@@ -21,6 +21,8 @@
 		2CD229422B42E7A2005400BE /* RxCocoa-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 2CD229412B42E7A2005400BE /* RxCocoa-Dynamic */; };
 		2CD229442B42E7A2005400BE /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 2CD229432B42E7A2005400BE /* RxRelay */; };
 		2CD229472B42E7C8005400BE /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 2CD229462B42E7C8005400BE /* Lottie */; };
+		2CD229552B42EA5B005400BE /* addSubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD229542B42EA5B005400BE /* addSubView.swift */; };
+		2CD229572B42EA75005400BE /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD229562B42EA75005400BE /* UIColor+.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +32,8 @@
 		2CD2291F2B42E685005400BE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		2CD229242B42E687005400BE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2CD229292B42E687005400BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2CD229542B42EA5B005400BE /* addSubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = addSubView.swift; path = ../../../../../../../Downloads/addSubView.swift; sourceTree = "<group>"; };
+		2CD229562B42EA75005400BE /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,13 +76,111 @@
 		2CD2291A2B42E685005400BE /* WSSiOS */ = {
 			isa = PBXGroup;
 			children = (
-				2CD2291B2B42E685005400BE /* AppDelegate.swift */,
-				2CD2291D2B42E685005400BE /* SceneDelegate.swift */,
-				2CD2291F2B42E685005400BE /* ViewController.swift */,
-				2CD229242B42E687005400BE /* Assets.xcassets */,
+				2CD229532B42EA12005400BE /* App */,
+				2CD229482B42E92F005400BE /* Resource */,
+				2CD2294F2B42E9AD005400BE /* Source */,
 				2CD229292B42E687005400BE /* Info.plist */,
+				2CD229242B42E687005400BE /* Assets.xcassets */,
 			);
 			path = WSSiOS;
+			sourceTree = "<group>";
+		};
+		2CD229482B42E92F005400BE /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				2CD229492B42E952005400BE /* Constants */,
+				2CD2294A2B42E964005400BE /* Extensions */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
+		2CD229492B42E952005400BE /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				2CD2294E2B42E995005400BE /* Config */,
+				2CD2294D2B42E98F005400BE /* URLs */,
+				2CD2294C2B42E983005400BE /* Images */,
+				2CD2294B2B42E97E005400BE /* Fonts */,
+			);
+			path = Constants;
+			sourceTree = "<group>";
+		};
+		2CD2294A2B42E964005400BE /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				2CD229542B42EA5B005400BE /* addSubView.swift */,
+				2CD229562B42EA75005400BE /* UIColor+.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		2CD2294B2B42E97E005400BE /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		2CD2294C2B42E983005400BE /* Images */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Images;
+			sourceTree = "<group>";
+		};
+		2CD2294D2B42E98F005400BE /* URLs */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = URLs;
+			sourceTree = "<group>";
+		};
+		2CD2294E2B42E995005400BE /* Config */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
+		2CD2294F2B42E9AD005400BE /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				2CD229502B42E9C8005400BE /* Presentation */,
+				2CD229522B42E9F7005400BE /* Data */,
+				2CD229512B42E9DB005400BE /* Network */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		2CD229502B42E9C8005400BE /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				2CD2291F2B42E685005400BE /* ViewController.swift */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		2CD229512B42E9DB005400BE /* Network */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		2CD229522B42E9F7005400BE /* Data */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		2CD229532B42EA12005400BE /* App */ = {
+			isa = PBXGroup;
+			children = (
+				2CD2291D2B42E685005400BE /* SceneDelegate.swift */,
+				2CD2291B2B42E685005400BE /* AppDelegate.swift */,
+			);
+			path = App;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -170,8 +272,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				2CD229202B42E685005400BE /* ViewController.swift in Sources */,
+				2CD229552B42EA5B005400BE /* addSubView.swift in Sources */,
 				2CD2291C2B42E685005400BE /* AppDelegate.swift in Sources */,
 				2CD2291E2B42E685005400BE /* SceneDelegate.swift in Sources */,
+				2CD229572B42EA75005400BE /* UIColor+.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
