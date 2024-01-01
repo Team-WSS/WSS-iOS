@@ -11,6 +11,16 @@
 		2CD2291E2B42E685005400BE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD2291D2B42E685005400BE /* SceneDelegate.swift */; };
 		2CD229202B42E685005400BE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD2291F2B42E685005400BE /* ViewController.swift */; };
 		2CD229252B42E687005400BE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2CD229242B42E687005400BE /* Assets.xcassets */; };
+		2CD229312B42E766005400BE /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 2CD229302B42E766005400BE /* Then */; };
+		2CD229342B42E771005400BE /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 2CD229332B42E771005400BE /* SnapKit */; };
+		2CD229362B42E771005400BE /* SnapKit-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 2CD229352B42E771005400BE /* SnapKit-Dynamic */; };
+		2CD229392B42E77F005400BE /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 2CD229382B42E77F005400BE /* Kingfisher */; };
+		2CD2293C2B42E7A2005400BE /* RxBlocking in Frameworks */ = {isa = PBXBuildFile; productRef = 2CD2293B2B42E7A2005400BE /* RxBlocking */; };
+		2CD2293E2B42E7A2005400BE /* RxBlocking-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 2CD2293D2B42E7A2005400BE /* RxBlocking-Dynamic */; };
+		2CD229402B42E7A2005400BE /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 2CD2293F2B42E7A2005400BE /* RxCocoa */; };
+		2CD229422B42E7A2005400BE /* RxCocoa-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 2CD229412B42E7A2005400BE /* RxCocoa-Dynamic */; };
+		2CD229442B42E7A2005400BE /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 2CD229432B42E7A2005400BE /* RxRelay */; };
+		2CD229472B42E7C8005400BE /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 2CD229462B42E7C8005400BE /* Lottie */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +37,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2CD229442B42E7A2005400BE /* RxRelay in Frameworks */,
+				2CD229422B42E7A2005400BE /* RxCocoa-Dynamic in Frameworks */,
+				2CD229392B42E77F005400BE /* Kingfisher in Frameworks */,
+				2CD229312B42E766005400BE /* Then in Frameworks */,
+				2CD229342B42E771005400BE /* SnapKit in Frameworks */,
+				2CD229472B42E7C8005400BE /* Lottie in Frameworks */,
+				2CD229402B42E7A2005400BE /* RxCocoa in Frameworks */,
+				2CD2293E2B42E7A2005400BE /* RxBlocking-Dynamic in Frameworks */,
+				2CD229362B42E771005400BE /* SnapKit-Dynamic in Frameworks */,
+				2CD2293C2B42E7A2005400BE /* RxBlocking in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,6 +97,18 @@
 			dependencies = (
 			);
 			name = WSSiOS;
+			packageProductDependencies = (
+				2CD229302B42E766005400BE /* Then */,
+				2CD229332B42E771005400BE /* SnapKit */,
+				2CD229352B42E771005400BE /* SnapKit-Dynamic */,
+				2CD229382B42E77F005400BE /* Kingfisher */,
+				2CD2293B2B42E7A2005400BE /* RxBlocking */,
+				2CD2293D2B42E7A2005400BE /* RxBlocking-Dynamic */,
+				2CD2293F2B42E7A2005400BE /* RxCocoa */,
+				2CD229412B42E7A2005400BE /* RxCocoa-Dynamic */,
+				2CD229432B42E7A2005400BE /* RxRelay */,
+				2CD229462B42E7C8005400BE /* Lottie */,
+			);
 			productName = WSSiOS;
 			productReference = 2CD229182B42E685005400BE /* WSSiOS.app */;
 			productType = "com.apple.product-type.application";
@@ -105,6 +137,13 @@
 				Base,
 			);
 			mainGroup = 2CD2290F2B42E685005400BE;
+			packageReferences = (
+				2CD2292F2B42E766005400BE /* XCRemoteSwiftPackageReference "Then" */,
+				2CD229322B42E771005400BE /* XCRemoteSwiftPackageReference "SnapKit" */,
+				2CD229372B42E77F005400BE /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				2CD2293A2B42E7A2005400BE /* XCRemoteSwiftPackageReference "RxSwift" */,
+				2CD229452B42E7C8005400BE /* XCRemoteSwiftPackageReference "lottie-ios" */,
+			);
 			productRefGroup = 2CD229192B42E685005400BE /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -334,6 +373,102 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		2CD2292F2B42E766005400BE /* XCRemoteSwiftPackageReference "Then" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/devxoul/Then";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
+		2CD229322B42E771005400BE /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.0;
+			};
+		};
+		2CD229372B42E77F005400BE /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.10.1;
+			};
+		};
+		2CD2293A2B42E7A2005400BE /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.6.0;
+			};
+		};
+		2CD229452B42E7C8005400BE /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.3.4;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		2CD229302B42E766005400BE /* Then */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2CD2292F2B42E766005400BE /* XCRemoteSwiftPackageReference "Then" */;
+			productName = Then;
+		};
+		2CD229332B42E771005400BE /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2CD229322B42E771005400BE /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		2CD229352B42E771005400BE /* SnapKit-Dynamic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2CD229322B42E771005400BE /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = "SnapKit-Dynamic";
+		};
+		2CD229382B42E77F005400BE /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2CD229372B42E77F005400BE /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+		2CD2293B2B42E7A2005400BE /* RxBlocking */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2CD2293A2B42E7A2005400BE /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxBlocking;
+		};
+		2CD2293D2B42E7A2005400BE /* RxBlocking-Dynamic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2CD2293A2B42E7A2005400BE /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = "RxBlocking-Dynamic";
+		};
+		2CD2293F2B42E7A2005400BE /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2CD2293A2B42E7A2005400BE /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		2CD229412B42E7A2005400BE /* RxCocoa-Dynamic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2CD2293A2B42E7A2005400BE /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = "RxCocoa-Dynamic";
+		};
+		2CD229432B42E7A2005400BE /* RxRelay */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2CD2293A2B42E7A2005400BE /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxRelay;
+		};
+		2CD229462B42E7C8005400BE /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2CD229452B42E7C8005400BE /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 2CD229102B42E685005400BE /* Project object */;
 }
