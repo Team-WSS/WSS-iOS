@@ -11,18 +11,19 @@ enum ImageLiterals {
     
     enum icon {
         enum icAlert {
-            static var icDefault: UIImage{ .load(named: "default")}
-            static var icWarning: UIImage{ .load(named: "warning")}
+            static var success: UIImage{ .load(named: "icAlertSuccess")}
+            static var warning: UIImage{ .load(named: "icAlertWarning")}
         }
         
         enum icBookRegistration {
-            static var icNoResult: UIImage{ .load(named: "no result")}
-            static var icPlus: UIImage{ .load(named: "plus")}
+            static var noResult: UIImage{ .load(named: "icBookRegistrationNoresult")}
+            static var plus: UIImage{ .load(named: "icBookRegistrationPlus")}
         }
         
-        enum icCreateMemo {
-            static var icBig: UIImage{ .load(named: "big")}
-            static var icSmall: UIImage{ .load(named: "small")}
+        enum icMemo {
+            static var big: UIImage{ .load(named: "icCreateMemoBig")}
+            static var small: UIImage{ .load(named: "icCreateMemoSmall")}
+            static var delete: UIImage{ .load(named: "icDeleteMemo")}
         }
         
         enum icGenre {
@@ -40,7 +41,7 @@ enum ImageLiterals {
         enum icStar {
             static var fill: UIImage{ .load(named: "icStarFill")}
             static var half: UIImage{ .load(named: "icStarHalf")}
-            static var empty: UIImage{ .load(named: "icStarUnfilled")}
+            static var empty: UIImage{ .load(named: "icStarEmpty")}
         }
         
         enum icTagStatus {
@@ -50,12 +51,22 @@ enum ImageLiterals {
             static var finished: UIImage{ .load(named: "icTagFinished")}
         }
         
+        enum Tabbar {
+            static var home: UIImage{ .load(named: "icNavigateHome")}
+            static var homeSelected: UIImage{ .load(named: "icNavigateHomeSelected")}
+            static var library: UIImage{ .load(named: "icNavigateLibrary")}
+            static var librarySelected: UIImage{ .load(named: "icNavigateLibrarySelected")}
+            static var record: UIImage{ .load(named: "icNavigateRecord")}
+            static var recordSelected: UIImage{ .load(named: "icNavigateRecordSelected")}
+            static var myPage: UIImage{ .load(named: "icNavigateMy")}
+            static var myPageSelected: UIImage{ .load(named: "icNavigateMySelected")}
+        }
+        
         static var calender: UIImage{ .load(named: "icCalender")}
-        static var deleteMemo: UIImage{ .load(named: "icDeleteMemo")}
         static var dropDown: UIImage{ .load(named: "icDropDown")}
         static var linkPlatform: UIImage{ .load(named: "icLinkPlatform")}
-        static var meatballMemo: UIImage{ .load(named: "icMeatballMemo")}
         static var navigateLeft: UIImage{ .load(named: "icNavigateLeft")}
+        static var meatballMemo: UIImage{ .load(named: "icMeatballMemo")}
         static var plusKeyword: UIImage{ .load(named: "icPlusKeyword")}
         static var search: UIImage{ .load(named: "icSearch")}
     }
