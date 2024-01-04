@@ -23,6 +23,7 @@
 		2CD229472B42E7C8005400BE /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 2CD229462B42E7C8005400BE /* Lottie */; };
 		2CD229552B42EA5B005400BE /* addSubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD229542B42EA5B005400BE /* addSubView.swift */; };
 		2CD229572B42EA75005400BE /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD229562B42EA75005400BE /* UIColor+.swift */; };
+		A1C3EC532B46962F00D997C2 /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C3EC522B46962F00D997C2 /* UIImage+.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		2CD229292B42E687005400BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2CD229542B42EA5B005400BE /* addSubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = addSubView.swift; path = ../../../../../../../Downloads/addSubView.swift; sourceTree = "<group>"; };
 		2CD229562B42EA75005400BE /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
+		A1C3EC522B46962F00D997C2 /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +112,7 @@
 			children = (
 				2CD229542B42EA5B005400BE /* addSubView.swift */,
 				2CD229562B42EA75005400BE /* UIColor+.swift */,
+				A1C3EC522B46962F00D997C2 /* UIImage+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -274,6 +277,7 @@
 				2CD229202B42E685005400BE /* ViewController.swift in Sources */,
 				2CD229552B42EA5B005400BE /* addSubView.swift in Sources */,
 				2CD2291C2B42E685005400BE /* AppDelegate.swift in Sources */,
+				A1C3EC532B46962F00D997C2 /* UIImage+.swift in Sources */,
 				2CD2291E2B42E685005400BE /* SceneDelegate.swift in Sources */,
 				2CD229572B42EA75005400BE /* UIColor+.swift in Sources */,
 			);
