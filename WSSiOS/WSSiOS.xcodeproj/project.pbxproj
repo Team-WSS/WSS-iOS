@@ -24,6 +24,7 @@
 		2CD229552B42EA5B005400BE /* addSubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD229542B42EA5B005400BE /* addSubView.swift */; };
 		2CD229572B42EA75005400BE /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD229562B42EA75005400BE /* UIColor+.swift */; };
 		A1C3EC532B46962F00D997C2 /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C3EC522B46962F00D997C2 /* UIImage+.swift */; };
+		A1C3EC552B4697C600D997C2 /* ImageLiterals.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C3EC542B4697C600D997C2 /* ImageLiterals.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		2CD229542B42EA5B005400BE /* addSubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = addSubView.swift; path = ../../../../../../../Downloads/addSubView.swift; sourceTree = "<group>"; };
 		2CD229562B42EA75005400BE /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		A1C3EC522B46962F00D997C2 /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
+		A1C3EC542B4697C600D997C2 /* ImageLiterals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ImageLiterals.swift; path = WSSiOS/Resource/Extensions/ImageLiterals.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +129,7 @@
 		2CD2294C2B42E983005400BE /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				A1C3EC542B4697C600D997C2 /* ImageLiterals.swift */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -279,6 +282,7 @@
 				2CD2291C2B42E685005400BE /* AppDelegate.swift in Sources */,
 				A1C3EC532B46962F00D997C2 /* UIImage+.swift in Sources */,
 				2CD2291E2B42E685005400BE /* SceneDelegate.swift in Sources */,
+				A1C3EC552B4697C600D997C2 /* ImageLiterals.swift in Sources */,
 				2CD229572B42EA75005400BE /* UIColor+.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
