@@ -27,6 +27,10 @@
 		2CD229442B42E7A2005400BE /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 2CD229432B42E7A2005400BE /* RxRelay */; };
 		2CD229472B42E7C8005400BE /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 2CD229462B42E7C8005400BE /* Lottie */; };
 		2CD229572B42EA75005400BE /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD229562B42EA75005400BE /* UIColor+.swift */; };
+		A1A1F9CD2B48733200705F44 /* SearchWebNovelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A1F9CC2B48733200705F44 /* SearchWebNovelViewController.swift */; };
+		A1A1F9CF2B48738200705F44 /* SearchHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A1F9CE2B48738200705F44 /* SearchHeaderView.swift */; };
+		A1A1F9D22B4873A100705F44 /* SearchResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A1F9D12B4873A100705F44 /* SearchResultView.swift */; };
+		A1A1F9D42B4873B500705F44 /* SearchEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A1F9D32B4873B500705F44 /* SearchEmptyView.swift */; };
 		A1C3EC532B46962F00D997C2 /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C3EC522B46962F00D997C2 /* UIImage+.swift */; };
 		A1EC91B42B46DA3100CFB33D /* ImageLiterals.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EC91B32B46DA3100CFB33D /* ImageLiterals.swift */; };
 /* End PBXBuildFile section */
@@ -44,6 +48,10 @@
 		2CD229242B42E687005400BE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2CD229292B42E687005400BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2CD229562B42EA75005400BE /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
+		A1A1F9CC2B48733200705F44 /* SearchWebNovelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchWebNovelViewController.swift; sourceTree = "<group>"; };
+		A1A1F9CE2B48738200705F44 /* SearchHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHeaderView.swift; sourceTree = "<group>"; };
+		A1A1F9D12B4873A100705F44 /* SearchResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultView.swift; sourceTree = "<group>"; };
+		A1A1F9D32B4873B500705F44 /* SearchEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEmptyView.swift; sourceTree = "<group>"; };
 		A1C3EC522B46962F00D997C2 /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
 		A1EC91B32B46DA3100CFB33D /* ImageLiterals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLiterals.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -165,6 +173,7 @@
 		2CD229502B42E9C8005400BE /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				A1A1F9CB2B48731D00705F44 /* Search */,
 				2CD2291F2B42E685005400BE /* ViewController.swift */,
 			);
 			path = Presentation;
@@ -191,6 +200,25 @@
 				2CD2291B2B42E685005400BE /* AppDelegate.swift */,
 			);
 			path = App;
+			sourceTree = "<group>";
+		};
+		A1A1F9CB2B48731D00705F44 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				A1A1F9D02B48739400705F44 /* View */,
+				A1A1F9CC2B48733200705F44 /* SearchWebNovelViewController.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		A1A1F9D02B48739400705F44 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				A1A1F9CE2B48738200705F44 /* SearchHeaderView.swift */,
+				A1A1F9D12B4873A100705F44 /* SearchResultView.swift */,
+				A1A1F9D32B4873B500705F44 /* SearchEmptyView.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		A1EC91B22B46DA2700CFB33D /* Images */ = {
@@ -296,10 +324,14 @@
 				2CD229202B42E685005400BE /* ViewController.swift in Sources */,
 				2CD2291C2B42E685005400BE /* AppDelegate.swift in Sources */,
 				A1C3EC532B46962F00D997C2 /* UIImage+.swift in Sources */,
+				A1A1F9D42B4873B500705F44 /* SearchEmptyView.swift in Sources */,
 				2CD2291E2B42E685005400BE /* SceneDelegate.swift in Sources */,
+				A1A1F9CD2B48733200705F44 /* SearchWebNovelViewController.swift in Sources */,
 				2C79CB9D2B45A1DD00734E1F /* UIFont+.swift in Sources */,
 				A1EC91B42B46DA3100CFB33D /* ImageLiterals.swift in Sources */,
 				2CD229572B42EA75005400BE /* UIColor+.swift in Sources */,
+				A1A1F9CF2B48738200705F44 /* SearchHeaderView.swift in Sources */,
+				A1A1F9D22B4873A100705F44 /* SearchResultView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
