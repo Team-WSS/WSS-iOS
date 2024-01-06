@@ -69,5 +69,6 @@ enum ImageLiterals {
         static var meatballMemo: UIImage{ .load(named: "icMeatballMemo")}
         static var plusKeyword: UIImage{ .load(named: "icPlusKeyword")}
         static var search: UIImage{ .load(named: "icSearch")}
+        static var searchCancel: UIImage{ .load(named: "icSearchCancel")}
     }
 }
