@@ -33,6 +33,7 @@ class WSSTabBarController: UITabBarController {
     private func setUI() {
         tabBar.backgroundColor = .White
         tabBar.itemPositioning = .centered
+        tabBar.tintColor = .Black
     }
     
     private func makeRadius() {
@@ -68,6 +69,16 @@ class WSSTabBarController: UITabBarController {
             image: normalImage,
             selectedImage: selectedImage
         )
+        
+        let normalAttributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.Label2,
+            .foregroundColor: UIColor.Gray200
+        ]
+        
+        let selectedAttributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.Label2,
+            .foregroundColor: UIColor.Black
+        ]
         
         naviController.setNavigationBarHidden(true, animated: true)
         naviController.tabBarItem = item
