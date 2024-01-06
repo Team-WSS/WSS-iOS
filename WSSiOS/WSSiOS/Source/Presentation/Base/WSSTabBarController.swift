@@ -21,7 +21,11 @@ class WSSTabBarController: UITabBarController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        tabBar.frame.size.height = 71
+        let tabBarHeight: CGFloat = 71
+        tabBar.frame.size.height = tabBarHeight
+        tabBar.frame.origin.y = view.frame.height - tabBarHeight
+        
+        makeRadius()
     }
     
     //MARK: UI
@@ -29,9 +33,11 @@ class WSSTabBarController: UITabBarController {
     private func setUI() {
         tabBar.backgroundColor = .White
         tabBar.itemPositioning = .centered
-        
+    }
+    
+    private func makeRadius() {
         let layer = CAShapeLayer()
-        let bezierPath = UIBezierPath(roundedRect: tabBar.bounds, byRoundingCorners: [.topLeft, .topRight], cornerRadii: CGSize(width: UIScreen.main.bounds.width/4, height: UIScreen.main.bounds.width/4))
+        let bezierPath = UIBezierPath(roundedRect: tabBar.bounds, byRoundingCorners: [.topLeft, .topRight], cornerRadii: CGSize(width: 24, height: 24))
         layer.path = bezierPath.cgPath
         tabBar.layer.mask = layer
     }
