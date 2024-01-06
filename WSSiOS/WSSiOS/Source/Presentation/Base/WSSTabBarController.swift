@@ -29,6 +29,11 @@ class WSSTabBarController: UITabBarController {
     private func setUI() {
         tabBar.backgroundColor = .White
         tabBar.itemPositioning = .centered
+        
+        let layer = CAShapeLayer()
+        let bezierPath = UIBezierPath(roundedRect: tabBar.bounds, byRoundingCorners: [.topLeft, .topRight], cornerRadii: CGSize(width: UIScreen.main.bounds.width/4, height: UIScreen.main.bounds.width/4))
+        layer.path = bezierPath.cgPath
+        tabBar.layer.mask = layer
     }
     
     private func registerTabBarController() {
@@ -47,9 +52,9 @@ class WSSTabBarController: UITabBarController {
     }
     
     private func createNaviControllers(normalImage: UIImage,
-                               selectedImage: UIImage,
-                               title: String,
-                               viewController: UIViewController) -> UINavigationController {
+                                       selectedImage: UIImage,
+                                       title: String,
+                                       viewController: UIViewController) -> UINavigationController {
         let naviController = UINavigationController(rootViewController: viewController)
         
         let item = UITabBarItem(
