@@ -22,7 +22,8 @@ class WSSTabBarController: UITabBarController {
     //MARK: UI
     
     private func setUI() {
-        
+        tabBar.backgroundColor = .White
+        tabBar.itemPositioning = .centered
     }
     
     //MARK: Hierachy
