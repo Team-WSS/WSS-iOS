@@ -43,5 +43,18 @@ enum WSSTabBarItem: CaseIterable {
         }
     }
     
-
+    var itemTitle: String {
+        switch self {
+        case .home:
+            return StringLiterals.Tabbar.Title.home
+        case .library:
+            return StringLiterals.Tabbar.Title.library
+        case .record:
+            return StringLiterals.Tabbar.Title.record
+        case .myPage:
+            return StringLiterals.Tabbar.Title.myPage
+        default:
+            return String()
+        }
+    }
 }
