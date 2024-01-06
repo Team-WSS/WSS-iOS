@@ -13,5 +13,34 @@ enum WSSTabBarItem: CaseIterable {
     
     //로고, 타이틀, 뷰컨, 선택유무
     
+    var normalItemImage: UIImage {
+        switch self {
+        case .home: 
+            return ImageLiterals.icon.Tabbar.home
+        case .library:
+            return ImageLiterals.icon.Tabbar.library
+        case .record:
+            return ImageLiterals.icon.Tabbar.record
+        case .myPage:
+            return ImageLiterals.icon.Tabbar.myPage
+        default:
+            return UIImage()
+        }
+    }
+    
+    var selectedItemImage: UIImage {
+        switch self {
+        case .home: 
+            return ImageLiterals.icon.Tabbar.homeSelected
+        case .library:
+            return ImageLiterals.icon.Tabbar.librarySelected
+        case .record:
+            return ImageLiterals.icon.Tabbar.recordSelected
+        case .myPage:
+            return ImageLiterals.icon.Tabbar.myPageSelected
+        default:
+            return UIImage()
+        }
+    }
     
 }
