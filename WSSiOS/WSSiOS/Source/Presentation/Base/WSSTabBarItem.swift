@@ -57,4 +57,19 @@ enum WSSTabBarItem: CaseIterable {
             return String()
         }
     }
+    
+    var itemViewController: UIViewController {
+        switch self {
+        case .home:
+            return ViewController()
+        case .library:
+            return UIViewController()
+        case .record:
+            return UIViewController()
+        case .myPage:
+            return UIViewController()
+        default:
+            return UIViewController()
+        }
+    }
 }
