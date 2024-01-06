@@ -11,8 +11,6 @@ enum WSSTabBarItem: CaseIterable {
     
     case home, library, record, myPage
     
-    //로고, 타이틀, 뷰컨, 선택유무
-    
     var normalItemImage: UIImage {
         switch self {
         case .home: 

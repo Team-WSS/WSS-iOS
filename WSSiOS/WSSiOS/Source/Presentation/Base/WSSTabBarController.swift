@@ -9,7 +9,7 @@ import UIKit
 
 class WSSTabBarController: UITabBarController {
     
-    //MARK: Life Cycle
+    //MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,7 +28,7 @@ class WSSTabBarController: UITabBarController {
         makeRadius()
     }
     
-    //MARK: UI
+    //MARK: - UI
     
     private func setUI() {
         tabBar.backgroundColor = .White
@@ -42,6 +42,8 @@ class WSSTabBarController: UITabBarController {
         layer.path = bezierPath.cgPath
         tabBar.layer.mask = layer
     }
+    
+    //MARK: - Custom TabBar
     
     private func registerTabBarController() {
         var naviControllers = [UINavigationController]()
