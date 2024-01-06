@@ -15,6 +15,7 @@ class WSSTabBarController: UITabBarController {
         super.viewDidLoad()
         
         setUI()
+        registerTabBarController()
     }
     
     override func viewDidLayoutSubviews() {
@@ -30,4 +31,36 @@ class WSSTabBarController: UITabBarController {
         tabBar.itemPositioning = .centered
     }
     
+    private func registerTabBarController() {
+        var naviControllers = [UINavigationController]()
+        
+        for item in WSSTabBarItem.allCases {
+            let naviController = createNaviControllers(
+                normalImage: item.normalItemImage,
+                selectedImage: item.selectedItemImage,
+                title: item.itemTitle,
+                viewController: item.itemViewController
+            )
+            naviControllers.append(naviController)
+        }
+        setViewControllers(naviControllers, animated: true)
+    }
+    
+    private func createNaviControllers(normalImage: UIImage,
+                               selectedImage: UIImage,
+                               title: String,
+                               viewController: UIViewController) -> UINavigationController {
+        let naviController = UINavigationController(rootViewController: viewController)
+        
+        let item = UITabBarItem(
+            title: title,
+            image: normalImage,
+            selectedImage: selectedImage
+        )
+        
+        naviController.setNavigationBarHidden(true, animated: true)
+        naviController.tabBarItem = item
+        
+        return naviController
+    }
 }
