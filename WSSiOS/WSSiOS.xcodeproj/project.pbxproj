@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2C41402A2B4991F8000E2AD9 /* WSSTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C4140292B4991F8000E2AD9 /* WSSTabBarController.swift */; };
+		2C41402C2B49A271000E2AD9 /* WSSTabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C41402B2B49A271000E2AD9 /* WSSTabBarItem.swift */; };
 		2C79CB952B45A0A400734E1F /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2C79CB942B45A0A400734E1F /* Pretendard-SemiBold.otf */; };
 		2C79CB972B45A0AB00734E1F /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2C79CB962B45A0AB00734E1F /* Pretendard-Medium.otf */; };
 		2C79CB992B45A0B200734E1F /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2C79CB982B45A0B200734E1F /* Pretendard-Bold.otf */; };
@@ -34,6 +35,7 @@
 
 /* Begin PBXFileReference section */
 		2C4140292B4991F8000E2AD9 /* WSSTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSTabBarController.swift; sourceTree = "<group>"; };
+		2C41402B2B49A271000E2AD9 /* WSSTabBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSTabBarItem.swift; sourceTree = "<group>"; };
 		2C79CB942B45A0A400734E1F /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
 		2C79CB962B45A0AB00734E1F /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
 		2C79CB982B45A0B200734E1F /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
@@ -75,6 +77,7 @@
 			isa = PBXGroup;
 			children = (
 				2C4140292B4991F8000E2AD9 /* WSSTabBarController.swift */,
+				2C41402B2B49A271000E2AD9 /* WSSTabBarItem.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -311,6 +314,7 @@
 				2CD2291E2B42E685005400BE /* SceneDelegate.swift in Sources */,
 				2C79CB9D2B45A1DD00734E1F /* UIFont+.swift in Sources */,
 				A1EC91B42B46DA3100CFB33D /* ImageLiterals.swift in Sources */,
+				2C41402C2B49A271000E2AD9 /* WSSTabBarItem.swift in Sources */,
 				2CD229572B42EA75005400BE /* UIColor+.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
