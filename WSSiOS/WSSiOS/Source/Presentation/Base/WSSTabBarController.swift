@@ -8,15 +8,19 @@
 import UIKit
 
 class WSSTabBarController: UITabBarController {
-
+    
     //MARK: Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         setUI()
-        setHierachy()
-        setLayout()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        tabBar.frame.size.height = 71
     }
     
     //MARK: UI
@@ -26,16 +30,4 @@ class WSSTabBarController: UITabBarController {
         tabBar.itemPositioning = .centered
     }
     
-    //MARK: Hierachy
-    
-    private func setHierachy() {
-        
-    }
-    
-    //MARK: Layout
-    
-    private func setLayout() {
-        
-    }
-
 }
