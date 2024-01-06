@@ -40,7 +40,7 @@ final class SearchWebNovelViewController: UIViewController, UISearchBarDelegate 
     
     private func setLayout() {
         headerView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(50)
+            $0.top.equalToSuperview().inset(100) // 임시 -> 네비게이션바 만들고 재조정 필요
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(67)
         }

@@ -35,11 +35,12 @@ final class SearchHeaderView: UIView {
     
     private func setUI() {
         self.do {
-            $0.backgroundColor = .white
+            $0.backgroundColor = .systemRed
         }
         
         searchBar.do {
             $0.setImage(ImageLiterals.icon.search, for: .search, state: .normal)
+            $0.setImage(ImageLiterals.icon.searchCancel, for: .clear, state: .normal)
             $0.layer.borderColor = UIColor.Gray200.cgColor
             $0.layer.borderWidth = 1
             $0.clipsToBounds = true
@@ -47,7 +48,7 @@ final class SearchHeaderView: UIView {
         }
         
         if let textfield = searchBar.value(forKey: "searchField") as? UITextField {
-            textfield.backgroundColor = .White
+            textfield.backgroundColor = .clear
             textfield.font = .Body2
             textfield.attributedPlaceholder = NSAttributedString(string: textfield.placeholder ?? "등록할 작품 검색하기", attributes: [NSAttributedString.Key.foregroundColor : UIColor.Gray200])
             // 텍스트 입력시 색상
