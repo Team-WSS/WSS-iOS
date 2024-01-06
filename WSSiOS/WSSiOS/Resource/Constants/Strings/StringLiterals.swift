@@ -12,7 +12,7 @@ enum StringLiterals {
     enum Tabbar {
         enum Title {
             static let home = "홈"
-            static let libarary = "서재"
+            static let library = "서재"
             static let record = "기록"
             static let myPage = "MY"
         }
