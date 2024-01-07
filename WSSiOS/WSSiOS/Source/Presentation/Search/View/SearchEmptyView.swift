@@ -49,8 +49,9 @@ final class SearchEmptyView: UIView {
     //MARK: set Hierachy
     
     private func setHierachy() {
-        self.addSubview(emptyImageView)
-        self.addSubview(emptyDescriptionLabel)
+        self.addSubviews(emptyImageView,
+                         emptyDescriptionLabel)
+        
     }
     
     //MARK: set Layout

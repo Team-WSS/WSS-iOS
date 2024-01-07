@@ -57,9 +57,9 @@ final class SearchWebNovelViewController: UIViewController, UISearchBarDelegate 
     //MARK: set Hierachy
     
     private func setHierachy() {
-        self.view.addSubview(headerView)
-        self.view.addSubview(dividerLine)
-        self.view.addSubview(mainEmptyView)
+        self.view.addSubviews(headerView,
+                              dividerLine,
+                              mainResultView)
     }
     
     //MARK: set Layout

@@ -57,11 +57,11 @@ final class SearchTableViewCell: UITableViewCell {
     
     //MARK: set Hierachy
     
-    private func setHierachy() {
-        self.addSubview(novelImageView)
-        self.addSubview(novelTitleLabel)
-        self.addSubview(novelAuthorLabel)
-        self.addSubview(novelGenreLabel)
+    private func setHierachy() {    
+        self.addSubviews(novelImageView,
+                         novelTitleLabel,
+                         novelAuthorLabel,
+                         novelGenreLabel)
     }
     
     //MARK: set Layout
