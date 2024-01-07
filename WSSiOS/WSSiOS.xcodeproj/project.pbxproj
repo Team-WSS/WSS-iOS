@@ -205,8 +205,8 @@
 		A1A1F9CB2B48731D00705F44 /* Search */ = {
 			isa = PBXGroup;
 			children = (
+				A1DBB2F72B4AA2BE000EE869 /* ViewController */,
 				A1A1F9D02B48739400705F44 /* View */,
-				A1A1F9CC2B48733200705F44 /* SearchWebNovelViewController.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -219,6 +219,14 @@
 				A1A1F9D32B4873B500705F44 /* SearchEmptyView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		A1DBB2F72B4AA2BE000EE869 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				A1A1F9CC2B48733200705F44 /* SearchWebNovelViewController.swift */,
+			);
+			path = ViewController;
 			sourceTree = "<group>";
 		};
 		A1EC91B22B46DA2700CFB33D /* Images */ = {

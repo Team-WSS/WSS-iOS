@@ -13,6 +13,7 @@ final class SearchWebNovelViewController: UIViewController, UISearchBarDelegate 
     
     private let navigationBarTitleLabel = UILabel()
     private let headerView = SearchHeaderView()
+    private let dividerLine = UIView()
     private let mainEmptyView = SearchEmptyView()
     
     //MARK: Life Cycle
@@ -38,6 +39,10 @@ final class SearchWebNovelViewController: UIViewController, UISearchBarDelegate 
             $0.font = .Title2
             $0.textColor = .Black
         }
+        
+        dividerLine.do {
+            $0.backgroundColor = .Gray50
+        }
     }
     
     //MARK: customize NaivationBar
@@ -52,6 +57,7 @@ final class SearchWebNovelViewController: UIViewController, UISearchBarDelegate 
     
     private func setHierachy() {
         self.view.addSubview(headerView)
+        self.view.addSubview(dividerLine)
         self.view.addSubview(mainEmptyView)
     }
     
@@ -64,8 +70,14 @@ final class SearchWebNovelViewController: UIViewController, UISearchBarDelegate 
             $0.height.equalTo(67)
         }
         
-        mainEmptyView.snp.makeConstraints {
+        dividerLine.snp.makeConstraints {
             $0.top.equalTo(headerView.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(1)
+        }
+        
+        mainEmptyView.snp.makeConstraints {
+            $0.top.equalTo(dividerLine.snp.bottom)
             $0.leading.trailing.bottom.equalToSuperview()
         }
     }
