@@ -7,7 +7,9 @@
 
 import UIKit
 
-class WSSTabBarController: UITabBarController {
+import Then
+
+final class WSSTabBarController: UITabBarController {
     
     //MARK: - Life Cycle
     
@@ -31,9 +33,11 @@ class WSSTabBarController: UITabBarController {
     //MARK: - UI
     
     private func setUI() {
-        tabBar.backgroundColor = .White
-        tabBar.itemPositioning = .centered
-        tabBar.tintColor = .Black
+        tabBar.do {
+            $0.backgroundColor = .White
+            $0.itemPositioning = .centered
+            $0.tintColor = .Black
+        }
     }
     
     private func makeRadius() {
@@ -48,6 +52,7 @@ class WSSTabBarController: UITabBarController {
     private func registerTabBarController() {
         var naviControllers = [UINavigationController]()
         
+        navigationController
         for item in WSSTabBarItem.allCases {
             let naviController = createNaviControllers(
                 normalImage: item.normalItemImage,
