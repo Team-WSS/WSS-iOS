@@ -14,6 +14,7 @@ final class SearchWebNovelViewController: UIViewController, UISearchBarDelegate 
     private let navigationBarTitleLabel = UILabel()
     private let headerView = SearchHeaderView()
     private let dividerLine = UIView()
+    private let mainResultView = SearchResultView()
     private let mainEmptyView = SearchEmptyView()
     
     //MARK: Life Cycle

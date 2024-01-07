@@ -32,6 +32,7 @@
 		A1A1F9D22B4873A100705F44 /* SearchResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A1F9D12B4873A100705F44 /* SearchResultView.swift */; };
 		A1A1F9D42B4873B500705F44 /* SearchEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A1F9D32B4873B500705F44 /* SearchEmptyView.swift */; };
 		A1C3EC532B46962F00D997C2 /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C3EC522B46962F00D997C2 /* UIImage+.swift */; };
+		A1DBB2FA2B4AA981000EE869 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1DBB2F92B4AA981000EE869 /* SearchTableViewCell.swift */; };
 		A1EC91B42B46DA3100CFB33D /* ImageLiterals.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EC91B32B46DA3100CFB33D /* ImageLiterals.swift */; };
 /* End PBXBuildFile section */
 
@@ -53,6 +54,7 @@
 		A1A1F9D12B4873A100705F44 /* SearchResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultView.swift; sourceTree = "<group>"; };
 		A1A1F9D32B4873B500705F44 /* SearchEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEmptyView.swift; sourceTree = "<group>"; };
 		A1C3EC522B46962F00D997C2 /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
+		A1DBB2F92B4AA981000EE869 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		A1EC91B32B46DA3100CFB33D /* ImageLiterals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLiterals.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -205,6 +207,7 @@
 		A1A1F9CB2B48731D00705F44 /* Search */ = {
 			isa = PBXGroup;
 			children = (
+				A1DBB2F82B4AA973000EE869 /* Cell */,
 				A1DBB2F72B4AA2BE000EE869 /* ViewController */,
 				A1A1F9D02B48739400705F44 /* View */,
 			);
@@ -227,6 +230,14 @@
 				A1A1F9CC2B48733200705F44 /* SearchWebNovelViewController.swift */,
 			);
 			path = ViewController;
+			sourceTree = "<group>";
+		};
+		A1DBB2F82B4AA973000EE869 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				A1DBB2F92B4AA981000EE869 /* SearchTableViewCell.swift */,
+			);
+			path = Cell;
 			sourceTree = "<group>";
 		};
 		A1EC91B22B46DA2700CFB33D /* Images */ = {
@@ -338,6 +349,7 @@
 				2C79CB9D2B45A1DD00734E1F /* UIFont+.swift in Sources */,
 				A1EC91B42B46DA3100CFB33D /* ImageLiterals.swift in Sources */,
 				2CD229572B42EA75005400BE /* UIColor+.swift in Sources */,
+				A1DBB2FA2B4AA981000EE869 /* SearchTableViewCell.swift in Sources */,
 				A1A1F9CF2B48738200705F44 /* SearchHeaderView.swift in Sources */,
 				A1A1F9D22B4873A100705F44 /* SearchResultView.swift in Sources */,
 			);
