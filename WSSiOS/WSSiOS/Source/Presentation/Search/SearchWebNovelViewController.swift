@@ -11,6 +11,7 @@ final class SearchWebNovelViewController: UIViewController, UISearchBarDelegate 
     
     //MARK: set Properties
     
+    private let navigationBarTitleLabel = UILabel()
     private let headerView = SearchHeaderView()
     
     //MARK: Life Cycle
@@ -21,13 +22,27 @@ final class SearchWebNovelViewController: UIViewController, UISearchBarDelegate 
         setUI()
         setHierachy()
         setLayout()
+        
+        setNavigationBar()
+        setDelegate()
     }
     
     //MARK: set UI
     
     private func setUI() {
         self.view.backgroundColor = .White
-        headerView.searchBar.delegate = self
+        
+        navigationBarTitleLabel.do {
+            $0.text = "검색"
+            $0.font = .Title2
+            $0.textColor = .Black
+        }
+    }
+    
+    //MARK: customize NaivationBar
+    
+    private func setNavigationBar() {
+        self.navigationController?.navigationBar.topItem?.titleView = navigationBarTitleLabel
     }
     
     //MARK: set Hierachy
@@ -40,9 +55,15 @@ final class SearchWebNovelViewController: UIViewController, UISearchBarDelegate 
     
     private func setLayout() {
         headerView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(100) // 임시 -> 네비게이션바 만들고 재조정 필요
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(67)
         }
+    }
+    
+    //MARK: set Delegate
+    
+    private func setDelegate() {
+        headerView.searchBar.delegate = self
     }
 }
