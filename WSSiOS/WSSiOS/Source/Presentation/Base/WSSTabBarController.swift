@@ -23,11 +23,11 @@ final class WSSTabBarController: UITabBarController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        let tabBarHeight: CGFloat = 71 + view.safeAreaInsets.bottom - 15
+        let tabBarHeight: CGFloat = 49 + view.safeAreaInsets.bottom
         tabBar.frame.size.height = tabBarHeight
         tabBar.frame.origin.y = view.frame.height - tabBarHeight
         
-        makeRadius()
+        makeShadowRadius()
     }
     
     //MARK: - UI
@@ -40,11 +40,25 @@ final class WSSTabBarController: UITabBarController {
         }
     }
     
-    private func makeRadius() {
+    private func makeShadowRadius() {
         let layer = CAShapeLayer()
         let bezierPath = UIBezierPath(roundedRect: tabBar.bounds, byRoundingCorners: [.topLeft, .topRight], cornerRadii: CGSize(width: 24, height: 24))
         layer.path = bezierPath.cgPath
         tabBar.layer.mask = layer
+        
+        let shadowView = UIView(frame: tabBar.frame)
+        shadowView.do {
+            $0.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
+            $0.layer.shadowOpacity = 1
+            $0.layer.shadowRadius = 15
+            $0.layer.shadowOffset = CGSize(width: 0, height: 2)
+            $0.layer.shadowPath = bezierPath.cgPath
+            $0.layer.masksToBounds = false
+        }
+        
+        if let container = tabBar.superview {
+            container.insertSubview(shadowView, belowSubview: tabBar)
+        }
     }
     
     //MARK: - Custom TabBar
@@ -52,7 +66,6 @@ final class WSSTabBarController: UITabBarController {
     private func registerTabBarController() {
         var naviControllers = [UINavigationController]()
         
-        navigationController
         for item in WSSTabBarItem.allCases {
             let naviController = createNaviControllers(
                 normalImage: item.normalItemImage,
