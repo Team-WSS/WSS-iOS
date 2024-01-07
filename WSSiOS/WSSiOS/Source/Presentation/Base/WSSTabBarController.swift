@@ -11,6 +11,10 @@ import Then
 
 final class WSSTabBarController: UITabBarController {
     
+    //MARK: - UI Component
+    
+    let shadowView = UIView()
+    
     //MARK: - Life Cycle
     
     override func viewDidLoad() {
@@ -46,8 +50,8 @@ final class WSSTabBarController: UITabBarController {
         layer.path = bezierPath.cgPath
         tabBar.layer.mask = layer
         
-        let shadowView = UIView(frame: tabBar.frame)
         shadowView.do {
+            $0.frame = tabBar.frame
             $0.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
             $0.layer.shadowOpacity = 1
             $0.layer.shadowRadius = 15
