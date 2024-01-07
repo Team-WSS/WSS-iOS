@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2C41402A2B4991F8000E2AD9 /* WSSTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C4140292B4991F8000E2AD9 /* WSSTabBarController.swift */; };
+		2C41402C2B49A271000E2AD9 /* WSSTabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C41402B2B49A271000E2AD9 /* WSSTabBarItem.swift */; };
+		2C4140322B49A8D6000E2AD9 /* StringLiterals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C4140312B49A8D6000E2AD9 /* StringLiterals.swift */; };
 		2C01F9852B482EB700D90FFE /* UserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C01F9842B482EB700D90FFE /* UserRepository.swift */; };
 		2C79CB952B45A0A400734E1F /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2C79CB942B45A0A400734E1F /* Pretendard-SemiBold.otf */; };
 		2C79CB972B45A0AB00734E1F /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2C79CB962B45A0AB00734E1F /* Pretendard-Medium.otf */; };
@@ -33,6 +36,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2C4140292B4991F8000E2AD9 /* WSSTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSTabBarController.swift; sourceTree = "<group>"; };
+		2C41402B2B49A271000E2AD9 /* WSSTabBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSTabBarItem.swift; sourceTree = "<group>"; };
+		2C4140312B49A8D6000E2AD9 /* StringLiterals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringLiterals.swift; sourceTree = "<group>"; };
 		2C01F9842B482EB700D90FFE /* UserRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRepository.swift; sourceTree = "<group>"; };
 		2C79CB942B45A0A400734E1F /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
 		2C79CB962B45A0AB00734E1F /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
@@ -71,6 +77,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2C4140282B4991D3000E2AD9 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				2C4140292B4991F8000E2AD9 /* WSSTabBarController.swift */,
+				2C41402B2B49A271000E2AD9 /* WSSTabBarItem.swift */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		2C4140302B49A8C1000E2AD9 /* Strings */ = {
+			isa = PBXGroup;
+			children = (
+				2C4140312B49A8D6000E2AD9 /* StringLiterals.swift */,
+			);
+			path = Strings;
 		2C01F9832B482E6400D90FFE /* Repository */ = {
 			isa = PBXGroup;
 			children = (
@@ -119,6 +140,7 @@
 		2CD229492B42E952005400BE /* Constants */ = {
 			isa = PBXGroup;
 			children = (
+				2C4140302B49A8C1000E2AD9 /* Strings */,
 				A1EC91B22B46DA2700CFB33D /* Images */,
 				2CD2294E2B42E995005400BE /* Config */,
 				2CD2294D2B42E98F005400BE /* URLs */,
@@ -176,6 +198,7 @@
 			isa = PBXGroup;
 			children = (
 				2CD2291F2B42E685005400BE /* ViewController.swift */,
+				2C4140282B4991D3000E2AD9 /* Base */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -305,11 +328,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				2CD229202B42E685005400BE /* ViewController.swift in Sources */,
+				2C41402A2B4991F8000E2AD9 /* WSSTabBarController.swift in Sources */,
 				2CD2291C2B42E685005400BE /* AppDelegate.swift in Sources */,
 				A1C3EC532B46962F00D997C2 /* UIImage+.swift in Sources */,
 				2CD2291E2B42E685005400BE /* SceneDelegate.swift in Sources */,
 				2C79CB9D2B45A1DD00734E1F /* UIFont+.swift in Sources */,
+				2C4140322B49A8D6000E2AD9 /* StringLiterals.swift in Sources */,
 				A1EC91B42B46DA3100CFB33D /* ImageLiterals.swift in Sources */,
+				2C41402C2B49A271000E2AD9 /* WSSTabBarItem.swift in Sources */,
 				2C01F9852B482EB700D90FFE /* UserRepository.swift in Sources */,
 				2CD229572B42EA75005400BE /* UIColor+.swift in Sources */,
 			);
