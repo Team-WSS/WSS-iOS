@@ -10,6 +10,7 @@
 		2C41402A2B4991F8000E2AD9 /* WSSTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C4140292B4991F8000E2AD9 /* WSSTabBarController.swift */; };
 		2C41402C2B49A271000E2AD9 /* WSSTabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C41402B2B49A271000E2AD9 /* WSSTabBarItem.swift */; };
 		2C4140322B49A8D6000E2AD9 /* StringLiterals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C4140312B49A8D6000E2AD9 /* StringLiterals.swift */; };
+		2C01F9852B482EB700D90FFE /* UserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C01F9842B482EB700D90FFE /* UserRepository.swift */; };
 		2C79CB952B45A0A400734E1F /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2C79CB942B45A0A400734E1F /* Pretendard-SemiBold.otf */; };
 		2C79CB972B45A0AB00734E1F /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2C79CB962B45A0AB00734E1F /* Pretendard-Medium.otf */; };
 		2C79CB992B45A0B200734E1F /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2C79CB982B45A0B200734E1F /* Pretendard-Bold.otf */; };
@@ -38,6 +39,7 @@
 		2C4140292B4991F8000E2AD9 /* WSSTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSTabBarController.swift; sourceTree = "<group>"; };
 		2C41402B2B49A271000E2AD9 /* WSSTabBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSTabBarItem.swift; sourceTree = "<group>"; };
 		2C4140312B49A8D6000E2AD9 /* StringLiterals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringLiterals.swift; sourceTree = "<group>"; };
+		2C01F9842B482EB700D90FFE /* UserRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRepository.swift; sourceTree = "<group>"; };
 		2C79CB942B45A0A400734E1F /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
 		2C79CB962B45A0AB00734E1F /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
 		2C79CB982B45A0B200734E1F /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
@@ -90,6 +92,12 @@
 				2C4140312B49A8D6000E2AD9 /* StringLiterals.swift */,
 			);
 			path = Strings;
+		2C01F9832B482E6400D90FFE /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				2C01F9842B482EB700D90FFE /* UserRepository.swift */,
+			);
+			path = Repository;
 			sourceTree = "<group>";
 		};
 		2CD2290F2B42E685005400BE = {
@@ -115,7 +123,6 @@
 				2CD229482B42E92F005400BE /* Resource */,
 				2CD2294F2B42E9AD005400BE /* Source */,
 				2CD229292B42E687005400BE /* Info.plist */,
-				2CD229242B42E687005400BE /* Assets.xcassets */,
 			);
 			path = WSSiOS;
 			sourceTree = "<group>";
@@ -123,6 +130,7 @@
 		2CD229482B42E92F005400BE /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				2CD229242B42E687005400BE /* Assets.xcassets */,
 				2CD229492B42E952005400BE /* Constants */,
 				2CD2294A2B42E964005400BE /* Extensions */,
 			);
@@ -205,6 +213,7 @@
 		2CD229522B42E9F7005400BE /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				2C01F9832B482E6400D90FFE /* Repository */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -327,6 +336,7 @@
 				2C4140322B49A8D6000E2AD9 /* StringLiterals.swift in Sources */,
 				A1EC91B42B46DA3100CFB33D /* ImageLiterals.swift in Sources */,
 				2C41402C2B49A271000E2AD9 /* WSSTabBarItem.swift in Sources */,
+				2C01F9852B482EB700D90FFE /* UserRepository.swift in Sources */,
 				2CD229572B42EA75005400BE /* UIColor+.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
