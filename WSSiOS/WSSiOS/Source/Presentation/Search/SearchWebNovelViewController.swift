@@ -13,6 +13,7 @@ final class SearchWebNovelViewController: UIViewController, UISearchBarDelegate 
     
     private let navigationBarTitleLabel = UILabel()
     private let headerView = SearchHeaderView()
+    private let mainEmptyView = SearchEmptyView()
     
     //MARK: Life Cycle
     
@@ -43,12 +44,15 @@ final class SearchWebNovelViewController: UIViewController, UISearchBarDelegate 
     
     private func setNavigationBar() {
         self.navigationController?.navigationBar.topItem?.titleView = navigationBarTitleLabel
+        
+        //TODO: custom backbutton 추가 필요
     }
     
     //MARK: set Hierachy
     
     private func setHierachy() {
         self.view.addSubview(headerView)
+        self.view.addSubview(mainEmptyView)
     }
     
     //MARK: set Layout
@@ -58,6 +62,11 @@ final class SearchWebNovelViewController: UIViewController, UISearchBarDelegate 
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(67)
+        }
+        
+        mainEmptyView.snp.makeConstraints {
+            $0.top.equalTo(headerView.snp.bottom)
+            $0.leading.trailing.bottom.equalToSuperview()
         }
     }
     
