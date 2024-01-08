@@ -9,7 +9,7 @@ import UIKit
 
 final class SearchCollectionViewCell: UICollectionViewCell {
     
-    //MARK: set Properties
+    //MARK: - set Properties
     
     static let identifier: String = "SearchCollectionViewCell"
     
@@ -18,7 +18,7 @@ final class SearchCollectionViewCell: UICollectionViewCell {
     private let novelAuthorLabel = UILabel()
     private let novelGenreLabel = UILabel()
     
-    //MARK: Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -33,7 +33,7 @@ final class SearchCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: set UI
+    //MARK: - set UI
     
     private func setUI() {
         novelTitleLabel.do {
@@ -57,7 +57,7 @@ final class SearchCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    //MARK: set Hierachy
+    //MARK: - set Hierachy
     
     private func setHierachy() {
         self.addSubviews(novelImageView,
@@ -66,7 +66,7 @@ final class SearchCollectionViewCell: UICollectionViewCell {
                          novelGenreLabel)
     }
     
-    //MARK: set Layout
+    //MARK: - set Layout
     
     private func setLayout() {
         novelImageView.snp.makeConstraints {
@@ -92,6 +92,8 @@ final class SearchCollectionViewCell: UICollectionViewCell {
             $0.trailing.equalToSuperview()
         }
     }
+    
+    //TODO: - 서버 붙이고 나서 수정 필요
     
     func bindData(data: SearchNovel) {
         novelImageView.image = data.novelImage

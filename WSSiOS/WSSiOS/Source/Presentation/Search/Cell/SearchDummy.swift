@@ -7,6 +7,8 @@
 
 import UIKit
 
+//TODO: - 서버 붙이고 수정 필요
+
 struct SearchNovel {
     let novelImage: UIImage?
     let novelTitle: String

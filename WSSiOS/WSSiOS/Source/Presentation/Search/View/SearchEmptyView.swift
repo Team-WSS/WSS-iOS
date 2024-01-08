@@ -12,12 +12,12 @@ import Then
 
 final class SearchEmptyView: UIView {
     
-    //MARK: set Porperties
+    //MARK: - set Porperties
     
     private let emptyImageView = UIImageView()
     private let emptyDescriptionLabel = UILabel()
     
-    //MARK: Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -32,7 +32,7 @@ final class SearchEmptyView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: set UI
+    //MARK: - set UI
     
     private func setUI() {
         emptyImageView.do {
@@ -46,7 +46,7 @@ final class SearchEmptyView: UIView {
         }
     }
     
-    //MARK: set Hierachy
+    //MARK: - set Hierachy
     
     private func setHierachy() {
         self.addSubviews(emptyImageView,
@@ -54,7 +54,7 @@ final class SearchEmptyView: UIView {
         
     }
     
-    //MARK: set Layout
+    //MARK: - set Layout
     
     private func setLayout() {
         emptyImageView.snp.makeConstraints {

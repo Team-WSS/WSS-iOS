@@ -12,11 +12,11 @@ import Then
 
 final class SearchHeaderView: UIView {
     
-    //MARK: set Properties
+    //MARK: - set Properties
     
     let searchBar = UISearchBar()
     
-    //MARK: Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -31,7 +31,7 @@ final class SearchHeaderView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: set UI
+    //MARK: - set UI
     
     private func setUI() {
         self.do {
@@ -57,13 +57,13 @@ final class SearchHeaderView: UIView {
         }
     }
     
-    //MARK: set Hierachy
+    //MARK: - set Hierachy
     
     private func setHierachy() {
         self.addSubview(searchBar)
     }
     
-    //MARK: set Layout
+    //MARK: - set Layout
     
     private func setLayout() {
         searchBar.snp.makeConstraints {

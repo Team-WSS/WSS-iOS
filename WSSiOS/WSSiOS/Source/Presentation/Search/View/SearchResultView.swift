@@ -12,11 +12,11 @@ import Then
 
 final class SearchResultView: UIView {
     
-    //MARK: set Properties
+    //MARK: - set Properties
     
     let searchCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     
-    //MARK: Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -31,7 +31,7 @@ final class SearchResultView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: set UI
+    //MARK: - set UI
     
     private func setUI() {
         searchCollectionView.do {
@@ -40,13 +40,13 @@ final class SearchResultView: UIView {
         }
     }
     
-    //MARK: set Hierachy
+    //MARK: - set Hierachy
     
     private func setHierachy() {
         self.addSubview(searchCollectionView)
     }
     
-    //MARK: set Layout
+    //MARK: - set Layout
     
     private func setLayout() {
         searchCollectionView.snp.makeConstraints {
