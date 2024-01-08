@@ -9,15 +9,16 @@ import UIKit
 
 final class SearchWebNovelViewController: UIViewController, UISearchBarDelegate {
     
-    //MARK: set Properties
+    //MARK: - set Properties
     
     private let navigationBarTitleLabel = UILabel()
     private let headerView = SearchHeaderView()
     private let dividerLine = UIView()
     private let mainResultView = SearchResultView()
     private let mainEmptyView = SearchEmptyView()
+    private let searchDummy = SearchNovel.searchNovelDummy()
     
-    //MARK: Life Cycle
+    //MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,9 +29,11 @@ final class SearchWebNovelViewController: UIViewController, UISearchBarDelegate 
         
         setNavigationBar()
         setDelegate()
+        setCollectionViewConfig()
+        setCollectionViewLayout()
     }
     
-    //MARK: set UI
+    //MARK: - set UI
     
     private func setUI() {
         self.view.backgroundColor = .White
@@ -46,7 +49,7 @@ final class SearchWebNovelViewController: UIViewController, UISearchBarDelegate 
         }
     }
     
-    //MARK: customize NaivationBar
+    //MARK: - customize NaivationBar
     
     private func setNavigationBar() {
         self.navigationController?.navigationBar.topItem?.titleView = navigationBarTitleLabel
@@ -54,7 +57,7 @@ final class SearchWebNovelViewController: UIViewController, UISearchBarDelegate 
         //TODO: custom backbutton 추가 필요
     }
     
-    //MARK: set Hierachy
+    //MARK: - set Hierachy
     
     private func setHierachy() {
         self.view.addSubviews(headerView,
@@ -62,7 +65,7 @@ final class SearchWebNovelViewController: UIViewController, UISearchBarDelegate 
                               mainResultView)
     }
     
-    //MARK: set Layout
+    //MARK: - set Layout
     
     private func setLayout() {
         headerView.snp.makeConstraints {
@@ -77,15 +80,51 @@ final class SearchWebNovelViewController: UIViewController, UISearchBarDelegate 
             $0.height.equalTo(1)
         }
         
-        mainEmptyView.snp.makeConstraints {
+        mainResultView.snp.makeConstraints {
             $0.top.equalTo(dividerLine.snp.bottom)
             $0.leading.trailing.bottom.equalToSuperview()
         }
     }
     
-    //MARK: set Delegate
+    //MARK: - set Delegate
     
     private func setDelegate() {
         headerView.searchBar.delegate = self
+    }
+    
+    private func setCollectionViewConfig() {
+        mainResultView.searchCollectionView.register(SearchCollectionViewCell.self, forCellWithReuseIdentifier: SearchCollectionViewCell.identifier)
+        mainResultView.searchCollectionView.dataSource = self
+        mainResultView.searchCollectionView.delegate = self
+    }
+    
+    private func setCollectionViewLayout() {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.scrollDirection = .vertical
+        flowLayout.minimumLineSpacing = 15
+        mainResultView.searchCollectionView.setCollectionViewLayout(flowLayout, animated: false)
+    }
+}
+
+//MARK: - Extensions
+
+extension SearchWebNovelViewController: UICollectionViewDelegate {}
+
+extension SearchWebNovelViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        searchDummy.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let item = collectionView.dequeueReusableCell(withReuseIdentifier: SearchCollectionViewCell.identifier, for: indexPath) as? SearchCollectionViewCell else { return UICollectionViewCell()}
+        
+        item.bindData(data: searchDummy[indexPath.row])
+        return item
+    }
+}
+
+extension SearchWebNovelViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: mainResultView.searchCollectionView.frame.width, height: 104)
     }
 }

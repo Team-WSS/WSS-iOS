@@ -14,7 +14,7 @@ final class SearchResultView: UIView {
     
     //MARK: set Properties
     
-    private let searchTableView = UITableView()
+    let searchCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     
     //MARK: Life Cycle
     
@@ -34,22 +34,24 @@ final class SearchResultView: UIView {
     //MARK: set UI
     
     private func setUI() {
-        searchTableView.do {
-            $0.rowHeight = 104
+        searchCollectionView.do {
+            $0.backgroundColor = .clear
+            $0.showsVerticalScrollIndicator = false
         }
     }
     
     //MARK: set Hierachy
     
     private func setHierachy() {
-        self.addSubview(searchTableView)
+        self.addSubview(searchCollectionView)
     }
     
     //MARK: set Layout
     
     private func setLayout() {
-        searchTableView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+        searchCollectionView.snp.makeConstraints {
+            $0.top.bottom.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(20)
         }
     }
 }

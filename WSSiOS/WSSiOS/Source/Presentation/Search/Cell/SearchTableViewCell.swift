@@ -7,9 +7,11 @@
 
 import UIKit
 
-final class SearchTableViewCell: UITableViewCell {
+final class SearchCollectionViewCell: UICollectionViewCell {
     
     //MARK: set Properties
+    
+    static let identifier: String = "SearchCollectionViewCell"
     
     private let novelImageView = UIImageView()
     private let novelTitleLabel = UILabel()
@@ -18,8 +20,8 @@ final class SearchTableViewCell: UITableViewCell {
     
     //MARK: Life Cycle
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         
         setUI()
         setHierachy()
@@ -57,7 +59,7 @@ final class SearchTableViewCell: UITableViewCell {
     
     //MARK: set Hierachy
     
-    private func setHierachy() {    
+    private func setHierachy() {
         self.addSubviews(novelImageView,
                          novelTitleLabel,
                          novelAuthorLabel,
@@ -89,5 +91,12 @@ final class SearchTableViewCell: UITableViewCell {
             $0.leading.equalTo(novelAuthorLabel.snp.leading)
             $0.trailing.equalToSuperview()
         }
+    }
+    
+    func bindData(data: SearchNovel) {
+        novelImageView.image = data.novelImage
+        novelTitleLabel.text = data.novelTitle
+        novelAuthorLabel.text = data.novelAuthor
+        novelGenreLabel.text = data.novelGenre
     }
 }

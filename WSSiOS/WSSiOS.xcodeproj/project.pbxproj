@@ -34,6 +34,7 @@
 		A1C3EC532B46962F00D997C2 /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C3EC522B46962F00D997C2 /* UIImage+.swift */; };
 		A1DBB2FA2B4AA981000EE869 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1DBB2F92B4AA981000EE869 /* SearchTableViewCell.swift */; };
 		A1DBB2FE2B4AEB22000EE869 /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1DBB2FD2B4AEB22000EE869 /* UIView+.swift */; };
+		A1DBB3002B4AFCC0000EE869 /* SearchDummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1DBB2FF2B4AFCC0000EE869 /* SearchDummy.swift */; };
 		A1EC91B42B46DA3100CFB33D /* ImageLiterals.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EC91B32B46DA3100CFB33D /* ImageLiterals.swift */; };
 /* End PBXBuildFile section */
 
@@ -57,6 +58,7 @@
 		A1C3EC522B46962F00D997C2 /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
 		A1DBB2F92B4AA981000EE869 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		A1DBB2FD2B4AEB22000EE869 /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
+		A1DBB2FF2B4AFCC0000EE869 /* SearchDummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchDummy.swift; sourceTree = "<group>"; };
 		A1EC91B32B46DA3100CFB33D /* ImageLiterals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLiterals.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -239,6 +241,7 @@
 			isa = PBXGroup;
 			children = (
 				A1DBB2F92B4AA981000EE869 /* SearchTableViewCell.swift */,
+				A1DBB2FF2B4AFCC0000EE869 /* SearchDummy.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -355,6 +358,7 @@
 				A1DBB2FA2B4AA981000EE869 /* SearchTableViewCell.swift in Sources */,
 				A1DBB2FE2B4AEB22000EE869 /* UIView+.swift in Sources */,
 				A1A1F9CF2B48738200705F44 /* SearchHeaderView.swift in Sources */,
+				A1DBB3002B4AFCC0000EE869 /* SearchDummy.swift in Sources */,
 				A1A1F9D22B4873A100705F44 /* SearchResultView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
