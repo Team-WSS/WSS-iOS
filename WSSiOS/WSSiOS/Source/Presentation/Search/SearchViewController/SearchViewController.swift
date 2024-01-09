@@ -82,7 +82,7 @@ extension SearchViewController: UICollectionViewDelegate {}
 
 extension SearchViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        searchDummy.count
+        return searchDummy.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -95,6 +95,7 @@ extension SearchViewController: UICollectionViewDataSource {
 
 extension SearchViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: rootView.mainResultView.searchCollectionView.frame.width, height: 104)
+        let itemWidth = rootView.mainResultView.searchCollectionView.frame.width
+        return CGSize(width: itemWidth, height: 104)
     }
 }
