@@ -1,5 +1,5 @@
 //
-//  SearchWebNovelViewController.swift
+//  SearchViewController.swift
 //  WSSiOS
 //
 //  Created by 최서연 on 1/6/24.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class SearchWebNovelViewController: UIViewController, UISearchBarDelegate {
+final class SearchViewController: UIViewController {
     
     //MARK: - set Properties
     
@@ -108,9 +108,11 @@ final class SearchWebNovelViewController: UIViewController, UISearchBarDelegate 
 
 //MARK: - Extensions
 
-extension SearchWebNovelViewController: UICollectionViewDelegate {}
+extension SearchViewController: UISearchBarDelegate {}
 
-extension SearchWebNovelViewController: UICollectionViewDataSource {
+extension SearchViewController: UICollectionViewDelegate {}
+
+extension SearchViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         searchDummy.count
     }
@@ -123,7 +125,7 @@ extension SearchWebNovelViewController: UICollectionViewDataSource {
     }
 }
 
-extension SearchWebNovelViewController: UICollectionViewDelegateFlowLayout {
+extension SearchViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: mainResultView.searchCollectionView.frame.width, height: 104)
     }
