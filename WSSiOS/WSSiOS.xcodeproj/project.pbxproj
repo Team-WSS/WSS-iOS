@@ -35,6 +35,7 @@
 		A107A49C2B4DC8C600668C3E /* HomeCharacterTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A107A49B2B4DC8C600668C3E /* HomeCharacterTagView.swift */; };
 		A107A49E2B4DCD9900668C3E /* HomeCharacterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A107A49D2B4DCD9900668C3E /* HomeCharacterView.swift */; };
 		A107A4A02B4DD7E200668C3E /* HomeSosoPickTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A107A49F2B4DD7E200668C3E /* HomeSosoPickTitleView.swift */; };
+		A107A4AA2B4DDE5E00668C3E /* HomeSosoPickCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A107A4A92B4DDE5E00668C3E /* HomeSosoPickCollectionViewCell.swift */; };
 		A147CBC42B4D662E0040AE39 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A147CBC32B4D662E0040AE39 /* SearchView.swift */; };
 		A147CBC62B4D6E190040AE39 /* UIStackView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A147CBC52B4D6E190040AE39 /* UIStackView+.swift */; };
 		A1708F142B4D8DF400E35E50 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1708F132B4D8DF400E35E50 /* HomeViewController.swift */; };
@@ -72,6 +73,7 @@
 		A107A49B2B4DC8C600668C3E /* HomeCharacterTagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCharacterTagView.swift; sourceTree = "<group>"; };
 		A107A49D2B4DCD9900668C3E /* HomeCharacterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCharacterView.swift; sourceTree = "<group>"; };
 		A107A49F2B4DD7E200668C3E /* HomeSosoPickTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSosoPickTitleView.swift; sourceTree = "<group>"; };
+		A107A4A92B4DDE5E00668C3E /* HomeSosoPickCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSosoPickCollectionViewCell.swift; sourceTree = "<group>"; };
 		A147CBC32B4D662E0040AE39 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		A147CBC52B4D6E190040AE39 /* UIStackView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+.swift"; sourceTree = "<group>"; };
 		A1708F132B4D8DF400E35E50 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -265,6 +267,23 @@
 			path = App;
 			sourceTree = "<group>";
 		};
+		A107A4A72B4DDE4900668C3E /* HomeView */ = {
+			isa = PBXGroup;
+			children = (
+				A107A4A82B4DDE5100668C3E /* HomeCell */,
+				A1708F112B4D8DD300E35E50 /* HomeAssistantView */,
+			);
+			path = HomeView;
+			sourceTree = "<group>";
+		};
+		A107A4A82B4DDE5100668C3E /* HomeCell */ = {
+			isa = PBXGroup;
+			children = (
+				A107A4A92B4DDE5E00668C3E /* HomeSosoPickCollectionViewCell.swift */,
+			);
+			path = HomeCell;
+			sourceTree = "<group>";
+		};
 		A147CBC22B4D653C0040AE39 /* SearchAssistantView */ = {
 			isa = PBXGroup;
 			children = (
@@ -278,8 +297,8 @@
 		A1708F102B4D8DCD00E35E50 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				A107A4A72B4DDE4900668C3E /* HomeView */,
 				A1708F122B4D8DDE00E35E50 /* HomeViewController */,
-				A1708F112B4D8DD300E35E50 /* HomeAssistantView */,
 				A1708F172B4D8E2F00E35E50 /* HomeView.swift */,
 			);
 			path = Home;
@@ -309,19 +328,19 @@
 			isa = PBXGroup;
 			children = (
 				A1DBB2F72B4AA2BE000EE869 /* SearchViewController */,
-				A1A1F9D02B48739400705F44 /* View */,
+				A1A1F9D02B48739400705F44 /* SearchView */,
 			);
 			path = Search;
 			sourceTree = "<group>";
 		};
-		A1A1F9D02B48739400705F44 /* View */ = {
+		A1A1F9D02B48739400705F44 /* SearchView */ = {
 			isa = PBXGroup;
 			children = (
 				A147CBC22B4D653C0040AE39 /* SearchAssistantView */,
 				A1DBB2F82B4AA973000EE869 /* SearchCell */,
 				A147CBC32B4D662E0040AE39 /* SearchView.swift */,
 			);
-			path = View;
+			path = SearchView;
 			sourceTree = "<group>";
 		};
 		A1DBB2F72B4AA2BE000EE869 /* SearchViewController */ = {
@@ -447,6 +466,7 @@
 				2CD2291C2B42E685005400BE /* AppDelegate.swift in Sources */,
 				A1708F162B4D8E2700E35E50 /* HomeHeaderView.swift in Sources */,
 				A1C3EC532B46962F00D997C2 /* UIImage+.swift in Sources */,
+				A107A4AA2B4DDE5E00668C3E /* HomeSosoPickCollectionViewCell.swift in Sources */,
 				A1A1F9D42B4873B500705F44 /* SearchEmptyView.swift in Sources */,
 				2CD2291E2B42E685005400BE /* SceneDelegate.swift in Sources */,
 				A1A1F9CD2B48733200705F44 /* SearchViewController.swift in Sources */,

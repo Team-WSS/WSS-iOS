@@ -42,7 +42,7 @@ final class HomeCharacterView: UIView {
         }
         
         characterCommentLabel.do {
-            $0.text = "명진 영애, 오랜만입니다"
+            $0.text = "지원 영애, 오랜만입니다"
             $0.font = .Title1
             $0.textColor = .Black
         }
