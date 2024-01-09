@@ -19,6 +19,8 @@
 		2CCBF9EE2B4C1FC500D787C2 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBF9ED2B4C1FC500D787C2 /* MyPageViewController.swift */; };
 		2CCBF9F02B4C1FD800D787C2 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBF9EF2B4C1FD800D787C2 /* MyPageView.swift */; };
 		2CCBF9F22B4D347B00D787C2 /* WSSMainButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBF9F12B4D347B00D787C2 /* WSSMainButton.swift */; };
+		2CCBFA002B4DBFD200D787C2 /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBF9FF2B4DBFD200D787C2 /* MyPageViewModel.swift */; };
+		2CCBFA022B4DC10500D787C2 /* MyPageProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBFA012B4DC10500D787C2 /* MyPageProfileView.swift */; };
 		2CD2291C2B42E685005400BE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD2291B2B42E685005400BE /* AppDelegate.swift */; };
 		2CD2291E2B42E685005400BE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD2291D2B42E685005400BE /* SceneDelegate.swift */; };
 		2CD229202B42E685005400BE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD2291F2B42E685005400BE /* ViewController.swift */; };
@@ -60,6 +62,8 @@
 		2CCBF9ED2B4C1FC500D787C2 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		2CCBF9EF2B4C1FD800D787C2 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
 		2CCBF9F12B4D347B00D787C2 /* WSSMainButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSMainButton.swift; sourceTree = "<group>"; };
+		2CCBF9FF2B4DBFD200D787C2 /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
+		2CCBFA012B4DC10500D787C2 /* MyPageProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageProfileView.swift; sourceTree = "<group>"; };
 		2CD229182B42E685005400BE /* WSSiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WSSiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CD2291B2B42E685005400BE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2CD2291D2B42E685005400BE /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -130,8 +134,9 @@
 		2CCBF9E92B4C1E2200D787C2 /* MyPage */ = {
 			isa = PBXGroup;
 			children = (
-				2CCBF9EA2B4C1E3700D787C2 /* MyPageViewController */,
 				2CCBF9EB2B4C1E4600D787C2 /* MyPageView */,
+				2CCBF9EA2B4C1E3700D787C2 /* MyPageViewController */,
+				2CCBF9FD2B4DBF4200D787C2 /* MyPageViewModel */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
@@ -148,8 +153,25 @@
 			isa = PBXGroup;
 			children = (
 				2CCBF9EF2B4C1FD800D787C2 /* MyPageView.swift */,
+				2CCBF9FE2B4DBF6A00D787C2 /* MyPageAssistantView */,
 			);
 			path = MyPageView;
+			sourceTree = "<group>";
+		};
+		2CCBF9FD2B4DBF4200D787C2 /* MyPageViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				2CCBF9FF2B4DBFD200D787C2 /* MyPageViewModel.swift */,
+			);
+			path = MyPageViewModel;
+			sourceTree = "<group>";
+		};
+		2CCBF9FE2B4DBF6A00D787C2 /* MyPageAssistantView */ = {
+			isa = PBXGroup;
+			children = (
+				2CCBFA012B4DC10500D787C2 /* MyPageProfileView.swift */,
+			);
+			path = MyPageAssistantView;
 			sourceTree = "<group>";
 		};
 		2CD2290F2B42E685005400BE = {
@@ -451,7 +473,9 @@
 				A1DBB2FE2B4AEB22000EE869 /* UIView+.swift in Sources */,
 				A1A1F9CF2B48738200705F44 /* SearchHeaderView.swift in Sources */,
 				A1DBB3002B4AFCC0000EE869 /* SearchDummy.swift in Sources */,
+				2CCBFA022B4DC10500D787C2 /* MyPageProfileView.swift in Sources */,
 				A1A1F9D22B4873A100705F44 /* SearchResultView.swift in Sources */,
+				2CCBFA002B4DBFD200D787C2 /* MyPageViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
