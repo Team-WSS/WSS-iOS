@@ -13,6 +13,9 @@
 
 "웹소설도 소설이다." 33기 DO SOPT 앱잼에서 탄생한 웹소소는 웹소설을 더욱 간편하게 기록하고 기억할 수 있는 플랫폼입니다. 웹소설 헤비 이용자들을 타겟으로 하며, 사용자들의 편의를 증진시키고 웹소설에 대한 몰입감을 더욱 깊게 만들어주는 특별한 경험을 제공합니다. 간단하게 기록하고, 재미있게 기억하며, 마음껏 몰입하기 위한 새로운 앱 서비스로 여러분을 초대합니다.
 <br>
+
+## 🎈[Guest book](https://github.com/Team-WSS/WSS-iOS/issues/14) 
+
 <br>
 
 
@@ -651,6 +654,16 @@ W1: 꼭 반영해주세요 (Request changes)
 W2: 반영해도 좋고 넘어가도 좋습니다 (Approve)
 W3: 그냥 사소한 의견입니다 (Approve)
 ```
+
+### ISSUE & PR
+**1. ISSUE와 PR**
+ - 큰 단위의 ISSUE 와 작은 단위의 PR 로 구분한다.
+ ex) HomeView 의 기능 구현을 목적으로 하는 ISSUE, 기능별로 나눈 PR
+ 
+ **2. PR Label**
+ - reviewPlz : 처음 코드리뷰를 요청할 때
+ - reviewMore : 수정한 바를 기반으로 다시 코드리뷰를 요청할 때
+ - veryGoodDeveloper : 최종적으로 머지할 때
 
 <br>
 
