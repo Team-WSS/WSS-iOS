@@ -54,7 +54,6 @@ final class SearchView: UIView {
         headerView.snp.makeConstraints {
             $0.top.equalTo(self.safeAreaLayoutGuide.snp.top)
             $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(67)
         }
         
         dividerLine.snp.makeConstraints {

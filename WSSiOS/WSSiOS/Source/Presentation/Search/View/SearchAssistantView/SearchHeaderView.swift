@@ -68,6 +68,7 @@ final class SearchHeaderView: UIView {
     private func setLayout() {
         searchBar.snp.makeConstraints {
             $0.top.equalToSuperview().inset(10)
+            $0.bottom.equalToSuperview().inset(12)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(44)
         }
