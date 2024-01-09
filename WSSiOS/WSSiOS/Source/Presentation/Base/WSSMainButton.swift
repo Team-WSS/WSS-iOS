@@ -18,12 +18,23 @@ class WSSMainButton: UIButton {
     init(title: String, selfY: Bool) {
         super.init(frame: .zero)
         
+        setUI(title: title)
+        setLayout(selfY: selfY)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setUI(title: String) {
         setTitle(title, for: .normal)
         titleLabel?.font = .Title1
         setTitleColor(.White, for: .normal)
         backgroundColor = .Primary100
         layer.cornerRadius = 12
-        
+    }
+    
+    private func setLayout(selfY: Bool) {
         self.snp.makeConstraints() {
             $0.centerX.equalToSuperview()
             $0.leading.equalToSuperview().inset(20)
@@ -34,9 +45,4 @@ class WSSMainButton: UIButton {
             }
         }
     }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
 }
