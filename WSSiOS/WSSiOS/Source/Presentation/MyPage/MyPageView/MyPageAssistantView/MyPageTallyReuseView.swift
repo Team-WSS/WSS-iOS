@@ -14,10 +14,10 @@ class MyPageTallyReuseView: UIView {
     
     //MARK: - set Properties
     
-    private var titleView = UIStackView()
-    private var titleIconImageView = UIImageView()
-    private var titleLabel = UILabel()
-    private var tallyLabel = UILabel()
+    var titleView = UIStackView()
+    var titleIconImageView = UIImageView()
+    var titleLabel = UILabel()
+    var tallyLabel = UILabel()
     
     // MARK: - Life Cycle
     
@@ -43,11 +43,11 @@ class MyPageTallyReuseView: UIView {
             $0.alignment = .fill
             $0.distribution = .fillEqually
             $0.spacing = 0
-        }
-        
-        titleLabel.do {
-            $0.font = .Body2
-            $0.textColor = .Gray300
+            
+            titleLabel.do {
+                $0.font = .Body2
+                $0.textColor = .Gray300
+            }
         }
         
         tallyLabel.do {
@@ -79,6 +79,7 @@ class MyPageTallyReuseView: UIView {
         tallyLabel.snp.makeConstraints() {
             $0.top.equalTo(titleView.snp.bottom).offset(4)
             $0.centerX.equalToSuperview()
+            $0.bottom.equalToSuperview().inset(5)
         }
     }
 }

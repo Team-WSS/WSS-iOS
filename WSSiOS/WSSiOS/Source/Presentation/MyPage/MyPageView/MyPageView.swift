@@ -13,6 +13,7 @@ class MyPageView: UIView {
     
     private var myPageStackView = UIStackView()
     private var myPageProfileView = MyPageProfileView()
+    private var myPageTallyView = MyPageTallyView()
     
     // MARK: - Life Cycle
     
@@ -35,13 +36,14 @@ class MyPageView: UIView {
             $0.axis = .vertical
             $0.alignment = .fill
             $0.distribution = .fillEqually
-            $0.spacing = 10
+            $0.spacing = 0
         }
     }
     
     private func setHierachy() {
         self.addSubviews(myPageStackView)
-        myPageStackView.addArrangedSubviews(myPageProfileView)
+        myPageStackView.addArrangedSubviews(myPageProfileView,
+        myPageTallyView)
     }
     
     private func setLayout() {
