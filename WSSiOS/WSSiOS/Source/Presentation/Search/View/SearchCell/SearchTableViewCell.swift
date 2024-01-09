@@ -14,6 +14,7 @@ final class SearchCollectionViewCell: UICollectionViewCell {
     static let identifier: String = "SearchCollectionViewCell"
     
     private let novelImageView = UIImageView()
+    private let novelStackView = UIStackView()
     private let novelTitleLabel = UILabel()
     private let novelAuthorLabel = UILabel()
     private let novelGenreLabel = UILabel()
@@ -36,6 +37,12 @@ final class SearchCollectionViewCell: UICollectionViewCell {
     //MARK: - set UI
     
     private func setUI() {
+        novelStackView.do {
+            $0.axis = .vertical
+            $0.spacing = 2
+            $0.alignment = .leading
+        }
+        
         novelTitleLabel.do {
             $0.font = .Title2
             $0.textColor = .Black
@@ -61,9 +68,11 @@ final class SearchCollectionViewCell: UICollectionViewCell {
     
     private func setHierachy() {
         self.addSubviews(novelImageView,
-                         novelTitleLabel,
-                         novelAuthorLabel,
-                         novelGenreLabel)
+                         novelStackView)
+        
+        novelStackView.addArrangedSubviews(novelTitleLabel,
+                                           novelAuthorLabel,
+                                           novelGenreLabel)
     }
     
     //MARK: - set Layout
@@ -75,21 +84,9 @@ final class SearchCollectionViewCell: UICollectionViewCell {
             $0.height.equalTo(104)
         }
         
-        novelTitleLabel.snp.makeConstraints {
+        novelStackView.snp.makeConstraints {
             $0.top.trailing.equalToSuperview()
-            $0.leading.equalTo(novelImageView.snp.trailing).offset(10)
-        }
-        
-        novelAuthorLabel.snp.makeConstraints {
-            $0.top.equalTo(novelTitleLabel.snp.bottom)
-            $0.leading.equalTo(novelTitleLabel.snp.leading)
-            $0.trailing.equalToSuperview()
-        }
-        
-        novelGenreLabel.snp.makeConstraints {
-            $0.top.equalTo(novelAuthorLabel.snp.bottom)
-            $0.leading.equalTo(novelAuthorLabel.snp.leading)
-            $0.trailing.equalToSuperview()
+            $0.leading.equalTo(novelImageView.snp.trailing).offset(16)
         }
     }
     
