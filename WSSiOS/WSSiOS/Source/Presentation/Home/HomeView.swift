@@ -9,6 +9,10 @@ import UIKit
 
 final class HomeView: UIView {
     
+    //MARK: - UI Components
+    
+    private let headerView = HomeHeaderView()
+    
     //MARK: - Life Cycle
     
     override init(frame: CGRect) {

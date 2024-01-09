@@ -9,6 +9,16 @@ import UIKit
 
 final class HomeViewController: UIViewController {
     
+    //MARK: - UI Components
+    
+    private let rootView = HomeView()
+    
+    //MARK: - Life Cycle
+    
+    override func loadView() {
+        self.view = rootView
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
