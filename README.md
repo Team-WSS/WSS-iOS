@@ -31,9 +31,9 @@
 <br>
 
 ### 📕 Coding Convention
-
+StyleShare 프로젝트 Convention을 기본으로 하되, 구성원들의 합의 하에 필요한 부분들을 수정하였습니다.
 <details>
-<summary> StyleShare 프로젝트 Convention을 기본으로 하되, 구성원들의 합의 하에 필요한 부분들을 수정하였습니다. </summary>
+<summary> 살펴보기 </summary>
 <div>
  
 ## 코드 레이아웃
@@ -582,3 +582,34 @@ import URLNavigator
 </div>
 </details>
 
+### 🗂 Folder Structure
+
+```swift
+WSSiOS
+├── App
+├── Resource
+│   ├── Assets.xcassets
+│   ├── Constants
+│   │   ├── Fonts
+│   │   ├── Images
+│   │   └── Strings
+│   └── Extensions
+├── Source
+│   ├── Data
+│   │   └── Repository
+│   ├── Presentation
+│   │   ├── Home
+│   │   │   ├── HomeView
+│   │   │   │   ├── HomeView.swift
+│   │   │   │   ├── HomeAssistantView
+│   │   │   │   └── HomeCell
+│   │   │   ├── ViewController
+│   │   │   │   └── HomeViewController.swift
+│   │   │   └── ViewModel
+│   │   │       └── HomeViewModel.swift
+│   │   ├── Search
+│   │   │   └──  .....
+│   │   ├── RegisterNormal
+ ....
+```
+<br>
