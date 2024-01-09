@@ -11,7 +11,8 @@ class MyPageView: UIView {
 
     //MARK: - UI Components
     
-    private let myPageProfileView = MyPageProfileView()
+    private var myPageStackView = UIStackView()
+    private var myPageProfileView = MyPageProfileView()
     
     // MARK: - Life Cycle
     
@@ -29,16 +30,23 @@ class MyPageView: UIView {
 
     private func setUI() {
         self.backgroundColor = .White
+        
+        myPageStackView.do {
+            $0.axis = .vertical
+            $0.alignment = .fill
+            $0.distribution = .fillEqually
+            $0.spacing = 10
+        }
     }
     
     private func setHierachy() {
-        self.addSubviews(myPageProfileView)
+        self.addSubviews(myPageStackView)
+        myPageStackView.addArrangedSubviews(myPageProfileView)
     }
     
     private func setLayout() {
-        myPageProfileView.snp.makeConstraints() {
-            $0.top.equalTo(super.safeAreaLayoutGuide)
-            $0.width.equalToSuperview()
+        myPageStackView.snp.makeConstraints() {
+            $0.top.width.bottom.equalToSuperview()
         }
     }
     

@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class MyPageProfileView: UIView {
+class MyPageProfileView: UIView {
     
     //MARK: - set Properties
     
@@ -27,6 +27,7 @@ final class MyPageProfileView: UIView {
         setUI()
         setHierachy()
         setLayout()
+        dataBind()
     }
     
     required init?(coder: NSCoder) {
@@ -64,6 +65,7 @@ final class MyPageProfileView: UIView {
     
     private func setLayout() {
         myBadgeImageView.snp.makeConstraints() {
+            $0.top.equalTo(super.safeAreaLayoutGuide)
             $0.centerX.equalToSuperview()
             $0.size.equalTo(40)
         }
@@ -82,13 +84,13 @@ final class MyPageProfileView: UIView {
             $0.top.equalTo(avaterPhraseLabel.snp.bottom).offset(23)
             $0.centerX.equalToSuperview()
             $0.size.equalTo(220)
-            $0.bottom.equalToSuperview().inset(28)
         }
     }
     
     func dataBind() {
         avaterNameLabel.text = "추락한 악역영애"
         avaterPhraseLabel.text = "김명진 영애, 오늘도 왔구나?"
-        avarterImageView.image = 
+        avarterImageView.image = UIImage(named: "avaterExample")
+        myBadgeImageView.image = ImageLiterals.icon.icBadge.RF
     }
 }
