@@ -9,25 +9,27 @@ import UIKit
 
 final class SearchViewController: UIViewController {
     
-    //MARK: - set Properties
+    //MARK: - Properties
     
     private let navigationBarTitleLabel = UILabel()
-    private let headerView = SearchHeaderView()
-    private let dividerLine = UIView()
-    private let mainResultView = SearchResultView()
-    private let mainEmptyView = SearchEmptyView()
     private let searchDummy = SearchNovel.searchNovelDummy()
     
+    //MARK: - UI Components
+    
+    private let rootView = SearchView()
+    
     //MARK: - Life Cycle
+    
+    override func loadView() {
+        self.view = rootView
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setUI()
-        setHierachy()
-        setLayout()
-        
         setNavigationBar()
+        
         setDelegate()
         setCollectionViewConfig()
         setCollectionViewLayout()
@@ -36,16 +38,10 @@ final class SearchViewController: UIViewController {
     //MARK: - set UI
     
     private func setUI() {
-        self.view.backgroundColor = .White
-        
         navigationBarTitleLabel.do {
             $0.text = "검색"
             $0.font = .Title2
             $0.textColor = .Black
-        }
-        
-        dividerLine.do {
-            $0.backgroundColor = .Gray50
         }
     }
     
@@ -57,52 +53,24 @@ final class SearchViewController: UIViewController {
         //TODO: custom backbutton 추가 필요
     }
     
-    //MARK: - set Hierachy
-    
-    private func setHierachy() {
-        self.view.addSubviews(headerView,
-                              dividerLine,
-                              mainResultView)
-    }
-    
-    //MARK: - set Layout
-    
-    private func setLayout() {
-        headerView.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(67)
-        }
-        
-        dividerLine.snp.makeConstraints {
-            $0.top.equalTo(headerView.snp.bottom)
-            $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(1)
-        }
-        
-        mainResultView.snp.makeConstraints {
-            $0.top.equalTo(dividerLine.snp.bottom)
-            $0.leading.trailing.bottom.equalToSuperview()
-        }
-    }
-    
     //MARK: - set Delegate
     
     private func setDelegate() {
-        headerView.searchBar.delegate = self
+        rootView.headerView.searchBar.delegate = self
     }
     
     private func setCollectionViewConfig() {
-        mainResultView.searchCollectionView.register(SearchCollectionViewCell.self, forCellWithReuseIdentifier: SearchCollectionViewCell.identifier)
-        mainResultView.searchCollectionView.dataSource = self
-        mainResultView.searchCollectionView.delegate = self
+        rootView.mainResultView.searchCollectionView.register(SearchCollectionViewCell.self, forCellWithReuseIdentifier: SearchCollectionViewCell.identifier)
+        rootView.mainResultView.searchCollectionView.dataSource = self
+        rootView.mainResultView.searchCollectionView.delegate = self
     }
     
     private func setCollectionViewLayout() {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .vertical
         flowLayout.minimumLineSpacing = 15
-        mainResultView.searchCollectionView.setCollectionViewLayout(flowLayout, animated: false)
+        flowLayout.sectionInset = UIEdgeInsets(top: 13, left: 0, bottom: 0, right: 0)
+        rootView.mainResultView.searchCollectionView.setCollectionViewLayout(flowLayout, animated: false)
     }
 }
 
@@ -127,6 +95,6 @@ extension SearchViewController: UICollectionViewDataSource {
 
 extension SearchViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: mainResultView.searchCollectionView.frame.width, height: 104)
+        return CGSize(width: rootView.mainResultView.searchCollectionView.frame.width, height: 104)
     }
 }
