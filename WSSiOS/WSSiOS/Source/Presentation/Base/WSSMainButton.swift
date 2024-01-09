@@ -11,6 +11,8 @@ import SnapKit
 
 class WSSMainButton: UIButton {
     
+    //MARK: - Life Cycle
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -25,6 +27,8 @@ class WSSMainButton: UIButton {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    //MARK: - UI
     
     private func setUI(title: String) {
         setTitle(title, for: .normal)
