@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-class WSSMainButton: UIButton {
+final class WSSMainButton: UIButton {
     
     //MARK: - Life Cycle
     
