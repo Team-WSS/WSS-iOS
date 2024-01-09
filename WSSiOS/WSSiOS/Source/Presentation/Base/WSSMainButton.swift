@@ -31,7 +31,12 @@ class WSSMainButton: UIButton {
         super.didMoveToSuperview()
         
         if superview != nil {
-            setLayout()
+            self.snp.makeConstraints() {
+                $0.centerX.equalToSuperview()
+                $0.leading.equalToSuperview().inset(20)
+                $0.bottom.equalTo(superview!.safeAreaLayoutGuide).offset(-10)
+                $0.height.equalTo(53)
+            }
         }
     }
     
@@ -43,14 +48,5 @@ class WSSMainButton: UIButton {
         setTitleColor(.White, for: .normal)
         backgroundColor = .Primary100
         layer.cornerRadius = 12
-    }
-    
-    private func setLayout() {
-        self.snp.makeConstraints() {
-            $0.centerX.equalToSuperview()
-            $0.leading.equalToSuperview().inset(20)
-            $0.bottom.equalToSuperview().inset(34)
-            $0.height.equalTo(53)
-        }
     }
 }

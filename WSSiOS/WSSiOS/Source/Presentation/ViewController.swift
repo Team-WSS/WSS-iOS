@@ -11,8 +11,12 @@ import SnapKit
 
 class ViewController: UIViewController {
      
-     override func viewDidLoad() {
-         super.viewDidLoad()
-     }
+    private var mainButton = WSSMainButton(title: "안녕 얘두라?")
+        
+        override func viewDidLoad() {
+            super.viewDidLoad()
+            self.view.backgroundColor = .white
+            self.view.addSubview(mainButton)
+        }
 }
 
