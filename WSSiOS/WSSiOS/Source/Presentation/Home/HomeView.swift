@@ -12,6 +12,7 @@ final class HomeView: UIView {
     //MARK: - UI Components
     
     private let headerView = HomeHeaderView()
+    private let characterView = HomeCharacterView()
     
     //MARK: - Life Cycle
     
@@ -26,9 +27,10 @@ final class HomeView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     private func setHierachy() {
-        self.addSubviews(headerView)
+        self.addSubviews(headerView,
+                         characterView)
     }
     
     private func setLayout() {
@@ -36,6 +38,11 @@ final class HomeView: UIView {
             $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).inset(14)
             $0.leading.equalToSuperview().inset(20)
             $0.centerX.equalToSuperview()
+        }
+        
+        characterView.snp.makeConstraints {
+            $0.top.equalTo(headerView.snp.bottom).offset(37)
+            $0.leading.trailing.equalToSuperview().inset(20)
         }
     }
 }

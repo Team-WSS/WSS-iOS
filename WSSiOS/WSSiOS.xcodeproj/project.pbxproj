@@ -32,6 +32,8 @@
 		2CD229472B42E7C8005400BE /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 2CD229462B42E7C8005400BE /* Lottie */; };
 		2CD229572B42EA75005400BE /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD229562B42EA75005400BE /* UIColor+.swift */; };
 		A107A49A2B4DB66D00668C3E /* HomeSearchButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A107A4992B4DB66D00668C3E /* HomeSearchButtonView.swift */; };
+		A107A49C2B4DC8C600668C3E /* HomeCharacterTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A107A49B2B4DC8C600668C3E /* HomeCharacterTagView.swift */; };
+		A107A49E2B4DCD9900668C3E /* HomeCharacterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A107A49D2B4DCD9900668C3E /* HomeCharacterView.swift */; };
 		A147CBC42B4D662E0040AE39 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A147CBC32B4D662E0040AE39 /* SearchView.swift */; };
 		A147CBC62B4D6E190040AE39 /* UIStackView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A147CBC52B4D6E190040AE39 /* UIStackView+.swift */; };
 		A1708F142B4D8DF400E35E50 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1708F132B4D8DF400E35E50 /* HomeViewController.swift */; };
@@ -66,6 +68,8 @@
 		2CD229292B42E687005400BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2CD229562B42EA75005400BE /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		A107A4992B4DB66D00668C3E /* HomeSearchButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchButtonView.swift; sourceTree = "<group>"; };
+		A107A49B2B4DC8C600668C3E /* HomeCharacterTagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCharacterTagView.swift; sourceTree = "<group>"; };
+		A107A49D2B4DCD9900668C3E /* HomeCharacterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCharacterView.swift; sourceTree = "<group>"; };
 		A147CBC32B4D662E0040AE39 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		A147CBC52B4D6E190040AE39 /* UIStackView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+.swift"; sourceTree = "<group>"; };
 		A1708F132B4D8DF400E35E50 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -284,6 +288,8 @@
 			children = (
 				A1708F152B4D8E2700E35E50 /* HomeHeaderView.swift */,
 				A107A4992B4DB66D00668C3E /* HomeSearchButtonView.swift */,
+				A107A49B2B4DC8C600668C3E /* HomeCharacterTagView.swift */,
+				A107A49D2B4DCD9900668C3E /* HomeCharacterView.swift */,
 			);
 			path = HomeAssistantView;
 			sourceTree = "<group>";
@@ -432,6 +438,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A107A49C2B4DC8C600668C3E /* HomeCharacterTagView.swift in Sources */,
 				2CD229202B42E685005400BE /* ViewController.swift in Sources */,
 				A1708F182B4D8E2F00E35E50 /* HomeView.swift in Sources */,
 				2CD2291C2B42E685005400BE /* AppDelegate.swift in Sources */,
@@ -440,6 +447,7 @@
 				A1A1F9D42B4873B500705F44 /* SearchEmptyView.swift in Sources */,
 				2CD2291E2B42E685005400BE /* SceneDelegate.swift in Sources */,
 				A1A1F9CD2B48733200705F44 /* SearchViewController.swift in Sources */,
+				A107A49E2B4DCD9900668C3E /* HomeCharacterView.swift in Sources */,
 				2C79CB9D2B45A1DD00734E1F /* UIFont+.swift in Sources */,
 				A147CBC62B4D6E190040AE39 /* UIStackView+.swift in Sources */,
 				2C2491842B4ADC230096F255 /* WSSTabBarItem.swift in Sources */,
