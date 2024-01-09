@@ -17,15 +17,21 @@ class WSSMainButton: UIButton {
         super.init(frame: frame)
     }
     
-    init(title: String, selfY: Bool) {
+    init(title: String) {
         super.init(frame: .zero)
         
         setUI(title: title)
-        setLayout(selfY: selfY)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        if superview != nil {
+            setLayout()
+        }
     }
     
     //MARK: - UI
@@ -38,15 +44,12 @@ class WSSMainButton: UIButton {
         layer.cornerRadius = 12
     }
     
-    private func setLayout(selfY: Bool) {
+    private func setLayout() {
         self.snp.makeConstraints() {
             $0.centerX.equalToSuperview()
             $0.leading.equalToSuperview().inset(20)
+            $0.bottom.equalToSuperview().inset(34)
             $0.height.equalTo(53)
-            
-            if !selfY {
-                $0.bottom.equalTo(super.safeAreaInsets.bottom)
-            }
         }
     }
 }
