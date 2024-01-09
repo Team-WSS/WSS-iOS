@@ -13,6 +13,7 @@ final class HomeView: UIView {
     
     private let headerView = HomeHeaderView()
     private let characterView = HomeCharacterView()
+    private let titleView = HomeSosoPickTitleView()
     
     //MARK: - Life Cycle
     
@@ -30,7 +31,8 @@ final class HomeView: UIView {
     
     private func setHierachy() {
         self.addSubviews(headerView,
-                         characterView)
+                         characterView,
+                         titleView)
     }
     
     private func setLayout() {
@@ -42,6 +44,11 @@ final class HomeView: UIView {
         
         characterView.snp.makeConstraints {
             $0.top.equalTo(headerView.snp.bottom).offset(37)
+            $0.leading.trailing.equalToSuperview().inset(20)
+        }
+        
+        titleView.snp.makeConstraints {
+            $0.top.equalTo(characterView.snp.bottom).offset(24)
             $0.leading.trailing.equalToSuperview().inset(20)
         }
     }
