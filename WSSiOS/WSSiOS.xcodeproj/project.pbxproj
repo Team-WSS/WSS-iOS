@@ -18,6 +18,7 @@
 		2C79CB9D2B45A1DD00734E1F /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C79CB9C2B45A1DD00734E1F /* UIFont+.swift */; };
 		2CCBF9EE2B4C1FC500D787C2 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBF9ED2B4C1FC500D787C2 /* MyPageViewController.swift */; };
 		2CCBF9F02B4C1FD800D787C2 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBF9EF2B4C1FD800D787C2 /* MyPageView.swift */; };
+		2CCBF9F22B4D347B00D787C2 /* WSSMainButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBF9F12B4D347B00D787C2 /* WSSMainButton.swift */; };
 		2CD2291C2B42E685005400BE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD2291B2B42E685005400BE /* AppDelegate.swift */; };
 		2CD2291E2B42E685005400BE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD2291D2B42E685005400BE /* SceneDelegate.swift */; };
 		2CD229202B42E685005400BE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD2291F2B42E685005400BE /* ViewController.swift */; };
@@ -49,6 +50,7 @@
 		2C79CB9C2B45A1DD00734E1F /* UIFont+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+.swift"; sourceTree = "<group>"; };
 		2CCBF9ED2B4C1FC500D787C2 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		2CCBF9EF2B4C1FD800D787C2 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
+		2CCBF9F12B4D347B00D787C2 /* WSSMainButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSMainButton.swift; sourceTree = "<group>"; };
 		2CD229182B42E685005400BE /* WSSiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WSSiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CD2291B2B42E685005400BE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2CD2291D2B42E685005400BE /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -102,6 +104,7 @@
 			children = (
 				2C2491852B4ADC420096F255 /* WSSTabBarController.swift */,
 				2C2491832B4ADC230096F255 /* WSSTabBarItem.swift */,
+				2CCBF9F12B4D347B00D787C2 /* WSSMainButton.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -369,6 +372,7 @@
 				A1EC91B42B46DA3100CFB33D /* ImageLiterals.swift in Sources */,
 				2CCBF9EE2B4C1FC500D787C2 /* MyPageViewController.swift in Sources */,
 				2C01F9852B482EB700D90FFE /* UserRepository.swift in Sources */,
+				2CCBF9F22B4D347B00D787C2 /* WSSMainButton.swift in Sources */,
 				2C2491812B4ADC000096F255 /* StringLiterals.swift in Sources */,
 				2C2491862B4ADC420096F255 /* WSSTabBarController.swift in Sources */,
 				2CD229572B42EA75005400BE /* UIColor+.swift in Sources */,
