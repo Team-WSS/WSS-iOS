@@ -40,8 +40,8 @@ class MyPageTallyReuseView: UIView {
         
         titleView.do {
             $0.axis = .horizontal
-            $0.alignment = .fill
-            $0.distribution = .fillEqually
+            $0.alignment = .center
+            $0.distribution = .fill
             $0.spacing = 0
             
             titleLabel.do {
