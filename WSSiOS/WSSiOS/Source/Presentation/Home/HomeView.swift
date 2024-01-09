@@ -18,7 +18,6 @@ final class HomeView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        setUI()
         setHierachy()
         setLayout()
     }
@@ -27,16 +26,16 @@ final class HomeView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    private func setUI() {
-        
-    }
-    
+
     private func setHierachy() {
-        
+        self.addSubviews(headerView)
     }
     
     private func setLayout() {
-        
+        headerView.snp.makeConstraints {
+            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top)
+            $0.leading.equalToSuperview().inset(20)
+            $0.centerX.equalToSuperview()
+        }
     }
 }
