@@ -33,7 +33,7 @@ final class HomeView: UIView {
     
     private func setLayout() {
         headerView.snp.makeConstraints {
-            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top)
+            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).inset(14)
             $0.leading.equalToSuperview().inset(20)
             $0.centerX.equalToSuperview()
         }
