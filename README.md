@@ -602,9 +602,9 @@ WSSiOS
 │   │   │   │   ├── HomeView.swift
 │   │   │   │   ├── HomeAssistantView
 │   │   │   │   └── HomeCell
-│   │   │   ├── ViewController
+│   │   │   ├── HomeViewController
 │   │   │   │   └── HomeViewController.swift
-│   │   │   └── ViewModel
+│   │   │   └── HomeViewModel
 │   │   │       └── HomeViewModel.swift
 │   │   ├── Search
 │   │   │   └──  .....
@@ -683,9 +683,9 @@ W3: 그냥 사소한 의견입니다 (Approve)
   
 ### 2. Branch Naming
  ```
- prefix/#이슈번호`
+ prefix/#이슈번호
 
- Ex) Desing/#11, Docs/#20
+ Ex) Design/#11, Docs/#20
  ```
 
 ### 3. Commit Naming
