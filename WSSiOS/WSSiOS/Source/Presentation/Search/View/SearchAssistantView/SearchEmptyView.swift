@@ -12,7 +12,7 @@ import Then
 
 final class SearchEmptyView: UIView {
     
-    //MARK: - set Porperties
+    //MARK: - UI Components
     
     private let emptyImageView = UIImageView()
     private let emptyDescriptionLabel = UILabel()

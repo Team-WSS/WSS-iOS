@@ -12,7 +12,7 @@ import Then
 
 final class SearchHeaderView: UIView {
     
-    //MARK: - set Properties
+    //MARK: - UI Components
     
     let searchBar = UISearchBar()
     

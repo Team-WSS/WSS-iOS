@@ -12,7 +12,7 @@ import Then
 
 final class SearchResultView: UIView {
     
-    //MARK: - set Properties
+    //MARK: - UI Components
     
     let searchCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     

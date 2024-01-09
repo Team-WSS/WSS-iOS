@@ -9,9 +9,11 @@ import UIKit
 
 final class SearchCollectionViewCell: UICollectionViewCell {
     
-    //MARK: - set Properties
+    //MARK: - Properties
     
     static let identifier: String = "SearchCollectionViewCell"
+    
+    //MARK: - UI Components
     
     private let novelImageView = UIImageView()
     private let novelStackView = UIStackView()
