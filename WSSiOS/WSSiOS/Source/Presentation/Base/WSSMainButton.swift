@@ -29,6 +29,7 @@ class WSSMainButton: UIButton {
     
     override func didMoveToSuperview() {
         super.didMoveToSuperview()
+        
         if superview != nil {
             setLayout()
         }
