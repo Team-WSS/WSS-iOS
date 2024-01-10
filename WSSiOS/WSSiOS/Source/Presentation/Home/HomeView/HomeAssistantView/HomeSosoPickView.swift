@@ -43,7 +43,6 @@ final class HomeSosoPickView: UIView {
     private func setLayout() {
         sosoPickCollectionView.snp.makeConstraints {
             $0.edges.equalToSuperview()
-            $0.height.equalTo(195)
         }
     }
     

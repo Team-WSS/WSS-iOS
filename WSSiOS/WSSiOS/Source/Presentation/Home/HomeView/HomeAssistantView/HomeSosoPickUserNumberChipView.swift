@@ -33,7 +33,7 @@ final class HomeSosoPickUserNumberChipView: UIView {
     private func setUI() {
         self.do {
             $0.backgroundColor = .Gray50
-            $0.layer.cornerRadius = 20
+            $0.layer.cornerRadius = 14
         }
         
         userNumberLabel.do {

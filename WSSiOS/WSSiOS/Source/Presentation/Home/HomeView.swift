@@ -55,8 +55,9 @@ final class HomeView: UIView {
         }
         
         sosopickView.snp.makeConstraints {
-            $0.top.equalTo(titleView.snp.bottom).offset(10)
+            $0.top.equalTo(titleView.snp.bottom)
             $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
         }
     }
 }

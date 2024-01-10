@@ -16,8 +16,8 @@ final class HomeSosoPickCollectionViewCell: UICollectionViewCell {
     //MARK: - UI Components
     
     private let bottomBackgroundView = UIView()
+    private let novelImageShadowView = UIView()
     private let novelImageView = UIImageView()
-    
     private let novelStackView = UIStackView()
     private let novelUserNumberView = HomeSosoPickUserNumberChipView()
     private let novelTitleLabel = UILabel()
@@ -42,25 +42,41 @@ final class HomeSosoPickCollectionViewCell: UICollectionViewCell {
         self.do {
             $0.backgroundColor = .Primary80
             $0.layer.cornerRadius = 12
-            $0.clipsToBounds = true
+            $0.layer.masksToBounds = false
+            $0.layer.shadowPath = UIBezierPath(roundedRect: $0.bounds, cornerRadius: $0.layer.cornerRadius).cgPath
+            $0.layer.shadowColor = UIColor.black.withAlphaComponent(0.1).cgColor
+            $0.layer.shadowOpacity = 1
+            $0.layer.shadowOffset = CGSize(width: 0, height: 2)
+            $0.layer.shadowRadius = 15
+        }
+        
+        novelImageShadowView.do {
+            $0.layer.shadowColor = UIColor.black.withAlphaComponent(0.1).cgColor
+            $0.layer.shadowOpacity = 1
+            $0.layer.shadowOffset = CGSize(width: 0, height: 2)
+            $0.layer.shadowRadius = 15
         }
         
         bottomBackgroundView.do {
             $0.backgroundColor = .White
+            $0.layer.cornerRadius = 12
+            $0.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
         }
         
         novelImageView.do {
-            $0.image = UIImage(named: "sample1")
+            $0.image = UIImage(named: "sa")
+            $0.layer.cornerRadius = 6
+            $0.clipsToBounds = true
         }
         
         novelStackView.do {
             $0.axis = .vertical
             $0.alignment = .leading
-            $0.spacing = 1
+            $0.spacing = 2
         }
         
         novelTitleLabel.do {
-            $0.text = "당신의 잠을 위해 노력한다네"
+            $0.text = "잠은 죽어서 자는걸까 "
             $0.font = .Title2
             $0.textColor = .Black
             $0.numberOfLines = 1
@@ -68,7 +84,7 @@ final class HomeSosoPickCollectionViewCell: UICollectionViewCell {
         }
         
         novelAuthorLabel.do {
-            $0.text = "최서연영애"
+            $0.text = "최서연 영애"
             $0.font = .Body3
             $0.textColor = .Gray200
             $0.numberOfLines = 1
@@ -77,8 +93,9 @@ final class HomeSosoPickCollectionViewCell: UICollectionViewCell {
     }
     
     private func setHierachy() {
-        self.addSubviews(novelImageView,
+        self.addSubviews(novelImageShadowView,
                          bottomBackgroundView)
+        novelImageShadowView.addSubview(novelImageView)
         bottomBackgroundView.addSubviews(novelUserNumberView,
                                          novelStackView)
         novelStackView.addArrangedSubviews(novelTitleLabel,
@@ -105,6 +122,7 @@ final class HomeSosoPickCollectionViewCell: UICollectionViewCell {
         novelStackView.snp.makeConstraints {
             $0.top.equalTo(novelUserNumberView.snp.bottom).offset(7)
             $0.leading.equalTo(novelUserNumberView.snp.leading)
+            $0.trailing.equalToSuperview().inset(12)
         }
     }
 }

@@ -33,7 +33,7 @@ final class HomeCharacterTagView: UIView {
     private func setUI() {
         self.do {
             $0.backgroundColor = .Primary50
-            $0.layer.cornerRadius = 20
+            $0.layer.cornerRadius = 15
         }
         
         tagLabel.do {
