@@ -36,6 +36,7 @@
 		2CD229572B42EA75005400BE /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD229562B42EA75005400BE /* UIColor+.swift */; };
 		392A29232B4E89FD0065EB97 /* RegisterNormalNovelInfoWithRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392A29222B4E89FD0065EB97 /* RegisterNormalNovelInfoWithRatingView.swift */; };
 		392A29252B4E8A910065EB97 /* RegisterNormalNovelInfoStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392A29242B4E8A910065EB97 /* RegisterNormalNovelInfoStackView.swift */; };
+		392A29272B4E96F30065EB97 /* UILabel+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392A29262B4E96F30065EB97 /* UILabel+.swift */; };
 		3999BFE42B4E6B0700984832 /* RegisterNormalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3999BFE32B4E6B0700984832 /* RegisterNormalView.swift */; };
 		3999BFE92B4E6C3500984832 /* RegisterNormalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3999BFE82B4E6C3500984832 /* RegisterNormalViewController.swift */; };
 		3999BFEB2B4E6C4400984832 /* RegisterNormalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3999BFEA2B4E6C4400984832 /* RegisterNormalViewModel.swift */; };
@@ -76,6 +77,7 @@
 		2CD229562B42EA75005400BE /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		392A29222B4E89FD0065EB97 /* RegisterNormalNovelInfoWithRatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalNovelInfoWithRatingView.swift; sourceTree = "<group>"; };
 		392A29242B4E8A910065EB97 /* RegisterNormalNovelInfoStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalNovelInfoStackView.swift; sourceTree = "<group>"; };
+		392A29262B4E96F30065EB97 /* UILabel+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+.swift"; sourceTree = "<group>"; };
 		3999BFE32B4E6B0700984832 /* RegisterNormalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RegisterNormalView.swift; path = WSSiOS/Source/Presentation/RegisterNormal/RegisterNormalView/RegisterNormalView.swift; sourceTree = SOURCE_ROOT; };
 		3999BFE82B4E6C3500984832 /* RegisterNormalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalViewController.swift; sourceTree = "<group>"; };
 		3999BFEA2B4E6C4400984832 /* RegisterNormalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalViewModel.swift; sourceTree = "<group>"; };
@@ -223,6 +225,7 @@
 				2C79CB9C2B45A1DD00734E1F /* UIFont+.swift */,
 				A1DBB2FD2B4AEB22000EE869 /* UIView+.swift */,
 				A147CBC52B4D6E190040AE39 /* UIStackView+.swift */,
+				392A29262B4E96F30065EB97 /* UILabel+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -503,6 +506,7 @@
 				392A29232B4E89FD0065EB97 /* RegisterNormalNovelInfoWithRatingView.swift in Sources */,
 				2C79CB9D2B45A1DD00734E1F /* UIFont+.swift in Sources */,
 				A147CBC62B4D6E190040AE39 /* UIStackView+.swift in Sources */,
+				392A29272B4E96F30065EB97 /* UILabel+.swift in Sources */,
 				2C2491842B4ADC230096F255 /* WSSTabBarItem.swift in Sources */,
 				A1EC91B42B46DA3100CFB33D /* ImageLiterals.swift in Sources */,
 				2CCBF9EE2B4C1FC500D787C2 /* MyPageViewController.swift in Sources */,

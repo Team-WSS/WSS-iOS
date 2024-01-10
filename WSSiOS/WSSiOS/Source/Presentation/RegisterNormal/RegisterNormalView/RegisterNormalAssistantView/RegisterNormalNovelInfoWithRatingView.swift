@@ -15,7 +15,6 @@ final class RegisterNormalNovelInfoWithRatingView: UIView {
     // MARK: - UI Components
     
     private let novelInfoWithRatingContentView = UIStackView()
-    
     private let novelInfoStackView = RegisterNormalNovelInfoStackView()
     
     // MARK: - Life Cycle
