@@ -14,7 +14,7 @@ final class HomeView: UIView {
     private let headerView = HomeHeaderView()
     private let characterView = HomeCharacterView()
     private let titleView = HomeSosoPickTitleView()
-    private let sosoPickCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+    let sosopickView = HomeSosoPickView()
     
     //MARK: - Life Cycle
     
@@ -34,7 +34,7 @@ final class HomeView: UIView {
         self.addSubviews(headerView,
                          characterView,
                          titleView,
-                         sosoPickCollectionView)
+                         sosopickView)
     }
     
     private func setLayout() {
@@ -54,9 +54,9 @@ final class HomeView: UIView {
             $0.leading.trailing.equalToSuperview().inset(20)
         }
         
-        sosoPickCollectionView.snp.makeConstraints {
+        sosopickView.snp.makeConstraints {
             $0.top.equalTo(titleView.snp.bottom).offset(10)
-            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.leading.trailing.equalToSuperview()
         }
     }
 }
