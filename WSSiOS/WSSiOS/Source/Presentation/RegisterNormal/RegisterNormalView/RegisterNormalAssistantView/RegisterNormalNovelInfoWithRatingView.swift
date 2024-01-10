@@ -17,6 +17,7 @@ final class RegisterNormalNovelInfoWithRatingView: UIView {
     private let novelInfoWithRatingContentView = UIStackView()
     private let novelInfoStackView = RegisterNormalNovelInfoStackView()
     private let novelCoverImageView = UIImageView()
+    private let starRatingView = RegisterNormalStarRatingView()
     
     // MARK: - Life Cycle
     
@@ -53,7 +54,7 @@ final class RegisterNormalNovelInfoWithRatingView: UIView {
         self.addSubview(novelInfoWithRatingContentView)
         
         novelInfoWithRatingContentView.addArrangedSubviews(
-            novelInfoStackView, novelCoverImageView
+            novelInfoStackView, novelCoverImageView, starRatingView
         )
     }
     
