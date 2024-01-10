@@ -74,7 +74,7 @@ final class RegisterNormalStarRatingView: UIView {
     private func makeStarImageView() -> UIImageView {
         let imageView = UIImageView()
         imageView.do {
-            $0.image = ImageLiterals.icon.icStar.empty
+            $0.image = ImageLiterals.icon.Star.empty
             $0.isUserInteractionEnabled = true
         }
         return imageView

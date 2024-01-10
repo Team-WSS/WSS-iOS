@@ -17,10 +17,10 @@ final class RegisterNormalReadStatusView: UIView {
     
     let buttonTitles = ["읽음", "읽는 중", "하차", "읽고 싶음"]
     let buttonImages: [UIImage] = [
-        ImageLiterals.icon.icTagStatus.finished,
-        ImageLiterals.icon.icTagStatus.reading,
-        ImageLiterals.icon.icTagStatus.stop,
-        ImageLiterals.icon.icTagStatus.interest
+        ImageLiterals.icon.TagStatus.finished,
+        ImageLiterals.icon.TagStatus.reading,
+        ImageLiterals.icon.TagStatus.stop,
+        ImageLiterals.icon.TagStatus.interest
     ]
     
     // MARK: - UI Components
