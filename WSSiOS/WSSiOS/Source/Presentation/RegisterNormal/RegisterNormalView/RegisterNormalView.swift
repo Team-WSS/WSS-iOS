@@ -24,9 +24,9 @@ final class RegisterNormalView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-
-        setHieararchy()
+        
         setUI()
+        setHieararchy()
         setLayout()
     }
     
@@ -48,9 +48,7 @@ final class RegisterNormalView: UIView {
         pageContentView.do {
             $0.axis = .vertical
             $0.alignment = .fill
-            $0.setCustomSpacing(-154, after: bannerImageView)
         }
-        
     }
     
     private func setHieararchy() {
@@ -71,7 +69,13 @@ final class RegisterNormalView: UIView {
         pageContentView.snp.makeConstraints {
             $0.edges.equalTo(pageScrollView.contentLayoutGuide)
             $0.width.equalToSuperview()
+            
+            pageContentView.do {
+                $0.setCustomSpacing(-154, after: bannerImageView)
+            }
         }
     }
+    
+    
 
 }

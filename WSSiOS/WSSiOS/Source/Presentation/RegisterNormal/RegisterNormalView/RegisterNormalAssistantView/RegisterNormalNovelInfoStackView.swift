@@ -23,8 +23,8 @@ final class RegisterNormalNovelInfoStackView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        setHieararchy()
         setUI()
+        setHieararchy()
         setLayout()
     }
     
@@ -43,23 +43,12 @@ final class RegisterNormalNovelInfoStackView: UIView {
         
         novelTitleLabel.do {
             $0.text = "여성향 게임의 파멸 플래그밖에 없는 악역 영애로 환생해 버렸다"
-            $0.font = .HeadLine1
-            $0.textColor = .White
             novelTitleAttribute(of: $0)
-            $0.numberOfLines = 3
-            $0.textAlignment = .center
-            $0.lineBreakMode = .byTruncatingTail
-            $0.lineBreakStrategy = .hangulWordPriority
         }
         
         novelAuthorLabel.do {
             $0.text = "Satoru Yamaguchi"
-            $0.font = .Body2
-            $0.textColor = .Gray200
             novelAuthorAttribute(of: $0)
-            $0.numberOfLines = 1
-            $0.lineBreakMode = .byTruncatingTail
-            
         }
     }
     
@@ -77,22 +66,33 @@ final class RegisterNormalNovelInfoStackView: UIView {
         }
     }
     
-    /// novelTitle의 AttributedText 적용을 위한 함수.
+    /// novelTitle의 UI를 위한 함수.
     private func novelTitleAttribute(of label: UILabel) {
-        label.makeAttribute()?
-            .lineSpacing(spacingPercentage: 140)
-            .kerning(kerningPixel: -1.2)
-            //.textAlignment(.center)
-            //.lineBreakMode(.byTruncatingTail)
-            .applyAttribute()
+        label.do {
+            $0.makeAttribute(with: label.text)?
+                .lineSpacing(spacingPercentage: 140)
+                .kerning(kerningPixel: -1.2)
+                .applyAttribute()
+            $0.font = .HeadLine1
+            $0.textColor = .White
+            $0.textAlignment = .center
+            $0.lineBreakMode = .byTruncatingTail
+            $0.lineBreakStrategy = .hangulWordPriority
+            $0.numberOfLines = 3
+        }
     }
     
     /// novel의 AttributedText 적용을 위한 함수.
     private func novelAuthorAttribute(of label: UILabel) {
-        label.makeAttribute()?
-            .lineSpacing(spacingPercentage: 150)
-            .kerning(kerningPixel: -0.6)
-            .applyAttribute()
+        label.do{
+            $0.makeAttribute(with: label.text)?
+                .lineSpacing(spacingPercentage: 150)
+                .kerning(kerningPixel: -0.6)
+                .applyAttribute()
+            $0.font = .Body2
+            $0.textColor = .Gray200
+            $0.numberOfLines = 1
+            $0.lineBreakMode = .byTruncatingTail
+        }
     }
-    
 }

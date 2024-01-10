@@ -24,8 +24,8 @@ final class RegisterNormalNovelInfoWithRatingView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        setHieararchy()
         setUI()
+        setHieararchy()
         setLayout()
     }
     

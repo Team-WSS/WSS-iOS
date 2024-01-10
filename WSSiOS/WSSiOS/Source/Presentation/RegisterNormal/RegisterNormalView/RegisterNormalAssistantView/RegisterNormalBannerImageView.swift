@@ -23,8 +23,8 @@ final class RegisterNormalBannerImageView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        setHieararchy()
         setUI()
+        setHieararchy()
         setLayout()
     }
     
