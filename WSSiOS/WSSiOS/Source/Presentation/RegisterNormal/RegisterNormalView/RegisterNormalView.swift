@@ -24,6 +24,8 @@ final class RegisterNormalView: UIView {
     private let dividerView = RegisterNormalDividerView()
     private let keywordSelectionView = RegisterNormalKeywordSelectionView()
     private let novelSummaryView = RegisterNormalNovelSummaryView()
+    private let registerButton = WSSMainButton(title: "내 서재에 등록")
+    private let registerButtonGradient = UIImageView()
     
     // MARK: - Life Cycle
     
@@ -45,19 +47,25 @@ final class RegisterNormalView: UIView {
         self.do {
             $0.backgroundColor = .white
         }
+        
         pageScrollView.do {
             $0.contentInsetAdjustmentBehavior = .never
             $0.showsVerticalScrollIndicator = false
             $0.alwaysBounceVertical = true
         }
+        
         pageContentView.do {
             $0.axis = .vertical
             $0.alignment = .fill
         }
+        
+        registerButtonGradient.do {
+            $0.image = .registerNormalButtonGradientDummy
+        }
     }
     
     private func setHieararchy() {
-        self.addSubviews(pageScrollView)
+        self.addSubviews(pageScrollView, registerButtonGradient, registerButton)
         
         pageScrollView.addSubview(pageContentView)
         
@@ -68,7 +76,8 @@ final class RegisterNormalView: UIView {
     
     private func setLayout() {
         pageScrollView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.horizontalEdges.top.equalToSuperview()
+            $0.bottom.equalTo(registerButton.snp.top)
         }
         
         pageContentView.do {
@@ -80,6 +89,12 @@ final class RegisterNormalView: UIView {
             $0.spacing = 35
             $0.setCustomSpacing(-154, after: bannerImageView)
             $0.setCustomSpacing(56, after: infoWithRatingView)
+        }
+        
+        registerButtonGradient.snp.makeConstraints {
+            $0.bottom.equalTo(registerButton.snp.top)
+            $0.horizontalEdges.equalToSuperview()
+            $0.height.equalTo(34)
         }
     }
 }
