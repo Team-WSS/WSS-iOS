@@ -65,13 +65,13 @@ final class RegisterNormalKeywordSelectionView: UIView {
     
     private func titleStyle(of label: UILabel) {
         label.do {
+            $0.textColor = .Black
             $0.makeAttribute(with: label.text)?
                 .lineSpacing(spacingPercentage: 140)
                 .kerning(kerningPixel: -0.6)
                 .partialColor(color: .Secondary100, rangeString: "*")
                 .applyAttribute()
             $0.font = .Title1
-            $0.textColor = .Black
         }
     }
 }
