@@ -12,7 +12,12 @@
 > 📅 1차 스프린트 기간: 2023.12.17 - 2024.01.20
 
 "웹소설도 소설이다." 33기 DO SOPT 앱잼에서 탄생한 웹소소는 웹소설을 더욱 간편하게 기록하고 기억할 수 있는 플랫폼입니다. 웹소설 헤비 이용자들을 타겟으로 하며, 사용자들의 편의를 증진시키고 웹소설에 대한 몰입감을 더욱 깊게 만들어주는 특별한 경험을 제공합니다. 간단하게 기록하고, 재미있게 기억하며, 마음껏 몰입하기 위한 새로운 앱 서비스로 여러분을 초대합니다.
+
 <br>
+
+## 🎈Guest book 
+> 아요 소소의 방명록을 만들었어요. 아요 왕국에 초대합니다. [아요 왕국 방명록](https://github.com/Team-WSS/WSS-iOS/issues/14)
+
 <br>
 
 
@@ -25,6 +30,31 @@
 |<img width="250px" alt="지원" src="https://github.com/Team-WSS/WSS-iOS/assets/87518742/c902ad7d-4a2a-4964-b3e6-76c4ab5fbdb0">|<img width="250px" alt="윤학" src="https://github.com/Team-WSS/WSS-iOS/assets/87518742/e09c52e1-2876-49c0-9a32-33eb204590ea">|<img width="250px" alt="서연" src="https://github.com/Team-WSS/WSS-iOS/assets/87518742/b2b350b4-cf4a-4469-8e3d-320b4a7fd7fa">|<img width="250px" alt="효원" src="https://github.com/Team-WSS/WSS-iOS/assets/87518742/e46f7d9c-41cb-4fcb-8ba5-52acbd208bb3">|
 |:----:|:----:|:----:|:----:|
 |[신지원](https://github.com/ena-isme)|[이윤학](https://github.com/Naknakk)|[최서연](https://github.com/chetseoo)|[전효원](https://github.com/hyowon612)|
+|Library, MyPage|Register|Home, Search, Record|Detail, Memo|
+
+<br>
+
+## ⚖️ Technology Stack
+#### Development Stack
+
+<img src="https://img.shields.io/badge/iOS-000000?style=flat-square&logo=iOS&logoColor=white"/> <img src="https://img.shields.io/badge/Swift-F05138?style=flat-square&logo=Swift&logoColor=white"/> <img src="https://img.shields.io/badge/UIKit-2396F3?style=flat-square&logo=UIKit&logoColor=white"/>
+
+#### Develop Enviroment
+
+<img src="https://img.shields.io/badge/iOS-17.2-000000?style=flat-square&logo=iOS&logoColor=white"/> <img src="https://img.shields.io/badge/Xcode-15.1-147EFB?style=flat-square&logo=Xcode&logoColor=white"/> 
+
+<br>
+
+## ⚖️ Libraries
+
+|Library|Version|Description|
+|:----:|:----:|:----:|
+|[Kingfisher](https://github.com/onevcat/Kingfisher)|7.10.1|웹에서 다운받은 이미지 캐싱 에 사용|
+|[Lottie](https://github.com/airbnb/lottie-ios)|4.3.4|벡터 애니메이션 렌더링 에 사용|
+|[RxSwift](https://github.com/ReactiveX/RxSwift.git)|6.6.0|MVVM 패턴의 원활한 적용과 반응형 프로그래밍 에 사용|
+|[SnapKit](https://github.com/SnapKit/SnapKit)|5.7.0|UI AutoLayout 에 사용|
+|[Then](https://github.com/devxoul/Then)|3.0.0|클로저를 이용한 인스턴스 초기화 에 사용|
+|[UIImageViewAlignedSwift](https://github.com/sochalewski/UIImageViewAlignedSwift)|0.8.3|크롭한 이미지의 정렬 에 사용|
 
 <br>
 
@@ -628,6 +658,10 @@ WSSiOS
 3. 빠른 협업 속도를 위해 코드리뷰는 최대한 빨리 완료한다.
 4. 최소 2명의 Approved 이후 Merge할 수 있으며, 본인의 Pull Request는 본인이 Merge한다.
 5. Merge시, 최신 main를 본인 브랜치에 먼저 Merge하여 로컬에서 Conflict를 해결한 뒤, 앱이 정상적으로 실행되는 지 빌드한 후 Merge한다.
+6. Pull Request 의 라벨은 아래와 같이 구분한다.
+- reviewPlz : 처음 코드리뷰를 요청할 때
+- reviewMore : 수정한 바를 기반으로 다시 코드리뷰를 요청할 때
+- veryGoodDeveloper : 최종적으로 머지할 때
 ```
 
 ### 브랜치 플로우
