@@ -36,12 +36,12 @@ final class RegisterNormalBannerImageView: UIView {
     
     private func setUI() {
         bannerImageView.do {
-            $0.image = .registerNormalNovelCover//.applyBannerImageBlur(radius: 16)
-
+            $0.image = .registerNormalNovelCover.asBlurredBannerImage(radius: 15)
             $0.contentMode = .scaleAspectFill
             $0.alignment = .top
             $0.clipsToBounds = true
         }
+        
         gradientView.do {
             $0.contentMode = .scaleAspectFill
             $0.clipsToBounds = true
