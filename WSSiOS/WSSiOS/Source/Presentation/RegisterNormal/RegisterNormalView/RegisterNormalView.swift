@@ -19,6 +19,8 @@ final class RegisterNormalView: UIView {
     
     private let bannerImageView = RegisterNormalBannerImageView()
     private let infoWithRatingView = RegisterNormalNovelInfoWithRatingView()
+    private let readStatusView = RegisterNormalReadStatusView()
+    private let readDateView = RegisterNormalReadDateView()
     
     // MARK: - Life Cycle
     
@@ -57,7 +59,7 @@ final class RegisterNormalView: UIView {
         pageScrollView.addSubview(pageContentView)
         
         pageContentView.addArrangedSubviews(
-            bannerImageView, infoWithRatingView
+            bannerImageView, infoWithRatingView, readStatusView, readDateView
         )
     }
     
@@ -66,16 +68,15 @@ final class RegisterNormalView: UIView {
             $0.edges.equalToSuperview()
         }
         
-        pageContentView.snp.makeConstraints {
-            $0.edges.equalTo(pageScrollView.contentLayoutGuide)
-            $0.width.equalToSuperview()
-            
-            pageContentView.do {
-                $0.setCustomSpacing(-154, after: bannerImageView)
+        pageContentView.do {
+            $0.snp.makeConstraints {
+                $0.edges.equalTo(pageScrollView.contentLayoutGuide)
+                $0.width.equalToSuperview()
             }
+            
+            $0.setCustomSpacing(-154, after: bannerImageView)
+            $0.setCustomSpacing(56, after: infoWithRatingView)
+            $0.setCustomSpacing(35, after: readStatusView)
         }
     }
-    
-    
-
 }

@@ -39,6 +39,8 @@
 		392A29272B4E96F30065EB97 /* UILabel+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392A29262B4E96F30065EB97 /* UILabel+.swift */; };
 		392A292B2B4ECDB80065EB97 /* RegisterNormalStarRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392A292A2B4ECDB80065EB97 /* RegisterNormalStarRatingView.swift */; };
 		392A292D2B4ECF320065EB97 /* RegisterNormalReadStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392A292C2B4ECF320065EB97 /* RegisterNormalReadStatusView.swift */; };
+		392A292F2B4F07FF0065EB97 /* RegisterNormalReadDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392A292E2B4F07FF0065EB97 /* RegisterNormalReadDateView.swift */; };
+		392A29312B4F145D0065EB97 /* RegisterNormalDatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392A29302B4F145D0065EB97 /* RegisterNormalDatePickerView.swift */; };
 		3999BFE42B4E6B0700984832 /* RegisterNormalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3999BFE32B4E6B0700984832 /* RegisterNormalView.swift */; };
 		3999BFE92B4E6C3500984832 /* RegisterNormalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3999BFE82B4E6C3500984832 /* RegisterNormalViewController.swift */; };
 		3999BFEB2B4E6C4400984832 /* RegisterNormalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3999BFEA2B4E6C4400984832 /* RegisterNormalViewModel.swift */; };
@@ -82,6 +84,8 @@
 		392A29262B4E96F30065EB97 /* UILabel+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+.swift"; sourceTree = "<group>"; };
 		392A292A2B4ECDB80065EB97 /* RegisterNormalStarRatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalStarRatingView.swift; sourceTree = "<group>"; };
 		392A292C2B4ECF320065EB97 /* RegisterNormalReadStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalReadStatusView.swift; sourceTree = "<group>"; };
+		392A292E2B4F07FF0065EB97 /* RegisterNormalReadDateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalReadDateView.swift; sourceTree = "<group>"; };
+		392A29302B4F145D0065EB97 /* RegisterNormalDatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalDatePickerView.swift; sourceTree = "<group>"; };
 		3999BFE32B4E6B0700984832 /* RegisterNormalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RegisterNormalView.swift; path = WSSiOS/Source/Presentation/RegisterNormal/RegisterNormalView/RegisterNormalView.swift; sourceTree = SOURCE_ROOT; };
 		3999BFE82B4E6C3500984832 /* RegisterNormalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalViewController.swift; sourceTree = "<group>"; };
 		3999BFEA2B4E6C4400984832 /* RegisterNormalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalViewModel.swift; sourceTree = "<group>"; };
@@ -332,6 +336,8 @@
 				392A29242B4E8A910065EB97 /* RegisterNormalNovelInfoStackView.swift */,
 				392A292A2B4ECDB80065EB97 /* RegisterNormalStarRatingView.swift */,
 				392A292C2B4ECF320065EB97 /* RegisterNormalReadStatusView.swift */,
+				392A292E2B4F07FF0065EB97 /* RegisterNormalReadDateView.swift */,
+				392A29302B4F145D0065EB97 /* RegisterNormalDatePickerView.swift */,
 			);
 			path = RegisterNormalAssistantView;
 			sourceTree = "<group>";
@@ -507,6 +513,7 @@
 				A1A1F9D42B4873B500705F44 /* SearchEmptyView.swift in Sources */,
 				3999BFE92B4E6C3500984832 /* RegisterNormalViewController.swift in Sources */,
 				3999BFF02B4E6FA800984832 /* RegisterNormalBannerImageView.swift in Sources */,
+				392A29312B4F145D0065EB97 /* RegisterNormalDatePickerView.swift in Sources */,
 				2CD2291E2B42E685005400BE /* SceneDelegate.swift in Sources */,
 				392A292B2B4ECDB80065EB97 /* RegisterNormalStarRatingView.swift in Sources */,
 				A1A1F9CD2B48733200705F44 /* SearchViewController.swift in Sources */,
@@ -523,6 +530,7 @@
 				2CCBF9F22B4D347B00D787C2 /* WSSMainButton.swift in Sources */,
 				2C2491812B4ADC000096F255 /* StringLiterals.swift in Sources */,
 				2C2491862B4ADC420096F255 /* WSSTabBarController.swift in Sources */,
+				392A292F2B4F07FF0065EB97 /* RegisterNormalReadDateView.swift in Sources */,
 				2CD229572B42EA75005400BE /* UIColor+.swift in Sources */,
 				A1DBB2FA2B4AA981000EE869 /* SearchTableViewCell.swift in Sources */,
 				3999BFEB2B4E6C4400984832 /* RegisterNormalViewModel.swift in Sources */,
