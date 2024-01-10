@@ -91,6 +91,7 @@ final class RegisterNormalReadStatusView: UIView {
                 .partialColor(color: .Secondary100, rangeString: "*")
                 .applyAttribute()
             $0.font = .Title1
+            $0.textColor = .Black
         }
     }
     
