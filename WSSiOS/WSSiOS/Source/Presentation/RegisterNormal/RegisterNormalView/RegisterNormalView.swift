@@ -17,7 +17,8 @@ final class RegisterNormalView: UIView {
     private let pageScrollView = UIScrollView()
     private let pageContentView = UIStackView()
     
-    let bannerImageView = RegisterNormalBannerImageView()
+    private let bannerImageView = RegisterNormalBannerImageView()
+    private let infoWithRatingView = RegisterNormalNovelInfoWithRatingView()
     
     // MARK: - Life Cycle
     
@@ -47,6 +48,7 @@ final class RegisterNormalView: UIView {
         pageContentView.do {
             $0.axis = .vertical
             $0.alignment = .fill
+            $0.setCustomSpacing(-154, after: bannerImageView)
         }
         
     }
@@ -57,7 +59,7 @@ final class RegisterNormalView: UIView {
         pageScrollView.addSubview(pageContentView)
         
         pageContentView.addArrangedSubviews(
-            bannerImageView
+            bannerImageView, infoWithRatingView
         )
     }
     
