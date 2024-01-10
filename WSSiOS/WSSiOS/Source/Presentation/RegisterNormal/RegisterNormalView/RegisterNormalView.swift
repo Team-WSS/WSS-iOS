@@ -23,6 +23,7 @@ final class RegisterNormalView: UIView {
     private let readDateView = RegisterNormalReadDateView()
     private let dividerView = RegisterNormalDividerView()
     private let keywordSelectionView = RegisterNormalKeywordSelectionView()
+    private let novelSummaryView = RegisterNormalNovelSummaryView()
     
     // MARK: - Life Cycle
     
@@ -61,7 +62,7 @@ final class RegisterNormalView: UIView {
         pageScrollView.addSubview(pageContentView)
         
         pageContentView.addArrangedSubviews(
-            bannerImageView, infoWithRatingView, readStatusView, readDateView, dividerView, keywordSelectionView
+            bannerImageView, infoWithRatingView, readStatusView, readDateView, dividerView, keywordSelectionView, novelSummaryView
         )
     }
     
