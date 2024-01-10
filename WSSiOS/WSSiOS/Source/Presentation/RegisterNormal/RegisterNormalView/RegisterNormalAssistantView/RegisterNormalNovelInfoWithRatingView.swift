@@ -16,6 +16,7 @@ final class RegisterNormalNovelInfoWithRatingView: UIView {
     
     private let novelInfoWithRatingContentView = UIStackView()
     private let novelInfoStackView = RegisterNormalNovelInfoStackView()
+    private let novelCoverImageView = UIImageView()
     
     // MARK: - Life Cycle
     
@@ -39,13 +40,20 @@ final class RegisterNormalNovelInfoWithRatingView: UIView {
             $0.spacing = 22
             $0.alignment = .center
         }
+        
+        novelCoverImageView.do {
+            $0.image = .registerNormalNovelCover
+            $0.contentMode = .scaleAspectFill
+            $0.layer.cornerRadius = 12
+            $0.clipsToBounds = true
+        }
     }
     
     private func setHieararchy() {
         self.addSubview(novelInfoWithRatingContentView)
         
         novelInfoWithRatingContentView.addArrangedSubviews(
-            novelInfoStackView
+            novelInfoStackView, novelCoverImageView
         )
     }
     
@@ -53,6 +61,11 @@ final class RegisterNormalNovelInfoWithRatingView: UIView {
         novelInfoWithRatingContentView.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview().inset(67)
             $0.verticalEdges.equalToSuperview()
+        }
+        
+        novelCoverImageView.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview().inset(56.5)
+            $0.height.equalTo(novelCoverImageView.snp.width).multipliedBy(197.0/128.0)
         }
     }
 }
