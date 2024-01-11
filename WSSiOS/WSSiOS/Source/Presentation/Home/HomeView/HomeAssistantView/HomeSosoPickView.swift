@@ -12,6 +12,7 @@ final class HomeSosoPickView: UIView {
     //MARK: - UI Components
     
     let sosoPickCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+    private let sosoPickCollectionViewLayout = UICollectionViewFlowLayout()
     
     //MARK: - Life Cycle
     
@@ -21,7 +22,6 @@ final class HomeSosoPickView: UIView {
         setUI()
         setHierachy()
         setLayout()
-        setCollectionViewLayout()
     }
     
     @available(*, unavailable)
@@ -34,6 +34,14 @@ final class HomeSosoPickView: UIView {
             $0.showsHorizontalScrollIndicator = false
             $0.backgroundColor = .clear
         }
+        
+        sosoPickCollectionViewLayout.do {
+            $0.scrollDirection = .horizontal
+            $0.minimumLineSpacing = 11
+            $0.itemSize = CGSize(width: 230, height: 195)
+            $0.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+            sosoPickCollectionView.setCollectionViewLayout($0, animated: false)
+        }
     }
     
     private func setHierachy() {
@@ -44,14 +52,5 @@ final class HomeSosoPickView: UIView {
         sosoPickCollectionView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
-    }
-    
-    private func setCollectionViewLayout() {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.scrollDirection = .horizontal
-        flowLayout.minimumLineSpacing = 11
-        flowLayout.itemSize = CGSize(width: 230, height: 195)
-        flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
-        sosoPickCollectionView.setCollectionViewLayout(flowLayout, animated: false)
     }
 }

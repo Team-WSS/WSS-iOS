@@ -76,7 +76,6 @@ final class HomeSosoPickCollectionViewCell: UICollectionViewCell {
         }
         
         novelTitleLabel.do {
-            $0.text = "잠은 죽어서 자는걸까 "
             $0.font = .Title2
             $0.textColor = .Black
             $0.numberOfLines = 1
@@ -84,7 +83,6 @@ final class HomeSosoPickCollectionViewCell: UICollectionViewCell {
         }
         
         novelAuthorLabel.do {
-            $0.text = "최서연 영애"
             $0.font = .Body3
             $0.textColor = .Gray200
             $0.numberOfLines = 1
