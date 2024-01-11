@@ -52,6 +52,7 @@
 		CD39F2C12B4FF81E00B73A5C /* UIButton+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2C02B4FF81E00B73A5C /* UIButton+.swift */; };
 		CD39F2C32B4FFDF900B73A5C /* NovelDetailMemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2C22B4FFDF900B73A5C /* NovelDetailMemoView.swift */; };
 		CD39F2C52B4FFE7400B73A5C /* NovelDetailCreateMemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2C42B4FFE7400B73A5C /* NovelDetailCreateMemoView.swift */; };
+		CD39F2C82B50124C00B73A5C /* NovelDetailMemoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2C72B50124C00B73A5C /* NovelDetailMemoTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -92,6 +93,7 @@
 		CD39F2C02B4FF81E00B73A5C /* UIButton+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+.swift"; sourceTree = "<group>"; };
 		CD39F2C22B4FFDF900B73A5C /* NovelDetailMemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailMemoView.swift; sourceTree = "<group>"; };
 		CD39F2C42B4FFE7400B73A5C /* NovelDetailCreateMemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailCreateMemoView.swift; sourceTree = "<group>"; };
+		CD39F2C72B50124C00B73A5C /* NovelDetailMemoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailMemoTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -365,6 +367,7 @@
 		CD39F2B32B4FE0C100B73A5C /* NovelDetailView */ = {
 			isa = PBXGroup;
 			children = (
+				CD39F2C62B50122500B73A5C /* NovelDetailCell */,
 				CD39F2B92B4FE10800B73A5C /* NovelDetailAssistantView */,
 				CD39F2B52B4FE0E200B73A5C /* NovelDetailView.swift */,
 			);
@@ -388,6 +391,14 @@
 				CD39F2C42B4FFE7400B73A5C /* NovelDetailCreateMemoView.swift */,
 			);
 			path = NovelDetailAssistantView;
+			sourceTree = "<group>";
+		};
+		CD39F2C62B50122500B73A5C /* NovelDetailCell */ = {
+			isa = PBXGroup;
+			children = (
+				CD39F2C72B50124C00B73A5C /* NovelDetailMemoTableViewCell.swift */,
+			);
+			path = NovelDetailCell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -484,6 +495,7 @@
 			files = (
 				2CD229202B42E685005400BE /* ViewController.swift in Sources */,
 				2CD2291C2B42E685005400BE /* AppDelegate.swift in Sources */,
+				CD39F2C82B50124C00B73A5C /* NovelDetailMemoTableViewCell.swift in Sources */,
 				CD39F2B62B4FE0E200B73A5C /* NovelDetailView.swift in Sources */,
 				2CCBF9F02B4C1FD800D787C2 /* MyPageView.swift in Sources */,
 				A1C3EC532B46962F00D997C2 /* UIImage+.swift in Sources */,
