@@ -69,7 +69,8 @@ final class RegisterNormalKeywordSelectionButton: UIView {
     private func setLayout() {
         buttonStackView.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(13)
-            $0.centerY.equalToSuperview()
+            $0.verticalEdges.equalToSuperview()
+            $0.height.equalTo(43)
             
             buttonImage.snp.makeConstraints {
                 $0.size.equalTo(24)

@@ -51,6 +51,7 @@
 		39CD5E0A2B4F2E4000668B9A /* RegisterNormalKeywordSelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CD5E092B4F2E4000668B9A /* RegisterNormalKeywordSelectionButton.swift */; };
 		39CD5E0C2B4F3D0700668B9A /* RegisterNormalNovelSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CD5E0B2B4F3D0700668B9A /* RegisterNormalNovelSummaryView.swift */; };
 		39CD5E0E2B4FCEBC00668B9A /* RegisterNormalPlatformSelectButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CD5E0D2B4FCEBC00668B9A /* RegisterNormalPlatformSelectButton.swift */; };
+		39CD5E102B4FEC0F00668B9A /* RegisterNormalCustomToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CD5E0F2B4FEC0F00668B9A /* RegisterNormalCustomToggle.swift */; };
 		A147CBC42B4D662E0040AE39 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A147CBC32B4D662E0040AE39 /* SearchView.swift */; };
 		A147CBC62B4D6E190040AE39 /* UIStackView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A147CBC52B4D6E190040AE39 /* UIStackView+.swift */; };
 		A1A1F9CD2B48733200705F44 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A1F9CC2B48733200705F44 /* SearchViewController.swift */; };
@@ -100,6 +101,7 @@
 		39CD5E092B4F2E4000668B9A /* RegisterNormalKeywordSelectionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalKeywordSelectionButton.swift; sourceTree = "<group>"; };
 		39CD5E0B2B4F3D0700668B9A /* RegisterNormalNovelSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalNovelSummaryView.swift; sourceTree = "<group>"; };
 		39CD5E0D2B4FCEBC00668B9A /* RegisterNormalPlatformSelectButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalPlatformSelectButton.swift; sourceTree = "<group>"; };
+		39CD5E0F2B4FEC0F00668B9A /* RegisterNormalCustomToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalCustomToggle.swift; sourceTree = "<group>"; };
 		A147CBC32B4D662E0040AE39 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		A147CBC52B4D6E190040AE39 /* UIStackView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+.swift"; sourceTree = "<group>"; };
 		A1A1F9CC2B48733200705F44 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
@@ -353,6 +355,7 @@
 				39CD5E092B4F2E4000668B9A /* RegisterNormalKeywordSelectionButton.swift */,
 				39CD5E0B2B4F3D0700668B9A /* RegisterNormalNovelSummaryView.swift */,
 				39CD5E0D2B4FCEBC00668B9A /* RegisterNormalPlatformSelectButton.swift */,
+				39CD5E0F2B4FEC0F00668B9A /* RegisterNormalCustomToggle.swift */,
 			);
 			path = RegisterNormalAssistantView;
 			sourceTree = "<group>";
@@ -533,6 +536,7 @@
 				39CD5E082B4F2BBE00668B9A /* RegisterNormalKeywordSelectionView.swift in Sources */,
 				2CD2291E2B42E685005400BE /* SceneDelegate.swift in Sources */,
 				392A292B2B4ECDB80065EB97 /* RegisterNormalStarRatingView.swift in Sources */,
+				39CD5E102B4FEC0F00668B9A /* RegisterNormalCustomToggle.swift in Sources */,
 				39CD5E0A2B4F2E4000668B9A /* RegisterNormalKeywordSelectionButton.swift in Sources */,
 				A1A1F9CD2B48733200705F44 /* SearchViewController.swift in Sources */,
 				392A29232B4E89FD0065EB97 /* RegisterNormalNovelInfoWithRatingView.swift in Sources */,

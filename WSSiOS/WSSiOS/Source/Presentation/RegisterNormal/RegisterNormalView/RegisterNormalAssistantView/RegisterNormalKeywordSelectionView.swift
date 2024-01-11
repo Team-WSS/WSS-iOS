@@ -57,10 +57,6 @@ final class RegisterNormalKeywordSelectionView: UIView {
             $0.verticalEdges.equalToSuperview()
             $0.horizontalEdges.equalToSuperview().inset(20)
         }
-        
-        keywordButtonView.snp.makeConstraints {
-            $0.height.equalTo(43)
-        }
     }
     
     private func titleStyle(of label: UILabel) {

@@ -100,7 +100,7 @@ final class RegisterNormalNovelSummaryView: UIView {
         novelSummaryStackView.do {
             $0.snp.makeConstraints {
                 $0.top.equalToSuperview().inset(32)
-                $0.bottom.equalToSuperview().inset(36)
+                $0.bottom.equalToSuperview().inset(100)
                 $0.horizontalEdges.equalToSuperview().inset(20)
             }
             

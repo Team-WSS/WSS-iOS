@@ -17,7 +17,7 @@ final class RegisterNormalReadDateView: UIView {
     private let totalStackView = UIStackView()
     private let upperStackView = UIStackView()
     private let titleView = UILabel()
-    private let toggle = UISwitch()
+    private let toggle = RegisterNormalCustomToggle()
     private let datePickerView = RegisterNormalDatePickerView()
     
     // MARK: - Life Cycle
@@ -50,7 +50,7 @@ final class RegisterNormalReadDateView: UIView {
         }
         
         titleView.do {
-            $0.text = "읽기 날짜"
+            $0.text = "읽은 날짜"
             titleStyle(of: $0)
         }
     }

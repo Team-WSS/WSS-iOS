@@ -26,6 +26,7 @@ final class RegisterNormalView: UIView {
     private let novelSummaryView = RegisterNormalNovelSummaryView()
     private let registerButton = WSSMainButton(title: "내 서재에 등록")
     private let registerButtonGradient = UIImageView()
+    private let registerButtonBackgroundView = UIView()
     
     // MARK: - Life Cycle
     
@@ -51,7 +52,7 @@ final class RegisterNormalView: UIView {
         pageScrollView.do {
             $0.contentInsetAdjustmentBehavior = .never
             $0.showsVerticalScrollIndicator = false
-            $0.alwaysBounceVertical = true
+            $0.showsHorizontalScrollIndicator = false
         }
         
         pageContentView.do {
@@ -62,10 +63,14 @@ final class RegisterNormalView: UIView {
         registerButtonGradient.do {
             $0.image = .registerNormalButtonGradientDummy
         }
+        
+        registerButtonBackgroundView.do {
+            $0.backgroundColor = .White
+        }
     }
     
     private func setHieararchy() {
-        self.addSubviews(pageScrollView, registerButtonGradient, registerButton)
+        self.addSubviews(pageScrollView, registerButtonGradient, registerButtonBackgroundView, registerButton)
         
         pageScrollView.addSubview(pageContentView)
         
@@ -77,7 +82,7 @@ final class RegisterNormalView: UIView {
     private func setLayout() {
         pageScrollView.snp.makeConstraints {
             $0.horizontalEdges.top.equalToSuperview()
-            $0.bottom.equalTo(registerButton.snp.top)
+            $0.bottom.equalTo(registerButton.snp.bottom)
         }
         
         pageContentView.do {
@@ -95,6 +100,12 @@ final class RegisterNormalView: UIView {
             $0.bottom.equalTo(registerButton.snp.top)
             $0.horizontalEdges.equalToSuperview()
             $0.height.equalTo(34)
+        }
+        
+        registerButtonBackgroundView.snp.makeConstraints {
+            $0.bottom.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview()
+            $0.top.equalTo(registerButton.snp.top)
         }
     }
 }
