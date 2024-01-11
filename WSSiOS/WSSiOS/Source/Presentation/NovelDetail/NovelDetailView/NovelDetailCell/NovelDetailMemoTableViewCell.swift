@@ -101,6 +101,8 @@ final class NovelDetailMemoTableViewCell: UITableViewCell {
     
     // MARK: - bind data
     
-    func bindData() {
+    func bindData(date: String, content: String) {
+        self.memoDateLabel.text = date
+        self.memoContentLabel.text = content
     }
 }

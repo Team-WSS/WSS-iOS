@@ -15,6 +15,7 @@ final class NovelDetailMemoView: UIView {
     // MARK: - UI Components
     
     private let novelDetailCreateMemoView = NovelDetailCreateMemoView()
+    public let memoTableView = UITableView(frame: .zero, style: .plain)
 
     // MARK: - Life Cycle
     
@@ -33,13 +34,16 @@ final class NovelDetailMemoView: UIView {
     // MARK: - set UI
     
     private func setUI() {
-        self.backgroundColor = .Gray70
+        memoTableView.do {
+            $0.separatorStyle = .none
+        }
     }
     
     // MARK: - set Hierachy
     
     private func setHierachy() {
-        self.addSubviews(novelDetailCreateMemoView)
+        self.addSubviews(novelDetailCreateMemoView,
+                         memoTableView)
     }
     
     // MARK: - set Layout
@@ -47,6 +51,18 @@ final class NovelDetailMemoView: UIView {
     private func setLayout() {
         novelDetailCreateMemoView.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
+        }
+        
+        memoTableView.snp.makeConstraints {
+            $0.top.equalTo(novelDetailCreateMemoView.snp.bottom).offset(28)
+            $0.leading.trailing.bottom.equalToSuperview()
+            $0.height.equalTo(200)
+        }
+    }
+    
+    func updateTableViewHeight(height: CGFloat) {
+        memoTableView.snp.updateConstraints {
+            $0.height.equalTo(height + 82)
         }
     }
 }

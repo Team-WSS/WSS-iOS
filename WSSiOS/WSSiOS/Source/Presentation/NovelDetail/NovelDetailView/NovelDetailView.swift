@@ -41,6 +41,7 @@ final class NovelDetailView: UIView {
         
         scrollView.do {
             $0.contentInsetAdjustmentBehavior = .never
+            $0.showsVerticalScrollIndicator = false
         }
         
         contentView.do {
@@ -69,10 +70,6 @@ final class NovelDetailView: UIView {
         contentView.snp.makeConstraints {
             $0.edges.equalTo(scrollView.contentLayoutGuide)
             $0.width.equalToSuperview()
-        }
-        
-        novelDetailMemoView.snp.makeConstraints {
-            $0.height.equalTo(700)
         }
     }
 }
