@@ -53,6 +53,8 @@
 		CD39F2C32B4FFDF900B73A5C /* NovelDetailMemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2C22B4FFDF900B73A5C /* NovelDetailMemoView.swift */; };
 		CD39F2C52B4FFE7400B73A5C /* NovelDetailCreateMemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2C42B4FFE7400B73A5C /* NovelDetailCreateMemoView.swift */; };
 		CD39F2C82B50124C00B73A5C /* NovelDetailMemoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2C72B50124C00B73A5C /* NovelDetailMemoTableViewCell.swift */; };
+		CD39F2CA2B5038F400B73A5C /* NovelDetailInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2C92B5038F400B73A5C /* NovelDetailInfoView.swift */; };
+		CD39F2CC2B503B8E00B73A5C /* NovelDetailInfoRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2CB2B503B8E00B73A5C /* NovelDetailInfoRatingView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -94,6 +96,8 @@
 		CD39F2C22B4FFDF900B73A5C /* NovelDetailMemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailMemoView.swift; sourceTree = "<group>"; };
 		CD39F2C42B4FFE7400B73A5C /* NovelDetailCreateMemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailCreateMemoView.swift; sourceTree = "<group>"; };
 		CD39F2C72B50124C00B73A5C /* NovelDetailMemoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailMemoTableViewCell.swift; sourceTree = "<group>"; };
+		CD39F2C92B5038F400B73A5C /* NovelDetailInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoView.swift; sourceTree = "<group>"; };
+		CD39F2CB2B503B8E00B73A5C /* NovelDetailInfoRatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoRatingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -389,6 +393,8 @@
 				CD39F2BE2B4FF6DF00B73A5C /* NovelDetailTabView.swift */,
 				CD39F2C22B4FFDF900B73A5C /* NovelDetailMemoView.swift */,
 				CD39F2C42B4FFE7400B73A5C /* NovelDetailCreateMemoView.swift */,
+				CD39F2C92B5038F400B73A5C /* NovelDetailInfoView.swift */,
+				CD39F2CB2B503B8E00B73A5C /* NovelDetailInfoRatingView.swift */,
 			);
 			path = NovelDetailAssistantView;
 			sourceTree = "<group>";
@@ -493,6 +499,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD39F2CC2B503B8E00B73A5C /* NovelDetailInfoRatingView.swift in Sources */,
 				2CD229202B42E685005400BE /* ViewController.swift in Sources */,
 				2CD2291C2B42E685005400BE /* AppDelegate.swift in Sources */,
 				CD39F2C82B50124C00B73A5C /* NovelDetailMemoTableViewCell.swift in Sources */,
@@ -511,6 +518,7 @@
 				2CCBF9EE2B4C1FC500D787C2 /* MyPageViewController.swift in Sources */,
 				2C01F9852B482EB700D90FFE /* UserRepository.swift in Sources */,
 				CD39F2C12B4FF81E00B73A5C /* UIButton+.swift in Sources */,
+				CD39F2CA2B5038F400B73A5C /* NovelDetailInfoView.swift in Sources */,
 				2CCBF9F22B4D347B00D787C2 /* WSSMainButton.swift in Sources */,
 				2C2491812B4ADC000096F255 /* StringLiterals.swift in Sources */,
 				CD39F2C32B4FFDF900B73A5C /* NovelDetailMemoView.swift in Sources */,
