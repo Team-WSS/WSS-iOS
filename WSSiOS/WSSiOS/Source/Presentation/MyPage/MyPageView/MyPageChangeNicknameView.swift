@@ -63,7 +63,7 @@ class MyPageChangeNicknameView: UIView {
         }
         
         countNicknameLabel.do {
-            $0.text = "3/10"
+            $0.text = "\(changeNicknameTextField.text?.count)/10"
             $0.font = .Label1
             $0.textColor = .Gray200
         }

@@ -31,7 +31,7 @@ class MyPageChangeNicknameViewController: UIViewController {
         
         textFieldEvent()
     }
-
+    
     //MARK: - Custom Method
     
     private func textFieldEvent() {
@@ -61,6 +61,13 @@ class MyPageChangeNicknameViewController: UIViewController {
             .subscribe(onNext: { text in 
                 self.limitNum(text)
             })
+            .disposed(by: disposeBag)
+        
+        rootView.setClearButton.rx.tap
+            .bind {
+                self.rootView.changeNicknameTextField.text = ""
+                self.rootView.countNicknameLabel.text = "0/10"
+            }
             .disposed(by: disposeBag)
     }
     
