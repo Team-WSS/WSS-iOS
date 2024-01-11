@@ -62,7 +62,7 @@ enum ImageLiterals {
             static var myPageSelected: UIImage{ .load(named: "icNavigateMySelected")}
         }
         
-        enum icBadge {
+        enum Badge {
             static var logo: UIImage{ .load(named: "badgeLogo")}
             static var RF: UIImage{ .load(named: "badgeRF")}
             static var HF: UIImage{ .load(named: "badgeHF")}
@@ -75,7 +75,7 @@ enum ImageLiterals {
             static var BL: UIImage{ .load(named: "badgeBL")}
         }
         
-        enum icMyPage {
+        enum MyPage {
             static var register: UIImage{ .load(named: "register")}
             static var record: UIImage{ .load(named: "record")}
             static var right: UIImage{ .load(named: "icRight")}

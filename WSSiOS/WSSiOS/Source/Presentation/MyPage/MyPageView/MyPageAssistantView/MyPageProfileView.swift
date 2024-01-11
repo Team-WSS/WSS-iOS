@@ -94,6 +94,6 @@ final class MyPageProfileView: UIView {
         myPageNameLabel.text = "추락한 악역영애"
         myPagePhraseLabel.text = "김명진 영애, 오늘도 왔구나?"
         myPageAvartarImageView.image = UIImage(named: "avaterExample")
-        myPageBadgeImageView.image = ImageLiterals.icon.icBadge.RF
+        myPageBadgeImageView.image = ImageLiterals.icon.Badge.RF
     }
 }

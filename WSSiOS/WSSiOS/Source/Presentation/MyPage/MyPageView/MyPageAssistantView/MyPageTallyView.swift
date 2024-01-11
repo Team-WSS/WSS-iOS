@@ -58,7 +58,7 @@ final class MyPageTallyView: UIView {
                 $0.setTitle("신지원님", for: .normal)
                 $0.setTitleColor(.Black, for: .normal)
                 $0.titleLabel?.font = .HeadLine1
-                $0.setImage(ImageLiterals.icon.icMyPage.right, for: .normal)
+                $0.setImage(ImageLiterals.icon.MyPage.right, for: .normal)
                 $0.semanticContentAttribute = .forceRightToLeft
                 $0.imageEdgeInsets = .init(top: 0, left: 8, bottom: 0, right: 0)
             }
@@ -68,12 +68,12 @@ final class MyPageTallyView: UIView {
             }
             
             myPageRegisterView.do {
-                $0.titleIconImageView.image = ImageLiterals.icon.icMyPage.register
+                $0.titleIconImageView.image = ImageLiterals.icon.MyPage.register
                 $0.titleLabel.text = "등록 작품"
             }
             
             myPageRecordView.do {
-                $0.titleIconImageView.image = ImageLiterals.icon.icMyPage.record
+                $0.titleIconImageView.image = ImageLiterals.icon.MyPage.record
                 $0.titleLabel.text = "기록"
             }
         }
