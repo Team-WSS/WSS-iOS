@@ -174,7 +174,6 @@
 		2C2491822B4ADC1D0096F255 /* Base */ = {
 			isa = PBXGroup;
 			children = (
-				2CCBF9ED2B4C1FC500D787C2 /* MyPageViewController.swift */,
 				2C2491852B4ADC420096F255 /* WSSTabBarController.swift */,
 				2C2491832B4ADC230096F255 /* WSSTabBarItem.swift */,
 				2CCBF9F12B4D347B00D787C2 /* WSSMainButton.swift */,
@@ -204,6 +203,7 @@
 		2CCBF9EA2B4C1E3700D787C2 /* MyPageViewController */ = {
 			isa = PBXGroup;
 			children = (
+				2CCBF9ED2B4C1FC500D787C2 /* MyPageViewController.swift */,
 			);
 			path = MyPageViewController;
 			sourceTree = "<group>";
