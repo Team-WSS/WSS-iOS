@@ -11,7 +11,7 @@ final class HomeSosoPickUserNumberChipView: UIView {
     
     //MARK: - UI Components
     
-    private let userNumberLabel = UILabel()
+    let userNumberLabel = UILabel()
     
     //MARK: - Life Cycle
     
@@ -37,7 +37,6 @@ final class HomeSosoPickUserNumberChipView: UIView {
         }
         
         userNumberLabel.do {
-            $0.text = "5명이 등록"
             $0.font = .Label2
             $0.textColor = .Gray300
         }

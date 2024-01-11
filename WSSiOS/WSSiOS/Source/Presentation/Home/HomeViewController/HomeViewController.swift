@@ -7,7 +7,14 @@
 
 import UIKit
 
+import RxSwift
+import RxCocoa
+
 final class HomeViewController: UIViewController {
+    
+    //MARK: - Properties
+    
+    private let disposeBag = DisposeBag()
     
     //MARK: - UI Components
     
@@ -22,29 +29,26 @@ final class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = .White
-        setCollectionViewConfig()
+        setUI()
+        
+        registerCell()
+        bindDataToSosoPickCollectionView()
     }
     
-    private func setCollectionViewConfig() {
+    private func setUI() {
+        self.view.do {
+            $0.backgroundColor = .White
+        }
+    }
+    
+    private func registerCell() {
         rootView.sosopickView.sosoPickCollectionView.register(HomeSosoPickCollectionViewCell.self, forCellWithReuseIdentifier: HomeSosoPickCollectionViewCell.identifier)
-        rootView.sosopickView.sosoPickCollectionView.dataSource = self
-        rootView.sosopickView.sosoPickCollectionView.delegate = self
-    }
-}
-
-//MARK: - Extensions
-
-extension HomeViewController: UICollectionViewDelegate {}
-
-extension HomeViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let item = collectionView.dequeueReusableCell(withReuseIdentifier: HomeSosoPickCollectionViewCell.identifier, for: indexPath) as? HomeSosoPickCollectionViewCell else { return UICollectionViewCell()}
-
-        return item
+    private func bindDataToSosoPickCollectionView() {
+        sosoPickDummy.bind(to: rootView.sosopickView.sosoPickCollectionView.rx.items(cellIdentifier: HomeSosoPickCollectionViewCell.identifier, cellType: HomeSosoPickCollectionViewCell.self)) { (row, element, cell) in
+            cell.bindData(data: element)
+        }
+        .disposed(by: disposeBag)
     }
 }

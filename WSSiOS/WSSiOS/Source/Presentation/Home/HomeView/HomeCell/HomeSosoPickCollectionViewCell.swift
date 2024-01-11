@@ -123,6 +123,13 @@ final class HomeSosoPickCollectionViewCell: UICollectionViewCell {
             $0.trailing.equalToSuperview().inset(12)
         }
     }
+    
+    func bindData(data: SosoPickNovel) {
+        novelImageView.image = UIImage(named: data.image)
+        novelUserNumberView.userNumberLabel.text = "\(data.registerUserNumber)명이 등록"
+        novelTitleLabel.text = data.title
+        novelAuthorLabel.text = data.author
+    }
 }
 
 
