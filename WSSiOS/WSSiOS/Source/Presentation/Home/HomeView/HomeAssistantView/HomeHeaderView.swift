@@ -39,7 +39,8 @@ final class HomeHeaderView: UIView {
     }
     
     private func setHierachy() {
-        self.addSubviews(logoImageView, headerSearchView)
+        self.addSubviews(logoImageView, 
+                         headerSearchView)
     }
     
     private func setLayout() {

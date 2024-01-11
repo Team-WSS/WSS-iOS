@@ -7,6 +7,9 @@
 
 import UIKit
 
+import SnapKit
+import Then
+
 final class HomeSosoPickTitleView: UIView {
     
     //MARK: - UI Components
@@ -31,6 +34,8 @@ final class HomeSosoPickTitleView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: - set UI
+    
     private func setUI() {
         titleStackView.do {
             $0.axis = .horizontal
@@ -38,7 +43,7 @@ final class HomeSosoPickTitleView: UIView {
         }
         
         circleImageView.do {
-            $0.image = UIImage(named: "sosopickCircle")
+            $0.image = ImageLiterals.icon.sosopickCircle
             $0.contentMode = .scaleAspectFit
         }
         
@@ -55,12 +60,16 @@ final class HomeSosoPickTitleView: UIView {
         }
     }
     
+    //MARK: - set Hierachy
+    
     private func setHierachy() {
         self.addSubview(titleStackView)
         titleStackView.addArrangedSubviews(circleImageView,
                                            sosopickTitleLabel,
                                            sosopickDescriptionLabel)
     }
+    
+    //MARK: - set Layout
     
     private func setLayout() {
         titleStackView.snp.makeConstraints {

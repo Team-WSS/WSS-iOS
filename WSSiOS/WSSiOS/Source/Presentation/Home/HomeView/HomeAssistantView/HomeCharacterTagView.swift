@@ -7,6 +7,9 @@
 
 import UIKit
 
+import SnapKit
+import Then
+
 final class HomeCharacterTagView: UIView {
     
     //MARK: - UI Components
@@ -23,6 +26,14 @@ final class HomeCharacterTagView: UIView {
         setLayout()
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        self.do {
+            $0.layer.cornerRadius = $0.frame.height / 2
+        }
+    }
+    
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -33,7 +44,6 @@ final class HomeCharacterTagView: UIView {
     private func setUI() {
         self.do {
             $0.backgroundColor = .Primary50
-            $0.layer.cornerRadius = 15
         }
         
         tagLabel.do {

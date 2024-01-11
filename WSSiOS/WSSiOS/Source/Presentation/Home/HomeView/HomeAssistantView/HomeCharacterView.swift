@@ -7,22 +7,25 @@
 
 import UIKit
 
+import SnapKit
+import Then
+
 final class HomeCharacterView: UIView {
     
     //MARK: - UI Components
     
-    private let characterStackView = UIStackView()
-    private let tagView = HomeCharacterTagView()
-    private let characterCommentLabel = UILabel()
-    private let characterImageView = UIImageView()
+    let characterStackView = UIStackView()
+    let tagView = HomeCharacterTagView()
+    let characterCommentLabel = UILabel()
+    let characterImageView = UIImageView()
     
     //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        setHierachy()
         setUI()
+        setHierachy()
         setLayout()
     }
     
@@ -66,6 +69,11 @@ final class HomeCharacterView: UIView {
     private func setLayout() {
         characterStackView.snp.makeConstraints {
             $0.top.bottom.centerX.equalToSuperview()
+        }
+        
+        characterStackView.do {
+            $0.setCustomSpacing(10, after: tagView)
+            $0.setCustomSpacing(12, after: characterCommentLabel)
         }
     }
 }

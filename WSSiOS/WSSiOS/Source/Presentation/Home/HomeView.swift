@@ -11,6 +11,7 @@ final class HomeView: UIView {
     
     //MARK: - UI Components
     
+    private let homeStackView = UIStackView()
     private let headerView = HomeHeaderView()
     private let characterView = HomeCharacterView()
     private let titleView = HomeSosoPickTitleView()
@@ -21,6 +22,7 @@ final class HomeView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        setUI()
         setHierachy()
         setLayout()
     }
@@ -30,34 +32,37 @@ final class HomeView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private func setUI() {
+        homeStackView.do {
+            $0.axis = .vertical
+        }
+    }
+    
     private func setHierachy() {
-        self.addSubviews(headerView,
-                         characterView,
-                         titleView,
+        self.addSubviews(homeStackView,
                          sosopickView)
+        
+        homeStackView.addArrangedSubviews(headerView,
+                                          characterView,
+                                          titleView)
     }
     
     private func setLayout() {
-        headerView.snp.makeConstraints {
-            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).inset(14)
-            $0.leading.equalToSuperview().inset(20)
-            $0.centerX.equalToSuperview()
-        }
-        
-        characterView.snp.makeConstraints {
-            $0.top.equalTo(headerView.snp.bottom).offset(37)
-            $0.leading.trailing.equalToSuperview().inset(20)
-        }
-        
-        titleView.snp.makeConstraints {
-            $0.top.equalTo(characterView.snp.bottom).offset(24)
+        homeStackView.snp.makeConstraints {
+            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).inset(16)
             $0.leading.trailing.equalToSuperview().inset(20)
         }
         
         sosopickView.snp.makeConstraints {
-            $0.top.equalTo(titleView.snp.bottom)
+            $0.top.equalTo(homeStackView.snp.bottom)
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
+        }
+        
+        homeStackView.do {
+            $0.setCustomSpacing(37, after: headerView)
+            $0.setCustomSpacing(24, after: characterView)
+            $0.setCustomSpacing(0, after: titleView)
         }
     }
 }

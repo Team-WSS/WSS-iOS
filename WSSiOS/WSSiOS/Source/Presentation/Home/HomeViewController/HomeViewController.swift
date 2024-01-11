@@ -42,11 +42,14 @@ final class HomeViewController: UIViewController {
     }
     
     private func registerCell() {
-        rootView.sosopickView.sosoPickCollectionView.register(HomeSosoPickCollectionViewCell.self, forCellWithReuseIdentifier: HomeSosoPickCollectionViewCell.identifier)
+        rootView.sosopickView.sosoPickCollectionView.register(HomeSosoPickCollectionViewCell.self,
+                                                              forCellWithReuseIdentifier: HomeSosoPickCollectionViewCell.identifier)
     }
     
     private func bindDataToSosoPickCollectionView() {
-        sosoPickDummy.bind(to: rootView.sosopickView.sosoPickCollectionView.rx.items(cellIdentifier: HomeSosoPickCollectionViewCell.identifier, cellType: HomeSosoPickCollectionViewCell.self)) { (row, element, cell) in
+        sosoPickDummy.bind(to: rootView.sosopickView.sosoPickCollectionView.rx.items(
+            cellIdentifier: HomeSosoPickCollectionViewCell.identifier,
+            cellType: HomeSosoPickCollectionViewCell.self)) { (row, element, cell) in
             cell.bindData(data: element)
         }
         .disposed(by: disposeBag)

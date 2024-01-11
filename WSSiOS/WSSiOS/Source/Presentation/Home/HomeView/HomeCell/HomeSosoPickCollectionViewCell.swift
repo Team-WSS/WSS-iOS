@@ -7,6 +7,9 @@
 
 import UIKit
 
+import SnapKit
+import Then
+
 final class HomeSosoPickCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Properties
@@ -38,6 +41,8 @@ final class HomeSosoPickCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: - set UI
+    
     private func setUI() {
         self.do {
             $0.backgroundColor = .Primary80
@@ -64,7 +69,6 @@ final class HomeSosoPickCollectionViewCell: UICollectionViewCell {
         }
         
         novelImageView.do {
-            $0.image = UIImage(named: "sa")
             $0.layer.cornerRadius = 6
             $0.clipsToBounds = true
         }
@@ -90,6 +94,8 @@ final class HomeSosoPickCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    //MARK: - set Hierachy
+    
     private func setHierachy() {
         self.addSubviews(novelImageShadowView,
                          bottomBackgroundView)
@@ -99,6 +105,8 @@ final class HomeSosoPickCollectionViewCell: UICollectionViewCell {
         novelStackView.addArrangedSubviews(novelTitleLabel,
                                            novelAuthorLabel)
     }
+    
+    //MARK: - set Layout
     
     private func setLayout() {
         novelImageView.snp.makeConstraints {
@@ -123,6 +131,8 @@ final class HomeSosoPickCollectionViewCell: UICollectionViewCell {
             $0.trailing.equalToSuperview().inset(12)
         }
     }
+    
+    //MARK: - bind Data
     
     func bindData(data: SosoPickNovel) {
         novelImageView.image = UIImage(named: data.image)

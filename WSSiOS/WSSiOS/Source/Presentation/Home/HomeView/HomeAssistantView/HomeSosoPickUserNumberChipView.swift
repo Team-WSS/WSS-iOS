@@ -7,6 +7,9 @@
 
 import UIKit
 
+import SnapKit
+import Then
+
 final class HomeSosoPickUserNumberChipView: UIView {
     
     //MARK: - UI Components
@@ -23,6 +26,14 @@ final class HomeSosoPickUserNumberChipView: UIView {
         setLayout()
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        self.do {
+            $0.layer.cornerRadius = $0.frame.height / 2
+        }
+    }
+    
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -33,7 +44,6 @@ final class HomeSosoPickUserNumberChipView: UIView {
     private func setUI() {
         self.do {
             $0.backgroundColor = .Gray50
-            $0.layer.cornerRadius = 14
         }
         
         userNumberLabel.do {
