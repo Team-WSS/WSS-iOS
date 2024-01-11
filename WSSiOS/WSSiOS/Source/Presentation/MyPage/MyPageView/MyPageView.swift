@@ -16,6 +16,7 @@ class MyPageView: UIView {
     var myPageProfileView = MyPageProfileView()
     var myPageTallyView = MyPageTallyView()
     var myPageInventoryView = MyPageInventoryView()
+    var myPageSettingView = MyPageSettingView()
     
     // MARK: - Life Cycle
     
@@ -33,7 +34,7 @@ class MyPageView: UIView {
     
     private func setUI() {
         self.backgroundColor = .White
-
+        
         myPageStackView.do {
             $0.axis = .vertical
             $0.alignment = .fill
@@ -47,7 +48,8 @@ class MyPageView: UIView {
         scrollView.addSubviews(myPageStackView)
         myPageStackView.addArrangedSubviews(myPageProfileView,
                                             myPageTallyView,
-                                            myPageInventoryView)
+                                            myPageInventoryView,
+                                            myPageSettingView)
     }
     
     private func setLayout() {

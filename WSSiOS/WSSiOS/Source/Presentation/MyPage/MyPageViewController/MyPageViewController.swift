@@ -19,6 +19,10 @@ class MyPageViewController: UIViewController {
                                          UIImage(named: "exampleAvater"),
                                          UIImage(named: "exampleAvater"),
                                          UIImage(named: "exampleAvater")])
+    private let items2 = Observable.just(["계정정보 확인",
+                                          "로그아웃",
+                                          "웹소소 인스타 보러가기",
+                                          "서비스 이용약관"])
     private let disposeBag = DisposeBag()
     
     //MARK: - UI Components
@@ -45,6 +49,7 @@ class MyPageViewController: UIViewController {
     private func register() {
         rootView.myPageInventoryView.avaterCollectionView.register(MyPageInventoryCollectionViewCell.self, forCellWithReuseIdentifier: "MyPageInventoryCollectionViewCell")
         
+        rootView.myPageSettingView.myPageSettingCollectionView.register(MyPageSettingCollectionViewCell.self, forCellWithReuseIdentifier: "MyPageSettingCollectionViewCell")
     }
     
     //MARK: - Custom Method
@@ -54,13 +59,22 @@ class MyPageViewController: UIViewController {
             cellIdentifier: "MyPageInventoryCollectionViewCell",
             cellType: MyPageInventoryCollectionViewCell.self)) { (row, element, cell) in
                 cell.avaterImageView.image = element
-                
+            }
+            .disposed(by: disposeBag)
+        
+        items2.bind(to: rootView.myPageSettingView.myPageSettingCollectionView.rx.items(
+            cellIdentifier: "MyPageSettingCollectionViewCell",
+            cellType: MyPageSettingCollectionViewCell.self)) { (row, element, cell) in
+                cell.myPageSettingCellLabel.text = element
             }
             .disposed(by: disposeBag)
     }
     
     private func delegate() {
         rootView.myPageInventoryView.avaterCollectionView.rx.setDelegate(self) 
+            .disposed(by: disposeBag)
+        
+        rootView.myPageSettingView.myPageSettingCollectionView.rx.setDelegate(self) 
             .disposed(by: disposeBag)
     }
 }
@@ -70,14 +84,25 @@ class MyPageViewController: UIViewController {
 extension MyPageViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        guard let flowLayout = collectionViewLayout as? UICollectionViewFlowLayout else {
-            return CGSize.zero
+        switch collectionView {
+        case rootView.myPageInventoryView.avaterCollectionView:
+            return CGSize(width: 84.0, height: 96.0)
+        case rootView.myPageSettingView.myPageSettingCollectionView:
+            return CGSize(width: super.view.bounds.width, height: 64.0)
+        default:
+            return CGSize()
         }
-        return CGSize(width: 84.0, height: 96.0)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         
-        return 0.0
+        switch collectionView {
+        case rootView.myPageInventoryView.avaterCollectionView:
+            return 0.0
+        case rootView.myPageSettingView.myPageSettingCollectionView:
+            return 1.0
+        default:
+            return 0.0
+        }
     }
 }
