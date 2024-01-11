@@ -8,15 +8,17 @@
 import UIKit
 
 import SnapKit
+import Then
 
 final class NovelDetailView: UIView {
     
     // MARK: - UI Components
 
     let scrollView = UIScrollView()
-    let contentView = UIView()
+    let contentView = UIStackView()
     let novelDetailHeaderView = NovelDetailHeaderView()
     let novelDetailTabView = NovelDetailTabView()
+    let novelDetailMemoView = NovelDetailMemoView()
 
     // MARK: - Life Cycle
     
@@ -36,6 +38,15 @@ final class NovelDetailView: UIView {
     
     private func setUI() {
         self.backgroundColor = .White
+        
+        scrollView.do {
+            $0.contentInsetAdjustmentBehavior = .never
+        }
+        
+        contentView.do {
+            $0.alignment = .fill
+            $0.axis = .vertical
+        }
     }
     
     // MARK: - set Hierachy
@@ -43,8 +54,9 @@ final class NovelDetailView: UIView {
     private func setHierachy() {
         self.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        contentView.addSubviews(novelDetailHeaderView, 
-                                novelDetailTabView)
+        contentView.addArrangedSubviews(novelDetailHeaderView,
+                                        novelDetailTabView,
+                                        novelDetailMemoView)
     }
     
     // MARK: - set Layout
@@ -55,17 +67,12 @@ final class NovelDetailView: UIView {
         }
         
         contentView.snp.makeConstraints {
-            $0.edges.width.equalToSuperview()
+            $0.edges.equalTo(scrollView.contentLayoutGuide)
+            $0.width.equalToSuperview()
         }
         
-        novelDetailHeaderView.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview()
-            $0.height.equalTo(302)
-        }
-        
-        novelDetailTabView.snp.makeConstraints {
-            $0.top.equalTo(novelDetailHeaderView.snp.bottom)
-            $0.leading.trailing.equalToSuperview()
+        novelDetailMemoView.snp.makeConstraints {
+            $0.height.equalTo(700)
         }
     }
 }

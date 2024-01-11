@@ -50,6 +50,8 @@
 		CD39F2BD2B4FE98500B73A5C /* NovelDetailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2BC2B4FE98500B73A5C /* NovelDetailHeaderView.swift */; };
 		CD39F2BF2B4FF6DF00B73A5C /* NovelDetailTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2BE2B4FF6DF00B73A5C /* NovelDetailTabView.swift */; };
 		CD39F2C12B4FF81E00B73A5C /* UIButton+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2C02B4FF81E00B73A5C /* UIButton+.swift */; };
+		CD39F2C32B4FFDF900B73A5C /* NovelDetailMemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2C22B4FFDF900B73A5C /* NovelDetailMemoView.swift */; };
+		CD39F2C52B4FFE7400B73A5C /* NovelDetailCreateMemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2C42B4FFE7400B73A5C /* NovelDetailCreateMemoView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -88,6 +90,8 @@
 		CD39F2BC2B4FE98500B73A5C /* NovelDetailHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailHeaderView.swift; sourceTree = "<group>"; };
 		CD39F2BE2B4FF6DF00B73A5C /* NovelDetailTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailTabView.swift; sourceTree = "<group>"; };
 		CD39F2C02B4FF81E00B73A5C /* UIButton+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+.swift"; sourceTree = "<group>"; };
+		CD39F2C22B4FFDF900B73A5C /* NovelDetailMemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailMemoView.swift; sourceTree = "<group>"; };
+		CD39F2C42B4FFE7400B73A5C /* NovelDetailCreateMemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailCreateMemoView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -380,6 +384,8 @@
 			children = (
 				CD39F2BC2B4FE98500B73A5C /* NovelDetailHeaderView.swift */,
 				CD39F2BE2B4FF6DF00B73A5C /* NovelDetailTabView.swift */,
+				CD39F2C22B4FFDF900B73A5C /* NovelDetailMemoView.swift */,
+				CD39F2C42B4FFE7400B73A5C /* NovelDetailCreateMemoView.swift */,
 			);
 			path = NovelDetailAssistantView;
 			sourceTree = "<group>";
@@ -488,12 +494,14 @@
 				2C79CB9D2B45A1DD00734E1F /* UIFont+.swift in Sources */,
 				A147CBC62B4D6E190040AE39 /* UIStackView+.swift in Sources */,
 				2C2491842B4ADC230096F255 /* WSSTabBarItem.swift in Sources */,
+				CD39F2C52B4FFE7400B73A5C /* NovelDetailCreateMemoView.swift in Sources */,
 				A1EC91B42B46DA3100CFB33D /* ImageLiterals.swift in Sources */,
 				2CCBF9EE2B4C1FC500D787C2 /* MyPageViewController.swift in Sources */,
 				2C01F9852B482EB700D90FFE /* UserRepository.swift in Sources */,
 				CD39F2C12B4FF81E00B73A5C /* UIButton+.swift in Sources */,
 				2CCBF9F22B4D347B00D787C2 /* WSSMainButton.swift in Sources */,
 				2C2491812B4ADC000096F255 /* StringLiterals.swift in Sources */,
+				CD39F2C32B4FFDF900B73A5C /* NovelDetailMemoView.swift in Sources */,
 				2C2491862B4ADC420096F255 /* WSSTabBarController.swift in Sources */,
 				2CD229572B42EA75005400BE /* UIColor+.swift in Sources */,
 				A1DBB2FA2B4AA981000EE869 /* SearchTableViewCell.swift in Sources */,

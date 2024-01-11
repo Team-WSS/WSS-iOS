@@ -84,6 +84,7 @@ final class NovelDetailHeaderView: UIView {
     private func setLayout() {
         backgroundImageView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+            $0.height.equalTo(302)
         }
         
         genreImageView.snp.makeConstraints {
