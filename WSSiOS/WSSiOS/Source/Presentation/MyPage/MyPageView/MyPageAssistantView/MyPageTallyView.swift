@@ -9,7 +9,7 @@ import UIKit
 
 class MyPageTallyView: UIView {
     
-    //MARK: - set Properties
+    //MARK: - UI Components
     
     private let backGroundView = UIView()
     private var tallyView = UIView()
@@ -107,6 +107,9 @@ class MyPageTallyView: UIView {
             }
         }
     }
+    
+    //MARK: - dataBind 
+    //추후 수정 예정
     
     func dataBind() {
         registerView.titleIconImageView = UIImageView(image: ImageLiterals.icon.calender)

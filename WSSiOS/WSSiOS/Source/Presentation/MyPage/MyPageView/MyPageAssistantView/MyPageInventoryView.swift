@@ -12,7 +12,7 @@ import Then
 
 class MyPageInventoryView: UIView {
     
-    //MARK: - set Properties
+    //MARK: - UI Components
     
     private let titleLabel = UILabel()
     var avaterCollectionView = UICollectionView(frame: .zero,

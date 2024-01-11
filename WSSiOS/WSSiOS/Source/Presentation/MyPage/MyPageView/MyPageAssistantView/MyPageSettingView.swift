@@ -9,7 +9,7 @@ import UIKit
 
 class MyPageSettingView: UIView {
 
-    //MARK: - set Properties
+    //MARK: - UI Components
     
     var myPageSettingCollectionView = UICollectionView(frame: .zero,
                                                 collectionViewLayout: UICollectionViewFlowLayout())

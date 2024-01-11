@@ -12,7 +12,7 @@ import Then
 
 class MyPageTallyReuseView: UIView {
     
-    //MARK: - set Properties
+    //MARK: - UI Components
     
     var titleView = UIStackView()
     var titleIconImageView = UIImageView()

@@ -12,7 +12,7 @@ import Then
 
 class MyPageProfileView: UIView {
     
-    //MARK: - set Properties
+    //MARK: - UI Components
     
     private let myBadgeImageView = UIImageView()
     private let avaterNameLabel = UILabel()
@@ -86,6 +86,9 @@ class MyPageProfileView: UIView {
             $0.size.equalTo(220)
         }
     }
+    
+    //MARK: - dataBind 
+    //추후 수정 예정
     
     func dataBind() {
         avaterNameLabel.text = "추락한 악역영애"
