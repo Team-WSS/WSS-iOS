@@ -7,23 +7,64 @@
 
 import UIKit
 
-class MyPageViewController: UIViewController {
+import RxSwift
+import RxCocoa
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+final class MyPageViewController: UIViewController {
+    
+    //MARK: - Set Properties
+    
+    //DummyData
+    private let items = Observable.just([UIImage(named: "exampleAvater"),
+                                         UIImage(named: "exampleAvater"),
+                                         UIImage(named: "exampleAvater"),
+                                         UIImage(named: "exampleAvater")])
+    private let items2 = Observable.just(["계정정보 확인",
+                                          "로그아웃",
+                                          "웹소소 인스타 보러가기",
+                                          "서비스 이용약관"])
+    private let disposeBag = DisposeBag()
+    
+    //MARK: - UI Components
+    
+    private var rootView = MyPageView()
+    
+    // MARK: - Life Cycle
+    
+    override func loadView() {
+        self.view = rootView
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        register()
+        bindDataToMyPageCollectionView()
     }
-    */
-
+    
+    //MARK: - UI Components
+    
+    private func register() {
+        rootView.myPageInventoryView.myPageAvaterCollectionView.register(MyPageInventoryCollectionViewCell.self, forCellWithReuseIdentifier: "MyPageInventoryCollectionViewCell")
+        
+        rootView.myPageSettingView.myPageSettingCollectionView.register(MyPageSettingCollectionViewCell.self, forCellWithReuseIdentifier: "MyPageSettingCollectionViewCell")
+    }
+    
+    //MARK: - Custom Method
+    
+    private func bindDataToMyPageCollectionView() {
+        items.bind(to: rootView.myPageInventoryView.myPageAvaterCollectionView.rx.items(
+            cellIdentifier: "MyPageInventoryCollectionViewCell",
+            cellType: MyPageInventoryCollectionViewCell.self)) { (row, element, cell) in
+                cell.myPageAvaterImageView.image = element
+            }
+            .disposed(by: disposeBag)
+        
+        items2.bind(to: rootView.myPageSettingView.myPageSettingCollectionView.rx.items(
+            cellIdentifier: "MyPageSettingCollectionViewCell",
+            cellType: MyPageSettingCollectionViewCell.self)) { (row, element, cell) in
+                cell.myPageSettingCellLabel.text = element
+            }
+            .disposed(by: disposeBag)
+    }
 }
