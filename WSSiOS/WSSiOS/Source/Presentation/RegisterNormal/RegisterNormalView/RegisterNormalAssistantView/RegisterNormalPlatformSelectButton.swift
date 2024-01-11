@@ -10,7 +10,11 @@ import UIKit
 import SnapKit
 import Then
 
-final class RegisterNormalPlatformSelectButton: UIView {
+final class RegisterNormalPlatformSelectButton: UIButton {
+    
+    // MARK: - UI Components
+    
+    private var buttonSize: (height: CGFloat, width: CGFloat) = (37, 126)
     
     // MARK: - UI Components
     
@@ -36,11 +40,17 @@ final class RegisterNormalPlatformSelectButton: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Override Method
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        print("Touched")
+    }
+    
     // MARK: - Custom Method
     
     private func setUI(platformName: String) {
         self.do {
-            $0.layer.cornerRadius = 16
+            $0.layer.cornerRadius = buttonSize.height / 2
             $0.backgroundColor = .Primary50
         }
         
@@ -70,9 +80,13 @@ final class RegisterNormalPlatformSelectButton: UIView {
     }
     
     private func setLayout() {
+        self.snp.makeConstraints {
+            $0.width.equalTo(buttonSize.width)
+            $0.height.equalTo(buttonSize.height)
+        }
+        
         buttonStackView.snp.makeConstraints {
-            $0.horizontalEdges.equalToSuperview().inset(13)
-            $0.verticalEdges.equalToSuperview().inset(7)
+            $0.center.equalToSuperview()
             
             buttonImage.snp.makeConstraints {
                 $0.size.equalTo(16)

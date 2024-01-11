@@ -14,25 +14,26 @@ class RegisterNormalCustomToggle: UIButton {
     
     // MARK: - Properties
 
-    var isOn: Bool = true {
+    private var isOn: Bool = true {
         didSet {
             self.changeState()
         }
     }
     
     // 상태별 스위치 배경 색상
-    var onColor = UIColor.Primary100
-    var offColor = UIColor.Gray100
+    private var onColor = UIColor.Primary100
+    private var offColor = UIColor.Gray100
     
     // 스위치가 이동하는 애니메이션 시간
-    var animationDuration: TimeInterval = 0.20
+    private var animationDuration: TimeInterval = 0.20
     
     // 각 View의 Size
     typealias SizeSet = (height: CGFloat, width: CGFloat)
     
-    var toggleSize: SizeSet = (height: 32, width: 32)
-    var barViewSize: SizeSet = (height: 16.55, width: 30.9)
-    var circleViewSize: SizeSet = (height: 11.03, width: 11.03)
+    private var toggleSize: SizeSet = (height: 32, width: 32)
+    private var barViewSize: SizeSet = (height: 16.55, width: 30.9)
+    private var circleViewSize: SizeSet = (height: 11.03, width: 11.03)
+    
     
     // MARK: - UI Components
     
