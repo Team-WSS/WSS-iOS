@@ -47,7 +47,7 @@ final class MyPageInventoryCollectionViewCell: UICollectionViewCell {
     //MARK: - Set Hierachy
     
     private func setHierachy() {
-        self.addSubviews(myPageAvaterImageView)
+        self.addSubview(myPageAvaterImageView)
     }
     
     //MARK: - Set Layout

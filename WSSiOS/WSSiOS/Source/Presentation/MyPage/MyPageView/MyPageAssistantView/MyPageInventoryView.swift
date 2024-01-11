@@ -44,8 +44,11 @@ final class MyPageInventoryView: UIView {
         myPageAvaterCollectionView.do {
             let layout = UICollectionViewFlowLayout()
             layout.scrollDirection = .horizontal
-            $0.collectionViewLayout = layout
+            layout.minimumLineSpacing = 0.0
+            layout.itemSize = CGSize(width: 84.0,
+                                     height: 96.0)
             
+            $0.collectionViewLayout = layout
         }
     }
     

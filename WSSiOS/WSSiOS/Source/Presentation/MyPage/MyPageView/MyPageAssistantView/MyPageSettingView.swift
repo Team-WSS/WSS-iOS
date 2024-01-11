@@ -36,6 +36,10 @@ final class MyPageSettingView: UIView {
         myPageSettingCollectionView.do {
             let layout = UICollectionViewFlowLayout()
             layout.scrollDirection = .vertical
+            layout.minimumLineSpacing = 1.0
+            layout.itemSize = CGSize(width: UIScreen.main.bounds.width,
+                                     height: 64.0)
+            
             $0.collectionViewLayout = layout
             $0.backgroundColor = .Gray50
         }
@@ -44,7 +48,8 @@ final class MyPageSettingView: UIView {
     //MARK: - set Hierachy
     
     private func setHierachy() {
-        self.addSubviews(myPageSettingCollectionView)}
+        self.addSubview(myPageSettingCollectionView)
+    }
     
     //MARK: - set Layout
     

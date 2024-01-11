@@ -62,7 +62,7 @@ final class MyPageTallyReuseView: UIView {
         self.addSubviews(titleView,
                          tallyLabel)
         titleView.addArrangedSubviews(titleIconImageView,
-                              titleLabel)
+                                      titleLabel)
     }
     
     //MARK: - set Layout

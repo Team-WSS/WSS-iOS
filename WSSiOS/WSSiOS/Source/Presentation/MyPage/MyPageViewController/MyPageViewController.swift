@@ -32,7 +32,6 @@ final class MyPageViewController: UIViewController {
     // MARK: - Life Cycle
     
     override func loadView() {
-        
         self.view = rootView
     }
     
@@ -40,8 +39,7 @@ final class MyPageViewController: UIViewController {
         super.viewDidLoad()
         
         register()
-        bind()
-        delegate()
+        bindDataToMyPageCollectionView()
     }
     
     //MARK: - UI Components
@@ -54,7 +52,7 @@ final class MyPageViewController: UIViewController {
     
     //MARK: - Custom Method
     
-    private func bind() {
+    private func bindDataToMyPageCollectionView() {
         items.bind(to: rootView.myPageInventoryView.myPageAvaterCollectionView.rx.items(
             cellIdentifier: "MyPageInventoryCollectionViewCell",
             cellType: MyPageInventoryCollectionViewCell.self)) { (row, element, cell) in
@@ -68,41 +66,5 @@ final class MyPageViewController: UIViewController {
                 cell.myPageSettingCellLabel.text = element
             }
             .disposed(by: disposeBag)
-    }
-    
-    private func delegate() {
-        rootView.myPageInventoryView.myPageAvaterCollectionView.rx.setDelegate(self) 
-            .disposed(by: disposeBag)
-        
-        rootView.myPageSettingView.myPageSettingCollectionView.rx.setDelegate(self) 
-            .disposed(by: disposeBag)
-    }
-}
-
-//MARK: - UICollectionViewDelegateFlowLayout
-
-extension MyPageViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        switch collectionView {
-        case rootView.myPageInventoryView.myPageAvaterCollectionView:
-            return CGSize(width: 84.0, height: 96.0)
-        case rootView.myPageSettingView.myPageSettingCollectionView:
-            return CGSize(width: super.view.bounds.width, height: 64.0)
-        default:
-            return CGSize()
-        }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        
-        switch collectionView {
-        case rootView.myPageInventoryView.myPageAvaterCollectionView:
-            return 0.0
-        case rootView.myPageSettingView.myPageSettingCollectionView:
-            return 1.0
-        default:
-            return 0.0
-        }
     }
 }
