@@ -48,6 +48,7 @@
 		CD39F2B62B4FE0E200B73A5C /* NovelDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2B52B4FE0E200B73A5C /* NovelDetailView.swift */; };
 		CD39F2B82B4FE0FB00B73A5C /* NovelDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2B72B4FE0FB00B73A5C /* NovelDetailViewController.swift */; };
 		CD39F2BD2B4FE98500B73A5C /* NovelDetailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2BC2B4FE98500B73A5C /* NovelDetailHeaderView.swift */; };
+		CD39F2BF2B4FF6DF00B73A5C /* NovelDetailTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2BE2B4FF6DF00B73A5C /* NovelDetailTabView.swift */; };
 		CD39F2C12B4FF81E00B73A5C /* UIButton+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2C02B4FF81E00B73A5C /* UIButton+.swift */; };
 /* End PBXBuildFile section */
 
@@ -85,6 +86,7 @@
 		CD39F2B52B4FE0E200B73A5C /* NovelDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailView.swift; sourceTree = "<group>"; };
 		CD39F2B72B4FE0FB00B73A5C /* NovelDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailViewController.swift; sourceTree = "<group>"; };
 		CD39F2BC2B4FE98500B73A5C /* NovelDetailHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailHeaderView.swift; sourceTree = "<group>"; };
+		CD39F2BE2B4FF6DF00B73A5C /* NovelDetailTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailTabView.swift; sourceTree = "<group>"; };
 		CD39F2C02B4FF81E00B73A5C /* UIButton+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -377,6 +379,7 @@
 			isa = PBXGroup;
 			children = (
 				CD39F2BC2B4FE98500B73A5C /* NovelDetailHeaderView.swift */,
+				CD39F2BE2B4FF6DF00B73A5C /* NovelDetailTabView.swift */,
 			);
 			path = NovelDetailAssistantView;
 			sourceTree = "<group>";
@@ -500,6 +503,7 @@
 				A1A1F9CF2B48738200705F44 /* SearchHeaderView.swift in Sources */,
 				A1DBB3002B4AFCC0000EE869 /* SearchDummy.swift in Sources */,
 				A1A1F9D22B4873A100705F44 /* SearchResultView.swift in Sources */,
+				CD39F2BF2B4FF6DF00B73A5C /* NovelDetailTabView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -11,9 +11,12 @@ import SnapKit
 
 final class NovelDetailView: UIView {
     
+    // MARK: - UI Components
+
     let scrollView = UIScrollView()
     let contentView = UIView()
     let novelDetailHeaderView = NovelDetailHeaderView()
+    let novelDetailTabView = NovelDetailTabView()
 
     // MARK: - Life Cycle
     
@@ -39,8 +42,9 @@ final class NovelDetailView: UIView {
     
     private func setHierachy() {
         self.addSubview(scrollView)
-        scrollView.addSubviews(contentView)
-        contentView.addSubviews(novelDetailHeaderView)
+        scrollView.addSubview(contentView)
+        contentView.addSubviews(novelDetailHeaderView, 
+                                novelDetailTabView)
     }
     
     // MARK: - set Layout
@@ -57,6 +61,11 @@ final class NovelDetailView: UIView {
         novelDetailHeaderView.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
             $0.height.equalTo(302)
+        }
+        
+        novelDetailTabView.snp.makeConstraints {
+            $0.top.equalTo(novelDetailHeaderView.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
         }
     }
 }
