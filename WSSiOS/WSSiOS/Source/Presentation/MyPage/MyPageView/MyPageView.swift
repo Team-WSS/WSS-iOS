@@ -11,11 +11,11 @@ class MyPageView: UIView {
     
     //MARK: - UI Components
     
-    private var scrollView = UIScrollView()
-    private var myPageStackView = UIStackView()
-    private var myPageProfileView = MyPageProfileView()
-    private var myPageTallyView = MyPageTallyView()
-    private var myPageInventoryView = MyPageInventoryView()
+    var scrollView = UIScrollView()
+    var myPageStackView = UIStackView()
+    var myPageProfileView = MyPageProfileView()
+    var myPageTallyView = MyPageTallyView()
+    var myPageInventoryView = MyPageInventoryView()
     
     // MARK: - Life Cycle
     

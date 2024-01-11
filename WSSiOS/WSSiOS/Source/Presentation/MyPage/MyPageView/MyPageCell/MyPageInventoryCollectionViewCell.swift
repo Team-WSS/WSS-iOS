@@ -18,7 +18,7 @@ class MyPageInventoryCollectionViewCell: UICollectionViewCell {
     
     //MARK: - UI Components
     
-    private let avaterImageView = UIImageView()
+    var avaterImageView = UIImageView()
     
     //MARK: - Life Cycle
     
@@ -54,14 +54,14 @@ class MyPageInventoryCollectionViewCell: UICollectionViewCell {
     
     private func setLayout() {
         avaterImageView.snp.makeConstraints() {
-            $0.edges.equalToSuperview()
+            $0.height.width.equalToSuperview()
         }
     }
     
+    // 네트워크 연결 후 수정 예정
     
     func bindData(_ selected: Bool) {
-//        avaterImageView.image = UIImage(named: "exampleAvater")
-        avaterImageView.layer.backgroundColor = UIColor.blue.cgColor
+        avaterImageView.image = UIImage(named: "exampleAvater")
 
         if selected {
             avaterImageView.layer.borderColor = UIColor.Primary100.cgColor
