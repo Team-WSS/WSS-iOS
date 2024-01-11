@@ -42,7 +42,7 @@ final class MyPageTallyReuseView: UIView {
             $0.axis = .horizontal
             $0.alignment = .center
             $0.distribution = .fill
-            $0.spacing = 0
+            $0.spacing = 4
             
             titleLabel.do {
                 $0.font = .Body2

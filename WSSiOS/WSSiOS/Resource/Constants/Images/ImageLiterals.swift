@@ -75,6 +75,12 @@ enum ImageLiterals {
             static var BL: UIImage{ .load(named: "badgeBL")}
         }
         
+        enum icMyPage {
+            static var register: UIImage{ .load(named: "register")}
+            static var record: UIImage{ .load(named: "record")}
+            static var right: UIImage{ .load(named: "icRight")}
+        }
+        
         static var calender: UIImage{ .load(named: "icCalender")}
         static var dropDown: UIImage{ .load(named: "icDropDown")}
         static var linkPlatform: UIImage{ .load(named: "icLinkPlatform")}

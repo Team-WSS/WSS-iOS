@@ -13,6 +13,7 @@ final class MyPageTallyView: UIView {
     
     private let backGroundView = UIView()
     private var tallyView = UIView()
+    private let shadowView = UIView()
     var myPageUserNameButton = UIButton()
     var myPageRegisterView = MyPageTallyReuseView()
     var myPageRecordView = MyPageTallyReuseView()
@@ -48,10 +49,23 @@ final class MyPageTallyView: UIView {
                 $0.setTitle("신지원님", for: .normal)
                 $0.setTitleColor(.Black, for: .normal)
                 $0.titleLabel?.font = .HeadLine1
+                $0.setImage(ImageLiterals.icon.icMyPage.right, for: .normal)
+                $0.semanticContentAttribute = .forceRightToLeft
+                $0.imageEdgeInsets = .init(top: 0, left: 8, bottom: 0, right: 0)
             }
             
             dividerView.do {
                 $0.backgroundColor = .Gray70
+            }
+            
+            myPageRegisterView.do {
+                $0.titleIconImageView.image = ImageLiterals.icon.icMyPage.register
+                $0.titleLabel.text = "등록 작품"
+            }
+            
+            myPageRecordView.do {
+                $0.titleIconImageView.image = ImageLiterals.icon.icMyPage.record
+                $0.titleLabel.text = "기록"
             }
         }
     }
@@ -60,6 +74,7 @@ final class MyPageTallyView: UIView {
     
     private func setHierachy() {
         self.addSubviews(backGroundView,
+//                         shadowView,
                          tallyView)
         tallyView.addSubviews(myPageUserNameButton,
                               dividerView,
@@ -112,12 +127,7 @@ final class MyPageTallyView: UIView {
     //추후 수정 예정
     
     func dataBind() {
-        myPageRegisterView.titleIconImageView = UIImageView(image: ImageLiterals.icon.calender)
-        myPageRegisterView.titleLabel.text = "등록 작품"
         myPageRegisterView.tallyLabel.text = "0"
-        myPageRecordView.titleIconImageView = UIImageView(image: ImageLiterals.icon.calender)
-        myPageRecordView.titleLabel.text = "기록"
         myPageRecordView.tallyLabel.text = "100"
     }
-    
 }
