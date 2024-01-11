@@ -20,6 +20,11 @@ final class RegisterNormalNovelSummaryView: UIView {
     private let genreTitleLabel = UILabel()
     private let genreLabel = UILabel()
     private let platformTitleLabel = UILabel()
+    private let platformButtonStackView = UIStackView()
+    private let platformButtons = [
+        RegisterNormalPlatformSelectButton(platformName: "네이버시리즈"),
+        RegisterNormalPlatformSelectButton(platformName: "카카오페이지")
+    ]
     
     // MARK: - Life Cycle
     
@@ -71,13 +76,24 @@ final class RegisterNormalNovelSummaryView: UIView {
             $0.text = "작품 보러가기"
             titleStyle(of: platformTitleLabel)
         }
+        
+        platformButtonStackView.do {
+            $0.axis = .horizontal
+            $0.spacing = 8
+        }
     }
     
     private func setHieararchy() {
         self.addSubview(novelSummaryStackView)
+        
         novelSummaryStackView.addArrangedSubviews(
-            plotTitleLabel, plotLabel, genreTitleLabel, genreLabel, platformTitleLabel
+            plotTitleLabel, plotLabel, genreTitleLabel, genreLabel, platformTitleLabel, platformButtonStackView
         )
+        
+        platformButtons.forEach {
+            platformButtonStackView.addArrangedSubview($0)
+        }
+        platformButtonStackView.addArrangedSubview(UIView())
     }
     
     private func setLayout() {
