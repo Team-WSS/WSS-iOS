@@ -18,6 +18,10 @@ extension UIColor {
         return UIColor(r:241, g: 239, b: 255)
     }
     
+    class var Primary80: UIColor {
+        return UIColor(r:207, g: 202, b: 240)
+    }
+    
     class var Primary100: UIColor {
         return UIColor(r:99, g: 65, b: 240)
     }
