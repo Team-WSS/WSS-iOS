@@ -65,7 +65,7 @@ class MyPageProfileView: UIView {
     
     private func setLayout() {
         myBadgeImageView.snp.makeConstraints() {
-            $0.top.equalTo(super.safeAreaLayoutGuide)
+            $0.top.equalTo(super.safeAreaLayoutGuide).offset(27)
             $0.centerX.equalToSuperview()
             $0.size.equalTo(40)
         }
@@ -82,7 +82,7 @@ class MyPageProfileView: UIView {
         
         avarterImageView.snp.makeConstraints() {
             $0.top.equalTo(avaterPhraseLabel.snp.bottom).offset(23)
-            $0.centerX.equalToSuperview()
+            $0.centerX.bottom.equalToSuperview()
             $0.size.equalTo(220)
         }
     }

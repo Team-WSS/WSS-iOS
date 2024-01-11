@@ -8,12 +8,14 @@
 import UIKit
 
 class MyPageView: UIView {
-
+    
     //MARK: - UI Components
     
+    private var scrollView = UIScrollView()
     private var myPageStackView = UIStackView()
     private var myPageProfileView = MyPageProfileView()
     private var myPageTallyView = MyPageTallyView()
+    private var myPageInventoryView = MyPageInventoryView()
     
     // MARK: - Life Cycle
     
@@ -28,10 +30,10 @@ class MyPageView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     private func setUI() {
         self.backgroundColor = .White
-        
+
         myPageStackView.do {
             $0.axis = .vertical
             $0.alignment = .fill
@@ -41,15 +43,20 @@ class MyPageView: UIView {
     }
     
     private func setHierachy() {
-        self.addSubviews(myPageStackView)
+        self.addSubview(scrollView)
+        scrollView.addSubviews(myPageStackView)
         myPageStackView.addArrangedSubviews(myPageProfileView,
-        myPageTallyView)
+                                            myPageTallyView,
+                                            myPageInventoryView)
     }
     
     private func setLayout() {
+        scrollView.snp.makeConstraints() {
+            $0.edges.equalToSuperview()
+        }
+        
         myPageStackView.snp.makeConstraints() {
             $0.top.width.bottom.equalToSuperview()
         }
     }
-    
 }
