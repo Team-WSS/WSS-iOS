@@ -45,6 +45,8 @@
 		A1DBB2FE2B4AEB22000EE869 /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1DBB2FD2B4AEB22000EE869 /* UIView+.swift */; };
 		A1DBB3002B4AFCC0000EE869 /* SearchDummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1DBB2FF2B4AFCC0000EE869 /* SearchDummy.swift */; };
 		A1EC91B42B46DA3100CFB33D /* ImageLiterals.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EC91B32B46DA3100CFB33D /* ImageLiterals.swift */; };
+		CD39F2B62B4FE0E200B73A5C /* NovelDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2B52B4FE0E200B73A5C /* NovelDetailView.swift */; };
+		CD39F2B82B4FE0FB00B73A5C /* NovelDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2B72B4FE0FB00B73A5C /* NovelDetailViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -78,6 +80,8 @@
 		A1DBB2FD2B4AEB22000EE869 /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
 		A1DBB2FF2B4AFCC0000EE869 /* SearchDummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchDummy.swift; sourceTree = "<group>"; };
 		A1EC91B32B46DA3100CFB33D /* ImageLiterals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLiterals.swift; sourceTree = "<group>"; };
+		CD39F2B52B4FE0E200B73A5C /* NovelDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailView.swift; sourceTree = "<group>"; };
+		CD39F2B72B4FE0FB00B73A5C /* NovelDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -254,6 +258,7 @@
 				A1A1F9CB2B48731D00705F44 /* Search */,
 				2CD2291F2B42E685005400BE /* ViewController.swift */,
 				2CCBF9E92B4C1E2200D787C2 /* MyPage */,
+				CD39F2B22B4FE09300B73A5C /* NovelDetail */,
 				2C2491822B4ADC1D0096F255 /* Base */,
 			);
 			path = Presentation;
@@ -335,6 +340,39 @@
 				A1EC91B32B46DA3100CFB33D /* ImageLiterals.swift */,
 			);
 			path = Images;
+			sourceTree = "<group>";
+		};
+		CD39F2B22B4FE09300B73A5C /* NovelDetail */ = {
+			isa = PBXGroup;
+			children = (
+				CD39F2B42B4FE0CB00B73A5C /* NovelDetailViewController */,
+				CD39F2B32B4FE0C100B73A5C /* NovelDetailView */,
+			);
+			path = NovelDetail;
+			sourceTree = "<group>";
+		};
+		CD39F2B32B4FE0C100B73A5C /* NovelDetailView */ = {
+			isa = PBXGroup;
+			children = (
+				CD39F2B92B4FE10800B73A5C /* NovelDetailAssistantView */,
+				CD39F2B52B4FE0E200B73A5C /* NovelDetailView.swift */,
+			);
+			path = NovelDetailView;
+			sourceTree = "<group>";
+		};
+		CD39F2B42B4FE0CB00B73A5C /* NovelDetailViewController */ = {
+			isa = PBXGroup;
+			children = (
+				CD39F2B72B4FE0FB00B73A5C /* NovelDetailViewController.swift */,
+			);
+			path = NovelDetailViewController;
+			sourceTree = "<group>";
+		};
+		CD39F2B92B4FE10800B73A5C /* NovelDetailAssistantView */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = NovelDetailAssistantView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -431,6 +469,7 @@
 			files = (
 				2CD229202B42E685005400BE /* ViewController.swift in Sources */,
 				2CD2291C2B42E685005400BE /* AppDelegate.swift in Sources */,
+				CD39F2B62B4FE0E200B73A5C /* NovelDetailView.swift in Sources */,
 				2CCBF9F02B4C1FD800D787C2 /* MyPageView.swift in Sources */,
 				A1C3EC532B46962F00D997C2 /* UIImage+.swift in Sources */,
 				A1A1F9D42B4873B500705F44 /* SearchEmptyView.swift in Sources */,
@@ -447,6 +486,7 @@
 				2C2491862B4ADC420096F255 /* WSSTabBarController.swift in Sources */,
 				2CD229572B42EA75005400BE /* UIColor+.swift in Sources */,
 				A1DBB2FA2B4AA981000EE869 /* SearchTableViewCell.swift in Sources */,
+				CD39F2B82B4FE0FB00B73A5C /* NovelDetailViewController.swift in Sources */,
 				A147CBC42B4D662E0040AE39 /* SearchView.swift in Sources */,
 				A1DBB2FE2B4AEB22000EE869 /* UIView+.swift in Sources */,
 				A1A1F9CF2B48738200705F44 /* SearchHeaderView.swift in Sources */,
