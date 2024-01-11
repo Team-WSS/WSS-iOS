@@ -30,11 +30,18 @@ final class MyPageTallyView: UIView {
         setUI()
         setHierachy()
         setLayout()
+        makeShadow()
         dataBind()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        updateShadow()
     }
     
     //MARK: - set UI
@@ -77,7 +84,7 @@ final class MyPageTallyView: UIView {
     
     private func setHierachy() {
         self.addSubviews(backGroundView,
-//                         shadowView,
+                         shadowView,
                          tallyView)
         tallyView.addSubviews(myPageUserNameButton,
                               dividerView,
@@ -132,5 +139,20 @@ final class MyPageTallyView: UIView {
     func dataBind() {
         myPageRegisterView.tallyLabel.text = "0"
         myPageRecordView.tallyLabel.text = "100"
+    }
+    
+    private func updateShadow() {
+        shadowView.frame = tallyView.frame
+        shadowView.layer.shadowPath = UIBezierPath(rect: shadowView.bounds).cgPath
+    }
+    
+    private func makeShadow() {
+        shadowView.do {
+            $0.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
+            $0.layer.shadowOpacity = 1
+            $0.layer.shadowOffset = CGSize(width: 0, height: -2)
+            $0.layer.shadowRadius = 15
+            $0.layer.masksToBounds = false
+        }
     }
 }
