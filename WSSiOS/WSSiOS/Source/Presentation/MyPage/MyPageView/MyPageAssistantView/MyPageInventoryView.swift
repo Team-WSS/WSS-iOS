@@ -10,12 +10,12 @@ import UIKit
 import SnapKit
 import Then
 
-class MyPageInventoryView: UIView {
+final class MyPageInventoryView: UIView {
     
     //MARK: - UI Components
     
     private let titleLabel = UILabel()
-    var avaterCollectionView = UICollectionView(frame: .zero,
+    var myPageAvaterCollectionView = UICollectionView(frame: .zero,
                                                 collectionViewLayout: UICollectionViewFlowLayout())
     
     // MARK: - Life Cycle
@@ -41,7 +41,7 @@ class MyPageInventoryView: UIView {
             $0.textColor = .Black
         }
         
-        avaterCollectionView.do {
+        myPageAvaterCollectionView.do {
             let layout = UICollectionViewFlowLayout()
             layout.scrollDirection = .horizontal
             $0.collectionViewLayout = layout
@@ -53,7 +53,7 @@ class MyPageInventoryView: UIView {
     
     private func setHierachy() {
         self.addSubviews(titleLabel,
-                         avaterCollectionView)
+                         myPageAvaterCollectionView)
     }
     
     //MARK: - set Layout
@@ -64,7 +64,7 @@ class MyPageInventoryView: UIView {
             $0.leading.equalToSuperview().inset(20)
         }
         
-        avaterCollectionView.snp.makeConstraints() {
+        myPageAvaterCollectionView.snp.makeConstraints() {
             $0.top.equalTo(titleLabel.snp.bottom).offset(30)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(97)

@@ -7,15 +7,15 @@
 
 import UIKit
 
-class MyPageTallyView: UIView {
+final class MyPageTallyView: UIView {
     
     //MARK: - UI Components
     
     private let backGroundView = UIView()
     private var tallyView = UIView()
-    private var userNameButton = UIButton()
-    private var registerView = MyPageTallyReuseView()
-    private var recordView = MyPageTallyReuseView()
+    var myPageUserNameButton = UIButton()
+    var myPageRegisterView = MyPageTallyReuseView()
+    var myPageRecordView = MyPageTallyReuseView()
     private var dividerView = UIView()
     
     // MARK: - Life Cycle
@@ -44,7 +44,7 @@ class MyPageTallyView: UIView {
             $0.backgroundColor = .White
             $0.layer.cornerRadius = 15
             
-            userNameButton.do {
+            myPageUserNameButton.do {
                 $0.setTitle("신지원님", for: .normal)
                 $0.setTitleColor(.Black, for: .normal)
                 $0.titleLabel?.font = .HeadLine1
@@ -61,10 +61,10 @@ class MyPageTallyView: UIView {
     private func setHierachy() {
         self.addSubviews(backGroundView,
                          tallyView)
-        tallyView.addSubviews(userNameButton,
+        tallyView.addSubviews(myPageUserNameButton,
                               dividerView,
-                              registerView,
-                              recordView)
+                              myPageRegisterView,
+                              myPageRecordView)
     }
     
     //MARK: - set Layout
@@ -80,26 +80,26 @@ class MyPageTallyView: UIView {
             $0.top.equalToSuperview().inset(27)
             $0.leading.equalToSuperview().inset(20)
             
-            userNameButton.snp.makeConstraints() {
+            myPageUserNameButton.snp.makeConstraints() {
                 $0.top.equalToSuperview().inset(18)
                 $0.centerX.equalToSuperview()
             }
             
             dividerView.snp.makeConstraints() {
-                $0.top.equalTo(userNameButton.snp.bottom).offset(20)
+                $0.top.equalTo(myPageUserNameButton.snp.bottom).offset(20)
                 $0.centerX.equalToSuperview()
                 $0.bottom.equalToSuperview().inset(18)
                 $0.width.equalTo(1)
             }
             
-            registerView.snp.makeConstraints() {
+            myPageRegisterView.snp.makeConstraints() {
                 $0.top.equalTo(dividerView.snp.top)
                 $0.leading.equalToSuperview()
                 $0.trailing.equalTo(dividerView.snp.leading)
                 $0.bottom.equalToSuperview().inset(18)
             }
             
-            recordView.snp.makeConstraints() {
+            myPageRecordView.snp.makeConstraints() {
                 $0.top.equalTo(dividerView.snp.top)
                 $0.trailing.equalToSuperview()
                 $0.leading.equalTo(dividerView.snp.trailing)
@@ -112,12 +112,12 @@ class MyPageTallyView: UIView {
     //추후 수정 예정
     
     func dataBind() {
-        registerView.titleIconImageView = UIImageView(image: ImageLiterals.icon.calender)
-        registerView.titleLabel.text = "등록 작품"
-        registerView.tallyLabel.text = "0"
-        recordView.titleIconImageView = UIImageView(image: ImageLiterals.icon.calender)
-        recordView.titleLabel.text = "기록"
-        recordView.tallyLabel.text = "100"
+        myPageRegisterView.titleIconImageView = UIImageView(image: ImageLiterals.icon.calender)
+        myPageRegisterView.titleLabel.text = "등록 작품"
+        myPageRegisterView.tallyLabel.text = "0"
+        myPageRecordView.titleIconImageView = UIImageView(image: ImageLiterals.icon.calender)
+        myPageRecordView.titleLabel.text = "기록"
+        myPageRecordView.tallyLabel.text = "100"
     }
     
 }

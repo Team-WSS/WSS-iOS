@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MyPageSettingCollectionViewCell: UICollectionViewCell {
+final class MyPageSettingCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Properties
     

@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-class MyPageInventoryCollectionViewCell: UICollectionViewCell {
+final class MyPageInventoryCollectionViewCell: UICollectionViewCell {
 
     //MARK: - Properties
     
@@ -18,7 +18,7 @@ class MyPageInventoryCollectionViewCell: UICollectionViewCell {
     
     //MARK: - UI Components
     
-    var avaterImageView = UIImageView()
+    var myPageAvaterImageView = UIImageView()
     
     //MARK: - Life Cycle
     
@@ -38,7 +38,7 @@ class MyPageInventoryCollectionViewCell: UICollectionViewCell {
     //MARK: - Set UI
     
     private func setUI() {
-        avaterImageView.do {
+        myPageAvaterImageView.do {
             $0.layer.cornerRadius = 12
             $0.layer.masksToBounds = true
         }
@@ -47,13 +47,13 @@ class MyPageInventoryCollectionViewCell: UICollectionViewCell {
     //MARK: - Set Hierachy
     
     private func setHierachy() {
-        self.addSubviews(avaterImageView)
+        self.addSubviews(myPageAvaterImageView)
     }
     
     //MARK: - Set Layout
     
     private func setLayout() {
-        avaterImageView.snp.makeConstraints() {
+        myPageAvaterImageView.snp.makeConstraints() {
             $0.height.width.equalToSuperview()
         }
     }
@@ -61,14 +61,14 @@ class MyPageInventoryCollectionViewCell: UICollectionViewCell {
     // 네트워크 연결 후 수정 예정
     
     func bindData(_ selected: Bool) {
-        avaterImageView.image = UIImage(named: "exampleAvater")
+        myPageAvaterImageView.image = UIImage(named: "exampleAvater")
 
         if selected {
-            avaterImageView.layer.borderColor = UIColor.Primary100.cgColor
-            avaterImageView.layer.borderWidth = 1
+            myPageAvaterImageView.layer.borderColor = UIColor.Primary100.cgColor
+            myPageAvaterImageView.layer.borderWidth = 1
         }else {
-            avaterImageView.layer.borderColor = UIColor.Primary100.cgColor
-            avaterImageView.layer.borderWidth = 1
+            myPageAvaterImageView.layer.borderColor = UIColor.Primary100.cgColor
+            myPageAvaterImageView.layer.borderWidth = 1
         }
     }
 }

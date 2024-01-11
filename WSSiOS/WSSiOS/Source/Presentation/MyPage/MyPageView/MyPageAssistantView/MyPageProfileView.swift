@@ -10,14 +10,14 @@ import UIKit
 import SnapKit
 import Then
 
-class MyPageProfileView: UIView {
+final class MyPageProfileView: UIView {
     
     //MARK: - UI Components
     
-    private let myBadgeImageView = UIImageView()
-    private let avaterNameLabel = UILabel()
-    private var avaterPhraseLabel = UILabel()
-    private var avarterImageView = UIImageView()
+    var myPageBadgeImageView = UIImageView()
+    var myPageNameLabel = UILabel()
+    var myPagePhraseLabel = UILabel()
+    var myPageAvartarImageView = UIImageView()
     
     // MARK: - Life Cycle
     
@@ -39,13 +39,13 @@ class MyPageProfileView: UIView {
     private func setUI() {
         self.backgroundColor = .Gray50
         
-        avaterNameLabel.do {
+        myPageNameLabel.do {
             $0.font = .Title1
             $0.textColor = .Gray300
             $0.textAlignment = .center
         }
         
-        avaterPhraseLabel.do {
+        myPagePhraseLabel.do {
             $0.font = .Body2
             $0.textColor = .Gray300
             $0.textAlignment = .center
@@ -55,33 +55,33 @@ class MyPageProfileView: UIView {
     //MARK: - set Hierachy
     
     private func setHierachy() {
-        self.addSubviews(myBadgeImageView,
-                         avaterNameLabel,
-                         avaterPhraseLabel,
-                         avarterImageView)
+        self.addSubviews(myPageBadgeImageView,
+                         myPageNameLabel,
+                         myPagePhraseLabel,
+                         myPageAvartarImageView)
     }
     
     //MARK: - set Layout
     
     private func setLayout() {
-        myBadgeImageView.snp.makeConstraints() {
+        myPageBadgeImageView.snp.makeConstraints() {
             $0.top.equalTo(super.safeAreaLayoutGuide).offset(27)
             $0.centerX.equalToSuperview()
             $0.size.equalTo(40)
         }
         
-        avaterNameLabel.snp.makeConstraints() {
-            $0.top.equalTo(myBadgeImageView.snp.bottom).offset(13)
+        myPageNameLabel.snp.makeConstraints() {
+            $0.top.equalTo(myPageBadgeImageView.snp.bottom).offset(13)
             $0.centerX.equalToSuperview()
         }
         
-        avaterPhraseLabel.snp.makeConstraints() {
-            $0.top.equalTo(avaterNameLabel.snp.bottom)
+        myPagePhraseLabel.snp.makeConstraints() {
+            $0.top.equalTo(myPageNameLabel.snp.bottom)
             $0.centerX.equalToSuperview()
         }
         
-        avarterImageView.snp.makeConstraints() {
-            $0.top.equalTo(avaterPhraseLabel.snp.bottom).offset(23)
+        myPageAvartarImageView.snp.makeConstraints() {
+            $0.top.equalTo(myPagePhraseLabel.snp.bottom).offset(23)
             $0.centerX.bottom.equalToSuperview()
             $0.size.equalTo(220)
         }
@@ -91,9 +91,9 @@ class MyPageProfileView: UIView {
     //추후 수정 예정
     
     func dataBind() {
-        avaterNameLabel.text = "추락한 악역영애"
-        avaterPhraseLabel.text = "김명진 영애, 오늘도 왔구나?"
-        avarterImageView.image = UIImage(named: "avaterExample")
-        myBadgeImageView.image = ImageLiterals.icon.icBadge.RF
+        myPageNameLabel.text = "추락한 악역영애"
+        myPagePhraseLabel.text = "김명진 영애, 오늘도 왔구나?"
+        myPageAvartarImageView.image = UIImage(named: "avaterExample")
+        myPageBadgeImageView.image = ImageLiterals.icon.icBadge.RF
     }
 }

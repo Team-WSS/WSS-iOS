@@ -7,11 +7,11 @@
 
 import UIKit
 
-class MyPageView: UIView {
+final class MyPageView: UIView {
     
     //MARK: - UI Components
     
-    var scrollView = UIScrollView()
+    private var scrollView = UIScrollView()
     var myPageStackView = UIStackView()
     var myPageProfileView = MyPageProfileView()
     var myPageTallyView = MyPageTallyView()

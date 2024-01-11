@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class MyPageViewController: UIViewController {
+final class MyPageViewController: UIViewController {
     
     //MARK: - Set Properties
     
@@ -47,7 +47,7 @@ class MyPageViewController: UIViewController {
     //MARK: - UI Components
     
     private func register() {
-        rootView.myPageInventoryView.avaterCollectionView.register(MyPageInventoryCollectionViewCell.self, forCellWithReuseIdentifier: "MyPageInventoryCollectionViewCell")
+        rootView.myPageInventoryView.myPageAvaterCollectionView.register(MyPageInventoryCollectionViewCell.self, forCellWithReuseIdentifier: "MyPageInventoryCollectionViewCell")
         
         rootView.myPageSettingView.myPageSettingCollectionView.register(MyPageSettingCollectionViewCell.self, forCellWithReuseIdentifier: "MyPageSettingCollectionViewCell")
     }
@@ -55,10 +55,10 @@ class MyPageViewController: UIViewController {
     //MARK: - Custom Method
     
     private func bind() {
-        items.bind(to: rootView.myPageInventoryView.avaterCollectionView.rx.items(
+        items.bind(to: rootView.myPageInventoryView.myPageAvaterCollectionView.rx.items(
             cellIdentifier: "MyPageInventoryCollectionViewCell",
             cellType: MyPageInventoryCollectionViewCell.self)) { (row, element, cell) in
-                cell.avaterImageView.image = element
+                cell.myPageAvaterImageView.image = element
             }
             .disposed(by: disposeBag)
         
@@ -71,7 +71,7 @@ class MyPageViewController: UIViewController {
     }
     
     private func delegate() {
-        rootView.myPageInventoryView.avaterCollectionView.rx.setDelegate(self) 
+        rootView.myPageInventoryView.myPageAvaterCollectionView.rx.setDelegate(self) 
             .disposed(by: disposeBag)
         
         rootView.myPageSettingView.myPageSettingCollectionView.rx.setDelegate(self) 
@@ -85,7 +85,7 @@ extension MyPageViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         switch collectionView {
-        case rootView.myPageInventoryView.avaterCollectionView:
+        case rootView.myPageInventoryView.myPageAvaterCollectionView:
             return CGSize(width: 84.0, height: 96.0)
         case rootView.myPageSettingView.myPageSettingCollectionView:
             return CGSize(width: super.view.bounds.width, height: 64.0)
@@ -97,7 +97,7 @@ extension MyPageViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         
         switch collectionView {
-        case rootView.myPageInventoryView.avaterCollectionView:
+        case rootView.myPageInventoryView.myPageAvaterCollectionView:
             return 0.0
         case rootView.myPageSettingView.myPageSettingCollectionView:
             return 1.0

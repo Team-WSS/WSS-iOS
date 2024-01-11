@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MyPageSettingView: UIView {
+final class MyPageSettingView: UIView {
 
     //MARK: - UI Components
     
