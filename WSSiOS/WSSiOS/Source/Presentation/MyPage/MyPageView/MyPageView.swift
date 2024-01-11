@@ -55,10 +55,10 @@ final class MyPageView: UIView {
     private func setLayout() {
         scrollView.snp.makeConstraints() {
             $0.edges.equalToSuperview()
-        }
-        
-        myPageStackView.snp.makeConstraints() {
-            $0.top.width.bottom.equalToSuperview()
+            
+            myPageStackView.snp.makeConstraints() {
+                $0.top.width.bottom.equalToSuperview()
+            }
         }
     }
 }
