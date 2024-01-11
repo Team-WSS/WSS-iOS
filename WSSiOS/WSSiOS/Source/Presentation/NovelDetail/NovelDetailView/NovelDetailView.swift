@@ -7,14 +7,56 @@
 
 import UIKit
 
-class NovelDetailView: UIView {
+import SnapKit
 
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
+final class NovelDetailView: UIView {
+    
+    let scrollView = UIScrollView()
+    let contentView = UIView()
+    let novelDetailHeaderView = NovelDetailHeaderView()
+
+    // MARK: - Life Cycle
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        setUI()
+        setHierachy()
+        setLayout()
     }
-    */
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
+    // MARK: - set UI
+    
+    private func setUI() {
+        self.backgroundColor = .White
+    }
+    
+    // MARK: - set Hierachy
+    
+    private func setHierachy() {
+        self.addSubview(scrollView)
+        scrollView.addSubviews(contentView)
+        contentView.addSubviews(novelDetailHeaderView)
+    }
+    
+    // MARK: - set Layout
+    
+    private func setLayout() {
+        scrollView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
+        contentView.snp.makeConstraints {
+            $0.edges.width.equalToSuperview()
+        }
+        
+        novelDetailHeaderView.snp.makeConstraints {
+            $0.top.leading.trailing.equalToSuperview()
+            $0.height.equalTo(302)
+        }
+    }
 }
