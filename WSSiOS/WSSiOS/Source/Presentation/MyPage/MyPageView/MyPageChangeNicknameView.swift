@@ -16,6 +16,7 @@ class MyPageChangeNicknameView: UIView {
     
     private let nicknameLabel = UILabel()
     var changeNicknameTextField = UITextField()
+    var setClearButton = UIButton(type: .custom)
     var textFieldUnderBarView = UIView()
     var countNicknameLabel = UILabel()
     
@@ -47,6 +48,14 @@ class MyPageChangeNicknameView: UIView {
             $0.font = .Body1
             $0.textColor = .Black
             $0.borderStyle = .none
+            $0.rightView = setClearButton
+            $0.rightViewMode = .always
+        }
+        
+        setClearButton.do {
+            $0.setImage(ImageLiterals.icon.searchCancel, for: .normal)
+            $0.frame = CGRect(x: 0, y: 0, width: 25, height: 25)
+            $0.imageView?.contentMode = .scaleAspectFill
         }
         
         textFieldUnderBarView.do {
