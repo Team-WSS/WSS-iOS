@@ -30,7 +30,6 @@ final class MyPageTallyView: UIView {
         setUI()
         setHierachy()
         setLayout()
-//        makeShadow()
         dataBind()
     }
     
@@ -41,7 +40,7 @@ final class MyPageTallyView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        updateShadow()
+        makeShadow()
     }
     
     //MARK: - set UI
@@ -141,8 +140,7 @@ final class MyPageTallyView: UIView {
         myPageRecordView.tallyLabel.text = "100"
     }
     
-    private func updateShadow() {
-        
+    private func makeShadow() {
         shadowView.do {
             $0.frame = tallyView.frame
             $0.layer.shadowPath = UIBezierPath(rect: shadowView.bounds).cgPath
@@ -153,6 +151,4 @@ final class MyPageTallyView: UIView {
             $0.layer.masksToBounds = false
         }
     }
-    
-
 }
