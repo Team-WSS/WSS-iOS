@@ -11,7 +11,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class RegisterNormalDatePickerView: UIView {
+final class RegisterNormalDatePickerView: UIButton {
     
     // MARK: - UI Components
     
@@ -33,6 +33,12 @@ final class RegisterNormalDatePickerView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Override Method
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        // touchEvent
     }
     
     // MARK: - Custom Method

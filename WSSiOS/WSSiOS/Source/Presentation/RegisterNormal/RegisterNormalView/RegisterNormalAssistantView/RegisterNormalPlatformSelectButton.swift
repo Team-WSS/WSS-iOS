@@ -43,7 +43,7 @@ final class RegisterNormalPlatformSelectButton: UIButton {
     // MARK: - Override Method
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("Touched")
+        // touchResult
     }
     
     // MARK: - Custom Method

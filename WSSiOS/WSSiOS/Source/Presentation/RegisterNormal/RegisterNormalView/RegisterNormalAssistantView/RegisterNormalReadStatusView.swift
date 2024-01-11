@@ -98,11 +98,10 @@ final class RegisterNormalReadStatusView: UIView {
     private func createButtons() -> [UIButton] {
         var buttons: [UIButton] = []
         for index in 0..<4 {
-            let button = UIButton()
+            let button = RegisterNormalReadStatusButton()
             button.do {
-                $0.setTitle(buttonTitles[index], for: .normal)
-                $0.setImage(buttonImages[index], for: .normal)
-                $0.setTitleColor(.Primary100, for: .normal)
+                $0.buttonLabel.text = buttonTitles[index]
+                $0.buttonImage.image = buttonImages[index]
                 $0.tag = index
             }
             buttons.append(button)
