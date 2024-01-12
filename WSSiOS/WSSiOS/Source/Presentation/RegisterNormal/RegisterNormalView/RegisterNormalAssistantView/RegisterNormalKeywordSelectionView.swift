@@ -15,7 +15,7 @@ final class RegisterNormalKeywordSelectionView: UIView {
     // MARK: - UI Components
     
     private let totalStackView = UIStackView()
-    private let titleView = UILabel()
+    private let titleView = RegisterNormalSectionTitleView()
     private let keywordButtonView = RegisterNormalKeywordSelectionButton()
     
     // MARK: - Life Cycle
@@ -39,35 +39,23 @@ final class RegisterNormalKeywordSelectionView: UIView {
             $0.axis = .vertical
             $0.spacing = 18
             $0.alignment = .fill
-        }
-        
-        titleView.do {
-            $0.text = "키워드"
-            titleStyle(of: $0)
+            
+            titleView.do {
+                $0.setText("키워드")
+            }
         }
     }
     
     private func setHieararchy() {
         self.addSubview(totalStackView)
-        totalStackView.addArrangedSubviews(titleView, keywordButtonView)
+        totalStackView.addArrangedSubviews(titleView,
+                                           keywordButtonView)
     }
     
     private func setLayout() {
         totalStackView.snp.makeConstraints {
             $0.verticalEdges.equalToSuperview()
             $0.horizontalEdges.equalToSuperview().inset(20)
-        }
-    }
-    
-    private func titleStyle(of label: UILabel) {
-        label.do {
-            $0.textColor = .Black
-            $0.makeAttribute(with: label.text)?
-                .lineSpacing(spacingPercentage: 140)
-                .kerning(kerningPixel: -0.6)
-                .partialColor(color: .Secondary100, rangeString: "*")
-                .applyAttribute()
-            $0.font = .Title1
         }
     }
 }

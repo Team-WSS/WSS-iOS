@@ -44,7 +44,8 @@ final class RegisterNormalDividerView: UIView {
     }
     
     private func setHieararchy() {
-        self.addSubviews(dividerView, topBorderView)
+        self.addSubviews(dividerView, 
+                         topBorderView)
     }
     
     private func setLayout() {

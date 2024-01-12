@@ -16,9 +16,10 @@ final class RegisterNormalReadDateView: UIView {
     
     private let totalStackView = UIStackView()
     private let upperStackView = UIStackView()
-    private let titleView = UILabel()
-    private let toggle = RegisterNormalCustomToggle()
-    private let datePickerView = RegisterNormalDatePickerView()
+    private let titleView = RegisterNormalSectionTitleView()
+    private let toggleButton = RegisterNormalCustomToggleButton()
+    private let datePickerView = RegisterNormalDatePickerButton()
+    private let spacer = UIView()
     
     // MARK: - Life Cycle
     
@@ -41,42 +42,32 @@ final class RegisterNormalReadDateView: UIView {
             $0.axis = .vertical
             $0.spacing = 8
             $0.alignment = .fill
-        }
-        
-        upperStackView.do {
-            $0.axis = .horizontal
-            $0.spacing = 14
-            $0.alignment = .center
-        }
-        
-        titleView.do {
-            $0.text = "읽은 날짜"
-            titleStyle(of: $0)
+            
+            upperStackView.do {
+                $0.axis = .horizontal
+                $0.spacing = 14
+                $0.alignment = .center
+                
+                titleView.do {
+                    $0.setText("읽은 날짜")
+                }
+            }
         }
     }
     
     private func setHieararchy() {
         self.addSubview(totalStackView)
-        totalStackView.addArrangedSubviews(upperStackView, datePickerView)
-        upperStackView.addArrangedSubviews(titleView, toggle, UIView())
+        totalStackView.addArrangedSubviews(upperStackView,
+                                           datePickerView)
+        upperStackView.addArrangedSubviews(titleView,
+                                           toggleButton,
+                                           spacer)
     }
     
     private func setLayout() {
         totalStackView.snp.makeConstraints {
             $0.verticalEdges.equalToSuperview()
             $0.horizontalEdges.equalToSuperview().inset(20)
-        }
-    }
-    
-    private func titleStyle(of label: UILabel) {
-        label.do {
-            $0.textColor = .Black
-            $0.makeAttribute(with: label.text)?
-                .lineSpacing(spacingPercentage: 140)
-                .kerning(kerningPixel: -0.6)
-                .partialColor(color: .Secondary100, rangeString: "*")
-                .applyAttribute()
-            $0.font = .Title1
         }
     }
 }

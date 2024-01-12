@@ -15,15 +15,17 @@ final class RegisterNormalNovelSummaryView: UIView {
     // MARK: - UI Components
     
     private let novelSummaryStackView = UIStackView()
-    private let plotTitleLabel = UILabel()
+    private let plotTitleLabel = RegisterNormalSectionTitleView()
     private let plotLabel = UILabel()
-    private let genreTitleLabel = UILabel()
+    private let genreTitleLabel = RegisterNormalSectionTitleView()
     private let genreLabel = UILabel()
-    private let platformTitleLabel = UILabel()
+    private let platformTitleLabel = RegisterNormalSectionTitleView()
     private let platformButtonStackView = UIStackView()
-    private let platformButtons = [
+    private let spacer = UIView()
+    private lazy var platformButtons = [
         RegisterNormalPlatformSelectButton(platformName: "네이버시리즈"),
-        RegisterNormalPlatformSelectButton(platformName: "카카오페이지")
+        RegisterNormalPlatformSelectButton(platformName: "카카오페이지"),
+        spacer
     ]
     
     // MARK: - Life Cycle
@@ -53,8 +55,7 @@ final class RegisterNormalNovelSummaryView: UIView {
         }
         
         plotTitleLabel.do {
-            $0.text = "작품 소개"
-            titleStyle(of: plotTitleLabel)
+            $0.setText("작품 소개")
         }
         
         plotLabel.do {
@@ -63,8 +64,7 @@ final class RegisterNormalNovelSummaryView: UIView {
         }
         
         genreTitleLabel.do {
-            $0.text = "장르"
-            titleStyle(of: genreTitleLabel)
+            $0.setText("장르")
         }
         
         genreLabel.do {
@@ -73,8 +73,7 @@ final class RegisterNormalNovelSummaryView: UIView {
         }
         
         platformTitleLabel.do {
-            $0.text = "작품 보러가기"
-            titleStyle(of: platformTitleLabel)
+            $0.setText("작품 보러가기")
         }
         
         platformButtonStackView.do {
@@ -85,15 +84,15 @@ final class RegisterNormalNovelSummaryView: UIView {
     
     private func setHieararchy() {
         self.addSubview(novelSummaryStackView)
-        
-        novelSummaryStackView.addArrangedSubviews(
-            plotTitleLabel, plotLabel, genreTitleLabel, genreLabel, platformTitleLabel, platformButtonStackView
-        )
-        
+        novelSummaryStackView.addArrangedSubviews(plotTitleLabel,
+                                                  plotLabel,
+                                                  genreTitleLabel,
+                                                  genreLabel,
+                                                  platformTitleLabel,
+                                                  platformButtonStackView)
         platformButtons.forEach {
             platformButtonStackView.addArrangedSubview($0)
         }
-        platformButtonStackView.addArrangedSubview(UIView())
     }
     
     private func setLayout() {
@@ -107,18 +106,6 @@ final class RegisterNormalNovelSummaryView: UIView {
             $0.setCustomSpacing(10, after: plotTitleLabel)
             $0.setCustomSpacing(10, after: genreTitleLabel)
             $0.setCustomSpacing(10, after: platformTitleLabel)
-        }
-    }
-    
-    private func titleStyle(of label: UILabel) {
-        label.do {
-            $0.textColor = .Black
-            $0.makeAttribute(with: label.text)?
-                .lineSpacing(spacingPercentage: 140)
-                .kerning(kerningPixel: -0.6)
-                .partialColor(color: .Secondary100, rangeString: "*")
-                .applyAttribute()
-            $0.font = .Title1
         }
     }
     

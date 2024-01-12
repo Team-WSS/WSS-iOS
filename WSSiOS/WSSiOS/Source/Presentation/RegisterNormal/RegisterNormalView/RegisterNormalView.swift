@@ -53,11 +53,11 @@ final class RegisterNormalView: UIView {
             $0.contentInsetAdjustmentBehavior = .never
             $0.showsVerticalScrollIndicator = false
             $0.showsHorizontalScrollIndicator = false
-        }
-        
-        pageContentView.do {
-            $0.axis = .vertical
-            $0.alignment = .fill
+            
+            pageContentView.do {
+                $0.axis = .vertical
+                $0.alignment = .fill
+            }
         }
         
         registerButtonGradient.do {
@@ -70,42 +70,48 @@ final class RegisterNormalView: UIView {
     }
     
     private func setHieararchy() {
-        self.addSubviews(pageScrollView, registerButtonGradient, registerButtonBackgroundView, registerButton)
-        
+        self.addSubviews(pageScrollView,
+                         registerButtonGradient,
+                         registerButtonBackgroundView,
+                         registerButton)
         pageScrollView.addSubview(pageContentView)
-        
-        pageContentView.addArrangedSubviews(
-            bannerImageView, infoWithRatingView, readStatusView, readDateView, dividerView, keywordSelectionView, novelSummaryView
-        )
+        pageContentView.addArrangedSubviews(bannerImageView,
+                                            infoWithRatingView,
+                                            readStatusView,
+                                            readDateView,
+                                            dividerView,
+                                            keywordSelectionView,
+                                            novelSummaryView)
     }
     
     private func setLayout() {
         pageScrollView.snp.makeConstraints {
-            $0.horizontalEdges.top.equalToSuperview()
+            $0.top.equalToSuperview()
             $0.bottom.equalTo(registerButton.snp.bottom)
-        }
-        
-        pageContentView.do {
-            $0.snp.makeConstraints {
-                $0.edges.equalTo(pageScrollView.contentLayoutGuide)
-                $0.width.equalToSuperview()
-            }
+            $0.horizontalEdges.equalToSuperview()
             
-            $0.spacing = 35
-            $0.setCustomSpacing(-154, after: bannerImageView)
-            $0.setCustomSpacing(56, after: infoWithRatingView)
+            pageContentView.do {
+                $0.snp.makeConstraints {
+                    $0.edges.equalTo(pageScrollView.contentLayoutGuide)
+                    $0.width.equalToSuperview()
+                }
+                
+                $0.spacing = 35
+                $0.setCustomSpacing(-154, after: bannerImageView)
+                $0.setCustomSpacing(56, after: infoWithRatingView)
+            }
         }
         
         registerButtonGradient.snp.makeConstraints {
             $0.bottom.equalTo(registerButton.snp.top)
-            $0.horizontalEdges.equalToSuperview()
             $0.height.equalTo(34)
+            $0.horizontalEdges.equalToSuperview()
         }
         
         registerButtonBackgroundView.snp.makeConstraints {
+            $0.top.equalTo(registerButton.snp.top)
             $0.bottom.equalToSuperview()
             $0.horizontalEdges.equalToSuperview()
-            $0.top.equalTo(registerButton.snp.top)
         }
     }
 }

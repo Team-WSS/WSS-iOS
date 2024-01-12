@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class RegisterNormalNovelInfoStackView: UIView {
+final class RegisterNormalNovelInfoView: UIView {
     
     // MARK: - UI Components
     
@@ -39,25 +39,23 @@ final class RegisterNormalNovelInfoStackView: UIView {
             $0.axis = .vertical
             $0.spacing = 6
             $0.alignment = .center
-        }
-        
-        novelTitleLabel.do {
-            $0.text = "여성향 게임의 파멸 플래그밖에 없는 악역 영애로 환생해 버렸다"
-            novelTitleAttribute(of: $0)
-        }
-        
-        novelAuthorLabel.do {
-            $0.text = "Satoru Yamaguchi"
-            novelAuthorAttribute(of: $0)
+            
+            novelTitleLabel.do {
+                $0.text = "여성향 게임의 파멸 플래그밖에 없는 악역 영애로 환생해 버렸다"
+                novelTitleAttribute(of: $0)
+            }
+            
+            novelAuthorLabel.do {
+                $0.text = "Satoru Yamaguchi"
+                novelAuthorAttribute(of: $0)
+            }
         }
     }
     
     private func setHieararchy() {
         self.addSubview(novelInfoStackView)
-
-        novelInfoStackView.addArrangedSubviews(
-            novelTitleLabel, novelAuthorLabel
-        )
+        novelInfoStackView.addArrangedSubviews(novelTitleLabel,
+                                               novelAuthorLabel)
     }
     
     private func setLayout() {

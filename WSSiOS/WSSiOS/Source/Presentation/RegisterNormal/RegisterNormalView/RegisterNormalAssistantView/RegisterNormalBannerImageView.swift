@@ -40,12 +40,12 @@ final class RegisterNormalBannerImageView: UIView {
             $0.contentMode = .scaleAspectFill
             $0.alignment = .top
             $0.clipsToBounds = true
-        }
-        
-        gradientView.do {
-            $0.contentMode = .scaleAspectFill
-            $0.clipsToBounds = true
-            $0.image = .registerNormalGradientDummy
+            
+            gradientView.do {
+                $0.contentMode = .scaleAspectFill
+                $0.clipsToBounds = true
+                $0.image = .registerNormalGradientDummy
+            }
         }
     }
     
@@ -58,10 +58,10 @@ final class RegisterNormalBannerImageView: UIView {
         bannerImageView.snp.makeConstraints {
             $0.edges.equalToSuperview()
             $0.height.equalTo(251)
-        }
-        
-        gradientView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            
+            gradientView.snp.makeConstraints {
+                $0.edges.equalToSuperview()
+            }
         }
     }
 }

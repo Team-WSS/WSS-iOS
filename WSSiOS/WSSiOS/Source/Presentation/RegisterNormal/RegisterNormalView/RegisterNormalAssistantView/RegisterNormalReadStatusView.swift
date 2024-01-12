@@ -16,17 +16,15 @@ final class RegisterNormalReadStatusView: UIView {
     // MARK: - Properties
     
     let buttonTitles = ["읽음", "읽는 중", "하차", "읽고 싶음"]
-    let buttonImages: [UIImage] = [
-        ImageLiterals.icon.TagStatus.finished,
-        ImageLiterals.icon.TagStatus.reading,
-        ImageLiterals.icon.TagStatus.stop,
-        ImageLiterals.icon.TagStatus.interest
-    ]
+    let buttonImages: [UIImage] = [ImageLiterals.icon.TagStatus.finished,
+                                   ImageLiterals.icon.TagStatus.reading,
+                                   ImageLiterals.icon.TagStatus.stop,
+                                   ImageLiterals.icon.TagStatus.interest]
     
     // MARK: - UI Components
     
     private let totalStackView = UIStackView()
-    private let titleView = UILabel()
+    private let titleView = RegisterNormalSectionTitleView()
     private lazy var readStatusButtons: [UIButton] = createButtons()
     private let readStatusStackView = UIStackView()
     
@@ -51,29 +49,25 @@ final class RegisterNormalReadStatusView: UIView {
             $0.axis = .vertical
             $0.spacing = 12
             $0.alignment = .leading
-        }
-        
-        titleView.do {
-            $0.text = "읽기 상태 *"
-            titleStyle(of: $0)
-        }
-        
-        readStatusStackView.do {
-            $0.axis = .horizontal
-            $0.spacing = 8
+            
+            titleView.do {
+                $0.setText("읽기 상태 *")
+            }
+            
+            readStatusStackView.do {
+                $0.axis = .horizontal
+                $0.spacing = 8
+            }
         }
     }
     
     private func setHieararchy() {
         self.addSubview(totalStackView)
-        totalStackView.addArrangedSubviews(
-            titleView, readStatusStackView
-        )
-        
+        totalStackView.addArrangedSubviews(titleView,
+                                           readStatusStackView)
         readStatusButtons.forEach {
             readStatusStackView.addArrangedSubview($0)
         }
-        
     }
     
     private func setLayout() {
@@ -83,25 +77,13 @@ final class RegisterNormalReadStatusView: UIView {
         }
     }
     
-    private func titleStyle(of label: UILabel) {
-        label.do {
-            $0.textColor = .Black
-            $0.makeAttribute(with: label.text)?
-                .lineSpacing(spacingPercentage: 140)
-                .kerning(kerningPixel: -0.6)
-                .partialColor(color: .Secondary100, rangeString: "*")
-                .applyAttribute()
-            $0.font = .Title1
-        }
-    }
-    
     private func createButtons() -> [UIButton] {
         var buttons: [UIButton] = []
         for index in 0..<4 {
             let button = RegisterNormalReadStatusButton()
             button.do {
-                $0.buttonLabel.text = buttonTitles[index]
-                $0.buttonImage.image = buttonImages[index]
+                $0.setText(buttonTitles[index])
+                $0.setImage(buttonImages[index])
                 $0.tag = index
             }
             buttons.append(button)

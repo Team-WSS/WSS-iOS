@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-class RegisterNormalCustomToggle: UIButton {
+class RegisterNormalCustomToggleButton: UIButton {
     
     // MARK: - Properties
 
@@ -34,7 +34,6 @@ class RegisterNormalCustomToggle: UIButton {
     private var barViewSize: SizeSet = (height: 16.55, width: 30.9)
     private var circleViewSize: SizeSet = (height: 11.03, width: 11.03)
     
-    
     // MARK: - UI Components
     
     private var barView = UIView()
@@ -57,7 +56,7 @@ class RegisterNormalCustomToggle: UIButton {
     // MARK: - Override Method
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        isOn = !isOn
+        isOn.toggle()
     }
     
     // MARK: - Custom Method
@@ -77,7 +76,8 @@ class RegisterNormalCustomToggle: UIButton {
     }
     
     private func setHieararchy() {
-        self.addSubviews(barView, circleView)
+        self.addSubviews(barView,
+                         circleView)
     }
     
     private func setLayout() {

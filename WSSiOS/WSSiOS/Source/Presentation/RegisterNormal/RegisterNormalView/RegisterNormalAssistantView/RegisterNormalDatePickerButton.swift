@@ -11,7 +11,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class RegisterNormalDatePickerView: UIButton {
+final class RegisterNormalDatePickerButton: UIButton {
     
     // MARK: - UI Components
     
@@ -53,21 +53,21 @@ final class RegisterNormalDatePickerView: UIButton {
             $0.axis = .horizontal
             $0.spacing = 20
             $0.alignment = .center
-        }
-        
-        startDateLabel.do {
-            $0.text = "2023-12-26"
-            dateLabelStyle(of: startDateLabel)
-        }
-        
-        middleLabel.do {
-            $0.text = "~"
-            dateLabelStyle(of: middleLabel)
-        }
-        
-        endDateLabel.do {
-            $0.text = "2023-12-26"
-            dateLabelStyle(of: endDateLabel)
+            
+            startDateLabel.do {
+                $0.text = "2023-12-26"
+                dateLabelStyle(of: startDateLabel)
+            }
+            
+            middleLabel.do {
+                $0.text = "~"
+                dateLabelStyle(of: middleLabel)
+            }
+            
+            endDateLabel.do {
+                $0.text = "2023-12-26"
+                dateLabelStyle(of: endDateLabel)
+            }
         }
         
         calendarImageView.do {
@@ -78,9 +78,11 @@ final class RegisterNormalDatePickerView: UIButton {
     }
     
     private func setHieararchy() {
-        self.addSubviews(dateLabelStackView, calendarImageView)
-        dateLabelStackView.addArrangedSubviews(
-            startDateLabel, middleLabel, endDateLabel
+        self.addSubviews(dateLabelStackView,
+                         calendarImageView)
+        dateLabelStackView.addArrangedSubviews(startDateLabel,
+                                               middleLabel,
+                                               endDateLabel
         )
     }
     

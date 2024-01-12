@@ -20,28 +20,11 @@ class RegisterNormalReadStatusButton: UIButton {
     private var buttonHeight: CGFloat = 37
     private var buttonImageSize = SizeSet(width: 16, height: 16)
     
-    var labelText: String = "Test" {
-        didSet {
-            self.buttonLabel.do {
-                $0.text = labelText
-                self.buttonLabelStyle(of: $0)
-            }
-        }
-    }
-    
-    var labelImage: UIImage = ImageLiterals.icon.TagStatus.reading {
-        didSet {
-            self.buttonImage.do {
-                $0.image = labelImage
-            }
-        }
-    }
-    
     // MARK: - UI Components
     
     private let buttonStackView = UIStackView()
-    let buttonLabel = UILabel()
-    let buttonImage = UIImageView()
+    private let buttonImage = UIImageView()
+    private let buttonLabel = UILabel()
     
     // MARK: - Life Cycle
     
@@ -70,31 +53,45 @@ class RegisterNormalReadStatusButton: UIButton {
             $0.axis = .horizontal
             $0.spacing = 6
             $0.alignment = .center
-        }
-        
-        buttonImage.do {
-            $0.contentMode = .scaleAspectFill
-            $0.clipsToBounds = true
-        }
-        
-        buttonLabel.do {
-            buttonLabelStyle(of: $0)
+            
+            buttonImage.do {
+                $0.contentMode = .scaleAspectFill
+                $0.clipsToBounds = true
+            }
+            
+            buttonLabel.do {
+                buttonLabelStyle(of: $0)
+            }
         }
     }
     
     private func setHieararchy() {
         self.addSubviews(buttonStackView)
-        buttonStackView.addArrangedSubviews(buttonImage, buttonLabel)
+        buttonStackView.addArrangedSubviews(buttonImage,
+                                            buttonLabel)
     }
     
     private func setLayout() {
         buttonStackView.snp.makeConstraints {
-            $0.horizontalEdges.equalToSuperview().inset(13)
             $0.verticalEdges.equalToSuperview().inset(7)
+            $0.horizontalEdges.equalToSuperview().inset(13)
+            
+            buttonImage.snp.makeConstraints {
+                $0.size.equalTo(buttonImageSize.height)
+            }
         }
-
-        buttonImage.snp.makeConstraints {
-            $0.size.equalTo(buttonImageSize.height)
+    }
+    
+    func setText(_ text: String) {
+        buttonLabel.do {
+            $0.text = text
+            self.buttonLabelStyle(of: $0)
+        }
+    }
+    
+    func setImage(_ image: UIImage) {
+        buttonImage.do {
+            $0.image = image
         }
     }
     

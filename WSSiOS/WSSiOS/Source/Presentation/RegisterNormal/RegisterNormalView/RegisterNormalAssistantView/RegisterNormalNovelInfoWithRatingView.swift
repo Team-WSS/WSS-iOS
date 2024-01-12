@@ -15,7 +15,7 @@ final class RegisterNormalNovelInfoWithRatingView: UIView {
     // MARK: - UI Components
     
     private let novelInfoWithRatingContentView = UIStackView()
-    private let novelInfoStackView = RegisterNormalNovelInfoStackView()
+    private let novelInfoStackView = RegisterNormalNovelInfoView()
     private let novelCoverImageView = UIImageView()
     private let starRatingView = RegisterNormalStarRatingView()
     
@@ -40,33 +40,32 @@ final class RegisterNormalNovelInfoWithRatingView: UIView {
             $0.axis = .vertical
             $0.spacing = 22
             $0.alignment = .center
-        }
-        
-        novelCoverImageView.do {
-            $0.image = .registerNormalNovelCover
-            $0.contentMode = .scaleAspectFill
-            $0.layer.cornerRadius = 12
-            $0.clipsToBounds = true
+            
+            novelCoverImageView.do {
+                $0.image = .registerNormalNovelCover
+                $0.contentMode = .scaleAspectFill
+                $0.layer.cornerRadius = 12
+                $0.clipsToBounds = true
+            }
         }
     }
     
     private func setHieararchy() {
         self.addSubview(novelInfoWithRatingContentView)
-        
-        novelInfoWithRatingContentView.addArrangedSubviews(
-            novelInfoStackView, novelCoverImageView, starRatingView
-        )
+        novelInfoWithRatingContentView.addArrangedSubviews(novelInfoStackView,
+                                                           novelCoverImageView,
+                                                           starRatingView)
     }
     
     private func setLayout() {
         novelInfoWithRatingContentView.snp.makeConstraints {
-            $0.horizontalEdges.equalToSuperview().inset(67)
             $0.verticalEdges.equalToSuperview()
-        }
-        
-        novelCoverImageView.snp.makeConstraints {
-            $0.horizontalEdges.equalToSuperview().inset(56.5)
-            $0.height.equalTo(novelCoverImageView.snp.width).multipliedBy(197.0/128.0)
+            $0.horizontalEdges.equalToSuperview().inset(67)
+            
+            novelCoverImageView.snp.makeConstraints {
+                $0.height.equalTo(novelCoverImageView.snp.width).multipliedBy(197.0/128.0)
+                $0.horizontalEdges.equalToSuperview().inset(56.5)
+            }
         }
     }
 }

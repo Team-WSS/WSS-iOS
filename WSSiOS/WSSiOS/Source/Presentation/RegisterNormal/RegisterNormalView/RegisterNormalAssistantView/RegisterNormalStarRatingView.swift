@@ -47,7 +47,6 @@ final class RegisterNormalStarRatingView: UIView {
     
     private func setHieararchy() {
         self.addSubviews(starStackView)
-        
         starImageViews.forEach {
             starStackView.addArrangedSubview($0)
         }
@@ -75,7 +74,7 @@ final class RegisterNormalStarRatingView: UIView {
         let imageView = UIImageView()
         imageView.do {
             $0.image = ImageLiterals.icon.Star.empty
-            $0.isUserInteractionEnabled = true
+            //$0.isUserInteractionEnabled = true
         }
         return imageView
     }

@@ -55,8 +55,6 @@ final class RegisterNormalKeywordSelectionButton: UIButton {
         
         buttonImage.do {
             $0.image = ImageLiterals.icon.plusKeyword
-            $0.contentMode = .scaleAspectFill
-            $0.clipsToBounds = true
         }
         
         buttonLabel.do {
@@ -67,9 +65,8 @@ final class RegisterNormalKeywordSelectionButton: UIButton {
     
     private func setHieararchy() {
         self.addSubviews(buttonStackView)
-        buttonStackView.addArrangedSubviews(
-            buttonImage, buttonLabel
-        )
+        buttonStackView.addArrangedSubviews(buttonImage,
+                                            buttonLabel)
     }
     
     private func setLayout() {
@@ -77,10 +74,6 @@ final class RegisterNormalKeywordSelectionButton: UIButton {
             $0.leading.equalToSuperview().inset(13)
             $0.verticalEdges.equalToSuperview()
             $0.height.equalTo(43)
-            
-            buttonImage.snp.makeConstraints {
-                $0.size.equalTo(24)
-            }
         }
     }
     
