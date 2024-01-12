@@ -62,7 +62,7 @@ enum ImageLiterals {
             static var myPageSelected: UIImage{ .load(named: "icNavigateMySelected")}
         }
         
-        static var calender: UIImage{ .load(named: "icCalender")}
+        static var calender: UIImage{ .load(named: "icCalendar")}
         static var dropDown: UIImage{ .load(named: "icDropDown")}
         static var linkPlatform: UIImage{ .load(named: "icLinkPlatform")}
         static var navigateLeft: UIImage{ .load(named: "icNavigateLeft")}
