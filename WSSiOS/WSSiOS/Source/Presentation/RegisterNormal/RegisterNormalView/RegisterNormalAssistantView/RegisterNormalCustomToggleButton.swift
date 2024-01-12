@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-class RegisterNormalCustomToggleButton: UIButton {
+final class RegisterNormalCustomToggleButton: UIButton {
     
     // MARK: - Properties
 

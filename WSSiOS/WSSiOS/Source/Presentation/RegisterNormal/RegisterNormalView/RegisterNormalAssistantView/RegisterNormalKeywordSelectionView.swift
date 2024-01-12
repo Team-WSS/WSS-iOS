@@ -16,7 +16,7 @@ final class RegisterNormalKeywordSelectionView: UIView {
     
     private let totalStackView = UIStackView()
     private let titleView = RegisterNormalSectionTitleView()
-    private let keywordButtonView = RegisterNormalKeywordSelectionButton()
+    private let keywordButton = RegisterNormalKeywordSelectionButton()
     
     // MARK: - Life Cycle
     
@@ -49,7 +49,7 @@ final class RegisterNormalKeywordSelectionView: UIView {
     private func setHieararchy() {
         self.addSubview(totalStackView)
         totalStackView.addArrangedSubviews(titleView,
-                                           keywordButtonView)
+                                           keywordButton)
     }
     
     private func setLayout() {

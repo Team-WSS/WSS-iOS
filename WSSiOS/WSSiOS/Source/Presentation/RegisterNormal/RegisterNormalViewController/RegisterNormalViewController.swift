@@ -7,9 +7,6 @@
 
 import UIKit
 
-import Then
-import SnapKit
-
 /// 1-3-1 RegisterNormal View
 final class RegisterNormalViewController: ViewController {
     
