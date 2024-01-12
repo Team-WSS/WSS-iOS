@@ -1,5 +1,5 @@
 //
-//  SearchTableViewCell.swift
+//  SearchCollectionViewCell.swift
 //  WSSiOS
 //
 //  Created by 최서연 on 1/7/24.
