@@ -18,6 +18,7 @@ final class NovelDetailInfoView: UIView {
     let novelDetailInfoRatingView = NovelDetailInfoRatingView()
     let novelDetailInfoReadStatusView = NovelDetailInfoReadStatusView()
     let novelDetailInfoReadDateView = NovelDetailInfoReadDateView()
+    let novelDetailInfoKeywordView = NovelDetailInfoKeywordView()
     let novelDetailInfoDescriptionView = NovelDetailInfoDescriptionView()
     let novelDetailInfoGenreView = NovelDetailInfoGenreView()
 
@@ -51,6 +52,7 @@ final class NovelDetailInfoView: UIView {
         contentView.addArrangedSubviews(novelDetailInfoRatingView,
                                         novelDetailInfoReadStatusView,
                                         novelDetailInfoReadDateView,
+                                        novelDetailInfoKeywordView,
                                         novelDetailInfoDescriptionView,
                                         novelDetailInfoGenreView)
     }

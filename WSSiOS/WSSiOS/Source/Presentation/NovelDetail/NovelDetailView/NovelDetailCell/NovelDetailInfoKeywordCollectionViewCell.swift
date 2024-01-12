@@ -64,6 +64,6 @@ final class NovelDetailInfoKeywordCollectionViewCell: UICollectionViewCell {
     // MARK: - bind data
     
     func bindData(keyword: String) {
-        self.keywordLabel.text = "#\(keyword)"
+        self.keywordLabel.text = keyword
     }
 }

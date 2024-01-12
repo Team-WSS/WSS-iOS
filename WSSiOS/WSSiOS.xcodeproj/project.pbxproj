@@ -58,6 +58,7 @@
 		CD39F2D02B50CD4700B73A5C /* NovelDetailInfoReadStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2CF2B50CD4700B73A5C /* NovelDetailInfoReadStatusView.swift */; };
 		CD39F2D22B50CE0600B73A5C /* NovelDetailInfoReadStatusTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2D12B50CE0600B73A5C /* NovelDetailInfoReadStatusTagView.swift */; };
 		CD39F2D42B50D5C700B73A5C /* NovelDetailInfoReadDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2D32B50D5C700B73A5C /* NovelDetailInfoReadDateView.swift */; };
+		CD39F2D62B50D9A900B73A5C /* NovelDetailInfoKeywordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2D52B50D9A900B73A5C /* NovelDetailInfoKeywordView.swift */; };
 		CD39F2D82B50DA6300B73A5C /* NovelDetailInfoDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2D72B50DA6300B73A5C /* NovelDetailInfoDescriptionView.swift */; };
 		CD39F2DA2B50DDBF00B73A5C /* NovelDetailInfoGenreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2D92B50DDBF00B73A5C /* NovelDetailInfoGenreView.swift */; };
 		CD39F2DE2B50E11000B73A5C /* NovelDetailInfoKeywordCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2DD2B50E11000B73A5C /* NovelDetailInfoKeywordCollectionViewCell.swift */; };
@@ -108,6 +109,7 @@
 		CD39F2CF2B50CD4700B73A5C /* NovelDetailInfoReadStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoReadStatusView.swift; sourceTree = "<group>"; };
 		CD39F2D12B50CE0600B73A5C /* NovelDetailInfoReadStatusTagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoReadStatusTagView.swift; sourceTree = "<group>"; };
 		CD39F2D32B50D5C700B73A5C /* NovelDetailInfoReadDateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoReadDateView.swift; sourceTree = "<group>"; };
+		CD39F2D52B50D9A900B73A5C /* NovelDetailInfoKeywordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoKeywordView.swift; sourceTree = "<group>"; };
 		CD39F2D72B50DA6300B73A5C /* NovelDetailInfoDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoDescriptionView.swift; sourceTree = "<group>"; };
 		CD39F2D92B50DDBF00B73A5C /* NovelDetailInfoGenreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoGenreView.swift; sourceTree = "<group>"; };
 		CD39F2DD2B50E11000B73A5C /* NovelDetailInfoKeywordCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoKeywordCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -413,6 +415,7 @@
 				CD39F2CF2B50CD4700B73A5C /* NovelDetailInfoReadStatusView.swift */,
 				CD39F2D12B50CE0600B73A5C /* NovelDetailInfoReadStatusTagView.swift */,
 				CD39F2D32B50D5C700B73A5C /* NovelDetailInfoReadDateView.swift */,
+				CD39F2D52B50D9A900B73A5C /* NovelDetailInfoKeywordView.swift */,
 				CD39F2D72B50DA6300B73A5C /* NovelDetailInfoDescriptionView.swift */,
 				CD39F2D92B50DDBF00B73A5C /* NovelDetailInfoGenreView.swift */,
 			);
@@ -540,6 +543,7 @@
 				CD39F2DA2B50DDBF00B73A5C /* NovelDetailInfoGenreView.swift in Sources */,
 				2CCBF9EE2B4C1FC500D787C2 /* MyPageViewController.swift in Sources */,
 				2C01F9852B482EB700D90FFE /* UserRepository.swift in Sources */,
+				CD39F2D62B50D9A900B73A5C /* NovelDetailInfoKeywordView.swift in Sources */,
 				CD39F2C12B4FF81E00B73A5C /* UIButton+.swift in Sources */,
 				CD39F2CA2B5038F400B73A5C /* NovelDetailInfoView.swift in Sources */,
 				2CCBF9F22B4D347B00D787C2 /* WSSMainButton.swift in Sources */,

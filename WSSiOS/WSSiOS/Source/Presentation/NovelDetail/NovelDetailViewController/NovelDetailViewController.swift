@@ -18,8 +18,20 @@ final class NovelDetailViewController: UIViewController {
         ["memoDate": "2023-12-23 오전 10:12", "memoContent": "깨달았다. 사람은 사람을 절대 이해할 수 없다. 공감할수는 있어도. 그렇기에 나는 절대로 사람을 이해하려 노력하지 않을"]
     ])
     
+    private let keywords = Observable<[String]>.just([
+        "#가상시대물",
+        "#판타지물",
+        "#오해",
+        "#상처녀",
+        "#존댓말남",
+        "#소유욕/독점욕/질투",
+        "#운명적사랑",
+        "#소유욕"
+    ])
+    
     private let disposeBag = DisposeBag()
     private let memoTableViewHeight = BehaviorSubject<CGFloat>(value: 0)
+    private let keywordCollectionViewHeight = BehaviorSubject<CGFloat>(value: 0)
     
     // MARK: - UI Components
     
@@ -35,6 +47,7 @@ final class NovelDetailViewController: UIViewController {
         super.viewDidLoad()
         
         register()
+        delegate()
         bind()
     }
     
@@ -42,6 +55,14 @@ final class NovelDetailViewController: UIViewController {
 
     private func register() {
         rootView.novelDetailMemoView.memoTableView.register(NovelDetailMemoTableViewCell.self, forCellReuseIdentifier: "NovelDetailMemoTableViewCell")
+        rootView.novelDetailInfoView.novelDetailInfoKeywordView.keywordCollectionView.register(NovelDetailInfoKeywordCollectionViewCell.self, forCellWithReuseIdentifier: "NovelDetailInfoKeywordCollectionViewCell")
+    }
+    
+    // MARK: - delegate
+    
+    private func delegate() {
+        rootView.novelDetailInfoView.novelDetailInfoKeywordView.keywordCollectionView.rx.setDelegate(self)
+            .disposed(by: disposeBag)
     }
     
     // MARK: - bind
@@ -65,5 +86,42 @@ final class NovelDetailViewController: UIViewController {
                 self.rootView.novelDetailMemoView.updateTableViewHeight(height: height)
             })
             .disposed(by: disposeBag)
+        
+        keywords.bind(to: rootView.novelDetailInfoView.novelDetailInfoKeywordView.keywordCollectionView.rx.items(
+            cellIdentifier: "NovelDetailInfoKeywordCollectionViewCell",
+            cellType: NovelDetailInfoKeywordCollectionViewCell.self)) { item, element, cell in
+                cell.bindData(keyword: element)
+            }
+            .disposed(by: disposeBag)
+        
+        rootView.novelDetailInfoView.novelDetailInfoKeywordView.keywordCollectionView.rx.observe(CGSize.self, "contentSize")
+            .map { $0?.height ?? 0 }
+            .bind(to: keywordCollectionViewHeight)
+            .disposed(by: disposeBag)
+        
+        keywordCollectionViewHeight
+            .subscribe(onNext: { height in
+                self.rootView.novelDetailInfoView.novelDetailInfoKeywordView.updateCollectionViewHeight(height: height)
+            })
+            .disposed(by: disposeBag)
+    }
+}
+
+extension NovelDetailViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        var text: String?
+
+        keywords.subscribe(onNext: { items in
+            guard indexPath.item < items.count else { return }
+            text = items[indexPath.item]
+        })
+        .disposed(by: disposeBag)
+
+        guard let unwrappedText = text else {
+            return CGSize(width: 50, height: 37)
+        }
+
+        let width = (unwrappedText as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 27
+        return CGSize(width: width, height: 37)
     }
 }
