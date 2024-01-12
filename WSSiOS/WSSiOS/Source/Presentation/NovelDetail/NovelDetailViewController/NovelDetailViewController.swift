@@ -77,6 +77,14 @@ final class NovelDetailViewController: UIViewController {
     // MARK: - bind
     
     private func bind() {
+        rootView.novelDetailTabView.memoButton.rx.tap.bind {
+            self.memoButtonDidTap()
+        }.disposed(by: disposeBag)
+        
+        rootView.novelDetailTabView.infoButton.rx.tap.bind {
+            self.infoButtonDidTap()
+        }.disposed(by: disposeBag)
+        
         memos.bind(to: rootView.novelDetailMemoView.memoTableView.rx.items(
             cellIdentifier: "NovelDetailMemoTableViewCell",
             cellType: NovelDetailMemoTableViewCell.self)) { row, element, cell in
@@ -131,6 +139,22 @@ final class NovelDetailViewController: UIViewController {
                 self.rootView.novelDetailInfoView.novelDetailInfoPlatformView.updateCollectionViewHeight(height: height)
             })
             .disposed(by: disposeBag)
+    }
+    
+    private func memoButtonDidTap() {
+        rootView.novelDetailInfoView.removeFromSuperview()
+        rootView.contentView.addArrangedSubview(rootView.novelDetailMemoView)
+        rootView.novelDetailTabView.memoButton.isSelected = true
+        rootView.novelDetailTabView.infoButton.isSelected = false
+        rootView.novelDetailTabView.highlightMemoButton()
+    }
+    
+    private func infoButtonDidTap() {
+        rootView.novelDetailMemoView.removeFromSuperview()
+        rootView.contentView.addArrangedSubview(rootView.novelDetailInfoView)
+        rootView.novelDetailTabView.memoButton.isSelected = false
+        rootView.novelDetailTabView.infoButton.isSelected = true
+        rootView.novelDetailTabView.highlightInfoButton()
     }
 }
 

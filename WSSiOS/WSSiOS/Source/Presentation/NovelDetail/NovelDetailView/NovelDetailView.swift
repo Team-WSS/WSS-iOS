@@ -19,6 +19,7 @@ final class NovelDetailView: UIView {
     let novelDetailHeaderView = NovelDetailHeaderView()
     let novelDetailTabView = NovelDetailTabView()
     let novelDetailMemoView = NovelDetailMemoView()
+    let novelDetailInfoView = NovelDetailInfoView()
 
     // MARK: - Life Cycle
     
