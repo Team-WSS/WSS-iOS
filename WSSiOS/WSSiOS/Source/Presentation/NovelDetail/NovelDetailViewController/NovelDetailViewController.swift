@@ -29,9 +29,15 @@ final class NovelDetailViewController: UIViewController {
         "#소유욕"
     ])
     
+    private let platforms = Observable<[String]>.just([
+        "네이버시리즈",
+        "카카오페이지"
+    ])
+    
     private let disposeBag = DisposeBag()
     private let memoTableViewHeight = BehaviorSubject<CGFloat>(value: 0)
     private let keywordCollectionViewHeight = BehaviorSubject<CGFloat>(value: 0)
+    private let platformCollectionViewHeight = BehaviorSubject<CGFloat>(value: 0)
     
     // MARK: - UI Components
     
@@ -56,12 +62,15 @@ final class NovelDetailViewController: UIViewController {
     private func register() {
         rootView.novelDetailMemoView.memoTableView.register(NovelDetailMemoTableViewCell.self, forCellReuseIdentifier: "NovelDetailMemoTableViewCell")
         rootView.novelDetailInfoView.novelDetailInfoKeywordView.keywordCollectionView.register(NovelDetailInfoKeywordCollectionViewCell.self, forCellWithReuseIdentifier: "NovelDetailInfoKeywordCollectionViewCell")
+        rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.register(NovelDetailInfoPlatformCollectionViewCell.self, forCellWithReuseIdentifier: "NovelDetailInfoPlatformCollectionViewCell")
     }
     
     // MARK: - delegate
     
     private func delegate() {
         rootView.novelDetailInfoView.novelDetailInfoKeywordView.keywordCollectionView.rx.setDelegate(self)
+            .disposed(by: disposeBag)
+        rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.rx.setDelegate(self)
             .disposed(by: disposeBag)
     }
     
@@ -104,24 +113,60 @@ final class NovelDetailViewController: UIViewController {
                 self.rootView.novelDetailInfoView.novelDetailInfoKeywordView.updateCollectionViewHeight(height: height)
             })
             .disposed(by: disposeBag)
+        
+        platforms.bind(to: rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.rx.items(
+            cellIdentifier: "NovelDetailInfoPlatformCollectionViewCell",
+            cellType: NovelDetailInfoPlatformCollectionViewCell.self)) { item, element, cell in
+                cell.bindData(platform: element)
+            }
+            .disposed(by: disposeBag)
+        
+        rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.rx.observe(CGSize.self, "contentSize")
+            .map { $0?.height ?? 0 }
+            .bind(to: platformCollectionViewHeight)
+            .disposed(by: disposeBag)
+        
+        platformCollectionViewHeight
+            .subscribe(onNext: { height in
+                self.rootView.novelDetailInfoView.novelDetailInfoPlatformView.updateCollectionViewHeight(height: height)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
 extension NovelDetailViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var text: String?
-
-        keywords.subscribe(onNext: { items in
-            guard indexPath.item < items.count else { return }
-            text = items[indexPath.item]
-        })
-        .disposed(by: disposeBag)
-
-        guard let unwrappedText = text else {
-            return CGSize(width: 50, height: 37)
+        
+        switch collectionView {
+        case rootView.novelDetailInfoView.novelDetailInfoKeywordView.keywordCollectionView:
+            keywords.subscribe(onNext: { items in
+                guard indexPath.item < items.count else { return }
+                text = items[indexPath.item]
+            })
+            .disposed(by: disposeBag)
+            
+            guard let unwrappedText = text else {
+                return CGSize(width: 0, height: 0)
+            }
+            
+            let width = (unwrappedText as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 27
+            return CGSize(width: width, height: 37)
+        case rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView:
+            platforms.subscribe(onNext: { items in
+                guard indexPath.item < items.count else { return }
+                text = items[indexPath.item]
+            })
+            .disposed(by: disposeBag)
+            
+            guard let unwrappedText = text else {
+                return CGSize(width: 0, height: 0)
+            }
+            
+            let width = (unwrappedText as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 48
+            return CGSize(width: width, height: 37)
+        default:
+            return CGSize(width: 0, height: 0)
         }
-
-        let width = (unwrappedText as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 27
-        return CGSize(width: width, height: 37)
     }
 }

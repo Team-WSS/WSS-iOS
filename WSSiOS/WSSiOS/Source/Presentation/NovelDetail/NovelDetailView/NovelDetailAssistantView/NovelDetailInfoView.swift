@@ -21,6 +21,7 @@ final class NovelDetailInfoView: UIView {
     let novelDetailInfoKeywordView = NovelDetailInfoKeywordView()
     let novelDetailInfoDescriptionView = NovelDetailInfoDescriptionView()
     let novelDetailInfoGenreView = NovelDetailInfoGenreView()
+    let novelDetailInfoPlatformView = NovelDetailInfoPlatformView()
 
     // MARK: - Life Cycle
     
@@ -54,7 +55,8 @@ final class NovelDetailInfoView: UIView {
                                         novelDetailInfoReadDateView,
                                         novelDetailInfoKeywordView,
                                         novelDetailInfoDescriptionView,
-                                        novelDetailInfoGenreView)
+                                        novelDetailInfoGenreView,
+                                        novelDetailInfoPlatformView)
     }
     
     // MARK: - set Layout
