@@ -37,37 +37,37 @@ class MyPageChangeNicknameViewController: UIViewController {
     private func textFieldEvent() {
         rootView.changeNicknameTextField.rx.controlEvent([.editingDidBegin, .editingChanged])
             .asObservable()
-            .subscribe(onNext: { _ in
-                self.rootView.textFieldUnderBarView.backgroundColor = .Primary100
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.rootView.textFieldUnderBarView.backgroundColor = .Primary100
             })
             .disposed(by: disposeBag)
         
         rootView.changeNicknameTextField.rx.controlEvent([.editingDidEnd])
             .asObservable()
-            .subscribe(onNext: { _ in
-                self.rootView.textFieldUnderBarView.backgroundColor = .Gray200
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.rootView.textFieldUnderBarView.backgroundColor = .Gray200
             })
             .disposed(by: disposeBag)
         
         rootView.changeNicknameTextField.rx.text
-            .subscribe(onNext: { text in
+            .subscribe(with: self, onNext: { owner, text in
                 if let countText = text?.count {
-                    self.rootView.countNicknameLabel.text = "\(countText)/10"
+                    owner.rootView.countNicknameLabel.text = "\(countText)/10"
                 }
             })
             .disposed(by: disposeBag)
         
         rootView.changeNicknameTextField.rx.text.orEmpty
-            .subscribe(onNext: { text in 
+            .subscribe(with: self, onNext: { owner, text in
                 self.limitNum(text)
             })
             .disposed(by: disposeBag)
         
         rootView.setClearButton.rx.tap
-            .bind {
-                self.rootView.changeNicknameTextField.text = ""
-                self.rootView.countNicknameLabel.text = "0/10"
-            }
+            .bind(with: self, onNext: { owner, _ in
+                owner.rootView.changeNicknameTextField.text = ""
+                owner.rootView.countNicknameLabel.text = "0/10"
+            })
             .disposed(by: disposeBag)
     }
     
