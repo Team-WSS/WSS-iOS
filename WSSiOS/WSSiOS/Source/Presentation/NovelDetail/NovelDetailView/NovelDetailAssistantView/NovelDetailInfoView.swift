@@ -18,6 +18,7 @@ final class NovelDetailInfoView: UIView {
     let novelDetailInfoRatingView = NovelDetailInfoRatingView()
     let novelDetailInfoReadStatusView = NovelDetailInfoReadStatusView()
     let novelDetailInfoReadDateView = NovelDetailInfoReadDateView()
+    let novelDetailInfoDescriptionView = NovelDetailInfoDescriptionView()
 
     // MARK: - Life Cycle
     
@@ -48,7 +49,8 @@ final class NovelDetailInfoView: UIView {
         self.addSubview(contentView)
         contentView.addArrangedSubviews(novelDetailInfoRatingView,
                                         novelDetailInfoReadStatusView,
-                                        novelDetailInfoReadDateView)
+                                        novelDetailInfoReadDateView,
+                                        novelDetailInfoDescriptionView)
     }
     
     // MARK: - set Layout
