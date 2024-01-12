@@ -16,6 +16,7 @@ final class NovelDetailInfoView: UIView {
     
     let contentView = UIStackView()
     let novelDetailInfoRatingView = NovelDetailInfoRatingView()
+    let novelDetailInfoReadStatusView = NovelDetailInfoReadStatusView()
 
     // MARK: - Life Cycle
     
@@ -44,7 +45,8 @@ final class NovelDetailInfoView: UIView {
     
     private func setHierachy() {
         self.addSubview(contentView)
-        contentView.addArrangedSubviews(novelDetailInfoRatingView)
+        contentView.addArrangedSubviews(novelDetailInfoRatingView,
+                                        novelDetailInfoReadStatusView)
     }
     
     // MARK: - set Layout
