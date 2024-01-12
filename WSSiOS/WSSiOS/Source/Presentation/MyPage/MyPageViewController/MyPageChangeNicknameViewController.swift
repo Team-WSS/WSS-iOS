@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class MyPageChangeNicknameViewController: UIViewController {
+final class MyPageChangeNicknameViewController: UIViewController {
     
     //MARK: - Set Properties
     

@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-class MyPageChangeNicknameView: UIView {
+final class MyPageChangeNicknameView: UIView {
     
     //MARK: - UI Components
     
