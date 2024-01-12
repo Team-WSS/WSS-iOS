@@ -15,10 +15,10 @@ class MyPageChangeNicknameView: UIView {
     //MARK: - UI Components
     
     private let nicknameLabel = UILabel()
-    var changeNicknameTextField = UITextField()
-    var setClearButton = UIButton(type: .custom)
-    var textFieldUnderBarView = UIView()
-    var countNicknameLabel = UILabel()
+    public var changeNicknameTextField = UITextField()
+    public var setClearButton = UIButton(type: .custom)
+    public var textFieldUnderBarView = UIView()
+    public var countNicknameLabel = UILabel()
     
     // MARK: - Life Cycle
     
