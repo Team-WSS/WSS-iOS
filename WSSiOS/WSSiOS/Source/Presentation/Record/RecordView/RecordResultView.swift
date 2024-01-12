@@ -12,6 +12,7 @@ final class RecordResultView: UIView {
     //MARK: - UI Components
     
     private let headerView = RecordHeaderView()
+    private let recordTableView = UITableView(frame: .zero, style: .plain)
     
     // MARK: - Life Cycle
     
@@ -21,6 +22,8 @@ final class RecordResultView: UIView {
         setUI()
         setHierachy()
         setLayout()
+        
+        registerCell()
     }
     
     required init?(coder: NSCoder) {
@@ -28,11 +31,14 @@ final class RecordResultView: UIView {
     }
     
     private func setUI() {
-        
+        recordTableView.do {
+            $0.rowHeight = 136
+        }
     }
     
     private func setHierachy() {
-        self.addSubviews(headerView)
+        self.addSubviews(headerView,
+                         recordTableView)
     }
     
     private func setLayout() {
@@ -41,5 +47,19 @@ final class RecordResultView: UIView {
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(40)
         }
+        
+        recordTableView.snp.makeConstraints {
+            $0.top.equalTo(headerView.snp.bottom)
+            $0.leading.trailing.bottom.equalToSuperview()
+        }
+    }
+    
+    private func registerCell() {
+        recordTableView.register(RecordTableViewCell.self,
+                                 forCellReuseIdentifier: RecordTableViewCell.identifier)
+    }
+    
+    private func bindDataToRecordTableView() {
+        
     }
 }
