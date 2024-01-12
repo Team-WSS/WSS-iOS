@@ -63,6 +63,7 @@
 		CD39F2DA2B50DDBF00B73A5C /* NovelDetailInfoGenreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2D92B50DDBF00B73A5C /* NovelDetailInfoGenreView.swift */; };
 		CD39F2DE2B50E11000B73A5C /* NovelDetailInfoKeywordCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2DD2B50E11000B73A5C /* NovelDetailInfoKeywordCollectionViewCell.swift */; };
 		CD39F2E22B50EFCB00B73A5C /* LeftAlignedCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2E12B50EFCB00B73A5C /* LeftAlignedCollectionViewFlowLayout.swift */; };
+		CD39F2E62B50F2E900B73A5C /* NovelDetailInfoPlatformCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2E52B50F2E900B73A5C /* NovelDetailInfoPlatformCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -114,6 +115,7 @@
 		CD39F2D92B50DDBF00B73A5C /* NovelDetailInfoGenreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoGenreView.swift; sourceTree = "<group>"; };
 		CD39F2DD2B50E11000B73A5C /* NovelDetailInfoKeywordCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoKeywordCollectionViewCell.swift; sourceTree = "<group>"; };
 		CD39F2E12B50EFCB00B73A5C /* LeftAlignedCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftAlignedCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
+		CD39F2E52B50F2E900B73A5C /* NovelDetailInfoPlatformCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoPlatformCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -427,6 +429,7 @@
 			children = (
 				CD39F2C72B50124C00B73A5C /* NovelDetailMemoTableViewCell.swift */,
 				CD39F2DD2B50E11000B73A5C /* NovelDetailInfoKeywordCollectionViewCell.swift */,
+				CD39F2E52B50F2E900B73A5C /* NovelDetailInfoPlatformCollectionViewCell.swift */,
 			);
 			path = NovelDetailCell;
 			sourceTree = "<group>";
@@ -532,6 +535,7 @@
 				2CCBF9F02B4C1FD800D787C2 /* MyPageView.swift in Sources */,
 				A1C3EC532B46962F00D997C2 /* UIImage+.swift in Sources */,
 				CD39F2BD2B4FE98500B73A5C /* NovelDetailHeaderView.swift in Sources */,
+				CD39F2E62B50F2E900B73A5C /* NovelDetailInfoPlatformCollectionViewCell.swift in Sources */,
 				A1A1F9D42B4873B500705F44 /* SearchEmptyView.swift in Sources */,
 				2CD2291E2B42E685005400BE /* SceneDelegate.swift in Sources */,
 				A1A1F9CD2B48733200705F44 /* SearchViewController.swift in Sources */,
