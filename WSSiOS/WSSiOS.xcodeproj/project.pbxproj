@@ -61,6 +61,7 @@
 		CD39F2D82B50DA6300B73A5C /* NovelDetailInfoDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2D72B50DA6300B73A5C /* NovelDetailInfoDescriptionView.swift */; };
 		CD39F2DA2B50DDBF00B73A5C /* NovelDetailInfoGenreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2D92B50DDBF00B73A5C /* NovelDetailInfoGenreView.swift */; };
 		CD39F2DE2B50E11000B73A5C /* NovelDetailInfoKeywordCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2DD2B50E11000B73A5C /* NovelDetailInfoKeywordCollectionViewCell.swift */; };
+		CD39F2E22B50EFCB00B73A5C /* LeftAlignedCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2E12B50EFCB00B73A5C /* LeftAlignedCollectionViewFlowLayout.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -110,6 +111,7 @@
 		CD39F2D72B50DA6300B73A5C /* NovelDetailInfoDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoDescriptionView.swift; sourceTree = "<group>"; };
 		CD39F2D92B50DDBF00B73A5C /* NovelDetailInfoGenreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoGenreView.swift; sourceTree = "<group>"; };
 		CD39F2DD2B50E11000B73A5C /* NovelDetailInfoKeywordCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoKeywordCollectionViewCell.swift; sourceTree = "<group>"; };
+		CD39F2E12B50EFCB00B73A5C /* LeftAlignedCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftAlignedCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -386,6 +388,7 @@
 				CD39F2C62B50122500B73A5C /* NovelDetailCell */,
 				CD39F2B92B4FE10800B73A5C /* NovelDetailAssistantView */,
 				CD39F2B52B4FE0E200B73A5C /* NovelDetailView.swift */,
+				CD39F2E12B50EFCB00B73A5C /* LeftAlignedCollectionViewFlowLayout.swift */,
 			);
 			path = NovelDetailView;
 			sourceTree = "<group>";
@@ -546,6 +549,7 @@
 				2C2491862B4ADC420096F255 /* WSSTabBarController.swift in Sources */,
 				CD39F2D02B50CD4700B73A5C /* NovelDetailInfoReadStatusView.swift in Sources */,
 				2CD229572B42EA75005400BE /* UIColor+.swift in Sources */,
+				CD39F2E22B50EFCB00B73A5C /* LeftAlignedCollectionViewFlowLayout.swift in Sources */,
 				A1DBB2FA2B4AA981000EE869 /* SearchTableViewCell.swift in Sources */,
 				CD39F2B82B4FE0FB00B73A5C /* NovelDetailViewController.swift in Sources */,
 				CD39F2DE2B50E11000B73A5C /* NovelDetailInfoKeywordCollectionViewCell.swift in Sources */,
