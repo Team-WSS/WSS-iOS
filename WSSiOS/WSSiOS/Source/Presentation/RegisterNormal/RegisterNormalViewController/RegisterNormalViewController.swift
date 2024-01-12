@@ -25,27 +25,5 @@ final class RegisterNormalViewController: ViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        setHieararchy()
-        setUI()
-        setLayout()
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-    }
-    
-    // MARK: - @Functions
-    
-    private func setUI() {
-        
-    }
-    
-    private func setLayout() {
-        
-    }
-    
-    func setHieararchy() {
-        
     }
 }
