@@ -43,6 +43,8 @@ final class RegisterNormalStarRatingView: UIView {
             starImageView.do {
                 $0.isUserInteractionEnabled = true
                 $0.image = ImageLiterals.icon.Star.empty
+                $0.contentMode = .scaleAspectFill
+                $0.clipsToBounds = true
             }
         }
     }
@@ -57,6 +59,13 @@ final class RegisterNormalStarRatingView: UIView {
     func setLayout() {
         starStackView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+        }
+        
+        starImageViews.forEach {
+            $0.snp.makeConstraints {
+                $0.width.equalTo(31)
+                $0.height.equalTo(29)
+            }
         }
     }
     
