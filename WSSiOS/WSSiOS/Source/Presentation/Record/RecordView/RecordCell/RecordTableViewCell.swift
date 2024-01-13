@@ -48,7 +48,8 @@ final class RecordTableViewCell: UITableViewCell {
         recordContentLabel.do {
             $0.font = .Body2
             $0.textColor = .Black
-            $0.numberOfLines = 5
+            $0.numberOfLines = 0
+            $0.lineBreakMode = .byCharWrapping
         }
     }
     
@@ -69,13 +70,21 @@ final class RecordTableViewCell: UITableViewCell {
         
         novelTitleLabel.snp.makeConstraints {
             $0.top.equalTo(dateView.snp.bottom).offset(16)
+            $0.leading.equalToSuperview().inset(20)
             $0.centerX.equalToSuperview()
         }
         
         recordContentLabel.snp.makeConstraints {
             $0.top.equalTo(novelTitleLabel.snp.bottom).offset(16)
             $0.centerX.equalToSuperview()
+            $0.leading.equalToSuperview().inset(21)
             $0.bottom.equalToSuperview().inset(48)
         }
+    }
+    
+    func bindData(data: Record) {
+        dateView.dateLabel.text = data.recordDate
+        novelTitleLabel.text = data.novelTitle
+        recordContentLabel.text = data.recordContent
     }
 }

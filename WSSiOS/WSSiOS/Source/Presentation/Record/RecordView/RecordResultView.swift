@@ -7,12 +7,21 @@
 
 import UIKit
 
+import RxSwift
+import RxCocoa
+import SnapKit
+import Then
+
 final class RecordResultView: UIView {
     
+    //MARK: - Properties
+    
+    private let disposeBag = DisposeBag()
+
     //MARK: - UI Components
     
     private let headerView = RecordHeaderView()
-    private let recordTableView = UITableView(frame: .zero, style: .plain)
+    let recordTableView = UITableView(frame: .zero, style: .plain)
     
     // MARK: - Life Cycle
     
@@ -24,6 +33,7 @@ final class RecordResultView: UIView {
         setLayout()
         
         registerCell()
+        bindDataToRecordTableView()
     }
     
     required init?(coder: NSCoder) {
@@ -32,7 +42,9 @@ final class RecordResultView: UIView {
     
     private func setUI() {
         recordTableView.do {
-            $0.rowHeight = 136
+            $0.rowHeight = 200
+            $0.showsVerticalScrollIndicator = false
+            $0.separatorStyle = .none
         }
     }
     
@@ -60,6 +72,9 @@ final class RecordResultView: UIView {
     }
     
     private func bindDataToRecordTableView() {
-        
+        recordDummy.bind(to: recordTableView.rx.items(cellIdentifier: RecordTableViewCell.identifier, cellType: RecordTableViewCell.self)) { (row, element, cell) in
+            cell.bindData(data: element)
+        }
+        .disposed(by: disposeBag)
     }
 }

@@ -17,7 +17,7 @@ final class RecordDateView: UIView {
     private let dateStackView = UIStackView()
     private let leftLine = UIView()
     private let rightLine = UIView()
-    private let dateLabel = UILabel()
+    let dateLabel = UILabel()
     
     // MARK: - Life Cycle
     
@@ -39,16 +39,15 @@ final class RecordDateView: UIView {
         dateStackView.do {
             $0.axis = .horizontal
             $0.spacing = 8
+            $0.alignment = .center
         }
         
         leftLine.do {
-            $0.layer.borderWidth = 1.5
-            $0.layer.borderColor = UIColor.Gray70.cgColor
+            $0.backgroundColor = .Gray70
         }
         
         rightLine.do {
-            $0.layer.borderWidth = 1.5
-            $0.layer.borderColor = UIColor.Gray70.cgColor
+            $0.backgroundColor = .Gray70
         }
         
         dateLabel.do {
@@ -71,8 +70,18 @@ final class RecordDateView: UIView {
     //MARK: - set Layout
     
     private func setLayout() {
+        leftLine.snp.makeConstraints {
+            $0.height.equalTo(1.5)
+        }
+        
+        rightLine.snp.makeConstraints {
+            $0.width.equalTo(37)
+            $0.height.equalTo(1.5)
+        }
+        
         dateStackView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.top.leading.trailing.equalToSuperview()
+            $0.height.equalTo(10)
         }
     }
 }
