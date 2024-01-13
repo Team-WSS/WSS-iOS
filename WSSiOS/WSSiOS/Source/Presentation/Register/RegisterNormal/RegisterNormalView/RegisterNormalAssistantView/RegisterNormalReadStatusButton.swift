@@ -10,15 +10,16 @@ import UIKit
 import SnapKit
 import Then
 
-class RegisterNormalReadStatusButton: UIButton {
+final class RegisterNormalReadStatusButton: UIButton {
     
     // MARK: - Properties
+    
+    private var status: ReadStatus?
     
     // 각 View의 Size
     typealias SizeSet = (width: CGFloat, height: CGFloat)
     
     private var buttonHeight: CGFloat = 37
-    private var buttonImageSize = SizeSet(width: 16, height: 16)
     
     // MARK: - UI Components
     
@@ -36,8 +37,19 @@ class RegisterNormalReadStatusButton: UIButton {
         setLayout()
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // UIButton 내의 StackView 터치 이벤트를 Button의 터치 이벤트로 옮겨줌.
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        let view = super.hitTest(point, with: event)
+        return view == self.buttonStackView || view == self.buttonImage || view == self.buttonLabel ? self : view
     }
     
     // MARK: - Custom Method
@@ -69,16 +81,20 @@ class RegisterNormalReadStatusButton: UIButton {
         self.addSubviews(buttonStackView)
         buttonStackView.addArrangedSubviews(buttonImage,
                                             buttonLabel)
+        
     }
     
     private func setLayout() {
+        self.snp.makeConstraints {
+            $0.height.equalTo(buttonHeight)
+        }
         buttonStackView.snp.makeConstraints {
-            $0.verticalEdges.equalToSuperview().inset(7)
             $0.horizontalEdges.equalToSuperview().inset(13)
-            
-            buttonImage.snp.makeConstraints {
-                $0.size.equalTo(buttonImageSize.height)
-            }
+            $0.centerY.equalToSuperview()
+        }
+
+        buttonImage.snp.makeConstraints {
+            $0.size.equalTo(16)
         }
     }
     
@@ -89,10 +105,32 @@ class RegisterNormalReadStatusButton: UIButton {
         }
     }
     
-    func setImage(_ image: UIImage) {
+    func setImage(_ image: UIImage?) {
         buttonImage.do {
             $0.image = image
         }
+    }
+    
+    func setStatus(_ status: ReadStatus) {
+        self.status = status
+    }
+    
+    func checkStatus(_ status: ReadStatus) -> Bool {
+        return self.status == status
+    }
+    
+    func setColor(_ color: UIColor) {
+        self.layer.borderColor = UIColor.clear.cgColor
+        self.layer.borderColor = color.cgColor
+        buttonLabel.textColor = color
+    }
+    
+    func removeImage() {
+        buttonImage.isHidden = true
+    }
+    
+    func insertImage() {
+        buttonImage.isHidden = false
     }
     
     private func buttonLabelStyle(of label: UILabel) {
@@ -103,6 +141,6 @@ class RegisterNormalReadStatusButton: UIButton {
                 .applyAttribute()
             $0.font = .Body2
             $0.textColor = .Primary100
-       }
+        }
     }
 }
