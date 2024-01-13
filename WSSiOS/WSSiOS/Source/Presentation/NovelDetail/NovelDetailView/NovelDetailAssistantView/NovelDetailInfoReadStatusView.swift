@@ -44,8 +44,6 @@ final class NovelDetailInfoReadStatusView: UIView {
             $0.textColor = .Black
             $0.font = .Title1
         }
-        
-        readStatusTagView.bindData(.FINISH)
     }
     
     // MARK: - set Hierachy
@@ -73,6 +71,21 @@ final class NovelDetailInfoReadStatusView: UIView {
             $0.top.equalTo(readStatusLabel.snp.bottom).offset(10)
             $0.leading.equalToSuperview().inset(20)
             $0.bottom.equalToSuperview()
+        }
+    }
+    
+    func bindData(status: String) {
+        switch status {
+        case "FINISH":
+            self.readStatusTagView.bindData(.FINISH)
+        case "READING":
+            self.readStatusTagView.bindData(.READING)
+        case "DROP":
+            self.readStatusTagView.bindData(.DROP)
+        case "WISH":
+            self.readStatusTagView.bindData(.WISH)
+        default:
+            break
         }
     }
 }

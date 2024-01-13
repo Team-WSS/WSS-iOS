@@ -20,6 +20,8 @@ final class NovelDetailViewController: UIViewController {
     
     private let rating = Observable<Float>.just(3.5)
     
+    private let readStatus = Observable<String>.just("WISH")
+    
     private let keywords = Observable<[String]>.just([
         "#가상시대물",
         "#판타지물",
@@ -121,6 +123,12 @@ final class NovelDetailViewController: UIViewController {
         rating
             .subscribe(onNext: { rating in
                 self.rootView.novelDetailInfoView.novelDetailInfoRatingView.bindData(rating: rating)
+            })
+            .disposed(by: disposeBag)
+        
+        readStatus
+            .subscribe(onNext: { readStatus in
+                self.rootView.novelDetailInfoView.novelDetailInfoReadStatusView.bindData(status: readStatus)
             })
             .disposed(by: disposeBag)
         
