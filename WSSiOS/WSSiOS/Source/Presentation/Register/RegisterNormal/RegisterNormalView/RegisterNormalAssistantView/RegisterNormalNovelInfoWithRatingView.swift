@@ -17,7 +17,7 @@ final class RegisterNormalNovelInfoWithRatingView: UIView {
     private let novelInfoWithRatingContentView = UIStackView()
     private let novelInfoStackView = RegisterNormalNovelInfoView()
     private let novelCoverImageView = UIImageView()
-    private let starRatingView = RegisterNormalStarRatingView()
+    let starRatingView = RegisterNormalStarRatingTestView()
     
     // MARK: - Life Cycle
     

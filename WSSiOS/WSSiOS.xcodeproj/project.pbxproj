@@ -61,6 +61,7 @@
 		39CC16882B51D94F003F56AE /* RegisterSuccessViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CC16872B51D94F003F56AE /* RegisterSuccessViewModel.swift */; };
 		39CC168A2B51D965003F56AE /* RegisterSuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CC16892B51D965003F56AE /* RegisterSuccessView.swift */; };
 		39CC168C2B526991003F56AE /* WSSSectionTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CC168B2B526991003F56AE /* WSSSectionTitleView.swift */; };
+		39CC168E2B527029003F56AE /* RegisterNormalStarRatingTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CC168D2B527029003F56AE /* RegisterNormalStarRatingTestView.swift */; };
 		39CD5E062B4F20A600668B9A /* RegisterNormalDividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CD5E052B4F20A600668B9A /* RegisterNormalDividerView.swift */; };
 		39CD5E082B4F2BBE00668B9A /* RegisterNormalKeywordSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CD5E072B4F2BBE00668B9A /* RegisterNormalKeywordSelectionView.swift */; };
 		39CD5E0A2B4F2E4000668B9A /* RegisterNormalKeywordSelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CD5E092B4F2E4000668B9A /* RegisterNormalKeywordSelectionButton.swift */; };
@@ -137,6 +138,7 @@
 		39CC16872B51D94F003F56AE /* RegisterSuccessViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterSuccessViewModel.swift; sourceTree = "<group>"; };
 		39CC16892B51D965003F56AE /* RegisterSuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterSuccessView.swift; sourceTree = "<group>"; };
 		39CC168B2B526991003F56AE /* WSSSectionTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSSectionTitleView.swift; sourceTree = "<group>"; };
+		39CC168D2B527029003F56AE /* RegisterNormalStarRatingTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalStarRatingTestView.swift; sourceTree = "<group>"; };
 		39CD5E052B4F20A600668B9A /* RegisterNormalDividerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalDividerView.swift; sourceTree = "<group>"; };
 		39CD5E072B4F2BBE00668B9A /* RegisterNormalKeywordSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalKeywordSelectionView.swift; sourceTree = "<group>"; };
 		39CD5E092B4F2E4000668B9A /* RegisterNormalKeywordSelectionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalKeywordSelectionButton.swift; sourceTree = "<group>"; };
@@ -435,6 +437,7 @@
 				392A29222B4E89FD0065EB97 /* RegisterNormalNovelInfoWithRatingView.swift */,
 				392A29242B4E8A910065EB97 /* RegisterNormalNovelInfoView.swift */,
 				392A292A2B4ECDB80065EB97 /* RegisterNormalStarRatingView.swift */,
+				39CC168D2B527029003F56AE /* RegisterNormalStarRatingTestView.swift */,
 				392A292C2B4ECF320065EB97 /* RegisterNormalReadStatusView.swift */,
 				39AF30D02B50182F00FDC1F3 /* RegisterNormalReadStatusButton.swift */,
 				392A292E2B4F07FF0065EB97 /* RegisterNormalReadDateView.swift */,
@@ -727,6 +730,7 @@
 				39CD5E082B4F2BBE00668B9A /* RegisterNormalKeywordSelectionView.swift in Sources */,
 				2CD2291E2B42E685005400BE /* SceneDelegate.swift in Sources */,
 				392A292B2B4ECDB80065EB97 /* RegisterNormalStarRatingView.swift in Sources */,
+				39CC168E2B527029003F56AE /* RegisterNormalStarRatingTestView.swift in Sources */,
 				39CD5E102B4FEC0F00668B9A /* RegisterNormalCustomToggleButton.swift in Sources */,
 				39CD5E0A2B4F2E4000668B9A /* RegisterNormalKeywordSelectionButton.swift in Sources */,
 				A1A1F9CD2B48733200705F44 /* SearchViewController.swift in Sources */,
