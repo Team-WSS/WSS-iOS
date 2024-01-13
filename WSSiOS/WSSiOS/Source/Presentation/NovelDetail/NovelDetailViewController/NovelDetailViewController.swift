@@ -41,9 +41,9 @@ final class NovelDetailViewController: UIViewController {
     
     private let novelGenre = Observable<String>.just("로판")
     
-    private let platforms = Observable<[String]>.just([
-        "네이버시리즈",
-        "카카오페이지"
+    private let platforms = Observable<[[String: String]]>.just([
+        ["platformName": "네이버시리즈", "platformUrl": "https://series.naver.com"],
+        ["platformName": "카카오페이지", "platformUrl": "https://page.kakao.com"]
     ])
     
     private let disposeBag = DisposeBag()
@@ -156,18 +156,6 @@ final class NovelDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        novelDescription
-            .subscribe(onNext: { description in
-                self.rootView.novelDetailInfoView.novelDetailInfoDescriptionView.bindData(description: description)
-            })
-            .disposed(by: disposeBag)
-        
-        novelGenre
-            .subscribe(onNext: { genre in
-                self.rootView.novelDetailInfoView.novelDetailInfoGenreView.bindData(genre: genre)
-            })
-            .disposed(by: disposeBag)
-        
         keywords.bind(to: rootView.novelDetailInfoView.novelDetailInfoKeywordView.keywordCollectionView.rx.items(
             cellIdentifier: "NovelDetailInfoKeywordCollectionViewCell",
             cellType: NovelDetailInfoKeywordCollectionViewCell.self)) { item, element, cell in
@@ -186,11 +174,31 @@ final class NovelDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        novelDescription
+            .subscribe(onNext: { description in
+                self.rootView.novelDetailInfoView.novelDetailInfoDescriptionView.bindData(description: description)
+            })
+            .disposed(by: disposeBag)
+        
+        novelGenre
+            .subscribe(onNext: { genre in
+                self.rootView.novelDetailInfoView.novelDetailInfoGenreView.bindData(genre: genre)
+            })
+            .disposed(by: disposeBag)
+        
         platforms.bind(to: rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.rx.items(
             cellIdentifier: "NovelDetailInfoPlatformCollectionViewCell",
             cellType: NovelDetailInfoPlatformCollectionViewCell.self)) { item, element, cell in
-                cell.bindData(platform: element)
+                cell.bindData(platform: element["platformName"]!)
             }
+            .disposed(by: disposeBag)
+        
+        rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.rx.modelSelected([String: String].self)
+            .subscribe(onNext: { platform in
+                if let url = URL(string: platform["platformUrl"]!) {
+                    UIApplication.shared.open(url, options: [:])
+                }
+            })
             .disposed(by: disposeBag)
         
         rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.rx.observe(CGSize.self, "contentSize")
@@ -243,7 +251,7 @@ extension NovelDetailViewController: UICollectionViewDelegateFlowLayout {
         case rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView:
             platforms.subscribe(onNext: { items in
                 guard indexPath.item < items.count else { return }
-                text = items[indexPath.item]
+                text = items[indexPath.item]["platformName"]
             })
             .disposed(by: disposeBag)
             
