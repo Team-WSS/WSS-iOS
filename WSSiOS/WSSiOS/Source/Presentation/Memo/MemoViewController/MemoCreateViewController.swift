@@ -7,7 +7,16 @@
 
 import UIKit
 
+import RxCocoa
+import RxSwift
+
 final class MemoCreateViewController: UIViewController {
+    
+    //MARK: - set Properties
+    
+    private let disposeBag = DisposeBag()
+    
+    private var memoContent = ""
 
     // MARK: - UI Components
 
@@ -21,5 +30,27 @@ final class MemoCreateViewController: UIViewController {
 
      override func viewDidLoad() {
          super.viewDidLoad()
+         
+         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewDidTap))
+         view.addGestureRecognizer(tapGesture)
+         
+         bind()
      }
+    
+    // MARK: - bind
+    
+    private func bind() {
+        rootView.memoContentView.memoTextView.rx.text.orEmpty
+            .subscribe(onNext: { text in
+                self.memoContent = text
+                if text.count > 2000 {
+                    self.rootView.memoContentView.memoTextView.text = String(text.prefix(2000))
+                }
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    @objc func viewDidTap() {
+        view.endEditing(true)
+    }
 }

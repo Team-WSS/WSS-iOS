@@ -1,5 +1,5 @@
 //
-//  MemoCreateView.swift
+//  MemoContentView.swift
 //  WSSiOS
 //
 //  Created by Hyowon Jeon on 1/13/24.
@@ -10,12 +10,11 @@ import UIKit
 import SnapKit
 import Then
 
-final class MemoCreateView: UIView {
-    
+final class MemoContentView: UIView {
+
     // MARK: - UI Components
     
-    let memoHeaderView = MemoHeaderView()
-    let memoContentView = MemoContentView()
+    let memoTextView = UITextView()
     
     // MARK: - Life Cycle
     
@@ -34,25 +33,27 @@ final class MemoCreateView: UIView {
     // MARK: - set UI
     
     private func setUI() {
+        self.backgroundColor = .Gray50
+        
+        memoTextView.do {
+            $0.backgroundColor = .clear
+            $0.textColor = .Black
+            $0.font = .Body1
+            $0.showsVerticalScrollIndicator = false
+        }
     }
     
     // MARK: - set Hierachy
     
     private func setHierachy() {
-        self.addSubviews(memoHeaderView,
-                         memoContentView)
+        self.addSubview(memoTextView)
     }
     
     // MARK: - set Layout
     
     private func setLayout() {
-        memoHeaderView.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview()
-        }
-        
-        memoContentView.snp.makeConstraints {
-            $0.top.equalTo(memoHeaderView.snp.bottom)
-            $0.leading.trailing.bottom.equalToSuperview()
+        memoTextView.snp.makeConstraints {
+            $0.edges.equalToSuperview().inset(20)
         }
     }
 }
