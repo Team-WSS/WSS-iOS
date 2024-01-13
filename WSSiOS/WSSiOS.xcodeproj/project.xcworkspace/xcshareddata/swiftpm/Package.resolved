@@ -48,7 +48,7 @@
     {
       "identity" : "uiimageviewalignedswift",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/sochalewski/UIImageViewAlignedSwift.git",
+      "location" : "https://github.com/sochalewski/UIImageViewAlignedSwift",
       "state" : {
         "revision" : "c51914ca25aa3721da1812fa0d4d69064e778391",
         "version" : "0.8.3"

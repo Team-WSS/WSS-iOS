@@ -46,7 +46,7 @@ final class RecordEmptyView: UIView {
         }
         
         registerPlusImageView.do {
-            $0.image = ImageLiterals.icon.icBookRegistration.plus
+            $0.image = ImageLiterals.icon.BookRegistration.plus
         }
         
         recordEmptyDescriptionLabel.do {
