@@ -23,6 +23,7 @@
 		2C79CB9D2B45A1DD00734E1F /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C79CB9C2B45A1DD00734E1F /* UIFont+.swift */; };
 		2CA2F6482B5278AF0045B4C2 /*  MyPageCustomModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2F6472B5278AF0045B4C2 /*  MyPageCustomModalViewController.swift */; };
 		2CA2F64A2B5278C50045B4C2 /* MyPageCustomAvatarModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2F6492B5278C50045B4C2 /* MyPageCustomAvatarModalView.swift */; };
+		2CA2F64C2B52798D0045B4C2 /* MyPageModalAvatarFeatureLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2F64B2B52798D0045B4C2 /* MyPageModalAvatarFeatureLabelView.swift */; };
 		2CCBF9EE2B4C1FC500D787C2 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBF9ED2B4C1FC500D787C2 /* MyPageViewController.swift */; };
 		2CCBF9F02B4C1FD800D787C2 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBF9EF2B4C1FD800D787C2 /* MyPageView.swift */; };
 		2CCBF9F22B4D347B00D787C2 /* WSSMainButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBF9F12B4D347B00D787C2 /* WSSMainButton.swift */; };
@@ -110,6 +111,7 @@
 		2C79CB9C2B45A1DD00734E1F /* UIFont+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+.swift"; sourceTree = "<group>"; };
 		2CA2F6472B5278AF0045B4C2 /*  MyPageCustomModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = " MyPageCustomModalViewController.swift"; path = "../../../../../../../../../.Trash/WSS-iOS 오후 11.50.02/WSSiOS/WSSiOS/Source/Presentation/MyPage/MyPageViewController/ MyPageCustomModalViewController.swift"; sourceTree = "<group>"; };
 		2CA2F6492B5278C50045B4C2 /* MyPageCustomAvatarModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MyPageCustomAvatarModalView.swift; path = "../../../../../../../../../.Trash/WSS-iOS 오후 11.50.02/WSSiOS/WSSiOS/Source/Presentation/MyPage/MyPageView/MyPageCustomAvatarModalView.swift"; sourceTree = "<group>"; };
+		2CA2F64B2B52798D0045B4C2 /* MyPageModalAvatarFeatureLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MyPageModalAvatarFeatureLabelView.swift; path = "../../../../../../../../../../.Trash/WSS-iOS 오후 11.50.02/WSSiOS/WSSiOS/Source/Presentation/MyPage/MyPageView/MyPageAssistantView/MyPageModalAvatarFeatureLabelView.swift"; sourceTree = "<group>"; };
 		2CCBF9ED2B4C1FC500D787C2 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		2CCBF9EF2B4C1FD800D787C2 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
 		2CCBF9F12B4D347B00D787C2 /* WSSMainButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSMainButton.swift; sourceTree = "<group>"; };
@@ -276,6 +278,7 @@
 				2CCBFA052B4DD85600D787C2 /* MyPageTallyReuseView.swift */,
 				2CCBFA072B4DE38800D787C2 /* MyPageInventoryView.swift */,
 				2C5D0F5A2B500EF100C76D3C /* MyPageSettingView.swift */,
+				2CA2F64B2B52798D0045B4C2 /* MyPageModalAvatarFeatureLabelView.swift */,
 			);
 			path = MyPageAssistantView;
 			sourceTree = "<group>";
@@ -771,6 +774,7 @@
 				A107A4A02B4DD7E200668C3E /* HomeSosoPickTitleView.swift in Sources */,
 				A1708F142B4D8DF400E35E50 /* HomeViewController.swift in Sources */,
 				A1DBB2FA2B4AA981000EE869 /* SearchCollectionViewCell.swift in Sources */,
+				2CA2F64C2B52798D0045B4C2 /* MyPageModalAvatarFeatureLabelView.swift in Sources */,
 				A14EDBC12B4F06E600906957 /* HomeSosoPickView.swift in Sources */,
 				A147CBC42B4D662E0040AE39 /* SearchView.swift in Sources */,
 				A1DBB2FE2B4AEB22000EE869 /* UIView+.swift in Sources */,
