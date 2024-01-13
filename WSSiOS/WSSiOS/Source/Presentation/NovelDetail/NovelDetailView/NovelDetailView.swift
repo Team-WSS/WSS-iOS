@@ -20,6 +20,7 @@ final class NovelDetailView: UIView {
     let novelDetailTabView = NovelDetailTabView()
     let novelDetailMemoView = NovelDetailMemoView()
     let novelDetailInfoView = NovelDetailInfoView()
+    let createMemoButton = DifferentRadiusButton()
 
     // MARK: - Life Cycle
     
@@ -49,12 +50,22 @@ final class NovelDetailView: UIView {
             $0.alignment = .fill
             $0.axis = .vertical
         }
+        
+        createMemoButton.do {
+            $0.backgroundColor = .Black
+            $0.setImage(ImageLiterals.icon.icMemo.big, for: .normal)
+            $0.topLeftRadius = 32.5
+            $0.topRightRadius = 32.5
+            $0.bottomLeftRadius = 32.5
+            $0.bottomRightRadius = 10.0
+        }
     }
     
     // MARK: - set Hierachy
     
     private func setHierachy() {
-        self.addSubview(scrollView)
+        self.addSubviews(scrollView,
+                         createMemoButton)
         scrollView.addSubview(contentView)
         contentView.addArrangedSubviews(novelDetailHeaderView,
                                         novelDetailTabView,
@@ -66,6 +77,12 @@ final class NovelDetailView: UIView {
     private func setLayout() {
         scrollView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+        }
+        
+        createMemoButton.snp.makeConstraints {
+            $0.trailing.equalToSuperview().inset(26)
+            $0.bottom.equalToSuperview().inset(60)
+            $0.size.equalTo(65)
         }
         
         contentView.snp.makeConstraints {
