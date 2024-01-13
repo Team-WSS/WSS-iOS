@@ -37,6 +37,8 @@ final class NovelDetailViewController: UIViewController {
         "#소유욕"
     ])
     
+    private let novelDescription = Observable<String>.just("왕실에는 막대한 빚이 있었고, 그들은 빚을 갚기 위해 왕녀인 바이올렛을 막대한 돈을 지녔지만 공작의 사생/아인 윈터에게 시집보낸다.  '태어나서 이렇게 멋있는 남자는 처음 봐…….' 왕실에는 막대한 빚이 있었고, 그들은 빚을 갚기 위해 왕녀인 바이올렛을 막대한 돈을 지녔지만 공작의 사생/아인 윈터에게 시집보낸다.")
+    
     private let platforms = Observable<[String]>.just([
         "네이버시리즈",
         "카카오페이지"
@@ -149,6 +151,12 @@ final class NovelDetailViewController: UIViewController {
         endDate
             .subscribe(onNext: { endDate in
                 self.rootView.novelDetailInfoView.novelDetailInfoReadDateView.bindData(endDate: endDate)
+            })
+            .disposed(by: disposeBag)
+        
+        novelDescription
+            .subscribe(onNext: { description in
+                self.rootView.novelDetailInfoView.novelDetailInfoDescriptionView.bindData(description: description)
             })
             .disposed(by: disposeBag)
         
