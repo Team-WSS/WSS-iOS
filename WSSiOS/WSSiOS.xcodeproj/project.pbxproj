@@ -101,6 +101,12 @@
 		A1EF35452B52F76C00A94C53 /* UserNovelRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EF35442B52F76C00A94C53 /* UserNovelRepository.swift */; };
 		A1EF35472B52F77800A94C53 /* MemoRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EF35462B52F77800A94C53 /* MemoRepository.swift */; };
 		A1EF35492B52F7B000A94C53 /* AvatarRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EF35482B52F7B000A94C53 /* AvatarRepository.swift */; };
+		A1EF35582B52FAC800A94C53 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EF35572B52FAC800A94C53 /* UserService.swift */; };
+		A1EF355A2B52FAD300A94C53 /* RecommendService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EF35592B52FAD300A94C53 /* RecommendService.swift */; };
+		A1EF355C2B52FADC00A94C53 /* NovelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EF355B2B52FADC00A94C53 /* NovelService.swift */; };
+		A1EF355E2B52FAE600A94C53 /* UserNovelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EF355D2B52FAE600A94C53 /* UserNovelService.swift */; };
+		A1EF35602B52FAEF00A94C53 /* MemoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EF355F2B52FAEF00A94C53 /* MemoService.swift */; };
+		A1EF35622B52FAF700A94C53 /* AvatarService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EF35612B52FAF700A94C53 /* AvatarService.swift */; };
 		CD39F2B62B4FE0E200B73A5C /* NovelDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2B52B4FE0E200B73A5C /* NovelDetailView.swift */; };
 		CD39F2B82B4FE0FB00B73A5C /* NovelDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2B72B4FE0FB00B73A5C /* NovelDetailViewController.swift */; };
 		CD39F2BD2B4FE98500B73A5C /* NovelDetailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2BC2B4FE98500B73A5C /* NovelDetailHeaderView.swift */; };
@@ -209,6 +215,12 @@
 		A1EF35442B52F76C00A94C53 /* UserNovelRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNovelRepository.swift; sourceTree = "<group>"; };
 		A1EF35462B52F77800A94C53 /* MemoRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoRepository.swift; sourceTree = "<group>"; };
 		A1EF35482B52F7B000A94C53 /* AvatarRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarRepository.swift; sourceTree = "<group>"; };
+		A1EF35572B52FAC800A94C53 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
+		A1EF35592B52FAD300A94C53 /* RecommendService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendService.swift; sourceTree = "<group>"; };
+		A1EF355B2B52FADC00A94C53 /* NovelService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelService.swift; sourceTree = "<group>"; };
+		A1EF355D2B52FAE600A94C53 /* UserNovelService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNovelService.swift; sourceTree = "<group>"; };
+		A1EF355F2B52FAEF00A94C53 /* MemoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoService.swift; sourceTree = "<group>"; };
+		A1EF35612B52FAF700A94C53 /* AvatarService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarService.swift; sourceTree = "<group>"; };
 		CD39F2B52B4FE0E200B73A5C /* NovelDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailView.swift; sourceTree = "<group>"; };
 		CD39F2B72B4FE0FB00B73A5C /* NovelDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailViewController.swift; sourceTree = "<group>"; };
 		CD39F2BC2B4FE98500B73A5C /* NovelDetailHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailHeaderView.swift; sourceTree = "<group>"; };
@@ -366,6 +378,7 @@
 				2CD229532B42EA12005400BE /* App */,
 				2CD229482B42E92F005400BE /* Resource */,
 				2CD2294F2B42E9AD005400BE /* Source */,
+				A1EF35562B52FAA300A94C53 /* Network */,
 				2CD229292B42E687005400BE /* Info.plist */,
 			);
 			path = WSSiOS;
@@ -437,7 +450,6 @@
 			children = (
 				2CD229502B42E9C8005400BE /* Presentation */,
 				2CD229522B42E9F7005400BE /* Data */,
-				2CD229512B42E9DB005400BE /* Network */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -456,16 +468,10 @@
 			path = Presentation;
 			sourceTree = "<group>";
 		};
-		2CD229512B42E9DB005400BE /* Network */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Network;
-			sourceTree = "<group>";
-		};
 		2CD229522B42E9F7005400BE /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				A1EF35552B52FA9700A94C53 /* DTO */,
 				2C01F9832B482E6400D90FFE /* Repository */,
 			);
 			path = Data;
@@ -731,6 +737,26 @@
 			path = Images;
 			sourceTree = "<group>";
 		};
+		A1EF35552B52FA9700A94C53 /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = DTO;
+			sourceTree = "<group>";
+		};
+		A1EF35562B52FAA300A94C53 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				A1EF35572B52FAC800A94C53 /* UserService.swift */,
+				A1EF35592B52FAD300A94C53 /* RecommendService.swift */,
+				A1EF355B2B52FADC00A94C53 /* NovelService.swift */,
+				A1EF355D2B52FAE600A94C53 /* UserNovelService.swift */,
+				A1EF355F2B52FAEF00A94C53 /* MemoService.swift */,
+				A1EF35612B52FAF700A94C53 /* AvatarService.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
 		CD39F2B22B4FE09300B73A5C /* NovelDetail */ = {
 			isa = PBXGroup;
 			children = (
@@ -887,6 +913,7 @@
 				2CCBFA062B4DD85600D787C2 /* MyPageTallyReuseView.swift in Sources */,
 				CD39F2CC2B503B8E00B73A5C /* NovelDetailInfoRatingView.swift in Sources */,
 				A1EF35492B52F7B000A94C53 /* AvatarRepository.swift in Sources */,
+				A1EF355E2B52FAE600A94C53 /* UserNovelService.swift in Sources */,
 				A14EB86A2B4F15D400A0A799 /* HomeSosoPickUserNumberChipView.swift in Sources */,
 				A1708F182B4D8E2F00E35E50 /* HomeView.swift in Sources */,
 				2CD2291C2B42E685005400BE /* AppDelegate.swift in Sources */,
@@ -906,6 +933,7 @@
 				A1A1F9D42B4873B500705F44 /* SearchEmptyView.swift in Sources */,
 				3999BFE92B4E6C3500984832 /* RegisterNormalViewController.swift in Sources */,
 				3999BFF02B4E6FA800984832 /* RegisterNormalBannerImageView.swift in Sources */,
+				A1EF355A2B52FAD300A94C53 /* RecommendService.swift in Sources */,
 				39CC167E2B512369003F56AE /* RegisterSuccessViewController.swift in Sources */,
 				392A29312B4F145D0065EB97 /* RegisterNormalDatePickerButton.swift in Sources */,
 				39CD5E082B4F2BBE00668B9A /* RegisterNormalKeywordSelectionView.swift in Sources */,
@@ -922,6 +950,8 @@
 				2C5D0F5B2B500EF100C76D3C /* MyPageSettingView.swift in Sources */,
 				2C5D0F612B50525700C76D3C /* MyPageChangeNicknameView.swift in Sources */,
 				2CCBFA082B4DE38800D787C2 /* MyPageInventoryView.swift in Sources */,
+				A1EF35602B52FAEF00A94C53 /* MemoService.swift in Sources */,
+				A1EF355C2B52FADC00A94C53 /* NovelService.swift in Sources */,
 				2C5D0F592B4FDEC000C76D3C /* MyPageInventoryCollectionViewCell.swift in Sources */,
 				39D118102B506EA400801830 /* RegisterNormalSectionTitleView.swift in Sources */,
 				392A29232B4E89FD0065EB97 /* RegisterNormalNovelInfoWithRatingView.swift in Sources */,
@@ -946,6 +976,7 @@
 				A1147A802B50638200141692 /* RecordViewController.swift in Sources */,
 				2CCBFA042B4DD73D00D787C2 /* MyPageTallyView.swift in Sources */,
 				2C2491812B4ADC000096F255 /* StringLiterals.swift in Sources */,
+				A1EF35622B52FAF700A94C53 /* AvatarService.swift in Sources */,
 				39CD5E0E2B4FCEBC00668B9A /* RegisterNormalPlatformSelectButton.swift in Sources */,
 				39CD5E062B4F20A600668B9A /* RegisterNormalDividerView.swift in Sources */,
 				2C2491862B4ADC420096F255 /* WSSTabBarController.swift in Sources */,
@@ -981,6 +1012,7 @@
 				A1A1F9D22B4873A100705F44 /* SearchResultView.swift in Sources */,
 				2CCBFA002B4DBFD200D787C2 /* MyPageViewModel.swift in Sources */,
 				CD39F2BF2B4FF6DF00B73A5C /* NovelDetailTabView.swift in Sources */,
+				A1EF35582B52FAC800A94C53 /* UserService.swift in Sources */,
 				CD39F2D82B50DA6300B73A5C /* NovelDetailInfoDescriptionView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
