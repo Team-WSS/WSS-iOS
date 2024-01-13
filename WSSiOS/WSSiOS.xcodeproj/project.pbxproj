@@ -93,6 +93,9 @@
 		CD39F2F02B525F1B00B73A5C /* MemoCreateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2EF2B525F1B00B73A5C /* MemoCreateViewController.swift */; };
 		CD39F2F32B52600D00B73A5C /* MemoHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2F22B52600D00B73A5C /* MemoHeaderView.swift */; };
 		CD39F2F52B52653900B73A5C /* MemoCreateContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2F42B52653900B73A5C /* MemoCreateContentView.swift */; };
+		CD39F2F72B526CDF00B73A5C /* MemoEditContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2F62B526CDF00B73A5C /* MemoEditContentView.swift */; };
+		CD39F2F92B526CFA00B73A5C /* MemoEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2F82B526CFA00B73A5C /* MemoEditView.swift */; };
+		CD39F2FB2B526D2300B73A5C /* MemoEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2FA2B526D2300B73A5C /* MemoEditViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -173,6 +176,9 @@
 		CD39F2EF2B525F1B00B73A5C /* MemoCreateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoCreateViewController.swift; sourceTree = "<group>"; };
 		CD39F2F22B52600D00B73A5C /* MemoHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoHeaderView.swift; sourceTree = "<group>"; };
 		CD39F2F42B52653900B73A5C /* MemoCreateContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoCreateContentView.swift; sourceTree = "<group>"; };
+		CD39F2F62B526CDF00B73A5C /* MemoEditContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoEditContentView.swift; sourceTree = "<group>"; };
+		CD39F2F82B526CFA00B73A5C /* MemoEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoEditView.swift; sourceTree = "<group>"; };
+		CD39F2FA2B526D2300B73A5C /* MemoEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoEditViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -635,6 +641,7 @@
 			children = (
 				CD39F2F12B525FFA00B73A5C /* MemoAssistantView */,
 				CD39F2ED2B525F1000B73A5C /* MemoCreateView.swift */,
+				CD39F2F82B526CFA00B73A5C /* MemoEditView.swift */,
 			);
 			path = MemoView;
 			sourceTree = "<group>";
@@ -643,6 +650,7 @@
 			isa = PBXGroup;
 			children = (
 				CD39F2EF2B525F1B00B73A5C /* MemoCreateViewController.swift */,
+				CD39F2FA2B526D2300B73A5C /* MemoEditViewController.swift */,
 			);
 			path = MemoViewController;
 			sourceTree = "<group>";
@@ -652,6 +660,7 @@
 			children = (
 				CD39F2F22B52600D00B73A5C /* MemoHeaderView.swift */,
 				CD39F2F42B52653900B73A5C /* MemoCreateContentView.swift */,
+				CD39F2F62B526CDF00B73A5C /* MemoEditContentView.swift */,
 			);
 			path = MemoAssistantView;
 			sourceTree = "<group>";
@@ -778,6 +787,7 @@
 				A1A1F9CD2B48733200705F44 /* SearchViewController.swift in Sources */,
 				39CC16812B51246E003F56AE /* RegisterNormalView.swift in Sources */,
 				A107A49E2B4DCD9900668C3E /* HomeCharacterView.swift in Sources */,
+				CD39F2F92B526CFA00B73A5C /* MemoEditView.swift in Sources */,
 				2C5D0F5D2B50100000C76D3C /* MyPageSettingCollectionViewCell.swift in Sources */,
 				CD39F2F02B525F1B00B73A5C /* MemoCreateViewController.swift in Sources */,
 				39CC168A2B51D965003F56AE /* RegisterSuccessView.swift in Sources */,
@@ -804,6 +814,7 @@
 				39CD5E0E2B4FCEBC00668B9A /* RegisterNormalPlatformSelectButton.swift in Sources */,
 				39CD5E062B4F20A600668B9A /* RegisterNormalDividerView.swift in Sources */,
 				2C2491862B4ADC420096F255 /* WSSTabBarController.swift in Sources */,
+				CD39F2F72B526CDF00B73A5C /* MemoEditContentView.swift in Sources */,
 				392A292F2B4F07FF0065EB97 /* RegisterNormalReadDateView.swift in Sources */,
 				2CD229572B42EA75005400BE /* UIColor+.swift in Sources */,
 				A1DBB2FA2B4AA981000EE869 /* SearchCollectionViewCell.swift in Sources */,
@@ -814,6 +825,7 @@
 				A1DBB2FA2B4AA981000EE869 /* SearchCollectionViewCell.swift in Sources */,
 				A14EDBC12B4F06E600906957 /* HomeSosoPickView.swift in Sources */,
 				A147CBC42B4D662E0040AE39 /* SearchView.swift in Sources */,
+				CD39F2FB2B526D2300B73A5C /* MemoEditViewController.swift in Sources */,
 				A1DBB2FE2B4AEB22000EE869 /* UIView+.swift in Sources */,
 				A1A1F9CF2B48738200705F44 /* SearchHeaderView.swift in Sources */,
 				A1DBB3002B4AFCC0000EE869 /* SearchDummy.swift in Sources */,
