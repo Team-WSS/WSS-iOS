@@ -36,7 +36,7 @@ final class SearchEmptyView: UIView {
     
     private func setUI() {
         emptyImageView.do {
-            $0.image = ImageLiterals.icon.icBookRegistration.noResult
+            $0.image = ImageLiterals.icon.BookRegistration.noResult
         }
         
         emptyDescriptionLabel.do {
