@@ -7,8 +7,10 @@
 
 import UIKit
 
-import RxSwift
 import RxCocoa
+import RxSwift
+import SnapKit
+import Then
 
 final class MyPageViewController: UIViewController {
     
@@ -28,6 +30,7 @@ final class MyPageViewController: UIViewController {
     //MARK: - UI Components
     
     private var rootView = MyPageView()
+//    private let dimmedView = UIView()
     
     // MARK: - Life Cycle
     
@@ -41,6 +44,7 @@ final class MyPageViewController: UIViewController {
         register()
         bindDataToMyPageCollectionView()
         pushChangeNicknameViewController()
+//        removeDimmedView()
     }
     
     //MARK: - UI Components
@@ -57,7 +61,11 @@ final class MyPageViewController: UIViewController {
         items.bind(to: rootView.myPageInventoryView.myPageAvaterCollectionView.rx.items(
             cellIdentifier: "MyPageInventoryCollectionViewCell",
             cellType: MyPageInventoryCollectionViewCell.self)) { (row, element, cell) in
-                cell.myPageAvaterImageView.image = element
+                cell.myPageAvaterButton.setImage(element, for: .normal)
+                cell.myPageAvaterButton.rx.tap
+                    .bind(with: self, onNext: { owner, _ in 
+                        owner.tapAvatarButton()
+                    })
             }
             .disposed(by: disposeBag)
         
@@ -71,15 +79,36 @@ final class MyPageViewController: UIViewController {
     
     private func pushChangeNicknameViewController() {
         rootView.myPageTallyView.myPageUserNameButton.rx.tap
-            .bind {[weak self] in
-                if let tabBarController = self?.tabBarController as? WSSTabBarController {
+            .bind(with: self, onNext: { owner, _ in 
+                if let tabBarController = owner.tabBarController as? WSSTabBarController {
                     tabBarController.tabBar.isHidden = true
                     tabBarController.shadowView.isHidden = true
                 }
                 
                 let changeNicknameViewController = MyPageChangeNicknameViewController()
-                self?.navigationController?.pushViewController(changeNicknameViewController, animated: true)
-            }
+                owner.navigationController?.pushViewController(changeNicknameViewController, animated: true)
+            })
             .disposed(by: disposeBag)
     }
+}
+
+extension MyPageViewController {
+    @objc func tapAvatarButton() {
+        let modalVC = MyPageCustomModalViewController()
+//        addDimmedView()
+        modalVC.modalPresentationStyle = .overFullScreen
+        present(modalVC, animated: true)
+    }
+    
+//    private func addDimmedView() {
+//        view.addSubview(dimmedView)
+//        dimmedView.do {
+//            $0.backgroundColor = .Black
+//            $0.alpha = 0.6
+//            $0.addGestureRecognizer(tapGesture)
+//        }
+//        dimmedView.snp.makeConstraints() {
+//            $0.edges.equalToSuperview()
+//        }
+//    }
 }

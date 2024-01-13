@@ -18,7 +18,7 @@ final class MyPageInventoryCollectionViewCell: UICollectionViewCell {
     
     //MARK: - UI Components
     
-    var myPageAvaterImageView = UIImageView()
+    var myPageAvaterButton = UIButton()
     
     //MARK: - Life Cycle
     
@@ -38,7 +38,7 @@ final class MyPageInventoryCollectionViewCell: UICollectionViewCell {
     //MARK: - Set UI
     
     private func setUI() {
-        myPageAvaterImageView.do {
+        myPageAvaterButton.do {
             $0.layer.cornerRadius = 12
             $0.layer.masksToBounds = true
         }
@@ -47,13 +47,13 @@ final class MyPageInventoryCollectionViewCell: UICollectionViewCell {
     //MARK: - Set Hierachy
     
     private func setHierachy() {
-        self.addSubview(myPageAvaterImageView)
+        self.addSubview(myPageAvaterButton)
     }
     
     //MARK: - Set Layout
     
     private func setLayout() {
-        myPageAvaterImageView.snp.makeConstraints() {
+        myPageAvaterButton.snp.makeConstraints() {
             $0.height.width.equalToSuperview()
         }
     }
@@ -61,14 +61,14 @@ final class MyPageInventoryCollectionViewCell: UICollectionViewCell {
     // 네트워크 연결 후 수정 예정
     
     func bindData(_ selected: Bool) {
-        myPageAvaterImageView.image = UIImage(named: "exampleAvater")
+        myPageAvaterButton.setImage(UIImage(named: "exampleAvater"), for: .normal)
 
         if selected {
-            myPageAvaterImageView.layer.borderColor = UIColor.Primary100.cgColor
-            myPageAvaterImageView.layer.borderWidth = 1
+            myPageAvaterButton.layer.borderColor = UIColor.Primary100.cgColor
+            myPageAvaterButton.layer.borderWidth = 1
         }else {
-            myPageAvaterImageView.layer.borderColor = UIColor.Primary100.cgColor
-            myPageAvaterImageView.layer.borderWidth = 1
+            myPageAvaterButton.layer.borderColor = UIColor.Primary100.cgColor
+            myPageAvaterButton.layer.borderWidth = 1
         }
     }
 }
