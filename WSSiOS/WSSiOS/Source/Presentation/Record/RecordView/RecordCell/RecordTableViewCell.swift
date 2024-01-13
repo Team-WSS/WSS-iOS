@@ -49,8 +49,9 @@ final class RecordTableViewCell: UITableViewCell {
         recordContentLabel.do {
             $0.font = .Body2
             $0.textColor = .Black
-            $0.numberOfLines = 0
-            $0.lineBreakMode = .byWordWrapping
+            $0.numberOfLines = 5
+            $0.lineBreakStrategy = .hangulWordPriority
+            $0.lineBreakMode = .byTruncatingTail
         }
     }
     

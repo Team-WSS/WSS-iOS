@@ -9,7 +9,7 @@ import UIKit
 
 final class RecordViewController: UIViewController {
     
-    private let rootView = RecordEmptyView()
+    private let rootView = RecordResultView()
     
     override func loadView() {
         self.view = rootView
