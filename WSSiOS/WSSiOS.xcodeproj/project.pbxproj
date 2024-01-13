@@ -248,6 +248,7 @@
 		2C2491822B4ADC1D0096F255 /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				CD39F2E12B50EFCB00B73A5C /* LeftAlignedCollectionViewFlowLayout.swift */,
 				2C2491852B4ADC420096F255 /* WSSTabBarController.swift */,
 				2C2491832B4ADC230096F255 /* WSSTabBarItem.swift */,
 				2CCBF9F12B4D347B00D787C2 /* WSSMainButton.swift */,
@@ -669,7 +670,6 @@
 				CD39F2C62B50122500B73A5C /* NovelDetailCell */,
 				CD39F2B92B4FE10800B73A5C /* NovelDetailAssistantView */,
 				CD39F2B52B4FE0E200B73A5C /* NovelDetailView.swift */,
-				CD39F2E12B50EFCB00B73A5C /* LeftAlignedCollectionViewFlowLayout.swift */,
 			);
 			path = NovelDetailView;
 			sourceTree = "<group>";
