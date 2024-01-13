@@ -25,8 +25,8 @@ final class RecordEmptyView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        setHierachy()
         setUI()
+        setHierachy()
         setLayout()
     }
     
@@ -46,8 +46,6 @@ final class RecordEmptyView: UIView {
         stackView.do {
             $0.axis = .vertical
             $0.alignment = .center
-            $0.setCustomSpacing(8, after: registerPlusImageView)
-            $0.setCustomSpacing(45, after: recordEmptyDescriptionLabel)
         }
         
         registerPlusImageView.do {
@@ -95,6 +93,11 @@ final class RecordEmptyView: UIView {
         stackView.snp.makeConstraints {
             $0.top.equalTo(dividerView.snp.bottom).offset(158)
             $0.centerX.equalToSuperview()
+        }
+        
+        stackView.do {
+            $0.setCustomSpacing(8, after: registerPlusImageView)
+            $0.setCustomSpacing(45, after: recordEmptyDescriptionLabel)
         }
     }
 }
