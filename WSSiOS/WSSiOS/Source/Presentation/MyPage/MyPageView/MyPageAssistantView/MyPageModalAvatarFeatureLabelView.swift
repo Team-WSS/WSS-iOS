@@ -10,15 +10,13 @@ import UIKit
 import SnapKit
 import Then
 
-class MyPageModalAvatarFeatureLabelView: UIView {
+final class MyPageModalAvatarFeatureLabelView: UIView {
     
     //MARK: - UI Components
     
     private var stackView = UIStackView()
     public var modalAvaterBadgeImageView = UIImageView()
     public var modalAvaterTitleLabel = UILabel()
-    private let emptylabel1 = UILabel()
-    private let emptylabel2 = UILabel()
     
     
     // MARK: - Life Cycle
@@ -38,15 +36,18 @@ class MyPageModalAvatarFeatureLabelView: UIView {
     //MARK: - set UI
     
     private func setUI() {
+        self.do {
+            $0.backgroundColor = .clear
+            $0.layer.borderColor = UIColor.Gray100.cgColor
+            $0.layer.borderWidth = 1
+            $0.layer.cornerRadius = 26
+        }
+        
         stackView.do {
             $0.axis = .horizontal
             $0.alignment = .center
             $0.distribution = .fill
             $0.spacing = 6
-            $0.backgroundColor = .clear
-            $0.layer.borderColor = UIColor.Gray100.cgColor
-            $0.layer.borderWidth = 1
-            $0.layer.cornerRadius = 26
             
             modalAvaterBadgeImageView.image = ImageLiterals.icon.Badge.HF
             
@@ -62,24 +63,20 @@ class MyPageModalAvatarFeatureLabelView: UIView {
     
     private func setHierachy() {
         self.addSubview(stackView)
-        stackView.addArrangedSubviews(emptylabel1,
-                                      modalAvaterBadgeImageView,
-                                      modalAvaterTitleLabel,
-                                      emptylabel2)
+        stackView.addArrangedSubviews(modalAvaterBadgeImageView,
+                                      modalAvaterTitleLabel)
     }
     
     //MARK: - set Layout
     
     private func setLayout() {
         stackView.snp.makeConstraints() {
-            $0.edges.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview().inset(20)
+            $0.verticalEdges.equalToSuperview().inset(11)
         }
         
-        [emptylabel1, emptylabel2].forEach {
-            $0.snp.makeConstraints() {
-                $0.height.equalTo(52)
-                $0.width.equalTo(10)
-            }     
+        modalAvaterBadgeImageView.snp.makeConstraints() {
+            $0.size.equalTo(30)
         }
     }
 }

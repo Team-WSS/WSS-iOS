@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-class MyPageCustomModalView: UIView {
+final class MyPageCustomModalView: UIView {
 
     //MARK: - UI Components
     
@@ -81,7 +81,7 @@ class MyPageCustomModalView: UIView {
         modalAvatarFeatureLabelView.snp.makeConstraints() {
             $0.top.equalToSuperview().inset(30)
             $0.centerX.equalToSuperview()
-            $0.height.equalTo(52)
+//            $0.height.equalTo(52)
         }
         
         modalAvaterImageView.snp.makeConstraints() {
