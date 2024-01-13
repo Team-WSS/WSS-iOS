@@ -81,6 +81,7 @@
 		A1147A8A2B506BA500141692 /* RecordHeaderAlignmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1147A892B506BA500141692 /* RecordHeaderAlignmentView.swift */; };
 		A122C9CF2B53024200DFCFE4 /* UserAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A122C9CE2B53024200DFCFE4 /* UserAPI.swift */; };
 		A122C9D22B53025300DFCFE4 /* RecommendAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A122C9D12B53025300DFCFE4 /* RecommendAPI.swift */; };
+		A122C9F22B53146800DFCFE4 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = A122C9F12B53146800DFCFE4 /* Config.swift */; };
 		A147CBC42B4D662E0040AE39 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A147CBC32B4D662E0040AE39 /* SearchView.swift */; };
 		A147CBC62B4D6E190040AE39 /* UIStackView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A147CBC52B4D6E190040AE39 /* UIStackView+.swift */; };
 		A14EB86A2B4F15D400A0A799 /* HomeSosoPickUserNumberChipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14EB8692B4F15D400A0A799 /* HomeSosoPickUserNumberChipView.swift */; };
@@ -201,6 +202,8 @@
 		A1147A892B506BA500141692 /* RecordHeaderAlignmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordHeaderAlignmentView.swift; sourceTree = "<group>"; };
 		A122C9CE2B53024200DFCFE4 /* UserAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAPI.swift; sourceTree = "<group>"; };
 		A122C9D12B53025300DFCFE4 /* RecommendAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendAPI.swift; sourceTree = "<group>"; };
+		A122C9F12B53146800DFCFE4 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		A122C9F32B53149200DFCFE4 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		A147CBC32B4D662E0040AE39 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		A147CBC52B4D6E190040AE39 /* UIStackView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+.swift"; sourceTree = "<group>"; };
 		A14EB8692B4F15D400A0A799 /* HomeSosoPickUserNumberChipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSosoPickUserNumberChipView.swift; sourceTree = "<group>"; };
@@ -395,6 +398,7 @@
 				2CD2294F2B42E9AD005400BE /* Source */,
 				A1EF35562B52FAA300A94C53 /* Network */,
 				2CD229292B42E687005400BE /* Info.plist */,
+				A122C9F32B53149200DFCFE4 /* Config.xcconfig */,
 			);
 			path = WSSiOS;
 			sourceTree = "<group>";
@@ -412,9 +416,9 @@
 		2CD229492B42E952005400BE /* Constants */ = {
 			isa = PBXGroup;
 			children = (
+				A122C9F02B53146100DFCFE4 /* Config */,
 				2C24917F2B4ADBF20096F255 /* Strings */,
 				A1EC91B22B46DA2700CFB33D /* Images */,
-				2CD2294E2B42E995005400BE /* Config */,
 				2CD2294D2B42E98F005400BE /* URLs */,
 				2CD2294B2B42E97E005400BE /* Fonts */,
 			);
@@ -451,13 +455,6 @@
 			children = (
 			);
 			path = URLs;
-			sourceTree = "<group>";
-		};
-		2CD2294E2B42E995005400BE /* Config */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Config;
 			sourceTree = "<group>";
 		};
 		2CD2294F2B42E9AD005400BE /* Source */ = {
@@ -695,6 +692,14 @@
 				A1EF35612B52FAF700A94C53 /* AvatarService.swift */,
 			);
 			path = Avatar;
+			sourceTree = "<group>";
+		};
+		A122C9F02B53146100DFCFE4 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				A122C9F12B53146800DFCFE4 /* Config.swift */,
+			);
+			path = Config;
 			sourceTree = "<group>";
 		};
 		A147CBC22B4D653C0040AE39 /* SearchAssistantView */ = {
@@ -990,6 +995,7 @@
 				39AF30D12B50182F00FDC1F3 /* RegisterNormalReadStatusButton.swift in Sources */,
 				A1C3EC532B46962F00D997C2 /* UIImage+.swift in Sources */,
 				39CD5E0C2B4F3D0700668B9A /* RegisterNormalNovelSummaryView.swift in Sources */,
+				A122C9F22B53146800DFCFE4 /* Config.swift in Sources */,
 				A1147A792B50552500141692 /* HomeSosoPickDummy.swift in Sources */,
 				A14EDBBF2B4F05F300906957 /* HomeSosoPickCollectionViewCell.swift in Sources */,
 				CD39F2C82B50124C00B73A5C /* NovelDetailMemoTableViewCell.swift in Sources */,
@@ -1094,6 +1100,7 @@
 /* Begin XCBuildConfiguration section */
 		2CD2292A2B42E687005400BE /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A122C9F32B53149200DFCFE4 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -1157,6 +1164,7 @@
 		};
 		2CD2292B2B42E687005400BE /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A122C9F32B53149200DFCFE4 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
