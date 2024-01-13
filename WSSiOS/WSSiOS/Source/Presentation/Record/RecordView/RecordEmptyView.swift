@@ -63,12 +63,16 @@ final class RecordEmptyView: UIView {
         }
         
         recordButton.do {
-            $0.backgroundColor = .Primary50
-            $0.layer.cornerRadius = 12
-            $0.setTitle("웹소설 등록하기", for: .normal)
-            $0.setTitleColor(.Primary100, for: .normal)
-            $0.titleLabel?.font = .Title1
-            $0.contentEdgeInsets = UIEdgeInsets(top: 18, left: 42, bottom: 18, right: 42)
+            var config = UIButton.Configuration.filled()
+            config.baseBackgroundColor = .Primary50
+            config.baseForegroundColor = .Primary100
+            var titleAttr = AttributedString.init("웹소설 등록하기")
+            titleAttr.font = UIFont.Title1
+            
+            config.attributedTitle = titleAttr
+            config.background.cornerRadius = 12
+            config.contentInsets = NSDirectionalEdgeInsets(top: 18, leading: 42, bottom: 18, trailing: 42)
+            $0.configuration = config
         }
     }
     
