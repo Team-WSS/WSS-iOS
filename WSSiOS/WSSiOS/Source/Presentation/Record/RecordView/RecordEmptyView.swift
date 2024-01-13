@@ -14,6 +14,7 @@ final class RecordEmptyView: UIView {
     
     //MARK: - UI Components
     
+    private let dividerLine = UIView()
     private let stackView = UIStackView()
     private let registerPlusImageView = UIImageView()
     private let recordEmptyDescriptionLabel = UILabel()
@@ -36,6 +37,10 @@ final class RecordEmptyView: UIView {
     private func setUI() {
         self.do {
             $0.backgroundColor = .White
+        }
+        
+        dividerLine.do {
+            $0.backgroundColor = .Gray50
         }
         
         stackView.do {
@@ -68,7 +73,8 @@ final class RecordEmptyView: UIView {
     }
     
     private func setHierachy() {
-        self.addSubview(stackView)
+        self.addSubviews(dividerLine,
+                         stackView)
         
         stackView.addArrangedSubviews(registerPlusImageView,
                                       recordEmptyDescriptionLabel,
@@ -76,8 +82,14 @@ final class RecordEmptyView: UIView {
     }
     
     private func setLayout() {
+        dividerLine.snp.makeConstraints {
+            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(1)
+        }
+        
         stackView.snp.makeConstraints {
-            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).inset(158)
+            $0.top.equalTo(dividerLine.snp.bottom).offset(158)
             $0.centerX.equalToSuperview()
         }
     }
