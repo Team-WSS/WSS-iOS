@@ -15,7 +15,7 @@ final class MemoCreateView: UIView {
     // MARK: - UI Components
     
     let memoHeaderView = MemoHeaderView()
-    let memoContentView = MemoContentView()
+    let memoCreateContentView = MemoCreateContentView()
     
     // MARK: - Life Cycle
     
@@ -40,7 +40,7 @@ final class MemoCreateView: UIView {
     
     private func setHierachy() {
         self.addSubviews(memoHeaderView,
-                         memoContentView)
+                         memoCreateContentView)
     }
     
     // MARK: - set Layout
@@ -50,7 +50,7 @@ final class MemoCreateView: UIView {
             $0.top.leading.trailing.equalToSuperview()
         }
         
-        memoContentView.snp.makeConstraints {
+        memoCreateContentView.snp.makeConstraints {
             $0.top.equalTo(memoHeaderView.snp.bottom)
             $0.leading.trailing.bottom.equalToSuperview()
         }

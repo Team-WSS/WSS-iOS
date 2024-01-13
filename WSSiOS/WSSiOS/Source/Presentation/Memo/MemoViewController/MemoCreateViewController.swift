@@ -40,11 +40,11 @@ final class MemoCreateViewController: UIViewController {
     // MARK: - bind
     
     private func bind() {
-        rootView.memoContentView.memoTextView.rx.text.orEmpty
+        rootView.memoCreateContentView.memoTextView.rx.text.orEmpty
             .subscribe(onNext: { text in
                 self.memoContent = text
                 if text.count > 2000 {
-                    self.rootView.memoContentView.memoTextView.text = String(text.prefix(2000))
+                    self.rootView.memoCreateContentView.memoTextView.text = String(text.prefix(2000))
                 }
             })
             .disposed(by: disposeBag)

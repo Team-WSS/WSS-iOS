@@ -92,7 +92,7 @@
 		CD39F2EE2B525F1000B73A5C /* MemoCreateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2ED2B525F1000B73A5C /* MemoCreateView.swift */; };
 		CD39F2F02B525F1B00B73A5C /* MemoCreateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2EF2B525F1B00B73A5C /* MemoCreateViewController.swift */; };
 		CD39F2F32B52600D00B73A5C /* MemoHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2F22B52600D00B73A5C /* MemoHeaderView.swift */; };
-		CD39F2F52B52653900B73A5C /* MemoContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2F42B52653900B73A5C /* MemoContentView.swift */; };
+		CD39F2F52B52653900B73A5C /* MemoCreateContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2F42B52653900B73A5C /* MemoCreateContentView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -172,7 +172,7 @@
 		CD39F2ED2B525F1000B73A5C /* MemoCreateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoCreateView.swift; sourceTree = "<group>"; };
 		CD39F2EF2B525F1B00B73A5C /* MemoCreateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoCreateViewController.swift; sourceTree = "<group>"; };
 		CD39F2F22B52600D00B73A5C /* MemoHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoHeaderView.swift; sourceTree = "<group>"; };
-		CD39F2F42B52653900B73A5C /* MemoContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoContentView.swift; sourceTree = "<group>"; };
+		CD39F2F42B52653900B73A5C /* MemoCreateContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoCreateContentView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -651,7 +651,7 @@
 			isa = PBXGroup;
 			children = (
 				CD39F2F22B52600D00B73A5C /* MemoHeaderView.swift */,
-				CD39F2F42B52653900B73A5C /* MemoContentView.swift */,
+				CD39F2F42B52653900B73A5C /* MemoCreateContentView.swift */,
 			);
 			path = MemoAssistantView;
 			sourceTree = "<group>";
@@ -763,7 +763,7 @@
 				39CD5E0C2B4F3D0700668B9A /* RegisterNormalNovelSummaryView.swift in Sources */,
 				A1147A792B50552500141692 /* HomeSosoPickDummy.swift in Sources */,
 				CD39F2EE2B525F1000B73A5C /* MemoCreateView.swift in Sources */,
-				CD39F2F52B52653900B73A5C /* MemoContentView.swift in Sources */,
+				CD39F2F52B52653900B73A5C /* MemoCreateContentView.swift in Sources */,
 				A14EDBBF2B4F05F300906957 /* HomeSosoPickCollectionViewCell.swift in Sources */,
 				A1A1F9D42B4873B500705F44 /* SearchEmptyView.swift in Sources */,
 				3999BFE92B4E6C3500984832 /* RegisterNormalViewController.swift in Sources */,

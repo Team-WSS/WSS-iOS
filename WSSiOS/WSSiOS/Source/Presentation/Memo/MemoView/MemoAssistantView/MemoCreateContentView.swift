@@ -1,5 +1,5 @@
 //
-//  MemoContentView.swift
+//  MemoCreateContentView.swift
 //  WSSiOS
 //
 //  Created by Hyowon Jeon on 1/13/24.
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class MemoContentView: UIView {
+final class MemoCreateContentView: UIView {
 
     // MARK: - UI Components
     
