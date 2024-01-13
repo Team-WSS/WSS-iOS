@@ -18,10 +18,10 @@ enum ReadStatus {
     
     var tagImage: UIImage {
         switch self {
-        case .FINISH: return ImageLiterals.icon.icTagStatus.finished
-        case .READING: return ImageLiterals.icon.icTagStatus.reading
-        case .DROP: return ImageLiterals.icon.icTagStatus.stop
-        case .WISH: return ImageLiterals.icon.icTagStatus.interest
+        case .FINISH: return ImageLiterals.icon.TagStatus.finished
+        case .READING: return ImageLiterals.icon.TagStatus.reading
+        case .DROP: return ImageLiterals.icon.TagStatus.stop
+        case .WISH: return ImageLiterals.icon.TagStatus.interest
         }
     }
     

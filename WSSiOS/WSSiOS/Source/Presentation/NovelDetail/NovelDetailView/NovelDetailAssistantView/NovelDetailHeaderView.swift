@@ -43,7 +43,7 @@ final class NovelDetailHeaderView: UIView {
         }
         
         genreImageView.do {
-            $0.image = ImageLiterals.icon.icGenre.bl
+            $0.image = ImageLiterals.icon.Genre.bl
             $0.contentMode = .scaleAspectFit
         }
         

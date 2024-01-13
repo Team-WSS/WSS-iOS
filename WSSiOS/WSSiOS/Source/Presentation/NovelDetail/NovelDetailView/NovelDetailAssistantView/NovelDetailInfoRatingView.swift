@@ -91,11 +91,11 @@ final class NovelDetailInfoRatingView: UIView {
             starImageView.do {
                 $0.contentMode = .scaleAspectFit
                 if rating >= Float(i + 1) {
-                    $0.image = ImageLiterals.icon.icStar.fill
+                    $0.image = ImageLiterals.icon.Star.fill
                 } else if rating > Float(i) {
-                    $0.image = ImageLiterals.icon.icStar.half
+                    $0.image = ImageLiterals.icon.Star.half
                 } else {
-                    $0.image = ImageLiterals.icon.icStar.empty
+                    $0.image = ImageLiterals.icon.Star.empty
                 }
             }
             
