@@ -96,6 +96,7 @@
 		CD39F2F72B526CDF00B73A5C /* MemoEditContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2F62B526CDF00B73A5C /* MemoEditContentView.swift */; };
 		CD39F2F92B526CFA00B73A5C /* MemoEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2F82B526CFA00B73A5C /* MemoEditView.swift */; };
 		CD39F2FB2B526D2300B73A5C /* MemoEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2FA2B526D2300B73A5C /* MemoEditViewController.swift */; };
+		CD39F2FE2B5278A200B73A5C /* RxKeyboard in Frameworks */ = {isa = PBXBuildFile; productRef = CD39F2FD2B5278A200B73A5C /* RxKeyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -187,6 +188,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3999BFEE2B4E6CA000984832 /* UIImageViewAlignedSwift in Frameworks */,
+				CD39F2FE2B5278A200B73A5C /* RxKeyboard in Frameworks */,
 				2CD229442B42E7A2005400BE /* RxRelay in Frameworks */,
 				2CD229422B42E7A2005400BE /* RxCocoa-Dynamic in Frameworks */,
 				2CD229392B42E77F005400BE /* Kingfisher in Frameworks */,
@@ -693,6 +695,7 @@
 				2CD229432B42E7A2005400BE /* RxRelay */,
 				2CD229462B42E7C8005400BE /* Lottie */,
 				3999BFED2B4E6CA000984832 /* UIImageViewAlignedSwift */,
+				CD39F2FD2B5278A200B73A5C /* RxKeyboard */,
 			);
 			productName = WSSiOS;
 			productReference = 2CD229182B42E685005400BE /* WSSiOS.app */;
@@ -729,6 +732,7 @@
 				2CD2293A2B42E7A2005400BE /* XCRemoteSwiftPackageReference "RxSwift" */,
 				2CD229452B42E7C8005400BE /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				3999BFEC2B4E6CA000984832 /* XCRemoteSwiftPackageReference "UIImageViewAlignedSwift" */,
+				CD39F2FC2B5278A200B73A5C /* XCRemoteSwiftPackageReference "RxKeyboard" */,
 			);
 			productRefGroup = 2CD229192B42E685005400BE /* Products */;
 			projectDirPath = "";
@@ -1084,6 +1088,14 @@
 				minimumVersion = 0.8.3;
 			};
 		};
+		CD39F2FC2B5278A200B73A5C /* XCRemoteSwiftPackageReference "RxKeyboard" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/RxKeyboard";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1141,6 +1153,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3999BFEC2B4E6CA000984832 /* XCRemoteSwiftPackageReference "UIImageViewAlignedSwift" */;
 			productName = UIImageViewAlignedSwift;
+		};
+		CD39F2FD2B5278A200B73A5C /* RxKeyboard */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CD39F2FC2B5278A200B73A5C /* XCRemoteSwiftPackageReference "RxKeyboard" */;
+			productName = RxKeyboard;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
