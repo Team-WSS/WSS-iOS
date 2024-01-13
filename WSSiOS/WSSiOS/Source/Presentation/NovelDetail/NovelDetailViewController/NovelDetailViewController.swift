@@ -47,6 +47,7 @@ final class NovelDetailViewController: UIViewController {
     ])
     
     private let disposeBag = DisposeBag()
+    private var selectedMenu = BehaviorSubject<Int>(value: 0)
     private let memoTableViewHeight = BehaviorSubject<CGFloat>(value: 0)
     private let keywordCollectionViewHeight = BehaviorSubject<CGFloat>(value: 0)
     private let platformCollectionViewHeight = BehaviorSubject<CGFloat>(value: 0)
@@ -89,11 +90,23 @@ final class NovelDetailViewController: UIViewController {
     // MARK: - bind
     
     private func bind() {
+        selectedMenu
+            .subscribe(onNext: { selectedMenu in
+                if selectedMenu == 0 {
+                    self.rootView.createMemoButton.isHidden = false
+                } else {
+                    self.rootView.createMemoButton.isHidden = true
+                }
+            })
+            .disposed(by: disposeBag)
+        
         rootView.novelDetailTabView.memoButton.rx.tap.bind {
+            self.selectedMenu.onNext(0)
             self.memoButtonDidTap()
         }.disposed(by: disposeBag)
         
         rootView.novelDetailTabView.infoButton.rx.tap.bind {
+            self.selectedMenu.onNext(1)
             self.infoButtonDidTap()
         }.disposed(by: disposeBag)
         
