@@ -14,7 +14,7 @@ class MyPageCustomModalView: UIView {
 
     //MARK: - UI Components
     
-    public var modalAvatarFeatureView = MyPageModalAvatarFeatureLabelView()
+    public var modalAvatarFeatureLabelView = MyPageModalAvatarFeatureLabelView()
     public var modalAvaterImageView = UIImageView()
     public var modalTitleLabel = UILabel()
     public var modalExplanationLabel = UILabel()
@@ -69,7 +69,7 @@ class MyPageCustomModalView: UIView {
     }
     
     private func setHierachy() {
-        self.addSubviews(modalAvatarFeatureView,
+        self.addSubviews(modalAvatarFeatureLabelView,
                          modalAvaterImageView,
                          modalTitleLabel,
                          modalExplanationLabel,
@@ -78,13 +78,14 @@ class MyPageCustomModalView: UIView {
     }
     
     private func setLayout() {
-        modalAvatarFeatureView.snp.makeConstraints() {
+        modalAvatarFeatureLabelView.snp.makeConstraints() {
             $0.top.equalToSuperview().inset(30)
             $0.centerX.equalToSuperview()
+            $0.height.equalTo(52)
         }
         
         modalAvaterImageView.snp.makeConstraints() {
-            $0.top.equalTo(modalAvatarFeatureView.snp.bottom).offset(30)
+            $0.top.equalTo(modalAvatarFeatureLabelView.snp.bottom).offset(30)
             $0.centerX.equalToSuperview()
             $0.size.equalTo(220)
         }
