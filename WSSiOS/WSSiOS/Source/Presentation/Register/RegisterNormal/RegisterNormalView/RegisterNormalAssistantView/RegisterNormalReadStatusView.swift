@@ -24,7 +24,7 @@ final class RegisterNormalReadStatusView: UIView {
     // MARK: - UI Components
     
     private let totalStackView = UIStackView()
-    private let titleView = RegisterNormalSectionTitleView()
+    private let titleView = WSSSectionTitleView()
     private lazy var readStatusButtons: [UIButton] = createButtons()
     private let readStatusStackView = UIStackView()
     

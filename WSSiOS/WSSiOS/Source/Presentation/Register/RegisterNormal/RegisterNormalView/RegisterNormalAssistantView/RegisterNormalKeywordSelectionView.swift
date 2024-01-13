@@ -15,7 +15,7 @@ final class RegisterNormalKeywordSelectionView: UIView {
     // MARK: - UI Components
     
     private let totalStackView = UIStackView()
-    private let titleView = RegisterNormalSectionTitleView()
+    private let titleView = WSSSectionTitleView()
     private let keywordButton = RegisterNormalKeywordSelectionButton()
     
     // MARK: - Life Cycle
