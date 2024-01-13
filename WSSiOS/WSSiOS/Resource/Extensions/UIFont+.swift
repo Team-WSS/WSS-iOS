@@ -21,7 +21,7 @@ extension UIFont {
     }
     
     class var Title3: UIFont {
-        return UIFont(name: "Pretendard-Bold", size: 14)!
+        return UIFont(name: "Pretendard-Medium", size: 14)!
     }
     
     class var Body1: UIFont {
@@ -30,6 +30,10 @@ extension UIFont {
     
     class var Body2: UIFont {
         return UIFont(name: "Pretendard-Regular", size: 15)!
+    }
+    
+    class var Body3: UIFont {
+        return UIFont(name: "Pretendard-Regular", size: 12)!
     }
     
     class var Label1: UIFont {

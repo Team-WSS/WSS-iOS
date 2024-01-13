@@ -59,13 +59,13 @@ enum WSSTabBarItem: CaseIterable {
     var itemViewController: UIViewController {
         switch self {
         case .home:
-            return SearchViewController()
+            return HomeViewController()
         case .library:
             return UIViewController()
         case .record:
             return UIViewController()
         case .myPage:
-            return UIViewController()
+            return MyPageViewController()
         default:
             return UIViewController()
         }
