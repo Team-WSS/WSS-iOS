@@ -18,6 +18,12 @@ final class RecordViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = .White
+        setUI()
+    }
+    
+    private func setUI() {
+        self.view.do {
+            $0.backgroundColor = .White
+        }
     }
 }

@@ -50,7 +50,7 @@ final class RecordTableViewCell: UITableViewCell {
             $0.font = .Body2
             $0.textColor = .Black
             $0.numberOfLines = 0
-            $0.lineBreakMode = .byCharWrapping
+            $0.lineBreakMode = .byWordWrapping
         }
     }
     
