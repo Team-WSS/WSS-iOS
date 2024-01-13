@@ -42,9 +42,10 @@ final class RecordResultView: UIView {
     
     private func setUI() {
         recordTableView.do {
-            $0.rowHeight = 200
             $0.showsVerticalScrollIndicator = false
             $0.separatorStyle = .none
+            $0.contentInset.top = 24
+            $0.contentInset.bottom = 24
         }
     }
     

@@ -38,6 +38,7 @@ final class RecordTableViewCell: UITableViewCell {
     private func setUI() {
         self.do {
             $0.backgroundColor = .White
+            $0.selectionStyle = .none
         }
         
         novelTitleLabel.do {
@@ -66,6 +67,7 @@ final class RecordTableViewCell: UITableViewCell {
     private func setLayout() {
         dateView.snp.makeConstraints{
             $0.top.leading.trailing.equalToSuperview()
+            $0.height.equalTo(10)
         }
         
         novelTitleLabel.snp.makeConstraints {
