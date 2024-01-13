@@ -12,10 +12,6 @@ import Then
 
 final class NovelDetailInfoGenreView: UIView {
     
-    //MARK: - set Properties
-    
-    private let novelGenre = "로판"
-    
     // MARK: - UI Components
     
     private let titleLabel = UILabel()
@@ -45,7 +41,6 @@ final class NovelDetailInfoGenreView: UIView {
         }
         
         genreLabel.do {
-            $0.text = self.novelGenre
             $0.textColor = .Gray300
             $0.font = .Body2
         }
@@ -71,5 +66,9 @@ final class NovelDetailInfoGenreView: UIView {
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.bottom.equalToSuperview()
         }
+    }
+    
+    func bindData(genre: String) {
+        self.genreLabel.text = genre
     }
 }

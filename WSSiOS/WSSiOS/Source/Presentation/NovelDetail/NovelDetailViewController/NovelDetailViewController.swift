@@ -39,6 +39,8 @@ final class NovelDetailViewController: UIViewController {
     
     private let novelDescription = Observable<String>.just("왕실에는 막대한 빚이 있었고, 그들은 빚을 갚기 위해 왕녀인 바이올렛을 막대한 돈을 지녔지만 공작의 사생/아인 윈터에게 시집보낸다.  '태어나서 이렇게 멋있는 남자는 처음 봐…….' 왕실에는 막대한 빚이 있었고, 그들은 빚을 갚기 위해 왕녀인 바이올렛을 막대한 돈을 지녔지만 공작의 사생/아인 윈터에게 시집보낸다.")
     
+    private let novelGenre = Observable<String>.just("로판")
+    
     private let platforms = Observable<[String]>.just([
         "네이버시리즈",
         "카카오페이지"
@@ -157,6 +159,12 @@ final class NovelDetailViewController: UIViewController {
         novelDescription
             .subscribe(onNext: { description in
                 self.rootView.novelDetailInfoView.novelDetailInfoDescriptionView.bindData(description: description)
+            })
+            .disposed(by: disposeBag)
+        
+        novelGenre
+            .subscribe(onNext: { genre in
+                self.rootView.novelDetailInfoView.novelDetailInfoGenreView.bindData(genre: genre)
             })
             .disposed(by: disposeBag)
         
