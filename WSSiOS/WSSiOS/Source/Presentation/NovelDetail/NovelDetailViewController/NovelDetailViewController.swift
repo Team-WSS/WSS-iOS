@@ -22,6 +22,10 @@ final class NovelDetailViewController: UIViewController {
     
     private let readStatus = Observable<String>.just("WISH")
     
+    private let startDate = Observable<String?>.just("2023-12-26")
+    
+    private let endDate = Observable<String?>.just("2023-12-30")
+    
     private let keywords = Observable<[String]>.just([
         "#가상시대물",
         "#판타지물",
@@ -129,6 +133,22 @@ final class NovelDetailViewController: UIViewController {
         readStatus
             .subscribe(onNext: { readStatus in
                 self.rootView.novelDetailInfoView.novelDetailInfoReadStatusView.bindData(status: readStatus)
+            })
+            .disposed(by: disposeBag)
+        
+        startDate
+            .subscribe(onNext: { startDate in
+                if let startDate = startDate {
+                    self.rootView.novelDetailInfoView.novelDetailInfoReadDateView.bindData(startDate: startDate)
+                } else {
+                    self.rootView.novelDetailInfoView.novelDetailInfoReadDateView.removeFromSuperview()
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        endDate
+            .subscribe(onNext: { endDate in
+                self.rootView.novelDetailInfoView.novelDetailInfoReadDateView.bindData(endDate: endDate)
             })
             .disposed(by: disposeBag)
         

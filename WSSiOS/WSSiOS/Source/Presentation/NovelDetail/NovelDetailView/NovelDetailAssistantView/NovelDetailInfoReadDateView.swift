@@ -11,11 +11,6 @@ import SnapKit
 import Then
 
 final class NovelDetailInfoReadDateView: UIView {
-
-    //MARK: - set Properties
-
-    private var startDate: String = "2023-12-26"
-    private var endDate: String = "2023-12-30"
     
     // MARK: - UI Components
     
@@ -43,7 +38,6 @@ final class NovelDetailInfoReadDateView: UIView {
     
     private func setUI() {
         readDateLabel.do {
-            $0.text = "읽은 날짜"
             $0.textColor = .Black
             $0.font = .Title1
         }
@@ -55,19 +49,16 @@ final class NovelDetailInfoReadDateView: UIView {
         }
         
         startDateLabel.do {
-            $0.text = self.startDate
             $0.font = .Body2
             $0.textColor = .Gray300
         }
         
         endDateLabel.do {
-            $0.text = self.endDate
             $0.font = .Body2
             $0.textColor = .Gray300
         }
         
         waveLabel.do {
-            $0.text = "~"
             $0.font = .Body2
             $0.textColor = .Gray300
         }
@@ -111,6 +102,22 @@ final class NovelDetailInfoReadDateView: UIView {
         endDateLabel.snp.makeConstraints {
             $0.centerY.equalTo(dateImageView.snp.centerY)
             $0.leading.equalTo(waveLabel.snp.trailing).offset(20)
+        }
+    }
+    
+    func bindData(startDate: String) {
+        self.startDateLabel.text = startDate
+    }
+    
+    func bindData(endDate: String?) {
+        if let endDate = endDate {
+            self.readDateLabel.text = "읽은 날짜"
+            self.endDateLabel.text = endDate
+            self.waveLabel.text = "~"
+        } else {
+            self.readDateLabel.text = "시작 날짜"
+            self.endDateLabel.text = nil
+            self.waveLabel.text = nil
         }
     }
 }
