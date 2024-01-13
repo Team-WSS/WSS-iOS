@@ -93,4 +93,10 @@ final class MemoEditContentView: UIView {
             $0.leading.trailing.bottom.equalToSuperview().inset(20)
         }
     }
+    
+    func updateTextViewConstraint(keyboardHeight: CGFloat) {
+        self.memoTextView.snp.updateConstraints {
+            $0.bottom.equalToSuperview().inset(keyboardHeight + 20)
+        }
+    }
 }

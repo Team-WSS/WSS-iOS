@@ -8,6 +8,7 @@
 import UIKit
 
 import RxCocoa
+import RxKeyboard
 import RxSwift
 
 final class MemoEditViewController: UIViewController {
@@ -46,6 +47,12 @@ final class MemoEditViewController: UIViewController {
                 if text.count > 2000 {
                     self.rootView.memoEditContentView.memoTextView.text = String(text.prefix(2000))
                 }
+            })
+            .disposed(by: disposeBag)
+        
+        RxKeyboard.instance.visibleHeight
+            .drive(onNext: { keyboardHeight in
+                self.rootView.memoEditContentView.updateTextViewConstraint(keyboardHeight: keyboardHeight)
             })
             .disposed(by: disposeBag)
     }
