@@ -93,6 +93,18 @@ final class NovelDetailViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
+        memos
+            .map { $0.count == 0 }
+            .subscribe(onNext: { isEmpty in
+                if isEmpty {
+                    self.rootView.novelDetailMemoView.novelDetailCreateMemoView.createMemoLabel.text = "아직 작성된 메모가 없어요"
+                } else {
+                    self.rootView.novelDetailMemoView.novelDetailCreateMemoView.createMemoLabel.text = "새로운 메모를 작성해보세요"
+                }
+            })
+            .disposed(by: disposeBag)
+
+        
         rootView.novelDetailMemoView.memoTableView.rx.observe(CGSize.self, "contentSize")
             .map { $0?.height ?? 0 }
             .bind(to: memoTableViewHeight)

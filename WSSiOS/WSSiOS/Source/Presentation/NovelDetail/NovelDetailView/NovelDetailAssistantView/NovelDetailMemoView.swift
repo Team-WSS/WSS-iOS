@@ -14,7 +14,7 @@ final class NovelDetailMemoView: UIView {
 
     // MARK: - UI Components
     
-    private let novelDetailCreateMemoView = NovelDetailCreateMemoView()
+    public let novelDetailCreateMemoView = NovelDetailCreateMemoView()
     public let memoTableView = UITableView(frame: .zero, style: .plain)
 
     // MARK: - Life Cycle
