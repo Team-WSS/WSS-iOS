@@ -40,6 +40,7 @@ final class MyPageViewController: UIViewController {
         
         register()
         bindDataToMyPageCollectionView()
+        pushChangeNicknameViewController()
     }
     
     //MARK: - UI Components
@@ -64,6 +65,20 @@ final class MyPageViewController: UIViewController {
             cellIdentifier: "MyPageSettingCollectionViewCell",
             cellType: MyPageSettingCollectionViewCell.self)) { (row, element, cell) in
                 cell.myPageSettingCellLabel.text = element
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    private func pushChangeNicknameViewController() {
+        rootView.myPageTallyView.myPageUserNameButton.rx.tap
+            .bind {[weak self] in
+                if let tabBarController = self?.tabBarController as? WSSTabBarController {
+                    tabBarController.tabBar.isHidden = true
+                    tabBarController.shadowView.isHidden = true
+                }
+                
+                let changeNicknameViewController = MyPageChangeNicknameViewController()
+                self?.navigationController?.pushViewController(changeNicknameViewController, animated: true)
             }
             .disposed(by: disposeBag)
     }

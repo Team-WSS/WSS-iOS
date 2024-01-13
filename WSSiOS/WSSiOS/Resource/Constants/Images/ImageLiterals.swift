@@ -10,23 +10,23 @@ import UIKit
 enum ImageLiterals {
     
     enum icon {
-        enum icAlert {
+        enum Alert {
             static var success: UIImage{ .load(named: "icAlertSuccess")}
             static var warning: UIImage{ .load(named: "icAlertWarning")}
         }
         
-        enum icBookRegistration {
+        enum BookRegistration {
             static var noResult: UIImage{ .load(named: "icBookRegistrationNoresult")}
             static var plus: UIImage{ .load(named: "icBookRegistrationPlus")}
         }
         
-        enum icMemo {
+        enum Memo {
             static var big: UIImage{ .load(named: "icCreateMemoBig")}
             static var small: UIImage{ .load(named: "icCreateMemoSmall")}
             static var delete: UIImage{ .load(named: "icDeleteMemo")}
         }
         
-        enum icGenre {
+        enum Genre {
             static var bl: UIImage{ .load(named: "icGenreBL")}
             static var drama: UIImage{ .load(named: "icGenreD")}
             static var rantasy: UIImage{ .load(named: "icGenreF")}
@@ -38,13 +38,13 @@ enum ImageLiterals {
             static var romanceFantasy: UIImage{ .load(named: "icGenreRF")}
         }
         
-        enum icStar {
+        enum Star {
             static var fill: UIImage{ .load(named: "icStarFill")}
             static var half: UIImage{ .load(named: "icStarHalf")}
             static var empty: UIImage{ .load(named: "icStarEmpty")}
         }
         
-        enum icTagStatus {
+        enum TagStatus {
             static var stop: UIImage{ .load(named: "icTagStop")}
             static var reading: UIImage{ .load(named: "icTagReading")}
             static var interest: UIImage{ .load(named: "icTagInterest")}
@@ -62,7 +62,7 @@ enum ImageLiterals {
             static var myPageSelected: UIImage{ .load(named: "icNavigateMySelected")}
         }
         
-        enum icBadge {
+        enum Badge {
             static var logo: UIImage{ .load(named: "badgeLogo")}
             static var RF: UIImage{ .load(named: "badgeRF")}
             static var HF: UIImage{ .load(named: "badgeHF")}
@@ -75,13 +75,13 @@ enum ImageLiterals {
             static var BL: UIImage{ .load(named: "badgeBL")}
         }
         
-        enum icMyPage {
+        enum MyPage {
             static var register: UIImage{ .load(named: "register")}
             static var record: UIImage{ .load(named: "record")}
             static var right: UIImage{ .load(named: "icRight")}
         }
         
-        static var calender: UIImage{ .load(named: "icCalender")}
+        static var calender: UIImage{ .load(named: "icCalendar")}
         static var dropDown: UIImage{ .load(named: "icDropDown")}
         static var linkPlatform: UIImage{ .load(named: "icLinkPlatform")}
         static var navigateLeft: UIImage{ .load(named: "icNavigateLeft")}
@@ -89,5 +89,7 @@ enum ImageLiterals {
         static var plusKeyword: UIImage{ .load(named: "icPlusKeyword")}
         static var search: UIImage{ .load(named: "icSearch")}
         static var searchCancel: UIImage{ .load(named: "icSearchCancel")}
+        static var imgLogoType: UIImage{ .load(named: "imgLogoType")}
+        static var sosopickCircle: UIImage { .load(named: "sosopickCircle")}
     }
 }
