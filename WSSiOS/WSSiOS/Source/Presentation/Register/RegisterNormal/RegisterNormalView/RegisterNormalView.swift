@@ -19,7 +19,7 @@ final class RegisterNormalView: UIView {
     
     private let bannerImageView = RegisterNormalBannerImageView()
     let infoWithRatingView = RegisterNormalNovelInfoWithRatingView()
-    private let readStatusView = RegisterNormalReadStatusView()
+    let readStatusView = RegisterNormalReadStatusView()
     private let readDateView = RegisterNormalReadDateView()
     private let dividerView = RegisterNormalDividerView()
     private let keywordSelectionView = RegisterNormalKeywordSelectionView()

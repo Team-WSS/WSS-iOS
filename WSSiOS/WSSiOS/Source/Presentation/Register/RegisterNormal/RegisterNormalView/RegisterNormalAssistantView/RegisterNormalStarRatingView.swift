@@ -21,7 +21,7 @@ final class RegisterNormalStarRatingView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        //setupView()
+        
         setUI()
         setHieararchy()
         setLayout()
