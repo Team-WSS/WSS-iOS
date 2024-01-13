@@ -18,6 +18,8 @@ final class NovelDetailViewController: UIViewController {
         ["memoDate": "2023-12-23 오전 10:12", "memoContent": "깨달았다. 사람은 사람을 절대 이해할 수 없다. 공감할수는 있어도. 그렇기에 나는 절대로 사람을 이해하려 노력하지 않을"]
     ])
     
+    private let rating = Observable<Float>.just(3.5)
+    
     private let keywords = Observable<[String]>.just([
         "#가상시대물",
         "#판타지물",
@@ -113,6 +115,12 @@ final class NovelDetailViewController: UIViewController {
         memoTableViewHeight
             .subscribe(onNext: { height in
                 self.rootView.novelDetailMemoView.updateTableViewHeight(height: height)
+            })
+            .disposed(by: disposeBag)
+        
+        rating
+            .subscribe(onNext: { rating in
+                self.rootView.novelDetailInfoView.novelDetailInfoRatingView.bindData(rating: rating)
             })
             .disposed(by: disposeBag)
         

@@ -46,17 +46,6 @@ final class NovelDetailInfoRatingView: UIView {
             $0.alignment = .fill
             $0.distribution = .fill
             $0.spacing = 10
-            
-            for _ in 0...4 {
-                let starImageView = UIImageView()
-                
-                starImageView.do {
-                    $0.image = ImageLiterals.icon.icStar.fill
-                    $0.contentMode = .scaleAspectFit
-                }
-                
-                $0.addArrangedSubview(starImageView)
-            }
         }
         
         dividerView.do {
@@ -92,6 +81,25 @@ final class NovelDetailInfoRatingView: UIView {
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalToSuperview()
             $0.height.equalTo(1)
+        }
+    }
+    
+    func bindData(rating: Float) {
+        for i in 0...4 {
+            let starImageView = UIImageView()
+            
+            starImageView.do {
+                $0.contentMode = .scaleAspectFit
+                if rating >= Float(i + 1) {
+                    $0.image = ImageLiterals.icon.icStar.fill
+                } else if rating > Float(i) {
+                    $0.image = ImageLiterals.icon.icStar.half
+                } else {
+                    $0.image = ImageLiterals.icon.icStar.empty
+                }
+            }
+            
+            self.ratingStackView.addArrangedSubview(starImageView)
         }
     }
 }
