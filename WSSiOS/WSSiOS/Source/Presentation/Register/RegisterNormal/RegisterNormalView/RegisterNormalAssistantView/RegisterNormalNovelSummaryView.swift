@@ -15,11 +15,11 @@ final class RegisterNormalNovelSummaryView: UIView {
     // MARK: - UI Components
     
     private let novelSummaryStackView = UIStackView()
-    private let plotTitleLabel = RegisterNormalSectionTitleView()
+    private let plotTitleLabel = WSSSectionTitleView()
     private let plotLabel = UILabel()
-    private let genreTitleLabel = RegisterNormalSectionTitleView()
+    private let genreTitleLabel = WSSSectionTitleView()
     private let genreLabel = UILabel()
-    private let platformTitleLabel = RegisterNormalSectionTitleView()
+    private let platformTitleLabel = WSSSectionTitleView()
     private let platformButtonStackView = UIStackView()
     private let spacer = UIView()
     private lazy var platformButtons = [

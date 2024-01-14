@@ -2,30 +2,23 @@
 //  RegisterNormalReadStatusView.swift
 //  WSSiOS
 //
-//  Created by 이윤학 on 1/9/24.
+//  Created by 이윤학 on 1/13/24.
 //
-
 
 import UIKit
 
 import SnapKit
 import Then
+import RxSwift
+import RxCocoa
 
 final class RegisterNormalReadStatusView: UIView {
-    
-    // MARK: - Properties
-    
-    let buttonTitles = ["읽음", "읽는 중", "하차", "읽고 싶음"]
-    let buttonImages: [UIImage] = [ImageLiterals.icon.TagStatus.finished,
-                                   ImageLiterals.icon.TagStatus.reading,
-                                   ImageLiterals.icon.TagStatus.stop,
-                                   ImageLiterals.icon.TagStatus.interest]
     
     // MARK: - UI Components
     
     private let totalStackView = UIStackView()
-    private let titleView = RegisterNormalSectionTitleView()
-    private lazy var readStatusButtons: [UIButton] = createButtons()
+    private let titleView = WSSSectionTitleView()
+    lazy var readStatusButtons: [RegisterNormalReadStatusButton] = createButtons()
     private let readStatusStackView = UIStackView()
     
     // MARK: - Life Cycle
@@ -77,14 +70,14 @@ final class RegisterNormalReadStatusView: UIView {
         }
     }
     
-    private func createButtons() -> [UIButton] {
-        var buttons: [UIButton] = []
-        for index in 0..<4 {
+    private func createButtons() -> [RegisterNormalReadStatusButton] {
+        var buttons: [RegisterNormalReadStatusButton] = []
+        for status in RegisterNormalReadStatus.allCases {
             let button = RegisterNormalReadStatusButton()
             button.do {
-                $0.setText(buttonTitles[index])
-                $0.setImage(buttonImages[index])
-                $0.tag = index
+                $0.setText(status.tagText)
+                $0.setImage(status.tagImage)
+                $0.setStatus(status)
             }
             buttons.append(button)
         }
@@ -92,3 +85,4 @@ final class RegisterNormalReadStatusView: UIView {
         return buttons
     }
 }
+

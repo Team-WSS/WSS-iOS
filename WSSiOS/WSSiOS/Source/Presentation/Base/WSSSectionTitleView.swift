@@ -1,8 +1,8 @@
 //
-//  RegisterNormalTitleView.swift
+//  WSSSectionTitleView.swift
 //  WSSiOS
 //
-//  Created by 이윤학 on 1/12/24.
+//  Created by 이윤학 on 1/13/24.
 //
 
 import UIKit
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class RegisterNormalSectionTitleView: UIView {
+final class WSSSectionTitleView: UIView {
 
     // MARK: - UI Components
     
