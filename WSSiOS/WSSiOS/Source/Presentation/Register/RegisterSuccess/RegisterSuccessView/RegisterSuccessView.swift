@@ -7,6 +7,7 @@
 
 import UIKit
 
+import Lottie
 import SnapKit
 import Then
 
@@ -15,7 +16,7 @@ final class RegisterSuccessView: UIView {
     // MARK: - UI Components
     
     private let titleLabel = UILabel()
-    private let tempView = UIView()
+    private let lottieView = LottieAnimationView(name: "animationRegistration")
     private var makeMemoButton = WSSMainButton(title: "작품에 메모 남기기")
     private var returnHomeButton = UIButton()
     
@@ -46,8 +47,8 @@ final class RegisterSuccessView: UIView {
             $0.font = .HeadLine1
         }
             
-        tempView.do {
-            $0.backgroundColor = .Gray200
+        lottieView.do {
+            $0.play()
         }
         
         returnHomeButton.do {
@@ -63,18 +64,18 @@ final class RegisterSuccessView: UIView {
     }
     
     private func setHieararchy() {
-        self.addSubviews(titleLabel, tempView, makeMemoButton, returnHomeButton)
+        self.addSubviews(titleLabel, lottieView, makeMemoButton, returnHomeButton)
     }
     
     private func setLayout() {
         titleLabel.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.bottom.equalTo(tempView.snp.top).offset(-36)
+            $0.bottom.equalTo(lottieView.snp.top).offset(-36)
         }
         
-        tempView.snp.makeConstraints {
+        lottieView.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview().inset(40)
-            $0.height.equalTo(tempView.snp.width)
+            $0.height.equalTo(lottieView.snp.width)
             $0.centerY.equalToSuperview()
         }
         
