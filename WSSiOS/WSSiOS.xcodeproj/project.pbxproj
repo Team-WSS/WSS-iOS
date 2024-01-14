@@ -81,6 +81,12 @@
 		A1147A8A2B506BA500141692 /* RecordHeaderAlignmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1147A892B506BA500141692 /* RecordHeaderAlignmentView.swift */; };
 		A122C9CF2B53024200DFCFE4 /* UserAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A122C9CE2B53024200DFCFE4 /* UserAPI.swift */; };
 		A122C9D22B53025300DFCFE4 /* RecommendAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A122C9D12B53025300DFCFE4 /* RecommendAPI.swift */; };
+		A122C9D92B53098F00DFCFE4 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = A122C9D82B53098F00DFCFE4 /* Networking.swift */; };
+		A122C9DB2B5309AF00DFCFE4 /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = A122C9DA2B5309AF00DFCFE4 /* HTTPMethod.swift */; };
+		A122C9DD2B5309D100DFCFE4 /* NetworkingServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A122C9DC2B5309D100DFCFE4 /* NetworkingServiceError.swift */; };
+		A122C9DF2B530A1A00DFCFE4 /* APIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A122C9DE2B530A1A00DFCFE4 /* APIConstants.swift */; };
+		A122C9E12B530A4100DFCFE4 /* NetworkLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A122C9E02B530A4100DFCFE4 /* NetworkLogger.swift */; };
+		A122C9E32B530A8800DFCFE4 /* Data+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A122C9E22B530A8800DFCFE4 /* Data+.swift */; };
 		A122C9F22B53146800DFCFE4 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = A122C9F12B53146800DFCFE4 /* Config.swift */; };
 		A122C9F62B5314FE00DFCFE4 /* URLs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A122C9F52B5314FE00DFCFE4 /* URLs.swift */; };
 		A147CBC42B4D662E0040AE39 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A147CBC32B4D662E0040AE39 /* SearchView.swift */; };
@@ -203,9 +209,6 @@
 		A1147A892B506BA500141692 /* RecordHeaderAlignmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordHeaderAlignmentView.swift; sourceTree = "<group>"; };
 		A122C9CE2B53024200DFCFE4 /* UserAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAPI.swift; sourceTree = "<group>"; };
 		A122C9D12B53025300DFCFE4 /* RecommendAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendAPI.swift; sourceTree = "<group>"; };
-		A122C9F12B53146800DFCFE4 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
-		A122C9F32B53149200DFCFE4 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
-		A122C9F52B5314FE00DFCFE4 /* URLs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLs.swift; sourceTree = "<group>"; };
 		A147CBC32B4D662E0040AE39 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		A147CBC52B4D6E190040AE39 /* UIStackView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+.swift"; sourceTree = "<group>"; };
 		A14EB8692B4F15D400A0A799 /* HomeSosoPickUserNumberChipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSosoPickUserNumberChipView.swift; sourceTree = "<group>"; };
@@ -437,6 +440,7 @@
 				A1DBB2FD2B4AEB22000EE869 /* UIView+.swift */,
 				A147CBC52B4D6E190040AE39 /* UIStackView+.swift */,
 				CD39F2C02B4FF81E00B73A5C /* UIButton+.swift */,
+				A122C9E22B530A8800DFCFE4 /* Data+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -689,6 +693,18 @@
 			path = Avatar;
 			sourceTree = "<group>";
 		};
+		A122C9D72B53097A00DFCFE4 /* Foundation */ = {
+			isa = PBXGroup;
+			children = (
+				A122C9D82B53098F00DFCFE4 /* Networking.swift */,
+				A122C9DA2B5309AF00DFCFE4 /* HTTPMethod.swift */,
+				A122C9DC2B5309D100DFCFE4 /* NetworkingServiceError.swift */,
+				A122C9DE2B530A1A00DFCFE4 /* APIConstants.swift */,
+				A122C9E02B530A4100DFCFE4 /* NetworkLogger.swift */,
+			);
+			path = Foundation;
+			sourceTree = "<group>";
+		};
 		A122C9F02B53146100DFCFE4 /* Config */ = {
 			isa = PBXGroup;
 			children = (
@@ -821,6 +837,7 @@
 		A1EF35562B52FAA300A94C53 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				A122C9D72B53097A00DFCFE4 /* Foundation */,
 				A122C9D62B53026E00DFCFE4 /* Avatar */,
 				A122C9D52B53026700DFCFE4 /* Memo */,
 				A122C9D42B53026100DFCFE4 /* UserNovel */,
@@ -1019,8 +1036,10 @@
 				39CD5E102B4FEC0F00668B9A /* RegisterNormalCustomToggleButton.swift in Sources */,
 				39CD5E0A2B4F2E4000668B9A /* RegisterNormalKeywordSelectionButton.swift in Sources */,
 				A1A1F9CD2B48733200705F44 /* SearchViewController.swift in Sources */,
+				A122C9DF2B530A1A00DFCFE4 /* APIConstants.swift in Sources */,
 				39CC16812B51246E003F56AE /* RegisterNormalView.swift in Sources */,
 				A107A49E2B4DCD9900668C3E /* HomeCharacterView.swift in Sources */,
+				A122C9DB2B5309AF00DFCFE4 /* HTTPMethod.swift in Sources */,
 				A1EF35432B52F75800A94C53 /* NovelRepository.swift in Sources */,
 				2C5D0F5D2B50100000C76D3C /* MyPageSettingCollectionViewCell.swift in Sources */,
 				39CC168A2B51D965003F56AE /* RegisterSuccessView.swift in Sources */,
@@ -1045,6 +1064,7 @@
 				2C2491842B4ADC230096F255 /* WSSTabBarItem.swift in Sources */,
 				A1147A8A2B506BA500141692 /* RecordHeaderAlignmentView.swift in Sources */,
 				A107A49A2B4DB66D00668C3E /* HomeSearchButtonView.swift in Sources */,
+				A122C9E32B530A8800DFCFE4 /* Data+.swift in Sources */,
 				CD39F2C52B4FFE7400B73A5C /* NovelDetailCreateMemoView.swift in Sources */,
 				A1EC91B42B46DA3100CFB33D /* ImageLiterals.swift in Sources */,
 				CD39F2DA2B50DDBF00B73A5C /* NovelDetailInfoGenreView.swift in Sources */,
@@ -1060,6 +1080,7 @@
 				A1EF35622B52FAF700A94C53 /* AvatarService.swift in Sources */,
 				39CD5E0E2B4FCEBC00668B9A /* RegisterNormalPlatformSelectButton.swift in Sources */,
 				39CD5E062B4F20A600668B9A /* RegisterNormalDividerView.swift in Sources */,
+				A122C9DD2B5309D100DFCFE4 /* NetworkingServiceError.swift in Sources */,
 				2C2491862B4ADC420096F255 /* WSSTabBarController.swift in Sources */,
 				392A292F2B4F07FF0065EB97 /* RegisterNormalReadDateView.swift in Sources */,
 				2CD229572B42EA75005400BE /* UIColor+.swift in Sources */,
@@ -1077,6 +1098,7 @@
 				CD39F2D22B50CE0600B73A5C /* NovelDetailInfoReadStatusTagView.swift in Sources */,
 				A1EF35452B52F76C00A94C53 /* UserNovelRepository.swift in Sources */,
 				CD39F2C32B4FFDF900B73A5C /* NovelDetailMemoView.swift in Sources */,
+				A122C9E12B530A4100DFCFE4 /* NetworkLogger.swift in Sources */,
 				CD39F2D02B50CD4700B73A5C /* NovelDetailInfoReadStatusView.swift in Sources */,
 				CD39F2E22B50EFCB00B73A5C /* LeftAlignedCollectionViewFlowLayout.swift in Sources */,
 				CD39F2B82B4FE0FB00B73A5C /* NovelDetailViewController.swift in Sources */,
@@ -1091,6 +1113,7 @@
 				A1DBB3002B4AFCC0000EE869 /* SearchDummy.swift in Sources */,
 				2CCBFA022B4DC10500D787C2 /* MyPageProfileView.swift in Sources */,
 				392A292D2B4ECF320065EB97 /* RegisterNormalReadStatusView.swift in Sources */,
+				A122C9D92B53098F00DFCFE4 /* Networking.swift in Sources */,
 				A1A1F9D22B4873A100705F44 /* SearchResultView.swift in Sources */,
 				2CCBFA002B4DBFD200D787C2 /* MyPageViewModel.swift in Sources */,
 				CD39F2BF2B4FF6DF00B73A5C /* NovelDetailTabView.swift in Sources */,
