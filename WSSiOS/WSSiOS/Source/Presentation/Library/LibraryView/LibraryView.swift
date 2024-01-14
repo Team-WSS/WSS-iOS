@@ -54,7 +54,7 @@ class LibraryView: UIView {
     
     private func setLayout() {
         libraryCollectionView.snp.makeConstraints() {
-            $0.top.equalToSuperview().inset(100)
+            $0.top.equalToSuperview()
             $0.centerX.equalToSuperview()
             $0.leading.equalTo(20)
             $0.bottom.equalToSuperview().inset(84)

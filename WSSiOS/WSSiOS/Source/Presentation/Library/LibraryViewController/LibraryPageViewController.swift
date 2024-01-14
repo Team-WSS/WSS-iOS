@@ -16,11 +16,11 @@ class LibraryPageViewController: UIViewController {
     
     //MARK: - Properties
     
-    private var tabBarDummyText = ["전체", "읽음", "읽는 중", "하차", "읽고 싶음"]
-    
+    private let disposeBag = DisposeBag()
     
     //MARK: - UI Components
-    var libraryPageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+    private var libraryPageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+    private var libraryPageBar = LibraryPageBar()
     private var libraryPages = [LibraryBaseViewController]()
     private var initialPage = 0
     
@@ -29,15 +29,36 @@ class LibraryPageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        register()
+        bindDataToLibraryCollectionView()
+        
         setupPage()
         delegate()
+        
         setHierarchy()
         setLayout()
     }
     
     //MARK: - Custom TabBar
     
+    private func register() {
+        libraryPageBar.libraryTabCollectionView
+            .register(LibraryTabCollectionViewCell.self,
+                      forCellWithReuseIdentifier: "LibraryTabCollectionViewCell")
+    }
+    
+    private func bindDataToLibraryCollectionView() {
+        dummyLibraryTabTitle.bind(to: libraryPageBar.libraryTabCollectionView.rx.items(
+            cellIdentifier: "LibraryTabCollectionViewCell",
+            cellType: LibraryTabCollectionViewCell.self)) { (row, element, cell) in
+                cell.libraryTabButton.setTitle(element, for: .normal)
+            }
+            .disposed(by: disposeBag)
+    }
+    
     private func setupPage() {
+        self.view.backgroundColor = .White
+        
         for i in 0...4 {
             libraryPages.append(LibraryBaseViewController())
         }
@@ -51,20 +72,22 @@ class LibraryPageViewController: UIViewController {
     }
     
     private func setHierarchy() {
+        self.view.addSubview(libraryPageBar)
         self.addChild(libraryPageViewController)
-        self.view.addSubview(libraryPageViewController.view)
+        self.view.addSubviews(libraryPageViewController.view)
         libraryPageViewController.didMove(toParent: self)
     }
     
     private func setLayout() {
-        libraryPageViewController.view.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+        libraryPageBar.snp.makeConstraints() {
+            $0.top.width.equalToSuperview()
+            $0.height.equalTo(107)
         }
-    }
-    
-    func initializePageViewController(with index: Int) {
-        let currentVC = libraryPages[index]
-        libraryPageViewController.setViewControllers([currentVC], direction: .forward, animated: false, completion: nil)
+        
+        libraryPageViewController.view.snp.makeConstraints {
+            $0.top.equalTo(libraryPageBar.snp.bottom)
+            $0.width.bottom.equalToSuperview()
+        }
     }
 }
 
@@ -72,7 +95,7 @@ extension LibraryPageViewController : UIPageViewControllerDelegate {
 //    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
 //        guard completed else { return }
 //        if let viewController = pageViewController.viewControllers?.first {
-//            detailBottomBar.detailPageController.currentPage = VCList.firstIndex(of: viewController as! DetailViewController) ?? 0
+//
 //        }
 //    }
 }

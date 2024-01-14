@@ -38,3 +38,5 @@ let libraryDummyData = Observable.just([
     libraryDummyStruct(Image: UIImage(named: "sample3")!, title: "나는 이윤학", author: "낙낙", rating: 5.0),
     libraryDummyStruct(Image: UIImage(named: "sample3")!, title: "나는 최서연", author: "서여닝둥둥둥둥", rating: 5.0),
     libraryDummyStruct(Image: UIImage(named: "sample4")!, title: "ㅎㅇ나 낙낙인디", author: "낙낙낙낙낙낙낙낙낙낙", rating: 5.0)])
+
+let dummyLibraryTabTitle = Observable.just(["전체", "읽음", "읽는 중", "하차", "읽고 싶음"])
