@@ -8,7 +8,7 @@
 import UIKit
 
 /// 1-3-1 RegisterNormal View
-final class RegisterSuccessViewController: ViewController {
+final class RegisterSuccessViewController: UIViewController {
     
     // MARK: - Properties
     
