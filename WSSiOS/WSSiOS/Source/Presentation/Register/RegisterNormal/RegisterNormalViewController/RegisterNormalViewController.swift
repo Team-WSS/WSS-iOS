@@ -38,7 +38,7 @@ enum RegisterNormalReadStatus: String, CaseIterable {
 }
 
 /// 1-3-1 RegisterNormal View
-final class RegisterNormalViewController: ViewController {
+final class RegisterNormalViewController: UIViewController {
     
     // MARK: - Properties
     
