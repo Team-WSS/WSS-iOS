@@ -62,7 +62,7 @@ final class RegisterNormalStarRatingView: UIView {
     
     private func createStars() -> [UIImageView] {
         var stars: [UIImageView] = []
-        for i in 0..<5 {
+        for _ in 0..<5 {
             let starImageView = UIImageView()
             starImageView.do {
                 $0.isUserInteractionEnabled = true
