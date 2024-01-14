@@ -133,6 +133,9 @@
 		CD39F2E22B50EFCB00B73A5C /* LeftAlignedCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2E12B50EFCB00B73A5C /* LeftAlignedCollectionViewFlowLayout.swift */; };
 		CD39F2E42B50F23B00B73A5C /* NovelDetailInfoPlatformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2E32B50F23B00B73A5C /* NovelDetailInfoPlatformView.swift */; };
 		CD39F2E62B50F2E900B73A5C /* NovelDetailInfoPlatformCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2E52B50F2E900B73A5C /* NovelDetailInfoPlatformCollectionViewCell.swift */; };
+		CD3E5A542B54076500C0A659 /* DeletePopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5A532B54076500C0A659 /* DeletePopupView.swift */; };
+		CD3E5A572B54078400C0A659 /* DeletePopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5A562B54078400C0A659 /* DeletePopupViewController.swift */; };
+		CD3E5A592B54081200C0A659 /* DeletePopupContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5A582B54081200C0A659 /* DeletePopupContentView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -253,6 +256,9 @@
 		CD39F2E12B50EFCB00B73A5C /* LeftAlignedCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftAlignedCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		CD39F2E32B50F23B00B73A5C /* NovelDetailInfoPlatformView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoPlatformView.swift; sourceTree = "<group>"; };
 		CD39F2E52B50F2E900B73A5C /* NovelDetailInfoPlatformCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoPlatformCollectionViewCell.swift; sourceTree = "<group>"; };
+		CD3E5A532B54076500C0A659 /* DeletePopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletePopupView.swift; sourceTree = "<group>"; };
+		CD3E5A562B54078400C0A659 /* DeletePopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletePopupViewController.swift; sourceTree = "<group>"; };
+		CD3E5A582B54081200C0A659 /* DeletePopupContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletePopupContentView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -479,6 +485,7 @@
 				39CC167F2B5123CC003F56AE /* Register */,
 				2CCBF9E92B4C1E2200D787C2 /* MyPage */,
 				CD39F2B22B4FE09300B73A5C /* NovelDetail */,
+				CD3E5A502B54071C00C0A659 /* DeletePopup */,
 				2C2491822B4ADC1D0096F255 /* Base */,
 			);
 			path = Presentation;
@@ -880,6 +887,40 @@
 			path = NovelDetailCell;
 			sourceTree = "<group>";
 		};
+		CD3E5A502B54071C00C0A659 /* DeletePopup */ = {
+			isa = PBXGroup;
+			children = (
+				CD3E5A522B54075300C0A659 /* DeletePopupViewController */,
+				CD3E5A512B54074D00C0A659 /* DeletePopupView */,
+			);
+			path = DeletePopup;
+			sourceTree = "<group>";
+		};
+		CD3E5A512B54074D00C0A659 /* DeletePopupView */ = {
+			isa = PBXGroup;
+			children = (
+				CD3E5A552B54076F00C0A659 /* DeletePopupAssistantView */,
+				CD3E5A532B54076500C0A659 /* DeletePopupView.swift */,
+			);
+			path = DeletePopupView;
+			sourceTree = "<group>";
+		};
+		CD3E5A522B54075300C0A659 /* DeletePopupViewController */ = {
+			isa = PBXGroup;
+			children = (
+				CD3E5A562B54078400C0A659 /* DeletePopupViewController.swift */,
+			);
+			path = DeletePopupViewController;
+			sourceTree = "<group>";
+		};
+		CD3E5A552B54076F00C0A659 /* DeletePopupAssistantView */ = {
+			isa = PBXGroup;
+			children = (
+				CD3E5A582B54081200C0A659 /* DeletePopupContentView.swift */,
+			);
+			path = DeletePopupAssistantView;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -984,6 +1025,7 @@
 				2CA2F64E2B527B060045B4C2 /* MyPageCustomModalView.swift in Sources */,
 				A14EB86A2B4F15D400A0A799 /* HomeSosoPickUserNumberChipView.swift in Sources */,
 				A1708F182B4D8E2F00E35E50 /* HomeView.swift in Sources */,
+				CD3E5A542B54076500C0A659 /* DeletePopupView.swift in Sources */,
 				2CD2291C2B42E685005400BE /* AppDelegate.swift in Sources */,
 				A1708F162B4D8E2700E35E50 /* HomeHeaderView.swift in Sources */,
 				2CCBF9F02B4C1FD800D787C2 /* MyPageView.swift in Sources */,
@@ -1053,6 +1095,7 @@
 				39CD5E062B4F20A600668B9A /* RegisterNormalDividerView.swift in Sources */,
 				2C2491862B4ADC420096F255 /* WSSTabBarController.swift in Sources */,
 				392A292F2B4F07FF0065EB97 /* RegisterNormalReadDateView.swift in Sources */,
+				CD3E5A572B54078400C0A659 /* DeletePopupViewController.swift in Sources */,
 				2CD229572B42EA75005400BE /* UIColor+.swift in Sources */,
 				A18432EC2B511E7400910940 /* RecordDateView.swift in Sources */,
 				A1DBB2FA2B4AA981000EE869 /* SearchCollectionViewCell.swift in Sources */,
@@ -1079,6 +1122,7 @@
 				A1DBB2FE2B4AEB22000EE869 /* UIView+.swift in Sources */,
 				A1147A822B5063B300141692 /* RecordEmptyView.swift in Sources */,
 				A1A1F9CF2B48738200705F44 /* SearchHeaderView.swift in Sources */,
+				CD3E5A592B54081200C0A659 /* DeletePopupContentView.swift in Sources */,
 				A1DBB3002B4AFCC0000EE869 /* SearchDummy.swift in Sources */,
 				2CCBFA022B4DC10500D787C2 /* MyPageProfileView.swift in Sources */,
 				A1A1F9D22B4873A100705F44 /* SearchResultView.swift in Sources */,
