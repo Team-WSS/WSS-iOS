@@ -14,7 +14,7 @@ class LibraryView: UIView {
     
     //MARK: - UI Components
     
-    public var libraryCollectionView = UICollectionView()
+    public var libraryCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     
     // MARK: - Life Cycle
     
@@ -38,8 +38,7 @@ class LibraryView: UIView {
             layout.scrollDirection = .vertical
             layout.minimumLineSpacing = 10.0
             layout.minimumInteritemSpacing = 3
-            layout.itemSize = CGSize(width: 105.0,
-                                     height: 243.0)
+            layout.itemSize = CGSize(width: 105.0, height: 243.0)
             
             $0.collectionViewLayout = layout
         }
@@ -56,7 +55,8 @@ class LibraryView: UIView {
     private func setLayout() {
         libraryCollectionView.snp.makeConstraints() {
             $0.top.equalToSuperview().inset(100)
-            $0.width.equalToSuperview()
+            $0.centerX.equalToSuperview()
+            $0.leading.equalTo(20)
             $0.bottom.equalToSuperview().inset(84)
         }
     }

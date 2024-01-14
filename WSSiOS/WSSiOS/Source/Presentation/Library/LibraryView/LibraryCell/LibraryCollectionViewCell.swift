@@ -15,11 +15,9 @@ class LibraryCollectionViewCell: UICollectionViewCell {
     
     //MARK: - UI Components
     
-    private var stackView = UIStackView()
     public var novelImageView = UIImageView()
     public var novelTitleLabel = UILabel()
     public var novelAuthorLabel = UILabel()
-    public var ratingStackView = UIStackView() 
     private let ratingStarImage = UIImageView(image: ImageLiterals.icon.Star.fill)
     public var novelRatingLabel = UILabel()
     
@@ -42,12 +40,6 @@ class LibraryCollectionViewCell: UICollectionViewCell {
     
     private func setUI() {
         
-        stackView.do {
-            $0.axis = .vertical
-            $0.alignment = .center
-            $0.distribution = .fill
-        }
-        
         novelImageView.do {
             $0.layer.cornerRadius = 10
         }
@@ -66,13 +58,6 @@ class LibraryCollectionViewCell: UICollectionViewCell {
             $0.numberOfLines = 1
         }
         
-        ratingStackView.do {
-            $0.axis = .horizontal
-            $0.alignment = .center
-            $0.distribution = .fill
-            $0.spacing = 5
-        }
-        
         novelRatingLabel.do {
             $0.font = .Label1
             $0.textColor = .Black
@@ -82,29 +67,40 @@ class LibraryCollectionViewCell: UICollectionViewCell {
     //MARK: - Set Hierachy
     
     private func setHierachy() {
-        self.addSubviews(stackView)
-        stackView.addArrangedSubviews(novelImageView,
-                                      novelTitleLabel,
-                                      novelAuthorLabel,
-                                      ratingStackView)
-        ratingStackView.addArrangedSubviews(ratingStarImage,
-                                            novelRatingLabel)
+        self.addSubviews(novelImageView,
+                         novelTitleLabel,
+                         novelAuthorLabel,
+                         ratingStarImage,
+                         novelRatingLabel)
     }
     
     //MARK: - Set Layout
     
     private func setLayout() {
-        stackView.snp.makeConstraints() {
-            $0.edges.equalToSuperview()
-        }
-        
         novelImageView.snp.makeConstraints() {
             $0.width.equalToSuperview()
-            $0.height.equalTo(105)
+            $0.height.equalTo(155)
+        }
+        
+        novelTitleLabel.snp.makeConstraints() {
+            $0.top.equalTo(novelImageView.snp.bottom).offset(10)
+            $0.width.equalToSuperview()
+        }
+        
+        novelAuthorLabel.snp.makeConstraints() {
+            $0.top.equalTo(novelTitleLabel.snp.bottom)
+            $0.width.equalToSuperview()
         }
         
         ratingStarImage.snp.makeConstraints() {
+            $0.top.equalTo(novelAuthorLabel.snp.bottom).offset(6.5)
+            $0.leading.equalToSuperview()
             $0.size.equalTo(10)
+        }
+        
+        novelRatingLabel.snp.makeConstraints() {
+            $0.centerY.equalTo(ratingStarImage.snp.centerY)
+            $0.leading.equalTo(ratingStarImage.snp.trailing).offset(5)
         }
     }
 }
