@@ -7,23 +7,29 @@
 
 import UIKit
 
+import RxSwift
+import RxCocoa
+
 class LibraryViewController: UIViewController {
     
     //MARK: - Properties
-    
-    private var tabBarDummyText = ["전체", "읽음", "읽는 중", "하차", "읽고 싶음"]
-    
+
+    private let disposeBag = DisposeBag()
     
     //MARK: - UI Components
 
+    private var rootView = LibraryView()
     
     // MARK: - Life Cycle
     
+    override func loadView() {
+        self.view = rootView
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setUI()
+        register()
     }
     
     private func setUI() {
@@ -32,5 +38,9 @@ class LibraryViewController: UIViewController {
     
     //MARK: - Custom TabBar
     
-    
+    private func register() {
+        rootView.libraryCollectionView
+            .register(LibraryCollectionViewCell.self,
+                      forCellWithReuseIdentifier: "LibraryCollectionViewCell")
+    }
 }
