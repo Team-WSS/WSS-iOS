@@ -35,6 +35,15 @@ enum RegisterNormalReadStatus: String, CaseIterable {
         case .WISH: return "읽고 싶음"
         }
     }
+    
+    var dateText: String? {
+        switch self {
+        case .FINISH: return "읽은 날짜"
+        case .READING: return "시작 날짜"
+        case .DROP: return "종료 날짜"
+        case .WISH: return nil
+        }
+    }
 }
 
 /// 1-3-1 RegisterNormal View
@@ -47,7 +56,7 @@ final class RegisterNormalViewController: UIViewController {
     
     // 별점의 현재 값을 저장하고, 변경사항을 관찰하기 위한 BehaviorRelay
     private var starRatingRelay = BehaviorRelay<Float>(value: 0.0)
-    private var buttonStatusSubject = BehaviorSubject<RegisterNormalReadStatus>(value: .FINISH)
+    private var buttonStatusSubject = BehaviorRelay<RegisterNormalReadStatus>(value: .FINISH)
     
     private let rootView = RegisterNormalView()
     
@@ -101,15 +110,16 @@ final class RegisterNormalViewController: UIViewController {
                 .disposed(by: disposeBag)
         }
         
+        // ReadStatus 에 따른 ReadStatus 선택 뷰 변화
         rootView.readStatusView.do { view in
             for (index, status) in RegisterNormalReadStatus.allCases.enumerated() {
                 view.readStatusButtons[index].rx.tap
                     .bind {
-                        self.buttonStatusSubject.onNext(status)
+                        self.buttonStatusSubject.accept(status)
                     }
                     .disposed(by: disposeBag)
             }
-            
+
             buttonStatusSubject
                 .subscribe(onNext: { status in
                     view.readStatusButtons.forEach { button in
@@ -122,6 +132,20 @@ final class RegisterNormalViewController: UIViewController {
                             button.hideImage(true)
                             button.setColor(.Gray200)
                         }
+                    }
+                })
+                .disposed(by: disposeBag)
+        }
+        
+        // ReadStatus 에 따른 날짜 선택 뷰 변화
+        rootView.readDateView.do { view in
+            buttonStatusSubject
+                .subscribe(onNext: { status in
+                    if status == .WISH {
+                        view.isHidden = true
+                    } else {
+                        view.isHidden = false
+                        view.bindData(status)
                     }
                 })
                 .disposed(by: disposeBag)
