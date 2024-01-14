@@ -14,10 +14,10 @@ final class MemoEditContentView: UIView {
 
     // MARK: - UI Components
     
-    let dividerView = UIView()
-    let dateLabel = UILabel()
-    let deleteButton = UIButton()
-    let memoTextView = UITextView()
+    private let dividerView = UIView()
+    private let dateLabel = UILabel()
+    private let deleteButton = UIButton()
+    public let memoTextView = UITextView()
     
     // MARK: - Life Cycle
     

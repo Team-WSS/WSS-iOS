@@ -32,11 +32,16 @@ final class MemoEditViewController: UIViewController {
      override func viewDidLoad() {
          super.viewDidLoad()
          
-         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewDidTap))
-         view.addGestureRecognizer(tapGesture)
-         
+         setTapGesture()
          bind()
      }
+    
+    // MARK: - set tap gesture
+    
+    private func setTapGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewDidTap))
+        view.addGestureRecognizer(tapGesture)
+    }
     
     // MARK: - bind
     

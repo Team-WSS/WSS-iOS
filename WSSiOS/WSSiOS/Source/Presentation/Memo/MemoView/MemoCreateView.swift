@@ -14,26 +14,20 @@ final class MemoCreateView: UIView {
     
     // MARK: - UI Components
     
-    let memoHeaderView = MemoHeaderView()
-    let memoCreateContentView = MemoCreateContentView()
+    public let memoHeaderView = MemoHeaderView()
+    public let memoCreateContentView = MemoCreateContentView()
     
     // MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        setUI()
         setHierachy()
         setLayout()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    // MARK: - set UI
-    
-    private func setUI() {
     }
     
     // MARK: - set Hierachy

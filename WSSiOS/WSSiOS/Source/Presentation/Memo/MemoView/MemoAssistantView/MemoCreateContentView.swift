@@ -14,7 +14,7 @@ final class MemoCreateContentView: UIView {
 
     // MARK: - UI Components
     
-    let memoTextView = UITextView()
+    public let memoTextView = UITextView()
     
     // MARK: - Life Cycle
     
