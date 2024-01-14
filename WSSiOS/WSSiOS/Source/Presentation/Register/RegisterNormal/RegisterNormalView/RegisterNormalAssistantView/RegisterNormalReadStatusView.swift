@@ -1,5 +1,5 @@
 //
-//  RegisterNoemalReadingStatusTest.swift
+//  RegisterNormalReadStatusView.swift
 //  WSSiOS
 //
 //  Created by 이윤학 on 1/13/24.
@@ -72,7 +72,7 @@ final class RegisterNormalReadStatusView: UIView {
     
     private func createButtons() -> [RegisterNormalReadStatusButton] {
         var buttons: [RegisterNormalReadStatusButton] = []
-        for status in ReadStatus.allCases {
+        for status in RegisterNormalReadStatus.allCases {
             let button = RegisterNormalReadStatusButton()
             button.do {
                 $0.setText(status.tagText)

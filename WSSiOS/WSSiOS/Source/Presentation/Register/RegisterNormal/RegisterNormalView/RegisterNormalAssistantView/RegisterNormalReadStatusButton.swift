@@ -14,11 +14,7 @@ final class RegisterNormalReadStatusButton: UIButton {
     
     // MARK: - Properties
     
-    private var status: ReadStatus?
-    
-    // 각 View의 Size
-    typealias SizeSet = (width: CGFloat, height: CGFloat)
-    
+    private var status: RegisterNormalReadStatus?
     private var buttonHeight: CGFloat = 37
     
     // MARK: - UI Components
@@ -49,7 +45,7 @@ final class RegisterNormalReadStatusButton: UIButton {
     // UIButton 내의 StackView 터치 이벤트를 Button의 터치 이벤트로 옮겨줌.
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         let view = super.hitTest(point, with: event)
-        return view == self.buttonStackView || view == self.buttonImage || view == self.buttonLabel ? self : view
+        return view == self.buttonStackView ? self : view
     }
     
     // MARK: - Custom Method
@@ -111,11 +107,11 @@ final class RegisterNormalReadStatusButton: UIButton {
         }
     }
     
-    func setStatus(_ status: ReadStatus) {
+    func setStatus(_ status: RegisterNormalReadStatus) {
         self.status = status
     }
     
-    func checkStatus(_ status: ReadStatus) -> Bool {
+    func checkStatus(_ status: RegisterNormalReadStatus) -> Bool {
         return self.status == status
     }
     
@@ -125,12 +121,8 @@ final class RegisterNormalReadStatusButton: UIButton {
         buttonLabel.textColor = color
     }
     
-    func removeImage() {
-        buttonImage.isHidden = true
-    }
-    
-    func insertImage() {
-        buttonImage.isHidden = false
+    func hideImage(_ hide: Bool) {
+        buttonImage.isHidden = hide
     }
     
     private func buttonLabelStyle(of label: UILabel) {

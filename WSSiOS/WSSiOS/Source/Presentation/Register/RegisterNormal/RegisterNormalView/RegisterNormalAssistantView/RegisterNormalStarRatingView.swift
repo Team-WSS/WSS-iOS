@@ -14,7 +14,7 @@ final class RegisterNormalStarRatingView: UIView {
     
     // MARK: - UI Components
     
-    let starImageViews: [UIImageView] = (0..<5).map { _ in UIImageView() }
+    lazy var starImageViews: [UIImageView] = createStars()
     private let starStackView = UIStackView()
     
     // MARK: - Life Cycle
@@ -38,15 +38,6 @@ final class RegisterNormalStarRatingView: UIView {
             $0.axis = .horizontal
             $0.spacing = 10
         }
-        
-        starImageViews.forEach { starImageView in
-            starImageView.do {
-                $0.isUserInteractionEnabled = true
-                $0.image = ImageLiterals.icon.Star.empty
-                $0.contentMode = .scaleAspectFill
-                $0.clipsToBounds = true
-            }
-        }
     }
     
     private func setHieararchy() {
@@ -69,6 +60,21 @@ final class RegisterNormalStarRatingView: UIView {
         }
     }
     
+    private func createStars() -> [UIImageView] {
+        var stars: [UIImageView] = []
+        for i in 0..<5 {
+            let starImageView = UIImageView()
+            starImageView.do {
+                $0.isUserInteractionEnabled = true
+                $0.image = ImageLiterals.icon.Star.empty
+                $0.contentMode = .scaleAspectFill
+                $0.clipsToBounds = true
+            }
+            stars.append(starImageView)
+        }
+        
+        return stars
+    }
     /// 별점에 따라 별 이미지를 업데이트하는 함수
     func updateStarImages(rating: Float) {
         let fullStars = Int(rating)

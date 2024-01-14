@@ -12,7 +12,7 @@ import RxCocoa
 import SnapKit
 import Then
 
-enum ReadStatus: String, CaseIterable {
+enum RegisterNormalReadStatus: String, CaseIterable {
     case FINISH
     case READING
     case DROP
@@ -47,7 +47,7 @@ final class RegisterNormalViewController: ViewController {
     
     // 별점의 현재 값을 저장하고, 변경사항을 관찰하기 위한 BehaviorRelay
     private var starRatingRelay = BehaviorRelay<Float>(value: 0.0)
-    private var buttonStatusSubject = BehaviorSubject<ReadStatus>(value: .FINISH)
+    private var buttonStatusSubject = BehaviorSubject<RegisterNormalReadStatus>(value: .FINISH)
     
     private let rootView = RegisterNormalView()
     
@@ -72,49 +72,59 @@ final class RegisterNormalViewController: ViewController {
                 // 탭 제스처 인식기 생성 및 설정
                 let tapGesture = UITapGestureRecognizer()
                 imageView.addGestureRecognizer(tapGesture)
-                tapGesture.rx.event.bind(onNext: { recognizer in
-                    let location = recognizer.location(in: imageView)
-                    let rating = Float(index) + (location.x > imageView.frame.width / 2 ? 1 : 0.5)
-                    self.starRatingRelay.accept(rating)
-                }).disposed(by: disposeBag)
+                tapGesture.rx.event
+                    .bind(onNext: { recognizer in
+                        let location = recognizer.location(in: imageView)
+                        let rating = Float(index) + (location.x > imageView.frame.width / 2 ? 1 : 0.5)
+                        self.starRatingRelay.accept(rating)
+                    })
+                    .disposed(by: disposeBag)
                 
                 // 팬 제스처 인식기 생성 및 설정
                 let panGesture = UIPanGestureRecognizer()
                 view.addGestureRecognizer(panGesture)
-                panGesture.rx.event.bind(onNext: { recognizer in
-                    let location = recognizer.location(in: view)
-                    let rawRating = (Float(location.x / view.frame.width * 5) * 2).rounded(.toNearestOrAwayFromZero) / 2
-                    let rating = min(max(rawRating, 0), 5)
-                    self.starRatingRelay.accept(rating)
-                }).disposed(by: disposeBag)
+                panGesture.rx.event
+                    .bind(onNext: { recognizer in
+                        let location = recognizer.location(in: view)
+                        let rawRating = (Float(location.x / view.frame.width * 5) * 2).rounded(.toNearestOrAwayFromZero) / 2
+                        let rating = min(max(rawRating, 0), 5)
+                        self.starRatingRelay.accept(rating)
+                    })
+                    .disposed(by: disposeBag)
             }
             
             // 별점이 변경될 때마다 별 이미지 업데이트
-            starRatingRelay.asObservable().subscribe(onNext: { rating in
-                view.updateStarImages(rating: rating)
-            }).disposed(by: disposeBag)
+            starRatingRelay.asObservable()
+                .subscribe(onNext: { rating in
+                    view.updateStarImages(rating: rating)
+                })
+                .disposed(by: disposeBag)
         }
         
         rootView.readStatusView.do { view in
-            for (index, status) in ReadStatus.allCases.enumerated() {
-                view.readStatusButtons[index].rx.tap.bind {
-                    self.buttonStatusSubject.onNext(status)
-                }.disposed(by: disposeBag)
+            for (index, status) in RegisterNormalReadStatus.allCases.enumerated() {
+                view.readStatusButtons[index].rx.tap
+                    .bind {
+                        self.buttonStatusSubject.onNext(status)
+                    }
+                    .disposed(by: disposeBag)
             }
             
-            buttonStatusSubject.subscribe(onNext: { status in
-                view.readStatusButtons.forEach { button in
-                    if button.checkStatus(status) {
-                        // 활성화 상태 설정
-                        button.insertImage()
-                        button.setColor(.Primary100)
-                    } else {
-                        // 비활성화 상태 설정
-                        button.removeImage()
-                        button.setColor(.Gray200)
+            buttonStatusSubject
+                .subscribe(onNext: { status in
+                    view.readStatusButtons.forEach { button in
+                        if button.checkStatus(status) {
+                            // 활성화 상태 설정
+                            button.hideImage(false)
+                            button.setColor(.Primary100)
+                        } else {
+                            // 비활성화 상태 설정
+                            button.hideImage(true)
+                            button.setColor(.Gray200)
+                        }
                     }
-                }
-            }).disposed(by: disposeBag)
+                })
+                .disposed(by: disposeBag)
         }
     }
 }

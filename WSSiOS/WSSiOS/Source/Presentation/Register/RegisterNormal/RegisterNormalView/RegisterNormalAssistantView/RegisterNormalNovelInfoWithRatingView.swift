@@ -17,7 +17,7 @@ final class RegisterNormalNovelInfoWithRatingView: UIView {
     private let novelInfoWithRatingContentView = UIStackView()
     private let novelInfoStackView = RegisterNormalNovelInfoView()
     private let novelCoverImageView = UIImageView()
-    private let novelImageShadowView = UIView()
+    private let novelCoverShadowView = UIView()
     let starRatingView = RegisterNormalStarRatingView()
     
     // MARK: - Life Cycle
@@ -49,7 +49,7 @@ final class RegisterNormalNovelInfoWithRatingView: UIView {
                 $0.clipsToBounds = true
             }
             
-            novelImageShadowView.do {
+            novelCoverShadowView.do {
                 $0.layer.shadowColor = UIColor.black.withAlphaComponent(0.1).cgColor
                 $0.layer.shadowOpacity = 1
                 $0.layer.shadowOffset = CGSize(width: 0, height: 2)
@@ -60,9 +60,9 @@ final class RegisterNormalNovelInfoWithRatingView: UIView {
     
     private func setHieararchy() {
         self.addSubview(novelInfoWithRatingContentView)
-        novelImageShadowView.addSubview(novelCoverImageView)
+        novelCoverShadowView.addSubview(novelCoverImageView)
         novelInfoWithRatingContentView.addArrangedSubviews(novelInfoStackView,
-                                                           novelImageShadowView,
+                                                           novelCoverShadowView,
                                                            starRatingView)
     }
     
@@ -71,8 +71,8 @@ final class RegisterNormalNovelInfoWithRatingView: UIView {
             $0.verticalEdges.equalToSuperview()
             $0.horizontalEdges.equalToSuperview().inset(67)
             
-            novelImageShadowView.snp.makeConstraints {
-                $0.height.equalTo(novelImageShadowView.snp.width).multipliedBy(197.0/128.0)
+            novelCoverShadowView.snp.makeConstraints {
+                $0.height.equalTo(novelCoverShadowView.snp.width).multipliedBy(197.0/128.0)
                 $0.horizontalEdges.equalToSuperview().inset(56.5)
             }
             novelCoverImageView.snp.makeConstraints {
