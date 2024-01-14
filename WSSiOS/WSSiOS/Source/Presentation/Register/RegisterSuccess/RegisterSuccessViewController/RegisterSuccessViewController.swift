@@ -12,7 +12,7 @@ final class RegisterSuccessViewController: UIViewController {
     
     // MARK: - Properties
     
-    private let rootView = RegisterNormalView()
+    private let rootView = RegisterSuccessView()
     
     // MARK: - View Life Cycle
     
@@ -22,5 +22,6 @@ final class RegisterSuccessViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.backgroundColor = .White
     }
 }
