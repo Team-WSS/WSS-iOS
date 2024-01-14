@@ -102,6 +102,10 @@ final class RegisterNormalView: UIView {
             }
         }
         
+        registerButton.snp.makeConstraints {
+            $0.bottom.equalTo(safeAreaLayoutGuide).inset(10)
+        }
+        
         registerButtonGradient.snp.makeConstraints {
             $0.bottom.equalTo(registerButton.snp.top)
             $0.height.equalTo(34)
