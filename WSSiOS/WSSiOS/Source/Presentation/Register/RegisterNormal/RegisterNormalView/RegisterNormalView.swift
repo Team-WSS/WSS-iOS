@@ -101,7 +101,9 @@ final class RegisterNormalView: UIView {
                 $0.setCustomSpacing(56, after: infoWithRatingView)
             }
         }
-        
+        registerButton.snp.makeConstraints {
+            $0.bottom.equalTo(safeAreaLayoutGuide).inset(10)
+        }
         registerButtonGradient.snp.makeConstraints {
             $0.bottom.equalTo(registerButton.snp.top)
             $0.height.equalTo(34)
