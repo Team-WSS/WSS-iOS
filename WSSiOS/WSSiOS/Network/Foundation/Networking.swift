@@ -29,7 +29,7 @@ extension Networking {
     
     func makeHTTPRequest(
         method: HTTPMethod,
-        baseURL: String = Config.baseURL,
+        baseURL: String = Config.Keys.Plist.baseURL,
         path: String,
         headers: [String: String]?,
         body: Data?) throws -> URLRequest
