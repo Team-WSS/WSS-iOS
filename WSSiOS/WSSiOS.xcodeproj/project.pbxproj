@@ -407,8 +407,8 @@
 		2CD229482B42E92F005400BE /* Resource */ = {
 			isa = PBXGroup;
 			children = (
-				39EF97AF2B53E46100D2148B /* animationRegistration.json */,
 				2CD229242B42E687005400BE /* Assets.xcassets */,
+				39EF97B12B54498E00D2148B /* Lottie */,
 				2CD229492B42E952005400BE /* Constants */,
 				2CD2294A2B42E964005400BE /* Extensions */,
 			);
@@ -604,6 +604,14 @@
 				39CC16872B51D94F003F56AE /* RegisterSuccessViewModel.swift */,
 			);
 			path = RegisterSuccessViewModel;
+			sourceTree = "<group>";
+		};
+		39EF97B12B54498E00D2148B /* Lottie */ = {
+			isa = PBXGroup;
+			children = (
+				39EF97AF2B53E46100D2148B /* animationRegistration.json */,
+			);
+			path = Lottie;
 			sourceTree = "<group>";
 		};
 		A107A4A72B4DDE4900668C3E /* HomeView */ = {

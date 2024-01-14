@@ -16,8 +16,8 @@ final class RegisterSuccessView: UIView {
     // MARK: - UI Components
     
     private let titleLabel = UILabel()
-    private let lottieView = LottieAnimationView(name: "animationRegistration")
-    private var makeMemoButton = WSSMainButton(title: "작품에 메모 남기기")
+    private let lottieView = LottieAnimationView(name: StringLiterals.Register.Success.lottie)
+    private var makeMemoButton = WSSMainButton(title: StringLiterals.Register.Success.makeMemo)
     private var returnHomeButton = UIButton()
     
     // MARK: - Life Cycle
@@ -37,8 +37,12 @@ final class RegisterSuccessView: UIView {
     // MARK: - Custom Method
     
     private func setUI() {
+        self.do{
+            $0.backgroundColor = .White
+        }
+        
         titleLabel.do {
-            $0.text = "내 서재에 작품이\n성공적으로 등록되었어요!"
+            $0.text = StringLiterals.Register.Success.title
             $0.makeAttribute()?.lineSpacing(spacingPercentage: 140)
                 .kerning(kerningPixel: -1.2).applyAttribute()
             $0.numberOfLines = 2
@@ -52,7 +56,7 @@ final class RegisterSuccessView: UIView {
         }
         
         returnHomeButton.do {
-            $0.setTitle("홈으로 돌아가기", for: .normal)
+            $0.setTitle(StringLiterals.Register.Success.returnHome, for: .normal)
             $0.setAttributedTitle($0.titleLabel?.makeAttribute()?
                                                 .kerning(kerningPixel: -0.6)
                                                 .lineSpacing(spacingPercentage: 150)
@@ -64,7 +68,10 @@ final class RegisterSuccessView: UIView {
     }
     
     private func setHieararchy() {
-        self.addSubviews(titleLabel, lottieView, makeMemoButton, returnHomeButton)
+        self.addSubviews(titleLabel,
+                         lottieView,
+                         makeMemoButton,
+                         returnHomeButton)
     }
     
     private func setLayout() {
