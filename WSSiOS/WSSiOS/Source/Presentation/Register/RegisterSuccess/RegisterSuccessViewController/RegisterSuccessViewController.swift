@@ -12,12 +12,13 @@ final class RegisterSuccessViewController: UIViewController {
     
     // MARK: - Properties
     
-    private let rootView = RegisterNormalView()
+    private let rootView = RegisterNormalCustomDatePicker()
     
     // MARK: - View Life Cycle
     
     override func loadView() {
         self.view = rootView
+        self.view.backgroundColor = .white
     }
     
     override func viewDidLoad() {

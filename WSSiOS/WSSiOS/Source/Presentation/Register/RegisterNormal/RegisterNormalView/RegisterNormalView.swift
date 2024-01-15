@@ -27,7 +27,6 @@ final class RegisterNormalView: UIView {
     private let registerButton = WSSMainButton(title: "내 서재에 등록")
     private let registerButtonGradient = UIImageView()
     private let registerButtonBackgroundView = UIView()
-    
     // MARK: - Life Cycle
     
     override init(frame: CGRect) {
