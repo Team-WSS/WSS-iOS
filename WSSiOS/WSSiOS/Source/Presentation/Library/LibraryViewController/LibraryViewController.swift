@@ -77,8 +77,6 @@ final class LibraryViewController: UIViewController {
     }
     
     private func setupPage() {
-        self.view.backgroundColor = .White
-        
         for i in 0...4 {
             libraryPages.append(LibraryBaseViewController())
         }

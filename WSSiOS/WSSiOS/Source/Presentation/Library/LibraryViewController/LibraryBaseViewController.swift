@@ -37,8 +37,7 @@ final class LibraryBaseViewController: UIViewController {
     //MARK: - Custom TabBar
     
     private func register() {
-        rootView.libraryCollectionView
-            .register(LibraryCollectionViewCell.self,
+        rootView.libraryCollectionView.register(LibraryCollectionViewCell.self,
                       forCellWithReuseIdentifier: "LibraryCollectionViewCell")
     }
     
@@ -46,10 +45,7 @@ final class LibraryBaseViewController: UIViewController {
         dummyData.bind(to: rootView.libraryCollectionView.rx.items(
             cellIdentifier: "LibraryCollectionViewCell",
             cellType: LibraryCollectionViewCell.self)) { (row, element, cell) in
-                cell.novelImageView.image = element.Image
-                cell.novelTitleLabel.text = element.title
-                cell.novelAuthorLabel.text = element.author
-                cell.novelRatingLabel.text = String(element.rating)
+                cell.dataBind(element)
             }
             .disposed(by: disposeBag)
     }

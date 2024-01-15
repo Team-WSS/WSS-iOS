@@ -17,7 +17,7 @@ final class LibraryTabCollectionViewCell: UICollectionViewCell {
     //MARK: - Properties
     
     static let identifier: String = "LibraryTabCollectionViewCell"
-    let disposeBag = DisposeBag()
+    public let disposeBag = DisposeBag()
     
     //MARK: - UI Components
     

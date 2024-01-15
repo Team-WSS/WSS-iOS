@@ -39,7 +39,6 @@ final class LibraryCollectionViewCell: UICollectionViewCell {
     //MARK: - Set UI
     
     private func setUI() {
-        
         novelImageView.do {
             $0.layer.cornerRadius = 10
         }
@@ -102,5 +101,12 @@ final class LibraryCollectionViewCell: UICollectionViewCell {
             $0.centerY.equalTo(ratingStarImage.snp.centerY)
             $0.leading.equalTo(ratingStarImage.snp.trailing).offset(5)
         }
+    }
+    
+    func dataBind(_ data: libraryDummyStruct) {
+        novelImageView.image = data.Image
+        novelTitleLabel.text = data.title
+        novelAuthorLabel.text = data.author
+        novelRatingLabel.text = String(data.rating)
     }
 }
