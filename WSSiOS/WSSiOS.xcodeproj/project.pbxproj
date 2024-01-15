@@ -159,6 +159,9 @@
 		CD3E5A812B54253E00C0A659 /* MemoEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5A7F2B54253E00C0A659 /* MemoEditViewController.swift */; };
 		CD3E5A822B54253E00C0A659 /* MemoCreateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5A802B54253E00C0A659 /* MemoCreateViewController.swift */; };
 		CD3E5A852B54254F00C0A659 /* RxKeyboard in Frameworks */ = {isa = PBXBuildFile; productRef = CD3E5A842B54254F00C0A659 /* RxKeyboard */; };
+		CD3E5A962B55099E00C0A659 /* DeletePopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5A952B55099E00C0A659 /* DeletePopupView.swift */; };
+		CD3E5A982B5509A500C0A659 /* DeletePopupContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5A972B5509A500C0A659 /* DeletePopupContentView.swift */; };
+		CD3E5A9A2B5509AB00C0A659 /* DeletePopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5A992B5509AB00C0A659 /* DeletePopupViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -296,6 +299,9 @@
 		CD3E5A772B5424E600C0A659 /* MemoEditContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemoEditContentView.swift; sourceTree = "<group>"; };
 		CD3E5A7F2B54253E00C0A659 /* MemoEditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemoEditViewController.swift; sourceTree = "<group>"; };
 		CD3E5A802B54253E00C0A659 /* MemoCreateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemoCreateViewController.swift; sourceTree = "<group>"; };
+		CD3E5A952B55099E00C0A659 /* DeletePopupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeletePopupView.swift; sourceTree = "<group>"; };
+		CD3E5A972B5509A500C0A659 /* DeletePopupContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeletePopupContentView.swift; sourceTree = "<group>"; };
+		CD3E5A992B5509AB00C0A659 /* DeletePopupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeletePopupViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -507,6 +513,7 @@
 		2CD229502B42E9C8005400BE /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				CD3E5A912B55097600C0A659 /* DeletePopup */,
 				CD3E5A6D2B5424A700C0A659 /* Memo */,
 				A1147A7B2B50634100141692 /* Record */,
 				A1708F102B4D8DCD00E35E50 /* Home */,
@@ -990,6 +997,40 @@
 			path = MemoAssistantView;
 			sourceTree = "<group>";
 		};
+		CD3E5A912B55097600C0A659 /* DeletePopup */ = {
+			isa = PBXGroup;
+			children = (
+				CD3E5A932B55098400C0A659 /* DeletePopupViewController */,
+				CD3E5A922B55097D00C0A659 /* DeletePopupView */,
+				CD3E5A952B55099E00C0A659 /* DeletePopupView.swift */,
+			);
+			path = DeletePopup;
+			sourceTree = "<group>";
+		};
+		CD3E5A922B55097D00C0A659 /* DeletePopupView */ = {
+			isa = PBXGroup;
+			children = (
+				CD3E5A942B55098D00C0A659 /* DeletePopupAssistantView */,
+			);
+			path = DeletePopupView;
+			sourceTree = "<group>";
+		};
+		CD3E5A932B55098400C0A659 /* DeletePopupViewController */ = {
+			isa = PBXGroup;
+			children = (
+				CD3E5A992B5509AB00C0A659 /* DeletePopupViewController.swift */,
+			);
+			path = DeletePopupViewController;
+			sourceTree = "<group>";
+		};
+		CD3E5A942B55098D00C0A659 /* DeletePopupAssistantView */ = {
+			isa = PBXGroup;
+			children = (
+				CD3E5A972B5509A500C0A659 /* DeletePopupContentView.swift */,
+			);
+			path = DeletePopupAssistantView;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1152,6 +1193,7 @@
 				392A29232B4E89FD0065EB97 /* RegisterNormalNovelInfoWithRatingView.swift in Sources */,
 				2C79CB9D2B45A1DD00734E1F /* UIFont+.swift in Sources */,
 				A147CBC62B4D6E190040AE39 /* UIStackView+.swift in Sources */,
+				CD3E5A982B5509A500C0A659 /* DeletePopupContentView.swift in Sources */,
 				A18432F02B52622E00910940 /* RecordDummy.swift in Sources */,
 				392A29272B4E96F30065EB97 /* UILabel+.swift in Sources */,
 				A122C9F62B5314FE00DFCFE4 /* (null) in Sources */,
@@ -1162,6 +1204,7 @@
 				2C2491842B4ADC230096F255 /* WSSTabBarItem.swift in Sources */,
 				39CC168C2B526991003F56AE /* WSSSectionTitleView.swift in Sources */,
 				A1147A8A2B506BA500141692 /* RecordHeaderAlignmentView.swift in Sources */,
+				CD3E5A962B55099E00C0A659 /* DeletePopupView.swift in Sources */,
 				A107A49A2B4DB66D00668C3E /* HomeSearchButtonView.swift in Sources */,
 				A122C9E32B530A8800DFCFE4 /* (null) in Sources */,
 				CD39F2C52B4FFE7400B73A5C /* NovelDetailCreateMemoView.swift in Sources */,
@@ -1184,6 +1227,7 @@
 				A122C9DD2B5309D100DFCFE4 /* (null) in Sources */,
 				2C2491862B4ADC420096F255 /* WSSTabBarController.swift in Sources */,
 				392A292F2B4F07FF0065EB97 /* RegisterNormalReadDateView.swift in Sources */,
+				CD3E5A9A2B5509AB00C0A659 /* DeletePopupViewController.swift in Sources */,
 				2CD229572B42EA75005400BE /* UIColor+.swift in Sources */,
 				A18432EC2B511E7400910940 /* RecordDateView.swift in Sources */,
 				A1DBB2FA2B4AA981000EE869 /* SearchCollectionViewCell.swift in Sources */,
@@ -1215,7 +1259,6 @@
 				A1A1F9CF2B48738200705F44 /* SearchHeaderView.swift in Sources */,
 				A1DBB3002B4AFCC0000EE869 /* SearchDummy.swift in Sources */,
 				2CCBFA022B4DC10500D787C2 /* MyPageProfileView.swift in Sources */,
-				392A292D2B4ECF320065EB97 /* RegisterNormalReadStatusView.swift in Sources */,
 				A122C9D92B53098F00DFCFE4 /* (null) in Sources */,
 				A1A1F9D22B4873A100705F44 /* SearchResultView.swift in Sources */,
 				2CCBFA002B4DBFD200D787C2 /* MyPageViewModel.swift in Sources */,
