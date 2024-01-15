@@ -12,7 +12,7 @@ final class RegisterSuccessViewController: UIViewController {
     
     // MARK: - Properties
     
-    private let rootView = RegisterNormalCustomDatePicker()
+    private let rootView = RegisterSuccessView()
     
     // MARK: - View Life Cycle
     
