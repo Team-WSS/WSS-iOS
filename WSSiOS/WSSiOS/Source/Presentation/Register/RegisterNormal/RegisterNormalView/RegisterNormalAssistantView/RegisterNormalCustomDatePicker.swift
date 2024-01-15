@@ -23,6 +23,7 @@ final class RegisterNormalCustomDatePicker: UIButton {
     // MARK: - UI Components
     
     private let background = UIView()
+    private let totalStackView = UIStackView()
     
     private let buttonStackView = UIStackView()
     
@@ -35,6 +36,9 @@ final class RegisterNormalCustomDatePicker: UIButton {
     private let endButtonStackView = UIStackView()
     private let endTitleLabel = UILabel()
     private let endDateLabel = UILabel()
+    
+    private let readingStatusLabel = UILabel()
+    private let dropStatusLabel = UILabel()
     
     private let datePicker = UIDatePicker()
     
@@ -61,7 +65,7 @@ final class RegisterNormalCustomDatePicker: UIButton {
         setLayout()
         selectedButton = startButton
         isStart(true)
-        setupActions()
+        setActions()
     }
     
     required init?(coder: NSCoder) {
@@ -75,6 +79,13 @@ final class RegisterNormalCustomDatePicker: UIButton {
         background.do {
             $0.backgroundColor = .White
             $0.layer.cornerRadius = 12
+        }
+        
+        totalStackView.do {
+            $0.axis = .vertical
+            $0.alignment = .fill
+            // 원래 35인데, DatePicker가 커스텀 되지 않아 시각적으로 더 멀어 보여서 줄였음.
+            $0.spacing = 20
         }
         
         datePicker.do {
@@ -137,13 +148,36 @@ final class RegisterNormalCustomDatePicker: UIButton {
                 }
             }
         }
+        
+        readingStatusLabel.do {
+            $0.text = "시작 날짜"
+            $0.makeAttribute()?
+                .kerning(kerningPixel: -0.6)
+                .lineSpacing(spacingPercentage: 140)
+                .applyAttribute()
+            $0.textAlignment = .center
+            $0.font = .Title2
+        }
+        
+        dropStatusLabel.do {
+            $0.text = "종료 날짜"
+            $0.makeAttribute()?
+                .kerning(kerningPixel: -0.6)
+                .lineSpacing(spacingPercentage: 140)
+                .applyAttribute()
+            $0.textAlignment = .center
+            $0.font = .Title2
+        }
     }
     
     private func setHieararchy() {
         self.addSubview(background)
-        background.addSubviews(buttonStackView,
-                         datePicker,
-                         completeButton)
+        background.addSubviews(totalStackView,
+                               completeButton)
+        totalStackView.addArrangedSubviews(buttonStackView,
+                                           readingStatusLabel,
+                                           dropStatusLabel,
+                                           datePicker)
         buttonStackView.addArrangedSubviews(startButton,
                                             endButton)
         startButton.addSubview(startButtonStackView)
@@ -160,23 +194,31 @@ final class RegisterNormalCustomDatePicker: UIButton {
             $0.horizontalEdges.equalToSuperview()
         }
         
-        buttonStackView.snp.makeConstraints {
+        totalStackView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(34)
             $0.horizontalEdges.equalToSuperview().inset(20)
-            
-            startButtonStackView.snp.makeConstraints {
-                $0.verticalEdges.equalToSuperview().inset(10)
-                $0.centerX.equalToSuperview()
-            }
-            
-            endButtonStackView.snp.makeConstraints {
-                $0.verticalEdges.equalToSuperview().inset(10)
-                $0.centerX.equalToSuperview()
-            }
+            $0.bottom.equalTo(completeButton.snp.top).offset(-35)
+        }
+        
+        readingStatusLabel.snp.makeConstraints {
+            $0.height.equalTo(42)
+        }
+        
+        dropStatusLabel.snp.makeConstraints {
+            $0.height.equalTo(42)
+        }
+        
+        startButtonStackView.snp.makeConstraints {
+            $0.verticalEdges.equalToSuperview().inset(10)
+            $0.centerX.equalToSuperview()
+        }
+        
+        endButtonStackView.snp.makeConstraints {
+            $0.verticalEdges.equalToSuperview().inset(10)
+            $0.centerX.equalToSuperview()
         }
         
         datePicker.snp.makeConstraints {
-            $0.top.equalTo(buttonStackView.snp.bottom).offset(35)
             $0.horizontalEdges.equalToSuperview().inset(20)
             $0.bottom.equalTo(completeButton.snp.top).offset(-35)
         }
@@ -186,7 +228,26 @@ final class RegisterNormalCustomDatePicker: UIButton {
         }
     }
     
-    func setupActions() {
+    func bindReadStatus(status: RegisterNormalReadStatus) {
+        if status == .FINISH {
+            buttonStackView.isHidden = false
+            readingStatusLabel.isHidden = true
+            dropStatusLabel.isHidden = true
+            selectedButton = startButton
+        } else if status == .DROP {
+            buttonStackView.isHidden = true
+            readingStatusLabel.isHidden = true
+            dropStatusLabel.isHidden = false
+            selectedButton = endButton
+        } else if status == .READING {
+            buttonStackView.isHidden = true
+            readingStatusLabel.isHidden = false
+            dropStatusLabel.isHidden = true
+            selectedButton = startButton
+        }
+    }
+    
+    func setActions() {
         startButton.addTarget(self, action: #selector(didTapButton(_:)), for: .touchUpInside)
         endButton.addTarget(self, action: #selector(didTapButton(_:)), for: .touchUpInside)
         datePicker.addTarget(self, action: #selector(dateChanged), for: .valueChanged)
@@ -201,13 +262,15 @@ final class RegisterNormalCustomDatePicker: UIButton {
         let selectedDate = datePicker.date
         
         if selectedButton == startButton && selectedDate >= endDate {
-            datePicker.date = startDate
+            startDate = selectedDate
+            endDate = selectedDate
         } else if selectedButton == endButton && selectedDate <= startDate {
-            datePicker.date = endDate
+            startDate = selectedDate
+            endDate = selectedDate
         } else if selectedButton == startButton {
-            startDate = datePicker.date
+            startDate = selectedDate
         } else if selectedButton == endButton {
-            endDate = datePicker.date
+            endDate = selectedDate
         }
     }
     

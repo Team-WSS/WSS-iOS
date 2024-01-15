@@ -82,7 +82,7 @@ final class RegisterNormalViewController: UIViewController {
             
             view.starImageViews.enumerated().forEach { index, imageView in
                 
-                // 탭 제스처 인식기 생성 및 설정
+                // StarRating 탭 제스처 인식기 생성 및 설정
                 let tapGesture = UITapGestureRecognizer()
                 imageView.addGestureRecognizer(tapGesture)
                 tapGesture.rx.event
@@ -93,7 +93,7 @@ final class RegisterNormalViewController: UIViewController {
                     })
                     .disposed(by: disposeBag)
                 
-                // 팬 제스처 인식기 생성 및 설정
+                // StarRating 팬 제스처 인식기 생성 및 설정
                 let panGesture = UIPanGestureRecognizer()
                 view.addGestureRecognizer(panGesture)
                 panGesture.rx.event
@@ -126,17 +126,7 @@ final class RegisterNormalViewController: UIViewController {
 
             buttonStatusSubject
                 .subscribe(onNext: { status in
-                    view.readStatusButtons.forEach { button in
-                        if button.checkStatus(status) {
-                            // 활성화 상태 설정
-                            button.hideImage(false)
-                            button.setColor(.Primary100)
-                        } else {
-                            // 비활성화 상태 설정
-                            button.hideImage(true)
-                            button.setColor(.Gray200)
-                        }
-                    }
+                    view.bindReadStatus(status: status)
                 })
                 .disposed(by: disposeBag)
         }
@@ -177,10 +167,16 @@ final class RegisterNormalViewController: UIViewController {
                     print(next)
                 })
                 .disposed(by: disposeBag)
-            
         }
         
         rootView.do { view in
+            
+            let dateFormatter: DateFormatter = {
+                let formatter = DateFormatter()
+                formatter.dateFormat = "yyyy-MM-dd"
+                return formatter
+            }()
+            
             popDatePicker.subscribe(onNext: { popDatePicker in
                 view.customDatePicker.isHidden = !popDatePicker
             })
@@ -198,12 +194,30 @@ final class RegisterNormalViewController: UIViewController {
                 .subscribe(onNext: {
                     self.startDate.accept(view.customDatePicker.startDate)
                     self.endDate.accept(view.customDatePicker.endDate)
+                    let next = !self.popDatePicker.value
+                    self.popDatePicker.accept(next)
                 })
                 .disposed(by: disposeBag)
-//            self.startDate.subscribe(onNext: { date in
-//                view.readDateView.datePickerButton.startDateLabel.
-//            } )
             
+            startDate.asObservable()
+                .map { date in
+                    return dateFormatter.string(from: date)
+                }
+                .bind(to: view.readDateView.datePickerButton.startDateLabel.rx.text)
+                .disposed(by: disposeBag)
+            
+            endDate.asObservable()
+                .map { date in
+                    return dateFormatter.string(from: date)
+                }
+                .bind(to: view.readDateView.datePickerButton.endDateLabel.rx.text)
+                .disposed(by: disposeBag)
+            
+            buttonStatusSubject
+                .subscribe(onNext: { status in
+                    view.customDatePicker.bindReadStatus(status: status)
+                })
+                .disposed(by: disposeBag)
         }
         
     }
