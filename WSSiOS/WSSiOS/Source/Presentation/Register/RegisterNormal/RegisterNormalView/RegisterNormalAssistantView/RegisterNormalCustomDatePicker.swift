@@ -236,13 +236,13 @@ final class RegisterNormalCustomDatePicker: UIButton {
             selectedButton = startButton
         } else if status == .DROP {
             buttonStackView.isHidden = true
-            readingStatusLabel.isHidden = true
             dropStatusLabel.isHidden = false
+            readingStatusLabel.isHidden = true
             selectedButton = endButton
         } else if status == .READING {
             buttonStackView.isHidden = true
-            readingStatusLabel.isHidden = false
             dropStatusLabel.isHidden = true
+            readingStatusLabel.isHidden = false
             selectedButton = startButton
         }
     }
