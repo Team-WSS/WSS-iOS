@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class RegisterNormalCustomDatePicker: UIView {
+final class RegisterNormalCustomDatePicker: UIButton {
     
     //MARK: - Properties
     
@@ -21,6 +21,8 @@ final class RegisterNormalCustomDatePicker: UIView {
     }()
     
     // MARK: - UI Components
+    
+    private let background = UIView()
     
     private let buttonStackView = UIStackView()
     
@@ -68,8 +70,11 @@ final class RegisterNormalCustomDatePicker: UIView {
     
     private func setUI() {
         self.do {
-            $0.layer.cornerRadius = self.bounds.height / 2
+            $0.backgroundColor = .Black.withAlphaComponent(0.6)
+        }
+        background.do {
             $0.backgroundColor = .White
+            $0.layer.cornerRadius = 12
         }
         
         datePicker.do {
@@ -135,7 +140,8 @@ final class RegisterNormalCustomDatePicker: UIView {
     }
     
     private func setHieararchy() {
-        self.addSubviews(buttonStackView,
+        self.addSubview(background)
+        background.addSubviews(buttonStackView,
                          datePicker,
                          completeButton)
         buttonStackView.addArrangedSubviews(startButton,
@@ -149,6 +155,11 @@ final class RegisterNormalCustomDatePicker: UIView {
     }
     
     private func setLayout() {
+        background.snp.makeConstraints {
+            $0.bottom.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview()
+        }
+        
         buttonStackView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(34)
             $0.horizontalEdges.equalToSuperview().inset(20)
@@ -209,12 +220,12 @@ final class RegisterNormalCustomDatePicker: UIView {
         
         startTitleLabel.textColor = isStart ? .Primary100 : .Gray100
         startDateLabel.textColor = isStart ? .Primary100 : .Gray100
-        endTitleLabel.textColor = isStart ? .Gray100 : .Primary100
-        endDateLabel.textColor = isStart ? .Gray100 : .Primary100
         startButton.backgroundColor = isStart ? .White : .Gray50
         startButton.layer.borderColor = isStart ? UIColor.Primary50.cgColor : UIColor.Gray50.cgColor
+        endTitleLabel.textColor = isStart ? .Gray100 : .Primary100
+        endDateLabel.textColor = isStart ? .Gray100 : .Primary100
         endButton.backgroundColor = isStart ? .Gray50 : .White
-        startButton.layer.borderColor = isStart ? UIColor.Gray50.cgColor : UIColor.Primary50.cgColor
+        endButton.layer.borderColor = isStart ? UIColor.Gray50.cgColor : UIColor.Primary50.cgColor
     }
     
     private func buttonDateStyle(of label: UILabel) {

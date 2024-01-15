@@ -35,12 +35,6 @@ final class RegisterNormalDatePickerButton: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Override Method
-    
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        // touchEvent
-    }
-    
     // MARK: - Custom Method
     
     private func setUI() {
@@ -53,6 +47,7 @@ final class RegisterNormalDatePickerButton: UIButton {
             $0.axis = .horizontal
             $0.spacing = 20
             $0.alignment = .center
+            $0.isUserInteractionEnabled = false
             
             startDateLabel.do {
                 $0.text = "2023-12-26"

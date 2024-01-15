@@ -54,10 +54,12 @@ final class RegisterNormalViewController: UIViewController {
     // RxSwift에서 메모리 관리를 위한 DisposeBag
     private let disposeBag = DisposeBag()
     
-    // 별점의 현재 값을 저장하고, 변경사항을 관찰하기 위한 BehaviorRelay
     private var starRatingRelay = BehaviorRelay<Float>(value: 0.0)
     private var buttonStatusSubject = BehaviorRelay<RegisterNormalReadStatus>(value: .FINISH)
     private var isOn = BehaviorRelay<Bool>(value: true)
+    private var popDatePicker = BehaviorRelay<Bool>(value: false)
+//    private var startDate = BehaviorRelay<Date>(value: Date())
+//    private var endDate = BehaviorRelay<Date>(value: Date())
     
     private let rootView = RegisterNormalView()
     
@@ -151,6 +153,7 @@ final class RegisterNormalViewController: UIViewController {
                 })
                 .disposed(by: disposeBag)
         }
+        
         rootView.readDateView.do { view in
             view.toggleButton.rx.tap
                 .subscribe(onNext: {
@@ -166,6 +169,27 @@ final class RegisterNormalViewController: UIViewController {
                 })
                 .disposed(by: disposeBag)
             
+            view.datePickerButton.rx.tap
+                .subscribe(onNext: {
+                    let next = !self.popDatePicker.value
+                    self.popDatePicker.accept(next)
+                    print(next)
+                })
+                .disposed(by: disposeBag)
+        }
+        
+        rootView.do { view in
+            popDatePicker.subscribe(onNext: { popDatePicker in
+                view.customDatePicker.isHidden = !popDatePicker
+            })
+            .disposed(by: disposeBag)
+            
+            view.customDatePicker.rx.tap
+                .subscribe(onNext: {
+                    let next = !self.popDatePicker.value
+                    self.popDatePicker.accept(next)
+                    print(next)
+                }).disposed(by: disposeBag)
         }
         
     }

@@ -27,6 +27,8 @@ final class RegisterNormalView: UIView {
     private let registerButton = WSSMainButton(title: "내 서재에 등록")
     private let registerButtonGradient = UIImageView()
     private let registerButtonBackgroundView = UIView()
+    
+    let customDatePicker = RegisterNormalCustomDatePicker()
     // MARK: - Life Cycle
     
     override init(frame: CGRect) {
@@ -72,7 +74,8 @@ final class RegisterNormalView: UIView {
         self.addSubviews(pageScrollView,
                          registerButtonGradient,
                          registerButtonBackgroundView,
-                         registerButton)
+                         registerButton,
+                         customDatePicker)
         pageScrollView.addSubview(pageContentView)
         pageContentView.addArrangedSubviews(bannerImageView,
                                             infoWithRatingView,
@@ -115,6 +118,10 @@ final class RegisterNormalView: UIView {
             $0.top.equalTo(registerButton.snp.top)
             $0.bottom.equalToSuperview()
             $0.horizontalEdges.equalToSuperview()
+        }
+        
+        customDatePicker.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
 }
