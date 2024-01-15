@@ -25,11 +25,11 @@ final class MyPageViewController: UIViewController {
                                           "로그아웃",
                                           "웹소소 인스타 보러가기",
                                           "서비스 이용약관"])
-    private let viewModel: MyPageViewModel
+    private var userRepository: DefaultUserRepository
     private let disposeBag = DisposeBag()
     
-    init(viewModel: MyPageViewModel) {
-        self.viewModel = viewModel
+    init(userRepository: UserRepository) {
+        self.userRepository = userRepository as! DefaultUserRepository
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -52,30 +52,22 @@ final class MyPageViewController: UIViewController {
         super.viewDidLoad()
         
         register()
+        bindData()
+        
         bindDataToMyPageCollectionView()
         pushChangeNicknameViewController()
         //        removeDimmedView()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        let input = MyPageViewModel.Input(viewWillAppearEvent: Observable.just(()))
-        let output = viewModel.transform(from: input, disposeBag: disposeBag)
-        
-        output.profileData.subscribe(onNext: { [weak self] userDTO in
-            self?.updateProfileView(with: userDTO)
-        }).disposed(by: disposeBag)
+    private func bindData() {
+        userRepository.getUserData()
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, data in 
+                owner.rootView.dataBind(data)
+            })
+            .disposed(by: disposeBag)
     }
     
-    private func updateProfileView(with userDTO: UserDTO) {
-        print(userDTO.memoCount)
-        print(userDTO.userNickName)
-        rootView.myPageTallyView.myPageUserNameButton.setTitle("\(userDTO.userNickName)님", for: .normal)
-        rootView.myPageTallyView.myPageRegisterView.tallyLabel.text = String(userDTO.userNovelCount)
-        rootView.myPageTallyView.myPageRecordView.tallyLabel.text = String(userDTO.memoCount)
-    }
-                
     //MARK: - UI Components
     
     private func register() {
@@ -120,11 +112,11 @@ final class MyPageViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-//    private func bindViewModel() {
-//        let input = MyPageViewModel.Input(
-//            viewWillAppearEvent: self.rx.viewWillAppear.asObservable(),
-//        )
-//    }
+    //    private func bindViewModel() {
+    //        let input = MyPageViewModel.Input(
+    //            viewWillAppearEvent: self.rx.viewWillAppear.asObservable(),
+    //        )
+    //    }
 }
 
 extension MyPageViewController {

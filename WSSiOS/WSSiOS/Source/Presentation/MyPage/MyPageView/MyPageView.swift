@@ -61,4 +61,13 @@ final class MyPageView: UIView {
             }
         }
     }
+    
+    func dataBind(_ data: UserResult) {
+        myPageProfileView.myPageNameLabel.text = data.representativeAvatarTag
+        myPageProfileView.myPageBadgeImageView.image = UIImage(named: kingfisher.data.representativeAvatarGenreBadge)
+        myPageProfileView.myPagePhraseLabel.text = data.representativeAvatarLineContent
+        myPageTallyView.myPageUserNameButton.setTitle("\(data.userNickName)님", for: .normal)
+        myPageTallyView.myPageRegisterView.tallyLabel.text = String(data.userNovelCount)
+        myPageTallyView.myPageRecordView.tallyLabel.text = String(data.memoCount)
+    }
 }

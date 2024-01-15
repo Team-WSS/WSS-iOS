@@ -10,19 +10,18 @@ import Foundation
 import RxSwift
 
 protocol UserRepository {
-    func getUserData() -> Observable<UserDTO>
+    func getUserData() -> Observable<UserResult>
 }
 
 struct DefaultUserRepository: UserRepository {
     
     private var userService: UserService
-    static let shared = DefaultUserRepository(userService: DefaultUserService())
     
     init(userService: UserService) {
         self.userService = userService
     }
     
-    func getUserData() -> RxSwift.Observable<UserDTO> {
+    func getUserData() -> RxSwift.Observable<UserResult> {
         return userService.getUserData()
             .asObservable()
     }

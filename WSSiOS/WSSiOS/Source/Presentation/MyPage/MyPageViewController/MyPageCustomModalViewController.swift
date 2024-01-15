@@ -20,11 +20,8 @@ class MyPageCustomModalViewController: UIViewController {
     
     private var rootView = MyPageCustomModalView()
     private let myPageViewController = MyPageViewController(
-        viewModel: MyPageViewModel(
-            myUseCase: DefaultMyUseCase(
-                userRepository: DefaultUserRepository.shared
-            )
-        )
+        userRepository: DefaultUserRepository(
+            userService: DefaultUserService())
     )
     
     // MARK: - Life Cycle
