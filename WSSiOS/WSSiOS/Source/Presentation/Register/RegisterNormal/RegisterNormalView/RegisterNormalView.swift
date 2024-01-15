@@ -18,8 +18,8 @@ final class RegisterNormalView: UIView {
     private let pageContentView = UIStackView()
     
     private let bannerImageView = RegisterNormalBannerImageView()
-    private let infoWithRatingView = RegisterNormalNovelInfoWithRatingView()
-    private let readStatusView = RegisterNormalReadStatusView()
+    let infoWithRatingView = RegisterNormalNovelInfoWithRatingView()
+    let readStatusView = RegisterNormalReadStatusView()
     private let readDateView = RegisterNormalReadDateView()
     private let dividerView = RegisterNormalDividerView()
     private let keywordSelectionView = RegisterNormalKeywordSelectionView()
@@ -100,6 +100,10 @@ final class RegisterNormalView: UIView {
                 $0.setCustomSpacing(-154, after: bannerImageView)
                 $0.setCustomSpacing(56, after: infoWithRatingView)
             }
+        }
+        
+        registerButton.snp.makeConstraints {
+            $0.bottom.equalTo(safeAreaLayoutGuide).inset(10)
         }
         
         registerButtonGradient.snp.makeConstraints {

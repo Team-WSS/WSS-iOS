@@ -1,8 +1,8 @@
 //
-//  StarRatingView.swift
+//  RegisterNormalStarRatingView.swift
 //  WSSiOS
 //
-//  Created by 이윤학 on 1/7/24.
+//  Created by 이윤학 on 1/13/24.
 //
 
 import UIKit
@@ -12,15 +12,10 @@ import Then
 
 final class RegisterNormalStarRatingView: UIView {
     
-    // MARK: - Properties
-    
-    private var selectedRate: Int = 0
-    private var starsCount: Int = 5
-    
     // MARK: - UI Components
     
+    lazy var starImageViews: [UIImageView] = createStars()
     private let starStackView = UIStackView()
-    private lazy var starImageViews: [UIImageView] = self.createStars()
     
     // MARK: - Life Cycle
     
@@ -46,36 +41,54 @@ final class RegisterNormalStarRatingView: UIView {
     }
     
     private func setHieararchy() {
-        self.addSubviews(starStackView)
+        self.addSubview(starStackView)
         starImageViews.forEach {
             starStackView.addArrangedSubview($0)
         }
     }
     
-    private func setLayout() {
+    func setLayout() {
         starStackView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+        
+        starImageViews.forEach {
+            $0.snp.makeConstraints {
+                $0.width.equalTo(31)
+                $0.height.equalTo(29)
+            }
+        }
     }
     
-    /// loop through the number of our stars
     private func createStars() -> [UIImageView] {
-        var starImageViews: [UIImageView] = []
-        for index in 1...starsCount {
-            let star = makeStarImageView()
-            star.tag = index
-            starImageViews.append(star)
+        var stars: [UIImageView] = []
+        for _ in 0..<5 {
+            let starImageView = UIImageView()
+            starImageView.do {
+                $0.isUserInteractionEnabled = true
+                $0.image = ImageLiterals.icon.Star.empty
+                $0.contentMode = .scaleAspectFill
+                $0.clipsToBounds = true
+            }
+            stars.append(starImageView)
         }
-        return starImageViews
+        
+        return stars
     }
-    
-    /// declare default icon
-    private func makeStarImageView() -> UIImageView {
-        let imageView = UIImageView()
-        imageView.do {
-            $0.image = ImageLiterals.icon.Star.empty
-            //$0.isUserInteractionEnabled = true
+    /// 별점에 따라 별 이미지를 업데이트하는 함수
+    func updateStarImages(rating: Float) {
+        let fullStars = Int(rating)
+        let hasHalfStar = rating - Float(fullStars) >= 0.5
+        
+        starImageViews.enumerated().forEach { index, imageView in
+            if index < fullStars {
+                imageView.image = ImageLiterals.icon.Star.fill
+            } else if hasHalfStar && index == fullStars {
+                imageView.image = ImageLiterals.icon.Star.half
+            } else {
+                imageView.image = ImageLiterals.icon.Star.empty
+            }
         }
-        return imageView
+        print(rating)
     }
 }

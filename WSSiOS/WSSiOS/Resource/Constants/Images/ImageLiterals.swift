@@ -91,5 +91,6 @@ enum ImageLiterals {
         static var searchCancel: UIImage{ .load(named: "icSearchCancel")}
         static var imgLogoType: UIImage{ .load(named: "imgLogoType")}
         static var sosopickCircle: UIImage { .load(named: "sosopickCircle")}
+        static var warning: UIImage { .load(named: "icWarning")}
     }
 }
