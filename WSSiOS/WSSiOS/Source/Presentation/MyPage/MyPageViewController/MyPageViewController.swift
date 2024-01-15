@@ -25,12 +25,22 @@ final class MyPageViewController: UIViewController {
                                           "로그아웃",
                                           "웹소소 인스타 보러가기",
                                           "서비스 이용약관"])
+    private let viewModel: MyPageViewModel
     private let disposeBag = DisposeBag()
+    
+    init(viewModel: MyPageViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     //MARK: - UI Components
     
     private var rootView = MyPageView()
-//    private let dimmedView = UIView()
+    //    private let dimmedView = UIView()
     
     // MARK: - Life Cycle
     
@@ -44,9 +54,28 @@ final class MyPageViewController: UIViewController {
         register()
         bindDataToMyPageCollectionView()
         pushChangeNicknameViewController()
-//        removeDimmedView()
+        //        removeDimmedView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        let input = MyPageViewModel.Input(viewWillAppearEvent: Observable.just(()))
+        let output = viewModel.transform(from: input, disposeBag: disposeBag)
+        
+        output.profileData.subscribe(onNext: { [weak self] userDTO in
+            self?.updateProfileView(with: userDTO)
+        }).disposed(by: disposeBag)
+    }
+    
+    private func updateProfileView(with userDTO: UserDTO) {
+        print(userDTO.memoCount)
+        print(userDTO.userNickName)
+        rootView.myPageTallyView.myPageUserNameButton.setTitle("\(userDTO.userNickName)님", for: .normal)
+        rootView.myPageTallyView.myPageRegisterView.tallyLabel.text = String(userDTO.userNovelCount)
+        rootView.myPageTallyView.myPageRecordView.tallyLabel.text = String(userDTO.memoCount)
+    }
+                
     //MARK: - UI Components
     
     private func register() {
@@ -90,25 +119,31 @@ final class MyPageViewController: UIViewController {
             })
             .disposed(by: disposeBag)
     }
+    
+//    private func bindViewModel() {
+//        let input = MyPageViewModel.Input(
+//            viewWillAppearEvent: self.rx.viewWillAppear.asObservable(),
+//        )
+//    }
 }
 
 extension MyPageViewController {
     @objc func tapAvatarButton() {
         let modalVC = MyPageCustomModalViewController()
-//        addDimmedView()
+        //        addDimmedView()
         modalVC.modalPresentationStyle = .overFullScreen
         present(modalVC, animated: true)
     }
     
-//    private func addDimmedView() {
-//        view.addSubview(dimmedView)
-//        dimmedView.do {
-//            $0.backgroundColor = .Black
-//            $0.alpha = 0.6
-//            $0.addGestureRecognizer(tapGesture)
-//        }
-//        dimmedView.snp.makeConstraints() {
-//            $0.edges.equalToSuperview()
-//        }
-//    }
+    //    private func addDimmedView() {
+    //        view.addSubview(dimmedView)
+    //        dimmedView.do {
+    //            $0.backgroundColor = .Black
+    //            $0.alpha = 0.6
+    //            $0.addGestureRecognizer(tapGesture)
+    //        }
+    //        dimmedView.snp.makeConstraints() {
+    //            $0.edges.equalToSuperview()
+    //        }
+    //    }
 }

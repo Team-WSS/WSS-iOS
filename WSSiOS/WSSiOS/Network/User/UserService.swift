@@ -6,3 +6,31 @@
 //
 
 import Foundation
+
+import RxSwift
+
+protocol UserService {
+    func getUserData() -> Single<UserDTO>
+}
+
+final class DefaultUserService: NSObject, Networking {
+    private var urlSession: URLSession = URLSession(configuration: URLSessionConfiguration.default,
+                                                        delegate: nil,
+                                                        delegateQueue: nil)
+}
+
+extension DefaultUserService: UserService {
+    func getUserData() -> Single<UserDTO> {
+        let request = try! makeHTTPRequest(method: .get,
+                                           path: URLs.User.getUserInfo,
+                                           headers: APIConstants.noTokenHeader,
+                                           body: nil)
+        
+        NetworkLogger.log(request: request)
+        
+        return urlSession.rx.data(request: request)
+            .map { try self.decode(data: $0, to: UserDTO.self) }
+            .asSingle()
+    }
+}
+

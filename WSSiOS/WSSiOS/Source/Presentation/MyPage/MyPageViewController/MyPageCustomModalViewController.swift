@@ -19,7 +19,13 @@ class MyPageCustomModalViewController: UIViewController {
     //MARK: - UI Components
     
     private var rootView = MyPageCustomModalView()
-    private let myPageViewController = MyPageViewController()
+    private let myPageViewController = MyPageViewController(
+        viewModel: MyPageViewModel(
+            myUseCase: DefaultMyUseCase(
+                userRepository: DefaultUserRepository.shared
+            )
+        )
+    )
     
     // MARK: - Life Cycle
     
@@ -47,7 +53,7 @@ class MyPageCustomModalViewController: UIViewController {
     private func tapContinueButton() {
         rootView.modalContinueButton.rx.tap
             .bind(with: self, onNext: { owner, _ in
-//                owner.myPageViewController.myPageViewModel.removeDimmedView.onNext(())
+                //                owner.myPageViewController.myPageViewModel.removeDimmedView.onNext(())
                 owner.dismiss(animated: true)
             })
             .disposed(by: disposeBag)

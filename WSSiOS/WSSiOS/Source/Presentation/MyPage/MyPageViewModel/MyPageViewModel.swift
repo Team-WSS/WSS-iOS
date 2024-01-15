@@ -7,13 +7,49 @@
 
 import Foundation
 
-public struct MyPageViewModel: Decodable {
-    public let userNickName: String
-    public let userNovelCount, memoCount: Int
+import RxSwift
+import RxCocoa
+
+protocol MyUseCase {
+    var profileData: PublishRelay<UserDTO> { get }
+   
+    func requestMyPage()
+}
+
+final class MyPageViewModel {
     
-    public init(userNickName: String, userNovelCount: Int, memoCount: Int) {
-        self.userNickName = userNickName
-        self.userNovelCount = userNovelCount
-        self.memoCount = memoCount
+    internal var disposeBag = DisposeBag()
+    
+    private var myUseCase : MyUseCase
+    
+    init(myUseCase: MyUseCase) {
+        self.myUseCase = myUseCase
+    }
+    
+    struct Input {
+        let viewWillAppearEvent: Observable<Void>
+    }
+    
+    struct Output {
+        var profileData = PublishRelay<UserDTO>()
+    }
+    
+    func transform(from input: Input, disposeBag: DisposeBag) -> Output {
+        let output = Output()
+        self.bindOutput(output: output, disposeBag: disposeBag)
+        
+        input.viewWillAppearEvent.subscribe(with: self, onNext: { owner, _ in
+            owner.myUseCase.requestMyPage()
+        }).disposed(by: disposeBag)
+        
+        return output
+    }
+    
+    
+    private func bindOutput(output: Output, disposeBag: DisposeBag) {
+        myUseCase.profileData.subscribe(onNext: { profileData in
+            output.profileData.accept(profileData)
+        }).disposed(by: disposeBag)
     }
 }
+
