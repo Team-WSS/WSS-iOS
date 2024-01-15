@@ -19,41 +19,53 @@ class LibraryPageViewController: UIViewController {
     private let disposeBag = DisposeBag()
     
     //MARK: - UI Components
-    private var libraryPageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+    
+    private var libraryPageViewController = UIPageViewController(transitionStyle: .scroll,
+                                                                 navigationOrientation: .horizontal,
+                                                                 options: nil)
     private var libraryPageBar = LibraryPageBar()
     private var libraryPages = [LibraryBaseViewController]()
-    private var initialPage = 0
     
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        register()
-        bindDataToLibraryCollectionView()
+        setTabBar()
+        delegate()
         
         setupPage()
-        delegate()
         
         setHierarchy()
         setLayout()
+        setAction()
     }
     
     //MARK: - Custom TabBar
     
-    private func register() {
+    private func setTabBar() {
         libraryPageBar.libraryTabCollectionView
             .register(LibraryTabCollectionViewCell.self,
                       forCellWithReuseIdentifier: "LibraryTabCollectionViewCell")
-    }
-    
-    private func bindDataToLibraryCollectionView() {
+        
         dummyLibraryTabTitle.bind(to: libraryPageBar.libraryTabCollectionView.rx.items(
             cellIdentifier: "LibraryTabCollectionViewCell",
             cellType: LibraryTabCollectionViewCell.self)) { (row, element, cell) in
                 cell.libraryTabButton.setTitle(element, for: .normal)
-            }
+                cell.libraryTabButton.rx.tap
+                    .map { row }
+                    .bind(to: self.libraryPageBar.selectedTabIndex)
+                    .disposed(by: cell.disposeBag)
+                }
             .disposed(by: disposeBag)
+        
+        Observable.just(Void())
+                .observeOn(MainScheduler.instance)
+                .subscribe(onNext: { [weak self] in
+                    self?.libraryPageBar.libraryTabCollectionView.selectItem(at: IndexPath(item: 0, section: 0), animated: true, scrollPosition: [])
+                    self?.libraryPageBar.selectedTabIndex.onNext(0)
+                })
+                .disposed(by: disposeBag)
     }
     
     private func setupPage() {
@@ -63,7 +75,14 @@ class LibraryPageViewController: UIViewController {
             libraryPages.append(LibraryBaseViewController())
         }
         
-        libraryPageViewController.setViewControllers([libraryPages[0]], direction: .forward, animated: false, completion: nil)
+        for (index, viewController) in libraryPages.enumerated() {
+            viewController.view.tag = index
+        }
+        
+        libraryPageViewController.setViewControllers([libraryPages[0]],
+                                                     direction: .forward,
+                                                     animated: false,
+                                                     completion: nil)
     }
     
     private func delegate() {
@@ -89,15 +108,27 @@ class LibraryPageViewController: UIViewController {
             $0.width.bottom.equalToSuperview()
         }
     }
+    
+    private func setAction() {
+        libraryPageBar.selectedTabIndex
+            .subscribe(onNext: { [weak self] index in
+                guard let self = self, self.libraryPages.indices.contains(index) else { return }
+                let direction: UIPageViewController.NavigationDirection = index > (self.libraryPageViewController.viewControllers?.first?.view.tag ?? 0) ? .forward : .reverse
+                self.libraryPageViewController.setViewControllers([self.libraryPages[index]],
+                                                                  direction: direction,
+                                                                  animated: true,
+                                                                  completion: nil)
+            })
+            .disposed(by: disposeBag)
+    }
 }
 
 extension LibraryPageViewController : UIPageViewControllerDelegate {
-//    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-//        guard completed else { return }
-//        if let viewController = pageViewController.viewControllers?.first {
-//
-//        }
-//    }
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) { 
+        if completed, let currentViewController = pageViewController.viewControllers?.first, let index = libraryPages.firstIndex(of: currentViewController as! LibraryBaseViewController) {
+            libraryPageBar.libraryTabCollectionView.selectItem(at: IndexPath(item: index, section: 0), animated: true, scrollPosition: .centeredHorizontally)
+        }
+    }
 }
 
 extension LibraryPageViewController: UIPageViewControllerDataSource {

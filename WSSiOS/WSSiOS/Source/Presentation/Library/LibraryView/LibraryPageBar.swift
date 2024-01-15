@@ -7,8 +7,18 @@
 
 import UIKit
 
+import RxSwift
+import RxCocoa
+import SnapKit
+import Then
+
 class LibraryPageBar: UIView {
 
+    //MARK: - Properties
+    
+    private let disposeBag = DisposeBag()
+    public var selectedTabIndex = PublishSubject<Int>()
+    
     //MARK: - UI Components
     
     public var libraryTabCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
@@ -38,6 +48,11 @@ class LibraryPageBar: UIView {
             
             $0.collectionViewLayout = layout
         }
+        
+        libraryTabCollectionView.rx.itemSelected
+            .map{$0.row}
+            .bind(to: selectedTabIndex)
+            .disposed(by: disposeBag)
     }
     
     //MARK: - set Hierachy

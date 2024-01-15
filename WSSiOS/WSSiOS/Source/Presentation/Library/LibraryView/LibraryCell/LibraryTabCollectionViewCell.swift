@@ -7,6 +7,8 @@
 
 import UIKit
 
+import RxSwift
+import RxCocoa
 import SnapKit
 import Then
 
@@ -15,6 +17,7 @@ class LibraryTabCollectionViewCell: UICollectionViewCell {
     //MARK: - Properties
     
     static let identifier: String = "LibraryTabCollectionViewCell"
+    let disposeBag = DisposeBag()
     
     //MARK: - UI Components
     
@@ -33,6 +36,16 @@ class LibraryTabCollectionViewCell: UICollectionViewCell {
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override var isSelected: Bool {
+        didSet {
+            selectUI()
+        }
+    }
+    
+    private func selectUI() {
+        libraryTabButton.titleLabel?.textColor = isSelected ? .Primary100 : .Gray200
     }
     
     //MARK: - Set UI
