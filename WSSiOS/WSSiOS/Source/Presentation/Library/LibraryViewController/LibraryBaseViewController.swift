@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class LibraryBaseViewController: UIViewController {
+final class LibraryBaseViewController: UIViewController {
     
     //MARK: - Properties
     

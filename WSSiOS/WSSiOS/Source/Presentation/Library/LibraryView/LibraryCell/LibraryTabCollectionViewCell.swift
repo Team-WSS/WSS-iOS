@@ -12,7 +12,7 @@ import RxCocoa
 import SnapKit
 import Then
 
-class LibraryTabCollectionViewCell: UICollectionViewCell {
+final class LibraryTabCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Properties
     
@@ -44,10 +44,6 @@ class LibraryTabCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    private func selectUI() {
-        libraryTabButton.titleLabel?.textColor = isSelected ? .Primary100 : .Gray200
-    }
-    
     //MARK: - Set UI
     
     private func setUI() {
@@ -70,5 +66,11 @@ class LibraryTabCollectionViewCell: UICollectionViewCell {
         libraryTabButton.snp.makeConstraints() {
             $0.edges.equalToSuperview()
         }
+    }
+    
+    //MARK: - Select Case
+    
+    private func selectUI() {
+        libraryTabButton.titleLabel?.textColor = isSelected ? .Primary100 : .Gray200
     }
 }

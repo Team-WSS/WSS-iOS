@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-class LibraryView: UIView {
+final class LibraryView: UIView {
     
     //MARK: - UI Components
     

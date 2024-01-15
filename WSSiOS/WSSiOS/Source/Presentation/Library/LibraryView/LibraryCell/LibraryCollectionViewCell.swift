@@ -7,7 +7,7 @@
 
 import UIKit
 
-class LibraryCollectionViewCell: UICollectionViewCell {
+final class LibraryCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Properties
     

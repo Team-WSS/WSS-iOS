@@ -12,7 +12,7 @@ import RxCocoa
 import SnapKit
 import Then
 
-class LibraryViewController: UIViewController {
+final class LibraryViewController: UIViewController {
     
     //MARK: - Properties
     
@@ -71,6 +71,11 @@ class LibraryViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
+    private func delegate() {
+        libraryPageViewController.delegate = self
+        libraryPageViewController.dataSource = self
+    }
+    
     private func setupPage() {
         self.view.backgroundColor = .White
         
@@ -86,11 +91,6 @@ class LibraryViewController: UIViewController {
                                                      direction: .forward,
                                                      animated: false,
                                                      completion: nil)
-    }
-    
-    private func delegate() {
-        libraryPageViewController.delegate = self
-        libraryPageViewController.dataSource = self
     }
     
     private func setUI() {

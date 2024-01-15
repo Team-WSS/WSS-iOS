@@ -12,7 +12,7 @@ import RxCocoa
 import SnapKit
 import Then
 
-class LibraryPageBar: UIView {
+final class LibraryPageBar: UIView {
 
     //MARK: - Properties
     
