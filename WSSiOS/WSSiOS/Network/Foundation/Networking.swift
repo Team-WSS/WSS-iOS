@@ -15,8 +15,6 @@ protocol Networking {
         headers: [String: String]?,
         body: Data?) throws -> URLRequest
     
-    
-    
     func makeMultipartFormImageBody(keyName: String,
                                     images: [Data],
                                     fileName: String,
@@ -48,7 +46,6 @@ extension Networking {
         }
         
         return request
-        
     }
     
     func makeMultipartFormImageBody(keyName: String,
@@ -83,7 +80,7 @@ extension Networking {
         let result = try decode(data: data, to: T.self)
         
         return result
-    }    
+    }
     
     func decode<T: Decodable>(data: Data, to target: T.Type) throws -> T {
         do {
