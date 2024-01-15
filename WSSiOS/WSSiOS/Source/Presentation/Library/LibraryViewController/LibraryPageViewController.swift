@@ -25,6 +25,7 @@ class LibraryPageViewController: UIViewController {
                                                                  options: nil)
     private var libraryPageBar = LibraryPageBar()
     private var libraryDescriptionView = LibraryDescriptionView()
+    private var libraryListView = LibraryListView()
     private var libraryPages = [LibraryBaseViewController]()
     
     // MARK: - Life Cycle
@@ -37,6 +38,7 @@ class LibraryPageViewController: UIViewController {
         
         setupPage()
         
+        setUI()
         setHierarchy()
         setLayout()
         setAction()
@@ -57,16 +59,16 @@ class LibraryPageViewController: UIViewController {
                     .map { row }
                     .bind(to: self.libraryPageBar.selectedTabIndex)
                     .disposed(by: cell.disposeBag)
-                }
+            }
             .disposed(by: disposeBag)
         
         Observable.just(Void())
-                .observeOn(MainScheduler.instance)
-                .subscribe(onNext: { [weak self] in
-                    self?.libraryPageBar.libraryTabCollectionView.selectItem(at: IndexPath(item: 0, section: 0), animated: true, scrollPosition: [])
-                    self?.libraryPageBar.selectedTabIndex.onNext(0)
-                })
-                .disposed(by: disposeBag)
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [weak self] in
+                self?.libraryPageBar.libraryTabCollectionView.selectItem(at: IndexPath(item: 0, section: 0), animated: true, scrollPosition: [])
+                self?.libraryPageBar.selectedTabIndex.onNext(0)
+            })
+            .disposed(by: disposeBag)
     }
     
     private func setupPage() {
@@ -91,12 +93,19 @@ class LibraryPageViewController: UIViewController {
         libraryPageViewController.dataSource = self
     }
     
+    private func setUI() {
+        self.view.backgroundColor = .White
+        
+        libraryListView.isHidden = true
+    }
+    
     private func setHierarchy() {
         self.view.addSubviews(libraryPageBar,
-                             libraryDescriptionView)
+                              libraryDescriptionView)
         self.addChild(libraryPageViewController)
         self.view.addSubviews(libraryPageViewController.view)
         libraryPageViewController.didMove(toParent: self)
+        self.view.addSubview(libraryListView)
     }
     
     private func setLayout() {
@@ -115,6 +124,13 @@ class LibraryPageViewController: UIViewController {
             $0.top.equalTo(libraryDescriptionView.snp.bottom)
             $0.width.bottom.equalToSuperview()
         }
+        
+        libraryListView.snp.makeConstraints() {
+            $0.top.equalTo(libraryDescriptionView.snp.bottom).offset(10)
+            $0.trailing.equalToSuperview().inset(25)
+            $0.width.equalTo(100)
+            $0.height.equalTo(104)
+        }
     }
     
     private func setAction() {
@@ -128,6 +144,11 @@ class LibraryPageViewController: UIViewController {
                                                                   completion: nil)
             })
             .disposed(by: disposeBag)
+        
+        libraryDescriptionView.libraryNovelListButton.rx.tap
+            .bind(with: self, onNext: { owner, _ in 
+                    owner.libraryListView.isHidden = false
+            })
     }
 }
 

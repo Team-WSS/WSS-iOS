@@ -15,7 +15,7 @@ final class LibraryDescriptionView: UIView {
     //MARK: - UI Components
     
     public var libraryNovelCountLabel = UILabel()
-    public var libraryNovelListlabel = UIButton()
+    public var libraryNovelListButton = UIButton()
     
     // MARK: - Life Cycle
     
@@ -44,7 +44,7 @@ final class LibraryDescriptionView: UIView {
             $0.textColor = .Gray200
         }
         
-        libraryNovelListlabel.do {
+        libraryNovelListButton.do {
             $0.setTitle("최신 순", for: .normal)
             $0.setTitleColor(.Gray300, for: .normal)
             $00.titleLabel?.font = .Label1
@@ -58,7 +58,7 @@ final class LibraryDescriptionView: UIView {
     
     private func setHierachy() {
         self.addSubviews(libraryNovelCountLabel,
-                         libraryNovelListlabel)
+                         libraryNovelListButton)
     }
     
     //MARK: - set Layout
@@ -69,10 +69,9 @@ final class LibraryDescriptionView: UIView {
             $0.leading.equalToSuperview().inset(20)
         }
         
-        libraryNovelListlabel.snp.makeConstraints() {
+        libraryNovelListButton.snp.makeConstraints() {
             $0.centerY.equalToSuperview()
             $0.trailing.equalToSuperview().inset(20)
         }
     }
-
 }

@@ -36,8 +36,9 @@ class LibraryView: UIView {
         libraryCollectionView.do {
             let layout = UICollectionViewFlowLayout()
             layout.scrollDirection = .vertical
-            layout.minimumLineSpacing = 10.0
+            layout.minimumLineSpacing = 24.0
             layout.minimumInteritemSpacing = 3
+            layout.sectionInset = UIEdgeInsets(top: 24, left: 0, bottom: 0, right: 0)
             layout.itemSize = CGSize(width: 105.0, height: 243.0)
             
             $0.collectionViewLayout = layout
