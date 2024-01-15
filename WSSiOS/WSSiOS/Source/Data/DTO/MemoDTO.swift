@@ -7,6 +7,10 @@
 
 import Foundation
 
+struct RecordMemos: Decodable {
+    let memos: [RecordMemo]
+}
+
 struct RecordMemo: Codable {
     let id: Int
     let novelTitle: String
