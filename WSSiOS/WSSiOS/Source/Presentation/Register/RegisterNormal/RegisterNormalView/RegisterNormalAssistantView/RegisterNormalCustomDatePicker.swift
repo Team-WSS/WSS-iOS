@@ -38,7 +38,7 @@ final class RegisterNormalCustomDatePicker: UIButton {
     
     private let datePicker = UIDatePicker()
     
-    private let completeButton = WSSMainButton(title: "완료")
+    let completeButton = WSSMainButton(title: "완료")
     
     var startDate = Date() {
         didSet {

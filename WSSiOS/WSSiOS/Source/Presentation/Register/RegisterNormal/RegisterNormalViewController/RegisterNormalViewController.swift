@@ -58,8 +58,9 @@ final class RegisterNormalViewController: UIViewController {
     private var buttonStatusSubject = BehaviorRelay<RegisterNormalReadStatus>(value: .FINISH)
     private var isOn = BehaviorRelay<Bool>(value: true)
     private var popDatePicker = BehaviorRelay<Bool>(value: false)
-//    private var startDate = BehaviorRelay<Date>(value: Date())
-//    private var endDate = BehaviorRelay<Date>(value: Date())
+    
+    private var startDate = BehaviorRelay<Date>(value: Date())
+    private var endDate = BehaviorRelay<Date>(value: Date())
     
     private let rootView = RegisterNormalView()
     
@@ -176,6 +177,7 @@ final class RegisterNormalViewController: UIViewController {
                     print(next)
                 })
                 .disposed(by: disposeBag)
+            
         }
         
         rootView.do { view in
@@ -189,7 +191,19 @@ final class RegisterNormalViewController: UIViewController {
                     let next = !self.popDatePicker.value
                     self.popDatePicker.accept(next)
                     print(next)
-                }).disposed(by: disposeBag)
+                })
+                .disposed(by: disposeBag)
+            
+            view.customDatePicker.completeButton.rx.tap
+                .subscribe(onNext: {
+                    self.startDate.accept(view.customDatePicker.startDate)
+                    self.endDate.accept(view.customDatePicker.endDate)
+                })
+                .disposed(by: disposeBag)
+//            self.startDate.subscribe(onNext: { date in
+//                view.readDateView.datePickerButton.startDateLabel.
+//            } )
+            
         }
         
     }
