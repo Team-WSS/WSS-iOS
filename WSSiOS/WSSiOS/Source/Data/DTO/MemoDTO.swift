@@ -8,6 +8,7 @@
 import Foundation
 
 struct RecordMemos: Decodable {
+    let memoCount: Int
     let memos: [RecordMemo]
 }
 

@@ -16,7 +16,6 @@ protocol MemoRepository {
 struct DefaultMemoRepository: MemoRepository {
     
     private var memoService: MemoService
-    static let shared = DefaultMemoRepository(memoService: DefaultMemoService())
     
     init(memoService: MemoService) {
         self.memoService = memoService

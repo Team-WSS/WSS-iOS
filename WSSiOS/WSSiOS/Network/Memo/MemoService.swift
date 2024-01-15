@@ -14,6 +14,12 @@ protocol MemoService {
 }
 
 final class DefaultMemoService: NSObject, Networking {
+    
+    private let recordListQueryItems: [URLQueryItem] = [
+        URLQueryItem(name: "lastMemoId", value: String(describing: 1000)),
+        URLQueryItem(name: "size", value: String(describing: 5)),
+        URLQueryItem(name: "sortType", value: "NEWEST")]
+    
     private var urlSession = URLSession(configuration: URLSessionConfiguration.default,
                                         delegate: nil,
                                         delegateQueue: nil)
@@ -23,6 +29,7 @@ extension DefaultMemoService: MemoService {
     func getRecordMemosData() -> Single<RecordMemos> {
         let request = try! makeHTTPRequest(method: .get,
                                            path: URLs.Memo.getMemoList,
+                                           queryItems: recordListQueryItems,
                                            headers: APIConstants.testTokenHeader,
                                            body: nil)
         
@@ -31,5 +38,6 @@ extension DefaultMemoService: MemoService {
         return urlSession.rx.data(request: request)
             .map { try self.decode(data: $0, to: RecordMemos.self) }
             .asSingle()
+        // Single이기 때문에 에러를 처리하는 흐름이 없다. 
     }
 }
