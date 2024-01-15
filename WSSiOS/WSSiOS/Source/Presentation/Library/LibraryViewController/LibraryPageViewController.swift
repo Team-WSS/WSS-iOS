@@ -24,6 +24,7 @@ class LibraryPageViewController: UIViewController {
                                                                  navigationOrientation: .horizontal,
                                                                  options: nil)
     private var libraryPageBar = LibraryPageBar()
+    private var libraryDescriptionView = LibraryDescriptionView()
     private var libraryPages = [LibraryBaseViewController]()
     
     // MARK: - Life Cycle
@@ -91,7 +92,8 @@ class LibraryPageViewController: UIViewController {
     }
     
     private func setHierarchy() {
-        self.view.addSubview(libraryPageBar)
+        self.view.addSubviews(libraryPageBar,
+                             libraryDescriptionView)
         self.addChild(libraryPageViewController)
         self.view.addSubviews(libraryPageViewController.view)
         libraryPageViewController.didMove(toParent: self)
@@ -103,8 +105,14 @@ class LibraryPageViewController: UIViewController {
             $0.height.equalTo(107)
         }
         
-        libraryPageViewController.view.snp.makeConstraints {
+        libraryDescriptionView.snp.makeConstraints() {
             $0.top.equalTo(libraryPageBar.snp.bottom)
+            $0.width.equalToSuperview()
+            $0.height.equalTo(40)
+        }
+        
+        libraryPageViewController.view.snp.makeConstraints {
+            $0.top.equalTo(libraryDescriptionView.snp.bottom)
             $0.width.bottom.equalToSuperview()
         }
     }

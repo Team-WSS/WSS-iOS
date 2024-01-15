@@ -20,6 +20,7 @@
 		2C6030692B5414850031544C /* LibraryDummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6030682B5414850031544C /* LibraryDummy.swift */; };
 		2C60306B2B54448F0031544C /* LibraryPageBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C60306A2B54448F0031544C /* LibraryPageBar.swift */; };
 		2C60306D2B5445EC0031544C /* LibraryTabCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C60306C2B5445EC0031544C /* LibraryTabCollectionViewCell.swift */; };
+		2C60306F2B54EDDD0031544C /* LibraryDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C60306E2B54EDDC0031544C /* LibraryDescriptionView.swift */; };
 		2C79CB952B45A0A400734E1F /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2C79CB942B45A0A400734E1F /* Pretendard-SemiBold.otf */; };
 		2C79CB972B45A0AB00734E1F /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2C79CB962B45A0AB00734E1F /* Pretendard-Medium.otf */; };
 		2C79CB992B45A0B200734E1F /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2C79CB982B45A0B200734E1F /* Pretendard-Bold.otf */; };
@@ -156,6 +157,7 @@
 		2C6030682B5414850031544C /* LibraryDummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryDummy.swift; sourceTree = "<group>"; };
 		2C60306A2B54448F0031544C /* LibraryPageBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryPageBar.swift; sourceTree = "<group>"; };
 		2C60306C2B5445EC0031544C /* LibraryTabCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryTabCollectionViewCell.swift; sourceTree = "<group>"; };
+		2C60306E2B54EDDC0031544C /* LibraryDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryDescriptionView.swift; sourceTree = "<group>"; };
 		2C79CB942B45A0A400734E1F /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
 		2C79CB962B45A0AB00734E1F /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
 		2C79CB982B45A0B200734E1F /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
@@ -374,6 +376,7 @@
 		2CA2F65E2B5304400045B4C2 /* LibraryAssistantView */ = {
 			isa = PBXGroup;
 			children = (
+				2C60306E2B54EDDC0031544C /* LibraryDescriptionView.swift */,
 			);
 			path = LibraryAssistantView;
 			sourceTree = "<group>";
@@ -1054,6 +1057,7 @@
 				39CD5E0C2B4F3D0700668B9A /* RegisterNormalNovelSummaryView.swift in Sources */,
 				A1147A792B50552500141692 /* HomeSosoPickDummy.swift in Sources */,
 				A14EDBBF2B4F05F300906957 /* HomeSosoPickCollectionViewCell.swift in Sources */,
+				2C60306F2B54EDDD0031544C /* LibraryDescriptionView.swift in Sources */,
 				CD39F2C82B50124C00B73A5C /* NovelDetailMemoTableViewCell.swift in Sources */,
 				CD39F2D42B50D5C700B73A5C /* NovelDetailInfoReadDateView.swift in Sources */,
 				CD39F2B62B4FE0E200B73A5C /* NovelDetailView.swift in Sources */,
