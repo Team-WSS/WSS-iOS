@@ -78,9 +78,6 @@ final class RecordViewController: UIViewController {
                     let recordMemoList = memo.memos
                     
                     completion(recordMemoCount, recordMemoList)
-                    
-                    print(recordMemoCount)
-                    print(recordMemoList)
                 },
                 onError: { error in
                     print(error)
@@ -112,7 +109,13 @@ final class RecordViewController: UIViewController {
         .observe(on: MainScheduler.instance)
         .subscribe(onNext: { [weak self] count, list in
             self?.rootView.headerView.recordCountLabel.text = "\(count)개"
-            self?.recordMemoListRelay.accept(list)
+
+            if count == 0 {
+                self?.view = RecordEmptyView()
+            }
+            else {
+                self?.recordMemoListRelay.accept(list)
+            }
         })
         .disposed(by: disposeBag)
     }
