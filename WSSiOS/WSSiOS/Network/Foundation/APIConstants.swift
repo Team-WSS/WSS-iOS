@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct APIConstants{
+struct APIConstants {
     static let contentType = "Content-Type"
     static let applicationJSON = "application/json"
     static let multipartFormData = "multipart/form"
@@ -16,16 +16,16 @@ struct APIConstants{
     static let fcm = "FcmToken"
     
     static let boundary = "Boundary-\(UUID().uuidString)"
-    static let testToken = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDUxOTM1MTEsImV4cCI6MTcwNjA1NzUxMSwidXNlcklkIjoxfQ.VK42vScpGJ9rpie-jbE2xlGeEbrnP4u6eN8UyzoFbvQ"
+    static let testToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDUxOTM1MTEsImV4cCI6MTcwNjA1NzUxMSwidXNlcklkIjoxfQ.VK42vScpGJ9rpie-jbE2xlGeEbrnP4u6eN8UyzoFbvQ"
 }
 
-extension APIConstants{
+extension APIConstants {
     static var noTokenHeader: Dictionary<String, String> {
         [contentType: applicationJSON]
     }
     
     static var testTokenHeader: Dictionary<String, String> {
         [contentType: applicationJSON,
-                auth: testToken]
+                auth: "Bearer " + testToken]
     }
 }

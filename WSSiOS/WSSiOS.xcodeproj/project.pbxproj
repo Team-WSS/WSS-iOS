@@ -16,6 +16,12 @@
 		2C5D0F5D2B50100000C76D3C /* MyPageSettingCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5D0F5C2B50100000C76D3C /* MyPageSettingCollectionViewCell.swift */; };
 		2C5D0F5F2B50523B00C76D3C /* MyPageChangeNicknameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5D0F5E2B50523B00C76D3C /* MyPageChangeNicknameViewController.swift */; };
 		2C5D0F612B50525700C76D3C /* MyPageChangeNicknameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5D0F602B50525700C76D3C /* MyPageChangeNicknameView.swift */; };
+		2C6030642B5407E90031544C /* LibraryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6030632B5407E90031544C /* LibraryViewController.swift */; };
+		2C6030692B5414850031544C /* LibraryDummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6030682B5414850031544C /* LibraryDummy.swift */; };
+		2C60306B2B54448F0031544C /* LibraryPageBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C60306A2B54448F0031544C /* LibraryPageBar.swift */; };
+		2C60306D2B5445EC0031544C /* LibraryTabCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C60306C2B5445EC0031544C /* LibraryTabCollectionViewCell.swift */; };
+		2C60306F2B54EDDD0031544C /* LibraryDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C60306E2B54EDDC0031544C /* LibraryDescriptionView.swift */; };
+		2C6030712B54F23F0031544C /* LibraryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6030702B54F23F0031544C /* LibraryListView.swift */; };
 		2C79CB952B45A0A400734E1F /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2C79CB942B45A0A400734E1F /* Pretendard-SemiBold.otf */; };
 		2C79CB972B45A0AB00734E1F /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2C79CB962B45A0AB00734E1F /* Pretendard-Medium.otf */; };
 		2C79CB992B45A0B200734E1F /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2C79CB982B45A0B200734E1F /* Pretendard-Bold.otf */; };
@@ -24,6 +30,9 @@
 		2CA2F64E2B527B060045B4C2 /* MyPageCustomModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2F64D2B527B060045B4C2 /* MyPageCustomModalView.swift */; };
 		2CA2F6502B527B3A0045B4C2 /* MyPageCustomModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2F64F2B527B3A0045B4C2 /* MyPageCustomModalViewController.swift */; };
 		2CA2F6522B527B590045B4C2 /* MyPageModalAvatarFeatureLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2F6512B527B590045B4C2 /* MyPageModalAvatarFeatureLabelView.swift */; };
+		2CA2F65B2B53041E0045B4C2 /* LibraryBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2F65A2B53041E0045B4C2 /* LibraryBaseViewController.swift */; };
+		2CA2F6602B530B660045B4C2 /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2F65F2B530B650045B4C2 /* LibraryView.swift */; };
+		2CA2F6622B530BBF0045B4C2 /* LibraryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2F6612B530BBF0045B4C2 /* LibraryCollectionViewCell.swift */; };
 		2CCBF9EE2B4C1FC500D787C2 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBF9ED2B4C1FC500D787C2 /* MyPageViewController.swift */; };
 		2CCBF9F02B4C1FD800D787C2 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBF9EF2B4C1FD800D787C2 /* MyPageView.swift */; };
 		2CCBF9F22B4D347B00D787C2 /* WSSMainButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBF9F12B4D347B00D787C2 /* WSSMainButton.swift */; };
@@ -161,6 +170,9 @@
 		CD3E5A812B54253E00C0A659 /* MemoEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5A7F2B54253E00C0A659 /* MemoEditViewController.swift */; };
 		CD3E5A822B54253E00C0A659 /* MemoCreateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5A802B54253E00C0A659 /* MemoCreateViewController.swift */; };
 		CD3E5A852B54254F00C0A659 /* RxKeyboard in Frameworks */ = {isa = PBXBuildFile; productRef = CD3E5A842B54254F00C0A659 /* RxKeyboard */; };
+		CD3E5A962B55099E00C0A659 /* DeletePopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5A952B55099E00C0A659 /* DeletePopupView.swift */; };
+		CD3E5A982B5509A500C0A659 /* DeletePopupContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5A972B5509A500C0A659 /* DeletePopupContentView.swift */; };
+		CD3E5A9A2B5509AB00C0A659 /* DeletePopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5A992B5509AB00C0A659 /* DeletePopupViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -173,6 +185,12 @@
 		2C5D0F5C2B50100000C76D3C /* MyPageSettingCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSettingCollectionViewCell.swift; sourceTree = "<group>"; };
 		2C5D0F5E2B50523B00C76D3C /* MyPageChangeNicknameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageChangeNicknameViewController.swift; sourceTree = "<group>"; };
 		2C5D0F602B50525700C76D3C /* MyPageChangeNicknameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageChangeNicknameView.swift; sourceTree = "<group>"; };
+		2C6030632B5407E90031544C /* LibraryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViewController.swift; sourceTree = "<group>"; };
+		2C6030682B5414850031544C /* LibraryDummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryDummy.swift; sourceTree = "<group>"; };
+		2C60306A2B54448F0031544C /* LibraryPageBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryPageBar.swift; sourceTree = "<group>"; };
+		2C60306C2B5445EC0031544C /* LibraryTabCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryTabCollectionViewCell.swift; sourceTree = "<group>"; };
+		2C60306E2B54EDDC0031544C /* LibraryDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryDescriptionView.swift; sourceTree = "<group>"; };
+		2C6030702B54F23F0031544C /* LibraryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryListView.swift; sourceTree = "<group>"; };
 		2C79CB942B45A0A400734E1F /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
 		2C79CB962B45A0AB00734E1F /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
 		2C79CB982B45A0B200734E1F /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
@@ -181,6 +199,9 @@
 		2CA2F64D2B527B060045B4C2 /* MyPageCustomModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageCustomModalView.swift; sourceTree = "<group>"; };
 		2CA2F64F2B527B3A0045B4C2 /* MyPageCustomModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageCustomModalViewController.swift; sourceTree = "<group>"; };
 		2CA2F6512B527B590045B4C2 /* MyPageModalAvatarFeatureLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageModalAvatarFeatureLabelView.swift; sourceTree = "<group>"; };
+		2CA2F65A2B53041E0045B4C2 /* LibraryBaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryBaseViewController.swift; sourceTree = "<group>"; };
+		2CA2F65F2B530B650045B4C2 /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
+		2CA2F6612B530BBF0045B4C2 /* LibraryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryCollectionViewCell.swift; sourceTree = "<group>"; };
 		2CCBF9ED2B4C1FC500D787C2 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		2CCBF9EF2B4C1FD800D787C2 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
 		2CCBF9F12B4D347B00D787C2 /* WSSMainButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSMainButton.swift; sourceTree = "<group>"; };
@@ -300,6 +321,9 @@
 		CD3E5A772B5424E600C0A659 /* MemoEditContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemoEditContentView.swift; sourceTree = "<group>"; };
 		CD3E5A7F2B54253E00C0A659 /* MemoEditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemoEditViewController.swift; sourceTree = "<group>"; };
 		CD3E5A802B54253E00C0A659 /* MemoCreateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemoCreateViewController.swift; sourceTree = "<group>"; };
+		CD3E5A952B55099E00C0A659 /* DeletePopupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeletePopupView.swift; sourceTree = "<group>"; };
+		CD3E5A972B5509A500C0A659 /* DeletePopupContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeletePopupContentView.swift; sourceTree = "<group>"; };
+		CD3E5A992B5509AB00C0A659 /* DeletePopupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeletePopupViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -366,6 +390,54 @@
 				2C5D0F5C2B50100000C76D3C /* MyPageSettingCollectionViewCell.swift */,
 			);
 			path = MyPageCell;
+			sourceTree = "<group>";
+		};
+		2CA2F6562B5303A60045B4C2 /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				2CA2F6582B5303F40045B4C2 /* LibraryViewController */,
+				2CA2F6572B5303B10045B4C2 /* LibraryView */,
+			);
+			path = Library;
+			sourceTree = "<group>";
+		};
+		2CA2F6572B5303B10045B4C2 /* LibraryView */ = {
+			isa = PBXGroup;
+			children = (
+				2CA2F65F2B530B650045B4C2 /* LibraryView.swift */,
+				2C60306A2B54448F0031544C /* LibraryPageBar.swift */,
+				2C6030682B5414850031544C /* LibraryDummy.swift */,
+				2CA2F65E2B5304400045B4C2 /* LibraryAssistantView */,
+				2CA2F6592B5304000045B4C2 /* LibraryCell */,
+			);
+			path = LibraryView;
+			sourceTree = "<group>";
+		};
+		2CA2F6582B5303F40045B4C2 /* LibraryViewController */ = {
+			isa = PBXGroup;
+			children = (
+				2C6030632B5407E90031544C /* LibraryViewController.swift */,
+				2CA2F65A2B53041E0045B4C2 /* LibraryBaseViewController.swift */,
+			);
+			path = LibraryViewController;
+			sourceTree = "<group>";
+		};
+		2CA2F6592B5304000045B4C2 /* LibraryCell */ = {
+			isa = PBXGroup;
+			children = (
+				2CA2F6612B530BBF0045B4C2 /* LibraryCollectionViewCell.swift */,
+				2C60306C2B5445EC0031544C /* LibraryTabCollectionViewCell.swift */,
+			);
+			path = LibraryCell;
+			sourceTree = "<group>";
+		};
+		2CA2F65E2B5304400045B4C2 /* LibraryAssistantView */ = {
+			isa = PBXGroup;
+			children = (
+				2C60306E2B54EDDC0031544C /* LibraryDescriptionView.swift */,
+				2C6030702B54F23F0031544C /* LibraryListView.swift */,
+			);
+			path = LibraryAssistantView;
 			sourceTree = "<group>";
 		};
 		2CCBF9E92B4C1E2200D787C2 /* MyPage */ = {
@@ -511,6 +583,8 @@
 		2CD229502B42E9C8005400BE /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				2CA2F6562B5303A60045B4C2 /* Library */,
+				CD3E5A912B55097600C0A659 /* DeletePopup */,
 				CD3E5A6D2B5424A700C0A659 /* Memo */,
 				A1147A7B2B50634100141692 /* Record */,
 				A1708F102B4D8DCD00E35E50 /* Home */,
@@ -1004,6 +1078,40 @@
 			path = MemoAssistantView;
 			sourceTree = "<group>";
 		};
+		CD3E5A912B55097600C0A659 /* DeletePopup */ = {
+			isa = PBXGroup;
+			children = (
+				CD3E5A932B55098400C0A659 /* DeletePopupViewController */,
+				CD3E5A922B55097D00C0A659 /* DeletePopupView */,
+				CD3E5A952B55099E00C0A659 /* DeletePopupView.swift */,
+			);
+			path = DeletePopup;
+			sourceTree = "<group>";
+		};
+		CD3E5A922B55097D00C0A659 /* DeletePopupView */ = {
+			isa = PBXGroup;
+			children = (
+				CD3E5A942B55098D00C0A659 /* DeletePopupAssistantView */,
+			);
+			path = DeletePopupView;
+			sourceTree = "<group>";
+		};
+		CD3E5A932B55098400C0A659 /* DeletePopupViewController */ = {
+			isa = PBXGroup;
+			children = (
+				CD3E5A992B5509AB00C0A659 /* DeletePopupViewController.swift */,
+			);
+			path = DeletePopupViewController;
+			sourceTree = "<group>";
+		};
+		CD3E5A942B55098D00C0A659 /* DeletePopupAssistantView */ = {
+			isa = PBXGroup;
+			children = (
+				CD3E5A972B5509A500C0A659 /* DeletePopupContentView.swift */,
+			);
+			path = DeletePopupAssistantView;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1109,6 +1217,7 @@
 				CD39F2CC2B503B8E00B73A5C /* NovelDetailInfoRatingView.swift in Sources */,
 				CD3E5A732B5424D600C0A659 /* MemoEditView.swift in Sources */,
 				A1EF35492B52F7B000A94C53 /* AvatarRepository.swift in Sources */,
+				2C6030642B5407E90031544C /* LibraryViewController.swift in Sources */,
 				A1EF355E2B52FAE600A94C53 /* UserNovelService.swift in Sources */,
 				A1654F142B540513004F78E8 /* NetworkingServiceError.swift in Sources */,
 				2CA2F64E2B527B060045B4C2 /* MyPageCustomModalView.swift in Sources */,
@@ -1127,6 +1236,7 @@
 				A1147A792B50552500141692 /* HomeSosoPickDummy.swift in Sources */,
 				A1654F162B540513004F78E8 /* NetworkLogger.swift in Sources */,
 				A14EDBBF2B4F05F300906957 /* HomeSosoPickCollectionViewCell.swift in Sources */,
+				2C60306F2B54EDDD0031544C /* LibraryDescriptionView.swift in Sources */,
 				CD39F2C82B50124C00B73A5C /* NovelDetailMemoTableViewCell.swift in Sources */,
 				CD39F2D42B50D5C700B73A5C /* NovelDetailInfoReadDateView.swift in Sources */,
 				CD39F2B62B4FE0E200B73A5C /* NovelDetailView.swift in Sources */,
@@ -1141,6 +1251,7 @@
 				39CC167E2B512369003F56AE /* RegisterSuccessViewController.swift in Sources */,
 				392A29312B4F145D0065EB97 /* RegisterNormalDatePickerButton.swift in Sources */,
 				39CD5E082B4F2BBE00668B9A /* RegisterNormalKeywordSelectionView.swift in Sources */,
+				2CA2F6602B530B660045B4C2 /* LibraryView.swift in Sources */,
 				2CD2291E2B42E685005400BE /* SceneDelegate.swift in Sources */,
 				39CC168E2B527029003F56AE /* RegisterNormalStarRatingView.swift in Sources */,
 				39CD5E102B4FEC0F00668B9A /* RegisterNormalCustomToggleButton.swift in Sources */,
@@ -1166,8 +1277,10 @@
 				392A29232B4E89FD0065EB97 /* RegisterNormalNovelInfoWithRatingView.swift in Sources */,
 				2C79CB9D2B45A1DD00734E1F /* UIFont+.swift in Sources */,
 				A147CBC62B4D6E190040AE39 /* UIStackView+.swift in Sources */,
+				CD3E5A982B5509A500C0A659 /* DeletePopupContentView.swift in Sources */,
 				A18432F02B52622E00910940 /* RecordDummy.swift in Sources */,
 				392A29272B4E96F30065EB97 /* UILabel+.swift in Sources */,
+				2C60306B2B54448F0031544C /* LibraryPageBar.swift in Sources */,
 				A122C9F62B5314FE00DFCFE4 /* (null) in Sources */,
 				39CC16882B51D94F003F56AE /* RegisterSuccessViewModel.swift in Sources */,
 				2CA2F6522B527B590045B4C2 /* MyPageModalAvatarFeatureLabelView.swift in Sources */,
@@ -1176,6 +1289,7 @@
 				2C2491842B4ADC230096F255 /* WSSTabBarItem.swift in Sources */,
 				39CC168C2B526991003F56AE /* WSSSectionTitleView.swift in Sources */,
 				A1147A8A2B506BA500141692 /* RecordHeaderAlignmentView.swift in Sources */,
+				CD3E5A962B55099E00C0A659 /* DeletePopupView.swift in Sources */,
 				A107A49A2B4DB66D00668C3E /* HomeSearchButtonView.swift in Sources */,
 				A122C9E32B530A8800DFCFE4 /* (null) in Sources */,
 				CD39F2C52B4FFE7400B73A5C /* NovelDetailCreateMemoView.swift in Sources */,
@@ -1188,16 +1302,19 @@
 				2C01F9852B482EB700D90FFE /* UserRepository.swift in Sources */,
 				A1147A862B5063CA00141692 /* RecordHeaderView.swift in Sources */,
 				392A29252B4E8A910065EB97 /* RegisterNormalNovelInfoView.swift in Sources */,
+				2C6030692B5414850031544C /* LibraryDummy.swift in Sources */,
 				2CCBF9F22B4D347B00D787C2 /* WSSMainButton.swift in Sources */,
 				A1147A802B50638200141692 /* RecordViewController.swift in Sources */,
 				2CCBFA042B4DD73D00D787C2 /* MyPageTallyView.swift in Sources */,
 				2C2491812B4ADC000096F255 /* StringLiterals.swift in Sources */,
+				2C6030712B54F23F0031544C /* LibraryListView.swift in Sources */,
 				A1EF35622B52FAF700A94C53 /* AvatarService.swift in Sources */,
 				39CD5E0E2B4FCEBC00668B9A /* RegisterNormalPlatformSelectButton.swift in Sources */,
 				39CD5E062B4F20A600668B9A /* RegisterNormalDividerView.swift in Sources */,
 				A122C9DD2B5309D100DFCFE4 /* (null) in Sources */,
 				2C2491862B4ADC420096F255 /* WSSTabBarController.swift in Sources */,
 				392A292F2B4F07FF0065EB97 /* RegisterNormalReadDateView.swift in Sources */,
+				CD3E5A9A2B5509AB00C0A659 /* DeletePopupViewController.swift in Sources */,
 				2CD229572B42EA75005400BE /* UIColor+.swift in Sources */,
 				A18432EC2B511E7400910940 /* RecordDateView.swift in Sources */,
 				A1DBB2FA2B4AA981000EE869 /* SearchCollectionViewCell.swift in Sources */,
@@ -1209,6 +1326,7 @@
 				A1EF35472B52F77800A94C53 /* MemoRepository.swift in Sources */,
 				CD3E5A7A2B5424E600C0A659 /* MemoEditContentView.swift in Sources */,
 				A1708F142B4D8DF400E35E50 /* HomeViewController.swift in Sources */,
+				2C60306D2B5445EC0031544C /* LibraryTabCollectionViewCell.swift in Sources */,
 				A1DBB2FA2B4AA981000EE869 /* SearchCollectionViewCell.swift in Sources */,
 				A14EDBC12B4F06E600906957 /* HomeSosoPickView.swift in Sources */,
 				CD39F2D62B50D9A900B73A5C /* NovelDetailInfoKeywordView.swift in Sources */,
@@ -1229,8 +1347,11 @@
 				A1DBB2FE2B4AEB22000EE869 /* UIView+.swift in Sources */,
 				A1147A822B5063B300141692 /* RecordEmptyView.swift in Sources */,
 				A1A1F9CF2B48738200705F44 /* SearchHeaderView.swift in Sources */,
+				2CA2F65B2B53041E0045B4C2 /* LibraryBaseViewController.swift in Sources */,
 				A1DBB3002B4AFCC0000EE869 /* SearchDummy.swift in Sources */,
 				2CCBFA022B4DC10500D787C2 /* MyPageProfileView.swift in Sources */,
+				392A292D2B4ECF320065EB97 /* RegisterNormalReadStatusView.swift in Sources */,
+				2CA2F6622B530BBF0045B4C2 /* LibraryCollectionViewCell.swift in Sources */,
 				A122C9D92B53098F00DFCFE4 /* (null) in Sources */,
 				A1A1F9D22B4873A100705F44 /* SearchResultView.swift in Sources */,
 				2CCBFA002B4DBFD200D787C2 /* MyPageViewModel.swift in Sources */,

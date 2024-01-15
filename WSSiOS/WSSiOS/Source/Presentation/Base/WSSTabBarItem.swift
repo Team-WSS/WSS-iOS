@@ -61,7 +61,7 @@ enum WSSTabBarItem: CaseIterable {
         case .home:
             return HomeViewController()
         case .library:
-            return UIViewController()
+            return LibraryViewController()
         case .record:
             return RecordViewController(recordViewModel: RecordViewModel(memoRepository: DefaultMemoRepository.shared))
         case .myPage:
