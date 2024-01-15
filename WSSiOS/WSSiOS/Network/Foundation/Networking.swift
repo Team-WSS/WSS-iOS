@@ -27,7 +27,7 @@ extension Networking {
     
     func makeHTTPRequest(
         method: HTTPMethod,
-        baseURL: String = Config.Keys.Plist.baseURL,
+        baseURL: String = Bundle.main.object(forInfoDictionaryKey: Config.Keys.Plist.baseURL) as? String ?? "",
         path: String,
         headers: [String: String]?,
         body: Data?) throws -> URLRequest
@@ -45,6 +45,7 @@ extension Networking {
             request.httpBody = body
         }
         
+        print(baseURL)
         return request
     }
     

@@ -12,3 +12,18 @@ import RxSwift
 protocol MemoRepository {
     func getRecordMemoList() -> Observable<RecordMemos>
 }
+
+struct DefaultMemoRepository: MemoRepository {
+    
+    private var memoService: MemoService
+    static let shared = DefaultMemoRepository(memoService: DefaultMemoService())
+    
+    init(memoService: MemoService) {
+        self.memoService = memoService
+    }
+    
+    func getRecordMemoList() -> Observable<RecordMemos> {
+        return memoService.getRecordMemosData()
+            .asObservable()
+    }
+}

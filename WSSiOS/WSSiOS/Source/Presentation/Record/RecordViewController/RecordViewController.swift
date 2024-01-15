@@ -7,9 +7,27 @@
 
 import UIKit
 
+import RxSwift
+
 final class RecordViewController: UIViewController {
     
-    private let rootView = RecordEmptyView()
+    //MARK: - Properties
+    
+    private let recordViewModel: RecordViewModel
+    private let disposeBag = DisposeBag()
+    
+    //MARK: - UI Components
+    
+    private let rootView = RecordResultView()
+    
+    init(recordViewModel: RecordViewModel) {
+        self.recordViewModel = recordViewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func loadView() {
         self.view = rootView
@@ -20,6 +38,8 @@ final class RecordViewController: UIViewController {
         
         setUI()
         setNavigationBar()
+        
+        bindRecordViewModel()
     }
     
     private func setUI() {
@@ -39,5 +59,9 @@ final class RecordViewController: UIViewController {
             ]
             navigationBar.titleTextAttributes = titleTextAttributes
         }
+    }
+    
+    private func bindRecordViewModel() {
+        self.recordViewModel.transform(disposeBag: disposeBag)
     }
 }

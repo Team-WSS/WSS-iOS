@@ -23,7 +23,7 @@ extension DefaultMemoService: MemoService {
     func getRecordMemosData() -> Single<RecordMemos> {
         let request = try! makeHTTPRequest(method: .get,
                                            path: URLs.Memo.getMemoList,
-                                           headers: APIConstants.noTokenHeader,
+                                           headers: APIConstants.testTokenHeader,
                                            body: nil)
         
         NetworkLogger.log(request: request)
@@ -32,5 +32,4 @@ extension DefaultMemoService: MemoService {
             .map { try self.decode(data: $0, to: RecordMemos.self) }
             .asSingle()
     }
-    
 }

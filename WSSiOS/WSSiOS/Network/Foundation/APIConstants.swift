@@ -16,10 +16,16 @@ struct APIConstants{
     static let fcm = "FcmToken"
     
     static let boundary = "Boundary-\(UUID().uuidString)"
+    static let testToken = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDUxOTM1MTEsImV4cCI6MTcwNjA1NzUxMSwidXNlcklkIjoxfQ.VK42vScpGJ9rpie-jbE2xlGeEbrnP4u6eN8UyzoFbvQ"
 }
 
 extension APIConstants{
-    static var noTokenHeader: Dictionary<String,String> {
+    static var noTokenHeader: Dictionary<String, String> {
         [contentType: applicationJSON]
+    }
+    
+    static var testTokenHeader: Dictionary<String, String> {
+        [contentType: applicationJSON,
+                auth: testToken]
     }
 }
