@@ -57,6 +57,7 @@ final class RegisterNormalViewController: UIViewController {
     // 별점의 현재 값을 저장하고, 변경사항을 관찰하기 위한 BehaviorRelay
     private var starRatingRelay = BehaviorRelay<Float>(value: 0.0)
     private var buttonStatusSubject = BehaviorRelay<RegisterNormalReadStatus>(value: .FINISH)
+    private var isOn = BehaviorRelay<Bool>(value: true)
     
     private let rootView = RegisterNormalView()
     
@@ -150,5 +151,22 @@ final class RegisterNormalViewController: UIViewController {
                 })
                 .disposed(by: disposeBag)
         }
+        rootView.readDateView.do { view in
+            view.toggleButton.rx.tap
+                .subscribe(onNext: {
+                    let next = !self.isOn.value
+                    self.isOn.accept(next)
+                })
+                .disposed(by: disposeBag)
+            
+            isOn
+                .subscribe(onNext: { isOn in
+                    view.toggleButton.changeState(isOn)
+                    view.datePickerButton.isHidden = !isOn
+                })
+                .disposed(by: disposeBag)
+            
+        }
+        
     }
 }
