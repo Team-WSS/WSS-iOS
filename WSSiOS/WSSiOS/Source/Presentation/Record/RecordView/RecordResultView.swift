@@ -31,8 +31,6 @@ final class RecordResultView: UIView {
         setUI()
         setHierachy()
         setLayout()
-        
-        registerCell()
     }
     
     required init?(coder: NSCoder) {
@@ -64,10 +62,5 @@ final class RecordResultView: UIView {
             $0.top.equalTo(headerView.snp.bottom)
             $0.leading.trailing.bottom.equalToSuperview()
         }
-    }
-    
-    private func registerCell() {
-        recordTableView.register(RecordTableViewCell.self,
-                                 forCellReuseIdentifier: RecordTableViewCell.identifier)
     }
 }

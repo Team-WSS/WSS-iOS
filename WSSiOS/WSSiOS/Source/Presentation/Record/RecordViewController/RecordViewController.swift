@@ -46,6 +46,7 @@ final class RecordViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        registerCell()
         bindDataToRecordTableView()
         setNavigationBar()
     }
@@ -63,11 +64,11 @@ final class RecordViewController: UIViewController {
             navigationBar.titleTextAttributes = titleTextAttributes
         }
     }
-//    
-//    private func registerCell() {
-//        rootView.recordTableView.register(RecordTableViewCell.self, forCellReuseIdentifier: RecordTableViewCell.identifier)
-//    }
-//    
+    
+    private func registerCell() {
+        rootView.recordTableView.register(RecordTableViewCell.self, forCellReuseIdentifier: RecordTableViewCell.identifier)
+    }
+    
     func transform(disposeBag: DisposeBag, completion: @escaping (Int, [RecordMemo]) -> Void) {
         self.memoRepository.getRecordMemoList()
             .subscribe (
@@ -102,8 +103,8 @@ final class RecordViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
+    // UI 로직 구현
     func updateUI(recordMemoCount: Int, recordMemoList: [RecordMemo]) {
-        // UI 로직 구현
         Observable.combineLatest(
             Observable.just(recordMemoCount),
             Observable.just(recordMemoList)
