@@ -48,10 +48,6 @@ enum PopupStatus {
 
 final class DeletePopupContentView: UIView {
     
-    //MARK: - set Properties
-    
-    public var popupStatus: PopupStatus?
-    
     // MARK: - UI Components
     
     private let warningImageView = UIImageView()
@@ -62,14 +58,14 @@ final class DeletePopupContentView: UIView {
 
     // MARK: - Life Cycle
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(_ popupStatus: PopupStatus) {
+        super.init(frame: .zero)
         
         setUI()
         setHierachy()
         setLayout()
         
-        bindData(.novelDelete)
+        bindData(popupStatus)
     }
     
     required init?(coder: NSCoder) {

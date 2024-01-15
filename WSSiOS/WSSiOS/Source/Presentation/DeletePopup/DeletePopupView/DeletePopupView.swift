@@ -14,7 +14,7 @@ final class DeletePopupView: UIView {
     
     // MARK: - UI Components
     
-    let deletePopupContentView = DeletePopupContentView()
+    let deletePopupContentView = DeletePopupContentView(.novelDelete)
 
     // MARK: - Life Cycle
     
@@ -46,7 +46,7 @@ final class DeletePopupView: UIView {
     
     private func setLayout() {
         deletePopupContentView.snp.makeConstraints {
-            $0.center.equalToSuperview()
+            $0.centerY.equalToSuperview()
             $0.leading.trailing.equalToSuperview().inset(41.5)
         }
     }
