@@ -61,7 +61,7 @@ enum WSSTabBarItem: CaseIterable {
         case .home:
             return HomeViewController()
         case .library:
-            return LibraryPageViewController()
+            return LibraryViewController()
         case .record:
             return RecordViewController()
         case .myPage:

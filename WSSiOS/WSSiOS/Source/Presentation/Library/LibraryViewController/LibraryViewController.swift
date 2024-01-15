@@ -12,7 +12,7 @@ import RxCocoa
 import SnapKit
 import Then
 
-class LibraryPageViewController: UIViewController {
+class LibraryViewController: UIViewController {
     
     //MARK: - Properties
     
@@ -147,12 +147,12 @@ class LibraryPageViewController: UIViewController {
         
         libraryDescriptionView.libraryNovelListButton.rx.tap
             .bind(with: self, onNext: { owner, _ in 
-                    owner.libraryListView.isHidden = false
+                owner.libraryListView.isHidden.toggle()
             })
     }
 }
 
-extension LibraryPageViewController : UIPageViewControllerDelegate {
+extension LibraryViewController : UIPageViewControllerDelegate {
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) { 
         if completed, let currentViewController = pageViewController.viewControllers?.first, let index = libraryPages.firstIndex(of: currentViewController as! LibraryBaseViewController) {
             libraryPageBar.libraryTabCollectionView.selectItem(at: IndexPath(item: index, section: 0), animated: true, scrollPosition: .centeredHorizontally)
@@ -160,7 +160,7 @@ extension LibraryPageViewController : UIPageViewControllerDelegate {
     }
 }
 
-extension LibraryPageViewController: UIPageViewControllerDataSource {
+extension LibraryViewController: UIPageViewControllerDataSource {
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         if let currentIndex = libraryPages.firstIndex(of: viewController as! LibraryBaseViewController), currentIndex > 0 {
             return libraryPages[currentIndex - 1]
