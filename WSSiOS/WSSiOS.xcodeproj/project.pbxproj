@@ -172,6 +172,8 @@
 		CD3E5A962B55099E00C0A659 /* DeletePopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5A952B55099E00C0A659 /* DeletePopupView.swift */; };
 		CD3E5A982B5509A500C0A659 /* DeletePopupContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5A972B5509A500C0A659 /* DeletePopupContentView.swift */; };
 		CD3E5A9A2B5509AB00C0A659 /* DeletePopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5A992B5509AB00C0A659 /* DeletePopupViewController.swift */; };
+		CD3E5AA22B55190400C0A659 /* UserNovelResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5AA12B55190400C0A659 /* UserNovelResult.swift */; };
+		CD3E5AAB2B56173C00C0A659 /* NovelDetailMemoSettingButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5AAA2B56173C00C0A659 /* NovelDetailMemoSettingButtonView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -322,6 +324,8 @@
 		CD3E5A952B55099E00C0A659 /* DeletePopupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeletePopupView.swift; sourceTree = "<group>"; };
 		CD3E5A972B5509A500C0A659 /* DeletePopupContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeletePopupContentView.swift; sourceTree = "<group>"; };
 		CD3E5A992B5509AB00C0A659 /* DeletePopupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeletePopupViewController.swift; sourceTree = "<group>"; };
+		CD3E5AA12B55190400C0A659 /* UserNovelResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNovelResult.swift; sourceTree = "<group>"; };
+		CD3E5AAA2B56173C00C0A659 /* NovelDetailMemoSettingButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailMemoSettingButtonView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -954,6 +958,7 @@
 			isa = PBXGroup;
 			children = (
 				A1EF35682B52FD9B00A94C53 /* AvatarDTO.swift */,
+				CD3E5AA12B55190400C0A659 /* UserNovelResult.swift */,
 			);
 			path = DTO;
 			sourceTree = "<group>";
@@ -975,6 +980,7 @@
 		CD39F2B22B4FE09300B73A5C /* NovelDetail */ = {
 			isa = PBXGroup;
 			children = (
+				CD3E5AA32B551A7800C0A659 /* NovelDetailViewModel */,
 				CD39F2B42B4FE0CB00B73A5C /* NovelDetailViewController */,
 				CD39F2B32B4FE0C100B73A5C /* NovelDetailView */,
 			);
@@ -1015,6 +1021,7 @@
 				CD39F2D72B50DA6300B73A5C /* NovelDetailInfoDescriptionView.swift */,
 				CD39F2D92B50DDBF00B73A5C /* NovelDetailInfoGenreView.swift */,
 				CD39F2E32B50F23B00B73A5C /* NovelDetailInfoPlatformView.swift */,
+				CD3E5AAA2B56173C00C0A659 /* NovelDetailMemoSettingButtonView.swift */,
 			);
 			path = NovelDetailAssistantView;
 			sourceTree = "<group>";
@@ -1099,6 +1106,13 @@
 				CD3E5A972B5509A500C0A659 /* DeletePopupContentView.swift */,
 			);
 			path = DeletePopupAssistantView;
+			sourceTree = "<group>";
+		};
+		CD3E5AA32B551A7800C0A659 /* NovelDetailViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = NovelDetailViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1312,6 +1326,7 @@
 				3999BFEB2B4E6C4400984832 /* RegisterNormalViewModel.swift in Sources */,
 				A1654F0F2B540504004F78E8 /* APIConstants.swift in Sources */,
 				A107A4A02B4DD7E200668C3E /* HomeSosoPickTitleView.swift in Sources */,
+				CD3E5AA22B55190400C0A659 /* UserNovelResult.swift in Sources */,
 				A1EF35472B52F77800A94C53 /* MemoRepository.swift in Sources */,
 				CD3E5A7A2B5424E600C0A659 /* MemoEditContentView.swift in Sources */,
 				A1708F142B4D8DF400E35E50 /* HomeViewController.swift in Sources */,
@@ -1347,6 +1362,7 @@
 				A1654F1A2B54052E004F78E8 /* Config.swift in Sources */,
 				CD39F2D82B50DA6300B73A5C /* NovelDetailInfoDescriptionView.swift in Sources */,
 				A1654F152B540513004F78E8 /* Networking.swift in Sources */,
+				CD3E5AAB2B56173C00C0A659 /* NovelDetailMemoSettingButtonView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

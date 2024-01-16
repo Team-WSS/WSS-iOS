@@ -14,12 +14,13 @@ final class DeletePopupView: UIView {
     
     // MARK: - UI Components
     
-    let deletePopupContentView = DeletePopupContentView(.novelDelete)
+    var deletePopupContentView: DeletePopupContentView
 
     // MARK: - Life Cycle
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(_ popupStatus: PopupStatus) {
+        deletePopupContentView = DeletePopupContentView(popupStatus)
+        super.init(frame: .zero)
         
         setUI()
         setHierachy()

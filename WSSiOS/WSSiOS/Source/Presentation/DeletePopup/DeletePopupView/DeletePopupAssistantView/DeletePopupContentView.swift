@@ -53,8 +53,8 @@ final class DeletePopupContentView: UIView {
     private let warningImageView = UIImageView()
     private let titleLabel = UILabel()
     private let descriptionLabel = UILabel()
-    private let deleteButton = UIButton()
-    private let cancelButton = UIButton()
+    public let deleteButton = UIButton()
+    public let cancelButton = UIButton()
 
     // MARK: - Life Cycle
     
