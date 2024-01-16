@@ -16,9 +16,9 @@ final class RegisterNormalDatePickerButton: UIButton {
     // MARK: - UI Components
     
     private let dateLabelStackView = UIStackView()
-    private let startDateLabel = UILabel()
-    private let middleLabel = UILabel()
-    private let endDateLabel = UILabel()
+    let startDateLabel = UILabel()
+    let middleLabel = UILabel()
+    let endDateLabel = UILabel()
     private let calendarImageView = UIImageView()
     
     // MARK: - Life Cycle
@@ -35,12 +35,6 @@ final class RegisterNormalDatePickerButton: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Override Method
-    
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        // touchEvent
-    }
-    
     // MARK: - Custom Method
     
     private func setUI() {
@@ -53,6 +47,7 @@ final class RegisterNormalDatePickerButton: UIButton {
             $0.axis = .horizontal
             $0.spacing = 20
             $0.alignment = .center
+            $0.isUserInteractionEnabled = false
             
             startDateLabel.do {
                 $0.text = "2023-12-26"
@@ -107,6 +102,25 @@ final class RegisterNormalDatePickerButton: UIButton {
                 .applyAttribute()
             $0.font = .Body2
             $0.textColor = .Gray300
+        }
+    }
+    
+    func bindData(_ status: RegisterNormalReadStatus) {
+        switch status {
+        case .FINISH:
+            startDateLabel.isHidden = false
+            middleLabel.isHidden = false
+            endDateLabel.isHidden = false
+        case .READING:
+            startDateLabel.isHidden = false
+            middleLabel.isHidden = true
+            endDateLabel.isHidden = true
+        case .DROP:
+            startDateLabel.isHidden = true
+            middleLabel.isHidden = true
+            endDateLabel.isHidden = false
+        case .WISH:
+            break
         }
     }
 }

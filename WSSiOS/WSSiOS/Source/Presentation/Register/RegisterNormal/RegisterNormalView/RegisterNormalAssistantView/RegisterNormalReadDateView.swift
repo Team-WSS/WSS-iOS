@@ -17,8 +17,8 @@ final class RegisterNormalReadDateView: UIView {
     private let totalStackView = UIStackView()
     private let upperStackView = UIStackView()
     private let titleView = WSSSectionTitleView()
-    private let toggleButton = RegisterNormalCustomToggleButton()
-    private let datePickerView = RegisterNormalDatePickerButton()
+    let toggleButton = RegisterNormalCustomToggleButton()
+    let datePickerButton = RegisterNormalDatePickerButton()
     private let spacer = UIView()
     
     // MARK: - Life Cycle
@@ -58,7 +58,7 @@ final class RegisterNormalReadDateView: UIView {
     private func setHieararchy() {
         self.addSubview(totalStackView)
         totalStackView.addArrangedSubviews(upperStackView,
-                                           datePickerView)
+                                           datePickerButton)
         upperStackView.addArrangedSubviews(titleView,
                                            toggleButton,
                                            spacer)
@@ -69,5 +69,10 @@ final class RegisterNormalReadDateView: UIView {
             $0.verticalEdges.equalToSuperview()
             $0.horizontalEdges.equalToSuperview().inset(20)
         }
+    }
+    
+    func bindData(_ status: RegisterNormalReadStatus) {
+        titleView.setText(status.dateText)
+        datePickerButton.bindData(status)
     }
 }

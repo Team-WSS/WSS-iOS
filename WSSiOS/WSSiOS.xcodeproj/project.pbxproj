@@ -64,6 +64,7 @@
 		3999BFEB2B4E6C4400984832 /* RegisterNormalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3999BFEA2B4E6C4400984832 /* RegisterNormalViewModel.swift */; };
 		3999BFEE2B4E6CA000984832 /* UIImageViewAlignedSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 3999BFED2B4E6CA000984832 /* UIImageViewAlignedSwift */; };
 		3999BFF02B4E6FA800984832 /* RegisterNormalBannerImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3999BFEF2B4E6FA800984832 /* RegisterNormalBannerImageView.swift */; };
+		39ABD5A02B54D0A900DEA94E /* RegisterNormalCustomDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39ABD59F2B54D0A900DEA94E /* RegisterNormalCustomDatePicker.swift */; };
 		39AF30D12B50182F00FDC1F3 /* RegisterNormalReadStatusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39AF30D02B50182F00FDC1F3 /* RegisterNormalReadStatusButton.swift */; };
 		39CC167E2B512369003F56AE /* RegisterSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CC167D2B512369003F56AE /* RegisterSuccessViewController.swift */; };
 		39CC16812B51246E003F56AE /* RegisterNormalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CC16802B51246E003F56AE /* RegisterNormalView.swift */; };
@@ -224,6 +225,7 @@
 		3999BFE82B4E6C3500984832 /* RegisterNormalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalViewController.swift; sourceTree = "<group>"; };
 		3999BFEA2B4E6C4400984832 /* RegisterNormalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalViewModel.swift; sourceTree = "<group>"; };
 		3999BFEF2B4E6FA800984832 /* RegisterNormalBannerImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalBannerImageView.swift; sourceTree = "<group>"; };
+		39ABD59F2B54D0A900DEA94E /* RegisterNormalCustomDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalCustomDatePicker.swift; sourceTree = "<group>"; };
 		39AF30D02B50182F00FDC1F3 /* RegisterNormalReadStatusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalReadStatusButton.swift; sourceTree = "<group>"; };
 		39CC167D2B512369003F56AE /* RegisterSuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterSuccessViewController.swift; sourceTree = "<group>"; };
 		39CC16802B51246E003F56AE /* RegisterNormalView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterNormalView.swift; sourceTree = "<group>"; };
@@ -651,6 +653,7 @@
 				39CD5E0B2B4F3D0700668B9A /* RegisterNormalNovelSummaryView.swift */,
 				39CD5E0D2B4FCEBC00668B9A /* RegisterNormalPlatformSelectButton.swift */,
 				39CD5E0F2B4FEC0F00668B9A /* RegisterNormalCustomToggleButton.swift */,
+				39ABD59F2B54D0A900DEA94E /* RegisterNormalCustomDatePicker.swift */,
 			);
 			path = RegisterNormalAssistantView;
 			sourceTree = "<group>";
@@ -1305,6 +1308,7 @@
 				2C6030692B5414850031544C /* LibraryDummy.swift in Sources */,
 				2CCBF9F22B4D347B00D787C2 /* WSSMainButton.swift in Sources */,
 				A1147A802B50638200141692 /* RecordViewController.swift in Sources */,
+				39ABD5A02B54D0A900DEA94E /* RegisterNormalCustomDatePicker.swift in Sources */,
 				2CCBFA042B4DD73D00D787C2 /* MyPageTallyView.swift in Sources */,
 				2C2491812B4ADC000096F255 /* StringLiterals.swift in Sources */,
 				2C6030712B54F23F0031544C /* LibraryListView.swift in Sources */,

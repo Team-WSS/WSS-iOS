@@ -70,6 +70,21 @@ final class RegisterNormalReadStatusView: UIView {
         }
     }
     
+    func bindReadStatus(status: RegisterNormalReadStatus) {
+        readStatusButtons.forEach { button in
+            if button.checkStatus(status) {
+                // 활성화 상태 설정
+                button.hideImage(false)
+                button.setColor(.Primary100)
+            } else {
+                // 비활성화 상태 설정
+                button.hideImage(true)
+                button.setColor(.Gray200)
+            }
+        }
+    }
+    
+    
     private func createButtons() -> [RegisterNormalReadStatusButton] {
         var buttons: [RegisterNormalReadStatusButton] = []
         for status in RegisterNormalReadStatus.allCases {
