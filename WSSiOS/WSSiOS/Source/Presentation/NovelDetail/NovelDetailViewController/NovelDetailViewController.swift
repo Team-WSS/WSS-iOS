@@ -97,6 +97,10 @@ final class NovelDetailViewController: UIViewController {
     // MARK: - bind
     
     private func bind() {
+        novelSettingButton.rx.tap.bind {
+            self.rootView.novelDetailMemoSettingButtonView.isHidden = false
+        }.disposed(by: disposeBag)
+        
         selectedMenu
             .subscribe(onNext: { selectedMenu in
                 if selectedMenu == 0 {
