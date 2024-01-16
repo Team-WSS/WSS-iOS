@@ -20,7 +20,7 @@ final class RegisterNormalView: UIView {
     private let bannerImageView = RegisterNormalBannerImageView()
     let infoWithRatingView = RegisterNormalNovelInfoWithRatingView()
     let readStatusView = RegisterNormalReadStatusView()
-    private let readDateView = RegisterNormalReadDateView()
+    let readDateView = RegisterNormalReadDateView()
     private let dividerView = RegisterNormalDividerView()
     private let keywordSelectionView = RegisterNormalKeywordSelectionView()
     private let novelSummaryView = RegisterNormalNovelSummaryView()
@@ -28,6 +28,7 @@ final class RegisterNormalView: UIView {
     private let registerButtonGradient = UIImageView()
     private let registerButtonBackgroundView = UIView()
     
+    let customDatePicker = RegisterNormalCustomDatePicker()
     // MARK: - Life Cycle
     
     override init(frame: CGRect) {
@@ -73,7 +74,8 @@ final class RegisterNormalView: UIView {
         self.addSubviews(pageScrollView,
                          registerButtonGradient,
                          registerButtonBackgroundView,
-                         registerButton)
+                         registerButton,
+                         customDatePicker)
         pageScrollView.addSubview(pageContentView)
         pageContentView.addArrangedSubviews(bannerImageView,
                                             infoWithRatingView,
@@ -116,6 +118,10 @@ final class RegisterNormalView: UIView {
             $0.top.equalTo(registerButton.snp.top)
             $0.bottom.equalToSuperview()
             $0.horizontalEdges.equalToSuperview()
+        }
+        
+        customDatePicker.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
 }
