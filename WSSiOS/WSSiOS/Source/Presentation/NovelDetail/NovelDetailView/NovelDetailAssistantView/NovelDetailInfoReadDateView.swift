@@ -105,11 +105,8 @@ final class NovelDetailInfoReadDateView: UIView {
         }
     }
     
-    func bindData(startDate: String) {
+    func bindData(startDate: String, endDate: String?) {
         self.startDateLabel.text = startDate
-    }
-    
-    func bindData(endDate: String?) {
         if let endDate = endDate {
             self.readDateLabel.text = "읽은 날짜"
             self.endDateLabel.text = endDate

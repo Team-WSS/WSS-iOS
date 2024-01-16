@@ -21,6 +21,7 @@ final class NovelDetailView: UIView {
     let novelDetailMemoView = NovelDetailMemoView()
     let novelDetailInfoView = NovelDetailInfoView()
     let createMemoButton = DifferentRadiusButton()
+    let novelDetailMemoSettingButtonView = NovelDetailMemoSettingButtonView()
 
     // MARK: - Life Cycle
     
@@ -59,13 +60,18 @@ final class NovelDetailView: UIView {
             $0.bottomLeftRadius = 32.5
             $0.bottomRightRadius = 10.0
         }
+        
+        novelDetailMemoSettingButtonView.do {
+            $0.isHidden = true
+        }
     }
     
     // MARK: - set Hierachy
     
     private func setHierachy() {
         self.addSubviews(scrollView,
-                         createMemoButton)
+                         createMemoButton,
+                         novelDetailMemoSettingButtonView)
         scrollView.addSubview(contentView)
         contentView.addArrangedSubviews(novelDetailHeaderView,
                                         novelDetailTabView,
@@ -85,9 +91,30 @@ final class NovelDetailView: UIView {
             $0.size.equalTo(65)
         }
         
+        novelDetailMemoSettingButtonView.snp.makeConstraints {
+            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).inset(14)
+            $0.trailing.equalToSuperview().inset(18)
+        }
+        
         contentView.snp.makeConstraints {
             $0.edges.equalTo(scrollView.contentLayoutGuide)
             $0.width.equalToSuperview()
         }
+    }
+    
+    func memoButtonDidTap() {
+        self.novelDetailInfoView.removeFromSuperview()
+        self.contentView.addArrangedSubview(self.novelDetailMemoView)
+        self.novelDetailTabView.memoButton.isSelected = true
+        self.novelDetailTabView.infoButton.isSelected = false
+        self.novelDetailTabView.highlightMemoButton()
+    }
+    
+    func infoButtonDidTap() {
+        self.novelDetailMemoView.removeFromSuperview()
+        self.contentView.addArrangedSubview(self.novelDetailInfoView)
+        self.novelDetailTabView.memoButton.isSelected = false
+        self.novelDetailTabView.infoButton.isSelected = true
+        self.novelDetailTabView.highlightInfoButton()
     }
 }
