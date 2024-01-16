@@ -21,6 +21,7 @@ final class MyPageViewController: UIViewController {
     private var userRepository: DefaultUserRepository
     private var settingData = MyPageViewModel.setting
     private var avatarId = 0
+    private var userNickName = ""
     private var representativeAvatarId = 0
     private var representativeAvatar = false
     private var hasAvatar = false
@@ -105,6 +106,7 @@ final class MyPageViewController: UIViewController {
             .subscribe(with: self, onNext: { owner, data in 
                 owner.rootView.dataBind(data)
                 owner.representativeAvatarId = data.representativeAvatarId
+                owner.userNickName = data.userNickName
             })
             .disposed(by: disposeBag)
     }
@@ -133,6 +135,7 @@ final class MyPageViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, list in 
                 owner.avaterListRelay.accept(list)
+//                owner.userNickName.
             })
     }
     
@@ -145,6 +148,7 @@ final class MyPageViewController: UIViewController {
                 }
                 
                 let changeNicknameViewController = MyPageChangeNicknameViewController()
+                changeNicknameViewController.bindData(self.userNickName)
                 owner.navigationController?.pushViewController(changeNicknameViewController, animated: true)
             })
             .disposed(by: disposeBag)

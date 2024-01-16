@@ -44,7 +44,6 @@ final class MyPageChangeNicknameView: UIView {
         }
         
         changeNicknameTextField.do {
-            $0.text = "김명진"
             $0.font = .Body1
             $0.textColor = .Black
             $0.borderStyle = .none

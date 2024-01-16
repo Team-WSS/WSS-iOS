@@ -28,5 +28,6 @@ struct DefaultUserRepository: UserRepository {
     
     func patchUserName(userNickName: String) -> RxSwift.Observable<Void> {
         return userService.patchUserName(userNickName: userNickName)
-    }    .asObservable()
+            .asObservable()
+    }
 }

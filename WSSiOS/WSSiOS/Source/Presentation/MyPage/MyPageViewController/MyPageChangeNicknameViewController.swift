@@ -14,11 +14,12 @@ final class MyPageChangeNicknameViewController: UIViewController {
     
     //MARK: - Set Properties
     
+    private let userNickName = ""
     private let disposeBag = DisposeBag()
     
     //MARK: - UI Components
     
-    private var rootView = MyPageChangeNicknameView()
+    var rootView = MyPageChangeNicknameView()
     
     // MARK: - Life Cycle
     
@@ -76,5 +77,9 @@ final class MyPageChangeNicknameViewController: UIViewController {
             let index = text.index(text.startIndex, offsetBy: 9)
             self.rootView.changeNicknameTextField.text = String(text[..<index])
         }
+    }
+    
+    func bindData(_ data: String) {
+        rootView.changeNicknameTextField.text = data
     }
 }
