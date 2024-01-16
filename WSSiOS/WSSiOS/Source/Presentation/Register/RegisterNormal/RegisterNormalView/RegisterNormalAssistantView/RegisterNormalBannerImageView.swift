@@ -71,7 +71,7 @@ final class RegisterNormalBannerImageView: UIView {
             KingfisherManager.shared.retrieveImage(with: novelImageUrl, completionHandler: { result in
             switch(result) {
             case .success(let imageResult):
-                let blurredImage = imageResult.image.asBlurredBannerImage(radius: 15)
+                let blurredImage = imageResult.image.asBlurredBannerImage(radius: 5)
                 self.bannerImageView.image = blurredImage
             case .failure(let error):
                 print(error)

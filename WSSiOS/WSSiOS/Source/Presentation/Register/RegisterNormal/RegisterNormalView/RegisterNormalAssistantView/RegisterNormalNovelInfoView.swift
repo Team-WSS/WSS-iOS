@@ -64,6 +64,18 @@ final class RegisterNormalNovelInfoView: UIView {
         }
     }
     
+    func bindData(title: String?, author: String?) {
+        novelTitleLabel.do {
+            $0.text = title
+            novelTitleAttribute(of: $0)
+        }
+        
+        novelAuthorLabel.do {
+            $0.text = author
+            novelAuthorAttribute(of: $0)
+        }
+    }
+    
     /// novelTitle의 UI를 위한 함수.
     private func novelTitleAttribute(of label: UILabel) {
         label.do {

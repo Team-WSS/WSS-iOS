@@ -23,7 +23,7 @@ final class RegisterNormalView: UIView {
     let readDateView = RegisterNormalReadDateView()
     private let dividerView = RegisterNormalDividerView()
     private let keywordSelectionView = RegisterNormalKeywordSelectionView()
-    private let novelSummaryView = RegisterNormalNovelSummaryView()
+    let novelSummaryView = RegisterNormalNovelSummaryView()
     private let registerButton = WSSMainButton(title: "내 서재에 등록")
     private let registerButtonGradient = UIImageView()
     private let registerButtonBackgroundView = UIView()
@@ -124,4 +124,6 @@ final class RegisterNormalView: UIView {
             $0.edges.equalToSuperview()
         }
     }
+    
+    
 }

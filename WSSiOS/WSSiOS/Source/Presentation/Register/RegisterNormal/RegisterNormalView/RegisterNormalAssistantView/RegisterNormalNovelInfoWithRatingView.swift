@@ -9,6 +9,7 @@ import UIKit
 
 import SnapKit
 import Then
+import Kingfisher
 
 final class RegisterNormalNovelInfoWithRatingView: UIView {
     
@@ -79,5 +80,11 @@ final class RegisterNormalNovelInfoWithRatingView: UIView {
                 $0.edges.equalToSuperview()
             }
         }
+    }
+    
+    func bindData(coverImage: String, title: String?, author: String?) {
+        guard let url = URL(string: coverImage) else { return }
+        novelCoverImageView.kf.setImage(with: url)
+        novelInfoStackView.bindData(title: title, author: author)
     }
 }

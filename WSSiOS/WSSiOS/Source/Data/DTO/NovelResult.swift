@@ -43,9 +43,9 @@ struct EditNovelResult: Codable {
     let userNovelID: Int
     let userNovelTitle, userNovelAuthor, userNovelGenre, userNovelImg: String
     let userNovelDescription: String
-    let userNovelRating: Double
+    let userNovelRating: Float
     let userNovelReadStatus: String
-    let platforms: [Platform]
+    let platforms: [UserNovelPlatform]
     let userNovelReadDate: UserNovelReadDate
 
     enum CodingKeys: String, CodingKey {
@@ -56,6 +56,6 @@ struct EditNovelResult: Codable {
 
 // MARK: - UserNovelReadDate
 struct UserNovelReadDate: Codable {
-    let userNovelReadStartDate, userNovelReadEndDate: String
+    let userNovelReadStartDate, userNovelReadEndDate: String?
 }
 

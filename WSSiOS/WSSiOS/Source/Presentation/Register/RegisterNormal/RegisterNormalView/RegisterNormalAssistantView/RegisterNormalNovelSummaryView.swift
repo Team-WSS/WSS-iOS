@@ -120,4 +120,11 @@ final class RegisterNormalNovelSummaryView: UIView {
             $0.textColor = .Gray300
         }
     }
+    
+    func bindData(plot: String?, genre: String?) {
+        plotLabel.text = plot
+        genreLabel.text = genre
+        bodyStyle(of: plotLabel)
+        bodyStyle(of: genreLabel)
+    }
 }

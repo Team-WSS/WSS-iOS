@@ -13,53 +13,20 @@ import RxCocoa
 import SnapKit
 import Then
 
-enum RegisterNormalReadStatus: String, CaseIterable {
-    case FINISH
-    case READING
-    case DROP
-    case WISH
-    
-    var tagImage: UIImage {
-        switch self {
-        case .FINISH: return ImageLiterals.icon.TagStatus.finished
-        case .READING: return ImageLiterals.icon.TagStatus.reading
-        case .DROP: return ImageLiterals.icon.TagStatus.stop
-        case .WISH: return ImageLiterals.icon.TagStatus.interest
-        }
-    }
-    
-    var tagText: String {
-        switch self {
-        case .FINISH: return "읽음"
-        case .READING: return "읽는 중"
-        case .DROP: return "하차"
-        case .WISH: return "읽고 싶음"
-        }
-    }
-    
-    var dateText: String? {
-        switch self {
-        case .FINISH: return "읽은 날짜"
-        case .READING: return "시작 날짜"
-        case .DROP: return "종료 날짜"
-        case .WISH: return nil
-        }
-    }
-}
-
 /// 1-3-1 RegisterNormal View
 final class RegisterNormalViewController: UIViewController {
     
     // MARK: - Properties
     
     // 서버 통신을 위한 properties
+    let localData: EditNovelResult?
     private let repository: NovelRepository
-    private let novelId: Int
+    private let novelId: Int?
     
     // RxSwift
     private let disposeBag = DisposeBag()
     private var starRating = BehaviorRelay<Float>(value: 0.0)
-    private var buttonStatus = BehaviorRelay<RegisterNormalReadStatus>(value: .FINISH)
+    private var readStatus = BehaviorRelay<ReadStatus>(value: .FINISH)
     private var isOn = BehaviorRelay<Bool>(value: true)
     private var showDatePicker = BehaviorRelay<Bool>(value: false)
     private var startDate = BehaviorRelay<Date>(value: Date())
@@ -67,17 +34,23 @@ final class RegisterNormalViewController: UIViewController {
     
     private let rootView = RegisterNormalView()
     
-    let dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        return formatter
-    }()
+    // Date -> String
+    let dateToString = DateFormatter().then {
+        $0.dateFormat = "yyyy-MM-dd"
+    }
+    // String -> Date
+    let stringToDate = DateFormatter().then {
+        $0.dateFormat = "yyyy-MM-dd"
+        $0.timeZone = TimeZone(identifier: "ko_KR")
+    }
     
     // MARK: - View Life Cycle
     
-    init(repository: NovelRepository, novelId: Int) {
+    init(repository: NovelRepository, novelId: Int? = nil, userNovelModel: EditNovelResult? = nil) {
         self.repository = repository
         self.novelId = novelId
+        self.localData = userNovelModel
+        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -100,28 +73,69 @@ final class RegisterNormalViewController: UIViewController {
     
     private func getNovel() {
         repository.getNovelInfo(novelId: novelId)
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { data in
                 self.bindData(data)
             },onError: { error in
-                print(error)
+                print("ERROR!!!")
+                if let localData = self.localData {
+                    self.bindData(localData)
+                }
             }).disposed(by: disposeBag)
     }
     
     private func bindData(_ data: NovelResult) {
-        if let newNovelResult = data.newNovelResult {
-            bindData(newNovelResult)
-        }
         if let editNovelResult = data.editNovelResult {
             bindData(editNovelResult)
+            print("Edit!")
+        }
+        
+        if let newNovelResult = data.newNovelResult {
+            bindData(newNovelResult)
+            print("New!")
+            print(newNovelResult.novelID)
         }
     }
     
     private func bindData(_ newData: NewNovelResult) {
-        rootView.bannerImageView.bindData(newData.novelImg.kf)
+        rootView.bannerImageView.bindData(newData.novelImg)
+        rootView.infoWithRatingView.bindData(coverImage: newData.novelImg,
+                                             title: newData.novelTitle,
+                                             author: newData.novelAuthor)
+        rootView.novelSummaryView.bindData(plot: newData.novelDescription, genre: newData.novelGenre)
     }
     
     private func bindData(_ userData: EditNovelResult) {
+        rootView.bannerImageView.bindData(userData.userNovelImg)
+        rootView.infoWithRatingView.bindData(coverImage: userData.userNovelImg,
+                                             title: userData.userNovelTitle,
+                                             author: userData.userNovelAuthor)
+        self.starRating.accept(userData.userNovelRating)
         
+        let status = ReadStatus(rawValue: userData.userNovelReadStatus) ?? .FINISH
+        self.readStatus.accept(status)
+        
+        // status에 따른 날짜 처리
+        var start = ""
+        var end = ""
+        
+        if status == .FINISH {
+            start = userData.userNovelReadDate.userNovelReadStartDate ?? ""
+            end = userData.userNovelReadDate.userNovelReadEndDate ?? ""
+        } else if status == .READING {
+            end = userData.userNovelReadDate.userNovelReadStartDate ?? ""
+        } else if status == .DROP {
+            start = userData.userNovelReadDate.userNovelReadEndDate ?? ""
+        }
+        
+        self.startDate.accept(
+            dateToString.date(from: start) ?? Date()
+        )
+        self.endDate.accept(
+            dateToString.date(from: end) ?? Date()
+        )
+        
+        rootView.novelSummaryView.bindData(plot: userData.userNovelDescription, genre: userData.userNovelGenre)
     }
     
     private func bindRx() {
@@ -163,24 +177,24 @@ final class RegisterNormalViewController: UIViewController {
         
         // ReadStatus 에 따른 ReadStatus 선택 뷰 변화
         rootView.readStatusView.do { view in
-            for (index, status) in RegisterNormalReadStatus.allCases.enumerated() {
+            for (index, status) in ReadStatus.allCases.enumerated() {
                 view.readStatusButtons[index].rx.tap
                     .bind {
-                        self.buttonStatus.accept(status)
+                        self.readStatus.accept(status)
                     }
                     .disposed(by: disposeBag)
             }
 
-            buttonStatus
+            readStatus
                 .subscribe(onNext: { status in
                     view.bindReadStatus(status: status)
                 })
                 .disposed(by: disposeBag)
         }
-        
+    
         // ReadStatus 에 따른 날짜 선택 뷰 변화
         rootView.readDateView.do { view in
-            buttonStatus
+            readStatus
                 .subscribe(onNext: { status in
                     if status == .WISH {
                         view.isHidden = true
@@ -217,8 +231,12 @@ final class RegisterNormalViewController: UIViewController {
         }
         
         rootView.do { view in
-            showDatePicker.subscribe(onNext: { value in
-                view.customDatePicker.isHidden = !value
+            showDatePicker.subscribe(with: self, onNext: { owner, show in
+                if show {
+                    view.customDatePicker.startDate = self.startDate.value
+                    view.customDatePicker.endDate = self.endDate.value
+                }
+                view.customDatePicker.isHidden = !show
             })
             .disposed(by: disposeBag)
             
@@ -240,24 +258,36 @@ final class RegisterNormalViewController: UIViewController {
                 .disposed(by: disposeBag)
             
             startDate.asObservable()
-                .map { date in
-                    return self.dateFormatter.string(from: date)
-                }
+                .map { self.dateToString.string(from: $0) }
                 .bind(to: view.readDateView.datePickerButton.startDateLabel.rx.text)
                 .disposed(by: disposeBag)
             
             endDate.asObservable()
-                .map { date in
-                    return self.dateFormatter.string(from: date)
-                }
+                .map { self.dateToString.string(from: $0) }
                 .bind(to: view.readDateView.datePickerButton.endDateLabel.rx.text)
                 .disposed(by: disposeBag)
             
-            buttonStatus
+            readStatus
                 .subscribe(onNext: { status in
                     view.customDatePicker.bindReadStatus(status: status)
                 })
                 .disposed(by: disposeBag)
         }
+    }
+    
+    // 나중에 효원에게 넘겨받을 것
+    private func bindEditData(data: UserNovelDetail) {
+        let editData = EditNovelResult(userNovelID: novelId ?? 0,
+                                   userNovelTitle: data.userNovelTitle,
+                                   userNovelAuthor: data.userNovelAuthor,
+                                   userNovelGenre: data.userNovelGenre,
+                                   userNovelImg: data.userNovelImg,
+                                   userNovelDescription: data.userNovelDescription,
+                                   userNovelRating: data.userNovelRating,
+                                   userNovelReadStatus: data.userNovelReadStatus,
+                                   platforms: data.platforms,
+                                   userNovelReadDate: UserNovelReadDate(
+                                    userNovelReadStartDate: data.userNovelReadStartDate,
+                                    userNovelReadEndDate: data.userNovelReadEndDate))
     }
 }
