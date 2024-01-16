@@ -78,15 +78,10 @@ final class DeletePopupViewController: UIViewController {
     
     private func deleteUserNovel() {
         userNovelRepository!.deleteUserNovel(userNovelId: self.novelId!)
+            .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
                 // 소설 삭제 후 로직 추가 예정
-                Observable.just(())
-                    .observe(on: MainScheduler.instance)
-                    .subscribe(onNext: { [weak self] in
-                        guard let self = self else { return }
-                        self.dismiss(animated: true)
-                    })
-                    .disposed(by: self.disposeBag)
+                self.dismiss(animated: true)
             },onError: { owner, error in
                 print(error)
             }).disposed(by: disposeBag)
@@ -94,15 +89,10 @@ final class DeletePopupViewController: UIViewController {
     
     private func deleteMemo() {
         memoRepository!.deleteMemo(memoId: self.memoId!)
+            .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
                 // 메모 삭제후 로직 추가 예정
-                Observable.just(())
-                    .observe(on: MainScheduler.instance)
-                    .subscribe(onNext: { [weak self] in
-                        guard let self = self else { return }
-                        self.dismiss(animated: true)
-                    })
-                    .disposed(by: self.disposeBag)
+                self.dismiss(animated: true)
             },onError: { owner, error in
                 print(error)
             }).disposed(by: disposeBag)

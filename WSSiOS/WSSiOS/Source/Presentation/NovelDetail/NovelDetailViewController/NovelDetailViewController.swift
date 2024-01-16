@@ -198,39 +198,34 @@ final class NovelDetailViewController: UIViewController {
         self.novelAuthor = novelData.userNovelAuthor
         self.novelImage = novelData.userNovelImg
         
-        Observable.just(())
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] in
-                guard let self = self else { return }
-                self.rootView.novelDetailHeaderView.bindData(
-                    title: novelData.userNovelTitle,
-                    author: novelData.userNovelAuthor,
-                    novelImage: novelData.userNovelImg,
-                    genreImage: novelData.userNovelGenreBadgeImg
-                )
-                self.rootView.novelDetailMemoView.bindData(
-                    memos: novelData.memos
-                )
-                self.rootView.novelDetailInfoView.bindData(
-                    rating: novelData.userNovelRating,
-                    readStatus: novelData.userNovelReadStatus,
-                    startDate: novelData.userNovelReadStartDate,
-                    endDate: novelData.userNovelReadEndDate,
-                    description: novelData.userNovelDescription,
-                    genre: novelData.userNovelGenre,
-                    platforms: novelData.platforms
-                )
-                
-                self.rootView.novelDetailMemoView.memoTableView.reloadData()
-                self.rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.reloadData()
-            })
-            .disposed(by: disposeBag)
+        self.rootView.novelDetailHeaderView.bindData(
+            title: novelData.userNovelTitle,
+            author: novelData.userNovelAuthor,
+            novelImage: novelData.userNovelImg,
+            genreImage: novelData.userNovelGenreBadgeImg
+        )
+        self.rootView.novelDetailMemoView.bindData(
+            memos: novelData.memos
+        )
+        self.rootView.novelDetailInfoView.bindData(
+            rating: novelData.userNovelRating,
+            readStatus: novelData.userNovelReadStatus,
+            startDate: novelData.userNovelReadStartDate,
+            endDate: novelData.userNovelReadEndDate,
+            description: novelData.userNovelDescription,
+            genre: novelData.userNovelGenre,
+            platforms: novelData.platforms
+        )
+        
+        self.rootView.novelDetailMemoView.memoTableView.reloadData()
+        self.rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.reloadData()
     }
     
     // MARK: - API request
     
     private func getUserNovel() {
         repository.getUserNovel(userNovelId: self.novelId)
+            .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
                 self.updateUI(data)
             },onError: { owner, error in

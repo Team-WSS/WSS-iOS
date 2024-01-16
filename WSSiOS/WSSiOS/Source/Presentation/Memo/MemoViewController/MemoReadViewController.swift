@@ -129,29 +129,23 @@ final class MemoReadViewController: UIViewController {
         self.novelImage = memoDetail.userNovelImg
         self.memoContent = memoDetail.memoContent
         
-        Observable.just(())
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] in
-                guard let self = self else { return }
-                
-                self.rootView.memoHeaderView.bindData(
-                    novelTitle: memoDetail.userNovelTitle,
-                    novelAuthor: memoDetail.userNovelAuthor,
-                    novelImage: memoDetail.userNovelImg
-                )
-                
-                self.rootView.memoReadContentView.bindData(
-                    date: memoDetail.memoDate,
-                    memoContent: memoDetail.memoContent
-                )
-            })
-            .disposed(by: disposeBag)
+        self.rootView.memoHeaderView.bindData(
+            novelTitle: memoDetail.userNovelTitle,
+            novelAuthor: memoDetail.userNovelAuthor,
+            novelImage: memoDetail.userNovelImg
+        )
+        
+        self.rootView.memoReadContentView.bindData(
+            date: memoDetail.memoDate,
+            memoContent: memoDetail.memoContent
+        )
     }
     
     // MARK: - API request
     
     private func getMemoDetail() {
         repository.getMemoDetail(memoId: self.memoId)
+            .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
                 self.updateUI(data)
             },onError: { owner, error in

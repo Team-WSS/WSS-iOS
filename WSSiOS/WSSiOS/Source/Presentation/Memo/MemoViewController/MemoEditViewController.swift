@@ -167,32 +167,24 @@ final class MemoEditViewController: UIViewController {
     
     private func postMemo() {
         repository.postMemo(userNovelId: self.novelId!, memoContent: updatedMemoContent)
+            .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
-                Observable.just(())
-                    .observe(on: MainScheduler.instance)
-                    .subscribe(onNext: { [weak self] in
-                        guard let self = self else { return }
-                        self.navigationController?.popViewController(animated: true)
-                    })
-                    .disposed(by: self.disposeBag)
+                self.navigationController?.popViewController(animated: true)
             },onError: { owner, error in
                 print(error)
-            }).disposed(by: disposeBag)
+            })
+            .disposed(by: disposeBag)
     }
     
     private func patchMemo() {
         repository.patchMemo(memoId: self.memoId!, memoContent: updatedMemoContent)
+            .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
-                Observable.just(())
-                    .observe(on: MainScheduler.instance)
-                    .subscribe(onNext: { [weak self] in
-                        guard let self = self else { return }
-                        self.navigationController?.popViewController(animated: true)
-                    })
-                    .disposed(by: self.disposeBag)
+                self.navigationController?.popViewController(animated: true)
             },onError: { owner, error in
                 print(error)
-            }).disposed(by: disposeBag)
+            })
+            .disposed(by: disposeBag)
     }
     
     func enableCompleteButton() {

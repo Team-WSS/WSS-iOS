@@ -45,7 +45,6 @@ final class MemoReadContentView: UIView {
         }
         
         dateLabel.do {
-            $0.text = "2023-12-23 오전 10:12"
             $0.textColor = .Gray200
             $0.font = .Label1
         }
