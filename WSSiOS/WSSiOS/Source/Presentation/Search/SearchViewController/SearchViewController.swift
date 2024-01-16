@@ -24,33 +24,37 @@ final class SearchViewController: UIViewController {
         self.view = rootView
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
-        setUI()
-        setNavigationBar()
-        
-        setDelegate()
-        setCollectionViewConfig()
-        setCollectionViewLayout()
+
     }
     
-    //MARK: - set UI
-    
-    private func setUI() {
-        navigationBarTitleLabel.do {
-            $0.text = "검색"
-            $0.font = .Title2
-            $0.textColor = .Black
-        }
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        setDelegate()
+        setNavigationBar()
+        setCollectionViewConfig()
+        setCollectionViewLayout()
     }
     
     //MARK: - customize NaivationBar
     
     private func setNavigationBar() {
-        self.navigationController?.navigationBar.topItem?.titleView = navigationBarTitleLabel
+        self.navigationController?.isNavigationBarHidden = false
+        self.navigationItem.title = "검색"
+        self.navigationController?.navigationBar.backgroundColor = .White
         
-        //TODO: custom backbutton 추가 필요
+        // Navigation Bar의 title 폰트 설정
+        if let navigationBar = self.navigationController?.navigationBar {
+            let titleTextAttributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont.Title2
+            ]
+            navigationBar.titleTextAttributes = titleTextAttributes
+        }
+        
+        self.navigationItem.hidesBackButton = true
     }
     
     //MARK: - set Delegate

@@ -51,6 +51,12 @@ final class RecordViewController: UIViewController {
         setNavigationBar()
     }
     
+    private func setUI() {
+        self.view.do {
+            $0.backgroundColor = .White
+        }
+    }
+    
     private func setNavigationBar() {
         self.navigationController?.isNavigationBarHidden = false
         self.navigationItem.title = "내 기록"

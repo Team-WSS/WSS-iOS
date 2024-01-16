@@ -26,12 +26,19 @@ final class HomeViewController: UIViewController {
         self.view = rootView
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setUI()
         
         registerCell()
+        addTapGesture()
         bindDataToSosoPickCollectionView()
     }
     
@@ -50,8 +57,18 @@ final class HomeViewController: UIViewController {
         sosoPickDummy.bind(to: rootView.sosopickView.sosoPickCollectionView.rx.items(
             cellIdentifier: HomeSosoPickCollectionViewCell.identifier,
             cellType: HomeSosoPickCollectionViewCell.self)) { (row, element, cell) in
-            cell.bindData(data: element)
-        }
-        .disposed(by: disposeBag)
+                cell.bindData(data: element)
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    private func addTapGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(pushSearchVC(_:)))
+        rootView.headerView.headerSearchView.addGestureRecognizer(tapGesture)
+        rootView.headerView.headerSearchView.isUserInteractionEnabled = true
+    }
+    
+    @objc private func pushSearchVC(_ sender: UITapGestureRecognizer) {
+        self.navigationController?.pushViewController(SearchViewController(), animated: true)
     }
 }

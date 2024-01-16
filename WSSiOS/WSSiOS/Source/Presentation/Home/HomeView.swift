@@ -12,7 +12,7 @@ final class HomeView: UIView {
     //MARK: - UI Components
     
     private let homeStackView = UIStackView()
-    private let headerView = HomeHeaderView()
+    let headerView = HomeHeaderView()
     private let characterView = HomeCharacterView()
     private let titleView = HomeSosoPickTitleView()
     let sosopickView = HomeSosoPickView()
