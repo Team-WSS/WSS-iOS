@@ -19,9 +19,10 @@ final class RegisterNormalViewController: UIViewController {
     // MARK: - Properties
     
     // 서버 통신을 위한 properties
-    let localData: EditNovelResult?
     private let repository: NovelRepository
     private let novelId: Int?
+    let localData: EditNovelResult?
+    var isNew: Bool = true
     
     // RxSwift
     private let disposeBag = DisposeBag()
@@ -85,15 +86,15 @@ final class RegisterNormalViewController: UIViewController {
     }
     
     private func bindData(_ data: NovelResult) {
-        if let editNovelResult = data.editNovelResult {
-            bindData(editNovelResult)
-            print("Edit!")
-        }
-        
         if let newNovelResult = data.newNovelResult {
+            self.isNew = true
             bindData(newNovelResult)
             print("New!")
             print(newNovelResult.novelID)
+        } else if let editNovelResult = data.editNovelResult {
+            self.isNew = false
+            bindData(editNovelResult)
+            print("Edit!")
         }
     }
     
@@ -273,6 +274,12 @@ final class RegisterNormalViewController: UIViewController {
                 })
                 .disposed(by: disposeBag)
         }
+        
+        rootView.registerButton.rx.tap
+            .subscribe(with: self, onNext: { _,_ in
+                self.present(RegisterSuccessViewController(), animated: true)
+            })
+            .disposed(by: disposeBag)
     }
     
     // 나중에 효원에게 넘겨받을 것
