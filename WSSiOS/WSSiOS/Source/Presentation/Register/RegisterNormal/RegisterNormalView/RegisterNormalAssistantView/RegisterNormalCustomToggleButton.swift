@@ -42,7 +42,6 @@ final class RegisterNormalCustomToggleButton: UIButton {
         setUI()
         setHieararchy()
         setLayout()
-        bind()
     }
     
     required init?(coder: NSCoder) {
@@ -89,10 +88,6 @@ final class RegisterNormalCustomToggleButton: UIButton {
             $0.trailing.equalTo(barView.snp.trailing).inset(2.76)
             $0.centerY.equalToSuperview()
         }
-    }
-    
-    private func bind() {
-        
     }
     
     func changeState(_ state: Bool) {

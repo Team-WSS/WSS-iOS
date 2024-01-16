@@ -54,15 +54,21 @@ final class RegisterNormalViewController: UIViewController {
     // RxSwift에서 메모리 관리를 위한 DisposeBag
     private let disposeBag = DisposeBag()
     
-    private var starRatingRelay = BehaviorRelay<Float>(value: 0.0)
-    private var buttonStatusSubject = BehaviorRelay<RegisterNormalReadStatus>(value: .FINISH)
+    private var starRating = BehaviorRelay<Float>(value: 0.0)
+    private var buttonStatus = BehaviorRelay<RegisterNormalReadStatus>(value: .FINISH)
     private var isOn = BehaviorRelay<Bool>(value: true)
-    private var popDatePicker = BehaviorRelay<Bool>(value: false)
+    private var showDatePicker = BehaviorRelay<Bool>(value: false)
     
     private var startDate = BehaviorRelay<Date>(value: Date())
     private var endDate = BehaviorRelay<Date>(value: Date())
     
     private let rootView = RegisterNormalView()
+    
+    let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        return formatter
+    }()
     
     // MARK: - View Life Cycle
     
@@ -89,7 +95,7 @@ final class RegisterNormalViewController: UIViewController {
                     .bind(onNext: { recognizer in
                         let location = recognizer.location(in: imageView)
                         let rating = Float(index) + (location.x > imageView.frame.width / 2 ? 1 : 0.5)
-                        self.starRatingRelay.accept(rating)
+                        self.starRating.accept(rating)
                     })
                     .disposed(by: disposeBag)
                 
@@ -101,13 +107,13 @@ final class RegisterNormalViewController: UIViewController {
                         let location = recognizer.location(in: view)
                         let rawRating = (Float(location.x / view.frame.width * 5) * 2).rounded(.toNearestOrAwayFromZero) / 2
                         let rating = min(max(rawRating, 0), 5)
-                        self.starRatingRelay.accept(rating)
+                        self.starRating.accept(rating)
                     })
                     .disposed(by: disposeBag)
             }
             
             // 별점이 변경될 때마다 별 이미지 업데이트
-            starRatingRelay.asObservable()
+            starRating.asObservable()
                 .subscribe(onNext: { rating in
                     view.updateStarImages(rating: rating)
                 })
@@ -119,12 +125,12 @@ final class RegisterNormalViewController: UIViewController {
             for (index, status) in RegisterNormalReadStatus.allCases.enumerated() {
                 view.readStatusButtons[index].rx.tap
                     .bind {
-                        self.buttonStatusSubject.accept(status)
+                        self.buttonStatus.accept(status)
                     }
                     .disposed(by: disposeBag)
             }
 
-            buttonStatusSubject
+            buttonStatus
                 .subscribe(onNext: { status in
                     view.bindReadStatus(status: status)
                 })
@@ -133,7 +139,7 @@ final class RegisterNormalViewController: UIViewController {
         
         // ReadStatus 에 따른 날짜 선택 뷰 변화
         rootView.readDateView.do { view in
-            buttonStatusSubject
+            buttonStatus
                 .subscribe(onNext: { status in
                     if status == .WISH {
                         view.isHidden = true
@@ -162,30 +168,23 @@ final class RegisterNormalViewController: UIViewController {
             
             view.datePickerButton.rx.tap
                 .subscribe(onNext: {
-                    let next = !self.popDatePicker.value
-                    self.popDatePicker.accept(next)
+                    let next = !self.showDatePicker.value
+                    self.showDatePicker.accept(next)
                     print(next)
                 })
                 .disposed(by: disposeBag)
         }
         
         rootView.do { view in
-            
-            let dateFormatter: DateFormatter = {
-                let formatter = DateFormatter()
-                formatter.dateFormat = "yyyy-MM-dd"
-                return formatter
-            }()
-            
-            popDatePicker.subscribe(onNext: { popDatePicker in
-                view.customDatePicker.isHidden = !popDatePicker
+            showDatePicker.subscribe(onNext: { value in
+                view.customDatePicker.isHidden = !value
             })
             .disposed(by: disposeBag)
             
             view.customDatePicker.rx.tap
                 .subscribe(onNext: {
-                    let next = !self.popDatePicker.value
-                    self.popDatePicker.accept(next)
+                    let next = !self.showDatePicker.value
+                    self.showDatePicker.accept(next)
                     print(next)
                 })
                 .disposed(by: disposeBag)
@@ -194,31 +193,30 @@ final class RegisterNormalViewController: UIViewController {
                 .subscribe(onNext: {
                     self.startDate.accept(view.customDatePicker.startDate)
                     self.endDate.accept(view.customDatePicker.endDate)
-                    let next = !self.popDatePicker.value
-                    self.popDatePicker.accept(next)
+                    let next = !self.showDatePicker.value
+                    self.showDatePicker.accept(next)
                 })
                 .disposed(by: disposeBag)
             
             startDate.asObservable()
                 .map { date in
-                    return dateFormatter.string(from: date)
+                    return self.dateFormatter.string(from: date)
                 }
                 .bind(to: view.readDateView.datePickerButton.startDateLabel.rx.text)
                 .disposed(by: disposeBag)
             
             endDate.asObservable()
                 .map { date in
-                    return dateFormatter.string(from: date)
+                    return self.dateFormatter.string(from: date)
                 }
                 .bind(to: view.readDateView.datePickerButton.endDateLabel.rx.text)
                 .disposed(by: disposeBag)
             
-            buttonStatusSubject
+            buttonStatus
                 .subscribe(onNext: { status in
                     view.customDatePicker.bindReadStatus(status: status)
                 })
                 .disposed(by: disposeBag)
         }
-        
     }
 }

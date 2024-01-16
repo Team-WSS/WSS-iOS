@@ -22,7 +22,7 @@ final class RegisterNormalCustomDatePicker: UIButton {
     
     // MARK: - UI Components
     
-    private let background = UIView()
+    private let backgroundView = UIView()
     private let totalStackView = UIStackView()
     
     private let buttonStackView = UIStackView()
@@ -76,7 +76,7 @@ final class RegisterNormalCustomDatePicker: UIButton {
         self.do {
             $0.backgroundColor = .Black.withAlphaComponent(0.6)
         }
-        background.do {
+        backgroundView.do {
             $0.backgroundColor = .White
             $0.layer.cornerRadius = 12
         }
@@ -113,16 +113,14 @@ final class RegisterNormalCustomDatePicker: UIButton {
                     
                     startTitleLabel.do {
                         $0.text = "시작 날짜"
-                        buttonTitleStyle(of: $0)
+                        titleLabelStyle(of: $0)
                     }
                     
                     startDateLabel.do {
                         $0.text = dateFormatter.string(from: startDate)
-                        buttonDateStyle(of: $0)
+                        dateLabelStyle(of: $0)
                     }
                 }
-                
-                
             }
             
             endButton.do {
@@ -138,12 +136,12 @@ final class RegisterNormalCustomDatePicker: UIButton {
                     
                     endTitleLabel.do {
                         $0.text = "종료 날짜"
-                        buttonTitleStyle(of: $0)
+                        titleLabelStyle(of: $0)
                     }
                     
                     endDateLabel.do {
                         $0.text = dateFormatter.string(from: endDate)
-                        buttonDateStyle(of: $0)
+                        dateLabelStyle(of: $0)
                     }
                 }
             }
@@ -171,8 +169,8 @@ final class RegisterNormalCustomDatePicker: UIButton {
     }
     
     private func setHieararchy() {
-        self.addSubview(background)
-        background.addSubviews(totalStackView,
+        self.addSubview(backgroundView)
+        backgroundView.addSubviews(totalStackView,
                                completeButton)
         totalStackView.addArrangedSubviews(buttonStackView,
                                            readingStatusLabel,
@@ -189,7 +187,7 @@ final class RegisterNormalCustomDatePicker: UIButton {
     }
     
     private func setLayout() {
-        background.snp.makeConstraints {
+        backgroundView.snp.makeConstraints {
             $0.bottom.equalToSuperview()
             $0.horizontalEdges.equalToSuperview()
         }
@@ -291,7 +289,7 @@ final class RegisterNormalCustomDatePicker: UIButton {
         endButton.layer.borderColor = isStart ? UIColor.Gray50.cgColor : UIColor.Primary50.cgColor
     }
     
-    private func buttonDateStyle(of label: UILabel) {
+    private func dateLabelStyle(of label: UILabel) {
         label.do {
             $0.makeAttribute(with: $0.text)?
                 .lineSpacing(spacingPercentage: 145)
@@ -300,7 +298,7 @@ final class RegisterNormalCustomDatePicker: UIButton {
         }
     }
     
-    private func buttonTitleStyle(of label: UILabel) {
+    private func titleLabelStyle(of label: UILabel) {
         label.do {
             $0.makeAttribute(with: $0.text)?
                 .lineSpacing(spacingPercentage: 140)
