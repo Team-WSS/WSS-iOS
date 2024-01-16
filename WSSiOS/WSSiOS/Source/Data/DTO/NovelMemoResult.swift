@@ -26,23 +26,3 @@ struct MemoDetail: Codable {
     let memoDate: String
     let memoContent: String
 }
-
-// 삭제 예정
-struct RecordMemos: Decodable {
-    let memoCount: Int
-    let memos: [RecordMemo]
-}
-
-struct RecordMemo: Codable {
-    let id: Int
-    let novelTitle: String
-    let content: String
-    let date: String
-    
-    enum CodingKeys: String, CodingKey {
-        case id = "memoId"
-        case novelTitle
-        case content = "memoContent"
-        case date = "memoDate"
-    }
-}
