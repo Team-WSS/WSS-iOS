@@ -7,6 +7,8 @@
 
 import Foundation
 
+//MARK: - RecordMemo
+
 struct RecordMemos: Decodable {
     let memoCount: Int
     let memos: [RecordMemo]
