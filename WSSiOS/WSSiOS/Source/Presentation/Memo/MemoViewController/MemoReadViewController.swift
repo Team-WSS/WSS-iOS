@@ -1,5 +1,5 @@
 //
-//  MemoEditViewController.swift
+//  MemoReadViewController.swift
 //  WSSiOS
 //
 //  Created by Hyowon Jeon on 1/13/24.
@@ -11,7 +11,7 @@ import RxCocoa
 import RxKeyboard
 import RxSwift
 
-final class MemoEditViewController: UIViewController {
+final class MemoReadViewController: UIViewController {
     
     //MARK: - set Properties
     
@@ -26,7 +26,7 @@ final class MemoEditViewController: UIViewController {
 
     // MARK: - UI Components
 
-    private let rootView = MemoEditView()
+    private let rootView = MemoReadView()
     private let backButton = UIButton()
     private let editButon = UIButton()
 
@@ -107,18 +107,18 @@ final class MemoEditViewController: UIViewController {
             ), animated: true)
         }.disposed(by: disposeBag)
         
-        rootView.memoEditContentView.memoTextView.rx.text.orEmpty
+        rootView.memoReadContentView.memoTextView.rx.text.orEmpty
             .subscribe(onNext: { text in
                 self.memoContent = text
                 if text.count > 2000 {
-                    self.rootView.memoEditContentView.memoTextView.text = String(text.prefix(2000))
+                    self.rootView.memoReadContentView.memoTextView.text = String(text.prefix(2000))
                 }
             })
             .disposed(by: disposeBag)
         
         RxKeyboard.instance.visibleHeight
             .drive(onNext: { keyboardHeight in
-                self.rootView.memoEditContentView.updateTextViewConstraint(keyboardHeight: keyboardHeight)
+                self.rootView.memoReadContentView.updateTextViewConstraint(keyboardHeight: keyboardHeight)
             })
             .disposed(by: disposeBag)
     }
@@ -141,7 +141,7 @@ final class MemoEditViewController: UIViewController {
                     novelImage: memoDetail.userNovelImg
                 )
                 
-                self.rootView.memoEditContentView.bindData(
+                self.rootView.memoReadContentView.bindData(
                     date: memoDetail.memoDate,
                     memoContent: memoDetail.memoContent
                 )

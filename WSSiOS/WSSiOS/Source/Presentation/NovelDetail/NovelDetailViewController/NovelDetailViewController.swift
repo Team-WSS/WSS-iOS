@@ -262,7 +262,7 @@ extension NovelDetailViewController: UITableViewDataSource {
 extension NovelDetailViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.navigationController?.pushViewController(
-            MemoEditViewController(
+            MemoReadViewController(
                 repository: DefaultMemoRepository(
                     memoService: DefaultMemoService()),
                 novelId: self.novelId,

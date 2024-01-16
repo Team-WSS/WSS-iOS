@@ -161,12 +161,12 @@
 		CD39F2E22B50EFCB00B73A5C /* LeftAlignedCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2E12B50EFCB00B73A5C /* LeftAlignedCollectionViewFlowLayout.swift */; };
 		CD39F2E42B50F23B00B73A5C /* NovelDetailInfoPlatformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2E32B50F23B00B73A5C /* NovelDetailInfoPlatformView.swift */; };
 		CD39F2E62B50F2E900B73A5C /* NovelDetailInfoPlatformCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2E52B50F2E900B73A5C /* NovelDetailInfoPlatformCollectionViewCell.swift */; };
-		CD3E5A732B5424D600C0A659 /* MemoEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5A712B5424D600C0A659 /* MemoEditView.swift */; };
+		CD3E5A732B5424D600C0A659 /* MemoReadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5A712B5424D600C0A659 /* MemoReadView.swift */; };
 		CD3E5A742B5424D600C0A659 /* MemoCreateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5A722B5424D600C0A659 /* MemoCreateView.swift */; };
 		CD3E5A782B5424E600C0A659 /* MemoHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5A752B5424E600C0A659 /* MemoHeaderView.swift */; };
 		CD3E5A792B5424E600C0A659 /* MemoCreateContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5A762B5424E600C0A659 /* MemoCreateContentView.swift */; };
-		CD3E5A7A2B5424E600C0A659 /* MemoEditContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5A772B5424E600C0A659 /* MemoEditContentView.swift */; };
-		CD3E5A812B54253E00C0A659 /* MemoEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5A7F2B54253E00C0A659 /* MemoEditViewController.swift */; };
+		CD3E5A7A2B5424E600C0A659 /* MemoReadContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5A772B5424E600C0A659 /* MemoReadContentView.swift */; };
+		CD3E5A812B54253E00C0A659 /* MemoReadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5A7F2B54253E00C0A659 /* MemoReadViewController.swift */; };
 		CD3E5A822B54253E00C0A659 /* MemoCreateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5A802B54253E00C0A659 /* MemoCreateViewController.swift */; };
 		CD3E5A852B54254F00C0A659 /* RxKeyboard in Frameworks */ = {isa = PBXBuildFile; productRef = CD3E5A842B54254F00C0A659 /* RxKeyboard */; };
 		CD3E5A962B55099E00C0A659 /* DeletePopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5A952B55099E00C0A659 /* DeletePopupView.swift */; };
@@ -315,12 +315,12 @@
 		CD39F2E12B50EFCB00B73A5C /* LeftAlignedCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftAlignedCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		CD39F2E32B50F23B00B73A5C /* NovelDetailInfoPlatformView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoPlatformView.swift; sourceTree = "<group>"; };
 		CD39F2E52B50F2E900B73A5C /* NovelDetailInfoPlatformCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoPlatformCollectionViewCell.swift; sourceTree = "<group>"; };
-		CD3E5A712B5424D600C0A659 /* MemoEditView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemoEditView.swift; sourceTree = "<group>"; };
+		CD3E5A712B5424D600C0A659 /* MemoReadView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemoReadView.swift; sourceTree = "<group>"; };
 		CD3E5A722B5424D600C0A659 /* MemoCreateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemoCreateView.swift; sourceTree = "<group>"; };
 		CD3E5A752B5424E600C0A659 /* MemoHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemoHeaderView.swift; sourceTree = "<group>"; };
 		CD3E5A762B5424E600C0A659 /* MemoCreateContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemoCreateContentView.swift; sourceTree = "<group>"; };
-		CD3E5A772B5424E600C0A659 /* MemoEditContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemoEditContentView.swift; sourceTree = "<group>"; };
-		CD3E5A7F2B54253E00C0A659 /* MemoEditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemoEditViewController.swift; sourceTree = "<group>"; };
+		CD3E5A772B5424E600C0A659 /* MemoReadContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemoReadContentView.swift; sourceTree = "<group>"; };
+		CD3E5A7F2B54253E00C0A659 /* MemoReadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemoReadViewController.swift; sourceTree = "<group>"; };
 		CD3E5A802B54253E00C0A659 /* MemoCreateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemoCreateViewController.swift; sourceTree = "<group>"; };
 		CD3E5A952B55099E00C0A659 /* DeletePopupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeletePopupView.swift; sourceTree = "<group>"; };
 		CD3E5A972B5509A500C0A659 /* DeletePopupContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeletePopupContentView.swift; sourceTree = "<group>"; };
@@ -1053,7 +1053,7 @@
 			children = (
 				CD3E5A702B5424BF00C0A659 /* MemoAssistantView */,
 				CD3E5A722B5424D600C0A659 /* MemoCreateView.swift */,
-				CD3E5A712B5424D600C0A659 /* MemoEditView.swift */,
+				CD3E5A712B5424D600C0A659 /* MemoReadView.swift */,
 			);
 			path = MemoView;
 			sourceTree = "<group>";
@@ -1062,7 +1062,7 @@
 			isa = PBXGroup;
 			children = (
 				CD3E5A802B54253E00C0A659 /* MemoCreateViewController.swift */,
-				CD3E5A7F2B54253E00C0A659 /* MemoEditViewController.swift */,
+				CD3E5A7F2B54253E00C0A659 /* MemoReadViewController.swift */,
 			);
 			path = MemoViewController;
 			sourceTree = "<group>";
@@ -1071,7 +1071,7 @@
 			isa = PBXGroup;
 			children = (
 				CD3E5A762B5424E600C0A659 /* MemoCreateContentView.swift */,
-				CD3E5A772B5424E600C0A659 /* MemoEditContentView.swift */,
+				CD3E5A772B5424E600C0A659 /* MemoReadContentView.swift */,
 				CD3E5A752B5424E600C0A659 /* MemoHeaderView.swift */,
 			);
 			path = MemoAssistantView;
@@ -1221,7 +1221,7 @@
 				A107A49C2B4DC8C600668C3E /* HomeCharacterTagView.swift in Sources */,
 				2CCBFA062B4DD85600D787C2 /* MyPageTallyReuseView.swift in Sources */,
 				CD39F2CC2B503B8E00B73A5C /* NovelDetailInfoRatingView.swift in Sources */,
-				CD3E5A732B5424D600C0A659 /* MemoEditView.swift in Sources */,
+				CD3E5A732B5424D600C0A659 /* MemoReadView.swift in Sources */,
 				A1EF35492B52F7B000A94C53 /* AvatarRepository.swift in Sources */,
 				2C6030642B5407E90031544C /* LibraryViewController.swift in Sources */,
 				A1EF355E2B52FAE600A94C53 /* UserNovelService.swift in Sources */,
@@ -1264,7 +1264,7 @@
 				39CD5E0A2B4F2E4000668B9A /* RegisterNormalKeywordSelectionButton.swift in Sources */,
 				A1A1F9CD2B48733200705F44 /* SearchViewController.swift in Sources */,
 				A122C9DF2B530A1A00DFCFE4 /* (null) in Sources */,
-				CD3E5A812B54253E00C0A659 /* MemoEditViewController.swift in Sources */,
+				CD3E5A812B54253E00C0A659 /* MemoReadViewController.swift in Sources */,
 				CD3E5A742B5424D600C0A659 /* MemoCreateView.swift in Sources */,
 				39CC16812B51246E003F56AE /* RegisterNormalView.swift in Sources */,
 				A107A49E2B4DCD9900668C3E /* HomeCharacterView.swift in Sources */,
@@ -1331,7 +1331,7 @@
 				A107A4A02B4DD7E200668C3E /* HomeSosoPickTitleView.swift in Sources */,
 				CD3E5AA22B55190400C0A659 /* UserNovelResult.swift in Sources */,
 				A1EF35472B52F77800A94C53 /* MemoRepository.swift in Sources */,
-				CD3E5A7A2B5424E600C0A659 /* MemoEditContentView.swift in Sources */,
+				CD3E5A7A2B5424E600C0A659 /* MemoReadContentView.swift in Sources */,
 				A1708F142B4D8DF400E35E50 /* HomeViewController.swift in Sources */,
 				2C60306D2B5445EC0031544C /* LibraryTabCollectionViewCell.swift in Sources */,
 				A1DBB2FA2B4AA981000EE869 /* SearchCollectionViewCell.swift in Sources */,
