@@ -1,5 +1,5 @@
 //
-//  MemoCreateView.swift
+//  MemoReadView.swift
 //  WSSiOS
 //
 //  Created by Hyowon Jeon on 1/13/24.
@@ -10,12 +10,12 @@ import UIKit
 import SnapKit
 import Then
 
-final class MemoCreateView: UIView {
+final class MemoReadView: UIView {
     
     // MARK: - UI Components
     
     public let memoHeaderView = MemoHeaderView()
-    public let memoCreateContentView = MemoCreateContentView()
+    public let memoReadContentView = MemoReadContentView()
     
     // MARK: - Life Cycle
     
@@ -34,7 +34,7 @@ final class MemoCreateView: UIView {
     
     private func setHierachy() {
         self.addSubviews(memoHeaderView,
-                         memoCreateContentView)
+                         memoReadContentView)
     }
     
     // MARK: - set Layout
@@ -44,7 +44,7 @@ final class MemoCreateView: UIView {
             $0.top.leading.trailing.equalToSuperview()
         }
         
-        memoCreateContentView.snp.makeConstraints {
+        memoReadContentView.snp.makeConstraints {
             $0.top.equalTo(memoHeaderView.snp.bottom)
             $0.leading.trailing.bottom.equalToSuperview()
         }

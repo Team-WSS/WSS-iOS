@@ -18,6 +18,9 @@ final class NovelDetailViewController: UIViewController {
     private let disposeBag = DisposeBag()
     private let userNovelDetail = BehaviorRelay<UserNovelDetail?>(value: nil)
     private let novelId: Int
+    private var novelTitle = ""
+    private var novelAuthor = ""
+    private var novelImage = ""
     private var selectedMenu = BehaviorSubject<Int>(value: 0)
     private let memoTableViewHeight = BehaviorSubject<CGFloat>(value: 0)
     private let keywordCollectionViewHeight = BehaviorSubject<CGFloat>(value: 0)
@@ -84,8 +87,11 @@ final class NovelDetailViewController: UIViewController {
     // MARK: - set tap gesture
     
     private func setTapGesture() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewDidTap))
-        view.addGestureRecognizer(tapGesture)
+        let viewTapGesture = UITapGestureRecognizer(target: self, action: #selector(viewDidTap))
+        self.rootView.novelDetailMemoSettingButtonView.addGestureRecognizer(viewTapGesture)
+        
+        let memoCreateViewTapGesture = UITapGestureRecognizer(target: self, action: #selector(memoCreateViewDidTap))
+        self.rootView.novelDetailMemoView.novelDetailCreateMemoView.addGestureRecognizer(memoCreateViewTapGesture)
     }
     
     // MARK: - register
@@ -99,6 +105,7 @@ final class NovelDetailViewController: UIViewController {
     
     private func delegate() {
         rootView.novelDetailMemoView.memoTableView.dataSource = self
+        rootView.novelDetailMemoView.memoTableView.delegate = self
         rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.dataSource = self
         rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.delegate = self
     }
@@ -113,7 +120,7 @@ final class NovelDetailViewController: UIViewController {
         rootView.novelDetailMemoSettingButtonView.novelDeleteButton.rx.tap.bind {
             self.rootView.novelDetailMemoSettingButtonView.isHidden = true
             let vc = DeletePopupViewController(
-                repository: DefaultUserNovelRepository(
+                userNovelRepository: DefaultUserNovelRepository(
                     userNovelService: DefaultUserNovelService()
                 ),
                 popupStatus: .novelDelete,
@@ -127,6 +134,18 @@ final class NovelDetailViewController: UIViewController {
         rootView.novelDetailMemoSettingButtonView.novelEditButon.rx.tap.bind {
             self.rootView.novelDetailMemoSettingButtonView.isHidden = true
             self.navigationController?.pushViewController(RegisterNormalViewController(), animated: true)
+        }.disposed(by: disposeBag)
+        
+        rootView.createMemoButton.rx.tap.bind {
+            self.navigationController?.pushViewController(MemoEditViewController(
+                repository: DefaultMemoRepository(
+                    memoService: DefaultMemoService()
+                ),
+                novelId: self.novelId,
+                novelTitle: self.novelTitle,
+                novelAuthor: self.novelAuthor,
+                novelImage: self.novelImage
+            ), animated: true)
         }.disposed(by: disposeBag)
         
         selectedMenu
@@ -175,39 +194,38 @@ final class NovelDetailViewController: UIViewController {
     // MARK: - update UI
 
     private func updateUI(_ novelData: UserNovelDetail) {
-        Observable.just(())
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] in
-                guard let self = self else { return }
-                self.rootView.novelDetailHeaderView.bindData(
-                    title: novelData.userNovelTitle,
-                    author: novelData.userNovelAuthor,
-                    novelImage: novelData.userNovelImg,
-                    genreImage: novelData.userNovelGenreBadgeImg
-                )
-                self.rootView.novelDetailMemoView.bindData(
-                    memos: novelData.memos
-                )
-                self.rootView.novelDetailInfoView.bindData(
-                    rating: novelData.userNovelRating,
-                    readStatus: novelData.userNovelReadStatus,
-                    startDate: novelData.userNovelReadStartDate,
-                    endDate: novelData.userNovelReadEndDate,
-                    description: novelData.userNovelDescription,
-                    genre: novelData.userNovelGenre,
-                    platforms: novelData.platforms
-                )
-                
-                self.rootView.novelDetailMemoView.memoTableView.reloadData()
-                self.rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.reloadData()
-            })
-            .disposed(by: disposeBag)
+        self.novelTitle = novelData.userNovelTitle
+        self.novelAuthor = novelData.userNovelAuthor
+        self.novelImage = novelData.userNovelImg
+        
+        self.rootView.novelDetailHeaderView.bindData(
+            title: novelData.userNovelTitle,
+            author: novelData.userNovelAuthor,
+            novelImage: novelData.userNovelImg,
+            genreImage: novelData.userNovelGenreBadgeImg
+        )
+        self.rootView.novelDetailMemoView.bindData(
+            memos: novelData.memos
+        )
+        self.rootView.novelDetailInfoView.bindData(
+            rating: novelData.userNovelRating,
+            readStatus: novelData.userNovelReadStatus,
+            startDate: novelData.userNovelReadStartDate,
+            endDate: novelData.userNovelReadEndDate,
+            description: novelData.userNovelDescription,
+            genre: novelData.userNovelGenre,
+            platforms: novelData.platforms
+        )
+        
+        self.rootView.novelDetailMemoView.memoTableView.reloadData()
+        self.rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.reloadData()
     }
     
     // MARK: - API request
     
     private func getUserNovel() {
         repository.getUserNovel(userNovelId: self.novelId)
+            .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
                 self.updateUI(data)
             },onError: { owner, error in
@@ -217,6 +235,18 @@ final class NovelDetailViewController: UIViewController {
     
     @objc func viewDidTap() {
         self.rootView.novelDetailMemoSettingButtonView.isHidden = true
+    }
+    
+    @objc func memoCreateViewDidTap() {
+        self.navigationController?.pushViewController(MemoEditViewController(
+            repository: DefaultMemoRepository(
+                memoService: DefaultMemoService()
+            ),
+            novelId: self.novelId,
+            novelTitle: self.novelTitle,
+            novelAuthor: self.novelAuthor,
+            novelImage: self.novelImage
+        ), animated: true)
     }
 }
 
@@ -237,6 +267,18 @@ extension NovelDetailViewController: UITableViewDataSource {
             content: rootView.novelDetailMemoView.memoList[indexPath.row].memoContent
         )
         return cell
+    }
+}
+
+extension NovelDetailViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.navigationController?.pushViewController(
+            MemoReadViewController(
+                repository: DefaultMemoRepository(
+                    memoService: DefaultMemoService()),
+                novelId: self.novelId,
+                memoId: rootView.novelDetailMemoView.memoList[indexPath.row].memoId
+            ), animated: true)
     }
 }
 
