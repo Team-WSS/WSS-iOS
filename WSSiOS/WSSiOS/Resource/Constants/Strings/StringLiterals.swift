@@ -19,6 +19,10 @@ enum StringLiterals {
     }
     
     enum Register {
+        enum Normal {
+            static let new = "내 서재에 등록"
+            static let edit = "수정 완료"
+        }
         enum Success {
             static let title = "내 서재에 작품이\n성공적으로 등록되었어요!"
             static let lottie = "animationRegistration"

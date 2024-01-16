@@ -12,6 +12,7 @@ import RxSwift
 protocol UserNovelRepository {
     func getUserNovel(userNovelId: Int) -> Observable<UserNovelDetail>
     func deleteUserNovel(userNovelId: Int) -> Observable<Void>
+    func postUserNovel(novelId: Int, userNovelRating: Float?, userNovelReadStatus: ReadStatus, userNovelReadStartDate: String?, userNovelReadEndDate: String?) -> Observable<UserNovelId>
 }
 
 struct DefaultUserNovelRepository: UserNovelRepository {
@@ -30,5 +31,15 @@ struct DefaultUserNovelRepository: UserNovelRepository {
     func deleteUserNovel(userNovelId: Int) -> Observable<Void> {
         return userNovelService.deleteUserNovel(userNovelId: userNovelId)
             .asObservable()
+    }
+    
+    func postUserNovel(novelId: Int, userNovelRating: Float?, userNovelReadStatus: ReadStatus, userNovelReadStartDate: String?, userNovelReadEndDate: String?) -> Observable<UserNovelId> {
+        return userNovelService
+            .postUserNovelAPI(novelId: novelId,
+                              userNovelRating: userNovelRating,
+                              userNovelReadStatus: userNovelReadStatus,
+                              userNovelReadStartDate: userNovelReadStartDate,
+                              userNovelReadEndDate: userNovelReadEndDate
+            ).asObservable()
     }
 }

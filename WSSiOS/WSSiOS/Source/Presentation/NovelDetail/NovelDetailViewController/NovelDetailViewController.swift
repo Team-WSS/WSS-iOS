@@ -133,7 +133,7 @@ final class NovelDetailViewController: UIViewController {
         
         rootView.novelDetailMemoSettingButtonView.novelEditButon.rx.tap.bind {
             self.rootView.novelDetailMemoSettingButtonView.isHidden = true
-            self.navigationController?.pushViewController(RegisterNormalViewController(repository: DefaultNovelRepository(novelService: DefaultNovelService()), novelId: nil, userNovelModel: nil), animated: true)
+            self.navigationController?.pushViewController(RegisterNormalViewController(novelRepository: DefaultNovelRepository(novelService: DefaultNovelService()), userNovelRepository: DefaultUserNovelRepository(userNovelService: DefaultUserNovelService())), animated: true)
         }.disposed(by: disposeBag)
         
         rootView.createMemoButton.rx.tap.bind {

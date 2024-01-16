@@ -38,3 +38,14 @@ struct UserNovelPlatform: Codable {
     let platformName: String
     let platformUrl: String
 }
+
+// MARK: - UserNovelBasic
+struct UserNovelBasicInfo: Codable {
+    let userNovelRating: Float?
+    let userNovelReadStatus: String
+    let userNovelReadStartDate, userNovelReadEndDate: String?
+}
+
+struct UserNovelId: Codable {
+    let userNovelId: Int
+}
