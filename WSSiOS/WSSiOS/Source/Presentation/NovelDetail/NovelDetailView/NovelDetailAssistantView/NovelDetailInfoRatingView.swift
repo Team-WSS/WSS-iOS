@@ -85,6 +85,7 @@ final class NovelDetailInfoRatingView: UIView {
     }
     
     func bindData(rating: Float) {
+        self.ratingStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         for i in 0...4 {
             let starImageView = UIImageView()
             
