@@ -10,12 +10,14 @@ import UIKit
 import Kingfisher
 import SnapKit
 import Then
+import UIImageViewAlignedSwift
 
 final class NovelDetailHeaderView: UIView {
 
     // MARK: - UI Components
     
-    private let backgroundImageView = UIImageView()
+    private let backgroundImageView = UIImageViewAligned()
+    private let gradientView = UIImageView()
     private let genreImageView = UIImageView()
     private let novelTitleLabel = UILabel()
     private let novelAuthorLabel = UILabel()
@@ -39,8 +41,15 @@ final class NovelDetailHeaderView: UIView {
     
     private func setUI() {
         backgroundImageView.do {
-            $0.contentMode = .scaleAspectFit
-            $0.backgroundColor = .Gray300
+            $0.contentMode = .scaleAspectFill
+            $0.clipsToBounds = true
+            $0.alignment = .top
+        }
+        
+        gradientView.do {
+            $0.contentMode = .scaleAspectFill
+            $0.clipsToBounds = true
+            $0.image = .registerNormalGradientDummy
         }
         
         genreImageView.do {
@@ -71,6 +80,7 @@ final class NovelDetailHeaderView: UIView {
     
     private func setHierachy() {
         self.addSubviews(backgroundImageView,
+                         gradientView,
                          genreImageView,
                          novelTitleLabel,
                          novelAuthorLabel,
@@ -83,6 +93,10 @@ final class NovelDetailHeaderView: UIView {
         backgroundImageView.snp.makeConstraints {
             $0.edges.equalToSuperview()
             $0.height.equalTo(302)
+        }
+        
+        gradientView.snp.makeConstraints {
+            $0.edges.equalTo(backgroundImageView.snp.edges)
         }
         
         genreImageView.snp.makeConstraints {
@@ -116,5 +130,16 @@ final class NovelDetailHeaderView: UIView {
         self.novelAuthorLabel.text = author
         self.novelCoverImageView.kf.setImage(with: URL(string: novelImage))
         self.genreImageView.kf.setImage(with: URL(string: genreImage))
+        if let novelImageUrl = URL(string: novelImage) {
+            KingfisherManager.shared.retrieveImage(with: novelImageUrl, completionHandler: { result in
+            switch(result) {
+            case .success(let imageResult):
+                let blurredImage = imageResult.image.asBlurredBannerImage(radius: 3)
+                self.backgroundImageView.image = blurredImage
+            case .failure(let error):
+                break
+                }
+            })
+        }
     }
 }
