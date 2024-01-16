@@ -58,17 +58,16 @@ final class MyPageInventoryCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    // 네트워크 연결 후 수정 예정
-    
-    func bindData(_ data: UserAvatar) {
+    func bindData(_ data: UserAvatar, representativeId: Int) {
         myPageAvaterButton.kfSetButtonImage(url: data.avatarImg, state: .normal)
 
-//        if {
-//            myPageAvaterButton.layer.borderColor = UIColor.Primary100.cgColor
-//            myPageAvaterButton.layer.borderWidth = 1
-//        }else {
-//            myPageAvaterButton.layer.borderColor = UIColor.Primary100.cgColor
-//            myPageAvaterButton.layer.borderWidth = 1
-//        }
+        if representativeId == data.avatarId {
+            myPageAvaterButton.layer.borderColor = UIColor.Primary100.cgColor
+            myPageAvaterButton.layer.borderWidth = 1
+        }
+        else {
+            myPageAvaterButton.layer.borderColor = UIColor.clear.cgColor
+            myPageAvaterButton.layer.borderWidth = 0
+        }
     }
 }

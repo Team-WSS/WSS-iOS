@@ -15,12 +15,14 @@ import Then
 final class MyPageViewController: UIViewController {
     
     //MARK: - Set Properties
-
+    
     private var avaterListRelay = BehaviorRelay<[UserAvatar]>(value: [])
     private let disposeBag = DisposeBag()
     private var userRepository: DefaultUserRepository
     private var settingData = MyPageViewModel.setting
-    private var avatarId: Int = 0
+    private var avatarId = 0
+    private var representativeAvatarId = 0
+    private var representativeAvatar = false
     private var hasAvatar = false
     
     init(userRepository: UserRepository) {
@@ -71,13 +73,15 @@ final class MyPageViewController: UIViewController {
     private func bindColletionView() {
         avaterListRelay.bind(to: rootView.myPageInventoryView.myPageAvaterCollectionView.rx.items(
             cellIdentifier: "MyPageInventoryCollectionViewCell",
-            cellType: MyPageInventoryCollectionViewCell.self)) { (row, element, cell) in
-                cell.bindData(element)
+            cellType: MyPageInventoryCollectionViewCell.self)) { [weak self] (row, element, cell) in
+                guard let self = self else { return }
+                
+                self.representativeAvatarId == element.avatarId ? representativeAvatar : !representativeAvatar
+                cell.bindData(element, representativeId: representativeAvatarId)
                 cell.myPageAvaterButton.rx.tap
                     .bind(with: self, onNext: { owner, _ in 
                         owner.avatarId = element.avatarId
                         owner.hasAvatar = element.hasAvatar
-                        
                         owner.tapAvatarButton()
                     })
             }
@@ -91,12 +95,16 @@ final class MyPageViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
+    private func updateRepresentativeAvatar() {
+        rootView.myPageInventoryView.myPageAvaterCollectionView.reloadData()
+    }
+    
     private func bindUserData() {
         userRepository.getUserData()
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in 
-                print(data)
                 owner.rootView.dataBind(data)
+                owner.representativeAvatarId = data.representativeAvatarId
             })
             .disposed(by: disposeBag)
     }
@@ -135,7 +143,7 @@ final class MyPageViewController: UIViewController {
                     tabBarController.tabBar.isHidden = true
                     tabBarController.shadowView.isHidden = true
                 }
-        
+                
                 let changeNicknameViewController = MyPageChangeNicknameViewController()
                 owner.navigationController?.pushViewController(changeNicknameViewController, animated: true)
             })
@@ -149,6 +157,7 @@ extension MyPageViewController {
             avatarRepository:DefaultAvatarRepository(
                 avatarService: DefaultAvatarService()),
             avatarId: avatarId,
+            representativeAvatar: representativeAvatar,
             modalHasAvatar: hasAvatar
         )
         

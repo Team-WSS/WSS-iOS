@@ -17,13 +17,16 @@ class MyPageCustomModalViewController: UIViewController {
     private let disposeBag = DisposeBag()
     private var avatarRepository: DefaultAvatarRepository
     private let avatarId: Int
+    private let representativeAvatar: Bool
     private let modalHasAvatar: Bool
     
     init(avatarRepository: DefaultAvatarRepository,
          avatarId: Int,
+         representativeAvatar: Bool,
          modalHasAvatar: Bool) {
         self.avatarRepository = avatarRepository
         self.avatarId = avatarId
+        self.representativeAvatar = representativeAvatar
         self.modalHasAvatar = modalHasAvatar
         super.init(nibName: nil, bundle: nil)
     }
@@ -35,10 +38,10 @@ class MyPageCustomModalViewController: UIViewController {
     //MARK: - UI Components
     
     private var rootView = MyPageCustomModalView()
-//    private let myPageViewController = MyPageViewController(
-//        userRepository: DefaultUserRepository(
-//            userService: DefaultUserService())
-//    )
+    //    private let myPageViewController = MyPageViewController(
+    //        userRepository: DefaultUserRepository(
+    //            userService: DefaultUserService())
+    //    )
     
     // MARK: - Life Cycle
     
@@ -50,7 +53,7 @@ class MyPageCustomModalViewController: UIViewController {
         setLayout()
         
         bindAvatarData()
-        tapContinueButton()
+        setAction()
     }
     
     //MARK: - Custom Method
@@ -81,11 +84,22 @@ class MyPageCustomModalViewController: UIViewController {
         }
     }
     
-    private func tapContinueButton() {
+    private func setAction() {
         rootView.modalContinueButton.rx.tap
             .bind(with: self, onNext: { owner, _ in
                 //                owner.myPageViewController.myPageViewModel.removeDimmedView.onNext(())
                 owner.dismiss(animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        rootView.modalChangeButton.rx.tap
+            .bind(with: self, onNext: { owner, _ in
+                if !owner.modalHasAvatar || owner.representativeAvatar {
+                    owner.dismiss(animated: true)
+                }
+                else {
+                    owner.patchAvatar()
+                }
             })
             .disposed(by: disposeBag)
     }
@@ -96,6 +110,17 @@ class MyPageCustomModalViewController: UIViewController {
             .subscribe(with: self, onNext: { owner, data in 
                 print(data)
                 owner.rootView.bindData(data)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func patchAvatar() {
+        avatarRepository.patchAvatar(avatarId: avatarId)
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, data in 
+                owner.dismiss(animated: true)
+            },onError: { owner, error in
+                print(error)
             })
             .disposed(by: disposeBag)
     }

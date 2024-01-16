@@ -16,7 +16,7 @@ struct APIConstants {
     static let fcm = "FcmToken"
     
     static let boundary = "Boundary-\(UUID().uuidString)"
-    static let testToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDUxOTM1MTEsImV4cCI6MTcwNjA1NzUxMSwidXNlcklkIjoxfQ.VK42vScpGJ9rpie-jbE2xlGeEbrnP4u6eN8UyzoFbvQ"
+    static let testToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDU0MTUxODQsImV4cCI6MTcwNjI3OTE4NCwidXNlcklkIjoyfQ.BSIfqyxKVjbpFLoMOFM5KWSkkJnowXzDt1x6lIrJqDs"
 }
 
 extension APIConstants {

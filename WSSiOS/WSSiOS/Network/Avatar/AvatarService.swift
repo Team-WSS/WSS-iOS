@@ -11,6 +11,7 @@ import RxSwift
 
 protocol AvatarService {
     func getAvatarData(avatarId: Int) -> Single<AvatarResult>
+    func patchAvatar(avatarId: Int) -> Single<Void>
 }
 
 final class DefaultAvatarService: NSObject, Networking {
@@ -33,6 +34,23 @@ extension DefaultAvatarService: AvatarService {
         return urlSession.rx.data(request: request)
             .map { try self.decode(data: $0,
                                    to: AvatarResult.self) }
+            .asSingle()
+    }
+    
+    func patchAvatar(avatarId: Int) -> RxSwift.Single<Void> {
+        guard let avatarIdData = try? JSONEncoder().encode(AvatarChangeResult(avatarId: avatarId)) else {
+            return .error(NetworkServiceError.invalidRequestError)
+        }
+        
+        let request = try! makeHTTPRequest(method: .patch,
+                                           path: URLs.Avatar.patchRepAvatar,
+                                           headers: APIConstants.testTokenHeader,
+                                           body: avatarIdData)
+        
+        NetworkLogger.log(request: request)
+        
+        return urlSession.rx.data(request: request)
+            .map { _ in }
             .asSingle()
     }
 }

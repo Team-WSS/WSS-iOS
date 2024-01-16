@@ -7,9 +7,13 @@
 
 import Foundation
 
-public struct AvatarResult: Decodable {
+struct AvatarResult: Decodable {
     let avatarTag,
         avatarGenreBadgeImg,
         avatarMent,
         avatarCondition: String
+}
+
+struct AvatarChangeResult: Decodable, Encodable {
+    let avatarId: Int
 }
