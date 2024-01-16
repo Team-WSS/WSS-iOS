@@ -21,6 +21,7 @@ final class SearchViewController: UIViewController {
     //MARK: - UI Components
     
     private let rootView = SearchView()
+    private let backButton = UIButton()
     
     //MARK: - Life Cycle
     
@@ -40,6 +41,7 @@ final class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setUI()
         setDelegate()
         setNavigationBar()
         
@@ -47,6 +49,19 @@ final class SearchViewController: UIViewController {
         bindDataToSearchCollectionView()
         setCollectionViewLayout()
         setSearchAction()
+    }
+    
+    //MARK: - set UI
+    
+    private func setUI() {
+        backButton.do {
+            $0.setImage(ImageLiterals.icon.navigateLeft.withRenderingMode(.alwaysOriginal), for: .normal)
+            $0.rx.tap
+                .subscribe(onNext: { [weak self] in
+                    self?.navigationController?.popViewController(animated: true)
+                })
+                .disposed(by: disposeBag)
+        }
     }
     
     //MARK: - customize NaivationBar
@@ -64,7 +79,7 @@ final class SearchViewController: UIViewController {
             navigationBar.titleTextAttributes = titleTextAttributes
         }
         
-        //self.navigationItem.hidesBackButton = true
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.backButton)
     }
     
     //MARK: - set Delegate
