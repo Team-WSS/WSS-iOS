@@ -13,6 +13,7 @@ protocol MemoRepository {
     func getRecordMemoList() -> Observable<RecordMemos>
     func postMemo(userNovelId: Int, memoContent: String) -> Observable<IsAvatarUnlocked>
     func getMemoDetail(memoId: Int) -> Observable<MemoDetail>
+    func deleteMemo(memoId: Int) -> Observable<Void>
 }
 
 struct DefaultMemoRepository: MemoRepository {
@@ -35,6 +36,11 @@ struct DefaultMemoRepository: MemoRepository {
     
     func getMemoDetail(memoId: Int) -> Observable<MemoDetail> {
         return memoService.getMemoDetail(memoId: memoId)
+            .asObservable()
+    }
+    
+    func deleteMemo(memoId: Int) -> Observable<Void> {
+        return memoService.deleteMemo(memoId: memoId)
             .asObservable()
     }
 }

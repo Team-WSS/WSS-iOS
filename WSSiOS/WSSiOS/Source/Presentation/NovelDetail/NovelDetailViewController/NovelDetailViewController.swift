@@ -117,7 +117,7 @@ final class NovelDetailViewController: UIViewController {
         rootView.novelDetailMemoSettingButtonView.novelDeleteButton.rx.tap.bind {
             self.rootView.novelDetailMemoSettingButtonView.isHidden = true
             let vc = DeletePopupViewController(
-                repository: DefaultUserNovelRepository(
+                userNovelRepository: DefaultUserNovelRepository(
                     userNovelService: DefaultUserNovelService()
                 ),
                 popupStatus: .novelDelete,

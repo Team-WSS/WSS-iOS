@@ -78,7 +78,6 @@ final class MemoReadViewController: UIViewController {
         
         editButon.do {
             $0.setButtonAttributedTitle(text: "수정", font: .Title2, color: .Primary100)
-            $0.isEnabled = false
         }
     }
 
@@ -105,6 +104,19 @@ final class MemoReadViewController: UIViewController {
                 novelAuthor: self.novelAuthor,
                 novelImage: self.novelImage
             ), animated: true)
+        }.disposed(by: disposeBag)
+        
+        rootView.memoReadContentView.deleteButton.rx.tap.bind {
+            let vc = DeletePopupViewController(
+                memoRepository: DefaultMemoRepository(
+                    memoService: DefaultMemoService()
+                ),
+                popupStatus: .memoDelete,
+                memoId: self.memoId
+            )
+            vc.modalPresentationStyle = .overFullScreen
+            vc.modalTransitionStyle = .crossDissolve
+            self.present(vc, animated: true)
         }.disposed(by: disposeBag)
         
         rootView.memoReadContentView.memoTextView.rx.text.orEmpty
