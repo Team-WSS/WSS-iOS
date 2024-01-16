@@ -52,6 +52,7 @@ final class NovelDetailInfoPlatformView: UIView {
 
             $0.collectionViewLayout = layout
             $0.isScrollEnabled = false
+            $0.backgroundColor = .white
         }
     }
     
