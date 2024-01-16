@@ -147,7 +147,8 @@ final class MyPageViewController: UIViewController {
                     tabBarController.shadowView.isHidden = true
                 }
                 
-                let changeNicknameViewController = MyPageChangeNicknameViewController()
+                let changeNicknameViewController = MyPageChangeNicknameViewController(userRepository: DefaultUserRepository(
+                    userService: DefaultUserService()))
                 changeNicknameViewController.bindData(self.userNickName)
                 owner.navigationController?.pushViewController(changeNicknameViewController, animated: true)
             })

@@ -15,6 +15,7 @@ protocol UserService {
 }
 
 final class DefaultUserService: NSObject, Networking {
+    private let userNickNameQueryItems: [URLQueryItem] = [URLQueryItem(name: "userNickname", value: String(describing: 10))]
     private var urlSession: URLSession = URLSession(configuration: URLSessionConfiguration.default,
                                                     delegate: nil,
                                                     delegateQueue: nil)
@@ -42,6 +43,7 @@ extension DefaultUserService: UserService {
         
         let request = try! makeHTTPRequest(method: .patch,
                                            path: URLs.User.patchUserNickname,
+                                           queryItems: userNickNameQueryItems,
                                            headers: APIConstants.testTokenHeader,
                                            body: userNickNameData)
         

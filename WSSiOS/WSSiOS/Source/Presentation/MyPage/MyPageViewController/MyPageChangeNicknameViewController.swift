@@ -14,8 +14,18 @@ final class MyPageChangeNicknameViewController: UIViewController {
     
     //MARK: - Set Properties
     
-    private let userNickName = ""
+    private var userNickName = ""
     private let disposeBag = DisposeBag()
+    private let userRepository : UserRepository
+    
+    init(userRepository: UserRepository) {
+        self.userRepository = userRepository
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     //MARK: - UI Components
     
@@ -47,13 +57,15 @@ final class MyPageChangeNicknameViewController: UIViewController {
             .asObservable()
             .subscribe(with: self, onNext: { owner, _ in
                 owner.rootView.textFieldUnderBarView.backgroundColor = .Gray200
+                owner.patchUserNickName()
             })
             .disposed(by: disposeBag)
         
         rootView.changeNicknameTextField.rx.text
             .subscribe(with: self, onNext: { owner, text in
-                if let countText = text?.count {
-                    owner.rootView.countNicknameLabel.text = "\(countText)/10"
+                if let text = text {
+                    owner.rootView.countNicknameLabel.text = "\(text.count)/10"
+                    owner.userNickName = text
                 }
             })
             .disposed(by: disposeBag)
@@ -77,6 +89,16 @@ final class MyPageChangeNicknameViewController: UIViewController {
             let index = text.index(text.startIndex, offsetBy: 9)
             self.rootView.changeNicknameTextField.text = String(text[..<index])
         }
+    }
+    
+    private func patchUserNickName() {
+        userRepository.patchUserName(userNickName: userNickName)
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, data in 
+            },onError: { owner, error in
+                print(error)
+            })
+            .disposed(by: disposeBag)
     }
     
     func bindData(_ data: String) {
