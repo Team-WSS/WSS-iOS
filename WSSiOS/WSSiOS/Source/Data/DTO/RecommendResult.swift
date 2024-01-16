@@ -7,11 +7,7 @@
 
 import Foundation
 
-struct SosopickNovels {
-    let sosopickList: [SosopickNovel]
-}
-
-struct SosopickNovel {
+struct SosopickNovel: Codable {
     let novelImage: String
     let novelTitle: String
     let novelAuthor: String
