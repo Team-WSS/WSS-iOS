@@ -88,7 +88,7 @@ final class NovelDetailViewController: UIViewController {
     
     private func setTapGesture() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewDidTap))
-        view.addGestureRecognizer(tapGesture)
+        self.rootView.novelDetailMemoSettingButtonView.addGestureRecognizer(tapGesture)
     }
     
     // MARK: - register
