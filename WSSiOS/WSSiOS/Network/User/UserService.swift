@@ -11,6 +11,7 @@ import RxSwift
 
 protocol UserService {
     func getUserData() -> Single<UserResult>
+    func patchUserName(userNickName: String) -> Single<Void>
 }
 
 final class DefaultUserService: NSObject, Networking {
@@ -31,6 +32,23 @@ extension DefaultUserService: UserService {
         return urlSession.rx.data(request: request)
             .map { try self.decode(data: $0,
                                    to: UserResult.self) }
+            .asSingle()
+    }
+    
+    func patchUserName(userNickName: String) -> RxSwift.Single<Void> {
+        guard let userNickNameData = try? JSONEncoder().encode(UserNickNameResult(userNickname: userNickName)) else {
+            return .error(NetworkServiceError.invalidRequestError)
+        }
+        
+        let request = try! makeHTTPRequest(method: .patch,
+                                           path: URLs.User.patchUserNickname,
+                                           headers: APIConstants.testTokenHeader,
+                                           body: userNickNameData)
+        
+        NetworkLogger.log(request: request)
+        
+        return urlSession.rx.data(request: request)
+            .map { _ in }
             .asSingle()
     }
 }

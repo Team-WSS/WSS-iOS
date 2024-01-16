@@ -11,10 +11,10 @@ import RxSwift
 
 protocol UserRepository {
     func getUserData() -> Observable<UserResult>
+    func patchUserName(userNickName: String) -> Observable<Void>
 }
 
 struct DefaultUserRepository: UserRepository {
-    
     private var userService: UserService
     
     init(userService: UserService) {
@@ -25,4 +25,8 @@ struct DefaultUserRepository: UserRepository {
         return userService.getUserData()
             .asObservable()
     }
+    
+    func patchUserName(userNickName: String) -> RxSwift.Observable<Void> {
+        return userService.patchUserName(userNickName: userNickName)
+    }    .asObservable()
 }

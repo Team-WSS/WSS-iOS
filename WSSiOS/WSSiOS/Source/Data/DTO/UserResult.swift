@@ -24,3 +24,7 @@ struct UserAvatar: Codable {
     let avatarImg: String
     let hasAvatar: Bool
 }
+
+struct UserNickNameResult: Codable {
+    let userNickname: String
+}
