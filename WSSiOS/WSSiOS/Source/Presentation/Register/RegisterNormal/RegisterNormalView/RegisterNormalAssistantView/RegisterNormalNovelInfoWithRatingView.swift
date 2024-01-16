@@ -44,7 +44,7 @@ final class RegisterNormalNovelInfoWithRatingView: UIView {
             $0.alignment = .center
             
             novelCoverImageView.do {
-                $0.image = .registerNormalNovelCover
+                $0.image = ImageLiterals.Image.Banner.loadingThumbnail
                 $0.contentMode = .scaleAspectFill
                 $0.layer.cornerRadius = 12
                 $0.clipsToBounds = true

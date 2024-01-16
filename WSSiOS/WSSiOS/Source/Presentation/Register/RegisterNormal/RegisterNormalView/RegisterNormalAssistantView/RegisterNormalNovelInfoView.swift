@@ -41,12 +41,12 @@ final class RegisterNormalNovelInfoView: UIView {
             $0.alignment = .center
             
             novelTitleLabel.do {
-                $0.text = "여성향 게임의 파멸 플래그밖에 없는 악역 영애로 환생해 버렸다"
+                $0.text = "데이터가"
                 novelTitleAttribute(of: $0)
             }
             
             novelAuthorLabel.do {
-                $0.text = "Satoru Yamaguchi"
+                $0.text = "없어요"
                 novelAuthorAttribute(of: $0)
             }
         }
