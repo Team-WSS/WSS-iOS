@@ -15,15 +15,11 @@ import Then
 final class MyPageViewController: UIViewController {
     
     //MARK: - Set Properties
-    
-    private let items2 = Observable.just(["계정정보 확인",
-                                          "로그아웃",
-                                          "웹소소 인스타 보러가기",
-                                          "서비스 이용약관"])
 
     private var avaterListRelay = BehaviorRelay<[UserAvatar]>(value: [])
     private let disposeBag = DisposeBag()
     private var userRepository: DefaultUserRepository
+    private var settingData = MyPageViewModel.setting
     
     init(userRepository: UserRepository) {
         self.userRepository = userRepository as! DefaultUserRepository
@@ -82,7 +78,7 @@ final class MyPageViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
-        items2.bind(to: rootView.myPageSettingView.myPageSettingCollectionView.rx.items(
+        settingData.bind(to: rootView.myPageSettingView.myPageSettingCollectionView.rx.items(
             cellIdentifier: "MyPageSettingCollectionViewCell",
             cellType: MyPageSettingCollectionViewCell.self)) { (row, element, cell) in
                 cell.myPageSettingCellLabel.text = element

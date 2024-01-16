@@ -50,6 +50,10 @@ final class MyPageProfileView: UIView {
             $0.textColor = .Gray300
             $0.textAlignment = .center
         }
+        
+        myPageAvartarImageView.do {
+            $0.contentMode = .scaleToFill
+        }
     }
     
     //MARK: - set Hierachy
@@ -85,15 +89,5 @@ final class MyPageProfileView: UIView {
             $0.centerX.bottom.equalToSuperview()
             $0.size.equalTo(220)
         }
-    }
-    
-    //MARK: - dataBind 
-    //추후 수정 예정
-    
-    func dataBind() {
-        myPageNameLabel.text = "추락한 악역영애"
-        myPagePhraseLabel.text = "김명진 영애, 오늘도 왔구나?"
-        myPageAvartarImageView.image = UIImage(named: "avaterExample")
-        myPageBadgeImageView.image = ImageLiterals.icon.Badge.RF
     }
 }
