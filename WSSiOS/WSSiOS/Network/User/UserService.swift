@@ -23,7 +23,7 @@ final class DefaultUserService: NSObject, Networking {
 extension DefaultUserService: UserService {
     func getUserCharacterData() -> Single<UserCharacter> {
         let request = try! makeHTTPRequest(method: .get,
-                                           path: URLs.Memo.getMemoList,
+                                           path: URLs.Avatar.getRepAvatar,
                                            headers: APIConstants.testTokenHeader,
                                            body: nil)
         
