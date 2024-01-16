@@ -10,19 +10,18 @@ import Foundation
 import RxSwift
 
 protocol AvatarRepository {
-    func getUserData() -> Observable<AvatarResult>
+    func getAvatarData(avatarId: Int) -> Observable<AvatarResult>
 }
 
 struct DefaultAvatarRepository: AvatarRepository {
-    
     private var avatarService: AvatarService
     
     init(avatarService: AvatarService) {
         self.avatarService = avatarService
     }
     
-    func getUserData() -> RxSwift.Observable<AvatarResult> {
-        return avatarService.getAvatarData()
+    func getAvatarData(avatarId: Int) -> RxSwift.Observable<AvatarResult> {
+        return avatarService.getAvatarData(avatarId: avatarId)
             .asObservable()
     }
 }

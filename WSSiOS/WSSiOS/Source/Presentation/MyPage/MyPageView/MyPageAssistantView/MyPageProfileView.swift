@@ -27,7 +27,6 @@ final class MyPageProfileView: UIView {
         setUI()
         setHierachy()
         setLayout()
-        dataBind()
     }
     
     required init?(coder: NSCoder) {

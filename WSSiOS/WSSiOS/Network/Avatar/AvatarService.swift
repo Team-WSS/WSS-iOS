@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 
 protocol AvatarService {
-    func getAvatarData() -> Single<AvatarResult>
+    func getAvatarData(avatarId: Int) -> Single<AvatarResult>
 }
 
 final class DefaultAvatarService: NSObject, Networking {
@@ -21,9 +21,9 @@ final class DefaultAvatarService: NSObject, Networking {
 }
 
 extension DefaultAvatarService: AvatarService {
-    func getAvatarData() -> RxSwift.Single<AvatarResult> {
+    func getAvatarData(avatarId: Int) -> RxSwift.Single<AvatarResult> {
         let request = try! makeHTTPRequest(method: .get,
-                                           path: URLs.Avatar.getAvatarDetail,
+                                           path: URLs.Avatar.getAvatarDetail.replacingOccurrences(of: "{avatarId}", with: String(avatarId)),
                                            queryItems: avatarListQueryItems,
                                            headers: APIConstants.testTokenHeader,
                                            body: nil)
