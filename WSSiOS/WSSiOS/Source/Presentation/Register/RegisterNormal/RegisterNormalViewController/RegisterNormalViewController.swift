@@ -99,7 +99,7 @@ final class RegisterNormalViewController: UIViewController {
     // MARK: - Custom Method
     
     private func getNovel() {
-        repository.getNovel(novelId: novelId)
+        repository.getNovelInfo(novelId: novelId)
             .subscribe(onNext: { data in
                 self.bindData(data)
             },onError: { error in
