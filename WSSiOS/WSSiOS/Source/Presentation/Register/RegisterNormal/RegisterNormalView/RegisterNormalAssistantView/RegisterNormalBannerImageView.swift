@@ -10,6 +10,7 @@ import UIKit
 import SnapKit
 import Then
 import UIImageViewAlignedSwift
+import Kingfisher
 
 final class RegisterNormalBannerImageView: UIView {
     
@@ -62,6 +63,20 @@ final class RegisterNormalBannerImageView: UIView {
             gradientView.snp.makeConstraints {
                 $0.edges.equalToSuperview()
             }
+        }
+    }
+    
+    func bindData(_ novelImage: String) {
+        if let novelImageUrl = URL(string: novelImage) {
+            KingfisherManager.shared.retrieveImage(with: novelImageUrl, completionHandler: { result in
+            switch(result) {
+            case .success(let imageResult):
+                let blurredImage = imageResult.image.asBlurredBannerImage(radius: 15)
+                self.bannerImageView.image = blurredImage
+            case .failure(let error):
+                print(error)
+                }
+            })
         }
     }
 }

@@ -7,6 +7,7 @@
 
 import UIKit
 
+import Kingfisher
 import RxSwift
 import RxCocoa
 import SnapKit
@@ -61,7 +62,6 @@ final class RegisterNormalViewController: UIViewController {
     private var buttonStatus = BehaviorRelay<RegisterNormalReadStatus>(value: .FINISH)
     private var isOn = BehaviorRelay<Bool>(value: true)
     private var showDatePicker = BehaviorRelay<Bool>(value: false)
-    
     private var startDate = BehaviorRelay<Date>(value: Date())
     private var endDate = BehaviorRelay<Date>(value: Date())
     
@@ -93,7 +93,7 @@ final class RegisterNormalViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         getNovel()
-        bind()
+        bindRx()
     }
     
     // MARK: - Custom Method
@@ -101,15 +101,30 @@ final class RegisterNormalViewController: UIViewController {
     private func getNovel() {
         repository.getNovel(novelId: novelId)
             .subscribe(onNext: { data in
-                self.updateUI(data)
+                self.bindData(data)
             },onError: { error in
                 print(error)
             }).disposed(by: disposeBag)
     }
-    private func updateUI(_ data: NovelResult) {
+    
+    private func bindData(_ data: NovelResult) {
+        if let newNovelResult = data.newNovelResult {
+            bindData(newNovelResult)
+        }
+        if let editNovelResult = data.editNovelResult {
+            bindData(editNovelResult)
+        }
+    }
+    
+    private func bindData(_ newData: NewNovelResult) {
+        rootView.bannerImageView.bindData(newData.novelImg.kf)
+    }
+    
+    private func bindData(_ userData: EditNovelResult) {
         
     }
-    private func bind() {
+    
+    private func bindRx() {
         rootView.infoWithRatingView.starRatingView.do { view in
             
             view.starImageViews.enumerated().forEach { index, imageView in

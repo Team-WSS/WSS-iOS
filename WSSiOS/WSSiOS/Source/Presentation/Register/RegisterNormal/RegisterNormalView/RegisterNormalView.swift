@@ -17,7 +17,7 @@ final class RegisterNormalView: UIView {
     private let pageScrollView = UIScrollView()
     private let pageContentView = UIStackView()
     
-    private let bannerImageView = RegisterNormalBannerImageView()
+    let bannerImageView = RegisterNormalBannerImageView()
     let infoWithRatingView = RegisterNormalNovelInfoWithRatingView()
     let readStatusView = RegisterNormalReadStatusView()
     let readDateView = RegisterNormalReadDateView()
