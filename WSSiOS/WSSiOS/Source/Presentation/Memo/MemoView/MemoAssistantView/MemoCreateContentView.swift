@@ -62,4 +62,8 @@ final class MemoCreateContentView: UIView {
             $0.bottom.equalToSuperview().inset(keyboardHeight + 20)
         }
     }
+    
+    func bindData(memoContent: String) {
+        self.memoTextView.text = memoContent
+    }
 }

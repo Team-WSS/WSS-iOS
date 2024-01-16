@@ -17,8 +17,10 @@ final class MemoCreateViewController: UIViewController {
     
     private let repository: MemoRepository
     private let disposeBag = DisposeBag()
-    private let novelId: Int
-    private var memoContent = ""
+    private let novelId: Int?
+    private let memoId: Int?
+    private var memoContent: String?
+    private var updatedMemoContent = ""
 
     // MARK: - UI Components
 
@@ -28,9 +30,11 @@ final class MemoCreateViewController: UIViewController {
 
      // MARK: - Life Cycle
     
-    init(repository: MemoRepository, novelId: Int, novelTitle: String, novelAuthor: String, novelImage: String) {
+    init(repository: MemoRepository, novelId: Int? = nil, memoId: Int? = nil, novelTitle: String, novelAuthor: String, novelImage: String, memoContent: String? = nil) {
         self.repository = repository
         self.novelId = novelId
+        self.memoId = memoId
+        self.memoContent = memoContent
         super.init(nibName: nil, bundle: nil)
         
         self.rootView.memoHeaderView.bindData(
@@ -38,6 +42,12 @@ final class MemoCreateViewController: UIViewController {
             novelAuthor: novelAuthor,
             novelImage: novelImage
         )
+        if let memoContent = memoContent {
+            self.updatedMemoContent = memoContent
+            self.rootView.memoCreateContentView.bindData(
+                memoContent: memoContent
+            )
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -88,16 +98,48 @@ final class MemoCreateViewController: UIViewController {
     
     private func setBinding() {
         backButton.rx.tap.bind {
-            self.navigationController?.popViewController(animated: true)
+            if let memoContent = self.memoContent {
+                if self.updatedMemoContent != self.memoContent {
+                    let vc = DeletePopupViewController(
+                        memoRepository: DefaultMemoRepository(
+                            memoService: DefaultMemoService()
+                        ),
+                        popupStatus: .memoEditCancel
+                    )
+                    vc.modalPresentationStyle = .overFullScreen
+                    vc.modalTransitionStyle = .crossDissolve
+                    self.present(vc, animated: true)
+                } else {
+                    self.navigationController?.popViewController(animated: true)
+                }
+            } else {
+                if self.updatedMemoContent.count > 0 {
+                    let vc = DeletePopupViewController(
+                        memoRepository: DefaultMemoRepository(
+                            memoService: DefaultMemoService()
+                        ),
+                        popupStatus: .memoEditCancel
+                    )
+                    vc.modalPresentationStyle = .overFullScreen
+                    vc.modalTransitionStyle = .crossDissolve
+                    self.present(vc, animated: true)
+                } else {
+                    self.navigationController?.popViewController(animated: true)
+                }
+            }
         }.disposed(by: disposeBag)
         
         completeButton.rx.tap.bind {
-            self.postMemo()
+            if let memoContent = self.memoContent {
+                self.patchMemo()
+            } else {
+                self.postMemo()
+            }
         }.disposed(by: disposeBag)
         
         rootView.memoCreateContentView.memoTextView.rx.text.orEmpty
             .subscribe(onNext: { text in
-                self.memoContent = text
+                self.updatedMemoContent = text
                 if text.count == 0 {
                     self.disableCompleteButton()
                 } else if text.count > 2000 {
@@ -105,6 +147,11 @@ final class MemoCreateViewController: UIViewController {
                     self.disableCompleteButton()
                 } else {
                     self.enableCompleteButton()
+                }
+                if let memoContent = self.memoContent {
+                    if self.updatedMemoContent == self.memoContent {
+                        self.disableCompleteButton()
+                    }
                 }
             })
             .disposed(by: disposeBag)
@@ -119,7 +166,22 @@ final class MemoCreateViewController: UIViewController {
     // MARK: - API request
     
     private func postMemo() {
-        repository.postMemo(userNovelId: self.novelId, memoContent: memoContent)
+        repository.postMemo(userNovelId: self.novelId!, memoContent: updatedMemoContent)
+            .subscribe(with: self, onNext: { owner, data in
+                Observable.just(())
+                    .observe(on: MainScheduler.instance)
+                    .subscribe(onNext: { [weak self] in
+                        guard let self = self else { return }
+                        self.navigationController?.popViewController(animated: true)
+                    })
+                    .disposed(by: self.disposeBag)
+            },onError: { owner, error in
+                print(error)
+            }).disposed(by: disposeBag)
+    }
+    
+    private func patchMemo() {
+        repository.patchMemo(memoId: self.memoId!, memoContent: updatedMemoContent)
             .subscribe(with: self, onNext: { owner, data in
                 Observable.just(())
                     .observe(on: MainScheduler.instance)

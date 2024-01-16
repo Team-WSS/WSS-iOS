@@ -63,7 +63,10 @@ final class DeletePopupViewController: UIViewController {
             rootView.deletePopupContentView.deleteButton.rx.tap.bind {
                 self.deleteMemo()
             }.disposed(by: disposeBag)
-        case .memoEditCancel: break
+        case .memoEditCancel:
+            rootView.deletePopupContentView.deleteButton.rx.tap.bind {
+                self.dismiss(animated: true)
+            }.disposed(by: disposeBag)
         case .novelDelete:
             rootView.deletePopupContentView.deleteButton.rx.tap.bind {
                 self.deleteUserNovel()

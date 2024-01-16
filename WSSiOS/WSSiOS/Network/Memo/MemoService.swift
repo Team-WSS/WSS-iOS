@@ -14,6 +14,7 @@ protocol MemoService {
     func postMemo(userNovelId: Int, memoContent: String) -> Single<IsAvatarUnlocked>
     func getMemoDetail(memoId: Int) -> Single<MemoDetail>
     func deleteMemo(memoId: Int) -> Single<Void>
+    func patchMemo(memoId: Int, memoContent: String) -> Single<Void>
 }
 
 final class DefaultMemoService: NSObject, Networking {
@@ -79,6 +80,23 @@ extension DefaultMemoService: MemoService {
                                            path: URLs.Memo.deleteMemo.replacingOccurrences(of: "{memoId}", with: String(memoId)),
                                            headers: APIConstants.testTokenHeader,
                                            body: nil)
+        
+        NetworkLogger.log(request: request)
+        
+        return urlSession.rx.data(request: request)
+            .map { _ in }
+            .asSingle()
+    }
+    
+    func patchMemo(memoId: Int, memoContent: String) -> Single<Void> {
+        guard let memoContentData = try? JSONEncoder().encode(MemoContent(memoContent: memoContent)) else {
+            return Single.error(NetworkServiceError.invalidRequestError)
+        }
+        
+        let request = try! makeHTTPRequest(method: .patch,
+                                           path: URLs.Memo.patchMemo.replacingOccurrences(of: "{memoId}", with: String(memoId)),
+                                           headers: APIConstants.testTokenHeader,
+                                           body: memoContentData)
         
         NetworkLogger.log(request: request)
         

@@ -136,7 +136,8 @@ final class NovelDetailViewController: UIViewController {
         rootView.createMemoButton.rx.tap.bind {
             self.navigationController?.pushViewController(MemoCreateViewController(
                 repository: DefaultMemoRepository(
-                    memoService: DefaultMemoService()),
+                    memoService: DefaultMemoService()
+                ),
                 novelId: self.novelId,
                 novelTitle: self.novelTitle,
                 novelAuthor: self.novelAuthor,
