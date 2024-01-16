@@ -32,8 +32,7 @@ enum URLs {
     
     enum Memo {
         static let getMemo = "/memos/{memoId}"
-//        static let getMemoList = "/memos"
-        static let getMemoList = "/memos?lastMemoId=100&size=3&sortType=NEWEST"
+        static let getMemoList = "/memos"
         static let postMemo = "user-novels/{userNovelId}/memo"
         static let patchMemo = "/memos/{memoId}"
         static let deleteMemo = "/memos/{memoId}"
