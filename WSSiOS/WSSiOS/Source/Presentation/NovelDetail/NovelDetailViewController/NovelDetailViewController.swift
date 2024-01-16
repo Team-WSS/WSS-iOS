@@ -117,6 +117,11 @@ final class NovelDetailViewController: UIViewController {
             self.present(vc, animated: true)
         }.disposed(by: disposeBag)
         
+        rootView.novelDetailMemoSettingButtonView.novelEditButon.rx.tap.bind {
+            self.rootView.novelDetailMemoSettingButtonView.isHidden = true
+            self.navigationController?.pushViewController(RegisterNormalViewController(), animated: true)
+        }.disposed(by: disposeBag)
+        
         selectedMenu
             .subscribe(onNext: { selectedMenu in
                 if selectedMenu == 0 {
