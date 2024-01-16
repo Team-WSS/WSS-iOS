@@ -1,5 +1,5 @@
 //
-//  MemoCreateViewController.swift
+//  MemoEditViewController.swift
 //  WSSiOS
 //
 //  Created by Hyowon Jeon on 1/13/24.
@@ -11,7 +11,7 @@ import RxCocoa
 import RxKeyboard
 import RxSwift
 
-final class MemoCreateViewController: UIViewController {
+final class MemoEditViewController: UIViewController {
     
     //MARK: - set Properties
     
@@ -24,7 +24,7 @@ final class MemoCreateViewController: UIViewController {
 
     // MARK: - UI Components
 
-    private let rootView = MemoCreateView()
+    private let rootView = MemoEditView()
     private let backButton = UIButton()
     private let completeButton = UIButton()
 
@@ -44,7 +44,7 @@ final class MemoCreateViewController: UIViewController {
         )
         if let memoContent = memoContent {
             self.updatedMemoContent = memoContent
-            self.rootView.memoCreateContentView.bindData(
+            self.rootView.memoEditContentView.bindData(
                 memoContent: memoContent
             )
         }
@@ -137,13 +137,13 @@ final class MemoCreateViewController: UIViewController {
             }
         }.disposed(by: disposeBag)
         
-        rootView.memoCreateContentView.memoTextView.rx.text.orEmpty
+        rootView.memoEditContentView.memoTextView.rx.text.orEmpty
             .subscribe(onNext: { text in
                 self.updatedMemoContent = text
                 if text.count == 0 {
                     self.disableCompleteButton()
                 } else if text.count > 2000 {
-                    self.rootView.memoCreateContentView.memoTextView.text = String(text.prefix(2000))
+                    self.rootView.memoEditContentView.memoTextView.text = String(text.prefix(2000))
                     self.disableCompleteButton()
                 } else {
                     self.enableCompleteButton()
@@ -158,7 +158,7 @@ final class MemoCreateViewController: UIViewController {
         
         RxKeyboard.instance.visibleHeight
             .drive(onNext: { keyboardHeight in
-                self.rootView.memoCreateContentView.updateTextViewConstraint(keyboardHeight: keyboardHeight)
+                self.rootView.memoEditContentView.updateTextViewConstraint(keyboardHeight: keyboardHeight)
             })
             .disposed(by: disposeBag)
     }

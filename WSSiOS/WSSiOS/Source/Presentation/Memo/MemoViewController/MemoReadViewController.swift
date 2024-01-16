@@ -96,7 +96,7 @@ final class MemoReadViewController: UIViewController {
         }.disposed(by: disposeBag)
         
         editButon.rx.tap.bind {
-            self.navigationController?.pushViewController(MemoCreateViewController(
+            self.navigationController?.pushViewController(MemoEditViewController(
                 repository: DefaultMemoRepository(
                     memoService: DefaultMemoService()
                 ),

@@ -134,7 +134,7 @@ final class NovelDetailViewController: UIViewController {
         }.disposed(by: disposeBag)
         
         rootView.createMemoButton.rx.tap.bind {
-            self.navigationController?.pushViewController(MemoCreateViewController(
+            self.navigationController?.pushViewController(MemoEditViewController(
                 repository: DefaultMemoRepository(
                     memoService: DefaultMemoService()
                 ),
