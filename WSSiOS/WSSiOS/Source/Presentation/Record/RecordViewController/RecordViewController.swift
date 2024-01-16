@@ -69,11 +69,13 @@ final class RecordViewController: UIViewController {
         rootView.recordTableView.register(RecordTableViewCell.self, forCellReuseIdentifier: RecordTableViewCell.identifier)
     }
     
-    func transform(disposeBag: DisposeBag, completion: @escaping (Int, [RecordMemo]) -> Void) {
+    func getDataFromAPI(disposeBag: DisposeBag, completion: @escaping (Int, [RecordMemo]) -> Void) {
         self.memoRepository.getRecordMemoList()
             .subscribe (
                 onNext: { [weak self] memo in
                     guard self != nil else { return }
+                    
+                    print(memo)
                     let recordMemoCount = memo.memoCount
                     let recordMemoList = memo.memos
                     
@@ -84,13 +86,6 @@ final class RecordViewController: UIViewController {
                 })
             .disposed(by: disposeBag)
     }
-
-    private func bindDataToUI() {
-        self.transform(disposeBag: disposeBag) { [weak self] recordMemoCount, recordMemoList in
-            // 뷰 컨트롤러에서 전달받은 데이터 처리
-            self?.updateUI(recordMemoCount: recordMemoCount, recordMemoList: recordMemoList)
-        }
-    }
     
     private func bindDataToRecordTableView() {
         recordMemoListRelay
@@ -98,6 +93,13 @@ final class RecordViewController: UIViewController {
                 cell.bindData(data: element)
             }
             .disposed(by: disposeBag)
+    }
+    
+    private func bindDataToUI() {
+        self.getDataFromAPI(disposeBag: disposeBag) { [weak self] recordMemoCount, recordMemoList in
+            // 뷰 컨트롤러에서 전달받은 데이터 처리
+            self?.updateUI(recordMemoCount: recordMemoCount, recordMemoList: recordMemoList)
+        }
     }
     
     // UI 로직 구현
@@ -109,7 +111,7 @@ final class RecordViewController: UIViewController {
         .observe(on: MainScheduler.instance)
         .subscribe(onNext: { [weak self] count, list in
             self?.rootView.headerView.recordCountLabel.text = "\(count)개"
-
+            
             if count == 0 {
                 self?.view = RecordEmptyView()
             }
