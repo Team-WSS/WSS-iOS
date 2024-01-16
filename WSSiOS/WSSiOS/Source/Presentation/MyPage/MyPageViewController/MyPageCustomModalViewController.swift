@@ -17,10 +17,14 @@ class MyPageCustomModalViewController: UIViewController {
     private let disposeBag = DisposeBag()
     private var avatarRepository: DefaultAvatarRepository
     private let avatarId: Int
+    private let modalHasAvatar: Bool
     
-    init(avatarRepository: DefaultAvatarRepository, avatarId: Int) {
+    init(avatarRepository: DefaultAvatarRepository,
+         avatarId: Int,
+         modalHasAvatar: Bool) {
         self.avatarRepository = avatarRepository
         self.avatarId = avatarId
+        self.modalHasAvatar = modalHasAvatar
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -41,22 +45,39 @@ class MyPageCustomModalViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setUI()
         setHierachy()
         setLayout()
+        
         bindAvatarData()
         tapContinueButton()
     }
     
     //MARK: - Custom Method
     
+    private func setUI() {
+        if !modalHasAvatar {
+            rootView.modalContinueButton.isHidden = true
+            rootView.modalChangeButton.setTitle("돌아가기", for: .normal)
+        }
+    }
+    
     private func setHierachy() {
         self.view.addSubview(rootView)
     }
     
     private func setLayout() {
-        rootView.snp.makeConstraints() {
-            $0.bottom.width.equalToSuperview()
-            $0.height.equalTo(572)
+        if !modalHasAvatar {
+            rootView.snp.makeConstraints() {
+                $0.bottom.width.equalToSuperview()
+                $0.height.equalTo(533)
+            }
+        }
+        else {
+            rootView.snp.makeConstraints() {
+                $0.bottom.width.equalToSuperview()
+                $0.height.equalTo(572)
+            }
         }
     }
     

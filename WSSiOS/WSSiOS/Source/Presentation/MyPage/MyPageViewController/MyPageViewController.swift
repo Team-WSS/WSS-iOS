@@ -20,7 +20,8 @@ final class MyPageViewController: UIViewController {
     private let disposeBag = DisposeBag()
     private var userRepository: DefaultUserRepository
     private var settingData = MyPageViewModel.setting
-    private var avatarId : Int = 0
+    private var avatarId: Int = 0
+    private var hasAvatar = false
     
     init(userRepository: UserRepository) {
         self.userRepository = userRepository as! DefaultUserRepository
@@ -75,6 +76,8 @@ final class MyPageViewController: UIViewController {
                 cell.myPageAvaterButton.rx.tap
                     .bind(with: self, onNext: { owner, _ in 
                         owner.avatarId = element.avatarId
+                        owner.hasAvatar = element.hasAvatar
+                        
                         owner.tapAvatarButton()
                     })
             }
@@ -144,9 +147,11 @@ extension MyPageViewController {
     @objc func tapAvatarButton() {
         let modalVC = MyPageCustomModalViewController(
             avatarRepository:DefaultAvatarRepository(
-                avatarService: DefaultAvatarService()
-            ), avatarId: avatarId
+                avatarService: DefaultAvatarService()),
+            avatarId: avatarId,
+            modalHasAvatar: hasAvatar
         )
+        
         //        addDimmedView()
         modalVC.modalPresentationStyle = .overFullScreen
         present(modalVC, animated: true)
