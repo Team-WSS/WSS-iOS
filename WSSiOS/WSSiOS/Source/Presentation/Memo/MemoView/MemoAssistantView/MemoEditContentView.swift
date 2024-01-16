@@ -99,4 +99,9 @@ final class MemoEditContentView: UIView {
             $0.bottom.equalToSuperview().inset(keyboardHeight + 20)
         }
     }
+    
+    func bindData(date: String, memoContent: String) {
+        self.dateLabel.text = date
+        self.memoTextView.text = memoContent
+    }
 }

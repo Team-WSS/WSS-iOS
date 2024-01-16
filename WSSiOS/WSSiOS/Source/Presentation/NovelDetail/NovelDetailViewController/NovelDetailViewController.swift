@@ -18,6 +18,9 @@ final class NovelDetailViewController: UIViewController {
     private let disposeBag = DisposeBag()
     private let userNovelDetail = BehaviorRelay<UserNovelDetail?>(value: nil)
     private let novelId: Int
+    private var novelTitle = ""
+    private var novelAuthor = ""
+    private var novelImage = ""
     private var selectedMenu = BehaviorSubject<Int>(value: 0)
     private let memoTableViewHeight = BehaviorSubject<CGFloat>(value: 0)
     private let keywordCollectionViewHeight = BehaviorSubject<CGFloat>(value: 0)
@@ -28,9 +31,6 @@ final class NovelDetailViewController: UIViewController {
     private let rootView = NovelDetailView()
     private let backButton = UIButton()
     private let novelSettingButton = UIButton()
-    private var novelTitle = ""
-    private var novelAuthor = ""
-    private var novelImage = ""
     
     // MARK: - Life Cycle
     
@@ -102,6 +102,7 @@ final class NovelDetailViewController: UIViewController {
     
     private func delegate() {
         rootView.novelDetailMemoView.memoTableView.dataSource = self
+        rootView.novelDetailMemoView.memoTableView.delegate = self
         rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.dataSource = self
         rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.delegate = self
     }
@@ -255,6 +256,18 @@ extension NovelDetailViewController: UITableViewDataSource {
             content: rootView.novelDetailMemoView.memoList[indexPath.row].memoContent
         )
         return cell
+    }
+}
+
+extension NovelDetailViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.navigationController?.pushViewController(
+            MemoEditViewController(
+                repository: DefaultMemoRepository(
+                    memoService: DefaultMemoService()),
+                novelId: self.novelId,
+                memoId: rootView.novelDetailMemoView.memoList[indexPath.row].memoId
+            ), animated: true)
     }
 }
 

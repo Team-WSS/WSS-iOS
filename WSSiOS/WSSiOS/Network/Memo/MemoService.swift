@@ -12,6 +12,7 @@ import RxSwift
 protocol MemoService {
     func getRecordMemosData() -> Single<RecordMemos>
     func postMemo(userNovelId: Int, memoContent: String) -> Single<IsAvatarUnlocked>
+    func getMemoDetail(memoId: Int) -> Single<MemoDetail>
 }
 
 final class DefaultMemoService: NSObject, Networking {
@@ -56,6 +57,19 @@ extension DefaultMemoService: MemoService {
         
         return urlSession.rx.data(request: request)
             .map { try self.decode(data: $0, to: IsAvatarUnlocked.self) }
+            .asSingle()
+    }
+    
+    func getMemoDetail(memoId: Int) -> Single<MemoDetail> {
+        let request = try! makeHTTPRequest(method: .get,
+                                           path: URLs.Memo.getMemo.replacingOccurrences(of: "{memoId}", with: String(memoId)),
+                                           headers: APIConstants.testTokenHeader,
+                                           body: nil)
+        
+        NetworkLogger.log(request: request)
+        
+        return urlSession.rx.data(request: request)
+            .map { try self.decode(data: $0, to: MemoDetail.self) }
             .asSingle()
     }
 }

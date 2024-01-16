@@ -18,3 +18,11 @@ struct MemoContent: Codable {
 struct IsAvatarUnlocked: Codable {
     let isAvatarUnlocked: Bool
 }
+
+struct MemoDetail: Codable {
+    let userNovelTitle: String
+    let userNovelImg: String
+    let userNovelAuthor: String
+    let memoDate: String
+    let memoContent: String
+}

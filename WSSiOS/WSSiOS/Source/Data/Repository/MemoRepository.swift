@@ -12,6 +12,7 @@ import RxSwift
 protocol MemoRepository {
     func getRecordMemoList() -> Observable<RecordMemos>
     func postMemo(userNovelId: Int, memoContent: String) -> Observable<IsAvatarUnlocked>
+    func getMemoDetail(memoId: Int) -> Observable<MemoDetail>
 }
 
 struct DefaultMemoRepository: MemoRepository {
@@ -29,6 +30,11 @@ struct DefaultMemoRepository: MemoRepository {
     
     func postMemo(userNovelId: Int, memoContent: String) -> Observable<IsAvatarUnlocked> {
         return memoService.postMemo(userNovelId: userNovelId, memoContent: memoContent)
+            .asObservable()
+    }
+    
+    func getMemoDetail(memoId: Int) -> Observable<MemoDetail> {
+        return memoService.getMemoDetail(memoId: memoId)
             .asObservable()
     }
 }
