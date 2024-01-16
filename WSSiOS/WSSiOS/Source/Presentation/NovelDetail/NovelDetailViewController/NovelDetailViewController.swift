@@ -87,8 +87,11 @@ final class NovelDetailViewController: UIViewController {
     // MARK: - set tap gesture
     
     private func setTapGesture() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewDidTap))
-        self.rootView.novelDetailMemoSettingButtonView.addGestureRecognizer(tapGesture)
+        let viewTapGesture = UITapGestureRecognizer(target: self, action: #selector(viewDidTap))
+        self.rootView.novelDetailMemoSettingButtonView.addGestureRecognizer(viewTapGesture)
+        
+        let memoCreateViewTapGesture = UITapGestureRecognizer(target: self, action: #selector(memoCreateViewDidTap))
+        self.rootView.novelDetailMemoView.novelDetailCreateMemoView.addGestureRecognizer(memoCreateViewTapGesture)
     }
     
     // MARK: - register
@@ -237,6 +240,18 @@ final class NovelDetailViewController: UIViewController {
     
     @objc func viewDidTap() {
         self.rootView.novelDetailMemoSettingButtonView.isHidden = true
+    }
+    
+    @objc func memoCreateViewDidTap() {
+        self.navigationController?.pushViewController(MemoEditViewController(
+            repository: DefaultMemoRepository(
+                memoService: DefaultMemoService()
+            ),
+            novelId: self.novelId,
+            novelTitle: self.novelTitle,
+            novelAuthor: self.novelAuthor,
+            novelImage: self.novelImage
+        ), animated: true)
     }
 }
 
