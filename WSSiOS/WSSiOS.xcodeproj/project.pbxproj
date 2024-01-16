@@ -174,6 +174,7 @@
 		CD3E5A9A2B5509AB00C0A659 /* DeletePopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5A992B5509AB00C0A659 /* DeletePopupViewController.swift */; };
 		CD3E5AA22B55190400C0A659 /* UserNovelResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5AA12B55190400C0A659 /* UserNovelResult.swift */; };
 		CD3E5AAB2B56173C00C0A659 /* NovelDetailMemoSettingButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5AAA2B56173C00C0A659 /* NovelDetailMemoSettingButtonView.swift */; };
+		CD3E5AB32B565DFF00C0A659 /* NovelMemoResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5AB22B565DFF00C0A659 /* NovelMemoResult.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -326,6 +327,7 @@
 		CD3E5A992B5509AB00C0A659 /* DeletePopupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeletePopupViewController.swift; sourceTree = "<group>"; };
 		CD3E5AA12B55190400C0A659 /* UserNovelResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNovelResult.swift; sourceTree = "<group>"; };
 		CD3E5AAA2B56173C00C0A659 /* NovelDetailMemoSettingButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailMemoSettingButtonView.swift; sourceTree = "<group>"; };
+		CD3E5AB22B565DFF00C0A659 /* NovelMemoResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelMemoResult.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -959,6 +961,7 @@
 			children = (
 				A1EF35682B52FD9B00A94C53 /* AvatarDTO.swift */,
 				CD3E5AA12B55190400C0A659 /* UserNovelResult.swift */,
+				CD3E5AB22B565DFF00C0A659 /* NovelMemoResult.swift */,
 			);
 			path = DTO;
 			sourceTree = "<group>";
@@ -1338,6 +1341,7 @@
 				CD39F2D22B50CE0600B73A5C /* NovelDetailInfoReadStatusTagView.swift in Sources */,
 				A1EF35452B52F76C00A94C53 /* UserNovelRepository.swift in Sources */,
 				CD39F2C32B4FFDF900B73A5C /* NovelDetailMemoView.swift in Sources */,
+				CD3E5AB32B565DFF00C0A659 /* NovelMemoResult.swift in Sources */,
 				A122C9E12B530A4100DFCFE4 /* (null) in Sources */,
 				CD39F2D02B50CD4700B73A5C /* NovelDetailInfoReadStatusView.swift in Sources */,
 				CD39F2E22B50EFCB00B73A5C /* LeftAlignedCollectionViewFlowLayout.swift in Sources */,

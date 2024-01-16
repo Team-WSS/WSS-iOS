@@ -28,6 +28,9 @@ final class NovelDetailViewController: UIViewController {
     private let rootView = NovelDetailView()
     private let backButton = UIButton()
     private let novelSettingButton = UIButton()
+    private var novelTitle = ""
+    private var novelAuthor = ""
+    private var novelImage = ""
     
     // MARK: - Life Cycle
     
@@ -129,6 +132,17 @@ final class NovelDetailViewController: UIViewController {
             self.navigationController?.pushViewController(RegisterNormalViewController(), animated: true)
         }.disposed(by: disposeBag)
         
+        rootView.createMemoButton.rx.tap.bind {
+            self.navigationController?.pushViewController(MemoCreateViewController(
+                repository: DefaultMemoRepository(
+                    memoService: DefaultMemoService()),
+                novelId: self.novelId,
+                novelTitle: self.novelTitle,
+                novelAuthor: self.novelAuthor,
+                novelImage: self.novelImage
+            ), animated: true)
+        }.disposed(by: disposeBag)
+        
         selectedMenu
             .subscribe(onNext: { selectedMenu in
                 if selectedMenu == 0 {
@@ -175,6 +189,10 @@ final class NovelDetailViewController: UIViewController {
     // MARK: - update UI
 
     private func updateUI(_ novelData: UserNovelDetail) {
+        self.novelTitle = novelData.userNovelTitle
+        self.novelAuthor = novelData.userNovelAuthor
+        self.novelImage = novelData.userNovelImg
+        
         Observable.just(())
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] in

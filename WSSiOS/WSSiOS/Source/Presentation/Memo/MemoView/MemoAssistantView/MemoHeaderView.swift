@@ -39,19 +39,16 @@ final class MemoHeaderView: UIView {
         self.backgroundColor = .white
         
         novelTitleLabel.do {
-            $0.text = "당신의 이해를 돕기 위하여"
             $0.textColor = .Black
             $0.font = .Title1
         }
         
         novelAuthorLabel.do {
-            $0.text = "이보라"
             $0.textColor = .Gray200
             $0.font = .Body2
         }
         
         novelCoverImageView.do {
-            $0.image = UIImage(named: "sample5")
             $0.contentMode = .scaleAspectFill
             $0.clipsToBounds = true
             $0.layer.cornerRadius = 4
@@ -89,5 +86,11 @@ final class MemoHeaderView: UIView {
             $0.width.equalTo(68)
             $0.height.equalTo(49)
         }
+    }
+    
+    func bindData(novelTitle: String, novelAuthor: String, novelImage: String) {
+        self.novelTitleLabel.text = novelTitle
+        self.novelAuthorLabel.text = novelAuthor
+        self.novelCoverImageView.kf.setImage(with: URL(string: novelImage))
     }
 }
