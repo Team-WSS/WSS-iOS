@@ -75,6 +75,7 @@ final class HomeViewController: UIViewController {
             .do(onNext: { [weak self] user in
                 guard let self = self else { return }
                 self.userCharacter = user
+                self.characterId = user.avatarId
             })
         
         let sosopickObservable = self.recommendRepository.getSosopickNovels()
@@ -118,6 +119,7 @@ final class HomeViewController: UIViewController {
             .subscribe(onNext: { user in
                 self.rootView.characterView.tagView.tagLabel.text = user.avatarTag
                 self.rootView.characterView.characterCommentLabel.text = user.avatarComment
+                //MARK: - characterId값에 따른 캐릭터 로띠 이미지 분기처리 필요
                 self.characterId = user.avatarId
                 self.userNickname = user.userNickname
                 
