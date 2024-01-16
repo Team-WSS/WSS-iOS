@@ -16,18 +16,14 @@ final class MyPageViewController: UIViewController {
     
     //MARK: - Set Properties
     
-    //DummyData
-    private let items = Observable.just([UIImage(named: "exampleAvater"),
-                                         UIImage(named: "exampleAvater"),
-                                         UIImage(named: "exampleAvater"),
-                                         UIImage(named: "exampleAvater")])
     private let items2 = Observable.just(["계정정보 확인",
                                           "로그아웃",
                                           "웹소소 인스타 보러가기",
                                           "서비스 이용약관"])
-    private var userRepository: DefaultUserRepository
+
     private var avaterListRelay = BehaviorRelay<[UserAvatar]>(value: [])
     private let disposeBag = DisposeBag()
+    private var userRepository: DefaultUserRepository
     
     init(userRepository: UserRepository) {
         self.userRepository = userRepository as! DefaultUserRepository
@@ -53,10 +49,10 @@ final class MyPageViewController: UIViewController {
         super.viewDidLoad()
         
         register()
-        bindData()
+        bindUserData()
         
-        bindDataToMyPageCollectionView()
-        pushChangeNicknameViewController()
+        bindColletionView()
+        pushViewController()
         //        removeDimmedView()
     }
     
@@ -66,31 +62,7 @@ final class MyPageViewController: UIViewController {
         bindDataAgain()
     }
     
-    private func bindData() {
-        userRepository.getUserData()
-            .observe(on: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, data in 
-                print(data)
-                owner.rootView.dataBind(data)
-            })
-            .disposed(by: disposeBag)
-    }
-    
-    private func bindDataAgain() {
-        getDataFromAPI(disposeBag: disposeBag) { avatarCount, avatarList in 
-            self.updateUI(avatarList: avatarList)
-        }
-    }
-    
-    private func updateUI(avatarList: [UserAvatar]) {
-        Observable.just(avatarList)
-            .observe(on: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, list in 
-                owner.avaterListRelay.accept(list)
-            })
-    }
-    
-    //MARK: - UI Components
+    //MARK: - Custom Method
     
     private func register() {
         rootView.myPageInventoryView.myPageAvaterCollectionView.register(MyPageInventoryCollectionViewCell.self, forCellWithReuseIdentifier: "MyPageInventoryCollectionViewCell")
@@ -98,9 +70,7 @@ final class MyPageViewController: UIViewController {
         rootView.myPageSettingView.myPageSettingCollectionView.register(MyPageSettingCollectionViewCell.self, forCellWithReuseIdentifier: "MyPageSettingCollectionViewCell")
     }
     
-    //MARK: - Custom Method
-    
-    private func bindDataToMyPageCollectionView() {
+    private func bindColletionView() {
         avaterListRelay.bind(to: rootView.myPageInventoryView.myPageAvaterCollectionView.rx.items(
             cellIdentifier: "MyPageInventoryCollectionViewCell",
             cellType: MyPageInventoryCollectionViewCell.self)) { (row, element, cell) in
@@ -120,18 +90,20 @@ final class MyPageViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    private func pushChangeNicknameViewController() {
-        rootView.myPageTallyView.myPageUserNameButton.rx.tap
-            .bind(with: self, onNext: { owner, _ in 
-                if let tabBarController = owner.tabBarController as? WSSTabBarController {
-                    tabBarController.tabBar.isHidden = true
-                    tabBarController.shadowView.isHidden = true
-                }
-                
-                let changeNicknameViewController = MyPageChangeNicknameViewController()
-                owner.navigationController?.pushViewController(changeNicknameViewController, animated: true)
+    private func bindUserData() {
+        userRepository.getUserData()
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, data in 
+                print(data)
+                owner.rootView.dataBind(data)
             })
             .disposed(by: disposeBag)
+    }
+    
+    private func bindDataAgain() {
+        getDataFromAPI(disposeBag: disposeBag) { avatarCount, avatarList in 
+            self.updateUI(avatarList: avatarList)
+        }
     }
     
     private func getDataFromAPI(disposeBag: DisposeBag, completion: @escaping (Int, [UserAvatar]) -> Void) {
@@ -143,6 +115,28 @@ final class MyPageViewController: UIViewController {
                 completion(avatarCount, avatarList)
             }, onError: { error, _ in
                 print(error)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func updateUI(avatarList: [UserAvatar]) {
+        Observable.just(avatarList)
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, list in 
+                owner.avaterListRelay.accept(list)
+            })
+    }
+    
+    private func pushViewController() {
+        rootView.myPageTallyView.myPageUserNameButton.rx.tap
+            .bind(with: self, onNext: { owner, _ in 
+                if let tabBarController = owner.tabBarController as? WSSTabBarController {
+                    tabBarController.tabBar.isHidden = true
+                    tabBarController.shadowView.isHidden = true
+                }
+                
+                let changeNicknameViewController = MyPageChangeNicknameViewController()
+                owner.navigationController?.pushViewController(changeNicknameViewController, animated: true)
             })
             .disposed(by: disposeBag)
     }
