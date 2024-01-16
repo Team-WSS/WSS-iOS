@@ -74,8 +74,6 @@ final class RecordViewController: UIViewController {
             .subscribe (
                 onNext: { [weak self] memo in
                     guard self != nil else { return }
-                    
-                    print(memo)
                     let recordMemoCount = memo.memoCount
                     let recordMemoList = memo.memos
                     
