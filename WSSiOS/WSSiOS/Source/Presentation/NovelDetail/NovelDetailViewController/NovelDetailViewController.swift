@@ -55,6 +55,7 @@ final class NovelDetailViewController: UIViewController {
         
         setNavigationBar()
         setUI()
+        setTapGesture()
         register()
         delegate()
         bind()
@@ -79,6 +80,13 @@ final class NovelDetailViewController: UIViewController {
         }
     }
     
+    // MARK: - set tap gesture
+    
+    private func setTapGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewDidTap))
+        view.addGestureRecognizer(tapGesture)
+    }
+    
     // MARK: - register
 
     private func register() {
@@ -99,6 +107,14 @@ final class NovelDetailViewController: UIViewController {
     private func bind() {
         novelSettingButton.rx.tap.bind {
             self.rootView.novelDetailMemoSettingButtonView.isHidden = false
+        }.disposed(by: disposeBag)
+        
+        rootView.novelDetailMemoSettingButtonView.novelDeleteButton.rx.tap.bind {
+            self.rootView.novelDetailMemoSettingButtonView.isHidden = true
+            let vc = DeletePopupViewController(.novelDelete)
+            vc.modalPresentationStyle = .overFullScreen
+            vc.modalTransitionStyle = .crossDissolve
+            self.present(vc, animated: true)
         }.disposed(by: disposeBag)
         
         selectedMenu
@@ -181,6 +197,10 @@ final class NovelDetailViewController: UIViewController {
             },onError: { owner, error in
                 print(error)
             }).disposed(by: disposeBag)
+    }
+    
+    @objc func viewDidTap() {
+        self.rootView.novelDetailMemoSettingButtonView.isHidden = true
     }
 }
 

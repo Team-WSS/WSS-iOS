@@ -14,13 +14,15 @@ final class DeletePopupView: UIView {
     
     // MARK: - UI Components
     
-    let deletePopupContentView = DeletePopupContentView(.novelDelete)
+    var deletePopupContentView: DeletePopupContentView?
 
     // MARK: - Life Cycle
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(_ popupStatus: PopupStatus) {
+        super.init(frame: .zero)
         
+        deletePopupContentView = DeletePopupContentView(popupStatus)
+
         setUI()
         setHierachy()
         setLayout()
@@ -39,13 +41,13 @@ final class DeletePopupView: UIView {
     // MARK: - set Hierachy
     
     private func setHierachy() {
-        self.addSubview(deletePopupContentView)
+        self.addSubview(deletePopupContentView!)
     }
     
     // MARK: - set Layout
     
     private func setLayout() {
-        deletePopupContentView.snp.makeConstraints {
+        deletePopupContentView!.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.leading.trailing.equalToSuperview().inset(41.5)
         }
