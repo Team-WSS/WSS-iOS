@@ -14,6 +14,7 @@ final class NovelDetailMemoSettingButtonView: UIView {
     
     // MARK: - UI Components
     
+    public let backgroundView = UIView()
     private let containerView = UIView()
     private let dividerView = UIView()
     public let novelDeleteButton = UIButton()
@@ -66,7 +67,8 @@ final class NovelDetailMemoSettingButtonView: UIView {
     // MARK: - set Hierachy
     
     private func setHierachy() {
-        self.addSubview(containerView)
+        self.addSubview(backgroundView)
+        self.backgroundView.addSubview(containerView)
         self.containerView.addSubviews(novelDeleteButton,
                                        novelEditButon,
                                        dividerView)
@@ -75,8 +77,13 @@ final class NovelDetailMemoSettingButtonView: UIView {
     // MARK: - set Layout
     
     private func setLayout() {
-        containerView.snp.makeConstraints {
+        backgroundView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+        }
+        
+        containerView.snp.makeConstraints {
+            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).inset(14)
+            $0.trailing.equalToSuperview().inset(18)
         }
         
         novelDeleteButton.snp.makeConstraints {

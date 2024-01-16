@@ -14,7 +14,7 @@ final class RecordHeaderView: UIView {
     
     //MARK: - UI Components
     
-    private let recordCountLabel = UILabel()
+    let recordCountLabel = UILabel()
     private let headerAlignmentView = RecordHeaderAlignmentView()
     
     // MARK: - Life Cycle
@@ -39,7 +39,6 @@ final class RecordHeaderView: UIView {
         }
         
         recordCountLabel.do {
-            $0.text = "234개"
             $0.font = .Label1
             $0.textColor = .Gray200
         }
