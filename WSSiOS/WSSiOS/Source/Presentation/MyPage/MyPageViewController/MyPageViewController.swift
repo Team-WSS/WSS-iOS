@@ -7,8 +7,8 @@
 
 import UIKit
 
-import RxCocoa
 import RxSwift
+import RxCocoa
 import SnapKit
 import Then
 
@@ -26,6 +26,7 @@ final class MyPageViewController: UIViewController {
                                           "웹소소 인스타 보러가기",
                                           "서비스 이용약관"])
     private var userRepository: DefaultUserRepository
+    private var avaterListRelay = BehaviorRelay<[UserAvatar]>(value: [])
     private let disposeBag = DisposeBag()
     
     init(userRepository: UserRepository) {
@@ -59,13 +60,34 @@ final class MyPageViewController: UIViewController {
         //        removeDimmedView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        bindDataAgain()
+    }
+    
     private func bindData() {
         userRepository.getUserData()
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in 
+                print(data)
                 owner.rootView.dataBind(data)
             })
             .disposed(by: disposeBag)
+    }
+    
+    private func bindDataAgain() {
+        getDataFromAPI(disposeBag: disposeBag) { avatarCount, avatarList in 
+            self.updateUI(avatarList: avatarList)
+        }
+    }
+    
+    private func updateUI(avatarList: [UserAvatar]) {
+        Observable.just(avatarList)
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, list in 
+                owner.avaterListRelay.accept(list)
+            })
     }
     
     //MARK: - UI Components
@@ -79,10 +101,10 @@ final class MyPageViewController: UIViewController {
     //MARK: - Custom Method
     
     private func bindDataToMyPageCollectionView() {
-        items.bind(to: rootView.myPageInventoryView.myPageAvaterCollectionView.rx.items(
+        avaterListRelay.bind(to: rootView.myPageInventoryView.myPageAvaterCollectionView.rx.items(
             cellIdentifier: "MyPageInventoryCollectionViewCell",
             cellType: MyPageInventoryCollectionViewCell.self)) { (row, element, cell) in
-                cell.myPageAvaterButton.setImage(element, for: .normal)
+                cell.bindData(element)
                 cell.myPageAvaterButton.rx.tap
                     .bind(with: self, onNext: { owner, _ in 
                         owner.tapAvatarButton()
@@ -112,11 +134,18 @@ final class MyPageViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    //    private func bindViewModel() {
-    //        let input = MyPageViewModel.Input(
-    //            viewWillAppearEvent: self.rx.viewWillAppear.asObservable(),
-    //        )
-    //    }
+    private func getDataFromAPI(disposeBag: DisposeBag, completion: @escaping (Int, [UserAvatar]) -> Void) {
+        self.userRepository.getUserData()
+            .subscribe(with: self, onNext: { owner, data in
+                let avatarCount = data.userAvatars.count
+                let avatarList = data.userAvatars
+                
+                completion(avatarCount, avatarList)
+            }, onError: { error, _ in
+                print(error)
+            })
+            .disposed(by: disposeBag)
+    }
 }
 
 extension MyPageViewController {

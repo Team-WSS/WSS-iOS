@@ -7,24 +7,20 @@
 
 import Foundation
 
-public struct UserResult: Decodable {
-    public let representativeAvatarGenreBadge,
+public struct UserResult: Codable {
+    let representativeAvatarGenreBadge,
                representativeAvatarTag,
                representativeAvatarLineContent,
                representativeAvatarImg,
                userNickName: String
-    public let representativeAvatarId, 
+    let representativeAvatarId, 
                userNovelCount,
                memoCount: Int
-    
-    init(representativeAvatarGenreBadge: String, representativeAvatarTag: String, representativeAvatarLineContent: String, representativeAvatarImg: String, userNickName: String, representativeAvatarId: Int, userNovelCount: Int, memoCount: Int) {
-        self.representativeAvatarGenreBadge = representativeAvatarGenreBadge
-        self.representativeAvatarTag = representativeAvatarTag
-        self.representativeAvatarLineContent = representativeAvatarLineContent
-        self.representativeAvatarImg = representativeAvatarImg
-        self.userNickName = userNickName
-        self.representativeAvatarId = representativeAvatarId
-        self.userNovelCount = userNovelCount
-        self.memoCount = memoCount
-    }
+    let userAvatars: [UserAvatar]
+}
+
+struct UserAvatar: Codable {
+    let avatarId: Int
+    let avatarImg: String
+    let hasAvatar: Bool
 }

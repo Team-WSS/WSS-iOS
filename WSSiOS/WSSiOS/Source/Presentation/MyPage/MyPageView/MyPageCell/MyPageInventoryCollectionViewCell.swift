@@ -60,15 +60,15 @@ final class MyPageInventoryCollectionViewCell: UICollectionViewCell {
     
     // 네트워크 연결 후 수정 예정
     
-    func bindData(_ selected: Bool) {
-        myPageAvaterButton.setImage(UIImage(named: "exampleAvater"), for: .normal)
+    func bindData(_ data: UserAvatar) {
+        myPageAvaterButton.kfSetButtonImage(url: data.avatarImg, state: .normal)
 
-        if selected {
-            myPageAvaterButton.layer.borderColor = UIColor.Primary100.cgColor
-            myPageAvaterButton.layer.borderWidth = 1
-        }else {
-            myPageAvaterButton.layer.borderColor = UIColor.Primary100.cgColor
-            myPageAvaterButton.layer.borderWidth = 1
-        }
+//        if {
+//            myPageAvaterButton.layer.borderColor = UIColor.Primary100.cgColor
+//            myPageAvaterButton.layer.borderWidth = 1
+//        }else {
+//            myPageAvaterButton.layer.borderColor = UIColor.Primary100.cgColor
+//            myPageAvaterButton.layer.borderWidth = 1
+//        }
     }
 }
