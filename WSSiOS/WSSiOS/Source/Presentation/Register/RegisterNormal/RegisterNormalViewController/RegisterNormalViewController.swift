@@ -51,9 +51,12 @@ final class RegisterNormalViewController: UIViewController {
     
     // MARK: - Properties
     
-    // RxSwift에서 메모리 관리를 위한 DisposeBag
-    private let disposeBag = DisposeBag()
+    // 서버 통신을 위한 properties
+    private let repository: NovelRepository
+    private let novelId: Int
     
+    // RxSwift
+    private let disposeBag = DisposeBag()
     private var starRating = BehaviorRelay<Float>(value: 0.0)
     private var buttonStatus = BehaviorRelay<RegisterNormalReadStatus>(value: .FINISH)
     private var isOn = BehaviorRelay<Bool>(value: true)
@@ -72,17 +75,40 @@ final class RegisterNormalViewController: UIViewController {
     
     // MARK: - View Life Cycle
     
+    init(repository: NovelRepository, novelId: Int) {
+        self.repository = repository
+        self.novelId = novelId
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func loadView() {
         self.view = rootView
+        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        getNovel()
         bind()
     }
     
     // MARK: - Custom Method
     
+    private func getNovel() {
+        repository.getNovel(novelId: novelId)
+            .subscribe(onNext: { data in
+                self.updateUI(data)
+            },onError: { error in
+                print(error)
+            }).disposed(by: disposeBag)
+    }
+    private func updateUI(_ data: NovelResult) {
+        
+    }
     private func bind() {
         rootView.infoWithRatingView.starRatingView.do { view in
             

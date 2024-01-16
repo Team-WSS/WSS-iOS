@@ -126,7 +126,7 @@ final class NovelDetailViewController: UIViewController {
         
         rootView.novelDetailMemoSettingButtonView.novelEditButon.rx.tap.bind {
             self.rootView.novelDetailMemoSettingButtonView.isHidden = true
-            self.navigationController?.pushViewController(RegisterNormalViewController(), animated: true)
+            //self.navigationController?.pushViewController(RegisterNormalViewController(), animated: true)
         }.disposed(by: disposeBag)
         
         selectedMenu

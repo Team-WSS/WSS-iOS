@@ -18,7 +18,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         navigationController.isNavigationBarHidden = true
         
         self.window = UIWindow(windowScene: windowScene)
-        self.window?.rootViewController = navigationController
+        self.window?.rootViewController = RegisterNormalViewController(repository: DefaultNovelRepository(novelService: DefaultNovelService()), novelId: 2)
         self.window?.makeKeyAndVisible()
     }
     
