@@ -49,7 +49,6 @@ final class MyPageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setNavigationBar()
         register()
         bindUserData()
         
@@ -61,8 +60,10 @@ final class MyPageViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.hidesBottomBarWhenPushed = false
-        self.tabBarController?.tabBar.isHidden = false
+        if let tabBarController = self.tabBarController as? WSSTabBarController {
+            tabBarController.tabBar.isHidden = false
+            tabBarController.shadowView.isHidden = false
+        }
         
         bindDataAgain()
     }
@@ -112,10 +113,6 @@ final class MyPageViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    private func updateRepresentativeAvatar() {
-        rootView.myPageInventoryView.myPageAvaterCollectionView.reloadData()
-    }
-    
     private func bindUserData() {
         userRepository.getUserData()
             .observe(on: MainScheduler.instance)
@@ -128,17 +125,16 @@ final class MyPageViewController: UIViewController {
     }
     
     private func bindDataAgain() {
-        getDataFromAPI(disposeBag: disposeBag) { userData, avatarList in 
-            self.updateUI(userData: userData, avatarList: avatarList)
+        getDataFromAPI(disposeBag: disposeBag) { data, list in 
+            self.updateUI(userData: data, avatarList: list)
         }
     }
     
     private func getDataFromAPI(disposeBag: DisposeBag, completion: @escaping (UserResult, [UserAvatar]) -> Void) {
         self.userRepository.getUserData()
-            .subscribe(with: self, onNext: { owner, data in
-                let userNickName = data.userNickName
-                let avatarCount = data.userAvatars.count
-                let avatarList = data.userAvatars
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, userData in
+                completion(userData, userData.userAvatars)
             }, onError: { error, _ in
                 print(error)
             })
@@ -146,15 +142,9 @@ final class MyPageViewController: UIViewController {
     }
     
     private func updateUI(userData: UserResult, avatarList: [UserAvatar]) {
-        Observable.combineLatest(
-                    Observable.just(userData),
-                    Observable.just(avatarList)
-                )
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] data, list in
-                self?.rootView.myPageTallyView.myPageUserNameButton.setTitle(data.userNickName, for: .normal)
-                self?.avaterListRelay.accept(list)
-            })
+        self.userNickName = userData.userNickName
+        self.rootView.dataBind(userData)
+        self.avaterListRelay.accept(avatarList)
     }
     
     private func pushViewController() {

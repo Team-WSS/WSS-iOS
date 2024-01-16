@@ -66,7 +66,6 @@ final class MyPageChangeNicknameViewController: UIViewController {
             $0.rx.tap
                 .subscribe(with: self, onNext: { owner, _ in 
                     owner.patchUserNickName()
-                    owner.navigationController?.popViewController(animated: true)
                 })
         }
     }
@@ -135,10 +134,10 @@ final class MyPageChangeNicknameViewController: UIViewController {
         userRepository.patchUserName(userNickName: userNickName)
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in 
-            },onError: { owner, error in
+                owner.navigationController?.popViewController(animated: true)
+            }, onError: { owner, error in
                 print(error)
             })
-            .disposed(by: disposeBag)
     }
     
     func bindData(_ data: String) {
