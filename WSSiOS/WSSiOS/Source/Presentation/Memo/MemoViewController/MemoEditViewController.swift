@@ -33,7 +33,7 @@ final class MemoEditViewController: UIViewController {
          super.viewDidLoad()
          
          setTapGesture()
-         bind()
+         setBinding()
      }
     
     // MARK: - set tap gesture
@@ -43,9 +43,9 @@ final class MemoEditViewController: UIViewController {
         view.addGestureRecognizer(tapGesture)
     }
     
-    // MARK: - bind
+    // MARK: - set Binding
     
-    private func bind() {
+    private func setBinding() {
         rootView.memoEditContentView.memoTextView.rx.text.orEmpty
             .subscribe(onNext: { text in
                 self.memoContent = text

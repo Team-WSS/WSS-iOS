@@ -59,7 +59,7 @@ final class NovelDetailViewController: UIViewController {
         setTapGesture()
         register()
         delegate()
-        bind()
+        setBinding()
     }
     
     // MARK: - set NavigationBar
@@ -103,9 +103,9 @@ final class NovelDetailViewController: UIViewController {
         rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.delegate = self
     }
     
-    // MARK: - bind
+    // MARK: - set Binding
     
-    private func bind() {
+    private func setBinding() {
         novelSettingButton.rx.tap.bind {
             self.rootView.novelDetailMemoSettingButtonView.isHidden = false
         }.disposed(by: disposeBag)
@@ -175,29 +175,33 @@ final class NovelDetailViewController: UIViewController {
     // MARK: - update UI
 
     private func updateUI(_ novelData: UserNovelDetail) {
-        DispatchQueue.main.async {
-            self.rootView.novelDetailHeaderView.bindData(
-                title: novelData.userNovelTitle,
-                author: novelData.userNovelAuthor,
-                novelImage: novelData.userNovelImg,
-                genreImage: novelData.userNovelGenreBadgeImg
-            )
-            self.rootView.novelDetailMemoView.bindData(
-                memos: novelData.memos
-            )
-            self.rootView.novelDetailInfoView.bindData(
-                rating: novelData.userNovelRating,
-                readStatus: novelData.userNovelReadStatus,
-                startDate: novelData.userNovelReadStartDate,
-                endDate: novelData.userNovelReadEndDate,
-                description: novelData.userNovelDescription,
-                genre: novelData.userNovelGenre,
-                platforms: novelData.platforms
-            )
-
-            self.rootView.novelDetailMemoView.memoTableView.reloadData()
-            self.rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.reloadData()
-        }
+        Observable.just(())
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] in
+                guard let self = self else { return }
+                self.rootView.novelDetailHeaderView.bindData(
+                    title: novelData.userNovelTitle,
+                    author: novelData.userNovelAuthor,
+                    novelImage: novelData.userNovelImg,
+                    genreImage: novelData.userNovelGenreBadgeImg
+                )
+                self.rootView.novelDetailMemoView.bindData(
+                    memos: novelData.memos
+                )
+                self.rootView.novelDetailInfoView.bindData(
+                    rating: novelData.userNovelRating,
+                    readStatus: novelData.userNovelReadStatus,
+                    startDate: novelData.userNovelReadStartDate,
+                    endDate: novelData.userNovelReadEndDate,
+                    description: novelData.userNovelDescription,
+                    genre: novelData.userNovelGenre,
+                    platforms: novelData.platforms
+                )
+                
+                self.rootView.novelDetailMemoView.memoTableView.reloadData()
+                self.rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.reloadData()
+            })
+            .disposed(by: disposeBag)
     }
     
     // MARK: - API request

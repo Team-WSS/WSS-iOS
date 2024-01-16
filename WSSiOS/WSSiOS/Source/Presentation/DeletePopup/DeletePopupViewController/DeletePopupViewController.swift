@@ -44,12 +44,12 @@ final class DeletePopupViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        bind()
+        setBinding()
     }
     
-    // MARK: - bind
+    // MARK: - set Binding
     
-    private func bind() {
+    private func setBinding() {
         rootView.deletePopupContentView.cancelButton.rx.tap.bind {
             self.dismiss(animated: true)
         }.disposed(by: disposeBag)

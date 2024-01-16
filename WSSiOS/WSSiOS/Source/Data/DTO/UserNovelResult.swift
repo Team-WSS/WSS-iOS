@@ -1,5 +1,5 @@
 //
-//  UserNovelDTO.swift
+//  UserNovelResult.swift
 //  WSSiOS
 //
 //  Created by Hyowon Jeon on 1/15/24.
