@@ -7,6 +7,7 @@
 
 import UIKit
 
+import Kingfisher
 import SnapKit
 import Then
 
@@ -94,11 +95,10 @@ final class SearchCollectionViewCell: UICollectionViewCell {
             $0.leading.equalTo(novelImageView.snp.trailing).offset(16)
         }
     }
-    
-    //TODO: - 서버 붙이고 나서 수정 필요
-    
+
     func bindData(data: SearchNovel) {
-        novelImageView.image = data.novelImage
+        guard let imageURL = URL(string: data.novelImg) else { return }
+        novelImageView.kf.setImage(with: imageURL)
         novelTitleLabel.text = data.novelTitle
         novelAuthorLabel.text = data.novelAuthor
         novelGenreLabel.text = data.novelGenre

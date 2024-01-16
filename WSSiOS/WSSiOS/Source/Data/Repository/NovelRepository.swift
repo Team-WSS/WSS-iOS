@@ -22,7 +22,7 @@ struct DefaultNovelRepository: NovelRepository {
     }
     
     func getSearchNovels() -> Observable<SearchNovels> {
-        return novelService.getSearchNovelData()
+        return novelService.getSearchNovelData(searchWord: "당")
             .asObservable()
     }
 }
