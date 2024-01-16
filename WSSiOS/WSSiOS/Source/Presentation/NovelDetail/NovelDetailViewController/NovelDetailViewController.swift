@@ -14,10 +14,10 @@ final class NovelDetailViewController: UIViewController {
     
     //MARK: - set Properties
     
-    private let userNovelDetail = BehaviorRelay<UserNovelDetail?>(value: nil)
-    
     private let repository: UserNovelRepository
     private let disposeBag = DisposeBag()
+    private let userNovelDetail = BehaviorRelay<UserNovelDetail?>(value: nil)
+    private let novelId: Int
     private var selectedMenu = BehaviorSubject<Int>(value: 0)
     private let memoTableViewHeight = BehaviorSubject<CGFloat>(value: 0)
     private let keywordCollectionViewHeight = BehaviorSubject<CGFloat>(value: 0)
@@ -31,8 +31,9 @@ final class NovelDetailViewController: UIViewController {
     
     // MARK: - Life Cycle
     
-    init(repository: UserNovelRepository) {
+    init(repository: UserNovelRepository, novelId: Int) {
         self.repository = repository
+        self.novelId = novelId
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -111,7 +112,13 @@ final class NovelDetailViewController: UIViewController {
         
         rootView.novelDetailMemoSettingButtonView.novelDeleteButton.rx.tap.bind {
             self.rootView.novelDetailMemoSettingButtonView.isHidden = true
-            let vc = DeletePopupViewController(.novelDelete)
+            let vc = DeletePopupViewController(
+                repository: DefaultUserNovelRepository(
+                    userNovelService: DefaultUserNovelService()
+                ),
+                popupStatus: .novelDelete,
+                novelId: self.novelId
+            )
             vc.modalPresentationStyle = .overFullScreen
             vc.modalTransitionStyle = .crossDissolve
             self.present(vc, animated: true)
@@ -196,7 +203,7 @@ final class NovelDetailViewController: UIViewController {
     // MARK: - API request
     
     private func getUserNovel() {
-        repository.getUserNovel(userNovelId: 2)
+        repository.getUserNovel(userNovelId: self.novelId)
             .subscribe(with: self, onNext: { owner, data in
                 self.updateUI(data)
             },onError: { owner, error in

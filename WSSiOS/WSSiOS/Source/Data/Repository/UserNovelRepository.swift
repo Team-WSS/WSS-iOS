@@ -11,6 +11,7 @@ import RxSwift
 
 protocol UserNovelRepository {
     func getUserNovel(userNovelId: Int) -> Observable<UserNovelDetail>
+    func deleteUserNovel(userNovelId: Int) -> Observable<Void>
 }
 
 struct DefaultUserNovelRepository: UserNovelRepository {
@@ -25,4 +26,9 @@ struct DefaultUserNovelRepository: UserNovelRepository {
         return userNovelService.getUserNovel(userNovelId: userNovelId)
             .asObservable()
     }
-} 
+    
+    func deleteUserNovel(userNovelId: Int) -> Observable<Void> {
+        return userNovelService.deleteUserNovel(userNovelId: userNovelId)
+            .asObservable()
+    }
+}
