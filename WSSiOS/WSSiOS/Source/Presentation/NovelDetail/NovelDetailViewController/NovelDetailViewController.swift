@@ -26,6 +26,8 @@ final class NovelDetailViewController: UIViewController {
     // MARK: - UI Components
     
     private let rootView = NovelDetailView()
+    private let backButton = UIButton()
+    private let novelSettingButton = UIButton()
     
     // MARK: - Life Cycle
     
@@ -51,9 +53,30 @@ final class NovelDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setNavigationBar()
+        setUI()
         register()
         delegate()
         bind()
+    }
+    
+    // MARK: - set NavigationBar
+    
+    private func setNavigationBar() {
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.backButton)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.novelSettingButton)
+    }
+    
+    // MARK: - set UI
+    
+    private func setUI() {
+        backButton.do {
+            $0.setImage(ImageLiterals.icon.navigateLeft.withRenderingMode(.alwaysOriginal), for: .normal)
+        }
+        
+        novelSettingButton.do {
+            $0.setImage(ImageLiterals.icon.meatballMemo.withRenderingMode(.alwaysOriginal), for: .normal)
+        }
     }
     
     // MARK: - register
