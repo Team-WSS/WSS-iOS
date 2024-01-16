@@ -12,6 +12,7 @@ protocol Networking {
         method: HTTPMethod,
         baseURL: String,
         path: String,
+        queryItems: [URLQueryItem]?,
         headers: [String: String]?,
         body: Data?) throws -> URLRequest
     
@@ -29,10 +30,17 @@ extension Networking {
         method: HTTPMethod,
         baseURL: String = Bundle.main.object(forInfoDictionaryKey: Config.Keys.Plist.baseURL) as? String ?? "",
         path: String,
+        queryItems: [URLQueryItem]? = nil,
         headers: [String: String]?,
         body: Data?) throws -> URLRequest
     {
-        guard let url = URL(string: baseURL + path) else {
+        guard var urlComponents = URLComponents(string: baseURL + path) else {
+            throw NetworkServiceError.invalidURLError
+        }
+        
+        urlComponents.queryItems = queryItems
+        
+        guard let url = urlComponents.url else {
             throw NetworkServiceError.invalidURLError
         }
         

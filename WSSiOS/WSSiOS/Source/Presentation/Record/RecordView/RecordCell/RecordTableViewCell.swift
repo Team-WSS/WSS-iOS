@@ -85,9 +85,9 @@ final class RecordTableViewCell: UITableViewCell {
         }
     }
     
-    func bindData(data: Record) {
-        dateView.dateLabel.text = data.recordDate
+    func bindData(data: RecordMemo) {
+        dateView.dateLabel.text = data.date
         novelTitleLabel.text = data.novelTitle
-        recordContentLabel.text = data.recordContent
+        recordContentLabel.text = data.content
     }
 }

@@ -39,6 +39,10 @@ final class NovelDetailMemoTableViewCell: UITableViewCell {
     // MARK: - set UI
     
     private func setUI() {
+        self.do {
+            $0.backgroundColor = .white
+        }
+        
         leftDividerView.do {
             $0.backgroundColor = .Gray70
         }
