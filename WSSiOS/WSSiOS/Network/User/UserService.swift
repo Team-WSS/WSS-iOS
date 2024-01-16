@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 
 protocol UserService {
-    func getUserCharacter() -> Single<UserCharacter>
+    func getUserCharacterData() -> Single<UserCharacter>
 }
 
 final class DefaultUserService: NSObject, Networking {
@@ -21,7 +21,7 @@ final class DefaultUserService: NSObject, Networking {
 }
 
 extension DefaultUserService: UserService {
-    func getUserCharacter() -> Single<UserCharacter> {
+    func getUserCharacterData() -> Single<UserCharacter> {
         let request = try! makeHTTPRequest(method: .get,
                                            path: URLs.Memo.getMemoList,
                                            headers: APIConstants.testTokenHeader,
