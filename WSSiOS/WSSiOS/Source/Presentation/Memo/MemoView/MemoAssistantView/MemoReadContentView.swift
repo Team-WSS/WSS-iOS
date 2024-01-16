@@ -17,7 +17,9 @@ final class MemoReadContentView: UIView {
     private let dividerView = UIView()
     private let dateLabel = UILabel()
     public let deleteButton = UIButton()
-    public let memoTextView = UITextView()
+    private let scrollView = UIScrollView()
+    private let contentView = UIView()
+    public let memoContentLabel = UILabel()
     
     // MARK: - Life Cycle
     
@@ -52,11 +54,11 @@ final class MemoReadContentView: UIView {
             $0.setImage(ImageLiterals.icon.Memo.delete, for: .normal)
         }
         
-        memoTextView.do {
-            $0.backgroundColor = .clear
+        memoContentLabel.do {
             $0.textColor = .Black
             $0.font = .Body1
-            $0.showsVerticalScrollIndicator = false
+            $0.numberOfLines = 0
+            $0.lineBreakStrategy = .hangulWordPriority
         }
     }
     
@@ -66,7 +68,9 @@ final class MemoReadContentView: UIView {
         self.addSubviews(dividerView,
                          dateLabel,
                          deleteButton,
-                         memoTextView)
+                         scrollView)
+        scrollView.addSubview(contentView)
+        contentView.addSubview(memoContentLabel)
     }
     
     // MARK: - set Layout
@@ -88,20 +92,28 @@ final class MemoReadContentView: UIView {
             $0.size.equalTo(24)
         }
         
-        memoTextView.snp.makeConstraints {
+        scrollView.snp.makeConstraints {
             $0.top.equalTo(deleteButton.snp.bottom).offset(23)
             $0.leading.trailing.bottom.equalToSuperview().inset(20)
+        }
+        
+        contentView.snp.makeConstraints {
+            $0.edges.width.equalToSuperview()
+        }
+        
+        memoContentLabel.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
     
     func updateTextViewConstraint(keyboardHeight: CGFloat) {
-        self.memoTextView.snp.updateConstraints {
+        self.memoContentLabel.snp.updateConstraints {
             $0.bottom.equalToSuperview().inset(keyboardHeight + 20)
         }
     }
     
     func bindData(date: String, memoContent: String) {
         self.dateLabel.text = date
-        self.memoTextView.text = memoContent
+        self.memoContentLabel.text = memoContent
     }
 }

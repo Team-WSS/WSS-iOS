@@ -68,7 +68,7 @@ final class MemoHeaderView: UIView {
     
     private func setLayout() {
         novelTitleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(122)
+            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).inset(27)
             $0.leading.equalToSuperview().inset(20)
             $0.trailing.equalTo(novelCoverImageView.snp.leading).offset(-18)
         }

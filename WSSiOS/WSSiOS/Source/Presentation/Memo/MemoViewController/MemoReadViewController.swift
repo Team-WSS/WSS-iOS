@@ -8,7 +8,6 @@
 import UIKit
 
 import RxCocoa
-import RxKeyboard
 import RxSwift
 
 final class MemoReadViewController: UIViewController {
@@ -120,21 +119,6 @@ final class MemoReadViewController: UIViewController {
             vc.modalTransitionStyle = .crossDissolve
             self.present(vc, animated: true)
         }.disposed(by: disposeBag)
-        
-        rootView.memoReadContentView.memoTextView.rx.text.orEmpty
-            .subscribe(onNext: { text in
-                self.memoContent = text
-                if text.count > 2000 {
-                    self.rootView.memoReadContentView.memoTextView.text = String(text.prefix(2000))
-                }
-            })
-            .disposed(by: disposeBag)
-        
-        RxKeyboard.instance.visibleHeight
-            .drive(onNext: { keyboardHeight in
-                self.rootView.memoReadContentView.updateTextViewConstraint(keyboardHeight: keyboardHeight)
-            })
-            .disposed(by: disposeBag)
     }
     
     // MARK: - update UI
@@ -143,6 +127,7 @@ final class MemoReadViewController: UIViewController {
         self.novelTitle = memoDetail.userNovelTitle
         self.novelAuthor = memoDetail.userNovelAuthor
         self.novelImage = memoDetail.userNovelImg
+        self.memoContent = memoDetail.memoContent
         
         Observable.just(())
             .observe(on: MainScheduler.instance)
