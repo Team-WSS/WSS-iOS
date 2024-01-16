@@ -25,6 +25,5 @@ enum StringLiterals {
             static let makeMemo = "작품에 메모 남기기"
             static let returnHome = "홈으로 돌아가기"
         }
-        
     }
 }

@@ -20,7 +20,7 @@ final class RecordResultView: UIView {
 
     //MARK: - UI Components
     
-    private let headerView = RecordHeaderView()
+    let headerView = RecordHeaderView()
     let recordTableView = UITableView(frame: .zero, style: .plain)
     
     // MARK: - Life Cycle
@@ -31,9 +31,6 @@ final class RecordResultView: UIView {
         setUI()
         setHierachy()
         setLayout()
-        
-        registerCell()
-        bindDataToRecordTableView()
     }
     
     required init?(coder: NSCoder) {
@@ -65,17 +62,5 @@ final class RecordResultView: UIView {
             $0.top.equalTo(headerView.snp.bottom)
             $0.leading.trailing.bottom.equalToSuperview()
         }
-    }
-    
-    private func registerCell() {
-        recordTableView.register(RecordTableViewCell.self,
-                                 forCellReuseIdentifier: RecordTableViewCell.identifier)
-    }
-    
-    private func bindDataToRecordTableView() {
-        recordDummy.bind(to: recordTableView.rx.items(cellIdentifier: RecordTableViewCell.identifier, cellType: RecordTableViewCell.self)) { (row, element, cell) in
-            cell.bindData(data: element)
-        }
-        .disposed(by: disposeBag)
     }
 }
