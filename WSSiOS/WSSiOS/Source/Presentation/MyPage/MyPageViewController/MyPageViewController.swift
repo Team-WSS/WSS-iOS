@@ -49,6 +49,7 @@ final class MyPageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setNavigationBar()
         register()
         bindUserData()
         
@@ -60,10 +61,25 @@ final class MyPageViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        self.hidesBottomBarWhenPushed = false
+        self.tabBarController?.tabBar.isHidden = false
+        
         bindDataAgain()
     }
     
     //MARK: - Custom Method
+    
+    private func setNavigationBar() {
+        self.navigationController?.isNavigationBarHidden = false
+        self.title = "마이페이지"
+        
+        if let navigationBar = self.navigationController?.navigationBar {
+            let titleTextAttributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont.Title2
+            ]
+            navigationBar.titleTextAttributes = titleTextAttributes
+        }
+    }
     
     private func register() {
         rootView.myPageInventoryView.myPageAvaterCollectionView.register(MyPageInventoryCollectionViewCell.self, forCellWithReuseIdentifier: "MyPageInventoryCollectionViewCell")
@@ -112,30 +128,32 @@ final class MyPageViewController: UIViewController {
     }
     
     private func bindDataAgain() {
-        getDataFromAPI(disposeBag: disposeBag) { avatarCount, avatarList in 
-            self.updateUI(avatarList: avatarList)
+        getDataFromAPI(disposeBag: disposeBag) { userData, avatarList in 
+            self.updateUI(userData: userData, avatarList: avatarList)
         }
     }
     
-    private func getDataFromAPI(disposeBag: DisposeBag, completion: @escaping (Int, [UserAvatar]) -> Void) {
+    private func getDataFromAPI(disposeBag: DisposeBag, completion: @escaping (UserResult, [UserAvatar]) -> Void) {
         self.userRepository.getUserData()
             .subscribe(with: self, onNext: { owner, data in
+                let userNickName = data.userNickName
                 let avatarCount = data.userAvatars.count
                 let avatarList = data.userAvatars
-                
-                completion(avatarCount, avatarList)
             }, onError: { error, _ in
                 print(error)
             })
             .disposed(by: disposeBag)
     }
     
-    private func updateUI(avatarList: [UserAvatar]) {
-        Observable.just(avatarList)
+    private func updateUI(userData: UserResult, avatarList: [UserAvatar]) {
+        Observable.combineLatest(
+                    Observable.just(userData),
+                    Observable.just(avatarList)
+                )
             .observe(on: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, list in 
-                owner.avaterListRelay.accept(list)
-//                owner.userNickName.
+            .subscribe(onNext: { [weak self] data, list in
+                self?.rootView.myPageTallyView.myPageUserNameButton.setTitle(data.userNickName, for: .normal)
+                self?.avaterListRelay.accept(list)
             })
     }
     

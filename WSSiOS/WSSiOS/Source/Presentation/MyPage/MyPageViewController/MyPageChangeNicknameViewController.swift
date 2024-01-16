@@ -30,6 +30,8 @@ final class MyPageChangeNicknameViewController: UIViewController {
     //MARK: - UI Components
     
     var rootView = MyPageChangeNicknameView()
+    private var backButton = UIButton()
+    private var completeButton = UIButton()
     
     // MARK: - Life Cycle
     
@@ -40,10 +42,49 @@ final class MyPageChangeNicknameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setUI()
+        setNavigationBar()
         textFieldEvent()
     }
     
     //MARK: - Custom Method
+    
+    private func setUI() {
+        backButton.do {
+            $0.setImage(ImageLiterals.icon.navigateLeft.withRenderingMode(.alwaysOriginal), for: .normal)
+            $0.rx.tap
+                .subscribe(with: self, onNext: { owner, _ in 
+                    owner.navigationController?.popViewController(animated: true)
+                })
+                .disposed(by: disposeBag)
+        }
+        
+        completeButton.do {
+            $0.setTitle("완료", for: .normal)
+            $0.setTitleColor(.Primary100, for: .normal)
+            $0.titleLabel?.font = .Title2
+            $0.rx.tap
+                .subscribe(with: self, onNext: { owner, _ in 
+                    owner.patchUserNickName()
+                    owner.navigationController?.popViewController(animated: true)
+                })
+        }
+    }
+    
+    private func setNavigationBar() {
+        self.navigationController?.isNavigationBarHidden = false
+        self.title = "닉네임 변경"
+        
+        if let navigationBar = self.navigationController?.navigationBar {
+            let titleTextAttributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont.Title2
+            ]
+            navigationBar.titleTextAttributes = titleTextAttributes
+        }
+        
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.backButton)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.completeButton)
+    }
     
     private func textFieldEvent() {
         rootView.changeNicknameTextField.rx.controlEvent([.editingDidBegin, .editingChanged])
@@ -57,7 +98,6 @@ final class MyPageChangeNicknameViewController: UIViewController {
             .asObservable()
             .subscribe(with: self, onNext: { owner, _ in
                 owner.rootView.textFieldUnderBarView.backgroundColor = .Gray200
-                owner.patchUserNickName()
             })
             .disposed(by: disposeBag)
         
@@ -94,7 +134,7 @@ final class MyPageChangeNicknameViewController: UIViewController {
     private func patchUserNickName() {
         userRepository.patchUserName(userNickName: userNickName)
             .observe(on: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, data in 
+            .subscribe(with: self, onNext: { owner, _ in 
             },onError: { owner, error in
                 print(error)
             })

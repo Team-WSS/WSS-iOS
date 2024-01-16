@@ -14,6 +14,7 @@ final class MyPageChangeNicknameView: UIView {
     
     //MARK: - UI Components
     
+    private let dividerView = UIView()
     private let nicknameLabel = UILabel()
     public var changeNicknameTextField = UITextField()
     public var setClearButton = UIButton(type: .custom)
@@ -36,6 +37,10 @@ final class MyPageChangeNicknameView: UIView {
     
     private func setUI() {
         self.backgroundColor = .White
+        
+        dividerView.do {
+            $0.backgroundColor = .Gray50
+        }
         
         nicknameLabel.do {
             $0.text = "닉네임"
@@ -69,15 +74,23 @@ final class MyPageChangeNicknameView: UIView {
     }
     
     private func setHierachy() {
-        self.addSubviews(nicknameLabel,
+        self.addSubviews(dividerView,
+                         nicknameLabel,
                          changeNicknameTextField,
                          textFieldUnderBarView,
                          countNicknameLabel)
     }
     
     private func setLayout() {
+        dividerView.snp.makeConstraints() {
+            $0.top.equalTo(safeAreaLayoutGuide)
+            $0.width.equalToSuperview()
+            $0.height.equalTo(1)
+        }
+        
         nicknameLabel.snp.makeConstraints() {
-            $0.top.leading.equalTo(safeAreaLayoutGuide).offset(20)
+            $0.top.equalTo(dividerView.snp.bottom).offset(20)
+            $0.leading.equalToSuperview().offset(20)
         }
         
         changeNicknameTextField.snp.makeConstraints() {
