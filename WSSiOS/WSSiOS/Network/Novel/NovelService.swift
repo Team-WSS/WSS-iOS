@@ -28,11 +28,11 @@ extension DefaultNovelService: NovelService {
         }
         
         print(encodedSearchWord)
-
+        
         let searchListQueryItems: [URLQueryItem] = [
             URLQueryItem(name: "lastNovelId", value: String(describing: 999999)),
             URLQueryItem(name: "size", value: String(describing: 40)),
-            URLQueryItem(name: "word", value: "BL")
+            URLQueryItem(name: "word", value: encodedSearchWord)
         ]
         
         let request = try! makeHTTPRequest(method: .get,

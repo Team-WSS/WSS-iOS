@@ -37,12 +37,6 @@ final class SearchViewController: UIViewController {
         self.view = rootView
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        bindDataToUI()
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -52,6 +46,7 @@ final class SearchViewController: UIViewController {
         registerCell()
         bindDataToSearchCollectionView()
         setCollectionViewLayout()
+        setSearchAction()
     }
     
     //MARK: - customize NaivationBar
@@ -78,10 +73,6 @@ final class SearchViewController: UIViewController {
         rootView.headerView.searchBar.delegate = self
     }
     
-    private func registerCell() {
-        rootView.mainResultView.searchCollectionView.register(SearchCollectionViewCell.self, forCellWithReuseIdentifier: SearchCollectionViewCell.identifier)
-    }
-    
     private func setCollectionViewLayout() {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .vertical
@@ -91,14 +82,19 @@ final class SearchViewController: UIViewController {
         rootView.mainResultView.searchCollectionView.setCollectionViewLayout(flowLayout, animated: false)
     }
     
+    private func registerCell() {
+        rootView.mainResultView.searchCollectionView.register(SearchCollectionViewCell.self, forCellWithReuseIdentifier: SearchCollectionViewCell.identifier)
+    }
+    
     private func getDataFromAPI(disposeBag: DisposeBag,
+                                searchWord: String,
                                 completion: @escaping (SearchNovels)
                                 -> Void) {
-        self.novelRepository.getSearchNovels()
+        self.novelRepository.getSearchNovels(searchWord: searchWord)
             .subscribe (
                 onNext: { [weak self] search in
                     guard self != nil else { return }
-                  
+                    
                     completion(search)
                 },
                 onError: { error in
@@ -116,18 +112,35 @@ final class SearchViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    private func bindDataToUI() {
-        self.getDataFromAPI(disposeBag: disposeBag) { [weak self] searchResultList in
-            // 뷰 컨트롤러에서 전달받은 데이터 처리
-            self?.updateUI(searchList: searchResultList.novels)
-        }
-    }
-    
     func updateUI(searchList: [SearchNovel]) {
         Observable.just(searchList)
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] list in
                 self?.searchResultListRelay.accept(list)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    func searchNovels(with searchText: String) {
+        let searchWord = searchText.isEmpty ? "" : searchText
+        
+        self.getDataFromAPI(disposeBag: disposeBag, searchWord: searchWord) { [weak self] searchResultList in
+            self?.updateUI(searchList: searchResultList.novels)
+        }
+    }
+    
+    func setSearchAction() {
+        let searchTextObservable = rootView.headerView.searchBar.rx.text.orEmpty
+            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
+        
+        searchTextObservable
+            .subscribe(onNext: { [weak self] searchText in
+                if searchText.isEmpty {
+                    // 아무것도 입력하지 않았을 때, 테이블뷰 내 데이터에 빈 배열 삽입
+                    self?.searchResultListRelay.accept([])
+                } else {
+                    self?.searchNovels(with: searchText)
+                }
             })
             .disposed(by: disposeBag)
     }
