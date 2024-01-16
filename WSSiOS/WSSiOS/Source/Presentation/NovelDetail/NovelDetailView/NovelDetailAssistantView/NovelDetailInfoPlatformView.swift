@@ -12,6 +12,10 @@ import Then
 
 final class NovelDetailInfoPlatformView: UIView {
     
+    //MARK: - set Properties
+
+    public var platformList: [UserNovelPlatform] = []
+
     // MARK: - UI Components
     
     private let titleLabel = UILabel()
@@ -69,7 +73,7 @@ final class NovelDetailInfoPlatformView: UIView {
         platformCollectionView.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(18)
             $0.leading.trailing.equalToSuperview().inset(20)
-            $0.bottom.equalToSuperview().inset(110)
+            $0.bottom.equalToSuperview()
             $0.height.equalTo(100)
         }
     }
@@ -77,6 +81,14 @@ final class NovelDetailInfoPlatformView: UIView {
     func updateCollectionViewHeight(height: CGFloat) {
         platformCollectionView.snp.updateConstraints {
             $0.height.equalTo(height)
+        }
+    }
+    
+    func bindData(platforms: [UserNovelPlatform]) {
+        self.platformList = platforms
+        
+        if self.platformList.count == 0 {
+            self.removeFromSuperview()
         }
     }
 }

@@ -18,7 +18,6 @@ final class NovelDetailInfoView: UIView {
     let novelDetailInfoRatingView = NovelDetailInfoRatingView()
     let novelDetailInfoReadStatusView = NovelDetailInfoReadStatusView()
     let novelDetailInfoReadDateView = NovelDetailInfoReadDateView()
-    let novelDetailInfoKeywordView = NovelDetailInfoKeywordView()
     let novelDetailInfoDescriptionView = NovelDetailInfoDescriptionView()
     let novelDetailInfoGenreView = NovelDetailInfoGenreView()
     let novelDetailInfoPlatformView = NovelDetailInfoPlatformView()
@@ -53,7 +52,6 @@ final class NovelDetailInfoView: UIView {
         contentView.addArrangedSubviews(novelDetailInfoRatingView,
                                         novelDetailInfoReadStatusView,
                                         novelDetailInfoReadDateView,
-                                        novelDetailInfoKeywordView,
                                         novelDetailInfoDescriptionView,
                                         novelDetailInfoGenreView,
                                         novelDetailInfoPlatformView)
@@ -63,7 +61,21 @@ final class NovelDetailInfoView: UIView {
     
     private func setLayout() {
         contentView.snp.makeConstraints {
-            $0.edges.width.equalToSuperview()
+            $0.top.leading.trailing.width.equalToSuperview()
+            $0.bottom.equalToSuperview().inset(110)
         }
+    }
+    
+    func bindData(rating: Float, readStatus: String, startDate: String?, endDate: String?, description: String, genre: String, platforms: [UserNovelPlatform]) {
+        self.novelDetailInfoRatingView.bindData(rating: rating)
+        self.novelDetailInfoReadStatusView.bindData(status: readStatus)
+        if let startDate = startDate {
+            self.novelDetailInfoReadDateView.bindData(startDate: startDate, endDate: endDate)
+        } else {
+            self.novelDetailInfoReadDateView.removeFromSuperview()
+        }
+        self.novelDetailInfoDescriptionView.bindData(description: description)
+        self.novelDetailInfoGenreView.bindData(genre: genre)
+        self.novelDetailInfoPlatformView.bindData(platforms: platforms)
     }
 }

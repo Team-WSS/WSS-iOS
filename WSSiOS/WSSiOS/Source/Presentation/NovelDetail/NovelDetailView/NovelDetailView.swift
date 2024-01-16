@@ -90,4 +90,20 @@ final class NovelDetailView: UIView {
             $0.width.equalToSuperview()
         }
     }
+    
+    func memoButtonDidTap() {
+        self.novelDetailInfoView.removeFromSuperview()
+        self.contentView.addArrangedSubview(self.novelDetailMemoView)
+        self.novelDetailTabView.memoButton.isSelected = true
+        self.novelDetailTabView.infoButton.isSelected = false
+        self.novelDetailTabView.highlightMemoButton()
+    }
+    
+    func infoButtonDidTap() {
+        self.novelDetailMemoView.removeFromSuperview()
+        self.contentView.addArrangedSubview(self.novelDetailInfoView)
+        self.novelDetailTabView.memoButton.isSelected = false
+        self.novelDetailTabView.infoButton.isSelected = true
+        self.novelDetailTabView.highlightInfoButton()
+    }
 }
