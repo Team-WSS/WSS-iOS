@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 
 protocol RecommendRepository {
-    func getSosopickNovels() -> Observable<[SosopickNovel]>
+    func getSosopickNovels() -> Observable<SosopickNovels>
 }
 
 struct DefaultRecommendRepository: RecommendRepository {
@@ -21,7 +21,7 @@ struct DefaultRecommendRepository: RecommendRepository {
         self.recommendService = recommendService
     }
     
-    func getSosopickNovels() -> Observable<[SosopickNovel]> {
+    func getSosopickNovels() -> Observable<SosopickNovels> {
         return recommendService.getSosopickData()
             .asObservable()
     }

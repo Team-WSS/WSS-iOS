@@ -14,7 +14,7 @@ enum URLs {
     }
     
     enum Recommend {
-        static let getRecommendList = "/soso-picks"
+        static let getRecommendList = "/user-novels/soso-picks"
     }
     
     enum Novel {

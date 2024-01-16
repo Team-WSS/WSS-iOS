@@ -15,9 +15,11 @@ final class HomeViewController: UIViewController {
     //MARK: - Properties
     
     private let userRepository: UserRepository
+    private let recommendRepository: RecommendRepository
     private var characterId: Int = 0
     private var userNickname: String = ""
     private var userCharacter = UserCharacter(avatarId: 0, avatarTag: "", avatarComment: "", userNickname: "")
+    private var sosopickListRelay = BehaviorRelay<[SosopickNovel]>(value: [])
     private let disposeBag = DisposeBag()
     
     //MARK: - UI Components
@@ -26,8 +28,9 @@ final class HomeViewController: UIViewController {
     
     //MARK: - Life Cycle
     
-    init(userRepository: UserRepository) {
+    init(userRepository: UserRepository, recommendRepository: RecommendRepository) {
         self.userRepository = userRepository
+        self.recommendRepository = recommendRepository
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -65,17 +68,29 @@ final class HomeViewController: UIViewController {
                                                               forCellWithReuseIdentifier: HomeSosoPickCollectionViewCell.identifier)
     }
     
-    func getDataFromAPI(disposeBag: DisposeBag, completion: @escaping (Int, UserCharacter) -> Void) {
-        self.userRepository.getUserCharacter()
+    func getDataFromAPI(disposeBag: DisposeBag,
+                        completion: @escaping (Int, UserCharacter, SosopickNovels)
+                        -> Void) {
+        let userObservable = self.userRepository.getUserCharacter()
+            .do(onNext: { [weak self] user in
+                guard let self = self else { return }
+                self.userCharacter = user
+            })
+        
+        let sosopickObservable = self.recommendRepository.getSosopickNovels()
+            .do(onNext: { [weak self] sosopicks in
+                guard let self = self else { return }
+                print("☘️☘️☘️☘️☘️☘️☘️☘️☘️☘️☘️☘️☘️☘️☘️☘️☘️")
+                print(sosopicks)
+            })
+        
+        Observable.zip(userObservable, sosopickObservable)
             .subscribe(
-                onNext: { [weak self] user in
+                onNext: { [weak self] user, sosopicks in
                     guard let self = self else { return }
-                    self.userCharacter = user
-                    completion(self.characterId, user)
-                    print("☘️☘️☘️☘️☘️☘️☘️☘️☘️☘️☘️☘️☘️☘️☘️☘️")
-                    print(userCharacter)
+                    completion(self.characterId, user, sosopicks)
                 },
-                onError: {error in
+                onError: { error in
                     print(error)
                 }
             )
@@ -83,7 +98,7 @@ final class HomeViewController: UIViewController {
     }
     
     private func bindDataToSosoPickCollectionView() {
-        sosoPickDummy.bind(to: rootView.sosopickView.sosoPickCollectionView.rx.items(
+        sosopickListRelay.bind(to: rootView.sosopickView.sosoPickCollectionView.rx.items(
             cellIdentifier: HomeSosoPickCollectionViewCell.identifier,
             cellType: HomeSosoPickCollectionViewCell.self)) { (row, element, cell) in
                 cell.bindData(data: element)
@@ -92,12 +107,12 @@ final class HomeViewController: UIViewController {
     }
     
     private func bindDataToUI() {
-        getDataFromAPI(disposeBag: disposeBag) { [weak self] _, user in
-            self?.updateUI(user: user)
+        getDataFromAPI(disposeBag: disposeBag) { [weak self] characterId, user, sosopick in
+            self?.updateUI(user: user, sosopickList: sosopick)
         }
     }
     
-    private func updateUI(user: UserCharacter) {
+    private func updateUI(user: UserCharacter, sosopickList: SosopickNovels) {
         Observable.just(userCharacter)
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { user in
@@ -105,6 +120,8 @@ final class HomeViewController: UIViewController {
                 self.rootView.characterView.characterCommentLabel.text = user.avatarComment
                 self.characterId = user.avatarId
                 self.userNickname = user.userNickname
+                
+                self.sosopickListRelay.accept(sosopickList.sosoPickNovels)
             })
             .disposed(by: disposeBag)
     }
