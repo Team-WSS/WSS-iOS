@@ -177,6 +177,7 @@ final class MemoEditViewController: UIViewController {
                 self.navigationController?.popViewController(animated: true)
             },onError: { owner, error in
                 print(error)
+                self.showToast(.memoSaveFail)
             })
             .disposed(by: disposeBag)
     }
@@ -188,6 +189,7 @@ final class MemoEditViewController: UIViewController {
                 self.navigationController?.popViewController(animated: true)
             },onError: { owner, error in
                 print(error)
+                self.showToast(.memoSaveFail)
             })
             .disposed(by: disposeBag)
     }
