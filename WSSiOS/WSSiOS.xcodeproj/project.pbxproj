@@ -90,7 +90,6 @@
 		A107A49C2B4DC8C600668C3E /* HomeCharacterTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A107A49B2B4DC8C600668C3E /* HomeCharacterTagView.swift */; };
 		A107A49E2B4DCD9900668C3E /* HomeCharacterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A107A49D2B4DCD9900668C3E /* HomeCharacterView.swift */; };
 		A107A4A02B4DD7E200668C3E /* HomeSosoPickTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A107A49F2B4DD7E200668C3E /* HomeSosoPickTitleView.swift */; };
-		A1147A792B50552500141692 /* HomeSosoPickDummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1147A782B50552500141692 /* HomeSosoPickDummy.swift */; };
 		A1147A802B50638200141692 /* RecordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1147A7F2B50638200141692 /* RecordViewController.swift */; };
 		A1147A822B5063B300141692 /* RecordEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1147A812B5063B300141692 /* RecordEmptyView.swift */; };
 		A1147A842B5063BC00141692 /* RecordResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1147A832B5063BC00141692 /* RecordResultView.swift */; };
@@ -124,7 +123,6 @@
 		A1708F182B4D8E2F00E35E50 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1708F172B4D8E2F00E35E50 /* HomeView.swift */; };
 		A18432EA2B511C4300910940 /* RecordTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18432E92B511C4300910940 /* RecordTableViewCell.swift */; };
 		A18432EC2B511E7400910940 /* RecordDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18432EB2B511E7400910940 /* RecordDateView.swift */; };
-		A18432F02B52622E00910940 /* RecordDummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18432EF2B52622E00910940 /* RecordDummy.swift */; };
 		A197A4C12B56BB6000E5A701 /* UserCharacterResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A197A4C02B56BB6000E5A701 /* UserCharacterResult.swift */; };
 		A197A4C32B56D0C200E5A701 /* RecommendResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A197A4C22B56D0C200E5A701 /* RecommendResult.swift */; };
 		A197A4C52B56E14200E5A701 /* 3regressor.json in Resources */ = {isa = PBXBuildFile; fileRef = A197A4C42B56E14200E5A701 /* 3regressor.json */; };
@@ -264,7 +262,6 @@
 		A107A49B2B4DC8C600668C3E /* HomeCharacterTagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCharacterTagView.swift; sourceTree = "<group>"; };
 		A107A49D2B4DCD9900668C3E /* HomeCharacterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCharacterView.swift; sourceTree = "<group>"; };
 		A107A49F2B4DD7E200668C3E /* HomeSosoPickTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSosoPickTitleView.swift; sourceTree = "<group>"; };
-		A1147A782B50552500141692 /* HomeSosoPickDummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSosoPickDummy.swift; sourceTree = "<group>"; };
 		A1147A7F2B50638200141692 /* RecordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordViewController.swift; sourceTree = "<group>"; };
 		A1147A812B5063B300141692 /* RecordEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordEmptyView.swift; sourceTree = "<group>"; };
 		A1147A832B5063BC00141692 /* RecordResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordResultView.swift; sourceTree = "<group>"; };
@@ -290,7 +287,6 @@
 		A1708F172B4D8E2F00E35E50 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		A18432E92B511C4300910940 /* RecordTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordTableViewCell.swift; sourceTree = "<group>"; };
 		A18432EB2B511E7400910940 /* RecordDateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDateView.swift; sourceTree = "<group>"; };
-		A18432EF2B52622E00910940 /* RecordDummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDummy.swift; sourceTree = "<group>"; };
 		A197A4C02B56BB6000E5A701 /* UserCharacterResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCharacterResult.swift; sourceTree = "<group>"; };
 		A197A4C22B56D0C200E5A701 /* RecommendResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendResult.swift; sourceTree = "<group>"; };
 		A197A4C42B56E14200E5A701 /* 3regressor.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 3regressor.json; sourceTree = "<group>"; };
@@ -907,7 +903,6 @@
 			isa = PBXGroup;
 			children = (
 				A14EDBBE2B4F05F300906957 /* HomeSosoPickCollectionViewCell.swift */,
-				A1147A782B50552500141692 /* HomeSosoPickDummy.swift */,
 			);
 			path = HomeCell;
 			sourceTree = "<group>";
@@ -949,7 +944,6 @@
 			children = (
 				A18432E92B511C4300910940 /* RecordTableViewCell.swift */,
 				A18432EB2B511E7400910940 /* RecordDateView.swift */,
-				A18432EF2B52622E00910940 /* RecordDummy.swift */,
 			);
 			path = RecordCell;
 			sourceTree = "<group>";
@@ -1281,7 +1275,6 @@
 				39CD5E0C2B4F3D0700668B9A /* RegisterNormalNovelSummaryView.swift in Sources */,
 				A122C9F22B53146800DFCFE4 /* (null) in Sources */,
 				CDE596D62B57708D00D99DA1 /* UIViewController+.swift in Sources */,
-				A1147A792B50552500141692 /* HomeSosoPickDummy.swift in Sources */,
 				39B02DC32B57BC9F00B38F7F /* RegisterNormalPlatFormTest.swift in Sources */,
 				A1654F162B540513004F78E8 /* NetworkLogger.swift in Sources */,
 				A14EDBBF2B4F05F300906957 /* HomeSosoPickCollectionViewCell.swift in Sources */,
@@ -1332,7 +1325,6 @@
 				2C79CB9D2B45A1DD00734E1F /* UIFont+.swift in Sources */,
 				A147CBC62B4D6E190040AE39 /* UIStackView+.swift in Sources */,
 				CD3E5A982B5509A500C0A659 /* DeletePopupContentView.swift in Sources */,
-				A18432F02B52622E00910940 /* RecordDummy.swift in Sources */,
 				392A29272B4E96F30065EB97 /* UILabel+.swift in Sources */,
 				2C60306B2B54448F0031544C /* LibraryPageBar.swift in Sources */,
 				A122C9F62B5314FE00DFCFE4 /* (null) in Sources */,

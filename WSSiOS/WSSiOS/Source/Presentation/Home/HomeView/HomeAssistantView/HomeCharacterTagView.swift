@@ -47,9 +47,20 @@ final class HomeCharacterTagView: UIView {
         }
         
         tagLabel.do {
-            $0.text = "지나친 지원이는 못말려요"
             $0.font = .Title3
             $0.textColor = .Primary100
+        }
+    }
+    
+    //MARK: - custom TagLabel Style
+    
+    func setTagLabelStyle(text: String) {
+        tagLabel.do {
+            $0.makeAttribute(with: text)?
+                .lineSpacing(spacingPercentage: 100)
+                .kerning(kerningPixel: -0.6)
+                .applyAttribute()
+            $0.textAlignment = .center
         }
     }
     

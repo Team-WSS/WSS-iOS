@@ -48,13 +48,17 @@ final class HomeSosoPickTitleView: UIView {
         }
         
         sosopickTitleLabel.do {
-            $0.text = "소소’s pick"
+            $0.makeAttribute(with: "소소’s pick")?
+                .kerning(kerningPixel: -1.2)
+                .applyAttribute()
             $0.font = .HeadLine1
             $0.textColor = .Black
         }
         
         sosopickDescriptionLabel.do {
-            $0.text = "지금 소소들이 등록한 작품"
+            $0.makeAttribute(with: "지금 소소들이 등록한 작품")?
+                .kerning(kerningPixel: -0.6)
+                .applyAttribute()
             $0.font = .Body2
             $0.textColor = .Gray200
         }

@@ -48,13 +48,22 @@ final class HomeCharacterView: UIView {
         }
         
         characterCommentLabel.do {
-            $0.text = "지원 영애, 오랜만입니다"
             $0.font = .Title1
             $0.textColor = .Black
         }
         
         characterImageView.do {
             $0.contentMode = .scaleAspectFit
+        }
+    }
+    
+    func setCommentLabelStyle(text: String) {
+        characterCommentLabel.do {
+            $0.makeAttribute(with: text)?
+                .lineSpacing(spacingPercentage: 100)
+                .kerning(kerningPixel: -0.6)
+                .applyAttribute()
+            $0.textAlignment = .center
         }
     }
     
