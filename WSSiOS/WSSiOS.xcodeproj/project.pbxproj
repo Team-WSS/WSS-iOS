@@ -50,12 +50,9 @@
 		2CD229252B42E687005400BE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2CD229242B42E687005400BE /* Assets.xcassets */; };
 		2CD229312B42E766005400BE /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 2CD229302B42E766005400BE /* Then */; };
 		2CD229342B42E771005400BE /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 2CD229332B42E771005400BE /* SnapKit */; };
-		2CD229362B42E771005400BE /* SnapKit-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 2CD229352B42E771005400BE /* SnapKit-Dynamic */; };
 		2CD229392B42E77F005400BE /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 2CD229382B42E77F005400BE /* Kingfisher */; };
 		2CD2293C2B42E7A2005400BE /* RxBlocking in Frameworks */ = {isa = PBXBuildFile; productRef = 2CD2293B2B42E7A2005400BE /* RxBlocking */; };
-		2CD2293E2B42E7A2005400BE /* RxBlocking-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 2CD2293D2B42E7A2005400BE /* RxBlocking-Dynamic */; };
 		2CD229402B42E7A2005400BE /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 2CD2293F2B42E7A2005400BE /* RxCocoa */; };
-		2CD229422B42E7A2005400BE /* RxCocoa-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 2CD229412B42E7A2005400BE /* RxCocoa-Dynamic */; };
 		2CD229442B42E7A2005400BE /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 2CD229432B42E7A2005400BE /* RxRelay */; };
 		2CD229472B42E7C8005400BE /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 2CD229462B42E7C8005400BE /* Lottie */; };
 		2CD229572B42EA75005400BE /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD229562B42EA75005400BE /* UIColor+.swift */; };
@@ -359,14 +356,11 @@
 				3999BFEE2B4E6CA000984832 /* UIImageViewAlignedSwift in Frameworks */,
 				CD3E5A852B54254F00C0A659 /* RxKeyboard in Frameworks */,
 				2CD229442B42E7A2005400BE /* RxRelay in Frameworks */,
-				2CD229422B42E7A2005400BE /* RxCocoa-Dynamic in Frameworks */,
 				2CD229392B42E77F005400BE /* Kingfisher in Frameworks */,
 				2CD229312B42E766005400BE /* Then in Frameworks */,
 				2CD229342B42E771005400BE /* SnapKit in Frameworks */,
 				2CD229472B42E7C8005400BE /* Lottie in Frameworks */,
 				2CD229402B42E7A2005400BE /* RxCocoa in Frameworks */,
-				2CD2293E2B42E7A2005400BE /* RxBlocking-Dynamic in Frameworks */,
-				2CD229362B42E771005400BE /* SnapKit-Dynamic in Frameworks */,
 				2CD2293C2B42E7A2005400BE /* RxBlocking in Frameworks */,
 				39EF97AC2B53E43800D2148B /* Lottie in Frameworks */,
 			);
@@ -1176,12 +1170,9 @@
 			packageProductDependencies = (
 				2CD229302B42E766005400BE /* Then */,
 				2CD229332B42E771005400BE /* SnapKit */,
-				2CD229352B42E771005400BE /* SnapKit-Dynamic */,
 				2CD229382B42E77F005400BE /* Kingfisher */,
 				2CD2293B2B42E7A2005400BE /* RxBlocking */,
-				2CD2293D2B42E7A2005400BE /* RxBlocking-Dynamic */,
 				2CD2293F2B42E7A2005400BE /* RxCocoa */,
-				2CD229412B42E7A2005400BE /* RxCocoa-Dynamic */,
 				2CD229432B42E7A2005400BE /* RxRelay */,
 				2CD229462B42E7C8005400BE /* Lottie */,
 				3999BFED2B4E6CA000984832 /* UIImageViewAlignedSwift */,
@@ -1554,19 +1545,21 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = D23XDL6TZZ;
+				CURRENT_PROJECT_VERSION = 202401171;
+				DEVELOPMENT_TEAM = 989T5J4B5R;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WSSiOS/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "웹소소";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = wss.WSSiOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1582,19 +1575,21 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = D23XDL6TZZ;
+				CURRENT_PROJECT_VERSION = 202401171;
+				DEVELOPMENT_TEAM = 989T5J4B5R;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WSSiOS/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "웹소소";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = shinjiwon.WSSiOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1696,11 +1691,6 @@
 			package = 2CD229322B42E771005400BE /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
 		};
-		2CD229352B42E771005400BE /* SnapKit-Dynamic */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2CD229322B42E771005400BE /* XCRemoteSwiftPackageReference "SnapKit" */;
-			productName = "SnapKit-Dynamic";
-		};
 		2CD229382B42E77F005400BE /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2CD229372B42E77F005400BE /* XCRemoteSwiftPackageReference "Kingfisher" */;
@@ -1711,20 +1701,10 @@
 			package = 2CD2293A2B42E7A2005400BE /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxBlocking;
 		};
-		2CD2293D2B42E7A2005400BE /* RxBlocking-Dynamic */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2CD2293A2B42E7A2005400BE /* XCRemoteSwiftPackageReference "RxSwift" */;
-			productName = "RxBlocking-Dynamic";
-		};
 		2CD2293F2B42E7A2005400BE /* RxCocoa */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2CD2293A2B42E7A2005400BE /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxCocoa;
-		};
-		2CD229412B42E7A2005400BE /* RxCocoa-Dynamic */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2CD2293A2B42E7A2005400BE /* XCRemoteSwiftPackageReference "RxSwift" */;
-			productName = "RxCocoa-Dynamic";
 		};
 		2CD229432B42E7A2005400BE /* RxRelay */ = {
 			isa = XCSwiftPackageProductDependency;
