@@ -11,7 +11,7 @@ import SnapKit
 import Then
 
 final class MyPageInventoryCollectionViewCell: UICollectionViewCell {
-
+    
     //MARK: - Properties
     
     static let identifier: String = "MyPageInventoryTableViewCell"
@@ -58,17 +58,16 @@ final class MyPageInventoryCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    // 네트워크 연결 후 수정 예정
-    
-    func bindData(_ selected: Bool) {
-        myPageAvaterButton.setImage(UIImage(named: "exampleAvater"), for: .normal)
-
-        if selected {
+    func bindData(_ data: UserAvatar, representativeId: Int) {
+        myPageAvaterButton.kfSetButtonImage(url: data.avatarImg, state: .normal)
+        print("🐰",representativeId)
+        if representativeId == data.avatarId {
             myPageAvaterButton.layer.borderColor = UIColor.Primary100.cgColor
             myPageAvaterButton.layer.borderWidth = 1
-        }else {
-            myPageAvaterButton.layer.borderColor = UIColor.Primary100.cgColor
-            myPageAvaterButton.layer.borderWidth = 1
+        }
+        else {
+            myPageAvaterButton.layer.borderColor = UIColor.clear.cgColor
+            myPageAvaterButton.layer.borderWidth = 0
         }
     }
 }

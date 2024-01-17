@@ -7,6 +7,8 @@
 
 import UIKit
 
+import Kingfisher
+
 final class MyPageView: UIView {
     
     //MARK: - UI Components
@@ -60,5 +62,15 @@ final class MyPageView: UIView {
                 $0.top.width.bottom.equalToSuperview()
             }
         }
+    }
+    
+    func dataBind(_ data: UserResult) {
+        myPageProfileView.myPageNameLabel.text = data.representativeAvatarTag
+        myPageProfileView.myPageBadgeImageView.kfSetImage(url: data.representativeAvatarGenreBadge)
+        myPageProfileView.myPagePhraseLabel.text = data.representativeAvatarLineContent
+        myPageProfileView.myPageAvartarImageView.kfSetImage(url: data.representativeAvatarImg)
+        myPageTallyView.myPageUserNameButton.setTitle("\(data.userNickName)님", for: .normal)
+        myPageTallyView.myPageRegisterView.tallyLabel.text = String(data.userNovelCount)
+        myPageTallyView.myPageRecordView.tallyLabel.text = String(data.memoCount)
     }
 }

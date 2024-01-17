@@ -14,11 +14,24 @@ final class MyPageChangeNicknameViewController: UIViewController {
     
     //MARK: - Set Properties
     
+    private var userNickName = ""
     private let disposeBag = DisposeBag()
+    private let userRepository : UserRepository
+    
+    init(userRepository: UserRepository) {
+        self.userRepository = userRepository
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     //MARK: - UI Components
     
-    private var rootView = MyPageChangeNicknameView()
+    var rootView = MyPageChangeNicknameView()
+    private var backButton = UIButton()
+    private var completeButton = UIButton()
     
     // MARK: - Life Cycle
     
@@ -29,10 +42,48 @@ final class MyPageChangeNicknameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setUI()
+        setNavigationBar()
         textFieldEvent()
     }
     
     //MARK: - Custom Method
+    
+    private func setUI() {
+        backButton.do {
+            $0.setImage(ImageLiterals.icon.navigateLeft.withRenderingMode(.alwaysOriginal), for: .normal)
+            $0.rx.tap
+                .subscribe(with: self, onNext: { owner, _ in 
+                    owner.navigationController?.popViewController(animated: true)
+                })
+                .disposed(by: disposeBag)
+        }
+        
+        completeButton.do {
+            $0.setTitle("완료", for: .normal)
+            $0.setTitleColor(.Primary100, for: .normal)
+            $0.titleLabel?.font = .Title2
+            $0.rx.tap
+                .subscribe(with: self, onNext: { owner, _ in 
+                    owner.patchUserNickName()
+                })
+        }
+    }
+    
+    private func setNavigationBar() {
+        self.navigationController?.isNavigationBarHidden = false
+        self.title = "닉네임 변경"
+        
+        if let navigationBar = self.navigationController?.navigationBar {
+            let titleTextAttributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont.Title2
+            ]
+            navigationBar.titleTextAttributes = titleTextAttributes
+        }
+        
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.backButton)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.completeButton)
+    }
     
     private func textFieldEvent() {
         rootView.changeNicknameTextField.rx.controlEvent([.editingDidBegin, .editingChanged])
@@ -51,8 +102,9 @@ final class MyPageChangeNicknameViewController: UIViewController {
         
         rootView.changeNicknameTextField.rx.text
             .subscribe(with: self, onNext: { owner, text in
-                if let countText = text?.count {
-                    owner.rootView.countNicknameLabel.text = "\(countText)/10"
+                if let text = text {
+                    owner.rootView.countNicknameLabel.text = "\(text.count)/10"
+                    owner.userNickName = text
                 }
             })
             .disposed(by: disposeBag)
@@ -71,6 +123,24 @@ final class MyPageChangeNicknameViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
+    //MARK: - Bind Data
+    
+    private func patchUserNickName() {
+        userRepository.patchUserName(userNickName: userNickName)
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, _ in 
+                owner.navigationController?.popViewController(animated: true)
+            }, onError: { owner, error in
+                print(error)
+            })
+    }
+    
+    func bindData(_ data: String) {
+        rootView.changeNicknameTextField.text = data
+    }
+}
+
+extension MyPageChangeNicknameViewController {
     private func limitNum(_ text: String) {
         if text.count > 9 {
             let index = text.index(text.startIndex, offsetBy: 9)
