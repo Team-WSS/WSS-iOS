@@ -52,16 +52,11 @@ final class SearchCollectionViewCell: UICollectionViewCell {
         novelTitleLabel.do {
             $0.font = .Title2
             $0.textColor = .Black
-            $0.numberOfLines = 2
-            $0.lineBreakMode = .byTruncatingTail
-            $0.lineBreakStrategy = .hangulWordPriority
         }
         
         novelAuthorLabel.do {
             $0.font = .Label1
             $0.textColor = .Gray200
-            $0.numberOfLines = 1
-            $0.lineBreakMode = .byTruncatingTail
         }
         
         novelGenreLabel.do {
@@ -95,12 +90,37 @@ final class SearchCollectionViewCell: UICollectionViewCell {
             $0.leading.equalTo(novelImageView.snp.trailing).offset(16)
         }
     }
-
+    
     func bindData(data: SearchNovel) {
         guard let imageURL = URL(string: data.novelImg) else { return }
         novelImageView.kf.setImage(with: imageURL)
-        novelTitleLabel.text = data.novelTitle
-        novelAuthorLabel.text = data.novelAuthor
-        novelGenreLabel.text = data.novelGenre
+        
+        novelTitleLabel.do {
+            $0.makeAttribute(with: data.novelTitle)?
+                .kerning(kerningPixel: -0.6)
+                .lineSpacing(spacingPercentage: 140)
+                .applyAttribute()
+            $0.numberOfLines = 2
+            $0.lineBreakMode = .byTruncatingTail
+            $0.lineBreakStrategy = .hangulWordPriority
+        }
+        
+        novelAuthorLabel.do {
+            $0.makeAttribute(with: data.novelAuthor)?
+                .kerning(kerningPixel: 0)
+                .lineSpacing(spacingPercentage: 145)
+                .applyAttribute()
+            $0.numberOfLines = 1
+            $0.lineBreakMode = .byTruncatingTail
+        }
+        
+        novelGenreLabel.do {
+            $0.makeAttribute(with: data.novelGenre)?
+                .kerning(kerningPixel: 0)
+                .lineSpacing(spacingPercentage: 145)
+                .applyAttribute()
+            $0.numberOfLines = 1
+            $0.lineBreakMode = .byTruncatingTail
+        }
     }
 }
