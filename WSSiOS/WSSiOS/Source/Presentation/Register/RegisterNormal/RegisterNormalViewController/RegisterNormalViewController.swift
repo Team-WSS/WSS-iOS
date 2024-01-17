@@ -91,7 +91,7 @@ final class RegisterNormalViewController: UIViewController {
             requestEndDate = nil
         }
         
-        var requestRating: Float? = starRating.value <= 0.0 ? nil : starRating.value
+        let requestRating: Float? = starRating.value <= 0.0 ? nil : starRating.value
         
         userNovelRepository.postUserNovel(novelId: novelId,
                                           userNovelRating: requestRating,
@@ -174,22 +174,20 @@ final class RegisterNormalViewController: UIViewController {
         rootView.infoWithRatingView.bindData(coverImage: userData.userNovelImg,
                                              title: userData.userNovelTitle,
                                              author: userData.userNovelAuthor)
-        self.starRating.accept(userData.userNovelRating)
+        self.starRating.accept(userData.userNovelRating ?? 0.0)
+        
         
         let status = ReadStatus(rawValue: userData.userNovelReadStatus) ?? .FINISH
         self.readStatus.accept(status)
         
         // status에 따른 날짜 처리
-        var start = ""
-        var end = ""
+        var start = userData.userNovelReadDate.userNovelReadStartDate ?? ""
+        var end = userData.userNovelReadDate.userNovelReadEndDate ?? ""
         
-        if status == .FINISH {
-            start = userData.userNovelReadDate.userNovelReadStartDate ?? ""
-            end = userData.userNovelReadDate.userNovelReadEndDate ?? ""
-        } else if status == .READING {
-            end = userData.userNovelReadDate.userNovelReadStartDate ?? ""
+        if status == .READING {
+            end = start
         } else if status == .DROP {
-            start = userData.userNovelReadDate.userNovelReadEndDate ?? ""
+            start = end
         }
         
         self.startDate.accept(

@@ -43,7 +43,7 @@ struct EditNovelResult: Codable {
     let userNovelID: Int
     let userNovelTitle, userNovelAuthor, userNovelGenre, userNovelImg: String
     let userNovelDescription: String
-    let userNovelRating: Float
+    let userNovelRating: Float?
     let userNovelReadStatus: String
     let platforms: [UserNovelPlatform]
     let userNovelReadDate: UserNovelReadDate
