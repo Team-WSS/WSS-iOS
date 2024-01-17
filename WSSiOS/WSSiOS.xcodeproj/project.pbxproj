@@ -1003,7 +1003,6 @@
 		CD39F2B22B4FE09300B73A5C /* NovelDetail */ = {
 			isa = PBXGroup;
 			children = (
-				CD3E5AA32B551A7800C0A659 /* NovelDetailViewModel */,
 				CD39F2B42B4FE0CB00B73A5C /* NovelDetailViewController */,
 				CD39F2B32B4FE0C100B73A5C /* NovelDetailView */,
 			);
@@ -1129,13 +1128,6 @@
 				CD3E5A972B5509A500C0A659 /* DeletePopupContentView.swift */,
 			);
 			path = DeletePopupAssistantView;
-			sourceTree = "<group>";
-		};
-		CD3E5AA32B551A7800C0A659 /* NovelDetailViewModel */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = NovelDetailViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1289,9 +1281,9 @@
 				A122C9DF2B530A1A00DFCFE4 /* (null) in Sources */,
 				CD3E5A812B54253E00C0A659 /* MemoReadViewController.swift in Sources */,
 				CD3E5A742B5424D600C0A659 /* MemoEditView.swift in Sources */,
-				CD3E5A812B54253E00C0A659 /* MemoEditViewController.swift in Sources */,
+				CD3E5A812B54253E00C0A659 /* MemoReadViewController.swift in Sources */,
 				A197A4C12B56BB6000E5A701 /* UserCharacterResult.swift in Sources */,
-				CD3E5A742B5424D600C0A659 /* MemoCreateView.swift in Sources */,
+				CD3E5A742B5424D600C0A659 /* MemoEditView.swift in Sources */,
 				39CC16812B51246E003F56AE /* RegisterNormalView.swift in Sources */,
 				A107A49E2B4DCD9900668C3E /* HomeCharacterView.swift in Sources */,
 				A122C9DB2B5309AF00DFCFE4 /* (null) in Sources */,

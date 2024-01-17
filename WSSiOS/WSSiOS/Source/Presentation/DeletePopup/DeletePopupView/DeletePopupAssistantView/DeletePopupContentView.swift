@@ -156,8 +156,17 @@ final class DeletePopupContentView: UIView {
     }
     
     func bindData(_ status: PopupStatus) {
-        self.titleLabel.text = status.titleText
-        self.descriptionLabel.text = status.descriptionText
+        self.titleLabel.do {
+            $0.makeAttribute(with: status.titleText)?
+                .lineSpacing(spacingPercentage: 140)
+                .kerning(kerningPixel: -0.6)
+                .applyAttribute()
+        }
+        self.descriptionLabel.do {
+            $0.makeAttribute(with: status.descriptionText)?
+                .lineSpacing(spacingPercentage: 145)
+                .applyAttribute()
+        }
         self.deleteButton.setButtonAttributedTitle(text: status.deleteButtonText, font: .Label1, color: .Gray300)
         self.cancelButton.setButtonAttributedTitle(text: status.cancelButtonText, font: .Label1, color: .white)
     }

@@ -96,7 +96,12 @@ final class WSSToastView: UIView {
     
     func bindData(_ status: ToastStatus) {
         self.toastImageView.image = status.toastImage
-        self.descriptionLabel.text = status.toastText
+        self.descriptionLabel.do {
+            $0.makeAttribute(with: status.toastText)?
+                .lineSpacing(spacingPercentage: 140)
+                .kerning(kerningPixel: -0.8)
+                .applyAttribute()
+        }
         self.setLayout(status)
     }
     

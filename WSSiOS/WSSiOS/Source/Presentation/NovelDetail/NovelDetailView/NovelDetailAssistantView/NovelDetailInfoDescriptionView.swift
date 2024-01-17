@@ -35,7 +35,9 @@ final class NovelDetailInfoDescriptionView: UIView {
     
     private func setUI() {
         titleLabel.do {
-            $0.text = "작품 소개"
+            $0.makeAttribute(with: "작품 소개")?
+                .kerning(kerningPixel: -0.6)
+                .applyAttribute()
             $0.textColor = .Black
             $0.font = .Title1
         }
@@ -44,7 +46,6 @@ final class NovelDetailInfoDescriptionView: UIView {
             $0.textColor = .Gray300
             $0.font = .Body2
             $0.numberOfLines = 0
-            $0.lineBreakStrategy = .hangulWordPriority
         }
     }
     
@@ -71,6 +72,12 @@ final class NovelDetailInfoDescriptionView: UIView {
     }
     
     func bindData(description: String) {
-        self.descriptionLabel.text = description
+        self.descriptionLabel.do {
+            $0.makeAttribute(with: description)?
+                .lineSpacing(spacingPercentage: 150)
+                .kerning(kerningPixel: -0.6)
+                .applyAttribute()
+            $0.lineBreakStrategy = .hangulWordPriority
+        }
     }
 }
