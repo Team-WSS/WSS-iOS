@@ -11,6 +11,7 @@ import Foundation
 
 struct UserNovelDetail: Codable {
     let memos: [UserNovelMemo]
+    let novelId: Int
     let userNovelTitle: String
     let userNovelImg: String
     let userNovelAuthor: String
@@ -37,4 +38,15 @@ struct UserNovelMemo: Codable {
 struct UserNovelPlatform: Codable {
     let platformName: String
     let platformUrl: String
+}
+
+// MARK: - UserNovelBasic
+struct UserNovelBasicInfo: Codable {
+    let userNovelRating: Float?
+    let userNovelReadStatus: String
+    let userNovelReadStartDate, userNovelReadEndDate: String?
+}
+
+struct UserNovelId: Codable {
+    let userNovelId: Int
 }

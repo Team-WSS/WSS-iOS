@@ -14,9 +14,8 @@ final class LibraryListView: UIView {
     
     //MARK: - UI Components
     
-    private let libraryStackView = UIStackView()
+    private let dividerView = UIView()
     
-    //추후 양이 많아지면 collectionView 로 빼겠습니당
     public let libraryNewestButton = UIButton()
     public let libraryOldesttButton = UIButton()
     
@@ -37,13 +36,14 @@ final class LibraryListView: UIView {
     //MARK: - set UI
     
     private func setUI() {
-        self.backgroundColor = .White
-        
-        libraryStackView.do {
-            $0.axis = .vertical
-            $0.alignment = .center
-            $0.distribution = .fillEqually
-            $0.spacing = 0
+        self.do {
+            $0.backgroundColor = .White
+            $0.layer.cornerRadius = 12
+
+            $0.layer.shadowColor = UIColor.black.withAlphaComponent(0.11).cgColor
+            $0.layer.shadowOpacity = 1
+            $0.layer.shadowOffset = CGSize(width: 0, height: 2)
+            $0.layer.shadowRadius = 15
         }
         
         libraryNewestButton.setTitle("오래된 순", for: .normal)
@@ -52,23 +52,40 @@ final class LibraryListView: UIView {
             $0.do {
                 $0.setTitleColor(.Black, for: .normal)
                 $0.titleLabel?.font = .Body2
+                $0.titleLabel?.textAlignment = .left
             }
+        }
+        
+        dividerView.do {
+            $0.backgroundColor = .Gray50
         }
     }
     
     //MARK: - set Hierachy
     
     private func setHierachy() {
-        self.addSubview(libraryStackView)
-        libraryStackView.addArrangedSubviews(libraryNewestButton,
-                                             libraryOldesttButton)
+        self.addSubviews(libraryNewestButton,
+                         dividerView,
+                         libraryOldesttButton)
     }
     
     //MARK: - set Layout
     
     private func setLayout() {
-        libraryStackView.snp.makeConstraints() {
-            $0.edges.equalToSuperview()
+        libraryNewestButton.snp.makeConstraints {
+            $0.top.leading.trailing.equalToSuperview().inset(15)
+        }
+        
+        dividerView.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(0.7)
+        }
+        
+        libraryOldesttButton.snp.makeConstraints {
+            $0.top.equalTo(dividerView.snp.bottom).offset(15)
+            $0.leading.trailing.equalToSuperview().inset(15)
+            $0.bottom.equalToSuperview().inset(15)
         }
     }
 }

@@ -49,7 +49,7 @@ final class NovelDetailHeaderView: UIView {
         gradientView.do {
             $0.contentMode = .scaleAspectFill
             $0.clipsToBounds = true
-            $0.image = .registerNormalGradientDummy
+            $0.image = ImageLiterals.Image.Banner.backgroundGradient
         }
         
         genreImageView.do {
@@ -60,17 +60,15 @@ final class NovelDetailHeaderView: UIView {
             $0.font = .HeadLine1
             $0.textColor = .White
             $0.numberOfLines = 3
-            $0.lineBreakMode = .byTruncatingTail
-            $0.lineBreakStrategy = .hangulWordPriority
         }
         
         novelAuthorLabel.do {
             $0.font = .Body2
             $0.textColor = .Gray200
-            $0.lineBreakMode = .byTruncatingTail
         }
         
         novelCoverImageView.do {
+            $0.image = ImageLiterals.Image.Banner.loadingThumbnail
             $0.layer.cornerRadius = 6
             $0.clipsToBounds = true
         }
@@ -100,7 +98,7 @@ final class NovelDetailHeaderView: UIView {
         }
         
         genreImageView.snp.makeConstraints {
-            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).inset(27)
+            $0.top.equalToSuperview().inset(120)
             $0.leading.equalToSuperview().inset(20)
             $0.size.equalTo(40)
         }
@@ -126,8 +124,21 @@ final class NovelDetailHeaderView: UIView {
     }
     
     func bindData(title: String, author: String, novelImage: String, genreImage: String) {
-        self.novelTitleLabel.text = title
-        self.novelAuthorLabel.text = author
+        self.novelTitleLabel.do {
+            $0.makeAttribute(with: title)?
+                .lineSpacing(spacingPercentage: 140)
+                .kerning(kerningPixel: -1.2)
+                .applyAttribute()
+            $0.lineBreakMode = .byTruncatingTail
+            $0.lineBreakStrategy = .hangulWordPriority
+        }
+        self.novelAuthorLabel.do {
+            $0.makeAttribute(with: author)?
+                .lineSpacing(spacingPercentage: 150)
+                .kerning(kerningPixel: -0.6)
+                .applyAttribute()
+            $0.lineBreakMode = .byTruncatingTail
+        }
         self.novelCoverImageView.kf.setImage(with: URL(string: novelImage))
         self.genreImageView.kf.setImage(with: URL(string: genreImage))
         if let novelImageUrl = URL(string: novelImage) {

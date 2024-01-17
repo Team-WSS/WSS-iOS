@@ -64,6 +64,11 @@ final class NovelDetailInfoKeywordCollectionViewCell: UICollectionViewCell {
     // MARK: - bind data
     
     func bindData(keyword: String) {
-        self.keywordLabel.text = keyword
+        self.keywordLabel.do {
+            $0.makeAttribute(with: keyword)?
+                .lineSpacing(spacingPercentage: 150)
+                .kerning(kerningPixel: -0.6)
+                .applyAttribute()
+        }
     }
 }

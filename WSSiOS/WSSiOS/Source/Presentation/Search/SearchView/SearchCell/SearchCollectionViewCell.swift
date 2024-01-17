@@ -7,6 +7,7 @@
 
 import UIKit
 
+import Kingfisher
 import SnapKit
 import Then
 
@@ -42,6 +43,11 @@ final class SearchCollectionViewCell: UICollectionViewCell {
     //MARK: - set UI
     
     private func setUI() {
+        novelImageView.do {
+            $0.layer.cornerRadius = 6
+            $0.clipsToBounds = true
+        }
+        
         novelStackView.do {
             $0.axis = .vertical
             $0.spacing = 2
@@ -51,16 +57,11 @@ final class SearchCollectionViewCell: UICollectionViewCell {
         novelTitleLabel.do {
             $0.font = .Title2
             $0.textColor = .Black
-            $0.numberOfLines = 2
-            $0.lineBreakMode = .byTruncatingTail
-            $0.lineBreakStrategy = .hangulWordPriority
         }
         
         novelAuthorLabel.do {
             $0.font = .Label1
             $0.textColor = .Gray200
-            $0.numberOfLines = 1
-            $0.lineBreakMode = .byTruncatingTail
         }
         
         novelGenreLabel.do {
@@ -95,12 +96,36 @@ final class SearchCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    //TODO: - 서버 붙이고 나서 수정 필요
-    
     func bindData(data: SearchNovel) {
-        novelImageView.image = data.novelImage
-        novelTitleLabel.text = data.novelTitle
-        novelAuthorLabel.text = data.novelAuthor
-        novelGenreLabel.text = data.novelGenre
+        guard let imageURL = URL(string: data.novelImg) else { return }
+        novelImageView.kf.setImage(with: imageURL)
+        
+        novelTitleLabel.do {
+            $0.makeAttribute(with: data.novelTitle)?
+                .kerning(kerningPixel: -0.6)
+                .lineSpacing(spacingPercentage: 140)
+                .applyAttribute()
+            $0.numberOfLines = 2
+            $0.lineBreakMode = .byTruncatingTail
+            $0.lineBreakStrategy = .hangulWordPriority
+        }
+        
+        novelAuthorLabel.do {
+            $0.makeAttribute(with: data.novelAuthor)?
+                .kerning(kerningPixel: 0)
+                .lineSpacing(spacingPercentage: 145)
+                .applyAttribute()
+            $0.numberOfLines = 1
+            $0.lineBreakMode = .byTruncatingTail
+        }
+        
+        novelGenreLabel.do {
+            $0.makeAttribute(with: data.novelGenre)?
+                .kerning(kerningPixel: 0)
+                .lineSpacing(spacingPercentage: 145)
+                .applyAttribute()
+            $0.numberOfLines = 1
+            $0.lineBreakMode = .byTruncatingTail
+        }
     }
 }

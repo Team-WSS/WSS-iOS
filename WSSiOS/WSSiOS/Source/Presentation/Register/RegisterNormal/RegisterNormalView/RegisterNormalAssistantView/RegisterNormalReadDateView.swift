@@ -71,7 +71,7 @@ final class RegisterNormalReadDateView: UIView {
         }
     }
     
-    func bindData(_ status: RegisterNormalReadStatus) {
+    func bindData(_ status: ReadStatus) {
         titleView.setText(status.dateText)
         datePickerButton.bindData(status)
     }

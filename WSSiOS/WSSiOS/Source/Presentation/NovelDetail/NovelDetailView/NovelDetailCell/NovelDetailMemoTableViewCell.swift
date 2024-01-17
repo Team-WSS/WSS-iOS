@@ -60,8 +60,6 @@ final class NovelDetailMemoTableViewCell: UITableViewCell {
             $0.font = .Body2
             $0.textColor = .Black
             $0.numberOfLines = 5
-            $0.lineBreakMode = .byTruncatingTail
-            $0.lineBreakStrategy = .hangulWordPriority
         }
     }
     
@@ -107,6 +105,13 @@ final class NovelDetailMemoTableViewCell: UITableViewCell {
     
     func bindData(date: String, content: String) {
         self.memoDateLabel.text = date
-        self.memoContentLabel.text = content
+        self.memoContentLabel.do {
+            $0.makeAttribute(with: content)?
+                .lineSpacing(spacingPercentage: 150)
+                .kerning(kerningPixel: -0.6)
+                .applyAttribute()
+            $0.lineBreakMode = .byTruncatingTail
+            $0.lineBreakStrategy = .hangulWordPriority
+        }
     }
 }

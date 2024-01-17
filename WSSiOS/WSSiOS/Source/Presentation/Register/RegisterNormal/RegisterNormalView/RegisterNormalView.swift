@@ -14,17 +14,18 @@ final class RegisterNormalView: UIView {
     
     // MARK: - UI Components
     
-    private let pageScrollView = UIScrollView()
+    let statusBarView = UIView()
+    let pageScrollView = UIScrollView()
     private let pageContentView = UIStackView()
     
-    private let bannerImageView = RegisterNormalBannerImageView()
+    let bannerImageView = RegisterNormalBannerImageView()
     let infoWithRatingView = RegisterNormalNovelInfoWithRatingView()
     let readStatusView = RegisterNormalReadStatusView()
     let readDateView = RegisterNormalReadDateView()
     private let dividerView = RegisterNormalDividerView()
     private let keywordSelectionView = RegisterNormalKeywordSelectionView()
-    private let novelSummaryView = RegisterNormalNovelSummaryView()
-    private let registerButton = WSSMainButton(title: "내 서재에 등록")
+    let novelSummaryView = RegisterNormalNovelSummaryView()
+    let registerButton = WSSMainButton(title: "내 서재에 등록")
     private let registerButtonGradient = UIImageView()
     private let registerButtonBackgroundView = UIView()
     
@@ -50,6 +51,13 @@ final class RegisterNormalView: UIView {
             $0.backgroundColor = .white
         }
         
+        statusBarView.do {
+            let scenes = UIApplication.shared.connectedScenes
+            let windowScene = scenes.first as? UIWindowScene
+            let statusBarManager = windowScene?.windows.first?.windowScene?.statusBarManager
+            $0.frame = statusBarManager?.statusBarFrame ?? .zero
+        }
+        
         pageScrollView.do {
             $0.contentInsetAdjustmentBehavior = .never
             $0.showsVerticalScrollIndicator = false
@@ -72,6 +80,7 @@ final class RegisterNormalView: UIView {
     
     private func setHieararchy() {
         self.addSubviews(pageScrollView,
+                         statusBarView,
                          registerButtonGradient,
                          registerButtonBackgroundView,
                          registerButton,

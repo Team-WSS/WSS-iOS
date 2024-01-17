@@ -47,11 +47,17 @@ final class RegisterNormalCustomDatePicker: UIButton {
     var startDate = Date() {
         didSet {
             startDateLabel.text = dateFormatter.string(from: startDate)
+            if selectedButton == startButton {
+                datePicker.date = startDate
+            }
         }
     }
     var endDate = Date() {
         didSet {
             endDateLabel.text = dateFormatter.string(from: endDate)
+            if selectedButton == endButton {
+                datePicker.date = endDate
+            }
         }
     }
     
@@ -226,7 +232,7 @@ final class RegisterNormalCustomDatePicker: UIButton {
         }
     }
     
-    func bindReadStatus(status: RegisterNormalReadStatus) {
+    func bindReadStatus(status: ReadStatus) {
         if status == .FINISH {
             buttonStackView.isHidden = false
             readingStatusLabel.isHidden = true

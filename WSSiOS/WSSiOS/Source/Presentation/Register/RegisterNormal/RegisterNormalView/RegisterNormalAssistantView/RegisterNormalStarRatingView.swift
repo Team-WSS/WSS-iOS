@@ -38,6 +38,10 @@ final class RegisterNormalStarRatingView: UIView {
             $0.axis = .horizontal
             $0.spacing = 10
         }
+        starImageViews.forEach {
+            $0.contentMode = .scaleAspectFit
+            $0.clipsToBounds = true
+        }
     }
     
     private func setHieararchy() {
@@ -55,7 +59,7 @@ final class RegisterNormalStarRatingView: UIView {
         starImageViews.forEach {
             $0.snp.makeConstraints {
                 $0.width.equalTo(31)
-                $0.height.equalTo(29)
+                $0.height.equalTo(31)
             }
         }
     }

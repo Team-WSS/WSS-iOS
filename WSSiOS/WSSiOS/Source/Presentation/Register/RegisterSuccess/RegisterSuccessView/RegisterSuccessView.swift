@@ -17,8 +17,8 @@ final class RegisterSuccessView: UIView {
     
     private let titleLabel = UILabel()
     private let lottieView = LottieAnimationView(name: StringLiterals.Register.Success.lottie)
-    private var makeMemoButton = WSSMainButton(title: StringLiterals.Register.Success.makeMemo)
-    private var returnHomeButton = UIButton()
+    var makeMemoButton = WSSMainButton(title: StringLiterals.Register.Success.makeMemo)
+    var returnHomeButton = UIButton()
     
     // MARK: - Life Cycle
     

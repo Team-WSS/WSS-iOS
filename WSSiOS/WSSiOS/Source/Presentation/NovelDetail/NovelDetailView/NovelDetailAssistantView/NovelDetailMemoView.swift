@@ -41,6 +41,7 @@ final class NovelDetailMemoView: UIView {
         memoTableView.do {
             $0.backgroundColor = .white
             $0.separatorStyle = .none
+            $0.isScrollEnabled = false
         }
     }
     
@@ -75,9 +76,19 @@ final class NovelDetailMemoView: UIView {
         self.memoList = memos
         
         if self.memoList.count == 0 {
-            self.novelDetailCreateMemoView.createMemoLabel.text = "아직 작성된 메모가 없어요"
+            self.novelDetailCreateMemoView.createMemoLabel.do {
+                $0.makeAttribute(with: "아직 작성된 메모가 없어요")?
+                    .lineSpacing(spacingPercentage: 150)
+                    .kerning(kerningPixel: -0.6)
+                    .applyAttribute()
+            }
         } else {
-            self.novelDetailCreateMemoView.createMemoLabel.text = "새로운 메모를 작성해보세요"
+            self.novelDetailCreateMemoView.createMemoLabel.do {
+                $0.makeAttribute(with: "새로운 메모를 작성해보세요")?
+                    .lineSpacing(spacingPercentage: 150)
+                    .kerning(kerningPixel: -0.6)
+                    .applyAttribute()
+            }
         }
     }
 }

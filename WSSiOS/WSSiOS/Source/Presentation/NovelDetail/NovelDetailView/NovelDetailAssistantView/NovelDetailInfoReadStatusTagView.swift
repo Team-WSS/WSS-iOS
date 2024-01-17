@@ -10,30 +10,6 @@ import UIKit
 import SnapKit
 import Then
 
-enum ReadStatus {
-    case FINISH
-    case READING
-    case DROP
-    case WISH
-    
-    var tagImage: UIImage {
-        switch self {
-        case .FINISH: return ImageLiterals.icon.TagStatus.finished
-        case .READING: return ImageLiterals.icon.TagStatus.reading
-        case .DROP: return ImageLiterals.icon.TagStatus.stop
-        case .WISH: return ImageLiterals.icon.TagStatus.interest
-        }
-    }
-    
-    var tagText: String {
-        switch self {
-        case .FINISH: return "읽음"
-        case .READING: return "읽는 중"
-        case .DROP: return "하차"
-        case .WISH: return "읽고 싶음"
-        }
-    }
-}
 
 final class NovelDetailInfoReadStatusTagView: UIView {
     
@@ -105,6 +81,11 @@ final class NovelDetailInfoReadStatusTagView: UIView {
     
     func bindData(_ status: ReadStatus) {
         self.tagImageView.image = status.tagImage
-        self.tagLabel.text = status.tagText
+        self.tagLabel.do {
+            $0.makeAttribute(with: status.tagText)?
+                .lineSpacing(spacingPercentage: 150)
+                .kerning(kerningPixel: -0.6)
+                .applyAttribute()
+        }
     }
 }

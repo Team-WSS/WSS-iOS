@@ -59,6 +59,10 @@ final class NovelDetailInfoReadDateView: UIView {
         }
         
         waveLabel.do {
+            $0.makeAttribute(with: "~")?
+                .lineSpacing(spacingPercentage: 150)
+                .kerning(kerningPixel: -0.6)
+                .applyAttribute()
             $0.font = .Body2
             $0.textColor = .Gray300
         }
@@ -106,15 +110,33 @@ final class NovelDetailInfoReadDateView: UIView {
     }
     
     func bindData(startDate: String, endDate: String?) {
-        self.startDateLabel.text = startDate
+        self.startDateLabel.do {
+            $0.makeAttribute(with: startDate)?
+                .lineSpacing(spacingPercentage: 150)
+                .kerning(kerningPixel: -0.6)
+                .applyAttribute()
+        }
         if let endDate = endDate {
-            self.readDateLabel.text = "읽은 날짜"
-            self.endDateLabel.text = endDate
-            self.waveLabel.text = "~"
+            self.readDateLabel.do {
+                $0.makeAttribute(with: "읽은 날짜")?
+                    .kerning(kerningPixel: -0.6)
+                    .applyAttribute()
+            }
+            self.endDateLabel.do {
+                $0.makeAttribute(with: endDate)?
+                    .lineSpacing(spacingPercentage: 150)
+                    .kerning(kerningPixel: -0.6)
+                    .applyAttribute()
+            }
+            self.waveLabel.isHidden = false
         } else {
-            self.readDateLabel.text = "시작 날짜"
+            self.readDateLabel.do {
+                $0.makeAttribute(with: "시작 날짜")?
+                    .kerning(kerningPixel: -0.6)
+                    .applyAttribute()
+            }
             self.endDateLabel.text = nil
-            self.waveLabel.text = nil
+            self.waveLabel.isHidden = true
         }
     }
 }

@@ -105,7 +105,7 @@ final class RegisterNormalDatePickerButton: UIButton {
         }
     }
     
-    func bindData(_ status: RegisterNormalReadStatus) {
+    func bindData(_ status: ReadStatus) {
         switch status {
         case .FINISH:
             startDateLabel.isHidden = false

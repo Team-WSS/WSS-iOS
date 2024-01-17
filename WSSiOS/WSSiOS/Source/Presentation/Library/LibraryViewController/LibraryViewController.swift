@@ -69,6 +69,13 @@ final class LibraryViewController: UIViewController {
             ]
             navigationBar.titleTextAttributes = titleTextAttributes
         }
+
+    override func viewWillAppear(_ animated: Bool) {
+        if let tabBarController = self.tabBarController as? WSSTabBarController {
+            tabBarController.tabBar.isHidden = false
+            tabBarController.shadowView.isHidden = false
+        }
+        super.viewWillAppear(animated)
     }
     
     //MARK: - Custom TabBar

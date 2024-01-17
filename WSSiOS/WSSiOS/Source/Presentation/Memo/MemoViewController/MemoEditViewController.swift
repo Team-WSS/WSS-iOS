@@ -17,7 +17,7 @@ final class MemoEditViewController: UIViewController {
     
     private let repository: MemoRepository
     private let disposeBag = DisposeBag()
-    private let novelId: Int?
+    private let userNovelId: Int?
     private let memoId: Int?
     private var memoContent: String?
     private var updatedMemoContent = ""
@@ -30,9 +30,9 @@ final class MemoEditViewController: UIViewController {
 
      // MARK: - Life Cycle
     
-    init(repository: MemoRepository, novelId: Int? = nil, memoId: Int? = nil, novelTitle: String, novelAuthor: String, novelImage: String, memoContent: String? = nil) {
+    init(repository: MemoRepository, userNovelId: Int? = nil, memoId: Int? = nil, novelTitle: String, novelAuthor: String, novelImage: String, memoContent: String? = nil) {
         self.repository = repository
-        self.novelId = novelId
+        self.userNovelId = userNovelId
         self.memoId = memoId
         self.memoContent = memoContent
         super.init(nibName: nil, bundle: nil)
@@ -63,6 +63,7 @@ final class MemoEditViewController: UIViewController {
          
          setNavigationBar()
          setUI()
+         setNotificationCenter()
          setTapGesture()
          setBinding()
      }
@@ -85,6 +86,17 @@ final class MemoEditViewController: UIViewController {
             $0.setButtonAttributedTitle(text: "완료", font: .Title2, color: .Primary100)
             $0.isEnabled = false
         }
+    }
+    
+    // MARK: - setNotificationCenter
+
+    private func setNotificationCenter() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.canceledEdit(_:)),
+            name: NSNotification.Name("CanceledEdit"),
+            object: nil
+        )
     }
     
     // MARK: - set tap gesture
@@ -166,12 +178,18 @@ final class MemoEditViewController: UIViewController {
     // MARK: - API request
     
     private func postMemo() {
-        repository.postMemo(userNovelId: self.novelId!, memoContent: updatedMemoContent)
+        repository.postMemo(userNovelId: self.userNovelId!, memoContent: updatedMemoContent)
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
+                if data.isAvatarUnlocked {
+                    NotificationCenter.default.post(name: NSNotification.Name("AvatarUnlocked"), object: nil)
+                } else {
+                    NotificationCenter.default.post(name: NSNotification.Name("PostedMemo"), object: nil)
+                }
                 self.navigationController?.popViewController(animated: true)
             },onError: { owner, error in
                 print(error)
+                self.showToast(.memoSaveFail)
             })
             .disposed(by: disposeBag)
     }
@@ -180,12 +198,16 @@ final class MemoEditViewController: UIViewController {
         repository.patchMemo(memoId: self.memoId!, memoContent: updatedMemoContent)
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
+                NotificationCenter.default.post(name: NSNotification.Name("PatchedMemo"), object: nil)
                 self.navigationController?.popViewController(animated: true)
             },onError: { owner, error in
                 print(error)
+                self.showToast(.memoSaveFail)
             })
             .disposed(by: disposeBag)
     }
+    
+    // MARK: - custom method
     
     func enableCompleteButton() {
         completeButton.do {
@@ -203,5 +225,9 @@ final class MemoEditViewController: UIViewController {
     
     @objc func viewDidTap() {
         view.endEditing(true)
+    }
+    
+    @objc func canceledEdit(_ notification: Notification) {
+        self.navigationController?.popViewController(animated: true)
     }
 }
