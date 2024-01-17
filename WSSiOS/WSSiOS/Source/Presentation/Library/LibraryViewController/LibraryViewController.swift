@@ -17,6 +17,16 @@ final class LibraryViewController: UIViewController {
     //MARK: - Properties
     
     private let disposeBag = DisposeBag()
+    private var userNovelListRepository: DefaultUserNovelRepository
+    
+    init(userNovelListRepository: DefaultUserNovelRepository) {
+        self.userNovelListRepository = userNovelListRepository
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     //MARK: - UI Components
     
@@ -33,6 +43,7 @@ final class LibraryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setNavigationBar()
         setTabBar()
         delegate()
         
@@ -42,6 +53,20 @@ final class LibraryViewController: UIViewController {
         setHierarchy()
         setLayout()
         setAction()
+    }
+    
+    //MARK: - set NavigationBar
+    
+    private func setNavigationBar() {
+        self.navigationController?.isNavigationBarHidden = false
+        self.title = "내 서재"
+        
+        if let navigationBar = self.navigationController?.navigationBar {
+            let titleTextAttributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont.Title2
+            ]
+            navigationBar.titleTextAttributes = titleTextAttributes
+        }
     }
     
     //MARK: - Custom TabBar
