@@ -34,6 +34,7 @@ final class RegisterNormalViewController: UIViewController {
     private var showDatePicker = BehaviorRelay<Bool>(value: false)
     private var startDate = BehaviorRelay<Date>(value: Date())
     private var endDate = BehaviorRelay<Date>(value: Date())
+    private let platformCollectionViewHeight = BehaviorSubject<CGFloat>(value: 0)
     
     private let rootView = RegisterNormalView()
     
@@ -70,6 +71,8 @@ final class RegisterNormalViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         getNovel()
+        register()
+        delegate()
         bindRx()
     }
     
@@ -147,6 +150,15 @@ final class RegisterNormalViewController: UIViewController {
             }).disposed(by: disposeBag)
     }
     
+    private func register() {
+        rootView.novelSummaryView.platFormTest.platformCollectionView.register(NovelDetailInfoPlatformCollectionViewCell.self, forCellWithReuseIdentifier: "NovelDetailInfoPlatformCollectionViewCell")
+    }
+    
+    private func delegate() {
+        rootView.novelSummaryView.platFormTest.platformCollectionView.dataSource = self
+        rootView.novelSummaryView.platFormTest.platformCollectionView.delegate = self
+    }
+    
     private func bindData(_ data: NovelResult) {
         if let newNovelResult = data.newNovelResult {
             isNew.accept(true)
@@ -165,7 +177,8 @@ final class RegisterNormalViewController: UIViewController {
         rootView.infoWithRatingView.bindData(coverImage: newData.novelImg,
                                              title: newData.novelTitle,
                                              author: newData.novelAuthor)
-        rootView.novelSummaryView.bindData(plot: newData.novelDescription, genre: newData.novelGenre)
+        rootView.novelSummaryView.bindData(plot: newData.novelDescription, genre: newData.novelGenre, platforms: newData.platforms)
+        self.rootView.novelSummaryView.platFormTest.platformCollectionView.reloadData()
     }
     
     private func bindUserData(_ userData: EditNovelResult) {
@@ -197,7 +210,8 @@ final class RegisterNormalViewController: UIViewController {
             dateToString.date(from: end) ?? Date()
         )
         
-        rootView.novelSummaryView.bindData(plot: userData.userNovelDescription, genre: userData.userNovelGenre)
+        rootView.novelSummaryView.bindData(plot: userData.userNovelDescription, genre: userData.userNovelGenre, platforms: userData.platforms)
+        self.rootView.novelSummaryView.platFormTest.platformCollectionView.reloadData()
     }
     
     private func bindRx() {
@@ -355,6 +369,17 @@ final class RegisterNormalViewController: UIViewController {
             }
         })
         .disposed(by: disposeBag)
+        
+        rootView.novelSummaryView.platFormTest.platformCollectionView.rx.observe(CGSize.self, "contentSize")
+            .map { $0?.height ?? 0 }
+            .bind(to: platformCollectionViewHeight)
+            .disposed(by: disposeBag)
+        
+        platformCollectionViewHeight
+            .subscribe(onNext: { height in
+                self.rootView.novelSummaryView.platFormTest.updateCollectionViewHeight(height: height)
+            })
+            .disposed(by: disposeBag)
     }
     
     // 나중에 효원에게 넘겨받을 것
@@ -371,5 +396,48 @@ final class RegisterNormalViewController: UIViewController {
                                        userNovelReadDate: UserNovelReadDate(
                                         userNovelReadStartDate: data.userNovelReadStartDate,
                                         userNovelReadEndDate: data.userNovelReadEndDate))
+    }
+}
+
+extension RegisterNormalViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        print("Hello")
+        return rootView.novelSummaryView.platFormTest.platformList.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: NovelDetailInfoPlatformCollectionViewCell.identifier,
+            for: indexPath
+        ) as? NovelDetailInfoPlatformCollectionViewCell else {return UICollectionViewCell()}
+        
+        cell.bindData(
+            platform: rootView.novelSummaryView.platFormTest.platformList[indexPath.item].platformName
+        )
+        
+        return cell
+    }
+}
+
+extension RegisterNormalViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let url = URL(string: rootView.novelSummaryView.platFormTest.platformList[indexPath.item].platformUrl) {
+            UIApplication.shared.open(url, options: [:])
+        }
+    }
+}
+
+extension RegisterNormalViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        var text: String?
+        
+        text = rootView.novelSummaryView.platFormTest.platformList[indexPath.item].platformName
+        
+        guard let unwrappedText = text else {
+            return CGSize(width: 0, height: 0)
+        }
+        
+        let width = (unwrappedText as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 48
+        return CGSize(width: width, height: 37)
     }
 }

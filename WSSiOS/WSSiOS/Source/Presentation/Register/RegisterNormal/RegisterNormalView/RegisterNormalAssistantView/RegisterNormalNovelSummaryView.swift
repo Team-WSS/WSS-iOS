@@ -19,14 +19,7 @@ final class RegisterNormalNovelSummaryView: UIView {
     private let plotLabel = UILabel()
     private let genreTitleLabel = WSSSectionTitleView()
     private let genreLabel = UILabel()
-    private let platformTitleLabel = WSSSectionTitleView()
-    private let platformButtonStackView = UIStackView()
-    private let spacer = UIView()
-    private lazy var platformButtons = [
-        RegisterNormalPlatformSelectButton(platformName: "네이버시리즈"),
-        RegisterNormalPlatformSelectButton(platformName: "카카오페이지"),
-        spacer
-    ]
+    let platFormTest = RegisterNormalPlatFormTest()
     
     // MARK: - Life Cycle
     
@@ -71,15 +64,6 @@ final class RegisterNormalNovelSummaryView: UIView {
             $0.text = "로판"
             bodyStyle(of: genreLabel)
         }
-        
-        platformTitleLabel.do {
-            $0.setText("작품 보러가기")
-        }
-        
-        platformButtonStackView.do {
-            $0.axis = .horizontal
-            $0.spacing = 8
-        }
     }
     
     private func setHieararchy() {
@@ -88,11 +72,7 @@ final class RegisterNormalNovelSummaryView: UIView {
                                                   plotLabel,
                                                   genreTitleLabel,
                                                   genreLabel,
-                                                  platformTitleLabel,
-                                                  platformButtonStackView)
-        platformButtons.forEach {
-            platformButtonStackView.addArrangedSubview($0)
-        }
+                                                  platFormTest)
     }
     
     private func setLayout() {
@@ -105,7 +85,7 @@ final class RegisterNormalNovelSummaryView: UIView {
             
             $0.setCustomSpacing(10, after: plotTitleLabel)
             $0.setCustomSpacing(10, after: genreTitleLabel)
-            $0.setCustomSpacing(10, after: platformTitleLabel)
+            $0.setCustomSpacing(10, after: platFormTest)
         }
     }
     
@@ -122,10 +102,11 @@ final class RegisterNormalNovelSummaryView: UIView {
         }
     }
     
-    func bindData(plot: String?, genre: String?) {
+    func bindData(plot: String?, genre: String?, platforms: [UserNovelPlatform]) {
         plotLabel.text = plot
         genreLabel.text = genre
         bodyStyle(of: plotLabel)
         bodyStyle(of: genreLabel)
+        platFormTest.bindData(platforms: platforms)
     }
 }

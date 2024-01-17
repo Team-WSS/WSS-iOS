@@ -18,7 +18,7 @@ struct NewNovelResult: Codable {
     let novelID: Int
     let novelTitle, novelAuthor, novelGenre, novelImg: String
     let novelDescription: String
-    let platforms: [Platform]
+    let platforms: [UserNovelPlatform]
 
     enum CodingKeys: String, CodingKey {
         case novelID = "novelId"
@@ -26,16 +26,16 @@ struct NewNovelResult: Codable {
     }
 }
 
-// MARK: - Platform
-
-struct Platform: Codable {
-    let platformName, platformURL: String
-
-    enum CodingKeys: String, CodingKey {
-        case platformName
-        case platformURL = "platformUrl"
-    }
-}
+//// MARK: - Platform
+//
+//struct Platform: Codable {
+//    let platformName, platformURL: String
+//
+//    enum CodingKeys: String, CodingKey {
+//        case platformName
+//        case platformURL = "platformUrl"
+//    }
+//}
 
 // MARK: - EditNovelResult
 
