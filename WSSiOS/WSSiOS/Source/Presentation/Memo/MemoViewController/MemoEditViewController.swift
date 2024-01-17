@@ -169,6 +169,7 @@ final class MemoEditViewController: UIViewController {
         repository.postMemo(userNovelId: self.novelId!, memoContent: updatedMemoContent)
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
+                NotificationCenter.default.post(name: NSNotification.Name("PostedMemo"), object: nil)
                 self.navigationController?.popViewController(animated: true)
             },onError: { owner, error in
                 print(error)

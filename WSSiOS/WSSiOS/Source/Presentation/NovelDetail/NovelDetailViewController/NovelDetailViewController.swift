@@ -59,6 +59,7 @@ final class NovelDetailViewController: UIViewController {
         
         setNavigationBar()
         setUI()
+        setNotificationCenter()
         setTapGesture()
         register()
         delegate()
@@ -86,6 +87,17 @@ final class NovelDetailViewController: UIViewController {
         novelSettingButton.do {
             $0.setImage(ImageLiterals.icon.meatballMemo.withRenderingMode(.alwaysOriginal), for: .normal)
         }
+    }
+    
+    // MARK: - setNotificationCenter
+
+    private func setNotificationCenter() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.postedMemo(_:)),
+            name: NSNotification.Name("PostedMemo"),
+            object: nil
+        )
     }
     
     // MARK: - set tap gesture
@@ -277,6 +289,8 @@ final class NovelDetailViewController: UIViewController {
         }
     }
     
+    // MARK: - custom method
+    
     @objc func viewDidTap() {
         self.rootView.novelDetailMemoSettingButtonView.isHidden = true
     }
@@ -291,6 +305,10 @@ final class NovelDetailViewController: UIViewController {
             novelAuthor: self.novelAuthor,
             novelImage: self.novelImage
         ), animated: true)
+    }
+    
+    @objc func postedMemo(_ notification: Notification) {
+        showToast(.memoSaveSuccess)
     }
 }
 
