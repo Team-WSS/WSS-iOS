@@ -53,21 +53,16 @@ final class MyPageViewController: UIViewController {
         bindUserData()
         pushChangeNickNameViewController()
         addNotificationCenter()
-        //        removeDimmedView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if let tabBarController = self.tabBarController as? WSSTabBarController {
-            tabBarController.tabBar.isHidden = false
-            tabBarController.shadowView.isHidden = false
-        }
-        
+        reSetNavigationBar()
         bindDataAgain()
     }
     
-    //MARK: - Custom Method
+    //MARK: - set NavigationBar
     
     private func setNavigationBar() {
         self.navigationController?.isNavigationBarHidden = false
@@ -81,13 +76,20 @@ final class MyPageViewController: UIViewController {
         }
     }
     
+    private func reSetNavigationBar() {
+        if let tabBarController = self.tabBarController as? WSSTabBarController {
+            tabBarController.tabBar.isHidden = false
+            tabBarController.shadowView.isHidden = false
+        }
+    }
+    
+    //MARK: - init DataBind
+    
     private func register() {
         rootView.myPageInventoryView.myPageAvaterCollectionView.register(MyPageInventoryCollectionViewCell.self, forCellWithReuseIdentifier: "MyPageInventoryCollectionViewCell")
         
         rootView.myPageSettingView.myPageSettingCollectionView.register(MyPageSettingCollectionViewCell.self, forCellWithReuseIdentifier: "MyPageSettingCollectionViewCell")
     }
-    
-    //MARK: - init DataBind
     
     private func bindUserData() {
         userRepository.getUserData()
