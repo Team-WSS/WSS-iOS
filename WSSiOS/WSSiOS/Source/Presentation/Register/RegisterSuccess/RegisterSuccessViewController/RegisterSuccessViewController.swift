@@ -18,6 +18,7 @@ final class RegisterSuccessViewController: UIViewController {
     
     override func loadView() {
         self.view = rootView
+        self.view.backgroundColor = .white
     }
     
     override func viewDidLoad() {

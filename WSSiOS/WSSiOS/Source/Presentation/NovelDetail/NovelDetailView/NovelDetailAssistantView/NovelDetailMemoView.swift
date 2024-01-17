@@ -11,6 +11,10 @@ import SnapKit
 import Then
 
 final class NovelDetailMemoView: UIView {
+    
+    //MARK: - set Properties
+    
+    public var memoList: [UserNovelMemo] = []
 
     // MARK: - UI Components
     
@@ -35,6 +39,7 @@ final class NovelDetailMemoView: UIView {
     
     private func setUI() {
         memoTableView.do {
+            $0.backgroundColor = .white
             $0.separatorStyle = .none
         }
     }
@@ -63,6 +68,16 @@ final class NovelDetailMemoView: UIView {
     func updateTableViewHeight(height: CGFloat) {
         memoTableView.snp.updateConstraints {
             $0.height.equalTo(height + 82)
+        }
+    }
+    
+    func bindData(memos: [UserNovelMemo]) {
+        self.memoList = memos
+        
+        if self.memoList.count == 0 {
+            self.novelDetailCreateMemoView.createMemoLabel.text = "아직 작성된 메모가 없어요"
+        } else {
+            self.novelDetailCreateMemoView.createMemoLabel.text = "새로운 메모를 작성해보세요"
         }
     }
 }

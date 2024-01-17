@@ -35,6 +35,15 @@ enum RegisterNormalReadStatus: String, CaseIterable {
         case .WISH: return "읽고 싶음"
         }
     }
+    
+    var dateText: String? {
+        switch self {
+        case .FINISH: return "읽은 날짜"
+        case .READING: return "시작 날짜"
+        case .DROP: return "종료 날짜"
+        case .WISH: return nil
+        }
+    }
 }
 
 /// 1-3-1 RegisterNormal View
@@ -45,11 +54,21 @@ final class RegisterNormalViewController: UIViewController {
     // RxSwift에서 메모리 관리를 위한 DisposeBag
     private let disposeBag = DisposeBag()
     
-    // 별점의 현재 값을 저장하고, 변경사항을 관찰하기 위한 BehaviorRelay
-    private var starRatingRelay = BehaviorRelay<Float>(value: 0.0)
-    private var buttonStatusSubject = BehaviorSubject<RegisterNormalReadStatus>(value: .FINISH)
+    private var starRating = BehaviorRelay<Float>(value: 0.0)
+    private var buttonStatus = BehaviorRelay<RegisterNormalReadStatus>(value: .FINISH)
+    private var isOn = BehaviorRelay<Bool>(value: true)
+    private var showDatePicker = BehaviorRelay<Bool>(value: false)
+    
+    private var startDate = BehaviorRelay<Date>(value: Date())
+    private var endDate = BehaviorRelay<Date>(value: Date())
     
     private let rootView = RegisterNormalView()
+    
+    let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        return formatter
+    }()
     
     // MARK: - View Life Cycle
     
@@ -69,18 +88,18 @@ final class RegisterNormalViewController: UIViewController {
             
             view.starImageViews.enumerated().forEach { index, imageView in
                 
-                // 탭 제스처 인식기 생성 및 설정
+                // StarRating 탭 제스처 인식기 생성 및 설정
                 let tapGesture = UITapGestureRecognizer()
                 imageView.addGestureRecognizer(tapGesture)
                 tapGesture.rx.event
                     .bind(onNext: { recognizer in
                         let location = recognizer.location(in: imageView)
                         let rating = Float(index) + (location.x > imageView.frame.width / 2 ? 1 : 0.5)
-                        self.starRatingRelay.accept(rating)
+                        self.starRating.accept(rating)
                     })
                     .disposed(by: disposeBag)
                 
-                // 팬 제스처 인식기 생성 및 설정
+                // StarRating 팬 제스처 인식기 생성 및 설정
                 let panGesture = UIPanGestureRecognizer()
                 view.addGestureRecognizer(panGesture)
                 panGesture.rx.event
@@ -88,41 +107,114 @@ final class RegisterNormalViewController: UIViewController {
                         let location = recognizer.location(in: view)
                         let rawRating = (Float(location.x / view.frame.width * 5) * 2).rounded(.toNearestOrAwayFromZero) / 2
                         let rating = min(max(rawRating, 0), 5)
-                        self.starRatingRelay.accept(rating)
+                        self.starRating.accept(rating)
                     })
                     .disposed(by: disposeBag)
             }
             
             // 별점이 변경될 때마다 별 이미지 업데이트
-            starRatingRelay.asObservable()
+            starRating.asObservable()
                 .subscribe(onNext: { rating in
                     view.updateStarImages(rating: rating)
                 })
                 .disposed(by: disposeBag)
         }
         
+        // ReadStatus 에 따른 ReadStatus 선택 뷰 변화
         rootView.readStatusView.do { view in
             for (index, status) in RegisterNormalReadStatus.allCases.enumerated() {
                 view.readStatusButtons[index].rx.tap
                     .bind {
-                        self.buttonStatusSubject.onNext(status)
+                        self.buttonStatus.accept(status)
                     }
                     .disposed(by: disposeBag)
             }
-            
-            buttonStatusSubject
+
+            buttonStatus
                 .subscribe(onNext: { status in
-                    view.readStatusButtons.forEach { button in
-                        if button.checkStatus(status) {
-                            // 활성화 상태 설정
-                            button.hideImage(false)
-                            button.setColor(.Primary100)
-                        } else {
-                            // 비활성화 상태 설정
-                            button.hideImage(true)
-                            button.setColor(.Gray200)
-                        }
+                    view.bindReadStatus(status: status)
+                })
+                .disposed(by: disposeBag)
+        }
+        
+        // ReadStatus 에 따른 날짜 선택 뷰 변화
+        rootView.readDateView.do { view in
+            buttonStatus
+                .subscribe(onNext: { status in
+                    if status == .WISH {
+                        view.isHidden = true
+                    } else {
+                        view.isHidden = false
+                        view.bindData(status)
                     }
+                })
+                .disposed(by: disposeBag)
+        }
+        
+        rootView.readDateView.do { view in
+            view.toggleButton.rx.tap
+                .subscribe(onNext: {
+                    let next = !self.isOn.value
+                    self.isOn.accept(next)
+                })
+                .disposed(by: disposeBag)
+            
+            isOn
+                .subscribe(onNext: { isOn in
+                    view.toggleButton.changeState(isOn)
+                    view.datePickerButton.isHidden = !isOn
+                })
+                .disposed(by: disposeBag)
+            
+            view.datePickerButton.rx.tap
+                .subscribe(onNext: {
+                    let next = !self.showDatePicker.value
+                    self.showDatePicker.accept(next)
+                    print(next)
+                })
+                .disposed(by: disposeBag)
+        }
+        
+        rootView.do { view in
+            showDatePicker.subscribe(onNext: { value in
+                view.customDatePicker.isHidden = !value
+            })
+            .disposed(by: disposeBag)
+            
+            view.customDatePicker.rx.tap
+                .subscribe(onNext: {
+                    let next = !self.showDatePicker.value
+                    self.showDatePicker.accept(next)
+                    print(next)
+                })
+                .disposed(by: disposeBag)
+            
+            view.customDatePicker.completeButton.rx.tap
+                .subscribe(onNext: {
+                    self.startDate.accept(view.customDatePicker.startDate)
+                    self.endDate.accept(view.customDatePicker.endDate)
+                    let next = !self.showDatePicker.value
+                    self.showDatePicker.accept(next)
+                })
+                .disposed(by: disposeBag)
+            
+            startDate.asObservable()
+                .map { date in
+                    return self.dateFormatter.string(from: date)
+                }
+                .bind(to: view.readDateView.datePickerButton.startDateLabel.rx.text)
+                .disposed(by: disposeBag)
+            
+            endDate.asObservable()
+                .map { date in
+                    return self.dateFormatter.string(from: date)
+                }
+                .bind(to: view.readDateView.datePickerButton.endDateLabel.rx.text)
+                .disposed(by: disposeBag)
+            
+            buttonStatus
+                .subscribe(onNext: { status in
+                    view.customDatePicker.bindReadStatus(status: status)
                 })
                 .disposed(by: disposeBag)
         }

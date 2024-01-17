@@ -12,6 +12,7 @@ import RxSwift
 protocol UserService {
     func getUserData() -> Single<UserResult>
     func patchUserName(userNickName: String) -> Single<Void>
+  func getUserCharacterData() -> Single<UserCharacter>
 }
 
 final class DefaultUserService: NSObject, Networking {
@@ -22,7 +23,8 @@ final class DefaultUserService: NSObject, Networking {
 }
 
 extension DefaultUserService: UserService {
-    func getUserData() -> RxSwift.Single<UserResult> {
+  
+  func getUserData() -> RxSwift.Single<UserResult> {
         let request = try! makeHTTPRequest(method: .get,
                                            path: URLs.User.getUserInfo,
                                            headers: APIConstants.testTokenHeader,
@@ -51,6 +53,18 @@ extension DefaultUserService: UserService {
         
         return urlSession.rx.data(request: request)
             .map { _ in }
+            .asSingle()
+    }
+  
+func getUserCharacterData() -> Single<UserCharacter> {
+        let request = try! makeHTTPRequest(method: .get,
+                                           path: URLs.Avatar.getRepAvatar,
+                                           headers: APIConstants.testTokenHeader,
+                                           body: nil)
+        
+        NetworkLogger.log(request: request)
+  return urlSession.rx.data(request: request)
+            .map { try self.decode(data: $0, to: UserCharacter.self) }
             .asSingle()
     }
 }

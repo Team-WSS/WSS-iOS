@@ -14,7 +14,7 @@ enum URLs {
     }
     
     enum Recommend {
-        static let getRecommendList = "/soso-picks"
+        static let getRecommendList = "/user-novels/soso-picks"
     }
     
     enum Novel {
@@ -33,7 +33,7 @@ enum URLs {
     enum Memo {
         static let getMemo = "/memos/{memoId}"
         static let getMemoList = "/memos"
-        static let postMemo = "user-novels/{userNovelId}/memo"
+        static let postMemo = "/user-novels/{userNovelId}/memo"
         static let patchMemo = "/memos/{memoId}"
         static let deleteMemo = "/memos/{memoId}"
     }

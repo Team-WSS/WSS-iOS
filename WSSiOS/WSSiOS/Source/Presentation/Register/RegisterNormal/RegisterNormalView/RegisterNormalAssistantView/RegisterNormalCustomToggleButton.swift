@@ -6,26 +6,21 @@
 //
 
 import UIKit
-
+import RxSwift
+import RxCocoa
 import SnapKit
 import Then
 
 final class RegisterNormalCustomToggleButton: UIButton {
     
     // MARK: - Properties
-
-    private var isOn: Bool = true {
-        didSet {
-            self.changeState()
-        }
-    }
     
     // 상태별 스위치 배경 색상
-    private var onColor = UIColor.Primary100
-    private var offColor = UIColor.Gray100
+    var onColor = UIColor.Primary100
+    var offColor = UIColor.Gray100
     
     // 스위치가 이동하는 애니메이션 시간
-    private var animationDuration: TimeInterval = 0.20
+    var animationDuration: TimeInterval = 0.20
     
     // 각 View의 Size
     typealias SizeSet = (height: CGFloat, width: CGFloat)
@@ -36,8 +31,8 @@ final class RegisterNormalCustomToggleButton: UIButton {
     
     // MARK: - UI Components
     
-    private var barView = UIView()
-    private var circleView = UIView()
+    var barView = UIView()
+    var circleView = UIView()
     
     // MARK: - Life Cycle
     
@@ -53,12 +48,6 @@ final class RegisterNormalCustomToggleButton: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Override Method
-    
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        isOn.toggle()
-    }
-    
     // MARK: - Custom Method
     
     private func setUI() {
@@ -66,12 +55,14 @@ final class RegisterNormalCustomToggleButton: UIButton {
             $0.backgroundColor = onColor
             $0.layer.masksToBounds = true
             $0.layer.cornerRadius = barViewSize.height / 2
+            $0.isUserInteractionEnabled = false  // superView인 버튼만 터치되도록
         }
         
         circleView.do {
             $0.backgroundColor = .White
             $0.layer.masksToBounds = true
             $0.layer.cornerRadius = circleViewSize.height / 2
+            $0.isUserInteractionEnabled = false  // superView인 버튼만 터치되도록
         }
     }
     
@@ -99,25 +90,28 @@ final class RegisterNormalCustomToggleButton: UIButton {
         }
     }
     
-    private func onStateLayout() {
-        self.circleView.center.x = 17.1 + circleViewSize.width / 2
-    }
-    
-    private func offStateLayout() {
-        self.circleView.center.x = 2.76 + circleViewSize.width / 2
-    }
-    
-    private func changeState() {
-        UIView.animate(withDuration: animationDuration, animations: { [weak self] in
-            guard let self = self else { return }
-
-            if self.isOn {
-                self.onStateLayout()
+    func changeState(_ state: Bool) {
+        UIView.animate(withDuration: self.animationDuration) {
+            if state {
+                onStateLayout()
                 self.barView.backgroundColor = self.onColor
             } else {
-                self.offStateLayout()
+                offStateLayout()
                 self.barView.backgroundColor = self.offColor
             }
-        })
+            self.layoutIfNeeded()
+        }
+        
+        func onStateLayout() {
+            circleView.snp.updateConstraints {
+                $0.trailing.equalTo(barView.snp.trailing).inset(2.76)
+            }
+        }
+        
+        func offStateLayout() {
+            circleView.snp.updateConstraints {
+                $0.trailing.equalTo(barView.snp.trailing).inset(17.1)
+            }
+        }
     }
 }

@@ -1,17 +1,15 @@
 {
   "images" : [
     {
-      "filename" : "icStar-1.png",
+      "filename" : "Group 1171275377.svg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "icStar@2x-1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "icStar@3x-1.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

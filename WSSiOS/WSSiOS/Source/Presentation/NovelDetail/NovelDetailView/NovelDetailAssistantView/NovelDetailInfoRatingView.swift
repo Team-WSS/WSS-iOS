@@ -45,7 +45,7 @@ final class NovelDetailInfoRatingView: UIView {
             $0.axis = .horizontal
             $0.alignment = .fill
             $0.distribution = .fill
-            $0.spacing = 10
+            $0.spacing = 9
         }
         
         dividerView.do {
@@ -72,8 +72,8 @@ final class NovelDetailInfoRatingView: UIView {
         ratingStackView.snp.makeConstraints {
             $0.top.equalTo(ratingLabel.snp.bottom).offset(10)
             $0.leading.equalTo(20)
-            $0.width.equalTo(195)
-            $0.height.equalTo(29)
+            $0.width.equalTo(170)
+            $0.height.equalTo(26)
             $0.bottom.equalToSuperview().inset(35)
         }
         
@@ -85,6 +85,7 @@ final class NovelDetailInfoRatingView: UIView {
     }
     
     func bindData(rating: Float) {
+        self.ratingStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         for i in 0...4 {
             let starImageView = UIImageView()
             
