@@ -15,7 +15,7 @@ final class MyPageSettingCollectionViewCell: UICollectionViewCell {
     
     //MARK: - UI Components
     
-    var myPageSettingCellButton = UIButton()
+    let myPageSettingCellButton = UIButton()
     
     //MARK: - Life Cycle
     

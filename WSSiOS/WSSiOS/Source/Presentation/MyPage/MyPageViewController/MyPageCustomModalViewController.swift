@@ -15,7 +15,7 @@ final class MyPageCustomModalViewController: UIViewController {
     //MARK: - Set Properties
     
     private let disposeBag = DisposeBag()
-    private var avatarRepository: DefaultAvatarRepository
+    private let avatarRepository: DefaultAvatarRepository
     private let avatarId: Int
     private let modalHasAvatar: Bool
     
