@@ -43,6 +43,11 @@ final class SearchCollectionViewCell: UICollectionViewCell {
     //MARK: - set UI
     
     private func setUI() {
+        novelImageView.do {
+            $0.layer.cornerRadius = 6
+            $0.clipsToBounds = true
+        }
+        
         novelStackView.do {
             $0.axis = .vertical
             $0.spacing = 2
