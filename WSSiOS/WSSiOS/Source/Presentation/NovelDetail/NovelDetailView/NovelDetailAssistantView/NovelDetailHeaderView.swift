@@ -68,6 +68,7 @@ final class NovelDetailHeaderView: UIView {
         }
         
         novelCoverImageView.do {
+            $0.image = ImageLiterals.Image.Banner.loadingThumbnail
             $0.layer.cornerRadius = 6
             $0.clipsToBounds = true
         }

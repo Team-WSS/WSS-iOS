@@ -122,8 +122,11 @@ final class RegisterNormalViewController: UIViewController {
                                           userNovelReadStatus: readStatus.value,
                                           userNovelReadStartDate: requestStartDate,
                                           userNovelReadEndDate: requestEndDate)
-        .subscribe(onNext: {
-            self.userNovelId = $0.userNovelId
+        .observe(on: MainScheduler.instance)
+        .subscribe(with: self, onNext: { owner, event in
+            owner.userNovelId = event.userNovelId
+            owner.navigationController?.pushViewController(RegisterSuccessViewController(userNovelId: owner.userNovelId),
+                                                          animated: true)
         })
         .disposed(by: disposeBag)
     }
@@ -391,11 +394,10 @@ final class RegisterNormalViewController: UIViewController {
             .subscribe(with: self, onNext: { _,_ in
                 if self.isNew.value {
                     self.postUserNovel()
-                    self.navigationController?.pushViewController(RegisterSuccessViewController(),
-                                                                  animated: true)
+                    
+                    
                 } else {
                     self.patchUserNovel()
-                    
 //                    if let tabBarController = owner.tabBarController as? WSSTabBarController {
 //                        tabBarController.
 //                        tabBarController.tabBar.isHidden = true
