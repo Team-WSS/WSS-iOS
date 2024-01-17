@@ -13,10 +13,10 @@ protocol UserNovelRepository {
     func getUserNovel(userNovelId: Int) -> Observable<UserNovelDetail>
     func deleteUserNovel(userNovelId: Int) -> Observable<Void>
     func postUserNovel(novelId: Int, userNovelRating: Float?, userNovelReadStatus: ReadStatus, userNovelReadStartDate: String?, userNovelReadEndDate: String?) -> Observable<UserNovelId>
+    func patchUserNovel(userNovelId: Int, userNovelRating: Float?, userNovelReadStatus: ReadStatus, userNovelReadStartDate: String?, userNovelReadEndDate: String?) -> Observable<Void>
 }
 
 struct DefaultUserNovelRepository: UserNovelRepository {
-    
     private var userNovelService: UserNovelService
     
     init(userNovelService: UserNovelService) {
@@ -35,7 +35,17 @@ struct DefaultUserNovelRepository: UserNovelRepository {
     
     func postUserNovel(novelId: Int, userNovelRating: Float?, userNovelReadStatus: ReadStatus, userNovelReadStartDate: String?, userNovelReadEndDate: String?) -> Observable<UserNovelId> {
         return userNovelService
-            .postUserNovelAPI(novelId: novelId,
+            .postUserNovel(novelId: novelId,
+                              userNovelRating: userNovelRating,
+                              userNovelReadStatus: userNovelReadStatus,
+                              userNovelReadStartDate: userNovelReadStartDate,
+                              userNovelReadEndDate: userNovelReadEndDate
+            ).asObservable()
+    }
+    
+    func patchUserNovel(userNovelId: Int, userNovelRating: Float?, userNovelReadStatus: ReadStatus, userNovelReadStartDate: String?, userNovelReadEndDate: String?) -> Observable<Void> {
+        return userNovelService
+            .patchUserNovel(userNovelId: userNovelId,
                               userNovelRating: userNovelRating,
                               userNovelReadStatus: userNovelReadStatus,
                               userNovelReadStartDate: userNovelReadStartDate,

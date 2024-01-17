@@ -105,6 +105,36 @@ final class RegisterNormalViewController: UIViewController {
         .disposed(by: disposeBag)
     }
     
+    private func patchUserNovel() {
+        var requestStartDate: String? = dateToString.string(from: startDate.value)
+        var requestEndDate: String? = dateToString.string(from: endDate.value)
+        
+        if !isDateExist.value {
+            requestStartDate = nil
+            requestEndDate = nil
+        } else if readStatus.value == .READING  {
+            requestEndDate = nil
+        } else if readStatus.value == .DROP {
+            requestStartDate = nil
+        } else if readStatus.value == .WISH {
+            requestStartDate = nil
+            requestEndDate = nil
+        }
+        
+        var requestRating: Float? = starRating.value <= 0.0 ? nil : starRating.value
+        
+        userNovelRepository.patchUserNovel(userNovelId: userNovelId,
+                                               userNovelRating: requestRating,
+                                               userNovelReadStatus: readStatus.value,
+                                               userNovelReadStartDate: requestStartDate,
+                                               userNovelReadEndDate: requestEndDate)
+        .observe(on: MainScheduler.instance)
+            .subscribe(with: self,onError: { owner, error in
+                print(error)
+            })
+            .disposed(by: disposeBag)
+    }
+    
     private func getNovel() {
         novelRepository.getNovelInfo(novelId: novelId)
             .observe(on: MainScheduler.instance)
@@ -140,6 +170,7 @@ final class RegisterNormalViewController: UIViewController {
     }
     
     private func bindUserData(_ userData: EditNovelResult) {
+        self.userNovelId = userData.userNovelID
         rootView.bannerImageView.bindData(userData.userNovelImg)
         rootView.infoWithRatingView.bindData(coverImage: userData.userNovelImg,
                                              title: userData.userNovelTitle,
@@ -309,8 +340,13 @@ final class RegisterNormalViewController: UIViewController {
         
         rootView.registerButton.rx.tap
             .subscribe(with: self, onNext: { _,_ in
-                self.present(RegisterSuccessViewController(), animated: true)
-                self.postUserNovel()
+                if self.isNew.value {
+                    self.present(RegisterSuccessViewController(), animated: true)
+                    self.postUserNovel()
+                } else {
+                    self.patchUserNovel()
+                }
+                
             })
             .disposed(by: disposeBag)
         
