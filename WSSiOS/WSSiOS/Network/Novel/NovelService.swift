@@ -22,17 +22,12 @@ final class DefaultNovelService: NSObject, Networking {
 extension DefaultNovelService: NovelService {
     
     func getSearchNovelData(searchWord: String) -> Single<SearchNovels> {
-        
-        guard let encodedSearchWord = searchWord.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
-            return Single.error(NSError(domain: "URL Encoding Error", code: 0, userInfo: nil))
-        }
-        
-        print(encodedSearchWord)
-        
+
         let searchListQueryItems: [URLQueryItem] = [
             URLQueryItem(name: "lastNovelId", value: String(describing: 999999)),
             URLQueryItem(name: "size", value: String(describing: 40)),
-            URLQueryItem(name: "word", value: encodedSearchWord)
+            //MARK: - value값이 한글일때의 디코딩 처리 필요
+            URLQueryItem(name: "word", value: searchWord.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed))
         ]
         
         let request = try! makeHTTPRequest(method: .get,
