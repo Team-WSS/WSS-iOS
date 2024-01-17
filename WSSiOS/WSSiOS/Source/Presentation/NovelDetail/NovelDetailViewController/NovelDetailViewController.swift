@@ -179,6 +179,16 @@ final class NovelDetailViewController: UIViewController {
             self.rootView.infoButtonDidTap()
         }.disposed(by: disposeBag)
         
+        rootView.stickyNovelDetailTabView.memoButton.rx.tap.bind {
+            self.selectedMenu.onNext(0)
+            self.rootView.memoButtonDidTap()
+        }.disposed(by: disposeBag)
+        
+        rootView.stickyNovelDetailTabView.infoButton.rx.tap.bind {
+            self.selectedMenu.onNext(1)
+            self.rootView.infoButtonDidTap()
+        }.disposed(by: disposeBag)
+        
         rootView.novelDetailMemoView.memoTableView.rx.observe(CGSize.self, "contentSize")
             .map { $0?.height ?? 0 }
             .bind(to: memoTableViewHeight)
@@ -245,6 +255,11 @@ final class NovelDetailViewController: UIViewController {
     }
     
     private func updateNavigationBarStyle(offset: CGFloat) {
+        if offset > rootView.novelDetailHeaderView.frame.size.height - view.safeAreaInsets.top {
+            rootView.stickyNovelDetailTabView.isHidden = false
+        } else {
+            rootView.stickyNovelDetailTabView.isHidden = true
+        }
         if offset > 0 {
             rootView.statusBarView.backgroundColor = .white
             navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
