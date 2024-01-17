@@ -13,6 +13,7 @@ enum ImageLiterals {
         enum Alert {
             static var success: UIImage{ .load(named: "icAlertSuccess")}
             static var warning: UIImage{ .load(named: "icAlertWarning")}
+            static var check: UIImage{ .load(named: "icAlertCheck")}
         }
         
         enum BookRegistration {
