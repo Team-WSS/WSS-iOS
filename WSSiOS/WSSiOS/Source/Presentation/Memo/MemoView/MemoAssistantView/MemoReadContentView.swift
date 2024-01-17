@@ -57,7 +57,6 @@ final class MemoReadContentView: UIView {
             $0.textColor = .Black
             $0.font = .Body1
             $0.numberOfLines = 0
-            $0.lineBreakStrategy = .hangulWordPriority
         }
     }
     
@@ -112,7 +111,17 @@ final class MemoReadContentView: UIView {
     }
     
     func bindData(date: String, memoContent: String) {
-        self.dateLabel.text = date
-        self.memoContentLabel.text = memoContent
+        self.dateLabel.do {
+            $0.makeAttribute(with: date)?
+                .lineSpacing(spacingPercentage: 145)
+                .applyAttribute()
+        }
+        self.memoContentLabel.do {
+            $0.makeAttribute(with: memoContent)?
+                .lineSpacing(spacingPercentage: 140)
+                .kerning(kerningPixel: -0.8)
+                .applyAttribute()
+            $0.lineBreakStrategy = .hangulWordPriority
+        }
     }
 }

@@ -89,8 +89,17 @@ final class MemoHeaderView: UIView {
     }
     
     func bindData(novelTitle: String, novelAuthor: String, novelImage: String) {
-        self.novelTitleLabel.text = novelTitle
-        self.novelAuthorLabel.text = novelAuthor
+        self.novelTitleLabel.do {
+            $0.makeAttribute(with: novelTitle)?
+                .kerning(kerningPixel: -0.6)
+                .applyAttribute()
+        }
+        self.novelAuthorLabel.do {
+            $0.makeAttribute(with: novelAuthor)?
+                .lineSpacing(spacingPercentage: 150)
+                .kerning(kerningPixel: -0.6)
+                .applyAttribute()
+        }
         self.novelCoverImageView.kf.setImage(with: URL(string: novelImage))
     }
 }

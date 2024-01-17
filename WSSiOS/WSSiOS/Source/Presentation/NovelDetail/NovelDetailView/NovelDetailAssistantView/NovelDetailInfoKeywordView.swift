@@ -35,7 +35,9 @@ final class NovelDetailInfoKeywordView: UIView {
     
     private func setUI() {
         keywordLabel.do {
-            $0.text = "키워드"
+            $0.makeAttribute(with: "키워드")?
+                .kerning(kerningPixel: -0.6)
+                .applyAttribute()
             $0.textColor = .Black
             $0.font = .Title1
         }

@@ -35,7 +35,9 @@ final class NovelDetailInfoGenreView: UIView {
     
     private func setUI() {
         titleLabel.do {
-            $0.text = "장르"
+            $0.makeAttribute(with: "장르")?
+                .kerning(kerningPixel: -0.6)
+                .applyAttribute()
             $0.textColor = .Black
             $0.font = .Title1
         }
@@ -69,6 +71,11 @@ final class NovelDetailInfoGenreView: UIView {
     }
     
     func bindData(genre: String) {
-        self.genreLabel.text = genre
+        self.genreLabel.do {
+            $0.makeAttribute(with: genre)?
+                .lineSpacing(spacingPercentage: 150)
+                .kerning(kerningPixel: -0.6)
+                .applyAttribute()
+        }
     }
 }

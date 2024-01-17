@@ -187,6 +187,7 @@
 		CD3E5AB32B565DFF00C0A659 /* NovelMemoResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5AB22B565DFF00C0A659 /* NovelMemoResult.swift */; };
 		CDE596D62B57708D00D99DA1 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D52B57708D00D99DA1 /* UIViewController+.swift */; };
 		CDE596D82B5770CE00D99DA1 /* WSSToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D72B5770CE00D99DA1 /* WSSToastView.swift */; };
+		CDE596DA2B57C4BE00D99DA1 /* UITextView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D92B57C4BE00D99DA1 /* UITextView+.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -351,6 +352,7 @@
 		CD3E5AB22B565DFF00C0A659 /* NovelMemoResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelMemoResult.swift; sourceTree = "<group>"; };
 		CDE596D52B57708D00D99DA1 /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
 		CDE596D72B5770CE00D99DA1 /* WSSToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSToastView.swift; sourceTree = "<group>"; };
+		CDE596D92B57C4BE00D99DA1 /* UITextView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -588,6 +590,7 @@
 				CD39F2C02B4FF81E00B73A5C /* UIButton+.swift */,
 				2C60307A2B55D9160031544C /* UIImageView+.swift */,
 				CDE596D52B57708D00D99DA1 /* UIViewController+.swift */,
+				CDE596D92B57C4BE00D99DA1 /* UITextView+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1033,7 +1036,6 @@
 		CD39F2B22B4FE09300B73A5C /* NovelDetail */ = {
 			isa = PBXGroup;
 			children = (
-				CD3E5AA32B551A7800C0A659 /* NovelDetailViewModel */,
 				CD39F2B42B4FE0CB00B73A5C /* NovelDetailViewController */,
 				CD39F2B32B4FE0C100B73A5C /* NovelDetailView */,
 			);
@@ -1159,13 +1161,6 @@
 				CD3E5A972B5509A500C0A659 /* DeletePopupContentView.swift */,
 			);
 			path = DeletePopupAssistantView;
-			sourceTree = "<group>";
-		};
-		CD3E5AA32B551A7800C0A659 /* NovelDetailViewModel */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = NovelDetailViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1335,6 +1330,7 @@
 				2C5D0F5D2B50100000C76D3C /* MyPageSettingCollectionViewCell.swift in Sources */,
 				39CC168A2B51D965003F56AE /* RegisterSuccessView.swift in Sources */,
 				2C5D0F5B2B500EF100C76D3C /* MyPageSettingView.swift in Sources */,
+				CDE596DA2B57C4BE00D99DA1 /* UITextView+.swift in Sources */,
 				2C5D0F612B50525700C76D3C /* MyPageChangeNicknameView.swift in Sources */,
 				2CCBFA082B4DE38800D787C2 /* MyPageInventoryView.swift in Sources */,
 				A1EF35602B52FAEF00A94C53 /* MemoService.swift in Sources */,
