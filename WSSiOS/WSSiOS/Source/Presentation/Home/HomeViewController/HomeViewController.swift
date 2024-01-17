@@ -128,14 +128,14 @@ final class HomeViewController: UIViewController {
     private func updateUI(user: UserCharacter, sosopickList: SosopickNovels) {
         Observable.just(userCharacter)
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { user in
-                self.rootView.characterView.tagView.tagLabel.text = user.avatarTag
-                self.rootView.characterView.characterCommentLabel.text = user.avatarComment
+            .subscribe(with: self, onNext: { owner, user in
+                owner.rootView.characterView.tagView.tagLabel.text = user.avatarTag
+                owner.rootView.characterView.characterCommentLabel.text = user.avatarComment
                 //MARK: - characterId값에 따른 캐릭터 로띠 이미지 분기처리 필요
-                self.characterId = user.avatarId
-                self.userNickname = user.userNickname
+                owner.characterId = user.avatarId
+                owner.userNickname = user.userNickname
                 
-                self.sosopickListRelay.accept(sosopickList.sosoPickNovels)
+                owner.sosopickListRelay.accept(sosopickList.sosoPickNovels)
             })
             .disposed(by: disposeBag)
     }

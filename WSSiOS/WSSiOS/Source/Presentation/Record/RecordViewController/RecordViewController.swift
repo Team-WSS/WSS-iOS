@@ -46,6 +46,7 @@ final class RecordViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setUI()
         registerCell()
         bindDataToRecordTableView()
         setNavigationBar()
@@ -113,14 +114,13 @@ final class RecordViewController: UIViewController {
             Observable.just(recordMemoList)
         )
         .observe(on: MainScheduler.instance)
-        .subscribe(onNext: { [weak self] count, list in
-            self?.rootView.headerView.recordCountLabel.text = "\(count)개"
-            
-            if count == 0 {
-                self?.view = RecordEmptyView()
+        .subscribe(with: self, onNext: { owner, event in
+            owner.rootView.headerView.recordCountLabel.text = "\(event.0)개"
+            if event.0 == 0 {
+                owner.view = RecordEmptyView()
             }
             else {
-                self?.recordMemoListRelay.accept(list)
+                owner.recordMemoListRelay.accept(event.1)
             }
         })
         .disposed(by: disposeBag)

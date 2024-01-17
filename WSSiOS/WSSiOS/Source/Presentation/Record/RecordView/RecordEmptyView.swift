@@ -87,7 +87,7 @@ final class RecordEmptyView: UIView {
         dividerView.snp.makeConstraints {
             $0.top.equalTo(self.safeAreaLayoutGuide.snp.top)
             $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(1)
+            $0.height.equalTo(0.7)
         }
         
         stackView.snp.makeConstraints {

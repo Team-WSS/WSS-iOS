@@ -57,8 +57,8 @@ final class SearchViewController: UIViewController {
         backButton.do {
             $0.setImage(ImageLiterals.icon.navigateLeft.withRenderingMode(.alwaysOriginal), for: .normal)
             $0.rx.tap
-                .subscribe(onNext: { [weak self] in
-                    self?.navigationController?.popViewController(animated: true)
+                .subscribe(with: self ,onNext: { owner, _ in
+                    owner.navigationController?.popViewController(animated: true)
                 })
                 .disposed(by: disposeBag)
         }
@@ -106,15 +106,9 @@ final class SearchViewController: UIViewController {
                                 completion: @escaping (SearchNovels)
                                 -> Void) {
         self.novelRepository.getSearchNovels(searchWord: searchWord)
-            .subscribe (
-                onNext: { [weak self] search in
-                    guard self != nil else { return }
-                    
-                    completion(search)
-                },
-                onError: { error in
-                    print(error)
-                })
+            .subscribe (with: self, onNext: { owner, search in
+                completion(search)
+            })
             .disposed(by: disposeBag)
     }
     
@@ -130,8 +124,8 @@ final class SearchViewController: UIViewController {
     func updateUI(searchList: [SearchNovel]) {
         Observable.just(searchList)
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] list in
-                self?.searchResultListRelay.accept(list)
+            .subscribe(with: self, onNext: { owner, list in
+                owner.searchResultListRelay.accept(list)
             })
             .disposed(by: disposeBag)
     }
@@ -149,12 +143,12 @@ final class SearchViewController: UIViewController {
             .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
         
         searchTextObservable
-            .subscribe(onNext: { [weak self] searchText in
+            .subscribe(with: self, onNext: { owner ,searchText in
                 if searchText.isEmpty {
                     // 아무것도 입력하지 않았을 때, 테이블뷰 내 데이터에 빈 배열 삽입
-                    self?.searchResultListRelay.accept([])
+                    owner.searchResultListRelay.accept([])
                 } else {
-                    self?.searchNovels(with: searchText)
+                    owner.searchNovels(with: searchText)
                 }
             })
             .disposed(by: disposeBag)
