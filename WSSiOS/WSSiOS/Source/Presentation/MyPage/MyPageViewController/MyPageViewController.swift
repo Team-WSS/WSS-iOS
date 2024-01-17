@@ -87,6 +87,8 @@ final class MyPageViewController: UIViewController {
         rootView.myPageSettingView.myPageSettingCollectionView.register(MyPageSettingCollectionViewCell.self, forCellWithReuseIdentifier: "MyPageSettingCollectionViewCell")
     }
     
+    //MARK: - init DataBind
+    
     private func bindUserData() {
         userRepository.getUserData()
             .observe(on: MainScheduler.instance)
@@ -135,6 +137,8 @@ final class MyPageViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
+    //MARK: - reDataBind
+    
     private func bindDataAgain() {
         getDataFromAPI(disposeBag: disposeBag) { data, list in 
             self.updateUI(userData: data, avatarList: list)
@@ -160,6 +164,23 @@ final class MyPageViewController: UIViewController {
         self.avaterListRelay.accept(avatarList)
         self.rootView.myPageInventoryView.myPageAvaterCollectionView.reloadData()
     }
+}
+
+extension MyPageViewController {
+    
+    //MARK: - push To ViewController
+    
+    @objc func pushModalViewController(avatarId: Int) {
+        let modalVC = MyPageCustomModalViewController(
+            avatarRepository:DefaultAvatarRepository(
+                avatarService: DefaultAvatarService()),
+            avatarId: avatarId,
+            modalHasAvatar: hasAvatar
+        )
+        
+        modalVC.modalPresentationStyle = .overFullScreen
+        present(modalVC, animated: true)
+    }
     
     private func pushChangeNickNameViewController() {
         rootView.myPageTallyView.myPageUserNameButton.rx.tap
@@ -176,21 +197,8 @@ final class MyPageViewController: UIViewController {
             })
             .disposed(by: disposeBag)
     }
-}
-
-extension MyPageViewController {
-    @objc func pushModalViewController(avatarId: Int) {
-        let modalVC = MyPageCustomModalViewController(
-            avatarRepository:DefaultAvatarRepository(
-                avatarService: DefaultAvatarService()),
-            avatarId: avatarId,
-            modalHasAvatar: hasAvatar
-        )
-        
-        modalVC.modalPresentationStyle = .overFullScreen
-        present(modalVC, animated: true)
-    }
     
+    //MARK: - notification
     
     private func addNotificationCenter() {
         NotificationCenter.default.addObserver(
