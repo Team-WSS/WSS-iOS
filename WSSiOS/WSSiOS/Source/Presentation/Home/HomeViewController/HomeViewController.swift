@@ -81,8 +81,6 @@ final class HomeViewController: UIViewController {
         let sosopickObservable = self.recommendRepository.getSosopickNovels()
             .do(onNext: { [weak self] sosopicks in
                 guard let self = self else { return }
-                print("☘️☘️☘️☘️☘️☘️☘️☘️☘️☘️☘️☘️☘️☘️☘️☘️☘️")
-                print(sosopicks)
             })
         
         Observable.zip(userObservable, sosopickObservable)

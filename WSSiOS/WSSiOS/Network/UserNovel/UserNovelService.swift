@@ -19,6 +19,11 @@ protocol UserNovelService {
 }
 
 final class DefaultUserNovelService: NSObject, Networking {
+    private let novelListQuery: [URLQueryItem] = [
+        URLQueryItem(name: "readStatus", value: ("WISH")),
+        URLQueryItem(name: "lastUserNovelId", value: String(describing: 10)),
+        URLQueryItem(name: "size", value: String(describing: 2)),
+        URLQueryItem(name: "sortType", value: String("NEWEST"))]
     private var urlSession: URLSession = URLSession(configuration: URLSessionConfiguration.default,
                                                     delegate: nil,
                                                     delegateQueue: nil)
@@ -27,9 +32,10 @@ final class DefaultUserNovelService: NSObject, Networking {
 extension DefaultUserNovelService: UserNovelService {
     func getUserNovelList(readStatus: String, lastUserNovelId: Int, size: Int, sortType: String) -> RxSwift.Single<UserNovelList> {
         let request = try! makeHTTPRequest(method: .get,
-                                          path: URLs.UserNovel.getUserNovelList,
-                                          headers: APIConstants.testTokenHeader,
-                                          body: nil)
+                                           path: URLs.UserNovel.getUserNovelList,
+                                           queryItems: novelListQuery,
+                                           headers: APIConstants.testTokenHeader,
+                                           body: nil)
         
         NetworkLogger.log(request: request)
         

@@ -103,10 +103,10 @@ final class LibraryCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func dataBind(_ data: libraryDummyStruct) {
-        novelImageView.image = data.Image
-        novelTitleLabel.text = data.title
-        novelAuthorLabel.text = data.author
-        novelRatingLabel.text = String(data.rating)
+    func bindData(_ data: UserNovelListDetail) {
+        novelImageView.kfSetImage(url: data.userNovelImg)
+        novelTitleLabel.text = data.userNovelTitle
+        novelAuthorLabel.text = data.userNovelAuthor
+        novelRatingLabel.text = String(data.userNovelRating)
     }
 }

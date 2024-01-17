@@ -16,8 +16,19 @@ final class LibraryViewController: UIViewController {
     
     //MARK: - Properties
     
-    private let readStatus = ["ALL", "FINISH", "READING", "DROP", "WISH"]
     private let disposeBag = DisposeBag()
+    private let readStatusList = ["ALL", "FINISH", "READING", "DROP", "WISH"]
+    private let sortTypeList = ["NEWEST", "OLDEST"]
+    
+    //MARK: - UI Components
+    
+    private var libraryPageViewController = UIPageViewController(transitionStyle: .scroll,
+                                                                 navigationOrientation: .horizontal,
+                                                                 options: nil)
+    private var libraryPageBar = LibraryPageBar()
+    private var libraryDescriptionView = LibraryDescriptionView()
+    private var libraryListView = LibraryListView()
+    private var libraryPages = [LibraryBaseViewController]()
     private let userNovelListRepository: DefaultUserNovelRepository
     
     init(userNovelListRepository: DefaultUserNovelRepository) {
@@ -29,16 +40,6 @@ final class LibraryViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - UI Components
-    
-    private var libraryPageViewController = UIPageViewController(transitionStyle: .scroll,
-                                                                 navigationOrientation: .horizontal,
-                                                                 options: nil)
-    private var libraryPageBar = LibraryPageBar()
-    private var libraryDescriptionView = LibraryDescriptionView()
-    private var libraryListView = LibraryListView()
-    private var libraryPages = [LibraryBaseViewController]()
-    
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
@@ -48,7 +49,7 @@ final class LibraryViewController: UIViewController {
         setTabBar()
         delegate()
         
-        setupPage()
+        setupPages()
         
         setUI()
         setHierarchy()
@@ -102,9 +103,17 @@ final class LibraryViewController: UIViewController {
         libraryPageViewController.dataSource = self
     }
     
-    private func setupPage() {
-        for i in 0...readStatus.count {
-            libraryPages.append(LibraryBaseViewController())
+    private func setupPages() {
+        for i in 0..<readStatusList.count {
+            let viewController = LibraryBaseViewController(
+                userNovelListRepository: DefaultUserNovelRepository(
+                    userNovelService: DefaultUserNovelService()),
+                readStatusData: readStatusList[i],
+                lastUserNovelIdData: 999999,
+                sizeData: 3,
+                sortTypeData: sortTypeList[0])
+            
+            libraryPages.append(viewController)
         }
         
         for (index, viewController) in libraryPages.enumerated() {
