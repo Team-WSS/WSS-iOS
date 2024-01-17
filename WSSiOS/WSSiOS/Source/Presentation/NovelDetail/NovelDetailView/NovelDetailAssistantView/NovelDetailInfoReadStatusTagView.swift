@@ -81,6 +81,11 @@ final class NovelDetailInfoReadStatusTagView: UIView {
     
     func bindData(_ status: ReadStatus) {
         self.tagImageView.image = status.tagImage
-        self.tagLabel.text = status.tagText
+        self.tagLabel.do {
+            $0.makeAttribute(with: status.tagText)?
+                .lineSpacing(spacingPercentage: 150)
+                .kerning(kerningPixel: -0.6)
+                .applyAttribute()
+        }
     }
 }

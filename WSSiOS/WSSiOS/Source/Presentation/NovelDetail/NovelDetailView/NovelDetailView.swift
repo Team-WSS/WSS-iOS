@@ -14,6 +14,7 @@ final class NovelDetailView: UIView {
     
     // MARK: - UI Components
 
+    let statusBarView = UIView()
     let scrollView = UIScrollView()
     let contentView = UIStackView()
     let novelDetailHeaderView = NovelDetailHeaderView()
@@ -21,6 +22,7 @@ final class NovelDetailView: UIView {
     let novelDetailMemoView = NovelDetailMemoView()
     let novelDetailInfoView = NovelDetailInfoView()
     let createMemoButton = DifferentRadiusButton()
+    let stickyNovelDetailTabView = NovelDetailTabView()
     let novelDetailMemoSettingButtonView = NovelDetailMemoSettingButtonView()
 
     // MARK: - Life Cycle
@@ -42,6 +44,13 @@ final class NovelDetailView: UIView {
     private func setUI() {
         self.backgroundColor = .White
         
+        statusBarView.do {
+            let scenes = UIApplication.shared.connectedScenes
+            let windowScene = scenes.first as? UIWindowScene
+            let statusBarManager = windowScene?.windows.first?.windowScene?.statusBarManager
+            $0.frame = statusBarManager?.statusBarFrame ?? .zero
+        }
+        
         scrollView.do {
             $0.contentInsetAdjustmentBehavior = .never
             $0.showsVerticalScrollIndicator = false
@@ -61,6 +70,10 @@ final class NovelDetailView: UIView {
             $0.bottomRightRadius = 10.0
         }
         
+        stickyNovelDetailTabView.do {
+            $0.isHidden = true
+        }
+        
         novelDetailMemoSettingButtonView.do {
             $0.isHidden = true
         }
@@ -70,7 +83,9 @@ final class NovelDetailView: UIView {
     
     private func setHierachy() {
         self.addSubviews(scrollView,
+                         statusBarView,
                          createMemoButton,
+                         stickyNovelDetailTabView,
                          novelDetailMemoSettingButtonView)
         scrollView.addSubview(contentView)
         contentView.addArrangedSubviews(novelDetailHeaderView,
@@ -91,6 +106,11 @@ final class NovelDetailView: UIView {
             $0.size.equalTo(65)
         }
         
+        stickyNovelDetailTabView.snp.makeConstraints {
+            $0.top.equalTo(self.safeAreaLayoutGuide)
+            $0.leading.trailing.equalToSuperview()
+        }
+        
         novelDetailMemoSettingButtonView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
@@ -104,16 +124,30 @@ final class NovelDetailView: UIView {
     func memoButtonDidTap() {
         self.novelDetailInfoView.removeFromSuperview()
         self.contentView.addArrangedSubview(self.novelDetailMemoView)
-        self.novelDetailTabView.memoButton.isSelected = true
-        self.novelDetailTabView.infoButton.isSelected = false
-        self.novelDetailTabView.highlightMemoButton()
+        self.novelDetailTabView.do {
+            $0.memoButton.isSelected = true
+            $0.infoButton.isSelected = false
+            $0.highlightMemoButton()
+        }
+        self.stickyNovelDetailTabView.do {
+            $0.memoButton.isSelected = true
+            $0.infoButton.isSelected = false
+            $0.highlightMemoButton()
+        }
     }
     
     func infoButtonDidTap() {
         self.novelDetailMemoView.removeFromSuperview()
         self.contentView.addArrangedSubview(self.novelDetailInfoView)
-        self.novelDetailTabView.memoButton.isSelected = false
-        self.novelDetailTabView.infoButton.isSelected = true
-        self.novelDetailTabView.highlightInfoButton()
+        self.novelDetailTabView.do {
+            $0.memoButton.isSelected = false
+            $0.infoButton.isSelected = true
+            $0.highlightInfoButton()
+        }
+        self.stickyNovelDetailTabView.do {
+            $0.memoButton.isSelected = false
+            $0.infoButton.isSelected = true
+            $0.highlightInfoButton()
+        }
     }
 }

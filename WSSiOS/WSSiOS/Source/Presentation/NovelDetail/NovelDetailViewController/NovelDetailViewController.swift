@@ -59,6 +59,7 @@ final class NovelDetailViewController: UIViewController {
         
         setNavigationBar()
         setUI()
+        setNotificationCenter()
         setTapGesture()
         register()
         delegate()
@@ -70,6 +71,10 @@ final class NovelDetailViewController: UIViewController {
     private func setNavigationBar() {
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.backButton)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.novelSettingButton)
+        self.navigationController?.navigationBar.titleTextAttributes = [
+            NSAttributedString.Key.font: UIFont.Title2,
+            NSAttributedString.Key.foregroundColor: UIColor.black
+        ]
     }
     
     // MARK: - set UI
@@ -82,6 +87,38 @@ final class NovelDetailViewController: UIViewController {
         novelSettingButton.do {
             $0.setImage(ImageLiterals.icon.meatballMemo.withRenderingMode(.alwaysOriginal), for: .normal)
         }
+    }
+    
+    // MARK: - setNotificationCenter
+
+    private func setNotificationCenter() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.postedMemo(_:)),
+            name: NSNotification.Name("PostedMemo"),
+            object: nil
+        )
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.deletedMemo(_:)),
+            name: NSNotification.Name("DeletedMemo"),
+            object: nil
+        )
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.avatarUnlocked(_:)),
+            name: NSNotification.Name("AvatarUnlocked"),
+            object: nil
+        )
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.deletedNovel(_:)),
+            name: NSNotification.Name("DeletedNovel"),
+            object: nil
+        )
     }
     
     // MARK: - set tap gesture
@@ -113,6 +150,13 @@ final class NovelDetailViewController: UIViewController {
     // MARK: - set Binding
     
     private func setBinding() {
+        rootView.scrollView.rx.contentOffset
+            .asDriver()
+            .drive(onNext: { [weak self] offset in
+                self?.updateNavigationBarStyle(offset: offset.y)
+            })
+            .disposed(by: disposeBag)
+        
         novelSettingButton.rx.tap.bind {
             self.rootView.novelDetailMemoSettingButtonView.isHidden = false
         }.disposed(by: disposeBag)
@@ -170,6 +214,16 @@ final class NovelDetailViewController: UIViewController {
         }.disposed(by: disposeBag)
         
         rootView.novelDetailTabView.infoButton.rx.tap.bind {
+            self.selectedMenu.onNext(1)
+            self.rootView.infoButtonDidTap()
+        }.disposed(by: disposeBag)
+        
+        rootView.stickyNovelDetailTabView.memoButton.rx.tap.bind {
+            self.selectedMenu.onNext(0)
+            self.rootView.memoButtonDidTap()
+        }.disposed(by: disposeBag)
+        
+        rootView.stickyNovelDetailTabView.infoButton.rx.tap.bind {
             self.selectedMenu.onNext(1)
             self.rootView.infoButtonDidTap()
         }.disposed(by: disposeBag)
@@ -239,6 +293,31 @@ final class NovelDetailViewController: UIViewController {
             }).disposed(by: disposeBag)
     }
     
+    private func updateNavigationBarStyle(offset: CGFloat) {
+        if offset > rootView.novelDetailHeaderView.frame.size.height - view.safeAreaInsets.top {
+            rootView.stickyNovelDetailTabView.isHidden = false
+        } else {
+            rootView.stickyNovelDetailTabView.isHidden = true
+        }
+        if offset > 0 {
+            rootView.statusBarView.backgroundColor = .white
+            navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+            navigationController?.navigationBar.shadowImage = UIImage()
+            navigationController?.navigationBar.backgroundColor = .white
+            navigationItem.title = self.novelTitle
+            novelSettingButton.isHidden = true
+        } else {
+            rootView.statusBarView.backgroundColor = .clear
+            navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+            navigationController?.navigationBar.shadowImage = nil
+            navigationController?.navigationBar.backgroundColor = .clear
+            navigationItem.title = ""
+            novelSettingButton.isHidden = false
+        }
+    }
+    
+    // MARK: - custom method
+    
     @objc func viewDidTap() {
         self.rootView.novelDetailMemoSettingButtonView.isHidden = true
     }
@@ -253,6 +332,22 @@ final class NovelDetailViewController: UIViewController {
             novelAuthor: self.novelAuthor,
             novelImage: self.novelImage
         ), animated: true)
+    }
+    
+    @objc func postedMemo(_ notification: Notification) {
+        showToast(.memoSaveSuccess)
+    }
+    
+    @objc func deletedMemo(_ notification: Notification) {
+        showToast(.memoDelete)
+    }
+    
+    @objc func avatarUnlocked(_ notification: Notification) {
+        showToast(.avatarUnlock)
+    }
+    
+    @objc func deletedNovel(_ notification: Notification) {
+        self.navigationController?.popViewController(animated: true)
     }
 }
 
@@ -282,7 +377,6 @@ extension NovelDetailViewController: UITableViewDelegate {
             MemoReadViewController(
                 repository: DefaultMemoRepository(
                     memoService: DefaultMemoService()),
-                novelId: self.novelId,
                 memoId: rootView.novelDetailMemoView.memoList[indexPath.row].memoId
             ), animated: true)
     }

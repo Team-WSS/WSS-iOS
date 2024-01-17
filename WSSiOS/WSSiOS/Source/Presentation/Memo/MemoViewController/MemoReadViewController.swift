@@ -16,7 +16,6 @@ final class MemoReadViewController: UIViewController {
     
     private let repository: MemoRepository
     private let disposeBag = DisposeBag()
-    private let novelId: Int
     private let memoId: Int
     private var novelTitle = ""
     private var novelAuthor = ""
@@ -31,9 +30,8 @@ final class MemoReadViewController: UIViewController {
 
      // MARK: - Life Cycle
     
-    init(repository: MemoRepository, novelId: Int, memoId: Int) {
+    init(repository: MemoRepository, memoId: Int) {
         self.repository = repository
-        self.novelId = novelId
         self.memoId = memoId
         super.init(nibName: nil, bundle: nil)
     }
@@ -57,6 +55,7 @@ final class MemoReadViewController: UIViewController {
          
          setNavigationBar()
          setUI()
+         setNotificationCenter()
          setTapGesture()
          setBinding()
      }
@@ -78,6 +77,24 @@ final class MemoReadViewController: UIViewController {
         editButon.do {
             $0.setButtonAttributedTitle(text: "수정", font: .Title2, color: .Primary100)
         }
+    }
+    
+    // MARK: - setNotificationCenter
+
+    private func setNotificationCenter() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.deletedMemo(_:)),
+            name: NSNotification.Name("DeletedMemo"),
+            object: nil
+        )
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.patchedMemo(_:)),
+            name: NSNotification.Name("PatchedMemo"),
+            object: nil
+        )
     }
 
     // MARK: - set tap gesture
@@ -153,7 +170,17 @@ final class MemoReadViewController: UIViewController {
             }).disposed(by: disposeBag)
     }
     
+    // MARK: - custom method
+    
     @objc func viewDidTap() {
         view.endEditing(true)
+    }
+    
+    @objc func deletedMemo(_ notification: Notification) {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func patchedMemo(_ notification: Notification) {
+        showToast(.memoEditSuccess)
     }
 }

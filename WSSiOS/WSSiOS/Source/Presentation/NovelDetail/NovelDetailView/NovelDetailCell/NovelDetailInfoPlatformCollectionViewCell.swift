@@ -77,6 +77,11 @@ final class NovelDetailInfoPlatformCollectionViewCell: UICollectionViewCell {
     // MARK: - bind data
     
     func bindData(platform: String) {
-        self.platformLabel.text = platform
+        self.platformLabel.do {
+            $0.makeAttribute(with: platform)?
+                .lineSpacing(spacingPercentage: 150)
+                .kerning(kerningPixel: -0.6)
+                .applyAttribute()
+        }
     }
 }

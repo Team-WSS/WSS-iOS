@@ -65,6 +65,7 @@ final class DeletePopupViewController: UIViewController {
             }.disposed(by: disposeBag)
         case .memoEditCancel:
             rootView.deletePopupContentView.deleteButton.rx.tap.bind {
+                NotificationCenter.default.post(name: NSNotification.Name("CanceledEdit"), object: nil)
                 self.dismiss(animated: true)
             }.disposed(by: disposeBag)
         case .novelDelete:
@@ -80,7 +81,7 @@ final class DeletePopupViewController: UIViewController {
         userNovelRepository!.deleteUserNovel(userNovelId: self.novelId!)
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
-                // 소설 삭제 후 로직 추가 예정
+                NotificationCenter.default.post(name: NSNotification.Name("DeletedNovel"), object: nil)
                 self.dismiss(animated: true)
             },onError: { owner, error in
                 print(error)
@@ -91,7 +92,7 @@ final class DeletePopupViewController: UIViewController {
         memoRepository!.deleteMemo(memoId: self.memoId!)
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
-                // 메모 삭제후 로직 추가 예정
+                NotificationCenter.default.post(name: NSNotification.Name("DeletedMemo"), object: nil)
                 self.dismiss(animated: true)
             },onError: { owner, error in
                 print(error)
