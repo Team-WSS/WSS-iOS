@@ -121,6 +121,10 @@ final class HomeViewController: UIViewController {
     
     @objc private func pushSearchVC(_ sender: UITapGestureRecognizer) {
         let searchVC = SearchViewController(novelRepository: DefaultNovelRepository(novelService: DefaultNovelService()))
+        if let tabBarController = self.tabBarController as? WSSTabBarController {
+            tabBarController.tabBar.isHidden = true
+            tabBarController.shadowView.isHidden = true
+        }
         searchVC.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(searchVC, animated: true)
     }

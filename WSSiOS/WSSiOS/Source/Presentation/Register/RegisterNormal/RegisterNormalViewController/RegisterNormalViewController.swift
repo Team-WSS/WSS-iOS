@@ -25,9 +25,10 @@ final class RegisterNormalViewController: UIViewController {
     private var userNovelId: Int
     private var novelTitle: String = ""
     let localData: EditNovelResult?
-    private var isNew = BehaviorRelay<Bool>(value: true)
+    
     
     // RxSwift
+    private var isNew = BehaviorRelay<Bool>(value: true)
     private let disposeBag = DisposeBag()
     private var starRating = BehaviorRelay<Float>(value: 0.0)
     private var readStatus = BehaviorRelay<ReadStatus>(value: .FINISH)
@@ -143,7 +144,7 @@ final class RegisterNormalViewController: UIViewController {
             requestEndDate = nil
         }
         
-        var requestRating: Float? = starRating.value <= 0.0 ? nil : starRating.value
+        let requestRating: Float? = starRating.value <= 0.0 ? nil : starRating.value
         
         userNovelRepository.patchUserNovel(userNovelId: userNovelId,
                                            userNovelRating: requestRating,
@@ -151,7 +152,9 @@ final class RegisterNormalViewController: UIViewController {
                                            userNovelReadStartDate: requestStartDate,
                                            userNovelReadEndDate: requestEndDate)
         .observe(on: MainScheduler.instance)
-        .subscribe(with: self,onError: { owner, error in
+        .subscribe(with: self, onNext: { owner, data in
+            self.navigationController?.pushViewController(NovelDetailViewController(repository: DefaultUserNovelRepository(userNovelService: DefaultUserNovelService()), userNovelId: self.userNovelId), animated: true)
+        }, onError: { owner, error in
             print(error)
         })
         .disposed(by: disposeBag)
@@ -387,11 +390,18 @@ final class RegisterNormalViewController: UIViewController {
         rootView.registerButton.rx.tap
             .subscribe(with: self, onNext: { _,_ in
                 if self.isNew.value {
+                    self.postUserNovel()
                     self.navigationController?.pushViewController(RegisterSuccessViewController(),
                                                                   animated: true)
-                    self.postUserNovel()
                 } else {
                     self.patchUserNovel()
+                    
+//                    if let tabBarController = owner.tabBarController as? WSSTabBarController {
+//                        tabBarController.
+//                        tabBarController.tabBar.isHidden = true
+//                        tabBarController.shadowView.isHidden = true
+//                    }
+                    
                 }
                 
             })
