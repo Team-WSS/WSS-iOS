@@ -41,6 +41,10 @@ final class RecordViewController: UIViewController {
         super.viewWillAppear(animated)
         
         bindDataToUI()
+        if let tabBarController = self.tabBarController as? WSSTabBarController {
+            tabBarController.tabBar.isHidden = false
+            tabBarController.shadowView.isHidden = false
+        }
     }
     
     override func viewDidLoad() {
@@ -98,6 +102,13 @@ final class RecordViewController: UIViewController {
                 cell.bindData(data: element)
             }
             .disposed(by: disposeBag)
+        
+        rootView.recordTableView
+            .rx
+            .itemSelected
+                .subscribe(onNext:{ indexPath in
+                    self.navigationController?.pushViewController(MemoReadViewController(repository: DefaultMemoRepository(memoService: DefaultMemoService()), memoId: self.recordMemoListRelay.value[indexPath.row].id) , animated: true)
+                }).disposed(by: disposeBag)
     }
     
     private func bindDataToUI() {

@@ -34,6 +34,14 @@ final class LibraryBaseViewController: UIViewController {
         bindDataToLibraryCollectionView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if let tabBarController = self.tabBarController as? WSSTabBarController {
+            tabBarController.tabBar.isHidden = false
+            tabBarController.shadowView.isHidden = false
+        }
+    }
+    
     //MARK: - Custom TabBar
     
     private func register() {

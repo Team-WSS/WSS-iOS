@@ -28,7 +28,7 @@ extension DefaultMemoService: MemoService {
     func getRecordMemosData() -> Single<RecordMemos> {
         let recordListQueryItems: [URLQueryItem] = [
             URLQueryItem(name: "lastMemoId", value: String(describing: 1000)),
-            URLQueryItem(name: "size", value: String(describing: 10)),
+            URLQueryItem(name: "size", value: String(describing: 50)),
             URLQueryItem(name: "sortType", value: "NEWEST")]
         
         let request = try! makeHTTPRequest(method: .get,

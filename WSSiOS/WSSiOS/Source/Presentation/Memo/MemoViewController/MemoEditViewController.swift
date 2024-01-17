@@ -17,7 +17,7 @@ final class MemoEditViewController: UIViewController {
     
     private let repository: MemoRepository
     private let disposeBag = DisposeBag()
-    private let novelId: Int?
+    private let userNovelId: Int?
     private let memoId: Int?
     private var memoContent: String?
     private var updatedMemoContent = ""
@@ -30,9 +30,9 @@ final class MemoEditViewController: UIViewController {
 
      // MARK: - Life Cycle
     
-    init(repository: MemoRepository, novelId: Int? = nil, memoId: Int? = nil, novelTitle: String, novelAuthor: String, novelImage: String, memoContent: String? = nil) {
+    init(repository: MemoRepository, userNovelId: Int? = nil, memoId: Int? = nil, novelTitle: String, novelAuthor: String, novelImage: String, memoContent: String? = nil) {
         self.repository = repository
-        self.novelId = novelId
+        self.userNovelId = userNovelId
         self.memoId = memoId
         self.memoContent = memoContent
         super.init(nibName: nil, bundle: nil)
@@ -178,7 +178,7 @@ final class MemoEditViewController: UIViewController {
     // MARK: - API request
     
     private func postMemo() {
-        repository.postMemo(userNovelId: self.novelId!, memoContent: updatedMemoContent)
+        repository.postMemo(userNovelId: self.userNovelId!, memoContent: updatedMemoContent)
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
                 if data.isAvatarUnlocked {

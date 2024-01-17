@@ -17,7 +17,8 @@ final class NovelDetailViewController: UIViewController {
     private let repository: UserNovelRepository
     private let disposeBag = DisposeBag()
     private let userNovelDetail = BehaviorRelay<UserNovelDetail?>(value: nil)
-    private let novelId: Int
+    private let userNovelId: Int
+    private var novelId: Int = 0
     private var novelTitle = ""
     private var novelAuthor = ""
     private var novelImage = ""
@@ -34,9 +35,9 @@ final class NovelDetailViewController: UIViewController {
     
     // MARK: - Life Cycle
     
-    init(repository: UserNovelRepository, novelId: Int) {
+    init(repository: UserNovelRepository, userNovelId: Int) {
         self.repository = repository
-        self.novelId = novelId
+        self.userNovelId = userNovelId
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -52,6 +53,7 @@ final class NovelDetailViewController: UIViewController {
         super.viewWillAppear(animated)
         
         getUserNovel()
+        updateNavigationBarStyle(offset: self.rootView.scrollView.contentOffset.y)
     }
     
     override func viewDidLoad() {
@@ -157,6 +159,13 @@ final class NovelDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        backButton.rx.tap.bind {
+//            self.navigationController?.popToRootViewController(animated: true)
+//            self.navigationController?.tabBarController?.selectedIndex = 1
+            // 부드러운 애니메이션을 원한다면 .. (홈화면 또는 서재로 돌아간다.)
+            self.navigationController?.popToRootViewController(animated: true)
+        }.disposed(by: disposeBag)
+        
         novelSettingButton.rx.tap.bind {
             self.rootView.novelDetailMemoSettingButtonView.isHidden = false
         }.disposed(by: disposeBag)
@@ -168,7 +177,7 @@ final class NovelDetailViewController: UIViewController {
                     userNovelService: DefaultUserNovelService()
                 ),
                 popupStatus: .novelDelete,
-                novelId: self.novelId
+                userNovelId: self.userNovelId
             )
             vc.modalPresentationStyle = .overFullScreen
             vc.modalTransitionStyle = .crossDissolve
@@ -182,7 +191,8 @@ final class NovelDetailViewController: UIViewController {
                     novelRepository: DefaultNovelRepository(
                         novelService: DefaultNovelService()),
                     userNovelRepository: DefaultUserNovelRepository(
-                        userNovelService: DefaultUserNovelService())),
+                        userNovelService: DefaultUserNovelService()), 
+                    novelId: self.novelId),
                 animated: true)
         }.disposed(by: disposeBag)
         
@@ -191,7 +201,7 @@ final class NovelDetailViewController: UIViewController {
                 repository: DefaultMemoRepository(
                     memoService: DefaultMemoService()
                 ),
-                novelId: self.novelId,
+                userNovelId: self.userNovelId,
                 novelTitle: self.novelTitle,
                 novelAuthor: self.novelAuthor,
                 novelImage: self.novelImage
@@ -254,6 +264,7 @@ final class NovelDetailViewController: UIViewController {
     // MARK: - update UI
 
     private func updateUI(_ novelData: UserNovelDetail) {
+        self.novelId = novelData.novelId
         self.novelTitle = novelData.userNovelTitle
         self.novelAuthor = novelData.userNovelAuthor
         self.novelImage = novelData.userNovelImg
@@ -284,7 +295,7 @@ final class NovelDetailViewController: UIViewController {
     // MARK: - API request
     
     private func getUserNovel() {
-        repository.getUserNovel(userNovelId: self.novelId)
+        repository.getUserNovel(userNovelId: self.userNovelId)
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
                 self.updateUI(data)
@@ -327,7 +338,7 @@ final class NovelDetailViewController: UIViewController {
             repository: DefaultMemoRepository(
                 memoService: DefaultMemoService()
             ),
-            novelId: self.novelId,
+            userNovelId: self.userNovelId,
             novelTitle: self.novelTitle,
             novelAuthor: self.novelAuthor,
             novelImage: self.novelImage
