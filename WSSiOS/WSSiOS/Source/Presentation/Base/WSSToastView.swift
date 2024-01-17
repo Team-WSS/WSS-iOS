@@ -13,13 +13,14 @@ import Then
 enum ToastStatus {
     case memoSaveSuccess
     case memoSaveFail
+    case memoEditSuccess
     case memoDelete
     case avatarUnlock
     case nicknameSave
     
     var toastImage: UIImage {
         switch self {
-        case .memoSaveSuccess, .nicknameSave:
+        case .memoSaveSuccess, .nicknameSave, .memoEditSuccess:
             ImageLiterals.icon.Alert.success
         case .memoSaveFail, .memoDelete:
             ImageLiterals.icon.Alert.warning
@@ -34,6 +35,8 @@ enum ToastStatus {
             "메모를 저장했어요"
         case .memoSaveFail:
             "메모 저장에 실패했어요"
+        case .memoEditSuccess:
+            "메모를 수정했어요"
         case .memoDelete:
             "메모를 삭제했어요"
         case .avatarUnlock:
@@ -99,7 +102,7 @@ final class WSSToastView: UIView {
     
     func setLayout(_ status: ToastStatus) {
         switch status {
-        case .memoSaveSuccess, .memoSaveFail, .memoDelete, .nicknameSave:
+        case .memoSaveSuccess, .memoSaveFail, .memoEditSuccess, .memoDelete, .nicknameSave:
             toastImageView.snp.makeConstraints {
                 $0.top.bottom.equalToSuperview().inset(14)
                 $0.leading.equalToSuperview().inset(20)

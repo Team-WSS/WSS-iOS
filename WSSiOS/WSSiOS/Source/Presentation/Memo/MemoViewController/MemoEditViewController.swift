@@ -198,6 +198,7 @@ final class MemoEditViewController: UIViewController {
         repository.patchMemo(memoId: self.memoId!, memoContent: updatedMemoContent)
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
+                NotificationCenter.default.post(name: NSNotification.Name("PatchedMemo"), object: nil)
                 self.navigationController?.popViewController(animated: true)
             },onError: { owner, error in
                 print(error)

@@ -88,6 +88,13 @@ final class MemoReadViewController: UIViewController {
             name: NSNotification.Name("DeletedMemo"),
             object: nil
         )
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.patchedMemo(_:)),
+            name: NSNotification.Name("PatchedMemo"),
+            object: nil
+        )
     }
 
     // MARK: - set tap gesture
@@ -171,5 +178,9 @@ final class MemoReadViewController: UIViewController {
     
     @objc func deletedMemo(_ notification: Notification) {
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func patchedMemo(_ notification: Notification) {
+        showToast(.memoEditSuccess)
     }
 }
