@@ -39,16 +39,6 @@ final class RegisterNormalNovelInfoView: UIView {
             $0.axis = .vertical
             $0.spacing = 6
             $0.alignment = .center
-            
-            novelTitleLabel.do {
-                $0.text = "여성향 게임의 파멸 플래그밖에 없는 악역 영애로 환생해 버렸다"
-                novelTitleAttribute(of: $0)
-            }
-            
-            novelAuthorLabel.do {
-                $0.text = "Satoru Yamaguchi"
-                novelAuthorAttribute(of: $0)
-            }
         }
     }
     
@@ -61,6 +51,18 @@ final class RegisterNormalNovelInfoView: UIView {
     private func setLayout() {
         novelInfoStackView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+        }
+    }
+    
+    func bindData(title: String?, author: String?) {
+        novelTitleLabel.do {
+            $0.text = title
+            novelTitleAttribute(of: $0)
+        }
+        
+        novelAuthorLabel.do {
+            $0.text = author
+            novelAuthorAttribute(of: $0)
         }
     }
     

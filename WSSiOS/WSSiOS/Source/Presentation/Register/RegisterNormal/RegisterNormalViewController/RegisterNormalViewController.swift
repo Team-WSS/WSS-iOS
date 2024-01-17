@@ -7,70 +7,62 @@
 
 import UIKit
 
+import Kingfisher
 import RxSwift
 import RxCocoa
 import SnapKit
 import Then
-
-enum RegisterNormalReadStatus: String, CaseIterable {
-    case FINISH
-    case READING
-    case DROP
-    case WISH
-    
-    var tagImage: UIImage {
-        switch self {
-        case .FINISH: return ImageLiterals.icon.TagStatus.finished
-        case .READING: return ImageLiterals.icon.TagStatus.reading
-        case .DROP: return ImageLiterals.icon.TagStatus.stop
-        case .WISH: return ImageLiterals.icon.TagStatus.interest
-        }
-    }
-    
-    var tagText: String {
-        switch self {
-        case .FINISH: return "읽음"
-        case .READING: return "읽는 중"
-        case .DROP: return "하차"
-        case .WISH: return "읽고 싶음"
-        }
-    }
-    
-    var dateText: String? {
-        switch self {
-        case .FINISH: return "읽은 날짜"
-        case .READING: return "시작 날짜"
-        case .DROP: return "종료 날짜"
-        case .WISH: return nil
-        }
-    }
-}
 
 /// 1-3-1 RegisterNormal View
 final class RegisterNormalViewController: UIViewController {
     
     // MARK: - Properties
     
-    // RxSwift에서 메모리 관리를 위한 DisposeBag
+    // 서버 통신을 위한 properties
+    private let novelRepository: NovelRepository
+    private let userNovelRepository: UserNovelRepository
+    private let novelId: Int
+    private var userNovelId: Int
+    let localData: EditNovelResult?
+    private var isNew = BehaviorRelay<Bool>(value: true)
+    
+    // RxSwift
     private let disposeBag = DisposeBag()
-    
     private var starRating = BehaviorRelay<Float>(value: 0.0)
-    private var buttonStatus = BehaviorRelay<RegisterNormalReadStatus>(value: .FINISH)
-    private var isOn = BehaviorRelay<Bool>(value: true)
+    private var readStatus = BehaviorRelay<ReadStatus>(value: .FINISH)
+    private var isDateExist = BehaviorRelay<Bool>(value: true)
     private var showDatePicker = BehaviorRelay<Bool>(value: false)
-    
     private var startDate = BehaviorRelay<Date>(value: Date())
     private var endDate = BehaviorRelay<Date>(value: Date())
+    private let platformCollectionViewHeight = BehaviorSubject<CGFloat>(value: 0)
     
     private let rootView = RegisterNormalView()
     
-    let dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        return formatter
-    }()
+    // Date -> String
+    let dateToString = DateFormatter().then {
+        $0.dateFormat = "yyyy-MM-dd"
+    }
+    // String -> Date
+    let stringToDate = DateFormatter().then {
+        $0.dateFormat = "yyyy-MM-dd"
+        $0.timeZone = TimeZone(identifier: "ko_KR")
+    }
     
     // MARK: - View Life Cycle
+    
+    init(novelRepository: NovelRepository, userNovelRepository: UserNovelRepository, novelId: Int = 0, userNovelId: Int = 0, userNovelModel: EditNovelResult? = nil) {
+        self.novelRepository = novelRepository
+        self.userNovelRepository = userNovelRepository
+        self.novelId = novelId
+        self.userNovelId = userNovelId
+        self.localData = userNovelModel
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func loadView() {
         self.view = rootView
@@ -78,12 +70,151 @@ final class RegisterNormalViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        bind()
+        getNovel()
+        register()
+        delegate()
+        bindRx()
     }
     
     // MARK: - Custom Method
     
-    private func bind() {
+    private func postUserNovel() {
+        var requestStartDate: String? = dateToString.string(from: startDate.value)
+        var requestEndDate: String? = dateToString.string(from: endDate.value)
+        
+        if !isDateExist.value {
+            requestStartDate = nil
+            requestEndDate = nil
+        } else if readStatus.value == .READING  {
+            requestEndDate = nil
+        } else if readStatus.value == .DROP {
+            requestStartDate = nil
+        } else if readStatus.value == .WISH {
+            requestStartDate = nil
+            requestEndDate = nil
+        }
+        
+        let requestRating: Float? = starRating.value <= 0.0 ? nil : starRating.value
+        
+        userNovelRepository.postUserNovel(novelId: novelId,
+                                          userNovelRating: requestRating,
+                                          userNovelReadStatus: readStatus.value,
+                                          userNovelReadStartDate: requestStartDate,
+                                          userNovelReadEndDate: requestEndDate)
+        .subscribe(onNext: {
+            self.userNovelId = $0.userNovelId
+        })
+        .disposed(by: disposeBag)
+    }
+    
+    private func patchUserNovel() {
+        var requestStartDate: String? = dateToString.string(from: startDate.value)
+        var requestEndDate: String? = dateToString.string(from: endDate.value)
+        
+        if !isDateExist.value {
+            requestStartDate = nil
+            requestEndDate = nil
+        } else if readStatus.value == .READING  {
+            requestEndDate = nil
+        } else if readStatus.value == .DROP {
+            requestStartDate = nil
+        } else if readStatus.value == .WISH {
+            requestStartDate = nil
+            requestEndDate = nil
+        }
+        
+        var requestRating: Float? = starRating.value <= 0.0 ? nil : starRating.value
+        
+        userNovelRepository.patchUserNovel(userNovelId: userNovelId,
+                                               userNovelRating: requestRating,
+                                               userNovelReadStatus: readStatus.value,
+                                               userNovelReadStartDate: requestStartDate,
+                                               userNovelReadEndDate: requestEndDate)
+        .observe(on: MainScheduler.instance)
+            .subscribe(with: self,onError: { owner, error in
+                print(error)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func getNovel() {
+        novelRepository.getNovelInfo(novelId: novelId)
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { data in
+                self.bindData(data)
+            },onError: { error in
+                print("ERROR!!!")
+                if let localData = self.localData {
+                    self.bindUserData(localData)
+                }
+            }).disposed(by: disposeBag)
+    }
+    
+    private func register() {
+        rootView.novelSummaryView.platFormTest.platformCollectionView.register(NovelDetailInfoPlatformCollectionViewCell.self, forCellWithReuseIdentifier: "NovelDetailInfoPlatformCollectionViewCell")
+    }
+    
+    private func delegate() {
+        rootView.novelSummaryView.platFormTest.platformCollectionView.dataSource = self
+        rootView.novelSummaryView.platFormTest.platformCollectionView.delegate = self
+    }
+    
+    private func bindData(_ data: NovelResult) {
+        if let newNovelResult = data.newNovelResult {
+            isNew.accept(true)
+            bindNewData(newNovelResult)
+            print("New!")
+            print(newNovelResult.novelID)
+        } else if let editNovelResult = data.editNovelResult {
+            isNew.accept(false)
+            bindUserData(editNovelResult)
+            print("Edit!")
+        }
+    }
+    
+    private func bindNewData(_ newData: NewNovelResult) {
+        rootView.bannerImageView.bindData(newData.novelImg)
+        rootView.infoWithRatingView.bindData(coverImage: newData.novelImg,
+                                             title: newData.novelTitle,
+                                             author: newData.novelAuthor)
+        rootView.novelSummaryView.bindData(plot: newData.novelDescription, genre: newData.novelGenre, platforms: newData.platforms)
+        self.rootView.novelSummaryView.platFormTest.platformCollectionView.reloadData()
+    }
+    
+    private func bindUserData(_ userData: EditNovelResult) {
+        self.userNovelId = userData.userNovelID
+        rootView.bannerImageView.bindData(userData.userNovelImg)
+        rootView.infoWithRatingView.bindData(coverImage: userData.userNovelImg,
+                                             title: userData.userNovelTitle,
+                                             author: userData.userNovelAuthor)
+        self.starRating.accept(userData.userNovelRating ?? 0.0)
+        
+        
+        let status = ReadStatus(rawValue: userData.userNovelReadStatus) ?? .FINISH
+        self.readStatus.accept(status)
+        
+        // status에 따른 날짜 처리
+        var start = userData.userNovelReadDate.userNovelReadStartDate ?? ""
+        var end = userData.userNovelReadDate.userNovelReadEndDate ?? ""
+        
+        if status == .READING {
+            end = start
+        } else if status == .DROP {
+            start = end
+        }
+        
+        self.startDate.accept(
+            dateToString.date(from: start) ?? Date()
+        )
+        self.endDate.accept(
+            dateToString.date(from: end) ?? Date()
+        )
+        
+        rootView.novelSummaryView.bindData(plot: userData.userNovelDescription, genre: userData.userNovelGenre, platforms: userData.platforms)
+        self.rootView.novelSummaryView.platFormTest.platformCollectionView.reloadData()
+    }
+    
+    private func bindRx() {
         rootView.infoWithRatingView.starRatingView.do { view in
             
             view.starImageViews.enumerated().forEach { index, imageView in
@@ -114,7 +245,7 @@ final class RegisterNormalViewController: UIViewController {
             
             // 별점이 변경될 때마다 별 이미지 업데이트
             starRating.asObservable()
-                .subscribe(onNext: { rating in
+                .subscribe(with: self, onNext: { owner, rating in
                     view.updateStarImages(rating: rating)
                 })
                 .disposed(by: disposeBag)
@@ -122,15 +253,15 @@ final class RegisterNormalViewController: UIViewController {
         
         // ReadStatus 에 따른 ReadStatus 선택 뷰 변화
         rootView.readStatusView.do { view in
-            for (index, status) in RegisterNormalReadStatus.allCases.enumerated() {
+            for (index, status) in ReadStatus.allCases.enumerated() {
                 view.readStatusButtons[index].rx.tap
                     .bind {
-                        self.buttonStatus.accept(status)
+                        self.readStatus.accept(status)
                     }
                     .disposed(by: disposeBag)
             }
-
-            buttonStatus
+            
+            readStatus
                 .subscribe(onNext: { status in
                     view.bindReadStatus(status: status)
                 })
@@ -139,8 +270,8 @@ final class RegisterNormalViewController: UIViewController {
         
         // ReadStatus 에 따른 날짜 선택 뷰 변화
         rootView.readDateView.do { view in
-            buttonStatus
-                .subscribe(onNext: { status in
+            readStatus
+                .subscribe(with: self, onNext: { owner, status in
                     if status == .WISH {
                         view.isHidden = true
                     } else {
@@ -153,36 +284,39 @@ final class RegisterNormalViewController: UIViewController {
         
         rootView.readDateView.do { view in
             view.toggleButton.rx.tap
-                .subscribe(onNext: {
-                    let next = !self.isOn.value
-                    self.isOn.accept(next)
+                .subscribe(with: self, onNext: { owner, status in
+                    let next = !self.isDateExist.value
+                    self.isDateExist.accept(next)
                 })
                 .disposed(by: disposeBag)
             
-            isOn
-                .subscribe(onNext: { isOn in
-                    view.toggleButton.changeState(isOn)
-                    view.datePickerButton.isHidden = !isOn
+            isDateExist
+                .subscribe(with: self, onNext: { owner, status in
+                    view.toggleButton.changeState(status)
+                    view.datePickerButton.isHidden = !status
                 })
                 .disposed(by: disposeBag)
             
             view.datePickerButton.rx.tap
-                .subscribe(onNext: {
+                .subscribe(with: self, onNext: { owner, status in
                     let next = !self.showDatePicker.value
                     self.showDatePicker.accept(next)
-                    print(next)
                 })
                 .disposed(by: disposeBag)
         }
         
         rootView.do { view in
-            showDatePicker.subscribe(onNext: { value in
-                view.customDatePicker.isHidden = !value
+            showDatePicker.subscribe(with: self, onNext: { owner, show in
+                if show {
+                    view.customDatePicker.startDate = self.startDate.value
+                    view.customDatePicker.endDate = self.endDate.value
+                }
+                view.customDatePicker.isHidden = !show
             })
             .disposed(by: disposeBag)
             
             view.customDatePicker.rx.tap
-                .subscribe(onNext: {
+                .subscribe(with: self, onNext: { owner, status in
                     let next = !self.showDatePicker.value
                     self.showDatePicker.accept(next)
                     print(next)
@@ -190,7 +324,7 @@ final class RegisterNormalViewController: UIViewController {
                 .disposed(by: disposeBag)
             
             view.customDatePicker.completeButton.rx.tap
-                .subscribe(onNext: {
+                .subscribe(with: self, onNext: { owner, status in
                     self.startDate.accept(view.customDatePicker.startDate)
                     self.endDate.accept(view.customDatePicker.endDate)
                     let next = !self.showDatePicker.value
@@ -199,24 +333,112 @@ final class RegisterNormalViewController: UIViewController {
                 .disposed(by: disposeBag)
             
             startDate.asObservable()
-                .map { date in
-                    return self.dateFormatter.string(from: date)
-                }
+                .map { self.dateToString.string(from: $0) }
                 .bind(to: view.readDateView.datePickerButton.startDateLabel.rx.text)
                 .disposed(by: disposeBag)
             
             endDate.asObservable()
-                .map { date in
-                    return self.dateFormatter.string(from: date)
-                }
+                .map { self.dateToString.string(from: $0) }
                 .bind(to: view.readDateView.datePickerButton.endDateLabel.rx.text)
                 .disposed(by: disposeBag)
             
-            buttonStatus
-                .subscribe(onNext: { status in
+            readStatus
+                .subscribe(with: self, onNext: { owner, status in
                     view.customDatePicker.bindReadStatus(status: status)
                 })
                 .disposed(by: disposeBag)
         }
+        
+        rootView.registerButton.rx.tap
+            .subscribe(with: self, onNext: { _,_ in
+                if self.isNew.value {
+                    self.navigationController?.pushViewController(RegisterSuccessViewController(),
+                        animated: true)
+                    self.postUserNovel()
+                } else {
+                    self.patchUserNovel()
+                }
+                
+            })
+            .disposed(by: disposeBag)
+        
+        isNew.subscribe(with: self, onNext: { owner, status in
+            if status {
+                self.rootView.registerButton.setTitle(StringLiterals.Register.Normal.new, for: .normal)
+            } else {
+                self.rootView.registerButton.setTitle(StringLiterals.Register.Normal.edit, for: .normal)
+            }
+        })
+        .disposed(by: disposeBag)
+        
+        rootView.novelSummaryView.platFormTest.platformCollectionView.rx.observe(CGSize.self, "contentSize")
+            .map { $0?.height ?? 0 }
+            .bind(to: platformCollectionViewHeight)
+            .disposed(by: disposeBag)
+        
+        platformCollectionViewHeight
+            .subscribe(onNext: { height in
+                self.rootView.novelSummaryView.platFormTest.updateCollectionViewHeight(height: height)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    // 나중에 효원에게 넘겨받을 것
+    private func bindEditData(data: UserNovelDetail) {
+        let editData = EditNovelResult(userNovelID: novelId ?? 0,
+                                       userNovelTitle: data.userNovelTitle,
+                                       userNovelAuthor: data.userNovelAuthor,
+                                       userNovelGenre: data.userNovelGenre,
+                                       userNovelImg: data.userNovelImg,
+                                       userNovelDescription: data.userNovelDescription,
+                                       userNovelRating: data.userNovelRating,
+                                       userNovelReadStatus: data.userNovelReadStatus,
+                                       platforms: data.platforms,
+                                       userNovelReadDate: UserNovelReadDate(
+                                        userNovelReadStartDate: data.userNovelReadStartDate,
+                                        userNovelReadEndDate: data.userNovelReadEndDate))
+    }
+}
+
+extension RegisterNormalViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        print("Hello")
+        return rootView.novelSummaryView.platFormTest.platformList.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: NovelDetailInfoPlatformCollectionViewCell.identifier,
+            for: indexPath
+        ) as? NovelDetailInfoPlatformCollectionViewCell else {return UICollectionViewCell()}
+        
+        cell.bindData(
+            platform: rootView.novelSummaryView.platFormTest.platformList[indexPath.item].platformName
+        )
+        
+        return cell
+    }
+}
+
+extension RegisterNormalViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let url = URL(string: rootView.novelSummaryView.platFormTest.platformList[indexPath.item].platformUrl) {
+            UIApplication.shared.open(url, options: [:])
+        }
+    }
+}
+
+extension RegisterNormalViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        var text: String?
+        
+        text = rootView.novelSummaryView.platFormTest.platformList[indexPath.item].platformName
+        
+        guard let unwrappedText = text else {
+            return CGSize(width: 0, height: 0)
+        }
+        
+        let width = (unwrappedText as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 48
+        return CGSize(width: width, height: 37)
     }
 }
