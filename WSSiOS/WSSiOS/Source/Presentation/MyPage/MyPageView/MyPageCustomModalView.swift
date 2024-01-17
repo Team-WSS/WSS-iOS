@@ -111,4 +111,11 @@ final class MyPageCustomModalView: UIView {
             $0.height.equalTo(53)
         }
     }
+    
+    func bindData(_ data: AvatarResult) {
+        modalAvatarFeatureLabelView.modalAvaterBadgeImageView.kfSetImage(url: data.avatarGenreBadgeImg)
+        modalAvatarFeatureLabelView.modalAvaterTitleLabel.text = data.avatarTag
+        modalTitleLabel.text = data.avatarMent
+        modalExplanationLabel.text = data.avatarCondition
+    }
 }

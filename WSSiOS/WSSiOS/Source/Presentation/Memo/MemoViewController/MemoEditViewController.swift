@@ -98,7 +98,7 @@ final class MemoEditViewController: UIViewController {
     
     private func setBinding() {
         backButton.rx.tap.bind {
-            if let memoContent = self.memoContent {
+            if self.memoContent != nil {
                 if self.updatedMemoContent != self.memoContent {
                     let vc = DeletePopupViewController(
                         memoRepository: DefaultMemoRepository(
@@ -130,7 +130,7 @@ final class MemoEditViewController: UIViewController {
         }.disposed(by: disposeBag)
         
         completeButton.rx.tap.bind {
-            if let memoContent = self.memoContent {
+            if self.memoContent != nil {
                 self.patchMemo()
             } else {
                 self.postMemo()
@@ -148,7 +148,7 @@ final class MemoEditViewController: UIViewController {
                 } else {
                     self.enableCompleteButton()
                 }
-                if let memoContent = self.memoContent {
+                if self.memoContent != nil {
                     if self.updatedMemoContent == self.memoContent {
                         self.disableCompleteButton()
                     }

@@ -25,7 +25,7 @@ protocol Networking {
 }
 
 extension Networking {
-    
+
     func makeHTTPRequest(
         method: HTTPMethod,
         baseURL: String = Bundle.main.object(forInfoDictionaryKey: Config.Keys.Plist.baseURL) as? String ?? "",

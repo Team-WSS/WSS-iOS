@@ -15,7 +15,7 @@ final class MyPageSettingCollectionViewCell: UICollectionViewCell {
     
     //MARK: - UI Components
     
-    var myPageSettingCellLabel = UILabel()
+    let myPageSettingCellButton = UIButton()
     
     //MARK: - Life Cycle
     
@@ -37,22 +37,22 @@ final class MyPageSettingCollectionViewCell: UICollectionViewCell {
     private func setUI() {
         self.backgroundColor = .White
         
-        myPageSettingCellLabel.do {
-            $0.font = .Body1
-            $0.textColor = .Black
+        myPageSettingCellButton.do {
+            $0.setTitleColor(.Black, for: .normal)
+            $0.titleLabel?.font = .Body1
         }
     }
     
     //MARK: - Set Hierachy
     
     private func setHierachy() {
-        self.addSubviews(myPageSettingCellLabel)
+        self.addSubviews(myPageSettingCellButton)
     }
     
     //MARK: - Set Layout
     
     private func setLayout() {
-        myPageSettingCellLabel.snp.makeConstraints() {
+        myPageSettingCellButton.snp.makeConstraints() {
             $0.centerY.equalToSuperview()
             $0.leading.equalToSuperview().inset(20)
         }

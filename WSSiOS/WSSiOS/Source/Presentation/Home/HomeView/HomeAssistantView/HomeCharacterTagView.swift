@@ -14,7 +14,7 @@ final class HomeCharacterTagView: UIView {
     
     //MARK: - UI Components
     
-    private let tagLabel = UILabel()
+    let tagLabel = UILabel()
     
     //MARK: - Life Cycle
     

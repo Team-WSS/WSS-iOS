@@ -13,7 +13,7 @@ final class HomeView: UIView {
     
     private let homeStackView = UIStackView()
     private let headerView = HomeHeaderView()
-    private let characterView = HomeCharacterView()
+    let characterView = HomeCharacterView()
     private let titleView = HomeSosoPickTitleView()
     let sosopickView = HomeSosoPickView()
     
