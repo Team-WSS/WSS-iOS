@@ -139,13 +139,8 @@ final class HomeSosoPickCollectionViewCell: UICollectionViewCell {
         guard let imageUrl = URL(string: data.novelImage) else { return }
         novelImageView.kf.setImage(with: imageUrl)
         
-        novelUserNumberView.userNumberLabel.do {
-            $0.makeAttribute(with: "\(data.novelRegisteredCount)명이 등록")?
-                .kerning(kerningPixel: 0)
-                .lineSpacing(spacingPercentage: 100)
-                .applyAttribute()
-        }
-        
+        novelUserNumberView.userNumberLabel.text = "\(data.novelRegisteredCount)명이 등록"
+ 
         novelTitleLabel.do {
             $0.makeAttribute(with: data.novelTitle)?
                 .kerning(kerningPixel: -0.6)
