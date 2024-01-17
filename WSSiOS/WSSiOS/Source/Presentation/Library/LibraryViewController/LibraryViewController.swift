@@ -16,8 +16,9 @@ final class LibraryViewController: UIViewController {
     
     //MARK: - Properties
     
+    private let readStatus = ["ALL", "FINISH", "READING", "DROP", "WISH"]
     private let disposeBag = DisposeBag()
-    private var userNovelListRepository: DefaultUserNovelRepository
+    private let userNovelListRepository: DefaultUserNovelRepository
     
     init(userNovelListRepository: DefaultUserNovelRepository) {
         self.userNovelListRepository = userNovelListRepository
@@ -102,7 +103,7 @@ final class LibraryViewController: UIViewController {
     }
     
     private func setupPage() {
-        for i in 0...4 {
+        for i in 0...readStatus.count {
             libraryPages.append(LibraryBaseViewController())
         }
         
