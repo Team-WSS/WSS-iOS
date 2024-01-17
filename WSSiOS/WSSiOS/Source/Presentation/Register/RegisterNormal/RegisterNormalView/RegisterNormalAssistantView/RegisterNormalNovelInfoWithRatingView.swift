@@ -7,9 +7,9 @@
 
 import UIKit
 
+import Kingfisher
 import SnapKit
 import Then
-import Kingfisher
 
 final class RegisterNormalNovelInfoWithRatingView: UIView {
     

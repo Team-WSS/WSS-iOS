@@ -65,7 +65,6 @@ final class RegisterNormalViewController: UIViewController {
     
     override func loadView() {
         self.view = rootView
-        
     }
     
     override func viewDidLoad() {

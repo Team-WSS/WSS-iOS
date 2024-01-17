@@ -109,6 +109,7 @@ final class RegisterNormalNovelSummaryView: UIView {
         }
     }
     
+    /// 각 Section의 본문 텍스트 스타일
     private func bodyStyle(of label: UILabel) {
         label.do {
             $0.makeAttribute(with: label.text)?

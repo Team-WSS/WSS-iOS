@@ -39,16 +39,6 @@ final class RegisterNormalNovelInfoView: UIView {
             $0.axis = .vertical
             $0.spacing = 6
             $0.alignment = .center
-            
-            novelTitleLabel.do {
-                $0.text = "데이터가"
-                novelTitleAttribute(of: $0)
-            }
-            
-            novelAuthorLabel.do {
-                $0.text = "없어요"
-                novelAuthorAttribute(of: $0)
-            }
         }
     }
     

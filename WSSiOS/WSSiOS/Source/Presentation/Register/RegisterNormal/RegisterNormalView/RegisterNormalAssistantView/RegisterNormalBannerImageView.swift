@@ -7,10 +7,10 @@
 
 import UIKit
 
+import Kingfisher
 import SnapKit
 import Then
 import UIImageViewAlignedSwift
-import Kingfisher
 
 final class RegisterNormalBannerImageView: UIView {
     

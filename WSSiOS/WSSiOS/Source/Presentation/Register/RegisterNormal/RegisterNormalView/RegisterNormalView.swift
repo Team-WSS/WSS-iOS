@@ -124,6 +124,4 @@ final class RegisterNormalView: UIView {
             $0.edges.equalToSuperview()
         }
     }
-    
-    
 }
