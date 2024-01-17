@@ -94,7 +94,6 @@ final class DeletePopupContentView: UIView {
             $0.textColor = .Gray200
             $0.font = .Label1
             $0.numberOfLines = 2
-            $0.textAlignment = .center
         }
         
         deleteButton.do {
@@ -166,6 +165,7 @@ final class DeletePopupContentView: UIView {
             $0.makeAttribute(with: status.descriptionText)?
                 .lineSpacing(spacingPercentage: 145)
                 .applyAttribute()
+            $0.textAlignment = .center
         }
         self.deleteButton.setButtonAttributedTitle(text: status.deleteButtonText, font: .Label1, color: .Gray300)
         self.cancelButton.setButtonAttributedTitle(text: status.cancelButtonText, font: .Label1, color: .white)

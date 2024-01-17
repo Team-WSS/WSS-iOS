@@ -52,6 +52,11 @@ final class NovelDetailViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        if let tabBarController = self.tabBarController as? WSSTabBarController {
+            tabBarController.tabBar.isHidden = true
+            tabBarController.shadowView.isHidden = true
+        }
+        
         getUserNovel()
         updateNavigationBarStyle(offset: self.rootView.scrollView.contentOffset.y)
     }

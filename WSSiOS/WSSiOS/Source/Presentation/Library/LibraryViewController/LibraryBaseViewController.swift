@@ -55,10 +55,7 @@ final class LibraryBaseViewController: UIViewController {
         super.viewDidLoad()
         
         register()
-        bindUserData(readStatus: readStatusData,
-                     lastUserNovelId: lastUserNovelIdData,
-                     size: sizeData,
-                     sortType: sortTypeData)
+        bindColletionView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -67,6 +64,11 @@ final class LibraryBaseViewController: UIViewController {
             tabBarController.tabBar.isHidden = false
             tabBarController.shadowView.isHidden = false
         }
+        
+        bindUserData(readStatus: readStatusData,
+                     lastUserNovelId: lastUserNovelIdData,
+                     size: sizeData,
+                     sortType: sortTypeData)
     }
     
     //MARK: - Custom TabBar
@@ -87,7 +89,6 @@ final class LibraryBaseViewController: UIViewController {
         .observe(on: MainScheduler.instance)
         .subscribe(with: self, onNext: { owner, data in
             owner.novelListRelay.accept(data.userNovels)
-            owner.bindColletionView()
         }, onError: { error, _  in
             print(error)
         })
@@ -104,6 +105,16 @@ final class LibraryBaseViewController: UIViewController {
                 
                 //                cell.myPageAvaterButton.rx.tap
             }
+            .disposed(by: disposeBag)
+        
+        rootView.libraryCollectionView.rx.itemSelected
+            .observe(on: MainScheduler.instance)
+            .map { indexPath in
+                return self.novelListRelay.value[indexPath.item]
+            }
+            .subscribe(onNext: { [weak self] selectedItem in
+                self?.navigationController?.pushViewController(NovelDetailViewController(repository: DefaultUserNovelRepository(userNovelService: DefaultUserNovelService()), userNovelId: selectedItem.userNovelId), animated: true)
+            })
             .disposed(by: disposeBag)
     }
 }

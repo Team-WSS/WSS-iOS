@@ -66,6 +66,8 @@ final class MemoEditViewController: UIViewController {
          setNotificationCenter()
          setTapGesture()
          setBinding()
+         
+         rootView.memoEditContentView.memoTextView.becomeFirstResponder()
      }
     
     // MARK: - set NavigationBar

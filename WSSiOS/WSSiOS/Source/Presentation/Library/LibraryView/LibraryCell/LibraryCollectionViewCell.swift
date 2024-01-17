@@ -41,6 +41,7 @@ final class LibraryCollectionViewCell: UICollectionViewCell {
     private func setUI() {
         novelImageView.do {
             $0.layer.cornerRadius = 10
+            $0.clipsToBounds = true
         }
         
         novelTitleLabel.do {
