@@ -320,7 +320,6 @@ extension NovelDetailViewController: UITableViewDelegate {
             MemoReadViewController(
                 repository: DefaultMemoRepository(
                     memoService: DefaultMemoService()),
-                novelId: self.novelId,
                 memoId: rootView.novelDetailMemoView.memoList[indexPath.row].memoId
             ), animated: true)
     }

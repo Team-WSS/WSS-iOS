@@ -16,7 +16,6 @@ final class MemoReadViewController: UIViewController {
     
     private let repository: MemoRepository
     private let disposeBag = DisposeBag()
-    private let novelId: Int
     private let memoId: Int
     private var novelTitle = ""
     private var novelAuthor = ""
@@ -31,9 +30,8 @@ final class MemoReadViewController: UIViewController {
 
      // MARK: - Life Cycle
     
-    init(repository: MemoRepository, novelId: Int, memoId: Int) {
+    init(repository: MemoRepository, memoId: Int) {
         self.repository = repository
-        self.novelId = novelId
         self.memoId = memoId
         super.init(nibName: nil, bundle: nil)
     }
