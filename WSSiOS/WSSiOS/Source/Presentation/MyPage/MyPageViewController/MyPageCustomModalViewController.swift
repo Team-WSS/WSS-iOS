@@ -18,6 +18,7 @@ final class MyPageCustomModalViewController: UIViewController {
     private let avatarRepository: DefaultAvatarRepository
     private let avatarId: Int
     private let modalHasAvatar: Bool
+    private let modalBackgroundView = UIView()
     
     init(avatarRepository: DefaultAvatarRepository,
          avatarId: Int,
@@ -38,10 +39,16 @@ final class MyPageCustomModalViewController: UIViewController {
     
     // MARK: - Life Cycle
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.setBackgroundDimmed()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setUI()
+        setStyle()
         setHierachy()
         setLayout()
         print("🙏🏿", avatarId)
@@ -49,7 +56,27 @@ final class MyPageCustomModalViewController: UIViewController {
         setAction()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.setBackgroundClear()
+    }
+    
     //MARK: - Custom Method
+    
+    private func setBackgroundDimmed() {
+        UIView.animate(withDuration: 0.3, delay: 0.3) {
+            self.modalBackgroundView.alpha = 1
+        }
+    }
+    
+    private func setBackgroundClear() {
+        self.modalBackgroundView.alpha = 0
+    }
+    
+    private func setStyle() {
+        self.modalBackgroundView.alpha = 0
+        self.modalBackgroundView.backgroundColor = .Black60.withAlphaComponent(0.6)
+    }
     
     private func setUI() {
         if !modalHasAvatar {
@@ -59,7 +86,8 @@ final class MyPageCustomModalViewController: UIViewController {
     }
     
     private func setHierachy() {
-        self.view.addSubview(rootView)
+        self.view.addSubviews(modalBackgroundView, 
+                              rootView)
     }
     
     private func setLayout() {
@@ -74,6 +102,10 @@ final class MyPageCustomModalViewController: UIViewController {
                 $0.bottom.width.equalToSuperview()
                 $0.height.equalTo(572)
             }
+        }
+        
+        modalBackgroundView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
     
@@ -100,8 +132,9 @@ final class MyPageCustomModalViewController: UIViewController {
     
     private func bindAvatarData() {
         avatarRepository.getAvatarData(avatarId: avatarId)
-            .observe(on: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, data in 
+            .observe(on: MainScheduler.asyncInstance)
+            .withUnretained(self)
+            .subscribe(onNext: { (owner, data) in
                 print(data)
                 owner.rootView.bindData(data)
             })
@@ -110,9 +143,10 @@ final class MyPageCustomModalViewController: UIViewController {
     
     private func patchAvatar() {
         avatarRepository.patchAvatar(avatarId: avatarId)
-            .observe(on: MainScheduler.instance)
+            .observe(on: MainScheduler.asyncInstance)
             .subscribe(with: self, onNext: { owner, _ in 
-                NotificationCenter.default.post(name: NSNotification.Name("AvatarChanged"), object: nil)
+                NotificationCenter.default.post(name: NSNotification.Name("AvatarChanged"), 
+                                                object: nil)
                 owner.dismiss(animated: true)
             },onError: { owner, error in
                 print(error)

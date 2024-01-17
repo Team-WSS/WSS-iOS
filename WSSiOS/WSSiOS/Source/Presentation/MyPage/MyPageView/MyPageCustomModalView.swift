@@ -14,6 +14,7 @@ final class MyPageCustomModalView: UIView {
 
     //MARK: - UI Components
     
+    public var modalBackgroundView = UIView()
     public var modalAvatarFeatureLabelView = MyPageModalAvatarFeatureLabelView()
     public var modalAvaterImageView = UIImageView()
     public var modalTitleLabel = UILabel()

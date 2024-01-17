@@ -17,6 +17,8 @@ final class LibraryViewController: UIViewController {
     //MARK: - Properties
     
     private let disposeBag = DisposeBag()
+    private let readStatusList = ["ALL", "FINISH", "READING", "DROP", "WISH"]
+    private let sortTypeList = ["NEWEST", "OLDEST"]
     
     //MARK: - UI Components
     
@@ -27,16 +29,27 @@ final class LibraryViewController: UIViewController {
     private var libraryDescriptionView = LibraryDescriptionView()
     private var libraryListView = LibraryListView()
     private var libraryPages = [LibraryBaseViewController]()
+    private let userNovelListRepository: DefaultUserNovelRepository
+    
+    init(userNovelListRepository: DefaultUserNovelRepository) {
+        self.userNovelListRepository = userNovelListRepository
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setNavigationBar()
         setTabBar()
         delegate()
         
-        setupPage()
+        setupPages()
         
         setUI()
         setHierarchy()
@@ -44,6 +57,19 @@ final class LibraryViewController: UIViewController {
         setAction()
     }
     
+    //MARK: - set NavigationBar
+    
+    private func setNavigationBar() {
+        self.navigationController?.isNavigationBarHidden = false
+        self.title = "내 서재"
+        
+        if let navigationBar = self.navigationController?.navigationBar {
+            let titleTextAttributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont.Title2
+            ]
+            navigationBar.titleTextAttributes = titleTextAttributes
+        }
+
     override func viewWillAppear(_ animated: Bool) {
         if let tabBarController = self.tabBarController as? WSSTabBarController {
             tabBarController.tabBar.isHidden = false
@@ -84,9 +110,17 @@ final class LibraryViewController: UIViewController {
         libraryPageViewController.dataSource = self
     }
     
-    private func setupPage() {
-        for i in 0...4 {
-            libraryPages.append(LibraryBaseViewController())
+    private func setupPages() {
+        for i in 0..<readStatusList.count {
+            let viewController = LibraryBaseViewController(
+                userNovelListRepository: DefaultUserNovelRepository(
+                    userNovelService: DefaultUserNovelService()),
+                readStatusData: readStatusList[i],
+                lastUserNovelIdData: 999999,
+                sizeData: 3,
+                sortTypeData: sortTypeList[0])
+            
+            libraryPages.append(viewController)
         }
         
         for (index, viewController) in libraryPages.enumerated() {
@@ -97,46 +131,6 @@ final class LibraryViewController: UIViewController {
                                                      direction: .forward,
                                                      animated: false,
                                                      completion: nil)
-    }
-    
-    private func setUI() {
-        self.view.backgroundColor = .White
-        
-        libraryListView.isHidden = true
-    }
-    
-    private func setHierarchy() {
-        self.view.addSubviews(libraryPageBar,
-                              libraryDescriptionView)
-        self.addChild(libraryPageViewController)
-        self.view.addSubviews(libraryPageViewController.view)
-        libraryPageViewController.didMove(toParent: self)
-        self.view.addSubview(libraryListView)
-    }
-    
-    private func setLayout() {
-        libraryPageBar.snp.makeConstraints() {
-            $0.top.width.equalToSuperview()
-            $0.height.equalTo(107)
-        }
-        
-        libraryDescriptionView.snp.makeConstraints() {
-            $0.top.equalTo(libraryPageBar.snp.bottom)
-            $0.width.equalToSuperview()
-            $0.height.equalTo(40)
-        }
-        
-        libraryPageViewController.view.snp.makeConstraints {
-            $0.top.equalTo(libraryDescriptionView.snp.bottom)
-            $0.width.bottom.equalToSuperview()
-        }
-        
-        libraryListView.snp.makeConstraints() {
-            $0.top.equalTo(libraryDescriptionView.snp.bottom).offset(10)
-            $0.trailing.equalToSuperview().inset(25)
-            $0.width.equalTo(100)
-            $0.height.equalTo(104)
-        }
     }
     
     private func setAction() {
@@ -179,6 +173,52 @@ extension LibraryViewController: UIPageViewControllerDataSource {
             return libraryPages[currentIndex + 1]
         }
         return nil
+    }
+}
+
+extension LibraryViewController {
+    
+    //MARK: - set Design
+    
+    private func setUI() {
+        self.view.backgroundColor = .White
+        
+        libraryListView.isHidden = true
+    }
+    
+    private func setHierarchy() {
+        self.view.addSubviews(libraryPageBar,
+                              libraryDescriptionView)
+        self.addChild(libraryPageViewController)
+        self.view.addSubviews(libraryPageViewController.view)
+        libraryPageViewController.didMove(toParent: self)
+        self.view.addSubview(libraryListView)
+    }
+    
+    private func setLayout() {
+        libraryPageBar.snp.makeConstraints() {
+            $0.top.equalTo(self.view.safeAreaLayoutGuide)
+            $0.width.equalToSuperview()
+            $0.height.equalTo(54)
+        }
+        
+        libraryDescriptionView.snp.makeConstraints() {
+            $0.top.equalTo(libraryPageBar.snp.bottom)
+            $0.width.equalToSuperview()
+            $0.height.equalTo(40)
+        }
+        
+        libraryPageViewController.view.snp.makeConstraints {
+            $0.top.equalTo(libraryDescriptionView.snp.bottom)
+            $0.width.bottom.equalToSuperview()
+        }
+        
+        libraryListView.snp.makeConstraints() {
+            $0.top.equalTo(libraryDescriptionView.snp.bottom).offset(10)
+            $0.trailing.equalToSuperview().inset(25)
+            $0.width.equalTo(100)
+            $0.height.equalTo(104)
+        }
     }
 }
 
