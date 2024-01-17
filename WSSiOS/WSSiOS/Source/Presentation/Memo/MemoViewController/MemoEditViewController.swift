@@ -63,6 +63,7 @@ final class MemoEditViewController: UIViewController {
          
          setNavigationBar()
          setUI()
+         setNotificationCenter()
          setTapGesture()
          setBinding()
      }
@@ -85,6 +86,17 @@ final class MemoEditViewController: UIViewController {
             $0.setButtonAttributedTitle(text: "완료", font: .Title2, color: .Primary100)
             $0.isEnabled = false
         }
+    }
+    
+    // MARK: - setNotificationCenter
+
+    private func setNotificationCenter() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.canceledEdit(_:)),
+            name: NSNotification.Name("CanceledEdit"),
+            object: nil
+        )
     }
     
     // MARK: - set tap gesture
@@ -194,6 +206,8 @@ final class MemoEditViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
+    // MARK: - custom method
+    
     func enableCompleteButton() {
         completeButton.do {
             $0.setButtonAttributedTitle(text: "완료", font: .Title2, color: .Primary100)
@@ -210,5 +224,9 @@ final class MemoEditViewController: UIViewController {
     
     @objc func viewDidTap() {
         view.endEditing(true)
+    }
+    
+    @objc func canceledEdit(_ notification: Notification) {
+        self.navigationController?.popViewController(animated: true)
     }
 }

@@ -65,6 +65,7 @@ final class DeletePopupViewController: UIViewController {
             }.disposed(by: disposeBag)
         case .memoEditCancel:
             rootView.deletePopupContentView.deleteButton.rx.tap.bind {
+                NotificationCenter.default.post(name: NSNotification.Name("CanceledEdit"), object: nil)
                 self.dismiss(animated: true)
             }.disposed(by: disposeBag)
         case .novelDelete:
