@@ -11,6 +11,7 @@ import Foundation
 
 struct UserNovelDetail: Codable {
     let memos: [UserNovelMemo]
+    let novelId: Int
     let userNovelTitle: String
     let userNovelImg: String
     let userNovelAuthor: String
