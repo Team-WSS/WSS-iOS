@@ -41,6 +41,7 @@ final class NovelDetailMemoView: UIView {
         memoTableView.do {
             $0.backgroundColor = .white
             $0.separatorStyle = .none
+            $0.isScrollEnabled = false
         }
     }
     

@@ -70,6 +70,10 @@ final class NovelDetailViewController: UIViewController {
     private func setNavigationBar() {
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.backButton)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.novelSettingButton)
+        self.navigationController?.navigationBar.titleTextAttributes = [
+            NSAttributedString.Key.font: UIFont.Title2,
+            NSAttributedString.Key.foregroundColor: UIColor.black
+        ]
     }
     
     // MARK: - set UI
@@ -113,6 +117,13 @@ final class NovelDetailViewController: UIViewController {
     // MARK: - set Binding
     
     private func setBinding() {
+        rootView.scrollView.rx.contentOffset
+            .asDriver()
+            .drive(onNext: { [weak self] offset in
+                self?.updateNavigationBarStyle(offset: offset.y)
+            })
+            .disposed(by: disposeBag)
+        
         novelSettingButton.rx.tap.bind {
             self.rootView.novelDetailMemoSettingButtonView.isHidden = false
         }.disposed(by: disposeBag)
@@ -231,6 +242,24 @@ final class NovelDetailViewController: UIViewController {
             },onError: { owner, error in
                 print(error)
             }).disposed(by: disposeBag)
+    }
+    
+    private func updateNavigationBarStyle(offset: CGFloat) {
+        if offset > 0 {
+            rootView.statusBarView.backgroundColor = .white
+            navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+            navigationController?.navigationBar.shadowImage = UIImage()
+            navigationController?.navigationBar.backgroundColor = .white
+            navigationItem.title = self.novelTitle
+            novelSettingButton.isHidden = true
+        } else {
+            rootView.statusBarView.backgroundColor = .clear
+            navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+            navigationController?.navigationBar.shadowImage = nil
+            navigationController?.navigationBar.backgroundColor = .clear
+            navigationItem.title = ""
+            novelSettingButton.isHidden = false
+        }
     }
     
     @objc func viewDidTap() {

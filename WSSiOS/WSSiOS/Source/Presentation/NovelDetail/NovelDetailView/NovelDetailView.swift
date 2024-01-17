@@ -14,6 +14,7 @@ final class NovelDetailView: UIView {
     
     // MARK: - UI Components
 
+    let statusBarView = UIView()
     let scrollView = UIScrollView()
     let contentView = UIStackView()
     let novelDetailHeaderView = NovelDetailHeaderView()
@@ -41,6 +42,13 @@ final class NovelDetailView: UIView {
     
     private func setUI() {
         self.backgroundColor = .White
+        
+        statusBarView.do {
+            let scenes = UIApplication.shared.connectedScenes
+            let windowScene = scenes.first as? UIWindowScene
+            let statusBarManager = windowScene?.windows.first?.windowScene?.statusBarManager
+            $0.frame = statusBarManager?.statusBarFrame ?? .zero
+        }
         
         scrollView.do {
             $0.contentInsetAdjustmentBehavior = .never
@@ -70,6 +78,7 @@ final class NovelDetailView: UIView {
     
     private func setHierachy() {
         self.addSubviews(scrollView,
+                         statusBarView,
                          createMemoButton,
                          novelDetailMemoSettingButtonView)
         scrollView.addSubview(contentView)

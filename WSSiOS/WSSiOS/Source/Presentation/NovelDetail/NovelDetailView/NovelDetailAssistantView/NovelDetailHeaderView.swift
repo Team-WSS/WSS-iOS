@@ -100,7 +100,7 @@ final class NovelDetailHeaderView: UIView {
         }
         
         genreImageView.snp.makeConstraints {
-            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).inset(27)
+            $0.top.equalToSuperview().inset(120)
             $0.leading.equalToSuperview().inset(20)
             $0.size.equalTo(40)
         }
