@@ -15,7 +15,7 @@ protocol AvatarService {
 }
 
 final class DefaultAvatarService: NSObject, Networking {
-    private let avatarListQueryItems: [URLQueryItem] = [URLQueryItem(name: "avatarId", value: String(describing: 10))]
+    private let avatarListQueryItems: [URLQueryItem] = [URLQueryItem(name: "avatarId", value: String(describing: 2))]
     private var urlSession: URLSession = URLSession(configuration: URLSessionConfiguration.default,
                                                     delegate: nil,
                                                     delegateQueue: nil)
@@ -25,7 +25,6 @@ extension DefaultAvatarService: AvatarService {
     func getAvatarData(avatarId: Int) -> RxSwift.Single<AvatarResult> {
         let request = try! makeHTTPRequest(method: .get,
                                            path: URLs.Avatar.getAvatarDetail.replacingOccurrences(of: "{avatarId}", with: String(avatarId)),
-                                           queryItems: avatarListQueryItems,
                                            headers: APIConstants.testTokenHeader,
                                            body: nil)
         
@@ -44,6 +43,7 @@ extension DefaultAvatarService: AvatarService {
         
         let request = try! makeHTTPRequest(method: .patch,
                                            path: URLs.Avatar.patchRepAvatar,
+                                           queryItems: avatarListQueryItems,
                                            headers: APIConstants.testTokenHeader,
                                            body: avatarIdData)
         

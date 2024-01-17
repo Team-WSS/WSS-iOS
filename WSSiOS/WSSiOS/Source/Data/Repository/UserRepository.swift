@@ -30,8 +30,4 @@ struct DefaultUserRepository: UserRepository {
         return userService.patchUserName(userNickName: userNickName)
             .asObservable()
     }
-    
-    func updateLocalUserData(with newName: String) {
-        UserDefaults.standard.set(newName, forKey: "userNickname")
-    }
 }

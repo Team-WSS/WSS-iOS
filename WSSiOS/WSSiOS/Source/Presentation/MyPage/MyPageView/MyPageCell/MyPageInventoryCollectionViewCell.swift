@@ -11,7 +11,7 @@ import SnapKit
 import Then
 
 final class MyPageInventoryCollectionViewCell: UICollectionViewCell {
-
+    
     //MARK: - Properties
     
     static let identifier: String = "MyPageInventoryTableViewCell"
@@ -60,7 +60,7 @@ final class MyPageInventoryCollectionViewCell: UICollectionViewCell {
     
     func bindData(_ data: UserAvatar, representativeId: Int) {
         myPageAvaterButton.kfSetButtonImage(url: data.avatarImg, state: .normal)
-
+        
         if representativeId == data.avatarId {
             myPageAvaterButton.layer.borderColor = UIColor.Primary100.cgColor
             myPageAvaterButton.layer.borderWidth = 1
