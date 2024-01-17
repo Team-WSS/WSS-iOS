@@ -41,7 +41,9 @@ final class HomeSearchButtonView: UIView {
         }
         
         searchDescriptionLabel.do {
-            $0.text = "등록할 작품 검색하기"
+            $0.makeAttribute(with: "등록할 작품 검색하기")?
+                .kerning(kerningPixel: -0.6)
+                .applyAttribute()
             $0.font = .Body2
             $0.textColor = .Gray200
         }
