@@ -7,6 +7,7 @@
 
 import UIKit
 
+import Kingfisher
 import SnapKit
 import Then
 
@@ -134,11 +135,12 @@ final class HomeSosoPickCollectionViewCell: UICollectionViewCell {
     
     //MARK: - bind Data
     
-    func bindData(data: SosoPickNovel) {
-        novelImageView.image = UIImage(named: data.image)
-        novelUserNumberView.userNumberLabel.text = "\(data.registerUserNumber)명이 등록"
-        novelTitleLabel.text = data.title
-        novelAuthorLabel.text = data.author
+    func bindData(data: SosopickNovel) {
+        guard let imageUrl = URL(string: data.novelImage) else { return }
+        novelImageView.kf.setImage(with: imageUrl)
+        novelUserNumberView.userNumberLabel.text = "\(data.novelRegisteredCount)명이 등록"
+        novelTitleLabel.text = data.novelTitle
+        novelAuthorLabel.text = data.novelAuthor
     }
 }
 
