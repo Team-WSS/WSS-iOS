@@ -10,6 +10,7 @@ import Foundation
 import RxSwift
 
 protocol NovelService {
+    func getSearchNovelData(searchWord: String) -> Single<SearchNovels>
     func getNovelInfo(novelId: Int?) -> Single<NovelResult>
 }
 
@@ -20,6 +21,27 @@ final class DefaultNovelService: NSObject, Networking {
 }
 
 extension DefaultNovelService: NovelService {
+    func getSearchNovelData(searchWord: String) -> Single<SearchNovels> {
+
+        let searchListQueryItems: [URLQueryItem] = [
+            URLQueryItem(name: "lastNovelId", value: String(describing: 999999)),
+            URLQueryItem(name: "size", value: String(describing: 40)),
+            URLQueryItem(name: "word", value: searchWord)
+        ]
+        
+        let request = try! makeHTTPRequest(method: .get,
+                                           path: URLs.Novel.getSearchList,
+                                           queryItems: searchListQueryItems,
+                                           headers: APIConstants.testTokenHeader,
+                                           body: nil)
+        
+        NetworkLogger.log(request: request)
+        
+        return urlSession.rx.data(request: request)
+            .map { try self.decode(data: $0, to: SearchNovels.self) }
+            .asSingle()
+    }
+    
     func getNovelInfo(novelId: Int?) -> Single<NovelResult> {
         let request = try! makeHTTPRequest(method: .get,
                                            path: URLs.Novel.getNovelInfo.replacingOccurrences(of: "{novelId}", with: String(novelId ?? 0)),

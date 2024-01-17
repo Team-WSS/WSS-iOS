@@ -15,7 +15,7 @@ final class HomeHeaderView: UIView {
     //MARK: - UI Components
     
     private let logoImageView = UIImageView()
-    private let headerSearchView = HomeSearchButtonView()
+    let headerSearchView = HomeSearchButtonView()
     
     //MARK: - Life Cycle
     
