@@ -49,7 +49,7 @@ final class NovelDetailHeaderView: UIView {
         gradientView.do {
             $0.contentMode = .scaleAspectFill
             $0.clipsToBounds = true
-            $0.image = .registerNormalGradientDummy
+            $0.image = ImageLiterals.Image.Banner.backgroundGradient
         }
         
         genreImageView.do {

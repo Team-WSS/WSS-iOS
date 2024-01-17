@@ -14,7 +14,7 @@ final class RegisterNormalReadStatusButton: UIButton {
     
     // MARK: - Properties
     
-    private var status: RegisterNormalReadStatus?
+    private var status: ReadStatus?
     private var buttonHeight: CGFloat = 37
     
     // MARK: - UI Components
@@ -107,11 +107,11 @@ final class RegisterNormalReadStatusButton: UIButton {
         }
     }
     
-    func setStatus(_ status: RegisterNormalReadStatus) {
+    func setStatus(_ status: ReadStatus) {
         self.status = status
     }
     
-    func checkStatus(_ status: RegisterNormalReadStatus) -> Bool {
+    func checkStatus(_ status: ReadStatus) -> Bool {
         return self.status == status
     }
     

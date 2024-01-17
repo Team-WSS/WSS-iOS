@@ -2,7 +2,7 @@
 //  NovelRepository.swift
 //  WSSiOS
 //
-//  Created by 최서연 on 1/14/24.
+//  Created by 이윤학 on 1/16/24.
 //
 
 import Foundation
@@ -11,6 +11,7 @@ import RxSwift
 
 protocol NovelRepository {
     func getSearchNovels(searchWord: String) -> Observable<SearchNovels>
+    func getNovelInfo(novelId: Int?) -> Observable<NovelResult>
 }
 
 struct DefaultNovelRepository: NovelRepository {
@@ -25,5 +26,9 @@ struct DefaultNovelRepository: NovelRepository {
         return novelService.getSearchNovelData(searchWord: searchWord)
             .asObservable()
     }
+    
+    func getNovelInfo(novelId: Int?) -> Observable<NovelResult> {
+        return novelService.getNovelInfo(novelId: novelId)
+            .asObservable()
+    }
 }
-

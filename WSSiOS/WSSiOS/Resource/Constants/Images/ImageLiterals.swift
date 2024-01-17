@@ -94,4 +94,12 @@ enum ImageLiterals {
         static var sosopickCircle: UIImage { .load(named: "sosopickCircle")}
         static var warning: UIImage { .load(named: "icWarning")}
     }
+    
+    enum Image {
+        enum Banner {
+            static var loadingBackground: UIImage{ .load(named: "imgLoadingBackground")}
+            static var loadingThumbnail: UIImage{ .load(named: "imgLoadingThumbnail")}
+            static var backgroundGradient: UIImage{ .load(named: "imgBackgroundGradient")}
+        }
+    }
 }
