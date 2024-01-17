@@ -49,9 +49,10 @@ final class MyPageViewController: UIViewController {
         
         setNavigationBar()
         register()
-        bindUserData()
         
-        pushViewController()
+        bindUserData()
+        pushChangeNickNameViewController()
+        addNotificationCenter()
         //        removeDimmedView()
     }
     
@@ -93,6 +94,7 @@ final class MyPageViewController: UIViewController {
                 owner.rootView.dataBind(data)
                 owner.representativeAvatarId = data.representativeAvatarId
                 owner.userNickName = data.userNickName
+                owner.avaterListRelay = BehaviorRelay(value: data.userAvatars)
                 owner.bindColletionView()
             })
             .disposed(by: disposeBag)
@@ -107,7 +109,7 @@ final class MyPageViewController: UIViewController {
                 cell.myPageAvaterButton.rx.tap
                     .bind(with: self, onNext: { owner, _ in 
                         owner.hasAvatar = element.hasAvatar
-                        owner.tapAvatarButton(avatarId: element.avatarId)
+                        owner.pushModalViewController(avatarId: element.avatarId)
                     })
             }
             .disposed(by: disposeBag)
@@ -133,8 +135,6 @@ final class MyPageViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    
-    
     private func bindDataAgain() {
         getDataFromAPI(disposeBag: disposeBag) { data, list in 
             self.updateUI(userData: data, avatarList: list)
@@ -147,8 +147,6 @@ final class MyPageViewController: UIViewController {
             .subscribe(with: self, onNext: { owner, userData in
                 owner.representativeAvatarId = userData.representativeAvatarId
                 owner.userNickName = userData.userNickName
-                print("👑\(owner.representativeAvatarId)\n")
-                
                 completion(userData, userData.userAvatars)
             }, onError: { error, _ in
                 print(error)
@@ -157,13 +155,13 @@ final class MyPageViewController: UIViewController {
     }
     
     private func updateUI(userData: UserResult, avatarList: [UserAvatar]) {
-        print("👑\(self.representativeAvatarId)\n")
         self.rootView.dataBind(userData)
+        self.representativeAvatarId = userData.representativeAvatarId
         self.avaterListRelay.accept(avatarList)
         self.rootView.myPageInventoryView.myPageAvaterCollectionView.reloadData()
     }
     
-    private func pushViewController() {
+    private func pushChangeNickNameViewController() {
         rootView.myPageTallyView.myPageUserNameButton.rx.tap
             .bind(with: self, onNext: { owner, _ in 
                 if let tabBarController = owner.tabBarController as? WSSTabBarController {
@@ -181,7 +179,7 @@ final class MyPageViewController: UIViewController {
 }
 
 extension MyPageViewController {
-    @objc func tapAvatarButton(avatarId: Int) {
+    @objc func pushModalViewController(avatarId: Int) {
         let modalVC = MyPageCustomModalViewController(
             avatarRepository:DefaultAvatarRepository(
                 avatarService: DefaultAvatarService()),
@@ -189,20 +187,22 @@ extension MyPageViewController {
             modalHasAvatar: hasAvatar
         )
         
-        //        addDimmedView()
         modalVC.modalPresentationStyle = .overFullScreen
         present(modalVC, animated: true)
     }
     
-    //    private func addDimmedView() {
-    //        view.addSubview(dimmedView)
-    //        dimmedView.do {
-    //            $0.backgroundColor = .Black
-    //            $0.alpha = 0.6
-    //            $0.addGestureRecognizer(tapGesture)
-    //        }
-    //        dimmedView.snp.makeConstraints() {
-    //            $0.edges.equalToSuperview()
-    //        }
-    //    }
+    
+    private func addNotificationCenter() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.checkNotification(notification:)),
+            name: NSNotification.Name("AvatarChanged"),
+            object: nil
+        )
+    }
+    
+    @objc 
+    func checkNotification(notification: Notification) {
+        bindDataAgain()
+    }
 }

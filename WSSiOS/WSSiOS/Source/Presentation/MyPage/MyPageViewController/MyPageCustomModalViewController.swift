@@ -111,6 +111,7 @@ class MyPageCustomModalViewController: UIViewController {
         avatarRepository.patchAvatar(avatarId: avatarId)
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in 
+                NotificationCenter.default.post(name: NSNotification.Name("AvatarChanged"), object: nil)
                 owner.dismiss(animated: true)
             },onError: { owner, error in
                 print(error)
