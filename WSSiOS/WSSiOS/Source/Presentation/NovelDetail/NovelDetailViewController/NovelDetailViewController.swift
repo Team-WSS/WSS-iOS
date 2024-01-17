@@ -183,7 +183,8 @@ final class NovelDetailViewController: UIViewController {
                     novelRepository: DefaultNovelRepository(
                         novelService: DefaultNovelService()),
                     userNovelRepository: DefaultUserNovelRepository(
-                        userNovelService: DefaultUserNovelService())),
+                        userNovelService: DefaultUserNovelService()), 
+                    novelId: self.novelId),
                 animated: true)
         }.disposed(by: disposeBag)
         
