@@ -45,6 +45,7 @@ final class HomeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        bindDataToUI()
         navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
@@ -81,9 +82,7 @@ final class HomeViewController: UIViewController {
         
         let sosopickObservable = self.recommendRepository.getSosopickNovels()
             .do(onNext: { [weak self] sosopicks in
-                guard let self = self else { return }
-                print("☘️☘️☘️☘️☘️☘️☘️☘️☘️☘️☘️☘️☘️☘️☘️☘️☘️")
-                print(sosopicks)
+                guard self != nil else { return }
             })
         
         Observable.zip(userObservable, sosopickObservable)
@@ -106,6 +105,7 @@ final class HomeViewController: UIViewController {
                 cell.bindData(data: element)
             }
             .disposed(by: disposeBag)
+    }
     
     private func bindDataToUI() {
         getDataFromAPI(disposeBag: disposeBag) { [weak self] characterId, user, sosopick in
