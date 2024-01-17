@@ -113,6 +113,7 @@ final class MyPageViewController: UIViewController {
                 cell.myPageAvaterButton.rx.tap
                     .bind(with: self, onNext: { owner, _ in 
                         owner.hasAvatar = element.hasAvatar
+                        print("🐱", element.avatarId)
                         owner.pushModalViewController(avatarId: element.avatarId)
                     })
             }
@@ -164,7 +165,6 @@ final class MyPageViewController: UIViewController {
         self.rootView.dataBind(userData)
         self.representativeAvatarId = userData.representativeAvatarId
         self.avaterListRelay.accept(avatarList)
-        self.rootView.myPageInventoryView.myPageAvaterCollectionView.reloadData()
     }
 }
 
@@ -179,7 +179,7 @@ extension MyPageViewController {
             avatarId: avatarId,
             modalHasAvatar: hasAvatar
         )
-        
+        print("💖", avatarId)
         modalVC.modalPresentationStyle = .overFullScreen
         present(modalVC, animated: true)
     }

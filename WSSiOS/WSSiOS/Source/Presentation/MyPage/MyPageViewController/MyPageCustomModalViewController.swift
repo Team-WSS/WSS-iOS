@@ -7,8 +7,8 @@
 
 import UIKit
 
-import RxCocoa
 import RxSwift
+import RxCocoa
 
 class MyPageCustomModalViewController: UIViewController {
     
@@ -44,7 +44,7 @@ class MyPageCustomModalViewController: UIViewController {
         setUI()
         setHierachy()
         setLayout()
-        
+        print("🙏🏿", avatarId)
         bindAvatarData()
         setAction()
     }
@@ -80,7 +80,6 @@ class MyPageCustomModalViewController: UIViewController {
     private func setAction() {
         rootView.modalContinueButton.rx.tap
             .bind(with: self, onNext: { owner, _ in
-                //                owner.myPageViewController.myPageViewModel.removeDimmedView.onNext(())
                 owner.dismiss(animated: true)
             })
             .disposed(by: disposeBag)
@@ -96,6 +95,8 @@ class MyPageCustomModalViewController: UIViewController {
             })
             .disposed(by: disposeBag)
     }
+    
+    //MARK: - Bind Data
     
     private func bindAvatarData() {
         avatarRepository.getAvatarData(avatarId: avatarId)

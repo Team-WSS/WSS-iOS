@@ -123,12 +123,7 @@ final class MyPageChangeNicknameViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    private func limitNum(_ text: String) {
-        if text.count > 9 {
-            let index = text.index(text.startIndex, offsetBy: 9)
-            self.rootView.changeNicknameTextField.text = String(text[..<index])
-        }
-    }
+    //MARK: - Bind Data
     
     private func patchUserNickName() {
         userRepository.patchUserName(userNickName: userNickName)
@@ -142,5 +137,14 @@ final class MyPageChangeNicknameViewController: UIViewController {
     
     func bindData(_ data: String) {
         rootView.changeNicknameTextField.text = data
+    }
+}
+
+extension MyPageChangeNicknameViewController {
+    private func limitNum(_ text: String) {
+        if text.count > 9 {
+            let index = text.index(text.startIndex, offsetBy: 9)
+            self.rootView.changeNicknameTextField.text = String(text[..<index])
+        }
     }
 }
