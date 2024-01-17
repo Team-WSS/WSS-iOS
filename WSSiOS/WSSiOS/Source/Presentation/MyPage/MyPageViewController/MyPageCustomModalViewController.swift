@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class MyPageCustomModalViewController: UIViewController {
+final class MyPageCustomModalViewController: UIViewController {
     
     //MARK: - Set Properties
     

@@ -9,7 +9,7 @@ import UIKit
 
 import RxSwift
 
-class MyPageInfoViewController: UIViewController {
+final class MyPageInfoViewController: UIViewController {
 
     //MARK: - Set Properties
     

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MyPageInfoView: UIView {
+final class MyPageInfoView: UIView {
     
     //MARK: - UI Components
     
@@ -88,19 +88,23 @@ class MyPageInfoView: UIView {
             $0.width.equalToSuperview()
             $0.height.equalTo(1)
         }
+        
         emailLabel.snp.makeConstraints() {
             $0.top.equalTo(divider1View.snp.bottom).offset(20)
             $0.leading.equalToSuperview().inset(20)
         }
+        
         userEmailLabel.snp.makeConstraints() {
             $0.top.equalTo(emailLabel.snp.bottom)
             $0.leading.equalToSuperview().inset(20)
         }
+        
         divider2View.snp.makeConstraints() {
             $0.top.equalTo(userEmailLabel.snp.bottom).offset(20)
             $0.width.equalToSuperview()
             $0.height.equalTo(1)
         }
+        
         secessionLabel.snp.makeConstraints() {
             $0.top.equalTo(divider2View.snp.bottom).offset(20)
             $0.leading.equalToSuperview().inset(20)
