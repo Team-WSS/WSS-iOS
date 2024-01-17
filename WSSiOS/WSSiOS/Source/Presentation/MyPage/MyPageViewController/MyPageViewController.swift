@@ -114,11 +114,26 @@ final class MyPageViewController: UIViewController {
         
         settingData.bind(to: rootView.myPageSettingView.myPageSettingCollectionView.rx.items(
             cellIdentifier: "MyPageSettingCollectionViewCell",
-            cellType: MyPageSettingCollectionViewCell.self)) { (row, element, cell) in
-                cell.myPageSettingCellLabel.text = element
+            cellType: MyPageSettingCollectionViewCell.self)) {[weak self] (row, element, cell) in
+                guard let self = self else { return }
+                cell.myPageSettingCellButton.setTitle(element, for: .normal)
+                cell.myPageSettingCellButton.rx.tap
+                    .bind(with: self, onNext: { owner, _ in 
+                        switch row {
+                        case 0:
+                            let infoViewController = MyPageInfoViewController()
+                            infoViewController.rootView.bindData(self.userNickName)
+                            owner.navigationController?.pushViewController(infoViewController, animated: true)
+                            
+                        default:
+                            break
+                        }
+                    })
             }
             .disposed(by: disposeBag)
     }
+    
+    
     
     private func bindDataAgain() {
         getDataFromAPI(disposeBag: disposeBag) { data, list in 
