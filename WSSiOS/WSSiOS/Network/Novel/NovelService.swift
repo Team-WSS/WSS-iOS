@@ -26,8 +26,7 @@ extension DefaultNovelService: NovelService {
         let searchListQueryItems: [URLQueryItem] = [
             URLQueryItem(name: "lastNovelId", value: String(describing: 999999)),
             URLQueryItem(name: "size", value: String(describing: 40)),
-            //MARK: - value값이 한글일때의 디코딩 처리 필요
-            URLQueryItem(name: "word", value: searchWord.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed))
+            URLQueryItem(name: "word", value: searchWord)
         ]
         
         let request = try! makeHTTPRequest(method: .get,
