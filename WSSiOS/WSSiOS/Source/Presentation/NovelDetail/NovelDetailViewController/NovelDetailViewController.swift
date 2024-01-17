@@ -105,6 +105,13 @@ final class NovelDetailViewController: UIViewController {
             name: NSNotification.Name("DeletedMemo"),
             object: nil
         )
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.avatarUnlocked(_:)),
+            name: NSNotification.Name("AvatarUnlocked"),
+            object: nil
+        )
     }
     
     // MARK: - set tap gesture
@@ -320,6 +327,10 @@ final class NovelDetailViewController: UIViewController {
     
     @objc func deletedMemo(_ notification: Notification) {
         showToast(.memoDelete)
+    }
+    
+    @objc func avatarUnlocked(_ notification: Notification) {
+        showToast(.avatarUnlock)
     }
 }
 
