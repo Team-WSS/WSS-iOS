@@ -138,9 +138,31 @@ final class HomeSosoPickCollectionViewCell: UICollectionViewCell {
     func bindData(data: SosopickNovel) {
         guard let imageUrl = URL(string: data.novelImage) else { return }
         novelImageView.kf.setImage(with: imageUrl)
-        novelUserNumberView.userNumberLabel.text = "\(data.novelRegisteredCount)명이 등록"
-        novelTitleLabel.text = data.novelTitle
-        novelAuthorLabel.text = data.novelAuthor
+        
+        novelUserNumberView.userNumberLabel.do {
+            $0.makeAttribute(with: "\(data.novelRegisteredCount)명이 등록")?
+                .kerning(kerningPixel: 0)
+                .lineSpacing(spacingPercentage: 100)
+                .applyAttribute()
+        }
+        
+        novelTitleLabel.do {
+            $0.makeAttribute(with: data.novelTitle)?
+                .kerning(kerningPixel: -0.6)
+                .lineSpacing(spacingPercentage: 140)
+                .applyAttribute()
+            $0.numberOfLines = 1
+            $0.lineBreakMode = .byTruncatingTail
+        }
+        
+        novelAuthorLabel.do {
+            $0.makeAttribute(with: data.novelAuthor)?
+                .kerning(kerningPixel: 0)
+                .lineSpacing(spacingPercentage: 145)
+                .applyAttribute()
+            $0.numberOfLines = 1
+            $0.lineBreakMode = .byTruncatingTail
+        }
     }
 }
 
