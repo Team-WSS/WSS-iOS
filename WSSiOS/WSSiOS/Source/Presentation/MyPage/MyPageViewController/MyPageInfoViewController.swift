@@ -12,14 +12,13 @@ import RxSwift
 final class MyPageInfoViewController: UIViewController {
 
     //MARK: - Set Properties
-    
-    private var userNickName = ""
+
     private let disposeBag = DisposeBag()
     
     //MARK: - UI Components
     
     var rootView = MyPageInfoView()
-    private var backButton = UIButton()
+    private let backButton = UIButton()
     
     // MARK: - Life Cycle
     

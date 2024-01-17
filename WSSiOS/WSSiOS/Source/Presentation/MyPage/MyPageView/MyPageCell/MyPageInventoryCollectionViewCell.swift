@@ -18,7 +18,7 @@ final class MyPageInventoryCollectionViewCell: UICollectionViewCell {
     
     //MARK: - UI Components
     
-    var myPageAvaterButton = UIButton()
+    let myPageAvaterButton = UIButton()
     
     //MARK: - Life Cycle
     
