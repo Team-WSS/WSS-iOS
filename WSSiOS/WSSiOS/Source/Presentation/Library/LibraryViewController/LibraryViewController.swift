@@ -116,46 +116,6 @@ final class LibraryViewController: UIViewController {
                                                      completion: nil)
     }
     
-    private func setUI() {
-        self.view.backgroundColor = .White
-        
-        libraryListView.isHidden = true
-    }
-    
-    private func setHierarchy() {
-        self.view.addSubviews(libraryPageBar,
-                              libraryDescriptionView)
-        self.addChild(libraryPageViewController)
-        self.view.addSubviews(libraryPageViewController.view)
-        libraryPageViewController.didMove(toParent: self)
-        self.view.addSubview(libraryListView)
-    }
-    
-    private func setLayout() {
-        libraryPageBar.snp.makeConstraints() {
-            $0.top.width.equalToSuperview()
-            $0.height.equalTo(107)
-        }
-        
-        libraryDescriptionView.snp.makeConstraints() {
-            $0.top.equalTo(libraryPageBar.snp.bottom)
-            $0.width.equalToSuperview()
-            $0.height.equalTo(40)
-        }
-        
-        libraryPageViewController.view.snp.makeConstraints {
-            $0.top.equalTo(libraryDescriptionView.snp.bottom)
-            $0.width.bottom.equalToSuperview()
-        }
-        
-        libraryListView.snp.makeConstraints() {
-            $0.top.equalTo(libraryDescriptionView.snp.bottom).offset(10)
-            $0.trailing.equalToSuperview().inset(25)
-            $0.width.equalTo(100)
-            $0.height.equalTo(104)
-        }
-    }
-    
     private func setAction() {
         libraryPageBar.selectedTabIndex
             .subscribe(onNext: { [weak self] index in
@@ -196,6 +156,52 @@ extension LibraryViewController: UIPageViewControllerDataSource {
             return libraryPages[currentIndex + 1]
         }
         return nil
+    }
+}
+
+extension LibraryViewController {
+    
+    //MARK: - set Design
+    
+    private func setUI() {
+        self.view.backgroundColor = .White
+        
+        libraryListView.isHidden = true
+    }
+    
+    private func setHierarchy() {
+        self.view.addSubviews(libraryPageBar,
+                              libraryDescriptionView)
+        self.addChild(libraryPageViewController)
+        self.view.addSubviews(libraryPageViewController.view)
+        libraryPageViewController.didMove(toParent: self)
+        self.view.addSubview(libraryListView)
+    }
+    
+    private func setLayout() {
+        libraryPageBar.snp.makeConstraints() {
+            $0.top.equalTo(self.view.safeAreaLayoutGuide)
+            $0.width.equalToSuperview()
+            $0.height.equalTo(54)
+        }
+        
+        libraryDescriptionView.snp.makeConstraints() {
+            $0.top.equalTo(libraryPageBar.snp.bottom)
+            $0.width.equalToSuperview()
+            $0.height.equalTo(40)
+        }
+        
+        libraryPageViewController.view.snp.makeConstraints {
+            $0.top.equalTo(libraryDescriptionView.snp.bottom)
+            $0.width.bottom.equalToSuperview()
+        }
+        
+        libraryListView.snp.makeConstraints() {
+            $0.top.equalTo(libraryDescriptionView.snp.bottom).offset(10)
+            $0.trailing.equalToSuperview().inset(25)
+            $0.width.equalTo(100)
+            $0.height.equalTo(104)
+        }
     }
 }
 
