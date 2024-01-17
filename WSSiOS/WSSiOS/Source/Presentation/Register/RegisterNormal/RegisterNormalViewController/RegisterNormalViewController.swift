@@ -352,7 +352,8 @@ final class RegisterNormalViewController: UIViewController {
         rootView.registerButton.rx.tap
             .subscribe(with: self, onNext: { _,_ in
                 if self.isNew.value {
-                    self.present(RegisterSuccessViewController(), animated: true)
+                    self.navigationController?.pushViewController(RegisterSuccessViewController(),
+                        animated: true)
                     self.postUserNovel()
                 } else {
                     self.patchUserNovel()
