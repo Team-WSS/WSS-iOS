@@ -10,6 +10,10 @@ import Foundation
 import RxSwift
 
 protocol UserNovelService {
+    func getUserNovelList(readStatus: String,
+                          lastUserNovelId: Int,
+                          size: Int,
+                          sortType: String) -> Single<UserNovelList>
     func getUserNovel(userNovelId: Int) -> Single<UserNovelDetail>
     func deleteUserNovel(userNovelId: Int) -> Single<Void>
 }
@@ -21,6 +25,20 @@ final class DefaultUserNovelService: NSObject, Networking {
 }
 
 extension DefaultUserNovelService: UserNovelService {
+    func getUserNovelList(readStatus: String, lastUserNovelId: Int, size: Int, sortType: String) -> RxSwift.Single<UserNovelList> {
+        let request = try! makeHTTPRequest(method: .get,
+                                          path: URLs.UserNovel.getUserNovelList,
+                                          headers: APIConstants.testTokenHeader,
+                                          body: nil)
+        
+        NetworkLogger.log(request: request)
+        
+        return urlSession.rx.data(request: request)
+            .map { try self.decode(data: $0,
+                                   to: UserNovelList.self) }
+            .asSingle()
+    }
+    
     func getUserNovel(userNovelId: Int) -> Single<UserNovelDetail> {
         let request = try! makeHTTPRequest(method: .get,
                                            path: URLs.UserNovel.getUserNovel.replacingOccurrences(of: "{userNovelId}", with: String(userNovelId)),
@@ -30,7 +48,8 @@ extension DefaultUserNovelService: UserNovelService {
         NetworkLogger.log(request: request)
         
         return urlSession.rx.data(request: request)
-            .map { try self.decode(data: $0, to: UserNovelDetail.self) }
+            .map { try self.decode(data: $0,
+                                   to: UserNovelDetail.self) }
             .asSingle()
     }
     

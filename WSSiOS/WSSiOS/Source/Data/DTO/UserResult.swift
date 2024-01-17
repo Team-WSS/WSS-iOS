@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct UserResult: Codable {
+struct UserResult: Codable {
     let representativeAvatarGenreBadge,
                representativeAvatarTag,
                representativeAvatarLineContent,
