@@ -91,7 +91,7 @@ final class DeletePopupViewController: UIViewController {
         memoRepository!.deleteMemo(memoId: self.memoId!)
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
-                // 메모 삭제후 로직 추가 예정
+                NotificationCenter.default.post(name: NSNotification.Name("DeletedMemo"), object: nil)
                 self.dismiss(animated: true)
             },onError: { owner, error in
                 print(error)

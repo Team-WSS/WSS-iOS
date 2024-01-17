@@ -55,6 +55,7 @@ final class MemoReadViewController: UIViewController {
          
          setNavigationBar()
          setUI()
+         setNotificationCenter()
          setTapGesture()
          setBinding()
      }
@@ -76,6 +77,17 @@ final class MemoReadViewController: UIViewController {
         editButon.do {
             $0.setButtonAttributedTitle(text: "수정", font: .Title2, color: .Primary100)
         }
+    }
+    
+    // MARK: - setNotificationCenter
+
+    private func setNotificationCenter() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.deletedMemo(_:)),
+            name: NSNotification.Name("DeletedMemo"),
+            object: nil
+        )
     }
 
     // MARK: - set tap gesture
@@ -151,7 +163,13 @@ final class MemoReadViewController: UIViewController {
             }).disposed(by: disposeBag)
     }
     
+    // MARK: - custom method
+    
     @objc func viewDidTap() {
         view.endEditing(true)
+    }
+    
+    @objc func deletedMemo(_ notification: Notification) {
+        self.navigationController?.popViewController(animated: true)
     }
 }
