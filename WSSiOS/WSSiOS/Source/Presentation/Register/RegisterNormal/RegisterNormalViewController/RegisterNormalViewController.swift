@@ -23,6 +23,7 @@ final class RegisterNormalViewController: UIViewController {
     private let userNovelRepository: UserNovelRepository
     private let novelId: Int
     private var userNovelId: Int
+    private var novelTitle: String = ""
     let localData: EditNovelResult?
     private var isNew = BehaviorRelay<Bool>(value: true)
     
@@ -48,6 +49,9 @@ final class RegisterNormalViewController: UIViewController {
         $0.timeZone = TimeZone(identifier: "ko_KR")
     }
     
+    
+    private let backButton = UIButton()
+    
     // MARK: - View Life Cycle
     
     init(novelRepository: NovelRepository, userNovelRepository: UserNovelRepository, novelId: Int = 0, userNovelId: Int = 0, userNovelModel: EditNovelResult? = nil) {
@@ -70,6 +74,9 @@ final class RegisterNormalViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        setUI()
+        setNavigationBar()
         getNovel()
         register()
         delegate()
@@ -77,6 +84,19 @@ final class RegisterNormalViewController: UIViewController {
     }
     
     // MARK: - Custom Method
+    private func setNavigationBar() {
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.backButton)
+        self.navigationController?.navigationBar.titleTextAttributes = [
+            NSAttributedString.Key.font: UIFont.Title2,
+            NSAttributedString.Key.foregroundColor: UIColor.black
+        ]
+    }
+    
+    private func setUI() {
+        backButton.do {
+            $0.setImage(ImageLiterals.icon.navigateLeft.withRenderingMode(.alwaysOriginal), for: .normal)
+        }
+    }
     
     private func postUserNovel() {
         var requestStartDate: String? = dateToString.string(from: startDate.value)
@@ -126,15 +146,15 @@ final class RegisterNormalViewController: UIViewController {
         var requestRating: Float? = starRating.value <= 0.0 ? nil : starRating.value
         
         userNovelRepository.patchUserNovel(userNovelId: userNovelId,
-                                               userNovelRating: requestRating,
-                                               userNovelReadStatus: readStatus.value,
-                                               userNovelReadStartDate: requestStartDate,
-                                               userNovelReadEndDate: requestEndDate)
+                                           userNovelRating: requestRating,
+                                           userNovelReadStatus: readStatus.value,
+                                           userNovelReadStartDate: requestStartDate,
+                                           userNovelReadEndDate: requestEndDate)
         .observe(on: MainScheduler.instance)
-            .subscribe(with: self,onError: { owner, error in
-                print(error)
-            })
-            .disposed(by: disposeBag)
+        .subscribe(with: self,onError: { owner, error in
+            print(error)
+        })
+        .disposed(by: disposeBag)
     }
     
     private func getNovel() {
@@ -173,6 +193,7 @@ final class RegisterNormalViewController: UIViewController {
     }
     
     private func bindNewData(_ newData: NewNovelResult) {
+        self.novelTitle = newData.novelTitle
         rootView.bannerImageView.bindData(newData.novelImg)
         rootView.infoWithRatingView.bindData(coverImage: newData.novelImg,
                                              title: newData.novelTitle,
@@ -182,6 +203,7 @@ final class RegisterNormalViewController: UIViewController {
     }
     
     private func bindUserData(_ userData: EditNovelResult) {
+        self.novelTitle = userData.userNovelTitle
         self.userNovelId = userData.userNovelID
         rootView.bannerImageView.bindData(userData.userNovelImg)
         rootView.infoWithRatingView.bindData(coverImage: userData.userNovelImg,
@@ -215,6 +237,19 @@ final class RegisterNormalViewController: UIViewController {
     }
     
     private func bindRx() {
+        backButton.rx.tap
+            .subscribe(with: self, onNext: { owner, _ in
+                self.navigationController?.popViewController(animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        rootView.pageScrollView.rx.contentOffset
+            .asDriver()
+            .drive(onNext: { [weak self] offset in
+                self?.updateNavigationBarStyle(offset: offset.y)
+            })
+            .disposed(by: disposeBag)
+        
         rootView.infoWithRatingView.starRatingView.do { view in
             
             view.starImageViews.enumerated().forEach { index, imageView in
@@ -353,7 +388,7 @@ final class RegisterNormalViewController: UIViewController {
             .subscribe(with: self, onNext: { _,_ in
                 if self.isNew.value {
                     self.navigationController?.pushViewController(RegisterSuccessViewController(),
-                        animated: true)
+                                                                  animated: true)
                     self.postUserNovel()
                 } else {
                     self.patchUserNovel()
@@ -383,20 +418,20 @@ final class RegisterNormalViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    // 나중에 효원에게 넘겨받을 것
-    private func bindEditData(data: UserNovelDetail) {
-        let editData = EditNovelResult(userNovelID: novelId ?? 0,
-                                       userNovelTitle: data.userNovelTitle,
-                                       userNovelAuthor: data.userNovelAuthor,
-                                       userNovelGenre: data.userNovelGenre,
-                                       userNovelImg: data.userNovelImg,
-                                       userNovelDescription: data.userNovelDescription,
-                                       userNovelRating: data.userNovelRating,
-                                       userNovelReadStatus: data.userNovelReadStatus,
-                                       platforms: data.platforms,
-                                       userNovelReadDate: UserNovelReadDate(
-                                        userNovelReadStartDate: data.userNovelReadStartDate,
-                                        userNovelReadEndDate: data.userNovelReadEndDate))
+    private func updateNavigationBarStyle(offset: CGFloat) {
+        if offset > 0 {
+            rootView.statusBarView.backgroundColor = .white
+            navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+            navigationController?.navigationBar.shadowImage = UIImage()
+            navigationController?.navigationBar.backgroundColor = .white
+            navigationItem.title = self.novelTitle
+        } else {
+            rootView.statusBarView.backgroundColor = .clear
+            navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+            navigationController?.navigationBar.shadowImage = nil
+            navigationController?.navigationBar.backgroundColor = .clear
+            navigationItem.title = ""
+        }
     }
 }
 

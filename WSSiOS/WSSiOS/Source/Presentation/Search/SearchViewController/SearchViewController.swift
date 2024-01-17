@@ -119,6 +119,20 @@ final class SearchViewController: UIViewController {
                 cell.bindData(data: element)
             }
             .disposed(by: disposeBag)
+        
+        rootView.mainResultView.searchCollectionView
+            .rx
+            .itemSelected
+                .subscribe(onNext:{ indexPath in
+                    self.navigationController?.pushViewController(
+                        RegisterNormalViewController(
+                            novelRepository: DefaultNovelRepository(
+                                novelService: DefaultNovelService()),
+                            userNovelRepository: DefaultUserNovelRepository(
+                                userNovelService:DefaultUserNovelService()),
+                            novelId: self.searchResultListRelay.value[indexPath.row].novelId),
+                        animated: true)
+                }).disposed(by: disposeBag)
     }
     
     func updateUI(searchList: [SearchNovel]) {
