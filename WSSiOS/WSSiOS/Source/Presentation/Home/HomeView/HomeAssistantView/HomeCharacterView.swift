@@ -7,6 +7,7 @@
 
 import UIKit
 
+import Lottie
 import SnapKit
 import Then
 
@@ -14,10 +15,10 @@ final class HomeCharacterView: UIView {
     
     //MARK: - UI Components
     
-    let characterStackView = UIStackView()
+    private let characterStackView = UIStackView()
     let tagView = HomeCharacterTagView()
     let characterCommentLabel = UILabel()
-    let characterImageView = UIImageView()
+    let characterImageView = LottieAnimationView(name: "3regressor")
     
     //MARK: - Life Cycle
     
@@ -27,6 +28,8 @@ final class HomeCharacterView: UIView {
         setUI()
         setHierachy()
         setLayout()
+        
+        playLottie()
     }
     
     @available(*, unavailable)
@@ -51,7 +54,7 @@ final class HomeCharacterView: UIView {
         }
         
         characterImageView.do {
-            $0.image = UIImage(named: "render")
+            $0.contentMode = .scaleAspectFit
         }
     }
     
@@ -67,6 +70,11 @@ final class HomeCharacterView: UIView {
     //MARK: - set Layout
     
     private func setLayout() {
+        
+        characterImageView.snp.makeConstraints {
+            $0.size.equalTo(240)
+        }
+        
         characterStackView.snp.makeConstraints {
             $0.top.bottom.centerX.equalToSuperview()
         }
@@ -75,5 +83,10 @@ final class HomeCharacterView: UIView {
             $0.setCustomSpacing(10, after: tagView)
             $0.setCustomSpacing(12, after: characterCommentLabel)
         }
+    }
+    
+    private func playLottie() {
+        characterImageView.play()
+        characterImageView.loopMode = .loop
     }
 }
