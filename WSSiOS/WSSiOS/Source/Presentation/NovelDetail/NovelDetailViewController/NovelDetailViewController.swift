@@ -53,6 +53,7 @@ final class NovelDetailViewController: UIViewController {
         super.viewWillAppear(animated)
         
         getUserNovel()
+        updateNavigationBarStyle(offset: self.rootView.scrollView.contentOffset.y)
     }
     
     override func viewDidLoad() {
