@@ -160,9 +160,10 @@ final class NovelDetailViewController: UIViewController {
             .disposed(by: disposeBag)
         
         backButton.rx.tap.bind {
-            self.navigationController?.tabBarController?.selectedIndex = 1
+//            self.navigationController?.popToRootViewController(animated: true)
+//            self.navigationController?.tabBarController?.selectedIndex = 1
             // 부드러운 애니메이션을 원한다면 .. (홈화면 또는 서재로 돌아간다.)
-            //self.navigationController?.popToRootViewController(animated: true)
+            self.navigationController?.popToRootViewController(animated: true)
         }.disposed(by: disposeBag)
         
         novelSettingButton.rx.tap.bind {

@@ -41,17 +41,22 @@ final class RegisterSuccessViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setUI()
         bindRx()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.isNavigationBarHidden = false
+    }
+    
+    func setUI() {
+        self.navigationController?.isNavigationBarHidden = true
     }
     
     func bindRx() {
         rootView.makeMemoButton.rx.tap.subscribe(with: self, onNext: { owner, _ in
-            owner.navigationController?.pushViewController(
-                NovelDetailViewController(
-                    repository: DefaultUserNovelRepository(
-                        userNovelService: DefaultUserNovelService()),
-                    userNovelId: self.userNovelId),
-                animated: true)
+            owner.navigationController?.popToRootViewController(animated: true)
         })
         .disposed(by: disposeBag)
         

@@ -41,6 +41,10 @@ final class RecordViewController: UIViewController {
         super.viewWillAppear(animated)
         
         bindDataToUI()
+        if let tabBarController = self.tabBarController as? WSSTabBarController {
+            tabBarController.tabBar.isHidden = false
+            tabBarController.shadowView.isHidden = false
+        }
     }
     
     override func viewDidLoad() {
