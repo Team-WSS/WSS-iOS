@@ -20,9 +20,9 @@ protocol UserNovelService {
 
 final class DefaultUserNovelService: NSObject, Networking {
     private let novelListQuery: [URLQueryItem] = [
-        URLQueryItem(name: "readStatus", value: ("WISH")),
-        URLQueryItem(name: "lastUserNovelId", value: String(describing: 10)),
-        URLQueryItem(name: "size", value: String(describing: 2)),
+        URLQueryItem(name: "readStatus", value: ("ALL")),
+        URLQueryItem(name: "lastUserNovelId", value: String(describing: 100)),
+        URLQueryItem(name: "size", value: String(describing: 5)),
         URLQueryItem(name: "sortType", value: String("NEWEST"))]
     private var urlSession: URLSession = URLSession(configuration: URLSessionConfiguration.default,
                                                     delegate: nil,
