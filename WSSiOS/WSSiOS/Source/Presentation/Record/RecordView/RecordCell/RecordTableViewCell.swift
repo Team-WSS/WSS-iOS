@@ -49,9 +49,6 @@ final class RecordTableViewCell: UITableViewCell {
         recordContentLabel.do {
             $0.font = .Body2
             $0.textColor = .Black
-            $0.numberOfLines = 5
-            $0.lineBreakStrategy = .hangulWordPriority
-            $0.lineBreakMode = .byTruncatingTail
         }
     }
     
@@ -87,7 +84,22 @@ final class RecordTableViewCell: UITableViewCell {
     
     func bindData(data: RecordMemo) {
         dateView.dateLabel.text = data.date
-        novelTitleLabel.text = data.novelTitle
-        recordContentLabel.text = data.content
+
+        novelTitleLabel.do {
+            $0.makeAttribute(with: data.novelTitle)?
+                .kerning(kerningPixel: -0.6)
+                .lineSpacing(spacingPercentage: 150)
+                .applyAttribute()
+        }
+        
+        recordContentLabel.do {
+            $0.makeAttribute(with: data.content)?
+                .kerning(kerningPixel: -0.6)
+                .lineSpacing(spacingPercentage: 150)
+                .applyAttribute()
+            $0.numberOfLines = 5
+            $0.lineBreakStrategy = .hangulWordPriority
+            $0.lineBreakMode = .byTruncatingTail
+        }
     }
 }
