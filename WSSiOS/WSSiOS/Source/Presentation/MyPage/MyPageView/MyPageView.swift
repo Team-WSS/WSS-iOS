@@ -35,7 +35,7 @@ final class MyPageView: UIView {
     }
     
     private func setUI() {
-        self.backgroundColor = .White
+        self.backgroundColor = .Gray50
         
         myPageStackView.do {
             $0.axis = .vertical

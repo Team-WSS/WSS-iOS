@@ -35,6 +35,8 @@ final class MyPageInventoryView: UIView {
     //MARK: - set UI
     
     private func setUI() {
+        self.backgroundColor = .White
+        
         titleLabel.do {
             $0.text = "캐릭터 선택"
             $0.font = .Title1
