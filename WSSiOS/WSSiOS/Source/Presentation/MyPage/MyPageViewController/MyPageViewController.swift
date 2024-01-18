@@ -174,18 +174,38 @@ final class MyPageViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(pushToRecord))
-        rootView.myPageTallyView.myPageRecordView.addGestureRecognizer(tapGesture)
+        let tapGestureForRegister = UITapGestureRecognizer(target: self, action: #selector(pushToRegister))
+        let tapGestureForRecord = UITapGestureRecognizer(target: self, action: #selector(pushToRecord))
+        
+        rootView.myPageTallyView.myPageRegisterView.addGestureRecognizer(tapGestureForRegister)
+        rootView.myPageTallyView.myPageRecordView.addGestureRecognizer(tapGestureForRecord)
+    }
+    
+    @objc
+    func pushToRegister() {
+        if self.navigationController?.tabBarController?.selectedIndex == 3 {
+            UIView.performWithoutAnimation {
+                let tabBar = WSSTabBarController()
+                tabBar.selectedIndex = 1
+                let navigationController = UINavigationController(rootViewController: tabBar)
+                navigationController.isNavigationBarHidden = true
+                self.view.window?.rootViewController = navigationController
+                self.view.window?.makeKeyAndVisible()
+            }
+        }
     }
     
     @objc
     func pushToRecord() {
         if self.navigationController?.tabBarController?.selectedIndex == 3 {
-            let tabBar = WSSTabBarController()
-            tabBar.selectedIndex = 2
-            let navigationController = UINavigationController(rootViewController: tabBar)
-            navigationController.isNavigationBarHidden = true
-            self.view.window?.rootViewController = navigationController
+            UIView.performWithoutAnimation {
+                let tabBar = WSSTabBarController()
+                tabBar.selectedIndex = 2
+                let navigationController = UINavigationController(rootViewController: tabBar)
+                navigationController.isNavigationBarHidden = true
+                self.view.window?.rootViewController = navigationController
+                self.view.window?.makeKeyAndVisible()
+            }
         }
     }
     
