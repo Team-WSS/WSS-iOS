@@ -63,7 +63,7 @@ final class LibraryViewController: UIViewController {
     
     private func setNavigationBar() {
         self.navigationController?.isNavigationBarHidden = false
-        self.navigationItem.title = "내 서재"
+        self.navigationItem.title = StringLiterals.Navigation.Title.library
         
         if let navigationBar = self.navigationController?.navigationBar {
             let titleTextAttributes: [NSAttributedString.Key: Any] = [

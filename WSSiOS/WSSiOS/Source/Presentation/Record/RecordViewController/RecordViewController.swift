@@ -64,7 +64,7 @@ final class RecordViewController: UIViewController {
     
     private func setNavigationBar() {
         self.navigationController?.isNavigationBarHidden = false
-        self.navigationItem.title = "내 기록"
+        self.navigationItem.title = StringLiterals.Navigation.Title.record
         self.navigationController?.navigationBar.backgroundColor = .White
         
         // Navigation Bar의 title 폰트 설정

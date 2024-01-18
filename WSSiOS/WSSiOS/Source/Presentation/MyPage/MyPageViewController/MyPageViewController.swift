@@ -66,7 +66,7 @@ final class MyPageViewController: UIViewController {
     
     private func setNavigationBar() {
         self.navigationController?.isNavigationBarHidden = false
-        self.navigationItem.title = "마이페이지"
+        self.navigationItem.title = StringLiterals.Navigation.Title.myPage
         
         if let navigationBar = self.navigationController?.navigationBar {
             let titleTextAttributes: [NSAttributedString.Key: Any] = [
