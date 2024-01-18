@@ -149,7 +149,11 @@ final class RecordViewController: UIViewController {
                         owner.navigationController?.tabBarController?.selectedIndex = 1
                     })
                     .disposed(by: self.disposeBag)
-                owner.view = emptyView
+                
+                owner.rootView.addSubview(emptyView)
+                emptyView.snp.makeConstraints {
+                    $0.edges.equalToSuperview()
+                }
             }
             else {
                 owner.recordMemoListRelay.accept(event.1)
