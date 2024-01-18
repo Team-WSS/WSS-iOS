@@ -16,7 +16,7 @@ final class RegisterSuccessView: UIView {
     // MARK: - UI Components
     
     private let titleLabel = UILabel()
-    private let lottieView = LottieAnimationView(name: StringLiterals.Register.Success.lottie)
+    private let lottieView = LottieAnimationView(name: "scroll")
     var makeMemoButton = WSSMainButton(title: StringLiterals.Register.Success.makeMemo)
     var returnHomeButton = UIButton()
     
