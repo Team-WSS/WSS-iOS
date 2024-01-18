@@ -137,7 +137,8 @@ final class MyPageCustomModalViewController: UIViewController {
             .observe(on: MainScheduler.asyncInstance)
             .withUnretained(self)
             .subscribe(onNext: { (owner, data) in
-                owner.rootView.bindData(data)
+                owner.rootView.bindData(id: owner.avatarId,
+                                        data: data)
             })
             .disposed(by: disposeBag)
     }
