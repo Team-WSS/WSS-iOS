@@ -120,7 +120,7 @@ final class MyPageCustomModalViewController: UIViewController {
         
         rootView.modalChangeButton.rx.tap
             .bind(with: self, onNext: { owner, _ in
-                if !owner.modalHasAvatar {
+                if !owner.modalHasAvatar || !owner.currentRepresentativeAvatar {
                     owner.dismiss(animated: true)
                 }
                 else {
