@@ -46,8 +46,7 @@ final class MyPageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        setNavigationBar()
+    
         register()
         
         bindUserData()
@@ -78,8 +77,8 @@ final class MyPageViewController: UIViewController {
     
     private func reSetNavigationBar() {
         if let tabBarController = self.tabBarController as? WSSTabBarController {
-            tabBarController.tabBar.isHidden = false
             tabBarController.shadowView.isHidden = false
+            tabBarController.tabBar.isHidden = false
         }
     }
     
@@ -97,7 +96,7 @@ final class MyPageViewController: UIViewController {
             .subscribe(with: self, onNext: { owner, data in 
                 owner.rootView.dataBind(data)
                 owner.representativeAvatarId = data.representativeAvatarId
-                owner.userNickName = data.userNickName
+                owner.userNickName = data.userNickname
                 owner.avaterListRelay = BehaviorRelay(value: data.userAvatars)
                 owner.bindColletionView()
             })
@@ -157,7 +156,7 @@ final class MyPageViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, userData in
                 owner.representativeAvatarId = userData.representativeAvatarId
-                owner.userNickName = userData.userNickName
+                owner.userNickName = userData.userNickname
                 completion(userData, userData.userAvatars)
             }, onError: { error, _ in
                 print(error)
@@ -192,8 +191,8 @@ extension MyPageViewController {
         rootView.myPageTallyView.myPageUserNameButton.rx.tap
             .bind(with: self, onNext: { owner, _ in 
                 if let tabBarController = owner.tabBarController as? WSSTabBarController {
-                    tabBarController.tabBar.isHidden = true
                     tabBarController.shadowView.isHidden = true
+                    tabBarController.tabBar.isHidden = true
                 }
                 
                 let changeNicknameViewController = MyPageChangeNicknameViewController(userNickName: owner.userNickName,

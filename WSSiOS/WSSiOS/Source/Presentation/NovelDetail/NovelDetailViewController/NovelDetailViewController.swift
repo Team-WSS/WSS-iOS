@@ -54,8 +54,8 @@ final class NovelDetailViewController: UIViewController {
         super.viewWillAppear(animated)
         
         if let tabBarController = self.tabBarController as? WSSTabBarController {
-            tabBarController.tabBar.isHidden = true
             tabBarController.shadowView.isHidden = true
+            tabBarController.tabBar.isHidden = true
         }
         
         getUserNovel()
