@@ -50,4 +50,23 @@ enum StringLiterals {
             static let returnHome = "홈으로 돌아가기"
         }
     }
+    
+    enum MyPage {
+        enum Modal {
+            static let back = "돌아가기"
+        }
+        
+        enum Setting {
+            static let instaURL = "https://www.instagram.com/websoso_official/"
+        }
+        
+        enum Profile {
+            static let registerNovel = "등록 작품"
+            static let record = "기록"
+        }
+        
+        enum Character {
+            static let select = "캐릭터 선택"
+        }
+    }
 }

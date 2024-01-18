@@ -83,7 +83,7 @@ final class MyPageCustomModalViewController: UIViewController {
     private func setUI() {
         if !modalHasAvatar || currentRepresentativeAvatar {
             rootView.modalContinueButton.isHidden = true
-            rootView.modalChangeButton.setTitle("돌아가기", for: .normal)
+            rootView.modalChangeButton.setTitle(StringLiterals.MyPage.Modal.back, for: .normal)
         }
     }
     
@@ -137,8 +137,6 @@ final class MyPageCustomModalViewController: UIViewController {
             .observe(on: MainScheduler.asyncInstance)
             .withUnretained(self)
             .subscribe(onNext: { (owner, data) in
-                print(data)
-                print("🎈",owner.currentRepresentativeAvatar)
                 owner.rootView.bindData(data)
             })
             .disposed(by: disposeBag)

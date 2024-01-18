@@ -130,7 +130,7 @@ final class MyPageViewController: UIViewController {
                     self.navigationController?.pushViewController(infoViewController, animated: true)
                     
                 case 1:
-                    if let url = URL(string: "https://www.instagram.com/websoso_official/") {
+                    if let url = URL(string: StringLiterals.MyPage.Setting.instaURL) {
                         UIApplication.shared.open(url, options: [:])
                     }
                 default:
