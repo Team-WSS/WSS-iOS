@@ -15,13 +15,13 @@ final class LibraryBaseViewController: UIViewController {
     //MARK: - Properties
     
     private let disposeBag = DisposeBag()
+    private let libraryEmptyView = LibraryEmptyView()
     private let userNovelListRepository: DefaultUserNovelRepository
     private let readStatusData: String
     private let lastUserNovelIdData: Int
     private let sizeData: Int
     private let sortTypeData: String
     private var novelList = [UserNovelListDetail]()
-    
     private var novelListRelay = PublishRelay<[UserNovelListDetail]>()
     
     init(userNovelListRepository: DefaultUserNovelRepository,
@@ -55,6 +55,9 @@ final class LibraryBaseViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setHierachy()
+        setLayout()
+        
         register()
         bindColletionView()
     }
@@ -84,13 +87,18 @@ final class LibraryBaseViewController: UIViewController {
             cellIdentifier: "LibraryCollectionViewCell",
             cellType: LibraryCollectionViewCell.self)) { [weak self] (row, element, cell) in
                 guard let self = self else { return }
-                
                 cell.bindData(element)
             }
             .disposed(by: disposeBag)
         
         novelListRelay
             .subscribe(onNext: { [weak self] list in
+                if list.isEmpty {
+                    self?.libraryEmptyView.isHidden = false
+                } else {
+                    self?.libraryEmptyView.isHidden = true
+                }
+                
                 self?.novelList = list
             })
             .disposed(by: disposeBag)
@@ -125,5 +133,18 @@ final class LibraryBaseViewController: UIViewController {
             print(error)
         })
         .disposed(by: disposeBag)
+    }
+}
+
+extension LibraryBaseViewController {
+    private func setHierachy() {
+        libraryEmptyView.isHidden = true
+        self.view.addSubview(libraryEmptyView ?? UIView())
+    }
+    
+    private func setLayout() {
+        libraryEmptyView.snp.makeConstraints() {
+            $0.edges.equalToSuperview()
+        }
     }
 }

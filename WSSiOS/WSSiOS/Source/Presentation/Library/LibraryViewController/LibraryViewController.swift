@@ -29,7 +29,6 @@ final class LibraryViewController: UIViewController {
     private var libraryPageBar = LibraryPageBar()
     private var libraryDescriptionView = LibraryDescriptionView()
     private var libraryListView = LibraryListView()
-    private let libraryEmptyView = LibraryEmptyView()
     private var libraryPages = [LibraryBaseViewController]()
     private let userNovelListRepository: DefaultUserNovelRepository
     

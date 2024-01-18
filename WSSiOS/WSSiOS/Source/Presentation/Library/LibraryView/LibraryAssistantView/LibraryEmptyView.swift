@@ -15,7 +15,7 @@ final class LibraryEmptyView: UIView {
     //MARK: - UI Components
     
     private let emptyStackView = UIStackView()
-    private let emptyImgeView = UIImageView()
+    private let emptyImageView = UIImageView()
     private let emptyTitleLabel = UILabel()
     public let libraryRegisterButton = UIButton()
     
@@ -36,13 +36,15 @@ final class LibraryEmptyView: UIView {
     //MARK: - set UI
     
     private func setUI() {
-        self.backgroundColor = .Gray50
+        self.backgroundColor = .White
         
         emptyStackView.do {
             $0.axis = .vertical
+            $0.distribution = .fill
+            $0.alignment = .center
             $0.spacing = 8
             
-            emptyImgeView.do {
+            emptyImageView.do {
                 $0.image = ImageLiterals.icon.Library.register
             }
             
@@ -50,12 +52,14 @@ final class LibraryEmptyView: UIView {
                 $0.text = StringLiterals.Library.empty
                 $0.font = .Body1
                 $0.textColor = .Gray200
+                $0.textAlignment = .center
             }
         }
         
         libraryRegisterButton.do {
             $0.setTitle(StringLiterals.Library.register, for: .normal)
-            $0.setTitleColor(.Primary200, for: .normal)
+            $0.setTitleColor(.Primary100, for: .normal)
+            $0.titleLabel?.font = .Title1
             $0.layer.backgroundColor = UIColor.Primary50.cgColor
             $0.layer.cornerRadius = 12
         }
@@ -66,7 +70,7 @@ final class LibraryEmptyView: UIView {
     private func setHierachy() {
         self.addSubviews(emptyStackView,
                          libraryRegisterButton)
-        emptyStackView.addArrangedSubviews(emptyImgeView,
+        emptyStackView.addArrangedSubviews(emptyImageView,
                                            emptyTitleLabel)
     }
     
@@ -77,6 +81,10 @@ final class LibraryEmptyView: UIView {
             $0.top.equalToSuperview().inset(129)
             $0.centerX.equalToSuperview()
             $0.leading.equalToSuperview().inset(90)
+        }
+        
+        emptyImageView.snp.makeConstraints() {
+            $0.size.equalTo(48)
         }
         
         libraryRegisterButton.snp.makeConstraints() {
