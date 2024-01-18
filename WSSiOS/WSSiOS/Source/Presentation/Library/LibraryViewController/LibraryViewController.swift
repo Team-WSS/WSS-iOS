@@ -99,7 +99,9 @@ final class LibraryViewController: UIViewController {
         Observable.just(Void())
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] in
-                self?.libraryPageBar.libraryTabCollectionView.selectItem(at: IndexPath(item: 0, section: 0), animated: true, scrollPosition: [])
+                self?.libraryPageBar.libraryTabCollectionView.selectItem(at: IndexPath(item: 0, section: 0),
+                                                                         animated: true,
+                                                                         scrollPosition: [])
                 self?.libraryPageBar.selectedTabIndex.onNext(0)
             })
             .disposed(by: disposeBag)
@@ -117,7 +119,7 @@ final class LibraryViewController: UIViewController {
                     userNovelService: DefaultUserNovelService()),
                 readStatusData: readStatusList[i],
                 lastUserNovelIdData: 999999,
-                sizeData: 10,
+                sizeData: 20,
                 sortTypeData: sortTypeList[0])
             
             viewController.delegate = self
