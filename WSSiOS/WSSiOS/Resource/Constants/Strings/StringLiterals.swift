@@ -9,6 +9,11 @@ import Foundation
 
 enum StringLiterals {
     
+    enum Loading {
+        static let novelTitle = "작품 제목"
+        static let novelAuthor = "작가"
+    }
+    
     enum Tabbar {
         enum Title {
             static let home = "홈"
@@ -20,9 +25,23 @@ enum StringLiterals {
     
     enum Register {
         enum Normal {
-            static let new = "내 서재에 등록"
-            static let edit = "수정 완료"
+            enum DatePicker {
+                static let start = "시작 날짜"
+                static let end = "종료 날짜"
+            }
+            enum SectinoTitle {
+                static let readStatus = "읽기 상태 *"
+                static let readDate = "읽은 날짜"
+                static let plot = "작품 소개"
+                static let genre = "장르"
+            }
+            
+            enum RegisterButton {
+                static let new = "내 서재에 등록"
+                static let edit = "수정 완료"
+            }
         }
+        
         enum Success {
             static let title = "내 서재에 작품이\n성공적으로 등록되었어요!"
             static let lottie = "animationRegistration"

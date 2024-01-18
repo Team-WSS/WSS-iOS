@@ -215,7 +215,9 @@ final class RegisterNormalViewController: UIViewController {
         rootView.infoWithRatingView.bindData(coverImage: newData.novelImg,
                                              title: newData.novelTitle,
                                              author: newData.novelAuthor)
-        rootView.novelSummaryView.bindData(plot: newData.novelDescription, genre: newData.novelGenre, platforms: newData.platforms)
+        rootView.novelSummaryView.bindData(plot: newData.novelDescription, 
+                                           genre: newData.novelGenre,
+                                           platforms: newData.platforms)
         self.rootView.novelSummaryView.platformView.platformCollectionView.reloadData()
     }
     
@@ -249,7 +251,9 @@ final class RegisterNormalViewController: UIViewController {
             dateToString.date(from: end) ?? Date()
         )
         
-        rootView.novelSummaryView.bindData(plot: userData.userNovelDescription, genre: userData.userNovelGenre, platforms: userData.platforms)
+        rootView.novelSummaryView.bindData(plot: userData.userNovelDescription, 
+                                           genre: userData.userNovelGenre,
+                                           platforms: userData.platforms)
         self.rootView.novelSummaryView.platformView.platformCollectionView.reloadData()
     }
     
@@ -268,7 +272,6 @@ final class RegisterNormalViewController: UIViewController {
             .disposed(by: disposeBag)
         
         rootView.infoWithRatingView.starRatingView.do { view in
-            
             view.starImageViews.enumerated().forEach { index, imageView in
                 
                 // StarRating 탭 제스처 인식기 생성 및 설정
@@ -386,12 +389,16 @@ final class RegisterNormalViewController: UIViewController {
             
             startDate.asObservable()
                 .map { self.dateToString.string(from: $0) }
-                .bind(to: view.readDateView.datePickerButton.startDateLabel.rx.text)
+                .subscribe(with: self, onNext: { owner, text in
+                    view.readDateView.datePickerButton.setStartDateText(text: text)
+                })
                 .disposed(by: disposeBag)
             
             endDate.asObservable()
                 .map { self.dateToString.string(from: $0) }
-                .bind(to: view.readDateView.datePickerButton.endDateLabel.rx.text)
+                .subscribe(with: self, onNext: { owner, text in
+                    view.readDateView.datePickerButton.setEndDateText(text: text)
+                })
                 .disposed(by: disposeBag)
             
             readStatus
@@ -414,9 +421,9 @@ final class RegisterNormalViewController: UIViewController {
         
         isNew.subscribe(with: self, onNext: { owner, status in
             if status {
-                self.rootView.registerButton.setTitle(StringLiterals.Register.Normal.new, for: .normal)
+                self.rootView.registerButton.setTitle(StringLiterals.Register.Normal.RegisterButton.new, for: .normal)
             } else {
-                self.rootView.registerButton.setTitle(StringLiterals.Register.Normal.edit, for: .normal)
+                self.rootView.registerButton.setTitle(StringLiterals.Register.Normal.RegisterButton.edit, for: .normal)
             }
         })
         .disposed(by: disposeBag)

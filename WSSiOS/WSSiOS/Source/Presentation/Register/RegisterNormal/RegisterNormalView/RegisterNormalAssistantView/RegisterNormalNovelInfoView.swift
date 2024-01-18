@@ -42,14 +42,14 @@ final class RegisterNormalNovelInfoView: UIView {
         }
         
         novelTitleLabel.do {
-            // 로딩 전&후 화면의 이질감을 줄이기 위해 추가
-            $0.text = "작품제목\n"
+            // 로딩 전&후 화면의 이질감을 줄이기 위해 로딩중 문구 추가
+            $0.text = StringLiterals.Loading.novelTitle
             novelTitleAttribute(of: $0)
         }
         
         novelAuthorLabel.do {
             // 로딩 전&후 화면의 이질감을 줄이기 위해 추가
-            $0.text = "작가"
+            $0.text = StringLiterals.Loading.novelAuthor
             novelAuthorAttribute(of: $0)
         }
     }

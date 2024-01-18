@@ -24,7 +24,7 @@ final class RegisterNormalView: UIView {
     let readDateView = RegisterNormalReadDateView()
     private let dividerView = RegisterNormalDividerView()
     let novelSummaryView = RegisterNormalNovelSummaryView()
-    let registerButton = WSSMainButton(title: "내 서재에 등록")
+    let registerButton = WSSMainButton(title: StringLiterals.Register.Normal.RegisterButton.new)
     private let registerButtonGradient = UIImageView()
     private let registerButtonBackgroundView = UIView()
     
