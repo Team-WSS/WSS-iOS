@@ -60,6 +60,7 @@ final class LibraryBaseViewController: UIViewController {
         
         register()
         bindColletionView()
+        bindAction()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -102,20 +103,6 @@ final class LibraryBaseViewController: UIViewController {
                 self?.novelList = list
             })
             .disposed(by: disposeBag)
-        
-        rootView.libraryCollectionView.rx.itemSelected
-            .observe(on: MainScheduler.instance)
-            .map { [weak self] indexPath in
-                return self?.novelList[indexPath.row]
-            }
-            .compactMap { $0 }
-            .subscribe(onNext: { [weak self] selectedItem in
-                self?.navigationController?.pushViewController(NovelDetailViewController(
-                    repository: DefaultUserNovelRepository(
-                        userNovelService: DefaultUserNovelService()
-                    ), userNovelId: selectedItem.userNovelId), animated: true)
-            })
-            .disposed(by: disposeBag)
     }
     
     private func bindUserData(readStatus: String,
@@ -133,6 +120,31 @@ final class LibraryBaseViewController: UIViewController {
             print(error)
         })
         .disposed(by: disposeBag)
+    }
+    
+    private func bindAction() {
+        rootView.libraryCollectionView.rx.itemSelected
+            .observe(on: MainScheduler.instance)
+            .map { [weak self] indexPath in
+                return self?.novelList[indexPath.row]
+            }
+            .compactMap { $0 }
+            .subscribe(onNext: { [weak self] selectedItem in
+                self?.navigationController?.pushViewController(NovelDetailViewController(
+                    repository: DefaultUserNovelRepository(
+                        userNovelService: DefaultUserNovelService()
+                    ), userNovelId: selectedItem.userNovelId), animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        libraryEmptyView.libraryRegisterButton.rx.tap
+            .bind(with: self, onNext: { owner, _ in
+                self.navigationController?.pushViewController(
+                    SearchViewController(novelRepository: DefaultNovelRepository(
+                        novelService: DefaultNovelService())), 
+                    animated: true)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
