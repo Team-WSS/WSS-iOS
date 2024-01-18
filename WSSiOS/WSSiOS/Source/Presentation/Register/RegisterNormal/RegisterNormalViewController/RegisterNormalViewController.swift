@@ -364,6 +364,7 @@ final class RegisterNormalViewController: UIViewController {
                     view.customDatePicker.endDate = self.endDate.value
                 }
                 view.customDatePicker.isHidden = !show
+                owner.navigationController?.isNavigationBarHidden = show
             })
             .disposed(by: disposeBag)
             
@@ -371,7 +372,6 @@ final class RegisterNormalViewController: UIViewController {
                 .subscribe(with: self, onNext: { owner, status in
                     let next = !self.showDatePicker.value
                     self.showDatePicker.accept(next)
-                    print(next)
                 })
                 .disposed(by: disposeBag)
             
