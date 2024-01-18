@@ -21,6 +21,7 @@ final class MemoEditViewController: UIViewController {
     private let memoId: Int?
     private var memoContent: String?
     private var updatedMemoContent = ""
+    private let memoContentPredicate = NSPredicate(format: "SELF MATCHES %@", "^[\\s]+$")
 
     // MARK: - UI Components
 
@@ -127,7 +128,7 @@ final class MemoEditViewController: UIViewController {
                     self.navigationController?.popViewController(animated: true)
                 }
             } else {
-                if self.updatedMemoContent.count > 0 {
+                if self.updatedMemoContent.count > 0 && !self.memoContentPredicate.evaluate(with: self.updatedMemoContent) {
                     let vc = DeletePopupViewController(
                         memoRepository: DefaultMemoRepository(
                             memoService: DefaultMemoService()
@@ -152,15 +153,19 @@ final class MemoEditViewController: UIViewController {
         }.disposed(by: disposeBag)
         
         rootView.memoEditContentView.memoTextView.rx.text.orEmpty
-            .subscribe(onNext: { text in
+            .subscribe(with: self, onNext: { owner, text  in
                 self.updatedMemoContent = text
                 if text.count == 0 {
                     self.disableCompleteButton()
-                } else if text.count > 2000 {
-                    self.rootView.memoEditContentView.memoTextView.text = String(text.prefix(2000))
-                    self.disableCompleteButton()
                 } else {
-                    self.enableCompleteButton()
+                    if text.count > 2000 {
+                        self.rootView.memoEditContentView.memoTextView.text = String(text.prefix(2000))
+                        self.disableCompleteButton()
+                    } else if self.memoContentPredicate.evaluate(with: self.updatedMemoContent) {
+                        self.disableCompleteButton()
+                    } else {
+                        self.enableCompleteButton()
+                    }
                 }
                 if self.memoContent != nil {
                     if self.updatedMemoContent == self.memoContent {
