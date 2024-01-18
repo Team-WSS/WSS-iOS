@@ -20,6 +20,9 @@ final class RecordViewController: UIViewController {
     var recordMemoListRelay = BehaviorRelay<[RecordMemo]>(value: [])
     private let disposeBag = DisposeBag()
     
+    private var lastMemoId = 9999
+    private var alignmentLabel = "NEWEST"
+    
     //MARK: - UI Components
     
     private let rootView = RecordResultView()
@@ -40,7 +43,7 @@ final class RecordViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        bindDataToUI()
+        bindDataToUI(id: lastMemoId, sortStyle: alignmentLabel)
         
         if let tabBarController = self.tabBarController as? WSSTabBarController {
             tabBarController.tabBar.isHidden = false
@@ -50,7 +53,7 @@ final class RecordViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        print("heoollefkdslfa")
         setUI()
         registerCell()
         setAction()
@@ -92,10 +95,37 @@ final class RecordViewController: UIViewController {
                 owner.rootView.alignmentView.isHidden.toggle()
             })
             .disposed(by: disposeBag)
+        
+        rootView.alignmentView.libraryNewestButton
+            .rx.tap
+            .bind(with: self, onNext: { owner, event in
+                owner.lastMemoId = 9999
+                owner.alignmentLabel = "NEWEST"
+                owner.rootView.headerView.headerAlignmentButton.setTitle("최신 순", for: .normal)
+                owner.bindDataToUI(id: owner.lastMemoId,
+                                   sortStyle: owner.alignmentLabel)
+                owner.rootView.alignmentView.isHidden = true
+            })
+            .disposed(by: disposeBag)
+        
+        rootView.alignmentView.libraryOldesttButton
+            .rx.tap
+            .bind(with: self, onNext: { owner, event in
+                owner.lastMemoId = 0
+                owner.alignmentLabel = "OLDEST"
+                owner.rootView.headerView.headerAlignmentButton.setTitle("오래된 순", for: .normal)
+                owner.bindDataToUI(id: owner.lastMemoId,
+                                   sortStyle: owner.alignmentLabel)
+                owner.rootView.alignmentView.isHidden = true
+            })
+            .disposed(by: disposeBag)
     }
     
-    func getDataFromAPI(disposeBag: DisposeBag, completion: @escaping (Int, [RecordMemo]) -> Void) {
-        self.memoRepository.getRecordMemoList()
+    func getDataFromAPI(disposeBag: DisposeBag,
+                        id: Int,
+                        sortStyle: String,
+                        completion: @escaping (Int, [RecordMemo]) -> Void) {
+        self.memoRepository.getRecordMemoList(memoId: id, sort: sortStyle)
             .subscribe (
                 onNext: { [weak self] memo in
                     guard self != nil else { return }
@@ -125,8 +155,10 @@ final class RecordViewController: UIViewController {
             }).disposed(by: disposeBag)
     }
     
-    private func bindDataToUI() {
-        self.getDataFromAPI(disposeBag: disposeBag) { [weak self] recordMemoCount, recordMemoList in
+    private func bindDataToUI(id: Int, sortStyle: String) {
+        self.getDataFromAPI(disposeBag: disposeBag,
+                            id: id,
+                            sortStyle: sortStyle) { [weak self] recordMemoCount, recordMemoList in
             // 뷰 컨트롤러에서 전달받은 데이터 처리
             self?.updateUI(recordMemoCount: recordMemoCount, recordMemoList: recordMemoList)
         }
