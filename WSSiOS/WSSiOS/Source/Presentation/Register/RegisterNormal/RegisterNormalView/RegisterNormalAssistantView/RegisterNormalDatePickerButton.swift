@@ -94,6 +94,16 @@ final class RegisterNormalDatePickerButton: UIButton {
         }
     }
     
+    func setStartDateText(text: String) {
+        startDateLabel.text = text
+        dateLabelStyle(of: startDateLabel)
+    }
+    
+    func setEndDateText(text: String) {
+        endDateLabel.text = text
+        dateLabelStyle(of: endDateLabel)
+    }
+    
     private func dateLabelStyle(of label: UILabel) {
         label.do {
             $0.makeAttribute(with: label.text)?

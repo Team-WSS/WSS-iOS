@@ -1,5 +1,5 @@
 //
-//  RegisterNormalPlatFormTest.swift
+//  RegisterNormalPlatformView.swift
 //  WSSiOS
 //
 //  Created by 이윤학 on 1/17/24.
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class RegisterNormalPlatFormTest: UIView {
+final class RegisterNormalPlatformView: UIView {
     
     //MARK: - set Properties
 
@@ -65,7 +65,7 @@ final class RegisterNormalPlatFormTest: UIView {
     
     private func setLayout() {
         titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(35)
+            $0.top.equalToSuperview()
             $0.leading.trailing.equalToSuperview()
         }
         

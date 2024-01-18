@@ -12,12 +12,14 @@ struct SosopickNovels: Codable {
 }
 
 struct SosopickNovel: Codable {
+    let novelId: Int
     let novelImage: String
     let novelTitle: String
     let novelAuthor: String
     let novelRegisteredCount: Int
     
     enum CodingKeys: String, CodingKey {
+        case novelId
         case novelImage = "novelImg"
         case novelTitle
         case novelAuthor

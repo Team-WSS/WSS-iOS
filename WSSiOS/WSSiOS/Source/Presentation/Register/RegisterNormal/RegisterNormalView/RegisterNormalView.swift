@@ -23,13 +23,13 @@ final class RegisterNormalView: UIView {
     let readStatusView = RegisterNormalReadStatusView()
     let readDateView = RegisterNormalReadDateView()
     private let dividerView = RegisterNormalDividerView()
-    private let keywordSelectionView = RegisterNormalKeywordSelectionView()
     let novelSummaryView = RegisterNormalNovelSummaryView()
-    let registerButton = WSSMainButton(title: "내 서재에 등록")
+    let registerButton = WSSMainButton(title: StringLiterals.Register.Normal.RegisterButton.new)
     private let registerButtonGradient = UIImageView()
     private let registerButtonBackgroundView = UIView()
     
     let customDatePicker = RegisterNormalCustomDatePicker()
+    
     // MARK: - Life Cycle
     
     override init(frame: CGRect) {
@@ -90,8 +90,6 @@ final class RegisterNormalView: UIView {
                                             infoWithRatingView,
                                             readStatusView,
                                             readDateView,
-                                            dividerView,
-                                            keywordSelectionView,
                                             novelSummaryView)
     }
     
