@@ -132,6 +132,10 @@ final class MyPageViewController: UIViewController {
                             infoViewController.rootView.bindData(self.userNickName)
                             owner.navigationController?.pushViewController(infoViewController, animated: true)
                             
+                        case 1:
+                            if let url = URL(string: "https://www.instagram.com/websoso_official/") {
+                                UIApplication.shared.open(url, options: [:])
+                            }
                         default:
                             break
                         }
