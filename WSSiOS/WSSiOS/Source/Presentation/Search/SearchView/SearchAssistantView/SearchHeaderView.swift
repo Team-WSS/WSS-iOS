@@ -50,12 +50,10 @@ final class SearchHeaderView: UIView {
         if let textfield = searchBar.value(forKey: "searchField") as? UITextField {
             textfield.backgroundColor = .clear
             textfield.font = .Body2
-            textfield.attributedPlaceholder = NSAttributedString(
-                string: textfield.placeholder ?? "등록할 작품 검색하기",
-                attributes: [NSAttributedString.Key.foregroundColor : UIColor.Gray200])
             textfield.textColor = UIColor.Black
         }
     }
+
     
     //MARK: - set Hierachy
     
