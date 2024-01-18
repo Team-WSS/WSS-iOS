@@ -140,7 +140,7 @@ final class DeletePopupContentView: UIView {
             $0.top.equalTo(descriptionLabel.snp.bottom).offset(18)
             $0.leading.equalToSuperview().inset(21)
             $0.bottom.equalToSuperview().inset(24)
-            $0.width.equalTo(116)
+            $0.trailing.equalTo(self.snp.centerX).offset(-9)
             $0.height.equalTo(40)
         }
         
@@ -149,7 +149,7 @@ final class DeletePopupContentView: UIView {
             $0.leading.equalTo(deleteButton.snp.trailing).offset(18)
             $0.trailing.equalToSuperview().inset(21)
             $0.bottom.equalToSuperview().inset(24)
-            $0.width.equalTo(116)
+            $0.leading.equalTo(self.snp.centerX).offset(9)
             $0.height.equalTo(40)
         }
     }
