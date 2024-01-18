@@ -22,6 +22,7 @@ final class MyPageViewController: UIViewController {
     private var settingData = MyPageViewModel.setting
     private var userNickName = ""
     private var representativeAvatarId = 0
+    private var currentCepresentativeAvatar = false
     
     init(userRepository: UserRepository) {
         self.userRepository = userRepository as! DefaultUserRepository
@@ -144,8 +145,10 @@ final class MyPageViewController: UIViewController {
                 let avatars = self.avaterListRelay.value
                 let selectedAvatarId = avatars[indexPath.row].avatarId
                 let selectedAvatarHas = avatars[indexPath.row].hasAvatar
+                
                 owner.pushModalViewController(avatarId: selectedAvatarId,
-                                              hasAvatar: selectedAvatarHas)
+                                              hasAvatar: selectedAvatarHas,
+                                              currentRepresentativeAvatar: owner.currentCepresentativeAvatar)
             })
             .disposed(by: disposeBag)
         
@@ -199,14 +202,16 @@ extension MyPageViewController {
     //MARK: - push To ViewController
     
     @objc
-    func pushModalViewController(avatarId: Int, hasAvatar: Bool) {
+    func pushModalViewController(avatarId: Int,
+                                 hasAvatar: Bool,
+                                 currentRepresentativeAvatar: Bool) {
         let modalVC = MyPageCustomModalViewController(
             avatarRepository: DefaultAvatarRepository(
                 avatarService: DefaultAvatarService()),
             avatarId: avatarId,
-            modalHasAvatar: hasAvatar)
+            modalHasAvatar: hasAvatar,
+            currentRepresentativeAvatar: currentRepresentativeAvatar)
         
-        print("💖", avatarId)
         modalVC.modalPresentationStyle = .overFullScreen
         present(modalVC, animated: true)
     }

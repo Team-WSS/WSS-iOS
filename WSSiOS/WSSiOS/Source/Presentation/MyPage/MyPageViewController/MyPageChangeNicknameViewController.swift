@@ -114,8 +114,6 @@ final class MyPageChangeNicknameViewController: UIViewController {
                         owner.newNickName = text
                     }
                     
-                    print("🎈",text)
-                    print("🧩",owner.userNickName)
                     if text == owner.userNickName || text == "" {
                         owner.completeButton.setTitleColor(.Gray200, for: .normal)
                     }

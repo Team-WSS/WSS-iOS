@@ -60,7 +60,7 @@ final class MyPageInventoryCollectionViewCell: UICollectionViewCell {
     
     func bindData(data: UserAvatar, representativeId: Int) {
         myPageAvaterImageView.kfSetImage(url: data.avatarImg)
-        print("🐰",representativeId)
+        
         if representativeId == data.avatarId {
             myPageAvaterImageView.layer.borderColor = UIColor.Primary100.cgColor
             myPageAvaterImageView.layer.borderWidth = 1

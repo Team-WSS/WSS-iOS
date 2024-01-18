@@ -18,14 +18,17 @@ final class MyPageCustomModalViewController: UIViewController {
     private let avatarRepository: DefaultAvatarRepository
     private let avatarId: Int
     private let modalHasAvatar: Bool
+    private let currentRepresentativeAvatar: Bool
     private let modalBackgroundView = UIView()
     
     init(avatarRepository: DefaultAvatarRepository,
          avatarId: Int,
-         modalHasAvatar: Bool) {
+         modalHasAvatar: Bool,
+         currentRepresentativeAvatar: Bool) {
         self.avatarRepository = avatarRepository
         self.avatarId = avatarId
         self.modalHasAvatar = modalHasAvatar
+        self.currentRepresentativeAvatar = currentRepresentativeAvatar
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -51,7 +54,6 @@ final class MyPageCustomModalViewController: UIViewController {
         setStyle()
         setHierachy()
         setLayout()
-        print("🙏🏿", avatarId)
         bindAvatarData()
         setAction()
     }
@@ -79,7 +81,7 @@ final class MyPageCustomModalViewController: UIViewController {
     }
     
     private func setUI() {
-        if !modalHasAvatar {
+        if !modalHasAvatar || !currentRepresentativeAvatar {
             rootView.modalContinueButton.isHidden = true
             rootView.modalChangeButton.setTitle("돌아가기", for: .normal)
         }
@@ -91,7 +93,7 @@ final class MyPageCustomModalViewController: UIViewController {
     }
     
     private func setLayout() {
-        if !modalHasAvatar {
+        if !modalHasAvatar || !currentRepresentativeAvatar {
             rootView.snp.makeConstraints() {
                 $0.bottom.width.equalToSuperview()
                 $0.height.equalTo(533)
