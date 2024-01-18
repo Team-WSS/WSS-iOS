@@ -35,9 +35,10 @@ final class NovelDetailViewController: UIViewController {
     
     // MARK: - Life Cycle
     
-    init(repository: UserNovelRepository, userNovelId: Int) {
+    init(repository: UserNovelRepository, userNovelId: Int, selectedMenu: Int = 0) {
         self.repository = repository
         self.userNovelId = userNovelId
+        self.selectedMenu.onNext(selectedMenu)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -165,10 +166,7 @@ final class NovelDetailViewController: UIViewController {
             .disposed(by: disposeBag)
         
         backButton.rx.tap.bind {
-//            self.navigationController?.popToRootViewController(animated: true)
-//            self.navigationController?.tabBarController?.selectedIndex = 1
-            // 부드러운 애니메이션을 원한다면 .. (홈화면 또는 서재로 돌아간다.)
-            self.navigationController?.popToRootViewController(animated: true)
+            self.navigationController?.popViewController(animated: true)
         }.disposed(by: disposeBag)
         
         novelSettingButton.rx.tap.bind {
@@ -191,6 +189,7 @@ final class NovelDetailViewController: UIViewController {
         
         rootView.novelDetailMemoSettingButtonView.novelEditButon.rx.tap.bind {
             self.rootView.novelDetailMemoSettingButtonView.isHidden = true
+            self.selectedMenu.onNext(1)
             self.navigationController?.pushViewController(
                 RegisterNormalViewController(
                     novelRepository: DefaultNovelRepository(
@@ -214,33 +213,31 @@ final class NovelDetailViewController: UIViewController {
         }.disposed(by: disposeBag)
         
         selectedMenu
-            .subscribe(onNext: { selectedMenu in
+            .subscribe(with: self, onNext: { owner, selectedMenu in
                 if selectedMenu == 0 {
                     self.rootView.createMemoButton.isHidden = false
+                    self.rootView.changeCurrentMenu(menu: 0)
                 } else {
                     self.rootView.createMemoButton.isHidden = true
+                    self.rootView.changeCurrentMenu(menu: 1)
                 }
             })
             .disposed(by: disposeBag)
         
         rootView.novelDetailTabView.memoButton.rx.tap.bind {
             self.selectedMenu.onNext(0)
-            self.rootView.memoButtonDidTap()
         }.disposed(by: disposeBag)
         
         rootView.novelDetailTabView.infoButton.rx.tap.bind {
             self.selectedMenu.onNext(1)
-            self.rootView.infoButtonDidTap()
         }.disposed(by: disposeBag)
         
         rootView.stickyNovelDetailTabView.memoButton.rx.tap.bind {
             self.selectedMenu.onNext(0)
-            self.rootView.memoButtonDidTap()
         }.disposed(by: disposeBag)
         
         rootView.stickyNovelDetailTabView.infoButton.rx.tap.bind {
             self.selectedMenu.onNext(1)
-            self.rootView.infoButtonDidTap()
         }.disposed(by: disposeBag)
         
         rootView.novelDetailMemoView.memoTableView.rx.observe(CGSize.self, "contentSize")
@@ -249,7 +246,7 @@ final class NovelDetailViewController: UIViewController {
             .disposed(by: disposeBag)
 
         memoTableViewHeight
-            .subscribe(onNext: { height in
+            .subscribe(with: self, onNext: { owner, height in
                 self.rootView.novelDetailMemoView.updateTableViewHeight(height: height)
             })
             .disposed(by: disposeBag)
@@ -260,7 +257,7 @@ final class NovelDetailViewController: UIViewController {
             .disposed(by: disposeBag)
         
         platformCollectionViewHeight
-            .subscribe(onNext: { height in
+            .subscribe(with: self, onNext: { owner, height in
                 self.rootView.novelDetailInfoView.novelDetailInfoPlatformView.updateCollectionViewHeight(height: height)
             })
             .disposed(by: disposeBag)

@@ -121,33 +121,33 @@ final class NovelDetailView: UIView {
         }
     }
     
-    func memoButtonDidTap() {
-        self.novelDetailInfoView.removeFromSuperview()
-        self.contentView.addArrangedSubview(self.novelDetailMemoView)
-        self.novelDetailTabView.do {
-            $0.memoButton.isSelected = true
-            $0.infoButton.isSelected = false
-            $0.highlightMemoButton()
-        }
-        self.stickyNovelDetailTabView.do {
-            $0.memoButton.isSelected = true
-            $0.infoButton.isSelected = false
-            $0.highlightMemoButton()
-        }
-    }
-    
-    func infoButtonDidTap() {
-        self.novelDetailMemoView.removeFromSuperview()
-        self.contentView.addArrangedSubview(self.novelDetailInfoView)
-        self.novelDetailTabView.do {
-            $0.memoButton.isSelected = false
-            $0.infoButton.isSelected = true
-            $0.highlightInfoButton()
-        }
-        self.stickyNovelDetailTabView.do {
-            $0.memoButton.isSelected = false
-            $0.infoButton.isSelected = true
-            $0.highlightInfoButton()
+    func changeCurrentMenu(menu: Int) {
+        if menu == 0 {
+            self.novelDetailInfoView.removeFromSuperview()
+            self.contentView.addArrangedSubview(self.novelDetailMemoView)
+            self.novelDetailTabView.do {
+                $0.memoButton.isSelected = true
+                $0.infoButton.isSelected = false
+                $0.highlightMemoButton()
+            }
+            self.stickyNovelDetailTabView.do {
+                $0.memoButton.isSelected = true
+                $0.infoButton.isSelected = false
+                $0.highlightMemoButton()
+            }
+        } else {
+            self.novelDetailMemoView.removeFromSuperview()
+            self.contentView.addArrangedSubview(self.novelDetailInfoView)
+            self.novelDetailTabView.do {
+                $0.memoButton.isSelected = false
+                $0.infoButton.isSelected = true
+                $0.highlightInfoButton()
+            }
+            self.stickyNovelDetailTabView.do {
+                $0.memoButton.isSelected = false
+                $0.infoButton.isSelected = true
+                $0.highlightInfoButton()
+            }
         }
     }
 }

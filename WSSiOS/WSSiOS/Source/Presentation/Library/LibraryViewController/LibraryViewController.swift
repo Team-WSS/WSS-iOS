@@ -55,6 +55,8 @@ final class LibraryViewController: UIViewController {
         setHierarchy()
         setLayout()
         setAction()
+        
+        addNotificationCenter()
     }
     
     //MARK: - set NavigationBar
@@ -219,6 +221,29 @@ extension LibraryViewController {
             $0.width.equalTo(100)
             $0.height.equalTo(104)
         }
+    }
+    
+    //MARK: - notification
+    
+    private func addNotificationCenter() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.showNovelDetail(_:)),
+            name: NSNotification.Name("ShowNovelDetail"),
+            object: nil
+        )
+    }
+    
+    @objc
+    func showNovelDetail(_ notification: Notification) {
+        guard let userNovelId = notification.object as? Int else { return }
+        self.navigationController?.pushViewController(NovelDetailViewController(
+            repository: DefaultUserNovelRepository(
+                userNovelService: DefaultUserNovelService()
+            ),
+            userNovelId: userNovelId,
+            selectedMenu: 1
+        ), animated: true)
     }
 }
 

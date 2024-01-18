@@ -156,7 +156,18 @@ final class RegisterNormalViewController: UIViewController {
                                            userNovelReadEndDate: requestEndDate)
         .observe(on: MainScheduler.instance)
         .subscribe(with: self, onNext: { owner, data in
-            self.navigationController?.pushViewController(NovelDetailViewController(repository: DefaultUserNovelRepository(userNovelService: DefaultUserNovelService()), userNovelId: self.userNovelId), animated: true)
+            if self.navigationController?.tabBarController?.selectedIndex == 0 {
+                let tabBar = WSSTabBarController()
+                tabBar.selectedIndex = 1
+                let navigationController = UINavigationController(rootViewController: tabBar)
+                navigationController.isNavigationBarHidden = true
+                self.view.window?.rootViewController = navigationController
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    NotificationCenter.default.post(name: NSNotification.Name("ShowNovelDetail"), object: self.userNovelId)
+                }
+            } else {
+                self.navigationController?.popViewController(animated: true)
+            }
         }, onError: { owner, error in
             print(error)
         })
