@@ -53,7 +53,7 @@ final class RecordViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("heoollefkdslfa")
+
         setUI()
         registerCell()
         setAction()
