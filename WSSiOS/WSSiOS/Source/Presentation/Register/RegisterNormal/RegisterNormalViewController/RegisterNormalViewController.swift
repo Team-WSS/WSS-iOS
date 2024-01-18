@@ -163,7 +163,7 @@ final class RegisterNormalViewController: UIViewController {
                 navigationController.isNavigationBarHidden = true
                 self.view.window?.rootViewController = navigationController
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    NotificationCenter.default.post(name: NSNotification.Name("ShowNovelDetail"), object: self.userNovelId)
+                    NotificationCenter.default.post(name: NSNotification.Name("ShowNovelInfo"), object: self.userNovelId)
                 }
             } else {
                 self.navigationController?.popViewController(animated: true)
