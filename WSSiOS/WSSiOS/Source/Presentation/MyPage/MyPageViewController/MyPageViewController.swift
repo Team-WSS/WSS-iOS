@@ -173,6 +173,20 @@ final class MyPageViewController: UIViewController {
                 owner.navigationController?.pushViewController(changeNicknameViewController, animated: true)
             })
             .disposed(by: disposeBag)
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(pushToRecord))
+        rootView.myPageTallyView.myPageRecordView.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc
+    func pushToRecord() {
+        if self.navigationController?.tabBarController?.selectedIndex == 3 {
+            let tabBar = WSSTabBarController()
+            tabBar.selectedIndex = 2
+            let navigationController = UINavigationController(rootViewController: tabBar)
+            navigationController.isNavigationBarHidden = true
+            self.view.window?.rootViewController = navigationController
+        }
     }
     
     //MARK: - reDataBind

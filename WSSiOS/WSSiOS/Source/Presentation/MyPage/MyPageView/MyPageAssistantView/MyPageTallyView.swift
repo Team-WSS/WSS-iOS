@@ -30,7 +30,6 @@ final class MyPageTallyView: UIView {
         setUI()
         setHierachy()
         setLayout()
-        dataBind()
     }
     
     required init?(coder: NSCoder) {
