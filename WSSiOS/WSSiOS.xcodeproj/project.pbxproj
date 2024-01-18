@@ -79,6 +79,7 @@
 		39B75ADA2B59891D005DD8B9 /* villainessFan.json in Resources */ = {isa = PBXBuildFile; fileRef = 39B75AD32B59891D005DD8B9 /* villainessFan.json */; };
 		39B75ADB2B59891D005DD8B9 /* regressorSword.json in Resources */ = {isa = PBXBuildFile; fileRef = 39B75AD42B59891D005DD8B9 /* regressorSword.json */; };
 		39B75ADC2B59891D005DD8B9 /* sosocatBread.json in Resources */ = {isa = PBXBuildFile; fileRef = 39B75AD52B59891D005DD8B9 /* sosocatBread.json */; };
+		39B75ADE2B59BA87005DD8B9 /* UIScreen+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B75ADD2B59BA87005DD8B9 /* UIScreen+.swift */; };
 		39CC167E2B512369003F56AE /* RegisterSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CC167D2B512369003F56AE /* RegisterSuccessViewController.swift */; };
 		39CC16812B51246E003F56AE /* RegisterNormalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CC16802B51246E003F56AE /* RegisterNormalView.swift */; };
 		39CC16882B51D94F003F56AE /* RegisterSuccessViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CC16872B51D94F003F56AE /* RegisterSuccessViewModel.swift */; };
@@ -258,6 +259,7 @@
 		39B75AD32B59891D005DD8B9 /* villainessFan.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = villainessFan.json; sourceTree = "<group>"; };
 		39B75AD42B59891D005DD8B9 /* regressorSword.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = regressorSword.json; sourceTree = "<group>"; };
 		39B75AD52B59891D005DD8B9 /* sosocatBread.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sosocatBread.json; sourceTree = "<group>"; };
+		39B75ADD2B59BA87005DD8B9 /* UIScreen+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+.swift"; sourceTree = "<group>"; };
 		39CC167D2B512369003F56AE /* RegisterSuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterSuccessViewController.swift; sourceTree = "<group>"; };
 		39CC16802B51246E003F56AE /* RegisterNormalView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterNormalView.swift; sourceTree = "<group>"; };
 		39CC16872B51D94F003F56AE /* RegisterSuccessViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterSuccessViewModel.swift; sourceTree = "<group>"; };
@@ -594,6 +596,7 @@
 				2C60307A2B55D9160031544C /* UIImageView+.swift */,
 				CDE596D52B57708D00D99DA1 /* UIViewController+.swift */,
 				CDE596D92B57C4BE00D99DA1 /* UITextView+.swift */,
+				39B75ADD2B59BA87005DD8B9 /* UIScreen+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1340,6 +1343,7 @@
 				A1B903E52B58140800398890 /* UserNovelListResult.swift in Sources */,
 				CD3E5A742B5424D600C0A659 /* MemoEditView.swift in Sources */,
 				39CC16812B51246E003F56AE /* RegisterNormalView.swift in Sources */,
+				39B75ADE2B59BA87005DD8B9 /* UIScreen+.swift in Sources */,
 				A107A49E2B4DCD9900668C3E /* HomeCharacterView.swift in Sources */,
 				A122C9DB2B5309AF00DFCFE4 /* (null) in Sources */,
 				A1EF35432B52F75800A94C53 /* NovelRepository.swift in Sources */,

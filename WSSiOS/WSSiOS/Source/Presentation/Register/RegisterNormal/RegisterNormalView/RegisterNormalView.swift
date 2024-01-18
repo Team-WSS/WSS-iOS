@@ -122,7 +122,11 @@ final class RegisterNormalView: UIView {
         }
         
         registerButton.snp.makeConstraints {
-            $0.bottom.equalTo(safeAreaLayoutGuide).inset(10)
+            if UIScreen.isSE {
+                $0.bottom.equalTo(safeAreaLayoutGuide).inset(15)
+            } else {
+                $0.bottom.equalTo(safeAreaLayoutGuide).inset(10)
+            }
         }
         
         registerButtonGradient.snp.makeConstraints {

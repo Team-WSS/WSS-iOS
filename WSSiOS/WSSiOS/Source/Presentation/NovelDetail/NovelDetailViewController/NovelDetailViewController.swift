@@ -77,6 +77,7 @@ final class NovelDetailViewController: UIViewController {
     // MARK: - set NavigationBar
     
     private func setNavigationBar() {
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.backButton)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.novelSettingButton)
         self.navigationController?.navigationBar.titleTextAttributes = [
