@@ -22,6 +22,7 @@ final class LibraryTabCollectionViewCell: UICollectionViewCell {
     //MARK: - UI Components
     
     public var libraryTabLabel = UILabel()
+    private let libraryTabUnderView = UIView()
     
     //MARK: - Life Cycle
     
@@ -51,20 +52,33 @@ final class LibraryTabCollectionViewCell: UICollectionViewCell {
             $0.textColor = .Gray200
             $0.font = .Body1
             $0.backgroundColor = .clear
+            $0.textAlignment = .center
+        }
+        
+        libraryTabUnderView.do {
+            $0.backgroundColor = .Primary100
+            $0.isHidden = true
         }
     }
     
     //MARK: - Set Hierachy
     
     private func setHierachy() {
-        self.addSubview(libraryTabLabel)
+        self.addSubviews(libraryTabLabel,
+                         libraryTabUnderView)
     }
     
     //MARK: - Set Layout
     
     private func setLayout() {
         libraryTabLabel.snp.makeConstraints() {
-            $0.edges.equalToSuperview()
+            $0.center.equalToSuperview()
+        }
+        
+        libraryTabUnderView.snp.makeConstraints() {
+            $0.width.equalTo(libraryTabLabel.snp.width)
+            $0.centerX.bottom.equalToSuperview()
+            $0.height.equalTo(3)
         }
     }
     
@@ -72,5 +86,6 @@ final class LibraryTabCollectionViewCell: UICollectionViewCell {
     
     private func selectUI() {
         libraryTabLabel.textColor = isSelected ? .Primary100 : .Gray200
+        libraryTabUnderView.isHidden = isSelected ? false : true
     }
 }
