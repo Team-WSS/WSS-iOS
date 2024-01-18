@@ -10,17 +10,27 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+protocol NovelCountDelegate: AnyObject {
+    func sendData(data: Int)
+}
+
 final class LibraryBaseViewController: UIViewController {
     
     //MARK: - Properties
-    
-    private let disposeBag = DisposeBag()
-    private let libraryEmptyView = LibraryEmptyView()
-    private let userNovelListRepository: DefaultUserNovelRepository
+
     private let readStatusData: String
     private let lastUserNovelIdData: Int
     private let sizeData: Int
     private let sortTypeData: String
+    private var novelTotalCount = 0
+    weak var delegate : NovelCountDelegate?
+    
+    //MARK: - UI Components
+    
+    private var rootView = LibraryView()
+    private let disposeBag = DisposeBag()
+    private let libraryEmptyView = LibraryEmptyView()
+    private let userNovelListRepository: DefaultUserNovelRepository
     private var novelList = [UserNovelListDetail]()
     private var novelListRelay = PublishRelay<[UserNovelListDetail]>()
     
@@ -41,10 +51,6 @@ final class LibraryBaseViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    //MARK: - UI Components
-    
-    private var rootView = LibraryView()
     
     // MARK: - Life Cycle
     
@@ -115,6 +121,9 @@ final class LibraryBaseViewController: UIViewController {
                                                  sortType: sortType)
         .observe(on: MainScheduler.instance)
         .subscribe(with: self, onNext: { owner, data in
+            owner.novelTotalCount = data.userNovelCount
+            owner.delegate?.sendData(data: owner.novelTotalCount)
+            
             owner.novelListRelay.accept(data.userNovels)
         }, onError: { error, _  in
             print(error)
@@ -151,7 +160,7 @@ final class LibraryBaseViewController: UIViewController {
 extension LibraryBaseViewController {
     private func setHierachy() {
         libraryEmptyView.isHidden = true
-        self.view.addSubview(libraryEmptyView ?? UIView())
+        self.view.addSubview(libraryEmptyView)
     }
     
     private func setLayout() {

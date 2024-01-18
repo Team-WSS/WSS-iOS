@@ -120,6 +120,7 @@ final class LibraryViewController: UIViewController {
                 sizeData: 10,
                 sortTypeData: sortTypeList[0])
             
+            viewController.delegate = self
             libraryPages.append(viewController)
         }
         
@@ -175,6 +176,12 @@ extension LibraryViewController: UIPageViewControllerDataSource {
             return libraryPages[currentIndex + 1]
         }
         return nil
+    }
+}
+
+extension LibraryViewController: NovelCountDelegate {
+    func sendData(data: Int) {
+        libraryDescriptionView.libraryNovelCountLabel.text = "\(data)개"
     }
 }
 
