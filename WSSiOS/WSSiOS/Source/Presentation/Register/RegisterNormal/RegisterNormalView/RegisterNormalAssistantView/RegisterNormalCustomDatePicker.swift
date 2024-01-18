@@ -263,6 +263,10 @@ final class RegisterNormalCustomDatePicker: UIButton {
     }
     
     @objc func dateChanged() {
+        if datePicker.date > Date() {
+            datePicker.date = Date()
+        }
+        
         let selectedDate = datePicker.date
         
         if selectedButton == startButton && selectedDate >= endDate {

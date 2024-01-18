@@ -26,7 +26,6 @@ final class RegisterNormalViewController: UIViewController {
     private var novelTitle: String = ""
     let localData: EditNovelResult?
     
-    
     // RxSwift
     private var isNew = BehaviorRelay<Bool>(value: true)
     private let disposeBag = DisposeBag()
