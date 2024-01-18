@@ -81,7 +81,7 @@ final class MyPageCustomModalViewController: UIViewController {
     }
     
     private func setUI() {
-        if !modalHasAvatar || !currentRepresentativeAvatar {
+        if !modalHasAvatar || currentRepresentativeAvatar {
             rootView.modalContinueButton.isHidden = true
             rootView.modalChangeButton.setTitle("돌아가기", for: .normal)
         }
@@ -93,7 +93,7 @@ final class MyPageCustomModalViewController: UIViewController {
     }
     
     private func setLayout() {
-        if !modalHasAvatar || !currentRepresentativeAvatar {
+        if !modalHasAvatar || currentRepresentativeAvatar {
             rootView.snp.makeConstraints() {
                 $0.bottom.width.equalToSuperview()
                 $0.height.equalTo(533)
@@ -120,7 +120,7 @@ final class MyPageCustomModalViewController: UIViewController {
         
         rootView.modalChangeButton.rx.tap
             .bind(with: self, onNext: { owner, _ in
-                if !owner.modalHasAvatar || !owner.currentRepresentativeAvatar {
+                if !owner.modalHasAvatar || owner.currentRepresentativeAvatar {
                     owner.dismiss(animated: true)
                 }
                 else {
@@ -138,6 +138,7 @@ final class MyPageCustomModalViewController: UIViewController {
             .withUnretained(self)
             .subscribe(onNext: { (owner, data) in
                 print(data)
+                print("🎈",owner.currentRepresentativeAvatar)
                 owner.rootView.bindData(data)
             })
             .disposed(by: disposeBag)

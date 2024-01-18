@@ -146,6 +146,13 @@ final class MyPageViewController: UIViewController {
                 let selectedAvatarId = avatars[indexPath.row].avatarId
                 let selectedAvatarHas = avatars[indexPath.row].hasAvatar
                 
+                if owner.representativeAvatarId == selectedAvatarId {
+                    owner.currentCepresentativeAvatar = true
+                }
+                else {
+                    owner.currentCepresentativeAvatar = false
+                }
+                
                 owner.pushModalViewController(avatarId: selectedAvatarId,
                                               hasAvatar: selectedAvatarHas,
                                               currentRepresentativeAvatar: owner.currentCepresentativeAvatar)
