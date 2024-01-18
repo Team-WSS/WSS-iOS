@@ -18,7 +18,7 @@ final class HomeCharacterView: UIView {
     private let characterStackView = UIStackView()
     let tagView = HomeCharacterTagView()
     let characterCommentLabel = UILabel()
-    let characterImageView = LottieLiterals.Home.regressorGreeting
+    var characterLottieView = LottieLiterals.Home.Sosocat.bread
     
     //MARK: - Life Cycle
     
@@ -52,7 +52,7 @@ final class HomeCharacterView: UIView {
             $0.textColor = .Black
         }
         
-        characterImageView.do {
+        characterLottieView.do {
             $0.contentMode = .scaleAspectFit
         }
     }
@@ -72,7 +72,7 @@ final class HomeCharacterView: UIView {
     private func setHierachy() {
         characterStackView.addArrangedSubviews(tagView,
                                                characterCommentLabel,
-                                               characterImageView)
+                                               characterLottieView)
         self.addSubviews(characterStackView)
     }
     
@@ -80,7 +80,7 @@ final class HomeCharacterView: UIView {
     
     private func setLayout() {
         
-        characterImageView.snp.makeConstraints {
+        characterLottieView.snp.makeConstraints {
             $0.size.equalTo(240)
         }
         
@@ -94,8 +94,18 @@ final class HomeCharacterView: UIView {
         }
     }
     
+    func setLottie(view: LottieAnimationView) {
+        self.characterLottieView.removeFromSuperview()
+        
+        // Lottie 애니메이션 뷰 생성 및 설정
+        characterLottieView = view
+        characterStackView.insertArrangedSubview(characterLottieView, at: 2)
+        
+        playLottie()
+    }
+    
     private func playLottie() {
-        characterImageView.play()
-        characterImageView.loopMode = .loop
+        characterLottieView.play()
+        characterLottieView.loopMode = .loop
     }
 }

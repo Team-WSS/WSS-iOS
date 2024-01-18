@@ -86,7 +86,7 @@ final class RegisterNormalViewController: UIViewController {
     // MARK: - Custom Method
     private func setNavigationBar() {
         rootView.divider.isHidden = true
-        self.navigationController?.isNavigationBarHidden = false
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.backButton)
         self.navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.font: UIFont.Title2,
@@ -161,7 +161,7 @@ final class RegisterNormalViewController: UIViewController {
                 let tabBar = WSSTabBarController()
                 tabBar.selectedIndex = 1
                 let navigationController = UINavigationController(rootViewController: tabBar)
-                navigationController.isNavigationBarHidden = true
+                navigationController.setNavigationBarHidden(true, animated: true)
                 self.view.window?.rootViewController = navigationController
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     NotificationCenter.default.post(name: NSNotification.Name("ShowNovelInfo"), object: self.userNovelId)
@@ -365,7 +365,7 @@ final class RegisterNormalViewController: UIViewController {
                     view.customDatePicker.endDate = self.endDate.value
                 }
                 view.customDatePicker.isHidden = !show
-                owner.navigationController?.isNavigationBarHidden = show
+                owner.navigationController?.setNavigationBarHidden(show, animated: true)
                 owner.rootView.divider.isHidden = show
             })
             .disposed(by: disposeBag)

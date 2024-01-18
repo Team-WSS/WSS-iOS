@@ -47,7 +47,7 @@ final class MyPageInfoViewController: UIViewController {
     }
     
     private func setNavigationBar() {
-        self.navigationController?.isNavigationBarHidden = false
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
         self.title = "계정정보 확인"
         
         if let navigationBar = self.navigationController?.navigationBar {

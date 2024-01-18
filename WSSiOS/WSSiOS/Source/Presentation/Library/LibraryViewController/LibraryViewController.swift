@@ -63,7 +63,7 @@ final class LibraryViewController: UIViewController {
     //MARK: - set NavigationBar
     
     private func setNavigationBar() {
-        self.navigationController?.isNavigationBarHidden = false
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
         self.navigationItem.title = "내 서재"
         
         if let navigationBar = self.navigationController?.navigationBar {

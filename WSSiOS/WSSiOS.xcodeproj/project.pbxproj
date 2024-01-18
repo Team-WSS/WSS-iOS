@@ -787,6 +787,7 @@
 		A107A4A72B4DDE4900668C3E /* HomeView */ = {
 			isa = PBXGroup;
 			children = (
+				A1708F172B4D8E2F00E35E50 /* HomeView.swift */,
 				A14EDBBD2B4F05DD00906957 /* HomeCell */,
 				A1708F112B4D8DD300E35E50 /* HomeAssistantView */,
 			);
@@ -937,7 +938,6 @@
 			children = (
 				A107A4A72B4DDE4900668C3E /* HomeView */,
 				A1708F122B4D8DDE00E35E50 /* HomeViewController */,
-				A1708F172B4D8E2F00E35E50 /* HomeView.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
