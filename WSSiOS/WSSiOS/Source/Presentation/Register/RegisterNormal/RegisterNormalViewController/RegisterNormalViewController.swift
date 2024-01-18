@@ -404,18 +404,10 @@ final class RegisterNormalViewController: UIViewController {
             .subscribe(with: self, onNext: { _,_ in
                 if self.isNew.value {
                     self.postUserNovel()
-                    
-                    
                 } else {
                     self.patchUserNovel()
-//                    if let tabBarController = owner.tabBarController as? WSSTabBarController {
-//                        tabBarController.
-//                        tabBarController.tabBar.isHidden = true
-//                        tabBarController.shadowView.isHidden = true
-//                    }
-                    
                 }
-                
+                self.rootView.registerButton.isEnabled = false
             })
             .disposed(by: disposeBag)
         
