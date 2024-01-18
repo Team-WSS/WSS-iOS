@@ -17,6 +17,7 @@ final class LibraryViewController: UIViewController {
     //MARK: - Properties
     
     private let disposeBag = DisposeBag()
+    private let dummyLibraryTabTitle = Observable.just(["전체", "읽음", "읽는 중", "하차", "읽고 싶음"])
     private let readStatusList = ["ALL", "FINISH", "READING", "DROP", "WISH"]
     private let sortTypeList = ["NEWEST", "OLDEST"]
     
@@ -28,6 +29,7 @@ final class LibraryViewController: UIViewController {
     private var libraryPageBar = LibraryPageBar()
     private var libraryDescriptionView = LibraryDescriptionView()
     private var libraryListView = LibraryListView()
+    private let libraryEmptyView = LibraryEmptyView()
     private var libraryPages = [LibraryBaseViewController]()
     private let userNovelListRepository: DefaultUserNovelRepository
     

@@ -86,5 +86,4 @@ final class LibraryEmptyView: UIView {
             $0.height.equalTo(53)
         }
     }
-    
 }
