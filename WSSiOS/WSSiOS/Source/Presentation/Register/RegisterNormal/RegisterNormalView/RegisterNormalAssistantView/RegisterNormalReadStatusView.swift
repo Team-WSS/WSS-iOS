@@ -44,7 +44,7 @@ final class RegisterNormalReadStatusView: UIView {
             $0.alignment = .leading
             
             titleView.do {
-                $0.setText("읽기 상태 *")
+                $0.setText(StringLiterals.Register.Normal.SectionTitle.readStatus)
             }
             
             readStatusStackView.do {

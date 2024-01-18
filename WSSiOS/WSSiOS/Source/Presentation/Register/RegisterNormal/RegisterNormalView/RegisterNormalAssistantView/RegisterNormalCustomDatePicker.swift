@@ -47,6 +47,7 @@ final class RegisterNormalCustomDatePicker: UIButton {
     var startDate = Date() {
         didSet {
             startDateLabel.text = dateFormatter.string(from: startDate)
+            dateLabelStyle(of: startDateLabel)
             if selectedButton == startButton {
                 datePicker.date = startDate
             }
@@ -55,6 +56,7 @@ final class RegisterNormalCustomDatePicker: UIButton {
     var endDate = Date() {
         didSet {
             endDateLabel.text = dateFormatter.string(from: endDate)
+            dateLabelStyle(of: endDateLabel)
             if selectedButton == endButton {
                 datePicker.date = endDate
             }
@@ -118,7 +120,7 @@ final class RegisterNormalCustomDatePicker: UIButton {
                     $0.isUserInteractionEnabled = false
                     
                     startTitleLabel.do {
-                        $0.text = "시작 날짜"
+                        $0.text = StringLiterals.Register.Normal.DatePicker.start
                         titleLabelStyle(of: $0)
                     }
                     
@@ -141,7 +143,7 @@ final class RegisterNormalCustomDatePicker: UIButton {
                     $0.isUserInteractionEnabled = false
                     
                     endTitleLabel.do {
-                        $0.text = "종료 날짜"
+                        $0.text = StringLiterals.Register.Normal.DatePicker.end
                         titleLabelStyle(of: $0)
                     }
                     
@@ -154,7 +156,7 @@ final class RegisterNormalCustomDatePicker: UIButton {
         }
         
         readingStatusLabel.do {
-            $0.text = "시작 날짜"
+            $0.text = StringLiterals.Register.Normal.DatePicker.start
             $0.makeAttribute()?
                 .kerning(kerningPixel: -0.6)
                 .lineSpacing(spacingPercentage: 140)
@@ -164,7 +166,7 @@ final class RegisterNormalCustomDatePicker: UIButton {
         }
         
         dropStatusLabel.do {
-            $0.text = "종료 날짜"
+            $0.text = StringLiterals.Register.Normal.DatePicker.end
             $0.makeAttribute()?
                 .kerning(kerningPixel: -0.6)
                 .lineSpacing(spacingPercentage: 140)
@@ -222,11 +224,6 @@ final class RegisterNormalCustomDatePicker: UIButton {
             $0.centerX.equalToSuperview()
         }
         
-        datePicker.snp.makeConstraints {
-            $0.horizontalEdges.equalToSuperview().inset(20)
-            $0.bottom.equalTo(completeButton.snp.top).offset(-35)
-        }
-        
         completeButton.snp.makeConstraints {
             $0.bottom.equalTo(safeAreaLayoutGuide).inset(10)
         }
@@ -263,6 +260,10 @@ final class RegisterNormalCustomDatePicker: UIButton {
     }
     
     @objc func dateChanged() {
+        if datePicker.date > Date() {
+            datePicker.date = Date()
+        }
+        
         let selectedDate = datePicker.date
         
         if selectedButton == startButton && selectedDate >= endDate {

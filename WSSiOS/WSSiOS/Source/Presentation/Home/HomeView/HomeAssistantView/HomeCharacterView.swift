@@ -18,7 +18,7 @@ final class HomeCharacterView: UIView {
     private let characterStackView = UIStackView()
     let tagView = HomeCharacterTagView()
     let characterCommentLabel = UILabel()
-    let characterImageView = LottieAnimationView(name: "3regressor")
+    let characterImageView = LottieLiterals.Home.regressorB
     
     //MARK: - Life Cycle
     

@@ -27,7 +27,6 @@ final class RegisterSuccessViewController: UIViewController {
     init(userNovelId: Int) {
         self.userNovelId = userNovelId
         super.init(nibName: nil, bundle: nil)
-        print(userNovelId)
     }
     
     required init?(coder: NSCoder) {

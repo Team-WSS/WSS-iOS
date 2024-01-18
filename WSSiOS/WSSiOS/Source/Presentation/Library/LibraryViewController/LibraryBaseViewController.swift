@@ -10,18 +10,29 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+protocol NovelCountDelegate: AnyObject {
+    func sendData(data: Int)
+}
+
 final class LibraryBaseViewController: UIViewController {
     
     //MARK: - Properties
-    
-    private let disposeBag = DisposeBag()
-    private let userNovelListRepository: DefaultUserNovelRepository
+
     private let readStatusData: String
     private let lastUserNovelIdData: Int
     private let sizeData: Int
     private let sortTypeData: String
+    private var novelTotalCount = 0
+    weak var delegate : NovelCountDelegate?
     
-    private var novelListRelay = BehaviorRelay<[UserNovelListDetail]>(value: [])
+    //MARK: - UI Components
+    
+    private var rootView = LibraryView()
+    private let disposeBag = DisposeBag()
+    private let libraryEmptyView = LibraryEmptyView()
+    private let userNovelListRepository: DefaultUserNovelRepository
+    private var novelList = [UserNovelListDetail]()
+    private var novelListRelay = PublishRelay<[UserNovelListDetail]>()
     
     init(userNovelListRepository: DefaultUserNovelRepository,
          readStatusData: String,
@@ -41,10 +52,6 @@ final class LibraryBaseViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - UI Components
-    
-    private var rootView = LibraryView()
-    
     // MARK: - Life Cycle
     
     override func loadView() {
@@ -54,8 +61,13 @@ final class LibraryBaseViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setUI()
+        setHierachy()
+        setLayout()
+        
         register()
         bindColletionView()
+        bindAction()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -78,6 +90,27 @@ final class LibraryBaseViewController: UIViewController {
                                                 forCellWithReuseIdentifier: "LibraryCollectionViewCell")
     }
     
+    private func bindColletionView() {
+        novelListRelay.bind(to: rootView.libraryCollectionView.rx.items(
+            cellIdentifier: "LibraryCollectionViewCell",
+            cellType: LibraryCollectionViewCell.self)) { [weak self] (row, element, cell) in
+                cell.bindData(element)
+            }
+            .disposed(by: disposeBag)
+        
+        novelListRelay
+            .subscribe(onNext: { [weak self] list in
+                if list.isEmpty {
+                    self?.libraryEmptyView.isHidden = false
+                } else {
+                    self?.libraryEmptyView.isHidden = true
+                }
+                
+                self?.novelList = list
+            })
+            .disposed(by: disposeBag)
+    }
+    
     private func bindUserData(readStatus: String,
                               lastUserNovelId: Int,
                               size: Int,
@@ -88,6 +121,9 @@ final class LibraryBaseViewController: UIViewController {
                                                  sortType: sortType)
         .observe(on: MainScheduler.instance)
         .subscribe(with: self, onNext: { owner, data in
+            owner.novelTotalCount = data.userNovelCount
+            owner.delegate?.sendData(data: owner.novelTotalCount)
+            
             owner.novelListRelay.accept(data.userNovels)
         }, onError: { error, _  in
             print(error)
@@ -95,26 +131,44 @@ final class LibraryBaseViewController: UIViewController {
         .disposed(by: disposeBag)
     }
     
-    private func bindColletionView() {
-        novelListRelay.bind(to: rootView.libraryCollectionView.rx.items(
-            cellIdentifier: "LibraryCollectionViewCell",
-            cellType: LibraryCollectionViewCell.self)) { [weak self] (row, element, cell) in
-                guard let self = self else { return }
-                cell.bindData(element)
-                print("🤙🏻", element)
-                
-                //                cell.myPageAvaterButton.rx.tap
-            }
-            .disposed(by: disposeBag)
-        
+    private func bindAction() {
         rootView.libraryCollectionView.rx.itemSelected
             .observe(on: MainScheduler.instance)
-            .map { indexPath in
-                return self.novelListRelay.value[indexPath.item]
+            .map { [weak self] indexPath in
+                return self?.novelList[indexPath.row]
             }
+            .compactMap { $0 }
             .subscribe(onNext: { [weak self] selectedItem in
-                self?.navigationController?.pushViewController(NovelDetailViewController(repository: DefaultUserNovelRepository(userNovelService: DefaultUserNovelService()), userNovelId: selectedItem.userNovelId), animated: true)
+                self?.navigationController?.pushViewController(NovelDetailViewController(
+                    repository: DefaultUserNovelRepository(
+                        userNovelService: DefaultUserNovelService()
+                    ), userNovelId: selectedItem.userNovelId), animated: true)
             })
             .disposed(by: disposeBag)
+        
+        libraryEmptyView.libraryRegisterButton.rx.tap
+            .bind(with: self, onNext: { owner, _ in
+                self.navigationController?.pushViewController(
+                    SearchViewController(novelRepository: DefaultNovelRepository(
+                        novelService: DefaultNovelService())), 
+                    animated: true)
+            })
+            .disposed(by: disposeBag)
+    }
+}
+
+extension LibraryBaseViewController {
+    private func setUI() {
+        libraryEmptyView.isHidden = true
+    }
+    
+    private func setHierachy() {
+        self.view.addSubview(libraryEmptyView)
+    }
+    
+    private func setLayout() {
+        libraryEmptyView.snp.makeConstraints() {
+            $0.edges.equalToSuperview()
+        }
     }
 }

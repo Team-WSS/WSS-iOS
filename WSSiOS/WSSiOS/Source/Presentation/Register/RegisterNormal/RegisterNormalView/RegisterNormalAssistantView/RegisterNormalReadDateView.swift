@@ -49,7 +49,7 @@ final class RegisterNormalReadDateView: UIView {
                 $0.alignment = .center
                 
                 titleView.do {
-                    $0.setText("읽은 날짜")
+                    $0.setText(StringLiterals.Register.Normal.SectionTitle.readStatus)
                 }
             }
         }

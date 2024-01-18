@@ -1,5 +1,5 @@
 //
-//  RegisterNormalPlatFormTest.swift
+//  RegisterNormalPlatformView.swift
 //  WSSiOS
 //
 //  Created by 이윤학 on 1/17/24.
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class RegisterNormalPlatFormTest: UIView {
+final class RegisterNormalPlatformView: UIView {
     
     //MARK: - set Properties
 
@@ -39,7 +39,7 @@ final class RegisterNormalPlatFormTest: UIView {
     
     private func setUI() {
         titleLabel.do {
-            $0.setText("작품 보러가기")
+            $0.setText(StringLiterals.Register.Normal.SectionTitle.platform)
         }
         
         platformCollectionView.do {
@@ -65,7 +65,7 @@ final class RegisterNormalPlatFormTest: UIView {
     
     private func setLayout() {
         titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(35)
+            $0.top.equalToSuperview()
             $0.leading.trailing.equalToSuperview()
         }
         
@@ -89,6 +89,5 @@ final class RegisterNormalPlatFormTest: UIView {
         if self.platformList.count == 0 {
             self.removeFromSuperview()
         }
-        print(platforms)
     }
 }

@@ -77,7 +77,7 @@ final class HomeSearchButtonView: UIView {
             $0.leading.equalTo(searchImageView.snp.leading)
             $0.top.equalTo(searchImageView.snp.bottom).offset(10)
             $0.height.equalTo(2)
-            $0.width.equalTo(224)
+            $0.trailing.equalToSuperview()
         }
     }
 }

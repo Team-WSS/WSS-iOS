@@ -37,9 +37,6 @@ final class LibraryDescriptionView: UIView {
         self.backgroundColor = .Gray50
         
         libraryNovelCountLabel.do {
-            // 추후 뺄 예정
-            $0.text = "43개"
-            
             $0.font = .Label1
             $0.textColor = .Gray200
         }

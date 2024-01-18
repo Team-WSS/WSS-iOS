@@ -26,7 +26,6 @@ final class RegisterNormalViewController: UIViewController {
     private var novelTitle: String = ""
     let localData: EditNovelResult?
     
-    
     // RxSwift
     private var isNew = BehaviorRelay<Bool>(value: true)
     private let disposeBag = DisposeBag()
@@ -77,15 +76,17 @@ final class RegisterNormalViewController: UIViewController {
         super.viewDidLoad()
         
         setUI()
-        setNavigationBar()
         getNovel()
         register()
         delegate()
         bindRx()
+        setNavigationBar()
     }
     
     // MARK: - Custom Method
     private func setNavigationBar() {
+        rootView.divider.isHidden = true
+        self.navigationController?.isNavigationBarHidden = false
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.backButton)
         self.navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.font: UIFont.Title2,
@@ -188,24 +189,21 @@ final class RegisterNormalViewController: UIViewController {
     }
     
     private func register() {
-        rootView.novelSummaryView.platFormTest.platformCollectionView.register(NovelDetailInfoPlatformCollectionViewCell.self, forCellWithReuseIdentifier: "NovelDetailInfoPlatformCollectionViewCell")
+        rootView.novelSummaryView.platformView.platformCollectionView.register(NovelDetailInfoPlatformCollectionViewCell.self, forCellWithReuseIdentifier: "NovelDetailInfoPlatformCollectionViewCell")
     }
     
     private func delegate() {
-        rootView.novelSummaryView.platFormTest.platformCollectionView.dataSource = self
-        rootView.novelSummaryView.platFormTest.platformCollectionView.delegate = self
+        rootView.novelSummaryView.platformView.platformCollectionView.dataSource = self
+        rootView.novelSummaryView.platformView.platformCollectionView.delegate = self
     }
     
     private func bindData(_ data: NovelResult) {
         if let newNovelResult = data.newNovelResult {
             isNew.accept(true)
             bindNewData(newNovelResult)
-            print("New!")
-            print(newNovelResult.novelID)
         } else if let editNovelResult = data.editNovelResult {
             isNew.accept(false)
             bindUserData(editNovelResult)
-            print("Edit!")
         }
     }
     
@@ -215,8 +213,10 @@ final class RegisterNormalViewController: UIViewController {
         rootView.infoWithRatingView.bindData(coverImage: newData.novelImg,
                                              title: newData.novelTitle,
                                              author: newData.novelAuthor)
-        rootView.novelSummaryView.bindData(plot: newData.novelDescription, genre: newData.novelGenre, platforms: newData.platforms)
-        self.rootView.novelSummaryView.platFormTest.platformCollectionView.reloadData()
+        rootView.novelSummaryView.bindData(plot: newData.novelDescription, 
+                                           genre: newData.novelGenre,
+                                           platforms: newData.platforms)
+        self.rootView.novelSummaryView.platformView.platformCollectionView.reloadData()
     }
     
     private func bindUserData(_ userData: EditNovelResult) {
@@ -249,8 +249,10 @@ final class RegisterNormalViewController: UIViewController {
             dateToString.date(from: end) ?? Date()
         )
         
-        rootView.novelSummaryView.bindData(plot: userData.userNovelDescription, genre: userData.userNovelGenre, platforms: userData.platforms)
-        self.rootView.novelSummaryView.platFormTest.platformCollectionView.reloadData()
+        rootView.novelSummaryView.bindData(plot: userData.userNovelDescription, 
+                                           genre: userData.userNovelGenre,
+                                           platforms: userData.platforms)
+        self.rootView.novelSummaryView.platformView.platformCollectionView.reloadData()
     }
     
     private func bindRx() {
@@ -268,7 +270,6 @@ final class RegisterNormalViewController: UIViewController {
             .disposed(by: disposeBag)
         
         rootView.infoWithRatingView.starRatingView.do { view in
-            
             view.starImageViews.enumerated().forEach { index, imageView in
                 
                 // StarRating 탭 제스처 인식기 생성 및 설정
@@ -364,6 +365,8 @@ final class RegisterNormalViewController: UIViewController {
                     view.customDatePicker.endDate = self.endDate.value
                 }
                 view.customDatePicker.isHidden = !show
+                owner.navigationController?.isNavigationBarHidden = show
+                owner.rootView.divider.isHidden = show
             })
             .disposed(by: disposeBag)
             
@@ -371,7 +374,6 @@ final class RegisterNormalViewController: UIViewController {
                 .subscribe(with: self, onNext: { owner, status in
                     let next = !self.showDatePicker.value
                     self.showDatePicker.accept(next)
-                    print(next)
                 })
                 .disposed(by: disposeBag)
             
@@ -386,12 +388,16 @@ final class RegisterNormalViewController: UIViewController {
             
             startDate.asObservable()
                 .map { self.dateToString.string(from: $0) }
-                .bind(to: view.readDateView.datePickerButton.startDateLabel.rx.text)
+                .subscribe(with: self, onNext: { owner, text in
+                    view.readDateView.datePickerButton.setStartDateText(text: text)
+                })
                 .disposed(by: disposeBag)
             
             endDate.asObservable()
                 .map { self.dateToString.string(from: $0) }
-                .bind(to: view.readDateView.datePickerButton.endDateLabel.rx.text)
+                .subscribe(with: self, onNext: { owner, text in
+                    view.readDateView.datePickerButton.setEndDateText(text: text)
+                })
                 .disposed(by: disposeBag)
             
             readStatus
@@ -405,38 +411,30 @@ final class RegisterNormalViewController: UIViewController {
             .subscribe(with: self, onNext: { _,_ in
                 if self.isNew.value {
                     self.postUserNovel()
-                    
-                    
                 } else {
                     self.patchUserNovel()
-//                    if let tabBarController = owner.tabBarController as? WSSTabBarController {
-//                        tabBarController.
-//                        tabBarController.tabBar.isHidden = true
-//                        tabBarController.shadowView.isHidden = true
-//                    }
-                    
                 }
-                
+                self.rootView.registerButton.isEnabled = false
             })
             .disposed(by: disposeBag)
         
         isNew.subscribe(with: self, onNext: { owner, status in
             if status {
-                self.rootView.registerButton.setTitle(StringLiterals.Register.Normal.new, for: .normal)
+                self.rootView.registerButton.setTitle(StringLiterals.Register.Normal.RegisterButton.new, for: .normal)
             } else {
-                self.rootView.registerButton.setTitle(StringLiterals.Register.Normal.edit, for: .normal)
+                self.rootView.registerButton.setTitle(StringLiterals.Register.Normal.RegisterButton.edit, for: .normal)
             }
         })
         .disposed(by: disposeBag)
         
-        rootView.novelSummaryView.platFormTest.platformCollectionView.rx.observe(CGSize.self, "contentSize")
+        rootView.novelSummaryView.platformView.platformCollectionView.rx.observe(CGSize.self, "contentSize")
             .map { $0?.height ?? 0 }
             .bind(to: platformCollectionViewHeight)
             .disposed(by: disposeBag)
         
         platformCollectionViewHeight
             .subscribe(onNext: { height in
-                self.rootView.novelSummaryView.platFormTest.updateCollectionViewHeight(height: height)
+                self.rootView.novelSummaryView.platformView.updateCollectionViewHeight(height: height)
             })
             .disposed(by: disposeBag)
     }
@@ -448,20 +446,21 @@ final class RegisterNormalViewController: UIViewController {
             navigationController?.navigationBar.shadowImage = UIImage()
             navigationController?.navigationBar.backgroundColor = .white
             navigationItem.title = self.novelTitle
+            rootView.divider.isHidden = false
         } else {
             rootView.statusBarView.backgroundColor = .clear
             navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
             navigationController?.navigationBar.shadowImage = nil
             navigationController?.navigationBar.backgroundColor = .clear
             navigationItem.title = ""
+            rootView.divider.isHidden = true
         }
     }
 }
 
 extension RegisterNormalViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print("Hello")
-        return rootView.novelSummaryView.platFormTest.platformList.count
+        return rootView.novelSummaryView.platformView.platformList.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -471,7 +470,7 @@ extension RegisterNormalViewController: UICollectionViewDataSource {
         ) as? NovelDetailInfoPlatformCollectionViewCell else {return UICollectionViewCell()}
         
         cell.bindData(
-            platform: rootView.novelSummaryView.platFormTest.platformList[indexPath.item].platformName
+            platform: rootView.novelSummaryView.platformView.platformList[indexPath.item].platformName
         )
         
         return cell
@@ -480,7 +479,7 @@ extension RegisterNormalViewController: UICollectionViewDataSource {
 
 extension RegisterNormalViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let url = URL(string: rootView.novelSummaryView.platFormTest.platformList[indexPath.item].platformUrl) {
+        if let url = URL(string: rootView.novelSummaryView.platformView.platformList[indexPath.item].platformUrl) {
             UIApplication.shared.open(url, options: [:])
         }
     }
@@ -490,7 +489,7 @@ extension RegisterNormalViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var text: String?
         
-        text = rootView.novelSummaryView.platFormTest.platformList[indexPath.item].platformName
+        text = rootView.novelSummaryView.platformView.platformList[indexPath.item].platformName
         
         guard let unwrappedText = text else {
             return CGSize(width: 0, height: 0)

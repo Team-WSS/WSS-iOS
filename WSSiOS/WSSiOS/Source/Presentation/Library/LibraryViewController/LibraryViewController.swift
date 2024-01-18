@@ -17,6 +17,7 @@ final class LibraryViewController: UIViewController {
     //MARK: - Properties
     
     private let disposeBag = DisposeBag()
+    private var tabBarList = Observable.just(["전체", "읽음", "읽는 중", "하차", "읽고 싶음"])
     private let readStatusList = ["ALL", "FINISH", "READING", "DROP", "WISH"]
     private let sortTypeList = ["NEWEST", "OLDEST"]
     
@@ -72,13 +73,6 @@ final class LibraryViewController: UIViewController {
             navigationBar.titleTextAttributes = titleTextAttributes
         }
     }
-    override func viewWillAppear(_ animated: Bool) {
-        if let tabBarController = self.tabBarController as? WSSTabBarController {
-            tabBarController.tabBar.isHidden = false
-            tabBarController.shadowView.isHidden = false
-        }
-        super.viewWillAppear(animated)
-    }
     
     //MARK: - Custom TabBar
     
@@ -87,21 +81,26 @@ final class LibraryViewController: UIViewController {
             .register(LibraryTabCollectionViewCell.self,
                       forCellWithReuseIdentifier: "LibraryTabCollectionViewCell")
         
-        dummyLibraryTabTitle.bind(to: libraryPageBar.libraryTabCollectionView.rx.items(
+        tabBarList.bind(to: libraryPageBar.libraryTabCollectionView.rx.items(
             cellIdentifier: "LibraryTabCollectionViewCell",
             cellType: LibraryTabCollectionViewCell.self)) { (row, element, cell) in
-                cell.libraryTabButton.setTitle(element, for: .normal)
-                cell.libraryTabButton.rx.tap
-                    .map { row }
-                    .bind(to: self.libraryPageBar.selectedTabIndex)
-                    .disposed(by: cell.disposeBag)
+                cell.libraryTabLabel.text = element
             }
+            .disposed(by: disposeBag)
+        
+        libraryPageBar.libraryTabCollectionView.rx.itemSelected
+            .map { indexPath in
+                return indexPath.row
+            }
+            .bind(to: self.libraryPageBar.selectedTabIndex)
             .disposed(by: disposeBag)
         
         Observable.just(Void())
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] in
-                self?.libraryPageBar.libraryTabCollectionView.selectItem(at: IndexPath(item: 0, section: 0), animated: true, scrollPosition: [])
+                self?.libraryPageBar.libraryTabCollectionView.selectItem(at: IndexPath(item: 0, section: 0),
+                                                                         animated: true,
+                                                                         scrollPosition: [])
                 self?.libraryPageBar.selectedTabIndex.onNext(0)
             })
             .disposed(by: disposeBag)
@@ -119,9 +118,10 @@ final class LibraryViewController: UIViewController {
                     userNovelService: DefaultUserNovelService()),
                 readStatusData: readStatusList[i],
                 lastUserNovelIdData: 999999,
-                sizeData: 3,
+                sizeData: 20,
                 sortTypeData: sortTypeList[0])
             
+            viewController.delegate = self
             libraryPages.append(viewController)
         }
         
@@ -154,6 +154,8 @@ final class LibraryViewController: UIViewController {
     }
 }
 
+//MARK: - set PageController
+
 extension LibraryViewController : UIPageViewControllerDelegate {
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) { 
         if completed, let currentViewController = pageViewController.viewControllers?.first, let index = libraryPages.firstIndex(of: currentViewController as! LibraryBaseViewController) {
@@ -175,6 +177,12 @@ extension LibraryViewController: UIPageViewControllerDataSource {
             return libraryPages[currentIndex + 1]
         }
         return nil
+    }
+}
+
+extension LibraryViewController: NovelCountDelegate {
+    func sendData(data: Int) {
+        libraryDescriptionView.libraryNovelCountLabel.text = "\(data)개"
     }
 }
 
