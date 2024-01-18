@@ -38,9 +38,15 @@ final class SearchViewController: UIViewController {
         self.view = rootView
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        rootView.headerView.searchBar.becomeFirstResponder()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         setUI()
         setDelegate()
         setNavigationBar()
@@ -49,6 +55,11 @@ final class SearchViewController: UIViewController {
         bindDataToSearchCollectionView()
         setCollectionViewLayout()
         setSearchAction()
+    }
+    
+    // 화면 터치 시 키보드 내려감
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
     }
     
     //MARK: - set UI
@@ -171,4 +182,9 @@ final class SearchViewController: UIViewController {
 
 //MARK: - Extensions
 
-extension SearchViewController: UISearchBarDelegate {}
+extension SearchViewController: UISearchBarDelegate {
+    // 키보드 내 Search버튼 클릭 시 키보드 내려감
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        rootView.headerView.searchBar.resignFirstResponder()
+    }
+}
