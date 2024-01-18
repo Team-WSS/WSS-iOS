@@ -114,6 +114,10 @@ final class LibraryCollectionViewCell: UICollectionViewCell {
             novelRatingLabel.isHidden = true
             ratingStarImage.isHidden = true
         }
+        else {
+            novelRatingLabel.isHidden = false
+            ratingStarImage.isHidden = false
+        }
         
         novelRatingLabel.text = String(data.userNovelRating)
     }
