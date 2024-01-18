@@ -26,6 +26,7 @@ final class RecordViewController: UIViewController {
     //MARK: - UI Components
     
     private let rootView = RecordResultView()
+    private let emptyView = RecordEmptyView()
     
     init(memoRepository: DefaultMemoRepository) {
         self.memoRepository = memoRepository
@@ -119,6 +120,13 @@ final class RecordViewController: UIViewController {
                 owner.rootView.alignmentView.isHidden = true
             })
             .disposed(by: disposeBag)
+        
+        emptyView.recordButton
+            .rx.tap
+            .subscribe(with: self, onNext: { owner, event in
+                owner.navigationController?.tabBarController?.selectedIndex = 1
+            })
+            .disposed(by: self.disposeBag)
     }
     
     func getDataFromAPI(disposeBag: DisposeBag,
@@ -172,22 +180,16 @@ final class RecordViewController: UIViewController {
         )
         .observe(on: MainScheduler.instance)
         .subscribe(with: self, onNext: { owner, event in
+            
             owner.rootView.headerView.recordCountLabel.text = "\(event.0)개"
             if event.0 == 0 {
-                let emptyView = RecordEmptyView()
-                emptyView.recordButton
-                    .rx.tap
-                    .subscribe(with: self, onNext: { owner, event in
-                        owner.navigationController?.tabBarController?.selectedIndex = 1
-                    })
-                    .disposed(by: self.disposeBag)
-                
-                owner.rootView.addSubview(emptyView)
-                emptyView.snp.makeConstraints {
+                owner.rootView.addSubview(self.emptyView)
+                self.emptyView.snp.makeConstraints {
                     $0.edges.equalToSuperview()
                 }
             }
             else {
+                owner.emptyView.removeFromSuperview()
                 owner.recordMemoListRelay.accept(event.1)
             }
         })

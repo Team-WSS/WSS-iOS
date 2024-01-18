@@ -796,7 +796,6 @@
 		A1147A7B2B50634100141692 /* Record */ = {
 			isa = PBXGroup;
 			children = (
-				A1493BC52B552154004DD84A /* RecordViewModel */,
 				A1147A7D2B50635800141692 /* RecordView */,
 				A1147A7C2B50634700141692 /* RecordViewController */,
 			);
@@ -915,13 +914,6 @@
 				A1A1F9D32B4873B500705F44 /* SearchEmptyView.swift */,
 			);
 			path = SearchAssistantView;
-			sourceTree = "<group>";
-		};
-		A1493BC52B552154004DD84A /* RecordViewModel */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = RecordViewModel;
 			sourceTree = "<group>";
 		};
 		A14EDBBD2B4F05DD00906957 /* HomeCell */ = {
