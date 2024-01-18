@@ -106,10 +106,12 @@ final class MyPageChangeNicknameViewController: UIViewController {
                 if let text = text {
                     var textCount = text.count
                     if textCount > 10 {
-                        textCount = 10
+                        owner.rootView.countNicknameLabel.text = "10/10"
                     }
+                    else {
                         owner.rootView.countNicknameLabel.text = "\(textCount)/10"
                         owner.newNickName = text
+                    }
                 }
             })
             .disposed(by: disposeBag)
@@ -149,8 +151,7 @@ final class MyPageChangeNicknameViewController: UIViewController {
 extension MyPageChangeNicknameViewController {
     private func limitNum(_ text: String) {
         if text.count > 10 {
-            let index = text.index(text.startIndex, offsetBy: 9)
-            self.rootView.changeNicknameTextField.text = String(text[..<index])
+            self.rootView.changeNicknameTextField.text = String(text.prefix(10))
         }
     }
 }
