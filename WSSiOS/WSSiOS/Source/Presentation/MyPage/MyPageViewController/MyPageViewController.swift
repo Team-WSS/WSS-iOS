@@ -192,8 +192,9 @@ extension MyPageViewController {
                     tabBarController.shadowView.isHidden = true
                 }
                 
-                let changeNicknameViewController = MyPageChangeNicknameViewController(userRepository: DefaultUserRepository(
-                    userService: DefaultUserService()))
+                let changeNicknameViewController = MyPageChangeNicknameViewController(userNickName: owner.userNickName,
+                                                                                      userRepository: DefaultUserRepository(
+                                                                                        userService: DefaultUserService()))
                 changeNicknameViewController.bindData(self.userNickName)
                 owner.navigationController?.pushViewController(changeNicknameViewController, animated: true)
             })

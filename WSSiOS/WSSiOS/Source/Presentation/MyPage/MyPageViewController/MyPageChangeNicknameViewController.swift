@@ -14,12 +14,13 @@ final class MyPageChangeNicknameViewController: UIViewController {
     
     //MARK: - Set Properties
     
-    private var userNickName = ""
+    private var userNickName : String
     private var newNickName = ""
     private let disposeBag = DisposeBag()
     private let userRepository : UserRepository
     
-    init(userRepository: UserRepository) {
+    init(userNickName: String, userRepository: UserRepository) {
+        self.userNickName = userNickName
         self.userRepository = userRepository
         super.init(nibName: nil, bundle: nil)
     }
@@ -112,6 +113,15 @@ final class MyPageChangeNicknameViewController: UIViewController {
                         owner.rootView.countNicknameLabel.text = "\(textCount)/10"
                         owner.newNickName = text
                     }
+                    
+                    print("🎈",text)
+                    print("🧩",owner.userNickName)
+                    if text == owner.userNickName || text == "" {
+                        owner.completeButton.setTitleColor(.Gray200, for: .normal)
+                    }
+                    else {
+                        owner.completeButton.setTitleColor(.Primary100, for: .normal)
+                    }
                 }
             })
             .disposed(by: disposeBag)
@@ -126,7 +136,6 @@ final class MyPageChangeNicknameViewController: UIViewController {
             .bind(with: self, onNext: { owner, _ in
                 owner.rootView.changeNicknameTextField.text = ""
                 owner.rootView.countNicknameLabel.text = "0/10"
-                owner.completeButton.setTitleColor(.Gray200, for: .normal)
             })
             .disposed(by: disposeBag)
     }
