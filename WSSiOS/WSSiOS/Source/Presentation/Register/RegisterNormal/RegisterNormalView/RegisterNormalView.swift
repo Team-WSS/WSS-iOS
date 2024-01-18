@@ -18,6 +18,7 @@ final class RegisterNormalView: UIView {
     let pageScrollView = UIScrollView()
     private let pageContentView = UIStackView()
     
+    let divider = UIView()
     let bannerImageView = RegisterNormalBannerImageView()
     let infoWithRatingView = RegisterNormalNovelInfoWithRatingView()
     let readStatusView = RegisterNormalReadStatusView()
@@ -50,7 +51,9 @@ final class RegisterNormalView: UIView {
         self.do {
             $0.backgroundColor = .white
         }
-        
+        divider.do {
+            $0.backgroundColor = .Gray70
+        }
         statusBarView.do {
             let scenes = UIApplication.shared.connectedScenes
             let windowScene = scenes.first as? UIWindowScene
@@ -80,6 +83,7 @@ final class RegisterNormalView: UIView {
     
     private func setHieararchy() {
         self.addSubviews(pageScrollView,
+                         divider,
                          statusBarView,
                          registerButtonGradient,
                          registerButtonBackgroundView,
@@ -109,6 +113,12 @@ final class RegisterNormalView: UIView {
                 $0.setCustomSpacing(-154, after: bannerImageView)
                 $0.setCustomSpacing(56, after: infoWithRatingView)
             }
+        }
+        
+        divider.snp.makeConstraints {
+            $0.top.equalTo(safeAreaLayoutGuide.snp.top)
+            $0.height.equalTo(0.7)
+            $0.horizontalEdges.equalToSuperview()
         }
         
         registerButton.snp.makeConstraints {

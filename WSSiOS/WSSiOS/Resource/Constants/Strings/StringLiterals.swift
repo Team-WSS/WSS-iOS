@@ -29,11 +29,12 @@ enum StringLiterals {
                 static let start = "시작 날짜"
                 static let end = "종료 날짜"
             }
-            enum SectinoTitle {
+            enum SectionTitle {
                 static let readStatus = "읽기 상태 *"
                 static let readDate = "읽은 날짜"
                 static let plot = "작품 소개"
                 static let genre = "장르"
+                static let platform = "작품 보러가기"
             }
             
             enum RegisterButton {

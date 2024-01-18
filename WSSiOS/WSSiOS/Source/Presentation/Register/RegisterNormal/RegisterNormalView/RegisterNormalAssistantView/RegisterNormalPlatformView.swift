@@ -39,7 +39,7 @@ final class RegisterNormalPlatformView: UIView {
     
     private func setUI() {
         titleLabel.do {
-            $0.setText("작품 보러가기")
+            $0.setText(StringLiterals.Register.Normal.SectionTitle.platform)
         }
         
         platformCollectionView.do {
@@ -89,6 +89,5 @@ final class RegisterNormalPlatformView: UIView {
         if self.platformList.count == 0 {
             self.removeFromSuperview()
         }
-        print(platforms)
     }
 }
