@@ -50,4 +50,9 @@ enum StringLiterals {
             static let returnHome = "홈으로 돌아가기"
         }
     }
+    
+    enum Library {
+        static let empty = "아직 서재가 비어있네요!"
+        static let register = "웹소설 등록하기"
+    }
 }

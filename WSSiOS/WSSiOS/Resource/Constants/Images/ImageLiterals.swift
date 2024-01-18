@@ -82,6 +82,10 @@ enum ImageLiterals {
             static var right: UIImage{ .load(named: "icRight")}
         }
         
+        enum Library {
+            static var register: UIImage{ .load(named: "icLibraryEmpty")}
+        }
+        
         static var calender: UIImage{ .load(named: "icCalendar")}
         static var dropDown: UIImage{ .load(named: "icDropDown")}
         static var linkPlatform: UIImage{ .load(named: "icLinkPlatform")}
