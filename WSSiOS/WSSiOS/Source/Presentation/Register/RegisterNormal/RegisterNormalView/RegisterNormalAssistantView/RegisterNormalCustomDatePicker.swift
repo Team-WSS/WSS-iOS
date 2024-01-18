@@ -222,11 +222,6 @@ final class RegisterNormalCustomDatePicker: UIButton {
             $0.centerX.equalToSuperview()
         }
         
-        datePicker.snp.makeConstraints {
-            $0.horizontalEdges.equalToSuperview().inset(20)
-            $0.bottom.equalTo(completeButton.snp.top).offset(-35)
-        }
-        
         completeButton.snp.makeConstraints {
             $0.bottom.equalTo(safeAreaLayoutGuide).inset(10)
         }
