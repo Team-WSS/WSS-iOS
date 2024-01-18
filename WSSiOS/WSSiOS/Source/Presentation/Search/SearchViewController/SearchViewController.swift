@@ -57,7 +57,6 @@ final class SearchViewController: UIViewController {
         setSearchAction()
     }
     
-    // 화면 터치 시 키보드 내려감
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
@@ -183,7 +182,6 @@ final class SearchViewController: UIViewController {
 //MARK: - Extensions
 
 extension SearchViewController: UISearchBarDelegate {
-    // 키보드 내 Search버튼 클릭 시 키보드 내려감
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         rootView.headerView.searchBar.resignFirstResponder()
     }
