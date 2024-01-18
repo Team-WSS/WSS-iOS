@@ -20,8 +20,9 @@ final class LibraryBaseViewController: UIViewController {
     private let lastUserNovelIdData: Int
     private let sizeData: Int
     private let sortTypeData: String
+    private var novelList = [UserNovelListDetail]()
     
-    private var novelListRelay = BehaviorRelay<[UserNovelListDetail]>(value: [])
+    private var novelListRelay = PublishRelay<[UserNovelListDetail]>()
     
     init(userNovelListRepository: DefaultUserNovelRepository,
          readStatusData: String,
@@ -78,6 +79,37 @@ final class LibraryBaseViewController: UIViewController {
                                                 forCellWithReuseIdentifier: "LibraryCollectionViewCell")
     }
     
+    private func bindColletionView() {
+        novelListRelay.bind(to: rootView.libraryCollectionView.rx.items(
+            cellIdentifier: "LibraryCollectionViewCell",
+            cellType: LibraryCollectionViewCell.self)) { [weak self] (row, element, cell) in
+                guard let self = self else { return }
+                
+                cell.bindData(element)
+            }
+            .disposed(by: disposeBag)
+        
+        novelListRelay
+            .subscribe(onNext: { [weak self] list in
+                self?.novelList = list
+            })
+            .disposed(by: disposeBag)
+        
+        rootView.libraryCollectionView.rx.itemSelected
+            .observe(on: MainScheduler.instance)
+            .map { [weak self] indexPath in
+                return self?.novelList[indexPath.row]
+            }
+            .compactMap { $0 }
+            .subscribe(onNext: { [weak self] selectedItem in
+                self?.navigationController?.pushViewController(NovelDetailViewController(
+                    repository: DefaultUserNovelRepository(
+                        userNovelService: DefaultUserNovelService()
+                    ), userNovelId: selectedItem.userNovelId), animated: true)
+            })
+            .disposed(by: disposeBag)
+    }
+    
     private func bindUserData(readStatus: String,
                               lastUserNovelId: Int,
                               size: Int,
@@ -93,28 +125,5 @@ final class LibraryBaseViewController: UIViewController {
             print(error)
         })
         .disposed(by: disposeBag)
-    }
-    
-    private func bindColletionView() {
-        novelListRelay.bind(to: rootView.libraryCollectionView.rx.items(
-            cellIdentifier: "LibraryCollectionViewCell",
-            cellType: LibraryCollectionViewCell.self)) { [weak self] (row, element, cell) in
-                guard let self = self else { return }
-                cell.bindData(element)
-                print("🤙🏻", element)
-                
-                //                cell.myPageAvaterButton.rx.tap
-            }
-            .disposed(by: disposeBag)
-        
-        rootView.libraryCollectionView.rx.itemSelected
-            .observe(on: MainScheduler.instance)
-            .map { indexPath in
-                return self.novelListRelay.value[indexPath.item]
-            }
-            .subscribe(onNext: { [weak self] selectedItem in
-                self?.navigationController?.pushViewController(NovelDetailViewController(repository: DefaultUserNovelRepository(userNovelService: DefaultUserNovelService()), userNovelId: selectedItem.userNovelId), animated: true)
-            })
-            .disposed(by: disposeBag)
     }
 }
