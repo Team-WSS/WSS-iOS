@@ -73,10 +73,7 @@ final class LibraryViewController: UIViewController {
         }
     }
     override func viewWillAppear(_ animated: Bool) {
-        if let tabBarController = self.tabBarController as? WSSTabBarController {
-            tabBarController.tabBar.isHidden = false
-            tabBarController.shadowView.isHidden = false
-        }
+        showTabBar()
         super.viewWillAppear(animated)
     }
     

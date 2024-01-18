@@ -47,10 +47,7 @@ final class HomeViewController: UIViewController {
         
         bindDataToUI()
         navigationController?.setNavigationBarHidden(true, animated: false)
-        if let tabBarController = self.tabBarController as? WSSTabBarController {
-            tabBarController.tabBar.isHidden = false
-            tabBarController.shadowView.isHidden = false
-        }
+        showTabBar()
     }
     
     override func viewDidLoad() {
@@ -120,10 +117,7 @@ final class HomeViewController: UIViewController {
                             userNovelService:DefaultUserNovelService()),
                         novelId: self.sosopickListRelay.value[indexPath.row].novelId)
                     
-                    if let tabBarController = self.tabBarController as? WSSTabBarController {
-                        tabBarController.tabBar.isHidden = true
-                        tabBarController.shadowView.isHidden = true
-                    }
+                    self.hideTabBar()
                     
                     RegisterNormalVC.hidesBottomBarWhenPushed = true
                     self.navigationController?.pushViewController(
@@ -147,10 +141,7 @@ final class HomeViewController: UIViewController {
     
     @objc private func pushSearchVC(_ sender: UITapGestureRecognizer) {
         let searchVC = SearchViewController(novelRepository: DefaultNovelRepository(novelService: DefaultNovelService()))
-        if let tabBarController = self.tabBarController as? WSSTabBarController {
-            tabBarController.tabBar.isHidden = true
-            tabBarController.shadowView.isHidden = true
-        }
+        hideTabBar()
         searchVC.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(searchVC, animated: true)
     }
