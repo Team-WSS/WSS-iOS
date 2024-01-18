@@ -92,9 +92,6 @@ final class LibraryViewController: UIViewController {
             .map { indexPath in
                 return indexPath.row
             }
-            .do(onNext: {IndexPathRow in
-                print(IndexPathRow)
-            })
             .bind(to: self.libraryPageBar.selectedTabIndex)
             .disposed(by: disposeBag)
         
