@@ -54,7 +54,6 @@ final class SearchHeaderView: UIView {
         }
     }
 
-    
     //MARK: - set Hierachy
     
     private func setHierachy() {
