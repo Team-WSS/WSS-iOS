@@ -56,7 +56,14 @@ final class RegisterSuccessViewController: UIViewController {
     
     func bindRx() {
         rootView.makeMemoButton.rx.tap.subscribe(with: self, onNext: { owner, _ in
-            owner.navigationController?.popToRootViewController(animated: true)
+            let tabBar = WSSTabBarController()
+            tabBar.selectedIndex = 1
+            let navigationController = UINavigationController(rootViewController: tabBar)
+            navigationController.isNavigationBarHidden = true
+            self.view.window?.rootViewController = navigationController
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                NotificationCenter.default.post(name: NSNotification.Name("ShowNovelMemo"), object: self.userNovelId)
+            }
         })
         .disposed(by: disposeBag)
         

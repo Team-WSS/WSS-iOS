@@ -228,14 +228,21 @@ extension LibraryViewController {
     private func addNotificationCenter() {
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(self.showNovelDetail(_:)),
-            name: NSNotification.Name("ShowNovelDetail"),
+            selector: #selector(self.showNovelInfo(_:)),
+            name: NSNotification.Name("ShowNovelInfo"),
+            object: nil
+        )
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.showNovelMemo(_:)),
+            name: NSNotification.Name("ShowNovelMemo"),
             object: nil
         )
     }
     
     @objc
-    func showNovelDetail(_ notification: Notification) {
+    func showNovelInfo(_ notification: Notification) {
         guard let userNovelId = notification.object as? Int else { return }
         self.navigationController?.pushViewController(NovelDetailViewController(
             repository: DefaultUserNovelRepository(
@@ -243,6 +250,18 @@ extension LibraryViewController {
             ),
             userNovelId: userNovelId,
             selectedMenu: 1
+        ), animated: true)
+    }
+    
+    @objc
+    func showNovelMemo(_ notification: Notification) {
+        guard let userNovelId = notification.object as? Int else { return }
+        self.navigationController?.pushViewController(NovelDetailViewController(
+            repository: DefaultUserNovelRepository(
+                userNovelService: DefaultUserNovelService()
+            ),
+            userNovelId: userNovelId,
+            selectedMenu: 0
         ), animated: true)
     }
 }
