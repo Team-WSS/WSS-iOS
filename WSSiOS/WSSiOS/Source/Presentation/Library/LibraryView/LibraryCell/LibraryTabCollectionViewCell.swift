@@ -21,7 +21,7 @@ final class LibraryTabCollectionViewCell: UICollectionViewCell {
     
     //MARK: - UI Components
     
-    public var libraryTabButton = UIButton()
+    public var libraryTabLabel = UILabel()
     
     //MARK: - Life Cycle
     
@@ -47,23 +47,23 @@ final class LibraryTabCollectionViewCell: UICollectionViewCell {
     //MARK: - Set UI
     
     private func setUI() {
-        libraryTabButton.do {
-            $0.setTitleColor(.Gray200, for: .normal)
-            $0.titleLabel?.font = .Body1
-            $0.layer.backgroundColor = UIColor.clear.cgColor
+        libraryTabLabel.do {
+            $0.textColor = .Gray200
+            $0.font = .Body1
+            $0.backgroundColor = .clear
         }
     }
     
     //MARK: - Set Hierachy
     
     private func setHierachy() {
-        self.addSubview(libraryTabButton)
+        self.addSubview(libraryTabLabel)
     }
     
     //MARK: - Set Layout
     
     private func setLayout() {
-        libraryTabButton.snp.makeConstraints() {
+        libraryTabLabel.snp.makeConstraints() {
             $0.edges.equalToSuperview()
         }
     }
@@ -71,6 +71,6 @@ final class LibraryTabCollectionViewCell: UICollectionViewCell {
     //MARK: - Select Case
     
     private func selectUI() {
-        libraryTabButton.titleLabel?.textColor = isSelected ? .Primary100 : .Gray200
+        libraryTabLabel.textColor = isSelected ? .Primary100 : .Gray200
     }
 }
