@@ -76,15 +76,16 @@ final class RegisterNormalViewController: UIViewController {
         super.viewDidLoad()
         
         setUI()
-        setNavigationBar()
         getNovel()
         register()
         delegate()
         bindRx()
+        setNavigationBar()
     }
     
     // MARK: - Custom Method
     private func setNavigationBar() {
+        rootView.divider.isHidden = true
         self.navigationController?.isNavigationBarHidden = false
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.backButton)
         self.navigationController?.navigationBar.titleTextAttributes = [
@@ -200,12 +201,9 @@ final class RegisterNormalViewController: UIViewController {
         if let newNovelResult = data.newNovelResult {
             isNew.accept(true)
             bindNewData(newNovelResult)
-            print("New!")
-            print(newNovelResult.novelID)
         } else if let editNovelResult = data.editNovelResult {
             isNew.accept(false)
             bindUserData(editNovelResult)
-            print("Edit!")
         }
     }
     
@@ -368,6 +366,7 @@ final class RegisterNormalViewController: UIViewController {
                 }
                 view.customDatePicker.isHidden = !show
                 owner.navigationController?.isNavigationBarHidden = show
+                owner.rootView.divider.isHidden = show
             })
             .disposed(by: disposeBag)
             
@@ -447,19 +446,20 @@ final class RegisterNormalViewController: UIViewController {
             navigationController?.navigationBar.shadowImage = UIImage()
             navigationController?.navigationBar.backgroundColor = .white
             navigationItem.title = self.novelTitle
+            rootView.divider.isHidden = false
         } else {
             rootView.statusBarView.backgroundColor = .clear
             navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
             navigationController?.navigationBar.shadowImage = nil
             navigationController?.navigationBar.backgroundColor = .clear
             navigationItem.title = ""
+            rootView.divider.isHidden = true
         }
     }
 }
 
 extension RegisterNormalViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print("Hello")
         return rootView.novelSummaryView.platformView.platformList.count
     }
     

@@ -48,11 +48,11 @@ final class RegisterNormalNovelSummaryView: UIView {
         }
         
         plotTitleLabel.do {
-            $0.setText(StringLiterals.Register.Normal.SectinoTitle.plot)
+            $0.setText(StringLiterals.Register.Normal.SectionTitle.plot)
         }
         
         genreTitleLabel.do {
-            $0.setText(StringLiterals.Register.Normal.SectinoTitle.genre)
+            $0.setText(StringLiterals.Register.Normal.SectionTitle.genre)
         }
     }
     
@@ -99,5 +99,6 @@ final class RegisterNormalNovelSummaryView: UIView {
     func bindData(plot: String?, genre: String?, platforms: [UserNovelPlatform]) {
         setText(of: plotLabel, text: plot)
         setText(of: genreLabel, text: genre)
+        platformView.bindData(platforms: platforms)
     }
 }
