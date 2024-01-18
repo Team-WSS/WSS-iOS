@@ -53,6 +53,8 @@ final class RecordViewController: UIViewController {
         
         setUI()
         registerCell()
+        setAction()
+        
         bindDataToRecordTableView()
         setNavigationBar()
     }
@@ -61,6 +63,8 @@ final class RecordViewController: UIViewController {
         self.view.do {
             $0.backgroundColor = .White
         }
+        
+        rootView.headerView.isUserInteractionEnabled = true
     }
     
     private func setNavigationBar() {
@@ -79,6 +83,15 @@ final class RecordViewController: UIViewController {
     
     private func registerCell() {
         rootView.recordTableView.register(RecordTableViewCell.self, forCellReuseIdentifier: RecordTableViewCell.identifier)
+    }
+    
+    private func setAction() {
+        rootView.headerView.headerAlignmentButton
+            .rx.tap
+            .bind(with: self, onNext: { owner, event in
+                owner.rootView.alignmentView.isHidden.toggle()
+            })
+            .disposed(by: disposeBag)
     }
     
     func getDataFromAPI(disposeBag: DisposeBag, completion: @escaping (Int, [RecordMemo]) -> Void) {

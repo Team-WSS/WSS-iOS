@@ -7,12 +7,7 @@
 
 import UIKit
 
-final class RecordHeaderAlignmentView: UIView {
-    
-    //MARK: - UI Components
-    private let stackView = UIStackView()
-    private let recordAlignmentLabel = UILabel()
-    private let dropDownImageView = UIImageView()
+final class RecordHeaderAlignmentButton: UIButton {
     
     // MARK: - Life Cycle
     
@@ -20,8 +15,6 @@ final class RecordHeaderAlignmentView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
-        setLayout()
     }
     
     required init?(coder: NSCoder) {
@@ -31,35 +24,13 @@ final class RecordHeaderAlignmentView: UIView {
     //MARK: - set UI
     
     private func setUI() {
-        stackView.do {
-            $0.axis = .horizontal
-            $0.spacing = 8
-        }
-        
-        recordAlignmentLabel.do {
-            $0.text = "최신순"
-            $0.font = .Label1
-            $0.textColor = .Gray300
-        }
-        
-        dropDownImageView.do {
-            $0.image = ImageLiterals.icon.dropDown
-        }
-    }
-    
-    //MARK: - set Hierachy
-    
-    private func setHierachy() {
-        self.addSubview(stackView)
-        stackView.addArrangedSubviews(recordAlignmentLabel,
-                                      dropDownImageView)
-    }
-    
-    //MARK: - set Layout
-    
-    private func setLayout() {
-        stackView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+        self.do {
+            $0.setTitle("최신 순", for: .normal)
+            $0.setTitleColor(.Gray300, for: .normal)
+            $00.titleLabel?.font = .Label1
+            $0.setImage(ImageLiterals.icon.dropDown, for: .normal)
+            $0.semanticContentAttribute = .forceRightToLeft
+            $0.configuration?.contentInsets = .init(top: 0, leading: 8, bottom: 0, trailing: 0)
         }
     }
 }
