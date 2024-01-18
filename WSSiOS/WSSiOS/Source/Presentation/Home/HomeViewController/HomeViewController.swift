@@ -23,6 +23,10 @@ final class HomeViewController: UIViewController {
     private var sosopickListRelay = BehaviorRelay<[SosopickNovel]>(value: [])
     private let disposeBag = DisposeBag()
     
+    let lotties = [[LottieLiterals.Home.Sosocat.bread, LottieLiterals.Home.Sosocat.tail],
+                   [LottieLiterals.Home.Regressor.greeting, LottieLiterals.Home.Regressor.sword],
+                   [LottieLiterals.Home.Villainess.fan, LottieLiterals.Home.Villainess.tea]]
+    
     //MARK: - UI Components
     
     private let rootView = HomeView()
@@ -155,11 +159,7 @@ final class HomeViewController: UIViewController {
         searchVC.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(searchVC, animated: true)
     }
-    
-    let lotties = [[LottieLiterals.Home.Sosocat.bread, LottieLiterals.Home.Sosocat.tail],
-                   [LottieLiterals.Home.Regressor.greeting, LottieLiterals.Home.Regressor.sword],
-                   [LottieLiterals.Home.Villainess.fan, LottieLiterals.Home.Villainess.tea]]
-    
+
     private func getLottie(avatarId: Int) -> LottieAnimationView {
         let random = (0...1).randomElement() ?? 0
         return lotties[avatarId-1][random]
