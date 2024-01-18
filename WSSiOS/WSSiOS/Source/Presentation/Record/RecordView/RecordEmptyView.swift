@@ -18,7 +18,7 @@ final class RecordEmptyView: UIView {
     private let stackView = UIStackView()
     private let registerPlusImageView = UIImageView()
     private let recordEmptyDescriptionLabel = UILabel()
-    private let recordButton = UIButton()
+    let recordButton = UIButton()
     
     // MARK: - Life Cycle
     
@@ -67,7 +67,7 @@ final class RecordEmptyView: UIView {
             var config = UIButton.Configuration.filled()
             config.baseBackgroundColor = .Primary50
             config.baseForegroundColor = .Primary100
-            var titleAttr = AttributedString.init("웹소설 등록하기")
+            var titleAttr = AttributedString.init("웹소설 기록하기")
             titleAttr.font = UIFont.Title1
             config.attributedTitle = titleAttr
             config.background.cornerRadius = 12

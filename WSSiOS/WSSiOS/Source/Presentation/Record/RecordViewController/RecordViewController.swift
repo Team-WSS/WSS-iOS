@@ -41,6 +41,7 @@ final class RecordViewController: UIViewController {
         super.viewWillAppear(animated)
         
         bindDataToUI()
+        
         if let tabBarController = self.tabBarController as? WSSTabBarController {
             tabBarController.tabBar.isHidden = false
             tabBarController.shadowView.isHidden = false
@@ -106,9 +107,9 @@ final class RecordViewController: UIViewController {
         rootView.recordTableView
             .rx
             .itemSelected
-                .subscribe(onNext:{ indexPath in
-                    self.navigationController?.pushViewController(MemoReadViewController(repository: DefaultMemoRepository(memoService: DefaultMemoService()), memoId: self.recordMemoListRelay.value[indexPath.row].id) , animated: true)
-                }).disposed(by: disposeBag)
+            .subscribe(onNext:{ indexPath in
+                self.navigationController?.pushViewController(MemoReadViewController(repository: DefaultMemoRepository(memoService: DefaultMemoService()), memoId: self.recordMemoListRelay.value[indexPath.row].id) , animated: true)
+            }).disposed(by: disposeBag)
     }
     
     private func bindDataToUI() {
@@ -128,7 +129,14 @@ final class RecordViewController: UIViewController {
         .subscribe(with: self, onNext: { owner, event in
             owner.rootView.headerView.recordCountLabel.text = "\(event.0)개"
             if event.0 == 0 {
-                owner.view = RecordEmptyView()
+                let emptyView = RecordEmptyView()
+                emptyView.recordButton
+                    .rx.tap
+                    .subscribe(with: self, onNext: { owner, event in
+                        owner.navigationController?.tabBarController?.selectedIndex = 1
+                    })
+                    .disposed(by: self.disposeBag)
+                owner.view = emptyView
             }
             else {
                 owner.recordMemoListRelay.accept(event.1)
