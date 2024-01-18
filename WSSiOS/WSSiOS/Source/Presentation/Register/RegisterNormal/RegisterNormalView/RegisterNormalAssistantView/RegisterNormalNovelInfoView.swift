@@ -40,6 +40,18 @@ final class RegisterNormalNovelInfoView: UIView {
             $0.spacing = 6
             $0.alignment = .center
         }
+        
+        novelTitleLabel.do {
+            // 로딩 전&후 화면의 이질감을 줄이기 위해 추가
+            $0.text = "작품제목\n"
+            novelTitleAttribute(of: $0)
+        }
+        
+        novelAuthorLabel.do {
+            // 로딩 전&후 화면의 이질감을 줄이기 위해 추가
+            $0.text = "작가"
+            novelAuthorAttribute(of: $0)
+        }
     }
     
     private func setHieararchy() {
