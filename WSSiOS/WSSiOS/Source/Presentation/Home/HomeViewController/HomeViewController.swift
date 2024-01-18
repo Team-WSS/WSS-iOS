@@ -109,6 +109,28 @@ final class HomeViewController: UIViewController {
                 cell.bindData(data: element)
             }
             .disposed(by: disposeBag)
+        rootView.sosopickView.sosoPickCollectionView
+            .rx
+            .itemSelected
+                .subscribe(onNext:{ indexPath in
+                    let RegisterNormalVC = RegisterNormalViewController(
+                        novelRepository: DefaultNovelRepository(
+                            novelService: DefaultNovelService()),
+                        userNovelRepository: DefaultUserNovelRepository(
+                            userNovelService:DefaultUserNovelService()),
+                        novelId: self.sosopickListRelay.value[indexPath.row].novelId)
+                    
+                    if let tabBarController = self.tabBarController as? WSSTabBarController {
+                        tabBarController.tabBar.isHidden = true
+                        tabBarController.shadowView.isHidden = true
+                    }
+                    
+                    RegisterNormalVC.hidesBottomBarWhenPushed = true
+                    self.navigationController?.pushViewController(
+                        RegisterNormalVC,
+                        animated: true)
+                })
+                .disposed(by: disposeBag)
     }
     
     private func bindDataToUI() {

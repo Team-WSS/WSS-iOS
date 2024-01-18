@@ -85,6 +85,7 @@ final class RegisterNormalViewController: UIViewController {
     
     // MARK: - Custom Method
     private func setNavigationBar() {
+        self.navigationController?.isNavigationBarHidden = false
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.backButton)
         self.navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.font: UIFont.Title2,
