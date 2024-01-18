@@ -15,6 +15,7 @@ final class MyPageChangeNicknameViewController: UIViewController {
     //MARK: - Set Properties
     
     private var userNickName = ""
+    private var newNickName = ""
     private let disposeBag = DisposeBag()
     private let userRepository : UserRepository
     
@@ -103,8 +104,12 @@ final class MyPageChangeNicknameViewController: UIViewController {
         rootView.changeNicknameTextField.rx.text
             .subscribe(with: self, onNext: { owner, text in
                 if let text = text {
-                    owner.rootView.countNicknameLabel.text = "\(text.count)/10"
-                    owner.userNickName = text
+                    var textCount = text.count
+                    if textCount > 10 {
+                        textCount = 10
+                    }
+                        owner.rootView.countNicknameLabel.text = "\(textCount)/10"
+                        owner.newNickName = text
                 }
             })
             .disposed(by: disposeBag)
@@ -119,6 +124,7 @@ final class MyPageChangeNicknameViewController: UIViewController {
             .bind(with: self, onNext: { owner, _ in
                 owner.rootView.changeNicknameTextField.text = ""
                 owner.rootView.countNicknameLabel.text = "0/10"
+                owner.completeButton.setTitleColor(.Gray200, for: .normal)
             })
             .disposed(by: disposeBag)
     }
@@ -126,7 +132,7 @@ final class MyPageChangeNicknameViewController: UIViewController {
     //MARK: - Bind Data
     
     private func patchUserNickName() {
-        userRepository.patchUserName(userNickName: userNickName)
+        userRepository.patchUserName(userNickName: newNickName)
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in 
                 owner.navigationController?.popViewController(animated: true)
@@ -142,7 +148,7 @@ final class MyPageChangeNicknameViewController: UIViewController {
 
 extension MyPageChangeNicknameViewController {
     private func limitNum(_ text: String) {
-        if text.count > 9 {
+        if text.count > 10 {
             let index = text.index(text.startIndex, offsetBy: 9)
             self.rootView.changeNicknameTextField.text = String(text[..<index])
         }

@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/onevcat/Kingfisher",
       "state" : {
-        "revision" : "3ec0ab0bca4feb56e8b33e289c9496e89059dd08",
-        "version" : "7.10.2"
+        "revision" : "add0a87ec4e31e2ca2a0b2085f0559201e4f5918",
+        "version" : "7.10.1"
       }
     },
     {
@@ -57,7 +57,7 @@
     {
       "identity" : "uiimageviewalignedswift",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/sochalewski/UIImageViewAlignedSwift",
+      "location" : "https://github.com/sochalewski/UIImageViewAlignedSwift.git",
       "state" : {
         "revision" : "c51914ca25aa3721da1812fa0d4d69064e778391",
         "version" : "0.8.3"
