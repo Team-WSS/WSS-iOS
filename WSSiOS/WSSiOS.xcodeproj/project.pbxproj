@@ -80,6 +80,7 @@
 		39B75ADB2B59891D005DD8B9 /* regressorSword.json in Resources */ = {isa = PBXBuildFile; fileRef = 39B75AD42B59891D005DD8B9 /* regressorSword.json */; };
 		39B75ADC2B59891D005DD8B9 /* sosocatBread.json in Resources */ = {isa = PBXBuildFile; fileRef = 39B75AD52B59891D005DD8B9 /* sosocatBread.json */; };
 		39B75ADE2B59BA87005DD8B9 /* UIScreen+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B75ADD2B59BA87005DD8B9 /* UIScreen+.swift */; };
+		39B75AE02B59C6A7005DD8B9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 39B75ADF2B59C6A7005DD8B9 /* LaunchScreen.storyboard */; };
 		39CC167E2B512369003F56AE /* RegisterSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CC167D2B512369003F56AE /* RegisterSuccessViewController.swift */; };
 		39CC16812B51246E003F56AE /* RegisterNormalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CC16802B51246E003F56AE /* RegisterNormalView.swift */; };
 		39CC16882B51D94F003F56AE /* RegisterSuccessViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CC16872B51D94F003F56AE /* RegisterSuccessViewModel.swift */; };
@@ -260,6 +261,7 @@
 		39B75AD42B59891D005DD8B9 /* regressorSword.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = regressorSword.json; sourceTree = "<group>"; };
 		39B75AD52B59891D005DD8B9 /* sosocatBread.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sosocatBread.json; sourceTree = "<group>"; };
 		39B75ADD2B59BA87005DD8B9 /* UIScreen+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+.swift"; sourceTree = "<group>"; };
+		39B75ADF2B59C6A7005DD8B9 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		39CC167D2B512369003F56AE /* RegisterSuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterSuccessViewController.swift; sourceTree = "<group>"; };
 		39CC16802B51246E003F56AE /* RegisterNormalView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterNormalView.swift; sourceTree = "<group>"; };
 		39CC16872B51D94F003F56AE /* RegisterSuccessViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterSuccessViewModel.swift; sourceTree = "<group>"; };
@@ -553,6 +555,7 @@
 				2CD2294F2B42E9AD005400BE /* Source */,
 				A1EF35562B52FAA300A94C53 /* Network */,
 				2CD229292B42E687005400BE /* Info.plist */,
+				39B75ADF2B59C6A7005DD8B9 /* LaunchScreen.storyboard */,
 				399F292F2B565D8000BBC12B /* Config.xcconfig */,
 			);
 			path = WSSiOS;
@@ -1265,6 +1268,7 @@
 				39B75AD72B59891D005DD8B9 /* scroll.json in Resources */,
 				39B75AD92B59891D005DD8B9 /* villainessTea.json in Resources */,
 				39B75ADB2B59891D005DD8B9 /* regressorSword.json in Resources */,
+				39B75AE02B59C6A7005DD8B9 /* LaunchScreen.storyboard in Resources */,
 				39B75AD62B59891D005DD8B9 /* sosocatTail.json in Resources */,
 				399F29302B565D8000BBC12B /* Config.xcconfig in Resources */,
 				2C79CB9B2B45A0B700734E1F /* Pretendard-Regular.otf in Resources */,
