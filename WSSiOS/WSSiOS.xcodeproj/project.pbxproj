@@ -70,7 +70,7 @@
 		399F29352B56DA7800BBC12B /* ReadStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399F29342B56DA7800BBC12B /* ReadStatus.swift */; };
 		39ABD5A02B54D0A900DEA94E /* RegisterNormalCustomDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39ABD59F2B54D0A900DEA94E /* RegisterNormalCustomDatePicker.swift */; };
 		39AF30D12B50182F00FDC1F3 /* RegisterNormalReadStatusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39AF30D02B50182F00FDC1F3 /* RegisterNormalReadStatusButton.swift */; };
-		39B02DC32B57BC9F00B38F7F /* RegisterNormalPlatFormTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B02DC22B57BC9F00B38F7F /* RegisterNormalPlatFormTest.swift */; };
+		39B02DC32B57BC9F00B38F7F /* RegisterNormalPlatformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B02DC22B57BC9F00B38F7F /* RegisterNormalPlatformView.swift */; };
 		39CC167E2B512369003F56AE /* RegisterSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CC167D2B512369003F56AE /* RegisterSuccessViewController.swift */; };
 		39CC16812B51246E003F56AE /* RegisterNormalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CC16802B51246E003F56AE /* RegisterNormalView.swift */; };
 		39CC16882B51D94F003F56AE /* RegisterSuccessViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CC16872B51D94F003F56AE /* RegisterSuccessViewModel.swift */; };
@@ -82,7 +82,6 @@
 		39CD5E082B4F2BBE00668B9A /* RegisterNormalKeywordSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CD5E072B4F2BBE00668B9A /* RegisterNormalKeywordSelectionView.swift */; };
 		39CD5E0A2B4F2E4000668B9A /* RegisterNormalKeywordSelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CD5E092B4F2E4000668B9A /* RegisterNormalKeywordSelectionButton.swift */; };
 		39CD5E0C2B4F3D0700668B9A /* RegisterNormalNovelSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CD5E0B2B4F3D0700668B9A /* RegisterNormalNovelSummaryView.swift */; };
-		39CD5E0E2B4FCEBC00668B9A /* RegisterNormalPlatformSelectButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CD5E0D2B4FCEBC00668B9A /* RegisterNormalPlatformSelectButton.swift */; };
 		39CD5E102B4FEC0F00668B9A /* RegisterNormalCustomToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CD5E0F2B4FEC0F00668B9A /* RegisterNormalCustomToggleButton.swift */; };
 		39EF97AC2B53E43800D2148B /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 39EF97AB2B53E43800D2148B /* Lottie */; };
 		39EF97B02B53E46100D2148B /* animationRegistration.json in Resources */ = {isa = PBXBuildFile; fileRef = 39EF97AF2B53E46100D2148B /* animationRegistration.json */; };
@@ -244,7 +243,7 @@
 		399F29342B56DA7800BBC12B /* ReadStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadStatus.swift; sourceTree = "<group>"; };
 		39ABD59F2B54D0A900DEA94E /* RegisterNormalCustomDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalCustomDatePicker.swift; sourceTree = "<group>"; };
 		39AF30D02B50182F00FDC1F3 /* RegisterNormalReadStatusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalReadStatusButton.swift; sourceTree = "<group>"; };
-		39B02DC22B57BC9F00B38F7F /* RegisterNormalPlatFormTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalPlatFormTest.swift; sourceTree = "<group>"; };
+		39B02DC22B57BC9F00B38F7F /* RegisterNormalPlatformView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalPlatformView.swift; sourceTree = "<group>"; };
 		39CC167D2B512369003F56AE /* RegisterSuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterSuccessViewController.swift; sourceTree = "<group>"; };
 		39CC16802B51246E003F56AE /* RegisterNormalView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterNormalView.swift; sourceTree = "<group>"; };
 		39CC16872B51D94F003F56AE /* RegisterSuccessViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterSuccessViewModel.swift; sourceTree = "<group>"; };
@@ -256,7 +255,6 @@
 		39CD5E072B4F2BBE00668B9A /* RegisterNormalKeywordSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalKeywordSelectionView.swift; sourceTree = "<group>"; };
 		39CD5E092B4F2E4000668B9A /* RegisterNormalKeywordSelectionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalKeywordSelectionButton.swift; sourceTree = "<group>"; };
 		39CD5E0B2B4F3D0700668B9A /* RegisterNormalNovelSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalNovelSummaryView.swift; sourceTree = "<group>"; };
-		39CD5E0D2B4FCEBC00668B9A /* RegisterNormalPlatformSelectButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalPlatformSelectButton.swift; sourceTree = "<group>"; };
 		39CD5E0F2B4FEC0F00668B9A /* RegisterNormalCustomToggleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalCustomToggleButton.swift; sourceTree = "<group>"; };
 		39EF97AF2B53E46100D2148B /* animationRegistration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = animationRegistration.json; sourceTree = "<group>"; };
 		A107A4992B4DB66D00668C3E /* HomeSearchButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchButtonView.swift; sourceTree = "<group>"; };
@@ -677,10 +675,9 @@
 				39CD5E072B4F2BBE00668B9A /* RegisterNormalKeywordSelectionView.swift */,
 				39CD5E092B4F2E4000668B9A /* RegisterNormalKeywordSelectionButton.swift */,
 				39CD5E0B2B4F3D0700668B9A /* RegisterNormalNovelSummaryView.swift */,
-				39CD5E0D2B4FCEBC00668B9A /* RegisterNormalPlatformSelectButton.swift */,
 				39CD5E0F2B4FEC0F00668B9A /* RegisterNormalCustomToggleButton.swift */,
 				39ABD59F2B54D0A900DEA94E /* RegisterNormalCustomDatePicker.swift */,
-				39B02DC22B57BC9F00B38F7F /* RegisterNormalPlatFormTest.swift */,
+				39B02DC22B57BC9F00B38F7F /* RegisterNormalPlatformView.swift */,
 			);
 			path = RegisterNormalAssistantView;
 			sourceTree = "<group>";
@@ -1278,7 +1275,7 @@
 				39CD5E0C2B4F3D0700668B9A /* RegisterNormalNovelSummaryView.swift in Sources */,
 				A122C9F22B53146800DFCFE4 /* (null) in Sources */,
 				CDE596D62B57708D00D99DA1 /* UIViewController+.swift in Sources */,
-				39B02DC32B57BC9F00B38F7F /* RegisterNormalPlatFormTest.swift in Sources */,
+				39B02DC32B57BC9F00B38F7F /* RegisterNormalPlatformView.swift in Sources */,
 				A1654F162B540513004F78E8 /* NetworkLogger.swift in Sources */,
 				A14EDBBF2B4F05F300906957 /* HomeSosoPickCollectionViewCell.swift in Sources */,
 				2C60306F2B54EDDD0031544C /* LibraryDescriptionView.swift in Sources */,
@@ -1362,7 +1359,6 @@
 				2C2491812B4ADC000096F255 /* StringLiterals.swift in Sources */,
 				2C6030712B54F23F0031544C /* LibraryListView.swift in Sources */,
 				A1EF35622B52FAF700A94C53 /* AvatarService.swift in Sources */,
-				39CD5E0E2B4FCEBC00668B9A /* RegisterNormalPlatformSelectButton.swift in Sources */,
 				39CD5E062B4F20A600668B9A /* RegisterNormalDividerView.swift in Sources */,
 				A122C9DD2B5309D100DFCFE4 /* (null) in Sources */,
 				2C6030772B55263F0031544C /* UserResult.swift in Sources */,

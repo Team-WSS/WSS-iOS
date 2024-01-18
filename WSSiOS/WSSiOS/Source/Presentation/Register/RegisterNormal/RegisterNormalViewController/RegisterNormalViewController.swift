@@ -187,12 +187,12 @@ final class RegisterNormalViewController: UIViewController {
     }
     
     private func register() {
-        rootView.novelSummaryView.platFormTest.platformCollectionView.register(NovelDetailInfoPlatformCollectionViewCell.self, forCellWithReuseIdentifier: "NovelDetailInfoPlatformCollectionViewCell")
+        rootView.novelSummaryView.platformView.platformCollectionView.register(NovelDetailInfoPlatformCollectionViewCell.self, forCellWithReuseIdentifier: "NovelDetailInfoPlatformCollectionViewCell")
     }
     
     private func delegate() {
-        rootView.novelSummaryView.platFormTest.platformCollectionView.dataSource = self
-        rootView.novelSummaryView.platFormTest.platformCollectionView.delegate = self
+        rootView.novelSummaryView.platformView.platformCollectionView.dataSource = self
+        rootView.novelSummaryView.platformView.platformCollectionView.delegate = self
     }
     
     private func bindData(_ data: NovelResult) {
@@ -215,7 +215,7 @@ final class RegisterNormalViewController: UIViewController {
                                              title: newData.novelTitle,
                                              author: newData.novelAuthor)
         rootView.novelSummaryView.bindData(plot: newData.novelDescription, genre: newData.novelGenre, platforms: newData.platforms)
-        self.rootView.novelSummaryView.platFormTest.platformCollectionView.reloadData()
+        self.rootView.novelSummaryView.platformView.platformCollectionView.reloadData()
     }
     
     private func bindUserData(_ userData: EditNovelResult) {
@@ -249,7 +249,7 @@ final class RegisterNormalViewController: UIViewController {
         )
         
         rootView.novelSummaryView.bindData(plot: userData.userNovelDescription, genre: userData.userNovelGenre, platforms: userData.platforms)
-        self.rootView.novelSummaryView.platFormTest.platformCollectionView.reloadData()
+        self.rootView.novelSummaryView.platformView.platformCollectionView.reloadData()
     }
     
     private func bindRx() {
@@ -428,14 +428,14 @@ final class RegisterNormalViewController: UIViewController {
         })
         .disposed(by: disposeBag)
         
-        rootView.novelSummaryView.platFormTest.platformCollectionView.rx.observe(CGSize.self, "contentSize")
+        rootView.novelSummaryView.platformView.platformCollectionView.rx.observe(CGSize.self, "contentSize")
             .map { $0?.height ?? 0 }
             .bind(to: platformCollectionViewHeight)
             .disposed(by: disposeBag)
         
         platformCollectionViewHeight
             .subscribe(onNext: { height in
-                self.rootView.novelSummaryView.platFormTest.updateCollectionViewHeight(height: height)
+                self.rootView.novelSummaryView.platformView.updateCollectionViewHeight(height: height)
             })
             .disposed(by: disposeBag)
     }
@@ -460,7 +460,7 @@ final class RegisterNormalViewController: UIViewController {
 extension RegisterNormalViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         print("Hello")
-        return rootView.novelSummaryView.platFormTest.platformList.count
+        return rootView.novelSummaryView.platformView.platformList.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -470,7 +470,7 @@ extension RegisterNormalViewController: UICollectionViewDataSource {
         ) as? NovelDetailInfoPlatformCollectionViewCell else {return UICollectionViewCell()}
         
         cell.bindData(
-            platform: rootView.novelSummaryView.platFormTest.platformList[indexPath.item].platformName
+            platform: rootView.novelSummaryView.platformView.platformList[indexPath.item].platformName
         )
         
         return cell
@@ -479,7 +479,7 @@ extension RegisterNormalViewController: UICollectionViewDataSource {
 
 extension RegisterNormalViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let url = URL(string: rootView.novelSummaryView.platFormTest.platformList[indexPath.item].platformUrl) {
+        if let url = URL(string: rootView.novelSummaryView.platformView.platformList[indexPath.item].platformUrl) {
             UIApplication.shared.open(url, options: [:])
         }
     }
@@ -489,7 +489,7 @@ extension RegisterNormalViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var text: String?
         
-        text = rootView.novelSummaryView.platFormTest.platformList[indexPath.item].platformName
+        text = rootView.novelSummaryView.platformView.platformList[indexPath.item].platformName
         
         guard let unwrappedText = text else {
             return CGSize(width: 0, height: 0)

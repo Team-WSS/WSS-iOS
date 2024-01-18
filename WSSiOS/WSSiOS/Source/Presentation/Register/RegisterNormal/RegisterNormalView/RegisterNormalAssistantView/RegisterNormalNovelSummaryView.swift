@@ -19,7 +19,7 @@ final class RegisterNormalNovelSummaryView: UIView {
     private let plotLabel = UILabel()
     private let genreTitleLabel = WSSSectionTitleView()
     private let genreLabel = UILabel()
-    let platFormTest = RegisterNormalPlatFormTest()
+    let platformView = RegisterNormalPlatformView()
     
     // MARK: - Life Cycle
     
@@ -72,7 +72,7 @@ final class RegisterNormalNovelSummaryView: UIView {
                                                   plotLabel,
                                                   genreTitleLabel,
                                                   genreLabel,
-                                                  platFormTest)
+                                                  platformView)
     }
     
     private func setLayout() {
@@ -85,7 +85,6 @@ final class RegisterNormalNovelSummaryView: UIView {
             
             $0.setCustomSpacing(10, after: plotTitleLabel)
             $0.setCustomSpacing(10, after: genreTitleLabel)
-            $0.setCustomSpacing(10, after: platFormTest)
         }
     }
     
@@ -107,6 +106,6 @@ final class RegisterNormalNovelSummaryView: UIView {
         genreLabel.text = genre
         bodyStyle(of: plotLabel)
         bodyStyle(of: genreLabel)
-        platFormTest.bindData(platforms: platforms)
+        platformView.bindData(platforms: platforms)
     }
 }
