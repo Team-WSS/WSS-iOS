@@ -99,11 +99,8 @@ final class LibraryBaseViewController: UIViewController {
         novelListRelay.bind(to: rootView.libraryCollectionView.rx.items(
             cellIdentifier: "LibraryCollectionViewCell",
             cellType: LibraryCollectionViewCell.self)) { [weak self] (row, element, cell) in
-                guard let self = self else { return }
                 cell.bindData(element)
                 print("🤙🏻", element)
-                
-                //                cell.myPageAvaterButton.rx.tap
             }
             .disposed(by: disposeBag)
         

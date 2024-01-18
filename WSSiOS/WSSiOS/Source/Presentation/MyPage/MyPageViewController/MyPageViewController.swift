@@ -22,7 +22,6 @@ final class MyPageViewController: UIViewController {
     private var settingData = MyPageViewModel.setting
     private var userNickName = ""
     private var representativeAvatarId = 0
-    private var hasAvatar = false
     
     init(userRepository: UserRepository) {
         self.userRepository = userRepository as! DefaultUserRepository
@@ -46,18 +45,19 @@ final class MyPageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        
+        setNavigationBar()
         register()
         
         bindUserData()
-        pushChangeNickNameViewController()
+        bindAction()
         addNotificationCenter()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        reSetNavigationBar()
+        setTabBar()
         bindDataAgain()
     }
     
@@ -75,7 +75,7 @@ final class MyPageViewController: UIViewController {
         }
     }
     
-    private func reSetNavigationBar() {
+    private func setTabBar() {
         if let tabBarController = self.tabBarController as? WSSTabBarController {
             tabBarController.shadowView.isHidden = false
             tabBarController.tabBar.isHidden = false
@@ -107,39 +107,61 @@ final class MyPageViewController: UIViewController {
         avaterListRelay.bind(to: rootView.myPageInventoryView.myPageAvaterCollectionView.rx.items(
             cellIdentifier: "MyPageInventoryCollectionViewCell",
             cellType: MyPageInventoryCollectionViewCell.self)) { [weak self] (row, element, cell) in
-                guard let self = self else { return }
-                cell.bindData(element, representativeId: self.representativeAvatarId)
-                cell.myPageAvaterButton.rx.tap
-                    .bind(with: self, onNext: { owner, _ in 
-                        owner.hasAvatar = element.hasAvatar
-                        print("🐱", element.avatarId)
-                        owner.pushModalViewController(avatarId: element.avatarId)
-                    })
+                cell.bindData(data: element, representativeId: self?.representativeAvatarId ?? 0)
             }
             .disposed(by: disposeBag)
         
         settingData.bind(to: rootView.myPageSettingView.myPageSettingCollectionView.rx.items(
             cellIdentifier: "MyPageSettingCollectionViewCell",
             cellType: MyPageSettingCollectionViewCell.self)) {[weak self] (row, element, cell) in
-                guard let self = self else { return }
-                cell.myPageSettingCellButton.setTitle(element, for: .normal)
-                cell.myPageSettingCellButton.rx.tap
-                    .bind(with: self, onNext: { owner, _ in 
-                        switch row {
-                        case 0:
-                            let infoViewController = MyPageInfoViewController()
-                            infoViewController.rootView.bindData(self.userNickName)
-                            owner.navigationController?.pushViewController(infoViewController, animated: true)
-                            
-                        case 1:
-                            if let url = URL(string: "https://www.instagram.com/websoso_official/") {
-                                UIApplication.shared.open(url, options: [:])
-                            }
-                        default:
-                            break
-                        }
-                    })
+                cell.myPageSettingCellLabel.text = element
             }
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindAction() {
+        rootView.myPageSettingView.myPageSettingCollectionView.rx.itemSelected
+            .subscribe(with: self, onNext: { owner, indexpath in
+                switch indexpath.row {
+                case 0:
+                    let infoViewController = MyPageInfoViewController()
+                    infoViewController.rootView.bindData(self.userNickName)
+                    self.navigationController?.pushViewController(infoViewController, animated: true)
+                    
+                case 1:
+                    if let url = URL(string: "https://www.instagram.com/websoso_official/") {
+                        UIApplication.shared.open(url, options: [:])
+                    }
+                default:
+                    break
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        
+        rootView.myPageInventoryView.myPageAvaterCollectionView.rx.itemSelected
+            .subscribe(with: self, onNext: { owner, indexPath in
+                let avatars = self.avaterListRelay.value
+                let selectedAvatarId = avatars[indexPath.row].avatarId
+                let selectedAvatarHas = avatars[indexPath.row].hasAvatar
+                owner.pushModalViewController(avatarId: selectedAvatarId,
+                                              hasAvatar: selectedAvatarHas)
+            })
+            .disposed(by: disposeBag)
+        
+        rootView.myPageTallyView.myPageUserNameButton.rx.tap
+            .bind(with: self, onNext: { owner, _ in 
+                if let tabBarController = owner.tabBarController as? WSSTabBarController {
+                    tabBarController.shadowView.isHidden = true
+                    tabBarController.tabBar.isHidden = true
+                }
+                
+                let changeNicknameViewController = MyPageChangeNicknameViewController(userNickName: owner.userNickName,
+                                                                                      userRepository: DefaultUserRepository(
+                                                                                        userService: DefaultUserService()))
+                changeNicknameViewController.bindData(self.userNickName)
+                owner.navigationController?.pushViewController(changeNicknameViewController, animated: true)
+            })
             .disposed(by: disposeBag)
     }
     
@@ -151,7 +173,8 @@ final class MyPageViewController: UIViewController {
         }
     }
     
-    private func getDataFromAPI(disposeBag: DisposeBag, completion: @escaping (UserResult, [UserAvatar]) -> Void) {
+    private func getDataFromAPI(disposeBag: DisposeBag,
+                                completion: @escaping (UserResult, [UserAvatar]) -> Void) {
         self.userRepository.getUserData()
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, userData in
@@ -175,33 +198,17 @@ extension MyPageViewController {
     
     //MARK: - push To ViewController
     
-    @objc func pushModalViewController(avatarId: Int) {
+    @objc
+    func pushModalViewController(avatarId: Int, hasAvatar: Bool) {
         let modalVC = MyPageCustomModalViewController(
-            avatarRepository:DefaultAvatarRepository(
+            avatarRepository: DefaultAvatarRepository(
                 avatarService: DefaultAvatarService()),
             avatarId: avatarId,
-            modalHasAvatar: hasAvatar
-        )
+            modalHasAvatar: hasAvatar)
+        
         print("💖", avatarId)
         modalVC.modalPresentationStyle = .overFullScreen
         present(modalVC, animated: true)
-    }
-    
-    private func pushChangeNickNameViewController() {
-        rootView.myPageTallyView.myPageUserNameButton.rx.tap
-            .bind(with: self, onNext: { owner, _ in 
-                if let tabBarController = owner.tabBarController as? WSSTabBarController {
-                    tabBarController.shadowView.isHidden = true
-                    tabBarController.tabBar.isHidden = true
-                }
-                
-                let changeNicknameViewController = MyPageChangeNicknameViewController(userNickName: owner.userNickName,
-                                                                                      userRepository: DefaultUserRepository(
-                                                                                        userService: DefaultUserService()))
-                changeNicknameViewController.bindData(self.userNickName)
-                owner.navigationController?.pushViewController(changeNicknameViewController, animated: true)
-            })
-            .disposed(by: disposeBag)
     }
     
     //MARK: - notification
