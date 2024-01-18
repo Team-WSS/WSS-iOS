@@ -39,7 +39,7 @@ final class HomeSosoPickView: UIView {
             $0.scrollDirection = .horizontal
             $0.minimumLineSpacing = 11
             $0.itemSize = CGSize(width: 230, height: 195)
-            $0.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+            $0.sectionInset = UIEdgeInsets(top: 10, left: 20, bottom: 25, right: 20)
             sosoPickCollectionView.setCollectionViewLayout($0, animated: false)
         }
     }

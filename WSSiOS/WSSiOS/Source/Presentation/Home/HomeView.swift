@@ -11,7 +11,8 @@ final class HomeView: UIView {
     
     //MARK: - UI Components
     
-    private let homeStackView = UIStackView()
+    private let scrollView = UIScrollView()
+    private let contentView = UIView()
     let headerView = HomeHeaderView()
     let characterView = HomeCharacterView()
     private let titleView = HomeSosoPickTitleView()
@@ -33,36 +34,50 @@ final class HomeView: UIView {
     }
     
     private func setUI() {
-        homeStackView.do {
-            $0.axis = .vertical
+        scrollView.do {
+            $0.showsVerticalScrollIndicator = false
         }
     }
     
     private func setHierachy() {
-        self.addSubviews(homeStackView,
-                         sosopickView)
-        
-        homeStackView.addArrangedSubviews(headerView,
-                                          characterView,
-                                          titleView)
+        self.addSubviews(headerView,
+                        scrollView)
+        self.scrollView.addSubview(contentView)
+        contentView.addSubviews(characterView,
+                                          titleView,
+                                          sosopickView)
     }
     
     private func setLayout() {
-        homeStackView.snp.makeConstraints {
+        headerView.snp.makeConstraints {
             $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).inset(16)
             $0.leading.trailing.equalToSuperview().inset(20)
         }
         
-        sosopickView.snp.makeConstraints {
-            $0.top.equalTo(homeStackView.snp.bottom)
+        scrollView.snp.makeConstraints {
+            $0.top.equalTo(headerView.snp.bottom).offset(20)
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
         }
         
-        homeStackView.do {
-            $0.setCustomSpacing(37, after: headerView)
-            $0.setCustomSpacing(24, after: characterView)
-            $0.setCustomSpacing(0, after: titleView)
+        contentView.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(15)
+            $0.leading.trailing.bottom.width.equalToSuperview()
+        }
+        
+        characterView.snp.makeConstraints {
+            $0.top.centerX.equalToSuperview()
+        }
+        
+        titleView.snp.makeConstraints {
+            $0.top.equalTo(characterView.snp.bottom).offset(24)
+            $0.centerX.leading.trailing.equalToSuperview()
+        }
+        
+        sosopickView.snp.makeConstraints {
+            $0.top.equalTo(titleView.snp.bottom)
+            $0.centerX.leading.trailing.bottom.equalToSuperview()
+            $0.height.equalTo(230)
         }
     }
 }

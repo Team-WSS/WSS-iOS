@@ -77,7 +77,8 @@ final class HomeSosoPickTitleView: UIView {
     
     private func setLayout() {
         titleStackView.snp.makeConstraints {
-            $0.top.bottom.leading.equalToSuperview()
+            $0.top.bottom.equalToSuperview()
+            $0.leading.equalToSuperview().inset(20)
         }
     }
 }
