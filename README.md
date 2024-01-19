@@ -633,9 +633,7 @@ WSSiOS
 │   │   │   │   ├── HomeAssistantView
 │   │   │   │   └── HomeCell
 │   │   │   ├── HomeViewController
-│   │   │   │   └── HomeViewController.swift
-│   │   │   └── HomeViewModel
-│   │   │       └── HomeViewModel.swift
+│   │   │       └── HomeViewController.swift    
 │   │   ├── Search
 │   │   │   └──  .....
 │   │   ├── RegisterNormal
