@@ -156,18 +156,23 @@ final class LibraryViewController: UIViewController {
             .bind(with: self, onNext: { owner, _ in 
                 owner.libraryListView.isHidden.toggle()
             })
+            .disposed(by: disposeBag)
         
         libraryListView.libraryNewestButton.rx.tap
             .bind(with: self) { owner , _ in
                 owner.updatePages(sort: owner.sortTypeList[0])
                 owner.libraryDescriptionView.libraryNovelListButton.setTitle(StringLiterals.Library.newest, for: .normal)
+                owner.libraryListView.isHidden.toggle()
             }
+            .disposed(by: disposeBag)
         
         libraryListView.libraryOldesttButton.rx.tap
             .bind(with: self) { owner , _ in
                 owner.updatePages(sort: owner.sortTypeList[1])
                 owner.libraryDescriptionView.libraryNovelListButton.setTitle(StringLiterals.Library.oldest, for: .normal)
+                owner.libraryListView.isHidden.toggle()
             }
+            .disposed(by: disposeBag)
     }
     
     private func updatePages(sort: String) {
@@ -206,6 +211,7 @@ extension LibraryViewController: UIPageViewControllerDataSource {
 
 extension LibraryViewController: NovelDelegate {
     func sendData(data: Int) {
+        print(data)
         libraryDescriptionView.libraryNovelCountLabel.text = "\(data)개"
     }
 }

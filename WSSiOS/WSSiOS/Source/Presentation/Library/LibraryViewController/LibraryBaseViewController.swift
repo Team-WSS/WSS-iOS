@@ -118,7 +118,9 @@ final class LibraryBaseViewController: UIViewController {
         .observe(on: MainScheduler.instance)
         .subscribe(with: self, onNext: { owner, data in
             owner.novelTotalCount = data.userNovelCount
-            owner.delegate?.sendData(data: owner.novelTotalCount)
+            if readStatus == owner.readStatusData {
+                owner.delegate?.sendData(data: owner.novelTotalCount)
+            }
             owner.novelListRelay.accept(data.userNovels)
         }, onError: { error, _  in
             print(error)

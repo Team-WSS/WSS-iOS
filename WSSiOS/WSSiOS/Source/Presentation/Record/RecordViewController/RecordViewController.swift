@@ -57,6 +57,7 @@ final class RecordViewController: UIViewController {
         
         bindDataToRecordTableView()
         setNavigationBar()
+        setNotificationCenter()
     }
     
     private func setUI() {
@@ -190,5 +191,18 @@ final class RecordViewController: UIViewController {
             }
         })
         .disposed(by: disposeBag)
+    }
+    
+    private func setNotificationCenter() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.deletedMemo(_:)),
+            name: NSNotification.Name("DeletedMemo"),
+            object: nil
+        )
+    }
+    
+    @objc func deletedMemo(_ notification: Notification) {
+        showToast(.memoDelete)
     }
 }
