@@ -84,9 +84,7 @@ final class HomeCharacterView: UIView {
             $0.size.equalTo(240)
         }
         
-        characterLottieView.snp.makeConstraints {
-            $0.size.equalTo(240)
-        }
+        
         
         characterStackView.snp.makeConstraints {
             $0.top.bottom.centerX.equalToSuperview()
@@ -110,7 +108,7 @@ final class HomeCharacterView: UIView {
         }
         
         characterLottieView.snp.makeConstraints {
-            $0.size.equalTo(240)
+            $0.size.equalTo(UIScreen.main.bounds.width*0.64)
         }
         
         playLottie()

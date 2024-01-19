@@ -90,6 +90,7 @@ final class RecordTableViewCell: UITableViewCell {
                 .kerning(kerningPixel: -0.6)
                 .lineSpacing(spacingPercentage: 150)
                 .applyAttribute()
+            $0.lineBreakMode = .byTruncatingTail
         }
         
         recordContentLabel.do {
