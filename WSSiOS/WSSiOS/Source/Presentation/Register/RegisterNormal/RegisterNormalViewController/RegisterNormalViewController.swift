@@ -127,7 +127,7 @@ final class RegisterNormalViewController: UIViewController {
         .subscribe(with: self, onNext: { owner, event in
             owner.userNovelId = event.userNovelId
             owner.navigationController?.pushViewController(RegisterSuccessViewController(userNovelId: owner.userNovelId),
-                                                          animated: true)
+                                                           animated: true)
         })
         .disposed(by: disposeBag)
     }
@@ -213,7 +213,7 @@ final class RegisterNormalViewController: UIViewController {
         rootView.infoWithRatingView.bindData(coverImage: newData.novelImg,
                                              title: newData.novelTitle,
                                              author: newData.novelAuthor)
-        rootView.novelSummaryView.bindData(plot: newData.novelDescription, 
+        rootView.novelSummaryView.bindData(plot: newData.novelDescription,
                                            genre: newData.novelGenre,
                                            platforms: newData.platforms)
         self.rootView.novelSummaryView.platformView.platformCollectionView.reloadData()
@@ -249,7 +249,7 @@ final class RegisterNormalViewController: UIViewController {
             dateToString.date(from: end) ?? Date()
         )
         
-        rootView.novelSummaryView.bindData(plot: userData.userNovelDescription, 
+        rootView.novelSummaryView.bindData(plot: userData.userNovelDescription,
                                            genre: userData.userNovelGenre,
                                            platforms: userData.platforms)
         self.rootView.novelSummaryView.platformView.platformCollectionView.reloadData()
@@ -365,8 +365,12 @@ final class RegisterNormalViewController: UIViewController {
                     view.customDatePicker.endDate = self.endDate.value
                 }
                 view.customDatePicker.isHidden = !show
-                owner.navigationController?.setNavigationBarHidden(show, animated: true)
-                owner.rootView.divider.isHidden = show
+                if self.rootView.pageScrollView.contentOffset.y == 0 {
+                    self.updateNavigationBarStyle(offset: self.rootView.pageScrollView.contentOffset.y)
+                } else {
+                    owner.navigationController?.setNavigationBarHidden(show, animated: false)
+                    owner.rootView.divider.isHidden = show
+                }
             })
             .disposed(by: disposeBag)
             
