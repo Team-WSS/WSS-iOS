@@ -415,6 +415,7 @@
 				2CCBF9F12B4D347B00D787C2 /* WSSMainButton.swift */,
 				39CC168B2B526991003F56AE /* WSSSectionTitleView.swift */,
 				CDE596D72B5770CE00D99DA1 /* WSSToastView.swift */,
+				39B75ADF2B59C6A7005DD8B9 /* LaunchScreen.storyboard */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -555,7 +556,6 @@
 				2CD2294F2B42E9AD005400BE /* Source */,
 				A1EF35562B52FAA300A94C53 /* Network */,
 				2CD229292B42E687005400BE /* Info.plist */,
-				39B75ADF2B59C6A7005DD8B9 /* LaunchScreen.storyboard */,
 				399F292F2B565D8000BBC12B /* Config.xcconfig */,
 			);
 			path = WSSiOS;

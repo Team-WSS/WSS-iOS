@@ -83,6 +83,7 @@ final class HomeCharacterView: UIView {
         characterLoadingView.snp.makeConstraints {
             $0.size.equalTo(240)
         }
+        
         characterLottieView.snp.makeConstraints {
             $0.size.equalTo(240)
         }
@@ -103,6 +104,14 @@ final class HomeCharacterView: UIView {
         // Lottie 애니메이션 뷰 생성 및 설정
         characterLottieView = view
         characterStackView.insertArrangedSubview(characterLottieView, at: 2)
+        
+        characterLottieView.do {
+            $0.contentMode = .scaleAspectFit
+        }
+        
+        characterLottieView.snp.makeConstraints {
+            $0.size.equalTo(240)
+        }
         
         playLottie()
     }
