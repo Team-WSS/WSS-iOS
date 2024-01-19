@@ -102,7 +102,7 @@ final class NovelDetailView: UIView {
         
         createMemoButton.snp.makeConstraints {
             $0.trailing.equalToSuperview().inset(26)
-            $0.bottom.equalToSuperview().inset(60)
+            $0.bottom.equalTo(self.safeAreaLayoutGuide).inset(25)
             $0.size.equalTo(65)
         }
         

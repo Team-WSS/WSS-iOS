@@ -68,7 +68,7 @@ final class RecordViewController: UIViewController {
     }
     
     private func setNavigationBar() {
-        self.navigationController?.isNavigationBarHidden = false
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
         self.navigationItem.title = StringLiterals.Navigation.Title.record
         self.navigationController?.navigationBar.backgroundColor = .White
         

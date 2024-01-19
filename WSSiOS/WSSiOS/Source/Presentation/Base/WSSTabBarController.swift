@@ -26,8 +26,10 @@ final class WSSTabBarController: UITabBarController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
-        let tabBarHeight: CGFloat = 49 + view.safeAreaInsets.bottom
+        var tabBarHeight: CGFloat = 49 + view.safeAreaInsets.bottom
+        if UIScreen.isSE {
+            tabBarHeight += 5
+        }
         tabBar.frame.size.height = tabBarHeight
         tabBar.frame.origin.y = view.frame.height - tabBarHeight
         

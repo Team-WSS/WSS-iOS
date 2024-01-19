@@ -77,7 +77,7 @@ final class SearchViewController: UIViewController {
     //MARK: - customize NaivationBar
     
     private func setNavigationBar() {
-        self.navigationController?.isNavigationBarHidden = false
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
         self.navigationItem.title = StringLiterals.Navigation.Title.search
         self.navigationController?.navigationBar.backgroundColor = .White
         

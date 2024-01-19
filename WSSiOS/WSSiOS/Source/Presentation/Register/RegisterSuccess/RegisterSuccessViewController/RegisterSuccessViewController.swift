@@ -46,11 +46,11 @@ final class RegisterSuccessViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        self.navigationController?.isNavigationBarHidden = false
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
     func setUI() {
-        self.navigationController?.isNavigationBarHidden = true
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
     func bindRx() {
@@ -58,7 +58,7 @@ final class RegisterSuccessViewController: UIViewController {
             let tabBar = WSSTabBarController()
             tabBar.selectedIndex = 1
             let navigationController = UINavigationController(rootViewController: tabBar)
-            navigationController.isNavigationBarHidden = true
+            navigationController.setNavigationBarHidden(true, animated: true)
             self.view.window?.rootViewController = navigationController
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 NotificationCenter.default.post(name: NSNotification.Name("ShowNovelMemo"), object: self.userNovelId)

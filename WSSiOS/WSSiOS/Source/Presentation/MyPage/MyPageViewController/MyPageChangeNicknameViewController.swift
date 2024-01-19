@@ -73,7 +73,7 @@ final class MyPageChangeNicknameViewController: UIViewController {
     }
     
     private func setNavigationBar() {
-        self.navigationController?.isNavigationBarHidden = false
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
         self.title = StringLiterals.Navigation.Title.changeNickname
         
         if let navigationBar = self.navigationController?.navigationBar {

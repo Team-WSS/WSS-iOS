@@ -9,6 +9,7 @@ import UIKit
 
 import RxSwift
 import RxCocoa
+import Lottie
 
 final class HomeViewController: UIViewController {
     
@@ -21,6 +22,10 @@ final class HomeViewController: UIViewController {
     private var userCharacter = UserCharacter(avatarId: 0, avatarTag: "", avatarComment: "", userNickname: "")
     private var sosopickListRelay = BehaviorRelay<[SosopickNovel]>(value: [])
     private let disposeBag = DisposeBag()
+    
+    let lotties = [[LottieLiterals.Home.Sosocat.bread, LottieLiterals.Home.Sosocat.tail],
+                   [LottieLiterals.Home.Regressor.greeting, LottieLiterals.Home.Regressor.sword],
+                   [LottieLiterals.Home.Villainess.fan, LottieLiterals.Home.Villainess.tea]]
     
     //MARK: - UI Components
     
@@ -145,7 +150,12 @@ final class HomeViewController: UIViewController {
         searchVC.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(searchVC, animated: true)
     }
-    
+
+    private func getLottie(avatarId: Int) -> LottieAnimationView {
+        let random = (0...1).randomElement() ?? 0
+        return lotties[avatarId-1][random]
+    }
+ 
     private func updateUI(user: UserCharacter, sosopickList: SosopickNovels) {
         Observable.just(userCharacter)
             .observe(on: MainScheduler.instance)
@@ -157,6 +167,7 @@ final class HomeViewController: UIViewController {
                 owner.characterId = user.avatarId
                 owner.userNickname = user.userNickname
                 
+                owner.rootView.characterView.setLottie(view: self.getLottie(avatarId: owner.characterId))
                 owner.sosopickListRelay.accept(sosopickList.sosoPickNovels)
             })
             .disposed(by: disposeBag)

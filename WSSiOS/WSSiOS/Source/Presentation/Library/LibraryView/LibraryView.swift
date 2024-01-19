@@ -59,7 +59,7 @@ final class LibraryView: UIView {
             $0.top.equalToSuperview()
             $0.centerX.equalToSuperview()
             $0.leading.equalTo(20)
-            $0.bottom.equalToSuperview().inset(84)
+            $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom)
         }
     }
 }

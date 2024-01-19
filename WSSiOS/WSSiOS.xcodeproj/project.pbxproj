@@ -71,14 +71,16 @@
 		39ABD5A02B54D0A900DEA94E /* RegisterNormalCustomDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39ABD59F2B54D0A900DEA94E /* RegisterNormalCustomDatePicker.swift */; };
 		39AF30D12B50182F00FDC1F3 /* RegisterNormalReadStatusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39AF30D02B50182F00FDC1F3 /* RegisterNormalReadStatusButton.swift */; };
 		39B02DC32B57BC9F00B38F7F /* RegisterNormalPlatformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B02DC22B57BC9F00B38F7F /* RegisterNormalPlatformView.swift */; };
-		39B75AC52B59123A005DD8B9 /* villainessA.json in Resources */ = {isa = PBXBuildFile; fileRef = 39B75ABE2B591239005DD8B9 /* villainessA.json */; };
-		39B75AC62B59123A005DD8B9 /* scroll.json in Resources */ = {isa = PBXBuildFile; fileRef = 39B75ABF2B591239005DD8B9 /* scroll.json */; };
-		39B75AC72B59123A005DD8B9 /* regressorB.json in Resources */ = {isa = PBXBuildFile; fileRef = 39B75AC02B591239005DD8B9 /* regressorB.json */; };
-		39B75AC82B59123A005DD8B9 /* sosocatB.json in Resources */ = {isa = PBXBuildFile; fileRef = 39B75AC12B591239005DD8B9 /* sosocatB.json */; };
-		39B75AC92B59123A005DD8B9 /* sosocatA.json in Resources */ = {isa = PBXBuildFile; fileRef = 39B75AC22B591239005DD8B9 /* sosocatA.json */; };
-		39B75ACA2B59123A005DD8B9 /* regressorA.json in Resources */ = {isa = PBXBuildFile; fileRef = 39B75AC32B591239005DD8B9 /* regressorA.json */; };
-		39B75ACB2B59123A005DD8B9 /* villainessB.json in Resources */ = {isa = PBXBuildFile; fileRef = 39B75AC42B59123A005DD8B9 /* villainessB.json */; };
 		39B75ACE2B5912B5005DD8B9 /* LottieLiterals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B75ACD2B5912B5005DD8B9 /* LottieLiterals.swift */; };
+		39B75AD62B59891D005DD8B9 /* sosocatTail.json in Resources */ = {isa = PBXBuildFile; fileRef = 39B75ACF2B59891C005DD8B9 /* sosocatTail.json */; };
+		39B75AD72B59891D005DD8B9 /* scroll.json in Resources */ = {isa = PBXBuildFile; fileRef = 39B75AD02B59891C005DD8B9 /* scroll.json */; };
+		39B75AD82B59891D005DD8B9 /* regressorGreeting.json in Resources */ = {isa = PBXBuildFile; fileRef = 39B75AD12B59891D005DD8B9 /* regressorGreeting.json */; };
+		39B75AD92B59891D005DD8B9 /* villainessTea.json in Resources */ = {isa = PBXBuildFile; fileRef = 39B75AD22B59891D005DD8B9 /* villainessTea.json */; };
+		39B75ADA2B59891D005DD8B9 /* villainessFan.json in Resources */ = {isa = PBXBuildFile; fileRef = 39B75AD32B59891D005DD8B9 /* villainessFan.json */; };
+		39B75ADB2B59891D005DD8B9 /* regressorSword.json in Resources */ = {isa = PBXBuildFile; fileRef = 39B75AD42B59891D005DD8B9 /* regressorSword.json */; };
+		39B75ADC2B59891D005DD8B9 /* sosocatBread.json in Resources */ = {isa = PBXBuildFile; fileRef = 39B75AD52B59891D005DD8B9 /* sosocatBread.json */; };
+		39B75ADE2B59BA87005DD8B9 /* UIScreen+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B75ADD2B59BA87005DD8B9 /* UIScreen+.swift */; };
+		39B75AE02B59C6A7005DD8B9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 39B75ADF2B59C6A7005DD8B9 /* LaunchScreen.storyboard */; };
 		39CC167E2B512369003F56AE /* RegisterSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CC167D2B512369003F56AE /* RegisterSuccessViewController.swift */; };
 		39CC16812B51246E003F56AE /* RegisterNormalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CC16802B51246E003F56AE /* RegisterNormalView.swift */; };
 		39CC16882B51D94F003F56AE /* RegisterSuccessViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CC16872B51D94F003F56AE /* RegisterSuccessViewModel.swift */; };
@@ -250,14 +252,16 @@
 		39ABD59F2B54D0A900DEA94E /* RegisterNormalCustomDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalCustomDatePicker.swift; sourceTree = "<group>"; };
 		39AF30D02B50182F00FDC1F3 /* RegisterNormalReadStatusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalReadStatusButton.swift; sourceTree = "<group>"; };
 		39B02DC22B57BC9F00B38F7F /* RegisterNormalPlatformView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalPlatformView.swift; sourceTree = "<group>"; };
-		39B75ABE2B591239005DD8B9 /* villainessA.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = villainessA.json; sourceTree = "<group>"; };
-		39B75ABF2B591239005DD8B9 /* scroll.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = scroll.json; sourceTree = "<group>"; };
-		39B75AC02B591239005DD8B9 /* regressorB.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = regressorB.json; sourceTree = "<group>"; };
-		39B75AC12B591239005DD8B9 /* sosocatB.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sosocatB.json; sourceTree = "<group>"; };
-		39B75AC22B591239005DD8B9 /* sosocatA.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sosocatA.json; sourceTree = "<group>"; };
-		39B75AC32B591239005DD8B9 /* regressorA.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = regressorA.json; sourceTree = "<group>"; };
-		39B75AC42B59123A005DD8B9 /* villainessB.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = villainessB.json; sourceTree = "<group>"; };
 		39B75ACD2B5912B5005DD8B9 /* LottieLiterals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieLiterals.swift; sourceTree = "<group>"; };
+		39B75ACF2B59891C005DD8B9 /* sosocatTail.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sosocatTail.json; sourceTree = "<group>"; };
+		39B75AD02B59891C005DD8B9 /* scroll.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = scroll.json; sourceTree = "<group>"; };
+		39B75AD12B59891D005DD8B9 /* regressorGreeting.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = regressorGreeting.json; sourceTree = "<group>"; };
+		39B75AD22B59891D005DD8B9 /* villainessTea.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = villainessTea.json; sourceTree = "<group>"; };
+		39B75AD32B59891D005DD8B9 /* villainessFan.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = villainessFan.json; sourceTree = "<group>"; };
+		39B75AD42B59891D005DD8B9 /* regressorSword.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = regressorSword.json; sourceTree = "<group>"; };
+		39B75AD52B59891D005DD8B9 /* sosocatBread.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sosocatBread.json; sourceTree = "<group>"; };
+		39B75ADD2B59BA87005DD8B9 /* UIScreen+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+.swift"; sourceTree = "<group>"; };
+		39B75ADF2B59C6A7005DD8B9 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		39CC167D2B512369003F56AE /* RegisterSuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterSuccessViewController.swift; sourceTree = "<group>"; };
 		39CC16802B51246E003F56AE /* RegisterNormalView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterNormalView.swift; sourceTree = "<group>"; };
 		39CC16872B51D94F003F56AE /* RegisterSuccessViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterSuccessViewModel.swift; sourceTree = "<group>"; };
@@ -551,6 +555,7 @@
 				2CD2294F2B42E9AD005400BE /* Source */,
 				A1EF35562B52FAA300A94C53 /* Network */,
 				2CD229292B42E687005400BE /* Info.plist */,
+				39B75ADF2B59C6A7005DD8B9 /* LaunchScreen.storyboard */,
 				399F292F2B565D8000BBC12B /* Config.xcconfig */,
 			);
 			path = WSSiOS;
@@ -594,6 +599,7 @@
 				2C60307A2B55D9160031544C /* UIImageView+.swift */,
 				CDE596D52B57708D00D99DA1 /* UIViewController+.swift */,
 				CDE596D92B57C4BE00D99DA1 /* UITextView+.swift */,
+				39B75ADD2B59BA87005DD8B9 /* UIScreen+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -773,13 +779,13 @@
 		39EF97B12B54498E00D2148B /* Lottie */ = {
 			isa = PBXGroup;
 			children = (
-				39B75ABF2B591239005DD8B9 /* scroll.json */,
-				39B75AC22B591239005DD8B9 /* sosocatA.json */,
-				39B75AC12B591239005DD8B9 /* sosocatB.json */,
-				39B75ABE2B591239005DD8B9 /* villainessA.json */,
-				39B75AC42B59123A005DD8B9 /* villainessB.json */,
-				39B75AC32B591239005DD8B9 /* regressorA.json */,
-				39B75AC02B591239005DD8B9 /* regressorB.json */,
+				39B75AD02B59891C005DD8B9 /* scroll.json */,
+				39B75AD12B59891D005DD8B9 /* regressorGreeting.json */,
+				39B75AD42B59891D005DD8B9 /* regressorSword.json */,
+				39B75AD52B59891D005DD8B9 /* sosocatBread.json */,
+				39B75ACF2B59891C005DD8B9 /* sosocatTail.json */,
+				39B75AD32B59891D005DD8B9 /* villainessFan.json */,
+				39B75AD22B59891D005DD8B9 /* villainessTea.json */,
 			);
 			path = Lottie;
 			sourceTree = "<group>";
@@ -787,6 +793,7 @@
 		A107A4A72B4DDE4900668C3E /* HomeView */ = {
 			isa = PBXGroup;
 			children = (
+				A1708F172B4D8E2F00E35E50 /* HomeView.swift */,
 				A14EDBBD2B4F05DD00906957 /* HomeCell */,
 				A1708F112B4D8DD300E35E50 /* HomeAssistantView */,
 			);
@@ -929,7 +936,6 @@
 			children = (
 				A107A4A72B4DDE4900668C3E /* HomeView */,
 				A1708F122B4D8DDE00E35E50 /* HomeViewController */,
-				A1708F172B4D8E2F00E35E50 /* HomeView.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -1248,18 +1254,19 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				39B75AC62B59123A005DD8B9 /* scroll.json in Resources */,
-				39B75ACB2B59123A005DD8B9 /* villainessB.json in Resources */,
-				39B75ACA2B59123A005DD8B9 /* regressorA.json in Resources */,
-				39B75AC52B59123A005DD8B9 /* villainessA.json in Resources */,
 				2CD229252B42E687005400BE /* Assets.xcassets in Resources */,
 				2C79CB992B45A0B200734E1F /* Pretendard-Bold.otf in Resources */,
+				39B75ADA2B59891D005DD8B9 /* villainessFan.json in Resources */,
+				39B75AD72B59891D005DD8B9 /* scroll.json in Resources */,
+				39B75AD92B59891D005DD8B9 /* villainessTea.json in Resources */,
+				39B75ADB2B59891D005DD8B9 /* regressorSword.json in Resources */,
+				39B75AE02B59C6A7005DD8B9 /* LaunchScreen.storyboard in Resources */,
+				39B75AD62B59891D005DD8B9 /* sosocatTail.json in Resources */,
 				399F29302B565D8000BBC12B /* Config.xcconfig in Resources */,
 				2C79CB9B2B45A0B700734E1F /* Pretendard-Regular.otf in Resources */,
-				39B75AC92B59123A005DD8B9 /* sosocatA.json in Resources */,
-				39B75AC82B59123A005DD8B9 /* sosocatB.json in Resources */,
-				39B75AC72B59123A005DD8B9 /* regressorB.json in Resources */,
+				39B75AD82B59891D005DD8B9 /* regressorGreeting.json in Resources */,
 				2C79CB952B45A0A400734E1F /* Pretendard-SemiBold.otf in Resources */,
+				39B75ADC2B59891D005DD8B9 /* sosocatBread.json in Resources */,
 				2C79CB972B45A0AB00734E1F /* Pretendard-Medium.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1332,6 +1339,7 @@
 				A1B903E52B58140800398890 /* UserNovelListResult.swift in Sources */,
 				CD3E5A742B5424D600C0A659 /* MemoEditView.swift in Sources */,
 				39CC16812B51246E003F56AE /* RegisterNormalView.swift in Sources */,
+				39B75ADE2B59BA87005DD8B9 /* UIScreen+.swift in Sources */,
 				A107A49E2B4DCD9900668C3E /* HomeCharacterView.swift in Sources */,
 				A122C9DB2B5309AF00DFCFE4 /* (null) in Sources */,
 				A1EF35432B52F75800A94C53 /* NovelRepository.swift in Sources */,

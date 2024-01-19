@@ -15,11 +15,19 @@ enum LottieLiterals {
     }
     
     enum Home {
-        static let sosocatA = LottieAnimationView(name: "sosocatA")
-        static let sosocatB = LottieAnimationView(name: "sosocatB")
-        static let villainessA = LottieAnimationView(name: "villainessA")
-        static let villainessB = LottieAnimationView(name: "villainessB")
-        static let regressorA = LottieAnimationView(name: "regressorA")
-        static let regressorB = LottieAnimationView(name: "regressorB")
+        enum Sosocat {
+            static let tail = LottieAnimationView(name: "sosocatTail")
+            static let bread = LottieAnimationView(name: "sosocatBread")
+        }
+        
+        enum Villainess {
+            static let fan = LottieAnimationView(name: "villainessFan")
+            static let tea = LottieAnimationView(name: "villainessTea")
+        }
+        
+        enum Regressor {
+            static let sword = LottieAnimationView(name: "regressorSword")
+            static let greeting = LottieAnimationView(name: "regressorGreeting")
+        }
     }
 }

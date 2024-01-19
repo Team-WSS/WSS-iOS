@@ -22,9 +22,9 @@ final class MyPageCustomModalView: UIView {
     public var modalExplanationLabel = UILabel()
     public var modalChangeButton = WSSMainButton(title: "대표 캐릭터 설정하기")
     public var modalContinueButton = UIButton()
-    private let lottieList = [LottieLiterals.Home.sosocatA,
-                              LottieLiterals.Home.regressorA,
-                              LottieLiterals.Home.villainessA]
+    private let lottieList = [LottieLiterals.Home.Sosocat.bread,
+                              LottieLiterals.Home.Regressor.sword,
+                              LottieLiterals.Home.Villainess.fan]
     
     // MARK: - Life Cycle
     
