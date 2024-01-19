@@ -123,7 +123,7 @@ final class LibraryViewController: UIViewController {
                     userNovelService: DefaultUserNovelService()),
                 readStatusData: readStatusList[i],
                 lastUserNovelIdData: 999999,
-                sizeData: 20,
+                sizeData: 500,
                 sortTypeData: sortTypeList[0])
             
             viewController.delegate = self
@@ -156,6 +156,25 @@ final class LibraryViewController: UIViewController {
             .bind(with: self, onNext: { owner, _ in 
                 owner.libraryListView.isHidden.toggle()
             })
+        
+        libraryListView.libraryNewestButton.rx.tap
+            .bind(with: self) { owner , _ in
+                owner.updatePages(sort: owner.sortTypeList[0])
+                owner.libraryDescriptionView.libraryNovelListButton.setTitle(StringLiterals.Library.newest, for: .normal)
+            }
+        
+        libraryListView.libraryOldesttButton.rx.tap
+            .bind(with: self) { owner , _ in
+                owner.updatePages(sort: owner.sortTypeList[1])
+                owner.libraryDescriptionView.libraryNovelListButton.setTitle(StringLiterals.Library.oldest, for: .normal)
+            }
+    }
+    
+    private func updatePages(sort: String) {
+        for index in 0..<readStatusList.count {
+            let viewController = libraryPages[index]
+            viewController.reloadView(sortType: sort)
+        }
     }
 }
 
@@ -185,9 +204,13 @@ extension LibraryViewController: UIPageViewControllerDataSource {
     }
 }
 
-extension LibraryViewController: NovelCountDelegate {
+extension LibraryViewController: NovelDelegate {
     func sendData(data: Int) {
         libraryDescriptionView.libraryNovelCountLabel.text = "\(data)개"
+    }
+    
+    func sendStatus(status: String) {
+        print("good")
     }
 }
 
