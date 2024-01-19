@@ -18,7 +18,8 @@ final class HomeCharacterView: UIView {
     private let characterStackView = UIStackView()
     let tagView = HomeCharacterTagView()
     let characterCommentLabel = UILabel()
-    var characterLottieView = LottieLiterals.Home.Sosocat.bread
+    let characterLoadingView = UIView()
+    var characterLottieView = LottieAnimationView()
     
     //MARK: - Life Cycle
     
@@ -72,14 +73,16 @@ final class HomeCharacterView: UIView {
     private func setHierachy() {
         characterStackView.addArrangedSubviews(tagView,
                                                characterCommentLabel,
-                                               characterLottieView)
+                                               characterLoadingView)
         self.addSubviews(characterStackView)
     }
     
     //MARK: - set Layout
     
     private func setLayout() {
-        
+        characterLoadingView.snp.makeConstraints {
+            $0.size.equalTo(240)
+        }
         characterLottieView.snp.makeConstraints {
             $0.size.equalTo(240)
         }
@@ -96,7 +99,7 @@ final class HomeCharacterView: UIView {
     
     func setLottie(view: LottieAnimationView) {
         self.characterLottieView.removeFromSuperview()
-        
+        characterLoadingView.removeFromSuperview()
         // Lottie 애니메이션 뷰 생성 및 설정
         characterLottieView = view
         characterStackView.insertArrangedSubview(characterLottieView, at: 2)

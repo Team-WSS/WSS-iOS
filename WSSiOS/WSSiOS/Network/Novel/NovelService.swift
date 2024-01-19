@@ -25,7 +25,7 @@ extension DefaultNovelService: NovelService {
 
         let searchListQueryItems: [URLQueryItem] = [
             URLQueryItem(name: "lastNovelId", value: String(describing: 999999)),
-            URLQueryItem(name: "size", value: String(describing: 40)),
+            URLQueryItem(name: "size", value: String(describing: 1000)),
             URLQueryItem(name: "word", value: searchWord)
         ]
         
