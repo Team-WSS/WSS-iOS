@@ -18,7 +18,7 @@ final class RecordEmptyView: UIView {
     private let stackView = UIStackView()
     private let registerPlusImageView = UIImageView()
     private let recordEmptyDescriptionLabel = UILabel()
-    private let recordButton = UIButton()
+    let recordButton = UIButton()
     
     // MARK: - Life Cycle
     
@@ -53,20 +53,23 @@ final class RecordEmptyView: UIView {
         }
         
         recordEmptyDescriptionLabel.do {
-            $0.text = "읽은 웹소설에 대해\n기록을 남겨볼까요?"
-            $0.textAlignment = .center
-            $0.numberOfLines = 2
             $0.font = .Body1
             $0.textColor = .Gray200
+            $0.makeAttribute(with: "읽은 웹소설에 대해\n기록을 남겨볼까요?")?
+                .kerning(kerningPixel: -0.8)
+                .lineSpacing(spacingPercentage: 140)
+                .applyAttribute()
+            $0.textAlignment = .center
+            $0.numberOfLines = 2
         }
         
         recordButton.do {
             var config = UIButton.Configuration.filled()
             config.baseBackgroundColor = .Primary50
             config.baseForegroundColor = .Primary100
-            var titleAttr = AttributedString.init("웹소설 등록하기")
+            var titleAttr = AttributedString.init("웹소설 기록하기")
+            titleAttr.kern = -0.6
             titleAttr.font = UIFont.Title1
-            
             config.attributedTitle = titleAttr
             config.background.cornerRadius = 12
             config.contentInsets = NSDirectionalEdgeInsets(top: 18, leading: 42, bottom: 18, trailing: 42)

@@ -21,7 +21,8 @@ final class LibraryTabCollectionViewCell: UICollectionViewCell {
     
     //MARK: - UI Components
     
-    public var libraryTabButton = UIButton()
+    public var libraryTabLabel = UILabel()
+    private let libraryTabUnderView = UIView()
     
     //MARK: - Life Cycle
     
@@ -47,30 +48,44 @@ final class LibraryTabCollectionViewCell: UICollectionViewCell {
     //MARK: - Set UI
     
     private func setUI() {
-        libraryTabButton.do {
-            $0.setTitleColor(.Gray200, for: .normal)
-            $0.titleLabel?.font = .Body1
-            $0.layer.backgroundColor = UIColor.clear.cgColor
+        libraryTabLabel.do {
+            $0.textColor = .Gray200
+            $0.font = .Body1
+            $0.backgroundColor = .clear
+            $0.textAlignment = .center
+        }
+        
+        libraryTabUnderView.do {
+            $0.backgroundColor = .Primary100
+            $0.isHidden = true
         }
     }
     
     //MARK: - Set Hierachy
     
     private func setHierachy() {
-        self.addSubview(libraryTabButton)
+        self.addSubviews(libraryTabLabel,
+                         libraryTabUnderView)
     }
     
     //MARK: - Set Layout
     
     private func setLayout() {
-        libraryTabButton.snp.makeConstraints() {
-            $0.edges.equalToSuperview()
+        libraryTabLabel.snp.makeConstraints() {
+            $0.center.equalToSuperview()
+        }
+        
+        libraryTabUnderView.snp.makeConstraints() {
+            $0.width.equalTo(libraryTabLabel.snp.width)
+            $0.centerX.bottom.equalToSuperview()
+            $0.height.equalTo(3)
         }
     }
     
     //MARK: - Select Case
     
     private func selectUI() {
-        libraryTabButton.titleLabel?.textColor = isSelected ? .Primary100 : .Gray200
+        libraryTabLabel.textColor = isSelected ? .Primary100 : .Gray200
+        libraryTabUnderView.isHidden = isSelected ? false : true
     }
 }

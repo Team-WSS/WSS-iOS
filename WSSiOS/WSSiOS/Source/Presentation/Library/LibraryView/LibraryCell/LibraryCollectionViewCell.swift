@@ -108,6 +108,17 @@ final class LibraryCollectionViewCell: UICollectionViewCell {
         novelImageView.kfSetImage(url: data.userNovelImg)
         novelTitleLabel.text = data.userNovelTitle
         novelAuthorLabel.text = data.userNovelAuthor
+        
+        let novelRating = data.userNovelRating
+        if novelRating == 0.0 {
+            novelRatingLabel.isHidden = true
+            ratingStarImage.isHidden = true
+        }
+        else {
+            novelRatingLabel.isHidden = false
+            ratingStarImage.isHidden = false
+        }
+        
         novelRatingLabel.text = String(data.userNovelRating)
     }
 }

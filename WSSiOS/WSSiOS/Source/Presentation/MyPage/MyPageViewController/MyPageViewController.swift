@@ -66,7 +66,7 @@ final class MyPageViewController: UIViewController {
     
     private func setNavigationBar() {
         self.navigationController?.isNavigationBarHidden = false
-        self.navigationItem.title = "마이페이지"
+        self.navigationItem.title = StringLiterals.Navigation.Title.myPage
         
         if let navigationBar = self.navigationController?.navigationBar {
             let titleTextAttributes: [NSAttributedString.Key: Any] = [
@@ -81,8 +81,7 @@ final class MyPageViewController: UIViewController {
             tabBarController.shadowView.isHidden = false
             tabBarController.tabBar.isHidden = false
         }
-    }
-    
+
     //MARK: - init DataBind
     
     private func register() {
@@ -260,6 +259,18 @@ extension MyPageViewController {
         
         modalVC.modalPresentationStyle = .overFullScreen
         present(modalVC, animated: true)
+    }
+    
+    private func pushChangeNickNameViewController() {
+        rootView.myPageTallyView.myPageUserNameButton.rx.tap
+            .bind(with: self, onNext: { owner, _ in 
+                self.hideTabBar()
+                let changeNicknameViewController = MyPageChangeNicknameViewController(userRepository: DefaultUserRepository(
+                    userService: DefaultUserService()))
+                changeNicknameViewController.bindData(self.userNickName)
+                owner.navigationController?.pushViewController(changeNicknameViewController, animated: true)
+            })
+            .disposed(by: disposeBag)
     }
     
     //MARK: - notification

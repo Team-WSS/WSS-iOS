@@ -21,11 +21,15 @@ protocol UserNovelService {
 }
 
 final class DefaultUserNovelService: NSObject, Networking {
-    private let novelListQuery: [URLQueryItem] = [
-        URLQueryItem(name: "readStatus", value: ("ALL")),
-        URLQueryItem(name: "lastUserNovelId", value: String(describing: 100)),
-        URLQueryItem(name: "size", value: String(describing: 5)),
-        URLQueryItem(name: "sortType", value: String("NEWEST"))]
+    func makeNovelListQuery(readStatus: String, lastUserNovelId: Int, size: Int, sortType: String) -> [URLQueryItem] {
+            return [
+                URLQueryItem(name: "readStatus", value: readStatus),
+                URLQueryItem(name: "lastUserNovelId", value: String(describing: lastUserNovelId)),
+                URLQueryItem(name: "size", value: String(describing: size)),
+                URLQueryItem(name: "sortType", value: sortType)
+            ]
+        }
+    
     private var urlSession: URLSession = URLSession(configuration: URLSessionConfiguration.default,
                                                     delegate: nil,
                                                     delegateQueue: nil)
@@ -35,7 +39,10 @@ extension DefaultUserNovelService: UserNovelService {
     func getUserNovelList(readStatus: String, lastUserNovelId: Int, size: Int, sortType: String) -> RxSwift.Single<UserNovelList> {
         let request = try! makeHTTPRequest(method: .get,
                                            path: URLs.UserNovel.getUserNovelList,
-                                           queryItems: novelListQuery,
+                                           queryItems: makeNovelListQuery(readStatus: readStatus,
+                                                                          lastUserNovelId: lastUserNovelId,
+                                                                          size: size,
+                                                                          sortType: sortType),
                                            headers: APIConstants.testTokenHeader,
                                            body: nil)
         
@@ -73,13 +80,13 @@ extension DefaultUserNovelService: UserNovelService {
             .map { _ in }
             .asSingle()
     }
-
+    
     func postUserNovel(novelId: Int, userNovelRating: Float?, userNovelReadStatus: ReadStatus, userNovelReadStartDate: String?, userNovelReadEndDate: String?) -> Single<UserNovelId> {
         guard let userNovelBasic = try? JSONEncoder()
             .encode(UserNovelBasicInfo(userNovelRating: userNovelRating,
-                                   userNovelReadStatus: userNovelReadStatus.rawValue,
-                                   userNovelReadStartDate: userNovelReadStartDate,
-                                   userNovelReadEndDate: userNovelReadEndDate)
+                                       userNovelReadStatus: userNovelReadStatus.rawValue,
+                                       userNovelReadStartDate: userNovelReadStartDate,
+                                       userNovelReadEndDate: userNovelReadEndDate)
             ) else {
             return Single.error(NetworkServiceError.invalidRequestError)
         }
@@ -98,9 +105,9 @@ extension DefaultUserNovelService: UserNovelService {
     func patchUserNovel(userNovelId: Int, userNovelRating: Float?, userNovelReadStatus: ReadStatus, userNovelReadStartDate: String?, userNovelReadEndDate: String?) -> Single<Void> {
         guard let userNovelBasic = try? JSONEncoder()
             .encode(UserNovelBasicInfo(userNovelRating: userNovelRating,
-                                   userNovelReadStatus: userNovelReadStatus.rawValue,
-                                   userNovelReadStartDate: userNovelReadStartDate,
-                                   userNovelReadEndDate: userNovelReadEndDate)
+                                       userNovelReadStatus: userNovelReadStatus.rawValue,
+                                       userNovelReadStartDate: userNovelReadStartDate,
+                                       userNovelReadEndDate: userNovelReadEndDate)
             ) else {
             return Single.error(NetworkServiceError.invalidRequestError)
         }
