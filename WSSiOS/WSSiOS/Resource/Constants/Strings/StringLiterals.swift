@@ -70,6 +70,7 @@ enum StringLiterals {
         
         enum Setting {
             static let instaURL = "https://www.instagram.com/websoso_official/"
+            static let termsURL = "https://kimmjabc.notion.site/4acd397608c146cbbf8dd4fe11a82e19"
         }
         
         enum Profile {
