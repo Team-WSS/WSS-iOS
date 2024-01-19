@@ -127,6 +127,7 @@ final class MyPageViewController: UIViewController {
                 case 0:
                     let infoViewController = MyPageInfoViewController()
                     infoViewController.rootView.bindData(self.userNickName)
+                    self.hideTabBar()
                     self.navigationController?.pushViewController(infoViewController, animated: true)
                     
                 case 1:

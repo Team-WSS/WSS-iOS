@@ -10,20 +10,20 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-protocol NovelCountDelegate: AnyObject {
+protocol NovelDelegate: AnyObject {
     func sendData(data: Int)
 }
 
 final class LibraryBaseViewController: UIViewController {
     
     //MARK: - Properties
-
+    
     private let readStatusData: String
-    private let lastUserNovelIdData: Int
+    private var lastUserNovelIdData: Int
     private let sizeData: Int
-    private let sortTypeData: String
+    private var sortTypeData: String
     private var novelTotalCount = 0
-    weak var delegate : NovelCountDelegate?
+    weak var delegate : NovelDelegate?
     
     //MARK: - UI Components
     
@@ -119,14 +119,13 @@ final class LibraryBaseViewController: UIViewController {
         .subscribe(with: self, onNext: { owner, data in
             owner.novelTotalCount = data.userNovelCount
             owner.delegate?.sendData(data: owner.novelTotalCount)
-            
             owner.novelListRelay.accept(data.userNovels)
         }, onError: { error, _  in
             print(error)
         })
         .disposed(by: disposeBag)
     }
-
+    
     private func bindAction() {
         rootView.libraryCollectionView.rx.itemSelected
             .observe(on: MainScheduler.instance)
@@ -150,6 +149,26 @@ final class LibraryBaseViewController: UIViewController {
                     animated: true)
             })
             .disposed(by: disposeBag)
+    }
+    
+    func reloadView(sortType: String) {
+        sortTypeData = sortType
+        
+        if sortTypeData == "NEWEST" {
+            lastUserNovelIdData = 999999
+            bindUserData(readStatus: readStatusData,
+                         lastUserNovelId: lastUserNovelIdData,
+                         size: 500,
+                         sortType: sortType)
+        }
+        
+        else if sortTypeData == "OLDEST" {
+            lastUserNovelIdData = 0
+            bindUserData(readStatus: readStatusData,
+                         lastUserNovelId: lastUserNovelIdData,
+                         size: 500,
+                         sortType: sortType)
+        }
     }
 }
 

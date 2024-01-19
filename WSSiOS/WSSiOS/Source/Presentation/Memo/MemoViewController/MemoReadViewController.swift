@@ -65,6 +65,7 @@ final class MemoReadViewController: UIViewController {
     private func setNavigationBar() {
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.backButton)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.editButon)
+        self.navigationController?.navigationBar.backgroundColor = .clear
     }
     
     // MARK: - set UI

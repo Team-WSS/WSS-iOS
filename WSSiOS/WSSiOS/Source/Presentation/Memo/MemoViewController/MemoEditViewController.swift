@@ -76,6 +76,7 @@ final class MemoEditViewController: UIViewController {
     private func setNavigationBar() {
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.backButton)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.completeButton)
+        self.navigationController?.navigationBar.backgroundColor = .clear
     }
     
     // MARK: - set UI
