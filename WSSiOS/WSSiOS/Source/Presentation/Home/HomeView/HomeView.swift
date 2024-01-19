@@ -70,11 +70,16 @@ final class HomeView: UIView {
         }
         
         titleView.snp.makeConstraints {
-            $0.top.equalTo(characterView.snp.bottom).offset(24)
+            if UIScreen.main.bounds.height < 813 {
+                $0.top.equalTo(characterView.snp.bottom).offset(24)
+            } else {
+                $0.top.equalTo(characterView.snp.bottom).offset(((UIScreen.main.bounds.height-812))/2+24)
+            }
             $0.centerX.leading.trailing.equalToSuperview()
         }
         
         sosopickView.snp.makeConstraints {
+          
             $0.top.equalTo(titleView.snp.bottom)
             $0.centerX.leading.trailing.bottom.equalToSuperview()
             $0.height.equalTo(230)
