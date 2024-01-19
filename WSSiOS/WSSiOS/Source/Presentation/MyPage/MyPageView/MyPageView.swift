@@ -69,7 +69,7 @@ final class MyPageView: UIView {
         myPageProfileView.myPageBadgeImageView.kfSetImage(url: data.representativeAvatarGenreBadge)
         myPageProfileView.myPagePhraseLabel.text = data.representativeAvatarLineContent
         myPageProfileView.myPageAvartarImageView.kfSetImage(url: data.representativeAvatarImg)
-        myPageTallyView.myPageUserNameButton.setTitle("\(data.userNickName)님", for: .normal)
+        myPageTallyView.myPageUserNameButton.setTitle("\(data.userNickname)님", for: .normal)
         myPageTallyView.myPageRegisterView.tallyLabel.text = String(data.userNovelCount)
         myPageTallyView.myPageRecordView.tallyLabel.text = String(data.memoCount)
     }

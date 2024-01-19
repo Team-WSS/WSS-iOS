@@ -15,7 +15,7 @@ final class RecordHeaderView: UIView {
     //MARK: - UI Components
     
     let recordCountLabel = UILabel()
-    private let headerAlignmentView = RecordHeaderAlignmentView()
+    let headerAlignmentButton = RecordHeaderAlignmentButton()
     
     // MARK: - Life Cycle
     
@@ -48,7 +48,7 @@ final class RecordHeaderView: UIView {
     
     private func setHierachy() {
         self.addSubviews(recordCountLabel,
-                         headerAlignmentView)
+                         headerAlignmentButton)
     }
     
     //MARK: - set Layout
@@ -59,7 +59,7 @@ final class RecordHeaderView: UIView {
             $0.leading.equalToSuperview().inset(20)
         }
         
-        headerAlignmentView.snp.makeConstraints {
+        headerAlignmentButton.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.trailing.equalToSuperview().inset(20)
         }

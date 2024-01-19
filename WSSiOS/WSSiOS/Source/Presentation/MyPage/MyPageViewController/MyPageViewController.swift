@@ -94,7 +94,7 @@ final class MyPageViewController: UIViewController {
             .subscribe(with: self, onNext: { owner, data in 
                 owner.rootView.dataBind(data)
                 owner.representativeAvatarId = data.representativeAvatarId
-                owner.userNickName = data.userNickName
+                owner.userNickName = data.userNickname
                 owner.avaterListRelay = BehaviorRelay(value: data.userAvatars)
                 owner.bindColletionView()
             })
@@ -150,7 +150,7 @@ final class MyPageViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, userData in
                 owner.representativeAvatarId = userData.representativeAvatarId
-                owner.userNickName = userData.userNickName
+                owner.userNickName = userData.userNickname
                 completion(userData, userData.userAvatars)
             }, onError: { error, _ in
                 print(error)
