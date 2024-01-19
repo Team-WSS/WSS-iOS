@@ -41,10 +41,7 @@ final class RecordViewController: UIViewController {
         super.viewWillAppear(animated)
         
         bindDataToUI()
-        if let tabBarController = self.tabBarController as? WSSTabBarController {
-            tabBarController.tabBar.isHidden = false
-            tabBarController.shadowView.isHidden = false
-        }
+        showTabBar()
     }
     
     override func viewDidLoad() {
@@ -64,7 +61,7 @@ final class RecordViewController: UIViewController {
     
     private func setNavigationBar() {
         self.navigationController?.isNavigationBarHidden = false
-        self.navigationItem.title = "내 기록"
+        self.navigationItem.title = StringLiterals.Navigation.Title.record
         self.navigationController?.navigationBar.backgroundColor = .White
         
         // Navigation Bar의 title 폰트 설정

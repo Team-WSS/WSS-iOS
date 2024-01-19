@@ -66,7 +66,7 @@ final class MyPageViewController: UIViewController {
     
     private func setNavigationBar() {
         self.navigationController?.isNavigationBarHidden = false
-        self.navigationItem.title = "마이페이지"
+        self.navigationItem.title = StringLiterals.Navigation.Title.myPage
         
         if let navigationBar = self.navigationController?.navigationBar {
             let titleTextAttributes: [NSAttributedString.Key: Any] = [
@@ -77,10 +77,7 @@ final class MyPageViewController: UIViewController {
     }
     
     private func reSetNavigationBar() {
-        if let tabBarController = self.tabBarController as? WSSTabBarController {
-            tabBarController.tabBar.isHidden = false
-            tabBarController.shadowView.isHidden = false
-        }
+        showTabBar()
     }
     
     //MARK: - init DataBind
@@ -187,11 +184,7 @@ extension MyPageViewController {
     private func pushChangeNickNameViewController() {
         rootView.myPageTallyView.myPageUserNameButton.rx.tap
             .bind(with: self, onNext: { owner, _ in 
-                if let tabBarController = owner.tabBarController as? WSSTabBarController {
-                    tabBarController.tabBar.isHidden = true
-                    tabBarController.shadowView.isHidden = true
-                }
-                
+                self.hideTabBar()
                 let changeNicknameViewController = MyPageChangeNicknameViewController(userRepository: DefaultUserRepository(
                     userService: DefaultUserService()))
                 changeNicknameViewController.bindData(self.userNickName)

@@ -23,6 +23,17 @@ enum StringLiterals {
         }
     }
     
+    enum Navigation {
+        enum Title {
+            static let library = "내 서재"
+            static let record = "내 기록"
+            static let search = "검색"
+            static let myPage = "마이페이지"
+            static let changeNickname = "닉네임 변경"
+            static let myPageInfo = "계정정보 확인"
+        }
+    }
+    
     enum Register {
         enum Normal {
             enum DatePicker {
