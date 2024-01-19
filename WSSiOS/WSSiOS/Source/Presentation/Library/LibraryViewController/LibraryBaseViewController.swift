@@ -12,13 +12,12 @@ import RxCocoa
 
 protocol NovelDelegate: AnyObject {
     func sendData(data: Int)
-    func sendStatus(status: String)
 }
 
 final class LibraryBaseViewController: UIViewController {
     
     //MARK: - Properties
-
+    
     private let readStatusData: String
     private var lastUserNovelIdData: Int
     private let sizeData: Int
@@ -120,15 +119,13 @@ final class LibraryBaseViewController: UIViewController {
         .subscribe(with: self, onNext: { owner, data in
             owner.novelTotalCount = data.userNovelCount
             owner.delegate?.sendData(data: owner.novelTotalCount)
-//            owner.delegate?.sendStatus(status: readStatus)
-            
             owner.novelListRelay.accept(data.userNovels)
         }, onError: { error, _  in
             print(error)
         })
         .disposed(by: disposeBag)
     }
-
+    
     private func bindAction() {
         rootView.libraryCollectionView.rx.itemSelected
             .observe(on: MainScheduler.instance)

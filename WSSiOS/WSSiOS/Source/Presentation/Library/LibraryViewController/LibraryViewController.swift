@@ -208,10 +208,6 @@ extension LibraryViewController: NovelDelegate {
     func sendData(data: Int) {
         libraryDescriptionView.libraryNovelCountLabel.text = "\(data)개"
     }
-    
-    func sendStatus(status: String) {
-        print("good")
-    }
 }
 
 extension LibraryViewController {
