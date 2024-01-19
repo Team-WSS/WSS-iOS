@@ -44,7 +44,7 @@ final class RecordViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        bindDataToUI()
+        bindDataToUI(id: lastMemoId, sortStyle: alignmentLabel)
         showTabBar()
     }
     

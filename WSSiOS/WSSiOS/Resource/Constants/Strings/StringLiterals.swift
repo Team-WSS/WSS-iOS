@@ -80,6 +80,7 @@ enum StringLiterals {
         enum Character {
             static let select = "캐릭터 선택"
         }
+    }
 
     enum Library {
         static let empty = "아직 서재가 비어있네요!"

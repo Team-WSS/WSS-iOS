@@ -81,6 +81,7 @@ final class MyPageViewController: UIViewController {
             tabBarController.shadowView.isHidden = false
             tabBarController.tabBar.isHidden = false
         }
+    }
 
     //MARK: - init DataBind
     
@@ -265,7 +266,7 @@ extension MyPageViewController {
         rootView.myPageTallyView.myPageUserNameButton.rx.tap
             .bind(with: self, onNext: { owner, _ in 
                 self.hideTabBar()
-                let changeNicknameViewController = MyPageChangeNicknameViewController(userRepository: DefaultUserRepository(
+                let changeNicknameViewController = MyPageChangeNicknameViewController(userNickName: owner.userNickName, userRepository: DefaultUserRepository(
                     userService: DefaultUserService()))
                 changeNicknameViewController.bindData(self.userNickName)
                 owner.navigationController?.pushViewController(changeNicknameViewController, animated: true)
