@@ -30,7 +30,6 @@ final class MyPageTallyView: UIView {
         setUI()
         setHierachy()
         setLayout()
-        dataBind()
     }
     
     required init?(coder: NSCoder) {
@@ -55,7 +54,6 @@ final class MyPageTallyView: UIView {
             $0.layer.cornerRadius = 15
             
             myPageUserNameButton.do {
-                $0.setTitle("신지원님", for: .normal)
                 $0.setTitleColor(.Black, for: .normal)
                 $0.titleLabel?.font = .HeadLine1
                 $0.setImage(ImageLiterals.icon.MyPage.right, for: .normal)
@@ -69,12 +67,12 @@ final class MyPageTallyView: UIView {
             
             myPageRegisterView.do {
                 $0.titleIconImageView.image = ImageLiterals.icon.MyPage.register
-                $0.titleLabel.text = "등록 작품"
+                $0.titleLabel.text = StringLiterals.MyPage.Profile.registerNovel
             }
             
             myPageRecordView.do {
                 $0.titleIconImageView.image = ImageLiterals.icon.MyPage.record
-                $0.titleLabel.text = "기록"
+                $0.titleLabel.text = StringLiterals.MyPage.Profile.record
             }
         }
     }
@@ -130,14 +128,6 @@ final class MyPageTallyView: UIView {
                 $0.bottom.equalToSuperview().inset(18)
             }
         }
-    }
-    
-    //MARK: - dataBind 
-    //추후 수정 예정
-    
-    func dataBind() {
-        myPageRegisterView.tallyLabel.text = "0"
-        myPageRecordView.tallyLabel.text = "100"
     }
     
     private func makeShadow() {

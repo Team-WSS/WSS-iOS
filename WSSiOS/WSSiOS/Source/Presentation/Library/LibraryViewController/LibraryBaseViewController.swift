@@ -127,6 +127,17 @@ final class LibraryBaseViewController: UIViewController {
         .disposed(by: disposeBag)
     }
     
+
+    private func bindColletionView() {
+        novelListRelay.bind(to: rootView.libraryCollectionView.rx.items(
+            cellIdentifier: "LibraryCollectionViewCell",
+            cellType: LibraryCollectionViewCell.self)) { [weak self] (row, element, cell) in
+                cell.bindData(element)
+                print("🤙🏻", element)
+            }
+            .disposed(by: disposeBag)
+        
+
     private func bindAction() {
         rootView.libraryCollectionView.rx.itemSelected
             .observe(on: MainScheduler.instance)
