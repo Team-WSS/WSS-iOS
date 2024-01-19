@@ -138,7 +138,12 @@ final class MyPageViewController: UIViewController {
                             UIApplication.shared.open(url, options: [:])
                         }
                     }
-
+                    
+                case 2:
+                    if let url = URL(string: StringLiterals.MyPage.Setting.termsURL) {
+                        UIApplication.shared.open(url, options: [:])
+                    }
+                    
                 default:
                     break
                 }
