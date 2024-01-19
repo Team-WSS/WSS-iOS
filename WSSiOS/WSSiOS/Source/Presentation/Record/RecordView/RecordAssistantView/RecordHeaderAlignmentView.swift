@@ -28,6 +28,7 @@ final class RecordHeaderAlignmentButton: UIButton {
             $0.setTitle("최신 순", for: .normal)
             $0.setTitleColor(.Gray300, for: .normal)
             $00.titleLabel?.font = .Label1
+            $0.titleLabel?.adjustsFontSizeToFitWidth = true
             $0.setImage(ImageLiterals.icon.dropDown, for: .normal)
             $0.semanticContentAttribute = .forceRightToLeft
             $0.configuration?.contentInsets = .init(top: 0, leading: 8, bottom: 0, trailing: 0)
