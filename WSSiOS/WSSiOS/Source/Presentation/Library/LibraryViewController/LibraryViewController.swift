@@ -211,7 +211,6 @@ extension LibraryViewController: UIPageViewControllerDataSource {
 
 extension LibraryViewController: NovelDelegate {
     func sendData(data: Int) {
-        print(data)
         libraryDescriptionView.libraryNovelCountLabel.text = "\(data)개"
     }
 }
