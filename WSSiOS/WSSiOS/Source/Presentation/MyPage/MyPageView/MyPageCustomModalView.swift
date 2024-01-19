@@ -7,6 +7,7 @@
 
 import UIKit
 
+import Lottie
 import SnapKit
 import Then
 
@@ -16,11 +17,14 @@ final class MyPageCustomModalView: UIView {
     
     public var modalBackgroundView = UIView()
     public var modalAvatarFeatureLabelView = MyPageModalAvatarFeatureLabelView()
-    public var modalAvaterImageView = UIImageView()
+    public var modalAvaterLottieView = LottieAnimationView()
     public var modalTitleLabel = UILabel()
     public var modalExplanationLabel = UILabel()
     public var modalChangeButton = WSSMainButton(title: "대표 캐릭터 설정하기")
     public var modalContinueButton = UIButton()
+    private let lottieList = [LottieLiterals.Home.sosocatA,
+                              LottieLiterals.Home.regressorA,
+                              LottieLiterals.Home.villainessA]
     
     // MARK: - Life Cycle
     
@@ -43,9 +47,6 @@ final class MyPageCustomModalView: UIView {
             $0.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
             $0.layer.masksToBounds = true
         }
-
-        //뷰컨으로 뺄 예정
-        modalAvaterImageView.backgroundColor = .Gray300
         
         modalTitleLabel.do {
             //text 뷰컨으로 뺄 예정
@@ -71,7 +72,7 @@ final class MyPageCustomModalView: UIView {
     
     private func setHierachy() {
         self.addSubviews(modalAvatarFeatureLabelView,
-                         modalAvaterImageView,
+                         modalAvaterLottieView,
                          modalTitleLabel,
                          modalExplanationLabel,
                          modalChangeButton,
@@ -82,17 +83,10 @@ final class MyPageCustomModalView: UIView {
         modalAvatarFeatureLabelView.snp.makeConstraints() {
             $0.top.equalToSuperview().inset(30)
             $0.centerX.equalToSuperview()
-//            $0.height.equalTo(52)
-        }
-        
-        modalAvaterImageView.snp.makeConstraints() {
-            $0.top.equalTo(modalAvatarFeatureLabelView.snp.bottom).offset(30)
-            $0.centerX.equalToSuperview()
-            $0.size.equalTo(220)
         }
         
         modalTitleLabel.snp.makeConstraints() {
-            $0.top.equalTo(modalAvaterImageView.snp.bottom).offset(18)
+            $0.top.equalTo(modalAvatarFeatureLabelView.snp.bottom).offset(268)
             $0.centerX.equalToSuperview()
         }
         
@@ -113,10 +107,30 @@ final class MyPageCustomModalView: UIView {
         }
     }
     
-    func bindData(_ data: AvatarResult) {
+    func bindData(id: Int, data: AvatarResult) {
         modalAvatarFeatureLabelView.modalAvaterBadgeImageView.kfSetImage(url: data.avatarGenreBadgeImg)
         modalAvatarFeatureLabelView.modalAvaterTitleLabel.text = data.avatarTag
         modalTitleLabel.text = data.avatarMent
         modalExplanationLabel.text = data.avatarCondition
+        
+        modalAvaterLottieView.do {
+            $0.contentMode = .scaleAspectFit
+        }
+        
+        modalAvaterLottieView = lottieList[id - 1] 
+        self.addSubview(modalAvaterLottieView)
+        
+        modalAvaterLottieView.snp.makeConstraints() {
+            $0.top.equalTo(modalAvatarFeatureLabelView.snp.bottom).offset(30)
+            $0.centerX.equalToSuperview()
+            $0.size.equalTo(220)
+        }
+    
+        playLottie()
+    }
+    
+    private func playLottie() {
+        modalAvaterLottieView.play()
+        modalAvaterLottieView.loopMode = .playOnce
     }
 }

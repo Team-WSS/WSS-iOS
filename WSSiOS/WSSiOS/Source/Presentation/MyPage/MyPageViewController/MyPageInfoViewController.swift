@@ -48,7 +48,7 @@ final class MyPageInfoViewController: UIViewController {
     
     private func setNavigationBar() {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
-        self.title = "계정정보 확인"
+        self.title = StringLiterals.Navigation.Title.myPageInfo
         
         if let navigationBar = self.navigationController?.navigationBar {
             let titleTextAttributes: [NSAttributedString.Key: Any] = [

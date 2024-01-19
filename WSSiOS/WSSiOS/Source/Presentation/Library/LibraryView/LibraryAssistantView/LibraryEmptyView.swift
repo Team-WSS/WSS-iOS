@@ -50,6 +50,9 @@ final class LibraryEmptyView: UIView {
             
             emptyTitleLabel.do {
                 $0.text = StringLiterals.Library.empty
+                $0.makeAttribute(with: StringLiterals.Library.empty)?
+                    .kerning(kerningPixel: -0.8)
+                    .applyAttribute()
                 $0.font = .Body1
                 $0.textColor = .Gray200
                 $0.textAlignment = .center

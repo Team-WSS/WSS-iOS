@@ -12,7 +12,7 @@ struct UserResult: Codable {
                representativeAvatarTag,
                representativeAvatarLineContent,
                representativeAvatarImg,
-               userNickName: String
+               userNickname: String
     let representativeAvatarId, 
                userNovelCount,
                memoCount: Int

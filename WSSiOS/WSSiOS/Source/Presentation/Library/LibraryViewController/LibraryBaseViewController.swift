@@ -72,11 +72,7 @@ final class LibraryBaseViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if let tabBarController = self.tabBarController as? WSSTabBarController {
-            tabBarController.tabBar.isHidden = false
-            tabBarController.shadowView.isHidden = false
-        }
-        
+        showTabBar()
         bindUserData(readStatus: readStatusData,
                      lastUserNovelId: lastUserNovelIdData,
                      size: sizeData,
@@ -130,7 +126,7 @@ final class LibraryBaseViewController: UIViewController {
         })
         .disposed(by: disposeBag)
     }
-    
+
     private func bindAction() {
         rootView.libraryCollectionView.rx.itemSelected
             .observe(on: MainScheduler.instance)

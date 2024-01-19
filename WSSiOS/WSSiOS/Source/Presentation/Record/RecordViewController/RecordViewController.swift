@@ -20,9 +20,13 @@ final class RecordViewController: UIViewController {
     var recordMemoListRelay = BehaviorRelay<[RecordMemo]>(value: [])
     private let disposeBag = DisposeBag()
     
+    private var lastMemoId = 9999
+    private var alignmentLabel = "NEWEST"
+    
     //MARK: - UI Components
     
     private let rootView = RecordResultView()
+    private let emptyView = RecordEmptyView()
     
     init(memoRepository: DefaultMemoRepository) {
         self.memoRepository = memoRepository
@@ -40,18 +44,17 @@ final class RecordViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        bindDataToUI()
-        if let tabBarController = self.tabBarController as? WSSTabBarController {
-            tabBarController.tabBar.isHidden = false
-            tabBarController.shadowView.isHidden = false
-        }
+        bindDataToUI(id: lastMemoId, sortStyle: alignmentLabel)
+        showTabBar()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         setUI()
         registerCell()
+        setAction()
+        
         bindDataToRecordTableView()
         setNavigationBar()
     }
@@ -60,11 +63,13 @@ final class RecordViewController: UIViewController {
         self.view.do {
             $0.backgroundColor = .White
         }
+        
+        rootView.headerView.isUserInteractionEnabled = true
     }
     
     private func setNavigationBar() {
         self.navigationController?.setNavigationBarHidden(false, animated: false)
-        self.navigationItem.title = "내 기록"
+        self.navigationItem.title = StringLiterals.Navigation.Title.record
         self.navigationController?.navigationBar.backgroundColor = .White
         
         // Navigation Bar의 title 폰트 설정
@@ -80,8 +85,51 @@ final class RecordViewController: UIViewController {
         rootView.recordTableView.register(RecordTableViewCell.self, forCellReuseIdentifier: RecordTableViewCell.identifier)
     }
     
-    func getDataFromAPI(disposeBag: DisposeBag, completion: @escaping (Int, [RecordMemo]) -> Void) {
-        self.memoRepository.getRecordMemoList()
+    private func setAction() {
+        rootView.headerView.headerAlignmentButton
+            .rx.tap
+            .bind(with: self, onNext: { owner, event in
+                owner.rootView.alignmentView.isHidden.toggle()
+            })
+            .disposed(by: disposeBag)
+        
+        rootView.alignmentView.libraryNewestButton
+            .rx.tap
+            .bind(with: self, onNext: { owner, event in
+                owner.lastMemoId = 9999
+                owner.alignmentLabel = "NEWEST"
+                owner.rootView.headerView.headerAlignmentButton.setTitle("최신 순", for: .normal)
+                owner.bindDataToUI(id: owner.lastMemoId,
+                                   sortStyle: owner.alignmentLabel)
+                owner.rootView.alignmentView.isHidden = true
+            })
+            .disposed(by: disposeBag)
+        
+        rootView.alignmentView.libraryOldesttButton
+            .rx.tap
+            .bind(with: self, onNext: { owner, event in
+                owner.lastMemoId = 0
+                owner.alignmentLabel = "OLDEST"
+                owner.rootView.headerView.headerAlignmentButton.setTitle("오래된 순", for: .normal)
+                owner.bindDataToUI(id: owner.lastMemoId,
+                                   sortStyle: owner.alignmentLabel)
+                owner.rootView.alignmentView.isHidden = true
+            })
+            .disposed(by: disposeBag)
+        
+        emptyView.recordButton
+            .rx.tap
+            .subscribe(with: self, onNext: { owner, event in
+                owner.navigationController?.tabBarController?.selectedIndex = 1
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    func getDataFromAPI(disposeBag: DisposeBag,
+                        id: Int,
+                        sortStyle: String,
+                        completion: @escaping (Int, [RecordMemo]) -> Void) {
+        self.memoRepository.getRecordMemoList(memoId: id, sort: sortStyle)
             .subscribe (
                 onNext: { [weak self] memo in
                     guard self != nil else { return }
@@ -106,13 +154,15 @@ final class RecordViewController: UIViewController {
         rootView.recordTableView
             .rx
             .itemSelected
-                .subscribe(onNext:{ indexPath in
-                    self.navigationController?.pushViewController(MemoReadViewController(repository: DefaultMemoRepository(memoService: DefaultMemoService()), memoId: self.recordMemoListRelay.value[indexPath.row].id) , animated: true)
-                }).disposed(by: disposeBag)
+            .subscribe(onNext:{ indexPath in
+                self.navigationController?.pushViewController(MemoReadViewController(repository: DefaultMemoRepository(memoService: DefaultMemoService()), memoId: self.recordMemoListRelay.value[indexPath.row].id) , animated: true)
+            }).disposed(by: disposeBag)
     }
     
-    private func bindDataToUI() {
-        self.getDataFromAPI(disposeBag: disposeBag) { [weak self] recordMemoCount, recordMemoList in
+    private func bindDataToUI(id: Int, sortStyle: String) {
+        self.getDataFromAPI(disposeBag: disposeBag,
+                            id: id,
+                            sortStyle: sortStyle) { [weak self] recordMemoCount, recordMemoList in
             // 뷰 컨트롤러에서 전달받은 데이터 처리
             self?.updateUI(recordMemoCount: recordMemoCount, recordMemoList: recordMemoList)
         }
@@ -126,11 +176,16 @@ final class RecordViewController: UIViewController {
         )
         .observe(on: MainScheduler.instance)
         .subscribe(with: self, onNext: { owner, event in
+            
             owner.rootView.headerView.recordCountLabel.text = "\(event.0)개"
             if event.0 == 0 {
-                owner.view = RecordEmptyView()
+                owner.rootView.addSubview(self.emptyView)
+                self.emptyView.snp.makeConstraints {
+                    $0.edges.equalToSuperview()
+                }
             }
             else {
+                owner.emptyView.removeFromSuperview()
                 owner.recordMemoListRelay.accept(event.1)
             }
         })

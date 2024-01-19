@@ -49,10 +49,10 @@ final class MyPageModalAvatarFeatureLabelView: UIView {
             $0.distribution = .fill
             $0.spacing = 6
             
-            modalAvaterBadgeImageView.image = ImageLiterals.icon.Badge.HF
+            modalAvaterBadgeImageView.image = ImageLiterals.icon.Badge.logo
             
             modalAvaterTitleLabel.do {
-                $0.text = "회귀자"
+                $0.text = "신지원 사랑해"
                 $0.font = .HeadLine1
                 $0.textColor = .Black
             }

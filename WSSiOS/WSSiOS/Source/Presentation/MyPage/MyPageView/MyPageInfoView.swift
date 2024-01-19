@@ -52,6 +52,12 @@ final class MyPageInfoView: UIView {
             $0.textColor = .Gray200
             $0.font = .Body2
         }
+        
+        //데모데이 기준 숨김처리
+        
+        [emailLabel, secessionLabel,divider2View, divider3View, userEmailLabel].forEach {
+            $0.isHidden = true
+        }
     }
     
     private func setHierachy() {

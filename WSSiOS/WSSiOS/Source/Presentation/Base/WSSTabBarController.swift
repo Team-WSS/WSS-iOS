@@ -43,6 +43,9 @@ final class WSSTabBarController: UITabBarController {
             $0.backgroundColor = .White
             $0.itemPositioning = .centered
             $0.tintColor = .Black
+            
+            //탭바가 불투명해지는 현상을 막기 위해 false 처리 했지만 뒷배경이 없어 부자연스러워짐
+//            $0.isTranslucent = false
         }
     }
     

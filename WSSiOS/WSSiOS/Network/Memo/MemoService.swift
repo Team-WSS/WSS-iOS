@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 
 protocol MemoService {
-    func getRecordMemosData() -> Single<RecordMemos>
+    func getRecordMemosData(memoId: Int, sort: String) -> Single<RecordMemos>
     func postMemo(userNovelId: Int, memoContent: String) -> Single<IsAvatarUnlocked>
     func getMemoDetail(memoId: Int) -> Single<MemoDetail>
     func deleteMemo(memoId: Int) -> Single<Void>
@@ -25,11 +25,11 @@ final class DefaultMemoService: NSObject, Networking {
 }
 
 extension DefaultMemoService: MemoService {
-    func getRecordMemosData() -> Single<RecordMemos> {
+    func getRecordMemosData(memoId: Int, sort: String) -> Single<RecordMemos> {
         let recordListQueryItems: [URLQueryItem] = [
-            URLQueryItem(name: "lastMemoId", value: String(describing: 1000)),
+            URLQueryItem(name: "lastMemoId", value: String(describing: memoId)),
             URLQueryItem(name: "size", value: String(describing: 1000)),
-            URLQueryItem(name: "sortType", value: "NEWEST")]
+            URLQueryItem(name: "sortType", value: sort)]
         
         let request = try! makeHTTPRequest(method: .get,
                                            path: URLs.Memo.getMemoList,

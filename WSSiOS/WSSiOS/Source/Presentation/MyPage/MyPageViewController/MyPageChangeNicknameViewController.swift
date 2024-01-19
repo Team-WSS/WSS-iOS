@@ -14,11 +14,13 @@ final class MyPageChangeNicknameViewController: UIViewController {
     
     //MARK: - Set Properties
     
-    private var userNickName = ""
+    private var userNickName : String
+    private var newNickName = ""
     private let disposeBag = DisposeBag()
     private let userRepository : UserRepository
     
-    init(userRepository: UserRepository) {
+    init(userNickName: String, userRepository: UserRepository) {
+        self.userNickName = userNickName
         self.userRepository = userRepository
         super.init(nibName: nil, bundle: nil)
     }
@@ -72,7 +74,7 @@ final class MyPageChangeNicknameViewController: UIViewController {
     
     private func setNavigationBar() {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
-        self.title = "닉네임 변경"
+        self.title = StringLiterals.Navigation.Title.changeNickname
         
         if let navigationBar = self.navigationController?.navigationBar {
             let titleTextAttributes: [NSAttributedString.Key: Any] = [
@@ -103,8 +105,21 @@ final class MyPageChangeNicknameViewController: UIViewController {
         rootView.changeNicknameTextField.rx.text
             .subscribe(with: self, onNext: { owner, text in
                 if let text = text {
-                    owner.rootView.countNicknameLabel.text = "\(text.count)/10"
-                    owner.userNickName = text
+                    var textCount = text.count
+                    if textCount > 10 {
+                        owner.rootView.countNicknameLabel.text = "10/10"
+                    }
+                    else {
+                        owner.rootView.countNicknameLabel.text = "\(textCount)/10"
+                        owner.newNickName = text
+                    }
+                    
+                    if text == owner.userNickName || text == "" {
+                        owner.completeButton.setTitleColor(.Gray200, for: .normal)
+                    }
+                    else {
+                        owner.completeButton.setTitleColor(.Primary100, for: .normal)
+                    }
                 }
             })
             .disposed(by: disposeBag)
@@ -126,7 +141,7 @@ final class MyPageChangeNicknameViewController: UIViewController {
     //MARK: - Bind Data
     
     private func patchUserNickName() {
-        userRepository.patchUserName(userNickName: userNickName)
+        userRepository.patchUserName(userNickName: newNickName)
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in 
                 owner.navigationController?.popViewController(animated: true)
@@ -142,9 +157,8 @@ final class MyPageChangeNicknameViewController: UIViewController {
 
 extension MyPageChangeNicknameViewController {
     private func limitNum(_ text: String) {
-        if text.count > 9 {
-            let index = text.index(text.startIndex, offsetBy: 9)
-            self.rootView.changeNicknameTextField.text = String(text[..<index])
+        if text.count > 10 {
+            self.rootView.changeNicknameTextField.text = String(text.prefix(10))
         }
     }
 }

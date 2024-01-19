@@ -23,6 +23,17 @@ enum StringLiterals {
         }
     }
     
+    enum Navigation {
+        enum Title {
+            static let library = "내 서재"
+            static let record = "내 기록"
+            static let search = "검색"
+            static let myPage = "마이페이지"
+            static let changeNickname = "닉네임 변경"
+            static let myPageInfo = "계정정보 확인"
+        }
+    }
+    
     enum Register {
         enum Normal {
             enum DatePicker {
@@ -51,8 +62,29 @@ enum StringLiterals {
         }
     }
     
+
+    enum MyPage {
+        enum Modal {
+            static let back = "돌아가기"
+        }
+        
+        enum Setting {
+            static let instaURL = "https://www.instagram.com/websoso_official/"
+        }
+        
+        enum Profile {
+            static let registerNovel = "등록 작품"
+            static let record = "기록"
+        }
+        
+        enum Character {
+            static let select = "캐릭터 선택"
+        }
+    }
+
     enum Library {
         static let empty = "아직 서재가 비어있네요!"
         static let register = "웹소설 등록하기"
+
     }
 }
