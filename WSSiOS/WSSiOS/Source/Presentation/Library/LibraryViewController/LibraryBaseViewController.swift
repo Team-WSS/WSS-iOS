@@ -126,6 +126,23 @@ final class LibraryBaseViewController: UIViewController {
         .disposed(by: disposeBag)
     }
     
+    private func reBindUserData(readStatus: String,
+                              lastUserNovelId: Int,
+                              size: Int,
+                              sortType: String) {
+        userNovelListRepository.getUserNovelList(readStatus: readStatus,
+                                                 lastUserNovelId: lastUserNovelId,
+                                                 size: size,
+                                                 sortType: sortType)
+        .observe(on: MainScheduler.instance)
+        .subscribe(with: self, onNext: { owner, data in
+            owner.novelListRelay.accept(data.userNovels)
+        }, onError: { error, _  in
+            print(error)
+        })
+        .disposed(by: disposeBag)
+    }
+    
     private func bindAction() {
         rootView.libraryCollectionView.rx.itemSelected
             .observe(on: MainScheduler.instance)
@@ -153,10 +170,9 @@ final class LibraryBaseViewController: UIViewController {
     
     func reloadView(sortType: String) {
         sortTypeData = sortType
-        
         if sortTypeData == "NEWEST" {
             lastUserNovelIdData = 999999
-            bindUserData(readStatus: readStatusData,
+            reBindUserData(readStatus: readStatusData,
                          lastUserNovelId: lastUserNovelIdData,
                          size: 500,
                          sortType: sortType)
@@ -164,7 +180,7 @@ final class LibraryBaseViewController: UIViewController {
         
         else if sortTypeData == "OLDEST" {
             lastUserNovelIdData = 0
-            bindUserData(readStatus: readStatusData,
+            reBindUserData(readStatus: readStatusData,
                          lastUserNovelId: lastUserNovelIdData,
                          size: 500,
                          sortType: sortType)
