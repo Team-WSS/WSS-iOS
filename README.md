@@ -52,10 +52,10 @@
 |[Kingfisher](https://github.com/onevcat/Kingfisher)|7.10.1|웹에서 다운받은 이미지 캐싱 에 사용|
 |[Lottie](https://github.com/airbnb/lottie-ios)|4.3.4|벡터 애니메이션 렌더링 에 사용|
 |[RxSwift](https://github.com/ReactiveX/RxSwift.git)|6.6.0|MVVM 패턴의 원활한 적용과 반응형 프로그래밍 에 사용|
+|[RxKeyboard](https://github.com/RxSwiftCommunity/RxKeyboard.git)|2.0.1|Keyboard 처리 에 사용|
 |[SnapKit](https://github.com/SnapKit/SnapKit)|5.7.0|UI AutoLayout 에 사용|
 |[Then](https://github.com/devxoul/Then)|3.0.0|클로저를 이용한 인스턴스 초기화 에 사용|
 |[UIImageViewAlignedSwift](https://github.com/sochalewski/UIImageViewAlignedSwift)|0.8.3|크롭한 이미지의 정렬 에 사용|
-|[RxKeyboard](https://github.com/RxSwiftCommunity/RxKeyboard.git)|2.0.1|Keyboard 처리 에 사용|
 
 <br>
 
