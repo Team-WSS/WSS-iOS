@@ -47,6 +47,10 @@ final class MyPageChangeNicknameViewController: UIViewController {
         setUI()
         setNavigationBar()
         textFieldEvent()
+        
+        //추후 BaseViewController 생성하기
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
     //MARK: - Custom Method
@@ -160,5 +164,11 @@ extension MyPageChangeNicknameViewController {
         if text.count > 10 {
             self.rootView.changeNicknameTextField.text = String(text.prefix(10))
         }
+    }
+}
+
+extension MyPageChangeNicknameViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return navigationController?.viewControllers.count ?? 0 > 1
     }
 }
