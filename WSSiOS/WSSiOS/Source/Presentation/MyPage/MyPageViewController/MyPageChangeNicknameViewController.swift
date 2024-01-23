@@ -74,6 +74,7 @@ final class MyPageChangeNicknameViewController: UIViewController {
                 .subscribe(with: self, onNext: { owner, _ in 
                     owner.patchUserNickName()
                 })
+                .disposed(by: disposeBag)
         }
     }
     
@@ -110,7 +111,7 @@ final class MyPageChangeNicknameViewController: UIViewController {
         rootView.changeNicknameTextField.rx.text
             .subscribe(with: self, onNext: { owner, text in
                 if let text = text {
-                    var textCount = text.count
+                    let textCount = text.count
                     if textCount > 10 {
                         owner.rootView.countNicknameLabel.text = "10/10"
                     }
@@ -153,6 +154,7 @@ final class MyPageChangeNicknameViewController: UIViewController {
             }, onError: { owner, error in
                 print(error)
             })
+            .disposed(by: disposeBag)
     }
     
     func bindData(_ data: String) {

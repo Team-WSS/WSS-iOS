@@ -59,7 +59,10 @@ final class MyPageTallyView: UIView {
                 $0.titleLabel?.adjustsFontSizeToFitWidth = true
                 $0.setImage(ImageLiterals.icon.MyPage.right, for: .normal)
                 $0.semanticContentAttribute = .forceRightToLeft
-                $0.imageEdgeInsets = .init(top: 0, left: 8, bottom: 0, right: 0)
+                
+                var config = UIButton.Configuration.plain()
+                config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 0)
+                $0.configuration = config
             }
             
             dividerView.do {

@@ -21,8 +21,6 @@ enum WSSTabBarItem: CaseIterable {
             return ImageLiterals.icon.Tabbar.record
         case .myPage:
             return ImageLiterals.icon.Tabbar.myPage
-        default:
-            return UIImage()
         }
     }
     
@@ -36,8 +34,6 @@ enum WSSTabBarItem: CaseIterable {
             return ImageLiterals.icon.Tabbar.recordSelected
         case .myPage:
             return ImageLiterals.icon.Tabbar.myPageSelected
-        default:
-            return UIImage()
         }
     }
     
@@ -51,8 +47,6 @@ enum WSSTabBarItem: CaseIterable {
             return StringLiterals.Tabbar.Title.record
         case .myPage:
             return StringLiterals.Tabbar.Title.myPage
-        default:
-            return String()
         }
     }
     
@@ -85,8 +79,6 @@ enum WSSTabBarItem: CaseIterable {
                     userService: DefaultUserService()
                 )
             )
-        default:
-            return UIViewController()
         }
     }
 }

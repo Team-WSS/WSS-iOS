@@ -89,7 +89,7 @@ final class LibraryBaseViewController: UIViewController {
     private func bindColletionView() {
         novelListRelay.bind(to: rootView.libraryCollectionView.rx.items(
             cellIdentifier: "LibraryCollectionViewCell",
-            cellType: LibraryCollectionViewCell.self)) { [weak self] (row, element, cell) in
+            cellType: LibraryCollectionViewCell.self)) {(row, element, cell) in
                 cell.bindData(element)
             }
             .disposed(by: disposeBag)

@@ -121,7 +121,7 @@ final class MyPageViewController: UIViewController {
         
         settingData.bind(to: rootView.myPageSettingView.myPageSettingCollectionView.rx.items(
             cellIdentifier: "MyPageSettingCollectionViewCell",
-            cellType: MyPageSettingCollectionViewCell.self)) {[weak self] (row, element, cell) in
+            cellType: MyPageSettingCollectionViewCell.self)) { (row, element, cell) in
                 cell.myPageSettingCellLabel.text = element
             }
             .disposed(by: disposeBag)
