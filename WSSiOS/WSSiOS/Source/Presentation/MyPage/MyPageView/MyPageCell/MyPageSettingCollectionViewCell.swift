@@ -7,6 +7,9 @@
 
 import UIKit
 
+import SnapKit
+import Then
+
 final class MyPageSettingCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Properties

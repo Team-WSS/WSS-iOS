@@ -8,6 +8,7 @@
 import UIKit
 
 import RxSwift
+import Then
 
 final class MyPageInfoViewController: UIViewController {
 

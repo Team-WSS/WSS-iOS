@@ -8,6 +8,8 @@
 import UIKit
 
 import Kingfisher
+import SnapKit
+import Then
 
 final class MyPageView: UIView {
     

@@ -7,6 +7,9 @@
 
 import UIKit
 
+import SnapKit
+import Then
+
 final class MyPageInfoView: UIView {
     
     //MARK: - UI Components

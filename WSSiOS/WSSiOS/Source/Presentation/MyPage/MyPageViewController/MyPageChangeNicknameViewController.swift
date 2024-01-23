@@ -9,6 +9,7 @@ import UIKit
 
 import RxSwift
 import RxCocoa
+import Then
 
 final class MyPageChangeNicknameViewController: UIViewController {
     
