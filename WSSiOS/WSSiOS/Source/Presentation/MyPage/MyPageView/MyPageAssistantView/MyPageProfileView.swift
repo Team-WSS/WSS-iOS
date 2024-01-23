@@ -14,10 +14,10 @@ final class MyPageProfileView: UIView {
     
     //MARK: - UI Components
     
-    var myPageBadgeImageView = UIImageView()
-    var myPageNameLabel = UILabel()
-    var myPagePhraseLabel = UILabel()
-    var myPageAvartarImageView = UIImageView()
+    private let myPageBadgeImageView = UIImageView()
+    private let myPageNameLabel = UILabel()
+    private let myPagePhraseLabel = UILabel()
+    private let myPageAvartarImageView = UIImageView()
     
     // MARK: - Life Cycle
     
@@ -88,5 +88,12 @@ final class MyPageProfileView: UIView {
             $0.centerX.bottom.equalToSuperview()
             $0.size.equalTo(220)
         }
+    }
+    
+    func profileViewDataBind(_ data: UserResult) {
+        myPageNameLabel.text = data.representativeAvatarTag
+        myPageBadgeImageView.kfSetImage(url: data.representativeAvatarGenreBadge)
+        myPagePhraseLabel.text = data.representativeAvatarLineContent
+        myPageAvartarImageView.kfSetImage(url: data.representativeAvatarImg)
     }
 }

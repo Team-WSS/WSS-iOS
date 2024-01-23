@@ -15,7 +15,7 @@ final class MyPageInventoryView: UIView {
     //MARK: - UI Components
     
     private let titleLabel = UILabel()
-    var myPageAvaterCollectionView = UICollectionView(frame: .zero,
+    lazy var myPageAvaterCollectionView = UICollectionView(frame: .zero,
                                                 collectionViewLayout: UICollectionViewFlowLayout())
     
     // MARK: - Life Cycle

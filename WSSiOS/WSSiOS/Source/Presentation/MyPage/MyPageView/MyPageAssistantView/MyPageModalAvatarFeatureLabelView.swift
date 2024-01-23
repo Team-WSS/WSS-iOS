@@ -14,9 +14,9 @@ final class MyPageModalAvatarFeatureLabelView: UIView {
     
     //MARK: - UI Components
     
-    private var stackView = UIStackView()
-    public var modalAvaterBadgeImageView = UIImageView()
-    public var modalAvaterTitleLabel = UILabel()
+    private let stackView = UIStackView()
+    public let modalAvaterBadgeImageView = UIImageView()
+    public let modalAvaterTitleLabel = UILabel()
     
     
     // MARK: - Life Cycle

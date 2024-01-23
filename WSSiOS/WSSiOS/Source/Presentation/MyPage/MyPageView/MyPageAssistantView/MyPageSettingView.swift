@@ -11,7 +11,7 @@ final class MyPageSettingView: UIView {
 
     //MARK: - UI Components
     
-    var myPageSettingCollectionView = UICollectionView(frame: .zero,
+    lazy var myPageSettingCollectionView = UICollectionView(frame: .zero,
                                                 collectionViewLayout: UICollectionViewFlowLayout())
     
     // MARK: - Life Cycle

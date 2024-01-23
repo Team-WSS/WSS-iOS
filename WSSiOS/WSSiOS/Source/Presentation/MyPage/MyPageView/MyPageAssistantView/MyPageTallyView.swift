@@ -15,12 +15,12 @@ final class MyPageTallyView: UIView {
     //MARK: - UI Components
     
     private let backGroundView = UIView()
-    private var tallyView = UIView()
+    private let tallyView = UIView()
     private let shadowView = UIView()
-    var myPageUserNameButton = UIButton()
-    var myPageRegisterView = MyPageTallyReuseView()
-    var myPageRecordView = MyPageTallyReuseView()
-    private var dividerView = UIView()
+    public lazy var myPageUserNameButton = UIButton()
+    public lazy var myPageRegisterView = MyPageTallyReuseView()
+    public lazy var myPageRecordView = MyPageTallyReuseView()
+    private let dividerView = UIView()
     
     // MARK: - Life Cycle
     
@@ -141,5 +141,11 @@ final class MyPageTallyView: UIView {
             $0.layer.shadowRadius = 15
             $0.layer.masksToBounds = false
         }
+    }
+    
+    func tallyViewDataBind(_ data: UserResult) {
+        myPageUserNameButton.setTitle("\(data.userNickname)님", for: .normal)
+        myPageRegisterView.tallyLabel.text = String(data.userNovelCount)
+        myPageRecordView.tallyLabel.text = String(data.memoCount)
     }
 }

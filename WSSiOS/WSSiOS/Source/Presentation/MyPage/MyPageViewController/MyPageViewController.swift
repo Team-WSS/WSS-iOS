@@ -18,11 +18,11 @@ final class MyPageViewController: UIViewController {
     
     private var avaterListRelay = BehaviorRelay<[UserAvatar]>(value: [])
     private let disposeBag = DisposeBag()
-    private var userRepository: DefaultUserRepository
-    private var settingData = MyPageViewModel.setting
-    private var userNickName = ""
-    private var representativeAvatarId = 0
-    private var currentCepresentativeAvatar = false
+    private let userRepository: DefaultUserRepository
+    private let settingData = MyPageViewModel.setting
+    private lazy var userNickName = ""
+    private lazy var representativeAvatarId = 0
+    private var currentPresentativeAvatar = false
     
     init(userRepository: UserRepository) {
         self.userRepository = userRepository as! DefaultUserRepository
@@ -102,7 +102,7 @@ final class MyPageViewController: UIViewController {
         userRepository.getUserData()
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in 
-                owner.rootView.dataBind(data)
+                owner.rootView.bindData(data)
                 owner.representativeAvatarId = data.representativeAvatarId
                 owner.userNickName = data.userNickname
                 owner.avaterListRelay = BehaviorRelay(value: data.userAvatars)
@@ -165,15 +165,15 @@ final class MyPageViewController: UIViewController {
                 let selectedAvatarHas = avatars[indexPath.row].hasAvatar
                 
                 if owner.representativeAvatarId == selectedAvatarId {
-                    owner.currentCepresentativeAvatar = true
+                    owner.currentPresentativeAvatar = true
                 }
                 else {
-                    owner.currentCepresentativeAvatar = false
+                    owner.currentPresentativeAvatar = false
                 }
                 
                 owner.pushModalViewController(avatarId: selectedAvatarId,
                                               hasAvatar: selectedAvatarHas,
-                                              currentRepresentativeAvatar: owner.currentCepresentativeAvatar)
+                                              currentRepresentativeAvatar: owner.currentPresentativeAvatar)
             })
             .disposed(by: disposeBag)
         
@@ -227,7 +227,7 @@ final class MyPageViewController: UIViewController {
         }
     }
     
-    //MARK: - reDataBind
+    //MARK: - reBindData
     
     private func bindDataAgain() {
         getDataFromAPI(disposeBag: disposeBag) { data, list in 
@@ -250,7 +250,7 @@ final class MyPageViewController: UIViewController {
     }
     
     private func updateUI(userData: UserResult, avatarList: [UserAvatar]) {
-        self.rootView.dataBind(userData)
+        self.rootView.bindData(userData)
         self.representativeAvatarId = userData.representativeAvatarId
         self.avaterListRelay.accept(avatarList)
     }

@@ -14,8 +14,8 @@ final class MyPageChangeNicknameViewController: UIViewController {
     
     //MARK: - Set Properties
     
-    private var userNickName : String
-    private var newNickName = ""
+    private let userNickName : String
+    private lazy var newNickName = ""
     private let disposeBag = DisposeBag()
     private let userRepository : UserRepository
     

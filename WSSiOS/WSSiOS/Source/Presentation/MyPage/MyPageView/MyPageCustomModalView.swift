@@ -15,13 +15,13 @@ final class MyPageCustomModalView: UIView {
 
     //MARK: - UI Components
     
-    public var modalBackgroundView = UIView()
-    public var modalAvatarFeatureLabelView = MyPageModalAvatarFeatureLabelView()
-    public var modalAvaterLottieView = LottieAnimationView()
-    public var modalTitleLabel = UILabel()
-    public var modalExplanationLabel = UILabel()
-    public var modalChangeButton = WSSMainButton(title: "대표 캐릭터 설정하기")
-    public var modalContinueButton = UIButton()
+    public let modalBackgroundView = UIView()
+    public let modalAvatarFeatureLabelView = MyPageModalAvatarFeatureLabelView()
+    public lazy var modalAvaterLottieView = LottieAnimationView()
+    public let modalTitleLabel = UILabel()
+    public let modalExplanationLabel = UILabel()
+    public lazy var modalChangeButton = WSSMainButton(title: "대표 캐릭터 설정하기")
+    public lazy var modalContinueButton = UIButton()
     private let lottieList = [LottieLiterals.Home.Sosocat.bread,
                               LottieLiterals.Home.Regressor.sword,
                               LottieLiterals.Home.Villainess.fan]

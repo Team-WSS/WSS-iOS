@@ -16,10 +16,10 @@ final class MyPageChangeNicknameView: UIView {
     
     private let dividerView = UIView()
     private let nicknameLabel = UILabel()
-    public var changeNicknameTextField = UITextField()
-    public var setClearButton = UIButton(type: .custom)
-    public var textFieldUnderBarView = UIView()
-    public var countNicknameLabel = UILabel()
+    public lazy var changeNicknameTextField = UITextField()
+    public lazy var setClearButton = UIButton(type: .custom)
+    public lazy var textFieldUnderBarView = UIView()
+    public lazy var countNicknameLabel = UILabel()
     
     // MARK: - Life Cycle
     

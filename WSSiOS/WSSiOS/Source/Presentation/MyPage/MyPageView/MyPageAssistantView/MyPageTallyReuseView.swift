@@ -14,10 +14,10 @@ final class MyPageTallyReuseView: UIView {
     
     //MARK: - UI Components
     
-    var titleView = UIStackView()
-    var titleIconImageView = UIImageView()
-    var titleLabel = UILabel()
-    var tallyLabel = UILabel()
+    let titleView = UIStackView()
+    let titleIconImageView = UIImageView()
+    let titleLabel = UILabel()
+    let tallyLabel = UILabel()
     
     // MARK: - Life Cycle
     
