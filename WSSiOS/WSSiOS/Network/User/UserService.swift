@@ -25,10 +25,13 @@ final class DefaultUserService: NSObject, Networking {
 
 extension DefaultUserService: UserService {
     func getUserData() -> RxSwift.Single<UserResult> {
-        let request = try! makeHTTPRequest(method: .get,
+        guard let request = try? makeHTTPRequest(method: .get,
                                            path: URLs.User.getUserInfo,
                                            headers: APIConstants.testTokenHeader,
                                            body: nil)
+        else {
+            return .error(NetworkServiceError.invalidRequestError)
+        }
         
         NetworkLogger.log(request: request)
         
@@ -43,11 +46,14 @@ extension DefaultUserService: UserService {
             return .error(NetworkServiceError.invalidRequestError)
         }
         
-        let request = try! makeHTTPRequest(method: .patch,
+        guard let request = try? makeHTTPRequest(method: .patch,
                                            path: URLs.User.patchUserNickname,
                                            queryItems: userNickNameQueryItems,
                                            headers: APIConstants.testTokenHeader,
                                            body: userNickNameData)
+        else {
+            return .error(NetworkServiceError.invalidRequestError)
+        }
         
         NetworkLogger.log(request: request)
         

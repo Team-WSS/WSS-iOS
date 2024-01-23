@@ -89,7 +89,7 @@ final class MyPageViewController: UIViewController {
             tabBarController.tabBar.isHidden = false
         }
     }
-
+    
     //MARK: - init DataBind
     
     private func register() {
@@ -179,14 +179,14 @@ final class MyPageViewController: UIViewController {
         
         rootView.myPageTallyView.myPageUserNameButton.rx.tap
             .bind(with: self, onNext: { owner, _ in 
-                if let tabBarController = owner.tabBarController as? WSSTabBarController {
+                if let tabBarController = self.tabBarController as? WSSTabBarController {
                     tabBarController.shadowView.isHidden = true
                     tabBarController.tabBar.isHidden = true
                 }
                 
                 let changeNicknameViewController = MyPageChangeNicknameViewController(userNickName: owner.userNickName,
-                                                                                      userRepository: UserRepository(
-                                                                                        userService: UserService()))
+                                                                                      userRepository: DefaultUserRepository(
+                                                                                        userService: DefaultUserService()))
                 changeNicknameViewController.bindData(self.userNickName)
                 owner.navigationController?.pushViewController(changeNicknameViewController, animated: true)
             })
