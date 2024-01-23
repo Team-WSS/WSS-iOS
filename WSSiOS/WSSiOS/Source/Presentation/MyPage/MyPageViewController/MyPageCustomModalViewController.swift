@@ -16,13 +16,13 @@ final class MyPageCustomModalViewController: UIViewController {
     //MARK: - Set Properties
     
     private let disposeBag = DisposeBag()
-    private let avatarRepository: DefaultAvatarRepository
+    private let avatarRepository: AvatarRepository
     private let avatarId: Int
     private let modalHasAvatar: Bool
     private let currentRepresentativeAvatar: Bool
     private let modalBackgroundView = UIView()
     
-    init(avatarRepository: DefaultAvatarRepository,
+    init(avatarRepository: AvatarRepository,
          avatarId: Int,
          modalHasAvatar: Bool,
          currentRepresentativeAvatar: Bool) {

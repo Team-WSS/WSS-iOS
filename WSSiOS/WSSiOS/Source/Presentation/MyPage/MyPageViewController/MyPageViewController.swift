@@ -18,14 +18,14 @@ final class MyPageViewController: UIViewController {
     
     private var avaterListRelay = BehaviorRelay<[UserAvatar]>(value: [])
     private let disposeBag = DisposeBag()
-    private let userRepository: DefaultUserRepository
+    private let userRepository: UserRepository
     private let settingData = MyPageViewModel.setting
     private lazy var userNickName = ""
     private lazy var representativeAvatarId = 0
     private var currentPresentativeAvatar = false
     
     init(userRepository: UserRepository) {
-        self.userRepository = userRepository as! DefaultUserRepository
+        self.userRepository = userRepository 
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -185,8 +185,8 @@ final class MyPageViewController: UIViewController {
                 }
                 
                 let changeNicknameViewController = MyPageChangeNicknameViewController(userNickName: owner.userNickName,
-                                                                                      userRepository: DefaultUserRepository(
-                                                                                        userService: DefaultUserService()))
+                                                                                      userRepository: UserRepository(
+                                                                                        userService: UserService()))
                 changeNicknameViewController.bindData(self.userNickName)
                 owner.navigationController?.pushViewController(changeNicknameViewController, animated: true)
             })
