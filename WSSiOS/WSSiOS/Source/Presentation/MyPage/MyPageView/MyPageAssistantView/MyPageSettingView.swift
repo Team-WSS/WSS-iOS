@@ -60,8 +60,6 @@ final class MyPageSettingView: UIView {
         myPageSettingCollectionView.snp.makeConstraints() {
             $0.top.equalToSuperview().inset(7)
             $0.width.equalToSuperview()
-            //데이터 연결 후 수정 예정
-            $0.height.equalTo(64*4 + 1*4)
             $0.bottom.equalToSuperview()
         }
     }

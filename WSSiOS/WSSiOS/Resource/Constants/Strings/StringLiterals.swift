@@ -68,11 +68,6 @@ enum StringLiterals {
             static let back = "돌아가기"
         }
         
-        enum Setting {
-            static let instaURL = "https://www.instagram.com/websoso_official/"
-            static let termsURL = "https://kimmjabc.notion.site/4acd397608c146cbbf8dd4fe11a82e19"
-        }
-        
         enum Profile {
             static let registerNovel = "등록 작품"
             static let record = "기록"
@@ -80,6 +75,21 @@ enum StringLiterals {
         
         enum Character {
             static let select = "캐릭터 선택"
+        }
+        
+        enum Setting: String, CaseIterable {
+            case accountInfo = "계정정보 확인"
+            case webSoso = "웹소소 인스타 보러가기"
+            case termsOfService = "서비스 이용약관"
+        }
+        
+        enum SettingURL {
+            static let instaURL = "https://www.instagram.com/websoso_official/"
+            static let termsURL = "https://kimmjabc.notion.site/4acd397608c146cbbf8dd4fe11a82e19"
+        }
+        
+        enum ChangeNickname {
+            static let complete = "완료"
         }
     }
 

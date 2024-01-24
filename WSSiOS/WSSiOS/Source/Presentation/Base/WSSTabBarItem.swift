@@ -61,18 +61,21 @@ enum WSSTabBarItem: CaseIterable {
                     recommendService: DefaultRecommendService()
                 )
             )
+            
         case .library:
             return LibraryViewController(
                 userNovelListRepository: DefaultUserNovelRepository(
                     userNovelService: DefaultUserNovelService()
                 )
             )
+            
         case .record:
             return RecordViewController(
                 memoRepository: DefaultMemoRepository(
                     memoService: DefaultMemoService()
                 )
             )
+            
         case .myPage:
             return MyPageViewController(
                 userRepository: DefaultUserRepository(

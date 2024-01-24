@@ -36,8 +36,8 @@ final class MyPageTallyView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
+    override func setNeedsLayout() {
+        super.setNeedsLayout()
         
         makeShadow()
     }
@@ -140,7 +140,10 @@ final class MyPageTallyView: UIView {
             $0.layer.shadowPath = UIBezierPath(rect: shadowView.bounds).cgPath
             $0.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
             $0.layer.shadowOpacity = 1
-            $0.layer.shadowOffset = CGSize(width: 0, height: -2)
+            
+            // 정확한 그림자 OffSet 을 모르겠어서 최대한 Figma 와 비슷하게 해놓음
+            // 추후 디자이너 선생님들고 이야기하여 수정하겠음
+            $0.layer.shadowOffset = CGSize(width: 10, height: 10)
             $0.layer.shadowRadius = 15
             $0.layer.masksToBounds = false
         }

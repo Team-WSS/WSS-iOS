@@ -19,13 +19,14 @@ final class MyPageViewController: UIViewController {
     private var avaterListRelay = BehaviorRelay<[UserAvatar]>(value: [])
     private let disposeBag = DisposeBag()
     private let userRepository: UserRepository
-    private let settingData = MyPageViewModel.setting
+    private let settingData = StringLiterals.MyPage.Setting.allCases.map { $0.rawValue }
     private lazy var userNickName = ""
     private lazy var representativeAvatarId = 0
     private var currentPresentativeAvatar = false
     
     init(userRepository: UserRepository) {
         self.userRepository = userRepository 
+        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -36,7 +37,6 @@ final class MyPageViewController: UIViewController {
     //MARK: - UI Components
     
     private var rootView = MyPageView()
-    //    private let dimmedView = UIView()
     
     // MARK: - Life Cycle
     
@@ -47,47 +47,31 @@ final class MyPageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setNavigationBar()
+        preparationSetNavigationBar(title: StringLiterals.Navigation.Title.myPage,
+                                    left: nil,
+                                    right: nil)
+        setAppearance()
         register()
-        
         bindUserData()
         bindAction()
         addNotificationCenter()
     }
     
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        setTabBar()
-        bindDataAgain()
+        hideTabBar()
     }
     
     //MARK: - set NavigationBar
     
-    private func setNavigationBar() {
-        self.navigationController?.isNavigationBarHidden = false
-        //self.navigationController?.navigationBar.backgroundColor = .White
-        self.navigationItem.title = StringLiterals.Navigation.Title.myPage
-        
+    private func setAppearance() {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = .White
         self.navigationController?.navigationBar.standardAppearance = appearance
         self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
-        
-        if let navigationBar = self.navigationController?.navigationBar {
-            let titleTextAttributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.Title2
-            ]
-            navigationBar.titleTextAttributes = titleTextAttributes
-        }
-    }
-    
-    private func setTabBar() {
-        if let tabBarController = self.tabBarController as? WSSTabBarController {
-            tabBarController.shadowView.isHidden = false
-            tabBarController.tabBar.isHidden = false
-        }
     }
     
     //MARK: - init DataBind
@@ -112,81 +96,83 @@ final class MyPageViewController: UIViewController {
     }
     
     private func bindColletionView() {
-        avaterListRelay.bind(to: rootView.myPageInventoryView.myPageAvaterCollectionView.rx.items(
-            cellIdentifier: "MyPageInventoryCollectionViewCell",
-            cellType: MyPageInventoryCollectionViewCell.self)) { [weak self] (row, element, cell) in
-                cell.bindData(data: element, representativeId: self?.representativeAvatarId ?? 0)
-            }
-            .disposed(by: disposeBag)
+        avaterListRelay
+            .bind(to: rootView.myPageInventoryView.myPageAvaterCollectionView.rx.items(
+                cellIdentifier: "MyPageInventoryCollectionViewCell",
+                cellType: MyPageInventoryCollectionViewCell.self)) { [weak self] (row, element, cell) in
+                    cell.bindData(data: element, representativeId: self?.representativeAvatarId ?? 0)
+                }
+                .disposed(by: disposeBag)
         
-        settingData.bind(to: rootView.myPageSettingView.myPageSettingCollectionView.rx.items(
-            cellIdentifier: "MyPageSettingCollectionViewCell",
-            cellType: MyPageSettingCollectionViewCell.self)) { (row, element, cell) in
-                cell.myPageSettingCellLabel.text = element
-            }
-            .disposed(by: disposeBag)
+        Observable.just(settingData)
+            .bind(to: rootView.myPageSettingView.myPageSettingCollectionView.rx.items(
+                cellIdentifier: "MyPageSettingCollectionViewCell",
+                cellType: MyPageSettingCollectionViewCell.self)) { (row, element, cell) in
+                    cell.myPageSettingCellLabel.text = element
+                }
+                .disposed(by: disposeBag)
+        
+        //초기값 100으로 설정, 아무 의미 없음, 초기값 설정마저 안하고 싶은데 방법을 모르겠음
+        
+        let collectionViewHeightConstraint = rootView.myPageSettingView.myPageSettingCollectionView.heightAnchor.constraint(equalToConstant: 100)
+        collectionViewHeightConstraint.isActive = true
+        let settingDataCount = CGFloat(settingData.count)
+        let calculatedHeight = settingDataCount * 64.0 + (settingDataCount - 1) * 1.0 + 24.0
+        collectionViewHeightConstraint.constant = calculatedHeight
+        view.layoutIfNeeded()
     }
     
     private func bindAction() {
         rootView.myPageSettingView.myPageSettingCollectionView.rx.itemSelected
-            .subscribe(with: self, onNext: { owner, indexpath in
-                switch indexpath.row {
-                case 0:
+            .compactMap { StringLiterals.MyPage.Setting(rawValue: self.settingData[$0.row]) }
+            .subscribe(with: self, onNext: { owner, option in
+                switch option {
+                case .accountInfo:
                     let infoViewController = MyPageInfoViewController()
                     infoViewController.rootView.bindData(self.userNickName)
                     self.hideTabBar()
                     self.navigationController?.pushViewController(infoViewController, animated: true)
                     
-                case 1:
-                    if let openApp = URL(string: StringLiterals.MyPage.Setting.instaURL), UIApplication.shared.canOpenURL(openApp) {
+                case .webSoso:
+                    if let openApp = URL(string: StringLiterals.MyPage.SettingURL.instaURL), UIApplication.shared.canOpenURL(openApp) {
                         UIApplication.shared.open(openApp, options: [:], completionHandler: nil)
                     } else {
-                        if let url = URL(string: StringLiterals.MyPage.Setting.instaURL) {
+                        if let url = URL(string: StringLiterals.MyPage.SettingURL.instaURL) {
                             UIApplication.shared.open(url, options: [:])
                         }
                     }
                     
-                case 2:
-                    if let url = URL(string: StringLiterals.MyPage.Setting.termsURL) {
+                case .termsOfService:
+                    if let url = URL(string: StringLiterals.MyPage.SettingURL.termsURL) {
                         UIApplication.shared.open(url, options: [:])
                     }
-                    
-                default:
-                    break
                 }
             })
             .disposed(by: disposeBag)
         
-        
         rootView.myPageInventoryView.myPageAvaterCollectionView.rx.itemSelected
             .subscribe(with: self, onNext: { owner, indexPath in
                 let avatars = self.avaterListRelay.value
-                let selectedAvatarId = avatars[indexPath.row].avatarId
-                let selectedAvatarHas = avatars[indexPath.row].hasAvatar
                 
-                if owner.representativeAvatarId == selectedAvatarId {
+                if owner.representativeAvatarId == avatars[indexPath.row].avatarId {
                     owner.currentPresentativeAvatar = true
                 }
                 else {
                     owner.currentPresentativeAvatar = false
                 }
                 
-                owner.pushModalViewController(avatarId: selectedAvatarId,
-                                              hasAvatar: selectedAvatarHas,
+                owner.pushModalViewController(avatarId: avatars[indexPath.row].avatarId,
+                                              hasAvatar: avatars[indexPath.row].hasAvatar,
                                               currentRepresentativeAvatar: owner.currentPresentativeAvatar)
             })
             .disposed(by: disposeBag)
         
         rootView.myPageTallyView.myPageUserNameButton.rx.tap
             .bind(with: self, onNext: { owner, _ in 
-                if let tabBarController = self.tabBarController as? WSSTabBarController {
-                    tabBarController.shadowView.isHidden = true
-                    tabBarController.tabBar.isHidden = true
-                }
-                
-                let changeNicknameViewController = MyPageChangeNicknameViewController(userNickName: owner.userNickName,
-                                                                                      userRepository: DefaultUserRepository(
-                                                                                        userService: DefaultUserService()))
+                owner.hideTabBar()
+                let changeNicknameViewController = MyPageChangeNicknameViewController(
+                    userNickName: owner.userNickName,
+                    userRepository: owner.userRepository)
                 changeNicknameViewController.bindData(self.userNickName)
                 owner.navigationController?.pushViewController(changeNicknameViewController, animated: true)
             })
@@ -279,8 +265,9 @@ extension MyPageViewController {
         rootView.myPageTallyView.myPageUserNameButton.rx.tap
             .bind(with: self, onNext: { owner, _ in 
                 self.hideTabBar()
-                let changeNicknameViewController = MyPageChangeNicknameViewController(userNickName: owner.userNickName, userRepository: DefaultUserRepository(
-                    userService: DefaultUserService()))
+                let changeNicknameViewController = MyPageChangeNicknameViewController(
+                    userNickName: owner.userNickName,
+                    userRepository: owner.userRepository)
                 changeNicknameViewController.bindData(self.userNickName)
                 owner.navigationController?.pushViewController(changeNicknameViewController, animated: true)
             })

@@ -51,7 +51,7 @@ final class MyPageProfileView: UIView {
         }
         
         myPageAvartarImageView.do {
-            $0.contentMode = .scaleToFill
+            $0.contentMode = .scaleAspectFit
         }
     }
     

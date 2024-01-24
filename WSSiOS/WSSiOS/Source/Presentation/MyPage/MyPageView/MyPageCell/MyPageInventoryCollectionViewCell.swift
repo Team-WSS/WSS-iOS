@@ -40,7 +40,10 @@ final class MyPageInventoryCollectionViewCell: UICollectionViewCell {
     private func setUI() {
         myPageAvaterImageView.do {
             $0.layer.cornerRadius = 12
+            $0.layer.borderWidth = 1
+            $0.layer.borderColor = UIColor.clear.cgColor
             $0.layer.masksToBounds = true
+            $0.contentMode = .scaleAspectFit
         }
     }
     
@@ -61,13 +64,7 @@ final class MyPageInventoryCollectionViewCell: UICollectionViewCell {
     func bindData(data: UserAvatar, representativeId: Int) {
         myPageAvaterImageView.kfSetImage(url: data.avatarImg)
         
-        if representativeId == data.avatarId {
-            myPageAvaterImageView.layer.borderColor = UIColor.Primary100.cgColor
-            myPageAvaterImageView.layer.borderWidth = 1
-        }
-        else {
-            myPageAvaterImageView.layer.borderColor = UIColor.clear.cgColor
-            myPageAvaterImageView.layer.borderWidth = 0
-        }
+        let isRepresentative = representativeId == data.avatarId
+        myPageAvaterImageView.layer.borderColor = isRepresentative ? UIColor.Primary100.cgColor : UIColor.clear.cgColor
     }
 }

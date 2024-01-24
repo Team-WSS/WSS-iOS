@@ -18,8 +18,8 @@ final class MyPageInfoViewController: UIViewController {
     
     //MARK: - UI Components
     
-    var rootView = MyPageInfoView()
-    private let backButton = UIButton()
+    public let rootView = MyPageInfoView()
+    private lazy var backButton = UIButton()
     
     // MARK: - Life Cycle
     
@@ -31,7 +31,9 @@ final class MyPageInfoViewController: UIViewController {
         super.viewDidLoad()
         
         setUI()
-        setNavigationBar()
+        preparationSetNavigationBar(title: StringLiterals.Navigation.Title.myPageInfo,
+                                    left: self.backButton,
+                                    right: nil)
     }
     
     //MARK: - Custom Method
@@ -46,19 +48,4 @@ final class MyPageInfoViewController: UIViewController {
                 .disposed(by: disposeBag)
         }
     }
-    
-    private func setNavigationBar() {
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        self.title = StringLiterals.Navigation.Title.myPageInfo
-        
-        if let navigationBar = self.navigationController?.navigationBar {
-            let titleTextAttributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.Title2
-            ]
-            navigationBar.titleTextAttributes = titleTextAttributes
-        }
-        
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.backButton)
-    }
-    
 }

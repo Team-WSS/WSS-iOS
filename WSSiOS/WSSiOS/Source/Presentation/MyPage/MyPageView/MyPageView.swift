@@ -49,7 +49,7 @@ final class MyPageView: UIView {
     
     private func setHierachy() {
         self.addSubview(scrollView)
-        scrollView.addSubviews(myPageStackView)
+        scrollView.addSubview(myPageStackView)
         myPageStackView.addArrangedSubviews(myPageProfileView,
                                             myPageTallyView,
                                             myPageInventoryView,

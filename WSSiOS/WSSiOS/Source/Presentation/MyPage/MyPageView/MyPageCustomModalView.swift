@@ -44,7 +44,8 @@ final class MyPageCustomModalView: UIView {
         self.do {
             $0.backgroundColor = .White
             $0.layer.cornerRadius = 10
-            $0.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+            $0.layer.maskedCorners = [.layerMinXMinYCorner,
+                                      .layerMaxXMinYCorner]
             $0.layer.masksToBounds = true
         }
         

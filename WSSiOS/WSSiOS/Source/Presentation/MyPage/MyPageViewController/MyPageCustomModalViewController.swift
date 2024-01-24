@@ -26,10 +26,12 @@ final class MyPageCustomModalViewController: UIViewController {
          avatarId: Int,
          modalHasAvatar: Bool,
          currentRepresentativeAvatar: Bool) {
+
         self.avatarRepository = avatarRepository
         self.avatarId = avatarId
         self.modalHasAvatar = modalHasAvatar
         self.currentRepresentativeAvatar = currentRepresentativeAvatar
+        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -45,6 +47,7 @@ final class MyPageCustomModalViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         self.setBackgroundDimmed()
     }
     
@@ -52,7 +55,6 @@ final class MyPageCustomModalViewController: UIViewController {
         super.viewDidLoad()
         
         setUI()
-        setStyle()
         setHierachy()
         setLayout()
         bindAvatarData()
@@ -61,7 +63,8 @@ final class MyPageCustomModalViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        self.setBackgroundClear()
+        
+        setBackgroundClear()
     }
     
     //MARK: - Custom Method
@@ -76,12 +79,10 @@ final class MyPageCustomModalViewController: UIViewController {
         self.modalBackgroundView.alpha = 0
     }
     
-    private func setStyle() {
+    private func setUI() {
         self.modalBackgroundView.alpha = 0
         self.modalBackgroundView.backgroundColor = .Black60.withAlphaComponent(0.6)
-    }
-    
-    private func setUI() {
+        
         if !modalHasAvatar || currentRepresentativeAvatar {
             rootView.modalContinueButton.isHidden = true
             rootView.modalChangeButton.setTitle(StringLiterals.MyPage.Modal.back, for: .normal)
@@ -99,8 +100,7 @@ final class MyPageCustomModalViewController: UIViewController {
                 $0.bottom.width.equalToSuperview()
                 $0.height.equalTo(533)
             }
-        }
-        else {
+        } else {
             rootView.snp.makeConstraints() {
                 $0.bottom.width.equalToSuperview()
                 $0.height.equalTo(572)
@@ -113,13 +113,15 @@ final class MyPageCustomModalViewController: UIViewController {
     }
     
     private func setAction() {
-        rootView.modalContinueButton.rx.tap
+        rootView.modalContinueButton.rx
+            .tap
             .bind(with: self, onNext: { owner, _ in
                 owner.dismiss(animated: true)
             })
             .disposed(by: disposeBag)
         
-        rootView.modalChangeButton.rx.tap
+        rootView.modalChangeButton.rx
+            .tap
             .bind(with: self, onNext: { owner, _ in
                 if !owner.modalHasAvatar || owner.currentRepresentativeAvatar {
                     owner.dismiss(animated: true)

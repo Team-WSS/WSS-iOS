@@ -32,9 +32,9 @@ final class MyPageChangeNicknameViewController: UIViewController {
     
     //MARK: - UI Components
     
-    var rootView = MyPageChangeNicknameView()
-    private var backButton = UIButton()
-    private var completeButton = UIButton()
+    private let rootView = MyPageChangeNicknameView()
+    private lazy var backButton = UIButton()
+    private lazy var completeButton = UIButton()
     
     // MARK: - Life Cycle
     
@@ -46,12 +46,11 @@ final class MyPageChangeNicknameViewController: UIViewController {
         super.viewDidLoad()
         
         setUI()
-        setNavigationBar()
-        textFieldEvent()
-        
-        //추후 BaseViewController 생성하기
-        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
-        navigationController?.interactivePopGestureRecognizer?.delegate = self
+        swipeBackGesture()
+        setTextField()
+        preparationSetNavigationBar(title: StringLiterals.Navigation.Title.changeNickname,
+                                    left: self.backButton,
+                                    right: self.completeButton)
     }
     
     //MARK: - Custom Method
@@ -67,7 +66,7 @@ final class MyPageChangeNicknameViewController: UIViewController {
         }
         
         completeButton.do {
-            $0.setTitle("완료", for: .normal)
+            $0.setTitle(StringLiterals.MyPage.ChangeNickname.complete, for: .normal)
             $0.setTitleColor(.Primary100, for: .normal)
             $0.titleLabel?.font = .Title2
             $0.rx.tap
@@ -78,23 +77,10 @@ final class MyPageChangeNicknameViewController: UIViewController {
         }
     }
     
-    private func setNavigationBar() {
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        self.title = StringLiterals.Navigation.Title.changeNickname
-        
-        if let navigationBar = self.navigationController?.navigationBar {
-            let titleTextAttributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.Title2
-            ]
-            navigationBar.titleTextAttributes = titleTextAttributes
-        }
-        
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.backButton)
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.completeButton)
-    }
-    
-    private func textFieldEvent() {
-        rootView.changeNicknameTextField.rx.controlEvent([.editingDidBegin, .editingChanged])
+    private func setTextField() {
+        rootView.changeNicknameTextField.rx
+            .controlEvent([.editingDidBegin,
+                           .editingChanged])
             .asObservable()
             .subscribe(with: self, onNext: { owner, _ in
                 owner.rootView.textFieldUnderBarView.backgroundColor = .Primary100
@@ -110,33 +96,34 @@ final class MyPageChangeNicknameViewController: UIViewController {
         
         rootView.changeNicknameTextField.rx.text
             .subscribe(with: self, onNext: { owner, text in
-                if let text = text {
+                if let text {
                     let textCount = text.count
+                    
                     if textCount > 10 {
                         owner.rootView.countNicknameLabel.text = "10/10"
-                    }
-                    else {
+                    } else {
                         owner.rootView.countNicknameLabel.text = "\(textCount)/10"
                         owner.newNickName = text
                     }
                     
                     if text == owner.userNickName || text == "" {
                         owner.completeButton.setTitleColor(.Gray200, for: .normal)
-                    }
-                    else {
+                    } else {
                         owner.completeButton.setTitleColor(.Primary100, for: .normal)
                     }
                 }
             })
             .disposed(by: disposeBag)
         
-        rootView.changeNicknameTextField.rx.text.orEmpty
+        rootView.changeNicknameTextField.rx.text
+            .orEmpty
             .subscribe(with: self, onNext: { owner, text in
                 self.limitNum(text)
             })
             .disposed(by: disposeBag)
         
-        rootView.setClearButton.rx.tap
+        rootView.setClearButton.rx
+            .tap
             .bind(with: self, onNext: { owner, _ in
                 owner.rootView.changeNicknameTextField.text = ""
                 owner.rootView.countNicknameLabel.text = "0/10"
@@ -167,11 +154,5 @@ extension MyPageChangeNicknameViewController {
         if text.count > 10 {
             self.rootView.changeNicknameTextField.text = String(text.prefix(10))
         }
-    }
-}
-
-extension MyPageChangeNicknameViewController: UIGestureRecognizerDelegate {
-    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        return navigationController?.viewControllers.count ?? 0 > 1
     }
 }
