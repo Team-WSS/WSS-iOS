@@ -53,16 +53,17 @@ final class MyPageTallyView: UIView {
             $0.backgroundColor = .White
             $0.layer.cornerRadius = 15
             
+            // contentInsets 에 대한 Warning 을 해결하다 iOS 15 부터 제안하는 configuration 까지 왔다.
+            // 왕 불편하고 왕 짜증난다. attributedString 처럼 설정 바꾸려면 모든 게 초기화됨
+            // contentInsets 쓸 거 아니면 setTitle 로 ,,, 쓰는 걸 추천,,,
+            // 이 주석은 코드리뷰 끝나고 지울게요 ,,,, 
             myPageUserNameButton.do {
-                $0.setTitleColor(.Black, for: .normal)
-                $0.titleLabel?.font = .HeadLine1
-                $0.titleLabel?.adjustsFontSizeToFitWidth = true
-                $0.setImage(ImageLiterals.icon.MyPage.right, for: .normal)
-                $0.semanticContentAttribute = .forceRightToLeft
-                
-                var config = UIButton.Configuration.plain()
-                config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 0)
-                $0.configuration = config
+                var configuration = UIButton.Configuration.filled()
+                configuration.image = ImageLiterals.icon.MyPage.right
+                configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 0)
+                configuration.imagePlacement = .trailing
+                configuration.baseBackgroundColor = UIColor.clear
+                $0.configuration = configuration
             }
             
             dividerView.do {
@@ -150,7 +151,12 @@ final class MyPageTallyView: UIView {
     }
     
     func tallyViewDataBind(_ data: UserResult) {
-        myPageUserNameButton.setTitle("\(data.userNickname)님", for: .normal)
+        let title = "\(data.userNickname)님"
+        var attString = AttributedString(title)
+        attString.font = UIFont.HeadLine1
+        attString.foregroundColor = UIColor.Black
+        myPageUserNameButton.configuration?.attributedTitle = attString
+        
         myPageRegisterView.tallyLabel.text = String(data.userNovelCount)
         myPageRecordView.tallyLabel.text = String(data.memoCount)
     }

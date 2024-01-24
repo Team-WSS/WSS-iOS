@@ -19,13 +19,15 @@ final class MyPageViewController: UIViewController {
     private var avaterListRelay = BehaviorRelay<[UserAvatar]>(value: [])
     private let disposeBag = DisposeBag()
     private let userRepository: UserRepository
+    private let avatarRepository: AvatarRepository
     private let settingData = StringLiterals.MyPage.Setting.allCases.map { $0.rawValue }
     private lazy var userNickName = ""
     private lazy var representativeAvatarId = 0
     private var currentPresentativeAvatar = false
     
-    init(userRepository: UserRepository) {
+    init(userRepository: UserRepository, avatarRepository: AvatarRepository) {
         self.userRepository = userRepository 
+        self.avatarRepository = avatarRepository
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -89,7 +91,7 @@ final class MyPageViewController: UIViewController {
                 owner.rootView.bindData(data)
                 owner.representativeAvatarId = data.representativeAvatarId
                 owner.userNickName = data.userNickname
-                owner.avaterListRelay = BehaviorRelay(value: data.userAvatars)
+                owner.avaterListRelay.accept(data.userAvatars)
                 owner.bindColletionView()
             })
             .disposed(by: disposeBag)
@@ -113,7 +115,6 @@ final class MyPageViewController: UIViewController {
                 .disposed(by: disposeBag)
         
         //초기값 100으로 설정, 아무 의미 없음, 초기값 설정마저 안하고 싶은데 방법을 모르겠음
-        
         let collectionViewHeightConstraint = rootView.myPageSettingView.myPageSettingCollectionView.heightAnchor.constraint(equalToConstant: 100)
         collectionViewHeightConstraint.isActive = true
         let settingDataCount = CGFloat(settingData.count)
@@ -251,8 +252,7 @@ extension MyPageViewController {
                                  hasAvatar: Bool,
                                  currentRepresentativeAvatar: Bool) {
         let modalVC = MyPageCustomModalViewController(
-            avatarRepository: DefaultAvatarRepository(
-                avatarService: DefaultAvatarService()),
+            avatarRepository: self.avatarRepository,
             avatarId: avatarId,
             modalHasAvatar: hasAvatar,
             currentRepresentativeAvatar: currentRepresentativeAvatar)
