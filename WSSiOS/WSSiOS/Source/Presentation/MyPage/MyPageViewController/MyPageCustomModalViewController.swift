@@ -115,6 +115,7 @@ final class MyPageCustomModalViewController: UIViewController {
     private func setAction() {
         rootView.modalContinueButton.rx
             .tap
+            .throttle(.seconds(3), scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 owner.dismiss(animated: true)
             })
@@ -122,6 +123,7 @@ final class MyPageCustomModalViewController: UIViewController {
         
         rootView.modalChangeButton.rx
             .tap
+            .throttle(.seconds(3), scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 if !owner.modalHasAvatar || owner.currentRepresentativeAvatar {
                     owner.dismiss(animated: true)

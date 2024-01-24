@@ -42,6 +42,7 @@ final class MyPageInfoViewController: UIViewController {
         backButton.do {
             $0.setImage(ImageLiterals.icon.navigateLeft.withRenderingMode(.alwaysOriginal), for: .normal)
             $0.rx.tap
+                .throttle(.seconds(3), scheduler: MainScheduler.instance)
                 .subscribe(with: self, onNext: { owner, _ in 
                     owner.navigationController?.popViewController(animated: true)
                 })

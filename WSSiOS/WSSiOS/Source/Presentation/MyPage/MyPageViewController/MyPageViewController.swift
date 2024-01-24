@@ -169,6 +169,7 @@ final class MyPageViewController: UIViewController {
             .disposed(by: disposeBag)
         
         rootView.myPageTallyView.myPageUserNameButton.rx.tap
+            .throttle(.seconds(3), scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in 
                 owner.hideTabBar()
                 let changeNicknameViewController = MyPageChangeNicknameViewController(
@@ -263,6 +264,7 @@ extension MyPageViewController {
     
     private func pushChangeNickNameViewController() {
         rootView.myPageTallyView.myPageUserNameButton.rx.tap
+            .throttle(.seconds(3), scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in 
                 self.hideTabBar()
                 let changeNicknameViewController = MyPageChangeNicknameViewController(
