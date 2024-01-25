@@ -20,6 +20,8 @@ final class LibraryViewController: UIViewController {
     private let tabBarList = Observable.just(StringLiterals.Library.TabBar.allCases.map { $0.rawValue })
     private let readStatusList = StringLiterals.Library.ReadStatus.allCases.map { $0.rawValue }
     private let sortTypeList = StringLiterals.Library.SortType.allCases.map { $0.rawValue }
+    var currentPageIndex = 0
+    private var readStatusData: Int = 0
     
     //MARK: - UI Components
     
@@ -90,11 +92,11 @@ final class LibraryViewController: UIViewController {
         
         Observable.just(Void())
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] in
-                self?.libraryPageBar.libraryTabCollectionView.selectItem(at: IndexPath(item: 0, section: 0),
+            .subscribe(with: self, onNext: { owner, _ in 
+                owner.libraryPageBar.libraryTabCollectionView.selectItem(at: IndexPath(item: 0, section: 0),
                                                                          animated: true,
                                                                          scrollPosition: [])
-                self?.libraryPageBar.selectedTabIndex.onNext(0)
+                owner.libraryPageBar.selectedTabIndex.onNext(0)
             })
             .disposed(by: disposeBag)
     }
@@ -164,10 +166,9 @@ final class LibraryViewController: UIViewController {
     }
     
     private func updatePages(sort: String) {
-        for index in 0..<readStatusList.count {
-            let viewController = libraryPages[index]
-            viewController.reloadView(sortType: sort)
-        }
+            let viewController = libraryPages[currentPageIndex]
+        print(currentPageIndex, "🧰🧰" )
+        viewController.reloadView(sortType: sort)
     }
 }
 
@@ -191,6 +192,7 @@ extension LibraryViewController: UIPageViewControllerDataSource {
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         if let currentIndex = libraryPages.firstIndex(of: viewController as! LibraryBaseViewController), currentIndex < libraryPages.count - 1 {
+            currentPageIndex = currentIndex
             return libraryPages[currentIndex + 1]
         }
         return nil

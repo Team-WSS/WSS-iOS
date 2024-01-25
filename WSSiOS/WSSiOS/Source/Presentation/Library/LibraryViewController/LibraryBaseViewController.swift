@@ -33,6 +33,7 @@ final class LibraryBaseViewController: UIViewController {
     private let userNovelListRepository: DefaultUserNovelRepository
     private lazy var novelList = [UserNovelListDetail]()
     private let novelListRelay = PublishRelay<[UserNovelListDetail]>()
+    private var novelSortTypeRelay = PublishRelay<Int>()
     
     init(userNovelListRepository: DefaultUserNovelRepository,
          readStatusData: String,
@@ -94,14 +95,20 @@ final class LibraryBaseViewController: UIViewController {
             .disposed(by: disposeBag)
         
         novelListRelay
-            .subscribe(onNext: { [weak self] list in
+            .subscribe(with: self, onNext: { owner, list in
                 if list.isEmpty {
-                    self?.libraryEmptyView.isHidden = false
+                    owner.libraryEmptyView.isHidden = false
                 } else {
-                    self?.libraryEmptyView.isHidden = true
+                    owner.libraryEmptyView.isHidden = true
                 }
                 
-                self?.novelList = list
+                owner.novelList = list
+            })
+            .disposed(by: disposeBag)
+        
+        novelSortTypeRelay
+            .subscribe(with: self, onNext: { owner, count in
+                owner.delegate?.sendData(data: owner.novelTotalCount)
             })
             .disposed(by: disposeBag)
     }
@@ -115,10 +122,11 @@ final class LibraryBaseViewController: UIViewController {
                                                  size: size,
                                                  sortType: sortType)
         .observe(on: MainScheduler.instance)
+        .debug()
         .subscribe(with: self, onNext: { owner, data in
-            owner.novelTotalCount = data.userNovelCount
-            owner.delegate?.sendData(data: owner.novelTotalCount)
             owner.novelListRelay.accept(data.userNovels)
+            owner.novelTotalCount = data.userNovelCount
+            owner.novelSortTypeRelay.accept(data.userNovelCount)
         }, onError: { error, _  in
             print(error)
         })
@@ -149,8 +157,8 @@ final class LibraryBaseViewController: UIViewController {
                 return self?.novelList[indexPath.row]
             }
             .compactMap { $0 }
-            .subscribe(onNext: { [weak self] selectedItem in
-                self?.navigationController?.pushViewController(NovelDetailViewController(
+            .subscribe(with: self, onNext: { owner, selectedItem in
+                owner.navigationController?.pushViewController(NovelDetailViewController(
                     repository: DefaultUserNovelRepository(
                         userNovelService: DefaultUserNovelService()
                     ), userNovelId: selectedItem.userNovelId), animated: true)
