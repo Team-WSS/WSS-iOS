@@ -98,5 +98,26 @@ enum StringLiterals {
         static let register = "웹소설 등록하기"
         static let newest = "최신 순"
         static let oldest = "오래된 순"
+        
+        enum TabBar: String, CaseIterable {
+            case all = "전체"
+            case finish = "읽음"
+            case reading = "읽는 중"
+            case drop = "하차"
+            case wish = "읽고 싶음"
+        }
+        
+        enum ReadStatus: String, CaseIterable {
+            case all = "ALL"
+            case finish = "FINISH"
+            case reading = "READING"
+            case drop = "DROP"
+            case wish = "WISH"
+        }
+        
+        enum SortType: String, CaseIterable {
+            case newest = "NEWEST"
+            case oldest = "OLDEST"
+        }
     }
 }

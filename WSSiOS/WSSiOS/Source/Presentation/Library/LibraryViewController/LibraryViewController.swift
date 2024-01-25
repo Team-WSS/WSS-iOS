@@ -17,9 +17,9 @@ final class LibraryViewController: UIViewController {
     //MARK: - Properties
     
     private let disposeBag = DisposeBag()
-    private let tabBarList = Observable.just(["전체", "읽음", "읽는 중", "하차", "읽고 싶음"])
-    private let readStatusList = ["ALL", "FINISH", "READING", "DROP", "WISH"]
-    private let sortTypeList = ["NEWEST", "OLDEST"]
+    private let tabBarList = Observable.just(StringLiterals.Library.TabBar.allCases.map { $0.rawValue })
+    private let readStatusList = StringLiterals.Library.ReadStatus.allCases.map { $0.rawValue }
+    private let sortTypeList = StringLiterals.Library.SortType.allCases.map { $0.rawValue }
     
     //MARK: - UI Components
     
@@ -51,38 +51,29 @@ final class LibraryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setNavigationBar()
-        setTabBar()
-        delegate()
+        preparationSetNavigationBar(title: StringLiterals.Navigation.Title.library,
+                                    left: nil,
+                                    right: nil)
         setupPages()
         setUI()
         setHierarchy()
+        delegate()
+        register()
+        bindCell()
         setLayout()
         setAction()
         addNotificationCenter()
     }
-    
-    //MARK: - set NavigationBar
-    
-    private func setNavigationBar() {
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        self.navigationItem.title = StringLiterals.Navigation.Title.library
-        
-        if let navigationBar = self.navigationController?.navigationBar {
-            let titleTextAttributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.Title2
-            ]
-            navigationBar.titleTextAttributes = titleTextAttributes
-        }
-    }
-    
+   
     //MARK: - Custom TabBar
     
-    private func setTabBar() {
+    private func register() {
         libraryPageBar.libraryTabCollectionView
             .register(LibraryTabCollectionViewCell.self,
                       forCellWithReuseIdentifier: "LibraryTabCollectionViewCell")
-        
+    }
+    
+    private func bindCell() {
         tabBarList.bind(to: libraryPageBar.libraryTabCollectionView.rx.items(
             cellIdentifier: "LibraryTabCollectionViewCell",
             cellType: LibraryTabCollectionViewCell.self)) { (row, element, cell) in
