@@ -17,7 +17,7 @@ final class LibraryViewController: UIViewController {
     //MARK: - Properties
     
     private let disposeBag = DisposeBag()
-    private var tabBarList = Observable.just(["전체", "읽음", "읽는 중", "하차", "읽고 싶음"])
+    private let tabBarList = Observable.just(["전체", "읽음", "읽는 중", "하차", "읽고 싶음"])
     private let readStatusList = ["ALL", "FINISH", "READING", "DROP", "WISH"]
     private let sortTypeList = ["NEWEST", "OLDEST"]
     
@@ -26,10 +26,10 @@ final class LibraryViewController: UIViewController {
     private var libraryPageViewController = UIPageViewController(transitionStyle: .scroll,
                                                                  navigationOrientation: .horizontal,
                                                                  options: nil)
-    private var libraryPageBar = LibraryPageBar()
-    private var libraryDescriptionView = LibraryDescriptionView()
-    private var libraryListView = LibraryListView()
-    private var libraryPages = [LibraryBaseViewController]()
+    private let libraryPageBar = LibraryPageBar()
+    private let libraryDescriptionView = LibraryDescriptionView()
+    private let libraryListView = LibraryListView()
+    private lazy var libraryPages = [LibraryBaseViewController]()
     private let userNovelListRepository: DefaultUserNovelRepository
     
     init(userNovelListRepository: DefaultUserNovelRepository) {
@@ -54,14 +54,11 @@ final class LibraryViewController: UIViewController {
         setNavigationBar()
         setTabBar()
         delegate()
-        
         setupPages()
-        
         setUI()
         setHierarchy()
         setLayout()
         setAction()
-        
         addNotificationCenter()
     }
     
@@ -89,7 +86,7 @@ final class LibraryViewController: UIViewController {
         tabBarList.bind(to: libraryPageBar.libraryTabCollectionView.rx.items(
             cellIdentifier: "LibraryTabCollectionViewCell",
             cellType: LibraryTabCollectionViewCell.self)) { (row, element, cell) in
-                cell.libraryTabLabel.text = element
+                cell.bindData(data: element)
             }
             .disposed(by: disposeBag)
         

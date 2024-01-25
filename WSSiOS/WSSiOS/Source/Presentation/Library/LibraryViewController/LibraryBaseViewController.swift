@@ -22,17 +22,17 @@ final class LibraryBaseViewController: UIViewController {
     private var lastUserNovelIdData: Int
     private let sizeData: Int
     private var sortTypeData: String
-    private var novelTotalCount = 0
+    private lazy var novelTotalCount = 0
     weak var delegate : NovelDelegate?
     
     //MARK: - UI Components
     
-    private var rootView = LibraryView()
+    private let rootView = LibraryView()
     private let disposeBag = DisposeBag()
     private let libraryEmptyView = LibraryEmptyView()
     private let userNovelListRepository: DefaultUserNovelRepository
-    private var novelList = [UserNovelListDetail]()
-    private var novelListRelay = PublishRelay<[UserNovelListDetail]>()
+    private lazy var novelList = [UserNovelListDetail]()
+    private let novelListRelay = PublishRelay<[UserNovelListDetail]>()
     
     init(userNovelListRepository: DefaultUserNovelRepository,
          readStatusData: String,
@@ -64,9 +64,8 @@ final class LibraryBaseViewController: UIViewController {
         setUI()
         setHierachy()
         setLayout()
-        
         register()
-        bindColletionView()
+        bindCell()
         bindAction()
     }
     
@@ -86,7 +85,7 @@ final class LibraryBaseViewController: UIViewController {
                                                 forCellWithReuseIdentifier: "LibraryCollectionViewCell")
     }
     
-    private func bindColletionView() {
+    private func bindCell() {
         novelListRelay.bind(to: rootView.libraryCollectionView.rx.items(
             cellIdentifier: "LibraryCollectionViewCell",
             cellType: LibraryCollectionViewCell.self)) {(row, element, cell) in

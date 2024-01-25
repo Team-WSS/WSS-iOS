@@ -7,6 +7,9 @@
 
 import UIKit
 
+import SnapKit
+import Then
+
 final class LibraryCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Properties
@@ -15,11 +18,11 @@ final class LibraryCollectionViewCell: UICollectionViewCell {
     
     //MARK: - UI Components
     
-    public var novelImageView = UIImageView()
-    public var novelTitleLabel = UILabel()
-    public var novelAuthorLabel = UILabel()
+    private let novelImageView = UIImageView()
+    private let novelTitleLabel = UILabel()
+    private let novelAuthorLabel = UILabel()
     private let ratingStarImage = UIImageView(image: ImageLiterals.icon.Star.fill)
-    public var novelRatingLabel = UILabel()
+    private let novelRatingLabel = UILabel()
     
     //MARK: - Life Cycle
     
@@ -110,15 +113,15 @@ final class LibraryCollectionViewCell: UICollectionViewCell {
         novelAuthorLabel.text = data.userNovelAuthor
         
         let novelRating = data.userNovelRating
+        
         if novelRating == 0.0 {
-            novelRatingLabel.isHidden = true
             ratingStarImage.isHidden = true
+            novelRatingLabel.isHidden = true
         }
         else {
-            novelRatingLabel.isHidden = false
             ratingStarImage.isHidden = false
+            novelRatingLabel.isHidden = false
+            novelRatingLabel.text = String(data.userNovelRating)
         }
-        
-        novelRatingLabel.text = String(data.userNovelRating)
     }
 }

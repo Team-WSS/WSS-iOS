@@ -15,8 +15,8 @@ final class LibraryListView: UIView {
     //MARK: - UI Components
     
     private let dividerView = UIView()
-    let libraryNewestButton = UIButton()
-    let libraryOldesttButton = UIButton()
+    public lazy var libraryNewestButton = UIButton()
+    public lazy var libraryOldesttButton = UIButton()
     
     // MARK: - Life Cycle
     
@@ -45,8 +45,8 @@ final class LibraryListView: UIView {
             $0.layer.shadowRadius = 15
         }
         
-        libraryNewestButton.setTitle("최신 순", for: .normal)
-        libraryOldesttButton.setTitle("오래된 순", for: .normal)
+        libraryNewestButton.setTitle(StringLiterals.Library.newest, for: .normal)
+        libraryOldesttButton.setTitle(StringLiterals.Library.oldest, for: .normal)
         [libraryNewestButton,libraryOldesttButton].forEach {
             $0.do {
                 $0.setTitleColor(.Black, for: .normal)

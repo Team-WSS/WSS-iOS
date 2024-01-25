@@ -17,7 +17,7 @@ final class LibraryEmptyView: UIView {
     private let emptyStackView = UIStackView()
     private let emptyImageView = UIImageView()
     private let emptyTitleLabel = UILabel()
-    public let libraryRegisterButton = UIButton()
+    public lazy var libraryRegisterButton = UIButton()
     
     // MARK: - Life Cycle
     

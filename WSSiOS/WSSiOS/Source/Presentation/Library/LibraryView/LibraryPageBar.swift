@@ -17,11 +17,11 @@ final class LibraryPageBar: UIView {
     //MARK: - Properties
     
     private let disposeBag = DisposeBag()
-    public var selectedTabIndex = PublishSubject<Int>()
+    public lazy var selectedTabIndex = PublishSubject<Int>()
     
     //MARK: - UI Components
     
-    public var libraryTabCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+    public lazy var libraryTabCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     
     // MARK: - Life Cycle
     

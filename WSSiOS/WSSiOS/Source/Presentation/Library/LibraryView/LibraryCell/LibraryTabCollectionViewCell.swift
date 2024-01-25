@@ -17,11 +17,11 @@ final class LibraryTabCollectionViewCell: UICollectionViewCell {
     //MARK: - Properties
     
     static let identifier: String = "LibraryTabCollectionViewCell"
-    public let disposeBag = DisposeBag()
+    private let disposeBag = DisposeBag()
     
     //MARK: - UI Components
     
-    public var libraryTabLabel = UILabel()
+    private let libraryTabLabel = UILabel()
     private let libraryTabUnderView = UIView()
     
     //MARK: - Life Cycle
@@ -87,5 +87,9 @@ final class LibraryTabCollectionViewCell: UICollectionViewCell {
     private func selectUI() {
         libraryTabLabel.textColor = isSelected ? .Primary100 : .Gray200
         libraryTabUnderView.isHidden = isSelected ? false : true
+    }
+    
+    func bindData(data: String) {
+        libraryTabLabel.text = data
     }
 }
