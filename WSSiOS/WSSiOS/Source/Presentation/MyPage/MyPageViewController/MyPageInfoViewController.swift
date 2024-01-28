@@ -12,12 +12,9 @@ import Then
 
 final class MyPageInfoViewController: UIViewController {
 
-    //MARK: - Set Properties
-
+    //MARK: - Components
+    
     private let disposeBag = DisposeBag()
-    
-    //MARK: - UI Components
-    
     public let rootView = MyPageInfoView()
     private lazy var backButton = UIButton()
     
@@ -30,13 +27,13 @@ final class MyPageInfoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setUI()
         preparationSetNavigationBar(title: StringLiterals.Navigation.Title.myPageInfo,
                                     left: self.backButton,
                                     right: nil)
+        setUI()
     }
     
-    //MARK: - Custom Method
+    //MARK: - UI
     
     private func setUI() {
         backButton.do {

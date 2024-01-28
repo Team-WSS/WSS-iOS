@@ -16,7 +16,7 @@ final class MyPageSettingCollectionViewCell: UICollectionViewCell {
     
     static let identifier: String = "MyPageSettingCollectionViewCell"
     
-    //MARK: - UI Components
+    //MARK: - Components
     
     let myPageSettingCellLabel = UILabel()
     
@@ -35,7 +35,7 @@ final class MyPageSettingCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - Set UI
+    //MARK: - UI
     
     private func setUI() {
         self.backgroundColor = .White
@@ -46,14 +46,10 @@ final class MyPageSettingCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    //MARK: - Set Hierachy
-    
     private func setHierachy() {
         self.addSubviews(myPageSettingCellLabel)
     }
-    
-    //MARK: - Set Layout
-    
+
     private func setLayout() {
         myPageSettingCellLabel.snp.makeConstraints() {
             $0.centerY.equalToSuperview()

@@ -14,7 +14,7 @@ import Then
 
 final class MyPageViewController: UIViewController {
     
-    //MARK: - Set Properties
+    //MARK: - Properties
     
     private var avaterListRelay = BehaviorRelay<[UserAvatar]>(value: [])
     private let disposeBag = DisposeBag()
@@ -66,7 +66,7 @@ final class MyPageViewController: UIViewController {
         hideTabBar()
     }
     
-    //MARK: - set NavigationBar
+    //MARK: - NavigationBar
     
     private func setAppearance() {
         let appearance = UINavigationBarAppearance()
@@ -76,7 +76,7 @@ final class MyPageViewController: UIViewController {
         self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
     }
     
-    //MARK: - init DataBind
+    //MARK: - Bind
     
     private func register() {
         rootView.myPageInventoryView.myPageAvaterCollectionView.register(MyPageInventoryCollectionViewCell.self, forCellWithReuseIdentifier: "MyPageInventoryCollectionViewCell")
@@ -122,6 +122,20 @@ final class MyPageViewController: UIViewController {
         collectionViewHeightConstraint.constant = calculatedHeight
         view.layoutIfNeeded()
     }
+    
+    private func bindDataAgain() {
+        getDataFromAPI(disposeBag: disposeBag) { data, list in 
+            self.updateUI(userData: data, avatarList: list)
+        }
+    }
+    
+    private func updateUI(userData: UserResult, avatarList: [UserAvatar]) {
+        self.rootView.bindData(userData)
+        self.representativeAvatarId = userData.representativeAvatarId
+        self.avaterListRelay.accept(avatarList)
+    }
+    
+    //MARK: - Actions
     
     private func bindAction() {
         rootView.myPageSettingView.myPageSettingCollectionView.rx.itemSelected
@@ -180,15 +194,15 @@ final class MyPageViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        let tapGestureForRegister = UITapGestureRecognizer(target: self, action: #selector(pushToRegister))
-        let tapGestureForRecord = UITapGestureRecognizer(target: self, action: #selector(pushToRecord))
+        let tapGestureForRegister = UITapGestureRecognizer(target: self, action: #selector(pushToRegisterTabBar))
+        let tapGestureForRecord = UITapGestureRecognizer(target: self, action: #selector(pushToRecordTabBar))
         
         rootView.myPageTallyView.myPageRegisterView.addGestureRecognizer(tapGestureForRegister)
         rootView.myPageTallyView.myPageRecordView.addGestureRecognizer(tapGestureForRecord)
     }
     
     @objc
-    func pushToRegister() {
+    func pushToRegisterTabBar() {
         if self.navigationController?.tabBarController?.selectedIndex == 3 {
             UIView.performWithoutAnimation {
                 let tabBar = WSSTabBarController()
@@ -202,7 +216,7 @@ final class MyPageViewController: UIViewController {
     }
     
     @objc
-    func pushToRecord() {
+    func pushToRecordTabBar() {
         if self.navigationController?.tabBarController?.selectedIndex == 3 {
             UIView.performWithoutAnimation {
                 let tabBar = WSSTabBarController()
@@ -215,13 +229,7 @@ final class MyPageViewController: UIViewController {
         }
     }
     
-    //MARK: - reBindData
-    
-    private func bindDataAgain() {
-        getDataFromAPI(disposeBag: disposeBag) { data, list in 
-            self.updateUI(userData: data, avatarList: list)
-        }
-    }
+    //MARK: - API
     
     private func getDataFromAPI(disposeBag: DisposeBag,
                                 completion: @escaping (UserResult, [UserAvatar]) -> Void) {
@@ -235,12 +243,6 @@ final class MyPageViewController: UIViewController {
                 print(error)
             })
             .disposed(by: disposeBag)
-    }
-    
-    private func updateUI(userData: UserResult, avatarList: [UserAvatar]) {
-        self.rootView.bindData(userData)
-        self.representativeAvatarId = userData.representativeAvatarId
-        self.avaterListRelay.accept(avatarList)
     }
 }
 

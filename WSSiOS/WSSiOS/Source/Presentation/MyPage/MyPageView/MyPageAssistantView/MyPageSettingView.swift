@@ -12,7 +12,7 @@ import Then
 
 final class MyPageSettingView: UIView {
 
-    //MARK: - UI Components
+    //MARK: - Components
     
     lazy var myPageSettingCollectionView = UICollectionView(frame: .zero,
                                                 collectionViewLayout: UICollectionViewFlowLayout())
@@ -31,7 +31,7 @@ final class MyPageSettingView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
         self.backgroundColor = .Gray50
@@ -47,15 +47,11 @@ final class MyPageSettingView: UIView {
             $0.backgroundColor = .Gray50
         }
     }
-    
-    //MARK: - set Hierachy
-    
+
     private func setHierachy() {
         self.addSubview(myPageSettingCollectionView)
     }
-    
-    //MARK: - set Layout
-    
+
     private func setLayout() {
         myPageSettingCollectionView.snp.makeConstraints() {
             $0.top.equalToSuperview().inset(7)

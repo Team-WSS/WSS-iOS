@@ -12,7 +12,7 @@ import Then
 
 final class MyPageTallyView: UIView {
     
-    //MARK: - UI Components
+    //MARK: - Components
     
     private let backGroundView = UIView()
     private let tallyView = UIView()
@@ -150,7 +150,9 @@ final class MyPageTallyView: UIView {
         }
     }
     
-    func tallyViewDataBind(_ data: UserResult) {
+    //MARK: - Data
+    
+    func bindTallyViewData(_ data: UserResult) {
         let title = "\(data.userNickname)님"
         var attString = AttributedString(title)
         attString.font = UIFont.HeadLine1

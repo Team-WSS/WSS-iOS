@@ -12,7 +12,7 @@ import Then
 
 final class MyPageChangeNicknameView: UIView {
     
-    //MARK: - UI Components
+    //MARK: - Components
     
     private let dividerView = UIView()
     private let nicknameLabel = UILabel()
@@ -34,6 +34,8 @@ final class MyPageChangeNicknameView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    //MARK: - UI
     
     private func setUI() {
         self.backgroundColor = .White

@@ -12,7 +12,7 @@ import Then
 
 final class MyPageProfileView: UIView {
     
-    //MARK: - UI Components
+    //MARK: - Components
     
     private let myPageBadgeImageView = UIImageView()
     private let myPageNameLabel = UILabel()
@@ -33,7 +33,7 @@ final class MyPageProfileView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
         self.backgroundColor = .Gray50
@@ -55,17 +55,13 @@ final class MyPageProfileView: UIView {
         }
     }
     
-    //MARK: - set Hierachy
-    
     private func setHierachy() {
         self.addSubviews(myPageBadgeImageView,
                          myPageNameLabel,
                          myPagePhraseLabel,
                          myPageAvartarImageView)
     }
-    
-    //MARK: - set Layout
-    
+
     private func setLayout() {
         myPageBadgeImageView.snp.makeConstraints() {
             $0.top.equalTo(super.safeAreaLayoutGuide).offset(27)
@@ -90,7 +86,9 @@ final class MyPageProfileView: UIView {
         }
     }
     
-    func profileViewDataBind(_ data: UserResult) {
+    //MARK: - Data
+    
+    func bindProfileViewData(_ data: UserResult) {
         myPageNameLabel.text = data.representativeAvatarTag
         myPageBadgeImageView.kfSetImage(url: data.representativeAvatarGenreBadge)
         myPagePhraseLabel.text = data.representativeAvatarLineContent

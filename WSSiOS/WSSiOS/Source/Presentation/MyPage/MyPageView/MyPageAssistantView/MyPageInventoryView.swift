@@ -12,7 +12,7 @@ import Then
 
 final class MyPageInventoryView: UIView {
     
-    //MARK: - UI Components
+    //MARK: - Components
     
     private let titleLabel = UILabel()
     lazy var myPageAvaterCollectionView = UICollectionView(frame: .zero,
@@ -32,7 +32,7 @@ final class MyPageInventoryView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
         self.backgroundColor = .White
@@ -53,16 +53,12 @@ final class MyPageInventoryView: UIView {
             $0.collectionViewLayout = layout
         }
     }
-    
-    //MARK: - set Hierachy
-    
+
     private func setHierachy() {
         self.addSubviews(titleLabel,
                          myPageAvaterCollectionView)
     }
-    
-    //MARK: - set Layout
-    
+
     private func setLayout() {
         titleLabel.snp.makeConstraints() {
             $0.top.equalToSuperview()

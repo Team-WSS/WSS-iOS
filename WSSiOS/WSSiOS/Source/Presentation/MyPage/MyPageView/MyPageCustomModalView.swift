@@ -13,7 +13,7 @@ import Then
 
 final class MyPageCustomModalView: UIView {
 
-    //MARK: - UI Components
+    //MARK: - Components
     
     public let modalBackgroundView = UIView()
     public let modalAvatarFeatureLabelView = MyPageModalAvatarFeatureLabelView()
@@ -39,6 +39,8 @@ final class MyPageCustomModalView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    //MARK: - UI
     
     private func setUI() {
         self.do {
@@ -108,6 +110,8 @@ final class MyPageCustomModalView: UIView {
         }
     }
     
+    //MARK: - Data
+    
     func bindData(id: Int, data: AvatarResult) {
         modalAvatarFeatureLabelView.modalAvaterBadgeImageView.kfSetImage(url: data.avatarGenreBadgeImg)
         modalAvatarFeatureLabelView.modalAvaterTitleLabel.text = data.avatarTag
@@ -129,6 +133,8 @@ final class MyPageCustomModalView: UIView {
     
         playLottie()
     }
+    
+    //MARK: - Custom Method
     
     private func playLottie() {
         modalAvaterLottieView.play()

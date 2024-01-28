@@ -12,7 +12,7 @@ import Then
 
 final class MyPageModalAvatarFeatureLabelView: UIView {
     
-    //MARK: - UI Components
+    //MARK: - Components
     
     private let stackView = UIStackView()
     public let modalAvaterBadgeImageView = UIImageView()
@@ -33,7 +33,7 @@ final class MyPageModalAvatarFeatureLabelView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
         self.do {
@@ -58,17 +58,13 @@ final class MyPageModalAvatarFeatureLabelView: UIView {
             }
         }
     }
-    
-    //MARK: - set Hierachy
-    
+
     private func setHierachy() {
         self.addSubview(stackView)
         stackView.addArrangedSubviews(modalAvaterBadgeImageView,
                                       modalAvaterTitleLabel)
     }
-    
-    //MARK: - set Layout
-    
+
     private func setLayout() {
         stackView.snp.makeConstraints() {
             $0.horizontalEdges.equalToSuperview().inset(20)

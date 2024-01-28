@@ -16,7 +16,7 @@ final class MyPageInventoryCollectionViewCell: UICollectionViewCell {
     
     static let identifier: String = "MyPageInventoryTableViewCell"
     
-    //MARK: - UI Components
+    //MARK: - Components
     
     let myPageAvaterImageView = UIImageView()
     
@@ -35,7 +35,7 @@ final class MyPageInventoryCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - Set UI
+    //MARK: - UI
     
     private func setUI() {
         myPageAvaterImageView.do {
@@ -47,19 +47,19 @@ final class MyPageInventoryCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    //MARK: - Set Hierachy
     
     private func setHierachy() {
         self.addSubview(myPageAvaterImageView)
     }
     
-    //MARK: - Set Layout
     
     private func setLayout() {
         myPageAvaterImageView.snp.makeConstraints() {
             $0.height.width.equalToSuperview()
         }
     }
+    
+    //MARK: - Data
     
     func bindData(data: UserAvatar, representativeId: Int) {
         myPageAvaterImageView.kfSetImage(url: data.avatarImg)
