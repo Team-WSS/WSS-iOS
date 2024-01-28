@@ -79,9 +79,9 @@ final class MyPageViewController: UIViewController {
     //MARK: - Bind
     
     private func register() {
-        rootView.myPageInventoryView.myPageAvaterCollectionView.register(MyPageInventoryCollectionViewCell.self, forCellWithReuseIdentifier: "MyPageInventoryCollectionViewCell")
+        rootView.myPageInventoryView.myPageAvaterCollectionView.register(MyPageInventoryCollectionViewCell.self, forCellWithReuseIdentifier: MyPageInventoryCollectionViewCell.cellIdentifier)
         
-        rootView.myPageSettingView.myPageSettingCollectionView.register(MyPageSettingCollectionViewCell.self, forCellWithReuseIdentifier: "MyPageSettingCollectionViewCell")
+        rootView.myPageSettingView.myPageSettingCollectionView.register(MyPageSettingCollectionViewCell.self, forCellWithReuseIdentifier: MyPageSettingCollectionViewCell.cellIdentifier)
     }
     
     private func bindUserData() {

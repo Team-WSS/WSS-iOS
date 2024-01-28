@@ -12,10 +12,6 @@ import Then
 
 final class MyPageInventoryCollectionViewCell: UICollectionViewCell {
     
-    //MARK: - Properties
-    
-    static let identifier: String = "MyPageInventoryTableViewCell"
-    
     //MARK: - Components
     
     let myPageAvaterImageView = UIImageView()

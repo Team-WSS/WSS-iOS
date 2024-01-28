@@ -11,11 +11,7 @@ import SnapKit
 import Then
 
 final class MyPageSettingCollectionViewCell: UICollectionViewCell {
-    
-    //MARK: - Properties
-    
-    static let identifier: String = "MyPageSettingCollectionViewCell"
-    
+     
     //MARK: - Components
     
     let myPageSettingCellLabel = UILabel()

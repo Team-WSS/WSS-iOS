@@ -18,11 +18,7 @@ final class MyPageChangeNicknameViewController: UIViewController {
     private let userNickName : String
     private lazy var newNickName = ""
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    //MARK: - UI Components
+    //MARK: - Components
     
     private let rootView = MyPageChangeNicknameView()
     private lazy var backButton = UIButton()
@@ -34,6 +30,10 @@ final class MyPageChangeNicknameViewController: UIViewController {
         self.userNickName = userNickName
         self.userRepository = userRepository
         super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: - Life Cycle

@@ -19,7 +19,6 @@ final class MyPageCustomModalViewController: UIViewController {
     private let modalHasAvatar: Bool
     private let currentRepresentativeAvatar: Bool
     
-    
     //MARK: - Components
     
     private var rootView = MyPageCustomModalView()
