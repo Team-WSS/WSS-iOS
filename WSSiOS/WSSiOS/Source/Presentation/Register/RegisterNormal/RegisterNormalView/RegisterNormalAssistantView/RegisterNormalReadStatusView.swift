@@ -70,7 +70,7 @@ final class RegisterNormalReadStatusView: UIView {
         }
     }
     
-    func bindReadStatus(status: ReadStatus) {
+    func updateReadStatusButton(status: ReadStatus) {
         readStatusButtons.forEach { button in
             if button.checkStatus(status) {
                 // 활성화 상태 설정

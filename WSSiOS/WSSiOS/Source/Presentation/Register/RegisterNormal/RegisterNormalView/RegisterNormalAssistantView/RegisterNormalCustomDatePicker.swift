@@ -229,7 +229,7 @@ final class RegisterNormalCustomDatePicker: UIButton {
         }
     }
     
-    func bindReadStatus(status: ReadStatus) {
+    func updateDatePicker(status: ReadStatus) {
         if status == .FINISH {
             buttonStackView.isHidden = false
             readingStatusLabel.isHidden = true
