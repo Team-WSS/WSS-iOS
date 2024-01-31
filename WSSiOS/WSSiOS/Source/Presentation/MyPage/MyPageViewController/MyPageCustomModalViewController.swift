@@ -173,10 +173,11 @@ extension MyPageCustomModalViewController {
     
     func modalDismiss() {
         self.view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(modalDownGesture)))
+        self.modalBackgroundView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(backGroundTapGesture)))
     }
     
     @objc
-    func modalDownGesture(_ sender: UIPanGestureRecognizer) {
+    private func modalDownGesture(_ sender: UIPanGestureRecognizer) {
         let viewTranslation = sender.translation(in: view)
         let viewVelocity = sender.velocity(in: view)
         
@@ -206,5 +207,10 @@ extension MyPageCustomModalViewController {
         default:
             break
         }
+    }
+    
+    @objc
+    private func backGroundTapGesture(_ sender: UITapGestureRecognizer) {
+        dismiss(animated: true)
     }
 }
