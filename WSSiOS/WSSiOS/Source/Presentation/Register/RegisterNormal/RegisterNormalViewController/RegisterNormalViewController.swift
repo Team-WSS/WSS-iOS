@@ -95,9 +95,9 @@ final class RegisterNormalViewController: UIViewController {
     //MARK: - Bind
     
     private func register() {
-        rootView.novelSummaryView.platformView.platformCollectionView.register(NovelDetailInfoPlatformCollectionViewCell.self, forCellWithReuseIdentifier: "NovelDetailInfoPlatformCollectionViewCell")
-        rootView.novelSummaryView.platformView.platformCollectionView.dataSource = self
-        rootView.novelSummaryView.platformView.platformCollectionView.delegate = self
+        rootView.novelSummaryView.platformCollectionView.register(NovelDetailInfoPlatformCollectionViewCell.self, forCellWithReuseIdentifier: "NovelDetailInfoPlatformCollectionViewCell")
+        rootView.novelSummaryView.platformCollectionView.dataSource = self
+        rootView.novelSummaryView.platformCollectionView.delegate = self
     }
     
     private func bindUI() {
@@ -111,7 +111,7 @@ final class RegisterNormalViewController: UIViewController {
         starRating
             .asDriver()
             .drive(with: self, onNext: { owner, rating in
-                owner.rootView.infoWithRatingView.starRatingView.updateStarImages(rating: rating)
+                owner.rootView.infoWithRatingView.updateStarImages(rating: rating)
             })
             .disposed(by: disposeBag)
         
@@ -161,7 +161,7 @@ final class RegisterNormalViewController: UIViewController {
             .asDriver()
             .map { self.stringToDate.string(from: $0) }
             .drive(with: self, onNext: { owner, text in
-                owner.rootView.readDateView.datePickerButton.setStartDateText(text: text)
+                owner.rootView.readDateView.setStartDateText(text: text)
             })
             .disposed(by: disposeBag)
         
@@ -169,7 +169,7 @@ final class RegisterNormalViewController: UIViewController {
             .asDriver()
             .map { self.stringToDate.string(from: $0) }
             .drive(with: self, onNext: { owner, text in
-                owner.rootView.readDateView.datePickerButton.setEndDateText(text: text)
+                owner.rootView.readDateView.setEndDateText(text: text)
             })
             .disposed(by: disposeBag)
         
@@ -187,7 +187,7 @@ final class RegisterNormalViewController: UIViewController {
         platformCollectionViewHeight
             .asDriver()
             .drive(with: self, onNext: { owner, height in
-                owner.rootView.novelSummaryView.platformView.updateCollectionViewHeight(height: height)
+                owner.rootView.novelSummaryView.updateCollectionViewHeight(height: height)
             })
             .disposed(by: disposeBag)
     }
@@ -201,7 +201,7 @@ final class RegisterNormalViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        rootView.infoWithRatingView.starRatingView.starImageViews
+        rootView.infoWithRatingView.starImageViews
             .enumerated().forEach { index, imageView in
                 
                 let tapGesture = UITapGestureRecognizer()
@@ -216,11 +216,11 @@ final class RegisterNormalViewController: UIViewController {
             }
         
         let panGesture = UIPanGestureRecognizer()
-        rootView.infoWithRatingView.starRatingView.addGestureRecognizer(panGesture)
+        rootView.infoWithRatingView.starRatingStackView.addGestureRecognizer(panGesture)
         panGesture.rx.event
             .bind(with: self, onNext: { owner, recognizer in
-                let location = recognizer.location(in: owner.rootView.infoWithRatingView.starRatingView)
-                let rawRating = (Float(location.x / owner.rootView.infoWithRatingView.starRatingView.frame.width * 5) * 2)
+                let location = recognizer.location(in: owner.rootView.infoWithRatingView.starRatingStackView)
+                let rawRating = (Float(location.x / owner.rootView.infoWithRatingView.starRatingStackView.frame.width * 5) * 2)
                     .rounded(.toNearestOrAwayFromZero) / 2
                 let rating = min(max(rawRating, 0), 5)
                 owner.starRating.accept(rating)
@@ -273,7 +273,7 @@ final class RegisterNormalViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        rootView.novelSummaryView.platformView.platformCollectionView.rx.observe(CGSize.self, "contentSize")
+        rootView.novelSummaryView.platformCollectionView.rx.observe(CGSize.self, "contentSize")
             .map { $0?.height ?? 0 }
             .bind(to: platformCollectionViewHeight)
             .disposed(by: disposeBag)
@@ -385,7 +385,7 @@ final class RegisterNormalViewController: UIViewController {
         rootView.novelSummaryView.bindData(plot: newData.novelDescription,
                                            genre: newData.novelGenre,
                                            platforms: newData.platforms)
-        self.rootView.novelSummaryView.platformView.platformCollectionView.reloadData()
+        self.rootView.novelSummaryView.platformCollectionView.reloadData()
     }
     
     private func bindUserData(_ userData: EditNovelResult) {
@@ -421,7 +421,7 @@ final class RegisterNormalViewController: UIViewController {
         rootView.novelSummaryView.bindData(plot: userData.userNovelDescription,
                                            genre: userData.userNovelGenre,
                                            platforms: userData.platforms)
-        self.rootView.novelSummaryView.platformView.platformCollectionView.reloadData()
+        self.rootView.novelSummaryView.platformCollectionView.reloadData()
     }
     
     //MARK: - Custom Method
@@ -447,7 +447,7 @@ final class RegisterNormalViewController: UIViewController {
 
 extension RegisterNormalViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return rootView.novelSummaryView.platformView.platformList.count
+        return rootView.novelSummaryView.platformList.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -457,7 +457,7 @@ extension RegisterNormalViewController: UICollectionViewDataSource {
         ) as? NovelDetailInfoPlatformCollectionViewCell else {return UICollectionViewCell()}
         
         cell.bindData(
-            platform: rootView.novelSummaryView.platformView.platformList[indexPath.item].platformName
+            platform: rootView.novelSummaryView.platformList[indexPath.item].platformName
         )
         
         return cell
@@ -466,7 +466,7 @@ extension RegisterNormalViewController: UICollectionViewDataSource {
 
 extension RegisterNormalViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let url = URL(string: rootView.novelSummaryView.platformView.platformList[indexPath.item].platformUrl) {
+        if let url = URL(string: rootView.novelSummaryView.platformList[indexPath.item].platformUrl) {
             UIApplication.shared.open(url, options: [:])
         }
     }
@@ -474,7 +474,7 @@ extension RegisterNormalViewController: UICollectionViewDelegate {
 
 extension RegisterNormalViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let text: String? = rootView.novelSummaryView.platformView.platformList[indexPath.item].platformName
+        let text: String? = rootView.novelSummaryView.platformList[indexPath.item].platformName
         
         guard let unwrappedText = text else {
             return CGSize(width: 0, height: 0)

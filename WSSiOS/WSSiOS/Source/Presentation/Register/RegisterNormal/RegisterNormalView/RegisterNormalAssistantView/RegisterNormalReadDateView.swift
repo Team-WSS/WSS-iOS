@@ -15,11 +15,18 @@ final class RegisterNormalReadDateView: UIView {
     // MARK: - UI Components
     
     private let totalStackView = UIStackView()
+    
     private let upperStackView = UIStackView()
     private let titleView = WSSSectionTitleView()
     let toggleButton = RegisterNormalCustomToggleButton()
-    let datePickerButton = RegisterNormalDatePickerButton()
     private let spacer = UIView()
+    
+    let datePickerButton = UIButton()
+    private let dateLabelStackView = UIStackView()
+    private let startDateLabel = UILabel()
+    private let middleLabel = UILabel()
+    private let endDateLabel = UILabel()
+    private let calendarImageView = UIImageView()
     
     // MARK: - Life Cycle
     
@@ -52,6 +59,39 @@ final class RegisterNormalReadDateView: UIView {
                     $0.setText(StringLiterals.Register.Normal.SectionTitle.readStatus)
                 }
             }
+            
+            datePickerButton.do {
+                $0.backgroundColor = .Gray50
+                $0.layer.cornerRadius = 15
+            }
+            
+            dateLabelStackView.do {
+                $0.axis = .horizontal
+                $0.spacing = 20
+                $0.alignment = .center
+                $0.isUserInteractionEnabled = false
+                
+                startDateLabel.do {
+                    $0.text = "2023-12-26"
+                    dateLabelStyle(of: startDateLabel)
+                }
+                
+                middleLabel.do {
+                    $0.text = "~"
+                    dateLabelStyle(of: middleLabel)
+                }
+                
+                endDateLabel.do {
+                    $0.text = "2023-12-26"
+                    dateLabelStyle(of: endDateLabel)
+                }
+            }
+            
+            calendarImageView.do {
+                $0.image = ImageLiterals.icon.calender
+                $0.contentMode = .scaleAspectFill
+                $0.clipsToBounds = true
+            }
         }
     }
     
@@ -62,17 +102,70 @@ final class RegisterNormalReadDateView: UIView {
         upperStackView.addArrangedSubviews(titleView,
                                            toggleButton,
                                            spacer)
+        datePickerButton.addSubviews(dateLabelStackView,
+                         calendarImageView)
+        dateLabelStackView.addArrangedSubviews(startDateLabel,
+                                               middleLabel,
+                                               endDateLabel)
     }
     
     private func setLayout() {
         totalStackView.snp.makeConstraints {
             $0.verticalEdges.equalToSuperview()
             $0.horizontalEdges.equalToSuperview().inset(20)
+            
+            dateLabelStackView.snp.makeConstraints {
+                $0.leading.equalToSuperview().inset(16)
+                $0.top.bottom.equalToSuperview().inset(11)
+            }
+            
+            calendarImageView.snp.makeConstraints {
+                $0.trailing.equalToSuperview().inset(16)
+                $0.size.equalTo(18)
+                $0.centerY.equalToSuperview()
+            }
+        }
+    }
+    
+    func setStartDateText(text: String) {
+        startDateLabel.text = text
+        dateLabelStyle(of: startDateLabel)
+    }
+    
+    func setEndDateText(text: String) {
+        endDateLabel.text = text
+        dateLabelStyle(of: endDateLabel)
+    }
+    
+    private func dateLabelStyle(of label: UILabel) {
+        label.do {
+            $0.makeAttribute(with: label.text)?
+                .lineSpacing(spacingPercentage: 150)
+                .kerning(kerningPixel: -0.6)
+                .applyAttribute()
+            $0.font = .Body2
+            $0.textColor = .Gray300
         }
     }
     
     func bindData(_ status: ReadStatus) {
         titleView.setText(status.dateText)
-        datePickerButton.bindData(status)
+        
+        switch status {
+        case .FINISH:
+            startDateLabel.isHidden = false
+            middleLabel.isHidden = false
+            endDateLabel.isHidden = false
+        case .READING:
+            startDateLabel.isHidden = false
+            middleLabel.isHidden = true
+            endDateLabel.isHidden = true
+        case .DROP:
+            startDateLabel.isHidden = true
+            middleLabel.isHidden = true
+            endDateLabel.isHidden = false
+        case .WISH:
+            break
+        }
     }
 }

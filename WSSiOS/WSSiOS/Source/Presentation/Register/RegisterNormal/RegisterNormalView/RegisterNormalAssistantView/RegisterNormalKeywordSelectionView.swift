@@ -16,7 +16,11 @@ final class RegisterNormalKeywordSelectionView: UIView {
     
     private let totalStackView = UIStackView()
     private let titleView = WSSSectionTitleView()
-    private let keywordButton = RegisterNormalKeywordSelectionButton()
+    
+    private let keywordSelectButton = UIButton()
+    private let buttonStackView = UIStackView()
+    private let buttonImage = UIImageView()
+    private let buttonLabel = UILabel()
     
     // MARK: - Life Cycle
     
@@ -43,19 +47,60 @@ final class RegisterNormalKeywordSelectionView: UIView {
             titleView.do {
                 $0.setText("키워드")
             }
+            
+            keywordSelectButton.do {
+                $0.layer.cornerRadius = 15
+                $0.layer.borderWidth = 1
+                $0.layer.borderColor = UIColor.Primary100.cgColor
+                
+                buttonStackView.do {
+                    $0.axis = .horizontal
+                    $0.spacing = 15
+                    $0.alignment = .center
+                    
+                    buttonImage.do {
+                        $0.image = ImageLiterals.icon.plusKeyword
+                    }
+                    
+                    buttonLabel.do {
+                        $0.text = "키워드 등록"
+                        buttonLabelStyle(of: buttonLabel)
+                    }
+                }
+            }
         }
     }
     
     private func setHieararchy() {
         self.addSubview(totalStackView)
         totalStackView.addArrangedSubviews(titleView,
-                                           keywordButton)
+                                           keywordSelectButton)
+        keywordSelectButton.addSubviews(buttonStackView)
+        buttonStackView.addArrangedSubviews(buttonImage,
+                                            buttonLabel)
     }
     
     private func setLayout() {
         totalStackView.snp.makeConstraints {
             $0.verticalEdges.equalToSuperview()
             $0.horizontalEdges.equalToSuperview().inset(20)
+        }
+        
+        buttonStackView.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(13)
+            $0.verticalEdges.equalToSuperview()
+            $0.height.equalTo(43)
+        }
+    }
+    
+    private func buttonLabelStyle(of label: UILabel) {
+        label.do {
+            $0.makeAttribute(with: label.text)?
+                .lineSpacing(spacingPercentage: 150)
+                .kerning(kerningPixel: -0.6)
+                .applyAttribute()
+            $0.font = .Body2
+            $0.textColor = .Primary100
         }
     }
 }

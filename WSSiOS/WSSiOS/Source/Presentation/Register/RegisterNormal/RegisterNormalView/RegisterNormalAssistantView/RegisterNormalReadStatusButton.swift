@@ -77,7 +77,6 @@ final class RegisterNormalReadStatusButton: UIButton {
         self.addSubviews(buttonStackView)
         buttonStackView.addArrangedSubviews(buttonImage,
                                             buttonLabel)
-        
     }
     
     private func setLayout() {

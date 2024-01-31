@@ -65,19 +65,15 @@ final class RegisterNormalStarRatingView: UIView {
     }
     
     private func createStars() -> [UIImageView] {
-        var stars: [UIImageView] = []
-        for _ in 0..<5 {
-            let starImageView = UIImageView()
-            starImageView.do {
+        return (0..<5).map { _ in
+            let starImageView = UIImageView().then {
                 $0.isUserInteractionEnabled = true
                 $0.image = ImageLiterals.icon.Star.empty
                 $0.contentMode = .scaleAspectFill
                 $0.clipsToBounds = true
             }
-            stars.append(starImageView)
+            return starImageView
         }
-        
-        return stars
     }
     /// 별점에 따라 별 이미지를 업데이트하는 함수
     func updateStarImages(rating: Float) {

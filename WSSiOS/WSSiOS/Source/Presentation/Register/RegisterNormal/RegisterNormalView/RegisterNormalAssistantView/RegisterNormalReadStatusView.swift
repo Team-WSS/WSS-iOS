@@ -84,7 +84,6 @@ final class RegisterNormalReadStatusView: UIView {
         }
     }
     
-    
     private func createButtons() -> [RegisterNormalReadStatusButton] {
         var buttons: [RegisterNormalReadStatusButton] = []
         for status in ReadStatus.allCases {
