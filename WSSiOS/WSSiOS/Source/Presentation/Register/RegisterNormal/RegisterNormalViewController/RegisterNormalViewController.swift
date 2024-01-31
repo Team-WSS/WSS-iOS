@@ -177,9 +177,9 @@ final class RegisterNormalViewController: UIViewController {
             .asDriver()
             .drive(with: self, onNext: { owner, isNew in
                 if isNew {
-                    self.rootView.registerButton.setTitle(StringLiterals.Register.Normal.RegisterButton.new, for: .normal)
+                    owner.rootView.registerButton.setTitle(StringLiterals.Register.Normal.RegisterButton.new, for: .normal)
                 } else {
-                    self.rootView.registerButton.setTitle(StringLiterals.Register.Normal.RegisterButton.edit, for: .normal)
+                    owner.rootView.registerButton.setTitle(StringLiterals.Register.Normal.RegisterButton.edit, for: .normal)
                 }
             })
             .disposed(by: disposeBag)
@@ -187,7 +187,7 @@ final class RegisterNormalViewController: UIViewController {
         platformCollectionViewHeight
             .asDriver()
             .drive(with: self, onNext: { owner, height in
-                self.rootView.novelSummaryView.platformView.updateCollectionViewHeight(height: height)
+                owner.rootView.novelSummaryView.platformView.updateCollectionViewHeight(height: height)
             })
             .disposed(by: disposeBag)
     }
@@ -196,7 +196,9 @@ final class RegisterNormalViewController: UIViewController {
     
     private func bindActions() {
         backButton.rx.tap
-            .bind { self.navigationController?.popViewController(animated: true) }
+            .bind(with: self, onNext: { owner, _ in
+                owner.navigationController?.popViewController(animated: true)
+            })
             .disposed(by: disposeBag)
         
         rootView.infoWithRatingView.starRatingView.starImageViews
@@ -225,10 +227,10 @@ final class RegisterNormalViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        for (index, status) in ReadStatus.allCases.enumerated() {
+        for (index, readStatus) in ReadStatus.allCases.enumerated() {
             rootView.readStatusView.readStatusButtons[index].rx.tap
                 .bind(with: self, onNext: { owner, _ in
-                    owner.readStatus.accept(status)
+                    owner.readStatus.accept(readStatus)
                 })
                 .disposed(by: disposeBag)
         }
@@ -246,7 +248,9 @@ final class RegisterNormalViewController: UIViewController {
             .disposed(by: disposeBag)
         
         rootView.customDatePicker.rx.tap
-            .bind { self.showDatePicker.accept(!self.showDatePicker.value) }
+            .bind(with: self, onNext: { owner, _ in
+                owner.showDatePicker.accept(!owner.showDatePicker.value)
+            })
             .disposed(by: disposeBag)
         
         rootView.customDatePicker.completeButton.rx.tap
@@ -279,9 +283,9 @@ final class RegisterNormalViewController: UIViewController {
     private func getNovel() {
         novelRepository.getNovelInfo(novelId: novelId)
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { data in
-                self.bindData(data)
-            },onError: { error in
+            .subscribe(with: self, onNext: { owner, data in
+                owner.bindData(data)
+            },onError: { _, _ in
                 print("ERROR!!!")
             }).disposed(by: disposeBag)
     }
@@ -469,9 +473,7 @@ extension RegisterNormalViewController: UICollectionViewDelegate {
 
 extension RegisterNormalViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        var text: String?
-        
-        text = rootView.novelSummaryView.platformView.platformList[indexPath.item].platformName
+        let text: String? = rootView.novelSummaryView.platformView.platformList[indexPath.item].platformName
         
         guard let unwrappedText = text else {
             return CGSize(width: 0, height: 0)
