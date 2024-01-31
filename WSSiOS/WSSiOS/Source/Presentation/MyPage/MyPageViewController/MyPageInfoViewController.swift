@@ -31,6 +31,7 @@ final class MyPageInfoViewController: UIViewController {
                                     left: self.backButton,
                                     right: nil)
         hideTabBar()
+        swipeBackGesture()
         setUI()
     }
     
