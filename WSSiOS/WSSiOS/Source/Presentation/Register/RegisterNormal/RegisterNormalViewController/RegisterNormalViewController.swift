@@ -262,13 +262,14 @@ final class RegisterNormalViewController: UIViewController {
             .disposed(by: disposeBag)
         
         rootView.registerButton.rx.tap
-            .bind(with: self, onNext: { owner, _ in
+            .asDriver()
+            .throttle(.seconds(3), latest: false)
+            .drive(with: self, onNext: { owner, _ in
                 if owner.isNew.value {
                     owner.postUserNovel()
                 } else {
                     owner.patchUserNovel()
                 }
-                owner.rootView.registerButton.isEnabled = false
             })
             .disposed(by: disposeBag)
         
