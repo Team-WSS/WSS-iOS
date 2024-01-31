@@ -14,7 +14,7 @@ import SnapKit
 final class MyPageCustomModalViewController: UIViewController {
     
     //MARK: - Properties
-
+    
     private let avatarId: Int
     private let modalHasAvatar: Bool
     private let currentRepresentativeAvatar: Bool
@@ -30,7 +30,7 @@ final class MyPageCustomModalViewController: UIViewController {
          avatarId: Int,
          modalHasAvatar: Bool,
          currentRepresentativeAvatar: Bool) {
-
+        
         self.avatarRepository = avatarRepository
         self.avatarId = avatarId
         self.modalHasAvatar = modalHasAvatar
@@ -44,12 +44,6 @@ final class MyPageCustomModalViewController: UIViewController {
     
     // MARK: - Life Cycle
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        self.setBackgroundDimmed()
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -58,6 +52,13 @@ final class MyPageCustomModalViewController: UIViewController {
         setLayout()
         bindAvatarData()
         setAction()
+        modalDismiss()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.setBackgroundDimmed()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -162,6 +163,48 @@ extension MyPageCustomModalViewController {
         
         modalBackgroundView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+        }
+    }
+}
+
+extension MyPageCustomModalViewController {
+    
+    //MARK: - Modal Gesture
+    
+    func modalDismiss() {
+        self.view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(modalDownGesture)))
+    }
+    
+    @objc
+    func modalDownGesture(_ sender: UIPanGestureRecognizer) {
+        let viewTranslation = sender.translation(in: view)
+        let viewVelocity = sender.velocity(in: view)
+        
+        switch sender.state {
+        case .changed:
+            if abs(viewVelocity.y) > abs(viewVelocity.x) {
+                if viewVelocity.y > 0 {
+                    modalBackgroundView.alpha = 0
+                    UIView.animate(withDuration: 0.1, animations: {
+                        self.view.transform = CGAffineTransform(translationX: 0, y: viewTranslation.y)
+                    })
+                }
+            }
+        case .ended:
+            if viewTranslation.y < 150 {
+                UIView.animate(withDuration: 0.1, animations: {
+                    self.view.transform = .identity
+                })
+                UIView.animate(withDuration: 0.3, delay: 0.3) {
+                    self.modalBackgroundView.alpha = 1
+                }
+            }
+            else {
+                modalBackgroundView.alpha = 0
+                dismiss(animated: true)
+            }
+        default:
+            break
         }
     }
 }

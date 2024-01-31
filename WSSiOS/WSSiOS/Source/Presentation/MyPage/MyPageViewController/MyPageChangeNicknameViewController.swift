@@ -45,12 +45,13 @@ final class MyPageChangeNicknameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setUI()
-        swipeBackGesture()
-        setTextField()
         preparationSetNavigationBar(title: StringLiterals.Navigation.Title.changeNickname,
                                     left: self.backButton,
                                     right: self.completeButton)
+        hideTabBar()
+        setUI()
+        swipeBackGesture()
+        setTextField()
     }
     
     //MARK: - Actions

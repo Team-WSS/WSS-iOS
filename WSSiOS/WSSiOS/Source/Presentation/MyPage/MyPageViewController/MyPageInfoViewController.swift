@@ -30,6 +30,7 @@ final class MyPageInfoViewController: UIViewController {
         preparationSetNavigationBar(title: StringLiterals.Navigation.Title.myPageInfo,
                                     left: self.backButton,
                                     right: nil)
+        hideTabBar()
         setUI()
     }
     
