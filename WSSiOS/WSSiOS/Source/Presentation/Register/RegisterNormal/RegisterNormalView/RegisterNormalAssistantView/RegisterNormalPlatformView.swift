@@ -19,7 +19,7 @@ final class RegisterNormalPlatformView: UIView {
     // MARK: - UI Components
     
     private let titleLabel = WSSSectionTitleView()
-    public let platformCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+    let platformCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     
     // MARK: - Life Cycle
     

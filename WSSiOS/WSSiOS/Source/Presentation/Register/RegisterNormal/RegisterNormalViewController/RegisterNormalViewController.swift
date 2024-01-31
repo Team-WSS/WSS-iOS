@@ -22,8 +22,8 @@ final class RegisterNormalViewController: UIViewController {
     private let userNovelRepository: UserNovelRepository
     private let novelId: Int
     private var userNovelId: Int
-    private var novelTitle: String = ""
-    let stringToDate = DateFormatter().then {
+    private var navigationTitle: String = ""
+    private let stringToDate = DateFormatter().then {
         $0.dateFormat = "yyyy-MM-dd"
         $0.timeZone = TimeZone(identifier: "ko_KR")
     }
@@ -376,7 +376,7 @@ final class RegisterNormalViewController: UIViewController {
     }
     
     private func bindNewData(_ newData: NewNovelResult) {
-        self.novelTitle = newData.novelTitle
+        self.navigationTitle = newData.novelTitle
         rootView.bannerImageView.bindData(newData.novelImg)
         rootView.infoWithRatingView.bindData(coverImage: newData.novelImg,
                                              title: newData.novelTitle,
@@ -388,7 +388,7 @@ final class RegisterNormalViewController: UIViewController {
     }
     
     private func bindUserData(_ userData: EditNovelResult) {
-        self.novelTitle = userData.userNovelTitle
+        self.navigationTitle = userData.userNovelTitle
         self.userNovelId = userData.userNovelID
         rootView.bannerImageView.bindData(userData.userNovelImg)
         rootView.infoWithRatingView.bindData(coverImage: userData.userNovelImg,
@@ -431,7 +431,7 @@ final class RegisterNormalViewController: UIViewController {
             navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
             navigationController?.navigationBar.shadowImage = UIImage()
             navigationController?.navigationBar.backgroundColor = .white
-            navigationItem.title = self.novelTitle
+            navigationItem.title = self.navigationTitle
             rootView.divider.isHidden = false
         } else {
             rootView.statusBarView.backgroundColor = .clear
