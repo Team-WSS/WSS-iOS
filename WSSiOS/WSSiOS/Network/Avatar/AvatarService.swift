@@ -23,21 +23,21 @@ final class DefaultAvatarService: NSObject, Networking {
 
 extension DefaultAvatarService: AvatarService {
     func getAvatarData(avatarId: Int) -> RxSwift.Single<AvatarResult> {
-        guard let request = try? makeHTTPRequest(method: .get,
-                                                 path: URLs.Avatar.getAvatarDetail.replacingOccurrences(of: "{avatarId}", with: String(avatarId)),
-                                                 headers: APIConstants.testTokenHeader,
-                                                 body: nil)
-                
-        else {
-            return .error(NetworkServiceError.invalidRequestError)
+        do {
+            let request = try makeHTTPRequest(method: .get,
+                                              path: URLs.Avatar.getAvatarDetail.replacingOccurrences(of: "{avatarId}", with: String(avatarId)),
+                                              headers: APIConstants.testTokenHeader,
+                                              body: nil)
+            
+            NetworkLogger.log(request: request)
+            
+            return urlSession.rx.data(request: request)
+                .map { try self.decode(data: $0,
+                                       to: AvatarResult.self) }
+                .asSingle()
+        } catch {
+            return Single.error(error)
         }
-        
-        NetworkLogger.log(request: request)
-        
-        return urlSession.rx.data(request: request)
-            .map { try self.decode(data: $0,
-                                   to: AvatarResult.self) }
-            .asSingle()
     }
     
     func patchAvatar(avatarId: Int) -> RxSwift.Single<Void> {
@@ -47,20 +47,21 @@ extension DefaultAvatarService: AvatarService {
             return .error(NetworkServiceError.invalidRequestError)
         }
         
-        guard let request = try? makeHTTPRequest(method: .patch,
-                                                 path: URLs.Avatar.patchRepAvatar,
-                                                 queryItems: avatarListQueryItems,
-                                                 headers: APIConstants.testTokenHeader,
-                                                 body: avatarIdData)
-        else {
-            return .error(NetworkServiceError.invalidRequestError)
+        do {
+            let request = try makeHTTPRequest(method: .patch,
+                                              path: URLs.Avatar.patchRepAvatar,
+                                              queryItems: avatarListQueryItems,
+                                              headers: APIConstants.testTokenHeader,
+                                              body: avatarIdData)
+            
+            NetworkLogger.log(request: request)
+            
+            return urlSession.rx.data(request: request)
+                .map { _ in }
+                .asSingle()
+        } catch {
+            return Single.error(error)
         }
-        
-        NetworkLogger.log(request: request)
-        
-        return urlSession.rx.data(request: request)
-            .map { _ in }
-            .asSingle()
     }
 }
 
