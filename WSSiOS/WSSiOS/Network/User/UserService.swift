@@ -26,11 +26,12 @@ final class DefaultUserService: NSObject, Networking {
 extension DefaultUserService: UserService {
     func getUserData() -> RxSwift.Single<UserResult> {
         guard let request = try? makeHTTPRequest(method: .get,
-                                           path: URLs.User.getUserInfo,
-                                           headers: APIConstants.testTokenHeader,
-                                           body: nil)
+                                                 path: URLs.User.getUserInfo,
+                                                 headers: APIConstants.testTokenHeader,
+                                                 body: nil)
+                
         else {
-            return .error(NetworkServiceError.invalidRequestError)
+            return .error(NetworkServiceError.invalidRequestError) 
         }
         
         NetworkLogger.log(request: request)
@@ -42,15 +43,17 @@ extension DefaultUserService: UserService {
     }
     
     func patchUserName(userNickName: String) -> RxSwift.Single<Void> {
-        guard let userNickNameData = try? JSONEncoder().encode(UserNickNameResult(userNickname: userNickName)) else {
+        guard let userNickNameData = try? JSONEncoder().encode(UserNickNameResult(userNickname: userNickName)) 
+                
+        else {
             return .error(NetworkServiceError.invalidRequestError)
         }
         
         guard let request = try? makeHTTPRequest(method: .patch,
-                                           path: URLs.User.patchUserNickname,
-                                           queryItems: userNickNameQueryItems,
-                                           headers: APIConstants.testTokenHeader,
-                                           body: userNickNameData)
+                                                 path: URLs.User.patchUserNickname,
+                                                 queryItems: userNickNameQueryItems,
+                                                 headers: APIConstants.testTokenHeader,
+                                                 body: userNickNameData)
         else {
             return .error(NetworkServiceError.invalidRequestError)
         }
@@ -63,10 +66,14 @@ extension DefaultUserService: UserService {
     }
     
     func getUserCharacterData() -> Single<UserCharacter> {
-        let request = try! makeHTTPRequest(method: .get,
-                                           path: URLs.Avatar.getRepAvatar,
-                                           headers: APIConstants.testTokenHeader,
-                                           body: nil)
+        guard let request = try? makeHTTPRequest(method: .get,
+                                                 path: URLs.Avatar.getRepAvatar,
+                                                 headers: APIConstants.testTokenHeader,
+                                                 body: nil)
+                
+        else {
+            return .error(NetworkServiceError.invalidRequestError)
+        }
         
         NetworkLogger.log(request: request)
         
@@ -76,4 +83,5 @@ extension DefaultUserService: UserService {
             .asSingle()
     }
 }
+
 

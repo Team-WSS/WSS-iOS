@@ -23,10 +23,14 @@ final class DefaultAvatarService: NSObject, Networking {
 
 extension DefaultAvatarService: AvatarService {
     func getAvatarData(avatarId: Int) -> RxSwift.Single<AvatarResult> {
-        let request = try! makeHTTPRequest(method: .get,
-                                           path: URLs.Avatar.getAvatarDetail.replacingOccurrences(of: "{avatarId}", with: String(avatarId)),
-                                           headers: APIConstants.testTokenHeader,
-                                           body: nil)
+        guard let request = try? makeHTTPRequest(method: .get,
+                                                 path: URLs.Avatar.getAvatarDetail.replacingOccurrences(of: "{avatarId}", with: String(avatarId)),
+                                                 headers: APIConstants.testTokenHeader,
+                                                 body: nil)
+                
+        else {
+            return .error(NetworkServiceError.invalidRequestError)
+        }
         
         NetworkLogger.log(request: request)
         
@@ -37,15 +41,20 @@ extension DefaultAvatarService: AvatarService {
     }
     
     func patchAvatar(avatarId: Int) -> RxSwift.Single<Void> {
-        guard let avatarIdData = try? JSONEncoder().encode(AvatarChangeResult(avatarId: avatarId)) else {
+        guard let avatarIdData = try? JSONEncoder().encode(AvatarChangeResult(avatarId: avatarId))
+                
+        else {
             return .error(NetworkServiceError.invalidRequestError)
         }
         
-        let request = try! makeHTTPRequest(method: .patch,
-                                           path: URLs.Avatar.patchRepAvatar,
-                                           queryItems: avatarListQueryItems,
-                                           headers: APIConstants.testTokenHeader,
-                                           body: avatarIdData)
+        guard let request = try? makeHTTPRequest(method: .patch,
+                                                 path: URLs.Avatar.patchRepAvatar,
+                                                 queryItems: avatarListQueryItems,
+                                                 headers: APIConstants.testTokenHeader,
+                                                 body: avatarIdData)
+        else {
+            return .error(NetworkServiceError.invalidRequestError)
+        }
         
         NetworkLogger.log(request: request)
         
