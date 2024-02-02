@@ -207,7 +207,6 @@ final class RegisterNormalViewController: UIViewController {
             .asDriver()
             .drive(with: self, onNext: { owner, isStart in
                 owner.rootView.customDatePicker.updateButtons(isStart)
-                
                 owner.rootView.customDatePicker
                     .updateDatePicker(date: isStart ? owner.internalStartDate.value :
                                                       owner.internalEndDate.value)
@@ -217,11 +216,10 @@ final class RegisterNormalViewController: UIViewController {
         isNew
             .asDriver()
             .drive(with: self, onNext: { owner, isNew in
-                if isNew {
-                    owner.rootView.registerButton.setTitle(StringLiterals.Register.Normal.RegisterButton.new, for: .normal)
-                } else {
-                    owner.rootView.registerButton.setTitle(StringLiterals.Register.Normal.RegisterButton.edit, for: .normal)
-                }
+                owner.rootView.registerButton
+                    .setTitle(isNew ? StringLiterals.Register.Normal.RegisterButton.new :
+                                      StringLiterals.Register.Normal.RegisterButton.edit,
+                              for: .normal)
             })
             .disposed(by: disposeBag)
         
@@ -383,7 +381,6 @@ final class RegisterNormalViewController: UIViewController {
         .disposed(by: disposeBag)
     }
     
-    
     private func patchUserNovel() {
         formatRequestBodyData()
         userNovelRepository.patchUserNovel(userNovelId: userNovelId,
@@ -487,7 +484,7 @@ extension RegisterNormalViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: NovelDetailInfoPlatformCollectionViewCell.identifier,
             for: indexPath
-        ) as? NovelDetailInfoPlatformCollectionViewCell else {return UICollectionViewCell()}
+        ) as? NovelDetailInfoPlatformCollectionViewCell else { return UICollectionViewCell() }
         
         cell.bindData(
             platform: rootView.novelSummaryView.platformList[indexPath.item].platformName
