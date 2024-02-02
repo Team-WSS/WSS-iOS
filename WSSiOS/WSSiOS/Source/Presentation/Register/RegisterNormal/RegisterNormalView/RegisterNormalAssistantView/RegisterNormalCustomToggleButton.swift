@@ -90,7 +90,7 @@ final class RegisterNormalCustomToggleButton: UIButton {
         }
     }
     
-    func changeState(_ state: Bool) {
+    func updateState(_ state: Bool) {
         UIView.animate(withDuration: self.animationDuration) {
             if state {
                 onStateLayout()

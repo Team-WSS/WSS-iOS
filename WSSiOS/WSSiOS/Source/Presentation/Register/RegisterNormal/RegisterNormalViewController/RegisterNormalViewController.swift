@@ -23,21 +23,24 @@ final class RegisterNormalViewController: UIViewController {
     private let novelId: Int
     private var userNovelId: Int
     private var navigationTitle: String = ""
-    private let stringToDate = DateFormatter().then {
+    private let dateFormatter = DateFormatter().then {
         $0.dateFormat = "yyyy-MM-dd"
         $0.timeZone = TimeZone(identifier: "ko_KR")
     }
     
     // RxSwift
-    private var isNew = BehaviorRelay<Bool>(value: true)
     private let disposeBag = DisposeBag()
+    private var isNew = BehaviorRelay<Bool>(value: true)
     private var starRating = BehaviorRelay<Float>(value: 0.0)
     private var readStatus = BehaviorRelay<ReadStatus>(value: .FINISH)
     private var isDateExist = BehaviorRelay<Bool>(value: true)
     private var showDatePicker = BehaviorRelay<Bool>(value: false)
     private var startDate = BehaviorRelay<Date>(value: Date())
     private var endDate = BehaviorRelay<Date>(value: Date())
-    private let platformCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
+    private var internalStartDate = BehaviorRelay<Date>(value: Date())
+    private var internalEndDate = BehaviorRelay<Date>(value: Date())
+    private var isSelectingStartDate = BehaviorRelay<Bool>(value: true)
+    private var platformCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
     
     // MARK: - Components
     
@@ -128,13 +131,19 @@ final class RegisterNormalViewController: UIViewController {
                 }
                 
                 owner.rootView.customDatePicker.updateDatePicker(status: status)
+                
+                if status == .FINISH || status == .READING {
+                    owner.isSelectingStartDate.accept(true)
+                } else if status == .DROP {
+                    owner.isSelectingStartDate.accept(false)
+                }
             })
             .disposed(by: disposeBag)
         
         isDateExist
             .asDriver()
             .drive(with: self, onNext: { owner, isDateExist in
-                owner.rootView.readDateView.toggleButton.changeState(isDateExist)
+                owner.rootView.readDateView.toggleButton.updateState(isDateExist)
                 owner.rootView.readDateView.datePickerButton.isHidden = !isDateExist
             })
             .disposed(by: disposeBag)
@@ -143,8 +152,10 @@ final class RegisterNormalViewController: UIViewController {
             .asDriver()
             .drive(with: self, onNext: { owner, isShow in
                 if isShow {
-                    owner.rootView.customDatePicker.startDate = self.startDate.value
-                    owner.rootView.customDatePicker.endDate = self.endDate.value
+                    owner.internalStartDate.accept(owner.startDate.value)
+                    owner.internalEndDate.accept(owner.endDate.value)
+                    owner.rootView.customDatePicker
+                        .updateDatePicker(date: owner.isSelectingStartDate.value ? owner.internalStartDate.value : owner.internalEndDate.value)
                 }
                 owner.rootView.customDatePicker.isHidden = !isShow
                 
@@ -159,7 +170,7 @@ final class RegisterNormalViewController: UIViewController {
         
         startDate
             .asDriver()
-            .map { self.stringToDate.string(from: $0) }
+            .map { self.dateFormatter.string(from: $0) }
             .drive(with: self, onNext: { owner, text in
                 owner.rootView.readDateView.setStartDateText(text: text)
             })
@@ -167,9 +178,36 @@ final class RegisterNormalViewController: UIViewController {
         
         endDate
             .asDriver()
-            .map { self.stringToDate.string(from: $0) }
+            .map { self.dateFormatter.string(from: $0) }
             .drive(with: self, onNext: { owner, text in
                 owner.rootView.readDateView.setEndDateText(text: text)
+            })
+            .disposed(by: disposeBag)
+        
+        internalStartDate
+            .asDriver()
+            .map { self.dateFormatter.string(from: $0) }
+            .drive(with: self, onNext: { owner, text in
+                owner.rootView.customDatePicker.setStartDateText(text: text)
+            })
+            .disposed(by: disposeBag)
+        
+        internalEndDate
+            .asDriver()
+            .map { self.dateFormatter.string(from: $0) }
+            .drive(with: self, onNext: { owner, text in
+                owner.rootView.customDatePicker.setEndDateText(text: text)
+            })
+            .disposed(by: disposeBag)
+        
+        isSelectingStartDate
+            .asDriver()
+            .drive(with: self, onNext: { owner, isStart in
+                owner.rootView.customDatePicker.updateButtons(isStart)
+                
+                owner.rootView.customDatePicker
+                    .updateDatePicker(date: isStart ? owner.internalStartDate.value :
+                                                      owner.internalEndDate.value)
             })
             .disposed(by: disposeBag)
         
@@ -253,10 +291,46 @@ final class RegisterNormalViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        rootView.customDatePicker.startButton.rx.tap
+            .bind(with: self, onNext: { owner, _ in
+                owner.isSelectingStartDate.accept(true)
+            })
+            .disposed(by: disposeBag)
+        
+        rootView.customDatePicker.endButton.rx.tap
+            .bind(with: self, onNext: { owner, _ in
+                owner.isSelectingStartDate.accept(false)
+            })
+            .disposed(by: disposeBag)
+        
+        rootView.customDatePicker.datePicker.rx.date.changed
+            .bind(with: self, onNext: { owner, date in
+                var selectedDate = date
+                if date > Date() {
+                    owner.rootView.customDatePicker.updateDatePicker(date: Date())
+                    selectedDate = Date()
+                }
+                
+                
+                let isStart = owner.isSelectingStartDate.value
+                let startDate = owner.internalStartDate.value
+                let endDate = owner.internalEndDate.value
+                
+                if (isStart && selectedDate >= endDate) || (!isStart && selectedDate <= startDate) {
+                    owner.internalStartDate.accept(selectedDate)
+                    owner.internalEndDate.accept(selectedDate)
+                } else if isStart {
+                    owner.internalStartDate.accept(selectedDate)
+                } else if !isStart {
+                    owner.internalEndDate.accept(selectedDate)
+                }
+            })
+            .disposed(by: disposeBag)
+        
         rootView.customDatePicker.completeButton.rx.tap
             .bind(with: self, onNext: { owner, _ in
-                owner.startDate.accept(owner.rootView.customDatePicker.startDate)
-                owner.endDate.accept(owner.rootView.customDatePicker.endDate)
+                owner.startDate.accept(owner.internalStartDate.value)
+                owner.endDate.accept(owner.internalEndDate.value)
                 owner.showDatePicker.accept(!owner.showDatePicker.value)
             })
             .disposed(by: disposeBag)
@@ -292,8 +366,8 @@ final class RegisterNormalViewController: UIViewController {
     }
     
     private func postUserNovel() {
-        var requestStartDate: String? = stringToDate.string(from: startDate.value)
-        var requestEndDate: String? = stringToDate.string(from: endDate.value)
+        var requestStartDate: String? = dateFormatter.string(from: startDate.value)
+        var requestEndDate: String? = dateFormatter.string(from: endDate.value)
         
         if !isDateExist.value {
             requestStartDate = nil
@@ -324,8 +398,8 @@ final class RegisterNormalViewController: UIViewController {
     }
     
     private func patchUserNovel() {
-        var requestStartDate: String? = stringToDate.string(from: startDate.value)
-        var requestEndDate: String? = stringToDate.string(from: endDate.value)
+        var requestStartDate: String? = dateFormatter.string(from: startDate.value)
+        var requestEndDate: String? = dateFormatter.string(from: endDate.value)
         
         if !isDateExist.value {
             requestStartDate = nil
@@ -412,10 +486,10 @@ final class RegisterNormalViewController: UIViewController {
         }
         
         self.startDate.accept(
-            stringToDate.date(from: start) ?? Date()
+            dateFormatter.date(from: start) ?? Date()
         )
         self.endDate.accept(
-            stringToDate.date(from: end) ?? Date()
+            dateFormatter.date(from: end) ?? Date()
         )
         
         rootView.novelSummaryView.bindData(plot: userData.userNovelDescription,
