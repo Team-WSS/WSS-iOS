@@ -49,13 +49,13 @@ final class RecordEmptyView: UIView {
         }
         
         registerPlusImageView.do {
-            $0.image = ImageLiterals.icon.BookRegistration.plus
+            $0.image = UIImage(resource: .icBookRegistrationPlus)
         }
         
         recordEmptyDescriptionLabel.do {
             $0.font = .Body1
             $0.textColor = .Gray200
-            $0.makeAttribute(with: "읽은 웹소설에 대해\n기록을 남겨볼까요?")?
+            $0.makeAttribute(with: StringLiterals.Record.Empty.description)?
                 .kerning(kerningPixel: -0.8)
                 .lineSpacing(spacingPercentage: 140)
                 .applyAttribute()
@@ -67,7 +67,7 @@ final class RecordEmptyView: UIView {
             var config = UIButton.Configuration.filled()
             config.baseBackgroundColor = .Primary50
             config.baseForegroundColor = .Primary100
-            var titleAttr = AttributedString.init("웹소설 기록하기")
+            var titleAttr = AttributedString.init(StringLiterals.Record.Empty.register)
             titleAttr.kern = -0.6
             titleAttr.font = UIFont.Title1
             config.attributedTitle = titleAttr

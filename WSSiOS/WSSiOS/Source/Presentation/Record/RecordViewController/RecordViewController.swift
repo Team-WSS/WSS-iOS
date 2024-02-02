@@ -99,7 +99,7 @@ final class RecordViewController: UIViewController {
             .bind(with: self, onNext: { owner, event in
                 owner.lastMemoId = 9999
                 owner.alignmentLabel = "NEWEST"
-                owner.rootView.headerView.headerAlignmentButton.setTitle("최신 순", for: .normal)
+                owner.rootView.headerView.headerAlignmentButton.setTitle(StringLiterals.Alignment.newest, for: .normal)
                 owner.bindDataToUI(id: owner.lastMemoId,
                                    sortStyle: owner.alignmentLabel)
                 owner.rootView.alignmentView.isHidden = true
@@ -111,7 +111,7 @@ final class RecordViewController: UIViewController {
             .bind(with: self, onNext: { owner, event in
                 owner.lastMemoId = 0
                 owner.alignmentLabel = "OLDEST"
-                owner.rootView.headerView.headerAlignmentButton.setTitle("오래된 순", for: .normal)
+                owner.rootView.headerView.headerAlignmentButton.setTitle(StringLiterals.Alignment.oldest, for: .normal)
                 owner.bindDataToUI(id: owner.lastMemoId,
                                    sortStyle: owner.alignmentLabel)
                 owner.rootView.alignmentView.isHidden = true

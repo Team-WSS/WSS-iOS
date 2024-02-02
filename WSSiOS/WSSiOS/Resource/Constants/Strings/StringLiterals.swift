@@ -86,6 +86,16 @@ enum StringLiterals {
     enum Library {
         static let empty = "아직 서재가 비어있네요!"
         static let register = "웹소설 등록하기"
+    }
+    
+    enum Record {
+        enum Empty {
+            static let description = "읽은 웹소설에 대해\n기록을 남겨볼까요?"
+            static let register = "웹소설 기록하기"
+        }
+    }
+    
+    enum Alignment {
         static let newest = "최신 순"
         static let oldest = "오래된 순"
     }
