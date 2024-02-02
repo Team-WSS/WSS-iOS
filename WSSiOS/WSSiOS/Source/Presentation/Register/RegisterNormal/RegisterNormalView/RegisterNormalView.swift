@@ -146,4 +146,26 @@ final class RegisterNormalView: UIView {
             $0.edges.equalToSuperview()
         }
     }
+    
+    func bindNewData(_ newData: NewNovelResult) {
+        bannerImageView.bindData(newData.novelImg)
+        infoWithRatingView.bindData(coverImage: newData.novelImg,
+                                             title: newData.novelTitle,
+                                             author: newData.novelAuthor)
+        novelSummaryView.bindData(plot: newData.novelDescription,
+                                           genre: newData.novelGenre,
+                                           platforms: newData.platforms)
+        novelSummaryView.platformCollectionView.reloadData()
+    }
+    
+    func bindUserData(_ userData: EditNovelResult) {
+        bannerImageView.bindData(userData.userNovelImg)
+        infoWithRatingView.bindData(coverImage: userData.userNovelImg,
+                                             title: userData.userNovelTitle,
+                                             author: userData.userNovelAuthor)
+        novelSummaryView.bindData(plot: userData.userNovelDescription,
+                                           genre: userData.userNovelGenre,
+                                           platforms: userData.platforms)
+        novelSummaryView.platformCollectionView.reloadData()
+    }
 }

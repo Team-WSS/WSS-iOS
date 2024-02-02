@@ -27,6 +27,9 @@ final class RegisterNormalViewController: UIViewController {
         $0.dateFormat = "yyyy-MM-dd"
         $0.timeZone = TimeZone(identifier: "ko_KR")
     }
+    var requestStartDate: String?
+    var requestEndDate: String?
+    var requestRating: Float?
     
     // RxSwift
     private let disposeBag = DisposeBag()
@@ -241,7 +244,6 @@ final class RegisterNormalViewController: UIViewController {
         
         rootView.infoWithRatingView.starImageViews
             .enumerated().forEach { index, imageView in
-                
                 let tapGesture = UITapGestureRecognizer()
                 imageView.addGestureRecognizer(tapGesture)
                 tapGesture.rx.event
@@ -311,7 +313,6 @@ final class RegisterNormalViewController: UIViewController {
                     selectedDate = Date()
                 }
                 
-                
                 let isStart = owner.isSelectingStartDate.value
                 let startDate = owner.internalStartDate.value
                 let endDate = owner.internalEndDate.value
@@ -360,61 +361,31 @@ final class RegisterNormalViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
                 owner.bindData(data)
-            },onError: { _, _ in
-                print("ERROR!!!")
+            },onError: { owner, error in
+                print(error)
             }).disposed(by: disposeBag)
     }
     
     private func postUserNovel() {
-        var requestStartDate: String? = dateFormatter.string(from: startDate.value)
-        var requestEndDate: String? = dateFormatter.string(from: endDate.value)
-        
-        if !isDateExist.value {
-            requestStartDate = nil
-            requestEndDate = nil
-        } else if readStatus.value == .READING  {
-            requestEndDate = nil
-        } else if readStatus.value == .DROP {
-            requestStartDate = nil
-        } else if readStatus.value == .WISH {
-            requestStartDate = nil
-            requestEndDate = nil
-        }
-        
-        let requestRating: Float? = starRating.value <= 0.0 ? nil : starRating.value
-        
+        formatRequestBodyData()
         userNovelRepository.postUserNovel(novelId: novelId,
                                           userNovelRating: requestRating,
                                           userNovelReadStatus: readStatus.value,
                                           userNovelReadStartDate: requestStartDate,
                                           userNovelReadEndDate: requestEndDate)
         .observe(on: MainScheduler.instance)
-        .subscribe(with: self, onNext: { owner, event in
-            owner.userNovelId = event.userNovelId
-            owner.navigationController?.pushViewController(RegisterSuccessViewController(userNovelId: owner.userNovelId),
-                                                           animated: true)
+        .subscribe(with: self, onNext: { owner, data in
+            owner.userNovelId = data.userNovelId
+            owner.moveToRegisterSuccessVC(userNovelId: owner.userNovelId)
+        }, onError: { owner, error in
+            print(error)
         })
         .disposed(by: disposeBag)
     }
     
+    
     private func patchUserNovel() {
-        var requestStartDate: String? = dateFormatter.string(from: startDate.value)
-        var requestEndDate: String? = dateFormatter.string(from: endDate.value)
-        
-        if !isDateExist.value {
-            requestStartDate = nil
-            requestEndDate = nil
-        } else if readStatus.value == .READING  {
-            requestEndDate = nil
-        } else if readStatus.value == .DROP {
-            requestStartDate = nil
-        } else if readStatus.value == .WISH {
-            requestStartDate = nil
-            requestEndDate = nil
-        }
-        
-        let requestRating: Float? = starRating.value <= 0.0 ? nil : starRating.value
-        
+        formatRequestBodyData()
         userNovelRepository.patchUserNovel(userNovelId: userNovelId,
                                            userNovelRating: requestRating,
                                            userNovelReadStatus: readStatus.value,
@@ -422,18 +393,7 @@ final class RegisterNormalViewController: UIViewController {
                                            userNovelReadEndDate: requestEndDate)
         .observe(on: MainScheduler.instance)
         .subscribe(with: self, onNext: { owner, data in
-            if self.navigationController?.tabBarController?.selectedIndex == 0 {
-                let tabBar = WSSTabBarController()
-                tabBar.selectedIndex = 1
-                let navigationController = UINavigationController(rootViewController: tabBar)
-                navigationController.setNavigationBarHidden(true, animated: true)
-                self.view.window?.rootViewController = navigationController
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    NotificationCenter.default.post(name: NSNotification.Name("ShowNovelInfo"), object: self.userNovelId)
-                }
-            } else {
-                self.navigationController?.popViewController(animated: true)
-            }
+            owner.moveToNovelDetailVC(userNovelId: owner.userNovelId)
         }, onError: { owner, error in
             print(error)
         })
@@ -451,27 +411,16 @@ final class RegisterNormalViewController: UIViewController {
     }
     
     private func bindNewData(_ newData: NewNovelResult) {
+        rootView.bindNewData(newData)
         self.navigationTitle = newData.novelTitle
-        rootView.bannerImageView.bindData(newData.novelImg)
-        rootView.infoWithRatingView.bindData(coverImage: newData.novelImg,
-                                             title: newData.novelTitle,
-                                             author: newData.novelAuthor)
-        rootView.novelSummaryView.bindData(plot: newData.novelDescription,
-                                           genre: newData.novelGenre,
-                                           platforms: newData.platforms)
-        self.rootView.novelSummaryView.platformCollectionView.reloadData()
     }
     
     private func bindUserData(_ userData: EditNovelResult) {
+        rootView.bindUserData(userData)
         self.navigationTitle = userData.userNovelTitle
         self.userNovelId = userData.userNovelID
-        rootView.bannerImageView.bindData(userData.userNovelImg)
-        rootView.infoWithRatingView.bindData(coverImage: userData.userNovelImg,
-                                             title: userData.userNovelTitle,
-                                             author: userData.userNovelAuthor)
+        
         self.starRating.accept(userData.userNovelRating ?? 0.0)
-        
-        
         let status = ReadStatus(rawValue: userData.userNovelReadStatus) ?? .FINISH
         self.readStatus.accept(status)
         
@@ -485,17 +434,8 @@ final class RegisterNormalViewController: UIViewController {
             start = end
         }
         
-        self.startDate.accept(
-            dateFormatter.date(from: start) ?? Date()
-        )
-        self.endDate.accept(
-            dateFormatter.date(from: end) ?? Date()
-        )
-        
-        rootView.novelSummaryView.bindData(plot: userData.userNovelDescription,
-                                           genre: userData.userNovelGenre,
-                                           platforms: userData.platforms)
-        self.rootView.novelSummaryView.platformCollectionView.reloadData()
+        self.startDate.accept( dateFormatter.date(from: start) ?? Date() )
+        self.endDate.accept( dateFormatter.date(from: end) ?? Date() )
     }
     
     //MARK: - Custom Method
@@ -516,6 +456,25 @@ final class RegisterNormalViewController: UIViewController {
             navigationItem.title = ""
             rootView.divider.isHidden = true
         }
+    }
+    
+    private func formatRequestBodyData() {
+        requestStartDate = dateFormatter.string(from: startDate.value)
+        requestEndDate = dateFormatter.string(from: endDate.value)
+        
+        if !isDateExist.value {
+            requestStartDate = nil
+            requestEndDate = nil
+        } else if readStatus.value == .READING  {
+            requestEndDate = nil
+        } else if readStatus.value == .DROP {
+            requestStartDate = nil
+        } else if readStatus.value == .WISH {
+            requestStartDate = nil
+            requestEndDate = nil
+        }
+        
+        requestRating = starRating.value <= 0.0 ? nil : starRating.value
     }
 }
 

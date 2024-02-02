@@ -43,4 +43,25 @@ extension UIViewController {
             tabBarController.shadowView.isHidden = true
         }
     }
+    
+    func moveToRegisterSuccessVC(userNovelId: Int) {
+        self.navigationController?.pushViewController(RegisterSuccessViewController(userNovelId: userNovelId),
+                                                       animated: true)
+    }
+    
+    func moveToNovelDetailVC(userNovelId: Int) {
+        if self.navigationController?.tabBarController?.selectedIndex == 0 {
+            let tabBar = WSSTabBarController()
+            tabBar.selectedIndex = 1
+            let navigationController = UINavigationController(rootViewController: tabBar)
+            navigationController.setNavigationBarHidden(true, animated: true)
+            self.view.window?.rootViewController = navigationController
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                NotificationCenter.default.post(name: NSNotification.Name("ShowNovelInfo"), object: userNovelId)
+            }
+        } else {
+            self.navigationController?.popViewController(animated: true)
+        }
+    }
+    
 }
