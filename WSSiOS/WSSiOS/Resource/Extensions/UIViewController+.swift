@@ -67,4 +67,8 @@ extension UIViewController {
     func popToLastVC() {
         self.navigationController?.popViewController(animated: true)
     }
+    
+    func popToRootVC() {
+        self.navigationController?.popToRootViewController(animated: true)
+    }
 }

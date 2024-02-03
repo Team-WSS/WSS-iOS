@@ -25,6 +25,7 @@ final class RegisterSuccessViewController: UIViewController {
     
     init(userNovelId: Int) {
         self.userNovelId = userNovelId
+        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -38,12 +39,14 @@ final class RegisterSuccessViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setUI()
         bindNavigation()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        
         self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
@@ -57,21 +60,18 @@ final class RegisterSuccessViewController: UIViewController {
     // MARK: - Actions
     
     func bindNavigation() {
-        rootView.makeMemoButton.rx.tap.subscribe(with: self, onNext: { owner, _ in
-            let tabBar = WSSTabBarController()
-            tabBar.selectedIndex = 1
-            let navigationController = UINavigationController(rootViewController: tabBar)
-            navigationController.setNavigationBarHidden(true, animated: true)
-            self.view.window?.rootViewController = navigationController
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                NotificationCenter.default.post(name: NSNotification.Name("ShowNovelMemo"), object: self.userNovelId)
-            }
-        })
-        .disposed(by: disposeBag)
+        rootView.makeMemoButton.rx.tap
+            .asDriver()
+            .drive(with: self, onNext: { owner, _ in
+                owner.moveToNovelDetailVC(userNovelId: owner.userNovelId)
+            })
+            .disposed(by: disposeBag)
         
-        rootView.returnHomeButton.rx.tap.subscribe(with: self, onNext: { owner, _  in
-            owner.navigationController?.popToRootViewController(animated: true)
-        })
-        .disposed(by: disposeBag)
+        rootView.returnHomeButton.rx.tap
+            .asDriver()
+            .drive(with: self, onNext: { owner, _ in
+                owner.popToRootVC()
+            })
+            .disposed(by: disposeBag)
     }
 }
