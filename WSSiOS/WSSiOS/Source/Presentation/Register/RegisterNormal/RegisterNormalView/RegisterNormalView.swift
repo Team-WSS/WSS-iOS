@@ -30,7 +30,7 @@ final class RegisterNormalView: UIView {
     private let registerButtonGradient = UIImageView()
     private let registerButtonBackgroundView = UIView()
     
-    let customDatePicker = RegisterNormalCustomDatePicker()
+    let customDatePicker = RegisterNormalDatePicker()
     
     // MARK: - Life Cycle
     

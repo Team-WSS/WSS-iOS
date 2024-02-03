@@ -18,7 +18,7 @@ final class RegisterNormalReadDateView: UIView {
     
     private let upperStackView = UIStackView()
     private let titleView = WSSSectionTitleView()
-    let toggleButton = RegisterNormalCustomToggleButton()
+    let toggleButton = RegisterNormalToggleButton()
     private let spacer = UIView()
     
     let datePickerButton = UIButton()

@@ -1,5 +1,5 @@
 //
-//  RegisterNormalCustomToggle.swift
+//  RegisterNormalToggleButton.swift
 //  WSSiOS
 //
 //  Created by 이윤학 on 1/11/24.
@@ -11,7 +11,7 @@ import RxCocoa
 import SnapKit
 import Then
 
-final class RegisterNormalCustomToggleButton: UIButton {
+final class RegisterNormalToggleButton: UIButton {
     
     // MARK: - Properties
     

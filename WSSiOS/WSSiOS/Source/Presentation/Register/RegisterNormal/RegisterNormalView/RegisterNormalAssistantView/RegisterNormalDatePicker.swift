@@ -1,5 +1,5 @@
 //
-//  RegisterNormalCustomDatePicker.swift
+//  RegisterNormalDatePicker.swift
 //  WSSiOS
 //
 //  Created by 이윤학 on 1/15/24.
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class RegisterNormalCustomDatePicker: UIButton {
+final class RegisterNormalDatePicker: UIButton {
     
     // MARK: - UI Components
     
