@@ -96,7 +96,7 @@ extension DefaultUserNovelService: UserNovelService {
         }
         do {
             let request = try makeHTTPRequest(method: .post,
-                                               path: URLs.UserNovel.postUserNovel.replacingOccurrences(of: "{novelId}", with: String(novelId)),
+                                               path: URLs.UserNovel.postUserNovel(novelId: novelId),
                                                headers: APIConstants.testTokenHeader,
                                                body: userNovelBasic)
             
@@ -121,7 +121,7 @@ extension DefaultUserNovelService: UserNovelService {
         }
         do {
             let request = try makeHTTPRequest(method: .patch,
-                                               path: URLs.UserNovel.patchUserNovel.replacingOccurrences(of: "{userNovelId}", with: String(userNovelId)),
+                                               path: URLs.UserNovel.patchUserNovel(userNovelId: userNovelId),
                                                headers: APIConstants.testTokenHeader,
                                                body: userNovelBasic)
             

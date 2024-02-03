@@ -11,7 +11,7 @@ import RxSwift
 
 protocol NovelRepository {
     func getSearchNovels(searchWord: String) -> Observable<SearchNovels>
-    func getNovelInfo(novelId: Int?) -> Observable<NovelResult>
+    func getNovelInfo(novelId: Int) -> Observable<NovelResult>
 }
 
 struct DefaultNovelRepository: NovelRepository {
@@ -27,7 +27,7 @@ struct DefaultNovelRepository: NovelRepository {
             .asObservable()
     }
     
-    func getNovelInfo(novelId: Int?) -> Observable<NovelResult> {
+    func getNovelInfo(novelId: Int) -> Observable<NovelResult> {
         return novelService.getNovelInfo(novelId: novelId)
             .asObservable()
     }

@@ -11,7 +11,7 @@ import RxSwift
 
 protocol NovelService {
     func getSearchNovelData(searchWord: String) -> Single<SearchNovels>
-    func getNovelInfo(novelId: Int?) -> Single<NovelResult>
+    func getNovelInfo(novelId: Int) -> Single<NovelResult>
 }
 
 final class DefaultNovelService: NSObject, Networking {
@@ -42,10 +42,10 @@ extension DefaultNovelService: NovelService {
             .asSingle()
     }
     
-    func getNovelInfo(novelId: Int?) -> Single<NovelResult> {
+    func getNovelInfo(novelId: Int) -> Single<NovelResult> {
         do {
             let request = try makeHTTPRequest(method: .get,
-                                               path: URLs.Novel.getNovelInfo.replacingOccurrences(of: "{novelId}", with: String(novelId ?? 0)),
+                                               path: URLs.Novel.getNovelInfo(novelId: novelId),
                                                headers: APIConstants.testTokenHeader,
                                                body: nil)
             
