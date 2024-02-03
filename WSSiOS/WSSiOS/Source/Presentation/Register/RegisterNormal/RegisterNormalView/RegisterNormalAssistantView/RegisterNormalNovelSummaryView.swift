@@ -11,10 +11,6 @@ import SnapKit
 import Then
 
 final class RegisterNormalNovelSummaryView: UIView {
-    
-    //MARK: - Properties
-
-    var platformList: [UserNovelPlatform] = []
 
     // MARK: - Components
     
@@ -114,12 +110,6 @@ final class RegisterNormalNovelSummaryView: UIView {
     func bindData(plot: String?, genre: String?, platforms: [UserNovelPlatform]) {
         setText(of: plotLabel, text: plot)
         setText(of: genreLabel, text: genre)
-        platformList = platforms
-        
-        if platformList.count == 0 {
-            platformTitleLabel.isHidden = true
-            platformCollectionView.isHidden = true
-        }
     }
     
     // MARK: - Custom Method
@@ -133,6 +123,11 @@ final class RegisterNormalNovelSummaryView: UIView {
         platformCollectionView.snp.updateConstraints {
             $0.height.equalTo(height)
         }
+    }
+    
+    func hiddenPlatformView(_ isHidden: Bool) {
+        platformTitleLabel.isHidden = isHidden
+        platformCollectionView.isHidden = isHidden
     }
     
     /// 각 Section의 본문 텍스트 스타일

@@ -23,6 +23,7 @@ final class RegisterNormalViewController: UIViewController {
     private let novelId: Int
     private var userNovelId: Int
     private var navigationTitle: String = ""
+    private var platformList: [UserNovelPlatform] = []
     private let dateFormatter = DateFormatter().then {
         $0.dateFormat = "yyyy-MM-dd"
         $0.timeZone = TimeZone(identifier: "ko_KR")
@@ -409,14 +410,18 @@ final class RegisterNormalViewController: UIViewController {
     }
     
     private func bindNewData(_ newData: NewNovelResult) {
-        rootView.bindNewData(newData)
         self.navigationTitle = newData.novelTitle
+        self.platformList = newData.platforms
+        rootView.novelSummaryView.hiddenPlatformView(platformList.count == 0)
+        rootView.bindNewData(newData)
     }
     
     private func bindUserData(_ userData: EditNovelResult) {
-        rootView.bindUserData(userData)
         self.navigationTitle = userData.userNovelTitle
         self.userNovelId = userData.userNovelID
+        self.platformList = userData.platforms
+        rootView.novelSummaryView.hiddenPlatformView(platformList.count == 0)
+        rootView.bindUserData(userData)
         
         self.starRating.accept(userData.userNovelRating ?? 0.0)
         let status = ReadStatus(rawValue: userData.userNovelReadStatus) ?? .FINISH
@@ -478,7 +483,7 @@ final class RegisterNormalViewController: UIViewController {
 
 extension RegisterNormalViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return rootView.novelSummaryView.platformList.count
+        return self.platformList.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -488,7 +493,7 @@ extension RegisterNormalViewController: UICollectionViewDataSource {
         ) as? NovelDetailInfoPlatformCollectionViewCell else { return UICollectionViewCell() }
         
         cell.bindData(
-            platform: rootView.novelSummaryView.platformList[indexPath.item].platformName
+            platform: self.platformList[indexPath.item].platformName
         )
         
         return cell
@@ -497,7 +502,7 @@ extension RegisterNormalViewController: UICollectionViewDataSource {
 
 extension RegisterNormalViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let url = URL(string: rootView.novelSummaryView.platformList[indexPath.item].platformUrl) {
+        if let url = URL(string: self.platformList[indexPath.item].platformUrl) {
             UIApplication.shared.open(url, options: [:])
         }
     }
@@ -505,7 +510,7 @@ extension RegisterNormalViewController: UICollectionViewDelegate {
 
 extension RegisterNormalViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let text: String? = rootView.novelSummaryView.platformList[indexPath.item].platformName
+        let text: String? = self.platformList[indexPath.item].platformName
         
         guard let unwrappedText = text else {
             return CGSize(width: 0, height: 0)
