@@ -12,7 +12,7 @@ import RxCocoa
 import SnapKit
 import Then
 
-/// 1-3-1 RegisterNormal View
+/// 1-3-1 RegisterSuccess View
 final class RegisterSuccessViewController: UIViewController {
     
     // MARK: - Properties
