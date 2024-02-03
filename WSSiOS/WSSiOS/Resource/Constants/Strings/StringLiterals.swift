@@ -40,7 +40,8 @@ enum StringLiterals {
                 static let middle = "~"
                 static let start = "시작 날짜"
                 static let end = "종료 날짜"
-                static let koreaLocale = "ko_KR"
+                static let KoreaTimeZone = "ko_KR"
+                static let dateFormat = "yyyy-MM-dd"
             }
             
             enum SectionTitle {

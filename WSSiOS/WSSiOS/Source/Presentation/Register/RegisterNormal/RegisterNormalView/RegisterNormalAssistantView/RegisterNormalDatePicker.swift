@@ -70,7 +70,7 @@ final class RegisterNormalDatePicker: UIButton {
         datePicker.do {
             $0.datePickerMode = .date
             $0.preferredDatePickerStyle = .wheels
-            $0.locale = Locale(identifier: StringLiterals.Register.Normal.DatePicker.koreaLocale)
+            $0.locale = Locale(identifier: StringLiterals.Register.Normal.DatePicker.KoreaTimeZone)
         }
         
         buttonStackView.do {

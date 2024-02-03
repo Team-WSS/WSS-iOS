@@ -26,8 +26,8 @@ final class RegisterNormalViewController: UIViewController {
     private var platformList: [UserNovelPlatform] = []
     private var minStarRating: Float = 0.0
     private let dateFormatter = DateFormatter().then {
-        $0.dateFormat = "yyyy-MM-dd"
-        $0.timeZone = TimeZone(identifier: "ko_KR")
+        $0.dateFormat = StringLiterals.Register.Normal.DatePicker.dateFormat
+        $0.timeZone = TimeZone(identifier: StringLiterals.Register.Normal.DatePicker.KoreaTimeZone)
     }
     private var requestStartDate: String?
     private var requestEndDate: String?
