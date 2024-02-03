@@ -25,6 +25,7 @@ final class RegisterNormalViewController: UIViewController {
     private var navigationTitle: String = ""
     private var platformList: [UserNovelPlatform] = []
     private var minStarRating: Float = 0.0
+    private var maxStarRating: Float = 5.0
     private let dateFormatter = DateFormatter().then {
         $0.dateFormat = StringLiterals.Register.Normal.DatePicker.dateFormat
         $0.timeZone = TimeZone(identifier: StringLiterals.Register.Normal.DatePicker.KoreaTimeZone)
@@ -263,7 +264,7 @@ final class RegisterNormalViewController: UIViewController {
                 let location = recognizer.location(in: owner.rootView.infoWithRatingView.starRatingStackView)
                 let rawRating = (Float(location.x / owner.rootView.infoWithRatingView.starRatingStackView.frame.width * 5) * 2)
                     .rounded(.toNearestOrAwayFromZero) / 2
-                let rating = min(max(rawRating, 0), 5)
+                let rating = min(max(rawRating, owner.minStarRating), owner.maxStarRating)
                 owner.starRating.accept(rating)
             })
             .disposed(by: disposeBag)
