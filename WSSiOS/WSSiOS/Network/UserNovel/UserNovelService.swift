@@ -56,16 +56,16 @@ extension DefaultUserNovelService: UserNovelService {
     
     func getUserNovel(userNovelId: Int) -> Single<UserNovelDetail> {
         let request = try! makeHTTPRequest(method: .get,
-                                               path: URLs.UserNovel.getUserNovel.replacingOccurrences(of: "{userNovelId}", with: String(userNovelId)),
-                                               headers: APIConstants.testTokenHeader,
-                                               body: nil)
-            
-            NetworkLogger.log(request: request)
-            
-            return urlSession.rx.data(request: request)
-                .map { try self.decode(data: $0,
-                                       to: UserNovelDetail.self) }
-                .asSingle()
+                                           path: URLs.UserNovel.getUserNovel.replacingOccurrences(of: "{userNovelId}", with: String(userNovelId)),
+                                           headers: APIConstants.testTokenHeader,
+                                           body: nil)
+        
+        NetworkLogger.log(request: request)
+        
+        return urlSession.rx.data(request: request)
+            .map { try self.decode(data: $0,
+                                   to: UserNovelDetail.self) }
+            .asSingle()
     }
     
     func deleteUserNovel(userNovelId: Int) -> Single<Void> {
