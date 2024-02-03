@@ -56,13 +56,15 @@ final class RegisterSuccessView: UIView {
         }
         
         returnHomeButton.do {
-            $0.setTitle(StringLiterals.Register.Success.returnHome, for: .normal)
+            $0.setTitle(StringLiterals.Register.Success.returnHome,
+                        for: .normal)
             $0.setAttributedTitle($0.titleLabel?.makeAttribute()?
                                                 .kerning(kerningPixel: -0.6)
                                                 .lineSpacing(spacingPercentage: 150)
                                                 .attributedString,
                                   for: .normal)
-            $0.setTitleColor(.Gray300, for: .normal)
+            $0.setTitleColor(.Gray300,
+                             for: .normal)
             $0.titleLabel?.font = .Body2
         }
     }
