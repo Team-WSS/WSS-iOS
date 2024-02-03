@@ -27,9 +27,9 @@ final class RegisterNormalViewController: UIViewController {
         $0.dateFormat = "yyyy-MM-dd"
         $0.timeZone = TimeZone(identifier: "ko_KR")
     }
-    var requestStartDate: String?
-    var requestEndDate: String?
-    var requestRating: Float?
+    private var requestStartDate: String?
+    private var requestEndDate: String?
+    private var requestRating: Float?
     
     // RxSwift
     private let disposeBag = DisposeBag()
@@ -236,7 +236,7 @@ final class RegisterNormalViewController: UIViewController {
     private func bindActions() {
         backButton.rx.tap
             .bind(with: self, onNext: { owner, _ in
-                owner.navigationController?.popViewController(animated: true)
+                owner.moveToBack()
             })
             .disposed(by: disposeBag)
         
