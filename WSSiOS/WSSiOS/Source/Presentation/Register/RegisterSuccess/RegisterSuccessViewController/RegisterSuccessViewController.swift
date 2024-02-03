@@ -17,12 +17,11 @@ final class RegisterSuccessViewController: UIViewController {
     
     // MARK: - Properties
     
+    private var userNovelId: Int
     private let rootView = RegisterSuccessView()
     private let disposeBag = DisposeBag()
     
-    private var userNovelId: Int
-    
-    // MARK: - View Life Cycle
+    // MARK: - Life Cycle
     
     init(userNovelId: Int) {
         self.userNovelId = userNovelId
@@ -35,13 +34,12 @@ final class RegisterSuccessViewController: UIViewController {
     
     override func loadView() {
         self.view = rootView
-        self.view.backgroundColor = .white
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setUI()
-        bindRx()
+        bindNavigation()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -49,11 +47,16 @@ final class RegisterSuccessViewController: UIViewController {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
+    // MARK: - UI
+    
     func setUI() {
+        self.view.backgroundColor = .white
         self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
-    func bindRx() {
+    // MARK: - Actions
+    
+    func bindNavigation() {
         rootView.makeMemoButton.rx.tap.subscribe(with: self, onNext: { owner, _ in
             let tabBar = WSSTabBarController()
             tabBar.selectedIndex = 1
