@@ -239,6 +239,14 @@ final class RegisterNormalViewController: UIViewController {
                 owner.rootView.novelSummaryView.updateCollectionViewHeight(height: height)
             })
             .disposed(by: disposeBag)
+        
+        rootView.registerButton.rx.tap
+            .asDriver()
+            .throttle(.seconds(3), latest: false)
+            .drive(with: self, onNext: { owner, _ in
+                owner.isNew.value ? owner.postUserNovel() : owner.patchUserNovel()
+            })
+            .disposed(by: disposeBag)
     }
     
     // MARK: - Actions
@@ -335,14 +343,6 @@ final class RegisterNormalViewController: UIViewController {
                 owner.startDate.accept(owner.internalStartDate.value)
                 owner.endDate.accept(owner.internalEndDate.value)
                 owner.showDatePicker.accept(!owner.showDatePicker.value)
-            })
-            .disposed(by: disposeBag)
-        
-        rootView.registerButton.rx.tap
-            .asDriver()
-            .throttle(.seconds(3), latest: false)
-            .drive(with: self, onNext: { owner, _ in
-                owner.isNew.value ? owner.postUserNovel() : owner.patchUserNovel()
             })
             .disposed(by: disposeBag)
         
