@@ -24,6 +24,7 @@ final class RegisterNormalViewController: UIViewController {
     private var userNovelId: Int
     private var navigationTitle: String = ""
     private var platformList: [UserNovelPlatform] = []
+    private var minStarRating: Float = 0.0
     private let dateFormatter = DateFormatter().then {
         $0.dateFormat = "yyyy-MM-dd"
         $0.timeZone = TimeZone(identifier: "ko_KR")
@@ -111,7 +112,7 @@ final class RegisterNormalViewController: UIViewController {
         backButton.rx.tap
             .asDriver()
             .drive(with: self, onNext: { owner, _ in
-                owner.moveToBack()
+                owner.popToLastVC()
             })
             .disposed(by: disposeBag)
         
@@ -340,11 +341,7 @@ final class RegisterNormalViewController: UIViewController {
             .asDriver()
             .throttle(.seconds(3), latest: false)
             .drive(with: self, onNext: { owner, _ in
-                if owner.isNew.value {
-                    owner.postUserNovel()
-                } else {
-                    owner.patchUserNovel()
-                }
+                owner.isNew.value ? owner.postUserNovel() : owner.patchUserNovel()
             })
             .disposed(by: disposeBag)
         
@@ -376,7 +373,7 @@ final class RegisterNormalViewController: UIViewController {
         .observe(on: MainScheduler.instance)
         .subscribe(with: self, onNext: { owner, data in
             owner.userNovelId = data.userNovelId
-            owner.moveToRegisterSuccessVC(userNovelId: owner.userNovelId)
+            owner.pushToRegisterSuccessVC(userNovelId: owner.userNovelId)
         }, onError: { owner, error in
             print(error)
         })
@@ -412,7 +409,7 @@ final class RegisterNormalViewController: UIViewController {
     private func bindNewData(_ newData: NewNovelResult) {
         self.navigationTitle = newData.novelTitle
         self.platformList = newData.platforms
-        rootView.novelSummaryView.hiddenPlatformView(platformList.count == 0)
+        rootView.novelSummaryView.hiddenPlatformView(platformList.count)
         rootView.bindNewData(newData)
     }
     
@@ -420,10 +417,10 @@ final class RegisterNormalViewController: UIViewController {
         self.navigationTitle = userData.userNovelTitle
         self.userNovelId = userData.userNovelID
         self.platformList = userData.platforms
-        rootView.novelSummaryView.hiddenPlatformView(platformList.count == 0)
+        rootView.novelSummaryView.hiddenPlatformView(platformList.count)
         rootView.bindUserData(userData)
         
-        self.starRating.accept(userData.userNovelRating ?? 0.0)
+        self.starRating.accept(userData.userNovelRating ?? minStarRating)
         let status = ReadStatus(rawValue: userData.userNovelReadStatus) ?? .FINISH
         self.readStatus.accept(status)
         
@@ -477,7 +474,7 @@ final class RegisterNormalViewController: UIViewController {
             requestEndDate = nil
         }
         
-        requestRating = starRating.value <= 0.0 ? nil : starRating.value
+        requestRating = starRating.value <= minStarRating ? nil : starRating.value
     }
 }
 

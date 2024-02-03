@@ -125,9 +125,11 @@ final class RegisterNormalNovelSummaryView: UIView {
         }
     }
     
-    func hiddenPlatformView(_ isHidden: Bool) {
-        platformTitleLabel.isHidden = isHidden
-        platformCollectionView.isHidden = isHidden
+    func hiddenPlatformView(_ count: Int) {
+        if count == 0 {
+            platformTitleLabel.isHidden = true
+            platformCollectionView.isHidden = true
+        }
     }
     
     /// 각 Section의 본문 텍스트 스타일

@@ -44,7 +44,7 @@ extension UIViewController {
         }
     }
     
-    func moveToRegisterSuccessVC(userNovelId: Int) {
+    func pushToRegisterSuccessVC(userNovelId: Int) {
         self.navigationController?.pushViewController(RegisterSuccessViewController(userNovelId: userNovelId),
                                                        animated: true)
     }
@@ -64,7 +64,7 @@ extension UIViewController {
         }
     }
     
-    func moveToBack() {
+    func popToLastVC() {
         self.navigationController?.popViewController(animated: true)
     }
 }
