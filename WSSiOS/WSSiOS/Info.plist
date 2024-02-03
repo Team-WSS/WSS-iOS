@@ -6,6 +6,8 @@
 	<string>Light</string>
 	<key>BASE_URL</key>
 	<string>$(BASE_URL)</string>
+	<key>TEST_TOKEN</key>
+	<string>$(TEST_TOKEN)</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>

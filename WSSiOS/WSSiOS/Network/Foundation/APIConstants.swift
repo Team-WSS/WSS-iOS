@@ -16,7 +16,7 @@ struct APIConstants {
     static let fcm = "FcmToken"
     
     static let boundary = "Boundary-\(UUID().uuidString)"
-    static let testToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDY2MjQ4NTMsImV4cCI6MTcwNzQ4ODg1MywidXNlcklkIjo0fQ.3cWJuSUh9cGNaJ6H39VK_ziWyh5qfJzENtTz3HZfkAA"
+    static let testToken = Bundle.main.object(forInfoDictionaryKey: Config.Keys.Plist.testToken) as? String ?? ""
 }
 
 extension APIConstants {
