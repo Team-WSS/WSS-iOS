@@ -50,7 +50,7 @@ final class RegisterNormalViewController: UIViewController {
     private let backButton = UIButton()
     private let rootView = RegisterNormalView()
     
-    // MARK: - View Life Cycle
+    // MARK: - Life Cycle
     
     init(novelRepository: NovelRepository, userNovelRepository: UserNovelRepository, novelId: Int = 0, userNovelId: Int = 0) {
         self.novelRepository = novelRepository
@@ -98,7 +98,7 @@ final class RegisterNormalViewController: UIViewController {
         ]
     }
     
-    //MARK: - Bind
+    // MARK: - Bind
     
     private func register() {
         rootView.novelSummaryView.platformCollectionView.register(NovelDetailInfoPlatformCollectionViewCell.self, forCellWithReuseIdentifier: "NovelDetailInfoPlatformCollectionViewCell")
@@ -107,6 +107,13 @@ final class RegisterNormalViewController: UIViewController {
     }
     
     private func bindUI() {
+        backButton.rx.tap
+            .asDriver()
+            .drive(with: self, onNext: { owner, _ in
+                owner.moveToBack()
+            })
+            .disposed(by: disposeBag)
+        
         rootView.pageScrollView.rx.contentOffset
             .asDriver()
             .drive(with: self, onNext: { owner, offset in
@@ -130,10 +137,10 @@ final class RegisterNormalViewController: UIViewController {
                     owner.rootView.readDateView.isHidden = true
                 } else {
                     owner.rootView.readDateView.isHidden = false
-                    owner.rootView.readDateView.bindData(status)
+                    owner.rootView.readDateView.updateDatePickerButton(status)
                 }
                 
-                owner.rootView.customDatePicker.updateDatePicker(status: status)
+                owner.rootView.customDatePicker.updateDatePickerTitle(status: status)
                 
                 if status == .FINISH || status == .READING {
                     owner.isSelectingStartDate.accept(true)
@@ -146,7 +153,7 @@ final class RegisterNormalViewController: UIViewController {
         isDateExist
             .asDriver()
             .drive(with: self, onNext: { owner, isDateExist in
-                owner.rootView.readDateView.toggleButton.updateState(isDateExist)
+                owner.rootView.readDateView.toggleButton.updateToggle(isDateExist)
                 owner.rootView.readDateView.datePickerButton.isHidden = !isDateExist
             })
             .disposed(by: disposeBag)
@@ -231,15 +238,9 @@ final class RegisterNormalViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    //MARK: - Actions
+    // MARK: - Actions
     
     private func bindActions() {
-        backButton.rx.tap
-            .bind(with: self, onNext: { owner, _ in
-                owner.moveToBack()
-            })
-            .disposed(by: disposeBag)
-        
         rootView.infoWithRatingView.starImageViews
             .enumerated().forEach { index, imageView in
                 let tapGesture = UITapGestureRecognizer()
@@ -352,7 +353,7 @@ final class RegisterNormalViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    //MARK: - API
+    // MARK: - API
     
     private func getNovel() {
         novelRepository.getNovelInfo(novelId: novelId)
@@ -424,7 +425,7 @@ final class RegisterNormalViewController: UIViewController {
         // status에 따른 날짜 처리
         var start = userData.userNovelReadDate.userNovelReadStartDate ?? ""
         var end = userData.userNovelReadDate.userNovelReadEndDate ?? ""
-        
+
         if status == .READING {
             end = start
         } else if status == .DROP {
@@ -435,7 +436,7 @@ final class RegisterNormalViewController: UIViewController {
         self.endDate.accept( dateFormatter.date(from: end) ?? Date() )
     }
     
-    //MARK: - Custom Method
+    // MARK: - Custom Method
     
     private func updateNavigationBarStyle(offset: CGFloat) {
         if offset > 0 {

@@ -12,7 +12,7 @@ import Then
 
 final class RegisterNormalReadDateView: UIView {
     
-    // MARK: - UI Components
+    // MARK: - Components
     
     private let totalStackView = UIStackView()
     
@@ -42,7 +42,7 @@ final class RegisterNormalReadDateView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Custom Method
+    // MARK: - UI
     
     private func setUI() {
         totalStackView.do {
@@ -71,19 +71,9 @@ final class RegisterNormalReadDateView: UIView {
                 $0.alignment = .center
                 $0.isUserInteractionEnabled = false
                 
-                startDateLabel.do {
-                    $0.text = "2023-12-26"
-                    dateLabelStyle(of: startDateLabel)
-                }
-                
                 middleLabel.do {
-                    $0.text = "~"
+                    $0.text = StringLiterals.Register.Normal.DatePicker.middle
                     dateLabelStyle(of: middleLabel)
-                }
-                
-                endDateLabel.do {
-                    $0.text = "2023-12-26"
-                    dateLabelStyle(of: endDateLabel)
                 }
             }
             
@@ -127,6 +117,29 @@ final class RegisterNormalReadDateView: UIView {
         }
     }
     
+    // MARK: - Custom Method
+    
+    func updateDatePickerButton(_ status: ReadStatus) {
+        titleView.setText(status.dateText)
+        
+        switch status {
+        case .FINISH:
+            startDateLabel.isHidden = false
+            middleLabel.isHidden = false
+            endDateLabel.isHidden = false
+        case .READING:
+            startDateLabel.isHidden = false
+            middleLabel.isHidden = true
+            endDateLabel.isHidden = true
+        case .DROP:
+            startDateLabel.isHidden = true
+            middleLabel.isHidden = true
+            endDateLabel.isHidden = false
+        case .WISH:
+            break
+        }
+    }
+    
     func setStartDateText(text: String) {
         startDateLabel.text = text
         dateLabelStyle(of: startDateLabel)
@@ -145,27 +158,6 @@ final class RegisterNormalReadDateView: UIView {
                 .applyAttribute()
             $0.font = .Body2
             $0.textColor = .Gray300
-        }
-    }
-    
-    func bindData(_ status: ReadStatus) {
-        titleView.setText(status.dateText)
-        
-        switch status {
-        case .FINISH:
-            startDateLabel.isHidden = false
-            middleLabel.isHidden = false
-            endDateLabel.isHidden = false
-        case .READING:
-            startDateLabel.isHidden = false
-            middleLabel.isHidden = true
-            endDateLabel.isHidden = true
-        case .DROP:
-            startDateLabel.isHidden = true
-            middleLabel.isHidden = true
-            endDateLabel.isHidden = false
-        case .WISH:
-            break
         }
     }
 }

@@ -29,7 +29,7 @@ final class RegisterNormalToggleButton: UIButton {
     private var barViewSize: SizeSet = (height: 16.55, width: 30.9)
     private var circleViewSize: SizeSet = (height: 11.03, width: 11.03)
     
-    // MARK: - UI Components
+    // MARK: - Components
     
     var barView = UIView()
     var circleView = UIView()
@@ -48,7 +48,7 @@ final class RegisterNormalToggleButton: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Custom Method
+    // MARK: - UI
     
     private func setUI() {
         barView.do {
@@ -90,28 +90,30 @@ final class RegisterNormalToggleButton: UIButton {
         }
     }
     
-    func updateState(_ state: Bool) {
+    // MARK: - Custom Method
+    
+    func updateToggle(_ state: Bool) {
         UIView.animate(withDuration: self.animationDuration) {
             if state {
-                onStateLayout()
+                self.onStateLayout()
                 self.barView.backgroundColor = self.onColor
             } else {
-                offStateLayout()
+                self.offStateLayout()
                 self.barView.backgroundColor = self.offColor
             }
             self.layoutIfNeeded()
         }
-        
-        func onStateLayout() {
-            circleView.snp.updateConstraints {
-                $0.trailing.equalTo(barView.snp.trailing).inset(2.76)
-            }
+    }
+    
+    func onStateLayout() {
+        circleView.snp.updateConstraints {
+            $0.trailing.equalTo(barView.snp.trailing).inset(2.76)
         }
-        
-        func offStateLayout() {
-            circleView.snp.updateConstraints {
-                $0.trailing.equalTo(barView.snp.trailing).inset(17.1)
-            }
+    }
+    
+    func offStateLayout() {
+        circleView.snp.updateConstraints {
+            $0.trailing.equalTo(barView.snp.trailing).inset(17.1)
         }
     }
 }

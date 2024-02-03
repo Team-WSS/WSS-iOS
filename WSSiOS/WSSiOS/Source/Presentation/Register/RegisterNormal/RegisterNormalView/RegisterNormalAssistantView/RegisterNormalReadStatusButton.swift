@@ -17,7 +17,7 @@ final class RegisterNormalReadStatusButton: UIButton {
     private var status: ReadStatus?
     private var buttonHeight: CGFloat = 37
     
-    // MARK: - UI Components
+    // MARK: - Components
     
     private let buttonStackView = UIStackView()
     private let buttonImage = UIImageView()
@@ -33,22 +33,11 @@ final class RegisterNormalReadStatusButton: UIButton {
         setLayout()
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-    }
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // UIButton 내의 StackView 터치 이벤트를 Button의 터치 이벤트로 옮겨줌.
-    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-        let view = super.hitTest(point, with: event)
-        return view == self.buttonStackView ? self : view
-    }
-    
-    // MARK: - Custom Method
+    // MARK: - UI
     
     private func setUI() {
         self.do {
@@ -61,6 +50,7 @@ final class RegisterNormalReadStatusButton: UIButton {
             $0.axis = .horizontal
             $0.spacing = 6
             $0.alignment = .center
+            $0.isUserInteractionEnabled = false
             
             buttonImage.do {
                 $0.contentMode = .scaleAspectFill
@@ -93,6 +83,8 @@ final class RegisterNormalReadStatusButton: UIButton {
         }
     }
     
+    // MARK: - Custom Method
+    
     func setText(_ text: String) {
         buttonLabel.do {
             $0.text = text
@@ -101,9 +93,7 @@ final class RegisterNormalReadStatusButton: UIButton {
     }
     
     func setImage(_ image: UIImage?) {
-        buttonImage.do {
-            $0.image = image
-        }
+        buttonImage.image = image
     }
     
     func setStatus(_ status: ReadStatus) {

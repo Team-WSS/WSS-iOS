@@ -13,7 +13,7 @@ import Then
 
 final class RegisterNormalNovelInfoWithRatingView: UIView {
     
-    // MARK: - UI Components
+    // MARK: - Components
     
     private let novelInfoWithRatingStackView = UIStackView()
     
@@ -41,7 +41,7 @@ final class RegisterNormalNovelInfoWithRatingView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Custom Method
+    // MARK: - UI
     
     private func setUI() {
         novelInfoWithRatingStackView.do {
@@ -124,6 +124,8 @@ final class RegisterNormalNovelInfoWithRatingView: UIView {
         }
     }
     
+    // MARK: - Data
+    
     func bindData(coverImage: String, title: String?, author: String?) {
         if let url = URL(string: coverImage) {
             novelCoverImageView.kf.setImage(with: url)
@@ -137,6 +139,8 @@ final class RegisterNormalNovelInfoWithRatingView: UIView {
             novelAuthorAttribute(of: $0)
         }
     }
+    
+    // MARK: - Custom Method
     
     /// StarRating 을 위한 별 이미지 5개 생성
     private func createStars() -> [UIImageView] {

@@ -13,7 +13,7 @@ import Then
 
 final class RegisterNormalDividerView: UIView {
     
-    // MARK: - UI Components
+    // MARK: - Components
     
     private let dividerView = UIView()
     private let topBorderView = UIView()
@@ -32,7 +32,7 @@ final class RegisterNormalDividerView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Custom Method
+    // MARK: - UI
     
     private func setUI() {
         dividerView.do {

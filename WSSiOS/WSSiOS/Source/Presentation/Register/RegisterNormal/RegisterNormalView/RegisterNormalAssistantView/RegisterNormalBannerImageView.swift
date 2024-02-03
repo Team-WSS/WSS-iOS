@@ -14,7 +14,7 @@ import UIImageViewAlignedSwift
 
 final class RegisterNormalBannerImageView: UIView {
     
-    // MARK: - UI Components
+    // MARK: - Components
     
     private let bannerImageView = UIImageViewAligned()
     private let gradientView = UIImageView()
@@ -33,7 +33,7 @@ final class RegisterNormalBannerImageView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Custom Method
+    // MARK: - UI
     
     private func setUI() {
         bannerImageView.do {
@@ -65,6 +65,8 @@ final class RegisterNormalBannerImageView: UIView {
             }
         }
     }
+    
+    // MARK: - Data
     
     func bindData(_ novelImage: String) {
         if let novelImageUrl = URL(string: novelImage) {

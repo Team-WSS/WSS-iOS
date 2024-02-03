@@ -14,7 +14,7 @@ import RxCocoa
 
 final class RegisterNormalReadStatusView: UIView {
     
-    // MARK: - UI Components
+    // MARK: - Components
     
     private let totalStackView = UIStackView()
     private let titleView = WSSSectionTitleView()
@@ -35,7 +35,7 @@ final class RegisterNormalReadStatusView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Custom Method
+    // MARK: - UI
     
     private func setUI() {
         totalStackView.do {
@@ -69,6 +69,8 @@ final class RegisterNormalReadStatusView: UIView {
             $0.horizontalEdges.equalToSuperview().inset(20)
         }
     }
+    
+    // MARK: - Custom Method
     
     func updateReadStatusButton(status: ReadStatus) {
         readStatusButtons.forEach { button in

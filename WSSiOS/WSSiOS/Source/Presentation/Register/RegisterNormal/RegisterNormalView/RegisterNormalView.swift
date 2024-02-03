@@ -12,7 +12,7 @@ import Then
 
 final class RegisterNormalView: UIView {
     
-    // MARK: - UI Components
+    // MARK: - Components
     
     let statusBarView = UIView()
     let pageScrollView = UIScrollView()
@@ -46,7 +46,7 @@ final class RegisterNormalView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Custom Method
+    // MARK: - UI
     
     private func setUI() {
         self.do {
@@ -146,6 +146,8 @@ final class RegisterNormalView: UIView {
             $0.edges.equalToSuperview()
         }
     }
+    
+    // MARK: - Data
     
     func bindNewData(_ newData: NewNovelResult) {
         bannerImageView.bindData(newData.novelImg)

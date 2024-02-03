@@ -12,7 +12,7 @@ import Then
 
 final class RegisterNormalKeywordSelectionView: UIView {
     
-    // MARK: - UI Components
+    // MARK: - Components
     
     private let totalStackView = UIStackView()
     private let titleView = WSSSectionTitleView()
@@ -36,7 +36,7 @@ final class RegisterNormalKeywordSelectionView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Custom Method
+    // MARK: - UI
     
     private func setUI() {
         totalStackView.do {
@@ -45,7 +45,7 @@ final class RegisterNormalKeywordSelectionView: UIView {
             $0.alignment = .fill
             
             titleView.do {
-                $0.setText("키워드")
+                $0.setText(StringLiterals.Register.Normal.SectionTitle.keyword)
             }
             
             keywordSelectButton.do {
@@ -63,8 +63,8 @@ final class RegisterNormalKeywordSelectionView: UIView {
                     }
                     
                     buttonLabel.do {
-                        $0.text = "키워드 등록"
-                        buttonLabelStyle(of: buttonLabel)
+                        $0.text = StringLiterals.Register.Normal.Keyword.selectButton
+                        buttonLabelStyle(of: $0)
                     }
                 }
             }
@@ -92,6 +92,8 @@ final class RegisterNormalKeywordSelectionView: UIView {
             $0.height.equalTo(43)
         }
     }
+    
+    // MARK: - Custom Method
     
     private func buttonLabelStyle(of label: UILabel) {
         label.do {

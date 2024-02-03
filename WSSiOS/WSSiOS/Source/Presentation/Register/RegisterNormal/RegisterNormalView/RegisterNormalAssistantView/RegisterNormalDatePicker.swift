@@ -12,7 +12,7 @@ import Then
 
 final class RegisterNormalDatePicker: UIButton {
     
-    // MARK: - UI Components
+    // MARK: - Components
     
     private let backgroundView = UIView()
     private let totalStackView = UIStackView()
@@ -33,8 +33,9 @@ final class RegisterNormalDatePicker: UIButton {
     private let dropStatusLabel = UILabel()
     
     let datePicker = UIDatePicker()
-    
     let completeButton = WSSMainButton(title: "완료")
+    
+    // MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -47,6 +48,8 @@ final class RegisterNormalDatePicker: UIButton {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - UI
     
     private func setUI() {
         self.do {
@@ -67,7 +70,7 @@ final class RegisterNormalDatePicker: UIButton {
         datePicker.do {
             $0.datePickerMode = .date
             $0.preferredDatePickerStyle = .wheels
-            $0.locale = Locale(identifier: "ko_KR")
+            $0.locale = Locale(identifier: StringLiterals.Register.Normal.DatePicker.koreaLocale)
         }
         
         buttonStackView.do {
@@ -187,21 +190,9 @@ final class RegisterNormalDatePicker: UIButton {
         }
     }
     
-    func updateDatePicker(date: Date) {
-        datePicker.date = date
-    }
+    // MARK: - Custom Method
     
-    func setStartDateText(text: String) {
-        startDateLabel.text = text
-        dateLabelStyle(of: startDateLabel)
-    }
-    
-    func setEndDateText(text: String) {
-        endDateLabel.text = text
-        dateLabelStyle(of: endDateLabel)
-    }
-    
-    func updateDatePicker(status: ReadStatus) {
+    func updateDatePickerTitle(status: ReadStatus) {
         if status == .FINISH {
             buttonStackView.isHidden = false
             readingStatusLabel.isHidden = true
@@ -226,6 +217,20 @@ final class RegisterNormalDatePicker: UIButton {
         endDateLabel.textColor = isStart ? .Gray100 : .Primary100
         endButton.backgroundColor = isStart ? .Gray50 : .White
         endButton.layer.borderColor = isStart ? UIColor.Gray50.cgColor : UIColor.Primary50.cgColor
+    }
+    
+    func updateDatePicker(date: Date) {
+        datePicker.date = date
+    }
+    
+    func setStartDateText(text: String) {
+        startDateLabel.text = text
+        dateLabelStyle(of: startDateLabel)
+    }
+    
+    func setEndDateText(text: String) {
+        endDateLabel.text = text
+        dateLabelStyle(of: endDateLabel)
     }
     
     private func dateLabelStyle(of label: UILabel) {

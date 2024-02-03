@@ -16,7 +16,7 @@ final class RegisterNormalNovelSummaryView: UIView {
 
     var platformList: [UserNovelPlatform] = []
 
-    // MARK: - UI Components
+    // MARK: - Components
     
     private let novelSummaryStackView = UIStackView()
     
@@ -43,7 +43,7 @@ final class RegisterNormalNovelSummaryView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Custom Method
+    // MARK: - UI
     
     private func setUI() {
         self.do {
@@ -109,10 +109,7 @@ final class RegisterNormalNovelSummaryView: UIView {
         }
     }
     
-    func setText(of label: UILabel, text: String?) {
-        label.text = text
-        bodyStyle(of: label)
-    }
+    // MARK: - Data
     
     func bindData(plot: String?, genre: String?, platforms: [UserNovelPlatform]) {
         setText(of: plotLabel, text: plot)
@@ -123,6 +120,13 @@ final class RegisterNormalNovelSummaryView: UIView {
             platformTitleLabel.isHidden = true
             platformCollectionView.isHidden = true
         }
+    }
+    
+    // MARK: - Custom Method
+    
+    func setText(of label: UILabel, text: String?) {
+        label.text = text
+        bodyStyle(of: label)
     }
     
     func updateCollectionViewHeight(height: CGFloat) {
