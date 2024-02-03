@@ -80,6 +80,7 @@ final class RegisterNormalViewController: UIViewController {
         register()
         bindUI()
         bindActions()
+        bindNavigation()
         setNavigationBar()
     }
     
@@ -110,13 +111,6 @@ final class RegisterNormalViewController: UIViewController {
     }
     
     private func bindUI() {
-        backButton.rx.tap
-            .asDriver()
-            .drive(with: self, onNext: { owner, _ in
-                owner.popToLastVC()
-            })
-            .disposed(by: disposeBag)
-        
         rootView.pageScrollView.rx.contentOffset
             .asDriver()
             .drive(with: self, onNext: { owner, offset in
@@ -239,14 +233,6 @@ final class RegisterNormalViewController: UIViewController {
                 owner.rootView.novelSummaryView.updateCollectionViewHeight(height: height)
             })
             .disposed(by: disposeBag)
-        
-        rootView.registerButton.rx.tap
-            .asDriver()
-            .throttle(.seconds(3), latest: false)
-            .drive(with: self, onNext: { owner, _ in
-                owner.isNew.value ? owner.postUserNovel() : owner.patchUserNovel()
-            })
-            .disposed(by: disposeBag)
     }
     
     // MARK: - Actions
@@ -349,6 +335,23 @@ final class RegisterNormalViewController: UIViewController {
         rootView.novelSummaryView.platformCollectionView.rx.observe(CGSize.self, "contentSize")
             .map { $0?.height ?? 0 }
             .bind(to: platformCollectionViewHeight)
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindNavigation() {
+        backButton.rx.tap
+            .asDriver()
+            .drive(with: self, onNext: { owner, _ in
+                owner.popToLastVC()
+            })
+            .disposed(by: disposeBag)
+        
+        rootView.registerButton.rx.tap
+            .asDriver()
+            .throttle(.seconds(3), latest: false)
+            .drive(with: self, onNext: { owner, _ in
+                owner.isNew.value ? owner.postUserNovel() : owner.patchUserNovel()
+            })
             .disposed(by: disposeBag)
     }
     
