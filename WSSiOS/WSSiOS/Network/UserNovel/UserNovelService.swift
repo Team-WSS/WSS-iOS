@@ -55,8 +55,7 @@ extension DefaultUserNovelService: UserNovelService {
     }
     
     func getUserNovel(userNovelId: Int) -> Single<UserNovelDetail> {
-        do {
-            let request = try makeHTTPRequest(method: .get,
+        let request = try! makeHTTPRequest(method: .get,
                                                path: URLs.UserNovel.getUserNovel.replacingOccurrences(of: "{userNovelId}", with: String(userNovelId)),
                                                headers: APIConstants.testTokenHeader,
                                                body: nil)
@@ -67,9 +66,6 @@ extension DefaultUserNovelService: UserNovelService {
                 .map { try self.decode(data: $0,
                                        to: UserNovelDetail.self) }
                 .asSingle()
-        } catch {
-            return Single.error(error)
-        }
     }
     
     func deleteUserNovel(userNovelId: Int) -> Single<Void> {
