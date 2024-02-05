@@ -18,7 +18,7 @@ protocol MemoService {
 }
 
 final class DefaultMemoService: NSObject, Networking {
-    
+    private var recordListSize = 1000
     private var urlSession = URLSession(configuration: URLSessionConfiguration.default,
                                         delegate: nil,
                                         delegateQueue: nil)
@@ -29,7 +29,7 @@ extension DefaultMemoService: MemoService {
         do {
             let recordListQueryItems: [URLQueryItem] = [
                 URLQueryItem(name: "lastMemoId", value: String(describing: memoId)),
-                URLQueryItem(name: "size", value: String(describing: 1000)),
+                URLQueryItem(name: "size", value: String(describing: recordListSize)),
                 URLQueryItem(name: "sortType", value: sort)]
             
             let request = try makeHTTPRequest(method: .get,
