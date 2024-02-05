@@ -14,7 +14,7 @@ final class RegisterNormalDatePicker: UIButton {
     
     // MARK: - Components
     
-    private let backgroundView = UIView()
+    private let backgroundView = RegisterNormalDifferentRadiusView(topLeftRadius: 12, topRightRadius: 12)
     private let totalStackView = UIStackView()
     
     private let buttonStackView = UIStackView()
@@ -57,7 +57,6 @@ final class RegisterNormalDatePicker: UIButton {
         }
         backgroundView.do {
             $0.backgroundColor = .White
-            $0.layer.cornerRadius = 12
         }
         
         totalStackView.do {
