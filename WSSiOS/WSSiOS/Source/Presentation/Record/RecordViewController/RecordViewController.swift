@@ -54,21 +54,18 @@ final class RecordViewController: UIViewController {
         super.viewDidLoad()
         
         setUI()
-        registerCell()
-        setAction()
-        
-        bindDataToRecordTableView()
         setNavigationBar()
+        
+        registerCell()
+        bindUI()
+        bindDataToRecordTableView()
         setNotificationCenter()
     }
     
     //MARK: - UI
     
     private func setUI() {
-        self.view.do {
-            $0.backgroundColor = .White
-        }
-        
+        self.view.backgroundColor = .White
         rootView.headerView.isUserInteractionEnabled = true
     }
     
@@ -85,19 +82,52 @@ final class RecordViewController: UIViewController {
         }
     }
     
-    private func bindDataToUI(id: Int, sortStyle: String) {
-        self.getDataFromAPI(disposeBag: disposeBag,
-                            id: id,
-                            sortStyle: sortStyle) { [weak self] recordMemoCount, recordMemoList in
-            self?.updateUI(recordMemoCount: recordMemoCount, recordMemoList: recordMemoList)
-        }
-    }
-    
-    //MARK: - Bind
+    //MARK: - Bind (Output)
     
     private func registerCell() {
         rootView.recordTableView.register(RecordTableViewCell.self, forCellReuseIdentifier: RecordTableViewCell.identifier)
     }
+    
+    private func bindUI() {
+        rootView.headerView.headerAlignmentButton
+            .rx.tap
+            .bind(with: self, onNext: { owner, event in
+                owner.rootView.alignmentView.isHidden.toggle()
+            })
+            .disposed(by: disposeBag)
+        
+        rootView.alignmentView.libraryNewestButton
+            .rx.tap
+            .bind(with: self, onNext: { owner, event in
+                owner.lastMemoId = 9999
+                owner.alignmentLabel = "NEWEST"
+                owner.rootView.headerView.headerAlignmentButton.setTitle(StringLiterals.Alignment.newest, for: .normal)
+                owner.bindDataToUI(id: owner.lastMemoId,
+                                   sortStyle: owner.alignmentLabel)
+                owner.rootView.alignmentView.isHidden = true
+            })
+            .disposed(by: disposeBag)
+        
+        rootView.alignmentView.libraryOldesttButton
+            .rx.tap
+            .bind(with: self, onNext: { owner, event in
+                owner.lastMemoId = 0
+                owner.alignmentLabel = "OLDEST"
+                owner.rootView.headerView.headerAlignmentButton.setTitle(StringLiterals.Alignment.oldest, for: .normal)
+                owner.bindDataToUI(id: owner.lastMemoId,
+                                   sortStyle: owner.alignmentLabel)
+                owner.rootView.alignmentView.isHidden = true
+            })
+            .disposed(by: disposeBag)
+        
+        emptyView.recordButton
+            .rx.tap
+            .subscribe(with: self, onNext: { owner, event in
+                owner.navigationController?.tabBarController?.selectedIndex = 1
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
     
     private func bindDataToRecordTableView() {
         recordMemoListRelay
@@ -137,47 +167,16 @@ final class RecordViewController: UIViewController {
         .disposed(by: disposeBag)
     }
     
-    //MARK: - Actions
     
-    private func setAction() {
-        rootView.headerView.headerAlignmentButton
-            .rx.tap
-            .bind(with: self, onNext: { owner, event in
-                owner.rootView.alignmentView.isHidden.toggle()
-            })
-            .disposed(by: disposeBag)
-        
-        rootView.alignmentView.libraryNewestButton
-            .rx.tap
-            .bind(with: self, onNext: { owner, event in
-                owner.lastMemoId = 9999
-                owner.alignmentLabel = "NEWEST"
-                owner.rootView.headerView.headerAlignmentButton.setTitle(StringLiterals.Alignment.newest, for: .normal)
-                owner.bindDataToUI(id: owner.lastMemoId,
-                                   sortStyle: owner.alignmentLabel)
-                owner.rootView.alignmentView.isHidden = true
-            })
-            .disposed(by: disposeBag)
-        
-        rootView.alignmentView.libraryOldesttButton
-            .rx.tap
-            .bind(with: self, onNext: { owner, event in
-                owner.lastMemoId = 0
-                owner.alignmentLabel = "OLDEST"
-                owner.rootView.headerView.headerAlignmentButton.setTitle(StringLiterals.Alignment.oldest, for: .normal)
-                owner.bindDataToUI(id: owner.lastMemoId,
-                                   sortStyle: owner.alignmentLabel)
-                owner.rootView.alignmentView.isHidden = true
-            })
-            .disposed(by: disposeBag)
-        
-        emptyView.recordButton
-            .rx.tap
-            .subscribe(with: self, onNext: { owner, event in
-                owner.navigationController?.tabBarController?.selectedIndex = 1
-            })
-            .disposed(by: self.disposeBag)
+    private func bindDataToUI(id: Int, sortStyle: String) {
+        self.getDataFromAPI(disposeBag: disposeBag,
+                            id: id,
+                            sortStyle: sortStyle) { [weak self] recordMemoCount, recordMemoList in
+            self?.updateUI(recordMemoCount: recordMemoCount, recordMemoList: recordMemoList)
+        }
     }
+    
+    //MARK: - Actions
     
     private func setNotificationCenter() {
         NotificationCenter.default.addObserver(
