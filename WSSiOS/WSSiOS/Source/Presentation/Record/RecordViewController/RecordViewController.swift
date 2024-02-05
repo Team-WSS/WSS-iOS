@@ -65,14 +65,14 @@ final class RecordViewController: UIViewController {
     //MARK: - UI
     
     private func setUI() {
-        self.view.backgroundColor = .White
+        self.view.backgroundColor = .wssWhite
         rootView.headerView.isUserInteractionEnabled = true
     }
     
     private func setNavigationBar() {
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         self.navigationItem.title = StringLiterals.Navigation.Title.record
-        self.navigationController?.navigationBar.backgroundColor = .White
+        self.navigationController?.navigationBar.backgroundColor = .wssWhite
         
         if let navigationBar = self.navigationController?.navigationBar {
             let titleTextAttributes: [NSAttributedString.Key: Any] = [

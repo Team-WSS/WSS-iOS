@@ -43,16 +43,16 @@ final class RecordDateView: UIView {
         }
         
         leftLine.do {
-            $0.backgroundColor = .Gray70
+            $0.backgroundColor = .wssGray70
         }
         
         rightLine.do {
-            $0.backgroundColor = .Gray70
+            $0.backgroundColor = .wssGray70
         }
         
         dateLabel.do {
             $0.font = .Label2
-            $0.textColor = .Gray200
+            $0.textColor = .wssGray200
         }
     }
     

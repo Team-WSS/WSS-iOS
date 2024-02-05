@@ -35,12 +35,12 @@ final class RecordHeaderView: UIView {
     
     private func setUI() {
         self.do {
-            $0.backgroundColor = .Gray50
+            $0.backgroundColor = .wssGray50
         }
         
         recordCountLabel.do {
             $0.font = .Label1
-            $0.textColor = .Gray200
+            $0.textColor = .wssGray200
         }
     }
  

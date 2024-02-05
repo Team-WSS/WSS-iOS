@@ -37,18 +37,18 @@ final class RecordTableViewCell: UITableViewCell {
     
     private func setUI() {
         self.do {
-            $0.backgroundColor = .White
+            $0.backgroundColor = .wssWhite
             $0.selectionStyle = .none
         }
         
         novelTitleLabel.do {
             $0.font = .Body2
-            $0.textColor = .Gray200
+            $0.textColor = .wssGray200
         }
         
         recordContentLabel.do {
             $0.font = .Body2
-            $0.textColor = .Black
+            $0.textColor = .wssBlack
         }
     }
     

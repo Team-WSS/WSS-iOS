@@ -38,11 +38,11 @@ final class RecordEmptyView: UIView {
     
     private func setUI() {
         self.do {
-            $0.backgroundColor = .White
+            $0.backgroundColor = .wssWhite
         }
         
         dividerView.do {
-            $0.backgroundColor = .Gray50
+            $0.backgroundColor = .wssGray50
         }
         
         stackView.do {
@@ -51,12 +51,12 @@ final class RecordEmptyView: UIView {
         }
         
         registerPlusImageView.do {
-            $0.image = UIImage(resource: .icBookRegistrationPlus)
+            $0.image = .icBookRegistrationPlus
         }
         
         recordEmptyDescriptionLabel.do {
             $0.font = .Body1
-            $0.textColor = .Gray200
+            $0.textColor = .wssGray200
             $0.makeAttribute(with: StringLiterals.Record.Empty.description)?
                 .kerning(kerningPixel: -0.8)
                 .lineSpacing(spacingPercentage: 140)
@@ -67,8 +67,8 @@ final class RecordEmptyView: UIView {
         
         recordButton.do {
             var config = UIButton.Configuration.filled()
-            config.baseBackgroundColor = .Primary50
-            config.baseForegroundColor = .Primary100
+            config.baseBackgroundColor = .wssPrimary50
+            config.baseForegroundColor = .wssPrimary100
             var titleAttr = AttributedString.init(StringLiterals.Record.Empty.register)
             titleAttr.kern = -0.6
             titleAttr.font = UIFont.Title1

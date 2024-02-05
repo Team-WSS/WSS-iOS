@@ -14,10 +14,6 @@ import Then
 
 final class RecordResultView: UIView {
     
-    //MARK: - Properties
-    
-    private let disposeBag = DisposeBag()
-    
     //MARK: - Components
     
     let alignmentView = LibraryListView()

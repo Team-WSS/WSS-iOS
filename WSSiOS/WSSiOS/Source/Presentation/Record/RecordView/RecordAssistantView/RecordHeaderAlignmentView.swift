@@ -26,7 +26,7 @@ final class RecordHeaderAlignmentButton: UIButton {
     private func setUI() {
         self.do {
             $0.setTitle(StringLiterals.Alignment.newest, for: .normal)
-            $0.setTitleColor(.Gray300, for: .normal)
+            $0.setTitleColor(.wssGray300, for: .normal)
             $00.titleLabel?.font = .Label1
             $0.titleLabel?.adjustsFontSizeToFitWidth = true
             $0.setImage(UIImage(resource: .icDropDown), for: .normal)
