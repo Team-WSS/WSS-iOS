@@ -8,39 +8,39 @@
 import UIKit
 
 extension UIFont {
-    class var HeadLine1: UIFont {
+    static var HeadLine1: UIFont {
         return UIFont(name: "Pretendard-SemiBold", size: 20)!
     }
     
-    class var Title1: UIFont {
+    static var Title1: UIFont {
         return UIFont(name: "Pretendard-Medium", size: 18)!
     }
     
-    class var Title2: UIFont {
+    static var Title2: UIFont {
         return UIFont(name: "Pretendard-SemiBold", size: 16)!
     }
     
-    class var Title3: UIFont {
+    static var Title3: UIFont {
         return UIFont(name: "Pretendard-Medium", size: 14)!
     }
     
-    class var Body1: UIFont {
+    static var Body1: UIFont {
         return UIFont(name: "Pretendard-Regular", size: 17)!
     }
     
-    class var Body2: UIFont {
+    static var Body2: UIFont {
         return UIFont(name: "Pretendard-Regular", size: 15)!
     }
     
-    class var Body3: UIFont {
+    static var Body3: UIFont {
         return UIFont(name: "Pretendard-Regular", size: 12)!
     }
     
-    class var Label1: UIFont {
+    static var Label1: UIFont {
         return UIFont(name: "Pretendard-Regular", size: 13)!
     }
     
-    class var Label2: UIFont {
+    static var Label2: UIFont {
         return UIFont(name: "Pretendard-Regular", size: 10)!
     }
 }
