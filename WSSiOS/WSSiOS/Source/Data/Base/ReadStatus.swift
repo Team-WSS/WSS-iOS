@@ -15,10 +15,10 @@ enum ReadStatus: String, CaseIterable {
     
     var tagImage: UIImage {
         switch self {
-        case .FINISH: return ImageLiterals.icon.TagStatus.finished
-        case .READING: return ImageLiterals.icon.TagStatus.reading
-        case .DROP: return ImageLiterals.icon.TagStatus.stop
-        case .WISH: return ImageLiterals.icon.TagStatus.interest
+        case .FINISH: return .icTagFinished
+        case .READING: return .icTagReading
+        case .DROP: return .icTagStop
+        case .WISH: return .icTagInterest
         }
     }
     

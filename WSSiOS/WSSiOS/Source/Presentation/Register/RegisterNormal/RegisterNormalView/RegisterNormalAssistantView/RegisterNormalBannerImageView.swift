@@ -37,7 +37,7 @@ final class RegisterNormalBannerImageView: UIView {
     
     private func setUI() {
         bannerImageView.do {
-            $0.image = ImageLiterals.Image.Banner.loadingBackground.asBlurredBannerImage(radius: 15)
+            $0.image = .imgLoadingBanner.asBlurredBannerImage(radius: 15)
             $0.contentMode = .scaleAspectFill
             $0.alignment = .top
             $0.clipsToBounds = true
@@ -45,7 +45,7 @@ final class RegisterNormalBannerImageView: UIView {
             gradientView.do {
                 $0.contentMode = .scaleAspectFill
                 $0.clipsToBounds = true
-                $0.image = ImageLiterals.Image.Banner.backgroundGradient
+                $0.image = .imgBackgroundGradation
             }
         }
     }

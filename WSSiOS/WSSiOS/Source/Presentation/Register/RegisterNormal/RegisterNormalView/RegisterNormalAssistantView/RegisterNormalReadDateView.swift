@@ -78,7 +78,7 @@ final class RegisterNormalReadDateView: UIView {
             }
             
             calendarImageView.do {
-                $0.image = ImageLiterals.icon.calender
+                $0.image = .icCalendar
                 $0.contentMode = .scaleAspectFill
                 $0.clipsToBounds = true
             }

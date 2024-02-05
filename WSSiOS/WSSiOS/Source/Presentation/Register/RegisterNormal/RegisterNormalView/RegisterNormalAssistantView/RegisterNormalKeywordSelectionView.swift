@@ -59,7 +59,7 @@ final class RegisterNormalKeywordSelectionView: UIView {
                     $0.alignment = .center
                     
                     buttonImage.do {
-                        $0.image = ImageLiterals.icon.plusKeyword
+                        $0.image = .icPlusKeyword
                     }
                     
                     buttonLabel.do {
