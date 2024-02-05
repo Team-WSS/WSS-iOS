@@ -56,17 +56,17 @@ final class SearchCollectionViewCell: UICollectionViewCell {
         
         novelTitleLabel.do {
             $0.font = .Title2
-            $0.textColor = .Black
+            $0.textColor = .wssBlack
         }
         
         novelAuthorLabel.do {
             $0.font = .Label1
-            $0.textColor = .Gray200
+            $0.textColor = .wssGray200
         }
         
         novelGenreLabel.do {
             $0.font = .Label1
-            $0.textColor = .Gray200
+            $0.textColor = .wssGray200
         }
     }
     

@@ -35,13 +35,13 @@ final class SearchHeaderView: UIView {
     
     private func setUI() {
         self.do {
-            $0.backgroundColor = .White
+            $0.backgroundColor = .wssWhite
         }
         
         searchBar.do {
             $0.setImage(.icSearch, for: .search, state: .normal)
             $0.setImage(.icSearchCancel, for: .clear, state: .normal)
-            $0.layer.borderColor = UIColor.Gray200.cgColor
+            $0.layer.borderColor = UIColor.wssGray200.cgColor
             $0.layer.borderWidth = 1
             $0.clipsToBounds = true
             $0.layer.cornerRadius = 12
@@ -50,7 +50,7 @@ final class SearchHeaderView: UIView {
         if let textfield = searchBar.value(forKey: "searchField") as? UITextField {
             textfield.backgroundColor = .clear
             textfield.font = .Body2
-            textfield.textColor = UIColor.Black
+            textfield.textColor = UIColor.wssBlack
         }
     }
 

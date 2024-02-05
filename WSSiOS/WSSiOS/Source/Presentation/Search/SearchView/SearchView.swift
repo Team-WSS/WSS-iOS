@@ -32,10 +32,10 @@ final class SearchView: UIView {
     //MARK: - set UI
     
     private func setUI() {
-        self.backgroundColor = .White
+        self.backgroundColor = .wssWhite
         
         dividerLine.do {
-            $0.backgroundColor = .Gray50
+            $0.backgroundColor = .wssGray50
         }
     }
 

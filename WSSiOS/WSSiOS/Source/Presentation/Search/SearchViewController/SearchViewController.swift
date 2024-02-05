@@ -66,7 +66,7 @@ final class SearchViewController: UIViewController {
     
     private func setUI() {
         backButton.do {
-            $0.setImage(ImageLiterals.icon.navigateLeft.withRenderingMode(.alwaysOriginal), for: .normal)
+            $0.setImage(.icNavigateLeft.withRenderingMode(.alwaysOriginal), for: .normal)
             $0.rx.tap
                 .subscribe(with: self ,onNext: { owner, _ in
                     owner.navigationController?.popViewController(animated: true)
@@ -78,7 +78,7 @@ final class SearchViewController: UIViewController {
     private func setNavigationBar() {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         self.navigationItem.title = StringLiterals.Navigation.Title.search
-        self.navigationController?.navigationBar.backgroundColor = .White
+        self.navigationController?.navigationBar.backgroundColor = .wssWhite
         
         if let navigationBar = self.navigationController?.navigationBar {
             let titleTextAttributes: [NSAttributedString.Key: Any] = [

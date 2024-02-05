@@ -42,7 +42,7 @@ final class SearchEmptyView: UIView {
         emptyDescriptionLabel.do {
             $0.text = StringLiterals.Search.empty
             $0.font = .Body1
-            $0.textColor = .Gray200
+            $0.textColor = .wssGray200
         }
     }
 
