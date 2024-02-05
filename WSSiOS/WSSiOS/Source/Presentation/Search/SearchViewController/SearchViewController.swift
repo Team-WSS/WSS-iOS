@@ -134,7 +134,7 @@ final class SearchViewController: UIViewController {
             }).disposed(by: disposeBag)
     }
     
-    func updateUI(searchList: [SearchNovel]) {
+    private func updateUI(searchList: [SearchNovel]) {
         Observable.just(searchList)
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, list in
@@ -143,7 +143,7 @@ final class SearchViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    func searchNovels(with searchText: String) {
+    private func searchNovels(with searchText: String) {
         let searchWord = searchText.isEmpty ? "" : searchText
         
         self.getDataFromAPI(disposeBag: disposeBag, searchWord: searchWord) { [weak self] searchResultList in
@@ -151,7 +151,7 @@ final class SearchViewController: UIViewController {
         }
     }
     
-    func setSearchAction() {
+    private func setSearchAction() {
         rootView.headerView.searchBar.rx.text.orEmpty
             .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner ,searchText in
