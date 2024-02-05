@@ -73,7 +73,7 @@ final class RegisterNormalView: UIView {
         }
         
         registerButtonGradient.do {
-            $0.image = .registerNormalButtonGradientDummy
+            $0.image = .imgButtonGradation
         }
         
         registerButtonBackgroundView.do {
