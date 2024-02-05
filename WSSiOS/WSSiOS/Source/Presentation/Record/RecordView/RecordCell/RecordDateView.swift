@@ -12,7 +12,7 @@ import Then
 
 final class RecordDateView: UIView {
     
-    //MARK: UI Components
+    //MARK: Components
     
     private let dateStackView = UIStackView()
     private let leftLine = UIView()
@@ -25,7 +25,7 @@ final class RecordDateView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -33,7 +33,7 @@ final class RecordDateView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
         dateStackView.do {
@@ -51,23 +51,18 @@ final class RecordDateView: UIView {
         }
         
         dateLabel.do {
-            $0.text = "2023-12-23 오전 10:12"
             $0.font = .Label2
             $0.textColor = .Gray200
         }
     }
     
-    //MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubview(dateStackView)
         
         dateStackView.addArrangedSubviews(leftLine,
                                           dateLabel,
                                           rightLine)
     }
-    
-    //MARK: - set Layout
     
     private func setLayout() {
         leftLine.snp.makeConstraints {

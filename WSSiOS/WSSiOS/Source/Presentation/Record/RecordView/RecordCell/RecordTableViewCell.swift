@@ -13,7 +13,7 @@ final class RecordTableViewCell: UITableViewCell {
     
     static let identifier = "RecordTableViewCell"
     
-    //MARK: - UI Components
+    //MARK: - Components
     
     private let dateView = RecordDateView()
     private let novelTitleLabel = UILabel()
@@ -25,7 +25,7 @@ final class RecordTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -33,7 +33,7 @@ final class RecordTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
         self.do {
@@ -52,15 +52,11 @@ final class RecordTableViewCell: UITableViewCell {
         }
     }
     
-    //MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(dateView,
                          novelTitleLabel,
                          recordContentLabel)
     }
-    
-    //MARK: - set Layout
     
     private func setLayout() {
         dateView.snp.makeConstraints{
@@ -81,6 +77,8 @@ final class RecordTableViewCell: UITableViewCell {
             $0.bottom.equalToSuperview().inset(48)
         }
     }
+    
+    //MARK: - Data
     
     func bindData(data: RecordMemo) {
         dateView.dateLabel.text = data.date

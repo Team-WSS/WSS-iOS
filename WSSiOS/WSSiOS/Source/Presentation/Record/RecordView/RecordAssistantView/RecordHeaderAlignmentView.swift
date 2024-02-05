@@ -21,7 +21,7 @@ final class RecordHeaderAlignmentButton: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
         self.do {
