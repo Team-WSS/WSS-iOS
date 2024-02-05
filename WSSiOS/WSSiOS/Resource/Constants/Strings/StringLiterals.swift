@@ -89,4 +89,8 @@ enum StringLiterals {
         static let newest = "최신 순"
         static let oldest = "오래된 순"
     }
+    
+    enum Search {
+        static let empty = "등록 문의하기"
+    }
 }

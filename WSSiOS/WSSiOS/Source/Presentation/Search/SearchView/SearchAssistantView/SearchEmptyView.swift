@@ -40,8 +40,7 @@ final class SearchEmptyView: UIView {
         }
         
         emptyDescriptionLabel.do {
-            //TODO: StringLiterals 빼두기
-            $0.text = "검색 결과가 없어요ㅠ"
+            $0.text = StringLiterals.Search.empty
             $0.font = .Body1
             $0.textColor = .Gray200
         }
