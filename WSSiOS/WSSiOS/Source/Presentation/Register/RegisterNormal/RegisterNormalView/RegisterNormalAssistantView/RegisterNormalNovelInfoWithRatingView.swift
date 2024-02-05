@@ -180,7 +180,7 @@ final class RegisterNormalNovelInfoWithRatingView: UIView {
                 .kerning(kerningPixel: -1.2)
                 .applyAttribute()
             $0.font = .HeadLine1
-            $0.textColor = .White
+            $0.textColor = .wssWhite
             $0.textAlignment = .center
             $0.lineBreakMode = .byTruncatingTail
             $0.lineBreakStrategy = .hangulWordPriority
@@ -196,7 +196,7 @@ final class RegisterNormalNovelInfoWithRatingView: UIView {
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
             $0.font = .Body2
-            $0.textColor = .Gray200
+            $0.textColor = .wssGray200
             $0.numberOfLines = 1
             $0.lineBreakMode = .byTruncatingTail
         }

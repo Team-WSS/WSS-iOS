@@ -43,7 +43,7 @@ final class RegisterNormalNovelSummaryView: UIView {
     
     private func setUI() {
         self.do {
-            $0.backgroundColor = .Gray50
+            $0.backgroundColor = .wssGray50
         }
         novelSummaryStackView.do {
             $0.axis = .vertical
@@ -141,7 +141,7 @@ final class RegisterNormalNovelSummaryView: UIView {
                 .applyAttribute()
             $0.font = .Body2
             $0.numberOfLines = 0
-            $0.textColor = .Gray300
+            $0.textColor = .wssGray300
         }
     }
 }

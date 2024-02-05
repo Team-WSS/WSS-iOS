@@ -50,10 +50,10 @@ final class RegisterNormalView: UIView {
     
     private func setUI() {
         self.do {
-            $0.backgroundColor = .white
+            $0.backgroundColor = .wssWhite
         }
         divider.do {
-            $0.backgroundColor = .Gray70
+            $0.backgroundColor = .wssGray70
         }
         statusBarView.do {
             let scenes = UIApplication.shared.connectedScenes
@@ -78,7 +78,7 @@ final class RegisterNormalView: UIView {
         }
         
         registerButtonBackgroundView.do {
-            $0.backgroundColor = .White
+            $0.backgroundColor = .wssWhite
         }
     }
     

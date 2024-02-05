@@ -51,7 +51,7 @@ final class RegisterNormalKeywordSelectionView: UIView {
             keywordSelectButton.do {
                 $0.layer.cornerRadius = 15
                 $0.layer.borderWidth = 1
-                $0.layer.borderColor = UIColor.Primary100.cgColor
+                $0.layer.borderColor = UIColor.wssPrimary100.cgColor
                 
                 buttonStackView.do {
                     $0.axis = .horizontal
@@ -102,7 +102,7 @@ final class RegisterNormalKeywordSelectionView: UIView {
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
             $0.font = .Body2
-            $0.textColor = .Primary100
+            $0.textColor = .wssPrimary100
         }
     }
 }

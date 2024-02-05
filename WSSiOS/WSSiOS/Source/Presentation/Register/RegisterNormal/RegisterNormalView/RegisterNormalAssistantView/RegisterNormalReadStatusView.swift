@@ -77,11 +77,11 @@ final class RegisterNormalReadStatusView: UIView {
             if button.checkStatus(status) {
                 // 활성화 상태 설정
                 button.hideImage(false)
-                button.setColor(.Primary100)
+                button.setColor(.wssPrimary100)
             } else {
                 // 비활성화 상태 설정
                 button.hideImage(true)
-                button.setColor(.Gray200)
+                button.setColor(.wssGray200)
             }
         }
     }

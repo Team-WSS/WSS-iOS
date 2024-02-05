@@ -43,7 +43,7 @@ final class RegisterNormalReadStatusButton: UIButton {
         self.do {
             $0.layer.cornerRadius = buttonHeight / 2
             $0.layer.borderWidth = 1
-            $0.layer.borderColor = UIColor.Primary100.cgColor
+            $0.layer.borderColor = UIColor.wssPrimary100.cgColor
         }
         
         buttonStackView.do {
@@ -121,7 +121,7 @@ final class RegisterNormalReadStatusButton: UIButton {
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
             $0.font = .Body2
-            $0.textColor = .Primary100
+            $0.textColor = .wssPrimary100
         }
     }
 }

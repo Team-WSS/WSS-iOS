@@ -36,10 +36,10 @@ final class RegisterNormalDividerView: UIView {
     
     private func setUI() {
         dividerView.do {
-            $0.backgroundColor = .Gray50
+            $0.backgroundColor = .wssGray50
         }
         topBorderView.do {
-            $0.backgroundColor = .Gray70
+            $0.backgroundColor = .wssGray70
         }
     }
     

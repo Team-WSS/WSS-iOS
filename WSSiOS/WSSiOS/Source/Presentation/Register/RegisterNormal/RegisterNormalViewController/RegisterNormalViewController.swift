@@ -98,7 +98,7 @@ final class RegisterNormalViewController: UIViewController {
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.backButton)
         self.navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.font: UIFont.Title2,
-            NSAttributedString.Key.foregroundColor: UIColor.black
+            NSAttributedString.Key.foregroundColor: UIColor.wssBlack
         ]
     }
     
@@ -446,10 +446,10 @@ final class RegisterNormalViewController: UIViewController {
     
     private func updateNavigationBarStyle(offset: CGFloat) {
         if offset > 0 {
-            rootView.statusBarView.backgroundColor = .white
+            rootView.statusBarView.backgroundColor = .wssWhite
             navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
             navigationController?.navigationBar.shadowImage = UIImage()
-            navigationController?.navigationBar.backgroundColor = .white
+            navigationController?.navigationBar.backgroundColor = .wssWhite
             navigationItem.title = self.navigationTitle
             rootView.divider.isHidden = false
         } else {

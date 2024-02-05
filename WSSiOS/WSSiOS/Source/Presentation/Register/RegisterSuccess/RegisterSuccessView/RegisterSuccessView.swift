@@ -38,7 +38,7 @@ final class RegisterSuccessView: UIView {
     
     private func setUI() {
         self.do{
-            $0.backgroundColor = .White
+            $0.backgroundColor = .wssWhite
         }
         
         titleLabel.do {
@@ -47,7 +47,7 @@ final class RegisterSuccessView: UIView {
                 .kerning(kerningPixel: -1.2).applyAttribute()
             $0.numberOfLines = 2
             $0.textAlignment = .center
-            $0.textColor = .Black
+            $0.textColor = .wssBlack
             $0.font = .HeadLine1
         }
             
@@ -62,7 +62,7 @@ final class RegisterSuccessView: UIView {
                                                 .lineSpacing(spacingPercentage: 150)
                                                 .attributedString,
                                   for: .normal)
-            $0.setTitleColor(.Gray300, for: .normal)
+            $0.setTitleColor(.wssGray300, for: .normal)
             $0.titleLabel?.font = .Body2
         }
     }

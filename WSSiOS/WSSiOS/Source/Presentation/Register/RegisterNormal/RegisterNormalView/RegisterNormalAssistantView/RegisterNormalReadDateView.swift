@@ -61,7 +61,7 @@ final class RegisterNormalReadDateView: UIView {
             }
             
             datePickerButton.do {
-                $0.backgroundColor = .Gray50
+                $0.backgroundColor = .wssGray50
                 $0.layer.cornerRadius = 15
             }
             
@@ -157,7 +157,7 @@ final class RegisterNormalReadDateView: UIView {
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
             $0.font = .Body2
-            $0.textColor = .Gray300
+            $0.textColor = .wssGray300
         }
     }
 }
