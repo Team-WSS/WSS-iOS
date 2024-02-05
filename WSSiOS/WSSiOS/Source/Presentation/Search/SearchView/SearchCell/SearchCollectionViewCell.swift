@@ -17,7 +17,7 @@ final class SearchCollectionViewCell: UICollectionViewCell {
     
     static let identifier: String = "SearchCollectionViewCell"
     
-    //MARK: - UI Components
+    //MARK: - Components
     
     private let novelImageView = UIImageView()
     private let novelStackView = UIStackView()
@@ -31,7 +31,7 @@ final class SearchCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -40,7 +40,7 @@ final class SearchCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
         novelImageView.do {
@@ -70,9 +70,7 @@ final class SearchCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    //MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(novelImageView,
                          novelStackView)
         
@@ -80,9 +78,7 @@ final class SearchCollectionViewCell: UICollectionViewCell {
                                            novelAuthorLabel,
                                            novelGenreLabel)
     }
-    
-    //MARK: - set Layout
-    
+
     private func setLayout() {
         novelImageView.snp.makeConstraints {
             $0.top.bottom.leading.equalToSuperview()
@@ -95,6 +91,8 @@ final class SearchCollectionViewCell: UICollectionViewCell {
             $0.leading.equalTo(novelImageView.snp.trailing).offset(16)
         }
     }
+    
+    //MARK: - Data
     
     func bindData(data: SearchNovel) {
         guard let imageURL = URL(string: data.novelImg) else { return }

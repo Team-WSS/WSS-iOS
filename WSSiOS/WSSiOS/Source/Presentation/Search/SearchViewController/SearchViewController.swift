@@ -18,7 +18,7 @@ final class SearchViewController: UIViewController {
     private var searchResultListRelay = BehaviorRelay<[SearchNovel]>(value: [])
     private let disposeBag = DisposeBag()
     
-    //MARK: - UI Components
+    //MARK: - Components
     
     private let rootView = SearchView()
     private let backButton = UIButton()
@@ -42,11 +42,12 @@ final class SearchViewController: UIViewController {
         super.viewWillAppear(animated)
         
         rootView.headerView.searchBar.becomeFirstResponder()
+        hideTabBar()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         setUI()
         setDelegate()
         setNavigationBar()
@@ -61,7 +62,7 @@ final class SearchViewController: UIViewController {
         self.view.endEditing(true)
     }
     
-    //MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
         backButton.do {
@@ -74,15 +75,11 @@ final class SearchViewController: UIViewController {
         }
     }
     
-    //MARK: - customize NaivationBar
-    
     private func setNavigationBar() {
-        hideTabBar()
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         self.navigationItem.title = StringLiterals.Navigation.Title.search
         self.navigationController?.navigationBar.backgroundColor = .White
         
-        // Navigation Bar의 title 폰트 설정
         if let navigationBar = self.navigationController?.navigationBar {
             let titleTextAttributes: [NSAttributedString.Key: Any] = [
                 .font: UIFont.Title2
@@ -91,12 +88,6 @@ final class SearchViewController: UIViewController {
         }
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.backButton)
-    }
-    
-    //MARK: - set Delegate
-    
-    private func setDelegate() {
-        rootView.headerView.searchBar.delegate = self
     }
     
     private func setCollectionViewLayout() {
@@ -108,20 +99,17 @@ final class SearchViewController: UIViewController {
         rootView.mainResultView.searchCollectionView.setCollectionViewLayout(flowLayout, animated: false)
     }
     
+    //MARK: - Bind
+    
+    private func setDelegate() {
+        rootView.headerView.searchBar.delegate = self
+    }
+    
     private func registerCell() {
         rootView.mainResultView.searchCollectionView.register(SearchCollectionViewCell.self, forCellWithReuseIdentifier: SearchCollectionViewCell.identifier)
     }
     
-    private func getDataFromAPI(disposeBag: DisposeBag,
-                                searchWord: String,
-                                completion: @escaping (SearchNovels)
-                                -> Void) {
-        self.novelRepository.getSearchNovels(searchWord: searchWord)
-            .subscribe (with: self, onNext: { owner, search in
-                completion(search)
-            })
-            .disposed(by: disposeBag)
-    }
+    //MARK: - Actions
     
     private func bindDataToSearchCollectionView() {
         searchResultListRelay.bind(to: rootView.mainResultView.searchCollectionView.rx.items(
@@ -134,16 +122,16 @@ final class SearchViewController: UIViewController {
         rootView.mainResultView.searchCollectionView
             .rx
             .itemSelected
-                .subscribe(onNext:{ indexPath in
-                    self.navigationController?.pushViewController(
-                        RegisterNormalViewController(
-                            novelRepository: DefaultNovelRepository(
-                                novelService: DefaultNovelService()),
-                            userNovelRepository: DefaultUserNovelRepository(
-                                userNovelService:DefaultUserNovelService()),
-                            novelId: self.searchResultListRelay.value[indexPath.row].novelId),
-                        animated: true)
-                }).disposed(by: disposeBag)
+            .subscribe(onNext:{ indexPath in
+                self.navigationController?.pushViewController(
+                    RegisterNormalViewController(
+                        novelRepository: DefaultNovelRepository(
+                            novelService: DefaultNovelService()),
+                        userNovelRepository: DefaultUserNovelRepository(
+                            userNovelService:DefaultUserNovelService()),
+                        novelId: self.searchResultListRelay.value[indexPath.row].novelId),
+                    animated: true)
+            }).disposed(by: disposeBag)
     }
     
     func updateUI(searchList: [SearchNovel]) {
@@ -164,17 +152,27 @@ final class SearchViewController: UIViewController {
     }
     
     func setSearchAction() {
-        let searchTextObservable = rootView.headerView.searchBar.rx.text.orEmpty
+        rootView.headerView.searchBar.rx.text.orEmpty
             .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
-        
-        searchTextObservable
             .subscribe(with: self, onNext: { owner ,searchText in
                 if searchText.isEmpty {
-                    // 아무것도 입력하지 않았을 때, 테이블뷰 내 데이터에 빈 배열 삽입
                     owner.searchResultListRelay.accept([])
                 } else {
                     owner.searchNovels(with: searchText)
                 }
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    //MARK: - API
+    
+    private func getDataFromAPI(disposeBag: DisposeBag,
+                                searchWord: String,
+                                completion: @escaping (SearchNovels)
+                                -> Void) {
+        self.novelRepository.getSearchNovels(searchWord: searchWord)
+            .subscribe (with: self, onNext: { owner, search in
+                completion(search)
             })
             .disposed(by: disposeBag)
     }

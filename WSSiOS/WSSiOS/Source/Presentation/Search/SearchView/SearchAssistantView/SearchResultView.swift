@@ -12,7 +12,7 @@ import Then
 
 final class SearchResultView: UIView {
     
-    //MARK: - UI Components
+    //MARK: - Components
     
     let searchCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     
@@ -22,7 +22,7 @@ final class SearchResultView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -31,7 +31,7 @@ final class SearchResultView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
         searchCollectionView.do {
@@ -40,13 +40,9 @@ final class SearchResultView: UIView {
         }
     }
     
-    //MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubview(searchCollectionView)
     }
-    
-    //MARK: - set Layout
     
     private func setLayout() {
         searchCollectionView.snp.makeConstraints {
