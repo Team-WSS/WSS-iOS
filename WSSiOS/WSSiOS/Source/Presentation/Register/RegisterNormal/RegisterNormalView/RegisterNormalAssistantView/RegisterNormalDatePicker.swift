@@ -46,7 +46,7 @@ final class RegisterNormalDatePicker: UIButton {
         super.init(frame: frame)
         
         setUI()
-        setHieararchy()
+        setHierarchy()
         setLayout()
     }
     
@@ -142,7 +142,7 @@ final class RegisterNormalDatePicker: UIButton {
         }
     }
     
-    private func setHieararchy() {
+    private func setHierarchy() {
         self.addSubview(backgroundView)
         backgroundView.addSubviews(totalStackView,
                                completeButton)

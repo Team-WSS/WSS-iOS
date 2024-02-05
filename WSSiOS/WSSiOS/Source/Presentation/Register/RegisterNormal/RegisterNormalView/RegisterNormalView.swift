@@ -38,7 +38,7 @@ final class RegisterNormalView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHieararchy()
+        setHierarchy()
         setLayout()
     }
     
@@ -82,7 +82,7 @@ final class RegisterNormalView: UIView {
         }
     }
     
-    private func setHieararchy() {
+    private func setHierarchy() {
         self.addSubviews(pageScrollView,
                          divider,
                          statusBarView,

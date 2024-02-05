@@ -34,7 +34,7 @@ final class RegisterNormalReadDateView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHieararchy()
+        setHierarchy()
         setLayout()
     }
     
@@ -85,7 +85,7 @@ final class RegisterNormalReadDateView: UIView {
         }
     }
     
-    private func setHieararchy() {
+    private func setHierarchy() {
         self.addSubview(totalStackView)
         totalStackView.addArrangedSubviews(upperStackView,
                                            datePickerButton)

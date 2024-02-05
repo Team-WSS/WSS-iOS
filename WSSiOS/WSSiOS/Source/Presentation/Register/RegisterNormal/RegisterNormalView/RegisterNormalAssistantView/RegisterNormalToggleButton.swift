@@ -40,7 +40,7 @@ final class RegisterNormalToggleButton: UIButton {
         super.init(frame: frame)
         
         setUI()
-        setHieararchy()
+        setHierarchy()
         setLayout()
     }
     
@@ -66,7 +66,7 @@ final class RegisterNormalToggleButton: UIButton {
         }
     }
     
-    private func setHieararchy() {
+    private func setHierarchy() {
         self.addSubviews(barView,
                          circleView)
     }

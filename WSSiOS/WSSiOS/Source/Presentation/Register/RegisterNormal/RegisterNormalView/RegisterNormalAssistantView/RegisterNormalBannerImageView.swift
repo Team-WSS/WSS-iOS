@@ -25,7 +25,7 @@ final class RegisterNormalBannerImageView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHieararchy()
+        setHierarchy()
         setLayout()
     }
     
@@ -50,7 +50,7 @@ final class RegisterNormalBannerImageView: UIView {
         }
     }
     
-    private func setHieararchy() {
+    private func setHierarchy() {
         self.addSubview(bannerImageView)
         bannerImageView.addSubview(gradientView)
     }

@@ -29,7 +29,7 @@ final class RegisterNormalReadStatusButton: UIButton {
         super.init(frame: frame)
         
         setUI()
-        setHieararchy()
+        setHierarchy()
         setLayout()
     }
     
@@ -63,7 +63,7 @@ final class RegisterNormalReadStatusButton: UIButton {
         }
     }
     
-    private func setHieararchy() {
+    private func setHierarchy() {
         self.addSubviews(buttonStackView)
         buttonStackView.addArrangedSubviews(buttonImage,
                                             buttonLabel)

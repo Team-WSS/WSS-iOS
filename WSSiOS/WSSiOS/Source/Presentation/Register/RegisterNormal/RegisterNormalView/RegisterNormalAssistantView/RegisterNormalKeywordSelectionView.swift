@@ -28,7 +28,7 @@ final class RegisterNormalKeywordSelectionView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHieararchy()
+        setHierarchy()
         setLayout()
     }
     
@@ -71,7 +71,7 @@ final class RegisterNormalKeywordSelectionView: UIView {
         }
     }
     
-    private func setHieararchy() {
+    private func setHierarchy() {
         self.addSubview(totalStackView)
         totalStackView.addArrangedSubviews(titleView,
                                            keywordSelectButton)

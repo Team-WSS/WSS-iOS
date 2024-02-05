@@ -33,7 +33,7 @@ final class RegisterNormalNovelInfoWithRatingView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHieararchy()
+        setHierarchy()
         setLayout()
     }
     
@@ -88,7 +88,7 @@ final class RegisterNormalNovelInfoWithRatingView: UIView {
         }
     }
     
-    private func setHieararchy() {
+    private func setHierarchy() {
         self.addSubview(novelInfoWithRatingStackView)
         novelCoverShadowView.addSubview(novelCoverImageView)
         novelInfoWithRatingStackView.addArrangedSubviews(novelInfoStackView,

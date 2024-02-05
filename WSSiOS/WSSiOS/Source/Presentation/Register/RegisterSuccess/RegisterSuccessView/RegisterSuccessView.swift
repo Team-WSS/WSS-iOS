@@ -26,7 +26,7 @@ final class RegisterSuccessView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHieararchy()
+        setHierarchy()
         setLayout()
     }
     
@@ -67,7 +67,7 @@ final class RegisterSuccessView: UIView {
         }
     }
     
-    private func setHieararchy() {
+    private func setHierarchy() {
         self.addSubviews(titleLabel,
                          lottieView,
                          makeMemoButton,
