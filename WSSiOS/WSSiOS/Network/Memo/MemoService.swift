@@ -26,22 +26,26 @@ final class DefaultMemoService: NSObject, Networking {
 
 extension DefaultMemoService: MemoService {
     func getRecordMemosData(memoId: Int, sort: String) -> Single<RecordMemos> {
-        let recordListQueryItems: [URLQueryItem] = [
-            URLQueryItem(name: "lastMemoId", value: String(describing: memoId)),
-            URLQueryItem(name: "size", value: String(describing: 1000)),
-            URLQueryItem(name: "sortType", value: sort)]
-        
-        let request = try! makeHTTPRequest(method: .get,
-                                           path: URLs.Memo.getMemoList,
-                                           queryItems: recordListQueryItems,
-                                           headers: APIConstants.testTokenHeader,
-                                           body: nil)
-        
-        NetworkLogger.log(request: request)
-        
-        return urlSession.rx.data(request: request)
-            .map { try self.decode(data: $0, to: RecordMemos.self) }
-            .asSingle()
+        do {
+            let recordListQueryItems: [URLQueryItem] = [
+                URLQueryItem(name: "lastMemoId", value: String(describing: memoId)),
+                URLQueryItem(name: "size", value: String(describing: 1000)),
+                URLQueryItem(name: "sortType", value: sort)]
+            
+            let request = try makeHTTPRequest(method: .get,
+                                               path: URLs.Memo.getMemoList,
+                                               queryItems: recordListQueryItems,
+                                               headers: APIConstants.testTokenHeader,
+                                               body: nil)
+            
+            NetworkLogger.log(request: request)
+            
+            return urlSession.rx.data(request: request)
+                .map { try self.decode(data: $0, to: RecordMemos.self) }
+                .asSingle()
+        } catch {
+            return Single.error(error)
+        }
     }
     
     func postMemo(userNovelId: Int, memoContent: String) -> Single<IsAvatarUnlocked> {
