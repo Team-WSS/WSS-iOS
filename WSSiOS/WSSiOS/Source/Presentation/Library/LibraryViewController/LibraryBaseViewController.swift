@@ -62,7 +62,7 @@ final class LibraryBaseViewController: UIViewController {
         super.viewDidLoad()
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
         
         register()
@@ -89,7 +89,7 @@ final class LibraryBaseViewController: UIViewController {
     private func bindColletionView() {
         novelListRelay.bind(to: rootView.libraryCollectionView.rx.items(
             cellIdentifier: "LibraryCollectionViewCell",
-            cellType: LibraryCollectionViewCell.self)) { [weak self] (row, element, cell) in
+            cellType: LibraryCollectionViewCell.self)) {(row, element, cell) in
                 cell.bindData(element)
             }
             .disposed(by: disposeBag)
@@ -193,7 +193,7 @@ extension LibraryBaseViewController {
         libraryEmptyView.isHidden = true
     }
     
-    private func setHierachy() {
+    private func setHierarchy() {
         self.view.addSubview(libraryEmptyView)
     }
     

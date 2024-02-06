@@ -25,7 +25,7 @@ protocol Networking {
 }
 
 extension Networking {
-
+    
     func makeHTTPRequest(
         method: HTTPMethod,
         baseURL: String = Bundle.main.object(forInfoDictionaryKey: Config.Keys.Plist.baseURL) as? String ?? "",
@@ -65,14 +65,12 @@ extension Networking {
         var body = Data()
         
         for image in images {
-            //            body.append("--\(APIConstants.boundary + lineBreak)")
             body.append("Content-Disposition: form-data; name=\"\(keyName)\"; filename=\"\(fileName)\"\(lineBreak)")
             body.append("Content-Type: \(mimeType)\(lineBreak + lineBreak)")
             body.append(image)
             body.append(lineBreak)
         }
         
-        //        body.append("--\(APIConstants.boundary)--\(lineBreak)") // End multipart form and return
         return body
     }
     

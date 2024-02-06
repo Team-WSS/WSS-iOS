@@ -10,10 +10,4 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-class MyPageViewModel {
-    
-    static let setting = Observable.just(["계정정보 확인",
-                                          "웹소소 인스타 보러가기",
-                                          "서비스 이용약관"])
-}
 

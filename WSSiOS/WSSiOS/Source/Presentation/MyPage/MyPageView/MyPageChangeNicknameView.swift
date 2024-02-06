@@ -12,14 +12,14 @@ import Then
 
 final class MyPageChangeNicknameView: UIView {
     
-    //MARK: - UI Components
+    //MARK: - Components
     
     private let dividerView = UIView()
     private let nicknameLabel = UILabel()
-    public var changeNicknameTextField = UITextField()
-    public var setClearButton = UIButton(type: .custom)
-    public var textFieldUnderBarView = UIView()
-    public var countNicknameLabel = UILabel()
+    public lazy var changeNicknameTextField = UITextField()
+    public lazy var setClearButton = UIButton(type: .custom)
+    public lazy var textFieldUnderBarView = UIView()
+    public lazy var countNicknameLabel = UILabel()
     
     // MARK: - Life Cycle
     
@@ -27,13 +27,15 @@ final class MyPageChangeNicknameView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    //MARK: - UI
     
     private func setUI() {
         self.backgroundColor = .White
@@ -43,7 +45,7 @@ final class MyPageChangeNicknameView: UIView {
         }
         
         nicknameLabel.do {
-            $0.text = "닉네임"
+            $0.text = StringLiterals.MyPage.ChangeNickname.nickname
             $0.font = .Body2
             $0.textColor = .Gray200
         }
@@ -67,13 +69,13 @@ final class MyPageChangeNicknameView: UIView {
         }
         
         countNicknameLabel.do {
-            $0.text = "\(changeNicknameTextField.text?.count)/10"
+            $0.text = "\(String(describing: changeNicknameTextField.text?.count))/10"
             $0.font = .Label1
             $0.textColor = .Gray200
         }
     }
     
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(dividerView,
                          nicknameLabel,
                          changeNicknameTextField,

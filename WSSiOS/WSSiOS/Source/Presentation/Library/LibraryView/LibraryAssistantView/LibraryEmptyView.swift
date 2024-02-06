@@ -25,7 +25,7 @@ final class LibraryEmptyView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -70,7 +70,7 @@ final class LibraryEmptyView: UIView {
     
     //MARK: - set Hierachy
     
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(emptyStackView,
                          libraryRegisterButton)
         emptyStackView.addArrangedSubviews(emptyImageView,

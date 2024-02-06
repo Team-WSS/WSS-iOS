@@ -12,11 +12,7 @@ import Then
 
 final class MyPageInventoryCollectionViewCell: UICollectionViewCell {
     
-    //MARK: - Properties
-    
-    static let identifier: String = "MyPageInventoryTableViewCell"
-    
-    //MARK: - UI Components
+    //MARK: - Components
     
     let myPageAvaterImageView = UIImageView()
     
@@ -26,7 +22,7 @@ final class MyPageInventoryCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -35,22 +31,23 @@ final class MyPageInventoryCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - Set UI
+    //MARK: - UI
     
     private func setUI() {
         myPageAvaterImageView.do {
             $0.layer.cornerRadius = 12
+            $0.layer.borderWidth = 1
+            $0.layer.borderColor = UIColor.clear.cgColor
             $0.layer.masksToBounds = true
+            $0.contentMode = .scaleAspectFit
         }
     }
     
-    //MARK: - Set Hierachy
     
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubview(myPageAvaterImageView)
     }
     
-    //MARK: - Set Layout
     
     private func setLayout() {
         myPageAvaterImageView.snp.makeConstraints() {
@@ -58,16 +55,12 @@ final class MyPageInventoryCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    //MARK: - Data
+    
     func bindData(data: UserAvatar, representativeId: Int) {
         myPageAvaterImageView.kfSetImage(url: data.avatarImg)
         
-        if representativeId == data.avatarId {
-            myPageAvaterImageView.layer.borderColor = UIColor.Primary100.cgColor
-            myPageAvaterImageView.layer.borderWidth = 1
-        }
-        else {
-            myPageAvaterImageView.layer.borderColor = UIColor.clear.cgColor
-            myPageAvaterImageView.layer.borderWidth = 0
-        }
+        let isRepresentative = representativeId == data.avatarId
+        myPageAvaterImageView.layer.borderColor = isRepresentative ? UIColor.Primary100.cgColor : UIColor.clear.cgColor
     }
 }
