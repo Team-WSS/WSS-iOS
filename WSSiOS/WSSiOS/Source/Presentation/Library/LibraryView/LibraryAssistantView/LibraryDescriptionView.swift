@@ -23,7 +23,7 @@ final class LibraryDescriptionView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -54,7 +54,7 @@ final class LibraryDescriptionView: UIView {
     
     //MARK: - set Hierachy
     
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(libraryNovelCountLabel,
                          libraryNovelListButton)
     }

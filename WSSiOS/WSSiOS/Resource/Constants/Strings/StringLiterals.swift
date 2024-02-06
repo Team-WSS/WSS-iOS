@@ -66,6 +66,10 @@ enum StringLiterals {
     enum MyPage {
         enum Modal {
             static let back = "돌아가기"
+            static let baseTitle = "오늘 당신을 만날 걸 알고 있었어"
+            static let baseExplanation = "메모를 작성해서 잠금해제 됐어요!"
+            static let keepOriginally = "원래대로 유지하기"
+            static let changeCharacter = "대표 캐릭터 설정하기"
         }
         
         enum Profile {
@@ -90,6 +94,7 @@ enum StringLiterals {
         
         enum ChangeNickname {
             static let complete = "완료"
+            static let nickname = "닉네임"
         }
     }
 

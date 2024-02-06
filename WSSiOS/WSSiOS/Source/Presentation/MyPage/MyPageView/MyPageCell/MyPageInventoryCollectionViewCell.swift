@@ -22,7 +22,7 @@ final class MyPageInventoryCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -44,7 +44,7 @@ final class MyPageInventoryCollectionViewCell: UICollectionViewCell {
     }
     
     
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubview(myPageAvaterImageView)
     }
     

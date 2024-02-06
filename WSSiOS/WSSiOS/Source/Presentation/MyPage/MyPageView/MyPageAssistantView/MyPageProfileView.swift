@@ -25,7 +25,7 @@ final class MyPageProfileView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -55,7 +55,7 @@ final class MyPageProfileView: UIView {
         }
     }
     
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(myPageBadgeImageView,
                          myPageNameLabel,
                          myPagePhraseLabel,

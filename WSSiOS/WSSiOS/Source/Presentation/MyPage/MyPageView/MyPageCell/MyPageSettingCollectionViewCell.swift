@@ -22,7 +22,7 @@ final class MyPageSettingCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -42,7 +42,7 @@ final class MyPageSettingCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(myPageSettingCellLabel)
     }
 

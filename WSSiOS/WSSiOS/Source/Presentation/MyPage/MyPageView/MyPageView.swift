@@ -28,7 +28,7 @@ final class MyPageView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -49,7 +49,7 @@ final class MyPageView: UIView {
         }
     }
     
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubview(scrollView)
         scrollView.addSubview(myPageStackView)
         myPageStackView.addArrangedSubviews(myPageProfileView,

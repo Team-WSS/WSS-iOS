@@ -25,7 +25,7 @@ final class MyPageTallyReuseView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -56,7 +56,7 @@ final class MyPageTallyReuseView: UIView {
         }
     }
 
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(titleView,
                          tallyLabel)
         titleView.addArrangedSubviews(titleIconImageView,

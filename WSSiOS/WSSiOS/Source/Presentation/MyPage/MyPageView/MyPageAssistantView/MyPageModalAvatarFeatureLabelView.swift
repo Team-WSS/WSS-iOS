@@ -25,7 +25,7 @@ final class MyPageModalAvatarFeatureLabelView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -59,7 +59,7 @@ final class MyPageModalAvatarFeatureLabelView: UIView {
         }
     }
 
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubview(stackView)
         stackView.addArrangedSubviews(modalAvaterBadgeImageView,
                                       modalAvaterTitleLabel)

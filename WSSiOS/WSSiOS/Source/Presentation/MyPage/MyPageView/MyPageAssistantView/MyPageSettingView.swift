@@ -23,7 +23,7 @@ final class MyPageSettingView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -48,7 +48,7 @@ final class MyPageSettingView: UIView {
         }
     }
 
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubview(myPageSettingCollectionView)
     }
 

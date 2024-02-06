@@ -26,6 +26,8 @@ final class MyPageCustomModalViewController: UIViewController {
     private let avatarRepository: AvatarRepository
     private let modalBackgroundView = UIView()
     
+    // MARK: - Life Cycle
+    
     init(avatarRepository: AvatarRepository,
          avatarId: Int,
          modalHasAvatar: Bool,
@@ -42,13 +44,11 @@ final class MyPageCustomModalViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Life Cycle
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
         bindAvatarData()
         setAction()
@@ -65,6 +65,32 @@ final class MyPageCustomModalViewController: UIViewController {
         super.viewWillDisappear(animated)
         
         setBackgroundClear()
+    }
+    
+    //MARK: - Bind
+    
+    private func bindAvatarData() {
+        avatarRepository.getAvatarData(avatarId: avatarId)
+            .observe(on: MainScheduler.asyncInstance)
+            .withUnretained(self)
+            .subscribe(onNext: { (owner, data) in
+                owner.rootView.bindData(id: owner.avatarId,
+                                        data: data)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func patchAvatar() {
+        avatarRepository.patchAvatar(avatarId: avatarId)
+            .observe(on: MainScheduler.asyncInstance)
+            .subscribe(with: self, onNext: { owner, _ in 
+                NotificationCenter.default.post(name: NSNotification.Name("AvatarChanged"), 
+                                                object: nil)
+                owner.dismiss(animated: true)
+            },onError: { owner, error in
+                print(error)
+            })
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Actions
@@ -101,32 +127,6 @@ final class MyPageCustomModalViewController: UIViewController {
             })
             .disposed(by: disposeBag)
     }
-    
-    //MARK: - Bind
-    
-    private func bindAvatarData() {
-        avatarRepository.getAvatarData(avatarId: avatarId)
-            .observe(on: MainScheduler.asyncInstance)
-            .withUnretained(self)
-            .subscribe(onNext: { (owner, data) in
-                owner.rootView.bindData(id: owner.avatarId,
-                                        data: data)
-            })
-            .disposed(by: disposeBag)
-    }
-    
-    private func patchAvatar() {
-        avatarRepository.patchAvatar(avatarId: avatarId)
-            .observe(on: MainScheduler.asyncInstance)
-            .subscribe(with: self, onNext: { owner, _ in 
-                NotificationCenter.default.post(name: NSNotification.Name("AvatarChanged"), 
-                                                object: nil)
-                owner.dismiss(animated: true)
-            },onError: { owner, error in
-                print(error)
-            })
-            .disposed(by: disposeBag)
-    }
 }
 
 extension MyPageCustomModalViewController {
@@ -143,7 +143,7 @@ extension MyPageCustomModalViewController {
         }
     }
     
-    private func setHierachy() {
+    private func setHierarchy() {
         self.view.addSubviews(modalBackgroundView, 
                               rootView)
     }

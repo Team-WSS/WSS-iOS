@@ -30,7 +30,7 @@ final class MyPageInfoView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -64,7 +64,7 @@ final class MyPageInfoView: UIView {
         }
     }
     
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(dividerView,
                          nickNameLabel,
                          userNickNameLabel,

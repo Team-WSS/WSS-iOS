@@ -20,7 +20,7 @@ final class MyPageCustomModalView: UIView {
     public lazy var modalAvaterLottieView = LottieAnimationView()
     public let modalTitleLabel = UILabel()
     public let modalExplanationLabel = UILabel()
-    public lazy var modalChangeButton = WSSMainButton(title: "대표 캐릭터 설정하기")
+    public lazy var modalChangeButton = WSSMainButton(title: StringLiterals.MyPage.Modal.keepOriginally)
     public lazy var modalContinueButton = UIButton()
     private let lottieList = [LottieLiterals.Home.Sosocat.bread,
                               LottieLiterals.Home.Regressor.sword,
@@ -32,7 +32,7 @@ final class MyPageCustomModalView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -52,28 +52,26 @@ final class MyPageCustomModalView: UIView {
         }
         
         modalTitleLabel.do {
-            //text 뷰컨으로 뺄 예정
-            $0.text = "오늘 당신을 만날 걸 알고 있었어"
+            $0.text = StringLiterals.MyPage.Modal.baseTitle
             $0.font = .HeadLine1
             $0.textColor = .Black
         }
         
         modalExplanationLabel.do {
-            //text 뷰컨으로 뺄 예정
-            $0.text = "메모를 작성해서 잠금해제 됐어요!"
+            $0.text = StringLiterals.MyPage.Modal.baseExplanation
             $0.font = .Title1
             $0.textColor = .Gray200
         }
         
         modalContinueButton.do {
-            $0.setTitle("원래대로 유지하기", for: .normal)
+            $0.setTitle(StringLiterals.MyPage.Modal.keepOriginally, for: .normal)
             $0.setTitleColor(.Gray300, for: .normal)
             $0.titleLabel?.font = .Body2
             $0.layer.backgroundColor = UIColor.clear.cgColor
         }
     }
     
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(modalAvatarFeatureLabelView,
                          modalAvaterLottieView,
                          modalTitleLabel,

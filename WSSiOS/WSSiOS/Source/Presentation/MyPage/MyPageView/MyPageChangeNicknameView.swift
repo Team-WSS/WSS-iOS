@@ -27,7 +27,7 @@ final class MyPageChangeNicknameView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -45,7 +45,7 @@ final class MyPageChangeNicknameView: UIView {
         }
         
         nicknameLabel.do {
-            $0.text = "닉네임"
+            $0.text = StringLiterals.MyPage.ChangeNickname.nickname
             $0.font = .Body2
             $0.textColor = .Gray200
         }
@@ -75,7 +75,7 @@ final class MyPageChangeNicknameView: UIView {
         }
     }
     
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(dividerView,
                          nicknameLabel,
                          changeNicknameTextField,

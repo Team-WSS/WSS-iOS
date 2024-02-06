@@ -24,7 +24,7 @@ final class MyPageInventoryView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -54,7 +54,7 @@ final class MyPageInventoryView: UIView {
         }
     }
 
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(titleLabel,
                          myPageAvaterCollectionView)
     }

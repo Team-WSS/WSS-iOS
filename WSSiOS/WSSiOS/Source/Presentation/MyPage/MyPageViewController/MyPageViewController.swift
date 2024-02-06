@@ -25,6 +25,12 @@ final class MyPageViewController: UIViewController {
     private lazy var representativeAvatarId = 0
     private var currentPresentativeAvatar = false
     
+    //MARK: - UI Components
+    
+    private var rootView = MyPageView()
+    
+    // MARK: - Life Cycle
+    
     init(userRepository: UserRepository, avatarRepository: AvatarRepository) {
         self.userRepository = userRepository 
         self.avatarRepository = avatarRepository
@@ -35,12 +41,6 @@ final class MyPageViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    //MARK: - UI Components
-    
-    private var rootView = MyPageView()
-    
-    // MARK: - Life Cycle
     
     override func loadView() {
         self.view = rootView

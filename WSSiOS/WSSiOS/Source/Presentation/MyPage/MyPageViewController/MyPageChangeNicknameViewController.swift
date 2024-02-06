@@ -26,6 +26,8 @@ final class MyPageChangeNicknameViewController: UIViewController {
     private let disposeBag = DisposeBag()
     private let userRepository : UserRepository
     
+    // MARK: - Life Cycle
+    
     init(userNickName: String, userRepository: UserRepository) {
         self.userNickName = userNickName
         self.userRepository = userRepository
@@ -35,8 +37,6 @@ final class MyPageChangeNicknameViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    // MARK: - Life Cycle
     
     override func loadView() {
         self.view = rootView
@@ -52,6 +52,23 @@ final class MyPageChangeNicknameViewController: UIViewController {
         setUI()
         swipeBackGesture()
         setTextField()
+    }
+    
+    //MARK: - Bind
+    
+    private func patchUserNickName() {
+        userRepository.patchUserName(userNickName: newNickName)
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, _ in 
+                owner.navigationController?.popViewController(animated: true)
+            }, onError: { owner, error in
+                print(error)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    func bindData(_ data: String) {
+        rootView.changeNicknameTextField.text = data
     }
     
     //MARK: - Actions
@@ -97,7 +114,7 @@ final class MyPageChangeNicknameViewController: UIViewController {
         rootView.changeNicknameTextField.rx.text
             .orEmpty
             .subscribe(with: self, onNext: { owner, text in
-                self.limitNum(text)
+                self.limitNameCount(text)
             })
             .disposed(by: disposeBag)
         
@@ -108,23 +125,6 @@ final class MyPageChangeNicknameViewController: UIViewController {
                 owner.rootView.countNicknameLabel.text = "0/10"
             })
             .disposed(by: disposeBag)
-    }
-    
-    //MARK: - Bind
-    
-    private func patchUserNickName() {
-        userRepository.patchUserName(userNickName: newNickName)
-            .observe(on: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, _ in 
-                owner.navigationController?.popViewController(animated: true)
-            }, onError: { owner, error in
-                print(error)
-            })
-            .disposed(by: disposeBag)
-    }
-    
-    func bindData(_ data: String) {
-        rootView.changeNicknameTextField.text = data
     }
 }
 
@@ -156,10 +156,9 @@ extension MyPageChangeNicknameViewController {
         }
     }
     
-    
     //MARK: - Custom Method
     
-    private func limitNum(_ text: String) {
+    private func limitNameCount(_ text: String) {
         if text.count > 10 {
             self.rootView.changeNicknameTextField.text = String(text.prefix(10))
         }

@@ -62,7 +62,7 @@ final class LibraryBaseViewController: UIViewController {
         super.viewDidLoad()
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
         
         register()
@@ -193,7 +193,7 @@ extension LibraryBaseViewController {
         libraryEmptyView.isHidden = true
     }
     
-    private func setHierachy() {
+    private func setHierarchy() {
         self.view.addSubview(libraryEmptyView)
     }
     
