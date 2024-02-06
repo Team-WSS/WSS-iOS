@@ -101,7 +101,7 @@ final class LibraryViewController: UIViewController {
             .disposed(by: disposeBag)
         
         Observable.just(Void())
-            .observeOn(MainScheduler.instance)
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] in
                 self?.libraryPageBar.libraryTabCollectionView.selectItem(at: IndexPath(item: 0, section: 0),
                                                                          animated: true,
