@@ -8,11 +8,7 @@
 import UIKit
 
 final class RecordTableViewCell: UITableViewCell {
-    
-    //MARK: - Properties
-    
-    static let identifier = "RecordTableViewCell"
-    
+
     //MARK: - Components
     
     private let dateView = RecordDateView()

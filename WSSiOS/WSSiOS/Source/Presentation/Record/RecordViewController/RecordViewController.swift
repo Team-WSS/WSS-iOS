@@ -48,14 +48,16 @@ final class RecordViewController: UIViewController {
         
         bindDataToUI(id: lastMemoId, sortStyle: alignmentLabel)
         showTabBar()
+        preparationSetNavigationBar(title: StringLiterals.Navigation.Title.record,
+                                    left: nil,
+                                    right: nil)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setUI()
-        setNavigationBar()
-        
+
         registerCell()
         bindUI()
         bindDataToRecordTableView()
@@ -69,23 +71,10 @@ final class RecordViewController: UIViewController {
         rootView.headerView.isUserInteractionEnabled = true
     }
     
-    private func setNavigationBar() {
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
-        self.navigationItem.title = StringLiterals.Navigation.Title.record
-        self.navigationController?.navigationBar.backgroundColor = .wssWhite
-        
-        if let navigationBar = self.navigationController?.navigationBar {
-            let titleTextAttributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.Title2
-            ]
-            navigationBar.titleTextAttributes = titleTextAttributes
-        }
-    }
-    
-    //MARK: - Bind (Output)
+    //MARK: - Bind
     
     private func registerCell() {
-        rootView.recordTableView.register(RecordTableViewCell.self, forCellReuseIdentifier: RecordTableViewCell.identifier)
+        rootView.recordTableView.register(RecordTableViewCell.self, forCellReuseIdentifier: RecordTableViewCell.cellIdentifier)
     }
     
     private func bindUI() {
@@ -131,7 +120,7 @@ final class RecordViewController: UIViewController {
     
     private func bindDataToRecordTableView() {
         recordMemoListRelay
-            .bind(to: rootView.recordTableView.rx.items(cellIdentifier: RecordTableViewCell.identifier, cellType: RecordTableViewCell.self)) { (row, element, cell) in
+            .bind(to: rootView.recordTableView.rx.items(cellIdentifier: RecordTableViewCell.cellIdentifier, cellType: RecordTableViewCell.self)) { (row, element, cell) in
                 cell.bindData(data: element)
             }
             .disposed(by: disposeBag)

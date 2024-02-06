@@ -29,7 +29,7 @@ final class RecordHeaderAlignmentButton: UIButton {
             $0.setTitleColor(.wssGray300, for: .normal)
             $00.titleLabel?.font = .Label1
             $0.titleLabel?.adjustsFontSizeToFitWidth = true
-            $0.setImage(UIImage(resource: .icDropDown), for: .normal)
+            $0.setImage(.icDropDown, for: .normal)
             $0.semanticContentAttribute = .forceRightToLeft
             $0.configuration?.contentInsets = .init(top: 0, leading: 8, bottom: 0, trailing: 0)
         }
