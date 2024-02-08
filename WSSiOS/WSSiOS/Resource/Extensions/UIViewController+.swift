@@ -53,7 +53,7 @@ extension UIViewController {
     // 추후 이름 고치기
     func preparationSetNavigationBar(title: String, left: UIButton?, right: UIButton?) {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
-        self.title = title
+        self.navigationItem.title = title
         
         if let navigationBar = self.navigationController?.navigationBar {
             let titleTextAttributes: [NSAttributedString.Key: Any] = [
