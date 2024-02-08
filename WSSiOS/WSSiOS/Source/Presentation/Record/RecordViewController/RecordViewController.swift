@@ -7,10 +7,9 @@
 
 import UIKit
 
-import Then
 import RxSwift
 import RxCocoa
-import RxRelay
+import Then
 
 final class RecordViewController: UIViewController {
     
@@ -187,17 +186,10 @@ final class RecordViewController: UIViewController {
                         sortStyle: String,
                         completion: @escaping (Int, [RecordMemo]) -> Void) {
         self.memoRepository.getRecordMemoList(memoId: id, sort: sortStyle)
-            .subscribe (
-                onNext: { [weak self] memo in
-                    guard self != nil else { return }
-                    let recordMemoCount = memo.memoCount
-                    let recordMemoList = memo.memos
-                    
-                    completion(recordMemoCount, recordMemoList)
-                },
-                onError: { error in
-                    print(error)
-                })
+            .subscribe(with: self, onNext: { owner, memo in
+                let recordMemoCount = memo.memoCount
+                let recordMemoList = memo.memos
+            })
             .disposed(by: disposeBag)
     }
 }
