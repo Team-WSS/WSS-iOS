@@ -125,7 +125,6 @@ final class RecordViewController: UIViewController {
                 }
                 else {
                     owner.emptyView.removeFromSuperview()
-                    owner.recordMemoCount.accept(value)
                 }
             })
             .disposed(by: disposeBag)
@@ -148,7 +147,6 @@ final class RecordViewController: UIViewController {
 
     //MARK: - API
     
-    // 서버에서 데이터를 받아온 뒤 Rx객체에 담아주는 함수
     func getDataFromAPI(id: Int,
                         sortType: String) {
         self.memoRepository.getRecordMemoList(memoId: id, sort: sortType)
