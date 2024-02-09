@@ -12,11 +12,11 @@ import Then
 
 final class MyPageModalAvatarFeatureLabelView: UIView {
     
-    //MARK: - UI Components
+    //MARK: - Components
     
-    private var stackView = UIStackView()
-    public var modalAvaterBadgeImageView = UIImageView()
-    public var modalAvaterTitleLabel = UILabel()
+    private let stackView = UIStackView()
+    public let modalAvaterBadgeImageView = UIImageView()
+    public let modalAvaterTitleLabel = UILabel()
     
     
     // MARK: - Life Cycle
@@ -25,7 +25,7 @@ final class MyPageModalAvatarFeatureLabelView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -33,7 +33,7 @@ final class MyPageModalAvatarFeatureLabelView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
         self.do {
@@ -58,17 +58,13 @@ final class MyPageModalAvatarFeatureLabelView: UIView {
             }
         }
     }
-    
-    //MARK: - set Hierachy
-    
-    private func setHierachy() {
+
+    private func setHierarchy() {
         self.addSubview(stackView)
         stackView.addArrangedSubviews(modalAvaterBadgeImageView,
                                       modalAvaterTitleLabel)
     }
-    
-    //MARK: - set Layout
-    
+
     private func setLayout() {
         stackView.snp.makeConstraints() {
             $0.horizontalEdges.equalToSuperview().inset(20)

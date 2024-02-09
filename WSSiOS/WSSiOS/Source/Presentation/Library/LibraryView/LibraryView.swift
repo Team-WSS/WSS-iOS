@@ -22,7 +22,7 @@ final class LibraryView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -48,7 +48,7 @@ final class LibraryView: UIView {
     
     //MARK: - set Hierachy
     
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubview(libraryCollectionView)
     }
     

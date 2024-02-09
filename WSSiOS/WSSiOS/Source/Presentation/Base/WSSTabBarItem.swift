@@ -21,8 +21,6 @@ enum WSSTabBarItem: CaseIterable {
             return .icNavigateRecord
         case .myPage:
             return .icNavigateMy
-        default:
-            return UIImage()
         }
     }
     
@@ -51,8 +49,6 @@ enum WSSTabBarItem: CaseIterable {
             return StringLiterals.Tabbar.Title.record
         case .myPage:
             return StringLiterals.Tabbar.Title.myPage
-        default:
-            return String()
         }
     }
     
@@ -67,26 +63,29 @@ enum WSSTabBarItem: CaseIterable {
                     recommendService: DefaultRecommendService()
                 )
             )
+            
         case .library:
             return LibraryViewController(
                 userNovelListRepository: DefaultUserNovelRepository(
                     userNovelService: DefaultUserNovelService()
                 )
             )
+            
         case .record:
             return RecordViewController(
                 memoRepository: DefaultMemoRepository(
                     memoService: DefaultMemoService()
                 )
             )
+            
         case .myPage:
             return MyPageViewController(
                 userRepository: DefaultUserRepository(
                     userService: DefaultUserService()
+                ), avatarRepository: DefaultAvatarRepository(
+                    avatarService: DefaultAvatarService()
                 )
             )
-        default:
-            return UIViewController()
         }
     }
 }
