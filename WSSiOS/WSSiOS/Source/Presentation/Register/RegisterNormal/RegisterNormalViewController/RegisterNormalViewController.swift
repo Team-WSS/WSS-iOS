@@ -82,6 +82,7 @@ final class RegisterNormalViewController: UIViewController {
         bindActions()
         bindNavigation()
         setNavigationBar()
+        swipeBackGesture()
     }
     
     // MARK: - UI
