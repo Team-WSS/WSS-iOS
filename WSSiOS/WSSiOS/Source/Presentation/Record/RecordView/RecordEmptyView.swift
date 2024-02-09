@@ -12,7 +12,7 @@ import Then
 
 final class RecordEmptyView: UIView {
     
-    //MARK: - UI Components
+    //MARK: - Components
     
     private let dividerView = UIView()
     private let stackView = UIStackView()
@@ -34,13 +34,15 @@ final class RecordEmptyView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: - UI
+    
     private func setUI() {
         self.do {
-            $0.backgroundColor = .White
+            $0.backgroundColor = .wssWhite
         }
         
         dividerView.do {
-            $0.backgroundColor = .Gray50
+            $0.backgroundColor = .wssGray50
         }
         
         stackView.do {
@@ -49,13 +51,13 @@ final class RecordEmptyView: UIView {
         }
         
         registerPlusImageView.do {
-            $0.image = ImageLiterals.icon.BookRegistration.plus
+            $0.image = .icBookRegistrationPlus
         }
         
         recordEmptyDescriptionLabel.do {
             $0.font = .Body1
-            $0.textColor = .Gray200
-            $0.makeAttribute(with: "읽은 웹소설에 대해\n기록을 남겨볼까요?")?
+            $0.textColor = .wssGray200
+            $0.makeAttribute(with: StringLiterals.Record.Empty.description)?
                 .kerning(kerningPixel: -0.8)
                 .lineSpacing(spacingPercentage: 140)
                 .applyAttribute()
@@ -65,9 +67,9 @@ final class RecordEmptyView: UIView {
         
         recordButton.do {
             var config = UIButton.Configuration.filled()
-            config.baseBackgroundColor = .Primary50
-            config.baseForegroundColor = .Primary100
-            var titleAttr = AttributedString.init("웹소설 기록하기")
+            config.baseBackgroundColor = .wssPrimary50
+            config.baseForegroundColor = .wssPrimary100
+            var titleAttr = AttributedString.init(StringLiterals.Record.Empty.register)
             titleAttr.kern = -0.6
             titleAttr.font = UIFont.Title1
             config.attributedTitle = titleAttr
