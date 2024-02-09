@@ -74,7 +74,9 @@ final class RecordViewController: UIViewController {
     //MARK: - Bind
     
     private func registerCell() {
-        rootView.recordTableView.register(RecordTableViewCell.self, forCellReuseIdentifier: RecordTableViewCell.cellIdentifier)
+        rootView.recordTableView.register(
+            RecordTableViewCell.self,
+            forCellReuseIdentifier: RecordTableViewCell.cellIdentifier)
         
         recordMemoListRelay
             .bind(to: rootView.recordTableView.rx.items(cellIdentifier: RecordTableViewCell.cellIdentifier, cellType: RecordTableViewCell.self)) { (row, element, cell) in
