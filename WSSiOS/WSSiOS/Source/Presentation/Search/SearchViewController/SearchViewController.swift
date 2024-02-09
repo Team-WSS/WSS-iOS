@@ -42,7 +42,11 @@ final class SearchViewController: UIViewController {
         super.viewWillAppear(animated)
         
         rootView.headerView.searchBar.becomeFirstResponder()
+        
         hideTabBar()
+        preparationSetNavigationBar(title: StringLiterals.Navigation.Title.search,
+                                    left: backButton,
+                                    right: nil)
     }
     
     override func viewDidLoad() {
@@ -50,7 +54,6 @@ final class SearchViewController: UIViewController {
         
         setUI()
         setDelegate()
-        setNavigationBar()
         
         registerCell()
         bindDataToSearchCollectionView()
@@ -73,21 +76,6 @@ final class SearchViewController: UIViewController {
                 })
                 .disposed(by: disposeBag)
         }
-    }
-    
-    private func setNavigationBar() {
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        self.navigationItem.title = StringLiterals.Navigation.Title.search
-        self.navigationController?.navigationBar.backgroundColor = .wssWhite
-        
-        if let navigationBar = self.navigationController?.navigationBar {
-            let titleTextAttributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.Title2
-            ]
-            navigationBar.titleTextAttributes = titleTextAttributes
-        }
-        
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.backButton)
     }
     
     private func setCollectionViewLayout() {
