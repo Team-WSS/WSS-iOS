@@ -44,12 +44,12 @@ extension UIViewController {
         }
     }
     
-    func pushToRegisterSuccessVC(userNovelId: Int) {
+    func pushToRegisterSuccessViewController(userNovelId: Int) {
         self.navigationController?.pushViewController(RegisterSuccessViewController(userNovelId: userNovelId),
                                                        animated: true)
     }
     
-    func moveToNovelDetailVC(userNovelId: Int) {
+    func moveToNovelDetailViewController(userNovelId: Int) {
         if self.navigationController?.tabBarController?.selectedIndex == 0 {
             let tabBar = WSSTabBarController()
             tabBar.selectedIndex = 1
@@ -64,7 +64,7 @@ extension UIViewController {
         }
     }
     
-    func popToLastVC() {
+    func popToLastViewController() {
         self.navigationController?.popViewController(animated: true)
     }
 }

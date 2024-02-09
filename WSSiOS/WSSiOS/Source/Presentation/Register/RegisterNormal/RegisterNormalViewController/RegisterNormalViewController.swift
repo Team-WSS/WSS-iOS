@@ -342,7 +342,7 @@ final class RegisterNormalViewController: UIViewController {
         backButton.rx.tap
             .asDriver()
             .drive(with: self, onNext: { owner, _ in
-                owner.popToLastVC()
+                owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
         
@@ -377,7 +377,7 @@ final class RegisterNormalViewController: UIViewController {
         .observe(on: MainScheduler.instance)
         .subscribe(with: self, onNext: { owner, data in
             owner.userNovelId = data.userNovelId
-            owner.pushToRegisterSuccessVC(userNovelId: owner.userNovelId)
+            owner.pushToRegisterSuccessViewController(userNovelId: owner.userNovelId)
         }, onError: { owner, error in
             print(error)
         })
@@ -393,7 +393,7 @@ final class RegisterNormalViewController: UIViewController {
                                            userNovelReadEndDate: requestEndDate)
         .observe(on: MainScheduler.instance)
         .subscribe(with: self, onNext: { owner, data in
-            owner.moveToNovelDetailVC(userNovelId: owner.userNovelId)
+            owner.moveToNovelDetailViewController(userNovelId: owner.userNovelId)
         }, onError: { owner, error in
             print(error)
         })
