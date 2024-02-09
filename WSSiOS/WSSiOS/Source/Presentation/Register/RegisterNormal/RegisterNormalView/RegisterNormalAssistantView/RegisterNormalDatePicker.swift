@@ -14,11 +14,11 @@ final class RegisterNormalDatePicker: UIButton {
     
     // MARK: - Properties
     
-    let horizontalPadding: CGFloat = 20
-    lazy var backgroundCenter = (UIScreen.main.bounds.width - horizontalPadding*2)/2
-    let animationDuration: Double = 0.25
-    let onColor: UIColor = .wssPrimary100
-    let offColor: UIColor = .wssGray100
+    private let horizontalPadding: CGFloat = 20
+    private lazy var backgroundCenter = (UIScreen.main.bounds.width - horizontalPadding*2)/2
+    private let animationDuration: Double = 0.25
+    private let onColor: UIColor = .wssPrimary100
+    private let offColor: UIColor = .wssGray100
     
     // MARK: - Components
     
@@ -26,7 +26,6 @@ final class RegisterNormalDatePicker: UIButton {
     private let totalStackView = UIStackView()
     
     private let finishStatusView = UIView()
-    
     private let buttonBackgroundView = UIView()
     
     let startButton = UIButton()
@@ -115,10 +114,10 @@ final class RegisterNormalDatePicker: UIButton {
             }
             
             buttonBackgroundView.do {
-                $0.backgroundColor = .White
+                $0.backgroundColor = .wssWhite
                 $0.layer.cornerRadius = 5
                 $0.layer.borderWidth = 1
-                $0.layer.borderColor = UIColor.Primary50.cgColor
+                $0.layer.borderColor = UIColor.wssPrimary50.cgColor
             }
         }
         
@@ -250,24 +249,24 @@ final class RegisterNormalDatePicker: UIButton {
     
     func updateButtons(_ isStart: Bool) {
         UIView.animate(withDuration: self.animationDuration) {
-            self.backgroundLayout(isStart)
+            self.whiteBackgroundLayout(isStart)
             self.layoutIfNeeded()
         }
         UIView.transition(with: self.startTitleLabel, duration: self.animationDuration, options: .transitionCrossDissolve) {
-            self.startTitleLabel.textColor = isStart ? .Primary100 : .Gray100
+            self.startTitleLabel.textColor = isStart ? self.onColor : self.offColor
         }
         UIView.transition(with: self.startDateLabel, duration: self.animationDuration, options: .transitionCrossDissolve) {
-            self.startDateLabel.textColor = isStart ? .Primary100 : .Gray100
+            self.startDateLabel.textColor = isStart ? self.onColor : self.offColor
         }
         UIView.transition(with: self.endTitleLabel, duration: self.animationDuration, options: .transitionCrossDissolve) {
-            self.endTitleLabel.textColor = isStart ? .Gray100 : .Primary100
+            self.endTitleLabel.textColor = isStart ? self.offColor : self.onColor
         }
         UIView.transition(with: self.endDateLabel, duration: self.animationDuration, options: .transitionCrossDissolve) {
-            self.endDateLabel.textColor = isStart ? .Gray100 : .Primary100
+            self.endDateLabel.textColor = isStart ? self.offColor : self.onColor
         }
     }
     
-    private func backgroundLayout(_ isStart: Bool) {
+    private func whiteBackgroundLayout(_ isStart: Bool) {
         if isStart {
             buttonBackgroundView.snp.updateConstraints {
                 $0.leading.equalTo(finishStatusView.snp.leading)
