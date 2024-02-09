@@ -29,7 +29,7 @@ final class LibraryPageBar: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -57,7 +57,7 @@ final class LibraryPageBar: UIView {
     
     //MARK: - set Hierachy
     
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubview(libraryTabCollectionView)
     }
     

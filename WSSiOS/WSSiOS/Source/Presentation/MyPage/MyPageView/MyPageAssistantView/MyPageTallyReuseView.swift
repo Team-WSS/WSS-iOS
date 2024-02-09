@@ -12,12 +12,12 @@ import Then
 
 final class MyPageTallyReuseView: UIView {
     
-    //MARK: - UI Components
+    //MARK: - Components
     
-    var titleView = UIStackView()
-    var titleIconImageView = UIImageView()
-    var titleLabel = UILabel()
-    var tallyLabel = UILabel()
+    let titleView = UIStackView()
+    let titleIconImageView = UIImageView()
+    let titleLabel = UILabel()
+    let tallyLabel = UILabel()
     
     // MARK: - Life Cycle
     
@@ -25,7 +25,7 @@ final class MyPageTallyReuseView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -33,7 +33,7 @@ final class MyPageTallyReuseView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
         self.backgroundColor = .clear
@@ -55,18 +55,14 @@ final class MyPageTallyReuseView: UIView {
             $0.textColor = .Black
         }
     }
-    
-    //MARK: - set Hierachy
-    
-    private func setHierachy() {
+
+    private func setHierarchy() {
         self.addSubviews(titleView,
                          tallyLabel)
         titleView.addArrangedSubviews(titleIconImageView,
                                       titleLabel)
     }
-    
-    //MARK: - set Layout
-    
+
     private func setLayout() {
         titleView.snp.makeConstraints() {
             $0.top.centerX.equalToSuperview()

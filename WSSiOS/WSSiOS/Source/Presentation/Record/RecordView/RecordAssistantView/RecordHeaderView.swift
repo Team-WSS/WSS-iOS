@@ -12,7 +12,7 @@ import Then
 
 final class RecordHeaderView: UIView {
     
-    //MARK: - UI Components
+    //MARK: - Components
     
     let recordCountLabel = UILabel()
     let headerAlignmentButton = RecordHeaderAlignmentButton()
@@ -23,7 +23,7 @@ final class RecordHeaderView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -31,28 +31,24 @@ final class RecordHeaderView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
         self.do {
-            $0.backgroundColor = .Gray50
+            $0.backgroundColor = .wssGray50
         }
         
         recordCountLabel.do {
             $0.font = .Label1
-            $0.textColor = .Gray200
+            $0.textColor = .wssGray200
         }
     }
-    
-    //MARK: - set Hierachy
-    
-    private func setHierachy() {
+ 
+    private func setHierarchy() {
         self.addSubviews(recordCountLabel,
                          headerAlignmentButton)
     }
-    
-    //MARK: - set Layout
-    
+ 
     private func setLayout() {
         recordCountLabel.snp.makeConstraints {
             $0.centerY.equalToSuperview()

@@ -7,11 +7,14 @@
 
 import UIKit
 
+import SnapKit
+import Then
+
 final class MyPageSettingView: UIView {
 
-    //MARK: - UI Components
+    //MARK: - Components
     
-    var myPageSettingCollectionView = UICollectionView(frame: .zero,
+    lazy var myPageSettingCollectionView = UICollectionView(frame: .zero,
                                                 collectionViewLayout: UICollectionViewFlowLayout())
     
     // MARK: - Life Cycle
@@ -20,7 +23,7 @@ final class MyPageSettingView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -28,7 +31,7 @@ final class MyPageSettingView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
         self.backgroundColor = .Gray50
@@ -44,21 +47,15 @@ final class MyPageSettingView: UIView {
             $0.backgroundColor = .Gray50
         }
     }
-    
-    //MARK: - set Hierachy
-    
-    private func setHierachy() {
+
+    private func setHierarchy() {
         self.addSubview(myPageSettingCollectionView)
     }
-    
-    //MARK: - set Layout
-    
+
     private func setLayout() {
         myPageSettingCollectionView.snp.makeConstraints() {
             $0.top.equalToSuperview().inset(7)
             $0.width.equalToSuperview()
-            //데이터 연결 후 수정 예정
-            $0.height.equalTo(64*4 + 1*4)
             $0.bottom.equalToSuperview()
         }
     }
