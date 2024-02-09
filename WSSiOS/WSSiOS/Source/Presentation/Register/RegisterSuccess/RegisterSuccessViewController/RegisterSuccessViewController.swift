@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  RegisterSuccessViewController.swift
 //  WSSiOS
 //
 //  Created by 이윤학 on 1/12/24.
