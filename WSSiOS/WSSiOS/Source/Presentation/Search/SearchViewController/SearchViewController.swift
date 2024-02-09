@@ -57,7 +57,6 @@ final class SearchViewController: UIViewController {
         
         registerCell()
         bindDataToSearchCollectionView()
-        setCollectionViewLayout()
         setSearchAction()
     }
 
@@ -73,16 +72,7 @@ final class SearchViewController: UIViewController {
                 .disposed(by: disposeBag)
         }
     }
-    
-    private func setCollectionViewLayout() {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.scrollDirection = .vertical
-        flowLayout.minimumLineSpacing = 15
-        flowLayout.itemSize = CGSize(width: UIScreen.main.bounds.width-40, height: 104)
-        flowLayout.sectionInset = UIEdgeInsets(top: 13, left: 0, bottom: 54.5, right: 0)
-        rootView.mainResultView.searchCollectionView.setCollectionViewLayout(flowLayout, animated: false)
-    }
-    
+
     //MARK: - Bind
     
     private func setDelegate() {

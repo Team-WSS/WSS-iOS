@@ -14,6 +14,7 @@ final class SearchResultView: UIView {
     
     //MARK: - Components
     
+    private let flowLayout = UICollectionViewFlowLayout()
     let searchCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     
     //MARK: - Life Cycle
@@ -38,6 +39,14 @@ final class SearchResultView: UIView {
             $0.backgroundColor = .clear
             $0.showsVerticalScrollIndicator = false
             $0.keyboardDismissMode = .onDrag
+        }
+        
+        flowLayout.do {
+            $0.scrollDirection = .vertical
+            $0.minimumLineSpacing = 15
+            $0.itemSize = CGSize(width: UIScreen.main.bounds.width-40, height: 104)
+            $0.sectionInset = UIEdgeInsets(top: 13, left: 0, bottom: 54.5, right: 0)
+            searchCollectionView.setCollectionViewLayout($0, animated: false)
         }
     }
     
