@@ -13,7 +13,7 @@ import Then
 
 final class RegisterNormalDividerView: UIView {
     
-    // MARK: - UI Components
+    // MARK: - Components
     
     private let dividerView = UIView()
     private let topBorderView = UIView()
@@ -24,7 +24,7 @@ final class RegisterNormalDividerView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHieararchy()
+        setHierarchy()
         setLayout()
     }
     
@@ -32,18 +32,18 @@ final class RegisterNormalDividerView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Custom Method
+    // MARK: - UI
     
     private func setUI() {
         dividerView.do {
-            $0.backgroundColor = .Gray50
+            $0.backgroundColor = .wssGray50
         }
         topBorderView.do {
-            $0.backgroundColor = .Gray70
+            $0.backgroundColor = .wssGray70
         }
     }
     
-    private func setHieararchy() {
+    private func setHierarchy() {
         self.addSubviews(dividerView, 
                          topBorderView)
     }

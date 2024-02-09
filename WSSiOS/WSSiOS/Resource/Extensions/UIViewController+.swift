@@ -65,6 +65,30 @@ extension UIViewController {
         self.navigationItem.leftBarButtonItem = left != nil ? UIBarButtonItem(customView: left!) : nil
         self.navigationItem.rightBarButtonItem = right != nil ? UIBarButtonItem(customView: right!) : nil
     }
+    
+    func pushToRegisterSuccessViewController(userNovelId: Int) {
+        self.navigationController?.pushViewController(RegisterSuccessViewController(userNovelId: userNovelId),
+                                                       animated: true)
+    }
+    
+    func moveToNovelDetailViewController(userNovelId: Int) {
+        if self.navigationController?.tabBarController?.selectedIndex == 0 {
+            let tabBar = WSSTabBarController()
+            tabBar.selectedIndex = 1
+            let navigationController = UINavigationController(rootViewController: tabBar)
+            navigationController.setNavigationBarHidden(true, animated: true)
+            self.view.window?.rootViewController = navigationController
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                NotificationCenter.default.post(name: NSNotification.Name("ShowNovelInfo"), object: userNovelId)
+            }
+        } else {
+            self.navigationController?.popViewController(animated: true)
+        }
+    }
+    
+    func popToLastViewController() {
+        self.navigationController?.popViewController(animated: true)
+    }
 }
 
 extension UIViewController: UIGestureRecognizerDelegate {

@@ -37,15 +37,24 @@ enum StringLiterals {
     enum Register {
         enum Normal {
             enum DatePicker {
+                static let middle = "~"
                 static let start = "시작 날짜"
                 static let end = "종료 날짜"
+                static let KoreaTimeZone = "ko_KR"
+                static let dateFormat = "yyyy-MM-dd"
             }
+            
             enum SectionTitle {
                 static let readStatus = "읽기 상태 *"
                 static let readDate = "읽은 날짜"
+                static let keyword = "키워드"
                 static let plot = "작품 소개"
                 static let genre = "장르"
                 static let platform = "작품 보러가기"
+            }
+            
+            enum Keyword {
+                static let selectButton = "키워드 등록"
             }
             
             enum RegisterButton {

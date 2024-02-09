@@ -90,16 +90,20 @@ extension DefaultUserNovelService: UserNovelService {
             ) else {
             return Single.error(NetworkServiceError.invalidRequestError)
         }
-        let request = try! makeHTTPRequest(method: .post,
-                                           path: URLs.UserNovel.postUserNovel.replacingOccurrences(of: "{novelId}", with: String(novelId)),
-                                           headers: APIConstants.testTokenHeader,
-                                           body: userNovelBasic)
-        
-        NetworkLogger.log(request: request)
-        
-        return urlSession.rx.data(request: request)
-            .map { try self.decode(data: $0, to: UserNovelId.self) }
-            .asSingle()
+        do {
+            let request = try makeHTTPRequest(method: .post,
+                                               path: URLs.UserNovel.postUserNovel(novelId: novelId),
+                                               headers: APIConstants.testTokenHeader,
+                                               body: userNovelBasic)
+            
+            NetworkLogger.log(request: request)
+            
+            return urlSession.rx.data(request: request)
+                .map { try self.decode(data: $0, to: UserNovelId.self) }
+                .asSingle()
+        } catch {
+            return Single.error(error)
+        }
     }
     
     func patchUserNovel(userNovelId: Int, userNovelRating: Float?, userNovelReadStatus: ReadStatus, userNovelReadStartDate: String?, userNovelReadEndDate: String?) -> Single<Void> {
@@ -111,15 +115,19 @@ extension DefaultUserNovelService: UserNovelService {
             ) else {
             return Single.error(NetworkServiceError.invalidRequestError)
         }
-        let request = try! makeHTTPRequest(method: .patch,
-                                           path: URLs.UserNovel.patchUserNovel.replacingOccurrences(of: "{userNovelId}", with: String(userNovelId)),
-                                           headers: APIConstants.testTokenHeader,
-                                           body: userNovelBasic)
-        
-        NetworkLogger.log(request: request)
-        
-        return urlSession.rx.data(request: request)
-            .map { _ in }
-            .asSingle()
+        do {
+            let request = try makeHTTPRequest(method: .patch,
+                                               path: URLs.UserNovel.patchUserNovel(userNovelId: userNovelId),
+                                               headers: APIConstants.testTokenHeader,
+                                               body: userNovelBasic)
+            
+            NetworkLogger.log(request: request)
+            
+            return urlSession.rx.data(request: request)
+                .map { _ in }
+                .asSingle()
+        } catch {
+            return Single.error(error)
+        }
     }
 }
