@@ -41,8 +41,7 @@ final class SearchViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        rootView.headerView.searchBar.becomeFirstResponder()
-        
+        showSearchBarAndFocus()
         hideTabBar()
         preparationSetNavigationBar(title: StringLiterals.Navigation.Title.search,
                                     left: backButton,
@@ -54,8 +53,8 @@ final class SearchViewController: UIViewController {
         
         setUI()
         setDelegate()
-        
         registerCell()
+        
         bindDataToSearchCollectionView()
         setSearchAction()
     }
@@ -80,14 +79,14 @@ final class SearchViewController: UIViewController {
     }
     
     private func registerCell() {
-        rootView.mainResultView.searchCollectionView.register(SearchCollectionViewCell.self, forCellWithReuseIdentifier: SearchCollectionViewCell.identifier)
+        rootView.mainResultView.searchCollectionView.register(SearchCollectionViewCell.self, forCellWithReuseIdentifier: SearchCollectionViewCell.cellIdentifier)
     }
     
     //MARK: - Actions
     
     private func bindDataToSearchCollectionView() {
         searchResultListRelay.bind(to: rootView.mainResultView.searchCollectionView.rx.items(
-            cellIdentifier: SearchCollectionViewCell.identifier,
+            cellIdentifier: SearchCollectionViewCell.cellIdentifier,
             cellType: SearchCollectionViewCell.self)) { (row, element, cell) in
                 cell.bindData(data: element)
             }
@@ -149,6 +148,12 @@ final class SearchViewController: UIViewController {
                 completion(search)
             })
             .disposed(by: disposeBag)
+    }
+    
+    //MARK: - Custom
+    
+    private func showSearchBarAndFocus() {
+        rootView.headerView.searchBar.becomeFirstResponder()
     }
 }
 

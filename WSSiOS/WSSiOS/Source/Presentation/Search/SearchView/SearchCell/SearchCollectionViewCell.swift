@@ -13,10 +13,6 @@ import Then
 
 final class SearchCollectionViewCell: UICollectionViewCell {
     
-    //MARK: - Properties
-    
-    static let identifier: String = "SearchCollectionViewCell"
-    
     //MARK: - Components
     
     private let novelImageView = UIImageView()
