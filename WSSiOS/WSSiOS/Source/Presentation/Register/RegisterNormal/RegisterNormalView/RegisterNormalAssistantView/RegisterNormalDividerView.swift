@@ -24,7 +24,7 @@ final class RegisterNormalDividerView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHieararchy()
+        setHierarchy()
         setLayout()
     }
     
@@ -36,14 +36,14 @@ final class RegisterNormalDividerView: UIView {
     
     private func setUI() {
         dividerView.do {
-            $0.backgroundColor = .Gray50
+            $0.backgroundColor = .wssGray50
         }
         topBorderView.do {
-            $0.backgroundColor = .Gray70
+            $0.backgroundColor = .wssGray70
         }
     }
     
-    private func setHieararchy() {
+    private func setHierarchy() {
         self.addSubviews(dividerView, 
                          topBorderView)
     }

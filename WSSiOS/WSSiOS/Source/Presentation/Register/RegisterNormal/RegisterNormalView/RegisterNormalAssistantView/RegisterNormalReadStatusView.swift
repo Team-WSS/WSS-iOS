@@ -27,7 +27,7 @@ final class RegisterNormalReadStatusView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHieararchy()
+        setHierarchy()
         setLayout()
     }
     
@@ -54,7 +54,7 @@ final class RegisterNormalReadStatusView: UIView {
         }
     }
     
-    private func setHieararchy() {
+    private func setHierarchy() {
         self.addSubview(totalStackView)
         totalStackView.addArrangedSubviews(titleView,
                                            readStatusStackView)
@@ -77,11 +77,11 @@ final class RegisterNormalReadStatusView: UIView {
             if button.checkStatus(status) {
                 // 활성화 상태 설정
                 button.hideImage(false)
-                button.setColor(.Primary100)
+                button.setColor(.wssPrimary100)
             } else {
                 // 비활성화 상태 설정
                 button.hideImage(true)
-                button.setColor(.Gray200)
+                button.setColor(.wssGray200)
             }
         }
     }

@@ -38,7 +38,7 @@ final class RegisterNormalView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHieararchy()
+        setHierarchy()
         setLayout()
     }
     
@@ -50,10 +50,10 @@ final class RegisterNormalView: UIView {
     
     private func setUI() {
         self.do {
-            $0.backgroundColor = .white
+            $0.backgroundColor = .wssWhite
         }
         divider.do {
-            $0.backgroundColor = .Gray70
+            $0.backgroundColor = .wssGray70
         }
         statusBarView.do {
             let scenes = UIApplication.shared.connectedScenes
@@ -74,15 +74,15 @@ final class RegisterNormalView: UIView {
         }
         
         registerButtonGradient.do {
-            $0.image = .registerNormalButtonGradientDummy
+            $0.image = .imgButtonGradation
         }
         
         registerButtonBackgroundView.do {
-            $0.backgroundColor = .White
+            $0.backgroundColor = .wssWhite
         }
     }
     
-    private func setHieararchy() {
+    private func setHierarchy() {
         self.addSubviews(pageScrollView,
                          divider,
                          statusBarView,

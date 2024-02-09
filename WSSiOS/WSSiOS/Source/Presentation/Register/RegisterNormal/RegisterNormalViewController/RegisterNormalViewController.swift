@@ -82,13 +82,14 @@ final class RegisterNormalViewController: UIViewController {
         bindActions()
         bindNavigation()
         setNavigationBar()
+        swipeBackGesture()
     }
     
     // MARK: - UI
     
     private func setUI() {
         backButton.do {
-            $0.setImage(ImageLiterals.icon.navigateLeft.withRenderingMode(.alwaysOriginal), for: .normal)
+            $0.setImage(.icNavigateLeft.withRenderingMode(.alwaysOriginal), for: .normal)
         }
     }
     
@@ -98,7 +99,7 @@ final class RegisterNormalViewController: UIViewController {
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.backButton)
         self.navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.font: UIFont.Title2,
-            NSAttributedString.Key.foregroundColor: UIColor.black
+            NSAttributedString.Key.foregroundColor: UIColor.wssBlack
         ]
     }
     
@@ -342,7 +343,7 @@ final class RegisterNormalViewController: UIViewController {
         backButton.rx.tap
             .asDriver()
             .drive(with: self, onNext: { owner, _ in
-                owner.popToLastVC()
+                owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
         
@@ -377,7 +378,7 @@ final class RegisterNormalViewController: UIViewController {
         .observe(on: MainScheduler.instance)
         .subscribe(with: self, onNext: { owner, data in
             owner.userNovelId = data.userNovelId
-            owner.pushToRegisterSuccessVC(userNovelId: owner.userNovelId)
+            owner.pushToRegisterSuccessViewController(userNovelId: owner.userNovelId)
         }, onError: { owner, error in
             print(error)
         })
@@ -393,7 +394,7 @@ final class RegisterNormalViewController: UIViewController {
                                            userNovelReadEndDate: requestEndDate)
         .observe(on: MainScheduler.instance)
         .subscribe(with: self, onNext: { owner, data in
-            owner.moveToNovelDetailVC(userNovelId: owner.userNovelId)
+            owner.moveToNovelDetailViewController(userNovelId: owner.userNovelId)
         }, onError: { owner, error in
             print(error)
         })
@@ -446,10 +447,10 @@ final class RegisterNormalViewController: UIViewController {
     
     private func updateNavigationBarStyle(offset: CGFloat) {
         if offset > 0 {
-            rootView.statusBarView.backgroundColor = .white
+            rootView.statusBarView.backgroundColor = .wssWhite
             navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
             navigationController?.navigationBar.shadowImage = UIImage()
-            navigationController?.navigationBar.backgroundColor = .white
+            navigationController?.navigationBar.backgroundColor = .wssWhite
             navigationItem.title = self.navigationTitle
             rootView.divider.isHidden = false
         } else {

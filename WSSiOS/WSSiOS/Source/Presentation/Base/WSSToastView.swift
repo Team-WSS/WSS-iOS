@@ -21,11 +21,11 @@ enum ToastStatus {
     var toastImage: UIImage {
         switch self {
         case .memoSaveSuccess, .nicknameSave, .memoEditSuccess:
-            ImageLiterals.icon.Alert.success
+            return .icAlertSuccess
         case .memoSaveFail, .memoDelete:
-            ImageLiterals.icon.Alert.warning
+            return .icAlertWarning
         case .avatarUnlock:
-            ImageLiterals.icon.Alert.check
+            return .icAlertCheck
         }
     }
     

@@ -14,11 +14,7 @@ import Then
 
 final class RecordResultView: UIView {
     
-    //MARK: - Properties
-    
-    private let disposeBag = DisposeBag()
-    
-    //MARK: - UI Components
+    //MARK: - Components
     
     let alignmentView = LibraryListView()
     let headerView = RecordHeaderView()
@@ -37,6 +33,8 @@ final class RecordResultView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    //MARK: - UI
     
     private func setUI() {
         recordTableView.do {

@@ -27,7 +27,7 @@ final class LibraryCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -66,7 +66,7 @@ final class LibraryCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Set Hierachy
     
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(novelImageView,
                          novelTitleLabel,
                          novelAuthorLabel,

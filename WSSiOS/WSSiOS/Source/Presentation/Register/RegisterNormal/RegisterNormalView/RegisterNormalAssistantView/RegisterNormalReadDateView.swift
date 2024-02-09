@@ -34,7 +34,7 @@ final class RegisterNormalReadDateView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHieararchy()
+        setHierarchy()
         setLayout()
     }
     
@@ -61,7 +61,7 @@ final class RegisterNormalReadDateView: UIView {
             }
             
             datePickerButton.do {
-                $0.backgroundColor = .Gray50
+                $0.backgroundColor = .wssGray50
                 $0.layer.cornerRadius = 15
             }
             
@@ -78,14 +78,14 @@ final class RegisterNormalReadDateView: UIView {
             }
             
             calendarImageView.do {
-                $0.image = ImageLiterals.icon.calender
+                $0.image = .icCalendar
                 $0.contentMode = .scaleAspectFill
                 $0.clipsToBounds = true
             }
         }
     }
     
-    private func setHieararchy() {
+    private func setHierarchy() {
         self.addSubview(totalStackView)
         totalStackView.addArrangedSubviews(upperStackView,
                                            datePickerButton)
@@ -157,7 +157,7 @@ final class RegisterNormalReadDateView: UIView {
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
             $0.font = .Body2
-            $0.textColor = .Gray300
+            $0.textColor = .wssGray300
         }
     }
 }

@@ -17,6 +17,8 @@ final class RegisterNormalDatePicker: UIButton {
     let horizontalPadding: CGFloat = 20
     lazy var backgroundCenter = (UIScreen.main.bounds.width - horizontalPadding*2)/2
     let animationDuration: Double = 0.25
+    let onColor: UIColor = .wssPrimary100
+    let offColor: UIColor = .wssGray100
     
     // MARK: - Components
     
@@ -49,7 +51,7 @@ final class RegisterNormalDatePicker: UIButton {
         super.init(frame: frame)
         
         setUI()
-        setHieararchy()
+        setHierarchy()
         setLayout()
     }
     
@@ -61,10 +63,10 @@ final class RegisterNormalDatePicker: UIButton {
     
     private func setUI() {
         self.do {
-            $0.backgroundColor = .Black.withAlphaComponent(0.6)
+            $0.backgroundColor = .wssBlack60
         }
         backgroundView.do {
-            $0.backgroundColor = .White
+            $0.backgroundColor = .wssWhite
         }
         
         totalStackView.do {
@@ -81,7 +83,7 @@ final class RegisterNormalDatePicker: UIButton {
         }
         
         finishStatusView.do {
-            $0.backgroundColor = .Gray50
+            $0.backgroundColor = .wssGray50
             $0.layer.cornerRadius = 5
             
             startButton.backgroundColor = .clear
@@ -141,7 +143,7 @@ final class RegisterNormalDatePicker: UIButton {
         }
     }
     
-    private func setHieararchy() {
+    private func setHierarchy() {
         self.addSubview(backgroundView)
         backgroundView.addSubviews(totalStackView,
                                    completeButton)

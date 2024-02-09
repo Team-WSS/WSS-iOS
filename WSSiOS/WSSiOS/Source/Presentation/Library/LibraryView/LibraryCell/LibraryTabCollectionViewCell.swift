@@ -30,7 +30,7 @@ final class LibraryTabCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -63,7 +63,7 @@ final class LibraryTabCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Set Hierachy
     
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(libraryTabLabel,
                          libraryTabUnderView)
     }
