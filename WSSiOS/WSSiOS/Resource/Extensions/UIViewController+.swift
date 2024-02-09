@@ -90,7 +90,7 @@ extension UIViewController {
         self.navigationController?.popViewController(animated: true)
     }
     
-    func popToRootVC() {
+    func popToRootViewController() {
         self.navigationController?.popToRootViewController(animated: true)
     }
 }

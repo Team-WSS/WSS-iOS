@@ -63,14 +63,14 @@ final class RegisterSuccessViewController: UIViewController {
         rootView.makeMemoButton.rx.tap
             .asDriver()
             .drive(with: self, onNext: { owner, _ in
-                owner.moveToNovelDetailVC(userNovelId: owner.userNovelId)
+                owner.moveToNovelDetailViewController(userNovelId: owner.userNovelId)
             })
             .disposed(by: disposeBag)
         
         rootView.returnHomeButton.rx.tap
             .asDriver()
             .drive(with: self, onNext: { owner, _ in
-                owner.popToRootVC()
+                owner.popToRootViewController()
             })
             .disposed(by: disposeBag)
     }
