@@ -60,11 +60,7 @@ final class SearchViewController: UIViewController {
         setCollectionViewLayout()
         setSearchAction()
     }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
-    }
-    
+
     //MARK: - UI
     
     private func setUI() {

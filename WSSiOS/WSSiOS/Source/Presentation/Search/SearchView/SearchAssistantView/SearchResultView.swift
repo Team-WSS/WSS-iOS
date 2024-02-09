@@ -37,6 +37,7 @@ final class SearchResultView: UIView {
         searchCollectionView.do {
             $0.backgroundColor = .clear
             $0.showsVerticalScrollIndicator = false
+            $0.keyboardDismissMode = .onDrag
         }
     }
     
