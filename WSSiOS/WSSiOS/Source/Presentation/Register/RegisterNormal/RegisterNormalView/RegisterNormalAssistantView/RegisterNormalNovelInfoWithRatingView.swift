@@ -33,7 +33,7 @@ final class RegisterNormalNovelInfoWithRatingView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHieararchy()
+        setHierarchy()
         setLayout()
     }
     
@@ -74,7 +74,7 @@ final class RegisterNormalNovelInfoWithRatingView: UIView {
                 $0.layer.shadowRadius = 15
                 
                 novelCoverImageView.do {
-                    $0.image = ImageLiterals.Image.Banner.loadingThumbnail
+                    $0.image = .imgLoadingThumbnail
                     $0.contentMode = .scaleAspectFill
                     $0.layer.cornerRadius = 12
                     $0.clipsToBounds = true
@@ -88,7 +88,7 @@ final class RegisterNormalNovelInfoWithRatingView: UIView {
         }
     }
     
-    private func setHieararchy() {
+    private func setHierarchy() {
         self.addSubview(novelInfoWithRatingStackView)
         novelCoverShadowView.addSubview(novelCoverImageView)
         novelInfoWithRatingStackView.addArrangedSubviews(novelInfoStackView,
@@ -147,7 +147,7 @@ final class RegisterNormalNovelInfoWithRatingView: UIView {
         return (0..<5).map { _ in
             let starImageView = UIImageView().then {
                 $0.isUserInteractionEnabled = true
-                $0.image = ImageLiterals.icon.Star.empty
+                $0.image = .icStarEmpty
                 $0.contentMode = .scaleAspectFill
                 $0.clipsToBounds = true
             }
@@ -162,11 +162,11 @@ final class RegisterNormalNovelInfoWithRatingView: UIView {
         
         starImageViews.enumerated().forEach { index, imageView in
             if index < fullStars {
-                imageView.image = ImageLiterals.icon.Star.fill
+                imageView.image = .icStarFill
             } else if hasHalfStar && index == fullStars {
-                imageView.image = ImageLiterals.icon.Star.half
+                imageView.image = .icStarHalf
             } else {
-                imageView.image = ImageLiterals.icon.Star.empty
+                imageView.image = .icStarEmpty
             }
         }
         print(rating)
@@ -180,7 +180,7 @@ final class RegisterNormalNovelInfoWithRatingView: UIView {
                 .kerning(kerningPixel: -1.2)
                 .applyAttribute()
             $0.font = .HeadLine1
-            $0.textColor = .White
+            $0.textColor = .wssWhite
             $0.textAlignment = .center
             $0.lineBreakMode = .byTruncatingTail
             $0.lineBreakStrategy = .hangulWordPriority
@@ -196,7 +196,7 @@ final class RegisterNormalNovelInfoWithRatingView: UIView {
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
             $0.font = .Body2
-            $0.textColor = .Gray200
+            $0.textColor = .wssGray200
             $0.numberOfLines = 1
             $0.lineBreakMode = .byTruncatingTail
         }

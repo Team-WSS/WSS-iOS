@@ -12,6 +12,11 @@ import Then
 
 final class RegisterNormalDatePicker: UIButton {
     
+    // MARK: - Properties
+    
+    let onColor: UIColor = .wssPrimary100
+    let offColor: UIColor = .wssGray100
+    
     // MARK: - Components
     
     private let backgroundView = UIView()
@@ -41,7 +46,7 @@ final class RegisterNormalDatePicker: UIButton {
         super.init(frame: frame)
         
         setUI()
-        setHieararchy()
+        setHierarchy()
         setLayout()
     }
     
@@ -53,10 +58,10 @@ final class RegisterNormalDatePicker: UIButton {
     
     private func setUI() {
         self.do {
-            $0.backgroundColor = .Black.withAlphaComponent(0.6)
+            $0.backgroundColor = .wssBlack60
         }
         backgroundView.do {
-            $0.backgroundColor = .White
+            $0.backgroundColor = .wssWhite
             $0.layer.cornerRadius = 12
         }
         
@@ -75,14 +80,14 @@ final class RegisterNormalDatePicker: UIButton {
         
         buttonStackView.do {
             $0.axis = .horizontal
-            $0.backgroundColor = .Gray50
+            $0.backgroundColor = .wssGray50
             $0.distribution = .fillEqually
             $0.layer.cornerRadius = 5
             
             startButton.do {
                 $0.layer.cornerRadius = 5
                 $0.layer.borderWidth = 1
-                $0.layer.borderColor = UIColor.Primary50.cgColor
+                $0.layer.borderColor = UIColor.wssPrimary50.cgColor
                 
                 startButtonStackView.do {
                     $0.axis = .vertical
@@ -100,7 +105,7 @@ final class RegisterNormalDatePicker: UIButton {
             endButton.do {
                 $0.layer.cornerRadius = 5
                 $0.layer.borderWidth = 1
-                $0.layer.borderColor = UIColor.Gray50.cgColor
+                $0.layer.borderColor = UIColor.wssGray50.cgColor
                 
                 endButtonStackView.do {
                     $0.axis = .vertical
@@ -137,7 +142,7 @@ final class RegisterNormalDatePicker: UIButton {
         }
     }
     
-    private func setHieararchy() {
+    private func setHierarchy() {
         self.addSubview(backgroundView)
         backgroundView.addSubviews(totalStackView,
                                completeButton)
@@ -209,14 +214,14 @@ final class RegisterNormalDatePicker: UIButton {
     }
     
     func updateButtons(_ isStart: Bool) {
-        startTitleLabel.textColor = isStart ? .Primary100 : .Gray100
-        startDateLabel.textColor = isStart ? .Primary100 : .Gray100
-        startButton.backgroundColor = isStart ? .White : .Gray50
-        startButton.layer.borderColor = isStart ? UIColor.Primary50.cgColor : UIColor.Gray50.cgColor
-        endTitleLabel.textColor = isStart ? .Gray100 : .Primary100
-        endDateLabel.textColor = isStart ? .Gray100 : .Primary100
-        endButton.backgroundColor = isStart ? .Gray50 : .White
-        endButton.layer.borderColor = isStart ? UIColor.Gray50.cgColor : UIColor.Primary50.cgColor
+        startTitleLabel.textColor = isStart ? onColor : offColor
+        startDateLabel.textColor = isStart ? onColor : offColor
+        startButton.backgroundColor = isStart ? .wssWhite : .wssGray50
+        startButton.layer.borderColor = isStart ? UIColor.wssPrimary50.cgColor : UIColor.wssGray50.cgColor
+        endTitleLabel.textColor = isStart ? offColor : onColor
+        endDateLabel.textColor = isStart ? offColor : onColor
+        endButton.backgroundColor = isStart ? .wssGray50 : .wssWhite
+        endButton.layer.borderColor = isStart ? UIColor.wssGray50.cgColor : UIColor.wssGray50.cgColor
     }
     
     func updateDatePicker(date: Date) {

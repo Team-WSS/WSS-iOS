@@ -22,7 +22,7 @@ final class WSSSectionTitleView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHieararchy()
+        setHierarchy()
         setLayout()
     }
     
@@ -38,7 +38,7 @@ final class WSSSectionTitleView: UIView {
         }
     }
     
-    private func setHieararchy() {
+    private func setHierarchy() {
         self.addSubview(titleLabel)
     }
     

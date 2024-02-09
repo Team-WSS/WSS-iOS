@@ -8,10 +8,12 @@
 import UIKit
 
 import Kingfisher
+import SnapKit
+import Then
 
 final class MyPageView: UIView {
     
-    //MARK: - UI Components
+    //MARK: - Components
     
     private var scrollView = UIScrollView()
     var myPageStackView = UIStackView()
@@ -26,13 +28,15 @@ final class MyPageView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    //MARK: - UI
     
     private func setUI() {
         self.backgroundColor = .Gray50
@@ -45,9 +49,9 @@ final class MyPageView: UIView {
         }
     }
     
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubview(scrollView)
-        scrollView.addSubviews(myPageStackView)
+        scrollView.addSubview(myPageStackView)
         myPageStackView.addArrangedSubviews(myPageProfileView,
                                             myPageTallyView,
                                             myPageInventoryView,
@@ -64,13 +68,10 @@ final class MyPageView: UIView {
         }
     }
     
-    func dataBind(_ data: UserResult) {
-        myPageProfileView.myPageNameLabel.text = data.representativeAvatarTag
-        myPageProfileView.myPageBadgeImageView.kfSetImage(url: data.representativeAvatarGenreBadge)
-        myPageProfileView.myPagePhraseLabel.text = data.representativeAvatarLineContent
-        myPageProfileView.myPageAvartarImageView.kfSetImage(url: data.representativeAvatarImg)
-        myPageTallyView.myPageUserNameButton.setTitle("\(data.userNickname)님", for: .normal)
-        myPageTallyView.myPageRegisterView.tallyLabel.text = String(data.userNovelCount)
-        myPageTallyView.myPageRecordView.tallyLabel.text = String(data.memoCount)
+    //MARK: - Data
+    
+    func bindData(_ data: UserResult) {
+        myPageProfileView.bindProfileViewData(data)
+        myPageTallyView.bindTallyViewData(data)
     }
 }

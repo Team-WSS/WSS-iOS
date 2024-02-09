@@ -14,28 +14,26 @@ enum WSSTabBarItem: CaseIterable {
     var normalItemImage: UIImage {
         switch self {
         case .home: 
-            return ImageLiterals.icon.Tabbar.home
+            return .icNavigateHome
         case .library:
-            return ImageLiterals.icon.Tabbar.library
+            return .icNavigateLibrary
         case .record:
-            return ImageLiterals.icon.Tabbar.record
+            return .icNavigateRecord
         case .myPage:
-            return ImageLiterals.icon.Tabbar.myPage
-        default:
-            return UIImage()
+            return .icNavigateMy
         }
     }
     
     var selectedItemImage: UIImage {
         switch self {
         case .home: 
-            return ImageLiterals.icon.Tabbar.homeSelected
+            return .icNavigateHomeSelected
         case .library:
-            return ImageLiterals.icon.Tabbar.librarySelected
+            return .icNavigateLibrarySelected
         case .record:
-            return ImageLiterals.icon.Tabbar.recordSelected
+            return .icNavigateRecordSelected
         case .myPage:
-            return ImageLiterals.icon.Tabbar.myPageSelected
+            return .icNavigateMySelected
         default:
             return UIImage()
         }
@@ -51,8 +49,6 @@ enum WSSTabBarItem: CaseIterable {
             return StringLiterals.Tabbar.Title.record
         case .myPage:
             return StringLiterals.Tabbar.Title.myPage
-        default:
-            return String()
         }
     }
     
@@ -67,26 +63,29 @@ enum WSSTabBarItem: CaseIterable {
                     recommendService: DefaultRecommendService()
                 )
             )
+            
         case .library:
             return LibraryViewController(
                 userNovelListRepository: DefaultUserNovelRepository(
                     userNovelService: DefaultUserNovelService()
                 )
             )
+            
         case .record:
             return RecordViewController(
                 memoRepository: DefaultMemoRepository(
                     memoService: DefaultMemoService()
                 )
             )
+            
         case .myPage:
             return MyPageViewController(
                 userRepository: DefaultUserRepository(
                     userService: DefaultUserService()
+                ), avatarRepository: DefaultAvatarRepository(
+                    avatarService: DefaultAvatarService()
                 )
             )
-        default:
-            return UIViewController()
         }
     }
 }

@@ -21,15 +21,15 @@ final class RecordHeaderAlignmentButton: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
         self.do {
-            $0.setTitle("최신 순", for: .normal)
-            $0.setTitleColor(.Gray300, for: .normal)
+            $0.setTitle(StringLiterals.Alignment.newest, for: .normal)
+            $0.setTitleColor(.wssGray300, for: .normal)
             $00.titleLabel?.font = .Label1
             $0.titleLabel?.adjustsFontSizeToFitWidth = true
-            $0.setImage(ImageLiterals.icon.dropDown, for: .normal)
+            $0.setImage(.icDropDown, for: .normal)
             $0.semanticContentAttribute = .forceRightToLeft
             $0.configuration?.contentInsets = .init(top: 0, leading: 8, bottom: 0, trailing: 0)
         }

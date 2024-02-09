@@ -12,12 +12,12 @@ import Then
 
 final class MyPageProfileView: UIView {
     
-    //MARK: - UI Components
+    //MARK: - Components
     
-    var myPageBadgeImageView = UIImageView()
-    var myPageNameLabel = UILabel()
-    var myPagePhraseLabel = UILabel()
-    var myPageAvartarImageView = UIImageView()
+    private let myPageBadgeImageView = UIImageView()
+    private let myPageNameLabel = UILabel()
+    private let myPagePhraseLabel = UILabel()
+    private let myPageAvartarImageView = UIImageView()
     
     // MARK: - Life Cycle
     
@@ -25,7 +25,7 @@ final class MyPageProfileView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -33,7 +33,7 @@ final class MyPageProfileView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
         self.backgroundColor = .Gray50
@@ -51,21 +51,17 @@ final class MyPageProfileView: UIView {
         }
         
         myPageAvartarImageView.do {
-            $0.contentMode = .scaleToFill
+            $0.contentMode = .scaleAspectFit
         }
     }
     
-    //MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(myPageBadgeImageView,
                          myPageNameLabel,
                          myPagePhraseLabel,
                          myPageAvartarImageView)
     }
-    
-    //MARK: - set Layout
-    
+
     private func setLayout() {
         myPageBadgeImageView.snp.makeConstraints() {
             $0.top.equalTo(super.safeAreaLayoutGuide).offset(27)
@@ -88,5 +84,14 @@ final class MyPageProfileView: UIView {
             $0.centerX.bottom.equalToSuperview()
             $0.size.equalTo(220)
         }
+    }
+    
+    //MARK: - Data
+    
+    func bindProfileViewData(_ data: UserResult) {
+        myPageNameLabel.text = data.representativeAvatarTag
+        myPageBadgeImageView.kfSetImage(url: data.representativeAvatarGenreBadge)
+        myPagePhraseLabel.text = data.representativeAvatarLineContent
+        myPageAvartarImageView.kfSetImage(url: data.representativeAvatarImg)
     }
 }

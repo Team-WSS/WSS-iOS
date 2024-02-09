@@ -16,8 +16,8 @@ final class RegisterNormalToggleButton: UIButton {
     // MARK: - Properties
     
     // 상태별 스위치 배경 색상
-    var onColor = UIColor.Primary100
-    var offColor = UIColor.Gray100
+    let onColor = UIColor.wssPrimary100
+    let offColor = UIColor.wssGray100
     
     // 스위치가 이동하는 애니메이션 시간
     var animationDuration: TimeInterval = 0.20
@@ -40,7 +40,7 @@ final class RegisterNormalToggleButton: UIButton {
         super.init(frame: frame)
         
         setUI()
-        setHieararchy()
+        setHierarchy()
         setLayout()
     }
     
@@ -59,14 +59,14 @@ final class RegisterNormalToggleButton: UIButton {
         }
         
         circleView.do {
-            $0.backgroundColor = .White
+            $0.backgroundColor = .wssWhite
             $0.layer.masksToBounds = true
             $0.layer.cornerRadius = circleViewSize.height / 2
             $0.isUserInteractionEnabled = false  // superView인 버튼만 터치되도록
         }
     }
     
-    private func setHieararchy() {
+    private func setHierarchy() {
         self.addSubviews(barView,
                          circleView)
     }

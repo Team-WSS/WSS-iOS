@@ -101,7 +101,7 @@ final class LibraryViewController: UIViewController {
             .disposed(by: disposeBag)
         
         Observable.just(Void())
-            .observeOn(MainScheduler.instance)
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] in
                 self?.libraryPageBar.libraryTabCollectionView.selectItem(at: IndexPath(item: 0, section: 0),
                                                                          animated: true,
@@ -158,21 +158,21 @@ final class LibraryViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        libraryListView.libraryNewestButton.rx.tap
-            .bind(with: self) { owner , _ in
-                owner.updatePages(sort: owner.sortTypeList[0])
-                owner.libraryDescriptionView.libraryNovelListButton.setTitle(StringLiterals.Library.newest, for: .normal)
-                owner.libraryListView.isHidden.toggle()
-            }
-            .disposed(by: disposeBag)
-        
-        libraryListView.libraryOldesttButton.rx.tap
-            .bind(with: self) { owner , _ in
-                owner.updatePages(sort: owner.sortTypeList[1])
-                owner.libraryDescriptionView.libraryNovelListButton.setTitle(StringLiterals.Library.oldest, for: .normal)
-                owner.libraryListView.isHidden.toggle()
-            }
-            .disposed(by: disposeBag)
+//        libraryListView.libraryNewestButton.rx.tap
+//            .bind(with: self) { owner , _ in
+//                owner.updatePages(sort: owner.sortTypeList[0])
+//                owner.libraryDescriptionView.libraryNovelListButton.setTitle(StringLiterals.Library.newest, for: .normal)
+//                owner.libraryListView.isHidden.toggle()
+//            }
+//            .disposed(by: disposeBag)
+//        
+//        libraryListView.libraryOldesttButton.rx.tap
+//            .bind(with: self) { owner , _ in
+//                owner.updatePages(sort: owner.sortTypeList[1])
+//                owner.libraryDescriptionView.libraryNovelListButton.setTitle(StringLiterals.Library.oldest, for: .normal)
+//                owner.libraryListView.isHidden.toggle()
+//            }
+//            .disposed(by: disposeBag)
     }
     
     private func updatePages(sort: String) {
