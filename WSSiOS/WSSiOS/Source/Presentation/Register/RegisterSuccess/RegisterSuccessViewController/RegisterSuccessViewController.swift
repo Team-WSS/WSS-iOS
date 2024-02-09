@@ -53,7 +53,7 @@ final class RegisterSuccessViewController: UIViewController {
     // MARK: - UI
     
     func setUI() {
-        self.view.backgroundColor = .white
+        self.view.backgroundColor = .wssWhite
         self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
