@@ -9,6 +9,7 @@ import UIKit
 
 import RxSwift
 import RxCocoa
+import SnapKit
 
 protocol NovelDelegate: AnyObject {
     func sendData(data: Int)
@@ -17,35 +18,33 @@ protocol NovelDelegate: AnyObject {
 final class LibraryBaseViewController: UIViewController {
     
     //MARK: - Properties
-    
-    private let readStatusData: String
-    private var lastUserNovelIdData: Int
-    private let sizeData: Int
-    private var sortTypeData: String
-    
-    weak var delegate : NovelDelegate?
-    
-    private let rootView = LibraryView()
-    private let disposeBag = DisposeBag()
-    private let libraryEmptyView = LibraryEmptyView()
+
+    private let readStatus: String
+    private var lastUserNovelId: Int
+    private let size: Int
+    private var sortType: String
     private let userNovelListRepository: DefaultUserNovelRepository
-    private lazy var novelList = [UserNovelListDetail]()
-    private let novelListRelay = PublishRelay<[UserNovelListDetail]>()
+    
+    private let disposeBag = DisposeBag()
+    weak var delegate : NovelDelegate?
+    private let rootView = LibraryView()
+    private let libraryEmptyView = LibraryEmptyView()
+    private lazy var novelListRelay = PublishRelay<[UserNovelListDetail]>()
     private lazy var novelTotalRelay = PublishRelay<Int>()
     
     // MARK: - Life Cycle
     
     init(userNovelListRepository: DefaultUserNovelRepository,
-         readStatusData: String,
-         lastUserNovelIdData: Int,
-         sizeData: Int,
-         sortTypeData: String) {
+         readStatus: String,
+         lastUserNovelId: Int,
+         size: Int,
+         sortType: String) {
         
         self.userNovelListRepository = userNovelListRepository
-        self.readStatusData = readStatusData
-        self.lastUserNovelIdData = lastUserNovelIdData
-        self.sizeData = sizeData
-        self.sortTypeData = sortTypeData
+        self.readStatus = readStatus
+        self.lastUserNovelId = lastUserNovelId
+        self.size = size
+        self.sortType = sortType
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -61,7 +60,7 @@ final class LibraryBaseViewController: UIViewController {
         super.viewDidLoad()
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
         register()
         bindCell()
@@ -71,10 +70,10 @@ final class LibraryBaseViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         showTabBar()
-        bindUserData(readStatus: readStatusData,
-                     lastUserNovelId: lastUserNovelIdData,
-                     size: sizeData,
-                     sortType: sortTypeData)
+        updateNovelList(readStatus: readStatus,
+                     lastUserNovelId: lastUserNovelId,
+                     size: size,
+                     sortType: sortType)
     }
     
     //MARK: - Custom TabBar
@@ -94,13 +93,7 @@ final class LibraryBaseViewController: UIViewController {
         
         novelListRelay
             .subscribe(with: self, onNext: { owner, list in
-                if list.isEmpty {
-                    owner.libraryEmptyView.isHidden = false
-                } else {
-                    owner.libraryEmptyView.isHidden = true
-                }
-                
-                owner.novelList = list
+                owner.libraryEmptyView.isHidden = !list.isEmpty
             })
             .disposed(by: disposeBag)
         
@@ -111,7 +104,7 @@ final class LibraryBaseViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    private func bindUserData(readStatus: String,
+    func updateNovelList(readStatus: String,
                               lastUserNovelId: Int,
                               size: Int,
                               sortType: String) {
@@ -123,35 +116,17 @@ final class LibraryBaseViewController: UIViewController {
         .subscribe(with: self, onNext: { owner, data in
             owner.novelListRelay.accept(data.userNovels)
             owner.novelTotalRelay.accept(data.userNovelCount)
-            print(data.userNovelCount, "👅👅👅👅")
         }, onError: { error, _  in
             print(error)
         })
         .disposed(by: disposeBag)
     }
     
-//    private func reBindUserData(readStatus: String,
-//                              lastUserNovelId: Int,
-//                              size: Int,
-//                              sortType: String) {
-//        userNovelListRepository.getUserNovelList(readStatus: readStatus,
-//                                                 lastUserNovelId: lastUserNovelId,
-//                                                 size: size,
-//                                                 sortType: sortType)
-//        .observe(on: MainScheduler.instance)
-//        .subscribe(with: self, onNext: { owner, data in
-//            owner.novelListRelay.accept(data.userNovels)
-//        }, onError: { error, _  in
-//            print(error)
-//        })
-//        .disposed(by: disposeBag)
-//    }
-    
     private func bindAction() {
         rootView.libraryCollectionView.rx.itemSelected
             .observe(on: MainScheduler.instance)
-            .map { [weak self] indexPath in
-                return self?.novelList[indexPath.row]
+            .withLatestFrom(novelListRelay) { (indexPath, novelList) -> UserNovelListDetail? in
+                return novelList[indexPath.row]
             }
             .compactMap { $0 }
             .subscribe(with: self, onNext: { owner, selectedItem in
@@ -171,27 +146,6 @@ final class LibraryBaseViewController: UIViewController {
             })
             .disposed(by: disposeBag)
     }
-    
-    func reloadView(sortType: String) {
-        sortTypeData = sortType
-        if sortTypeData == "NEWEST" {
-            lastUserNovelIdData = 999999
-            bindUserData(readStatus: readStatusData,
-                         lastUserNovelId: lastUserNovelIdData,
-                         size: 500,
-                         sortType: sortType)
-            print(readStatusData, "👁️👁️👁️👁️")
-        }
-        
-        else if sortTypeData == "OLDEST" {
-            lastUserNovelIdData = 0
-            bindUserData(readStatus: readStatusData,
-                         lastUserNovelId: lastUserNovelIdData,
-                         size: 500,
-                         sortType: sortType)
-            print(readStatusData, "👀👀👀👀")
-        }
-    }
 }
 
 extension LibraryBaseViewController {
@@ -199,7 +153,7 @@ extension LibraryBaseViewController {
         libraryEmptyView.isHidden = true
     }
     
-    private func setHierachy() {
+    private func setHierarchy() {
         self.view.addSubview(libraryEmptyView)
     }
     

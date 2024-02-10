@@ -115,9 +115,44 @@ enum StringLiterals {
             case wish = "WISH"
         }
         
-        enum SortType: String, CaseIterable {
-            case newest = "NEWEST"
-            case oldest = "OLDEST"
+        enum SortType {
+            case newest, oldest
+            
+            var title: String {
+                switch self {
+                case .newest:
+                    return "최신 순"
+                case .oldest:
+                    return "오래된 순"
+                }
+            }
+            
+            var sortType: String {
+                switch self {
+                case .newest:
+                    return "NEWEST"
+                case .oldest:
+                    return "OLDEST"
+                }
+            }
+            
+            var lastUserNovelIdData: Int {
+                switch self {
+                case .newest:
+                    return 999999
+                case .oldest:
+                    return 0
+                }
+            }
+            
+            var sizeData: Int {
+                switch self {
+                case .newest:
+                    return 500
+                case .oldest:
+                    return 500
+                }
+            }
         }
     }
 }

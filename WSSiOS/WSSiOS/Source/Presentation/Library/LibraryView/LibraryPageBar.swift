@@ -17,7 +17,7 @@ final class LibraryPageBar: UIView {
     //MARK: - Properties
     
     private let disposeBag = DisposeBag()
-    public lazy var selectedTabIndex = PublishSubject<Int>()
+    lazy var selectedTabIndex = PublishSubject<Int>()
     
     //MARK: - UI Components
     
