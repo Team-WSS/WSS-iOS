@@ -91,10 +91,10 @@ final class SearchViewController: UIViewController {
         rootView.headerView.searchBar.rx.text.orEmpty
             .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner ,searchText in
-                owner.emptyView.removeFromSuperview()
-                owner.searchResultListRelay.accept([])
-                
-                if !searchText.isEmpty {
+                if searchText.isEmpty {
+                    owner.searchResultListRelay.accept([])
+                }
+                else {
                     owner.searchNovels(with: searchText)
                 }
             })
