@@ -12,10 +12,6 @@ import Then
 
 final class NovelDetailInfoKeywordCollectionViewCell: UICollectionViewCell {
     
-    // MARK: - Properties
-    
-    static let identifier: String = "NovelDetailInfoKeywordCollectionViewCell"
-    
     // MARK: - Components
 
     private let keywordLabel = UILabel()

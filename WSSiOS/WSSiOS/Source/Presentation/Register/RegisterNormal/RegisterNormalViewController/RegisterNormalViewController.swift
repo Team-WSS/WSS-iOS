@@ -490,7 +490,7 @@ extension RegisterNormalViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: NovelDetailInfoPlatformCollectionViewCell.identifier,
+            withReuseIdentifier: NovelDetailInfoPlatformCollectionViewCell.cellIdentifier,
             for: indexPath
         ) as? NovelDetailInfoPlatformCollectionViewCell else { return UICollectionViewCell() }
         

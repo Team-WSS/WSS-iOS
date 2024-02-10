@@ -134,8 +134,8 @@ final class NovelDetailViewController: UIViewController {
     // MARK: - Bind
 
     private func register() {
-        rootView.novelDetailMemoView.memoTableView.register(NovelDetailMemoTableViewCell.self, forCellReuseIdentifier: "NovelDetailMemoTableViewCell")
-        rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.register(NovelDetailInfoPlatformCollectionViewCell.self, forCellWithReuseIdentifier: "NovelDetailInfoPlatformCollectionViewCell")
+        rootView.novelDetailMemoView.memoTableView.register(NovelDetailMemoTableViewCell.self, forCellReuseIdentifier: NovelDetailMemoTableViewCell.cellIdentifier)
+        rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.register(NovelDetailInfoPlatformCollectionViewCell.self, forCellWithReuseIdentifier: NovelDetailInfoPlatformCollectionViewCell.cellIdentifier)
     }
     
     private func delegate() {
@@ -357,7 +357,7 @@ extension NovelDetailViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: NovelDetailMemoTableViewCell.identifier,
+            withIdentifier: NovelDetailMemoTableViewCell.cellIdentifier,
             for: indexPath
         ) as? NovelDetailMemoTableViewCell else {return UITableViewCell()}
         
@@ -388,7 +388,7 @@ extension NovelDetailViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: NovelDetailInfoPlatformCollectionViewCell.identifier,
+            withReuseIdentifier: NovelDetailInfoPlatformCollectionViewCell.cellIdentifier,
             for: indexPath
         ) as? NovelDetailInfoPlatformCollectionViewCell else {return UICollectionViewCell()}
         

@@ -12,10 +12,6 @@ import Then
 
 final class NovelDetailInfoPlatformCollectionViewCell: UICollectionViewCell {
     
-    // MARK: - Properties
-    
-    static let identifier: String = "NovelDetailInfoPlatformCollectionViewCell"
-    
     // MARK: - Components
 
     private let platformLabel = UILabel()

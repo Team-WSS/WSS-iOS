@@ -12,10 +12,6 @@ import Then
 
 final class NovelDetailMemoTableViewCell: UITableViewCell {
     
-    // MARK: - Properties
-
-    static let identifier: String = "NovelDetailMemoTableViewCell"
-    
     // MARK: - Components
     
     private let leftDividerView = UIView()
