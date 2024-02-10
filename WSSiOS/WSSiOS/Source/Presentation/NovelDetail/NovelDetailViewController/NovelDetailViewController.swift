@@ -72,6 +72,7 @@ final class NovelDetailViewController: UIViewController {
         delegate()
         bindUI()
         bindAction()
+        bindNavigation()
     }
     
     // MARK: - UI
@@ -218,6 +219,45 @@ final class NovelDetailViewController: UIViewController {
     // MARK: - Actions
     
     private func bindAction() {
+        novelSettingButton.rx.tap
+            .bind(with: self, onNext: { owner, _ in
+                owner.rootView.novelDetailMemoSettingButtonView.isHidden = false
+            })
+            .disposed(by: disposeBag)
+        
+        rootView.novelDetailTabView.memoButton.rx.tap
+            .bind(with: self, onNext: { owner, _ in
+                owner.selectedMenu.accept(0)
+            })
+            .disposed(by: disposeBag)
+        
+        rootView.novelDetailTabView.infoButton.rx.tap
+            .bind(with: self, onNext: { owner, _ in
+                owner.selectedMenu.accept(1)
+            })
+            .disposed(by: disposeBag)
+        
+        rootView.stickyNovelDetailTabView.memoButton.rx.tap
+            .bind(with: self, onNext: { owner, _ in
+                owner.selectedMenu.accept(0)
+            })
+            .disposed(by: disposeBag)
+        
+        rootView.stickyNovelDetailTabView.infoButton.rx.tap
+            .bind(with: self, onNext: { owner, _ in
+                owner.selectedMenu.accept(1)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindNavigation() {
+        backButton.rx.tap
+            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                owner.navigationController?.popViewController(animated: true)
+            })
+            .disposed(by: disposeBag)
+        
         rootView.novelDetailMemoView.memoTableView.rx
             .itemSelected
             .subscribe(with: self, onNext: { owner, indexPath in
@@ -236,19 +276,6 @@ final class NovelDetailViewController: UIViewController {
                 if let url = URL(string: owner.platformList.value[indexPath.item].platformUrl) {
                     UIApplication.shared.open(url, options: [:])
                 }
-            })
-            .disposed(by: disposeBag)
-        
-        backButton.rx.tap
-            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, _ in
-                owner.navigationController?.popViewController(animated: true)
-            })
-            .disposed(by: disposeBag)
-        
-        novelSettingButton.rx.tap
-            .bind(with: self, onNext: { owner, _ in
-                owner.rootView.novelDetailMemoSettingButtonView.isHidden = false
             })
             .disposed(by: disposeBag)
         
@@ -297,30 +324,6 @@ final class NovelDetailViewController: UIViewController {
                     novelAuthor: owner.novelAuthor,
                     novelImage: owner.novelImage
                 ), animated: true)
-            })
-            .disposed(by: disposeBag)
-        
-        rootView.novelDetailTabView.memoButton.rx.tap
-            .bind(with: self, onNext: { owner, _ in
-                owner.selectedMenu.accept(0)
-            })
-            .disposed(by: disposeBag)
-        
-        rootView.novelDetailTabView.infoButton.rx.tap
-            .bind(with: self, onNext: { owner, _ in
-                owner.selectedMenu.accept(1)
-            })
-            .disposed(by: disposeBag)
-        
-        rootView.stickyNovelDetailTabView.memoButton.rx.tap
-            .bind(with: self, onNext: { owner, _ in
-                owner.selectedMenu.accept(0)
-            })
-            .disposed(by: disposeBag)
-        
-        rootView.stickyNovelDetailTabView.infoButton.rx.tap
-            .bind(with: self, onNext: { owner, _ in
-                owner.selectedMenu.accept(1)
             })
             .disposed(by: disposeBag)
     }
