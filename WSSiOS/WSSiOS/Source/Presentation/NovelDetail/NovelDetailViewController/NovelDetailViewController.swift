@@ -148,85 +148,103 @@ final class NovelDetailViewController: UIViewController {
     private func setBinding() {
         rootView.scrollView.rx.contentOffset
             .asDriver()
-            .drive(onNext: { [weak self] offset in
-                self?.updateNavigationBarStyle(offset: offset.y)
+            .drive(with: self, onNext: { owner, offset in
+                owner.updateNavigationBarStyle(offset: offset.y)
             })
             .disposed(by: disposeBag)
         
-        backButton.rx.tap.bind {
-            self.navigationController?.popViewController(animated: true)
-        }.disposed(by: disposeBag)
+        backButton.rx.tap
+            .bind(with: self, onNext: { owner, _ in
+                owner.navigationController?.popViewController(animated: true)
+            })
+            .disposed(by: disposeBag)
         
-        novelSettingButton.rx.tap.bind {
-            self.rootView.novelDetailMemoSettingButtonView.isHidden = false
-        }.disposed(by: disposeBag)
+        novelSettingButton.rx.tap
+            .bind(with: self, onNext: { owner, _ in
+                owner.rootView.novelDetailMemoSettingButtonView.isHidden = false
+            })
+            .disposed(by: disposeBag)
         
-        rootView.novelDetailMemoSettingButtonView.novelDeleteButton.rx.tap.bind {
-            self.rootView.novelDetailMemoSettingButtonView.isHidden = true
-            let vc = DeletePopupViewController(
-                userNovelRepository: DefaultUserNovelRepository(
-                    userNovelService: DefaultUserNovelService()
-                ),
-                popupStatus: .novelDelete,
-                userNovelId: self.userNovelId
-            )
-            vc.modalPresentationStyle = .overFullScreen
-            vc.modalTransitionStyle = .crossDissolve
-            self.present(vc, animated: true)
-        }.disposed(by: disposeBag)
-        
-        rootView.novelDetailMemoSettingButtonView.novelEditButon.rx.tap.bind {
-            self.rootView.novelDetailMemoSettingButtonView.isHidden = true
-            self.selectedMenu.onNext(1)
-            self.navigationController?.pushViewController(
-                RegisterNormalViewController(
-                    novelRepository: DefaultNovelRepository(
-                        novelService: DefaultNovelService()),
+        rootView.novelDetailMemoSettingButtonView.novelDeleteButton.rx.tap
+            .bind(with: self, onNext: { owner, _ in
+                owner.rootView.novelDetailMemoSettingButtonView.isHidden = true
+                let vc = DeletePopupViewController(
                     userNovelRepository: DefaultUserNovelRepository(
-                        userNovelService: DefaultUserNovelService()), 
-                    novelId: self.novelId),
-                animated: true)
-        }.disposed(by: disposeBag)
+                        userNovelService: DefaultUserNovelService()
+                    ),
+                    popupStatus: .novelDelete,
+                    userNovelId: owner.userNovelId
+                )
+                vc.modalPresentationStyle = .overFullScreen
+                vc.modalTransitionStyle = .crossDissolve
+                owner.present(vc, animated: true)
+            })
+            .disposed(by: disposeBag)
         
-        rootView.createMemoButton.rx.tap.bind {
-            self.navigationController?.pushViewController(MemoEditViewController(
-                repository: DefaultMemoRepository(
-                    memoService: DefaultMemoService()
-                ),
-                userNovelId: self.userNovelId,
-                novelTitle: self.novelTitle,
-                novelAuthor: self.novelAuthor,
-                novelImage: self.novelImage
-            ), animated: true)
-        }.disposed(by: disposeBag)
+        rootView.novelDetailMemoSettingButtonView.novelEditButon.rx.tap
+            .bind(with: self, onNext: { owner, _ in
+                owner.rootView.novelDetailMemoSettingButtonView.isHidden = true
+                owner.selectedMenu.onNext(1)
+                owner.navigationController?.pushViewController(
+                    RegisterNormalViewController(
+                        novelRepository: DefaultNovelRepository(
+                            novelService: DefaultNovelService()),
+                        userNovelRepository: DefaultUserNovelRepository(
+                            userNovelService: DefaultUserNovelService()),
+                        novelId: owner.novelId),
+                    animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        rootView.createMemoButton.rx.tap
+            .bind(with: self, onNext: { owner, _ in
+                owner.navigationController?.pushViewController(MemoEditViewController(
+                    repository: DefaultMemoRepository(
+                        memoService: DefaultMemoService()
+                    ),
+                    userNovelId: owner.userNovelId,
+                    novelTitle: owner.novelTitle,
+                    novelAuthor: owner.novelAuthor,
+                    novelImage: owner.novelImage
+                ), animated: true)
+            })
+            .disposed(by: disposeBag)
         
         selectedMenu
             .subscribe(with: self, onNext: { owner, selectedMenu in
                 if selectedMenu == 0 {
-                    self.rootView.createMemoButton.isHidden = false
-                    self.rootView.changeCurrentMenu(menu: 0)
+                    owner.rootView.createMemoButton.isHidden = false
+                    owner.rootView.changeCurrentMenu(menu: 0)
                 } else {
-                    self.rootView.createMemoButton.isHidden = true
-                    self.rootView.changeCurrentMenu(menu: 1)
+                    owner.rootView.createMemoButton.isHidden = true
+                    owner.rootView.changeCurrentMenu(menu: 1)
                 }
             })
             .disposed(by: disposeBag)
         
-        rootView.novelDetailTabView.memoButton.rx.tap.bind {
-            self.selectedMenu.onNext(0)
-        }.disposed(by: disposeBag)
+        rootView.novelDetailTabView.memoButton.rx.tap
+            .bind(with: self, onNext: { owner, _ in
+                owner.selectedMenu.onNext(0)
+            })
+            .disposed(by: disposeBag)
         
-        rootView.novelDetailTabView.infoButton.rx.tap.bind {
-            self.selectedMenu.onNext(1)
-        }.disposed(by: disposeBag)
+        rootView.novelDetailTabView.infoButton.rx.tap
+            .bind(with: self, onNext: { owner, _ in
+                owner.selectedMenu.onNext(1)
+            })
+            .disposed(by: disposeBag)
         
-        rootView.stickyNovelDetailTabView.memoButton.rx.tap.bind {
-            self.selectedMenu.onNext(0)
-        }.disposed(by: disposeBag)
+        rootView.stickyNovelDetailTabView.memoButton.rx.tap
+            .bind(with: self, onNext: { owner, _ in
+                owner.selectedMenu.onNext(0)
+            })
+            .disposed(by: disposeBag)
         
-        rootView.stickyNovelDetailTabView.infoButton.rx.tap.bind {
-            self.selectedMenu.onNext(1)
-        }.disposed(by: disposeBag)
+        rootView.stickyNovelDetailTabView.infoButton.rx.tap
+            .bind(with: self, onNext: { owner, _ in
+                owner.selectedMenu.onNext(1)
+            })
+            .disposed(by: disposeBag)
         
         rootView.novelDetailMemoView.memoTableView.rx.observe(CGSize.self, "contentSize")
             .map { $0?.height ?? 0 }
@@ -235,7 +253,7 @@ final class NovelDetailViewController: UIViewController {
 
         memoTableViewHeight
             .subscribe(with: self, onNext: { owner, height in
-                self.rootView.novelDetailMemoView.updateTableViewHeight(height: height)
+                owner.rootView.novelDetailMemoView.updateTableViewHeight(height: height)
             })
             .disposed(by: disposeBag)
         
@@ -246,7 +264,7 @@ final class NovelDetailViewController: UIViewController {
         
         platformCollectionViewHeight
             .subscribe(with: self, onNext: { owner, height in
-                self.rootView.novelDetailInfoView.novelDetailInfoPlatformView.updateCollectionViewHeight(height: height)
+                owner.rootView.novelDetailInfoView.novelDetailInfoPlatformView.updateCollectionViewHeight(height: height)
             })
             .disposed(by: disposeBag)
     }
@@ -257,7 +275,7 @@ final class NovelDetailViewController: UIViewController {
         repository.getUserNovel(userNovelId: self.userNovelId)
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
-                self.updateUI(data)
+                owner.updateUI(data)
             },onError: { owner, error in
                 print(error)
             }).disposed(by: disposeBag)
