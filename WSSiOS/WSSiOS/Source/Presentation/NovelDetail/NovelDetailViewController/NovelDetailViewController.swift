@@ -154,6 +154,7 @@ final class NovelDetailViewController: UIViewController {
             .disposed(by: disposeBag)
         
         backButton.rx.tap
+            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 owner.navigationController?.popViewController(animated: true)
             })
@@ -166,6 +167,7 @@ final class NovelDetailViewController: UIViewController {
             .disposed(by: disposeBag)
         
         rootView.novelDetailMemoSettingButtonView.novelDeleteButton.rx.tap
+            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 owner.rootView.novelDetailMemoSettingButtonView.isHidden = true
                 let vc = DeletePopupViewController(
@@ -182,6 +184,7 @@ final class NovelDetailViewController: UIViewController {
             .disposed(by: disposeBag)
         
         rootView.novelDetailMemoSettingButtonView.novelEditButon.rx.tap
+            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 owner.rootView.novelDetailMemoSettingButtonView.isHidden = true
                 owner.selectedMenu.onNext(1)
@@ -197,6 +200,7 @@ final class NovelDetailViewController: UIViewController {
             .disposed(by: disposeBag)
         
         rootView.createMemoButton.rx.tap
+            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 owner.navigationController?.pushViewController(MemoEditViewController(
                     repository: DefaultMemoRepository(
