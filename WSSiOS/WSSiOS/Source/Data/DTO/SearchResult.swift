@@ -16,5 +16,10 @@ struct SearchNovel: Codable {
     let novelTitle: String
     let novelAuthor: String
     let novelGenre: String
-    let novelImg: String
+    let novelImage: String
+    
+    enum CodingKeys: String, CodingKey {
+        case novelId, novelTitle, novelAuthor, novelGenre
+        case novelImage = "novelImg"
+    }
 }

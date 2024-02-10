@@ -91,7 +91,7 @@ final class SearchCollectionViewCell: UICollectionViewCell {
     //MARK: - Data
     
     func bindData(data: SearchNovel) {
-        guard let imageURL = URL(string: data.novelImg) else { return }
+        guard let imageURL = URL(string: data.novelImage) else { return }
         novelImageView.kf.setImage(with: imageURL)
         
         novelTitleLabel.do {
