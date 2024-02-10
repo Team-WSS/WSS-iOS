@@ -46,8 +46,9 @@ final class LibraryViewController: UIViewController {
     // MARK: - Life Cycle
     
     override func viewWillAppear(_ animated: Bool) {
-        showTabBar()
         super.viewWillAppear(animated)
+        
+        showTabBar()
     }
     
     override func viewDidLoad() {
@@ -151,7 +152,7 @@ final class LibraryViewController: UIViewController {
         libraryListView.libraryNewestButton.rx.tap
             .bind(with: self) { owner , _ in
                 owner.updatePages(sort: owner.sortTypeList[0])
-                owner.libraryDescriptionView.libraryNovelListButton.setTitle(StringLiterals.Library.newest, for: .normal)
+                owner.resetUI(title: StringLiterals.Library.newest)
                 owner.libraryListView.isHidden.toggle()
             }
             .disposed(by: disposeBag)
@@ -159,7 +160,7 @@ final class LibraryViewController: UIViewController {
         libraryListView.libraryOldesttButton.rx.tap
             .bind(with: self) { owner , _ in
                 owner.updatePages(sort: owner.sortTypeList[1])
-                owner.libraryDescriptionView.libraryNovelListButton.setTitle(StringLiterals.Library.oldest, for: .normal)
+                owner.resetUI(title: StringLiterals.Library.oldest)
                 owner.libraryListView.isHidden.toggle()
             }
             .disposed(by: disposeBag)
@@ -167,7 +168,6 @@ final class LibraryViewController: UIViewController {
     
     private func updatePages(sort: String) {
             let viewController = libraryPages[currentPageIndex]
-        print(currentPageIndex, "🧰🧰" )
         viewController.reloadView(sortType: sort)
     }
 }
@@ -178,6 +178,7 @@ extension LibraryViewController : UIPageViewControllerDelegate {
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) { 
         if completed, let currentViewController = pageViewController.viewControllers?.first, let index = libraryPages.firstIndex(of: currentViewController as! LibraryBaseViewController) {
             libraryPageBar.libraryTabCollectionView.selectItem(at: IndexPath(item: index, section: 0), animated: true, scrollPosition: .centeredHorizontally)
+            currentPageIndex = index
         }
     }
 }
@@ -192,7 +193,6 @@ extension LibraryViewController: UIPageViewControllerDataSource {
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         if let currentIndex = libraryPages.firstIndex(of: viewController as! LibraryBaseViewController), currentIndex < libraryPages.count - 1 {
-            currentPageIndex = currentIndex
             return libraryPages[currentIndex + 1]
         }
         return nil
@@ -247,6 +247,23 @@ extension LibraryViewController {
             $0.trailing.equalToSuperview().inset(25)
             $0.width.equalTo(100)
             $0.height.equalTo(104)
+        }
+    }
+    
+    private func resetUI(title: String) {
+        self.libraryDescriptionView.libraryNovelListButton.do {
+            let title = title
+            var attString = AttributedString(title)
+            attString.font = UIFont.Label1
+            attString.foregroundColor = UIColor.Gray300
+            
+            var configuration = UIButton.Configuration.filled()
+            configuration.attributedTitle = attString
+            configuration.image = ImageLiterals.icon.dropDown
+            configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 0)
+            configuration.imagePlacement = .trailing
+            configuration.baseBackgroundColor = UIColor.clear
+            $0.configuration = configuration
         }
     }
     

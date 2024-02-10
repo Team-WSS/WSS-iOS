@@ -45,7 +45,7 @@ final class LibraryDescriptionView: UIView {
             let title = StringLiterals.Library.newest
             var attString = AttributedString(title)
             attString.font = UIFont.Label1
-//            attString.foregroundColor = UIColor.Gray300
+            attString.foregroundColor = UIColor.Gray300
             
             var configuration = UIButton.Configuration.filled()
             configuration.attributedTitle = attString
