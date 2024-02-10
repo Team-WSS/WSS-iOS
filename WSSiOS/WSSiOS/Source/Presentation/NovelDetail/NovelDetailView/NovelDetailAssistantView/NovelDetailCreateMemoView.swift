@@ -14,7 +14,7 @@ final class NovelDetailCreateMemoView: UIView {
 
     // MARK: - Components
     
-    public let createMemoLabel = UILabel()
+    let createMemoLabel = UILabel()
     private let createMemoImageView = UIImageView()
 
     // MARK: - Life Cycle

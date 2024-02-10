@@ -15,7 +15,7 @@ final class NovelDetailInfoKeywordView: UIView {
     // MARK: - Components
     
     private let keywordLabel = UILabel()
-    public let keywordCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+    let keywordCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     
     // MARK: - Life Cycle
     

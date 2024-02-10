@@ -15,7 +15,7 @@ final class NovelDetailInfoPlatformView: UIView {
     // MARK: - Components
     
     private let titleLabel = UILabel()
-    public let platformCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+    let platformCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     
     // MARK: - Life Cycle
     

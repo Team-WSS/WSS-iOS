@@ -14,11 +14,11 @@ final class NovelDetailMemoSettingButtonView: UIView {
     
     // MARK: - Components
     
-    public let backgroundView = UIView()
+    let backgroundView = UIView()
     private let containerView = UIView()
     private let dividerView = UIView()
-    public let novelDeleteButton = UIButton()
-    public let novelEditButon = UIButton()
+    let novelDeleteButton = UIButton()
+    let novelEditButon = UIButton()
     
     // MARK: - Life Cycle
     

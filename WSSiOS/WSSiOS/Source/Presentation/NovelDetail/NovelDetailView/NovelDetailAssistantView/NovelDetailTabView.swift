@@ -18,10 +18,10 @@ final class NovelDetailTabView: UIView {
 
     // MARK: - Components
 
-    public let memoButton = UIButton()
-    public let infoButton = UIButton()
+    let memoButton = UIButton()
+    let infoButton = UIButton()
     private let dividerView = UIView()
-    public let highlightView = UIView()
+    let highlightView = UIView()
     
     // MARK: - Life Cycle
     
