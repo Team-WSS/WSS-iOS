@@ -58,8 +58,8 @@ final class RecordViewController: UIViewController {
         super.viewDidLoad()
         
         setUI()
+        register()
         
-        registerCell()
         bindUI()
         setNotificationCenter()
     }
@@ -73,7 +73,7 @@ final class RecordViewController: UIViewController {
     
     //MARK: - Bind
     
-    private func registerCell() {
+    private func register() {
         rootView.recordTableView.register(
             RecordTableViewCell.self,
             forCellReuseIdentifier: RecordTableViewCell.cellIdentifier)

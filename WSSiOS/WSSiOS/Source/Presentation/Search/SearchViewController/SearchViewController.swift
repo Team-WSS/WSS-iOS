@@ -92,19 +92,24 @@ final class SearchViewController: UIViewController {
             .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner ,searchText in
                 owner.emptyView.removeFromSuperview()
+                owner.searchResultListRelay.accept([])
                 
-                if searchText.isEmpty {
-                    owner.searchResultListRelay.accept([])
-                }
-                else {
+                if !searchText.isEmpty {
                     owner.searchNovels(with: searchText)
-                    
-                    if owner.searchResultListRelay.value.isEmpty {
-                        owner.view.addSubview(owner.emptyView)
-                        owner.emptyView.snp.makeConstraints {
-                            $0.edges.equalToSuperview()
-                        }
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        searchResultListRelay
+            .asDriver()
+            .drive(with: self, onNext: { owner, list in
+                if list.isEmpty && !(owner.rootView.headerView.searchBar.text ?? "").isEmpty {
+                    owner.view.addSubview(owner.emptyView)
+                    owner.emptyView.snp.makeConstraints {
+                        $0.edges.equalToSuperview()
                     }
+                } else {
+                    owner.emptyView.removeFromSuperview()
                 }
             })
             .disposed(by: disposeBag)
@@ -144,7 +149,7 @@ final class SearchViewController: UIViewController {
     private func getDataFromAPI(disposeBag: DisposeBag,
                                 searchWord: String) {
         self.novelRepository.getSearchNovels(searchWord: searchWord)
-            .subscribe (with: self, onNext: { owner, search in
+            .subscribe(with: self, onNext: { owner, search in
                 owner.searchResultListRelay.accept(search.novels)
             })
             .disposed(by: disposeBag)
