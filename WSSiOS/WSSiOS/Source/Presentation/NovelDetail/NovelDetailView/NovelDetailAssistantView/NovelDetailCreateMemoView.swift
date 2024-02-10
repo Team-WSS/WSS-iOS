@@ -46,7 +46,7 @@ final class NovelDetailCreateMemoView: UIView {
         }
         
         createMemoImageView.do {
-            $0.image = ImageLiterals.icon.Memo.small
+            $0.image = .icCreateMemoSmall
             $0.contentMode = .scaleAspectFit
         }
     }

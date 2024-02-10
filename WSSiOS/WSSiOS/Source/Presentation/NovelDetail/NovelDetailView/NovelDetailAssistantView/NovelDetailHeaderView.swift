@@ -49,7 +49,7 @@ final class NovelDetailHeaderView: UIView {
         gradientView.do {
             $0.contentMode = .scaleAspectFill
             $0.clipsToBounds = true
-            $0.image = ImageLiterals.Image.Banner.backgroundGradient
+            $0.image = .imgBackgroundGradation
         }
         
         genreImageView.do {
@@ -68,7 +68,7 @@ final class NovelDetailHeaderView: UIView {
         }
         
         novelCoverImageView.do {
-            $0.image = ImageLiterals.Image.Banner.loadingThumbnail
+            $0.image = .imgLoadingThumbnail
             $0.layer.cornerRadius = 6
             $0.clipsToBounds = true
         }

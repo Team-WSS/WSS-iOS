@@ -63,7 +63,7 @@ final class NovelDetailView: UIView {
         
         createMemoButton.do {
             $0.backgroundColor = .wssBlack
-            $0.setImage(ImageLiterals.icon.Memo.big, for: .normal)
+            $0.setImage(.icCreateMemoBig, for: .normal)
             $0.topLeftRadius = 32.5
             $0.topRightRadius = 32.5
             $0.bottomLeftRadius = 32.5

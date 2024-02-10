@@ -85,11 +85,11 @@ final class NovelDetailViewController: UIViewController {
     
     private func setUI() {
         backButton.do {
-            $0.setImage(ImageLiterals.icon.navigateLeft.withRenderingMode(.alwaysOriginal), for: .normal)
+            $0.setImage(.icNavigateLeft.withRenderingMode(.alwaysOriginal), for: .normal)
         }
         
         novelSettingButton.do {
-            $0.setImage(ImageLiterals.icon.meatballMemo.withRenderingMode(.alwaysOriginal), for: .normal)
+            $0.setImage(.icMeatballMemo.withRenderingMode(.alwaysOriginal), for: .normal)
         }
     }
     

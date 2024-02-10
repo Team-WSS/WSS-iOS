@@ -43,7 +43,7 @@ final class NovelDetailInfoReadDateView: UIView {
         }
         
         dateImageView.do {
-            $0.image = ImageLiterals.icon.calender.withRenderingMode(.alwaysTemplate)
+            $0.image = .icCalendar.withRenderingMode(.alwaysTemplate)
             $0.contentMode = .scaleAspectFit
             $0.tintColor = .wssBlack
         }

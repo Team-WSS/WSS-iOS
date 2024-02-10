@@ -45,7 +45,7 @@ final class NovelDetailInfoPlatformCollectionViewCell: UICollectionViewCell {
         }
         
         platformImageView.do {
-            $0.image = ImageLiterals.icon.linkPlatform
+            $0.image = .icLinkPlatform
             $0.contentMode = .scaleAspectFit
         }
     }
