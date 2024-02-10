@@ -19,7 +19,7 @@ final class LibraryTabCollectionViewCell: UICollectionViewCell {
     static let identifier: String = "LibraryTabCollectionViewCell"
     private let disposeBag = DisposeBag()
     
-    //MARK: - UI Components
+    //MARK: - Components
     
     private let libraryTabLabel = UILabel()
     private let libraryTabUnderView = UIView()
@@ -30,7 +30,7 @@ final class LibraryTabCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -45,7 +45,7 @@ final class LibraryTabCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    //MARK: - Set UI
+    //MARK: - UI
     
     private func setUI() {
         libraryTabLabel.do {
@@ -60,16 +60,12 @@ final class LibraryTabCollectionViewCell: UICollectionViewCell {
             $0.isHidden = true
         }
     }
-    
-    //MARK: - Set Hierachy
-    
-    private func setHierachy() {
+
+    private func setHierarchy() {
         self.addSubviews(libraryTabLabel,
                          libraryTabUnderView)
     }
-    
-    //MARK: - Set Layout
-    
+
     private func setLayout() {
         libraryTabLabel.snp.makeConstraints() {
             $0.center.equalToSuperview()
@@ -81,13 +77,13 @@ final class LibraryTabCollectionViewCell: UICollectionViewCell {
             $0.height.equalTo(3)
         }
     }
-    
-    //MARK: - Select Case
-    
+
     private func selectUI() {
         libraryTabLabel.textColor = isSelected ? .Primary100 : .Gray200
         libraryTabUnderView.isHidden = isSelected ? false : true
     }
+    
+    //MARK: - Data
     
     func bindData(data: String) {
         libraryTabLabel.text = data

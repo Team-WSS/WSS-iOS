@@ -28,7 +28,7 @@ final class LibraryViewController: UIViewController {
     private let libraryListView = LibraryListView()
     private lazy var libraryPages = [LibraryBaseViewController]()
     
-    //MARK: - UI Components
+    //MARK: - Components
     
     private let libraryPageViewController = UIPageViewController(transitionStyle: .scroll,
                                                                  navigationOrientation: .horizontal,
@@ -68,7 +68,7 @@ final class LibraryViewController: UIViewController {
         showTabBar()
     }
    
-    //MARK: - Custom TabBar
+    //MARK: - Bind
     
     private func register() {
         libraryPageBar.libraryTabCollectionView
@@ -131,6 +131,8 @@ final class LibraryViewController: UIViewController {
                                                      completion: nil)
     }
     
+    //MARK: - Actions
+    
     private func setAction() {
         libraryPageBar.selectedTabIndex
             .subscribe(with: self, onNext: { owner, index in 
@@ -176,7 +178,7 @@ final class LibraryViewController: UIViewController {
     }
 }
 
-//MARK: - set PageController
+//MARK: - Set PageController
 
 extension LibraryViewController : UIPageViewControllerDelegate {
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) { 
@@ -211,7 +213,7 @@ extension LibraryViewController: NovelDelegate {
 
 extension LibraryViewController {
     
-    //MARK: - set Design
+    //MARK: - UI
     
     private func setUI() {
         self.view.backgroundColor = .White
@@ -271,7 +273,7 @@ extension LibraryViewController {
         }
     }
     
-    //MARK: - notification
+    //MARK: - Notification
     
     private func addNotificationCenter() {
         NotificationCenter.default.addObserver(

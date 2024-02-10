@@ -19,7 +19,7 @@ final class LibraryPageBar: UIView {
     private let disposeBag = DisposeBag()
     lazy var selectedTabIndex = PublishSubject<Int>()
     
-    //MARK: - UI Components
+    //MARK: - Components
     
     public lazy var libraryTabCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     
@@ -29,7 +29,7 @@ final class LibraryPageBar: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -37,7 +37,7 @@ final class LibraryPageBar: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
         libraryTabCollectionView.do {
@@ -55,14 +55,10 @@ final class LibraryPageBar: UIView {
             .disposed(by: disposeBag)
     }
     
-    //MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubview(libraryTabCollectionView)
     }
-    
-    //MARK: - set Layout
-    
+
     private func setLayout() {
         libraryTabCollectionView.snp.makeConstraints() {
             $0.top.bottom.equalToSuperview()

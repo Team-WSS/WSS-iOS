@@ -12,7 +12,7 @@ import Then
 
 final class LibraryDescriptionView: UIView {
 
-    //MARK: - UI Components
+    //MARK: - Components
     
     public let libraryNovelCountLabel = UILabel()
     public lazy var libraryNovelListButton = UIButton()
@@ -23,7 +23,7 @@ final class LibraryDescriptionView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -31,7 +31,7 @@ final class LibraryDescriptionView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
         self.backgroundColor = .Gray50
@@ -56,16 +56,12 @@ final class LibraryDescriptionView: UIView {
             $0.configuration = configuration
         }
     }
-    
-    //MARK: - set Hierachy
-    
-    private func setHierachy() {
+  
+    private func setHierarchy() {
         self.addSubviews(libraryNovelCountLabel,
                          libraryNovelListButton)
     }
-    
-    //MARK: - set Layout
-    
+
     private func setLayout() {
         libraryNovelCountLabel.snp.makeConstraints() {
             $0.centerY.equalToSuperview()

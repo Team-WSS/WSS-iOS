@@ -76,7 +76,7 @@ final class LibraryBaseViewController: UIViewController {
                      sortType: sortType)
     }
     
-    //MARK: - Custom TabBar
+    //MARK: - Bind
     
     private func register() {
         rootView.libraryCollectionView.register(LibraryCollectionViewCell.self,
@@ -122,6 +122,8 @@ final class LibraryBaseViewController: UIViewController {
         .disposed(by: disposeBag)
     }
     
+    //MARK: - Actions
+    
     private func bindAction() {
         rootView.libraryCollectionView.rx.itemSelected
             .observe(on: MainScheduler.instance)
@@ -149,6 +151,9 @@ final class LibraryBaseViewController: UIViewController {
 }
 
 extension LibraryBaseViewController {
+    
+    //MARK: - UI
+    
     private func setUI() {
         libraryEmptyView.isHidden = true
     }

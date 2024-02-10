@@ -12,7 +12,7 @@ import Then
 
 final class LibraryView: UIView {
     
-    //MARK: - UI Components
+    //MARK: - Components
     
     public lazy var libraryCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     
@@ -30,7 +30,7 @@ final class LibraryView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
         libraryCollectionView.do {
@@ -46,13 +46,9 @@ final class LibraryView: UIView {
         }
     }
     
-    //MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubview(libraryCollectionView)
     }
-    
-    //MARK: - set Layout
     
     private func setLayout() {
         libraryCollectionView.snp.makeConstraints() {

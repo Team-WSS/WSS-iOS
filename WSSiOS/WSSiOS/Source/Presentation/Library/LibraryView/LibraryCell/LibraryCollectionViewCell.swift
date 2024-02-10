@@ -16,7 +16,7 @@ final class LibraryCollectionViewCell: UICollectionViewCell {
     
     static let identifier: String = "LibraryCollectionViewCell"
     
-    //MARK: - UI Components
+    //MARK: - Components
     
     private let novelImageView = UIImageView()
     private let novelTitleLabel = UILabel()
@@ -30,7 +30,7 @@ final class LibraryCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -39,7 +39,7 @@ final class LibraryCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - Set UI
+    //MARK: - UI
     
     private func setUI() {
         novelImageView.do {
@@ -66,19 +66,15 @@ final class LibraryCollectionViewCell: UICollectionViewCell {
             $0.textColor = .Black
         }
     }
-    
-    //MARK: - Set Hierachy
-    
-    private func setHierachy() {
+
+    private func setHierarchy() {
         self.addSubviews(novelImageView,
                          novelTitleLabel,
                          novelAuthorLabel,
                          ratingStarImage,
                          novelRatingLabel)
     }
-    
-    //MARK: - Set Layout
-    
+
     private func setLayout() {
         novelImageView.snp.makeConstraints() {
             $0.width.equalToSuperview()
@@ -106,6 +102,8 @@ final class LibraryCollectionViewCell: UICollectionViewCell {
             $0.leading.equalTo(ratingStarImage.snp.trailing).offset(5)
         }
     }
+    
+    //MARK: - Data
     
     func bindData(_ data: UserNovelListDetail) {
         novelImageView.kfSetImage(url: data.userNovelImg)
