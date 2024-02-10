@@ -64,7 +64,7 @@ final class NovelDetailInfoView: UIView {
     
     // MARK: - Data
     
-    func bindData(rating: Float, readStatus: String, startDate: String?, endDate: String?, description: String, genre: String, platforms: [UserNovelPlatform]) {
+    func bindData(rating: Float, readStatus: String, startDate: String?, endDate: String?, description: String, genre: String, platformCount: Int) {
         self.novelDetailInfoRatingView.bindData(rating: rating)
         self.novelDetailInfoReadStatusView.bindData(status: readStatus)
         if let startDate = startDate {
@@ -74,6 +74,6 @@ final class NovelDetailInfoView: UIView {
         }
         self.novelDetailInfoDescriptionView.bindData(description: description)
         self.novelDetailInfoGenreView.bindData(genre: genre)
-        self.novelDetailInfoPlatformView.bindData(platforms: platforms)
+        self.novelDetailInfoPlatformView.bindData(platformCount: platformCount)
     }
 }

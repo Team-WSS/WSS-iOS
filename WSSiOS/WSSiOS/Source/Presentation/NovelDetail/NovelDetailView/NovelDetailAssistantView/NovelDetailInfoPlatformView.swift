@@ -11,10 +11,6 @@ import SnapKit
 import Then
 
 final class NovelDetailInfoPlatformView: UIView {
-    
-    //MARK: - Properties
-
-    public var platformList: [UserNovelPlatform] = []
 
     // MARK: - Components
     
@@ -79,10 +75,8 @@ final class NovelDetailInfoPlatformView: UIView {
     
     // MARK: - Data
     
-    func bindData(platforms: [UserNovelPlatform]) {
-        self.platformList = platforms
-        
-        if self.platformList.count == 0 {
+    func bindData(platformCount: Int) {
+        if platformCount == 0 {
             self.removeFromSuperview()
         }
     }

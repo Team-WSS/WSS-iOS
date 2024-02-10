@@ -11,10 +11,6 @@ import SnapKit
 import Then
 
 final class NovelDetailMemoView: UIView {
-    
-    // MARK: - Properties
-
-    public var memoList: [UserNovelMemo] = []
 
     // MARK: - Components
 
@@ -64,10 +60,8 @@ final class NovelDetailMemoView: UIView {
     
     // MARK: - Data
     
-    func bindData(memos: [UserNovelMemo]) {
-        self.memoList = memos
-        
-        if self.memoList.count == 0 {
+    func bindData(memoCount: Int) {
+        if memoCount == 0 {
             self.novelDetailCreateMemoView.createMemoLabel.do {
                 $0.makeAttribute(with: StringLiterals.NovelDetail.Memo.noMemo)?
                     .lineSpacing(spacingPercentage: 150)

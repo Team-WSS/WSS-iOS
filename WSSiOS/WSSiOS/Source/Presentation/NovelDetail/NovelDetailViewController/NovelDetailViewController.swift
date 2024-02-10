@@ -17,6 +17,8 @@ final class NovelDetailViewController: UIViewController {
     private let repository: UserNovelRepository
     private let disposeBag = DisposeBag()
     private let userNovelDetail = BehaviorRelay<UserNovelDetail?>(value: nil)
+    private let memoList = BehaviorRelay<[UserNovelMemo]>(value: [])
+    private let platformList = BehaviorRelay<[UserNovelPlatform]>(value: [])
     private var selectedMenu = BehaviorRelay<Int>(value: 0)
     private let memoTableViewHeight = BehaviorRelay<CGFloat>(value: 0)
     private let keywordCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
@@ -135,18 +137,42 @@ final class NovelDetailViewController: UIViewController {
     // MARK: - Bind
 
     private func register() {
-        rootView.novelDetailMemoView.memoTableView.register(NovelDetailMemoTableViewCell.self, forCellReuseIdentifier: NovelDetailMemoTableViewCell.cellIdentifier)
-        rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.register(NovelDetailInfoPlatformCollectionViewCell.self, forCellWithReuseIdentifier: NovelDetailInfoPlatformCollectionViewCell.cellIdentifier)
+        rootView.novelDetailMemoView.memoTableView.register(
+            NovelDetailMemoTableViewCell.self,
+            forCellReuseIdentifier: NovelDetailMemoTableViewCell.cellIdentifier
+        )
+        rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.register(
+            NovelDetailInfoPlatformCollectionViewCell.self,
+            forCellWithReuseIdentifier: NovelDetailInfoPlatformCollectionViewCell.cellIdentifier
+        )
     }
     
     private func delegate() {
-        rootView.novelDetailMemoView.memoTableView.dataSource = self
-        rootView.novelDetailMemoView.memoTableView.delegate = self
-        rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.dataSource = self
-        rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.delegate = self
+        rootView.novelDetailMemoView.memoTableView.rx.setDelegate(self)
+            .disposed(by: disposeBag)
+        rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.rx.setDelegate(self)
+            .disposed(by: disposeBag)
     }
     
     private func bindUI() {
+        memoList.bind(to: rootView.novelDetailMemoView.memoTableView.rx.items(
+            cellIdentifier: NovelDetailMemoTableViewCell.cellIdentifier,
+            cellType: NovelDetailMemoTableViewCell.self)) { row, element, cell in
+                cell.selectionStyle = .none
+                cell.bindData(
+                    date: element.createdDate,
+                    content: element.memoContent
+                )
+            }
+            .disposed(by: disposeBag)
+        
+        platformList.bind(to: rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.rx.items(
+            cellIdentifier: NovelDetailInfoPlatformCollectionViewCell.cellIdentifier,
+            cellType: NovelDetailInfoPlatformCollectionViewCell.self)) { item, element, cell in
+                cell.bindData(platform: element.platformName)
+            }
+            .disposed(by: disposeBag)
+        
         rootView.scrollView.rx.contentOffset
             .asDriver()
             .drive(with: self, onNext: { owner, offset in
@@ -192,6 +218,27 @@ final class NovelDetailViewController: UIViewController {
     // MARK: - Actions
     
     private func bindAction() {
+        rootView.novelDetailMemoView.memoTableView.rx
+            .itemSelected
+            .subscribe(with: self, onNext: { owner, indexPath in
+                owner.navigationController?.pushViewController(
+                    MemoReadViewController(
+                        repository: DefaultMemoRepository(
+                            memoService: DefaultMemoService()),
+                        memoId: owner.memoList.value[indexPath.row].memoId
+                    ), animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.rx
+            .itemSelected
+            .subscribe(with: self, onNext: { owner, indexPath in
+                if let url = URL(string: owner.platformList.value[indexPath.item].platformUrl) {
+                    UIApplication.shared.open(url, options: [:])
+                }
+            })
+            .disposed(by: disposeBag)
+        
         backButton.rx.tap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
@@ -293,6 +340,9 @@ final class NovelDetailViewController: UIViewController {
     // MARK: - Custom Method
     
     private func updateUI(_ novelData: UserNovelDetail) {
+        self.memoList.accept(novelData.memos)
+        self.platformList.accept(novelData.platforms)
+        
         self.novelId = novelData.novelId
         self.novelTitle = novelData.userNovelTitle
         self.novelAuthor = novelData.userNovelAuthor
@@ -305,7 +355,7 @@ final class NovelDetailViewController: UIViewController {
             genreImage: novelData.userNovelGenreBadgeImg
         )
         self.rootView.novelDetailMemoView.bindData(
-            memos: novelData.memos
+            memoCount: self.memoList.value.count
         )
         self.rootView.novelDetailInfoView.bindData(
             rating: novelData.userNovelRating,
@@ -314,11 +364,8 @@ final class NovelDetailViewController: UIViewController {
             endDate: novelData.userNovelReadEndDate,
             description: novelData.userNovelDescription,
             genre: novelData.userNovelGenre,
-            platforms: novelData.platforms
+            platformCount: self.platformList.value.count
         )
-        
-        self.rootView.novelDetailMemoView.memoTableView.reloadData()
-        self.rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.reloadData()
     }
     
     private func updateNavigationBarStyle(offset: CGFloat) {
@@ -377,69 +424,11 @@ final class NovelDetailViewController: UIViewController {
     }
 }
 
-extension NovelDetailViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return rootView.novelDetailMemoView.memoList.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: NovelDetailMemoTableViewCell.cellIdentifier,
-            for: indexPath
-        ) as? NovelDetailMemoTableViewCell else {return UITableViewCell()}
-        
-        cell.selectionStyle = .none
-        cell.bindData(
-            date: rootView.novelDetailMemoView.memoList[indexPath.row].createdDate,
-            content: rootView.novelDetailMemoView.memoList[indexPath.row].memoContent
-        )
-        return cell
-    }
-}
-
-extension NovelDetailViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.navigationController?.pushViewController(
-            MemoReadViewController(
-                repository: DefaultMemoRepository(
-                    memoService: DefaultMemoService()),
-                memoId: rootView.novelDetailMemoView.memoList[indexPath.row].memoId
-            ), animated: true)
-    }
-}
-
-extension NovelDetailViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformList.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: NovelDetailInfoPlatformCollectionViewCell.cellIdentifier,
-            for: indexPath
-        ) as? NovelDetailInfoPlatformCollectionViewCell else {return UICollectionViewCell()}
-        
-        cell.bindData(
-            platform: rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformList[indexPath.item].platformName
-        )
-        
-        return cell
-    }
-}
-
-extension NovelDetailViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let url = URL(string: rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformList[indexPath.item].platformUrl) {
-            UIApplication.shared.open(url, options: [:])
-        }
-    }
-}
-
 extension NovelDetailViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var text: String?
         
-        text = rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformList[indexPath.item].platformName
+        text = self.platformList.value[indexPath.item].platformName
         
         guard let unwrappedText = text else {
             return CGSize(width: 0, height: 0)
