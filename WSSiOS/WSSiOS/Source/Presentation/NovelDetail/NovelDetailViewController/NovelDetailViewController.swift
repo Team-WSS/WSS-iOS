@@ -12,8 +12,8 @@ import RxCocoa
 
 final class NovelDetailViewController: UIViewController {
     
-    //MARK: - set Properties
-    
+    // MARK: - Properties
+
     private let repository: UserNovelRepository
     private let disposeBag = DisposeBag()
     private let userNovelDetail = BehaviorRelay<UserNovelDetail?>(value: nil)
@@ -27,8 +27,8 @@ final class NovelDetailViewController: UIViewController {
     private let keywordCollectionViewHeight = BehaviorSubject<CGFloat>(value: 0)
     private let platformCollectionViewHeight = BehaviorSubject<CGFloat>(value: 0)
     
-    // MARK: - UI Components
-    
+    // MARK: - Components
+
     private let rootView = NovelDetailView()
     private let backButton = UIButton()
     private let novelSettingButton = UIButton()
@@ -71,7 +71,7 @@ final class NovelDetailViewController: UIViewController {
         setBinding()
     }
     
-    // MARK: - set NavigationBar
+    // MARK: - UI
     
     private func setNavigationBar() {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
@@ -83,8 +83,6 @@ final class NovelDetailViewController: UIViewController {
         ]
     }
     
-    // MARK: - set UI
-    
     private func setUI() {
         backButton.do {
             $0.setImage(ImageLiterals.icon.navigateLeft.withRenderingMode(.alwaysOriginal), for: .normal)
@@ -95,8 +93,6 @@ final class NovelDetailViewController: UIViewController {
         }
     }
     
-    // MARK: - setNotificationCenter
-
     private func setNotificationCenter() {
         NotificationCenter.default.addObserver(
             self,
@@ -127,8 +123,6 @@ final class NovelDetailViewController: UIViewController {
         )
     }
     
-    // MARK: - set tap gesture
-    
     private func setTapGesture() {
         let viewTapGesture = UITapGestureRecognizer(target: self, action: #selector(viewDidTap))
         self.rootView.novelDetailMemoSettingButtonView.addGestureRecognizer(viewTapGesture)
@@ -137,14 +131,12 @@ final class NovelDetailViewController: UIViewController {
         self.rootView.novelDetailMemoView.novelDetailCreateMemoView.addGestureRecognizer(memoCreateViewTapGesture)
     }
     
-    // MARK: - register
+    // MARK: - Bind
 
     private func register() {
         rootView.novelDetailMemoView.memoTableView.register(NovelDetailMemoTableViewCell.self, forCellReuseIdentifier: "NovelDetailMemoTableViewCell")
         rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.register(NovelDetailInfoPlatformCollectionViewCell.self, forCellWithReuseIdentifier: "NovelDetailInfoPlatformCollectionViewCell")
     }
-    
-    // MARK: - delegate
     
     private func delegate() {
         rootView.novelDetailMemoView.memoTableView.dataSource = self
@@ -152,8 +144,6 @@ final class NovelDetailViewController: UIViewController {
         rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.dataSource = self
         rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.delegate = self
     }
-    
-    // MARK: - set Binding
     
     private func setBinding() {
         rootView.scrollView.rx.contentOffset
@@ -261,8 +251,20 @@ final class NovelDetailViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    // MARK: - update UI
-
+    // MARK: - API
+    
+    private func getUserNovel() {
+        repository.getUserNovel(userNovelId: self.userNovelId)
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, data in
+                self.updateUI(data)
+            },onError: { owner, error in
+                print(error)
+            }).disposed(by: disposeBag)
+    }
+    
+    // MARK: - Custom Method
+    
     private func updateUI(_ novelData: UserNovelDetail) {
         self.novelId = novelData.novelId
         self.novelTitle = novelData.userNovelTitle
@@ -292,18 +294,6 @@ final class NovelDetailViewController: UIViewController {
         self.rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.reloadData()
     }
     
-    // MARK: - API request
-    
-    private func getUserNovel() {
-        repository.getUserNovel(userNovelId: self.userNovelId)
-            .observe(on: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, data in
-                self.updateUI(data)
-            },onError: { owner, error in
-                print(error)
-            }).disposed(by: disposeBag)
-    }
-    
     private func updateNavigationBarStyle(offset: CGFloat) {
         if offset > rootView.novelDetailHeaderView.frame.size.height - view.safeAreaInsets.top {
             rootView.stickyNovelDetailTabView.isHidden = false
@@ -326,8 +316,6 @@ final class NovelDetailViewController: UIViewController {
             novelSettingButton.isHidden = false
         }
     }
-    
-    // MARK: - custom method
     
     @objc func viewDidTap() {
         self.rootView.novelDetailMemoSettingButtonView.isHidden = true

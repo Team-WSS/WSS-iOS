@@ -12,8 +12,8 @@ import Then
 
 final class NovelDetailInfoReadStatusView: UIView {
     
-    // MARK: - UI Components
-    
+    // MARK: - Components
+
     private let dividerView = UIView()
     private let readStatusLabel = UILabel()
     private let readStatusTagView = NovelDetailInfoReadStatusTagView()
@@ -24,7 +24,7 @@ final class NovelDetailInfoReadStatusView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -32,7 +32,7 @@ final class NovelDetailInfoReadStatusView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - set UI
+    // MARK: - UI
     
     private func setUI() {
         dividerView.do {
@@ -48,15 +48,11 @@ final class NovelDetailInfoReadStatusView: UIView {
         }
     }
     
-    // MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(dividerView,
                          readStatusLabel,
                          readStatusTagView)
     }
-    
-    // MARK: - set Layout
     
     private func setLayout() {
         dividerView.snp.makeConstraints {
@@ -75,6 +71,8 @@ final class NovelDetailInfoReadStatusView: UIView {
             $0.bottom.equalToSuperview()
         }
     }
+    
+    // MARK: - Data
     
     func bindData(status: String) {
         switch status {

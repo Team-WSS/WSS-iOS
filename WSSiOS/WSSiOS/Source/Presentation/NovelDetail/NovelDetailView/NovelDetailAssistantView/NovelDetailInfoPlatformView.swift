@@ -12,11 +12,11 @@ import Then
 
 final class NovelDetailInfoPlatformView: UIView {
     
-    //MARK: - set Properties
+    //MARK: - Properties
 
     public var platformList: [UserNovelPlatform] = []
 
-    // MARK: - UI Components
+    // MARK: - Components
     
     private let titleLabel = UILabel()
     public let platformCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
@@ -27,7 +27,7 @@ final class NovelDetailInfoPlatformView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -35,7 +35,7 @@ final class NovelDetailInfoPlatformView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - set UI
+    // MARK: - UI
     
     private func setUI() {
         titleLabel.do {
@@ -58,14 +58,10 @@ final class NovelDetailInfoPlatformView: UIView {
         }
     }
     
-    // MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(titleLabel,
                          platformCollectionView)
     }
-    
-    // MARK: - set Layout
     
     private func setLayout() {
         titleLabel.snp.makeConstraints {
@@ -81,11 +77,7 @@ final class NovelDetailInfoPlatformView: UIView {
         }
     }
     
-    func updateCollectionViewHeight(height: CGFloat) {
-        platformCollectionView.snp.updateConstraints {
-            $0.height.equalTo(height)
-        }
-    }
+    // MARK: - Data
     
     func bindData(platforms: [UserNovelPlatform]) {
         self.platformList = platforms
@@ -94,4 +86,13 @@ final class NovelDetailInfoPlatformView: UIView {
             self.removeFromSuperview()
         }
     }
+    
+    // MARK: - Custom Method
+    
+    func updateCollectionViewHeight(height: CGFloat) {
+        platformCollectionView.snp.updateConstraints {
+            $0.height.equalTo(height)
+        }
+    }
+
 }

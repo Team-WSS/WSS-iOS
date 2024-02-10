@@ -14,7 +14,7 @@ import UIImageViewAlignedSwift
 
 final class NovelDetailHeaderView: UIView {
 
-    // MARK: - UI Components
+    // MARK: - Components
     
     private let backgroundImageView = UIImageViewAligned()
     private let gradientView = UIImageView()
@@ -29,7 +29,7 @@ final class NovelDetailHeaderView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -37,7 +37,7 @@ final class NovelDetailHeaderView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - set UI
+    // MARK: - UI
     
     private func setUI() {
         backgroundImageView.do {
@@ -74,9 +74,7 @@ final class NovelDetailHeaderView: UIView {
         }
     }
     
-    // MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(backgroundImageView,
                          gradientView,
                          genreImageView,
@@ -84,8 +82,6 @@ final class NovelDetailHeaderView: UIView {
                          novelAuthorLabel,
                          novelCoverImageView)
     }
-    
-    // MARK: - set Layout
     
     private func setLayout() {
         backgroundImageView.snp.makeConstraints {
@@ -122,6 +118,8 @@ final class NovelDetailHeaderView: UIView {
             $0.trailing.equalTo(novelCoverImageView.snp.leading).offset(-18)
         }
     }
+    
+    // MARK: - Data
     
     func bindData(title: String, author: String, novelImage: String, genreImage: String) {
         self.novelTitleLabel.do {

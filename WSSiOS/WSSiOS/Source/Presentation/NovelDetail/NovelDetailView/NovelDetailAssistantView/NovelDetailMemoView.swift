@@ -12,12 +12,12 @@ import Then
 
 final class NovelDetailMemoView: UIView {
     
-    //MARK: - set Properties
-    
+    // MARK: - Properties
+
     public var memoList: [UserNovelMemo] = []
 
-    // MARK: - UI Components
-    
+    // MARK: - Components
+
     public let novelDetailCreateMemoView = NovelDetailCreateMemoView()
     public let memoTableView = UITableView(frame: .zero, style: .plain)
 
@@ -27,7 +27,7 @@ final class NovelDetailMemoView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -35,7 +35,7 @@ final class NovelDetailMemoView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - set UI
+    // MARK: - UI
     
     private func setUI() {
         memoTableView.do {
@@ -45,14 +45,10 @@ final class NovelDetailMemoView: UIView {
         }
     }
     
-    // MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(novelDetailCreateMemoView,
                          memoTableView)
     }
-    
-    // MARK: - set Layout
     
     private func setLayout() {
         novelDetailCreateMemoView.snp.makeConstraints {
@@ -66,11 +62,7 @@ final class NovelDetailMemoView: UIView {
         }
     }
     
-    func updateTableViewHeight(height: CGFloat) {
-        memoTableView.snp.updateConstraints {
-            $0.height.equalTo(height + 82)
-        }
-    }
+    // MARK: - Data
     
     func bindData(memos: [UserNovelMemo]) {
         self.memoList = memos
@@ -89,6 +81,14 @@ final class NovelDetailMemoView: UIView {
                     .kerning(kerningPixel: -0.6)
                     .applyAttribute()
             }
+        }
+    }
+    
+    // MARK: - Custom Method
+    
+    func updateTableViewHeight(height: CGFloat) {
+        memoTableView.snp.updateConstraints {
+            $0.height.equalTo(height + 82)
         }
     }
 }

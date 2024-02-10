@@ -12,7 +12,7 @@ import Then
 
 final class NovelDetailCreateMemoView: UIView {
 
-    // MARK: - UI Components
+    // MARK: - Components
     
     public let createMemoLabel = UILabel()
     private let createMemoImageView = UIImageView()
@@ -23,7 +23,7 @@ final class NovelDetailCreateMemoView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -31,7 +31,7 @@ final class NovelDetailCreateMemoView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - set UI
+    // MARK: - UI
     
     private func setUI() {
         self.backgroundColor = .White
@@ -51,14 +51,10 @@ final class NovelDetailCreateMemoView: UIView {
         }
     }
     
-    // MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(createMemoLabel,
                          createMemoImageView)
     }
-    
-    // MARK: - set Layout
     
     private func setLayout() {
         createMemoLabel.snp.makeConstraints {

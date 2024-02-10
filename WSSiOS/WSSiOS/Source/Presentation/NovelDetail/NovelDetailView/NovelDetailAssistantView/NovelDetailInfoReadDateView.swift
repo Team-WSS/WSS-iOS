@@ -12,7 +12,7 @@ import Then
 
 final class NovelDetailInfoReadDateView: UIView {
     
-    // MARK: - UI Components
+    // MARK: - Components
     
     private let readDateLabel = UILabel()
     private let dateImageView = UIImageView()
@@ -26,7 +26,7 @@ final class NovelDetailInfoReadDateView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -34,7 +34,7 @@ final class NovelDetailInfoReadDateView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - set UI
+    // MARK: - UI
     
     private func setUI() {
         readDateLabel.do {
@@ -68,17 +68,13 @@ final class NovelDetailInfoReadDateView: UIView {
         }
     }
     
-    // MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(readDateLabel,
                          dateImageView,
                          startDateLabel,
                          waveLabel,
                          endDateLabel)
     }
-    
-    // MARK: - set Layout
     
     private func setLayout() {
         readDateLabel.snp.makeConstraints {
@@ -108,6 +104,8 @@ final class NovelDetailInfoReadDateView: UIView {
             $0.leading.equalTo(waveLabel.snp.trailing).offset(20)
         }
     }
+    
+    // MARK: - Data
     
     func bindData(startDate: String, endDate: String?) {
         self.startDateLabel.do {

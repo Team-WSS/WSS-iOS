@@ -12,8 +12,8 @@ import Then
 
 final class NovelDetailInfoRatingView: UIView {
 
-    // MARK: - UI Components
-    
+    // MARK: - Components
+
     private let ratingLabel = UILabel()
     private let ratingStackView = UIStackView()
     private let dividerView = UIView()
@@ -24,7 +24,7 @@ final class NovelDetailInfoRatingView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -32,7 +32,7 @@ final class NovelDetailInfoRatingView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - set UI
+    // MARK: - UI
     
     private func setUI() {
         ratingLabel.do {
@@ -55,15 +55,11 @@ final class NovelDetailInfoRatingView: UIView {
         }
     }
     
-    // MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(ratingLabel,
                          ratingStackView,
                          dividerView)
     }
-    
-    // MARK: - set Layout
     
     private func setLayout() {
         ratingLabel.snp.makeConstraints {
@@ -85,6 +81,8 @@ final class NovelDetailInfoRatingView: UIView {
             $0.height.equalTo(1)
         }
     }
+    
+    // MARK: - Data
     
     func bindData(rating: Float) {
         self.ratingStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }

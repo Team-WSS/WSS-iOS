@@ -12,7 +12,7 @@ import Then
 
 final class NovelDetailView: UIView {
     
-    // MARK: - UI Components
+    // MARK: - Components
 
     let statusBarView = UIView()
     let scrollView = UIScrollView()
@@ -31,7 +31,7 @@ final class NovelDetailView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -39,7 +39,7 @@ final class NovelDetailView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - set UI
+    // MARK: - UI
     
     private func setUI() {
         self.backgroundColor = .White
@@ -79,9 +79,7 @@ final class NovelDetailView: UIView {
         }
     }
     
-    // MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(scrollView,
                          statusBarView,
                          createMemoButton,
@@ -92,8 +90,6 @@ final class NovelDetailView: UIView {
                                         novelDetailTabView,
                                         novelDetailMemoView)
     }
-    
-    // MARK: - set Layout
     
     private func setLayout() {
         scrollView.snp.makeConstraints {
@@ -120,6 +116,8 @@ final class NovelDetailView: UIView {
             $0.width.equalToSuperview()
         }
     }
+    
+    // MARK: - Custom Method
     
     func changeCurrentMenu(menu: Int) {
         if menu == 0 {

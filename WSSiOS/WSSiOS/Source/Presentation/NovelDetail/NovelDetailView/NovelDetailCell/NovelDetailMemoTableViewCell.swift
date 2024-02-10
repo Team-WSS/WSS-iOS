@@ -11,10 +11,12 @@ import SnapKit
 import Then
 
 final class NovelDetailMemoTableViewCell: UITableViewCell {
+    
+    // MARK: - Properties
 
     static let identifier: String = "NovelDetailMemoTableViewCell"
     
-    // MARK: - UI Components
+    // MARK: - Components
     
     private let leftDividerView = UIView()
     private let rightDividerView = UIView()
@@ -28,7 +30,7 @@ final class NovelDetailMemoTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -36,7 +38,7 @@ final class NovelDetailMemoTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - set UI
+    // MARK: - UI
     
     private func setUI() {
         self.do {
@@ -63,16 +65,12 @@ final class NovelDetailMemoTableViewCell: UITableViewCell {
         }
     }
     
-    // MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.contentView.addSubviews(leftDividerView,
                                      rightDividerView,
                                      memoDateLabel,
                                      memoContentLabel)
     }
-    
-    // MARK: - set Layout
     
     private func setLayout() {
         leftDividerView.snp.makeConstraints {
@@ -101,7 +99,7 @@ final class NovelDetailMemoTableViewCell: UITableViewCell {
         }
     }
     
-    // MARK: - bind data
+    // MARK: - Data
     
     func bindData(date: String, content: String) {
         self.memoDateLabel.text = date

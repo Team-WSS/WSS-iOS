@@ -12,7 +12,7 @@ import Then
 
 final class NovelDetailMemoSettingButtonView: UIView {
     
-    // MARK: - UI Components
+    // MARK: - Components
     
     public let backgroundView = UIView()
     private let containerView = UIView()
@@ -26,7 +26,7 @@ final class NovelDetailMemoSettingButtonView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -34,7 +34,7 @@ final class NovelDetailMemoSettingButtonView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - set UI
+    // MARK: - UI
     
     private func setUI() {
         self.do {
@@ -64,17 +64,13 @@ final class NovelDetailMemoSettingButtonView: UIView {
         }
     }
     
-    // MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubview(backgroundView)
         self.backgroundView.addSubview(containerView)
         self.containerView.addSubviews(novelDeleteButton,
                                        novelEditButon,
                                        dividerView)
     }
-    
-    // MARK: - set Layout
     
     private func setLayout() {
         backgroundView.snp.makeConstraints {

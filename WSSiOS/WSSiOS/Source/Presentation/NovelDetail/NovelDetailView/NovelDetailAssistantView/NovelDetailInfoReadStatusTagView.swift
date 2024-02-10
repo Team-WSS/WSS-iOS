@@ -13,11 +13,11 @@ import Then
 
 final class NovelDetailInfoReadStatusTagView: UIView {
     
-    //MARK: - set Properties
-    
+    // MARK: - Properties
+
     var readStatus: ReadStatus?
     
-    // MARK: - UI Components
+    // MARK: - Components
     
     private let tagImageView = UIImageView()
     private let tagLabel = UILabel()
@@ -29,7 +29,7 @@ final class NovelDetailInfoReadStatusTagView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -37,7 +37,7 @@ final class NovelDetailInfoReadStatusTagView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - set UI
+    // MARK: - UI
     
     private func setUI() {
         self.do {
@@ -56,14 +56,10 @@ final class NovelDetailInfoReadStatusTagView: UIView {
         }
     }
     
-    // MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(tagImageView,
                          tagLabel)
     }
-    
-    // MARK: - set Layout
     
     private func setLayout() {
         tagImageView.snp.makeConstraints {
@@ -78,6 +74,8 @@ final class NovelDetailInfoReadStatusTagView: UIView {
             $0.trailing.equalToSuperview().inset(13)
         }
     }
+    
+    // MARK: - Data
     
     func bindData(_ status: ReadStatus) {
         self.tagImageView.image = status.tagImage

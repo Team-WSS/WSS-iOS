@@ -12,12 +12,12 @@ import Then
 
 final class NovelDetailTabView: UIView {
     
-    //MARK: - set Properties
+    // MARK: - Properties
 
     private let screenWidth = UIScreen.main.bounds.size.width
 
-    // MARK: - UI Components
-    
+    // MARK: - Components
+
     public let memoButton = UIButton()
     public let infoButton = UIButton()
     private let dividerView = UIView()
@@ -29,7 +29,7 @@ final class NovelDetailTabView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -37,7 +37,7 @@ final class NovelDetailTabView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - set UI
+    // MARK: - UI
     
     private func setUI() {
         memoButton.do {
@@ -67,16 +67,12 @@ final class NovelDetailTabView: UIView {
         }
     }
     
-    // MARK: - set Hierachy
-    
-    private func setHierachy() {
-        self.addSubviews(memoButton, 
+    private func setHierarchy() {
+        self.addSubviews(memoButton,
                          infoButton,
                          dividerView,
                          highlightView)
     }
-    
-    // MARK: - set Layout
     
     private func setLayout() {
         memoButton.snp.makeConstraints {
@@ -105,6 +101,8 @@ final class NovelDetailTabView: UIView {
             $0.height.equalTo(2)
         }
     }
+    
+    // MARK: - Custom Method
     
     func highlightMemoButton() {
         highlightView.snp.remakeConstraints {

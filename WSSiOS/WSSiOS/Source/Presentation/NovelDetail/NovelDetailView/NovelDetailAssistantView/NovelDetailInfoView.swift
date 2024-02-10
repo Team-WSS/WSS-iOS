@@ -12,7 +12,7 @@ import Then
 
 final class NovelDetailInfoView: UIView {
 
-    // MARK: - UI Components
+    // MARK: - Components
     
     let contentView = UIStackView()
     let novelDetailInfoRatingView = NovelDetailInfoRatingView()
@@ -28,7 +28,7 @@ final class NovelDetailInfoView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -36,7 +36,7 @@ final class NovelDetailInfoView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - set UI
+    // MARK: - UI
     
     private func setUI() {
         contentView.do {
@@ -45,9 +45,7 @@ final class NovelDetailInfoView: UIView {
         }
     }
     
-    // MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubview(contentView)
         contentView.addArrangedSubviews(novelDetailInfoRatingView,
                                         novelDetailInfoReadStatusView,
@@ -57,14 +55,14 @@ final class NovelDetailInfoView: UIView {
                                         novelDetailInfoPlatformView)
     }
     
-    // MARK: - set Layout
-    
     private func setLayout() {
         contentView.snp.makeConstraints {
             $0.top.leading.trailing.width.equalToSuperview()
             $0.bottom.equalToSuperview().inset(110)
         }
     }
+    
+    // MARK: - Data
     
     func bindData(rating: Float, readStatus: String, startDate: String?, endDate: String?, description: String, genre: String, platforms: [UserNovelPlatform]) {
         self.novelDetailInfoRatingView.bindData(rating: rating)

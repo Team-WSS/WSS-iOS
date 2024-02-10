@@ -12,7 +12,7 @@ import Then
 
 final class NovelDetailInfoGenreView: UIView {
     
-    // MARK: - UI Components
+    // MARK: - Components
     
     private let titleLabel = UILabel()
     private let genreLabel = UILabel()
@@ -23,7 +23,7 @@ final class NovelDetailInfoGenreView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -31,7 +31,7 @@ final class NovelDetailInfoGenreView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - set UI
+    // MARK: - UI
     
     private func setUI() {
         titleLabel.do {
@@ -48,14 +48,10 @@ final class NovelDetailInfoGenreView: UIView {
         }
     }
     
-    // MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(titleLabel,
                          genreLabel)
     }
-    
-    // MARK: - set Layout
     
     private func setLayout() {
         titleLabel.snp.makeConstraints {
@@ -69,6 +65,8 @@ final class NovelDetailInfoGenreView: UIView {
             $0.bottom.equalToSuperview()
         }
     }
+    
+    // MARK: - Data
     
     func bindData(genre: String) {
         self.genreLabel.do {

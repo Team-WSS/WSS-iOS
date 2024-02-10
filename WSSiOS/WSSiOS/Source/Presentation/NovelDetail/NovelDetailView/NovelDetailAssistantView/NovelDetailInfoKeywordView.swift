@@ -12,7 +12,7 @@ import Then
 
 final class NovelDetailInfoKeywordView: UIView {
 
-    // MARK: - UI Components
+    // MARK: - Components
     
     private let keywordLabel = UILabel()
     public let keywordCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
@@ -23,7 +23,7 @@ final class NovelDetailInfoKeywordView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -31,7 +31,7 @@ final class NovelDetailInfoKeywordView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - set UI
+    // MARK: - UI
     
     private func setUI() {
         keywordLabel.do {
@@ -53,14 +53,10 @@ final class NovelDetailInfoKeywordView: UIView {
         }
     }
     
-    // MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(keywordLabel,
                          keywordCollectionView)
     }
-    
-    // MARK: - set Layout
     
     private func setLayout() {
         keywordLabel.snp.makeConstraints {
@@ -75,6 +71,8 @@ final class NovelDetailInfoKeywordView: UIView {
             $0.height.equalTo(100)
         }
     }
+    
+    // MARK: - Custom Method
     
     func updateCollectionViewHeight(height: CGFloat) {
         keywordCollectionView.snp.updateConstraints {

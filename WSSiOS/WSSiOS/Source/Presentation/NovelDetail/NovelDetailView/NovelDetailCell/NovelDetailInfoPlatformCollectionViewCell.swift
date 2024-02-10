@@ -12,10 +12,12 @@ import Then
 
 final class NovelDetailInfoPlatformCollectionViewCell: UICollectionViewCell {
     
+    // MARK: - Properties
+    
     static let identifier: String = "NovelDetailInfoPlatformCollectionViewCell"
     
-    // MARK: - UI Components
-    
+    // MARK: - Components
+
     private let platformLabel = UILabel()
     private let platformImageView = UIImageView()
     
@@ -25,7 +27,7 @@ final class NovelDetailInfoPlatformCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -33,7 +35,7 @@ final class NovelDetailInfoPlatformCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - set UI
+    // MARK: - UI
     
     private func setUI() {
         self.do {
@@ -52,14 +54,10 @@ final class NovelDetailInfoPlatformCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    // MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.contentView.addSubviews(platformLabel,
                                      platformImageView)
     }
-    
-    // MARK: - set Layout
     
     private func setLayout() {
         platformLabel.snp.makeConstraints {
@@ -74,8 +72,8 @@ final class NovelDetailInfoPlatformCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    // MARK: - bind data
-    
+    // MARK: - Data
+
     func bindData(platform: String) {
         self.platformLabel.do {
             $0.makeAttribute(with: platform)?
