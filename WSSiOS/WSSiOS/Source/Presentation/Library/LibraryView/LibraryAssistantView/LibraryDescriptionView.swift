@@ -11,7 +11,7 @@ import SnapKit
 import Then
 
 final class LibraryDescriptionView: UIView {
-
+    
     //MARK: - Components
     
     public let libraryNovelCountLabel = UILabel()
@@ -56,12 +56,12 @@ final class LibraryDescriptionView: UIView {
             $0.configuration = configuration
         }
     }
-  
+    
     private func setHierarchy() {
         self.addSubviews(libraryNovelCountLabel,
                          libraryNovelListButton)
     }
-
+    
     private func setLayout() {
         libraryNovelCountLabel.snp.makeConstraints() {
             $0.centerY.equalToSuperview()

@@ -18,7 +18,7 @@ protocol NovelDelegate: AnyObject {
 final class LibraryBaseViewController: UIViewController {
     
     //MARK: - Properties
-
+    
     private let readStatus: String
     private var lastUserNovelId: Int
     private let size: Int
@@ -71,9 +71,9 @@ final class LibraryBaseViewController: UIViewController {
         super.viewWillAppear(animated)
         showTabBar()
         updateNovelList(readStatus: readStatus,
-                     lastUserNovelId: lastUserNovelId,
-                     size: size,
-                     sortType: sortType)
+                        lastUserNovelId: lastUserNovelId,
+                        size: size,
+                        sortType: sortType)
     }
     
     //MARK: - Bind
@@ -105,9 +105,9 @@ final class LibraryBaseViewController: UIViewController {
     }
     
     func updateNovelList(readStatus: String,
-                              lastUserNovelId: Int,
-                              size: Int,
-                              sortType: String) {
+                         lastUserNovelId: Int,
+                         size: Int,
+                         sortType: String) {
         userNovelListRepository.getUserNovelList(readStatus: readStatus,
                                                  lastUserNovelId: lastUserNovelId,
                                                  size: size,

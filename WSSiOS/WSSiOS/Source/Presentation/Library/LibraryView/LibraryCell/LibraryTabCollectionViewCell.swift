@@ -60,12 +60,12 @@ final class LibraryTabCollectionViewCell: UICollectionViewCell {
             $0.isHidden = true
         }
     }
-
+    
     private func setHierarchy() {
         self.addSubviews(libraryTabLabel,
                          libraryTabUnderView)
     }
-
+    
     private func setLayout() {
         libraryTabLabel.snp.makeConstraints() {
             $0.center.equalToSuperview()
@@ -77,7 +77,7 @@ final class LibraryTabCollectionViewCell: UICollectionViewCell {
             $0.height.equalTo(3)
         }
     }
-
+    
     private func selectUI() {
         libraryTabLabel.textColor = isSelected ? .Primary100 : .Gray200
         libraryTabUnderView.isHidden = isSelected ? false : true

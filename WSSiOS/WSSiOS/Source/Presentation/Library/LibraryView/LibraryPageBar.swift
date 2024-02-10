@@ -13,7 +13,7 @@ import SnapKit
 import Then
 
 final class LibraryPageBar: UIView {
-
+    
     //MARK: - Properties
     
     private let disposeBag = DisposeBag()
@@ -58,7 +58,7 @@ final class LibraryPageBar: UIView {
     private func setHierarchy() {
         self.addSubview(libraryTabCollectionView)
     }
-
+    
     private func setLayout() {
         libraryTabCollectionView.snp.makeConstraints() {
             $0.top.bottom.equalToSuperview()

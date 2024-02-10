@@ -66,7 +66,7 @@ final class LibraryCollectionViewCell: UICollectionViewCell {
             $0.textColor = .Black
         }
     }
-
+    
     private func setHierarchy() {
         self.addSubviews(novelImageView,
                          novelTitleLabel,
@@ -74,7 +74,7 @@ final class LibraryCollectionViewCell: UICollectionViewCell {
                          ratingStarImage,
                          novelRatingLabel)
     }
-
+    
     private func setLayout() {
         novelImageView.snp.makeConstraints() {
             $0.width.equalToSuperview()

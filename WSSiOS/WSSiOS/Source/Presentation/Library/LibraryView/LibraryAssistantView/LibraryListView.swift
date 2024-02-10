@@ -38,7 +38,7 @@ final class LibraryListView: UIView {
         self.do {
             $0.backgroundColor = .White
             $0.layer.cornerRadius = 12
-
+            
             $0.layer.shadowColor = UIColor.black.withAlphaComponent(0.11).cgColor
             $0.layer.shadowOpacity = 1
             $0.layer.shadowOffset = CGSize(width: 0, height: 2)
@@ -59,13 +59,13 @@ final class LibraryListView: UIView {
             $0.backgroundColor = .Gray50
         }
     }
-
+    
     private func setHierarchy() {
         self.addSubviews(libraryNewestButton,
                          dividerView,
                          libraryOldesttButton)
     }
-
+    
     private func setLayout() {
         libraryNewestButton.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview().inset(15)

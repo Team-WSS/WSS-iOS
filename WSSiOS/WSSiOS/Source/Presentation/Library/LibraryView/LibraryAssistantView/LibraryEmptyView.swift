@@ -67,14 +67,14 @@ final class LibraryEmptyView: UIView {
             $0.layer.cornerRadius = 12
         }
     }
-
+    
     private func setHierarchy() {
         self.addSubviews(emptyStackView,
                          libraryRegisterButton)
         emptyStackView.addArrangedSubviews(emptyImageView,
                                            emptyTitleLabel)
     }
-
+    
     private func setLayout() {
         emptyStackView.snp.makeConstraints() {
             $0.top.equalToSuperview().inset(129)

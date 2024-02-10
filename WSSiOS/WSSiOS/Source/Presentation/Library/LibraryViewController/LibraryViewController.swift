@@ -67,7 +67,7 @@ final class LibraryViewController: UIViewController {
         
         showTabBar()
     }
-   
+    
     //MARK: - Bind
     
     private func register() {
@@ -138,9 +138,9 @@ final class LibraryViewController: UIViewController {
             .subscribe(with: self, onNext: { owner, index in 
                 let direction: UIPageViewController.NavigationDirection = index > (owner.libraryPageViewController.viewControllers?.first?.view.tag ?? 0) ? .forward : .reverse
                 owner.libraryPageViewController.setViewControllers([owner.libraryPages[index]],
-                                                                  direction: direction,
-                                                                  animated: true,
-                                                                  completion: nil)
+                                                                   direction: direction,
+                                                                   animated: true,
+                                                                   completion: nil)
             })
             .disposed(by: disposeBag)
         
