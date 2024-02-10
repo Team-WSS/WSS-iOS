@@ -57,6 +57,7 @@ final class SearchViewController: UIViewController {
         register()
         
         bindUI()
+        swipeBackGesture()
     }
     
     //MARK: - UI
