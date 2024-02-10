@@ -35,7 +35,7 @@ final class NovelDetailInfoGenreView: UIView {
     
     private func setUI() {
         titleLabel.do {
-            $0.makeAttribute(with: "장르")?
+            $0.makeAttribute(with: StringLiterals.NovelDetail.Info.genre)?
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
             $0.textColor = .wssBlack

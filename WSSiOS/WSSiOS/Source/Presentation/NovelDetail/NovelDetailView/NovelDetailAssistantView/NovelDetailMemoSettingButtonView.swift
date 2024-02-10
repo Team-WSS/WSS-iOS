@@ -55,12 +55,12 @@ final class NovelDetailMemoSettingButtonView: UIView {
         
         novelDeleteButton.do {
             $0.backgroundColor = .wssWhite
-            $0.setButtonAttributedTitle(text: "작품을 서재에서 삭제", font: .Body2, color: .wssBlack)
+            $0.setButtonAttributedTitle(text: StringLiterals.NovelDetail.Setting.novelDelete, font: .Body2, color: .wssBlack)
         }
         
         novelEditButon.do {
             $0.backgroundColor = .wssWhite
-            $0.setButtonAttributedTitle(text: "작품 정보 수정", font: .Body2, color: .wssBlack)
+            $0.setButtonAttributedTitle(text: StringLiterals.NovelDetail.Setting.novelEdit, font: .Body2, color: .wssBlack)
         }
     }
     

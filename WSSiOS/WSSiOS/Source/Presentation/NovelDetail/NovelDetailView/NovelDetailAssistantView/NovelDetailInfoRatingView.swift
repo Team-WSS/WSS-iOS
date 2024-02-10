@@ -36,7 +36,7 @@ final class NovelDetailInfoRatingView: UIView {
     
     private func setUI() {
         ratingLabel.do {
-            $0.makeAttribute(with: "나의 평가")?
+            $0.makeAttribute(with: StringLiterals.NovelDetail.Info.rating)?
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
             $0.textColor = .wssBlack

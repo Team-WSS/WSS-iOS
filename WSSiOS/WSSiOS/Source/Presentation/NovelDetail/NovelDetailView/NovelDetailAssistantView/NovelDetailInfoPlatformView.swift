@@ -39,7 +39,7 @@ final class NovelDetailInfoPlatformView: UIView {
     
     private func setUI() {
         titleLabel.do {
-            $0.makeAttribute(with: "작품 보러가기")?
+            $0.makeAttribute(with: StringLiterals.NovelDetail.Info.platform)?
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
             $0.textColor = .wssBlack

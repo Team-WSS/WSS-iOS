@@ -69,14 +69,14 @@ final class NovelDetailMemoView: UIView {
         
         if self.memoList.count == 0 {
             self.novelDetailCreateMemoView.createMemoLabel.do {
-                $0.makeAttribute(with: "아직 작성된 메모가 없어요")?
+                $0.makeAttribute(with: StringLiterals.NovelDetail.Memo.noMemo)?
                     .lineSpacing(spacingPercentage: 150)
                     .kerning(kerningPixel: -0.6)
                     .applyAttribute()
             }
         } else {
             self.novelDetailCreateMemoView.createMemoLabel.do {
-                $0.makeAttribute(with: "새로운 메모를 작성해보세요")?
+                $0.makeAttribute(with: StringLiterals.NovelDetail.Memo.newMemo)?
                     .lineSpacing(spacingPercentage: 150)
                     .kerning(kerningPixel: -0.6)
                     .applyAttribute()

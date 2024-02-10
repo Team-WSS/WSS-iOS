@@ -37,7 +37,7 @@ final class NovelDetailCreateMemoView: UIView {
         self.backgroundColor = .wssWhite
         
         createMemoLabel.do {
-            $0.makeAttribute(with: "아직 작성된 메모가 없어요")?
+            $0.makeAttribute(with: StringLiterals.NovelDetail.Memo.noMemo)?
                 .lineSpacing(spacingPercentage: 140)
                 .kerning(kerningPixel: -0.8)
                 .applyAttribute()

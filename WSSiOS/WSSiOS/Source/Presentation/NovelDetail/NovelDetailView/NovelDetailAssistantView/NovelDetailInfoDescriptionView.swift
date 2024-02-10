@@ -35,7 +35,7 @@ final class NovelDetailInfoDescriptionView: UIView {
     
     private func setUI() {
         titleLabel.do {
-            $0.makeAttribute(with: "작품 소개")?
+            $0.makeAttribute(with: StringLiterals.NovelDetail.Info.description)?
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
             $0.textColor = .wssBlack

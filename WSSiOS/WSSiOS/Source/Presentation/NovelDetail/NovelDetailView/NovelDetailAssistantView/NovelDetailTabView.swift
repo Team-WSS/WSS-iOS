@@ -42,7 +42,7 @@ final class NovelDetailTabView: UIView {
     private func setUI() {
         memoButton.do {
             $0.isSelected = true
-            $0.setTitle("메모", for: .normal)
+            $0.setTitle(StringLiterals.NovelDetail.Memo.memo, for: .normal)
             $0.titleLabel?.font = .Title2
             $0.setTitleColor(.wssGray200, for: .normal)
             $0.setTitleColor(.wssBlack, for: .selected)
@@ -51,7 +51,7 @@ final class NovelDetailTabView: UIView {
         
         infoButton.do {
             $0.isSelected = false
-            $0.setTitle("정보", for: .normal)
+            $0.setTitle(StringLiterals.NovelDetail.Info.info, for: .normal)
             $0.titleLabel?.font = .Title2
             $0.setTitleColor(.wssGray200, for: .normal)
             $0.setTitleColor(.wssBlack, for: .selected)

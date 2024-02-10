@@ -40,7 +40,7 @@ final class NovelDetailInfoReadStatusView: UIView {
         }
         
         readStatusLabel.do {
-            $0.makeAttribute(with: "읽기 상태")?
+            $0.makeAttribute(with: StringLiterals.NovelDetail.Info.readStatus)?
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
             $0.textColor = .wssBlack

@@ -59,7 +59,7 @@ final class NovelDetailInfoReadDateView: UIView {
         }
         
         waveLabel.do {
-            $0.makeAttribute(with: "~")?
+            $0.makeAttribute(with: StringLiterals.NovelDetail.Info.tilde)?
                 .lineSpacing(spacingPercentage: 150)
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
@@ -116,7 +116,7 @@ final class NovelDetailInfoReadDateView: UIView {
         }
         if let endDate = endDate {
             self.readDateLabel.do {
-                $0.makeAttribute(with: "읽은 날짜")?
+                $0.makeAttribute(with: StringLiterals.NovelDetail.Info.endDate)?
                     .kerning(kerningPixel: -0.6)
                     .applyAttribute()
             }
@@ -129,7 +129,7 @@ final class NovelDetailInfoReadDateView: UIView {
             self.waveLabel.isHidden = false
         } else {
             self.readDateLabel.do {
-                $0.makeAttribute(with: "시작 날짜")?
+                $0.makeAttribute(with: StringLiterals.NovelDetail.Info.startDate)?
                     .kerning(kerningPixel: -0.6)
                     .applyAttribute()
             }
