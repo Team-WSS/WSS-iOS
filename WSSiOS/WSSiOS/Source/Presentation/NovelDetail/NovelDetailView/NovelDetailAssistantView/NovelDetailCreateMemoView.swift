@@ -34,14 +34,14 @@ final class NovelDetailCreateMemoView: UIView {
     // MARK: - UI
     
     private func setUI() {
-        self.backgroundColor = .White
+        self.backgroundColor = .wssWhite
         
         createMemoLabel.do {
             $0.makeAttribute(with: "아직 작성된 메모가 없어요")?
                 .lineSpacing(spacingPercentage: 140)
                 .kerning(kerningPixel: -0.8)
                 .applyAttribute()
-            $0.textColor = .Gray200
+            $0.textColor = .wssGray200
             $0.font = .Body1
         }
         

@@ -58,13 +58,13 @@ final class NovelDetailHeaderView: UIView {
         
         novelTitleLabel.do {
             $0.font = .HeadLine1
-            $0.textColor = .White
+            $0.textColor = .wssWhite
             $0.numberOfLines = 3
         }
         
         novelAuthorLabel.do {
             $0.font = .Body2
-            $0.textColor = .Gray200
+            $0.textColor = .wssGray200
         }
         
         novelCoverImageView.do {

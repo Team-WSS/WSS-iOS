@@ -38,7 +38,7 @@ final class NovelDetailMemoSettingButtonView: UIView {
     
     private func setUI() {
         self.do {
-            $0.layer.shadowColor = UIColor.Black.cgColor
+            $0.layer.shadowColor = UIColor.wssBlack.cgColor
             $0.layer.shadowOpacity = 0.11
             $0.layer.shadowOffset = CGSize(width: 0, height: 2)
             $0.layer.shadowRadius = 15
@@ -50,17 +50,17 @@ final class NovelDetailMemoSettingButtonView: UIView {
         }
         
         dividerView.do {
-            $0.backgroundColor = .Gray50
+            $0.backgroundColor = .wssGray50
         }
         
         novelDeleteButton.do {
-            $0.backgroundColor = .white
-            $0.setButtonAttributedTitle(text: "작품을 서재에서 삭제", font: .Body2, color: .Black)
+            $0.backgroundColor = .wssWhite
+            $0.setButtonAttributedTitle(text: "작품을 서재에서 삭제", font: .Body2, color: .wssBlack)
         }
         
         novelEditButon.do {
-            $0.backgroundColor = .white
-            $0.setButtonAttributedTitle(text: "작품 정보 수정", font: .Body2, color: .Black)
+            $0.backgroundColor = .wssWhite
+            $0.setButtonAttributedTitle(text: "작품 정보 수정", font: .Body2, color: .wssBlack)
         }
     }
     

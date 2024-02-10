@@ -38,12 +38,12 @@ final class NovelDetailInfoDescriptionView: UIView {
             $0.makeAttribute(with: "작품 소개")?
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
-            $0.textColor = .Black
+            $0.textColor = .wssBlack
             $0.font = .Title1
         }
         
         descriptionLabel.do {
-            $0.textColor = .Gray300
+            $0.textColor = .wssGray300
             $0.font = .Body2
             $0.numberOfLines = 0
         }

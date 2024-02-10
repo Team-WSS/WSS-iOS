@@ -38,12 +38,12 @@ final class NovelDetailInfoGenreView: UIView {
             $0.makeAttribute(with: "장르")?
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
-            $0.textColor = .Black
+            $0.textColor = .wssBlack
             $0.font = .Title1
         }
         
         genreLabel.do {
-            $0.textColor = .Gray300
+            $0.textColor = .wssGray300
             $0.font = .Body2
         }
     }

@@ -36,14 +36,14 @@ final class NovelDetailInfoReadStatusView: UIView {
     
     private func setUI() {
         dividerView.do {
-            $0.backgroundColor = .Gray50
+            $0.backgroundColor = .wssGray50
         }
         
         readStatusLabel.do {
             $0.makeAttribute(with: "읽기 상태")?
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
-            $0.textColor = .Black
+            $0.textColor = .wssBlack
             $0.font = .Title1
         }
     }

@@ -38,7 +38,7 @@ final class NovelDetailInfoKeywordView: UIView {
             $0.makeAttribute(with: "키워드")?
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
-            $0.textColor = .Black
+            $0.textColor = .wssBlack
             $0.font = .Title1
         }
         

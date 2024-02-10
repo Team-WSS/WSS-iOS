@@ -38,24 +38,24 @@ final class NovelDetailInfoReadDateView: UIView {
     
     private func setUI() {
         readDateLabel.do {
-            $0.textColor = .Black
+            $0.textColor = .wssBlack
             $0.font = .Title1
         }
         
         dateImageView.do {
             $0.image = ImageLiterals.icon.calender.withRenderingMode(.alwaysTemplate)
             $0.contentMode = .scaleAspectFit
-            $0.tintColor = .Black
+            $0.tintColor = .wssBlack
         }
         
         startDateLabel.do {
             $0.font = .Body2
-            $0.textColor = .Gray300
+            $0.textColor = .wssGray300
         }
         
         endDateLabel.do {
             $0.font = .Body2
-            $0.textColor = .Gray300
+            $0.textColor = .wssGray300
         }
         
         waveLabel.do {
@@ -64,7 +64,7 @@ final class NovelDetailInfoReadDateView: UIView {
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
             $0.font = .Body2
-            $0.textColor = .Gray300
+            $0.textColor = .wssGray300
         }
     }
     

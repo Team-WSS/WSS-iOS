@@ -34,13 +34,13 @@ final class NovelDetailInfoKeywordCollectionViewCell: UICollectionViewCell {
     
     private func setUI() {
         self.do {
-            $0.backgroundColor = .Gray50
+            $0.backgroundColor = .wssGray50
             $0.layer.cornerRadius = 18.5
         }
         
         keywordLabel.do {
             $0.font = .Body2
-            $0.textColor = .Gray300
+            $0.textColor = .wssGray300
         }
     }
     

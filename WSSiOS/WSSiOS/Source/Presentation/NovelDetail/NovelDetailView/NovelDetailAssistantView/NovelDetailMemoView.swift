@@ -39,7 +39,7 @@ final class NovelDetailMemoView: UIView {
     
     private func setUI() {
         memoTableView.do {
-            $0.backgroundColor = .white
+            $0.backgroundColor = .wssWhite
             $0.separatorStyle = .none
             $0.isScrollEnabled = false
         }

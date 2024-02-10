@@ -44,26 +44,26 @@ final class NovelDetailTabView: UIView {
             $0.isSelected = true
             $0.setTitle("메모", for: .normal)
             $0.titleLabel?.font = .Title2
-            $0.setTitleColor(.Gray200, for: .normal)
-            $0.setTitleColor(.Black, for: .selected)
-            $0.backgroundColor = .White
+            $0.setTitleColor(.wssGray200, for: .normal)
+            $0.setTitleColor(.wssBlack, for: .selected)
+            $0.backgroundColor = .wssWhite
         }
         
         infoButton.do {
             $0.isSelected = false
             $0.setTitle("정보", for: .normal)
             $0.titleLabel?.font = .Title2
-            $0.setTitleColor(.Gray200, for: .normal)
-            $0.setTitleColor(.Black, for: .selected)
-            $0.backgroundColor = .White
+            $0.setTitleColor(.wssGray200, for: .normal)
+            $0.setTitleColor(.wssBlack, for: .selected)
+            $0.backgroundColor = .wssWhite
         }
         
         dividerView.do {
-            $0.backgroundColor = .Gray70
+            $0.backgroundColor = .wssGray70
         }
         
         highlightView.do {
-            $0.backgroundColor = .Black
+            $0.backgroundColor = .wssBlack
         }
     }
     

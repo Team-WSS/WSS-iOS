@@ -79,7 +79,7 @@ final class NovelDetailViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.novelSettingButton)
         self.navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.font: UIFont.Title2,
-            NSAttributedString.Key.foregroundColor: UIColor.black
+            NSAttributedString.Key.foregroundColor: UIColor.wssBlack
         ]
     }
     
@@ -301,10 +301,10 @@ final class NovelDetailViewController: UIViewController {
             rootView.stickyNovelDetailTabView.isHidden = true
         }
         if offset > 0 {
-            rootView.statusBarView.backgroundColor = .white
+            rootView.statusBarView.backgroundColor = .wssWhite
             navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
             navigationController?.navigationBar.shadowImage = UIImage()
-            navigationController?.navigationBar.backgroundColor = .white
+            navigationController?.navigationBar.backgroundColor = .wssWhite
             navigationItem.title = self.novelTitle
             novelSettingButton.isHidden = true
         } else {

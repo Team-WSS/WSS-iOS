@@ -38,25 +38,25 @@ final class NovelDetailMemoTableViewCell: UITableViewCell {
     
     private func setUI() {
         self.do {
-            $0.backgroundColor = .white
+            $0.backgroundColor = .wssWhite
         }
         
         leftDividerView.do {
-            $0.backgroundColor = .Gray70
+            $0.backgroundColor = .wssGray70
         }
         
         rightDividerView.do {
-            $0.backgroundColor = .Gray70
+            $0.backgroundColor = .wssGray70
         }
         
         memoDateLabel.do {
             $0.font = .Label2
-            $0.textColor = .Gray200
+            $0.textColor = .wssGray200
         }
         
         memoContentLabel.do {
             $0.font = .Body2
-            $0.textColor = .Black
+            $0.textColor = .wssBlack
             $0.numberOfLines = 5
         }
     }

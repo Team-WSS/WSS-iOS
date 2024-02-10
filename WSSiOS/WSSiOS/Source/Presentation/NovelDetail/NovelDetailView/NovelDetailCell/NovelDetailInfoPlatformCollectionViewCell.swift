@@ -35,13 +35,13 @@ final class NovelDetailInfoPlatformCollectionViewCell: UICollectionViewCell {
     
     private func setUI() {
         self.do {
-            $0.backgroundColor = .Primary50
+            $0.backgroundColor = .wssPrimary50
             $0.layer.cornerRadius = 18.5
         }
         
         platformLabel.do {
             $0.font = .Body2
-            $0.textColor = .Primary100
+            $0.textColor = .wssPrimary100
         }
         
         platformImageView.do {

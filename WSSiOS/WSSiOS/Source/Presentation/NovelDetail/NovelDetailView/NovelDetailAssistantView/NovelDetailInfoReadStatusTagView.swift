@@ -41,7 +41,7 @@ final class NovelDetailInfoReadStatusTagView: UIView {
     
     private func setUI() {
         self.do {
-            $0.layer.borderColor = UIColor.Primary100.cgColor
+            $0.layer.borderColor = UIColor.wssPrimary100.cgColor
             $0.layer.borderWidth = 1
             $0.layer.cornerRadius = 18.5
         }
@@ -51,7 +51,7 @@ final class NovelDetailInfoReadStatusTagView: UIView {
         }
         
         tagLabel.do {
-            $0.textColor = .Primary100
+            $0.textColor = .wssPrimary100
             $0.font = .Body2
         }
     }

@@ -39,7 +39,7 @@ final class NovelDetailInfoRatingView: UIView {
             $0.makeAttribute(with: "나의 평가")?
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
-            $0.textColor = .Black
+            $0.textColor = .wssBlack
             $0.font = .Title1
         }
         
@@ -51,7 +51,7 @@ final class NovelDetailInfoRatingView: UIView {
         }
         
         dividerView.do {
-            $0.backgroundColor = .Gray70
+            $0.backgroundColor = .wssGray70
         }
     }
     

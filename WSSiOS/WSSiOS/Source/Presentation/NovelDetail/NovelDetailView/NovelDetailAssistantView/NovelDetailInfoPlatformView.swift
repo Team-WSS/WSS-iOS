@@ -42,7 +42,7 @@ final class NovelDetailInfoPlatformView: UIView {
             $0.makeAttribute(with: "작품 보러가기")?
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
-            $0.textColor = .Black
+            $0.textColor = .wssBlack
             $0.font = .Title1
         }
         
@@ -54,7 +54,7 @@ final class NovelDetailInfoPlatformView: UIView {
 
             $0.collectionViewLayout = layout
             $0.isScrollEnabled = false
-            $0.backgroundColor = .white
+            $0.backgroundColor = .wssWhite
         }
     }
     
