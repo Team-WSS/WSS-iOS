@@ -71,7 +71,7 @@ final class SearchEmptyView: UIView {
 
     private func setLayout() {
         emptyImageView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(231)
+            $0.top.equalToSuperview().inset(330)
             $0.centerX.equalToSuperview()
         }
         

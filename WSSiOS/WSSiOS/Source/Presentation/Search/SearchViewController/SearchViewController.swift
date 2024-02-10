@@ -53,12 +53,12 @@ final class SearchViewController: UIViewController {
         super.viewDidLoad()
         
         setUI()
-        setDelegate()
-        registerCell()
+        delegate()
+        register()
         
         bindUI()
     }
-
+    
     //MARK: - UI
     
     private func setUI() {
@@ -66,44 +66,49 @@ final class SearchViewController: UIViewController {
             $0.setImage(.icNavigateLeft.withRenderingMode(.alwaysOriginal), for: .normal)
         }
     }
-
+    
     //MARK: - Bind
     
-    private func setDelegate() {
+    private func delegate() {
         rootView.headerView.searchBar.delegate = self
     }
     
-    private func registerCell() {
+    private func register() {
         rootView.mainResultView.searchCollectionView.register(
             SearchCollectionViewCell.self,
             forCellWithReuseIdentifier: SearchCollectionViewCell.cellIdentifier)
         
         searchResultListRelay
             .bind(to: rootView.mainResultView.searchCollectionView.rx.items(
-            cellIdentifier: SearchCollectionViewCell.cellIdentifier,
-            cellType: SearchCollectionViewCell.self)) { (row, element, cell) in
-                cell.bindData(data: element)
-            }
-            .disposed(by: disposeBag)
+                cellIdentifier: SearchCollectionViewCell.cellIdentifier,
+                cellType: SearchCollectionViewCell.self)) { (row, element, cell) in
+                    cell.bindData(data: element)
+                }
+                .disposed(by: disposeBag)
     }
     
     private func bindUI() {
         rootView.headerView.searchBar.rx.text.orEmpty
             .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner ,searchText in
+                owner.emptyView.removeFromSuperview()
+                
                 if searchText.isEmpty {
-                    owner.rootView.addSubview(owner.emptyView)
-                    owner.emptyView.snp.makeConstraints {
-                        $0.edges.equalToSuperview()
-                    }
-                } 
+                    owner.searchResultListRelay.accept([])
+                }
                 else {
-                    owner.emptyView.removeFromSuperview()
                     owner.searchNovels(with: searchText)
+                    
+                    if owner.searchResultListRelay.value.isEmpty {
+                        owner.view.addSubview(owner.emptyView)
+                        owner.emptyView.snp.makeConstraints {
+                            $0.edges.equalToSuperview()
+                        }
+                    }
                 }
             })
             .disposed(by: disposeBag)
-    
+        
         backButton
             .rx.tap
             .subscribe(with: self, onNext: { owner, event in
@@ -133,7 +138,7 @@ final class SearchViewController: UIViewController {
         let searchWord = searchText.isEmpty ? "" : searchText
         self.getDataFromAPI(disposeBag: disposeBag, searchWord: searchWord)
     }
-        
+    
     //MARK: - API
     
     private func getDataFromAPI(disposeBag: DisposeBag,
@@ -145,17 +150,21 @@ final class SearchViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    //MARK: - Custom
+    //MARK: - Custom Method
     
     private func showSearchBarAndFocus() {
         rootView.headerView.searchBar.becomeFirstResponder()
     }
 }
 
-//MARK: - Extensions
+//MARK: - Extension
 
 extension SearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         rootView.headerView.searchBar.resignFirstResponder()
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
+        self.view.endEditing(true)
     }
 }
