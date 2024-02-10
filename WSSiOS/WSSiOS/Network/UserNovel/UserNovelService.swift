@@ -57,7 +57,7 @@ extension DefaultUserNovelService: UserNovelService {
     func getUserNovel(userNovelId: Int) -> Single<UserNovelDetail> {
         do {
             let request = try makeHTTPRequest(method: .get,
-                                              path: URLs.UserNovel.getUserNovel.replacingOccurrences(of: "{userNovelId}", with: String(userNovelId)),
+                                              path: URLs.UserNovel.getUserNovel(userNovelId: userNovelId),
                                               headers: APIConstants.testTokenHeader,
                                               body: nil)
             
@@ -75,7 +75,7 @@ extension DefaultUserNovelService: UserNovelService {
     func deleteUserNovel(userNovelId: Int) -> Single<Void> {
         do {
             let request = try makeHTTPRequest(method: .delete,
-                                              path: URLs.UserNovel.deleteUserNovel.replacingOccurrences(of: "{userNovelId}", with: String(userNovelId)),
+                                              path: URLs.UserNovel.deleteUserNovel(userNovelId: userNovelId),
                                               headers: APIConstants.testTokenHeader,
                                               body: nil)
             
