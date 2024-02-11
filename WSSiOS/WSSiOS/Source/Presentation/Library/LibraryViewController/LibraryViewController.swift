@@ -286,7 +286,7 @@ extension LibraryViewController {
                 userNovelService: DefaultUserNovelService()
             ),
             userNovelId: userNovelId,
-            selectedMenu: 1
+            selectedMenu: .info
         ), animated: true)
     }
     
@@ -298,7 +298,7 @@ extension LibraryViewController {
                 userNovelService: DefaultUserNovelService()
             ),
             userNovelId: userNovelId,
-            selectedMenu: 0
+            selectedMenu: .memo
         ), animated: true)
     }
 }

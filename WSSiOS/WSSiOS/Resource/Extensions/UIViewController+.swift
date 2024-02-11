@@ -86,6 +86,51 @@ extension UIViewController {
         }
     }
     
+    func pushToMemoReadViewController(memoId: Int) {
+        self.navigationController?.pushViewController(
+            MemoReadViewController(
+                repository: DefaultMemoRepository(
+                    memoService: DefaultMemoService()),
+                memoId: memoId
+            ), animated: true)
+    }
+    
+    func pushToRegisterNormalViewController(novelId: Int) {
+        self.navigationController?.pushViewController(
+            RegisterNormalViewController(
+                novelRepository: DefaultNovelRepository(
+                    novelService: DefaultNovelService()),
+                userNovelRepository: DefaultUserNovelRepository(
+                    userNovelService: DefaultUserNovelService()),
+                novelId: novelId),
+            animated: true)
+    }
+    
+    func pushToMemoEditViewController(userNovelId: Int, novelTitle: String, novelAuthor: String, novelImage: String) {
+        self.navigationController?.pushViewController(MemoEditViewController(
+            repository: DefaultMemoRepository(
+                memoService: DefaultMemoService()
+            ),
+            userNovelId: userNovelId,
+            novelTitle: novelTitle,
+            novelAuthor: novelAuthor,
+            novelImage: novelImage
+        ), animated: true)
+    }
+    
+    func presentDeletePopupViewController(userNovelId: Int) {
+        let viewController = DeletePopupViewController(
+            userNovelRepository: DefaultUserNovelRepository(
+                userNovelService: DefaultUserNovelService()
+            ),
+            popupStatus: .novelDelete,
+            userNovelId: userNovelId
+        )
+        viewController.modalPresentationStyle = .overFullScreen
+        viewController.modalTransitionStyle = .crossDissolve
+        self.present(viewController, animated: true)
+    }
+    
     func popToLastViewController() {
         self.navigationController?.popViewController(animated: true)
     }

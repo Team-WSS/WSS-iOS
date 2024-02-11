@@ -11,23 +11,19 @@ import SnapKit
 import Then
 
 final class NovelDetailInfoPlatformView: UIView {
-    
-    //MARK: - set Properties
 
-    public var platformList: [UserNovelPlatform] = []
-
-    // MARK: - UI Components
+    //MARK: - Components
     
     private let titleLabel = UILabel()
-    public let platformCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+    let platformCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -35,14 +31,14 @@ final class NovelDetailInfoPlatformView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
         titleLabel.do {
-            $0.makeAttribute(with: "작품 보러가기")?
+            $0.makeAttribute(with: StringLiterals.NovelDetail.Info.platform)?
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
-            $0.textColor = .Black
+            $0.textColor = .wssBlack
             $0.font = .Title1
         }
         
@@ -54,18 +50,14 @@ final class NovelDetailInfoPlatformView: UIView {
 
             $0.collectionViewLayout = layout
             $0.isScrollEnabled = false
-            $0.backgroundColor = .white
+            $0.backgroundColor = .wssWhite
         }
     }
     
-    // MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(titleLabel,
                          platformCollectionView)
     }
-    
-    // MARK: - set Layout
     
     private func setLayout() {
         titleLabel.snp.makeConstraints {
@@ -81,17 +73,20 @@ final class NovelDetailInfoPlatformView: UIView {
         }
     }
     
+    //MARK: - Data
+    
+    func bindData(platformCount: Int) {
+        if platformCount == 0 {
+            self.removeFromSuperview()
+        }
+    }
+    
+    //MARK: - Custom Method
+    
     func updateCollectionViewHeight(height: CGFloat) {
         platformCollectionView.snp.updateConstraints {
             $0.height.equalTo(height)
         }
     }
-    
-    func bindData(platforms: [UserNovelPlatform]) {
-        self.platformList = platforms
-        
-        if self.platformList.count == 0 {
-            self.removeFromSuperview()
-        }
-    }
+
 }

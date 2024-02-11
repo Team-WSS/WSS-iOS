@@ -55,30 +55,38 @@ extension DefaultUserNovelService: UserNovelService {
     }
     
     func getUserNovel(userNovelId: Int) -> Single<UserNovelDetail> {
-        let request = try! makeHTTPRequest(method: .get,
-                                           path: URLs.UserNovel.getUserNovel.replacingOccurrences(of: "{userNovelId}", with: String(userNovelId)),
-                                           headers: APIConstants.testTokenHeader,
-                                           body: nil)
-        
-        NetworkLogger.log(request: request)
-        
-        return urlSession.rx.data(request: request)
-            .map { try self.decode(data: $0,
-                                   to: UserNovelDetail.self) }
-            .asSingle()
+        do {
+            let request = try makeHTTPRequest(method: .get,
+                                              path: URLs.UserNovel.getUserNovel(userNovelId: userNovelId),
+                                              headers: APIConstants.testTokenHeader,
+                                              body: nil)
+            
+            NetworkLogger.log(request: request)
+            
+            return urlSession.rx.data(request: request)
+                .map { try self.decode(data: $0,
+                                       to: UserNovelDetail.self) }
+                .asSingle()
+        } catch {
+            return Single.error(error)
+        }
     }
     
     func deleteUserNovel(userNovelId: Int) -> Single<Void> {
-        let request = try! makeHTTPRequest(method: .delete,
-                                           path: URLs.UserNovel.deleteUserNovel.replacingOccurrences(of: "{userNovelId}", with: String(userNovelId)),
-                                           headers: APIConstants.testTokenHeader,
-                                           body: nil)
-        
-        NetworkLogger.log(request: request)
-        
-        return urlSession.rx.data(request: request)
-            .map { _ in }
-            .asSingle()
+        do {
+            let request = try makeHTTPRequest(method: .delete,
+                                              path: URLs.UserNovel.deleteUserNovel(userNovelId: userNovelId),
+                                              headers: APIConstants.testTokenHeader,
+                                              body: nil)
+            
+            NetworkLogger.log(request: request)
+            
+            return urlSession.rx.data(request: request)
+                .map { _ in }
+                .asSingle()
+        } catch {
+            return Single.error(error)
+        }
     }
     
     func postUserNovel(novelId: Int, userNovelRating: Float?, userNovelReadStatus: ReadStatus, userNovelReadStartDate: String?, userNovelReadEndDate: String?) -> Single<UserNovelId> {

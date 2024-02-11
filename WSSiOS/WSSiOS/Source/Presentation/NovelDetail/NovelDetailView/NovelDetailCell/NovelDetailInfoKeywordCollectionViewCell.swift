@@ -12,19 +12,17 @@ import Then
 
 final class NovelDetailInfoKeywordCollectionViewCell: UICollectionViewCell {
     
-    static let identifier: String = "NovelDetailInfoKeywordCollectionViewCell"
-    
-    // MARK: - UI Components
-    
+    //MARK: - Components
+
     private let keywordLabel = UILabel()
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -32,27 +30,23 @@ final class NovelDetailInfoKeywordCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
         self.do {
-            $0.backgroundColor = .Gray50
+            $0.backgroundColor = .wssGray50
             $0.layer.cornerRadius = 18.5
         }
         
         keywordLabel.do {
             $0.font = .Body2
-            $0.textColor = .Gray300
+            $0.textColor = .wssGray300
         }
     }
     
-    // MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.contentView.addSubviews(keywordLabel)
     }
-    
-    // MARK: - set Layout
     
     private func setLayout() {
         keywordLabel.snp.makeConstraints {
@@ -61,7 +55,7 @@ final class NovelDetailInfoKeywordCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    // MARK: - bind data
+    //MARK: - Data
     
     func bindData(keyword: String) {
         self.keywordLabel.do {

@@ -123,4 +123,30 @@ enum StringLiterals {
         static let newest = "최신 순"
         static let oldest = "오래된 순"
     }
+    
+    enum NovelDetail {
+        enum Memo {
+            static let memo = "메모"
+            static let noMemo = "아직 작성된 메모가 없어요"
+            static let newMemo = "새로운 메모를 작성해보세요"
+        }
+        
+        enum Info {
+            static let info = "정보"
+            static let rating = "나의 평가"
+            static let readStatus = "읽기 상태"
+            static let tilde = "~"
+            static let startDate = "시작 날짜"
+            static let endDate = "읽은 날짜"
+            static let keyword = "키워드"
+            static let description = "작품 소개"
+            static let genre = "장르"
+            static let platform = "작품 보러가기"
+        }
+        
+        enum Setting {
+            static let novelDelete = "작품을 서재에서 삭제"
+            static let novelEdit = "작품 정보 수정"
+        }
+    }
 }
