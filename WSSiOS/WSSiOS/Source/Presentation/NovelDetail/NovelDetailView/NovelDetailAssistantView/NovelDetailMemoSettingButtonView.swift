@@ -12,7 +12,7 @@ import Then
 
 final class NovelDetailMemoSettingButtonView: UIView {
     
-    // MARK: - Components
+    //MARK: - Components
     
     let backgroundView = UIView()
     private let containerView = UIView()
@@ -20,7 +20,7 @@ final class NovelDetailMemoSettingButtonView: UIView {
     let novelDeleteButton = UIButton()
     let novelEditButon = UIButton()
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -34,7 +34,7 @@ final class NovelDetailMemoSettingButtonView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - UI
+    //MARK: - UI
     
     private func setUI() {
         self.do {

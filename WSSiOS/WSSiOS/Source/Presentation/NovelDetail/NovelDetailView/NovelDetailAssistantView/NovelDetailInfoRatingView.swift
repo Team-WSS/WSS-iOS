@@ -12,13 +12,13 @@ import Then
 
 final class NovelDetailInfoRatingView: UIView {
 
-    // MARK: - Components
+    //MARK: - Components
 
     private let ratingLabel = UILabel()
     private let ratingStackView = UIStackView()
     private let dividerView = UIView()
 
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -32,7 +32,7 @@ final class NovelDetailInfoRatingView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - UI
+    //MARK: - UI
     
     private func setUI() {
         ratingLabel.do {
@@ -82,7 +82,7 @@ final class NovelDetailInfoRatingView: UIView {
         }
     }
     
-    // MARK: - Data
+    //MARK: - Data
     
     func bindData(rating: Float) {
         self.ratingStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }

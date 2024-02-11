@@ -12,13 +12,13 @@ import Then
 
 final class NovelDetailInfoReadStatusView: UIView {
     
-    // MARK: - Components
+    //MARK: - Components
 
     private let dividerView = UIView()
     private let readStatusLabel = UILabel()
     private let readStatusTagView = NovelDetailInfoReadStatusTagView()
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -32,7 +32,7 @@ final class NovelDetailInfoReadStatusView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - UI
+    //MARK: - UI
     
     private func setUI() {
         dividerView.do {
@@ -72,7 +72,7 @@ final class NovelDetailInfoReadStatusView: UIView {
         }
     }
     
-    // MARK: - Data
+    //MARK: - Data
     
     func bindData(status: String) {
         switch status {

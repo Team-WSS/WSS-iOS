@@ -12,12 +12,12 @@ import Then
 
 final class NovelDetailInfoGenreView: UIView {
     
-    // MARK: - Components
+    //MARK: - Components
     
     private let titleLabel = UILabel()
     private let genreLabel = UILabel()
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -31,7 +31,7 @@ final class NovelDetailInfoGenreView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - UI
+    //MARK: - UI
     
     private func setUI() {
         titleLabel.do {
@@ -66,7 +66,7 @@ final class NovelDetailInfoGenreView: UIView {
         }
     }
     
-    // MARK: - Data
+    //MARK: - Data
     
     func bindData(genre: String) {
         self.genreLabel.do {

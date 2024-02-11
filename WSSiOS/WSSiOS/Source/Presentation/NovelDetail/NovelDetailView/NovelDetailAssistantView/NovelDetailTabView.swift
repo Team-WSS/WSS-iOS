@@ -12,18 +12,18 @@ import Then
 
 final class NovelDetailTabView: UIView {
     
-    // MARK: - Properties
+    //MARK: - Properties
 
     private let screenWidth = UIScreen.main.bounds.size.width
 
-    // MARK: - Components
+    //MARK: - Components
 
     let memoButton = UIButton()
     let infoButton = UIButton()
     private let dividerView = UIView()
     let highlightView = UIView()
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -37,7 +37,7 @@ final class NovelDetailTabView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - UI
+    //MARK: - UI
     
     private func setUI() {
         memoButton.do {
@@ -102,7 +102,7 @@ final class NovelDetailTabView: UIView {
         }
     }
     
-    // MARK: - Custom Method
+    //MARK: - Custom Method
     
     func highlightMemoButton() {
         highlightView.snp.remakeConstraints {

@@ -12,7 +12,7 @@ import Then
 
 final class NovelDetailView: UIView {
     
-    // MARK: - Components
+    //MARK: - Components
 
     let statusBarView = UIView()
     let scrollView = UIScrollView()
@@ -25,7 +25,7 @@ final class NovelDetailView: UIView {
     let stickyNovelDetailTabView = NovelDetailTabView()
     let novelDetailMemoSettingButtonView = NovelDetailMemoSettingButtonView()
 
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -39,7 +39,7 @@ final class NovelDetailView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - UI
+    //MARK: - UI
     
     private func setUI() {
         self.backgroundColor = .wssWhite
@@ -117,10 +117,11 @@ final class NovelDetailView: UIView {
         }
     }
     
-    // MARK: - Custom Method
+    //MARK: - Custom Method
     
-    func changeCurrentMenu(menu: Int) {
-        if menu == 0 {
+    func changeCurrentMenu(menu: SelectedMenu) {
+        switch menu {
+        case .memo:
             self.novelDetailInfoView.removeFromSuperview()
             self.contentView.addArrangedSubview(self.novelDetailMemoView)
             self.novelDetailTabView.do {
@@ -133,7 +134,7 @@ final class NovelDetailView: UIView {
                 $0.infoButton.isSelected = false
                 $0.highlightMemoButton()
             }
-        } else {
+        case .info:
             self.novelDetailMemoView.removeFromSuperview()
             self.contentView.addArrangedSubview(self.novelDetailInfoView)
             self.novelDetailTabView.do {

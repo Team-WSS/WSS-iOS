@@ -12,7 +12,7 @@ import Then
 
 final class NovelDetailInfoView: UIView {
 
-    // MARK: - Components
+    //MARK: - Components
     
     let contentView = UIStackView()
     let novelDetailInfoRatingView = NovelDetailInfoRatingView()
@@ -22,7 +22,7 @@ final class NovelDetailInfoView: UIView {
     let novelDetailInfoGenreView = NovelDetailInfoGenreView()
     let novelDetailInfoPlatformView = NovelDetailInfoPlatformView()
 
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -36,7 +36,7 @@ final class NovelDetailInfoView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - UI
+    //MARK: - UI
     
     private func setUI() {
         contentView.do {
@@ -62,7 +62,7 @@ final class NovelDetailInfoView: UIView {
         }
     }
     
-    // MARK: - Data
+    //MARK: - Data
     
     func bindData(rating: Float, readStatus: String, startDate: String?, endDate: String?, description: String, genre: String, platformCount: Int) {
         self.novelDetailInfoRatingView.bindData(rating: rating)

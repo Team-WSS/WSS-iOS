@@ -12,7 +12,7 @@ import Then
 
 final class NovelDetailMemoTableViewCell: UITableViewCell {
     
-    // MARK: - Components
+    //MARK: - Components
     
     private let leftDividerView = UIView()
     private let rightDividerView = UIView()
@@ -20,7 +20,7 @@ final class NovelDetailMemoTableViewCell: UITableViewCell {
     private let memoContentLabel = UILabel()
     
 
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -34,7 +34,7 @@ final class NovelDetailMemoTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - UI
+    //MARK: - UI
     
     private func setUI() {
         self.do {
@@ -95,12 +95,12 @@ final class NovelDetailMemoTableViewCell: UITableViewCell {
         }
     }
     
-    // MARK: - Data
+    //MARK: - Data
     
-    func bindData(date: String, content: String) {
-        self.memoDateLabel.text = date
+    func bindData(memo: UserNovelMemo) {
+        self.memoDateLabel.text = memo.createdDate
         self.memoContentLabel.do {
-            $0.makeAttribute(with: content)?
+            $0.makeAttribute(with: memo.memoContent)?
                 .lineSpacing(spacingPercentage: 150)
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()

@@ -12,12 +12,12 @@ import Then
 
 final class NovelDetailMemoView: UIView {
 
-    // MARK: - Components
+    //MARK: - Components
 
     let novelDetailCreateMemoView = NovelDetailCreateMemoView()
     let memoTableView = UITableView(frame: .zero, style: .plain)
 
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -31,7 +31,7 @@ final class NovelDetailMemoView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - UI
+    //MARK: - UI
     
     private func setUI() {
         memoTableView.do {
@@ -58,7 +58,7 @@ final class NovelDetailMemoView: UIView {
         }
     }
     
-    // MARK: - Data
+    //MARK: - Data
     
     func bindData(memoCount: Int) {
         if memoCount == 0 {
@@ -78,7 +78,7 @@ final class NovelDetailMemoView: UIView {
         }
     }
     
-    // MARK: - Custom Method
+    //MARK: - Custom Method
     
     func updateTableViewHeight(height: CGFloat) {
         memoTableView.snp.updateConstraints {

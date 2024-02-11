@@ -12,12 +12,12 @@ import Then
 
 final class NovelDetailInfoDescriptionView: UIView {
 
-    // MARK: - Components
+    //MARK: - Components
     
     private let titleLabel = UILabel()
     private let descriptionLabel = UILabel()
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -31,7 +31,7 @@ final class NovelDetailInfoDescriptionView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - UI
+    //MARK: - UI
     
     private func setUI() {
         titleLabel.do {
@@ -67,7 +67,7 @@ final class NovelDetailInfoDescriptionView: UIView {
         }
     }
     
-    // MARK: - Data
+    //MARK: - Data
     
     func bindData(description: String) {
         self.descriptionLabel.do {

@@ -12,11 +12,11 @@ import Then
 
 final class NovelDetailInfoKeywordCollectionViewCell: UICollectionViewCell {
     
-    // MARK: - Components
+    //MARK: - Components
 
     private let keywordLabel = UILabel()
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -30,7 +30,7 @@ final class NovelDetailInfoKeywordCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - UI
+    //MARK: - UI
     
     private func setUI() {
         self.do {
@@ -55,7 +55,7 @@ final class NovelDetailInfoKeywordCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    // MARK: - Data
+    //MARK: - Data
     
     func bindData(keyword: String) {
         self.keywordLabel.do {

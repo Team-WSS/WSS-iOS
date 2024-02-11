@@ -12,12 +12,12 @@ import Then
 
 final class NovelDetailInfoKeywordView: UIView {
 
-    // MARK: - Components
+    //MARK: - Components
     
     private let keywordLabel = UILabel()
     let keywordCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -31,7 +31,7 @@ final class NovelDetailInfoKeywordView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - UI
+    //MARK: - UI
     
     private func setUI() {
         keywordLabel.do {
@@ -72,7 +72,7 @@ final class NovelDetailInfoKeywordView: UIView {
         }
     }
     
-    // MARK: - Custom Method
+    //MARK: - Custom Method
     
     func updateCollectionViewHeight(height: CGFloat) {
         keywordCollectionView.snp.updateConstraints {

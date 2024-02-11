@@ -13,17 +13,17 @@ import Then
 
 final class NovelDetailInfoReadStatusTagView: UIView {
     
-    // MARK: - Properties
+    //MARK: - Properties
 
     var readStatus: ReadStatus?
     
-    // MARK: - Components
+    //MARK: - Components
     
     private let tagImageView = UIImageView()
     private let tagLabel = UILabel()
     
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -37,7 +37,7 @@ final class NovelDetailInfoReadStatusTagView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - UI
+    //MARK: - UI
     
     private func setUI() {
         self.do {
@@ -75,7 +75,7 @@ final class NovelDetailInfoReadStatusTagView: UIView {
         }
     }
     
-    // MARK: - Data
+    //MARK: - Data
     
     func bindData(_ status: ReadStatus) {
         self.tagImageView.image = status.tagImage

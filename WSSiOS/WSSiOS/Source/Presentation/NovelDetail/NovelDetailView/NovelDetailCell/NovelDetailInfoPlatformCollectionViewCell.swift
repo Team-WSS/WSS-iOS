@@ -12,12 +12,12 @@ import Then
 
 final class NovelDetailInfoPlatformCollectionViewCell: UICollectionViewCell {
     
-    // MARK: - Components
+    //MARK: - Components
 
     private let platformLabel = UILabel()
     private let platformImageView = UIImageView()
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -31,7 +31,7 @@ final class NovelDetailInfoPlatformCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - UI
+    //MARK: - UI
     
     private func setUI() {
         self.do {
@@ -68,7 +68,7 @@ final class NovelDetailInfoPlatformCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    // MARK: - Data
+    //MARK: - Data
 
     func bindData(platform: String) {
         self.platformLabel.do {

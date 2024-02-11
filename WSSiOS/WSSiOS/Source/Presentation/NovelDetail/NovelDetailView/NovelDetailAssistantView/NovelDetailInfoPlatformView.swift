@@ -12,12 +12,12 @@ import Then
 
 final class NovelDetailInfoPlatformView: UIView {
 
-    // MARK: - Components
+    //MARK: - Components
     
     private let titleLabel = UILabel()
     let platformCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -31,7 +31,7 @@ final class NovelDetailInfoPlatformView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - UI
+    //MARK: - UI
     
     private func setUI() {
         titleLabel.do {
@@ -73,7 +73,7 @@ final class NovelDetailInfoPlatformView: UIView {
         }
     }
     
-    // MARK: - Data
+    //MARK: - Data
     
     func bindData(platformCount: Int) {
         if platformCount == 0 {
@@ -81,7 +81,7 @@ final class NovelDetailInfoPlatformView: UIView {
         }
     }
     
-    // MARK: - Custom Method
+    //MARK: - Custom Method
     
     func updateCollectionViewHeight(height: CGFloat) {
         platformCollectionView.snp.updateConstraints {

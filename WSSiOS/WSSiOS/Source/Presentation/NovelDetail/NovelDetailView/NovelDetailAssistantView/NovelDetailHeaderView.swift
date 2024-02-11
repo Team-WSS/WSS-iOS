@@ -14,7 +14,7 @@ import UIImageViewAlignedSwift
 
 final class NovelDetailHeaderView: UIView {
 
-    // MARK: - Components
+    //MARK: - Components
     
     private let backgroundImageView = UIImageViewAligned()
     private let gradientView = UIImageView()
@@ -23,7 +23,7 @@ final class NovelDetailHeaderView: UIView {
     private let novelAuthorLabel = UILabel()
     private let novelCoverImageView = UIImageView()
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -37,7 +37,7 @@ final class NovelDetailHeaderView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - UI
+    //MARK: - UI
     
     private func setUI() {
         backgroundImageView.do {
@@ -119,7 +119,7 @@ final class NovelDetailHeaderView: UIView {
         }
     }
     
-    // MARK: - Data
+    //MARK: - Data
     
     func bindData(title: String, author: String, novelImage: String, genreImage: String) {
         self.novelTitleLabel.do {

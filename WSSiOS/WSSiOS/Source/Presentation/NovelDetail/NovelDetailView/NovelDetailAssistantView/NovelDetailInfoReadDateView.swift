@@ -12,7 +12,7 @@ import Then
 
 final class NovelDetailInfoReadDateView: UIView {
     
-    // MARK: - Components
+    //MARK: - Components
     
     private let readDateLabel = UILabel()
     private let dateImageView = UIImageView()
@@ -20,7 +20,7 @@ final class NovelDetailInfoReadDateView: UIView {
     private let endDateLabel = UILabel()
     private let waveLabel = UILabel()
 
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -34,7 +34,7 @@ final class NovelDetailInfoReadDateView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - UI
+    //MARK: - UI
     
     private func setUI() {
         readDateLabel.do {
@@ -105,7 +105,7 @@ final class NovelDetailInfoReadDateView: UIView {
         }
     }
     
-    // MARK: - Data
+    //MARK: - Data
     
     func bindData(startDate: String, endDate: String?) {
         self.startDateLabel.do {
