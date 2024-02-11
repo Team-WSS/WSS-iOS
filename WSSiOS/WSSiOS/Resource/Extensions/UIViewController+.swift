@@ -89,6 +89,10 @@ extension UIViewController {
     func popToLastViewController() {
         self.navigationController?.popViewController(animated: true)
     }
+    
+    func popToRootViewController() {
+        self.navigationController?.popToRootViewController(animated: true)
+    }
 }
 
 extension UIViewController: UIGestureRecognizerDelegate {
