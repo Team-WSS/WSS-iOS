@@ -68,7 +68,7 @@ final class MemoReadViewController: UIViewController {
         }
         
         editButon.do {
-            $0.setButtonAttributedTitle(text: "수정", font: .Title2, color: .wssPrimary100)
+            $0.setButtonAttributedTitle(text: StringLiterals.Memo.edit, font: .Title2, color: .wssPrimary100)
         }
     }
     
