@@ -36,15 +36,15 @@ final class MemoHeaderView: UIView {
     //MARK: - UI
     
     private func setUI() {
-        self.backgroundColor = .white
+        self.backgroundColor = .wssWhite
         
         novelTitleLabel.do {
-            $0.textColor = .Black
+            $0.textColor = .wssBlack
             $0.font = .Title1
         }
         
         novelAuthorLabel.do {
-            $0.textColor = .Gray200
+            $0.textColor = .wssGray200
             $0.font = .Body2
         }
         

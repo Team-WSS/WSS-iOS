@@ -38,14 +38,14 @@ final class MemoReadContentView: UIView {
     //MARK: - UI
     
     private func setUI() {
-        self.backgroundColor = .white
+        self.backgroundColor = .wssWhite
         
         dividerView.do {
-            $0.backgroundColor = .Gray70
+            $0.backgroundColor = .wssGray70
         }
         
         dateLabel.do {
-            $0.textColor = .Gray200
+            $0.textColor = .wssGray200
             $0.font = .Label1
         }
         
@@ -54,7 +54,7 @@ final class MemoReadContentView: UIView {
         }
         
         memoContentLabel.do {
-            $0.textColor = .Black
+            $0.textColor = .wssBlack
             $0.font = .Body1
             $0.numberOfLines = 0
         }

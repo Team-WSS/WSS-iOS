@@ -33,11 +33,11 @@ final class MemoEditContentView: UIView {
     //MARK: - UI
     
     private func setUI() {
-        self.backgroundColor = .Gray50
+        self.backgroundColor = .wssGray50
         
         memoTextView.do {
             $0.backgroundColor = .clear
-            $0.textColor = .Black
+            $0.textColor = .wssBlack
             $0.font = .Body1
             $0.showsVerticalScrollIndicator = false
         }

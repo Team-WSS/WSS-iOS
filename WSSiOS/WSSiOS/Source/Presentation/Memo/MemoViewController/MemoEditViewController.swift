@@ -79,7 +79,7 @@ final class MemoEditViewController: UIViewController {
         }
         
         completeButton.do {
-            $0.setButtonAttributedTitle(text: "완료", font: .Title2, color: .Primary100)
+            $0.setButtonAttributedTitle(text: "완료", font: .Title2, color: .wssPrimary100)
             $0.isEnabled = false
         }
     }
@@ -213,14 +213,14 @@ final class MemoEditViewController: UIViewController {
     
     func enableCompleteButton() {
         completeButton.do {
-            $0.setButtonAttributedTitle(text: "완료", font: .Title2, color: .Primary100)
+            $0.setButtonAttributedTitle(text: "완료", font: .Title2, color: .wssPrimary100)
             $0.isEnabled = true
         }
     }
     
     func disableCompleteButton() {
         completeButton.do {
-            $0.setButtonAttributedTitle(text: "완료", font: .Title2, color: .Gray200)
+            $0.setButtonAttributedTitle(text: "완료", font: .Title2, color: .wssGray200)
             $0.isEnabled = false
         }
     }
