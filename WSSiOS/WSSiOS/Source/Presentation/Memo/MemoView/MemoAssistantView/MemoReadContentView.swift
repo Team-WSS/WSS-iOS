@@ -50,7 +50,7 @@ final class MemoReadContentView: UIView {
         }
         
         deleteButton.do {
-            $0.setImage(ImageLiterals.icon.Memo.delete, for: .normal)
+            $0.setImage(.icDeleteMemo, for: .normal)
         }
         
         memoContentLabel.do {

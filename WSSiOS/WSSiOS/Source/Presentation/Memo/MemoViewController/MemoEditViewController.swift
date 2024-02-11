@@ -75,7 +75,7 @@ final class MemoEditViewController: UIViewController {
     
     private func setUI() {
         backButton.do {
-            $0.setImage(ImageLiterals.icon.navigateLeft.withRenderingMode(.alwaysOriginal), for: .normal)
+            $0.setImage(.icNavigateLeft.withRenderingMode(.alwaysOriginal), for: .normal)
         }
         
         completeButton.do {
