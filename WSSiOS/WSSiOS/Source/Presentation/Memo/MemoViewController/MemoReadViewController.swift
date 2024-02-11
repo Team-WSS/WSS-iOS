@@ -12,7 +12,7 @@ import RxSwift
 
 final class MemoReadViewController: UIViewController {
     
-    //MARK: - set Properties
+    //MARK: - Properties
     
     private let repository: MemoRepository
     private let disposeBag = DisposeBag()
@@ -22,13 +22,13 @@ final class MemoReadViewController: UIViewController {
     private var novelImage = ""
     private var memoContent = ""
 
-    // MARK: - UI Components
-
+    //MARK: - Components
+    
     private let rootView = MemoReadView()
     private let backButton = UIButton()
     private let editButon = UIButton()
 
-     // MARK: - Life Cycle
+     //MARK: - Life Cycle
     
     init(repository: MemoRepository, memoId: Int) {
         self.repository = repository
@@ -57,18 +57,10 @@ final class MemoReadViewController: UIViewController {
          setUI()
          setNotificationCenter()
          setTapGesture()
-         setBinding()
+         bindUI()
      }
     
-    // MARK: - set NavigationBar
-    
-    private func setNavigationBar() {
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.backButton)
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.editButon)
-        self.navigationController?.navigationBar.backgroundColor = .clear
-    }
-    
-    // MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
         backButton.do {
@@ -80,8 +72,12 @@ final class MemoReadViewController: UIViewController {
         }
     }
     
-    // MARK: - setNotificationCenter
-
+    private func setNavigationBar() {
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.backButton)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.editButon)
+        self.navigationController?.navigationBar.backgroundColor = .clear
+    }
+    
     private func setNotificationCenter() {
         NotificationCenter.default.addObserver(
             self,
@@ -97,17 +93,15 @@ final class MemoReadViewController: UIViewController {
             object: nil
         )
     }
-
-    // MARK: - set tap gesture
     
     private func setTapGesture() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewDidTap))
         view.addGestureRecognizer(tapGesture)
     }
     
-    // MARK: - set Binding
+    //MARK: - Bind
     
-    private func setBinding() {
+    private func bindUI() {
         backButton.rx.tap.bind {
             self.navigationController?.popViewController(animated: true)
         }.disposed(by: disposeBag)
@@ -139,9 +133,21 @@ final class MemoReadViewController: UIViewController {
         }.disposed(by: disposeBag)
     }
     
-    // MARK: - update UI
+    //MARK: - API
     
-    private func updateUI(_ memoDetail: MemoDetail) {
+    private func getMemoDetail() {
+        repository.getMemoDetail(memoId: self.memoId)
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, data in
+                self.bindData(data)
+            },onError: { owner, error in
+                print(error)
+            }).disposed(by: disposeBag)
+    }
+    
+    //MARK: - Custom Method
+    
+    private func bindData(_ memoDetail: MemoDetail) {
         self.novelTitle = memoDetail.userNovelTitle
         self.novelAuthor = memoDetail.userNovelAuthor
         self.novelImage = memoDetail.userNovelImg
@@ -158,20 +164,6 @@ final class MemoReadViewController: UIViewController {
             memoContent: memoDetail.memoContent
         )
     }
-    
-    // MARK: - API request
-    
-    private func getMemoDetail() {
-        repository.getMemoDetail(memoId: self.memoId)
-            .observe(on: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, data in
-                self.updateUI(data)
-            },onError: { owner, error in
-                print(error)
-            }).disposed(by: disposeBag)
-    }
-    
-    // MARK: - custom method
     
     @objc func viewDidTap() {
         view.endEditing(true)

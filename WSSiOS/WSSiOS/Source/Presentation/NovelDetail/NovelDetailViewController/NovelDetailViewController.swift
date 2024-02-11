@@ -141,7 +141,7 @@ final class NovelDetailViewController: UIViewController {
         self.rootView.novelDetailMemoView.novelDetailCreateMemoView.addGestureRecognizer(memoCreateViewTapGesture)
     }
     
-    // MARK: - Bind
+    //MARK: - Bind
 
     private func register() {
         rootView.novelDetailMemoView.memoTableView.register(

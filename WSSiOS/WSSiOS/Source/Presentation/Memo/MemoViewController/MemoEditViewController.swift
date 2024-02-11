@@ -13,7 +13,7 @@ import RxSwift
 
 final class MemoEditViewController: UIViewController {
     
-    //MARK: - set Properties
+    //MARK: - Properties
     
     private let repository: MemoRepository
     private let disposeBag = DisposeBag()
@@ -23,13 +23,13 @@ final class MemoEditViewController: UIViewController {
     private var updatedMemoContent = ""
     private let memoContentPredicate = NSPredicate(format: "SELF MATCHES %@", "^[\\s]+$")
 
-    // MARK: - UI Components
+    //MARK: - Components
 
     private let rootView = MemoEditView()
     private let backButton = UIButton()
     private let completeButton = UIButton()
 
-     // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     init(repository: MemoRepository, userNovelId: Int? = nil, memoId: Int? = nil, novelTitle: String, novelAuthor: String, novelImage: String, memoContent: String? = nil) {
         self.repository = repository
@@ -71,15 +71,7 @@ final class MemoEditViewController: UIViewController {
          rootView.memoEditContentView.memoTextView.becomeFirstResponder()
      }
     
-    // MARK: - set NavigationBar
-    
-    private func setNavigationBar() {
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.backButton)
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.completeButton)
-        self.navigationController?.navigationBar.backgroundColor = .clear
-    }
-    
-    // MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
         backButton.do {
@@ -92,8 +84,12 @@ final class MemoEditViewController: UIViewController {
         }
     }
     
-    // MARK: - setNotificationCenter
-
+    private func setNavigationBar() {
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.backButton)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.completeButton)
+        self.navigationController?.navigationBar.backgroundColor = .clear
+    }
+    
     private func setNotificationCenter() {
         NotificationCenter.default.addObserver(
             self,
@@ -103,14 +99,12 @@ final class MemoEditViewController: UIViewController {
         )
     }
     
-    // MARK: - set tap gesture
-    
     private func setTapGesture() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewDidTap))
         view.addGestureRecognizer(tapGesture)
     }
 
-    // MARK: - set Binding
+    //MARK: - Bind
     
     private func setBinding() {
         backButton.rx.tap.bind {
@@ -183,7 +177,7 @@ final class MemoEditViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    // MARK: - API request
+    //MARK: - API
     
     private func postMemo() {
         repository.postMemo(userNovelId: self.userNovelId!, memoContent: updatedMemoContent)
@@ -215,7 +209,7 @@ final class MemoEditViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    // MARK: - custom method
+    //MARK: - Custom Method
     
     func enableCompleteButton() {
         completeButton.do {

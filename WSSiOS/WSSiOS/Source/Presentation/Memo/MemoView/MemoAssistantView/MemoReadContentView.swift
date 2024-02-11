@@ -12,7 +12,7 @@ import Then
 
 final class MemoReadContentView: UIView {
 
-    // MARK: - UI Components
+    //MARK: - Components
     
     private let dividerView = UIView()
     private let dateLabel = UILabel()
@@ -21,13 +21,13 @@ final class MemoReadContentView: UIView {
     private let contentView = UIView()
     public let memoContentLabel = UILabel()
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -35,7 +35,7 @@ final class MemoReadContentView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
         self.backgroundColor = .white
@@ -60,9 +60,7 @@ final class MemoReadContentView: UIView {
         }
     }
     
-    // MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(dividerView,
                          dateLabel,
                          deleteButton,
@@ -70,8 +68,6 @@ final class MemoReadContentView: UIView {
         scrollView.addSubview(contentView)
         contentView.addSubview(memoContentLabel)
     }
-    
-    // MARK: - set Layout
     
     private func setLayout() {
         dividerView.snp.makeConstraints {
@@ -103,6 +99,8 @@ final class MemoReadContentView: UIView {
             $0.edges.equalToSuperview()
         }
     }
+    
+    //MARK: - Custom Method
     
     func updateTextViewConstraint(keyboardHeight: CGFloat) {
         self.memoContentLabel.snp.updateConstraints {

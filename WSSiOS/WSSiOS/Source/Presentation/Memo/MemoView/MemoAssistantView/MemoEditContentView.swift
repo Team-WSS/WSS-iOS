@@ -12,17 +12,17 @@ import Then
 
 final class MemoEditContentView: UIView {
 
-    // MARK: - UI Components
+    //MARK: - Components
     
     public let memoTextView = UITextView()
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -30,7 +30,7 @@ final class MemoEditContentView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
         self.backgroundColor = .Gray50
@@ -43,13 +43,9 @@ final class MemoEditContentView: UIView {
         }
     }
     
-    // MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubview(memoTextView)
     }
-    
-    // MARK: - set Layout
     
     private func setLayout() {
         memoTextView.snp.makeConstraints {
