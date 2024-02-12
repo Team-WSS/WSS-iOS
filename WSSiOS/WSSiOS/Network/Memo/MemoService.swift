@@ -53,42 +53,54 @@ extension DefaultMemoService: MemoService {
             return Single.error(NetworkServiceError.invalidRequestError)
         }
         
-        let request = try! makeHTTPRequest(method: .post,
-                                           path: URLs.Memo.postMemo.replacingOccurrences(of: "{userNovelId}", with: String(userNovelId)),
-                                           headers: APIConstants.testTokenHeader,
-                                           body: memoContentData)
-        
-        NetworkLogger.log(request: request)
-        
-        return urlSession.rx.data(request: request)
-            .map { try self.decode(data: $0, to: IsAvatarUnlocked.self) }
-            .asSingle()
+        do {
+            let request = try makeHTTPRequest(method: .post,
+                                              path: URLs.Memo.postMemo.replacingOccurrences(of: "{userNovelId}", with: String(userNovelId)),
+                                              headers: APIConstants.testTokenHeader,
+                                              body: memoContentData)
+            
+            NetworkLogger.log(request: request)
+            
+            return urlSession.rx.data(request: request)
+                .map { try self.decode(data: $0, to: IsAvatarUnlocked.self) }
+                .asSingle()
+        } catch {
+            return Single.error(error)
+        }
     }
     
     func getMemoDetail(memoId: Int) -> Single<MemoDetail> {
-        let request = try! makeHTTPRequest(method: .get,
-                                           path: URLs.Memo.getMemo.replacingOccurrences(of: "{memoId}", with: String(memoId)),
-                                           headers: APIConstants.testTokenHeader,
-                                           body: nil)
-        
-        NetworkLogger.log(request: request)
-        
-        return urlSession.rx.data(request: request)
-            .map { try self.decode(data: $0, to: MemoDetail.self) }
-            .asSingle()
+        do {
+            let request = try makeHTTPRequest(method: .get,
+                                              path: URLs.Memo.getMemo.replacingOccurrences(of: "{memoId}", with: String(memoId)),
+                                              headers: APIConstants.testTokenHeader,
+                                              body: nil)
+            
+            NetworkLogger.log(request: request)
+            
+            return urlSession.rx.data(request: request)
+                .map { try self.decode(data: $0, to: MemoDetail.self) }
+                .asSingle()
+        } catch {
+            return Single.error(error)
+        }
     }
     
     func deleteMemo(memoId: Int) -> Single<Void> {
-        let request = try! makeHTTPRequest(method: .delete,
-                                           path: URLs.Memo.deleteMemo.replacingOccurrences(of: "{memoId}", with: String(memoId)),
-                                           headers: APIConstants.testTokenHeader,
-                                           body: nil)
-        
-        NetworkLogger.log(request: request)
-        
-        return urlSession.rx.data(request: request)
-            .map { _ in }
-            .asSingle()
+        do {
+            let request = try makeHTTPRequest(method: .delete,
+                                               path: URLs.Memo.deleteMemo.replacingOccurrences(of: "{memoId}", with: String(memoId)),
+                                               headers: APIConstants.testTokenHeader,
+                                               body: nil)
+            
+            NetworkLogger.log(request: request)
+            
+            return urlSession.rx.data(request: request)
+                .map { _ in }
+                .asSingle()
+        } catch {
+            return Single.error(error)
+        }
     }
     
     func patchMemo(memoId: Int, memoContent: String) -> Single<Void> {
@@ -96,15 +108,19 @@ extension DefaultMemoService: MemoService {
             return Single.error(NetworkServiceError.invalidRequestError)
         }
         
-        let request = try! makeHTTPRequest(method: .patch,
-                                           path: URLs.Memo.patchMemo.replacingOccurrences(of: "{memoId}", with: String(memoId)),
-                                           headers: APIConstants.testTokenHeader,
-                                           body: memoContentData)
-        
-        NetworkLogger.log(request: request)
-        
-        return urlSession.rx.data(request: request)
-            .map { _ in }
-            .asSingle()
+        do {
+            let request = try makeHTTPRequest(method: .patch,
+                                              path: URLs.Memo.patchMemo.replacingOccurrences(of: "{memoId}", with: String(memoId)),
+                                              headers: APIConstants.testTokenHeader,
+                                              body: memoContentData)
+            
+            NetworkLogger.log(request: request)
+            
+            return urlSession.rx.data(request: request)
+                .map { _ in }
+                .asSingle()
+        } catch {
+            return Single.error(error)
+        }
     }
 }
