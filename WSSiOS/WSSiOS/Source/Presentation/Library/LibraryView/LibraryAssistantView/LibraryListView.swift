@@ -45,8 +45,8 @@ final class LibraryListView: UIView {
             $0.layer.shadowRadius = 15
         }
         
-        libraryNewestButton.setTitle(StringLiterals.Library.newest, for: .normal)
-        libraryOldesttButton.setTitle(StringLiterals.Library.oldest, for: .normal)
+        libraryNewestButton.setTitle(StringLiterals.Alignment.SortType.newest.title, for: .normal)
+        libraryOldesttButton.setTitle(StringLiterals.Alignment.SortType.oldest.title, for: .normal)
         [libraryNewestButton,libraryOldesttButton].forEach {
             $0.do {
                 $0.setTitleColor(.Black, for: .normal)
