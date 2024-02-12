@@ -55,7 +55,7 @@ extension DefaultMemoService: MemoService {
         
         do {
             let request = try makeHTTPRequest(method: .post,
-                                              path: URLs.Memo.postMemo.replacingOccurrences(of: "{userNovelId}", with: String(userNovelId)),
+                                              path: URLs.Memo.postMemo(userNovelId: userNovelId),
                                               headers: APIConstants.testTokenHeader,
                                               body: memoContentData)
             
@@ -72,7 +72,7 @@ extension DefaultMemoService: MemoService {
     func getMemoDetail(memoId: Int) -> Single<MemoDetail> {
         do {
             let request = try makeHTTPRequest(method: .get,
-                                              path: URLs.Memo.getMemo.replacingOccurrences(of: "{memoId}", with: String(memoId)),
+                                              path: URLs.Memo.getMemo(memoId: memoId),
                                               headers: APIConstants.testTokenHeader,
                                               body: nil)
             
@@ -89,7 +89,7 @@ extension DefaultMemoService: MemoService {
     func deleteMemo(memoId: Int) -> Single<Void> {
         do {
             let request = try makeHTTPRequest(method: .delete,
-                                               path: URLs.Memo.deleteMemo.replacingOccurrences(of: "{memoId}", with: String(memoId)),
+                                               path: URLs.Memo.deleteMemo(memoId: memoId),
                                                headers: APIConstants.testTokenHeader,
                                                body: nil)
             
@@ -110,7 +110,7 @@ extension DefaultMemoService: MemoService {
         
         do {
             let request = try makeHTTPRequest(method: .patch,
-                                              path: URLs.Memo.patchMemo.replacingOccurrences(of: "{memoId}", with: String(memoId)),
+                                              path: URLs.Memo.patchMemo(memoId: memoId),
                                               headers: APIConstants.testTokenHeader,
                                               body: memoContentData)
             
