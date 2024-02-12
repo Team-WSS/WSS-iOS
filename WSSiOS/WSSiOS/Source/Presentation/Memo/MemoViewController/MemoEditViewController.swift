@@ -108,6 +108,7 @@ final class MemoEditViewController: UIViewController {
     
     private func setBinding() {
         backButton.rx.tap
+            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 if owner.memoContent != nil {
                     if owner.updatedMemoContent != owner.memoContent {
@@ -142,6 +143,7 @@ final class MemoEditViewController: UIViewController {
             .disposed(by: disposeBag)
         
         completeButton.rx.tap
+            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 if owner.memoContent != nil {
                     owner.patchMemo()

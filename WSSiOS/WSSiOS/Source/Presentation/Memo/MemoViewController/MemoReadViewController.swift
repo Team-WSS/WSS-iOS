@@ -103,12 +103,14 @@ final class MemoReadViewController: UIViewController {
     
     private func bindUI() {
         backButton.rx.tap
+            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 owner.navigationController?.popViewController(animated: true)
             })
             .disposed(by: disposeBag)
         
         editButon.rx.tap
+            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 owner.navigationController?.pushViewController(MemoEditViewController(
                     repository: DefaultMemoRepository(
@@ -124,6 +126,7 @@ final class MemoReadViewController: UIViewController {
             .disposed(by: disposeBag)
         
         rootView.memoReadContentView.deleteButton.rx.tap
+            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 let vc = DeletePopupViewController(
                     memoRepository: DefaultMemoRepository(
