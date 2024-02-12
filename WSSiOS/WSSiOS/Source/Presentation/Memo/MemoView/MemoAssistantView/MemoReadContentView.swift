@@ -16,10 +16,10 @@ final class MemoReadContentView: UIView {
     
     private let dividerView = UIView()
     private let dateLabel = UILabel()
-    public let deleteButton = UIButton()
+    let deleteButton = UIButton()
     private let scrollView = UIScrollView()
     private let contentView = UIView()
-    public let memoContentLabel = UILabel()
+    let memoContentLabel = UILabel()
     
     //MARK: - Life Cycle
     

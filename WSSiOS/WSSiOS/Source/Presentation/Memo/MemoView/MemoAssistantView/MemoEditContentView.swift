@@ -14,7 +14,7 @@ final class MemoEditContentView: UIView {
 
     //MARK: - Components
     
-    public let memoTextView = UITextView()
+    let memoTextView = UITextView()
     
     //MARK: - Life Cycle
     

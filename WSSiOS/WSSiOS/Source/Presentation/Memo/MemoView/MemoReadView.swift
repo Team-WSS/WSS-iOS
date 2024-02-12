@@ -14,8 +14,8 @@ final class MemoReadView: UIView {
     
     //MARK: - Components
     
-    public let memoHeaderView = MemoHeaderView()
-    public let memoReadContentView = MemoReadContentView()
+    let memoHeaderView = MemoHeaderView()
+    let memoReadContentView = MemoReadContentView()
     
     //MARK: - Life Cycle
     
