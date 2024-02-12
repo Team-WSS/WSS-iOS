@@ -53,7 +53,7 @@ extension UIViewController {
     // 추후 이름 고치기
     func preparationSetNavigationBar(title: String, left: UIButton?, right: UIButton?) {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
-        self.title = title
+        self.navigationItem.title = title
         
         if let navigationBar = self.navigationController?.navigationBar {
             let titleTextAttributes: [NSAttributedString.Key: Any] = [
@@ -64,6 +64,79 @@ extension UIViewController {
         
         self.navigationItem.leftBarButtonItem = left != nil ? UIBarButtonItem(customView: left!) : nil
         self.navigationItem.rightBarButtonItem = right != nil ? UIBarButtonItem(customView: right!) : nil
+    }
+    
+    func pushToRegisterSuccessViewController(userNovelId: Int) {
+        self.navigationController?.pushViewController(RegisterSuccessViewController(userNovelId: userNovelId),
+                                                       animated: true)
+    }
+    
+    func moveToNovelDetailViewController(userNovelId: Int) {
+        if self.navigationController?.tabBarController?.selectedIndex == 0 {
+            let tabBar = WSSTabBarController()
+            tabBar.selectedIndex = 1
+            let navigationController = UINavigationController(rootViewController: tabBar)
+            navigationController.setNavigationBarHidden(true, animated: true)
+            self.view.window?.rootViewController = navigationController
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                NotificationCenter.default.post(name: NSNotification.Name("ShowNovelInfo"), object: userNovelId)
+            }
+        } else {
+            self.navigationController?.popViewController(animated: true)
+        }
+    }
+    
+    func pushToMemoReadViewController(memoId: Int) {
+        self.navigationController?.pushViewController(
+            MemoReadViewController(
+                repository: DefaultMemoRepository(
+                    memoService: DefaultMemoService()),
+                memoId: memoId
+            ), animated: true)
+    }
+    
+    func pushToRegisterNormalViewController(novelId: Int) {
+        self.navigationController?.pushViewController(
+            RegisterNormalViewController(
+                novelRepository: DefaultNovelRepository(
+                    novelService: DefaultNovelService()),
+                userNovelRepository: DefaultUserNovelRepository(
+                    userNovelService: DefaultUserNovelService()),
+                novelId: novelId),
+            animated: true)
+    }
+    
+    func pushToMemoEditViewController(userNovelId: Int, novelTitle: String, novelAuthor: String, novelImage: String) {
+        self.navigationController?.pushViewController(MemoEditViewController(
+            repository: DefaultMemoRepository(
+                memoService: DefaultMemoService()
+            ),
+            userNovelId: userNovelId,
+            novelTitle: novelTitle,
+            novelAuthor: novelAuthor,
+            novelImage: novelImage
+        ), animated: true)
+    }
+    
+    func presentDeletePopupViewController(userNovelId: Int) {
+        let viewController = DeletePopupViewController(
+            userNovelRepository: DefaultUserNovelRepository(
+                userNovelService: DefaultUserNovelService()
+            ),
+            popupStatus: .novelDelete,
+            userNovelId: userNovelId
+        )
+        viewController.modalPresentationStyle = .overFullScreen
+        viewController.modalTransitionStyle = .crossDissolve
+        self.present(viewController, animated: true)
+    }
+    
+    func popToLastViewController() {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    func popToRootViewController() {
+        self.navigationController?.popToRootViewController(animated: true)
     }
 }
 

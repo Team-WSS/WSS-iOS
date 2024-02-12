@@ -59,7 +59,7 @@ final class LibraryListView: UIView {
             $0.backgroundColor = .Gray50
         }
     }
-    
+
     private func setHierarchy() {
         self.addSubviews(libraryNewestButton,
                          dividerView,

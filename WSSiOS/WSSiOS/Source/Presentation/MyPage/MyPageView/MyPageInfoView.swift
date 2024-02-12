@@ -12,9 +12,8 @@ import Then
 
 final class MyPageInfoView: UIView {
     
-    //MARK: - UI Components
+    //MARK: - Components
     
-    //추후 기능이 많아지면 버튼 CollecitionView 로 구현할 예정
     private let dividerView = UIView()
     private let divider1View = UIView()
     private let divider2View = UIView()
@@ -31,13 +30,15 @@ final class MyPageInfoView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    //MARK: - UI
     
     private func setUI() {
         self.backgroundColor = .White
@@ -63,7 +64,7 @@ final class MyPageInfoView: UIView {
         }
     }
     
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(dividerView,
                          nickNameLabel,
                          userNickNameLabel,
@@ -125,6 +126,8 @@ final class MyPageInfoView: UIView {
             $0.height.equalTo(1)
         }
     }
+    
+    //MARK: - Data
     
     func bindData(_ data: String) {
         nickNameLabel.text = "닉네임"

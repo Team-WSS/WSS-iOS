@@ -66,7 +66,7 @@ final class LibraryCollectionViewCell: UICollectionViewCell {
             $0.textColor = .Black
         }
     }
-    
+
     private func setHierarchy() {
         self.addSubviews(novelImageView,
                          novelTitleLabel,

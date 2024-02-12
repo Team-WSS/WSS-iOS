@@ -11,12 +11,8 @@ import SnapKit
 import Then
 
 final class MyPageSettingCollectionViewCell: UICollectionViewCell {
-    
-    //MARK: - Properties
-    
-    static let identifier: String = "MyPageSettingCollectionViewCell"
-    
-    //MARK: - UI Components
+     
+    //MARK: - Components
     
     let myPageSettingCellLabel = UILabel()
     
@@ -26,7 +22,7 @@ final class MyPageSettingCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -35,7 +31,7 @@ final class MyPageSettingCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - Set UI
+    //MARK: - UI
     
     private func setUI() {
         self.backgroundColor = .White
@@ -46,14 +42,10 @@ final class MyPageSettingCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    //MARK: - Set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(myPageSettingCellLabel)
     }
-    
-    //MARK: - Set Layout
-    
+
     private func setLayout() {
         myPageSettingCellLabel.snp.makeConstraints() {
             $0.centerY.equalToSuperview()

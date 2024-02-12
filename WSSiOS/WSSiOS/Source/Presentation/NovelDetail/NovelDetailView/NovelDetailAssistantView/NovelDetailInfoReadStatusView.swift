@@ -12,19 +12,19 @@ import Then
 
 final class NovelDetailInfoReadStatusView: UIView {
     
-    // MARK: - UI Components
-    
+    //MARK: - Components
+
     private let dividerView = UIView()
     private let readStatusLabel = UILabel()
     private let readStatusTagView = NovelDetailInfoReadStatusTagView()
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -32,31 +32,27 @@ final class NovelDetailInfoReadStatusView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
         dividerView.do {
-            $0.backgroundColor = .Gray50
+            $0.backgroundColor = .wssGray50
         }
         
         readStatusLabel.do {
-            $0.makeAttribute(with: "읽기 상태")?
+            $0.makeAttribute(with: StringLiterals.NovelDetail.Info.readStatus)?
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
-            $0.textColor = .Black
+            $0.textColor = .wssBlack
             $0.font = .Title1
         }
     }
     
-    // MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(dividerView,
                          readStatusLabel,
                          readStatusTagView)
     }
-    
-    // MARK: - set Layout
     
     private func setLayout() {
         dividerView.snp.makeConstraints {
@@ -75,6 +71,8 @@ final class NovelDetailInfoReadStatusView: UIView {
             $0.bottom.equalToSuperview()
         }
     }
+    
+    //MARK: - Data
     
     func bindData(status: String) {
         switch status {

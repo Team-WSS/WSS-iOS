@@ -13,12 +13,12 @@ import Then
 
 final class RegisterSuccessView: UIView {
     
-    // MARK: - UI Components
+    // MARK: - Components
     
     private let titleLabel = UILabel()
     private let lottieView = LottieLiterals.Register.success
-    var makeMemoButton = WSSMainButton(title: StringLiterals.Register.Success.makeMemo)
-    var returnHomeButton = UIButton()
+    let makeMemoButton = WSSMainButton(title: StringLiterals.Register.Success.makeMemo)
+    let returnHomeButton = UIButton()
     
     // MARK: - Life Cycle
     
@@ -26,7 +26,7 @@ final class RegisterSuccessView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHieararchy()
+        setHierarchy()
         setLayout()
     }
     
@@ -34,11 +34,11 @@ final class RegisterSuccessView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Custom Method
+    // MARK: - UI
     
     private func setUI() {
         self.do{
-            $0.backgroundColor = .White
+            $0.backgroundColor = .wssWhite
         }
         
         titleLabel.do {
@@ -47,7 +47,7 @@ final class RegisterSuccessView: UIView {
                 .kerning(kerningPixel: -1.2).applyAttribute()
             $0.numberOfLines = 2
             $0.textAlignment = .center
-            $0.textColor = .Black
+            $0.textColor = .wssBlack
             $0.font = .HeadLine1
         }
             
@@ -56,18 +56,20 @@ final class RegisterSuccessView: UIView {
         }
         
         returnHomeButton.do {
-            $0.setTitle(StringLiterals.Register.Success.returnHome, for: .normal)
+            $0.setTitle(StringLiterals.Register.Success.returnHome,
+                        for: .normal)
             $0.setAttributedTitle($0.titleLabel?.makeAttribute()?
                                                 .kerning(kerningPixel: -0.6)
                                                 .lineSpacing(spacingPercentage: 150)
                                                 .attributedString,
                                   for: .normal)
-            $0.setTitleColor(.Gray300, for: .normal)
+            $0.setTitleColor(.Gray300,
+                             for: .normal)
             $0.titleLabel?.font = .Body2
         }
     }
     
-    private func setHieararchy() {
+    private func setHierarchy() {
         self.addSubviews(titleLabel,
                          lottieView,
                          makeMemoButton,
@@ -91,7 +93,7 @@ final class RegisterSuccessView: UIView {
         }
         
         returnHomeButton.snp.makeConstraints {
-            $0.bottom.equalTo(safeAreaLayoutGuide).inset(14)
+            $0.bottom.equalTo(safeAreaLayoutGuide).offset(-14)
             $0.height.equalTo(45)
             $0.centerX.equalToSuperview()
         }

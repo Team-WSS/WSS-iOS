@@ -54,7 +54,7 @@ final class LibraryPageBar: UIView {
             .bind(to: selectedTabIndex)
             .disposed(by: disposeBag)
     }
-    
+
     private func setHierarchy() {
         self.addSubview(libraryTabCollectionView)
     }

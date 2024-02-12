@@ -12,19 +12,19 @@ import Then
 
 final class NovelDetailInfoRatingView: UIView {
 
-    // MARK: - UI Components
-    
+    //MARK: - Components
+
     private let ratingLabel = UILabel()
     private let ratingStackView = UIStackView()
     private let dividerView = UIView()
 
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -32,14 +32,14 @@ final class NovelDetailInfoRatingView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
         ratingLabel.do {
-            $0.makeAttribute(with: "나의 평가")?
+            $0.makeAttribute(with: StringLiterals.NovelDetail.Info.rating)?
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
-            $0.textColor = .Black
+            $0.textColor = .wssBlack
             $0.font = .Title1
         }
         
@@ -51,19 +51,15 @@ final class NovelDetailInfoRatingView: UIView {
         }
         
         dividerView.do {
-            $0.backgroundColor = .Gray70
+            $0.backgroundColor = .wssGray70
         }
     }
     
-    // MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(ratingLabel,
                          ratingStackView,
                          dividerView)
     }
-    
-    // MARK: - set Layout
     
     private func setLayout() {
         ratingLabel.snp.makeConstraints {
@@ -86,6 +82,8 @@ final class NovelDetailInfoRatingView: UIView {
         }
     }
     
+    //MARK: - Data
+    
     func bindData(rating: Float) {
         self.ratingStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         for i in 0...4 {
@@ -94,11 +92,11 @@ final class NovelDetailInfoRatingView: UIView {
             starImageView.do {
                 $0.contentMode = .scaleAspectFit
                 if rating >= Float(i + 1) {
-                    $0.image = ImageLiterals.icon.Star.fill
+                    $0.image = .icStarFill
                 } else if rating > Float(i) {
-                    $0.image = ImageLiterals.icon.Star.half
+                    $0.image = .icStarHalf
                 } else {
-                    $0.image = ImageLiterals.icon.Star.empty
+                    $0.image = .icStarEmpty
                 }
             }
             

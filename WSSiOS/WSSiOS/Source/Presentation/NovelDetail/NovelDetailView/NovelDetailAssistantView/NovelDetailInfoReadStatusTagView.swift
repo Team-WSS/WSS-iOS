@@ -13,23 +13,23 @@ import Then
 
 final class NovelDetailInfoReadStatusTagView: UIView {
     
-    //MARK: - set Properties
-    
+    //MARK: - Properties
+
     var readStatus: ReadStatus?
     
-    // MARK: - UI Components
+    //MARK: - Components
     
     private let tagImageView = UIImageView()
     private let tagLabel = UILabel()
     
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -37,11 +37,11 @@ final class NovelDetailInfoReadStatusTagView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
         self.do {
-            $0.layer.borderColor = UIColor.Primary100.cgColor
+            $0.layer.borderColor = UIColor.wssPrimary100.cgColor
             $0.layer.borderWidth = 1
             $0.layer.cornerRadius = 18.5
         }
@@ -51,19 +51,15 @@ final class NovelDetailInfoReadStatusTagView: UIView {
         }
         
         tagLabel.do {
-            $0.textColor = .Primary100
+            $0.textColor = .wssPrimary100
             $0.font = .Body2
         }
     }
     
-    // MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(tagImageView,
                          tagLabel)
     }
-    
-    // MARK: - set Layout
     
     private func setLayout() {
         tagImageView.snp.makeConstraints {
@@ -78,6 +74,8 @@ final class NovelDetailInfoReadStatusTagView: UIView {
             $0.trailing.equalToSuperview().inset(13)
         }
     }
+    
+    //MARK: - Data
     
     func bindData(_ status: ReadStatus) {
         self.tagImageView.image = status.tagImage

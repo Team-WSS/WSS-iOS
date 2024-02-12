@@ -19,15 +19,25 @@ enum URLs {
     
     enum Novel {
         static let getSearchList = "/novels"
-        static let getNovelInfo = "/novels/{novelId}"
+        static func getNovelInfo(novelId: Int) -> String {
+            return "/novels/\(novelId)"
+        }
     }
     
     enum UserNovel {
-        static let getUserNovel = "/user-novels/{userNovelId}"
+        static func getUserNovel(userNovelId: Int) -> String {
+            return "/user-novels/\(userNovelId)"
+        }
         static let getUserNovelList = "/user-novels"
-        static let postUserNovel = "/user-novels/{novelId}"
-        static let patchUserNovel = "/user-novels/{userNovelId}"
-        static let deleteUserNovel = "/user-novels/{userNovelId}"
+        static func postUserNovel(novelId: Int) -> String {
+            return "/user-novels/\(novelId)"
+        }
+        static func patchUserNovel(userNovelId: Int) -> String {
+            return "/user-novels/\(userNovelId)"
+        }
+        static func deleteUserNovel(userNovelId: Int) -> String {
+            return "/user-novels/\(userNovelId)"
+        }
     }
     
     enum Memo {

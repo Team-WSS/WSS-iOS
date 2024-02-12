@@ -67,7 +67,7 @@ final class LibraryEmptyView: UIView {
             $0.layer.cornerRadius = 12
         }
     }
-    
+
     private func setHierarchy() {
         self.addSubviews(emptyStackView,
                          libraryRegisterButton)

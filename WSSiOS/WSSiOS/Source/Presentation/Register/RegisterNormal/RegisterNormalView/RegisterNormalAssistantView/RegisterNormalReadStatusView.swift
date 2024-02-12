@@ -14,7 +14,7 @@ import RxCocoa
 
 final class RegisterNormalReadStatusView: UIView {
     
-    // MARK: - UI Components
+    // MARK: - Components
     
     private let totalStackView = UIStackView()
     private let titleView = WSSSectionTitleView()
@@ -27,7 +27,7 @@ final class RegisterNormalReadStatusView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHieararchy()
+        setHierarchy()
         setLayout()
     }
     
@@ -35,7 +35,7 @@ final class RegisterNormalReadStatusView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Custom Method
+    // MARK: - UI
     
     private func setUI() {
         totalStackView.do {
@@ -54,7 +54,7 @@ final class RegisterNormalReadStatusView: UIView {
         }
     }
     
-    private func setHieararchy() {
+    private func setHierarchy() {
         self.addSubview(totalStackView)
         totalStackView.addArrangedSubviews(titleView,
                                            readStatusStackView)
@@ -70,20 +70,21 @@ final class RegisterNormalReadStatusView: UIView {
         }
     }
     
-    func bindReadStatus(status: ReadStatus) {
+    // MARK: - Custom Method
+    
+    func updateReadStatusButton(status: ReadStatus) {
         readStatusButtons.forEach { button in
             if button.checkStatus(status) {
                 // 활성화 상태 설정
                 button.hideImage(false)
-                button.setColor(.Primary100)
+                button.setColor(.wssPrimary100)
             } else {
                 // 비활성화 상태 설정
                 button.hideImage(true)
-                button.setColor(.Gray200)
+                button.setColor(.wssGray200)
             }
         }
     }
-    
     
     private func createButtons() -> [RegisterNormalReadStatusButton] {
         var buttons: [RegisterNormalReadStatusButton] = []

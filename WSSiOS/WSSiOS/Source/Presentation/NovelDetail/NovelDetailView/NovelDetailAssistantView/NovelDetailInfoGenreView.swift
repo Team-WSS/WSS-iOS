@@ -12,18 +12,18 @@ import Then
 
 final class NovelDetailInfoGenreView: UIView {
     
-    // MARK: - UI Components
+    //MARK: - Components
     
     private let titleLabel = UILabel()
     private let genreLabel = UILabel()
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -31,31 +31,27 @@ final class NovelDetailInfoGenreView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
         titleLabel.do {
-            $0.makeAttribute(with: "장르")?
+            $0.makeAttribute(with: StringLiterals.NovelDetail.Info.genre)?
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
-            $0.textColor = .Black
+            $0.textColor = .wssBlack
             $0.font = .Title1
         }
         
         genreLabel.do {
-            $0.textColor = .Gray300
+            $0.textColor = .wssGray300
             $0.font = .Body2
         }
     }
     
-    // MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(titleLabel,
                          genreLabel)
     }
-    
-    // MARK: - set Layout
     
     private func setLayout() {
         titleLabel.snp.makeConstraints {
@@ -69,6 +65,8 @@ final class NovelDetailInfoGenreView: UIView {
             $0.bottom.equalToSuperview()
         }
     }
+    
+    //MARK: - Data
     
     func bindData(genre: String) {
         self.genreLabel.do {

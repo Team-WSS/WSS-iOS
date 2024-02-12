@@ -14,26 +14,28 @@ enum WSSTabBarItem: CaseIterable {
     var normalItemImage: UIImage {
         switch self {
         case .home: 
-            return ImageLiterals.icon.Tabbar.home
+            return .icNavigateHome
         case .library:
-            return ImageLiterals.icon.Tabbar.library
+            return .icNavigateLibrary
         case .record:
-            return ImageLiterals.icon.Tabbar.record
+            return .icNavigateRecord
         case .myPage:
-            return ImageLiterals.icon.Tabbar.myPage
+            return .icNavigateMy
         }
     }
     
     var selectedItemImage: UIImage {
         switch self {
         case .home: 
-            return ImageLiterals.icon.Tabbar.homeSelected
+            return .icNavigateHomeSelected
         case .library:
-            return ImageLiterals.icon.Tabbar.librarySelected
+            return .icNavigateLibrarySelected
         case .record:
-            return ImageLiterals.icon.Tabbar.recordSelected
+            return .icNavigateRecordSelected
         case .myPage:
-            return ImageLiterals.icon.Tabbar.myPageSelected
+            return .icNavigateMySelected
+        default:
+            return UIImage()
         }
     }
     

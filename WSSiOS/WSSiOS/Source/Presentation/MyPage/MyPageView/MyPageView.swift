@@ -13,7 +13,7 @@ import Then
 
 final class MyPageView: UIView {
     
-    //MARK: - UI Components
+    //MARK: - Components
     
     private var scrollView = UIScrollView()
     var myPageStackView = UIStackView()
@@ -28,13 +28,15 @@ final class MyPageView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    //MARK: - UI
     
     private func setUI() {
         self.backgroundColor = .Gray50
@@ -47,7 +49,7 @@ final class MyPageView: UIView {
         }
     }
     
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubview(scrollView)
         scrollView.addSubview(myPageStackView)
         myPageStackView.addArrangedSubviews(myPageProfileView,
@@ -66,8 +68,10 @@ final class MyPageView: UIView {
         }
     }
     
+    //MARK: - Data
+    
     func bindData(_ data: UserResult) {
-        myPageProfileView.profileViewDataBind(data)
-        myPageTallyView.tallyViewDataBind(data)
+        myPageProfileView.bindProfileViewData(data)
+        myPageTallyView.bindTallyViewData(data)
     }
 }

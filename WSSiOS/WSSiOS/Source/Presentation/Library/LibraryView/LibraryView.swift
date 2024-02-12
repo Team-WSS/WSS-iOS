@@ -45,7 +45,7 @@ final class LibraryView: UIView {
             $0.showsVerticalScrollIndicator = false
         }
     }
-    
+  
     private func setHierarchy() {
         self.addSubview(libraryCollectionView)
     }

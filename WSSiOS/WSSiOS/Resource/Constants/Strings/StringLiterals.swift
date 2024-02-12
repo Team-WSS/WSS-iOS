@@ -37,15 +37,24 @@ enum StringLiterals {
     enum Register {
         enum Normal {
             enum DatePicker {
+                static let middle = "~"
                 static let start = "시작 날짜"
                 static let end = "종료 날짜"
+                static let KoreaTimeZone = "ko_KR"
+                static let dateFormat = "yyyy-MM-dd"
             }
+            
             enum SectionTitle {
                 static let readStatus = "읽기 상태 *"
                 static let readDate = "읽은 날짜"
+                static let keyword = "키워드"
                 static let plot = "작품 소개"
                 static let genre = "장르"
                 static let platform = "작품 보러가기"
+            }
+            
+            enum Keyword {
+                static let selectButton = "키워드 등록"
             }
             
             enum RegisterButton {
@@ -66,6 +75,10 @@ enum StringLiterals {
     enum MyPage {
         enum Modal {
             static let back = "돌아가기"
+            static let baseTitle = "오늘 당신을 만날 걸 알고 있었어"
+            static let baseExplanation = "메모를 작성해서 잠금해제 됐어요!"
+            static let keepOriginally = "원래대로 유지하기"
+            static let changeCharacter = "대표 캐릭터 설정하기"
         }
         
         enum Profile {
@@ -90,12 +103,23 @@ enum StringLiterals {
         
         enum ChangeNickname {
             static let complete = "완료"
+            static let nickname = "닉네임"
         }
     }
 
     enum Library {
         static let empty = "아직 서재가 비어있네요!"
         static let register = "웹소설 등록하기"
+    }
+    
+    enum Record {
+        enum Empty {
+            static let description = "읽은 웹소설에 대해\n기록을 남겨볼까요?"
+            static let register = "웹소설 기록하기"
+        }
+    }
+    
+    enum Alignment {
         static let newest = "최신 순"
         static let oldest = "오래된 순"
         
@@ -148,6 +172,32 @@ enum StringLiterals {
             var sizeData: Int {
                 return 500
             }
+        }
+    }
+    
+    enum NovelDetail {
+        enum Memo {
+            static let memo = "메모"
+            static let noMemo = "아직 작성된 메모가 없어요"
+            static let newMemo = "새로운 메모를 작성해보세요"
+        }
+        
+        enum Info {
+            static let info = "정보"
+            static let rating = "나의 평가"
+            static let readStatus = "읽기 상태"
+            static let tilde = "~"
+            static let startDate = "시작 날짜"
+            static let endDate = "읽은 날짜"
+            static let keyword = "키워드"
+            static let description = "작품 소개"
+            static let genre = "장르"
+            static let platform = "작품 보러가기"
+        }
+        
+        enum Setting {
+            static let novelDelete = "작품을 서재에서 삭제"
+            static let novelEdit = "작품 정보 수정"
         }
     }
 }

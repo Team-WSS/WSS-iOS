@@ -12,18 +12,18 @@ import Then
 
 final class NovelDetailInfoDescriptionView: UIView {
 
-    // MARK: - UI Components
+    //MARK: - Components
     
     private let titleLabel = UILabel()
     private let descriptionLabel = UILabel()
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -31,32 +31,28 @@ final class NovelDetailInfoDescriptionView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
         titleLabel.do {
-            $0.makeAttribute(with: "작품 소개")?
+            $0.makeAttribute(with: StringLiterals.NovelDetail.Info.description)?
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
-            $0.textColor = .Black
+            $0.textColor = .wssBlack
             $0.font = .Title1
         }
         
         descriptionLabel.do {
-            $0.textColor = .Gray300
+            $0.textColor = .wssGray300
             $0.font = .Body2
             $0.numberOfLines = 0
         }
     }
     
-    // MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(titleLabel,
                          descriptionLabel)
     }
-    
-    // MARK: - set Layout
     
     private func setLayout() {
         titleLabel.snp.makeConstraints {
@@ -70,6 +66,8 @@ final class NovelDetailInfoDescriptionView: UIView {
             $0.bottom.equalToSuperview()
         }
     }
+    
+    //MARK: - Data
     
     func bindData(description: String) {
         self.descriptionLabel.do {

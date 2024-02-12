@@ -56,7 +56,7 @@ final class LibraryDescriptionView: UIView {
             $0.configuration = configuration
         }
     }
-    
+
     private func setHierarchy() {
         self.addSubviews(libraryNovelCountLabel,
                          libraryNovelListButton)

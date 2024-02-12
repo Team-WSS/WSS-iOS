@@ -12,7 +12,7 @@ import Then
 
 final class MyPageTallyView: UIView {
     
-    //MARK: - UI Components
+    //MARK: - Components
     
     private let backGroundView = UIView()
     private let tallyView = UIView()
@@ -28,7 +28,7 @@ final class MyPageTallyView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -52,11 +52,7 @@ final class MyPageTallyView: UIView {
         tallyView.do {
             $0.backgroundColor = .White
             $0.layer.cornerRadius = 15
-            
-            // contentInsets 에 대한 Warning 을 해결하다 iOS 15 부터 제안하는 configuration 까지 왔다.
-            // 왕 불편하고 왕 짜증난다. attributedString 처럼 설정 바꾸려면 모든 게 초기화됨
-            // contentInsets 쓸 거 아니면 setTitle 로 ,,, 쓰는 걸 추천,,,
-            // 이 주석은 코드리뷰 끝나고 지울게요 ,,,, 
+
             myPageUserNameButton.do {
                 var configuration = UIButton.Configuration.filled()
                 configuration.image = ImageLiterals.icon.MyPage.right
@@ -84,7 +80,7 @@ final class MyPageTallyView: UIView {
     
     //MARK: - set Hierachy
     
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(backGroundView,
                          shadowView,
                          tallyView)
@@ -150,7 +146,9 @@ final class MyPageTallyView: UIView {
         }
     }
     
-    func tallyViewDataBind(_ data: UserResult) {
+    //MARK: - Data
+    
+    func bindTallyViewData(_ data: UserResult) {
         let title = "\(data.userNickname)님"
         var attString = AttributedString(title)
         attString.font = UIFont.HeadLine1

@@ -60,7 +60,7 @@ final class LibraryTabCollectionViewCell: UICollectionViewCell {
             $0.isHidden = true
         }
     }
-    
+
     private func setHierarchy() {
         self.addSubviews(libraryTabLabel,
                          libraryTabUnderView)

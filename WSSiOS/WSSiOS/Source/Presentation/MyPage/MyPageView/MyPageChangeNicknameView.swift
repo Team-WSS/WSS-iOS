@@ -12,7 +12,7 @@ import Then
 
 final class MyPageChangeNicknameView: UIView {
     
-    //MARK: - UI Components
+    //MARK: - Components
     
     private let dividerView = UIView()
     private let nicknameLabel = UILabel()
@@ -27,13 +27,15 @@ final class MyPageChangeNicknameView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    //MARK: - UI
     
     private func setUI() {
         self.backgroundColor = .White
@@ -43,7 +45,7 @@ final class MyPageChangeNicknameView: UIView {
         }
         
         nicknameLabel.do {
-            $0.text = "닉네임"
+            $0.text = StringLiterals.MyPage.ChangeNickname.nickname
             $0.font = .Body2
             $0.textColor = .Gray200
         }
@@ -73,7 +75,7 @@ final class MyPageChangeNicknameView: UIView {
         }
     }
     
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(dividerView,
                          nicknameLabel,
                          changeNicknameTextField,
