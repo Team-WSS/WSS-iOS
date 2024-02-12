@@ -36,17 +36,17 @@ final class MyPageProfileView: UIView {
     //MARK: - UI
     
     private func setUI() {
-        self.backgroundColor = .Gray50
+        self.backgroundColor = .wssGray50
         
         myPageNameLabel.do {
             $0.font = .Title1
-            $0.textColor = .Gray300
+            $0.textColor = .wssGray300
             $0.textAlignment = .center
         }
         
         myPagePhraseLabel.do {
             $0.font = .Body2
-            $0.textColor = .Gray300
+            $0.textColor = .wssGray300
             $0.textAlignment = .center
         }
         

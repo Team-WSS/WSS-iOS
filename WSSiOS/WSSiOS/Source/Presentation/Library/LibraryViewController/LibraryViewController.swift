@@ -212,7 +212,7 @@ extension LibraryViewController {
     //MARK: - UI
     
     private func setUI() {
-        self.view.backgroundColor = .White
+        self.view.backgroundColor = .wssWhite
         
         libraryListView.isHidden = true
     }
@@ -257,11 +257,11 @@ extension LibraryViewController {
             let title = title
             var attString = AttributedString(title)
             attString.font = UIFont.Label1
-            attString.foregroundColor = UIColor.Gray300
+            attString.foregroundColor = UIColor.wssGray300
             
             var configuration = UIButton.Configuration.filled()
             configuration.attributedTitle = attString
-            configuration.image = ImageLiterals.icon.dropDown
+            configuration.image = .icDropDown
             configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 0)
             configuration.imagePlacement = .trailing
             configuration.baseBackgroundColor = UIColor.clear

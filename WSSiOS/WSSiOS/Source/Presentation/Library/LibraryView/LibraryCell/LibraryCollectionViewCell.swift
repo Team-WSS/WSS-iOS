@@ -21,7 +21,7 @@ final class LibraryCollectionViewCell: UICollectionViewCell {
     private let novelImageView = UIImageView()
     private let novelTitleLabel = UILabel()
     private let novelAuthorLabel = UILabel()
-    private let ratingStarImage = UIImageView(image: ImageLiterals.icon.Star.fill)
+    private let ratingStarImage = UIImageView(image: .icStarFill)
     private let novelRatingLabel = UILabel()
     
     //MARK: - Life Cycle
@@ -49,21 +49,21 @@ final class LibraryCollectionViewCell: UICollectionViewCell {
         
         novelTitleLabel.do {
             $0.font = .Body2
-            $0.textColor = .Black
+            $0.textColor = .wssBlack
             $0.textAlignment = .left
             $0.numberOfLines = 2
         }
         
         novelAuthorLabel.do {
             $0.font = .Label1
-            $0.textColor = .Gray200
+            $0.textColor = .wssGray200
             $0.textAlignment = .left
             $0.numberOfLines = 1
         }
         
         novelRatingLabel.do {
             $0.font = .Label1
-            $0.textColor = .Black
+            $0.textColor = .wssBlack
         }
     }
 

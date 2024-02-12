@@ -38,40 +38,40 @@ final class MyPageChangeNicknameView: UIView {
     //MARK: - UI
     
     private func setUI() {
-        self.backgroundColor = .White
+        self.backgroundColor = .wssWhite
         
         dividerView.do {
-            $0.backgroundColor = .Gray50
+            $0.backgroundColor = .wssGray50
         }
         
         nicknameLabel.do {
             $0.text = StringLiterals.MyPage.ChangeNickname.nickname
             $0.font = .Body2
-            $0.textColor = .Gray200
+            $0.textColor = .wssGray200
         }
         
         changeNicknameTextField.do {
             $0.font = .Body1
-            $0.textColor = .Black
+            $0.textColor = .wssBlack
             $0.borderStyle = .none
             $0.rightView = setClearButton
             $0.rightViewMode = .always
         }
         
         setClearButton.do {
-            $0.setImage(ImageLiterals.icon.searchCancel, for: .normal)
+            $0.setImage(.icSearchCancel, for: .normal)
             $0.frame = CGRect(x: 0, y: 0, width: 25, height: 25)
             $0.imageView?.contentMode = .scaleAspectFill
         }
         
         textFieldUnderBarView.do {
-            $0.backgroundColor = .Gray200
+            $0.backgroundColor = .wssGray200
         }
         
         countNicknameLabel.do {
             $0.text = "\(String(describing: changeNicknameTextField.text?.count))/10"
             $0.font = .Label1
-            $0.textColor = .Gray200
+            $0.textColor = .wssGray200
         }
     }
     

@@ -36,7 +36,7 @@ final class LibraryEmptyView: UIView {
     //MARK: - UI
     
     private func setUI() {
-        self.backgroundColor = .White
+        self.backgroundColor = .wssWhite
         
         emptyStackView.do {
             $0.axis = .vertical
@@ -45,7 +45,7 @@ final class LibraryEmptyView: UIView {
             $0.spacing = 8
             
             emptyImageView.do {
-                $0.image = ImageLiterals.icon.Library.register
+                $0.image = .register
             }
             
             emptyTitleLabel.do {
@@ -54,16 +54,16 @@ final class LibraryEmptyView: UIView {
                     .kerning(kerningPixel: -0.8)
                     .applyAttribute()
                 $0.font = .Body1
-                $0.textColor = .Gray200
+                $0.textColor = .wssGray200
                 $0.textAlignment = .center
             }
         }
         
         libraryRegisterButton.do {
             $0.setTitle(StringLiterals.Library.register, for: .normal)
-            $0.setTitleColor(.Primary100, for: .normal)
+            $0.setTitleColor(.wssPrimary100, for: .normal)
             $0.titleLabel?.font = .Title1
-            $0.layer.backgroundColor = UIColor.Primary50.cgColor
+            $0.layer.backgroundColor = UIColor.wssPrimary50.cgColor
             $0.layer.cornerRadius = 12
         }
     }

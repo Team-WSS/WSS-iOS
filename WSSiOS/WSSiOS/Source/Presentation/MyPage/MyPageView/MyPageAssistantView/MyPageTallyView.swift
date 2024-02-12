@@ -45,17 +45,17 @@ final class MyPageTallyView: UIView {
     //MARK: - set UI
     
     private func setUI() {
-        self.backgroundColor = .White
+        self.backgroundColor = .wssWhite
         
-        backGroundView.backgroundColor = .Gray50
+        backGroundView.backgroundColor = .wssGray50
         
         tallyView.do {
-            $0.backgroundColor = .White
+            $0.backgroundColor = .wssWhite
             $0.layer.cornerRadius = 15
 
             myPageUserNameButton.do {
                 var configuration = UIButton.Configuration.filled()
-                configuration.image = ImageLiterals.icon.MyPage.right
+                configuration.image = .icRight
                 configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 0)
                 configuration.imagePlacement = .trailing
                 configuration.baseBackgroundColor = UIColor.clear
@@ -63,16 +63,16 @@ final class MyPageTallyView: UIView {
             }
             
             dividerView.do {
-                $0.backgroundColor = .Gray70
+                $0.backgroundColor = .wssGray70
             }
             
             myPageRegisterView.do {
-                $0.titleIconImageView.image = ImageLiterals.icon.MyPage.register
+                $0.titleIconImageView.image = .register
                 $0.titleLabel.text = StringLiterals.MyPage.Profile.registerNovel
             }
             
             myPageRecordView.do {
-                $0.titleIconImageView.image = ImageLiterals.icon.MyPage.record
+                $0.titleIconImageView.image = .record
                 $0.titleLabel.text = StringLiterals.MyPage.Profile.record
             }
         }
@@ -152,7 +152,7 @@ final class MyPageTallyView: UIView {
         let title = "\(data.userNickname)님"
         var attString = AttributedString(title)
         attString.font = UIFont.HeadLine1
-        attString.foregroundColor = UIColor.Black
+        attString.foregroundColor = UIColor.wssBlack
         myPageUserNameButton.configuration?.attributedTitle = attString
         
         myPageRegisterView.tallyLabel.text = String(data.userNovelCount)

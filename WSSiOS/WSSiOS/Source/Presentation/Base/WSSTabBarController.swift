@@ -40,9 +40,9 @@ final class WSSTabBarController: UITabBarController {
     
     private func setUI() {
         tabBar.do {
-            $0.backgroundColor = .White
+            $0.backgroundColor = .wssWhite
             $0.itemPositioning = .centered
-            $0.tintColor = .Black
+            $0.tintColor = .wssBlack
             
             //탭바가 불투명해지는 현상을 막기 위해 false 처리 했지만 뒷배경이 없어 부자연스러워짐
 //            $0.isTranslucent = false
@@ -101,12 +101,12 @@ final class WSSTabBarController: UITabBarController {
         
         let normalAttributes: [NSAttributedString.Key: Any] = [
             .font: UIFont.Label2,
-            .foregroundColor: UIColor.Gray200
+            .foregroundColor: UIColor.wssGray200
         ]
         
         let selectedAttributes: [NSAttributedString.Key: Any] = [
             .font: UIFont.Label2,
-            .foregroundColor: UIColor.Black
+            .foregroundColor: UIColor.wssBlack
         ]
         
         naviController.setNavigationBarHidden(true, animated: true)

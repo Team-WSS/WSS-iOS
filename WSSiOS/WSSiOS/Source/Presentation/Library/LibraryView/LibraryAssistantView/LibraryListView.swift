@@ -36,10 +36,10 @@ final class LibraryListView: UIView {
     
     private func setUI() {
         self.do {
-            $0.backgroundColor = .White
+            $0.backgroundColor = .wssWhite
             $0.layer.cornerRadius = 12
             
-            $0.layer.shadowColor = UIColor.black.withAlphaComponent(0.11).cgColor
+            $0.layer.shadowColor = UIColor.wssBlack.withAlphaComponent(0.11).cgColor
             $0.layer.shadowOpacity = 1
             $0.layer.shadowOffset = CGSize(width: 0, height: 2)
             $0.layer.shadowRadius = 15
@@ -49,14 +49,14 @@ final class LibraryListView: UIView {
         libraryOldesttButton.setTitle(StringLiterals.Alignment.SortType.oldest.title, for: .normal)
         [libraryNewestButton,libraryOldesttButton].forEach {
             $0.do {
-                $0.setTitleColor(.Black, for: .normal)
+                $0.setTitleColor(.wssBlack, for: .normal)
                 $0.titleLabel?.font = .Body2
                 $0.titleLabel?.textAlignment = .left
             }
         }
         
         dividerView.do {
-            $0.backgroundColor = .Gray50
+            $0.backgroundColor = .wssGray50
         }
     }
 

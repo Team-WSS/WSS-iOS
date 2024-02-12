@@ -34,22 +34,22 @@ final class LibraryDescriptionView: UIView {
     //MARK: - UI
     
     private func setUI() {
-        self.backgroundColor = .Gray50
+        self.backgroundColor = .wssGray50
         
         libraryNovelCountLabel.do {
             $0.font = .Label1
-            $0.textColor = .Gray200
+            $0.textColor = .wssGray200
         }
         
         libraryNovelListButton.do {
-            let title = StringLiterals.Library.newest
+            let title = StringLiterals.Alignment.newest
             var attString = AttributedString(title)
             attString.font = UIFont.Label1
-            attString.foregroundColor = UIColor.Gray300
+            attString.foregroundColor = UIColor.wssGray300
             
             var configuration = UIButton.Configuration.filled()
             configuration.attributedTitle = attString
-            configuration.image = ImageLiterals.icon.dropDown
+            configuration.image = .icDropDown
             configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 0)
             configuration.imagePlacement = .trailing
             configuration.baseBackgroundColor = UIColor.clear

@@ -49,14 +49,14 @@ final class LibraryTabCollectionViewCell: UICollectionViewCell {
     
     private func setUI() {
         libraryTabLabel.do {
-            $0.textColor = .Gray200
+            $0.textColor = .wssGray200
             $0.font = .Body1
             $0.backgroundColor = .clear
             $0.textAlignment = .center
         }
         
         libraryTabUnderView.do {
-            $0.backgroundColor = .Primary100
+            $0.backgroundColor = .wssPrimary100
             $0.isHidden = true
         }
     }
@@ -79,7 +79,7 @@ final class LibraryTabCollectionViewCell: UICollectionViewCell {
     }
     
     private func selectUI() {
-        libraryTabLabel.textColor = isSelected ? .Primary100 : .Gray200
+        libraryTabLabel.textColor = isSelected ? .wssPrimary100 : .wssGray200
         libraryTabUnderView.isHidden = isSelected ? false : true
     }
     
