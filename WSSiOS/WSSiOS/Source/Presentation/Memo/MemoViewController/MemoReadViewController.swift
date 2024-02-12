@@ -7,8 +7,8 @@
 
 import UIKit
 
-import RxCocoa
 import RxSwift
+import RxCocoa
 
 final class MemoReadViewController: UIViewController {
     

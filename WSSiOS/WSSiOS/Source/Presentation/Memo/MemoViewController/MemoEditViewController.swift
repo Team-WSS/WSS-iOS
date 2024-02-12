@@ -7,9 +7,9 @@
 
 import UIKit
 
-import RxCocoa
 import RxKeyboard
 import RxSwift
+import RxCocoa
 
 final class MemoEditViewController: UIViewController {
     
