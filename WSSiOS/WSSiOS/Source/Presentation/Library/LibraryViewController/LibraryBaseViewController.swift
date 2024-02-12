@@ -27,10 +27,13 @@ final class LibraryBaseViewController: UIViewController {
     
     private let disposeBag = DisposeBag()
     weak var delegate : NovelDelegate?
-    private let rootView = LibraryView()
-    private let libraryEmptyView = LibraryEmptyView()
     private lazy var novelListRelay = PublishRelay<[UserNovelListDetail]>()
     private lazy var novelTotalRelay = PublishRelay<Int>()
+    
+    //MARK: - Components
+    
+    private let rootView = LibraryView()
+    private let libraryEmptyView = LibraryEmptyView()
     
     // MARK: - Life Cycle
     

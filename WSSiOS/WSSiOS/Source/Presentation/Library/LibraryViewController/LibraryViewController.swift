@@ -19,20 +19,20 @@ final class LibraryViewController: UIViewController {
     private let userNovelListRepository: DefaultUserNovelRepository
     
     private let disposeBag = DisposeBag()
-    private let tabBarList = Observable.just(StringLiterals.Library.TabBar.allCases.map { $0.rawValue })
+    private let tabBarList = StringLiterals.Library.TabBar.allCases.map { $0.rawValue }
     private let readStatusList = StringLiterals.Library.ReadStatus.allCases.map { $0.rawValue }
     private let sortTypeList = StringLiterals.Library.SortType.self
     private var currentPageIndex = 0
-    private let libraryPageBar = LibraryPageBar()
-    private let libraryDescriptionView = LibraryDescriptionView()
-    private let libraryListView = LibraryListView()
-    private lazy var libraryPages = [LibraryBaseViewController]()
     
     //MARK: - Components
     
     private let libraryPageViewController = UIPageViewController(transitionStyle: .scroll,
                                                                  navigationOrientation: .horizontal,
                                                                  options: nil)
+    private let libraryPageBar = LibraryPageBar()
+    private let libraryDescriptionView = LibraryDescriptionView()
+    private let libraryListView = LibraryListView()
+    private lazy var libraryPages = [LibraryBaseViewController]()
     
     // MARK: - Life Cycle
     
@@ -77,7 +77,8 @@ final class LibraryViewController: UIViewController {
     }
     
     private func bindCell() {
-        tabBarList.bind(to: libraryPageBar.libraryTabCollectionView.rx.items(
+        Observable.just(tabBarList)
+            .bind(to: libraryPageBar.libraryTabCollectionView.rx.items(
             cellIdentifier: "LibraryTabCollectionViewCell",
             cellType: LibraryTabCollectionViewCell.self)) { (row, element, cell) in
                 cell.bindData(data: element)
@@ -91,14 +92,9 @@ final class LibraryViewController: UIViewController {
             .bind(to: self.libraryPageBar.selectedTabIndex)
             .disposed(by: disposeBag)
         
-        Observable.just(Void())
-            .observe(on: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, _ in 
-                owner.libraryPageBar.libraryTabCollectionView.selectItem(at: IndexPath(item: 0, section: 0),
-                                                                         animated: true,
-                                                                         scrollPosition: [])
-            })
-            .disposed(by: disposeBag)
+        libraryPageBar.libraryTabCollectionView.selectItem(at: IndexPath(item: 0, section: 0),
+                                                                 animated: true,
+                                                                 scrollPosition: [])
     }
     
     private func delegate() {

@@ -146,12 +146,7 @@ enum StringLiterals {
             }
             
             var sizeData: Int {
-                switch self {
-                case .newest:
-                    return 500
-                case .oldest:
-                    return 500
-                }
+                return 500
             }
         }
     }
