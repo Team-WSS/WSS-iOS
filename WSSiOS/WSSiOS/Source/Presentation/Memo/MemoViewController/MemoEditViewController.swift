@@ -107,72 +107,76 @@ final class MemoEditViewController: UIViewController {
     //MARK: - Bind
     
     private func setBinding() {
-        backButton.rx.tap.bind {
-            if self.memoContent != nil {
-                if self.updatedMemoContent != self.memoContent {
-                    let vc = DeletePopupViewController(
-                        memoRepository: DefaultMemoRepository(
-                            memoService: DefaultMemoService()
-                        ),
-                        popupStatus: .memoEditCancel
-                    )
-                    vc.modalPresentationStyle = .overFullScreen
-                    vc.modalTransitionStyle = .crossDissolve
-                    self.present(vc, animated: true)
+        backButton.rx.tap
+            .bind(with: self, onNext: { owner, _ in
+                if owner.memoContent != nil {
+                    if owner.updatedMemoContent != owner.memoContent {
+                        let vc = DeletePopupViewController(
+                            memoRepository: DefaultMemoRepository(
+                                memoService: DefaultMemoService()
+                            ),
+                            popupStatus: .memoEditCancel
+                        )
+                        vc.modalPresentationStyle = .overFullScreen
+                        vc.modalTransitionStyle = .crossDissolve
+                        owner.present(vc, animated: true)
+                    } else {
+                        owner.navigationController?.popViewController(animated: true)
+                    }
                 } else {
-                    self.navigationController?.popViewController(animated: true)
+                    if owner.updatedMemoContent.count > 0 && !owner.memoContentPredicate.evaluate(with: owner.updatedMemoContent) {
+                        let vc = DeletePopupViewController(
+                            memoRepository: DefaultMemoRepository(
+                                memoService: DefaultMemoService()
+                            ),
+                            popupStatus: .memoEditCancel
+                        )
+                        vc.modalPresentationStyle = .overFullScreen
+                        vc.modalTransitionStyle = .crossDissolve
+                        owner.present(vc, animated: true)
+                    } else {
+                        owner.navigationController?.popViewController(animated: true)
+                    }
                 }
-            } else {
-                if self.updatedMemoContent.count > 0 && !self.memoContentPredicate.evaluate(with: self.updatedMemoContent) {
-                    let vc = DeletePopupViewController(
-                        memoRepository: DefaultMemoRepository(
-                            memoService: DefaultMemoService()
-                        ),
-                        popupStatus: .memoEditCancel
-                    )
-                    vc.modalPresentationStyle = .overFullScreen
-                    vc.modalTransitionStyle = .crossDissolve
-                    self.present(vc, animated: true)
-                } else {
-                    self.navigationController?.popViewController(animated: true)
-                }
-            }
-        }.disposed(by: disposeBag)
+            })
+            .disposed(by: disposeBag)
         
-        completeButton.rx.tap.bind {
-            if self.memoContent != nil {
-                self.patchMemo()
-            } else {
-                self.postMemo()
-            }
-        }.disposed(by: disposeBag)
+        completeButton.rx.tap
+            .bind(with: self, onNext: { owner, _ in
+                if owner.memoContent != nil {
+                    owner.patchMemo()
+                } else {
+                    owner.postMemo()
+                }
+            })
+            .disposed(by: disposeBag)
         
         rootView.memoEditContentView.memoTextView.rx.text.orEmpty
             .subscribe(with: self, onNext: { owner, text  in
-                self.updatedMemoContent = text
+                owner.updatedMemoContent = text
                 if text.count == 0 {
-                    self.disableCompleteButton()
+                    owner.disableCompleteButton()
                 } else {
                     if text.count > 2000 {
-                        self.rootView.memoEditContentView.memoTextView.text = String(text.prefix(2000))
-                        self.disableCompleteButton()
-                    } else if self.memoContentPredicate.evaluate(with: self.updatedMemoContent) {
-                        self.disableCompleteButton()
+                        owner.rootView.memoEditContentView.memoTextView.text = String(text.prefix(2000))
+                        owner.disableCompleteButton()
+                    } else if owner.memoContentPredicate.evaluate(with: owner.updatedMemoContent) {
+                        owner.disableCompleteButton()
                     } else {
-                        self.enableCompleteButton()
+                        owner.enableCompleteButton()
                     }
                 }
-                if self.memoContent != nil {
-                    if self.updatedMemoContent == self.memoContent {
-                        self.disableCompleteButton()
+                if owner.memoContent != nil {
+                    if owner.updatedMemoContent == owner.memoContent {
+                        owner.disableCompleteButton()
                     }
                 }
             })
             .disposed(by: disposeBag)
         
         RxKeyboard.instance.visibleHeight
-            .drive(onNext: { keyboardHeight in
-                self.rootView.memoEditContentView.updateTextViewConstraint(keyboardHeight: keyboardHeight)
+            .drive(with: self, onNext: { owner, keyboardHeight in
+                owner.rootView.memoEditContentView.updateTextViewConstraint(keyboardHeight: keyboardHeight)
             })
             .disposed(by: disposeBag)
     }
@@ -188,10 +192,10 @@ final class MemoEditViewController: UIViewController {
                 } else {
                     NotificationCenter.default.post(name: NSNotification.Name("PostedMemo"), object: nil)
                 }
-                self.navigationController?.popViewController(animated: true)
+                owner.navigationController?.popViewController(animated: true)
             },onError: { owner, error in
                 print(error)
-                self.showToast(.memoSaveFail)
+                owner.showToast(.memoSaveFail)
             })
             .disposed(by: disposeBag)
     }
@@ -201,10 +205,10 @@ final class MemoEditViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
                 NotificationCenter.default.post(name: NSNotification.Name("PatchedMemo"), object: nil)
-                self.navigationController?.popViewController(animated: true)
+                owner.navigationController?.popViewController(animated: true)
             },onError: { owner, error in
                 print(error)
-                self.showToast(.memoSaveFail)
+                owner.showToast(.memoSaveFail)
             })
             .disposed(by: disposeBag)
     }
