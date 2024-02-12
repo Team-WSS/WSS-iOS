@@ -34,10 +34,10 @@ final class MyPageSettingCollectionViewCell: UICollectionViewCell {
     //MARK: - UI
     
     private func setUI() {
-        self.backgroundColor = .White
+        self.backgroundColor = .wssWhite
         
         myPageSettingCellLabel.do {
-            $0.textColor = .Black
+            $0.textColor = .wssBlack
             $0.font = .Body1
         }
     }

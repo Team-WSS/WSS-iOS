@@ -61,6 +61,6 @@ final class MyPageInventoryCollectionViewCell: UICollectionViewCell {
         myPageAvaterImageView.kfSetImage(url: data.avatarImg)
         
         let isRepresentative = representativeId == data.avatarId
-        myPageAvaterImageView.layer.borderColor = isRepresentative ? UIColor.Primary100.cgColor : UIColor.clear.cgColor
+        myPageAvaterImageView.layer.borderColor = isRepresentative ? UIColor.wssPrimary100.cgColor : UIColor.clear.cgColor
     }
 }

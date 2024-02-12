@@ -46,13 +46,13 @@ final class MyPageTallyReuseView: UIView {
             
             titleLabel.do {
                 $0.font = .Body2
-                $0.textColor = .Gray300
+                $0.textColor = .wssGray300
             }
         }
         
         tallyLabel.do {
             $0.font = .Title1
-            $0.textColor = .Black
+            $0.textColor = .wssBlack
         }
     }
 

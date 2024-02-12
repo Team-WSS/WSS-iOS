@@ -19,9 +19,9 @@ final class LibraryViewController: UIViewController {
     private let userNovelListRepository: DefaultUserNovelRepository
     
     private let disposeBag = DisposeBag()
-    private let tabBarList = StringLiterals.Library.TabBar.allCases.map { $0.rawValue }
-    private let readStatusList = StringLiterals.Library.ReadStatus.allCases.map { $0.rawValue }
-    private let sortTypeList = StringLiterals.Library.SortType.self
+    private let tabBarList = StringLiterals.Alignment.TabBar.allCases.map { $0.rawValue }
+    private let readStatusList = StringLiterals.Alignment.ReadStatus.allCases.map { $0.rawValue }
+    private let sortTypeList = StringLiterals.Alignment.SortType.self
     private var currentPageIndex = 0
     
     //MARK: - Components
@@ -165,7 +165,7 @@ final class LibraryViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    private func updatePages(sortType: StringLiterals.Library.SortType) {
+    private func updatePages(sortType: StringLiterals.Alignment.SortType) {
         let viewController = libraryPages[currentPageIndex]
         viewController.updateNovelList(readStatus: readStatusList[currentPageIndex],
                                        lastUserNovelId: sortType.lastUserNovelIdData,
@@ -212,7 +212,7 @@ extension LibraryViewController {
     //MARK: - UI
     
     private func setUI() {
-        self.view.backgroundColor = .White
+        self.view.backgroundColor = .wssWhite
         
         libraryListView.isHidden = true
     }
@@ -257,11 +257,11 @@ extension LibraryViewController {
             let title = title
             var attString = AttributedString(title)
             attString.font = UIFont.Label1
-            attString.foregroundColor = UIColor.Gray300
+            attString.foregroundColor = UIColor.wssGray300
             
             var configuration = UIButton.Configuration.filled()
             configuration.attributedTitle = attString
-            configuration.image = ImageLiterals.icon.dropDown
+            configuration.image = .icDropDown
             configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 0)
             configuration.imagePlacement = .trailing
             configuration.baseBackgroundColor = UIColor.clear

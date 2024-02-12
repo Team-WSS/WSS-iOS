@@ -71,7 +71,7 @@ final class MyPageViewController: UIViewController {
     private func setAppearance() {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = .White
+        appearance.backgroundColor = .wssWhite
         self.navigationController?.navigationBar.standardAppearance = appearance
         self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
     }

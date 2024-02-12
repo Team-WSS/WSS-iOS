@@ -74,7 +74,7 @@ final class WSSToastView: UIView {
     
     private func setUI() {
         self.do {
-            $0.backgroundColor = .GrayToast.withAlphaComponent(0.8)
+            $0.backgroundColor = .wssGrayToast.withAlphaComponent(0.8)
             $0.layer.cornerRadius = 20
         }
         
@@ -83,7 +83,7 @@ final class WSSToastView: UIView {
         }
         
         descriptionLabel.do {
-            $0.textColor = .Gray50
+            $0.textColor = .wssGray50
             $0.font = .Body1
             $0.numberOfLines = 2
         }

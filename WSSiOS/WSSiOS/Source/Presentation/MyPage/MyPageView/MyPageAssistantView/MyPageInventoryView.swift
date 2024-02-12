@@ -35,12 +35,12 @@ final class MyPageInventoryView: UIView {
     //MARK: - UI
     
     private func setUI() {
-        self.backgroundColor = .White
+        self.backgroundColor = .wssWhite
         
         titleLabel.do {
             $0.text = StringLiterals.MyPage.Character.select
             $0.font = .Title1
-            $0.textColor = .Black
+            $0.textColor = .wssBlack
         }
         
         myPageAvaterCollectionView.do {

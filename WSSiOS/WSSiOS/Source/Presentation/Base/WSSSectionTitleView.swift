@@ -55,7 +55,7 @@ final class WSSSectionTitleView: UIView {
     
     private func titleStyle(of label: UILabel) {
         label.do {
-            $0.textColor = .Black
+            $0.textColor = .wssBlack
             $0.makeAttribute(with: label.text)?
                 .lineSpacing(spacingPercentage: 140)
                 .kerning(kerningPixel: -0.6)
