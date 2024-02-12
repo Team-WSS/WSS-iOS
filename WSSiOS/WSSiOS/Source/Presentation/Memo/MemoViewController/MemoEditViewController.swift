@@ -66,7 +66,8 @@ final class MemoEditViewController: UIViewController {
          setUI()
          setNotificationCenter()
          setTapGesture()
-         setBinding()
+         bindUI()
+         bindAction()
          
          rootView.memoEditContentView.memoTextView.becomeFirstResponder()
      }
@@ -106,53 +107,7 @@ final class MemoEditViewController: UIViewController {
 
     //MARK: - Bind
     
-    private func setBinding() {
-        backButton.rx.tap
-            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, _ in
-                if owner.memoContent != nil {
-                    if owner.updatedMemoContent != owner.memoContent {
-                        let vc = DeletePopupViewController(
-                            memoRepository: DefaultMemoRepository(
-                                memoService: DefaultMemoService()
-                            ),
-                            popupStatus: .memoEditCancel
-                        )
-                        vc.modalPresentationStyle = .overFullScreen
-                        vc.modalTransitionStyle = .crossDissolve
-                        owner.present(vc, animated: true)
-                    } else {
-                        owner.navigationController?.popViewController(animated: true)
-                    }
-                } else {
-                    if owner.updatedMemoContent.count > 0 && !owner.memoContentPredicate.evaluate(with: owner.updatedMemoContent) {
-                        let vc = DeletePopupViewController(
-                            memoRepository: DefaultMemoRepository(
-                                memoService: DefaultMemoService()
-                            ),
-                            popupStatus: .memoEditCancel
-                        )
-                        vc.modalPresentationStyle = .overFullScreen
-                        vc.modalTransitionStyle = .crossDissolve
-                        owner.present(vc, animated: true)
-                    } else {
-                        owner.navigationController?.popViewController(animated: true)
-                    }
-                }
-            })
-            .disposed(by: disposeBag)
-        
-        completeButton.rx.tap
-            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, _ in
-                if owner.memoContent != nil {
-                    owner.patchMemo()
-                } else {
-                    owner.postMemo()
-                }
-            })
-            .disposed(by: disposeBag)
-        
+    private func bindUI() {
         rootView.memoEditContentView.memoTextView.rx.text.orEmpty
             .subscribe(with: self, onNext: { owner, text  in
                 owner.updatedMemoContent = text
@@ -183,6 +138,40 @@ final class MemoEditViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
+    //MARK: - Actions
+    
+    private func bindAction() {
+        backButton.rx.tap
+            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                if owner.memoContent != nil {
+                    if owner.updatedMemoContent != owner.memoContent {
+                        owner.presentMemoEditCancelViewController()
+                    } else {
+                        owner.popToLastViewController()
+                    }
+                } else {
+                    if owner.updatedMemoContent.count > 0 && !owner.memoContentPredicate.evaluate(with: owner.updatedMemoContent) {
+                        owner.presentMemoEditCancelViewController()
+                    } else {
+                        owner.popToLastViewController()
+                    }
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        completeButton.rx.tap
+            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                if owner.memoContent != nil {
+                    owner.patchMemo()
+                } else {
+                    owner.postMemo()
+                }
+            })
+            .disposed(by: disposeBag)
+    }
+    
     //MARK: - API
     
     private func postMemo() {
@@ -194,7 +183,7 @@ final class MemoEditViewController: UIViewController {
                 } else {
                     NotificationCenter.default.post(name: NSNotification.Name("PostedMemo"), object: nil)
                 }
-                owner.navigationController?.popViewController(animated: true)
+                owner.popToLastViewController()
             },onError: { owner, error in
                 print(error)
                 owner.showToast(.memoSaveFail)
@@ -207,7 +196,7 @@ final class MemoEditViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
                 NotificationCenter.default.post(name: NSNotification.Name("PatchedMemo"), object: nil)
-                owner.navigationController?.popViewController(animated: true)
+                owner.popToLastViewController()
             },onError: { owner, error in
                 print(error)
                 owner.showToast(.memoSaveFail)
@@ -236,6 +225,6 @@ final class MemoEditViewController: UIViewController {
     }
     
     @objc func canceledEdit(_ notification: Notification) {
-        self.navigationController?.popViewController(animated: true)
+        self.popToLastViewController()
     }
 }

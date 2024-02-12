@@ -280,7 +280,7 @@ final class NovelDetailViewController: UIViewController {
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 owner.rootView.novelDetailMemoSettingButtonView.isHidden = true
-                owner.presentDeletePopupViewController(userNovelId: owner.userNovelId)
+                owner.presentDeleteUserNovelViewController(userNovelId: owner.userNovelId)
             })
             .disposed(by: disposeBag)
         

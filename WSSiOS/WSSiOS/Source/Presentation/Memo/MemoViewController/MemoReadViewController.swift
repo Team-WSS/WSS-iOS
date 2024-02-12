@@ -57,7 +57,7 @@ final class MemoReadViewController: UIViewController {
          setUI()
          setNotificationCenter()
          setTapGesture()
-         bindUI()
+         bindAction()
      }
     
     //MARK: - UI
@@ -99,45 +99,33 @@ final class MemoReadViewController: UIViewController {
         view.addGestureRecognizer(tapGesture)
     }
     
-    //MARK: - Bind
+    //MARK: - Actions
     
-    private func bindUI() {
+    private func bindAction() {
         backButton.rx.tap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
-                owner.navigationController?.popViewController(animated: true)
+                owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
         
         editButon.rx.tap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
-                owner.navigationController?.pushViewController(MemoEditViewController(
-                    repository: DefaultMemoRepository(
-                        memoService: DefaultMemoService()
-                    ),
+                owner.pushToMemoEditViewController(
                     memoId: owner.memoId,
                     novelTitle: owner.novelTitle,
                     novelAuthor: owner.novelAuthor,
                     novelImage: owner.novelImage,
                     memoContent: owner.memoContent
-                ), animated: true)
+                )
             })
             .disposed(by: disposeBag)
         
         rootView.memoReadContentView.deleteButton.rx.tap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
-                let vc = DeletePopupViewController(
-                    memoRepository: DefaultMemoRepository(
-                        memoService: DefaultMemoService()
-                    ),
-                    popupStatus: .memoDelete,
-                    memoId: owner.memoId
-                )
-                vc.modalPresentationStyle = .overFullScreen
-                vc.modalTransitionStyle = .crossDissolve
-                owner.present(vc, animated: true)
+                owner.presentMemoDeleteViewController(memoId: owner.memoId)
             })
             .disposed(by: disposeBag)
     }
@@ -179,7 +167,7 @@ final class MemoReadViewController: UIViewController {
     }
     
     @objc func deletedMemo(_ notification: Notification) {
-        self.navigationController?.popViewController(animated: true)
+        self.popToLastViewController()
     }
     
     @objc func patchedMemo(_ notification: Notification) {
