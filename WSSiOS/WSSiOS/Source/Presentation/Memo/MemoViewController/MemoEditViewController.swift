@@ -22,6 +22,7 @@ final class MemoEditViewController: UIViewController {
     private var memoContent: String?
     private var updatedMemoContent = ""
     private let memoContentPredicate = NSPredicate(format: "SELF MATCHES %@", "^[\\s]+$")
+    private let maximumMemoContentCount: Int = 2000
 
     //MARK: - Components
 
@@ -114,8 +115,8 @@ final class MemoEditViewController: UIViewController {
                 if text.count == 0 {
                     owner.disableCompleteButton()
                 } else {
-                    if text.count > 2000 {
-                        owner.rootView.memoEditContentView.memoTextView.text = String(text.prefix(2000))
+                    if text.count > self.maximumMemoContentCount {
+                        owner.rootView.memoEditContentView.memoTextView.text = String(text.prefix(self.maximumMemoContentCount))
                         owner.disableCompleteButton()
                     } else if owner.memoContentPredicate.evaluate(with: owner.updatedMemoContent) {
                         owner.disableCompleteButton()
