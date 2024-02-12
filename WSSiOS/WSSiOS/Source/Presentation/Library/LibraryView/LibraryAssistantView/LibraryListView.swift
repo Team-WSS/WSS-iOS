@@ -12,11 +12,11 @@ import Then
 
 final class LibraryListView: UIView {
     
-    //MARK: - UI Components
+    //MARK: - Components
     
     private let dividerView = UIView()
-    let libraryNewestButton = UIButton()
-    let libraryOldesttButton = UIButton()
+    public lazy var libraryNewestButton = UIButton()
+    public lazy var libraryOldesttButton = UIButton()
     
     // MARK: - Life Cycle
     
@@ -32,21 +32,21 @@ final class LibraryListView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
         self.do {
             $0.backgroundColor = .White
             $0.layer.cornerRadius = 12
-
+            
             $0.layer.shadowColor = UIColor.black.withAlphaComponent(0.11).cgColor
             $0.layer.shadowOpacity = 1
             $0.layer.shadowOffset = CGSize(width: 0, height: 2)
             $0.layer.shadowRadius = 15
         }
         
-        libraryNewestButton.setTitle("최신 순", for: .normal)
-        libraryOldesttButton.setTitle("오래된 순", for: .normal)
+        libraryNewestButton.setTitle(StringLiterals.Library.newest, for: .normal)
+        libraryOldesttButton.setTitle(StringLiterals.Library.oldest, for: .normal)
         [libraryNewestButton,libraryOldesttButton].forEach {
             $0.do {
                 $0.setTitleColor(.Black, for: .normal)
@@ -59,16 +59,12 @@ final class LibraryListView: UIView {
             $0.backgroundColor = .Gray50
         }
     }
-    
-    //MARK: - set Hierachy
-    
+
     private func setHierarchy() {
         self.addSubviews(libraryNewestButton,
                          dividerView,
                          libraryOldesttButton)
     }
-    
-    //MARK: - set Layout
     
     private func setLayout() {
         libraryNewestButton.snp.makeConstraints {

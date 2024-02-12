@@ -12,12 +12,12 @@ import Then
 
 final class LibraryEmptyView: UIView {
     
-    //MARK: - UI Components
+    //MARK: - Components
     
     private let emptyStackView = UIStackView()
     private let emptyImageView = UIImageView()
     private let emptyTitleLabel = UILabel()
-    public let libraryRegisterButton = UIButton()
+    public lazy var libraryRegisterButton = UIButton()
     
     // MARK: - Life Cycle
     
@@ -33,7 +33,7 @@ final class LibraryEmptyView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
         self.backgroundColor = .White
@@ -67,17 +67,13 @@ final class LibraryEmptyView: UIView {
             $0.layer.cornerRadius = 12
         }
     }
-    
-    //MARK: - set Hierachy
-    
+
     private func setHierarchy() {
         self.addSubviews(emptyStackView,
                          libraryRegisterButton)
         emptyStackView.addArrangedSubviews(emptyImageView,
                                            emptyTitleLabel)
     }
-    
-    //MARK: - set Layout
     
     private func setLayout() {
         emptyStackView.snp.makeConstraints() {
