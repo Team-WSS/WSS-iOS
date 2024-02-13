@@ -12,10 +12,11 @@ import Then
 
 final class SearchEmptyView: UIView {
     
-    //MARK: - UI Components
+    //MARK: - Components
     
     private let emptyImageView = UIImageView()
     private let emptyDescriptionLabel = UILabel()
+    private let emptyButton = UIButton()
     
     //MARK: - Life Cycle
     
@@ -23,7 +24,7 @@ final class SearchEmptyView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -32,38 +33,55 @@ final class SearchEmptyView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
         emptyImageView.do {
-            $0.image = ImageLiterals.icon.BookRegistration.noResult
+            $0.image = .icBookRegistrationNoresult
         }
         
         emptyDescriptionLabel.do {
-            $0.text = "검색 결과가 없어요ㅠ"
+            $0.makeAttribute(with: StringLiterals.Search.Empty.description)?
+                .kerning(kerningPixel: -0.8)
+                .lineSpacing(spacingPercentage: 140)
+                .applyAttribute()
             $0.font = .Body1
-            $0.textColor = .Gray200
+            $0.textColor = .wssGray200
+        }
+        
+        emptyButton.do {
+            var configuration = UIButton.Configuration.filled()
+            configuration.baseBackgroundColor = .wssPrimary50
+            configuration.baseForegroundColor = .wssPrimary100
+            var titleAttr = AttributedString.init(StringLiterals.Search.Empty.register)
+            titleAttr.kern = -0.6
+            titleAttr.font = UIFont.Title1
+            configuration.attributedTitle = titleAttr
+            configuration.background.cornerRadius = 12
+            configuration.contentInsets = NSDirectionalEdgeInsets(top: 18, leading: 42, bottom: 18, trailing: 42)
+            $0.configuration = configuration
         }
     }
-    
-    //MARK: - set Hierachy
-    
-    private func setHierachy() {
+
+    private func setHierarchy() {
         self.addSubviews(emptyImageView,
-                         emptyDescriptionLabel)
-        
+                         emptyDescriptionLabel,
+                         emptyButton)
     }
-    
-    //MARK: - set Layout
-    
+
     private func setLayout() {
         emptyImageView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(191)
+            $0.top.equalToSuperview().inset(330)
             $0.centerX.equalToSuperview()
         }
         
         emptyDescriptionLabel.snp.makeConstraints {
-            $0.top.equalTo(emptyImageView.snp.bottom).offset(9)
+            $0.top.equalTo(emptyImageView.snp.bottom).offset(9.5)
+            $0.centerX.equalToSuperview()
+        }
+        
+        emptyButton.snp.makeConstraints {
+            $0.top.equalTo(emptyDescriptionLabel.snp.bottom).offset(24)
             $0.centerX.equalToSuperview()
         }
     }

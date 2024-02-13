@@ -12,7 +12,7 @@ import Then
 
 final class SearchHeaderView: UIView {
     
-    //MARK: - UI Components
+    //MARK: - Components
     
     let searchBar = UISearchBar()
     
@@ -22,7 +22,7 @@ final class SearchHeaderView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -31,17 +31,17 @@ final class SearchHeaderView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
         self.do {
-            $0.backgroundColor = .White
+            $0.backgroundColor = .wssWhite
         }
         
         searchBar.do {
-            $0.setImage(ImageLiterals.icon.search, for: .search, state: .normal)
-            $0.setImage(ImageLiterals.icon.searchCancel, for: .clear, state: .normal)
-            $0.layer.borderColor = UIColor.Gray200.cgColor
+            $0.setImage(.icSearch, for: .search, state: .normal)
+            $0.setImage(.icSearchCancel, for: .clear, state: .normal)
+            $0.layer.borderColor = UIColor.wssGray200.cgColor
             $0.layer.borderWidth = 1
             $0.clipsToBounds = true
             $0.layer.cornerRadius = 12
@@ -50,18 +50,14 @@ final class SearchHeaderView: UIView {
         if let textfield = searchBar.value(forKey: "searchField") as? UITextField {
             textfield.backgroundColor = .clear
             textfield.font = .Body2
-            textfield.textColor = UIColor.Black
+            textfield.textColor = UIColor.wssBlack
         }
     }
 
-    //MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubview(searchBar)
     }
-    
-    //MARK: - set Layout
-    
+
     private func setLayout() {
         searchBar.snp.makeConstraints {
             $0.top.equalToSuperview().inset(10)

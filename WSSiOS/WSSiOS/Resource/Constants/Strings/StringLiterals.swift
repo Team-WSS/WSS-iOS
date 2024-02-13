@@ -201,6 +201,13 @@ enum StringLiterals {
         }
     }
     
+    enum Search {
+        enum Empty {
+            static let description = "검색 결과가 없어요ㅠ"
+            static let register = "등록 문의하기"
+        }
+    }
+    
     enum Memo {
         static let complete = "완료"
         static let edit = "수정"

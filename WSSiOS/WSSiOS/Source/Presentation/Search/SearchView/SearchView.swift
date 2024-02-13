@@ -9,12 +9,11 @@ import UIKit
 
 final class SearchView: UIView {
     
-    //MARK: - set Properties
+    //MARK: - Components
     
     let headerView = SearchHeaderView()
     private let dividerLine = UIView()
     let mainResultView = SearchResultView()
-    private let mainEmptyView = SearchEmptyView()
     
     // MARK: - Life Cycle
     
@@ -22,7 +21,7 @@ final class SearchView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -33,23 +32,19 @@ final class SearchView: UIView {
     //MARK: - set UI
     
     private func setUI() {
-        self.backgroundColor = .White
+        self.backgroundColor = .wssWhite
         
         dividerLine.do {
-            $0.backgroundColor = .Gray50
+            $0.backgroundColor = .wssGray50
         }
     }
-    
-    //MARK: - set Hierachy
-    
-    private func setHierachy() {
+
+    private func setHierarchy() {
         self.addSubviews(headerView,
                          dividerLine,
                          mainResultView)
     }
-    
-    //MARK: - set Layout
-    
+
     private func setLayout() {
         headerView.snp.makeConstraints {
             $0.top.equalTo(self.safeAreaLayoutGuide.snp.top)

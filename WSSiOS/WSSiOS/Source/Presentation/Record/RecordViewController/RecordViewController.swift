@@ -58,8 +58,8 @@ final class RecordViewController: UIViewController {
         super.viewDidLoad()
         
         setUI()
+        register()
         
-        registerCell()
         bindUI()
         setNotificationCenter()
     }
@@ -73,8 +73,10 @@ final class RecordViewController: UIViewController {
     
     //MARK: - Bind
     
-    private func registerCell() {
-        rootView.recordTableView.register(RecordTableViewCell.self, forCellReuseIdentifier: RecordTableViewCell.cellIdentifier)
+    private func register() {
+        rootView.recordTableView.register(
+            RecordTableViewCell.self,
+            forCellReuseIdentifier: RecordTableViewCell.cellIdentifier)
         
         recordMemoListRelay
             .bind(to: rootView.recordTableView.rx.items(cellIdentifier: RecordTableViewCell.cellIdentifier, cellType: RecordTableViewCell.self)) { (row, element, cell) in
