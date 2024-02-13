@@ -7,12 +7,12 @@
 
 import UIKit
 
-import RxCocoa
 import RxSwift
+import RxCocoa
 
 final class MemoReadViewController: UIViewController {
     
-    //MARK: - set Properties
+    //MARK: - Properties
     
     private let repository: MemoRepository
     private let disposeBag = DisposeBag()
@@ -22,13 +22,13 @@ final class MemoReadViewController: UIViewController {
     private var novelImage = ""
     private var memoContent = ""
 
-    // MARK: - UI Components
-
+    //MARK: - Components
+    
     private let rootView = MemoReadView()
     private let backButton = UIButton()
     private let editButon = UIButton()
 
-     // MARK: - Life Cycle
+     //MARK: - Life Cycle
     
     init(repository: MemoRepository, memoId: Int) {
         self.repository = repository
@@ -53,14 +53,25 @@ final class MemoReadViewController: UIViewController {
      override func viewDidLoad() {
          super.viewDidLoad()
          
-         setNavigationBar()
+         hideTabBar()
          setUI()
+         setNavigationBar()
          setNotificationCenter()
          setTapGesture()
-         setBinding()
+         bindNavigation()
      }
     
-    // MARK: - set NavigationBar
+    //MARK: - UI
+    
+    private func setUI() {
+        backButton.do {
+            $0.setImage(.icNavigateLeft.withRenderingMode(.alwaysOriginal), for: .normal)
+        }
+        
+        editButon.do {
+            $0.setButtonAttributedTitle(text: StringLiterals.Memo.edit, font: .Title2, color: .wssPrimary100)
+        }
+    }
     
     private func setNavigationBar() {
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.backButton)
@@ -68,20 +79,6 @@ final class MemoReadViewController: UIViewController {
         self.navigationController?.navigationBar.backgroundColor = .clear
     }
     
-    // MARK: - set UI
-    
-    private func setUI() {
-        backButton.do {
-            $0.setImage(ImageLiterals.icon.navigateLeft.withRenderingMode(.alwaysOriginal), for: .normal)
-        }
-        
-        editButon.do {
-            $0.setButtonAttributedTitle(text: "수정", font: .Title2, color: .Primary100)
-        }
-    }
-    
-    // MARK: - setNotificationCenter
-
     private func setNotificationCenter() {
         NotificationCenter.default.addObserver(
             self,
@@ -97,51 +94,15 @@ final class MemoReadViewController: UIViewController {
             object: nil
         )
     }
-
-    // MARK: - set tap gesture
     
     private func setTapGesture() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewDidTap))
         view.addGestureRecognizer(tapGesture)
     }
     
-    // MARK: - set Binding
-    
-    private func setBinding() {
-        backButton.rx.tap.bind {
-            self.navigationController?.popViewController(animated: true)
-        }.disposed(by: disposeBag)
-        
-        editButon.rx.tap.bind {
-            self.navigationController?.pushViewController(MemoEditViewController(
-                repository: DefaultMemoRepository(
-                    memoService: DefaultMemoService()
-                ),
-                memoId: self.memoId,
-                novelTitle: self.novelTitle,
-                novelAuthor: self.novelAuthor,
-                novelImage: self.novelImage,
-                memoContent: self.memoContent
-            ), animated: true)
-        }.disposed(by: disposeBag)
-        
-        rootView.memoReadContentView.deleteButton.rx.tap.bind {
-            let vc = DeletePopupViewController(
-                memoRepository: DefaultMemoRepository(
-                    memoService: DefaultMemoService()
-                ),
-                popupStatus: .memoDelete,
-                memoId: self.memoId
-            )
-            vc.modalPresentationStyle = .overFullScreen
-            vc.modalTransitionStyle = .crossDissolve
-            self.present(vc, animated: true)
-        }.disposed(by: disposeBag)
-    }
-    
-    // MARK: - update UI
-    
-    private func updateUI(_ memoDetail: MemoDetail) {
+    //MARK: - Bind
+
+    private func bindData(_ memoDetail: MemoDetail) {
         self.novelTitle = memoDetail.userNovelTitle
         self.novelAuthor = memoDetail.userNovelAuthor
         self.novelImage = memoDetail.userNovelImg
@@ -159,26 +120,57 @@ final class MemoReadViewController: UIViewController {
         )
     }
     
-    // MARK: - API request
+    //MARK: - Actions
+    
+    private func bindNavigation() {
+        backButton.rx.tap
+            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                owner.popToLastViewController()
+            })
+            .disposed(by: disposeBag)
+        
+        editButon.rx.tap
+            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                owner.pushToMemoEditViewController(
+                    memoId: owner.memoId,
+                    novelTitle: owner.novelTitle,
+                    novelAuthor: owner.novelAuthor,
+                    novelImage: owner.novelImage,
+                    memoContent: owner.memoContent
+                )
+            })
+            .disposed(by: disposeBag)
+        
+        rootView.memoReadContentView.deleteButton.rx.tap
+            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                owner.presentMemoDeleteViewController(memoId: owner.memoId)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    //MARK: - API
     
     private func getMemoDetail() {
         repository.getMemoDetail(memoId: self.memoId)
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
-                self.updateUI(data)
+                owner.bindData(data)
             },onError: { owner, error in
                 print(error)
             }).disposed(by: disposeBag)
     }
     
-    // MARK: - custom method
+    //MARK: - Custom Method
     
     @objc func viewDidTap() {
         view.endEditing(true)
     }
     
     @objc func deletedMemo(_ notification: Notification) {
-        self.navigationController?.popViewController(animated: true)
+        self.popToLastViewController()
     }
     
     @objc func patchedMemo(_ notification: Notification) {

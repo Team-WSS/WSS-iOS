@@ -207,4 +207,9 @@ enum StringLiterals {
             static let register = "등록 문의하기"
         }
     }
+    
+    enum Memo {
+        static let complete = "완료"
+        static let edit = "수정"
+    }
 }
