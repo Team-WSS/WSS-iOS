@@ -55,12 +55,14 @@ final class DeletePopupViewController: UIViewController {
     
     private func bindAction() {
         rootView.deletePopupContentView.cancelButton.rx.tap
+            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 owner.dismiss(animated: true)
             })
             .disposed(by: disposeBag)
         
         rootView.deletePopupContentView.deleteButton.rx.tap
+            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 switch owner.popupStatus {
                 case .memoEditCancel:
