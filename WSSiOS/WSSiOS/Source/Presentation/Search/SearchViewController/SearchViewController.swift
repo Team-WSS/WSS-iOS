@@ -57,6 +57,7 @@ final class SearchViewController: UIViewController {
         register()
         
         bindUI()
+        bindActions()
         swipeBackGesture()
     }
     
@@ -89,18 +90,6 @@ final class SearchViewController: UIViewController {
     }
     
     private func bindUI() {
-        rootView.headerView.searchBar.rx.text.orEmpty
-            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner ,searchText in
-                if searchText.isEmpty {
-                    owner.searchResultListRelay.accept([])
-                }
-                else {
-                    owner.searchNovels(with: searchText)
-                }
-            })
-            .disposed(by: disposeBag)
-        
         searchResultListRelay
             .asDriver()
             .drive(with: self, onNext: { owner, list in
@@ -114,7 +103,25 @@ final class SearchViewController: UIViewController {
                 }
             })
             .disposed(by: disposeBag)
-        
+    }
+    
+    //MARK: - Actions
+    
+    private func bindActions() {
+        rootView.headerView.searchBar.rx.text.orEmpty
+            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner ,searchText in
+                if searchText.isEmpty {
+                    owner.searchResultListRelay.accept([])
+                }
+                else {
+                    owner.searchNovels(with: searchText)
+                }
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindNavigations() {
         backButton
             .rx.tap
             .subscribe(with: self, onNext: { owner, event in
@@ -129,8 +136,6 @@ final class SearchViewController: UIViewController {
             })
             .disposed(by: disposeBag)
     }
-    
-    //MARK: - Actions
     
     private func searchNovels(with searchText: String) {
         let searchWord = searchText.isEmpty ? "" : searchText
