@@ -53,11 +53,7 @@ final class MemoEditContentView: UIView {
         }
     }
     
-    func updateTextViewConstraint(keyboardHeight: CGFloat) {
-        self.memoTextView.snp.updateConstraints {
-            $0.bottom.equalToSuperview().inset(keyboardHeight + 20)
-        }
-    }
+    //MARK: - Data
     
     func bindData(memoContent: String) {
         self.memoTextView.do {
@@ -68,4 +64,13 @@ final class MemoEditContentView: UIView {
             $0.font = .Body1
         }
     }
+    
+    //MARK: - Custom Method
+    
+    func updateTextViewConstraint(keyboardHeight: CGFloat) {
+        self.memoTextView.snp.updateConstraints {
+            $0.bottom.equalToSuperview().inset(keyboardHeight + 20)
+        }
+    }
+    
 }

@@ -100,13 +100,7 @@ final class MemoReadContentView: UIView {
         }
     }
     
-    //MARK: - Custom Method
-    
-    func updateTextViewConstraint(keyboardHeight: CGFloat) {
-        self.memoContentLabel.snp.updateConstraints {
-            $0.bottom.equalToSuperview().inset(keyboardHeight + 20)
-        }
-    }
+    //MARK: - Data
     
     func bindData(date: String, memoContent: String) {
         self.dateLabel.do {
@@ -120,6 +114,14 @@ final class MemoReadContentView: UIView {
                 .kerning(kerningPixel: -0.8)
                 .applyAttribute()
             $0.lineBreakStrategy = .hangulWordPriority
+        }
+    }
+    
+    //MARK: - Custom Method
+    
+    func updateTextViewConstraint(keyboardHeight: CGFloat) {
+        self.memoContentLabel.snp.updateConstraints {
+            $0.bottom.equalToSuperview().inset(keyboardHeight + 20)
         }
     }
 }

@@ -7,9 +7,9 @@
 
 import UIKit
 
-import RxKeyboard
 import RxSwift
 import RxCocoa
+import RxKeyboard
 
 final class MemoEditViewController: UIViewController {
     
@@ -63,8 +63,8 @@ final class MemoEditViewController: UIViewController {
      override func viewDidLoad() {
          super.viewDidLoad()
          
-         setNavigationBar()
          setUI()
+         setNavigationBar()
          setNotificationCenter()
          setTapGesture()
          bindUI()
@@ -110,24 +110,19 @@ final class MemoEditViewController: UIViewController {
     
     private func bindUI() {
         rootView.memoEditContentView.memoTextView.rx.text.orEmpty
-            .subscribe(with: self, onNext: { owner, text  in
+            .subscribe(with: self, onNext: { owner, text in
                 owner.updatedMemoContent = text
-                if text.count == 0 {
-                    owner.disableCompleteButton()
+                owner.rootView.memoEditContentView.memoTextView.text = String(text.prefix(owner.maximumMemoContentCount))
+
+                let isEmpty = text.count == 0
+                let isOverLimit = text.count > owner.maximumMemoContentCount
+                let isWrongFormat = owner.memoContentPredicate.evaluate(with: owner.updatedMemoContent)
+                let isNotChanged = owner.updatedMemoContent == owner.memoContent
+
+                if isEmpty || isOverLimit || isWrongFormat || isNotChanged {
+                     owner.disableCompleteButton()
                 } else {
-                    if text.count > self.maximumMemoContentCount {
-                        owner.rootView.memoEditContentView.memoTextView.text = String(text.prefix(self.maximumMemoContentCount))
-                        owner.disableCompleteButton()
-                    } else if owner.memoContentPredicate.evaluate(with: owner.updatedMemoContent) {
-                        owner.disableCompleteButton()
-                    } else {
-                        owner.enableCompleteButton()
-                    }
-                }
-                if owner.memoContent != nil {
-                    if owner.updatedMemoContent == owner.memoContent {
-                        owner.disableCompleteButton()
-                    }
+                    owner.enableCompleteButton()
                 }
             })
             .disposed(by: disposeBag)

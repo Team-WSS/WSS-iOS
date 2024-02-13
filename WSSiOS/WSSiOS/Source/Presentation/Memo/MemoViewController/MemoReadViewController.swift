@@ -53,11 +53,12 @@ final class MemoReadViewController: UIViewController {
      override func viewDidLoad() {
          super.viewDidLoad()
          
-         setNavigationBar()
+         hideTabBar()
          setUI()
+         setNavigationBar()
          setNotificationCenter()
          setTapGesture()
-         bindAction()
+         bindNavigation()
      }
     
     //MARK: - UI
@@ -99,9 +100,29 @@ final class MemoReadViewController: UIViewController {
         view.addGestureRecognizer(tapGesture)
     }
     
+    //MARK: - Bind
+
+    private func bindData(_ memoDetail: MemoDetail) {
+        self.novelTitle = memoDetail.userNovelTitle
+        self.novelAuthor = memoDetail.userNovelAuthor
+        self.novelImage = memoDetail.userNovelImg
+        self.memoContent = memoDetail.memoContent
+        
+        self.rootView.memoHeaderView.bindData(
+            novelTitle: memoDetail.userNovelTitle,
+            novelAuthor: memoDetail.userNovelAuthor,
+            novelImage: memoDetail.userNovelImg
+        )
+        
+        self.rootView.memoReadContentView.bindData(
+            date: memoDetail.memoDate,
+            memoContent: memoDetail.memoContent
+        )
+    }
+    
     //MARK: - Actions
     
-    private func bindAction() {
+    private func bindNavigation() {
         backButton.rx.tap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
@@ -143,24 +164,6 @@ final class MemoReadViewController: UIViewController {
     }
     
     //MARK: - Custom Method
-    
-    private func bindData(_ memoDetail: MemoDetail) {
-        self.novelTitle = memoDetail.userNovelTitle
-        self.novelAuthor = memoDetail.userNovelAuthor
-        self.novelImage = memoDetail.userNovelImg
-        self.memoContent = memoDetail.memoContent
-        
-        self.rootView.memoHeaderView.bindData(
-            novelTitle: memoDetail.userNovelTitle,
-            novelAuthor: memoDetail.userNovelAuthor,
-            novelImage: memoDetail.userNovelImg
-        )
-        
-        self.rootView.memoReadContentView.bindData(
-            date: memoDetail.memoDate,
-            memoContent: memoDetail.memoContent
-        )
-    }
     
     @objc func viewDidTap() {
         view.endEditing(true)

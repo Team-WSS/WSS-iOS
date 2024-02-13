@@ -85,7 +85,7 @@ final class MemoHeaderView: UIView {
         }
     }
     
-    //MARK: - Custom Method
+    //MARK: - Data
     
     func bindData(novelTitle: String, novelAuthor: String, novelImage: String) {
         self.novelTitleLabel.do {
