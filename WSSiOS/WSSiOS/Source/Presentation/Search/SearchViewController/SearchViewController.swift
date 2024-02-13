@@ -123,8 +123,7 @@ final class SearchViewController: UIViewController {
             .disposed(by: disposeBag)
         
         rootView.mainResultView.searchCollectionView
-            .rx
-            .itemSelected
+            .rx.itemSelected
             .subscribe(with: self, onNext: { owner, indexPath in
                 owner.navigationController?.pushViewController(
                     RegisterNormalViewController(
