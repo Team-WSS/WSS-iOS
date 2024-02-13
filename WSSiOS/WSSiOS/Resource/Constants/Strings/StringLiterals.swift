@@ -200,4 +200,9 @@ enum StringLiterals {
             static let novelEdit = "작품 정보 수정"
         }
     }
+    
+    enum Memo {
+        static let complete = "완료"
+        static let edit = "수정"
+    }
 }

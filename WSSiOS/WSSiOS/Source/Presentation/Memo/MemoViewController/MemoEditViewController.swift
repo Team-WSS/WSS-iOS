@@ -7,13 +7,13 @@
 
 import UIKit
 
+import RxSwift
 import RxCocoa
 import RxKeyboard
-import RxSwift
 
 final class MemoEditViewController: UIViewController {
     
-    //MARK: - set Properties
+    //MARK: - Properties
     
     private let repository: MemoRepository
     private let disposeBag = DisposeBag()
@@ -22,14 +22,15 @@ final class MemoEditViewController: UIViewController {
     private var memoContent: String?
     private var updatedMemoContent = ""
     private let memoContentPredicate = NSPredicate(format: "SELF MATCHES %@", "^[\\s]+$")
+    private let maximumMemoContentCount: Int = 2000
 
-    // MARK: - UI Components
+    //MARK: - Components
 
     private let rootView = MemoEditView()
     private let backButton = UIButton()
     private let completeButton = UIButton()
 
-     // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     init(repository: MemoRepository, userNovelId: Int? = nil, memoId: Int? = nil, novelTitle: String, novelAuthor: String, novelImage: String, memoContent: String? = nil) {
         self.repository = repository
@@ -62,16 +63,28 @@ final class MemoEditViewController: UIViewController {
      override func viewDidLoad() {
          super.viewDidLoad()
          
-         setNavigationBar()
          setUI()
+         setNavigationBar()
          setNotificationCenter()
          setTapGesture()
-         setBinding()
+         bindUI()
+         bindAction()
          
          rootView.memoEditContentView.memoTextView.becomeFirstResponder()
      }
     
-    // MARK: - set NavigationBar
+    //MARK: - UI
+    
+    private func setUI() {
+        backButton.do {
+            $0.setImage(.icNavigateLeft.withRenderingMode(.alwaysOriginal), for: .normal)
+        }
+        
+        completeButton.do {
+            $0.setButtonAttributedTitle(text: StringLiterals.Memo.complete, font: .Title2, color: .wssPrimary100)
+            $0.isEnabled = false
+        }
+    }
     
     private func setNavigationBar() {
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.backButton)
@@ -79,21 +92,6 @@ final class MemoEditViewController: UIViewController {
         self.navigationController?.navigationBar.backgroundColor = .clear
     }
     
-    // MARK: - set UI
-    
-    private func setUI() {
-        backButton.do {
-            $0.setImage(ImageLiterals.icon.navigateLeft.withRenderingMode(.alwaysOriginal), for: .normal)
-        }
-        
-        completeButton.do {
-            $0.setButtonAttributedTitle(text: "완료", font: .Title2, color: .Primary100)
-            $0.isEnabled = false
-        }
-    }
-    
-    // MARK: - setNotificationCenter
-
     private func setNotificationCenter() {
         NotificationCenter.default.addObserver(
             self,
@@ -103,87 +101,74 @@ final class MemoEditViewController: UIViewController {
         )
     }
     
-    // MARK: - set tap gesture
-    
     private func setTapGesture() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewDidTap))
         view.addGestureRecognizer(tapGesture)
     }
 
-    // MARK: - set Binding
+    //MARK: - Bind
     
-    private func setBinding() {
-        backButton.rx.tap.bind {
-            if self.memoContent != nil {
-                if self.updatedMemoContent != self.memoContent {
-                    let vc = DeletePopupViewController(
-                        memoRepository: DefaultMemoRepository(
-                            memoService: DefaultMemoService()
-                        ),
-                        popupStatus: .memoEditCancel
-                    )
-                    vc.modalPresentationStyle = .overFullScreen
-                    vc.modalTransitionStyle = .crossDissolve
-                    self.present(vc, animated: true)
-                } else {
-                    self.navigationController?.popViewController(animated: true)
-                }
-            } else {
-                if self.updatedMemoContent.count > 0 && !self.memoContentPredicate.evaluate(with: self.updatedMemoContent) {
-                    let vc = DeletePopupViewController(
-                        memoRepository: DefaultMemoRepository(
-                            memoService: DefaultMemoService()
-                        ),
-                        popupStatus: .memoEditCancel
-                    )
-                    vc.modalPresentationStyle = .overFullScreen
-                    vc.modalTransitionStyle = .crossDissolve
-                    self.present(vc, animated: true)
-                } else {
-                    self.navigationController?.popViewController(animated: true)
-                }
-            }
-        }.disposed(by: disposeBag)
-        
-        completeButton.rx.tap.bind {
-            if self.memoContent != nil {
-                self.patchMemo()
-            } else {
-                self.postMemo()
-            }
-        }.disposed(by: disposeBag)
-        
+    private func bindUI() {
         rootView.memoEditContentView.memoTextView.rx.text.orEmpty
-            .subscribe(with: self, onNext: { owner, text  in
-                self.updatedMemoContent = text
-                if text.count == 0 {
-                    self.disableCompleteButton()
+            .subscribe(with: self, onNext: { owner, text in
+                owner.updatedMemoContent = text
+                owner.rootView.memoEditContentView.memoTextView.text = String(text.prefix(owner.maximumMemoContentCount))
+
+                let isEmpty = text.count == 0
+                let isOverLimit = text.count > owner.maximumMemoContentCount
+                let isWrongFormat = owner.memoContentPredicate.evaluate(with: owner.updatedMemoContent)
+                let isNotChanged = owner.updatedMemoContent == owner.memoContent
+
+                if isEmpty || isOverLimit || isWrongFormat || isNotChanged {
+                     owner.disableCompleteButton()
                 } else {
-                    if text.count > 2000 {
-                        self.rootView.memoEditContentView.memoTextView.text = String(text.prefix(2000))
-                        self.disableCompleteButton()
-                    } else if self.memoContentPredicate.evaluate(with: self.updatedMemoContent) {
-                        self.disableCompleteButton()
-                    } else {
-                        self.enableCompleteButton()
-                    }
-                }
-                if self.memoContent != nil {
-                    if self.updatedMemoContent == self.memoContent {
-                        self.disableCompleteButton()
-                    }
+                    owner.enableCompleteButton()
                 }
             })
             .disposed(by: disposeBag)
         
         RxKeyboard.instance.visibleHeight
-            .drive(onNext: { keyboardHeight in
-                self.rootView.memoEditContentView.updateTextViewConstraint(keyboardHeight: keyboardHeight)
+            .drive(with: self, onNext: { owner, keyboardHeight in
+                owner.rootView.memoEditContentView.updateTextViewConstraint(keyboardHeight: keyboardHeight)
             })
             .disposed(by: disposeBag)
     }
     
-    // MARK: - API request
+    //MARK: - Actions
+    
+    private func bindAction() {
+        backButton.rx.tap
+            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                if owner.memoContent != nil {
+                    if owner.updatedMemoContent != owner.memoContent {
+                        owner.presentMemoEditCancelViewController()
+                    } else {
+                        owner.popToLastViewController()
+                    }
+                } else {
+                    if owner.updatedMemoContent.count > 0 && !owner.memoContentPredicate.evaluate(with: owner.updatedMemoContent) {
+                        owner.presentMemoEditCancelViewController()
+                    } else {
+                        owner.popToLastViewController()
+                    }
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        completeButton.rx.tap
+            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                if owner.memoContent != nil {
+                    owner.patchMemo()
+                } else {
+                    owner.postMemo()
+                }
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    //MARK: - API
     
     private func postMemo() {
         repository.postMemo(userNovelId: self.userNovelId!, memoContent: updatedMemoContent)
@@ -194,10 +179,10 @@ final class MemoEditViewController: UIViewController {
                 } else {
                     NotificationCenter.default.post(name: NSNotification.Name("PostedMemo"), object: nil)
                 }
-                self.navigationController?.popViewController(animated: true)
+                owner.popToLastViewController()
             },onError: { owner, error in
                 print(error)
-                self.showToast(.memoSaveFail)
+                owner.showToast(.memoSaveFail)
             })
             .disposed(by: disposeBag)
     }
@@ -207,26 +192,26 @@ final class MemoEditViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
                 NotificationCenter.default.post(name: NSNotification.Name("PatchedMemo"), object: nil)
-                self.navigationController?.popViewController(animated: true)
+                owner.popToLastViewController()
             },onError: { owner, error in
                 print(error)
-                self.showToast(.memoSaveFail)
+                owner.showToast(.memoSaveFail)
             })
             .disposed(by: disposeBag)
     }
     
-    // MARK: - custom method
+    //MARK: - Custom Method
     
     func enableCompleteButton() {
         completeButton.do {
-            $0.setButtonAttributedTitle(text: "완료", font: .Title2, color: .Primary100)
+            $0.setButtonAttributedTitle(text: StringLiterals.Memo.complete, font: .Title2, color: .wssPrimary100)
             $0.isEnabled = true
         }
     }
     
     func disableCompleteButton() {
         completeButton.do {
-            $0.setButtonAttributedTitle(text: "완료", font: .Title2, color: .Gray200)
+            $0.setButtonAttributedTitle(text: StringLiterals.Memo.complete, font: .Title2, color: .wssGray200)
             $0.isEnabled = false
         }
     }
@@ -236,6 +221,6 @@ final class MemoEditViewController: UIViewController {
     }
     
     @objc func canceledEdit(_ notification: Notification) {
-        self.navigationController?.popViewController(animated: true)
+        self.popToLastViewController()
     }
 }
