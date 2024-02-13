@@ -118,21 +118,14 @@ final class SearchViewController: UIViewController {
         backButton
             .rx.tap
             .subscribe(with: self, onNext: { owner, event in
-                owner.navigationController?.popViewController(animated: true)
+                owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
         
         rootView.mainResultView.searchCollectionView
             .rx.itemSelected
             .subscribe(with: self, onNext: { owner, indexPath in
-                owner.navigationController?.pushViewController(
-                    RegisterNormalViewController(
-                        novelRepository: DefaultNovelRepository(
-                            novelService: DefaultNovelService()),
-                        userNovelRepository: DefaultUserNovelRepository(
-                            userNovelService: DefaultUserNovelService()),
-                        novelId: owner.searchResultListRelay.value[indexPath.row].novelId),
-                    animated: true)
+                owner.pushToRegisterNormalViewController(novelId: owner.searchResultListRelay.value[indexPath.row].novelId)
             })
             .disposed(by: disposeBag)
     }
@@ -146,8 +139,7 @@ final class SearchViewController: UIViewController {
     
     //MARK: - API
     
-    private func getDataFromAPI(disposeBag: DisposeBag,
-                                searchWord: String) {
+    private func getDataFromAPI(disposeBag: DisposeBag, searchWord: String) {
         self.novelRepository.getSearchNovels(searchWord: searchWord)
             .subscribe(with: self, onNext: { owner, search in
                 owner.searchResultListRelay.accept(search.novels)
