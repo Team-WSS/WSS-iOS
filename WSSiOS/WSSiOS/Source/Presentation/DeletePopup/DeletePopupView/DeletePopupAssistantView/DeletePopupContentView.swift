@@ -17,31 +17,31 @@ enum PopupStatus {
     
     var titleText: String {
         switch self {
-        case .memoEditCancel: "작성을 취소할까요?"
-        case .memoDelete: "메모를 삭제하실 건가요?"
-        case .novelDelete: "이 작품을 삭제하실 건가요?"
+        case .memoEditCancel: StringLiterals.DeletePopup.MemoEditCancel.titleText
+        case .memoDelete: StringLiterals.DeletePopup.MemoDelete.titleText
+        case .novelDelete: StringLiterals.DeletePopup.NovelDelete.titleText
         }
     }
     
     var descriptionText: String {
         switch self {
-        case .memoEditCancel: "작성 중인 내용이 모두 사라져요!"
-        case .memoDelete: "삭제한 메모는 다시 되돌릴 수 없어요!"
-        case .novelDelete: "읽기 정보와 작성한 메모가 모두 사라져요!\n삭제한 내용은 절대 되돌릴 수 없어요ㅠ"
+        case .memoEditCancel: StringLiterals.DeletePopup.MemoEditCancel.descriptionText
+        case .memoDelete: StringLiterals.DeletePopup.MemoDelete.descriptionText
+        case .novelDelete: StringLiterals.DeletePopup.NovelDelete.descriptionText
         }
     }
     
     var deleteButtonText: String {
         switch self {
-        case .memoEditCancel: "나가기"
-        case .memoDelete, .novelDelete: "삭제하기"
+        case .memoEditCancel: StringLiterals.DeletePopup.DeleteButtonText.exit
+        case .memoDelete, .novelDelete: StringLiterals.DeletePopup.DeleteButtonText.delete
         }
     }
     
     var cancelButtonText: String {
         switch self {
-        case .memoEditCancel: "계속 작성하기"
-        case .memoDelete, .novelDelete: "취소"
+        case .memoEditCancel: StringLiterals.DeletePopup.CancelButtonText.keepWriting
+        case .memoDelete, .novelDelete: StringLiterals.DeletePopup.CancelButtonText.cancel
         }
     }
 }

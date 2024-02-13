@@ -205,4 +205,31 @@ enum StringLiterals {
         static let complete = "완료"
         static let edit = "수정"
     }
+    
+    enum DeletePopup {
+        enum MemoEditCancel {
+            static let titleText = "작성을 취소할까요?"
+            static let descriptionText = "작성 중인 내용이 모두 사라져요!"
+        }
+        
+        enum MemoDelete {
+            static let titleText = "메모를 삭제하실 건가요?"
+            static let descriptionText = "삭제한 메모는 다시 되돌릴 수 없어요!"
+        }
+        
+        enum NovelDelete {
+            static let titleText = "이 작품을 삭제하실 건가요?"
+            static let descriptionText = "읽기 정보와 작성한 메모가 모두 사라져요!\n삭제한 내용은 절대 되돌릴 수 없어요ㅠ"
+        }
+        
+        enum DeleteButtonText {
+            static let exit = "나가기"
+            static let delete = "삭제하기"
+        }
+        
+        enum CancelButtonText {
+            static let keepWriting = "계속 작성하기"
+            static let cancel = "취소"
+        }
+    }
 }
