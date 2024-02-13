@@ -41,19 +41,19 @@ final class MyPageInfoView: UIView {
     //MARK: - UI
     
     private func setUI() {
-        self.backgroundColor = .White
+        self.backgroundColor = .wssWhite
         
         [dividerView, divider1View, divider2View, divider3View].forEach {
-            $0.backgroundColor = .Gray50
+            $0.backgroundColor = .wssGray50
         }
         
         [nickNameLabel, emailLabel, secessionLabel].forEach {
-            $0.textColor = .Black
+            $0.textColor = .wssBlack
             $0.font = .Body1
         }
         
         [userNickNameLabel,userEmailLabel].forEach {
-            $0.textColor = .Gray200
+            $0.textColor = .wssGray200
             $0.font = .Body2
         }
         

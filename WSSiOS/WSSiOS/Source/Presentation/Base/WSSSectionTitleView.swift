@@ -22,7 +22,7 @@ final class WSSSectionTitleView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHieararchy()
+        setHierarchy()
         setLayout()
     }
     
@@ -38,7 +38,7 @@ final class WSSSectionTitleView: UIView {
         }
     }
     
-    private func setHieararchy() {
+    private func setHierarchy() {
         self.addSubview(titleLabel)
     }
     
@@ -55,7 +55,7 @@ final class WSSSectionTitleView: UIView {
     
     private func titleStyle(of label: UILabel) {
         label.do {
-            $0.textColor = .Black
+            $0.textColor = .wssBlack
             $0.makeAttribute(with: label.text)?
                 .lineSpacing(spacingPercentage: 140)
                 .kerning(kerningPixel: -0.6)

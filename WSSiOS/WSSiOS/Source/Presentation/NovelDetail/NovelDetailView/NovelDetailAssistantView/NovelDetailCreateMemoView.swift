@@ -12,18 +12,18 @@ import Then
 
 final class NovelDetailCreateMemoView: UIView {
 
-    // MARK: - UI Components
+    //MARK: - Components
     
-    public let createMemoLabel = UILabel()
+    let createMemoLabel = UILabel()
     private let createMemoImageView = UIImageView()
 
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -31,34 +31,30 @@ final class NovelDetailCreateMemoView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
-        self.backgroundColor = .White
+        self.backgroundColor = .wssWhite
         
         createMemoLabel.do {
-            $0.makeAttribute(with: "아직 작성된 메모가 없어요")?
+            $0.makeAttribute(with: StringLiterals.NovelDetail.Memo.noMemo)?
                 .lineSpacing(spacingPercentage: 140)
                 .kerning(kerningPixel: -0.8)
                 .applyAttribute()
-            $0.textColor = .Gray200
+            $0.textColor = .wssGray200
             $0.font = .Body1
         }
         
         createMemoImageView.do {
-            $0.image = ImageLiterals.icon.Memo.small
+            $0.image = .icCreateMemoSmall
             $0.contentMode = .scaleAspectFit
         }
     }
     
-    // MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(createMemoLabel,
                          createMemoImageView)
     }
-    
-    // MARK: - set Layout
     
     private func setLayout() {
         createMemoLabel.snp.makeConstraints {

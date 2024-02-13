@@ -135,7 +135,7 @@ extension MyPageCustomModalViewController {
     
     private func setUI() {
         self.modalBackgroundView.alpha = 0
-        self.modalBackgroundView.backgroundColor = .Black60.withAlphaComponent(0.6)
+        self.modalBackgroundView.backgroundColor = .wssBlack60.withAlphaComponent(0.6)
         
         if !modalHasAvatar || currentRepresentativeAvatar {
             rootView.modalContinueButton.isHidden = true

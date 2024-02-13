@@ -12,7 +12,7 @@ import Then
 
 final class RegisterNormalView: UIView {
     
-    // MARK: - UI Components
+    // MARK: - Components
     
     let statusBarView = UIView()
     let pageScrollView = UIScrollView()
@@ -25,11 +25,12 @@ final class RegisterNormalView: UIView {
     let readDateView = RegisterNormalReadDateView()
     private let dividerView = RegisterNormalDividerView()
     let novelSummaryView = RegisterNormalNovelSummaryView()
+    
     let registerButton = WSSMainButton(title: StringLiterals.Register.Normal.RegisterButton.new)
     private let registerButtonGradient = UIImageView()
     private let registerButtonBackgroundView = UIView()
     
-    let customDatePicker = RegisterNormalCustomDatePicker()
+    let customDatePicker = RegisterNormalDatePicker()
     
     // MARK: - Life Cycle
     
@@ -37,7 +38,7 @@ final class RegisterNormalView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHieararchy()
+        setHierarchy()
         setLayout()
     }
     
@@ -45,14 +46,14 @@ final class RegisterNormalView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Custom Method
+    // MARK: - UI
     
     private func setUI() {
         self.do {
-            $0.backgroundColor = .white
+            $0.backgroundColor = .wssWhite
         }
         divider.do {
-            $0.backgroundColor = .Gray70
+            $0.backgroundColor = .wssGray70
         }
         statusBarView.do {
             let scenes = UIApplication.shared.connectedScenes
@@ -77,11 +78,11 @@ final class RegisterNormalView: UIView {
         }
         
         registerButtonBackgroundView.do {
-            $0.backgroundColor = .White
+            $0.backgroundColor = .wssWhite
         }
     }
     
-    private func setHieararchy() {
+    private func setHierarchy() {
         self.addSubviews(pageScrollView,
                          divider,
                          statusBarView,
@@ -144,5 +145,29 @@ final class RegisterNormalView: UIView {
         customDatePicker.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+    }
+    
+    // MARK: - Data
+    
+    func bindNewData(_ newData: NewNovelResult) {
+        bannerImageView.bindData(newData.novelImg)
+        infoWithRatingView.bindData(coverImage: newData.novelImg,
+                                             title: newData.novelTitle,
+                                             author: newData.novelAuthor)
+        novelSummaryView.bindData(plot: newData.novelDescription,
+                                           genre: newData.novelGenre,
+                                           platforms: newData.platforms)
+        novelSummaryView.platformCollectionView.reloadData()
+    }
+    
+    func bindUserData(_ userData: EditNovelResult) {
+        bannerImageView.bindData(userData.userNovelImg)
+        infoWithRatingView.bindData(coverImage: userData.userNovelImg,
+                                             title: userData.userNovelTitle,
+                                             author: userData.userNovelAuthor)
+        novelSummaryView.bindData(plot: userData.userNovelDescription,
+                                           genre: userData.userNovelGenre,
+                                           platforms: userData.platforms)
+        novelSummaryView.platformCollectionView.reloadData()
     }
 }

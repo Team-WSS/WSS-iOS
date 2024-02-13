@@ -11,10 +11,8 @@ import SnapKit
 import Then
 
 final class NovelDetailMemoTableViewCell: UITableViewCell {
-
-    static let identifier: String = "NovelDetailMemoTableViewCell"
     
-    // MARK: - UI Components
+    //MARK: - Components
     
     private let leftDividerView = UIView()
     private let rightDividerView = UIView()
@@ -22,13 +20,13 @@ final class NovelDetailMemoTableViewCell: UITableViewCell {
     private let memoContentLabel = UILabel()
     
 
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -36,43 +34,39 @@ final class NovelDetailMemoTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
         self.do {
-            $0.backgroundColor = .white
+            $0.backgroundColor = .wssWhite
         }
         
         leftDividerView.do {
-            $0.backgroundColor = .Gray70
+            $0.backgroundColor = .wssGray70
         }
         
         rightDividerView.do {
-            $0.backgroundColor = .Gray70
+            $0.backgroundColor = .wssGray70
         }
         
         memoDateLabel.do {
             $0.font = .Label2
-            $0.textColor = .Gray200
+            $0.textColor = .wssGray200
         }
         
         memoContentLabel.do {
             $0.font = .Body2
-            $0.textColor = .Black
+            $0.textColor = .wssBlack
             $0.numberOfLines = 5
         }
     }
     
-    // MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.contentView.addSubviews(leftDividerView,
                                      rightDividerView,
                                      memoDateLabel,
                                      memoContentLabel)
     }
-    
-    // MARK: - set Layout
     
     private func setLayout() {
         leftDividerView.snp.makeConstraints {
@@ -101,12 +95,12 @@ final class NovelDetailMemoTableViewCell: UITableViewCell {
         }
     }
     
-    // MARK: - bind data
+    //MARK: - Data
     
-    func bindData(date: String, content: String) {
-        self.memoDateLabel.text = date
+    func bindData(memo: UserNovelMemo) {
+        self.memoDateLabel.text = memo.createdDate
         self.memoContentLabel.do {
-            $0.makeAttribute(with: content)?
+            $0.makeAttribute(with: memo.memoContent)?
                 .lineSpacing(spacingPercentage: 150)
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()

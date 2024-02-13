@@ -7,19 +7,22 @@
 
 import UIKit
 
+import SnapKit
+import Then
+
 final class LibraryCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Properties
     
     static let identifier: String = "LibraryCollectionViewCell"
     
-    //MARK: - UI Components
+    //MARK: - Components
     
-    public var novelImageView = UIImageView()
-    public var novelTitleLabel = UILabel()
-    public var novelAuthorLabel = UILabel()
-    private let ratingStarImage = UIImageView(image: ImageLiterals.icon.Star.fill)
-    public var novelRatingLabel = UILabel()
+    private let novelImageView = UIImageView()
+    private let novelTitleLabel = UILabel()
+    private let novelAuthorLabel = UILabel()
+    private let ratingStarImage = UIImageView(image: .icStarFill)
+    private let novelRatingLabel = UILabel()
     
     //MARK: - Life Cycle
     
@@ -36,7 +39,7 @@ final class LibraryCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - Set UI
+    //MARK: - UI
     
     private func setUI() {
         novelImageView.do {
@@ -46,26 +49,24 @@ final class LibraryCollectionViewCell: UICollectionViewCell {
         
         novelTitleLabel.do {
             $0.font = .Body2
-            $0.textColor = .Black
+            $0.textColor = .wssBlack
             $0.textAlignment = .left
             $0.numberOfLines = 2
         }
         
         novelAuthorLabel.do {
             $0.font = .Label1
-            $0.textColor = .Gray200
+            $0.textColor = .wssGray200
             $0.textAlignment = .left
             $0.numberOfLines = 1
         }
         
         novelRatingLabel.do {
             $0.font = .Label1
-            $0.textColor = .Black
+            $0.textColor = .wssBlack
         }
     }
-    
-    //MARK: - Set Hierachy
-    
+
     private func setHierarchy() {
         self.addSubviews(novelImageView,
                          novelTitleLabel,
@@ -73,8 +74,6 @@ final class LibraryCollectionViewCell: UICollectionViewCell {
                          ratingStarImage,
                          novelRatingLabel)
     }
-    
-    //MARK: - Set Layout
     
     private func setLayout() {
         novelImageView.snp.makeConstraints() {
@@ -104,21 +103,23 @@ final class LibraryCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    //MARK: - Data
+    
     func bindData(_ data: UserNovelListDetail) {
         novelImageView.kfSetImage(url: data.userNovelImg)
         novelTitleLabel.text = data.userNovelTitle
         novelAuthorLabel.text = data.userNovelAuthor
         
         let novelRating = data.userNovelRating
+        
         if novelRating == 0.0 {
-            novelRatingLabel.isHidden = true
             ratingStarImage.isHidden = true
+            novelRatingLabel.isHidden = true
         }
         else {
-            novelRatingLabel.isHidden = false
             ratingStarImage.isHidden = false
+            novelRatingLabel.isHidden = false
+            novelRatingLabel.text = String(data.userNovelRating)
         }
-        
-        novelRatingLabel.text = String(data.userNovelRating)
     }
 }

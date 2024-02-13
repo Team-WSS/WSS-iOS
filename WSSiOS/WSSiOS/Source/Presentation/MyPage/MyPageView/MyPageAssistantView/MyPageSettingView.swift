@@ -34,7 +34,7 @@ final class MyPageSettingView: UIView {
     //MARK: - UI
     
     private func setUI() {
-        self.backgroundColor = .Gray50
+        self.backgroundColor = .wssGray50
         
         myPageSettingCollectionView.do {
             let layout = UICollectionViewFlowLayout()
@@ -44,7 +44,7 @@ final class MyPageSettingView: UIView {
                                      height: 64.0)
             
             $0.collectionViewLayout = layout
-            $0.backgroundColor = .Gray50
+            $0.backgroundColor = .wssGray50
         }
     }
 

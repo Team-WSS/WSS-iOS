@@ -14,7 +14,7 @@ import UIImageViewAlignedSwift
 
 final class NovelDetailHeaderView: UIView {
 
-    // MARK: - UI Components
+    //MARK: - Components
     
     private let backgroundImageView = UIImageViewAligned()
     private let gradientView = UIImageView()
@@ -23,13 +23,13 @@ final class NovelDetailHeaderView: UIView {
     private let novelAuthorLabel = UILabel()
     private let novelCoverImageView = UIImageView()
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -37,7 +37,7 @@ final class NovelDetailHeaderView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
         backgroundImageView.do {
@@ -49,7 +49,7 @@ final class NovelDetailHeaderView: UIView {
         gradientView.do {
             $0.contentMode = .scaleAspectFill
             $0.clipsToBounds = true
-            $0.image = ImageLiterals.Image.Banner.backgroundGradient
+            $0.image = .imgBackgroundGradation
         }
         
         genreImageView.do {
@@ -58,25 +58,23 @@ final class NovelDetailHeaderView: UIView {
         
         novelTitleLabel.do {
             $0.font = .HeadLine1
-            $0.textColor = .White
+            $0.textColor = .wssWhite
             $0.numberOfLines = 3
         }
         
         novelAuthorLabel.do {
             $0.font = .Body2
-            $0.textColor = .Gray200
+            $0.textColor = .wssGray200
         }
         
         novelCoverImageView.do {
-            $0.image = ImageLiterals.Image.Banner.loadingThumbnail
+            $0.image = .imgLoadingThumbnail
             $0.layer.cornerRadius = 6
             $0.clipsToBounds = true
         }
     }
     
-    // MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(backgroundImageView,
                          gradientView,
                          genreImageView,
@@ -84,8 +82,6 @@ final class NovelDetailHeaderView: UIView {
                          novelAuthorLabel,
                          novelCoverImageView)
     }
-    
-    // MARK: - set Layout
     
     private func setLayout() {
         backgroundImageView.snp.makeConstraints {
@@ -122,6 +118,8 @@ final class NovelDetailHeaderView: UIView {
             $0.trailing.equalTo(novelCoverImageView.snp.leading).offset(-18)
         }
     }
+    
+    //MARK: - Data
     
     func bindData(title: String, author: String, novelImage: String, genreImage: String) {
         self.novelTitleLabel.do {

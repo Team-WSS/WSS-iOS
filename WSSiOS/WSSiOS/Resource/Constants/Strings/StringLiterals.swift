@@ -37,15 +37,24 @@ enum StringLiterals {
     enum Register {
         enum Normal {
             enum DatePicker {
+                static let middle = "~"
                 static let start = "시작 날짜"
                 static let end = "종료 날짜"
+                static let KoreaTimeZone = "ko_KR"
+                static let dateFormat = "yyyy-MM-dd"
             }
+            
             enum SectionTitle {
                 static let readStatus = "읽기 상태 *"
                 static let readDate = "읽은 날짜"
+                static let keyword = "키워드"
                 static let plot = "작품 소개"
                 static let genre = "장르"
                 static let platform = "작품 보러가기"
+            }
+            
+            enum Keyword {
+                static let selectButton = "키워드 등록"
             }
             
             enum RegisterButton {
@@ -113,6 +122,83 @@ enum StringLiterals {
     enum Alignment {
         static let newest = "최신 순"
         static let oldest = "오래된 순"
+        
+        enum TabBar: String, CaseIterable {
+            case all = "전체"
+            case finish = "읽음"
+            case reading = "읽는 중"
+            case drop = "하차"
+            case wish = "읽고 싶음"
+        }
+        
+        enum ReadStatus: String, CaseIterable {
+            case all = "ALL"
+            case finish = "FINISH"
+            case reading = "READING"
+            case drop = "DROP"
+            case wish = "WISH"
+        }
+        
+        enum SortType {
+            case newest, oldest
+            
+            var title: String {
+                switch self {
+                case .newest:
+                    return "최신 순"
+                case .oldest:
+                    return "오래된 순"
+                }
+            }
+            
+            var sortType: String {
+                switch self {
+                case .newest:
+                    return "NEWEST"
+                case .oldest:
+                    return "OLDEST"
+                }
+            }
+            
+            var lastUserNovelIdData: Int {
+                switch self {
+                case .newest:
+                    return 999999
+                case .oldest:
+                    return 0
+                }
+            }
+            
+            var sizeData: Int {
+                return 500
+            }
+        }
+    }
+    
+    enum NovelDetail {
+        enum Memo {
+            static let memo = "메모"
+            static let noMemo = "아직 작성된 메모가 없어요"
+            static let newMemo = "새로운 메모를 작성해보세요"
+        }
+        
+        enum Info {
+            static let info = "정보"
+            static let rating = "나의 평가"
+            static let readStatus = "읽기 상태"
+            static let tilde = "~"
+            static let startDate = "시작 날짜"
+            static let endDate = "읽은 날짜"
+            static let keyword = "키워드"
+            static let description = "작품 소개"
+            static let genre = "장르"
+            static let platform = "작품 보러가기"
+        }
+        
+        enum Setting {
+            static let novelDelete = "작품을 서재에서 삭제"
+            static let novelEdit = "작품 정보 수정"
+        }
     }
     
     enum Search {
