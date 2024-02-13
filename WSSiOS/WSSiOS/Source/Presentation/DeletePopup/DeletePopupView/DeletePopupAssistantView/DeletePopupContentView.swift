@@ -48,7 +48,7 @@ enum PopupStatus {
 
 final class DeletePopupContentView: UIView {
     
-    // MARK: - UI Components
+    //MARK: - Components
     
     private let warningImageView = UIImageView()
     private let titleLabel = UILabel()
@@ -56,13 +56,13 @@ final class DeletePopupContentView: UIView {
     public let deleteButton = UIButton()
     public let cancelButton = UIButton()
 
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     init(_ popupStatus: PopupStatus) {
         super.init(frame: .zero)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
         
         bindData(popupStatus)
@@ -72,7 +72,7 @@ final class DeletePopupContentView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
         self.do {
@@ -107,17 +107,13 @@ final class DeletePopupContentView: UIView {
         }
     }
     
-    // MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(warningImageView,
                          titleLabel,
                          descriptionLabel,
                          deleteButton,
                          cancelButton)
     }
-    
-    // MARK: - set Layout
     
     private func setLayout() {
         warningImageView.snp.makeConstraints {
@@ -153,6 +149,8 @@ final class DeletePopupContentView: UIView {
             $0.height.equalTo(40)
         }
     }
+    
+    //MARK: - Bind
     
     func bindData(_ status: PopupStatus) {
         self.titleLabel.do {

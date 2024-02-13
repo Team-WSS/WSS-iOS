@@ -12,7 +12,7 @@ import RxCocoa
 
 final class DeletePopupViewController: UIViewController {
 
-    //MARK: - set Properties
+    //MARK: - Properties
 
     private let disposeBag = DisposeBag()
     private let userNovelRepository: UserNovelRepository?
@@ -21,11 +21,11 @@ final class DeletePopupViewController: UIViewController {
     private let userNovelId: Int?
     private let memoId: Int?
     
-    // MARK: - UI Components
+    //MARK: - Components
     
     private var rootView: DeletePopupView
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     init(userNovelRepository: UserNovelRepository? = nil, memoRepository: MemoRepository? = nil, popupStatus: PopupStatus, userNovelId: Int? = nil, memoId: Int? = nil) {
         self.userNovelRepository = userNovelRepository
@@ -48,34 +48,30 @@ final class DeletePopupViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setBinding()
+        bindAction()
     }
     
-    // MARK: - set Binding
+    //MARK: - Actions
     
-    private func setBinding() {
+    private func bindAction() {
         rootView.deletePopupContentView.cancelButton.rx.tap.bind {
             self.dismiss(animated: true)
         }.disposed(by: disposeBag)
         
-        switch self.popupStatus {
-        case .memoDelete:
-            rootView.deletePopupContentView.deleteButton.rx.tap.bind {
+        rootView.deletePopupContentView.deleteButton.rx.tap.bind {
+            switch self.popupStatus {
+            case .memoDelete:
                 self.deleteMemo()
-            }.disposed(by: disposeBag)
-        case .memoEditCancel:
-            rootView.deletePopupContentView.deleteButton.rx.tap.bind {
+            case .memoEditCancel:
                 NotificationCenter.default.post(name: NSNotification.Name("CanceledEdit"), object: nil)
                 self.dismiss(animated: true)
-            }.disposed(by: disposeBag)
-        case .novelDelete:
-            rootView.deletePopupContentView.deleteButton.rx.tap.bind {
+            case .novelDelete:
                 self.deleteUserNovel()
-            }.disposed(by: disposeBag)
-        }
+            }
+        }.disposed(by: disposeBag)
     }
     
-    // MARK: - API request
+    //MARK: - API
     
     private func deleteUserNovel() {
         userNovelRepository!.deleteUserNovel(userNovelId: self.userNovelId!)
