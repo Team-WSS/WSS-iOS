@@ -81,7 +81,7 @@ final class DeletePopupContentView: UIView {
         }
         
         warningImageView.do {
-            $0.image = ImageLiterals.icon.warning
+            $0.image = .icWarning
             $0.contentMode = .scaleAspectFit
         }
         
