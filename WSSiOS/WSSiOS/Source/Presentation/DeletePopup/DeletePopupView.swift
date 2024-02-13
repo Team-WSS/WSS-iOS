@@ -34,7 +34,7 @@ final class DeletePopupView: UIView {
     //MARK: - UI
     
     private func setUI() {
-        self.backgroundColor = .Black.withAlphaComponent(0.6)
+        self.backgroundColor = .wssBlack.withAlphaComponent(0.6)
     }
     
     private func setHierarchy() {

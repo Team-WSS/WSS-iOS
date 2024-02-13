@@ -76,7 +76,7 @@ final class DeletePopupContentView: UIView {
     
     private func setUI() {
         self.do {
-            $0.backgroundColor = .white
+            $0.backgroundColor = .wssWhite
             $0.layer.cornerRadius = 12
         }
         
@@ -86,23 +86,23 @@ final class DeletePopupContentView: UIView {
         }
         
         titleLabel.do {
-            $0.textColor = .Black
+            $0.textColor = .wssBlack
             $0.font = .Title2
         }
         
         descriptionLabel.do {
-            $0.textColor = .Gray200
+            $0.textColor = .wssGray200
             $0.font = .Label1
             $0.numberOfLines = 2
         }
         
         deleteButton.do {
-            $0.backgroundColor = .Gray50
+            $0.backgroundColor = .wssGray50
             $0.layer.cornerRadius = 8
         }
         
         cancelButton.do {
-            $0.backgroundColor = .Primary200
+            $0.backgroundColor = .wssPrimary200
             $0.layer.cornerRadius = 8
         }
     }
@@ -165,7 +165,7 @@ final class DeletePopupContentView: UIView {
                 .applyAttribute()
             $0.textAlignment = .center
         }
-        self.deleteButton.setButtonAttributedTitle(text: status.deleteButtonText, font: .Label1, color: .Gray300)
-        self.cancelButton.setButtonAttributedTitle(text: status.cancelButtonText, font: .Label1, color: .white)
+        self.deleteButton.setButtonAttributedTitle(text: status.deleteButtonText, font: .Label1, color: .wssGray300)
+        self.cancelButton.setButtonAttributedTitle(text: status.cancelButtonText, font: .Label1, color: .wssWhite)
     }
 }
