@@ -571,7 +571,6 @@
 				A122C9F42B5314F000DFCFE4 /* URLs */,
 				A122C9F02B53146100DFCFE4 /* Config */,
 				2C24917F2B4ADBF20096F255 /* Strings */,
-				A1EC91B22B46DA2700CFB33D /* Images */,
 				39B75ACC2B5912A0005DD8B9 /* Lotties */,
 			);
 			path = Constants;
@@ -993,13 +992,6 @@
 				A1DBB2F92B4AA981000EE869 /* SearchCollectionViewCell.swift */,
 			);
 			path = SearchCell;
-			sourceTree = "<group>";
-		};
-		A1EC91B22B46DA2700CFB33D /* Images */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Images;
 			sourceTree = "<group>";
 		};
 		A1EF35552B52FA9700A94C53 /* DTO */ = {
