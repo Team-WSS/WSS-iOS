@@ -12,18 +12,18 @@ import Then
 
 final class DeletePopupView: UIView {
     
-    // MARK: - UI Components
+    //MARK: - Components
     
     var deletePopupContentView: DeletePopupContentView
 
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     init(_ popupStatus: PopupStatus) {
         deletePopupContentView = DeletePopupContentView(popupStatus)
         super.init(frame: .zero)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -31,19 +31,15 @@ final class DeletePopupView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
-        self.backgroundColor = .Black.withAlphaComponent(0.6)
+        self.backgroundColor = .wssBlack.withAlphaComponent(0.6)
     }
     
-    // MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubview(deletePopupContentView)
     }
-    
-    // MARK: - set Layout
     
     private func setLayout() {
         deletePopupContentView.snp.makeConstraints {
