@@ -26,7 +26,7 @@ final class RecordEmptyView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -79,7 +79,7 @@ final class RecordEmptyView: UIView {
         }
     }
     
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(dividerView,
                          stackView)
         

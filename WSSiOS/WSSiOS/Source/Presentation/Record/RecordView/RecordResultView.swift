@@ -26,7 +26,7 @@ final class RecordResultView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -49,7 +49,7 @@ final class RecordResultView: UIView {
         }
     }
     
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(headerView,
                          recordTableView,
                          alignmentView)
