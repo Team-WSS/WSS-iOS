@@ -20,8 +20,8 @@ final class RecordViewController: UIViewController {
     private var recordMemoCount = BehaviorRelay<Int>(value: 0)
     private let disposeBag = DisposeBag()
     
-    private var lastMemoId = 9999
-    private var alignmentLabel = "NEWEST"
+    private var lastMemoId = StringLiterals.Alignment.newest.lastNovelId
+    private var alignmentLabel = StringLiterals.Alignment.newest.sortType
     
     //MARK: - Components
     
@@ -95,10 +95,10 @@ final class RecordViewController: UIViewController {
              
         rootView.alignmentView.libraryNewestButton
             .rx.tap
-            .bind(with: self, onNext: { owner, event in
-                owner.lastMemoId = 9999
-                owner.alignmentLabel = "NEWEST"
-                owner.rootView.headerView.headerAlignmentButton.setTitle(StringLiterals.Alignment.newest, for: .normal)
+            .bind(with: self, onNext: { owner, _ in
+                owner.lastMemoId = StringLiterals.Alignment.newest.lastNovelId
+                owner.alignmentLabel = StringLiterals.Alignment.newest.sortType
+                owner.rootView.headerView.headerAlignmentButton.setTitle(StringLiterals.Alignment.newest.title, for: .normal)
                 owner.getDataFromAPI(id: owner.lastMemoId, sortType: owner.alignmentLabel)
                 owner.rootView.alignmentView.isHidden = true
             })
@@ -106,10 +106,10 @@ final class RecordViewController: UIViewController {
         
         rootView.alignmentView.libraryOldesttButton
             .rx.tap
-            .bind(with: self, onNext: { owner, event in
-                owner.lastMemoId = 0
-                owner.alignmentLabel = "OLDEST"
-                owner.rootView.headerView.headerAlignmentButton.setTitle(StringLiterals.Alignment.newest, for: .normal)
+            .bind(with: self, onNext: { owner, _ in
+                owner.lastMemoId = StringLiterals.Alignment.oldest.lastNovelId
+                owner.alignmentLabel = StringLiterals.Alignment.oldest.sortType
+                owner.rootView.headerView.headerAlignmentButton.setTitle(StringLiterals.Alignment.oldest.title, for: .normal)
                 owner.getDataFromAPI(id: owner.lastMemoId, sortType: owner.alignmentLabel)
                 owner.rootView.alignmentView.isHidden = true
             })

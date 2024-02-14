@@ -71,7 +71,7 @@ enum StringLiterals {
         }
     }
     
-
+    
     enum MyPage {
         enum Modal {
             static let back = "돌아가기"
@@ -106,7 +106,7 @@ enum StringLiterals {
             static let nickname = "닉네임"
         }
     }
-
+    
     enum Library {
         static let empty = "아직 서재가 비어있네요!"
         static let register = "웹소설 등록하기"
@@ -119,59 +119,54 @@ enum StringLiterals {
         }
     }
     
+    enum TabBar: String, CaseIterable {
+        case all = "전체"
+        case finish = "읽음"
+        case reading = "읽는 중"
+        case drop = "하차"
+        case wish = "읽고 싶음"
+    }
+    
+    enum ReadStatus: String, CaseIterable {
+        case all = "ALL"
+        case finish = "FINISH"
+        case reading = "READING"
+        case drop = "DROP"
+        case wish = "WISH"
+    }
+    
     enum Alignment {
-        static let newest = "최신 순"
-        static let oldest = "오래된 순"
+        case newest, oldest
         
-        enum TabBar: String, CaseIterable {
-            case all = "전체"
-            case finish = "읽음"
-            case reading = "읽는 중"
-            case drop = "하차"
-            case wish = "읽고 싶음"
+        var sortType: String {
+            switch self {
+            case .newest:
+                return "NEWEST"
+            case .oldest:
+                return "OLDEST"
+            }
         }
         
-        enum ReadStatus: String, CaseIterable {
-            case all = "ALL"
-            case finish = "FINISH"
-            case reading = "READING"
-            case drop = "DROP"
-            case wish = "WISH"
+        var title: String {
+            switch self {
+            case .newest:
+                return "최신 순"
+            case .oldest:
+                return "오래된 순"
+            }
         }
         
-        enum SortType {
-            case newest, oldest
-            
-            var title: String {
-                switch self {
-                case .newest:
-                    return "최신 순"
-                case .oldest:
-                    return "오래된 순"
-                }
+        var lastNovelId: Int {
+            switch self {
+            case .newest:
+                return 999999
+            case .oldest:
+                return 0
             }
-            
-            var sortType: String {
-                switch self {
-                case .newest:
-                    return "NEWEST"
-                case .oldest:
-                    return "OLDEST"
-                }
-            }
-            
-            var lastUserNovelIdData: Int {
-                switch self {
-                case .newest:
-                    return 999999
-                case .oldest:
-                    return 0
-                }
-            }
-            
-            var sizeData: Int {
-                return 500
-            }
+        }
+        
+        var sizeData: Int {
+            return 500
         }
     }
     
