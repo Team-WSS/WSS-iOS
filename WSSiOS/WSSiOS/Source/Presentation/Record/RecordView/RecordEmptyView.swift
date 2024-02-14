@@ -66,16 +66,16 @@ final class RecordEmptyView: UIView {
         }
         
         recordButton.do {
-            var config = UIButton.Configuration.filled()
-            config.baseBackgroundColor = .wssPrimary50
-            config.baseForegroundColor = .wssPrimary100
+            var configuration = UIButton.Configuration.filled()
+            configuration.baseBackgroundColor = .wssPrimary50
+            configuration.baseForegroundColor = .wssPrimary100
             var titleAttr = AttributedString.init(StringLiterals.Record.Empty.register)
             titleAttr.kern = -0.6
             titleAttr.font = UIFont.Title1
-            config.attributedTitle = titleAttr
-            config.background.cornerRadius = 12
-            config.contentInsets = NSDirectionalEdgeInsets(top: 18, leading: 42, bottom: 18, trailing: 42)
-            $0.configuration = config
+            configuration.attributedTitle = titleAttr
+            configuration.background.cornerRadius = 12
+            configuration.contentInsets = NSDirectionalEdgeInsets(top: 18, leading: 42, bottom: 18, trailing: 42)
+            $0.configuration = configuration
         }
     }
     
