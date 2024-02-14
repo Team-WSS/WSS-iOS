@@ -11,11 +11,11 @@ import SnapKit
 import Then
 
 final class LibraryDescriptionView: UIView {
-
-    //MARK: - UI Components
     
-    public var libraryNovelCountLabel = UILabel()
-    public var libraryNovelListButton = UIButton()
+    //MARK: - Components
+    
+    public let libraryNovelCountLabel = UILabel()
+    public lazy var libraryNovelListButton = UIButton()
     
     // MARK: - Life Cycle
     
@@ -31,35 +31,36 @@ final class LibraryDescriptionView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
-        self.backgroundColor = .Gray50
+        self.backgroundColor = .wssGray50
         
         libraryNovelCountLabel.do {
             $0.font = .Label1
-            $0.textColor = .Gray200
+            $0.textColor = .wssGray200
         }
         
         libraryNovelListButton.do {
-            $0.setTitle("최신 순", for: .normal)
-            $0.setTitleColor(.Gray300, for: .normal)
-            $00.titleLabel?.font = .Label1
-            $0.titleLabel?.adjustsFontSizeToFitWidth = true
-            $0.setImage(ImageLiterals.icon.dropDown, for: .normal)
-            $0.semanticContentAttribute = .forceRightToLeft
-            $0.imageEdgeInsets = .init(top: 0, left: 8, bottom: 0, right: 0)
+            let title = StringLiterals.Alignment.newest
+            var attString = AttributedString(title)
+            attString.font = UIFont.Label1
+            attString.foregroundColor = UIColor.wssGray300
+            
+            var configuration = UIButton.Configuration.filled()
+            configuration.attributedTitle = attString
+            configuration.image = .icDropDown
+            configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 0)
+            configuration.imagePlacement = .trailing
+            configuration.baseBackgroundColor = UIColor.clear
+            $0.configuration = configuration
         }
     }
-    
-    //MARK: - set Hierachy
-    
+
     private func setHierarchy() {
         self.addSubviews(libraryNovelCountLabel,
                          libraryNovelListButton)
     }
-    
-    //MARK: - set Layout
     
     private func setLayout() {
         libraryNovelCountLabel.snp.makeConstraints() {

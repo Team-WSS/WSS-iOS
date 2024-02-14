@@ -12,18 +12,18 @@ import Then
 
 final class NovelDetailInfoKeywordView: UIView {
 
-    // MARK: - UI Components
+    //MARK: - Components
     
     private let keywordLabel = UILabel()
-    public let keywordCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+    let keywordCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -31,14 +31,14 @@ final class NovelDetailInfoKeywordView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
         keywordLabel.do {
-            $0.makeAttribute(with: "키워드")?
+            $0.makeAttribute(with: StringLiterals.NovelDetail.Info.keyword)?
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
-            $0.textColor = .Black
+            $0.textColor = .wssBlack
             $0.font = .Title1
         }
         
@@ -53,14 +53,10 @@ final class NovelDetailInfoKeywordView: UIView {
         }
     }
     
-    // MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(keywordLabel,
                          keywordCollectionView)
     }
-    
-    // MARK: - set Layout
     
     private func setLayout() {
         keywordLabel.snp.makeConstraints {
@@ -75,6 +71,8 @@ final class NovelDetailInfoKeywordView: UIView {
             $0.height.equalTo(100)
         }
     }
+    
+    //MARK: - Custom Method
     
     func updateCollectionViewHeight(height: CGFloat) {
         keywordCollectionView.snp.updateConstraints {

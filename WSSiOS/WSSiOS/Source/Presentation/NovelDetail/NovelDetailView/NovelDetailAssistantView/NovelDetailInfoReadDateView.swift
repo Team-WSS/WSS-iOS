@@ -12,7 +12,7 @@ import Then
 
 final class NovelDetailInfoReadDateView: UIView {
     
-    // MARK: - UI Components
+    //MARK: - Components
     
     private let readDateLabel = UILabel()
     private let dateImageView = UIImageView()
@@ -20,13 +20,13 @@ final class NovelDetailInfoReadDateView: UIView {
     private let endDateLabel = UILabel()
     private let waveLabel = UILabel()
 
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -34,51 +34,47 @@ final class NovelDetailInfoReadDateView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
         readDateLabel.do {
-            $0.textColor = .Black
+            $0.textColor = .wssBlack
             $0.font = .Title1
         }
         
         dateImageView.do {
-            $0.image = ImageLiterals.icon.calender.withRenderingMode(.alwaysTemplate)
+            $0.image = .icCalendar.withRenderingMode(.alwaysTemplate)
             $0.contentMode = .scaleAspectFit
-            $0.tintColor = .Black
+            $0.tintColor = .wssBlack
         }
         
         startDateLabel.do {
             $0.font = .Body2
-            $0.textColor = .Gray300
+            $0.textColor = .wssGray300
         }
         
         endDateLabel.do {
             $0.font = .Body2
-            $0.textColor = .Gray300
+            $0.textColor = .wssGray300
         }
         
         waveLabel.do {
-            $0.makeAttribute(with: "~")?
+            $0.makeAttribute(with: StringLiterals.NovelDetail.Info.tilde)?
                 .lineSpacing(spacingPercentage: 150)
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
             $0.font = .Body2
-            $0.textColor = .Gray300
+            $0.textColor = .wssGray300
         }
     }
     
-    // MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(readDateLabel,
                          dateImageView,
                          startDateLabel,
                          waveLabel,
                          endDateLabel)
     }
-    
-    // MARK: - set Layout
     
     private func setLayout() {
         readDateLabel.snp.makeConstraints {
@@ -109,6 +105,8 @@ final class NovelDetailInfoReadDateView: UIView {
         }
     }
     
+    //MARK: - Data
+    
     func bindData(startDate: String, endDate: String?) {
         self.startDateLabel.do {
             $0.makeAttribute(with: startDate)?
@@ -118,7 +116,7 @@ final class NovelDetailInfoReadDateView: UIView {
         }
         if let endDate = endDate {
             self.readDateLabel.do {
-                $0.makeAttribute(with: "읽은 날짜")?
+                $0.makeAttribute(with: StringLiterals.NovelDetail.Info.endDate)?
                     .kerning(kerningPixel: -0.6)
                     .applyAttribute()
             }
@@ -131,7 +129,7 @@ final class NovelDetailInfoReadDateView: UIView {
             self.waveLabel.isHidden = false
         } else {
             self.readDateLabel.do {
-                $0.makeAttribute(with: "시작 날짜")?
+                $0.makeAttribute(with: StringLiterals.NovelDetail.Info.startDate)?
                     .kerning(kerningPixel: -0.6)
                     .applyAttribute()
             }

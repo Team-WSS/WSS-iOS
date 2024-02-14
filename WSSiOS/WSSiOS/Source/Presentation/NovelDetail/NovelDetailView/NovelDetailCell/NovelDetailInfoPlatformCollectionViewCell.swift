@@ -12,20 +12,18 @@ import Then
 
 final class NovelDetailInfoPlatformCollectionViewCell: UICollectionViewCell {
     
-    static let identifier: String = "NovelDetailInfoPlatformCollectionViewCell"
-    
-    // MARK: - UI Components
-    
+    //MARK: - Components
+
     private let platformLabel = UILabel()
     private let platformImageView = UIImageView()
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -33,33 +31,29 @@ final class NovelDetailInfoPlatformCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
         self.do {
-            $0.backgroundColor = .Primary50
+            $0.backgroundColor = .wssPrimary50
             $0.layer.cornerRadius = 18.5
         }
         
         platformLabel.do {
             $0.font = .Body2
-            $0.textColor = .Primary100
+            $0.textColor = .wssPrimary100
         }
         
         platformImageView.do {
-            $0.image = ImageLiterals.icon.linkPlatform
+            $0.image = .icLinkPlatform
             $0.contentMode = .scaleAspectFit
         }
     }
     
-    // MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.contentView.addSubviews(platformLabel,
                                      platformImageView)
     }
-    
-    // MARK: - set Layout
     
     private func setLayout() {
         platformLabel.snp.makeConstraints {
@@ -74,8 +68,8 @@ final class NovelDetailInfoPlatformCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    // MARK: - bind data
-    
+    //MARK: - Data
+
     func bindData(platform: String) {
         self.platformLabel.do {
             $0.makeAttribute(with: platform)?

@@ -12,7 +12,7 @@ import Then
 
 final class NovelDetailView: UIView {
     
-    // MARK: - UI Components
+    //MARK: - Components
 
     let statusBarView = UIView()
     let scrollView = UIScrollView()
@@ -25,13 +25,13 @@ final class NovelDetailView: UIView {
     let stickyNovelDetailTabView = NovelDetailTabView()
     let novelDetailMemoSettingButtonView = NovelDetailMemoSettingButtonView()
 
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -39,10 +39,10 @@ final class NovelDetailView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
-        self.backgroundColor = .White
+        self.backgroundColor = .wssWhite
         
         statusBarView.do {
             let scenes = UIApplication.shared.connectedScenes
@@ -62,8 +62,8 @@ final class NovelDetailView: UIView {
         }
         
         createMemoButton.do {
-            $0.backgroundColor = .Black
-            $0.setImage(ImageLiterals.icon.Memo.big, for: .normal)
+            $0.backgroundColor = .wssBlack
+            $0.setImage(.icCreateMemoBig, for: .normal)
             $0.topLeftRadius = 32.5
             $0.topRightRadius = 32.5
             $0.bottomLeftRadius = 32.5
@@ -79,9 +79,7 @@ final class NovelDetailView: UIView {
         }
     }
     
-    // MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(scrollView,
                          statusBarView,
                          createMemoButton,
@@ -92,8 +90,6 @@ final class NovelDetailView: UIView {
                                         novelDetailTabView,
                                         novelDetailMemoView)
     }
-    
-    // MARK: - set Layout
     
     private func setLayout() {
         scrollView.snp.makeConstraints {
@@ -121,8 +117,11 @@ final class NovelDetailView: UIView {
         }
     }
     
-    func changeCurrentMenu(menu: Int) {
-        if menu == 0 {
+    //MARK: - Custom Method
+    
+    func changeCurrentMenu(menu: SelectedMenu) {
+        switch menu {
+        case .memo:
             self.novelDetailInfoView.removeFromSuperview()
             self.contentView.addArrangedSubview(self.novelDetailMemoView)
             self.novelDetailTabView.do {
@@ -135,7 +134,7 @@ final class NovelDetailView: UIView {
                 $0.infoButton.isSelected = false
                 $0.highlightMemoButton()
             }
-        } else {
+        case .info:
             self.novelDetailMemoView.removeFromSuperview()
             self.contentView.addArrangedSubview(self.novelDetailInfoView)
             self.novelDetailTabView.do {

@@ -17,52 +17,52 @@ enum PopupStatus {
     
     var titleText: String {
         switch self {
-        case .memoEditCancel: "작성을 취소할까요?"
-        case .memoDelete: "메모를 삭제하실 건가요?"
-        case .novelDelete: "이 작품을 삭제하실 건가요?"
+        case .memoEditCancel: StringLiterals.DeletePopup.MemoEditCancel.titleText
+        case .memoDelete: StringLiterals.DeletePopup.MemoDelete.titleText
+        case .novelDelete: StringLiterals.DeletePopup.NovelDelete.titleText
         }
     }
     
     var descriptionText: String {
         switch self {
-        case .memoEditCancel: "작성 중인 내용이 모두 사라져요!"
-        case .memoDelete: "삭제한 메모는 다시 되돌릴 수 없어요!"
-        case .novelDelete: "읽기 정보와 작성한 메모가 모두 사라져요!\n삭제한 내용은 절대 되돌릴 수 없어요ㅠ"
+        case .memoEditCancel: StringLiterals.DeletePopup.MemoEditCancel.descriptionText
+        case .memoDelete: StringLiterals.DeletePopup.MemoDelete.descriptionText
+        case .novelDelete: StringLiterals.DeletePopup.NovelDelete.descriptionText
         }
     }
     
     var deleteButtonText: String {
         switch self {
-        case .memoEditCancel: "나가기"
-        case .memoDelete, .novelDelete: "삭제하기"
+        case .memoEditCancel: StringLiterals.DeletePopup.DeleteButtonText.exit
+        case .memoDelete, .novelDelete: StringLiterals.DeletePopup.DeleteButtonText.delete
         }
     }
     
     var cancelButtonText: String {
         switch self {
-        case .memoEditCancel: "계속 작성하기"
-        case .memoDelete, .novelDelete: "취소"
+        case .memoEditCancel: StringLiterals.DeletePopup.CancelButtonText.keepWriting
+        case .memoDelete, .novelDelete: StringLiterals.DeletePopup.CancelButtonText.cancel
         }
     }
 }
 
 final class DeletePopupContentView: UIView {
     
-    // MARK: - UI Components
+    //MARK: - Components
     
     private let warningImageView = UIImageView()
     private let titleLabel = UILabel()
     private let descriptionLabel = UILabel()
-    public let deleteButton = UIButton()
-    public let cancelButton = UIButton()
+    let deleteButton = UIButton()
+    let cancelButton = UIButton()
 
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     init(_ popupStatus: PopupStatus) {
         super.init(frame: .zero)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
         
         bindData(popupStatus)
@@ -72,52 +72,48 @@ final class DeletePopupContentView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
         self.do {
-            $0.backgroundColor = .white
+            $0.backgroundColor = .wssWhite
             $0.layer.cornerRadius = 12
         }
         
         warningImageView.do {
-            $0.image = ImageLiterals.icon.warning
+            $0.image = .icWarning
             $0.contentMode = .scaleAspectFit
         }
         
         titleLabel.do {
-            $0.textColor = .Black
+            $0.textColor = .wssBlack
             $0.font = .Title2
         }
         
         descriptionLabel.do {
-            $0.textColor = .Gray200
+            $0.textColor = .wssGray200
             $0.font = .Label1
             $0.numberOfLines = 2
         }
         
         deleteButton.do {
-            $0.backgroundColor = .Gray50
+            $0.backgroundColor = .wssGray50
             $0.layer.cornerRadius = 8
         }
         
         cancelButton.do {
-            $0.backgroundColor = .Primary200
+            $0.backgroundColor = .wssPrimary200
             $0.layer.cornerRadius = 8
         }
     }
     
-    // MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(warningImageView,
                          titleLabel,
                          descriptionLabel,
                          deleteButton,
                          cancelButton)
     }
-    
-    // MARK: - set Layout
     
     private func setLayout() {
         warningImageView.snp.makeConstraints {
@@ -154,6 +150,8 @@ final class DeletePopupContentView: UIView {
         }
     }
     
+    //MARK: - Bind
+    
     func bindData(_ status: PopupStatus) {
         self.titleLabel.do {
             $0.makeAttribute(with: status.titleText)?
@@ -167,7 +165,7 @@ final class DeletePopupContentView: UIView {
                 .applyAttribute()
             $0.textAlignment = .center
         }
-        self.deleteButton.setButtonAttributedTitle(text: status.deleteButtonText, font: .Label1, color: .Gray300)
-        self.cancelButton.setButtonAttributedTitle(text: status.cancelButtonText, font: .Label1, color: .white)
+        self.deleteButton.setButtonAttributedTitle(text: status.deleteButtonText, font: .Label1, color: .wssGray300)
+        self.cancelButton.setButtonAttributedTitle(text: status.cancelButtonText, font: .Label1, color: .wssWhite)
     }
 }

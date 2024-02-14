@@ -34,8 +34,6 @@ enum WSSTabBarItem: CaseIterable {
             return .icNavigateRecordSelected
         case .myPage:
             return .icNavigateMySelected
-        default:
-            return UIImage()
         }
     }
     

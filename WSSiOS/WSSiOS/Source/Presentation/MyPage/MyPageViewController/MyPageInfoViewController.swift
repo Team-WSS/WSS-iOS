@@ -39,7 +39,7 @@ final class MyPageInfoViewController: UIViewController {
     
     private func setUI() {
         backButton.do {
-            $0.setImage(ImageLiterals.icon.navigateLeft.withRenderingMode(.alwaysOriginal), for: .normal)
+            $0.setImage(.icNavigateLeft.withRenderingMode(.alwaysOriginal), for: .normal)
             $0.rx.tap
                 .throttle(.seconds(3), scheduler: MainScheduler.instance)
                 .subscribe(with: self, onNext: { owner, _ in 

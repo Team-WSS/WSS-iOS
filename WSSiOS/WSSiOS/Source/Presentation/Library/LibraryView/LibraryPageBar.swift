@@ -13,15 +13,15 @@ import SnapKit
 import Then
 
 final class LibraryPageBar: UIView {
-
+    
     //MARK: - Properties
     
     private let disposeBag = DisposeBag()
-    public var selectedTabIndex = PublishSubject<Int>()
+    lazy var selectedTabIndex = PublishSubject<Int>()
     
-    //MARK: - UI Components
+    //MARK: - Components
     
-    public var libraryTabCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+    public lazy var libraryTabCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     
     // MARK: - Life Cycle
     
@@ -37,7 +37,7 @@ final class LibraryPageBar: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
         libraryTabCollectionView.do {
@@ -54,14 +54,10 @@ final class LibraryPageBar: UIView {
             .bind(to: selectedTabIndex)
             .disposed(by: disposeBag)
     }
-    
-    //MARK: - set Hierachy
-    
+
     private func setHierarchy() {
         self.addSubview(libraryTabCollectionView)
     }
-    
-    //MARK: - set Layout
     
     private func setLayout() {
         libraryTabCollectionView.snp.makeConstraints() {

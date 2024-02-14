@@ -79,14 +79,14 @@ final class MyPageChangeNicknameViewController: UIViewController {
                            .editingChanged])
             .asObservable()
             .subscribe(with: self, onNext: { owner, _ in
-                owner.rootView.textFieldUnderBarView.backgroundColor = .Primary100
+                owner.rootView.textFieldUnderBarView.backgroundColor = .wssPrimary100
             })
             .disposed(by: disposeBag)
         
         rootView.changeNicknameTextField.rx.controlEvent([.editingDidEnd])
             .asObservable()
             .subscribe(with: self, onNext: { owner, _ in
-                owner.rootView.textFieldUnderBarView.backgroundColor = .Gray200
+                owner.rootView.textFieldUnderBarView.backgroundColor = .wssGray200
             })
             .disposed(by: disposeBag)
         
@@ -103,9 +103,9 @@ final class MyPageChangeNicknameViewController: UIViewController {
                     }
                     
                     if text == owner.userNickName || text == "" {
-                        owner.completeButton.setTitleColor(.Gray200, for: .normal)
+                        owner.completeButton.setTitleColor(.wssGray200, for: .normal)
                     } else {
-                        owner.completeButton.setTitleColor(.Primary100, for: .normal)
+                        owner.completeButton.setTitleColor(.wssPrimary100, for: .normal)
                     }
                 }
             })
@@ -134,7 +134,7 @@ extension MyPageChangeNicknameViewController {
     
     private func setUI() {
         backButton.do {
-            $0.setImage(ImageLiterals.icon.navigateLeft.withRenderingMode(.alwaysOriginal), for: .normal)
+            $0.setImage(.icNavigateLeft.withRenderingMode(.alwaysOriginal), for: .normal)
             $0.rx.tap
                 .throttle(.seconds(3), scheduler: MainScheduler.instance)
                 .subscribe(with: self, onNext: { owner, _ in 
@@ -145,7 +145,7 @@ extension MyPageChangeNicknameViewController {
         
         completeButton.do {
             $0.setTitle(StringLiterals.MyPage.ChangeNickname.complete, for: .normal)
-            $0.setTitleColor(.Primary100, for: .normal)
+            $0.setTitleColor(.wssPrimary100, for: .normal)
             $0.titleLabel?.font = .Title2
             $0.rx.tap
                 .throttle(.seconds(3), scheduler: MainScheduler.instance)

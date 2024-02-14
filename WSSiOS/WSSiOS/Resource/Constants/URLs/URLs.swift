@@ -25,7 +25,9 @@ enum URLs {
     }
     
     enum UserNovel {
-        static let getUserNovel = "/user-novels/{userNovelId}"
+        static func getUserNovel(userNovelId: Int) -> String {
+            return "/user-novels/\(userNovelId)"
+        }
         static let getUserNovelList = "/user-novels"
         static func postUserNovel(novelId: Int) -> String {
             return "/user-novels/\(novelId)"
@@ -33,15 +35,25 @@ enum URLs {
         static func patchUserNovel(userNovelId: Int) -> String {
             return "/user-novels/\(userNovelId)"
         }
-        static let deleteUserNovel = "/user-novels/{userNovelId}"
+        static func deleteUserNovel(userNovelId: Int) -> String {
+            return "/user-novels/\(userNovelId)"
+        }
     }
     
     enum Memo {
-        static let getMemo = "/memos/{memoId}"
+        static func getMemo(memoId: Int) -> String {
+            return "/memos/\(memoId)"
+        }
         static let getMemoList = "/memos"
-        static let postMemo = "/user-novels/{userNovelId}/memo"
-        static let patchMemo = "/memos/{memoId}"
-        static let deleteMemo = "/memos/{memoId}"
+        static func postMemo(userNovelId: Int) -> String {
+            return "/user-novels/{\(userNovelId)/memo"
+        }
+        static func patchMemo(memoId: Int) -> String {
+            return "/memos/\(memoId)"
+        }
+        static func deleteMemo(memoId: Int) -> String {
+            return "/memos/\(memoId)"
+        }
     }
     
     enum Avatar {

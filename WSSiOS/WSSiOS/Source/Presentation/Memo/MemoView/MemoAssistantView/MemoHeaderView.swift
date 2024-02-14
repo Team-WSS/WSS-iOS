@@ -7,25 +7,26 @@
 
 import UIKit
 
+import Kingfisher
 import SnapKit
 import Then
 import UIImageViewAlignedSwift
 
 final class MemoHeaderView: UIView {
     
-    // MARK: - UI Components
+    //MARK: - Components
     
     private let novelTitleLabel = UILabel()
     private let novelAuthorLabel = UILabel()
     private let novelCoverImageView = UIImageViewAligned()
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -33,18 +34,18 @@ final class MemoHeaderView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
-        self.backgroundColor = .white
+        self.backgroundColor = .wssWhite
         
         novelTitleLabel.do {
-            $0.textColor = .Black
+            $0.textColor = .wssBlack
             $0.font = .Title1
         }
         
         novelAuthorLabel.do {
-            $0.textColor = .Gray200
+            $0.textColor = .wssGray200
             $0.font = .Body2
         }
         
@@ -56,15 +57,11 @@ final class MemoHeaderView: UIView {
         }
     }
     
-    // MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(novelTitleLabel,
                          novelAuthorLabel,
                          novelCoverImageView)
     }
-    
-    // MARK: - set Layout
     
     private func setLayout() {
         novelTitleLabel.snp.makeConstraints {
@@ -87,6 +84,8 @@ final class MemoHeaderView: UIView {
             $0.height.equalTo(49)
         }
     }
+    
+    //MARK: - Data
     
     func bindData(novelTitle: String, novelAuthor: String, novelImage: String) {
         self.novelTitleLabel.do {

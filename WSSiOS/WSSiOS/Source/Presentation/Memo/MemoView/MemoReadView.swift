@@ -12,17 +12,17 @@ import Then
 
 final class MemoReadView: UIView {
     
-    // MARK: - UI Components
+    //MARK: - Components
     
-    public let memoHeaderView = MemoHeaderView()
-    public let memoReadContentView = MemoReadContentView()
+    let memoHeaderView = MemoHeaderView()
+    let memoReadContentView = MemoReadContentView()
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -30,14 +30,12 @@ final class MemoReadView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - set Hierachy
+    //MARK: - UI
     
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(memoHeaderView,
                          memoReadContentView)
     }
-    
-    // MARK: - set Layout
     
     private func setLayout() {
         memoHeaderView.snp.makeConstraints {

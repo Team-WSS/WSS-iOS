@@ -12,22 +12,22 @@ import Then
 
 final class MemoReadContentView: UIView {
 
-    // MARK: - UI Components
+    //MARK: - Components
     
     private let dividerView = UIView()
     private let dateLabel = UILabel()
-    public let deleteButton = UIButton()
+    let deleteButton = UIButton()
     private let scrollView = UIScrollView()
     private let contentView = UIView()
-    public let memoContentLabel = UILabel()
+    let memoContentLabel = UILabel()
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -35,34 +35,32 @@ final class MemoReadContentView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
-        self.backgroundColor = .white
+        self.backgroundColor = .wssWhite
         
         dividerView.do {
-            $0.backgroundColor = .Gray70
+            $0.backgroundColor = .wssGray70
         }
         
         dateLabel.do {
-            $0.textColor = .Gray200
+            $0.textColor = .wssGray200
             $0.font = .Label1
         }
         
         deleteButton.do {
-            $0.setImage(ImageLiterals.icon.Memo.delete, for: .normal)
+            $0.setImage(.icDeleteMemo, for: .normal)
         }
         
         memoContentLabel.do {
-            $0.textColor = .Black
+            $0.textColor = .wssBlack
             $0.font = .Body1
             $0.numberOfLines = 0
         }
     }
     
-    // MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(dividerView,
                          dateLabel,
                          deleteButton,
@@ -70,8 +68,6 @@ final class MemoReadContentView: UIView {
         scrollView.addSubview(contentView)
         contentView.addSubview(memoContentLabel)
     }
-    
-    // MARK: - set Layout
     
     private func setLayout() {
         dividerView.snp.makeConstraints {
@@ -104,11 +100,7 @@ final class MemoReadContentView: UIView {
         }
     }
     
-    func updateTextViewConstraint(keyboardHeight: CGFloat) {
-        self.memoContentLabel.snp.updateConstraints {
-            $0.bottom.equalToSuperview().inset(keyboardHeight + 20)
-        }
-    }
+    //MARK: - Data
     
     func bindData(date: String, memoContent: String) {
         self.dateLabel.do {
@@ -122,6 +114,14 @@ final class MemoReadContentView: UIView {
                 .kerning(kerningPixel: -0.8)
                 .applyAttribute()
             $0.lineBreakStrategy = .hangulWordPriority
+        }
+    }
+    
+    //MARK: - Custom Method
+    
+    func updateTextViewConstraint(keyboardHeight: CGFloat) {
+        self.memoContentLabel.snp.updateConstraints {
+            $0.bottom.equalToSuperview().inset(keyboardHeight + 20)
         }
     }
 }

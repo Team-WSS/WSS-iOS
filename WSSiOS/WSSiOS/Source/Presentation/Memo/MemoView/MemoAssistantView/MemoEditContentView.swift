@@ -12,17 +12,17 @@ import Then
 
 final class MemoEditContentView: UIView {
 
-    // MARK: - UI Components
+    //MARK: - Components
     
-    public let memoTextView = UITextView()
+    let memoTextView = UITextView()
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -30,26 +30,22 @@ final class MemoEditContentView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - set UI
+    //MARK: - UI
     
     private func setUI() {
-        self.backgroundColor = .Gray50
+        self.backgroundColor = .wssGray50
         
         memoTextView.do {
             $0.backgroundColor = .clear
-            $0.textColor = .Black
+            $0.textColor = .wssBlack
             $0.font = .Body1
             $0.showsVerticalScrollIndicator = false
         }
     }
     
-    // MARK: - set Hierachy
-    
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubview(memoTextView)
     }
-    
-    // MARK: - set Layout
     
     private func setLayout() {
         memoTextView.snp.makeConstraints {
@@ -57,11 +53,7 @@ final class MemoEditContentView: UIView {
         }
     }
     
-    func updateTextViewConstraint(keyboardHeight: CGFloat) {
-        self.memoTextView.snp.updateConstraints {
-            $0.bottom.equalToSuperview().inset(keyboardHeight + 20)
-        }
-    }
+    //MARK: - Data
     
     func bindData(memoContent: String) {
         self.memoTextView.do {
@@ -72,4 +64,13 @@ final class MemoEditContentView: UIView {
             $0.font = .Body1
         }
     }
+    
+    //MARK: - Custom Method
+    
+    func updateTextViewConstraint(keyboardHeight: CGFloat) {
+        self.memoTextView.snp.updateConstraints {
+            $0.bottom.equalToSuperview().inset(keyboardHeight + 20)
+        }
+    }
+    
 }

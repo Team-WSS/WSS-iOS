@@ -44,8 +44,8 @@ final class WSSMainButton: UIButton {
     private func setUI(title: String) {
         setTitle(title, for: .normal)
         titleLabel?.font = .Title1
-        setTitleColor(.White, for: .normal)
-        backgroundColor = .Primary100
+        setTitleColor(.wssWhite, for: .normal)
+        backgroundColor = .wssPrimary100
         layer.cornerRadius = 12
     }
 }

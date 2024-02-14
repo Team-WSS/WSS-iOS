@@ -86,8 +86,84 @@ extension UIViewController {
         }
     }
     
+    func pushToMemoReadViewController(memoId: Int) {
+        self.navigationController?.pushViewController(
+            MemoReadViewController(
+                repository: DefaultMemoRepository(
+                    memoService: DefaultMemoService()),
+                memoId: memoId
+            ), animated: true)
+    }
+    
+    func pushToRegisterNormalViewController(novelId: Int) {
+        self.navigationController?.pushViewController(
+            RegisterNormalViewController(
+                novelRepository: DefaultNovelRepository(
+                    novelService: DefaultNovelService()),
+                userNovelRepository: DefaultUserNovelRepository(
+                    userNovelService: DefaultUserNovelService()),
+                novelId: novelId),
+            animated: true)
+    }
+    
+    func pushToMemoEditViewController(userNovelId: Int? = nil, memoId: Int? = nil, novelTitle: String, novelAuthor: String, novelImage: String, memoContent: String? = nil) {
+        self.navigationController?.pushViewController(MemoEditViewController(
+            repository: DefaultMemoRepository(
+                memoService: DefaultMemoService()
+            ),
+            userNovelId: userNovelId, 
+            memoId: memoId,
+            novelTitle: novelTitle,
+            novelAuthor: novelAuthor,
+            novelImage: novelImage,
+            memoContent: memoContent
+        ), animated: true)
+    }
+    
+    func presentDeleteUserNovelViewController(userNovelId: Int) {
+        let viewController = DeletePopupViewController(
+            userNovelRepository: DefaultUserNovelRepository(
+                userNovelService: DefaultUserNovelService()
+            ),
+            popupStatus: .novelDelete,
+            userNovelId: userNovelId
+        )
+        viewController.modalPresentationStyle = .overFullScreen
+        viewController.modalTransitionStyle = .crossDissolve
+        self.present(viewController, animated: true)
+    }
+    
+    func presentMemoDeleteViewController(memoId: Int) {
+        let viewController = DeletePopupViewController(
+            memoRepository: DefaultMemoRepository(
+                memoService: DefaultMemoService()
+            ),
+            popupStatus: .memoDelete,
+            memoId: memoId
+        )
+        viewController.modalPresentationStyle = .overFullScreen
+        viewController.modalTransitionStyle = .crossDissolve
+        self.present(viewController, animated: true)
+    }
+    
+    func presentMemoEditCancelViewController() {
+        let viewController = DeletePopupViewController(
+            memoRepository: DefaultMemoRepository(
+                memoService: DefaultMemoService()
+            ),
+            popupStatus: .memoEditCancel
+        )
+        viewController.modalPresentationStyle = .overFullScreen
+        viewController.modalTransitionStyle = .crossDissolve
+        self.present(viewController, animated: true)
+    }
+    
     func popToLastViewController() {
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    func popToRootViewController() {
+        self.navigationController?.popToRootViewController(animated: true)
     }
 }
 

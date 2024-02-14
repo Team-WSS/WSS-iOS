@@ -38,7 +38,7 @@ final class MyPageModalAvatarFeatureLabelView: UIView {
     private func setUI() {
         self.do {
             $0.backgroundColor = .clear
-            $0.layer.borderColor = UIColor.Gray100.cgColor
+            $0.layer.borderColor = UIColor.wssGray100.cgColor
             $0.layer.borderWidth = 1
             $0.layer.cornerRadius = 26
         }
@@ -49,12 +49,12 @@ final class MyPageModalAvatarFeatureLabelView: UIView {
             $0.distribution = .fill
             $0.spacing = 6
             
-            modalAvaterBadgeImageView.image = ImageLiterals.icon.Badge.logo
+            modalAvaterBadgeImageView.image = .badgeLogo
             
             modalAvaterTitleLabel.do {
                 $0.text = "신지원 사랑해"
                 $0.font = .HeadLine1
-                $0.textColor = .Black
+                $0.textColor = .wssBlack
             }
         }
     }
