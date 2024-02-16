@@ -249,24 +249,32 @@ final class RegisterNormalDatePicker: UIButton {
     
     func updateButtons(_ isStart: Bool) {
         UIView.animate(withDuration: self.animationDuration) {
-            self.whiteBackgroundLayout(isStart)
+            self.updateWhiteBackgroundLayout(isStart)
             self.layoutIfNeeded()
         }
-        UIView.transition(with: self.startTitleLabel, duration: self.animationDuration, options: .transitionCrossDissolve) {
+        UIView.transition(with: self.startTitleLabel,
+                          duration: self.animationDuration,
+                          options: .transitionCrossDissolve) {
             self.startTitleLabel.textColor = isStart ? self.onColor : self.offColor
         }
-        UIView.transition(with: self.startDateLabel, duration: self.animationDuration, options: .transitionCrossDissolve) {
+        UIView.transition(with: self.startDateLabel,
+                          duration: self.animationDuration,
+                          options: .transitionCrossDissolve) {
             self.startDateLabel.textColor = isStart ? self.onColor : self.offColor
         }
-        UIView.transition(with: self.endTitleLabel, duration: self.animationDuration, options: .transitionCrossDissolve) {
+        UIView.transition(with: self.endTitleLabel,
+                          duration: self.animationDuration,
+                          options: .transitionCrossDissolve) {
             self.endTitleLabel.textColor = isStart ? self.offColor : self.onColor
         }
-        UIView.transition(with: self.endDateLabel, duration: self.animationDuration, options: .transitionCrossDissolve) {
+        UIView.transition(with: self.endDateLabel,
+                          duration: self.animationDuration,
+                          options: .transitionCrossDissolve) {
             self.endDateLabel.textColor = isStart ? self.offColor : self.onColor
         }
     }
     
-    private func whiteBackgroundLayout(_ isStart: Bool) {
+    private func updateWhiteBackgroundLayout(_ isStart: Bool) {
         if isStart {
             buttonBackgroundView.snp.updateConstraints {
                 $0.leading.equalTo(finishStatusView.snp.leading)
