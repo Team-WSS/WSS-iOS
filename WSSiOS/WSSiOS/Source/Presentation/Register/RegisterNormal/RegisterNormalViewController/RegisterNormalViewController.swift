@@ -85,6 +85,19 @@ final class RegisterNormalViewController: UIViewController {
         swipeBackGesture()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        setNavigationBar()
+        updateNavigationBarStyle(offset: rootView.pageScrollView.contentOffset.y)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        rootView.divider.isHidden = true
+    }
+    
     // MARK: - UI
     
     private func setUI() {
