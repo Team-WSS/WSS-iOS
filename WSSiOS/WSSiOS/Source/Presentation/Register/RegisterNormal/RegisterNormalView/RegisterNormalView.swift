@@ -12,7 +12,7 @@ import Then
 
 final class RegisterNormalView: UIView {
     
-    // MARK: - Components
+    //MARK: - Components
     
     let statusBarView = UIView()
     let pageScrollView = UIScrollView()
@@ -32,7 +32,7 @@ final class RegisterNormalView: UIView {
     
     let customDatePicker = RegisterNormalDatePicker()
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -46,7 +46,7 @@ final class RegisterNormalView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - UI
+    //MARK: - UI
     
     private func setUI() {
         self.do {
@@ -147,7 +147,7 @@ final class RegisterNormalView: UIView {
         }
     }
     
-    // MARK: - Data
+    //MARK: - Data
     
     func bindNewData(_ newData: NewNovelResult) {
         bannerImageView.bindData(newData.novelImg)

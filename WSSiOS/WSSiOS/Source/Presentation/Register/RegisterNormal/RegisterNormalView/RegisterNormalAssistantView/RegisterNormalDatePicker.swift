@@ -12,7 +12,7 @@ import Then
 
 final class RegisterNormalDatePicker: UIButton {
     
-    // MARK: - Properties
+    //MARK: - Properties
     
     private let horizontalPadding: CGFloat = 20
     private lazy var backgroundCenter = (UIScreen.main.bounds.width - horizontalPadding*2)/2
@@ -20,7 +20,7 @@ final class RegisterNormalDatePicker: UIButton {
     private let onColor: UIColor = .wssPrimary100
     private let offColor: UIColor = .wssGray100
     
-    // MARK: - Components
+    //MARK: - Components
     
     private let backgroundView = RegisterNormalDifferentRadiusView(topLeftRadius: 12, topRightRadius: 12)
     private let totalStackView = UIStackView()
@@ -44,7 +44,7 @@ final class RegisterNormalDatePicker: UIButton {
     let datePicker = UIDatePicker()
     let completeButton = WSSMainButton(title: StringLiterals.Register.Normal.DatePicker.complete)
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -58,7 +58,7 @@ final class RegisterNormalDatePicker: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - UI
+    //MARK: - UI
     
     private func setUI() {
         self.do {
@@ -215,7 +215,7 @@ final class RegisterNormalDatePicker: UIButton {
         }
     }
     
-    // MARK: - Custom Method
+    //MARK: - Custom Method
     
     func updateDatePickerTitle(status: ReadStatus) {
         if status == .FINISH {

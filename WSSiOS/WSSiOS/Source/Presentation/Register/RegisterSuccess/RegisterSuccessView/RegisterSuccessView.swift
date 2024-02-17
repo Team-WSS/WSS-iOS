@@ -13,14 +13,14 @@ import Then
 
 final class RegisterSuccessView: UIView {
     
-    // MARK: - Components
+    //MARK: - Components
     
     private let titleLabel = UILabel()
     private let lottieView = LottieLiterals.Register.success
     let makeMemoButton = WSSMainButton(title: StringLiterals.Register.Success.makeMemo)
     let returnHomeButton = UIButton()
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -34,7 +34,7 @@ final class RegisterSuccessView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - UI
+    //MARK: - UI
     
     private func setUI() {
         self.do{

@@ -16,7 +16,7 @@ import Then
 /// 1-3-1 RegisterNormal View
 final class RegisterNormalViewController: UIViewController {
     
-    // MARK: - Properties
+    //MARK: - Properties
     
     private let novelRepository: NovelRepository
     private let userNovelRepository: UserNovelRepository
@@ -48,12 +48,12 @@ final class RegisterNormalViewController: UIViewController {
     private var isSelectingStartDate = BehaviorRelay<Bool>(value: true)
     private var platformCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
     
-    // MARK: - Components
+    //MARK: - Components
     
     private let backButton = UIButton()
     private let rootView = RegisterNormalView()
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     init(novelRepository: NovelRepository, userNovelRepository: UserNovelRepository, novelId: Int = 0, userNovelId: Int = 0) {
         self.novelRepository = novelRepository
@@ -98,7 +98,7 @@ final class RegisterNormalViewController: UIViewController {
         rootView.divider.isHidden = true
     }
     
-    // MARK: - UI
+    //MARK: - UI
     
     private func setUI() {
         backButton.do {
@@ -116,7 +116,7 @@ final class RegisterNormalViewController: UIViewController {
         ]
     }
     
-    // MARK: - Bind
+    //MARK: - Bind
     
     private func register() {
         rootView.novelSummaryView.platformCollectionView.register(NovelDetailInfoPlatformCollectionViewCell.self, forCellWithReuseIdentifier: "NovelDetailInfoPlatformCollectionViewCell")
@@ -249,7 +249,7 @@ final class RegisterNormalViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    // MARK: - Actions
+    //MARK: - Actions
     
     private func bindActions() {
         rootView.infoWithRatingView.starImageViews
@@ -369,7 +369,7 @@ final class RegisterNormalViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    // MARK: - API
+    //MARK: - API
     
     private func getNovel() {
         novelRepository.getNovelInfo(novelId: novelId)
@@ -456,7 +456,7 @@ final class RegisterNormalViewController: UIViewController {
         self.endDate.accept( dateFormatter.date(from: end) ?? Date() )
     }
     
-    // MARK: - Custom Method
+    //MARK: - Custom Method
     
     private func updateNavigationBarStyle(offset: CGFloat) {
         if offset > 0 {

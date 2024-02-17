@@ -12,7 +12,7 @@ import Then
 
 final class RegisterNormalReadDateView: UIView {
     
-    // MARK: - Components
+    //MARK: - Components
     
     private let totalStackView = UIStackView()
     
@@ -28,7 +28,7 @@ final class RegisterNormalReadDateView: UIView {
     private let endDateLabel = UILabel()
     private let calendarImageView = UIImageView()
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -42,7 +42,7 @@ final class RegisterNormalReadDateView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - UI
+    //MARK: - UI
     
     private func setUI() {
         totalStackView.do {
@@ -117,7 +117,7 @@ final class RegisterNormalReadDateView: UIView {
         }
     }
     
-    // MARK: - Custom Method
+    //MARK: - Custom Method
     
     func updateDatePickerButton(_ status: ReadStatus) {
         titleView.setText(status.dateText)

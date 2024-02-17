@@ -13,7 +13,7 @@ import Then
 
 final class RegisterNormalToggleButton: UIButton {
     
-    // MARK: - Properties
+    //MARK: - Properties
     
     // 상태별 스위치 배경 색상
     let onColor = UIColor.wssPrimary100
@@ -29,12 +29,12 @@ final class RegisterNormalToggleButton: UIButton {
     private var barViewSize: SizeSet = (height: 16.55, width: 30.9)
     private var circleViewSize: SizeSet = (height: 11.03, width: 11.03)
     
-    // MARK: - Components
+    //MARK: - Components
     
     var barView = UIView()
     var circleView = UIView()
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -48,7 +48,7 @@ final class RegisterNormalToggleButton: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - UI
+    //MARK: - UI
     
     private func setUI() {
         barView.do {
@@ -90,7 +90,7 @@ final class RegisterNormalToggleButton: UIButton {
         }
     }
     
-    // MARK: - Custom Method
+    //MARK: - Custom Method
     
     func updateToggle(_ state: Bool) {
         UIView.animate(withDuration: self.animationDuration) {
