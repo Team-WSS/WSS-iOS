@@ -42,7 +42,7 @@ final class RegisterNormalDatePicker: UIButton {
     private let dropStatusLabel = UILabel()
     
     let datePicker = UIDatePicker()
-    let completeButton = WSSMainButton(title: StringLiterals.Register.Normal.DatePicker.button)
+    let completeButton = WSSMainButton(title: StringLiterals.Register.Normal.DatePicker.complete)
     
     // MARK: - Life Cycle
     
@@ -151,8 +151,8 @@ final class RegisterNormalDatePicker: UIButton {
                                            dropStatusLabel,
                                            datePicker)
         finishStatusView.addSubviews(buttonBackgroundView,
-                               startButton,
-                               endButton)
+                                     startButton,
+                                     endButton)
         startButton.addSubview(startButtonStackView)
         endButton.addSubview(endButtonStackView)
         startButtonStackView.addArrangedSubviews(startTitleLabel,

@@ -8,10 +8,15 @@
 import UIKit
 
 final class RegisterNormalDifferentRadiusView: UIView {
+    
+    //MARK: - Properties
+    
     var topLeftRadius: CGFloat = 0.0
     var topRightRadius: CGFloat = 0.0
     var bottomLeftRadius: CGFloat = 0.0
     var bottomRightRadius: CGFloat = 0.0
+    
+    //MARK: - Life Cycle
     
     init(topLeftRadius: CGFloat = 0.0, topRightRadius: CGFloat = 0.0, bottomLeftRadius: CGFloat = 0.0, bottomRightRadius: CGFloat = 0.0) {
         self.topLeftRadius = topLeftRadius
@@ -24,6 +29,8 @@ final class RegisterNormalDifferentRadiusView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    //MARK: - UI
     
     override func draw(_ rect: CGRect) {
         let path = UIBezierPath()
