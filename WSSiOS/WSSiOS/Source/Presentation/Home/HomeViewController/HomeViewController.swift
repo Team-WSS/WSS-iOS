@@ -114,22 +114,32 @@ final class HomeViewController: UIViewController {
         rootView.sosopickView.sosoPickCollectionView
             .rx
             .itemSelected
-                .subscribe(onNext:{ indexPath in
-                    let RegisterNormalVC = RegisterNormalViewController(
-                        novelRepository: DefaultNovelRepository(
-                            novelService: DefaultNovelService()),
-                        userNovelRepository: DefaultUserNovelRepository(
-                            userNovelService:DefaultUserNovelService()),
-                        novelId: self.sosopickListRelay.value[indexPath.row].novelId)
-                    
-                    self.hideTabBar()
-                    
-                    RegisterNormalVC.hidesBottomBarWhenPushed = true
-                    self.navigationController?.pushViewController(
-                        RegisterNormalVC,
-                        animated: true)
-                })
-                .disposed(by: disposeBag)
+            .subscribe(onNext:{ indexPath in
+                let RegisterNormalVC = TestVC(viewModel: RegisterNormalViewModel(
+                    novelRepository: DefaultNovelRepository(
+                        novelService: DefaultNovelService()),
+                    userNovelRepository: DefaultUserNovelRepository(
+                        userNovelService:DefaultUserNovelService()),
+                    novelId: self.sosopickListRelay.value[indexPath.row].novelId)
+                )
+                
+//                let RegisterNormalVC = RegisterNormalViewController(
+//                    novelRepository: DefaultNovelRepository(
+//                        novelService: DefaultNovelService()),
+//                    userNovelRepository: DefaultUserNovelRepository(
+//                        userNovelService:DefaultUserNovelService()),
+//                    novelId: self.sosopickListRelay.value[indexPath.row].novelId)
+                
+                
+                
+                self.hideTabBar()
+                
+                RegisterNormalVC.hidesBottomBarWhenPushed = true
+                self.navigationController?.pushViewController(
+                    RegisterNormalVC,
+                    animated: true)
+            })
+            .disposed(by: disposeBag)
     }
     
     private func bindDataToUI() {
@@ -150,12 +160,12 @@ final class HomeViewController: UIViewController {
         searchVC.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(searchVC, animated: true)
     }
-
+    
     private func getLottie(avatarId: Int) -> LottieAnimationView {
         let random = (0...1).randomElement() ?? 0
         return lotties[avatarId-1][random]
     }
- 
+    
     private func updateUI(user: UserCharacter, sosopickList: SosopickNovels) {
         Observable.just(userCharacter)
             .observe(on: MainScheduler.instance)

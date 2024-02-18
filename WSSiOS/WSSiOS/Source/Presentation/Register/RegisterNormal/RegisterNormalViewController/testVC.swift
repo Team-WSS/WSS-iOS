@@ -1,8 +1,8 @@
 //
-//  RegisterNormalViewController.swift
+//  testVC.swift
 //  WSSiOS
 //
-//  Created by 이윤학 on 1/6/24.
+//  Created by 이윤학 on 2/18/24.
 //
 
 import UIKit
@@ -14,14 +14,21 @@ import SnapKit
 import Then
 
 /// 1-3-1 RegisterNormal View
-final class RegisterNormalViewController: UIViewController {
+final class TestVC: UIViewController{
     
     // MARK: - Properties
     
-    private let novelRepository: NovelRepository
-    private let userNovelRepository: UserNovelRepository
-    private let novelId: Int
-    private var userNovelId: Int
+//    private let novelRepository: NovelRepository
+//    private let userNovelRepository: UserNovelRepository
+//    private let novelId: Int
+//    private var userNovelId: Int
+    
+    private let viewModel: RegisterNormalViewModel
+    private lazy var input = RegisterNormalViewModel.Input(
+        readDateToggleButtonTap: rootView.readDateView.toggleButton.rx.tap
+    )
+    private lazy var output = viewModel.transform(from: input, disposeBag: disposeBag)
+    
     private var navigationTitle: String = ""
     private var platformList: [UserNovelPlatform] = []
     private var minStarRating: Float = 0.0
@@ -55,11 +62,8 @@ final class RegisterNormalViewController: UIViewController {
     
     // MARK: - Life Cycle
     
-    init(novelRepository: NovelRepository, userNovelRepository: UserNovelRepository, novelId: Int = 0, userNovelId: Int = 0) {
-        self.novelRepository = novelRepository
-        self.userNovelRepository = userNovelRepository
-        self.novelId = novelId
-        self.userNovelId = userNovelId
+    init(viewModel: RegisterNormalViewModel) {
+        self.viewModel = viewModel
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -76,7 +80,8 @@ final class RegisterNormalViewController: UIViewController {
         super.viewDidLoad()
         
         setUI()
-        getNovelInfo()
+        viewModel.getNovelInfo()
+        VMbind()
         register()
         bindUI()
         bindActions()
@@ -218,15 +223,15 @@ final class RegisterNormalViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        isNew
-            .asDriver()
-            .drive(with: self, onNext: { owner, isNew in
-                owner.rootView.registerButton
-                    .setTitle(isNew ? StringLiterals.Register.Normal.RegisterButton.new :
-                                      StringLiterals.Register.Normal.RegisterButton.edit,
-                              for: .normal)
-            })
-            .disposed(by: disposeBag)
+//        isNew
+//            .asDriver()
+//            .drive(with: self, onNext: { owner, isNew in
+//                owner.rootView.registerButton
+//                    .setTitle(isNew ? StringLiterals.Register.Normal.RegisterButton.new :
+//                                      StringLiterals.Register.Normal.RegisterButton.edit,
+//                              for: .normal)
+//            })
+//            .disposed(by: disposeBag)
         
         platformCollectionViewHeight
             .asDriver()
@@ -348,37 +353,54 @@ final class RegisterNormalViewController: UIViewController {
             .disposed(by: disposeBag)
         
         rootView.registerButton.rx.tap
-            .asDriver()
-            .throttle(.seconds(3), latest: false)
-            .drive(with: self, onNext: { owner, _ in
-                owner.isNew.value ? owner.postUserNovel() : owner.patchUserNovel()
+            .withLatestFrom(output.isNew)
+            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, isNew in
+                isNew ? owner.postUserNovel() : owner.patchUserNovel()
             })
             .disposed(by: disposeBag)
     }
     
     // MARK: - API
     
-    private func getNovelInfo() {
-        novelRepository.getNovelInfo(novelId: novelId)
+    private func VMbind() {
+        output.novelInfo
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
-                owner.bindData(data)
+                owner.VMbindData(data)
             },onError: { owner, error in
                 print(error)
             }).disposed(by: disposeBag)
+        
+        output.isNew
+            .drive(with: self, onNext: { owner, isNew in
+                owner.rootView.registerButton
+                    .setTitle(isNew ? StringLiterals.Register.Normal.RegisterButton.new :
+                                      StringLiterals.Register.Normal.RegisterButton.edit,
+                              for: .normal)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func VMbindData(_ data: NovelResult) {
+        if let newNovelResult = data.newNovelResult {
+            bindNewData(newNovelResult)
+        } else if let editNovelResult = data.editNovelResult {
+            bindUserData(editNovelResult)
+        }
     }
     
     private func postUserNovel() {
         formatRequestBodyData()
-        userNovelRepository.postUserNovel(novelId: novelId,
+        viewModel.userNovelRepository.postUserNovel(novelId: viewModel.novelId,
                                           userNovelRating: requestRating,
                                           userNovelReadStatus: readStatus.value,
                                           userNovelReadStartDate: requestStartDate,
                                           userNovelReadEndDate: requestEndDate)
         .observe(on: MainScheduler.instance)
         .subscribe(with: self, onNext: { owner, data in
-            owner.userNovelId = data.userNovelId
-            owner.pushToRegisterSuccessViewController(userNovelId: owner.userNovelId)
+            owner.viewModel.userNovelId = data.userNovelId
+            owner.pushToRegisterSuccessViewController(userNovelId: owner.viewModel.userNovelId)
         }, onError: { owner, error in
             print(error)
         })
@@ -387,28 +409,19 @@ final class RegisterNormalViewController: UIViewController {
     
     private func patchUserNovel() {
         formatRequestBodyData()
-        userNovelRepository.patchUserNovel(userNovelId: userNovelId,
+        print(viewModel.userNovelId)
+        viewModel.userNovelRepository.patchUserNovel(userNovelId: viewModel.userNovelId,
                                            userNovelRating: requestRating,
                                            userNovelReadStatus: readStatus.value,
                                            userNovelReadStartDate: requestStartDate,
                                            userNovelReadEndDate: requestEndDate)
         .observe(on: MainScheduler.instance)
         .subscribe(with: self, onNext: { owner, data in
-            owner.moveToNovelDetailViewController(userNovelId: owner.userNovelId)
+            owner.moveToNovelDetailViewController(userNovelId: owner.viewModel.userNovelId)
         }, onError: { owner, error in
             print(error)
         })
         .disposed(by: disposeBag)
-    }
-    
-    private func bindData(_ data: NovelResult) {
-        if let newNovelResult = data.newNovelResult {
-            isNew.accept(true)
-            bindNewData(newNovelResult)
-        } else if let editNovelResult = data.editNovelResult {
-            isNew.accept(false)
-            bindUserData(editNovelResult)
-        }
     }
     
     private func bindNewData(_ newData: NewNovelResult) {
@@ -420,7 +433,8 @@ final class RegisterNormalViewController: UIViewController {
     
     private func bindUserData(_ userData: EditNovelResult) {
         self.navigationTitle = userData.userNovelTitle
-        self.userNovelId = userData.userNovelID
+        self.viewModel.userNovelId = userData.userNovelID
+        print(self.viewModel.userNovelId)
         self.platformList = userData.platforms
         rootView.novelSummaryView.hiddenPlatformView(platformList.count)
         rootView.bindUserData(userData)
@@ -432,7 +446,8 @@ final class RegisterNormalViewController: UIViewController {
         // status에 따른 날짜 처리
         var start = userData.userNovelReadDate.userNovelReadStartDate ?? ""
         var end = userData.userNovelReadDate.userNovelReadEndDate ?? ""
-
+        self.isDateExist.accept(start != "" || end != "")
+        
         if status == .READING {
             end = start
         } else if status == .DROP {
@@ -483,7 +498,7 @@ final class RegisterNormalViewController: UIViewController {
     }
 }
 
-extension RegisterNormalViewController: UICollectionViewDataSource {
+extension TestVC: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.platformList.count
     }
@@ -502,7 +517,7 @@ extension RegisterNormalViewController: UICollectionViewDataSource {
     }
 }
 
-extension RegisterNormalViewController: UICollectionViewDelegate {
+extension TestVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let url = URL(string: self.platformList[indexPath.item].platformUrl) {
             UIApplication.shared.open(url, options: [:])
@@ -510,7 +525,7 @@ extension RegisterNormalViewController: UICollectionViewDelegate {
     }
 }
 
-extension RegisterNormalViewController: UICollectionViewDelegateFlowLayout {
+extension TestVC: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let text: String? = self.platformList[indexPath.item].platformName
         
