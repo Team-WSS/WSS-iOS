@@ -1,5 +1,5 @@
 //
-//  RegisterNormalDifference.swift
+//  RegisterNormalDifferentRadiusView.swift
 //  WSSiOS
 //
 //  Created by 이윤학 on 2/5/24.

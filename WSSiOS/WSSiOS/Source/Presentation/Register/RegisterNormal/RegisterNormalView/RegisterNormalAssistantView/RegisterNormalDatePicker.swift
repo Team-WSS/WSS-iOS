@@ -288,7 +288,7 @@ final class RegisterNormalDatePicker: UIButton {
     
     private func dateLabelStyle(of label: UILabel) {
         label.do {
-            $0.makeAttribute(with: $0.text)?
+            $0.makeAttribute()?
                 .lineSpacing(spacingPercentage: 145)
                 .applyAttribute()
             $0.font = .Label1
@@ -297,7 +297,7 @@ final class RegisterNormalDatePicker: UIButton {
     
     private func titleLabelStyle(of label: UILabel) {
         label.do {
-            $0.makeAttribute(with: $0.text)?
+            $0.makeAttribute()?
                 .lineSpacing(spacingPercentage: 140)
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
