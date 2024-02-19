@@ -17,7 +17,7 @@ final class RegisterSuccessView: UIView {
     
     private let titleLabel = UILabel()
     private let lottieView = LottieLiterals.Register.success
-    let makeMemoButton = WSSMainButton(title: StringLiterals.Register.Success.makeMemo)
+    let makeMemoButton = WSSMainButton(title: "")
     let returnHomeButton = UIButton()
     
     //MARK: - Life Cycle
@@ -55,6 +55,10 @@ final class RegisterSuccessView: UIView {
             $0.play()
         }
         
+        makeMemoButton.do {
+            $0.setTitle(StringLiterals.Register.Success.makeMemo, for: .normal)
+        }
+        
         returnHomeButton.do {
             $0.setTitle(StringLiterals.Register.Success.returnHome,
                         for: .normal)
@@ -63,7 +67,7 @@ final class RegisterSuccessView: UIView {
                                                 .lineSpacing(spacingPercentage: 150)
                                                 .attributedString,
                                   for: .normal)
-            $0.setTitleColor(.Gray300,
+            $0.setTitleColor(.wssGray300,
                              for: .normal)
             $0.titleLabel?.font = .Body2
         }
@@ -78,14 +82,14 @@ final class RegisterSuccessView: UIView {
     
     private func setLayout() {
         titleLabel.snp.makeConstraints {
-            $0.centerX.equalToSuperview()
             $0.bottom.equalTo(lottieView.snp.top).offset(-36)
+            $0.centerX.equalToSuperview()
         }
         
         lottieView.snp.makeConstraints {
-            $0.horizontalEdges.equalToSuperview().inset(40)
-            $0.height.equalTo(lottieView.snp.width)
             $0.centerY.equalToSuperview()
+            $0.height.equalTo(lottieView.snp.width)
+            $0.horizontalEdges.equalToSuperview().inset(40)
         }
         
         makeMemoButton.snp.makeConstraints {

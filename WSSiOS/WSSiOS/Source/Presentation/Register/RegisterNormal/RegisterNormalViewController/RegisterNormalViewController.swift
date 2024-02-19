@@ -354,16 +354,14 @@ final class RegisterNormalViewController: UIViewController {
     
     private func bindNavigation() {
         backButton.rx.tap
-            .asDriver()
-            .drive(with: self, onNext: { owner, _ in
+            .bind(with: self, onNext: { owner, _ in
                 owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
         
         rootView.registerButton.rx.tap
-            .asDriver()
-            .throttle(.seconds(3), latest: false)
-            .drive(with: self, onNext: { owner, _ in
+            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
                 owner.isNew.value ? owner.postUserNovel() : owner.patchUserNovel()
             })
             .disposed(by: disposeBag)
