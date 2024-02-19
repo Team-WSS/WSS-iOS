@@ -47,7 +47,6 @@ class RegisterNormalViewModel: ViewModelType {
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
-        
         novelInfo
             .subscribe(with: self, onNext: { owner, data in
                 owner.isNew.accept(data.newNovelResult != nil)

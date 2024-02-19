@@ -125,8 +125,8 @@ final class RegisterNormalNovelSummaryView: UIView {
         }
     }
     
-    func hiddenPlatformView(_ count: Int) {
-        if count == 0 {
+    func hiddenPlatformView(when isEmpty: Bool) {
+        if isEmpty {
             platformTitleLabel.isHidden = true
             platformCollectionView.isHidden = true
         }

@@ -427,16 +427,15 @@ final class TestVC: UIViewController{
     private func bindNewData(_ newData: NewNovelResult) {
         self.navigationTitle = newData.novelTitle
         self.platformList = newData.platforms
-        rootView.novelSummaryView.hiddenPlatformView(platformList.count)
+        rootView.novelSummaryView.hiddenPlatformView(when: platformList.isEmpty)
         rootView.bindNewData(newData)
     }
     
     private func bindUserData(_ userData: EditNovelResult) {
-        self.navigationTitle = userData.userNovelTitle
         self.viewModel.userNovelId = userData.userNovelID
-        print(self.viewModel.userNovelId)
+        self.navigationTitle = userData.userNovelTitle
         self.platformList = userData.platforms
-        rootView.novelSummaryView.hiddenPlatformView(platformList.count)
+        rootView.novelSummaryView.hiddenPlatformView(when: platformList.isEmpty)
         rootView.bindUserData(userData)
         
         self.starRating.accept(userData.userNovelRating ?? minStarRating)
