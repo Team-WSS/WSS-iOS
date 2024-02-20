@@ -18,6 +18,7 @@ final class RecordViewController: UIViewController {
     private let memoRepository: DefaultMemoRepository
     private var recordMemoListRelay = BehaviorRelay<[RecordMemo]>(value: [])
     private var recordMemoCount = BehaviorRelay<Int>(value: 0)
+    private let recordViewModel: RecordViewModel
     private let disposeBag = DisposeBag()
     
     private var lastMemoId = StringLiterals.Alignment.newest.lastNovelId
@@ -30,8 +31,9 @@ final class RecordViewController: UIViewController {
     
     //MARK: - Life Cycle
     
-    init(memoRepository: DefaultMemoRepository) {
+    init(memoRepository: DefaultMemoRepository, recordViewModel: RecordViewModel) {
         self.memoRepository = memoRepository
+        self.recordViewModel = recordViewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -61,6 +63,7 @@ final class RecordViewController: UIViewController {
         register()
         
         bindUI()
+        bindViewModel()
         setNotificationCenter()
     }
     
@@ -85,13 +88,27 @@ final class RecordViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    private func bindUI() {
-        rootView.headerView.headerAlignmentButton
-            .rx.tap
-            .bind(with: self, onNext: { owner, event in
+    private func bindViewModel() {
+        let input = RecordViewModel.Input(
+            sortTypeButtonTapped: self.rootView.headerView.headerAlignmentButton
+                .rx.tap.asObservable())
+        
+        let output = self.recordViewModel.transform(from: input, disposeBag: disposeBag)
+        
+        output.showAlignmentView
+            .subscribe(with: self, onNext: { owner, _ in
                 owner.rootView.alignmentView.isHidden.toggle()
             })
             .disposed(by: disposeBag)
+    }
+    
+    private func bindUI() {
+//        rootView.headerView.headerAlignmentButton
+//            .rx.tap
+//            .bind(with: self, onNext: { owner, event in
+//                owner.rootView.alignmentView.isHidden.toggle()
+//            })
+//            .disposed(by: disposeBag)
              
         rootView.alignmentView.libraryNewestButton
             .rx.tap

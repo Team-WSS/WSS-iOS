@@ -10,14 +10,6 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-protocol ViewModelType {
-    
-    associatedtype Input
-    associatedtype Output
-    
-    func transform(input: Input, disposeBag: DisposeBag) -> Output
-}
-
 final class RecordViewModel: ViewModelType {
     
     //MARK: - Properties
@@ -28,17 +20,18 @@ final class RecordViewModel: ViewModelType {
     // MARK: - Inputs
     
     struct Input {
-        let sortTypeButtonTapped: Driver<Void>
-        let newestButtonTapped: Driver<Void>
-        let oldestButtonTapped: Driver<Void>
-        let cellTapped: Driver<IndexPath>
+        let sortTypeButtonTapped: Observable<Void>
+//        let newestButtonTapped: Driver<Void>
+//        let oldestButtonTapped: Driver<Void>
+//        let cellTapped: Driver<IndexPath>
     }
     
     //MARK: - Outputs
     
     struct Output {
-        let recordMomoCount: BehaviorRelay<Int>
-        let recordItem: BehaviorRelay<[RecordTableViewCell]>
+        let showAlignmentView = BehaviorRelay<Bool>(value: false)
+//        let recordMomoCount = BehaviorRelay<Int>(value: 0)
+//        let recordItem = BehaviorRelay<[RecordTableViewCell]>(value: [])
     }
     
     //MARK: - init
@@ -51,12 +44,15 @@ final class RecordViewModel: ViewModelType {
 //MARK: - Methods
 
 extension RecordViewModel {
-    func transform(input: Input, disposeBag: DisposeBag) -> Output {
-        
+    func transform(from input: Input, disposeBag: DisposeBag) -> Output {
+        let output = Output()
+
         input.sortTypeButtonTapped
-            .drive(with: self, onNext: { owner, _ in
-                
+            .subscribe(with: self, onNext: { owner, _ in
+                output.showAlignmentView.accept(true)
             })
             .disposed(by: disposeBag)
+        
+        return output
     }
 }

@@ -73,7 +73,8 @@ enum WSSTabBarItem: CaseIterable {
             return RecordViewController(
                 memoRepository: DefaultMemoRepository(
                     memoService: DefaultMemoService()
-                )
+                ),
+                recordViewModel: RecordViewModel(memoRepository: DefaultMemoRepository(memoService: DefaultMemoService()))
             )
             
         case .myPage:
