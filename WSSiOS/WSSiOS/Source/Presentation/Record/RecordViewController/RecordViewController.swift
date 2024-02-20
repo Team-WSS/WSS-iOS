@@ -105,7 +105,7 @@ final class RecordViewController: UIViewController {
         let output = self.recordViewModel.transform(from: input, disposeBag: disposeBag)
         
         output.showAlignmentView
-            .subscribe(with: self, onNext: { owner, _ in
+            .bind(with: self, onNext: { owner, _ in
                 owner.rootView.alignmentView.isHidden.toggle()
             })
             .disposed(by: disposeBag)
@@ -130,13 +130,21 @@ final class RecordViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.navigateEmptyView
-            .subscribe(with: self, onNext: { owner, event in
-                owner.navigationController?.tabBarController?.selectedIndex = 1
+        output.navigateToMemoRead
+            .subscribe(with: self, onNext: { owner, indexPath in
+                owner.navigationController?.pushViewController(MemoReadViewController(repository: DefaultMemoRepository(memoService: DefaultMemoService()), memoId: owner.recordMemoListRelay.value[indexPath.row].id), animated: true)
             })
             .disposed(by: disposeBag)
         
-        output.recordMemoCount
+        output.navigateEmptyView
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.navigationController?.tabBarController?.selectedIndex = 1
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindUI() {
+        recordMemoCount
             .asDriver()
             .drive(with: self, onNext: { owner, value in
                 owner.rootView.headerView.recordCountLabel.text = "\(value)개"
@@ -149,32 +157,6 @@ final class RecordViewController: UIViewController {
                 else {
                     owner.emptyView.removeFromSuperview()
                 }
-            })
-            .disposed(by: disposeBag)
-    }
-    
-    private func bindUI() {
-//        recordMemoCount
-//            .asDriver()
-//            .drive(with: self, onNext: { owner, value in
-//                owner.rootView.headerView.recordCountLabel.text = "\(value)개"
-//                if value == 0 {
-//                    owner.rootView.addSubview(owner.emptyView)
-//                    owner.emptyView.snp.makeConstraints {
-//                        $0.edges.equalToSuperview()
-//                    }
-//                }
-//                else {
-//                    owner.emptyView.removeFromSuperview()
-//                }
-//            })
-//            .disposed(by: disposeBag)
-            
-        rootView.recordTableView
-            .rx
-            .itemSelected
-            .subscribe(with: self, onNext: { owner, indexPath in
-                owner.navigationController?.pushViewController(MemoReadViewController(repository: DefaultMemoRepository(memoService: DefaultMemoService()), memoId: owner.recordMemoListRelay.value[indexPath.row].id), animated: true)
             })
             .disposed(by: disposeBag)
     }

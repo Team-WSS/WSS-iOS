@@ -24,6 +24,7 @@ final class RecordViewModel: ViewModelType {
         let newestButtonTapped: Observable<Void>
         let oldestButtonTapped: Observable<Void>
         let recordCellSelected: Observable<IndexPath>
+        //recordMemoCount
         let emptyButtonTapped: Observable<Void>
     }
     
@@ -33,7 +34,7 @@ final class RecordViewModel: ViewModelType {
         let showAlignmentView = BehaviorRelay<Bool>(value: false)
         let alignNewest = BehaviorRelay<Bool>(value: false)
         let alignOldest = BehaviorRelay<Bool>(value: false)
-        // tableview output
+        let navigateToMemoRead = PublishRelay<IndexPath>()
         let recordMemoCount = BehaviorRelay<Int>(value: 0)
         let navigateEmptyView = BehaviorRelay<Bool>(value: false)
     }
@@ -71,7 +72,7 @@ extension RecordViewModel {
         
         input.recordCellSelected
             .subscribe(with: self, onNext: { owner, indexPath in
-                // 무엇이 들어가야 할까요 .......
+                output.navigateToMemoRead.accept(indexPath)
             })
             .disposed(by: disposeBag)
         
