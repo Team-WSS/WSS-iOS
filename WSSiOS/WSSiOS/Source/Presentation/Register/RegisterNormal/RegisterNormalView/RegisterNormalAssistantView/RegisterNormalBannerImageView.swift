@@ -14,12 +14,12 @@ import UIImageViewAlignedSwift
 
 final class RegisterNormalBannerImageView: UIView {
     
-    // MARK: - Components
+    //MARK: - Components
     
     private let bannerImageView = UIImageViewAligned()
     private let gradientView = UIImageView()
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -33,7 +33,7 @@ final class RegisterNormalBannerImageView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - UI
+    //MARK: - UI
     
     private func setUI() {
         bannerImageView.do {
@@ -66,7 +66,7 @@ final class RegisterNormalBannerImageView: UIView {
         }
     }
     
-    // MARK: - Data
+    //MARK: - Data
     
     func bindData(_ novelImage: String) {
         if let novelImageUrl = URL(string: novelImage) {
