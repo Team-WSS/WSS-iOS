@@ -170,4 +170,15 @@ final class RegisterNormalView: UIView {
                                            platforms: userData.platforms)
         novelSummaryView.platformCollectionView.reloadData()
     }
+    
+    func bindData(_ data: NovelBasicData) {
+        bannerImageView.bindData(data.novelImg)
+        infoWithRatingView.bindData(coverImage: data.novelImg,
+                                             title: data.novelTitle,
+                                             author: data.novelAuthor)
+        novelSummaryView.bindData(plot: data.novelDescription,
+                                           genre: data.novelGenre,
+                                           platforms: data.platforms)
+        novelSummaryView.platformCollectionView.reloadData()
+    }
 }

@@ -425,7 +425,7 @@ final class RegisterNormalViewController: UIViewController {
     private func bindNewData(_ newData: NewNovelResult) {
         self.navigationTitle = newData.novelTitle
         self.platformList = newData.platforms
-        rootView.novelSummaryView.hiddenPlatformView(platformList.count)
+        rootView.novelSummaryView.hiddenPlatformView(when: platformList.isEmpty)
         rootView.bindNewData(newData)
     }
     
@@ -433,7 +433,7 @@ final class RegisterNormalViewController: UIViewController {
         self.navigationTitle = userData.userNovelTitle
         self.userNovelId = userData.userNovelID
         self.platformList = userData.platforms
-        rootView.novelSummaryView.hiddenPlatformView(platformList.count)
+        rootView.novelSummaryView.hiddenPlatformView(when: platformList.isEmpty)
         rootView.bindUserData(userData)
         
         self.starRating.accept(userData.userNovelRating ?? minStarRating)
