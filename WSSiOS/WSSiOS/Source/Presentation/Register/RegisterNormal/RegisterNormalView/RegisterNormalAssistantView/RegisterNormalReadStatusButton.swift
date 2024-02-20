@@ -12,18 +12,18 @@ import Then
 
 final class RegisterNormalReadStatusButton: UIButton {
     
-    // MARK: - Properties
+    //MARK: - Properties
     
     private var status: ReadStatus?
     private var buttonHeight: CGFloat = 37
     
-    // MARK: - Components
+    //MARK: - Components
     
     private let buttonStackView = UIStackView()
     private let buttonImage = UIImageView()
     private let buttonLabel = UILabel()
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -37,7 +37,7 @@ final class RegisterNormalReadStatusButton: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - UI
+    //MARK: - UI
     
     private func setUI() {
         self.do {
@@ -83,7 +83,7 @@ final class RegisterNormalReadStatusButton: UIButton {
         }
     }
     
-    // MARK: - Custom Method
+    //MARK: - Custom Method
     
     func setText(_ text: String) {
         buttonLabel.do {

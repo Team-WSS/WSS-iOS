@@ -14,14 +14,14 @@ import RxCocoa
 
 final class RegisterNormalReadStatusView: UIView {
     
-    // MARK: - Components
+    //MARK: - Components
     
     private let totalStackView = UIStackView()
     private let titleView = WSSSectionTitleView()
     lazy var readStatusButtons: [RegisterNormalReadStatusButton] = createButtons()
     private let readStatusStackView = UIStackView()
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -35,7 +35,7 @@ final class RegisterNormalReadStatusView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - UI
+    //MARK: - UI
     
     private func setUI() {
         totalStackView.do {
@@ -70,7 +70,7 @@ final class RegisterNormalReadStatusView: UIView {
         }
     }
     
-    // MARK: - Custom Method
+    //MARK: - Custom Method
     
     func updateReadStatusButton(status: ReadStatus) {
         readStatusButtons.forEach { button in

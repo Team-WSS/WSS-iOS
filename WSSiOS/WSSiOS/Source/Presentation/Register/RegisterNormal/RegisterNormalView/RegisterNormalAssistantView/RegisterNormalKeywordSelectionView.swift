@@ -12,7 +12,7 @@ import Then
 
 final class RegisterNormalKeywordSelectionView: UIView {
     
-    // MARK: - Components
+    //MARK: - Components
     
     private let totalStackView = UIStackView()
     private let titleView = WSSSectionTitleView()
@@ -22,7 +22,7 @@ final class RegisterNormalKeywordSelectionView: UIView {
     private let buttonImage = UIImageView()
     private let buttonLabel = UILabel()
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -36,7 +36,7 @@ final class RegisterNormalKeywordSelectionView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - UI
+    //MARK: - UI
     
     private func setUI() {
         totalStackView.do {
@@ -93,7 +93,7 @@ final class RegisterNormalKeywordSelectionView: UIView {
         }
     }
     
-    // MARK: - Custom Method
+    //MARK: - Custom Method
     
     private func buttonLabelStyle(of label: UILabel) {
         label.do {
