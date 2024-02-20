@@ -12,17 +12,21 @@ import Then
 
 final class RegisterNormalDatePicker: UIButton {
     
-    // MARK: - Properties
+    //MARK: - Properties
     
-    let onColor: UIColor = .wssPrimary100
-    let offColor: UIColor = .wssGray100
+    private let horizontalPadding: CGFloat = 20
+    private lazy var backgroundCenter = (UIScreen.main.bounds.width - horizontalPadding*2)/2
+    private let animationDuration: Double = 0.25
+    private let onColor: UIColor = .wssPrimary100
+    private let offColor: UIColor = .wssGray100
     
-    // MARK: - Components
+    //MARK: - Components
     
-    private let backgroundView = UIView()
+    private let backgroundView = RegisterNormalDifferentRadiusView(topLeftRadius: 12, topRightRadius: 12)
     private let totalStackView = UIStackView()
     
-    private let buttonStackView = UIStackView()
+    private let finishStatusView = UIView()
+    private let buttonBackgroundView = UIView()
     
     let startButton = UIButton()
     private let startButtonStackView = UIStackView()
@@ -38,9 +42,9 @@ final class RegisterNormalDatePicker: UIButton {
     private let dropStatusLabel = UILabel()
     
     let datePicker = UIDatePicker()
-    let completeButton = WSSMainButton(title: "완료")
+    let completeButton = WSSMainButton(title: StringLiterals.Register.Normal.DatePicker.complete)
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -54,7 +58,7 @@ final class RegisterNormalDatePicker: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - UI
+    //MARK: - UI
     
     private func setUI() {
         self.do {
@@ -62,7 +66,6 @@ final class RegisterNormalDatePicker: UIButton {
         }
         backgroundView.do {
             $0.backgroundColor = .wssWhite
-            $0.layer.cornerRadius = 12
         }
         
         totalStackView.do {
@@ -78,46 +81,43 @@ final class RegisterNormalDatePicker: UIButton {
             $0.locale = Locale(identifier: StringLiterals.Register.Normal.DatePicker.KoreaTimeZone)
         }
         
-        buttonStackView.do {
-            $0.axis = .horizontal
+        finishStatusView.do {
             $0.backgroundColor = .wssGray50
-            $0.distribution = .fillEqually
             $0.layer.cornerRadius = 5
             
-            startButton.do {
-                $0.layer.cornerRadius = 5
-                $0.layer.borderWidth = 1
-                $0.layer.borderColor = UIColor.wssPrimary50.cgColor
+            startButton.backgroundColor = .clear
+            
+            startButtonStackView.do {
+                $0.axis = .vertical
+                $0.spacing = 2
+                $0.alignment = .center
+                $0.isUserInteractionEnabled = false
                 
-                startButtonStackView.do {
-                    $0.axis = .vertical
-                    $0.spacing = 2
-                    $0.alignment = .center
-                    $0.isUserInteractionEnabled = false
-                    
-                    startTitleLabel.do {
-                        $0.text = StringLiterals.Register.Normal.DatePicker.start
-                        titleLabelStyle(of: $0)
-                    }
+                startTitleLabel.do {
+                    $0.text = StringLiterals.Register.Normal.DatePicker.start
+                    titleLabelStyle(of: $0)
                 }
             }
             
-            endButton.do {
+            endButton.backgroundColor = .clear
+            
+            endButtonStackView.do {
+                $0.axis = .vertical
+                $0.spacing = 2
+                $0.alignment = .center
+                $0.isUserInteractionEnabled = false
+                
+                endTitleLabel.do {
+                    $0.text = StringLiterals.Register.Normal.DatePicker.end
+                    titleLabelStyle(of: $0)
+                }
+            }
+            
+            buttonBackgroundView.do {
+                $0.backgroundColor = .wssWhite
                 $0.layer.cornerRadius = 5
                 $0.layer.borderWidth = 1
-                $0.layer.borderColor = UIColor.wssGray50.cgColor
-                
-                endButtonStackView.do {
-                    $0.axis = .vertical
-                    $0.spacing = 2
-                    $0.alignment = .center
-                    $0.isUserInteractionEnabled = false
-                    
-                    endTitleLabel.do {
-                        $0.text = StringLiterals.Register.Normal.DatePicker.end
-                        titleLabelStyle(of: $0)
-                    }
-                }
+                $0.layer.borderColor = UIColor.wssPrimary50.cgColor
             }
         }
         
@@ -145,13 +145,14 @@ final class RegisterNormalDatePicker: UIButton {
     private func setHierarchy() {
         self.addSubview(backgroundView)
         backgroundView.addSubviews(totalStackView,
-                               completeButton)
-        totalStackView.addArrangedSubviews(buttonStackView,
+                                   completeButton)
+        totalStackView.addArrangedSubviews(finishStatusView,
                                            readingStatusLabel,
                                            dropStatusLabel,
                                            datePicker)
-        buttonStackView.addArrangedSubviews(startButton,
-                                            endButton)
+        finishStatusView.addSubviews(buttonBackgroundView,
+                                     startButton,
+                                     endButton)
         startButton.addSubview(startButtonStackView)
         endButton.addSubview(endButtonStackView)
         startButtonStackView.addArrangedSubviews(startTitleLabel,
@@ -168,7 +169,7 @@ final class RegisterNormalDatePicker: UIButton {
         
         totalStackView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(34)
-            $0.horizontalEdges.equalToSuperview().inset(20)
+            $0.horizontalEdges.equalToSuperview().inset(horizontalPadding)
             $0.bottom.equalTo(completeButton.snp.top).offset(-35)
         }
         
@@ -178,6 +179,18 @@ final class RegisterNormalDatePicker: UIButton {
         
         dropStatusLabel.snp.makeConstraints {
             $0.height.equalTo(42)
+        }
+        
+        startButton.snp.makeConstraints {
+            $0.verticalEdges.equalToSuperview()
+            $0.leading.equalToSuperview()
+            $0.trailing.equalTo(finishStatusView.snp.centerX)
+        }
+        
+        endButton.snp.makeConstraints {
+            $0.verticalEdges.equalToSuperview()
+            $0.leading.equalTo(finishStatusView.snp.centerX)
+            $0.trailing.equalToSuperview()
         }
         
         startButtonStackView.snp.makeConstraints {
@@ -190,38 +203,34 @@ final class RegisterNormalDatePicker: UIButton {
             $0.centerX.equalToSuperview()
         }
         
+        buttonBackgroundView.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.leading.equalTo(finishStatusView.snp.leading)
+            $0.width.equalTo(startButton.snp.width)
+            $0.height.equalTo(startButton.snp.height)
+        }
+        
         completeButton.snp.makeConstraints {
             $0.bottom.equalTo(safeAreaLayoutGuide).inset(10)
         }
     }
     
-    // MARK: - Custom Method
+    //MARK: - Custom Method
     
     func updateDatePickerTitle(status: ReadStatus) {
         if status == .FINISH {
-            buttonStackView.isHidden = false
+            finishStatusView.isHidden = false
             readingStatusLabel.isHidden = true
             dropStatusLabel.isHidden = true
         } else if status == .DROP {
-            buttonStackView.isHidden = true
+            finishStatusView.isHidden = true
             dropStatusLabel.isHidden = false
             readingStatusLabel.isHidden = true
         } else if status == .READING {
-            buttonStackView.isHidden = true
+            finishStatusView.isHidden = true
             dropStatusLabel.isHidden = true
             readingStatusLabel.isHidden = false
         }
-    }
-    
-    func updateButtons(_ isStart: Bool) {
-        startTitleLabel.textColor = isStart ? onColor : offColor
-        startDateLabel.textColor = isStart ? onColor : offColor
-        startButton.backgroundColor = isStart ? .wssWhite : .wssGray50
-        startButton.layer.borderColor = isStart ? UIColor.wssPrimary50.cgColor : UIColor.wssGray50.cgColor
-        endTitleLabel.textColor = isStart ? offColor : onColor
-        endDateLabel.textColor = isStart ? offColor : onColor
-        endButton.backgroundColor = isStart ? .wssGray50 : .wssWhite
-        endButton.layer.borderColor = isStart ? UIColor.wssGray50.cgColor : UIColor.wssGray50.cgColor
     }
     
     func updateDatePicker(date: Date) {
@@ -238,9 +247,48 @@ final class RegisterNormalDatePicker: UIButton {
         dateLabelStyle(of: endDateLabel)
     }
     
+    func updateButtons(_ isStart: Bool) {
+        UIView.animate(withDuration: self.animationDuration) {
+            self.updateWhiteBackgroundLayout(isStart)
+            self.layoutIfNeeded()
+        }
+        UIView.transition(with: self.startTitleLabel,
+                          duration: self.animationDuration,
+                          options: .transitionCrossDissolve) {
+            self.startTitleLabel.textColor = isStart ? self.onColor : self.offColor
+        }
+        UIView.transition(with: self.startDateLabel,
+                          duration: self.animationDuration,
+                          options: .transitionCrossDissolve) {
+            self.startDateLabel.textColor = isStart ? self.onColor : self.offColor
+        }
+        UIView.transition(with: self.endTitleLabel,
+                          duration: self.animationDuration,
+                          options: .transitionCrossDissolve) {
+            self.endTitleLabel.textColor = isStart ? self.offColor : self.onColor
+        }
+        UIView.transition(with: self.endDateLabel,
+                          duration: self.animationDuration,
+                          options: .transitionCrossDissolve) {
+            self.endDateLabel.textColor = isStart ? self.offColor : self.onColor
+        }
+    }
+    
+    private func updateWhiteBackgroundLayout(_ isStart: Bool) {
+        if isStart {
+            buttonBackgroundView.snp.updateConstraints {
+                $0.leading.equalTo(finishStatusView.snp.leading)
+            }
+        } else {
+            buttonBackgroundView.snp.updateConstraints {
+                $0.leading.equalTo(finishStatusView.snp.leading).inset(backgroundCenter)
+            }
+        }
+    }
+    
     private func dateLabelStyle(of label: UILabel) {
         label.do {
-            $0.makeAttribute(with: $0.text)?
+            $0.makeAttribute()?
                 .lineSpacing(spacingPercentage: 145)
                 .applyAttribute()
             $0.font = .Label1
@@ -249,7 +297,7 @@ final class RegisterNormalDatePicker: UIButton {
     
     private func titleLabelStyle(of label: UILabel) {
         label.do {
-            $0.makeAttribute(with: $0.text)?
+            $0.makeAttribute()?
                 .lineSpacing(spacingPercentage: 140)
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()

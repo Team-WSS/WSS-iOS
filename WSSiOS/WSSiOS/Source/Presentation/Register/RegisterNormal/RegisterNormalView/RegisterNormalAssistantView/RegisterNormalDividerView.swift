@@ -13,12 +13,12 @@ import Then
 
 final class RegisterNormalDividerView: UIView {
     
-    // MARK: - Components
+    //MARK: - Components
     
     private let dividerView = UIView()
     private let topBorderView = UIView()
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -32,7 +32,7 @@ final class RegisterNormalDividerView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - UI
+    //MARK: - UI
     
     private func setUI() {
         dividerView.do {

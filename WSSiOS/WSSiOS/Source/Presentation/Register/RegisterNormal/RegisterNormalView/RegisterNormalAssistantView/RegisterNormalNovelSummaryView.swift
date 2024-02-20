@@ -12,7 +12,7 @@ import Then
 
 final class RegisterNormalNovelSummaryView: UIView {
 
-    // MARK: - Components
+    //MARK: - Components
     
     private let novelSummaryStackView = UIStackView()
     
@@ -25,7 +25,7 @@ final class RegisterNormalNovelSummaryView: UIView {
     private let platformTitleLabel = WSSSectionTitleView()
     let platformCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -39,7 +39,7 @@ final class RegisterNormalNovelSummaryView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - UI
+    //MARK: - UI
     
     private func setUI() {
         self.do {
@@ -105,14 +105,14 @@ final class RegisterNormalNovelSummaryView: UIView {
         }
     }
     
-    // MARK: - Data
+    //MARK: - Data
     
     func bindData(plot: String?, genre: String?, platforms: [UserNovelPlatform]) {
         setText(of: plotLabel, text: plot)
         setText(of: genreLabel, text: genre)
     }
     
-    // MARK: - Custom Method
+    //MARK: - Custom Method
     
     func setText(of label: UILabel, text: String?) {
         label.text = text

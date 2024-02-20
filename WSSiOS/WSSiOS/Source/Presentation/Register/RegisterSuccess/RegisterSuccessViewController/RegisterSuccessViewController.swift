@@ -15,13 +15,13 @@ import Then
 /// 1-3-1 RegisterSuccess View
 final class RegisterSuccessViewController: UIViewController {
     
-    // MARK: - Properties
+    //MARK: - Properties
     
     private var userNovelId: Int
     private let rootView = RegisterSuccessView()
     private let disposeBag = DisposeBag()
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     init(userNovelId: Int) {
         self.userNovelId = userNovelId
@@ -50,26 +50,24 @@ final class RegisterSuccessViewController: UIViewController {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
-    // MARK: - UI
+    //MARK: - UI
     
-    func setUI() {
+    private func setUI() {
         self.view.backgroundColor = .wssWhite
         self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
-    // MARK: - Actions
+    //MARK: - Actions
     
-    func bindNavigation() {
+    private func bindNavigation() {
         rootView.makeMemoButton.rx.tap
-            .asDriver()
-            .drive(with: self, onNext: { owner, _ in
+            .bind(with: self, onNext: { owner, _ in
                 owner.moveToNovelDetailViewController(userNovelId: owner.userNovelId)
             })
             .disposed(by: disposeBag)
         
         rootView.returnHomeButton.rx.tap
-            .asDriver()
-            .drive(with: self, onNext: { owner, _ in
+            .bind(with: self, onNext: { owner, _ in
                 owner.popToRootViewController()
             })
             .disposed(by: disposeBag)

@@ -16,7 +16,7 @@ import Then
 /// 1-3-1 RegisterNormal View
 final class RegisterNormalViewController: UIViewController {
     
-    // MARK: - Properties
+    //MARK: - Properties
     
     private let novelRepository: NovelRepository
     private let userNovelRepository: UserNovelRepository
@@ -48,12 +48,12 @@ final class RegisterNormalViewController: UIViewController {
     private var isSelectingStartDate = BehaviorRelay<Bool>(value: true)
     private var platformCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
     
-    // MARK: - Components
+    //MARK: - Components
     
     private let backButton = UIButton()
     private let rootView = RegisterNormalView()
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     init(novelRepository: NovelRepository, userNovelRepository: UserNovelRepository, novelId: Int = 0, userNovelId: Int = 0) {
         self.novelRepository = novelRepository
@@ -85,7 +85,20 @@ final class RegisterNormalViewController: UIViewController {
         swipeBackGesture()
     }
     
-    // MARK: - UI
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        setNavigationBar()
+        updateNavigationBarStyle(offset: rootView.pageScrollView.contentOffset.y)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        rootView.divider.isHidden = true
+    }
+    
+    //MARK: - UI
     
     private func setUI() {
         backButton.do {
@@ -103,7 +116,7 @@ final class RegisterNormalViewController: UIViewController {
         ]
     }
     
-    // MARK: - Bind
+    //MARK: - Bind
     
     private func register() {
         rootView.novelSummaryView.platformCollectionView.register(NovelDetailInfoPlatformCollectionViewCell.self, forCellWithReuseIdentifier: "NovelDetailInfoPlatformCollectionViewCell")
@@ -236,7 +249,7 @@ final class RegisterNormalViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    // MARK: - Actions
+    //MARK: - Actions
     
     private func bindActions() {
         rootView.infoWithRatingView.starImageViews
@@ -341,22 +354,20 @@ final class RegisterNormalViewController: UIViewController {
     
     private func bindNavigation() {
         backButton.rx.tap
-            .asDriver()
-            .drive(with: self, onNext: { owner, _ in
+            .bind(with: self, onNext: { owner, _ in
                 owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
         
         rootView.registerButton.rx.tap
-            .asDriver()
-            .throttle(.seconds(3), latest: false)
-            .drive(with: self, onNext: { owner, _ in
+            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
                 owner.isNew.value ? owner.postUserNovel() : owner.patchUserNovel()
             })
             .disposed(by: disposeBag)
     }
     
-    // MARK: - API
+    //MARK: - API
     
     private func getNovelInfo() {
         novelRepository.getNovelInfo(novelId: novelId)
@@ -443,7 +454,7 @@ final class RegisterNormalViewController: UIViewController {
         self.endDate.accept( dateFormatter.date(from: end) ?? Date() )
     }
     
-    // MARK: - Custom Method
+    //MARK: - Custom Method
     
     private func updateNavigationBarStyle(offset: CGFloat) {
         if offset > 0 {
