@@ -21,17 +21,21 @@ final class RecordViewModel: ViewModelType {
     
     struct Input {
         let sortTypeButtonTapped: Observable<Void>
-//        let newestButtonTapped: Driver<Void>
-//        let oldestButtonTapped: Driver<Void>
-//        let cellTapped: Driver<IndexPath>
+        let newestButtonTapped: Observable<Void>
+        let oldestButtonTapped: Observable<Void>
+        let recordCellSelected: Observable<IndexPath>
+        let emptyButtonTapped: Observable<Void>
     }
     
     //MARK: - Outputs
     
     struct Output {
         let showAlignmentView = BehaviorRelay<Bool>(value: false)
-//        let recordMomoCount = BehaviorRelay<Int>(value: 0)
-//        let recordItem = BehaviorRelay<[RecordTableViewCell]>(value: [])
+        let alignNewest = BehaviorRelay<Bool>(value: false)
+        let alignOldest = BehaviorRelay<Bool>(value: false)
+        // tableview output
+        let recordMemoCount = BehaviorRelay<Int>(value: 0)
+        let navigateEmptyView = BehaviorRelay<Bool>(value: false)
     }
     
     //MARK: - init
@@ -50,6 +54,30 @@ extension RecordViewModel {
         input.sortTypeButtonTapped
             .subscribe(with: self, onNext: { owner, _ in
                 output.showAlignmentView.accept(true)
+            })
+            .disposed(by: disposeBag)
+        
+        input.newestButtonTapped
+            .subscribe(with: self, onNext: { owner, _ in
+                output.alignNewest.accept(true)
+            })
+            .disposed(by: disposeBag)
+        
+        input.oldestButtonTapped
+            .subscribe(with: self, onNext: { owner, _ in
+                output.alignOldest.accept(true)
+            })
+            .disposed(by: disposeBag)
+        
+        input.recordCellSelected
+            .subscribe(with: self, onNext: { owner, indexPath in
+                // 무엇이 들어가야 할까요 .......
+            })
+            .disposed(by: disposeBag)
+        
+        input.emptyButtonTapped
+            .subscribe(with: self, onNext: { owner, _ in
+                output.navigateEmptyView.accept(true)
             })
             .disposed(by: disposeBag)
         

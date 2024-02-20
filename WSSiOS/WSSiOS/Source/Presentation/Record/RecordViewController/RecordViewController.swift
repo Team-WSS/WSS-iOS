@@ -91,7 +91,16 @@ final class RecordViewController: UIViewController {
     private func bindViewModel() {
         let input = RecordViewModel.Input(
             sortTypeButtonTapped: self.rootView.headerView.headerAlignmentButton
-                .rx.tap.asObservable())
+                .rx.tap.asObservable(),
+            newestButtonTapped: self.rootView.alignmentView.libraryNewestButton
+                .rx.tap.asObservable(),
+            oldestButtonTapped: self.rootView.alignmentView.libraryOldesttButton
+                .rx.tap.asObservable(),
+            recordCellSelected: self.rootView.recordTableView
+                .rx.itemSelected.asObservable(),
+            emptyButtonTapped: self.emptyView.recordButton
+                .rx.tap.asObservable()
+        )
         
         let output = self.recordViewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -100,18 +109,8 @@ final class RecordViewController: UIViewController {
                 owner.rootView.alignmentView.isHidden.toggle()
             })
             .disposed(by: disposeBag)
-    }
-    
-    private func bindUI() {
-//        rootView.headerView.headerAlignmentButton
-//            .rx.tap
-//            .bind(with: self, onNext: { owner, event in
-//                owner.rootView.alignmentView.isHidden.toggle()
-//            })
-//            .disposed(by: disposeBag)
-             
-        rootView.alignmentView.libraryNewestButton
-            .rx.tap
+        
+        output.alignNewest
             .bind(with: self, onNext: { owner, _ in
                 owner.lastMemoId = StringLiterals.Alignment.newest.lastNovelId
                 owner.alignmentLabel = StringLiterals.Alignment.newest.sortType
@@ -121,8 +120,7 @@ final class RecordViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        rootView.alignmentView.libraryOldesttButton
-            .rx.tap
+        output.alignOldest
             .bind(with: self, onNext: { owner, _ in
                 owner.lastMemoId = StringLiterals.Alignment.oldest.lastNovelId
                 owner.alignmentLabel = StringLiterals.Alignment.oldest.sortType
@@ -132,7 +130,13 @@ final class RecordViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        recordMemoCount
+        output.navigateEmptyView
+            .subscribe(with: self, onNext: { owner, event in
+                owner.navigationController?.tabBarController?.selectedIndex = 1
+            })
+            .disposed(by: disposeBag)
+        
+        output.recordMemoCount
             .asDriver()
             .drive(with: self, onNext: { owner, value in
                 owner.rootView.headerView.recordCountLabel.text = "\(value)개"
@@ -147,6 +151,24 @@ final class RecordViewController: UIViewController {
                 }
             })
             .disposed(by: disposeBag)
+    }
+    
+    private func bindUI() {
+//        recordMemoCount
+//            .asDriver()
+//            .drive(with: self, onNext: { owner, value in
+//                owner.rootView.headerView.recordCountLabel.text = "\(value)개"
+//                if value == 0 {
+//                    owner.rootView.addSubview(owner.emptyView)
+//                    owner.emptyView.snp.makeConstraints {
+//                        $0.edges.equalToSuperview()
+//                    }
+//                }
+//                else {
+//                    owner.emptyView.removeFromSuperview()
+//                }
+//            })
+//            .disposed(by: disposeBag)
             
         rootView.recordTableView
             .rx
@@ -155,13 +177,6 @@ final class RecordViewController: UIViewController {
                 owner.navigationController?.pushViewController(MemoReadViewController(repository: DefaultMemoRepository(memoService: DefaultMemoService()), memoId: owner.recordMemoListRelay.value[indexPath.row].id), animated: true)
             })
             .disposed(by: disposeBag)
-        
-        emptyView.recordButton
-            .rx.tap
-            .subscribe(with: self, onNext: { owner, event in
-                owner.navigationController?.tabBarController?.selectedIndex = 1
-            })
-            .disposed(by: self.disposeBag)
     }
 
     //MARK: - API
@@ -176,7 +191,7 @@ final class RecordViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    //MARK: - Actions
+    //MARK: - Notification Center
     
     private func setNotificationCenter() {
         NotificationCenter.default.addObserver(
