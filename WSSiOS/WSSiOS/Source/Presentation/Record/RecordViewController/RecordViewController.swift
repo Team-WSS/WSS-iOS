@@ -89,6 +89,37 @@ final class RecordViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
+    
+    //MARK: - API
+    
+    func getDataFromAPI(id: Int,
+                        sortType: String) {
+        self.memoRepository.getRecordMemoList(memoId: id, sort: sortType)
+            .subscribe(with: self, onNext: { owner, memo in
+                owner.recordMemoCount.accept(memo.memoCount)
+                owner.recordMemoListRelay.accept(memo.memos)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    //MARK: - Notification Center
+    
+    private func setNotificationCenter() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.deletedMemo(_:)),
+            name: NSNotification.Name("DeletedMemo"),
+            object: nil
+        )
+    }
+    
+    @objc func deletedMemo(_ notification: Notification) {
+        showToast(.memoDelete)
+    }
+}
+
+extension RecordViewController {
+    
     private func bindViewModel() {
         let input = RecordViewModel.Input(
             sortTypeButtonTapped: self.rootView.headerView.headerAlignmentButton
@@ -161,30 +192,4 @@ final class RecordViewController: UIViewController {
             .disposed(by: disposeBag)
     }
 
-    //MARK: - API
-    
-    func getDataFromAPI(id: Int,
-                        sortType: String) {
-        self.memoRepository.getRecordMemoList(memoId: id, sort: sortType)
-            .subscribe(with: self, onNext: { owner, memo in
-                owner.recordMemoCount.accept(memo.memoCount)
-                owner.recordMemoListRelay.accept(memo.memos)
-            })
-            .disposed(by: disposeBag)
-    }
-    
-    //MARK: - Notification Center
-    
-    private func setNotificationCenter() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(self.deletedMemo(_:)),
-            name: NSNotification.Name("DeletedMemo"),
-            object: nil
-        )
-    }
-    
-    @objc func deletedMemo(_ notification: Notification) {
-        showToast(.memoDelete)
-    }
 }
