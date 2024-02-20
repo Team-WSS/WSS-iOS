@@ -21,7 +21,7 @@ final class RecordViewController: UIViewController {
     private let recordViewModel: RecordViewModel
     private let disposeBag = DisposeBag()
     
-    private var lastMemoId = StringLiterals.Alignment.newest.lastNovelId
+    private var lastMemoId = StringLiterals.Alignment.newest.lastId
     private var alignmentLabel = StringLiterals.Alignment.newest.sortType
     
     //MARK: - Components
@@ -89,7 +89,6 @@ final class RecordViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    
     //MARK: - API
     
     func getDataFromAPI(id: Int,
@@ -145,7 +144,7 @@ extension RecordViewController {
         
         output.alignNewest
             .bind(with: self, onNext: { owner, _ in
-                owner.lastMemoId = StringLiterals.Alignment.newest.lastNovelId
+                owner.lastMemoId = StringLiterals.Alignment.newest.lastId
                 owner.alignmentLabel = StringLiterals.Alignment.newest.sortType
                 owner.rootView.headerView.headerAlignmentButton.setTitle(StringLiterals.Alignment.newest.title, for: .normal)
                 owner.getDataFromAPI(id: owner.lastMemoId, sortType: owner.alignmentLabel)
@@ -155,7 +154,7 @@ extension RecordViewController {
         
         output.alignOldest
             .bind(with: self, onNext: { owner, _ in
-                owner.lastMemoId = StringLiterals.Alignment.oldest.lastNovelId
+                owner.lastMemoId = StringLiterals.Alignment.oldest.lastId
                 owner.alignmentLabel = StringLiterals.Alignment.oldest.sortType
                 owner.rootView.headerView.headerAlignmentButton.setTitle(StringLiterals.Alignment.oldest.title, for: .normal)
                 owner.getDataFromAPI(id: owner.lastMemoId, sortType: owner.alignmentLabel)
@@ -191,5 +190,4 @@ extension RecordViewController {
             })
             .disposed(by: disposeBag)
     }
-
 }

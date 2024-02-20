@@ -157,7 +157,7 @@ enum StringLiterals {
             }
         }
         
-        var lastNovelId: Int {
+        var lastId: Int {
             switch self {
             case .newest:
                 return 999999

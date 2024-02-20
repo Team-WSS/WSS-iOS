@@ -109,7 +109,7 @@ final class LibraryViewController: UIViewController {
                 userNovelListRepository: DefaultUserNovelRepository(
                     userNovelService: DefaultUserNovelService()),
                 readStatus: readStatusList[i],
-                lastUserNovelId: sortTypeList.lastNovelId,
+                lastUserNovelId: sortTypeList.lastId,
                 size: sortTypeList.sizeData,
                 sortType: sortTypeList.sortType)
             
@@ -168,7 +168,7 @@ final class LibraryViewController: UIViewController {
     private func updatePages(sortType: StringLiterals.Alignment) {
         let viewController = libraryPages[currentPageIndex]
         viewController.updateNovelList(readStatus: readStatusList[currentPageIndex],
-                                       lastUserNovelId: sortType.lastNovelId,
+                                       lastUserNovelId: sortType.lastId,
                                        size: sortType.sizeData,
                                        sortType: sortType.sortType)
     }
