@@ -62,7 +62,6 @@ final class RecordViewController: UIViewController {
         setUI()
         register()
         
-        bindUI()
         bindViewModel()
         setNotificationCenter()
     }
@@ -82,7 +81,9 @@ final class RecordViewController: UIViewController {
             forCellReuseIdentifier: RecordTableViewCell.cellIdentifier)
         
         recordMemoListRelay
-            .bind(to: rootView.recordTableView.rx.items(cellIdentifier: RecordTableViewCell.cellIdentifier, cellType: RecordTableViewCell.self)) { (row, element, cell) in
+            .bind(to: rootView.recordTableView.rx.items(
+                cellIdentifier: RecordTableViewCell.cellIdentifier,
+                cellType: RecordTableViewCell.self)) { row, element, cell in
                 cell.bindData(data: element)
             }
             .disposed(by: disposeBag)
@@ -98,6 +99,7 @@ final class RecordViewController: UIViewController {
                 .rx.tap.asObservable(),
             recordCellSelected: self.rootView.recordTableView
                 .rx.itemSelected.asObservable(),
+            recordMemoCount: self.recordMemoCount.asObservable(),
             emptyButtonTapped: self.emptyView.recordButton
                 .rx.tap.asObservable()
         )
@@ -136,15 +138,7 @@ final class RecordViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.navigateEmptyView
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.navigationController?.tabBarController?.selectedIndex = 1
-            })
-            .disposed(by: disposeBag)
-    }
-    
-    private func bindUI() {
-        recordMemoCount
+        output.recordMemoCount
             .asDriver()
             .drive(with: self, onNext: { owner, value in
                 owner.rootView.headerView.recordCountLabel.text = "\(value)개"
@@ -157,6 +151,12 @@ final class RecordViewController: UIViewController {
                 else {
                     owner.emptyView.removeFromSuperview()
                 }
+            })
+            .disposed(by: disposeBag)
+        
+        output.navigateEmptyView
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.navigationController?.tabBarController?.selectedIndex = 1
             })
             .disposed(by: disposeBag)
     }

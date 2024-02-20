@@ -13,7 +13,7 @@ enum WSSTabBarItem: CaseIterable {
     
     var normalItemImage: UIImage {
         switch self {
-        case .home: 
+        case .home:
             return .icNavigateHome
         case .library:
             return .icNavigateLibrary
@@ -26,7 +26,7 @@ enum WSSTabBarItem: CaseIterable {
     
     var selectedItemImage: UIImage {
         switch self {
-        case .home: 
+        case .home:
             return .icNavigateHomeSelected
         case .library:
             return .icNavigateLibrarySelected
@@ -56,7 +56,7 @@ enum WSSTabBarItem: CaseIterable {
             return HomeViewController(
                 userRepository: DefaultUserRepository(
                     userService: DefaultUserService()
-                ), 
+                ),
                 recommendRepository: DefaultRecommendRepository(
                     recommendService: DefaultRecommendService()
                 )
@@ -74,12 +74,9 @@ enum WSSTabBarItem: CaseIterable {
                 memoRepository: DefaultMemoRepository(
                     memoService: DefaultMemoService()
                 ),
-                recordViewModel: RecordViewModel(
-                    memoRepository: DefaultMemoRepository(
-                        memoService: DefaultMemoService()
-                    )
-                )
+                recordViewModel: RecordViewModel()
             )
+            
             
         case .myPage:
             return MyPageViewController(

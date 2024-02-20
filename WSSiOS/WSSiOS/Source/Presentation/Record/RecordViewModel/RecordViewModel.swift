@@ -14,8 +14,6 @@ final class RecordViewModel: ViewModelType {
     
     //MARK: - Properties
     
-    private let memoRepository: DefaultMemoRepository
-    private let disposeBag = DisposeBag()
     
     // MARK: - Inputs
     
@@ -24,7 +22,7 @@ final class RecordViewModel: ViewModelType {
         let newestButtonTapped: Observable<Void>
         let oldestButtonTapped: Observable<Void>
         let recordCellSelected: Observable<IndexPath>
-        //recordMemoCount
+        let recordMemoCount: Observable<Int>
         let emptyButtonTapped: Observable<Void>
     }
     
@@ -40,10 +38,7 @@ final class RecordViewModel: ViewModelType {
     }
     
     //MARK: - init
-    
-    init(memoRepository: DefaultMemoRepository) {
-        self.memoRepository = memoRepository
-    }
+
 }
 
 //MARK: - Methods
@@ -73,6 +68,13 @@ extension RecordViewModel {
         input.recordCellSelected
             .subscribe(with: self, onNext: { owner, indexPath in
                 output.navigateToMemoRead.accept(indexPath)
+            })
+            .disposed(by: disposeBag)
+        
+        input.recordMemoCount
+            .asDriver(onErrorJustReturn: 0)
+            .drive(with: self, onNext: { owner, count in
+                output.recordMemoCount.accept(count)
             })
             .disposed(by: disposeBag)
         
