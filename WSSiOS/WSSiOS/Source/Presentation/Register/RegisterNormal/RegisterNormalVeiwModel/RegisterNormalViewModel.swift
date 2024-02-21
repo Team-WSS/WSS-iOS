@@ -13,10 +13,13 @@ class RegisterNormalViewModel: ViewModelType {
     
     //MARK: - Properties
     
-    let novelRepository: NovelRepository
-    let userNovelRepository: UserNovelRepository
-    let novelId: Int
-    var userNovelId: Int
+    private let novelRepository: NovelRepository
+    private let userNovelRepository: UserNovelRepository
+    private let novelId: Int
+    private var userNovelId: Int
+    private var requestStartDate: String?
+    private var requestEndDate: String?
+    private var requestRating: Float?
     
     private var minStarRating: Float = 0.0
     private var maxStarRating: Float = 5.0
@@ -24,6 +27,8 @@ class RegisterNormalViewModel: ViewModelType {
         $0.dateFormat = StringLiterals.Register.Normal.DatePicker.dateFormat
         $0.timeZone = TimeZone(identifier: StringLiterals.Register.Normal.DatePicker.KoreaTimeZone)
     }
+    
+    
     
     private let disposeBag = DisposeBag()
     private let novelBasicData = PublishSubject<NovelBasicData>()
@@ -39,7 +44,7 @@ class RegisterNormalViewModel: ViewModelType {
     private let isSelectingStartDate = BehaviorRelay<Bool>(value: true)
     private let isOverToday = BehaviorRelay<Bool>(value: false)
     private let platformCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
-    
+    private let successAPIRequest = PublishSubject<Int>()
     
     //MARK: - Life Cycle
     
@@ -53,6 +58,7 @@ class RegisterNormalViewModel: ViewModelType {
     struct Input {
         let scrollContentOffset: ControlProperty<CGPoint>
         let backButtonTap: ControlEvent<Void>
+        let registerButtonTap: ControlEvent<Void>
         let readStatusButtonTap: Observable<ReadStatus>
         let readDateToggleButtonTap: ControlEvent<Void>
         let datePickerButtonTap: ControlEvent<Void>
@@ -67,6 +73,7 @@ class RegisterNormalViewModel: ViewModelType {
         let scrollContentOffset: Driver<CGPoint>
         let backButtonTap: Observable<Void>
         let novelBasicData: Observable<NovelBasicData>
+        let endAPIRequest: Observable<Int>
         let isNew: Driver<Bool>
         let starRating: Driver<Float>
         let readStatus: Driver<ReadStatus>
@@ -82,35 +89,9 @@ class RegisterNormalViewModel: ViewModelType {
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let scrollContentOffset = input.scrollContentOffset
-        
-        novelRepository.getNovelInfo(novelId: novelId)
-            .subscribe(with: self, onNext: { owner, data in
-                if let newData = data.newNovelResult {
-                    owner.isNew.accept(true)
-                    owner.novelBasicData
-                        .onNext(NovelBasicData(novelTitle: newData.novelTitle,
-                                               novelAuthor: newData.novelAuthor,
-                                               novelGenre: newData.novelGenre,
-                                               novelImg: newData.novelImg,
-                                               novelDescription: newData.novelDescription,
-                                               platforms: newData.platforms))
-                } else if let userData = data.editNovelResult {
-                    owner.isNew.accept(false)
-                    owner.novelBasicData
-                        .onNext(NovelBasicData(novelTitle: userData.userNovelTitle,
-                                               novelAuthor: userData.userNovelAuthor,
-                                               novelGenre: userData.userNovelGenre,
-                                               novelImg: userData.userNovelImg,
-                                               novelDescription: userData.userNovelDescription,
-                                               platforms: userData.platforms))
-                    owner.bindUserData(userData)
-                }
-            }, onError: { owner, error in
-                print(error)
-            })
-            .disposed(by: disposeBag)
-        
         let backButtonTap = input.backButtonTap.asObservable()
+        
+        getNovelInfo()
         
         input.readDateToggleButtonTap
             .bind(with: self, onNext: {owner, _ in
@@ -185,11 +166,18 @@ class RegisterNormalViewModel: ViewModelType {
                 if (isStart && selectedDate >= endDate) || (!isStart && selectedDate <= startDate) {
                     owner.internalStartDate.accept(selectedDate)
                     owner.internalEndDate.accept(selectedDate)
-                } else if isStart {
-                    owner.internalStartDate.accept(selectedDate)
-                } else if !isStart {
-                    owner.internalEndDate.accept(selectedDate)
+                } else  {
+                    isStart ? owner.internalStartDate.accept(selectedDate) :
+                              owner.internalEndDate.accept(selectedDate)
                 }
+            })
+            .disposed(by: disposeBag)
+        
+        input.registerButtonTap
+            .withLatestFrom(isNew)
+            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, isNew in
+                isNew ? owner.postUserNovel() : owner.patchUserNovel()
             })
             .disposed(by: disposeBag)
         
@@ -197,6 +185,7 @@ class RegisterNormalViewModel: ViewModelType {
             scrollContentOffset: scrollContentOffset.asDriver(),
             backButtonTap: backButtonTap,
             novelBasicData: novelBasicData.asObservable(),
+            endAPIRequest: successAPIRequest.asObservable(),
             isNew: isNew.asDriver(),
             starRating: starRating.asDriver(),
             readStatus: readStatus.asDriver(),
@@ -209,6 +198,90 @@ class RegisterNormalViewModel: ViewModelType {
             internalStartDate: internalStartDate.asDriver(),
             internalEndDate: internalEndDate.asDriver()
         )
+    }
+    
+    //MARK: - API
+    
+    private func getNovelInfo() {
+        novelRepository.getNovelInfo(novelId: novelId)
+            .subscribe(with: self, onNext: { owner, data in
+                if let newData = data.newNovelResult {
+                    owner.isNew.accept(true)
+                    owner.novelBasicData
+                        .onNext(NovelBasicData(novelTitle: newData.novelTitle,
+                                               novelAuthor: newData.novelAuthor,
+                                               novelGenre: newData.novelGenre,
+                                               novelImg: newData.novelImg,
+                                               novelDescription: newData.novelDescription,
+                                               platforms: newData.platforms))
+                } else if let userData = data.editNovelResult {
+                    owner.isNew.accept(false)
+                    owner.novelBasicData
+                        .onNext(NovelBasicData(novelTitle: userData.userNovelTitle,
+                                               novelAuthor: userData.userNovelAuthor,
+                                               novelGenre: userData.userNovelGenre,
+                                               novelImg: userData.userNovelImg,
+                                               novelDescription: userData.userNovelDescription,
+                                               platforms: userData.platforms))
+                    owner.bindUserData(userData)
+                }
+            }, onError: { owner, error in
+                print(error)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func postUserNovel() {
+        formatRequestBodyData()
+        userNovelRepository.postUserNovel(novelId: novelId,
+                                          userNovelRating: requestRating,
+                                          userNovelReadStatus: readStatus.value,
+                                          userNovelReadStartDate: requestStartDate,
+                                          userNovelReadEndDate: requestEndDate)
+        .subscribe(with: self, onNext: { owner, data in
+            owner.userNovelId = data.userNovelId
+            owner.successAPIRequest.onNext(owner.userNovelId)
+        }, onError: { owner, error in
+            owner.successAPIRequest.onError(error)
+        })
+        .disposed(by: disposeBag)
+    }
+    
+    private func patchUserNovel() {
+        formatRequestBodyData()
+        userNovelRepository.patchUserNovel(userNovelId: userNovelId,
+                                           userNovelRating: requestRating,
+                                           userNovelReadStatus: readStatus.value,
+                                           userNovelReadStartDate: requestStartDate,
+                                           userNovelReadEndDate: requestEndDate)
+        .subscribe(with: self, onNext: { owner, data in
+            owner.successAPIRequest.onNext(owner.userNovelId)
+        }, onError: { owner, error in
+            owner.successAPIRequest.onError(error)
+            print(error)
+        })
+        .disposed(by: disposeBag)
+    }
+    
+    //MARK: - Custom Method
+    
+    private func formatRequestBodyData() {
+        requestStartDate = dateFormatter.string(from: startDate.value)
+        requestEndDate = dateFormatter.string(from: endDate.value)
+        
+        if !isDateExist.value {
+            requestStartDate = nil
+            requestEndDate = nil
+        } else if readStatus.value == .READING  {
+            requestEndDate = nil
+        } else if readStatus.value == .DROP {
+            requestStartDate = nil
+        } else if readStatus.value == .WISH {
+            requestStartDate = nil
+            requestEndDate = nil
+        }
+        
+        requestRating = starRating.value <= minStarRating ? nil : starRating.value
     }
     
     private func bindUserData(_ userData: EditNovelResult) {

@@ -162,7 +162,8 @@ final class TestVC: UIViewController{
             })
         let input = RegisterNormalViewModel
             .Input(scrollContentOffset: rootView.pageScrollView.rx.contentOffset,
-                   backButtonTap: backButton.rx.tap,
+                   backButtonTap: backButton.rx.tap, 
+                   registerButtonTap:  rootView.registerButton.rx.tap,
                    readStatusButtonTap: readStatusButtonTap,
                    readDateToggleButtonTap: rootView.readDateView.toggleButton.rx.tap,
                    datePickerButtonTap: rootView.readDateView.datePickerButton.rx.tap,
@@ -293,83 +294,53 @@ final class TestVC: UIViewController{
             })
             .disposed(by: disposeBag)
         
-        rootView.registerButton.rx.tap
-            .withLatestFrom(output.isNew)
-            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, isNew in
-                isNew ? owner.postUserNovel() : owner.patchUserNovel()
+        output.endAPIRequest
+            .observe(on: MainScheduler.instance)
+            .withLatestFrom(output.isNew) { (userNovelId: $0, isNew: $1) }
+            .subscribe(with: self, onNext: { owner, values in
+                values.isNew ? owner.pushToRegisterSuccessViewController(userNovelId: values.userNovelId) :
+                               owner.moveToNovelDetailViewController(userNovelId: values.userNovelId)
+            }, onError: { owner, error in
+                print(error)
             })
             .disposed(by: disposeBag)
     }
     
     
-    private func postUserNovel() {
-        formatRequestBodyData()
-        viewModel.userNovelRepository.postUserNovel(novelId: viewModel.novelId,
-                                                    userNovelRating: requestRating,
-                                                    userNovelReadStatus: readStatus.value,
-                                                    userNovelReadStartDate: requestStartDate,
-                                                    userNovelReadEndDate: requestEndDate)
-        .observe(on: MainScheduler.instance)
-        .subscribe(with: self, onNext: { owner, data in
-            owner.viewModel.userNovelId = data.userNovelId
-            owner.pushToRegisterSuccessViewController(userNovelId: owner.viewModel.userNovelId)
-        }, onError: { owner, error in
-            print(error)
-        })
-        .disposed(by: disposeBag)
-    }
-    
-    private func patchUserNovel() {
-        formatRequestBodyData()
-        print(viewModel.userNovelId)
-        viewModel.userNovelRepository.patchUserNovel(userNovelId: viewModel.userNovelId,
-                                                     userNovelRating: requestRating,
-                                                     userNovelReadStatus: readStatus.value,
-                                                     userNovelReadStartDate: requestStartDate,
-                                                     userNovelReadEndDate: requestEndDate)
-        .observe(on: MainScheduler.instance)
-        .subscribe(with: self, onNext: { owner, data in
-            owner.moveToNovelDetailViewController(userNovelId: owner.viewModel.userNovelId)
-        }, onError: { owner, error in
-            print(error)
-        })
-        .disposed(by: disposeBag)
-    }
-    
-    private func bindNewData(_ newData: NewNovelResult) {
-        self.navigationTitle = newData.novelTitle
-        self.platformList = newData.platforms
-        rootView.novelSummaryView.hiddenPlatformView(when: platformList.isEmpty)
-        rootView.bindNewData(newData)
-    }
-    
-    private func bindUserData(_ userData: EditNovelResult) {
-        self.viewModel.userNovelId = userData.userNovelID
-        self.navigationTitle = userData.userNovelTitle
-        self.platformList = userData.platforms
-        rootView.novelSummaryView.hiddenPlatformView(when: platformList.isEmpty)
-        rootView.bindUserData(userData)
-        
-        self.starRating.accept(userData.userNovelRating ?? minStarRating)
-        let status = ReadStatus(rawValue: userData.userNovelReadStatus) ?? .FINISH
-        self.readStatus.accept(status)
-        
-        // status에 따른 날짜 처리
-        var start = userData.userNovelReadDate.userNovelReadStartDate ?? ""
-        var end = userData.userNovelReadDate.userNovelReadEndDate ?? ""
-        //        self.isDateExist.accept(start != "" || end != "")
-        
-        if status == .READING {
-            end = start
-        } else if status == .DROP {
-            start = end
-        }
-        
-        self.startDate.accept( dateFormatter.date(from: start) ?? Date() )
-        self.endDate.accept( dateFormatter.date(from: end) ?? Date() )
-    }
-    
+//    private func postUserNovel() {
+//        formatRequestBodyData()
+//        viewModel.userNovelRepository.postUserNovel(novelId: viewModel.novelId,
+//                                                    userNovelRating: requestRating,
+//                                                    userNovelReadStatus: readStatus.value,
+//                                                    userNovelReadStartDate: requestStartDate,
+//                                                    userNovelReadEndDate: requestEndDate)
+//        .observe(on: MainScheduler.instance)
+//        .subscribe(with: self, onNext: { owner, data in
+//            owner.viewModel.userNovelId = data.userNovelId
+//            owner.pushToRegisterSuccessViewController(userNovelId: owner.viewModel.userNovelId)
+//        }, onError: { owner, error in
+//            print(error)
+//        })
+//        .disposed(by: disposeBag)
+//    }
+//    
+//    private func patchUserNovel() {
+//        formatRequestBodyData()
+//        print(viewModel.userNovelId)
+//        viewModel.userNovelRepository.patchUserNovel(userNovelId: viewModel.userNovelId,
+//                                                     userNovelRating: requestRating,
+//                                                     userNovelReadStatus: readStatus.value,
+//                                                     userNovelReadStartDate: requestStartDate,
+//                                                     userNovelReadEndDate: requestEndDate)
+//        .observe(on: MainScheduler.instance)
+//        .subscribe(with: self, onNext: { owner, data in
+//            owner.moveToNovelDetailViewController(userNovelId: owner.viewModel.userNovelId)
+//        }, onError: { owner, error in
+//            print(error)
+//        })
+//        .disposed(by: disposeBag)
+//    }
+//    
     // MARK: - Custom Method
     
     private func updateNavigationBarStyle(offset: CGFloat) {
