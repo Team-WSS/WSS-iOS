@@ -33,22 +33,9 @@ final class TestVC: UIViewController{
         $0.dateFormat = StringLiterals.Register.Normal.DatePicker.dateFormat
         $0.timeZone = TimeZone(identifier: StringLiterals.Register.Normal.DatePicker.KoreaTimeZone)
     }
-    private var requestStartDate: String?
-    private var requestEndDate: String?
-    private var requestRating: Float?
     
     // RxSwift
     private let disposeBag = DisposeBag()
-    //private var isNew = BehaviorRelay<Bool>(value: true)
-    private var starRating = BehaviorRelay<Float>(value: 0.0)
-    private var readStatus = BehaviorRelay<ReadStatus>(value: .FINISH)
-    private var isDateExist = BehaviorRelay<Bool>(value: true)
-    private var showDatePicker = BehaviorRelay<Bool>(value: false)
-    private var startDate = BehaviorRelay<Date>(value: Date())
-    private var endDate = BehaviorRelay<Date>(value: Date())
-    private var internalStartDate = BehaviorRelay<Date>(value: Date())
-    private var internalEndDate = BehaviorRelay<Date>(value: Date())
-    private var isSelectingStartDate = BehaviorRelay<Bool>(value: true)
     private var platformCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
     
     // MARK: - Components
@@ -306,41 +293,6 @@ final class TestVC: UIViewController{
             .disposed(by: disposeBag)
     }
     
-    
-//    private func postUserNovel() {
-//        formatRequestBodyData()
-//        viewModel.userNovelRepository.postUserNovel(novelId: viewModel.novelId,
-//                                                    userNovelRating: requestRating,
-//                                                    userNovelReadStatus: readStatus.value,
-//                                                    userNovelReadStartDate: requestStartDate,
-//                                                    userNovelReadEndDate: requestEndDate)
-//        .observe(on: MainScheduler.instance)
-//        .subscribe(with: self, onNext: { owner, data in
-//            owner.viewModel.userNovelId = data.userNovelId
-//            owner.pushToRegisterSuccessViewController(userNovelId: owner.viewModel.userNovelId)
-//        }, onError: { owner, error in
-//            print(error)
-//        })
-//        .disposed(by: disposeBag)
-//    }
-//    
-//    private func patchUserNovel() {
-//        formatRequestBodyData()
-//        print(viewModel.userNovelId)
-//        viewModel.userNovelRepository.patchUserNovel(userNovelId: viewModel.userNovelId,
-//                                                     userNovelRating: requestRating,
-//                                                     userNovelReadStatus: readStatus.value,
-//                                                     userNovelReadStartDate: requestStartDate,
-//                                                     userNovelReadEndDate: requestEndDate)
-//        .observe(on: MainScheduler.instance)
-//        .subscribe(with: self, onNext: { owner, data in
-//            owner.moveToNovelDetailViewController(userNovelId: owner.viewModel.userNovelId)
-//        }, onError: { owner, error in
-//            print(error)
-//        })
-//        .disposed(by: disposeBag)
-//    }
-//    
     // MARK: - Custom Method
     
     private func updateNavigationBarStyle(offset: CGFloat) {
@@ -359,25 +311,6 @@ final class TestVC: UIViewController{
             navigationItem.title = ""
             rootView.divider.isHidden = true
         }
-    }
-    
-    private func formatRequestBodyData() {
-        requestStartDate = dateFormatter.string(from: startDate.value)
-        requestEndDate = dateFormatter.string(from: endDate.value)
-        
-        if !isDateExist.value {
-            requestStartDate = nil
-            requestEndDate = nil
-        } else if readStatus.value == .READING  {
-            requestEndDate = nil
-        } else if readStatus.value == .DROP {
-            requestStartDate = nil
-        } else if readStatus.value == .WISH {
-            requestStartDate = nil
-            requestEndDate = nil
-        }
-        
-        requestRating = starRating.value <= minStarRating ? nil : starRating.value
     }
     
     private func showDatePickerButton(_ isShow: Bool) {
