@@ -35,6 +35,8 @@ final class NovelDetailViewController: UIViewController {
     private var novelAuthor = ""
     private var novelImage = ""
     
+    private let novelDetailViewModel = NovelDetailViewModel()
+    
     //MARK: - Components
 
     private let rootView = NovelDetailView()
@@ -77,6 +79,7 @@ final class NovelDetailViewController: UIViewController {
         register()
         delegate()
         bindUI()
+        bindViewModel()
         bindAction()
         bindNavigation()
     }
@@ -161,6 +164,18 @@ final class NovelDetailViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
+    private func bindViewModel() {
+        let input = NovelDetailViewModel.Input(
+            novelSettingButtonDidTapEvent: novelSettingButton.rx.tap.asObservable()
+        )
+        
+        let output = self.novelDetailViewModel.transform(from: input, disposeBag: self.disposeBag)
+        
+        output.memoSettingButtonViewIsHidden.subscribe(with: self, onNext: { owner, isHidden in
+            owner.rootView.novelDetailMemoSettingButtonView.isHidden = isHidden
+        }).disposed(by: disposeBag)
+    }
+    
     private func bindUI() {
         memoList.bind(to: rootView.novelDetailMemoView.memoTableView.rx.items(
             cellIdentifier: NovelDetailMemoTableViewCell.cellIdentifier,
@@ -223,12 +238,6 @@ final class NovelDetailViewController: UIViewController {
     //MARK: - Actions
     
     private func bindAction() {
-        novelSettingButton.rx.tap
-            .bind(with: self, onNext: { owner, _ in
-                owner.rootView.novelDetailMemoSettingButtonView.isHidden = false
-            })
-            .disposed(by: disposeBag)
-        
         rootView.novelDetailTabView.memoButton.rx.tap
             .bind(with: self, onNext: { owner, _ in
                 owner.selectedMenu.accept(.memo)
