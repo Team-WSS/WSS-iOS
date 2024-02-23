@@ -26,11 +26,11 @@ final class RecordViewModel: ViewModelType {
     // MARK: - Inputs
     
     struct Input {
-        let sortTypeButtonTapped: Observable<Void>
-        let newestButtonTapped: Observable<Void>
-        let oldestButtonTapped: Observable<Void>
-        let recordCellSelected: Observable<IndexPath>
-        let emptyButtonTapped: Observable<Void>
+        let sortTypeButtonTapped: ControlEvent<Void>
+        let newestButtonTapped: ControlEvent<Void>
+        let oldestButtonTapped: ControlEvent<Void>
+        let recordCellSelected: ControlEvent<IndexPath>
+        let emptyButtonTapped: ControlEvent<Void>
     }
     
     //MARK: - Outputs
@@ -53,7 +53,7 @@ final class RecordViewModel: ViewModelType {
     
     func getDataFromAPI(id: Int,
                         sortType: String) {
-        memoRepository.getRecordMemos(memoId: id, sort: sortType)
+        memoRepository.getRecordMemos(lastId: id, sort: sortType)
             .subscribe(with: self, onNext: { owner, memo in
                 owner.recordMemoCount.accept(memo.memoCount)
                 owner.recordMemoList.accept(memo.memos)
@@ -68,9 +68,7 @@ extension RecordViewModel {
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
-        
-        getDataFromAPI(id: lastMemoId, sortType: sortType)
-        
+
         input.sortTypeButtonTapped
             .subscribe(with: self, onNext: { owner, _ in
                 output.showAlignmentView.accept(true)

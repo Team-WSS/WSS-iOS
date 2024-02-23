@@ -40,15 +40,17 @@ final class RecordViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        recordViewModel.getDataFromAPI(
-            id: recordViewModel.lastMemoId,
-            sortType: recordViewModel.sortType)
-        
+    
         showTabBar()
         preparationSetNavigationBar(title: StringLiterals.Navigation.Title.record,
                                     left: nil,
                                     right: nil)
+        
+        recordViewModel.getDataFromAPI(
+            id: recordViewModel.lastMemoId,
+            sortType: recordViewModel.sortType
+        )
+        
     }
     
     override func viewDidLoad() {
@@ -94,6 +96,9 @@ final class RecordViewController: UIViewController {
 
 extension RecordViewController {
     
+    //TODO: - output 로직 수정 필요
+    // viewdidload될때 함께 UI적용되는 이슈
+    
     private func bindViewModel() {
         recordViewModel.recordMemoList
             .bind(to: rootView.recordTableView.rx.items(
@@ -120,16 +125,11 @@ extension RecordViewController {
             .disposed(by: disposeBag)
         
         let input = RecordViewModel.Input(
-            sortTypeButtonTapped: self.rootView.headerView.headerAlignmentButton
-                .rx.tap.asObservable(),
-            newestButtonTapped: self.rootView.alignmentView.libraryNewestButton
-                .rx.tap.asObservable(),
-            oldestButtonTapped: self.rootView.alignmentView.libraryOldesttButton
-                .rx.tap.asObservable(),
-            recordCellSelected: self.rootView.recordTableView
-                .rx.itemSelected.asObservable(),
-            emptyButtonTapped: self.emptyView.recordButton
-                .rx.tap.asObservable()
+            sortTypeButtonTapped: self.rootView.headerView.headerAlignmentButton.rx.tap,
+            newestButtonTapped: self.rootView.alignmentView.libraryNewestButton.rx.tap,
+            oldestButtonTapped: self.rootView.alignmentView.libraryOldesttButton.rx.tap,
+            recordCellSelected: self.rootView.recordTableView.rx.itemSelected,
+            emptyButtonTapped: self.emptyView.recordButton.rx.tap
         )
         
         let output = self.recordViewModel.transform(from: input, disposeBag: disposeBag)
@@ -140,16 +140,16 @@ extension RecordViewController {
             })
             .disposed(by: disposeBag)
         
-        output.alignNewest
+        output.alignOldest
             .bind(with: self, onNext: { owner, _ in
-                owner.rootView.headerView.headerAlignmentButton.setTitle(StringLiterals.Alignment.newest.title, for: .normal)
+                owner.rootView.headerView.headerAlignmentButton.setTitle(StringLiterals.Alignment.oldest.title, for: .normal)
                 owner.rootView.alignmentView.isHidden = true
             })
             .disposed(by: disposeBag)
         
-        output.alignOldest
+        output.alignNewest
             .bind(with: self, onNext: { owner, _ in
-                owner.rootView.headerView.headerAlignmentButton.setTitle(StringLiterals.Alignment.oldest.title, for: .normal)
+                owner.rootView.headerView.headerAlignmentButton.setTitle(StringLiterals.Alignment.newest.title, for: .normal)
                 owner.rootView.alignmentView.isHidden = true
             })
             .disposed(by: disposeBag)
