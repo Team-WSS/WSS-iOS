@@ -27,7 +27,7 @@ final class RecordHeaderAlignmentButton: UIButton {
         self.do {
             $0.setTitle(StringLiterals.Alignment.newest.title, for: .normal)
             $0.setTitleColor(.wssGray300, for: .normal)
-            $00.titleLabel?.font = .Label1
+            $0.titleLabel?.font = .Label1
             $0.titleLabel?.adjustsFontSizeToFitWidth = true
             $0.setImage(.icDropDown, for: .normal)
             $0.semanticContentAttribute = .forceRightToLeft

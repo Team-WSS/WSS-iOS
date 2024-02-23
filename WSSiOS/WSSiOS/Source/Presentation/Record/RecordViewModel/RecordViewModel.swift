@@ -14,6 +14,14 @@ final class RecordViewModel: ViewModelType {
     
     //MARK: - Properties
     
+    private let memoRepository: DefaultMemoRepository
+    private let disposeBag = DisposeBag()
+    
+    var recordMemoList = BehaviorRelay<[RecordMemo]>(value: [])
+    var recordMemoCount = BehaviorRelay<Int>(value: 0)
+    
+    var lastMemoId = StringLiterals.Alignment.newest.lastId
+    var alignmentLabel = StringLiterals.Alignment.newest.sortType
     
     // MARK: - Inputs
     
@@ -22,7 +30,6 @@ final class RecordViewModel: ViewModelType {
         let newestButtonTapped: Observable<Void>
         let oldestButtonTapped: Observable<Void>
         let recordCellSelected: Observable<IndexPath>
-        let recordMemoCount: Observable<Int>
         let emptyButtonTapped: Observable<Void>
     }
     
@@ -33,20 +40,37 @@ final class RecordViewModel: ViewModelType {
         let alignNewest = BehaviorRelay<Bool>(value: false)
         let alignOldest = BehaviorRelay<Bool>(value: false)
         let navigateToMemoRead = PublishRelay<IndexPath>()
-        let recordMemoCount = BehaviorRelay<Int>(value: 0)
         let navigateEmptyView = BehaviorRelay<Bool>(value: false)
     }
     
     //MARK: - init
-
+    
+    init(memoRepository: DefaultMemoRepository) {
+        self.memoRepository = memoRepository
+    }
+    
+    //MARK: - API
+    
+    func getDataFromAPI(id: Int,
+                        sortType: String) {
+        memoRepository.getRecordMemoList(memoId: id, sort: sortType)
+            .subscribe(with: self, onNext: { owner, memo in
+                owner.recordMemoCount.accept(memo.memoCount)
+                owner.recordMemoList.accept(memo.memos)
+            })
+            .disposed(by: disposeBag)
+    }
 }
 
 //MARK: - Methods
 
 extension RecordViewModel {
+    
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
-
+        
+        getDataFromAPI(id: lastMemoId, sortType: alignmentLabel)
+        
         input.sortTypeButtonTapped
             .subscribe(with: self, onNext: { owner, _ in
                 output.showAlignmentView.accept(true)
@@ -55,12 +79,18 @@ extension RecordViewModel {
         
         input.newestButtonTapped
             .subscribe(with: self, onNext: { owner, _ in
+                owner.alignmentLabel = StringLiterals.Alignment.newest.sortType
+                owner.lastMemoId = StringLiterals.Alignment.newest.lastId
+                owner.getDataFromAPI(id: owner.lastMemoId, sortType: owner.alignmentLabel)
                 output.alignNewest.accept(true)
             })
             .disposed(by: disposeBag)
         
         input.oldestButtonTapped
             .subscribe(with: self, onNext: { owner, _ in
+                owner.alignmentLabel = StringLiterals.Alignment.oldest.sortType
+                owner.lastMemoId = StringLiterals.Alignment.oldest.lastId
+                owner.getDataFromAPI(id: owner.lastMemoId, sortType: owner.alignmentLabel)
                 output.alignOldest.accept(true)
             })
             .disposed(by: disposeBag)
@@ -68,13 +98,6 @@ extension RecordViewModel {
         input.recordCellSelected
             .subscribe(with: self, onNext: { owner, indexPath in
                 output.navigateToMemoRead.accept(indexPath)
-            })
-            .disposed(by: disposeBag)
-        
-        input.recordMemoCount
-            .asDriver(onErrorJustReturn: 0)
-            .drive(with: self, onNext: { owner, count in
-                output.recordMemoCount.accept(count)
             })
             .disposed(by: disposeBag)
         

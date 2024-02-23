@@ -15,14 +15,8 @@ final class RecordViewController: UIViewController {
     
     //MARK: - Properties
     
-    private let memoRepository: DefaultMemoRepository
-    private var recordMemoListRelay = BehaviorRelay<[RecordMemo]>(value: [])
-    private var recordMemoCount = BehaviorRelay<Int>(value: 0)
     private let recordViewModel: RecordViewModel
     private let disposeBag = DisposeBag()
-    
-    private var lastMemoId = StringLiterals.Alignment.newest.lastId
-    private var alignmentLabel = StringLiterals.Alignment.newest.sortType
     
     //MARK: - Components
     
@@ -31,8 +25,7 @@ final class RecordViewController: UIViewController {
     
     //MARK: - Life Cycle
     
-    init(memoRepository: DefaultMemoRepository, recordViewModel: RecordViewModel) {
-        self.memoRepository = memoRepository
+    init(recordViewModel: RecordViewModel) {
         self.recordViewModel = recordViewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -48,7 +41,9 @@ final class RecordViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        getDataFromAPI(id: lastMemoId, sortType: alignmentLabel)
+        recordViewModel.getDataFromAPI(
+            id: recordViewModel.lastMemoId,
+            sortType: recordViewModel.alignmentLabel)
         
         showTabBar()
         preparationSetNavigationBar(title: StringLiterals.Navigation.Title.record,
@@ -79,26 +74,6 @@ final class RecordViewController: UIViewController {
         rootView.recordTableView.register(
             RecordTableViewCell.self,
             forCellReuseIdentifier: RecordTableViewCell.cellIdentifier)
-        
-        recordMemoListRelay
-            .bind(to: rootView.recordTableView.rx.items(
-                cellIdentifier: RecordTableViewCell.cellIdentifier,
-                cellType: RecordTableViewCell.self)) { row, element, cell in
-                cell.bindData(data: element)
-            }
-            .disposed(by: disposeBag)
-    }
-    
-    //MARK: - API
-    
-    func getDataFromAPI(id: Int,
-                        sortType: String) {
-        self.memoRepository.getRecordMemoList(memoId: id, sort: sortType)
-            .subscribe(with: self, onNext: { owner, memo in
-                owner.recordMemoCount.accept(memo.memoCount)
-                owner.recordMemoListRelay.accept(memo.memos)
-            })
-            .disposed(by: disposeBag)
     }
     
     //MARK: - Notification Center
@@ -120,55 +95,15 @@ final class RecordViewController: UIViewController {
 extension RecordViewController {
     
     private func bindViewModel() {
-        let input = RecordViewModel.Input(
-            sortTypeButtonTapped: self.rootView.headerView.headerAlignmentButton
-                .rx.tap.asObservable(),
-            newestButtonTapped: self.rootView.alignmentView.libraryNewestButton
-                .rx.tap.asObservable(),
-            oldestButtonTapped: self.rootView.alignmentView.libraryOldesttButton
-                .rx.tap.asObservable(),
-            recordCellSelected: self.rootView.recordTableView
-                .rx.itemSelected.asObservable(),
-            recordMemoCount: self.recordMemoCount.asObservable(),
-            emptyButtonTapped: self.emptyView.recordButton
-                .rx.tap.asObservable()
-        )
+        recordViewModel.recordMemoList
+            .bind(to: rootView.recordTableView.rx.items(
+                cellIdentifier: RecordTableViewCell.cellIdentifier,
+                cellType: RecordTableViewCell.self)) { row, element, cell in
+                    cell.bindData(data: element)
+                }
+                .disposed(by: disposeBag)
         
-        let output = self.recordViewModel.transform(from: input, disposeBag: disposeBag)
-        
-        output.showAlignmentView
-            .bind(with: self, onNext: { owner, _ in
-                owner.rootView.alignmentView.isHidden.toggle()
-            })
-            .disposed(by: disposeBag)
-        
-        output.alignNewest
-            .bind(with: self, onNext: { owner, _ in
-                owner.lastMemoId = StringLiterals.Alignment.newest.lastId
-                owner.alignmentLabel = StringLiterals.Alignment.newest.sortType
-                owner.rootView.headerView.headerAlignmentButton.setTitle(StringLiterals.Alignment.newest.title, for: .normal)
-                owner.getDataFromAPI(id: owner.lastMemoId, sortType: owner.alignmentLabel)
-                owner.rootView.alignmentView.isHidden = true
-            })
-            .disposed(by: disposeBag)
-        
-        output.alignOldest
-            .bind(with: self, onNext: { owner, _ in
-                owner.lastMemoId = StringLiterals.Alignment.oldest.lastId
-                owner.alignmentLabel = StringLiterals.Alignment.oldest.sortType
-                owner.rootView.headerView.headerAlignmentButton.setTitle(StringLiterals.Alignment.oldest.title, for: .normal)
-                owner.getDataFromAPI(id: owner.lastMemoId, sortType: owner.alignmentLabel)
-                owner.rootView.alignmentView.isHidden = true
-            })
-            .disposed(by: disposeBag)
-        
-        output.navigateToMemoRead
-            .subscribe(with: self, onNext: { owner, indexPath in
-                owner.navigationController?.pushViewController(MemoReadViewController(repository: DefaultMemoRepository(memoService: DefaultMemoService()), memoId: owner.recordMemoListRelay.value[indexPath.row].id), animated: true)
-            })
-            .disposed(by: disposeBag)
-        
-        output.recordMemoCount
+        recordViewModel.recordMemoCount
             .asDriver()
             .drive(with: self, onNext: { owner, value in
                 owner.rootView.headerView.recordCountLabel.text = "\(value)개"
@@ -184,8 +119,49 @@ extension RecordViewController {
             })
             .disposed(by: disposeBag)
         
+        let input = RecordViewModel.Input(
+            sortTypeButtonTapped: self.rootView.headerView.headerAlignmentButton
+                .rx.tap.asObservable(),
+            newestButtonTapped: self.rootView.alignmentView.libraryNewestButton
+                .rx.tap.asObservable(),
+            oldestButtonTapped: self.rootView.alignmentView.libraryOldesttButton
+                .rx.tap.asObservable(),
+            recordCellSelected: self.rootView.recordTableView
+                .rx.itemSelected.asObservable(),
+            emptyButtonTapped: self.emptyView.recordButton
+                .rx.tap.asObservable()
+        )
+        
+        let output = self.recordViewModel.transform(from: input, disposeBag: disposeBag)
+        
+        output.showAlignmentView
+            .bind(with: self, onNext: { owner, _ in
+                owner.rootView.alignmentView.isHidden.toggle()
+            })
+            .disposed(by: disposeBag)
+        
+        output.alignNewest
+            .bind(with: self, onNext: { owner, _ in
+                owner.rootView.headerView.headerAlignmentButton.setTitle(StringLiterals.Alignment.newest.title, for: .normal)
+                owner.rootView.alignmentView.isHidden = true
+            })
+            .disposed(by: disposeBag)
+        
+        output.alignOldest
+            .bind(with: self, onNext: { owner, _ in
+                owner.rootView.headerView.headerAlignmentButton.setTitle(StringLiterals.Alignment.oldest.title, for: .normal)
+                owner.rootView.alignmentView.isHidden = true
+            })
+            .disposed(by: disposeBag)
+        
+        output.navigateToMemoRead
+            .bind(with: self, onNext: { owner, indexPath in
+                owner.pushToMemoReadViewController(memoId: owner.recordViewModel.recordMemoList.value[indexPath.row].id)
+            })
+            .disposed(by: disposeBag)
+        
         output.navigateEmptyView
-            .subscribe(with: self, onNext: { owner, _ in
+            .bind(with: self, onNext: { owner, _ in
                 owner.navigationController?.tabBarController?.selectedIndex = 1
             })
             .disposed(by: disposeBag)
