@@ -53,7 +53,7 @@ final class RecordViewModel: ViewModelType {
     
     func getDataFromAPI(id: Int,
                         sortType: String) {
-        memoRepository.getRecordMemoList(memoId: id, sort: sortType)
+        memoRepository.getRecordMemos(memoId: id, sort: sortType)
             .subscribe(with: self, onNext: { owner, memo in
                 owner.recordMemoCount.accept(memo.memoCount)
                 owner.recordMemoList.accept(memo.memos)

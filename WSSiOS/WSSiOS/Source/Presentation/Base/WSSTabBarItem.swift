@@ -78,7 +78,6 @@ enum WSSTabBarItem: CaseIterable {
                 )
             )
             
-            
         case .myPage:
             return MyPageViewController(
                 userRepository: DefaultUserRepository(
