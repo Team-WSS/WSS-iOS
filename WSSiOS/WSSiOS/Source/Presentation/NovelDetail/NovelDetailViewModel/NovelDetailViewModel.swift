@@ -29,33 +29,45 @@ final class NovelDetailViewModel: ViewModelType {
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
         
-        input.novelSettingButtonDidTapEvent.subscribe(with: self, onNext: { owner, _ in
-            if output.memoSettingButtonViewIsHidden.value == false {
+        input.novelSettingButtonDidTapEvent
+            .subscribe(with: self, onNext: { owner, _ in
+                if output.memoSettingButtonViewIsHidden.value == false {
+                    output.memoSettingButtonViewIsHidden.accept(true)
+                } else {
+                    output.memoSettingButtonViewIsHidden.accept(false)
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        input.viewDidTapEvent
+            .subscribe(with: self, onNext: { owner, _ in
                 output.memoSettingButtonViewIsHidden.accept(true)
-            } else {
-                output.memoSettingButtonViewIsHidden.accept(false)
-            }
-        }).disposed(by: disposeBag)
+            })
+            .disposed(by: disposeBag)
         
-        input.viewDidTapEvent.subscribe(with: self, onNext: { owner, _ in
-            output.memoSettingButtonViewIsHidden.accept(true)
-        }).disposed(by: disposeBag)
+        input.memoButtonDidTapEvent
+            .subscribe(with: self, onNext: { owner, _ in
+                output.selectedMenu.accept(.memo)
+            })
+            .disposed(by: disposeBag)
         
-        input.memoButtonDidTapEvent.subscribe(with: self, onNext: { owner, _ in
-            output.selectedMenu.accept(.memo)
-        }).disposed(by: disposeBag)
+        input.infoButtonDidTapEvent
+            .subscribe(with: self, onNext: { owner, _ in
+                output.selectedMenu.accept(.info)
+            })
+            .disposed(by: disposeBag)
         
-        input.infoButtonDidTapEvent.subscribe(with: self, onNext: { owner, _ in
-            output.selectedMenu.accept(.info)
-        }).disposed(by: disposeBag)
+        input.stickyMemoButtonDidTapEvent
+            .subscribe(with: self, onNext: { owner, _ in
+                output.selectedMenu.accept(.memo)
+            })
+            .disposed(by: disposeBag)
         
-        input.stickyMemoButtonDidTapEvent.subscribe(with: self, onNext: { owner, _ in
-            output.selectedMenu.accept(.memo)
-        }).disposed(by: disposeBag)
-        
-        input.stickyInfoButtonDidTapEvent.subscribe(with: self, onNext: { owner, _ in
-            output.selectedMenu.accept(.info)
-        }).disposed(by: disposeBag)
+        input.stickyInfoButtonDidTapEvent
+            .subscribe(with: self, onNext: { owner, _ in
+                output.selectedMenu.accept(.info)
+            })
+            .disposed(by: disposeBag)
         
         return output
     }

@@ -76,7 +76,6 @@ final class NovelDetailViewController: UIViewController {
         setUI()
         setNavigationBar()
         setNotificationCenter()
-        setTapGesture()
         register()
         delegate()
         bindUI()
@@ -134,11 +133,6 @@ final class NovelDetailViewController: UIViewController {
             name: NSNotification.Name("DeletedNovel"),
             object: nil
         )
-    }
-    
-    private func setTapGesture() {
-        let memoCreateViewTapGesture = UITapGestureRecognizer(target: self, action: #selector(memoCreateViewDidTap))
-        self.rootView.novelDetailMemoView.novelDetailCreateMemoView.addGestureRecognizer(memoCreateViewTapGesture)
     }
     
     //MARK: - Bind
@@ -213,19 +207,6 @@ final class NovelDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        selectedMenu
-            .subscribe(with: self, onNext: { owner, selectedMenu in
-                switch selectedMenu {
-                case .memo:
-                    owner.rootView.createMemoButton.isHidden = false
-                    owner.rootView.changeCurrentMenu(menu: .memo)
-                case .info:
-                    owner.rootView.createMemoButton.isHidden = true
-                    owner.rootView.changeCurrentMenu(menu: .info)
-                }
-            })
-            .disposed(by: disposeBag)
-        
         rootView.novelDetailMemoView.memoTableView.rx.observe(CGSize.self, "contentSize")
             .map { $0?.height ?? 0 }
             .bind(to: memoTableViewHeight)
@@ -256,6 +237,18 @@ final class NovelDetailViewController: UIViewController {
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 owner.navigationController?.popViewController(animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        rootView.novelDetailMemoView.novelDetailCreateMemoView.rx.tapGesture()
+            .when(.recognized)
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.pushToMemoEditViewController(
+                    userNovelId: owner.userNovelId,
+                    novelTitle: owner.novelTitle,
+                    novelAuthor: owner.novelAuthor,
+                    novelImage: owner.novelImage
+                )
             })
             .disposed(by: disposeBag)
         
@@ -365,15 +358,6 @@ final class NovelDetailViewController: UIViewController {
             navigationItem.title = ""
             novelSettingButton.isHidden = false
         }
-    }
-    
-    @objc func memoCreateViewDidTap() {
-        self.pushToMemoEditViewController(
-            userNovelId: self.userNovelId,
-            novelTitle: self.novelTitle,
-            novelAuthor: self.novelAuthor,
-            novelImage: self.novelImage
-        )
     }
     
     @objc func postedMemo(_ notification: Notification) {
