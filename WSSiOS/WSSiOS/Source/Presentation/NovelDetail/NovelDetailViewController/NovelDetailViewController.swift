@@ -80,7 +80,6 @@ final class NovelDetailViewController: UIViewController {
         delegate()
         bindUI()
         bindViewModel()
-        bindAction()
         bindNavigation()
     }
     
@@ -166,7 +165,11 @@ final class NovelDetailViewController: UIViewController {
     
     private func bindViewModel() {
         let input = NovelDetailViewModel.Input(
-            novelSettingButtonDidTapEvent: novelSettingButton.rx.tap.asObservable()
+            novelSettingButtonDidTapEvent: novelSettingButton.rx.tap.asObservable(),
+            memoButtonDidTapEvent: rootView.novelDetailTabView.memoButton.rx.tap.asObservable(),
+            infoButtonDidTapEvent: rootView.novelDetailTabView.infoButton.rx.tap.asObservable(),
+            stickyMemoButtonDidTapEvent: rootView.stickyNovelDetailTabView.memoButton.rx.tap.asObservable(),
+            stickyInfoButtonDidTapEvent: rootView.stickyNovelDetailTabView.infoButton.rx.tap.asObservable()
         )
         
         let output = self.novelDetailViewModel.transform(from: input, disposeBag: self.disposeBag)
@@ -174,6 +177,18 @@ final class NovelDetailViewController: UIViewController {
         output.memoSettingButtonViewIsHidden.subscribe(with: self, onNext: { owner, isHidden in
             owner.rootView.novelDetailMemoSettingButtonView.isHidden = isHidden
         }).disposed(by: disposeBag)
+        
+        output.selectedMenu.subscribe(with: self, onNext: { owner, selectedMenu in
+            switch selectedMenu {
+            case .memo:
+                owner.rootView.createMemoButton.isHidden = false
+                owner.rootView.changeCurrentMenu(menu: .memo)
+            case .info:
+                owner.rootView.createMemoButton.isHidden = true
+                owner.rootView.changeCurrentMenu(menu: .info)
+            }
+        })
+        .disposed(by: disposeBag)
     }
     
     private func bindUI() {
@@ -236,32 +251,6 @@ final class NovelDetailViewController: UIViewController {
     }
     
     //MARK: - Actions
-    
-    private func bindAction() {
-        rootView.novelDetailTabView.memoButton.rx.tap
-            .bind(with: self, onNext: { owner, _ in
-                owner.selectedMenu.accept(.memo)
-            })
-            .disposed(by: disposeBag)
-        
-        rootView.novelDetailTabView.infoButton.rx.tap
-            .bind(with: self, onNext: { owner, _ in
-                owner.selectedMenu.accept(.info)
-            })
-            .disposed(by: disposeBag)
-        
-        rootView.stickyNovelDetailTabView.memoButton.rx.tap
-            .bind(with: self, onNext: { owner, _ in
-                owner.selectedMenu.accept(.memo)
-            })
-            .disposed(by: disposeBag)
-        
-        rootView.stickyNovelDetailTabView.infoButton.rx.tap
-            .bind(with: self, onNext: { owner, _ in
-                owner.selectedMenu.accept(.info)
-            })
-            .disposed(by: disposeBag)
-    }
     
     private func bindNavigation() {
         backButton.rx.tap
