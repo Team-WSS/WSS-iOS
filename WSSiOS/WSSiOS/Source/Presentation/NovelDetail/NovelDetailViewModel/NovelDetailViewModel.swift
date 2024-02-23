@@ -5,7 +5,8 @@
 //  Created by Hyowon Jeon on 2/23/24.
 //
 
-import Foundation
+import UIKit
+
 import RxSwift
 import RxCocoa
 
@@ -13,6 +14,7 @@ final class NovelDetailViewModel: ViewModelType {
     
     struct Input {
         let novelSettingButtonDidTapEvent: Observable<Void>
+        let viewDidTapEvent: Observable<UITapGestureRecognizer>
         let memoButtonDidTapEvent: Observable<Void>
         let infoButtonDidTapEvent: Observable<Void>
         let stickyMemoButtonDidTapEvent: Observable<Void>
@@ -33,6 +35,10 @@ final class NovelDetailViewModel: ViewModelType {
             } else {
                 output.memoSettingButtonViewIsHidden.accept(false)
             }
+        }).disposed(by: disposeBag)
+        
+        input.viewDidTapEvent.subscribe(with: self, onNext: { owner, _ in
+            output.memoSettingButtonViewIsHidden.accept(true)
         }).disposed(by: disposeBag)
         
         input.memoButtonDidTapEvent.subscribe(with: self, onNext: { owner, _ in

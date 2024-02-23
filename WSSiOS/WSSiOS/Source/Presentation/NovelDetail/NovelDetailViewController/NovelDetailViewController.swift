@@ -9,6 +9,7 @@ import UIKit
 
 import RxSwift
 import RxCocoa
+import RxGesture
 import Then
 
 enum SelectedMenu {
@@ -136,9 +137,6 @@ final class NovelDetailViewController: UIViewController {
     }
     
     private func setTapGesture() {
-        let viewTapGesture = UITapGestureRecognizer(target: self, action: #selector(viewDidTap))
-        self.rootView.novelDetailMemoSettingButtonView.addGestureRecognizer(viewTapGesture)
-        
         let memoCreateViewTapGesture = UITapGestureRecognizer(target: self, action: #selector(memoCreateViewDidTap))
         self.rootView.novelDetailMemoView.novelDetailCreateMemoView.addGestureRecognizer(memoCreateViewTapGesture)
     }
@@ -166,6 +164,7 @@ final class NovelDetailViewController: UIViewController {
     private func bindViewModel() {
         let input = NovelDetailViewModel.Input(
             novelSettingButtonDidTapEvent: novelSettingButton.rx.tap.asObservable(),
+            viewDidTapEvent: rootView.novelDetailMemoSettingButtonView.rx.tapGesture().asObservable(),
             memoButtonDidTapEvent: rootView.novelDetailTabView.memoButton.rx.tap.asObservable(),
             infoButtonDidTapEvent: rootView.novelDetailTabView.infoButton.rx.tap.asObservable(),
             stickyMemoButtonDidTapEvent: rootView.stickyNovelDetailTabView.memoButton.rx.tap.asObservable(),
@@ -277,7 +276,6 @@ final class NovelDetailViewController: UIViewController {
         rootView.novelDetailMemoSettingButtonView.novelDeleteButton.rx.tap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
-                owner.rootView.novelDetailMemoSettingButtonView.isHidden = true
                 owner.presentDeleteUserNovelViewController(userNovelId: owner.userNovelId)
             })
             .disposed(by: disposeBag)
@@ -285,7 +283,6 @@ final class NovelDetailViewController: UIViewController {
         rootView.novelDetailMemoSettingButtonView.novelEditButon.rx.tap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
-                owner.rootView.novelDetailMemoSettingButtonView.isHidden = true
                 owner.selectedMenu.accept(.info)
                 owner.pushToRegisterNormalViewController(novelId: owner.novelId)
             })
@@ -368,10 +365,6 @@ final class NovelDetailViewController: UIViewController {
             navigationItem.title = ""
             novelSettingButton.isHidden = false
         }
-    }
-    
-    @objc func viewDidTap() {
-        self.rootView.novelDetailMemoSettingButtonView.isHidden = true
     }
     
     @objc func memoCreateViewDidTap() {
