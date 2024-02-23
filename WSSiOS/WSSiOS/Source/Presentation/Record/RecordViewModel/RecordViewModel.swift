@@ -21,7 +21,7 @@ final class RecordViewModel: ViewModelType {
     var recordMemoCount = BehaviorRelay<Int>(value: 0)
     
     var lastMemoId = StringLiterals.Alignment.newest.lastId
-    var alignmentLabel = StringLiterals.Alignment.newest.sortType
+    var sortType = StringLiterals.Alignment.newest.sortType
     
     // MARK: - Inputs
     
@@ -69,7 +69,7 @@ extension RecordViewModel {
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
         
-        getDataFromAPI(id: lastMemoId, sortType: alignmentLabel)
+        getDataFromAPI(id: lastMemoId, sortType: sortType)
         
         input.sortTypeButtonTapped
             .subscribe(with: self, onNext: { owner, _ in
@@ -79,18 +79,18 @@ extension RecordViewModel {
         
         input.newestButtonTapped
             .subscribe(with: self, onNext: { owner, _ in
-                owner.alignmentLabel = StringLiterals.Alignment.newest.sortType
+                owner.sortType = StringLiterals.Alignment.newest.sortType
                 owner.lastMemoId = StringLiterals.Alignment.newest.lastId
-                owner.getDataFromAPI(id: owner.lastMemoId, sortType: owner.alignmentLabel)
+                owner.getDataFromAPI(id: owner.lastMemoId, sortType: owner.sortType)
                 output.alignNewest.accept(true)
             })
             .disposed(by: disposeBag)
         
         input.oldestButtonTapped
             .subscribe(with: self, onNext: { owner, _ in
-                owner.alignmentLabel = StringLiterals.Alignment.oldest.sortType
+                owner.sortType = StringLiterals.Alignment.oldest.sortType
                 owner.lastMemoId = StringLiterals.Alignment.oldest.lastId
-                owner.getDataFromAPI(id: owner.lastMemoId, sortType: owner.alignmentLabel)
+                owner.getDataFromAPI(id: owner.lastMemoId, sortType: owner.sortType)
                 output.alignOldest.accept(true)
             })
             .disposed(by: disposeBag)

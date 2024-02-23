@@ -43,7 +43,7 @@ final class RecordViewController: UIViewController {
         
         recordViewModel.getDataFromAPI(
             id: recordViewModel.lastMemoId,
-            sortType: recordViewModel.alignmentLabel)
+            sortType: recordViewModel.sortType)
         
         showTabBar()
         preparationSetNavigationBar(title: StringLiterals.Navigation.Title.record,
