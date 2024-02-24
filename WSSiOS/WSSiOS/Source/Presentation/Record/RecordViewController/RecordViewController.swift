@@ -135,7 +135,15 @@ final class RecordViewController: UIViewController {
             .rx
             .itemSelected
             .subscribe(with: self, onNext: { owner, indexPath in
-                owner.navigationController?.pushViewController(MemoReadViewController(repository: DefaultMemoRepository(memoService: DefaultMemoService()), memoId: owner.recordMemoListRelay.value[indexPath.row].id), animated: true)
+                owner.navigationController?.pushViewController(
+                    MemoReadViewController(
+                        viewModel: MemoReadViewModel(
+                            memoRepository: DefaultMemoRepository(
+                                memoService: DefaultMemoService()
+                            )
+                        ),
+                        memoId: owner.recordMemoListRelay.value[indexPath.row].id
+                    ), animated: true)
             })
             .disposed(by: disposeBag)
         

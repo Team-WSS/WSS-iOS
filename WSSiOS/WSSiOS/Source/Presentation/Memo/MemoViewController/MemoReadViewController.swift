@@ -14,7 +14,7 @@ final class MemoReadViewController: UIViewController {
     
     //MARK: - Properties
     
-    private let repository: MemoRepository
+    private let memoReadViewModel: MemoReadViewModel
     private let disposeBag = DisposeBag()
     private let memoId: Int
     private var novelTitle = ""
@@ -30,8 +30,8 @@ final class MemoReadViewController: UIViewController {
 
      //MARK: - Life Cycle
     
-    init(repository: MemoRepository, memoId: Int) {
-        self.repository = repository
+    init(viewModel: MemoReadViewModel, memoId: Int) {
+        self.memoReadViewModel = viewModel
         self.memoId = memoId
         super.init(nibName: nil, bundle: nil)
     }
@@ -47,7 +47,7 @@ final class MemoReadViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        getMemoDetail()
+//        getMemoDetail()
     }
 
      override func viewDidLoad() {
@@ -153,15 +153,15 @@ final class MemoReadViewController: UIViewController {
     
     //MARK: - API
     
-    private func getMemoDetail() {
-        repository.getMemoDetail(memoId: self.memoId)
-            .observe(on: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, data in
-                owner.bindData(data)
-            },onError: { owner, error in
-                print(error)
-            }).disposed(by: disposeBag)
-    }
+//    private func getMemoDetail() {
+//        repository.getMemoDetail(memoId: self.memoId)
+//            .observe(on: MainScheduler.instance)
+//            .subscribe(with: self, onNext: { owner, data in
+//                owner.bindData(data)
+//            },onError: { owner, error in
+//                print(error)
+//            }).disposed(by: disposeBag)
+//    }
     
     //MARK: - Custom Method
     

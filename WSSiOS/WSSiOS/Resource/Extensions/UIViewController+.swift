@@ -89,8 +89,11 @@ extension UIViewController {
     func pushToMemoReadViewController(memoId: Int) {
         self.navigationController?.pushViewController(
             MemoReadViewController(
-                repository: DefaultMemoRepository(
-                    memoService: DefaultMemoService()),
+                viewModel: MemoReadViewModel(
+                    memoRepository: DefaultMemoRepository(
+                        memoService: DefaultMemoService()
+                    )
+                ),
                 memoId: memoId
             ), animated: true)
     }
