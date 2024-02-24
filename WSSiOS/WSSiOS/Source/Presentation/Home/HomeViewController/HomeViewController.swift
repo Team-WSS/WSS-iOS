@@ -115,29 +115,8 @@ final class HomeViewController: UIViewController {
             .rx
             .itemSelected
             .subscribe(onNext:{ indexPath in
-                let RegisterNormalVC = TestVC(viewModel: RegisterViewModel(
-                    novelRepository: DefaultNovelRepository(
-                        novelService: DefaultNovelService()),
-                    userNovelRepository: DefaultUserNovelRepository(
-                        userNovelService:DefaultUserNovelService()),
-                    novelId: self.sosopickListRelay.value[indexPath.row].novelId)
-                )
-                
-//                let RegisterNormalVC = RegisterNormalViewController(
-//                    novelRepository: DefaultNovelRepository(
-//                        novelService: DefaultNovelService()),
-//                    userNovelRepository: DefaultUserNovelRepository(
-//                        userNovelService:DefaultUserNovelService()),
-//                    novelId: self.sosopickListRelay.value[indexPath.row].novelId)
-                
-                
-                
-                self.hideTabBar()
-                
-                RegisterNormalVC.hidesBottomBarWhenPushed = true
-                self.navigationController?.pushViewController(
-                    RegisterNormalVC,
-                    animated: true)
+                let novelID = self.sosopickListRelay.value[indexPath.row].novelId
+                self.pushToRegisterNormalViewController(novelId: novelID)
             })
             .disposed(by: disposeBag)
     }
