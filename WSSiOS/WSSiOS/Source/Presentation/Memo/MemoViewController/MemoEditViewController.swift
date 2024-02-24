@@ -9,6 +9,7 @@ import UIKit
 
 import RxSwift
 import RxCocoa
+import RxGesture
 import RxKeyboard
 
 final class MemoEditViewController: UIViewController {
@@ -108,6 +109,13 @@ final class MemoEditViewController: UIViewController {
 
     //MARK: - Bind
     
+        
+        view.rx.tapGesture()
+            .when(.recognized)
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.view.endEditing(true)
+            })
+            .disposed(by: disposeBag)
     private func bindUI() {
         rootView.memoEditContentView.memoTextView.rx.text.orEmpty
             .subscribe(with: self, onNext: { owner, text in
@@ -214,10 +222,6 @@ final class MemoEditViewController: UIViewController {
             $0.setButtonAttributedTitle(text: StringLiterals.Memo.complete, font: .Title2, color: .wssGray200)
             $0.isEnabled = false
         }
-    }
-    
-    @objc func viewDidTap() {
-        view.endEditing(true)
     }
     
     @objc func canceledEdit(_ notification: Notification) {
