@@ -5,9 +5,10 @@
 //  Created by 이윤학 on 1/10/24.
 //
 
+import Foundation
+
 import RxSwift
 import RxCocoa
-import UIKit
 
 final class RegisterViewModel: ViewModelType {
     
