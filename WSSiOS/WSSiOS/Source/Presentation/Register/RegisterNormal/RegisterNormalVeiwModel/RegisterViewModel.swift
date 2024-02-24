@@ -22,17 +22,10 @@ final class RegisterViewModel: ViewModelType {
     private var requestEndDate: String?
     private var requestRating: Float?
     
-    private var minStarRating: Float = 0.0
-    private var maxStarRating: Float = 5.0
-    private let dateFormatter = DateFormatter().then {
-        $0.dateFormat = StringLiterals.Register.Normal.DatePicker.dateFormat
-        $0.timeZone = TimeZone(identifier: StringLiterals.Register.Normal.DatePicker.KoreaTimeZone)
-    }
-    
     private let disposeBag = DisposeBag()
     private let novelBasicData = PublishSubject<NovelBasicData>()
     private let isNew = BehaviorRelay<Bool>(value: true)
-    let starRating = BehaviorRelay<Float>(value: 0.0)
+    private let starRating = BehaviorRelay<Float>(value: 0.0)
     private let readStatus = BehaviorRelay<ReadStatus>(value: .FINISH)
     private let isDateExist = BehaviorRelay<Bool>(value: true)
     private let showDatePicker = BehaviorRelay<Bool>(value: false)
@@ -44,7 +37,14 @@ final class RegisterViewModel: ViewModelType {
     private let isOverToday = BehaviorRelay<Bool>(value: false)
     private let platformList = BehaviorRelay<[UserNovelPlatform]>(value: [])
     private let platformCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
-    private let successAPIRequest = PublishSubject<Int>()
+    private let endAPIRequest = PublishSubject<Int>()
+    
+    private var minStarRating: Float = 0.0
+    private var maxStarRating: Float = 5.0
+    private let dateFormatter = DateFormatter().then {
+        $0.dateFormat = StringLiterals.Register.Normal.DatePicker.dateFormat
+        $0.timeZone = TimeZone(identifier: StringLiterals.Register.Normal.DatePicker.KoreaTimeZone)
+    }
     
     //MARK: - Life Cycle
     
@@ -55,50 +55,63 @@ final class RegisterViewModel: ViewModelType {
         self.userNovelId = userNovelId
     }
     
+    //MARK: - Transform
+    
     struct Input {
         let scrollContentOffset: ControlProperty<CGPoint>
-        let backButtonTap: ControlEvent<Void>
-        let registerButtonTap: ControlEvent<Void>
+        let starRatingTapGesture: Observable<(location: CGPoint, width: CGFloat, index: Int)>
+        let starRatingPanGesture: Observable<(location: CGPoint, width: CGFloat)>
         let readStatusButtonTap: Observable<ReadStatus>
         let readDateToggleButtonTap: ControlEvent<Void>
         let datePickerButtonTap: ControlEvent<Void>
-        let platformCollectionViewHeight: Observable<CGSize?>
         let customDatePickerBackgroundTap: ControlEvent<Void>
-        let customDatePickerCompleteButtonTap: ControlEvent<Void>
         let customDatePickerStartButtonTap: ControlEvent<Void>
         let customDatePickerEndButtonTap: ControlEvent<Void>
         let customDatePickerDateChanged: ControlEvent<Date>
+        let customDatePickerCompleteButtonTap: ControlEvent<Void>
+        let platformCollectionViewHeight: Observable<CGSize?>
+        let registerButtonTap: ControlEvent<Void>
+        let backButtonTap: ControlEvent<Void>
     }
     
     struct Output {
-        let scrollContentOffset: Driver<CGPoint>
-        let backButtonTap: Observable<Void>
         let novelBasicData: Observable<NovelBasicData>
-        let endAPIRequest: Observable<Int>
-        let isNew: Driver<Bool>
+        let scrollContentOffset: Driver<CGPoint>
         let starRating: Driver<Float>
         let readStatus: Driver<ReadStatus>
         let isDateExist: Driver<Bool>
+        let startDate: Driver<Date>
+        let endDate: Driver<Date>
         let showDatePicker: Driver<Bool>
         let isOverToday: Driver<Bool>
         let isSelectingStartDate: Driver<Bool>
-        let startDate: Driver<Date>
-        let endDate: Driver<Date>
         let internalStartDate: Driver<Date>
         let internalEndDate: Driver<Date>
         let platformList: Driver<[UserNovelPlatform]>
         let platformCollectionViewHeight: Driver<CGFloat>
+        let isNew: Driver<Bool>
+        let endAPIRequest: Observable<Int>
+        let backButtonTap: Observable<Void>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let scrollContentOffset = input.scrollContentOffset
-        let backButtonTap = input.backButtonTap.asObservable()
-        
+
         getNovelInfo()
         
-        input.readDateToggleButtonTap
-            .bind(with: self, onNext: {owner, _ in
-                owner.isDateExist.accept(!owner.isDateExist.value)
+        input.starRatingTapGesture
+            .bind(with: self, onNext: { owner, value in
+                let isOverHalf = value.location.x > (value.width / 2)
+                let rating = Float(value.index) + (isOverHalf ? 1 : 0.5)
+                owner.starRating.accept(rating)
+            })
+            .disposed(by: disposeBag)
+        
+        input.starRatingPanGesture
+            .bind(with: self, onNext: { owner, value in
+                let rawRating = Float(value.location.x / value.width * 10).rounded(.up) / 2.0
+                let rating = min(max(rawRating, owner.minStarRating), owner.maxStarRating)
+                owner.starRating.accept(rating)
             })
             .disposed(by: disposeBag)
         
@@ -111,6 +124,12 @@ final class RegisterViewModel: ViewModelType {
                 } else if status == .DROP {
                     owner.isSelectingStartDate.accept(false)
                 }
+            })
+            .disposed(by: disposeBag)
+        
+        input.readDateToggleButtonTap
+            .bind(with: self, onNext: {owner, _ in
+                owner.isDateExist.accept(!owner.isDateExist.value)
             })
             .disposed(by: disposeBag)
         
@@ -145,13 +164,6 @@ final class RegisterViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.customDatePickerCompleteButtonTap
-            .bind(with: self, onNext: { owner, _ in
-                owner.startDate.accept(owner.internalStartDate.value)
-                owner.endDate.accept(owner.internalEndDate.value)
-            })
-            .disposed(by: disposeBag)
-        
         input.customDatePickerDateChanged
             .bind(with: self, onNext: { owner, date in
                 var selectedDate = date
@@ -176,10 +188,15 @@ final class RegisterViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.platformCollectionViewHeight
-            .map { $0?.height ?? 0 }
-            .bind(to: platformCollectionViewHeight)
+        input.customDatePickerCompleteButtonTap
+            .bind(with: self, onNext: { owner, _ in
+                owner.startDate.accept(owner.internalStartDate.value)
+                owner.endDate.accept(owner.internalEndDate.value)
+            })
             .disposed(by: disposeBag)
+        
+        let platformCollectionViewHeight = input.platformCollectionViewHeight
+            .map { $0?.height ?? 0 }.asDriver(onErrorJustReturn: 0)
         
         input.registerButtonTap
             .withLatestFrom(isNew)
@@ -189,86 +206,94 @@ final class RegisterViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        let backButtonTap = input.backButtonTap.asObservable()
+        
         return Output(
-            scrollContentOffset: scrollContentOffset.asDriver(),
-            backButtonTap: backButtonTap,
             novelBasicData: novelBasicData.asObservable(),
-            endAPIRequest: successAPIRequest.asObservable(),
-            isNew: isNew.asDriver(),
+            scrollContentOffset: scrollContentOffset.asDriver(),
             starRating: starRating.asDriver(),
             readStatus: readStatus.asDriver(),
             isDateExist: isDateExist.asDriver(),
+            startDate: startDate.asDriver(),
+            endDate: endDate.asDriver(),
             showDatePicker: showDatePicker.asDriver(),
             isOverToday: isOverToday.asDriver(),
             isSelectingStartDate: isSelectingStartDate.asDriver(),
-            startDate: startDate.asDriver(),
-            endDate: endDate.asDriver(),
             internalStartDate: internalStartDate.asDriver(),
             internalEndDate: internalEndDate.asDriver(),
-            platformList: platformList.asDriver(), 
-            platformCollectionViewHeight: platformCollectionViewHeight.asDriver()
+            platformList: platformList.asDriver(),
+            platformCollectionViewHeight: platformCollectionViewHeight,
+            isNew: isNew.asDriver(),
+            endAPIRequest: endAPIRequest.asObservable(),
+            backButtonTap: backButtonTap
         )
     }
     
     //MARK: - API
     
     private func getNovelInfo() {
-        novelRepository.getNovelInfo(novelId: novelId)
+        novelRepository
+            .getNovelInfo(novelId: novelId)
             .subscribe(with: self, onNext: { owner, data in
                 if let newData = data.newNovelResult {
                     owner.isNew.accept(true)
                     owner.platformList.accept(newData.platforms)
-                    owner.novelBasicData.onNext(NovelBasicData(novelTitle: newData.novelTitle,
-                                                               novelAuthor: newData.novelAuthor,
-                                                               novelGenre: newData.novelGenre,
-                                                               novelImg: newData.novelImg,
-                                                               novelDescription: newData.novelDescription))
+                    owner.novelBasicData.onNext(
+                        NovelBasicData(novelTitle: newData.novelTitle,
+                                       novelAuthor: newData.novelAuthor,
+                                       novelGenre: newData.novelGenre,
+                                       novelImg: newData.novelImg,
+                                       novelDescription: newData.novelDescription)
+                    )
                 } else if let userData = data.editNovelResult {
                     owner.isNew.accept(false)
                     owner.platformList.accept(userData.platforms)
                     owner.bindUserData(userData)
-                    owner.novelBasicData.onNext(NovelBasicData(novelTitle: userData.userNovelTitle,
-                                                               novelAuthor: userData.userNovelAuthor,
-                                                               novelGenre: userData.userNovelGenre,
-                                                               novelImg: userData.userNovelImg,
-                                                               novelDescription: userData.userNovelDescription))
+                    owner.novelBasicData.onNext(
+                        NovelBasicData(novelTitle: userData.userNovelTitle,
+                                       novelAuthor: userData.userNovelAuthor,
+                                       novelGenre: userData.userNovelGenre,
+                                       novelImg: userData.userNovelImg,
+                                       novelDescription: userData.userNovelDescription)
+                    )
                 }
             }, onError: { owner, error in
-                print(error)
+                owner.novelBasicData.onError(error)
             })
             .disposed(by: disposeBag)
     }
     
     private func postUserNovel() {
         formatRequestBodyData()
-        userNovelRepository.postUserNovel(novelId: novelId,
-                                          userNovelRating: requestRating,
-                                          userNovelReadStatus: readStatus.value,
-                                          userNovelReadStartDate: requestStartDate,
-                                          userNovelReadEndDate: requestEndDate)
-        .subscribe(with: self, onNext: { owner, data in
-            owner.userNovelId = data.userNovelId
-            owner.successAPIRequest.onNext(owner.userNovelId)
-        }, onError: { owner, error in
-            owner.successAPIRequest.onError(error)
-        })
-        .disposed(by: disposeBag)
+        userNovelRepository
+            .postUserNovel(novelId: novelId,
+                           userNovelRating: requestRating,
+                           userNovelReadStatus: readStatus.value,
+                           userNovelReadStartDate: requestStartDate,
+                           userNovelReadEndDate: requestEndDate)
+            .subscribe(with: self, onNext: { owner, data in
+                owner.userNovelId = data.userNovelId
+                owner.endAPIRequest.onNext(owner.userNovelId)
+            }, onError: { owner, error in
+                owner.endAPIRequest.onError(error)
+            })
+            .disposed(by: disposeBag)
     }
     
     private func patchUserNovel() {
         formatRequestBodyData()
-        userNovelRepository.patchUserNovel(userNovelId: userNovelId,
-                                           userNovelRating: requestRating,
-                                           userNovelReadStatus: readStatus.value,
-                                           userNovelReadStartDate: requestStartDate,
-                                           userNovelReadEndDate: requestEndDate)
-        .subscribe(with: self, onNext: { owner, data in
-            owner.successAPIRequest.onNext(owner.userNovelId)
-        }, onError: { owner, error in
-            owner.successAPIRequest.onError(error)
-            print(error)
-        })
-        .disposed(by: disposeBag)
+        userNovelRepository
+            .patchUserNovel(userNovelId: userNovelId,
+                            userNovelRating: requestRating,
+                            userNovelReadStatus: readStatus.value,
+                            userNovelReadStartDate: requestStartDate,
+                            userNovelReadEndDate: requestEndDate)
+            .subscribe(with: self, onNext: { owner, data in
+                owner.endAPIRequest.onNext(owner.userNovelId)
+            }, onError: { owner, error in
+                owner.endAPIRequest.onError(error)
+            })
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Custom Method

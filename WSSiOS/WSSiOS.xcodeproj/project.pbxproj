@@ -58,6 +58,7 @@
 		2CD229572B42EA75005400BE /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD229562B42EA75005400BE /* UIColor+.swift */; };
 		2CE078182B80894B0028F2B0 /* ViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CE078172B80894B0028F2B0 /* ViewModelType.swift */; };
 		2CFE04332B66A45A0048F77A /* UICollectionViewCell+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CFE04322B66A45A0048F77A /* UICollectionViewCell+.swift */; };
+		3916EC862B89B42C007835B5 /* RxGesture in Frameworks */ = {isa = PBXBuildFile; productRef = 3916EC852B89B42C007835B5 /* RxGesture */; };
 		392A29232B4E89FD0065EB97 /* RegisterNormalNovelInfoWithRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392A29222B4E89FD0065EB97 /* RegisterNormalNovelInfoWithRatingView.swift */; };
 		392A29272B4E96F30065EB97 /* UILabel+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392A29262B4E96F30065EB97 /* UILabel+.swift */; };
 		392A292F2B4F07FF0065EB97 /* RegisterNormalReadDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392A292E2B4F07FF0065EB97 /* RegisterNormalReadDateView.swift */; };
@@ -377,6 +378,7 @@
 				2CD229342B42E771005400BE /* SnapKit in Frameworks */,
 				2CD229472B42E7C8005400BE /* Lottie in Frameworks */,
 				2CD229402B42E7A2005400BE /* RxCocoa in Frameworks */,
+				3916EC862B89B42C007835B5 /* RxGesture in Frameworks */,
 				2CD2293C2B42E7A2005400BE /* RxBlocking in Frameworks */,
 				39EF97AC2B53E43800D2148B /* Lottie in Frameworks */,
 			);
@@ -1210,6 +1212,7 @@
 				3999BFED2B4E6CA000984832 /* UIImageViewAlignedSwift */,
 				39EF97AB2B53E43800D2148B /* Lottie */,
 				CD3E5A842B54254F00C0A659 /* RxKeyboard */,
+				3916EC852B89B42C007835B5 /* RxGesture */,
 			);
 			productName = WSSiOS;
 			productReference = 2CD229182B42E685005400BE /* WSSiOS.app */;
@@ -1247,6 +1250,7 @@
 				2CD229452B42E7C8005400BE /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				3999BFEC2B4E6CA000984832 /* XCRemoteSwiftPackageReference "UIImageViewAlignedSwift" */,
 				CD3E5A832B54254F00C0A659 /* XCRemoteSwiftPackageReference "RxKeyboard" */,
+				3916EC842B89B42C007835B5 /* XCRemoteSwiftPackageReference "RxGesture" */,
 			);
 			productRefGroup = 2CD229192B42E685005400BE /* Products */;
 			projectDirPath = "";
@@ -1704,6 +1708,14 @@
 				minimumVersion = 4.3.4;
 			};
 		};
+		3916EC842B89B42C007835B5 /* XCRemoteSwiftPackageReference "RxGesture" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/RxGesture";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.4;
+			};
+		};
 		3999BFEC2B4E6CA000984832 /* XCRemoteSwiftPackageReference "UIImageViewAlignedSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sochalewski/UIImageViewAlignedSwift";
@@ -1757,6 +1769,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 2CD229452B42E7C8005400BE /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
+		};
+		3916EC852B89B42C007835B5 /* RxGesture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3916EC842B89B42C007835B5 /* XCRemoteSwiftPackageReference "RxGesture" */;
+			productName = RxGesture;
 		};
 		3999BFED2B4E6CA000984832 /* UIImageViewAlignedSwift */ = {
 			isa = XCSwiftPackageProductDependency;
