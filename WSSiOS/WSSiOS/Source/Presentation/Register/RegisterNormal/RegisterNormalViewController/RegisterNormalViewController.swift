@@ -1,5 +1,5 @@
 //
-//  testVC.swift
+//  RegisterNormalViewController.swift
 //  WSSiOS
 //
 //  Created by 이윤학 on 2/18/24.
