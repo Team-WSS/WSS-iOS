@@ -107,7 +107,7 @@ final class RegisterNormalNovelSummaryView: UIView {
     
     //MARK: - Data
     
-    func bindData(plot: String?, genre: String?, platforms: [UserNovelPlatform]) {
+    func bindData(plot: String?, genre: String?) {
         setText(of: plotLabel, text: plot)
         setText(of: genreLabel, text: genre)
     }
@@ -126,10 +126,8 @@ final class RegisterNormalNovelSummaryView: UIView {
     }
     
     func hiddenPlatformView(when isEmpty: Bool) {
-        if isEmpty {
-            platformTitleLabel.isHidden = true
-            platformCollectionView.isHidden = true
-        }
+        platformTitleLabel.isHidden = isEmpty
+        platformCollectionView.isHidden = isEmpty
     }
     
     /// 각 Section의 본문 텍스트 스타일

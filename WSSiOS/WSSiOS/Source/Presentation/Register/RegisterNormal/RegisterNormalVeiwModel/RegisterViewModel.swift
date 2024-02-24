@@ -5,11 +5,11 @@
 //  Created by 이윤학 on 1/10/24.
 //
 
-import Foundation
 import RxSwift
 import RxCocoa
+import UIKit
 
-class RegisterNormalViewModel: ViewModelType {
+final class RegisterViewModel: ViewModelType {
     
     //MARK: - Properties
     
@@ -28,12 +28,10 @@ class RegisterNormalViewModel: ViewModelType {
         $0.timeZone = TimeZone(identifier: StringLiterals.Register.Normal.DatePicker.KoreaTimeZone)
     }
     
-    
-    
     private let disposeBag = DisposeBag()
     private let novelBasicData = PublishSubject<NovelBasicData>()
     private let isNew = BehaviorRelay<Bool>(value: true)
-     let starRating = BehaviorRelay<Float>(value: 0.0)
+    let starRating = BehaviorRelay<Float>(value: 0.0)
     private let readStatus = BehaviorRelay<ReadStatus>(value: .FINISH)
     private let isDateExist = BehaviorRelay<Bool>(value: true)
     private let showDatePicker = BehaviorRelay<Bool>(value: false)
@@ -43,6 +41,7 @@ class RegisterNormalViewModel: ViewModelType {
     private let internalEndDate = BehaviorRelay<Date>(value: Date())
     private let isSelectingStartDate = BehaviorRelay<Bool>(value: true)
     private let isOverToday = BehaviorRelay<Bool>(value: false)
+    private let platformList = BehaviorRelay<[UserNovelPlatform]>(value: [])
     private let platformCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
     private let successAPIRequest = PublishSubject<Int>()
     
@@ -62,6 +61,7 @@ class RegisterNormalViewModel: ViewModelType {
         let readStatusButtonTap: Observable<ReadStatus>
         let readDateToggleButtonTap: ControlEvent<Void>
         let datePickerButtonTap: ControlEvent<Void>
+        let platformCollectionViewHeight: Observable<CGSize?>
         let customDatePickerBackgroundTap: ControlEvent<Void>
         let customDatePickerCompleteButtonTap: ControlEvent<Void>
         let customDatePickerStartButtonTap: ControlEvent<Void>
@@ -85,6 +85,8 @@ class RegisterNormalViewModel: ViewModelType {
         let endDate: Driver<Date>
         let internalStartDate: Driver<Date>
         let internalEndDate: Driver<Date>
+        let platformList: Driver<[UserNovelPlatform]>
+        let platformCollectionViewHeight: Driver<CGFloat>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -168,9 +170,14 @@ class RegisterNormalViewModel: ViewModelType {
                     owner.internalEndDate.accept(selectedDate)
                 } else  {
                     isStart ? owner.internalStartDate.accept(selectedDate) :
-                              owner.internalEndDate.accept(selectedDate)
+                    owner.internalEndDate.accept(selectedDate)
                 }
             })
+            .disposed(by: disposeBag)
+        
+        input.platformCollectionViewHeight
+            .map { $0?.height ?? 0 }
+            .bind(to: platformCollectionViewHeight)
             .disposed(by: disposeBag)
         
         input.registerButtonTap
@@ -196,7 +203,9 @@ class RegisterNormalViewModel: ViewModelType {
             startDate: startDate.asDriver(),
             endDate: endDate.asDriver(),
             internalStartDate: internalStartDate.asDriver(),
-            internalEndDate: internalEndDate.asDriver()
+            internalEndDate: internalEndDate.asDriver(),
+            platformList: platformList.asDriver(), 
+            platformCollectionViewHeight: platformCollectionViewHeight.asDriver()
         )
     }
     
@@ -207,23 +216,21 @@ class RegisterNormalViewModel: ViewModelType {
             .subscribe(with: self, onNext: { owner, data in
                 if let newData = data.newNovelResult {
                     owner.isNew.accept(true)
-                    owner.novelBasicData
-                        .onNext(NovelBasicData(novelTitle: newData.novelTitle,
-                                               novelAuthor: newData.novelAuthor,
-                                               novelGenre: newData.novelGenre,
-                                               novelImg: newData.novelImg,
-                                               novelDescription: newData.novelDescription,
-                                               platforms: newData.platforms))
+                    owner.platformList.accept(newData.platforms)
+                    owner.novelBasicData.onNext(NovelBasicData(novelTitle: newData.novelTitle,
+                                                               novelAuthor: newData.novelAuthor,
+                                                               novelGenre: newData.novelGenre,
+                                                               novelImg: newData.novelImg,
+                                                               novelDescription: newData.novelDescription))
                 } else if let userData = data.editNovelResult {
                     owner.isNew.accept(false)
-                    owner.novelBasicData
-                        .onNext(NovelBasicData(novelTitle: userData.userNovelTitle,
-                                               novelAuthor: userData.userNovelAuthor,
-                                               novelGenre: userData.userNovelGenre,
-                                               novelImg: userData.userNovelImg,
-                                               novelDescription: userData.userNovelDescription,
-                                               platforms: userData.platforms))
+                    owner.platformList.accept(userData.platforms)
                     owner.bindUserData(userData)
+                    owner.novelBasicData.onNext(NovelBasicData(novelTitle: userData.userNovelTitle,
+                                                               novelAuthor: userData.userNovelAuthor,
+                                                               novelGenre: userData.userNovelGenre,
+                                                               novelImg: userData.userNovelImg,
+                                                               novelDescription: userData.userNovelDescription))
                 }
             }, onError: { owner, error in
                 print(error)
@@ -303,10 +310,16 @@ class RegisterNormalViewModel: ViewModelType {
         self.startDate.accept( dateFormatter.date(from: start) ?? Date() )
         self.endDate.accept( dateFormatter.date(from: end) ?? Date() )
     }
+    
+    func textForItemAt(indexPath: IndexPath) -> String? {
+        guard indexPath.item < platformList.value.count else {
+            return nil
+        }
+        
+        return platformList.value[indexPath.item].platformName
+    }
 }
 
 struct NovelBasicData {
-    let novelTitle, novelAuthor, novelGenre, novelImg: String
-    let novelDescription: String
-    let platforms: [UserNovelPlatform]
+    let novelTitle, novelAuthor, novelGenre, novelImg, novelDescription: String
 }

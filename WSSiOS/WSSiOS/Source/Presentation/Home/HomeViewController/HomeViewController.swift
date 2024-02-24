@@ -115,7 +115,7 @@ final class HomeViewController: UIViewController {
             .rx
             .itemSelected
             .subscribe(onNext:{ indexPath in
-                let RegisterNormalVC = TestVC(viewModel: RegisterNormalViewModel(
+                let RegisterNormalVC = TestVC(viewModel: RegisterViewModel(
                     novelRepository: DefaultNovelRepository(
                         novelService: DefaultNovelService()),
                     userNovelRepository: DefaultUserNovelRepository(
