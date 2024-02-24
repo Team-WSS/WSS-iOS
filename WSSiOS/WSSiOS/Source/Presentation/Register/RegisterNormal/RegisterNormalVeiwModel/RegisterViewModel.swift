@@ -333,7 +333,7 @@ final class RegisterViewModel: ViewModelType {
         self.endDate.accept( dateFormatter.date(from: end) ?? Date() )
     }
     
-    func textForItemAt(indexPath: IndexPath) -> String? {
+    func platFormNameForItemAt(indexPath: IndexPath) -> String? {
         guard indexPath.item < platformList.value.count else {
             return nil
         }

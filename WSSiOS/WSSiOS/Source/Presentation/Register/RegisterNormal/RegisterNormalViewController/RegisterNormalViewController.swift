@@ -15,7 +15,7 @@ import SnapKit
 import Then
 
 /// 1-3-1 RegisterNormal View
-final class RegisterNormalViewController: UIViewController{
+final class RegisterNormalViewController: UIViewController {
     
     //MARK: - Properties
     
@@ -56,8 +56,21 @@ final class RegisterNormalViewController: UIViewController{
         bindViewModel()
         register()
         delegate()
-        setNavigationBar()
         swipeBackGesture()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        setNavigationBar()
+        updateNavigationBarStyle(offset: rootView.pageScrollView.contentOffset.y)
+        hideTabBar()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        rootView.divider.isHidden = true
     }
     
     //MARK: - UI
@@ -65,11 +78,6 @@ final class RegisterNormalViewController: UIViewController{
     private func setUI() {
         backButton.do {
             $0.setImage(.icNavigateLeft.withRenderingMode(.alwaysOriginal), for: .normal)
-        }
-        
-        self.do {
-            $0.hidesBottomBarWhenPushed = true
-            $0.hideTabBar()
         }
     }
     
@@ -232,7 +240,7 @@ final class RegisterNormalViewController: UIViewController{
         output.isNew
             .drive(with: self, onNext: { owner, isNew in
                 let text = isNew ? StringLiterals.Register.Normal.RegisterButton.new :
-                                   StringLiterals.Register.Normal.RegisterButton.edit
+                StringLiterals.Register.Normal.RegisterButton.edit
                 owner.rootView.registerButton.setTitle(text,
                                                        for: .normal)
             })
@@ -243,7 +251,7 @@ final class RegisterNormalViewController: UIViewController{
             .withLatestFrom(output.isNew) { (userNovelId: $0, isNew: $1) }
             .subscribe(with: self, onNext: { owner, values in
                 values.isNew ? owner.pushToRegisterSuccessViewController(userNovelId: values.userNovelId) :
-                               owner.moveToNovelDetailViewController(userNovelId: values.userNovelId)
+                owner.moveToNovelDetailViewController(userNovelId: values.userNovelId)
             }, onError: { owner, error in
                 print(error)
             })
@@ -346,7 +354,7 @@ final class RegisterNormalViewController: UIViewController{
 
 extension RegisterNormalViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        guard let text = viewModel.textForItemAt(indexPath: indexPath) else {
+        guard let text = viewModel.platFormNameForItemAt(indexPath: indexPath) else {
             return CGSize(width: 0, height: 0)
         }
         

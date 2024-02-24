@@ -117,6 +117,7 @@ final class HomeViewController: UIViewController {
             .subscribe(onNext:{ indexPath in
                 let novelID = self.sosopickListRelay.value[indexPath.row].novelId
                 self.pushToRegisterNormalViewController(novelId: novelID)
+                self.hideTabBar()
             })
             .disposed(by: disposeBag)
     }
