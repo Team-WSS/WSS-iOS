@@ -86,8 +86,9 @@ final class RegisterNormalViewController: UIViewController{
     // MARK: - Bind
     
     private func register() {
-        rootView.novelSummaryView.platformCollectionView.register(NovelDetailInfoPlatformCollectionViewCell.self,
-                                                                  forCellWithReuseIdentifier: "NovelDetailInfoPlatformCollectionViewCell")
+        rootView.novelSummaryView.platformCollectionView
+            .register(NovelDetailInfoPlatformCollectionViewCell.self,
+                      forCellWithReuseIdentifier: "NovelDetailInfoPlatformCollectionViewCell")
     }
     
     private func delegate() {
@@ -97,7 +98,8 @@ final class RegisterNormalViewController: UIViewController{
     
     private func bindViewModel() {
         let input = createViewModelInput()
-        let output = viewModel.transform(from: input, disposeBag: disposeBag)
+        let output = viewModel.transform(from: input,
+                                         disposeBag: disposeBag)
         bindViewModelOutput(output)
     }
     
@@ -176,8 +178,8 @@ final class RegisterNormalViewController: UIViewController{
             .disposed(by: disposeBag)
         
         output.isOverToday
-            .drive(with: self, onNext: { owner, status in
-                if status {
+            .drive(with: self, onNext: { owner, isOverToday in
+                if isOverToday {
                     owner.rootView.customDatePicker.updateDatePicker(date: Date())
                 }
             })
@@ -230,7 +232,7 @@ final class RegisterNormalViewController: UIViewController{
         output.isNew
             .drive(with: self, onNext: { owner, isNew in
                 let text = isNew ? StringLiterals.Register.Normal.RegisterButton.new :
-                StringLiterals.Register.Normal.RegisterButton.edit
+                                   StringLiterals.Register.Normal.RegisterButton.edit
                 owner.rootView.registerButton.setTitle(text,
                                                        for: .normal)
             })
@@ -241,7 +243,7 @@ final class RegisterNormalViewController: UIViewController{
             .withLatestFrom(output.isNew) { (userNovelId: $0, isNew: $1) }
             .subscribe(with: self, onNext: { owner, values in
                 values.isNew ? owner.pushToRegisterSuccessViewController(userNovelId: values.userNovelId) :
-                owner.moveToNovelDetailViewController(userNovelId: values.userNovelId)
+                               owner.moveToNovelDetailViewController(userNovelId: values.userNovelId)
             }, onError: { owner, error in
                 print(error)
             })
@@ -280,7 +282,6 @@ final class RegisterNormalViewController: UIViewController{
             rootView.readStatusView.readStatusButtons.map {button in
                 button.rx.tap.map { button.status }
             })
-        
         
         let platformCollectionViewHeight = rootView.novelSummaryView.platformCollectionView.rx.observe(CGSize.self, "contentSize")
         
