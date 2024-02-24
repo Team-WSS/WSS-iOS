@@ -67,9 +67,9 @@ final class MemoEditViewController: UIViewController {
          setUI()
          setNavigationBar()
          setNotificationCenter()
-         setTapGesture()
          bindUI()
          bindAction()
+         bindNavigation()
          
          rootView.memoEditContentView.memoTextView.becomeFirstResponder()
      }
@@ -145,6 +145,19 @@ final class MemoEditViewController: UIViewController {
     //MARK: - Actions
     
     private func bindAction() {
+        completeButton.rx.tap
+            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                if owner.memoContent != nil {
+                    owner.patchMemo()
+                } else {
+                    owner.postMemo()
+                }
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindNavigation() {
         backButton.rx.tap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
@@ -160,17 +173,6 @@ final class MemoEditViewController: UIViewController {
                     } else {
                         owner.popToLastViewController()
                     }
-                }
-            })
-            .disposed(by: disposeBag)
-        
-        completeButton.rx.tap
-            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, _ in
-                if owner.memoContent != nil {
-                    owner.patchMemo()
-                } else {
-                    owner.postMemo()
                 }
             })
             .disposed(by: disposeBag)
