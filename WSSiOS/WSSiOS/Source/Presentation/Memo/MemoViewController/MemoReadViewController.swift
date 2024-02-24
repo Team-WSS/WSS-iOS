@@ -16,11 +16,10 @@ final class MemoReadViewController: UIViewController {
     
     private let memoReadViewModel: MemoReadViewModel
     private let disposeBag = DisposeBag()
+    
+    private let viewWillAppearEvent = BehaviorRelay<Int>(value: 0)
+    private let memoDetail = BehaviorRelay<MemoDetail?>(value: nil)
     private let memoId: Int
-    private var novelTitle = ""
-    private var novelAuthor = ""
-    private var novelImage = ""
-    private var memoContent = ""
 
     //MARK: - Components
     
@@ -47,7 +46,7 @@ final class MemoReadViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-//        getMemoDetail()
+        viewWillAppearEvent.accept(self.memoId)
     }
 
      override func viewDidLoad() {
@@ -57,7 +56,7 @@ final class MemoReadViewController: UIViewController {
          setUI()
          setNavigationBar()
          setNotificationCenter()
-         setTapGesture()
+         bindViewModel()
          bindNavigation()
      }
     
@@ -95,18 +94,24 @@ final class MemoReadViewController: UIViewController {
         )
     }
     
-    private func setTapGesture() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewDidTap))
-        view.addGestureRecognizer(tapGesture)
-    }
-    
     //MARK: - Bind
+    
+    private func bindViewModel() {
+        let input = MemoReadViewModel.Input(
+            viewWillAppearEvent: viewWillAppearEvent.asObservable()
+        )
+        
+        let output = self.memoReadViewModel.transform(from: input, disposeBag: self.disposeBag)
+        
+        output.memoDetail
+            .subscribe(with: self, onNext: { owner, data in
+                owner.bindData(data)
+            })
+            .disposed(by: disposeBag)
+    }
 
     private func bindData(_ memoDetail: MemoDetail) {
-        self.novelTitle = memoDetail.userNovelTitle
-        self.novelAuthor = memoDetail.userNovelAuthor
-        self.novelImage = memoDetail.userNovelImg
-        self.memoContent = memoDetail.memoContent
+        self.memoDetail.accept(memoDetail)
         
         self.rootView.memoHeaderView.bindData(
             novelTitle: memoDetail.userNovelTitle,
@@ -135,10 +140,10 @@ final class MemoReadViewController: UIViewController {
             .bind(with: self, onNext: { owner, _ in
                 owner.pushToMemoEditViewController(
                     memoId: owner.memoId,
-                    novelTitle: owner.novelTitle,
-                    novelAuthor: owner.novelAuthor,
-                    novelImage: owner.novelImage,
-                    memoContent: owner.memoContent
+                    novelTitle: owner.memoDetail.value?.userNovelTitle ?? "",
+                    novelAuthor: owner.memoDetail.value?.userNovelAuthor ?? "",
+                    novelImage: owner.memoDetail.value?.userNovelImg ?? "",
+                    memoContent: owner.memoDetail.value?.memoContent ?? ""
                 )
             })
             .disposed(by: disposeBag)
@@ -151,23 +156,7 @@ final class MemoReadViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    //MARK: - API
-    
-//    private func getMemoDetail() {
-//        repository.getMemoDetail(memoId: self.memoId)
-//            .observe(on: MainScheduler.instance)
-//            .subscribe(with: self, onNext: { owner, data in
-//                owner.bindData(data)
-//            },onError: { owner, error in
-//                print(error)
-//            }).disposed(by: disposeBag)
-//    }
-    
     //MARK: - Custom Method
-    
-    @objc func viewDidTap() {
-        view.endEditing(true)
-    }
     
     @objc func deletedMemo(_ notification: Notification) {
         self.popToLastViewController()
