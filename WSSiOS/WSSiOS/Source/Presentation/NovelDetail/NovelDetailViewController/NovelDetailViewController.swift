@@ -24,6 +24,7 @@ final class NovelDetailViewController: UIViewController {
     private let novelDetailViewModel: NovelDetailViewModel
     private let disposeBag = DisposeBag()
     
+    private let viewWillAppearEvent = BehaviorRelay<Int>(value: 0)
     private let memoList = BehaviorRelay<[UserNovelMemo]>(value: [])
     private let platformList = BehaviorRelay<[UserNovelPlatform]>(value: [])
     private var selectedMenu = BehaviorRelay<SelectedMenu>(value: .memo)
@@ -33,8 +34,6 @@ final class NovelDetailViewController: UIViewController {
     private var novelTitle = ""
     private var novelAuthor = ""
     private var novelImage = ""
-    
-    private let viewWillAppearEvent = BehaviorRelay<Int>(value: 0)
     
     //MARK: - Components
 
@@ -163,7 +162,9 @@ final class NovelDetailViewController: UIViewController {
             memoButtonDidTapEvent: rootView.novelDetailTabView.memoButton.rx.tap.asObservable(),
             infoButtonDidTapEvent: rootView.novelDetailTabView.infoButton.rx.tap.asObservable(),
             stickyMemoButtonDidTapEvent: rootView.stickyNovelDetailTabView.memoButton.rx.tap.asObservable(),
-            stickyInfoButtonDidTapEvent: rootView.stickyNovelDetailTabView.infoButton.rx.tap.asObservable()
+            stickyInfoButtonDidTapEvent: rootView.stickyNovelDetailTabView.infoButton.rx.tap.asObservable(),
+            novelDeleteButtonDidTapEvent: rootView.novelDetailMemoSettingButtonView.novelDeleteButton.rx.tap.asObservable(),
+            novelEditButtonDidTapEvent: rootView.novelDetailMemoSettingButtonView.novelEditButon.rx.tap.asObservable()
         )
         
         let output = self.novelDetailViewModel.transform(from: input, disposeBag: self.disposeBag)
@@ -273,7 +274,6 @@ final class NovelDetailViewController: UIViewController {
         rootView.novelDetailMemoSettingButtonView.novelEditButon.rx.tap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
-                owner.selectedMenu.accept(.info)
                 owner.pushToRegisterNormalViewController(novelId: owner.novelId)
             })
             .disposed(by: disposeBag)

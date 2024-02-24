@@ -29,6 +29,8 @@ final class NovelDetailViewModel: ViewModelType {
         let infoButtonDidTapEvent: Observable<Void>
         let stickyMemoButtonDidTapEvent: Observable<Void>
         let stickyInfoButtonDidTapEvent: Observable<Void>
+        let novelDeleteButtonDidTapEvent: Observable<Void>
+        let novelEditButtonDidTapEvent: Observable<Void>
     }
     
     struct Output {
@@ -111,6 +113,19 @@ final class NovelDetailViewModel: ViewModelType {
         input.stickyInfoButtonDidTapEvent
             .subscribe(with: self, onNext: { owner, _ in
                 output.selectedMenu.accept(.info)
+            })
+            .disposed(by: disposeBag)
+        
+        input.novelDeleteButtonDidTapEvent
+            .subscribe(with: self, onNext: { owner, _ in
+                output.memoSettingButtonViewIsHidden.accept(true)
+            })
+            .disposed(by: disposeBag)
+        
+        input.novelEditButtonDidTapEvent
+            .subscribe(with: self, onNext: { owner, _ in
+                output.selectedMenu.accept(.info)
+                output.memoSettingButtonViewIsHidden.accept(true)
             })
             .disposed(by: disposeBag)
         
