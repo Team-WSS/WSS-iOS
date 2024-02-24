@@ -62,8 +62,7 @@ final class NovelDetailViewModel: ViewModelType {
         
         input.viewWillAppearEvent
             .flatMapLatest { userNovelId in
-                self.userNovelRepository.getUserNovel(userNovelId: userNovelId)
-                    .observe(on: MainScheduler.instance)
+                self.getUserNovel(userNovelId: userNovelId)
             }
             .subscribe(with: self, onNext: { owner, data in
                 output.userNovelDetail.accept(data)
