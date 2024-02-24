@@ -20,6 +20,8 @@ final class NovelDetailViewModel: ViewModelType {
     
     struct Input {
         let viewWillAppearEvent: Observable<Int>
+        let memoTableViewContentSize: Observable<CGSize?>
+        let platformCollectionViewContentSize: Observable<CGSize?>
         let novelSettingButtonDidTapEvent: Observable<Void>
         let viewDidTapEvent: Observable<UITapGestureRecognizer>
         let memoButtonDidTapEvent: Observable<Void>
@@ -30,6 +32,10 @@ final class NovelDetailViewModel: ViewModelType {
     
     struct Output {
         let userNovelDetail = PublishRelay<UserNovelDetail>()
+        let memoList = BehaviorRelay<[UserNovelMemo]>(value: [])
+        let platformList = BehaviorRelay<[UserNovelPlatform]>(value: [])
+        let memoTableViewHeight = BehaviorRelay<CGFloat>(value: 0)
+        let platformCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
         let memoSettingButtonViewIsHidden = BehaviorRelay<Bool>(value: true)
         let selectedMenu = BehaviorRelay<SelectedMenu>(value: .memo)
     }
@@ -44,9 +50,21 @@ final class NovelDetailViewModel: ViewModelType {
             }
             .subscribe(with: self, onNext: { owner, data in
                 output.userNovelDetail.accept(data)
+                output.memoList.accept(data.memos)
+                output.platformList.accept(data.platforms)
             }, onError: { owner, error in
                 print(error)
             })
+            .disposed(by: disposeBag)
+        
+        input.memoTableViewContentSize
+            .map { $0?.height ?? 0 }
+            .bind(to: output.memoTableViewHeight)
+            .disposed(by: disposeBag)
+        
+        input.platformCollectionViewContentSize
+            .map { $0?.height ?? 0 }
+            .bind(to: output.platformCollectionViewHeight)
             .disposed(by: disposeBag)
         
         input.novelSettingButtonDidTapEvent

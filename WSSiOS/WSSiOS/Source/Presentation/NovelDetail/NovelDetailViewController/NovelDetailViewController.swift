@@ -23,20 +23,18 @@ final class NovelDetailViewController: UIViewController {
 
     private let novelDetailViewModel: NovelDetailViewModel
     private let disposeBag = DisposeBag()
-    private let userNovelDetail = BehaviorRelay<UserNovelDetail?>(value: nil)
+    
     private let memoList = BehaviorRelay<[UserNovelMemo]>(value: [])
     private let platformList = BehaviorRelay<[UserNovelPlatform]>(value: [])
     private var selectedMenu = BehaviorRelay<SelectedMenu>(value: .memo)
-    private let memoTableViewHeight = BehaviorRelay<CGFloat>(value: 0)
-    private let keywordCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
-    private let platformCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
+    
     private let userNovelId: Int
     private var novelId: Int = 0
     private var novelTitle = ""
     private var novelAuthor = ""
     private var novelImage = ""
     
-    private let viewWillAppearEvent = PublishSubject<Int>()
+    private let viewWillAppearEvent = BehaviorRelay<Int>(value: 0)
     
     //MARK: - Components
 
@@ -66,7 +64,7 @@ final class NovelDetailViewController: UIViewController {
         
         hideTabBar()
         
-        viewWillAppearEvent.onNext(self.userNovelId)
+        viewWillAppearEvent.accept(self.userNovelId)
         updateNavigationBarStyle(offset: self.rootView.scrollView.contentOffset.y)
     }
     
@@ -158,6 +156,8 @@ final class NovelDetailViewController: UIViewController {
     private func bindViewModel() {
         let input = NovelDetailViewModel.Input(
             viewWillAppearEvent: viewWillAppearEvent.asObservable(),
+            memoTableViewContentSize: rootView.novelDetailMemoView.memoTableView.rx.observe(CGSize.self, "contentSize"),
+            platformCollectionViewContentSize: rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.rx.observe(CGSize.self, "contentSize"),
             novelSettingButtonDidTapEvent: novelSettingButton.rx.tap.asObservable(),
             viewDidTapEvent: rootView.novelDetailMemoSettingButtonView.rx.tapGesture().asObservable(),
             memoButtonDidTapEvent: rootView.novelDetailTabView.memoButton.rx.tap.asObservable(),
@@ -171,6 +171,33 @@ final class NovelDetailViewController: UIViewController {
         output.userNovelDetail
             .subscribe(with: self, onNext: { owner, data in
                 owner.bindData(data)
+            })
+            .disposed(by: disposeBag)
+        
+        output.memoList.bind(to: rootView.novelDetailMemoView.memoTableView.rx.items(
+            cellIdentifier: NovelDetailMemoTableViewCell.cellIdentifier,
+            cellType: NovelDetailMemoTableViewCell.self)) { row, element, cell in
+                cell.selectionStyle = .none
+                cell.bindData(memo: element)
+            }
+            .disposed(by: disposeBag)
+        
+        output.platformList.bind(to: rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.rx.items(
+            cellIdentifier: NovelDetailInfoPlatformCollectionViewCell.cellIdentifier,
+            cellType: NovelDetailInfoPlatformCollectionViewCell.self)) { item, element, cell in
+                cell.bindData(platform: element.platformName)
+            }
+            .disposed(by: disposeBag)
+        
+        output.memoTableViewHeight
+            .subscribe(with: self, onNext: { owner, height in
+                owner.rootView.novelDetailMemoView.updateTableViewHeight(height: height)
+            })
+            .disposed(by: disposeBag)
+        
+        output.platformCollectionViewHeight
+            .subscribe(with: self, onNext: { owner, height in
+                owner.rootView.novelDetailInfoView.novelDetailInfoPlatformView.updateCollectionViewHeight(height: height)
             })
             .disposed(by: disposeBag)
         
@@ -195,47 +222,10 @@ final class NovelDetailViewController: UIViewController {
     }
     
     private func bindUI() {
-        memoList.bind(to: rootView.novelDetailMemoView.memoTableView.rx.items(
-            cellIdentifier: NovelDetailMemoTableViewCell.cellIdentifier,
-            cellType: NovelDetailMemoTableViewCell.self)) { row, element, cell in
-                cell.selectionStyle = .none
-                cell.bindData(memo: element)
-            }
-            .disposed(by: disposeBag)
-        
-        platformList.bind(to: rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.rx.items(
-            cellIdentifier: NovelDetailInfoPlatformCollectionViewCell.cellIdentifier,
-            cellType: NovelDetailInfoPlatformCollectionViewCell.self)) { item, element, cell in
-                cell.bindData(platform: element.platformName)
-            }
-            .disposed(by: disposeBag)
-        
         rootView.scrollView.rx.contentOffset
             .asDriver()
             .drive(with: self, onNext: { owner, offset in
                 owner.updateNavigationBarStyle(offset: offset.y)
-            })
-            .disposed(by: disposeBag)
-        
-        rootView.novelDetailMemoView.memoTableView.rx.observe(CGSize.self, "contentSize")
-            .map { $0?.height ?? 0 }
-            .bind(to: memoTableViewHeight)
-            .disposed(by: disposeBag)
-
-        memoTableViewHeight
-            .subscribe(with: self, onNext: { owner, height in
-                owner.rootView.novelDetailMemoView.updateTableViewHeight(height: height)
-            })
-            .disposed(by: disposeBag)
-        
-        rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.rx.observe(CGSize.self, "contentSize")
-            .map { $0?.height ?? 0 }
-            .bind(to: platformCollectionViewHeight)
-            .disposed(by: disposeBag)
-        
-        platformCollectionViewHeight
-            .subscribe(with: self, onNext: { owner, height in
-                owner.rootView.novelDetailInfoView.novelDetailInfoPlatformView.updateCollectionViewHeight(height: height)
             })
             .disposed(by: disposeBag)
     }
