@@ -12,10 +12,12 @@ protocol RegisterModuleFactory {
     func makeRegisterSuccessViewController(userNovelId: Int) -> UIViewController
 }
 
-final class ModuleFactory: RegisterModuleFactory {
+final class ModuleFactory {
     static let shared = ModuleFactory()
     private init() {}
-    
+}
+
+extension ModuleFactory: RegisterModuleFactory {
     func makeRegisterNormalViewController(novelId: Int) -> UIViewController {
         return RegisterNormalViewController(viewModel: RegisterViewModel(
             novelRepository: DefaultNovelRepository(novelService: DefaultNovelService()),
