@@ -12,11 +12,6 @@ import RxCocoa
 import RxGesture
 import Then
 
-enum SelectedMenu {
-    case memo
-    case info
-}
-
 final class NovelDetailViewController: UIViewController {
     
     //MARK: - Properties
@@ -27,7 +22,6 @@ final class NovelDetailViewController: UIViewController {
     private let viewWillAppearEvent = BehaviorRelay<Int>(value: 0)
     private let memoList = BehaviorRelay<[UserNovelMemo]>(value: [])
     private let platformList = BehaviorRelay<[UserNovelPlatform]>(value: [])
-    private var selectedMenu = BehaviorRelay<SelectedMenu>(value: .memo)
     
     private let userNovelId: Int
     private var novelId: Int = 0
@@ -43,10 +37,9 @@ final class NovelDetailViewController: UIViewController {
     
     //MARK: - Life Cycle
     
-    init(viewModel: NovelDetailViewModel, userNovelId: Int, selectedMenu: SelectedMenu = .memo) {
+    init(viewModel: NovelDetailViewModel, userNovelId: Int) {
         self.novelDetailViewModel = viewModel
         self.userNovelId = userNovelId
-        self.selectedMenu.accept(selectedMenu)
         super.init(nibName: nil, bundle: nil)
     }
     

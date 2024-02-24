@@ -10,12 +10,24 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+enum SelectedMenu {
+    case memo
+    case info
+}
+
 final class NovelDetailViewModel: ViewModelType {
     
+    //MARK: - Properties
+        
     private let userNovelRepository: UserNovelRepository
     
-    init(userNovelRepository: UserNovelRepository) {
+    private let selectedMenu: SelectedMenu
+    
+    //MARK: - Life Cycle
+    
+    init(userNovelRepository: UserNovelRepository, selectedMenu: SelectedMenu = .memo) {
         self.userNovelRepository = userNovelRepository
+        self.selectedMenu = selectedMenu
     }
     
     struct Input {
@@ -46,6 +58,7 @@ final class NovelDetailViewModel: ViewModelType {
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
+        output.selectedMenu.accept(self.selectedMenu)
         
         input.viewWillAppearEvent
             .flatMapLatest { userNovelId in

@@ -294,10 +294,10 @@ extension LibraryViewController {
             viewModel: NovelDetailViewModel(
                 userNovelRepository: DefaultUserNovelRepository(
                     userNovelService: DefaultUserNovelService()
-                )
+                ),
+                selectedMenu: .info
             ),
-            userNovelId: userNovelId,
-            selectedMenu: .info
+            userNovelId: userNovelId
         ), animated: true)
     }
     
@@ -308,10 +308,10 @@ extension LibraryViewController {
             viewModel: NovelDetailViewModel(
                 userNovelRepository: DefaultUserNovelRepository(
                     userNovelService: DefaultUserNovelService()
-                )
+                ),
+                selectedMenu: .memo
             ),
-            userNovelId: userNovelId,
-            selectedMenu: .memo
+            userNovelId: userNovelId
         ), animated: true)
     }
 }
