@@ -95,9 +95,9 @@ final class RegisterViewModel: ViewModelType {
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
-        let scrollContentOffset = input.scrollContentOffset
-
         getNovelInfo()
+        
+        let scrollContentOffset = input.scrollContentOffset
         
         input.starRatingTapGesture
             .bind(with: self, onNext: { owner, value in
@@ -166,13 +166,9 @@ final class RegisterViewModel: ViewModelType {
         
         input.customDatePickerDateChanged
             .bind(with: self, onNext: { owner, date in
-                var selectedDate = date
-                if date > Date() {
-                    owner.isOverToday.accept(true)
-                    selectedDate = Date()
-                } else {
-                    owner.isOverToday.accept(false)
-                }
+                let isOverToday = date > Date()
+                let selectedDate = isOverToday ? Date() : date
+                owner.isOverToday.accept(isOverToday)
                 
                 let isStart = owner.isSelectingStartDate.value
                 let startDate = owner.internalStartDate.value
@@ -183,7 +179,7 @@ final class RegisterViewModel: ViewModelType {
                     owner.internalEndDate.accept(selectedDate)
                 } else  {
                     isStart ? owner.internalStartDate.accept(selectedDate) :
-                    owner.internalEndDate.accept(selectedDate)
+                              owner.internalEndDate.accept(selectedDate)
                 }
             })
             .disposed(by: disposeBag)
