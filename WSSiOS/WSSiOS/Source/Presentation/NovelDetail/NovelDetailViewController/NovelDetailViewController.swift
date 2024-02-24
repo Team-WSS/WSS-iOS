@@ -76,7 +76,6 @@ final class NovelDetailViewController: UIViewController {
         setNotificationCenter()
         register()
         delegate()
-        bindUI()
         bindViewModel()
         bindNavigation()
     }
@@ -156,6 +155,7 @@ final class NovelDetailViewController: UIViewController {
     private func bindViewModel() {
         let input = NovelDetailViewModel.Input(
             viewWillAppearEvent: viewWillAppearEvent.asObservable(),
+            scrollViewContentOffset: rootView.scrollView.rx.contentOffset.asDriver(),
             memoTableViewContentSize: rootView.novelDetailMemoView.memoTableView.rx.observe(CGSize.self, "contentSize"),
             platformCollectionViewContentSize: rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.rx.observe(CGSize.self, "contentSize"),
             novelSettingButtonDidTapEvent: novelSettingButton.rx.tap.asObservable(),
@@ -189,6 +189,12 @@ final class NovelDetailViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
+        output.contentOffsetY
+            .subscribe(with: self, onNext: { owner, offset in
+                owner.updateNavigationBarStyle(offset: offset)
+            })
+            .disposed(by: disposeBag)
+        
         output.memoTableViewHeight
             .subscribe(with: self, onNext: { owner, height in
                 owner.rootView.novelDetailMemoView.updateTableViewHeight(height: height)
@@ -217,15 +223,6 @@ final class NovelDetailViewController: UIViewController {
                     owner.rootView.createMemoButton.isHidden = true
                     owner.rootView.changeCurrentMenu(menu: .info)
                 }
-            })
-            .disposed(by: disposeBag)
-    }
-    
-    private func bindUI() {
-        rootView.scrollView.rx.contentOffset
-            .asDriver()
-            .drive(with: self, onNext: { owner, offset in
-                owner.updateNavigationBarStyle(offset: offset.y)
             })
             .disposed(by: disposeBag)
     }

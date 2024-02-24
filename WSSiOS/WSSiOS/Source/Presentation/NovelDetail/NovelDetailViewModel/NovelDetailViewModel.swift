@@ -20,6 +20,7 @@ final class NovelDetailViewModel: ViewModelType {
     
     struct Input {
         let viewWillAppearEvent: Observable<Int>
+        let scrollViewContentOffset: Driver<CGPoint>
         let memoTableViewContentSize: Observable<CGSize?>
         let platformCollectionViewContentSize: Observable<CGSize?>
         let novelSettingButtonDidTapEvent: Observable<Void>
@@ -34,6 +35,7 @@ final class NovelDetailViewModel: ViewModelType {
         let userNovelDetail = PublishRelay<UserNovelDetail>()
         let memoList = BehaviorRelay<[UserNovelMemo]>(value: [])
         let platformList = BehaviorRelay<[UserNovelPlatform]>(value: [])
+        let contentOffsetY = BehaviorRelay<CGFloat>(value: 0)
         let memoTableViewHeight = BehaviorRelay<CGFloat>(value: 0)
         let platformCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
         let memoSettingButtonViewIsHidden = BehaviorRelay<Bool>(value: true)
@@ -55,6 +57,11 @@ final class NovelDetailViewModel: ViewModelType {
             }, onError: { owner, error in
                 print(error)
             })
+            .disposed(by: disposeBag)
+        
+        input.scrollViewContentOffset
+            .map { $0.y }
+            .drive(output.contentOffsetY)
             .disposed(by: disposeBag)
         
         input.memoTableViewContentSize
