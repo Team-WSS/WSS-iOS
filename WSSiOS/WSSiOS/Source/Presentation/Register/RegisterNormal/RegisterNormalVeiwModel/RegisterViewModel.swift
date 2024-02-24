@@ -24,19 +24,19 @@ final class RegisterViewModel: ViewModelType {
     
     private let disposeBag = DisposeBag()
     private let novelBasicData = PublishSubject<NovelBasicData>()
-    private let isNew = BehaviorRelay<Bool>(value: true)
     private let starRating = BehaviorRelay<Float>(value: 0.0)
     private let readStatus = BehaviorRelay<ReadStatus>(value: .FINISH)
     private let isDateExist = BehaviorRelay<Bool>(value: true)
-    private let showDatePicker = BehaviorRelay<Bool>(value: false)
     private let startDate = BehaviorRelay<Date>(value: Date())
     private let endDate = BehaviorRelay<Date>(value: Date())
+    private let showDatePicker = BehaviorRelay<Bool>(value: false)
+    private let isOverToday = BehaviorRelay<Bool>(value: false)
+    private let isSelectingStartDate = BehaviorRelay<Bool>(value: true)
     private let internalStartDate = BehaviorRelay<Date>(value: Date())
     private let internalEndDate = BehaviorRelay<Date>(value: Date())
-    private let isSelectingStartDate = BehaviorRelay<Bool>(value: true)
-    private let isOverToday = BehaviorRelay<Bool>(value: false)
     private let platformList = BehaviorRelay<[UserNovelPlatform]>(value: [])
     private let platformCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
+    private let isNew = BehaviorRelay<Bool>(value: true)
     private let endAPIRequest = PublishSubject<Int>()
     
     private var minStarRating: Float = 0.0
