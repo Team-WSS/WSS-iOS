@@ -17,7 +17,7 @@ import Then
 /// 1-3-1 RegisterNormal View
 final class RegisterNormalViewController: UIViewController{
     
-    // MARK: - Properties
+    //MARK: - Properties
     
     private let viewModel: RegisterViewModel
     private let disposeBag = DisposeBag()
@@ -28,12 +28,12 @@ final class RegisterNormalViewController: UIViewController{
         $0.timeZone = TimeZone(identifier: StringLiterals.Register.Normal.DatePicker.KoreaTimeZone)
     }
     
-    // MARK: - Components
+    //MARK: - Components
     
     private let backButton = UIButton()
     private let rootView = RegisterNormalView()
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
     
     init(viewModel: RegisterViewModel) {
         self.viewModel = viewModel
@@ -60,7 +60,7 @@ final class RegisterNormalViewController: UIViewController{
         swipeBackGesture()
     }
     
-    // MARK: - UI
+    //MARK: - UI
     
     private func setUI() {
         backButton.do {
@@ -83,7 +83,7 @@ final class RegisterNormalViewController: UIViewController{
         ]
     }
     
-    // MARK: - Bind
+    //MARK: - Bind
     
     private func register() {
         rootView.novelSummaryView.platformCollectionView
@@ -302,7 +302,7 @@ final class RegisterNormalViewController: UIViewController{
             backButtonTap: backButton.rx.tap)
     }
     
-    // MARK: - Custom Method
+    //MARK: - Custom Method
     
     private func showDatePickerButton(_ isShow: Bool) {
         rootView.readDateView.datePickerButton.isHidden = !isShow
