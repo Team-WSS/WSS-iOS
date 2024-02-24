@@ -20,14 +20,8 @@ final class NovelDetailViewController: UIViewController {
     private let disposeBag = DisposeBag()
     
     private let viewWillAppearEvent = BehaviorRelay<Int>(value: 0)
-    private let memoList = BehaviorRelay<[UserNovelMemo]>(value: [])
-    private let platformList = BehaviorRelay<[UserNovelPlatform]>(value: [])
-    
+    private let userNovelDetail = BehaviorRelay<UserNovelDetail?>(value: nil)
     private let userNovelId: Int
-    private var novelId: Int = 0
-    private var novelTitle = ""
-    private var novelAuthor = ""
-    private var novelImage = ""
     
     //MARK: - Components
 
@@ -236,22 +230,22 @@ final class NovelDetailViewController: UIViewController {
             .subscribe(with: self, onNext: { owner, _ in
                 owner.pushToMemoEditViewController(
                     userNovelId: owner.userNovelId,
-                    novelTitle: owner.novelTitle,
-                    novelAuthor: owner.novelAuthor,
-                    novelImage: owner.novelImage
+                    novelTitle: owner.userNovelDetail.value?.userNovelTitle ?? "",
+                    novelAuthor: owner.userNovelDetail.value?.userNovelAuthor ?? "",
+                    novelImage: owner.userNovelDetail.value?.userNovelImg ?? ""
                 )
             })
             .disposed(by: disposeBag)
         
         rootView.novelDetailMemoView.memoTableView.rx.itemSelected
             .subscribe(with: self, onNext: { owner, indexPath in
-                owner.pushToMemoReadViewController(memoId: owner.memoList.value[indexPath.row].memoId)
+                owner.pushToMemoReadViewController(memoId: owner.userNovelDetail.value?.memos[indexPath.row].memoId ?? 0)
             })
             .disposed(by: disposeBag)
         
         rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.rx.itemSelected
             .subscribe(with: self, onNext: { owner, indexPath in
-                if let url = URL(string: owner.platformList.value[indexPath.item].platformUrl) {
+                if let url = URL(string: owner.userNovelDetail.value?.platforms[indexPath.item].platformUrl ?? "") {
                     UIApplication.shared.open(url, options: [:])
                 }
             })
@@ -267,7 +261,7 @@ final class NovelDetailViewController: UIViewController {
         rootView.novelDetailMemoSettingButtonView.novelEditButon.rx.tap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
-                owner.pushToRegisterNormalViewController(novelId: owner.novelId)
+                owner.pushToRegisterNormalViewController(novelId: owner.userNovelDetail.value?.novelId ?? 0)
             })
             .disposed(by: disposeBag)
         
@@ -276,9 +270,9 @@ final class NovelDetailViewController: UIViewController {
             .bind(with: self, onNext: { owner, _ in
                 owner.pushToMemoEditViewController(
                     userNovelId: owner.userNovelId,
-                    novelTitle: owner.novelTitle,
-                    novelAuthor: owner.novelAuthor,
-                    novelImage: owner.novelImage
+                    novelTitle: owner.userNovelDetail.value?.userNovelTitle ?? "",
+                    novelAuthor: owner.userNovelDetail.value?.userNovelAuthor ?? "",
+                    novelImage: owner.userNovelDetail.value?.userNovelImg ?? ""
                 )
             })
             .disposed(by: disposeBag)
@@ -287,13 +281,7 @@ final class NovelDetailViewController: UIViewController {
     //MARK: - Custom Method
     
     private func bindData(_ novelData: UserNovelDetail) {
-        self.memoList.accept(novelData.memos)
-        self.platformList.accept(novelData.platforms)
-        
-        self.novelId = novelData.novelId
-        self.novelTitle = novelData.userNovelTitle
-        self.novelAuthor = novelData.userNovelAuthor
-        self.novelImage = novelData.userNovelImg
+        self.userNovelDetail.accept(novelData)
         
         self.rootView.novelDetailHeaderView.bindData(
             title: novelData.userNovelTitle,
@@ -302,7 +290,7 @@ final class NovelDetailViewController: UIViewController {
             genreImage: novelData.userNovelGenreBadgeImg
         )
         self.rootView.novelDetailMemoView.bindData(
-            memoCount: self.memoList.value.count
+            memoCount: novelData.memos.count
         )
         self.rootView.novelDetailInfoView.bindData(
             rating: novelData.userNovelRating,
@@ -311,7 +299,7 @@ final class NovelDetailViewController: UIViewController {
             endDate: novelData.userNovelReadEndDate,
             description: novelData.userNovelDescription,
             genre: novelData.userNovelGenre,
-            platformCount: self.platformList.value.count
+            platformCount: novelData.platforms.count
         )
     }
     
@@ -326,7 +314,7 @@ final class NovelDetailViewController: UIViewController {
             navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
             navigationController?.navigationBar.shadowImage = UIImage()
             navigationController?.navigationBar.backgroundColor = .wssWhite
-            navigationItem.title = self.novelTitle
+            navigationItem.title = self.userNovelDetail.value?.userNovelTitle ?? ""
             novelSettingButton.isHidden = true
         } else {
             rootView.statusBarView.backgroundColor = .clear
@@ -359,7 +347,7 @@ extension NovelDetailViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var text: String?
         
-        text = self.platformList.value[indexPath.item].platformName
+        text = self.userNovelDetail.value?.platforms[indexPath.item].platformName
         
         guard let unwrappedText = text else {
             return CGSize(width: 0, height: 0)
