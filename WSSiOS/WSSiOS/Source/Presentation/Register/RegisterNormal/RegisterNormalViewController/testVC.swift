@@ -19,6 +19,7 @@ final class TestVC: UIViewController{
     // MARK: - Properties
     
     private let viewModel: RegisterViewModel
+    private let disposeBag = DisposeBag()
     
     private var navigationTitle: String = ""
     private var minStarRating: Float = 0.0
@@ -27,9 +28,6 @@ final class TestVC: UIViewController{
         $0.dateFormat = StringLiterals.Register.Normal.DatePicker.dateFormat
         $0.timeZone = TimeZone(identifier: StringLiterals.Register.Normal.DatePicker.KoreaTimeZone)
     }
-    
-    // RxSwift
-    private let disposeBag = DisposeBag()
     
     // MARK: - Components
     
@@ -56,7 +54,7 @@ final class TestVC: UIViewController{
         super.viewDidLoad()
         
         setUI()
-        VMbind()
+        bindUI()
         register()
         delegate()
         bindActions()
@@ -95,43 +93,13 @@ final class TestVC: UIViewController{
             .disposed(by: disposeBag)
     }
     
-    // MARK: - Actions
-    
-    private func bindActions() {
-        rootView.infoWithRatingView.starImageViews
-            .enumerated().forEach { index, imageView in
-                let tapGesture = UITapGestureRecognizer()
-                imageView.addGestureRecognizer(tapGesture)
-                tapGesture.rx.event
-                    .bind(with: self, onNext: { owner, recognizer in
-                        let location = recognizer.location(in: imageView)
-                        let rating = Float(index) + (location.x > imageView.frame.width / 2 ? 1 : 0.5)
-                        owner.viewModel.starRating.accept(rating)
-                    })
-                    .disposed(by: disposeBag)
-            }
-        
-        let panGesture = UIPanGestureRecognizer()
-        rootView.infoWithRatingView.starRatingStackView.addGestureRecognizer(panGesture)
-        panGesture.rx.event
-            .bind(with: self, onNext: { owner, recognizer in
-                let location = recognizer.location(in: owner.rootView.infoWithRatingView.starRatingStackView)
-                let rawRating = (Float(location.x / owner.rootView.infoWithRatingView.starRatingStackView.frame.width * 5) * 2)
-                    .rounded(.toNearestOrAwayFromZero) / 2
-                let rating = min(max(rawRating, owner.minStarRating), owner.maxStarRating)
-                owner.viewModel.starRating.accept(rating)
-            })
-            .disposed(by: disposeBag)
-    }
-    
-    // MARK: - API
-    
-    private func VMbind() {
+    private func bindUI() {
         let readStatusButtonTap = Observable.merge(
             rootView.readStatusView.readStatusButtons.map {button in
                 button.rx.tap.map { button.status }
             })
         let platformCollectionViewHeight = rootView.novelSummaryView.platformCollectionView.rx.observe(CGSize.self, "contentSize")
+        
         let input = RegisterViewModel.Input(scrollContentOffset: rootView.pageScrollView.rx.contentOffset,
                                             backButtonTap: backButton.rx.tap,
                                             registerButtonTap:  rootView.registerButton.rx.tap,
@@ -218,12 +186,12 @@ final class TestVC: UIViewController{
         output.readStatus
             .drive(with: self, onNext: { owner, status in
                 owner.rootView.readStatusView.updateReadStatusButton(status: status)
-                owner.rootView.customDatePicker.updateDatePickerTitle(status: status)
                 
                 if status == .WISH {
                     owner.showReadDateView(false)
                 } else {
                     owner.showReadDateView(true)
+                    owner.rootView.customDatePicker.updateDatePickerTitle(status: status)
                     owner.rootView.readDateView.updateDatePickerButton(status)
                 }
             })
@@ -305,7 +273,48 @@ final class TestVC: UIViewController{
             .disposed(by: disposeBag)
     }
     
+    // MARK: - Actions
+    
+    private func bindActions() {
+        rootView.infoWithRatingView.starImageViews
+            .enumerated().forEach { index, imageView in
+                let tapGesture = UITapGestureRecognizer()
+                imageView.addGestureRecognizer(tapGesture)
+                tapGesture.rx.event
+                    .bind(with: self, onNext: { owner, recognizer in
+                        let location = recognizer.location(in: imageView)
+                        let rating = Float(index) + (location.x > imageView.frame.width / 2 ? 1 : 0.5)
+                        owner.viewModel.starRating.accept(rating)
+                    })
+                    .disposed(by: disposeBag)
+            }
+        
+        let panGesture = UIPanGestureRecognizer()
+        rootView.infoWithRatingView.starRatingStackView.addGestureRecognizer(panGesture)
+        panGesture.rx.event
+            .bind(with: self, onNext: { owner, recognizer in
+                let location = recognizer.location(in: owner.rootView.infoWithRatingView.starRatingStackView)
+                let rawRating = (Float(location.x / owner.rootView.infoWithRatingView.starRatingStackView.frame.width * 5) * 2)
+                    .rounded(.toNearestOrAwayFromZero) / 2
+                let rating = min(max(rawRating, owner.minStarRating), owner.maxStarRating)
+                owner.viewModel.starRating.accept(rating)
+            })
+            .disposed(by: disposeBag)
+    }
+    
     // MARK: - Custom Method
+    
+    private func showDatePickerButton(_ isShow: Bool) {
+        rootView.readDateView.datePickerButton.isHidden = !isShow
+    }
+    
+    private func showCustomDatePickerView(_ isShow: Bool) {
+        rootView.customDatePicker.isHidden = !isShow
+    }
+    
+    private func showReadDateView(_ isShow: Bool) {
+        rootView.readDateView.isHidden = !isShow
+    }
     
     private func updateNavigationBarStyle(offset: CGFloat) {
         if offset > 0 {
@@ -323,18 +332,6 @@ final class TestVC: UIViewController{
             navigationItem.title = ""
             rootView.divider.isHidden = true
         }
-    }
-    
-    private func showDatePickerButton(_ isShow: Bool) {
-        rootView.readDateView.datePickerButton.isHidden = !isShow
-    }
-    
-    private func showCustomDatePickerView(_ isShow: Bool) {
-        rootView.customDatePicker.isHidden = !isShow
-    }
-    
-    private func showReadDateView(_ isShow: Bool) {
-        rootView.readDateView.isHidden = !isShow
     }
     
     private func updateNavigationBarStyleWithDatePicker(_ isShow: Bool) {
