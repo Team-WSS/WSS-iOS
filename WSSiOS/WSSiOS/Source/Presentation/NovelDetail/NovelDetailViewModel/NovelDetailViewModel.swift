@@ -12,7 +12,14 @@ import RxCocoa
 
 final class NovelDetailViewModel: ViewModelType {
     
+    private let userNovelRepository: UserNovelRepository
+    
+    init(userNovelRepository: UserNovelRepository) {
+        self.userNovelRepository = userNovelRepository
+    }
+    
     struct Input {
+        let viewWillAppearEvent: Observable<Int>
         let novelSettingButtonDidTapEvent: Observable<Void>
         let viewDidTapEvent: Observable<UITapGestureRecognizer>
         let memoButtonDidTapEvent: Observable<Void>
@@ -22,12 +29,25 @@ final class NovelDetailViewModel: ViewModelType {
     }
     
     struct Output {
+        let userNovelDetail = PublishRelay<UserNovelDetail>()
         let memoSettingButtonViewIsHidden = BehaviorRelay<Bool>(value: true)
         let selectedMenu = BehaviorRelay<SelectedMenu>(value: .memo)
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
+        
+        input.viewWillAppearEvent
+            .flatMapLatest { userNovelId in
+                self.userNovelRepository.getUserNovel(userNovelId: userNovelId)
+                    .observe(on: MainScheduler.instance)
+            }
+            .subscribe(with: self, onNext: { owner, data in
+                output.userNovelDetail.accept(data)
+            }, onError: { owner, error in
+                print(error)
+            })
+            .disposed(by: disposeBag)
         
         input.novelSettingButtonDidTapEvent
             .subscribe(with: self, onNext: { owner, _ in
@@ -70,5 +90,10 @@ final class NovelDetailViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         return output
+    }
+    
+    private func getUserNovel(userNovelId: Int) -> Observable<UserNovelDetail> {
+        userNovelRepository.getUserNovel(userNovelId: userNovelId)
+            .observe(on: MainScheduler.instance)
     }
 }

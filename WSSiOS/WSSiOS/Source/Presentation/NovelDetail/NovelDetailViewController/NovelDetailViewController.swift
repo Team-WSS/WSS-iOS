@@ -21,7 +21,7 @@ final class NovelDetailViewController: UIViewController {
     
     //MARK: - Properties
 
-    private let repository: UserNovelRepository
+    private let novelDetailViewModel: NovelDetailViewModel
     private let disposeBag = DisposeBag()
     private let userNovelDetail = BehaviorRelay<UserNovelDetail?>(value: nil)
     private let memoList = BehaviorRelay<[UserNovelMemo]>(value: [])
@@ -36,7 +36,7 @@ final class NovelDetailViewController: UIViewController {
     private var novelAuthor = ""
     private var novelImage = ""
     
-    private let novelDetailViewModel = NovelDetailViewModel()
+    private let viewWillAppearEvent = PublishSubject<Int>()
     
     //MARK: - Components
 
@@ -46,8 +46,8 @@ final class NovelDetailViewController: UIViewController {
     
     //MARK: - Life Cycle
     
-    init(repository: UserNovelRepository, userNovelId: Int, selectedMenu: SelectedMenu = .memo) {
-        self.repository = repository
+    init(viewModel: NovelDetailViewModel, userNovelId: Int, selectedMenu: SelectedMenu = .memo) {
+        self.novelDetailViewModel = viewModel
         self.userNovelId = userNovelId
         self.selectedMenu.accept(selectedMenu)
         super.init(nibName: nil, bundle: nil)
@@ -66,7 +66,7 @@ final class NovelDetailViewController: UIViewController {
         
         hideTabBar()
         
-        getUserNovel()
+        viewWillAppearEvent.onNext(self.userNovelId)
         updateNavigationBarStyle(offset: self.rootView.scrollView.contentOffset.y)
     }
     
@@ -157,6 +157,7 @@ final class NovelDetailViewController: UIViewController {
     
     private func bindViewModel() {
         let input = NovelDetailViewModel.Input(
+            viewWillAppearEvent: viewWillAppearEvent.asObservable(),
             novelSettingButtonDidTapEvent: novelSettingButton.rx.tap.asObservable(),
             viewDidTapEvent: rootView.novelDetailMemoSettingButtonView.rx.tapGesture().asObservable(),
             memoButtonDidTapEvent: rootView.novelDetailTabView.memoButton.rx.tap.asObservable(),
@@ -167,21 +168,30 @@ final class NovelDetailViewController: UIViewController {
         
         let output = self.novelDetailViewModel.transform(from: input, disposeBag: self.disposeBag)
         
-        output.memoSettingButtonViewIsHidden.subscribe(with: self, onNext: { owner, isHidden in
-            owner.rootView.novelDetailMemoSettingButtonView.isHidden = isHidden
-        }).disposed(by: disposeBag)
+        output.userNovelDetail
+            .subscribe(with: self, onNext: { owner, data in
+                owner.bindData(data)
+            })
+            .disposed(by: disposeBag)
         
-        output.selectedMenu.subscribe(with: self, onNext: { owner, selectedMenu in
-            switch selectedMenu {
-            case .memo:
-                owner.rootView.createMemoButton.isHidden = false
-                owner.rootView.changeCurrentMenu(menu: .memo)
-            case .info:
-                owner.rootView.createMemoButton.isHidden = true
-                owner.rootView.changeCurrentMenu(menu: .info)
-            }
-        })
-        .disposed(by: disposeBag)
+        output.memoSettingButtonViewIsHidden
+            .subscribe(with: self, onNext: { owner, isHidden in
+                owner.rootView.novelDetailMemoSettingButtonView.isHidden = isHidden
+            })
+            .disposed(by: disposeBag)
+        
+        output.selectedMenu
+            .subscribe(with: self, onNext: { owner, selectedMenu in
+                switch selectedMenu {
+                case .memo:
+                    owner.rootView.createMemoButton.isHidden = false
+                    owner.rootView.changeCurrentMenu(menu: .memo)
+                case .info:
+                    owner.rootView.createMemoButton.isHidden = true
+                    owner.rootView.changeCurrentMenu(menu: .info)
+                }
+            })
+            .disposed(by: disposeBag)
     }
     
     private func bindUI() {
@@ -292,18 +302,6 @@ final class NovelDetailViewController: UIViewController {
                 )
             })
             .disposed(by: disposeBag)
-    }
-    
-    //MARK: - API
-    
-    private func getUserNovel() {
-        repository.getUserNovel(userNovelId: self.userNovelId)
-            .observe(on: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, data in
-                owner.bindData(data)
-            },onError: { owner, error in
-                print(error)
-            }).disposed(by: disposeBag)
     }
     
     //MARK: - Custom Method
