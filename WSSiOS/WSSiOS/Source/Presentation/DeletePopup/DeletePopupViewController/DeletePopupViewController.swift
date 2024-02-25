@@ -14,12 +14,9 @@ final class DeletePopupViewController: UIViewController {
 
     //MARK: - Properties
 
+    private let deletePopupViewModel: DeletePopupViewModel
     private let disposeBag = DisposeBag()
-    private let userNovelRepository: UserNovelRepository?
-    private let memoRepository: MemoRepository?
     private var popupStatus: PopupStatus
-    private let userNovelId: Int?
-    private let memoId: Int?
     
     //MARK: - Components
     
@@ -27,12 +24,9 @@ final class DeletePopupViewController: UIViewController {
     
     //MARK: - Life Cycle
     
-    init(userNovelRepository: UserNovelRepository? = nil, memoRepository: MemoRepository? = nil, popupStatus: PopupStatus, userNovelId: Int? = nil, memoId: Int? = nil) {
-        self.userNovelRepository = userNovelRepository
-        self.memoRepository = memoRepository
+    init(viewModel: DeletePopupViewModel, popupStatus: PopupStatus) {
+        self.deletePopupViewModel = viewModel
         self.popupStatus = popupStatus
-        self.userNovelId = userNovelId
-        self.memoId = memoId
         rootView = DeletePopupView(self.popupStatus)
         super.init(nibName: nil, bundle: nil)
     }
@@ -48,60 +42,50 @@ final class DeletePopupViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        bindAction()
+        bindViewModel()
+        bindNavigation()
+    }
+    
+    //MARK: - Bind
+    
+    private func bindViewModel() {
+        let input = DeletePopupViewModel.Input(
+            popupStatus: self.popupStatus,
+            deleteButtonDidTapEvent: rootView.deletePopupContentView.deleteButton.rx.tap.throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance).asObservable()
+        )
+
+        let output = self.deletePopupViewModel.transform(from: input, disposeBag: self.disposeBag)
+
+        output.canceledEdit
+            .subscribe(with: self, onNext: { owner, _ in
+                NotificationCenter.default.post(name: NSNotification.Name("CanceledEdit"), object: nil)
+                owner.dismiss(animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        output.deletedMemo
+            .subscribe(with: self, onNext: { owner, _ in
+                NotificationCenter.default.post(name: NSNotification.Name("DeletedMemo"), object: nil)
+                owner.dismiss(animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        output.deletedNovel
+            .subscribe(with: self, onNext: { owner, _ in
+                NotificationCenter.default.post(name: NSNotification.Name("DeletedNovel"), object: nil)
+                owner.dismiss(animated: true)
+            })
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Actions
     
-    private func bindAction() {
+    private func bindNavigation() {
         rootView.deletePopupContentView.cancelButton.rx.tap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 owner.dismiss(animated: true)
             })
             .disposed(by: disposeBag)
-        
-        rootView.deletePopupContentView.deleteButton.rx.tap
-            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, _ in
-                switch owner.popupStatus {
-                case .memoEditCancel:
-                    NotificationCenter.default.post(name: NSNotification.Name("CanceledEdit"), object: nil)
-                    owner.dismiss(animated: true)
-                case .memoDelete:
-                    owner.deleteMemo()
-                case .novelDelete:
-                    owner.deleteUserNovel()
-                }
-            })
-            .disposed(by: disposeBag)
-    }
-    
-    //MARK: - API
-    
-    private func deleteUserNovel() {
-        if let userNovelRepository = userNovelRepository, let userNovelId = self.userNovelId {
-            userNovelRepository.deleteUserNovel(userNovelId: userNovelId)
-                .observe(on: MainScheduler.instance)
-                .subscribe(with: self, onNext: { owner, data in
-                    NotificationCenter.default.post(name: NSNotification.Name("DeletedNovel"), object: nil)
-                    owner.dismiss(animated: true)
-                },onError: { owner, error in
-                    print(error)
-                }).disposed(by: disposeBag)
-        }
-    }
-    
-    private func deleteMemo() {
-        if let memoRepository = memoRepository, let memoId = self.memoId {
-            memoRepository.deleteMemo(memoId: memoId)
-                .observe(on: MainScheduler.instance)
-                .subscribe(with: self, onNext: { owner, data in
-                    NotificationCenter.default.post(name: NSNotification.Name("DeletedMemo"), object: nil)
-                    owner.dismiss(animated: true)
-                },onError: { owner, error in
-                    print(error)
-                }).disposed(by: disposeBag)
-        }
     }
 }

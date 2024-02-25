@@ -12,15 +12,90 @@ import RxCocoa
 
 final class DeletePopupViewModel: ViewModelType {
 
+    //MARK: - Properties
+
+    private let userNovelRepository: UserNovelRepository?
+    private let memoRepository: MemoRepository?
+    private let userNovelId: Int?
+    private let memoId: Int?
+    
+    //MARK: - Life Cycle
+
+    init(userNovelRepository: UserNovelRepository? = nil, memoRepository: MemoRepository? = nil, userNovelId: Int? = nil, memoId: Int? = nil) {
+        self.userNovelRepository = userNovelRepository
+        self.memoRepository = memoRepository
+        self.userNovelId = userNovelId
+        self.memoId = memoId
+    }
+
     struct Input {
+        let popupStatus: PopupStatus
+        let deleteButtonDidTapEvent: Observable<Void>
+        
     }
 
     struct Output {
+        let canceledEdit = PublishRelay<Bool>()
+        let deletedMemo = PublishRelay<Bool>()
+        let deletedNovel = PublishRelay<Bool>()
     }
 
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
-
+        
+        switch input.popupStatus {
+        case .memoEditCancel:
+            input.deleteButtonDidTapEvent
+                .subscribe(with: self, onNext: { owner, _ in
+                    output.canceledEdit.accept(true)
+                }, onError: { owner, error in
+                    print(error)
+                })
+                .disposed(by: disposeBag)
+        case .memoDelete:
+            input.deleteButtonDidTapEvent
+                .flatMapLatest {
+                    self.deleteMemo()
+                }
+                .subscribe(with: self, onNext: { owner, _ in
+                    output.deletedMemo.accept(true)
+                }, onError: { owner, error in
+                    print(error)
+                })
+                .disposed(by: disposeBag)
+        case .novelDelete:
+            input.deleteButtonDidTapEvent
+                .flatMapLatest {
+                    self.deleteUserNovel()
+                }
+                .subscribe(with: self, onNext: { owner, _ in
+                    output.deletedNovel.accept(true)
+                }, onError: { owner, error in
+                    print(error)
+                })
+                .disposed(by: disposeBag)
+        }
+        
         return output
+    }
+    
+    //MARK: - API
+    
+    private func deleteUserNovel() -> Observable<Void> {
+        guard let userNovelRepository = self.userNovelRepository, let userNovelId = self.userNovelId else {
+            return Observable.empty()
+        }
+
+        return userNovelRepository.deleteUserNovel(userNovelId: userNovelId)
+            .observe(on: MainScheduler.instance)
+    }
+    
+    private func deleteMemo() -> Observable<Void> {
+        guard let memoRepository = self.memoRepository, let memoId = self.memoId else {
+            return Observable.empty()
+        }
+
+        return memoRepository.deleteMemo(memoId: memoId)
+            .observe(on: MainScheduler.instance)
     }
 }
