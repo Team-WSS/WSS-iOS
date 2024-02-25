@@ -187,6 +187,7 @@
 		CD3E5AA22B55190400C0A659 /* UserNovelResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5AA12B55190400C0A659 /* UserNovelResult.swift */; };
 		CD3E5AAB2B56173C00C0A659 /* NovelDetailMemoSettingButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5AAA2B56173C00C0A659 /* NovelDetailMemoSettingButtonView.swift */; };
 		CD3E5AB32B565DFF00C0A659 /* NovelMemoResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5AB22B565DFF00C0A659 /* NovelMemoResult.swift */; };
+		CD6613782B8B313700B90B2B /* DeletePopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6613772B8B313700B90B2B /* DeletePopupViewModel.swift */; };
 		CDE596D62B57708D00D99DA1 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D52B57708D00D99DA1 /* UIViewController+.swift */; };
 		CDE596D82B5770CE00D99DA1 /* WSSToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D72B5770CE00D99DA1 /* WSSToastView.swift */; };
 		CDE596DA2B57C4BE00D99DA1 /* UITextView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D92B57C4BE00D99DA1 /* UITextView+.swift */; };
@@ -357,6 +358,7 @@
 		CD3E5AA12B55190400C0A659 /* UserNovelResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNovelResult.swift; sourceTree = "<group>"; };
 		CD3E5AAA2B56173C00C0A659 /* NovelDetailMemoSettingButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailMemoSettingButtonView.swift; sourceTree = "<group>"; };
 		CD3E5AB22B565DFF00C0A659 /* NovelMemoResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelMemoResult.swift; sourceTree = "<group>"; };
+		CD6613772B8B313700B90B2B /* DeletePopupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletePopupViewModel.swift; sourceTree = "<group>"; };
 		CDE596D52B57708D00D99DA1 /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
 		CDE596D72B5770CE00D99DA1 /* WSSToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSToastView.swift; sourceTree = "<group>"; };
 		CDE596D92B57C4BE00D99DA1 /* UITextView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+.swift"; sourceTree = "<group>"; };
@@ -1149,6 +1151,7 @@
 		CD3E5A912B55097600C0A659 /* DeletePopup */ = {
 			isa = PBXGroup;
 			children = (
+				CD6613762B8B312800B90B2B /* DeletePopupViewModel */,
 				CD3E5A932B55098400C0A659 /* DeletePopupViewController */,
 				CD3E5A922B55097D00C0A659 /* DeletePopupView */,
 				CD3E5A952B55099E00C0A659 /* DeletePopupView.swift */,
@@ -1178,6 +1181,14 @@
 				CD3E5A972B5509A500C0A659 /* DeletePopupContentView.swift */,
 			);
 			path = DeletePopupAssistantView;
+			sourceTree = "<group>";
+		};
+		CD6613762B8B312800B90B2B /* DeletePopupViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				CD6613772B8B313700B90B2B /* DeletePopupViewModel.swift */,
+			);
+			path = DeletePopupViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1318,6 +1329,7 @@
 				CD39F2B62B4FE0E200B73A5C /* NovelDetailView.swift in Sources */,
 				CD39F2E42B50F23B00B73A5C /* NovelDetailInfoPlatformView.swift in Sources */,
 				CD39F2BD2B4FE98500B73A5C /* NovelDetailHeaderView.swift in Sources */,
+				CD6613782B8B313700B90B2B /* DeletePopupViewModel.swift in Sources */,
 				CD39F2E62B50F2E900B73A5C /* NovelDetailInfoPlatformCollectionViewCell.swift in Sources */,
 				CDE596D82B5770CE00D99DA1 /* WSSToastView.swift in Sources */,
 				A1A1F9D42B4873B500705F44 /* SearchEmptyView.swift in Sources */,
