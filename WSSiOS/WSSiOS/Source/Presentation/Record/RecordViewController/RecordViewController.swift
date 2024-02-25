@@ -17,6 +17,7 @@ final class RecordViewController: UIViewController {
     
     private let recordViewModel: RecordViewModel
     private let disposeBag = DisposeBag()
+    private let viewWillAppearEvent = PublishSubject<Void>()
     
     //MARK: - Components
     
@@ -45,12 +46,7 @@ final class RecordViewController: UIViewController {
         preparationSetNavigationBar(title: StringLiterals.Navigation.Title.record,
                                     left: nil,
                                     right: nil)
-        
-        recordViewModel.getDataFromAPI(
-            id: recordViewModel.lastMemoId,
-            sortType: recordViewModel.sortType
-        )
-        
+        viewWillAppearEvent.onNext(())
     }
     
     override func viewDidLoad() {
@@ -96,11 +92,19 @@ final class RecordViewController: UIViewController {
 
 extension RecordViewController {
     
-    //TODO: - output 로직 수정 필요
-    // viewdidload될때 함께 UI적용되는 이슈
-    
     private func bindViewModel() {
-        recordViewModel.recordMemoList
+        let input = RecordViewModel.Input(
+            viewWillAppearEvent: viewWillAppearEvent.asObservable(),
+            sortTypeButtonTapped: rootView.headerView.headerAlignmentButton.rx.tap,
+            newestButtonTapped: rootView.alignmentView.libraryNewestButton.rx.tap,
+            oldestButtonTapped: rootView.alignmentView.libraryOldesttButton.rx.tap,
+            recordCellSelected: rootView.recordTableView.rx.itemSelected,
+            emptyButtonTapped: emptyView.recordButton.rx.tap
+        )
+        
+        let output = recordViewModel.transform(from: input, disposeBag: disposeBag)
+        
+        output.recordMemoList
             .bind(to: rootView.recordTableView.rx.items(
                 cellIdentifier: RecordTableViewCell.cellIdentifier,
                 cellType: RecordTableViewCell.self)) { row, element, cell in
@@ -108,7 +112,7 @@ extension RecordViewController {
                 }
                 .disposed(by: disposeBag)
         
-        recordViewModel.recordMemoCount
+        output.recordMemoCount
             .asDriver()
             .drive(with: self, onNext: { owner, value in
                 owner.rootView.headerView.recordCountLabel.text = "\(value)개"
@@ -124,26 +128,9 @@ extension RecordViewController {
             })
             .disposed(by: disposeBag)
         
-        let input = RecordViewModel.Input(
-            sortTypeButtonTapped: self.rootView.headerView.headerAlignmentButton.rx.tap,
-            newestButtonTapped: self.rootView.alignmentView.libraryNewestButton.rx.tap,
-            oldestButtonTapped: self.rootView.alignmentView.libraryOldesttButton.rx.tap,
-            recordCellSelected: self.rootView.recordTableView.rx.itemSelected,
-            emptyButtonTapped: self.emptyView.recordButton.rx.tap
-        )
-        
-        let output = self.recordViewModel.transform(from: input, disposeBag: disposeBag)
-        
         output.showAlignmentView
             .bind(with: self, onNext: { owner, _ in
                 owner.rootView.alignmentView.isHidden.toggle()
-            })
-            .disposed(by: disposeBag)
-        
-        output.alignOldest
-            .bind(with: self, onNext: { owner, _ in
-                owner.rootView.headerView.headerAlignmentButton.setTitle(StringLiterals.Alignment.oldest.title, for: .normal)
-                owner.rootView.alignmentView.isHidden = true
             })
             .disposed(by: disposeBag)
         
@@ -154,9 +141,16 @@ extension RecordViewController {
             })
             .disposed(by: disposeBag)
         
+        output.alignOldest
+            .bind(with: self, onNext: { owner, _ in
+                owner.rootView.headerView.headerAlignmentButton.setTitle(StringLiterals.Alignment.oldest.title, for: .normal)
+                owner.rootView.alignmentView.isHidden = true
+            })
+            .disposed(by: disposeBag)
+        
         output.navigateToMemoRead
             .bind(with: self, onNext: { owner, indexPath in
-                owner.pushToMemoReadViewController(memoId: owner.recordViewModel.recordMemoList.value[indexPath.row].id)
+                owner.pushToMemoReadViewController(memoId: output.recordMemoList.value[indexPath.row].id)
             })
             .disposed(by: disposeBag)
         

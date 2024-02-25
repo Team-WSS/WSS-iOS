@@ -17,15 +17,13 @@ final class RecordViewModel: ViewModelType {
     private let memoRepository: DefaultMemoRepository
     private let disposeBag = DisposeBag()
     
-    var recordMemoList = BehaviorRelay<[RecordMemo]>(value: [])
-    var recordMemoCount = BehaviorRelay<Int>(value: 0)
-    
-    var lastMemoId = StringLiterals.Alignment.newest.lastId
-    var sortType = StringLiterals.Alignment.newest.sortType
+    private var lastMemoId = StringLiterals.Alignment.newest.lastId
+    private var sortType = StringLiterals.Alignment.newest.sortType
     
     // MARK: - Inputs
     
     struct Input {
+        let viewWillAppearEvent: Observable<Void>
         let sortTypeButtonTapped: ControlEvent<Void>
         let newestButtonTapped: ControlEvent<Void>
         let oldestButtonTapped: ControlEvent<Void>
@@ -36,6 +34,9 @@ final class RecordViewModel: ViewModelType {
     //MARK: - Outputs
     
     struct Output {
+        var recordMemoList = BehaviorRelay<[RecordMemo]>(value: [])
+        var recordMemoCount = BehaviorRelay<Int>(value: 0)
+        
         let showAlignmentView = BehaviorRelay<Bool>(value: false)
         let alignNewest = BehaviorRelay<Bool>(value: false)
         let alignOldest = BehaviorRelay<Bool>(value: false)
@@ -51,14 +52,9 @@ final class RecordViewModel: ViewModelType {
     
     //MARK: - API
     
-    func getDataFromAPI(id: Int,
-                        sortType: String) {
+    private func getDataFromAPI(id: Int, sortType: String) -> Observable<RecordMemos> {
         memoRepository.getRecordMemos(lastId: id, sort: sortType)
-            .subscribe(with: self, onNext: { owner, memo in
-                owner.recordMemoCount.accept(memo.memoCount)
-                owner.recordMemoList.accept(memo.memos)
-            })
-            .disposed(by: disposeBag)
+            .observe(on: MainScheduler.instance)
     }
 }
 
@@ -68,7 +64,17 @@ extension RecordViewModel {
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
-
+        
+        input.viewWillAppearEvent
+            .flatMapLatest {
+                self.getDataFromAPI(id: self.lastMemoId, sortType: self.sortType)
+            }
+            .subscribe(with: self, onNext: { owner, memo in
+                output.recordMemoCount.accept(memo.memoCount)
+                output.recordMemoList.accept(memo.memos)
+            })
+            .disposed(by: disposeBag)
+        
         input.sortTypeButtonTapped
             .subscribe(with: self, onNext: { owner, _ in
                 output.showAlignmentView.accept(true)
@@ -76,19 +82,27 @@ extension RecordViewModel {
             .disposed(by: disposeBag)
         
         input.newestButtonTapped
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.sortType = StringLiterals.Alignment.newest.sortType
-                owner.lastMemoId = StringLiterals.Alignment.newest.lastId
-                owner.getDataFromAPI(id: owner.lastMemoId, sortType: owner.sortType)
+            .flatMapLatest {
+                self.lastMemoId = StringLiterals.Alignment.newest.lastId
+                self.sortType = StringLiterals.Alignment.newest.sortType
+                return self.getDataFromAPI(id: self.lastMemoId, sortType: self.sortType)
+            }
+            .subscribe(with: self, onNext: { owner, memo in
+                output.recordMemoCount.accept(memo.memoCount)
+                output.recordMemoList.accept(memo.memos)
                 output.alignNewest.accept(true)
             })
             .disposed(by: disposeBag)
         
         input.oldestButtonTapped
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.sortType = StringLiterals.Alignment.oldest.sortType
-                owner.lastMemoId = StringLiterals.Alignment.oldest.lastId
-                owner.getDataFromAPI(id: owner.lastMemoId, sortType: owner.sortType)
+            .flatMapLatest {
+                self.lastMemoId = StringLiterals.Alignment.oldest.lastId
+                self.sortType = StringLiterals.Alignment.oldest.sortType
+                return self.getDataFromAPI(id: self.lastMemoId, sortType: self.sortType)
+            }
+            .subscribe(with: self, onNext: { owner, memo in
+                output.recordMemoCount.accept(memo.memoCount)
+                output.recordMemoList.accept(memo.memos)
                 output.alignOldest.accept(true)
             })
             .disposed(by: disposeBag)
