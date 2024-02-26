@@ -220,10 +220,9 @@ final class RegisterNormalViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.platformList
-            .asObservable()
-            .bind(to: rootView.novelSummaryView.platformCollectionView.rx.items(
+            .drive(rootView.novelSummaryView.platformCollectionView.rx.items(
                 cellIdentifier: NovelDetailInfoPlatformCollectionViewCell.cellIdentifier,
-                cellType: NovelDetailInfoPlatformCollectionViewCell.self)) { item, element, cell in
+                cellType: NovelDetailInfoPlatformCollectionViewCell.self)) { _, element, cell in
                     cell.bindData(platform: element.platformName)
                 }
                 .disposed(by: disposeBag)

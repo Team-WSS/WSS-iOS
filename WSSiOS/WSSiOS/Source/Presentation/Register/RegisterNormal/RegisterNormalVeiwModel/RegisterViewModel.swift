@@ -9,6 +9,7 @@ import Foundation
 
 import RxSwift
 import RxCocoa
+import Then
 
 final class RegisterViewModel: ViewModelType {
     
@@ -116,7 +117,7 @@ final class RegisterViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.readStatusButtonTap
-            .bind(with: self, onNext: {owner, status in
+            .bind(with: self, onNext: { owner, status in
                 owner.readStatus.accept(status)
                 
                 if status == .FINISH || status == .READING {
@@ -128,7 +129,7 @@ final class RegisterViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.readDateToggleButtonTap
-            .bind(with: self, onNext: {owner, _ in
+            .bind(with: self, onNext: { owner, _ in
                 owner.isDateExist.accept(!owner.isDateExist.value)
             })
             .disposed(by: disposeBag)
@@ -177,7 +178,7 @@ final class RegisterViewModel: ViewModelType {
                 if (isStart && selectedDate >= endDate) || (!isStart && selectedDate <= startDate) {
                     owner.internalStartDate.accept(selectedDate)
                     owner.internalEndDate.accept(selectedDate)
-                } else  {
+                } else {
                     isStart ? owner.internalStartDate.accept(selectedDate) :
                               owner.internalEndDate.accept(selectedDate)
                 }

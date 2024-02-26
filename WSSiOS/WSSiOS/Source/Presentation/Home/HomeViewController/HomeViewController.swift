@@ -114,7 +114,7 @@ final class HomeViewController: UIViewController {
         rootView.sosopickView.sosoPickCollectionView
             .rx
             .itemSelected
-            .subscribe(onNext:{ indexPath in
+            .subscribe(onNext: { indexPath in
                 let novelID = self.sosopickListRelay.value[indexPath.row].novelId
                 self.pushToRegisterNormalViewController(novelId: novelID)
                 self.hideTabBar()
