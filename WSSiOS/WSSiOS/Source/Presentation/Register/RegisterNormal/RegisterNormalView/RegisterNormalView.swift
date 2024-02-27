@@ -155,9 +155,7 @@ final class RegisterNormalView: UIView {
                                              title: newData.novelTitle,
                                              author: newData.novelAuthor)
         novelSummaryView.bindData(plot: newData.novelDescription,
-                                           genre: newData.novelGenre,
-                                           platforms: newData.platforms)
-        novelSummaryView.platformCollectionView.reloadData()
+                                           genre: newData.novelGenre)
     }
     
     func bindUserData(_ userData: EditNovelResult) {
@@ -166,8 +164,15 @@ final class RegisterNormalView: UIView {
                                              title: userData.userNovelTitle,
                                              author: userData.userNovelAuthor)
         novelSummaryView.bindData(plot: userData.userNovelDescription,
-                                           genre: userData.userNovelGenre,
-                                           platforms: userData.platforms)
-        novelSummaryView.platformCollectionView.reloadData()
+                                           genre: userData.userNovelGenre)
+    }
+    
+    func bindData(_ data: NovelBasicData) {
+        bannerImageView.bindData(data.novelImg)
+        infoWithRatingView.bindData(coverImage: data.novelImg,
+                                             title: data.novelTitle,
+                                             author: data.novelAuthor)
+        novelSummaryView.bindData(plot: data.novelDescription,
+                                           genre: data.novelGenre)
     }
 }
