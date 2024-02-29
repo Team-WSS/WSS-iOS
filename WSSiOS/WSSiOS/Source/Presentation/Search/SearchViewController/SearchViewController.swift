@@ -79,12 +79,6 @@ final class SearchViewController: UIViewController {
             SearchCollectionViewCell.self,
             forCellWithReuseIdentifier: SearchCollectionViewCell.cellIdentifier)
     }
-
-    //MARK: - Custom Method
-    
-    private func showSearchBarAndFocus() {
-        rootView.headerView.searchBar.becomeFirstResponder()
-    }
     
     private func bindViewModel() {
         let input = SearchViewModel.Input(
@@ -141,5 +135,9 @@ extension SearchViewController: UISearchBarDelegate {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
         self.view.endEditing(true)
+    }
+    
+    private func showSearchBarAndFocus() {
+        rootView.headerView.searchBar.becomeFirstResponder()
     }
 }
