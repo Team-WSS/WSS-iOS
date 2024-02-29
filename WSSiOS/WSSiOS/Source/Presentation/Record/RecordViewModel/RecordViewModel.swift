@@ -37,11 +37,11 @@ final class RecordViewModel: ViewModelType {
         var recordMemoList = BehaviorRelay<[RecordMemo]>(value: [])
         var recordMemoCount = BehaviorRelay<Int>(value: 0)
         
-        let showAlignmentView = BehaviorRelay<Bool>(value: false)
-        let alignNewest = BehaviorRelay<Bool>(value: false)
-        let alignOldest = BehaviorRelay<Bool>(value: false)
+        let showAlignmentView = PublishRelay<Bool>()
+        let alignNewest = PublishRelay<Bool>()
+        let alignOldest = PublishRelay<Bool>()
         let navigateToMemoRead = PublishRelay<IndexPath>()
-        let navigateEmptyView = BehaviorRelay<Bool>(value: false)
+        let navigateEmptyView = PublishRelay<Bool>()
     }
     
     //MARK: - init
