@@ -58,11 +58,13 @@
 		2CD229572B42EA75005400BE /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD229562B42EA75005400BE /* UIColor+.swift */; };
 		2CE078182B80894B0028F2B0 /* ViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CE078172B80894B0028F2B0 /* ViewModelType.swift */; };
 		2CFE04332B66A45A0048F77A /* UICollectionViewCell+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CFE04322B66A45A0048F77A /* UICollectionViewCell+.swift */; };
+		3916EC862B89B42C007835B5 /* RxGesture in Frameworks */ = {isa = PBXBuildFile; productRef = 3916EC852B89B42C007835B5 /* RxGesture */; };
+		3916EC892B89D23D007835B5 /* ModuleFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3916EC882B89D23D007835B5 /* ModuleFactory.swift */; };
 		392A29232B4E89FD0065EB97 /* RegisterNormalNovelInfoWithRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392A29222B4E89FD0065EB97 /* RegisterNormalNovelInfoWithRatingView.swift */; };
 		392A29272B4E96F30065EB97 /* UILabel+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392A29262B4E96F30065EB97 /* UILabel+.swift */; };
 		392A292F2B4F07FF0065EB97 /* RegisterNormalReadDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392A292E2B4F07FF0065EB97 /* RegisterNormalReadDateView.swift */; };
-		3999BFE92B4E6C3500984832 /* RegisterNormalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3999BFE82B4E6C3500984832 /* RegisterNormalViewController.swift */; };
-		3999BFEB2B4E6C4400984832 /* RegisterNormalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3999BFEA2B4E6C4400984832 /* RegisterNormalViewModel.swift */; };
+		3992FA562B81E2A40079C8B8 /* RegisterNormalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3992FA552B81E2A40079C8B8 /* RegisterNormalViewController.swift */; };
+		3999BFEB2B4E6C4400984832 /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3999BFEA2B4E6C4400984832 /* RegisterViewModel.swift */; };
 		3999BFEE2B4E6CA000984832 /* UIImageViewAlignedSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 3999BFED2B4E6CA000984832 /* UIImageViewAlignedSwift */; };
 		3999BFF02B4E6FA800984832 /* RegisterNormalBannerImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3999BFEF2B4E6FA800984832 /* RegisterNormalBannerImageView.swift */; };
 		399F29302B565D8000BBC12B /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 399F292F2B565D8000BBC12B /* Config.xcconfig */; };
@@ -239,11 +241,12 @@
 		2CD229562B42EA75005400BE /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		2CE078172B80894B0028F2B0 /* ViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
 		2CFE04322B66A45A0048F77A /* UICollectionViewCell+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+.swift"; sourceTree = "<group>"; };
+		3916EC882B89D23D007835B5 /* ModuleFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleFactory.swift; sourceTree = "<group>"; };
 		392A29222B4E89FD0065EB97 /* RegisterNormalNovelInfoWithRatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalNovelInfoWithRatingView.swift; sourceTree = "<group>"; };
 		392A29262B4E96F30065EB97 /* UILabel+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+.swift"; sourceTree = "<group>"; };
 		392A292E2B4F07FF0065EB97 /* RegisterNormalReadDateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalReadDateView.swift; sourceTree = "<group>"; };
-		3999BFE82B4E6C3500984832 /* RegisterNormalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalViewController.swift; sourceTree = "<group>"; };
-		3999BFEA2B4E6C4400984832 /* RegisterNormalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalViewModel.swift; sourceTree = "<group>"; };
+		3992FA552B81E2A40079C8B8 /* RegisterNormalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalViewController.swift; sourceTree = "<group>"; };
+		3999BFEA2B4E6C4400984832 /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
 		3999BFEF2B4E6FA800984832 /* RegisterNormalBannerImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalBannerImageView.swift; sourceTree = "<group>"; };
 		399F292F2B565D8000BBC12B /* Config.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		399F29312B56633C00BBC12B /* NovelResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelResult.swift; sourceTree = "<group>"; };
@@ -375,6 +378,7 @@
 				2CD229342B42E771005400BE /* SnapKit in Frameworks */,
 				2CD229472B42E7C8005400BE /* Lottie in Frameworks */,
 				2CD229402B42E7A2005400BE /* RxCocoa in Frameworks */,
+				3916EC862B89B42C007835B5 /* RxGesture in Frameworks */,
 				2CD2293C2B42E7A2005400BE /* RxBlocking in Frameworks */,
 				39EF97AC2B53E43800D2148B /* Lottie in Frameworks */,
 			);
@@ -575,6 +579,7 @@
 		2CD229492B42E952005400BE /* Constants */ = {
 			isa = PBXGroup;
 			children = (
+				3916EC872B89D1D9007835B5 /* Factory */,
 				A122C9F42B5314F000DFCFE4 /* URLs */,
 				A122C9F02B53146100DFCFE4 /* Config */,
 				2C24917F2B4ADBF20096F255 /* Strings */,
@@ -668,6 +673,14 @@
 			path = Protocol;
 			sourceTree = "<group>";
 		};
+		3916EC872B89D1D9007835B5 /* Factory */ = {
+			isa = PBXGroup;
+			children = (
+				3916EC882B89D23D007835B5 /* ModuleFactory.swift */,
+			);
+			path = Factory;
+			sourceTree = "<group>";
+		};
 		3999BFE02B4E6A2B00984832 /* RegisterNormal */ = {
 			isa = PBXGroup;
 			children = (
@@ -708,7 +721,7 @@
 		3999BFE62B4E6B5B00984832 /* RegisterNormalViewController */ = {
 			isa = PBXGroup;
 			children = (
-				3999BFE82B4E6C3500984832 /* RegisterNormalViewController.swift */,
+				3992FA552B81E2A40079C8B8 /* RegisterNormalViewController.swift */,
 			);
 			path = RegisterNormalViewController;
 			sourceTree = "<group>";
@@ -716,7 +729,7 @@
 		3999BFE72B4E6B9900984832 /* RegisterNormalVeiwModel */ = {
 			isa = PBXGroup;
 			children = (
-				3999BFEA2B4E6C4400984832 /* RegisterNormalViewModel.swift */,
+				3999BFEA2B4E6C4400984832 /* RegisterViewModel.swift */,
 			);
 			path = RegisterNormalVeiwModel;
 			sourceTree = "<group>";
@@ -1207,6 +1220,7 @@
 				3999BFED2B4E6CA000984832 /* UIImageViewAlignedSwift */,
 				39EF97AB2B53E43800D2148B /* Lottie */,
 				CD3E5A842B54254F00C0A659 /* RxKeyboard */,
+				3916EC852B89B42C007835B5 /* RxGesture */,
 			);
 			productName = WSSiOS;
 			productReference = 2CD229182B42E685005400BE /* WSSiOS.app */;
@@ -1244,6 +1258,7 @@
 				2CD229452B42E7C8005400BE /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				3999BFEC2B4E6CA000984832 /* XCRemoteSwiftPackageReference "UIImageViewAlignedSwift" */,
 				CD3E5A832B54254F00C0A659 /* XCRemoteSwiftPackageReference "RxKeyboard" */,
+				3916EC842B89B42C007835B5 /* XCRemoteSwiftPackageReference "RxGesture" */,
 			);
 			productRefGroup = 2CD229192B42E685005400BE /* Products */;
 			projectDirPath = "";
@@ -1313,6 +1328,7 @@
 				A1654F162B540513004F78E8 /* NetworkLogger.swift in Sources */,
 				A14EDBBF2B4F05F300906957 /* HomeSosoPickCollectionViewCell.swift in Sources */,
 				2C60306F2B54EDDD0031544C /* LibraryDescriptionView.swift in Sources */,
+				3916EC892B89D23D007835B5 /* ModuleFactory.swift in Sources */,
 				CD39F2C82B50124C00B73A5C /* NovelDetailMemoTableViewCell.swift in Sources */,
 				CD39F2D42B50D5C700B73A5C /* NovelDetailInfoReadDateView.swift in Sources */,
 				CD39F2B62B4FE0E200B73A5C /* NovelDetailView.swift in Sources */,
@@ -1321,11 +1337,11 @@
 				CD39F2E62B50F2E900B73A5C /* NovelDetailInfoPlatformCollectionViewCell.swift in Sources */,
 				CDE596D82B5770CE00D99DA1 /* WSSToastView.swift in Sources */,
 				A1A1F9D42B4873B500705F44 /* SearchEmptyView.swift in Sources */,
-				3999BFE92B4E6C3500984832 /* RegisterNormalViewController.swift in Sources */,
 				39CC16902B529AB6003F56AE /* RegisterNormalReadStatusView.swift in Sources */,
 				3999BFF02B4E6FA800984832 /* RegisterNormalBannerImageView.swift in Sources */,
 				A1EF355A2B52FAD300A94C53 /* RecommendService.swift in Sources */,
 				39CC167E2B512369003F56AE /* RegisterSuccessViewController.swift in Sources */,
+				3992FA562B81E2A40079C8B8 /* RegisterNormalViewController.swift in Sources */,
 				39CD5E082B4F2BBE00668B9A /* RegisterNormalKeywordSelectionView.swift in Sources */,
 				2CA2F6602B530B660045B4C2 /* LibraryView.swift in Sources */,
 				2CD2291E2B42E685005400BE /* SceneDelegate.swift in Sources */,
@@ -1402,7 +1418,7 @@
 				A18432EC2B511E7400910940 /* RecordDateView.swift in Sources */,
 				A1DBB2FA2B4AA981000EE869 /* SearchCollectionViewCell.swift in Sources */,
 				A1DBB2FA2B4AA981000EE869 /* SearchCollectionViewCell.swift in Sources */,
-				3999BFEB2B4E6C4400984832 /* RegisterNormalViewModel.swift in Sources */,
+				3999BFEB2B4E6C4400984832 /* RegisterViewModel.swift in Sources */,
 				A1493BC32B55022E004DD84A /* MemoResult.swift in Sources */,
 				A1654F0F2B540504004F78E8 /* APIConstants.swift in Sources */,
 				A107A4A02B4DD7E200668C3E /* HomeSosoPickTitleView.swift in Sources */,
@@ -1700,6 +1716,14 @@
 				minimumVersion = 4.3.4;
 			};
 		};
+		3916EC842B89B42C007835B5 /* XCRemoteSwiftPackageReference "RxGesture" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/RxGesture";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.4;
+			};
+		};
 		3999BFEC2B4E6CA000984832 /* XCRemoteSwiftPackageReference "UIImageViewAlignedSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sochalewski/UIImageViewAlignedSwift";
@@ -1753,6 +1777,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 2CD229452B42E7C8005400BE /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
+		};
+		3916EC852B89B42C007835B5 /* RxGesture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3916EC842B89B42C007835B5 /* XCRemoteSwiftPackageReference "RxGesture" */;
+			productName = RxGesture;
 		};
 		3999BFED2B4E6CA000984832 /* UIImageViewAlignedSwift */ = {
 			isa = XCSwiftPackageProductDependency;

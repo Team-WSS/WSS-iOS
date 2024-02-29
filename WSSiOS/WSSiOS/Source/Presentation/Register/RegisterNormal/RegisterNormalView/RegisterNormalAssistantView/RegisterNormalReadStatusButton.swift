@@ -14,7 +14,7 @@ final class RegisterNormalReadStatusButton: UIButton {
     
     //MARK: - Properties
     
-    private var status: ReadStatus?
+    var status: ReadStatus
     private var buttonHeight: CGFloat = 37
     
     //MARK: - Components
@@ -26,6 +26,8 @@ final class RegisterNormalReadStatusButton: UIButton {
     //MARK: - Life Cycle
     
     override init(frame: CGRect) {
+        status = .FINISH
+        
         super.init(frame: frame)
         
         setUI()
