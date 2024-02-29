@@ -145,7 +145,7 @@ final class LibraryBaseViewController: UIViewController {
         libraryEmptyView.libraryRegisterButton.rx.tap
             .bind(with: self, onNext: { owner, _ in
                 self.navigationController?.pushViewController(
-                    SearchViewController(searchViewModel: SearchViewModel(novelRepository: DefaultNovelRepository(novelService: DefaultNovelService())), novelRepsitory: DefaultNovelRepository(novelService: DefaultNovelService())), 
+                    SearchViewController(searchViewModel: SearchViewModel(novelRepository: DefaultNovelRepository(novelService: DefaultNovelService()))), 
                     animated: true)
             })
             .disposed(by: disposeBag)

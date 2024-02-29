@@ -57,7 +57,6 @@ final class SearchViewController: UIViewController {
         register()
         
         bindViewModel()
-        bindActions()
         swipeBackGesture()
     }
     
@@ -81,37 +80,6 @@ final class SearchViewController: UIViewController {
             forCellWithReuseIdentifier: SearchCollectionViewCell.cellIdentifier)
     }
 
-    //MARK: - Actions
-    
-    private func bindActions() {
-        rootView.headerView.searchBar.rx.text.orEmpty
-            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner ,searchText in
-                if searchText.isEmpty {
-                    owner.searchResultListRelay.accept([])
-                }
-                else {
-                    owner.searchNovels(with: searchText)
-                }
-            })
-            .disposed(by: disposeBag)
-    }
-    
-    private func searchNovels(with searchText: String) {
-        let searchWord = searchText.isEmpty ? "" : searchText
-        self.getDataFromAPI(disposeBag: disposeBag, searchWord: searchWord)
-    }
-    
-    //MARK: - API
-    
-    private func getDataFromAPI(disposeBag: DisposeBag, searchWord: String) {
-        self.novelRepository.getSearchNovels(searchWord: searchWord)
-            .subscribe(with: self, onNext: { owner, search in
-                owner.searchResultListRelay.accept(search.novels)
-            })
-            .disposed(by: disposeBag)
-    }
-    
     //MARK: - Custom Method
     
     private func showSearchBarAndFocus() {
@@ -120,6 +88,7 @@ final class SearchViewController: UIViewController {
     
     private func bindViewModel() {
         let input = SearchViewModel.Input(
+            searchTextUpdated: rootView.headerView.searchBar.rx.text.orEmpty,
             backButtonTapped: backButton.rx.tap,
             searchCellSelected: rootView.mainResultView.searchCollectionView.rx.itemSelected
         )
@@ -147,7 +116,7 @@ final class SearchViewController: UIViewController {
                 }
             })
             .disposed(by: disposeBag)
-        
+
         output.backToHome
             .bind(with: self, onNext: { owner, _ in
                 owner.popToLastViewController()

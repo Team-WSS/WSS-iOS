@@ -15,10 +15,12 @@ final class SearchViewModel: ViewModelType {
     //MARK: - Properties
     
     private let novelRepository: NovelRepository
+    private let disposeBag = DisposeBag()
     
     //MARK: - Inputs
     
     struct Input {
+        let searchTextUpdated: ControlProperty<String>
         let backButtonTapped: ControlEvent<Void>
         let searchCellSelected: ControlEvent<IndexPath>
     }
@@ -27,7 +29,6 @@ final class SearchViewModel: ViewModelType {
     
     struct Output {
         var searchResultList = BehaviorRelay<[SearchNovel]>(value: [])
-        
         let backToHome = PublishRelay<Bool>()
         let navigateToRegisterNormal = PublishRelay<IndexPath>()
     }
@@ -37,6 +38,13 @@ final class SearchViewModel: ViewModelType {
     init(novelRepository: NovelRepository) {
         self.novelRepository = novelRepository
     }
+    
+    //MARK: - API
+    
+    private func getDataFromAPI(searchWord: String) -> Observable<SearchNovels>{
+        novelRepository.getSearchNovels(searchWord: searchWord)
+            .observe(on: MainScheduler.instance)
+    }
 }
 
 //MARK: - Methods
@@ -45,6 +53,23 @@ extension SearchViewModel {
     
     func transform(from input: Input, disposeBag: RxSwift.DisposeBag) -> Output {
         let output = Output()
+        
+        input.searchTextUpdated
+            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, text in
+                if text.isEmpty {
+                    output.searchResultList.accept([])
+                }
+                else {
+                    let searchWord = text.isEmpty ? "" : text
+                    owner.getDataFromAPI(searchWord: searchWord)
+                        .subscribe(with: self, onNext: { owner, list in
+                            output.searchResultList.accept(list.novels)
+                        })
+                        .disposed(by: disposeBag)
+                }
+            })
+            .disposed(by: disposeBag)
         
         input.backButtonTapped
             .subscribe(with: self, onNext: { owner, _ in
