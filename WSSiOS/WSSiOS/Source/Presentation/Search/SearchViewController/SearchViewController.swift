@@ -14,6 +14,7 @@ final class SearchViewController: UIViewController {
     
     //MARK: - Properties
     
+    private let searchViewModel: SearchViewModel
     private let novelRepository: NovelRepository
     private var searchResultListRelay = BehaviorRelay<[SearchNovel]>(value: [])
     private let disposeBag = DisposeBag()
@@ -26,8 +27,9 @@ final class SearchViewController: UIViewController {
     
     //MARK: - Life Cycle
     
-    init(novelRepository: NovelRepository) {
-        self.novelRepository = novelRepository
+    init(searchViewModel: SearchViewModel, novelRepsitory: NovelRepository) {
+        self.searchViewModel = searchViewModel
+        self.novelRepository = novelRepsitory
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -56,6 +58,7 @@ final class SearchViewController: UIViewController {
         delegate()
         register()
         
+        bindViewModel()
         bindUI()
         bindActions()
         swipeBackGesture()
@@ -156,6 +159,28 @@ final class SearchViewController: UIViewController {
     
     private func showSearchBarAndFocus() {
         rootView.headerView.searchBar.becomeFirstResponder()
+    }
+    
+    private func bindViewModel() {
+        let input = SearchViewModel.Input(
+            backButtonTapped: backButton.rx.tap,
+            searchCellSelected: rootView.mainResultView.searchCollectionView.rx.itemSelected
+        )
+        
+        let output = searchViewModel.transform(from: input, disposeBag: disposeBag)
+        
+        output.backToHome
+            .bind(with: self, onNext: { owner, _ in
+                owner.popToLastViewController()
+            })
+            .disposed(by: disposeBag)
+        
+        output.navigateToRegisterNormal
+            .bind(with: self, onNext: { owner, indexPath in
+                owner.pushToRegisterNormalViewController(
+                    novelId: owner.searchResultListRelay.value[indexPath.row].novelId)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
