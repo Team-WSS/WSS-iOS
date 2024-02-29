@@ -124,22 +124,6 @@ final class SearchViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    private func bindNavigations() {
-        backButton
-            .rx.tap
-            .subscribe(with: self, onNext: { owner, event in
-                owner.popToLastViewController()
-            })
-            .disposed(by: disposeBag)
-        
-        rootView.mainResultView.searchCollectionView
-            .rx.itemSelected
-            .subscribe(with: self, onNext: { owner, indexPath in
-                owner.pushToRegisterNormalViewController(novelId: owner.searchResultListRelay.value[indexPath.row].novelId)
-            })
-            .disposed(by: disposeBag)
-    }
-    
     private func searchNovels(with searchText: String) {
         let searchWord = searchText.isEmpty ? "" : searchText
         self.getDataFromAPI(disposeBag: disposeBag, searchWord: searchWord)
