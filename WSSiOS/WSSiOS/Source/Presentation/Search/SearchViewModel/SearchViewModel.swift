@@ -26,6 +26,8 @@ final class SearchViewModel: ViewModelType {
     //MARK: - Outputs
     
     struct Output {
+        var searchResultList = BehaviorRelay<[SearchNovel]>(value: [])
+        
         let backToHome = PublishRelay<Bool>()
         let navigateToRegisterNormal = PublishRelay<IndexPath>()
     }

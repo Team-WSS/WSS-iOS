@@ -9,14 +9,13 @@ import UIKit
 
 import RxSwift
 import RxCocoa
+import Then
 
 final class SearchViewController: UIViewController {
     
     //MARK: - Properties
     
     private let searchViewModel: SearchViewModel
-    private let novelRepository: NovelRepository
-    private var searchResultListRelay = BehaviorRelay<[SearchNovel]>(value: [])
     private let disposeBag = DisposeBag()
     
     //MARK: - Components
@@ -27,9 +26,8 @@ final class SearchViewController: UIViewController {
     
     //MARK: - Life Cycle
     
-    init(searchViewModel: SearchViewModel, novelRepsitory: NovelRepository) {
+    init(searchViewModel: SearchViewModel) {
         self.searchViewModel = searchViewModel
-        self.novelRepository = novelRepsitory
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -59,7 +57,6 @@ final class SearchViewController: UIViewController {
         register()
         
         bindViewModel()
-        bindUI()
         bindActions()
         swipeBackGesture()
     }
@@ -82,32 +79,8 @@ final class SearchViewController: UIViewController {
         rootView.mainResultView.searchCollectionView.register(
             SearchCollectionViewCell.self,
             forCellWithReuseIdentifier: SearchCollectionViewCell.cellIdentifier)
-        
-        searchResultListRelay
-            .bind(to: rootView.mainResultView.searchCollectionView.rx.items(
-                cellIdentifier: SearchCollectionViewCell.cellIdentifier,
-                cellType: SearchCollectionViewCell.self)) { (row, element, cell) in
-                    cell.bindData(data: element)
-                }
-                .disposed(by: disposeBag)
     }
-    
-    private func bindUI() {
-        searchResultListRelay
-            .asDriver()
-            .drive(with: self, onNext: { owner, list in
-                if list.isEmpty && !(owner.rootView.headerView.searchBar.text ?? "").isEmpty {
-                    owner.view.addSubview(owner.emptyView)
-                    owner.emptyView.snp.makeConstraints {
-                        $0.edges.equalToSuperview()
-                    }
-                } else {
-                    owner.emptyView.removeFromSuperview()
-                }
-            })
-            .disposed(by: disposeBag)
-    }
-    
+
     //MARK: - Actions
     
     private func bindActions() {
@@ -153,6 +126,28 @@ final class SearchViewController: UIViewController {
         
         let output = searchViewModel.transform(from: input, disposeBag: disposeBag)
         
+        output.searchResultList
+            .bind(to: rootView.mainResultView.searchCollectionView.rx.items(
+                cellIdentifier: SearchCollectionViewCell.cellIdentifier,
+                cellType: SearchCollectionViewCell.self)) { (row, element, cell) in
+                    cell.bindData(data: element)
+                }
+                .disposed(by: disposeBag)
+        
+        output.searchResultList
+            .asDriver()
+            .drive(with: self, onNext: { owner, list in
+                if list.isEmpty && !(owner.rootView.headerView.searchBar.text ?? "").isEmpty {
+                    owner.view.addSubview(owner.emptyView)
+                    owner.emptyView.snp.makeConstraints {
+                        $0.edges.equalToSuperview()
+                    }
+                } else {
+                    owner.emptyView.removeFromSuperview()
+                }
+            })
+            .disposed(by: disposeBag)
+        
         output.backToHome
             .bind(with: self, onNext: { owner, _ in
                 owner.popToLastViewController()
@@ -162,7 +157,7 @@ final class SearchViewController: UIViewController {
         output.navigateToRegisterNormal
             .bind(with: self, onNext: { owner, indexPath in
                 owner.pushToRegisterNormalViewController(
-                    novelId: owner.searchResultListRelay.value[indexPath.row].novelId)
+                    novelId: output.searchResultList.value[indexPath.row].novelId)
             })
             .disposed(by: disposeBag)
     }
