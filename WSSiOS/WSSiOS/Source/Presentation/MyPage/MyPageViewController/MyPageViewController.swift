@@ -185,11 +185,13 @@ final class MyPageViewController: UIViewController {
         rootView.myPageTallyView.myPageUserNameButton.rx.tap
             .throttle(.seconds(3), scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in 
-                owner.hideTabBar()
+//                owner.hideTabBar()
                 let changeNicknameViewController = MyPageChangeNicknameViewController(
                     userNickName: owner.userNickName,
-                    userRepository: owner.userRepository)
-                changeNicknameViewController.bindData(self.userNickName)
+                    viewModel: MyPageNickNameChangeViewModel(
+                        userRepository: DefaultUserRepository(
+                            userService: DefaultUserService()),
+                        userNickName: owner.userNickName))
                 owner.navigationController?.pushViewController(changeNicknameViewController, animated: true)
             })
             .disposed(by: disposeBag)
@@ -271,8 +273,10 @@ extension MyPageViewController {
                 self.hideTabBar()
                 let changeNicknameViewController = MyPageChangeNicknameViewController(
                     userNickName: owner.userNickName,
-                    userRepository: owner.userRepository)
-                changeNicknameViewController.bindData(self.userNickName)
+                    viewModel: MyPageNickNameChangeViewModel(
+                        userRepository: DefaultUserRepository(
+                            userService: DefaultUserService()),
+                        userNickName: owner.userNickName))
                 owner.navigationController?.pushViewController(changeNicknameViewController, animated: true)
             })
             .disposed(by: disposeBag)

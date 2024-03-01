@@ -24,13 +24,13 @@ final class MyPageChangeNicknameViewController: UIViewController {
     private lazy var backButton = UIButton()
     private lazy var completeButton = UIButton()
     private let disposeBag = DisposeBag()
-    private let userRepository : UserRepository
+    private let viewModel: MyPageNickNameChangeViewModel
     
     // MARK: - Life Cycle
     
-    init(userNickName: String, userRepository: UserRepository) {
+    init(userNickName: String, viewModel: MyPageNickNameChangeViewModel) {
         self.userNickName = userNickName
-        self.userRepository = userRepository
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -50,79 +50,64 @@ final class MyPageChangeNicknameViewController: UIViewController {
                                     right: self.completeButton)
         hideTabBar()
         setUI()
+        bindViewModel()
         swipeBackGesture()
-        setTextField()
     }
     
     //MARK: - Bind
     
-    private func patchUserNickName() {
-        userRepository.patchUserName(userNickName: newNickName)
-            .observe(on: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, _ in 
+    private func bindViewModel() {
+        rootView.changeNicknameTextField.text = userNickName
+        
+        let input = MyPageNickNameChangeViewModel.Input(
+            updateNicknameTextField: rootView.changeNicknameTextField.rx.text
+                .map { $0 ?? "" }
+                .asDriver(onErrorJustReturn: ""),
+            completeButtonDidTap: completeButton.rx.tap
+                .throttle(.seconds(3), scheduler: MainScheduler.instance)
+                .asObservable(),
+            clearButtonDidTap: rootView.setClearButton.rx.tap
+                .throttle(.seconds(1), scheduler: MainScheduler.instance)
+                .asObservable()
+        )
+        
+        let output = self.viewModel.transform(from: input, disposeBag: self.disposeBag)
+        
+        backButton.rx.tap
+            .subscribe(with: self, onNext: { owner, _ in
                 owner.navigationController?.popViewController(animated: true)
-            }, onError: { owner, error in
-                print(error)
-            })
-            .disposed(by: disposeBag)
-    }
-    
-    func bindData(_ data: String) {
-        rootView.changeNicknameTextField.text = data
-    }
-    
-    //MARK: - Actions
-    
-    private func setTextField() {
-        rootView.changeNicknameTextField.rx
-            .controlEvent([.editingDidBegin,
-                           .editingChanged])
-            .asObservable()
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.rootView.textFieldUnderBarView.backgroundColor = .wssPrimary100
             })
             .disposed(by: disposeBag)
         
-        rootView.changeNicknameTextField.rx.controlEvent([.editingDidEnd])
-            .asObservable()
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.rootView.textFieldUnderBarView.backgroundColor = .wssGray200
+        output.textFieldUnderlineColor
+            .subscribe(with: self, onNext: { owner, color in
+                owner.rootView.textFieldUnderBarView.backgroundColor = color
             })
             .disposed(by: disposeBag)
         
-        rootView.changeNicknameTextField.rx.text
+        output.countLabelText
             .subscribe(with: self, onNext: { owner, text in
-                if let text {
-                    let textCount = text.count
-                    
-                    if textCount > 10 {
-                        owner.rootView.countNicknameLabel.text = "10/10"
-                    } else {
-                        owner.rootView.countNicknameLabel.text = "\(textCount)/10"
-                        owner.newNickName = text
-                    }
-                    
-                    if text == owner.userNickName || text == "" {
-                        owner.completeButton.setTitleColor(.wssGray200, for: .normal)
-                    } else {
-                        owner.completeButton.setTitleColor(.wssPrimary100, for: .normal)
-                    }
+                owner.rootView.countNicknameLabel.text = text
+            })
+            .disposed(by: disposeBag)
+        
+        output.completeButtonTitleColor
+            .subscribe(with: self, onNext: { owner, color in
+                owner.completeButton.setTitleColor(color, for: .normal)
+            })
+            .disposed(by: disposeBag)
+        
+        output.newNicknameText
+            .subscribe(with: self, onNext: { owner, nickname in
+                owner.rootView.changeNicknameTextField.text = nickname
+            })
+            .disposed(by: disposeBag)
+        
+        output.completeButtonAction
+            .subscribe(with: self, onNext: { owner, isAble in
+                if isAble {
+                    owner.navigationController?.popViewController(animated: true)
                 }
-            })
-            .disposed(by: disposeBag)
-        
-        rootView.changeNicknameTextField.rx.text
-            .orEmpty
-            .subscribe(with: self, onNext: { owner, text in
-                self.limitNameCount(text)
-            })
-            .disposed(by: disposeBag)
-        
-        rootView.setClearButton.rx
-            .tap
-            .bind(with: self, onNext: { owner, _ in
-                owner.rootView.changeNicknameTextField.text = ""
-                owner.rootView.countNicknameLabel.text = "0/10"
             })
             .disposed(by: disposeBag)
     }
@@ -135,32 +120,12 @@ extension MyPageChangeNicknameViewController {
     private func setUI() {
         backButton.do {
             $0.setImage(.icNavigateLeft.withRenderingMode(.alwaysOriginal), for: .normal)
-            $0.rx.tap
-                .throttle(.seconds(3), scheduler: MainScheduler.instance)
-                .subscribe(with: self, onNext: { owner, _ in 
-                    owner.navigationController?.popViewController(animated: true)
-                })
-                .disposed(by: disposeBag)
         }
         
         completeButton.do {
             $0.setTitle(StringLiterals.MyPage.ChangeNickname.complete, for: .normal)
             $0.setTitleColor(.wssPrimary100, for: .normal)
             $0.titleLabel?.font = .Title2
-            $0.rx.tap
-                .throttle(.seconds(3), scheduler: MainScheduler.instance)
-                .subscribe(with: self, onNext: { owner, _ in 
-                    owner.patchUserNickName()
-                })
-                .disposed(by: disposeBag)
-        }
-    }
-    
-    //MARK: - Custom Method
-    
-    private func limitNameCount(_ text: String) {
-        if text.count > 10 {
-            self.rootView.changeNicknameTextField.text = String(text.prefix(10))
         }
     }
 }
