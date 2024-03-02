@@ -51,7 +51,7 @@ final class DeletePopupViewController: UIViewController {
     private func bindViewModel() {
         let input = DeletePopupViewModel.Input(
             popupStatus: self.popupStatus,
-            deleteButtonDidTapEvent: rootView.deletePopupContentView.deleteButton.rx.tap.throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance).asObservable()
+            deleteButtonDidTap: rootView.deletePopupContentView.deleteButton.rx.tap
         )
 
         let output = self.deletePopupViewModel.transform(from: input, disposeBag: self.disposeBag)

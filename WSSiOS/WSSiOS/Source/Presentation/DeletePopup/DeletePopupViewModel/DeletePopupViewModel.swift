@@ -30,8 +30,7 @@ final class DeletePopupViewModel: ViewModelType {
 
     struct Input {
         let popupStatus: PopupStatus
-        let deleteButtonDidTapEvent: Observable<Void>
-        
+        let deleteButtonDidTap: ControlEvent<Void>
     }
 
     struct Output {
@@ -45,32 +44,32 @@ final class DeletePopupViewModel: ViewModelType {
         
         switch input.popupStatus {
         case .memoEditCancel:
-            input.deleteButtonDidTapEvent
-                .subscribe(with: self, onNext: { owner, _ in
+            input.deleteButtonDidTap
+                .subscribe(onNext: {
                     output.canceledEdit.accept(true)
-                }, onError: { owner, error in
+                }, onError: { error in
                     print(error)
                 })
                 .disposed(by: disposeBag)
         case .memoDelete:
-            input.deleteButtonDidTapEvent
+            input.deleteButtonDidTap
                 .flatMapLatest {
                     self.deleteMemo()
                 }
-                .subscribe(with: self, onNext: { owner, _ in
+                .subscribe(onNext: {
                     output.deletedMemo.accept(true)
-                }, onError: { owner, error in
+                }, onError: { error in
                     print(error)
                 })
                 .disposed(by: disposeBag)
         case .novelDelete:
-            input.deleteButtonDidTapEvent
+            input.deleteButtonDidTap
                 .flatMapLatest {
                     self.deleteUserNovel()
                 }
-                .subscribe(with: self, onNext: { owner, _ in
+                .subscribe(onNext: {
                     output.deletedNovel.accept(true)
-                }, onError: { owner, error in
+                }, onError: { error in
                     print(error)
                 })
                 .disposed(by: disposeBag)
