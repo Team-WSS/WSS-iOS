@@ -94,12 +94,19 @@ final class MemoEditViewController: UIViewController {
     
     private func bindViewModel() {
         let input = MemoEditViewModel.Input(
+            viewDidTap: view.rx.tapGesture().when(.recognized).asObservable(),
             updatedMemoContent: rootView.memoEditContentView.memoTextView.rx.text.orEmpty.asObservable(),
-            completeButtonDidTapEvent: completeButton.rx.tap.throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance).asObservable(),
-            backButtonDidTapEvent: backButton.rx.tap.throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance).asObservable()
+            completeButtonDidTap: completeButton.rx.tap,
+            backButtonDidTap: backButton.rx.tap
         )
         
         let output = self.memoEditViewModel.transform(from: input, disposeBag: self.disposeBag)
+        
+        output.endEditing
+            .subscribe(with: self, onNext: { owner, endEditing in
+                owner.view.endEditing(endEditing)
+            })
+            .disposed(by: disposeBag)
         
         output.memoContentPrefix
             .subscribe(with: self, onNext: { owner, memoContentPrefix in
@@ -136,13 +143,6 @@ final class MemoEditViewController: UIViewController {
         RxKeyboard.instance.visibleHeight
             .drive(with: self, onNext: { owner, keyboardHeight in
                 owner.rootView.memoEditContentView.updateTextViewConstraint(keyboardHeight: keyboardHeight)
-            })
-            .disposed(by: disposeBag)
-        
-        view.rx.tapGesture()
-            .when(.recognized)
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.view.endEditing(true)
             })
             .disposed(by: disposeBag)
     }

@@ -33,12 +33,14 @@ final class MemoEditViewModel: ViewModelType {
     }
     
     struct Input {
+        let viewDidTap: Observable<UITapGestureRecognizer>
         let updatedMemoContent: Observable<String>
-        let completeButtonDidTapEvent: Observable<Void>
-        let backButtonDidTapEvent: Observable<Void>
+        let completeButtonDidTap: ControlEvent<Void>
+        let backButtonDidTap: ControlEvent<Void>
     }
     
     struct Output {
+        let endEditing = PublishRelay<Bool>()
         let memoContentPrefix = BehaviorRelay<String>(value: "")
         let completeButtonIsAbled = BehaviorRelay<Bool>(value: false)
         let isMemoSaveSuccess = PublishRelay<Bool>()
@@ -47,6 +49,12 @@ final class MemoEditViewModel: ViewModelType {
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
+        
+        input.viewDidTap
+            .subscribe(onNext: { _ in
+                output.endEditing.accept(true)
+            })
+            .disposed(by: disposeBag)
         
         input.updatedMemoContent
             .subscribe(with: self, onNext: { owner, text in
@@ -67,21 +75,23 @@ final class MemoEditViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         if memoContent != nil {
-            input.completeButtonDidTapEvent
+            guard let memoId = self.memoId else { return Output() }
+            
+            input.completeButtonDidTap
                 .flatMapLatest {
-                    self.patchMemo(memoId: self.memoId!, memoContent: self.updatedMemoContent)
+                    self.patchMemo(memoId: memoId, memoContent: self.updatedMemoContent)
                 }
-                .subscribe(with: self, onNext: { owner, data in
+                .subscribe(onNext: { data in
                     NotificationCenter.default.post(name: NSNotification.Name("PatchedMemo"), object: nil)
                     output.isMemoSaveSuccess.accept(true)
-                }, onError: { owner, error in
+                }, onError: { error in
                     print(error)
                     output.isMemoSaveSuccess.accept(false)
                 })
                 .disposed(by: disposeBag)
             
             
-            input.backButtonDidTapEvent
+            input.backButtonDidTap
                 .subscribe(with: self, onNext: { owner, _ in
                     if owner.updatedMemoContent != owner.memoContent {
                         output.isFixes.accept(true)
@@ -91,24 +101,26 @@ final class MemoEditViewModel: ViewModelType {
                 })
                 .disposed(by: disposeBag)
         } else {
-            input.completeButtonDidTapEvent
+            guard let userNovelId = self.userNovelId else { return Output() }
+            
+            input.completeButtonDidTap
                 .flatMapLatest {
-                    self.postMemo(userNovelId: self.userNovelId!, memoContent: self.updatedMemoContent)
+                    self.postMemo(userNovelId: userNovelId, memoContent: self.updatedMemoContent)
                 }
-                .subscribe(with: self, onNext: { owner, data in
+                .subscribe(onNext: { data in
                     if data.isAvatarUnlocked {
                         NotificationCenter.default.post(name: NSNotification.Name("AvatarUnlocked"), object: nil)
                     } else {
                         NotificationCenter.default.post(name: NSNotification.Name("PostedMemo"), object: nil)
                     }
                     output.isMemoSaveSuccess.accept(true)
-                }, onError: { owner, error in
+                }, onError: { error in
                     print(error)
                     output.isMemoSaveSuccess.accept(false)
                 })
                 .disposed(by: disposeBag)
             
-            input.backButtonDidTapEvent
+            input.backButtonDidTap
                 .subscribe(with: self, onNext: { owner, _ in
                     if owner.updatedMemoContent.count > 0 && !owner.memoContentPredicate.evaluate(with: owner.updatedMemoContent) {
                         output.isFixes.accept(true)

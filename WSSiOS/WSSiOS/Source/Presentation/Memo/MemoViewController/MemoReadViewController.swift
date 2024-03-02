@@ -18,7 +18,7 @@ final class MemoReadViewController: UIViewController {
     private let disposeBag = DisposeBag()
     
     private let viewWillAppearEvent = BehaviorRelay<Int>(value: 0)
-    private let memoDetail = BehaviorRelay<MemoDetail?>(value: nil)
+    private let memoDetail = PublishRelay<MemoDetail>()
     private let memoId: Int
 
     //MARK: - Components
@@ -98,7 +98,7 @@ final class MemoReadViewController: UIViewController {
     
     private func bindViewModel() {
         let input = MemoReadViewModel.Input(
-            viewWillAppearEvent: viewWillAppearEvent.asObservable()
+            viewWillAppear: viewWillAppearEvent.asObservable()
         )
         
         let output = self.memoReadViewModel.transform(from: input, disposeBag: self.disposeBag)
@@ -137,13 +137,14 @@ final class MemoReadViewController: UIViewController {
         
         editButon.rx.tap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, _ in
+            .withLatestFrom(memoDetail)
+            .bind(with: self, onNext: { owner, memoDetail in
                 owner.pushToMemoEditViewController(
                     memoId: owner.memoId,
-                    novelTitle: owner.memoDetail.value?.userNovelTitle ?? "",
-                    novelAuthor: owner.memoDetail.value?.userNovelAuthor ?? "",
-                    novelImage: owner.memoDetail.value?.userNovelImg ?? "",
-                    memoContent: owner.memoDetail.value?.memoContent ?? ""
+                    novelTitle: memoDetail.userNovelTitle,
+                    novelAuthor: memoDetail.userNovelAuthor,
+                    novelImage: memoDetail.userNovelImg,
+                    memoContent: memoDetail.memoContent
                 )
             })
             .disposed(by: disposeBag)

@@ -23,7 +23,7 @@ final class MemoReadViewModel: ViewModelType {
     }
     
     struct Input {
-        let viewWillAppearEvent: Observable<Int>
+        let viewWillAppear: Observable<Int>
     }
     
     struct Output {
@@ -33,7 +33,7 @@ final class MemoReadViewModel: ViewModelType {
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
         
-        input.viewWillAppearEvent
+        input.viewWillAppear
             .flatMapLatest { memoId in
                 self.getMemoDetail(memoId: memoId)
             }
