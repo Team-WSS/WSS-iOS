@@ -31,18 +31,18 @@ final class NovelDetailViewModel: ViewModelType {
     }
     
     struct Input {
-        let viewWillAppearEvent: Observable<Int>
+        let viewWillAppear: Observable<Int>
         let scrollViewContentOffset: Driver<CGPoint>
         let memoTableViewContentSize: Observable<CGSize?>
         let platformCollectionViewContentSize: Observable<CGSize?>
-        let novelSettingButtonDidTapEvent: Observable<Void>
-        let viewDidTapEvent: Observable<UITapGestureRecognizer>
-        let memoButtonDidTapEvent: Observable<Void>
-        let infoButtonDidTapEvent: Observable<Void>
-        let stickyMemoButtonDidTapEvent: Observable<Void>
-        let stickyInfoButtonDidTapEvent: Observable<Void>
-        let novelDeleteButtonDidTapEvent: Observable<Void>
-        let novelEditButtonDidTapEvent: Observable<Void>
+        let novelSettingButtonDidTap: Observable<Void>
+        let viewDidTap: Observable<UITapGestureRecognizer>
+        let memoButtonDidTap: Observable<Void>
+        let infoButtonDidTap: Observable<Void>
+        let stickyMemoButtonDidTap: Observable<Void>
+        let stickyInfoButtonDidTap: Observable<Void>
+        let novelDeleteButtonDidTap: Observable<Void>
+        let novelEditButtonDidTap: Observable<Void>
     }
     
     struct Output {
@@ -60,7 +60,7 @@ final class NovelDetailViewModel: ViewModelType {
         let output = Output()
         output.selectedMenu.accept(self.selectedMenu)
         
-        input.viewWillAppearEvent
+        input.viewWillAppear
             .flatMapLatest { userNovelId in
                 self.getUserNovel(userNovelId: userNovelId)
             }
@@ -88,8 +88,8 @@ final class NovelDetailViewModel: ViewModelType {
             .bind(to: output.platformCollectionViewHeight)
             .disposed(by: disposeBag)
         
-        input.novelSettingButtonDidTapEvent
-            .subscribe(with: self, onNext: { owner, _ in
+        input.novelSettingButtonDidTap
+            .subscribe(onNext: {
                 if output.memoSettingButtonViewIsHidden.value == false {
                     output.memoSettingButtonViewIsHidden.accept(true)
                 } else {
@@ -98,44 +98,44 @@ final class NovelDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.viewDidTapEvent
-            .subscribe(with: self, onNext: { owner, _ in
+        input.viewDidTap
+            .subscribe(onNext: { _ in
                 output.memoSettingButtonViewIsHidden.accept(true)
             })
             .disposed(by: disposeBag)
         
-        input.memoButtonDidTapEvent
-            .subscribe(with: self, onNext: { owner, _ in
+        input.memoButtonDidTap
+            .subscribe(onNext: {
                 output.selectedMenu.accept(.memo)
             })
             .disposed(by: disposeBag)
         
-        input.infoButtonDidTapEvent
-            .subscribe(with: self, onNext: { owner, _ in
+        input.infoButtonDidTap
+            .subscribe(onNext: {
                 output.selectedMenu.accept(.info)
             })
             .disposed(by: disposeBag)
         
-        input.stickyMemoButtonDidTapEvent
-            .subscribe(with: self, onNext: { owner, _ in
+        input.stickyMemoButtonDidTap
+            .subscribe(onNext: {
                 output.selectedMenu.accept(.memo)
             })
             .disposed(by: disposeBag)
         
-        input.stickyInfoButtonDidTapEvent
-            .subscribe(with: self, onNext: { owner, _ in
+        input.stickyInfoButtonDidTap
+            .subscribe(onNext: {
                 output.selectedMenu.accept(.info)
             })
             .disposed(by: disposeBag)
         
-        input.novelDeleteButtonDidTapEvent
-            .subscribe(with: self, onNext: { owner, _ in
+        input.novelDeleteButtonDidTap
+            .subscribe(onNext: {
                 output.memoSettingButtonViewIsHidden.accept(true)
             })
             .disposed(by: disposeBag)
         
-        input.novelEditButtonDidTapEvent
-            .subscribe(with: self, onNext: { owner, _ in
+        input.novelEditButtonDidTap
+            .subscribe(onNext: {
                 output.selectedMenu.accept(.info)
                 output.memoSettingButtonViewIsHidden.accept(true)
             })

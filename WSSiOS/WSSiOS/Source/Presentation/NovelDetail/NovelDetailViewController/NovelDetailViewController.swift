@@ -140,18 +140,18 @@ final class NovelDetailViewController: UIViewController {
     
     private func bindViewModel() {
         let input = NovelDetailViewModel.Input(
-            viewWillAppearEvent: viewWillAppearEvent.asObservable(),
+            viewWillAppear: viewWillAppearEvent.asObservable(),
             scrollViewContentOffset: rootView.scrollView.rx.contentOffset.asDriver(),
             memoTableViewContentSize: rootView.novelDetailMemoView.memoTableView.rx.observe(CGSize.self, "contentSize"),
             platformCollectionViewContentSize: rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.rx.observe(CGSize.self, "contentSize"),
-            novelSettingButtonDidTapEvent: novelSettingButton.rx.tap.asObservable(),
-            viewDidTapEvent: rootView.novelDetailMemoSettingButtonView.rx.tapGesture().asObservable(),
-            memoButtonDidTapEvent: rootView.novelDetailTabView.memoButton.rx.tap.asObservable(),
-            infoButtonDidTapEvent: rootView.novelDetailTabView.infoButton.rx.tap.asObservable(),
-            stickyMemoButtonDidTapEvent: rootView.stickyNovelDetailTabView.memoButton.rx.tap.asObservable(),
-            stickyInfoButtonDidTapEvent: rootView.stickyNovelDetailTabView.infoButton.rx.tap.asObservable(),
-            novelDeleteButtonDidTapEvent: rootView.novelDetailMemoSettingButtonView.novelDeleteButton.rx.tap.asObservable(),
-            novelEditButtonDidTapEvent: rootView.novelDetailMemoSettingButtonView.novelEditButon.rx.tap.asObservable()
+            novelSettingButtonDidTap: novelSettingButton.rx.tap.asObservable(),
+            viewDidTap: rootView.novelDetailMemoSettingButtonView.rx.tapGesture().asObservable(),
+            memoButtonDidTap: rootView.novelDetailTabView.memoButton.rx.tap.asObservable(),
+            infoButtonDidTap: rootView.novelDetailTabView.infoButton.rx.tap.asObservable(),
+            stickyMemoButtonDidTap: rootView.stickyNovelDetailTabView.memoButton.rx.tap.asObservable(),
+            stickyInfoButtonDidTap: rootView.stickyNovelDetailTabView.infoButton.rx.tap.asObservable(),
+            novelDeleteButtonDidTap: rootView.novelDetailMemoSettingButtonView.novelDeleteButton.rx.tap.asObservable(),
+            novelEditButtonDidTap: rootView.novelDetailMemoSettingButtonView.novelEditButon.rx.tap.asObservable()
         )
         
         let output = self.novelDetailViewModel.transform(from: input, disposeBag: self.disposeBag)
