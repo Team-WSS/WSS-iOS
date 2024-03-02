@@ -14,13 +14,12 @@ final class MemoReadViewController: UIViewController {
     
     //MARK: - Properties
     
-    private let repository: MemoRepository
+    private let memoReadViewModel: MemoReadViewModel
     private let disposeBag = DisposeBag()
+    
+    private let viewWillAppearEvent = BehaviorRelay<Int>(value: 0)
+    private let memoDetail = PublishRelay<MemoDetail>()
     private let memoId: Int
-    private var novelTitle = ""
-    private var novelAuthor = ""
-    private var novelImage = ""
-    private var memoContent = ""
 
     //MARK: - Components
     
@@ -30,8 +29,8 @@ final class MemoReadViewController: UIViewController {
 
      //MARK: - Life Cycle
     
-    init(repository: MemoRepository, memoId: Int) {
-        self.repository = repository
+    init(viewModel: MemoReadViewModel, memoId: Int) {
+        self.memoReadViewModel = viewModel
         self.memoId = memoId
         super.init(nibName: nil, bundle: nil)
     }
@@ -47,7 +46,7 @@ final class MemoReadViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        getMemoDetail()
+        viewWillAppearEvent.accept(self.memoId)
     }
 
      override func viewDidLoad() {
@@ -57,7 +56,7 @@ final class MemoReadViewController: UIViewController {
          setUI()
          setNavigationBar()
          setNotificationCenter()
-         setTapGesture()
+         bindViewModel()
          bindNavigation()
      }
     
@@ -95,18 +94,24 @@ final class MemoReadViewController: UIViewController {
         )
     }
     
-    private func setTapGesture() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewDidTap))
-        view.addGestureRecognizer(tapGesture)
-    }
-    
     //MARK: - Bind
+    
+    private func bindViewModel() {
+        let input = MemoReadViewModel.Input(
+            viewWillAppear: viewWillAppearEvent.asObservable()
+        )
+        
+        let output = self.memoReadViewModel.transform(from: input, disposeBag: self.disposeBag)
+        
+        output.memoDetail
+            .subscribe(with: self, onNext: { owner, data in
+                owner.bindData(data)
+            })
+            .disposed(by: disposeBag)
+    }
 
     private func bindData(_ memoDetail: MemoDetail) {
-        self.novelTitle = memoDetail.userNovelTitle
-        self.novelAuthor = memoDetail.userNovelAuthor
-        self.novelImage = memoDetail.userNovelImg
-        self.memoContent = memoDetail.memoContent
+        self.memoDetail.accept(memoDetail)
         
         self.rootView.memoHeaderView.bindData(
             novelTitle: memoDetail.userNovelTitle,
@@ -132,13 +137,14 @@ final class MemoReadViewController: UIViewController {
         
         editButon.rx.tap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, _ in
+            .withLatestFrom(memoDetail)
+            .bind(with: self, onNext: { owner, memoDetail in
                 owner.pushToMemoEditViewController(
                     memoId: owner.memoId,
-                    novelTitle: owner.novelTitle,
-                    novelAuthor: owner.novelAuthor,
-                    novelImage: owner.novelImage,
-                    memoContent: owner.memoContent
+                    novelTitle: memoDetail.userNovelTitle,
+                    novelAuthor: memoDetail.userNovelAuthor,
+                    novelImage: memoDetail.userNovelImg,
+                    memoContent: memoDetail.memoContent
                 )
             })
             .disposed(by: disposeBag)
@@ -151,23 +157,7 @@ final class MemoReadViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    //MARK: - API
-    
-    private func getMemoDetail() {
-        repository.getMemoDetail(memoId: self.memoId)
-            .observe(on: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, data in
-                owner.bindData(data)
-            },onError: { owner, error in
-                print(error)
-            }).disposed(by: disposeBag)
-    }
-    
     //MARK: - Custom Method
-    
-    @objc func viewDidTap() {
-        view.endEditing(true)
-    }
     
     @objc func deletedMemo(_ notification: Notification) {
         self.popToLastViewController()

@@ -96,23 +96,28 @@ extension UIViewController {
     func pushToMemoReadViewController(memoId: Int) {
         self.navigationController?.pushViewController(
             MemoReadViewController(
-                repository: DefaultMemoRepository(
-                    memoService: DefaultMemoService()),
+                viewModel: MemoReadViewModel(
+                    memoRepository: DefaultMemoRepository(
+                        memoService: DefaultMemoService()
+                    )
+                ),
                 memoId: memoId
             ), animated: true)
     }
     
     func pushToMemoEditViewController(userNovelId: Int? = nil, memoId: Int? = nil, novelTitle: String, novelAuthor: String, novelImage: String, memoContent: String? = nil) {
         self.navigationController?.pushViewController(MemoEditViewController(
-            repository: DefaultMemoRepository(
-                memoService: DefaultMemoService()
+            viewModel: MemoEditViewModel(
+                memoRepository: DefaultMemoRepository(
+                    memoService: DefaultMemoService()
+                ),
+                userNovelId: userNovelId,
+                memoId: memoId,
+                memoContent: memoContent
             ),
-            userNovelId: userNovelId, 
-            memoId: memoId,
             novelTitle: novelTitle,
             novelAuthor: novelAuthor,
-            novelImage: novelImage,
-            memoContent: memoContent
+            novelImage: novelImage
         ), animated: true)
     }
     
