@@ -41,7 +41,7 @@ final class RecordViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-    
+        
         showTabBar()
         preparationSetNavigationBar(title: StringLiterals.Navigation.Title.record,
                                     left: nil,
@@ -150,7 +150,15 @@ extension RecordViewController {
         
         output.navigateToMemoRead
             .bind(with: self, onNext: { owner, indexPath in
-                owner.pushToMemoReadViewController(memoId: output.recordMemoList.value[indexPath.row].id)
+                owner.navigationController?.pushViewController(
+                    MemoReadViewController(
+                        viewModel: MemoReadViewModel(
+                            memoRepository: DefaultMemoRepository(
+                                memoService: DefaultMemoService()
+                            )
+                        ),
+                        memoId: output.recordMemoList.value[indexPath.row].id
+                    ), animated: true)
             })
             .disposed(by: disposeBag)
         
