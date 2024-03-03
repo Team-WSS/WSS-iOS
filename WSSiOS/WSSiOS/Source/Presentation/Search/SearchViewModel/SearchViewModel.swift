@@ -41,7 +41,7 @@ final class SearchViewModel: ViewModelType {
     
     //MARK: - API
     
-    private func getDataFromAPI(searchWord: String) -> Observable<SearchNovels>{
+    private func getDataFromAPI(searchWord: String) -> Observable<SearchNovels> {
         novelRepository.getSearchNovels(searchWord: searchWord)
             .observe(on: MainScheduler.instance)
     }
