@@ -67,7 +67,6 @@
 		3999BFEB2B4E6C4400984832 /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3999BFEA2B4E6C4400984832 /* RegisterViewModel.swift */; };
 		3999BFEE2B4E6CA000984832 /* UIImageViewAlignedSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 3999BFED2B4E6CA000984832 /* UIImageViewAlignedSwift */; };
 		3999BFF02B4E6FA800984832 /* RegisterNormalBannerImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3999BFEF2B4E6FA800984832 /* RegisterNormalBannerImageView.swift */; };
-		399F29302B565D8000BBC12B /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 399F292F2B565D8000BBC12B /* Config.xcconfig */; };
 		399F29322B56633C00BBC12B /* NovelResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399F29312B56633C00BBC12B /* NovelResult.swift */; };
 		399F29352B56DA7800BBC12B /* ReadStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399F29342B56DA7800BBC12B /* ReadStatus.swift */; };
 		39ABD5A02B54D0A900DEA94E /* RegisterNormalDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39ABD59F2B54D0A900DEA94E /* RegisterNormalDatePicker.swift */; };
@@ -248,7 +247,6 @@
 		3992FA552B81E2A40079C8B8 /* RegisterNormalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalViewController.swift; sourceTree = "<group>"; };
 		3999BFEA2B4E6C4400984832 /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
 		3999BFEF2B4E6FA800984832 /* RegisterNormalBannerImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalBannerImageView.swift; sourceTree = "<group>"; };
-		399F292F2B565D8000BBC12B /* Config.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		399F29312B56633C00BBC12B /* NovelResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelResult.swift; sourceTree = "<group>"; };
 		399F29342B56DA7800BBC12B /* ReadStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadStatus.swift; sourceTree = "<group>"; };
 		39ABD59F2B54D0A900DEA94E /* RegisterNormalDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalDatePicker.swift; sourceTree = "<group>"; };
@@ -327,6 +325,7 @@
 		A1EF355F2B52FAEF00A94C53 /* MemoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoService.swift; sourceTree = "<group>"; };
 		A1EF35612B52FAF700A94C53 /* AvatarService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarService.swift; sourceTree = "<group>"; };
 		A1EF35682B52FD9B00A94C53 /* AvatarResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarResult.swift; sourceTree = "<group>"; };
+		B90655552B9466690047BB9D /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		CD39F2B52B4FE0E200B73A5C /* NovelDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailView.swift; sourceTree = "<group>"; };
 		CD39F2B72B4FE0FB00B73A5C /* NovelDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailViewController.swift; sourceTree = "<group>"; };
 		CD39F2BC2B4FE98500B73A5C /* NovelDetailHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailHeaderView.swift; sourceTree = "<group>"; };
@@ -559,7 +558,7 @@
 				2CD2294F2B42E9AD005400BE /* Source */,
 				A1EF35562B52FAA300A94C53 /* Network */,
 				2CD229292B42E687005400BE /* Info.plist */,
-				399F292F2B565D8000BBC12B /* Config.xcconfig */,
+				B90655552B9466690047BB9D /* Config.xcconfig */,
 			);
 			path = WSSiOS;
 			sourceTree = "<group>";
@@ -1282,7 +1281,6 @@
 				39B75ADB2B59891D005DD8B9 /* regressorSword.json in Resources */,
 				39B75AE02B59C6A7005DD8B9 /* LaunchScreen.storyboard in Resources */,
 				39B75AD62B59891D005DD8B9 /* sosocatTail.json in Resources */,
-				399F29302B565D8000BBC12B /* Config.xcconfig in Resources */,
 				2C79CB9B2B45A0B700734E1F /* Pretendard-Regular.otf in Resources */,
 				39B75AD82B59891D005DD8B9 /* regressorGreeting.json in Resources */,
 				2C79CB952B45A0A400734E1F /* Pretendard-SemiBold.otf in Resources */,
@@ -1471,7 +1469,6 @@
 /* Begin XCBuildConfiguration section */
 		2CD2292A2B42E687005400BE /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 399F292F2B565D8000BBC12B /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -1535,7 +1532,6 @@
 		};
 		2CD2292B2B42E687005400BE /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 399F292F2B565D8000BBC12B /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -1592,7 +1588,7 @@
 		};
 		2CD2292D2B42E687005400BE /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 399F292F2B565D8000BBC12B /* Config.xcconfig */;
+			baseConfigurationReference = B90655552B9466690047BB9D /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1623,7 +1619,7 @@
 		};
 		2CD2292E2B42E687005400BE /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 399F292F2B565D8000BBC12B /* Config.xcconfig */;
+			baseConfigurationReference = B90655552B9466690047BB9D /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

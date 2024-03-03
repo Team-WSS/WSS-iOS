@@ -155,7 +155,7 @@ final class LibraryViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
-        libraryListView.libraryOldesttButton.rx.tap
+        libraryListView.libraryOldestButton.rx.tap
             .bind(with: self) { owner , _ in
                 let sortTypeList = owner.sortTypeList.oldest
                 owner.updatePages(sortType: sortTypeList)

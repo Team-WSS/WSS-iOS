@@ -16,7 +16,7 @@ final class LibraryListView: UIView {
     
     private let dividerView = UIView()
     public lazy var libraryNewestButton = UIButton()
-    public lazy var libraryOldesttButton = UIButton()
+    public lazy var libraryOldestButton = UIButton()
     
     // MARK: - Life Cycle
     
@@ -38,7 +38,6 @@ final class LibraryListView: UIView {
         self.do {
             $0.backgroundColor = .wssWhite
             $0.layer.cornerRadius = 12
-            
             $0.layer.shadowColor = UIColor.wssBlack.withAlphaComponent(0.11).cgColor
             $0.layer.shadowOpacity = 1
             $0.layer.shadowOffset = CGSize(width: 0, height: 2)
@@ -46,8 +45,9 @@ final class LibraryListView: UIView {
         }
         
         libraryNewestButton.setTitle(StringLiterals.Alignment.newest.title, for: .normal)
-        libraryOldesttButton.setTitle(StringLiterals.Alignment.oldest.title, for: .normal)
-        [libraryNewestButton,libraryOldesttButton].forEach {
+        libraryOldestButton.setTitle(StringLiterals.Alignment.oldest.title, for: .normal)
+        
+        [libraryNewestButton,libraryOldestButton].forEach {
             $0.do {
                 $0.setTitleColor(.wssBlack, for: .normal)
                 $0.titleLabel?.font = .Body2
@@ -63,7 +63,7 @@ final class LibraryListView: UIView {
     private func setHierarchy() {
         self.addSubviews(libraryNewestButton,
                          dividerView,
-                         libraryOldesttButton)
+                         libraryOldestButton)
     }
     
     private func setLayout() {
@@ -77,7 +77,7 @@ final class LibraryListView: UIView {
             $0.height.equalTo(0.7)
         }
         
-        libraryOldesttButton.snp.makeConstraints {
+        libraryOldestButton.snp.makeConstraints {
             $0.top.equalTo(dividerView.snp.bottom).offset(15)
             $0.leading.trailing.equalToSuperview().inset(15)
             $0.bottom.equalToSuperview().inset(15)

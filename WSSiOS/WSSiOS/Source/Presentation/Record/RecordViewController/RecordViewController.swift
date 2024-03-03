@@ -97,7 +97,7 @@ extension RecordViewController {
             viewWillAppearEvent: viewWillAppearEvent.asObservable(),
             sortTypeButtonTapped: rootView.headerView.headerAlignmentButton.rx.tap,
             newestButtonTapped: rootView.alignmentView.libraryNewestButton.rx.tap,
-            oldestButtonTapped: rootView.alignmentView.libraryOldesttButton.rx.tap,
+            oldestButtonTapped: rootView.alignmentView.libraryOldestButton.rx.tap,
             recordCellSelected: rootView.recordTableView.rx.itemSelected,
             emptyButtonTapped: emptyView.recordButton.rx.tap
         )
