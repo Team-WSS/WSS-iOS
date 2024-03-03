@@ -56,18 +56,19 @@ extension SearchViewModel {
         
         input.searchTextUpdated
             .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, text in
+            .flatMapLatest { text in
                 if text.isEmpty {
-                    output.searchResultList.accept([])
+                    return Observable<[SearchNovel]>.empty()
                 }
                 else {
-                    let searchWord = text.isEmpty ? "" : text
-                    owner.getDataFromAPI(searchWord: searchWord)
-                        .subscribe(with: self, onNext: { owner, list in
-                            output.searchResultList.accept(list.novels)
-                        })
-                        .disposed(by: disposeBag)
+                    return self.getDataFromAPI(searchWord: text)
+                        .map { $0.novels }
                 }
+            }
+            .subscribe( onNext: { novels in
+                output.searchResultList.accept(novels)
+            }, onError: { error in
+                print(error)
             })
             .disposed(by: disposeBag)
         
