@@ -43,7 +43,7 @@ final class HomeSosoPickTitleView: UIView {
         }
         
         circleImageView.do {
-            $0.image = ImageLiterals.icon.sosopickCircle
+            $0.image = .sosopickCircle
             $0.contentMode = .scaleAspectFit
         }
         
