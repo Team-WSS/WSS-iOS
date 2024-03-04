@@ -73,13 +73,13 @@ extension SearchViewModel {
             .disposed(by: disposeBag)
         
         input.backButtonTapped
-            .subscribe(with: self, onNext: { owner, _ in
+            .subscribe(onNext: { _ in
                 output.backToHome.accept(true)
             })
             .disposed(by: disposeBag)
         
         input.searchCellSelected
-            .subscribe(with: self, onNext: { owner, indexPath in
+            .subscribe(onNext: { indexPath in
                 output.navigateToRegisterNormal.accept(indexPath)
             })
             .disposed(by: disposeBag)
