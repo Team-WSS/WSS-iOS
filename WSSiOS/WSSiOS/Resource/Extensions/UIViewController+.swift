@@ -96,33 +96,39 @@ extension UIViewController {
     func pushToMemoReadViewController(memoId: Int) {
         self.navigationController?.pushViewController(
             MemoReadViewController(
-                repository: DefaultMemoRepository(
-                    memoService: DefaultMemoService()),
+                viewModel: MemoReadViewModel(
+                    memoRepository: DefaultMemoRepository(
+                        memoService: DefaultMemoService()
+                    )
+                ),
                 memoId: memoId
             ), animated: true)
     }
     
     func pushToMemoEditViewController(userNovelId: Int? = nil, memoId: Int? = nil, novelTitle: String, novelAuthor: String, novelImage: String, memoContent: String? = nil) {
         self.navigationController?.pushViewController(MemoEditViewController(
-            repository: DefaultMemoRepository(
-                memoService: DefaultMemoService()
+            viewModel: MemoEditViewModel(
+                memoRepository: DefaultMemoRepository(
+                    memoService: DefaultMemoService()
+                ),
+                userNovelId: userNovelId,
+                memoId: memoId,
+                memoContent: memoContent
             ),
-            userNovelId: userNovelId, 
-            memoId: memoId,
             novelTitle: novelTitle,
             novelAuthor: novelAuthor,
-            novelImage: novelImage,
-            memoContent: memoContent
+            novelImage: novelImage
         ), animated: true)
     }
     
     func presentDeleteUserNovelViewController(userNovelId: Int) {
         let viewController = DeletePopupViewController(
-            userNovelRepository: DefaultUserNovelRepository(
-                userNovelService: DefaultUserNovelService()
-            ),
-            popupStatus: .novelDelete,
-            userNovelId: userNovelId
+            viewModel: DeletePopupViewModel(
+                userNovelRepository: DefaultUserNovelRepository(
+                    userNovelService: DefaultUserNovelService()
+                ),
+                userNovelId: userNovelId),
+            popupStatus: .novelDelete
         )
         viewController.modalPresentationStyle = .overFullScreen
         viewController.modalTransitionStyle = .crossDissolve
@@ -131,11 +137,12 @@ extension UIViewController {
     
     func presentMemoDeleteViewController(memoId: Int) {
         let viewController = DeletePopupViewController(
-            memoRepository: DefaultMemoRepository(
-                memoService: DefaultMemoService()
-            ),
-            popupStatus: .memoDelete,
-            memoId: memoId
+            viewModel: DeletePopupViewModel(
+                memoRepository: DefaultMemoRepository(
+                    memoService: DefaultMemoService()
+                ),
+                memoId: memoId),
+            popupStatus: .memoDelete
         )
         viewController.modalPresentationStyle = .overFullScreen
         viewController.modalTransitionStyle = .crossDissolve
@@ -144,8 +151,10 @@ extension UIViewController {
     
     func presentMemoEditCancelViewController() {
         let viewController = DeletePopupViewController(
-            memoRepository: DefaultMemoRepository(
-                memoService: DefaultMemoService()
+            viewModel: DeletePopupViewModel(
+                memoRepository: DefaultMemoRepository(
+                    memoService: DefaultMemoService()
+                )
             ),
             popupStatus: .memoEditCancel
         )
