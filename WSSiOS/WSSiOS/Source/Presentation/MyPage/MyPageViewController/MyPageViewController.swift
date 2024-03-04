@@ -21,7 +21,7 @@ final class MyPageViewController: UIViewController {
     private let userRepository: UserRepository
     private let avatarRepository: AvatarRepository
     private let settingData = StringLiterals.MyPage.Setting.allCases.map { $0.rawValue }
-    private lazy var userNickName = ""
+    private lazy var userNickname = ""
     private lazy var representativeAvatarId = 0
     private var currentPresentativeAvatar = false
     
@@ -90,7 +90,7 @@ final class MyPageViewController: UIViewController {
             .subscribe(with: self, onNext: { owner, data in 
                 owner.rootView.bindData(data)
                 owner.representativeAvatarId = data.representativeAvatarId
-                owner.userNickName = data.userNickname
+                owner.userNickname = data.userNickname
                 owner.avaterListRelay.accept(data.userAvatars)
                 owner.bindColletionView()
             })
@@ -144,7 +144,7 @@ final class MyPageViewController: UIViewController {
                 switch option {
                 case .accountInfo:
                     let infoViewController = MyPageInfoViewController()
-                    infoViewController.rootView.bindData(self.userNickName)
+                    infoViewController.rootView.bindData(self.userNickname)
                     self.hideTabBar()
                     self.navigationController?.pushViewController(infoViewController, animated: true)
                     
@@ -185,14 +185,7 @@ final class MyPageViewController: UIViewController {
         rootView.myPageTallyView.myPageUserNameButton.rx.tap
             .throttle(.seconds(3), scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in 
-//                owner.hideTabBar()
-                let changeNicknameViewController = MyPageChangeNicknameViewController(
-                    userNickName: owner.userNickName,
-                    viewModel: MyPageNickNameChangeViewModel(
-                        userRepository: DefaultUserRepository(
-                            userService: DefaultUserService()),
-                        userNickName: owner.userNickName))
-                owner.navigationController?.pushViewController(changeNicknameViewController, animated: true)
+                self.pushToChangeNicknameViewController(userNickname: owner.userNickname)
             })
             .disposed(by: disposeBag)
         
@@ -239,7 +232,7 @@ final class MyPageViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, userData in
                 owner.representativeAvatarId = userData.representativeAvatarId
-                owner.userNickName = userData.userNickname
+                owner.userNickname = userData.userNickname
                 completion(userData, userData.userAvatars)
             }, onError: { error, _ in
                 print(error)
@@ -271,13 +264,7 @@ extension MyPageViewController {
             .throttle(.seconds(3), scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in 
                 self.hideTabBar()
-                let changeNicknameViewController = MyPageChangeNicknameViewController(
-                    userNickName: owner.userNickName,
-                    viewModel: MyPageNickNameChangeViewModel(
-                        userRepository: DefaultUserRepository(
-                            userService: DefaultUserService()),
-                        userNickName: owner.userNickName))
-                owner.navigationController?.pushViewController(changeNicknameViewController, animated: true)
+                self.pushToChangeNicknameViewController(userNickname: owner.userNickname)
             })
             .disposed(by: disposeBag)
     }

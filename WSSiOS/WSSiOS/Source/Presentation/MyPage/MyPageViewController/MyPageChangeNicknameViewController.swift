@@ -24,11 +24,11 @@ final class MyPageChangeNicknameViewController: UIViewController {
     private lazy var backButton = UIButton()
     private lazy var completeButton = UIButton()
     private let disposeBag = DisposeBag()
-    private let viewModel: MyPageNickNameChangeViewModel
+    private let viewModel: MyPageChangeNickNameViewModel
     
     // MARK: - Life Cycle
     
-    init(userNickName: String, viewModel: MyPageNickNameChangeViewModel) {
+    init(userNickName: String, viewModel: MyPageChangeNickNameViewModel) {
         self.userNickName = userNickName
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -59,28 +59,25 @@ final class MyPageChangeNicknameViewController: UIViewController {
     private func bindViewModel() {
         rootView.changeNicknameTextField.text = userNickName
         
-        let input = MyPageNickNameChangeViewModel.Input(
+        let input = MyPageChangeNickNameViewModel.Input(
             updateNicknameTextField: rootView.changeNicknameTextField.rx.text
                 .map { $0 ?? "" }
                 .asDriver(onErrorJustReturn: ""),
-            completeButtonDidTap: completeButton.rx.tap
-                .throttle(.seconds(3), scheduler: MainScheduler.instance)
-                .asObservable(),
+            completeButtonDidTap: completeButton.rx.tap,
             clearButtonDidTap: rootView.setClearButton.rx.tap
-                .throttle(.seconds(1), scheduler: MainScheduler.instance)
-                .asObservable()
         )
         
         let output = self.viewModel.transform(from: input, disposeBag: self.disposeBag)
         
         backButton.rx.tap
             .subscribe(with: self, onNext: { owner, _ in
-                owner.navigationController?.popViewController(animated: true)
+                owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
         
         output.textFieldUnderlineColor
-            .subscribe(with: self, onNext: { owner, color in
+            .subscribe(with: self, onNext: { owner, isAble in
+                let color = isAble ? UIColor.wssPrimary100 : UIColor.wssGray200
                 owner.rootView.textFieldUnderBarView.backgroundColor = color
             })
             .disposed(by: disposeBag)
@@ -92,7 +89,8 @@ final class MyPageChangeNicknameViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.completeButtonTitleColor
-            .subscribe(with: self, onNext: { owner, color in
+            .subscribe(with: self, onNext: { owner, isAble in
+                let color = isAble ? UIColor.wssPrimary100 : UIColor.wssGray200
                 owner.completeButton.setTitleColor(color, for: .normal)
             })
             .disposed(by: disposeBag)
@@ -106,7 +104,7 @@ final class MyPageChangeNicknameViewController: UIViewController {
         output.completeButtonAction
             .subscribe(with: self, onNext: { owner, isAble in
                 if isAble {
-                    owner.navigationController?.popViewController(animated: true)
+                    owner.popToLastViewController()
                 }
             })
             .disposed(by: disposeBag)
