@@ -8,13 +8,6 @@
 import UIKit
 
 extension UIImage {
-    static func load (named imageName: String) -> UIImage {
-        guard let image = UIImage(named: imageName, in: nil, compatibleWith: nil) else {
-            return UIImage()
-        }
-        return image
-    }
-    
     func asBlurredBannerImage(radius: CGFloat) -> UIImage {
         let context = CIContext()
         guard let ciImage = CIImage(image: self),

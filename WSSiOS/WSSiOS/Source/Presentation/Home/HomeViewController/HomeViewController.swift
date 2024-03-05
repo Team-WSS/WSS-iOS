@@ -114,22 +114,12 @@ final class HomeViewController: UIViewController {
         rootView.sosopickView.sosoPickCollectionView
             .rx
             .itemSelected
-                .subscribe(onNext:{ indexPath in
-                    let RegisterNormalVC = RegisterNormalViewController(
-                        novelRepository: DefaultNovelRepository(
-                            novelService: DefaultNovelService()),
-                        userNovelRepository: DefaultUserNovelRepository(
-                            userNovelService:DefaultUserNovelService()),
-                        novelId: self.sosopickListRelay.value[indexPath.row].novelId)
-                    
-                    self.hideTabBar()
-                    
-                    RegisterNormalVC.hidesBottomBarWhenPushed = true
-                    self.navigationController?.pushViewController(
-                        RegisterNormalVC,
-                        animated: true)
-                })
-                .disposed(by: disposeBag)
+            .subscribe(onNext: { indexPath in
+                let novelID = self.sosopickListRelay.value[indexPath.row].novelId
+                self.pushToRegisterNormalViewController(novelId: novelID)
+                self.hideTabBar()
+            })
+            .disposed(by: disposeBag)
     }
     
     private func bindDataToUI() {
@@ -145,17 +135,21 @@ final class HomeViewController: UIViewController {
     }
     
     @objc private func pushSearchVC(_ sender: UITapGestureRecognizer) {
-        let searchVC = SearchViewController(novelRepository: DefaultNovelRepository(novelService: DefaultNovelService()))
+        let searchViewController = SearchViewController(
+            searchViewModel: SearchViewModel(
+                novelRepository: DefaultNovelRepository(
+                    novelService: DefaultNovelService())))
+        
         hideTabBar()
-        searchVC.hidesBottomBarWhenPushed = true
-        self.navigationController?.pushViewController(searchVC, animated: true)
+        searchViewController.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(searchViewController, animated: true)
     }
-
+    
     private func getLottie(avatarId: Int) -> LottieAnimationView {
         let random = (0...1).randomElement() ?? 0
         return lotties[avatarId-1][random]
     }
- 
+    
     private func updateUI(user: UserCharacter, sosopickList: SosopickNovels) {
         Observable.just(userCharacter)
             .observe(on: MainScheduler.instance)

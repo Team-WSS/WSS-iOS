@@ -42,7 +42,7 @@ final class LibraryDescriptionView: UIView {
         }
         
         libraryNovelListButton.do {
-            let title = StringLiterals.Alignment.newest
+            let title = StringLiterals.Alignment.newest.title
             var attString = AttributedString(title)
             attString.font = UIFont.Label1
             attString.foregroundColor = UIColor.wssGray300

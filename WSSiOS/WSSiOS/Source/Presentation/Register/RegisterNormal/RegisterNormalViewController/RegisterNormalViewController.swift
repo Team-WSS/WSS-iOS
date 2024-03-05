@@ -2,7 +2,7 @@
 //  RegisterNormalViewController.swift
 //  WSSiOS
 //
-//  Created by 이윤학 on 1/6/24.
+//  Created by 이윤학 on 2/18/24.
 //
 
 import UIKit
@@ -10,6 +10,7 @@ import UIKit
 import Kingfisher
 import RxSwift
 import RxCocoa
+import RxGesture
 import SnapKit
 import Then
 
@@ -18,35 +19,14 @@ final class RegisterNormalViewController: UIViewController {
     
     //MARK: - Properties
     
-    private let novelRepository: NovelRepository
-    private let userNovelRepository: UserNovelRepository
-    private let novelId: Int
-    private var userNovelId: Int
+    private let viewModel: RegisterViewModel
+    private let disposeBag = DisposeBag()
+    
     private var navigationTitle: String = ""
-    private var platformList: [UserNovelPlatform] = []
-    private var minStarRating: Float = 0.0
-    private var maxStarRating: Float = 5.0
     private let dateFormatter = DateFormatter().then {
         $0.dateFormat = StringLiterals.Register.Normal.DatePicker.dateFormat
         $0.timeZone = TimeZone(identifier: StringLiterals.Register.Normal.DatePicker.KoreaTimeZone)
     }
-    private var requestStartDate: String?
-    private var requestEndDate: String?
-    private var requestRating: Float?
-    
-    // RxSwift
-    private let disposeBag = DisposeBag()
-    private var isNew = BehaviorRelay<Bool>(value: true)
-    private var starRating = BehaviorRelay<Float>(value: 0.0)
-    private var readStatus = BehaviorRelay<ReadStatus>(value: .FINISH)
-    private var isDateExist = BehaviorRelay<Bool>(value: true)
-    private var showDatePicker = BehaviorRelay<Bool>(value: false)
-    private var startDate = BehaviorRelay<Date>(value: Date())
-    private var endDate = BehaviorRelay<Date>(value: Date())
-    private var internalStartDate = BehaviorRelay<Date>(value: Date())
-    private var internalEndDate = BehaviorRelay<Date>(value: Date())
-    private var isSelectingStartDate = BehaviorRelay<Bool>(value: true)
-    private var platformCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
     
     //MARK: - Components
     
@@ -55,11 +35,8 @@ final class RegisterNormalViewController: UIViewController {
     
     //MARK: - Life Cycle
     
-    init(novelRepository: NovelRepository, userNovelRepository: UserNovelRepository, novelId: Int = 0, userNovelId: Int = 0) {
-        self.novelRepository = novelRepository
-        self.userNovelRepository = userNovelRepository
-        self.novelId = novelId
-        self.userNovelId = userNovelId
+    init(viewModel: RegisterViewModel) {
+        self.viewModel = viewModel
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -76,12 +53,9 @@ final class RegisterNormalViewController: UIViewController {
         super.viewDidLoad()
         
         setUI()
-        getNovel()
+        bindViewModel()
         register()
-        bindUI()
-        bindActions()
-        bindNavigation()
-        setNavigationBar()
+        delegate()
         swipeBackGesture()
     }
     
@@ -90,6 +64,7 @@ final class RegisterNormalViewController: UIViewController {
         
         setNavigationBar()
         updateNavigationBarStyle(offset: rootView.pageScrollView.contentOffset.y)
+        hideTabBar()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -119,342 +94,234 @@ final class RegisterNormalViewController: UIViewController {
     //MARK: - Bind
     
     private func register() {
-        rootView.novelSummaryView.platformCollectionView.register(NovelDetailInfoPlatformCollectionViewCell.self, forCellWithReuseIdentifier: "NovelDetailInfoPlatformCollectionViewCell")
-        rootView.novelSummaryView.platformCollectionView.dataSource = self
-        rootView.novelSummaryView.platformCollectionView.delegate = self
+        rootView.novelSummaryView.platformCollectionView
+            .register(NovelDetailInfoPlatformCollectionViewCell.self,
+                      forCellWithReuseIdentifier: "NovelDetailInfoPlatformCollectionViewCell")
     }
     
-    private func bindUI() {
-        rootView.pageScrollView.rx.contentOffset
-            .asDriver()
+    private func delegate() {
+        rootView.novelSummaryView.platformCollectionView.rx.setDelegate(self)
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindViewModel() {
+        let input = createViewModelInput()
+        let output = viewModel.transform(from: input,
+                                         disposeBag: disposeBag)
+        bindViewModelOutput(output)
+    }
+    
+    private func bindViewModelOutput(_ output: RegisterViewModel.Output) {
+        output.novelBasicData
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, data in
+                owner.rootView.bindData(data)
+                owner.navigationTitle = data.novelTitle
+            },onError: { owner, error in
+                print(error)
+            })
+            .disposed(by: disposeBag)
+        
+        output.scrollContentOffset
             .drive(with: self, onNext: { owner, offset in
                 owner.updateNavigationBarStyle(offset: offset.y)
             })
             .disposed(by: disposeBag)
         
-        starRating
-            .asDriver()
+        output.starRating
             .drive(with: self, onNext: { owner, rating in
                 owner.rootView.infoWithRatingView.updateStarImages(rating: rating)
             })
             .disposed(by: disposeBag)
         
-        readStatus
-            .asDriver()
+        output.readStatus
             .drive(with: self, onNext: { owner, status in
                 owner.rootView.readStatusView.updateReadStatusButton(status: status)
                 
                 if status == .WISH {
-                    owner.rootView.readDateView.isHidden = true
+                    owner.showReadDateView(false)
                 } else {
-                    owner.rootView.readDateView.isHidden = false
+                    owner.showReadDateView(true)
+                    owner.rootView.customDatePicker.updateDatePickerTitle(status: status)
                     owner.rootView.readDateView.updateDatePickerButton(status)
                 }
-                
-                owner.rootView.customDatePicker.updateDatePickerTitle(status: status)
-                
-                if status == .FINISH || status == .READING {
-                    owner.isSelectingStartDate.accept(true)
-                } else if status == .DROP {
-                    owner.isSelectingStartDate.accept(false)
-                }
             })
             .disposed(by: disposeBag)
         
-        isDateExist
-            .asDriver()
+        output.isDateExist
             .drive(with: self, onNext: { owner, isDateExist in
                 owner.rootView.readDateView.toggleButton.updateToggle(isDateExist)
-                owner.rootView.readDateView.datePickerButton.isHidden = !isDateExist
+                owner.showDatePickerButton(isDateExist)
             })
             .disposed(by: disposeBag)
         
-        showDatePicker
-            .asDriver()
-            .drive(with: self, onNext: { owner, isShow in
-                if isShow {
-                    owner.internalStartDate.accept(owner.startDate.value)
-                    owner.internalEndDate.accept(owner.endDate.value)
-                    owner.rootView.customDatePicker
-                        .updateDatePicker(date: owner.isSelectingStartDate.value ? owner.internalStartDate.value : owner.internalEndDate.value)
-                }
-                owner.rootView.customDatePicker.isHidden = !isShow
-                
-                if owner.rootView.pageScrollView.contentOffset.y == 0 {
-                    owner.updateNavigationBarStyle(offset: owner.rootView.pageScrollView.contentOffset.y)
-                } else {
-                    owner.navigationController?.setNavigationBarHidden(isShow, animated: false)
-                    owner.rootView.divider.isHidden = isShow
-                }
-            })
-            .disposed(by: disposeBag)
-        
-        startDate
-            .asDriver()
+        output.startDate
             .map { self.dateFormatter.string(from: $0) }
             .drive(with: self, onNext: { owner, text in
                 owner.rootView.readDateView.setStartDateText(text: text)
             })
             .disposed(by: disposeBag)
         
-        endDate
-            .asDriver()
+        output.endDate
             .map { self.dateFormatter.string(from: $0) }
             .drive(with: self, onNext: { owner, text in
                 owner.rootView.readDateView.setEndDateText(text: text)
             })
             .disposed(by: disposeBag)
         
-        internalStartDate
-            .asDriver()
+        output.showDatePicker
+            .drive(with: self, onNext: { owner, isShow in
+                owner.showCustomDatePickerView(isShow)
+                owner.updateNavigationBarStyleWithDatePicker(isShow)
+            })
+            .disposed(by: disposeBag)
+        
+        output.isSelectingStartDate
+            .flatMapLatest { isSelectingStartDate in
+                return isSelectingStartDate ? output.internalStartDate : output.internalEndDate
+            }
+            .drive(with: self, onNext: { owner, date in
+                owner.rootView.customDatePicker.updateDatePicker(date: date)
+            })
+            .disposed(by: disposeBag)
+        
+        output.isOverToday
+            .drive(with: self, onNext: { owner, isOverToday in
+                if isOverToday {
+                    owner.rootView.customDatePicker.updateDatePicker(date: Date())
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        output.internalStartDate
             .map { self.dateFormatter.string(from: $0) }
             .drive(with: self, onNext: { owner, text in
                 owner.rootView.customDatePicker.setStartDateText(text: text)
             })
             .disposed(by: disposeBag)
         
-        internalEndDate
-            .asDriver()
+        output.internalEndDate
             .map { self.dateFormatter.string(from: $0) }
             .drive(with: self, onNext: { owner, text in
                 owner.rootView.customDatePicker.setEndDateText(text: text)
             })
             .disposed(by: disposeBag)
         
-        isSelectingStartDate
-            .asDriver()
-            .drive(with: self, onNext: { owner, isStart in
-                owner.rootView.customDatePicker.updateButtons(isStart)
-                owner.rootView.customDatePicker
-                    .updateDatePicker(date: isStart ? owner.internalStartDate.value :
-                                                      owner.internalEndDate.value)
+        output.platformList
+            .drive(with: self, onNext: { owner, list in
+                owner.rootView.novelSummaryView.hiddenPlatformView(when: list.isEmpty)
             })
             .disposed(by: disposeBag)
         
-        isNew
-            .asDriver()
-            .drive(with: self, onNext: { owner, isNew in
-                owner.rootView.registerButton
-                    .setTitle(isNew ? StringLiterals.Register.Normal.RegisterButton.new :
-                                      StringLiterals.Register.Normal.RegisterButton.edit,
-                              for: .normal)
-            })
-            .disposed(by: disposeBag)
-        
-        platformCollectionViewHeight
-            .asDriver()
+        output.platformCollectionViewHeight
             .drive(with: self, onNext: { owner, height in
                 owner.rootView.novelSummaryView.updateCollectionViewHeight(height: height)
+            })
+            .disposed(by: disposeBag)
+        
+        output.platformList
+            .drive(rootView.novelSummaryView.platformCollectionView.rx.items(
+                cellIdentifier: NovelDetailInfoPlatformCollectionViewCell.cellIdentifier,
+                cellType: NovelDetailInfoPlatformCollectionViewCell.self)) { _, element, cell in
+                    cell.bindData(platform: element.platformName)
+                }
+                .disposed(by: disposeBag)
+        
+        rootView.novelSummaryView.platformCollectionView.rx.itemSelected
+            .withLatestFrom(output.platformList) {(indexPath: $0, platformList: $1)}
+            .subscribe(with: self, onNext: { owner, data in
+                if let url = URL(string: data.platformList[data.indexPath.item].platformUrl) {
+                    UIApplication.shared.open(url, options: [:])
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        output.isNew
+            .drive(with: self, onNext: { owner, isNew in
+                let text = isNew ? StringLiterals.Register.Normal.RegisterButton.new :
+                StringLiterals.Register.Normal.RegisterButton.edit
+                owner.rootView.registerButton.setTitle(text,
+                                                       for: .normal)
+            })
+            .disposed(by: disposeBag)
+        
+        output.endAPIRequest
+            .observe(on: MainScheduler.instance)
+            .withLatestFrom(output.isNew) { (userNovelId: $0, isNew: $1) }
+            .subscribe(with: self, onNext: { owner, values in
+                values.isNew ? owner.pushToRegisterSuccessViewController(userNovelId: values.userNovelId) :
+                owner.moveToNovelDetailViewController(userNovelId: values.userNovelId)
+            }, onError: { owner, error in
+                print(error)
+            })
+            .disposed(by: disposeBag)
+        
+        output.backButtonTap
+            .bind(with: self, onNext: { owner, _ in
+                owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
     }
     
     //MARK: - Actions
     
-    private func bindActions() {
-        rootView.infoWithRatingView.starImageViews
-            .enumerated().forEach { index, imageView in
-                let tapGesture = UITapGestureRecognizer()
-                imageView.addGestureRecognizer(tapGesture)
-                tapGesture.rx.event
-                    .bind(with: self, onNext: { owner, recognizer in
+    private func createViewModelInput() -> RegisterViewModel.Input {
+        let starRatingTapGesture = Observable.merge(
+            rootView.infoWithRatingView.starImageViews.enumerated().map { index, imageView in
+                imageView.rx.tapGesture()
+                    .when(.recognized)
+                    .map { recognizer in
                         let location = recognizer.location(in: imageView)
-                        let rating = Float(index) + (location.x > imageView.frame.width / 2 ? 1 : 0.5)
-                        owner.starRating.accept(rating)
-                    })
-                    .disposed(by: disposeBag)
+                        return (location: location, width: imageView.frame.width, index: index)
+                    }
+            }
+        )
+        
+        let starRatingPanGesture = rootView.infoWithRatingView.starRatingStackView.rx.panGesture()
+            .when(.changed)
+            .map { recognizer in
+                let location = recognizer.location(in: self.rootView.infoWithRatingView.starRatingStackView)
+                let width = self.rootView.infoWithRatingView.starRatingStackView.frame.width
+                return (location: location, width: width)
             }
         
-        let panGesture = UIPanGestureRecognizer()
-        rootView.infoWithRatingView.starRatingStackView.addGestureRecognizer(panGesture)
-        panGesture.rx.event
-            .bind(with: self, onNext: { owner, recognizer in
-                let location = recognizer.location(in: owner.rootView.infoWithRatingView.starRatingStackView)
-                let rawRating = (Float(location.x / owner.rootView.infoWithRatingView.starRatingStackView.frame.width * 5) * 2)
-                    .rounded(.toNearestOrAwayFromZero) / 2
-                let rating = min(max(rawRating, owner.minStarRating), owner.maxStarRating)
-                owner.starRating.accept(rating)
+        let readStatusButtonTap = Observable.merge(
+            rootView.readStatusView.readStatusButtons.map {button in
+                button.rx.tap.map { button.status }
             })
-            .disposed(by: disposeBag)
         
-        for (index, readStatus) in ReadStatus.allCases.enumerated() {
-            rootView.readStatusView.readStatusButtons[index].rx.tap
-                .bind(with: self, onNext: { owner, _ in
-                    owner.readStatus.accept(readStatus)
-                })
-                .disposed(by: disposeBag)
-        }
+        let platformCollectionViewHeight = rootView.novelSummaryView.platformCollectionView.rx.observe(CGSize.self, "contentSize")
         
-        rootView.readDateView.toggleButton.rx.tap
-            .bind(with: self, onNext: { owner, _ in
-                owner.isDateExist.accept(!owner.isDateExist.value)
-            })
-            .disposed(by: disposeBag)
-        
-        rootView.readDateView.datePickerButton.rx.tap
-            .bind(with: self, onNext: { owner, _ in
-                owner.showDatePicker.accept(!owner.showDatePicker.value)
-            })
-            .disposed(by: disposeBag)
-        
-        rootView.customDatePicker.rx.tap
-            .bind(with: self, onNext: { owner, _ in
-                owner.showDatePicker.accept(!owner.showDatePicker.value)
-            })
-            .disposed(by: disposeBag)
-        
-        rootView.customDatePicker.startButton.rx.tap
-            .bind(with: self, onNext: { owner, _ in
-                owner.isSelectingStartDate.accept(true)
-            })
-            .disposed(by: disposeBag)
-        
-        rootView.customDatePicker.endButton.rx.tap
-            .bind(with: self, onNext: { owner, _ in
-                owner.isSelectingStartDate.accept(false)
-            })
-            .disposed(by: disposeBag)
-        
-        rootView.customDatePicker.datePicker.rx.date.changed
-            .bind(with: self, onNext: { owner, date in
-                var selectedDate = date
-                if date > Date() {
-                    owner.rootView.customDatePicker.updateDatePicker(date: Date())
-                    selectedDate = Date()
-                }
-                
-                let isStart = owner.isSelectingStartDate.value
-                let startDate = owner.internalStartDate.value
-                let endDate = owner.internalEndDate.value
-                
-                if (isStart && selectedDate >= endDate) || (!isStart && selectedDate <= startDate) {
-                    owner.internalStartDate.accept(selectedDate)
-                    owner.internalEndDate.accept(selectedDate)
-                } else if isStart {
-                    owner.internalStartDate.accept(selectedDate)
-                } else if !isStart {
-                    owner.internalEndDate.accept(selectedDate)
-                }
-            })
-            .disposed(by: disposeBag)
-        
-        rootView.customDatePicker.completeButton.rx.tap
-            .bind(with: self, onNext: { owner, _ in
-                owner.startDate.accept(owner.internalStartDate.value)
-                owner.endDate.accept(owner.internalEndDate.value)
-                owner.showDatePicker.accept(!owner.showDatePicker.value)
-            })
-            .disposed(by: disposeBag)
-        
-        rootView.novelSummaryView.platformCollectionView.rx.observe(CGSize.self, "contentSize")
-            .map { $0?.height ?? 0 }
-            .bind(to: platformCollectionViewHeight)
-            .disposed(by: disposeBag)
-    }
-    
-    private func bindNavigation() {
-        backButton.rx.tap
-            .bind(with: self, onNext: { owner, _ in
-                owner.popToLastViewController()
-            })
-            .disposed(by: disposeBag)
-        
-        rootView.registerButton.rx.tap
-            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, _ in
-                owner.isNew.value ? owner.postUserNovel() : owner.patchUserNovel()
-            })
-            .disposed(by: disposeBag)
-    }
-    
-    //MARK: - API
-    
-    private func getNovel() {
-        novelRepository.getNovelInfo(novelId: novelId)
-            .observe(on: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, data in
-                owner.bindData(data)
-            },onError: { owner, error in
-                print(error)
-            }).disposed(by: disposeBag)
-    }
-    
-    private func postUserNovel() {
-        formatRequestBodyData()
-        userNovelRepository.postUserNovel(novelId: novelId,
-                                          userNovelRating: requestRating,
-                                          userNovelReadStatus: readStatus.value,
-                                          userNovelReadStartDate: requestStartDate,
-                                          userNovelReadEndDate: requestEndDate)
-        .observe(on: MainScheduler.instance)
-        .subscribe(with: self, onNext: { owner, data in
-            owner.userNovelId = data.userNovelId
-            owner.pushToRegisterSuccessViewController(userNovelId: owner.userNovelId)
-        }, onError: { owner, error in
-            print(error)
-        })
-        .disposed(by: disposeBag)
-    }
-    
-    private func patchUserNovel() {
-        formatRequestBodyData()
-        userNovelRepository.patchUserNovel(userNovelId: userNovelId,
-                                           userNovelRating: requestRating,
-                                           userNovelReadStatus: readStatus.value,
-                                           userNovelReadStartDate: requestStartDate,
-                                           userNovelReadEndDate: requestEndDate)
-        .observe(on: MainScheduler.instance)
-        .subscribe(with: self, onNext: { owner, data in
-            owner.moveToNovelDetailViewController(userNovelId: owner.userNovelId)
-        }, onError: { owner, error in
-            print(error)
-        })
-        .disposed(by: disposeBag)
-    }
-    
-    private func bindData(_ data: NovelResult) {
-        if let newNovelResult = data.newNovelResult {
-            isNew.accept(true)
-            bindNewData(newNovelResult)
-        } else if let editNovelResult = data.editNovelResult {
-            isNew.accept(false)
-            bindUserData(editNovelResult)
-        }
-    }
-    
-    private func bindNewData(_ newData: NewNovelResult) {
-        self.navigationTitle = newData.novelTitle
-        self.platformList = newData.platforms
-        rootView.novelSummaryView.hiddenPlatformView(platformList.count)
-        rootView.bindNewData(newData)
-    }
-    
-    private func bindUserData(_ userData: EditNovelResult) {
-        self.navigationTitle = userData.userNovelTitle
-        self.userNovelId = userData.userNovelID
-        self.platformList = userData.platforms
-        rootView.novelSummaryView.hiddenPlatformView(platformList.count)
-        rootView.bindUserData(userData)
-        
-        self.starRating.accept(userData.userNovelRating ?? minStarRating)
-        let status = ReadStatus(rawValue: userData.userNovelReadStatus) ?? .FINISH
-        self.readStatus.accept(status)
-        
-        // status에 따른 날짜 처리
-        var start = userData.userNovelReadDate.userNovelReadStartDate ?? ""
-        var end = userData.userNovelReadDate.userNovelReadEndDate ?? ""
-
-        if status == .READING {
-            end = start
-        } else if status == .DROP {
-            start = end
-        }
-        
-        self.startDate.accept( dateFormatter.date(from: start) ?? Date() )
-        self.endDate.accept( dateFormatter.date(from: end) ?? Date() )
+        return RegisterViewModel.Input(
+            scrollContentOffset: rootView.pageScrollView.rx.contentOffset,
+            starRatingTapGesture: starRatingTapGesture,
+            starRatingPanGesture: starRatingPanGesture,
+            readStatusButtonTap: readStatusButtonTap,
+            readDateToggleButtonTap: rootView.readDateView.toggleButton.rx.tap,
+            datePickerButtonTap: rootView.readDateView.datePickerButton.rx.tap,
+            customDatePickerBackgroundTap: rootView.customDatePicker.rx.tap,
+            customDatePickerStartButtonTap: rootView.customDatePicker.startButton.rx.tap,
+            customDatePickerEndButtonTap: rootView.customDatePicker.endButton.rx.tap,
+            customDatePickerDateChanged: rootView.customDatePicker.datePicker.rx.date.changed,
+            customDatePickerCompleteButtonTap: rootView.customDatePicker.completeButton.rx.tap,
+            platformCollectionViewHeight: platformCollectionViewHeight,
+            registerButtonTap: rootView.registerButton.rx.tap,
+            backButtonTap: backButton.rx.tap)
     }
     
     //MARK: - Custom Method
+    
+    private func showDatePickerButton(_ isShow: Bool) {
+        rootView.readDateView.datePickerButton.isHidden = !isShow
+    }
+    
+    private func showCustomDatePickerView(_ isShow: Bool) {
+        rootView.customDatePicker.isHidden = !isShow
+    }
+    
+    private func showReadDateView(_ isShow: Bool) {
+        rootView.readDateView.isHidden = !isShow
+    }
     
     private func updateNavigationBarStyle(offset: CGFloat) {
         if offset > 0 {
@@ -474,62 +341,23 @@ final class RegisterNormalViewController: UIViewController {
         }
     }
     
-    private func formatRequestBodyData() {
-        requestStartDate = dateFormatter.string(from: startDate.value)
-        requestEndDate = dateFormatter.string(from: endDate.value)
-        
-        if !isDateExist.value {
-            requestStartDate = nil
-            requestEndDate = nil
-        } else if readStatus.value == .READING  {
-            requestEndDate = nil
-        } else if readStatus.value == .DROP {
-            requestStartDate = nil
-        } else if readStatus.value == .WISH {
-            requestStartDate = nil
-            requestEndDate = nil
-        }
-        
-        requestRating = starRating.value <= minStarRating ? nil : starRating.value
-    }
-}
-
-extension RegisterNormalViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.platformList.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: NovelDetailInfoPlatformCollectionViewCell.cellIdentifier,
-            for: indexPath
-        ) as? NovelDetailInfoPlatformCollectionViewCell else { return UICollectionViewCell() }
-        
-        cell.bindData(
-            platform: self.platformList[indexPath.item].platformName
-        )
-        
-        return cell
-    }
-}
-
-extension RegisterNormalViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let url = URL(string: self.platformList[indexPath.item].platformUrl) {
-            UIApplication.shared.open(url, options: [:])
+    private func updateNavigationBarStyleWithDatePicker(_ isShow: Bool) {
+        if self.rootView.pageScrollView.contentOffset.y != 0 {
+            self.navigationController?.setNavigationBarHidden(isShow, animated: false)
+            self.rootView.divider.isHidden = isShow
+        } else {
+            self.updateNavigationBarStyle(offset: self.rootView.pageScrollView.contentOffset.y)
         }
     }
 }
 
 extension RegisterNormalViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let text: String? = self.platformList[indexPath.item].platformName
-        
-        guard let unwrappedText = text else {
+        guard let text = viewModel.platFormNameForItemAt(indexPath: indexPath) else {
             return CGSize(width: 0, height: 0)
         }
         
-        let width = (unwrappedText as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 48
+        let width = (text as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 48
         return CGSize(width: width, height: 37)
     }
 }
