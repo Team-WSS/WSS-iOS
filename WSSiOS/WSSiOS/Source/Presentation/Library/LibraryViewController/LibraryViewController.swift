@@ -291,11 +291,13 @@ extension LibraryViewController {
     func showNovelInfo(_ notification: Notification) {
         guard let userNovelId = notification.object as? Int else { return }
         self.navigationController?.pushViewController(NovelDetailViewController(
-            repository: DefaultUserNovelRepository(
-                userNovelService: DefaultUserNovelService()
+            viewModel: NovelDetailViewModel(
+                userNovelRepository: DefaultUserNovelRepository(
+                    userNovelService: DefaultUserNovelService()
+                ),
+                selectedMenu: .info
             ),
-            userNovelId: userNovelId,
-            selectedMenu: .info
+            userNovelId: userNovelId
         ), animated: true)
     }
     
@@ -303,11 +305,13 @@ extension LibraryViewController {
     func showNovelMemo(_ notification: Notification) {
         guard let userNovelId = notification.object as? Int else { return }
         self.navigationController?.pushViewController(NovelDetailViewController(
-            repository: DefaultUserNovelRepository(
-                userNovelService: DefaultUserNovelService()
+            viewModel: NovelDetailViewModel(
+                userNovelRepository: DefaultUserNovelRepository(
+                    userNovelService: DefaultUserNovelService()
+                ),
+                selectedMenu: .memo
             ),
-            userNovelId: userNovelId,
-            selectedMenu: .memo
+            userNovelId: userNovelId
         ), animated: true)
     }
 }

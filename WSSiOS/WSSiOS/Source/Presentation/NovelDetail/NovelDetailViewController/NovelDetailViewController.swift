@@ -9,31 +9,19 @@ import UIKit
 
 import RxSwift
 import RxCocoa
+import RxGesture
 import Then
-
-enum SelectedMenu {
-    case memo
-    case info
-}
 
 final class NovelDetailViewController: UIViewController {
     
     //MARK: - Properties
 
-    private let repository: UserNovelRepository
+    private let novelDetailViewModel: NovelDetailViewModel
     private let disposeBag = DisposeBag()
+    
+    private let viewWillAppearEvent = BehaviorRelay<Int>(value: 0)
     private let userNovelDetail = BehaviorRelay<UserNovelDetail?>(value: nil)
-    private let memoList = BehaviorRelay<[UserNovelMemo]>(value: [])
-    private let platformList = BehaviorRelay<[UserNovelPlatform]>(value: [])
-    private var selectedMenu = BehaviorRelay<SelectedMenu>(value: .memo)
-    private let memoTableViewHeight = BehaviorRelay<CGFloat>(value: 0)
-    private let keywordCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
-    private let platformCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
     private let userNovelId: Int
-    private var novelId: Int = 0
-    private var novelTitle = ""
-    private var novelAuthor = ""
-    private var novelImage = ""
     
     //MARK: - Components
 
@@ -43,10 +31,9 @@ final class NovelDetailViewController: UIViewController {
     
     //MARK: - Life Cycle
     
-    init(repository: UserNovelRepository, userNovelId: Int, selectedMenu: SelectedMenu = .memo) {
-        self.repository = repository
+    init(viewModel: NovelDetailViewModel, userNovelId: Int) {
+        self.novelDetailViewModel = viewModel
         self.userNovelId = userNovelId
-        self.selectedMenu.accept(selectedMenu)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -63,7 +50,7 @@ final class NovelDetailViewController: UIViewController {
         
         hideTabBar()
         
-        getUserNovel()
+        viewWillAppearEvent.accept(self.userNovelId)
         updateNavigationBarStyle(offset: self.rootView.scrollView.contentOffset.y)
     }
     
@@ -73,11 +60,9 @@ final class NovelDetailViewController: UIViewController {
         setUI()
         setNavigationBar()
         setNotificationCenter()
-        setTapGesture()
         register()
         delegate()
-        bindUI()
-        bindAction()
+        bindViewModel()
         bindNavigation()
     }
     
@@ -133,14 +118,6 @@ final class NovelDetailViewController: UIViewController {
         )
     }
     
-    private func setTapGesture() {
-        let viewTapGesture = UITapGestureRecognizer(target: self, action: #selector(viewDidTap))
-        self.rootView.novelDetailMemoSettingButtonView.addGestureRecognizer(viewTapGesture)
-        
-        let memoCreateViewTapGesture = UITapGestureRecognizer(target: self, action: #selector(memoCreateViewDidTap))
-        self.rootView.novelDetailMemoView.novelDetailCreateMemoView.addGestureRecognizer(memoCreateViewTapGesture)
-    }
-    
     //MARK: - Bind
 
     private func register() {
@@ -161,8 +138,31 @@ final class NovelDetailViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    private func bindUI() {
-        memoList.bind(to: rootView.novelDetailMemoView.memoTableView.rx.items(
+    private func bindViewModel() {
+        let input = NovelDetailViewModel.Input(
+            viewWillAppear: viewWillAppearEvent.asObservable(),
+            scrollViewContentOffset: rootView.scrollView.rx.contentOffset.asDriver(),
+            memoTableViewContentSize: rootView.novelDetailMemoView.memoTableView.rx.observe(CGSize.self, "contentSize"),
+            platformCollectionViewContentSize: rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.rx.observe(CGSize.self, "contentSize"),
+            novelSettingButtonDidTap: novelSettingButton.rx.tap.asObservable(),
+            viewDidTap: rootView.novelDetailMemoSettingButtonView.rx.tapGesture().asObservable(),
+            memoButtonDidTap: rootView.novelDetailTabView.memoButton.rx.tap.asObservable(),
+            infoButtonDidTap: rootView.novelDetailTabView.infoButton.rx.tap.asObservable(),
+            stickyMemoButtonDidTap: rootView.stickyNovelDetailTabView.memoButton.rx.tap.asObservable(),
+            stickyInfoButtonDidTap: rootView.stickyNovelDetailTabView.infoButton.rx.tap.asObservable(),
+            novelDeleteButtonDidTap: rootView.novelDetailMemoSettingButtonView.novelDeleteButton.rx.tap.asObservable(),
+            novelEditButtonDidTap: rootView.novelDetailMemoSettingButtonView.novelEditButon.rx.tap.asObservable()
+        )
+        
+        let output = self.novelDetailViewModel.transform(from: input, disposeBag: self.disposeBag)
+        
+        output.userNovelDetail
+            .subscribe(with: self, onNext: { owner, data in
+                owner.bindData(data)
+            })
+            .disposed(by: disposeBag)
+        
+        output.memoList.bind(to: rootView.novelDetailMemoView.memoTableView.rx.items(
             cellIdentifier: NovelDetailMemoTableViewCell.cellIdentifier,
             cellType: NovelDetailMemoTableViewCell.self)) { row, element, cell in
                 cell.selectionStyle = .none
@@ -170,21 +170,38 @@ final class NovelDetailViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
-        platformList.bind(to: rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.rx.items(
+        output.platformList.bind(to: rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.rx.items(
             cellIdentifier: NovelDetailInfoPlatformCollectionViewCell.cellIdentifier,
             cellType: NovelDetailInfoPlatformCollectionViewCell.self)) { item, element, cell in
                 cell.bindData(platform: element.platformName)
             }
             .disposed(by: disposeBag)
         
-        rootView.scrollView.rx.contentOffset
-            .asDriver()
-            .drive(with: self, onNext: { owner, offset in
-                owner.updateNavigationBarStyle(offset: offset.y)
+        output.contentOffsetY
+            .subscribe(with: self, onNext: { owner, offset in
+                owner.updateNavigationBarStyle(offset: offset)
             })
             .disposed(by: disposeBag)
         
-        selectedMenu
+        output.memoTableViewHeight
+            .subscribe(with: self, onNext: { owner, height in
+                owner.rootView.novelDetailMemoView.updateTableViewHeight(height: height)
+            })
+            .disposed(by: disposeBag)
+        
+        output.platformCollectionViewHeight
+            .subscribe(with: self, onNext: { owner, height in
+                owner.rootView.novelDetailInfoView.novelDetailInfoPlatformView.updateCollectionViewHeight(height: height)
+            })
+            .disposed(by: disposeBag)
+        
+        output.memoSettingButtonViewIsHidden
+            .subscribe(with: self, onNext: { owner, isHidden in
+                owner.rootView.novelDetailMemoSettingButtonView.isHidden = isHidden
+            })
+            .disposed(by: disposeBag)
+        
+        output.selectedMenu
             .subscribe(with: self, onNext: { owner, selectedMenu in
                 switch selectedMenu {
                 case .memo:
@@ -196,63 +213,9 @@ final class NovelDetailViewController: UIViewController {
                 }
             })
             .disposed(by: disposeBag)
-        
-        rootView.novelDetailMemoView.memoTableView.rx.observe(CGSize.self, "contentSize")
-            .map { $0?.height ?? 0 }
-            .bind(to: memoTableViewHeight)
-            .disposed(by: disposeBag)
-
-        memoTableViewHeight
-            .subscribe(with: self, onNext: { owner, height in
-                owner.rootView.novelDetailMemoView.updateTableViewHeight(height: height)
-            })
-            .disposed(by: disposeBag)
-        
-        rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.rx.observe(CGSize.self, "contentSize")
-            .map { $0?.height ?? 0 }
-            .bind(to: platformCollectionViewHeight)
-            .disposed(by: disposeBag)
-        
-        platformCollectionViewHeight
-            .subscribe(with: self, onNext: { owner, height in
-                owner.rootView.novelDetailInfoView.novelDetailInfoPlatformView.updateCollectionViewHeight(height: height)
-            })
-            .disposed(by: disposeBag)
     }
     
     //MARK: - Actions
-    
-    private func bindAction() {
-        novelSettingButton.rx.tap
-            .bind(with: self, onNext: { owner, _ in
-                owner.rootView.novelDetailMemoSettingButtonView.isHidden = false
-            })
-            .disposed(by: disposeBag)
-        
-        rootView.novelDetailTabView.memoButton.rx.tap
-            .bind(with: self, onNext: { owner, _ in
-                owner.selectedMenu.accept(.memo)
-            })
-            .disposed(by: disposeBag)
-        
-        rootView.novelDetailTabView.infoButton.rx.tap
-            .bind(with: self, onNext: { owner, _ in
-                owner.selectedMenu.accept(.info)
-            })
-            .disposed(by: disposeBag)
-        
-        rootView.stickyNovelDetailTabView.memoButton.rx.tap
-            .bind(with: self, onNext: { owner, _ in
-                owner.selectedMenu.accept(.memo)
-            })
-            .disposed(by: disposeBag)
-        
-        rootView.stickyNovelDetailTabView.infoButton.rx.tap
-            .bind(with: self, onNext: { owner, _ in
-                owner.selectedMenu.accept(.info)
-            })
-            .disposed(by: disposeBag)
-    }
     
     private func bindNavigation() {
         backButton.rx.tap
@@ -262,15 +225,27 @@ final class NovelDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        rootView.novelDetailMemoView.novelDetailCreateMemoView.rx.tapGesture()
+            .when(.recognized)
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.pushToMemoEditViewController(
+                    userNovelId: owner.userNovelId,
+                    novelTitle: owner.userNovelDetail.value?.userNovelTitle ?? "",
+                    novelAuthor: owner.userNovelDetail.value?.userNovelAuthor ?? "",
+                    novelImage: owner.userNovelDetail.value?.userNovelImg ?? ""
+                )
+            })
+            .disposed(by: disposeBag)
+        
         rootView.novelDetailMemoView.memoTableView.rx.itemSelected
             .subscribe(with: self, onNext: { owner, indexPath in
-                owner.pushToMemoReadViewController(memoId: owner.memoList.value[indexPath.row].memoId)
+                owner.pushToMemoReadViewController(memoId: owner.userNovelDetail.value?.memos[indexPath.row].memoId ?? 0)
             })
             .disposed(by: disposeBag)
         
         rootView.novelDetailInfoView.novelDetailInfoPlatformView.platformCollectionView.rx.itemSelected
             .subscribe(with: self, onNext: { owner, indexPath in
-                if let url = URL(string: owner.platformList.value[indexPath.item].platformUrl) {
+                if let url = URL(string: owner.userNovelDetail.value?.platforms[indexPath.item].platformUrl ?? "") {
                     UIApplication.shared.open(url, options: [:])
                 }
             })
@@ -279,7 +254,6 @@ final class NovelDetailViewController: UIViewController {
         rootView.novelDetailMemoSettingButtonView.novelDeleteButton.rx.tap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
-                owner.rootView.novelDetailMemoSettingButtonView.isHidden = true
                 owner.presentDeleteUserNovelViewController(userNovelId: owner.userNovelId)
             })
             .disposed(by: disposeBag)
@@ -287,9 +261,7 @@ final class NovelDetailViewController: UIViewController {
         rootView.novelDetailMemoSettingButtonView.novelEditButon.rx.tap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
-                owner.rootView.novelDetailMemoSettingButtonView.isHidden = true
-                owner.selectedMenu.accept(.info)
-                owner.pushToRegisterNormalViewController(novelId: owner.novelId)
+                owner.pushToRegisterNormalViewController(novelId: owner.userNovelDetail.value?.novelId ?? 0)
             })
             .disposed(by: disposeBag)
         
@@ -298,36 +270,18 @@ final class NovelDetailViewController: UIViewController {
             .bind(with: self, onNext: { owner, _ in
                 owner.pushToMemoEditViewController(
                     userNovelId: owner.userNovelId,
-                    novelTitle: owner.novelTitle,
-                    novelAuthor: owner.novelAuthor,
-                    novelImage: owner.novelImage
+                    novelTitle: owner.userNovelDetail.value?.userNovelTitle ?? "",
+                    novelAuthor: owner.userNovelDetail.value?.userNovelAuthor ?? "",
+                    novelImage: owner.userNovelDetail.value?.userNovelImg ?? ""
                 )
             })
             .disposed(by: disposeBag)
     }
     
-    //MARK: - API
-    
-    private func getUserNovel() {
-        repository.getUserNovel(userNovelId: self.userNovelId)
-            .observe(on: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, data in
-                owner.bindData(data)
-            },onError: { owner, error in
-                print(error)
-            }).disposed(by: disposeBag)
-    }
-    
     //MARK: - Custom Method
     
     private func bindData(_ novelData: UserNovelDetail) {
-        self.memoList.accept(novelData.memos)
-        self.platformList.accept(novelData.platforms)
-        
-        self.novelId = novelData.novelId
-        self.novelTitle = novelData.userNovelTitle
-        self.novelAuthor = novelData.userNovelAuthor
-        self.novelImage = novelData.userNovelImg
+        self.userNovelDetail.accept(novelData)
         
         self.rootView.novelDetailHeaderView.bindData(
             title: novelData.userNovelTitle,
@@ -336,7 +290,7 @@ final class NovelDetailViewController: UIViewController {
             genreImage: novelData.userNovelGenreBadgeImg
         )
         self.rootView.novelDetailMemoView.bindData(
-            memoCount: self.memoList.value.count
+            memoCount: novelData.memos.count
         )
         self.rootView.novelDetailInfoView.bindData(
             rating: novelData.userNovelRating,
@@ -345,7 +299,7 @@ final class NovelDetailViewController: UIViewController {
             endDate: novelData.userNovelReadEndDate,
             description: novelData.userNovelDescription,
             genre: novelData.userNovelGenre,
-            platformCount: self.platformList.value.count
+            platformCount: novelData.platforms.count
         )
     }
     
@@ -360,7 +314,7 @@ final class NovelDetailViewController: UIViewController {
             navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
             navigationController?.navigationBar.shadowImage = UIImage()
             navigationController?.navigationBar.backgroundColor = .wssWhite
-            navigationItem.title = self.novelTitle
+            navigationItem.title = self.userNovelDetail.value?.userNovelTitle ?? ""
             novelSettingButton.isHidden = true
         } else {
             rootView.statusBarView.backgroundColor = .clear
@@ -370,19 +324,6 @@ final class NovelDetailViewController: UIViewController {
             navigationItem.title = ""
             novelSettingButton.isHidden = false
         }
-    }
-    
-    @objc func viewDidTap() {
-        self.rootView.novelDetailMemoSettingButtonView.isHidden = true
-    }
-    
-    @objc func memoCreateViewDidTap() {
-        self.pushToMemoEditViewController(
-            userNovelId: self.userNovelId,
-            novelTitle: self.novelTitle,
-            novelAuthor: self.novelAuthor,
-            novelImage: self.novelImage
-        )
     }
     
     @objc func postedMemo(_ notification: Notification) {
@@ -406,7 +347,7 @@ extension NovelDetailViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var text: String?
         
-        text = self.platformList.value[indexPath.item].platformName
+        text = self.userNovelDetail.value?.platforms[indexPath.item].platformName
         
         guard let unwrappedText = text else {
             return CGSize(width: 0, height: 0)
