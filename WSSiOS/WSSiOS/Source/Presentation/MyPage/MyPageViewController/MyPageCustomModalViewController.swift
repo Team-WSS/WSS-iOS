@@ -15,15 +15,18 @@ final class MyPageCustomModalViewController: UIViewController {
     
     //MARK: - Properties
     
+    private let avatarRepository: AvatarRepository
     private let avatarId: Int
     private let modalHasAvatar: Bool
     private let currentRepresentativeAvatar: Bool
+    private let viewModel: MyPageCustomModalViewModel
+    private let viewWillAppearEvent = BehaviorRelay(value: false)
+    private let viewWillDisappearEvent = BehaviorRelay(value: false)
+    private let disposeBag = DisposeBag()
     
     //MARK: - Components
     
     private var rootView = MyPageCustomModalView()
-    private let disposeBag = DisposeBag()
-    private let avatarRepository: AvatarRepository
     private let modalBackgroundView = UIView()
     
     // MARK: - Life Cycle
@@ -31,12 +34,15 @@ final class MyPageCustomModalViewController: UIViewController {
     init(avatarRepository: AvatarRepository,
          avatarId: Int,
          modalHasAvatar: Bool,
-         currentRepresentativeAvatar: Bool) {
+         currentRepresentativeAvatar: Bool,
+         viewModel: MyPageCustomModalViewModel) {
         
         self.avatarRepository = avatarRepository
         self.avatarId = avatarId
         self.modalHasAvatar = modalHasAvatar
         self.currentRepresentativeAvatar = currentRepresentativeAvatar
+        self.viewModel = viewModel
+        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -51,20 +57,21 @@ final class MyPageCustomModalViewController: UIViewController {
         setHierarchy()
         setLayout()
         bindAvatarData()
-        setAction()
+        bindViewModel()
         modalDismiss()
+        bindViewModel()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.setBackgroundDimmed()
+        viewWillAppearEvent.accept(true)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        setBackgroundClear()
+        viewWillDisappearEvent.accept(true)
     }
     
     //MARK: - Bind
@@ -93,36 +100,46 @@ final class MyPageCustomModalViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    //MARK: - Actions
     
-    private func setBackgroundDimmed() {
-        UIView.animate(withDuration: 0.3, delay: 0.3) {
-            self.modalBackgroundView.alpha = 1
-        }
-    }
-    
-    private func setBackgroundClear() {
-        self.modalBackgroundView.alpha = 0
-    }
-    
-    private func setAction() {
-        rootView.modalContinueButton.rx
-            .tap
-            .throttle(.seconds(3), scheduler: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, _ in
-                owner.dismiss(animated: true)
+    private func bindViewModel() {
+        let input = MyPageCustomModalViewModel.Input(
+            viewWillAppear: viewWillAppearEvent.asDriver(),
+            viewWillDisappear: viewWillDisappearEvent.asDriver(),
+            continueButtonDidTap: rootView.modalContinueButton.rx.tap,
+            changeButtonDidTap: rootView.modalChangeButton.rx.tap
+        )
+        
+        let output = self.viewModel.transform(from: input, disposeBag: self.disposeBag)
+        
+        output.viewWillAppearAction
+            .bind(with: self, onNext: { owner, isAble in
+                UIView.animate(withDuration: 0.3, delay: 0.3) {
+                    owner.modalBackgroundView.alpha = 1
+                }
+            })
+        
+        output.viewWillDisappearAction
+            .bind(with: self, onNext: { owner, isAble in
+                owner.modalBackgroundView.alpha = 0
+            })
+        
+        output.continueButtonAction
+            .subscribe(with: self, onNext: { owner, isAble in
+                if isAble {
+                    owner.dismiss(animated: true)
+                }
             })
             .disposed(by: disposeBag)
         
-        rootView.modalChangeButton.rx
-            .tap
-            .throttle(.seconds(3), scheduler: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, _ in
-                if !owner.modalHasAvatar || owner.currentRepresentativeAvatar {
-                    owner.dismiss(animated: true)
-                }
-                else {
-                    owner.patchAvatar()
+        output.changeButtonAction
+            .subscribe(with: self, onNext: { owner, isAble in
+                if isAble {
+                    if !owner.modalHasAvatar || owner.currentRepresentativeAvatar {
+                        owner.dismiss(animated: true)
+                    }
+                    else {
+                        owner.patchAvatar()
+                    }
                 }
             })
             .disposed(by: disposeBag)

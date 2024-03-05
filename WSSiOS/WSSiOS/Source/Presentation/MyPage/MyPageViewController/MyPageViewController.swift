@@ -253,7 +253,9 @@ extension MyPageViewController {
             avatarRepository: self.avatarRepository,
             avatarId: avatarId,
             modalHasAvatar: hasAvatar,
-            currentRepresentativeAvatar: currentRepresentativeAvatar)
+            currentRepresentativeAvatar: currentRepresentativeAvatar,
+            viewModel: MyPageCustomModalViewModel(
+                avatarRepository: self.avatarRepository))
         
         modalVC.modalPresentationStyle = .overFullScreen
         present(modalVC, animated: true)
