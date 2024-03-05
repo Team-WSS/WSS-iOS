@@ -37,7 +37,7 @@ final class HomeSearchButtonView: UIView {
     
     private func setUI() {
         searchImageView.do {
-            $0.image = ImageLiterals.icon.search
+            $0.image = .icSearch
         }
         
         searchDescriptionLabel.do {

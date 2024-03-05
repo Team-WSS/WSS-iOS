@@ -19,9 +19,9 @@ final class LibraryViewController: UIViewController {
     private let userNovelListRepository: DefaultUserNovelRepository
     
     private let disposeBag = DisposeBag()
-    private let tabBarList = StringLiterals.Alignment.TabBar.allCases.map { $0.rawValue }
-    private let readStatusList = StringLiterals.Alignment.ReadStatus.allCases.map { $0.rawValue }
-    private let sortTypeList = StringLiterals.Alignment.SortType.self
+    private let tabBarList = StringLiterals.TabBar.allCases.map { $0.rawValue }
+    private let readStatusList = StringLiterals.ReadStatus.allCases.map { $0.rawValue }
+    private let sortTypeList = StringLiterals.Alignment.self
     private var currentPageIndex = 0
     
     //MARK: - Components
@@ -109,7 +109,7 @@ final class LibraryViewController: UIViewController {
                 userNovelListRepository: DefaultUserNovelRepository(
                     userNovelService: DefaultUserNovelService()),
                 readStatus: readStatusList[i],
-                lastUserNovelId: sortTypeList.lastUserNovelIdData,
+                lastUserNovelId: sortTypeList.lastId,
                 size: sortTypeList.sizeData,
                 sortType: sortTypeList.sortType)
             
@@ -155,7 +155,7 @@ final class LibraryViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
-        libraryListView.libraryOldesttButton.rx.tap
+        libraryListView.libraryOldestButton.rx.tap
             .bind(with: self) { owner , _ in
                 let sortTypeList = owner.sortTypeList.oldest
                 owner.updatePages(sortType: sortTypeList)
@@ -165,10 +165,10 @@ final class LibraryViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    private func updatePages(sortType: StringLiterals.Alignment.SortType) {
+    private func updatePages(sortType: StringLiterals.Alignment) {
         let viewController = libraryPages[currentPageIndex]
         viewController.updateNovelList(readStatus: readStatusList[currentPageIndex],
-                                       lastUserNovelId: sortType.lastUserNovelIdData,
+                                       lastUserNovelId: sortType.lastId,
                                        size: sortType.sizeData,
                                        sortType: sortType.sortType)
     }

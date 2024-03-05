@@ -34,7 +34,7 @@ final class HomeHeaderView: UIView {
     
     private func setUI() {
         logoImageView.do {
-            $0.image = ImageLiterals.icon.imgLogoType
+            $0.image = .imgLogoType
         }
     }
     
