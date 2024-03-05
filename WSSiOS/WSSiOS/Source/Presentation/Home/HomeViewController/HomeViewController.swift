@@ -135,10 +135,14 @@ final class HomeViewController: UIViewController {
     }
     
     @objc private func pushSearchVC(_ sender: UITapGestureRecognizer) {
-        let searchVC = SearchViewController(novelRepository: DefaultNovelRepository(novelService: DefaultNovelService()))
+        let searchViewController = SearchViewController(
+            searchViewModel: SearchViewModel(
+                novelRepository: DefaultNovelRepository(
+                    novelService: DefaultNovelService())))
+        
         hideTabBar()
-        searchVC.hidesBottomBarWhenPushed = true
-        self.navigationController?.pushViewController(searchVC, animated: true)
+        searchViewController.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(searchViewController, animated: true)
     }
     
     private func getLottie(avatarId: Int) -> LottieAnimationView {

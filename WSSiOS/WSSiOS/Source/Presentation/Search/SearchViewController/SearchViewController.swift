@@ -9,13 +9,13 @@ import UIKit
 
 import RxSwift
 import RxCocoa
+import Then
 
 final class SearchViewController: UIViewController {
     
     //MARK: - Properties
     
-    private let novelRepository: NovelRepository
-    private var searchResultListRelay = BehaviorRelay<[SearchNovel]>(value: [])
+    private let searchViewModel: SearchViewModel
     private let disposeBag = DisposeBag()
     
     //MARK: - Components
@@ -26,8 +26,8 @@ final class SearchViewController: UIViewController {
     
     //MARK: - Life Cycle
     
-    init(novelRepository: NovelRepository) {
-        self.novelRepository = novelRepository
+    init(searchViewModel: SearchViewModel) {
+        self.searchViewModel = searchViewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -56,8 +56,7 @@ final class SearchViewController: UIViewController {
         delegate()
         register()
         
-        bindUI()
-        bindActions()
+        bindViewModel()
         swipeBackGesture()
     }
     
@@ -79,18 +78,26 @@ final class SearchViewController: UIViewController {
         rootView.mainResultView.searchCollectionView.register(
             SearchCollectionViewCell.self,
             forCellWithReuseIdentifier: SearchCollectionViewCell.cellIdentifier)
+    }
+    
+    private func bindViewModel() {
+        let input = SearchViewModel.Input(
+            searchTextUpdated: rootView.headerView.searchBar.rx.text.orEmpty,
+            backButtonTapped: backButton.rx.tap,
+            searchCellSelected: rootView.mainResultView.searchCollectionView.rx.itemSelected
+        )
         
-        searchResultListRelay
+        let output = searchViewModel.transform(from: input, disposeBag: disposeBag)
+        
+        output.searchResultList
             .bind(to: rootView.mainResultView.searchCollectionView.rx.items(
                 cellIdentifier: SearchCollectionViewCell.cellIdentifier,
                 cellType: SearchCollectionViewCell.self)) { (row, element, cell) in
                     cell.bindData(data: element)
                 }
                 .disposed(by: disposeBag)
-    }
-    
-    private func bindUI() {
-        searchResultListRelay
+        
+        output.searchResultList
             .asDriver()
             .drive(with: self, onNext: { owner, list in
                 if list.isEmpty && !(owner.rootView.headerView.searchBar.text ?? "").isEmpty {
@@ -103,59 +110,19 @@ final class SearchViewController: UIViewController {
                 }
             })
             .disposed(by: disposeBag)
-    }
-    
-    //MARK: - Actions
-    
-    private func bindActions() {
-        rootView.headerView.searchBar.rx.text.orEmpty
-            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner ,searchText in
-                if searchText.isEmpty {
-                    owner.searchResultListRelay.accept([])
-                }
-                else {
-                    owner.searchNovels(with: searchText)
-                }
-            })
-            .disposed(by: disposeBag)
-    }
-    
-    private func bindNavigations() {
-        backButton
-            .rx.tap
-            .subscribe(with: self, onNext: { owner, event in
+
+        output.backToHome
+            .bind(with: self, onNext: { owner, _ in
                 owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
         
-        rootView.mainResultView.searchCollectionView
-            .rx.itemSelected
-            .subscribe(with: self, onNext: { owner, indexPath in
-                owner.pushToRegisterNormalViewController(novelId: owner.searchResultListRelay.value[indexPath.row].novelId)
+        output.navigateToRegisterNormal
+            .bind(with: self, onNext: { owner, indexPath in
+                owner.pushToRegisterNormalViewController(
+                    novelId: output.searchResultList.value[indexPath.row].novelId)
             })
             .disposed(by: disposeBag)
-    }
-    
-    private func searchNovels(with searchText: String) {
-        let searchWord = searchText.isEmpty ? "" : searchText
-        self.getDataFromAPI(disposeBag: disposeBag, searchWord: searchWord)
-    }
-    
-    //MARK: - API
-    
-    private func getDataFromAPI(disposeBag: DisposeBag, searchWord: String) {
-        self.novelRepository.getSearchNovels(searchWord: searchWord)
-            .subscribe(with: self, onNext: { owner, search in
-                owner.searchResultListRelay.accept(search.novels)
-            })
-            .disposed(by: disposeBag)
-    }
-    
-    //MARK: - Custom Method
-    
-    private func showSearchBarAndFocus() {
-        rootView.headerView.searchBar.becomeFirstResponder()
     }
 }
 
@@ -168,5 +135,9 @@ extension SearchViewController: UISearchBarDelegate {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
         self.view.endEditing(true)
+    }
+    
+    private func showSearchBarAndFocus() {
+        rootView.headerView.searchBar.becomeFirstResponder()
     }
 }

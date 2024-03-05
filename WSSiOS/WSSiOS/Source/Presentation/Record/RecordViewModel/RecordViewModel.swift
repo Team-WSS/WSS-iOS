@@ -69,14 +69,14 @@ extension RecordViewModel {
             .flatMapLatest {
                 self.getDataFromAPI(id: self.lastMemoId, sortType: self.sortType)
             }
-            .subscribe(with: self, onNext: { owner, memo in
+            .subscribe(onNext: { memo in
                 output.recordMemoCount.accept(memo.memoCount)
                 output.recordMemoList.accept(memo.memos)
             })
             .disposed(by: disposeBag)
         
         input.sortTypeButtonTapped
-            .subscribe(with: self, onNext: { owner, _ in
+            .subscribe(onNext: { _ in
                 output.showAlignmentView.accept(true)
             })
             .disposed(by: disposeBag)
@@ -87,7 +87,7 @@ extension RecordViewModel {
                 self.sortType = StringLiterals.Alignment.newest.sortType
                 return self.getDataFromAPI(id: self.lastMemoId, sortType: self.sortType)
             }
-            .subscribe(with: self, onNext: { owner, memo in
+            .subscribe(onNext: { memo in
                 output.recordMemoCount.accept(memo.memoCount)
                 output.recordMemoList.accept(memo.memos)
                 output.alignNewest.accept(true)
@@ -100,7 +100,7 @@ extension RecordViewModel {
                 self.sortType = StringLiterals.Alignment.oldest.sortType
                 return self.getDataFromAPI(id: self.lastMemoId, sortType: self.sortType)
             }
-            .subscribe(with: self, onNext: { owner, memo in
+            .subscribe(onNext: { memo in
                 output.recordMemoCount.accept(memo.memoCount)
                 output.recordMemoList.accept(memo.memos)
                 output.alignOldest.accept(true)
@@ -108,13 +108,13 @@ extension RecordViewModel {
             .disposed(by: disposeBag)
         
         input.recordCellSelected
-            .subscribe(with: self, onNext: { owner, indexPath in
+            .subscribe(onNext: { indexPath in
                 output.navigateToMemoRead.accept(indexPath)
             })
             .disposed(by: disposeBag)
         
         input.emptyButtonTapped
-            .subscribe(with: self, onNext: { owner, _ in
+            .subscribe(onNext: { _ in
                 output.navigateEmptyView.accept(true)
             })
             .disposed(by: disposeBag)

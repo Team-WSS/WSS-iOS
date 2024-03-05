@@ -102,6 +102,7 @@
 		A1147A842B5063BC00141692 /* RecordResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1147A832B5063BC00141692 /* RecordResultView.swift */; };
 		A1147A862B5063CA00141692 /* RecordHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1147A852B5063CA00141692 /* RecordHeaderView.swift */; };
 		A1147A8A2B506BA500141692 /* RecordHeaderAlignmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1147A892B506BA500141692 /* RecordHeaderAlignmentView.swift */; };
+		A11DD83B2B9074F000A30C33 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11DD83A2B9074F000A30C33 /* SearchViewModel.swift */; };
 		A122C9D92B53098F00DFCFE4 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		A122C9DB2B5309AF00DFCFE4 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		A122C9DD2B5309D100DFCFE4 /* (null) in Sources */ = {isa = PBXBuildFile; };
@@ -285,6 +286,7 @@
 		A1147A832B5063BC00141692 /* RecordResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordResultView.swift; sourceTree = "<group>"; };
 		A1147A852B5063CA00141692 /* RecordHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordHeaderView.swift; sourceTree = "<group>"; };
 		A1147A892B506BA500141692 /* RecordHeaderAlignmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordHeaderAlignmentView.swift; sourceTree = "<group>"; };
+		A11DD83A2B9074F000A30C33 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		A123C49E2B56FB7800D32AEB /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
 		A147CBC32B4D662E0040AE39 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		A147CBC52B4D6E190040AE39 /* UIStackView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+.swift"; sourceTree = "<group>"; };
@@ -862,6 +864,14 @@
 			path = RecordAssistantView;
 			sourceTree = "<group>";
 		};
+		A11DD8392B9074E400A30C33 /* SearchViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				A11DD83A2B9074F000A30C33 /* SearchViewModel.swift */,
+			);
+			path = SearchViewModel;
+			sourceTree = "<group>";
+		};
 		A122C9CD2B53022E00DFCFE4 /* User */ = {
 			isa = PBXGroup;
 			children = (
@@ -999,6 +1009,7 @@
 		A1A1F9CB2B48731D00705F44 /* Search */ = {
 			isa = PBXGroup;
 			children = (
+				A11DD8392B9074E400A30C33 /* SearchViewModel */,
 				A1DBB2F72B4AA2BE000EE869 /* SearchViewController */,
 				A1A1F9D02B48739400705F44 /* SearchView */,
 			);
@@ -1336,6 +1347,7 @@
 				A1EF35692B52FD9B00A94C53 /* AvatarResult.swift in Sources */,
 				A18432EA2B511C4300910940 /* RecordTableViewCell.swift in Sources */,
 				A107A49C2B4DC8C600668C3E /* HomeCharacterTagView.swift in Sources */,
+				A11DD83B2B9074F000A30C33 /* SearchViewModel.swift in Sources */,
 				2CCBFA062B4DD85600D787C2 /* MyPageTallyReuseView.swift in Sources */,
 				CD39F2CC2B503B8E00B73A5C /* NovelDetailInfoRatingView.swift in Sources */,
 				CD3E5A732B5424D600C0A659 /* MemoReadView.swift in Sources */,
