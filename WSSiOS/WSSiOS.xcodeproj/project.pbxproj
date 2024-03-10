@@ -40,7 +40,7 @@
 		2CCBF9EE2B4C1FC500D787C2 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBF9ED2B4C1FC500D787C2 /* MyPageViewController.swift */; };
 		2CCBF9F02B4C1FD800D787C2 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBF9EF2B4C1FD800D787C2 /* MyPageView.swift */; };
 		2CCBF9F22B4D347B00D787C2 /* WSSMainButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBF9F12B4D347B00D787C2 /* WSSMainButton.swift */; };
-		2CCBFA002B4DBFD200D787C2 /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBF9FF2B4DBFD200D787C2 /* MyPageViewModel.swift */; };
+		2CCBFA002B4DBFD200D787C2 /* MyPageChangeNickNameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBF9FF2B4DBFD200D787C2 /* MyPageChangeNickNameViewModel.swift */; };
 		2CCBFA022B4DC10500D787C2 /* MyPageProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBFA012B4DC10500D787C2 /* MyPageProfileView.swift */; };
 		2CCBFA042B4DD73D00D787C2 /* MyPageTallyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBFA032B4DD73D00D787C2 /* MyPageTallyView.swift */; };
 		2CCBFA062B4DD85600D787C2 /* MyPageTallyReuseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBFA052B4DD85600D787C2 /* MyPageTallyReuseView.swift */; };
@@ -232,7 +232,7 @@
 		2CCBF9ED2B4C1FC500D787C2 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		2CCBF9EF2B4C1FD800D787C2 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
 		2CCBF9F12B4D347B00D787C2 /* WSSMainButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSMainButton.swift; sourceTree = "<group>"; };
-		2CCBF9FF2B4DBFD200D787C2 /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
+		2CCBF9FF2B4DBFD200D787C2 /* MyPageChangeNickNameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageChangeNickNameViewModel.swift; sourceTree = "<group>"; };
 		2CCBFA012B4DC10500D787C2 /* MyPageProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageProfileView.swift; sourceTree = "<group>"; };
 		2CCBFA032B4DD73D00D787C2 /* MyPageTallyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageTallyView.swift; sourceTree = "<group>"; };
 		2CCBFA052B4DD85600D787C2 /* MyPageTallyReuseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageTallyReuseView.swift; sourceTree = "<group>"; };
@@ -526,7 +526,7 @@
 		2CCBF9FD2B4DBF4200D787C2 /* MyPageViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				2CCBF9FF2B4DBFD200D787C2 /* MyPageViewModel.swift */,
+				2CCBF9FF2B4DBFD200D787C2 /* MyPageChangeNickNameViewModel.swift */,
 			);
 			path = MyPageViewModel;
 			sourceTree = "<group>";
@@ -1506,7 +1506,7 @@
 				A122C9D92B53098F00DFCFE4 /* (null) in Sources */,
 				A1A1F9D22B4873A100705F44 /* SearchResultView.swift in Sources */,
 				39B75ACE2B5912B5005DD8B9 /* LottieLiterals.swift in Sources */,
-				2CCBFA002B4DBFD200D787C2 /* MyPageViewModel.swift in Sources */,
+				2CCBFA002B4DBFD200D787C2 /* MyPageChangeNickNameViewModel.swift in Sources */,
 				CD39F2BF2B4FF6DF00B73A5C /* NovelDetailTabView.swift in Sources */,
 				A1EF35582B52FAC800A94C53 /* UserService.swift in Sources */,
 				A1654F1A2B54052E004F78E8 /* Config.swift in Sources */,
