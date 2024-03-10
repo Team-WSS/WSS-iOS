@@ -21,6 +21,7 @@ final class MyPageCustomModalView: UIView {
     public let modalTitleLabel = UILabel()
     public let modalExplanationLabel = UILabel()
     public lazy var modalChangeButton = WSSMainButton(title: StringLiterals.MyPage.Modal.changeCharacter)
+    public lazy var modalBackButton = WSSMainButton(title: StringLiterals.MyPage.Modal.back)
     public lazy var modalContinueButton = UIButton()
     private let lottieList = [LottieLiterals.Home.Sosocat.bread,
                               LottieLiterals.Home.Regressor.sword,
@@ -69,6 +70,10 @@ final class MyPageCustomModalView: UIView {
             $0.titleLabel?.font = .Body2
             $0.layer.backgroundColor = UIColor.clear.cgColor
         }
+        
+        modalBackButton.do {
+            $0.isHidden = true
+        }
     }
     
     private func setHierarchy() {
@@ -77,6 +82,7 @@ final class MyPageCustomModalView: UIView {
                          modalTitleLabel,
                          modalExplanationLabel,
                          modalChangeButton,
+                         modalBackButton,
                          modalContinueButton)
     }
     
@@ -97,6 +103,11 @@ final class MyPageCustomModalView: UIView {
         }
         
         modalChangeButton.snp.makeConstraints() {
+            $0.top.equalTo(modalExplanationLabel.snp.bottom).offset(30)
+            $0.height.equalTo(53)
+        }
+        
+        modalBackButton.snp.makeConstraints() {
             $0.top.equalTo(modalExplanationLabel.snp.bottom).offset(30)
             $0.height.equalTo(53)
         }

@@ -15,13 +15,14 @@ final class MyPageCustomModalViewController: UIViewController {
     
     //MARK: - Properties
     
-    private let avatarRepository: AvatarRepository
     private let avatarId: Int
     private let modalHasAvatar: Bool
     private let currentRepresentativeAvatar: Bool
     private let viewModel: MyPageCustomModalViewModel
+    private let viewDidLoadEvent = PublishRelay<Int>()
     private let viewWillAppearEvent = BehaviorRelay(value: false)
     private let viewWillDisappearEvent = BehaviorRelay(value: false)
+    private var currentState = BehaviorRelay<Bool>(value: false)
     private let disposeBag = DisposeBag()
     
     //MARK: - Components
@@ -31,13 +32,11 @@ final class MyPageCustomModalViewController: UIViewController {
     
     // MARK: - Life Cycle
     
-    init(avatarRepository: AvatarRepository,
-         avatarId: Int,
+    init(avatarId: Int,
          modalHasAvatar: Bool,
          currentRepresentativeAvatar: Bool,
          viewModel: MyPageCustomModalViewModel) {
-        
-        self.avatarRepository = avatarRepository
+    
         self.avatarId = avatarId
         self.modalHasAvatar = modalHasAvatar
         self.currentRepresentativeAvatar = currentRepresentativeAvatar
@@ -53,13 +52,9 @@ final class MyPageCustomModalViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setUI()
-        setHierarchy()
-        setLayout()
-        bindAvatarData()
+        viewDidLoadEvent.accept(avatarId)
         bindViewModel()
         modalDismiss()
-        bindViewModel()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -76,71 +71,57 @@ final class MyPageCustomModalViewController: UIViewController {
     
     //MARK: - Bind
     
-    private func bindAvatarData() {
-        avatarRepository.getAvatarData(avatarId: avatarId)
-            .observe(on: MainScheduler.asyncInstance)
-            .withUnretained(self)
-            .subscribe(onNext: { (owner, data) in
-                owner.rootView.bindData(id: owner.avatarId,
-                                        data: data)
-            })
-            .disposed(by: disposeBag)
-    }
-    
-    private func patchAvatar() {
-        avatarRepository.patchAvatar(avatarId: avatarId)
-            .observe(on: MainScheduler.asyncInstance)
-            .subscribe(with: self, onNext: { owner, _ in 
-                NotificationCenter.default.post(name: NSNotification.Name("AvatarChanged"), 
-                                                object: nil)
-                owner.dismiss(animated: true)
-            },onError: { owner, error in
-                print(error)
-            })
-            .disposed(by: disposeBag)
-    }
-    
-    
     private func bindViewModel() {
+        
         let input = MyPageCustomModalViewModel.Input(
+            viewDidLoad: viewDidLoadEvent.asObservable(),
             viewWillAppear: viewWillAppearEvent.asDriver(),
             viewWillDisappear: viewWillDisappearEvent.asDriver(),
             continueButtonDidTap: rootView.modalContinueButton.rx.tap,
             changeButtonDidTap: rootView.modalChangeButton.rx.tap
+                .flatMapLatest { _ in
+                    return Observable.just(self.avatarId)
+                },
+            backButtonDidTap: rootView.modalBackButton.rx.tap
         )
         
         let output = self.viewModel.transform(from: input, disposeBag: self.disposeBag)
         
+        output.bindAvatarDataEvent
+            .subscribe(with: self, onNext: { owner, avatarResult in
+                owner.rootView.bindData(id: owner.avatarId, data: avatarResult)
+            })
+            .disposed(by: disposeBag)
+        
+        output.viewDidLoadAction
+            .take(1)
+            .bind(with: self as MyPageCustomModalViewController, onNext: { owner, _ in
+                if !self.modalHasAvatar || self.currentRepresentativeAvatar {
+                    owner.currentState.accept(false)
+                } else {
+                    owner.currentState.accept(true)
+                }
+                
+                owner.setUI(isRepresentative: owner.currentState.value)
+                owner.setHierarchy()
+                owner.setLayout(isRepresentative: owner.currentState.value)
+            })
+        
         output.viewWillAppearAction
-            .bind(with: self, onNext: { owner, isAble in
+            .bind(with: self, onNext: { owner, _ in
                 UIView.animate(withDuration: 0.3, delay: 0.3) {
                     owner.modalBackgroundView.alpha = 1
                 }
             })
         
         output.viewWillDisappearAction
-            .bind(with: self, onNext: { owner, isAble in
+            .bind(with: self, onNext: { owner, _ in
                 owner.modalBackgroundView.alpha = 0
             })
         
-        output.continueButtonAction
-            .subscribe(with: self, onNext: { owner, isAble in
-                if isAble {
-                    owner.dismiss(animated: true)
-                }
-            })
-            .disposed(by: disposeBag)
-        
-        output.changeButtonAction
-            .subscribe(with: self, onNext: { owner, isAble in
-                if isAble {
-                    if !owner.modalHasAvatar || owner.currentRepresentativeAvatar {
-                        owner.dismiss(animated: true)
-                    }
-                    else {
-                        owner.patchAvatar()
-                    }
-                }
+        output.backAction
+            .subscribe(with: self, onNext: { owner, isRepresentative in
+                owner.dismiss(animated: true)
             })
             .disposed(by: disposeBag)
     }
@@ -150,13 +131,14 @@ extension MyPageCustomModalViewController {
     
     //MARK: - UI
     
-    private func setUI() {
+    private func setUI(isRepresentative: Bool) {
         self.modalBackgroundView.alpha = 0
         self.modalBackgroundView.backgroundColor = .wssBlack60.withAlphaComponent(0.6)
         
-        if !modalHasAvatar || currentRepresentativeAvatar {
+        if !isRepresentative {
             rootView.modalContinueButton.isHidden = true
-            rootView.modalChangeButton.setTitle(StringLiterals.MyPage.Modal.back, for: .normal)
+            rootView.modalChangeButton.isHidden = true
+            rootView.modalBackButton.isHidden = false
         }
     }
     
@@ -165,8 +147,8 @@ extension MyPageCustomModalViewController {
                               rootView)
     }
     
-    private func setLayout() {
-        if !modalHasAvatar || currentRepresentativeAvatar {
+    private func setLayout(isRepresentative: Bool) {
+        if !isRepresentative {
             rootView.snp.makeConstraints() {
                 $0.bottom.width.equalToSuperview()
                 $0.height.equalTo(533)
