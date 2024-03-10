@@ -263,7 +263,7 @@ extension MyPageViewController {
         rootView.myPageTallyView.myPageUserNameButton.rx.tap
             .throttle(.seconds(3), scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in 
-                self.hideTabBar()
+                owner.hideTabBar()
                 self.pushToChangeNicknameViewController(userNickname: owner.userNickname)
             })
             .disposed(by: disposeBag)
