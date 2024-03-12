@@ -15,14 +15,14 @@ final class MyPageCustomModalView: UIView {
 
     //MARK: - Components
     
-    public let modalBackgroundView = UIView()
-    public let modalAvatarFeatureLabelView = MyPageModalAvatarFeatureLabelView()
-    public lazy var modalAvaterLottieView = LottieAnimationView()
-    public let modalTitleLabel = UILabel()
-    public let modalExplanationLabel = UILabel()
-    public lazy var modalChangeButton = WSSMainButton(title: StringLiterals.MyPage.Modal.changeCharacter)
-    public lazy var modalBackButton = WSSMainButton(title: StringLiterals.MyPage.Modal.back)
-    public lazy var modalContinueButton = UIButton()
+    let modalBackgroundView = UIView()
+    private let modalAvatarFeatureLabelView = MyPageModalAvatarFeatureLabelView()
+    private lazy var modalAvaterLottieView = LottieAnimationView()
+    private let modalTitleLabel = UILabel()
+    private let modalExplanationLabel = UILabel()
+    lazy var modalChangeButton = WSSMainButton(title: StringLiterals.MyPage.Modal.changeCharacter)
+    lazy var modalBackButton = WSSMainButton(title: StringLiterals.MyPage.Modal.back)
+    lazy var modalContinueButton = UIButton()
     private let lottieList = [LottieLiterals.Home.Sosocat.bread,
                               LottieLiterals.Home.Regressor.sword,
                               LottieLiterals.Home.Villainess.fan]
