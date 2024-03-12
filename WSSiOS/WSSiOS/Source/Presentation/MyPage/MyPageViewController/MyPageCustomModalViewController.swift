@@ -15,14 +15,11 @@ import SnapKit
 final class MyPageCustomModalViewController: UIViewController {
     
     //MARK: - Properties
-    
-    private let modalHasAvatar: Bool
-    private let currentRepresentativeAvatar: Bool
-    private let viewModel: MyPageCustomModalViewModel
+
+    private var viewModel: MyPageCustomModalViewModel
     private let viewDidLoadEvent = BehaviorRelay(value: false)
     private let viewWillAppearEvent = BehaviorRelay(value: false)
     private let viewWillDisappearEvent = BehaviorRelay(value: false)
-    private var currentState = BehaviorRelay<Bool>(value: false)
     private let disposeBag = DisposeBag()
     
     //MARK: - Components
@@ -32,17 +29,11 @@ final class MyPageCustomModalViewController: UIViewController {
     
     // MARK: - Life Cycle
     
-    init(modalHasAvatar: Bool,
-         currentRepresentativeAvatar: Bool,
-         viewModel: MyPageCustomModalViewModel) {
+    init(viewModel: MyPageCustomModalViewModel) {
         
-        self.modalHasAvatar = modalHasAvatar
-        self.currentRepresentativeAvatar = currentRepresentativeAvatar
         self.viewModel = viewModel
-        
         super.init(nibName: nil, bundle: nil)
-        
-        bindAvatarData()
+        self.bindAvatarData()
     }
     
     required init?(coder: NSCoder) {
@@ -75,7 +66,8 @@ final class MyPageCustomModalViewController: UIViewController {
         viewModel.avatarData?
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, avatarResult in
-                owner.rootView.bindData(id: owner.viewModel.avatarId, data: avatarResult)
+                owner.rootView.bindData(id: owner.viewModel.avatarId,
+                                        data: avatarResult)
             }, onError: { owner, error in
                 print("Error fetching data: \(error)")
             })
@@ -99,17 +91,10 @@ final class MyPageCustomModalViewController: UIViewController {
         let output = self.viewModel.transform(from: input, disposeBag: self.disposeBag)
         
         output.viewDidLoadAction
-            .take(1)
-            .bind(with: self as MyPageCustomModalViewController, onNext: { owner, _ in
-                if !self.modalHasAvatar || self.currentRepresentativeAvatar {
-                    owner.currentState.accept(false)
-                } else {
-                    owner.currentState.accept(true)
-                }
-                
-                owner.setUI(isRepresentative: owner.currentState.value)
+            .bind(with: self, onNext: { owner, isRepresentative in
+                owner.setUI(isRepresentative: isRepresentative)
                 owner.setHierarchy()
-                owner.setLayout(isRepresentative: owner.currentState.value)
+                owner.setLayout(isRepresentative: isRepresentative)
             })
         
         output.viewWillAppearAction

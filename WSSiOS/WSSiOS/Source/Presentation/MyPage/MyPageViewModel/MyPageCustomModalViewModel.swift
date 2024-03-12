@@ -17,12 +17,20 @@ final class MyPageCustomModalViewModel: ViewModelType {
     private let avatarRepository: AvatarRepository
     var avatarData: Observable<AvatarResult>?
     let avatarId: Int
+    private let modalHasAvatar: Bool
+    private let currentRepresentativeAvatar: Bool
     
     //MARK: - Life Cycle
     
-    init(avatarRepository: AvatarRepository, avatarId: Int) {
+    init(avatarRepository: AvatarRepository,
+         avatarId: Int,
+         modalHasAvatar: Bool,
+         currentRepresentativeAvatar: Bool) {
+        
         self.avatarRepository = avatarRepository
         self.avatarId = avatarId
+        self.modalHasAvatar = modalHasAvatar
+        self.currentRepresentativeAvatar = currentRepresentativeAvatar
         
         let data = self.getAvatarData(avatar: avatarId)
         self.avatarData = data
@@ -41,8 +49,6 @@ final class MyPageCustomModalViewModel: ViewModelType {
         let viewDidLoadAction = BehaviorRelay(value: false)
         let viewWillAppearAction = BehaviorRelay(value: false)
         let viewWillDisappearAction = BehaviorRelay(value: false)
-        let currentState = BehaviorRelay(value: false)
-        let changeButtonAction = BehaviorRelay(value: false)
         let backAction = BehaviorRelay(value: false)
     }
     
@@ -50,7 +56,13 @@ final class MyPageCustomModalViewModel: ViewModelType {
         let output = Output()
         
         input.viewDidLoad
-            .drive(output.viewDidLoadAction)
+            .drive(with: self, onNext: { owner, _ in 
+                if !self.modalHasAvatar || self.currentRepresentativeAvatar {
+                    output.viewDidLoadAction.accept(false)
+                } else {
+                    output.viewDidLoadAction.accept(true)
+                }
+            })
             .disposed(by: disposeBag)
         
         input.viewWillAppear
