@@ -138,7 +138,7 @@ final class MyPageCustomModalView: UIView {
         modalAvaterLottieView.snp.makeConstraints() {
             $0.top.equalTo(modalAvatarFeatureLabelView.snp.bottom).offset(30)
             $0.centerX.equalToSuperview()
-            $0.size.equalTo(220)
+            $0.height.equalTo(220)
         }
     
         playLottie()
