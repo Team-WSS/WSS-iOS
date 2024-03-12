@@ -9,6 +9,7 @@ import UIKit
 
 import RxSwift
 import RxCocoa
+import RxGesture
 import SnapKit
 
 final class MyPageCustomModalViewController: UIViewController {
@@ -34,7 +35,7 @@ final class MyPageCustomModalViewController: UIViewController {
     init(modalHasAvatar: Bool,
          currentRepresentativeAvatar: Bool,
          viewModel: MyPageCustomModalViewModel) {
-    
+        
         self.modalHasAvatar = modalHasAvatar
         self.currentRepresentativeAvatar = currentRepresentativeAvatar
         self.viewModel = viewModel
@@ -53,7 +54,7 @@ final class MyPageCustomModalViewController: UIViewController {
         
         viewDidLoadEvent.accept(true)
         bindViewModel()
-        modalDismiss()
+        bindGesture()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -171,50 +172,52 @@ extension MyPageCustomModalViewController {
     }
 }
 
+//MARK: - Modal Dismiss Gesture
+
 extension MyPageCustomModalViewController {
     
-    //MARK: - Modal Gesture
-    
-    func modalDismiss() {
-        self.view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(modalDownGesture)))
-        self.modalBackgroundView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(backGroundTapGesture)))
-    }
-    
-    @objc
-    private func modalDownGesture(_ sender: UIPanGestureRecognizer) {
-        let viewTranslation = sender.translation(in: view)
-        let viewVelocity = sender.velocity(in: view)
+    func bindGesture() {
+        self.view.rx.panGesture()
+            .withUnretained(self)
+            .bind { view, gesture in
+                let viewTranslation = gesture.translation(in: view.view)
+                let viewVelocity = gesture.velocity(in: view.view)
+                
+                switch gesture.state {
+                case .changed:
+                    if abs(viewVelocity.y) > abs(viewVelocity.x) {
+                        if viewVelocity.y > 0 {
+                            self.modalBackgroundView.alpha = 0
+                            UIView.animate(withDuration: 0.1, animations: {
+                                self.view.transform = CGAffineTransform(translationX: 0, y: viewTranslation.y)
+                            })
+                        }
+                    }
+                case .ended:
+                    if viewTranslation.y < 150 {
+                        UIView.animate(withDuration: 0.1, animations: {
+                            self.view.transform = .identity
+                        })
+                        UIView.animate(withDuration: 0.3, delay: 0.3) {
+                            self.modalBackgroundView.alpha = 1
+                        }
+                    }
+                    else {
+                        self.modalBackgroundView.alpha = 0
+                        self.dismiss(animated: true)
+                    }
+                default:
+                    break
+                }
+            }
+            .disposed(by: disposeBag)
         
-        switch sender.state {
-        case .changed:
-            if abs(viewVelocity.y) > abs(viewVelocity.x) {
-                if viewVelocity.y > 0 {
-                    modalBackgroundView.alpha = 0
-                    UIView.animate(withDuration: 0.1, animations: {
-                        self.view.transform = CGAffineTransform(translationX: 0, y: viewTranslation.y)
-                    })
-                }
+        self.modalBackgroundView.rx.tapGesture()
+            .when(.recognized)
+            .withUnretained(self)
+            .bind { view, _ in
+                view.dismiss(animated: true)
             }
-        case .ended:
-            if viewTranslation.y < 150 {
-                UIView.animate(withDuration: 0.1, animations: {
-                    self.view.transform = .identity
-                })
-                UIView.animate(withDuration: 0.3, delay: 0.3) {
-                    self.modalBackgroundView.alpha = 1
-                }
-            }
-            else {
-                modalBackgroundView.alpha = 0
-                dismiss(animated: true)
-            }
-        default:
-            break
-        }
-    }
-    
-    @objc
-    private func backGroundTapGesture(_ sender: UITapGestureRecognizer) {
-        dismiss(animated: true)
+            .disposed(by: disposeBag)
     }
 }
