@@ -121,7 +121,8 @@ final class MyPageCustomModalView: UIView {
     
     //MARK: - Data
     
-    func bindData(id: Int, data: AvatarResult) {
+    func bindData(id: Int, data: AvatarResult?) {
+        guard let data else { return }
         modalAvatarFeatureLabelView.modalAvaterBadgeImageView.kfSetImage(url: data.avatarGenreBadgeImg)
         modalAvatarFeatureLabelView.modalAvaterTitleLabel.text = data.avatarTag
         modalTitleLabel.text = data.avatarMent

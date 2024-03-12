@@ -15,11 +15,10 @@ final class MyPageCustomModalViewController: UIViewController {
     
     //MARK: - Properties
     
-    private let avatarId: Int
     private let modalHasAvatar: Bool
     private let currentRepresentativeAvatar: Bool
     private let viewModel: MyPageCustomModalViewModel
-    private let viewDidLoadEvent = PublishRelay<Int>()
+    private let viewDidLoadEvent = BehaviorRelay(value: false)
     private let viewWillAppearEvent = BehaviorRelay(value: false)
     private let viewWillDisappearEvent = BehaviorRelay(value: false)
     private var currentState = BehaviorRelay<Bool>(value: false)
@@ -32,17 +31,17 @@ final class MyPageCustomModalViewController: UIViewController {
     
     // MARK: - Life Cycle
     
-    init(avatarId: Int,
-         modalHasAvatar: Bool,
+    init(modalHasAvatar: Bool,
          currentRepresentativeAvatar: Bool,
          viewModel: MyPageCustomModalViewModel) {
     
-        self.avatarId = avatarId
         self.modalHasAvatar = modalHasAvatar
         self.currentRepresentativeAvatar = currentRepresentativeAvatar
         self.viewModel = viewModel
         
         super.init(nibName: nil, bundle: nil)
+        
+        bindAvatarData()
     }
     
     required init?(coder: NSCoder) {
@@ -52,7 +51,7 @@ final class MyPageCustomModalViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        viewDidLoadEvent.accept(avatarId)
+        viewDidLoadEvent.accept(true)
         bindViewModel()
         modalDismiss()
     }
@@ -71,27 +70,32 @@ final class MyPageCustomModalViewController: UIViewController {
     
     //MARK: - Bind
     
+    private func bindAvatarData() {
+        viewModel.avatarData?
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, avatarResult in
+                owner.rootView.bindData(id: owner.viewModel.avatarId, data: avatarResult)
+            }, onError: { owner, error in
+                print("Error fetching data: \(error)")
+            })
+            .disposed(by: disposeBag)
+    }
+    
     private func bindViewModel() {
         
         let input = MyPageCustomModalViewModel.Input(
-            viewDidLoad: viewDidLoadEvent.asObservable(),
+            viewDidLoad: viewDidLoadEvent.asDriver(),
             viewWillAppear: viewWillAppearEvent.asDriver(),
             viewWillDisappear: viewWillDisappearEvent.asDriver(),
             continueButtonDidTap: rootView.modalContinueButton.rx.tap,
             changeButtonDidTap: rootView.modalChangeButton.rx.tap
                 .flatMapLatest { _ in
-                    return Observable.just(self.avatarId)
+                    return Observable.just(self.viewModel.avatarId)
                 },
             backButtonDidTap: rootView.modalBackButton.rx.tap
         )
         
         let output = self.viewModel.transform(from: input, disposeBag: self.disposeBag)
-        
-        output.bindAvatarDataEvent
-            .subscribe(with: self, onNext: { owner, avatarResult in
-                owner.rootView.bindData(id: owner.avatarId, data: avatarResult)
-            })
-            .disposed(by: disposeBag)
         
         output.viewDidLoadAction
             .take(1)
@@ -120,7 +124,8 @@ final class MyPageCustomModalViewController: UIViewController {
             })
         
         output.backAction
-            .subscribe(with: self, onNext: { owner, isRepresentative in
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
                 owner.dismiss(animated: true)
             })
             .disposed(by: disposeBag)

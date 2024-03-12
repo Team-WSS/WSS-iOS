@@ -11,7 +11,7 @@ import RxSwift
 
 protocol AvatarRepository {
     func getAvatarData(avatarId: Int) -> Observable<AvatarResult>
-    func patchAvatar(avatarId: Int) -> Observable<Void>
+    func patchAvatar(avatarId: Int) -> Observable<Bool>
 }
 
 struct DefaultAvatarRepository: AvatarRepository {
@@ -26,9 +26,11 @@ struct DefaultAvatarRepository: AvatarRepository {
             .asObservable()
     }
     
-    func patchAvatar(avatarId: Int) -> RxSwift.Observable<Void> {
+    func patchAvatar(avatarId: Int) -> RxSwift.Observable<Bool> {
         return avatarService.patchAvatar(avatarId: avatarId)
             .asObservable()
+            .map { true }
+            .catchAndReturn(false)
     }
 }
 

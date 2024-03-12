@@ -15,15 +15,21 @@ final class MyPageCustomModalViewModel: ViewModelType {
     //MARK: - Properties
     
     private let avatarRepository: AvatarRepository
+    var avatarData: Observable<AvatarResult>?
+    let avatarId: Int
     
     //MARK: - Life Cycle
     
-    init(avatarRepository: AvatarRepository) {
+    init(avatarRepository: AvatarRepository, avatarId: Int) {
         self.avatarRepository = avatarRepository
+        self.avatarId = avatarId
+        
+        let data = self.getAvatarData(avatar: avatarId)
+        self.avatarData = data
     }
     
     struct Input {
-        let viewDidLoad: Observable<Int>
+        let viewDidLoad: Driver<Bool>
         let viewWillAppear: Driver<Bool>
         let viewWillDisappear: Driver<Bool>
         let continueButtonDidTap: ControlEvent<Void>
@@ -35,7 +41,6 @@ final class MyPageCustomModalViewModel: ViewModelType {
         let viewDidLoadAction = BehaviorRelay(value: false)
         let viewWillAppearAction = BehaviorRelay(value: false)
         let viewWillDisappearAction = BehaviorRelay(value: false)
-        let bindAvatarDataEvent = PublishRelay<AvatarResult>()
         let currentState = BehaviorRelay(value: false)
         let changeButtonAction = BehaviorRelay(value: false)
         let backAction = BehaviorRelay(value: false)
@@ -45,17 +50,7 @@ final class MyPageCustomModalViewModel: ViewModelType {
         let output = Output()
         
         input.viewDidLoad
-            .observe(on: MainScheduler.instance)
-            .flatMap { [weak self] avatarId -> Observable<AvatarResult> in
-                guard let self = self else { return .empty() }
-                return self.getAvatarData(avatarId: avatarId)
-            }
-            .subscribe(onNext: { data in
-                output.bindAvatarDataEvent.accept(data)
-                output.viewDidLoadAction.accept(true)
-            }, onError: { error in
-                print(error)
-            })
+            .drive(output.viewDidLoadAction)
             .disposed(by: disposeBag)
         
         input.viewWillAppear
@@ -68,8 +63,11 @@ final class MyPageCustomModalViewModel: ViewModelType {
         
         input.changeButtonDidTap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, avatarId in
-                owner.patchAvatar(avatarId: avatarId)
+            .flatMapLatest { id -> Observable<Bool> in
+                return self.patchAvatar(avatar: id)
+            }
+            .filter { $0 == true }
+            .subscribe(with: self, onNext: { owner, _ in
                 output.backAction.accept(true)
             })
             .disposed(by: disposeBag)
@@ -93,11 +91,11 @@ final class MyPageCustomModalViewModel: ViewModelType {
     
     //MARK: - API
     
-    private func getAvatarData(avatarId: Int) -> Observable<AvatarResult> {
-        return self.avatarRepository.getAvatarData(avatarId: avatarId)
+    private func getAvatarData(avatar: Int) -> Observable<AvatarResult> {
+        return self.avatarRepository.getAvatarData(avatarId: avatar)
     }
     
-    private func patchAvatar(avatarId: Int) -> Observable<Void> {
-        return self.avatarRepository.patchAvatar(avatarId: avatarId)
+    private func patchAvatar(avatar: Int) -> Observable<Bool> {
+        return self.avatarRepository.patchAvatar(avatarId: avatar)
     }
 }
