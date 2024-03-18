@@ -250,10 +250,11 @@ extension MyPageViewController {
                                  hasAvatar: Bool,
                                  currentRepresentativeAvatar: Bool) {
         let modalVC = MyPageCustomModalViewController(
-            avatarRepository: self.avatarRepository,
-            avatarId: avatarId,
-            modalHasAvatar: hasAvatar,
-            currentRepresentativeAvatar: currentRepresentativeAvatar)
+            viewModel: MyPageCustomModalViewModel(
+                avatarRepository: avatarRepository,
+                avatarId: avatarId,
+                modalHasAvatar: hasAvatar,
+                currentRepresentativeAvatar: currentRepresentativeAvatar))
         
         modalVC.modalPresentationStyle = .overFullScreen
         present(modalVC, animated: true)
@@ -263,7 +264,7 @@ extension MyPageViewController {
         rootView.myPageTallyView.myPageUserNameButton.rx.tap
             .throttle(.seconds(3), scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in 
-                owner.hideTabBar()
+                self.hideTabBar()
                 self.pushToChangeNicknameViewController(userNickname: owner.userNickname)
             })
             .disposed(by: disposeBag)

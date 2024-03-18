@@ -60,9 +60,7 @@ final class MyPageChangeNicknameViewController: UIViewController {
         rootView.changeNicknameTextField.text = userNickName
         
         let input = MyPageChangeNickNameViewModel.Input(
-            updateNicknameTextField: rootView.changeNicknameTextField.rx.text
-                .map { $0 ?? "" }
-                .asDriver(onErrorJustReturn: ""),
+            updateNicknameTextField: rootView.changeNicknameTextField.rx.text.orEmpty.asDriver(),
             completeButtonDidTap: completeButton.rx.tap,
             clearButtonDidTap: rootView.setClearButton.rx.tap
         )
