@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		2C01F9852B482EB700D90FFE /* UserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C01F9842B482EB700D90FFE /* UserRepository.swift */; };
 		2C19A4F92BBA8C3F00D4D151 /* WSSDropdownTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C19A4F82BBA8C3F00D4D151 /* WSSDropdownTableViewCell.swift */; };
+		2C19A4FB2BBA8E9600D4D151 /* WSSDropdownManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C19A4FA2BBA8E9600D4D151 /* WSSDropdownManager.swift */; };
+		2C19A4FD2BBA90E700D4D151 /* WSSDropDownTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C19A4FC2BBA90E700D4D151 /* WSSDropDownTableView.swift */; };
 		2C2491812B4ADC000096F255 /* StringLiterals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2491802B4ADC000096F255 /* StringLiterals.swift */; };
 		2C2491842B4ADC230096F255 /* WSSTabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2491832B4ADC230096F255 /* WSSTabBarItem.swift */; };
 		2C2491862B4ADC420096F255 /* WSSTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2491852B4ADC420096F255 /* WSSTabBarController.swift */; };
@@ -203,6 +205,8 @@
 /* Begin PBXFileReference section */
 		2C01F9842B482EB700D90FFE /* UserRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRepository.swift; sourceTree = "<group>"; };
 		2C19A4F82BBA8C3F00D4D151 /* WSSDropdownTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSDropdownTableViewCell.swift; sourceTree = "<group>"; };
+		2C19A4FA2BBA8E9600D4D151 /* WSSDropdownManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSDropdownManager.swift; sourceTree = "<group>"; };
+		2C19A4FC2BBA90E700D4D151 /* WSSDropDownTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSDropDownTableView.swift; sourceTree = "<group>"; };
 		2C2491802B4ADC000096F255 /* StringLiterals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringLiterals.swift; sourceTree = "<group>"; };
 		2C2491832B4ADC230096F255 /* WSSTabBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSTabBarItem.swift; sourceTree = "<group>"; };
 		2C2491852B4ADC420096F255 /* WSSTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSTabBarController.swift; sourceTree = "<group>"; };
@@ -427,6 +431,8 @@
 				2CE078192B8089670028F2B0 /* Protocol */,
 				CD39F2E12B50EFCB00B73A5C /* LeftAlignedCollectionViewFlowLayout.swift */,
 				2C19A4F82BBA8C3F00D4D151 /* WSSDropdownTableViewCell.swift */,
+				2C19A4FC2BBA90E700D4D151 /* WSSDropDownTableView.swift */,
+				2C19A4FA2BBA8E9600D4D151 /* WSSDropdownManager.swift */,
 				2C2491852B4ADC420096F255 /* WSSTabBarController.swift */,
 				2C2491832B4ADC230096F255 /* WSSTabBarItem.swift */,
 				2CCBF9F12B4D347B00D787C2 /* WSSMainButton.swift */,
@@ -1369,6 +1375,7 @@
 				A1654F1C2B540563004F78E8 /* Data+.swift in Sources */,
 				CD3E5A822B54253E00C0A659 /* MemoEditViewController.swift in Sources */,
 				A1708F182B4D8E2F00E35E50 /* HomeView.swift in Sources */,
+				2C19A4FD2BBA90E700D4D151 /* WSSDropDownTableView.swift in Sources */,
 				2CD2291C2B42E685005400BE /* AppDelegate.swift in Sources */,
 				A1708F162B4D8E2700E35E50 /* HomeHeaderView.swift in Sources */,
 				2CCBF9F02B4C1FD800D787C2 /* MyPageView.swift in Sources */,
@@ -1408,6 +1415,7 @@
 				CD3E5A742B5424D600C0A659 /* MemoEditView.swift in Sources */,
 				CD3E5A812B54253E00C0A659 /* MemoReadViewController.swift in Sources */,
 				A197A4C12B56BB6000E5A701 /* UserCharacterResult.swift in Sources */,
+				2C19A4FB2BBA8E9600D4D151 /* WSSDropdownManager.swift in Sources */,
 				A1B903E52B58140800398890 /* UserNovelListResult.swift in Sources */,
 				CD3E5A742B5424D600C0A659 /* MemoEditView.swift in Sources */,
 				39CC16812B51246E003F56AE /* RegisterNormalView.swift in Sources */,
