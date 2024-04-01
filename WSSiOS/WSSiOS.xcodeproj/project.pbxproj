@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2C01F9852B482EB700D90FFE /* UserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C01F9842B482EB700D90FFE /* UserRepository.swift */; };
+		2C19A4F92BBA8C3F00D4D151 /* WSSDropdownTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C19A4F82BBA8C3F00D4D151 /* WSSDropdownTableViewCell.swift */; };
 		2C2491812B4ADC000096F255 /* StringLiterals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2491802B4ADC000096F255 /* StringLiterals.swift */; };
 		2C2491842B4ADC230096F255 /* WSSTabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2491832B4ADC230096F255 /* WSSTabBarItem.swift */; };
 		2C2491862B4ADC420096F255 /* WSSTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2491852B4ADC420096F255 /* WSSTabBarController.swift */; };
@@ -191,9 +192,9 @@
 		CD3E5AA22B55190400C0A659 /* UserNovelResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5AA12B55190400C0A659 /* UserNovelResult.swift */; };
 		CD3E5AAB2B56173C00C0A659 /* NovelDetailMemoSettingButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5AAA2B56173C00C0A659 /* NovelDetailMemoSettingButtonView.swift */; };
 		CD3E5AB32B565DFF00C0A659 /* NovelMemoResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5AB22B565DFF00C0A659 /* NovelMemoResult.swift */; };
-		CD6613782B8B313700B90B2B /* DeletePopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6613772B8B313700B90B2B /* DeletePopupViewModel.swift */; };
 		CD6613702B8A225E00B90B2B /* MemoReadViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD66136F2B8A225E00B90B2B /* MemoReadViewModel.swift */; };
 		CD6613752B8A283500B90B2B /* MemoEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6613742B8A283500B90B2B /* MemoEditViewModel.swift */; };
+		CD6613782B8B313700B90B2B /* DeletePopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6613772B8B313700B90B2B /* DeletePopupViewModel.swift */; };
 		CDE596D62B57708D00D99DA1 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D52B57708D00D99DA1 /* UIViewController+.swift */; };
 		CDE596D82B5770CE00D99DA1 /* WSSToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D72B5770CE00D99DA1 /* WSSToastView.swift */; };
 		CDE596DA2B57C4BE00D99DA1 /* UITextView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D92B57C4BE00D99DA1 /* UITextView+.swift */; };
@@ -201,6 +202,7 @@
 
 /* Begin PBXFileReference section */
 		2C01F9842B482EB700D90FFE /* UserRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRepository.swift; sourceTree = "<group>"; };
+		2C19A4F82BBA8C3F00D4D151 /* WSSDropdownTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSDropdownTableViewCell.swift; sourceTree = "<group>"; };
 		2C2491802B4ADC000096F255 /* StringLiterals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringLiterals.swift; sourceTree = "<group>"; };
 		2C2491832B4ADC230096F255 /* WSSTabBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSTabBarItem.swift; sourceTree = "<group>"; };
 		2C2491852B4ADC420096F255 /* WSSTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSTabBarController.swift; sourceTree = "<group>"; };
@@ -368,9 +370,9 @@
 		CD3E5AA12B55190400C0A659 /* UserNovelResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNovelResult.swift; sourceTree = "<group>"; };
 		CD3E5AAA2B56173C00C0A659 /* NovelDetailMemoSettingButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailMemoSettingButtonView.swift; sourceTree = "<group>"; };
 		CD3E5AB22B565DFF00C0A659 /* NovelMemoResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelMemoResult.swift; sourceTree = "<group>"; };
-		CD6613772B8B313700B90B2B /* DeletePopupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletePopupViewModel.swift; sourceTree = "<group>"; };
 		CD66136F2B8A225E00B90B2B /* MemoReadViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoReadViewModel.swift; sourceTree = "<group>"; };
 		CD6613742B8A283500B90B2B /* MemoEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoEditViewModel.swift; sourceTree = "<group>"; };
+		CD6613772B8B313700B90B2B /* DeletePopupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletePopupViewModel.swift; sourceTree = "<group>"; };
 		CDE596D52B57708D00D99DA1 /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
 		CDE596D72B5770CE00D99DA1 /* WSSToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSToastView.swift; sourceTree = "<group>"; };
 		CDE596D92B57C4BE00D99DA1 /* UITextView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+.swift"; sourceTree = "<group>"; };
@@ -424,6 +426,7 @@
 			children = (
 				2CE078192B8089670028F2B0 /* Protocol */,
 				CD39F2E12B50EFCB00B73A5C /* LeftAlignedCollectionViewFlowLayout.swift */,
+				2C19A4F82BBA8C3F00D4D151 /* WSSDropdownTableViewCell.swift */,
 				2C2491852B4ADC420096F255 /* WSSTabBarController.swift */,
 				2C2491832B4ADC230096F255 /* WSSTabBarItem.swift */,
 				2CCBF9F12B4D347B00D787C2 /* WSSMainButton.swift */,
@@ -1225,14 +1228,6 @@
 			path = DeletePopupAssistantView;
 			sourceTree = "<group>";
 		};
-		CD6613762B8B312800B90B2B /* DeletePopupViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				CD6613772B8B313700B90B2B /* DeletePopupViewModel.swift */,
-			);
-			path = DeletePopupViewModel;
-			sourceTree = "<group>";
-		};
 		CD66136C2B8A21F400B90B2B /* MemoViewModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -1240,6 +1235,14 @@
 				CD66136F2B8A225E00B90B2B /* MemoReadViewModel.swift */,
 			);
 			path = MemoViewModel;
+			sourceTree = "<group>";
+		};
+		CD6613762B8B312800B90B2B /* DeletePopupViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				CD6613772B8B313700B90B2B /* DeletePopupViewModel.swift */,
+			);
+			path = DeletePopupViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1383,6 +1386,7 @@
 				CD39F2B62B4FE0E200B73A5C /* NovelDetailView.swift in Sources */,
 				CD39F2E42B50F23B00B73A5C /* NovelDetailInfoPlatformView.swift in Sources */,
 				CD39F2BD2B4FE98500B73A5C /* NovelDetailHeaderView.swift in Sources */,
+				2C19A4F92BBA8C3F00D4D151 /* WSSDropdownTableViewCell.swift in Sources */,
 				CD6613782B8B313700B90B2B /* DeletePopupViewModel.swift in Sources */,
 				CD39F2E62B50F2E900B73A5C /* NovelDetailInfoPlatformCollectionViewCell.swift in Sources */,
 				CDE596D82B5770CE00D99DA1 /* WSSToastView.swift in Sources */,
