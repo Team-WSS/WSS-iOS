@@ -56,8 +56,7 @@ final class WSSDropdownTableViewCell: UITableViewCell {
         }
         
         cellLabel.snp.makeConstraints {
-            $0.centerY.centerX.equalToSuperview()
-//            $0.leading.trailing.equalToSuperview().inset(27)
+            $0.centerX.centerY.equalToSuperview()
         }
     }
     

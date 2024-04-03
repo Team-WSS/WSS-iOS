@@ -12,7 +12,7 @@ import RxCocoa
 import SnapKit
 import Then
 
-final class PuzzleDropdownTableView: UIView {
+final class WSSDropdownTableView: UIView {
     
     // MARK: - Properties
     
@@ -30,7 +30,7 @@ final class PuzzleDropdownTableView: UIView {
         
         self.backgroundColor = .clear
         
-        setDropDown()
+        setDropdown()
         
         setUI()
         setHierarchy()
@@ -51,6 +51,8 @@ final class PuzzleDropdownTableView: UIView {
             $0.register(WSSDropdownTableViewCell.self, forCellReuseIdentifier: WSSDropdownTableViewCell.cellIdentifier)
             $0.isScrollEnabled = false
             $0.separatorStyle = .none
+            $0.estimatedRowHeight = 51.0
+            $0.rowHeight = UITableView.automaticDimension
         }
     }
     
@@ -66,19 +68,18 @@ final class PuzzleDropdownTableView: UIView {
     
     //MARK: - Custom Method
     
-    private func setDropDown() {
+    private func setDropdown() {
         dropdownData
             .bind(to: dropdownTableView.rx.items(cellIdentifier: WSSDropdownTableViewCell.cellIdentifier, cellType: WSSDropdownTableViewCell.self)) { row, text, cell in
-            cell.bindText(text: text)
-        }
-        .disposed(by: disposeBag)
+                cell.bindText(text: text)
+            }
+            .disposed(by: disposeBag)
         
-        //cellItem 넘겨주는 함수
         dropdownTableView.rx.modelSelected(String.self)
-            .subscribe(onNext: { [weak self] cell in
-            print(cell)
-        })
-        .disposed(by: disposeBag)
+            .subscribe(with: self, onNext: { owner, cell in 
+                print(cell)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
