@@ -75,6 +75,7 @@ final class WSSDropdownTableView: UIView {
                 cellIdentifier: WSSDropdownTableViewCell.cellIdentifier,
                 cellType: WSSDropdownTableViewCell.self)) { row, text, cell in
                     cell.bindText(text: text, color: self.cellTextColor)
+                    cell.selectionStyle = .none
                 }
                 .disposed(by: disposeBag)
     }

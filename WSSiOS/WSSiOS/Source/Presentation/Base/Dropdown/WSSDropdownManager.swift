@@ -38,6 +38,7 @@ class WSSDropdownManager {
         
         dropdownView.snp.makeConstraints {
             $0.top.equalTo(mainView.snp.bottom)
+            $0.trailing.equalTo(mainView.snp.trailing)
             $0.width.equalTo(dropdownWidth)
             
             let calculateHeight = CGFloat(dropdownData.count) * 51.0
@@ -70,11 +71,11 @@ extension WSSDropdownManager {
             .disposed(by: disposeBag)
         
         //index 뱉고 싶을 때
-        dropdownView.dropdownTableView.rx.itemSelected
-            .subscribe(onNext: { indexPath in
-                print(indexPath.row)
-                dropdownView.isHidden.toggle()
-            })
-            .disposed(by: disposeBag)
+//        dropdownView.dropdownTableView.rx.itemSelected
+//            .subscribe(onNext: { indexPath in
+//                print(indexPath.row)
+//                dropdownView.isHidden.toggle()
+//            })
+//            .disposed(by: disposeBag)
     }
 }
