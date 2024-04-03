@@ -20,34 +20,19 @@ class WSSDropdownManager {
     private var dropdowns: [UIView: WSSDropdownTableView] = [:]
     private let disposeBag = DisposeBag()
     
-    var titleUpdateSubject = PublishSubject<(UIView, String)>()
-    
-    private init() {
-        setupBindings()
-    }
-    
-    private func setupBindings() {
-        titleUpdateSubject
-            .subscribe(onNext: { [weak self] mainView, title in
-                guard let dropdownView = self?.dropdowns[mainView] else { return }
-                if let mainView = mainView as? WSSDropdown {
-                    dropdownView.isHidden.toggle()
-                }
-            }).disposed(by: disposeBag)
-    }
-    
     // MARK: - Create Dropdown
     
-    func createDropdown(viewController: UIViewController,
-                        dropdownWidth: CGSize,
+    func createDropdown(rootView: UIView,
+                        mainView: WSSDropdown,
+                        dropdownWidth: Double,
                         dropdownData: [String]) {
         
-        let mainView = WSSDropdown()
         let dropdownView = WSSDropdownTableView()
         dropdownView.dropdownData.onNext(dropdownData)
         dropdownView.isHidden = true
         
-        viewController.view.addSubview(dropdownView)
+        rootView.addSubviews(mainView,
+                             dropdownView)
         
         dropdownView.snp.makeConstraints {
             $0.top.equalTo(mainView.snp.bottom)
@@ -60,14 +45,34 @@ class WSSDropdownManager {
         let tapGesture = UITapGestureRecognizer(target: self,
                                                 action: #selector(dropdownTapped(_:)))
         mainView.addGestureRecognizer(tapGesture)
-        
         dropdowns[mainView] = dropdownView
+        tapCell(dropdownView: dropdownView)
     }
     
     @objc
     private func dropdownTapped(_ sender: UITapGestureRecognizer) {
-        print("🎈")
         guard let mainView = sender.view, let dropdownView = dropdowns[mainView] else { return }
         dropdownView.isHidden.toggle()
+    }
+}
+
+extension WSSDropdownManager {
+    private func tapCell(dropdownView: WSSDropdownTableView) {
+        
+        //String 뱉고 싶을 때
+        dropdownView.dropdownTableView.rx.modelSelected(String.self)
+            .subscribe(onNext: { cell in
+                print(cell)
+                dropdownView.isHidden.toggle()
+            })
+            .disposed(by: disposeBag)
+        
+        //index 뱉고 싶을 때
+        dropdownView.dropdownTableView.rx.itemSelected
+            .subscribe(onNext: { indexPath in
+                print(indexPath.row)
+                dropdownView.isHidden.toggle()
+            })
+            .disposed(by: disposeBag)
     }
 }

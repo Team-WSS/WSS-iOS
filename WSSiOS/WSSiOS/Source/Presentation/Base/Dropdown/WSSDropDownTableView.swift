@@ -48,16 +48,16 @@ final class WSSDropdownTableView: UIView {
             $0.backgroundColor = .wssWhite
             $0.layer.cornerRadius = 12
             $0.layer.masksToBounds = true
-            $0.register(WSSDropdownTableViewCell.self, forCellReuseIdentifier: WSSDropdownTableViewCell.cellIdentifier)
+            $0.register(WSSDropdownTableViewCell.self,
+                        forCellReuseIdentifier: WSSDropdownTableViewCell.cellIdentifier)
             $0.isScrollEnabled = false
             $0.separatorStyle = .none
-            $0.estimatedRowHeight = 51.0
-            $0.rowHeight = UITableView.automaticDimension
+            $0.rowHeight = 51.0
         }
     }
     
     private func setHierarchy() {
-        self.addSubview(dropdownTableView)
+        addSubview(dropdownTableView)
     }
     
     private func setLayout() {
@@ -70,16 +70,12 @@ final class WSSDropdownTableView: UIView {
     
     private func setDropdown() {
         dropdownData
-            .bind(to: dropdownTableView.rx.items(cellIdentifier: WSSDropdownTableViewCell.cellIdentifier, cellType: WSSDropdownTableViewCell.self)) { row, text, cell in
-                cell.bindText(text: text)
-            }
-            .disposed(by: disposeBag)
-        
-        dropdownTableView.rx.modelSelected(String.self)
-            .subscribe(with: self, onNext: { owner, cell in 
-                print(cell)
-            })
-            .disposed(by: disposeBag)
+            .bind(to: dropdownTableView.rx.items(
+                cellIdentifier: WSSDropdownTableViewCell.cellIdentifier,
+                cellType: WSSDropdownTableViewCell.self)) { row, text, cell in
+                    cell.bindText(text: text)
+                }
+                .disposed(by: disposeBag)
     }
 }
 

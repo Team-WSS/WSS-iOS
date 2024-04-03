@@ -14,14 +14,14 @@ final class WSSDropdown: UIView {
     
     // MARK: - UI Components
     
-    private let  dropdownImageView = UIImageView(image: UIImage(resource: .icDropDownDot))
-    
+    private let dropdownImageView = UIImageView(image: UIImage(resource: .icDropDownDot))
+
     // MARK: - Life Cycles
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = .clear
-
+        
         setHierarchy()
         setLayout()
     }
@@ -29,6 +29,8 @@ final class WSSDropdown: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    //MARK: - UI
     
     private func setHierarchy() {
         addSubview(dropdownImageView)
@@ -39,5 +41,15 @@ final class WSSDropdown: UIView {
             $0.centerX.centerY.equalToSuperview()
             $0.size.equalTo(18)
         }
+    }
+    
+    func makeDropdown(dropdownRootView: UIView,
+                              dropdownWidth: Double,
+                              dropdownData: [String]) {
+        
+        WSSDropdownManager.shared.createDropdown(rootView: dropdownRootView,
+                                                 mainView: self,
+                                                 dropdownWidth: dropdownWidth,
+                                                 dropdownData: dropdownData)
     }
 }
