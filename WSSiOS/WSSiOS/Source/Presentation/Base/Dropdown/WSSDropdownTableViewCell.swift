@@ -36,7 +36,6 @@ final class WSSDropdownTableViewCell: UITableViewCell {
     private func setUI() {
         cellLabel.do {
             $0.font = .Body2
-            $0.textColor = .wssBlack
         }
         
         divderView.do {
@@ -62,7 +61,8 @@ final class WSSDropdownTableViewCell: UITableViewCell {
     
     // MARK: - Data
     
-    func bindText(text: String) {
+    func bindText(text: String, color: UIColor) {
         cellLabel.text = text
+        cellLabel.textColor = color
     }
 }

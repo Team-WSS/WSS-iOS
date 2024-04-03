@@ -25,11 +25,13 @@ class WSSDropdownManager {
     func createDropdown(rootView: UIView,
                         mainView: WSSDropdown,
                         dropdownWidth: Double,
-                        dropdownData: [String]) {
+                        dropdownData: [String],
+                        textColor: UIColor) {
         
         let dropdownView = WSSDropdownTableView()
         dropdownView.dropdownData.onNext(dropdownData)
         dropdownView.isHidden = true
+        dropdownView.cellTextColor = textColor
         
         rootView.addSubviews(mainView,
                              dropdownView)

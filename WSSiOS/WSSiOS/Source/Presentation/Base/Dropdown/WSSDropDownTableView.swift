@@ -17,6 +17,7 @@ final class WSSDropdownTableView: UIView {
     // MARK: - Properties
     
     var dropdownData: BehaviorSubject<[String]> = BehaviorSubject(value: [])
+    var cellTextColor: UIColor = .red
     private let disposeBag = DisposeBag()
     
     // MARK: - UI Components
@@ -73,9 +74,8 @@ final class WSSDropdownTableView: UIView {
             .bind(to: dropdownTableView.rx.items(
                 cellIdentifier: WSSDropdownTableViewCell.cellIdentifier,
                 cellType: WSSDropdownTableViewCell.self)) { row, text, cell in
-                    cell.bindText(text: text)
+                    cell.bindText(text: text, color: self.cellTextColor)
                 }
                 .disposed(by: disposeBag)
     }
 }
-

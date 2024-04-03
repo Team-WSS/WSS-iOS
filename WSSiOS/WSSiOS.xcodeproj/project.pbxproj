@@ -11,7 +11,7 @@
 		2C19A4F92BBA8C3F00D4D151 /* WSSDropdownTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C19A4F82BBA8C3F00D4D151 /* WSSDropdownTableViewCell.swift */; };
 		2C19A4FB2BBA8E9600D4D151 /* WSSDropdownManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C19A4FA2BBA8E9600D4D151 /* WSSDropdownManager.swift */; };
 		2C19A4FD2BBA90E700D4D151 /* WSSDropDownTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C19A4FC2BBA90E700D4D151 /* WSSDropDownTableView.swift */; };
-		2C19A5002BBD56C900D4D151 /* WSSDropdownButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C19A4FF2BBD56C900D4D151 /* WSSDropdownButton.swift */; };
+		2C19A5002BBD56C900D4D151 /* WSSDropdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C19A4FF2BBD56C900D4D151 /* WSSDropdown.swift */; };
 		2C19A5022BBD625000D4D151 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C19A5012BBD625000D4D151 /* TestViewController.swift */; };
 		2C19A5042BBD6CBB00D4D151 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C19A5032BBD6CBB00D4D151 /* TestView.swift */; };
 		2C2491812B4ADC000096F255 /* StringLiterals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2491802B4ADC000096F255 /* StringLiterals.swift */; };
@@ -210,7 +210,7 @@
 		2C19A4F82BBA8C3F00D4D151 /* WSSDropdownTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSDropdownTableViewCell.swift; sourceTree = "<group>"; };
 		2C19A4FA2BBA8E9600D4D151 /* WSSDropdownManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSDropdownManager.swift; sourceTree = "<group>"; };
 		2C19A4FC2BBA90E700D4D151 /* WSSDropDownTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSDropDownTableView.swift; sourceTree = "<group>"; };
-		2C19A4FF2BBD56C900D4D151 /* WSSDropdownButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSDropdownButton.swift; sourceTree = "<group>"; };
+		2C19A4FF2BBD56C900D4D151 /* WSSDropdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSDropdown.swift; sourceTree = "<group>"; };
 		2C19A5012BBD625000D4D151 /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		2C19A5032BBD6CBB00D4D151 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		2C2491802B4ADC000096F255 /* StringLiterals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringLiterals.swift; sourceTree = "<group>"; };
@@ -429,7 +429,7 @@
 				2C19A4F82BBA8C3F00D4D151 /* WSSDropdownTableViewCell.swift */,
 				2C19A4FC2BBA90E700D4D151 /* WSSDropDownTableView.swift */,
 				2C19A4FA2BBA8E9600D4D151 /* WSSDropdownManager.swift */,
-				2C19A4FF2BBD56C900D4D151 /* WSSDropdownButton.swift */,
+				2C19A4FF2BBD56C900D4D151 /* WSSDropdown.swift */,
 				2C19A5012BBD625000D4D151 /* TestViewController.swift */,
 				2C19A5032BBD6CBB00D4D151 /* TestView.swift */,
 			);
@@ -1423,7 +1423,7 @@
 				39CC167E2B512369003F56AE /* RegisterSuccessViewController.swift in Sources */,
 				3992FA562B81E2A40079C8B8 /* RegisterNormalViewController.swift in Sources */,
 				39CD5E082B4F2BBE00668B9A /* RegisterNormalKeywordSelectionView.swift in Sources */,
-				2C19A5002BBD56C900D4D151 /* WSSDropdownButton.swift in Sources */,
+				2C19A5002BBD56C900D4D151 /* WSSDropdown.swift in Sources */,
 				2CA2F6602B530B660045B4C2 /* LibraryView.swift in Sources */,
 				2CD2291E2B42E685005400BE /* SceneDelegate.swift in Sources */,
 				2CB613F52B575E6A00FC3F89 /* MyPageInfoView.swift in Sources */,

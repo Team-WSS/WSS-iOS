@@ -15,7 +15,7 @@ final class WSSDropdown: UIView {
     // MARK: - UI Components
     
     private let dropdownImageView = UIImageView(image: UIImage(resource: .icDropDownDot))
-
+    
     // MARK: - Life Cycles
     
     override init(frame: CGRect) {
@@ -44,12 +44,14 @@ final class WSSDropdown: UIView {
     }
     
     func makeDropdown(dropdownRootView: UIView,
-                              dropdownWidth: Double,
-                              dropdownData: [String]) {
+                      dropdownWidth: Double,
+                      dropdownData: [String],
+                      textColor: UIColor) {
         
         WSSDropdownManager.shared.createDropdown(rootView: dropdownRootView,
                                                  mainView: self,
                                                  dropdownWidth: dropdownWidth,
-                                                 dropdownData: dropdownData)
+                                                 dropdownData: dropdownData,
+                                                 textColor: textColor)
     }
 }

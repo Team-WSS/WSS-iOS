@@ -29,7 +29,8 @@ final class TestView: UIView {
     private func setUI() {
         dropdownView.makeDropdown(dropdownRootView: self,
                                   dropdownWidth: 190,
-                                  dropdownData: dummyData)
+                                  dropdownData: dummyData,
+                                  textColor: .red)
     }
     
     private func setHierarchy() {
