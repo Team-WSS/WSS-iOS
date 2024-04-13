@@ -919,7 +919,6 @@
 		A122C9D42B53026100DFCFE4 /* UserNovel */ = {
 			isa = PBXGroup;
 			children = (
-				A122C9D52B53026700DFCFE4 /* Memo */,
 				A1EF355D2B52FAE600A94C53 /* UserNovelService.swift */,
 			);
 			path = UserNovel;
@@ -1091,6 +1090,7 @@
 		A1EF35562B52FAA300A94C53 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				A122C9D52B53026700DFCFE4 /* Memo */,
 				A122C9D72B53097A00DFCFE4 /* Foundation */,
 				A122C9D62B53026E00DFCFE4 /* Avatar */,
 				A122C9D42B53026100DFCFE4 /* UserNovel */,
