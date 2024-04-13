@@ -26,7 +26,6 @@ final class TestViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        rootView.keywordLink.setText("내맘대로 텍스트 바꾸깅~")
-        rootView.keywordLink.updateColor(true)
+        rootView.keywordLabel.setText("내맘대로 텍스트 바꾸깅~")
     }
 }

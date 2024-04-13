@@ -87,6 +87,7 @@
 		39BA7F712BCAB5A90045B2B7 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39BA7F702BCAB5A90045B2B7 /* TestViewController.swift */; };
 		39BA7F732BCAB5DE0045B2B7 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39BA7F722BCAB5DE0045B2B7 /* TestView.swift */; };
 		39BA7F752BCABF1D0045B2B7 /* KeywordLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39BA7F742BCABF1D0045B2B7 /* KeywordLink.swift */; };
+		39BA7F772BCAC3E60045B2B7 /* keywordLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39BA7F762BCAC3E60045B2B7 /* keywordLabel.swift */; };
 		39CC167E2B512369003F56AE /* RegisterSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CC167D2B512369003F56AE /* RegisterSuccessViewController.swift */; };
 		39CC16812B51246E003F56AE /* RegisterNormalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CC16802B51246E003F56AE /* RegisterNormalView.swift */; };
 		39CC16882B51D94F003F56AE /* RegisterSuccessViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CC16872B51D94F003F56AE /* RegisterSuccessViewModel.swift */; };
@@ -277,6 +278,7 @@
 		39BA7F702BCAB5A90045B2B7 /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		39BA7F722BCAB5DE0045B2B7 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		39BA7F742BCABF1D0045B2B7 /* KeywordLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeywordLink.swift; sourceTree = "<group>"; };
+		39BA7F762BCAC3E60045B2B7 /* keywordLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = keywordLabel.swift; sourceTree = "<group>"; };
 		39CC167D2B512369003F56AE /* RegisterSuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterSuccessViewController.swift; sourceTree = "<group>"; };
 		39CC16802B51246E003F56AE /* RegisterNormalView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterNormalView.swift; sourceTree = "<group>"; };
 		39CC16872B51D94F003F56AE /* RegisterSuccessViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterSuccessViewModel.swift; sourceTree = "<group>"; };
@@ -776,6 +778,7 @@
 			children = (
 				39BA7F6E2BCAADDF0045B2B7 /* KeywordTag.swift */,
 				39BA7F742BCABF1D0045B2B7 /* KeywordLink.swift */,
+				39BA7F762BCAC3E60045B2B7 /* keywordLabel.swift */,
 				39BA7F702BCAB5A90045B2B7 /* TestViewController.swift */,
 				39BA7F722BCAB5DE0045B2B7 /* TestView.swift */,
 			);
@@ -1395,6 +1398,7 @@
 				39CD5E0C2B4F3D0700668B9A /* RegisterNormalNovelSummaryView.swift in Sources */,
 				A122C9F22B53146800DFCFE4 /* (null) in Sources */,
 				CDE596D62B57708D00D99DA1 /* UIViewController+.swift in Sources */,
+				39BA7F772BCAC3E60045B2B7 /* keywordLabel.swift in Sources */,
 				A1654F162B540513004F78E8 /* NetworkLogger.swift in Sources */,
 				A14EDBBF2B4F05F300906957 /* HomeSosoPickCollectionViewCell.swift in Sources */,
 				2C60306F2B54EDDD0031544C /* LibraryDescriptionView.swift in Sources */,
