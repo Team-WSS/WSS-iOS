@@ -83,6 +83,9 @@
 		39B75ADC2B59891D005DD8B9 /* sosocatBread.json in Resources */ = {isa = PBXBuildFile; fileRef = 39B75AD52B59891D005DD8B9 /* sosocatBread.json */; };
 		39B75ADE2B59BA87005DD8B9 /* UIScreen+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B75ADD2B59BA87005DD8B9 /* UIScreen+.swift */; };
 		39B75AE02B59C6A7005DD8B9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 39B75ADF2B59C6A7005DD8B9 /* LaunchScreen.storyboard */; };
+		39BA7F6F2BCAADDF0045B2B7 /* KeywordTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39BA7F6E2BCAADDF0045B2B7 /* KeywordTag.swift */; };
+		39BA7F712BCAB5A90045B2B7 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39BA7F702BCAB5A90045B2B7 /* TestViewController.swift */; };
+		39BA7F732BCAB5DE0045B2B7 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39BA7F722BCAB5DE0045B2B7 /* TestView.swift */; };
 		39CC167E2B512369003F56AE /* RegisterSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CC167D2B512369003F56AE /* RegisterSuccessViewController.swift */; };
 		39CC16812B51246E003F56AE /* RegisterNormalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CC16802B51246E003F56AE /* RegisterNormalView.swift */; };
 		39CC16882B51D94F003F56AE /* RegisterSuccessViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CC16872B51D94F003F56AE /* RegisterSuccessViewModel.swift */; };
@@ -191,9 +194,9 @@
 		CD3E5AA22B55190400C0A659 /* UserNovelResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5AA12B55190400C0A659 /* UserNovelResult.swift */; };
 		CD3E5AAB2B56173C00C0A659 /* NovelDetailMemoSettingButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5AAA2B56173C00C0A659 /* NovelDetailMemoSettingButtonView.swift */; };
 		CD3E5AB32B565DFF00C0A659 /* NovelMemoResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5AB22B565DFF00C0A659 /* NovelMemoResult.swift */; };
-		CD6613782B8B313700B90B2B /* DeletePopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6613772B8B313700B90B2B /* DeletePopupViewModel.swift */; };
 		CD6613702B8A225E00B90B2B /* MemoReadViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD66136F2B8A225E00B90B2B /* MemoReadViewModel.swift */; };
 		CD6613752B8A283500B90B2B /* MemoEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6613742B8A283500B90B2B /* MemoEditViewModel.swift */; };
+		CD6613782B8B313700B90B2B /* DeletePopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6613772B8B313700B90B2B /* DeletePopupViewModel.swift */; };
 		CDE596D62B57708D00D99DA1 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D52B57708D00D99DA1 /* UIViewController+.swift */; };
 		CDE596D82B5770CE00D99DA1 /* WSSToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D72B5770CE00D99DA1 /* WSSToastView.swift */; };
 		CDE596DA2B57C4BE00D99DA1 /* UITextView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D92B57C4BE00D99DA1 /* UITextView+.swift */; };
@@ -269,6 +272,9 @@
 		39B75AD52B59891D005DD8B9 /* sosocatBread.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sosocatBread.json; sourceTree = "<group>"; };
 		39B75ADD2B59BA87005DD8B9 /* UIScreen+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+.swift"; sourceTree = "<group>"; };
 		39B75ADF2B59C6A7005DD8B9 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		39BA7F6E2BCAADDF0045B2B7 /* KeywordTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeywordTag.swift; sourceTree = "<group>"; };
+		39BA7F702BCAB5A90045B2B7 /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
+		39BA7F722BCAB5DE0045B2B7 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		39CC167D2B512369003F56AE /* RegisterSuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterSuccessViewController.swift; sourceTree = "<group>"; };
 		39CC16802B51246E003F56AE /* RegisterNormalView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterNormalView.swift; sourceTree = "<group>"; };
 		39CC16872B51D94F003F56AE /* RegisterSuccessViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterSuccessViewModel.swift; sourceTree = "<group>"; };
@@ -368,9 +374,9 @@
 		CD3E5AA12B55190400C0A659 /* UserNovelResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNovelResult.swift; sourceTree = "<group>"; };
 		CD3E5AAA2B56173C00C0A659 /* NovelDetailMemoSettingButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailMemoSettingButtonView.swift; sourceTree = "<group>"; };
 		CD3E5AB22B565DFF00C0A659 /* NovelMemoResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelMemoResult.swift; sourceTree = "<group>"; };
-		CD6613772B8B313700B90B2B /* DeletePopupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletePopupViewModel.swift; sourceTree = "<group>"; };
 		CD66136F2B8A225E00B90B2B /* MemoReadViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoReadViewModel.swift; sourceTree = "<group>"; };
 		CD6613742B8A283500B90B2B /* MemoEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoEditViewModel.swift; sourceTree = "<group>"; };
+		CD6613772B8B313700B90B2B /* DeletePopupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletePopupViewModel.swift; sourceTree = "<group>"; };
 		CDE596D52B57708D00D99DA1 /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
 		CDE596D72B5770CE00D99DA1 /* WSSToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSToastView.swift; sourceTree = "<group>"; };
 		CDE596D92B57C4BE00D99DA1 /* UITextView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+.swift"; sourceTree = "<group>"; };
@@ -422,6 +428,7 @@
 		2C2491822B4ADC1D0096F255 /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				39BA7F6D2BCAAD620045B2B7 /* KeywordLabel */,
 				2CE078192B8089670028F2B0 /* Protocol */,
 				CD39F2E12B50EFCB00B73A5C /* LeftAlignedCollectionViewFlowLayout.swift */,
 				2C2491852B4ADC420096F255 /* WSSTabBarController.swift */,
@@ -762,6 +769,16 @@
 			path = Lotties;
 			sourceTree = "<group>";
 		};
+		39BA7F6D2BCAAD620045B2B7 /* KeywordLabel */ = {
+			isa = PBXGroup;
+			children = (
+				39BA7F6E2BCAADDF0045B2B7 /* KeywordTag.swift */,
+				39BA7F702BCAB5A90045B2B7 /* TestViewController.swift */,
+				39BA7F722BCAB5DE0045B2B7 /* TestView.swift */,
+			);
+			path = KeywordLabel;
+			sourceTree = "<group>";
+		};
 		39CC167F2B5123CC003F56AE /* Register */ = {
 			isa = PBXGroup;
 			children = (
@@ -902,6 +919,7 @@
 		A122C9D42B53026100DFCFE4 /* UserNovel */ = {
 			isa = PBXGroup;
 			children = (
+				A122C9D52B53026700DFCFE4 /* Memo */,
 				A1EF355D2B52FAE600A94C53 /* UserNovelService.swift */,
 			);
 			path = UserNovel;
@@ -1075,7 +1093,6 @@
 			children = (
 				A122C9D72B53097A00DFCFE4 /* Foundation */,
 				A122C9D62B53026E00DFCFE4 /* Avatar */,
-				A122C9D52B53026700DFCFE4 /* Memo */,
 				A122C9D42B53026100DFCFE4 /* UserNovel */,
 				A122C9D32B53025A00DFCFE4 /* Novel */,
 				A122C9D02B53024800DFCFE4 /* Recommend */,
@@ -1225,14 +1242,6 @@
 			path = DeletePopupAssistantView;
 			sourceTree = "<group>";
 		};
-		CD6613762B8B312800B90B2B /* DeletePopupViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				CD6613772B8B313700B90B2B /* DeletePopupViewModel.swift */,
-			);
-			path = DeletePopupViewModel;
-			sourceTree = "<group>";
-		};
 		CD66136C2B8A21F400B90B2B /* MemoViewModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -1240,6 +1249,14 @@
 				CD66136F2B8A225E00B90B2B /* MemoReadViewModel.swift */,
 			);
 			path = MemoViewModel;
+			sourceTree = "<group>";
+		};
+		CD6613762B8B312800B90B2B /* DeletePopupViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				CD6613772B8B313700B90B2B /* DeletePopupViewModel.swift */,
+			);
+			path = DeletePopupViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1369,6 +1386,7 @@
 				2CD2291C2B42E685005400BE /* AppDelegate.swift in Sources */,
 				A1708F162B4D8E2700E35E50 /* HomeHeaderView.swift in Sources */,
 				2CCBF9F02B4C1FD800D787C2 /* MyPageView.swift in Sources */,
+				39BA7F6F2BCAADDF0045B2B7 /* KeywordTag.swift in Sources */,
 				39AF30D12B50182F00FDC1F3 /* RegisterNormalReadStatusButton.swift in Sources */,
 				A1C3EC532B46962F00D997C2 /* UIImage+.swift in Sources */,
 				39CD5E0C2B4F3D0700668B9A /* RegisterNormalNovelSummaryView.swift in Sources */,
@@ -1435,6 +1453,7 @@
 				CD6613752B8A283500B90B2B /* MemoEditViewModel.swift in Sources */,
 				39B225252B70B41A001C76D0 /* RegisterNormalDifferentRadiusView.swift in Sources */,
 				A1EF35412B52F74A00A94C53 /* RecommendRepository.swift in Sources */,
+				39BA7F732BCAB5DE0045B2B7 /* TestView.swift in Sources */,
 				2C2491842B4ADC230096F255 /* WSSTabBarItem.swift in Sources */,
 				CD6613702B8A225E00B90B2B /* MemoReadViewModel.swift in Sources */,
 				39CC168C2B526991003F56AE /* WSSSectionTitleView.swift in Sources */,
@@ -1516,6 +1535,7 @@
 				A1654F1A2B54052E004F78E8 /* Config.swift in Sources */,
 				CD39F2D82B50DA6300B73A5C /* NovelDetailInfoDescriptionView.swift in Sources */,
 				A1654F152B540513004F78E8 /* Networking.swift in Sources */,
+				39BA7F712BCAB5A90045B2B7 /* TestViewController.swift in Sources */,
 				CD3E5AAB2B56173C00C0A659 /* NovelDetailMemoSettingButtonView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
