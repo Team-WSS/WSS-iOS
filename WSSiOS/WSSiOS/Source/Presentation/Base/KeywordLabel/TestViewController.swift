@@ -26,10 +26,7 @@ final class TestViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        rootView.keywordTag.setText("내맘대로 텍스트 바꾸깅~")
-        rootView.keywordTag.tapEvent.bind {
-            print("이렇게 탭 했을 때 작업 넣기~")
-        }
-        .disposed(by: disposeBag)
+        rootView.keywordLink.setText("내맘대로 텍스트 바꾸깅~")
+        rootView.keywordLink.updateColor(true)
     }
 }

@@ -10,7 +10,7 @@ import SnapKit
 
 final class TestView: UIView {
 
-    let keywordTag = KeywordTag()
+    let keywordLink = KeywordLink()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -30,11 +30,11 @@ final class TestView: UIView {
     }
 
     private func setHierarchy() {
-        addSubview(keywordTag)
+        addSubview(keywordLink)
     }
 
     private func setLayout() {
-        keywordTag.snp.makeConstraints {
+        keywordLink.snp.makeConstraints {
             $0.centerX.centerY.equalToSuperview()
         }
     }
