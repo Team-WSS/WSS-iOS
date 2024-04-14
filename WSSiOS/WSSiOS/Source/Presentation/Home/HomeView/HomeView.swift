@@ -14,9 +14,7 @@ final class HomeView: UIView {
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     let headerView = HomeHeaderView()
-    let characterView = HomeCharacterView()
-    private let titleView = HomeSosoPickTitleView()
-    let sosopickView = HomeSosoPickView()
+    private let todayPopularView = HomeTodayPopularView()
     
     //MARK: - Life Cycle
     
@@ -36,6 +34,11 @@ final class HomeView: UIView {
     private func setUI() {
         scrollView.do {
             $0.showsVerticalScrollIndicator = false
+            $0.backgroundColor = .lightGray
+        }
+        
+        contentView.do {
+            $0.backgroundColor = .systemOrange
         }
     }
     
@@ -43,9 +46,7 @@ final class HomeView: UIView {
         self.addSubviews(headerView,
                         scrollView)
         self.scrollView.addSubview(contentView)
-        contentView.addSubviews(characterView,
-                                          titleView,
-                                          sosopickView)
+        contentView.addSubviews(todayPopularView)
     }
     
     private func setLayout() {
@@ -56,34 +57,20 @@ final class HomeView: UIView {
         }
         
         scrollView.snp.makeConstraints {
-            $0.top.equalTo(headerView.snp.bottom).offset(20)
+            $0.top.equalTo(headerView.snp.bottom)
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
         }
         
         contentView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(15)
-            $0.leading.trailing.bottom.width.equalToSuperview()
+            $0.top.equalTo(scrollView.contentLayoutGuide).inset(20)
+            $0.leading.trailing.bottom.equalTo(scrollView.contentLayoutGuide)
+            $0.height.greaterThanOrEqualTo(self.snp.height).priority(.low)
+            $0.width.equalTo(scrollView.snp.width)
         }
         
-        characterView.snp.makeConstraints {
-            $0.top.centerX.equalToSuperview()
-        }
-        
-        titleView.snp.makeConstraints {
-            if UIScreen.main.bounds.height < 813 {
-                $0.top.equalTo(characterView.snp.bottom).offset(24)
-            } else {
-                $0.top.equalTo(characterView.snp.bottom).offset(((UIScreen.main.bounds.height-812))/2+24)
-            }
-            $0.centerX.leading.trailing.equalToSuperview()
-        }
-        
-        sosopickView.snp.makeConstraints {
-          
-            $0.top.equalTo(titleView.snp.bottom)
-            $0.centerX.leading.trailing.bottom.equalToSuperview()
-            $0.height.equalTo(230)
+        todayPopularView.snp.makeConstraints {
+            $0.top.leading.trailing.equalToSuperview()
         }
     }
 }

@@ -33,6 +33,8 @@ final class HomeHeaderView: UIView {
     }
     
     private func setUI() {
+        self.backgroundColor = .yellow
+        
         logoImageView.do {
             $0.image = .imgLogoType
         }

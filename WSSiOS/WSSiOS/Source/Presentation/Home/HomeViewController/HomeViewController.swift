@@ -62,7 +62,6 @@ final class HomeViewController: UIViewController {
         
         registerCell()
         addTapGesture()
-        bindDataToSosoPickCollectionView()
     }
     
     private func setUI() {
@@ -72,8 +71,7 @@ final class HomeViewController: UIViewController {
     }
     
     private func registerCell() {
-        rootView.sosopickView.sosoPickCollectionView.register(HomeSosoPickCollectionViewCell.self,
-                                                              forCellWithReuseIdentifier: HomeSosoPickCollectionViewCell.identifier)
+        
     }
     
     func getDataFromAPI(disposeBag: DisposeBag,
@@ -104,24 +102,6 @@ final class HomeViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    private func bindDataToSosoPickCollectionView() {
-        sosopickListRelay.bind(to: rootView.sosopickView.sosoPickCollectionView.rx.items(
-            cellIdentifier: HomeSosoPickCollectionViewCell.identifier,
-            cellType: HomeSosoPickCollectionViewCell.self)) { (row, element, cell) in
-                cell.bindData(data: element)
-            }
-            .disposed(by: disposeBag)
-        rootView.sosopickView.sosoPickCollectionView
-            .rx
-            .itemSelected
-            .subscribe(onNext: { indexPath in
-                let novelID = self.sosopickListRelay.value[indexPath.row].novelId
-                self.pushToRegisterNormalViewController(novelId: novelID)
-                self.hideTabBar()
-            })
-            .disposed(by: disposeBag)
-    }
-    
     private func bindDataToUI() {
         getDataFromAPI(disposeBag: disposeBag) { [weak self] characterId, user, sosopick in
             self?.updateUI(user: user, sosopickList: sosopick)
@@ -149,19 +129,6 @@ final class HomeViewController: UIViewController {
     }
     
     private func updateUI(user: UserCharacter, sosopickList: SosopickNovels) {
-        Observable.just(userCharacter)
-            .observe(on: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, user in
-                owner.rootView.characterView.tagView.setTagLabelStyle(text: user.avatarTag)
-                owner.rootView.characterView.setCommentLabelStyle(text: user.avatarComment)
-                
-                //MARK: - characterId값에 따른 캐릭터 로띠 이미지 분기처리 필요
-                owner.characterId = user.avatarId
-                owner.userNickname = user.userNickname
-                
-                owner.rootView.characterView.setLottie(view: self.getLottie(avatarId: owner.characterId))
-                owner.sosopickListRelay.accept(sosopickList.sosoPickNovels)
-            })
-            .disposed(by: disposeBag)
+        
     }
 }
