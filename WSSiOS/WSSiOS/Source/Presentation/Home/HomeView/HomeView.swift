@@ -50,8 +50,9 @@ final class HomeView: UIView {
     
     private func setLayout() {
         headerView.snp.makeConstraints {
-            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).inset(16)
-            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top)
+            $0.height.equalTo(50)
+            $0.leading.trailing.equalToSuperview()
         }
         
         scrollView.snp.makeConstraints {

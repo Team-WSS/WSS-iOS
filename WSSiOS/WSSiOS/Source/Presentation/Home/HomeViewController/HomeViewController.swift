@@ -130,8 +130,6 @@ final class HomeViewController: UIViewController {
     
     private func addTapGesture() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(pushSearchVC(_:)))
-        rootView.headerView.headerSearchView.addGestureRecognizer(tapGesture)
-        rootView.headerView.headerSearchView.isUserInteractionEnabled = true
     }
     
     @objc private func pushSearchVC(_ sender: UITapGestureRecognizer) {
