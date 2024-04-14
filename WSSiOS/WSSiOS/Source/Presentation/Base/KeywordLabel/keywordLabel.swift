@@ -1,5 +1,5 @@
 //
-//  keyword.swift
+//  KeywordLabel.swift
 //  WSSiOS
 //
 //  Created by 이윤학 on 4/13/24.
@@ -7,8 +7,6 @@
 
 import UIKit
 
-import RxSwift
-import RxCocoa
 import SnapKit
 import Then
 
@@ -27,7 +25,6 @@ final class KeywordLabel: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        setText("키워드")
         setUI()
         setHierarchy()
         setLayout()
@@ -47,7 +44,7 @@ final class KeywordLabel: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubviews(keywordLabel)
+        self.addSubview(keywordLabel)
     }
     
     private func setLayout() {

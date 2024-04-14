@@ -7,8 +7,6 @@
 
 import UIKit
 
-import RxSwift
-import RxCocoa
 import SnapKit
 import Then
 
@@ -27,7 +25,6 @@ final class KeywordLink: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        setText("키워드")
         setUI()
         setHierarchy()
         setLayout()
@@ -48,7 +45,7 @@ final class KeywordLink: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubviews(keywordLabel)
+        self.addSubview(keywordLabel)
     }
     
     private func setLayout() {

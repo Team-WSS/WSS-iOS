@@ -1,5 +1,5 @@
 //
-//  KeywordLabelwithX.swift
+//  KeywordTag.swift
 //  WSSiOS
 //
 //  Created by 이윤학 on 4/13/24.
@@ -20,7 +20,7 @@ final class KeywordTag: UIView {
     
     //MARK: - Components
     
-    private let ContentStackView = UIStackView()
+    private let contentStackView = UIStackView()
     private let keywordLabel = UILabel()
     private let eraseButton = UIButton()
     lazy var tapEvent = eraseButton.rx.tap
@@ -30,7 +30,6 @@ final class KeywordTag: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        setText("키워드")
         setUI()
         setHierarchy()
         setLayout()
@@ -49,7 +48,7 @@ final class KeywordTag: UIView {
             $0.layer.borderColor = UIColor.wssPrimary100.cgColor
         }
         
-        ContentStackView.do {
+        contentStackView.do {
             $0.axis = .horizontal
             $0.spacing = 6
             $0.alignment = .center
@@ -61,8 +60,8 @@ final class KeywordTag: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubviews(ContentStackView)
-        ContentStackView.addArrangedSubviews(keywordLabel,
+        self.addSubview(contentStackView)
+        contentStackView.addArrangedSubviews(keywordLabel,
                                              eraseButton)
     }
     
@@ -71,7 +70,7 @@ final class KeywordTag: UIView {
             $0.height.equalTo(labelHeight)
         }
         
-        ContentStackView.snp.makeConstraints {
+        contentStackView.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview().inset(13)
             $0.centerY.equalToSuperview()
         }
