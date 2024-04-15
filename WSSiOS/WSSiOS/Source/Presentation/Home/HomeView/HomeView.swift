@@ -14,7 +14,7 @@ final class HomeView: UIView {
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     let headerView = HomeHeaderView()
-    private let todayPopularView = HomeTodayPopularView()
+    let todayPopularView = HomeTodayPopularView()
     
     //MARK: - Life Cycle
     
@@ -34,11 +34,6 @@ final class HomeView: UIView {
     private func setUI() {
         scrollView.do {
             $0.showsVerticalScrollIndicator = false
-            $0.backgroundColor = .lightGray
-        }
-        
-        contentView.do {
-            $0.backgroundColor = .systemOrange
         }
     }
     

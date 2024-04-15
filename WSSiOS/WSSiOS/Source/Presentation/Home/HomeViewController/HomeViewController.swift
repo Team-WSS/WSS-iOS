@@ -71,7 +71,9 @@ final class HomeViewController: UIViewController {
     }
     
     private func registerCell() {
-        
+        rootView.todayPopularView.todayPopularCollectionView.register(
+            HomeTodayPopularCollectionViewCell.self,
+            forCellWithReuseIdentifier: HomeTodayPopularCollectionViewCell.cellIdentifier)
     }
     
     func getDataFromAPI(disposeBag: DisposeBag,

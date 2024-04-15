@@ -10,6 +10,11 @@ import UIKit
 final class HomeTodayPopularView: UIView {
     
     private let titleLabel = UILabel()
+    let todayPopularCollectionView = UICollectionView(frame: .zero, 
+                                                              collectionViewLayout: UICollectionViewLayout())
+    private let todayPopularCollectionViewLayout = UICollectionViewFlowLayout()
+    private let testView = HomeTodayPopularCollectionViewCell()
+    
     
     //MARK: - Life Cycle
     
@@ -27,8 +32,6 @@ final class HomeTodayPopularView: UIView {
     }
     
     private func setUI() {
-        self.backgroundColor = .Gray70
-        
         titleLabel.do {
             $0.font = .HeadLine1
             $0.textColor = .wssBlack
@@ -36,16 +39,40 @@ final class HomeTodayPopularView: UIView {
             .kerning(kerningPixel: -1.2)
             .applyAttribute()
         }
+        
+        todayPopularCollectionView.do {
+            $0.showsHorizontalScrollIndicator = false
+            $0.backgroundColor = .clear
+        }
+        
+        todayPopularCollectionViewLayout.do {
+            $0.scrollDirection = .horizontal
+            $0.minimumLineSpacing = 10
+            $0.itemSize = CGSize(width: 292, height: 377)
+            $0.sectionInset = UIEdgeInsets(top: 10, left: 20, bottom: 25, right: 20)
+            todayPopularCollectionView.setCollectionViewLayout($0, animated: false)
+        }
     }
     
     private func setHierarchy() {
-        self.addSubview(titleLabel)
+        self.addSubviews(titleLabel,testView,
+                         todayPopularCollectionView)
     }
     
     private func setLayout() {
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.leading.equalToSuperview().inset(20)
+        }
+        
+        testView.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom).offset(20)
+            $0.leading.equalToSuperview().inset(20)
+        }
+        
+        todayPopularCollectionView.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom).inset(16)
+            $0.leading.trailing.equalToSuperview()
         }
     }
 }
