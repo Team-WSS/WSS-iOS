@@ -15,6 +15,7 @@ final class HomeView: UIView {
     private let contentView = UIView()
     let headerView = HomeHeaderView()
     let todayPopularView = HomeTodayPopularView()
+    let realtimePopularView = HomeRealtimePopularView()
     
     //MARK: - Life Cycle
     
@@ -39,9 +40,10 @@ final class HomeView: UIView {
     
     private func setHierachy() {
         self.addSubviews(headerView,
-                        scrollView)
+                         scrollView)
         self.scrollView.addSubview(contentView)
-        contentView.addSubviews(todayPopularView)
+        contentView.addSubviews(todayPopularView,
+                                realtimePopularView)
     }
     
     private func setLayout() {
@@ -66,6 +68,12 @@ final class HomeView: UIView {
         
         todayPopularView.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
+            $0.height.equalTo(421)
+        }
+        
+        realtimePopularView.snp.makeConstraints {
+            $0.top.equalTo(todayPopularView.snp.bottom).offset(56)
+            $0.leading.equalToSuperview()
         }
     }
 }
