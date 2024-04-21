@@ -7,14 +7,18 @@
 
 import UIKit
 
+import SnapKit
+import Then
+
 final class HomeTodayPopularView: UIView {
     
+    //MARK: - UI Components
+    
     private let titleLabel = UILabel()
-    let todayPopularCollectionView = UICollectionView(frame: .zero, 
-                                                              collectionViewLayout: UICollectionViewLayout())
+    let todayPopularCollectionView = UICollectionView(frame: .zero,
+                                                      collectionViewLayout: UICollectionViewLayout())
     private let todayPopularCollectionViewLayout = UICollectionViewFlowLayout()
     private let testView = HomeTodayPopularCollectionViewCell()
-    
     
     //MARK: - Life Cycle
     
@@ -36,27 +40,25 @@ final class HomeTodayPopularView: UIView {
             $0.font = .HeadLine1
             $0.textColor = .wssBlack
             $0.makeAttribute(with: StringLiterals.Home.Title.todayPopular)?
-            .kerning(kerningPixel: -1.2)
-            .applyAttribute()
+                .kerning(kerningPixel: -1.2)
+                .applyAttribute()
         }
         
         todayPopularCollectionView.do {
             $0.showsHorizontalScrollIndicator = false
-            $0.backgroundColor = .clear
         }
         
         todayPopularCollectionViewLayout.do {
             $0.scrollDirection = .horizontal
             $0.minimumLineSpacing = 10
             $0.itemSize = CGSize(width: 292, height: 377)
-            $0.sectionInset = UIEdgeInsets(top: 10, left: 20, bottom: 25, right: 20)
+            $0.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
             todayPopularCollectionView.setCollectionViewLayout($0, animated: false)
         }
     }
     
     private func setHierarchy() {
-        self.addSubviews(titleLabel,testView,
-                         todayPopularCollectionView)
+        self.addSubviews(titleLabel,todayPopularCollectionView)
     }
     
     private func setLayout() {
@@ -65,14 +67,10 @@ final class HomeTodayPopularView: UIView {
             $0.leading.equalToSuperview().inset(20)
         }
         
-        testView.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(20)
-            $0.leading.equalToSuperview().inset(20)
-        }
-        
         todayPopularCollectionView.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).inset(16)
+            $0.top.equalTo(titleLabel.snp.bottom).offset(16)
             $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview()
         }
     }
 }

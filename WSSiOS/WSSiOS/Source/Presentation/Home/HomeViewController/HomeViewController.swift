@@ -61,7 +61,7 @@ final class HomeViewController: UIViewController {
         setUI()
         
         registerCell()
-        addTapGesture()
+        //addTapGesture()
     }
     
     private func setUI() {
@@ -74,6 +74,13 @@ final class HomeViewController: UIViewController {
         rootView.todayPopularView.todayPopularCollectionView.register(
             HomeTodayPopularCollectionViewCell.self,
             forCellWithReuseIdentifier: HomeTodayPopularCollectionViewCell.cellIdentifier)
+        
+        dummyData.bind(to: rootView.todayPopularView.todayPopularCollectionView.rx.items(
+            cellIdentifier: HomeTodayPopularCollectionViewCell.cellIdentifier,
+            cellType: HomeTodayPopularCollectionViewCell.self)) { row, element, cell in
+            cell.bindData(data: element)
+        }
+        .disposed(by: disposeBag)
     }
     
     func getDataFromAPI(disposeBag: DisposeBag,

@@ -38,9 +38,12 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: - UI
+    
     private func setUI() {
         backgroundImageView.do {
             $0.image = .imgTodayPopularBackground
+            $0.contentMode = .scaleAspectFit
             $0.layer.cornerRadius = 14
             $0.clipsToBounds = true
         }
@@ -52,25 +55,21 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
         novelTitleLabel.do {
             $0.font = .Title2
             $0.textColor = .wssBlack
-            $0.makeAttribute(with: "상수리 나무 아래라구요오오오오오오오오오오오오오옷")?
-                .kerning(kerningPixel: -0.6)
-                .lineSpacing(spacingPercentage: 140)
-                .applyAttribute()
             $0.numberOfLines = 1
-            $0.lineBreakMode = .byTruncatingTail
         }
         
         novelImageView.do {
-            $0.image = .imgTest
+            $0.layer.cornerRadius = 9
             $0.layer.shadowColor = UIColor.wssBlack.cgColor
             $0.layer.shadowOpacity = 0.1
             $0.layer.shadowRadius = 15.44
             $0.layer.shadowOffset = CGSize(width: 0, height: 2.06)
+            $0.clipsToBounds = true
         }
         
         blurBackgroundView.do {
             $0.frame = UIScreen.main.bounds
-            $0.backgroundColor = .wssWhite.withAlphaComponent(0.4)
+            $0.backgroundColor = .wssWhite.withAlphaComponent(0.3)
             let blurEffect = UIBlurEffect(style: .regular)
             let visualEffectView = UIVisualEffectView(effect: blurEffect)
             visualEffectView.frame = $0.bounds
@@ -79,17 +78,13 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
         
         userProfileView.do {
             $0.layer.cornerRadius = 8
+            $0.contentMode = .scaleAspectFit
             $0.clipsToBounds = true
-            $0.addSubview(UIImageView(image: .imgTest))
         }
         
         commentTitleLabel.do {
             $0.font = .Title2
             $0.textColor = .wssGray300
-            $0.makeAttribute(with: "일이삼사오육칠팔구십 님의 리뷰")?
-                .kerning(kerningPixel: -0.6)
-                .lineSpacing(spacingPercentage: 140)
-                .applyAttribute()
         }
         
         commaStartedImageView.do {
@@ -103,13 +98,7 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
         commentContentLabel.do {
             $0.font = .Label1
             $0.textColor = .wssGray300
-            $0.makeAttribute(with: "상수리 나무 아래는 ㄹㅇ 아마 제 인생작이 될꺼 같네요. 소장본도 사려고요 근데 약간 여주가 답답한 스타일인데 그거를 살려버린다 우왕")?
-                .kerning(kerningPixel: -0.4)
-                .lineSpacing(spacingPercentage: 145)
-                .applyAttribute()
             $0.numberOfLines = 3
-            $0.lineBreakStrategy = .hangulWordPriority
-            $0.lineBreakMode = .byTruncatingTail
         }
     }
     
@@ -159,7 +148,7 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
         }
         commentTitleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().offset(19)
-            $0.centerX.equalToSuperview()
+            $0.leading.equalTo(userProfileView.snp.trailing).offset(10)
         }
         
         commaStartedImageView.snp.makeConstraints {
@@ -179,7 +168,29 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func bindData() {
-        
+    func bindData(data: TodayPopularEntity) {
+        self.novelTitleLabel.do {
+            $0.makeAttribute(with: data.title)?
+                .kerning(kerningPixel: -0.6)
+                .lineSpacing(spacingPercentage: 140)
+                .applyAttribute()
+            $0.lineBreakMode = .byTruncatingTail
+        }
+        self.novelImageView.image = UIImage(named: data.novelImage)
+        self.userProfileView.addSubview(UIImageView(image: UIImage(named: data.avatarImage)))
+        self.commentTitleLabel.do {
+            $0.makeAttribute(with: "\(data.nickname) 님의 리뷰")?
+                .kerning(kerningPixel: -0.6)
+                .lineSpacing(spacingPercentage: 140)
+                .applyAttribute()
+        }
+        self.commentContentLabel.do {
+            $0.makeAttribute(with: data.feedContent)?
+                .kerning(kerningPixel: -0.4)
+                .lineSpacing(spacingPercentage: 145)
+                .applyAttribute()
+            $0.lineBreakStrategy = .hangulWordPriority
+            $0.lineBreakMode = .byTruncatingTail
+        }
     }
 }
