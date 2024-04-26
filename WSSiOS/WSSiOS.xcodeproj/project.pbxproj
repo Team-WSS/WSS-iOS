@@ -93,6 +93,11 @@
 		39CD5E082B4F2BBE00668B9A /* RegisterNormalKeywordSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CD5E072B4F2BBE00668B9A /* RegisterNormalKeywordSelectionView.swift */; };
 		39CD5E0C2B4F3D0700668B9A /* RegisterNormalNovelSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CD5E0B2B4F3D0700668B9A /* RegisterNormalNovelSummaryView.swift */; };
 		39CD5E102B4FEC0F00668B9A /* RegisterNormalToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CD5E0F2B4FEC0F00668B9A /* RegisterNormalToggleButton.swift */; };
+		39D4A5C92BDA4C5A004FC834 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5C82BDA4C5A004FC834 /* DetailViewController.swift */; };
+		39D4A5CB2BDA4C62004FC834 /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5CA2BDA4C62004FC834 /* DetailViewModel.swift */; };
+		39D4A5CD2BDA4C6D004FC834 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5CC2BDA4C6D004FC834 /* DetailView.swift */; };
+		39D4A5D02BDA50E8004FC834 /* DetailRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5CF2BDA50E8004FC834 /* DetailRepository.swift */; };
+		39D4A5D22BDC0902004FC834 /* NovelDetailResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5D12BDC0902004FC834 /* NovelDetailResult.swift */; };
 		39EF97AC2B53E43800D2148B /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 39EF97AB2B53E43800D2148B /* Lottie */; };
 		A107A49A2B4DB66D00668C3E /* HomeSearchButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A107A4992B4DB66D00668C3E /* HomeSearchButtonView.swift */; };
 		A107A49C2B4DC8C600668C3E /* HomeCharacterTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A107A49B2B4DC8C600668C3E /* HomeCharacterTagView.swift */; };
@@ -191,9 +196,9 @@
 		CD3E5AA22B55190400C0A659 /* UserNovelResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5AA12B55190400C0A659 /* UserNovelResult.swift */; };
 		CD3E5AAB2B56173C00C0A659 /* NovelDetailMemoSettingButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5AAA2B56173C00C0A659 /* NovelDetailMemoSettingButtonView.swift */; };
 		CD3E5AB32B565DFF00C0A659 /* NovelMemoResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5AB22B565DFF00C0A659 /* NovelMemoResult.swift */; };
-		CD6613782B8B313700B90B2B /* DeletePopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6613772B8B313700B90B2B /* DeletePopupViewModel.swift */; };
 		CD6613702B8A225E00B90B2B /* MemoReadViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD66136F2B8A225E00B90B2B /* MemoReadViewModel.swift */; };
 		CD6613752B8A283500B90B2B /* MemoEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6613742B8A283500B90B2B /* MemoEditViewModel.swift */; };
+		CD6613782B8B313700B90B2B /* DeletePopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6613772B8B313700B90B2B /* DeletePopupViewModel.swift */; };
 		CDE596D62B57708D00D99DA1 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D52B57708D00D99DA1 /* UIViewController+.swift */; };
 		CDE596D82B5770CE00D99DA1 /* WSSToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D72B5770CE00D99DA1 /* WSSToastView.swift */; };
 		CDE596DA2B57C4BE00D99DA1 /* UITextView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D92B57C4BE00D99DA1 /* UITextView+.swift */; };
@@ -279,6 +284,11 @@
 		39CD5E072B4F2BBE00668B9A /* RegisterNormalKeywordSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalKeywordSelectionView.swift; sourceTree = "<group>"; };
 		39CD5E0B2B4F3D0700668B9A /* RegisterNormalNovelSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalNovelSummaryView.swift; sourceTree = "<group>"; };
 		39CD5E0F2B4FEC0F00668B9A /* RegisterNormalToggleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalToggleButton.swift; sourceTree = "<group>"; };
+		39D4A5C82BDA4C5A004FC834 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		39D4A5CA2BDA4C62004FC834 /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
+		39D4A5CC2BDA4C6D004FC834 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
+		39D4A5CF2BDA50E8004FC834 /* DetailRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRepository.swift; sourceTree = "<group>"; };
+		39D4A5D12BDC0902004FC834 /* NovelDetailResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailResult.swift; sourceTree = "<group>"; };
 		A107A4992B4DB66D00668C3E /* HomeSearchButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchButtonView.swift; sourceTree = "<group>"; };
 		A107A49B2B4DC8C600668C3E /* HomeCharacterTagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCharacterTagView.swift; sourceTree = "<group>"; };
 		A107A49D2B4DCD9900668C3E /* HomeCharacterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCharacterView.swift; sourceTree = "<group>"; };
@@ -368,9 +378,9 @@
 		CD3E5AA12B55190400C0A659 /* UserNovelResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNovelResult.swift; sourceTree = "<group>"; };
 		CD3E5AAA2B56173C00C0A659 /* NovelDetailMemoSettingButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailMemoSettingButtonView.swift; sourceTree = "<group>"; };
 		CD3E5AB22B565DFF00C0A659 /* NovelMemoResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelMemoResult.swift; sourceTree = "<group>"; };
-		CD6613772B8B313700B90B2B /* DeletePopupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletePopupViewModel.swift; sourceTree = "<group>"; };
 		CD66136F2B8A225E00B90B2B /* MemoReadViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoReadViewModel.swift; sourceTree = "<group>"; };
 		CD6613742B8A283500B90B2B /* MemoEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoEditViewModel.swift; sourceTree = "<group>"; };
+		CD6613772B8B313700B90B2B /* DeletePopupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletePopupViewModel.swift; sourceTree = "<group>"; };
 		CDE596D52B57708D00D99DA1 /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
 		CDE596D72B5770CE00D99DA1 /* WSSToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSToastView.swift; sourceTree = "<group>"; };
 		CDE596D92B57C4BE00D99DA1 /* UITextView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+.swift"; sourceTree = "<group>"; };
@@ -407,6 +417,7 @@
 				A1EF35442B52F76C00A94C53 /* UserNovelRepository.swift */,
 				A1EF35462B52F77800A94C53 /* MemoRepository.swift */,
 				A1EF35482B52F7B000A94C53 /* AvatarRepository.swift */,
+				39D4A5CF2BDA50E8004FC834 /* DetailRepository.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -644,6 +655,7 @@
 		2CD229502B42E9C8005400BE /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				39D4A5C42BDA4B82004FC834 /* Detail */,
 				2CA2F6562B5303A60045B4C2 /* Library */,
 				CD3E5A912B55097600C0A659 /* DeletePopup */,
 				CD3E5A6D2B5424A700C0A659 /* Memo */,
@@ -803,6 +815,48 @@
 				39CC16872B51D94F003F56AE /* RegisterSuccessViewModel.swift */,
 			);
 			path = RegisterSuccessViewModel;
+			sourceTree = "<group>";
+		};
+		39D4A5C42BDA4B82004FC834 /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				39D4A5C62BDA4BF6004FC834 /* DetailView */,
+				39D4A5C52BDA4BEE004FC834 /* DetailViewController */,
+				39D4A5C72BDA4BFD004FC834 /* DetailViewModel */,
+			);
+			path = Detail;
+			sourceTree = "<group>";
+		};
+		39D4A5C52BDA4BEE004FC834 /* DetailViewController */ = {
+			isa = PBXGroup;
+			children = (
+				39D4A5C82BDA4C5A004FC834 /* DetailViewController.swift */,
+			);
+			path = DetailViewController;
+			sourceTree = "<group>";
+		};
+		39D4A5C62BDA4BF6004FC834 /* DetailView */ = {
+			isa = PBXGroup;
+			children = (
+				39D4A5CC2BDA4C6D004FC834 /* DetailView.swift */,
+				39D4A5CE2BDA4C77004FC834 /* DetailAssistantView */,
+			);
+			path = DetailView;
+			sourceTree = "<group>";
+		};
+		39D4A5C72BDA4BFD004FC834 /* DetailViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				39D4A5CA2BDA4C62004FC834 /* DetailViewModel.swift */,
+			);
+			path = DetailViewModel;
+			sourceTree = "<group>";
+		};
+		39D4A5CE2BDA4C77004FC834 /* DetailAssistantView */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = DetailAssistantView;
 			sourceTree = "<group>";
 		};
 		39EF97B12B54498E00D2148B /* Lottie */ = {
@@ -1066,6 +1120,7 @@
 				CD3E5AB22B565DFF00C0A659 /* NovelMemoResult.swift */,
 				399F29312B56633C00BBC12B /* NovelResult.swift */,
 				A123C49E2B56FB7800D32AEB /* SearchResult.swift */,
+				39D4A5D12BDC0902004FC834 /* NovelDetailResult.swift */,
 			);
 			path = DTO;
 			sourceTree = "<group>";
@@ -1225,14 +1280,6 @@
 			path = DeletePopupAssistantView;
 			sourceTree = "<group>";
 		};
-		CD6613762B8B312800B90B2B /* DeletePopupViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				CD6613772B8B313700B90B2B /* DeletePopupViewModel.swift */,
-			);
-			path = DeletePopupViewModel;
-			sourceTree = "<group>";
-		};
 		CD66136C2B8A21F400B90B2B /* MemoViewModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -1240,6 +1287,14 @@
 				CD66136F2B8A225E00B90B2B /* MemoReadViewModel.swift */,
 			);
 			path = MemoViewModel;
+			sourceTree = "<group>";
+		};
+		CD6613762B8B312800B90B2B /* DeletePopupViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				CD6613772B8B313700B90B2B /* DeletePopupViewModel.swift */,
+			);
+			path = DeletePopupViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1386,10 +1441,12 @@
 				CD6613782B8B313700B90B2B /* DeletePopupViewModel.swift in Sources */,
 				CD39F2E62B50F2E900B73A5C /* NovelDetailInfoPlatformCollectionViewCell.swift in Sources */,
 				CDE596D82B5770CE00D99DA1 /* WSSToastView.swift in Sources */,
+				39D4A5D22BDC0902004FC834 /* NovelDetailResult.swift in Sources */,
 				A1A1F9D42B4873B500705F44 /* SearchEmptyView.swift in Sources */,
 				39CC16902B529AB6003F56AE /* RegisterNormalReadStatusView.swift in Sources */,
 				3999BFF02B4E6FA800984832 /* RegisterNormalBannerImageView.swift in Sources */,
 				A1EF355A2B52FAD300A94C53 /* RecommendService.swift in Sources */,
+				39D4A5D02BDA50E8004FC834 /* DetailRepository.swift in Sources */,
 				39CC167E2B512369003F56AE /* RegisterSuccessViewController.swift in Sources */,
 				3992FA562B81E2A40079C8B8 /* RegisterNormalViewController.swift in Sources */,
 				39CD5E082B4F2BBE00668B9A /* RegisterNormalKeywordSelectionView.swift in Sources */,
@@ -1419,6 +1476,7 @@
 				2CCBFA082B4DE38800D787C2 /* MyPageInventoryView.swift in Sources */,
 				A1EF35602B52FAEF00A94C53 /* MemoService.swift in Sources */,
 				A1EF355C2B52FADC00A94C53 /* NovelService.swift in Sources */,
+				39D4A5CD2BDA4C6D004FC834 /* DetailView.swift in Sources */,
 				CD3E5A792B5424E600C0A659 /* MemoEditContentView.swift in Sources */,
 				2C5D0F592B4FDEC000C76D3C /* MyPageInventoryCollectionViewCell.swift in Sources */,
 				392A29232B4E89FD0065EB97 /* RegisterNormalNovelInfoWithRatingView.swift in Sources */,
@@ -1457,6 +1515,7 @@
 				A1CB373A2B72935900CB290F /* UITableViewCell+.swift in Sources */,
 				A1147A802B50638200141692 /* RecordViewController.swift in Sources */,
 				39ABD5A02B54D0A900DEA94E /* RegisterNormalDatePicker.swift in Sources */,
+				39D4A5C92BDA4C5A004FC834 /* DetailViewController.swift in Sources */,
 				2CCBFA042B4DD73D00D787C2 /* MyPageTallyView.swift in Sources */,
 				2C2491812B4ADC000096F255 /* StringLiterals.swift in Sources */,
 				2C6030712B54F23F0031544C /* LibraryListView.swift in Sources */,
@@ -1467,6 +1526,7 @@
 				2C2491862B4ADC420096F255 /* WSSTabBarController.swift in Sources */,
 				392A292F2B4F07FF0065EB97 /* RegisterNormalReadDateView.swift in Sources */,
 				CD3E5A9A2B5509AB00C0A659 /* DeletePopupViewController.swift in Sources */,
+				39D4A5CB2BDA4C62004FC834 /* DetailViewModel.swift in Sources */,
 				2CD229572B42EA75005400BE /* UIColor+.swift in Sources */,
 				A18432EC2B511E7400910940 /* RecordDateView.swift in Sources */,
 				A1DBB2FA2B4AA981000EE869 /* SearchCollectionViewCell.swift in Sources */,
