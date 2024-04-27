@@ -14,7 +14,11 @@ final class DetailView: UIView {
     
     //MARK: - Components
     
+    private let statusBarView = UIView()
+    private let scrollView = UIScrollView()
+    private let contentView = UIStackView()
     
+    private let detailHeaderView = DetailHeaderView()
     
     //MARK: - Life Cycle
     
@@ -33,22 +37,46 @@ final class DetailView: UIView {
     //MARK: - UI
     
     private func setUI() {
-        self.do {
-            $0.backgroundColor = .wssWhite
+        self.backgroundColor = .wssWhite
+        
+        statusBarView.do {
+            let scenes = UIApplication.shared.connectedScenes
+            let windowScene = scenes.first as? UIWindowScene
+            let statusBarManager = windowScene?.windows.first?.windowScene?.statusBarManager
+            $0.frame = statusBarManager?.statusBarFrame ?? .zero
+        }
+        
+        scrollView.do {
+            $0.contentInsetAdjustmentBehavior = .never
+            $0.showsVerticalScrollIndicator = false
+        }
+        
+        contentView.do {
+            $0.alignment = .fill
+            $0.axis = .vertical
         }
     }
     
     private func setHierarchy() {
-        
+        self.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        contentView.addArrangedSubview(detailHeaderView)
     }
     
     private func setLayout() {
-       
+        scrollView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
+        contentView.snp.makeConstraints {
+            $0.edges.equalTo(scrollView.contentLayoutGuide)
+            $0.width.equalToSuperview()
+        }
     }
     
     //MARK: - Data
     
-    func bindData(_ data: NovelBasicData) {
-       
+    func bindData(_ data: DetailBasicResult) {
+        detailHeaderView.bindData(data)
     }
 }

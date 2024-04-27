@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "imgBackgroundGradation.png",
+      "filename" : "ImgNovelCoverDummy.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "imgBackgroundGradation@2x.png",
+      "filename" : "ImgNovelCoverDummy@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "imgBackgroundGradation@3x.png",
+      "filename" : "ImgNovelCoverDummy@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

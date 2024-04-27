@@ -7,8 +7,8 @@
 
 import Foundation
 
-struct NovelDetailResult: Codable {
-    let userNovelID: Int
+struct DetailBasicResult: Codable {
+    let userNovelID: Int?
     let novelTitle, novelImage: String
     let novelGenres: [String]
     let novelGenreURL: String

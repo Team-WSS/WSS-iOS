@@ -1,5 +1,5 @@
 //
-//  DetailBannerImageView.swift
+//  DetailHeaderView.swift
 //  WSSiOS
 //
 //  Created by 이윤학 on 4/27/24.
@@ -10,11 +10,11 @@ import UIKit
 import SnapKit
 import Then
 
-final class DetailBannerImageView: UIView {
+final class DetailHeaderView: UIView {
     
     //MARK: - Components
     
-    
+    private let bannerBackgroundImageView = DetailBannerBackgroundImageView()
     
     //MARK: - Life Cycle
     
@@ -33,22 +33,24 @@ final class DetailBannerImageView: UIView {
     //MARK: - UI
     
     private func setUI() {
-        self.do {
-            $0.backgroundColor = .wssWhite
-        }
+        self.backgroundColor = .wssGray50
     }
     
     private func setHierarchy() {
-        
+        self.addSubview(bannerBackgroundImageView)
     }
     
     private func setLayout() {
-       
+        bannerBackgroundImageView.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview()
+            $0.height.equalTo(248)
+        }
     }
     
     //MARK: - Data
     
-    func bindData(_ data: NovelBasicData) {
-       
+    func bindData(_ data: DetailBasicResult) {
+        bannerBackgroundImageView.bindData(data.novelImage)
     }
 }
