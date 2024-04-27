@@ -16,7 +16,7 @@ final class DetailBannerBackgroundImageView: UIView {
     //MARK: - Components
     
     private let bannerImageView = UIImageViewAligned()
-    private let gradientView = UIImageView()
+    private let gradation = UIImageView()
     
     //MARK: - Life Cycle
     
@@ -41,9 +41,9 @@ final class DetailBannerBackgroundImageView: UIView {
             $0.alignment = .top
             $0.clipsToBounds = true
             
-            gradientView.do {
+            gradation.do {
                 $0.image = .imgBackgroundGradation
-                $0.contentMode = .scaleAspectFill
+                $0.contentMode = .scaleToFill
                 $0.clipsToBounds = true
             }
         }
@@ -51,14 +51,14 @@ final class DetailBannerBackgroundImageView: UIView {
     
     private func setHierarchy() {
         self.addSubview(bannerImageView)
-        bannerImageView.addSubview(gradientView)
+        bannerImageView.addSubview(gradation)
     }
     
     private func setLayout() {
         bannerImageView.snp.makeConstraints {
             $0.edges.equalToSuperview()
             
-            gradientView.snp.makeConstraints {
+            gradation.snp.makeConstraints {
                 $0.edges.equalToSuperview()
             }
         }
