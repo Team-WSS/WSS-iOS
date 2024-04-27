@@ -32,10 +32,12 @@ final class DetailViewModel: ViewModelType {
     
     struct Input {
         let viewWillAppearEvent: Observable<Bool>
+        let scrollContentOffset: ControlProperty<CGPoint>
     }
     
     struct Output {
         let detailBasicData: Observable<DetailBasicResult>
+        let scrollContentOffset: Driver<CGPoint>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -50,7 +52,9 @@ final class DetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        let scrollContentOffset = input.scrollContentOffset
 
-        return Output(detailBasicData: detailBasicData.asObservable())
+        return Output(
+            detailBasicData: detailBasicData.asObservable(), scrollContentOffset: scrollContentOffset.asDriver())
     }
 }

@@ -32,6 +32,8 @@ final class DetailViewController: UIViewController {
     
     //MARK: - Components
     
+    private let backButton = UIButton()
+    private let dropDownButton = UIButton()
     private let rootView = DetailView()
     
     //MARK: - Life Cycle
@@ -64,7 +66,6 @@ final class DetailViewController: UIViewController {
         super.viewWillAppear(animated)
         
         viewWillAppearEvent.accept(true)
-        
         setNavigationBar()
     }
     
@@ -75,11 +76,23 @@ final class DetailViewController: UIViewController {
     //MARK: - UI
     
     private func setUI() {
-       
+        backButton.do {
+            $0.setImage(.icNavigateLeft.withTintColor(.wssWhite, renderingMode: .alwaysOriginal), for: .normal)
+        }
+        
+        dropDownButton.do {
+            $0.setImage(.icMeatballMemo.withTintColor(.wssWhite, renderingMode: .alwaysOriginal), for: .normal)
+        }
     }
     
     private func setNavigationBar() {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.backButton)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.dropDownButton)
+        self.navigationController?.navigationBar.titleTextAttributes = [
+            NSAttributedString.Key.font: UIFont.Title2,
+            NSAttributedString.Key.foregroundColor: UIColor.wssBlack
+        ]
     }
     
     //MARK: - Bind
@@ -104,8 +117,15 @@ final class DetailViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
                 owner.rootView.bindData(data)
+                owner.navigationTitle = data.novelTitle
             }, onError: { owner, error in
                 print(error)
+            })
+            .disposed(by: disposeBag)
+        
+        output.scrollContentOffset
+            .drive(with: self, onNext: { owner, offset in
+                owner.updateNavigationBarStyle(offset: offset.y)
             })
             .disposed(by: disposeBag)
     }
@@ -114,8 +134,25 @@ final class DetailViewController: UIViewController {
     
     private func createViewModelInput() -> DetailViewModel.Input {
         return DetailViewModel.Input(
-            viewWillAppearEvent:  viewWillAppearEvent.asObservable())
+            viewWillAppearEvent:  viewWillAppearEvent.asObservable(),
+            scrollContentOffset: rootView.scrollView.rx.contentOffset)
     }
     
     //MARK: - Custom Method
+    
+    private func updateNavigationBarStyle(offset: CGFloat) {
+        if offset > 0 {
+            rootView.statusBarView.backgroundColor = .wssWhite
+            navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+            navigationController?.navigationBar.shadowImage = UIImage()
+            navigationController?.navigationBar.backgroundColor = .wssWhite
+            navigationItem.title = self.navigationTitle
+        } else {
+            rootView.statusBarView.backgroundColor = .clear
+            navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+            navigationController?.navigationBar.shadowImage = nil
+            navigationController?.navigationBar.backgroundColor = .clear
+            navigationItem.title = ""
+        }
+    }
 }

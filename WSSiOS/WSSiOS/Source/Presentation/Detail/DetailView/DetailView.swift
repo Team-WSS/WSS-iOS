@@ -14,8 +14,8 @@ final class DetailView: UIView {
     
     //MARK: - Components
     
-    private let statusBarView = UIView()
-    private let scrollView = UIScrollView()
+    let statusBarView = UIView()
+    let scrollView = UIScrollView()
     private let contentView = UIStackView()
     
     private let detailHeaderView = DetailHeaderView()
@@ -58,7 +58,8 @@ final class DetailView: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubview(scrollView)
+        self.addSubviews(scrollView,
+                         statusBarView)
         scrollView.addSubview(contentView)
         contentView.addArrangedSubview(detailHeaderView)
     }
