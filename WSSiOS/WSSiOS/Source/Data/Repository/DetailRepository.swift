@@ -23,9 +23,9 @@ struct DefaultDetailRepository: DummyDetailRepository {
         return Observable.just(
             DetailBasicResult(userNovelID: nil,
                               novelTitle: "당신의 이해를 돕기 위하여위하여 위하여위하여",
-                              novelImage: "ImgNovelCoverDummy",
+                              novelImage: "imgNovelCoverDummy",
                               novelGenres: ["romanceFantasy", "romance"],
-                              novelGenreURL: "ImgNovelCoverDummy",
+                              novelGenreURL: "icGenreLabelRfDummy",
                               isNovelCompleted: false,
                               author: "이보라",
                               interestCount: 203,
@@ -44,9 +44,9 @@ struct DefaultDetailRepository: DummyDetailRepository {
         return Observable.just(
             DetailBasicResult(userNovelID: 5,
                               novelTitle: "당신의 이해를 돕기 위하여",
-                              novelImage: "ImgNovelCoverDummy",
+                              novelImage: "imgNovelCoverDummy",
                               novelGenres: ["romanceFantasy", "romance"],
-                              novelGenreURL: "ImgNovelCoverDummy",
+                              novelGenreURL: "icGenreLabelRfDummy",
                               isNovelCompleted: true,
                               author: "이보라",
                               interestCount: 203,

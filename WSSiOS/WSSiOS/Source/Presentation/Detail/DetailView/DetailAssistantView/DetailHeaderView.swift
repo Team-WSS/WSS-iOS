@@ -16,6 +16,9 @@ final class DetailHeaderView: UIView {
     
     private let bannerBackgroundImageView = DetailBannerBackgroundImageView()
     
+    private let stackView = UIStackView()
+    private let novelCoverImageView = DetailNovelCoverImageView()
+    
     //MARK: - Life Cycle
     
     override init(frame: CGRect) {
@@ -34,10 +37,18 @@ final class DetailHeaderView: UIView {
     
     private func setUI() {
         self.backgroundColor = .wssGray50
+        
+        stackView.do {
+            $0.axis = .vertical
+            $0.alignment = .center
+        }
     }
     
     private func setHierarchy() {
-        self.addSubview(bannerBackgroundImageView)
+        self.addSubviews(bannerBackgroundImageView,
+                         stackView)
+        stackView.addArrangedSubviews(novelCoverImageView)
+        
     }
     
     private func setLayout() {
@@ -46,11 +57,17 @@ final class DetailHeaderView: UIView {
             $0.horizontalEdges.equalToSuperview()
             $0.height.equalTo(248)
         }
+        
+        stackView.snp.makeConstraints {
+            $0.top.equalTo(safeAreaLayoutGuide)
+            $0.horizontalEdges.equalToSuperview().inset(20)
+        }
     }
     
     //MARK: - Data
     
     func bindData(_ data: DetailBasicResult) {
         bannerBackgroundImageView.bindData(data.novelImage)
+        novelCoverImageView.bindData(novelImage: data.novelImage, novelGenreURL: data.novelGenreURL)
     }
 }

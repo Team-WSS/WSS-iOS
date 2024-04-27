@@ -17,8 +17,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let navigationController = UINavigationController(rootViewController: WSSTabBarController())
         navigationController.isNavigationBarHidden = true
         
+        let testNavigationController = UINavigationController(rootViewController: TestViewController())
+        testNavigationController.isNavigationBarHidden = true
+        
         self.window = UIWindow(windowScene: windowScene)
-        self.window?.rootViewController = ModuleFactory.shared.makeDetailViewController(novelId: 5)
+        self.window?.rootViewController = testNavigationController
         self.window?.makeKeyAndVisible()
     }
     

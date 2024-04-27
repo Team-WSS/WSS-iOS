@@ -79,7 +79,7 @@ final class DetailViewController: UIViewController {
     }
     
     private func setNavigationBar() {
-        
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
     //MARK: - Bind
