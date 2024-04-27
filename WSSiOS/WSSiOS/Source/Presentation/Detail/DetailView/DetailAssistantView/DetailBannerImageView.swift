@@ -1,8 +1,8 @@
 //
-//  DetailView.swift
+//  DetailBannerImageView.swift
 //  WSSiOS
 //
-//  Created by 이윤학 on 4/25/24.
+//  Created by 이윤학 on 4/27/24.
 //
 
 import UIKit
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class DetailView: UIView {
+final class DetailBannerImageView: UIView {
     
     //MARK: - Components
     
