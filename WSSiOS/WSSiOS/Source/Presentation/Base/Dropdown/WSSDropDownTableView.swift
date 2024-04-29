@@ -23,6 +23,7 @@ final class WSSDropdownTableView: UIView {
     // MARK: - UI Components
     
     let dropdownTableView = UITableView()
+    var dropdownShadowView = UIView()
     
     // MARK: - Life Cycles
     
@@ -43,11 +44,17 @@ final class WSSDropdownTableView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        dropdownShadowView.frame = dropdownTableView.frame
+        setShadowView()
+    }
+    
     // MARK: - UI
     
     private func setRegister() {
         dropdownTableView.register(WSSDropdownTableViewCell.self,
-                    forCellReuseIdentifier: WSSDropdownTableViewCell.cellIdentifier)
+                                   forCellReuseIdentifier: WSSDropdownTableViewCell.cellIdentifier)
     }
     
     private func setUI() {
@@ -59,10 +66,19 @@ final class WSSDropdownTableView: UIView {
             $0.separatorStyle = .none
             $0.rowHeight = 51.0
         }
+        
+        dropdownShadowView.do {
+            $0.backgroundColor = .clear
+            $0.layer.cornerRadius = 14
+            $0.clipsToBounds = false
+        }
+        
+        setShadowView()
     }
     
     private func setHierarchy() {
         addSubview(dropdownTableView)
+        insertSubview(dropdownShadowView, belowSubview: dropdownTableView)
     }
     
     private func setLayout() {
@@ -82,5 +98,19 @@ final class WSSDropdownTableView: UIView {
                     cell.selectionStyle = .none
                 }
                 .disposed(by: disposeBag)
+    }
+    
+    private func setShadowView() {
+        let shadowPath = UIBezierPath(roundedRect: dropdownShadowView.bounds, cornerRadius: 0)
+        let shadowLayer = CALayer()
+        shadowLayer.do {
+            $0.shadowPath = shadowPath.cgPath
+            $0.shadowColor = UIColor(resource: .wssBlack).withAlphaComponent(0.11).cgColor
+            $0.shadowOpacity = 1
+            $0.shadowRadius = 15
+            $0.shadowOffset = CGSize(width: 0, height: 2)
+        }
+        
+        dropdownShadowView.layer.insertSublayer(shadowLayer, at: 0)
     }
 }
