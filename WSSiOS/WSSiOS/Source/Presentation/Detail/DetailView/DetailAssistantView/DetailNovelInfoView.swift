@@ -47,7 +47,7 @@ final class DetailNovelInfoView: UIView {
     private func setUI() {
         stackView.do {
             $0.axis = .vertical
-            $0.spacing = 8
+            $0.spacing = 10
             $0.alignment = .center
             
             setTitleLabelText(with: StringLiterals.Loading.novelTitle)

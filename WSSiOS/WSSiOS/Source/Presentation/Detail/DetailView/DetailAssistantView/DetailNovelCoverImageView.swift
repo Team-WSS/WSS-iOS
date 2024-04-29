@@ -14,6 +14,7 @@ final class DetailNovelCoverImageView: UIView {
     
     //MARK: - Components
     
+    private let novelCoverShadowView = UIView()
     private let novelCoverImageView = UIImageView()
     private let novelGenreLabelImageView = UIImageView()
     
@@ -34,30 +35,45 @@ final class DetailNovelCoverImageView: UIView {
     //MARK: - UI
     
     private func setUI() {
-        novelCoverImageView.do {
-            $0.image = .imgLoadingThumbnail
-            $0.contentMode = .scaleAspectFill
-            $0.layer.cornerRadius = 8
-            $0.clipsToBounds = true
+        novelCoverShadowView.do {
+            $0.layer.shadowColor = UIColor.black.cgColor
+            $0.layer.shadowOpacity = 0.1
+            $0.layer.shadowOffset = CGSize(width: 0, height: 2)
+            $0.layer.shadowRadius = 15
+            $0.layer.masksToBounds = false
             
-            novelGenreLabelImageView.do {
-                $0.image = .imgGenreLabelBackgroundDummy
+            novelCoverImageView.do {
+                $0.image = .imgLoadingThumbnail
                 $0.contentMode = .scaleAspectFill
+                $0.layer.cornerRadius = 8
                 $0.clipsToBounds = true
+                
+                novelGenreLabelImageView.do {
+                    $0.image = .imgGenreLabelBackgroundDummy
+                    $0.contentMode = .scaleAspectFill
+                    $0.clipsToBounds = true
+                }
             }
         }
     }
     
     private func setHierarchy() {
-        self.addSubviews(novelCoverImageView,
-                        novelGenreLabelImageView)
+        self.addSubviews(novelCoverShadowView)
+        novelCoverShadowView.addSubviews(novelCoverImageView,
+                                         novelGenreLabelImageView)
+                         
     }
     
     private func setLayout() {
-        novelCoverImageView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+        novelCoverShadowView.snp.makeConstraints {
+            $0.verticalEdges.equalToSuperview()
+            $0.centerX.equalToSuperview()
             $0.height.equalTo(217)
             $0.width.equalTo(148)
+        }
+        
+        novelCoverImageView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
         
         novelGenreLabelImageView.snp.makeConstraints {
