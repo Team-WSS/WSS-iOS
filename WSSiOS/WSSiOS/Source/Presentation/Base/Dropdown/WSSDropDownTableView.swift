@@ -33,6 +33,7 @@ final class WSSDropdownTableView: UIView {
         
         setDropdown()
         
+        setRegister()
         setUI()
         setHierarchy()
         setLayout()
@@ -44,13 +45,16 @@ final class WSSDropdownTableView: UIView {
     
     // MARK: - UI
     
+    private func setRegister() {
+        dropdownTableView.register(WSSDropdownTableViewCell.self,
+                    forCellReuseIdentifier: WSSDropdownTableViewCell.cellIdentifier)
+    }
+    
     private func setUI() {
         dropdownTableView.do {
             $0.backgroundColor = .wssWhite
-            $0.layer.cornerRadius = 12
+            $0.layer.cornerRadius = 14
             $0.layer.masksToBounds = true
-            $0.register(WSSDropdownTableViewCell.self,
-                        forCellReuseIdentifier: WSSDropdownTableViewCell.cellIdentifier)
             $0.isScrollEnabled = false
             $0.separatorStyle = .none
             $0.rowHeight = 51.0

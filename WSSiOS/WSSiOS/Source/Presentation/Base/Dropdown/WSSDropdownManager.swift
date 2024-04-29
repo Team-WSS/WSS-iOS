@@ -22,23 +22,23 @@ class WSSDropdownManager {
     
     // MARK: - Create Dropdown
     
-    func createDropdown(rootView: UIView,
-                        mainView: WSSDropdown,
+    func createDropdown(superView: UIView,
+                        dropdownView: WSSDropdown,
                         dropdownWidth: Double,
                         dropdownData: [String],
                         textColor: UIColor) {
         
-        let dropdownView = WSSDropdownTableView()
-        dropdownView.dropdownData.onNext(dropdownData)
-        dropdownView.isHidden = true
-        dropdownView.cellTextColor = textColor
+        let dropdownTableView = WSSDropdownTableView()
+        dropdownTableView.dropdownData.onNext(dropdownData)
+        dropdownTableView.isHidden = true
+        dropdownTableView.cellTextColor = textColor
         
-        rootView.addSubviews(mainView,
-                             dropdownView)
+        superView.addSubviews(dropdownView,
+                             dropdownTableView)
         
-        dropdownView.snp.makeConstraints {
-            $0.top.equalTo(mainView.snp.bottom)
-            $0.trailing.equalTo(mainView.snp.trailing)
+        dropdownTableView.snp.makeConstraints {
+            $0.top.equalTo(dropdownView.snp.bottom)
+            $0.trailing.equalTo(dropdownView.snp.trailing)
             $0.width.equalTo(dropdownWidth)
             
             let calculateHeight = CGFloat(dropdownData.count) * 51.0
@@ -47,9 +47,9 @@ class WSSDropdownManager {
         
         let tapGesture = UITapGestureRecognizer(target: self,
                                                 action: #selector(dropdownTapped(_:)))
-        mainView.addGestureRecognizer(tapGesture)
-        dropdowns[mainView] = dropdownView
-        tapCell(dropdownView: dropdownView)
+        dropdownView.addGestureRecognizer(tapGesture)
+        dropdowns[dropdownView] = dropdownTableView
+        tapCell(dropdownView: dropdownTableView)
     }
     
     @objc
@@ -61,21 +61,11 @@ class WSSDropdownManager {
 
 extension WSSDropdownManager {
     private func tapCell(dropdownView: WSSDropdownTableView) {
-        
-        //String 뱉고 싶을 때
         dropdownView.dropdownTableView.rx.modelSelected(String.self)
             .subscribe(onNext: { cell in
                 print(cell)
                 dropdownView.isHidden.toggle()
             })
             .disposed(by: disposeBag)
-        
-        //index 뱉고 싶을 때
-//        dropdownView.dropdownTableView.rx.itemSelected
-//            .subscribe(onNext: { indexPath in
-//                print(indexPath.row)
-//                dropdownView.isHidden.toggle()
-//            })
-//            .disposed(by: disposeBag)
     }
 }
