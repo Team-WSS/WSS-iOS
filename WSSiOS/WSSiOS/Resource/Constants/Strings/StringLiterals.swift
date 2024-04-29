@@ -11,7 +11,8 @@ enum StringLiterals {
     
     enum Loading {
         static let novelTitle = "작품 제목"
-        static let novelAuthor = "작가"
+        static let novelAuthor = "작품 작가"
+        static let novelGenre = "작품 장르"
     }
     
     enum Tabbar {
