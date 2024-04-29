@@ -69,8 +69,8 @@ final class DetailNovelCoverImageView: UIView {
     
     //MARK: - Data
     
-    func bindData(novelImage: String, novelGenreURL: String) {
-        novelCoverImageView.image = UIImage(named: novelImage)
-        novelGenreLabelImageView.image = UIImage(named: novelGenreURL)
+    func bindData(_ data: DetailBasicResult) {
+        novelCoverImageView.image = UIImage(named: data.novelImage)
+        novelGenreLabelImageView.image = UIImage(named: data.novelGenreURL)
     }
 }

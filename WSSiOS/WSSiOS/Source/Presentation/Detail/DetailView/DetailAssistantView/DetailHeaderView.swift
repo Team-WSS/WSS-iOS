@@ -18,6 +18,7 @@ final class DetailHeaderView: UIView {
     
     private let stackView = UIStackView()
     private let novelCoverImageView = DetailNovelCoverImageView()
+    private let novelInfoView = DetailNovelInfoView()
     
     //MARK: - Life Cycle
     
@@ -47,8 +48,8 @@ final class DetailHeaderView: UIView {
     private func setHierarchy() {
         self.addSubviews(bannerBackgroundImageView,
                          stackView)
-        stackView.addArrangedSubviews(novelCoverImageView)
-        
+        stackView.addArrangedSubviews(novelCoverImageView,
+                                      novelInfoView)
     }
     
     private func setLayout() {
@@ -58,17 +59,23 @@ final class DetailHeaderView: UIView {
             $0.height.equalTo(248)
         }
         
-        stackView.snp.makeConstraints {
-            $0.top.equalTo(safeAreaLayoutGuide)
-            $0.horizontalEdges.equalToSuperview().inset(20)
-            $0.bottom.equalToSuperview()
+        stackView.do {
+            stackView.snp.makeConstraints {
+                $0.top.equalTo(safeAreaLayoutGuide)
+                $0.horizontalEdges.equalToSuperview().inset(20)
+                $0.bottom.equalToSuperview()
+            }
+            
+            $0.setCustomSpacing(20, after: novelCoverImageView)
         }
+        
     }
     
     //MARK: - Data
     
     func bindData(_ data: DetailBasicResult) {
-        bannerBackgroundImageView.bindData(data.novelImage)
-        novelCoverImageView.bindData(novelImage: data.novelImage, novelGenreURL: data.novelGenreURL)
+        bannerBackgroundImageView.bindData(data)
+        novelCoverImageView.bindData(data)
+        novelInfoView.bindData(data)
     }
 }
