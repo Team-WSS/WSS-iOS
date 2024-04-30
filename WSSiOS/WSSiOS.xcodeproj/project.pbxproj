@@ -94,9 +94,6 @@
 		39CD5E0C2B4F3D0700668B9A /* RegisterNormalNovelSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CD5E0B2B4F3D0700668B9A /* RegisterNormalNovelSummaryView.swift */; };
 		39CD5E102B4FEC0F00668B9A /* RegisterNormalToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CD5E0F2B4FEC0F00668B9A /* RegisterNormalToggleButton.swift */; };
 		39EF97AC2B53E43800D2148B /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 39EF97AB2B53E43800D2148B /* Lottie */; };
-		A107A49C2B4DC8C600668C3E /* HomeCharacterTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A107A49B2B4DC8C600668C3E /* HomeCharacterTagView.swift */; };
-		A107A49E2B4DCD9900668C3E /* HomeCharacterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A107A49D2B4DCD9900668C3E /* HomeCharacterView.swift */; };
-		A107A4A02B4DD7E200668C3E /* HomeSosoPickTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A107A49F2B4DD7E200668C3E /* HomeSosoPickTitleView.swift */; };
 		A1147A802B50638200141692 /* RecordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1147A7F2B50638200141692 /* RecordViewController.swift */; };
 		A1147A822B5063B300141692 /* RecordEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1147A812B5063B300141692 /* RecordEmptyView.swift */; };
 		A1147A842B5063BC00141692 /* RecordResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1147A832B5063BC00141692 /* RecordResultView.swift */; };
@@ -115,9 +112,6 @@
 		A147CBC42B4D662E0040AE39 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A147CBC32B4D662E0040AE39 /* SearchView.swift */; };
 		A147CBC62B4D6E190040AE39 /* UIStackView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A147CBC52B4D6E190040AE39 /* UIStackView+.swift */; };
 		A1493BC32B55022E004DD84A /* MemoResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1493BC22B55022E004DD84A /* MemoResult.swift */; };
-		A14EB86A2B4F15D400A0A799 /* HomeSosoPickUserNumberChipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14EB8692B4F15D400A0A799 /* HomeSosoPickUserNumberChipView.swift */; };
-		A14EDBBF2B4F05F300906957 /* HomeSosoPickCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14EDBBE2B4F05F300906957 /* HomeSosoPickCollectionViewCell.swift */; };
-		A14EDBC12B4F06E600906957 /* HomeSosoPickView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14EDBC02B4F06E600906957 /* HomeSosoPickView.swift */; };
 		A1522CF52B8257F3003A4078 /* RecordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1522CF42B8257F3003A4078 /* RecordViewModel.swift */; };
 		A1654F0F2B540504004F78E8 /* APIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1654F0D2B540504004F78E8 /* APIConstants.swift */; };
 		A1654F102B540504004F78E8 /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1654F0E2B540504004F78E8 /* HTTPMethod.swift */; };
@@ -284,9 +278,6 @@
 		39CD5E072B4F2BBE00668B9A /* RegisterNormalKeywordSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalKeywordSelectionView.swift; sourceTree = "<group>"; };
 		39CD5E0B2B4F3D0700668B9A /* RegisterNormalNovelSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalNovelSummaryView.swift; sourceTree = "<group>"; };
 		39CD5E0F2B4FEC0F00668B9A /* RegisterNormalToggleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalToggleButton.swift; sourceTree = "<group>"; };
-		A107A49B2B4DC8C600668C3E /* HomeCharacterTagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCharacterTagView.swift; sourceTree = "<group>"; };
-		A107A49D2B4DCD9900668C3E /* HomeCharacterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCharacterView.swift; sourceTree = "<group>"; };
-		A107A49F2B4DD7E200668C3E /* HomeSosoPickTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSosoPickTitleView.swift; sourceTree = "<group>"; };
 		A1147A7F2B50638200141692 /* RecordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordViewController.swift; sourceTree = "<group>"; };
 		A1147A812B5063B300141692 /* RecordEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordEmptyView.swift; sourceTree = "<group>"; };
 		A1147A832B5063BC00141692 /* RecordResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordResultView.swift; sourceTree = "<group>"; };
@@ -297,9 +288,6 @@
 		A147CBC32B4D662E0040AE39 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		A147CBC52B4D6E190040AE39 /* UIStackView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+.swift"; sourceTree = "<group>"; };
 		A1493BC22B55022E004DD84A /* MemoResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoResult.swift; sourceTree = "<group>"; };
-		A14EB8692B4F15D400A0A799 /* HomeSosoPickUserNumberChipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSosoPickUserNumberChipView.swift; sourceTree = "<group>"; };
-		A14EDBBE2B4F05F300906957 /* HomeSosoPickCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSosoPickCollectionViewCell.swift; sourceTree = "<group>"; };
-		A14EDBC02B4F06E600906957 /* HomeSosoPickView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSosoPickView.swift; sourceTree = "<group>"; };
 		A1522CF42B8257F3003A4078 /* RecordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordViewModel.swift; sourceTree = "<group>"; };
 		A1654F0D2B540504004F78E8 /* APIConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIConstants.swift; sourceTree = "<group>"; };
 		A1654F0E2B540504004F78E8 /* HTTPMethod.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
@@ -974,7 +962,6 @@
 		A14EDBBD2B4F05DD00906957 /* HomeCell */ = {
 			isa = PBXGroup;
 			children = (
-				A14EDBBE2B4F05F300906957 /* HomeSosoPickCollectionViewCell.swift */,
 				C9AF1AE32BCC28EE00208BC9 /* HomeTodayPopularCollectionViewCell.swift */,
 				C95EADD42BD4F38E0060CF1A /* TodayPopularEntity.swift */,
 				C95EADD62BD4FA290060CF1A /* HomeRealtimePopularCell.swift */,
@@ -996,11 +983,6 @@
 			isa = PBXGroup;
 			children = (
 				A1708F152B4D8E2700E35E50 /* HomeHeaderView.swift */,
-				A107A49B2B4DC8C600668C3E /* HomeCharacterTagView.swift */,
-				A107A49D2B4DCD9900668C3E /* HomeCharacterView.swift */,
-				A107A49F2B4DD7E200668C3E /* HomeSosoPickTitleView.swift */,
-				A14EDBC02B4F06E600906957 /* HomeSosoPickView.swift */,
-				A14EB8692B4F15D400A0A799 /* HomeSosoPickUserNumberChipView.swift */,
 				C9AF1AE12BCC234300208BC9 /* HomeTodayPopularView.swift */,
 				C9063A962BD3F868006AD8F9 /* HomeRealtimePopularView.swift */,
 			);
@@ -1364,7 +1346,6 @@
 				2C60307B2B55D9160031544C /* UIImageView+.swift in Sources */,
 				A1EF35692B52FD9B00A94C53 /* AvatarResult.swift in Sources */,
 				A18432EA2B511C4300910940 /* RecordTableViewCell.swift in Sources */,
-				A107A49C2B4DC8C600668C3E /* HomeCharacterTagView.swift in Sources */,
 				A11DD83B2B9074F000A30C33 /* SearchViewModel.swift in Sources */,
 				2CCBFA062B4DD85600D787C2 /* MyPageTallyReuseView.swift in Sources */,
 				CD39F2CC2B503B8E00B73A5C /* NovelDetailInfoRatingView.swift in Sources */,
@@ -1377,7 +1358,6 @@
 				A1654F142B540513004F78E8 /* NetworkingServiceError.swift in Sources */,
 				2CA2F64E2B527B060045B4C2 /* MyPageCustomModalView.swift in Sources */,
 				A1654F102B540504004F78E8 /* HTTPMethod.swift in Sources */,
-				A14EB86A2B4F15D400A0A799 /* HomeSosoPickUserNumberChipView.swift in Sources */,
 				A1654F1C2B540563004F78E8 /* Data+.swift in Sources */,
 				CD3E5A822B54253E00C0A659 /* MemoEditViewController.swift in Sources */,
 				C9063A972BD3F868006AD8F9 /* HomeRealtimePopularView.swift in Sources */,
@@ -1391,7 +1371,6 @@
 				A122C9F22B53146800DFCFE4 /* (null) in Sources */,
 				CDE596D62B57708D00D99DA1 /* UIViewController+.swift in Sources */,
 				A1654F162B540513004F78E8 /* NetworkLogger.swift in Sources */,
-				A14EDBBF2B4F05F300906957 /* HomeSosoPickCollectionViewCell.swift in Sources */,
 				2C60306F2B54EDDD0031544C /* LibraryDescriptionView.swift in Sources */,
 				3916EC892B89D23D007835B5 /* ModuleFactory.swift in Sources */,
 				CD39F2C82B50124C00B73A5C /* NovelDetailMemoTableViewCell.swift in Sources */,
@@ -1425,7 +1404,6 @@
 				CD3E5A742B5424D600C0A659 /* MemoEditView.swift in Sources */,
 				39CC16812B51246E003F56AE /* RegisterNormalView.swift in Sources */,
 				39B75ADE2B59BA87005DD8B9 /* UIScreen+.swift in Sources */,
-				A107A49E2B4DCD9900668C3E /* HomeCharacterView.swift in Sources */,
 				A122C9DB2B5309AF00DFCFE4 /* (null) in Sources */,
 				A1EF35432B52F75800A94C53 /* NovelRepository.swift in Sources */,
 				2C5D0F5D2B50100000C76D3C /* MyPageSettingCollectionViewCell.swift in Sources */,
@@ -1491,7 +1469,6 @@
 				3999BFEB2B4E6C4400984832 /* RegisterViewModel.swift in Sources */,
 				A1493BC32B55022E004DD84A /* MemoResult.swift in Sources */,
 				A1654F0F2B540504004F78E8 /* APIConstants.swift in Sources */,
-				A107A4A02B4DD7E200668C3E /* HomeSosoPickTitleView.swift in Sources */,
 				CD3E5AA22B55190400C0A659 /* UserNovelResult.swift in Sources */,
 				A1EF35472B52F77800A94C53 /* MemoRepository.swift in Sources */,
 				CD3E5A7A2B5424E600C0A659 /* MemoReadContentView.swift in Sources */,
@@ -1500,7 +1477,6 @@
 				A123C49F2B56FB7800D32AEB /* SearchResult.swift in Sources */,
 				2C60306D2B5445EC0031544C /* LibraryTabCollectionViewCell.swift in Sources */,
 				A1DBB2FA2B4AA981000EE869 /* SearchCollectionViewCell.swift in Sources */,
-				A14EDBC12B4F06E600906957 /* HomeSosoPickView.swift in Sources */,
 				CD39F2D62B50D9A900B73A5C /* NovelDetailInfoKeywordView.swift in Sources */,
 				CD39F2CA2B5038F400B73A5C /* NovelDetailInfoView.swift in Sources */,
 				CD39F2D22B50CE0600B73A5C /* NovelDetailInfoReadStatusTagView.swift in Sources */,
