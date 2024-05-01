@@ -16,6 +16,7 @@ final class HomeView: UIView {
     let headerView = HomeHeaderView()
     let todayPopularView = HomeTodayPopularView()
     let realtimePopularView = HomeRealtimePopularView()
+    let intersetView = HomeInterestView()
     
     //MARK: - Life Cycle
     
@@ -43,7 +44,8 @@ final class HomeView: UIView {
                          scrollView)
         self.scrollView.addSubview(contentView)
         contentView.addSubviews(todayPopularView,
-                                realtimePopularView)
+                                realtimePopularView,
+                                intersetView)
     }
     
     private func setLayout() {
@@ -73,6 +75,11 @@ final class HomeView: UIView {
         
         realtimePopularView.snp.makeConstraints {
             $0.top.equalTo(todayPopularView.snp.bottom).offset(56)
+            $0.leading.equalToSuperview()
+        }
+        
+        intersetView.snp.makeConstraints {
+            $0.top.equalTo(realtimePopularView.snp.bottom).offset(56)
             $0.leading.equalToSuperview()
         }
     }
