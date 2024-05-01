@@ -20,8 +20,6 @@ final class HomeRealtimePopularView: UIView {
     
     private var scrollView = UIScrollView()
     
-    private var testView = HomeRealtimePopularCell()
-    
     //MARK: - Life Cycle
     
     override init(frame: CGRect) {
@@ -60,21 +58,13 @@ final class HomeRealtimePopularView: UIView {
     private func setHierarchy() {
         titleStackView.addArrangedSubviews(titleLogoImageView,
                                            titleLabel)
-        self.addSubviews(titleStackView,
-                         testView)
+        self.addSubviews(titleStackView)
     }
     
     private func setLayout() {
         titleStackView.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.leading.equalToSuperview().inset(20)
-        }
-        
-        testView.snp.makeConstraints {
-            $0.top.equalTo(titleStackView.snp.bottom).offset(20)
-            $0.leading.equalToSuperview().inset(20)
-            $0.width.equalTo(335)
-            $0.height.equalTo(414)
         }
     }
 }

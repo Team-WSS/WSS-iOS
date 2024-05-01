@@ -1,5 +1,5 @@
 //
-//  HomeRealTimePopularFeedCell.swift
+//  HomeRealTimePopularFeedView.swift
 //  WSSiOS
 //
 //  Created by Seoyeon Choi on 4/21/24.
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class HomeRealTimePopularFeedCell: UIView {
+final class HomeRealTimePopularFeedView: UIView {
     
     //MARK: - UI Components
     
