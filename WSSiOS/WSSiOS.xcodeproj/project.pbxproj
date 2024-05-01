@@ -103,8 +103,9 @@
 		39D4A5D82BDD23FE004FC834 /* DetailNovelCoverImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5D72BDD23FE004FC834 /* DetailNovelCoverImageView.swift */; };
 		39D4A5DA2BDD3202004FC834 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5D92BDD3202004FC834 /* TestViewController.swift */; };
 		39D4A5DC2BDD420D004FC834 /* DetailNovelInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5DB2BDD420D004FC834 /* DetailNovelInfoView.swift */; };
-		39D4A5DE2BDE48FD004FC834 /* ReviewInfoElementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5DD2BDE48FD004FC834 /* ReviewInfoElementView.swift */; };
+		39D4A5DE2BDE48FD004FC834 /* DetailReviewInfoElementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5DD2BDE48FD004FC834 /* DetailReviewInfoElementView.swift */; };
 		39D4A5E02BDF746C004FC834 /* NovelGenre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5DF2BDF746C004FC834 /* NovelGenre.swift */; };
+		39D4A5E42BDF90FB004FC834 /* DetailNovelRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5E32BDF90FB004FC834 /* DetailNovelRatingView.swift */; };
 		39EF97AC2B53E43800D2148B /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 39EF97AB2B53E43800D2148B /* Lottie */; };
 		A107A49A2B4DB66D00668C3E /* HomeSearchButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A107A4992B4DB66D00668C3E /* HomeSearchButtonView.swift */; };
 		A107A49C2B4DC8C600668C3E /* HomeCharacterTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A107A49B2B4DC8C600668C3E /* HomeCharacterTagView.swift */; };
@@ -301,8 +302,9 @@
 		39D4A5D72BDD23FE004FC834 /* DetailNovelCoverImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailNovelCoverImageView.swift; sourceTree = "<group>"; };
 		39D4A5D92BDD3202004FC834 /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		39D4A5DB2BDD420D004FC834 /* DetailNovelInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailNovelInfoView.swift; sourceTree = "<group>"; };
-		39D4A5DD2BDE48FD004FC834 /* ReviewInfoElementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewInfoElementView.swift; sourceTree = "<group>"; };
+		39D4A5DD2BDE48FD004FC834 /* DetailReviewInfoElementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailReviewInfoElementView.swift; sourceTree = "<group>"; };
 		39D4A5DF2BDF746C004FC834 /* NovelGenre.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelGenre.swift; sourceTree = "<group>"; };
+		39D4A5E32BDF90FB004FC834 /* DetailNovelRatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailNovelRatingView.swift; sourceTree = "<group>"; };
 		A107A4992B4DB66D00668C3E /* HomeSearchButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchButtonView.swift; sourceTree = "<group>"; };
 		A107A49B2B4DC8C600668C3E /* HomeCharacterTagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCharacterTagView.swift; sourceTree = "<group>"; };
 		A107A49D2B4DCD9900668C3E /* HomeCharacterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCharacterView.swift; sourceTree = "<group>"; };
@@ -875,7 +877,8 @@
 				39D4A5D32BDCC1B1004FC834 /* DetailBannerBackgroundImageView.swift */,
 				39D4A5D72BDD23FE004FC834 /* DetailNovelCoverImageView.swift */,
 				39D4A5DB2BDD420D004FC834 /* DetailNovelInfoView.swift */,
-				39D4A5DD2BDE48FD004FC834 /* ReviewInfoElementView.swift */,
+				39D4A5DD2BDE48FD004FC834 /* DetailReviewInfoElementView.swift */,
+				39D4A5E32BDF90FB004FC834 /* DetailNovelRatingView.swift */,
 			);
 			path = DetailAssistantView;
 			sourceTree = "<group>";
@@ -1483,6 +1486,7 @@
 				A122C9DF2B530A1A00DFCFE4 /* (null) in Sources */,
 				CD3E5A812B54253E00C0A659 /* MemoReadViewController.swift in Sources */,
 				CD3E5A742B5424D600C0A659 /* MemoEditView.swift in Sources */,
+				39D4A5E42BDF90FB004FC834 /* DetailNovelRatingView.swift in Sources */,
 				CD3E5A812B54253E00C0A659 /* MemoReadViewController.swift in Sources */,
 				A197A4C12B56BB6000E5A701 /* UserCharacterResult.swift in Sources */,
 				A1B903E52B58140800398890 /* UserNovelListResult.swift in Sources */,
@@ -1570,7 +1574,7 @@
 				2C60306D2B5445EC0031544C /* LibraryTabCollectionViewCell.swift in Sources */,
 				A1DBB2FA2B4AA981000EE869 /* SearchCollectionViewCell.swift in Sources */,
 				A14EDBC12B4F06E600906957 /* HomeSosoPickView.swift in Sources */,
-				39D4A5DE2BDE48FD004FC834 /* ReviewInfoElementView.swift in Sources */,
+				39D4A5DE2BDE48FD004FC834 /* DetailReviewInfoElementView.swift in Sources */,
 				CD39F2D62B50D9A900B73A5C /* NovelDetailInfoKeywordView.swift in Sources */,
 				CD39F2CA2B5038F400B73A5C /* NovelDetailInfoView.swift in Sources */,
 				CD39F2D22B50CE0600B73A5C /* NovelDetailInfoReadStatusTagView.swift in Sources */,
