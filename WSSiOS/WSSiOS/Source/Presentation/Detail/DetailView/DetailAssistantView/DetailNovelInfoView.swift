@@ -24,9 +24,9 @@ final class DetailNovelInfoView: UIView {
     private let infoLabel = UILabel()
     private let reviewStack = UIStackView()
     
-    private let interestCount = ReviewInfoElementView()
-    private let rating = ReviewInfoElementView()
-    private let feedCount = ReviewInfoElementView()
+    private let interestCount = DetailReviewInfoElementView()
+    private let rating = DetailReviewInfoElementView()
+    private let feedCount = DetailReviewInfoElementView()
     
     //MARK: - Life Cycle
     
