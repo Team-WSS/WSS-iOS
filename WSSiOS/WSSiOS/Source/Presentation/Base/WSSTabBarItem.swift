@@ -9,16 +9,16 @@ import UIKit
 
 enum WSSTabBarItem: CaseIterable {
     
-    case home, library, record, myPage
+    case home, search, feed, myPage
     
     var normalItemImage: UIImage {
         switch self {
         case .home:
             return .icNavigateHome
-        case .library:
-            return .icNavigateLibrary
-        case .record:
-            return .icNavigateRecord
+        case .search:
+            return .icNavigateSearch
+        case .feed:
+            return .icNavigateFeed
         case .myPage:
             return .icNavigateMy
         }
@@ -28,10 +28,10 @@ enum WSSTabBarItem: CaseIterable {
         switch self {
         case .home:
             return .icNavigateHomeSelected
-        case .library:
-            return .icNavigateLibrarySelected
-        case .record:
-            return .icNavigateRecordSelected
+        case .search:
+            return .icNavigateSearchSelected
+        case .feed:
+            return .icNavigateFeedSelected
         case .myPage:
             return .icNavigateMySelected
         }
@@ -41,10 +41,10 @@ enum WSSTabBarItem: CaseIterable {
         switch self {
         case .home:
             return StringLiterals.Tabbar.Title.home
-        case .library:
-            return StringLiterals.Tabbar.Title.library
-        case .record:
-            return StringLiterals.Tabbar.Title.record
+        case .search:
+            return StringLiterals.Tabbar.Title.search
+        case .feed:
+            return StringLiterals.Tabbar.Title.feed
         case .myPage:
             return StringLiterals.Tabbar.Title.myPage
         }
@@ -62,14 +62,14 @@ enum WSSTabBarItem: CaseIterable {
                 )
             )
             
-        case .library:
+        case .search:
             return LibraryViewController(
                 userNovelListRepository: DefaultUserNovelRepository(
                     userNovelService: DefaultUserNovelService()
                 )
             )
             
-        case .record:
+        case .feed:
             return RecordViewController(
                 recordViewModel: RecordViewModel(
                     memoRepository: DefaultMemoRepository(
