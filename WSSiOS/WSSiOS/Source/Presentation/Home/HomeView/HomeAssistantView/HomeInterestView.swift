@@ -17,7 +17,9 @@ final class HomeInterestView: UIView {
     private var titleLabel = UILabel()
     private var subTitleLabel = UILabel()
     
-    private var testView = HomeInterestCollectionViewCell()
+    let interestCollectionView = UICollectionView(frame: .zero,
+                                                      collectionViewLayout: UICollectionViewLayout())
+    private let interestCollectionViewLayout = UICollectionViewFlowLayout()
     
     //MARK: - Life Cycle
     
@@ -50,12 +52,24 @@ final class HomeInterestView: UIView {
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
         }
+        
+        interestCollectionView.do {
+            $0.showsHorizontalScrollIndicator = false
+        }
+        
+        interestCollectionViewLayout.do {
+            $0.scrollDirection = .horizontal
+            $0.minimumLineSpacing = 12
+            $0.itemSize = CGSize(width: 280, height: 251)
+            $0.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+            interestCollectionView.setCollectionViewLayout($0, animated: false)
+        }
     }
     
     private func setHierarchy() {
         self.addSubviews(titleLabel,
                          subTitleLabel,
-                         testView)
+                         interestCollectionView)
     }
     
     private func setLayout() {
@@ -69,9 +83,11 @@ final class HomeInterestView: UIView {
             $0.leading.equalTo(titleLabel.snp.leading)
         }
         
-        testView.snp.makeConstraints {
+        interestCollectionView.snp.makeConstraints {
             $0.top.equalTo(subTitleLabel.snp.bottom).offset(20)
-            $0.leading.equalTo(titleLabel.snp.leading)
+            $0.leading.trailing.equalToSuperview()
+            //TODO: 그림자 잘리는 현상 해결 필요
+            $0.height.equalTo(251)
         }
     }
 }

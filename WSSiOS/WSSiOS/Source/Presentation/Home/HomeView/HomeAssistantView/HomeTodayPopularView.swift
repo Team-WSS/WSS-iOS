@@ -18,7 +18,6 @@ final class HomeTodayPopularView: UIView {
     let todayPopularCollectionView = UICollectionView(frame: .zero,
                                                       collectionViewLayout: UICollectionViewLayout())
     private let todayPopularCollectionViewLayout = UICollectionViewFlowLayout()
-    private let testView = HomeTodayPopularCollectionViewCell()
     
     //MARK: - Life Cycle
     

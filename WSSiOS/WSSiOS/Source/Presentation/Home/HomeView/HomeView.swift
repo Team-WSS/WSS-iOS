@@ -16,7 +16,7 @@ final class HomeView: UIView {
     let headerView = HomeHeaderView()
     let todayPopularView = HomeTodayPopularView()
     let realtimePopularView = HomeRealtimePopularView()
-    let intersetView = HomeInterestView()
+    let interestView = HomeInterestView()
     let tasteRecommendView = HomeTasteRecommendView()
     
     //MARK: - Life Cycle
@@ -25,7 +25,7 @@ final class HomeView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -40,13 +40,13 @@ final class HomeView: UIView {
         }
     }
     
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(headerView,
                          scrollView)
         self.scrollView.addSubview(contentView)
         contentView.addSubviews(todayPopularView,
                                 realtimePopularView,
-                                intersetView,
+                                interestView,
                                 tasteRecommendView)
     }
     
@@ -80,14 +80,14 @@ final class HomeView: UIView {
             $0.leading.equalToSuperview()
         }
         
-        intersetView.snp.makeConstraints {
+        interestView.snp.makeConstraints {
             $0.top.equalTo(realtimePopularView.snp.bottom).offset(56)
-            $0.leading.equalToSuperview()
-            $0.height.equalTo(324)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(370)
         }
         
         tasteRecommendView.snp.makeConstraints {
-            $0.top.equalTo(intersetView.snp.bottom).offset(56)
+            $0.top.equalTo(interestView.snp.bottom).offset(56)
             $0.leading.trailing.bottom.equalToSuperview()
             $0.height.equalTo(1664)
         }

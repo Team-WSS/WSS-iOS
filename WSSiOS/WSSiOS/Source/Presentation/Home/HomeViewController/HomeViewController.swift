@@ -75,9 +75,20 @@ final class HomeViewController: UIViewController {
             HomeTodayPopularCollectionViewCell.self,
             forCellWithReuseIdentifier: HomeTodayPopularCollectionViewCell.cellIdentifier)
         
-        dummyData.bind(to: rootView.todayPopularView.todayPopularCollectionView.rx.items(
+        rootView.interestView.interestCollectionView.register(
+            HomeInterestCollectionViewCell.self,
+            forCellWithReuseIdentifier: HomeInterestCollectionViewCell.cellIdentifier)
+        
+        dummyData1.bind(to: rootView.todayPopularView.todayPopularCollectionView.rx.items(
             cellIdentifier: HomeTodayPopularCollectionViewCell.cellIdentifier,
             cellType: HomeTodayPopularCollectionViewCell.self)) { row, element, cell in
+            cell.bindData(data: element)
+        }
+        .disposed(by: disposeBag)
+        
+        dummyData2.bind(to: rootView.interestView.interestCollectionView.rx.items(
+            cellIdentifier: HomeInterestCollectionViewCell.cellIdentifier,
+            cellType: HomeInterestCollectionViewCell.self)) { row, element, cell in
             cell.bindData(data: element)
         }
         .disposed(by: disposeBag)

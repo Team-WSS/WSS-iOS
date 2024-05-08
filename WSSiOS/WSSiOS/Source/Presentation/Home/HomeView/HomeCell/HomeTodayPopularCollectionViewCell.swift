@@ -11,11 +11,13 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
     
     //MARK: - UI Components
     
+    /// 소설 정보
     private let backgroundImageView = UIImageView()
     private let bestTagImageView = UIImageView()
     private let novelTitleLabel = UILabel()
     private let novelImageView = UIImageView()
     
+    /// 유저 피드 글 정보
     private let blurBackgroundView = UIView()
     private let userProfileView = UIView()
     private let commentTitleLabel = UILabel()
