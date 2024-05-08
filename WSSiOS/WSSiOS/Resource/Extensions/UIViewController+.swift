@@ -33,14 +33,12 @@ extension UIViewController {
     func showTabBar() {
         if let tabBarController = self.tabBarController as? WSSTabBarController {
             tabBarController.tabBar.isHidden = false
-            tabBarController.shadowView.isHidden = false
         }
     }
     
     func hideTabBar() {
         if let tabBarController = self.tabBarController as? WSSTabBarController {
             tabBarController.tabBar.isHidden = true
-            tabBarController.shadowView.isHidden = true
         }
     }
     
