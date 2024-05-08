@@ -16,6 +16,8 @@ final class HomeInterestView: UIView {
     
     private var titleLabel = UILabel()
     private var subTitleLabel = UILabel()
+    
+    private var testView = HomeInterestCollectionViewCell()
 
     //MARK: - Life Cycle
     
@@ -52,7 +54,8 @@ final class HomeInterestView: UIView {
     
     private func setHierarchy() {
         self.addSubviews(titleLabel,
-                         subTitleLabel)
+                         subTitleLabel,
+        testView)
     }
     
     private func setLayout() {
@@ -63,6 +66,11 @@ final class HomeInterestView: UIView {
         
         subTitleLabel.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(2)
+            $0.leading.equalTo(titleLabel.snp.leading)
+        }
+        
+        testView.snp.makeConstraints {
+            $0.top.equalTo(subTitleLabel.snp.bottom).offset(20)
             $0.leading.equalTo(titleLabel.snp.leading)
         }
     }
