@@ -40,6 +40,10 @@ extension UIFont {
         return UIFont(name: "Pretendard-Medium", size: 13)!
     }
     
+    static var Body5: UIFont {
+        return UIFont(name: "Pretendard-Regular", size: 12)!
+    }
+    
     static var Label1: UIFont {
         return UIFont(name: "Pretendard-Regular", size: 13)!
     }
