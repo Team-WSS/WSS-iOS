@@ -17,7 +17,7 @@ final class HomeTasteRecommendView: UIView {
     private var titleLabel = UILabel()
     private var subTitleLabel = UILabel()
     
-    private var testView = HomeInterestCollectionViewCell()
+    private var testView = HomeTasteRecommendCollectionViewCell()
     
     //MARK: - Life Cycle
     

@@ -171,6 +171,7 @@ final class HomeInterestCollectionViewCell: UICollectionViewCell {
             $0.width.equalTo(280)
             $0.height.equalTo(251)
         }
+        
         novelBackgroundView.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
             $0.height.equalTo(118)
