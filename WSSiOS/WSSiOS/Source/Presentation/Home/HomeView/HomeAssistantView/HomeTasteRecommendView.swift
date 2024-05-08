@@ -1,8 +1,8 @@
 //
-//  HomeInterestView.swift
+//  HomeTasteRecommendView.swift
 //  WSSiOS
 //
-//  Created by Seoyeon Choi on 5/2/24.
+//  Created by Seoyeon Choi on 5/9/24.
 //
 
 import UIKit
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class HomeInterestView: UIView {
+final class HomeTasteRecommendView: UIView {
     
     //MARK: - UI Components
     
@@ -38,7 +38,7 @@ final class HomeInterestView: UIView {
         titleLabel.do {
             $0.font = .HeadLine1
             $0.textColor = .wssBlack
-            $0.makeAttribute(with: "일이삼사오육칠팔구십 님의 게시물")?
+            $0.makeAttribute(with: "이 웹소설은 어때요?")?
                 .kerning(kerningPixel: -1.2)
                 .applyAttribute()
         }
@@ -46,7 +46,7 @@ final class HomeInterestView: UIView {
         subTitleLabel.do {
             $0.font = .Body2
             $0.textColor = .wssGray200
-            $0.makeAttribute(with: "관심 등록한 작품의 최신글이에요")?
+            $0.makeAttribute(with: "선호장르를 기반으로 추천해 드려요")?
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
         }
