@@ -42,7 +42,7 @@ final class HomeTasteRecommendView: UIView {
         titleLabel.do {
             $0.font = .HeadLine1
             $0.textColor = .wssBlack
-            $0.makeAttribute(with: "이 웹소설은 어때요?")?
+            $0.makeAttribute(with: StringLiterals.Home.Title.recommend)?
                 .kerning(kerningPixel: -1.2)
                 .applyAttribute()
         }
@@ -50,7 +50,7 @@ final class HomeTasteRecommendView: UIView {
         subTitleLabel.do {
             $0.font = .Body2
             $0.textColor = .wssGray200
-            $0.makeAttribute(with: "선호장르를 기반으로 추천해 드려요")?
+            $0.makeAttribute(with: StringLiterals.Home.SubTitle.recommend)?
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
         }
