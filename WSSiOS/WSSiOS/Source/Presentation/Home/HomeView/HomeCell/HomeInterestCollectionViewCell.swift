@@ -197,7 +197,7 @@ final class HomeInterestCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func bindData(data: InterestEntity) {
+    func bindData(data: InterestFeed) {
         self.novelImageView.image = UIImage(named: data.novelImage)
         self.novelTitleLabel.do {
             $0.makeAttribute(with: data.novelTitle)?

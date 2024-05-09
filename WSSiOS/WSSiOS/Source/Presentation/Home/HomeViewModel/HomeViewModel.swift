@@ -23,10 +23,12 @@ final class HomeViewModel: ViewModelType {
 
     }
     
+    //MARK: - Outputs
+    
     struct Output {
-        var todayPopularList = BehaviorRelay<[TodayPopularEntity]>(value: [])
-        var interestList = BehaviorRelay<[InterestEntity]>(value: [])
-        var tasteRecommendList = BehaviorRelay<[TasteRecommendEntity]>(value: [])
+        var todayPopularList = BehaviorRelay<[TodayPopularNovel]>(value: [])
+        var interestList = BehaviorRelay<[InterestFeed]>(value: [])
+        var tasteRecommendList = BehaviorRelay<[TasteRecommendNovel]>(value: [])
     }
     
     //MARK: - init

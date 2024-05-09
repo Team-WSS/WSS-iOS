@@ -170,7 +170,7 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func bindData(data: TodayPopularEntity) {
+    func bindData(data: TodayPopularNovel) {
         self.novelTitleLabel.do {
             $0.makeAttribute(with: data.title)?
                 .kerning(kerningPixel: -0.6)

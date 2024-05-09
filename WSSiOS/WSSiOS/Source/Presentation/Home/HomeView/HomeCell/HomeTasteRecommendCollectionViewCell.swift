@@ -147,7 +147,7 @@ final class HomeTasteRecommendCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func bindData(data: TasteRecommendEntity) {
+    func bindData(data: TasteRecommendNovel) {
         self.novelImageView.image = UIImage(named: data.novelImage)
         self.novelTitleLabel.do {
             $0.makeAttribute(with: data.novelTitle)?
