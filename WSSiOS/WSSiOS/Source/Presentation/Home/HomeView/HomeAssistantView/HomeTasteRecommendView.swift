@@ -19,6 +19,10 @@ final class HomeTasteRecommendView: UIView {
     
     private var testView = HomeTasteRecommendCollectionViewCell()
     
+    let tasteRecommendCollectionView = UICollectionView(frame: .zero,
+                                                      collectionViewLayout: UICollectionViewLayout())
+    private let tasteRecommendCollectionViewLayout = UICollectionViewFlowLayout()
+    
     //MARK: - Life Cycle
     
     override init(frame: CGRect) {
@@ -50,12 +54,25 @@ final class HomeTasteRecommendView: UIView {
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
         }
+        
+        tasteRecommendCollectionView.do {
+            $0.showsVerticalScrollIndicator = false
+            $0.isScrollEnabled = false
+        }
+        
+        tasteRecommendCollectionViewLayout.do {
+            $0.scrollDirection = .vertical
+            $0.minimumLineSpacing = 18
+            $0.minimumInteritemSpacing = 9
+            $0.itemSize = CGSize(width: (UIScreen.main.bounds.width - 49) / 2, height: 319)
+            tasteRecommendCollectionView.setCollectionViewLayout($0, animated: false)
+        }
     }
     
     private func setHierarchy() {
         self.addSubviews(titleLabel,
                          subTitleLabel,
-                         testView)
+                         tasteRecommendCollectionView)
     }
     
     private func setLayout() {
@@ -69,9 +86,11 @@ final class HomeTasteRecommendView: UIView {
             $0.leading.equalTo(titleLabel.snp.leading)
         }
         
-        testView.snp.makeConstraints {
+        tasteRecommendCollectionView.snp.makeConstraints {
             $0.top.equalTo(subTitleLabel.snp.bottom).offset(20)
-            $0.leading.equalTo(titleLabel.snp.leading)
+            $0.width.equalTo(UIScreen.main.bounds.width - 40)
+            $0.centerX.equalToSuperview()
+            $0.bottom.equalToSuperview()
         }
     }
 }

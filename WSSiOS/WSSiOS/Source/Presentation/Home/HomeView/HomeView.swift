@@ -83,13 +83,13 @@ final class HomeView: UIView {
         interestView.snp.makeConstraints {
             $0.top.equalTo(realtimePopularView.snp.bottom).offset(56)
             $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(370)
+            $0.height.equalTo(324)
         }
         
         tasteRecommendView.snp.makeConstraints {
             $0.top.equalTo(interestView.snp.bottom).offset(56)
             $0.leading.trailing.bottom.equalToSuperview()
-            $0.height.equalTo(1664)
+            $0.height.equalTo(1750)
         }
     }
 }

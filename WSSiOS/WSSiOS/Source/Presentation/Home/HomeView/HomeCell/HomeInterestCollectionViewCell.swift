@@ -54,7 +54,7 @@ final class HomeInterestCollectionViewCell: UICollectionViewCell {
         self.do {
             $0.contentView.layer.cornerRadius = 14
             $0.contentView.layer.masksToBounds = true
-            $0.contentView.backgroundColor = .wssTempGray
+            $0.contentView.backgroundColor = .wssGray20
             
             $0.layer.shadowColor = UIColor.black.withAlphaComponent(0.1).cgColor
             $0.layer.shadowOpacity = 1

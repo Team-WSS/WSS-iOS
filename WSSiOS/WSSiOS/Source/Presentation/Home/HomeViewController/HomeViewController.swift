@@ -79,6 +79,10 @@ final class HomeViewController: UIViewController {
             HomeInterestCollectionViewCell.self,
             forCellWithReuseIdentifier: HomeInterestCollectionViewCell.cellIdentifier)
         
+        rootView.tasteRecommendView.tasteRecommendCollectionView.register(
+            HomeTasteRecommendCollectionViewCell.self,
+            forCellWithReuseIdentifier: HomeTasteRecommendCollectionViewCell.cellIdentifier)
+        
         dummyData1.bind(to: rootView.todayPopularView.todayPopularCollectionView.rx.items(
             cellIdentifier: HomeTodayPopularCollectionViewCell.cellIdentifier,
             cellType: HomeTodayPopularCollectionViewCell.self)) { row, element, cell in
@@ -89,6 +93,13 @@ final class HomeViewController: UIViewController {
         dummyData2.bind(to: rootView.interestView.interestCollectionView.rx.items(
             cellIdentifier: HomeInterestCollectionViewCell.cellIdentifier,
             cellType: HomeInterestCollectionViewCell.self)) { row, element, cell in
+            cell.bindData(data: element)
+        }
+        .disposed(by: disposeBag)
+        
+        dummyData3.bind(to: rootView.tasteRecommendView.tasteRecommendCollectionView.rx.items(
+            cellIdentifier: HomeTasteRecommendCollectionViewCell.cellIdentifier,
+            cellType: HomeTasteRecommendCollectionViewCell.self)) { row, element, cell in
             cell.bindData(data: element)
         }
         .disposed(by: disposeBag)

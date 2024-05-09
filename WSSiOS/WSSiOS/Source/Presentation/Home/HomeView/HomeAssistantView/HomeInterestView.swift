@@ -87,7 +87,7 @@ final class HomeInterestView: UIView {
             $0.top.equalTo(subTitleLabel.snp.bottom).offset(20)
             $0.leading.trailing.equalToSuperview()
             //TODO: 그림자 잘리는 현상 해결 필요
-            $0.height.equalTo(251)
+            $0.height.equalTo(290)
         }
     }
 }

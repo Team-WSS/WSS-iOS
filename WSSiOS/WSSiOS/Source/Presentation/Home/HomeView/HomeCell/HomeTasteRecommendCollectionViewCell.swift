@@ -49,7 +49,6 @@ final class HomeTasteRecommendCollectionViewCell: UICollectionViewCell {
     
     private func setUI() {
         novelImageView.do {
-            $0.image = .imgTest2
             $0.contentMode = .scaleAspectFill
             $0.layer.cornerRadius = 14
             $0.layer.masksToBounds = true
@@ -58,19 +57,11 @@ final class HomeTasteRecommendCollectionViewCell: UICollectionViewCell {
         novelTitleLabel.do {
             $0.font = .Label1
             $0.textColor = .wssBlack
-            $0.makeAttribute(with: "여주인공의 오빠를 지키는 방법이라능")?
-                .kerning(kerningPixel: -0.4)
-                .lineSpacing(spacingPercentage: 145)
-                .applyAttribute()
-            $0.lineBreakMode = .byTruncatingTail
-            $0.lineBreakStrategy = .hangulWordPriority
-            $0.numberOfLines = 2
         }
         
         novelAuthorLabel.do {
             $0.font = .Body5
             $0.textColor = .wssGray200
-            $0.text = "최서연"
             $0.lineBreakMode = .byTruncatingTail
         }
         
@@ -80,14 +71,13 @@ final class HomeTasteRecommendCollectionViewCell: UICollectionViewCell {
         }
         
         likeImageView.do {
-            $0.image = .icStar
+            $0.image = .icHeart
             $0.contentMode = .scaleAspectFit
         }
         
         likeCountLabel.do {
             $0.font = .Body5
             $0.textColor = .wssGray200
-            $0.text = "1003"
         }
         
         ratingStackView.do {
@@ -96,20 +86,18 @@ final class HomeTasteRecommendCollectionViewCell: UICollectionViewCell {
         }
         
         ratingImageView.do {
-            $0.image = .icStar
+            $0.image = .icStar2
             $0.contentMode = .scaleAspectFit
         }
         
         ratingAverageLabel.do {
             $0.font = .Body5
             $0.textColor = .wssGray200
-            $0.text = "4.21"
         }
         
         ratingCountLabel.do {
             $0.font = .Body5
             $0.textColor = .wssGray200
-            $0.text = "(123)"
         }
     }
     
@@ -124,7 +112,6 @@ final class HomeTasteRecommendCollectionViewCell: UICollectionViewCell {
                          ratingStackView,
                          novelTitleLabel,
                          novelAuthorLabel)
-        
     }
     
     private func setLayout() {
@@ -158,5 +145,22 @@ final class HomeTasteRecommendCollectionViewCell: UICollectionViewCell {
             $0.top.equalTo(novelTitleLabel.snp.bottom).offset(2)
             $0.leading.equalToSuperview()
         }
+    }
+    
+    func bindData(data: TasteRecommendEntity) {
+        self.novelImageView.image = UIImage(named: data.novelImage)
+        self.novelTitleLabel.do {
+            $0.makeAttribute(with: data.novelTitle)?
+                .kerning(kerningPixel: -0.4)
+                .lineSpacing(spacingPercentage: 145)
+                .applyAttribute()
+            $0.lineBreakMode = .byTruncatingTail
+            $0.lineBreakStrategy = .hangulWordPriority
+            $0.numberOfLines = 2
+        }
+        self.novelAuthorLabel.text = data.novelAuthor
+        self.likeCountLabel.text = String(data.novelLikeCount)
+        self.ratingAverageLabel.text = String(data.novelRating)
+        self.ratingCountLabel.text = "(\(data.novelRatingCount))"
     }
 }
