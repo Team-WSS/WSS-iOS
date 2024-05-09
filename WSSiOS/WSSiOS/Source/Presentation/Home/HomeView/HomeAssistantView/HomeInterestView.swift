@@ -18,7 +18,7 @@ final class HomeInterestView: UIView {
     private var subTitleLabel = UILabel()
     
     let interestCollectionView = UICollectionView(frame: .zero,
-                                                      collectionViewLayout: UICollectionViewLayout())
+                                                  collectionViewLayout: UICollectionViewLayout())
     private let interestCollectionViewLayout = UICollectionViewFlowLayout()
     
     //MARK: - Life Cycle
@@ -84,10 +84,9 @@ final class HomeInterestView: UIView {
         }
         
         interestCollectionView.snp.makeConstraints {
-            $0.top.equalTo(subTitleLabel.snp.bottom).offset(20)
-            $0.leading.trailing.equalToSuperview()
-            //TODO: 그림자 잘리는 현상 해결 필요
-            $0.height.equalTo(290)
+            $0.top.equalTo(subTitleLabel.snp.bottom)
+            $0.leading.trailing.bottom.equalToSuperview()
+            $0.height.equalTo(301)
         }
     }
 }
