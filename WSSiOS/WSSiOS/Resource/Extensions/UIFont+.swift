@@ -13,7 +13,7 @@ extension UIFont {
     }
     
     static var Title1: UIFont {
-        return UIFont(name: "Pretendard-Medium", size: 18)!
+        return UIFont(name: "Pretendard-Bold", size: 18)!
     }
     
     static var Title2: UIFont {
