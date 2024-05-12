@@ -39,6 +39,11 @@ final class HomeNoticeTableViewCell: UITableViewCell {
     //MARK: - UI
     
     private func setUI() {
+        self.do {
+            $0.selectionStyle = .none
+            $0.backgroundColor = .wssWhite
+        }
+        
         adminProfileImageView.do {
             $0.image = .adminProfile
             $0.layer.cornerRadius = 10
