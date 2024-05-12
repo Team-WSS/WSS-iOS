@@ -15,7 +15,6 @@ final class HomeNoticeView: UIView {
     //MARK: - UI Components
     
     let noticeTableView = UITableView(frame: .zero, style: .plain)
-    let testview = HomeNoticeTableViewCell()
     
     //MARK: - Life Cycle
     
@@ -35,19 +34,21 @@ final class HomeNoticeView: UIView {
     private func setUI() {
         noticeTableView.do {
             $0.showsVerticalScrollIndicator = false
-            $0.separatorStyle = .none
+            $0.separatorStyle = .singleLine
+            $0.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+            $0.separatorColor = .wssGray50
+            $0.rowHeight = 110
         }
     }
     
     private func setHierarchy() {
-        self.addSubview(testview)
+        self.addSubview(noticeTableView)
     }
     
     private func setLayout() {
-        testview.snp.makeConstraints {
+        noticeTableView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(100)
-            $0.horizontalEdges.equalToSuperview()
-            $0.height.equalTo(110)
+            $0.horizontalEdges.bottom.equalToSuperview()
         }
     }
 }

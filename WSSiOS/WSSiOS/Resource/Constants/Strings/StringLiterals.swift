@@ -31,6 +31,7 @@ enum StringLiterals {
             static let myPage = "마이페이지"
             static let changeNickname = "닉네임 변경"
             static let myPageInfo = "계정정보 확인"
+            static let notice = "알림"
         }
     }
     

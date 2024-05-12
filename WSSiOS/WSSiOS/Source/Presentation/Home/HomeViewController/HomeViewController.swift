@@ -104,7 +104,12 @@ final class HomeViewController: UIViewController {
         
         output.navigateToAnnoucementView
             .bind(with: self, onNext: { owner, _ in
-                owner.navigationController?.pushViewController(HomeAnnouncementViewController(), animated: true)
+                owner.navigationController?.pushViewController(
+                    HomeNoticeViewController(
+                        viewModel: HomeNoticeViewModel(
+                            noticeRepository: DefaultNoticeRepository()
+                        )
+                    ), animated: true)
             })
             .disposed(by: disposeBag)
     }
