@@ -58,7 +58,7 @@ final class HomeRealtimePopularView: UIView {
     private func setHierarchy() {
         titleStackView.addArrangedSubviews(titleLogoImageView,
                                            titleLabel)
-        self.addSubviews(titleStackView)
+        self.addSubview(titleStackView)
     }
     
     private func setLayout() {

@@ -57,7 +57,8 @@ final class HomeTodayPopularView: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubviews(titleLabel,todayPopularCollectionView)
+        self.addSubviews(titleLabel,
+                         todayPopularCollectionView)
     }
     
     private func setLayout() {

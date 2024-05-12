@@ -92,8 +92,10 @@ final class HomeRealTimePopularFeedView: UIView {
     }
     
     private func setHierarchy() {
-        likeStackView.addArrangedSubviews(likeImageView, likeCountLabel)
-        commentStackView.addArrangedSubviews(commentImageView, commentCountLabel)
+        likeStackView.addArrangedSubviews(likeImageView, 
+                                          likeCountLabel)
+        commentStackView.addArrangedSubviews(commentImageView, 
+                                             commentCountLabel)
         self.addSubviews(feedContentLabel,
                          likeStackView,
                          commentStackView)

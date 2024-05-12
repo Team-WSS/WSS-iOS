@@ -88,7 +88,7 @@ final class HomeTasteRecommendView: UIView {
         
         tasteRecommendCollectionView.snp.makeConstraints {
             $0.top.equalTo(subTitleLabel.snp.bottom).offset(20)
-            $0.width.equalTo(UIScreen.main.bounds.width - 40)
+            $0.leading.equalToSuperview().inset(20)
             $0.centerX.equalToSuperview()
             $0.bottom.equalToSuperview()
         }
