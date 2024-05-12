@@ -14,7 +14,7 @@ final class HomeAnnouncementViewController: UIViewController {
     
     //MARK: - UI Components
     
-    private let rootView = HomeView()
+    private let rootView = HomeAnnouncementView()
     
     //MARK: - Life Cycle
 
@@ -31,7 +31,6 @@ final class HomeAnnouncementViewController: UIViewController {
         super.viewDidLoad()
         
        // setUI()
-
     }
     
     private func setUI() {
