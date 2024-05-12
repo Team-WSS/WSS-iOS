@@ -1,5 +1,5 @@
 //
-//  HomeAnnouncementTableViewCell.swift
+//  HomeNoticeTableViewCell.swift
 //  WSSiOS
 //
 //  Created by Seoyeon Choi on 5/12/24.
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class HomeAnnouncementTableViewCell: UITableViewCell {
+final class HomeNoticeTableViewCell: UITableViewCell {
     
     //MARK: - UI Components
     
@@ -38,7 +38,7 @@ final class HomeAnnouncementTableViewCell: UITableViewCell {
     
     private func setUI() {
         adminProfileImageView.do {
-            $0.image = .imgTest2
+            $0.image = .adminProfile
             $0.layer.cornerRadius = 10
             $0.clipsToBounds = true
         }

@@ -1,5 +1,5 @@
 //
-//  HomeAnnouncementView.swift
+//  HomeNoticeView.swift
 //  WSSiOS
 //
 //  Created by Seoyeon Choi on 5/12/24.
@@ -10,12 +10,12 @@ import UIKit
 import SnapKit
 import Then
 
-final class HomeAnnouncementView: UIView {
+final class HomeNoticeView: UIView {
     
     //MARK: - UI Components
     
-    let announcementTableView = UITableView(frame: .zero, style: .plain)
-    let testview = HomeAnnouncementTableViewCell()
+    let noticeTableView = UITableView(frame: .zero, style: .plain)
+    let testview = HomeNoticeTableViewCell()
     
     //MARK: - Life Cycle
     
@@ -33,7 +33,7 @@ final class HomeAnnouncementView: UIView {
     }
     
     private func setUI() {
-        announcementTableView.do {
+        noticeTableView.do {
             $0.showsVerticalScrollIndicator = false
             $0.separatorStyle = .none
         }

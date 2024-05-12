@@ -1,5 +1,5 @@
 //
-//  HomeAnnouncementViewController.swift
+//  HomeNoticeViewController.swift
 //  WSSiOS
 //
 //  Created by Seoyeon Choi on 5/12/24.
@@ -7,14 +7,14 @@
 
 import UIKit
 
-final class HomeAnnouncementViewController: UIViewController {
+final class HomeNoticeViewController: UIViewController {
     
     //MARK: - Properties
 
     
     //MARK: - UI Components
     
-    private let rootView = HomeAnnouncementView()
+    private let rootView = HomeNoticeView()
     
     //MARK: - Life Cycle
 
