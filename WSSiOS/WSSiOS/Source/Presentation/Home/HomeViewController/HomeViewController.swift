@@ -73,7 +73,9 @@ final class HomeViewController: UIViewController {
     }
     
     private func bindViewModel() {
-        let input = HomeViewModel.Input()
+        let input = HomeViewModel.Input(
+            announcementButtonTapped: rootView.headerView.announcementButton.rx.tap
+        )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
 
         output.todayPopularList
@@ -98,6 +100,12 @@ final class HomeViewController: UIViewController {
                 cellType: HomeTasteRecommendCollectionViewCell.self)) { row, element, cell in
                 cell.bindData(data: element)
             }
+            .disposed(by: disposeBag)
+        
+        output.navigateToAnnoucementView
+            .bind(with: self, onNext: { owner, _ in
+                owner.navigationController?.pushViewController(HomeAnnouncementViewController(), animated: true)
+            })
             .disposed(by: disposeBag)
     }
 }
