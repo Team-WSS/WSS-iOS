@@ -19,6 +19,7 @@
 		2C2F34682BF350720019E609 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2F34672BF350720019E609 /* FeedViewController.swift */; };
 		2C2F346A2BF350840019E609 /* FeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2F34692BF350840019E609 /* FeedViewModel.swift */; };
 		2C2F346E2BF353860019E609 /* FeedCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2F346D2BF353860019E609 /* FeedCollectionViewCell.swift */; };
+		2C2F34702BF3B9F40019E609 /* TotalFeedResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2F346F2BF3B9F40019E609 /* TotalFeedResult.swift */; };
 		2C421FE82B96DC0F000DCB87 /* MyPageCustomModalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C421FE72B96DC0F000DCB87 /* MyPageCustomModalViewModel.swift */; };
 		2C42939B2B58F27000BD62AB /* LibraryEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C42939A2B58F27000BD62AB /* LibraryEmptyView.swift */; };
 		2C5D0F592B4FDEC000C76D3C /* MyPageInventoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5D0F582B4FDEC000C76D3C /* MyPageInventoryCollectionViewCell.swift */; };
@@ -224,6 +225,7 @@
 		2C2F34672BF350720019E609 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		2C2F34692BF350840019E609 /* FeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewModel.swift; sourceTree = "<group>"; };
 		2C2F346D2BF353860019E609 /* FeedCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCollectionViewCell.swift; sourceTree = "<group>"; };
+		2C2F346F2BF3B9F40019E609 /* TotalFeedResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotalFeedResult.swift; sourceTree = "<group>"; };
 		2C421FE72B96DC0F000DCB87 /* MyPageCustomModalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageCustomModalViewModel.swift; sourceTree = "<group>"; };
 		2C42939A2B58F27000BD62AB /* LibraryEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryEmptyView.swift; sourceTree = "<group>"; };
 		2C5D0F582B4FDEC000C76D3C /* MyPageInventoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageInventoryCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -1166,6 +1168,7 @@
 				CD3E5AB22B565DFF00C0A659 /* NovelMemoResult.swift */,
 				399F29312B56633C00BBC12B /* NovelResult.swift */,
 				A123C49E2B56FB7800D32AEB /* SearchResult.swift */,
+				2C2F346F2BF3B9F40019E609 /* TotalFeedResult.swift */,
 			);
 			path = DTO;
 			sourceTree = "<group>";
@@ -1474,6 +1477,7 @@
 				39AF30D12B50182F00FDC1F3 /* RegisterNormalReadStatusButton.swift in Sources */,
 				A1C3EC532B46962F00D997C2 /* UIImage+.swift in Sources */,
 				39CD5E0C2B4F3D0700668B9A /* RegisterNormalNovelSummaryView.swift in Sources */,
+				2C2F34702BF3B9F40019E609 /* TotalFeedResult.swift in Sources */,
 				A122C9F22B53146800DFCFE4 /* (null) in Sources */,
 				CDE596D62B57708D00D99DA1 /* UIViewController+.swift in Sources */,
 				39BA7F772BCAC3E60045B2B7 /* keywordLabel.swift in Sources */,

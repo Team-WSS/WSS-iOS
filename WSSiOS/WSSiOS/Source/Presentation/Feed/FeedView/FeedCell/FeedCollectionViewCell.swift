@@ -7,6 +7,7 @@
 
 import UIKit
 
+import Kingfisher
 import SnapKit
 import Then
 
@@ -326,5 +327,22 @@ final class FeedCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Data
     
+    func bindData(data: TotalFeeds) {
+        userImageView.kfSetImage(url: data.avatarImage)
+        userNicknameLabel.text = data.nickname
+        
+        //TODO: 추후 수정
+        restTimeLabel.text = data.createdDate
+        
+        detailContentLabel.text = data.feedContent
+        novelTitleLabel.text = data.title
+        novelRatingLabel.text = String(data.novelRating)
+        novelRatingParticipantsLabel.text = String(data.novelRatingCount)
+        likeRatingLabel.text = String(data.likeCount)
+        commentRatingLabel.text = String(data.commentCount)
+        
+        let categoriesText = data.relevantCategories.joined(separator: " · ")
+        genreLabel.text = categoriesText
+    }
 }
 
