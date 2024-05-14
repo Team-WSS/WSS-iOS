@@ -21,6 +21,7 @@ final class FeedCollectionViewCell: UICollectionViewCell {
     
     private let dotIcon = UIImageView()
     private let restTimeLabel = UILabel()
+    private let modifiedLabel = UILabel()
     
     private let dropdownIcon = UIImageView()
     
@@ -92,6 +93,12 @@ final class FeedCollectionViewCell: UICollectionViewCell {
             $0.textColor = .wssBlack
         }
         
+        modifiedLabel.do {
+            $0.text = "(수정됨)"
+            $0.font = .Body5
+            $0.textColor = .Gray200
+        }
+        
         dropdownIcon.do {
             $0.image = UIImage(resource: .icDropDownDot)
         }
@@ -102,7 +109,7 @@ final class FeedCollectionViewCell: UICollectionViewCell {
             detailContentLabel.do {
                 $0.font = .Body2
                 $0.textColor = .wssBlack
-                $0.textAlignment = .left
+                $0.textAlignment = .natural
                 $0.numberOfLines = 0
                 $0.lineBreakMode = .byTruncatingTail
                 $0.lineBreakStrategy = .hangulWordPriority
@@ -110,7 +117,8 @@ final class FeedCollectionViewCell: UICollectionViewCell {
         }
         
         novelView.do {
-            $0.backgroundColor = .pri
+            $0.backgroundColor = .wssPrimary20
+            $0.layer.cornerRadius = 14
             
             novelLinkIcon.do {
                 $0.image = UIImage(resource: .icNovelLink)
@@ -124,6 +132,7 @@ final class FeedCollectionViewCell: UICollectionViewCell {
             
             novelStarIcon.do {
                 $0.image = UIImage(resource: .icPinkStar)
+                $0.tintColor = .wssGray200
             }
             
             [novelRatingLabel,novelRatingParticipantsLabel].forEach {
@@ -181,6 +190,7 @@ final class FeedCollectionViewCell: UICollectionViewCell {
         addSubviews(userView,
                     dotIcon,
                     restTimeLabel,
+                    modifiedLabel,
                     dropdownIcon,
                     detailContentView,
                     novelView,
@@ -226,14 +236,19 @@ final class FeedCollectionViewCell: UICollectionViewCell {
         }
         
         dotIcon.snp.makeConstraints {
-            $0.centerX.equalTo(userView.snp.centerX)
+            $0.centerY.equalTo(userView.snp.centerY)
             $0.leading.equalTo(userView.snp.trailing).offset(6)
             $0.size.equalTo(8)
         }
         
         restTimeLabel.snp.makeConstraints {
-            $0.centerX.equalTo(dotIcon.snp.centerX)
+            $0.centerY.equalTo(dotIcon.snp.centerY)
             $0.leading.equalTo(dotIcon.snp.trailing).offset(6)
+        }
+        
+        modifiedLabel.snp.makeConstraints {
+            $0.centerY.equalTo(restTimeLabel.snp.centerY)
+            $0.leading.equalTo(restTimeLabel.snp.trailing).offset(6)
         }
         
         //TODO: - 추후 수정
@@ -266,7 +281,6 @@ final class FeedCollectionViewCell: UICollectionViewCell {
             novelTitleLabel.snp.makeConstraints {
                 $0.centerY.equalToSuperview()
                 $0.leading.equalTo(novelLinkIcon.snp.trailing).offset(6)
-                $0.size.equalTo(20)
             }
             
             rightArrowIcon.snp.makeConstraints {
@@ -293,45 +307,46 @@ final class FeedCollectionViewCell: UICollectionViewCell {
         }
         
         genreLabel.snp.makeConstraints {
-            $0.top.equalTo(novelView.snp.bottom).offset(28)
+            $0.top.equalTo(novelView.snp.bottom).offset(20)
             $0.leading.equalToSuperview().inset(20)
         }
         
         likeView.snp.makeConstraints {
-            $0.top.equalTo(genreLabel.snp.bottom).offset(28)
+            $0.top.equalTo(genreLabel.snp.bottom).offset(24)
             $0.leading.equalToSuperview().inset(20)
-            $0.bottom.equalToSuperview().inset(28)
             
             likeIcon.snp.makeConstraints {
-                $0.top.leading.bottom.equalToSuperview().inset(8)
-                $0.size.equalTo(22)
+                $0.top.bottom.equalToSuperview().inset(8.5)
+                $0.leading.equalToSuperview()
+                $0.size.equalTo(20)
             }
             
             likeRatingLabel.snp.makeConstraints {
                 $0.centerY.equalToSuperview()
-                $0.leading.equalTo(likeIcon.snp.trailing).offset(4)
-                $0.trailing.equalToSuperview().inset(8)
+                $0.leading.equalTo(likeIcon.snp.trailing).offset(5)
+                $0.trailing.equalToSuperview()
             }
         }
         
         commentView.snp.makeConstraints {
             $0.top.equalTo(likeView.snp.top)
             $0.leading.equalTo(likeView.snp.trailing).offset(6)
-            $0.bottom.equalTo(likeView.snp.bottom)
             
             commentIcon.snp.makeConstraints {
-                $0.top.leading.bottom.equalToSuperview().inset(8)
+                $0.top.bottom.equalToSuperview().inset(8.5)
+                $0.leading.equalToSuperview()
                 $0.size.equalTo(22)
             }
             
             commentRatingLabel.snp.makeConstraints {
                 $0.centerY.equalToSuperview()
-                $0.leading.equalTo(likeIcon.snp.trailing).offset(4)
-                $0.trailing.equalToSuperview().inset(8)
+                $0.leading.equalTo(commentIcon.snp.trailing).offset(5)
+                $0.trailing.equalToSuperview()
             }
         }
         
         divideView.snp.makeConstraints {
+            $0.top.equalTo(likeView.snp.bottom).offset(24)
             $0.width.bottom.equalToSuperview()
             $0.height.equalTo(1)
         }
@@ -346,6 +361,7 @@ final class FeedCollectionViewCell: UICollectionViewCell {
         //TODO: 추후 수정
         restTimeLabel.text = data.createdDate
         
+        modifiedLabel.isHidden = data.isModified
         detailContentLabel.text = data.feedContent
         novelTitleLabel.text = data.title
         novelRatingLabel.text = String(data.novelRating)
@@ -353,7 +369,7 @@ final class FeedCollectionViewCell: UICollectionViewCell {
         likeRatingLabel.text = String(data.likeCount)
         commentRatingLabel.text = String(data.commentCount)
         
-        let categoriesText = data.relevantCategories.joined(separator: " · ")
+        let categoriesText = data.relevantCategories.joined(separator: ", ")
         genreLabel.text = categoriesText
     }
 }
