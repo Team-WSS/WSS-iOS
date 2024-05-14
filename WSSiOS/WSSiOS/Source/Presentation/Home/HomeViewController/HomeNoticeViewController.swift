@@ -49,6 +49,7 @@ final class HomeNoticeViewController: UIViewController {
         
         setUI()
         registerCell()
+        enablePopSwipe()
         bindViewModel()
     }
     
@@ -64,6 +65,11 @@ final class HomeNoticeViewController: UIViewController {
         rootView.noticeTableView.register(
             HomeNoticeTableViewCell.self,
             forCellReuseIdentifier: HomeNoticeTableViewCell.cellIdentifier)
+    }
+    
+    private func enablePopSwipe() {
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
     private func bindViewModel() {
