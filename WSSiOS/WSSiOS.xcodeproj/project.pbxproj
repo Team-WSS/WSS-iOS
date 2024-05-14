@@ -18,6 +18,7 @@
 		2C2F34662BF3505B0019E609 /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2F34652BF3505B0019E609 /* FeedView.swift */; };
 		2C2F34682BF350720019E609 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2F34672BF350720019E609 /* FeedViewController.swift */; };
 		2C2F346A2BF350840019E609 /* FeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2F34692BF350840019E609 /* FeedViewModel.swift */; };
+		2C2F346E2BF353860019E609 /* FeedCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2F346D2BF353860019E609 /* FeedCollectionViewCell.swift */; };
 		2C421FE82B96DC0F000DCB87 /* MyPageCustomModalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C421FE72B96DC0F000DCB87 /* MyPageCustomModalViewModel.swift */; };
 		2C42939B2B58F27000BD62AB /* LibraryEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C42939A2B58F27000BD62AB /* LibraryEmptyView.swift */; };
 		2C5D0F592B4FDEC000C76D3C /* MyPageInventoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5D0F582B4FDEC000C76D3C /* MyPageInventoryCollectionViewCell.swift */; };
@@ -222,6 +223,7 @@
 		2C2F34652BF3505B0019E609 /* FeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedView.swift; sourceTree = "<group>"; };
 		2C2F34672BF350720019E609 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		2C2F34692BF350840019E609 /* FeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewModel.swift; sourceTree = "<group>"; };
+		2C2F346D2BF353860019E609 /* FeedCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCollectionViewCell.swift; sourceTree = "<group>"; };
 		2C421FE72B96DC0F000DCB87 /* MyPageCustomModalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageCustomModalViewModel.swift; sourceTree = "<group>"; };
 		2C42939A2B58F27000BD62AB /* LibraryEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryEmptyView.swift; sourceTree = "<group>"; };
 		2C5D0F582B4FDEC000C76D3C /* MyPageInventoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageInventoryCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -482,6 +484,8 @@
 		2C2F34622BF3501B0019E609 /* FeedView */ = {
 			isa = PBXGroup;
 			children = (
+				2C2F346C2BF353680019E609 /* FeedCell */,
+				2C2F346B2BF3535D0019E609 /* FeedAssistantView */,
 				2C2F34652BF3505B0019E609 /* FeedView.swift */,
 			);
 			path = FeedView;
@@ -501,6 +505,21 @@
 				2C2F34692BF350840019E609 /* FeedViewModel.swift */,
 			);
 			path = FeedViewModel;
+			sourceTree = "<group>";
+		};
+		2C2F346B2BF3535D0019E609 /* FeedAssistantView */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = FeedAssistantView;
+			sourceTree = "<group>";
+		};
+		2C2F346C2BF353680019E609 /* FeedCell */ = {
+			isa = PBXGroup;
+			children = (
+				2C2F346D2BF353860019E609 /* FeedCollectionViewCell.swift */,
+			);
+			path = FeedCell;
 			sourceTree = "<group>";
 		};
 		2C5D0F572B4FDE7500C76D3C /* MyPageCell */ = {
@@ -1564,6 +1583,7 @@
 				3999BFEB2B4E6C4400984832 /* RegisterViewModel.swift in Sources */,
 				A1493BC32B55022E004DD84A /* MemoResult.swift in Sources */,
 				A1654F0F2B540504004F78E8 /* APIConstants.swift in Sources */,
+				2C2F346E2BF353860019E609 /* FeedCollectionViewCell.swift in Sources */,
 				A107A4A02B4DD7E200668C3E /* HomeSosoPickTitleView.swift in Sources */,
 				CD3E5AA22B55190400C0A659 /* UserNovelResult.swift in Sources */,
 				A1EF35472B52F77800A94C53 /* MemoRepository.swift in Sources */,

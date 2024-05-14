@@ -33,6 +33,10 @@ extension UIFont {
     }
     
     static var Body3: UIFont {
+        return UIFont(name: "Pretendard-Regular", size: 14)!
+    }
+    
+    static var Body5: UIFont {
         return UIFont(name: "Pretendard-Regular", size: 12)!
     }
     
