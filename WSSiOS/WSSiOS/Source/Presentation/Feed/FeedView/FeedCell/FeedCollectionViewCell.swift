@@ -74,7 +74,7 @@ final class FeedCollectionViewCell: UICollectionViewCell {
             
             userImageView.do {
                 $0.contentMode = .scaleAspectFill
-                $0.layer.cornerRadius = 14
+                $0.layer.cornerRadius = 12
             }
             
             userNicknameLabel.do {
@@ -103,13 +103,14 @@ final class FeedCollectionViewCell: UICollectionViewCell {
                 $0.font = .Body2
                 $0.textColor = .wssBlack
                 $0.textAlignment = .left
+                $0.numberOfLines = 0
                 $0.lineBreakMode = .byTruncatingTail
                 $0.lineBreakStrategy = .hangulWordPriority
             }
         }
         
         novelView.do {
-            $0.backgroundColor = .clear
+            $0.backgroundColor = .pri
             
             novelLinkIcon.do {
                 $0.image = UIImage(resource: .icNovelLink)
@@ -214,20 +215,19 @@ final class FeedCollectionViewCell: UICollectionViewCell {
             $0.leading.equalToSuperview().inset(20)
             
             userImageView.snp.makeConstraints {
-                $0.top.leading.equalToSuperview()
-                $0.size.equalTo(42)
+                $0.top.leading.bottom.equalToSuperview()
+                $0.size.equalTo(36)
             }
             
             userNicknameLabel.snp.makeConstraints {
-                $0.centerY.equalTo(userImageView.snp.centerX)
+                $0.centerY.trailing.equalToSuperview()
                 $0.leading.equalTo(userImageView.snp.trailing).offset(14)
-                $0.trailing.equalToSuperview()
             }
         }
         
         dotIcon.snp.makeConstraints {
-            $0.centerX.equalTo(userImageView.snp.centerX)
-            $0.leading.equalTo(userImageView.snp.trailing).offset(6)
+            $0.centerX.equalTo(userView.snp.centerX)
+            $0.leading.equalTo(userView.snp.trailing).offset(6)
             $0.size.equalTo(8)
         }
         
@@ -349,7 +349,7 @@ final class FeedCollectionViewCell: UICollectionViewCell {
         detailContentLabel.text = data.feedContent
         novelTitleLabel.text = data.title
         novelRatingLabel.text = String(data.novelRating)
-        novelRatingParticipantsLabel.text = String(data.novelRatingCount)
+        novelRatingParticipantsLabel.text = " (" + String(data.novelRatingCount) + ")"
         likeRatingLabel.text = String(data.likeCount)
         commentRatingLabel.text = String(data.commentCount)
         

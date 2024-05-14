@@ -43,7 +43,7 @@ final class FeedViewController: UIViewController {
         
         register()
         bindData()
-        bindViewModel()
+        //        bindViewModel()
     }
     
     
@@ -55,15 +55,26 @@ final class FeedViewController: UIViewController {
     }
     
     private func bindData() {
-        feedListRelay.bind(to: rootView.feedCollectionView.rx.items(
-            cellIdentifier: FeedCollectionViewCell.cellIdentifier,
-            cellType: FeedCollectionViewCell.self)) { (row, element, cell) in
-                cell.bindData(data: element)
-            }
-            .disposed(by: disposeBag)
+        Observable.just(dummy)
+            .bind(to: rootView.feedCollectionView.rx.items(
+                cellIdentifier: FeedCollectionViewCell.cellIdentifier,
+                cellType: FeedCollectionViewCell.self)) { (row, element, cell) in
+                    cell.bindData(data: element)
+                }
+                .disposed(by: disposeBag)
     }
     
+    
     private func bindViewModel() {
+        let input = FeedViewModel.Input()
+        let output = viewModel.transform(from: input, disposeBag: self.disposeBag)
         
+        output.feedList
+            .bind(to: rootView.feedCollectionView.rx.items(
+                cellIdentifier: FeedCollectionViewCell.cellIdentifier,
+                cellType: FeedCollectionViewCell.self)) { (row, element, cell) in
+                    cell.bindData(data: element)
+                }
+                .disposed(by: disposeBag)
     }
 }
