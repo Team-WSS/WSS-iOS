@@ -14,6 +14,9 @@ final class FeedView: UIView {
     
     //MARK: - Components
     
+    lazy var feedCollectionView = UICollectionView(frame: .zero,
+                                                   collectionViewLayout: UICollectionViewLayout())
+    
     // MARK: - Life Cycle
     
     override init(frame: CGRect) {
@@ -31,17 +34,23 @@ final class FeedView: UIView {
     //MARK: - UI
     
     private func setUI() {
-       
+        feedCollectionView.do {
+            let layout = UICollectionViewFlowLayout()
+            layout.scrollDirection = .vertical
+            $0.collectionViewLayout = layout
+            $0.showsVerticalScrollIndicator = false
+        }
     }
     
     private func setHierarchy() {
-        
+        self.addSubview(feedCollectionView)
     }
     
     private func setLayout() {
-        
+        feedCollectionView.snp.makeConstraints() {
+            //TODO: - top 추후 수정
+            $0.top.equalToSuperview()
+            $0.edges.equalToSuperview()
+        }
     }
-    
-    //MARK: - Data
-
 }

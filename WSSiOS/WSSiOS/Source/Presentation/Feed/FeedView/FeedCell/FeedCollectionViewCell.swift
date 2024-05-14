@@ -45,6 +45,8 @@ final class FeedCollectionViewCell: UICollectionViewCell {
     private let commentIcon = UIImageView()
     private let commentRatingLabel = UILabel()
     
+    private let divideView = UIView()
+    
     //MARK: - Life Cycle
     
     override init(frame: CGRect) {
@@ -168,6 +170,10 @@ final class FeedCollectionViewCell: UICollectionViewCell {
                 $0.textColor = .Gray200
             }
         }
+        
+        divideView.do {
+            $0.backgroundColor = .Gray50
+        }
     }
     
     private func setHierarchy() {
@@ -179,7 +185,8 @@ final class FeedCollectionViewCell: UICollectionViewCell {
                     novelView,
                     genreLabel,
                     likeView,
-                    commentView)
+                    commentView,
+                    divideView)
         
         userView.addSubviews(userImageView,
                              userNicknameLabel)
@@ -322,6 +329,11 @@ final class FeedCollectionViewCell: UICollectionViewCell {
                 $0.leading.equalTo(likeIcon.snp.trailing).offset(4)
                 $0.trailing.equalToSuperview().inset(8)
             }
+        }
+        
+        divideView.snp.makeConstraints {
+            $0.width.bottom.equalToSuperview()
+            $0.height.equalTo(1)
         }
     }
     

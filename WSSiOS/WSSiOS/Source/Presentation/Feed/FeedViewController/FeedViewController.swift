@@ -8,11 +8,13 @@
 import UIKit
 
 import RxSwift
+import RxRelay
 
 final class FeedViewController: UIViewController {
     
     //MARK: - Properties
     
+    private var feedListRelay = BehaviorRelay<[TotalFeeds]>(value: [])
     private let disposeBag = DisposeBag()
     
     //MARK: - Components
@@ -39,11 +41,27 @@ final class FeedViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        register()
+        bindData()
         bindViewModel()
     }
     
     
     //MARK: - Bind
+    
+    private func register() {
+        rootView.feedCollectionView.register(FeedCollectionViewCell.self,
+                                             forCellWithReuseIdentifier: FeedCollectionViewCell.cellIdentifier)
+    }
+    
+    private func bindData() {
+        feedListRelay.bind(to: rootView.feedCollectionView.rx.items(
+            cellIdentifier: FeedCollectionViewCell.cellIdentifier,
+            cellType: FeedCollectionViewCell.self)) { (row, element, cell) in
+                cell.bindData(data: element)
+            }
+            .disposed(by: disposeBag)
+    }
     
     private func bindViewModel() {
         
