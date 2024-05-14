@@ -20,6 +20,8 @@
 		2C2F346A2BF350840019E609 /* FeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2F34692BF350840019E609 /* FeedViewModel.swift */; };
 		2C2F346E2BF353860019E609 /* FeedCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2F346D2BF353860019E609 /* FeedCollectionViewCell.swift */; };
 		2C2F34702BF3B9F40019E609 /* TotalFeedResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2F346F2BF3B9F40019E609 /* TotalFeedResult.swift */; };
+		2C2F34732BF3C3A80019E609 /* FeedRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2F34722BF3C3A80019E609 /* FeedRepository.swift */; };
+		2C2F34752BF3C3C90019E609 /* FeedService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2F34742BF3C3C90019E609 /* FeedService.swift */; };
 		2C421FE82B96DC0F000DCB87 /* MyPageCustomModalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C421FE72B96DC0F000DCB87 /* MyPageCustomModalViewModel.swift */; };
 		2C42939B2B58F27000BD62AB /* LibraryEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C42939A2B58F27000BD62AB /* LibraryEmptyView.swift */; };
 		2C5D0F592B4FDEC000C76D3C /* MyPageInventoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5D0F582B4FDEC000C76D3C /* MyPageInventoryCollectionViewCell.swift */; };
@@ -226,6 +228,8 @@
 		2C2F34692BF350840019E609 /* FeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewModel.swift; sourceTree = "<group>"; };
 		2C2F346D2BF353860019E609 /* FeedCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCollectionViewCell.swift; sourceTree = "<group>"; };
 		2C2F346F2BF3B9F40019E609 /* TotalFeedResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotalFeedResult.swift; sourceTree = "<group>"; };
+		2C2F34722BF3C3A80019E609 /* FeedRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedRepository.swift; sourceTree = "<group>"; };
+		2C2F34742BF3C3C90019E609 /* FeedService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedService.swift; sourceTree = "<group>"; };
 		2C421FE72B96DC0F000DCB87 /* MyPageCustomModalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageCustomModalViewModel.swift; sourceTree = "<group>"; };
 		2C42939A2B58F27000BD62AB /* LibraryEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryEmptyView.swift; sourceTree = "<group>"; };
 		2C5D0F582B4FDEC000C76D3C /* MyPageInventoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageInventoryCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -433,6 +437,7 @@
 				A1EF35442B52F76C00A94C53 /* UserNovelRepository.swift */,
 				A1EF35462B52F77800A94C53 /* MemoRepository.swift */,
 				A1EF35482B52F7B000A94C53 /* AvatarRepository.swift */,
+				2C2F34722BF3C3A80019E609 /* FeedRepository.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -522,6 +527,14 @@
 				2C2F346D2BF353860019E609 /* FeedCollectionViewCell.swift */,
 			);
 			path = FeedCell;
+			sourceTree = "<group>";
+		};
+		2C2F34712BF3C38B0019E609 /* Feed */ = {
+			isa = PBXGroup;
+			children = (
+				2C2F34742BF3C3C90019E609 /* FeedService.swift */,
+			);
+			path = Feed;
 			sourceTree = "<group>";
 		};
 		2C5D0F572B4FDE7500C76D3C /* MyPageCell */ = {
@@ -1176,6 +1189,7 @@
 		A1EF35562B52FAA300A94C53 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				2C2F34712BF3C38B0019E609 /* Feed */,
 				A122C9D52B53026700DFCFE4 /* Memo */,
 				A122C9D72B53097A00DFCFE4 /* Foundation */,
 				A122C9D62B53026E00DFCFE4 /* Avatar */,
@@ -1517,8 +1531,10 @@
 				A1B903E52B58140800398890 /* UserNovelListResult.swift in Sources */,
 				CD3E5A742B5424D600C0A659 /* MemoEditView.swift in Sources */,
 				39CC16812B51246E003F56AE /* RegisterNormalView.swift in Sources */,
+				2C2F34732BF3C3A80019E609 /* FeedRepository.swift in Sources */,
 				39B75ADE2B59BA87005DD8B9 /* UIScreen+.swift in Sources */,
 				39BA7F752BCABF1D0045B2B7 /* KeywordLink.swift in Sources */,
+				2C2F34752BF3C3C90019E609 /* FeedService.swift in Sources */,
 				A107A49E2B4DCD9900668C3E /* HomeCharacterView.swift in Sources */,
 				A122C9DB2B5309AF00DFCFE4 /* (null) in Sources */,
 				A1EF35432B52F75800A94C53 /* NovelRepository.swift in Sources */,

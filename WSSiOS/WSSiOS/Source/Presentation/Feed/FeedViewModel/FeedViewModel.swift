@@ -13,13 +13,13 @@ final class FeedViewModel: ViewModelType {
     
     //MARK: - Properties
     
-//    private let feedRepository: FeedRepository
+    private let feedRepository: FeedRepository
     
     //MARK: - Life Cycle
     
-//    init(feedRepository: FeedRepository) {
-//        self.feedRepository = feedRepository
-//    }
+    init(feedRepository: FeedRepository) {
+        self.feedRepository = feedRepository
+    }
     
     struct Input {
        
