@@ -369,7 +369,10 @@ final class FeedCollectionViewCell: UICollectionViewCell {
         likeRatingLabel.text = String(data.likeCount)
         commentRatingLabel.text = String(data.commentCount)
         
-        let categoriesText = data.relevantCategories.joined(separator: ", ")
+        let categoriesText = data.relevantCategories
+            .compactMap{
+                ReplaceGenre(rawValue: $0)?.withKorean
+            }.joined(separator: ", ")
         genreLabel.text = categoriesText
     }
 }

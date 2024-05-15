@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxRelay
 
-final class FeedViewController: UIViewController {
+final class FeedViewController: UIViewController, UIScrollViewDelegate {
     
     //MARK: - Properties
     
@@ -62,6 +62,7 @@ final class FeedViewController: UIViewController {
                     cell.bindData(data: element)
                 }
                 .disposed(by: disposeBag)
+        rootView.feedCollectionView.rx.setDelegate(self).disposed(by: disposeBag)
     }
     
     
