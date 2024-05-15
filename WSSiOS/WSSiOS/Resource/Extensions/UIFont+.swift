@@ -52,7 +52,6 @@ extension UIFont {
         return UIFont(name: "Pretendard-Medium", size: 12)!
     }
     
-    
     static var Label1: UIFont {
         return UIFont(name: "Pretendard-Medium", size: 13)!
     }
