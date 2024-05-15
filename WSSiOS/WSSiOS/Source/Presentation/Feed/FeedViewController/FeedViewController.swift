@@ -15,6 +15,7 @@ final class FeedViewController: UIViewController, UIScrollViewDelegate {
     //MARK: - Properties
     
     private var feedListRelay = BehaviorRelay<[TotalFeeds]>(value: [])
+    private var feedContentRelay = BehaviorRelay<String>(value: "")
     private let disposeBag = DisposeBag()
     
     //MARK: - Components
@@ -43,7 +44,7 @@ final class FeedViewController: UIViewController, UIScrollViewDelegate {
         
         register()
         bindData()
-        //        bindViewModel()
+        setupCollectionViewLayout()
     }
     
     
@@ -60,6 +61,7 @@ final class FeedViewController: UIViewController, UIScrollViewDelegate {
                 cellIdentifier: FeedCollectionViewCell.cellIdentifier,
                 cellType: FeedCollectionViewCell.self)) { (row, element, cell) in
                     cell.bindData(data: element)
+                    self.feedContentRelay.accept(element.feedContent)
                 }
                 .disposed(by: disposeBag)
         rootView.feedCollectionView.rx.setDelegate(self).disposed(by: disposeBag)
@@ -77,5 +79,15 @@ final class FeedViewController: UIViewController, UIScrollViewDelegate {
                     cell.bindData(data: element)
                 }
                 .disposed(by: disposeBag)
+    }
+}
+
+extension FeedViewController: UICollectionViewDelegateFlowLayout {
+    private func setupCollectionViewLayout() {
+        guard let layout = rootView.feedCollectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
+        let width = UIScreen.main.bounds.width
+        let height = UICollectionViewFlowLayout.automaticSize.height
+        layout.estimatedItemSize = CGSize(width: width, height: height)
+        layout.minimumLineSpacing = 0
     }
 }

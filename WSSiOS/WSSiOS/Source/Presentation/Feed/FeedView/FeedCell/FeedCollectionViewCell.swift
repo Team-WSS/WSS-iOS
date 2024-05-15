@@ -260,11 +260,13 @@ final class FeedCollectionViewCell: UICollectionViewCell {
         detailContentView.snp.makeConstraints {
             $0.top.equalTo(userView.snp.bottom).offset(18)
             $0.leading.trailing.equalToSuperview().inset(20)
-            $0.height.equalTo(115)
             
             detailContentLabel.snp.makeConstraints {
                 $0.edges.equalToSuperview()
+                $0.height.lessThanOrEqualTo(115)
             }
+            
+            $0.bottom.equalTo(detailContentLabel.snp.bottom)
         }
         
         novelView.snp.makeConstraints {
