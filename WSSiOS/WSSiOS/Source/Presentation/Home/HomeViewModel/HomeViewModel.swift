@@ -14,7 +14,7 @@ final class HomeViewModel: ViewModelType {
     
     //MARK: - Properties
     
-    private let recommendRepository: DefaultRecommendRepository
+    private let recommendRepository: RecommendRepository
     private let disposeBag = DisposeBag()
     
     // MARK: - Inputs
@@ -33,7 +33,7 @@ final class HomeViewModel: ViewModelType {
     
     //MARK: - init
     
-    init(recommendRepository: DefaultRecommendRepository) {
+    init(recommendRepository: TestRecommendRepository) {
         self.recommendRepository = recommendRepository
     }
     
@@ -45,7 +45,7 @@ extension HomeViewModel {
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
 
-        recommendRepository.getTestTodayPopularNovels()
+        recommendRepository.getTodayPopularNovels()
             .subscribe(with: self, onNext: { owner, data in
                 output.todayPopularList.accept(data)
             }, onError: { owner, error in
@@ -53,7 +53,7 @@ extension HomeViewModel {
             })
             .disposed(by: disposeBag)
         
-        recommendRepository.getTestInterestNovels()
+        recommendRepository.getInterestNovels()
             .subscribe(with: self, onNext: { owner, data in
                 output.interestList.accept(data)
             }, onError: { owner, error in
@@ -61,7 +61,7 @@ extension HomeViewModel {
         })
         .disposed(by: disposeBag)
         
-        recommendRepository.getTestTasteRecommendNovels()
+        recommendRepository.getTasteRecommendNovels()
             .subscribe(with: self, onNext: { owner, data in
                 output.tasteRecommendList.accept(data)
             }, onError: { owner, error in
