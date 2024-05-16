@@ -16,9 +16,6 @@ final class HomeTasteRecommendView: UIView {
     
     private var titleLabel = UILabel()
     private var subTitleLabel = UILabel()
-    
-    private var testView = HomeTasteRecommendCollectionViewCell()
-    
     let tasteRecommendCollectionView = UICollectionView(frame: .zero,
                                                       collectionViewLayout: UICollectionViewLayout())
     private let tasteRecommendCollectionViewLayout = UICollectionViewFlowLayout()
