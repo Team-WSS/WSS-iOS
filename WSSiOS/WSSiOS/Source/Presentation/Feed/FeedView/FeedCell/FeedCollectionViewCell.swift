@@ -151,6 +151,7 @@ final class FeedCollectionViewCell: UICollectionViewCell {
     //MARK: - Data
     
     func bindData(data: TotalFeeds) {
+        
         //TODO: - dropDown 설정하면서 myFeed 구분하기
         
         userView.bindData(imageURL: data.avatarImage,

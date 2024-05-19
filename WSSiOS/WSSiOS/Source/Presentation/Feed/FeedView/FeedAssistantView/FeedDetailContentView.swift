@@ -14,7 +14,7 @@ final class FeedDetailContentView: UIView {
     
     //MARK: - Components
     
-    let detailContentLabel = UILabel()
+    private let detailContentLabel = UILabel()
     
     // MARK: - Life Cycle
     
@@ -48,6 +48,8 @@ final class FeedDetailContentView: UIView {
             $0.trailing.lessThanOrEqualToSuperview()
         }
     }
+    
+    //MARK: - Data
     
     func bindData(content: String, isSpolier: Bool) {
         detailContentLabel.text = isSpolier ? StringLiterals.Feed.spoilerText : content

@@ -61,6 +61,8 @@ final class FeedPageBarCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    //MARK: - Data
+    
     func bindData(text: String) {
         titleLabel.text = text
     }

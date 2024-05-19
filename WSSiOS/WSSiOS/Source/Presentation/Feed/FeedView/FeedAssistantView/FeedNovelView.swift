@@ -115,6 +115,8 @@ final class FeedNovelView: UIView {
         }
     }
     
+    //MARK: - Data
+    
     func bindData(title: String, rating: Float, participants: Int) {
         novelTitleLabel.text = title
         novelRatingLabel.text = String(rating)

@@ -14,13 +14,13 @@ final class FeedReactView: UIView {
     
     //MARK: - Components
     
-    let likeView = UIView()
-    let likeIcon = UIImageView()
-    let likeRatingLabel = UILabel()
+    private let likeView = UIView()
+    private let likeIcon = UIImageView()
+    private let likeRatingLabel = UILabel()
     
-    let commentView = UIView()
+    private let commentView = UIView()
     private let commentIcon = UIImageView()
-    let commentRatingLabel = UILabel()
+    private let commentRatingLabel = UILabel()
     
     // MARK: - Life Cycle
     
@@ -117,6 +117,8 @@ final class FeedReactView: UIView {
             $0.trailing.equalToSuperview()
         }
     }
+    
+    //MARK: - Data
     
     func bindData(likeRating: Int, isLiked: Bool, commentRating: Int) {
         likeRatingLabel.text = String(likeRating)

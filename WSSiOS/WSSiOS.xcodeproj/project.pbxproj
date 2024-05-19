@@ -570,13 +570,6 @@
 			path = MyPageCell;
 			sourceTree = "<group>";
 		};
-		2C68B94B2BF50B9800B38F62 /* Trash */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Trash;
-			sourceTree = "<group>";
-		};
 		2CA2F6562B5303A60045B4C2 /* Library */ = {
 			isa = PBXGroup;
 			children = (
@@ -705,7 +698,6 @@
 				2CD2294F2B42E9AD005400BE /* Source */,
 				A1EF35562B52FAA300A94C53 /* Network */,
 				2CD229292B42E687005400BE /* Info.plist */,
-				2C68B94B2BF50B9800B38F62 /* Trash */,
 				B90655552B9466690047BB9D /* Config.xcconfig */,
 			);
 			path = WSSiOS;

@@ -7,16 +7,10 @@
 
 import UIKit
 
-import RxSwift
-import RxCocoa
 import SnapKit
 import Then
 
 final class FeedPageBar: UIView {
-    
-    //MARK: - Properties
-    
-    private let disposeBag = DisposeBag()
     
     //MARK: - Components
     

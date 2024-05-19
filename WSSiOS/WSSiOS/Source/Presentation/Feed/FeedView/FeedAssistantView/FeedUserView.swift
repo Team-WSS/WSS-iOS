@@ -14,8 +14,8 @@ final class FeedUserView: UIView {
     
     //MARK: - Components
     
-    let userImageView = UIImageView()
-    let userNicknameLabel = UILabel()
+    private let userImageView = UIImageView()
+    private let userNicknameLabel = UILabel()
     
     // MARK: - Life Cycle
     
@@ -63,6 +63,8 @@ final class FeedUserView: UIView {
             $0.leading.equalTo(userImageView.snp.trailing).offset(14)
         }
     }
+    
+    //MARK: - Data
     
     func bindData(imageURL: String, nickname: String) {
         userImageView.kfSetImage(url: imageURL)
