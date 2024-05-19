@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "icStar.png",
+      "filename" : "Status=Filled.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "icStar@2x.png",
+      "filename" : "Status=Filled@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "icStar@3x.png",
+      "filename" : "Status=Filled@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
