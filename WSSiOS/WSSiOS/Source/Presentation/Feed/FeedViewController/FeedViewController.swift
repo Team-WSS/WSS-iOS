@@ -46,6 +46,14 @@ final class FeedViewController: UIViewController, UIScrollViewDelegate {
         bindData()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(false)
+        
+        preparationSetNavigationBar(title: StringLiterals.Navigation.Title.feed,
+                                    left: nil,
+                                    right: nil)
+    }
+    
     //MARK: - Bind
     
     private func register() {
