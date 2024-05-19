@@ -1,21 +1,27 @@
 //
-//  FeedView.swift
+//  FeedPageBar.swift
 //  WSSiOS
 //
-//  Created by 신지원 on 5/14/24.
+//  Created by 신지원 on 5/19/24.
 //
 
 import UIKit
 
+import RxSwift
+import RxCocoa
 import SnapKit
 import Then
 
-final class FeedView: UIView {
+final class FeedPageBar: UIView {
+    
+    //MARK: - Properties
+    
+    private let disposeBag = DisposeBag()
     
     //MARK: - Components
     
-    lazy var feedCollectionView = UICollectionView(frame: .zero,
-                                                   collectionViewLayout: UICollectionViewLayout())
+    lazy var feedPageBarCollectionView = UICollectionView(frame: .zero,
+                                                          collectionViewLayout: UICollectionViewLayout())
     
     // MARK: - Life Cycle
     
@@ -36,27 +42,26 @@ final class FeedView: UIView {
     private func setUI() {
         self.backgroundColor = .wssWhite
         
-        feedCollectionView.do {
+        feedPageBarCollectionView.do {
             let layout = UICollectionViewFlowLayout().then {
+                $0.scrollDirection = .horizontal
                 $0.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-                $0.minimumLineSpacing = 0
-                $0.minimumInteritemSpacing = 0
-                $0.scrollDirection = .vertical
+                $0.minimumLineSpacing = 6
             }
             
             $0.collectionViewLayout = layout
-            $0.showsVerticalScrollIndicator = false
-            $0.contentInsetAdjustmentBehavior = .always
+            $0.showsHorizontalScrollIndicator = false
         }
     }
     
     private func setHierarchy() {
-        addSubview(feedCollectionView)
+        addSubview(feedPageBarCollectionView)
     }
     
     private func setLayout() {
-        feedCollectionView.snp.makeConstraints() {
-            $0.edges.equalToSuperview()
+        feedPageBarCollectionView.snp.makeConstraints() {
+            $0.top.bottom.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(20)
         }
     }
 }

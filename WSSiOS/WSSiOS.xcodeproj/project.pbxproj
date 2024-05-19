@@ -30,6 +30,9 @@
 		2C5D0F5F2B50523B00C76D3C /* MyPageChangeNicknameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5D0F5E2B50523B00C76D3C /* MyPageChangeNicknameViewController.swift */; };
 		2C5D0F612B50525700C76D3C /* MyPageChangeNicknameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5D0F602B50525700C76D3C /* MyPageChangeNicknameView.swift */; };
 		2C5D2CF12BFA38A6001A8671 /* FeedNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5D2CF02BFA38A6001A8671 /* FeedNavigationView.swift */; };
+		2C5D2CF32BFA3E3D001A8671 /* FeedGenreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5D2CF22BFA3E3D001A8671 /* FeedGenreViewController.swift */; };
+		2C5D2CF52BFA401D001A8671 /* FeedPageBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5D2CF42BFA401D001A8671 /* FeedPageBar.swift */; };
+		2C5D2CF72BFA4189001A8671 /* FeedPageBarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5D2CF62BFA4189001A8671 /* FeedPageBarCollectionViewCell.swift */; };
 		2C6030642B5407E90031544C /* LibraryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6030632B5407E90031544C /* LibraryViewController.swift */; };
 		2C60306B2B54448F0031544C /* LibraryPageBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C60306A2B54448F0031544C /* LibraryPageBar.swift */; };
 		2C60306D2B5445EC0031544C /* LibraryTabCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C60306C2B5445EC0031544C /* LibraryTabCollectionViewCell.swift */; };
@@ -243,6 +246,9 @@
 		2C5D0F5E2B50523B00C76D3C /* MyPageChangeNicknameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageChangeNicknameViewController.swift; sourceTree = "<group>"; };
 		2C5D0F602B50525700C76D3C /* MyPageChangeNicknameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageChangeNicknameView.swift; sourceTree = "<group>"; };
 		2C5D2CF02BFA38A6001A8671 /* FeedNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedNavigationView.swift; sourceTree = "<group>"; };
+		2C5D2CF22BFA3E3D001A8671 /* FeedGenreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedGenreViewController.swift; sourceTree = "<group>"; };
+		2C5D2CF42BFA401D001A8671 /* FeedPageBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedPageBar.swift; sourceTree = "<group>"; };
+		2C5D2CF62BFA4189001A8671 /* FeedPageBarCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedPageBarCollectionViewCell.swift; sourceTree = "<group>"; };
 		2C6030632B5407E90031544C /* LibraryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViewController.swift; sourceTree = "<group>"; };
 		2C60306A2B54448F0031544C /* LibraryPageBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryPageBar.swift; sourceTree = "<group>"; };
 		2C60306C2B5445EC0031544C /* LibraryTabCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryTabCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -504,6 +510,7 @@
 				2C2F346C2BF353680019E609 /* FeedCell */,
 				2C2F346B2BF3535D0019E609 /* FeedAssistantView */,
 				2C2F34652BF3505B0019E609 /* FeedView.swift */,
+				2C5D2CF42BFA401D001A8671 /* FeedPageBar.swift */,
 			);
 			path = FeedView;
 			sourceTree = "<group>";
@@ -512,6 +519,7 @@
 			isa = PBXGroup;
 			children = (
 				2C2F34672BF350720019E609 /* FeedViewController.swift */,
+				2C5D2CF22BFA3E3D001A8671 /* FeedGenreViewController.swift */,
 			);
 			path = FeedViewController;
 			sourceTree = "<group>";
@@ -540,6 +548,7 @@
 			isa = PBXGroup;
 			children = (
 				2C2F346D2BF353860019E609 /* FeedCollectionViewCell.swift */,
+				2C5D2CF62BFA4189001A8671 /* FeedPageBarCollectionViewCell.swift */,
 			);
 			path = FeedCell;
 			sourceTree = "<group>";
@@ -1531,6 +1540,7 @@
 				2C19A4F92BBA8C3F00D4D151 /* WSSDropdownTableViewCell.swift in Sources */,
 				CD6613782B8B313700B90B2B /* DeletePopupViewModel.swift in Sources */,
 				CD39F2E62B50F2E900B73A5C /* NovelDetailInfoPlatformCollectionViewCell.swift in Sources */,
+				2C5D2CF52BFA401D001A8671 /* FeedPageBar.swift in Sources */,
 				CDE596D82B5770CE00D99DA1 /* WSSToastView.swift in Sources */,
 				A1A1F9D42B4873B500705F44 /* SearchEmptyView.swift in Sources */,
 				39CC16902B529AB6003F56AE /* RegisterNormalReadStatusView.swift in Sources */,
@@ -1560,6 +1570,7 @@
 				39BA7F752BCABF1D0045B2B7 /* KeywordLink.swift in Sources */,
 				2C2F34752BF3C3C90019E609 /* FeedService.swift in Sources */,
 				A107A49E2B4DCD9900668C3E /* HomeCharacterView.swift in Sources */,
+				2C5D2CF72BFA4189001A8671 /* FeedPageBarCollectionViewCell.swift in Sources */,
 				A122C9DB2B5309AF00DFCFE4 /* (null) in Sources */,
 				A1EF35432B52F75800A94C53 /* NovelRepository.swift in Sources */,
 				2C5D0F5D2B50100000C76D3C /* MyPageSettingCollectionViewCell.swift in Sources */,
@@ -1578,6 +1589,7 @@
 				CD3E5A982B5509A500C0A659 /* DeletePopupContentView.swift in Sources */,
 				392A29272B4E96F30065EB97 /* UILabel+.swift in Sources */,
 				2C60306B2B54448F0031544C /* LibraryPageBar.swift in Sources */,
+				2C5D2CF32BFA3E3D001A8671 /* FeedGenreViewController.swift in Sources */,
 				A122C9F62B5314FE00DFCFE4 /* (null) in Sources */,
 				39CC16882B51D94F003F56AE /* RegisterSuccessViewModel.swift in Sources */,
 				2CA2F6522B527B590045B4C2 /* MyPageModalAvatarFeatureLabelView.swift in Sources */,
