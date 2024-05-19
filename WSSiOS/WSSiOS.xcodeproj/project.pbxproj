@@ -36,6 +36,10 @@
 		2C6030712B54F23F0031544C /* LibraryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6030702B54F23F0031544C /* LibraryListView.swift */; };
 		2C6030772B55263F0031544C /* UserResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6030762B55263F0031544C /* UserResult.swift */; };
 		2C60307B2B55D9160031544C /* UIImageView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C60307A2B55D9160031544C /* UIImageView+.swift */; };
+		2C68B9442BF48EA100B38F62 /* FeedNovelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C68B9432BF48EA100B38F62 /* FeedNovelView.swift */; };
+		2C68B9462BF48FBB00B38F62 /* FeedUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C68B9452BF48FBB00B38F62 /* FeedUserView.swift */; };
+		2C68B9482BF4900A00B38F62 /* FeedReactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C68B9472BF4900A00B38F62 /* FeedReactView.swift */; };
+		2C68B94A2BF4949B00B38F62 /* FeedDetailContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C68B9492BF4949B00B38F62 /* FeedDetailContentView.swift */; };
 		2C79CB952B45A0A400734E1F /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2C79CB942B45A0A400734E1F /* Pretendard-SemiBold.otf */; };
 		2C79CB972B45A0AB00734E1F /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2C79CB962B45A0AB00734E1F /* Pretendard-Medium.otf */; };
 		2C79CB992B45A0B200734E1F /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2C79CB982B45A0B200734E1F /* Pretendard-Bold.otf */; };
@@ -244,6 +248,10 @@
 		2C6030702B54F23F0031544C /* LibraryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryListView.swift; sourceTree = "<group>"; };
 		2C6030762B55263F0031544C /* UserResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserResult.swift; sourceTree = "<group>"; };
 		2C60307A2B55D9160031544C /* UIImageView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+.swift"; sourceTree = "<group>"; };
+		2C68B9432BF48EA100B38F62 /* FeedNovelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedNovelView.swift; sourceTree = "<group>"; };
+		2C68B9452BF48FBB00B38F62 /* FeedUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedUserView.swift; sourceTree = "<group>"; };
+		2C68B9472BF4900A00B38F62 /* FeedReactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedReactView.swift; sourceTree = "<group>"; };
+		2C68B9492BF4949B00B38F62 /* FeedDetailContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDetailContentView.swift; sourceTree = "<group>"; };
 		2C79CB942B45A0A400734E1F /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
 		2C79CB962B45A0AB00734E1F /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
 		2C79CB982B45A0B200734E1F /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
@@ -517,6 +525,10 @@
 		2C2F346B2BF3535D0019E609 /* FeedAssistantView */ = {
 			isa = PBXGroup;
 			children = (
+				2C68B9432BF48EA100B38F62 /* FeedNovelView.swift */,
+				2C68B9452BF48FBB00B38F62 /* FeedUserView.swift */,
+				2C68B9472BF4900A00B38F62 /* FeedReactView.swift */,
+				2C68B9492BF4949B00B38F62 /* FeedDetailContentView.swift */,
 			);
 			path = FeedAssistantView;
 			sourceTree = "<group>";
@@ -544,6 +556,13 @@
 				2C5D0F5C2B50100000C76D3C /* MyPageSettingCollectionViewCell.swift */,
 			);
 			path = MyPageCell;
+			sourceTree = "<group>";
+		};
+		2C68B94B2BF50B9800B38F62 /* Trash */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Trash;
 			sourceTree = "<group>";
 		};
 		2CA2F6562B5303A60045B4C2 /* Library */ = {
@@ -674,6 +693,7 @@
 				2CD2294F2B42E9AD005400BE /* Source */,
 				A1EF35562B52FAA300A94C53 /* Network */,
 				2CD229292B42E687005400BE /* Info.plist */,
+				2C68B94B2BF50B9800B38F62 /* Trash */,
 				B90655552B9466690047BB9D /* Config.xcconfig */,
 			);
 			path = WSSiOS;
@@ -1469,6 +1489,7 @@
 				A107A49C2B4DC8C600668C3E /* HomeCharacterTagView.swift in Sources */,
 				A11DD83B2B9074F000A30C33 /* SearchViewModel.swift in Sources */,
 				2CCBFA062B4DD85600D787C2 /* MyPageTallyReuseView.swift in Sources */,
+				2C68B94A2BF4949B00B38F62 /* FeedDetailContentView.swift in Sources */,
 				CD39F2CC2B503B8E00B73A5C /* NovelDetailInfoRatingView.swift in Sources */,
 				CD3E5A732B5424D600C0A659 /* MemoReadView.swift in Sources */,
 				399F29322B56633C00BBC12B /* NovelResult.swift in Sources */,
@@ -1578,6 +1599,7 @@
 				A1654F182B540524004F78E8 /* URLs.swift in Sources */,
 				2C5D0F5F2B50523B00C76D3C /* MyPageChangeNicknameViewController.swift in Sources */,
 				CD3E5A782B5424E600C0A659 /* MemoHeaderView.swift in Sources */,
+				2C68B9462BF48FBB00B38F62 /* FeedUserView.swift in Sources */,
 				2C01F9852B482EB700D90FFE /* UserRepository.swift in Sources */,
 				A1147A862B5063CA00141692 /* RecordHeaderView.swift in Sources */,
 				2CFE04332B66A45A0048F77A /* UICollectionViewCell+.swift in Sources */,
@@ -1593,6 +1615,7 @@
 				39CD5E062B4F20A600668B9A /* RegisterNormalDividerView.swift in Sources */,
 				A122C9DD2B5309D100DFCFE4 /* (null) in Sources */,
 				2C6030772B55263F0031544C /* UserResult.swift in Sources */,
+				2C68B9442BF48EA100B38F62 /* FeedNovelView.swift in Sources */,
 				2C2491862B4ADC420096F255 /* WSSTabBarController.swift in Sources */,
 				392A292F2B4F07FF0065EB97 /* RegisterNormalReadDateView.swift in Sources */,
 				CD3E5A9A2B5509AB00C0A659 /* DeletePopupViewController.swift in Sources */,
@@ -1601,6 +1624,7 @@
 				A1DBB2FA2B4AA981000EE869 /* SearchCollectionViewCell.swift in Sources */,
 				A1DBB2FA2B4AA981000EE869 /* SearchCollectionViewCell.swift in Sources */,
 				3999BFEB2B4E6C4400984832 /* RegisterViewModel.swift in Sources */,
+				2C68B9482BF4900A00B38F62 /* FeedReactView.swift in Sources */,
 				A1493BC32B55022E004DD84A /* MemoResult.swift in Sources */,
 				A1654F0F2B540504004F78E8 /* APIConstants.swift in Sources */,
 				2C2F346E2BF353860019E609 /* FeedCollectionViewCell.swift in Sources */,

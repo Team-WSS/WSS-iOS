@@ -44,17 +44,16 @@ final class FeedView: UIView {
             
             $0.collectionViewLayout = layout
             $0.showsVerticalScrollIndicator = false
+            $0.contentInsetAdjustmentBehavior = .always
         }
     }
     
     private func setHierarchy() {
-        self.addSubview(feedCollectionView)
+        addSubview(feedCollectionView)
     }
     
     private func setLayout() {
         feedCollectionView.snp.makeConstraints() {
-            //TODO: - top 추후 수정
-            $0.top.equalToSuperview()
             $0.edges.equalToSuperview()
         }
     }

@@ -13,9 +13,8 @@ import RxRelay
 final class FeedViewController: UIViewController, UIScrollViewDelegate {
     
     //MARK: - Properties
-    
-    private var feedListRelay = BehaviorRelay<[TotalFeeds]>(value: [])
-    private var feedContentRelay = BehaviorRelay<String>(value: "")
+
+    private var feedsDummy: [TotalFeeds]
     private let disposeBag = DisposeBag()
     
     //MARK: - Components
@@ -25,9 +24,10 @@ final class FeedViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Life Cycle
     
-    init(viewModel: FeedViewModel) {
+    init(viewModel: FeedViewModel, feedsDummy: [TotalFeeds]) {
         
         self.viewModel = viewModel
+        self.feedsDummy = feedsDummy
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -44,9 +44,7 @@ final class FeedViewController: UIViewController, UIScrollViewDelegate {
         
         register()
         bindData()
-        setupCollectionViewLayout()
     }
-    
     
     //MARK: - Bind
     
@@ -56,38 +54,35 @@ final class FeedViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func bindData() {
-        Observable.just(dummy)
+        Observable.just(feedsDummy)
             .bind(to: rootView.feedCollectionView.rx.items(
                 cellIdentifier: FeedCollectionViewCell.cellIdentifier,
                 cellType: FeedCollectionViewCell.self)) { (row, element, cell) in
                     cell.bindData(data: element)
-                    self.feedContentRelay.accept(element.feedContent)
                 }
                 .disposed(by: disposeBag)
         rootView.feedCollectionView.rx.setDelegate(self).disposed(by: disposeBag)
     }
-    
-    
-    private func bindViewModel() {
-        let input = FeedViewModel.Input()
-        let output = viewModel.transform(from: input, disposeBag: self.disposeBag)
-        
-        output.feedList
-            .bind(to: rootView.feedCollectionView.rx.items(
-                cellIdentifier: FeedCollectionViewCell.cellIdentifier,
-                cellType: FeedCollectionViewCell.self)) { (row, element, cell) in
-                    cell.bindData(data: element)
-                }
-                .disposed(by: disposeBag)
-    }
 }
 
 extension FeedViewController: UICollectionViewDelegateFlowLayout {
-    private func setupCollectionViewLayout() {
-        guard let layout = rootView.feedCollectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        guard let feeds = try? feedsDummy, indexPath.item < feeds.count 
+        else { return CGSize(width: UIScreen.main.bounds.width, height: 289) }
+        
+        let text = feeds[indexPath.row].isSpolier ? StringLiterals.Feed.spoilerText : feeds[indexPath.row].feedContent
         let width = UIScreen.main.bounds.width
-        let height = UICollectionViewFlowLayout.automaticSize.height
-        layout.estimatedItemSize = CGSize(width: width, height: height)
-        layout.minimumLineSpacing = 0
+        
+        let feedContentLabel = UILabel()
+        feedContentLabel.text = text
+        feedContentLabel.numberOfLines = 5
+        
+        //TODO: - Font 높이 계산해서 동적 height 할당
+        
+        let maxSize = CGSize(width: width, height: 115)
+        let requiredSize = feedContentLabel.sizeThatFits(maxSize)
+        let finalHeight = min(requiredSize.height, 115)
+        
+        return CGSize(width: width, height: finalHeight + 266)
     }
 }
