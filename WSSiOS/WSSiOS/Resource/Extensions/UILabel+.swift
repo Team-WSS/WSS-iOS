@@ -42,7 +42,7 @@ extension UILabel {
     func fontTitle3Attribute(with text: String) {
         self.do {
             $0.makeAttribute(with: text)?
-                .lineSpacing(spacingPercentage: 150)
+                .lineSpacing(spacingPercentage: 100)
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
             $0.font = .Title3
@@ -55,7 +55,7 @@ extension UILabel {
                 .lineSpacing(spacingPercentage: 140)
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
-            $0.font = .Body2
+            $0.font = .Body1
         }
     }
     
