@@ -201,7 +201,7 @@ extension FeedViewController {
         }
         
         pageBar.snp.makeConstraints {
-            $0.top.equalTo(navigationBar.snp.bottom)
+            $0.top.equalTo(navigationBar.snp.bottom).offset(6)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(41)
         }
