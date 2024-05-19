@@ -46,14 +46,6 @@ final class FeedViewController: UIViewController, UIScrollViewDelegate {
         bindData()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(false)
-        
-        preparationSetNavigationBar(title: StringLiterals.Navigation.Title.feed,
-                                    left: nil,
-                                    right: nil)
-    }
-    
     //MARK: - Bind
     
     private func register() {
@@ -72,6 +64,8 @@ final class FeedViewController: UIViewController, UIScrollViewDelegate {
         rootView.feedCollectionView.rx.setDelegate(self).disposed(by: disposeBag)
     }
 }
+
+// MARK: - UI
 
 extension FeedViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

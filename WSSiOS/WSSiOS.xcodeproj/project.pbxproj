@@ -29,6 +29,7 @@
 		2C5D0F5D2B50100000C76D3C /* MyPageSettingCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5D0F5C2B50100000C76D3C /* MyPageSettingCollectionViewCell.swift */; };
 		2C5D0F5F2B50523B00C76D3C /* MyPageChangeNicknameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5D0F5E2B50523B00C76D3C /* MyPageChangeNicknameViewController.swift */; };
 		2C5D0F612B50525700C76D3C /* MyPageChangeNicknameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5D0F602B50525700C76D3C /* MyPageChangeNicknameView.swift */; };
+		2C5D2CF12BFA38A6001A8671 /* FeedNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5D2CF02BFA38A6001A8671 /* FeedNavigationView.swift */; };
 		2C6030642B5407E90031544C /* LibraryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6030632B5407E90031544C /* LibraryViewController.swift */; };
 		2C60306B2B54448F0031544C /* LibraryPageBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C60306A2B54448F0031544C /* LibraryPageBar.swift */; };
 		2C60306D2B5445EC0031544C /* LibraryTabCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C60306C2B5445EC0031544C /* LibraryTabCollectionViewCell.swift */; };
@@ -241,6 +242,7 @@
 		2C5D0F5C2B50100000C76D3C /* MyPageSettingCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSettingCollectionViewCell.swift; sourceTree = "<group>"; };
 		2C5D0F5E2B50523B00C76D3C /* MyPageChangeNicknameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageChangeNicknameViewController.swift; sourceTree = "<group>"; };
 		2C5D0F602B50525700C76D3C /* MyPageChangeNicknameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageChangeNicknameView.swift; sourceTree = "<group>"; };
+		2C5D2CF02BFA38A6001A8671 /* FeedNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedNavigationView.swift; sourceTree = "<group>"; };
 		2C6030632B5407E90031544C /* LibraryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViewController.swift; sourceTree = "<group>"; };
 		2C60306A2B54448F0031544C /* LibraryPageBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryPageBar.swift; sourceTree = "<group>"; };
 		2C60306C2B5445EC0031544C /* LibraryTabCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryTabCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -529,6 +531,7 @@
 				2C68B9452BF48FBB00B38F62 /* FeedUserView.swift */,
 				2C68B9472BF4900A00B38F62 /* FeedReactView.swift */,
 				2C68B9492BF4949B00B38F62 /* FeedDetailContentView.swift */,
+				2C5D2CF02BFA38A6001A8671 /* FeedNavigationView.swift */,
 			);
 			path = FeedAssistantView;
 			sourceTree = "<group>";
@@ -1633,6 +1636,7 @@
 				A1EF35472B52F77800A94C53 /* MemoRepository.swift in Sources */,
 				CD3E5A7A2B5424E600C0A659 /* MemoReadContentView.swift in Sources */,
 				2CE078182B80894B0028F2B0 /* ViewModelType.swift in Sources */,
+				2C5D2CF12BFA38A6001A8671 /* FeedNavigationView.swift in Sources */,
 				A1708F142B4D8DF400E35E50 /* HomeViewController.swift in Sources */,
 				A123C49F2B56FB7800D32AEB /* SearchResult.swift in Sources */,
 				2C60306D2B5445EC0031544C /* LibraryTabCollectionViewCell.swift in Sources */,

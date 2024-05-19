@@ -14,6 +14,7 @@ final class FeedView: UIView {
     
     //MARK: - Components
     
+    private let navigationBar = FeedNavigationView()
     lazy var feedCollectionView = UICollectionView(frame: .zero,
                                                    collectionViewLayout: UICollectionViewLayout())
     
@@ -34,6 +35,8 @@ final class FeedView: UIView {
     //MARK: - UI
     
     private func setUI() {
+        self.backgroundColor = .wssWhite
+        
         feedCollectionView.do {
             let layout = UICollectionViewFlowLayout().then {
                 $0.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
@@ -49,12 +52,20 @@ final class FeedView: UIView {
     }
     
     private func setHierarchy() {
-        addSubview(feedCollectionView)
+        addSubviews(navigationBar,
+                   feedCollectionView)
     }
     
     private func setLayout() {
+        navigationBar.snp.makeConstraints {
+            $0.top.equalTo(safeAreaLayoutGuide.snp.top)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(52)
+        }
+        
         feedCollectionView.snp.makeConstraints() {
-            $0.edges.equalToSuperview()
+            $0.top.equalTo(navigationBar.snp.bottom)
+            $0.leading.trailing.bottom.equalToSuperview()
         }
     }
 }
