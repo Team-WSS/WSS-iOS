@@ -11,7 +11,7 @@ import SnapKit
 import Then
 
 final class FeedPageBarCollectionViewCell: UICollectionViewCell {
-
+    
     //MARK: - Components
     
     private let titleLabel = UILabel()
@@ -50,7 +50,7 @@ final class FeedPageBarCollectionViewCell: UICollectionViewCell {
             $0.textColor = isSelected ? .wssWhite : .wssGray300
         }
     }
-
+    
     private func setHierarchy() {
         addSubview(titleLabel)
     }
@@ -64,6 +64,12 @@ final class FeedPageBarCollectionViewCell: UICollectionViewCell {
     //MARK: - Data
     
     func bindData(text: String) {
-        titleLabel.text = text
+        titleLabel.do {
+            $0.text = text
+            $0.makeAttribute(with: $0.text)?
+                .lineSpacing(spacingPercentage: 0)
+                .kerning(kerningPixel: -0.6)
+                .applyAttribute()
+        }
     }
 }

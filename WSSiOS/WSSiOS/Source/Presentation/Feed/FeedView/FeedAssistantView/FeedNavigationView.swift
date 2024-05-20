@@ -38,6 +38,10 @@ final class FeedNavigationView: UIView {
         
         navigationTitle.do {
             $0.text = StringLiterals.Navigation.Title.feed
+            $0.makeAttribute(with: $0.text)?
+                .lineSpacing(spacingPercentage: 140)
+                .kerning(kerningPixel: -1.2)
+                .applyAttribute()
             $0.font = .HeadLine1
             $0.textColor = .wssBlack
         }

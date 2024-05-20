@@ -59,7 +59,7 @@ final class FeedCollectionViewCell: UICollectionViewCell {
         }
         
         modifiedLabel.do {
-            $0.text = "(수정됨)"
+            $0.text = StringLiterals.Feed.modifiedText
             $0.font = .Body5
             $0.textColor = .Gray200
         }
@@ -176,7 +176,13 @@ final class FeedCollectionViewCell: UICollectionViewCell {
                 ReplaceGenre(rawValue: $0)?.withKorean
             }.joined(separator: ", ")
         
-        genreLabel.text = categoriesText
+        genreLabel.do {
+            $0.text = categoriesText
+            $0.makeAttribute(with: $0.text)?
+                .lineSpacing(spacingPercentage: 0)
+                .kerning(kerningPixel: -0.6)
+                .applyAttribute()
+        }
     }
 }
 

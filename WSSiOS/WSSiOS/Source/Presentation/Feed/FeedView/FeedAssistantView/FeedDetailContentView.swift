@@ -52,10 +52,16 @@ final class FeedDetailContentView: UIView {
     //MARK: - Data
     
     func bindData(content: String, isSpolier: Bool) {
-        detailContentLabel.text = isSpolier ? StringLiterals.Feed.spoilerText : content
-        detailContentLabel.textColor = isSpolier ? .Secondary100 : .wssBlack
-        
         detailContentLabel.do {
+            $0.text = isSpolier ? StringLiterals.Feed.spoilerText : content
+            var paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.lineHeightMultiple = 1.26
+            $0.makeAttribute(with: $0.text)?
+                .lineHeightMultiple(1.26)
+                .kerning(kerningPixel: -0.6)
+                .applyAttribute()
+            $0.textColor = isSpolier ? .Secondary100 : .wssBlack
+            
             $0.font = .Body2
             $0.textAlignment = .natural
             $0.numberOfLines = 5

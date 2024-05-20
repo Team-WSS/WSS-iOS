@@ -118,7 +118,13 @@ final class FeedNovelView: UIView {
     //MARK: - Data
     
     func bindData(title: String, rating: Float, participants: Int) {
-        novelTitleLabel.text = title
+        novelTitleLabel.do {
+            $0.text = title.truncateText(maxLength: 13)
+            $0.makeAttribute(with: $0.text)?
+                .kerning(kerningPixel: -0.6)
+                .applyAttribute()
+        }
+        
         novelRatingLabel.text = String(rating)
         novelRatingParticipantsLabel.text = " (" + String(participants) + ")"
     }

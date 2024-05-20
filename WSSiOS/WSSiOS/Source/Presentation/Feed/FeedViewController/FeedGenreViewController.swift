@@ -74,10 +74,15 @@ extension FeedGenreViewController: UICollectionViewDelegateFlowLayout {
         let text = feeds[indexPath.row].isSpolier ? StringLiterals.Feed.spoilerText : feeds[indexPath.row].feedContent
         let width = UIScreen.main.bounds.width
         
-        let feedContentLabel = UILabel()
-        feedContentLabel.text = text
-        feedContentLabel.font = .Body2
-        feedContentLabel.numberOfLines = 5
+        let feedContentLabel = UILabel().then {
+            $0.text = text
+            $0.makeAttribute(with: $0.text)?
+                .lineHeightMultiple(1.26)
+                .kerning(kerningPixel: -0.6)
+                .applyAttribute()
+            $0.font = .Body2
+            $0.numberOfLines = 5
+        }
         
         //TODO: - Font 높이 계산해서 동적 height 할당
         

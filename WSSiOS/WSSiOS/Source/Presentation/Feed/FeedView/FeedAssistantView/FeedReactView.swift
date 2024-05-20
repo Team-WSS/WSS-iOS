@@ -124,5 +124,13 @@ final class FeedReactView: UIView {
         likeRatingLabel.text = String(likeRating)
         likeIcon.image = UIImage(resource: isLiked ? .icThumbUpFill : .icThumbUp)
         commentRatingLabel.text = String(commentRating)
+        
+        [likeRatingLabel, commentRatingLabel].forEach {
+            $0.do {
+                $0.makeAttribute(with: $0.text)?
+                    .kerning(kerningPixel: -0.6)
+                    .applyAttribute()
+            }
+        }
     }
 }

@@ -239,5 +239,6 @@ enum StringLiterals {
     
     enum Feed {
         static let spoilerText = "스포일러가 포함된 글 보기"
+        static let modifiedText = "(수정됨)"
     }
 }
