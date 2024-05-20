@@ -34,6 +34,20 @@ enum StringLiterals {
         }
     }
     
+    enum Home {
+        enum Title {
+            static let todayPopular = "오늘의 인기작"
+            static let realtimePopular = "실시간 인기글"
+            static let interest = "님의 관심글"
+            static let recommend = "이 웹소설은 어때요?"
+        }
+        
+        enum SubTitle {
+            static let interest = "관심 등록한 작품의 최신글이에요"
+            static let recommend = "선호 장르를 기반으로 추천드려요!"
+        }
+    }
+    
     enum Register {
         enum Normal {
             enum DatePicker {

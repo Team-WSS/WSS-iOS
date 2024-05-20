@@ -14,9 +14,10 @@ final class HomeView: UIView {
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     let headerView = HomeHeaderView()
-    let characterView = HomeCharacterView()
-    private let titleView = HomeSosoPickTitleView()
-    let sosopickView = HomeSosoPickView()
+    let todayPopularView = HomeTodayPopularView()
+    let realtimePopularView = HomeRealtimePopularView()
+    let interestView = HomeInterestView()
+    let tasteRecommendView = HomeTasteRecommendView()
     
     //MARK: - Life Cycle
     
@@ -24,7 +25,7 @@ final class HomeView: UIView {
         super.init(frame: frame)
         
         setUI()
-        setHierachy()
+        setHierarchy()
         setLayout()
     }
     
@@ -39,50 +40,55 @@ final class HomeView: UIView {
         }
     }
     
-    private func setHierachy() {
+    private func setHierarchy() {
         self.addSubviews(headerView,
-                        scrollView)
+                         scrollView)
         self.scrollView.addSubview(contentView)
-        contentView.addSubviews(characterView,
-                                          titleView,
-                                          sosopickView)
+        contentView.addSubviews(todayPopularView,
+                                realtimePopularView,
+                                interestView,
+                                tasteRecommendView)
     }
     
     private func setLayout() {
         headerView.snp.makeConstraints {
-            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).inset(16)
-            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top)
+            $0.height.equalTo(50)
+            $0.leading.trailing.equalToSuperview()
         }
         
         scrollView.snp.makeConstraints {
-            $0.top.equalTo(headerView.snp.bottom).offset(20)
+            $0.top.equalTo(headerView.snp.bottom)
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
         }
         
         contentView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(15)
-            $0.leading.trailing.bottom.width.equalToSuperview()
+            $0.top.equalTo(scrollView.contentLayoutGuide).inset(20)
+            $0.leading.trailing.bottom.equalTo(scrollView.contentLayoutGuide)
+            $0.height.greaterThanOrEqualTo(self.snp.height).priority(.low)
+            $0.width.equalTo(scrollView.snp.width)
         }
         
-        characterView.snp.makeConstraints {
-            $0.top.centerX.equalToSuperview()
+        todayPopularView.snp.makeConstraints {
+            $0.top.leading.trailing.equalToSuperview()
+            $0.height.equalTo(421)
         }
         
-        titleView.snp.makeConstraints {
-            if UIScreen.main.bounds.height < 813 {
-                $0.top.equalTo(characterView.snp.bottom).offset(24)
-            } else {
-                $0.top.equalTo(characterView.snp.bottom).offset(((UIScreen.main.bounds.height-812))/2+24)
-            }
-            $0.centerX.leading.trailing.equalToSuperview()
+        realtimePopularView.snp.makeConstraints {
+            $0.top.equalTo(todayPopularView.snp.bottom).offset(56)
+            $0.leading.equalToSuperview()
         }
         
-        sosopickView.snp.makeConstraints {
-          
-            $0.top.equalTo(titleView.snp.bottom)
-            $0.centerX.leading.trailing.bottom.equalToSuperview()
-            $0.height.equalTo(230)
+        interestView.snp.makeConstraints {
+            $0.top.equalTo(realtimePopularView.snp.bottom).offset(56)
+            $0.leading.trailing.equalToSuperview()
+        }
+        
+        tasteRecommendView.snp.makeConstraints {
+            $0.top.equalTo(interestView.snp.bottom).offset(36)
+            $0.leading.trailing.bottom.equalToSuperview()
+            $0.height.equalTo(1750)
         }
     }
 }
