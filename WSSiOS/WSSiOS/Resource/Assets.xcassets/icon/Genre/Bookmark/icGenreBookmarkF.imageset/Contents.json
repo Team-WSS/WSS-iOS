@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Status=icTagStop.png",
+      "filename" : "genre=f.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Status=icTagStop@2x.png",
+      "filename" : "genre=f@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Status=icTagStop@3x.png",
+      "filename" : "genre=f@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
