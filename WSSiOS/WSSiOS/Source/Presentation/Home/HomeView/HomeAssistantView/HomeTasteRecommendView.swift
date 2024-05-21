@@ -16,9 +16,6 @@ final class HomeTasteRecommendView: UIView {
     
     private var titleLabel = UILabel()
     private var subTitleLabel = UILabel()
-    
-    private var testView = HomeTasteRecommendCollectionViewCell()
-    
     let tasteRecommendCollectionView = UICollectionView(frame: .zero,
                                                       collectionViewLayout: UICollectionViewLayout())
     private let tasteRecommendCollectionViewLayout = UICollectionViewFlowLayout()
@@ -88,7 +85,7 @@ final class HomeTasteRecommendView: UIView {
         
         tasteRecommendCollectionView.snp.makeConstraints {
             $0.top.equalTo(subTitleLabel.snp.bottom).offset(20)
-            $0.width.equalTo(UIScreen.main.bounds.width - 40)
+            $0.leading.equalToSuperview().inset(20)
             $0.centerX.equalToSuperview()
             $0.bottom.equalToSuperview()
         }

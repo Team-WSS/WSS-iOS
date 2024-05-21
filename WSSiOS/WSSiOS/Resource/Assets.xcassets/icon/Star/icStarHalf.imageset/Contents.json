@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "icStar-1.png",
+      "filename" : "Status=Half.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "icStar@2x-1.png",
+      "filename" : "Status=Half@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "icStar@3x-1.png",
+      "filename" : "Status=Half@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

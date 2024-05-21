@@ -9,7 +9,7 @@ import UIKit
 
 extension UIFont {
     static var HeadLine1: UIFont {
-        return UIFont(name: "Pretendard-SemiBold", size: 20)!
+        return UIFont(name: "Pretendard-Bold", size: 20)!
     }
     
     static var Title1: UIFont {
@@ -40,15 +40,23 @@ extension UIFont {
         return UIFont(name: "Pretendard-Medium", size: 13)!
     }
     
+    static var Body4_2: UIFont {
+        return UIFont(name: "Pretendard-Regular", size: 13)!
+    }
+    
     static var Body5: UIFont {
         return UIFont(name: "Pretendard-Regular", size: 12)!
     }
     
+    static var Body5_2: UIFont {
+        return UIFont(name: "Pretendard-Medium", size: 12)!
+    }
+    
     static var Label1: UIFont {
-        return UIFont(name: "Pretendard-Regular", size: 13)!
+        return UIFont(name: "Pretendard-Medium", size: 13)!
     }
     
     static var Label2: UIFont {
-        return UIFont(name: "Pretendard-Regular", size: 10)!
+        return UIFont(name: "Pretendard-Medium", size: 10)!
     }
 }
