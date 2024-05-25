@@ -18,6 +18,10 @@ final class HomeRealtimePopularView: UIView {
     private var titleLabel = UILabel()
     private var titleStackView = UIStackView()
     
+    var testView = HomeRealtimePopularCollectionViewCell()
+    var realtimePopularCollectionView = UICollectionView(frame: .zero,
+                                                         collectionViewLayout: UICollectionViewLayout())
+    private let realtimePopularCollectionViewLayout = UICollectionViewFlowLayout()
     private var scrollView = UIScrollView()
     
     //MARK: - Life Cycle
@@ -53,17 +57,34 @@ final class HomeRealtimePopularView: UIView {
             $0.axis = .horizontal
             $0.spacing = 6
         }
+        
+        realtimePopularCollectionView.do {
+            $0.showsHorizontalScrollIndicator = false
+        }
+        
+        realtimePopularCollectionViewLayout.do {
+            $0.scrollDirection = .horizontal
+            $0.minimumLineSpacing = 10
+            $0.itemSize = CGSize(width: 335, height: 414)
+            $0.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+            realtimePopularCollectionView.setCollectionViewLayout($0, animated: false)
+        }
     }
     
     private func setHierarchy() {
         titleStackView.addArrangedSubviews(titleLogoImageView,
                                            titleLabel)
-        self.addSubview(titleStackView)
+        self.addSubviews(titleStackView, testView)
     }
     
     private func setLayout() {
         titleStackView.snp.makeConstraints {
             $0.top.equalToSuperview()
+            $0.leading.equalToSuperview().inset(20)
+        }
+        
+        testView.snp.makeConstraints {
+            $0.top.equalTo(titleStackView.snp.bottom).offset(14)
             $0.leading.equalToSuperview().inset(20)
         }
     }

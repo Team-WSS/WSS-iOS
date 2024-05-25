@@ -63,6 +63,10 @@ final class HomeViewController: UIViewController {
             HomeTodayPopularCollectionViewCell.self,
             forCellWithReuseIdentifier: HomeTodayPopularCollectionViewCell.cellIdentifier)
         
+        rootView.realtimePopularView.realtimePopularCollectionView.register(
+            HomeRealtimePopularCollectionViewCell.self,
+            forCellWithReuseIdentifier: HomeRealtimePopularCollectionViewCell.cellIdentifier)
+        
         rootView.interestView.interestCollectionView.register(
             HomeInterestCollectionViewCell.self,
             forCellWithReuseIdentifier: HomeInterestCollectionViewCell.cellIdentifier)

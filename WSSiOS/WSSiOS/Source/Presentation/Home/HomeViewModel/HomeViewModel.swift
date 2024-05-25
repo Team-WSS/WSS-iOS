@@ -27,6 +27,7 @@ final class HomeViewModel: ViewModelType {
     
     struct Output {
         var todayPopularList = BehaviorRelay<[TodayPopularNovel]>(value: [])
+        var realtimePopularList = BehaviorRelay<[RealtimePopularFeed]>(value: [])
         var interestList = BehaviorRelay<[InterestFeed]>(value: [])
         var tasteRecommendList = BehaviorRelay<[TasteRecommendNovel]>(value: [])
         let navigateToAnnoucementView = PublishRelay<Bool>()
@@ -49,6 +50,14 @@ extension HomeViewModel {
         recommendRepository.getTodayPopularNovels()
             .subscribe(with: self, onNext: { owner, data in
                 output.todayPopularList.accept(data)
+            }, onError: { owner, error in
+                print(error)
+            })
+            .disposed(by: disposeBag)
+        
+        recommendRepository.getRealtimePopularFeeds()
+            .subscribe(with: self, onNext: { owner, data in
+                output.realtimePopularList.accept(data)
             }, onError: { owner, error in
                 print(error)
             })
