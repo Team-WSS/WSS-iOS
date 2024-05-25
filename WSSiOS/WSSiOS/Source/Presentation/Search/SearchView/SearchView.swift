@@ -11,9 +11,8 @@ final class SearchView: UIView {
     
     //MARK: - Components
     
-    let headerView = SearchHeaderView()
-    private let dividerLine = UIView()
-    let mainResultView = SearchResultView()
+    private let titleLabel = UILabel()
+    private let searchbarView = SearchBarView()
     
     // MARK: - Life Cycle
     
@@ -32,34 +31,27 @@ final class SearchView: UIView {
     //MARK: - set UI
     
     private func setUI() {
-        self.backgroundColor = .wssWhite
-        
-        dividerLine.do {
-            $0.backgroundColor = .wssGray50
+        titleLabel.do {
+            $0.fontHeadline1Attribute(with: StringLiterals.Search.title)
+            $0.textColor = .wssBlack
         }
     }
-
+    
     private func setHierarchy() {
-        self.addSubviews(headerView,
-                         dividerLine,
-                         mainResultView)
+        self.addSubviews(titleLabel,
+                         searchbarView)
     }
-
+    
     private func setLayout() {
-        headerView.snp.makeConstraints {
-            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top)
-            $0.leading.trailing.equalToSuperview()
+        titleLabel.snp.makeConstraints {
+            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).inset(12)
+            $0.leading.equalToSuperview().inset(20)
         }
         
-        dividerLine.snp.makeConstraints {
-            $0.top.equalTo(headerView.snp.bottom)
-            $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(1)
-        }
-        
-        mainResultView.snp.makeConstraints {
-            $0.top.equalTo(dividerLine.snp.bottom)
-            $0.leading.trailing.bottom.equalToSuperview()
+        searchbarView.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom).offset(20)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(42)
         }
     }
 }
