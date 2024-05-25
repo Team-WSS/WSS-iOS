@@ -45,7 +45,6 @@ final class FeedNovelView: UIView {
         
         novelLinkIcon.do {
             $0.image = UIImage(resource: .icNovelLink)
-            $0.tintColor = .wssPrimary100
         }
         
         novelTitleLabel.do {
@@ -55,7 +54,6 @@ final class FeedNovelView: UIView {
         
         novelStarIcon.do {
             $0.image = UIImage(resource: .icPinkStar)
-            $0.tintColor = .wssGray200
         }
         
         [novelRatingLabel,novelRatingParticipantsLabel].forEach {
@@ -67,7 +65,6 @@ final class FeedNovelView: UIView {
         
         rightArrowIcon.do {
             $0.image = UIImage(resource: .icNavigateRight)
-            $0.tintColor = .Gray100
         }
     }
     

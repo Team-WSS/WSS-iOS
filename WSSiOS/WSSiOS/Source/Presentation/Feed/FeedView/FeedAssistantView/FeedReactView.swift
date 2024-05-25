@@ -47,7 +47,6 @@ final class FeedReactView: UIView {
         
         likeIcon .do {
             $0.image = UIImage(resource: .icThumbUp)
-            $0.tintColor = .Gray200
             $0.contentMode = .scaleAspectFit
         }
         
@@ -62,7 +61,6 @@ final class FeedReactView: UIView {
         
         commentIcon.do {
             $0.image = UIImage(resource: .icComment)
-            $0.tintColor = .Gray200
             $0.contentMode = .scaleAspectFit
         }
         

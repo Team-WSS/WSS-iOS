@@ -60,7 +60,7 @@ final class FeedDetailContentView: UIView {
                 .lineHeightMultiple(1.26)
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
-            $0.textColor = isSpolier ? .Secondary100 : .wssBlack
+            $0.textColor = isSpolier ? .wssSecondary100 : .wssBlack
             
             $0.font = .Body2
             $0.textAlignment = .natural

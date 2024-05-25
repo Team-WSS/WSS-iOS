@@ -43,6 +43,7 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
         
         register()
         bindData()
+        delegate()
     }
     
     //MARK: - Bind
@@ -60,7 +61,9 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
                     cell.bindData(data: element)
                 }
                 .disposed(by: disposeBag)
-        
+    }
+    
+    private func delegate() {
         rootView.feedCollectionView.rx
             .setDelegate(self).disposed(by: disposeBag)
     }
