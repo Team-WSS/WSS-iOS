@@ -7,22 +7,33 @@
 
 import Foundation
 
-struct SosopickNovels: Codable {
-    let sosoPickNovels: [SosopickNovel]
+struct TodayPopularNovel {
+    var novelId: Int
+    var title: String
+    var novelImage: String
+    var avatarImage: String
+    var nickname: String
+    var feedContent: String
 }
 
-struct SosopickNovel: Codable {
-    let novelId: Int
-    let novelImage: String
-    let novelTitle: String
-    let novelAuthor: String
-    let novelRegisteredCount: Int
-    
-    enum CodingKeys: String, CodingKey {
-        case novelId
-        case novelImage = "novelImg"
-        case novelTitle
-        case novelAuthor
-        case novelRegisteredCount
-    }
+struct InterestFeed {
+    var novelId: Int
+    var novelTitle: String
+    var novelImage: String
+    var novelRating: Float
+    var novelRatingCount: Int
+    var userNickname: String
+    var userAvatarImage: String
+    var userFeedContent: String
 }
+
+struct TasteRecommendNovel {
+    var novelId: Int
+    var novelTitle: String
+    var novelAuthor: String
+    var novelImage: String
+    var novelLikeCount: Int
+    var novelRating: Float
+    var novelRatingCount: Int
+}
+
