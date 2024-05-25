@@ -214,6 +214,9 @@ enum StringLiterals {
     enum Search {
         static let title = "탐색하기"
         static let searchbar = "작품 제목, 작가를 검색하세요"
+        static let induceTitle = "이제 뭐 읽을지 고민될 땐?"
+        static let induceDescription = "장르, 연재상태, 별점, 키워드로 작품 찾기"
+        static let induceButton = "내 취향에 맞는 작품 탐색하기"
     }
     
     enum Memo {
