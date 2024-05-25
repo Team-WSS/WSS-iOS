@@ -19,6 +19,7 @@ final class HomeTasteRecommendView: UIView {
     let tasteRecommendCollectionView = UICollectionView(frame: .zero,
                                                       collectionViewLayout: UICollectionViewLayout())
     private let tasteRecommendCollectionViewLayout = UICollectionViewFlowLayout()
+    private let unregisterView = HomeUnregisterView(.tasteRecommend)
     
     //MARK: - Life Cycle
     
@@ -89,5 +90,11 @@ final class HomeTasteRecommendView: UIView {
             $0.centerX.equalToSuperview()
             $0.bottom.equalToSuperview()
         }
+        
+        /// 비로그인일 때
+//        unregisterView.snp.makeConstraints {
+//            $0.top.equalTo(subTitleLabel.snp.bottom).offset(20)
+//            $0.leading.trailing.equalToSuperview().inset(20)
+//        }
     }
 }
