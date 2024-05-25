@@ -9,6 +9,7 @@ import UIKit
 
 import RxSwift
 import RxRelay
+import SnapKit
 
 final class FeedViewController: UIViewController {
     
@@ -127,11 +128,9 @@ extension FeedViewController: UICollectionViewDelegateFlowLayout {
         
         switch collectionView {
         case pageBar.feedPageBarCollectionView:
-            guard let pageTitle = try? dummyTitle, indexPath.item < pageTitle.count else {
-                return CGSize(width: 0, height: 0)
-            }
+            guard indexPath.item < dummyTitle.count else { return CGSize(width: 0, height: 0) }
             
-            let text = pageTitle[indexPath.row]
+            let text = dummyTitle[indexPath.row]
             let height: CGFloat = 41
             
             let pageTitleLabel = UILabel()
