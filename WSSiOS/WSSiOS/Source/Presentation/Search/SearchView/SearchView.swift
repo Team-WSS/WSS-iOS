@@ -7,12 +7,16 @@
 
 import UIKit
 
+import SnapKit
+import Then
+
 final class SearchView: UIView {
     
     //MARK: - Components
     
     private let titleLabel = UILabel()
     private let searchbarView = SearchBarView()
+    private let searchDetailInduceView = SearchDetailInduceView()
     
     // MARK: - Life Cycle
     
@@ -39,7 +43,8 @@ final class SearchView: UIView {
     
     private func setHierarchy() {
         self.addSubviews(titleLabel,
-                         searchbarView)
+                         searchbarView,
+                         searchDetailInduceView)
     }
     
     private func setLayout() {
@@ -52,6 +57,11 @@ final class SearchView: UIView {
             $0.top.equalTo(titleLabel.snp.bottom).offset(20)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(42)
+        }
+        
+        searchDetailInduceView.snp.makeConstraints {
+            $0.top.equalTo(searchbarView.snp.bottom).offset(14)
+            $0.leading.trailing.equalToSuperview().inset(20)
         }
     }
 }
