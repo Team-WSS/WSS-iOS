@@ -14,6 +14,9 @@ final class SearchView: UIView {
     
     //MARK: - Components
     
+    private let scrollView = UIScrollView()
+    private let contentView = UIView()
+    
     private let titleLabel = UILabel()
     private let searchbarView = SearchBarView()
     private let searchDetailInduceView = SearchDetailInduceView()
@@ -36,6 +39,10 @@ final class SearchView: UIView {
     //MARK: - set UI
     
     private func setUI() {
+        scrollView.do {
+            $0.showsVerticalScrollIndicator = false
+        }
+        
         titleLabel.do {
             $0.fontHeadline1Attribute(with: StringLiterals.Search.title)
             $0.textColor = .wssBlack
@@ -69,7 +76,7 @@ final class SearchView: UIView {
         sosopickView.snp.makeConstraints {
             $0.top.equalTo(searchDetailInduceView.snp.bottom).offset(24)
             $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(281)
+            $0.height.equalTo(261)
         }
     }
 }

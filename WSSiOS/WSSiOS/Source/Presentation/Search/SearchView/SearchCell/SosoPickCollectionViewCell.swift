@@ -36,13 +36,11 @@ final class SosoPickCollectionViewCell: UICollectionViewCell {
     
     private func setUI() {
         novelImageView.do {
-            $0.image = .imgTest2
             $0.layer.cornerRadius = 8
             $0.clipsToBounds = true
         }
         
         novelTitleLabel.do {
-            $0.fontLabel1Attribute(with: "상수리 나무 아래")
             $0.textColor = .wssBlack
         }
     }
@@ -62,12 +60,16 @@ final class SosoPickCollectionViewCell: UICollectionViewCell {
         novelTitleLabel.snp.makeConstraints {
             $0.top.equalTo(novelImageView.snp.bottom).offset(8)
             $0.leading.equalTo(novelImageView.snp.leading)
+            $0.width.equalTo(novelImageView.snp.width)
             $0.bottom.equalToSuperview()
         }
     }
     
     func bindData(data: SosoPickNovel) {
         self.novelImageView.image = UIImage(named: data.novelImage)
-        self.novelTitleLabel.text = data.novelTitle
+        self.novelTitleLabel.do {
+            $0.fontLabel1Attribute(with: data.novelTitle)
+            $0.lineBreakMode = .byTruncatingTail
+        }
     }
 }

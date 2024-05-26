@@ -23,6 +23,6 @@ struct TestSearchRepository: SearchRepository {
                                 SosoPickNovel(novelId: 1, novelImage: "imgTest2", novelTitle: "딱대"),
                                 SosoPickNovel(novelId: 1, novelImage: "imgTest2", novelTitle: "토크쇼"),
                                 SosoPickNovel(novelId: 1, novelImage: "imgTest2", novelTitle: "배고파"),
-                                SosoPickNovel(novelId: 1, novelImage: "imgTest2", novelTitle: "닭가슴살꼬치먹고싶다")])
+                                SosoPickNovel(novelId: 1, novelImage: "imgTest2", novelTitle: "닭가슴살꼬치먹고싶다힝구힝구힝")])
     }
 }
