@@ -7,19 +7,8 @@
 
 import Foundation
 
-struct SearchNovels: Codable {
-    let novels: [SearchNovel]
-}
-
-struct SearchNovel: Codable {
-    let novelId: Int
-    let novelTitle: String
-    let novelAuthor: String
-    let novelGenre: String
-    let novelImage: String
-    
-    enum CodingKeys: String, CodingKey {
-        case novelId, novelTitle, novelAuthor, novelGenre
-        case novelImage = "novelImg"
-    }
+struct SosoPickNovel {
+    var novelId: Int
+    var novelImage: String
+    var novelTitle: String
 }
