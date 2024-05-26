@@ -65,4 +65,9 @@ final class SosoPickCollectionViewCell: UICollectionViewCell {
             $0.bottom.equalToSuperview()
         }
     }
+    
+    func bindData(data: SosoPickNovel) {
+        self.novelImageView.image = UIImage(named: data.novelImage)
+        self.novelTitleLabel.text = data.novelTitle
+    }
 }

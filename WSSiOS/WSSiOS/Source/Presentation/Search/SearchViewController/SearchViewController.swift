@@ -15,6 +15,7 @@ final class SearchViewController: UIViewController {
     
     //MARK: - Properties
     
+    private let viewModel: SearchViewModel
     private let disposeBag = DisposeBag()
     
     //MARK: - Components
@@ -23,7 +24,8 @@ final class SearchViewController: UIViewController {
     
     //MARK: - Life Cycle
     
-    init() {
+    init(viewModel: SearchViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -38,14 +40,14 @@ final class SearchViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        showTabBar()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setUI()
-        delegate()
-        register()
+        registerCell()
         
         bindViewModel()
     }
@@ -53,21 +55,30 @@ final class SearchViewController: UIViewController {
     //MARK: - UI
     
     private func setUI() {
-        
+        self.view.do {
+            $0.backgroundColor = .White
+        }
     }
     
     //MARK: - Bind
-    
-    private func delegate() {
-        
-    }
-    
-    private func register() {
-        
+
+    private func registerCell() {
+        rootView.sosopickView.sosopickCollectionView.register(
+            SosoPickCollectionViewCell.self,
+            forCellWithReuseIdentifier: SosoPickCollectionViewCell.cellIdentifier)
     }
     
     private func bindViewModel() {
+        let input = SearchViewModel.Input()
+        let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
+        output.sosoPickList
+            .bind(to: rootView.sosopickView.sosopickCollectionView.rx.items(
+                cellIdentifier: SosoPickCollectionViewCell.cellIdentifier,
+                cellType: SosoPickCollectionViewCell.self)) { row, element, cell in
+                cell.bindData(data: element)
+            }
+            .disposed(by: disposeBag)
     }
 }
 
