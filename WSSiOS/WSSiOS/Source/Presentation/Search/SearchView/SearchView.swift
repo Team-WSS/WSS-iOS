@@ -17,6 +17,7 @@ final class SearchView: UIView {
     private let titleLabel = UILabel()
     private let searchbarView = SearchBarView()
     private let searchDetailInduceView = SearchDetailInduceView()
+    private let sosopickView = SearchSosoPickView()
     
     // MARK: - Life Cycle
     
@@ -44,7 +45,8 @@ final class SearchView: UIView {
     private func setHierarchy() {
         self.addSubviews(titleLabel,
                          searchbarView,
-                         searchDetailInduceView)
+                         searchDetailInduceView,
+                         sosopickView)
     }
     
     private func setLayout() {
@@ -61,6 +63,11 @@ final class SearchView: UIView {
         
         searchDetailInduceView.snp.makeConstraints {
             $0.top.equalTo(searchbarView.snp.bottom).offset(14)
+            $0.leading.trailing.equalToSuperview().inset(20)
+        }
+        
+        sosopickView.snp.makeConstraints {
+            $0.top.equalTo(searchDetailInduceView.snp.bottom).offset(14)
             $0.leading.trailing.equalToSuperview().inset(20)
         }
     }
