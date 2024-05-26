@@ -483,6 +483,7 @@
 		2C426A432BFB08A4008F6B23 /* Trash */ = {
 			isa = PBXGroup;
 			children = (
+				A1DBB2F92B4AA981000EE869 /* SearchCollectionViewCell.swift */,
 				A1A1F9CE2B48738200705F44 /* SearchHeaderView.swift */,
 				A1A1F9D12B4873A100705F44 /* SearchResultView.swift */,
 				A1A1F9D32B4873B500705F44 /* SearchEmptyView.swift */,
@@ -960,14 +961,6 @@
 			path = Recommend;
 			sourceTree = "<group>";
 		};
-		A122C9D32B53025A00DFCFE4 /* Novel */ = {
-			isa = PBXGroup;
-			children = (
-				A1EF355B2B52FADC00A94C53 /* NovelService.swift */,
-			);
-			path = Novel;
-			sourceTree = "<group>";
-		};
 		A122C9D42B53026100DFCFE4 /* UserNovel */ = {
 			isa = PBXGroup;
 			children = (
@@ -1119,7 +1112,6 @@
 		A1DBB2F82B4AA973000EE869 /* SearchCell */ = {
 			isa = PBXGroup;
 			children = (
-				A1DBB2F92B4AA981000EE869 /* SearchCollectionViewCell.swift */,
 				B97A43722C0251D90029C8D7 /* SosoPickCollectionViewCell.swift */,
 			);
 			path = SearchCell;
@@ -1145,11 +1137,11 @@
 		A1EF35562B52FAA300A94C53 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				B971D87A2C038D72008934D8 /* Novel */,
 				A122C9D52B53026700DFCFE4 /* Memo */,
 				A122C9D72B53097A00DFCFE4 /* Foundation */,
 				A122C9D62B53026E00DFCFE4 /* Avatar */,
 				A122C9D42B53026100DFCFE4 /* UserNovel */,
-				A122C9D32B53025A00DFCFE4 /* Novel */,
 				A122C9D02B53024800DFCFE4 /* Recommend */,
 				A122C9CD2B53022E00DFCFE4 /* User */,
 			);
@@ -1162,6 +1154,14 @@
 				B96D10C32BED2EDB00D4D84C /* HomeViewModel.swift */,
 			);
 			path = HomeViewModel;
+			sourceTree = "<group>";
+		};
+		B971D87A2C038D72008934D8 /* Novel */ = {
+			isa = PBXGroup;
+			children = (
+				A1EF355B2B52FADC00A94C53 /* NovelService.swift */,
+			);
+			path = Novel;
 			sourceTree = "<group>";
 		};
 		CD280A8F2B88A69400AFDD90 /* NovelDetailViewModel */ = {

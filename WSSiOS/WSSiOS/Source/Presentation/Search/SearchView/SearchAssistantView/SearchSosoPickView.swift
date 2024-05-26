@@ -17,7 +17,6 @@ final class SearchSosoPickView: UIView {
     private let titleLabel = UILabel()
     private let pickImageView = UIImageView()
     private let descriptionLabel = UILabel()
-    private let testView = SosoPickCollectionViewCell()
     let sosopickCollectionView = UICollectionView(frame: .zero,
                                                   collectionViewLayout: UICollectionViewLayout())
     private let sosopickCollectionViewLayout = UICollectionViewFlowLayout()
@@ -53,19 +52,31 @@ final class SearchSosoPickView: UIView {
             $0.fontLabel1Attribute(with: StringLiterals.Search.sosoDescription)
             $0.textColor = .wssGray200
         }
+        
+        sosopickCollectionView.do {
+            $0.showsHorizontalScrollIndicator = false
+        }
+        
+        sosopickCollectionViewLayout.do {
+            $0.scrollDirection = .horizontal
+            $0.minimumLineSpacing = 6
+            $0.itemSize = CGSize(width: 121, height: 206)
+            $0.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+            sosopickCollectionView.setCollectionViewLayout($0, animated: false)
+        }
     }
     
     private func setHierarchy() {
         self.addSubviews(titleLabel,
                          pickImageView,
                          descriptionLabel,
-                         testView)
+                         sosopickCollectionView)
     }
     
     private func setLayout() {
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview()
-            $0.leading.equalToSuperview()
+            $0.leading.equalToSuperview().inset(20)
         }
         
         pickImageView.snp.makeConstraints {
@@ -78,9 +89,10 @@ final class SearchSosoPickView: UIView {
             $0.leading.equalTo(titleLabel.snp.leading)
         }
         
-        testView.snp.makeConstraints {
+        sosopickCollectionView.snp.makeConstraints {
             $0.top.equalTo(descriptionLabel.snp.bottom).offset(12)
-            $0.leading.equalTo(titleLabel.snp.leading)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview()
         }
     }
 }

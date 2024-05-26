@@ -17,7 +17,7 @@ final class SearchView: UIView {
     private let titleLabel = UILabel()
     private let searchbarView = SearchBarView()
     private let searchDetailInduceView = SearchDetailInduceView()
-    private let sosopickView = SearchSosoPickView()
+    let sosopickView = SearchSosoPickView()
     
     // MARK: - Life Cycle
     
@@ -67,8 +67,9 @@ final class SearchView: UIView {
         }
         
         sosopickView.snp.makeConstraints {
-            $0.top.equalTo(searchDetailInduceView.snp.bottom).offset(14)
-            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.top.equalTo(searchDetailInduceView.snp.bottom).offset(24)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(281)
         }
     }
 }
