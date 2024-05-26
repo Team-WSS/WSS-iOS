@@ -92,7 +92,7 @@ final class SearchSosoPickView: UIView {
         sosopickCollectionView.snp.makeConstraints {
             $0.top.equalTo(descriptionLabel.snp.bottom).offset(12)
             $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalToSuperview()
+            $0.height.equalTo(206)
         }
     }
 }

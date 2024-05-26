@@ -21,6 +21,7 @@ final class SearchView: UIView {
     private let searchbarView = SearchBarView()
     private let searchDetailInduceView = SearchDetailInduceView()
     let sosopickView = SearchSosoPickView()
+    private let emptyView = UIView()
     
     // MARK: - Life Cycle
     
@@ -47,36 +48,93 @@ final class SearchView: UIView {
             $0.fontHeadline1Attribute(with: StringLiterals.Search.title)
             $0.textColor = .wssBlack
         }
+        
+        emptyView.do {
+            $0.backgroundColor = .white
+        }
     }
     
     private func setHierarchy() {
-        self.addSubviews(titleLabel,
-                         searchbarView,
-                         searchDetailInduceView,
-                         sosopickView)
+        /// SE 기기대응을 위한 조건 적용
+        if UIScreen.main.bounds.height < 812 {
+            self.addSubviews(scrollView,
+                             titleLabel)
+            scrollView.addSubview(contentView)
+            contentView.addSubviews(searchbarView,
+                                    searchDetailInduceView,
+                                    sosopickView,
+                                    emptyView)
+        } else {
+            self.addSubviews(titleLabel,
+                             searchbarView,
+                             searchDetailInduceView,
+                             sosopickView,
+                             emptyView)
+        }
     }
     
     private func setLayout() {
-        titleLabel.snp.makeConstraints {
-            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).inset(12)
-            $0.leading.equalToSuperview().inset(20)
+        if UIScreen.main.bounds.height < 812 {
+            titleLabel.snp.makeConstraints {
+                $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).inset(12)
+                $0.leading.equalToSuperview().inset(20)
+            }
+            
+            scrollView.snp.makeConstraints {
+                $0.top.equalTo(titleLabel.snp.bottom).offset(10)
+                $0.leading.trailing.equalToSuperview()
+                $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
+            }
+            
+            contentView.snp.makeConstraints {
+                $0.top.equalTo(scrollView.contentLayoutGuide).inset(10)
+                $0.leading.trailing.bottom.equalTo(scrollView.contentLayoutGuide)
+                $0.height.greaterThanOrEqualTo(self.snp.height).priority(.low)
+                $0.width.equalTo(scrollView.snp.width)
+            }
+            
+            searchbarView.snp.makeConstraints {
+                $0.top.equalToSuperview()
+                $0.leading.trailing.equalToSuperview().inset(20)
+                $0.height.equalTo(42)
+            }
+            
+            searchDetailInduceView.snp.makeConstraints {
+                $0.top.equalTo(searchbarView.snp.bottom).offset(14)
+                $0.leading.trailing.equalToSuperview().inset(20)
+            }
+            
+            sosopickView.snp.makeConstraints {
+                $0.top.equalTo(searchDetailInduceView.snp.bottom).offset(24)
+                $0.leading.trailing.bottom.equalToSuperview()
+            }
         }
-        
-        searchbarView.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(20)
-            $0.leading.trailing.equalToSuperview().inset(20)
-            $0.height.equalTo(42)
-        }
-        
-        searchDetailInduceView.snp.makeConstraints {
-            $0.top.equalTo(searchbarView.snp.bottom).offset(14)
-            $0.leading.trailing.equalToSuperview().inset(20)
-        }
-        
-        sosopickView.snp.makeConstraints {
-            $0.top.equalTo(searchDetailInduceView.snp.bottom).offset(24)
-            $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(261)
+        else {
+            titleLabel.snp.makeConstraints {
+                $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).inset(12)
+                $0.leading.equalToSuperview().inset(20)
+            }
+            
+            searchbarView.snp.makeConstraints {
+                $0.top.equalTo(titleLabel.snp.bottom).offset(20)
+                $0.leading.trailing.equalToSuperview().inset(20)
+                $0.height.equalTo(42)
+            }
+            
+            searchDetailInduceView.snp.makeConstraints {
+                $0.top.equalTo(searchbarView.snp.bottom).offset(14)
+                $0.leading.trailing.equalToSuperview().inset(20)
+            }
+            
+            sosopickView.snp.makeConstraints {
+                $0.top.equalTo(searchDetailInduceView.snp.bottom).offset(24)
+                $0.leading.trailing.equalToSuperview()
+            }
+            
+            emptyView.snp.makeConstraints {
+                $0.top.equalTo(sosopickView.snp.bottom)
+                $0.leading.trailing.bottom.equalToSuperview()
+            }
         }
     }
 }
