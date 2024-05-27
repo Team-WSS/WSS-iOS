@@ -85,7 +85,8 @@ final class SearchViewController: UIViewController {
         
         output.searchBarEnabled
             .bind(with: self, onNext: { owner, _ in
-                owner.navigationController?.pushViewController(NormalSearchViewController(), animated: true)
+                owner.navigationController?.pushViewController(NormalSearchViewController(
+                    viewModel: NormalSearchViewModel()), animated: true)
             })
             .disposed(by: disposeBag)
     }

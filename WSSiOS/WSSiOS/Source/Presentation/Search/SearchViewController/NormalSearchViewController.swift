@@ -15,13 +15,23 @@ final class NormalSearchViewController: UIViewController {
     
     //MARK: - Properties
     
+    private let viewModel: NormalSearchViewModel
+    private let disposeBag = DisposeBag()
     
     //MARK: - Components
     
     private let rootView = NormalSearchView()
     
     //MARK: - Life Cycle
-
+    
+    init(viewModel: NormalSearchViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func loadView() {
         self.view = rootView
@@ -29,8 +39,6 @@ final class NormalSearchViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        showTabBar()
     }
     
     override func viewDidLoad() {
@@ -57,6 +65,15 @@ final class NormalSearchViewController: UIViewController {
     }
     
     private func bindViewModel() {
+        let input = NormalSearchViewModel.Input(
+            backButtonDidTap: rootView.headerView.backButton.rx.tap
+        )
+        let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
+        output.backButtonEnabled
+            .bind(with: self, onNext: { owner, _ in
+                owner.popToLastViewController()
+            })
+            .disposed(by: disposeBag)
     }
 }

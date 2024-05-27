@@ -14,7 +14,7 @@ final class NormalSearchHeaderView: UIView {
     
     //MARK: - Components
     
-    private let backButton = UIButton()
+    let backButton = UIButton()
     private let searchBar = UISearchBar()
     
     //MARK: - Life Cycle
@@ -40,7 +40,6 @@ final class NormalSearchHeaderView: UIView {
         }
         
         searchBar.do {
-            $0.setImage(.icSearch, for: .search, state: .normal)
             $0.setImage(.icSearchCancel, for: .clear, state: .normal)
             $0.layer.borderColor = UIColor.wssGray70.cgColor
             $0.layer.borderWidth = 1
@@ -72,6 +71,7 @@ final class NormalSearchHeaderView: UIView {
             $0.leading.equalTo(backButton.snp.trailing).offset(16)
             $0.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(42)
+            $0.bottom.equalToSuperview()
         }
     }
 }

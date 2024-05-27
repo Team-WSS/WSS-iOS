@@ -14,7 +14,7 @@ final class NormalSearchView: UIView {
     
     //MARK: - Components
     
-    private let headerView = NormalSearchHeaderView()
+    let headerView = NormalSearchHeaderView()
     
     // MARK: - Life Cycle
     
@@ -42,7 +42,7 @@ final class NormalSearchView: UIView {
     
     private func setLayout() {
         headerView.snp.makeConstraints {
-            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top)
+            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).inset(5)
             $0.leading.trailing.equalToSuperview()
         }
     }
