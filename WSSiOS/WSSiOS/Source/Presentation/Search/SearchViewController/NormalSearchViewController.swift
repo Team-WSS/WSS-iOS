@@ -61,7 +61,9 @@ final class NormalSearchViewController: UIViewController {
     //MARK: - Bind
     
     private func registerCell() {
-        
+        rootView.resultView.normalSearchCollectionView.register(
+            NormalSearchCollectionViewCell.self,
+            forCellWithReuseIdentifier: NormalSearchCollectionViewCell.cellIdentifier)
     }
     
     private func bindViewModel() {
@@ -75,5 +77,13 @@ final class NormalSearchViewController: UIViewController {
                 owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
+        
+        output.normalSearchList
+            .bind(to: rootView.resultView.normalSearchCollectionView.rx.items(
+                cellIdentifier: NormalSearchCollectionViewCell.cellIdentifier,
+                cellType: NormalSearchCollectionViewCell.self)) { row, element, cell in
+                    cell.bindData(data: element)
+                }
+                .disposed(by: disposeBag)
     }
 }

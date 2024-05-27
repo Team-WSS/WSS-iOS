@@ -11,6 +11,7 @@ import RxSwift
 
 protocol SearchRepository {
     func getSosoPickNovels() -> Observable<[SosoPickNovel]>
+    func getSearchNovels() -> Observable<[NormalSearchNovel]>
 }
 
 struct TestSearchRepository: SearchRepository {
@@ -24,5 +25,18 @@ struct TestSearchRepository: SearchRepository {
                                 SosoPickNovel(novelId: 1, novelImage: "imgTest2", novelTitle: "토크쇼"),
                                 SosoPickNovel(novelId: 1, novelImage: "imgTest2", novelTitle: "배고파"),
                                 SosoPickNovel(novelId: 1, novelImage: "imgTest2", novelTitle: "닭가슴살꼬치먹고싶다힝구힝구힝")])
+    }
+    
+    func getSearchNovels() -> Observable<[NormalSearchNovel]> {
+        return Observable.just([NormalSearchNovel(novelId: 2, novelImage: "imgTest2", novelTitle: "구리구리구리구리구리구리", novelAuthor: "구리스구리스최서연최서연", interestCount: 123, ratingAverage: 2.34, ratingCount: 21),
+                                NormalSearchNovel(novelId: 2, novelImage: "imgTest2", novelTitle: "구리구리구리구리구리구리", novelAuthor: "구리스구리스최서연최서연", interestCount: 123, ratingAverage: 2.34, ratingCount: 21),
+                                NormalSearchNovel(novelId: 2, novelImage: "imgTest2", novelTitle: "구리구리구리구리구리구리", novelAuthor: "구리스구리스최서연최서연", interestCount: 123, ratingAverage: 2.34, ratingCount: 21),
+                                NormalSearchNovel(novelId: 2, novelImage: "imgTest2", novelTitle: "구리구리구리구리구리구리", novelAuthor: "구리스구리스최서연최서연", interestCount: 123, ratingAverage: 2.34, ratingCount: 21),
+                                NormalSearchNovel(novelId: 2, novelImage: "imgTest2", novelTitle: "구리구리구리구리구리구리", novelAuthor: "구리스구리스최서연최서연", interestCount: 123, ratingAverage: 2.34, ratingCount: 21),
+                                NormalSearchNovel(novelId: 2, novelImage: "imgTest2", novelTitle: "구리구리구리구리구리구리", novelAuthor: "구리스구리스최서연최서연", interestCount: 123, ratingAverage: 2.34, ratingCount: 21),NormalSearchNovel(novelId: 2, novelImage: "imgTest2", novelTitle: "구리구리구리구리구리구리", novelAuthor: "구리스구리스최서연최서연", interestCount: 123, ratingAverage: 2.34, ratingCount: 21),
+                                NormalSearchNovel(novelId: 2, novelImage: "imgTest2", novelTitle: "구리구리구리구리구리구리", novelAuthor: "구리스구리스최서연최서연", interestCount: 123, ratingAverage: 2.34, ratingCount: 21),
+                                NormalSearchNovel(novelId: 2, novelImage: "imgTest2", novelTitle: "구리구리구리구리구리구리", novelAuthor: "구리스구리스최서연최서연", interestCount: 123, ratingAverage: 2.34, ratingCount: 21),NormalSearchNovel(novelId: 2, novelImage: "imgTest2", novelTitle: "구리구리구리구리구리구리", novelAuthor: "구리스구리스최서연최서연", interestCount: 123, ratingAverage: 2.34, ratingCount: 21),
+                                NormalSearchNovel(novelId: 2, novelImage: "imgTest2", novelTitle: "구리구리구리구리구리구리", novelAuthor: "구리스구리스최서연최서연", interestCount: 123, ratingAverage: 2.34, ratingCount: 21),
+                                NormalSearchNovel(novelId: 2, novelImage: "imgTest2", novelTitle: "구리구리구리구리구리구리", novelAuthor: "구리스구리스최서연최서연", interestCount: 123, ratingAverage: 2.34, ratingCount: 21)])
     }
 }

@@ -15,13 +15,13 @@ final class NormalSearchView: UIView {
     //MARK: - Components
     
     let headerView = NormalSearchHeaderView()
+    let resultView = NormalSearchResultView()
     
     // MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        setUI()
         setHierarchy()
         setLayout()
     }
@@ -31,19 +31,21 @@ final class NormalSearchView: UIView {
     }
     
     //MARK: - UI
-    
-    private func setUI() {
-       
-    }
-    
+
     private func setHierarchy() {
-        self.addSubviews(headerView)
+        self.addSubviews(headerView,
+                         resultView)
     }
     
     private func setLayout() {
         headerView.snp.makeConstraints {
             $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).inset(5)
             $0.leading.trailing.equalToSuperview()
+        }
+        
+        resultView.snp.makeConstraints {
+            $0.top.equalTo(headerView.snp.bottom)
+            $0.leading.trailing.bottom.equalToSuperview()
         }
     }
 }

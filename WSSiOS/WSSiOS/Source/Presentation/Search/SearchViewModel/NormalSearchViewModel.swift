@@ -13,7 +13,7 @@ import RxCocoa
 final class NormalSearchViewModel: ViewModelType {
     
     //MARK: - Properties
-    
+    private let searchRepository: SearchRepository
     private let disposeBag = DisposeBag()
     
     //MARK: - Inputs
@@ -26,9 +26,14 @@ final class NormalSearchViewModel: ViewModelType {
     
     struct Output {
         let backButtonEnabled = PublishRelay<Bool>()
+        let normalSearchList = BehaviorRelay<[NormalSearchNovel]>(value: [])
     }
     
     //MARK: - init
+    
+    init(searchRepository: SearchRepository) {
+        self.searchRepository = searchRepository
+    }
     
     
     //MARK: - API
@@ -44,6 +49,14 @@ extension NormalSearchViewModel {
         input.backButtonDidTap
             .subscribe(onNext: { _ in
                 output.backButtonEnabled.accept(true)
+            })
+            .disposed(by: disposeBag)
+        
+        searchRepository.getSearchNovels()
+            .subscribe(with: self, onNext: { owner, data in
+                output.normalSearchList.accept(data)
+            }, onError: { owner, error in
+                print(error)
             })
             .disposed(by: disposeBag)
         

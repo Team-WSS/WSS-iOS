@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class NormalSearchTableViewCell: UITableViewCell {
+final class NormalSearchCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Components
     ///소설 정보
@@ -29,8 +29,8 @@ final class NormalSearchTableViewCell: UITableViewCell {
     
     //MARK: - Life Cycle
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         
         setUI()
         setHierarchy()
@@ -45,27 +45,21 @@ final class NormalSearchTableViewCell: UITableViewCell {
     
     private func setUI() {
         self.do {
-            $0.backgroundColor = .white
-            $0.selectionStyle = .none
+            $0.backgroundColor = .wssWhite
         }
         
         novelImageView.do {
-            $0.image = .imgTest2
             $0.contentMode = .scaleAspectFill
             $0.layer.cornerRadius = 8
             $0.clipsToBounds = true
         }
         
         novelTitleLabel.do {
-            $0.fontTitle3Attribute(with: "여주인공의 이해를 돕기 위하여")
             $0.textColor = .wssBlack
-            $0.lineBreakMode = .byTruncatingTail
         }
         
         novelAuthorLabel.do {
-            $0.fontBody5Attribute(with: "구리스, 최서연")
             $0.textColor = .wssGray200
-            $0.lineBreakMode = .byTruncatingTail
         }
         
         likeImageView.do {
@@ -73,7 +67,7 @@ final class NormalSearchTableViewCell: UITableViewCell {
         }
         
         likeCountLabel.do {
-            $0.fontBody5Attribute(with: "123")
+            
             $0.textColor = .wssGray200
         }
         
@@ -82,12 +76,10 @@ final class NormalSearchTableViewCell: UITableViewCell {
         }
         
         ratingAverageLabel.do {
-            $0.fontBody5Attribute(with: "2.34")
             $0.textColor = .wssGray200
         }
         
         ratingCountLabel.do {
-            $0.fontBody5Attribute(with: "(123)")
             $0.textColor = .wssGray200
         }
     }
@@ -117,7 +109,7 @@ final class NormalSearchTableViewCell: UITableViewCell {
         
         likeCountLabel.snp.makeConstraints {
             $0.centerY.equalTo(likeImageView.snp.centerY)
-            $0.leading.equalTo(likeImageView.snp.trailing)
+            $0.leading.equalTo(likeImageView.snp.trailing).offset(2)
         }
         
         ratingImageView.snp.makeConstraints {
@@ -127,7 +119,7 @@ final class NormalSearchTableViewCell: UITableViewCell {
         
         ratingAverageLabel.snp.makeConstraints {
             $0.centerY.equalTo(ratingImageView.snp.centerY)
-            $0.leading.equalTo(ratingImageView.snp.trailing)
+            $0.leading.equalTo(ratingImageView.snp.trailing).offset(2)
         }
         
         ratingCountLabel.snp.makeConstraints {
@@ -144,5 +136,20 @@ final class NormalSearchTableViewCell: UITableViewCell {
             $0.top.equalTo(novelTitleLabel.snp.bottom).offset(7)
             $0.leading.equalTo(likeImageView.snp.leading)
         }
+    }
+    
+    func bindData(data: NormalSearchNovel) {
+        self.novelImageView.image = UIImage(named: data.novelImage)
+        self.novelTitleLabel.do {
+            $0.fontTitle3Attribute(with: data.novelTitle)
+            $0.lineBreakMode = .byTruncatingTail
+        }
+        self.novelAuthorLabel.do {
+            $0.fontBody5Attribute(with: data.novelAuthor)
+            $0.lineBreakMode = .byTruncatingTail
+        }
+        self.likeCountLabel.fontBody5Attribute(with: String(data.interestCount))
+        self.ratingAverageLabel.fontBody5Attribute(with: String(data.ratingAverage))
+        self.ratingCountLabel.fontBody5Attribute(with: "(\(data.ratingCount))")
     }
 }

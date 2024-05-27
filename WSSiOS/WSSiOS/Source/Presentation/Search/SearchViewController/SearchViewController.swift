@@ -86,24 +86,8 @@ final class SearchViewController: UIViewController {
         output.searchBarEnabled
             .bind(with: self, onNext: { owner, _ in
                 owner.navigationController?.pushViewController(NormalSearchViewController(
-                    viewModel: NormalSearchViewModel()), animated: true)
+                    viewModel: NormalSearchViewModel(searchRepository: TestSearchRepository())), animated: true)
             })
             .disposed(by: disposeBag)
     }
 }
-
-//MARK: - Extension
-//
-//extension SearchViewController: UISearchBarDelegate {
-//    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-//        rootView.headerView.searchBar.resignFirstResponder()
-//    }
-//
-//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
-//        self.view.endEditing(true)
-//    }
-//
-//    private func showSearchBarAndFocus() {
-//        rootView.headerView.searchBar.becomeFirstResponder()
-//    }
-//}
