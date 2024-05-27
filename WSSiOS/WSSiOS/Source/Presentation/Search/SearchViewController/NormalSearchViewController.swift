@@ -7,6 +7,10 @@
 
 import UIKit
 
+import RxSwift
+import RxCocoa
+import Then
+
 final class NormalSearchViewController: UIViewController {
     
     //MARK: - Properties
@@ -14,17 +18,13 @@ final class NormalSearchViewController: UIViewController {
     
     //MARK: - Components
     
-    
+    private let rootView = NormalSearchView()
     
     //MARK: - Life Cycle
-    
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+
     
     override func loadView() {
-       
+        self.view = rootView
     }
     
     override func viewWillAppear(_ animated: Bool) {

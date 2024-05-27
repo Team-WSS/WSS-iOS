@@ -9,6 +9,7 @@ import UIKit
 
 import RxSwift
 import RxCocoa
+import RxGesture
 import Then
 
 final class SearchViewController: UIViewController {
@@ -69,7 +70,9 @@ final class SearchViewController: UIViewController {
     }
     
     private func bindViewModel() {
-        let input = SearchViewModel.Input()
+        let input = SearchViewModel.Input(
+            searhBarDidTap: rootView.searchbarView.rx.tapGesture().when(.recognized).asObservable()
+        )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.sosoPickList
@@ -78,6 +81,12 @@ final class SearchViewController: UIViewController {
                 cellType: SosoPickCollectionViewCell.self)) { row, element, cell in
                 cell.bindData(data: element)
             }
+            .disposed(by: disposeBag)
+        
+        output.searchBarEnabled
+            .bind(with: self, onNext: { owner, _ in
+                owner.navigationController?.pushViewController(NormalSearchViewController(), animated: true)
+            })
             .disposed(by: disposeBag)
     }
 }
