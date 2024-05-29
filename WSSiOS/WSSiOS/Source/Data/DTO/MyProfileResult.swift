@@ -7,6 +7,11 @@
 
 import Foundation
 
+struct MyProfileResult: Codable {
+    let nickname, intro, avatarImage: String
+    let genrePreferences: [String]
+}
+
 struct UserResult: Codable {
     let representativeAvatarGenreBadge,
                representativeAvatarTag,

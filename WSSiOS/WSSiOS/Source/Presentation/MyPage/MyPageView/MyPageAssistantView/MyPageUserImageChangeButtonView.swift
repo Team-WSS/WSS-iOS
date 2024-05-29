@@ -1,28 +1,26 @@
 //
-//  MyPageView.swift
+//  MyPageChangeProfileButtonView.swift
 //  WSSiOS
 //
-//  Created by 신지원 on 1/8/24.
+//  Created by 신지원 on 5/29/24.
 //
 
 import UIKit
 
-import Kingfisher
 import SnapKit
 import Then
 
-final class MyPageView: UIView {
+final class MyPageUserImageChangeButtonView: UIView {
     
     //MARK: - Components
     
-    private let headerView = MyPageProfileHeaderView()
+    private let pencilImageView = UIImageView(image: .pencil)
     
     // MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        setUI()
         setHierarchy()
         setLayout()
     }
@@ -33,21 +31,16 @@ final class MyPageView: UIView {
     
     //MARK: - UI
     
-    private func setUI() {
-       
-    }
-    
     private func setHierarchy() {
-        addSubview(headerView)
+        addSubview(pencilImageView)
     }
     
     private func setLayout() {
-        headerView.snp.makeConstraints {
-            $0.top.width.equalToSuperview()
-            $0.height.equalTo(308)
+        pencilImageView.snp.makeConstraints {
+            $0.center.equalToSuperview()
+            $0.size.equalTo(20)
         }
     }
-    
-    //MARK: - Data
-    
 }
+
+
