@@ -477,6 +477,13 @@
 		2C3EEB662C0B6DA800B4EFEA /* NoExist */ = {
 			isa = PBXGroup;
 			children = (
+				2C5D0F572B4FDE7500C76D3C /* MyPageCell */,
+				2CA2F64D2B527B060045B4C2 /* MyPageCustomModalView.swift */,
+				2C5D0F5E2B50523B00C76D3C /* MyPageChangeNicknameViewController.swift */,
+				2CA2F64F2B527B3A0045B4C2 /* MyPageCustomModalViewController.swift */,
+				2CB613F42B575E6A00FC3F89 /* MyPageInfoView.swift */,
+				2CB613F22B575E4500FC3F89 /* MyPageInfoViewController.swift */,
+				2C5D0F602B50525700C76D3C /* MyPageChangeNicknameView.swift */,
 				2CCBFA012B4DC10500D787C2 /* MyPageProfileView.swift */,
 				2CCBFA032B4DD73D00D787C2 /* MyPageTallyView.swift */,
 				2CCBFA052B4DD85600D787C2 /* MyPageTallyReuseView.swift */,
@@ -566,9 +573,6 @@
 			isa = PBXGroup;
 			children = (
 				2CCBF9ED2B4C1FC500D787C2 /* MyPageViewController.swift */,
-				2C5D0F5E2B50523B00C76D3C /* MyPageChangeNicknameViewController.swift */,
-				2CA2F64F2B527B3A0045B4C2 /* MyPageCustomModalViewController.swift */,
-				2CB613F22B575E4500FC3F89 /* MyPageInfoViewController.swift */,
 			);
 			path = MyPageViewController;
 			sourceTree = "<group>";
@@ -576,11 +580,8 @@
 		2CCBF9EB2B4C1E4600D787C2 /* MyPageView */ = {
 			isa = PBXGroup;
 			children = (
+				2C3EEB662C0B6DA800B4EFEA /* NoExist */,
 				2CCBF9EF2B4C1FD800D787C2 /* MyPageView.swift */,
-				2C5D0F602B50525700C76D3C /* MyPageChangeNicknameView.swift */,
-				2CA2F64D2B527B060045B4C2 /* MyPageCustomModalView.swift */,
-				2CB613F42B575E6A00FC3F89 /* MyPageInfoView.swift */,
-				2C5D0F572B4FDE7500C76D3C /* MyPageCell */,
 				2CCBF9FE2B4DBF6A00D787C2 /* MyPageAssistantView */,
 			);
 			path = MyPageView;
@@ -598,7 +599,6 @@
 		2CCBF9FE2B4DBF6A00D787C2 /* MyPageAssistantView */ = {
 			isa = PBXGroup;
 			children = (
-				2C3EEB662C0B6DA800B4EFEA /* NoExist */,
 				2C04395E2C0753BE007888E3 /* MyPageProfileHeaderView.swift */,
 				2C3EEB632C07648000B4EFEA /* MyPageUserImageChangeButtonView.swift */,
 			);
