@@ -15,7 +15,21 @@ final class MyPageView: UIView {
     
     //MARK: - Components
     
-    private let headerView = MyPageProfileHeaderView()
+    let scrollView = UIScrollView()
+    
+    let headerView = MyPageProfileHeaderView().then {
+        $0.isHidden = false
+    }
+    let stickyHeaderView = UIView().then {
+        $0.backgroundColor = .wssPrimary100
+    }
+    let stickyHeaderView2 = UIView().then {
+        $0.backgroundColor = .wssPrimary100
+        $0.isHidden = true
+    }
+    let dummyView = UIView().then {
+        $0.backgroundColor = .wssGray70
+    }
     
     // MARK: - Life Cycle
     
@@ -34,16 +48,45 @@ final class MyPageView: UIView {
     //MARK: - UI
     
     private func setUI() {
-       
+        self.backgroundColor = .wssPrimary20
     }
     
     private func setHierarchy() {
-        addSubview(headerView)
+        addSubviews(scrollView,
+                    stickyHeaderView2)
+        
+        scrollView.addSubviews(headerView,
+                               stickyHeaderView,
+                               dummyView)
     }
     
     private func setLayout() {
+        scrollView.snp.makeConstraints {
+            $0.top.equalTo(safeAreaLayoutGuide)
+            $0.left.right.bottom.equalToSuperview()
+        }
+        
         headerView.snp.makeConstraints {
             $0.top.width.equalToSuperview()
+        }
+        
+        stickyHeaderView.snp.makeConstraints {
+            $0.top.equalTo(headerView.snp.bottom)
+            $0.width.equalToSuperview()
+            $0.height.equalTo(47)
+        }
+        
+        stickyHeaderView2.snp.makeConstraints {
+            $0.top.equalTo(safeAreaLayoutGuide)
+            $0.width.equalToSuperview()
+            $0.height.equalTo(47)
+        }
+        
+        dummyView.snp.makeConstraints {
+            $0.top.equalTo(stickyHeaderView.snp.bottom)
+            $0.width.equalToSuperview()
+            $0.height.equalTo(1000)
+            $0.bottom.equalToSuperview()
         }
     }
     

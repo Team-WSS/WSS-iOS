@@ -33,8 +33,7 @@ final class MyPageProfileHeaderView: UIView {
     private let userImageChangeButtonView = MyPageUserImageChangeButtonView()
     
     //MARK: - Components
-    
-    lazy var settingButton = UIButton()
+
     lazy var userImageChangeButton = CircularButton()
     
     private let userImageView = CircularImageView()
@@ -61,10 +60,6 @@ final class MyPageProfileHeaderView: UIView {
     
     private func setUI() {
         self.backgroundColor = .wssPrimary20
-        
-        settingButton.do {
-            $0.setImage(UIImage(resource: .setting), for: .normal)
-        }
         
         userImageView.do {
             $0.contentMode = .scaleAspectFill
@@ -99,22 +94,16 @@ final class MyPageProfileHeaderView: UIView {
     }
     
     private func setHierarchy() {
-        addSubviews(settingButton,
-                    userImageView,
+        addSubviews(userImageView,
                     userImageChangeButton,
                     userNicknameLabel,
                     userIntroLabel)
     }
     
     private func setLayout() {
-        settingButton.snp.makeConstraints {
-            $0.top.equalTo(safeAreaLayoutGuide.snp.top).offset(1)
-            $0.trailing.equalToSuperview().inset(12)
-            $0.size.equalTo(44)
-        }
         
         userImageView.snp.makeConstraints {
-            $0.top.equalTo(settingButton.snp.bottom).offset(25)
+            $0.top.equalToSuperview().inset(124)
             $0.centerX.equalToSuperview()
             $0.size.equalTo(94)
         }
