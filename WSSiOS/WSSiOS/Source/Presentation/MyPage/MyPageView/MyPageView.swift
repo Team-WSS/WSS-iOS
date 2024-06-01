@@ -44,7 +44,6 @@ final class MyPageView: UIView {
     private func setLayout() {
         headerView.snp.makeConstraints {
             $0.top.width.equalToSuperview()
-            $0.height.equalTo(308)
         }
     }
     

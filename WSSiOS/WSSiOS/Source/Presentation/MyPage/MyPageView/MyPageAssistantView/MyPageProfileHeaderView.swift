@@ -133,6 +133,7 @@ final class MyPageProfileHeaderView: UIView {
         userIntroLabel.snp.makeConstraints {
             $0.top.equalTo(userNicknameLabel.snp.bottom).offset(4)
             $0.centerX.equalToSuperview()
+            $0.bottom.equalToSuperview().inset(30)
         }
     }
     
