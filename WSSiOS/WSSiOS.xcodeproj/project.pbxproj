@@ -474,6 +474,19 @@
 			path = Base;
 			sourceTree = "<group>";
 		};
+		2C3EEB662C0B6DA800B4EFEA /* NoExist */ = {
+			isa = PBXGroup;
+			children = (
+				2CCBFA012B4DC10500D787C2 /* MyPageProfileView.swift */,
+				2CCBFA032B4DD73D00D787C2 /* MyPageTallyView.swift */,
+				2CCBFA052B4DD85600D787C2 /* MyPageTallyReuseView.swift */,
+				2CCBFA072B4DE38800D787C2 /* MyPageInventoryView.swift */,
+				2C5D0F5A2B500EF100C76D3C /* MyPageSettingView.swift */,
+				2CA2F6512B527B590045B4C2 /* MyPageModalAvatarFeatureLabelView.swift */,
+			);
+			path = NoExist;
+			sourceTree = "<group>";
+		};
 		2C426A432BFB08A4008F6B23 /* Trash */ = {
 			isa = PBXGroup;
 			children = (
@@ -585,12 +598,7 @@
 		2CCBF9FE2B4DBF6A00D787C2 /* MyPageAssistantView */ = {
 			isa = PBXGroup;
 			children = (
-				2CCBFA012B4DC10500D787C2 /* MyPageProfileView.swift */,
-				2CCBFA032B4DD73D00D787C2 /* MyPageTallyView.swift */,
-				2CCBFA052B4DD85600D787C2 /* MyPageTallyReuseView.swift */,
-				2CCBFA072B4DE38800D787C2 /* MyPageInventoryView.swift */,
-				2C5D0F5A2B500EF100C76D3C /* MyPageSettingView.swift */,
-				2CA2F6512B527B590045B4C2 /* MyPageModalAvatarFeatureLabelView.swift */,
+				2C3EEB662C0B6DA800B4EFEA /* NoExist */,
 				2C04395E2C0753BE007888E3 /* MyPageProfileHeaderView.swift */,
 				2C3EEB632C07648000B4EFEA /* MyPageUserImageChangeButtonView.swift */,
 			);
