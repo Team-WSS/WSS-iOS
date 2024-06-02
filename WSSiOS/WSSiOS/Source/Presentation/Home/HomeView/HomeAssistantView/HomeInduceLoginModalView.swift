@@ -7,12 +7,18 @@
 
 import UIKit
 
+import SnapKit
+import Then
+
 final class HomeInduceLoginModalView: UIView {
     
     //MARK: - UI Components
     
-    private var backgroundImageView = UIImageView()
-    private var titleLabel = UILabel()
+    private let backgroundView = UIView()
+    
+    private let backgroundModalView = UIView()
+    private let backgroundImageView = UIImageView()
+    private let titleLabel = UILabel()
     private var loginButton = UIButton()
     private var cancelButton = UIButton()
     
@@ -32,7 +38,11 @@ final class HomeInduceLoginModalView: UIView {
     }
     
     private func setUI() {
-        self.do {
+        backgroundView.do {
+            $0.backgroundColor = .wssBlack60
+        }
+        
+        backgroundModalView.do {
             $0.backgroundColor = .wssWhite
             $0.layer.cornerRadius = 12
             $0.layer.shadowColor = UIColor.black.withAlphaComponent(0.1).cgColor
@@ -85,21 +95,28 @@ final class HomeInduceLoginModalView: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubviews(backgroundImageView,
-                        loginButton,
-                        cancelButton)
+        self.addSubview(backgroundView)
+        backgroundView.addSubview(backgroundModalView)
+        backgroundModalView.addSubviews(backgroundImageView,
+                                        loginButton,
+                                        cancelButton)
         
         backgroundImageView.addSubview(titleLabel)
     }
     
     private func setLayout() {
-        self.snp.makeConstraints {
+        backgroundView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
+        backgroundModalView.snp.makeConstraints {
             $0.width.equalTo(292)
             $0.height.equalTo(390)
+            $0.center.equalToSuperview()
         }
         
         backgroundImageView.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview()
+            $0.leading.trailing.top.equalToSuperview()
         }
         
         titleLabel.snp.makeConstraints {

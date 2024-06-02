@@ -18,8 +18,7 @@ final class HomeRealtimePopularView: UIView {
     private var titleLabel = UILabel()
     private var titleStackView = UIStackView()
     
-    var testView = HomeRealtimePopularCollectionViewCell()
-    var realtimePopularCollectionView = UICollectionView(frame: .zero,
+    let realtimePopularCollectionView = UICollectionView(frame: .zero,
                                                          collectionViewLayout: UICollectionViewLayout())
     private let realtimePopularCollectionViewLayout = UICollectionViewFlowLayout()
     private var scrollView = UIScrollView()
@@ -74,17 +73,12 @@ final class HomeRealtimePopularView: UIView {
     private func setHierarchy() {
         titleStackView.addArrangedSubviews(titleLogoImageView,
                                            titleLabel)
-        self.addSubviews(titleStackView, testView)
+        self.addSubviews(titleStackView)
     }
     
     private func setLayout() {
         titleStackView.snp.makeConstraints {
             $0.top.equalToSuperview()
-            $0.leading.equalToSuperview().inset(20)
-        }
-        
-        testView.snp.makeConstraints {
-            $0.top.equalTo(titleStackView.snp.bottom).offset(14)
             $0.leading.equalToSuperview().inset(20)
         }
     }
