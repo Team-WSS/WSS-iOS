@@ -52,16 +52,8 @@ final class SearchViewController: UIViewController {
         bindViewModel()
     }
     
-    //MARK: - UI
-    
-    private func setUI() {
-        self.view.do {
-            $0.backgroundColor = .White
-        }
-    }
-    
     //MARK: - Bind
-
+    
     private func registerCell() {
         rootView.sosopickView.sosopickCollectionView.register(
             SosoPickCollectionViewCell.self,
@@ -76,9 +68,20 @@ final class SearchViewController: UIViewController {
             .bind(to: rootView.sosopickView.sosopickCollectionView.rx.items(
                 cellIdentifier: SosoPickCollectionViewCell.cellIdentifier,
                 cellType: SosoPickCollectionViewCell.self)) { row, element, cell in
-                cell.bindData(data: element)
-            }
-            .disposed(by: disposeBag)
+                    cell.bindData(data: element)
+                }
+                .disposed(by: disposeBag)
+    }
+}
+
+extension SearchViewController {
+    
+    //MARK: - UI
+    
+    private func setUI() {
+        self.view.do {
+            $0.backgroundColor = .White
+        }
     }
 }
 
