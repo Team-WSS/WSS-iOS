@@ -46,16 +46,7 @@ final class NormalSearchViewController: UIViewController {
         
         setUI()
         registerCell()
-        
         bindViewModel()
-    }
-    
-    //MARK: - UI
-    
-    private func setUI() {
-        self.view.do {
-            $0.backgroundColor = .White
-        }
     }
     
     //MARK: - Bind
@@ -94,5 +85,16 @@ final class NormalSearchViewController: UIViewController {
                 }
             })
             .disposed(by: disposeBag)
+    }
+}
+
+extension NormalSearchViewController {
+    
+    //MARK: - UI
+    
+    private func setUI() {
+        self.view.do {
+            $0.backgroundColor = .White
+        }
     }
 }
