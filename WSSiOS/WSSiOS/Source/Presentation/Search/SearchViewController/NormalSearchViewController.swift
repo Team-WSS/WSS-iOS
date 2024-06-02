@@ -89,7 +89,9 @@ final class NormalSearchViewController: UIViewController {
         
         output.inquiryButtonEnabled
             .bind(with: self, onNext: { owner, _ in
-               
+                if let url = URL(string: StringLiterals.Search.Empty.kakaoChannelUrl) {
+                    UIApplication.shared.open(url, options: [:])
+                }
             })
             .disposed(by: disposeBag)
     }
