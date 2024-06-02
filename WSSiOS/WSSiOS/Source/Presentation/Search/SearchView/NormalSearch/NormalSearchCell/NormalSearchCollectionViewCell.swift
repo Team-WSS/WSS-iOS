@@ -130,11 +130,13 @@ final class NormalSearchCollectionViewCell: UICollectionViewCell {
         novelTitleLabel.snp.makeConstraints {
             $0.top.equalTo(likeImageView.snp.bottom).offset(9)
             $0.leading.equalTo(likeImageView.snp.leading)
+            $0.trailing.equalToSuperview()
         }
         
         novelAuthorLabel.snp.makeConstraints {
             $0.top.equalTo(novelTitleLabel.snp.bottom).offset(7)
             $0.leading.equalTo(likeImageView.snp.leading)
+            $0.trailing.equalToSuperview()
         }
     }
     
@@ -150,6 +152,9 @@ final class NormalSearchCollectionViewCell: UICollectionViewCell {
         }
         self.likeCountLabel.fontBody5Attribute(with: String(data.interestCount))
         self.ratingAverageLabel.fontBody5Attribute(with: String(data.ratingAverage))
-        self.ratingCountLabel.fontBody5Attribute(with: "(\(data.ratingCount))")
+        self.ratingCountLabel.do {
+            $0.fontBody5Attribute(with: "(\(data.ratingCount))")
+            $0.lineBreakMode = .byTruncatingTail
+        }
     }
 }

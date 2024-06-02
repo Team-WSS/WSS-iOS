@@ -13,6 +13,8 @@ import Then
 final class NormalSearchResultView: UIView {
     
     //MARK: - Components
+    private let scrollView = UIScrollView()
+    private let contentView = UIView()
     
     private let titleLabel = UILabel()
     private let novelResultLabel = UILabel()
@@ -39,8 +41,12 @@ final class NormalSearchResultView: UIView {
     //MARK: - UI
     
     private func setUI() {
+        scrollView.do {
+            $0.showsVerticalScrollIndicator = false
+        }
+        
         titleLabel.do {
-            $0.fontTitle2Attribute(with: "작품")
+            $0.fontTitle2Attribute(with: StringLiterals.Search.novel)
             $0.textColor = .wssBlack
         }
         
@@ -56,6 +62,7 @@ final class NormalSearchResultView: UIView {
         
         normalSearchCollectionView.do {
             $0.showsVerticalScrollIndicator = false
+            $0.isScrollEnabled = false
         }
         
         normalSearchCollectionViewLayout.do {
@@ -68,16 +75,37 @@ final class NormalSearchResultView: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubviews(titleLabel,
-                        novelResultLabel,
-                        normalSearchCollectionView)
+        self.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        stackView.addArrangedSubviews(titleLabel,
+                                      novelResultLabel)
+        contentView.addSubviews(stackView,
+                                normalSearchCollectionView)
     }
     
     private func setLayout() {
-        normalSearchCollectionView.snp.makeConstraints {
+        scrollView.snp.makeConstraints {
             $0.top.equalToSuperview()
-            $0.leading.trailing.equalToSuperview().inset(20)
-            $0.bottom.equalToSuperview()
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
+        }
+        
+        contentView.snp.makeConstraints {
+            $0.top.equalTo(scrollView.contentLayoutGuide).inset(10)
+            $0.leading.trailing.bottom.equalTo(scrollView.contentLayoutGuide)
+            $0.height.greaterThanOrEqualTo(self.snp.height).priority(.low)
+            $0.width.equalTo(scrollView.snp.width)
+        }
+        
+        stackView.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.leading.equalToSuperview().inset(20)
+        }
+        
+        normalSearchCollectionView.snp.makeConstraints {
+            $0.top.equalTo(stackView.snp.bottom).offset(8)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview().offset(-40)
         }
     }
 }

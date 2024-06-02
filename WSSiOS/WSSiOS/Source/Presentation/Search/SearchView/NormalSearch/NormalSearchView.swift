@@ -35,7 +35,7 @@ final class NormalSearchView: UIView {
 
     private func setHierarchy() {
         self.addSubviews(headerView,
-                         emptyView)
+                         resultView)
     }
     
     private func setLayout() {
@@ -44,7 +44,7 @@ final class NormalSearchView: UIView {
             $0.leading.trailing.equalToSuperview()
         }
         
-        emptyView.snp.makeConstraints {
+        resultView.snp.makeConstraints {
             $0.top.equalTo(headerView.snp.bottom)
             $0.leading.trailing.bottom.equalToSuperview()
         }

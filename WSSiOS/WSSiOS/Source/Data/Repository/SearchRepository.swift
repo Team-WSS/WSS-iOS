@@ -28,7 +28,7 @@ struct TestSearchRepository: SearchRepository {
     }
     
     func getSearchNovels() -> Observable<[NormalSearchNovel]> {
-        return Observable.just([NormalSearchNovel(novelId: 2, novelImage: "imgTest2", novelTitle: "구리구리구리구리구리구리", novelAuthor: "구리스구리스최서연최서연", interestCount: 123, ratingAverage: 2.34, ratingCount: 21),
+        return Observable.just([NormalSearchNovel(novelId: 2, novelImage: "imgTest2", novelTitle: "구리구리구리구리구리구리구리구리구리구리구리구리구리구리구리구리구리구리", novelAuthor: "구리스구리스최서연최서연구리구리구리구리구리구리구리구리구리구리구리구리", interestCount: 13, ratingAverage: 2.34, ratingCount: 221),
                                 NormalSearchNovel(novelId: 2, novelImage: "imgTest2", novelTitle: "구리구리구리구리구리구리", novelAuthor: "구리스구리스최서연최서연", interestCount: 123, ratingAverage: 2.34, ratingCount: 21),
                                 NormalSearchNovel(novelId: 2, novelImage: "imgTest2", novelTitle: "구리구리구리구리구리구리", novelAuthor: "구리스구리스최서연최서연", interestCount: 123, ratingAverage: 2.34, ratingCount: 21),
                                 NormalSearchNovel(novelId: 2, novelImage: "imgTest2", novelTitle: "구리구리구리구리구리구리", novelAuthor: "구리스구리스최서연최서연", interestCount: 123, ratingAverage: 2.34, ratingCount: 21),
