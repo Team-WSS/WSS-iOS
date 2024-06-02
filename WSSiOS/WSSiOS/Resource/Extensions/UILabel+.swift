@@ -8,14 +8,49 @@
 import UIKit
 
 // Font
+enum WSSFontSet {
+    case headline1, title1, title2, title3
+    
+    var font: UIFont {
+        switch self {
+        case .headline1: return .HeadLine1
+        case .title1: return .Title1
+        case .title2: return .Title2
+        case .title3: return .Title3
+        }
+    }
+    
+    var lineHeightMultiple: CGFloat {
+        switch self {
+        case .headline1: return 1.4
+        case .title1: return 1.4
+        case .title2: return 1.4
+        case .title3: return 1.0
+        }
+    }
+    
+    var kerningPixel: Double {
+        switch self {
+        case .headline1: return -1.2
+        case .title1: return -0.6
+        case .title2: return -0.6
+        case .title3: return -0.6
+        }
+    }
+}
+
 extension UILabel {
-    func fontHeadline1Attribute(with text: String) {
+    func applyFont(text: String, _ fontSet: WSSFontSet) {
+        self.applyFont(text: text, lineHeightMultiple: fontSet.lineHeightMultiple, kerningPixel: fontSet.kerningPixel, font: fontSet.font)
+    }
+    
+    func applyFont(text: String, lineHeightMultiple: CGFloat, kerningPixel: Double, font: UIFont) {
         self.do {
             $0.makeAttribute(with: text)?
-                .lineSpacing(spacingPercentage: 140)
-                .kerning(kerningPixel: -1.2)
+                .lineHeightMultiple(lineHeightMultiple)
+                .kerning(kerningPixel: kerningPixel)
                 .applyAttribute()
-            $0.font = .HeadLine1
+            $0.font = font
         }
     }
     
@@ -146,21 +181,21 @@ extension UILabel {
      // Text가 바뀔 때 attributedText 설정이 초기화되므로, 재설정을 편하게 하기 위해
      // 추가한 Extension입니다.
      
-    private func novelTitleAttribute(of label: UILabel) {
-        label.do {
-            $0.makeAttribute(with: label.text)?
-                .lineSpacing(spacingPercentage: 140)
-                .kerning(kerningPixel: -1.2)
-                .applyAttribute()
-            $0.font = .HeadLine1
-            $0.textColor = .White
-            $0.textAlignment = .center
-            $0.lineBreakMode = .byTruncatingTail
-            $0.lineBreakStrategy = .hangulWordPriority
-            $0.numberOfLines = 3
-        }
-    }
-    */
+     private func novelTitleAttribute(of label: UILabel) {
+     label.do {
+     $0.makeAttribute(with: label.text)?
+     .lineSpacing(spacingPercentage: 140)
+     .kerning(kerningPixel: -1.2)
+     .applyAttribute()
+     $0.font = .HeadLine1
+     $0.textColor = .White
+     $0.textAlignment = .center
+     $0.lineBreakMode = .byTruncatingTail
+     $0.lineBreakStrategy = .hangulWordPriority
+     $0.numberOfLines = 3
+     }
+     }
+     */
     
     func makeAttribute() -> TextAttributeSet? {
         guard let text = text, !text.isEmpty else { return nil }
@@ -234,6 +269,18 @@ extension TextAttributeSet {
             .foregroundColor,
             value: color,
             range: NSRange(location: from, length: to+1-from)
+        )
+        
+        return self
+    }
+    
+    func lineHeightMultiple(_ multiple: CGFloat) -> TextAttributeSet {
+        let style = NSMutableParagraphStyle()
+        style.lineHeightMultiple = multiple
+        self.attributedString.addAttribute(
+            .paragraphStyle,
+            value: style,
+            range: NSRange(location: 0, length: attributedString.length)
         )
         
         return self
