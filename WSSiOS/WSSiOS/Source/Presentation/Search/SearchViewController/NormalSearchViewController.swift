@@ -47,6 +47,8 @@ final class NormalSearchViewController: UIViewController {
         setUI()
         registerCell()
         bindViewModel()
+        
+        registerHeader()
     }
     
     //MARK: - Bind
@@ -96,5 +98,11 @@ extension NormalSearchViewController {
         self.view.do {
             $0.backgroundColor = .White
         }
+    }
+    
+    private func registerHeader() {
+        rootView.resultView.normalSearchCollectionView.register(NormalSearchHeaderView.self,
+                                            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+                                            withReuseIdentifier: "NormalSearchHeaderCollectionView")
     }
 }
