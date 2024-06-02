@@ -20,13 +20,15 @@ final class NormalSearchViewModel: ViewModelType {
     
     struct Input {
         let backButtonDidTap: ControlEvent<Void>
+        let inquiryButtonDidTap: ControlEvent<Void>
     }
     
     //MARK: - Outputs
     
     struct Output {
-        let backButtonEnabled = PublishRelay<Bool>()
         let normalSearchList = BehaviorRelay<[NormalSearchNovel]>(value: [])
+        let backButtonEnabled = PublishRelay<Bool>()
+        let inquiryButtonEnabled = PublishRelay<Bool>()
     }
     
     //MARK: - init
@@ -46,17 +48,23 @@ extension NormalSearchViewModel {
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
         
+        searchRepository.getSearchNovels()
+            .subscribe(with: self, onNext: { owner, data in
+                output.normalSearchList.accept(data)
+            }, onError: { owner, error in
+                print(error)
+            })
+            .disposed(by: disposeBag)
+        
         input.backButtonDidTap
             .subscribe(onNext: { _ in
                 output.backButtonEnabled.accept(true)
             })
             .disposed(by: disposeBag)
         
-        searchRepository.getSearchNovels()
-            .subscribe(with: self, onNext: { owner, data in
-                output.normalSearchList.accept(data)
-            }, onError: { owner, error in
-                print(error)
+        input.inquiryButtonDidTap
+            .subscribe(onNext: { _ in
+                output.inquiryButtonEnabled.accept(true)
             })
             .disposed(by: disposeBag)
         

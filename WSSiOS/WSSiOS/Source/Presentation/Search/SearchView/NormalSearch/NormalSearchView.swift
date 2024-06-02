@@ -16,6 +16,7 @@ final class NormalSearchView: UIView {
     
     let headerView = NormalSearchHeaderView()
     let resultView = NormalSearchResultView()
+    let emptyView = NormalSearchEmptyView()
     
     // MARK: - Life Cycle
     
@@ -34,7 +35,7 @@ final class NormalSearchView: UIView {
 
     private func setHierarchy() {
         self.addSubviews(headerView,
-                         resultView)
+                         emptyView)
     }
     
     private func setLayout() {
@@ -43,7 +44,7 @@ final class NormalSearchView: UIView {
             $0.leading.trailing.equalToSuperview()
         }
         
-        resultView.snp.makeConstraints {
+        emptyView.snp.makeConstraints {
             $0.top.equalTo(headerView.snp.bottom)
             $0.leading.trailing.bottom.equalToSuperview()
         }

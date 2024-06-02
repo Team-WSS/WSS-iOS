@@ -68,15 +68,10 @@ final class NormalSearchViewController: UIViewController {
     
     private func bindViewModel() {
         let input = NormalSearchViewModel.Input(
-            backButtonDidTap: rootView.headerView.backButton.rx.tap
+            backButtonDidTap: rootView.headerView.backButton.rx.tap,
+            inquiryButtonDidTap: rootView.emptyView.inquiryButton.rx.tap
         )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
-        
-        output.backButtonEnabled
-            .bind(with: self, onNext: { owner, _ in
-                owner.popToLastViewController()
-            })
-            .disposed(by: disposeBag)
         
         output.normalSearchList
             .bind(to: rootView.resultView.normalSearchCollectionView.rx.items(
@@ -85,5 +80,17 @@ final class NormalSearchViewController: UIViewController {
                     cell.bindData(data: element)
                 }
                 .disposed(by: disposeBag)
+        
+        output.backButtonEnabled
+            .bind(with: self, onNext: { owner, _ in
+                owner.popToLastViewController()
+            })
+            .disposed(by: disposeBag)
+        
+        output.inquiryButtonEnabled
+            .bind(with: self, onNext: { owner, _ in
+               
+            })
+            .disposed(by: disposeBag)
     }
 }
