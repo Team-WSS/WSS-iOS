@@ -53,6 +53,18 @@ enum StringLiterals {
             static let loginButtonTitle = "로그인 하러가기"
             static let cancelButtonTitle = "닫기"
         }
+        
+        enum Unregister {
+            enum Title {
+                static let interest = "아직 관심작품이 없어요\n관심 등록하고 피드 소식을 빠르게 확인하세요!"
+                static let recommend = "로맨스, 로판, 판타지, 현판 등\n선호장르를 기반으로 웹소설을 추천해 드려요!"
+            }
+            
+            enum ButtonTItle {
+                static let interest = "관심작품 등록하기"
+                static let recommend = "선호장르 설정하기"
+            }
+        }
     }
     
     enum Register {
