@@ -47,7 +47,7 @@ final class NormalSearchEmptyView: UIView {
         }
         
         descriptionLabel.do {
-            $0.fontBody1Attribute(with: "해당 검색어를 가진 작품은\n아직 등록되지 않았어요..")
+            $0.fontBody1Attribute(with: StringLiterals.Search.Empty.description)
             $0.textColor = .wssGray200
             $0.numberOfLines = 2
         }
@@ -56,7 +56,7 @@ final class NormalSearchEmptyView: UIView {
             var configuration = UIButton.Configuration.filled()
             configuration.baseBackgroundColor = .wssPrimary50
             configuration.baseForegroundColor = .wssPrimary100
-            var titleAttr = AttributedString.init("작품 문의하러 가기")
+            var titleAttr = AttributedString.init(StringLiterals.Search.Empty.inquiryButton)
             titleAttr.kern = -0.6
             titleAttr.font = UIFont.Title2
             configuration.attributedTitle = titleAttr
