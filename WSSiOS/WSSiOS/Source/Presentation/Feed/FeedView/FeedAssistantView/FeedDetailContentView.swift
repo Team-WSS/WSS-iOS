@@ -54,10 +54,8 @@ final class FeedDetailContentView: UIView {
     func bindData(content: String, isSpolier: Bool) {
         detailContentLabel.do {
             $0.text = isSpolier ? StringLiterals.Feed.spoilerText : content
-            var paragraphStyle = NSMutableParagraphStyle()
-            paragraphStyle.lineHeightMultiple = 1.26
             $0.makeAttribute(with: $0.text)?
-                .lineHeightMultiple(1.26)
+                .lineHeightMultiple(1.5)
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
             $0.textColor = isSpolier ? .wssSecondary100 : .wssBlack
