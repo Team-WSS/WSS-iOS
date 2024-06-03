@@ -146,21 +146,21 @@ extension UILabel {
      // Text가 바뀔 때 attributedText 설정이 초기화되므로, 재설정을 편하게 하기 위해
      // 추가한 Extension입니다.
      
-    private func novelTitleAttribute(of label: UILabel) {
-        label.do {
-            $0.makeAttribute(with: label.text)?
-                .lineSpacing(spacingPercentage: 140)
-                .kerning(kerningPixel: -1.2)
-                .applyAttribute()
-            $0.font = .HeadLine1
-            $0.textColor = .White
-            $0.textAlignment = .center
-            $0.lineBreakMode = .byTruncatingTail
-            $0.lineBreakStrategy = .hangulWordPriority
-            $0.numberOfLines = 3
-        }
-    }
-    */
+     private func novelTitleAttribute(of label: UILabel) {
+     label.do {
+     $0.makeAttribute(with: label.text)?
+     .lineSpacing(spacingPercentage: 140)
+     .kerning(kerningPixel: -1.2)
+     .applyAttribute()
+     $0.font = .HeadLine1
+     $0.textColor = .White
+     $0.textAlignment = .center
+     $0.lineBreakMode = .byTruncatingTail
+     $0.lineBreakStrategy = .hangulWordPriority
+     $0.numberOfLines = 3
+     }
+     }
+     */
     
     func makeAttribute() -> TextAttributeSet? {
         guard let text = text, !text.isEmpty else { return nil }
@@ -241,5 +241,17 @@ extension TextAttributeSet {
     
     func applyAttribute() {
         self.label.attributedText = self.attributedString
+    }
+    
+    func lineHeightMultiple(_ multiple: CGFloat) -> TextAttributeSet {
+        let style = NSMutableParagraphStyle()
+        style.lineHeightMultiple = multiple
+        self.attributedString.addAttribute(
+            .paragraphStyle,
+            value: style,
+            range: NSRange(location: 0, length: attributedString.length)
+        )
+        
+        return self
     }
 }

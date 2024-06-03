@@ -31,6 +31,7 @@ enum StringLiterals {
             static let myPage = "마이페이지"
             static let changeNickname = "닉네임 변경"
             static let myPageInfo = "계정정보 확인"
+            static let feed = "소소피드"
         }
     }
     
@@ -260,5 +261,10 @@ enum StringLiterals {
             static let keepWriting = "계속 작성하기"
             static let cancel = "취소"
         }
+    }
+    
+    enum Feed {
+        static let spoilerText = "스포일러가 포함된 글 보기"
+        static let modifiedText = "(수정됨)"
     }
 }
