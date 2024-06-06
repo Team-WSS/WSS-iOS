@@ -7,44 +7,15 @@
 
 import UIKit
 
-// Font
-enum WSSFontSet {
-    case headline1, title1, title2, title3
-    
-    var font: UIFont {
-        switch self {
-        case .headline1: return .HeadLine1
-        case .title1: return .Title1
-        case .title2: return .Title2
-        case .title3: return .Title3
-        }
-    }
-    
-    var lineHeightMultiple: CGFloat {
-        switch self {
-        case .headline1: return 1.4
-        case .title1: return 1.4
-        case .title2: return 1.4
-        case .title3: return 1.0
-        }
-    }
-    
-    var kerningPixel: Double {
-        switch self {
-        case .headline1: return -1.2
-        case .title1: return -0.6
-        case .title2: return -0.6
-        case .title3: return -0.6
-        }
-    }
-}
-
 extension UILabel {
-    func applyFont(text: String, _ fontSet: WSSFontSet) {
-        self.applyFont(text: text, lineHeightMultiple: fontSet.lineHeightMultiple, kerningPixel: fontSet.kerningPixel, font: fontSet.font)
+    func applyWSSFont(_ font: WSSFont, with text: String?) {
+        self.applyFontAttribute(text: text,
+                       lineHeightMultiple: font.lineHeightMultiple,
+                       kerningPixel: font.kerningPixel,
+                       font: font.font)
     }
     
-    func applyFont(text: String, lineHeightMultiple: CGFloat, kerningPixel: Double, font: UIFont) {
+    func applyFontAttribute(text: String?, lineHeightMultiple: CGFloat, kerningPixel: Double, font: UIFont) {
         self.do {
             $0.makeAttribute(with: text)?
                 .lineHeightMultiple(lineHeightMultiple)
@@ -54,10 +25,20 @@ extension UILabel {
         }
     }
     
+    func fontHeadline1Attribute(with text: String) {
+        self.do {
+            $0.makeAttribute(with: text)?
+                .lineHeightMultiple(1.4)
+                .kerning(kerningPixel: -1.2)
+                .applyAttribute()
+            $0.font = .HeadLine1
+        }
+    }
+    
     func fontTitle1Attribute(with text: String) {
         self.do {
             $0.makeAttribute(with: text)?
-                .lineSpacing(spacingPercentage: 140)
+                .lineHeightMultiple(1.4)
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
             $0.font = .Title1
@@ -67,7 +48,7 @@ extension UILabel {
     func fontTitle2Attribute(with text: String) {
         self.do {
             $0.makeAttribute(with: text)?
-                .lineSpacing(spacingPercentage: 140)
+                .lineHeightMultiple(1.4)
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
             $0.font = .Title2
@@ -77,7 +58,6 @@ extension UILabel {
     func fontTitle3Attribute(with text: String) {
         self.do {
             $0.makeAttribute(with: text)?
-                .lineSpacing(spacingPercentage: 100)
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
             $0.font = .Title3
@@ -87,7 +67,7 @@ extension UILabel {
     func fontBody1Attribute(with text: String) {
         self.do {
             $0.makeAttribute(with: text)?
-                .lineSpacing(spacingPercentage: 140)
+                .lineHeightMultiple(1.4)
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
             $0.font = .Body1
@@ -97,7 +77,7 @@ extension UILabel {
     func fontBody2Attribute(with text: String) {
         self.do {
             $0.makeAttribute(with: text)?
-                .lineSpacing(spacingPercentage: 150)
+                .lineHeightMultiple(1.5)
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
             $0.font = .Body2
@@ -107,7 +87,7 @@ extension UILabel {
     func fontBody3Attribute(with text: String) {
         self.do {
             $0.makeAttribute(with: text)?
-                .lineSpacing(spacingPercentage: 150)
+                .lineHeightMultiple(1.5)
                 .kerning(kerningPixel: -0.4)
                 .applyAttribute()
             $0.font = .Body3
@@ -117,7 +97,7 @@ extension UILabel {
     func fontBody4Attribute(with text: String) {
         self.do {
             $0.makeAttribute(with: text)?
-                .lineSpacing(spacingPercentage: 145)
+                .lineHeightMultiple(1.45)
                 .kerning(kerningPixel: -0.4)
                 .applyAttribute()
             $0.font = .Body4
@@ -127,7 +107,7 @@ extension UILabel {
     func fontBody4_2Attribute(with text: String) {
         self.do {
             $0.makeAttribute(with: text)?
-                .lineSpacing(spacingPercentage: 145)
+                .lineHeightMultiple(1.45)
                 .kerning(kerningPixel: -0.4)
                 .applyAttribute()
             $0.font = .Body4_2
@@ -137,7 +117,7 @@ extension UILabel {
     func fontBody5Attribute(with text: String) {
         self.do {
             $0.makeAttribute(with: text)?
-                .lineSpacing(spacingPercentage: 145)
+                .lineHeightMultiple(1.45)
                 .applyAttribute()
             $0.font = .Body5
         }
@@ -146,7 +126,7 @@ extension UILabel {
     func fontBody5_2Attribute(with text: String) {
         self.do {
             $0.makeAttribute(with: text)?
-                .lineSpacing(spacingPercentage: 145)
+                .lineHeightMultiple(1.45)
                 .applyAttribute()
             $0.font = .Body5_2
         }
@@ -155,7 +135,7 @@ extension UILabel {
     func fontLabel1Attribute(with text: String) {
         self.do {
             $0.makeAttribute(with: text)?
-                .lineSpacing(spacingPercentage: 145)
+                .lineHeightMultiple(1.45)
                 .kerning(kerningPixel: -0.4)
                 .applyAttribute()
             $0.font = .Label1
@@ -165,7 +145,6 @@ extension UILabel {
     func fontLabel2Attribute(with text: String) {
         self.do {
             $0.makeAttribute(with: text)?
-                .lineSpacing(spacingPercentage: 100)
                 .applyAttribute()
             $0.font = .Label2
         }
