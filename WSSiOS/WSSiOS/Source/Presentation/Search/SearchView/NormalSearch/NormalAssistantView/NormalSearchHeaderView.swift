@@ -15,7 +15,9 @@ final class NormalSearchHeaderView: UIView {
     //MARK: - Components
     
     let backButton = UIButton()
-    private let searchBar = UISearchBar()
+    private let searchBackgroundView = UIView()
+    private let searchTextField = UITextField()
+    private let searchImageView = UIImageView()
     
     //MARK: - Life Cycle
     
@@ -39,24 +41,31 @@ final class NormalSearchHeaderView: UIView {
             $0.setImage(.icNavigateLeft, for: .normal)
         }
         
-        searchBar.do {
-            $0.setImage(.icSearchCancel, for: .clear, state: .normal)
+        searchBackgroundView.do {
+            $0.backgroundColor = .wssWhite
+            $0.layer.cornerRadius = 14
             $0.layer.borderColor = UIColor.wssGray70.cgColor
             $0.layer.borderWidth = 1
-            $0.clipsToBounds = true
-            $0.layer.cornerRadius = 14
         }
         
-        if let textfield = searchBar.value(forKey: "searchField") as? UITextField {
-            textfield.backgroundColor = .clear
-            textfield.font = .Label1
-            textfield.textColor = .wssBlack
+        searchTextField.do {
+            $0.textColor = .wssBlack
+            $0.font = .Label1
+            $0.rightView = UIImageView(image: .icSearchCancel)
+            $0.rightViewMode = .whileEditing
+        }
+        
+        searchImageView.do {
+            $0.image = .icSearch
+            $0.contentMode = .scaleAspectFit
         }
     }
     
     private func setHierarchy() {
+        searchBackgroundView.addSubviews(searchTextField,
+                                         searchImageView)
         self.addSubviews(backButton,
-                         searchBar)
+                         searchBackgroundView)
     }
     
     private func setLayout() {
@@ -66,7 +75,20 @@ final class NormalSearchHeaderView: UIView {
             $0.size.equalTo(24)
         }
         
-        searchBar.snp.makeConstraints {
+        searchTextField.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(12)
+            $0.centerY.equalToSuperview()
+            $0.leading.equalToSuperview().inset(16)
+        }
+        
+        searchImageView.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.leading.equalTo(searchTextField.snp.trailing)
+            $0.trailing.equalToSuperview().inset(15)
+            $0.size.equalTo(25)
+        }
+        
+        searchBackgroundView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(2)
             $0.leading.equalTo(backButton.snp.trailing).offset(16)
             $0.trailing.equalToSuperview().inset(20)
