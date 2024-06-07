@@ -39,6 +39,8 @@ final class NormalSearchViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        enablePopSwipe()
     }
     
     override func viewDidLoad() {
@@ -102,7 +104,12 @@ extension NormalSearchViewController {
     
     private func registerHeader() {
         rootView.resultView.normalSearchCollectionView.register(NormalSearchHeaderView.self,
-                                            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-                                            withReuseIdentifier: "NormalSearchHeaderCollectionView")
+                                                                forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+                                                                withReuseIdentifier: "NormalSearchHeaderCollectionView")
+    }
+    
+    private func enablePopSwipe() {
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
 }
