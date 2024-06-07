@@ -47,7 +47,7 @@ final class HomeNoticeView: UIView {
     
     private func setLayout() {
         noticeTableView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(100)
+            $0.top.equalTo(safeAreaLayoutGuide.snp.top)
             $0.horizontalEdges.bottom.equalToSuperview()
         }
     }
