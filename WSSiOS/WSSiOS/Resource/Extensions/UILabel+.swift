@@ -138,14 +138,15 @@ extension UILabel {
 }
 
 extension UILabel {
+    
     /*
-     // 아래와 같이 함수를 View에서 만들어 사용하면 됩니다.
-     // 단, 반드시 applyAttribute()로 attributedText 조작하는 부분을 마친 후,
-     // label.### 으로 수정하는 부분을 작성해야 합니다.
-     
-     // Text가 바뀔 때 attributedText 설정이 초기화되므로, 재설정을 편하게 하기 위해
-     // 추가한 Extension입니다.
-     
+    // 아래와 같이 함수를 View에서 만들어 사용하면 됩니다.
+    // 단, 반드시 applyAttribute()로 attributedText 조작하는 부분을 마친 후,
+    // label.### 으로 수정하는 부분을 작성해야 합니다.
+    
+    // Text가 바뀔 때 attributedText 설정이 초기화되므로, 재설정을 편하게 하기 위해
+    // 추가한 Extension입니다.
+    
     private func novelTitleAttribute(of label: UILabel) {
         label.do {
             $0.makeAttribute(with: label.text)?
@@ -161,6 +162,7 @@ extension UILabel {
         }
     }
     */
+    
     
     func makeAttribute() -> TextAttributeSet? {
         guard let text = text, !text.isEmpty else { return nil }
@@ -241,5 +243,17 @@ extension TextAttributeSet {
     
     func applyAttribute() {
         self.label.attributedText = self.attributedString
+    }
+    
+    func lineHeightMultiple(_ multiple: CGFloat) -> TextAttributeSet {
+        let style = NSMutableParagraphStyle()
+        style.lineHeightMultiple = multiple
+        self.attributedString.addAttribute(
+            .paragraphStyle,
+            value: style,
+            range: NSRange(location: 0, length: attributedString.length)
+        )
+        
+        return self
     }
 }
