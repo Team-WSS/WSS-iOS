@@ -36,8 +36,8 @@ extension ModuleFactory: RegisterModuleFactory {
 
 extension ModuleFactory: DetailModuleFactory {
     func makeDetailViewController(novelId: Int) -> UIViewController {
-        return DetailViewController(
-            viewModel: DetailViewModel(
+        return NovelDetailViewController(
+            viewModel: NovelDetailViewModel(
                 detailRepository: DefaultDetailRepository(),
                 novelId: novelId))
     }

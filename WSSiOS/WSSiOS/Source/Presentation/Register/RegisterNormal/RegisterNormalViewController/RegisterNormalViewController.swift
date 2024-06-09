@@ -95,7 +95,7 @@ final class RegisterNormalViewController: UIViewController {
     
     private func register() {
         rootView.novelSummaryView.platformCollectionView
-            .register(NovelDetailInfoPlatformCollectionViewCell.self,
+            .register(TrashNovelDetailInfoPlatformCollectionViewCell.self,
                       forCellWithReuseIdentifier: "NovelDetailInfoPlatformCollectionViewCell")
     }
     
@@ -221,8 +221,8 @@ final class RegisterNormalViewController: UIViewController {
         
         output.platformList
             .drive(rootView.novelSummaryView.platformCollectionView.rx.items(
-                cellIdentifier: NovelDetailInfoPlatformCollectionViewCell.cellIdentifier,
-                cellType: NovelDetailInfoPlatformCollectionViewCell.self)) { _, element, cell in
+                cellIdentifier: TrashNovelDetailInfoPlatformCollectionViewCell.cellIdentifier,
+                cellType: TrashNovelDetailInfoPlatformCollectionViewCell.self)) { _, element, cell in
                     cell.bindData(platform: element.platformName)
                 }
                 .disposed(by: disposeBag)
