@@ -20,6 +20,7 @@ final class HomeInterestView: UIView {
     let interestCollectionView = UICollectionView(frame: .zero,
                                                   collectionViewLayout: UICollectionViewLayout())
     private let interestCollectionViewLayout = UICollectionViewFlowLayout()
+    private let unregisterView = HomeUnregisterView(.interest)
     
     //MARK: - Life Cycle
     
@@ -88,5 +89,11 @@ final class HomeInterestView: UIView {
             $0.leading.trailing.bottom.equalToSuperview()
             $0.height.equalTo(301)
         }
+        
+        /// 비로그인일 때
+//        unregisterView.snp.makeConstraints {
+//            $0.top.equalTo(subTitleLabel.snp.bottom).offset(20)
+//            $0.leading.trailing.equalToSuperview().inset(20)
+//        }
     }
 }

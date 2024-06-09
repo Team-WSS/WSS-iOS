@@ -61,4 +61,8 @@ enum URLs {
         static let getRepAvatar = "/rep-avatar"
         static let patchRepAvatar = "/rep-avatar"
     }
+    
+    enum Feed {
+        static let getFeeds = "/feeds"
+    }
 }
