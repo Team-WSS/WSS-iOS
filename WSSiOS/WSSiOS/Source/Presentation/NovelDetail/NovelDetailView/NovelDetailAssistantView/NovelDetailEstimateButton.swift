@@ -10,12 +10,12 @@ import UIKit
 import SnapKit
 import Then
 
-final class NovelDetailNovelRatingView: UIView {
+final class NovelDetailEstimateButton: UIButton {
     
     //MARK: - Components
     
-    private let starRatingStackView = UIStackView()
-    private lazy var starImageViews: [UIImageView] = createStars()
+    private let stackView = UIStackView()
+    private let dummyLabel = UILabel()
     
     //MARK: - Life Cycle
     
@@ -34,23 +34,32 @@ final class NovelDetailNovelRatingView: UIView {
     //MARK: - UI
     
     private func setUI() {
+        self.do {
+            $0.backgroundColor = .wssWhite
+            $0.layer.cornerRadius = 15
+        }
         
-    }
-    
-    private func setHierarchy() {
-        self.addSubview(starRatingStackView)
+        stackView.do {
+            $0.axis = .horizontal
+            $0.alignment =  .center
+        }
         
-        starImageViews.forEach {
-            starRatingStackView.addArrangedSubview($0)
+        dummyLabel.do {
+            $0.applyWSSFont(.headline1, with: "디자인 미정")
+            $0.textColor = .wssGray80
         }
     }
     
+    private func setHierarchy() {
+        self.addSubview(stackView)
+        
+        stackView.addArrangedSubview(dummyLabel)
+    }
+    
     private func setLayout() {
-        starImageViews.forEach {
-            $0.snp.makeConstraints {
-                $0.width.equalTo(31)
-                $0.height.equalTo(31)
-            }
+        stackView.snp.makeConstraints {
+            $0.verticalEdges.equalToSuperview().inset(15)
+            $0.centerX.equalToSuperview()
         }
     }
     
@@ -62,6 +71,7 @@ final class NovelDetailNovelRatingView: UIView {
     
     //MARK: - Custom Method
     
+    // 별점으로 디자인이 유지되면 사용예정인 메서드
     private func createStars() -> [UIImageView] {
         return (0..<5).map { _ in
             let starImageView = UIImageView().then {

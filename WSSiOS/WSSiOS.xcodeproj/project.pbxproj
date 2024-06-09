@@ -126,10 +126,10 @@
 		39D4A5D62BDD0913004FC834 /* NovelDetailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5D52BDD0913004FC834 /* NovelDetailHeaderView.swift */; };
 		39D4A5D82BDD23FE004FC834 /* NovelDetailNovelCoverImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5D72BDD23FE004FC834 /* NovelDetailNovelCoverImageView.swift */; };
 		39D4A5DA2BDD3202004FC834 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5D92BDD3202004FC834 /* TestViewController.swift */; };
-		39D4A5DC2BDD420D004FC834 /* NovelDetailNovelInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5DB2BDD420D004FC834 /* NovelDetailNovelInfoView.swift */; };
+		39D4A5DC2BDD420D004FC834 /* NovelDetailInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5DB2BDD420D004FC834 /* NovelDetailInfoView.swift */; };
 		39D4A5DE2BDE48FD004FC834 /* NovelDetailReviewInfoElementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5DD2BDE48FD004FC834 /* NovelDetailReviewInfoElementView.swift */; };
 		39D4A5E02BDF746C004FC834 /* NovelGenre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5DF2BDF746C004FC834 /* NovelGenre.swift */; };
-		39D4A5E42BDF90FB004FC834 /* NovelDetailNovelRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5E32BDF90FB004FC834 /* NovelDetailNovelRatingView.swift */; };
+		39D4A5E42BDF90FB004FC834 /* NovelDetailEstimateButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5E32BDF90FB004FC834 /* NovelDetailEstimateButton.swift */; };
 		39EF97AC2B53E43800D2148B /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 39EF97AB2B53E43800D2148B /* Lottie */; };
 		A1147A802B50638200141692 /* RecordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1147A7F2B50638200141692 /* RecordViewController.swift */; };
 		A1147A822B5063B300141692 /* RecordEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1147A812B5063B300141692 /* RecordEmptyView.swift */; };
@@ -352,10 +352,10 @@
 		39D4A5D52BDD0913004FC834 /* NovelDetailHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailHeaderView.swift; sourceTree = "<group>"; };
 		39D4A5D72BDD23FE004FC834 /* NovelDetailNovelCoverImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailNovelCoverImageView.swift; sourceTree = "<group>"; };
 		39D4A5D92BDD3202004FC834 /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
-		39D4A5DB2BDD420D004FC834 /* NovelDetailNovelInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailNovelInfoView.swift; sourceTree = "<group>"; };
+		39D4A5DB2BDD420D004FC834 /* NovelDetailInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoView.swift; sourceTree = "<group>"; };
 		39D4A5DD2BDE48FD004FC834 /* NovelDetailReviewInfoElementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailReviewInfoElementView.swift; sourceTree = "<group>"; };
 		39D4A5DF2BDF746C004FC834 /* NovelGenre.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelGenre.swift; sourceTree = "<group>"; };
-		39D4A5E32BDF90FB004FC834 /* NovelDetailNovelRatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailNovelRatingView.swift; sourceTree = "<group>"; };
+		39D4A5E32BDF90FB004FC834 /* NovelDetailEstimateButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailEstimateButton.swift; sourceTree = "<group>"; };
 		A1147A7F2B50638200141692 /* RecordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordViewController.swift; sourceTree = "<group>"; };
 		A1147A812B5063B300141692 /* RecordEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordEmptyView.swift; sourceTree = "<group>"; };
 		A1147A832B5063BC00141692 /* RecordResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordResultView.swift; sourceTree = "<group>"; };
@@ -1032,9 +1032,9 @@
 				39D4A5D52BDD0913004FC834 /* NovelDetailHeaderView.swift */,
 				39D4A5D32BDCC1B1004FC834 /* NovelDetailBannerBackgroundImageView.swift */,
 				39D4A5D72BDD23FE004FC834 /* NovelDetailNovelCoverImageView.swift */,
-				39D4A5DB2BDD420D004FC834 /* NovelDetailNovelInfoView.swift */,
+				39D4A5DB2BDD420D004FC834 /* NovelDetailInfoView.swift */,
 				39D4A5DD2BDE48FD004FC834 /* NovelDetailReviewInfoElementView.swift */,
-				39D4A5E32BDF90FB004FC834 /* NovelDetailNovelRatingView.swift */,
+				39D4A5E32BDF90FB004FC834 /* NovelDetailEstimateButton.swift */,
 			);
 			path = NovelDetailAssistantView;
 			sourceTree = "<group>";
@@ -1661,14 +1661,14 @@
 				2CB613F52B575E6A00FC3F89 /* MyPageInfoView.swift in Sources */,
 				39D4A5D62BDD0913004FC834 /* NovelDetailHeaderView.swift in Sources */,
 				A1522CF52B8257F3003A4078 /* RecordViewModel.swift in Sources */,
-				39D4A5DC2BDD420D004FC834 /* NovelDetailNovelInfoView.swift in Sources */,
+				39D4A5DC2BDD420D004FC834 /* NovelDetailInfoView.swift in Sources */,
 				2CD9114E2C0D8A0B006B8D72 /* FeedUserView.swift in Sources */,
 				39CD5E102B4FEC0F00668B9A /* RegisterNormalToggleButton.swift in Sources */,
 				A1A1F9CD2B48733200705F44 /* SearchViewController.swift in Sources */,
 				A122C9DF2B530A1A00DFCFE4 /* (null) in Sources */,
 				CD3E5A812B54253E00C0A659 /* MemoReadViewController.swift in Sources */,
 				CD3E5A742B5424D600C0A659 /* MemoEditView.swift in Sources */,
-				39D4A5E42BDF90FB004FC834 /* NovelDetailNovelRatingView.swift in Sources */,
+				39D4A5E42BDF90FB004FC834 /* NovelDetailEstimateButton.swift in Sources */,
 				2CD911522C0D8A0F006B8D72 /* FeedNovelView.swift in Sources */,
 				CD3E5A812B54253E00C0A659 /* MemoReadViewController.swift in Sources */,
 				A197A4C12B56BB6000E5A701 /* UserCharacterResult.swift in Sources */,

@@ -66,8 +66,7 @@ final class NovelDetailNovelCoverImageView: UIView {
     
     private func setLayout() {
         novelCoverShadowView.snp.makeConstraints {
-            $0.verticalEdges.equalToSuperview()
-            $0.centerX.equalToSuperview()
+            $0.edges.equalToSuperview()
             $0.height.equalTo(217)
             $0.width.equalTo(148)
         }
