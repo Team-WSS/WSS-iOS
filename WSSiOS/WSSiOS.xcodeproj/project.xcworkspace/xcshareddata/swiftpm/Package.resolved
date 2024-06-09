@@ -1,4 +1,5 @@
 {
+  "originHash" : "853506211c977c975e280a2011731c4c69e1931a59488083be9552d7803e90f3",
   "pins" : [
     {
       "identity" : "kingfisher",
@@ -66,12 +67,12 @@
     {
       "identity" : "uiimageviewalignedswift",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/sochalewski/UIImageViewAlignedSwift.git",
+      "location" : "https://github.com/sochalewski/UIImageViewAlignedSwift",
       "state" : {
         "revision" : "c51914ca25aa3721da1812fa0d4d69064e778391",
         "version" : "0.8.3"
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }

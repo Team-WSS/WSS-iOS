@@ -19,7 +19,7 @@ extension UILabel {
     func applyFontAttribute(text: String?, lineHeightMultiple: CGFloat, kerningPixel: Double, font: UIFont) {
         self.do {
             $0.makeAttribute(with: text)?
-                .lineHeightMultiple(lineHeightMultiple)
+                .lineHeight(lineHeightMultiple)
                 .kerning(kerningPixel: kerningPixel)
                 .applyAttribute()
             $0.font = font
@@ -29,7 +29,7 @@ extension UILabel {
     func fontHeadline1Attribute(with text: String) {
         self.do {
             $0.makeAttribute(with: text)?
-                .lineHeightMultiple(1.4)
+                .lineHeight(1.4)
                 .kerning(kerningPixel: -1.2)
                 .applyAttribute()
             $0.font = .HeadLine1
@@ -39,7 +39,7 @@ extension UILabel {
     func fontTitle1Attribute(with text: String) {
         self.do {
             $0.makeAttribute(with: text)?
-                .lineHeightMultiple(1.4)
+                .lineHeight(1.4)
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
             $0.font = .Title1
@@ -49,7 +49,7 @@ extension UILabel {
     func fontTitle2Attribute(with text: String) {
         self.do {
             $0.makeAttribute(with: text)?
-                .lineHeightMultiple(1.4)
+                .lineHeight(1.4)
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
             $0.font = .Title2
@@ -68,7 +68,7 @@ extension UILabel {
     func fontBody1Attribute(with text: String) {
         self.do {
             $0.makeAttribute(with: text)?
-                .lineHeightMultiple(1.4)
+                .lineHeight(1.4)
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
             $0.font = .Body1
@@ -78,7 +78,7 @@ extension UILabel {
     func fontBody2Attribute(with text: String) {
         self.do {
             $0.makeAttribute(with: text)?
-                .lineHeightMultiple(1.5)
+                .lineHeight(1.5)
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
             $0.font = .Body2
@@ -88,7 +88,7 @@ extension UILabel {
     func fontBody3Attribute(with text: String) {
         self.do {
             $0.makeAttribute(with: text)?
-                .lineHeightMultiple(1.5)
+                .lineHeight(1.5)
                 .kerning(kerningPixel: -0.4)
                 .applyAttribute()
             $0.font = .Body3
@@ -98,7 +98,7 @@ extension UILabel {
     func fontBody4Attribute(with text: String) {
         self.do {
             $0.makeAttribute(with: text)?
-                .lineHeightMultiple(1.45)
+                .lineHeight(1.45)
                 .kerning(kerningPixel: -0.4)
                 .applyAttribute()
             $0.font = .Body4
@@ -108,7 +108,7 @@ extension UILabel {
     func fontBody4_2Attribute(with text: String) {
         self.do {
             $0.makeAttribute(with: text)?
-                .lineHeightMultiple(1.45)
+                .lineHeight(1.45)
                 .kerning(kerningPixel: -0.4)
                 .applyAttribute()
             $0.font = .Body4_2
@@ -118,7 +118,7 @@ extension UILabel {
     func fontBody5Attribute(with text: String) {
         self.do {
             $0.makeAttribute(with: text)?
-                .lineHeightMultiple(1.45)
+                .lineHeight(1.45)
                 .applyAttribute()
             $0.font = .Body5
         }
@@ -127,7 +127,7 @@ extension UILabel {
     func fontBody5_2Attribute(with text: String) {
         self.do {
             $0.makeAttribute(with: text)?
-                .lineHeightMultiple(1.45)
+                .lineHeight(1.45)
                 .applyAttribute()
             $0.font = .Body5_2
         }
@@ -136,7 +136,7 @@ extension UILabel {
     func fontLabel1Attribute(with text: String) {
         self.do {
             $0.makeAttribute(with: text)?
-                .lineHeightMultiple(1.45)
+                .lineHeight(1.45)
                 .kerning(kerningPixel: -0.4)
                 .applyAttribute()
             $0.font = .Label1
@@ -256,12 +256,23 @@ extension TextAttributeSet {
         return self
     }
     
-    func lineHeightMultiple(_ multiple: CGFloat) -> TextAttributeSet {
-        let style = NSMutableParagraphStyle()
-        style.lineHeightMultiple = multiple
+    func lineHeight(_ multiple: CGFloat) -> TextAttributeSet {
+        let lineHeight = self.label.font.pointSize * multiple
+        
+        let style = NSMutableParagraphStyle().then {
+            $0.maximumLineHeight = lineHeight
+            $0.minimumLineHeight = lineHeight
+        }
+        
         self.attributedString.addAttribute(
             .paragraphStyle,
             value: style,
+            range: NSRange(location: 0, length: attributedString.length)
+        )
+        
+        self.attributedString.addAttribute(
+            .baselineOffset,
+            value: (lineHeight - self.label.font.lineHeight) / 2,
             range: NSRange(location: 0, length: attributedString.length)
         )
         
