@@ -10,9 +10,9 @@ import UIKit
 extension UILabel {
     func applyWSSFont(_ font: WSSFont, with text: String?) {
         self.applyFontAttribute(text: text,
-                       lineHeightMultiple: font.lineHeightMultiple,
-                       kerningPixel: font.kerningPixel,
-                       font: font.font)
+                                lineHeightMultiple: font.lineHeightMultiple,
+                                kerningPixel: font.kerningPixel,
+                                font: font.font)
     }
     
     func applyFontAttribute(text: String?, lineHeightMultiple: CGFloat, kerningPixel: Double, font: UIFont) {
@@ -256,27 +256,27 @@ extension TextAttributeSet {
     }
     
     func lineHeight(_ multiple: CGFloat) -> TextAttributeSet {
-            let lineHeight = self.label.font.pointSize * multiple
-            
-            let style = NSMutableParagraphStyle().then {
-                $0.maximumLineHeight = lineHeight
-                $0.minimumLineHeight = lineHeight
-            }
-            
-            self.attributedString.addAttribute(
-                .paragraphStyle,
-                value: style,
-                range: NSRange(location: 0, length: attributedString.length)
-            )
-            
-            self.attributedString.addAttribute(
-                .baselineOffset,
-                value: (lineHeight - self.label.font.lineHeight) / 2,
-                range: NSRange(location: 0, length: attributedString.length)
-            )
-            
-            return self
+        let lineHeight = self.label.font.pointSize * multiple
+        
+        let style = NSMutableParagraphStyle().then {
+            $0.maximumLineHeight = lineHeight
+            $0.minimumLineHeight = lineHeight
         }
+        
+        self.attributedString.addAttribute(
+            .paragraphStyle,
+            value: style,
+            range: NSRange(location: 0, length: attributedString.length)
+        )
+        
+        self.attributedString.addAttribute(
+            .baselineOffset,
+            value: (lineHeight - self.label.font.lineHeight) / 2,
+            range: NSRange(location: 0, length: attributedString.length)
+        )
+        
+        return self
+    }
     
     func applyAttribute() {
         self.label.attributedText = self.attributedString
