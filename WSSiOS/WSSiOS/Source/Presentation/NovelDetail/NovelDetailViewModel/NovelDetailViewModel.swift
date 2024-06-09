@@ -15,7 +15,7 @@ final class NovelDetailViewModel: ViewModelType {
     
     //MARK: - Properties
     
-    private let detailRepository: DummyDetailRepository
+    private let detailRepository: DetailRepository
     private let novelId: Int
     
     private let viewWillAppearEvent = BehaviorRelay(value: false)
@@ -23,7 +23,7 @@ final class NovelDetailViewModel: ViewModelType {
     
     //MARK: - Life Cycle
     
-    init(detailRepository: DummyDetailRepository, novelId: Int = 0) {
+    init(detailRepository: DetailRepository, novelId: Int = 0) {
         self.detailRepository = detailRepository
         self.novelId = novelId
     }
@@ -43,7 +43,7 @@ final class NovelDetailViewModel: ViewModelType {
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         input.viewWillAppearEvent
             .flatMapLatest { _ in
-                self.detailRepository.getEstimatedNovelBasic(novelId: self.novelId)
+                self.detailRepository.getNovelBasic(novelId: self.novelId)
             }
             .subscribe(with: self, onNext: { owner, data in
                 owner.detailBasicData.onNext(data)

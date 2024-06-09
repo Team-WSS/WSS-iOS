@@ -117,8 +117,8 @@
 		39CD5E082B4F2BBE00668B9A /* RegisterNormalKeywordSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CD5E072B4F2BBE00668B9A /* RegisterNormalKeywordSelectionView.swift */; };
 		39CD5E0C2B4F3D0700668B9A /* RegisterNormalNovelSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CD5E0B2B4F3D0700668B9A /* RegisterNormalNovelSummaryView.swift */; };
 		39CD5E102B4FEC0F00668B9A /* RegisterNormalToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CD5E0F2B4FEC0F00668B9A /* RegisterNormalToggleButton.swift */; };
-		39D4A5C92BDA4C5A004FC834 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5C82BDA4C5A004FC834 /* DetailViewController.swift */; };
-		39D4A5CB2BDA4C62004FC834 /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5CA2BDA4C62004FC834 /* DetailViewModel.swift */; };
+		39D4A5C92BDA4C5A004FC834 /* NovelDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5C82BDA4C5A004FC834 /* NovelDetailViewController.swift */; };
+		39D4A5CB2BDA4C62004FC834 /* NovelDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5CA2BDA4C62004FC834 /* NovelDetailViewModel.swift */; };
 		39D4A5CD2BDA4C6D004FC834 /* NovelDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5CC2BDA4C6D004FC834 /* NovelDetailView.swift */; };
 		39D4A5D02BDA50E8004FC834 /* DetailRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5CF2BDA50E8004FC834 /* DetailRepository.swift */; };
 		39D4A5D22BDC0902004FC834 /* DetailBasicResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5D12BDC0902004FC834 /* DetailBasicResult.swift */; };
@@ -343,8 +343,8 @@
 		39CD5E072B4F2BBE00668B9A /* RegisterNormalKeywordSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalKeywordSelectionView.swift; sourceTree = "<group>"; };
 		39CD5E0B2B4F3D0700668B9A /* RegisterNormalNovelSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalNovelSummaryView.swift; sourceTree = "<group>"; };
 		39CD5E0F2B4FEC0F00668B9A /* RegisterNormalToggleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalToggleButton.swift; sourceTree = "<group>"; };
-		39D4A5C82BDA4C5A004FC834 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
-		39D4A5CA2BDA4C62004FC834 /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
+		39D4A5C82BDA4C5A004FC834 /* NovelDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailViewController.swift; sourceTree = "<group>"; };
+		39D4A5CA2BDA4C62004FC834 /* NovelDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailViewModel.swift; sourceTree = "<group>"; };
 		39D4A5CC2BDA4C6D004FC834 /* NovelDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailView.swift; sourceTree = "<group>"; };
 		39D4A5CF2BDA50E8004FC834 /* DetailRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRepository.swift; sourceTree = "<group>"; };
 		39D4A5D12BDC0902004FC834 /* DetailBasicResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailBasicResult.swift; sourceTree = "<group>"; };
@@ -995,7 +995,7 @@
 			children = (
 				39D4A5C62BDA4BF6004FC834 /* NovelDetailView */,
 				39D4A5C52BDA4BEE004FC834 /* NovelDetailViewController */,
-				39D4A5C72BDA4BFD004FC834 /* DetailViewModel */,
+				39D4A5C72BDA4BFD004FC834 /* NovelDetailViewModel */,
 			);
 			path = NovelDetail;
 			sourceTree = "<group>";
@@ -1003,7 +1003,7 @@
 		39D4A5C52BDA4BEE004FC834 /* NovelDetailViewController */ = {
 			isa = PBXGroup;
 			children = (
-				39D4A5C82BDA4C5A004FC834 /* DetailViewController.swift */,
+				39D4A5C82BDA4C5A004FC834 /* NovelDetailViewController.swift */,
 				39D4A5D92BDD3202004FC834 /* TestViewController.swift */,
 			);
 			path = NovelDetailViewController;
@@ -1018,12 +1018,12 @@
 			path = NovelDetailView;
 			sourceTree = "<group>";
 		};
-		39D4A5C72BDA4BFD004FC834 /* DetailViewModel */ = {
+		39D4A5C72BDA4BFD004FC834 /* NovelDetailViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				39D4A5CA2BDA4C62004FC834 /* DetailViewModel.swift */,
+				39D4A5CA2BDA4C62004FC834 /* NovelDetailViewModel.swift */,
 			);
-			path = DetailViewModel;
+			path = NovelDetailViewModel;
 			sourceTree = "<group>";
 		};
 		39D4A5CE2BDA4C77004FC834 /* NovelDetailAssistantView */ = {
@@ -1735,7 +1735,7 @@
 				A1CB373A2B72935900CB290F /* UITableViewCell+.swift in Sources */,
 				A1147A802B50638200141692 /* RecordViewController.swift in Sources */,
 				39ABD5A02B54D0A900DEA94E /* RegisterNormalDatePicker.swift in Sources */,
-				39D4A5C92BDA4C5A004FC834 /* DetailViewController.swift in Sources */,
+				39D4A5C92BDA4C5A004FC834 /* NovelDetailViewController.swift in Sources */,
 				2CCBFA042B4DD73D00D787C2 /* MyPageTallyView.swift in Sources */,
 				2C2491812B4ADC000096F255 /* StringLiterals.swift in Sources */,
 				2C6030712B54F23F0031544C /* LibraryListView.swift in Sources */,
@@ -1748,7 +1748,7 @@
 				392A292F2B4F07FF0065EB97 /* RegisterNormalReadDateView.swift in Sources */,
 				CD3E5A9A2B5509AB00C0A659 /* DeletePopupViewController.swift in Sources */,
 				39D4A5D42BDCC1B1004FC834 /* NovelDetailBannerBackgroundImageView.swift in Sources */,
-				39D4A5CB2BDA4C62004FC834 /* DetailViewModel.swift in Sources */,
+				39D4A5CB2BDA4C62004FC834 /* NovelDetailViewModel.swift in Sources */,
 				2CD229572B42EA75005400BE /* UIColor+.swift in Sources */,
 				A18432EC2B511E7400910940 /* RecordDateView.swift in Sources */,
 				A1DBB2FA2B4AA981000EE869 /* SearchCollectionViewCell.swift in Sources */,
