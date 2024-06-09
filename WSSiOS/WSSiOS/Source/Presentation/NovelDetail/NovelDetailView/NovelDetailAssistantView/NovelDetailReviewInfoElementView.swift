@@ -16,8 +16,8 @@ final class NovelDetailReviewInfoElementView: UIView {
     
     private let stackView = UIStackView()
     
-    private let infoSymbolImageView = UIImageView()
-    private let infoLabel = UILabel()
+    private let reviewSymbolImageView = UIImageView()
+    private let reviewInfoLabel = UILabel()
     
     //MARK: - Life Cycle
     
@@ -46,8 +46,8 @@ final class NovelDetailReviewInfoElementView: UIView {
     private func setHierarchy() {
         self.addSubview(stackView)
         
-        stackView.addArrangedSubviews(infoSymbolImageView,
-                                      infoLabel)
+        stackView.addArrangedSubviews(reviewSymbolImageView,
+                                      reviewInfoLabel)
     }
     
     private func setLayout() {
@@ -59,7 +59,7 @@ final class NovelDetailReviewInfoElementView: UIView {
     //MARK: - Custom Method
     
     func setText(with text: String) {
-        infoLabel.do {
+        reviewInfoLabel.do {
             $0.fontBody5_2Attribute(with: text)
             $0.textColor = .wssGray300
             $0.textAlignment = .center
@@ -68,7 +68,7 @@ final class NovelDetailReviewInfoElementView: UIView {
     }
     
     func setImage(_ image: UIImage) {
-        infoSymbolImageView.do {
+        reviewSymbolImageView.do {
             $0.image = image
         }
     }
