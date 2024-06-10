@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class NovelDetailReviewInfoElementView: UIView {
+final class NovelDetailHeaderReviewInfoElementView: UIView {
     
     //MARK: - Components
     
@@ -60,7 +60,7 @@ final class NovelDetailReviewInfoElementView: UIView {
     
     func setText(with text: String) {
         reviewInfoLabel.do {
-            $0.fontBody5_2Attribute(with: text)
+            $0.applyWSSFont(.body5_2, with: text)
             $0.textColor = .wssGray300
             $0.textAlignment = .center
             $0.numberOfLines = 1

@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class NovelDetailEstimateButton: UIButton {
+final class NovelDetailHeaderEstimateButton: UIButton {
     
     //MARK: - Components
     

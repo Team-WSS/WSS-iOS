@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class NovelDetailNovelCoverImageView: UIView {
+final class NovelDetailHeaderCoverImageView: UIView {
     
     //MARK: - Components
     

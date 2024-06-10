@@ -14,12 +14,12 @@ final class NovelDetailHeaderView: UIView {
     
     //MARK: - Components
     
-    private let bannerBackgroundImageView = NovelDetailBannerBackgroundImageView()
+    private let bannerBackgroundImageView = NovelDetailHeaderBackgroundImageView()
     
     private let stackView = UIStackView()
-    private let novelCoverImageView = NovelDetailNovelCoverImageView()
-    private let novelInfoView = NovelDetailInfoView()
-    private let novelEstimateButton = NovelDetailEstimateButton()
+    private let novelCoverImageView = NovelDetailHeaderCoverImageView()
+    private let novelInfoView = NovelDetailHeaderInfoView()
+    private let novelEstimateButton = NovelDetailHeaderEstimateButton()
     
     //MARK: - Life Cycle
     

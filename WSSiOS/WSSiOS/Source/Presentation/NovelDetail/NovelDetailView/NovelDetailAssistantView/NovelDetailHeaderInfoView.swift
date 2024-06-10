@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class NovelDetailInfoView: UIView {
+final class NovelDetailHeaderInfoView: UIView {
     
     //MARK: - Properties
     
@@ -24,9 +24,9 @@ final class NovelDetailInfoView: UIView {
     private let infoLabel = UILabel()
     private let reviewStack = UIStackView()
     
-    private let interestCount = NovelDetailReviewInfoElementView()
-    private let rating = NovelDetailReviewInfoElementView()
-    private let feedCount = NovelDetailReviewInfoElementView()
+    private let interestCount = NovelDetailHeaderReviewInfoElementView()
+    private let rating = NovelDetailHeaderReviewInfoElementView()
+    private let feedCount = NovelDetailHeaderReviewInfoElementView()
     
     //MARK: - Life Cycle
     
@@ -47,7 +47,7 @@ final class NovelDetailInfoView: UIView {
     private func setUI() {
         stackView.do {
             $0.axis = .vertical
-            $0.spacing = 10
+            $0.spacing = 6
             $0.alignment = .center
             
             setTitleLabelText(with: StringLiterals.Loading.novelTitle)
@@ -120,7 +120,7 @@ final class NovelDetailInfoView: UIView {
     
     private func setTitleLabelText(with text: String) {
         titleLabel.do {
-            $0.fontHeadline1Attribute(with: text)
+            $0.applyWSSFont(.headline1, with: text)
             $0.textColor = .wssBlack
             $0.textAlignment = .center
             $0.lineBreakMode = .byTruncatingTail
@@ -131,7 +131,7 @@ final class NovelDetailInfoView: UIView {
     
     private func setInfoLabelText(with text: String) {
         infoLabel.do {
-            $0.fontBody2Attribute(with: text)
+            $0.applyWSSFont(.body2, with: text)
             $0.textColor = .wssGray300
             $0.textAlignment = .center
             $0.numberOfLines = 1

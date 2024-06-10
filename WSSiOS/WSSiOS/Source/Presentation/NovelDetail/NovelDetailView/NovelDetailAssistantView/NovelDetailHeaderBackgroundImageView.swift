@@ -11,7 +11,7 @@ import SnapKit
 import Then
 import UIImageViewAlignedSwift
 
-final class NovelDetailBannerBackgroundImageView: UIView {
+final class NovelDetailHeaderBackgroundImageView: UIView {
     
     //MARK: - Components
     
