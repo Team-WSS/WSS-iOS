@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct DetailBasicResult: Codable {
+struct NovelDetailBasicResult: Codable {
     let userNovelID: Int?
     let novelTitle, novelImage: String
     let novelGenres: [String]

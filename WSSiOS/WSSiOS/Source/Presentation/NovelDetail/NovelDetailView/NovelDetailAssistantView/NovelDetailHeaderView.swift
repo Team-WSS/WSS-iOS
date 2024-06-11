@@ -86,7 +86,7 @@ final class NovelDetailHeaderView: UIView {
     
     //MARK: - Data
     
-    func bindData(_ data: DetailBasicResult) {
+    func bindData(_ data: NovelDetailBasicResult) {
         bannerBackgroundImageView.bindData(data)
         novelCoverImageView.bindData(data)
         novelInfoView.bindData(data)

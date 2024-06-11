@@ -95,7 +95,7 @@ final class NovelDetailHeaderInfoView: UIView {
     
     //MARK: - Data
     
-    func bindData(_ data: DetailBasicResult) {
+    func bindData(_ data: NovelDetailBasicResult) {
         var novelGenreText = ""
         if data.novelGenres.count >= 2 {
             let firstGenre = NovelGenre(rawValue: data.novelGenres[0]) ?? .error

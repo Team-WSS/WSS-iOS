@@ -15,16 +15,16 @@ final class NovelDetailViewModel: ViewModelType {
     
     //MARK: - Properties
     
-    private let detailRepository: DetailRepository
+    private let novelDetailRepository: NovelDetailRepository
     private let novelId: Int
     
     private let viewWillAppearEvent = BehaviorRelay(value: false)
-    private let detailBasicData = PublishSubject<DetailBasicResult>()
+    private let novelDetailBasicData = PublishSubject<NovelDetailBasicResult>()
     
     //MARK: - Life Cycle
     
-    init(detailRepository: DetailRepository, novelId: Int = 0) {
-        self.detailRepository = detailRepository
+    init(detailRepository: NovelDetailRepository, novelId: Int = 0) {
+        self.novelDetailRepository = detailRepository
         self.novelId = novelId
     }
     
@@ -36,25 +36,27 @@ final class NovelDetailViewModel: ViewModelType {
     }
     
     struct Output {
-        let detailBasicData: Observable<DetailBasicResult>
+        let detailBasicData: Observable<NovelDetailBasicResult>
         let scrollContentOffset: Driver<CGPoint>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         input.viewWillAppearEvent
             .flatMapLatest { _ in
-                self.detailRepository.getNovelBasic(novelId: self.novelId)
+                self.novelDetailRepository.getNovelBasic(novelId: self.novelId)
             }
             .subscribe(with: self, onNext: { owner, data in
-                owner.detailBasicData.onNext(data)
+                owner.novelDetailBasicData.onNext(data)
             }, onError: { owner, error in
-                owner.detailBasicData.onError(error)
+                owner.novelDetailBasicData.onError(error)
             })
             .disposed(by: disposeBag)
         
         let scrollContentOffset = input.scrollContentOffset
 
         return Output(
-            detailBasicData: detailBasicData.asObservable(), scrollContentOffset: scrollContentOffset.asDriver())
+            detailBasicData: novelDetailBasicData.asObservable(),
+            scrollContentOffset: scrollContentOffset.asDriver()
+        )
     }
 }

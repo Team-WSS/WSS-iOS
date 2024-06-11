@@ -135,7 +135,8 @@ final class NovelDetailViewController: UIViewController {
     private func createViewModelInput() -> NovelDetailViewModel.Input {
         return NovelDetailViewModel.Input(
             viewWillAppearEvent:  viewWillAppearEvent.asObservable(),
-            scrollContentOffset: rootView.scrollView.rx.contentOffset)
+            scrollContentOffset: rootView.scrollView.rx.contentOffset
+        )
     }
     
     //MARK: - Custom Method

@@ -66,7 +66,7 @@ final class NovelDetailHeaderBackgroundImageView: UIView {
     
     //MARK: - Data
     
-    func bindData(_ data: DetailBasicResult) {
+    func bindData(_ data: NovelDetailBasicResult) {
         bannerImageView.image = UIImage(named: data.novelImage)?.asBlurredBannerImage(radius: 40)
     }
 }

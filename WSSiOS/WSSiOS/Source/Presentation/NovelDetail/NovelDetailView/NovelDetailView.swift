@@ -18,7 +18,7 @@ final class NovelDetailView: UIView {
     let scrollView = UIScrollView()
     private let contentView = UIStackView()
     
-    private let detailHeaderView = NovelDetailHeaderView()
+    private let headerView = NovelDetailHeaderView()
     
     //MARK: - Life Cycle
     
@@ -61,7 +61,7 @@ final class NovelDetailView: UIView {
         self.addSubviews(scrollView,
                          statusBarView)
         scrollView.addSubview(contentView)
-        contentView.addArrangedSubview(detailHeaderView)
+        contentView.addArrangedSubview(headerView)
     }
     
     private func setLayout() {
@@ -77,7 +77,7 @@ final class NovelDetailView: UIView {
     
     //MARK: - Data
     
-    func bindData(_ data: DetailBasicResult) {
-        detailHeaderView.bindData(data)
+    func bindData(_ data: NovelDetailBasicResult) {
+        headerView.bindData(data)
     }
 }
