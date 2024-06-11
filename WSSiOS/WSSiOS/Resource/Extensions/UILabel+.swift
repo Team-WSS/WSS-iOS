@@ -17,11 +17,11 @@ extension UILabel {
     
     func applyFontAttribute(text: String?, lineHeightMultiple: CGFloat, kerningPixel: Double, font: UIFont) {
         self.do {
+            $0.font = font
             $0.makeAttribute(with: text)?
                 .lineHeight(lineHeightMultiple)
                 .kerning(kerningPixel: kerningPixel)
                 .applyAttribute()
-            $0.font = font
         }
     }
     
