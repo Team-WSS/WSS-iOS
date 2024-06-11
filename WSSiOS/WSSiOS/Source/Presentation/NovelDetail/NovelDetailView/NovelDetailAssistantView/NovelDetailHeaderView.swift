@@ -90,5 +90,6 @@ final class NovelDetailHeaderView: UIView {
         bannerBackgroundImageView.bindData(data)
         novelCoverImageView.bindData(data)
         novelInfoView.bindData(data)
+        novelInterestReviewButton.bindData(data)
     }
 }

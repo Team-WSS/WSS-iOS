@@ -57,11 +57,12 @@ final class NovelDetailHeaderInterestReviewButton: UIView {
             $0.isUserInteractionEnabled = false
             
             intersetImageView.do {
-                $0.image = .icReviewSave
+                $0.image = .icReviewNotInterest
             }
             
             interestLabel.do {
                 $0.applyWSSFont(.body5, with: StringLiterals.NovelDetail.Header.interest)
+                $0.textColor = .wssGray300
             }
         }
         
@@ -81,6 +82,7 @@ final class NovelDetailHeaderInterestReviewButton: UIView {
             
             reviewLabel.do {
                 $0.applyWSSFont(.body5, with: StringLiterals.NovelDetail.Header.review)
+                $0.textColor = .wssGray300
             }
         }
     }
@@ -127,6 +129,18 @@ final class NovelDetailHeaderInterestReviewButton: UIView {
         
         reviewStackView.snp.makeConstraints {
             $0.center.equalToSuperview()
+        }
+    }
+    
+    //MARK: - Data
+    
+    func bindData(_ data: DetailBasicResult) {
+        if data.isUserNovelInterest {
+            intersetImageView.image = .icReviewInterest
+            interestLabel.textColor = .wssPrimary200
+        } else {
+            intersetImageView.image = .icReviewNotInterest
+            interestLabel.textColor = .wssGray300
         }
     }
 }
