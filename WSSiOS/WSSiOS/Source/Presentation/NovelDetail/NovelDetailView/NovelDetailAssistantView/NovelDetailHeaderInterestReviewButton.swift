@@ -61,7 +61,7 @@ final class NovelDetailHeaderInterestReviewButton: UIView {
             }
             
             interestLabel.do {
-                $0.applyWSSFont(.body5, with: StringLiterals.NovelDetail.HeaderButton.interest)
+                $0.applyWSSFont(.body5, with: StringLiterals.NovelDetail.Header.interest)
             }
         }
         
@@ -80,7 +80,7 @@ final class NovelDetailHeaderInterestReviewButton: UIView {
             }
             
             reviewLabel.do {
-                $0.applyWSSFont(.body5, with: StringLiterals.NovelDetail.HeaderButton.review)
+                $0.applyWSSFont(.body5, with: StringLiterals.NovelDetail.Header.review)
             }
         }
     }

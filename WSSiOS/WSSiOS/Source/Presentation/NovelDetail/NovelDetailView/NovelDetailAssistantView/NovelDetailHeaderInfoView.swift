@@ -107,10 +107,11 @@ final class NovelDetailHeaderInfoView: UIView {
             novelGenreText = "\(firstGenre.genreText)"
         }
         
-        let novelCompletedStatusText = data.isNovelCompleted ? "완결작 · " : "연재중  · "
+        let novelCompletedStatusText = data.isNovelCompleted ? StringLiterals.NovelDetail.Header.complete
+                                                             : StringLiterals.NovelDetail.Header.inSeries
         
         setTitleLabelText(with: data.novelTitle)
-        setInfoLabelText(with: "\(novelGenreText) · \(novelCompletedStatusText)\(data.author)")
+        setInfoLabelText(with: "\(novelGenreText)\(novelCompletedStatusText)\(data.author)")
         interestCount.setText(with: "\(data.interestCount)")
         rating.setText(with: "\(data.novelRating) (\(data.novelRatingCount))")
         feedCount.setText(with: "\(data.feedCount)")
