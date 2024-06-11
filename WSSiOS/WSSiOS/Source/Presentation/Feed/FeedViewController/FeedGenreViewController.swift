@@ -80,7 +80,7 @@ extension FeedGenreViewController: UICollectionViewDelegateFlowLayout {
         let feedContentLabel = UILabel().then {
             $0.text = text
             $0.makeAttribute(with: $0.text)?
-                .lineHeightMultiple(1.5)
+                .lineHeight(1.5)
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
             $0.font = .Body2

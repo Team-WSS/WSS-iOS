@@ -55,7 +55,7 @@ final class FeedDetailContentView: UIView {
         detailContentLabel.do {
             $0.text = isSpolier ? StringLiterals.Feed.spoilerText : content
             $0.makeAttribute(with: $0.text)?
-                .lineHeightMultiple(1.5)
+                .lineHeight(1.5)
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
             $0.textColor = isSpolier ? .wssSecondary100 : .wssBlack
