@@ -11,9 +11,9 @@ import UIKit
 extension UILabel {
     func applyWSSFont(_ font: WSSFont, with text: String?) {
         self.applyFontAttribute(text: text,
-                       lineHeightMultiple: font.lineHeightMultiple,
-                       kerningPixel: font.kerningPixel,
-                       font: font.font)
+                                lineHeightMultiple: font.lineHeightMultiple,
+                                kerningPixel: font.kerningPixel,
+                                font: font.font)
     }
     
     func applyFontAttribute(text: String?, lineHeightMultiple: CGFloat, kerningPixel: Double, font: UIFont) {
