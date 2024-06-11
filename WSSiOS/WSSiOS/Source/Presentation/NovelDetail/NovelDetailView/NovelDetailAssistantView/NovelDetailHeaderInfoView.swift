@@ -60,17 +60,17 @@ final class NovelDetailHeaderInfoView: UIView {
                 $0.alignment = .center
                 
                 interestCount.do {
-                    $0.setImage(.icInterestCount)
+                    $0.setImage(.icCountInterest)
                     $0.setText(with: "0")
                 }
                 
                 rating.do {
-                    $0.setImage(.icRatingCount)
+                    $0.setImage(.icCountRating)
                     $0.setText(with: "0.0 (0)")
                 }
                 
                 feedCount.do {
-                    $0.setImage(.icfeedCount)
+                    $0.setImage(.icCountFeed)
                     $0.setText(with: "0")
                 }
             }
