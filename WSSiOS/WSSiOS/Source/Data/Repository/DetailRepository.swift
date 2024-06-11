@@ -17,7 +17,7 @@ struct TestDetailRepository: DetailRepository {
     func getNovelBasic(novelId: Int) -> Observable<DetailBasicResult> {
         return Observable.just(
             DetailBasicResult(userNovelID: nil,
-                              novelTitle: "당신의 이해를 돕기 위하여위하여 위하여위하여",
+                              novelTitle: "여자친구로 삼으려고 학생회장을 꼭 닮은 여자아이를 연성했다가 내가 하인이 됐습니다",
                               novelImage: "ImgNovelCoverDummy",
                               novelGenres: ["romanceFantasy", "romance"],
                               novelGenreURL: "icGenreLabelRfDummy",

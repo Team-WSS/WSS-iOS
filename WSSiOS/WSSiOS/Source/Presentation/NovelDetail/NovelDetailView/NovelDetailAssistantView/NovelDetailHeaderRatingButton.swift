@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class NovelDetailHeaderEstimateButton: UIButton {
+final class NovelDetailHeaderRatingButton: UIButton {
     
     //MARK: - Components
     
@@ -36,7 +36,9 @@ final class NovelDetailHeaderEstimateButton: UIButton {
     private func setUI() {
         self.do {
             $0.backgroundColor = .wssWhite
-            $0.layer.cornerRadius = 15
+            $0.layer.cornerRadius = 10
+            $0.layer.borderColor = UIColor.wssGray70.cgColor
+            $0.layer.borderWidth = 1
         }
         
         stackView.do {

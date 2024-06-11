@@ -19,7 +19,8 @@ final class NovelDetailHeaderView: UIView {
     private let stackView = UIStackView()
     private let novelCoverImageView = NovelDetailHeaderCoverImageView()
     private let novelInfoView = NovelDetailHeaderInfoView()
-    private let novelEstimateButton = NovelDetailHeaderEstimateButton()
+    private let novelEstimateButton = NovelDetailHeaderRatingButton()
+    private let novelInterestReviewButton = NovelDetailHeaderInterestReviewButton()
     
     //MARK: - Life Cycle
     
@@ -51,7 +52,8 @@ final class NovelDetailHeaderView: UIView {
                          stackView)
         stackView.addArrangedSubviews(novelCoverImageView,
                                       novelInfoView,
-                                      novelEstimateButton)
+                                      novelEstimateButton,
+                                      novelInterestReviewButton)
     }
     
     private func setLayout() {
@@ -65,15 +67,19 @@ final class NovelDetailHeaderView: UIView {
             $0.snp.makeConstraints {
                 $0.top.equalTo(safeAreaLayoutGuide)
                 $0.horizontalEdges.equalToSuperview().inset(20)
-                $0.bottom.equalToSuperview()
+                $0.bottom.equalToSuperview().inset(16)
             }
             
             $0.setCustomSpacing(20, after: novelCoverImageView)
-            $0.setCustomSpacing(32, after: novelInfoView)
+            $0.setCustomSpacing(26, after: novelInfoView)
+            $0.setCustomSpacing(6, after: novelEstimateButton)
         }
         
-        
         novelEstimateButton.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview()
+        }
+        
+        novelInterestReviewButton.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview()
         }
     }

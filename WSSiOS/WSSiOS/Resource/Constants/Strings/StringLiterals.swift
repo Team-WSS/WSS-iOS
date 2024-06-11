@@ -223,6 +223,11 @@ enum StringLiterals {
             static let novelDelete = "작품을 서재에서 삭제"
             static let novelEdit = "작품 정보 수정"
         }
+        
+        enum HeaderButton {
+            static let interest = "관심 있어요"
+            static let review = "리뷰 남기기"
+        }
     }
     
     enum Search {
