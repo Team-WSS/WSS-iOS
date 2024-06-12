@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class NovelDetailHeaderCoverImageView: UIView {
+final class NovelDetailHeaderCoverImageButton: UIButton {
     
     //MARK: - Components
     
@@ -41,17 +41,20 @@ final class NovelDetailHeaderCoverImageView: UIView {
             $0.layer.shadowOffset = CGSize(width: 0, height: 2)
             $0.layer.shadowRadius = 15
             $0.layer.masksToBounds = false
+            $0.isUserInteractionEnabled = false
             
             novelCoverImageView.do {
                 $0.image = .imgLoadingThumbnail
                 $0.contentMode = .scaleAspectFill
                 $0.layer.cornerRadius = 8
                 $0.clipsToBounds = true
+                $0.isUserInteractionEnabled = false
                 
                 novelGenreLabelImageView.do {
                     $0.image = .imgGenreLabelBackgroundDummy
                     $0.contentMode = .scaleAspectFill
                     $0.clipsToBounds = true
+                    $0.isUserInteractionEnabled = false
                 }
             }
         }

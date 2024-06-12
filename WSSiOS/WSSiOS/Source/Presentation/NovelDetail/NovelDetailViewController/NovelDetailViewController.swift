@@ -77,11 +77,15 @@ final class NovelDetailViewController: UIViewController {
     
     private func setUI() {
         backButton.do {
-            $0.setImage(.icNavigateLeft.withTintColor(.wssWhite, renderingMode: .alwaysOriginal), for: .normal)
+            $0.setImage(.icNavigateLeft.withTintColor(.wssWhite,
+                                                      renderingMode: .alwaysOriginal),
+                        for: .normal)
         }
         
         dropDownButton.do {
-            $0.setImage(.icDropDownDot.withTintColor(.wssWhite, renderingMode: .alwaysOriginal), for: .normal)
+            $0.setImage(.icDropDownDot.withTintColor(.wssWhite,
+                                                     renderingMode: .alwaysOriginal),
+                        for: .normal)
         }
     }
     
@@ -98,11 +102,11 @@ final class NovelDetailViewController: UIViewController {
     //MARK: - Bind
     
     private func register() {
-       
+        
     }
     
     private func delegate() {
-
+        
     }
     
     private func bindViewModel() {
@@ -128,6 +132,18 @@ final class NovelDetailViewController: UIViewController {
                 owner.updateNavigationBarStyle(offset: offset.y)
             })
             .disposed(by: disposeBag)
+        
+        output.showLargeNovelCoverImage
+            .drive(with: self, onNext: { owner, isShow in
+                owner.showLargeNovelCoverImageView(isShow)
+            })
+            .disposed(by: disposeBag)
+        
+        output.backButtonDidTap
+            .bind(with: self, onNext: { owner, _ in
+                owner.popToLastViewController()
+            })
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Actions
@@ -135,11 +151,19 @@ final class NovelDetailViewController: UIViewController {
     private func createViewModelInput() -> NovelDetailViewModel.Input {
         return NovelDetailViewModel.Input(
             viewWillAppearEvent:  viewWillAppearEvent.asObservable(),
-            scrollContentOffset: rootView.scrollView.rx.contentOffset
+            scrollContentOffset: rootView.scrollView.rx.contentOffset,
+            novelCoverImageButtonDidTap: rootView.headerView.novelCoverImageButton.rx.tap,
+            largeNovelCoverImageDismissButtonDidTap: rootView.largeNovelCoverImageView.dismissButton.rx.tap,
+            backButtonDidTap: backButton.rx.tap
         )
     }
     
     //MARK: - Custom Method
+    
+    private func showLargeNovelCoverImageView(_ isShow: Bool) {
+        rootView.largeNovelCoverImageView.isHidden = !isShow
+        self.navigationController?.setNavigationBarHidden(isShow, animated: false)
+    }
     
     private func updateNavigationBarStyle(offset: CGFloat) {
         if offset > 0 {

@@ -20,6 +20,7 @@ final class NovelDetailViewModel: ViewModelType {
     
     private let viewWillAppearEvent = BehaviorRelay(value: false)
     private let novelDetailBasicData = PublishSubject<NovelDetailBasicResult>()
+    private let showLargeNovelCoverImage = BehaviorRelay<Bool>(value: false)
     
     //MARK: - Life Cycle
     
@@ -33,11 +34,16 @@ final class NovelDetailViewModel: ViewModelType {
     struct Input {
         let viewWillAppearEvent: Observable<Bool>
         let scrollContentOffset: ControlProperty<CGPoint>
+        let novelCoverImageButtonDidTap: ControlEvent<Void>
+        let largeNovelCoverImageDismissButtonDidTap: ControlEvent<Void>
+        let backButtonDidTap: ControlEvent<Void>
     }
     
     struct Output {
         let detailBasicData: Observable<NovelDetailBasicResult>
         let scrollContentOffset: Driver<CGPoint>
+        let showLargeNovelCoverImage: Driver<Bool>
+        let backButtonDidTap: Observable<Void>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -52,11 +58,27 @@ final class NovelDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        input.novelCoverImageButtonDidTap
+            .bind(with: self, onNext: { owner, _ in
+                owner.showLargeNovelCoverImage.accept(true)
+            })
+            .disposed(by: disposeBag)
+        
+        input.largeNovelCoverImageDismissButtonDidTap
+            .bind(with: self, onNext: { owner, _ in
+                owner.showLargeNovelCoverImage.accept(false)
+            })
+            .disposed(by: disposeBag)
+        
         let scrollContentOffset = input.scrollContentOffset
-
+        
+        let backButtonDidTap = input.backButtonDidTap.asObservable()
+        
         return Output(
             detailBasicData: novelDetailBasicData.asObservable(),
-            scrollContentOffset: scrollContentOffset.asDriver()
+            scrollContentOffset: scrollContentOffset.asDriver(),
+            showLargeNovelCoverImage: showLargeNovelCoverImage.asDriver(),
+            backButtonDidTap: backButtonDidTap
         )
     }
 }

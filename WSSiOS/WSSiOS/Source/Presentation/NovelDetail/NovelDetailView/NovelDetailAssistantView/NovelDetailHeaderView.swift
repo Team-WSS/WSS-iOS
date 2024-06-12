@@ -17,7 +17,7 @@ final class NovelDetailHeaderView: UIView {
     private let bannerBackgroundImageView = NovelDetailHeaderBackgroundImageView()
     
     private let stackView = UIStackView()
-    private let novelCoverImageView = NovelDetailHeaderCoverImageView()
+    let novelCoverImageButton = NovelDetailHeaderCoverImageButton()
     private let novelInfoView = NovelDetailHeaderInfoView()
     private let novelEstimateButton = NovelDetailHeaderRatingButton()
     private let novelInterestReviewButton = NovelDetailHeaderInterestReviewButton()
@@ -48,9 +48,9 @@ final class NovelDetailHeaderView: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubviews(bannerBackgroundImageView,
-                         stackView)
-        stackView.addArrangedSubviews(novelCoverImageView,
+        self.addSubviews(stackView)
+        stackView.addArrangedSubviews(bannerBackgroundImageView,
+                                      novelCoverImageButton,
                                       novelInfoView,
                                       novelEstimateButton,
                                       novelInterestReviewButton)
@@ -58,29 +58,33 @@ final class NovelDetailHeaderView: UIView {
     
     private func setLayout() {
         bannerBackgroundImageView.snp.makeConstraints {
-            $0.top.equalToSuperview()
             $0.horizontalEdges.equalToSuperview()
             $0.height.equalTo(248)
         }
         
         stackView.do {
             $0.snp.makeConstraints {
-                $0.top.equalTo(safeAreaLayoutGuide)
-                $0.horizontalEdges.equalToSuperview().inset(20)
+                $0.top.equalToSuperview()
                 $0.bottom.equalToSuperview().inset(16)
+                $0.horizontalEdges.equalToSuperview()
             }
             
-            $0.setCustomSpacing(20, after: novelCoverImageView)
+            $0.setCustomSpacing(-148, after: bannerBackgroundImageView)
+            $0.setCustomSpacing(20, after: novelCoverImageButton)
             $0.setCustomSpacing(26, after: novelInfoView)
             $0.setCustomSpacing(6, after: novelEstimateButton)
         }
         
+        novelInfoView.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview().inset(20)
+        }
+        
         novelEstimateButton.snp.makeConstraints {
-            $0.horizontalEdges.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview().inset(20)
         }
         
         novelInterestReviewButton.snp.makeConstraints {
-            $0.horizontalEdges.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview().inset(20)
         }
     }
     
@@ -88,7 +92,7 @@ final class NovelDetailHeaderView: UIView {
     
     func bindData(_ data: NovelDetailBasicResult) {
         bannerBackgroundImageView.bindData(data)
-        novelCoverImageView.bindData(data)
+        novelCoverImageButton.bindData(data)
         novelInfoView.bindData(data)
         novelInterestReviewButton.bindData(data)
     }
