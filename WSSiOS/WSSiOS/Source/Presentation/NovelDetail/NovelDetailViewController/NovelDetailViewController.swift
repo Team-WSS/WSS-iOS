@@ -57,8 +57,6 @@ final class NovelDetailViewController: UIViewController {
         
         setUI()
         bindViewModel()
-        register()
-        delegate()
         swipeBackGesture()
     }
     
@@ -67,10 +65,6 @@ final class NovelDetailViewController: UIViewController {
         
         viewWillAppearEvent.accept(true)
         setNavigationBar()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
     }
     
     //MARK: - UI
@@ -100,14 +94,6 @@ final class NovelDetailViewController: UIViewController {
     }
     
     //MARK: - Bind
-    
-    private func register() {
-        
-    }
-    
-    private func delegate() {
-        
-    }
     
     private func bindViewModel() {
         let input = createViewModelInput()
