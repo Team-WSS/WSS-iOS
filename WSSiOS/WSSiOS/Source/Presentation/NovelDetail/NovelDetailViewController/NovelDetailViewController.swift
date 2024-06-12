@@ -81,7 +81,7 @@ final class NovelDetailViewController: UIViewController {
         }
         
         dropDownButton.do {
-            $0.setImage(.icMeatballMemo.withTintColor(.wssWhite, renderingMode: .alwaysOriginal), for: .normal)
+            $0.setImage(.icDropDownDot.withTintColor(.wssWhite, renderingMode: .alwaysOriginal), for: .normal)
         }
     }
     
