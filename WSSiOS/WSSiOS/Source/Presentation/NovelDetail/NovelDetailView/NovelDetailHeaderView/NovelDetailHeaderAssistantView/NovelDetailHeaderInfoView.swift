@@ -50,9 +50,9 @@ final class NovelDetailHeaderInfoView: UIView {
             $0.spacing = 6
             $0.alignment = .center
             
-            setTitleLabelText(with: StringLiterals.Loading.novelTitle)
+            setTitleLabelText(with: StringLiterals.NovelDetail.Header.Loading.novelTitle)
             
-            setInfoLabelText(with: "\(StringLiterals.Loading.novelGenre) · \(StringLiterals.Loading.novelAuthor)")
+            setInfoLabelText(with: "\(StringLiterals.NovelDetail.Header.Loading.novelGenre) · \(StringLiterals.NovelDetail.Header.Loading.novelAuthor)")
             
             reviewStack.do {
                 $0.axis = .horizontal
@@ -61,17 +61,17 @@ final class NovelDetailHeaderInfoView: UIView {
                 
                 interestCount.do {
                     $0.setImage(.icCountInterest)
-                    $0.setText(with: "0")
+                    $0.setText(with: StringLiterals.NovelDetail.Header.Loading.novelInterestCount)
                 }
                 
                 rating.do {
                     $0.setImage(.icCountRating)
-                    $0.setText(with: "0.0 (0)")
+                    $0.setText(with: StringLiterals.NovelDetail.Header.Loading.novelRatingCount)
                 }
                 
                 feedCount.do {
                     $0.setImage(.icCountFeed)
-                    $0.setText(with: "0")
+                    $0.setText(with: StringLiterals.NovelDetail.Header.Loading.novelFeedCount)
                 }
             }
         }
