@@ -18,9 +18,10 @@ final class NovelDetailViewModel: ViewModelType {
     private let novelDetailRepository: NovelDetailRepository
     private let novelId: Int
     
-    private let viewWillAppearEvent = BehaviorRelay(value: false)
+    private let viewWillAppearEvent = BehaviorRelay<Bool>(value: false)
     private let novelDetailBasicData = PublishSubject<NovelDetailBasicResult>()
     private let showLargeNovelCoverImage = BehaviorRelay<Bool>(value: false)
+    private let selectedTab = BehaviorRelay<Tab>(value: Tab.info)
     
     //MARK: - Life Cycle
     
@@ -37,6 +38,8 @@ final class NovelDetailViewModel: ViewModelType {
         let novelCoverImageButtonDidTap: ControlEvent<Void>
         let largeNovelCoverImageDismissButtonDidTap: ControlEvent<Void>
         let backButtonDidTap: ControlEvent<Void>
+        let infoTabBarButtonDidTap: ControlEvent<Void>
+        let feedTabBarButtonDidTap: ControlEvent<Void>
     }
     
     struct Output {
@@ -44,6 +47,7 @@ final class NovelDetailViewModel: ViewModelType {
         let scrollContentOffset: Driver<CGPoint>
         let showLargeNovelCoverImage: Driver<Bool>
         let backButtonDidTap: Observable<Void>
+        let selectedTab: Driver<Tab>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -74,11 +78,24 @@ final class NovelDetailViewModel: ViewModelType {
         
         let backButtonDidTap = input.backButtonDidTap.asObservable()
         
+        input.infoTabBarButtonDidTap
+            .bind(with: self, onNext: { owner, _ in
+                owner.selectedTab.accept(.info)
+            })
+            .disposed(by: disposeBag)
+        
+        input.feedTabBarButtonDidTap
+            .bind(with: self, onNext: { owner, _ in
+                owner.selectedTab.accept(.feed)
+            })
+            .disposed(by: disposeBag)
+        
         return Output(
             detailBasicData: novelDetailBasicData.asObservable(),
             scrollContentOffset: scrollContentOffset.asDriver(),
             showLargeNovelCoverImage: showLargeNovelCoverImage.asDriver(),
-            backButtonDidTap: backButtonDidTap
+            backButtonDidTap: backButtonDidTap,
+            selectedTab: selectedTab.asDriver()
         )
     }
 }

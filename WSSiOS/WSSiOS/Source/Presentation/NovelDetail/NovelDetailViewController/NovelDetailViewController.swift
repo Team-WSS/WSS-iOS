@@ -130,6 +130,12 @@ final class NovelDetailViewController: UIViewController {
                 owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
+        
+        output.selectedTab
+            .drive(with: self, onNext: { owner, tab in
+                owner.rootView.tabBarView.updateTabBar(selected: tab)
+            })
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Actions
@@ -140,7 +146,9 @@ final class NovelDetailViewController: UIViewController {
             scrollContentOffset: rootView.scrollView.rx.contentOffset,
             novelCoverImageButtonDidTap: rootView.headerView.novelCoverImageButton.rx.tap,
             largeNovelCoverImageDismissButtonDidTap: rootView.largeNovelCoverImageView.dismissButton.rx.tap,
-            backButtonDidTap: backButton.rx.tap
+            backButtonDidTap: backButton.rx.tap,
+            infoTabBarButtonDidTap: rootView.tabBarView.infoButton.rx.tap,
+            feedTabBarButtonDidTap: rootView.tabBarView.feedButton.rx.tap
         )
     }
     
