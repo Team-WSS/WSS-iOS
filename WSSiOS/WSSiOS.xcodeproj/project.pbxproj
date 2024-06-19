@@ -870,6 +870,15 @@
 			path = Factory;
 			sourceTree = "<group>";
 		};
+		397DE6792C22C8740026DB07 /* NovelDetailHeaderView */ = {
+			isa = PBXGroup;
+			children = (
+				39D4A5D52BDD0913004FC834 /* NovelDetailHeaderView.swift */,
+				39D4A5CE2BDA4C77004FC834 /* NovelDetailHeaderAssistantView */,
+			);
+			path = NovelDetailHeaderView;
+			sourceTree = "<group>";
+		};
 		3999BFE02B4E6A2B00984832 /* RegisterNormal */ = {
 			isa = PBXGroup;
 			children = (
@@ -1017,7 +1026,7 @@
 			isa = PBXGroup;
 			children = (
 				39D4A5CC2BDA4C6D004FC834 /* NovelDetailView.swift */,
-				39D4A5CE2BDA4C77004FC834 /* NovelDetailAssistantView */,
+				397DE6792C22C8740026DB07 /* NovelDetailHeaderView */,
 			);
 			path = NovelDetailView;
 			sourceTree = "<group>";
@@ -1030,10 +1039,9 @@
 			path = NovelDetailViewModel;
 			sourceTree = "<group>";
 		};
-		39D4A5CE2BDA4C77004FC834 /* NovelDetailAssistantView */ = {
+		39D4A5CE2BDA4C77004FC834 /* NovelDetailHeaderAssistantView */ = {
 			isa = PBXGroup;
 			children = (
-				39D4A5D52BDD0913004FC834 /* NovelDetailHeaderView.swift */,
 				39D4A5D32BDCC1B1004FC834 /* NovelDetailHeaderBackgroundImageView.swift */,
 				39D4A5D72BDD23FE004FC834 /* NovelDetailHeaderCoverImageButton.swift */,
 				39D4A5DB2BDD420D004FC834 /* NovelDetailHeaderInfoView.swift */,
@@ -1042,7 +1050,7 @@
 				399258172C16DAF20063FB46 /* NovelDetailHeaderInterestReviewButton.swift */,
 				3980D1D52C19BB2C008B9B18 /* NovelDetailLargeCoverImageView.swift */,
 			);
-			path = NovelDetailAssistantView;
+			path = NovelDetailHeaderAssistantView;
 			sourceTree = "<group>";
 		};
 		39EF97B12B54498E00D2148B /* Lottie */ = {
