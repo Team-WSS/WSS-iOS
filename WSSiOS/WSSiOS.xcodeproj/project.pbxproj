@@ -85,6 +85,7 @@
 		392A29272B4E96F30065EB97 /* UILabel+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392A29262B4E96F30065EB97 /* UILabel+.swift */; };
 		392A292F2B4F07FF0065EB97 /* RegisterNormalReadDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392A292E2B4F07FF0065EB97 /* RegisterNormalReadDateView.swift */; };
 		395319272BE2865A00D075F4 /* KeywordManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395319262BE2865A00D075F4 /* KeywordManager.swift */; };
+		397DE6802C2342A70026DB07 /* NovelDetailTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 397DE67F2C2342A70026DB07 /* NovelDetailTabBarView.swift */; };
 		3980D1D62C19BB2C008B9B18 /* NovelDetailLargeCoverImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3980D1D52C19BB2C008B9B18 /* NovelDetailLargeCoverImageView.swift */; };
 		399258182C16DAF20063FB46 /* NovelDetailHeaderInterestReviewButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399258172C16DAF20063FB46 /* NovelDetailHeaderInterestReviewButton.swift */; };
 		3992FA562B81E2A40079C8B8 /* RegisterNormalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3992FA552B81E2A40079C8B8 /* RegisterNormalViewController.swift */; };
@@ -314,6 +315,7 @@
 		392A29262B4E96F30065EB97 /* UILabel+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+.swift"; sourceTree = "<group>"; };
 		392A292E2B4F07FF0065EB97 /* RegisterNormalReadDateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalReadDateView.swift; sourceTree = "<group>"; };
 		395319262BE2865A00D075F4 /* KeywordManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeywordManager.swift; sourceTree = "<group>"; };
+		397DE67F2C2342A70026DB07 /* NovelDetailTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailTabBarView.swift; sourceTree = "<group>"; };
 		3980D1D52C19BB2C008B9B18 /* NovelDetailLargeCoverImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailLargeCoverImageView.swift; sourceTree = "<group>"; };
 		399258172C16DAF20063FB46 /* NovelDetailHeaderInterestReviewButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailHeaderInterestReviewButton.swift; sourceTree = "<group>"; };
 		3992FA552B81E2A40079C8B8 /* RegisterNormalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalViewController.swift; sourceTree = "<group>"; };
@@ -879,6 +881,14 @@
 			path = NovelDetailHeaderView;
 			sourceTree = "<group>";
 		};
+		397DE67E2C23427D0026DB07 /* NovelDetailTabBarView */ = {
+			isa = PBXGroup;
+			children = (
+				397DE67F2C2342A70026DB07 /* NovelDetailTabBarView.swift */,
+			);
+			path = NovelDetailTabBarView;
+			sourceTree = "<group>";
+		};
 		3999BFE02B4E6A2B00984832 /* RegisterNormal */ = {
 			isa = PBXGroup;
 			children = (
@@ -1027,6 +1037,7 @@
 			children = (
 				39D4A5CC2BDA4C6D004FC834 /* NovelDetailView.swift */,
 				397DE6792C22C8740026DB07 /* NovelDetailHeaderView */,
+				397DE67E2C23427D0026DB07 /* NovelDetailTabBarView */,
 			);
 			path = NovelDetailView;
 			sourceTree = "<group>";
@@ -1784,6 +1795,7 @@
 				A1DBB2FA2B4AA981000EE869 /* SearchCollectionViewCell.swift in Sources */,
 				39D4A5DE2BDE48FD004FC834 /* NovelDetailHeaderReviewInfoElementView.swift in Sources */,
 				CD39F2D62B50D9A900B73A5C /* TrashNovelDetailInfoKeywordView.swift in Sources */,
+				397DE6802C2342A70026DB07 /* NovelDetailTabBarView.swift in Sources */,
 				2CD9114C2C0D898E006B8D72 /* FeedNavigationView.swift in Sources */,
 				CD39F2CA2B5038F400B73A5C /* TrashNovelDetailInfoView.swift in Sources */,
 				CD39F2D22B50CE0600B73A5C /* TrashNovelDetailInfoReadStatusTagView.swift in Sources */,

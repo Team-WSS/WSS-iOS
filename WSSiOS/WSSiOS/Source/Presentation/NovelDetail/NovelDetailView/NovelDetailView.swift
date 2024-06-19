@@ -20,6 +20,7 @@ final class NovelDetailView: UIView {
     
     let headerView = NovelDetailHeaderView()
     let largeNovelCoverImageView = NovelDetailLargeCoverImageView()
+    let tabBarView = NovelDetailTabBarView()
     
     //MARK: - Life Cycle
     
@@ -63,7 +64,8 @@ final class NovelDetailView: UIView {
                          statusBarView,
                          largeNovelCoverImageView)
         scrollView.addSubview(contentView)
-        contentView.addArrangedSubview(headerView)
+        contentView.addArrangedSubviews(headerView,
+                                        tabBarView)
     }
     
     private func setLayout() {
