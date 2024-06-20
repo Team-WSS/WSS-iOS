@@ -21,6 +21,7 @@ final class NovelDetailView: UIView {
     let headerView = NovelDetailHeaderView()
     let largeNovelCoverImageView = NovelDetailLargeCoverImageView()
     let tabBarView = NovelDetailTabBarView()
+    let stickyTabBarView = NovelDetailTabBarView()
     
     //MARK: - Life Cycle
     
@@ -48,6 +49,10 @@ final class NovelDetailView: UIView {
             $0.frame = statusBarManager?.statusBarFrame ?? .zero
         }
         
+        stickyTabBarView.do {
+            $0.isHidden = true
+        }
+        
         scrollView.do {
             $0.contentInsetAdjustmentBehavior = .never
             $0.showsVerticalScrollIndicator = false
@@ -62,6 +67,7 @@ final class NovelDetailView: UIView {
     private func setHierarchy() {
         self.addSubviews(scrollView,
                          statusBarView,
+                         stickyTabBarView,
                          largeNovelCoverImageView)
         scrollView.addSubview(contentView)
         contentView.addArrangedSubviews(headerView,
@@ -69,12 +75,18 @@ final class NovelDetailView: UIView {
     }
     
     private func setLayout() {
+        stickyTabBarView.snp.makeConstraints {
+            $0.top.equalTo(self.safeAreaLayoutGuide)
+            $0.leading.trailing.equalToSuperview()
+        }
+        
         scrollView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
         
         contentView.snp.makeConstraints {
-            $0.edges.equalTo(scrollView.contentLayoutGuide)
+            $0.horizontalEdges.top.equalTo(scrollView.contentLayoutGuide)
+            $0.bottom.equalToSuperview().inset(1000)
             $0.width.equalToSuperview()
         }
         
@@ -88,5 +100,9 @@ final class NovelDetailView: UIView {
     func bindData(_ data: NovelDetailBasicResult) {
         headerView.bindData(data)
         largeNovelCoverImageView.bindData(data)
+    }
+    
+    func updateStickyTabBarShow(_ isShow: Bool) {
+        stickyTabBarView.isHidden = !isShow
     }
 }

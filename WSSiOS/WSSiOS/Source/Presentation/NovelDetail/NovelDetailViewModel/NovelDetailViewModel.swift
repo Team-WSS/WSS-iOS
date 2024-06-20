@@ -40,6 +40,8 @@ final class NovelDetailViewModel: ViewModelType {
         let backButtonDidTap: ControlEvent<Void>
         let infoTabBarButtonDidTap: ControlEvent<Void>
         let feedTabBarButtonDidTap: ControlEvent<Void>
+        let stickyInfoTabBarButtonDidTap: ControlEvent<Void>
+        let stickyFeedTabBarButtonDidTap: ControlEvent<Void>
     }
     
     struct Output {
@@ -85,6 +87,18 @@ final class NovelDetailViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.feedTabBarButtonDidTap
+            .bind(with: self, onNext: { owner, _ in
+                owner.selectedTab.accept(.feed)
+            })
+            .disposed(by: disposeBag)
+        
+        input.stickyInfoTabBarButtonDidTap
+            .bind(with: self, onNext: { owner, _ in
+                owner.selectedTab.accept(.info)
+            })
+            .disposed(by: disposeBag)
+        
+        input.stickyFeedTabBarButtonDidTap
             .bind(with: self, onNext: { owner, _ in
                 owner.selectedTab.accept(.feed)
             })

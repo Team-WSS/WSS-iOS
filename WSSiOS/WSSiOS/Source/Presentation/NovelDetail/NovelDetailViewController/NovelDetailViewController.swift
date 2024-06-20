@@ -116,6 +116,10 @@ final class NovelDetailViewController: UIViewController {
         output.scrollContentOffset
             .drive(with: self, onNext: { owner, offset in
                 owner.updateNavigationBarStyle(offset: offset.y)
+                
+                let stickyoffset = owner.rootView.headerView.frame.size.height - owner.view.safeAreaInsets.top
+                let showStickyTabBar = offset.y > stickyoffset
+                owner.rootView.updateStickyTabBarShow(showStickyTabBar)
             })
             .disposed(by: disposeBag)
         
@@ -134,6 +138,7 @@ final class NovelDetailViewController: UIViewController {
         output.selectedTab
             .drive(with: self, onNext: { owner, tab in
                 owner.rootView.tabBarView.updateTabBar(selected: tab)
+                owner.rootView.stickyTabBarView.updateTabBar(selected: tab)
             })
             .disposed(by: disposeBag)
     }
@@ -148,7 +153,9 @@ final class NovelDetailViewController: UIViewController {
             largeNovelCoverImageDismissButtonDidTap: rootView.largeNovelCoverImageView.dismissButton.rx.tap,
             backButtonDidTap: backButton.rx.tap,
             infoTabBarButtonDidTap: rootView.tabBarView.infoButton.rx.tap,
-            feedTabBarButtonDidTap: rootView.tabBarView.feedButton.rx.tap
+            feedTabBarButtonDidTap: rootView.tabBarView.feedButton.rx.tap,
+            stickyInfoTabBarButtonDidTap: rootView.stickyTabBarView.infoButton.rx.tap,
+            stickyFeedTabBarButtonDidTap: rootView.stickyTabBarView.feedButton.rx.tap
         )
     }
     
