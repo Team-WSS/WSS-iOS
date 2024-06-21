@@ -72,13 +72,13 @@ final class NovelDetailViewController: UIViewController {
     private func setUI() {
         backButton.do {
             $0.setImage(.icNavigateLeft.withTintColor(.wssWhite,
-                                                      renderingMode: .alwaysOriginal),
+                                                      renderingMode: .alwaysTemplate),
                         for: .normal)
         }
         
         dropDownButton.do {
             $0.setImage(.icDropDownDot.withTintColor(.wssWhite,
-                                                     renderingMode: .alwaysOriginal),
+                                                     renderingMode: .alwaysTemplate),
                         for: .normal)
         }
     }
@@ -173,12 +173,16 @@ final class NovelDetailViewController: UIViewController {
             navigationController?.navigationBar.shadowImage = UIImage()
             navigationController?.navigationBar.backgroundColor = .wssWhite
             navigationItem.title = self.navigationTitle
+            backButton.tintColor = .wssGray200
+            dropDownButton.tintColor = .wssGray200
         } else {
             rootView.statusBarView.backgroundColor = .clear
             navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
             navigationController?.navigationBar.shadowImage = nil
             navigationController?.navigationBar.backgroundColor = .clear
             navigationItem.title = ""
+            backButton.tintColor = .wssWhite
+            dropDownButton.tintColor = .wssWhite
         }
     }
 }
