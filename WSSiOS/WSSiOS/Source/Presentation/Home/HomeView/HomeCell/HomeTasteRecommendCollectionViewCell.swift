@@ -55,12 +55,10 @@ final class HomeTasteRecommendCollectionViewCell: UICollectionViewCell {
         }
         
         novelTitleLabel.do {
-            $0.font = .Label1
             $0.textColor = .wssBlack
         }
         
         novelAuthorLabel.do {
-            $0.font = .Body5
             $0.textColor = .wssGray200
             $0.lineBreakMode = .byTruncatingTail
         }
@@ -76,7 +74,6 @@ final class HomeTasteRecommendCollectionViewCell: UICollectionViewCell {
         }
         
         likeCountLabel.do {
-            $0.font = .Body5
             $0.textColor = .wssGray200
         }
         
@@ -91,12 +88,10 @@ final class HomeTasteRecommendCollectionViewCell: UICollectionViewCell {
         }
         
         ratingAverageLabel.do {
-            $0.font = .Body5
             $0.textColor = .wssGray200
         }
         
         ratingCountLabel.do {
-            $0.font = .Body5
             $0.textColor = .wssGray200
         }
     }
@@ -136,31 +131,32 @@ final class HomeTasteRecommendCollectionViewCell: UICollectionViewCell {
         }
         
         novelTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(likeStackView.snp.bottom).offset(2)
+            $0.top.equalTo(likeStackView.snp.bottom)
             $0.leading.equalToSuperview()
             $0.trailing.equalToSuperview().inset(23)
         }
         
         novelAuthorLabel.snp.makeConstraints {
-            $0.top.equalTo(novelTitleLabel.snp.bottom).offset(2)
-            $0.leading.equalToSuperview()
+            $0.top.equalTo(novelTitleLabel.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
         }
     }
     
     func bindData(data: TasteRecommendNovel) {
         self.novelImageView.image = UIImage(named: data.novelImage)
         self.novelTitleLabel.do {
-            $0.makeAttribute(with: data.novelTitle)?
-                .kerning(kerningPixel: -0.4)
-                .lineSpacing(spacingPercentage: 145)
-                .applyAttribute()
+            $0.applyWSSFont(.label1, with: data.novelTitle)
             $0.lineBreakMode = .byTruncatingTail
             $0.lineBreakStrategy = .hangulWordPriority
             $0.numberOfLines = 2
         }
-        self.novelAuthorLabel.text = data.novelAuthor
-        self.likeCountLabel.text = String(data.novelLikeCount)
-        self.ratingAverageLabel.text = String(data.novelRating)
-        self.ratingCountLabel.text = "(\(data.novelRatingCount))"
+        self.novelAuthorLabel.do {
+            $0.applyWSSFont(.body5, with: data.novelAuthor)
+            $0.lineBreakMode = .byTruncatingTail
+            $0.numberOfLines = 1
+        }
+        self.likeCountLabel.applyWSSFont(.body5, with: String(data.novelLikeCount))
+        self.ratingAverageLabel.applyWSSFont(.body5, with: String(data.novelRating))
+        self.ratingCountLabel.applyWSSFont(.body5, with: "(\(data.novelRatingCount))")
     }
 }
