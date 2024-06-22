@@ -30,12 +30,12 @@ final class NormalSearchHeaderCollectionView: UIView {
     
     private func setUI() {
         titleLabel.do {
-            $0.fontTitle2Attribute(with: StringLiterals.Search.novel)
+            $0.applyWSSFont(.title2, with: StringLiterals.Search.novel)
             $0.textColor = .wssBlack
         }
         
         novelCountLabel.do {
-            $0.fontBody4Attribute(with: "123")
+            $0.applyWSSFont(.body4, with: "124")
             $0.textColor = .wssGray100
         }
         

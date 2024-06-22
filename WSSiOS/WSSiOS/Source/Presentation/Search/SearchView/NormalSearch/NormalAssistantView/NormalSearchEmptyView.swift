@@ -47,7 +47,7 @@ final class NormalSearchEmptyView: UIView {
         }
         
         descriptionLabel.do {
-            $0.fontBody1Attribute(with: StringLiterals.Search.Empty.description)
+            $0.applyWSSFont(.body1, with: StringLiterals.Search.Empty.description)
             $0.textColor = .wssGray200
             $0.numberOfLines = 2
         }

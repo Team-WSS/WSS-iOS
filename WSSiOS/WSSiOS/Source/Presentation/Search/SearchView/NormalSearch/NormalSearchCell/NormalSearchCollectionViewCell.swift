@@ -118,7 +118,7 @@ final class NormalSearchCollectionViewCell: UICollectionViewCell {
         }
         
         ratingCountLabel.snp.makeConstraints {
-            $0.top.equalTo(likeCountLabel.snp.top)
+            $0.centerY.equalTo(ratingAverageLabel.snp.centerY)
             $0.leading.equalTo(ratingAverageLabel.snp.trailing).offset(2)
         }
         
@@ -144,17 +144,18 @@ final class NormalSearchCollectionViewCell: UICollectionViewCell {
     func bindData(data: NormalSearchNovel) {
         self.novelImageView.image = UIImage(named: data.novelImage)
         self.novelTitleLabel.do {
-            $0.fontTitle3Attribute(with: data.novelTitle)
+            $0.applyWSSFont(.title3, with: data.novelTitle)
             $0.lineBreakMode = .byTruncatingTail
         }
         self.novelAuthorLabel.do {
-            $0.fontBody5Attribute(with: data.novelAuthor)
+            $0.applyWSSFont(.body5, with: data.novelAuthor)
             $0.lineBreakMode = .byTruncatingTail
         }
         self.likeCountLabel.fontBody5Attribute(with: String(data.interestCount))
-        self.ratingAverageLabel.fontBody5Attribute(with: String(data.ratingAverage))
+        self.likeCountLabel.applyWSSFont(.body5, with: String(data.interestCount))
+        self.ratingAverageLabel.applyWSSFont(.body5, with: String(data.ratingAverage))
         self.ratingCountLabel.do {
-            $0.fontBody5Attribute(with: "(\(data.ratingCount))")
+            $0.applyWSSFont(.body5, with: "(\(data.ratingCount))")
             $0.lineBreakMode = .byTruncatingTail
         }
     }

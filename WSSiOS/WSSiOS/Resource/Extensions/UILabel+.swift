@@ -47,22 +47,21 @@ extension UILabel {
     
     func fontTitle2Attribute(with text: String) {
         self.do {
-            $0.font = .Title2
             $0.makeAttribute(with: text)?
                 .lineHeight(1.4)
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
+            $0.font = .Title2
         }
     }
     
     func fontTitle3Attribute(with text: String) {
         self.do {
-            $0.font = .Title3
             $0.makeAttribute(with: text)?
                 .lineHeight(1.5)
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
-            
+            $0.font = .Title3
         }
     }
     
@@ -98,11 +97,11 @@ extension UILabel {
     
     func fontBody4Attribute(with text: String) {
         self.do {
-            $0.font = .Body4
             $0.makeAttribute(with: text)?
                 .lineHeight(1.45)
                 .kerning(kerningPixel: -0.4)
                 .applyAttribute()
+            $0.font = .Body4
         }
     }
     
@@ -118,10 +117,10 @@ extension UILabel {
     
     func fontBody5Attribute(with text: String) {
         self.do {
-            $0.font = .Body5
             $0.makeAttribute(with: text)?
                 .lineHeight(1.45)
                 .applyAttribute()
+            $0.font = .Body5
         }
     }
     
