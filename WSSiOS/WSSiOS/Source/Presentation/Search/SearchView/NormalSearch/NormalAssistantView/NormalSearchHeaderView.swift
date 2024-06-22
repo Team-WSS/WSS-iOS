@@ -93,7 +93,7 @@ final class NormalSearchHeaderView: UIView {
             $0.leading.equalTo(backButton.snp.trailing).offset(16)
             $0.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(42)
-            $0.bottom.equalToSuperview().inset(13)
+            $0.bottom.equalToSuperview().inset(11)
         }
     }
 }

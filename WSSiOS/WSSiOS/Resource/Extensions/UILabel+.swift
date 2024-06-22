@@ -57,10 +57,12 @@ extension UILabel {
     
     func fontTitle3Attribute(with text: String) {
         self.do {
+            $0.font = .Title3
             $0.makeAttribute(with: text)?
+                .lineHeight(1.5)
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
-            $0.font = .Title3
+            
         }
     }
     
@@ -116,10 +118,10 @@ extension UILabel {
     
     func fontBody5Attribute(with text: String) {
         self.do {
+            $0.font = .Body5
             $0.makeAttribute(with: text)?
                 .lineHeight(1.45)
                 .applyAttribute()
-            $0.font = .Body5
         }
     }
     
@@ -274,7 +276,10 @@ extension TextAttributeSet {
             value: (lineHeight - self.label.font.lineHeight) / 2,
             range: NSRange(location: 0, length: attributedString.length)
         )
-        
+//        self.attributedString.addAttributes([
+//            .paragraphStyle: style,
+//            .baselineOffset: (lineHeight - self.label.font.lineHeight) / 4
+//            ], range: NSRange(location: 0, length: attributedString.length))
         return self
     }
     

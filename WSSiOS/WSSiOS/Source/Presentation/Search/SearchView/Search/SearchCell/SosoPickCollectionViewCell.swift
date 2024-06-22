@@ -36,6 +36,8 @@ final class SosoPickCollectionViewCell: UICollectionViewCell {
     
     private func setUI() {
         novelImageView.do {
+            // 서버 딜레이 시 기본으로 보여지는 썸네일 이미지
+            $0.image = .imgLoadingThumbnail
             $0.layer.cornerRadius = 8
             $0.clipsToBounds = true
         }

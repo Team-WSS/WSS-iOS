@@ -67,7 +67,6 @@ final class NormalSearchCollectionViewCell: UICollectionViewCell {
         }
         
         likeCountLabel.do {
-            
             $0.textColor = .wssGray200
         }
         
@@ -102,39 +101,41 @@ final class NormalSearchCollectionViewCell: UICollectionViewCell {
             $0.height.equalTo(105)
         }
         
-        likeImageView.snp.makeConstraints {
+        likeCountLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(21)
+            $0.leading.equalTo(likeImageView.snp.trailing).offset(3)
+        }
+        
+        likeImageView.snp.makeConstraints {
+            $0.size.equalTo(12)
+            $0.centerY.equalTo(likeCountLabel.snp.centerY)
             $0.leading.equalTo(novelImageView.snp.trailing).offset(18)
         }
         
-        likeCountLabel.snp.makeConstraints {
-            $0.centerY.equalTo(likeImageView.snp.centerY)
-            $0.leading.equalTo(likeImageView.snp.trailing).offset(2)
-        }
-        
-        ratingImageView.snp.makeConstraints {
-            $0.top.equalTo(likeImageView.snp.top)
-            $0.leading.equalTo(likeCountLabel.snp.trailing).offset(8)
-        }
-        
         ratingAverageLabel.snp.makeConstraints {
-            $0.centerY.equalTo(ratingImageView.snp.centerY)
-            $0.leading.equalTo(ratingImageView.snp.trailing).offset(2)
+            $0.top.equalTo(likeCountLabel.snp.top)
+            $0.leading.equalTo(ratingImageView.snp.trailing).offset(3)
         }
         
         ratingCountLabel.snp.makeConstraints {
-            $0.centerY.equalTo(ratingImageView.snp.centerY)
+            $0.top.equalTo(likeCountLabel.snp.top)
             $0.leading.equalTo(ratingAverageLabel.snp.trailing).offset(2)
         }
         
+        ratingImageView.snp.makeConstraints {
+            $0.size.equalTo(12)
+            $0.centerY.equalTo(ratingAverageLabel.snp.centerY)
+            $0.leading.equalTo(likeCountLabel.snp.trailing).offset(8)
+        }
+    
         novelTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(likeImageView.snp.bottom).offset(9)
+            $0.top.equalTo(likeCountLabel.snp.bottom).offset(4)
             $0.leading.equalTo(likeImageView.snp.leading)
             $0.trailing.equalToSuperview()
         }
         
         novelAuthorLabel.snp.makeConstraints {
-            $0.top.equalTo(novelTitleLabel.snp.bottom).offset(7)
+            $0.top.equalTo(novelTitleLabel.snp.bottom).offset(4)
             $0.leading.equalTo(likeImageView.snp.leading)
             $0.trailing.equalToSuperview()
         }
