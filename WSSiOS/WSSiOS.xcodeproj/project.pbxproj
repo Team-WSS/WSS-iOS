@@ -62,6 +62,22 @@
 		2CD229442B42E7A2005400BE /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 2CD229432B42E7A2005400BE /* RxRelay */; };
 		2CD229472B42E7C8005400BE /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 2CD229462B42E7C8005400BE /* Lottie */; };
 		2CD229572B42EA75005400BE /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD229562B42EA75005400BE /* UIColor+.swift */; };
+		2CD911422C0D87E0006B8D72 /* FeedService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD911412C0D87E0006B8D72 /* FeedService.swift */; };
+		2CD911442C0D884B006B8D72 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD911432C0D884B006B8D72 /* String+.swift */; };
+		2CD911462C0D88CA006B8D72 /* TotalFeedResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD911452C0D88CA006B8D72 /* TotalFeedResult.swift */; };
+		2CD911482C0D88F8006B8D72 /* FeedRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD911472C0D88F8006B8D72 /* FeedRepository.swift */; };
+		2CD9114A2C0D8948006B8D72 /* FeedDetailContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD911492C0D8948006B8D72 /* FeedDetailContentView.swift */; };
+		2CD9114C2C0D898E006B8D72 /* FeedNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD9114B2C0D898E006B8D72 /* FeedNavigationView.swift */; };
+		2CD9114E2C0D8A0B006B8D72 /* FeedUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD9114D2C0D8A0B006B8D72 /* FeedUserView.swift */; };
+		2CD911502C0D8A0D006B8D72 /* FeedReactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD9114F2C0D8A0D006B8D72 /* FeedReactView.swift */; };
+		2CD911522C0D8A0F006B8D72 /* FeedNovelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD911512C0D8A0F006B8D72 /* FeedNovelView.swift */; };
+		2CD911542C0D8A17006B8D72 /* FeedCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD911532C0D8A17006B8D72 /* FeedCollectionViewCell.swift */; };
+		2CD911562C0D8A1A006B8D72 /* FeedPageBarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD911552C0D8A1A006B8D72 /* FeedPageBarCollectionViewCell.swift */; };
+		2CD911582C0D8A21006B8D72 /* FeedPageBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD911572C0D8A21006B8D72 /* FeedPageBar.swift */; };
+		2CD9115A2C0D8A23006B8D72 /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD911592C0D8A23006B8D72 /* FeedView.swift */; };
+		2CD9115C2C0D8A26006B8D72 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD9115B2C0D8A26006B8D72 /* FeedViewController.swift */; };
+		2CD9115E2C0D8A28006B8D72 /* FeedGenreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD9115D2C0D8A28006B8D72 /* FeedGenreViewController.swift */; };
+		2CD911612C0D8B71006B8D72 /* FeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD911602C0D8B71006B8D72 /* FeedViewModel.swift */; };
 		2CE078182B80894B0028F2B0 /* ViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CE078172B80894B0028F2B0 /* ViewModelType.swift */; };
 		2CFE04332B66A45A0048F77A /* UICollectionViewCell+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CFE04322B66A45A0048F77A /* UICollectionViewCell+.swift */; };
 		3916EC862B89B42C007835B5 /* RxGesture in Frameworks */ = {isa = PBXBuildFile; productRef = 3916EC852B89B42C007835B5 /* RxGesture */; };
@@ -169,6 +185,7 @@
 		B97A43732C0251D90029C8D7 /* SosoPickCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B97A43722C0251D90029C8D7 /* SosoPickCollectionViewCell.swift */; };
 		B9B0CBD62BE29EA0002F4CF6 /* HomeInterestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B0CBD52BE29EA0002F4CF6 /* HomeInterestView.swift */; };
 		B9B0CBD82BE2A09B002F4CF6 /* HomeInterestCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B0CBD72BE2A09B002F4CF6 /* HomeInterestCollectionViewCell.swift */; };
+		B9CEDA0D2C01C97E00E62247 /* HomeUnregisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9CEDA0C2C01C97E00E62247 /* HomeUnregisterView.swift */; };
 		B9E565F52C04517A00DB51FF /* NormalSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E565F42C04517A00DB51FF /* NormalSearchViewController.swift */; };
 		B9E565F92C04520A00DB51FF /* NormalSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E565F82C04520A00DB51FF /* NormalSearchView.swift */; };
 		B9E565FC2C04526000DB51FF /* NormalSearchCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E565FB2C04526000DB51FF /* NormalSearchCollectionViewCell.swift */; };
@@ -274,6 +291,22 @@
 		2CD229242B42E687005400BE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2CD229292B42E687005400BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2CD229562B42EA75005400BE /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
+		2CD911412C0D87E0006B8D72 /* FeedService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedService.swift; sourceTree = "<group>"; };
+		2CD911432C0D884B006B8D72 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
+		2CD911452C0D88CA006B8D72 /* TotalFeedResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotalFeedResult.swift; sourceTree = "<group>"; };
+		2CD911472C0D88F8006B8D72 /* FeedRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedRepository.swift; sourceTree = "<group>"; };
+		2CD911492C0D8948006B8D72 /* FeedDetailContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDetailContentView.swift; sourceTree = "<group>"; };
+		2CD9114B2C0D898E006B8D72 /* FeedNavigationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedNavigationView.swift; sourceTree = "<group>"; };
+		2CD9114D2C0D8A0B006B8D72 /* FeedUserView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedUserView.swift; sourceTree = "<group>"; };
+		2CD9114F2C0D8A0D006B8D72 /* FeedReactView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedReactView.swift; sourceTree = "<group>"; };
+		2CD911512C0D8A0F006B8D72 /* FeedNovelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedNovelView.swift; sourceTree = "<group>"; };
+		2CD911532C0D8A17006B8D72 /* FeedCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedCollectionViewCell.swift; sourceTree = "<group>"; };
+		2CD911552C0D8A1A006B8D72 /* FeedPageBarCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedPageBarCollectionViewCell.swift; sourceTree = "<group>"; };
+		2CD911572C0D8A21006B8D72 /* FeedPageBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedPageBar.swift; sourceTree = "<group>"; };
+		2CD911592C0D8A23006B8D72 /* FeedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedView.swift; sourceTree = "<group>"; };
+		2CD9115B2C0D8A26006B8D72 /* FeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
+		2CD9115D2C0D8A28006B8D72 /* FeedGenreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedGenreViewController.swift; sourceTree = "<group>"; };
+		2CD911602C0D8B71006B8D72 /* FeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewModel.swift; sourceTree = "<group>"; };
 		2CE078172B80894B0028F2B0 /* ViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
 		2CFE04322B66A45A0048F77A /* UICollectionViewCell+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+.swift"; sourceTree = "<group>"; };
 		3916EC882B89D23D007835B5 /* ModuleFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleFactory.swift; sourceTree = "<group>"; };
@@ -371,6 +404,7 @@
 		B97A43722C0251D90029C8D7 /* SosoPickCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SosoPickCollectionViewCell.swift; sourceTree = "<group>"; };
 		B9B0CBD52BE29EA0002F4CF6 /* HomeInterestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeInterestView.swift; sourceTree = "<group>"; };
 		B9B0CBD72BE2A09B002F4CF6 /* HomeInterestCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeInterestCollectionViewCell.swift; sourceTree = "<group>"; };
+		B9CEDA0C2C01C97E00E62247 /* HomeUnregisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeUnregisterView.swift; sourceTree = "<group>"; };
 		B9E565F42C04517A00DB51FF /* NormalSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalSearchViewController.swift; sourceTree = "<group>"; };
 		B9E565F82C04520A00DB51FF /* NormalSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalSearchView.swift; sourceTree = "<group>"; };
 		B9E565FB2C04526000DB51FF /* NormalSearchCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalSearchCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -455,6 +489,7 @@
 				A1EF35442B52F76C00A94C53 /* UserNovelRepository.swift */,
 				A1EF35462B52F77800A94C53 /* MemoRepository.swift */,
 				A1EF35482B52F7B000A94C53 /* AvatarRepository.swift */,
+				2CD911472C0D88F8006B8D72 /* FeedRepository.swift */,
 				B971D8782C0388E0008934D8 /* SearchRepository.swift */,
 			);
 			path = Repository;
@@ -692,6 +727,7 @@
 				CDE596D92B57C4BE00D99DA1 /* UITextView+.swift */,
 				39B75ADD2B59BA87005DD8B9 /* UIScreen+.swift */,
 				A1CB37392B72935900CB290F /* UITableViewCell+.swift */,
+				2CD911432C0D884B006B8D72 /* String+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -719,6 +755,7 @@
 		2CD229502B42E9C8005400BE /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				2CD9113B2C0D878A006B8D72 /* Feed */,
 				2CA2F6562B5303A60045B4C2 /* Library */,
 				CD3E5A912B55097600C0A659 /* DeletePopup */,
 				CD3E5A6D2B5424A700C0A659 /* Memo */,
@@ -750,6 +787,73 @@
 				2CD2291B2B42E685005400BE /* AppDelegate.swift */,
 			);
 			path = App;
+			sourceTree = "<group>";
+		};
+		2CD9113B2C0D878A006B8D72 /* Feed */ = {
+			isa = PBXGroup;
+			children = (
+				2CD9115F2C0D8B65006B8D72 /* FeedViewModel */,
+				2CD9113D2C0D879F006B8D72 /* FeedView */,
+				2CD9113C2C0D878F006B8D72 /* FeedViewController */,
+			);
+			path = Feed;
+			sourceTree = "<group>";
+		};
+		2CD9113C2C0D878F006B8D72 /* FeedViewController */ = {
+			isa = PBXGroup;
+			children = (
+				2CD9115B2C0D8A26006B8D72 /* FeedViewController.swift */,
+				2CD9115D2C0D8A28006B8D72 /* FeedGenreViewController.swift */,
+			);
+			path = FeedViewController;
+			sourceTree = "<group>";
+		};
+		2CD9113D2C0D879F006B8D72 /* FeedView */ = {
+			isa = PBXGroup;
+			children = (
+				2CD911572C0D8A21006B8D72 /* FeedPageBar.swift */,
+				2CD911592C0D8A23006B8D72 /* FeedView.swift */,
+				2CD9113F2C0D87B2006B8D72 /* FeedCell */,
+				2CD9113E2C0D87A9006B8D72 /* FeedAssistantView */,
+			);
+			path = FeedView;
+			sourceTree = "<group>";
+		};
+		2CD9113E2C0D87A9006B8D72 /* FeedAssistantView */ = {
+			isa = PBXGroup;
+			children = (
+				2CD9114D2C0D8A0B006B8D72 /* FeedUserView.swift */,
+				2CD9114F2C0D8A0D006B8D72 /* FeedReactView.swift */,
+				2CD911512C0D8A0F006B8D72 /* FeedNovelView.swift */,
+				2CD9114B2C0D898E006B8D72 /* FeedNavigationView.swift */,
+				2CD911492C0D8948006B8D72 /* FeedDetailContentView.swift */,
+			);
+			path = FeedAssistantView;
+			sourceTree = "<group>";
+		};
+		2CD9113F2C0D87B2006B8D72 /* FeedCell */ = {
+			isa = PBXGroup;
+			children = (
+				2CD911532C0D8A17006B8D72 /* FeedCollectionViewCell.swift */,
+				2CD911552C0D8A1A006B8D72 /* FeedPageBarCollectionViewCell.swift */,
+			);
+			path = FeedCell;
+			sourceTree = "<group>";
+		};
+		2CD911402C0D87CD006B8D72 /* Feed */ = {
+			isa = PBXGroup;
+			children = (
+				2CD911412C0D87E0006B8D72 /* FeedService.swift */,
+			);
+			path = Feed;
+			sourceTree = "<group>";
+		};
+		2CD9115F2C0D8B65006B8D72 /* FeedViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				2CD911602C0D8B71006B8D72 /* FeedViewModel.swift */,
+			);
+			path = FeedViewModel;
 			sourceTree = "<group>";
 		};
 		2CE078192B8089670028F2B0 /* Protocol */ = {
@@ -1069,6 +1173,7 @@
 				C9063A962BD3F868006AD8F9 /* HomeRealtimePopularView.swift */,
 				B9B0CBD52BE29EA0002F4CF6 /* HomeInterestView.swift */,
 				B9181BDB2BEBDFA80024C800 /* HomeTasteRecommendView.swift */,
+				B9CEDA0C2C01C97E00E62247 /* HomeUnregisterView.swift */,
 			);
 			path = HomeAssistantView;
 			sourceTree = "<group>";
@@ -1147,6 +1252,7 @@
 				CD3E5AB22B565DFF00C0A659 /* NovelMemoResult.swift */,
 				399F29312B56633C00BBC12B /* NovelResult.swift */,
 				A123C49E2B56FB7800D32AEB /* SearchResult.swift */,
+				2CD911452C0D88CA006B8D72 /* TotalFeedResult.swift */,
 			);
 			path = DTO;
 			sourceTree = "<group>";
@@ -1154,6 +1260,7 @@
 		A1EF35562B52FAA300A94C53 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				2CD911402C0D87CD006B8D72 /* Feed */,
 				B971D87A2C038D72008934D8 /* Novel */,
 				A122C9D52B53026700DFCFE4 /* Memo */,
 				A122C9D72B53097A00DFCFE4 /* Foundation */,
@@ -1482,6 +1589,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2CD9115A2C0D8A23006B8D72 /* FeedView.swift in Sources */,
 				2C60307B2B55D9160031544C /* UIImageView+.swift in Sources */,
 				A1EF35692B52FD9B00A94C53 /* AvatarResult.swift in Sources */,
 				B971D8792C0388E0008934D8 /* SearchRepository.swift in Sources */,
@@ -1507,6 +1615,7 @@
 				A1708F182B4D8E2F00E35E50 /* HomeView.swift in Sources */,
 				2C19A4FD2BBA90E700D4D151 /* WSSDropDownTableView.swift in Sources */,
 				2CD2291C2B42E685005400BE /* AppDelegate.swift in Sources */,
+				2CD911542C0D8A17006B8D72 /* FeedCollectionViewCell.swift in Sources */,
 				A1708F162B4D8E2700E35E50 /* HomeHeaderView.swift in Sources */,
 				2CCBF9F02B4C1FD800D787C2 /* MyPageView.swift in Sources */,
 				39BA7F6F2BCAADDF0045B2B7 /* KeywordTag.swift in Sources */,
@@ -1522,6 +1631,7 @@
 				B97A436D2C0246400029C8D7 /* SearchBarView.swift in Sources */,
 				CD39F2C82B50124C00B73A5C /* NovelDetailMemoTableViewCell.swift in Sources */,
 				CD39F2D42B50D5C700B73A5C /* NovelDetailInfoReadDateView.swift in Sources */,
+				2CD9115C2C0D8A26006B8D72 /* FeedViewController.swift in Sources */,
 				CD39F2B62B4FE0E200B73A5C /* NovelDetailView.swift in Sources */,
 				CD39F2E42B50F23B00B73A5C /* NovelDetailInfoPlatformView.swift in Sources */,
 				B9E565FC2C04526000DB51FF /* NormalSearchCollectionViewCell.swift in Sources */,
@@ -1529,10 +1639,12 @@
 				CD39F2BD2B4FE98500B73A5C /* NovelDetailHeaderView.swift in Sources */,
 				2C19A4F92BBA8C3F00D4D151 /* WSSDropdownTableViewCell.swift in Sources */,
 				CD6613782B8B313700B90B2B /* DeletePopupViewModel.swift in Sources */,
+				2CD911442C0D884B006B8D72 /* String+.swift in Sources */,
 				CD39F2E62B50F2E900B73A5C /* NovelDetailInfoPlatformCollectionViewCell.swift in Sources */,
 				CDE596D82B5770CE00D99DA1 /* WSSToastView.swift in Sources */,
 				A1A1F9D42B4873B500705F44 /* SearchEmptyView.swift in Sources */,
 				C9AF1AE22BCC234300208BC9 /* HomeTodayPopularView.swift in Sources */,
+				2CD9115E2C0D8A28006B8D72 /* FeedGenreViewController.swift in Sources */,
 				39CC16902B529AB6003F56AE /* RegisterNormalReadStatusView.swift in Sources */,
 				B9B0CBD62BE29EA0002F4CF6 /* HomeInterestView.swift in Sources */,
 				3999BFF02B4E6FA800984832 /* RegisterNormalBannerImageView.swift in Sources */,
@@ -1543,22 +1655,27 @@
 				2C19A5002BBD56C900D4D151 /* WSSDropdown.swift in Sources */,
 				2CA2F6602B530B660045B4C2 /* LibraryView.swift in Sources */,
 				2CD2291E2B42E685005400BE /* SceneDelegate.swift in Sources */,
+				2CD911612C0D8B71006B8D72 /* FeedViewModel.swift in Sources */,
 				2CB613F52B575E6A00FC3F89 /* MyPageInfoView.swift in Sources */,
 				A1522CF52B8257F3003A4078 /* RecordViewModel.swift in Sources */,
+				2CD9114E2C0D8A0B006B8D72 /* FeedUserView.swift in Sources */,
 				B97A436F2C0249430029C8D7 /* SearchDetailInduceView.swift in Sources */,
 				39CD5E102B4FEC0F00668B9A /* RegisterNormalToggleButton.swift in Sources */,
 				A1A1F9CD2B48733200705F44 /* SearchViewController.swift in Sources */,
 				A122C9DF2B530A1A00DFCFE4 /* (null) in Sources */,
 				CD3E5A812B54253E00C0A659 /* MemoReadViewController.swift in Sources */,
 				CD3E5A742B5424D600C0A659 /* MemoEditView.swift in Sources */,
+				2CD911522C0D8A0F006B8D72 /* FeedNovelView.swift in Sources */,
 				CD3E5A812B54253E00C0A659 /* MemoReadViewController.swift in Sources */,
 				A197A4C12B56BB6000E5A701 /* UserCharacterResult.swift in Sources */,
 				2C19A4FB2BBA8E9600D4D151 /* WSSDropdownManager.swift in Sources */,
+				B9CEDA0D2C01C97E00E62247 /* HomeUnregisterView.swift in Sources */,
 				A1B903E52B58140800398890 /* UserNovelListResult.swift in Sources */,
 				B9E565F52C04517A00DB51FF /* NormalSearchViewController.swift in Sources */,
 				CD3E5A742B5424D600C0A659 /* MemoEditView.swift in Sources */,
 				39CC16812B51246E003F56AE /* RegisterNormalView.swift in Sources */,
 				39B75ADE2B59BA87005DD8B9 /* UIScreen+.swift in Sources */,
+				2CD911562C0D8A1A006B8D72 /* FeedPageBarCollectionViewCell.swift in Sources */,
 				39BA7F752BCABF1D0045B2B7 /* KeywordLink.swift in Sources */,
 				A122C9DB2B5309AF00DFCFE4 /* (null) in Sources */,
 				A1EF35432B52F75800A94C53 /* NovelRepository.swift in Sources */,
@@ -1599,9 +1716,12 @@
 				A122C9E32B530A8800DFCFE4 /* (null) in Sources */,
 				CD39F2C52B4FFE7400B73A5C /* NovelDetailCreateMemoView.swift in Sources */,
 				CD39F2DA2B50DDBF00B73A5C /* NovelDetailInfoGenreView.swift in Sources */,
+				2CD9114A2C0D8948006B8D72 /* FeedDetailContentView.swift in Sources */,
 				2CCBF9EE2B4C1FC500D787C2 /* MyPageViewController.swift in Sources */,
 				A1654F182B540524004F78E8 /* URLs.swift in Sources */,
+				2CD911462C0D88CA006B8D72 /* TotalFeedResult.swift in Sources */,
 				2C5D0F5F2B50523B00C76D3C /* MyPageChangeNicknameViewController.swift in Sources */,
+				2CD911422C0D87E0006B8D72 /* FeedService.swift in Sources */,
 				CD3E5A782B5424E600C0A659 /* MemoHeaderView.swift in Sources */,
 				2C01F9852B482EB700D90FFE /* UserRepository.swift in Sources */,
 				A1147A862B5063CA00141692 /* RecordHeaderView.swift in Sources */,
@@ -1620,6 +1740,7 @@
 				39CD5E062B4F20A600668B9A /* RegisterNormalDividerView.swift in Sources */,
 				A122C9DD2B5309D100DFCFE4 /* (null) in Sources */,
 				2C6030772B55263F0031544C /* UserResult.swift in Sources */,
+				2CD911482C0D88F8006B8D72 /* FeedRepository.swift in Sources */,
 				2C2491862B4ADC420096F255 /* WSSTabBarController.swift in Sources */,
 				392A292F2B4F07FF0065EB97 /* RegisterNormalReadDateView.swift in Sources */,
 				CD3E5A9A2B5509AB00C0A659 /* DeletePopupViewController.swift in Sources */,
@@ -1643,6 +1764,7 @@
 				395319272BE2865A00D075F4 /* KeywordManager.swift in Sources */,
 				A1DBB2FA2B4AA981000EE869 /* SearchCollectionViewCell.swift in Sources */,
 				CD39F2D62B50D9A900B73A5C /* NovelDetailInfoKeywordView.swift in Sources */,
+				2CD9114C2C0D898E006B8D72 /* FeedNavigationView.swift in Sources */,
 				CD39F2CA2B5038F400B73A5C /* NovelDetailInfoView.swift in Sources */,
 				CD39F2D22B50CE0600B73A5C /* NovelDetailInfoReadStatusTagView.swift in Sources */,
 				A1EF35452B52F76C00A94C53 /* UserNovelRepository.swift in Sources */,
@@ -1650,6 +1772,7 @@
 				CD3E5AB32B565DFF00C0A659 /* NovelMemoResult.swift in Sources */,
 				A122C9E12B530A4100DFCFE4 /* (null) in Sources */,
 				2C421FE82B96DC0F000DCB87 /* MyPageCustomModalViewModel.swift in Sources */,
+				2CD911502C0D8A0D006B8D72 /* FeedReactView.swift in Sources */,
 				CD39F2D02B50CD4700B73A5C /* NovelDetailInfoReadStatusView.swift in Sources */,
 				CD39F2E22B50EFCB00B73A5C /* LeftAlignedCollectionViewFlowLayout.swift in Sources */,
 				CD39F2B82B4FE0FB00B73A5C /* NovelDetailViewController.swift in Sources */,
@@ -1673,6 +1796,7 @@
 				CD39F2BF2B4FF6DF00B73A5C /* NovelDetailTabView.swift in Sources */,
 				A1EF35582B52FAC800A94C53 /* UserService.swift in Sources */,
 				A1654F1A2B54052E004F78E8 /* Config.swift in Sources */,
+				2CD911582C0D8A21006B8D72 /* FeedPageBar.swift in Sources */,
 				CD39F2D82B50DA6300B73A5C /* NovelDetailInfoDescriptionView.swift in Sources */,
 				C95EADD92BD4FE4C0060CF1A /* HomeRealTimePopularFeedView.swift in Sources */,
 				A1654F152B540513004F78E8 /* Networking.swift in Sources */,
