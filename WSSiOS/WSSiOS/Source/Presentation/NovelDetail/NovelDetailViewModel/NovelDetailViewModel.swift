@@ -19,7 +19,7 @@ final class NovelDetailViewModel: ViewModelType {
     private let novelId: Int
     
     private let viewWillAppearEvent = BehaviorRelay(value: false)
-    private let novelDetailBasicData = PublishSubject<NovelDetailBasicResult>()
+    private let novelDetailBasicData = PublishSubject<NovelDetailHeaderResult>()
     private let showLargeNovelCoverImage = BehaviorRelay<Bool>(value: false)
     
     //MARK: - Life Cycle
@@ -40,7 +40,7 @@ final class NovelDetailViewModel: ViewModelType {
     }
     
     struct Output {
-        let detailBasicData: Observable<NovelDetailBasicResult>
+        let detailBasicData: Observable<NovelDetailHeaderResult>
         let scrollContentOffset: Driver<CGPoint>
         let showLargeNovelCoverImage: Driver<Bool>
         let backButtonDidTap: Observable<Void>

@@ -134,7 +134,7 @@ final class NovelDetailHeaderInterestReviewButton: UIView {
     
     //MARK: - Data
     
-    func bindData(_ data: NovelDetailBasicResult) {
+    func bindData(_ data: NovelDetailHeaderResult) {
         if data.isUserNovelInterest {
             intersetImageView.image = .icReviewInterest
             interestLabel.textColor = .wssPrimary200

@@ -10,17 +10,17 @@ import Foundation
 import RxSwift
 
 protocol NovelDetailRepository {
-    func getNovelBasic(novelId: Int) -> Observable<NovelDetailBasicResult>
+    func getNovelBasic(novelId: Int) -> Observable<NovelDetailHeaderResult>
 }
 
 struct TestDetailRepository: NovelDetailRepository {
-    func getNovelBasic(novelId: Int) -> Observable<NovelDetailBasicResult> {
+    func getNovelBasic(novelId: Int) -> Observable<NovelDetailHeaderResult> {
         return Observable.just(
-            NovelDetailBasicResult(userNovelID: nil,
+            NovelDetailHeaderResult(userNovelID: nil,
                               novelTitle: "여자친구로 삼으려고 학생회장을 꼭 닮은 여자아이를 연성했다가 내가 하인이 됐습니다",
                               novelImage: "ImgNovelCoverDummy",
                               novelGenres: ["romanceFantasy", "romance"],
-                              novelGenreURL: "icGenreLabelRfDummy",
+                              novelGenreImage: "icGenreLabelRfDummy",
                               isNovelCompleted: false,
                               author: "이보라",
                               interestCount: 203,

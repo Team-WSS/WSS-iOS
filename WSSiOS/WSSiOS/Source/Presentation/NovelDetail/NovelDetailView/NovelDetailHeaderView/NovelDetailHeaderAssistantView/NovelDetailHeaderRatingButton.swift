@@ -67,7 +67,7 @@ final class NovelDetailHeaderRatingButton: UIButton {
     
     //MARK: - Data
     
-    func bindData(_ data: NovelDetailBasicResult) {
+    func bindData(_ data: NovelDetailHeaderResult) {
         
     }
     

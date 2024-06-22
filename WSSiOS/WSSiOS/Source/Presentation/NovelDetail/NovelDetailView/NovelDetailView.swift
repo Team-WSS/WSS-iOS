@@ -83,7 +83,7 @@ final class NovelDetailView: UIView {
     
     //MARK: - Data
     
-    func bindData(_ data: NovelDetailBasicResult) {
+    func bindData(_ data: NovelDetailHeaderResult) {
         headerView.bindData(data)
         largeNovelCoverImageView.bindData(data)
     }
