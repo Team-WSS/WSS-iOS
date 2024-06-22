@@ -275,10 +275,7 @@ extension TextAttributeSet {
             value: (lineHeight - self.label.font.lineHeight) / 2,
             range: NSRange(location: 0, length: attributedString.length)
         )
-//        self.attributedString.addAttributes([
-//            .paragraphStyle: style,
-//            .baselineOffset: (lineHeight - self.label.font.lineHeight) / 4
-//            ], range: NSRange(location: 0, length: attributedString.length))
+
         return self
     }
     
