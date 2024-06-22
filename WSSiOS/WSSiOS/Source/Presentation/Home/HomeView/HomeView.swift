@@ -64,7 +64,7 @@ final class HomeView: UIView {
         }
         
         contentView.snp.makeConstraints {
-            $0.top.equalTo(scrollView.contentLayoutGuide).inset(20)
+            $0.top.equalTo(scrollView.contentLayoutGuide).inset(18)
             $0.leading.trailing.bottom.equalTo(scrollView.contentLayoutGuide)
             $0.height.greaterThanOrEqualTo(self.snp.height).priority(.low)
             $0.width.equalTo(scrollView.snp.width)
@@ -88,7 +88,7 @@ final class HomeView: UIView {
         tasteRecommendView.snp.makeConstraints {
             $0.top.equalTo(interestView.snp.bottom).offset(36)
             $0.leading.trailing.bottom.equalToSuperview()
-            $0.height.equalTo(1750)
+            $0.height.equalTo(1800)
         }
     }
 }

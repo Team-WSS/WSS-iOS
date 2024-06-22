@@ -38,19 +38,13 @@ final class HomeTasteRecommendView: UIView {
     
     private func setUI() {
         titleLabel.do {
-            $0.font = .HeadLine1
+            $0.applyWSSFont(.headline1, with: StringLiterals.Home.Title.recommend)
             $0.textColor = .wssBlack
-            $0.makeAttribute(with: StringLiterals.Home.Title.recommend)?
-                .kerning(kerningPixel: -1.2)
-                .applyAttribute()
         }
         
         subTitleLabel.do {
-            $0.font = .Body2
+            $0.applyWSSFont(.body2, with: StringLiterals.Home.SubTitle.recommend)
             $0.textColor = .wssGray200
-            $0.makeAttribute(with: StringLiterals.Home.SubTitle.recommend)?
-                .kerning(kerningPixel: -0.6)
-                .applyAttribute()
         }
         
         tasteRecommendCollectionView.do {
