@@ -43,7 +43,7 @@ final class NovelDetailViewModel: ViewModelType {
         let detailBasicData: Observable<NovelDetailHeaderResult>
         let scrollContentOffset: Driver<CGPoint>
         let showLargeNovelCoverImage: Driver<Bool>
-        let backButtonDidTap: Observable<Void>
+        let backButtonEnabled: Observable<Void>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -78,7 +78,7 @@ final class NovelDetailViewModel: ViewModelType {
             detailBasicData: novelDetailBasicData.asObservable(),
             scrollContentOffset: scrollContentOffset.asDriver(),
             showLargeNovelCoverImage: showLargeNovelCoverImage.asDriver(),
-            backButtonDidTap: backButtonDidTap
+            backButtonEnabled: backButtonDidTap
         )
     }
 }
