@@ -2,7 +2,7 @@
 //  NormalSearchHeaderCollectionView.swift
 //  WSSiOS
 //
-//  Created by Seoyeon Choi on 6/3/24.
+//  Created by Seoyeon Choi on 6/23/24.
 //
 
 import UIKit
@@ -10,10 +10,10 @@ import UIKit
 import SnapKit
 import Then
 
-final class NormalSearchHeaderCollectionView: UICollectionReusableView {
+final class NormalSearchHeaderCollectionView: UIView {
     
     let titleLabel = UILabel()
-    let novelResultLabel = UILabel()
+    let novelCountLabel = UILabel()
     private let stackView = UIStackView()
     
     override init(frame: CGRect) {
@@ -34,7 +34,7 @@ final class NormalSearchHeaderCollectionView: UICollectionReusableView {
             $0.textColor = .wssBlack
         }
         
-        novelResultLabel.do {
+        novelCountLabel.do {
             $0.fontBody4Attribute(with: "123")
             $0.textColor = .wssGray100
         }
@@ -47,7 +47,7 @@ final class NormalSearchHeaderCollectionView: UICollectionReusableView {
     
     private func setHierarchy() {
         stackView.addArrangedSubviews(titleLabel,
-                                      novelResultLabel)
+                                      novelCountLabel)
         self.addSubview(stackView)
     }
     
@@ -57,4 +57,3 @@ final class NormalSearchHeaderCollectionView: UICollectionReusableView {
         }
     }
 }
-
