@@ -67,6 +67,10 @@ final class NovelDetailHeaderBackgroundImageView: UIView {
     //MARK: - Data
     
     func bindData(_ data: NovelDetailHeaderResult) {
-        bannerImageView.image = UIImage(named: data.novelImage)?.asBlurredBannerImage(radius: 40)
+        if let image = UIImage(named: data.novelImage) {
+            bannerImageView.image = image.asBlurredBannerImage(radius: 40)
+        } else {
+            bannerImageView.image = .imgLoadingThumbnail.asBlurredBannerImage(radius: 40)
+        }
     }
 }
