@@ -61,7 +61,7 @@ final class NovelDetailHeaderCoverImageButton: UIButton {
     }
     
     private func setHierarchy() {
-        self.addSubviews(novelCoverShadowView)
+        self.addSubview(novelCoverShadowView)
         novelCoverShadowView.addSubviews(novelCoverImageView,
                                          novelGenreLabelImageView)
                          
