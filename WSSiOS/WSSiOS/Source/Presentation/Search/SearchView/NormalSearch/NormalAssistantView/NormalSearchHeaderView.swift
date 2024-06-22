@@ -17,6 +17,7 @@ final class NormalSearchHeaderView: UIView {
     let backButton = UIButton()
     private let searchBackgroundView = UIView()
     private let searchTextField = UITextField()
+    private let searchClearButton = UIButton()
     private let searchImageView = UIImageView()
     
     //MARK: - Life Cycle
@@ -51,8 +52,12 @@ final class NormalSearchHeaderView: UIView {
         searchTextField.do {
             $0.textColor = .wssBlack
             $0.font = .Label1
-            $0.rightView = UIImageView(image: .icSearchCancel)
+            $0.rightView = searchClearButton
             $0.rightViewMode = .whileEditing
+        }
+        
+        searchClearButton.do {
+            $0.setImage(.icSearchCancel, for: .normal)
         }
         
         searchImageView.do {
