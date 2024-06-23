@@ -7,10 +7,15 @@
 
 import UIKit
 
+import SnapKit
+import Then
+
 final class FeedDetailView: UIView {
     
     //MARK: - Components
     
+    private let profileView = FeedDetailProfileView()
+    private let contentView = FeedDetailContentView()
     
     // MARK: - Life Cycle
     
@@ -33,10 +38,15 @@ final class FeedDetailView: UIView {
     }
     
     private func setHierarchy() {
-        
+        self.addSubviews(profileView,
+                         contentView)
     }
     
     private func setLayout() {
+        profileView.snp.makeConstraints {
+            $0.top.equalTo(safeAreaLayoutGuide.snp.top).inset(20)
+            $0.leading.equalToSuperview().inset(20)
+        }
         
     }
 }
