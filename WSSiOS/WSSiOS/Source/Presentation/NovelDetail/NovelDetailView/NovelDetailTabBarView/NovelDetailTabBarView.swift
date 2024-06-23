@@ -136,39 +136,28 @@ final class NovelDetailTabBarView: UIView {
     private func updateButtonTextColor(selected tab: Tab) {
         let isInfoSelected = tab == .info
         
-        UIView.transition(with: self.infoLabel,
-                          duration: self.animationDuration,
-                          options: .transitionCrossDissolve) {
-            self.infoLabel.textColor = isInfoSelected ? self.onColor : self.offColor
-        }
-        
-        UIView.transition(with: self.feedLabel,
-                          duration: self.animationDuration,
-                          options: .transitionCrossDissolve) {
-            self.feedLabel.textColor = isInfoSelected ? self.offColor : self.onColor
-        }
+        self.infoLabel.textColor = isInfoSelected ? self.onColor : self.offColor
+        self.feedLabel.textColor = isInfoSelected ? self.offColor : self.onColor
     }
     
     private func updateHilightLineView(selected tab: Tab) {
-        UIView.animate(withDuration: self.animationDuration) {
-            switch tab {
-            case .info:
-                self.highlightLineView.snp.remakeConstraints {
-                    $0.top.equalTo(self.infoButton.snp.bottom)
-                    $0.bottom.equalToSuperview()
-                    $0.leading.equalTo(self.infoButton.snp.leading)
-                    $0.width.equalToSuperview().dividedBy(2)
-                }
-            case .feed:
-                self.highlightLineView.snp.remakeConstraints {
-                    $0.top.equalTo(self.infoButton.snp.bottom)
-                    $0.bottom.equalToSuperview()
-                    $0.leading.equalTo(self.feedButton.snp.leading)
-                    $0.width.equalToSuperview().dividedBy(2)
-                }
+        switch tab {
+        case .info:
+            self.highlightLineView.snp.remakeConstraints {
+                $0.top.equalTo(self.infoButton.snp.bottom)
+                $0.bottom.equalToSuperview()
+                $0.leading.equalTo(self.infoButton.snp.leading)
+                $0.width.equalToSuperview().dividedBy(2)
             }
-            self.layoutIfNeeded()
+        case .feed:
+            self.highlightLineView.snp.remakeConstraints {
+                $0.top.equalTo(self.infoButton.snp.bottom)
+                $0.bottom.equalToSuperview()
+                $0.leading.equalTo(self.feedButton.snp.leading)
+                $0.width.equalToSuperview().dividedBy(2)
+            }
         }
+        self.layoutIfNeeded()
     }
 }
 

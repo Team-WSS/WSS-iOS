@@ -23,6 +23,9 @@ final class NovelDetailView: UIView {
     let tabBarView = NovelDetailTabBarView()
     let stickyTabBarView = NovelDetailTabBarView()
     
+    let infoView = NovelDetailInfoView()
+    let feedView = NovelDetailFeedView()
+    
     //MARK: - Life Cycle
     
     override init(frame: CGRect) {
@@ -53,6 +56,10 @@ final class NovelDetailView: UIView {
             $0.isHidden = true
         }
         
+        feedView.do {
+            $0.isHidden = true
+        }
+        
         scrollView.do {
             $0.contentInsetAdjustmentBehavior = .never
             $0.showsVerticalScrollIndicator = false
@@ -71,7 +78,9 @@ final class NovelDetailView: UIView {
                          largeNovelCoverImageView)
         scrollView.addSubview(contentView)
         contentView.addArrangedSubviews(headerView,
-                                        tabBarView)
+                                        tabBarView,
+                                        infoView,
+                                        feedView)
     }
     
     private func setLayout() {
@@ -104,5 +113,22 @@ final class NovelDetailView: UIView {
     
     func updateStickyTabBarShow(_ isShow: Bool) {
         stickyTabBarView.isHidden = !isShow
+    }
+    
+    func updateTab(selected tab: Tab) {
+        tabBarView.updateTabBar(selected: tab)
+        stickyTabBarView.updateTabBar(selected: tab)
+        updateSelectedTabView(selected: tab)
+    }
+    
+    private func updateSelectedTabView(selected tab: Tab) {
+        switch tab {
+        case .info:
+            infoView.isHidden = false
+            feedView.isHidden = true
+        case .feed:
+            infoView.isHidden = true
+            feedView.isHidden = false
+        }
     }
 }

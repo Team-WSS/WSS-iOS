@@ -137,8 +137,7 @@ final class NovelDetailViewController: UIViewController {
         
         output.selectedTab
             .drive(with: self, onNext: { owner, tab in
-                owner.rootView.tabBarView.updateTabBar(selected: tab)
-                owner.rootView.stickyTabBarView.updateTabBar(selected: tab)
+                owner.rootView.updateTab(selected: tab)
             })
             .disposed(by: disposeBag)
     }
