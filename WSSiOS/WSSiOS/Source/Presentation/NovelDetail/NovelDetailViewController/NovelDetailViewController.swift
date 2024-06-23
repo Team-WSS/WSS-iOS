@@ -127,15 +127,15 @@ final class NovelDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.showLargeNovelCoverImage
-            .drive(with: self, onNext: { owner, isShow in
-                owner.showLargeNovelCoverImageView(isShow)
-            })
-            .disposed(by: disposeBag)
-        
         output.backButtonEnabled
             .bind(with: self, onNext: { owner, _ in
                 owner.popToLastViewController()
+            })
+            .disposed(by: disposeBag)
+        
+        output.showLargeNovelCoverImage
+            .drive(with: self, onNext: { owner, isShow in
+                owner.showLargeNovelCoverImageView(isShow)
             })
             .disposed(by: disposeBag)
         
@@ -152,9 +152,9 @@ final class NovelDetailViewController: UIViewController {
         return NovelDetailViewModel.Input(
             viewWillAppearEvent:  viewWillAppearEvent.asObservable(),
             scrollContentOffset: rootView.scrollView.rx.contentOffset,
+            backButtonDidTap: backButton.rx.tap,
             novelCoverImageButtonDidTap: rootView.headerView.novelCoverImageButton.rx.tap,
             largeNovelCoverImageDismissButtonDidTap: rootView.largeNovelCoverImageView.dismissButton.rx.tap,
-            backButtonDidTap: backButton.rx.tap,
             infoTabBarButtonDidTap: rootView.tabBarView.infoButton.rx.tap,
             feedTabBarButtonDidTap: rootView.tabBarView.feedButton.rx.tap,
             stickyInfoTabBarButtonDidTap: rootView.stickyTabBarView.infoButton.rx.tap,

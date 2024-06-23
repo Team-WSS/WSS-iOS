@@ -35,9 +35,9 @@ final class NovelDetailViewModel: ViewModelType {
     struct Input {
         let viewWillAppearEvent: Observable<Bool>
         let scrollContentOffset: ControlProperty<CGPoint>
+        let backButtonDidTap: ControlEvent<Void>
         let novelCoverImageButtonDidTap: ControlEvent<Void>
         let largeNovelCoverImageDismissButtonDidTap: ControlEvent<Void>
-        let backButtonDidTap: ControlEvent<Void>
         let infoTabBarButtonDidTap: ControlEvent<Void>
         let feedTabBarButtonDidTap: ControlEvent<Void>
         let stickyInfoTabBarButtonDidTap: ControlEvent<Void>
@@ -47,8 +47,8 @@ final class NovelDetailViewModel: ViewModelType {
     struct Output {
         let detailBasicData: Observable<NovelDetailHeaderResult>
         let scrollContentOffset: Driver<CGPoint>
-        let showLargeNovelCoverImage: Driver<Bool>
         let backButtonEnabled: Observable<Void>
+        let showLargeNovelCoverImage: Driver<Bool>
         let selectedTab: Driver<Tab>
     }
     
@@ -107,8 +107,8 @@ final class NovelDetailViewModel: ViewModelType {
         return Output(
             detailBasicData: NovelDetailHeaderData.asObservable(),
             scrollContentOffset: scrollContentOffset.asDriver(),
-            showLargeNovelCoverImage: showLargeNovelCoverImage.asDriver(),
             backButtonEnabled: backButtonDidTap,
+            showLargeNovelCoverImage: showLargeNovelCoverImage.asDriver(),
             selectedTab: selectedTab.asDriver()
         )
     }
