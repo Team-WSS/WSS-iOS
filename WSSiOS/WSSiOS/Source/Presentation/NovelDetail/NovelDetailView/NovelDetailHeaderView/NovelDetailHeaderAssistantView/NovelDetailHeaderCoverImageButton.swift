@@ -48,13 +48,11 @@ final class NovelDetailHeaderCoverImageButton: UIButton {
                 $0.contentMode = .scaleAspectFill
                 $0.layer.cornerRadius = 8
                 $0.clipsToBounds = true
-                $0.isUserInteractionEnabled = false
                 
                 novelGenreLabelImageView.do {
                     $0.image = .imgGenreLabelBackgroundDummy
                     $0.contentMode = .scaleAspectFill
                     $0.clipsToBounds = true
-                    $0.isUserInteractionEnabled = false
                 }
             }
         }
