@@ -87,9 +87,13 @@ final class NovelDetailViewController: UIViewController {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.backButton)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.dropDownButton)
-        self.navigationController?.navigationBar.titleTextAttributes = [
+    }
+    
+    private func setNavigationBarTextAttribute() {
+        navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.font: UIFont.Title2,
-            NSAttributedString.Key.foregroundColor: UIColor.wssBlack
+            NSAttributedString.Key.foregroundColor: UIColor.wssBlack,
+            NSAttributedString.Key.kern: -0.6,
         ]
     }
     
@@ -171,7 +175,8 @@ final class NovelDetailViewController: UIViewController {
             navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
             navigationController?.navigationBar.shadowImage = UIImage()
             navigationController?.navigationBar.backgroundColor = .wssWhite
-            navigationItem.title = self.navigationTitle
+            navigationItem.title = navigationTitle
+            setNavigationBarTextAttribute()
             backButton.tintColor = .wssGray200
             dropDownButton.tintColor = .wssGray200
         } else {
@@ -184,4 +189,5 @@ final class NovelDetailViewController: UIViewController {
             dropDownButton.tintColor = .wssWhite
         }
     }
+    
 }
