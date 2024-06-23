@@ -132,8 +132,7 @@ final class HomeTasteRecommendCollectionViewCell: UICollectionViewCell {
         
         novelTitleLabel.snp.makeConstraints {
             $0.top.equalTo(likeStackView.snp.bottom)
-            $0.leading.equalToSuperview()
-            $0.trailing.equalToSuperview().inset(23)
+            $0.leading.trailing.equalToSuperview()
         }
         
         novelAuthorLabel.snp.makeConstraints {
