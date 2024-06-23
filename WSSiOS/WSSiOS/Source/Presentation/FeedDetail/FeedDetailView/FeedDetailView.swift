@@ -48,5 +48,9 @@ final class FeedDetailView: UIView {
             $0.leading.equalToSuperview().inset(20)
         }
         
+        contentView.snp.makeConstraints {
+            $0.top.equalTo(profileView.snp.bottom).offset(12)
+            $0.leading.trailing.equalToSuperview().inset(20)
+        }
     }
 }
