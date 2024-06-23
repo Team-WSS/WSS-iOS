@@ -16,7 +16,8 @@ final class NovelDetailHeaderCoverImageButton: UIButton {
     
     private let novelCoverShadowView = UIView()
     private let novelCoverImageView = UIImageView()
-    private let novelGenreLabelImageView = UIImageView()
+    private let novelGenreBookmarkBackgroundImageView = UIImageView()
+    private let novelGenreImageView = UIImageView()
     
     //MARK: - Life Cycle
     
@@ -49,10 +50,13 @@ final class NovelDetailHeaderCoverImageButton: UIButton {
                 $0.layer.cornerRadius = 8
                 $0.clipsToBounds = true
                 
-                novelGenreLabelImageView.do {
-                    $0.image = .imgGenreLabelBackgroundDummy
-                    $0.contentMode = .scaleAspectFill
-                    $0.clipsToBounds = true
+                novelGenreBookmarkBackgroundImageView.do {
+                    $0.image = .icGenreBackground
+                    $0.contentMode = .scaleAspectFit
+                    
+                    novelGenreImageView.do {
+                        $0.contentMode = .scaleAspectFit
+                    }
                 }
             }
         }
@@ -61,7 +65,8 @@ final class NovelDetailHeaderCoverImageButton: UIButton {
     private func setHierarchy() {
         self.addSubview(novelCoverShadowView)
         novelCoverShadowView.addSubviews(novelCoverImageView,
-                                         novelGenreLabelImageView)
+                                         novelGenreBookmarkBackgroundImageView)
+        novelGenreBookmarkBackgroundImageView.addSubview(novelGenreImageView)
                          
     }
     
@@ -70,16 +75,22 @@ final class NovelDetailHeaderCoverImageButton: UIButton {
             $0.edges.equalToSuperview()
             $0.height.equalTo(217)
             $0.width.equalTo(148)
-        }
-        
-        novelCoverImageView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
-        
-        novelGenreLabelImageView.snp.makeConstraints {
-            $0.bottom.equalToSuperview()
-            $0.trailing.equalToSuperview()
-            $0.size.equalTo(71)
+            
+            novelCoverImageView.snp.makeConstraints {
+                $0.edges.equalToSuperview()
+            }
+            
+            novelGenreBookmarkBackgroundImageView.snp.makeConstraints {
+                $0.bottom.equalToSuperview()
+                $0.trailing.equalToSuperview()
+                $0.size.equalTo(71)
+            }
+            
+            novelGenreImageView.snp.makeConstraints {
+                $0.trailing.equalToSuperview().inset(4)
+                $0.bottom.equalToSuperview().inset(5)
+                $0.size.equalTo(32)
+            }
         }
     }
     
@@ -87,6 +98,6 @@ final class NovelDetailHeaderCoverImageButton: UIButton {
     
     func bindData(_ data: NovelDetailHeaderResult) {
         novelCoverImageView.image = UIImage(named: data.novelImage)
-        novelGenreLabelImageView.image = UIImage(named: data.novelGenreImage)
+        novelGenreImageView.image = UIImage(named: data.novelGenreImage)
     }
 }
