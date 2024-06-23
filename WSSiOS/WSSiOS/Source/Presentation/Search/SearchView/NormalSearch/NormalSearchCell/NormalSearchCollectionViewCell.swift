@@ -49,6 +49,7 @@ final class NormalSearchCollectionViewCell: UICollectionViewCell {
         }
         
         novelImageView.do {
+            $0.image = .imgLoadingThumbnail
             $0.contentMode = .scaleAspectFill
             $0.layer.cornerRadius = 8
             $0.clipsToBounds = true
@@ -127,7 +128,7 @@ final class NormalSearchCollectionViewCell: UICollectionViewCell {
             $0.centerY.equalTo(ratingAverageLabel.snp.centerY)
             $0.leading.equalTo(likeCountLabel.snp.trailing).offset(8)
         }
-    
+        
         novelTitleLabel.snp.makeConstraints {
             $0.top.equalTo(likeCountLabel.snp.bottom).offset(4)
             $0.leading.equalTo(likeImageView.snp.leading)
@@ -142,7 +143,13 @@ final class NormalSearchCollectionViewCell: UICollectionViewCell {
     }
     
     func bindData(data: NormalSearchNovel) {
-        self.novelImageView.image = UIImage(named: data.novelImage)
+        if let novelImage = UIImage(named: data.novelImage) {
+            self.novelImageView.image = novelImage
+        }
+        else {
+            self.novelImageView.image = .imgLoadingThumbnail
+        }
+        
         self.novelTitleLabel.do {
             $0.applyWSSFont(.title3, with: data.novelTitle)
             $0.lineBreakMode = .byTruncatingTail
