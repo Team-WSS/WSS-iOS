@@ -129,7 +129,7 @@ final class NovelDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.backButtonDidTap
+        output.backButtonEnabled
             .bind(with: self, onNext: { owner, _ in
                 owner.popToLastViewController()
             })

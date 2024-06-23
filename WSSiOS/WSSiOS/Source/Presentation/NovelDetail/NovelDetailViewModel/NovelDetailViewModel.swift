@@ -19,7 +19,7 @@ final class NovelDetailViewModel: ViewModelType {
     private let novelId: Int
     
     private let viewWillAppearEvent = BehaviorRelay<Bool>(value: false)
-    private let novelDetailBasicData = PublishSubject<NovelDetailBasicResult>()
+    private let NovelDetailHeaderData = PublishSubject<NovelDetailHeaderResult>()
     private let showLargeNovelCoverImage = BehaviorRelay<Bool>(value: false)
     private let selectedTab = BehaviorRelay<Tab>(value: Tab.info)
     
@@ -45,10 +45,10 @@ final class NovelDetailViewModel: ViewModelType {
     }
     
     struct Output {
-        let detailBasicData: Observable<NovelDetailBasicResult>
+        let detailBasicData: Observable<NovelDetailHeaderResult>
         let scrollContentOffset: Driver<CGPoint>
         let showLargeNovelCoverImage: Driver<Bool>
-        let backButtonDidTap: Observable<Void>
+        let backButtonEnabled: Observable<Void>
         let selectedTab: Driver<Tab>
     }
     
@@ -58,9 +58,9 @@ final class NovelDetailViewModel: ViewModelType {
                 self.novelDetailRepository.getNovelBasic(novelId: self.novelId)
             }
             .subscribe(with: self, onNext: { owner, data in
-                owner.novelDetailBasicData.onNext(data)
+                owner.NovelDetailHeaderData.onNext(data)
             }, onError: { owner, error in
-                owner.novelDetailBasicData.onError(error)
+                owner.NovelDetailHeaderData.onError(error)
             })
             .disposed(by: disposeBag)
         
@@ -105,10 +105,10 @@ final class NovelDetailViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         return Output(
-            detailBasicData: novelDetailBasicData.asObservable(),
+            detailBasicData: NovelDetailHeaderData.asObservable(),
             scrollContentOffset: scrollContentOffset.asDriver(),
             showLargeNovelCoverImage: showLargeNovelCoverImage.asDriver(),
-            backButtonDidTap: backButtonDidTap,
+            backButtonEnabled: backButtonDidTap,
             selectedTab: selectedTab.asDriver()
         )
     }

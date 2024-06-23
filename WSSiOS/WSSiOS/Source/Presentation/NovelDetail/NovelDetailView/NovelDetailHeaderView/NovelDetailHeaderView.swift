@@ -48,7 +48,7 @@ final class NovelDetailHeaderView: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubviews(stackView)
+        self.addSubview(stackView)
         stackView.addArrangedSubviews(bannerBackgroundImageView,
                                       novelCoverImageButton,
                                       novelInfoView,
@@ -90,7 +90,7 @@ final class NovelDetailHeaderView: UIView {
     
     //MARK: - Data
     
-    func bindData(_ data: NovelDetailBasicResult) {
+    func bindData(_ data: NovelDetailHeaderResult) {
         bannerBackgroundImageView.bindData(data)
         novelCoverImageButton.bindData(data)
         novelInfoView.bindData(data)

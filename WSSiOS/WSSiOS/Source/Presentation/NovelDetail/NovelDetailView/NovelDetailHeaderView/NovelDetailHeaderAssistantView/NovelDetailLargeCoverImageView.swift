@@ -73,7 +73,7 @@ final class NovelDetailLargeCoverImageView: UIView {
     
     //MARK: - Data
     
-    func bindData(_ data: NovelDetailBasicResult) {
+    func bindData(_ data: NovelDetailHeaderResult) {
         novelCoverImageView.image = UIImage(named: data.novelImage)
     }
 }
