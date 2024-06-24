@@ -7,6 +7,7 @@
 
 import UIKit
 
+// Font
 extension UILabel {
     func applyWSSFont(_ font: WSSFont, with text: String?) {
         self.applyFontAttribute(text: text,
