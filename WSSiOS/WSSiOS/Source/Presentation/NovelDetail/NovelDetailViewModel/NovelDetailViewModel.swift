@@ -36,6 +36,7 @@ final class NovelDetailViewModel: ViewModelType {
         let scrollContentOffset: ControlProperty<CGPoint>
         let novelCoverImageButtonDidTap: ControlEvent<Void>
         let largeNovelCoverImageDismissButtonDidTap: ControlEvent<Void>
+        let largeNovelCoverImageBackgroundDidTap: ControlEvent<Void>
         let backButtonDidTap: ControlEvent<Void>
     }
     
@@ -69,6 +70,13 @@ final class NovelDetailViewModel: ViewModelType {
                 owner.showLargeNovelCoverImage.accept(false)
             })
             .disposed(by: disposeBag)
+        
+        input.largeNovelCoverImageBackgroundDidTap
+            .bind(with: self, onNext: { owner, _ in
+                owner.showLargeNovelCoverImage.accept(false)
+            })
+            .disposed(by: disposeBag)
+        
         
         let scrollContentOffset = input.scrollContentOffset
         

@@ -19,7 +19,7 @@ final class NovelDetailView: UIView {
     private let contentView = UIStackView()
     
     let headerView = NovelDetailHeaderView()
-    let largeNovelCoverImageView = NovelDetailLargeCoverImageView()
+    let largeNovelCoverImageButton = NovelDetailLargeCoverImageButton()
     
     //MARK: - Life Cycle
     
@@ -61,7 +61,7 @@ final class NovelDetailView: UIView {
     private func setHierarchy() {
         self.addSubviews(scrollView,
                          statusBarView,
-                         largeNovelCoverImageView)
+                         largeNovelCoverImageButton)
         scrollView.addSubview(contentView)
         contentView.addArrangedSubview(headerView)
     }
@@ -76,7 +76,7 @@ final class NovelDetailView: UIView {
             $0.width.equalToSuperview()
         }
         
-        largeNovelCoverImageView.snp.makeConstraints {
+        largeNovelCoverImageButton.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
     }
@@ -85,6 +85,6 @@ final class NovelDetailView: UIView {
     
     func bindData(_ data: NovelDetailHeaderResult) {
         headerView.bindData(data)
-        largeNovelCoverImageView.bindData(data)
+        largeNovelCoverImageButton.bindData(data)
     }
 }
