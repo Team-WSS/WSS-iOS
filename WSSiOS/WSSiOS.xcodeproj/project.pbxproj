@@ -128,7 +128,6 @@
 		39D4A5D42BDCC1B1004FC834 /* NovelDetailHeaderBackgroundImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5D32BDCC1B1004FC834 /* NovelDetailHeaderBackgroundImageView.swift */; };
 		39D4A5D62BDD0913004FC834 /* NovelDetailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5D52BDD0913004FC834 /* NovelDetailHeaderView.swift */; };
 		39D4A5D82BDD23FE004FC834 /* NovelDetailHeaderCoverImageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5D72BDD23FE004FC834 /* NovelDetailHeaderCoverImageButton.swift */; };
-		39D4A5DA2BDD3202004FC834 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5D92BDD3202004FC834 /* TestViewController.swift */; };
 		39D4A5DC2BDD420D004FC834 /* NovelDetailHeaderInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5DB2BDD420D004FC834 /* NovelDetailHeaderInfoView.swift */; };
 		39D4A5DE2BDE48FD004FC834 /* NovelDetailHeaderReviewInfoElementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5DD2BDE48FD004FC834 /* NovelDetailHeaderReviewInfoElementView.swift */; };
 		39D4A5E02BDF746C004FC834 /* NovelGenre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5DF2BDF746C004FC834 /* NovelGenre.swift */; };
@@ -359,7 +358,6 @@
 		39D4A5D32BDCC1B1004FC834 /* NovelDetailHeaderBackgroundImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailHeaderBackgroundImageView.swift; sourceTree = "<group>"; };
 		39D4A5D52BDD0913004FC834 /* NovelDetailHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailHeaderView.swift; sourceTree = "<group>"; };
 		39D4A5D72BDD23FE004FC834 /* NovelDetailHeaderCoverImageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailHeaderCoverImageButton.swift; sourceTree = "<group>"; };
-		39D4A5D92BDD3202004FC834 /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		39D4A5DB2BDD420D004FC834 /* NovelDetailHeaderInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailHeaderInfoView.swift; sourceTree = "<group>"; };
 		39D4A5DD2BDE48FD004FC834 /* NovelDetailHeaderReviewInfoElementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailHeaderReviewInfoElementView.swift; sourceTree = "<group>"; };
 		39D4A5DF2BDF746C004FC834 /* NovelGenre.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelGenre.swift; sourceTree = "<group>"; };
@@ -1031,7 +1029,6 @@
 			isa = PBXGroup;
 			children = (
 				39D4A5C82BDA4C5A004FC834 /* NovelDetailViewController.swift */,
-				39D4A5D92BDD3202004FC834 /* TestViewController.swift */,
 			);
 			path = NovelDetailViewController;
 			sourceTree = "<group>";
@@ -1733,7 +1730,6 @@
 				2C5D0F5D2B50100000C76D3C /* MyPageSettingCollectionViewCell.swift in Sources */,
 				C9AF1AE42BCC28EE00208BC9 /* HomeTodayPopularCollectionViewCell.swift in Sources */,
 				39CC168A2B51D965003F56AE /* RegisterSuccessView.swift in Sources */,
-				39D4A5DA2BDD3202004FC834 /* TestViewController.swift in Sources */,
 				2C5D0F5B2B500EF100C76D3C /* MyPageSettingView.swift in Sources */,
 				CDE596DA2B57C4BE00D99DA1 /* UITextView+.swift in Sources */,
 				2C5D0F612B50525700C76D3C /* MyPageChangeNicknameView.swift in Sources */,

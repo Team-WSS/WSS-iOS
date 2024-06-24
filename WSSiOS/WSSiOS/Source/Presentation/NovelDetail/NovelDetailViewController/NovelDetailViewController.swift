@@ -154,7 +154,8 @@ final class NovelDetailViewController: UIViewController {
             scrollContentOffset: rootView.scrollView.rx.contentOffset,
             backButtonDidTap: backButton.rx.tap,
             novelCoverImageButtonDidTap: rootView.headerView.novelCoverImageButton.rx.tap,
-            largeNovelCoverImageDismissButtonDidTap: rootView.largeNovelCoverImageView.dismissButton.rx.tap,
+            largeNovelCoverImageDismissButtonDidTap: rootView.largeNovelCoverImageButton.dismissButton.rx.tap,
+            largeNovelCoverImageBackgroundDidTap: rootView.largeNovelCoverImageButton.rx.tap,
             infoTabBarButtonDidTap: rootView.tabBarView.infoButton.rx.tap,
             feedTabBarButtonDidTap: rootView.tabBarView.feedButton.rx.tap,
             stickyInfoTabBarButtonDidTap: rootView.stickyTabBarView.infoButton.rx.tap,
@@ -165,7 +166,7 @@ final class NovelDetailViewController: UIViewController {
     //MARK: - Custom Method
     
     private func showLargeNovelCoverImageView(_ isShow: Bool) {
-        rootView.largeNovelCoverImageView.isHidden = !isShow
+        rootView.largeNovelCoverImageButton.isHidden = !isShow
         self.navigationController?.setNavigationBarHidden(isShow, animated: false)
     }
     

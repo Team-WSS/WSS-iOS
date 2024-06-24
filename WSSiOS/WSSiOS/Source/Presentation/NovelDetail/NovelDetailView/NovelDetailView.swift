@@ -19,9 +19,9 @@ final class NovelDetailView: UIView {
     private let contentView = UIStackView()
     
     let headerView = NovelDetailHeaderView()
-    let largeNovelCoverImageView = NovelDetailLargeCoverImageView()
-    let tabBarView = NovelDetailTabBarView()
+    let largeNovelCoverImageButton = NovelDetailLargeCoverImageButton()
     let stickyTabBarView = NovelDetailTabBarView()
+    let tabBarView = NovelDetailTabBarView()
     
     let infoView = NovelDetailInfoView()
     let feedView = NovelDetailFeedView()
@@ -75,7 +75,7 @@ final class NovelDetailView: UIView {
         self.addSubviews(scrollView,
                          statusBarView,
                          stickyTabBarView,
-                         largeNovelCoverImageView)
+                         largeNovelCoverImageButton)
         scrollView.addSubview(contentView)
         contentView.addArrangedSubviews(headerView,
                                         tabBarView,
@@ -99,7 +99,7 @@ final class NovelDetailView: UIView {
             $0.width.equalToSuperview()
         }
         
-        largeNovelCoverImageView.snp.makeConstraints {
+        largeNovelCoverImageButton.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
     }
@@ -108,7 +108,7 @@ final class NovelDetailView: UIView {
     
     func bindData(_ data: NovelDetailHeaderResult) {
         headerView.bindData(data)
-        largeNovelCoverImageView.bindData(data)
+        largeNovelCoverImageButton.bindData(data)
     }
     
     func updateStickyTabBarShow(_ isShow: Bool) {

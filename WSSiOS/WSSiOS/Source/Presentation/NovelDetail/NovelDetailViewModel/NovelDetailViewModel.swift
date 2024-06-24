@@ -38,6 +38,7 @@ final class NovelDetailViewModel: ViewModelType {
         let backButtonDidTap: ControlEvent<Void>
         let novelCoverImageButtonDidTap: ControlEvent<Void>
         let largeNovelCoverImageDismissButtonDidTap: ControlEvent<Void>
+        let largeNovelCoverImageBackgroundDidTap: ControlEvent<Void>
         let infoTabBarButtonDidTap: ControlEvent<Void>
         let feedTabBarButtonDidTap: ControlEvent<Void>
         let stickyInfoTabBarButtonDidTap: ControlEvent<Void>
@@ -75,6 +76,13 @@ final class NovelDetailViewModel: ViewModelType {
                 owner.showLargeNovelCoverImage.accept(false)
             })
             .disposed(by: disposeBag)
+        
+        input.largeNovelCoverImageBackgroundDidTap
+            .bind(with: self, onNext: { owner, _ in
+                owner.showLargeNovelCoverImage.accept(false)
+            })
+            .disposed(by: disposeBag)
+        
         
         let scrollContentOffset = input.scrollContentOffset
         

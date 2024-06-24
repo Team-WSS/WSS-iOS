@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class NovelDetailLargeCoverImageView: UIView {
+final class NovelDetailLargeCoverImageButton: UIButton {
     
     //MARK: - Components
     
@@ -43,6 +43,7 @@ final class NovelDetailLargeCoverImageView: UIView {
             $0.contentMode = .scaleAspectFill
             $0.clipsToBounds = true
             $0.layer.cornerRadius = 14
+            $0.isUserInteractionEnabled = true
         }
         
         dismissButton.do {
