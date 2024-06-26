@@ -136,6 +136,7 @@
 		39F850642C28202300E93EBC /* NovelDetailInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39F850632C28202300E93EBC /* NovelDetailInfoView.swift */; };
 		39F850662C2820FF00E93EBC /* NovelDetailFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39F850652C2820FF00E93EBC /* NovelDetailFeedView.swift */; };
 		39F850682C29B06600E93EBC /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39F850672C29B06600E93EBC /* TestViewController.swift */; };
+		39F8506A2C29C1FB00E93EBC /* NovelDetailInfoResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39F850692C29C1FB00E93EBC /* NovelDetailInfoResult.swift */; };
 		A1147A802B50638200141692 /* RecordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1147A7F2B50638200141692 /* RecordViewController.swift */; };
 		A1147A822B5063B300141692 /* RecordEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1147A812B5063B300141692 /* RecordEmptyView.swift */; };
 		A1147A842B5063BC00141692 /* RecordResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1147A832B5063BC00141692 /* RecordResultView.swift */; };
@@ -366,6 +367,7 @@
 		39F850632C28202300E93EBC /* NovelDetailInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoView.swift; sourceTree = "<group>"; };
 		39F850652C2820FF00E93EBC /* NovelDetailFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailFeedView.swift; sourceTree = "<group>"; };
 		39F850672C29B06600E93EBC /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
+		39F850692C29C1FB00E93EBC /* NovelDetailInfoResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoResult.swift; sourceTree = "<group>"; };
 		A1147A7F2B50638200141692 /* RecordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordViewController.swift; sourceTree = "<group>"; };
 		A1147A812B5063B300141692 /* RecordEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordEmptyView.swift; sourceTree = "<group>"; };
 		A1147A832B5063BC00141692 /* RecordResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordResultView.swift; sourceTree = "<group>"; };
@@ -1351,6 +1353,7 @@
 				399F29312B56633C00BBC12B /* NovelResult.swift */,
 				A123C49E2B56FB7800D32AEB /* SearchResult.swift */,
 				39D4A5D12BDC0902004FC834 /* NovelDetailHeaderResult.swift */,
+				39F850692C29C1FB00E93EBC /* NovelDetailInfoResult.swift */,
 				2CD911452C0D88CA006B8D72 /* TotalFeedResult.swift */,
 			);
 			path = DTO;
@@ -1665,6 +1668,7 @@
 				2CD2291C2B42E685005400BE /* AppDelegate.swift in Sources */,
 				2CD911542C0D8A17006B8D72 /* FeedCollectionViewCell.swift in Sources */,
 				A1708F162B4D8E2700E35E50 /* HomeHeaderView.swift in Sources */,
+				39F8506A2C29C1FB00E93EBC /* NovelDetailInfoResult.swift in Sources */,
 				2CCBF9F02B4C1FD800D787C2 /* MyPageView.swift in Sources */,
 				39BA7F6F2BCAADDF0045B2B7 /* KeywordTag.swift in Sources */,
 				39AF30D12B50182F00FDC1F3 /* RegisterNormalReadStatusButton.swift in Sources */,

@@ -10,11 +10,11 @@ import UIKit
 import SnapKit
 import Then
 
-final class NovelDetailInfoView: UIButton {
+final class NovelDetailInfoView: UIView {
     
     //MARK: - Components
     
-    private let dummyLabel = UILabel()
+    private let stackView = UIStackView()
     
     //MARK: - Life Cycle
     
@@ -33,27 +33,31 @@ final class NovelDetailInfoView: UIButton {
     //MARK: - UI
     
     private func setUI() {
-        self.do {
-            $0.backgroundColor = .wssWhite
-        }
+        self.backgroundColor = .wssGray50
         
-        dummyLabel.do {
-            $0.applyWSSFont(.headline1, with: "Info View")
-            $0.textColor = .wssGray80
+        stackView.do {
+            $0.axis = .vertical
+            $0.alignment = .center
         }
     }
     
     private func setHierarchy() {
-        self.addSubview(dummyLabel)
+        self.addSubview(stackView)
     }
     
     private func setLayout() {
-        self.snp.makeConstraints {
-            $0.height.equalTo(1000)
+        stackView.do {
+            $0.snp.makeConstraints {
+                $0.top.equalToSuperview()
+                $0.bottom.equalToSuperview().inset(16)
+                $0.horizontalEdges.equalToSuperview()
+            }
         }
+    }
+    
+    //MARK: - Data
+    
+    func bindData(_ data: NovelDetailHeaderResult) {
         
-        dummyLabel.snp.makeConstraints {
-            $0.center.equalToSuperview()
-        }
     }
 }
