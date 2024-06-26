@@ -56,7 +56,7 @@ final class NovelDetailViewModel: ViewModelType {
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         input.viewWillAppearEvent
             .flatMapLatest { _ in
-                self.novelDetailRepository.getNovelBasic(novelId: self.novelId)
+                self.novelDetailRepository.getNovelDetailHeaderData(novelId: self.novelId)
             }
             .subscribe(with: self, onNext: { owner, data in
                 owner.NovelDetailHeaderData.onNext(data)
