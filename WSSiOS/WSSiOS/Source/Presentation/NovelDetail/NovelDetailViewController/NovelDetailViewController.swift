@@ -153,6 +153,12 @@ final class NovelDetailViewController: UIViewController {
                 owner.rootView.updateTab(selected: tab)
             })
             .disposed(by: disposeBag)
+        
+        output.isInfoDescriptionExpended
+            .drive(with: self, onNext: { owner, isExpended in
+                owner.rootView.infoView.descriptionSection.updateAccordionButton(isExpended)
+            })
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Actions
@@ -168,7 +174,8 @@ final class NovelDetailViewController: UIViewController {
             infoTabBarButtonDidTap: rootView.tabBarView.infoButton.rx.tap,
             feedTabBarButtonDidTap: rootView.tabBarView.feedButton.rx.tap,
             stickyInfoTabBarButtonDidTap: rootView.stickyTabBarView.infoButton.rx.tap,
-            stickyFeedTabBarButtonDidTap: rootView.stickyTabBarView.feedButton.rx.tap
+            stickyFeedTabBarButtonDidTap: rootView.stickyTabBarView.feedButton.rx.tap,
+            descriptionAccordionButtonDidTap: rootView.infoView.descriptionSection.accordionButton.rx.tap
         )
     }
     

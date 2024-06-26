@@ -15,14 +15,13 @@ final class NovelDetailInfoDescriptionSection: UIView {
     //MARK: - Properites
     
     private let basicDescriptionLineLimit: Int = 3
-    private let expendedDescriptionLineLimit: Int? = nil
+    private let expendedDescriptionLineLimit: Int = 0
     
     //MARK: - Components
     
-    private let stackView = UIStackView()
     private let titleLabel = UILabel()
     private let descriptionLabel = UILabel()
-    private let accordionButton = UIButton()
+    let accordionButton = UIButton()
     private let accordionImageView = UIImageView()
     
     //MARK: - Life Cycle
@@ -46,11 +45,6 @@ final class NovelDetailInfoDescriptionSection: UIView {
             $0.backgroundColor = .wssWhite
         }
         
-        stackView.do {
-            $0.axis = .vertical
-            $0.alignment = .center
-        }
-        
         titleLabel.do {
             $0.applyWSSFont(.title1,
                             with: StringLiterals.NovelDetail.Info.description)
@@ -64,33 +58,27 @@ final class NovelDetailInfoDescriptionSection: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubview(stackView)
-        stackView.addArrangedSubviews(titleLabel,
-                                      descriptionLabel,
-                                      accordionButton)
+        self.addSubviews(titleLabel,
+                         descriptionLabel,
+                         accordionButton)
         accordionButton.addSubview(accordionImageView)
     }
     
     private func setLayout() {
-        stackView.do {
-            $0.snp.makeConstraints {
-                $0.top.equalToSuperview().inset(40)
-                $0.bottom.equalToSuperview()
-                $0.horizontalEdges.equalToSuperview().inset(20)
-            }
-            
-            $0.spacing = 10
-        }
-        
         titleLabel.snp.makeConstraints {
-            $0.horizontalEdges.equalToSuperview()
+            $0.top.equalToSuperview().inset(40)
+            $0.horizontalEdges.equalToSuperview().inset(20)
         }
         
         descriptionLabel.snp.makeConstraints {
-            $0.horizontalEdges.equalToSuperview()
+            $0.top.equalTo(titleLabel.snp.bottom).offset(10)
+            $0.horizontalEdges.equalToSuperview().inset(20)
         }
         
         accordionButton.snp.makeConstraints {
+            $0.top.equalTo(descriptionLabel.snp.bottom).offset(10)
+            $0.bottom.equalToSuperview()
+            $0.centerX.equalToSuperview()
             $0.size.equalTo(44)
         }
         
@@ -108,6 +96,11 @@ final class NovelDetailInfoDescriptionSection: UIView {
     }
     
     //MARK: - Custom Method
+    
+    func updateAccordionButton(_ isExpended: Bool) {
+        self.accordionImageView.image = isExpended ? .icChveronUp : .icChveronDown
+        self.descriptionLabel.numberOfLines = isExpended ? self.expendedDescriptionLineLimit : self.basicDescriptionLineLimit
+    }
     
     private func setDescriptionLabelText(with text: String) {
         descriptionLabel.do {

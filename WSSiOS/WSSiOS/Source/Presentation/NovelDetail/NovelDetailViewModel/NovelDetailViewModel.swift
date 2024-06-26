@@ -24,6 +24,8 @@ final class NovelDetailViewModel: ViewModelType {
     private let showLargeNovelCoverImage = BehaviorRelay<Bool>(value: false)
     private let selectedTab = BehaviorRelay<Tab>(value: Tab.info)
     
+    private let isInfoDescriptionExpended = BehaviorRelay<Bool>(value: false)
+    
     //MARK: - Life Cycle
     
     init(detailRepository: NovelDetailRepository, novelId: Int = 0) {
@@ -44,6 +46,7 @@ final class NovelDetailViewModel: ViewModelType {
         let feedTabBarButtonDidTap: ControlEvent<Void>
         let stickyInfoTabBarButtonDidTap: ControlEvent<Void>
         let stickyFeedTabBarButtonDidTap: ControlEvent<Void>
+        let descriptionAccordionButtonDidTap: ControlEvent<Void>
     }
     
     struct Output {
@@ -53,6 +56,7 @@ final class NovelDetailViewModel: ViewModelType {
         let backButtonEnabled: Observable<Void>
         let showLargeNovelCoverImage: Driver<Bool>
         let selectedTab: Driver<Tab>
+        let isInfoDescriptionExpended: Driver<Bool>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -125,13 +129,20 @@ final class NovelDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        input.descriptionAccordionButtonDidTap
+            .bind(with: self, onNext: { owner, _ in
+                owner.isInfoDescriptionExpended.accept(!owner.isInfoDescriptionExpended.value)
+            })
+            .disposed(by: disposeBag)
+        
         return Output(
             detailHeaderData: NovelDetailHeaderData.asObservable(),
             detailInfoData: novelDetailInfoData.asObserver(),
             scrollContentOffset: scrollContentOffset.asDriver(),
             backButtonEnabled: backButtonDidTap,
             showLargeNovelCoverImage: showLargeNovelCoverImage.asDriver(),
-            selectedTab: selectedTab.asDriver()
+            selectedTab: selectedTab.asDriver(),
+            isInfoDescriptionExpended: isInfoDescriptionExpended.asDriver()
         )
     }
 }
