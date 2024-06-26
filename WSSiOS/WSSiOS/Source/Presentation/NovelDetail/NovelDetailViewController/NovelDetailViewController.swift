@@ -107,11 +107,20 @@ final class NovelDetailViewController: UIViewController {
     }
     
     private func bindViewModelOutput(_ output: NovelDetailViewModel.Output) {
-        output.detailBasicData
+        output.detailHeaderData
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
-                owner.rootView.bindData(data)
+                owner.rootView.bindHeaderData(data)
                 owner.navigationTitle = data.novelTitle
+            }, onError: { owner, error in
+                print(error)
+            })
+            .disposed(by: disposeBag)
+        
+        output.detailInfoData
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, data in
+                owner.rootView.bindInfoData(data)
             }, onError: { owner, error in
                 print(error)
             })

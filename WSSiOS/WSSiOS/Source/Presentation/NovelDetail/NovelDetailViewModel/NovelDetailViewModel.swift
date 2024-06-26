@@ -20,6 +20,7 @@ final class NovelDetailViewModel: ViewModelType {
     
     private let viewWillAppearEvent = BehaviorRelay<Bool>(value: false)
     private let NovelDetailHeaderData = PublishSubject<NovelDetailHeaderResult>()
+    private let novelDetailInfoData = PublishSubject<NovelDetailInfoResult>()
     private let showLargeNovelCoverImage = BehaviorRelay<Bool>(value: false)
     private let selectedTab = BehaviorRelay<Tab>(value: Tab.info)
     
@@ -46,7 +47,8 @@ final class NovelDetailViewModel: ViewModelType {
     }
     
     struct Output {
-        let detailBasicData: Observable<NovelDetailHeaderResult>
+        let detailHeaderData: Observable<NovelDetailHeaderResult>
+        let detailInfoData: Observable<NovelDetailInfoResult>
         let scrollContentOffset: Driver<CGPoint>
         let backButtonEnabled: Observable<Void>
         let showLargeNovelCoverImage: Driver<Bool>
@@ -62,6 +64,17 @@ final class NovelDetailViewModel: ViewModelType {
                 owner.NovelDetailHeaderData.onNext(data)
             }, onError: { owner, error in
                 owner.NovelDetailHeaderData.onError(error)
+            })
+            .disposed(by: disposeBag)
+        
+        input.viewWillAppearEvent
+            .flatMapLatest { _ in
+                self.novelDetailRepository.getNovelDetailInfoData(novelId: self.novelId)
+            }
+            .subscribe(with: self, onNext: { owner, data in
+                owner.novelDetailInfoData.onNext(data)
+            }, onError: { owner, error in
+                owner.novelDetailInfoData.onError(error)
             })
             .disposed(by: disposeBag)
         
@@ -113,7 +126,8 @@ final class NovelDetailViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         return Output(
-            detailBasicData: NovelDetailHeaderData.asObservable(),
+            detailHeaderData: NovelDetailHeaderData.asObservable(),
+            detailInfoData: novelDetailInfoData.asObserver(),
             scrollContentOffset: scrollContentOffset.asDriver(),
             backButtonEnabled: backButtonDidTap,
             showLargeNovelCoverImage: showLargeNovelCoverImage.asDriver(),

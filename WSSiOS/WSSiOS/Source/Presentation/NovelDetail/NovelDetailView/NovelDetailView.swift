@@ -106,9 +106,13 @@ final class NovelDetailView: UIView {
     
     //MARK: - Data
     
-    func bindData(_ data: NovelDetailHeaderResult) {
+    func bindHeaderData(_ data: NovelDetailHeaderResult) {
         headerView.bindData(data)
         largeNovelCoverImageButton.bindData(data)
+    }
+    
+    func bindInfoData(_ data: NovelDetailInfoResult) {
+        infoView.bindData(data)
     }
     
     func updateStickyTabBarShow(_ isShow: Bool) {

@@ -137,6 +137,7 @@
 		39F850662C2820FF00E93EBC /* NovelDetailFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39F850652C2820FF00E93EBC /* NovelDetailFeedView.swift */; };
 		39F850682C29B06600E93EBC /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39F850672C29B06600E93EBC /* TestViewController.swift */; };
 		39F8506A2C29C1FB00E93EBC /* NovelDetailInfoResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39F850692C29C1FB00E93EBC /* NovelDetailInfoResult.swift */; };
+		39F8506D2C2BFB3E00E93EBC /* NovelDetailInfoDescriptionSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39F8506C2C2BFB3E00E93EBC /* NovelDetailInfoDescriptionSection.swift */; };
 		A1147A802B50638200141692 /* RecordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1147A7F2B50638200141692 /* RecordViewController.swift */; };
 		A1147A822B5063B300141692 /* RecordEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1147A812B5063B300141692 /* RecordEmptyView.swift */; };
 		A1147A842B5063BC00141692 /* RecordResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1147A832B5063BC00141692 /* RecordResultView.swift */; };
@@ -368,6 +369,7 @@
 		39F850652C2820FF00E93EBC /* NovelDetailFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailFeedView.swift; sourceTree = "<group>"; };
 		39F850672C29B06600E93EBC /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		39F850692C29C1FB00E93EBC /* NovelDetailInfoResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoResult.swift; sourceTree = "<group>"; };
+		39F8506C2C2BFB3E00E93EBC /* NovelDetailInfoDescriptionSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoDescriptionSection.swift; sourceTree = "<group>"; };
 		A1147A7F2B50638200141692 /* RecordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordViewController.swift; sourceTree = "<group>"; };
 		A1147A812B5063B300141692 /* RecordEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordEmptyView.swift; sourceTree = "<group>"; };
 		A1147A832B5063BC00141692 /* RecordResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordResultView.swift; sourceTree = "<group>"; };
@@ -1090,6 +1092,7 @@
 			isa = PBXGroup;
 			children = (
 				39F850632C28202300E93EBC /* NovelDetailInfoView.swift */,
+				39F8506B2C2BFAEB00E93EBC /* NovelDetailInfoAssistantView */,
 			);
 			path = NovelDetailInfoView;
 			sourceTree = "<group>";
@@ -1100,6 +1103,14 @@
 				39F850652C2820FF00E93EBC /* NovelDetailFeedView.swift */,
 			);
 			path = NovelDetailFeedView;
+			sourceTree = "<group>";
+		};
+		39F8506B2C2BFAEB00E93EBC /* NovelDetailInfoAssistantView */ = {
+			isa = PBXGroup;
+			children = (
+				39F8506C2C2BFB3E00E93EBC /* NovelDetailInfoDescriptionSection.swift */,
+			);
+			path = NovelDetailInfoAssistantView;
 			sourceTree = "<group>";
 		};
 		A107A4A72B4DDE4900668C3E /* HomeView */ = {
@@ -1858,6 +1869,7 @@
 				A1654F1A2B54052E004F78E8 /* Config.swift in Sources */,
 				2CD911582C0D8A21006B8D72 /* FeedPageBar.swift in Sources */,
 				CD39F2D82B50DA6300B73A5C /* TrashNovelDetailInfoDescriptionView.swift in Sources */,
+				39F8506D2C2BFB3E00E93EBC /* NovelDetailInfoDescriptionSection.swift in Sources */,
 				C95EADD92BD4FE4C0060CF1A /* HomeRealTimePopularFeedView.swift in Sources */,
 				A1654F152B540513004F78E8 /* Networking.swift in Sources */,
 				CD3E5AAB2B56173C00C0A659 /* TrashNovelDetailMemoSettingButtonView.swift in Sources */,

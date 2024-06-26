@@ -15,6 +15,7 @@ final class NovelDetailInfoView: UIView {
     //MARK: - Components
     
     private let stackView = UIStackView()
+    let descriptionSection = NovelDetailInfoDescriptionSection()
     
     //MARK: - Life Cycle
     
@@ -37,19 +38,20 @@ final class NovelDetailInfoView: UIView {
         
         stackView.do {
             $0.axis = .vertical
-            $0.alignment = .center
+            $0.alignment = .fill
         }
     }
     
     private func setHierarchy() {
         self.addSubview(stackView)
+        stackView.addArrangedSubviews(descriptionSection)
     }
     
     private func setLayout() {
         stackView.do {
             $0.snp.makeConstraints {
                 $0.top.equalToSuperview()
-                $0.bottom.equalToSuperview().inset(16)
+                $0.bottom.equalToSuperview().inset(1)
                 $0.horizontalEdges.equalToSuperview()
             }
         }
@@ -57,7 +59,7 @@ final class NovelDetailInfoView: UIView {
     
     //MARK: - Data
     
-    func bindData(_ data: NovelDetailHeaderResult) {
-        
+    func bindData(_ data: NovelDetailInfoResult) {
+        descriptionSection.bindData(data)
     }
 }
