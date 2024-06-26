@@ -206,5 +206,4 @@ final class NovelDetailViewController: UIViewController {
             dropDownButton.tintColor = .wssWhite
         }
     }
-    
 }

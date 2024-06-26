@@ -19,7 +19,7 @@ final class NovelDetailViewModel: ViewModelType {
     private let novelId: Int
     
     private let viewWillAppearEvent = BehaviorRelay<Bool>(value: false)
-    private let NovelDetailHeaderData = PublishSubject<NovelDetailHeaderResult>()
+    private let novelDetailHeaderData = PublishSubject<NovelDetailHeaderResult>()
     private let novelDetailInfoData = PublishSubject<NovelDetailInfoResult>()
     private let showLargeNovelCoverImage = BehaviorRelay<Bool>(value: false)
     private let selectedTab = BehaviorRelay<Tab>(value: Tab.info)
@@ -65,9 +65,9 @@ final class NovelDetailViewModel: ViewModelType {
                 self.novelDetailRepository.getNovelDetailHeaderData(novelId: self.novelId)
             }
             .subscribe(with: self, onNext: { owner, data in
-                owner.NovelDetailHeaderData.onNext(data)
+                owner.novelDetailHeaderData.onNext(data)
             }, onError: { owner, error in
-                owner.NovelDetailHeaderData.onError(error)
+                owner.novelDetailHeaderData.onError(error)
             })
             .disposed(by: disposeBag)
         
@@ -136,7 +136,7 @@ final class NovelDetailViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         return Output(
-            detailHeaderData: NovelDetailHeaderData.asObservable(),
+            detailHeaderData: novelDetailHeaderData.asObservable(),
             detailInfoData: novelDetailInfoData.asObserver(),
             scrollContentOffset: scrollContentOffset.asDriver(),
             backButtonEnabled: backButtonDidTap,

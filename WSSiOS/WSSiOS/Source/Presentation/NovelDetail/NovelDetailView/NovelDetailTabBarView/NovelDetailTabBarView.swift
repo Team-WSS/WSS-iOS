@@ -17,6 +17,10 @@ import UIKit
 import SnapKit
 import Then
 
+enum Tab {
+    case info, feed
+}
+
 final class NovelDetailTabBarView: UIView {
     
     //MARK: - Properties
@@ -159,8 +163,4 @@ final class NovelDetailTabBarView: UIView {
         }
         self.layoutIfNeeded()
     }
-}
-
-enum Tab {
-    case info, feed
 }
