@@ -18,6 +18,7 @@ final class FeedDetailContentView: UIView {
     private let linkNovelView = FeedNovelView()
     private let genreLabel = UILabel()
     private let reactView = FeedReactView()
+    private let dividerView = UIView()
     
     //MARK: - Life Cycle
     
@@ -55,34 +56,46 @@ final class FeedDetailContentView: UIView {
         reactView.do {
             $0.bindData(likeRating: 23, isLiked: true, commentRating: 7)
         }
+        
+        dividerView.do {
+            $0.backgroundColor = .wssGray50
+        }
     }
     
     private func setHierarchy() {
         self.addSubviews(contentLabel,
-                         linkNovelView, 
+                         linkNovelView,
                          genreLabel,
-                         reactView)
+                         reactView,
+                         dividerView)
     }
     
     private func setLayout() {
         contentLabel.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview()
+            $0.top.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(20)
         }
         
         linkNovelView.snp.makeConstraints {
             $0.top.equalTo(contentLabel.snp.bottom).offset(20)
-            $0.leading.trailing.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(48)
         }
         
         genreLabel.snp.makeConstraints {
             $0.top.equalTo(linkNovelView.snp.bottom).offset(20)
-            $0.leading.trailing.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(20)
         }
         
         reactView.snp.makeConstraints {
             $0.top.equalTo(genreLabel.snp.bottom).offset(24)
-            $0.leading.trailing.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(20)
+        }
+        
+        dividerView.snp.makeConstraints {
+            $0.top.equalTo(reactView.snp.bottom).offset(22)
+            $0.height.equalTo(7)
+            $0.leading.trailing.bottom.equalToSuperview()
         }
     }
 }

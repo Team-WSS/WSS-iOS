@@ -16,6 +16,7 @@ final class FeedDetailView: UIView {
     
     private let profileView = FeedDetailProfileView()
     private let contentView = FeedDetailContentView()
+    let replyView = FeedDetailReplyView()
     
     // MARK: - Life Cycle
     
@@ -39,7 +40,8 @@ final class FeedDetailView: UIView {
     
     private func setHierarchy() {
         self.addSubviews(profileView,
-                         contentView)
+                         contentView,
+                         replyView)
     }
     
     private func setLayout() {
@@ -50,7 +52,12 @@ final class FeedDetailView: UIView {
         
         contentView.snp.makeConstraints {
             $0.top.equalTo(profileView.snp.bottom).offset(12)
-            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.leading.trailing.equalToSuperview()
+        }
+        
+        replyView.snp.makeConstraints {
+            $0.top.equalTo(contentView.snp.bottom)
+            $0.leading.trailing.bottom.equalToSuperview()
         }
     }
 }
