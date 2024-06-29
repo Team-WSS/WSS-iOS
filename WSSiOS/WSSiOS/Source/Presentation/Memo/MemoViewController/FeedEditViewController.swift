@@ -86,7 +86,9 @@ final class FeedEditViewController: UIViewController {
             }).when(.recognized).asObservable(),
             backButtonDidTap: rootView.backButton.rx.tap,
             spoilerButtonDidTap: rootView.feedContentView.spoilerButton.rx.tap,
-            feedContentUpdated: rootView.feedContentView.feedTextView.rx.text.orEmpty.asObservable()
+            feedContentUpdated: rootView.feedContentView.feedTextView.rx.text.orEmpty.asObservable(),
+            feetContentViewDidBeginEditing: rootView.feedContentView.feedTextView.rx.didBeginEditing,
+            feetContentViewDidEndEditing: rootView.feedContentView.feedTextView.rx.didEndEditing
         )
         
         let output = self.feedEditViewModel.transform(from: input, disposeBag: self.disposeBag)
@@ -125,6 +127,12 @@ final class FeedEditViewController: UIViewController {
         output.completeButtonIsAbled
             .subscribe(with: self, onNext: { owner, isAbled in
                 owner.rootView.enableCompleteButton(isAbled: isAbled)
+            })
+            .disposed(by: disposeBag)
+        
+        output.showPlaceholder
+            .subscribe(with: self, onNext: { owner, showPlaceholder in
+                owner.rootView.feedContentView.placeholderLabel.isHidden = !showPlaceholder
             })
             .disposed(by: disposeBag)
     }

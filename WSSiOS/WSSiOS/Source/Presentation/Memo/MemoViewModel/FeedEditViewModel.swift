@@ -45,6 +45,8 @@ final class FeedEditViewModel: ViewModelType {
         let backButtonDidTap: ControlEvent<Void>
         let spoilerButtonDidTap: ControlEvent<Void>
         let feedContentUpdated: Observable<String>
+        let feetContentViewDidBeginEditing: ControlEvent<Void>
+        let feetContentViewDidEndEditing: ControlEvent<Void>
     }
     
     struct Output {
@@ -54,6 +56,7 @@ final class FeedEditViewModel: ViewModelType {
         let hasSpoiler = BehaviorRelay<Bool>(value: false)
         let feedContentWithLengthLimit = BehaviorRelay<String>(value: "")
         let completeButtonIsAbled = BehaviorRelay<Bool>(value: false)
+        let showPlaceholder = PublishRelay<Bool>()
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -99,6 +102,18 @@ final class FeedEditViewModel: ViewModelType {
                 } else {
                     output.completeButtonIsAbled.accept(true)
                 }
+            })
+            .disposed(by: disposeBag)
+        
+        input.feetContentViewDidBeginEditing
+            .subscribe(onNext: { _ in
+                output.showPlaceholder.accept(false)
+            })
+            .disposed(by: disposeBag)
+        
+        input.feetContentViewDidEndEditing
+            .subscribe(with: self, onNext: { owner, _ in
+                output.showPlaceholder.accept(owner.updatedFeedContent.count == 0 ? true : false)
             })
             .disposed(by: disposeBag)
         

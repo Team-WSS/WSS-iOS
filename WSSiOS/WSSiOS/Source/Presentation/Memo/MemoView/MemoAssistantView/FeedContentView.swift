@@ -20,6 +20,7 @@ final class FeedContentView: UIView {
     let spoilerButton = RegisterNormalToggleButton()
     private let feedTextWrapperView = UIView()
     let feedTextView = UITextView()
+    let placeholderLabel = UILabel()
     private let letterCountLabel = UILabel()
     
     //MARK: - Life Cycle
@@ -74,6 +75,12 @@ final class FeedContentView: UIView {
             $0.textContainerInset = .zero
         }
         
+        placeholderLabel.do {
+            $0.applyWSSFont(.body2, with: "피드 작성 유의사항!\n\n욕설, 비방 등 상대방을 불쾌하게 하는 의견은\n작품 내용을 담은 글은 스포일러 체크해주세요.")
+            $0.textColor = .wssGray200
+            $0.numberOfLines = 0
+        }
+        
         letterCountLabel.do {
             $0.textColor = .wssGray200
         }
@@ -86,6 +93,7 @@ final class FeedContentView: UIView {
                          spoilerButton,
                          feedTextWrapperView)
         feedTextWrapperView.addSubviews(feedTextView,
+                                        placeholderLabel,
                                         letterCountLabel)
     }
     
@@ -120,6 +128,10 @@ final class FeedContentView: UIView {
         feedTextView.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview().inset(20)
             $0.bottom.equalToSuperview().inset(35.89)
+        }
+        
+        placeholderLabel.snp.makeConstraints {
+            $0.top.leading.equalToSuperview().inset(20)
         }
         
         letterCountLabel.snp.makeConstraints {
