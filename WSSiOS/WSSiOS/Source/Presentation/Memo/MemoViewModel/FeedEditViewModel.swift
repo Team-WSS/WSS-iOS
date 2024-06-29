@@ -40,11 +40,13 @@ final class FeedEditViewModel: ViewModelType {
     
     struct Input {
         let viewWillAppearEvent: Observable<Void>
+        let viewDidTap: Observable<UITapGestureRecognizer>
         let backButtonDidTap: ControlEvent<Void>
         let feedContentUpdated: Observable<String>
     }
     
     struct Output {
+        let endEditing = PublishRelay<Bool>()
         let categoryListData = PublishRelay<[String]>()
         let popViewController = PublishRelay<Void>()
         let feedContentWithLengthLimit = BehaviorRelay<String>(value: "")
@@ -53,6 +55,12 @@ final class FeedEditViewModel: ViewModelType {
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
+        
+        input.viewDidTap
+            .subscribe(onNext: { _ in
+                output.endEditing.accept(true)
+            })
+            .disposed(by: disposeBag)
         
         input.viewWillAppearEvent
             .subscribe(with: self, onNext: { owner, _ in

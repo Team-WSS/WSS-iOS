@@ -9,6 +9,7 @@ import UIKit
 
 import RxSwift
 import RxCocoa
+import RxGesture
 
 final class FeedEditViewController: UIViewController {
     
@@ -77,11 +78,18 @@ final class FeedEditViewController: UIViewController {
     private func bindViewModel() {
         let input = FeedEditViewModel.Input(
             viewWillAppearEvent: viewWillAppearEvent.asObservable(),
-            backButtonDidTap: rootView.backButton.rx.tap, 
+            viewDidTap: view.rx.tapGesture().when(.recognized).asObservable(),
+            backButtonDidTap: rootView.backButton.rx.tap,
             feedContentUpdated: rootView.feedContentView.feedTextView.rx.text.orEmpty.asObservable()
         )
         
         let output = self.feedEditViewModel.transform(from: input, disposeBag: self.disposeBag)
+        
+        output.endEditing
+            .subscribe(with: self, onNext: { owner, endEditing in
+                owner.view.endEditing(endEditing)
+            })
+            .disposed(by: disposeBag)
         
         output.categoryListData.bind(to: rootView.feedCategoryView.categoryCollectionView.rx.items(
             cellIdentifier: FeedCategoryCollectionViewCell.cellIdentifier,
