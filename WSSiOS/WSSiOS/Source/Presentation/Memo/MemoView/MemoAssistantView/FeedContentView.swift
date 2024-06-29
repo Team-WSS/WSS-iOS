@@ -18,6 +18,7 @@ final class FeedContentView: UIView {
     private let essentialImageView = UIImageView()
     private let feedTextWrapperView = UIView()
     let feedTextView = UITextView()
+    private let letterCountLabel = UILabel()
     
     //MARK: - Life Cycle
     
@@ -61,13 +62,18 @@ final class FeedContentView: UIView {
             $0.textContainer.lineFragmentPadding = 0
             $0.textContainerInset = .zero
         }
+        
+        letterCountLabel.do {
+            $0.textColor = .wssGray200
+        }
     }
     
     private func setHierarchy() {
         self.addSubviews(writeContentLabel,
                          essentialImageView,
                          feedTextWrapperView)
-        feedTextWrapperView.addSubviews(feedTextView)
+        feedTextWrapperView.addSubviews(feedTextView,
+                                        letterCountLabel)
     }
     
     private func setLayout() {
@@ -89,7 +95,13 @@ final class FeedContentView: UIView {
         }
         
         feedTextView.snp.makeConstraints {
-            $0.edges.equalToSuperview().inset(20)
+            $0.top.leading.trailing.equalToSuperview().inset(20)
+            $0.bottom.equalToSuperview().inset(35.89)
+        }
+        
+        letterCountLabel.snp.makeConstraints {
+            $0.right.equalToSuperview().inset(20)
+            $0.bottom.equalToSuperview().inset(12.5)
         }
     }
     
@@ -102,6 +114,10 @@ final class FeedContentView: UIView {
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
             $0.font = .Body2
+        }
+        
+        self.letterCountLabel.do {
+            $0.applyWSSFont(.body2, with: "(\(memoContent.count)/2000)")
         }
     }
 }

@@ -16,6 +16,11 @@ final class FeedEditViewModel: ViewModelType {
         
     private let memoRepository: MemoRepository
     
+    let initialFeedContent: String = ""
+    private var updatedFeedContent: String = ""
+    private let feedContentPredicate = NSPredicate(format: "SELF MATCHES %@", "^[\\s]+$")
+    private let maximumFeedContentCount: Int = 2000
+    
     let dummyCategoryList = ["로맨스",
                              "로판",
                              "BL",
@@ -36,11 +41,14 @@ final class FeedEditViewModel: ViewModelType {
     struct Input {
         let viewWillAppearEvent: Observable<Void>
         let backButtonDidTap: ControlEvent<Void>
+        let feedContentUpdated: Observable<String>
     }
     
     struct Output {
         let categoryListData = PublishRelay<[String]>()
         let popViewController = PublishRelay<Void>()
+        let feedContentWithLengthLimit = BehaviorRelay<String>(value: "")
+        let completeButtonIsAbled = BehaviorRelay<Bool>(value: false)
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -55,6 +63,24 @@ final class FeedEditViewModel: ViewModelType {
         input.backButtonDidTap
             .subscribe(onNext: { _ in
                 output.popViewController.accept(())
+            })
+            .disposed(by: disposeBag)
+        
+        input.feedContentUpdated
+            .subscribe(with: self, onNext: { owner, text in
+                owner.updatedFeedContent = text
+                output.feedContentWithLengthLimit.accept(String(text.prefix(owner.maximumFeedContentCount)))
+
+                let isEmpty = text.count == 0
+                let isOverLimit = text.count > owner.maximumFeedContentCount
+                let isWrongFormat = owner.feedContentPredicate.evaluate(with: text)
+                let isNotChanged = text == owner.initialFeedContent
+
+                if isEmpty || isOverLimit || isWrongFormat || isNotChanged {
+                    output.completeButtonIsAbled.accept(false)
+                } else {
+                    output.completeButtonIsAbled.accept(true)
+                }
             })
             .disposed(by: disposeBag)
         

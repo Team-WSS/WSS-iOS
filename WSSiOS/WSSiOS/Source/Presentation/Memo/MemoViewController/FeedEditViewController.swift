@@ -77,7 +77,8 @@ final class FeedEditViewController: UIViewController {
     private func bindViewModel() {
         let input = FeedEditViewModel.Input(
             viewWillAppearEvent: viewWillAppearEvent.asObservable(),
-            backButtonDidTap: rootView.backButton.rx.tap
+            backButtonDidTap: rootView.backButton.rx.tap, 
+            feedContentUpdated: rootView.feedContentView.feedTextView.rx.text.orEmpty.asObservable()
         )
         
         let output = self.feedEditViewModel.transform(from: input, disposeBag: self.disposeBag)
@@ -92,6 +93,18 @@ final class FeedEditViewController: UIViewController {
         output.popViewController
             .subscribe(with: self, onNext: { owner, _ in
                 owner.navigationController?.popViewController(animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        output.feedContentWithLengthLimit
+            .subscribe(with: self, onNext: { owner, feedContentWithLengthLimit in
+                owner.rootView.feedContentView.bindData(memoContent: feedContentWithLengthLimit)
+            })
+            .disposed(by: disposeBag)
+        
+        output.completeButtonIsAbled
+            .subscribe(with: self, onNext: { owner, isAbled in
+                owner.rootView.enableCompleteButton(isAbled: isAbled)
             })
             .disposed(by: disposeBag)
     }
