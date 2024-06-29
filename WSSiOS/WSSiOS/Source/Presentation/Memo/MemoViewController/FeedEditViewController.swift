@@ -78,7 +78,9 @@ final class FeedEditViewController: UIViewController {
     private func bindViewModel() {
         let input = FeedEditViewModel.Input(
             viewWillAppearEvent: viewWillAppearEvent.asObservable(),
-            viewDidTap: view.rx.tapGesture().when(.recognized).asObservable(),
+            viewDidTap: view.rx.tapGesture(configuration: { gestureRecognizer, delegate in
+                gestureRecognizer.cancelsTouchesInView = false
+            }).when(.recognized).asObservable(),
             backButtonDidTap: rootView.backButton.rx.tap,
             spoilerButtonDidTap: rootView.feedContentView.spoilerButton.rx.tap,
             feedContentUpdated: rootView.feedContentView.feedTextView.rx.text.orEmpty.asObservable()
