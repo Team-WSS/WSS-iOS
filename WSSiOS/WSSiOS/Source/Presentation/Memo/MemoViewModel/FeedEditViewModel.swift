@@ -16,6 +16,7 @@ final class FeedEditViewModel: ViewModelType {
         
     private let memoRepository: MemoRepository
     
+    private var hasSpoiler: Bool = false
     let initialFeedContent: String = ""
     private var updatedFeedContent: String = ""
     private let feedContentPredicate = NSPredicate(format: "SELF MATCHES %@", "^[\\s]+$")
@@ -42,6 +43,7 @@ final class FeedEditViewModel: ViewModelType {
         let viewWillAppearEvent: Observable<Void>
         let viewDidTap: Observable<UITapGestureRecognizer>
         let backButtonDidTap: ControlEvent<Void>
+        let spoilerButtonDidTap: ControlEvent<Void>
         let feedContentUpdated: Observable<String>
     }
     
@@ -49,6 +51,7 @@ final class FeedEditViewModel: ViewModelType {
         let endEditing = PublishRelay<Bool>()
         let categoryListData = PublishRelay<[String]>()
         let popViewController = PublishRelay<Void>()
+        let hasSpoiler = BehaviorRelay<Bool>(value: false)
         let feedContentWithLengthLimit = BehaviorRelay<String>(value: "")
         let completeButtonIsAbled = BehaviorRelay<Bool>(value: false)
     }
@@ -71,6 +74,13 @@ final class FeedEditViewModel: ViewModelType {
         input.backButtonDidTap
             .subscribe(onNext: { _ in
                 output.popViewController.accept(())
+            })
+            .disposed(by: disposeBag)
+        
+        input.spoilerButtonDidTap
+            .subscribe(with: self, onNext: { owner, _ in
+                output.hasSpoiler.accept(!owner.hasSpoiler)
+                owner.hasSpoiler = !owner.hasSpoiler
             })
             .disposed(by: disposeBag)
         

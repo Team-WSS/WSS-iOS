@@ -80,6 +80,7 @@ final class FeedEditViewController: UIViewController {
             viewWillAppearEvent: viewWillAppearEvent.asObservable(),
             viewDidTap: view.rx.tapGesture().when(.recognized).asObservable(),
             backButtonDidTap: rootView.backButton.rx.tap,
+            spoilerButtonDidTap: rootView.feedContentView.spoilerButton.rx.tap,
             feedContentUpdated: rootView.feedContentView.feedTextView.rx.text.orEmpty.asObservable()
         )
         
@@ -101,6 +102,12 @@ final class FeedEditViewController: UIViewController {
         output.popViewController
             .subscribe(with: self, onNext: { owner, _ in
                 owner.navigationController?.popViewController(animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        output.hasSpoiler
+            .subscribe(with: self, onNext: { owner, hasSpoiler in
+                owner.rootView.feedContentView.spoilerButton.updateToggle(hasSpoiler)
             })
             .disposed(by: disposeBag)
         

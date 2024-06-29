@@ -16,6 +16,8 @@ final class FeedContentView: UIView {
     
     private let writeContentLabel = UILabel()
     private let essentialImageView = UIImageView()
+    private let spoilerLabel = UILabel()
+    let spoilerButton = RegisterNormalToggleButton()
     private let feedTextWrapperView = UIView()
     let feedTextView = UITextView()
     private let letterCountLabel = UILabel()
@@ -51,6 +53,15 @@ final class FeedContentView: UIView {
             $0.contentMode = .scaleAspectFit
         }
         
+        spoilerLabel.do {
+            $0.applyWSSFont(.label1, with: "스포일러")
+            $0.textColor = .wssGray300
+        }
+        
+        spoilerButton.do {
+            $0.updateToggle(false)
+        }
+        
         feedTextWrapperView.do {
             $0.backgroundColor = .wssGray50
             $0.layer.cornerRadius = 14
@@ -71,6 +82,8 @@ final class FeedContentView: UIView {
     private func setHierarchy() {
         self.addSubviews(writeContentLabel,
                          essentialImageView,
+                         spoilerLabel,
+                         spoilerButton,
                          feedTextWrapperView)
         feedTextWrapperView.addSubviews(feedTextView,
                                         letterCountLabel)
@@ -85,6 +98,16 @@ final class FeedContentView: UIView {
         essentialImageView.snp.makeConstraints {
             $0.top.equalTo(writeContentLabel.snp.top).offset(2)
             $0.left.equalTo(writeContentLabel.snp.right).offset(2)
+        }
+        
+        spoilerLabel.snp.makeConstraints {
+            $0.centerY.equalTo(writeContentLabel.snp.centerY)
+            $0.right.equalTo(spoilerButton.snp.left).offset(-8)
+        }
+        
+        spoilerButton.snp.makeConstraints {
+            $0.centerY.equalTo(writeContentLabel.snp.centerY)
+            $0.right.equalToSuperview().inset(20)
         }
         
         feedTextWrapperView.snp.makeConstraints {
