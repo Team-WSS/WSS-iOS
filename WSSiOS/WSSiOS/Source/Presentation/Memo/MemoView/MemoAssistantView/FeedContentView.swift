@@ -105,17 +105,17 @@ final class FeedContentView: UIView {
         
         essentialImageView.snp.makeConstraints {
             $0.top.equalTo(writeContentLabel.snp.top).offset(2)
-            $0.left.equalTo(writeContentLabel.snp.right).offset(2)
+            $0.leading.equalTo(writeContentLabel.snp.trailing).offset(2)
         }
         
         spoilerLabel.snp.makeConstraints {
             $0.centerY.equalTo(writeContentLabel.snp.centerY)
-            $0.right.equalTo(spoilerButton.snp.left).offset(-8)
+            $0.trailing.equalTo(spoilerButton.snp.leading).offset(-8)
         }
         
         spoilerButton.snp.makeConstraints {
             $0.centerY.equalTo(writeContentLabel.snp.centerY)
-            $0.right.equalToSuperview().inset(20)
+            $0.trailing.equalToSuperview().inset(20)
         }
         
         feedTextWrapperView.snp.makeConstraints {
@@ -135,7 +135,7 @@ final class FeedContentView: UIView {
         }
         
         letterCountLabel.snp.makeConstraints {
-            $0.right.equalToSuperview().inset(20)
+            $0.trailing.equalToSuperview().inset(20)
             $0.bottom.equalToSuperview().inset(12.5)
         }
     }

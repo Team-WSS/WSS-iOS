@@ -82,12 +82,12 @@ final class FeedCategoryView: UIView {
         
         essentialImageView.snp.makeConstraints {
             $0.top.equalTo(categoryLabel.snp.top).offset(2)
-            $0.left.equalTo(categoryLabel.snp.right).offset(2)
+            $0.leading.equalTo(categoryLabel.snp.trailing).offset(2)
         }
         
         multipleSelectLabel.snp.makeConstraints {
             $0.top.equalTo(categoryLabel.snp.top).offset(3)
-            $0.left.equalTo(essentialImageView.snp.right).offset(6)
+            $0.leading.equalTo(essentialImageView.snp.trailing).offset(6)
         }
         
         categoryCollectionView.snp.makeConstraints {

@@ -242,6 +242,7 @@
 		CDA5F0432C2FDCD800FCF15C /* FeedCategoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5F0422C2FDCD800FCF15C /* FeedCategoryCollectionViewCell.swift */; };
 		CDA5F0452C2FE41F00FCF15C /* FeedContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5F0442C2FE41F00FCF15C /* FeedContentView.swift */; };
 		CDA5F0472C2FF60A00FCF15C /* FeedNovelConnectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5F0462C2FF60A00FCF15C /* FeedNovelConnectView.swift */; };
+		CDA5F0492C30248A00FCF15C /* ConnectedNovelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5F0482C30248A00FCF15C /* ConnectedNovelView.swift */; };
 		CDE596D62B57708D00D99DA1 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D52B57708D00D99DA1 /* UIViewController+.swift */; };
 		CDE596D82B5770CE00D99DA1 /* WSSToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D72B5770CE00D99DA1 /* WSSToastView.swift */; };
 		CDE596DA2B57C4BE00D99DA1 /* UITextView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D92B57C4BE00D99DA1 /* UITextView+.swift */; };
@@ -467,6 +468,7 @@
 		CDA5F0422C2FDCD800FCF15C /* FeedCategoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCategoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		CDA5F0442C2FE41F00FCF15C /* FeedContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedContentView.swift; sourceTree = "<group>"; };
 		CDA5F0462C2FF60A00FCF15C /* FeedNovelConnectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedNovelConnectView.swift; sourceTree = "<group>"; };
+		CDA5F0482C30248A00FCF15C /* ConnectedNovelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectedNovelView.swift; sourceTree = "<group>"; };
 		CDE596D52B57708D00D99DA1 /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
 		CDE596D72B5770CE00D99DA1 /* WSSToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSToastView.swift; sourceTree = "<group>"; };
 		CDE596D92B57C4BE00D99DA1 /* UITextView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+.swift"; sourceTree = "<group>"; };
@@ -1465,6 +1467,7 @@
 				CDA5F03F2C2FDC5200FCF15C /* FeedCategoryView.swift */,
 				CDA5F0442C2FE41F00FCF15C /* FeedContentView.swift */,
 				CDA5F0462C2FF60A00FCF15C /* FeedNovelConnectView.swift */,
+				CDA5F0482C30248A00FCF15C /* ConnectedNovelView.swift */,
 			);
 			path = MemoAssistantView;
 			sourceTree = "<group>";
@@ -1739,6 +1742,7 @@
 				B9181BDE2BEBE2300024C800 /* HomeTasteRecommendCollectionViewCell.swift in Sources */,
 				2C5D0F592B4FDEC000C76D3C /* MyPageInventoryCollectionViewCell.swift in Sources */,
 				392A29232B4E89FD0065EB97 /* RegisterNormalNovelInfoWithRatingView.swift in Sources */,
+				CDA5F0492C30248A00FCF15C /* ConnectedNovelView.swift in Sources */,
 				2C79CB9D2B45A1DD00734E1F /* UIFont+.swift in Sources */,
 				A147CBC62B4D6E190040AE39 /* UIStackView+.swift in Sources */,
 				CD3E5A982B5509A500C0A659 /* DeletePopupContentView.swift in Sources */,
