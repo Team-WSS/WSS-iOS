@@ -235,6 +235,11 @@
 		CD6613702B8A225E00B90B2B /* MemoReadViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD66136F2B8A225E00B90B2B /* MemoReadViewModel.swift */; };
 		CD6613752B8A283500B90B2B /* MemoEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6613742B8A283500B90B2B /* MemoEditViewModel.swift */; };
 		CD6613782B8B313700B90B2B /* DeletePopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6613772B8B313700B90B2B /* DeletePopupViewModel.swift */; };
+		CDA5F03A2C2FDB2200FCF15C /* FeedEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5F0392C2FDB2200FCF15C /* FeedEditViewController.swift */; };
+		CDA5F03C2C2FDB3100FCF15C /* FeedEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5F03B2C2FDB3100FCF15C /* FeedEditViewModel.swift */; };
+		CDA5F03E2C2FDB6B00FCF15C /* FeedEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5F03D2C2FDB6B00FCF15C /* FeedEditView.swift */; };
+		CDA5F0402C2FDC5200FCF15C /* FeedCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5F03F2C2FDC5200FCF15C /* FeedCategoryView.swift */; };
+		CDA5F0432C2FDCD800FCF15C /* FeedCategoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5F0422C2FDCD800FCF15C /* FeedCategoryCollectionViewCell.swift */; };
 		CDE596D62B57708D00D99DA1 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D52B57708D00D99DA1 /* UIViewController+.swift */; };
 		CDE596D82B5770CE00D99DA1 /* WSSToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D72B5770CE00D99DA1 /* WSSToastView.swift */; };
 		CDE596DA2B57C4BE00D99DA1 /* UITextView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D92B57C4BE00D99DA1 /* UITextView+.swift */; };
@@ -453,6 +458,11 @@
 		CD66136F2B8A225E00B90B2B /* MemoReadViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoReadViewModel.swift; sourceTree = "<group>"; };
 		CD6613742B8A283500B90B2B /* MemoEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoEditViewModel.swift; sourceTree = "<group>"; };
 		CD6613772B8B313700B90B2B /* DeletePopupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletePopupViewModel.swift; sourceTree = "<group>"; };
+		CDA5F0392C2FDB2200FCF15C /* FeedEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedEditViewController.swift; sourceTree = "<group>"; };
+		CDA5F03B2C2FDB3100FCF15C /* FeedEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedEditViewModel.swift; sourceTree = "<group>"; };
+		CDA5F03D2C2FDB6B00FCF15C /* FeedEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedEditView.swift; sourceTree = "<group>"; };
+		CDA5F03F2C2FDC5200FCF15C /* FeedCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCategoryView.swift; sourceTree = "<group>"; };
+		CDA5F0422C2FDCD800FCF15C /* FeedCategoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCategoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		CDE596D52B57708D00D99DA1 /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
 		CDE596D72B5770CE00D99DA1 /* WSSToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSToastView.swift; sourceTree = "<group>"; };
 		CDE596D92B57C4BE00D99DA1 /* UITextView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+.swift"; sourceTree = "<group>"; };
@@ -1413,6 +1423,7 @@
 		CD3E5A6D2B5424A700C0A659 /* Memo */ = {
 			isa = PBXGroup;
 			children = (
+				CDA5F0412C2FDCBD00FCF15C /* MemoViewCell */,
 				CD66136C2B8A21F400B90B2B /* MemoViewModel */,
 				CD3E5A6F2B5424B700C0A659 /* MemoViewController */,
 				CD3E5A6E2B5424B100C0A659 /* MemoView */,
@@ -1426,6 +1437,7 @@
 				CD3E5A702B5424BF00C0A659 /* MemoAssistantView */,
 				CD3E5A722B5424D600C0A659 /* MemoEditView.swift */,
 				CD3E5A712B5424D600C0A659 /* MemoReadView.swift */,
+				CDA5F03D2C2FDB6B00FCF15C /* FeedEditView.swift */,
 			);
 			path = MemoView;
 			sourceTree = "<group>";
@@ -1435,6 +1447,7 @@
 			children = (
 				CD3E5A802B54253E00C0A659 /* MemoEditViewController.swift */,
 				CD3E5A7F2B54253E00C0A659 /* MemoReadViewController.swift */,
+				CDA5F0392C2FDB2200FCF15C /* FeedEditViewController.swift */,
 			);
 			path = MemoViewController;
 			sourceTree = "<group>";
@@ -1445,6 +1458,7 @@
 				CD3E5A762B5424E600C0A659 /* MemoEditContentView.swift */,
 				CD3E5A772B5424E600C0A659 /* MemoReadContentView.swift */,
 				CD3E5A752B5424E600C0A659 /* MemoHeaderView.swift */,
+				CDA5F03F2C2FDC5200FCF15C /* FeedCategoryView.swift */,
 			);
 			path = MemoAssistantView;
 			sourceTree = "<group>";
@@ -1489,6 +1503,7 @@
 			children = (
 				CD6613742B8A283500B90B2B /* MemoEditViewModel.swift */,
 				CD66136F2B8A225E00B90B2B /* MemoReadViewModel.swift */,
+				CDA5F03B2C2FDB3100FCF15C /* FeedEditViewModel.swift */,
 			);
 			path = MemoViewModel;
 			sourceTree = "<group>";
@@ -1499,6 +1514,14 @@
 				CD6613772B8B313700B90B2B /* DeletePopupViewModel.swift */,
 			);
 			path = DeletePopupViewModel;
+			sourceTree = "<group>";
+		};
+		CDA5F0412C2FDCBD00FCF15C /* MemoViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				CDA5F0422C2FDCD800FCF15C /* FeedCategoryCollectionViewCell.swift */,
+			);
+			path = MemoViewCell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1645,6 +1668,7 @@
 				CD39F2D42B50D5C700B73A5C /* TrashNovelDetailInfoReadDateView.swift in Sources */,
 				2CD9115C2C0D8A26006B8D72 /* FeedViewController.swift in Sources */,
 				CD39F2B62B4FE0E200B73A5C /* TrashNovelDetailView.swift in Sources */,
+				CDA5F03C2C2FDB3100FCF15C /* FeedEditViewModel.swift in Sources */,
 				CD39F2E42B50F23B00B73A5C /* TrashNovelDetailInfoPlatformView.swift in Sources */,
 				B9181BDC2BEBDFA80024C800 /* HomeTasteRecommendView.swift in Sources */,
 				CD39F2BD2B4FE98500B73A5C /* TrashNovelDetailHeaderView.swift in Sources */,
@@ -1733,6 +1757,7 @@
 				CD39F2DA2B50DDBF00B73A5C /* TrashNovelDetailInfoGenreView.swift in Sources */,
 				2CD9114A2C0D8948006B8D72 /* FeedDetailContentView.swift in Sources */,
 				2CCBF9EE2B4C1FC500D787C2 /* MyPageViewController.swift in Sources */,
+				CDA5F03A2C2FDB2200FCF15C /* FeedEditViewController.swift in Sources */,
 				A1654F182B540524004F78E8 /* URLs.swift in Sources */,
 				2CD911462C0D88CA006B8D72 /* TotalFeedResult.swift in Sources */,
 				2C5D0F5F2B50523B00C76D3C /* MyPageChangeNicknameViewController.swift in Sources */,
@@ -1753,6 +1778,7 @@
 				A1EF35622B52FAF700A94C53 /* AvatarService.swift in Sources */,
 				3980D1D62C19BB2C008B9B18 /* NovelDetailLargeCoverImageView.swift in Sources */,
 				39CD5E062B4F20A600668B9A /* RegisterNormalDividerView.swift in Sources */,
+				CDA5F03E2C2FDB6B00FCF15C /* FeedEditView.swift in Sources */,
 				A122C9DD2B5309D100DFCFE4 /* (null) in Sources */,
 				2C6030772B55263F0031544C /* UserResult.swift in Sources */,
 				2CD911482C0D88F8006B8D72 /* FeedRepository.swift in Sources */,
@@ -1808,6 +1834,7 @@
 				A122C9D92B53098F00DFCFE4 /* (null) in Sources */,
 				A1A1F9D22B4873A100705F44 /* SearchResultView.swift in Sources */,
 				39B75ACE2B5912B5005DD8B9 /* LottieLiterals.swift in Sources */,
+				CDA5F0402C2FDC5200FCF15C /* FeedCategoryView.swift in Sources */,
 				2CCBFA002B4DBFD200D787C2 /* MyPageChangeNickNameViewModel.swift in Sources */,
 				CD39F2BF2B4FF6DF00B73A5C /* TrashNovelDetailTabView.swift in Sources */,
 				A1EF35582B52FAC800A94C53 /* UserService.swift in Sources */,
@@ -1817,6 +1844,7 @@
 				C95EADD92BD4FE4C0060CF1A /* HomeRealTimePopularFeedView.swift in Sources */,
 				A1654F152B540513004F78E8 /* Networking.swift in Sources */,
 				CD3E5AAB2B56173C00C0A659 /* TrashNovelDetailMemoSettingButtonView.swift in Sources */,
+				CDA5F0432C2FDCD800FCF15C /* FeedCategoryCollectionViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
