@@ -19,6 +19,7 @@ final class FeedEditView: UIView {
     let scrollView = UIScrollView()
     private let contentView = UIStackView()
     let feedCategoryView = FeedCategoryView()
+    let feedContentView = FeedContentView()
     
     //MARK: - Life Cycle
     
@@ -65,7 +66,8 @@ final class FeedEditView: UIView {
     private func setHierarchy() {
         self.addSubviews(scrollView)
         scrollView.addSubview(contentView)
-        contentView.addArrangedSubview(feedCategoryView)
+        contentView.addArrangedSubviews(feedCategoryView,
+                                        feedContentView)
     }
     
     private func setLayout() {
