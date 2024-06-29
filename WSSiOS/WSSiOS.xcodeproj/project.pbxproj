@@ -241,6 +241,7 @@
 		CDA5F0402C2FDC5200FCF15C /* FeedCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5F03F2C2FDC5200FCF15C /* FeedCategoryView.swift */; };
 		CDA5F0432C2FDCD800FCF15C /* FeedCategoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5F0422C2FDCD800FCF15C /* FeedCategoryCollectionViewCell.swift */; };
 		CDA5F0452C2FE41F00FCF15C /* FeedContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5F0442C2FE41F00FCF15C /* FeedContentView.swift */; };
+		CDA5F0472C2FF60A00FCF15C /* FeedNovelConnectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5F0462C2FF60A00FCF15C /* FeedNovelConnectView.swift */; };
 		CDE596D62B57708D00D99DA1 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D52B57708D00D99DA1 /* UIViewController+.swift */; };
 		CDE596D82B5770CE00D99DA1 /* WSSToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D72B5770CE00D99DA1 /* WSSToastView.swift */; };
 		CDE596DA2B57C4BE00D99DA1 /* UITextView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D92B57C4BE00D99DA1 /* UITextView+.swift */; };
@@ -465,6 +466,7 @@
 		CDA5F03F2C2FDC5200FCF15C /* FeedCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCategoryView.swift; sourceTree = "<group>"; };
 		CDA5F0422C2FDCD800FCF15C /* FeedCategoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCategoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		CDA5F0442C2FE41F00FCF15C /* FeedContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedContentView.swift; sourceTree = "<group>"; };
+		CDA5F0462C2FF60A00FCF15C /* FeedNovelConnectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedNovelConnectView.swift; sourceTree = "<group>"; };
 		CDE596D52B57708D00D99DA1 /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
 		CDE596D72B5770CE00D99DA1 /* WSSToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSToastView.swift; sourceTree = "<group>"; };
 		CDE596D92B57C4BE00D99DA1 /* UITextView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+.swift"; sourceTree = "<group>"; };
@@ -1462,6 +1464,7 @@
 				CD3E5A752B5424E600C0A659 /* MemoHeaderView.swift */,
 				CDA5F03F2C2FDC5200FCF15C /* FeedCategoryView.swift */,
 				CDA5F0442C2FE41F00FCF15C /* FeedContentView.swift */,
+				CDA5F0462C2FF60A00FCF15C /* FeedNovelConnectView.swift */,
 			);
 			path = MemoAssistantView;
 			sourceTree = "<group>";
@@ -1798,6 +1801,7 @@
 				3999BFEB2B4E6C4400984832 /* RegisterViewModel.swift in Sources */,
 				A1493BC32B55022E004DD84A /* MemoResult.swift in Sources */,
 				A1654F0F2B540504004F78E8 /* APIConstants.swift in Sources */,
+				CDA5F0472C2FF60A00FCF15C /* FeedNovelConnectView.swift in Sources */,
 				CD3E5AA22B55190400C0A659 /* UserNovelResult.swift in Sources */,
 				A1EF35472B52F77800A94C53 /* MemoRepository.swift in Sources */,
 				CD3E5A7A2B5424E600C0A659 /* MemoReadContentView.swift in Sources */,

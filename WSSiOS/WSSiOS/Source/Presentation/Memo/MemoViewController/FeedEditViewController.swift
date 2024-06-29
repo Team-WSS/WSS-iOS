@@ -42,6 +42,7 @@ final class FeedEditViewController: UIViewController {
      override func viewDidLoad() {
          super.viewDidLoad()
          
+         hideTabBar()
          setNavigationBar()
          register()
          delegate()
@@ -52,15 +53,17 @@ final class FeedEditViewController: UIViewController {
         super.viewWillAppear(animated)
         
         viewWillAppearEvent.accept(())
-        navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
     //MARK: - UI
     
     private func setNavigationBar() {
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.rootView.backButton)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.rootView.completeButton)
-        self.navigationController?.navigationBar.backgroundColor = .clear
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.backgroundColor = .wssWhite
     }
     
     private func register() {

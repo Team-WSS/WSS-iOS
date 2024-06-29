@@ -20,6 +20,7 @@ final class FeedEditView: UIView {
     private let contentView = UIStackView()
     let feedCategoryView = FeedCategoryView()
     let feedContentView = FeedContentView()
+    let feedNovelConnectView = FeedNovelConnectView()
     
     //MARK: - Life Cycle
     
@@ -54,6 +55,7 @@ final class FeedEditView: UIView {
         scrollView.do {
             $0.contentInsetAdjustmentBehavior = .never
             $0.showsVerticalScrollIndicator = false
+            $0.contentInset = UIEdgeInsets(top: 14.0, left: 0.0, bottom: 80.0, right: 0.0)
         }
         
         contentView.do {
@@ -67,21 +69,19 @@ final class FeedEditView: UIView {
         self.addSubviews(scrollView)
         scrollView.addSubview(contentView)
         contentView.addArrangedSubviews(feedCategoryView,
-                                        feedContentView)
+                                        feedContentView,
+                                        feedNovelConnectView)
     }
     
     private func setLayout() {
         scrollView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.top.equalTo(self.safeAreaLayoutGuide)
+            $0.leading.trailing.bottom.equalToSuperview()
         }
         
         contentView.snp.makeConstraints {
             $0.edges.equalTo(scrollView.contentLayoutGuide)
             $0.width.equalToSuperview()
-        }
-        
-        feedCategoryView.snp.makeConstraints {
-            $0.top.equalTo(self.safeAreaLayoutGuide).inset(14)
         }
     }
     
