@@ -7,10 +7,8 @@
 
 import UIKit
 
-import Kingfisher
 import RxSwift
 import RxCocoa
-import RxGesture
 import SnapKit
 import Then
 
@@ -56,6 +54,7 @@ final class NovelDetailViewController: UIViewController {
         super.viewDidLoad()
         
         setUI()
+        registerCell()
         bindViewModel()
         swipeBackGesture()
     }
@@ -98,6 +97,12 @@ final class NovelDetailViewController: UIViewController {
     }
     
     //MARK: - Bind
+    
+    private func registerCell() {
+        rootView.infoView.platformSection.platformCollectionView.register(
+            NovelDetailInfoPlatformCollectionViewCell.self,
+            forCellWithReuseIdentifier: NovelDetailInfoPlatformCollectionViewCell.cellIdentifier)
+    }
     
     private func bindViewModel() {
         let input = createViewModelInput()
@@ -157,6 +162,23 @@ final class NovelDetailViewController: UIViewController {
         output.isInfoDescriptionExpended
             .drive(with: self, onNext: { owner, isExpended in
                 owner.rootView.infoView.descriptionSection.updateAccordionButton(isExpended)
+            })
+            .disposed(by: disposeBag)
+        
+        output.platformList
+            .drive(rootView.infoView.platformSection.platformCollectionView.rx.items(
+                cellIdentifier: NovelDetailInfoPlatformCollectionViewCell.cellIdentifier,
+                cellType: NovelDetailInfoPlatformCollectionViewCell.self)) { _, element, cell in
+                    cell.bindData(data: element)
+                }
+                .disposed(by: disposeBag)
+        
+        rootView.infoView.platformSection.platformCollectionView.rx.itemSelected
+            .withLatestFrom(output.platformList) {(indexPath: $0, platformList: $1)}
+            .subscribe(with: self, onNext: { owner, data in
+                if let url = URL(string: data.platformList[data.indexPath.item].platformURL) {
+                    UIApplication.shared.open(url, options: [:])
+                }
             })
             .disposed(by: disposeBag)
     }

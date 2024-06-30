@@ -25,6 +25,7 @@ final class NovelDetailViewModel: ViewModelType {
     private let selectedTab = BehaviorRelay<Tab>(value: Tab.info)
     
     private let isInfoDescriptionExpended = BehaviorRelay<Bool>(value: false)
+    private let platformList = BehaviorRelay<[Platform]>(value: [])
     
     //MARK: - Life Cycle
     
@@ -57,6 +58,7 @@ final class NovelDetailViewModel: ViewModelType {
         let showLargeNovelCoverImage: Driver<Bool>
         let selectedTab: Driver<Tab>
         let isInfoDescriptionExpended: Driver<Bool>
+        let platformList: Driver<[Platform]>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -77,6 +79,7 @@ final class NovelDetailViewModel: ViewModelType {
             }
             .subscribe(with: self, onNext: { owner, data in
                 owner.novelDetailInfoData.onNext(data)
+                owner.platformList.accept(data.platforms)
             }, onError: { owner, error in
                 owner.novelDetailInfoData.onError(error)
             })
@@ -99,7 +102,6 @@ final class NovelDetailViewModel: ViewModelType {
                 owner.showLargeNovelCoverImage.accept(false)
             })
             .disposed(by: disposeBag)
-        
         
         let scrollContentOffset = input.scrollContentOffset
         
@@ -142,7 +144,8 @@ final class NovelDetailViewModel: ViewModelType {
             backButtonEnabled: backButtonDidTap,
             showLargeNovelCoverImage: showLargeNovelCoverImage.asDriver(),
             selectedTab: selectedTab.asDriver(),
-            isInfoDescriptionExpended: isInfoDescriptionExpended.asDriver()
+            isInfoDescriptionExpended: isInfoDescriptionExpended.asDriver(),
+            platformList: platformList.asDriver()
         )
     }
 }

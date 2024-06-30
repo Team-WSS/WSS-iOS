@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class NovelDetailInfoDescriptionSection: UIView {
+final class NovelDetailInfoDescriptionView: UIView {
     
     //MARK: - Properites
     

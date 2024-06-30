@@ -15,7 +15,8 @@ final class NovelDetailInfoView: UIView {
     //MARK: - Components
     
     private let stackView = UIStackView()
-    let descriptionSection = NovelDetailInfoDescriptionSection()
+    let descriptionSection = NovelDetailInfoDescriptionView()
+    let platformSection = NovelDetailInfoPlatformView()
     
     //MARK: - Life Cycle
     
@@ -44,16 +45,19 @@ final class NovelDetailInfoView: UIView {
     
     private func setHierarchy() {
         self.addSubview(stackView)
-        stackView.addArrangedSubviews(descriptionSection)
+        stackView.addArrangedSubviews(descriptionSection,
+                                      platformSection)
     }
     
     private func setLayout() {
         stackView.do {
             $0.snp.makeConstraints {
                 $0.top.equalToSuperview()
-                $0.bottom.equalToSuperview().inset(1)
+                $0.bottom.equalToSuperview()
                 $0.horizontalEdges.equalToSuperview()
             }
+            
+            $0.setCustomSpacing(1, after: descriptionSection)
         }
     }
     
