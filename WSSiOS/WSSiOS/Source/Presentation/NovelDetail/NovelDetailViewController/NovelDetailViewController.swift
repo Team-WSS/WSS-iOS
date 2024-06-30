@@ -162,6 +162,12 @@ final class NovelDetailViewController: UIViewController {
         output.isInfoDescriptionExpended
             .drive(with: self, onNext: { owner, isExpended in
                 owner.rootView.infoView.descriptionSection.updateAccordionButton(isExpended)
+                
+                let stickyoffset = owner.rootView.headerView.frame.size.height - owner.view.safeAreaInsets.top
+                let point = CGPoint(x: 0, y: stickyoffset)
+                if !isExpended {
+                    owner.rootView.scrollView.rx.contentOffset.onNext(point)
+                }
             })
             .disposed(by: disposeBag)
         
