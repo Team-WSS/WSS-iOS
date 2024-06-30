@@ -50,6 +50,7 @@ final class NovelDetailInfoPlatformView: UIView {
             $0.scrollDirection = .horizontal
             $0.minimumInteritemSpacing = 16
             $0.itemSize = CGSize(width: 48, height: 48)
+            $0.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
             platformCollectionView.setCollectionViewLayout($0,
                                                            animated: false)
         }
@@ -69,8 +70,7 @@ final class NovelDetailInfoPlatformView: UIView {
         platformCollectionView.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(14)
             $0.bottom.equalToSuperview().inset(40)
-            $0.leading.equalTo(titleLabel.snp.leading)
-            $0.trailing.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview()
             $0.height.equalTo(48)
         }
     }
