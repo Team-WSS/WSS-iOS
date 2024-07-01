@@ -621,25 +621,24 @@ WSSiOS
 ├── Resource
 │   ├── Assets.xcassets
 │   ├── Constants
-│   │   ├── Fonts
-│   │   ├── Images
-│   │   └── Strings
 │   └── Extensions
 ├── Source
 │   ├── Data
 │   │   └── Repository
 │   ├── Presentation
-│   │   ├── Home
-│   │   │   ├── HomeView
-│   │   │   │   ├── HomeView.swift
-│   │   │   │   ├── HomeAssistantView
-│   │   │   │   └── HomeCell
-│   │   │   ├── HomeViewController
-│   │   │       └── HomeViewController.swift    
-│   │   ├── Search
-│   │   │   └──  .....
-│   │   ├── RegisterNormal
- ....
+│   │   ├── Feature
+│   │   │   ├── View
+│   │   │   │   ├── View.swift
+│   │   │   │   ├── AssistantView
+│   │   │   │   └── Cell
+│   │   │   ├── ViewController
+│   │   │       └── ViewController.swift
+│   │   │   ├── ViewModel
+│   │   │   │   └── ViewModel.swift
+├── Network
+│   └── Service
+└── Trash
+
 ```
 <br>
 
