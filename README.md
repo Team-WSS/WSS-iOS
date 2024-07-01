@@ -1,12 +1,19 @@
 # WWS-iOS
 
-<div align="center">
- <img alt="websosoMainImage" src="https://github.com/Team-WSS/WSS-iOS/assets/87518742/7dbfadfe-c721-4ec0-8937-bd212edd2b69">
- 
- ### _**🌠 웹소소, 새로운 세상으로의 포털을 열다. 🌠**_
- _**쉽게 기록하고, 재밌게 기억하고, 마음껏 몰입하기 위해.**_ 
+
+ <div align="center">
+ <img alt="스크린샷 2024-07-01 오후 3 14 07" src="https://github.com/Team-WSS/WSS-iOS/assets/103318297/d08ae388-429f-46cc-a507-9cc3d004b33a">
+
+</br>
+
+</br>
+
+ ### _**WEBSOSO**_
+ _**웹소설 뭐 읽을지 고민될 땐, 웹소소**_ 
  </div>
 
+</br>
+</br>
 
 ## 🌠 About WSS
 > 📅 1차 스프린트 기간: 2023.12.17 - 2024.01.20
