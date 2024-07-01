@@ -71,7 +71,7 @@ final class NovelDetailInfoDescriptionView: UIView {
         }
         
         descriptionLabel.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(10)
+            $0.top.equalTo(titleLabel.snp.bottom).offset(14)
             $0.horizontalEdges.equalToSuperview().inset(20)
         }
         
