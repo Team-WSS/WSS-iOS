@@ -74,18 +74,4 @@ final class NovelDetailInfoPlatformView: UIView {
             $0.height.equalTo(48)
         }
     }
-    
-    //MARK: - Data
-    
-    func bindData(_ data: NovelDetailInfoResult) {
-        setDescriptionLabelText(with: data.novelDescription)
-    }
-    
-    //MARK: - Custom Method
-    
-    func updateAccordionButton(_ isExpended: Bool) {
-    }
-    
-    private func setDescriptionLabelText(with text: String) {
-    }
 }
