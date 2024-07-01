@@ -140,6 +140,7 @@
 		39F8506D2C2BFB3E00E93EBC /* NovelDetailInfoDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39F8506C2C2BFB3E00E93EBC /* NovelDetailInfoDescriptionView.swift */; };
 		39F850712C2D39E000E93EBC /* NovelDetailInfoPlatformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39F850702C2D39E000E93EBC /* NovelDetailInfoPlatformView.swift */; };
 		39F850742C2D514C00E93EBC /* NovelDetailInfoPlatformCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39F850732C2D514C00E93EBC /* NovelDetailInfoPlatformCollectionViewCell.swift */; };
+		39F850762C319BE500E93EBC /* NovelDetailInfoReviewEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39F850752C319BE500E93EBC /* NovelDetailInfoReviewEmptyView.swift */; };
 		A1147A802B50638200141692 /* RecordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1147A7F2B50638200141692 /* RecordViewController.swift */; };
 		A1147A822B5063B300141692 /* RecordEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1147A812B5063B300141692 /* RecordEmptyView.swift */; };
 		A1147A842B5063BC00141692 /* RecordResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1147A832B5063BC00141692 /* RecordResultView.swift */; };
@@ -374,6 +375,7 @@
 		39F8506C2C2BFB3E00E93EBC /* NovelDetailInfoDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoDescriptionView.swift; sourceTree = "<group>"; };
 		39F850702C2D39E000E93EBC /* NovelDetailInfoPlatformView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoPlatformView.swift; sourceTree = "<group>"; };
 		39F850732C2D514C00E93EBC /* NovelDetailInfoPlatformCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoPlatformCollectionViewCell.swift; sourceTree = "<group>"; };
+		39F850752C319BE500E93EBC /* NovelDetailInfoReviewEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoReviewEmptyView.swift; sourceTree = "<group>"; };
 		A1147A7F2B50638200141692 /* RecordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordViewController.swift; sourceTree = "<group>"; };
 		A1147A812B5063B300141692 /* RecordEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordEmptyView.swift; sourceTree = "<group>"; };
 		A1147A832B5063BC00141692 /* RecordResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordResultView.swift; sourceTree = "<group>"; };
@@ -1115,6 +1117,7 @@
 			children = (
 				39F8506C2C2BFB3E00E93EBC /* NovelDetailInfoDescriptionView.swift */,
 				39F850702C2D39E000E93EBC /* NovelDetailInfoPlatformView.swift */,
+				39F850752C319BE500E93EBC /* NovelDetailInfoReviewEmptyView.swift */,
 			);
 			path = NovelDetailInfoAssistantView;
 			sourceTree = "<group>";
@@ -1805,6 +1808,7 @@
 				CD3E5A782B5424E600C0A659 /* MemoHeaderView.swift in Sources */,
 				2C01F9852B482EB700D90FFE /* UserRepository.swift in Sources */,
 				A1147A862B5063CA00141692 /* RecordHeaderView.swift in Sources */,
+				39F850762C319BE500E93EBC /* NovelDetailInfoReviewEmptyView.swift in Sources */,
 				2CFE04332B66A45A0048F77A /* UICollectionViewCell+.swift in Sources */,
 				2CB613F32B575E4500FC3F89 /* MyPageInfoViewController.swift in Sources */,
 				2CCBF9F22B4D347B00D787C2 /* WSSMainButton.swift in Sources */,

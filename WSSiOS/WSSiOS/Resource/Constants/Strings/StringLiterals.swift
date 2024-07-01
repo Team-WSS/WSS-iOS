@@ -235,6 +235,7 @@ enum StringLiterals {
         enum Info {
             static let description = "작품 소개"
             static let platform = "작품 보러가기"
+            static let reviewEmpty = "독자들의 평가"
             static let keyword = "독자들의 감상평"
             static let readStatus = "명이 작품을\n"
             
