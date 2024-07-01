@@ -18,6 +18,8 @@ final class NovelDetailInfoView: UIView {
     let descriptionSection = NovelDetailInfoDescriptionView()
     let platformSection = NovelDetailInfoPlatformView()
     
+    let reviewEmptyView = NovelDetailInfoReviewEmptyView()
+    
     //MARK: - Life Cycle
     
     override init(frame: CGRect) {
@@ -46,7 +48,8 @@ final class NovelDetailInfoView: UIView {
     private func setHierarchy() {
         self.addSubview(stackView)
         stackView.addArrangedSubviews(descriptionSection,
-                                      platformSection)
+                                      platformSection,
+                                      reviewEmptyView)
     }
     
     private func setLayout() {
@@ -58,6 +61,7 @@ final class NovelDetailInfoView: UIView {
             }
             
             $0.setCustomSpacing(1, after: descriptionSection)
+            $0.setCustomSpacing(7, after: platformSection)
         }
     }
     

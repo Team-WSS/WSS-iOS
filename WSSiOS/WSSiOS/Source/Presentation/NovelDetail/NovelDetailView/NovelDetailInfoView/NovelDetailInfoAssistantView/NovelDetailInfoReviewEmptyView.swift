@@ -16,6 +16,7 @@ final class NovelDetailInfoReviewEmptyView: UIView {
     
     private let titleLabel = UILabel()
     private let reviewEmptyImageView = UIImageView()
+    private let reviewEmptyLabel = UILabel()
     
     //MARK: - Life Cycle
     
@@ -48,17 +49,25 @@ final class NovelDetailInfoReviewEmptyView: UIView {
             $0.contentMode = .scaleAspectFill
             $0.image = .imgReviewEmpty
         }
+        
+        reviewEmptyLabel.do {
+            $0.applyWSSFont(.body2,
+                            with: StringLiterals.NovelDetail.Info.reviewEmptyDescription)
+            $0.textColor = .wssGray200
+            $0.numberOfLines = 2
+        }
     }
     
     private func setHierarchy() {
         self.addSubviews(titleLabel,
-                         reviewEmptyImageView)
+                         reviewEmptyImageView,
+                         reviewEmptyLabel)
     }
     
     private func setLayout() {
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(35)
-            $0.leading.equalToSuperview().inset(20)
+            $0.leading.trailing.equalToSuperview().inset(20)
         }
         
         reviewEmptyImageView.snp.makeConstraints {
@@ -66,9 +75,11 @@ final class NovelDetailInfoReviewEmptyView: UIView {
             $0.centerX.equalToSuperview()
             $0.size.equalTo(160)
         }
-    }
-    
-    func bindData(data: Platform) {
-        reviewEmptyImageView.image = UIImage(named: data.platformImage)
+        
+        reviewEmptyLabel.snp.makeConstraints {
+            $0.top.equalTo(reviewEmptyImageView.snp.bottom).offset(20)
+            $0.centerX.equalToSuperview()
+            $0.bottom.equalToSuperview().inset(105)
+        }
     }
 }
