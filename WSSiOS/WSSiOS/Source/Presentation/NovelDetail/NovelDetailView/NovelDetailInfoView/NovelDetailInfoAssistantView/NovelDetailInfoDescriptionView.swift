@@ -66,7 +66,7 @@ final class NovelDetailInfoDescriptionView: UIView {
     
     private func setLayout() {
         titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(40)
+            $0.top.equalToSuperview().inset(35)
             $0.horizontalEdges.equalToSuperview().inset(20)
         }
         
