@@ -88,7 +88,7 @@ final class HomeView: UIView {
         tasteRecommendView.snp.makeConstraints {
             $0.top.equalTo(interestView.snp.bottom).offset(36)
             $0.leading.trailing.bottom.equalToSuperview()
-            $0.height.equalTo(1800)
+            $0.height.equalTo(1700)
         }
     }
 }

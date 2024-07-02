@@ -110,11 +110,6 @@ final class HomeTasteRecommendCollectionViewCell: UICollectionViewCell {
     }
     
     private func setLayout() {
-        self.snp.makeConstraints {
-            $0.width.equalTo(163)
-            $0.height.equalTo(319)
-        }
-        
         novelImageView.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
             $0.height.equalTo(241)
@@ -137,7 +132,7 @@ final class HomeTasteRecommendCollectionViewCell: UICollectionViewCell {
         
         novelAuthorLabel.snp.makeConstraints {
             $0.top.equalTo(novelTitleLabel.snp.bottom)
-            $0.leading.trailing.equalToSuperview()
+            $0.leading.trailing.bottom.equalToSuperview()
         }
     }
     
@@ -146,8 +141,7 @@ final class HomeTasteRecommendCollectionViewCell: UICollectionViewCell {
         self.novelTitleLabel.do {
             $0.applyWSSFont(.label1, with: data.novelTitle)
             $0.lineBreakMode = .byTruncatingTail
-            $0.lineBreakStrategy = .hangulWordPriority
-            $0.numberOfLines = 2
+            $0.numberOfLines = 1
         }
         self.novelAuthorLabel.do {
             $0.applyWSSFont(.body5, with: data.novelAuthor)

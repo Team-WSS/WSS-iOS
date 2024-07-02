@@ -56,7 +56,7 @@ final class HomeTasteRecommendView: UIView {
             $0.scrollDirection = .vertical
             $0.minimumLineSpacing = 18
             $0.minimumInteritemSpacing = 9
-            $0.itemSize = CGSize(width: (UIScreen.main.bounds.width - 49) / 2, height: 319)
+            $0.itemSize = CGSize(width: (UIScreen.main.bounds.width - 49) / 2, height: 300)
             tasteRecommendCollectionView.setCollectionViewLayout($0, animated: false)
         }
     }
@@ -80,8 +80,7 @@ final class HomeTasteRecommendView: UIView {
         
         tasteRecommendCollectionView.snp.makeConstraints {
             $0.top.equalTo(subTitleLabel.snp.bottom).offset(20)
-            $0.leading.equalToSuperview().inset(20)
-            $0.centerX.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(20)
             $0.bottom.equalToSuperview()
         }
         
