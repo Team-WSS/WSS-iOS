@@ -19,8 +19,14 @@ final class HomeInduceLoginModalView: UIView {
     private let backgroundModalView = UIView()
     private let backgroundImageView = UIImageView()
     private let titleLabel = UILabel()
+    
+    /// 로그인 버튼 및 버튼 내 라벨
     private var loginButton = UIButton()
+    private let loginButtonLabel = UILabel()
+    
+    /// 닫기 버튼 및 버튼 내 라벨
     private var cancelButton = UIButton()
+    private let cancelButtonLabel = UILabel()
     
     //MARK: - Life Cycle
     
@@ -57,40 +63,32 @@ final class HomeInduceLoginModalView: UIView {
         }
         
         titleLabel.do {
-            $0.font = .Title1
+            $0.applyWSSFont(.title1, with: StringLiterals.Home.Login.induceTitle)
             $0.textColor = .wssBlack
-            $0.makeAttribute(with: StringLiterals.Home.Login.induceTitle)?
-                .kerning(kerningPixel: -0.6)
-                .lineSpacing(spacingPercentage: 140)
-                .applyAttribute()
             $0.textAlignment = .center
             $0.numberOfLines = 2
         }
         
         loginButton.do {
-            var configuration = UIButton.Configuration.filled()
-            configuration.baseBackgroundColor = .wssPrimary100
-            configuration.baseForegroundColor = .wssWhite
-            var titleAttr = AttributedString.init(StringLiterals.Home.Login.loginButtonTitle)
-            titleAttr.kern = -0.4
-            titleAttr.font = UIFont.Label1
-            configuration.attributedTitle = titleAttr
-            configuration.background.cornerRadius = 8
-            configuration.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 82, bottom: 12, trailing: 82)
-            $0.configuration = configuration
+            $0.backgroundColor = .wssPrimary100
+            $0.layer.cornerRadius = 8
+            
+            loginButtonLabel.do {
+                $0.applyWSSFont(.label1, with: StringLiterals.Home.Login.loginButtonTitle)
+                $0.textColor = .wssWhite
+                $0.isUserInteractionEnabled = false
+            }
         }
         
         cancelButton.do {
-            var configuration = UIButton.Configuration.filled()
-            configuration.baseBackgroundColor = .wssWhite
-            configuration.baseForegroundColor = .wssGray200
-            var titleAttr = AttributedString.init(StringLiterals.Home.Login.cancelButtonTitle)
-            titleAttr.kern = -0.4
-            titleAttr.font = UIFont.Label1
-            configuration.attributedTitle = titleAttr
-            configuration.background.cornerRadius = 8
-            configuration.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 113, bottom: 8, trailing: 113)
-            $0.configuration = configuration
+            $0.backgroundColor = .wssWhite
+            $0.layer.cornerRadius = 8
+            
+            cancelButtonLabel.do {
+                $0.applyWSSFont(.label1, with: StringLiterals.Home.Login.cancelButtonTitle)
+                $0.textColor = .wssGray200
+                $0.isUserInteractionEnabled = false
+            }
         }
     }
     
@@ -102,6 +100,8 @@ final class HomeInduceLoginModalView: UIView {
                                         cancelButton)
         
         backgroundImageView.addSubview(titleLabel)
+        loginButton.addSubview(loginButtonLabel)
+        cancelButton.addSubview(cancelButtonLabel)
     }
     
     private func setLayout() {
@@ -127,11 +127,23 @@ final class HomeInduceLoginModalView: UIView {
         loginButton.snp.makeConstraints {
             $0.top.equalTo(backgroundImageView.snp.bottom).offset(20)
             $0.centerX.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(21)
+            $0.height.equalTo(43)
+            
+            loginButtonLabel.snp.makeConstraints {
+                $0.center.equalToSuperview()
+            }
         }
         
         cancelButton.snp.makeConstraints {
             $0.top.equalTo(loginButton.snp.bottom).offset(8)
             $0.centerX.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(21)
+            $0.height.equalTo(35)
+            
+            cancelButtonLabel.snp.makeConstraints {
+                $0.center.equalToSuperview()
+            }
         }
     }
 }
