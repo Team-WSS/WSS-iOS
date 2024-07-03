@@ -135,8 +135,8 @@ final class LibraryBaseViewController: UIViewController {
             }
             .compactMap { $0 }
             .subscribe(with: self, onNext: { owner, selectedItem in
-                owner.navigationController?.pushViewController(NovelDetailViewController(
-                    viewModel: NovelDetailViewModel(
+                owner.navigationController?.pushViewController(TrashNovelDetailViewController(
+                    viewModel: TrashNovelDetailViewModel(
                         userNovelRepository: DefaultUserNovelRepository(
                             userNovelService: DefaultUserNovelService()
                         )

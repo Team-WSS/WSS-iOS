@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Rectangle 41690 copy.png",
+      "filename" : "imgBackgroundGradation.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Rectangle 41690@2x copy.png",
+      "filename" : "imgBackgroundGradation@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Rectangle 41690@3x copy.png",
+      "filename" : "imgBackgroundGradation@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
