@@ -135,8 +135,8 @@ final class LibraryBaseViewController: UIViewController {
             }
             .compactMap { $0 }
             .subscribe(with: self, onNext: { owner, selectedItem in
-                owner.navigationController?.pushViewController(NovelDetailViewController(
-                    viewModel: NovelDetailViewModel(
+                owner.navigationController?.pushViewController(TrashNovelDetailViewController(
+                    viewModel: TrashNovelDetailViewModel(
                         userNovelRepository: DefaultUserNovelRepository(
                             userNovelService: DefaultUserNovelService()
                         )
@@ -146,9 +146,7 @@ final class LibraryBaseViewController: UIViewController {
         
         libraryEmptyView.libraryRegisterButton.rx.tap
             .bind(with: self, onNext: { owner, _ in
-                self.navigationController?.pushViewController(
-                    SearchViewController(searchViewModel: SearchViewModel(novelRepository: DefaultNovelRepository(novelService: DefaultNovelService()))), 
-                    animated: true)
+                
             })
             .disposed(by: disposeBag)
     }

@@ -10,7 +10,6 @@ import Foundation
 import RxSwift
 
 protocol NovelRepository {
-    func getSearchNovels(searchWord: String) -> Observable<SearchNovels>
     func getNovelInfo(novelId: Int) -> Observable<NovelResult>
 }
 
@@ -20,11 +19,6 @@ struct DefaultNovelRepository: NovelRepository {
     
     init(novelService: NovelService) {
         self.novelService = novelService
-    }
-    
-    func getSearchNovels(searchWord: String) -> Observable<SearchNovels> {
-        return novelService.getSearchNovelData(searchWord: searchWord)
-            .asObservable()
     }
     
     func getNovelInfo(novelId: Int) -> Observable<NovelResult> {

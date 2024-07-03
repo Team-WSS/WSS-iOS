@@ -54,7 +54,7 @@ final class HomeViewController: UIViewController {
     
     private func setUI() {
         self.view.do {
-            $0.backgroundColor = .White
+            $0.backgroundColor = .wssWhite
         }
     }
     

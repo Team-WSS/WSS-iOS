@@ -85,9 +85,9 @@ struct TestRecommendRepository: RecommendRepository {
     }
     
     func getTasteRecommendNovels() -> Observable<[TasteRecommendNovel]> {
-        return Observable.just([TasteRecommendNovel(novelId: 1, novelTitle: "여주인공의 오빠를 지키는 방법이라능", novelAuthor: "최서연, 구리스", novelImage: "imgTest2", novelLikeCount: 123, novelRating: 4.21, novelRatingCount: 456),
-                                TasteRecommendNovel(novelId: 1, novelTitle: "여주인공의 오빠를 지키는 방법이라능", novelAuthor: "최서연, 구리스", novelImage: "imgTest2", novelLikeCount: 123, novelRating: 4.21, novelRatingCount: 456),
-                                TasteRecommendNovel(novelId: 1, novelTitle: "여주인공의 오빠를 지키는 방법이라능", novelAuthor: "최서연, 구리스", novelImage: "imgTest2", novelLikeCount: 123, novelRating: 4.21, novelRatingCount: 456),
+        return Observable.just([TasteRecommendNovel(novelId: 1, novelTitle: "여주인공", novelAuthor: "최서연, 구리스, 최서연, 구리스, 최서연, 구리스, 최서연, 구리스", novelImage: "imgTest2", novelLikeCount: 123, novelRating: 4.21, novelRatingCount: 456),
+                                TasteRecommendNovel(novelId: 1, novelTitle: "여주인공의 오빠를 지키는 방법이라능", novelAuthor: "최서연, 구리스, 최서연, 구리스, 최서연, 구리스, 최서연, 구리스, 최서연, 구리스, 최서연, 구리스", novelImage: "imgTest2", novelLikeCount: 123, novelRating: 4.21, novelRatingCount: 456),
+                                TasteRecommendNovel(novelId: 1, novelTitle: "오빠를 지키", novelAuthor: "최서연, 구리스", novelImage: "imgTest2", novelLikeCount: 123, novelRating: 4.21, novelRatingCount: 456),
                                 TasteRecommendNovel(novelId: 1, novelTitle: "여주인공의 오빠를 지키는 방법이라능", novelAuthor: "최서연, 구리스", novelImage: "imgTest2", novelLikeCount: 123, novelRating: 4.21, novelRatingCount: 456),
                                 TasteRecommendNovel(novelId: 1, novelTitle: "여주인공의 오빠를 지키는 방법이라능", novelAuthor: "최서연, 구리스", novelImage: "imgTest2", novelLikeCount: 123, novelRating: 4.21, novelRatingCount: 456),
                                 TasteRecommendNovel(novelId: 1, novelTitle: "여주인공의 오빠를 지키는 방법이라능", novelAuthor: "최서연, 구리스", novelImage: "imgTest2", novelLikeCount: 123, novelRating: 4.21, novelRatingCount: 456),

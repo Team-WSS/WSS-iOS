@@ -12,6 +12,10 @@ protocol RegisterModuleFactory {
     func makeRegisterSuccessViewController(userNovelId: Int) -> UIViewController
 }
 
+protocol DetailModuleFactory {
+    func makeDetailViewController(novelId: Int) -> UIViewController
+}
+
 final class ModuleFactory {
     static let shared = ModuleFactory()
     private init() {}
@@ -27,5 +31,14 @@ extension ModuleFactory: RegisterModuleFactory {
     
     func makeRegisterSuccessViewController(userNovelId: Int) -> UIViewController {
         return RegisterSuccessViewController(userNovelId: userNovelId)
+    }
+}
+
+extension ModuleFactory: DetailModuleFactory {
+    func makeDetailViewController(novelId: Int) -> UIViewController {
+        return NovelDetailViewController(
+            viewModel: NovelDetailViewModel(
+                detailRepository: TestDetailRepository(),
+                novelId: novelId))
     }
 }
