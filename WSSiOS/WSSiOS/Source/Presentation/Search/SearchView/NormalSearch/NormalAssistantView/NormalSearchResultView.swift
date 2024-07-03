@@ -83,8 +83,15 @@ final class NormalSearchResultView: UIView {
         normalSearchCollectionView.snp.makeConstraints {
             $0.top.equalTo(resultCountView.snp.bottom).offset(16)
             $0.leading.trailing.bottom.equalToSuperview()
-            // 무한 스크롤을 위한 컬렉션뷰 동적 높이 조절 필요
             $0.height.equalTo(1000)
+        }
+    }
+    
+    //MARK: - Custom Method
+    
+    func updateCollectionViewHeight(height: CGFloat) {
+        normalSearchCollectionView.snp.updateConstraints {
+            $0.height.equalTo(height)
         }
     }
 }

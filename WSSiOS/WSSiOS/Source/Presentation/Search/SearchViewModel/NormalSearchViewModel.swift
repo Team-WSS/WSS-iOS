@@ -13,6 +13,7 @@ import RxCocoa
 final class NormalSearchViewModel: ViewModelType {
     
     //MARK: - Properties
+    
     private let searchRepository: SearchRepository
     private let disposeBag = DisposeBag()
     
@@ -21,6 +22,7 @@ final class NormalSearchViewModel: ViewModelType {
     struct Input {
         let backButtonDidTap: ControlEvent<Void>
         let inquiryButtonDidTap: ControlEvent<Void>
+        let normalSearchCollectionViewContentSize: Observable<CGSize?>
     }
     
     //MARK: - Outputs
@@ -29,6 +31,7 @@ final class NormalSearchViewModel: ViewModelType {
         let normalSearchList = BehaviorRelay<[NormalSearchNovel]>(value: [])
         let backButtonEnabled = PublishRelay<Bool>()
         let inquiryButtonEnabled = PublishRelay<Bool>()
+        let normalSearchCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
     }
     
     //MARK: - init
@@ -66,6 +69,11 @@ extension NormalSearchViewModel {
             .subscribe(onNext: { _ in
                 output.inquiryButtonEnabled.accept(true)
             })
+            .disposed(by: disposeBag)
+        
+        input.normalSearchCollectionViewContentSize
+            .map{ $0?.height ?? 0 }
+            .bind(to: output.normalSearchCollectionViewHeight)
             .disposed(by: disposeBag)
         
         return output

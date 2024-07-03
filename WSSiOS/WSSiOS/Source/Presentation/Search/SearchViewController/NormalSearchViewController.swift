@@ -62,8 +62,8 @@ final class NormalSearchViewController: UIViewController {
     private func bindViewModel() {
         let input = NormalSearchViewModel.Input(
             backButtonDidTap: rootView.headerView.backButton.rx.tap,
-            inquiryButtonDidTap: rootView.emptyView.inquiryButton.rx.tap
-        )
+            inquiryButtonDidTap: rootView.emptyView.inquiryButton.rx.tap,
+            normalSearchCollectionViewContentSize: rootView.resultView.normalSearchCollectionView.rx.observe(CGSize.self, "contentSize"))
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.normalSearchList
@@ -85,6 +85,12 @@ final class NormalSearchViewController: UIViewController {
                 if let url = URL(string: StringLiterals.Search.Empty.kakaoChannelUrl) {
                     UIApplication.shared.open(url, options: [:])
                 }
+            })
+            .disposed(by: disposeBag)
+        
+        output.normalSearchCollectionViewHeight
+            .subscribe(with: self, onNext: { owner, height in
+                owner.rootView.resultView.updateCollectionViewHeight(height: height)
             })
             .disposed(by: disposeBag)
     }
