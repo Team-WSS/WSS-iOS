@@ -47,6 +47,8 @@ final class SearchBarView: UIView {
         
         searchIconImageView.do {
             $0.image = .icSearch
+                .withRenderingMode(.alwaysOriginal)
+                .withTintColor(.wssGray300)
         }
     }
     

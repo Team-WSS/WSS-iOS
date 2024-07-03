@@ -61,7 +61,9 @@ final class NormalSearchHeaderView: UIView {
         }
         
         searchImageView.do {
-            $0.image = .icSearch
+            $0.image = .icSearch                
+                .withRenderingMode(.alwaysOriginal)
+                .withTintColor(.wssGray300)
             $0.contentMode = .scaleAspectFit
         }
     }
