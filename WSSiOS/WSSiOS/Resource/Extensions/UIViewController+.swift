@@ -178,6 +178,11 @@ extension UIViewController {
     func popToRootViewController() {
         self.navigationController?.popToRootViewController(animated: true)
     }
+    
+    func pushToDetailViewController(novelId: Int) {
+        let viewController = ModuleFactory.shared.makeDetailViewController(novelId: novelId)
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
 }
 
 extension UIViewController: UIGestureRecognizerDelegate {

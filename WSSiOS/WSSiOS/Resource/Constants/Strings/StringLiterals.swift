@@ -11,7 +11,8 @@ enum StringLiterals {
     
     enum Loading {
         static let novelTitle = "작품 제목"
-        static let novelAuthor = "작가"
+        static let novelAuthor = "작품 작가"
+        static let novelGenre = "작품 장르"
     }
     
     enum Tabbar {
@@ -222,13 +223,34 @@ enum StringLiterals {
             static let novelDelete = "작품을 서재에서 삭제"
             static let novelEdit = "작품 정보 수정"
         }
+        
+        enum Header {
+            static let complete = "  ·  완결작  ·  "
+            static let inSeries = "  ·  연재중  ·  "
+            static let interest = "관심 있어요"
+            static let review = "리뷰 남기기"
+            
+            enum Loading {
+                static let novelTitle = "작품 제목"
+                static let novelAuthor = "작품 작가"
+                static let novelGenre = "작품 장르"
+                static let novelInterestCount = "0"
+                static let novelRatingCount = "0.0 (0)"
+                static let novelFeedCount = "0"
+            }
+        }
     }
     
     enum Search {
-        enum Empty {
-            static let description = "검색 결과가 없어요ㅠ"
-            static let register = "등록 문의하기"
-        }
+        static let title = "탐색하기"
+        static let searchbar = "작품 제목, 작가를 검색하세요"
+        
+        static let induceTitle = "이제 뭐 읽을지 고민될 땐?"
+        static let induceDescription = "장르, 연재상태, 별점, 키워드로 작품 찾기"
+        static let induceButton = "내 취향에 맞는 작품 탐색하기"
+        
+        static let sosoTitle = "소소"
+        static let sosoDescription = "다른 사람들이 최근에 읽고 있는 작품이에요"
     }
     
     enum Memo {
