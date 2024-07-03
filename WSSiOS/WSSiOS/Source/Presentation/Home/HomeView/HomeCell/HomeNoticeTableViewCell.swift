@@ -46,7 +46,7 @@ final class HomeNoticeTableViewCell: UITableViewCell {
         
         adminProfileImageView.do {
             $0.image = .adminProfile
-            $0.layer.cornerRadius = 10
+            $0.layer.cornerRadius = 11.25
             $0.clipsToBounds = true
         }
         
@@ -55,17 +55,14 @@ final class HomeNoticeTableViewCell: UITableViewCell {
         }
         
         titleLabel.do {
-            $0.font = .Title2
             $0.textColor = .wssBlack
         }
         
         contentLabel.do {
-            $0.font = .Body5
             $0.textColor = .wssGray200
         }
         
         dateLabel.do {
-            $0.font = .Body5
             $0.textColor = .wssGray200
         }
     }
@@ -82,7 +79,7 @@ final class HomeNoticeTableViewCell: UITableViewCell {
         adminProfileImageView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(20)
             $0.leading.equalToSuperview().inset(20)
-            $0.size.equalTo(32)
+            $0.size.equalTo(36)
         }
         
         contentStackView.do {
@@ -99,21 +96,19 @@ final class HomeNoticeTableViewCell: UITableViewCell {
     
     func bindData(data: Notice) {
         self.titleLabel.do {
-            $0.makeAttribute(with: data.noticeTitle)?
-                .kerning(kerningPixel: -0.6)
-                .applyAttribute()
+            $0.applyWSSFont(.title2, with: data.noticeTitle)
             $0.lineBreakMode = .byTruncatingTail
             $0.numberOfLines = 1
         }
         
         self.contentLabel.do {
-            $0.makeAttribute(with: data.noticeContent)?
-                .kerning(kerningPixel: -0.6)
-                .applyAttribute()
+            $0.applyWSSFont(.body5, with: data.noticeContent)
             $0.lineBreakMode = .byTruncatingTail
             $0.numberOfLines = 1
         }
-        
-        self.dateLabel.text = data.createdDate
+
+        self.dateLabel.do {
+            $0.applyWSSFont(.body5, with: data.createdDate)
+        }
     }
 }
