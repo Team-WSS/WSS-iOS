@@ -60,7 +60,7 @@ final class NormalSearchResultView: UIView {
         self.addSubview(scrollView)
         scrollView.addSubview(contentView)
         contentView.addSubviews(resultCountView,
-                         normalSearchCollectionView)
+                                normalSearchCollectionView)
     }
     
     private func setLayout() {

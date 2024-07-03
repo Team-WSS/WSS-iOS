@@ -158,7 +158,6 @@ final class NormalSearchCollectionViewCell: UICollectionViewCell {
             $0.applyWSSFont(.body5, with: data.novelAuthor)
             $0.lineBreakMode = .byTruncatingTail
         }
-        self.likeCountLabel.fontBody5Attribute(with: String(data.interestCount))
         self.likeCountLabel.applyWSSFont(.body5, with: String(data.interestCount))
         self.ratingAverageLabel.applyWSSFont(.body5, with: String(data.ratingAverage))
         self.ratingCountLabel.do {
