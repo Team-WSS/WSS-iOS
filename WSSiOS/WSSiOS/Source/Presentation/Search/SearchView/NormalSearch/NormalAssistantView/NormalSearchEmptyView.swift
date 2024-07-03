@@ -17,7 +17,10 @@ final class NormalSearchEmptyView: UIView {
     private let stackView = UIStackView()
     private let emptyImageView = UIImageView()
     private let descriptionLabel = UILabel()
+    
+    /// 작품 문의 버튼 및 버튼 내 라벨
     let inquiryButton = UIButton()
+    private let inquiryButtonLabel = UILabel()
     
     //MARK: - Life Cycle
     
@@ -40,6 +43,7 @@ final class NormalSearchEmptyView: UIView {
         stackView.do {
             $0.axis = .vertical
             $0.alignment = .center
+            $0.spacing = 8
         }
         
         emptyImageView.do {
@@ -53,35 +57,38 @@ final class NormalSearchEmptyView: UIView {
         }
         
         inquiryButton.do {
-            var configuration = UIButton.Configuration.filled()
-            configuration.baseBackgroundColor = .wssPrimary50
-            configuration.baseForegroundColor = .wssPrimary100
-            var titleAttr = AttributedString.init(StringLiterals.Search.Empty.inquiryButton)
-            titleAttr.kern = -0.6
-            titleAttr.font = UIFont.Title2
-            configuration.attributedTitle = titleAttr
-            configuration.background.cornerRadius = 14
-            configuration.contentInsets = NSDirectionalEdgeInsets(top: 18, leading: 42, bottom: 18, trailing: 42)
-            $0.configuration = configuration
+            $0.backgroundColor = .wssPrimary50
+            $0.layer.cornerRadius = 14
+            
+            inquiryButtonLabel.do {
+                $0.applyWSSFont(.title2, with: StringLiterals.Search.Empty.inquiryButton)
+                $0.textColor = .wssPrimary100
+                $0.isUserInteractionEnabled = false
+            }
         }
     }
     
     private func setHierarchy() {
         stackView.addArrangedSubviews(emptyImageView,
-                                      descriptionLabel,
-                                      inquiryButton)
-        self.addSubview(stackView)
+                                      descriptionLabel)
+        self.addSubviews(stackView, inquiryButton)
+        inquiryButton.addSubview(inquiryButtonLabel)
     }
     
     private func setLayout() {
-        stackView.do {
-            $0.setCustomSpacing(8, after: emptyImageView)
-            $0.setCustomSpacing(36, after: descriptionLabel)
+        stackView.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(252)
+            $0.leading.trailing.equalToSuperview()
         }
         
-        stackView.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.leading.trailing.equalToSuperview()
+        inquiryButton.snp.makeConstraints {
+            $0.top.equalTo(stackView.snp.bottom).offset(36)
+            $0.leading.trailing.equalToSuperview().inset(90)
+            $0.height.equalTo(58)
+            
+            inquiryButtonLabel.snp.makeConstraints {
+                $0.center.equalToSuperview()
+            }
         }
     }
 }
