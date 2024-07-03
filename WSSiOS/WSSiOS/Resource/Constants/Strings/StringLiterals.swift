@@ -11,7 +11,8 @@ enum StringLiterals {
     
     enum Loading {
         static let novelTitle = "작품 제목"
-        static let novelAuthor = "작가"
+        static let novelAuthor = "작품 작가"
+        static let novelGenre = "작품 장르"
     }
     
     enum Tabbar {
@@ -31,6 +32,7 @@ enum StringLiterals {
             static let myPage = "마이페이지"
             static let changeNickname = "닉네임 변경"
             static let myPageInfo = "계정정보 확인"
+            static let feed = "소소피드"
         }
     }
     
@@ -45,6 +47,18 @@ enum StringLiterals {
         enum SubTitle {
             static let interest = "관심 등록한 작품의 최신글이에요"
             static let recommend = "선호 장르를 기반으로 추천드려요!"
+        }
+        
+        enum Unregister {
+            enum Title {
+                static let interest = "아직 관심작품이 없어요\n관심 등록하고 피드 소식을 빠르게 확인하세요!"
+                static let recommend = "로맨스, 로판, 판타지, 현판 등\n선호장르를 기반으로 웹소설을 추천해 드려요!"
+            }
+            
+            enum ButtonTItle {
+                static let interest = "관심작품 등록하기"
+                static let recommend = "선호장르 설정하기"
+            }
         }
     }
     
@@ -209,6 +223,22 @@ enum StringLiterals {
             static let novelDelete = "작품을 서재에서 삭제"
             static let novelEdit = "작품 정보 수정"
         }
+        
+        enum Header {
+            static let complete = "  ·  완결작  ·  "
+            static let inSeries = "  ·  연재중  ·  "
+            static let interest = "관심 있어요"
+            static let review = "리뷰 남기기"
+            
+            enum Loading {
+                static let novelTitle = "작품 제목"
+                static let novelAuthor = "작품 작가"
+                static let novelGenre = "작품 장르"
+                static let novelInterestCount = "0"
+                static let novelRatingCount = "0.0 (0)"
+                static let novelFeedCount = "0"
+            }
+        }
     }
     
     enum Search {
@@ -253,5 +283,10 @@ enum StringLiterals {
             static let keepWriting = "계속 작성하기"
             static let cancel = "취소"
         }
+    }
+    
+    enum Feed {
+        static let spoilerText = "스포일러가 포함된 글 보기"
+        static let modifiedText = "(수정됨)"
     }
 }
