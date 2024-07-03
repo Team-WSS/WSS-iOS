@@ -15,7 +15,7 @@ final class NormalSearchResultView: UIView {
     //MARK: - Components
     private let scrollView = UIScrollView()
     private let contentView = UIView()
-    let normalSearchHeaderView = NormalSearchHeaderCollectionView()
+    let resultCountView = NormalSearchResultCountView()
     let normalSearchCollectionView = UICollectionView(frame: .zero,
                                                       collectionViewLayout: UICollectionViewLayout())
     private let normalSearchCollectionViewLayout = UICollectionViewFlowLayout()
@@ -59,7 +59,7 @@ final class NormalSearchResultView: UIView {
     private func setHierarchy() {
         self.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        contentView.addSubviews(normalSearchHeaderView,
+        contentView.addSubviews(resultCountView,
                          normalSearchCollectionView)
     }
     
@@ -75,13 +75,13 @@ final class NormalSearchResultView: UIView {
             $0.width.equalTo(scrollView.snp.width)
         }
         
-        normalSearchHeaderView.snp.makeConstraints {
+        resultCountView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(10)
             $0.leading.equalToSuperview().inset(20)
         }
         
         normalSearchCollectionView.snp.makeConstraints {
-            $0.top.equalTo(normalSearchHeaderView.snp.bottom).offset(16)
+            $0.top.equalTo(resultCountView.snp.bottom).offset(16)
             $0.leading.trailing.bottom.equalToSuperview()
             // 무한 스크롤을 위한 컬렉션뷰 동적 높이 조절 필요
             $0.height.equalTo(1000)

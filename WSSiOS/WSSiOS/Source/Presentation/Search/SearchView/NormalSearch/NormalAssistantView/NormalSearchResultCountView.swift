@@ -1,5 +1,5 @@
 //
-//  NormalSearchHeaderCollectionView.swift
+//  NormalSearchResultCountView.swift
 //  WSSiOS
 //
 //  Created by Seoyeon Choi on 6/23/24.
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class NormalSearchHeaderCollectionView: UIView {
+final class NormalSearchResultCountView: UIView {
     
     let titleLabel = UILabel()
     let novelCountLabel = UILabel()
