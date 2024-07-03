@@ -40,7 +40,7 @@ final class NormalSearchViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        enablePopSwipe()
+        swipeBackGesture()
     }
     
     override func viewDidLoad() {
@@ -49,8 +49,6 @@ final class NormalSearchViewController: UIViewController {
         setUI()
         registerCell()
         bindViewModel()
-        
-        registerHeader()
     }
     
     //MARK: - Bind
@@ -100,16 +98,5 @@ extension NormalSearchViewController {
         self.view.do {
             $0.backgroundColor = .White
         }
-    }
-    
-    private func registerHeader() {
-        rootView.resultView.normalSearchCollectionView.register(NormalSearchHeaderView.self,
-                                                                forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-                                                                withReuseIdentifier: "NormalSearchHeaderCollectionView")
-    }
-    
-    private func enablePopSwipe() {
-        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
-        navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
 }
