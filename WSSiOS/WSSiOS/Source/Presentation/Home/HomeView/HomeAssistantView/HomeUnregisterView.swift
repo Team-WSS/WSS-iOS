@@ -103,7 +103,7 @@ final class HomeUnregisterView: UIView {
     
     private func bindData(_ type: UnregisterType) {
         self.titleLabel.do {
-            $0.fontBody2Attribute(with: type.title)
+            $0.applyWSSFont(.body2, with: type.title)
             $0.numberOfLines = 2
         }
         
