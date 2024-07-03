@@ -40,7 +40,7 @@ final class NormalSearchView: UIView {
     
     private func setLayout() {
         headerView.snp.makeConstraints {
-            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).inset(5)
+            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).inset(1)
             $0.leading.trailing.equalToSuperview()
         }
         

@@ -83,14 +83,13 @@ final class NormalSearchHeaderView: UIView {
         }
         
         searchTextField.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(12)
             $0.centerY.equalToSuperview()
             $0.leading.equalToSuperview().inset(16)
         }
         
         searchImageView.snp.makeConstraints {
             $0.centerY.equalToSuperview()
-            $0.leading.equalTo(searchTextField.snp.trailing)
+            $0.leading.equalTo(searchTextField.snp.trailing).offset(15)
             $0.trailing.equalToSuperview().inset(15)
             $0.size.equalTo(25)
         }
