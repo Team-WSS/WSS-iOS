@@ -40,6 +40,7 @@ final class SosoPickCollectionViewCell: UICollectionViewCell {
             $0.image = .imgLoadingThumbnail
             $0.layer.cornerRadius = 8
             $0.clipsToBounds = true
+            $0.contentMode = .scaleAspectFill
         }
         
         novelTitleLabel.do {
@@ -75,8 +76,9 @@ final class SosoPickCollectionViewCell: UICollectionViewCell {
             self.novelImageView.image = .imgLoadingThumbnail
         }
         self.novelTitleLabel.do {
-            $0.fontLabel1Attribute(with: data.novelTitle)
+            $0.applyWSSFont(.label1, with: data.novelTitle)
             $0.lineBreakMode = .byTruncatingTail
+            $0.numberOfLines = 1
         }
     }
 }

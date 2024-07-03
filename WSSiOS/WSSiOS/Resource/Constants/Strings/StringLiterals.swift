@@ -11,7 +11,8 @@ enum StringLiterals {
     
     enum Loading {
         static let novelTitle = "작품 제목"
-        static let novelAuthor = "작가"
+        static let novelAuthor = "작품 작가"
+        static let novelGenre = "작품 장르"
     }
     
     enum Tabbar {
@@ -221,6 +222,22 @@ enum StringLiterals {
         enum Setting {
             static let novelDelete = "작품을 서재에서 삭제"
             static let novelEdit = "작품 정보 수정"
+        }
+        
+        enum Header {
+            static let complete = "  ·  완결작  ·  "
+            static let inSeries = "  ·  연재중  ·  "
+            static let interest = "관심 있어요"
+            static let review = "리뷰 남기기"
+            
+            enum Loading {
+                static let novelTitle = "작품 제목"
+                static let novelAuthor = "작품 작가"
+                static let novelGenre = "작품 장르"
+                static let novelInterestCount = "0"
+                static let novelRatingCount = "0.0 (0)"
+                static let novelFeedCount = "0"
+            }
         }
     }
     

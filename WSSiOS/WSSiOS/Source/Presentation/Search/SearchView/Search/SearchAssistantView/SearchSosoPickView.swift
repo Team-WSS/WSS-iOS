@@ -40,7 +40,7 @@ final class SearchSosoPickView: UIView {
     
     private func setUI() {
         titleLabel.do {
-            $0.fontTitle1Attribute(with: StringLiterals.Search.sosoTitle)
+            $0.applyWSSFont(.title1, with: StringLiterals.Search.sosoTitle)
             $0.textColor = .wssBlack
         }
         
@@ -49,7 +49,7 @@ final class SearchSosoPickView: UIView {
         }
         
         descriptionLabel.do {
-            $0.fontLabel1Attribute(with: StringLiterals.Search.sosoDescription)
+            $0.applyWSSFont(.label1, with: StringLiterals.Search.sosoDescription)
             $0.textColor = .wssGray200
         }
         
@@ -85,7 +85,7 @@ final class SearchSosoPickView: UIView {
         }
         
         descriptionLabel.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(5)
+            $0.top.equalTo(titleLabel.snp.bottom).offset(2)
             $0.leading.equalTo(titleLabel.snp.leading)
         }
         
@@ -93,6 +93,7 @@ final class SearchSosoPickView: UIView {
             $0.top.equalTo(descriptionLabel.snp.bottom).offset(12)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(206)
+            $0.bottom.equalToSuperview().inset(24)
         }
     }
 }

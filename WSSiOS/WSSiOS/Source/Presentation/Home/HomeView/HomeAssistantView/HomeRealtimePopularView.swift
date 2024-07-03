@@ -42,11 +42,8 @@ final class HomeRealtimePopularView: UIView {
         }
         
         titleLabel.do {
-            $0.font = .HeadLine1
+            $0.applyWSSFont(.headline1, with: StringLiterals.Home.Title.realtimePopular)
             $0.textColor = .wssBlack
-            $0.makeAttribute(with: StringLiterals.Home.Title.realtimePopular)?
-                .kerning(kerningPixel: -1.2)
-                .applyAttribute()
         }
         
         titleStackView.do {

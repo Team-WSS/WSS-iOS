@@ -17,7 +17,10 @@ final class SearchDetailInduceView: UIView {
     private let titleLabel = UILabel()
     private let descriptionLabel = UILabel()
     private let backgroundImageView = UIImageView()
+    
+    /// 상세 탐색 버튼 및 버튼 내 라벨
     private let induceDetailButton = UIButton()
+    private let induceDetailButtonLabel = UILabel()
     
     //MARK: - Life Cycle
     
@@ -43,12 +46,12 @@ final class SearchDetailInduceView: UIView {
         }
         
         titleLabel.do {
-            $0.fontTitle1Attribute(with: StringLiterals.Search.induceTitle)
+            $0.applyWSSFont(.title1, with: StringLiterals.Search.induceTitle)
             $0.textColor = .wssBlack
         }
         
         descriptionLabel.do {
-            $0.fontLabel1Attribute(with: StringLiterals.Search.induceDescription)
+            $0.applyWSSFont(.label1, with: StringLiterals.Search.induceDescription)
             $0.textColor = .wssGray200
         }
         
@@ -58,16 +61,15 @@ final class SearchDetailInduceView: UIView {
         }
         
         induceDetailButton.do {
-            var configuration = UIButton.Configuration.filled()
-            configuration.baseBackgroundColor = .wssWhite
-            configuration.baseForegroundColor = .wssPrimary100
-            var titleAttr = AttributedString.init(StringLiterals.Search.induceButton)
-            titleAttr.kern = -0.6
-            titleAttr.font = UIFont.Title3
-            configuration.attributedTitle = titleAttr
-            configuration.background.cornerRadius = 14
-            configuration.contentInsets = NSDirectionalEdgeInsets(top: 14.5, leading: 57.5, bottom: 14.5, trailing: 57.5)
-            $0.configuration = configuration
+            $0.backgroundColor = .wssWhite
+            $0.layer.cornerRadius = 14
+            $0.clipsToBounds = true
+        }
+        
+        induceDetailButtonLabel.do {
+            $0.applyWSSFont(.title3, with: StringLiterals.Search.induceButton)
+            $0.textColor = .wssPrimary100
+            $0.isUserInteractionEnabled = false
         }
     }
     
@@ -76,6 +78,7 @@ final class SearchDetailInduceView: UIView {
         backgroundImageView.addSubviews(titleLabel,
                                         descriptionLabel,
                                         induceDetailButton)
+        induceDetailButton.addSubview(induceDetailButtonLabel)
     }
     
     private func setLayout() {
@@ -97,6 +100,10 @@ final class SearchDetailInduceView: UIView {
             $0.top.equalTo(descriptionLabel.snp.bottom).offset(113)
             $0.leading.trailing.equalToSuperview().inset(22.5)
             $0.bottom.equalToSuperview().inset(21)
+            
+            induceDetailButtonLabel.snp.makeConstraints {
+                $0.center.equalToSuperview()
+            }
         }
     }
 }

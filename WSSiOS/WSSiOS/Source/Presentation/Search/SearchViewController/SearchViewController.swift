@@ -53,16 +53,8 @@ final class SearchViewController: UIViewController {
         bindViewModel()
     }
     
-    //MARK: - UI
-    
-    private func setUI() {
-        self.view.do {
-            $0.backgroundColor = .White
-        }
-    }
-    
     //MARK: - Bind
-
+    
     private func registerCell() {
         rootView.sosopickView.sosopickCollectionView.register(
             SosoPickCollectionViewCell.self,
@@ -91,3 +83,30 @@ final class SearchViewController: UIViewController {
             .disposed(by: disposeBag)
     }
 }
+
+extension SearchViewController {
+    
+    //MARK: - UI
+    
+    private func setUI() {
+        self.view.do {
+            $0.backgroundColor = .White
+        }
+    }
+}
+
+//MARK: - Extension
+//
+//extension SearchViewController: UISearchBarDelegate {
+//    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+//        rootView.headerView.searchBar.resignFirstResponder()
+//    }
+//
+//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
+//        self.view.endEditing(true)
+//    }
+//
+//    private func showSearchBarAndFocus() {
+//        rootView.headerView.searchBar.becomeFirstResponder()
+//    }
+//}

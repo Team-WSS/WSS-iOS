@@ -36,11 +36,8 @@ final class HomeTodayPopularView: UIView {
     
     private func setUI() {
         titleLabel.do {
-            $0.font = .HeadLine1
+            $0.applyWSSFont(.headline1, with: StringLiterals.Home.Title.todayPopular)
             $0.textColor = .wssBlack
-            $0.makeAttribute(with: StringLiterals.Home.Title.todayPopular)?
-                .kerning(kerningPixel: -1.2)
-                .applyAttribute()
         }
         
         todayPopularCollectionView.do {
