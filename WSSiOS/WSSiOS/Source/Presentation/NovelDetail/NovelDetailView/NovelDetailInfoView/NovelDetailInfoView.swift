@@ -19,6 +19,7 @@ final class NovelDetailInfoView: UIView {
     let platformSection = NovelDetailInfoPlatformView()
     
     let reviewEmptyView = NovelDetailInfoReviewEmptyView()
+    let reviewView = NovelDetailInfoReviewView()
     
     //MARK: - Life Cycle
     
@@ -49,7 +50,8 @@ final class NovelDetailInfoView: UIView {
         self.addSubview(stackView)
         stackView.addArrangedSubviews(descriptionSection,
                                       platformSection,
-                                      reviewEmptyView)
+                                      reviewEmptyView,
+                                      reviewView)
     }
     
     private func setLayout() {
@@ -69,5 +71,6 @@ final class NovelDetailInfoView: UIView {
     
     func bindData(_ data: NovelDetailInfoResult) {
         descriptionSection.bindData(data)
+        reviewView.bindData(data)
     }
 }
