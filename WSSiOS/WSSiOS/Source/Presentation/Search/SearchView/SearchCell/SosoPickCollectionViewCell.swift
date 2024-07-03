@@ -69,8 +69,9 @@ final class SosoPickCollectionViewCell: UICollectionViewCell {
     func bindData(data: SosoPickNovel) {
         self.novelImageView.image = UIImage(named: data.novelImage)
         self.novelTitleLabel.do {
-            $0.fontLabel1Attribute(with: data.novelTitle)
+            $0.applyWSSFont(.label1, with: data.novelTitle)
             $0.lineBreakMode = .byTruncatingTail
+            $0.numberOfLines = 1
         }
     }
 }

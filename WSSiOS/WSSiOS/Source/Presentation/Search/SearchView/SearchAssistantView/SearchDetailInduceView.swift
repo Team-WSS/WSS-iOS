@@ -46,12 +46,12 @@ final class SearchDetailInduceView: UIView {
         }
         
         titleLabel.do {
-            $0.fontTitle1Attribute(with: StringLiterals.Search.induceTitle)
+            $0.applyWSSFont(.title1, with: StringLiterals.Search.induceTitle)
             $0.textColor = .wssBlack
         }
         
         descriptionLabel.do {
-            $0.fontLabel1Attribute(with: StringLiterals.Search.induceDescription)
+            $0.applyWSSFont(.label1, with: StringLiterals.Search.induceDescription)
             $0.textColor = .wssGray200
         }
         

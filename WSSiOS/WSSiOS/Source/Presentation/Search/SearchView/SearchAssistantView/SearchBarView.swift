@@ -41,7 +41,7 @@ final class SearchBarView: UIView {
         }
         
         searchBarLabel.do {
-            $0.fontLabel1Attribute(with: StringLiterals.Search.searchbar)
+            $0.applyWSSFont(.label1, with: StringLiterals.Search.searchbar)
             $0.textColor = .wssGray200
         }
         
@@ -63,6 +63,7 @@ final class SearchBarView: UIView {
         
         searchIconImageView.snp.makeConstraints {
             $0.centerY.equalToSuperview()
+            $0.size.equalTo(25)
             $0.trailing.equalToSuperview().inset(15)
         }
     }
