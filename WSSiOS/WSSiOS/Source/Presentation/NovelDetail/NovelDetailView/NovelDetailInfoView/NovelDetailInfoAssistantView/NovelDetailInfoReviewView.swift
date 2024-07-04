@@ -14,8 +14,12 @@ final class NovelDetailInfoReviewView: UIView {
     
     //MARK: - UI Components
     
+    private let reviewStackView = UIStackView()
     private let titleLabel = UILabel()
     private let attractivePointView = NovelDetailInfoReviewAttractivePointView()
+    let keywordCollectionView = UICollectionView(frame: .zero,
+                                                      collectionViewLayout: UICollectionViewLayout())
+    private let keywordCollectionViewLayout = UICollectionViewFlowLayout()
     
     //MARK: - Life Cycle
     
@@ -38,29 +42,60 @@ final class NovelDetailInfoReviewView: UIView {
             $0.backgroundColor = .wssWhite
         }
         
+        reviewStackView.do {
+            $0.axis = .vertical
+            $0.alignment = .fill
+        }
+        
         titleLabel.do {
             $0.applyWSSFont(.title1,
                             with: StringLiterals.NovelDetail.Info.attractivePoints)
             $0.textColor = .wssBlack
         }
+        
+        keywordCollectionView.do {
+            $0.showsHorizontalScrollIndicator = false
+        }
+        
+        keywordCollectionViewLayout.do {
+            $0.scrollDirection = .horizontal
+            $0.minimumInteritemSpacing = 6
+            $0.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+            keywordCollectionView.setCollectionViewLayout($0,
+                                                          animated: false)
+        }
     }
     
     private func setHierarchy() {
-        self.addSubviews(titleLabel,
-                         attractivePointView)
+        self.addSubview(reviewStackView)
+        reviewStackView.addArrangedSubviews(titleLabel,
+                                            attractivePointView,
+                                            keywordCollectionView)
     }
     
     private func setLayout() {
+        reviewStackView.do {
+            $0.setCustomSpacing(15, after: titleLabel)
+            $0.setCustomSpacing(10, after: attractivePointView)
+            
+            $0.snp.makeConstraints {
+                $0.top.equalToSuperview().inset(35)
+                $0.horizontalEdges.equalToSuperview()
+                $0.bottom.equalToSuperview().inset(40)
+            }
+        }
+        
         titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(35)
-            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.horizontalEdges.equalToSuperview().inset(20)
         }
         
         attractivePointView.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(15)
-            $0.leading.trailing.equalToSuperview().inset(20)
-            $0.bottom.equalToSuperview().inset(40)
-            $0.height.equalTo(55)
+            $0.horizontalEdges.equalToSuperview().inset(20)
+        }
+        
+        keywordCollectionView.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview()
+            $0.height.equalTo(44)
         }
     }
     

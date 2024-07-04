@@ -26,6 +26,7 @@ final class NovelDetailViewModel: ViewModelType {
     
     private let isInfoDescriptionExpended = BehaviorRelay<Bool>(value: false)
     private let platformList = BehaviorRelay<[Platform]>(value: [])
+    private let keywordList = BehaviorRelay<[Keyword]>(value: [])
     
     //MARK: - Life Cycle
     
@@ -59,6 +60,7 @@ final class NovelDetailViewModel: ViewModelType {
         let selectedTab: Driver<Tab>
         let isInfoDescriptionExpended: Driver<Bool>
         let platformList: Driver<[Platform]>
+        let keywordList: Driver<[Keyword]>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -80,6 +82,7 @@ final class NovelDetailViewModel: ViewModelType {
             .subscribe(with: self, onNext: { owner, data in
                 owner.novelDetailInfoData.onNext(data)
                 owner.platformList.accept(data.platforms)
+                owner.keywordList.accept(data.keywords)
             }, onError: { owner, error in
                 owner.novelDetailInfoData.onError(error)
             })
@@ -145,7 +148,17 @@ final class NovelDetailViewModel: ViewModelType {
             showLargeNovelCoverImage: showLargeNovelCoverImage.asDriver(),
             selectedTab: selectedTab.asDriver(),
             isInfoDescriptionExpended: isInfoDescriptionExpended.asDriver(),
-            platformList: platformList.asDriver()
+            platformList: platformList.asDriver(),
+            keywordList: keywordList.asDriver()
         )
+    }
+    
+    //MARK: - Custom Method
+    
+    func keywordNameForItemAt(indexPath: IndexPath) -> String? {
+        guard indexPath.item < keywordList.value.count else {
+            return nil
+        }
+       return "\(keywordList.value[indexPath.item].keywordName) \(keywordList.value[indexPath.item].keywordCount)"
     }
 }

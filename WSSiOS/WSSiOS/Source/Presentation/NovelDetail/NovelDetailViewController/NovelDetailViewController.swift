@@ -55,6 +55,7 @@ final class NovelDetailViewController: UIViewController {
         
         setUI()
         registerCell()
+        delegate()
         bindViewModel()
         swipeBackGesture()
     }
@@ -102,6 +103,15 @@ final class NovelDetailViewController: UIViewController {
         rootView.infoView.platformSection.platformCollectionView.register(
             NovelDetailInfoPlatformCollectionViewCell.self,
             forCellWithReuseIdentifier: NovelDetailInfoPlatformCollectionViewCell.cellIdentifier)
+        
+        rootView.infoView.reviewView.keywordCollectionView.register(
+            NovelDetailInfoReviewKeywordCollectionViewCell.self,
+            forCellWithReuseIdentifier: NovelDetailInfoReviewKeywordCollectionViewCell.cellIdentifier)
+    }
+    
+    private func delegate() {
+        rootView.infoView.reviewView.keywordCollectionView.rx.setDelegate(self)
+            .disposed(by: disposeBag)
     }
     
     private func bindViewModel() {
@@ -187,6 +197,14 @@ final class NovelDetailViewController: UIViewController {
                 }
             })
             .disposed(by: disposeBag)
+        
+        output.keywordList
+            .drive(rootView.infoView.reviewView.keywordCollectionView.rx.items(
+                cellIdentifier: NovelDetailInfoReviewKeywordCollectionViewCell.cellIdentifier,
+                cellType: NovelDetailInfoReviewKeywordCollectionViewCell.self)) { _, element, cell in
+                    cell.bindData(data: element)
+                }
+                .disposed(by: disposeBag)
     }
     
     //MARK: - Actions
@@ -233,5 +251,15 @@ final class NovelDetailViewController: UIViewController {
             backButton.tintColor = .wssWhite
             dropDownButton.tintColor = .wssWhite
         }
+    }
+}
+extension NovelDetailViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        guard let text = viewModel.keywordNameForItemAt(indexPath: indexPath) else {
+            return CGSize(width: 0, height: 0)
+        }
+        
+        let width = (text as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 24
+        return CGSize(width: width, height: 37)
     }
 }
