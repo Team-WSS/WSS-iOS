@@ -79,7 +79,7 @@ final class FeedDetailReplyTableViewCell: UITableViewCell {
         }
         
         threeDotsButton.do {
-            $0.setImage(.icThreedots, for: .normal)
+            $0.setImage(.icThreedots.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray100), for: .normal)
             $0.contentMode = .scaleAspectFit
         }
     }
@@ -122,10 +122,12 @@ final class FeedDetailReplyTableViewCell: UITableViewCell {
     }
     
     func bindData(data: Comment) {
-        self.userProfileImageView.image = UIImage(named: data.userProfileImage)
+        self.userProfileImageView.kfSetImage(url: data.userProfileImage)
         self.userNicknameLabel.applyWSSFont(.title2, with: data.userNickname)
         self.createdDateLabel.applyWSSFont(.body5, with: data.createdDate)
-        self.isModifiedLabel.applyWSSFont(.body5, with: StringLiterals.Feed.modifiedText)
+        if data.isModified {
+            self.isModifiedLabel.applyWSSFont(.body5, with: StringLiterals.Feed.modifiedText)
+        }
         self.replyContentLabel.do {
             $0.applyWSSFont(.body2, with: data.commentContent)
             $0.numberOfLines = 0

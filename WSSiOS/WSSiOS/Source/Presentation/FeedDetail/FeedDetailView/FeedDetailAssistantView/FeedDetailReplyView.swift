@@ -16,7 +16,7 @@ final class FeedDetailReplyView: UIView {
     
     private let replyTitleStackView = UIStackView()
     private let replyTitleLabel = UILabel()
-    private let replyCountLabel = UILabel()
+    let replyCountLabel = UILabel()
     let replyTableView = UITableView(frame: .zero, style: .plain)
     
     private let testView = FeedDetailReplyTableViewCell()
@@ -48,7 +48,6 @@ final class FeedDetailReplyView: UIView {
         }
         
         replyCountLabel.do {
-            $0.applyWSSFont(.title2, with: String(3))
             $0.textColor = .wssPrimary100
         }
         
@@ -64,8 +63,7 @@ final class FeedDetailReplyView: UIView {
         replyTitleStackView.addArrangedSubviews(replyTitleLabel,
                                                 replyCountLabel)
         self.addSubviews(replyTitleStackView,
-                        testView)
-
+                         replyTableView)
     }
     
     private func setLayout() {
@@ -74,9 +72,14 @@ final class FeedDetailReplyView: UIView {
             $0.leading.equalToSuperview().inset(20)
         }
         
-        testView.snp.makeConstraints {
+        replyTableView.snp.makeConstraints {
             $0.top.equalTo(replyTitleStackView.snp.bottom).offset(24)
             $0.leading.trailing.equalToSuperview().inset(20)
+            $0.bottom.equalToSuperview()
         }
+    }
+    
+    func bindData(commentCount: Int) {
+        replyCountLabel.applyWSSFont(.title2, with: String(commentCount))
     }
 }

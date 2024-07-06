@@ -14,8 +14,11 @@ final class FeedDetailView: UIView {
     
     //MARK: - Components
     
-    private let profileView = FeedDetailProfileView()
-    private let contentView = FeedDetailContentView()
+    private let scrollView = UIScrollView()
+    private let contentView = UIView()
+    
+    let profileView = FeedDetailProfileView()
+    let feedContentView = FeedDetailContentView()
     let replyView = FeedDetailReplyView()
     
     // MARK: - Life Cycle
@@ -35,28 +38,43 @@ final class FeedDetailView: UIView {
     //MARK: - UI
     
     private func setUI() {
-        
+        scrollView.do {
+            $0.showsVerticalScrollIndicator = false
+        }
     }
     
     private func setHierarchy() {
-        self.addSubviews(profileView,
-                         contentView,
-                         replyView)
+        self.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        contentView.addSubviews(profileView,
+                                feedContentView,
+                                replyView)
     }
     
     private func setLayout() {
-        profileView.snp.makeConstraints {
-            $0.top.equalTo(safeAreaLayoutGuide.snp.top).inset(20)
-            $0.leading.equalToSuperview().inset(20)
+        scrollView.snp.makeConstraints {
+            $0.top.bottom.equalTo(self.safeAreaLayoutGuide)
+            $0.leading.trailing.equalToSuperview()
         }
         
         contentView.snp.makeConstraints {
+            $0.edges.equalTo(scrollView.contentLayoutGuide)
+            $0.height.greaterThanOrEqualTo(self.snp.height).priority(.low)
+            $0.width.equalTo(scrollView.snp.width)
+        }
+        
+        profileView.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(20)
+            $0.leading.equalToSuperview().inset(20)
+        }
+        
+        feedContentView.snp.makeConstraints {
             $0.top.equalTo(profileView.snp.bottom).offset(12)
             $0.leading.trailing.equalToSuperview()
         }
         
         replyView.snp.makeConstraints {
-            $0.top.equalTo(contentView.snp.bottom)
+            $0.top.equalTo(feedContentView.snp.bottom)
             $0.leading.trailing.bottom.equalToSuperview()
         }
     }

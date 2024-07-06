@@ -13,7 +13,6 @@ protocol FeedRepository {
     func getFeedData(category: String,
                      lastFeedId: Int,
                      size: Int) -> Observable<TotalFeed>
-    
     func getSingleFeedData() -> Observable<Feed>
     func getSingleFeedComments() -> Observable<[Comment]>
 }
@@ -44,12 +43,12 @@ struct TestFeedRepository: FeedRepository {
                                     userNickName: "구리구리스",
                                     createdDate: "10월 3일",
                                     content: "짱짱걸",
-                                    novelTitle: "여주가 세계를 구한다고라고라",
+                                    novelTitle: "여주가 세계를 구한다",
                                     novelRating: 4.21,
                                     novelRatingCount: 123,
                                     genres: [.bl, .drama],
                                     likeCount: 12,
-                                    commentCount: 23))
+                                    commentCount: 56))
     }
     
     func getSingleFeedComments() -> Observable<[Comment]> {
@@ -68,16 +67,16 @@ struct TestFeedRepository: FeedRepository {
                       commentId: 1,
                       createdDate: "11월 16일",
                       commentContent: "진짜 더 재미있다 ㄷㄷ",
-                      isModified: true,
-                      isMyComment: true),
+                      isModified: false,
+                      isMyComment: false),
              Comment(userId: 1,
                       userNickname: "이안",
                       userProfileImage: "imgTest2",
                       commentId: 1,
-                      createdDate: "10월 3일",
+                      createdDate: "7월 10일",
                       commentContent: "진짜진짜 재미있다!",
                       isModified: true,
-                      isMyComment: true)
+                      isMyComment: false)
             ])
     }
 }
@@ -106,7 +105,7 @@ struct DefaultFeedRepository: FeedRepository {
                      commentId: 1,
                      createdDate: "10월 3일",
                      commentContent: "진짜 재미있다 ㄷㄷ",
-                     isModified: true,
+                     isModified: false,
                      isMyComment: true),
              Comment(userId: 1,
                       userNickname: "이진토",
@@ -115,15 +114,15 @@ struct DefaultFeedRepository: FeedRepository {
                       createdDate: "11월 16일",
                       commentContent: "진짜 더 재미있다 ㄷㄷ",
                       isModified: true,
-                      isMyComment: true),
+                      isMyComment: false),
              Comment(userId: 1,
                       userNickname: "이안",
                       userProfileImage: "imgTest2",
                       commentId: 1,
-                      createdDate: "10월 3일",
+                      createdDate: "7월 10일",
                       commentContent: "진짜진짜 재미있다!",
                       isModified: true,
-                      isMyComment: true)
+                      isMyComment: false)
             ])
     }
 }

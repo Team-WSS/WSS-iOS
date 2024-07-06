@@ -13,7 +13,7 @@ struct Feed {
     var createdDate: String
     var content: String
     var novelTitle: String
-    var novelRating: Double
+    var novelRating: Float
     var novelRatingCount: Int
     var genres: [ReplaceGenre]
     var likeCount: Int

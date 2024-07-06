@@ -51,6 +51,7 @@ final class FeedDetailViewController: UIViewController {
         super.viewDidLoad()
         
         setUI()
+        
         registerCell()
         bindViewModel()
     }
@@ -78,7 +79,26 @@ final class FeedDetailViewController: UIViewController {
         let input = FeedDetailViewModel.Input()
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
-        output.commentDataList
+        output.feedProfileData
+            .bind(with: self, onNext: { owner, data in
+                owner.rootView.profileView.bindData(data: data)
+            })
+            .disposed(by: disposeBag)
+        
+        output.feedDetailData
+            .bind(with: self, onNext: { owner, data in
+                owner.rootView.feedContentView.bindData(data: data)
+            })
+            .disposed(by: disposeBag)
+        
+        output.commentCountLabel
+            .asDriver()
+            .drive(with: self, onNext: { owner, data in
+                owner.rootView.replyView.bindData(commentCount: data)
+            })
+            .disposed(by: disposeBag)
+        
+        output.commentsDataList
             .bind(to: rootView.replyView.replyTableView.rx.items(
                 cellIdentifier: FeedDetailReplyTableViewCell.cellIdentifier,
                 cellType: FeedDetailReplyTableViewCell.self)) { row, element, cell in

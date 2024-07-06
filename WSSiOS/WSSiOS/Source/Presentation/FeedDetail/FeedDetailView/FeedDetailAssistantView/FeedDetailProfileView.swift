@@ -7,6 +7,7 @@
 
 import UIKit
 
+import Kingfisher
 import SnapKit
 import Then
 
@@ -41,14 +42,13 @@ final class FeedDetailProfileView: UIView {
         }
         
         userProfileImageView.do {
-            $0.image = .imgTest2
+            $0.image = .imgLoadingThumbnail
             $0.layer.cornerRadius = 12
             $0.contentMode = .scaleAspectFill
             $0.clipsToBounds = true
         }
         
         userNicknameLabel.do {
-            $0.applyWSSFont(.title2, with: "구리스")
             $0.textColor = .wssBlack
         }
         
@@ -58,7 +58,6 @@ final class FeedDetailProfileView: UIView {
         }
         
         createdDateLabel.do {
-            $0.applyWSSFont(.body5, with: "11월 16일")
             $0.textColor = .wssBlack
         }
     }
@@ -85,5 +84,11 @@ final class FeedDetailProfileView: UIView {
             $0.setCustomSpacing(6, after: userNicknameLabel)
             $0.setCustomSpacing(6, after: blackDotImageView)
         }
+    }
+    
+    func bindData(data: Feed) {
+        userProfileImageView.kfSetImage(url: data.userProfileImage)
+        userNicknameLabel.applyWSSFont(.title2, with: data.userNickName)
+        createdDateLabel.applyWSSFont(.body5, with: data.createdDate)
     }
 }

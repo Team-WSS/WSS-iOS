@@ -17,8 +17,8 @@ final class FeedDetailViewModel: ViewModelType {
     private let feedRepository: FeedRepository
     private let disposeBag = DisposeBag()
     
-    private let feedDetailData = PublishSubject<Feed>()
-    private let commentsDataList = PublishSubject<[Comment]>()
+    private let feedDetailData = PublishRelay<Feed>()
+    private let commentsDataList = PublishRelay<[Comment]>()
     
     //MARK: - Life Cycle
     
@@ -31,24 +31,33 @@ final class FeedDetailViewModel: ViewModelType {
     }
     
     struct Output {
-        let feedDetailData: Observable<Feed>
-        let commentDataList: Observable<[Comment]>
+        let feedProfileData = PublishRelay<Feed>()
+        let feedDetailData = PublishRelay<Feed>()
+        let commentCountLabel = BehaviorRelay<Int>(value: 0)
+        let commentsDataList = PublishRelay<[Comment]>()
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
+        let output = Output()
+        
         feedRepository.getSingleFeedData()
             .subscribe(with: self, onNext: { owner, data in
-                owner.feedDetailData.onNext(data)
+                output.feedProfileData.accept(data)
+                output.feedDetailData.accept(data)
+                output.commentCountLabel.accept(data.commentCount)
+            }, onError: { owner, error in
+                print(error)
             })
             .disposed(by: disposeBag)
         
         feedRepository.getSingleFeedComments()
             .subscribe(with: self, onNext: { owner, data in
-                owner.commentsDataList.onNext(data)
+                output.commentsDataList.accept(data)
+            }, onError: { owner, error in
+                print(error)
             })
             .disposed(by: disposeBag)
 
-        return Output(feedDetailData: feedDetailData.asObservable(),
-                      commentDataList: commentsDataList.asObservable())
+        return output
     }
 }
