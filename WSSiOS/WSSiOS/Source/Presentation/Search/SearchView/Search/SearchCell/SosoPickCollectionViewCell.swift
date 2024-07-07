@@ -36,6 +36,8 @@ final class SosoPickCollectionViewCell: UICollectionViewCell {
     
     private func setUI() {
         novelImageView.do {
+            // 서버 딜레이 시 기본으로 보여지는 썸네일 이미지
+            $0.image = .imgLoadingThumbnail
             $0.layer.cornerRadius = 8
             $0.clipsToBounds = true
             $0.contentMode = .scaleAspectFill
@@ -67,7 +69,12 @@ final class SosoPickCollectionViewCell: UICollectionViewCell {
     }
     
     func bindData(data: SosoPickNovel) {
-        self.novelImageView.image = UIImage(named: data.novelImage)
+        if let novelImage = UIImage(named: data.novelImage) {
+            self.novelImageView.image = novelImage
+        }
+        else {
+            self.novelImageView.image = .imgLoadingThumbnail
+        }
         self.novelTitleLabel.do {
             $0.applyWSSFont(.label1, with: data.novelTitle)
             $0.lineBreakMode = .byTruncatingTail
