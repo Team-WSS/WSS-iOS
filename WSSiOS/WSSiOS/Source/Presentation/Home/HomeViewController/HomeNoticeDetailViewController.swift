@@ -7,10 +7,14 @@
 
 import UIKit
 
+import RxSwift
+
 final class HomeNoticeDetailViewController: UIViewController {
     
     //MARK: - Properties
 
+    private let viewModel: HomeNoticeDetailViewModel
+    private let disposeBag = DisposeBag()
     
     //MARK: - UI Components
     
@@ -18,6 +22,15 @@ final class HomeNoticeDetailViewController: UIViewController {
     private var backButton = UIButton()
     
     //MARK: - Life Cycle
+    
+    init(viewModel: HomeNoticeDetailViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func loadView() {
         self.view = rootView
@@ -35,6 +48,7 @@ final class HomeNoticeDetailViewController: UIViewController {
         super.viewDidLoad()
         
         setUI()
+        bindViewModel()
     }
     
     private func setUI() {
@@ -43,5 +57,17 @@ final class HomeNoticeDetailViewController: UIViewController {
         backButton.do {
             $0.setImage(.icNavigateLeft, for: .normal)
         }
+    }
+    
+    private func bindViewModel() {
+        let input = HomeNoticeDetailViewModel.Input()
+        let output = viewModel.transform(from: input, disposeBag: disposeBag)
+        
+        output.noticeData
+            .asDriver()
+            .drive(with: self, onNext: { owner, data in
+                owner.rootView.noticeContentView.bindData(data: data)
+            })
+            .disposed(by: disposeBag)
     }
 }

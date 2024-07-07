@@ -189,6 +189,7 @@
 		B9095D282C394FC7007521EF /* HomeNoticeDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9095D272C394FC7007521EF /* HomeNoticeDetailViewController.swift */; };
 		B9095D2A2C3950B4007521EF /* HomeNoticeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9095D292C3950B4007521EF /* HomeNoticeDetailView.swift */; };
 		B9095D2C2C39514D007521EF /* HomeNoticeDetailContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9095D2B2C39514D007521EF /* HomeNoticeDetailContentView.swift */; };
+		B9095D2E2C395598007521EF /* HomeNoticeDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9095D2D2C395598007521EF /* HomeNoticeDetailViewModel.swift */; };
 		B90A5E5E2C355BB4009938D9 /* NovelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90A5E5C2C355BB4009938D9 /* NovelService.swift */; };
 		B9181BDC2BEBDFA80024C800 /* HomeTasteRecommendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9181BDB2BEBDFA80024C800 /* HomeTasteRecommendView.swift */; };
 		B9181BDE2BEBE2300024C800 /* HomeTasteRecommendCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9181BDD2BEBE2300024C800 /* HomeTasteRecommendCollectionViewCell.swift */; };
@@ -427,6 +428,7 @@
 		B9095D272C394FC7007521EF /* HomeNoticeDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNoticeDetailViewController.swift; sourceTree = "<group>"; };
 		B9095D292C3950B4007521EF /* HomeNoticeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNoticeDetailView.swift; sourceTree = "<group>"; };
 		B9095D2B2C39514D007521EF /* HomeNoticeDetailContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNoticeDetailContentView.swift; sourceTree = "<group>"; };
+		B9095D2D2C395598007521EF /* HomeNoticeDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNoticeDetailViewModel.swift; sourceTree = "<group>"; };
 		B90A5E5C2C355BB4009938D9 /* NovelService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NovelService.swift; sourceTree = "<group>"; };
 		B9181BDB2BEBDFA80024C800 /* HomeTasteRecommendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTasteRecommendView.swift; sourceTree = "<group>"; };
 		B9181BDD2BEBE2300024C800 /* HomeTasteRecommendCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTasteRecommendCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -1403,6 +1405,7 @@
 			children = (
 				B96D10C32BED2EDB00D4D84C /* HomeViewModel.swift */,
 				B9AC1BD52BF0BB9D006EDE92 /* HomeNoticeViewModel.swift */,
+				B9095D2D2C395598007521EF /* HomeNoticeDetailViewModel.swift */,
 			);
 			path = HomeViewModel;
 			sourceTree = "<group>";
@@ -1785,6 +1788,7 @@
 				2C5D0F592B4FDEC000C76D3C /* MyPageInventoryCollectionViewCell.swift in Sources */,
 				392A29232B4E89FD0065EB97 /* RegisterNormalNovelInfoWithRatingView.swift in Sources */,
 				2C79CB9D2B45A1DD00734E1F /* UIFont+.swift in Sources */,
+				B9095D2E2C395598007521EF /* HomeNoticeDetailViewModel.swift in Sources */,
 				B97A43732C0251D90029C8D7 /* SosoPickCollectionViewCell.swift in Sources */,
 				A147CBC62B4D6E190040AE39 /* UIStackView+.swift in Sources */,
 				CD3E5A982B5509A500C0A659 /* DeletePopupContentView.swift in Sources */,

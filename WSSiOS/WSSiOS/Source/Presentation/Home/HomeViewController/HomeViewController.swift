@@ -111,7 +111,7 @@ final class HomeViewController: UIViewController {
                 owner.navigationController?.pushViewController(
                     HomeNoticeViewController(
                         viewModel: HomeNoticeViewModel(
-                            noticeRepository: DefaultNoticeRepository()
+                            noticeRepository: TestNoticeRepository()
                         )
                     ), animated: true)
             })

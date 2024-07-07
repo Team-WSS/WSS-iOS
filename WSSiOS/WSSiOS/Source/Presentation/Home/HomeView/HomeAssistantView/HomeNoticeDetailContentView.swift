@@ -40,20 +40,15 @@ final class HomeNoticeDetailContentView: UIView {
         }
         
         noticeTitleLabel.do {
-            $0.applyWSSFont(.headline1, with: "리뷰 기능 변경 관련 공지")
             $0.textColor = .wssBlack
         }
         
         createdDateLabel.do {
-            $0.applyWSSFont(.body5, with: "2024.11.16")
             $0.textColor = .wssGray200
         }
         
         noticeContentLabel.do {
-            $0.applyWSSFont(.body2, with: "156번은 연장냥(Chicken Cat)이라는 닭 코스튬을 입은 모습의 냥코가 존재한다, 8.0 이전까지 데이터로만 존재하다가 이후 삭제되었다. 183번 냥코 자리에 EX 캐릭터인데")
             $0.textColor = .wssBlack
-            $0.numberOfLines = 0
-            $0.lineBreakStrategy = .hangulWordPriority
         }
     }
     
@@ -72,6 +67,19 @@ final class HomeNoticeDetailContentView: UIView {
             $0.top.equalTo(safeAreaLayoutGuide).inset(20)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.bottom.equalToSuperview().inset(40)
+        }
+    }
+    
+    func bindData(data: Notice) {
+        noticeTitleLabel.do {
+            $0.applyWSSFont(.headline1, with: data.noticeTitle)
+            $0.numberOfLines = 0
+        }
+        createdDateLabel.applyWSSFont(.body5, with: data.createdDate)
+        noticeContentLabel.do {
+            $0.applyWSSFont(.body2, with: data.noticeContent)
+            $0.numberOfLines = 0
+            $0.lineBreakStrategy = .hangulWordPriority
         }
     }
 }

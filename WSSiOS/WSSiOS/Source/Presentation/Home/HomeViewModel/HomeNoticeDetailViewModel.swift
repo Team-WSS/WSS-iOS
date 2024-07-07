@@ -1,16 +1,16 @@
 //
-//  HomeNoticeViewModel.swift
+//  HomeNoticeDetailViewModel.swift
 //  WSSiOS
 //
-//  Created by Seoyeon Choi on 5/12/24.
+//  Created by Seoyeon Choi on 7/6/24.
 //
 
-import UIKit
+import Foundation
 
 import RxSwift
 import RxCocoa
 
-final class HomeNoticeViewModel: ViewModelType {
+final class HomeNoticeDetailViewModel: ViewModelType {
     
     //MARK: - Properties
     
@@ -20,14 +20,13 @@ final class HomeNoticeViewModel: ViewModelType {
     // MARK: - Inputs
     
     struct Input {
-        let noticeCellTapped: ControlEvent<IndexPath>
+        
     }
     
     // MARK: - Outputs
     
     struct Output {
-        var noticeList = BehaviorRelay<[Notice]>(value: [])
-        let navigateToNoticeDetail = PublishRelay<IndexPath>()
+        let noticeData = BehaviorRelay<Notice>(value: Notice(noticeTitle: "", noticeContent: "", createdDate: ""))
     }
     
     //MARK: - init
@@ -37,21 +36,13 @@ final class HomeNoticeViewModel: ViewModelType {
     }
 }
 
-extension HomeNoticeViewModel {
+extension HomeNoticeDetailViewModel {
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
         
         noticeRepository.getNotices()
             .subscribe(with: self, onNext: { owner, data in
-                output.noticeList.accept(data)
-            }, onError: { owner, error in
-                print(error)
-            })
-            .disposed(by: disposeBag)
-        
-        input.noticeCellTapped
-            .subscribe(onNext: { indexPath in
-                output.navigateToNoticeDetail.accept(indexPath)
+                output.noticeData.accept(data[0])
             })
             .disposed(by: disposeBag)
         

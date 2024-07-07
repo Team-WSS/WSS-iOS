@@ -16,7 +16,7 @@ final class HomeNoticeDetailView: UIView {
     
     private let scrollView = UIScrollView()
     private let contentView = UIView()
-    private let noticeContentView = HomeNoticeDetailContentView()
+    let noticeContentView = HomeNoticeDetailContentView()
     
     //MARK: - Life Cycle
     
@@ -34,7 +34,9 @@ final class HomeNoticeDetailView: UIView {
     }
     
     private func setUI() {
-        
+        scrollView.do {
+            $0.showsVerticalScrollIndicator = false
+        }
     }
     
     private func setHierarchy() {
