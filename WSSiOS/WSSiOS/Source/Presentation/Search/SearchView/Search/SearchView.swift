@@ -18,8 +18,8 @@ final class SearchView: UIView {
     private let contentView = UIView()
     
     private let titleLabel = UILabel()
-    private let searchbarView = SearchBarView()
-    private let searchDetailInduceView = SearchDetailInduceView()
+    let searchbarView = SearchBarView()
+    let searchDetailInduceView = SearchDetailInduceView()
     let sosopickView = SearchSosoPickView()
     
     // MARK: - Life Cycle
