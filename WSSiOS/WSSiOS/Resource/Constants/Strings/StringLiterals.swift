@@ -33,6 +33,7 @@ enum StringLiterals {
             static let changeNickname = "닉네임 변경"
             static let myPageInfo = "계정정보 확인"
             static let feed = "소소피드"
+            static let notice = "알림"
         }
     }
     
@@ -47,6 +48,12 @@ enum StringLiterals {
         enum SubTitle {
             static let interest = "관심 등록한 작품의 최신글이에요"
             static let recommend = "선호 장르를 기반으로 추천드려요!"
+        }
+        
+        enum Login {
+            static let induceTitle = "로그인하고 모든 기능을\n자유롭게 사용하세요!"
+            static let loginButtonTitle = "로그인 하러가기"
+            static let cancelButtonTitle = "닫기"
         }
         
         enum Unregister {

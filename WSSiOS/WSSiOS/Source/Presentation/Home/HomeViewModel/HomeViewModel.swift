@@ -20,15 +20,17 @@ final class HomeViewModel: ViewModelType {
     // MARK: - Inputs
     
     struct Input {
-
+        let announcementButtonTapped: ControlEvent<Void>
     }
     
     //MARK: - Outputs
     
     struct Output {
         var todayPopularList = BehaviorRelay<[TodayPopularNovel]>(value: [])
+        var realtimePopularList = BehaviorRelay<[RealtimePopularFeed]>(value: [])
         var interestList = BehaviorRelay<[InterestFeed]>(value: [])
         var tasteRecommendList = BehaviorRelay<[TasteRecommendNovel]>(value: [])
+        let navigateToAnnoucementView = PublishRelay<Bool>()
     }
     
     //MARK: - init
@@ -53,21 +55,35 @@ extension HomeViewModel {
             })
             .disposed(by: disposeBag)
         
+        recommendRepository.getRealtimePopularFeeds()
+            .subscribe(with: self, onNext: { owner, data in
+                output.realtimePopularList.accept(data)
+            }, onError: { owner, error in
+                print(error)
+            })
+            .disposed(by: disposeBag)
+        
         recommendRepository.getInterestNovels()
             .subscribe(with: self, onNext: { owner, data in
                 output.interestList.accept(data)
             }, onError: { owner, error in
-            print(error)
-        })
-        .disposed(by: disposeBag)
+                print(error)
+            })
+            .disposed(by: disposeBag)
         
         recommendRepository.getTasteRecommendNovels()
             .subscribe(with: self, onNext: { owner, data in
                 output.tasteRecommendList.accept(data)
             }, onError: { owner, error in
-            print(error)
-        })
-        .disposed(by: disposeBag)
+                print(error)
+            })
+            .disposed(by: disposeBag)
+        
+        input.announcementButtonTapped
+            .subscribe(onNext: { _ in
+                output.navigateToAnnoucementView.accept(true)
+            })
+            .disposed(by: disposeBag)
         
         return output
     }

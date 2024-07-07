@@ -15,7 +15,7 @@ final class HomeHeaderView: UIView {
     //MARK: - UI Components
     
     private let logoImageView = UIImageView()
-    private let announcementImageView = UIImageView()
+    let announcementButton = UIButton()
     
     //MARK: - Life Cycle
     
@@ -37,14 +37,14 @@ final class HomeHeaderView: UIView {
             $0.image = .imgLogoType
         }
         
-        announcementImageView.do {
-            $0.image = .icAnnouncementDotted
+        announcementButton.do {
+            $0.setImage(.icAnnouncement, for: .normal)
         }
     }
     
     private func setHierachy() {
         self.addSubviews(logoImageView,
-                         announcementImageView)
+                         announcementButton)
     }
     
     private func setLayout() {
@@ -53,7 +53,7 @@ final class HomeHeaderView: UIView {
             $0.leading.equalToSuperview().inset(20)
         }
         
-        announcementImageView.snp.makeConstraints {
+        announcementButton.snp.makeConstraints {
             $0.top.equalTo(logoImageView.snp.top)
             $0.trailing.equalToSuperview().inset(20)
         }
