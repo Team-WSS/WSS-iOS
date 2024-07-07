@@ -258,6 +258,14 @@ enum StringLiterals {
         
         static let sosoTitle = "소소"
         static let sosoDescription = "다른 사람들이 최근에 읽고 있는 작품이에요"
+        
+        static let novel = "작품"
+        
+        enum Empty {
+            static let description = "해당 검색어를 가진 작품은\n아직 등록되지 않았어요.."
+            static let inquiryButton = "작품 문의하러 가기"
+            static let kakaoChannelUrl = "https://pf.kakao.com/_kHxlWG"
+        }
     }
     
     enum Memo {

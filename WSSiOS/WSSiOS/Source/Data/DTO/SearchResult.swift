@@ -12,3 +12,13 @@ struct SosoPickNovel {
     var novelImage: String
     var novelTitle: String
 }
+
+struct NormalSearchNovel {
+    var novelId: Int
+    var novelImage: String
+    var novelTitle: String
+    var novelAuthor: String
+    var interestCount: Int
+    var ratingAverage: Float
+    var ratingCount: Int
+}
