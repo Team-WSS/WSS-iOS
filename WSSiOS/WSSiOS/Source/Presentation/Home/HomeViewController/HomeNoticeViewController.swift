@@ -74,7 +74,7 @@ final class HomeNoticeViewController: UIViewController {
     
     private func bindViewModel() {
         let input = HomeNoticeViewModel.Input(
-            noticeCellTapped: rootView.noticeTableView.rx.itemSelected
+            noticeCellDidTap: rootView.noticeTableView.rx.itemSelected
         )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -86,9 +86,9 @@ final class HomeNoticeViewController: UIViewController {
                 }
                 .disposed(by: disposeBag)
         
-        output.navigateToNoticeDetail
+        output.noticeDetailEnabled
             .bind(with: self, onNext: { owner, indexPath in
-                /// 공지사항 상세뷰가 있을 시 추가 예정
+                owner.navigationController?.pushViewController(HomeNoticeDetailViewController(viewModel: HomeNoticeDetailViewModel(noticeRepository: TestNoticeRepository())), animated: true)
             })
             .disposed(by: disposeBag)
         

@@ -20,14 +20,14 @@ final class HomeNoticeViewModel: ViewModelType {
     // MARK: - Inputs
     
     struct Input {
-        let noticeCellTapped: ControlEvent<IndexPath>
+        let noticeCellDidTap: ControlEvent<IndexPath>
     }
     
     // MARK: - Outputs
     
     struct Output {
         var noticeList = BehaviorRelay<[Notice]>(value: [])
-        let navigateToNoticeDetail = PublishRelay<IndexPath>()
+        let noticeDetailEnabled = PublishRelay<IndexPath>()
     }
     
     //MARK: - init
@@ -49,9 +49,9 @@ extension HomeNoticeViewModel {
             })
             .disposed(by: disposeBag)
         
-        input.noticeCellTapped
+        input.noticeCellDidTap
             .subscribe(onNext: { indexPath in
-                output.navigateToNoticeDetail.accept(indexPath)
+                output.noticeDetailEnabled.accept(indexPath)
             })
             .disposed(by: disposeBag)
         
