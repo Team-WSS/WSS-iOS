@@ -64,9 +64,16 @@ final class HomeNoticeDetailViewController: UIViewController {
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.noticeData
-            .asDriver()
-            .drive(with: self, onNext: { owner, data in
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, data in
                 owner.rootView.noticeContentView.bindData(data: data)
+            })
+            .disposed(by: disposeBag)
+        
+        self.backButton.rx.tap
+            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
     }
