@@ -52,11 +52,15 @@ final class HomeViewController: UIViewController {
         bindViewModel()
     }
     
+    //MARK: - UI
+    
     private func setUI() {
         self.view.do {
             $0.backgroundColor = .wssWhite
         }
     }
+    
+    //MARK: - Bind
     
     private func registerCell() {
         rootView.todayPopularView.todayPopularCollectionView.register(

@@ -39,6 +39,7 @@ final class HomeNoticeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        swipeBackGesture()
         preparationSetNavigationBar(title: StringLiterals.Navigation.Title.notice,
                                     left: self.backButton,
                                     right: nil)
@@ -49,9 +50,10 @@ final class HomeNoticeViewController: UIViewController {
         
         setUI()
         registerCell()
-        enablePopSwipe()
         bindViewModel()
     }
+    
+    //MARK: - UI
     
     private func setUI() {
         self.view.backgroundColor = .wssWhite
@@ -61,15 +63,12 @@ final class HomeNoticeViewController: UIViewController {
         }
     }
     
+    //MARK: - Bind
+    
     private func registerCell() {
         rootView.noticeTableView.register(
             HomeNoticeTableViewCell.self,
             forCellReuseIdentifier: HomeNoticeTableViewCell.cellIdentifier)
-    }
-    
-    private func enablePopSwipe() {
-        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
-        navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
     private func bindViewModel() {

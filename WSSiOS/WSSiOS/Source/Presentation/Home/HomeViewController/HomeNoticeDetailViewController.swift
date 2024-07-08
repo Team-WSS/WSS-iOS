@@ -12,7 +12,7 @@ import RxSwift
 final class HomeNoticeDetailViewController: UIViewController {
     
     //MARK: - Properties
-
+    
     private let viewModel: HomeNoticeDetailViewModel
     private let disposeBag = DisposeBag()
     
@@ -51,6 +51,8 @@ final class HomeNoticeDetailViewController: UIViewController {
         bindViewModel()
     }
     
+    //MARK: - UI
+    
     private func setUI() {
         self.view.backgroundColor = .wssWhite
         
@@ -58,6 +60,8 @@ final class HomeNoticeDetailViewController: UIViewController {
             $0.setImage(.icNavigateLeft, for: .normal)
         }
     }
+    
+    //MARK: - Bind
     
     private func bindViewModel() {
         let input = HomeNoticeDetailViewModel.Input()
