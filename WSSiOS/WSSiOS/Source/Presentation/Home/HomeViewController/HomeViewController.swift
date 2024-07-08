@@ -54,7 +54,7 @@ final class HomeViewController: UIViewController {
     
     private func setUI() {
         self.view.do {
-            $0.backgroundColor = .White
+            $0.backgroundColor = .wssWhite
         }
     }
     
@@ -62,6 +62,10 @@ final class HomeViewController: UIViewController {
         rootView.todayPopularView.todayPopularCollectionView.register(
             HomeTodayPopularCollectionViewCell.self,
             forCellWithReuseIdentifier: HomeTodayPopularCollectionViewCell.cellIdentifier)
+        
+        rootView.realtimePopularView.realtimePopularCollectionView.register(
+            HomeRealtimePopularCollectionViewCell.self,
+            forCellWithReuseIdentifier: HomeRealtimePopularCollectionViewCell.cellIdentifier)
         
         rootView.interestView.interestCollectionView.register(
             HomeInterestCollectionViewCell.self,
@@ -73,7 +77,9 @@ final class HomeViewController: UIViewController {
     }
     
     private func bindViewModel() {
-        let input = HomeViewModel.Input()
+        let input = HomeViewModel.Input(
+            announcementButtonTapped: rootView.headerView.announcementButton.rx.tap
+        )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
 
         output.todayPopularList
@@ -98,6 +104,17 @@ final class HomeViewController: UIViewController {
                 cellType: HomeTasteRecommendCollectionViewCell.self)) { row, element, cell in
                 cell.bindData(data: element)
             }
+            .disposed(by: disposeBag)
+        
+        output.navigateToAnnoucementView
+            .bind(with: self, onNext: { owner, _ in
+                owner.navigationController?.pushViewController(
+                    HomeNoticeViewController(
+                        viewModel: HomeNoticeViewModel(
+                            noticeRepository: DefaultNoticeRepository()
+                        )
+                    ), animated: true)
+            })
             .disposed(by: disposeBag)
     }
 }

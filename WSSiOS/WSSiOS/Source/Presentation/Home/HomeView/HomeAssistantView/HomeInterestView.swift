@@ -20,6 +20,7 @@ final class HomeInterestView: UIView {
     let interestCollectionView = UICollectionView(frame: .zero,
                                                   collectionViewLayout: UICollectionViewLayout())
     private let interestCollectionViewLayout = UICollectionViewFlowLayout()
+    private let unregisterView = HomeUnregisterView(.interest)
     
     //MARK: - Life Cycle
     
@@ -38,19 +39,13 @@ final class HomeInterestView: UIView {
     
     private func setUI() {
         titleLabel.do {
-            $0.font = .HeadLine1
+            $0.applyWSSFont(.headline1, with: "일이삼사오육칠팔구십 \(StringLiterals.Home.Title.interest)")
             $0.textColor = .wssBlack
-            $0.makeAttribute(with: "일이삼사오육칠팔구십 \(StringLiterals.Home.Title.interest)")?
-                .kerning(kerningPixel: -1.2)
-                .applyAttribute()
         }
         
         subTitleLabel.do {
-            $0.font = .Body2
+            $0.applyWSSFont(.body2, with: StringLiterals.Home.SubTitle.interest)
             $0.textColor = .wssGray200
-            $0.makeAttribute(with: StringLiterals.Home.SubTitle.interest)?
-                .kerning(kerningPixel: -0.6)
-                .applyAttribute()
         }
         
         interestCollectionView.do {
@@ -88,5 +83,11 @@ final class HomeInterestView: UIView {
             $0.leading.trailing.bottom.equalToSuperview()
             $0.height.equalTo(301)
         }
+        
+        /// 비로그인일 때
+//        unregisterView.snp.makeConstraints {
+//            $0.top.equalTo(subTitleLabel.snp.bottom).offset(20)
+//            $0.leading.trailing.equalToSuperview().inset(20)
+//        }
     }
 }

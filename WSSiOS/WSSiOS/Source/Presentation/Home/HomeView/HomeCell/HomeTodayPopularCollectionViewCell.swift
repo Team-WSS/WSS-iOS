@@ -55,7 +55,6 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
         }
         
         novelTitleLabel.do {
-            $0.font = .Title2
             $0.textColor = .wssBlack
             $0.numberOfLines = 1
         }
@@ -85,7 +84,6 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
         }
         
         commentTitleLabel.do {
-            $0.font = .Title2
             $0.textColor = .wssGray300
         }
         
@@ -98,7 +96,6 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
         }
         
         commentContentLabel.do {
-            $0.font = .Label1
             $0.textColor = .wssGray300
             $0.numberOfLines = 3
         }
@@ -148,6 +145,7 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
             $0.top.leading.equalToSuperview().offset(18)
             $0.size.equalTo(24)
         }
+        
         commentTitleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().offset(19)
             $0.leading.equalTo(userProfileView.snp.trailing).offset(10)
@@ -155,7 +153,7 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
         
         commaStartedImageView.snp.makeConstraints {
             $0.top.equalTo(commentTitleLabel.snp.bottom).offset(16)
-            $0.leading.equalToSuperview().inset(16)
+            $0.leading.equalToSuperview().inset(18)
         }
         
         commentContentLabel.snp.makeConstraints {
@@ -172,25 +170,16 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
     
     func bindData(data: TodayPopularNovel) {
         self.novelTitleLabel.do {
-            $0.makeAttribute(with: data.title)?
-                .kerning(kerningPixel: -0.6)
-                .lineSpacing(spacingPercentage: 140)
-                .applyAttribute()
+            $0.applyWSSFont(.title2, with: data.title)
             $0.lineBreakMode = .byTruncatingTail
         }
         self.novelImageView.image = UIImage(named: data.novelImage)
         self.userProfileView.addSubview(UIImageView(image: UIImage(named: data.avatarImage)))
         self.commentTitleLabel.do {
-            $0.makeAttribute(with: "\(data.nickname) 님의 리뷰")?
-                .kerning(kerningPixel: -0.6)
-                .lineSpacing(spacingPercentage: 140)
-                .applyAttribute()
+            $0.applyWSSFont(.title2, with: "\(data.nickname)님의 글")
         }
         self.commentContentLabel.do {
-            $0.makeAttribute(with: data.feedContent)?
-                .kerning(kerningPixel: -0.4)
-                .lineSpacing(spacingPercentage: 145)
-                .applyAttribute()
+            $0.applyWSSFont(.label1, with: data.feedContent)
             $0.lineBreakStrategy = .hangulWordPriority
             $0.lineBreakMode = .byTruncatingTail
         }

@@ -11,7 +11,8 @@ enum StringLiterals {
     
     enum Loading {
         static let novelTitle = "작품 제목"
-        static let novelAuthor = "작가"
+        static let novelAuthor = "작품 작가"
+        static let novelGenre = "작품 장르"
     }
     
     enum Tabbar {
@@ -31,6 +32,8 @@ enum StringLiterals {
             static let myPage = "마이페이지"
             static let changeNickname = "닉네임 변경"
             static let myPageInfo = "계정정보 확인"
+            static let feed = "소소피드"
+            static let notice = "알림"
         }
     }
     
@@ -45,6 +48,24 @@ enum StringLiterals {
         enum SubTitle {
             static let interest = "관심 등록한 작품의 최신글이에요"
             static let recommend = "선호 장르를 기반으로 추천드려요!"
+        }
+        
+        enum Login {
+            static let induceTitle = "로그인하고 모든 기능을\n자유롭게 사용하세요!"
+            static let loginButtonTitle = "로그인 하러가기"
+            static let cancelButtonTitle = "닫기"
+        }
+        
+        enum Unregister {
+            enum Title {
+                static let interest = "아직 관심작품이 없어요\n관심 등록하고 피드 소식을 빠르게 확인하세요!"
+                static let recommend = "로맨스, 로판, 판타지, 현판 등\n선호장르를 기반으로 웹소설을 추천해 드려요!"
+            }
+            
+            enum ButtonTItle {
+                static let interest = "관심작품 등록하기"
+                static let recommend = "선호장르 설정하기"
+            }
         }
     }
     
@@ -209,12 +230,41 @@ enum StringLiterals {
             static let novelDelete = "작품을 서재에서 삭제"
             static let novelEdit = "작품 정보 수정"
         }
+        
+        enum Header {
+            static let complete = "  ·  완결작  ·  "
+            static let inSeries = "  ·  연재중  ·  "
+            static let interest = "관심 있어요"
+            static let review = "리뷰 남기기"
+            
+            enum Loading {
+                static let novelTitle = "작품 제목"
+                static let novelAuthor = "작품 작가"
+                static let novelGenre = "작품 장르"
+                static let novelInterestCount = "0"
+                static let novelRatingCount = "0.0 (0)"
+                static let novelFeedCount = "0"
+            }
+        }
     }
     
     enum Search {
+        static let title = "탐색하기"
+        static let searchbar = "작품 제목, 작가를 검색하세요"
+        
+        static let induceTitle = "이제 뭐 읽을지 고민될 땐?"
+        static let induceDescription = "장르, 연재상태, 별점, 키워드로 작품 찾기"
+        static let induceButton = "내 취향에 맞는 작품 탐색하기"
+        
+        static let sosoTitle = "소소"
+        static let sosoDescription = "다른 사람들이 최근에 읽고 있는 작품이에요"
+        
+        static let novel = "작품"
+        
         enum Empty {
-            static let description = "검색 결과가 없어요ㅠ"
-            static let register = "등록 문의하기"
+            static let description = "해당 검색어를 가진 작품은\n아직 등록되지 않았어요.."
+            static let inquiryButton = "작품 문의하러 가기"
+            static let kakaoChannelUrl = "https://pf.kakao.com/_kHxlWG"
         }
     }
     
@@ -248,5 +298,10 @@ enum StringLiterals {
             static let keepWriting = "계속 작성하기"
             static let cancel = "취소"
         }
+    }
+    
+    enum Feed {
+        static let spoilerText = "스포일러가 포함된 글 보기"
+        static let modifiedText = "(수정됨)"
     }
 }
