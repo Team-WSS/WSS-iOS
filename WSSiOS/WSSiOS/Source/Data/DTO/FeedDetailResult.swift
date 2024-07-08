@@ -15,7 +15,7 @@ struct Feed {
     var novelTitle: String
     var novelRating: Float
     var novelRatingCount: Int
-    var genres: [ReplaceGenre]
+    var genres: [Genre]
     var likeCount: Int
     var commentCount: Int
     var isLiked: Bool

@@ -42,11 +42,11 @@ struct TestFeedRepository: FeedRepository {
         return Observable.just(Feed(userProfileImage: "imgTest2",
                                     userNickName: "구리구리스",
                                     createdDate: "10월 3일",
-                                    content: "짱짱걸",
+                                    content: "짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸짱짱걸",
                                     novelTitle: "여주가 세계를 구한다",
                                     novelRating: 4.21,
                                     novelRatingCount: 123,
-                                    genres: [.bl, .drama],
+                                    genres: [.bl, .drama, .modernFantasy, .lightNovel],
                                     likeCount: 12,
                                     commentCount: 56,
                                     isLiked: true))

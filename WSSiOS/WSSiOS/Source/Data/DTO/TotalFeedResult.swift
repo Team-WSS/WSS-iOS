@@ -33,7 +33,7 @@ struct TotalFeeds: Codable {
     let isMyFeed: Bool
 }
 
-enum ReplaceGenre: String {
+enum Genre: String {
     case all = "all"
     case fantasy = "fantasy"
     case modernFantasy = "modernFantasy"
