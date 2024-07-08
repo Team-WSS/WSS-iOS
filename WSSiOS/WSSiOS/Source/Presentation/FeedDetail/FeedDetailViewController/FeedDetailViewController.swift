@@ -60,11 +60,11 @@ final class FeedDetailViewController: UIViewController {
         self.view.backgroundColor = .wssWhite
         
         backButton.do {
-            $0.setImage(.icNavigateLeft, for: .normal)
+            $0.setImage(.icNavigateLeft.withRenderingMode(.alwaysOriginal).withTintColor(.wssBlack), for: .normal)
         }
         
         dotsButton.do {
-            $0.setImage(.icThreedots, for: .normal)
+            $0.setImage(.icThreedots.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray100), for: .normal)
         }
     }
     
@@ -100,7 +100,7 @@ final class FeedDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.commentsDataList
+        output.commentsData
             .observe(on: MainScheduler.instance)
             .bind(to: rootView.replyView.replyCollectionView.rx.items(
                 cellIdentifier: FeedDetailReplyCollectionViewCell.cellIdentifier,
