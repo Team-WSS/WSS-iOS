@@ -14,9 +14,9 @@ final class HomeNoticeDetailContentView: UIView {
     
     //MARK: - UI Components
     
-    private let stackView = UIStackView()
     private let noticeTitleLabel = UILabel()
     private let createdDateLabel = UILabel()
+    private let dividerView = UIView()
     private let noticeContentLabel = UILabel()
     
     //MARK: - Life Cycle
@@ -35,10 +35,6 @@ final class HomeNoticeDetailContentView: UIView {
     }
     
     private func setUI() {
-        stackView.do {
-            $0.axis = .vertical
-        }
-        
         noticeTitleLabel.do {
             $0.textColor = .wssBlack
         }
@@ -47,24 +43,40 @@ final class HomeNoticeDetailContentView: UIView {
             $0.textColor = .wssGray200
         }
         
+        dividerView.do {
+            $0.backgroundColor = .wssGray50
+        }
+        
         noticeContentLabel.do {
             $0.textColor = .wssBlack
         }
     }
     
     private func setHierarchy() {
-        self.addSubview(stackView)
-        stackView.addArrangedSubviews(noticeTitleLabel,
-                                      createdDateLabel,
-                                      noticeContentLabel)
+        self.addSubviews(noticeTitleLabel,
+                         createdDateLabel,
+                         dividerView,
+                         noticeContentLabel)
     }
     
     private func setLayout() {
-        stackView.setCustomSpacing(10, after: noticeTitleLabel)
-        stackView.setCustomSpacing(44, after: createdDateLabel)
+        noticeTitleLabel.snp.makeConstraints {
+            $0.top.leading.trailing.equalToSuperview().inset(20)
+        }
         
-        stackView.snp.makeConstraints {
-            $0.top.equalTo(safeAreaLayoutGuide).inset(20)
+        createdDateLabel.snp.makeConstraints {
+            $0.top.equalTo(noticeTitleLabel.snp.bottom).offset(10)
+            $0.leading.equalTo(noticeTitleLabel.snp.leading)
+        }
+        
+        dividerView.snp.makeConstraints {
+            $0.top.equalTo(createdDateLabel.snp.bottom).offset(20)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(1)
+        }
+        
+        noticeContentLabel.snp.makeConstraints {
+            $0.top.equalTo(dividerView.snp.bottom).offset(24)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.bottom.equalToSuperview().inset(40)
         }
