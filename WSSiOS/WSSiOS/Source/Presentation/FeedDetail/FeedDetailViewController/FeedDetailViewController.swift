@@ -76,7 +76,8 @@ final class FeedDetailViewController: UIViewController {
     }
     
     private func bindViewModel() {
-        let input = FeedDetailViewModel.Input()
+        let input = FeedDetailViewModel.Input(
+            replyCollectionViewContentSize: rootView.replyView.replyCollectionView.rx.observe(CGSize.self, "contentSize"))
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.feedProfileData
@@ -105,8 +106,14 @@ final class FeedDetailViewController: UIViewController {
             .bind(to: rootView.replyView.replyCollectionView.rx.items(
                 cellIdentifier: FeedDetailReplyCollectionViewCell.cellIdentifier,
                 cellType: FeedDetailReplyCollectionViewCell.self)) { row, element, cell in
-                cell.bindData(data: element)
-            }
+                    cell.bindData(data: element)
+                }
+                .disposed(by: disposeBag)
+        
+        output.replyCollectionViewHeight
+            .subscribe(with: self, onNext: { owner, height in
+                owner.rootView.replyView.updateCollectionViewHeight(height: height)
+            })
             .disposed(by: disposeBag)
     }
 }

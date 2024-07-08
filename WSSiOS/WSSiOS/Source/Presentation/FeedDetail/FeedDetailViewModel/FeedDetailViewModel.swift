@@ -16,7 +16,7 @@ final class FeedDetailViewModel: ViewModelType {
     
     private let feedRepository: FeedRepository
     private let disposeBag = DisposeBag()
-     
+    
     //MARK: - Life Cycle
     
     init(feedRepository: FeedRepository) {
@@ -24,7 +24,7 @@ final class FeedDetailViewModel: ViewModelType {
     }
     
     struct Input {
-        
+        let replyCollectionViewContentSize: Observable<CGSize?>
     }
     
     struct Output {
@@ -32,6 +32,7 @@ final class FeedDetailViewModel: ViewModelType {
         let feedDetailData =  BehaviorRelay<Feed>(value: Feed(userProfileImage: "", userNickName: "", createdDate: "", content: "", novelTitle: "", novelRating: 0, novelRatingCount: 0, genres: [.all], likeCount: 0, commentCount: 0, isLiked: false))
         let commentCountLabel = BehaviorRelay<Int>(value: 0)
         let commentsData = BehaviorRelay<[Comment]>(value: [Comment(userId: 0, userNickname: "", userProfileImage: "", commentId: 0, createdDate: "", commentContent: "", isModified: false, isMyComment: false)])
+        let replyCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -53,6 +54,11 @@ final class FeedDetailViewModel: ViewModelType {
             }, onError: { owner, error in
                 print(error)
             })
+            .disposed(by: disposeBag)
+        
+        input.replyCollectionViewContentSize
+            .map{ $0?.height ?? 0 }
+            .bind(to: output.replyCollectionViewHeight)
             .disposed(by: disposeBag)
         
         return output

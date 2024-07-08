@@ -79,11 +79,20 @@ final class FeedDetailReplyView: UIView {
         replyCollectionView.snp.makeConstraints {
             $0.top.equalTo(replyTitleStackView.snp.bottom).offset(24)
             $0.leading.trailing.equalToSuperview().inset(20)
-            $0.bottom.equalToSuperview()
+            $0.bottom.equalToSuperview().inset(40)
+            $0.height.equalTo(20) // updateHeight을 위한 임시값 저장
         }
     }
     
     func bindData(commentCount: Int) {
         replyCountLabel.applyWSSFont(.title2, with: String(commentCount))
+    }
+    
+    //MARK: - Custom Method
+    
+    func updateCollectionViewHeight(height: CGFloat) {
+        replyCollectionView.snp.updateConstraints {
+            $0.height.equalTo(height)
+        }
     }
 }

@@ -53,8 +53,8 @@ final class FeedDetailView: UIView {
     
     private func setLayout() {
         scrollView.snp.makeConstraints {
-            $0.top.bottom.equalTo(self.safeAreaLayoutGuide)
-            $0.leading.trailing.equalToSuperview()
+            $0.top.equalTo(self.safeAreaLayoutGuide)
+            $0.leading.trailing.bottom.equalToSuperview()
         }
         
         contentView.snp.makeConstraints {
