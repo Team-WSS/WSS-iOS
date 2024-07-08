@@ -291,7 +291,7 @@ enum StringLiterals {
     }
     
     enum FeedDetail {
-        static let title = "피드"
+        static let title = "수다글"
         static let reply = "댓글"
     }
 }
