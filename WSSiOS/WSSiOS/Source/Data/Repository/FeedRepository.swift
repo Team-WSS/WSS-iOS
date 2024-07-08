@@ -39,7 +39,7 @@ struct TestFeedRepository: FeedRepository {
     }
     
     func getSingleFeedData() -> Observable<Feed> {
-        return Observable.just(Feed(userProfileImage: "imgTest2", 
+        return Observable.just(Feed(userProfileImage: "imgTest2",
                                     userNickName: "구리구리스",
                                     createdDate: "10월 3일",
                                     content: "짱짱걸",
@@ -48,7 +48,8 @@ struct TestFeedRepository: FeedRepository {
                                     novelRatingCount: 123,
                                     genres: [.bl, .drama],
                                     likeCount: 12,
-                                    commentCount: 56))
+                                    commentCount: 56,
+                                    isLiked: true))
     }
     
     func getSingleFeedComments() -> Observable<[Comment]> {
@@ -62,39 +63,39 @@ struct TestFeedRepository: FeedRepository {
                      isModified: true,
                      isMyComment: true),
              Comment(userId: 1,
-                      userNickname: "이진토",
-                      userProfileImage: "imgTest2",
-                      commentId: 1,
-                      createdDate: "11월 16일",
-                      commentContent: "진짜 더 재미있다 ㄷㄷ",
-                      isModified: false,
-                      isMyComment: false),
+                     userNickname: "이진토",
+                     userProfileImage: "imgTest2",
+                     commentId: 1,
+                     createdDate: "11월 16일",
+                     commentContent: "진짜 더 재미있다 ㄷㄷ",
+                     isModified: false,
+                     isMyComment: false),
              Comment(userId: 1,
-                      userNickname: "이안",
-                      userProfileImage: "imgTest2",
-                      commentId: 1,
-                      createdDate: "7월 10일",
-                      commentContent: "진짜진짜 재미있다!",
-                      isModified: true,
-                      isMyComment: false)
+                     userNickname: "이안",
+                     userProfileImage: "imgTest2",
+                     commentId: 1,
+                     createdDate: "7월 10일",
+                     commentContent: "진짜진짜 재미있다!",
+                     isModified: true,
+                     isMyComment: false)
             ])
     }
 }
 
 struct DefaultFeedRepository: FeedRepository {
     private var feedService: FeedService
-
+    
     init(feedService: FeedService) {
         self.feedService = feedService
     }
-
+    
     func getFeedData(category: String, lastFeedId: Int, size: Int) -> RxSwift.Observable<TotalFeed> {
         return feedService.getFeedList(category: category, lastFeedId: lastFeedId, size: size)
-        .asObservable()
+            .asObservable()
     }
     
     func getSingleFeedData() -> Observable<Feed> {
-        return Observable.just(Feed(userProfileImage: "imgTest2", userNickName: "구리구리스", createdDate: "10월 3일", content: "짱짱걸", novelTitle: "여주가 세계를 구한다고라고라", novelRating: 4.21, novelRatingCount: 123, genres: [.bl, .drama], likeCount: 12, commentCount: 23))
+        return Observable.just(Feed(userProfileImage: "imgTest2", userNickName: "구리구리스", createdDate: "10월 3일", content: "짱짱걸", novelTitle: "여주가 세계를 구한다고라고라", novelRating: 4.21, novelRatingCount: 123, genres: [.bl, .drama], likeCount: 12, commentCount: 23, isLiked: true))
     }
     
     func getSingleFeedComments() -> Observable<[Comment]> {
@@ -108,21 +109,21 @@ struct DefaultFeedRepository: FeedRepository {
                      isModified: false,
                      isMyComment: true),
              Comment(userId: 1,
-                      userNickname: "이진토",
-                      userProfileImage: "imgTest2",
-                      commentId: 1,
-                      createdDate: "11월 16일",
-                      commentContent: "진짜 더 재미있다 ㄷㄷ",
-                      isModified: true,
-                      isMyComment: false),
+                     userNickname: "이진토",
+                     userProfileImage: "imgTest2",
+                     commentId: 1,
+                     createdDate: "11월 16일",
+                     commentContent: "진짜 더 재미있다 ㄷㄷ",
+                     isModified: true,
+                     isMyComment: false),
              Comment(userId: 1,
-                      userNickname: "이안",
-                      userProfileImage: "imgTest2",
-                      commentId: 1,
-                      createdDate: "7월 10일",
-                      commentContent: "진짜진짜 재미있다!",
-                      isModified: true,
-                      isMyComment: false)
+                     userNickname: "이안",
+                     userProfileImage: "imgTest2",
+                     commentId: 1,
+                     createdDate: "7월 10일",
+                     commentContent: "진짜진짜 재미있다!",
+                     isModified: true,
+                     isMyComment: false)
             ])
     }
 }

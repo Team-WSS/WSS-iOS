@@ -18,6 +18,7 @@ struct Feed {
     var genres: [ReplaceGenre]
     var likeCount: Int
     var commentCount: Int
+    var isLiked: Bool
 }
 
 struct Comment {

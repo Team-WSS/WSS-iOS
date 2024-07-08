@@ -107,7 +107,7 @@ final class FeedDetailContentView: UIView {
         
         reactView.do {
             $0.bindData(likeRating: data.likeCount,
-                        isLiked: true,
+                        isLiked: data.isLiked,
                         commentRating: data.commentCount)
         }
     }
