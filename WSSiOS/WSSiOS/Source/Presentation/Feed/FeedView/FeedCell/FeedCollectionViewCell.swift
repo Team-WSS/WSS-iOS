@@ -173,7 +173,7 @@ final class FeedCollectionViewCell: UICollectionViewCell {
 
         let categoriesText = data.relevantCategories
             .compactMap{
-                ReplaceGenre(rawValue: $0)?.withKorean
+                Genre(rawValue: $0)?.withKorean
             }.joined(separator: ", ")
         
         genreLabel.do {

@@ -100,9 +100,12 @@ final class FeedDetailContentView: UIView {
         linkNovelView.bindData(title: data.novelTitle,
                                rating: data.novelRating, 
                                participants: data.novelRatingCount)
+        
+        let genres = data.genres.map { $0.withKorean }.joined(separator: ", ")
+        
         genreLabel.do {
-            //MARK: 배열을 순회하여 콤마로 구분
-            $0.applyWSSFont(.body2, with: "호러, 호러, 호러")
+            $0.applyWSSFont(.body2, with: genres)
+            $0.lineBreakMode = .byTruncatingTail
         }
         
         reactView.do {
