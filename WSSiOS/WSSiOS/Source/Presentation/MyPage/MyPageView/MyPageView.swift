@@ -17,16 +17,10 @@ final class MyPageView: UIView {
     
     let scrollView = UIScrollView()
     
-    let headerView = MyPageProfileHeaderView().then {
-        $0.isHidden = false
-    }
-    let stickyHeaderView = UIView().then {
-        $0.backgroundColor = .wssPrimary100
-    }
-    let stickyHeaderView2 = UIView().then {
-        $0.backgroundColor = .wssPrimary100
-        $0.isHidden = true
-    }
+    let headerView = MyPageProfileHeaderView()
+    let mainStickyHeaderView = UIView()
+    let scrolledStstickyHeaderView = UIView()
+    
     let dummyView = UIView().then {
         $0.backgroundColor = .wssGray70
     }
@@ -49,14 +43,23 @@ final class MyPageView: UIView {
     
     private func setUI() {
         self.backgroundColor = .wssPrimary20
+        
+        mainStickyHeaderView.do {
+                $0.backgroundColor = .wssPrimary100
+        }
+        
+        scrolledStstickyHeaderView.do {
+            $0.backgroundColor = .wssPrimary20
+            $0.isHidden = true
+        }
     }
     
     private func setHierarchy() {
         addSubviews(scrollView,
-                    stickyHeaderView2)
+                    scrolledStstickyHeaderView)
         
         scrollView.addSubviews(headerView,
-                               stickyHeaderView,
+                               mainStickyHeaderView,
                                dummyView)
     }
     
@@ -70,20 +73,20 @@ final class MyPageView: UIView {
             $0.top.width.equalToSuperview()
         }
         
-        stickyHeaderView.snp.makeConstraints {
+        mainStickyHeaderView.snp.makeConstraints {
             $0.top.equalTo(headerView.snp.bottom)
             $0.width.equalToSuperview()
             $0.height.equalTo(47)
         }
         
-        stickyHeaderView2.snp.makeConstraints {
+        scrolledStstickyHeaderView.snp.makeConstraints {
             $0.top.equalTo(safeAreaLayoutGuide)
             $0.width.equalToSuperview()
             $0.height.equalTo(47)
         }
         
         dummyView.snp.makeConstraints {
-            $0.top.equalTo(stickyHeaderView.snp.bottom)
+            $0.top.equalTo(mainStickyHeaderView.snp.bottom)
             $0.width.equalToSuperview()
             $0.height.equalTo(1000)
             $0.bottom.equalToSuperview()

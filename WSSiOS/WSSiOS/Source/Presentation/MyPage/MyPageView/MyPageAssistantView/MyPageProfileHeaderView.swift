@@ -30,7 +30,7 @@ final class MyPageProfileHeaderView: UIView {
     
     //MARK: - Properties
     
-    private let userImageChangeButtonView = MyPageUserImageChangeButtonView()
+    private let userImageChangeButtonView = UIImageView()
     
     //MARK: - Components
 
@@ -48,8 +48,6 @@ final class MyPageProfileHeaderView: UIView {
         setUI()
         setHierarchy()
         setLayout()
-        
-        test()
     }
     
     required init?(coder: NSCoder) {
@@ -61,13 +59,15 @@ final class MyPageProfileHeaderView: UIView {
     private func setUI() {
         self.backgroundColor = .wssPrimary20
         
-        userImageView.do {
-            $0.contentMode = .scaleAspectFill
+        userImageChangeButtonView.do {
+            $0.image = .pencil
+            $0.bounds.size = CGSize(width: 20, height: 20)
         }
         
         userImageChangeButton.do {
             var configuration = UIButton.Configuration.filled()
             configuration.background.customView = userImageChangeButtonView
+            configuration.background.customView?.contentMode = .center
             configuration.baseBackgroundColor = .wssWhite
             
             $0.configuration = configuration
@@ -76,19 +76,16 @@ final class MyPageProfileHeaderView: UIView {
             $0.layer.borderWidth = 1.04
             $0.layer.borderColor = UIColor.wssGray70.cgColor
         }
-        
-        //TODO: - 이 부분 lineHeightMultiple 은 FeedView 머지 후 수정
+
         userNicknameLabel.do {
-            $0.font = .HeadLine1
             $0.textColor = .wssBlack
             $0.numberOfLines = 1
             $0.textAlignment = .center
         }
         
         userIntroLabel.do {
-            $0.font = .Body2
             $0.textColor = .wssGray200
-            $0.numberOfLines = 0
+            $0.numberOfLines = 2
             $0.textAlignment = .center
         }
     }
@@ -100,10 +97,9 @@ final class MyPageProfileHeaderView: UIView {
                     userIntroLabel)
     }
     
-    private func setLayout() {
-        
+    private func setLayout() {        
         userImageView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(124)
+            $0.top.equalToSuperview().inset(25)
             $0.centerX.equalToSuperview()
             $0.size.equalTo(94)
         }
@@ -122,6 +118,7 @@ final class MyPageProfileHeaderView: UIView {
         userIntroLabel.snp.makeConstraints {
             $0.top.equalTo(userNicknameLabel.snp.bottom).offset(4)
             $0.centerX.equalToSuperview()
+            $0.width.equalTo(250)
             $0.bottom.equalToSuperview().inset(30)
         }
     }
@@ -129,15 +126,10 @@ final class MyPageProfileHeaderView: UIView {
     //MARK: - Data
     
     func bindData(data: MyProfileResult) {
+        print(data)
         userImageView.kfSetImage(url: data.avatarImage)
-        userNicknameLabel.text = data.nickname
-        userIntroLabel.text = data.intro
-    }
-    
-    func test() {
-        userImageView.backgroundColor = .black
-        userNicknameLabel.text = "밝보"
-        userIntroLabel.text = "꺄울 로판에 절여진 밝보입니다~"
+        userNicknameLabel.applyWSSFont(.headline1, with: data.nickname)
+        userIntroLabel.applyWSSFont(.body2, with: data.intro)
     }
 }
 

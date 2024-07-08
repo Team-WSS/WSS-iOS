@@ -8,14 +8,15 @@
 import UIKit
 
 import RxSwift
+import RxRelay
 import Then
 
 final class MyPageViewController: UIViewController {
     
     //MARK: - Properties
     
+    private let viewModel: MyPageViewModel
     private let disposeBag = DisposeBag()
-    private let userRepository: UserRepository
     
     //MARK: - UI Components
     
@@ -25,8 +26,8 @@ final class MyPageViewController: UIViewController {
     
     // MARK: - Life Cycle
     
-    init(userRepository: UserRepository) {
-        self.userRepository = userRepository 
+    init(viewModel: MyPageViewModel) {
+        self.viewModel = viewModel
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -42,11 +43,12 @@ final class MyPageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setUI()
         preparationSetNavigationBar(title: "",
                                     left: nil,
                                     right: settingButton)
+        setUI()
         rootView.scrollView.delegate = self
+        bindViewModel()
     }
     
     
@@ -55,11 +57,11 @@ final class MyPageViewController: UIViewController {
         
         showTabBar()
     }
+
+    //MARK: - Bind
     
-    //MARK: - Actions
-    
-    private func bindAction() {
-        
+    private func bindViewModel() {
+        self.rootView.headerView.bindData(data: MyProfileResult.dummyData)
     }
     
     private func updateNavigationTitle(isShown: Bool) {
@@ -83,17 +85,17 @@ extension MyPageViewController: UIScrollViewDelegate {
         let headerViewHeight = rootView.headerView.frame.height
         let scrollOffset = scrollView.contentOffset.y
         
-        print(scrollOffset, " ", headerViewHeight)
+        //        print(scrollOffset, " ", headerViewHeight)
         if scrollOffset >= headerViewHeight {
-            rootView.stickyHeaderView2.isHidden = false
-            rootView.stickyHeaderView.isHidden = true
+            rootView.scrolledStstickyHeaderView.isHidden = false
+            rootView.mainStickyHeaderView.isHidden = true
             rootView.headerView.isHidden = true
             
             updateNavigationTitle(isShown: true)
             
         } else {
-            rootView.stickyHeaderView2.isHidden = true
-            rootView.stickyHeaderView.isHidden = false
+            rootView.scrolledStstickyHeaderView.isHidden = true
+            rootView.mainStickyHeaderView.isHidden = false
             rootView.headerView.isHidden = false
             
             updateNavigationTitle(isShown: false)
