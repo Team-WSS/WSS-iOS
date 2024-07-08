@@ -17,9 +17,9 @@ final class FeedDetailReplyView: UIView {
     private let replyTitleStackView = UIStackView()
     private let replyTitleLabel = UILabel()
     let replyCountLabel = UILabel()
-    let replyTableView = UITableView(frame: .zero, style: .plain)
-    
-    private let testView = FeedDetailReplyTableViewCell()
+    let replyCollectionView = UICollectionView(frame: .zero,
+                                               collectionViewLayout: UICollectionViewLayout())
+    private let replyCollectionViewLayout = UICollectionViewFlowLayout()
     
     //MARK: - Life Cycle
     
@@ -51,11 +51,15 @@ final class FeedDetailReplyView: UIView {
             $0.textColor = .wssPrimary100
         }
         
-        replyTableView.do {
+        replyCollectionView.do {
             $0.showsVerticalScrollIndicator = false
-            $0.separatorStyle = .none
-            $0.contentInset.top = 24
-            $0.contentInset.bottom = 24
+        }
+        
+        replyCollectionViewLayout.do {
+            $0.scrollDirection = .vertical
+            $0.itemSize = CGSize(width: UIScreen.main.bounds.width-40, height: 45)
+            $0.minimumLineSpacing = 22
+            replyCollectionView.setCollectionViewLayout($0, animated: true)
         }
     }
     
@@ -63,7 +67,7 @@ final class FeedDetailReplyView: UIView {
         replyTitleStackView.addArrangedSubviews(replyTitleLabel,
                                                 replyCountLabel)
         self.addSubviews(replyTitleStackView,
-                         replyTableView)
+                         replyCollectionView)
     }
     
     private func setLayout() {
@@ -72,7 +76,7 @@ final class FeedDetailReplyView: UIView {
             $0.leading.equalToSuperview().inset(20)
         }
         
-        replyTableView.snp.makeConstraints {
+        replyCollectionView.snp.makeConstraints {
             $0.top.equalTo(replyTitleStackView.snp.bottom).offset(24)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.bottom.equalToSuperview()

@@ -87,7 +87,8 @@ final class FeedDetailProfileView: UIView {
     }
     
     func bindData(data: Feed) {
-        userProfileImageView.kfSetImage(url: data.userProfileImage)
+        userProfileImageView.image = UIImage(named: data.userProfileImage)
+        //userProfileImageView.kfSetImage(url: data.userProfileImage)
         userNicknameLabel.applyWSSFont(.title2, with: data.userNickName)
         createdDateLabel.applyWSSFont(.body5, with: data.createdDate)
     }

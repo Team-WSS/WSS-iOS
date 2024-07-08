@@ -71,8 +71,8 @@ final class FeedDetailViewController: UIViewController {
     //MARK: - Bind
     
     private func registerCell() {
-        rootView.replyView.replyTableView.register(FeedDetailReplyTableViewCell.self,
-                                                   forCellReuseIdentifier: FeedDetailReplyTableViewCell.cellIdentifier)
+        rootView.replyView.replyCollectionView.register(FeedDetailReplyCollectionViewCell.self,
+                                                        forCellWithReuseIdentifier: FeedDetailReplyCollectionViewCell.cellIdentifier)
     }
     
     private func bindViewModel() {
@@ -80,12 +80,14 @@ final class FeedDetailViewController: UIViewController {
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.feedProfileData
+            .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, data in
                 owner.rootView.profileView.bindData(data: data)
             })
             .disposed(by: disposeBag)
         
         output.feedDetailData
+            .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, data in
                 owner.rootView.feedContentView.bindData(data: data)
             })
@@ -99,9 +101,10 @@ final class FeedDetailViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.commentsDataList
-            .bind(to: rootView.replyView.replyTableView.rx.items(
-                cellIdentifier: FeedDetailReplyTableViewCell.cellIdentifier,
-                cellType: FeedDetailReplyTableViewCell.self)) { row, element, cell in
+            .observe(on: MainScheduler.instance)
+            .bind(to: rootView.replyView.replyCollectionView.rx.items(
+                cellIdentifier: FeedDetailReplyCollectionViewCell.cellIdentifier,
+                cellType: FeedDetailReplyCollectionViewCell.self)) { row, element, cell in
                 cell.bindData(data: element)
             }
             .disposed(by: disposeBag)
