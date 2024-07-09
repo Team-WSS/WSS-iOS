@@ -183,6 +183,11 @@ extension UIViewController {
         let viewController = ModuleFactory.shared.makeDetailViewController(novelId: novelId)
         self.navigationController?.pushViewController(viewController, animated: true)
     }
+    
+    func pushToMyPageInfoViewController() {
+        let viewController = MyPageInfoViewController()
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
 }
 
 extension UIViewController: UIGestureRecognizerDelegate {

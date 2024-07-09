@@ -11,10 +11,11 @@ import SnapKit
 import Then
 
 final class MyPageSettingTableViewCell: UITableViewCell {
-     
+    
     //MARK: - Components
     
     let cellLabel = UILabel()
+    let cellDescriptionLabel = UILabel()
     let cellIconImageView = UIImageView(image: .icNavigateRight)
     
     //MARK: - Life Cycle
@@ -41,13 +42,18 @@ final class MyPageSettingTableViewCell: UITableViewCell {
             $0.textColor = .wssBlack
             $0.font = .Body2
         }
+        
+        cellDescriptionLabel.do {
+            $0.textColor = .wssGray200
+            $0.font = .Body3
+        }
     }
     
     private func setHierarchy() {
         self.addSubviews(cellLabel,
-        cellIconImageView)
+                         cellIconImageView)
     }
-
+    
     private func setLayout() {
         cellLabel.snp.makeConstraints() {
             $0.centerY.equalToSuperview()
@@ -64,6 +70,22 @@ final class MyPageSettingTableViewCell: UITableViewCell {
     //MARK: - Data
     
     func bindData(title: String) {
-        cellLabel.text = title
+        cellLabel.applyWSSFont(.body2, with: title)
+    }
+    
+    func bindDescriptionData(title: String) {
+        cellDescriptionLabel.applyWSSFont(.body3, with: title)
+        
+        self.addSubview(cellDescriptionLabel)
+        
+        cellLabel.snp.remakeConstraints {
+            $0.top.equalToSuperview().inset(9.5)
+            $0.leading.equalToSuperview().inset(20)
+        }
+        
+        cellDescriptionLabel.snp.makeConstraints() {
+            $0.top.equalTo(cellLabel.snp.bottom)
+            $0.leading.equalToSuperview().inset(20)
+        }
     }
 }

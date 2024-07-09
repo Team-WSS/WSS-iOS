@@ -48,7 +48,7 @@
 		2CA8611A2C3DA4F60006E204 /* MyPageSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA861192C3DA4F60006E204 /* MyPageSettingView.swift */; };
 		2CA8611F2C3DAF9F0006E204 /* MyPageSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA8611E2C3DAF9F0006E204 /* MyPageSettingViewModel.swift */; };
 		2CB613F32B575E4500FC3F89 /* MyPageInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB613F22B575E4500FC3F89 /* MyPageInfoViewController.swift */; };
-		2CB613F52B575E6A00FC3F89 /* MyPageInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB613F42B575E6A00FC3F89 /* MyPageInfoView.swift */; };
+		2CB613F52B575E6A00FC3F89 /* TrashMyPageInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB613F42B575E6A00FC3F89 /* TrashMyPageInfoView.swift */; };
 		2CCBF9F02B4C1FD800D787C2 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBF9EF2B4C1FD800D787C2 /* MyPageView.swift */; };
 		2CCBF9F22B4D347B00D787C2 /* WSSMainButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBF9F12B4D347B00D787C2 /* WSSMainButton.swift */; };
 		2CCBFA002B4DBFD200D787C2 /* MyPageChangeNickNameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBF9FF2B4DBFD200D787C2 /* MyPageChangeNickNameViewModel.swift */; };
@@ -311,7 +311,7 @@
 		2CA861192C3DA4F60006E204 /* MyPageSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSettingView.swift; sourceTree = "<group>"; };
 		2CA8611E2C3DAF9F0006E204 /* MyPageSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MyPageSettingViewModel.swift; path = ../../../../../../../../../Downloads/MyPageSettingViewModel.swift; sourceTree = "<group>"; };
 		2CB613F22B575E4500FC3F89 /* MyPageInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageInfoViewController.swift; sourceTree = "<group>"; };
-		2CB613F42B575E6A00FC3F89 /* MyPageInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageInfoView.swift; sourceTree = "<group>"; };
+		2CB613F42B575E6A00FC3F89 /* TrashMyPageInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashMyPageInfoView.swift; sourceTree = "<group>"; };
 		2CCBF9EF2B4C1FD800D787C2 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
 		2CCBF9F12B4D347B00D787C2 /* WSSMainButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSMainButton.swift; sourceTree = "<group>"; };
 		2CCBF9FF2B4DBFD200D787C2 /* MyPageChangeNickNameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageChangeNickNameViewModel.swift; sourceTree = "<group>"; };
@@ -597,8 +597,7 @@
 				2CA2F64D2B527B060045B4C2 /* MyPageCustomModalView.swift */,
 				2C5D0F5E2B50523B00C76D3C /* MyPageChangeNicknameViewController.swift */,
 				2CA2F64F2B527B3A0045B4C2 /* MyPageCustomModalViewController.swift */,
-				2CB613F42B575E6A00FC3F89 /* MyPageInfoView.swift */,
-				2CB613F22B575E4500FC3F89 /* MyPageInfoViewController.swift */,
+				2CB613F42B575E6A00FC3F89 /* TrashMyPageInfoView.swift */,
 				2C5D0F602B50525700C76D3C /* MyPageChangeNicknameView.swift */,
 				2CCBFA012B4DC10500D787C2 /* MyPageProfileView.swift */,
 				2CCBFA032B4DD73D00D787C2 /* MyPageTallyView.swift */,
@@ -694,6 +693,7 @@
 			children = (
 				2C03EE602C3CF82100923233 /* MyPageViewController.swift */,
 				2CA861172C3DA4B60006E204 /* MyPageSettingViewController.swift */,
+				2CB613F22B575E4500FC3F89 /* MyPageInfoViewController.swift */,
 			);
 			path = MyPageViewController;
 			sourceTree = "<group>";
@@ -701,8 +701,8 @@
 		2CCBF9EB2B4C1E4600D787C2 /* MyPageView */ = {
 			isa = PBXGroup;
 			children = (
-				2C5D0F572B4FDE7500C76D3C /* MyPageCell */,
 				2C3EEB662C0B6DA800B4EFEA /* NoExist */,
+				2C5D0F572B4FDE7500C76D3C /* MyPageCell */,
 				2CCBF9EF2B4C1FD800D787C2 /* MyPageView.swift */,
 				2CA861192C3DA4F60006E204 /* MyPageSettingView.swift */,
 				2CCBF9FE2B4DBF6A00D787C2 /* MyPageAssistantView */,
@@ -1814,7 +1814,7 @@
 				2CA2F6602B530B660045B4C2 /* LibraryView.swift in Sources */,
 				2CD2291E2B42E685005400BE /* SceneDelegate.swift in Sources */,
 				2CD911612C0D8B71006B8D72 /* FeedViewModel.swift in Sources */,
-				2CB613F52B575E6A00FC3F89 /* MyPageInfoView.swift in Sources */,
+				2CB613F52B575E6A00FC3F89 /* TrashMyPageInfoView.swift in Sources */,
 				39D4A5D62BDD0913004FC834 /* NovelDetailHeaderView.swift in Sources */,
 				A1522CF52B8257F3003A4078 /* RecordViewModel.swift in Sources */,
 				39D4A5DC2BDD420D004FC834 /* NovelDetailHeaderInfoView.swift in Sources */,

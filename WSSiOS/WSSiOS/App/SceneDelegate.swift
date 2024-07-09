@@ -15,7 +15,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         let navigationController = UINavigationController(
-            rootViewController: MyPageSettingViewController(viewModel: MyPageSettingViewModel()))
+            rootViewController: MyPageSettingViewController())
         navigationController.isNavigationBarHidden = true
         
         self.window = UIWindow(windowScene: windowScene)

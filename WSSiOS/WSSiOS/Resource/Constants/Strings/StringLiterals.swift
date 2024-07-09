@@ -31,10 +31,10 @@ enum StringLiterals {
             static let search = "검색"
             static let myPage = "마이페이지"
             static let changeNickname = "닉네임 변경"
-            static let myPageInfo = "계정정보 확인"
             static let feed = "소소피드"
             static let notice = "알림"
             static let myPageSetting = "설정"
+            static let myPageInfo = "계정설정"
         }
     }
     
@@ -139,6 +139,14 @@ enum StringLiterals {
         enum SettingURL {
             static let instaURL = "https://www.instagram.com/websoso_official/"
             static let termsURL = "https://kimmjabc.notion.site/4acd397608c146cbbf8dd4fe11a82e19"
+        }
+        
+        enum SettingInfo: String, CaseIterable {
+            case changeProfile = "성별/나이 변경"
+            case email = "이메일"
+            case blockList = "차단유저 목록"
+            case logout = "로그아웃"
+            case secession = "회원탈퇴"
         }
         
         enum ChangeNickname {

@@ -1,20 +1,21 @@
 //
-//  MyPageSettingViewController.swift
+//  MyPageInfoViewController.swift
 //  WSSiOS
 //
-//  Created by 신지원 on 7/10/24.
+//  Created by 신지원 on 1/17/24.
 //
 
 import UIKit
 
 import RxSwift
+import Then
 
-final class MyPageSettingViewController: UIViewController {
+final class MyPageInfoViewController: UIViewController {
     
     //MARK: - Properties
     
     private let disposeBag = DisposeBag()
-    private let settingList = StringLiterals.MyPage.Setting.allCases.map { $0.rawValue }
+    private let settingList = StringLiterals.MyPage.SettingInfo.allCases.map { $0.rawValue }
     
     //MARK: - UI Components
     
@@ -42,8 +43,8 @@ final class MyPageSettingViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        preparationSetNavigationBar(title: StringLiterals.Navigation.Title.myPageSetting,
-                                    left: self.backButton,
+        preparationSetNavigationBar(title: StringLiterals.Navigation.Title.myPageInfo,
+                                    left: backButton,
                                     right: nil)
     }
     
@@ -64,39 +65,32 @@ final class MyPageSettingViewController: UIViewController {
                 cellIdentifier: MyPageSettingTableViewCell.cellIdentifier,
                 cellType: MyPageSettingTableViewCell.self)) {(row, element, cell) in
                     cell.bindData(title: element)
+                    if row == 1 {
+                        cell.bindDescriptionData(title: element)
+                    }
                 }
                 .disposed(by: disposeBag)
+        
         rootView.tableView.rx.itemSelected
             .subscribe(with: self, onNext: { owner, indexPath in
                 self.rootView.tableView.deselectRow(at: indexPath, animated: true)
 
                 switch indexPath.row {
                 case 0:
-                    print("계정정보")
-                    owner.pushToMyPageInfoViewController()
+                    print("성별/나이 변경")
+                    //pushVC
                 case 1:
-                    print("프로필 공개 여부 설정")
+                    print("이메일")
                     //pushVC
                 case 2:
-                    print("웹소소 공식 계정")
-                    if let url = URL(string: StringLiterals.MyPage.SettingURL.instaURL) {
-                        UIApplication.shared.open(url, options: [:])
-                    }
+                    print("차단유저 목록")
+                    //pushVC
                 case 3:
-                    print("문의하기 & 의견 보내기")
-                    if let url = URL(string: "https://www.instagram.com/2s.ena/") {
-                        UIApplication.shared.open(url, options: [:])
-                    }
+                    print("로그아웃")
+                    //pushModalVC
                 case 4:
-                    print("앱 평점 남기기")
-                    if let url = URL(string: "https://www.instagram.com/2s.ena/") {
-                        UIApplication.shared.open(url, options: [:])
-                    }
-                case 5:
-                    print("서비스 이용약관")
-                    if let url = URL(string: StringLiterals.MyPage.SettingURL.termsURL) {
-                        UIApplication.shared.open(url, options: [:])
-                    }
+                    print("회원탈퇴")
+                    //pushVC
                 default: break
                 }
             })
@@ -104,7 +98,7 @@ final class MyPageSettingViewController: UIViewController {
     }
 }
 
-extension MyPageSettingViewController {
+extension MyPageInfoViewController {
     private func setUI() {
         backButton.do {
             $0.setImage(.icNavigateLeft, for: .normal)
