@@ -22,11 +22,7 @@ final class MyPageViewController: UIViewController {
     //MARK: - UI Components
     
     private var rootView = MyPageView()
-    //    private lazy var dropdownButton = WSSDropdownManager.shared.createDropdown(superView: <#T##UIView#>,
-    //                                                                               dropdownView: <#T##WSSDropdown#>,
-    //                                                                               dropdownWidth: <#T##Double#>,
-    //                                                                               dropdownData: <#T##[String]#>,
-    //                                                                               textColor: <#T##UIColor#>)
+    private let dropdownView = WSSDropdownButton()
     
     // MARK: - Life Cycle
     
