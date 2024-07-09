@@ -30,7 +30,9 @@ final class MyPageViewModel: ViewModelType {
     }
     
     struct Output {
-        let profileData = PublishRelay<MyProfileResult>()
+        let profileData = BehaviorRelay<MyProfileResult>(value: MyProfileResult(nickname: "",
+                                                                                intro: "",
+                                                                                avatarImage: "", genrePreferences: []))
         let settingButtonAction = BehaviorRelay(value: false)
         let dropdownButtonAction = BehaviorRelay(value: false)
     }
