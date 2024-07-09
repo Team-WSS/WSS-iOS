@@ -18,9 +18,10 @@ final class NovelDetailViewModel: ViewModelType {
     private let novelDetailRepository: NovelDetailRepository
     private let novelId: Int
     
-    private let viewWillAppearEvent = BehaviorRelay(value: false)
-    private let novelDetailBasicData = PublishSubject<NovelDetailHeaderResult>()
+    private let viewWillAppearEvent = BehaviorRelay<Bool>(value: false)
+    private let novelDetailHeaderData = PublishSubject<NovelDetailHeaderResult>()
     private let showLargeNovelCoverImage = BehaviorRelay<Bool>(value: false)
+    private let selectedTab = BehaviorRelay<Tab>(value: Tab.info)
     
     //MARK: - Life Cycle
     
@@ -34,17 +35,22 @@ final class NovelDetailViewModel: ViewModelType {
     struct Input {
         let viewWillAppearEvent: Observable<Bool>
         let scrollContentOffset: ControlProperty<CGPoint>
+        let backButtonDidTap: ControlEvent<Void>
         let novelCoverImageButtonDidTap: ControlEvent<Void>
         let largeNovelCoverImageDismissButtonDidTap: ControlEvent<Void>
         let largeNovelCoverImageBackgroundDidTap: ControlEvent<Void>
-        let backButtonDidTap: ControlEvent<Void>
+        let infoTabBarButtonDidTap: ControlEvent<Void>
+        let feedTabBarButtonDidTap: ControlEvent<Void>
+        let stickyInfoTabBarButtonDidTap: ControlEvent<Void>
+        let stickyFeedTabBarButtonDidTap: ControlEvent<Void>
     }
     
     struct Output {
         let detailBasicData: Observable<NovelDetailHeaderResult>
         let scrollContentOffset: Driver<CGPoint>
-        let showLargeNovelCoverImage: Driver<Bool>
         let backButtonEnabled: Observable<Void>
+        let showLargeNovelCoverImage: Driver<Bool>
+        let selectedTab: Driver<Tab>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -53,9 +59,9 @@ final class NovelDetailViewModel: ViewModelType {
                 self.novelDetailRepository.getNovelBasic(novelId: self.novelId)
             }
             .subscribe(with: self, onNext: { owner, data in
-                owner.novelDetailBasicData.onNext(data)
+                owner.novelDetailHeaderData.onNext(data)
             }, onError: { owner, error in
-                owner.novelDetailBasicData.onError(error)
+                owner.novelDetailHeaderData.onError(error)
             })
             .disposed(by: disposeBag)
         
@@ -82,11 +88,36 @@ final class NovelDetailViewModel: ViewModelType {
         
         let backButtonDidTap = input.backButtonDidTap.asObservable()
         
+        input.infoTabBarButtonDidTap
+            .bind(with: self, onNext: { owner, _ in
+                owner.selectedTab.accept(.info)
+            })
+            .disposed(by: disposeBag)
+        
+        input.feedTabBarButtonDidTap
+            .bind(with: self, onNext: { owner, _ in
+                owner.selectedTab.accept(.feed)
+            })
+            .disposed(by: disposeBag)
+        
+        input.stickyInfoTabBarButtonDidTap
+            .bind(with: self, onNext: { owner, _ in
+                owner.selectedTab.accept(.info)
+            })
+            .disposed(by: disposeBag)
+        
+        input.stickyFeedTabBarButtonDidTap
+            .bind(with: self, onNext: { owner, _ in
+                owner.selectedTab.accept(.feed)
+            })
+            .disposed(by: disposeBag)
+        
         return Output(
-            detailBasicData: novelDetailBasicData.asObservable(),
+            detailBasicData: novelDetailHeaderData.asObservable(),
             scrollContentOffset: scrollContentOffset.asDriver(),
+            backButtonEnabled: backButtonDidTap,
             showLargeNovelCoverImage: showLargeNovelCoverImage.asDriver(),
-            backButtonEnabled: backButtonDidTap
+            selectedTab: selectedTab.asDriver()
         )
     }
 }
