@@ -185,7 +185,10 @@ extension UIViewController {
     }
     
     func pushToMyPageInfoViewController() {
-        let viewController = MyPageInfoViewController()
+        let viewController = MyPageInfoViewController(
+            viewModel: MyPageInfoViewModel(
+                userRepository: DefaultUserRepository(
+                    userService: DefaultUserService())))
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 }

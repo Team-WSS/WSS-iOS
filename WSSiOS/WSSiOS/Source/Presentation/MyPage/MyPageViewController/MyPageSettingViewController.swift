@@ -37,6 +37,7 @@ final class MyPageSettingViewController: UIViewController {
         setUI()
         register()
         bindCell()
+        bindAction()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -99,6 +100,16 @@ final class MyPageSettingViewController: UIViewController {
                     }
                 default: break
                 }
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    //MARK: - Action
+    
+    private func bindAction() {
+        backButton.rx.tap
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
     }

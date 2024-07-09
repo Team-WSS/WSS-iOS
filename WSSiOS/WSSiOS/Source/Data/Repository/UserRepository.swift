@@ -11,11 +11,17 @@ import RxSwift
 
 protocol UserRepository {
     func getMyProfileData() -> Observable<MyProfileResult>
+    func getUserEmail() -> Observable<String>
+    
     func patchUserName(userNickName: String) -> Observable<Void>
     func getUserCharacter() -> Observable<UserCharacter>
 }
 
 struct DefaultUserRepository: UserRepository {
+    func getUserEmail() -> RxSwift.Observable<String> {
+        return Observable.just("shinjiwonZZang")
+    }
+    
     func getMyProfileData() -> RxSwift.Observable<MyProfileResult> {
         return Observable.just(MyProfileResult(nickname: "밝보",
                                                intro: "꺄울 로판에 절여진 밝보입니다~꺄울 로판에 절여진 밝보입니다~꺄울 로판에",

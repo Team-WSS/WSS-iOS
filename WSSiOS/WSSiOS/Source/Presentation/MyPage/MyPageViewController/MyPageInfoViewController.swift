@@ -9,13 +9,16 @@ import UIKit
 
 import RxSwift
 import Then
+import RxRelay
 
 final class MyPageInfoViewController: UIViewController {
     
     //MARK: - Properties
     
     private let disposeBag = DisposeBag()
+    private let viewModel: MyPageInfoViewModel
     private let settingList = StringLiterals.MyPage.SettingInfo.allCases.map { $0.rawValue }
+    private let emailRelay = BehaviorRelay(value: "")
     
     //MARK: - UI Components
     
@@ -24,7 +27,17 @@ final class MyPageInfoViewController: UIViewController {
     private let backButton = UIButton()
     
     // MARK: - Life Cycle
-
+    
+    init(viewModel: MyPageInfoViewModel) {
+        self.viewModel = viewModel
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func loadView() {
         self.view = rootView
         
@@ -38,6 +51,7 @@ final class MyPageInfoViewController: UIViewController {
         setUI()
         register()
         bindCell()
+        bindViewModel()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -66,7 +80,7 @@ final class MyPageInfoViewController: UIViewController {
                 cellType: MyPageSettingTableViewCell.self)) {(row, element, cell) in
                     cell.bindData(title: element)
                     if row == 1 {
-                        cell.bindDescriptionData(title: element)
+                        cell.bindDescriptionData(title: self.emailRelay.value)
                     }
                 }
                 .disposed(by: disposeBag)
@@ -74,7 +88,7 @@ final class MyPageInfoViewController: UIViewController {
         rootView.tableView.rx.itemSelected
             .subscribe(with: self, onNext: { owner, indexPath in
                 self.rootView.tableView.deselectRow(at: indexPath, animated: true)
-
+                
                 switch indexPath.row {
                 case 0:
                     print("성별/나이 변경")
@@ -93,6 +107,30 @@ final class MyPageInfoViewController: UIViewController {
                     //pushVC
                 default: break
                 }
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindViewModel() {
+        let input = MyPageInfoViewModel.Input()
+        let output = viewModel.transform(from: input, disposeBag: disposeBag)
+        
+        output.email
+            .subscribe(with: self, onNext: { owner, email in
+                owner.emailRelay.accept(email)
+            })
+            .disposed(by: disposeBag)
+        
+        emailRelay
+            .subscribe(onNext: { [weak self] _ in
+                self?.rootView.tableView.reloadData()
+            })
+            .disposed(by: disposeBag)
+        
+        self.backButton.rx.tap
+            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
     }
