@@ -19,6 +19,7 @@ final class MyPageViewController: UIViewController {
     private let viewModel: MyPageViewModel
     private var isMyPageRelay: BehaviorRelay<Bool>
     private var updateNavigationTitle = BehaviorRelay<Bool>(value: true)
+    private var scrollOffsetRelay = BehaviorRelay<Double>(value: 0)
     
     //MARK: - UI Components
     
@@ -43,11 +44,10 @@ final class MyPageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+    
         delegate()
         bindAction()
         bindViewModel()
-        
     }
     
     //MARK: - Bind
@@ -60,6 +60,20 @@ final class MyPageViewController: UIViewController {
         updateNavigationTitle
             .subscribe(with: self, onNext: { owner, isShown in
                 self.navigationItem.title = isShown ? StringLiterals.Navigation.Title.myPage :  ""
+            })
+
+        rootView.headerView.layoutIfNeeded()
+        let headerViewHeight = rootView.headerView.layer.frame.height
+        
+        scrollOffsetRelay
+            .subscribe(with: self, onNext: { owner, isHeight in
+                let isHiddenMainHeader = isHeight > headerViewHeight
+                print(isHeight, " ", headerViewHeight )
+                owner.rootView.scrolledStstickyHeaderView.isHidden = !isHiddenMainHeader
+                owner.rootView.mainStickyHeaderView.isHidden = isHiddenMainHeader
+                owner.rootView.headerView.isHidden = isHiddenMainHeader
+                
+                owner.updateNavigationTitle.accept(isHiddenMainHeader)
             })
     }
     
@@ -83,24 +97,8 @@ extension MyPageViewController: UIScrollViewDelegate {
     //TODO: - headerViewHeight 초기값 0으로 잡히는 에러 수정
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let headerViewHeight = rootView.headerView.frame.height
         let scrollOffset = scrollView.contentOffset.y
-        
-        //        print(scrollOffset, " ", headerViewHeight)
-        if scrollOffset >= headerViewHeight {
-            rootView.scrolledStstickyHeaderView.isHidden = false
-            rootView.mainStickyHeaderView.isHidden = true
-            rootView.headerView.isHidden = true
-            
-            updateNavigationTitle.accept(true)
-            
-        } else {
-            rootView.scrolledStstickyHeaderView.isHidden = true
-            rootView.mainStickyHeaderView.isHidden = false
-            rootView.headerView.isHidden = false
-            
-            updateNavigationTitle.accept(false)
-        }
+        scrollOffsetRelay.accept(scrollOffset)
     }
 }
 
