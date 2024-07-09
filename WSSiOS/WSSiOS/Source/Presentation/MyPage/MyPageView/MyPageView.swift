@@ -49,7 +49,7 @@ final class MyPageView: UIView {
         }
         
         scrolledStstickyHeaderView.do {
-            $0.backgroundColor = .wssPrimary20
+            $0.backgroundColor = .wssPrimary100
             $0.isHidden = true
         }
     }

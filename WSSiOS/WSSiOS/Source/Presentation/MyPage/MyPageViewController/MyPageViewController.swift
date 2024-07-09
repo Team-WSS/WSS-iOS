@@ -18,12 +18,15 @@ final class MyPageViewController: UIViewController {
     private let disposeBag = DisposeBag()
     private let viewModel: MyPageViewModel
     private var isMyPageRelay: BehaviorRelay<Bool>
-    private var updateNavigationTitle = BehaviorRelay<Bool>(value: true)
+    private var updateNavigationBar = BehaviorRelay<Bool>(value: true)
     private var scrollOffsetRelay = BehaviorRelay<Double>(value: 0)
     
     //MARK: - UI Components
     
     private var rootView = MyPageView()
+    
+    private lazy var settingButton = UIButton()
+    private lazy var dropdownButton = WSSDropdownButton()
     
     // MARK: - Life Cycle
     
@@ -40,62 +43,67 @@ final class MyPageViewController: UIViewController {
     
     override func loadView() {
         self.view = rootView
+        
+        decideUI(isMyPage: isMyPageRelay.value)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        
         delegate()
-        bindAction()
         bindViewModel()
+        bindAction()
     }
     
-    //MARK: - Bind
+    //MARK: - Delegate
     
     private func delegate() {
         rootView.scrollView.delegate = self
     }
     
+    //MARK: - Bind
+    
     private func bindAction() {
-        updateNavigationTitle
+        updateNavigationBar
             .subscribe(with: self, onNext: { owner, isShown in
                 self.navigationItem.title = isShown ? StringLiterals.Navigation.Title.myPage :  ""
             })
-
+            .disposed(by: disposeBag)
+        
+        
+        // headerViewHeight 계산 후 StickyHeader가 등장할 높이 파악
         rootView.headerView.layoutIfNeeded()
         let headerViewHeight = rootView.headerView.layer.frame.height
         
         scrollOffsetRelay
             .subscribe(with: self, onNext: { owner, isHeight in
                 let isHiddenMainHeader = isHeight > headerViewHeight
-                print(isHeight, " ", headerViewHeight )
                 owner.rootView.scrolledStstickyHeaderView.isHidden = !isHiddenMainHeader
                 owner.rootView.mainStickyHeaderView.isHidden = isHiddenMainHeader
                 owner.rootView.headerView.isHidden = isHiddenMainHeader
                 
-                owner.updateNavigationTitle.accept(isHiddenMainHeader)
+                owner.updateNavigationBar.accept(isHiddenMainHeader)
             })
+            .disposed(by: disposeBag)
     }
     
     private func bindViewModel() {
         let input = MyPageViewModel.Input(
-            isMyPage: self.isMyPageRelay.asDriver()
-        )
+            isMyPage: isMyPageRelay.asDriver(),
+            settingButtonDidTap: settingButton.rx.tap,
+            dropdownButtonDidTap: dropdownButton.rx.tap)
         
+        rootView.headerView.bindData(data: MyProfileResult.dummyData)
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
-        
-        output.isMyPage
-            .drive(with: self, onNext: { owner, isMyPage  in
-                owner.decideUI(isMyPage: isMyPage)
+        output.profileData
+            .bind(with: self, onNext: { owner, data in
+                owner.rootView.headerView.bindData(data: data)
             })
             .disposed(by: disposeBag)
     }
 }
 
 extension MyPageViewController: UIScrollViewDelegate {
-    
-    //TODO: - headerViewHeight 초기값 0으로 잡히는 에러 수정
-    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let scrollOffset = scrollView.contentOffset.y
         scrollOffsetRelay.accept(scrollOffset)
@@ -114,14 +122,12 @@ extension MyPageViewController {
                                     left: nil,
                                     right: button)
         
-        if isMyPage {
-        } else {
-        }
+        rootView.headerView.userImageChangeButton.isHidden = !isMyPage
     }
     
     private func setButton(isMyPage: Bool) -> UIButton {
         if isMyPage {
-            lazy var settingButton = UIButton().then {
+            settingButton.do {
                 $0.setImage(UIImage(resource: .setting), for: .normal)
             }
             return settingButton
@@ -129,7 +135,7 @@ extension MyPageViewController {
         } else {
             
             //TODO: - 드롭다운 에러,,, 🥹
-            lazy var dropdownButton = WSSDropdownButton().then {
+            dropdownButton.do {
                 $0.makeDropdown(dropdownRootView: self.view,
                                 dropdownWidth: 120,
                                 dropdownData: ["차단하기"],
