@@ -22,7 +22,6 @@ final class MyPageViewController: UIViewController {
     //MARK: - UI Components
     
     private var rootView = MyPageView()
-    private let dropdownView = WSSDropdownButton()
     
     // MARK: - Life Cycle
     
@@ -69,11 +68,11 @@ extension MyPageViewController {
     
     private func decideUI(isMyPage: Bool) {
         let button = setButton(isMyPage: isMyPage)
-        preparationSetNavigationBar(title: "",
-                                    left: nil,
-                                    right: button)
         
         if isMyPage {
+            preparationSetNavigationBar(title: "",
+                                        left: nil,
+                                        right: button)
         } else {
         }
     }
@@ -86,8 +85,17 @@ extension MyPageViewController {
             return settingButton
             
         } else {
-            lazy var dropdownButton = UIButton().then {
-                $0.setImage(UIImage(resource: .badgeLogo), for: .normal)
+            lazy var dropdownButton = WSSDropdownButton().then {
+                $0.makeDropdown(dropdownRootView: self.view,
+                                dropdownWidth: 120,
+                                dropdownData: ["차단하기"],
+                                textColor: .wssBlack)
+            }
+            self.view.addSubview(dropdownButton)
+            dropdownButton.snp.makeConstraints {
+                $0.top.equalTo(view.safeAreaLayoutGuide)
+                $0.trailing.equalToSuperview().inset(10)
+                $0.size.equalTo(44)
             }
             return dropdownButton
         }
