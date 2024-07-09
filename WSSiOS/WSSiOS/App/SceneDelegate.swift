@@ -18,7 +18,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             rootViewController: MyPageViewController(
                 viewModel: MyPageViewModel(
                     userRepository: DefaultUserRepository(
-                        userService: DefaultUserService()))))
+                        userService: DefaultUserService())), isMyPage: false))
         navigationController.isNavigationBarHidden = true
         
         self.window = UIWindow(windowScene: windowScene)
