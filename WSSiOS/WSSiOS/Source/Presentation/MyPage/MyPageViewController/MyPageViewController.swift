@@ -50,6 +50,8 @@ final class MyPageViewController: UIViewController {
         bindViewModel()
     }
     
+    //MARK: - Bind
+    
     private func bindViewModel() {
         let input = MyPageViewModel.Input(
             isMyPage: self.isMyPageRelay.asDriver()
@@ -66,8 +68,10 @@ final class MyPageViewController: UIViewController {
 }
 
 extension MyPageViewController {
+    
+    //MARK: - UI
+    
     private func decideUI(isMyPage: Bool) {
-        
         let button = setButton(isMyPage: isMyPage)
         preparationSetNavigationBar(title: "",
                                     left: nil,
@@ -77,11 +81,6 @@ extension MyPageViewController {
         } else {
         }
     }
-}
-
-extension MyPageViewController {
-    
-    //MARK: - UI
     
     private func setButton(isMyPage: Bool) -> UIButton {
         if isMyPage {
