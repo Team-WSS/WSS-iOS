@@ -18,6 +18,7 @@ final class MyPageViewController: UIViewController {
     private let disposeBag = DisposeBag()
     private let viewModel: MyPageViewModel
     private var isMyPageRelay: BehaviorRelay<Bool>
+    private var updateNavigationTitle = BehaviorRelay<Bool>(value: true)
     
     //MARK: - UI Components
     
@@ -42,10 +43,25 @@ final class MyPageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        delegate()
+        bindAction()
         bindViewModel()
+        
     }
     
     //MARK: - Bind
+    
+    private func delegate() {
+        rootView.scrollView.delegate = self
+    }
+    
+    private func bindAction() {
+        updateNavigationTitle
+            .subscribe(with: self, onNext: { owner, isShown in
+                self.navigationItem.title = isShown ? StringLiterals.Navigation.Title.myPage :  ""
+            })
+    }
     
     private func bindViewModel() {
         let input = MyPageViewModel.Input(
@@ -62,6 +78,32 @@ final class MyPageViewController: UIViewController {
     }
 }
 
+extension MyPageViewController: UIScrollViewDelegate {
+    
+    //TODO: - headerViewHeight 초기값 0으로 잡히는 에러 수정
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let headerViewHeight = rootView.headerView.frame.height
+        let scrollOffset = scrollView.contentOffset.y
+        
+        //        print(scrollOffset, " ", headerViewHeight)
+        if scrollOffset >= headerViewHeight {
+            rootView.scrolledStstickyHeaderView.isHidden = false
+            rootView.mainStickyHeaderView.isHidden = true
+            rootView.headerView.isHidden = true
+            
+            updateNavigationTitle.accept(true)
+            
+        } else {
+            rootView.scrolledStstickyHeaderView.isHidden = true
+            rootView.mainStickyHeaderView.isHidden = false
+            rootView.headerView.isHidden = false
+            
+            updateNavigationTitle.accept(false)
+        }
+    }
+}
+
 extension MyPageViewController {
     
     //MARK: - UI
@@ -69,10 +111,12 @@ extension MyPageViewController {
     private func decideUI(isMyPage: Bool) {
         let button = setButton(isMyPage: isMyPage)
         
+        //TODO: - 타인 프로필도 타이틀이 마이페이지인지 확인해야 함
+        preparationSetNavigationBar(title: StringLiterals.Navigation.Title.myPage,
+                                    left: nil,
+                                    right: button)
+        
         if isMyPage {
-            preparationSetNavigationBar(title: "",
-                                        left: nil,
-                                        right: button)
         } else {
         }
     }
@@ -85,6 +129,8 @@ extension MyPageViewController {
             return settingButton
             
         } else {
+            
+            //TODO: - 드롭다운 에러,,, 🥹
             lazy var dropdownButton = WSSDropdownButton().then {
                 $0.makeDropdown(dropdownRootView: self.view,
                                 dropdownWidth: 120,
@@ -93,7 +139,6 @@ extension MyPageViewController {
             }
             self.view.addSubview(dropdownButton)
             dropdownButton.snp.makeConstraints {
-                $0.top.equalTo(view.safeAreaLayoutGuide)
                 $0.trailing.equalToSuperview().inset(10)
                 $0.size.equalTo(44)
             }
