@@ -23,7 +23,7 @@
 		2C42939B2B58F27000BD62AB /* LibraryEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C42939A2B58F27000BD62AB /* LibraryEmptyView.swift */; };
 		2C5D0F592B4FDEC000C76D3C /* MyPageInventoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5D0F582B4FDEC000C76D3C /* MyPageInventoryCollectionViewCell.swift */; };
 		2C5D0F5B2B500EF100C76D3C /* TrashMyPageSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5D0F5A2B500EF100C76D3C /* TrashMyPageSettingView.swift */; };
-		2C5D0F5D2B50100000C76D3C /* MyPageSettingCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5D0F5C2B50100000C76D3C /* MyPageSettingCollectionViewCell.swift */; };
+		2C5D0F5D2B50100000C76D3C /* MyPageSettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5D0F5C2B50100000C76D3C /* MyPageSettingTableViewCell.swift */; };
 		2C5D0F5F2B50523B00C76D3C /* MyPageChangeNicknameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5D0F5E2B50523B00C76D3C /* MyPageChangeNicknameViewController.swift */; };
 		2C5D0F612B50525700C76D3C /* MyPageChangeNicknameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5D0F602B50525700C76D3C /* MyPageChangeNicknameView.swift */; };
 		2C6030642B5407E90031544C /* LibraryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6030632B5407E90031544C /* LibraryViewController.swift */; };
@@ -46,6 +46,7 @@
 		2CA2F6622B530BBF0045B4C2 /* LibraryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2F6612B530BBF0045B4C2 /* LibraryCollectionViewCell.swift */; };
 		2CA861182C3DA4B60006E204 /* MyPageSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA861172C3DA4B60006E204 /* MyPageSettingViewController.swift */; };
 		2CA8611A2C3DA4F60006E204 /* MyPageSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA861192C3DA4F60006E204 /* MyPageSettingView.swift */; };
+		2CA8611F2C3DAF9F0006E204 /* MyPageSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA8611E2C3DAF9F0006E204 /* MyPageSettingViewModel.swift */; };
 		2CB613F32B575E4500FC3F89 /* MyPageInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB613F22B575E4500FC3F89 /* MyPageInfoViewController.swift */; };
 		2CB613F52B575E6A00FC3F89 /* MyPageInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB613F42B575E6A00FC3F89 /* MyPageInfoView.swift */; };
 		2CCBF9F02B4C1FD800D787C2 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBF9EF2B4C1FD800D787C2 /* MyPageView.swift */; };
@@ -285,7 +286,7 @@
 		2C42939A2B58F27000BD62AB /* LibraryEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryEmptyView.swift; sourceTree = "<group>"; };
 		2C5D0F582B4FDEC000C76D3C /* MyPageInventoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageInventoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		2C5D0F5A2B500EF100C76D3C /* TrashMyPageSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashMyPageSettingView.swift; sourceTree = "<group>"; };
-		2C5D0F5C2B50100000C76D3C /* MyPageSettingCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSettingCollectionViewCell.swift; sourceTree = "<group>"; };
+		2C5D0F5C2B50100000C76D3C /* MyPageSettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSettingTableViewCell.swift; sourceTree = "<group>"; };
 		2C5D0F5E2B50523B00C76D3C /* MyPageChangeNicknameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageChangeNicknameViewController.swift; sourceTree = "<group>"; };
 		2C5D0F602B50525700C76D3C /* MyPageChangeNicknameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageChangeNicknameView.swift; sourceTree = "<group>"; };
 		2C6030632B5407E90031544C /* LibraryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViewController.swift; sourceTree = "<group>"; };
@@ -308,6 +309,7 @@
 		2CA2F6612B530BBF0045B4C2 /* LibraryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryCollectionViewCell.swift; sourceTree = "<group>"; };
 		2CA861172C3DA4B60006E204 /* MyPageSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSettingViewController.swift; sourceTree = "<group>"; };
 		2CA861192C3DA4F60006E204 /* MyPageSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSettingView.swift; sourceTree = "<group>"; };
+		2CA8611E2C3DAF9F0006E204 /* MyPageSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MyPageSettingViewModel.swift; path = ../../../../../../../../../Downloads/MyPageSettingViewModel.swift; sourceTree = "<group>"; };
 		2CB613F22B575E4500FC3F89 /* MyPageInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageInfoViewController.swift; sourceTree = "<group>"; };
 		2CB613F42B575E6A00FC3F89 /* MyPageInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageInfoView.swift; sourceTree = "<group>"; };
 		2CCBF9EF2B4C1FD800D787C2 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
@@ -592,7 +594,6 @@
 		2C3EEB662C0B6DA800B4EFEA /* NoExist */ = {
 			isa = PBXGroup;
 			children = (
-				2C5D0F572B4FDE7500C76D3C /* MyPageCell */,
 				2CA2F64D2B527B060045B4C2 /* MyPageCustomModalView.swift */,
 				2C5D0F5E2B50523B00C76D3C /* MyPageChangeNicknameViewController.swift */,
 				2CA2F64F2B527B3A0045B4C2 /* MyPageCustomModalViewController.swift */,
@@ -625,7 +626,7 @@
 			isa = PBXGroup;
 			children = (
 				2C5D0F582B4FDEC000C76D3C /* MyPageInventoryCollectionViewCell.swift */,
-				2C5D0F5C2B50100000C76D3C /* MyPageSettingCollectionViewCell.swift */,
+				2C5D0F5C2B50100000C76D3C /* MyPageSettingTableViewCell.swift */,
 			);
 			path = MyPageCell;
 			sourceTree = "<group>";
@@ -700,6 +701,7 @@
 		2CCBF9EB2B4C1E4600D787C2 /* MyPageView */ = {
 			isa = PBXGroup;
 			children = (
+				2C5D0F572B4FDE7500C76D3C /* MyPageCell */,
 				2C3EEB662C0B6DA800B4EFEA /* NoExist */,
 				2CCBF9EF2B4C1FD800D787C2 /* MyPageView.swift */,
 				2CA861192C3DA4F60006E204 /* MyPageSettingView.swift */,
@@ -714,6 +716,7 @@
 				2CCBF9FF2B4DBFD200D787C2 /* MyPageChangeNickNameViewModel.swift */,
 				2C421FE72B96DC0F000DCB87 /* MyPageCustomModalViewModel.swift */,
 				2C03EE622C3CF86F00923233 /* MyPageViewModel.swift */,
+				2CA8611E2C3DAF9F0006E204 /* MyPageSettingViewModel.swift */,
 			);
 			path = MyPageViewModel;
 			sourceTree = "<group>";
@@ -1841,7 +1844,7 @@
 				39BA7F752BCABF1D0045B2B7 /* KeywordLink.swift in Sources */,
 				A122C9DB2B5309AF00DFCFE4 /* (null) in Sources */,
 				A1EF35432B52F75800A94C53 /* NovelRepository.swift in Sources */,
-				2C5D0F5D2B50100000C76D3C /* MyPageSettingCollectionViewCell.swift in Sources */,
+				2C5D0F5D2B50100000C76D3C /* MyPageSettingTableViewCell.swift in Sources */,
 				C9AF1AE42BCC28EE00208BC9 /* HomeTodayPopularCollectionViewCell.swift in Sources */,
 				39CC168A2B51D965003F56AE /* RegisterSuccessView.swift in Sources */,
 				2C5D0F5B2B500EF100C76D3C /* TrashMyPageSettingView.swift in Sources */,
@@ -1911,6 +1914,7 @@
 				2C6030772B55263F0031544C /* MyProfileResult.swift in Sources */,
 				2CD911482C0D88F8006B8D72 /* FeedRepository.swift in Sources */,
 				2C2491862B4ADC420096F255 /* WSSTabBarController.swift in Sources */,
+				2CA8611F2C3DAF9F0006E204 /* MyPageSettingViewModel.swift in Sources */,
 				392A292F2B4F07FF0065EB97 /* RegisterNormalReadDateView.swift in Sources */,
 				CD3E5A9A2B5509AB00C0A659 /* DeletePopupViewController.swift in Sources */,
 				39D4A5D42BDCC1B1004FC834 /* NovelDetailHeaderBackgroundImageView.swift in Sources */,

@@ -10,16 +10,17 @@ import UIKit
 import SnapKit
 import Then
 
-final class MyPageSettingCollectionViewCell: UICollectionViewCell {
+final class MyPageSettingTableViewCell: UITableViewCell {
      
     //MARK: - Components
     
-    let myPageSettingCellLabel = UILabel()
+    let cellLabel = UILabel()
+    let cellIconImageView = UIImageView(image: .icNavigateRight)
     
     //MARK: - Life Cycle
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         setUI()
         setHierarchy()
@@ -36,20 +37,33 @@ final class MyPageSettingCollectionViewCell: UICollectionViewCell {
     private func setUI() {
         self.backgroundColor = .wssWhite
         
-        myPageSettingCellLabel.do {
+        cellLabel.do {
             $0.textColor = .wssBlack
-            $0.font = .Body1
+            $0.font = .Body2
         }
     }
     
     private func setHierarchy() {
-        self.addSubviews(myPageSettingCellLabel)
+        self.addSubviews(cellLabel,
+        cellIconImageView)
     }
 
     private func setLayout() {
-        myPageSettingCellLabel.snp.makeConstraints() {
+        cellLabel.snp.makeConstraints() {
             $0.centerY.equalToSuperview()
             $0.leading.equalToSuperview().inset(20)
         }
+        
+        cellIconImageView.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalToSuperview().inset(20)
+            $0.size.equalTo(24)
+        }
+    }
+    
+    //MARK: - Data
+    
+    func bindData(title: String) {
+        cellLabel.text = title
     }
 }

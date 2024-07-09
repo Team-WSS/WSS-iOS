@@ -13,7 +13,8 @@ import Then
 final class MyPageSettingView: UIView {
     
     //MARK: - Components
-  
+    
+    var tableView = UITableView(frame: .zero, style: .plain)
     
     // MARK: - Life Cycle
     
@@ -32,19 +33,26 @@ final class MyPageSettingView: UIView {
     //MARK: - UI
     
     private func setUI() {
-        self.backgroundColor = .wssPrimary20
+        self.backgroundColor = .wssWhite
         
+        tableView.do {
+            $0.showsVerticalScrollIndicator = false
+            $0.isScrollEnabled = false
+            $0.separatorStyle = .singleLine
+            $0.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+            $0.separatorColor = .wssGray50
+            $0.rowHeight = 64
+        }
     }
     
     private func setHierarchy() {
-        
+        self.addSubview(tableView)
     }
     
     private func setLayout() {
-        
+        tableView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
     }
-    
-    //MARK: - Data
-    
 }
 

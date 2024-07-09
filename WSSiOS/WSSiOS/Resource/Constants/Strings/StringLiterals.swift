@@ -34,6 +34,7 @@ enum StringLiterals {
             static let myPageInfo = "계정정보 확인"
             static let feed = "소소피드"
             static let notice = "알림"
+            static let myPageSetting = "설정"
         }
     }
     
@@ -127,8 +128,11 @@ enum StringLiterals {
         }
         
         enum Setting: String, CaseIterable {
-            case accountInfo = "계정정보 확인"
-            case webSoso = "웹소소 인스타 보러가기"
+            case accountInfo = "계정정보"
+            case profileStatus = "프로필 공개 여부 설정"
+            case webSoso = "웹소소 공식 계정"
+            case qNA = "문의하기 & 의견 보내기"
+            case review = "앱 평점 남기기"
             case termsOfService = "서비스 이용약관"
         }
         
