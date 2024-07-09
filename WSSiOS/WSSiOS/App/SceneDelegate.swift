@@ -15,10 +15,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         let navigationController = UINavigationController(
-            rootViewController: MyPageViewController(
-                viewModel: MyPageViewModel(
-                    userRepository: DefaultUserRepository(
-                        userService: DefaultUserService())), isMyPage: false))
+            rootViewController: WSSTabBarController())
         navigationController.isNavigationBarHidden = true
         
         self.window = UIWindow(windowScene: windowScene)
