@@ -45,7 +45,7 @@ final class FeedContentView: UIView {
         }
         
         writeContentLabel.do {
-            $0.applyWSSFont(.title2, with: "내용 작성하기")
+            $0.applyWSSFont(.title2, with: StringLiterals.Memo.Content.writeContent)
             $0.textColor = .wssBlack
         }
         
@@ -55,7 +55,7 @@ final class FeedContentView: UIView {
         }
         
         spoilerLabel.do {
-            $0.applyWSSFont(.label1, with: "스포일러")
+            $0.applyWSSFont(.label1, with: StringLiterals.Memo.Content.spoiler)
             $0.textColor = .wssGray300
         }
         
@@ -76,7 +76,7 @@ final class FeedContentView: UIView {
         }
         
         placeholderLabel.do {
-            $0.applyWSSFont(.body2, with: "피드 작성 유의사항!\n\n욕설, 비방 등 상대방을 불쾌하게 하는 의견은\n작품 내용을 담은 글은 스포일러 체크해주세요.")
+            $0.applyWSSFont(.body2, with: StringLiterals.Memo.Content.placeHolder)
             $0.textColor = .wssGray200
             $0.numberOfLines = 0
         }

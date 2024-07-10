@@ -66,7 +66,7 @@ final class FeedEditView: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubviews(scrollView)
+        self.addSubview(scrollView)
         scrollView.addSubview(contentView)
         contentView.addArrangedSubviews(feedCategoryView,
                                         feedContentView,

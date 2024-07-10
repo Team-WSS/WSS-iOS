@@ -41,7 +41,7 @@ final class FeedCategoryView: UIView {
         }
         
         categoryLabel.do {
-            $0.applyWSSFont(.title2, with: "카테고리")
+            $0.applyWSSFont(.title2, with: StringLiterals.Memo.Category.category)
             $0.textColor = .wssBlack
         }
         
@@ -51,7 +51,7 @@ final class FeedCategoryView: UIView {
         }
         
         multipleSelectLabel.do {
-            $0.applyWSSFont(.label1, with: "중복 선택 가능")
+            $0.applyWSSFont(.label1, with: StringLiterals.Memo.Category.multipleSelect)
             $0.textColor = .Gray200
         }
         

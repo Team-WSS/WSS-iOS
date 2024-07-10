@@ -42,7 +42,7 @@ final class FeedNovelConnectView: UIView {
         }
         
         novelConnectLabel.do {
-            $0.applyWSSFont(.title2, with: "작품 연결하기")
+            $0.applyWSSFont(.title2, with: StringLiterals.Memo.Novel.novelConnect)
             $0.textColor = .wssBlack
         }
         
@@ -52,7 +52,7 @@ final class FeedNovelConnectView: UIView {
         }
         
         novelSearchLabel.do {
-            $0.applyWSSFont(.label1, with: "작품 제목, 작가를 검색하세요")
+            $0.applyWSSFont(.label1, with: StringLiterals.Memo.Novel.novelSearch)
             $0.textColor = .wssGray200
         }
         
