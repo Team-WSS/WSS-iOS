@@ -87,7 +87,10 @@ final class HomeNoticeViewController: UIViewController {
         
         output.noticeDetailEnabled
             .bind(with: self, onNext: { owner, indexPath in
-                owner.navigationController?.pushViewController(HomeNoticeDetailViewController(viewModel: HomeNoticeDetailViewModel(noticeRepository: TestNoticeRepository())), animated: true)
+                let viewController = HomeNoticeDetailViewController(viewModel: HomeNoticeDetailViewModel(noticeRepository: TestNoticeRepository()))
+                viewController.navigationController?.isNavigationBarHidden = false
+                viewController.hidesBottomBarWhenPushed = true
+                owner.navigationController?.pushViewController(viewController, animated: true)
             })
             .disposed(by: disposeBag)
         
