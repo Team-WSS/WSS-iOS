@@ -65,8 +65,7 @@ final class NormalSearchResultView: UIView {
     
     private func setLayout() {
         scrollView.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview()
-            $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
+            $0.edges.equalToSuperview()
         }
         
         contentView.snp.makeConstraints {
