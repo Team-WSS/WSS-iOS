@@ -17,7 +17,7 @@ final class FeedContentView: UIView {
     private let writeContentLabel = UILabel()
     private let essentialImageView = UIImageView()
     private let spoilerLabel = UILabel()
-    let spoilerButton = RegisterNormalToggleButton()
+    let spoilerButton = WSSToggleButton()
     private let feedTextWrapperView = UIView()
     let feedTextView = UITextView()
     let placeholderLabel = UILabel()
@@ -73,6 +73,7 @@ final class FeedContentView: UIView {
             $0.textColor = .wssBlack
             $0.textContainer.lineFragmentPadding = 0
             $0.textContainerInset = .zero
+            $0.tintColor = .wssBlack
         }
         
         placeholderLabel.do {

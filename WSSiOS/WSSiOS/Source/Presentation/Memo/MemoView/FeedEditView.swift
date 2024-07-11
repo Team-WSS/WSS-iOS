@@ -44,7 +44,8 @@ final class FeedEditView: UIView {
         }
         
         backButton.do {
-            $0.setImage(.icNavigateLeft.withRenderingMode(.alwaysOriginal), for: .normal)
+            $0.setImage(.icNavigateLeft.withRenderingMode(.alwaysTemplate), for: .normal)
+            $0.tintColor = .wssBlack
         }
         
         completeButton.do {
