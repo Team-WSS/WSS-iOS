@@ -85,7 +85,7 @@ final class HomeNoticeViewController: UIViewController {
                 }
                 .disposed(by: disposeBag)
         
-        output.noticeDetailEnabled
+        output.selectedNoticeCellIndexPath
             .bind(with: self, onNext: { owner, indexPath in
                 let viewController = HomeNoticeDetailViewController(viewModel: HomeNoticeDetailViewModel(noticeRepository: TestNoticeRepository()))
                 viewController.navigationController?.isNavigationBarHidden = false
