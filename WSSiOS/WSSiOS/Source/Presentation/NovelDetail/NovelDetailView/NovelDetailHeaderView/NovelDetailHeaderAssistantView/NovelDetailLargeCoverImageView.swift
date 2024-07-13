@@ -67,7 +67,7 @@ final class NovelDetailLargeCoverImageButton: UIButton {
         
         dismissButton.snp.makeConstraints {
             $0.size.equalTo(44)
-            $0.top.equalTo(safeAreaLayoutGuide.snp.top).offset(-44)
+            $0.top.equalTo(safeAreaLayoutGuide.snp.top)
             $0.trailing.equalToSuperview().inset(12)
         }
     }

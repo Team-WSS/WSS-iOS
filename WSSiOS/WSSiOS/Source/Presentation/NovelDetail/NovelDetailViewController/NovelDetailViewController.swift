@@ -72,13 +72,13 @@ final class NovelDetailViewController: UIViewController {
     private func setUI() {
         backButton.do {
             $0.setImage(.icNavigateLeft.withTintColor(.wssWhite,
-                                                      renderingMode: .alwaysOriginal),
+                                                      renderingMode: .alwaysTemplate),
                         for: .normal)
         }
         
         dropDownButton.do {
             $0.setImage(.icDropDownDot.withTintColor(.wssWhite,
-                                                     renderingMode: .alwaysOriginal),
+                                                     renderingMode: .alwaysTemplate),
                         for: .normal)
         }
     }
@@ -87,9 +87,13 @@ final class NovelDetailViewController: UIViewController {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.backButton)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.dropDownButton)
-        self.navigationController?.navigationBar.titleTextAttributes = [
+    }
+    
+    private func setNavigationBarTextAttribute() {
+        navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.font: UIFont.Title2,
-            NSAttributedString.Key.foregroundColor: UIColor.wssBlack
+            NSAttributedString.Key.foregroundColor: UIColor.wssBlack,
+            NSAttributedString.Key.kern: -0.6,
         ]
     }
     
@@ -116,6 +120,16 @@ final class NovelDetailViewController: UIViewController {
         output.scrollContentOffset
             .drive(with: self, onNext: { owner, offset in
                 owner.updateNavigationBarStyle(offset: offset.y)
+                
+                let stickyoffset = owner.rootView.headerView.frame.size.height - owner.view.safeAreaInsets.top
+                let showStickyTabBar = offset.y > stickyoffset
+                owner.rootView.updateStickyTabBarShow(showStickyTabBar)
+            })
+            .disposed(by: disposeBag)
+        
+        output.backButtonEnabled
+            .bind(with: self, onNext: { owner, _ in
+                owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
         
@@ -125,9 +139,9 @@ final class NovelDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.backButtonEnabled
-            .bind(with: self, onNext: { owner, _ in
-                owner.popToLastViewController()
+        output.selectedTab
+            .drive(with: self, onNext: { owner, tab in
+                owner.rootView.updateTab(selected: tab)
             })
             .disposed(by: disposeBag)
     }
@@ -138,10 +152,14 @@ final class NovelDetailViewController: UIViewController {
         return NovelDetailViewModel.Input(
             viewWillAppearEvent:  viewWillAppearEvent.asObservable(),
             scrollContentOffset: rootView.scrollView.rx.contentOffset,
+            backButtonDidTap: backButton.rx.tap,
             novelCoverImageButtonDidTap: rootView.headerView.novelCoverImageButton.rx.tap,
             largeNovelCoverImageDismissButtonDidTap: rootView.largeNovelCoverImageButton.dismissButton.rx.tap,
             largeNovelCoverImageBackgroundDidTap: rootView.largeNovelCoverImageButton.rx.tap,
-            backButtonDidTap: backButton.rx.tap
+            infoTabBarButtonDidTap: rootView.tabBarView.infoButton.rx.tap,
+            feedTabBarButtonDidTap: rootView.tabBarView.feedButton.rx.tap,
+            stickyInfoTabBarButtonDidTap: rootView.stickyTabBarView.infoButton.rx.tap,
+            stickyFeedTabBarButtonDidTap: rootView.stickyTabBarView.feedButton.rx.tap
         )
     }
     
@@ -158,13 +176,18 @@ final class NovelDetailViewController: UIViewController {
             navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
             navigationController?.navigationBar.shadowImage = UIImage()
             navigationController?.navigationBar.backgroundColor = .wssWhite
-            navigationItem.title = self.navigationTitle
+            navigationItem.title = navigationTitle
+            setNavigationBarTextAttribute()
+            backButton.tintColor = .wssGray200
+            dropDownButton.tintColor = .wssGray200
         } else {
             rootView.statusBarView.backgroundColor = .clear
             navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
             navigationController?.navigationBar.shadowImage = nil
             navigationController?.navigationBar.backgroundColor = .clear
             navigationItem.title = ""
+            backButton.tintColor = .wssWhite
+            dropDownButton.tintColor = .wssWhite
         }
     }
 }

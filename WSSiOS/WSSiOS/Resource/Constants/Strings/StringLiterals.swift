@@ -246,6 +246,11 @@ enum StringLiterals {
                 static let novelFeedCount = "0"
             }
         }
+        
+        enum Tab {
+            static let info = "정보"
+            static let feed = "피드"
+        }
     }
     
     enum Search {
