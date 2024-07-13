@@ -47,14 +47,11 @@ final class HomeNoticeDetailView: UIView {
     
     private func setLayout() {
         scrollView.snp.makeConstraints {
-            $0.top.equalToSuperview()
-            $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalToSuperview()
+            $0.edges.equalToSuperview()
         }
         
         contentView.snp.makeConstraints {
-            $0.top.equalTo(scrollView.contentLayoutGuide)
-            $0.leading.trailing.bottom.equalTo(scrollView.contentLayoutGuide)
+            $0.edges.equalTo(scrollView.contentLayoutGuide)
             $0.height.greaterThanOrEqualTo(self.snp.height).priority(.low)
             $0.width.equalTo(scrollView.snp.width)
         }
