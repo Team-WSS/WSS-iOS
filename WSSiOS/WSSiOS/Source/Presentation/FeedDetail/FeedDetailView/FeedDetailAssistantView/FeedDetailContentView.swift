@@ -95,6 +95,7 @@ final class FeedDetailContentView: UIView {
             $0.applyWSSFont(.body2, with: data.content)
             $0.numberOfLines = 0
             $0.textAlignment = .left
+            $0.lineBreakStrategy = .hangulWordPriority
         }
         
         linkNovelView.bindData(title: data.novelTitle,
