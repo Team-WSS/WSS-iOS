@@ -10,11 +10,11 @@ import Foundation
 import RxSwift
 
 protocol NoticeRepository {
-    func getTestNotices() -> Observable<[Notice]>
+    func getNotices() -> Observable<[Notice]>
 }
 
-struct DefaultNoticeRepository: NoticeRepository {
-    func getTestNotices() -> Observable<[Notice]> {
+struct TestNoticeRepository: NoticeRepository {
+    func getNotices() -> Observable<[Notice]> {
         return Observable.just([Notice(noticeTitle: "#후회남에 등록된 새로운 웹소설을 확인해 보실 수 있습니다람쥐",
                                        noticeContent: "후회남에 등록된 새로운 웹소설 리스트: <상수리 나무 아래>가 추가되었습니다~ 축하합니다~",
                                        createdDate: "2024.10.03"),
