@@ -13,11 +13,12 @@ import Then
 final class WSSAlertButtonView: UIView {
     
     // MARK: - UI Components
-    
+    private let alertView = UIView()
     private let stackView = UIStackView()
-    private let alertImageView = UIImage(resource: .icAlertWarningCircle)
-    var alertTitle = UILabel()
+    var alertImageView = UIImageView(image: .icAlertWarningCircle)
+    var alertTitleLabel = UILabel()
     var alertContentLabel = UILabel()
+    private let buttonStackView = UIStackView()
     var cancelButton = UIButton()
     var actionButton = UIButton()
     
@@ -38,12 +39,19 @@ final class WSSAlertButtonView: UIView {
     // MARK: - Custom Method
     
     private func setUI() {
+        self.backgroundColor = .wssBlack.withAlphaComponent(0.6)
+        
+        alertView.do {
+            $0.backgroundColor = .wssWhite
+            $0.layer.cornerRadius = 12
+        }
+        
         stackView.do {
             $0.axis = .vertical
             $0.alignment = .center
         }
-
-        alertTitle.do {
+        
+        alertTitleLabel.do {
             $0.textColor = .wssBlack
             $0.applyWSSFont(.title1, with: "하하하")
         }
@@ -52,28 +60,66 @@ final class WSSAlertButtonView: UIView {
             $0.textColor = .Gray300
             $0.applyWSSFont(.body2, with: "해당 글이 커뮤니티 가이드를\n위반했는지 검토할게요")
         }
-//                                      cancelButton,
-//                                      actionButton
+        
+        buttonStackView.do {
+            $0.axis = .horizontal
+        }
+        
+        cancelButton.do {
+            $0.setTitle("취소", for: .normal)
+            $0.titleLabel?.font = .Label1
+            $0.titleLabel?.textColor = .Gray300
+            $0.titleLabel?.layer.backgroundColor = UIColor.Gray50.cgColor
+            $0.titleLabel?.layer.cornerRadius = 8
+        }
+        
+        actionButton.do {
+            $0.setTitle("차단", for: .normal)
+            $0.titleLabel?.font = .Label1
+            $0.titleLabel?.textColor = .wssWhite
+            $0.titleLabel?.layer.backgroundColor = UIColor.Secondary100.cgColor
+            $0.titleLabel?.layer.cornerRadius = 8
+        }
     }
     
     private func setHierarchy() {
-        self.addSubview(stackView)
+        self.addSubview(alertView)
+        alertView.addSubview(stackView)
         stackView.addArrangedSubviews(alertImageView,
-                                      alertTitle,
+                                      alertTitleLabel,
                                       alertContentLabel,
-                                      cancelButton,
-                                      actionButton)
+                                      buttonStackView)
+        buttonStackView.addArrangedSubviews(cancelButton,
+                                            actionButton)
     }
     
     private func setLayout() {
-        stackView.snp.makeConstraints {
+        alertView.snp.makeConstraints {
             $0.top.bottom.equalToSuperview().inset(24)
             $0.leading.trailing.equalToSuperview().inset(21)
+        }
+        
+        stackView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
         
         alertImageView.snp.makeConstraints {
             $0.size.equalTo(60)
         }
+        
+        buttonStackView.do {
+            $0.setCustomSpacing(18, after: cancelButton)
+            $0.snp.makeConstraints {
+                $0.width.equalToSuperview()
+            }
+        }
+        
+        [cancelButton, actionButton]
+            .forEach { 
+                $0.snp.makeConstraints {
+                    $0.height.equalTo(40)
+                    $0.width.equalTo(116)
+                }}
     }
 }
 
