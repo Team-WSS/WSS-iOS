@@ -10,7 +10,7 @@ import UIKit
 class AlertBuilder {
     
     private var rootViewController = UIViewController()
-    private let alertViewController = TestViewController()
+    private let alertViewController = WSSAlertViewController()
     
     private var alertIconImageView: UIImageView?
     private var alertTitle: String?
@@ -23,37 +23,30 @@ class AlertBuilder {
         rootViewController = viewController
     }
     
-    func setIconImageView(_ image: UIImageView) -> AlertBuilder {
-        alertIconImageView = image
+    func setAlertView(iconImageView: UIImageView,
+                      titleText: String,
+                      contetnText: String,
+                      cancelButtonTitle: String,
+                      actionButtonTitle: String,
+                      actionButtonBackgroundColor: CGColor) -> AlertBuilder {
+        
+        show(iconImageView: iconImageView,
+             titleText: titleText,
+             contetnText: contetnText,
+             cancelButtonTitle: cancelButtonTitle,
+             actionButtonTitle: actionButtonTitle,
+             actionButtonBackgroundColor: actionButtonBackgroundColor)
+        
         return self
     }
     
-    func setTitle(_ text: String) -> AlertBuilder {
-        alertTitle = text
-        return self
-    }
-    
-    func setContent(_ text: String) -> AlertBuilder {
-        alertContent = text
-        return self
-    }
-    
-    func setCancelTitle(_ text: String) -> AlertBuilder {
-        cancelTitle = text
-        return self
-    }
-    
-    func setActionTitle(_ text: String) -> AlertBuilder {
-        actionTitle = text
-        return self
-    }
-    
-    func setActionColor(_ color: CGColor) -> AlertBuilder {
-        actionBackgroundColor = color
-        return self
-    }
-    
-    func show() -> Self {
+    private func show(iconImageView: UIImageView,
+              titleText: String,
+              contetnText: String,
+              cancelButtonTitle: String,
+              actionButtonTitle: String,
+              actionButtonBackgroundColor: CGColor) -> Self {
+        
         alertViewController.modalPresentationStyle = .overFullScreen
         alertViewController.modalTransitionStyle = .crossDissolve
         

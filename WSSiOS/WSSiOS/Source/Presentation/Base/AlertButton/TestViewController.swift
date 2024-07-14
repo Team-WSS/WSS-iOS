@@ -7,14 +7,11 @@
 
 import UIKit
 
-import RxSwift
-import RxCocoa
-
 final class TestViewController: UIViewController {
     
     //MARK: - UI Components
     
-    var rootView = WSSAlertButtonView()
+    var rootView = UIView()
     
     // MARK: - Life Cycle
     
@@ -25,6 +22,12 @@ final class TestViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
       
+        AlertBuilder(viewController: self)
+            .setAlertView(iconImageView: UIImageView(image: .icAlertWarningCircle),
+                          titleText: "안ㄴㅇ?",
+                          contetnText: "방갑수다",
+                          cancelButtonTitle: "ㅎㅇ",
+                          actionButtonTitle: "취소",
+                          actionButtonBackgroundColor: UIColor.wssSecondary100.cgColor)
     }
 }
-
