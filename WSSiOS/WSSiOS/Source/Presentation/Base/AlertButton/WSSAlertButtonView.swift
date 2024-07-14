@@ -54,11 +54,15 @@ final class WSSAlertButtonView: UIView {
         alertTitleLabel.do {
             $0.textColor = .wssBlack
             $0.applyWSSFont(.title1, with: "하하하")
+            $0.numberOfLines = 0
+            $0.textAlignment = .center
         }
         
         alertContentLabel.do {
             $0.textColor = .Gray300
             $0.applyWSSFont(.body2, with: "해당 글이 커뮤니티 가이드를\n위반했는지 검토할게요")
+            $0.numberOfLines = 0
+            $0.textAlignment = .center
         }
         
         buttonStackView.do {
@@ -95,12 +99,19 @@ final class WSSAlertButtonView: UIView {
     
     private func setLayout() {
         alertView.snp.makeConstraints {
+            $0.center.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(41)
+        }
+        
+        stackView.snp.makeConstraints {
             $0.top.bottom.equalToSuperview().inset(24)
             $0.leading.trailing.equalToSuperview().inset(21)
         }
         
-        stackView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+        stackView.do {
+            $0.setCustomSpacing(18, after: alertImageView)
+            $0.setCustomSpacing(4, after: alertTitleLabel)
+            $0.setCustomSpacing(18, after: alertContentLabel)
         }
         
         alertImageView.snp.makeConstraints {
@@ -108,16 +119,17 @@ final class WSSAlertButtonView: UIView {
         }
         
         buttonStackView.do {
-            $0.setCustomSpacing(18, after: cancelButton)
             $0.snp.makeConstraints {
                 $0.width.equalToSuperview()
+                $0.height.equalTo(40)
             }
+            $0.setCustomSpacing(18, after: cancelButton)
         }
         
         [cancelButton, actionButton]
             .forEach { 
                 $0.snp.makeConstraints {
-                    $0.height.equalTo(40)
+                    $0.height.equalToSuperview()
                     $0.width.equalTo(116)
                 }}
     }

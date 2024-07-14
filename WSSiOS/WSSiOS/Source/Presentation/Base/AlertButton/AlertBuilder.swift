@@ -23,67 +23,68 @@ class AlertBuilder {
         rootViewController = viewController
     }
     
-    func setAlertView(iconImageView: UIImageView,
-                      titleText: String,
-                      contetnText: String,
-                      cancelButtonTitle: String,
-                      actionButtonTitle: String,
-                      actionButtonBackgroundColor: CGColor) -> AlertBuilder {
+    func setAlertView(iconImageView: UIImageView?,
+                      titleText: String?,
+                      contentText: String?,
+                      cancelButtonTitle: String?,
+                      actionButtonTitle: String?,
+                      actionButtonBackgroundColor: CGColor?) -> AlertBuilder {
         
-        show(iconImageView: iconImageView,
-             titleText: titleText,
-             contetnText: contetnText,
-             cancelButtonTitle: cancelButtonTitle,
-             actionButtonTitle: actionButtonTitle,
-             actionButtonBackgroundColor: actionButtonBackgroundColor)
+        self.alertIconImageView = iconImageView
+        self.alertTitle = titleText
+        self.alertContent = contentText
+        self.cancelTitle = cancelButtonTitle
+        self.actionTitle = actionButtonTitle
+        self.actionBackgroundColor = actionButtonBackgroundColor
+        
+        show()
         
         return self
     }
     
-    private func show(iconImageView: UIImageView,
-              titleText: String,
-              contetnText: String,
-              cancelButtonTitle: String,
-              actionButtonTitle: String,
-              actionButtonBackgroundColor: CGColor) -> Self {
+    private func show() {
         
         alertViewController.modalPresentationStyle = .overFullScreen
         alertViewController.modalTransitionStyle = .crossDissolve
         
-        alertViewController.rootView.do {
-            if alertIconImageView == nil {
-                $0.alertImageView.isHidden = true
-            } else {
-                $0.alertImageView = alertIconImageView!
+        if let iconImageView = alertIconImageView {
+            alertViewController.rootView.alertImageView.image = iconImageView.image
+            alertViewController.rootView.alertImageView.isHidden = false
+        } else {
+            alertViewController.rootView.alertImageView.isHidden = true
+        }
+        
+        if let title = alertTitle {
+            alertViewController.rootView.alertTitleLabel.text = title
+            alertViewController.rootView.alertTitleLabel.isHidden = false
+        } else {
+            alertViewController.rootView.alertTitleLabel.isHidden = true
+        }
+        
+        if let content = alertContent {
+            alertViewController.rootView.alertContentLabel.text = content
+            alertViewController.rootView.alertContentLabel.isHidden = false
+        } else {
+            alertViewController.rootView.alertContentLabel.isHidden = true
+        }
+        
+        if let cancelTitle = cancelTitle {
+            alertViewController.rootView.cancelButton.setTitle(cancelTitle, for: .normal)
+            alertViewController.rootView.cancelButton.isHidden = false
+        } else {
+            alertViewController.rootView.cancelButton.isHidden = true
+        }
+        
+        if let actionTitle = actionTitle {
+            alertViewController.rootView.actionButton.setTitle(actionTitle, for: .normal)
+            if let bgColor = actionBackgroundColor {
+                alertViewController.rootView.actionButton.layer.backgroundColor = bgColor
             }
-            
-            if alertTitle == nil {
-                $0.alertTitleLabel.isHidden = true
-            } else {
-                $0.alertTitleLabel.text = alertTitle
-            }
-            
-            if alertContent == nil {
-                $0.alertContentLabel.isHidden = true
-            } else {
-                $0.alertContentLabel.text = alertContent
-            }
-            
-            if cancelTitle == nil {
-                $0.cancelButton.isHidden = true
-            } else {
-                $0.cancelButton.setTitle(cancelTitle, for: .normal)
-            }
-            
-            if actionTitle == nil {
-                $0.actionButton.isHidden = true
-            } else {
-                $0.actionButton.setTitle(actionTitle, for: .normal)
-                $0.actionButton.layer.backgroundColor = actionBackgroundColor
-            }
+            alertViewController.rootView.actionButton.isHidden = false
+        } else {
+            alertViewController.rootView.actionButton.isHidden = true
         }
         
         rootViewController.present(alertViewController, animated: true)
-        return self
     }
 }

@@ -24,10 +24,10 @@ final class TestViewController: UIViewController {
       
         AlertBuilder(viewController: self)
             .setAlertView(iconImageView: UIImageView(image: .icAlertWarningCircle),
-                          titleText: "안ㄴㅇ?",
-                          contetnText: "방갑수다",
-                          cancelButtonTitle: "ㅎㅇ",
-                          actionButtonTitle: "취소",
+                          titleText: "안녕하세요?",
+                          contentText: "차단하면 서로의 피드, 댓글, 프로필을 볼 수 없어요",
+                          cancelButtonTitle: "취소",
+                          actionButtonTitle: "확인",
                           actionButtonBackgroundColor: UIColor.wssSecondary100.cgColor)
     }
 }
