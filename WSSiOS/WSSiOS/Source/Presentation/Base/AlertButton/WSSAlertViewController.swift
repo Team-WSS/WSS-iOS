@@ -28,16 +28,16 @@ final class WSSAlertViewController: UIViewController {
     init(iconImage: UIImage?,
          titleText: String?,
          contentText: String?,
-         cancelButtonTitle: String?,
-         actionButtonTitle: String?,
-         actionButtonBackgroundColor: CGColor?) {
+         cancelTitle: String?,
+         actionTitle: String?,
+         actionBackgroundColor: CGColor?) {
         
         self.alertIconImage = iconImage
         self.alertTitle = titleText
         self.alertContent = contentText
-        self.cancelTitle = cancelButtonTitle
-        self.actionTitle = actionButtonTitle
-        self.actionBackgroundColor = actionButtonBackgroundColor
+        self.cancelTitle = cancelTitle
+        self.actionTitle = actionTitle
+        self.actionBackgroundColor = actionBackgroundColor
         
         super.init(nibName: nil, bundle: nil)
     }

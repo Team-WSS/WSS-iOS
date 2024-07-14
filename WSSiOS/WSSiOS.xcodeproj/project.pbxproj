@@ -63,7 +63,6 @@
 		2CD229572B42EA75005400BE /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD229562B42EA75005400BE /* UIColor+.swift */; };
 		2CD2FE3E2C43BF300033366C /* WSSAlertButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD2FE3D2C43BF300033366C /* WSSAlertButtonView.swift */; };
 		2CD2FE402C43E7B60033366C /* WSSAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD2FE3F2C43E7B60033366C /* WSSAlertViewController.swift */; };
-		2CD2FE442C43FABE0033366C /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD2FE432C43FABE0033366C /* TestViewController.swift */; };
 		2CD2FE462C444D6C0033366C /* WSSAlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD2FE452C444D6C0033366C /* WSSAlertType.swift */; };
 		2CD911422C0D87E0006B8D72 /* FeedService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD911412C0D87E0006B8D72 /* FeedService.swift */; };
 		2CD911442C0D884B006B8D72 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD911432C0D884B006B8D72 /* String+.swift */; };
@@ -319,7 +318,6 @@
 		2CD229562B42EA75005400BE /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		2CD2FE3D2C43BF300033366C /* WSSAlertButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSAlertButtonView.swift; sourceTree = "<group>"; };
 		2CD2FE3F2C43E7B60033366C /* WSSAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSAlertViewController.swift; sourceTree = "<group>"; };
-		2CD2FE432C43FABE0033366C /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		2CD2FE452C444D6C0033366C /* WSSAlertType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSAlertType.swift; sourceTree = "<group>"; };
 		2CD911412C0D87E0006B8D72 /* FeedService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedService.swift; sourceTree = "<group>"; };
 		2CD911432C0D884B006B8D72 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
@@ -853,7 +851,6 @@
 			children = (
 				2CD2FE3D2C43BF300033366C /* WSSAlertButtonView.swift */,
 				2CD2FE3F2C43E7B60033366C /* WSSAlertViewController.swift */,
-				2CD2FE432C43FABE0033366C /* TestViewController.swift */,
 				2CD2FE452C444D6C0033366C /* WSSAlertType.swift */,
 			);
 			path = AlertButton;
@@ -1866,7 +1863,6 @@
 				B942C78E2BFCD39700C4A8C6 /* HomeRealtimePopularContentView.swift in Sources */,
 				2CA2F6522B527B590045B4C2 /* MyPageModalAvatarFeatureLabelView.swift in Sources */,
 				A197A4C32B56D0C200E5A701 /* RecommendResult.swift in Sources */,
-				2CD2FE442C43FABE0033366C /* TestViewController.swift in Sources */,
 				2CA2F6502B527B3A0045B4C2 /* MyPageCustomModalViewController.swift in Sources */,
 				CD6613752B8A283500B90B2B /* MemoEditViewModel.swift in Sources */,
 				39B225252B70B41A001C76D0 /* RegisterNormalDifferentRadiusView.swift in Sources */,

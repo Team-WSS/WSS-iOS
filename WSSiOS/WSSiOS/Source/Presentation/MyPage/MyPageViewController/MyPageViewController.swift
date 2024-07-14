@@ -57,6 +57,13 @@ final class MyPageViewController: UIViewController {
         bindUserData()
         bindAction()
         addNotificationCenter()
+        
+        presentToAlertViewController(iconImage: .icAlertWarningCircle,
+                                     titleText: "난 지원이얌",
+                                     contentText: "지원ㅇ지원지원이 지원지원 지운이 지원이지원\n지원이",
+                                     cancelTitle: "취소",
+                                     actionTitle: "차단",
+                                     actionBackgroundColor: UIColor.wssSecondary100.cgColor)
     }
     
     
