@@ -12,11 +12,6 @@ import Then
 
 final class WSSAlertButtonView: UIView {
     
-    //MARK: - Properties
-    
-    var cancelButtonEnable = String()
-    var actionButtonEnable: (String, CGColor) = ("", UIColor.clear.cgColor)
-    
     // MARK: - UI Components
     
     private let alertView = UIView()
@@ -57,39 +52,9 @@ final class WSSAlertButtonView: UIView {
             $0.alignment = .center
         }
         
-        alertTitleLabel.do {
-            $0.textColor = .wssBlack
-            $0.applyWSSFont(.title1, with: "하하하")
-            $0.numberOfLines = 0
-            $0.textAlignment = .center
-        }
-        
-        alertContentLabel.do {
-            $0.textColor = .wssGray300
-            $0.applyWSSFont(.body2, with: "해당 글이 커뮤니티 가이드를\n위반했는지 검토할게요")
-            $0.numberOfLines = 0
-            $0.textAlignment = .center
-        }
-        
         buttonStackView.do {
             $0.axis = .horizontal
-            $0.distribution = .fill
-        }
-        
-        cancelButton.do {
-            $0.setTitle("취소", for: .normal)
-            $0.layer.backgroundColor = UIColor.wssGray50.cgColor
-            $0.layer.cornerRadius = 8
-            $0.titleLabel?.font = .Label1
-            $0.titleLabel?.textColor = .wssGray300
-        }
-        
-        actionButton.do {
-            $0.setTitle("차단", for: .normal)
-            $0.layer.backgroundColor = UIColor.wssSecondary100.cgColor
-            $0.layer.cornerRadius = 8
-            $0.titleLabel?.font = .Label1
-            $0.titleLabel?.textColor = .wssWhite
+            $0.distribution = .fillEqually
         }
     }
     
@@ -143,6 +108,70 @@ final class WSSAlertButtonView: UIView {
 }
 
 extension WSSAlertButtonView {
-    
+    func updateLayout(alertImage: UIImage?,
+                      alertTitle: String?,
+                      alertContent: String?,
+                      cancelTitle: String?,
+                      actionTitle: String?,
+                      actionBackgroundColor: CGColor?) {
+        
+        if let alertImage {
+            alertImageView.image = alertImage
+        } else {
+            alertImageView.removeFromSuperview()
+        }
+        
+        if let alertTitle {
+            alertTitleLabel.do {
+                $0.applyWSSFont(.title1, with: alertTitle)
+                $0.textColor = .wssBlack
+                $0.numberOfLines = 0
+                $0.textAlignment = .center
+            }
+        } else {
+            alertTitleLabel.removeFromSuperview()
+        }
+        
+        if let alertContent {
+            alertContentLabel.do {
+                $0.applyWSSFont(.body2, with: alertContent)
+                $0.textColor = .wssGray300
+                $0.numberOfLines = 0
+                $0.textAlignment = .center
+            }
+        } else {
+            alertContentLabel.removeFromSuperview()
+        }
+        
+        if let cancelTitle {
+            cancelButton.do {
+                $0.setTitle(cancelTitle, for: .normal)
+                $0.setTitleColor(.wssGray300, for: .normal)
+                $0.titleLabel?.font = .Label1
+                $0.layer.backgroundColor = UIColor.wssGray50.cgColor
+                $0.layer.cornerRadius = 8
+            }
+        } else {
+            cancelButton.removeFromSuperview()
+            actionButton.snp.makeConstraints {
+                $0.height.width.equalToSuperview()
+            }
+        }
+        
+        if let actionTitle {
+            actionButton.do {
+                $0.setTitle(actionTitle, for: .normal)
+                $0.setTitleColor(.wssWhite, for: .normal)
+                $0.titleLabel?.font = .Label1
+                $0.layer.backgroundColor = actionBackgroundColor
+                $0.layer.cornerRadius = 8
+            }
+        } else {
+            actionButton.removeFromSuperview()
+            cancelButton.snp.makeConstraints {
+                $0.height.width.equalToSuperview()
+            }
+        }
+    }
 }
-
+    

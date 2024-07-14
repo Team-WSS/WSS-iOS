@@ -48,14 +48,12 @@ final class WSSAlertViewController: UIViewController {
     
     override func loadView() {
         self.view = rootView
-        rootView.do {
-            $0.alertImageView.image = alertIconImage ?? UIImage()
-            $0.alertTitleLabel.text = alertTitle ?? nil
-            $0.alertContentLabel.text = alertContent ?? nil
-            $0.cancelButtonEnable = cancelTitle ?? ""
-            $0.actionButtonEnable.0 = actionTitle ?? ""
-            $0.actionButtonEnable.1 = actionBackgroundColor ?? UIColor.clear.cgColor
-        }
+        rootView.updateLayout(alertImage: alertIconImage,
+                              alertTitle: alertTitle,
+                              alertContent: alertContent,
+                              cancelTitle: cancelTitle,
+                              actionTitle: actionTitle,
+                              actionBackgroundColor: actionBackgroundColor)
     }
     
     override func viewDidLoad() {
