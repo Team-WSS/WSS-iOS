@@ -63,8 +63,8 @@
 		2CD229572B42EA75005400BE /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD229562B42EA75005400BE /* UIColor+.swift */; };
 		2CD2FE3E2C43BF300033366C /* WSSAlertButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD2FE3D2C43BF300033366C /* WSSAlertButtonView.swift */; };
 		2CD2FE402C43E7B60033366C /* WSSAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD2FE3F2C43E7B60033366C /* WSSAlertViewController.swift */; };
-		2CD2FE422C43F5490033366C /* AlertBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD2FE412C43F5490033366C /* AlertBuilder.swift */; };
 		2CD2FE442C43FABE0033366C /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD2FE432C43FABE0033366C /* TestViewController.swift */; };
+		2CD2FE462C444D6C0033366C /* WSSAlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD2FE452C444D6C0033366C /* WSSAlertType.swift */; };
 		2CD911422C0D87E0006B8D72 /* FeedService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD911412C0D87E0006B8D72 /* FeedService.swift */; };
 		2CD911442C0D884B006B8D72 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD911432C0D884B006B8D72 /* String+.swift */; };
 		2CD911462C0D88CA006B8D72 /* TotalFeedResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD911452C0D88CA006B8D72 /* TotalFeedResult.swift */; };
@@ -319,8 +319,8 @@
 		2CD229562B42EA75005400BE /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		2CD2FE3D2C43BF300033366C /* WSSAlertButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSAlertButtonView.swift; sourceTree = "<group>"; };
 		2CD2FE3F2C43E7B60033366C /* WSSAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSAlertViewController.swift; sourceTree = "<group>"; };
-		2CD2FE412C43F5490033366C /* AlertBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertBuilder.swift; sourceTree = "<group>"; };
 		2CD2FE432C43FABE0033366C /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
+		2CD2FE452C444D6C0033366C /* WSSAlertType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSAlertType.swift; sourceTree = "<group>"; };
 		2CD911412C0D87E0006B8D72 /* FeedService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedService.swift; sourceTree = "<group>"; };
 		2CD911432C0D884B006B8D72 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		2CD911452C0D88CA006B8D72 /* TotalFeedResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotalFeedResult.swift; sourceTree = "<group>"; };
@@ -853,8 +853,8 @@
 			children = (
 				2CD2FE3D2C43BF300033366C /* WSSAlertButtonView.swift */,
 				2CD2FE3F2C43E7B60033366C /* WSSAlertViewController.swift */,
-				2CD2FE412C43F5490033366C /* AlertBuilder.swift */,
 				2CD2FE432C43FABE0033366C /* TestViewController.swift */,
+				2CD2FE452C444D6C0033366C /* WSSAlertType.swift */,
 			);
 			path = AlertButton;
 			sourceTree = "<group>";
@@ -1769,6 +1769,7 @@
 				39D4A5E02BDF746C004FC834 /* NovelGenre.swift in Sources */,
 				A1C3EC532B46962F00D997C2 /* UIImage+.swift in Sources */,
 				39CD5E0C2B4F3D0700668B9A /* RegisterNormalNovelSummaryView.swift in Sources */,
+				2CD2FE462C444D6C0033366C /* WSSAlertType.swift in Sources */,
 				A122C9F22B53146800DFCFE4 /* (null) in Sources */,
 				B9AC1BD42BF0B529006EDE92 /* HomeNoticeTableViewCell.swift in Sources */,
 				CDE596D62B57708D00D99DA1 /* UIViewController+.swift in Sources */,
@@ -1810,7 +1811,6 @@
 				2C19A5002BBD56C900D4D151 /* WSSDropdown.swift in Sources */,
 				2CA2F6602B530B660045B4C2 /* LibraryView.swift in Sources */,
 				2CD2291E2B42E685005400BE /* SceneDelegate.swift in Sources */,
-				2CD2FE422C43F5490033366C /* AlertBuilder.swift in Sources */,
 				2CD911612C0D8B71006B8D72 /* FeedViewModel.swift in Sources */,
 				2CB613F52B575E6A00FC3F89 /* MyPageInfoView.swift in Sources */,
 				39D4A5D62BDD0913004FC834 /* NovelDetailHeaderView.swift in Sources */,

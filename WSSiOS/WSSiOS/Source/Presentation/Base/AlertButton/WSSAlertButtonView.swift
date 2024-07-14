@@ -12,10 +12,16 @@ import Then
 
 final class WSSAlertButtonView: UIView {
     
+    //MARK: - Properties
+    
+    var cancelButtonEnable = String()
+    var actionButtonEnable: (String, CGColor) = ("", UIColor.clear.cgColor)
+    
     // MARK: - UI Components
+    
     private let alertView = UIView()
     private let stackView = UIStackView()
-    var alertImageView = UIImageView(image: .icAlertWarningCircle)
+    var alertImageView = UIImageView()
     var alertTitleLabel = UILabel()
     var alertContentLabel = UILabel()
     private let buttonStackView = UIStackView()
@@ -59,7 +65,7 @@ final class WSSAlertButtonView: UIView {
         }
         
         alertContentLabel.do {
-            $0.textColor = .Gray300
+            $0.textColor = .wssGray300
             $0.applyWSSFont(.body2, with: "해당 글이 커뮤니티 가이드를\n위반했는지 검토할게요")
             $0.numberOfLines = 0
             $0.textAlignment = .center
@@ -67,22 +73,23 @@ final class WSSAlertButtonView: UIView {
         
         buttonStackView.do {
             $0.axis = .horizontal
+            $0.distribution = .fill
         }
         
         cancelButton.do {
             $0.setTitle("취소", for: .normal)
+            $0.layer.backgroundColor = UIColor.wssGray50.cgColor
+            $0.layer.cornerRadius = 8
             $0.titleLabel?.font = .Label1
-            $0.titleLabel?.textColor = .Gray300
-            $0.titleLabel?.layer.backgroundColor = UIColor.Gray50.cgColor
-            $0.titleLabel?.layer.cornerRadius = 8
+            $0.titleLabel?.textColor = .wssGray300
         }
         
         actionButton.do {
             $0.setTitle("차단", for: .normal)
+            $0.layer.backgroundColor = UIColor.wssSecondary100.cgColor
+            $0.layer.cornerRadius = 8
             $0.titleLabel?.font = .Label1
             $0.titleLabel?.textColor = .wssWhite
-            $0.titleLabel?.layer.backgroundColor = UIColor.Secondary100.cgColor
-            $0.titleLabel?.layer.cornerRadius = 8
         }
     }
     
@@ -133,5 +140,9 @@ final class WSSAlertButtonView: UIView {
                     $0.width.equalTo(116)
                 }}
     }
+}
+
+extension WSSAlertButtonView {
+    
 }
 
