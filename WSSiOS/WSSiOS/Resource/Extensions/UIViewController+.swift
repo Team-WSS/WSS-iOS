@@ -7,6 +7,7 @@
 
 import UIKit
 
+import RxSwift
 import SnapKit
 import Then
 
@@ -189,7 +190,7 @@ extension UIViewController {
                                       contentText: String?,
                                       cancelTitle: String?,
                                       actionTitle: String?,
-                                      actionBackgroundColor: CGColor?) {
+                                      actionBackgroundColor: CGColor?) -> Observable<Void> {
         let alertViewController = WSSAlertViewController(iconImage: iconImage,
                                                          titleText: titleText,
                                                          contentText: contentText,
@@ -200,6 +201,8 @@ extension UIViewController {
         alertViewController.modalTransitionStyle = .crossDissolve
         
         self.present(alertViewController, animated: true)
+        
+        return alertViewController.actionButtonTap
     }
 }
 

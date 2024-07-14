@@ -103,7 +103,8 @@ final class WSSAlertButtonView: UIView {
                 $0.snp.makeConstraints {
                     $0.height.equalToSuperview()
                     $0.width.equalTo(116)
-                }}
+                }
+            }
     }
 }
 

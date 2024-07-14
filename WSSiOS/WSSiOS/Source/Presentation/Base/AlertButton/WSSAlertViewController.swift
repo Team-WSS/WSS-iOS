@@ -12,6 +12,14 @@ import RxCocoa
 
 final class WSSAlertViewController: UIViewController {
     
+    //MARK: - Properties
+    
+    private let disposeBag = DisposeBag()
+    private let actionButtonTapSubject = PublishSubject<Void>()
+    var actionButtonTap: Observable<Void> {
+        return actionButtonTapSubject.asObservable()
+    }
+    
     //MARK: - UI Components
     
     var rootView = WSSAlertButtonView()
@@ -59,6 +67,26 @@ final class WSSAlertViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        bindGesture()
+    }
+    
+    private func bindGesture() {
+        rootView.cancelButton.rx.tap
+            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                print("\(String(describing: owner.cancelTitle))Button Tap 💖")
+                owner.dismiss(animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        rootView.actionButton.rx.tap
+            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                owner.actionButtonTapSubject.onNext(())
+                print("\(String(describing: owner.actionTitle))Button Tap 💖")
+                owner.dismiss(animated: true)
+            })
+            .disposed(by: disposeBag)
     }
 }
 

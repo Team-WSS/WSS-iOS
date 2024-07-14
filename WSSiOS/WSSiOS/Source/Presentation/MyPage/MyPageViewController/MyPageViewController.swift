@@ -58,12 +58,16 @@ final class MyPageViewController: UIViewController {
         bindAction()
         addNotificationCenter()
         
-        presentToAlertViewController(iconImage: nil,
+        presentToAlertViewController(iconImage: .icAlertWarningCircle,
                                      titleText: "난 지원이얌",
-                                     contentText: nil,
+                                     contentText: "지원ㅇ지원지원이 지원지원 지운이 지원이지원\n지원이",
                                      cancelTitle: "취소",
-                                     actionTitle: nil,
-                                     actionBackgroundColor: nil)
+                                     actionTitle: "차단",
+                                     actionBackgroundColor: UIColor.wssSecondary100.cgColor)
+        .subscribe({ _ in 
+            print("버튼이 눌렸군요!")
+        })
+        .disposed(by: disposeBag)
     }
     
     
