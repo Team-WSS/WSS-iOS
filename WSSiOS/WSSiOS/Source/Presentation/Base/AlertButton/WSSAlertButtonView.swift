@@ -55,6 +55,7 @@ final class WSSAlertButtonView: UIView {
         buttonStackView.do {
             $0.axis = .horizontal
             $0.distribution = .fillEqually
+            $0.spacing = 18
         }
     }
     
@@ -95,16 +96,13 @@ final class WSSAlertButtonView: UIView {
                 $0.width.equalToSuperview()
                 $0.height.equalTo(40)
             }
-            $0.setCustomSpacing(18, after: cancelButton)
         }
         
-        [cancelButton, actionButton]
-            .forEach { 
-                $0.snp.makeConstraints {
-                    $0.height.equalToSuperview()
-                    $0.width.equalTo(116)
-                }
+        [cancelButton, actionButton].forEach { button in
+            button.snp.makeConstraints {
+                $0.height.equalToSuperview()
             }
+        }
     }
 }
 
