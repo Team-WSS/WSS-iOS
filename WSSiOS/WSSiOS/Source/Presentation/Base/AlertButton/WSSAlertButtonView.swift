@@ -141,6 +141,7 @@ extension WSSAlertButtonView {
             }
         } else {
             alertContentLabel.removeFromSuperview()
+            stackView.setCustomSpacing(18, after: alertTitleLabel)
         }
         
         if let cancelTitle {
