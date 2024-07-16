@@ -106,12 +106,13 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
         replyContentLabel.snp.makeConstraints {
             $0.top.equalTo(userStackview.snp.bottom)
             $0.leading.equalTo(userStackview.snp.leading)
+            $0.width.equalTo(247)
             $0.bottom.equalToSuperview()
         }
         
         threeDotsButton.snp.makeConstraints {
             $0.size.equalTo(18)
-            $0.leading.equalTo(replyContentLabel.snp.trailing).offset(40)
+            $0.leading.equalTo(replyContentLabel.snp.trailing).offset(20)
             $0.trailing.equalToSuperview()
             $0.centerY.equalToSuperview()
         }
@@ -127,7 +128,6 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
         self.replyContentLabel.do {
             $0.applyWSSFont(.body2, with: data.commentContent)
             $0.numberOfLines = 0
-            $0.lineBreakStrategy = .hangulWordPriority
         }
     }
 }
