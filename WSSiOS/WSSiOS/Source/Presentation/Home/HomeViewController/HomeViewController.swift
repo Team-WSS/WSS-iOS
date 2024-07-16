@@ -23,7 +23,7 @@ final class HomeViewController: UIViewController {
     private let rootView = HomeView()
     
     //MARK: - Life Cycle
-
+    
     init(viewModel: HomeViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -52,11 +52,15 @@ final class HomeViewController: UIViewController {
         bindViewModel()
     }
     
+    //MARK: - UI
+    
     private func setUI() {
         self.view.do {
             $0.backgroundColor = .wssWhite
         }
     }
+    
+    //MARK: - Bind
     
     private func registerCell() {
         rootView.todayPopularView.todayPopularCollectionView.register(
@@ -81,39 +85,37 @@ final class HomeViewController: UIViewController {
             announcementButtonTapped: rootView.headerView.announcementButton.rx.tap
         )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
-
+        
         output.todayPopularList
             .bind(to: rootView.todayPopularView.todayPopularCollectionView.rx.items(
                 cellIdentifier: HomeTodayPopularCollectionViewCell.cellIdentifier,
                 cellType: HomeTodayPopularCollectionViewCell.self)) { row, element, cell in
-                cell.bindData(data: element)
-            }
-            .disposed(by: disposeBag)
+                    cell.bindData(data: element)
+                }
+                .disposed(by: disposeBag)
         
         output.interestList
             .bind(to: rootView.interestView.interestCollectionView.rx.items(
                 cellIdentifier: HomeInterestCollectionViewCell.cellIdentifier,
                 cellType: HomeInterestCollectionViewCell.self)) { row, element, cell in
-                cell.bindData(data: element)
-            }
-            .disposed(by: disposeBag)
+                    cell.bindData(data: element)
+                }
+                .disposed(by: disposeBag)
         
         output.tasteRecommendList
             .bind(to: rootView.tasteRecommendView.tasteRecommendCollectionView.rx.items(
                 cellIdentifier: HomeTasteRecommendCollectionViewCell.cellIdentifier,
                 cellType: HomeTasteRecommendCollectionViewCell.self)) { row, element, cell in
-                cell.bindData(data: element)
-            }
-            .disposed(by: disposeBag)
+                    cell.bindData(data: element)
+                }
+                .disposed(by: disposeBag)
         
         output.navigateToAnnoucementView
             .bind(with: self, onNext: { owner, _ in
-                owner.navigationController?.pushViewController(
-                    HomeNoticeViewController(
-                        viewModel: HomeNoticeViewModel(
-                            noticeRepository: DefaultNoticeRepository()
-                        )
-                    ), animated: true)
+                let viewController = HomeNoticeViewController(viewModel: HomeNoticeViewModel(noticeRepository: TestNoticeRepository()))
+                viewController.navigationController?.isNavigationBarHidden = false
+                viewController.hidesBottomBarWhenPushed = true
+                owner.navigationController?.pushViewController(viewController, animated: true)
             })
             .disposed(by: disposeBag)
     }

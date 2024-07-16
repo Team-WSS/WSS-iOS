@@ -65,8 +65,7 @@ final class NormalSearchResultView: UIView {
     
     private func setLayout() {
         scrollView.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview()
-            $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
+            $0.edges.equalToSuperview()
         }
         
         contentView.snp.makeConstraints {
@@ -83,7 +82,7 @@ final class NormalSearchResultView: UIView {
         normalSearchCollectionView.snp.makeConstraints {
             $0.top.equalTo(resultCountView.snp.bottom).offset(16)
             $0.leading.trailing.bottom.equalToSuperview()
-            $0.height.equalTo(1000)
+            $0.height.equalTo(300) // 기본 heigth값 적용
         }
     }
     
