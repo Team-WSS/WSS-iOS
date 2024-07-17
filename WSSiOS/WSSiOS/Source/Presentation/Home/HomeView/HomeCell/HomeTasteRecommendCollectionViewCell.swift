@@ -139,7 +139,8 @@ final class HomeTasteRecommendCollectionViewCell: UICollectionViewCell {
     }
     
     func bindData(data: TasteRecommendNovel) {
-        self.novelImageView.image = UIImage(named: data.novelImage)
+        self.novelImageView.kfSetImage(url: data.novelImage)
+        
         self.novelTitleLabel.do {
             $0.applyWSSFont(.label1, with: data.novelTitle)
             $0.lineBreakMode = .byTruncatingTail
