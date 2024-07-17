@@ -17,8 +17,8 @@ final class FeedDetailViewModel: ViewModelType {
     private let feedRepository: FeedRepository
     private let disposeBag = DisposeBag()
     
-    private let feedProfileData = BehaviorRelay<Feed>(value: Feed(userProfileImage: "", userNickName: "", createdDate: "", content: "", novelTitle: "", novelRating: 0, novelRatingCount: 0, genres: [.all], likeCount: 0, commentCount: 0, isLiked: false))
-    private let feedDetailData =  BehaviorRelay<Feed>(value: Feed(userProfileImage: "", userNickName: "", createdDate: "", content: "", novelTitle: "", novelRating: 0, novelRatingCount: 0, genres: [.all], likeCount: 0, commentCount: 0, isLiked: false))
+    private let feedProfileData = BehaviorRelay<Feed?>(value: nil)
+    private let feedDetailData =  BehaviorRelay<Feed?>(value: nil)
     private let commentCountLabel = BehaviorRelay<Int>(value: 0)
     private let commentsData = BehaviorRelay<[Comment]>(value: [])
     private let replyCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
@@ -34,8 +34,8 @@ final class FeedDetailViewModel: ViewModelType {
     }
     
     struct Output {
-        let feedProfileData: Driver<Feed>
-        let feedDetailData : Driver<Feed>
+        let feedProfileData: Driver<Feed?>
+        let feedDetailData : Driver<Feed?>
         let commentCountLabel: Driver<Int>
         let commentsData: Driver<[Comment]>
         let replyCollectionViewHeight: Driver<CGFloat>

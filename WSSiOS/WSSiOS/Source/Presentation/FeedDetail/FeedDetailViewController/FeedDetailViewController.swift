@@ -90,13 +90,17 @@ final class FeedDetailViewController: UIViewController {
         
         output.feedProfileData
             .drive(with: self, onNext: { owner, data in
-                owner.rootView.profileView.bindData(data: data)
+                if let data = data {
+                    owner.rootView.profileView.bindData(data: data)
+                }
             })
             .disposed(by: disposeBag)
         
         output.feedDetailData
             .drive(with: self, onNext: { owner, data in
-                owner.rootView.feedContentView.bindData(data: data)
+                if let data = data {
+                    owner.rootView.feedContentView.bindData(data: data)
+                }
             })
             .disposed(by: disposeBag)
         
