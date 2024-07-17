@@ -20,12 +20,10 @@ final class HomeTasteRecommendCollectionViewCell: UICollectionViewCell {
     private var novelAuthorLabel = UILabel()
     
     /// 관심 정보
-    private var likeStackView = UIStackView()
     private var likeImageView = UIImageView()
     private var likeCountLabel = UILabel()
     
     /// 평점 정보
-    private var ratingStackView = UIStackView()
     private var ratingImageView = UIImageView()
     private var ratingAverageLabel = UILabel()
     private var ratingCountLabel = UILabel()
@@ -63,11 +61,6 @@ final class HomeTasteRecommendCollectionViewCell: UICollectionViewCell {
             $0.lineBreakMode = .byTruncatingTail
         }
         
-        likeStackView.do {
-            $0.axis = .horizontal
-            $0.spacing = 3
-        }
-        
         likeImageView.do {
             $0.image = .icHeart
             $0.contentMode = .scaleAspectFit
@@ -75,11 +68,6 @@ final class HomeTasteRecommendCollectionViewCell: UICollectionViewCell {
         
         likeCountLabel.do {
             $0.textColor = .wssGray200
-        }
-        
-        ratingStackView.do {
-            $0.axis = .horizontal
-            $0.spacing = 3
         }
         
         ratingImageView.do {
@@ -97,14 +85,12 @@ final class HomeTasteRecommendCollectionViewCell: UICollectionViewCell {
     }
     
     private func setHierarchy() {
-        likeStackView.addArrangedSubviews(likeImageView,
-                                          likeCountLabel)
-        ratingStackView.addArrangedSubviews(ratingImageView,
-                                            ratingAverageLabel,
-                                            ratingCountLabel)
         self.addSubviews(novelImageView,
-                         likeStackView,
-                         ratingStackView,
+                         likeImageView,
+                         likeCountLabel,
+                         ratingImageView,
+                         ratingAverageLabel,
+                         ratingCountLabel,
                          novelTitleLabel,
                          novelAuthorLabel)
     }
@@ -115,18 +101,34 @@ final class HomeTasteRecommendCollectionViewCell: UICollectionViewCell {
             $0.height.equalTo(241)
         }
         
-        likeStackView.snp.makeConstraints {
-            $0.top.equalTo(novelImageView.snp.bottom).offset(6)
+        likeImageView.snp.makeConstraints {
+            $0.size.equalTo(12)
             $0.leading.equalToSuperview()
+            $0.top.equalTo(novelImageView.snp.bottom).offset(8.5)
         }
         
-        ratingStackView.snp.makeConstraints {
-            $0.top.equalTo(likeStackView.snp.top)
-            $0.leading.equalTo(likeStackView.snp.trailing).offset(8)
+        likeCountLabel.snp.makeConstraints {
+            $0.top.equalTo(novelImageView.snp.bottom).offset(6)
+            $0.leading.equalTo(likeImageView.snp.trailing).offset(3)
+        }
+        
+        ratingImageView.snp.makeConstraints {
+            $0.size.equalTo(12)
+            $0.top.equalTo(likeImageView.snp.top)
+            $0.leading.equalTo(likeCountLabel.snp.trailing).offset(8)
+        }
+        ratingAverageLabel.snp.makeConstraints {
+            $0.top.equalTo(likeCountLabel.snp.top)
+            $0.leading.equalTo(ratingImageView.snp.trailing).offset(3)
+        }
+        
+        ratingCountLabel.snp.makeConstraints {
+            $0.top.equalTo(likeCountLabel.snp.top)
+            $0.leading.equalTo(ratingAverageLabel.snp.trailing).offset(3)
         }
         
         novelTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(likeStackView.snp.bottom)
+            $0.top.equalTo(likeCountLabel.snp.bottom)
             $0.leading.trailing.equalToSuperview()
         }
         
