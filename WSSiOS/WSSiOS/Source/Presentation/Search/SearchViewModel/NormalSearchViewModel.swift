@@ -17,6 +17,11 @@ final class NormalSearchViewModel: ViewModelType {
     private let searchRepository: SearchRepository
     private let disposeBag = DisposeBag()
     
+    private let normalSearchList = BehaviorRelay<[NormalSearchNovel]>(value: [])
+    private let backButtonEnabled = PublishRelay<Bool>()
+    private let inquiryButtonEnabled = PublishRelay<Bool>()
+    private let normalSearchCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
+    
     //MARK: - Inputs
     
     struct Input {
@@ -28,10 +33,10 @@ final class NormalSearchViewModel: ViewModelType {
     //MARK: - Outputs
     
     struct Output {
-        let normalSearchList = BehaviorRelay<[NormalSearchNovel]>(value: [])
-        let backButtonEnabled = PublishRelay<Bool>()
-        let inquiryButtonEnabled = PublishRelay<Bool>()
-        let normalSearchCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
+        let normalSearchList: Driver<[NormalSearchNovel]>
+        let backButtonEnabled: Observable<Void>
+        let inquiryButtonEnabled: Observable<Void>
+        let normalSearchCollectionViewHeight: Driver<CGFloat>
     }
     
     //MARK: - init
@@ -49,33 +54,24 @@ final class NormalSearchViewModel: ViewModelType {
 
 extension NormalSearchViewModel {
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
-        let output = Output()
-        
         searchRepository.getSearchNovels()
             .subscribe(with: self, onNext: { owner, data in
-                output.normalSearchList.accept(data)
+                owner.normalSearchList.accept(data)
             }, onError: { owner, error in
                 print(error)
             })
             .disposed(by: disposeBag)
         
-        input.backButtonDidTap
-            .subscribe(onNext: { _ in
-                output.backButtonEnabled.accept(true)
-            })
-            .disposed(by: disposeBag)
+        let backButtonEnabled = input.backButtonDidTap.asObservable()
         
-        input.inquiryButtonDidTap
-            .subscribe(onNext: { _ in
-                output.inquiryButtonEnabled.accept(true)
-            })
-            .disposed(by: disposeBag)
+        let inquiryButtonEnabled = input.inquiryButtonDidTap.asObservable()
         
-        input.normalSearchCollectionViewContentSize
-            .map{ $0?.height ?? 0 }
-            .bind(to: output.normalSearchCollectionViewHeight)
-            .disposed(by: disposeBag)
+        let normalSearchCollectionViewHeight = input.normalSearchCollectionViewContentSize
+            .map { $0?.height ?? 0 }.asDriver(onErrorJustReturn: 0)
         
-        return output
+        return Output(normalSearchList: normalSearchList.asDriver(),
+                      backButtonEnabled: backButtonEnabled,
+                      inquiryButtonEnabled: inquiryButtonEnabled,
+                      normalSearchCollectionViewHeight: normalSearchCollectionViewHeight)
     }
 }
