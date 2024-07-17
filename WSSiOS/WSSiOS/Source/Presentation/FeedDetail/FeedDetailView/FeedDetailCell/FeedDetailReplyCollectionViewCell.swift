@@ -71,7 +71,6 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
         
         replyContentLabel.do {
             $0.textColor = .wssBlack
-            $0.numberOfLines = 0
         }
         
         threeDotsButton.do {
