@@ -22,6 +22,7 @@ final class SearchViewModel: ViewModelType {
     
     struct Input {
         let searhBarDidTap: Observable<UITapGestureRecognizer>
+        let induceButtonDidTap: Observable<UITapGestureRecognizer>
     }
     
     //MARK: - Outputs
@@ -29,6 +30,7 @@ final class SearchViewModel: ViewModelType {
     struct Output {
         var sosoPickList = BehaviorRelay<[SosoPickNovel]>(value: [])
         let searchBarEnabled = PublishRelay<Bool>()
+        let induceButtonEnabled = PublishRelay<Bool>()
     }
     
     //MARK: - init
@@ -58,6 +60,12 @@ extension SearchViewModel {
         input.searhBarDidTap
             .subscribe(onNext: { _ in
                 output.searchBarEnabled.accept(true)
+            })
+            .disposed(by: disposeBag)
+        
+        input.induceButtonDidTap
+            .subscribe(onNext: { _ in
+                output.induceButtonEnabled.accept(true)
             })
             .disposed(by: disposeBag)
         

@@ -14,6 +14,8 @@ final class DetailSearchView: UIView {
     
     //MARK: - UI Components
     
+    private let backgroundView = UIView()
+    let cancelModalButton = UIButton()
     
     //MARK: - Life Cycle
     
@@ -31,14 +33,33 @@ final class DetailSearchView: UIView {
     }
     
     private func setUI() {
+        self.backgroundColor = .black.withAlphaComponent(0.6)
         
+        backgroundView.do {
+            $0.backgroundColor = .wssWhite
+            $0.layer.cornerRadius = 15
+            $0.clipsToBounds = true
+        }
+        
+        cancelModalButton.do {
+            $0.setImage(.icCacelModal.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray300), for: .normal)
+        }
     }
     
     private func setHierarchy() {
-        
+        backgroundView.addSubviews(cancelModalButton)
+        self.addSubviews(backgroundView)
     }
     
     private func setLayout() {
+        backgroundView.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(82)
+            $0.leading.trailing.bottom.equalToSuperview()
+        }
         
+        cancelModalButton.snp.makeConstraints {
+            $0.size.equalTo(25)
+            $0.top.trailing.equalToSuperview().inset(20)
+        }
     }
 }
