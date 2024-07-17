@@ -143,12 +143,8 @@ final class NormalSearchCollectionViewCell: UICollectionViewCell {
     }
     
     func bindData(data: NormalSearchNovel) {
-        if let novelImage = UIImage(named: data.novelImage) {
-            self.novelImageView.image = novelImage
-        }
-        else {
-            self.novelImageView.image = .imgLoadingThumbnail
-        }
+        
+        self.novelImageView.kfSetImage(url: data.novelImage)
         
         self.novelTitleLabel.do {
             $0.applyWSSFont(.title3, with: data.novelTitle)
