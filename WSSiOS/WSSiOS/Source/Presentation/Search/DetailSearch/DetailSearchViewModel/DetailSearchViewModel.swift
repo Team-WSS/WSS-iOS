@@ -11,26 +11,43 @@ import RxSwift
 import RxCocoa
 
 final class DetailSearchViewModel: ViewModelType {
-
+    
+    //MARK: - Properties
+    
+    private let cancelButtonEnabled = PublishRelay<Bool>()
+    private let genreList = BehaviorRelay<[String]>(value: ["로맨스", "로판", "판타지", "현판", "무협", "미스터리", "드라마", "라노벨", "BL"])
+    private let genreCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
+    
     struct Input {
         let cancelButtonDidTap: ControlEvent<Void>
+        let genreCollectionViewContentSize: Observable<CGSize?>
     }
     
     struct Output {
-        let cancelButtonEnabled = PublishRelay<Bool>()
+        let cancelButtonEnabled: Observable<Void>
+        let genreList: Driver<[String]>
+        let genreCollectionViewHeight: Driver<CGFloat>
     }
-}
-
-extension DetailSearchViewModel {
+    
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
-        let output = Output()
         
-        input.cancelButtonDidTap
-            .subscribe(onNext: { _ in
-                output.cancelButtonEnabled.accept(true)
-            })
-            .disposed(by: disposeBag)
+        let cancelButtonEnabled = input.cancelButtonDidTap.asObservable()
         
-        return output
+        let genreCollectionViewContentSize = input.genreCollectionViewContentSize
+            .map { $0?.height ?? 0 }.asDriver(onErrorJustReturn: 0)
+        
+        return Output(cancelButtonEnabled: cancelButtonEnabled,
+                      genreList: genreList.asDriver(),
+                      genreCollectionViewHeight: genreCollectionViewContentSize)
+    }
+    
+    //MARK: - Custom Method
+    
+    func genreNameForItemAt(indexPath: IndexPath) -> String? {
+        guard indexPath.item < genreList.value.count else {
+            return nil
+        }
+        
+        return genreList.value[indexPath.item]
     }
 }

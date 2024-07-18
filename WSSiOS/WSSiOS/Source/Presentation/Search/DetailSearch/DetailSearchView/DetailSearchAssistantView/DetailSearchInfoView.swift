@@ -14,8 +14,10 @@ final class DetailSearchInfoView: UIView {
     
     //MARK: - UI Components
     
-    /// 장라
+    /// 장르
     private let genreTItleLabel = UILabel()
+    
+    let genreCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     
     /// 연재상태
     private let statusTitleLabel = UILabel()
@@ -33,7 +35,7 @@ final class DetailSearchInfoView: UIView {
     private let aboveThreePointFiveKeywordView = KeywordViewManager.shared.box()
     private let aboveFourPointZeroKeywordView = KeywordViewManager.shared.box()
     private let aboveFourPointFiveKeywordView = KeywordViewManager.shared.box()
-    private let aboveFivePointZeroKeywordView = KeywordViewManager.shared.box()
+    private let aboveFourPointEightKeywordView = KeywordViewManager.shared.box()
 
     //MARK: - Life Cycle
     
@@ -56,6 +58,17 @@ final class DetailSearchInfoView: UIView {
             $0.textColor = .wssBlack
         }
         
+        genreCollectionView.do {
+            let layout = LeftAlignedCollectionViewFlowLayout()
+            layout.scrollDirection = .vertical
+            layout.minimumLineSpacing = 14
+            layout.minimumInteritemSpacing = 6
+
+            $0.collectionViewLayout = layout
+            $0.isScrollEnabled = false
+            $0.backgroundColor = .clear
+        }
+        
         statusTitleLabel.do {
             $0.applyWSSFont(.title2, with: "연재상태")
             $0.textColor = .wssBlack
@@ -68,6 +81,7 @@ final class DetailSearchInfoView: UIView {
             
             ingStatusKeywordView.do {
                 $0.setText("연재중")
+                $0.updateColor(true)
             }
             
             finishedStatusKeywordView.do {
@@ -103,8 +117,8 @@ final class DetailSearchInfoView: UIView {
                 $0.setText("4.5이상")
             }
             
-            aboveFivePointZeroKeywordView.do {
-                $0.setText("5.0이상")
+            aboveFourPointEightKeywordView.do {
+                $0.setText("4.8이상")
             }
         }
         
@@ -123,8 +137,9 @@ final class DetailSearchInfoView: UIView {
                                                aboveFourPointZeroKeywordView)
         
         ratingBottomStackView.addArrangedSubviews(aboveFourPointFiveKeywordView,
-                                                  aboveFivePointZeroKeywordView)
+                                                  aboveFourPointEightKeywordView)
         self.addSubviews(genreTItleLabel,
+                         genreCollectionView,
                          statusTitleLabel,
                          statusStackView,
                          ratingTitleLabel, 
@@ -138,8 +153,14 @@ final class DetailSearchInfoView: UIView {
             $0.leading.equalToSuperview().inset(20)
         }
         
+        genreCollectionView.snp.makeConstraints {
+            $0.top.equalTo(genreTItleLabel.snp.bottom).offset(16)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(88)
+        }
+        
         statusTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(genreTItleLabel.snp.bottom).offset(32)
+            $0.top.equalTo(genreCollectionView.snp.bottom).offset(32)
             $0.leading.equalToSuperview().inset(20)
         }
         
@@ -161,6 +182,12 @@ final class DetailSearchInfoView: UIView {
         ratingBottomStackView.snp.makeConstraints {
             $0.top.equalTo(ratingTopStackView.snp.bottom).offset(10)
             $0.leading.trailing.equalToSuperview().inset(20)
+        }
+    }
+    
+    func updateCollectionViewHeight(height: CGFloat) {
+        genreCollectionView.snp.updateConstraints {
+            $0.height.equalTo(height)
         }
     }
 }

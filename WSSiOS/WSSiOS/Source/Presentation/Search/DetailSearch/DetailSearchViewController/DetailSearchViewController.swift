@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class DetailSearchViewController: UIViewController {
+final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
     
     //MARK: - Properties
     
@@ -43,19 +43,56 @@ final class DetailSearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        registerCell()
+        delegate()
         bindViewModel()
+    }
+    
+    private func registerCell() {
+        rootView.detailSearchInfoView.genreCollectionView.register(DetailSearchInfoGenreCollectionViewCell.self,
+                                                                   forCellWithReuseIdentifier: DetailSearchInfoGenreCollectionViewCell.cellIdentifier)
+    }
+    
+    private func delegate() {
+        rootView.detailSearchInfoView.genreCollectionView.rx.setDelegate(self)
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Bind
     
     private func bindViewModel() {
-        let input = DetailSearchViewModel.Input(cancelButtonDidTap: rootView.cancelModalButton.rx.tap)
+        let input = DetailSearchViewModel.Input(
+            cancelButtonDidTap: rootView.cancelModalButton.rx.tap,
+            genreCollectionViewContentSize: rootView.detailSearchInfoView.genreCollectionView.rx.observe(CGSize.self, "contentSize"))
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
-        input.cancelButtonDidTap
+        output.cancelButtonEnabled
             .bind(with: self, onNext: { owner, _ in
                 owner.navigationController?.popViewController(animated: false)
             })
             .disposed(by: disposeBag)
+        
+        output.genreList
+            .drive(rootView.detailSearchInfoView.genreCollectionView.rx.items(cellIdentifier: DetailSearchInfoGenreCollectionViewCell.cellIdentifier, cellType: DetailSearchInfoGenreCollectionViewCell.self)) { row, element, cell in
+                cell.bindData(genre: element)
+            }
+            .disposed(by: disposeBag)
+        
+        output.genreCollectionViewHeight
+            .drive(with: self, onNext: { owner, height in
+                owner.rootView.detailSearchInfoView.updateCollectionViewHeight(height: height)
+            })
+            .disposed(by: disposeBag)
+    }
+}
+
+extension DetailSearchViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        guard let text = viewModel.genreNameForItemAt(indexPath: indexPath) else {
+            return CGSize(width: 0, height: 0)
+        }
+        
+        let width = (text as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 26
+        return CGSize(width: width, height: 37)
     }
 }
