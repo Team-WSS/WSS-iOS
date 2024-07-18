@@ -21,7 +21,9 @@ final class WSSAlertButtonView: UIView {
     var alertContentLabel = UILabel()
     private let buttonStackView = UIStackView()
     var cancelButton = UIButton()
+    var cancelButtonTitleLabel = UILabel()
     var actionButton = UIButton()
+    var actionButtonTitleLabel = UILabel()
     
     // MARK: - Life Cycle
     
@@ -68,6 +70,8 @@ final class WSSAlertButtonView: UIView {
                                       buttonStackView)
         buttonStackView.addArrangedSubviews(cancelButton,
                                             actionButton)
+        cancelButton.addSubview(cancelButtonTitleLabel)
+        actionButton.addSubview(actionButtonTitleLabel)
     }
     
     private func setLayout() {
@@ -101,6 +105,12 @@ final class WSSAlertButtonView: UIView {
         [cancelButton, actionButton].forEach { button in
             button.snp.makeConstraints {
                 $0.height.equalToSuperview()
+            }
+        }
+        
+        [cancelButtonTitleLabel, actionButtonTitleLabel].forEach { label in
+            label.snp.makeConstraints {
+                $0.center.equalToSuperview()
             }
         }
     }
@@ -145,12 +155,16 @@ extension WSSAlertButtonView {
         
         if let cancelTitle {
             cancelButton.do {
-                $0.setTitle(cancelTitle, for: .normal)
-                $0.setTitleColor(.wssGray300, for: .normal)
-                $0.titleLabel?.font = .Label1
                 $0.layer.backgroundColor = UIColor.wssGray50.cgColor
                 $0.layer.cornerRadius = 8
             }
+            
+            cancelButtonTitleLabel.do {
+                $0.isUserInteractionEnabled = true
+                $0.applyWSSFont(.label1, with: cancelTitle)
+                $0.textColor = .wssGray300
+            }
+            
         } else {
             cancelButton.removeFromSuperview()
             actionButton.snp.makeConstraints {
@@ -160,12 +174,16 @@ extension WSSAlertButtonView {
         
         if let actionTitle {
             actionButton.do {
-                $0.setTitle(actionTitle, for: .normal)
-                $0.setTitleColor(.wssWhite, for: .normal)
-                $0.titleLabel?.font = .Label1
                 $0.layer.backgroundColor = actionBackgroundColor
                 $0.layer.cornerRadius = 8
             }
+            
+            actionButtonTitleLabel.do {
+                $0.isUserInteractionEnabled = true
+                $0.applyWSSFont(.label1, with: actionTitle)
+                $0.textColor = .wssWhite
+            }
+            
         } else {
             actionButton.removeFromSuperview()
             cancelButton.snp.makeConstraints {
