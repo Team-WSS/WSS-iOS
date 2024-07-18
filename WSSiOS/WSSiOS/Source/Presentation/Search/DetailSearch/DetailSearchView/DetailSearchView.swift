@@ -73,7 +73,7 @@ final class DetailSearchView: UIView {
         }
         
         reloadButtonLabel.do {
-            $0.applyWSSFont(.title2, with: "초기화")
+            $0.applyWSSFont(.title2, with: StringLiterals.DetailSearch.reload)
             $0.textColor = .wssGray300
         }
         
@@ -82,7 +82,7 @@ final class DetailSearchView: UIView {
         }
         
         searchButtonLabel.do {
-            $0.applyWSSFont(.title2, with: "작품 찾기")
+            $0.applyWSSFont(.title2, with: StringLiterals.DetailSearch.searchNovel)
             $0.textColor = .wssWhite
         }
     }

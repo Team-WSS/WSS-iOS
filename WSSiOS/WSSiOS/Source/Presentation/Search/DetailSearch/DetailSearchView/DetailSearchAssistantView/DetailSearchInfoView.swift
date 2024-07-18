@@ -54,7 +54,7 @@ final class DetailSearchInfoView: UIView {
     
     private func setUI() {
         genreTItleLabel.do {
-            $0.applyWSSFont(.title2, with: "장르")
+            $0.applyWSSFont(.title2, with: StringLiterals.DetailSearch.genre)
             $0.textColor = .wssBlack
         }
         
@@ -70,7 +70,7 @@ final class DetailSearchInfoView: UIView {
         }
         
         statusTitleLabel.do {
-            $0.applyWSSFont(.title2, with: "연재상태")
+            $0.applyWSSFont(.title2, with: StringLiterals.DetailSearch.serialStatus)
             $0.textColor = .wssBlack
         }
         
@@ -80,17 +80,17 @@ final class DetailSearchInfoView: UIView {
             $0.distribution = .fillEqually
             
             ingStatusKeywordView.do {
-                $0.setText("연재중")
+                $0.setText(StringLiterals.DetailSearch.statusIng)
                 $0.updateColor(true)
             }
             
             finishedStatusKeywordView.do {
-                $0.setText("완결작")
+                $0.setText(StringLiterals.DetailSearch.statusFinished)
             }
         }
         
         ratingTitleLabel.do {
-            $0.applyWSSFont(.title2, with: "별점")
+            $0.applyWSSFont(.title2, with: StringLiterals.DetailSearch.rating)
             $0.textColor = .wssBlack
         }
         
@@ -100,11 +100,11 @@ final class DetailSearchInfoView: UIView {
             $0.distribution = .fillEqually
             
             aboveThreePointFiveKeywordView.do {
-                $0.setText("3.5이상")
+                $0.setText(StringLiterals.DetailSearch.ratingaboveThreePointFive)
             }
             
             aboveFourPointZeroKeywordView.do {
-                $0.setText("4.0이상")
+                $0.setText(StringLiterals.DetailSearch.ratingaboveFourPointZero)
             }
         }
         
@@ -114,11 +114,11 @@ final class DetailSearchInfoView: UIView {
             $0.distribution = .fillEqually
             
             aboveFourPointFiveKeywordView.do {
-                $0.setText("4.5이상")
+                $0.setText(StringLiterals.DetailSearch.ratingaboveFourPointFive)
             }
             
             aboveFourPointEightKeywordView.do {
-                $0.setText("4.8이상")
+                $0.setText(StringLiterals.DetailSearch.ratingaboveFourPointEight)
             }
         }
         
