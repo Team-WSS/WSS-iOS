@@ -160,7 +160,7 @@ extension WSSAlertButtonView {
             }
             
             cancelButtonTitleLabel.do {
-                $0.isUserInteractionEnabled = true
+                $0.isUserInteractionEnabled = false
                 $0.applyWSSFont(.label1, with: cancelTitle)
                 $0.textColor = .wssGray300
             }
@@ -179,7 +179,7 @@ extension WSSAlertButtonView {
             }
             
             actionButtonTitleLabel.do {
-                $0.isUserInteractionEnabled = true
+                $0.isUserInteractionEnabled = false
                 $0.applyWSSFont(.label1, with: actionTitle)
                 $0.textColor = .wssWhite
             }
