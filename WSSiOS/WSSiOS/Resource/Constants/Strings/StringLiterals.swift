@@ -274,6 +274,9 @@ enum StringLiterals {
     }
     
     enum DetailSearch {
+        static let info = "정보"
+        static let keyword = "키워드"
+        
         static let genre = "장르"
         
         static let serialStatus = "연재상태"
