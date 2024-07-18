@@ -15,6 +15,14 @@ final class WSSAlertViewController: UIViewController {
     //MARK: - Properties
     
     private let disposeBag = DisposeBag()
+    
+    private var alertIconImage: UIImage?
+    private var alertTitle: String?
+    private var alertContent: String?
+    private var cancelTitle: String?
+    private var actionTitle: String?
+    private var actionBackgroundColor: CGColor?
+    
     private let actionButtonTapSubject = PublishSubject<Void>()
     var actionButtonTap: Observable<Void> {
         return actionButtonTapSubject.asObservable()
@@ -23,13 +31,6 @@ final class WSSAlertViewController: UIViewController {
     //MARK: - UI Components
     
     var rootView = WSSAlertButtonView()
-    
-    private var alertIconImage: UIImage?
-    private var alertTitle: String?
-    private var alertContent: String?
-    private var cancelTitle: String?
-    private var actionTitle: String?
-    private var actionBackgroundColor: CGColor?
     
     // MARK: - Life Cycle
     
