@@ -1,29 +1,29 @@
 //
-//  HomeNoticeViewController.swift
+//  HomeNoticeDetailViewController.swift
 //  WSSiOS
 //
-//  Created by Seoyeon Choi on 5/12/24.
+//  Created by Seoyeon Choi on 7/6/24.
 //
 
 import UIKit
 
 import RxSwift
 
-final class HomeNoticeViewController: UIViewController {
+final class HomeNoticeDetailViewController: UIViewController {
     
     //MARK: - Properties
     
-    private let viewModel: HomeNoticeViewModel
+    private let viewModel: HomeNoticeDetailViewModel
     private let disposeBag = DisposeBag()
-    private var backButton = UIButton()
     
     //MARK: - UI Components
     
-    private let rootView = HomeNoticeView()
+    private let rootView = HomeNoticeDetailView()
+    private var backButton = UIButton()
     
     //MARK: - Life Cycle
     
-    init(viewModel: HomeNoticeViewModel) {
+    init(viewModel: HomeNoticeDetailViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -39,7 +39,6 @@ final class HomeNoticeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        swipeBackGesture()
         preparationSetNavigationBar(title: StringLiterals.Navigation.Title.notice,
                                     left: self.backButton,
                                     right: nil)
@@ -49,7 +48,6 @@ final class HomeNoticeViewController: UIViewController {
         super.viewDidLoad()
         
         setUI()
-        registerCell()
         bindViewModel()
     }
     
@@ -65,32 +63,14 @@ final class HomeNoticeViewController: UIViewController {
     
     //MARK: - Bind
     
-    private func registerCell() {
-        rootView.noticeTableView.register(
-            HomeNoticeTableViewCell.self,
-            forCellReuseIdentifier: HomeNoticeTableViewCell.cellIdentifier)
-    }
-    
     private func bindViewModel() {
-        let input = HomeNoticeViewModel.Input(
-            noticeCellDidTap: rootView.noticeTableView.rx.itemSelected
-        )
+        let input = HomeNoticeDetailViewModel.Input()
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
-        output.noticeList
-            .bind(to: rootView.noticeTableView.rx.items(
-                cellIdentifier: HomeNoticeTableViewCell.cellIdentifier,
-                cellType: HomeNoticeTableViewCell.self)) { row, element, cell in
-                    cell.bindData(data: element)
-                }
-                .disposed(by: disposeBag)
-        
-        output.selectedNoticeCellIndexPath
-            .bind(with: self, onNext: { owner, indexPath in
-                let viewController = HomeNoticeDetailViewController(viewModel: HomeNoticeDetailViewModel(noticeRepository: TestNoticeRepository()))
-                viewController.navigationController?.isNavigationBarHidden = false
-                viewController.hidesBottomBarWhenPushed = true
-                owner.navigationController?.pushViewController(viewController, animated: true)
+        output.noticeData
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, data in
+                owner.rootView.noticeContentView.bindData(data: data)
             })
             .disposed(by: disposeBag)
         
