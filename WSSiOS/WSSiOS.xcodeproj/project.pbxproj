@@ -189,6 +189,7 @@
 		A1EF35602B52FAEF00A94C53 /* MemoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EF355F2B52FAEF00A94C53 /* MemoService.swift */; };
 		A1EF35622B52FAF700A94C53 /* AvatarService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EF35612B52FAF700A94C53 /* AvatarService.swift */; };
 		A1EF35692B52FD9B00A94C53 /* AvatarResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EF35682B52FD9B00A94C53 /* AvatarResult.swift */; };
+		B9059CBC2C484C2700D7CA86 /* DetailSearchInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9059CBB2C484C2700D7CA86 /* DetailSearchInfoView.swift */; };
 		B9095D282C394FC7007521EF /* HomeNoticeDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9095D272C394FC7007521EF /* HomeNoticeDetailViewController.swift */; };
 		B9095D2A2C3950B4007521EF /* HomeNoticeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9095D292C3950B4007521EF /* HomeNoticeDetailView.swift */; };
 		B9095D2C2C39514D007521EF /* HomeNoticeDetailContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9095D2B2C39514D007521EF /* HomeNoticeDetailContentView.swift */; };
@@ -196,6 +197,7 @@
 		B90A5E5E2C355BB4009938D9 /* NovelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90A5E5C2C355BB4009938D9 /* NovelService.swift */; };
 		B9181BDC2BEBDFA80024C800 /* HomeTasteRecommendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9181BDB2BEBDFA80024C800 /* HomeTasteRecommendView.swift */; };
 		B9181BDE2BEBE2300024C800 /* HomeTasteRecommendCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9181BDD2BEBE2300024C800 /* HomeTasteRecommendCollectionViewCell.swift */; };
+		B933BED32C4916DC00365077 /* KeywordBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = B933BED22C4916DC00365077 /* KeywordBox.swift */; };
 		B942C78E2BFCD39700C4A8C6 /* HomeRealtimePopularContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B942C78D2BFCD39700C4A8C6 /* HomeRealtimePopularContentView.swift */; };
 		B96098802C27201B0084F697 /* NormalSearchResultCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B960987F2C27201B0084F697 /* NormalSearchResultCountView.swift */; };
 		B96863D62C482E14008CFBA5 /* DetailSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B96863D52C482E14008CFBA5 /* DetailSearchViewController.swift */; };
@@ -440,6 +442,7 @@
 		A1EF355F2B52FAEF00A94C53 /* MemoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoService.swift; sourceTree = "<group>"; };
 		A1EF35612B52FAF700A94C53 /* AvatarService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarService.swift; sourceTree = "<group>"; };
 		A1EF35682B52FD9B00A94C53 /* AvatarResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarResult.swift; sourceTree = "<group>"; };
+		B9059CBB2C484C2700D7CA86 /* DetailSearchInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailSearchInfoView.swift; sourceTree = "<group>"; };
 		B90655552B9466690047BB9D /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		B9095D272C394FC7007521EF /* HomeNoticeDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNoticeDetailViewController.swift; sourceTree = "<group>"; };
 		B9095D292C3950B4007521EF /* HomeNoticeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNoticeDetailView.swift; sourceTree = "<group>"; };
@@ -448,6 +451,7 @@
 		B90A5E5C2C355BB4009938D9 /* NovelService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NovelService.swift; sourceTree = "<group>"; };
 		B9181BDB2BEBDFA80024C800 /* HomeTasteRecommendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTasteRecommendView.swift; sourceTree = "<group>"; };
 		B9181BDD2BEBE2300024C800 /* HomeTasteRecommendCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTasteRecommendCollectionViewCell.swift; sourceTree = "<group>"; };
+		B933BED22C4916DC00365077 /* KeywordBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeywordBox.swift; sourceTree = "<group>"; };
 		B942C78D2BFCD39700C4A8C6 /* HomeRealtimePopularContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRealtimePopularContentView.swift; sourceTree = "<group>"; };
 		B960987F2C27201B0084F697 /* NormalSearchResultCountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalSearchResultCountView.swift; sourceTree = "<group>"; };
 		B96863D52C482E14008CFBA5 /* DetailSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailSearchViewController.swift; sourceTree = "<group>"; };
@@ -1034,6 +1038,7 @@
 				39BA7F742BCABF1D0045B2B7 /* KeywordLink.swift */,
 				39BA7F762BCAC3E60045B2B7 /* keywordLabel.swift */,
 				395319262BE2865A00D075F4 /* KeywordManager.swift */,
+				B933BED22C4916DC00365077 /* KeywordBox.swift */,
 			);
 			path = KeywordLabel;
 			sourceTree = "<group>";
@@ -1437,6 +1442,14 @@
 			path = Network;
 			sourceTree = "<group>";
 		};
+		B9059CBA2C484C1100D7CA86 /* DetailSearchAssistantView */ = {
+			isa = PBXGroup;
+			children = (
+				B9059CBB2C484C2700D7CA86 /* DetailSearchInfoView.swift */,
+			);
+			path = DetailSearchAssistantView;
+			sourceTree = "<group>";
+		};
 		B90A5E5D2C355BB4009938D9 /* Novel */ = {
 			isa = PBXGroup;
 			children = (
@@ -1504,6 +1517,7 @@
 		B96863D22C482DF2008CFBA5 /* DetailSearchView */ = {
 			isa = PBXGroup;
 			children = (
+				B9059CBA2C484C1100D7CA86 /* DetailSearchAssistantView */,
 				B96863D92C482E8C008CFBA5 /* DetailSearchView.swift */,
 			);
 			path = DetailSearchView;
@@ -1833,6 +1847,7 @@
 				CD3E5A732B5424D600C0A659 /* MemoReadView.swift in Sources */,
 				A1EF35492B52F7B000A94C53 /* AvatarRepository.swift in Sources */,
 				2C6030642B5407E90031544C /* LibraryViewController.swift in Sources */,
+				B933BED32C4916DC00365077 /* KeywordBox.swift in Sources */,
 				A1EF355E2B52FAE600A94C53 /* UserNovelService.swift in Sources */,
 				A1654F142B540513004F78E8 /* NetworkingServiceError.swift in Sources */,
 				2CA2F64E2B527B060045B4C2 /* MyPageCustomModalView.swift in Sources */,
@@ -2031,6 +2046,7 @@
 				CD3E5AB32B565DFF00C0A659 /* NovelMemoResult.swift in Sources */,
 				A122C9E12B530A4100DFCFE4 /* (null) in Sources */,
 				2C421FE82B96DC0F000DCB87 /* MyPageCustomModalViewModel.swift in Sources */,
+				B9059CBC2C484C2700D7CA86 /* DetailSearchInfoView.swift in Sources */,
 				2CD911502C0D8A0D006B8D72 /* FeedReactView.swift in Sources */,
 				CD39F2D02B50CD4700B73A5C /* TrashNovelDetailInfoReadStatusView.swift in Sources */,
 				CD39F2E22B50EFCB00B73A5C /* LeftAlignedCollectionViewFlowLayout.swift in Sources */,
