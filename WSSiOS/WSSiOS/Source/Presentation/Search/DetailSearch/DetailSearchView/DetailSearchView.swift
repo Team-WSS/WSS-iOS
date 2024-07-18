@@ -17,6 +17,9 @@ final class DetailSearchView: UIView {
     private let backgroundView = UIView()
     let cancelModalButton = UIButton()
     
+    /// 정보
+    let detailSearchInfoView = DetailSearchInfoView()
+    
     /// 하단 버튼
     private let bottomStackView = UIStackView()
     
@@ -91,6 +94,7 @@ final class DetailSearchView: UIView {
         bottomStackView.addArrangedSubviews(reloadButtonView
                                             ,searchButtonView)
         backgroundView.addSubviews(cancelModalButton,
+                                   detailSearchInfoView,
                                    bottomStackView)
         self.addSubviews(backgroundView)
     }
@@ -99,11 +103,17 @@ final class DetailSearchView: UIView {
         backgroundView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(82)
             $0.leading.trailing.bottom.equalToSuperview()
-        }
-        
-        cancelModalButton.snp.makeConstraints {
-            $0.size.equalTo(25)
-            $0.top.trailing.equalToSuperview().inset(20)
+            
+            cancelModalButton.snp.makeConstraints {
+                $0.size.equalTo(25)
+                $0.top.trailing.equalToSuperview().inset(20)
+            }
+            
+            detailSearchInfoView.snp.makeConstraints {
+                $0.top.equalToSuperview().inset(97)
+                $0.leading.trailing.equalToSuperview()
+                $0.height.equalTo(136)
+            }
         }
         
         bottomStackView.snp.makeConstraints {

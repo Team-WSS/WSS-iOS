@@ -14,7 +14,6 @@ final class KeywordBox: UIView {
     
     //MARK: - Properties
     
-    private var boxWidth: CGFloat =. 62
     private var boxHeight: CGFloat = 43
     
     //MARK: - Components
@@ -51,7 +50,7 @@ final class KeywordBox: UIView {
     
     private func setLayout() {
         self.snp.makeConstraints {
-            $0.width.equalTo(boxWidth)
+            $0.width.equalTo((UIScreen.main.bounds.width - 51) / 2)
             $0.height.equalTo(boxHeight)
         }
         
