@@ -16,6 +16,7 @@ final class MyPageViewModel: ViewModelType {
     
     private let userRepository: UserRepository
     private let disposeBag = DisposeBag()
+    var height: Double = 0.0
     
     // MARK: - Life Cycle
     
@@ -25,6 +26,8 @@ final class MyPageViewModel: ViewModelType {
     
     struct Input {
         let isMyPage: Driver<Bool>
+        let headerViewHeight: Driver<Double>
+        let scrollOffset: Driver<Double>
         let settingButtonDidTap: ControlEvent<Void>
         let dropdownButtonDidTap: ControlEvent<Void>
     }
@@ -33,8 +36,9 @@ final class MyPageViewModel: ViewModelType {
         let profileData = BehaviorRelay<MyProfileResult>(value: MyProfileResult(nickname: "",
                                                                                 intro: "",
                                                                                 avatarImage: "", genrePreferences: []))
-        let settingButtonAction = BehaviorRelay(value: false)
-        let dropdownButtonAction = BehaviorRelay(value: false)
+        let settingButtonEnabled = BehaviorRelay(value: false)
+        let dropdownButtonEnabled = BehaviorRelay(value: false)
+        let updateNavigationEnabled = BehaviorRelay<Bool>(value: false)
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -47,6 +51,25 @@ final class MyPageViewModel: ViewModelType {
             }
             .bind(to: output.profileData)
             .disposed(by: disposeBag)
+        
+        input.headerViewHeight
+            .asObservable()
+            .bind(with: self, onNext: { owner, height in 
+                owner.height = height
+            })
+            .disposed(by: disposeBag)
+                  
+        input.scrollOffset
+            .asObservable()
+            .subscribe(with: self, onNext: { owner, scrollHeight in 
+                if (scrollHeight > owner.height) {
+                    output.updateNavigationEnabled.accept(true)
+                } else {
+                    output.updateNavigationEnabled.accept(false)
+                }
+            })
+            .disposed(by: disposeBag)
+
         return output
     }
     

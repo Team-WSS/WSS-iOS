@@ -17,9 +17,10 @@ final class MyPageViewController: UIViewController {
     
     private let disposeBag = DisposeBag()
     private let viewModel: MyPageViewModel
+    
     private var isMyPageRelay: BehaviorRelay<Bool>
-    private var updateNavigationBar = BehaviorRelay<Bool>(value: true)
     private var scrollOffsetRelay = BehaviorRelay<Double>(value: 0)
+    private let headerViewHeightRelay = BehaviorRelay<Double>(value: 0)
     
     //MARK: - UI Components
     
@@ -52,7 +53,12 @@ final class MyPageViewController: UIViewController {
         
         delegate()
         bindViewModel()
-        bindAction()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        headerViewHeightRelay.accept(rootView.headerView.layer.frame.height)
     }
     
     //MARK: - Delegate
@@ -63,33 +69,11 @@ final class MyPageViewController: UIViewController {
     
     //MARK: - Bind
     
-    private func bindAction() {
-        updateNavigationBar
-            .subscribe(with: self, onNext: { owner, isShown in
-                self.navigationItem.title = isShown ? StringLiterals.Navigation.Title.myPage :  ""
-            })
-            .disposed(by: disposeBag)
-        
-        
-        // headerViewHeight 계산 후 StickyHeader가 등장할 높이 파악
-        rootView.headerView.layoutIfNeeded()
-        let headerViewHeight = rootView.headerView.layer.frame.height
-        
-        scrollOffsetRelay
-            .subscribe(with: self, onNext: { owner, isHeight in
-                let isHiddenMainHeader = isHeight > headerViewHeight
-                owner.rootView.scrolledStstickyHeaderView.isHidden = !isHiddenMainHeader
-                owner.rootView.mainStickyHeaderView.isHidden = isHiddenMainHeader
-                owner.rootView.headerView.isHidden = isHiddenMainHeader
-                
-                owner.updateNavigationBar.accept(isHiddenMainHeader)
-            })
-            .disposed(by: disposeBag)
-    }
-    
     private func bindViewModel() {
         let input = MyPageViewModel.Input(
             isMyPage: isMyPageRelay.asDriver(),
+            headerViewHeight: headerViewHeightRelay.asDriver(),
+            scrollOffset: scrollOffsetRelay.asDriver(),
             settingButtonDidTap: settingButton.rx.tap,
             dropdownButtonDidTap: dropdownButton.rx.tap)
         
@@ -97,6 +81,16 @@ final class MyPageViewController: UIViewController {
         output.profileData
             .bind(with: self, onNext: { owner, data in
                 owner.rootView.headerView.bindData(data: data)
+            })
+            .disposed(by: disposeBag)
+        
+        output.updateNavigationEnabled
+            .asDriver()
+            .drive(with: self, onNext: { owner, update in 
+                owner.rootView.scrolledStstickyHeaderView.isHidden = !update
+                owner.rootView.mainStickyHeaderView.isHidden = update
+                owner.rootView.headerView.isHidden = update
+                owner.navigationItem.title = update ? StringLiterals.Navigation.Title.myPage :  ""
             })
             .disposed(by: disposeBag)
     }
