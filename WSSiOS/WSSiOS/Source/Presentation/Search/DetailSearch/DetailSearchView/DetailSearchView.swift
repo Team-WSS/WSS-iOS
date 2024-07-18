@@ -17,18 +17,9 @@ final class DetailSearchView: UIView {
     private let backgroundView = UIView()
     let cancelModalButton = UIButton()
     
-    /// 정보
+    let detailSearchHeaderView = DetailSearchHeaderView()
     let detailSearchInfoView = DetailSearchInfoView()
-    
-    /// 하단 버튼
-    private let bottomStackView = UIStackView()
-    
-    let reloadButtonView = UIView()
-    private let reloadImageView = UIImageView()
-    private let reloadButtonLabel = UILabel()
-    
-    let searchButtonView = UIView()
-    private let searchButtonLabel = UILabel()
+    let detailSearchBottomView = DetailSearchBottomView()
     
     //MARK: - Life Cycle
     
@@ -57,45 +48,14 @@ final class DetailSearchView: UIView {
         cancelModalButton.do {
             $0.setImage(.icCacelModal.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray300), for: .normal)
         }
-        
-        bottomStackView.do {
-            $0.axis = .horizontal
-            $0.spacing = 0
-        }
-        
-        reloadButtonView.do {
-            $0.backgroundColor = .wssGray50
-        }
-        
-        reloadImageView.do {
-            $0.image = .icReload.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray300)
-            $0.contentMode = .scaleAspectFit
-        }
-        
-        reloadButtonLabel.do {
-            $0.applyWSSFont(.title2, with: StringLiterals.DetailSearch.reload)
-            $0.textColor = .wssGray300
-        }
-        
-        searchButtonView.do {
-            $0.backgroundColor = .wssPrimary100
-        }
-        
-        searchButtonLabel.do {
-            $0.applyWSSFont(.title2, with: StringLiterals.DetailSearch.searchNovel)
-            $0.textColor = .wssWhite
-        }
     }
     
     private func setHierarchy() {
-        reloadButtonView.addSubviews(reloadImageView,
-                                     reloadButtonLabel)
-        searchButtonView.addSubview(searchButtonLabel)
-        bottomStackView.addArrangedSubviews(reloadButtonView
-                                            ,searchButtonView)
+        
         backgroundView.addSubviews(cancelModalButton,
+                                   detailSearchHeaderView,
                                    detailSearchInfoView,
-                                   bottomStackView)
+                                   detailSearchBottomView)
         self.addSubviews(backgroundView)
     }
     
@@ -109,39 +69,20 @@ final class DetailSearchView: UIView {
                 $0.top.trailing.equalToSuperview().inset(20)
             }
             
+            detailSearchHeaderView.snp.makeConstraints {
+                $0.top.leading.equalToSuperview().inset(34)
+            }
+            
             detailSearchInfoView.snp.makeConstraints {
-                $0.top.equalToSuperview().inset(97)
+                $0.top.equalTo(detailSearchHeaderView.snp.bottom).offset(34)
                 $0.leading.trailing.equalToSuperview()
                 $0.height.equalTo(136)
             }
-        }
-        
-        bottomStackView.snp.makeConstraints {
-            $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom)
-            $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(62)
             
-            reloadButtonView.snp.makeConstraints {
-                $0.width.equalTo(133)
-                
-                reloadImageView.snp.makeConstraints {
-                    $0.top.equalToSuperview().inset(24)
-                    $0.leading.equalToSuperview().inset(37)
-                    $0.size.equalTo(14)
-                }
-                
-                reloadButtonLabel.snp.makeConstraints {
-                    $0.top.equalToSuperview().inset(20)
-                    $0.leading.equalTo(reloadImageView.snp.trailing).offset(4)
-                }
-            }
-            
-            searchButtonView.snp.makeConstraints {
-                $0.width.equalTo(UIScreen.main.bounds.width - 133)
-                
-                searchButtonLabel.snp.makeConstraints {
-                    $0.center.equalToSuperview()
-                }
+            detailSearchBottomView.snp.makeConstraints {
+                $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom)
+                $0.leading.trailing.equalToSuperview()
+                $0.height.equalTo(62)
             }
         }
     }
