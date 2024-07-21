@@ -14,8 +14,7 @@ final class DetailSearchKeywordView: UIView {
     
     //MARK: - UI Components
     
-    // 뷰 구현을 위한 임시 컴포넌트
-    private let label = UILabel()
+    let searchBarView = DetailSearchKeywordSearchBarView()
     
     //MARK: - Life Cycle
     
@@ -33,18 +32,17 @@ final class DetailSearchKeywordView: UIView {
     }
     
     private func setUI() {
-        label.do {
-            $0.applyWSSFont(.body1, with: "상세탐색뷰의 키워드뷰입니다.")
-        }
+       
     }
     
     private func setHierarchy() {
-        self.addSubview(label)
+        self.addSubview(searchBarView)
     }
     
     private func setLayout() {
-        label.snp.makeConstraints {
-            $0.center.equalToSuperview()
+        searchBarView.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview().inset(20)
         }
     }
 }
