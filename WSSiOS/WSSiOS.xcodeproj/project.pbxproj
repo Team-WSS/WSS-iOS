@@ -192,6 +192,8 @@
 		A1EF35622B52FAF700A94C53 /* AvatarService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EF35612B52FAF700A94C53 /* AvatarService.swift */; };
 		A1EF35692B52FD9B00A94C53 /* AvatarResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EF35682B52FD9B00A94C53 /* AvatarResult.swift */; };
 		B90145392C4D301C00A8B7EA /* DetailSearchKeywordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90145382C4D301C00A8B7EA /* DetailSearchKeywordView.swift */; };
+		B901453B2C4D532300A8B7EA /* DetailSearchKeywordSearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B901453A2C4D532300A8B7EA /* DetailSearchKeywordSearchBarView.swift */; };
+		B901453D2C4D5BEE00A8B7EA /* DetailSearchKeywordCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B901453C2C4D5BEE00A8B7EA /* DetailSearchKeywordCategoryView.swift */; };
 		B9059CBC2C484C2700D7CA86 /* DetailSearchInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9059CBB2C484C2700D7CA86 /* DetailSearchInfoView.swift */; };
 		B9095D282C394FC7007521EF /* HomeNoticeDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9095D272C394FC7007521EF /* HomeNoticeDetailViewController.swift */; };
 		B9095D2A2C3950B4007521EF /* HomeNoticeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9095D292C3950B4007521EF /* HomeNoticeDetailView.swift */; };
@@ -451,6 +453,8 @@
 		A1EF35612B52FAF700A94C53 /* AvatarService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarService.swift; sourceTree = "<group>"; };
 		A1EF35682B52FD9B00A94C53 /* AvatarResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarResult.swift; sourceTree = "<group>"; };
 		B90145382C4D301C00A8B7EA /* DetailSearchKeywordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailSearchKeywordView.swift; sourceTree = "<group>"; };
+		B901453A2C4D532300A8B7EA /* DetailSearchKeywordSearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailSearchKeywordSearchBarView.swift; sourceTree = "<group>"; };
+		B901453C2C4D5BEE00A8B7EA /* DetailSearchKeywordCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailSearchKeywordCategoryView.swift; sourceTree = "<group>"; };
 		B9059CBB2C484C2700D7CA86 /* DetailSearchInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailSearchInfoView.swift; sourceTree = "<group>"; };
 		B90655552B9466690047BB9D /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		B9095D272C394FC7007521EF /* HomeNoticeDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNoticeDetailViewController.swift; sourceTree = "<group>"; };
@@ -1471,6 +1475,8 @@
 				B92A06662C49858800E27652 /* DetailSearchHeaderView.swift */,
 				B92A06682C49877700E27652 /* DetailSearchBottomView.swift */,
 				B90145382C4D301C00A8B7EA /* DetailSearchKeywordView.swift */,
+				B901453A2C4D532300A8B7EA /* DetailSearchKeywordSearchBarView.swift */,
+				B901453C2C4D5BEE00A8B7EA /* DetailSearchKeywordCategoryView.swift */,
 			);
 			path = DetailSearchAssistantView;
 			sourceTree = "<group>";
@@ -1987,6 +1993,7 @@
 				39D4A5CD2BDA4C6D004FC834 /* NovelDetailView.swift in Sources */,
 				CD3E5A792B5424E600C0A659 /* MemoEditContentView.swift in Sources */,
 				B9181BDE2BEBE2300024C800 /* HomeTasteRecommendCollectionViewCell.swift in Sources */,
+				B901453B2C4D532300A8B7EA /* DetailSearchKeywordSearchBarView.swift in Sources */,
 				2C5D0F592B4FDEC000C76D3C /* MyPageInventoryCollectionViewCell.swift in Sources */,
 				392A29232B4E89FD0065EB97 /* RegisterNormalNovelInfoWithRatingView.swift in Sources */,
 				2C79CB9D2B45A1DD00734E1F /* UIFont+.swift in Sources */,
@@ -2062,6 +2069,7 @@
 				3999BFEB2B4E6C4400984832 /* RegisterViewModel.swift in Sources */,
 				A1493BC32B55022E004DD84A /* MemoResult.swift in Sources */,
 				A1654F0F2B540504004F78E8 /* APIConstants.swift in Sources */,
+				B901453D2C4D5BEE00A8B7EA /* DetailSearchKeywordCategoryView.swift in Sources */,
 				B9AC1BD62BF0BB9D006EDE92 /* HomeNoticeViewModel.swift in Sources */,
 				CD3E5AA22B55190400C0A659 /* UserNovelResult.swift in Sources */,
 				A1EF35472B52F77800A94C53 /* MemoRepository.swift in Sources */,
