@@ -19,6 +19,7 @@ final class DetailSearchView: UIView {
     
     let detailSearchHeaderView = DetailSearchHeaderView()
     let detailSearchInfoView = DetailSearchInfoView()
+    let detailSearchKeywordView = DetailSearchKeywordView()
     let detailSearchBottomView = DetailSearchBottomView()
     
     //MARK: - Life Cycle
@@ -55,6 +56,7 @@ final class DetailSearchView: UIView {
         backgroundView.addSubviews(cancelModalButton,
                                    detailSearchHeaderView,
                                    detailSearchInfoView,
+                                   detailSearchKeywordView,
                                    detailSearchBottomView)
         self.addSubviews(backgroundView)
     }
@@ -73,10 +75,15 @@ final class DetailSearchView: UIView {
                 $0.top.leading.equalToSuperview().inset(34)
             }
             
+            detailSearchKeywordView.snp.makeConstraints {
+                $0.top.equalTo(detailSearchHeaderView.snp.bottom).offset(34)
+                $0.leading.trailing.equalToSuperview()
+                $0.bottom.equalTo(detailSearchBottomView.snp.top)
+            }
+            
             detailSearchInfoView.snp.makeConstraints {
                 $0.top.equalTo(detailSearchHeaderView.snp.bottom).offset(34)
                 $0.leading.trailing.equalToSuperview()
-                $0.height.equalTo(136)
             }
             
             detailSearchBottomView.snp.makeConstraints {
@@ -84,6 +91,24 @@ final class DetailSearchView: UIView {
                 $0.leading.trailing.equalToSuperview()
                 $0.height.equalTo(62)
             }
+        }
+    }
+    
+    //MARK: - Custom Method
+    
+    func updateTab(selected tab: DetailSearchTab) {
+        detailSearchHeaderView.updateTab(selected: tab)
+        updateSelectedTabView(selected: tab)
+    }
+    
+    private func updateSelectedTabView(selected tab: DetailSearchTab) {
+        switch tab {
+        case .info:
+            detailSearchInfoView.isHidden = false
+            detailSearchKeywordView.isHidden = true
+        case .keyword:
+            detailSearchInfoView.isHidden = true
+            detailSearchKeywordView.isHidden = false
         }
     }
 }

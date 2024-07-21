@@ -63,7 +63,9 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
     private func bindViewModel() {
         let input = DetailSearchViewModel.Input(
             cancelButtonDidTap: rootView.cancelModalButton.rx.tap,
-            genreCollectionViewContentSize: rootView.detailSearchInfoView.genreCollectionView.rx.observe(CGSize.self, "contentSize"))
+            genreCollectionViewContentSize: rootView.detailSearchInfoView.genreCollectionView.rx.observe(CGSize.self, "contentSize"),
+            infoTabDidTap: rootView.detailSearchHeaderView.infoLabel.rx.tapGesture().when(.recognized).asObservable(),
+            keywordTabDidTap: rootView.detailSearchHeaderView.keywordLabel.rx.tapGesture().when(.recognized).asObservable())
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.cancelButtonEnabled
@@ -81,6 +83,12 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
         output.genreCollectionViewHeight
             .drive(with: self, onNext: { owner, height in
                 owner.rootView.detailSearchInfoView.updateCollectionViewHeight(height: height)
+            })
+            .disposed(by: disposeBag)
+        
+        output.selectedTab
+            .drive(with: self, onNext: { owner, tab in
+                owner.rootView.updateTab(selected: tab)
             })
             .disposed(by: disposeBag)
     }
