@@ -18,8 +18,6 @@ final class DetailSearchViewModel: ViewModelType {
     private let cancelButtonEnabled = PublishRelay<Bool>()
     private let genreList = BehaviorRelay<[String]>(value: DetailSearchGenre.allCases.map { $0.withKorean })
     private let genreCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
-    private let infoTabEnabled = PublishRelay<Bool>()
-    private let keywordTabEnabled = PublishRelay<Bool>()
     private let selectedTab = BehaviorRelay<DetailSearchTab>(value: DetailSearchTab.info)
     
     struct Input {
