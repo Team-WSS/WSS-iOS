@@ -7,18 +7,32 @@
 
 import Foundation
 
+/// 소소피드 전체 및 단건 조회
 struct Feed {
-    var userProfileImage: String
+    var userId: Int
     var userNickName: String
+    var userProfileImage: String
+    
     var createdDate: String
-    var content: String
-    var novelTitle: String
-    var novelRating: Float
-    var novelRatingCount: Int
-    var genres: [Genre]
+    var feedContent: String
     var likeCount: Int
-    var commentCount: Int
     var isLiked: Bool
+    
+    var novelId: Int
+    var novelTitle: String
+    var novelRatingCount: Int
+    var novelRating: Float
+    var genres: [Genre]
+    
+    var isSpoiler: Bool
+    var isModified: Bool
+    var isMyFeed: Bool
+}
+
+/// 소소피드 댓글 전체 조회
+struct FeedComment {
+    var commentCount: Int
+    var comments: [Comment]
 }
 
 struct Comment {

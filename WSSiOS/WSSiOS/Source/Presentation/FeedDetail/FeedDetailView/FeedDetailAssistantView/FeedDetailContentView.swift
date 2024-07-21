@@ -88,7 +88,7 @@ final class FeedDetailContentView: UIView {
     
     func bindData(data: Feed) {
         contentLabel.do {
-            $0.applyWSSFont(.body2, with: data.content)
+            $0.applyWSSFont(.body2, with: data.feedContent)
             $0.numberOfLines = 0
             $0.textAlignment = .left
             $0.lineBreakStrategy = .hangulWordPriority
@@ -108,7 +108,7 @@ final class FeedDetailContentView: UIView {
         reactView.do {
             $0.bindData(likeRating: data.likeCount,
                         isLiked: data.isLiked,
-                        commentRating: data.commentCount)
+                        commentRating: data.novelRatingCount)
         }
     }
 }
