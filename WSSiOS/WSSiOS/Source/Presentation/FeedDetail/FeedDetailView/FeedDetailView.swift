@@ -17,6 +17,10 @@ final class FeedDetailView: UIView {
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     
+    let backButton = UIButton()
+    let viewTitleLabel = UILabel()
+    let dotsButton = UIButton()
+    
     let profileView = FeedDetailProfileView()
     let feedContentView = FeedDetailContentView()
     let replyView = FeedDetailReplyView()
@@ -40,6 +44,19 @@ final class FeedDetailView: UIView {
     private func setUI() {
         self.do {
             $0.backgroundColor = .wssWhite
+        }
+        
+        backButton.do {
+            $0.setImage(.icNavigateLeft.withRenderingMode(.alwaysOriginal).withTintColor(.wssBlack), for: .normal)
+        }
+        
+        viewTitleLabel.do {
+            $0.applyWSSFont(.title2, with: StringLiterals.FeedDetail.title)
+            $0.textColor = .wssBlack
+        }
+        
+        dotsButton.do {
+            $0.setImage(.icThreedots.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray100), for: .normal)
         }
         
         scrollView.do {

@@ -16,13 +16,10 @@ final class FeedDetailViewController: UIViewController {
     
     private let viewModel: FeedDetailViewModel
     private let disposeBag = DisposeBag()
-
+    
     //MARK: - UI Components
     
     private let rootView = FeedDetailView()
-    
-    private var backButton = UIButton()
-    private var dotsButton = UIButton()
     
     // MARK: - Life Cycle
     
@@ -38,33 +35,25 @@ final class FeedDetailViewController: UIViewController {
     override func loadView() {
         self.view = rootView
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        preparationSetNavigationBar(title: StringLiterals.FeedDetail.title,
-                                    left: self.backButton,
-                                    right: self.dotsButton)
-    }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setUI()
+        hideTabBar()
+        setNavigationBar()
         
         bindViewModel()
         registerCell()
         delegate()
     }
     
-    private func setUI() {
-        backButton.do {
-            $0.setImage(.icNavigateLeft.withRenderingMode(.alwaysOriginal).withTintColor(.wssBlack), for: .normal)
-        }
-        
-        dotsButton.do {
-            $0.setImage(.icThreedots.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray100), for: .normal)
-        }
+    //MARK: - UI
+    
+    private func setNavigationBar() {
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
+        self.navigationItem.titleView = self.rootView.viewTitleLabel
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.rootView.backButton)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.rootView.dotsButton)
     }
     
     //MARK: - Bind
