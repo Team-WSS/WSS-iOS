@@ -67,7 +67,13 @@ final class NormalSearchViewController: UIViewController {
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.normalSearchList
-            .drive(rootView.resultView.normalSearchCollectionView.rx.items(
+            .observe(on: MainScheduler.instance)
+            .catch { error in
+                print("NormalSearchList error: \(error)")
+                // 에러 발생 시 빈 배열 반환
+                return Observable.just([])
+            }
+            .bind(to: rootView.resultView.normalSearchCollectionView.rx.items(
                 cellIdentifier: NormalSearchCollectionViewCell.cellIdentifier,
                 cellType: NormalSearchCollectionViewCell.self)) { row, element, cell in
                     cell.bindData(data: element)

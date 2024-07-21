@@ -33,7 +33,7 @@ final class NormalSearchViewModel: ViewModelType {
     //MARK: - Outputs
     
     struct Output {
-        let normalSearchList: Driver<[NormalSearchNovel]>
+        let normalSearchList: Observable<[NormalSearchNovel]>
         let backButtonEnabled: Observable<Void>
         let inquiryButtonEnabled: Observable<Void>
         let normalSearchCollectionViewHeight: Driver<CGFloat>
@@ -69,7 +69,7 @@ extension NormalSearchViewModel {
         let normalSearchCollectionViewHeight = input.normalSearchCollectionViewContentSize
             .map { $0?.height ?? 0 }.asDriver(onErrorJustReturn: 0)
         
-        return Output(normalSearchList: normalSearchList.asDriver(),
+        return Output(normalSearchList: normalSearchList.asObservable(),
                       backButtonEnabled: backButtonEnabled,
                       inquiryButtonEnabled: inquiryButtonEnabled,
                       normalSearchCollectionViewHeight: normalSearchCollectionViewHeight)
