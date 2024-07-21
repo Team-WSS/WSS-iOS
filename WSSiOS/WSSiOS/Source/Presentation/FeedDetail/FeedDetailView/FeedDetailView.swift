@@ -38,6 +38,10 @@ final class FeedDetailView: UIView {
     //MARK: - UI
     
     private func setUI() {
+        self.do {
+            $0.backgroundColor = .wssWhite
+        }
+        
         scrollView.do {
             $0.showsVerticalScrollIndicator = false
         }
@@ -59,7 +63,6 @@ final class FeedDetailView: UIView {
         
         contentView.snp.makeConstraints {
             $0.edges.equalTo(scrollView.contentLayoutGuide)
-            $0.height.greaterThanOrEqualTo(self.snp.height).priority(.low)
             $0.width.equalTo(scrollView.snp.width)
         }
         

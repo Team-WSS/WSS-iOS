@@ -16,9 +16,7 @@ final class FeedDetailViewController: UIViewController {
     
     private let viewModel: FeedDetailViewModel
     private let disposeBag = DisposeBag()
-    
-    private let comments = BehaviorRelay<[Comment]>(value: [])
-    
+
     //MARK: - UI Components
     
     private let rootView = FeedDetailView()
@@ -60,8 +58,6 @@ final class FeedDetailViewController: UIViewController {
     }
     
     private func setUI() {
-        self.view.backgroundColor = .wssWhite
-        
         backButton.do {
             $0.setImage(.icNavigateLeft.withRenderingMode(.alwaysOriginal).withTintColor(.wssBlack), for: .normal)
         }

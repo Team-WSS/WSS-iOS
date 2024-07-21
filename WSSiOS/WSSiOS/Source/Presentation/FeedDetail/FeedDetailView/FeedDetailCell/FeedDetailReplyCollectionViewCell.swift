@@ -113,7 +113,7 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
             $0.size.equalTo(18)
             $0.leading.equalTo(replyContentLabel.snp.trailing).offset(20)
             $0.trailing.equalToSuperview()
-            $0.centerY.equalToSuperview()
+            $0.centerY.equalTo(userProfileImageView.snp.centerY)
         }
     }
     

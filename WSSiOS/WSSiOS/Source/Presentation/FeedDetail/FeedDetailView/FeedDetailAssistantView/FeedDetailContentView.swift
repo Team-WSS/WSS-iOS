@@ -40,10 +40,6 @@ final class FeedDetailContentView: UIView {
             $0.textColor = .wssBlack
         }
         
-        linkNovelView.do {
-            $0.backgroundColor = .wssPrimary20
-        }
-        
         genreLabel.do {
             $0.textColor = .wssGray200
         }
