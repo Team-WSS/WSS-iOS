@@ -19,7 +19,6 @@ final class MyPageViewController: UIViewController {
     private let viewModel: MyPageViewModel
     
     private var isMyPageRelay: BehaviorRelay<Bool>
-    private var scrollOffsetRelay = BehaviorRelay<Double>(value: 0)
     private let headerViewHeightRelay = BehaviorRelay<Double>(value: 0)
     
     //MARK: - UI Components
@@ -51,7 +50,6 @@ final class MyPageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        delegate()
         bindViewModel()
     }
     
@@ -60,20 +58,14 @@ final class MyPageViewController: UIViewController {
         
         headerViewHeightRelay.accept(rootView.headerView.layer.frame.height)
     }
-    
-    //MARK: - Delegate
-    
-    private func delegate() {
-        rootView.scrollView.delegate = self
-    }
-    
+
     //MARK: - Bind
     
     private func bindViewModel() {
         let input = MyPageViewModel.Input(
             isMyPage: isMyPageRelay.asDriver(),
             headerViewHeight: headerViewHeightRelay.asDriver(),
-            scrollOffset: scrollOffsetRelay.asDriver(),
+            scrollOffset: rootView.scrollView.rx.contentOffset.asDriver(),
             settingButtonDidTap: settingButton.rx.tap,
             dropdownButtonDidTap: dropdownButton.rx.tap)
         
@@ -98,13 +90,6 @@ final class MyPageViewController: UIViewController {
                 }
             })
             .disposed(by: disposeBag)
-    }
-}
-
-extension MyPageViewController: UIScrollViewDelegate {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let scrollOffset = scrollView.contentOffset.y
-        scrollOffsetRelay.accept(scrollOffset)
     }
 }
 

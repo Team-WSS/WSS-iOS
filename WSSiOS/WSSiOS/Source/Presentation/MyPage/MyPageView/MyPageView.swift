@@ -45,7 +45,7 @@ final class MyPageView: UIView {
         self.backgroundColor = .wssPrimary20
         
         mainStickyHeaderView.do {
-                $0.backgroundColor = .wssPrimary100
+            $0.backgroundColor = .wssPrimary100
         }
         
         scrolledStstickyHeaderView.do {
@@ -92,7 +92,4 @@ final class MyPageView: UIView {
             $0.bottom.equalToSuperview()
         }
     }
-    
-    //MARK: - Data
-    
 }

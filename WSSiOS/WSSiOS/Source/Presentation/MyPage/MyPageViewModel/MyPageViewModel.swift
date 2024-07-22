@@ -27,13 +27,13 @@ final class MyPageViewModel: ViewModelType {
     struct Input {
         let isMyPage: Driver<Bool>
         let headerViewHeight: Driver<Double>
-        let scrollOffset: Driver<Double>
+        let scrollOffset: Driver<CGPoint>
         let settingButtonDidTap: ControlEvent<Void>
         let dropdownButtonDidTap: ControlEvent<Void>
     }
     
     struct Output {
-        let profileData = BehaviorRelay<MyProfileResult>(value: MyProfileResult(nickname: "",
+        let profileData = BehaviorSubject<MyProfileResult>(value: MyProfileResult(nickname: "",
                                                                                 intro: "",
                                                                                 avatarImage: "", genrePreferences: []))
         let settingButtonEnabled = BehaviorRelay(value: false)
@@ -61,6 +61,7 @@ final class MyPageViewModel: ViewModelType {
                   
         input.scrollOffset
             .asObservable()
+            .map{ $0.y }
             .subscribe(with: self, onNext: { owner, scrollHeight in 
                 if (scrollHeight > owner.height) {
                     output.updateNavigationEnabled.accept(true)
@@ -80,9 +81,9 @@ final class MyPageViewModel: ViewModelType {
     
     private func getProfileData(isMyPage: Bool) -> Observable<MyProfileResult> {
         if isMyPage {
-            return userRepository.getMyProfileData().asObservable()
+            return userRepository.getMyProfileData()
         } else {
-            return userRepository.getMyProfileData().asObservable()
+            return userRepository.getMyProfileData()
         }
     }
 }

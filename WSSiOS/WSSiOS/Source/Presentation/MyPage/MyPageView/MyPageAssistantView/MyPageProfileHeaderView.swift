@@ -61,13 +61,10 @@ final class MyPageProfileHeaderView: UIView {
         
         userImageChangeButtonView.do {
             $0.image = .pencil
-            $0.bounds.size = CGSize(width: 20, height: 20)
         }
         
         userImageChangeButton.do {
             var configuration = UIButton.Configuration.filled()
-            configuration.background.customView = userImageChangeButtonView
-            configuration.background.customView?.contentMode = .center
             configuration.baseBackgroundColor = .wssWhite
             
             $0.configuration = configuration
@@ -80,7 +77,6 @@ final class MyPageProfileHeaderView: UIView {
         userNicknameLabel.do {
             $0.textColor = .wssBlack
             $0.numberOfLines = 1
-            $0.textAlignment = .center
         }
         
         userIntroLabel.do {
@@ -95,6 +91,7 @@ final class MyPageProfileHeaderView: UIView {
                     userImageChangeButton,
                     userNicknameLabel,
                     userIntroLabel)
+        userImageChangeButton.addSubview(userImageChangeButtonView)
     }
     
     private func setLayout() {        
@@ -102,6 +99,11 @@ final class MyPageProfileHeaderView: UIView {
             $0.top.equalToSuperview().inset(25)
             $0.centerX.equalToSuperview()
             $0.size.equalTo(94)
+        }
+        
+        userImageChangeButtonView.snp.makeConstraints {
+            $0.center.equalToSuperview()
+            $0.size.equalTo(20)
         }
         
         userImageChangeButton.snp.makeConstraints {
@@ -128,7 +130,10 @@ final class MyPageProfileHeaderView: UIView {
     func bindData(data: MyProfileResult) {
         userImageView.kfSetImage(url: data.avatarImage)
         userNicknameLabel.applyWSSFont(.headline1, with: data.nickname)
-        userIntroLabel.applyWSSFont(.body2, with: data.intro)
+        userIntroLabel.do {
+            $0.applyWSSFont(.body2, with: data.intro)
+            $0.textAlignment = .center
+        }
     }
 }
 
