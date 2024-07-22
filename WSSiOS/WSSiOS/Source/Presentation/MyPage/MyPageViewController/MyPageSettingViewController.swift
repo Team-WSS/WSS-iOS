@@ -26,7 +26,6 @@ final class MyPageSettingViewController: UIViewController {
 
     override func loadView() {
         self.view = rootView
-        
     }
     
     override func viewDidLoad() {
@@ -67,6 +66,7 @@ final class MyPageSettingViewController: UIViewController {
                     cell.bindData(title: element)
                 }
                 .disposed(by: disposeBag)
+        
         rootView.tableView.rx.itemSelected
             .subscribe(with: self, onNext: { owner, indexPath in
                 self.rootView.tableView.deselectRow(at: indexPath, animated: true)

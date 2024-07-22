@@ -40,7 +40,6 @@ final class MyPageInfoViewController: UIViewController {
     
     override func loadView() {
         self.view = rootView
-        
     }
     
     override func viewDidLoad() {
@@ -51,6 +50,7 @@ final class MyPageInfoViewController: UIViewController {
         setUI()
         register()
         bindCell()
+        bindAction()
         bindViewModel()
     }
     
@@ -111,6 +111,15 @@ final class MyPageInfoViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
+    private func bindAction() {
+        self.backButton.rx.tap
+            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.popToLastViewController()
+            })
+            .disposed(by: disposeBag)
+    }
+    
     private func bindViewModel() {
         let input = MyPageInfoViewModel.Input()
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
@@ -124,13 +133,6 @@ final class MyPageInfoViewController: UIViewController {
         emailRelay
             .bind(onNext: { [weak self] _ in
                 self?.rootView.tableView.reloadData()
-            })
-            .disposed(by: disposeBag)
-        
-        self.backButton.rx.tap
-            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
     }

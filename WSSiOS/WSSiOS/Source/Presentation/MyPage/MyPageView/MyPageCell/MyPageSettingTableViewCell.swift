@@ -14,8 +14,10 @@ final class MyPageSettingTableViewCell: UITableViewCell {
     
     //MARK: - Components
     
+    private let stackView = UIStackView()
     let cellLabel = UILabel()
     let cellDescriptionLabel = UILabel()
+    
     let cellIconImageView = UIImageView(image: .icNavigateRight)
     
     //MARK: - Life Cycle
@@ -38,6 +40,11 @@ final class MyPageSettingTableViewCell: UITableViewCell {
     private func setUI() {
         self.backgroundColor = .wssWhite
         
+        stackView.do {
+            $0.axis = .vertical
+            $0.alignment = .leading
+        }
+        
         cellLabel.do {
             $0.textColor = .wssBlack
             $0.font = .Body2
@@ -46,16 +53,19 @@ final class MyPageSettingTableViewCell: UITableViewCell {
         cellDescriptionLabel.do {
             $0.textColor = .wssGray200
             $0.font = .Body3
+            $0.isHidden = true
         }
     }
     
     private func setHierarchy() {
-        self.addSubviews(cellLabel,
+        self.addSubviews(stackView,
                          cellIconImageView)
+        stackView.addArrangedSubviews(cellLabel,
+                                      cellDescriptionLabel)
     }
     
     private func setLayout() {
-        cellLabel.snp.makeConstraints() {
+        stackView.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.leading.equalToSuperview().inset(20)
         }
@@ -75,17 +85,6 @@ final class MyPageSettingTableViewCell: UITableViewCell {
     
     func bindDescriptionData(title: String) {
         cellDescriptionLabel.applyWSSFont(.body3, with: title)
-        
-        self.addSubview(cellDescriptionLabel)
-        
-        cellLabel.snp.remakeConstraints {
-            $0.top.equalToSuperview().inset(9.5)
-            $0.leading.equalToSuperview().inset(20)
-        }
-        
-        cellDescriptionLabel.snp.makeConstraints() {
-            $0.top.equalTo(cellLabel.snp.bottom)
-            $0.leading.equalToSuperview().inset(20)
-        }
+        cellDescriptionLabel.isHidden = false
     }
 }
