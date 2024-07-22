@@ -15,7 +15,6 @@ final class MyPageInfoViewModel: ViewModelType {
     //MARK: - Properties
     
     private let userRepository: UserRepository
-
     
     //MARK: - Life Cycle
     
