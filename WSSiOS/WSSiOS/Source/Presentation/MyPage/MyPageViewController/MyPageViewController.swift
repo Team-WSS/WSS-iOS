@@ -90,7 +90,12 @@ final class MyPageViewController: UIViewController {
                 owner.rootView.scrolledStstickyHeaderView.isHidden = !update
                 owner.rootView.mainStickyHeaderView.isHidden = update
                 owner.rootView.headerView.isHidden = update
-                owner.navigationItem.title = update ? StringLiterals.Navigation.Title.myPage :  ""
+                
+                if update {
+                    owner.navigationItem.title = StringLiterals.Navigation.Title.myPage
+                } else {
+                    owner.navigationItem.title = ""
+                }
             })
             .disposed(by: disposeBag)
     }
