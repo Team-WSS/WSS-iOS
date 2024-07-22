@@ -122,7 +122,7 @@ final class MyPageInfoViewController: UIViewController {
             .disposed(by: disposeBag)
         
         emailRelay
-            .subscribe(onNext: { [weak self] _ in
+            .bind(onNext: { [weak self] _ in
                 self?.rootView.tableView.reloadData()
             })
             .disposed(by: disposeBag)
