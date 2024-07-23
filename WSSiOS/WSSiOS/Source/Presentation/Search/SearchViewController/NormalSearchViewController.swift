@@ -18,6 +18,8 @@ final class NormalSearchViewController: UIViewController {
     private let viewModel: NormalSearchViewModel
     private let disposeBag = DisposeBag()
     
+    private let viewWillAppearEvent = BehaviorRelay(value: false)
+    
     //MARK: - Components
     
     private let rootView = NormalSearchView()
@@ -40,6 +42,7 @@ final class NormalSearchViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        viewWillAppearEvent.accept(true)
         swipeBackGesture()
     }
     
@@ -61,6 +64,7 @@ final class NormalSearchViewController: UIViewController {
     
     private func bindViewModel() {
         let input = NormalSearchViewModel.Input(
+            viewWillAppearEvent: viewWillAppearEvent.asObservable(),
             backButtonDidTap: rootView.headerView.backButton.rx.tap,
             inquiryButtonDidTap: rootView.emptyView.inquiryButton.rx.tap,
             normalSearchCollectionViewContentSize: rootView.resultView.normalSearchCollectionView.rx.observe(CGSize.self, "contentSize"))
@@ -70,7 +74,6 @@ final class NormalSearchViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .catch { error in
                 print("NormalSearchList error: \(error)")
-                // 에러 발생 시 빈 배열 반환
                 return Observable.just([])
             }
             .bind(to: rootView.resultView.normalSearchCollectionView.rx.items(
