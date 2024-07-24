@@ -18,11 +18,13 @@ final class MyPageDeleteIDViewModel: ViewModelType {
     
     private let reasonCellTitle = BehaviorRelay<[String]>(value: StringLiterals.MyPage.DeleteIDReason.allCases.map { $0.rawValue })
     private let checkCellTitle = BehaviorRelay<[(String, String)]>(value: zip(StringLiterals.MyPage.DeleteIDCheckTitle.allCases, StringLiterals.MyPage.DeleteIDCheckContent.allCases).map { ($0.rawValue, $1.rawValue) })
+    private var agreeAllButtonIsTap: Bool = false
     
     //MARK: - Life Cycle
     
     struct Input {
         let backButtonDidTap: ControlEvent<Void>
+        let agreeAllButtonDidTap: ControlEvent<Void>
         let reasonCellTap: ControlEvent<IndexPath>
         let completeButtonDidTap: ControlEvent<Void>
         let viewDidTap: ControlEvent<UITapGestureRecognizer>
@@ -36,6 +38,8 @@ final class MyPageDeleteIDViewModel: ViewModelType {
         let bindCheckCell: Observable<[(String, String)]>
         let tapReasonCell = PublishRelay<IndexPath>()
         let popViewController = PublishRelay<Bool>() 
+        let changeAgreeButtonColor = BehaviorRelay<Bool>(value: false)
+        let completeButtonIsAlbe = BehaviorRelay<Bool>(value: false)
         let textCountLimit = PublishRelay<Int>()
         let beginEditing = PublishRelay<Bool>()
         let endEditing = PublishRelay<Bool>()
@@ -49,6 +53,13 @@ final class MyPageDeleteIDViewModel: ViewModelType {
         input.backButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
                 output.popViewController.accept(true)
+            })
+            .disposed(by: disposeBag)
+        
+        input.agreeAllButtonDidTap
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.agreeAllButtonIsTap.toggle()
+                output.changeAgreeButtonColor.accept(owner.agreeAllButtonIsTap)
             })
             .disposed(by: disposeBag)
         

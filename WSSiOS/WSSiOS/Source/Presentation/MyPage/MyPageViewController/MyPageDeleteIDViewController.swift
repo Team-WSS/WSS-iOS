@@ -75,6 +75,7 @@ final class MyPageDeleteIDViewController: UIViewController, UIScrollViewDelegate
     private func bindViewModel() {
         let input = MyPageDeleteIDViewModel.Input(
             backButtonDidTap: rootView.backButton.rx.tap,
+            agreeAllButtonDidTap: rootView.agreeDeleteIDButton.rx.tap,
             reasonCellTap: rootView.reasonTableView.rx.itemSelected,
             completeButtonDidTap: rootView.completeButton.rx.tap,
             viewDidTap: view.rx.tapGesture(),
@@ -100,6 +101,13 @@ final class MyPageDeleteIDViewController: UIViewController, UIScrollViewDelegate
                     cell.bindData(title: element.0, description: element.1)
                 }
                 .disposed(by: disposeBag)
+        
+        output.changeAgreeButtonColor
+            .bind(with: self, onNext: { owner, isTap in
+                owner.rootView.isSeleted(isSeleted: isTap)
+            })
+            .disposed(by: disposeBag)
+        
         
         output.tapReasonCell
             .observe(on: MainScheduler.instance)

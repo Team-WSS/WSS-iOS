@@ -29,6 +29,9 @@ final class MyPageDeleteIDView: UIView {
     private let checkTitleLabel = UILabel()
     var checkTableView = UITableView(frame: .zero, style: .plain)
     
+    lazy var agreeDeleteIDButton = UIButton()
+    private let agreeDeleteIDLabel = UILabel()
+    
     lazy var completeButton = UIButton()
     
     //In NavigationBar
@@ -107,6 +110,15 @@ final class MyPageDeleteIDView: UIView {
             $0.separatorStyle = .none
         }
         
+        agreeDeleteIDButton.do {
+            $0.setImage(.checkDefault, for: .normal)
+        }
+        
+        agreeDeleteIDLabel.do {
+            $0.applyWSSFont(.body2, with: StringLiterals.MyPage.DeleteID.agreeTitle)
+            $0.textColor = .wssGray300
+        }
+        
         completeButton.do {
             $0.backgroundColor = .wssGray70
             $0.layer.cornerRadius = 14
@@ -122,6 +134,8 @@ final class MyPageDeleteIDView: UIView {
         scrollView.addSubview(contentView)
         contentView.addSubviews(reasonView,
                                 checkView,
+                                agreeDeleteIDButton,
+                                agreeDeleteIDLabel,
                                 completeButton)
         reasonView.addSubviews(reasonTitleLabel,
                                reasonTableView,
@@ -196,8 +210,19 @@ final class MyPageDeleteIDView: UIView {
             }
         }
         
+        agreeDeleteIDButton.snp.makeConstraints {
+            $0.top.equalTo(checkView.snp.bottom).offset(34)
+            $0.leading.equalToSuperview().inset(16)
+            $0.size.equalTo(24)
+        }
+        
+        agreeDeleteIDLabel.snp.makeConstraints {
+            $0.centerY.equalTo(agreeDeleteIDButton.snp.centerY)
+            $0.leading.equalTo(agreeDeleteIDButton.snp.trailing).offset(10)
+        }
+        
         completeButton.snp.makeConstraints {
-            $0.top.equalTo(checkView.snp.bottom).offset(70)
+            $0.top.equalTo(agreeDeleteIDButton.snp.bottom).offset(22)
             $0.leading.trailing.equalToSuperview().inset(16)
             $0.height.equalTo(53)
             $0.bottom.equalToSuperview()
@@ -237,6 +262,10 @@ extension MyPageDeleteIDView {
         reasonTextView.do {
             $0.text = text
         }
+    }
+    
+    func isSeleted(isSeleted: Bool) {
+        agreeDeleteIDButton.setImage( isSeleted ? .checkSelected : .checkDefault , for: .normal)
     }
 }
 

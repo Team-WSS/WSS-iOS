@@ -158,6 +158,7 @@ enum StringLiterals {
             static let reasonTitle = "탈퇴사유를 알려주세요."
             static let reasonPlaceHolder = "위 항목 외의 탈퇴 사유를 자유롭게 작성해 주세요."
             static let checkTitle = "탈퇴하기 전에 확인해주세요"
+            static let agreeTitle = "위 주의사항을 모두 확인했고, 탈퇴에 동의합니다."
         }
         
         enum DeleteIDReason: String, CaseIterable {
