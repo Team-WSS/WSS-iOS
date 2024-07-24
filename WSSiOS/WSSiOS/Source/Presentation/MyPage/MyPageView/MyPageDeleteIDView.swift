@@ -61,13 +61,13 @@ final class MyPageDeleteIDView: UIView {
         }
         
         reasonTitleLabel.do {
+            $0.font = .HeadLine1
             $0.textColor = .wssBlack
             $0.makeAttribute(with: StringLiterals.MyPage.DeleteID.reasonTitle)?
-                .partialColor(color: .wssPrimary100, rangeString: "탈퇴사유")
                 .lineHeight(1.17)
                 .kerning(kerningPixel: -1.2)
+                .partialColor(color: .wssPrimary100, rangeString: "탈퇴사유")
                 .applyAttribute()
-            $0.font = .HeadLine1
         }
         
         reasonTableView.do {
@@ -156,7 +156,6 @@ final class MyPageDeleteIDView: UIView {
     private func setLayout() {
         scrollView.snp.makeConstraints {
             $0.edges.equalToSuperview()
-            $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
         }
         
         contentView.snp.makeConstraints {

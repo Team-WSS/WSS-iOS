@@ -238,12 +238,10 @@ extension TextAttributeSet {
     }
     
     func partialColor(color: UIColor, rangeString: String) -> TextAttributeSet {
-        self.attributedString.addAttribute(
-            .foregroundColor,
-            value: color,
-            range: ((self.label.text ?? "") as NSString).range(of: rangeString)
-        )
-        
+        let range = (self.attributedString.string as NSString).range(of: rangeString)
+        if range.location != NSNotFound {
+            self.attributedString.addAttribute(.foregroundColor, value: color, range: range)
+        }
         return self
     }
     
