@@ -15,6 +15,7 @@ final class MyPageDeleteIDViewModel: ViewModelType {
     //MARK: - Properties
     
     static let textViewMaxLimit = 80
+    static let exceptionIndexPath: IndexPath = [ 0 , 4 ]
     
     private let reasonCellTitle = BehaviorRelay<[String]>(value: StringLiterals.MyPage.DeleteIDReason.allCases.map { $0.rawValue })
     private let checkCellTitle = BehaviorRelay<[(String, String)]>(value: zip(StringLiterals.MyPage.DeleteIDCheckTitle.allCases, StringLiterals.MyPage.DeleteIDCheckContent.allCases).map { ($0.rawValue, $1.rawValue) })
@@ -25,7 +26,7 @@ final class MyPageDeleteIDViewModel: ViewModelType {
     struct Input {
         let backButtonDidTap: ControlEvent<Void>
         let agreeAllButtonDidTap: ControlEvent<Void>
-        let reasonCellTap: ControlEvent<IndexPath>
+        let reasonCellDidTap: ControlEvent<IndexPath>
         let completeButtonDidTap: ControlEvent<Void>
         let viewDidTap: ControlEvent<UITapGestureRecognizer>
         let textUpdated: Observable<String>
@@ -51,6 +52,7 @@ final class MyPageDeleteIDViewModel: ViewModelType {
                             bindCheckCell: checkCellTitle.asObservable())
         
         input.backButtonDidTap
+            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
                 output.popViewController.accept(true)
             })
@@ -63,12 +65,14 @@ final class MyPageDeleteIDViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.reasonCellTap
+        input.reasonCellDidTap
+            .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, indexPath in
                 output.tapReasonCell.accept(indexPath)
                 owner.reasonCellTap.accept(true)
-                if indexPath != [0, 4] {
+                if indexPath != MyPageDeleteIDViewModel.exceptionIndexPath {
                     output.containText.accept("")
+                    output.endEditing.accept(true)
                 }
             })
             .disposed(by: disposeBag)
@@ -80,12 +84,13 @@ final class MyPageDeleteIDViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.textUpdated
+            .observe(on:MainScheduler.asyncInstance)
             .subscribe(with: self, onNext: { owner, text in
                 output.containText.accept(String(text.prefix(MyPageDeleteIDViewModel.textViewMaxLimit)))
                 output.textCountLimit.accept(output.containText.value.count)
             })
             .disposed(by: disposeBag)
-        
+         
         input.didBeginEditing
             .subscribe(onNext: { _ in
                 output.beginEditing.accept(true)
@@ -99,6 +104,7 @@ final class MyPageDeleteIDViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.completeButtonDidTap
+            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .subscribe(onNext: { _ in
                 //서버연결 
             })

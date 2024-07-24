@@ -82,6 +82,8 @@ final class MyPageDeleteIDView: UIView {
             $0.backgroundColor = .wssGray50
             $0.layer.cornerRadius = 14
             $0.textContainerInset = UIEdgeInsets(top: 10, left: 16, bottom: 12, right: 16)
+            $0.spellCheckingType = .no
+            $0.autocorrectionType = .no
         }
         
         reasonTextViewPlaceholder.do {
@@ -154,6 +156,7 @@ final class MyPageDeleteIDView: UIView {
     private func setLayout() {
         scrollView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+            $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
         }
         
         contentView.snp.makeConstraints {
@@ -229,7 +232,7 @@ final class MyPageDeleteIDView: UIView {
             $0.top.equalTo(agreeDeleteIDButton.snp.bottom).offset(22)
             $0.leading.trailing.equalToSuperview().inset(16)
             $0.height.equalTo(53)
-            $0.bottom.equalToSuperview()
+            $0.bottom.equalToSuperview().inset(10)
         }
     }
 }

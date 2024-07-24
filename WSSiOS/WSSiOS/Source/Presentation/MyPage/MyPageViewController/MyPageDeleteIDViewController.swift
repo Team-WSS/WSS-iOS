@@ -77,7 +77,7 @@ final class MyPageDeleteIDViewController: UIViewController, UIScrollViewDelegate
         let input = MyPageDeleteIDViewModel.Input(
             backButtonDidTap: rootView.backButton.rx.tap,
             agreeAllButtonDidTap: rootView.agreeDeleteIDButton.rx.tap,
-            reasonCellTap: rootView.reasonTableView.rx.itemSelected,
+            reasonCellDidTap: rootView.reasonTableView.rx.itemSelected,
             completeButtonDidTap: rootView.completeButton.rx.tap,
             viewDidTap: view.rx.tapGesture(),
             textUpdated: rootView.reasonTextView.rx.text.orEmpty.asObservable(),
@@ -118,7 +118,6 @@ final class MyPageDeleteIDViewController: UIViewController, UIScrollViewDelegate
                     let cellIndexPath = self.rootView.reasonTableView.indexPath(for: cell)
                     if let cell = cell as? MyPageDeleteIDReasonTableViewCell {
                         cell.isSeleted(isSeleted: cellIndexPath == indexPath)
-                        print(cellIndexPath, " ", indexPath)
                     }
                 }
             })
@@ -133,7 +132,7 @@ final class MyPageDeleteIDViewController: UIViewController, UIScrollViewDelegate
         output.beginEditing
             .bind(with: self, onNext: { owner, beginEditing in
                 owner.rootView.placeholderIsHidden(isHidden: true)
-                output.tapReasonCell.accept([0, 4])
+                output.tapReasonCell.accept(MyPageDeleteIDViewModel.exceptionIndexPath)
             })
             .disposed(by: disposeBag)
         
