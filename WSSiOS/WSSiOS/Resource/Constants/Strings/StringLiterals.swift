@@ -153,6 +153,11 @@ enum StringLiterals {
             static let watched = "봤어요"
             static let quit = "하차"
         }
+        
+        enum DeleteID {
+            static let reasonTitle = "탈퇴사유를 알려주세요."
+            static let reasonPlaceHolder = "위 항목 외의 탈퇴 사유를 자유롭게 작성해 주세요."
+        }
     }
     
     enum Library {
