@@ -90,17 +90,19 @@ final class MyPageDeleteIDReasonView: UIView {
         
         tableView.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(20)
-            $0.width.equalToSuperview()
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(44 * 5)
         }
         
         textView.snp.makeConstraints {
             $0.top.equalTo(tableView.snp.bottom).offset(2)
             $0.width.equalToSuperview()
+            $0.height.equalTo(114)
         }
         
         countLimitLabel.snp.makeConstraints {
             $0.top.equalTo(textView.snp.bottom).offset(4)
-            $0.trailing.equalTo(textView.snp.trailing)
+            $0.trailing.equalToSuperview()
         }
         
         countLabel.snp.makeConstraints {

@@ -29,7 +29,6 @@ final class MyPageDeleteIDViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        delegate()
         register()
         bindAction()
         bindTableView()
@@ -40,12 +39,6 @@ final class MyPageDeleteIDViewController: UIViewController {
         
         setNavigationBar()
         hideTabBar()
-    }
-    
-    private func delegate() {
-        rootView.reasonView.tableView.rx
-            .setDelegate(self)
-            .disposed(by: disposeBag)
     }
     
     private func register() {
@@ -73,12 +66,6 @@ final class MyPageDeleteIDViewController: UIViewController {
                     cell.bindData(text: element)
                 }
                 .disposed(by: disposeBag)
-    }
-}
-
-extension MyPageDeleteIDViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 44
     }
 }
 
