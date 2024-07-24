@@ -45,7 +45,7 @@ final class MyPageDeleteIDReasonTableViewCell: UITableViewCell {
         }
         
         titleLabel.do {
-            $0.tintColor = .black
+            $0.textColor = .wssBlack
         }
     }
     

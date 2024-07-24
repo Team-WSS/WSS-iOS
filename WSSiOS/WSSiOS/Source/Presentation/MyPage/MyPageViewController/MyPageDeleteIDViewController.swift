@@ -14,6 +14,7 @@ final class MyPageDeleteIDViewController: UIViewController {
     //MARK: - Properties
     
     private let reasonCellTitle = StringLiterals.MyPage.DeleteIDReason.allCases.map { $0.rawValue }
+    private let checkCellText = zip(StringLiterals.MyPage.DeleteIDCheckTitle.allCases, StringLiterals.MyPage.DeleteIDCheckContent.allCases).map { ($0.rawValue, $1.rawValue) }
     
     //MARK: - Components
     
@@ -30,8 +31,8 @@ final class MyPageDeleteIDViewController: UIViewController {
         super.viewDidLoad()
         
         register()
-        bindAction()
         bindTableView()
+        bindAction()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -42,9 +43,30 @@ final class MyPageDeleteIDViewController: UIViewController {
     }
     
     private func register() {
-        rootView.reasonView.tableView.register(
+        rootView.reasonTableView.register(
             MyPageDeleteIDReasonTableViewCell.self,
             forCellReuseIdentifier: MyPageDeleteIDReasonTableViewCell.cellIdentifier)
+        
+        rootView.checkTableView.register(
+            MyPageDeleteIDCheckTableViewCell.self, forCellReuseIdentifier: MyPageDeleteIDCheckTableViewCell.cellIdentifier)
+    }
+    
+    private func bindTableView() {
+        Observable.just(reasonCellTitle)
+            .bind(to: rootView.reasonTableView.rx.items(
+                cellIdentifier: MyPageDeleteIDReasonTableViewCell.cellIdentifier,
+                cellType: MyPageDeleteIDReasonTableViewCell.self)) { row, element, cell in
+                    cell.bindData(text: element)
+                }
+                .disposed(by: disposeBag)
+        
+        Observable.just(checkCellText)
+            .bind(to: rootView.checkTableView.rx.items(
+                cellIdentifier: MyPageDeleteIDCheckTableViewCell.cellIdentifier,
+                cellType: MyPageDeleteIDCheckTableViewCell.self)) { row, element, cell in
+                    cell.bindData(title: element.0, description: element.1)
+                }
+                .disposed(by: disposeBag)
     }
     
     private func bindAction() {
@@ -56,16 +78,6 @@ final class MyPageDeleteIDViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-    }
-    
-    private func bindTableView() {
-        Observable.just(reasonCellTitle)
-            .bind(to: rootView.reasonView.tableView.rx.items(
-                cellIdentifier: MyPageDeleteIDReasonTableViewCell.cellIdentifier,
-                cellType: MyPageDeleteIDReasonTableViewCell.self)) { row, element, cell in
-                    cell.bindData(text: element)
-                }
-                .disposed(by: disposeBag)
     }
 }
 
