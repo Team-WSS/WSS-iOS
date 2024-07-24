@@ -84,7 +84,6 @@ final class MyPageDeleteIDViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.textUpdated
-            .observe(on:MainScheduler.asyncInstance)
             .subscribe(with: self, onNext: { owner, text in
                 output.containText.accept(String(text.prefix(MyPageDeleteIDViewModel.textViewMaxLimit)))
                 output.textCountLimit.accept(output.containText.value.count)

@@ -84,6 +84,7 @@ final class MyPageDeleteIDView: UIView {
             $0.textContainerInset = UIEdgeInsets(top: 10, left: 16, bottom: 12, right: 16)
             $0.spellCheckingType = .no
             $0.autocorrectionType = .no
+            $0.autocapitalizationType = .none
         }
         
         reasonTextViewPlaceholder.do {
