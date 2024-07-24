@@ -91,7 +91,7 @@ final class MyPageDeleteIDViewController: UIViewController, UIScrollViewDelegate
                 cellIdentifier: MyPageDeleteIDReasonTableViewCell.cellIdentifier,
                 cellType: MyPageDeleteIDReasonTableViewCell.self)) { row, element, cell in
                     cell.bindData(text: element)
-                    cell.contentView.isUserInteractionEnabled = false
+                    cell.selectionStyle = .none
                 }
                 .disposed(by: disposeBag)
         
@@ -100,6 +100,7 @@ final class MyPageDeleteIDViewController: UIViewController, UIScrollViewDelegate
                 cellIdentifier: MyPageDeleteIDCheckTableViewCell.cellIdentifier,
                 cellType: MyPageDeleteIDCheckTableViewCell.self)) { row, element, cell in
                     cell.bindData(title: element.0, description: element.1)
+                    cell.selectionStyle = .none
                 }
                 .disposed(by: disposeBag)
         
