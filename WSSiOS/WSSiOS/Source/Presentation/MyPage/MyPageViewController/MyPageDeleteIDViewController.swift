@@ -9,13 +9,11 @@ import UIKit
 
 import RxSwift
 
-final class MyPageDeleteIDViewController: UIViewController, UIScrollViewDelegate {
+final class MyPageDeleteIDViewController: UIViewController {
     
     //MARK: - Properties
     
     private var viewModel: MyPageDeleteIDViewModel
-    private let reasonCellTitle = StringLiterals.MyPage.DeleteIDReason.allCases.map { $0.rawValue }
-    private let checkCellText = zip(StringLiterals.MyPage.DeleteIDCheckTitle.allCases, StringLiterals.MyPage.DeleteIDCheckContent.allCases).map { ($0.rawValue, $1.rawValue) }
     
     //MARK: - Components
     
@@ -41,7 +39,6 @@ final class MyPageDeleteIDViewController: UIViewController, UIScrollViewDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        delegate()
         register()
         bindViewModel()
     }
@@ -54,15 +51,7 @@ final class MyPageDeleteIDViewController: UIViewController, UIScrollViewDelegate
         swipeBackGesture()
     }
     
-    private func delegate() {
-        rootView.reasonTableView.rx
-            .setDelegate(self)
-            .disposed(by: disposeBag)
-        
-        rootView.reasonTextView.rx
-            .setDelegate(self)
-            .disposed(by: disposeBag)
-    }
+    //MARK: - Bind
     
     private func register() {
         rootView.reasonTableView.register(

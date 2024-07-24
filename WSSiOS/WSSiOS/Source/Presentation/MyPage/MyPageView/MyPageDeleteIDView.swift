@@ -241,25 +241,7 @@ final class MyPageDeleteIDView: UIView {
 }
 
 extension MyPageDeleteIDView {
-    
-    //MARK: - Custom Method
-    
-    func updateReasonTableViewHeight(height: CGFloat) {
-        reasonTableView.snp.updateConstraints {
-            $0.height.equalTo(height)
-        }
-    }
-    
-    func updateCheckTableViewHeight(height: CGFloat) {
-        checkTableView.snp.updateConstraints {
-            $0.height.equalTo(height)
-        }
-    }
-    
-    func placeholderIsHidden(isHidden: Bool) {
-        reasonTextViewPlaceholder.isHidden = isHidden
-    }
-    
+
     //MARK: - Data
     
     func bindTextCount(count: Int) {
@@ -281,6 +263,10 @@ extension MyPageDeleteIDView {
     func completeButtonIsAble(isAble: Bool) {
         completeButton.backgroundColor = isAble ? .Primary100 : .wssGray70
         completeButton.isEnabled = isAble
+    }
+    
+    func placeholderIsHidden(isHidden: Bool) {
+        reasonTextViewPlaceholder.isHidden = isHidden
     }
 }
 

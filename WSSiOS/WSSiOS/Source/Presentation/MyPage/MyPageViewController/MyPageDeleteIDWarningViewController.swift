@@ -40,13 +40,9 @@ final class MyPageDeleteIDWarningViewController: UIViewController {
         hideTabBar()
         swipeBackGesture()
     }
-    
-    private func setNavigationBar() {
-        preparationSetNavigationBar(title: StringLiterals.Navigation.Title.deleteID,
-                                    left: self.rootView.backButton,
-                                    right: nil)
-    }
 
+    //MARK: - Bind
+    
     private func bindAction() {
         rootView.backButton.rx.tap
             .asDriver()
@@ -63,5 +59,15 @@ final class MyPageDeleteIDWarningViewController: UIViewController {
                 owner.pushToMyPageDeleteIDViewController()
             })
             .disposed(by: disposeBag)
+    }
+}
+
+//MARK: - UI
+
+extension MyPageDeleteIDWarningViewController {
+    private func setNavigationBar() {
+        preparationSetNavigationBar(title: StringLiterals.Navigation.Title.deleteID,
+                                    left: self.rootView.backButton,
+                                    right: nil)
     }
 }

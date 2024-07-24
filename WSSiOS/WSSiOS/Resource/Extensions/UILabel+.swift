@@ -156,28 +156,28 @@ extension UILabel {
 extension UILabel {
     
     /*
-    // 아래와 같이 함수를 View에서 만들어 사용하면 됩니다.
-    // 단, 반드시 applyAttribute()로 attributedText 조작하는 부분을 마친 후,
-    // label.### 으로 수정하는 부분을 작성해야 합니다.
-    
-    // Text가 바뀔 때 attributedText 설정이 초기화되므로, 재설정을 편하게 하기 위해
-    // 추가한 Extension입니다.
-    
-    private func novelTitleAttribute(of label: UILabel) {
-        label.do {
-            $0.makeAttribute(with: label.text)?
-                .lineSpacing(spacingPercentage: 140)
-                .kerning(kerningPixel: -1.2)
-                .applyAttribute()
-            $0.font = .HeadLine1
-            $0.textColor = .White
-            $0.textAlignment = .center
-            $0.lineBreakMode = .byTruncatingTail
-            $0.lineBreakStrategy = .hangulWordPriority
-            $0.numberOfLines = 3
-        }
-    }
-    */
+     // 아래와 같이 함수를 View에서 만들어 사용하면 됩니다.
+     // 단, 반드시 applyAttribute()로 attributedText 조작하는 부분을 마친 후,
+     // label.### 으로 수정하는 부분을 작성해야 합니다.
+     
+     // Text가 바뀔 때 attributedText 설정이 초기화되므로, 재설정을 편하게 하기 위해
+     // 추가한 Extension입니다.
+     
+     private func novelTitleAttribute(of label: UILabel) {
+     label.do {
+     $0.makeAttribute(with: label.text)?
+     .lineSpacing(spacingPercentage: 140)
+     .kerning(kerningPixel: -1.2)
+     .applyAttribute()
+     $0.font = .HeadLine1
+     $0.textColor = .White
+     $0.textAlignment = .center
+     $0.lineBreakMode = .byTruncatingTail
+     $0.lineBreakStrategy = .hangulWordPriority
+     $0.numberOfLines = 3
+     }
+     }
+     */
     
     
     func makeAttribute() -> TextAttributeSet? {
@@ -258,6 +258,11 @@ extension TextAttributeSet {
     func lineHeight(_ multiple: CGFloat) -> TextAttributeSet {
         let lineHeight = self.label.font.pointSize * multiple
         
+        guard !lineHeight.isNaN else {
+            print("Error: lineHeight is NaN")
+            return self
+        }
+        
         let style = NSMutableParagraphStyle().then {
             $0.maximumLineHeight = lineHeight
             $0.minimumLineHeight = lineHeight
@@ -274,7 +279,7 @@ extension TextAttributeSet {
             value: (lineHeight - self.label.font.lineHeight) / 2,
             range: NSRange(location: 0, length: attributedString.length)
         )
-
+        
         return self
     }
     
