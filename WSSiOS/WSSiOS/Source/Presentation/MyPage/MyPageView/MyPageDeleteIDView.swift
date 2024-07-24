@@ -21,6 +21,7 @@ final class MyPageDeleteIDView: UIView {
     private let reasonTitleLabel = UILabel()
     var reasonTableView = UITableView(frame: .zero, style: .plain)
     var reasonTextView = UITextView()
+    private var reasonTextViewPlaceholder = UILabel()
     var reasonCountLabel = UILabel()
     private let reasonCountLimitLabel = UILabel()
     
@@ -73,12 +74,16 @@ final class MyPageDeleteIDView: UIView {
         }
         
         reasonTextView.do {
-            $0.text = StringLiterals.MyPage.DeleteID.reasonPlaceHolder
             $0.font = .Body2
-            $0.textColor = .wssGray200
+            $0.textColor = .wssBlack
             $0.backgroundColor = .wssGray50
             $0.layer.cornerRadius = 14
             $0.textContainerInset = UIEdgeInsets(top: 10, left: 16, bottom: 12, right: 16)
+        }
+        
+        reasonTextViewPlaceholder.do {
+            $0.applyWSSFont(.body2, with: StringLiterals.MyPage.DeleteID.reasonPlaceHolder)
+            $0.textColor = .wssGray200
         }
         
         reasonCountLabel.do {
@@ -123,6 +128,7 @@ final class MyPageDeleteIDView: UIView {
                                reasonTextView,
                                reasonCountLimitLabel,
                                reasonCountLabel)
+        reasonTextView.addSubview(reasonTextViewPlaceholder)
         checkView.addSubviews(checkTitleLabel,
                               checkTableView)
     }
@@ -155,6 +161,11 @@ final class MyPageDeleteIDView: UIView {
                 $0.top.equalTo(reasonTableView.snp.bottom).offset(2)
                 $0.width.equalToSuperview()
                 $0.height.equalTo(114)
+                
+                reasonTextViewPlaceholder.snp.makeConstraints {
+                    $0.top.equalToSuperview().inset(10)
+                    $0.leading.trailing.equalToSuperview().inset(16)
+                }
             }
             
             reasonCountLimitLabel.snp.makeConstraints {
@@ -192,6 +203,9 @@ final class MyPageDeleteIDView: UIView {
             $0.bottom.equalToSuperview()
         }
     }
+}
+
+extension MyPageDeleteIDView {
     
     //MARK: - Custom Method
     
@@ -205,6 +219,10 @@ final class MyPageDeleteIDView: UIView {
         checkTableView.snp.updateConstraints {
             $0.height.equalTo(height)
         }
+    }
+    
+    func placeholderIsHidden(isHidden: Bool) {
+        reasonTextViewPlaceholder.isHidden = isHidden
     }
     
     //MARK: - Data

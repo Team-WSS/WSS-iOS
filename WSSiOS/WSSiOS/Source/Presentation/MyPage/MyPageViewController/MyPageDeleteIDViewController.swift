@@ -43,8 +43,6 @@ final class MyPageDeleteIDViewController: UIViewController, UIScrollViewDelegate
         
         delegate()
         register()
-        bindTableView()
-        bindAction()
         bindViewModel()
     }
     
@@ -70,26 +68,9 @@ final class MyPageDeleteIDViewController: UIViewController, UIScrollViewDelegate
             MyPageDeleteIDCheckTableViewCell.self, forCellReuseIdentifier: MyPageDeleteIDCheckTableViewCell.cellIdentifier)
     }
     
-    private func bindTableView() {
-        Observable.just(reasonCellTitle)
-            .bind(to: rootView.reasonTableView.rx.items(
-                cellIdentifier: MyPageDeleteIDReasonTableViewCell.cellIdentifier,
-                cellType: MyPageDeleteIDReasonTableViewCell.self)) { row, element, cell in
-                    cell.bindData(text: element)
-                }
-                .disposed(by: disposeBag)
-        
-        Observable.just(checkCellText)
-            .bind(to: rootView.checkTableView.rx.items(
-                cellIdentifier: MyPageDeleteIDCheckTableViewCell.cellIdentifier,
-                cellType: MyPageDeleteIDCheckTableViewCell.self)) { row, element, cell in
-                    cell.bindData(title: element.0, description: element.1)
-                }
-                .disposed(by: disposeBag)
-    }
-    
     private func bindViewModel() {
         let input = MyPageDeleteIDViewModel.Input(
+            backButtonDidTap: rootView.backButton.rx.tap,
             completeButtonDidTap: rootView.completeButton.rx.tap,
             viewDidTap: view.rx.tapGesture(),
             textUpdated: rootView.reasonTextView.rx.text.orEmpty.asObservable(),
@@ -98,31 +79,54 @@ final class MyPageDeleteIDViewController: UIViewController, UIScrollViewDelegate
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
+        output.bindReasonCell
+            .bind(to: rootView.reasonTableView.rx.items(
+                cellIdentifier: MyPageDeleteIDReasonTableViewCell.cellIdentifier,
+                cellType: MyPageDeleteIDReasonTableViewCell.self)) { row, element, cell in
+                    cell.bindData(text: element)
+                }
+                .disposed(by: disposeBag)
+        
+        output.bindCheckCell
+            .bind(to: rootView.checkTableView.rx.items(
+                cellIdentifier: MyPageDeleteIDCheckTableViewCell.cellIdentifier,
+                cellType: MyPageDeleteIDCheckTableViewCell.self)) { row, element, cell in
+                    cell.bindData(title: element.0, description: element.1)
+                }
+                .disposed(by: disposeBag)
+        
+        output.popViewController
+            .bind(with: self, onNext: { owner, _ in
+                owner.popToLastViewController()
+            })
+            .disposed(by: disposeBag)
+        
+        output.beginEditing
+            .bind(with: self, onNext: { owner, beginEditing in
+                owner.rootView.placeholderIsHidden(isHidden: true)
+            })
+            .disposed(by: disposeBag)
+        
         output.endEditing
-            .subscribe(with: self, onNext: { owner, endEditing in
+            .bind(with: self, onNext: { owner, endEditing in
                 owner.view.endEditing(endEditing)
+                let text = output.containText.value
+                if text.textIsEmpty() {
+                    owner.rootView.placeholderIsHidden(isHidden: false)
+                    output.containText.accept("")
+                }
             })
             .disposed(by: disposeBag)
         
         output.textCountLimit
-            .subscribe(with: self, onNext: { owner, count in
+            .bind(with: self, onNext: { owner, count in
                 owner.rootView.bindTextCount(count: count)
             })
             .disposed(by: disposeBag)
         
         output.containText
-            .subscribe(with: self, onNext: { owner, text in
+            .bind(with: self, onNext: { owner, text in
                 owner.rootView.bindText(text: text)
-            })
-            .disposed(by: disposeBag)
-    }
-    
-    private func bindAction() {
-        rootView.backButton.rx.tap
-            .asDriver()
-            .throttle(.seconds(3), latest: false)
-            .drive(with: self, onNext: { owner, _ in
-                owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
     }
