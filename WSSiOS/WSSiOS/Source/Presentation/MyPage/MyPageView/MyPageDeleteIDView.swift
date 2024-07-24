@@ -268,8 +268,13 @@ extension MyPageDeleteIDView {
         }
     }
     
-    func isSeleted(isSeleted: Bool) {
+    func agreeDeleteIDButtonIsSeleted(isSeleted: Bool) {
         agreeDeleteIDButton.setImage( isSeleted ? .checkSelected : .checkDefault , for: .normal)
+    }
+    
+    func completeButtonIsAble(isAble: Bool) {
+        completeButton.backgroundColor = isAble ? .Primary100 : .wssGray70
+        completeButton.isEnabled = isAble
     }
 }
 

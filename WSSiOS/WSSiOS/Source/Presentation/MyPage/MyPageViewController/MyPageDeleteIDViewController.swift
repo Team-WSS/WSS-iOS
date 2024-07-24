@@ -106,7 +106,7 @@ final class MyPageDeleteIDViewController: UIViewController, UIScrollViewDelegate
         
         output.changeAgreeButtonColor
             .bind(with: self, onNext: { owner, isTap in
-                owner.rootView.isSeleted(isSeleted: isTap)
+                owner.rootView.agreeDeleteIDButtonIsSeleted(isSeleted: isTap)
             })
             .disposed(by: disposeBag)
         
@@ -133,6 +133,7 @@ final class MyPageDeleteIDViewController: UIViewController, UIScrollViewDelegate
         output.beginEditing
             .bind(with: self, onNext: { owner, beginEditing in
                 owner.rootView.placeholderIsHidden(isHidden: true)
+                output.tapReasonCell.accept([0, 4])
             })
             .disposed(by: disposeBag)
         
@@ -156,6 +157,12 @@ final class MyPageDeleteIDViewController: UIViewController, UIScrollViewDelegate
         output.containText
             .bind(with: self, onNext: { owner, text in
                 owner.rootView.bindText(text: text)
+            })
+            .disposed(by: disposeBag)
+        
+        output.completeButtonIsAble
+            .bind(with: self, onNext: { owner, isAble in
+                owner.rootView.completeButtonIsAble(isAble: isAble)
             })
             .disposed(by: disposeBag)
     }

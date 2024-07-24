@@ -18,7 +18,7 @@ final class MyPageDeleteIDViewModel: ViewModelType {
     
     private let reasonCellTitle = BehaviorRelay<[String]>(value: StringLiterals.MyPage.DeleteIDReason.allCases.map { $0.rawValue })
     private let checkCellTitle = BehaviorRelay<[(String, String)]>(value: zip(StringLiterals.MyPage.DeleteIDCheckTitle.allCases, StringLiterals.MyPage.DeleteIDCheckContent.allCases).map { ($0.rawValue, $1.rawValue) })
-    private var agreeAllButtonIsTap: Bool = false
+    private let reasonCellTap = BehaviorRelay<Bool>(value: false)
     
     //MARK: - Life Cycle
     
@@ -39,7 +39,7 @@ final class MyPageDeleteIDViewModel: ViewModelType {
         let tapReasonCell = PublishRelay<IndexPath>()
         let popViewController = PublishRelay<Bool>() 
         let changeAgreeButtonColor = BehaviorRelay<Bool>(value: false)
-        let completeButtonIsAlbe = BehaviorRelay<Bool>(value: false)
+        let completeButtonIsAble = BehaviorRelay<Bool>(value: false)
         let textCountLimit = PublishRelay<Int>()
         let beginEditing = PublishRelay<Bool>()
         let endEditing = PublishRelay<Bool>()
@@ -58,15 +58,18 @@ final class MyPageDeleteIDViewModel: ViewModelType {
         
         input.agreeAllButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
-                owner.agreeAllButtonIsTap.toggle()
-                output.changeAgreeButtonColor.accept(owner.agreeAllButtonIsTap)
+                let currentValue = output.changeAgreeButtonColor.value
+                output.changeAgreeButtonColor.accept(!currentValue)
             })
             .disposed(by: disposeBag)
         
         input.reasonCellTap
             .subscribe(with: self, onNext: { owner, indexPath in
-                print(indexPath)
                 output.tapReasonCell.accept(indexPath)
+                owner.reasonCellTap.accept(true)
+                if indexPath != [0, 4] {
+                    output.containText.accept("")
+                }
             })
             .disposed(by: disposeBag)
         
@@ -101,11 +104,16 @@ final class MyPageDeleteIDViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        Observable
+            .combineLatest(reasonCellTap, output.changeAgreeButtonColor)
+            .map { $0 && $1 }
+            .bind(to: output.completeButtonIsAble)
+            .disposed(by: disposeBag)
+        
         return output
     }
     
     //MARK: - Custom Method
-    
     
     //MARK: - API
     
