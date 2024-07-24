@@ -65,7 +65,7 @@ final class MyPageDeleteIDRecordView: UIView {
     
     private func setLayout() {
         stackView.snp.makeConstraints {
-            $0.center.width.equalToSuperview()
+            $0.edges.equalToSuperview()
         }
         
         stackView.do {

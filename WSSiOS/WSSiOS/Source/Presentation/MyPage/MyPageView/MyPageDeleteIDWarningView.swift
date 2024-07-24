@@ -14,10 +14,17 @@ final class MyPageDeleteIDWarningView: UIView {
     
     //MARK: - Components
     
+    private let titleLabel = UILabel()
+    private let descriptionLabel = UILabel()
+    lazy var completeButton = WSSMainButton(title: StringLiterals.MyPage.DeleteIDWarning.buttonTitle)
+    
     private let interestView = MyPageDeleteIDRecordView()
     private let watchingView = MyPageDeleteIDRecordView()
     private let watchedView = MyPageDeleteIDRecordView()
     private let quitView = MyPageDeleteIDRecordView()
+    
+    //In NavigationBar
+    lazy var backButton = UIButton()
     
     // MARK: - Life Cycle
     
@@ -36,32 +43,58 @@ final class MyPageDeleteIDWarningView: UIView {
     //MARK: - UI
     
     private func setUI() {
-        //
+        self.backgroundColor = .wssWhite
+        
+        titleLabel.do {
+            $0.applyWSSFont(.headline1, with: StringLiterals.MyPage.DeleteIDWarning.title)
+            $0.textColor = .wssBlack
+        }
+        
+        descriptionLabel.do {
+            $0.applyWSSFont(.body2, with: StringLiterals.MyPage.DeleteIDWarning.description)
+            $0.textColor = .Gray200
+        }
+        
+        backButton.do {
+            $0.setImage(.icNavigateLeft.withRenderingMode(.alwaysOriginal), for: .normal)
+        }
     }
     
     private func setHierarchy() {
-        self.addSubviews(interestView,
+        self.addSubviews(titleLabel,
+                         descriptionLabel,
+                         interestView,
                          watchingView,
                          watchedView,
-                         quitView)
+                         quitView,
+                         completeButton)
     }
     
     private func setLayout() {
-
+        titleLabel.snp.makeConstraints {
+            $0.top.equalTo(safeAreaLayoutGuide.snp.top).offset(45)
+            $0.leading.equalToSuperview().inset(20)
+        }
+        
+        descriptionLabel.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom).offset(8)
+            $0.leading.equalToSuperview().inset(20)
+        }
+        
         interestView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(100)
+            $0.top.equalTo(descriptionLabel.snp.bottom).offset(60)
             $0.leading.equalToSuperview().inset(20)
             $0.trailing.equalTo(self.snp.centerX).offset(-3)
         }
         
         watchingView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(100)
+            $0.top.equalTo(descriptionLabel.snp.bottom).offset(60)
             $0.trailing.equalToSuperview().inset(20)
             $0.leading.equalTo(self.snp.centerX).offset(3)
         }
         
         watchedView.snp.makeConstraints {
-            $0.top.equalTo(interestView.snp.bottom).offset(3)
+            $0.top.equalTo(watchingView.snp.bottom).offset(3)
             $0.leading.equalToSuperview().inset(20)
             $0.trailing.equalTo(self.snp.centerX).offset(-3)
         }
@@ -71,10 +104,14 @@ final class MyPageDeleteIDWarningView: UIView {
             $0.trailing.equalToSuperview().inset(20)
             $0.leading.equalTo(self.snp.centerX).offset(3)
         }
+        
+        completeButton.snp.makeConstraints {
+            $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).offset(10)
+        }
     }
     
     //MARK: - Data
-
+    
     func bindData(count: UserNovelStatusResult) {
         interestView.bindData(icon: .interest, status: StringLiterals.MyPage.DeleteIDWarning.interest, count: String(describing: count.interestNovelCount))
         watchingView.bindData(icon: .watching, status: StringLiterals.MyPage.DeleteIDWarning.watching, count: String(describing: count.watchingNovelCount))

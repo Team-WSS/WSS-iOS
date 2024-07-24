@@ -143,6 +143,10 @@ enum StringLiterals {
         }
         
         enum DeleteIDWarning {
+            static let title = "정말 탈퇴하시겠어요?"
+            static let description = "남겼던 평가와 기록들이 모두 사라져요.."
+            static let buttonTitle = "탈퇴하기"
+            
             static let interest = "관심"
             static let watching = "보는 중"
             static let watched = "봤어요"
