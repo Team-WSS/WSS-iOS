@@ -127,6 +127,10 @@ final class MyPageDeleteIDView: UIView {
             $0.titleLabel?.font = .Title1
             $0.isEnabled = false
         }
+        
+        backButton.do {
+            $0.setImage(.icNavigateLeft.withRenderingMode(.alwaysOriginal), for: .normal)
+        }
     }
     
     private func setHierarchy() {

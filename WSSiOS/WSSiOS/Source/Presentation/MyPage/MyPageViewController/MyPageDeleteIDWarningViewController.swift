@@ -38,6 +38,7 @@ final class MyPageDeleteIDWarningViewController: UIViewController {
     
         setNavigationBar()
         hideTabBar()
+        swipeBackGesture()
     }
     
     private func setNavigationBar() {
@@ -59,7 +60,7 @@ final class MyPageDeleteIDWarningViewController: UIViewController {
             .asDriver()
             .throttle(.seconds(3), latest: false)
             .drive(with: self, onNext: { owner, _ in
-                owner.popToLastViewController()
+                owner.pushToMyPageDeleteIDViewController()
             })
             .disposed(by: disposeBag)
     }

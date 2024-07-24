@@ -51,6 +51,7 @@ final class MyPageDeleteIDViewController: UIViewController, UIScrollViewDelegate
         
         setNavigationBar()
         hideTabBar()
+        swipeBackGesture()
     }
     
     private func delegate() {

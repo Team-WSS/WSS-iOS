@@ -95,6 +95,12 @@ final class MyPageDeleteIDViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        input.completeButtonDidTap
+            .subscribe(onNext: { _ in
+                //서버연결 
+            })
+            .disposed(by: disposeBag)
+        
         return output
     }
     

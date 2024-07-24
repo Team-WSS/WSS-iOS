@@ -108,6 +108,10 @@ final class MyPageDeleteIDWarningView: UIView {
         completeButton.snp.makeConstraints {
             $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).offset(10)
         }
+        
+        backButton.do {
+            $0.setImage(.icNavigateLeft.withRenderingMode(.alwaysOriginal), for: .normal)
+        }
     }
     
     //MARK: - Data
