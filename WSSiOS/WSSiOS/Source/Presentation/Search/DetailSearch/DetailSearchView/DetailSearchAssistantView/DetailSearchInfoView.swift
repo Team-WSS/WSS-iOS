@@ -15,7 +15,7 @@ final class DetailSearchInfoView: UIView {
     //MARK: - UI Components
     
     /// 장르
-    private let genreTItleLabel = UILabel()
+    private let genreTitleLabel = UILabel()
     
     let genreCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     
@@ -53,7 +53,7 @@ final class DetailSearchInfoView: UIView {
     }
     
     private func setUI() {
-        genreTItleLabel.do {
+        genreTitleLabel.do {
             $0.applyWSSFont(.title2, with: StringLiterals.DetailSearch.genre)
             $0.textColor = .wssBlack
         }
@@ -138,7 +138,7 @@ final class DetailSearchInfoView: UIView {
         
         ratingBottomStackView.addArrangedSubviews(aboveFourPointFiveKeywordView,
                                                   aboveFourPointEightKeywordView)
-        self.addSubviews(genreTItleLabel,
+        self.addSubviews(genreTitleLabel,
                          genreCollectionView,
                          statusTitleLabel,
                          statusStackView,
@@ -148,13 +148,13 @@ final class DetailSearchInfoView: UIView {
     }
     
     private func setLayout() {
-        genreTItleLabel.snp.makeConstraints {
+        genreTitleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(10)
             $0.leading.equalToSuperview().inset(20)
         }
         
         genreCollectionView.snp.makeConstraints {
-            $0.top.equalTo(genreTItleLabel.snp.bottom).offset(16)
+            $0.top.equalTo(genreTitleLabel.snp.bottom).offset(16)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(88)
         }

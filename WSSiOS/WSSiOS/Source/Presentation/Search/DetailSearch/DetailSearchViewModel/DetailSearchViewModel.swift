@@ -10,6 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 import RxGesture
+import RxRelay
 
 final class DetailSearchViewModel: ViewModelType {
     
@@ -39,7 +40,8 @@ final class DetailSearchViewModel: ViewModelType {
         let cancelButtonEnabled = input.cancelButtonDidTap.asObservable()
         
         let genreCollectionViewContentSize = input.genreCollectionViewContentSize
-            .map { $0?.height ?? 0 }.asDriver(onErrorJustReturn: 0)
+            .map { $0?.height ?? 0 }
+            .asDriver(onErrorJustReturn: 0)
 
         input.infoTabDidTap
             .subscribe(with: self, onNext: { owner, _ in
