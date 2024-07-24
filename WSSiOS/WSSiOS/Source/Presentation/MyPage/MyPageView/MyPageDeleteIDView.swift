@@ -15,8 +15,9 @@ final class MyPageDeleteIDView: UIView {
     //MARK: - Components
     
     private let scrollView = UIScrollView()
-    private let stackView = UIStackView()
-  
+    private let contentView = UIView()
+    
+    let reasonView = MyPageDeleteIDReasonView()
     lazy var completeButton = UIButton()
     
     //In NavigationBar
@@ -41,6 +42,10 @@ final class MyPageDeleteIDView: UIView {
     private func setUI() {
         self.backgroundColor = .wssWhite
         
+        scrollView.do {
+            $0.showsVerticalScrollIndicator = false
+        }
+        
         completeButton.do {
             $0.backgroundColor = .wssGray70
             $0.layer.cornerRadius = 14
@@ -53,8 +58,9 @@ final class MyPageDeleteIDView: UIView {
     
     private func setHierarchy() {
         self.addSubview(scrollView)
-        scrollView.addSubview(stackView)
-        stackView.addArrangedSubviews(completeButton)
+        scrollView.addSubview(contentView)
+        contentView.addSubviews(reasonView,
+                                      completeButton)
     }
     
     private func setLayout() {
@@ -62,11 +68,19 @@ final class MyPageDeleteIDView: UIView {
             $0.edges.equalToSuperview()
         }
         
-        stackView.snp.makeConstraints {
+        contentView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+            $0.width.equalToSuperview()
+        }
+        
+        reasonView.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(45)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(415)
         }
         
         completeButton.snp.makeConstraints {
+            $0.top.equalTo(reasonView.snp.bottom).offset(300)
             $0.leading.trailing.equalToSuperview().inset(16)
             $0.height.equalTo(53)
             $0.bottom.equalToSuperview()
@@ -75,7 +89,7 @@ final class MyPageDeleteIDView: UIView {
     
     //MARK: - Data
     
-   
+    
 }
 
 

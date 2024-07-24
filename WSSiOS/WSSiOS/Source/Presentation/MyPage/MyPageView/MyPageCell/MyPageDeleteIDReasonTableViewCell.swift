@@ -11,7 +11,7 @@ import SnapKit
 import Then
 
 final class MyPageDeleteIDReasonTableViewCell: UITableViewCell {
-
+    
     //MARK: - Components
     
     private let checkButton = UIButton()
@@ -43,11 +43,15 @@ final class MyPageDeleteIDReasonTableViewCell: UITableViewCell {
             $0.setImage(.checkDefault, for: .normal)
             $0.addTarget(self, action: #selector(isSeleted), for: .touchUpInside)
         }
+        
+        titleLabel.do {
+            $0.tintColor = .black
+        }
     }
     
     private func setHierarchy() {
         self.addSubviews(checkButton,
-        titleLabel)
+                         titleLabel)
     }
     
     private func setLayout() {
@@ -65,6 +69,12 @@ final class MyPageDeleteIDReasonTableViewCell: UITableViewCell {
     @objc
     private func isSeleted() {
         checkButton.setImage(.checkSelected, for: .normal)
+    }
+    
+    //MARK: - Data
+    
+    func bindData(text: String) {
+        titleLabel.applyWSSFont(.body2, with: text)
     }
 }
 

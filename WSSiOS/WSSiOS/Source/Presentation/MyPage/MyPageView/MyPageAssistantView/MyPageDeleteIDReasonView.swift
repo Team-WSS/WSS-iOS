@@ -15,9 +15,9 @@ final class MyPageDeleteIDReasonView: UIView {
     //MARK: - Components
     
     private let titleLabel = UILabel()
-    let tableView = UITableView(frame: .zero, style: .plain)
-    lazy var textView = UITextView()
-    lazy var countLabel = UILabel()
+    var tableView = UITableView(frame: .zero, style: .plain)
+    var textView = UITextView()
+    var countLabel = UILabel()
     private let countLimitLabel = UILabel()
     
     // MARK: - Life Cycle
@@ -42,9 +42,9 @@ final class MyPageDeleteIDReasonView: UIView {
         titleLabel.do {
             $0.textColor = .wssBlack
             $0.makeAttribute(with: StringLiterals.MyPage.DeleteID.reasonTitle)?
+                .partialColor(color: .wssPrimary100, rangeString: "탈퇴사유")
                 .lineHeight(1.17)
                 .kerning(kerningPixel: -1.2)
-                .partialColor(color: .wssPrimary100, rangeString: "탈퇴사유")
                 .applyAttribute()
             $0.font = .HeadLine1
         }
@@ -56,7 +56,6 @@ final class MyPageDeleteIDReasonView: UIView {
         }
         
         textView.do {
-            //            $0.applyWSSFont(.body2, with: StringLiterals.MyPage.DeleteID.reasonPlaceHolder)
             $0.text = StringLiterals.MyPage.DeleteID.reasonPlaceHolder
             $0.font = .Body2
             $0.textColor = .wssGray200
@@ -86,8 +85,7 @@ final class MyPageDeleteIDReasonView: UIView {
     
     private func setLayout() {
         titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(45)
-            $0.leading.equalToSuperview()
+            $0.top.leading.equalToSuperview()
         }
         
         tableView.snp.makeConstraints {
@@ -96,22 +94,18 @@ final class MyPageDeleteIDReasonView: UIView {
         }
         
         textView.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview()
-            $0.height.equalTo(114)
+            $0.top.equalTo(tableView.snp.bottom).offset(2)
+            $0.width.equalToSuperview()
         }
         
         countLimitLabel.snp.makeConstraints {
             $0.top.equalTo(textView.snp.bottom).offset(4)
-            $0.trailing.equalToSuperview()
-            $0.bottom.equalToSuperview()
+            $0.trailing.equalTo(textView.snp.trailing)
         }
         
         countLabel.snp.makeConstraints {
-            $0.centerY.equalTo(countLimitLabel.snp.centerY)
+            $0.top.equalTo(countLimitLabel.snp.top)
             $0.trailing.equalTo(countLimitLabel.snp.leading)
-            $0.bottom.equalToSuperview()
         }
     }
 }
-
-

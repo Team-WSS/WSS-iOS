@@ -13,6 +13,8 @@ final class MyPageDeleteIDViewController: UIViewController {
     
     //MARK: - Properties
     
+    private let reasonCellTitle = StringLiterals.MyPage.DeleteIDReason.allCases.map { $0.rawValue }
+    
     //MARK: - Components
     
     private let disposeBag = DisposeBag()
@@ -27,22 +29,31 @@ final class MyPageDeleteIDViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        delegate()
+        register()
         bindAction()
+        bindTableView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-    
+        
         setNavigationBar()
         hideTabBar()
     }
     
-    private func setNavigationBar() {
-        preparationSetNavigationBar(title: StringLiterals.Navigation.Title.deleteID,
-                                    left: self.rootView.backButton,
-                                    right: nil)
+    private func delegate() {
+        rootView.reasonView.tableView.rx
+            .setDelegate(self)
+            .disposed(by: disposeBag)
     }
-
+    
+    private func register() {
+        rootView.reasonView.tableView.register(
+            MyPageDeleteIDReasonTableViewCell.self,
+            forCellReuseIdentifier: MyPageDeleteIDReasonTableViewCell.cellIdentifier)
+    }
+    
     private func bindAction() {
         rootView.backButton.rx.tap
             .asDriver()
@@ -52,6 +63,32 @@ final class MyPageDeleteIDViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+    }
+    
+    private func bindTableView() {
+        Observable.just(reasonCellTitle)
+            .bind(to: rootView.reasonView.tableView.rx.items(
+                cellIdentifier: MyPageDeleteIDReasonTableViewCell.cellIdentifier,
+                cellType: MyPageDeleteIDReasonTableViewCell.self)) { row, element, cell in
+                    cell.bindData(text: element)
+                }
+                .disposed(by: disposeBag)
+    }
+}
+
+extension MyPageDeleteIDViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 44
+    }
+}
+
+//MARK: - UI
+
+extension MyPageDeleteIDViewController {
+    private func setNavigationBar() {
+        preparationSetNavigationBar(title: StringLiterals.Navigation.Title.deleteID,
+                                    left: self.rootView.backButton,
+                                    right: nil)
     }
 }
 
