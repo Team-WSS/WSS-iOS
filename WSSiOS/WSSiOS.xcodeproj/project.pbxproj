@@ -34,6 +34,10 @@
 		2C79CB992B45A0B200734E1F /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2C79CB982B45A0B200734E1F /* Pretendard-Bold.otf */; };
 		2C79CB9B2B45A0B700734E1F /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2C79CB9A2B45A0B700734E1F /* Pretendard-Regular.otf */; };
 		2C79CB9D2B45A1DD00734E1F /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C79CB9C2B45A1DD00734E1F /* UIFont+.swift */; };
+		2C8F89432C50CF250056895B /* MyPageDeleteIDWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8F89422C50CF250056895B /* MyPageDeleteIDWarningView.swift */; };
+		2C8F89452C50CF470056895B /* MyPageDeleteIDWarningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8F89442C50CF470056895B /* MyPageDeleteIDWarningViewController.swift */; };
+		2C8F89472C50CFA30056895B /* MyPageDeleteIDRecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8F89462C50CFA30056895B /* MyPageDeleteIDRecordView.swift */; };
+		2C8F89492C50D37A0056895B /* UserNovelStatusResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8F89482C50D37A0056895B /* UserNovelStatusResult.swift */; };
 		2CA2F64E2B527B060045B4C2 /* MyPageCustomModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2F64D2B527B060045B4C2 /* MyPageCustomModalView.swift */; };
 		2CA2F6502B527B3A0045B4C2 /* MyPageCustomModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2F64F2B527B3A0045B4C2 /* MyPageCustomModalViewController.swift */; };
 		2CA2F6522B527B590045B4C2 /* MyPageModalAvatarFeatureLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2F6512B527B590045B4C2 /* MyPageModalAvatarFeatureLabelView.swift */; };
@@ -218,8 +222,6 @@
 		B9B0CBD62BE29EA0002F4CF6 /* HomeInterestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B0CBD52BE29EA0002F4CF6 /* HomeInterestView.swift */; };
 		B9B0CBD82BE2A09B002F4CF6 /* HomeInterestCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B0CBD72BE2A09B002F4CF6 /* HomeInterestCollectionViewCell.swift */; };
 		B9CEDA0D2C01C97E00E62247 /* HomeUnregisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9CEDA0C2C01C97E00E62247 /* HomeUnregisterView.swift */; };
-		B9FE59642BF11955005815AF /* HomeInduceLoginModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FE59632BF11955005815AF /* HomeInduceLoginModalView.swift */; };
-		B9CEDA0D2C01C97E00E62247 /* HomeUnregisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9CEDA0C2C01C97E00E62247 /* HomeUnregisterView.swift */; };
 		B9E565F52C04517A00DB51FF /* NormalSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E565F42C04517A00DB51FF /* NormalSearchViewController.swift */; };
 		B9E565F92C04520A00DB51FF /* NormalSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E565F82C04520A00DB51FF /* NormalSearchView.swift */; };
 		B9E565FF2C0452AA00DB51FF /* NormalSearchEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E565FE2C0452AA00DB51FF /* NormalSearchEmptyView.swift */; };
@@ -302,6 +304,10 @@
 		2C79CB982B45A0B200734E1F /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
 		2C79CB9A2B45A0B700734E1F /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
 		2C79CB9C2B45A1DD00734E1F /* UIFont+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+.swift"; sourceTree = "<group>"; };
+		2C8F89422C50CF250056895B /* MyPageDeleteIDWarningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageDeleteIDWarningView.swift; sourceTree = "<group>"; };
+		2C8F89442C50CF470056895B /* MyPageDeleteIDWarningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageDeleteIDWarningViewController.swift; sourceTree = "<group>"; };
+		2C8F89462C50CFA30056895B /* MyPageDeleteIDRecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageDeleteIDRecordView.swift; sourceTree = "<group>"; };
+		2C8F89482C50D37A0056895B /* UserNovelStatusResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNovelStatusResult.swift; sourceTree = "<group>"; };
 		2CA2F64D2B527B060045B4C2 /* MyPageCustomModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageCustomModalView.swift; sourceTree = "<group>"; };
 		2CA2F64F2B527B3A0045B4C2 /* MyPageCustomModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageCustomModalViewController.swift; sourceTree = "<group>"; };
 		2CA2F6512B527B590045B4C2 /* MyPageModalAvatarFeatureLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageModalAvatarFeatureLabelView.swift; sourceTree = "<group>"; };
@@ -687,6 +693,7 @@
 				2C5D0F5E2B50523B00C76D3C /* MyPageChangeNicknameViewController.swift */,
 				2CA2F64F2B527B3A0045B4C2 /* MyPageCustomModalViewController.swift */,
 				2CB613F22B575E4500FC3F89 /* MyPageInfoViewController.swift */,
+				2C8F89442C50CF470056895B /* MyPageDeleteIDWarningViewController.swift */,
 			);
 			path = MyPageViewController;
 			sourceTree = "<group>";
@@ -700,6 +707,7 @@
 				2CB613F42B575E6A00FC3F89 /* MyPageInfoView.swift */,
 				2C5D0F572B4FDE7500C76D3C /* MyPageCell */,
 				2CCBF9FE2B4DBF6A00D787C2 /* MyPageAssistantView */,
+				2C8F89422C50CF250056895B /* MyPageDeleteIDWarningView.swift */,
 			);
 			path = MyPageView;
 			sourceTree = "<group>";
@@ -722,6 +730,7 @@
 				2CCBFA072B4DE38800D787C2 /* MyPageInventoryView.swift */,
 				2C5D0F5A2B500EF100C76D3C /* MyPageSettingView.swift */,
 				2CA2F6512B527B590045B4C2 /* MyPageModalAvatarFeatureLabelView.swift */,
+				2C8F89462C50CFA30056895B /* MyPageDeleteIDRecordView.swift */,
 			);
 			path = MyPageAssistantView;
 			sourceTree = "<group>";
@@ -1431,6 +1440,7 @@
 				39D4A5D12BDC0902004FC834 /* NovelDetailHeaderResult.swift */,
 				2CD911452C0D88CA006B8D72 /* TotalFeedResult.swift */,
 				B9AC1BD92BF0BE23006EDE92 /* NoticeResult.swift */,
+				2C8F89482C50D37A0056895B /* UserNovelStatusResult.swift */,
 			);
 			path = DTO;
 			sourceTree = "<group>";
@@ -1779,6 +1789,7 @@
 			files = (
 				B9095D2C2C39514D007521EF /* HomeNoticeDetailContentView.swift in Sources */,
 				2CD9115A2C0D8A23006B8D72 /* FeedView.swift in Sources */,
+				2C8F89492C50D37A0056895B /* UserNovelStatusResult.swift in Sources */,
 				2C60307B2B55D9160031544C /* UIImageView+.swift in Sources */,
 				B9095D2A2C3950B4007521EF /* HomeNoticeDetailView.swift in Sources */,
 				A1EF35692B52FD9B00A94C53 /* AvatarResult.swift in Sources */,
@@ -1937,6 +1948,7 @@
 				B9FE59642BF11955005815AF /* HomeInduceLoginModalView.swift in Sources */,
 				2CB613F32B575E4500FC3F89 /* MyPageInfoViewController.swift in Sources */,
 				2CCBF9F22B4D347B00D787C2 /* WSSMainButton.swift in Sources */,
+				2C8F89452C50CF470056895B /* MyPageDeleteIDWarningViewController.swift in Sources */,
 				A1CB373A2B72935900CB290F /* UITableViewCell+.swift in Sources */,
 				A1147A802B50638200141692 /* RecordViewController.swift in Sources */,
 				B9F7401D2C047E360018D0C6 /* NormalSearchViewModel.swift in Sources */,
@@ -1990,6 +2002,7 @@
 				CD39F2C32B4FFDF900B73A5C /* TrashNovelDetailMemoView.swift in Sources */,
 				CD3E5AB32B565DFF00C0A659 /* NovelMemoResult.swift in Sources */,
 				A122C9E12B530A4100DFCFE4 /* (null) in Sources */,
+				2C8F89472C50CFA30056895B /* MyPageDeleteIDRecordView.swift in Sources */,
 				2C421FE82B96DC0F000DCB87 /* MyPageCustomModalViewModel.swift in Sources */,
 				2CD911502C0D8A0D006B8D72 /* FeedReactView.swift in Sources */,
 				CD39F2D02B50CD4700B73A5C /* TrashNovelDetailInfoReadStatusView.swift in Sources */,
@@ -1997,6 +2010,7 @@
 				CD39F2B82B4FE0FB00B73A5C /* TrashNovelDetailViewController.swift in Sources */,
 				CD39F2DE2B50E11000B73A5C /* TrashNovelDetailInfoKeywordCollectionViewCell.swift in Sources */,
 				399F29352B56DA7800BBC12B /* ReadStatus.swift in Sources */,
+				2C8F89432C50CF250056895B /* MyPageDeleteIDWarningView.swift in Sources */,
 				B9E565F92C04520A00DB51FF /* NormalSearchView.swift in Sources */,
 				CD39F2C12B4FF81E00B73A5C /* UIButton+.swift in Sources */,
 				A147CBC42B4D662E0040AE39 /* SearchView.swift in Sources */,

@@ -141,6 +141,13 @@ enum StringLiterals {
             static let complete = "완료"
             static let nickname = "닉네임"
         }
+        
+        enum DeleteIDWarning {
+            static let interest = "관심"
+            static let watching = "보는 중"
+            static let watched = "봤어요"
+            static let quit = "하차"
+        }
     }
     
     enum Library {
