@@ -208,6 +208,18 @@ final class MyPageDeleteIDView: UIView {
     }
     
     //MARK: - Data
+    
+    func bindTextCount(count: Int) {
+        reasonCountLabel.do {
+            $0.applyWSSFont(.label1, with: String(count))
+        }
+    }
+    
+    func bindText(text: String) {
+        reasonTextView.do {
+            $0.text = text
+        }
+    }
 }
 
 
