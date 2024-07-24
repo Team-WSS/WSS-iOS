@@ -36,12 +36,10 @@ final class MyPageDeleteIDReasonTableViewCell: UITableViewCell {
     private func setUI() {
         self.do {
             $0.backgroundColor = .wssWhite
-            $0.selectionStyle = .none
         }
         
         checkButton.do {
             $0.setImage(.checkDefault, for: .normal)
-            $0.addTarget(self, action: #selector(isSeleted), for: .touchUpInside)
         }
         
         titleLabel.do {
@@ -66,9 +64,10 @@ final class MyPageDeleteIDReasonTableViewCell: UITableViewCell {
         }
     }
     
-    @objc
-    private func isSeleted() {
-        checkButton.setImage(.checkSelected, for: .normal)
+    //MARK: - Custom Method
+    
+    func isSeleted(isSeleted: Bool) {
+        checkButton.setImage( isSeleted ? .checkSelected : .checkDefault , for: .normal)
     }
     
     //MARK: - Data

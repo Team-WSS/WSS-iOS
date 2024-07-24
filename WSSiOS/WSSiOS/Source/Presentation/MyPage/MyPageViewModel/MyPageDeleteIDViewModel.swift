@@ -23,6 +23,7 @@ final class MyPageDeleteIDViewModel: ViewModelType {
     
     struct Input {
         let backButtonDidTap: ControlEvent<Void>
+        let reasonCellTap: ControlEvent<IndexPath>
         let completeButtonDidTap: ControlEvent<Void>
         let viewDidTap: ControlEvent<UITapGestureRecognizer>
         let textUpdated: Observable<String>
@@ -33,6 +34,7 @@ final class MyPageDeleteIDViewModel: ViewModelType {
     struct Output {
         let bindReasonCell: Observable<[String]>
         let bindCheckCell: Observable<[(String, String)]>
+        let tapReasonCell = PublishRelay<IndexPath>()
         let popViewController = PublishRelay<Bool>() 
         let textCountLimit = PublishRelay<Int>()
         let beginEditing = PublishRelay<Bool>()
@@ -47,6 +49,13 @@ final class MyPageDeleteIDViewModel: ViewModelType {
         input.backButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
                 output.popViewController.accept(true)
+            })
+            .disposed(by: disposeBag)
+        
+        input.reasonCellTap
+            .subscribe(with: self, onNext: { owner, indexPath in
+                print(indexPath)
+                output.tapReasonCell.accept(indexPath)
             })
             .disposed(by: disposeBag)
         

@@ -54,6 +54,10 @@ final class MyPageDeleteIDViewController: UIViewController, UIScrollViewDelegate
     }
     
     private func delegate() {
+        rootView.reasonTableView.rx
+            .setDelegate(self)
+            .disposed(by: disposeBag)
+        
         rootView.reasonTextView.rx
             .setDelegate(self)
             .disposed(by: disposeBag)
@@ -71,6 +75,7 @@ final class MyPageDeleteIDViewController: UIViewController, UIScrollViewDelegate
     private func bindViewModel() {
         let input = MyPageDeleteIDViewModel.Input(
             backButtonDidTap: rootView.backButton.rx.tap,
+            reasonCellTap: rootView.reasonTableView.rx.itemSelected,
             completeButtonDidTap: rootView.completeButton.rx.tap,
             viewDidTap: view.rx.tapGesture(),
             textUpdated: rootView.reasonTextView.rx.text.orEmpty.asObservable(),
@@ -84,6 +89,7 @@ final class MyPageDeleteIDViewController: UIViewController, UIScrollViewDelegate
                 cellIdentifier: MyPageDeleteIDReasonTableViewCell.cellIdentifier,
                 cellType: MyPageDeleteIDReasonTableViewCell.self)) { row, element, cell in
                     cell.bindData(text: element)
+                    cell.contentView.isUserInteractionEnabled = false
                 }
                 .disposed(by: disposeBag)
         
@@ -94,6 +100,19 @@ final class MyPageDeleteIDViewController: UIViewController, UIScrollViewDelegate
                     cell.bindData(title: element.0, description: element.1)
                 }
                 .disposed(by: disposeBag)
+        
+        output.tapReasonCell
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, indexPath in
+                owner.rootView.reasonTableView.visibleCells.forEach { cell in
+                    let cellIndexPath = self.rootView.reasonTableView.indexPath(for: cell)
+                    if let cell = cell as? MyPageDeleteIDReasonTableViewCell {
+                        cell.isSeleted(isSeleted: cellIndexPath == indexPath)
+                        print(cellIndexPath, " ", indexPath)
+                    }
+                }
+            })
+            .disposed(by: disposeBag)
         
         output.popViewController
             .bind(with: self, onNext: { owner, _ in
