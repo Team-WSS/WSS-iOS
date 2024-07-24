@@ -155,7 +155,11 @@ final class MyPageDeleteIDView: UIView {
     
     private func setLayout() {
         scrollView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            if UIScreen.isSE {
+                $0.edges.equalTo(safeAreaLayoutGuide.snp.edges)
+            } else {
+                $0.edges.equalToSuperview()
+            }
         }
         
         contentView.snp.makeConstraints {
