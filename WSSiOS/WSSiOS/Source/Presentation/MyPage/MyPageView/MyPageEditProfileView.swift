@@ -39,7 +39,8 @@ final class MyPageEditProfileView: UIView {
     private let genreView = UIView()
     private let genreLabel = UILabel()
     private let genreDescriptionLabel = UILabel()
-    private let genreTableView = UITableView(frame: .zero, style: .plain)
+    private let genreCollectionView = UICollectionView(frame: .zero,
+                                                       collectionViewLayout: UICollectionViewLayout())
     
     //In VC
     lazy var backButton = UIButton()
@@ -146,6 +147,17 @@ final class MyPageEditProfileView: UIView {
                 $0.applyWSSFont(.body5, with: StringLiterals.MyPage.EditProfile.genreDescription)
                 $0.textColor = .Gray200
             }
+            
+            genreCollectionView.do {
+                let layout = LeftAlignedCollectionViewFlowLayout()
+                layout.scrollDirection = .vertical
+                layout.minimumLineSpacing = 14
+                layout.minimumInteritemSpacing = 6
+                
+                $0.backgroundColor = .wssWhite
+                $0.collectionViewLayout = layout
+                $0.isScrollEnabled = false
+            }
         }
         
         [divide1View, divide2View].forEach { 
@@ -186,7 +198,7 @@ final class MyPageEditProfileView: UIView {
         introTextView.addSubview(introTextViewPlaceholder)
         genreView.addSubviews(genreLabel,
                               genreDescriptionLabel,
-                              genreTableView)
+                              genreCollectionView)
     }
     
     private func setLayout() {
@@ -284,6 +296,12 @@ final class MyPageEditProfileView: UIView {
             genreDescriptionLabel.snp.makeConstraints {
                 $0.top.equalTo(genreLabel.snp.bottom).offset(6)
                 $0.leading.equalToSuperview().inset(20)
+            }
+            
+            genreCollectionView.snp.makeConstraints {
+                $0.top.equalTo(genreDescriptionLabel.snp.bottom).offset(14)
+                $0.leading.trailing.equalToSuperview().inset(20)
+                $0.height.equalTo(88)
             }
         }
         
