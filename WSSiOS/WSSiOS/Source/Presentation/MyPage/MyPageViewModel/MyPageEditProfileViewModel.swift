@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 import RxSwift
 import RxCocoa
@@ -23,10 +24,10 @@ final class MyPageEditProfileViewModel: ViewModelType {
     struct Input {
         let backButtonDidTap: ControlEvent<Void>
         let completeButtonDidTap: ControlEvent<Void>
-        let profileViewDidTap: ControlEvent<Void>
+        let profileViewDidTap: Observable<UITapGestureRecognizer>
         let clearButtonDidTap: ControlEvent<Void>
         let checkButtonDidTap: ControlEvent<Void>
-        let genreCellTap: ControlEvent<String>
+        let genreCellTap: ControlEvent<String.Type>
     }
     
     struct Output {

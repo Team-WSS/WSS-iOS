@@ -39,7 +39,7 @@ final class MyPageEditProfileView: UIView {
     private let genreView = UIView()
     private let genreLabel = UILabel()
     private let genreDescriptionLabel = UILabel()
-    private let genreCollectionView = UICollectionView(frame: .zero,
+    lazy var genreCollectionView = UICollectionView(frame: .zero,
                                                        collectionViewLayout: UICollectionViewLayout())
     
     //In VC
@@ -301,7 +301,7 @@ final class MyPageEditProfileView: UIView {
             genreCollectionView.snp.makeConstraints {
                 $0.top.equalTo(genreDescriptionLabel.snp.bottom).offset(14)
                 $0.leading.trailing.equalToSuperview().inset(20)
-                $0.height.equalTo(88)
+                $0.height.equalTo(200)
             }
         }
         
