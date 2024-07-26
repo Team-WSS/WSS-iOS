@@ -11,9 +11,13 @@ import RxSwift
 
 final class MyPageEditProfileViewController: UIViewController {
 
-    //MARK: - Components
+    //MARK: - Properties
     
     private let disposeBag = DisposeBag()
+    private let viewModel = 
+    
+    //MARK: - Components
+    
     private let rootView = MyPageEditProfileView()
     
     // MARK: - Life Cycle
@@ -33,6 +37,12 @@ final class MyPageEditProfileViewController: UIViewController {
         setNavigation()
         hideTabBar()
         swipeBackGesture()
+    }
+    
+    //MARK: - Bind
+    
+    private func bindViewModel() {
+        
     }
 }
 

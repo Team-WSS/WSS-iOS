@@ -22,7 +22,7 @@ final class MyPageEditProfileView: UIView {
     private let nicknameView = UIView()
     private let nicknameLabel = UILabel()
     lazy var nicknameTextField = UITextField()
-    lazy var cancelButton = UIButton()
+    lazy var clearButton = UIButton()
     lazy var checkButton = UIButton()
     var nicknameCountView = MyPageCountView(maxLimit: 10)
     
@@ -99,7 +99,7 @@ final class MyPageEditProfileView: UIView {
                 $0.backgroundColor = .wssGray50
                 $0.layer.cornerRadius = 12
                 
-                cancelButton.do {
+                clearButton.do {
                     var configuration = UIButton.Configuration.plain()
                     configuration.image = .icCancel
                     configuration.contentInsets = NSDirectionalEdgeInsets(top: 13, leading: 13, bottom: 13, trailing: 13)
@@ -190,7 +190,7 @@ final class MyPageEditProfileView: UIView {
                                  checkButton,
                                  nicknameCountView,
                                  divide1View)
-        nicknameTextField.addSubview(cancelButton)
+        nicknameTextField.addSubview(clearButton)
         introView.addSubviews(introLabel,
                               introTextView,
                               introCountView,
@@ -239,7 +239,7 @@ final class MyPageEditProfileView: UIView {
                 $0.height.equalTo(44)
                 $0.width.equalTo(240)
                 
-                cancelButton.snp.makeConstraints {
+                clearButton.snp.makeConstraints {
                     $0.centerY.trailing.equalToSuperview()
                     $0.size.equalTo(44)
                 }
