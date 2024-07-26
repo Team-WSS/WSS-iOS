@@ -47,7 +47,7 @@ final class MyPageCountView: UIView {
         }
         
         countLimitLabel.do {
-            $0.applyWSSFont(.label1, with: "/ " + String(maxLimit))
+            $0.applyWSSFont(.label1, with: " / " + String(maxLimit))
             $0.textColor = .wssGray200
         }
     }
