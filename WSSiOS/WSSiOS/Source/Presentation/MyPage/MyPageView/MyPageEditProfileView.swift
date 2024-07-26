@@ -151,7 +151,14 @@ final class MyPageEditProfileView: UIView {
     }
     
     private func setLayout() {
+        completeButton.snp.makeConstraints {
+            $0.width.equalTo(48)
+            $0.height.equalTo(42)
+        }
         
+        backButton.snp.makeConstraints {
+            $0.size.equalTo(44)
+        }
     }
     
     //MARK: - Data
