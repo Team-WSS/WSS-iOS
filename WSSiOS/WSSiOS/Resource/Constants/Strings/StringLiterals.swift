@@ -147,6 +147,12 @@ enum StringLiterals {
             static let genre = "선호장르"
             static let genreDescription = "선택한 장르에 맞춰 작품을 추천해 드려요"
         }
+        
+        enum EditProfileWarningMessage: String {
+            case exist = "이미 사용 중인 닉네임이에요"
+            case guid = "한글. 영문, 숫자 2~10자까지 입력가능해요"
+            case noUse = "사용할 수 없는 단어가 포함되어 있어요"
+        }
     }
     
     enum Library {

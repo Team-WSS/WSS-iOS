@@ -24,7 +24,8 @@ final class MyPageEditProfileView: UIView {
     lazy var nicknameTextField = UITextField()
     lazy var clearButton = UIButton()
     lazy var checkButton = UIButton()
-    var nicknameCountView = MyPageCountView(maxLimit: 10)
+    private let nicknameWarningLabel = UILabel()
+    private var nicknameCountView = MyPageCountView(maxLimit: 10)
     
     private let divide1View = UIView()
     
@@ -32,7 +33,7 @@ final class MyPageEditProfileView: UIView {
     private let introLabel = UILabel()
     lazy var introTextView = UIView()
     private let introTextViewPlaceholder = UILabel()
-    var introCountView = MyPageCountView(maxLimit: 40)
+    private var introCountView = MyPageCountView(maxLimit: 40)
     
     private let divide2View = UIView()
     
@@ -109,10 +110,14 @@ final class MyPageEditProfileView: UIView {
             
             checkButton.do {
                 $0.setTitle(StringLiterals.MyPage.EditProfile.nicknameCheck, for: .normal)
-                $0.setTitleColor(.Gray200, for: .normal)
+                $0.setTitleColor(.wssGray200, for: .normal)
                 $0.titleLabel?.applyWSSFont(.body2, with: StringLiterals.MyPage.EditProfile.nicknameCheck)
-                $0.backgroundColor = .Gray70
+                $0.backgroundColor = .wssGray70
                 $0.layer.cornerRadius = 12
+            }
+            
+            nicknameWarningLabel.do {
+                $0.textColor = .Secondary100
             }
         }
         
@@ -188,6 +193,7 @@ final class MyPageEditProfileView: UIView {
         nicknameView.addSubviews(nicknameLabel,
                                  nicknameTextField,
                                  checkButton,
+                                 nicknameWarningLabel,
                                  nicknameCountView,
                                  divide1View)
         nicknameTextField.addSubview(clearButton)
@@ -250,6 +256,11 @@ final class MyPageEditProfileView: UIView {
                 $0.leading.equalTo(nicknameTextField.snp.trailing).offset(7)
                 $0.trailing.equalToSuperview().inset(20)
                 $0.height.equalTo(nicknameTextField.snp.height)
+            }
+            
+            nicknameWarningLabel.snp.makeConstraints {
+                $0.top.equalTo(nicknameTextField.snp.bottom).offset(4)
+                $0.leading.equalToSuperview().inset(20)
             }
             
             nicknameCountView.snp.makeConstraints {
@@ -321,9 +332,57 @@ final class MyPageEditProfileView: UIView {
             $0.size.equalTo(44)
         }
     }
+}
+
+extension MyPageEditProfileView {
+    
+    //MARK: - Custom Method
+    
+    func updateNicknameTextFieldColor(update: Bool) {
+        nicknameWarningLabel.isHidden = true
+        
+        if update {
+            nicknameTextField.do {
+                $0.backgroundColor = .wssWhite
+                $0.layer.borderColor = UIColor.wssGray70.cgColor
+                $0.layer.borderWidth = 1
+            }
+            
+            checkButton.do {
+                $0.setTitleColor(.wssPrimary100, for: .normal)
+                $0.backgroundColor = .Primary50
+            }
+            
+        } else {
+            nicknameTextField.do {
+                $0.backgroundColor = .wssGray50
+                $0.layer.borderWidth = 0
+            }
+            
+            checkButton.do {
+                $0.setTitleColor(.wssGray200, for: .normal)
+                $0.backgroundColor = .wssGray70
+            }
+        }
+    }
+    
+    func updateNickname(text: String) {
+        nicknameTextField.text = text
+        nicknameCountView.countLabel.text = String(text.count)
+    }
+    
+    func warningNickname(isWarning: StringLiterals.MyPage.EditProfileWarningMessage) {
+        nicknameTextField.backgroundColor = .wssWhite
+        nicknameTextField.layer.borderColor = UIColor.wssSecondary100.cgColor
+        nicknameTextField.layer.borderWidth = 1
+        
+        nicknameWarningLabel.isHidden = false
+        nicknameWarningLabel.applyWSSFont(.label1, with: isWarning.rawValue)
+    }
     
     //MARK: - Data
     
-    
+    func bindNickname(text: String) {
+        nicknameTextField.text = text
+    }
 }
-
