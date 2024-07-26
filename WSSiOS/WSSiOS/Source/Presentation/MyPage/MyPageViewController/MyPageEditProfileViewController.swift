@@ -41,8 +41,8 @@ final class MyPageEditProfileViewController: UIViewController {
 extension MyPageEditProfileViewController {
     private func setNavigation() {
         preparationSetNavigationBar(title: StringLiterals.Navigation.Title.myPageInfo,
-                                    left: self.backButton,
-                                    right: nil)
+                                    left: self.rootView.backButton,
+                                    right: self.rootView.completeButton)
     }
 }
 

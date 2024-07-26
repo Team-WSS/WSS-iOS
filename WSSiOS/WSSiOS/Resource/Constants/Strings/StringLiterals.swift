@@ -139,7 +139,7 @@ enum StringLiterals {
         }
         
         enum EditProfile {
-            static let navigaTionLeftButtonTitle = "완료"
+            static let completeTitle = "완료"
             static let nickname = "닉네임"
             static let nicknameCheck = "중복확인"
             static let intro = "소개"

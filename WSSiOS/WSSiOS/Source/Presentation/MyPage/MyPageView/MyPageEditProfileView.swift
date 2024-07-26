@@ -39,6 +39,10 @@ final class MyPageEditProfileView: UIView {
     private let genreDescriptionLabel = UILabel()
     private let genreTableView = UITableView(frame: .zero, style: .plain)
     
+    //In VC
+    lazy var backButton = UIButton()
+    lazy var completeButton = UIButton()
+    
     // MARK: - Life Cycle
     
     override init(frame: CGRect) {
@@ -113,6 +117,16 @@ final class MyPageEditProfileView: UIView {
             $0.do {
                 $0.backgroundColor = .wssGray50
             }
+        }
+        
+        backButton.do {
+            $0.setImage(.icNavigateLeft.withRenderingMode(.alwaysOriginal), for: .normal)
+        }
+        
+        completeButton.do {
+            $0.setTitle(StringLiterals.MyPage.EditProfile.completeTitle, for: .normal)
+            $0.setTitleColor(.wssPrimary100, for: .normal)
+            $0.titleLabel?.font = .Title2
         }
     }
     
