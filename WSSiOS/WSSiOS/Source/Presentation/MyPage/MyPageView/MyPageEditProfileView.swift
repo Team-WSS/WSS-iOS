@@ -16,7 +16,8 @@ final class MyPageEditProfileView: UIView {
     
     let profileView = UIView()
     private var profileImageView = UIImageView()
-    private let profileChangeView = UIImageView()
+    private let profileChangeView = UIView()
+    private let profileChangeImageView = UIImageView()
 
     private let nicknameView = UIView()
     private let nicknameLabel = UILabel()
@@ -72,10 +73,14 @@ final class MyPageEditProfileView: UIView {
             }
             
             profileChangeView.do {
-                $0.image = .icPlus
+                $0.backgroundColor = .wssWhite
                 $0.layer.cornerRadius = 12.5
                 $0.layer.borderColor = UIColor.wssGray70.cgColor
                 $0.layer.borderWidth = 1.04
+                
+                profileChangeImageView.do {
+                    $0.image = .icPlus
+                }
             }
         }
         
@@ -167,6 +172,7 @@ final class MyPageEditProfileView: UIView {
                          genreView)
         profileView.addSubviews(profileImageView,
                                      profileChangeView)
+        profileChangeView.addSubview(profileChangeImageView)
         nicknameView.addSubviews(nicknameLabel,
                                  nicknameTextField,
                                  checkButton,
@@ -197,6 +203,12 @@ final class MyPageEditProfileView: UIView {
                 $0.size.equalTo(25)
                 $0.trailing.equalTo(profileImageView.snp.trailing)
                 $0.bottom.equalTo(profileImageView.snp.bottom)
+                
+                profileChangeImageView.snp.makeConstraints {
+                    $0.center.equalToSuperview()
+                    //TODO: 디자인썜들께 여쭤봄
+                    $0.size.equalTo(19.79)
+                }
             }
         }     
         
