@@ -65,6 +65,7 @@ final class MyPageEditProfileViewController: UIViewController {
             backButtonDidTap: rootView.backButton.rx.tap,
             completeButtonDidTap: rootView.completeButton.rx.tap,
             profileViewDidTap: rootView.profileView.rx.tapGesture().when(.recognized).asObservable(), 
+            updateNicknameText: rootView.nicknameTextField.rx.text.orEmpty.asObservable(), 
             textFieldBeginEditing: rootView.nicknameTextField.rx.controlEvent(.editingDidBegin),
             clearButtonDidTap: rootView.clearButton.rx.tap,
             checkButtonDidTap: rootView.checkButton.rx.tap,
@@ -81,7 +82,6 @@ final class MyPageEditProfileViewController: UIViewController {
                 cellIdentifier: MyPageEditProfileGenreCollectionViewCell.cellIdentifier,
                 cellType: MyPageEditProfileGenreCollectionViewCell.self)) { row, element, cell in
                     cell.bindData(genre: element, isSelected: false)
-                    self.rootView.genreCollectionView.reloadData()
                 }
                 .disposed(by: disposeBag)
         
@@ -98,8 +98,8 @@ final class MyPageEditProfileViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.updateTextField
-            .bind(with: self, onNext: { owner, update in
-                owner.rootView.updateNicknameTextFieldColor(update: update)
+            .bind(with: self, onNext: { owner, _ in
+                owner.rootView.updateNicknameTextFieldColor(update: true)
             })
             .disposed(by: disposeBag)
         

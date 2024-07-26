@@ -19,6 +19,9 @@ final class MyPageEditProfileViewModel: ViewModelType {
     private let genreList = ["로맨스", "로판", "판타지", "현판", "무협", "BL", "라노벨", "미스터리", "드라마"]
     private let dummySelectList = ["romanceFantasy", "fantasy", "drama"]
     
+    static let nicknameLimit = 10
+    static let introLimit = 40
+    
     //MARK: - Life Cycle
     
     struct Input {
@@ -26,6 +29,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
         let completeButtonDidTap: ControlEvent<Void>
         let profileViewDidTap: Observable<UITapGestureRecognizer>
         
+        let updateNicknameText: Observable<String>
         let textFieldBeginEditing: ControlEvent<Void>
         let clearButtonDidTap: ControlEvent<Void>
         let checkButtonDidTap: ControlEvent<Void>
@@ -77,6 +81,18 @@ final class MyPageEditProfileViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        input.updateNicknameText
+            .subscribe(with: self, onNext: { owner, text in
+                output.nicknameText.accept(String(text.prefix(MyPageEditProfileViewModel.nicknameLimit)))
+            })
+            .disposed(by: disposeBag)
+        
+        input.textFieldBeginEditing
+            .subscribe(with: self, onNext: { owner, _ in
+                output.updateTextField.accept(true)
+            })
+            .disposed(by: disposeBag)
+        
         input.clearButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
                 output.nicknameText.accept("")
@@ -92,7 +108,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
         
         input.updateIntroText
             .subscribe(with: self, onNext: { owner, text in
-                output.introText.accept(text)
+                output.introText.accept(String(text.prefix(MyPageEditProfileViewModel.introLimit)))
             })
             .disposed(by: disposeBag)
         

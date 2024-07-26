@@ -381,10 +381,19 @@ extension MyPageEditProfileView {
                 $0.layer.borderWidth = 1
                 $0.layer.borderColor = UIColor.wssGray70.cgColor
             }
+            
+            introTextViewPlaceholder.isHidden = true
+            
         } else {
             introTextView.do {
                 $0.backgroundColor = .wssGray50
                 $0.layer.borderWidth = 0
+            }
+            
+            if introTextView.text == "" {
+                introTextViewPlaceholder.isHidden = false
+            } else {
+                introTextViewPlaceholder.isHidden = true
             }
         }
     }
