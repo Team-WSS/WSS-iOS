@@ -1,5 +1,5 @@
 //
-//  WSSDividerView.swift
+//  WSSDivideView.swift
 //  WSSiOS
 //
 //  Created by 신지원 on 7/26/24.
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class WSSDivideViewView: UIView {
+final class WSSDivideView: UIView {
     
     //MARK: - Components
     
