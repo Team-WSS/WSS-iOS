@@ -34,6 +34,7 @@ enum StringLiterals {
             static let myPageInfo = "계정정보 확인"
             static let feed = "소소피드"
             static let notice = "알림"
+            static let editProfile = "프로필 편집"
         }
     }
     
@@ -137,9 +138,14 @@ enum StringLiterals {
             static let termsURL = "https://kimmjabc.notion.site/4acd397608c146cbbf8dd4fe11a82e19"
         }
         
-        enum ChangeNickname {
-            static let complete = "완료"
+        enum EditProfile {
+            static let navigaTionLeftButtonTitle = "완료"
             static let nickname = "닉네임"
+            static let nicknameCheck = "중복확인"
+            static let intro = "소개"
+            static let introPlaceholder = "소개글을 적어보세요!"
+            static let genre = "선호장르"
+            static let genreDescription = "선택한 장르에 맞춰 작품을 추천해 드려요"
         }
     }
     

@@ -14,7 +14,7 @@ final class MyPageProfileEditViewController: UIViewController {
     //MARK: - Components
     
     private let disposeBag = DisposeBag()
-    private let rootView = MyPageInfoView()
+    private let rootView = MyPageProfileEditView()
     
     // MARK: - Life Cycle
     
