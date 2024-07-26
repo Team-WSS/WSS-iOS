@@ -17,9 +17,7 @@ final class MyPageProfileEditView: UIView {
     let profileImageView = UIView()
     private var imageView = UIImageView()
     private let changeView = UIView()
-    
-    private let divideView = UIView()
-    
+
     private let nicknameView = UIView()
     private let nicknameLabel = UILabel()
     lazy var nicknameTextField = UITextField()
@@ -28,9 +26,13 @@ final class MyPageProfileEditView: UIView {
     var countLabel = UILabel()
     private let countLimitLabel = UILabel()
     
+    private let divide1View = UIView()
+    
     private let introView = UIView()
     private let introLabel = UILabel()
     lazy var introTextView = UIView()
+    
+    private let divide2View = UIView()
     
     private let genreView = UIView()
     private let genreLabel = UILabel()
@@ -109,6 +111,12 @@ final class MyPageProfileEditView: UIView {
                 $0.textColor = .Gray200
             }
         }
+        
+        [divide1View, divide2View].forEach { 
+            $0.do {
+                $0.backgroundColor = .wssGray50
+            }
+        }
     }
     
     private func setHierarchy() {
@@ -120,10 +128,12 @@ final class MyPageProfileEditView: UIView {
                                      changeView)
         nicknameView.addSubviews(nicknameLabel,
                                  nicknameTextField,
-                                 checkButton)
+                                 checkButton,
+                                 divide1View)
         nicknameTextField.addSubview(cancelButton)
         introView.addSubviews(introLabel,
-                              introTextView)
+                              introTextView,
+                              divide2View)
         genreView.addSubviews(genreLabel,
                               genreDescriptionLabel,
                               tableView)
