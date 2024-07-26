@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class MyPageProfileEditView: UIView {
+final class MyPageEditProfileView: UIView {
     
     //MARK: - Components
     
@@ -37,10 +37,7 @@ final class MyPageProfileEditView: UIView {
     private let genreView = UIView()
     private let genreLabel = UILabel()
     private let genreDescriptionLabel = UILabel()
-    private let tableView = UITableView(frame: .zero, style: .plain)
-    
-    
-    
+    private let genreTableView = UITableView(frame: .zero, style: .plain)
     
     // MARK: - Life Cycle
     
@@ -136,7 +133,7 @@ final class MyPageProfileEditView: UIView {
                               divide2View)
         genreView.addSubviews(genreLabel,
                               genreDescriptionLabel,
-                              tableView)
+                              genreTableView)
     }
     
     private func setLayout() {

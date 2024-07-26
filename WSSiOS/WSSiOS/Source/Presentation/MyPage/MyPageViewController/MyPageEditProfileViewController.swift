@@ -9,12 +9,12 @@ import UIKit
 
 import RxSwift
 
-final class MyPageProfileEditViewController: UIViewController {
+final class MyPageEditProfileViewController: UIViewController {
 
     //MARK: - Components
     
     private let disposeBag = DisposeBag()
-    private let rootView = MyPageProfileEditView()
+    private let rootView = MyPageEditProfileView()
     
     // MARK: - Life Cycle
     
@@ -38,7 +38,7 @@ final class MyPageProfileEditViewController: UIViewController {
 
 //MARK: - UI
 
-extension MyPageProfileEditViewController {
+extension MyPageEditProfileViewController {
     private func setNavigation() {
         preparationSetNavigationBar(title: StringLiterals.Navigation.Title.myPageInfo,
                                     left: self.backButton,

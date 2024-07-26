@@ -15,8 +15,8 @@
 		2C2491812B4ADC000096F255 /* StringLiterals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2491802B4ADC000096F255 /* StringLiterals.swift */; };
 		2C2491842B4ADC230096F255 /* WSSTabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2491832B4ADC230096F255 /* WSSTabBarItem.swift */; };
 		2C2491862B4ADC420096F255 /* WSSTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2491852B4ADC420096F255 /* WSSTabBarController.swift */; };
-		2C2B0BA32C53422400BCEC19 /* MyPageProfileEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2B0BA22C53422400BCEC19 /* MyPageProfileEditViewController.swift */; };
-		2C2B0BA52C53429900BCEC19 /* MyPageProfileEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2B0BA42C53429900BCEC19 /* MyPageProfileEditView.swift */; };
+		2C2B0BA32C53422400BCEC19 /* MyPageEditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2B0BA22C53422400BCEC19 /* MyPageEditProfileViewController.swift */; };
+		2C2B0BA52C53429900BCEC19 /* MyPageEditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2B0BA42C53429900BCEC19 /* MyPageEditProfileView.swift */; };
 		2C421FE82B96DC0F000DCB87 /* MyPageCustomModalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C421FE72B96DC0F000DCB87 /* MyPageCustomModalViewModel.swift */; };
 		2C42939B2B58F27000BD62AB /* LibraryEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C42939A2B58F27000BD62AB /* LibraryEmptyView.swift */; };
 		2C5D0F592B4FDEC000C76D3C /* MyPageInventoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5D0F582B4FDEC000C76D3C /* MyPageInventoryCollectionViewCell.swift */; };
@@ -283,8 +283,8 @@
 		2C2491802B4ADC000096F255 /* StringLiterals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringLiterals.swift; sourceTree = "<group>"; };
 		2C2491832B4ADC230096F255 /* WSSTabBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSTabBarItem.swift; sourceTree = "<group>"; };
 		2C2491852B4ADC420096F255 /* WSSTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSTabBarController.swift; sourceTree = "<group>"; };
-		2C2B0BA22C53422400BCEC19 /* MyPageProfileEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageProfileEditViewController.swift; sourceTree = "<group>"; };
-		2C2B0BA42C53429900BCEC19 /* MyPageProfileEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageProfileEditView.swift; sourceTree = "<group>"; };
+		2C2B0BA22C53422400BCEC19 /* MyPageEditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageEditProfileViewController.swift; sourceTree = "<group>"; };
+		2C2B0BA42C53429900BCEC19 /* MyPageEditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageEditProfileView.swift; sourceTree = "<group>"; };
 		2C421FE72B96DC0F000DCB87 /* MyPageCustomModalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageCustomModalViewModel.swift; sourceTree = "<group>"; };
 		2C42939A2B58F27000BD62AB /* LibraryEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryEmptyView.swift; sourceTree = "<group>"; };
 		2C5D0F582B4FDEC000C76D3C /* MyPageInventoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageInventoryCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -689,7 +689,7 @@
 				2C5D0F5E2B50523B00C76D3C /* MyPageChangeNicknameViewController.swift */,
 				2CA2F64F2B527B3A0045B4C2 /* MyPageCustomModalViewController.swift */,
 				2CB613F22B575E4500FC3F89 /* MyPageInfoViewController.swift */,
-				2C2B0BA22C53422400BCEC19 /* MyPageProfileEditViewController.swift */,
+				2C2B0BA22C53422400BCEC19 /* MyPageEditProfileViewController.swift */,
 			);
 			path = MyPageViewController;
 			sourceTree = "<group>";
@@ -701,7 +701,7 @@
 				2C5D0F602B50525700C76D3C /* MyPageChangeNicknameView.swift */,
 				2CA2F64D2B527B060045B4C2 /* MyPageCustomModalView.swift */,
 				2CB613F42B575E6A00FC3F89 /* MyPageInfoView.swift */,
-				2C2B0BA42C53429900BCEC19 /* MyPageProfileEditView.swift */,
+				2C2B0BA42C53429900BCEC19 /* MyPageEditProfileView.swift */,
 				2C5D0F572B4FDE7500C76D3C /* MyPageCell */,
 				2CCBF9FE2B4DBF6A00D787C2 /* MyPageAssistantView */,
 			);
@@ -1872,10 +1872,10 @@
 				A122C9DF2B530A1A00DFCFE4 /* (null) in Sources */,
 				CD3E5A812B54253E00C0A659 /* MemoReadViewController.swift in Sources */,
 				CD3E5A742B5424D600C0A659 /* MemoEditView.swift in Sources */,
-				2C2B0BA32C53422400BCEC19 /* MyPageProfileEditViewController.swift in Sources */,
+				2C2B0BA32C53422400BCEC19 /* MyPageEditProfileViewController.swift in Sources */,
 				39D4A5E42BDF90FB004FC834 /* NovelDetailHeaderRatingButton.swift in Sources */,
 				2CD911522C0D8A0F006B8D72 /* FeedNovelView.swift in Sources */,
-				2C2B0BA52C53429900BCEC19 /* MyPageProfileEditView.swift in Sources */,
+				2C2B0BA52C53429900BCEC19 /* MyPageEditProfileView.swift in Sources */,
 				CD3E5A812B54253E00C0A659 /* MemoReadViewController.swift in Sources */,
 				A197A4C12B56BB6000E5A701 /* UserCharacterResult.swift in Sources */,
 				2C19A4FB2BBA8E9600D4D151 /* WSSDropdownManager.swift in Sources */,
