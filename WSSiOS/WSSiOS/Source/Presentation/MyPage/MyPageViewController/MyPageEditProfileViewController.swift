@@ -111,7 +111,7 @@ final class MyPageEditProfileViewController: UIViewController {
         
         output.introText
             .bind(with: self, onNext: { owner, text in
-                owner.rootView.updateNickname(text: text)
+                owner.rootView.updateIntro(text: text)
             })
             .disposed(by: disposeBag)
         

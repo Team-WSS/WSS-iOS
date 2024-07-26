@@ -16,24 +16,22 @@ extension UITextView {
     }
     
     func applyFontAttribute(text: String?, lineHeightMultiple: CGFloat, kerningPixel: Double, font: UIFont) {
-        self.do {
-            $0.font = font
-            $0.makeAttribute(with: text)?
-                .lineHeight(lineHeightMultiple)
-                .kerning(kerningPixel: kerningPixel)
-                .applyAttribute()
+        self.font = font
+        guard let text = text, !text.isEmpty else {
+            self.attributedText = nil
+            return
         }
-    }
-    
-    func makeAttribute(with text: String?) -> TextViewAttributeSet? {
-        guard let text = text, !text.isEmpty else { return nil }
         
-        let textViewAttributeSet = TextViewAttributeSet(
-            textView: self,
-            attributeString: NSMutableAttributedString(string: text)
-        )
+        let attributedString = NSMutableAttributedString(string: text, attributes: [
+            .font: font,
+            .kern: kerningPixel
+        ])
         
-        return textViewAttributeSet
+        let textViewAttributeSet = TextViewAttributeSet(textView: self, attributedString: attributedString)
+            .lineHeight(lineHeightMultiple)
+            .kerning(kerningPixel: kerningPixel)
+        
+        textViewAttributeSet.applyAttribute()
     }
 }
 
@@ -41,22 +39,20 @@ struct TextViewAttributeSet {
     var textView: UITextView
     var attributedString: NSMutableAttributedString
 
-    init(textView: UITextView, attributeString: NSMutableAttributedString) {
+    init(textView: UITextView, attributedString: NSMutableAttributedString) {
         self.textView = textView
-        self.attributedString = attributeString
+        self.attributedString = attributedString
     }
 }
 
 extension TextViewAttributeSet {
     func lineSpacing(spacingPercentage: Double) -> TextViewAttributeSet {
-        let spacing = (self.textView.font!.pointSize * CGFloat(spacingPercentage/100) - self.textView.font!.pointSize)/2
+        let spacing = (self.textView.font!.pointSize * CGFloat(spacingPercentage / 100) - self.textView.font!.pointSize) / 2
         
-        let style = NSMutableParagraphStyle().then { $0.lineSpacing = spacing }
-        self.attributedString.addAttribute(
-            .paragraphStyle,
-            value: style,
-            range: NSRange(location: 0, length: attributedString.length)
-        )
+        let style = NSMutableParagraphStyle()
+        style.lineSpacing = spacing
+        let range = NSRange(location: 0, length: attributedString.length)
+        self.attributedString.addAttribute(.paragraphStyle, value: style, range: range)
         
         return self
     }
@@ -64,32 +60,21 @@ extension TextViewAttributeSet {
     func lineHeight(_ multiple: CGFloat) -> TextViewAttributeSet {
         let lineHeight = self.textView.font!.pointSize * multiple
         
-        let style = NSMutableParagraphStyle().then {
-            $0.maximumLineHeight = lineHeight
-            $0.minimumLineHeight = lineHeight
-        }
+        let style = NSMutableParagraphStyle()
+        style.maximumLineHeight = lineHeight
+        style.minimumLineHeight = lineHeight
         
-        self.attributedString.addAttribute(
-            .paragraphStyle,
-            value: style,
-            range: NSRange(location: 0, length: attributedString.length)
-        )
+        let range = NSRange(location: 0, length: attributedString.length)
+        self.attributedString.addAttribute(.paragraphStyle, value: style, range: range)
         
-        self.attributedString.addAttribute(
-            .baselineOffset,
-            value: (lineHeight - self.textView.font!.lineHeight) / 2,
-            range: NSRange(location: 0, length: attributedString.length)
-        )
-
+        self.attributedString.addAttribute(.baselineOffset, value: (lineHeight - self.textView.font!.lineHeight) / 2, range: range)
+        
         return self
     }
     
     func kerning(kerningPixel: Double) -> TextViewAttributeSet {
-        self.attributedString.addAttribute(
-            .kern,
-            value: kerningPixel,
-            range: NSRange(location: 0, length: attributedString.length - 1)
-        )
+        let range = NSRange(location: 0, length: attributedString.length)
+        self.attributedString.addAttribute(.kern, value: kerningPixel, range: range)
         
         return self
     }
