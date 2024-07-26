@@ -14,23 +14,24 @@ final class MyPageEditProfileView: UIView {
     
     //MARK: - Components
     
-    let profileImageView = UIView()
-    private var imageView = UIImageView()
-    private let changeView = UIView()
+    let profileView = UIView()
+    private var profileImageView = UIImageView()
+    private let profileChangeView = UIImageView()
 
     private let nicknameView = UIView()
     private let nicknameLabel = UILabel()
     lazy var nicknameTextField = UITextField()
     lazy var cancelButton = UIButton()
     lazy var checkButton = UIButton()
-    var countLabel = UILabel()
-    private let countLimitLabel = UILabel()
+    var nicknameCountView = MyPageCountView(maxLimit: 10)
     
     private let divide1View = UIView()
     
     private let introView = UIView()
     private let introLabel = UILabel()
     lazy var introTextView = UIView()
+    private let introTextViewPlaceholder = UILabel()
+    var introCountView = MyPageCountView(maxLimit: 40)
     
     private let divide2View = UIView()
     
@@ -62,6 +63,22 @@ final class MyPageEditProfileView: UIView {
     private func setUI() {
         self.backgroundColor = .wssWhite
         
+        profileView.do {
+            $0.backgroundColor = .wssWhite
+            
+            profileImageView.do {
+                $0.image = .profile
+                $0.layer.cornerRadius = 37
+            }
+            
+            profileChangeView.do {
+                $0.image = .icPlus
+                $0.layer.cornerRadius = 12.5
+                $0.layer.borderColor = UIColor.wssGray70.cgColor
+                $0.layer.borderWidth = 1.04
+            }
+        }
+        
         nicknameView.do {
             $0.backgroundColor = .wssWhite
             
@@ -75,11 +92,19 @@ final class MyPageEditProfileView: UIView {
                 $0.font = .Body2
                 $0.backgroundColor = .wssGray50
                 $0.layer.cornerRadius = 12
+                
+                cancelButton.do {
+                    var configuration = UIButton.Configuration.plain()
+                    configuration.image = .icCancel
+                    configuration.contentInsets = NSDirectionalEdgeInsets(top: 13, leading: 13, bottom: 13, trailing: 13)
+                    $0.configuration = configuration
+                }
             }
             
             checkButton.do {
                 $0.setTitle(StringLiterals.MyPage.EditProfile.nicknameCheck, for: .normal)
                 $0.setTitleColor(.Gray200, for: .normal)
+                $0.titleLabel?.applyWSSFont(.body2, with: StringLiterals.MyPage.EditProfile.nicknameCheck)
                 $0.backgroundColor = .Gray70
                 $0.layer.cornerRadius = 12
             }
@@ -96,6 +121,11 @@ final class MyPageEditProfileView: UIView {
             introTextView.do {
                 $0.backgroundColor = .Gray50
                 $0.layer.cornerRadius = 14
+            }
+            
+            introTextViewPlaceholder.do {
+                $0.applyWSSFont(.body2, with: StringLiterals.MyPage.EditProfile.introPlaceholder)
+                $0.textColor = .wssGray200
             }
         }
         
@@ -131,26 +161,127 @@ final class MyPageEditProfileView: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubviews(profileImageView,
+        self.addSubviews(profileView,
                          nicknameView,
                          introView,
                          genreView)
-        profileImageView.addSubviews(imageView,
-                                     changeView)
+        profileView.addSubviews(profileImageView,
+                                     profileChangeView)
         nicknameView.addSubviews(nicknameLabel,
                                  nicknameTextField,
                                  checkButton,
+                                 nicknameCountView,
                                  divide1View)
         nicknameTextField.addSubview(cancelButton)
         introView.addSubviews(introLabel,
                               introTextView,
+                              introCountView,
                               divide2View)
+        introTextView.addSubview(introTextViewPlaceholder)
         genreView.addSubviews(genreLabel,
                               genreDescriptionLabel,
                               genreTableView)
     }
     
     private func setLayout() {
+        profileView.snp.makeConstraints {
+            $0.top.equalTo(safeAreaLayoutGuide.snp.top).inset(38)
+            $0.centerX.equalToSuperview()
+            $0.size.equalTo(94)
+            
+            profileImageView.snp.makeConstraints {
+                $0.edges.equalToSuperview()
+            }
+            
+            profileChangeView.snp.makeConstraints {
+                $0.size.equalTo(25)
+                $0.trailing.equalTo(profileImageView.snp.trailing)
+                $0.bottom.equalTo(profileImageView.snp.bottom)
+            }
+        }     
+        
+        nicknameView.snp.makeConstraints {
+            $0.top.equalTo(profileView.snp.bottom).offset(29)
+            $0.width.equalToSuperview()
+            
+            nicknameLabel.snp.makeConstraints {
+                $0.top.equalToSuperview()
+                $0.leading.equalToSuperview().inset(20)
+            }
+            
+            nicknameTextField.snp.makeConstraints {
+                $0.top.equalTo(nicknameLabel.snp.bottom).offset(7)
+                $0.leading.equalToSuperview().inset(20)
+                $0.height.equalTo(44)
+                $0.width.equalTo(240)
+                
+                cancelButton.snp.makeConstraints {
+                    $0.centerY.trailing.equalToSuperview()
+                    $0.size.equalTo(44)
+                }
+            }
+            
+            checkButton.snp.makeConstraints {
+                $0.top.equalTo(nicknameLabel.snp.bottom).offset(7)
+                $0.leading.equalTo(nicknameTextField.snp.trailing).offset(7)
+                $0.trailing.equalToSuperview().inset(20)
+                $0.height.equalTo(nicknameTextField.snp.height)
+            }
+            
+            nicknameCountView.snp.makeConstraints {
+                $0.top.equalTo(nicknameTextField.snp.bottom).offset(4)
+                $0.trailing.bottom.equalToSuperview().inset(20)
+            }
+        }
+        
+        introView.snp.makeConstraints {
+            $0.top.equalTo(nicknameView.snp.bottom).offset(15)
+            $0.width.equalToSuperview()
+            
+            introLabel.snp.makeConstraints {
+                $0.top.equalToSuperview()
+                $0.leading.equalToSuperview().inset(20)
+            }
+            
+            introTextView.snp.makeConstraints {
+                $0.top.equalTo(introLabel.snp.bottom).offset(7)
+                $0.leading.trailing.equalToSuperview().inset(20)
+                $0.height.equalTo(66)
+                
+                introTextViewPlaceholder.snp.makeConstraints {
+                    $0.top.equalToSuperview().inset(10)
+                    $0.leading.equalToSuperview().inset(16)
+                }
+            }
+            
+            introCountView.snp.makeConstraints {
+                $0.top.equalTo(introTextView.snp.bottom).offset(4)
+                $0.trailing.bottom.equalToSuperview().inset(20)
+            }
+        }
+        
+        genreView.snp.makeConstraints {
+            $0.top.equalTo(introView.snp.bottom).offset(15)
+            $0.width.equalToSuperview()
+            
+            genreLabel.snp.makeConstraints {
+                $0.top.equalToSuperview()
+                $0.leading.equalToSuperview().inset(20)
+            }
+            
+            genreDescriptionLabel.snp.makeConstraints {
+                $0.top.equalTo(genreLabel.snp.bottom).offset(6)
+                $0.leading.equalToSuperview().inset(20)
+            }
+        }
+        
+        [divide1View, divide2View].forEach { 
+            $0.snp.makeConstraints {
+                $0.leading.trailing.bottom.equalToSuperview()
+                $0.height.equalTo(1)
+            }
+        }
+        
         completeButton.snp.makeConstraints {
             $0.width.equalTo(48)
             $0.height.equalTo(42)
