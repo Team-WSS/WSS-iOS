@@ -25,8 +25,11 @@ final class MyPageEditProfileViewModel: ViewModelType {
         let backButtonDidTap: ControlEvent<Void>
         let completeButtonDidTap: ControlEvent<Void>
         let profileViewDidTap: Observable<UITapGestureRecognizer>
+        
+        let textFieldBeginEditing: ControlEvent<Void>
         let clearButtonDidTap: ControlEvent<Void>
         let checkButtonDidTap: ControlEvent<Void>
+        
         let genreCellTap: ControlEvent<String.Type>
     }
     
@@ -34,7 +37,10 @@ final class MyPageEditProfileViewModel: ViewModelType {
         let bindGenreCell = BehaviorRelay<[String]>(value: ["로맨스", "로판", "판타지", "현판", "무협", "BL", "라노벨", "미스터리", "드라마"])
         let popViewController = PublishRelay<Bool>() 
         let nicknameText = BehaviorRelay<String>(value: "")
+        let updateTextField = BehaviorRelay<Bool>(value: false)
+        let checkNickname = BehaviorRelay<String>(value: "")
         let introText = BehaviorRelay<String>(value: "")
+        let completeButtonIsAble = BehaviorRelay<Bool>(value: false)
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -51,6 +57,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
                 //서버통신 구현
+                output.popViewController.accept(true)
             })
             .disposed(by: disposeBag)
         

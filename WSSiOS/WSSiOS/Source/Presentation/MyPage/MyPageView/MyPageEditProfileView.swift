@@ -100,6 +100,10 @@ final class MyPageEditProfileView: UIView {
                 $0.backgroundColor = .wssGray50
                 $0.layer.cornerRadius = 12
                 
+                let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 12, height: 44))
+                $0.leftView = paddingView
+                $0.leftViewMode = .always
+                
                 clearButton.do {
                     var configuration = UIButton.Configuration.plain()
                     configuration.image = .icCancel
@@ -118,6 +122,7 @@ final class MyPageEditProfileView: UIView {
             
             nicknameWarningLabel.do {
                 $0.textColor = .Secondary100
+                $0.isHidden = true
             }
         }
         

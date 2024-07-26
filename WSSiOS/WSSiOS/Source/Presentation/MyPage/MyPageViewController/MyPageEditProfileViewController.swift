@@ -64,7 +64,8 @@ final class MyPageEditProfileViewController: UIViewController {
         let input = MyPageEditProfileViewModel.Input(
             backButtonDidTap: rootView.backButton.rx.tap,
             completeButtonDidTap: rootView.completeButton.rx.tap,
-            profileViewDidTap: rootView.profileView.rx.tapGesture().when(.recognized).asObservable(),
+            profileViewDidTap: rootView.profileView.rx.tapGesture().when(.recognized).asObservable(), 
+            textFieldBeginEditing: rootView.nicknameTextField.rx.controlEvent(.editingDidBegin),
             clearButtonDidTap: rootView.clearButton.rx.tap,
             checkButtonDidTap: rootView.checkButton.rx.tap,
             genreCellTap: rootView.genreCollectionView.rx.modelSelected(String.Type.self)
@@ -77,6 +78,7 @@ final class MyPageEditProfileViewController: UIViewController {
                 cellIdentifier: MyPageEditProfileGenreCollectionViewCell.cellIdentifier,
                 cellType: MyPageEditProfileGenreCollectionViewCell.self)) { row, element, cell in
                     cell.bindData(genre: element, isSelected: false)
+                    self.rootView.genreCollectionView.reloadData()
                 }
                 .disposed(by: disposeBag)
         
@@ -85,7 +87,24 @@ final class MyPageEditProfileViewController: UIViewController {
                 owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
-
+        
+        output.nicknameText
+            .bind(with: self, onNext: { owner, text in
+                owner.rootView.updateNickname(text: text)
+            })
+            .disposed(by: disposeBag)
+        
+        output.updateTextField
+            .bind(with: self, onNext: { owner, update in
+                owner.rootView.updateNicknameTextFieldColor(update: update)
+            })
+            .disposed(by: disposeBag)
+        
+        output.checkNickname
+            .bind(with: self, onNext: { owner, update in
+//                owner.rootView.warningNickname(isWarning: .exist)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
