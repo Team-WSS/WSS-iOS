@@ -30,16 +30,25 @@ final class MyPageEditProfileViewModel: ViewModelType {
         let clearButtonDidTap: ControlEvent<Void>
         let checkButtonDidTap: ControlEvent<Void>
         
+        let updateIntroText: Observable<String>
+        let textViewBeginEditing: ControlEvent<Void>
+        let textViewEndEditing: ControlEvent<Void>
+        
         let genreCellTap: ControlEvent<String.Type>
     }
     
     struct Output {
         let bindGenreCell = BehaviorRelay<[String]>(value: ["로맨스", "로판", "판타지", "현판", "무협", "BL", "라노벨", "미스터리", "드라마"])
         let popViewController = PublishRelay<Bool>() 
+        
         let nicknameText = BehaviorRelay<String>(value: "")
         let updateTextField = BehaviorRelay<Bool>(value: false)
         let checkNickname = BehaviorRelay<String>(value: "")
+        
         let introText = BehaviorRelay<String>(value: "")
+        let introBeginEditing = PublishRelay<Bool>()
+        let introEndEditing = PublishRelay<Bool>()
+        
         let completeButtonIsAble = BehaviorRelay<Bool>(value: false)
     }
     
@@ -78,6 +87,24 @@ final class MyPageEditProfileViewModel: ViewModelType {
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
                 //중복 확인 서버통신 구현
+            })
+            .disposed(by: disposeBag)
+        
+        input.updateIntroText
+            .subscribe(with: self, onNext: { owner, text in
+                output.introText.accept(text)
+            })
+            .disposed(by: disposeBag)
+        
+        input.textViewBeginEditing
+            .subscribe(with: self, onNext: { owner, _ in
+                output.introBeginEditing.accept(true)
+            })
+            .disposed(by: disposeBag)
+        
+        input.textViewEndEditing
+            .subscribe(with: self, onNext: { owner, _ in
+                output.introBeginEditing.accept(true)
             })
             .disposed(by: disposeBag)
         

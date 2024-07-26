@@ -68,6 +68,9 @@ final class MyPageEditProfileViewController: UIViewController {
             textFieldBeginEditing: rootView.nicknameTextField.rx.controlEvent(.editingDidBegin),
             clearButtonDidTap: rootView.clearButton.rx.tap,
             checkButtonDidTap: rootView.checkButton.rx.tap,
+            updateIntroText: rootView.introTextView.rx.text.orEmpty.asObservable(),
+            textViewBeginEditing: rootView.introTextView.rx.didBeginEditing,
+            textViewEndEditing: rootView.introTextView.rx.didEndEditing,
             genreCellTap: rootView.genreCollectionView.rx.modelSelected(String.Type.self)
         )
         
@@ -102,7 +105,25 @@ final class MyPageEditProfileViewController: UIViewController {
         
         output.checkNickname
             .bind(with: self, onNext: { owner, update in
-//                owner.rootView.warningNickname(isWarning: .exist)
+                //                owner.rootView.warningNickname(isWarning: .exist)
+            })
+            .disposed(by: disposeBag)
+        
+        output.introText
+            .bind(with: self, onNext: { owner, text in
+                owner.rootView.updateNickname(text: text)
+            })
+            .disposed(by: disposeBag)
+        
+        output.introBeginEditing
+            .bind(with: self, onNext: { owner, _ in
+                owner.rootView.updateIntroTextViewColor(update: true)
+            })
+            .disposed(by: disposeBag)
+        
+        output.introEndEditing
+            .bind(with: self, onNext: { owner, _ in
+                owner.rootView.updateIntroTextViewColor(update: false)
             })
             .disposed(by: disposeBag)
     }

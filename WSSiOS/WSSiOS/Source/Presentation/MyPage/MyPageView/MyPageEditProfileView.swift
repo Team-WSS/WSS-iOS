@@ -31,7 +31,7 @@ final class MyPageEditProfileView: UIView {
     
     private let introView = UIView()
     private let introLabel = UILabel()
-    lazy var introTextView = UIView()
+    lazy var introTextView = UITextView()
     private let introTextViewPlaceholder = UILabel()
     private var introCountView = MyPageCountView(maxLimit: 40)
     
@@ -96,7 +96,6 @@ final class MyPageEditProfileView: UIView {
             
             nicknameTextField.do {
                 $0.textColor = .wssBlack
-                $0.font = .Body2
                 $0.backgroundColor = .wssGray50
                 $0.layer.cornerRadius = 12
                 
@@ -135,7 +134,7 @@ final class MyPageEditProfileView: UIView {
             }
             
             introTextView.do {
-                $0.backgroundColor = .Gray50
+                $0.backgroundColor = .wssGray50
                 $0.layer.cornerRadius = 14
             }
             
@@ -355,7 +354,7 @@ extension MyPageEditProfileView {
             
             checkButton.do {
                 $0.setTitleColor(.wssPrimary100, for: .normal)
-                $0.backgroundColor = .Primary50
+                $0.backgroundColor = .wssPrimary50
             }
             
         } else {
@@ -371,23 +370,48 @@ extension MyPageEditProfileView {
         }
     }
     
+    func updateIntroTextViewColor(update: Bool) {
+        if update {
+            introTextView.do {
+                $0.backgroundColor = .wssWhite
+                $0.layer.borderWidth = 1
+                $0.layer.borderColor = UIColor.wssGray70.cgColor
+            }
+        } else {
+            introTextView.do {
+                $0.backgroundColor = .wssGray50
+                $0.layer.borderWidth = 0
+            }
+        }
+    }
+    
     func updateNickname(text: String) {
-        nicknameTextField.text = text
-        nicknameCountView.countLabel.text = String(text.count)
+        nicknameTextField.applyWSSFont(.body2, with: text)
+        nicknameCountView.countLabel.applyWSSFont(.label1, with: String(text.count))
+    }
+    
+    func updateIntro(text: String) {
+        introTextView.applyWSSFont(.body2, with: text)
+        introCountView.countLabel.applyWSSFont(.label1, with: String(text.count))
     }
     
     func warningNickname(isWarning: StringLiterals.MyPage.EditProfileWarningMessage) {
-        nicknameTextField.backgroundColor = .wssWhite
-        nicknameTextField.layer.borderColor = UIColor.wssSecondary100.cgColor
-        nicknameTextField.layer.borderWidth = 1
+        nicknameTextField.do {
+            $0.backgroundColor = .wssWhite
+            $0.layer.borderColor = UIColor.wssSecondary100.cgColor
+            $0.layer.borderWidth = 1
+        }
         
-        nicknameWarningLabel.isHidden = false
-        nicknameWarningLabel.applyWSSFont(.label1, with: isWarning.rawValue)
+        nicknameWarningLabel.do {
+            $0.isHidden = false
+            $0.applyWSSFont(.label1, with: isWarning.rawValue)
+        }
     }
     
     //MARK: - Data
     
-    func bindNickname(text: String) {
-        nicknameTextField.text = text
+    func bindData(nickName: String, intro: String) {
+        nicknameTextField.applyWSSFont(.body2, with: nickName)
+        introTextView.applyWSSFont(.body2, with: intro)
     }
 }
