@@ -19,7 +19,6 @@ final class MyPageDeleteIDRecordView: UIView {
     private let titleLabel = UILabel()
     private let countLabel = UILabel()
     
-    
     // MARK: - Life Cycle
     
     override init(frame: CGRect) {

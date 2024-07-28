@@ -14,10 +14,10 @@ final class MyPageDeleteIDViewController: UIViewController {
     //MARK: - Properties
     
     private var viewModel: MyPageDeleteIDViewModel
+    private let disposeBag = DisposeBag()
     
     //MARK: - Components
     
-    private let disposeBag = DisposeBag()
     private let rootView = MyPageDeleteIDView()
     
     // MARK: - Life Cycle
@@ -95,7 +95,7 @@ final class MyPageDeleteIDViewController: UIViewController {
         
         output.changeAgreeButtonColor
             .bind(with: self, onNext: { owner, isTap in
-                owner.rootView.agreeDeleteIDButtonIsSeleted(isSeleted: isTap)
+                owner.rootView.agreeDeleteIDButtonIsSelected(isSelected: isTap)
             })
             .disposed(by: disposeBag)
         
@@ -106,7 +106,7 @@ final class MyPageDeleteIDViewController: UIViewController {
                 owner.rootView.reasonTableView.visibleCells.forEach { cell in
                     let cellIndexPath = self.rootView.reasonTableView.indexPath(for: cell)
                     if let cell = cell as? MyPageDeleteIDReasonTableViewCell {
-                        cell.isSeleted(isSeleted: cellIndexPath == indexPath)
+                        cell.isSelected(isSelected: cellIndexPath == indexPath)
                     }
                 }
             })
@@ -149,8 +149,8 @@ final class MyPageDeleteIDViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.completeButtonIsAble
-            .bind(with: self, onNext: { owner, isAble in
-                owner.rootView.completeButtonIsAble(isAble: isAble)
+            .bind(with: self, onNext: { owner, isEnabled in
+                owner.rootView.completeButtonIsEnabled(isEnabled: isEnabled)
             })
             .disposed(by: disposeBag)
     }

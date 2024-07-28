@@ -14,7 +14,7 @@ final class MyPageDeleteIDCheckTableViewCell: UITableViewCell {
     
     //MARK: - Components
     
-    private let view = UIView()
+    private let checkView = UIView()
     private let titleLabel = UILabel()
     private let descriptionLabel = UILabel()
     
@@ -35,7 +35,7 @@ final class MyPageDeleteIDCheckTableViewCell: UITableViewCell {
     //MARK: - UI
     
     private func setUI() {
-        view.do {
+        checkView.do {
             $0.backgroundColor = .wssGray50
             $0.layer.cornerRadius = 14
         }
@@ -50,13 +50,13 @@ final class MyPageDeleteIDCheckTableViewCell: UITableViewCell {
     }
     
     private func setHierarchy() {
-        self.addSubview(view)
-        view.addSubviews(titleLabel,
+        self.addSubview(checkView)
+        checkView.addSubviews(titleLabel,
         descriptionLabel)
     }
     
     private func setLayout() {
-        view.snp.makeConstraints {
+        checkView.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
             $0.bottom.equalToSuperview().inset(12)
         }

@@ -13,11 +13,11 @@ final class MyPageDeleteIDWarningViewController: UIViewController {
     
     //MARK: - Properties
     
-    private let dummpy = UserNovelStatusResult(interestNovelCount: 1, watchingNovelCount: 100, watchedNovelCount: 333, quitNovelCount: 29)
+    private let dummy = UserNovelStatusResult(interestNovelCount: 1, watchingNovelCount: 100, watchedNovelCount: 333, quitNovelCount: 29)
+    private let disposeBag = DisposeBag()
     
     //MARK: - Components
     
-    private let disposeBag = DisposeBag()
     private let rootView = MyPageDeleteIDWarningView()
     
     // MARK: - Life Cycle
@@ -29,7 +29,7 @@ final class MyPageDeleteIDWarningViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        rootView.bindData(count: dummpy)
+        rootView.bindData(count: dummy)
         bindAction()
     }
     

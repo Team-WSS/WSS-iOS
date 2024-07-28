@@ -66,7 +66,6 @@ final class MyPageDeleteIDViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.reasonCellDidTap
-            .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, indexPath in
                 output.tapReasonCell.accept(indexPath)
                 owner.reasonCellTap.accept(true)

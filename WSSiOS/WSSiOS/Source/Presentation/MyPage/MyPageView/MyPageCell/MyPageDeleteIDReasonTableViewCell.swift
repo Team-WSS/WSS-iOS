@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  MyPageDeleteIDReasonTableViewCell.swift
 //  WSSiOS
 //
 //  Created by 신지원 on 7/24/24.
@@ -66,8 +66,8 @@ final class MyPageDeleteIDReasonTableViewCell: UITableViewCell {
     
     //MARK: - Custom Method
     
-    func isSeleted(isSeleted: Bool) {
-        checkButton.setImage( isSeleted ? .checkSelected : .checkDefault , for: .normal)
+    func isSelected(isSelected: Bool) {
+        checkButton.setImage( isSelected ? .checkSelected : .checkDefault , for: .normal)
     }
     
     //MARK: - Data

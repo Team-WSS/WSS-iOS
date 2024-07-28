@@ -12,6 +12,9 @@ import Then
 
 final class MyPageDeleteIDView: UIView {
     
+    //MARK: - Properties
+    
+    
     //MARK: - Components
     
     private let scrollView = UIScrollView()
@@ -64,9 +67,9 @@ final class MyPageDeleteIDView: UIView {
             $0.font = .HeadLine1
             $0.textColor = .wssBlack
             $0.makeAttribute(with: StringLiterals.MyPage.DeleteID.reasonTitle)?
-                .lineHeight(1.17)
+                .lineHeight(1.4)
                 .kerning(kerningPixel: -1.2)
-                .partialColor(color: .wssPrimary100, rangeString: "탈퇴사유")
+                .partialColor(color: .wssPrimary100, rangeString: StringLiterals.MyPage.DeleteID.reasonTitleColor)
                 .applyAttribute()
         }
         
@@ -98,7 +101,7 @@ final class MyPageDeleteIDView: UIView {
         }
         
         reasonCountLimitLabel.do {
-            $0.applyWSSFont(.label1, with: "/80")
+            $0.applyWSSFont(.label1, with: "/" + String(MyPageDeleteIDViewModel.textViewMaxLimit))
             $0.textColor = .wssGray200
         }
         
@@ -257,13 +260,13 @@ extension MyPageDeleteIDView {
         }
     }
     
-    func agreeDeleteIDButtonIsSeleted(isSeleted: Bool) {
-        agreeDeleteIDButton.setImage( isSeleted ? .checkSelected : .checkDefault , for: .normal)
+    func agreeDeleteIDButtonIsSelected(isSelected: Bool) {
+        agreeDeleteIDButton.setImage( isSelected ? .checkSelected : .checkDefault , for: .normal)
     }
     
-    func completeButtonIsAble(isAble: Bool) {
-        completeButton.backgroundColor = isAble ? .Primary100 : .wssGray70
-        completeButton.isEnabled = isAble
+    func completeButtonIsEnabled(isEnabled: Bool) {
+        completeButton.backgroundColor = isEnabled ? .Primary100 : .wssGray70
+        completeButton.isEnabled = isEnabled
     }
     
     func placeholderIsHidden(isHidden: Bool) {
