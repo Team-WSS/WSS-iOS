@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxGesture
 
-final class MyPageEditProfileViewController: UIViewController {
+final class MyPageEditProfileViewController: UIViewController, UIScrollViewDelegate {
     
     //MARK: - Properties
     
@@ -40,6 +40,7 @@ final class MyPageEditProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        delegate()
         register()
         bindViewModel() 
     }
@@ -58,6 +59,12 @@ final class MyPageEditProfileViewController: UIViewController {
         rootView.genreCollectionView.register(
             MyPageEditProfileGenreCollectionViewCell.self,
             forCellWithReuseIdentifier: MyPageEditProfileGenreCollectionViewCell.cellIdentifier)
+    }
+    
+    private func delegate() {
+        rootView.genreCollectionView.rx
+            .setDelegate(self)
+            .disposed(by: disposeBag)
     }
     
     private func bindViewModel() {
@@ -126,6 +133,21 @@ final class MyPageEditProfileViewController: UIViewController {
                 owner.rootView.updateIntroTextViewColor(update: false)
             })
             .disposed(by: disposeBag)
+    }
+}
+
+extension MyPageEditProfileViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        var text: String?
+
+        text = self.viewModel.genreList[indexPath.item]
+
+        guard let unwrappedText = text else {
+            return CGSize(width: 0, height: 0)
+        }
+
+        let width = (unwrappedText as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 26
+        return CGSize(width: width, height: 37)
     }
 }
 

@@ -14,7 +14,7 @@ final class MyPageEditProfileGenreCollectionViewCell: UICollectionViewCell {
 
     //MARK: - Life Cycle
 
-    private let genreKeywordView = KeywordViewManager.shared.link()
+    private let genreKeywordLink = KeywordLink()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -30,19 +30,20 @@ final class MyPageEditProfileGenreCollectionViewCell: UICollectionViewCell {
     //MARK: - UI
 
     private func setHierarchy() {
-        self.addSubview(genreKeywordView)
+        self.addSubview(genreKeywordLink)
     }
 
     private func setLayout() {
-        genreKeywordView.snp.makeConstraints {
+        genreKeywordLink.snp.makeConstraints {
             $0.edges.equalToSuperview()
+            $0.height.equalTo(35)
         }
     }
 
     //MARK: - Data
 
     func bindData(genre: String, isSelected: Bool) {
-        genreKeywordView.do {
+        genreKeywordLink.do {
             $0.setText(genre)
             $0.updateColor(isSelected)
         }

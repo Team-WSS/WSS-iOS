@@ -102,6 +102,7 @@ final class MyPageEditProfileView: UIView {
                 let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 12, height: 44))
                 $0.leftView = paddingView
                 $0.leftViewMode = .always
+                $0.contentVerticalAlignment = .center
                 
                 clearButton.do {
                     var configuration = UIButton.Configuration.plain()
@@ -170,6 +171,7 @@ final class MyPageEditProfileView: UIView {
                 $0.backgroundColor = .wssWhite
                 $0.collectionViewLayout = layout
                 $0.isScrollEnabled = false
+                $0.allowsMultipleSelection = true
             }
         }
         

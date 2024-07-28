@@ -16,7 +16,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
     //MARK: - Properties
     
     //TODO: 서연이 코드랑 합칠 예정
-    private let genreList = ["로맨스", "로판", "판타지", "현판", "무협", "BL", "라노벨", "미스터리", "드라마"]
+    let genreList = ["로맨스", "로판", "판타지", "현판", "무협", "BL", "라노벨", "미스터리", "드라마"]
     private let dummySelectList = ["romanceFantasy", "fantasy", "drama"]
     
     static let nicknameLimit = 10
@@ -42,6 +42,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
     }
     
     struct Output {
+        //TODO: 서연이 코드 합치면서 수정하기
         let bindGenreCell = BehaviorRelay<[String]>(value: ["로맨스", "로판", "판타지", "현판", "무협", "BL", "라노벨", "미스터리", "드라마"])
         let popViewController = PublishRelay<Bool>() 
         
