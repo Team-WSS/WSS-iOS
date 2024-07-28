@@ -18,4 +18,10 @@ extension String {
             return self
         }
     }
+    
+    // 띄어쓰기만으로 이루어진 Text 인지 체크
+    func textIsEmpty() -> Bool {
+        let trimmedText = self.trimmingCharacters(in: .whitespacesAndNewlines)
+        if trimmedText.isEmpty { return true } else { return false }
+    }
 }

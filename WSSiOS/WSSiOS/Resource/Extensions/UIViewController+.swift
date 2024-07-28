@@ -204,6 +204,16 @@ extension UIViewController {
         
         return alertViewController.actionButtonTap
     }
+    
+    func pushToMyPageDeleteIDWarningViewController() {
+        let viewController = MyPageDeleteIDWarningViewController()
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func pushToMyPageDeleteIDViewController() {
+        let viewController = MyPageDeleteIDViewController(viewModel: MyPageDeleteIDViewModel())
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
 }
 
 extension UIViewController: UIGestureRecognizerDelegate {
