@@ -46,7 +46,6 @@ final class ConnectedNovelView: UIView {
         }
         
         novelTitleLabel.do {
-            $0.applyWSSFont(.title3, with: "여주가 세계를 구함")
             $0.textColor = .wssBlack
         }
         
@@ -77,6 +76,14 @@ final class ConnectedNovelView: UIView {
         removeButton.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.trailing.equalToSuperview().inset(16)
+        }
+    }
+    
+    //MARK: - Data
+    
+    func bindData(novelTitle: String) {
+        self.novelTitleLabel.do {
+            $0.applyWSSFont(.title3, with: novelTitle)
         }
     }
 }
