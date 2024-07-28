@@ -204,6 +204,14 @@ extension UIViewController {
         
         return alertViewController.actionButtonTap
     }
+    
+    func pushToMyPageInfoViewController() {
+        let viewController = MyPageInfoViewController(
+            viewModel: MyPageInfoViewModel(
+                userRepository: DefaultUserRepository(
+                    userService: DefaultUserService())))
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
 }
 
 extension UIViewController: UIGestureRecognizerDelegate {

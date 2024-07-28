@@ -11,6 +11,7 @@ import RxSwift
 
 protocol UserRepository {
     func getMyProfileData() -> Observable<MyProfileResult>
+    func getUserEmail() -> Observable<String>
     func patchUserName(userNickName: String) -> Observable<Void>
     func getUserCharacter() -> Observable<UserCharacter>
 }
@@ -34,6 +35,10 @@ struct DefaultUserRepository: UserRepository {
         return userService.getUserData()
             .asObservable()
     }
+    
+    func getUserEmail() -> RxSwift.Observable<String> {
+            return Observable.just("shinjiwonZZang")
+        }
     
     func patchUserName(userNickName: String) -> RxSwift.Observable<Void> {
         return userService.patchUserName(userNickName: userNickName)
