@@ -7,13 +7,16 @@
 
 import Foundation
 
-// MARK: - MemoContent: Codable {
-
 struct MemoContent: Codable {
     let memoContent: String
 }
 
-// MARK: - IsAvatarUnlocked: Codable {
+struct FeedContent: Codable {
+    let relevantCategories: [String]
+    let feedContent: String
+    let novelId: Int?
+    let isSpoiler: Bool
+}
 
 struct IsAvatarUnlocked: Codable {
     let isAvatarUnlocked: Bool

@@ -16,9 +16,12 @@ final class FeedEditViewModel: ViewModelType {
         
     private let memoRepository: MemoRepository
     
+    private var isValidFeedContent: Bool = false
+    private var novelId: Int?
+    private var relevantCategories: [String] = []
     private var hasSpoiler: Bool = false
     let initialFeedContent: String = ""
-    private var updatedFeedContent: String = ""
+    private var updatedFeedContent: String = "asdfasdf"
     private let feedContentPredicate = NSPredicate(format: "SELF MATCHES %@", "^[\\s]+$")
     private let maximumFeedContentCount: Int = 2000
     
@@ -43,10 +46,13 @@ final class FeedEditViewModel: ViewModelType {
         let viewWillAppearEvent: Observable<Void>
         let viewDidTap: Observable<UITapGestureRecognizer>
         let backButtonDidTap: ControlEvent<Void>
+        let completeButtonDidTap: ControlEvent<Void>
         let spoilerButtonDidTap: ControlEvent<Void>
+        let categoryCollectionViewItemSelected: Observable<IndexPath>
+        let categoryCollectionViewItemDeselected: Observable<IndexPath>
         let feedContentUpdated: Observable<String>
-        let feetContentViewDidBeginEditing: ControlEvent<Void>
-        let feetContentViewDidEndEditing: ControlEvent<Void>
+        let feedContentViewDidBeginEditing: ControlEvent<Void>
+        let feedContentViewDidEndEditing: ControlEvent<Void>
     }
     
     struct Output {
@@ -80,6 +86,17 @@ final class FeedEditViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        input.completeButtonDidTap
+            .flatMapLatest {
+                self.postFeed(relevantCategories: self.relevantCategories, feedContent: self.updatedFeedContent, novelId: self.novelId, isSpoiler: self.hasSpoiler)
+            }
+            .subscribe(onNext: { data in
+                print(data)
+            }, onError: { error in
+                print(error)
+            })
+            .disposed(by: disposeBag)
+        
         input.spoilerButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
                 output.hasSpoiler.accept(!owner.hasSpoiler)
@@ -87,36 +104,71 @@ final class FeedEditViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.feedContentUpdated
-            .subscribe(with: self, onNext: { owner, text in
-                owner.updatedFeedContent = text
-                output.feedContentWithLengthLimit.accept(String(text.prefix(owner.maximumFeedContentCount)))
-
-                let isEmpty = text.count == 0
-                let isOverLimit = text.count > owner.maximumFeedContentCount
-                let isWrongFormat = owner.feedContentPredicate.evaluate(with: text)
-                let isNotChanged = text == owner.initialFeedContent
-
-                if isEmpty || isOverLimit || isWrongFormat || isNotChanged {
-                    output.completeButtonIsAbled.accept(false)
-                } else {
+        input.categoryCollectionViewItemSelected
+            .subscribe(with: self, onNext: { owner, indexPath in
+                let selectedCategory = owner.dummyCategoryList[indexPath.item]
+                owner.relevantCategories.append(selectedCategory)
+                if owner.isValidFeedContent && !owner.relevantCategories.isEmpty {
                     output.completeButtonIsAbled.accept(true)
+                } else {
+                    output.completeButtonIsAbled.accept(false)
                 }
             })
             .disposed(by: disposeBag)
         
-        input.feetContentViewDidBeginEditing
+        input.categoryCollectionViewItemDeselected
+            .subscribe(with: self, onNext: { owner, indexPath in
+                let deselectedCategory = owner.dummyCategoryList[indexPath.item]
+                owner.relevantCategories.removeAll { $0 == deselectedCategory }
+                if owner.isValidFeedContent && !owner.relevantCategories.isEmpty {
+                    output.completeButtonIsAbled.accept(true)
+                } else {
+                    output.completeButtonIsAbled.accept(false)
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        input.feedContentUpdated
+            .subscribe(with: self, onNext: { owner, text in
+                owner.updatedFeedContent = text
+                output.feedContentWithLengthLimit.accept(String(text.prefix(owner.maximumFeedContentCount)))
+                
+                let isEmpty = text.count == 0
+                let isOverLimit = text.count > owner.maximumFeedContentCount
+                let isWrongFormat = owner.feedContentPredicate.evaluate(with: text)
+                let isNotChanged = text == owner.initialFeedContent
+                
+                if isEmpty || isOverLimit || isWrongFormat || isNotChanged {
+                    owner.isValidFeedContent = false
+                } else {
+                    owner.isValidFeedContent = true
+                }
+                
+                if owner.isValidFeedContent && !owner.relevantCategories.isEmpty {
+                    output.completeButtonIsAbled.accept(true)
+                } else {
+                    output.completeButtonIsAbled.accept(false)
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        input.feedContentViewDidBeginEditing
             .subscribe(onNext: { _ in
                 output.showPlaceholder.accept(false)
             })
             .disposed(by: disposeBag)
         
-        input.feetContentViewDidEndEditing
+        input.feedContentViewDidEndEditing
             .subscribe(with: self, onNext: { owner, _ in
                 output.showPlaceholder.accept(owner.updatedFeedContent.count == 0 ? true : false)
             })
             .disposed(by: disposeBag)
         
         return output
+    }
+    
+    private func postFeed(relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool) -> Observable<Void> {
+        memoRepository.postFeed(relevantCategories: relevantCategories, feedContent: feedContent, novelId: novelId, isSpoiler: isSpoiler)
+            .observe(on: MainScheduler.instance)
     }
 }

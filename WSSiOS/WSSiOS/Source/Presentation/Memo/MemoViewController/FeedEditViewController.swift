@@ -85,10 +85,13 @@ final class FeedEditViewController: UIViewController {
                 gestureRecognizer.cancelsTouchesInView = false
             }).when(.recognized).asObservable(),
             backButtonDidTap: rootView.backButton.rx.tap,
+            completeButtonDidTap: rootView.completeButton.rx.tap,
             spoilerButtonDidTap: rootView.feedContentView.spoilerButton.rx.tap,
+            categoryCollectionViewItemSelected: rootView.feedCategoryView.categoryCollectionView.rx.itemSelected.asObservable(),
+            categoryCollectionViewItemDeselected: rootView.feedCategoryView.categoryCollectionView.rx.itemDeselected.asObservable(),
             feedContentUpdated: rootView.feedContentView.feedTextView.rx.text.orEmpty.asObservable(),
-            feetContentViewDidBeginEditing: rootView.feedContentView.feedTextView.rx.didBeginEditing,
-            feetContentViewDidEndEditing: rootView.feedContentView.feedTextView.rx.didEndEditing
+            feedContentViewDidBeginEditing: rootView.feedContentView.feedTextView.rx.didBeginEditing,
+            feedContentViewDidEndEditing: rootView.feedContentView.feedTextView.rx.didEndEditing
         )
         
         let output = self.feedEditViewModel.transform(from: input, disposeBag: self.disposeBag)
