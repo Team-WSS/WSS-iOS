@@ -98,12 +98,12 @@ final class NovelDetailHeaderInfoView: UIView {
     func bindData(_ data: NovelDetailHeaderResult) {
         var novelGenreText = ""
         if data.novelGenres.count >= 2 {
-            let firstGenre = NovelGenre(rawValue: data.novelGenres[0]) ?? .error
-            let secondGenre = NovelGenre(rawValue: data.novelGenres[1]) ?? .error
+            let firstGenre = OldNovelGenre(rawValue: data.novelGenres[0]) ?? .error
+            let secondGenre = OldNovelGenre(rawValue: data.novelGenres[1]) ?? .error
             
             novelGenreText = "\(firstGenre.genreText)/\(secondGenre.genreText)"
         } else {
-            let firstGenre = NovelGenre(rawValue: data.novelGenres[0]) ?? .error
+            let firstGenre = OldNovelGenre(rawValue: data.novelGenres[0]) ?? .error
             novelGenreText = "\(firstGenre.genreText)"
         }
         
