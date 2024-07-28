@@ -63,7 +63,8 @@ final class SearchViewController: UIViewController {
     
     private func bindViewModel() {
         let input = SearchViewModel.Input(
-            searhBarDidTap: rootView.searchbarView.rx.tapGesture().when(.recognized).asObservable()
+            searhBarDidTap: rootView.searchbarView.rx.tapGesture().when(.recognized).asObservable(),
+            induceButtonDidTap: rootView.searchDetailInduceView.rx.tapGesture().when(.recognized).asObservable()
         )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -81,6 +82,15 @@ final class SearchViewController: UIViewController {
                 viewController.navigationController?.isNavigationBarHidden = false
                 viewController.hidesBottomBarWhenPushed = true
                 owner.navigationController?.pushViewController(viewController, animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        output.induceButtonEnabled
+            .bind(with: self, onNext: { owner, _ in
+                let detailSearchViewController = DetailSearchViewController(viewModel: DetailSearchViewModel())
+                detailSearchViewController.navigationController?.isNavigationBarHidden = false
+                detailSearchViewController.hidesBottomBarWhenPushed = true
+                owner.navigationController?.pushViewController(detailSearchViewController, animated: false)
             })
             .disposed(by: disposeBag)
     }

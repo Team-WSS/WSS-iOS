@@ -19,7 +19,7 @@ final class SearchDetailInduceView: UIView {
     private let backgroundImageView = UIImageView()
     
     /// 상세 탐색 버튼 및 버튼 내 라벨
-    private let induceDetailButton = UIButton()
+    let induceDetailButtonView = UIView()
     private let induceDetailButtonLabel = UILabel()
     
     //MARK: - Life Cycle
@@ -60,7 +60,7 @@ final class SearchDetailInduceView: UIView {
             $0.contentMode = .scaleAspectFill
         }
         
-        induceDetailButton.do {
+        induceDetailButtonView.do {
             $0.backgroundColor = .wssWhite
             $0.layer.cornerRadius = 14
             $0.clipsToBounds = true
@@ -77,8 +77,8 @@ final class SearchDetailInduceView: UIView {
         self.addSubview(backgroundImageView)
         backgroundImageView.addSubviews(titleLabel,
                                         descriptionLabel,
-                                        induceDetailButton)
-        induceDetailButton.addSubview(induceDetailButtonLabel)
+                                        induceDetailButtonView)
+        induceDetailButtonView.addSubview(induceDetailButtonLabel)
     }
     
     private func setLayout() {
@@ -96,7 +96,7 @@ final class SearchDetailInduceView: UIView {
             $0.leading.equalTo(titleLabel.snp.leading)
         }
         
-        induceDetailButton.snp.makeConstraints {
+        induceDetailButtonView.snp.makeConstraints {
             $0.top.equalTo(descriptionLabel.snp.bottom).offset(113)
             $0.leading.trailing.equalToSuperview().inset(22.5)
             $0.bottom.equalToSuperview().inset(21)
