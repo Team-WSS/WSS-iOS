@@ -110,6 +110,7 @@ final class MyPageEditProfileView: UIView {
                     configuration.contentInsets = NSDirectionalEdgeInsets(top: 13, leading: 13, bottom: 13, trailing: 13)
                     $0.configuration = configuration
                 }
+                print(nicknameTextField.backgroundColor, " UIView\n" )
             }
             
             checkButton.do {

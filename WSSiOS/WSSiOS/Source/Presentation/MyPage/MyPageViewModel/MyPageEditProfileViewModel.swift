@@ -28,6 +28,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
         let backButtonDidTap: ControlEvent<Void>
         let completeButtonDidTap: ControlEvent<Void>
         let profileViewDidTap: Observable<UITapGestureRecognizer>
+        let viewDidTap: ControlEvent<UITapGestureRecognizer>
         
         let updateNicknameText: Observable<String>
         let textFieldBeginEditing: ControlEvent<Void>
@@ -36,9 +37,8 @@ final class MyPageEditProfileViewModel: ViewModelType {
         
         let updateIntroText: Observable<String>
         let textViewBeginEditing: ControlEvent<Void>
-        let textViewEndEditing: ControlEvent<Void>
         
-        let genreCellTap: ControlEvent<String.Type>
+        let genreCellTap: ControlEvent<IndexPath>
     }
     
     struct Output {
@@ -47,12 +47,10 @@ final class MyPageEditProfileViewModel: ViewModelType {
         let popViewController = PublishRelay<Bool>() 
         
         let nicknameText = BehaviorRelay<String>(value: "")
-        let updateTextField = BehaviorRelay<Bool>(value: false)
-        let checkNickname = BehaviorRelay<String>(value: "")
+        let editingTextField = BehaviorRelay<Bool>(value: false)
         
         let introText = BehaviorRelay<String>(value: "")
-        let introBeginEditing = PublishRelay<Bool>()
-        let introEndEditing = PublishRelay<Bool>()
+        let editingTextView = BehaviorRelay<Bool>(value: false)
         
         let completeButtonIsAble = BehaviorRelay<Bool>(value: false)
     }
@@ -75,6 +73,13 @@ final class MyPageEditProfileViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        input.viewDidTap
+            .subscribe(onNext: { _ in
+                output.editingTextField.accept(false)
+                output.editingTextView.accept(false)
+            })
+            .disposed(by: disposeBag)
+        
         input.profileViewDidTap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
@@ -90,7 +95,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
         
         input.textFieldBeginEditing
             .subscribe(with: self, onNext: { owner, _ in
-                output.updateTextField.accept(true)
+                output.editingTextField.accept(true)
             })
             .disposed(by: disposeBag)
         
@@ -103,7 +108,8 @@ final class MyPageEditProfileViewModel: ViewModelType {
         input.checkButtonDidTap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
-                //중복 확인 서버통신 구현
+                //닉네임 체크
+                //완료시 서버연결
             })
             .disposed(by: disposeBag)
         
@@ -115,19 +121,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
         
         input.textViewBeginEditing
             .subscribe(with: self, onNext: { owner, _ in
-                output.introBeginEditing.accept(true)
-            })
-            .disposed(by: disposeBag)
-        
-        input.textViewEndEditing
-            .subscribe(with: self, onNext: { owner, _ in
-                output.introBeginEditing.accept(true)
-            })
-            .disposed(by: disposeBag)
-        
-        input.genreCellTap
-            .subscribe(with: self, onNext: { owner, _ in
-                //Cell Tap 액션
+                output.editingTextView.accept(true)
             })
             .disposed(by: disposeBag)
        

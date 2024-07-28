@@ -12,6 +12,18 @@ import Then
 
 final class MyPageEditProfileGenreCollectionViewCell: UICollectionViewCell {
 
+    //MARK: - Properties
+    
+    override var isSelected: Bool {
+            didSet {
+                if isSelected {
+                    self.genreKeywordLink.updateColor(true)
+                } else {
+                    self.genreKeywordLink.updateColor(false)
+                }
+            }
+        }
+    
     //MARK: - Life Cycle
 
     private let genreKeywordLink = KeywordLink()

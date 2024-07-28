@@ -71,15 +71,15 @@ final class MyPageEditProfileViewController: UIViewController, UIScrollViewDeleg
         let input = MyPageEditProfileViewModel.Input(
             backButtonDidTap: rootView.backButton.rx.tap,
             completeButtonDidTap: rootView.completeButton.rx.tap,
-            profileViewDidTap: rootView.profileView.rx.tapGesture().when(.recognized).asObservable(), 
+            profileViewDidTap: rootView.profileView.rx.tapGesture().when(.recognized).asObservable(),
+            viewDidTap: view.rx.tapGesture(), 
             updateNicknameText: rootView.nicknameTextField.rx.text.orEmpty.asObservable(), 
             textFieldBeginEditing: rootView.nicknameTextField.rx.controlEvent(.editingDidBegin),
             clearButtonDidTap: rootView.clearButton.rx.tap,
             checkButtonDidTap: rootView.checkButton.rx.tap,
             updateIntroText: rootView.introTextView.rx.text.orEmpty.asObservable(),
             textViewBeginEditing: rootView.introTextView.rx.didBeginEditing,
-            textViewEndEditing: rootView.introTextView.rx.didEndEditing,
-            genreCellTap: rootView.genreCollectionView.rx.modelSelected(String.Type.self)
+            genreCellTap: rootView.genreCollectionView.rx.itemSelected
         )
         
         let output = self.viewModel.transform(from: input, disposeBag: self.disposeBag)
@@ -89,6 +89,7 @@ final class MyPageEditProfileViewController: UIViewController, UIScrollViewDeleg
                 cellIdentifier: MyPageEditProfileGenreCollectionViewCell.cellIdentifier,
                 cellType: MyPageEditProfileGenreCollectionViewCell.self)) { row, element, cell in
                     cell.bindData(genre: element, isSelected: false)
+                    cell.isUserInteractionEnabled = true
                 }
                 .disposed(by: disposeBag)
         
@@ -104,15 +105,12 @@ final class MyPageEditProfileViewController: UIViewController, UIScrollViewDeleg
             })
             .disposed(by: disposeBag)
         
-        output.updateTextField
-            .bind(with: self, onNext: { owner, _ in
-                owner.rootView.updateNicknameTextFieldColor(update: true)
-            })
-            .disposed(by: disposeBag)
-        
-        output.checkNickname
-            .bind(with: self, onNext: { owner, update in
-                //                owner.rootView.warningNickname(isWarning: .exist)
+        output.editingTextField
+            .bind(with: self, onNext: { owner, editing in
+                owner.rootView.updateNicknameTextFieldColor(update: editing)
+                if !editing {
+                    owner.rootView.nicknameTextField.endEditing(true)
+                }
             })
             .disposed(by: disposeBag)
         
@@ -122,15 +120,13 @@ final class MyPageEditProfileViewController: UIViewController, UIScrollViewDeleg
             })
             .disposed(by: disposeBag)
         
-        output.introBeginEditing
-            .bind(with: self, onNext: { owner, _ in
-                owner.rootView.updateIntroTextViewColor(update: true)
-            })
-            .disposed(by: disposeBag)
-        
-        output.introEndEditing
-            .bind(with: self, onNext: { owner, _ in
-                owner.rootView.updateIntroTextViewColor(update: false)
+        output.editingTextView
+            .bind(with: self, onNext: { owner, editing in
+                owner.rootView.updateIntroTextViewColor(update: editing)
+                
+                if !editing {
+                    owner.rootView.introTextView.endEditing(true)
+                }
             })
             .disposed(by: disposeBag)
     }
@@ -139,13 +135,13 @@ final class MyPageEditProfileViewController: UIViewController, UIScrollViewDeleg
 extension MyPageEditProfileViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var text: String?
-
+        
         text = self.viewModel.genreList[indexPath.item]
-
+        
         guard let unwrappedText = text else {
             return CGSize(width: 0, height: 0)
         }
-
+        
         let width = (unwrappedText as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 26
         return CGSize(width: width, height: 37)
     }
