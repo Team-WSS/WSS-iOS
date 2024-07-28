@@ -48,23 +48,22 @@ final class FeedNovelView: UIView {
         }
         
         novelTitleLabel.do {
-            $0.font = .Title3
             $0.textColor = .wssBlack
         }
         
         novelStarIcon.do {
-            $0.image = UIImage(resource: .icPinkStar)
+            $0.image = .icLinkStar
+            $0.contentMode = .scaleAspectFit
         }
         
         [novelRatingLabel,novelRatingParticipantsLabel].forEach {
             $0.do {
-                $0.font = .Label1
                 $0.textColor = .wssBlack
             }
         }
         
         rightArrowIcon.do {
-            $0.image = UIImage(resource: .icNavigateRight)
+            $0.image = .icNavigateRight
         }
     }
     
@@ -117,12 +116,11 @@ final class FeedNovelView: UIView {
     func bindData(title: String, rating: Float, participants: Int) {
         novelTitleLabel.do {
             $0.text = title.truncateText(maxLength: 13)
-            $0.makeAttribute(with: $0.text)?
-                .kerning(kerningPixel: -0.6)
-                .applyAttribute()
+            $0.applyWSSFont(.title3, with: $0.text)
         }
         
         novelRatingLabel.text = String(rating)
-        novelRatingParticipantsLabel.text = " (" + String(participants) + ")"
+        novelRatingLabel.applyWSSFont(.label1, with: String(rating))
+        novelRatingParticipantsLabel.applyWSSFont(.label1, with: " (" + String(participants) + ")" )
     }
 }
