@@ -18,9 +18,9 @@ final class FeedEditView: UIView {
     let completeButton = UIButton()
     let scrollView = UIScrollView()
     private let contentView = UIStackView()
-    let feedCategoryView = FeedCategoryView()
-    let feedContentView = FeedContentView()
-    let feedNovelConnectView = FeedNovelConnectView()
+    let feedCategoryView = FeedEditCategoryView()
+    let feedContentView = FeedEditContentView()
+    let feedNovelConnectView = FeedEditNovelConnectView()
     
     //MARK: - Life Cycle
     
