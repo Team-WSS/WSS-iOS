@@ -15,12 +15,15 @@ final class MyPageView: UIView {
     
     //MARK: - Components
     
-    private var scrollView = UIScrollView()
-    var myPageStackView = UIStackView()
-    var myPageProfileView = MyPageProfileView()
-    var myPageTallyView = MyPageTallyView()
-    var myPageInventoryView = MyPageInventoryView()
-    var myPageSettingView = MyPageSettingView()
+    let scrollView = UIScrollView()
+    
+    let headerView = MyPageProfileHeaderView()
+    let mainStickyHeaderView = UIView()
+    let scrolledStstickyHeaderView = UIView()
+    
+    let dummyView = UIView().then {
+        $0.backgroundColor = .wssGray70
+    }
     
     // MARK: - Life Cycle
     
@@ -39,39 +42,54 @@ final class MyPageView: UIView {
     //MARK: - UI
     
     private func setUI() {
-        self.backgroundColor = .wssGray50
+        self.backgroundColor = .wssPrimary20
         
-        myPageStackView.do {
-            $0.axis = .vertical
-            $0.alignment = .fill
-            $0.distribution = .fill
-            $0.spacing = 0
+        mainStickyHeaderView.do {
+            $0.backgroundColor = .wssPrimary100
+        }
+        
+        scrolledStstickyHeaderView.do {
+            $0.backgroundColor = .wssPrimary100
+            $0.isHidden = true
         }
     }
     
     private func setHierarchy() {
-        self.addSubview(scrollView)
-        scrollView.addSubview(myPageStackView)
-        myPageStackView.addArrangedSubviews(myPageProfileView,
-                                            myPageTallyView,
-                                            myPageInventoryView,
-                                            myPageSettingView)
+        addSubviews(scrollView,
+                    scrolledStstickyHeaderView)
+        
+        scrollView.addSubviews(headerView,
+                               mainStickyHeaderView,
+                               dummyView)
     }
     
     private func setLayout() {
-        scrollView.snp.makeConstraints() {
-            $0.edges.equalToSuperview()
-            
-            myPageStackView.snp.makeConstraints() {
-                $0.top.width.bottom.equalToSuperview()
-            }
+        scrollView.snp.makeConstraints {
+            $0.top.equalTo(safeAreaLayoutGuide)
+            $0.left.right.bottom.equalToSuperview()
         }
-    }
-    
-    //MARK: - Data
-    
-    func bindData(_ data: UserResult) {
-        myPageProfileView.bindProfileViewData(data)
-        myPageTallyView.bindTallyViewData(data)
+        
+        headerView.snp.makeConstraints {
+            $0.top.width.equalToSuperview()
+        }
+        
+        mainStickyHeaderView.snp.makeConstraints {
+            $0.top.equalTo(headerView.snp.bottom)
+            $0.width.equalToSuperview()
+            $0.height.equalTo(47)
+        }
+        
+        scrolledStstickyHeaderView.snp.makeConstraints {
+            $0.top.equalTo(safeAreaLayoutGuide)
+            $0.width.equalToSuperview()
+            $0.height.equalTo(47)
+        }
+        
+        dummyView.snp.makeConstraints {
+            $0.top.equalTo(mainStickyHeaderView.snp.bottom)
+            $0.width.equalToSuperview()
+            $0.height.equalTo(1000)
+            $0.bottom.equalToSuperview()
+        }
     }
 }
