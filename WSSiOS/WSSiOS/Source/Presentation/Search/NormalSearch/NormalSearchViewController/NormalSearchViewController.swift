@@ -18,6 +18,8 @@ final class NormalSearchViewController: UIViewController {
     private let viewModel: NormalSearchViewModel
     private let disposeBag = DisposeBag()
     
+    private let viewWillAppearEvent = BehaviorRelay(value: false)
+    
     //MARK: - Components
     
     private let rootView = NormalSearchView()
@@ -40,6 +42,7 @@ final class NormalSearchViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        viewWillAppearEvent.accept(true)
         swipeBackGesture()
     }
     
@@ -61,12 +64,18 @@ final class NormalSearchViewController: UIViewController {
     
     private func bindViewModel() {
         let input = NormalSearchViewModel.Input(
+            viewWillAppearEvent: viewWillAppearEvent.asObservable(),
             backButtonDidTap: rootView.headerView.backButton.rx.tap,
             inquiryButtonDidTap: rootView.emptyView.inquiryButton.rx.tap,
             normalSearchCollectionViewContentSize: rootView.resultView.normalSearchCollectionView.rx.observe(CGSize.self, "contentSize"))
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.normalSearchList
+            .observe(on: MainScheduler.instance)
+            .catch { error in
+                print("NormalSearchList error: \(error)")
+                return Observable.just([])
+            }
             .bind(to: rootView.resultView.normalSearchCollectionView.rx.items(
                 cellIdentifier: NormalSearchCollectionViewCell.cellIdentifier,
                 cellType: NormalSearchCollectionViewCell.self)) { row, element, cell in
@@ -89,7 +98,7 @@ final class NormalSearchViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.normalSearchCollectionViewHeight
-            .subscribe(with: self, onNext: { owner, height in
+            .drive(with: self, onNext: { owner, height in
                 owner.rootView.resultView.updateCollectionViewHeight(height: height)
             })
             .disposed(by: disposeBag)

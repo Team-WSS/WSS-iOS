@@ -27,6 +27,9 @@ final class NormalSearchCollectionViewCell: UICollectionViewCell {
     private let ratingAverageLabel = UILabel()
     private let ratingCountLabel = UILabel()
     
+    private let reactStackView = UIStackView()
+    private let stackView = UIStackView()
+    
     //MARK: - Life Cycle
     
     override init(frame: CGRect) {
@@ -82,77 +85,67 @@ final class NormalSearchCollectionViewCell: UICollectionViewCell {
         ratingCountLabel.do {
             $0.textColor = .wssGray200
         }
+        
+        reactStackView.do {
+            $0.axis = .horizontal
+        }
+        
+        stackView.do {
+            $0.axis = .vertical
+            $0.spacing = 4
+            $0.alignment = .leading
+        }
     }
     
     private func setHierarchy() {
-        self.addSubviews(novelImageView,
-                         novelTitleLabel,
-                         novelAuthorLabel,
-                         likeImageView,
-                         likeCountLabel,
-                         ratingImageView,
-                         ratingAverageLabel,
-                         ratingCountLabel)
+        reactStackView.addArrangedSubviews(likeImageView,
+                                           likeCountLabel,
+                                           ratingImageView,
+                                           ratingAverageLabel,
+                                           ratingCountLabel)
+        stackView.addArrangedSubviews(reactStackView,
+                                      novelTitleLabel,
+                                      novelAuthorLabel)
+        self.addSubviews(novelImageView, stackView)
     }
     
     private func setLayout() {
         novelImageView.snp.makeConstraints {
-            $0.top.leading.bottom.equalToSuperview()
+            $0.leading.top.bottom.equalToSuperview()
             $0.width.equalTo(78)
             $0.height.equalTo(105)
         }
         
-        likeCountLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(21)
-            $0.leading.equalTo(likeImageView.snp.trailing).offset(3)
-        }
-        
         likeImageView.snp.makeConstraints {
             $0.size.equalTo(12)
-            $0.centerY.equalTo(likeCountLabel.snp.centerY)
-            $0.leading.equalTo(novelImageView.snp.trailing).offset(18)
-        }
-        
-        ratingAverageLabel.snp.makeConstraints {
-            $0.top.equalTo(likeCountLabel.snp.top)
-            $0.leading.equalTo(ratingImageView.snp.trailing).offset(3)
-        }
-        
-        ratingCountLabel.snp.makeConstraints {
-            $0.centerY.equalTo(ratingAverageLabel.snp.centerY)
-            $0.leading.equalTo(ratingAverageLabel.snp.trailing).offset(2)
         }
         
         ratingImageView.snp.makeConstraints {
             $0.size.equalTo(12)
-            $0.centerY.equalTo(ratingAverageLabel.snp.centerY)
-            $0.leading.equalTo(likeCountLabel.snp.trailing).offset(8)
         }
         
-        novelTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(likeCountLabel.snp.bottom).offset(4)
-            $0.leading.equalTo(likeImageView.snp.leading)
-            $0.trailing.equalToSuperview()
+        reactStackView.do {
+            $0.setCustomSpacing(3, after: likeImageView)
+            $0.setCustomSpacing(8, after: likeCountLabel)
+            $0.setCustomSpacing(3, after: ratingImageView)
+            $0.setCustomSpacing(2, after: ratingAverageLabel)
         }
         
-        novelAuthorLabel.snp.makeConstraints {
-            $0.top.equalTo(novelTitleLabel.snp.bottom).offset(4)
-            $0.leading.equalTo(likeImageView.snp.leading)
+        stackView.snp.makeConstraints {
+            $0.leading.equalTo(novelImageView.snp.trailing).offset(18)
+            $0.centerY.equalToSuperview()
             $0.trailing.equalToSuperview()
         }
     }
     
     func bindData(data: NormalSearchNovel) {
-        if let novelImage = UIImage(named: data.novelImage) {
-            self.novelImageView.image = novelImage
-        }
-        else {
-            self.novelImageView.image = .imgLoadingThumbnail
-        }
+        
+        self.novelImageView.kfSetImage(url: data.novelImage)
         
         self.novelTitleLabel.do {
             $0.applyWSSFont(.title3, with: data.novelTitle)
             $0.lineBreakMode = .byTruncatingTail
+            $0.numberOfLines = 2
         }
         self.novelAuthorLabel.do {
             $0.applyWSSFont(.body5, with: data.novelAuthor)

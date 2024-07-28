@@ -1,24 +1,20 @@
 //
-//  MyPageInfoViewController.swift
+//  MyPageSettingViewController.swift
 //  WSSiOS
 //
-//  Created by 신지원 on 1/17/24.
+//  Created by 신지원 on 7/10/24.
 //
 
 import UIKit
 
 import RxSwift
-import Then
-import RxRelay
 
-final class MyPageInfoViewController: UIViewController {
+final class MyPageSettingViewController: UIViewController {
     
     //MARK: - Properties
     
     private let disposeBag = DisposeBag()
-    private let viewModel: MyPageInfoViewModel
-    private let settingList = StringLiterals.MyPage.SettingInfo.allCases.map { $0.rawValue }
-    private let emailRelay = BehaviorRelay(value: "")
+    private let settingList = StringLiterals.MyPage.Setting.allCases.map { $0.rawValue }
     
     //MARK: - UI Components
     
@@ -27,17 +23,7 @@ final class MyPageInfoViewController: UIViewController {
     private let backButton = UIButton()
     
     // MARK: - Life Cycle
-    
-    init(viewModel: MyPageInfoViewModel) {
-        self.viewModel = viewModel
-        
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
+
     override func loadView() {
         self.view = rootView
     }
@@ -51,14 +37,13 @@ final class MyPageInfoViewController: UIViewController {
         register()
         bindCell()
         bindAction()
-        bindViewModel()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        preparationSetNavigationBar(title: StringLiterals.Navigation.Title.myPageInfo,
-                                    left: backButton,
+        preparationSetNavigationBar(title: StringLiterals.Navigation.Title.myPageSetting,
+                                    left: self.backButton,
                                     right: nil)
     }
     
@@ -79,66 +64,58 @@ final class MyPageInfoViewController: UIViewController {
                 cellIdentifier: MyPageSettingTableViewCell.cellIdentifier,
                 cellType: MyPageSettingTableViewCell.self)) {(row, element, cell) in
                     cell.bindData(title: element)
-                    if row == 1 {
-                        cell.bindDescriptionData(title: self.emailRelay.value)
-                    }
                 }
                 .disposed(by: disposeBag)
         
         rootView.tableView.rx.itemSelected
             .subscribe(with: self, onNext: { owner, indexPath in
                 self.rootView.tableView.deselectRow(at: indexPath, animated: true)
-                
+
                 switch indexPath.row {
                 case 0:
-                    print("성별/나이 변경")
-                    //pushVC
+                    print("계정정보")
+                    owner.pushToMyPageInfoViewController()
                 case 1:
-                    print("이메일")
+                    print("프로필 공개 여부 설정")
                     //pushVC
                 case 2:
-                    print("차단유저 목록")
-                    //pushVC
+                    print("웹소소 공식 계정")
+                    if let url = URL(string: StringLiterals.MyPage.SettingURL.instaURL) {
+                        UIApplication.shared.open(url, options: [:])
+                    }
                 case 3:
-                    print("로그아웃")
-                    //pushModalVC
+                    print("문의하기 & 의견 보내기")
+                    if let url = URL(string: "https://www.instagram.com/2s.ena/") {
+                        UIApplication.shared.open(url, options: [:])
+                    }
                 case 4:
-                    print("회원탈퇴")
-                    //pushVC
+                    print("앱 평점 남기기")
+                    if let url = URL(string: "https://www.instagram.com/2s.ena/") {
+                        UIApplication.shared.open(url, options: [:])
+                    }
+                case 5:
+                    print("서비스 이용약관")
+                    if let url = URL(string: StringLiterals.MyPage.SettingURL.termsURL) {
+                        UIApplication.shared.open(url, options: [:])
+                    }
                 default: break
                 }
             })
             .disposed(by: disposeBag)
     }
     
+    //MARK: - Action
+    
     private func bindAction() {
-        self.backButton.rx.tap
-            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
+        backButton.rx.tap
             .subscribe(with: self, onNext: { owner, _ in
                 owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
     }
-    
-    private func bindViewModel() {
-        let input = MyPageInfoViewModel.Input()
-        let output = viewModel.transform(from: input, disposeBag: disposeBag)
-        
-        output.email
-            .subscribe(with: self, onNext: { owner, email in
-                owner.emailRelay.accept(email)
-            })
-            .disposed(by: disposeBag)
-        
-        emailRelay
-            .bind(onNext: { [weak self] _ in
-                self?.rootView.tableView.reloadData()
-            })
-            .disposed(by: disposeBag)
-    }
 }
 
-extension MyPageInfoViewController {
+extension MyPageSettingViewController {
     private func setUI() {
         backButton.do {
             $0.setImage(.icNavigateLeft, for: .normal)
