@@ -218,8 +218,6 @@
 		B9B0CBD62BE29EA0002F4CF6 /* HomeInterestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B0CBD52BE29EA0002F4CF6 /* HomeInterestView.swift */; };
 		B9B0CBD82BE2A09B002F4CF6 /* HomeInterestCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B0CBD72BE2A09B002F4CF6 /* HomeInterestCollectionViewCell.swift */; };
 		B9CEDA0D2C01C97E00E62247 /* HomeUnregisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9CEDA0C2C01C97E00E62247 /* HomeUnregisterView.swift */; };
-		B9FE59642BF11955005815AF /* HomeInduceLoginModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FE59632BF11955005815AF /* HomeInduceLoginModalView.swift */; };
-		B9CEDA0D2C01C97E00E62247 /* HomeUnregisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9CEDA0C2C01C97E00E62247 /* HomeUnregisterView.swift */; };
 		B9E565F52C04517A00DB51FF /* NormalSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E565F42C04517A00DB51FF /* NormalSearchViewController.swift */; };
 		B9E565F92C04520A00DB51FF /* NormalSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E565F82C04520A00DB51FF /* NormalSearchView.swift */; };
 		B9E565FF2C0452AA00DB51FF /* NormalSearchEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E565FE2C0452AA00DB51FF /* NormalSearchEmptyView.swift */; };
@@ -2199,7 +2197,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 202401192;
-				DEVELOPMENT_TEAM = D23XDL6TZZ;
+				DEVELOPMENT_TEAM = 9SVDHQS4M3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WSSiOS/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "웹소소";
@@ -2230,7 +2228,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 202401192;
-				DEVELOPMENT_TEAM = D23XDL6TZZ;
+				DEVELOPMENT_TEAM = 9SVDHQS4M3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WSSiOS/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "웹소소";

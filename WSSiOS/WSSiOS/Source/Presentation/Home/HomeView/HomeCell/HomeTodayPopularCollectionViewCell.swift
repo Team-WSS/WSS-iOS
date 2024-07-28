@@ -19,7 +19,7 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
     
     /// 유저 피드 글 정보
     private let blurBackgroundView = UIView()
-    private let userProfileView = UIView()
+    private let userProfileView = UIImageView()
     private let commentTitleLabel = UILabel()
     private let commaStartedImageView = UIImageView()
     private let commaFinishedImageView = UIImageView()
@@ -60,11 +60,13 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
         }
         
         novelImageView.do {
+            $0.image = .imgLoadingThumbnail
             $0.layer.cornerRadius = 9
             $0.layer.shadowColor = UIColor.wssBlack.cgColor
             $0.layer.shadowOpacity = 0.1
             $0.layer.shadowRadius = 15.44
             $0.layer.shadowOffset = CGSize(width: 0, height: 2.06)
+            $0.contentMode = .scaleAspectFill
             $0.clipsToBounds = true
         }
         
@@ -133,6 +135,8 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
         novelImageView.snp.makeConstraints {
             $0.top.equalTo(novelTitleLabel.snp.bottom).offset(15)
             $0.centerX.equalToSuperview()
+            $0.width.equalTo(127)
+            $0.height.equalTo(188)
         }
         
         blurBackgroundView.snp.makeConstraints {
@@ -173,8 +177,8 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
             $0.applyWSSFont(.title2, with: data.title)
             $0.lineBreakMode = .byTruncatingTail
         }
-        self.novelImageView.image = UIImage(named: data.novelImage)
-        self.userProfileView.addSubview(UIImageView(image: UIImage(named: data.avatarImage)))
+        self.novelImageView.kfSetImage(url: data.novelImage)
+        self.userProfileView.kfSetImage(url: data.avatarImage)
         self.commentTitleLabel.do {
             $0.applyWSSFont(.title2, with: "\(data.nickname)님의 글")
         }
