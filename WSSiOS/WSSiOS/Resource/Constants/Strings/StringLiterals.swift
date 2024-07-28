@@ -40,7 +40,7 @@ enum StringLiterals {
     enum Home {
         enum Title {
             static let todayPopular = "오늘의 인기작"
-            static let realtimePopular = "실시간 인기글"
+            static let realtimePopular = "지금 뜨는 수다글"
             static let interest = "님의 관심글"
             static let recommend = "이 웹소설은 어때요?"
         }
@@ -246,6 +246,11 @@ enum StringLiterals {
                 static let novelFeedCount = "0"
             }
         }
+        
+        enum Tab {
+            static let info = "정보"
+            static let feed = "피드"
+        }
     }
     
     enum Search {
@@ -271,6 +276,19 @@ enum StringLiterals {
     enum Memo {
         static let complete = "완료"
         static let edit = "수정"
+        enum Category {
+            static let category = "카테고리"
+            static let multipleSelect = "중복 선택 가능"
+        }
+        enum Content {
+            static let writeContent = "내용 작성하기"
+            static let spoiler = "스포일러"
+            static let placeHolder = "피드 작성 유의사항!\n\n욕설, 비방 등 상대방을 불쾌하게 하는 의견은\n작품 내용을 담은 글은 스포일러 체크해주세요."
+        }
+        enum Novel {
+            static let novelConnect = "작품 연결하기"
+            static let novelSearch = "작품 제목, 작가를 검색하세요"
+        }
     }
     
     enum DeletePopup {

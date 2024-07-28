@@ -1,17 +1,18 @@
 //
-//  RegisterNormalToggleButton.swift
+//  WSSToggleButton.swift
 //  WSSiOS
 //
 //  Created by 이윤학 on 1/11/24.
 //
 
 import UIKit
+
 import RxSwift
 import RxCocoa
 import SnapKit
 import Then
 
-final class RegisterNormalToggleButton: UIButton {
+final class WSSToggleButton: UIButton {
     
     //MARK: - Properties
     

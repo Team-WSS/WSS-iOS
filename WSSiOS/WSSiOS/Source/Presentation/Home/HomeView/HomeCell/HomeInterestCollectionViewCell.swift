@@ -77,6 +77,7 @@ final class HomeInterestCollectionViewCell: UICollectionViewCell {
         novelImageView.do {
             $0.layer.cornerRadius = 4
             $0.clipsToBounds = true
+            $0.contentMode = .scaleAspectFill
         }
         
         novelTitleLabel.do {
@@ -140,11 +141,6 @@ final class HomeInterestCollectionViewCell: UICollectionViewCell {
     }
     
     private func setLayout() {
-        self.snp.makeConstraints {
-            $0.width.equalTo(280)
-            $0.height.equalTo(251)
-        }
-        
         novelBackgroundView.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
             $0.height.equalTo(118)
@@ -192,7 +188,7 @@ final class HomeInterestCollectionViewCell: UICollectionViewCell {
     }
     
     func bindData(data: InterestFeed) {
-        self.novelImageView.image = UIImage(named: data.novelImage)
+        self.novelImageView.kfSetImage(url: data.novelImage)
         self.novelTitleLabel.do {
             $0.applyWSSFont(.title3, with: data.novelTitle)
             $0.lineBreakMode = .byTruncatingTail
@@ -202,7 +198,7 @@ final class HomeInterestCollectionViewCell: UICollectionViewCell {
         self.novelAverageRatingLabel.applyWSSFont(.body5, with: String(data.novelRating))
         self.novelRatingNumberLabel.applyWSSFont(.body5, with: "(\(data.novelRatingCount))")
         
-        self.userProfileImageView.image = UIImage(named: data.userAvatarImage)
+        self.userProfileImageView.kfSetImage(url: data.userAvatarImage)
         self.userNicknameLabel.do {
             $0.applyWSSFont(.title3, with: "\(data.userNickname) 님의 글")
             $0.lineBreakMode = .byTruncatingTail
