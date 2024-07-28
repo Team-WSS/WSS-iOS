@@ -123,7 +123,7 @@ enum FeedGenre: String, CaseIterable {
     }
 }
 
-enum FeedDetailWomanGenre: String {
+enum FeedDetailGenre: String {
     case romance = "romance"
     case romanceFantasy = "romanceFantasy"
     case bl = "bl"
@@ -155,44 +155,6 @@ enum FeedDetailWomanGenre: String {
             return "미스터리"
         case .lightNovel:
             return "라노벨"
-        case .etc:
-            return "기타"
-        }
-    }
-}
-
-enum FeedDetailManGenre: String {
-    case fantasy = "fantasy"
-    case modernFantasy = "modernFantasy"
-    case wuxia = "wuxia"
-    case drama = "drama"
-    case mystery = "mystery"
-    case lightNovel = "lightNovel"
-    case romance = "romance"
-    case romanceFantasy = "romanceFantasy"
-    case bl = "bl"
-    case etc = "etc"
-    
-    var withKorean: String {
-        switch self {
-        case .fantasy:
-            return "판타지"
-        case .modernFantasy:
-            return "현판"
-        case .wuxia:
-            return "무협"
-        case .drama:
-            return "드라마"
-        case .mystery:
-            return "미스터리"
-        case .lightNovel:
-            return "라노벨"
-        case .romance:
-            return "로맨스"
-        case .romanceFantasy:
-            return "로판"
-        case .bl:
-            return "BL"
         case .etc:
             return "기타"
         }
@@ -200,7 +162,16 @@ enum FeedDetailManGenre: String {
 }
 
 enum FeedDetailWomanKoreanGenre: String, CaseIterable {
-    case 로맨스, 로판, BL, 판타지, 현판, 무협, 드라마, 미스터리, 라노벨, 기타
+    case 로맨스 = "로맨스"
+    case 로판 = "로판"
+    case BL = "BL"
+    case 판타지 = "판타지"
+    case 현판 = "현판"
+    case 무협 = "무협"
+    case 드라마 = "드라마"
+    case 미스터리 = "미스터리"
+    case 라노벨 = "라노벨"
+    case 기타 = "기타"
     
     var toEnglish: String {
         switch self {
@@ -229,7 +200,16 @@ enum FeedDetailWomanKoreanGenre: String, CaseIterable {
 }
 
 enum FeedDetailManKoreanGenre: String, CaseIterable {
-    case 판타지, 현판, 무협, 드라마, 미스터리, 라노벨, 로맨스, 로판, BL, 기타
+    case 판타지 = "판타지"
+    case 현판 = "현판"
+    case 무협 = "무협"
+    case 드라마 = "드라마"
+    case 미스터리 = "미스터리"
+    case 라노벨 = "라노벨"
+    case 로맨스 = "로맨스"
+    case 로판 = "로판"
+    case BL = "BL"
+    case 기타 = "기타"
     
     var toEnglish: String {
         switch self {
