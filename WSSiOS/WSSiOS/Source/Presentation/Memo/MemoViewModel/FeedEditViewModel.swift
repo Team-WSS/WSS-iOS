@@ -147,6 +147,12 @@ final class FeedEditViewModel: ViewModelType {
                 owner.updatedFeedContent = text
                 output.feedContentWithLengthLimit.accept(String(text.prefix(owner.maximumFeedContentCount)))
                 
+                if text.count == 0 {
+                    output.showPlaceholder.accept(true)
+                } else {
+                    output.showPlaceholder.accept(false)
+                }
+                
                 let isEmpty = text.count == 0
                 let isOverLimit = text.count > owner.maximumFeedContentCount
                 let isWrongFormat = owner.feedContentPredicate.evaluate(with: text)
