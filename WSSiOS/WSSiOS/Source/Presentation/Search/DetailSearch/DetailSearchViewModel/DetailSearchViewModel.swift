@@ -17,7 +17,7 @@ final class DetailSearchViewModel: ViewModelType {
     //MARK: - Properties
     
     private let cancelButtonEnabled = PublishRelay<Bool>()
-    private let genreList = BehaviorRelay<[String]>(value: DetailSearchGenre.allCases.map { $0.withKorean })
+    private let genreList = BehaviorRelay<[String]>(value: NovelGenre.allCases.map { $0.toKorean })
     private let genreCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
     private let selectedTab = BehaviorRelay<DetailSearchTab>(value: DetailSearchTab.info)
     
@@ -69,34 +69,5 @@ final class DetailSearchViewModel: ViewModelType {
         }
         
         return genreList.value[indexPath.item]
-    }
-}
-
-enum DetailSearchGenre: CaseIterable {
-    case romance, romanceFantasy, fantasy
-    case modernFantasy, wuxia, mystery, drama
-    case lightNovel, bl
-    
-    var withKorean: String {
-        switch self {
-        case .romance:
-            return "로맨스"
-        case .romanceFantasy:
-            return "로판"
-        case .fantasy:
-            return "판타지"
-        case .modernFantasy:
-            return "현판"
-        case .wuxia:
-            return "무협"
-        case .mystery:
-            return "미스터리"
-        case .drama:
-            return "드라마"
-        case .lightNovel:
-            return "라노벨"
-        case .bl:
-            return "BL"
-        }
     }
 }
