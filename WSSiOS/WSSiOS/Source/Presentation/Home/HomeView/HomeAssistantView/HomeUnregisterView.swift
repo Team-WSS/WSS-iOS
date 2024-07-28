@@ -48,6 +48,7 @@ final class HomeUnregisterView: UIView {
     
     private var titleLabel = UILabel()
     private var registerButton = UIButton()
+    private let registerButtonLabel = UILabel()
     
     //MARK: - Life Cycle
     
@@ -80,12 +81,19 @@ final class HomeUnregisterView: UIView {
         
         registerButton.do {
             $0.setTitleColor(.wssWhite, for: .normal)
+            $0.layer.cornerRadius = 8
+        }
+        
+        registerButtonLabel.do {
+            $0.textColor = .wssWhite
+            $0.isUserInteractionEnabled = false
         }
     }
     
     private func setHierarchy() {
         self.addSubviews(titleLabel,
                          registerButton)
+        registerButton.addSubview(registerButtonLabel)
     }
     
     private func setLayout() {
@@ -97,27 +105,28 @@ final class HomeUnregisterView: UIView {
         registerButton.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(14)
             $0.leading.equalTo(titleLabel.snp.leading)
+            $0.width.equalTo(138)
+            $0.height.equalTo(33)
             $0.bottom.equalToSuperview().inset(20)
+            
+            registerButtonLabel.snp.makeConstraints {
+                $0.center.equalToSuperview()
+            }
         }
     }
     
     private func bindData(_ type: UnregisterType) {
         self.titleLabel.do {
-            $0.fontBody2Attribute(with: type.title)
+            $0.applyWSSFont(.body2, with: type.title)
             $0.numberOfLines = 2
         }
         
         self.registerButton.do {
-            var configuration = UIButton.Configuration.filled()
-            configuration.background.cornerRadius = 8
-            configuration.contentInsets = NSDirectionalEdgeInsets(top: 9, leading: 21, bottom: 9, trailing: 21)
-            configuration.baseBackgroundColor = type.buttonColor
-            
-            var titleAttr = AttributedString.init(type.buttonTitle)
-            titleAttr.kern = -0.6
-            titleAttr.font = UIFont.Title3
-            configuration.attributedTitle = titleAttr
-            $0.configuration = configuration
+            $0.backgroundColor = type.buttonColor
+        }
+        
+        self.registerButtonLabel.do {
+            $0.applyWSSFont(.title3, with: type.buttonTitle)
         }
     }
 }

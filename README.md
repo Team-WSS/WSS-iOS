@@ -1,12 +1,19 @@
 # WWS-iOS
 
-<div align="center">
- <img alt="websosoMainImage" src="https://github.com/Team-WSS/WSS-iOS/assets/87518742/7dbfadfe-c721-4ec0-8937-bd212edd2b69">
- 
- ### _**🌠 웹소소, 새로운 세상으로의 포털을 열다. 🌠**_
- _**쉽게 기록하고, 재밌게 기억하고, 마음껏 몰입하기 위해.**_ 
+
+ <div align="center">
+ <img alt="스크린샷 2024-07-01 오후 3 14 07" src="https://github.com/Team-WSS/WSS-iOS/assets/103318297/d08ae388-429f-46cc-a507-9cc3d004b33a">
+
+</br>
+
+</br>
+
+ ### _**WEBSOSO**_
+ _**웹소설 뭐 읽을지 고민될 땐, 웹소소**_ 
  </div>
 
+</br>
+</br>
 
 ## 🌠 About WSS
 > 📅 1차 스프린트 기간: 2023.12.17 - 2024.01.20
@@ -29,7 +36,7 @@
 
 |<img width="250px" alt="지원" src="https://github.com/Team-WSS/WSS-iOS/assets/87518742/c902ad7d-4a2a-4964-b3e6-76c4ab5fbdb0">|<img width="250px" alt="윤학" src="https://github.com/Team-WSS/WSS-iOS/assets/87518742/e09c52e1-2876-49c0-9a32-33eb204590ea">|<img width="250px" alt="서연" src="https://github.com/Team-WSS/WSS-iOS/assets/87518742/b2b350b4-cf4a-4469-8e3d-320b4a7fd7fa">|<img width="250px" alt="효원" src="https://github.com/Team-WSS/WSS-iOS/assets/87518742/e46f7d9c-41cb-4fcb-8ba5-52acbd208bb3">|
 |:----:|:----:|:----:|:----:|
-|[신지원](https://github.com/ena-isme)|[이윤학](https://github.com/Naknakk)|[최서연](https://github.com/chetseoo)|[전효원](https://github.com/hyowon612)|
+|[신지원](https://github.com/ena-isme)|[이윤학](https://github.com/Naknakk)|[최서연](https://github.com/Guryss)|[전효원](https://github.com/hyowon612)|
 |Library, MyPage|Register|Home, Search, Record|Detail, Memo|
 
 <br>
@@ -52,6 +59,7 @@
 |[Kingfisher](https://github.com/onevcat/Kingfisher)|7.10.1|웹에서 다운받은 이미지 캐싱 에 사용|
 |[Lottie](https://github.com/airbnb/lottie-ios)|4.3.4|벡터 애니메이션 렌더링 에 사용|
 |[RxSwift](https://github.com/ReactiveX/RxSwift.git)|6.6.0|MVVM 패턴의 원활한 적용과 반응형 프로그래밍 에 사용|
+|[RxGesture](https://github.com/RxSwiftCommunity/RxGesture.git)|4.0.4|Gesture 처리 에 사용|
 |[RxKeyboard](https://github.com/RxSwiftCommunity/RxKeyboard.git)|2.0.1|Keyboard 처리 에 사용|
 |[SnapKit](https://github.com/SnapKit/SnapKit)|5.7.0|UI AutoLayout 에 사용|
 |[Then](https://github.com/devxoul/Then)|3.0.0|클로저를 이용한 인스턴스 초기화 에 사용|
@@ -620,25 +628,24 @@ WSSiOS
 ├── Resource
 │   ├── Assets.xcassets
 │   ├── Constants
-│   │   ├── Fonts
-│   │   ├── Images
-│   │   └── Strings
 │   └── Extensions
 ├── Source
 │   ├── Data
 │   │   └── Repository
 │   ├── Presentation
-│   │   ├── Home
-│   │   │   ├── HomeView
-│   │   │   │   ├── HomeView.swift
-│   │   │   │   ├── HomeAssistantView
-│   │   │   │   └── HomeCell
-│   │   │   ├── HomeViewController
-│   │   │       └── HomeViewController.swift    
-│   │   ├── Search
-│   │   │   └──  .....
-│   │   ├── RegisterNormal
- ....
+│   │   ├── Feature
+│   │   │   ├── View
+│   │   │   │   ├── View.swift
+│   │   │   │   ├── AssistantView
+│   │   │   │   └── Cell
+│   │   │   ├── ViewController
+│   │   │       └── ViewController.swift
+│   │   │   ├── ViewModel
+│   │   │   │   └── ViewModel.swift
+├── Network
+│   └── Service
+└── Trash
+
 ```
 <br>
 

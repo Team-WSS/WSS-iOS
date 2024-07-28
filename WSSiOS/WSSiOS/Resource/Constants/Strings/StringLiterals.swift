@@ -33,6 +33,7 @@ enum StringLiterals {
             static let changeNickname = "닉네임 변경"
             static let myPageInfo = "계정정보 확인"
             static let feed = "소소피드"
+            static let notice = "알림"
         }
     }
     
@@ -47,6 +48,12 @@ enum StringLiterals {
         enum SubTitle {
             static let interest = "관심 등록한 작품의 최신글이에요"
             static let recommend = "선호 장르를 기반으로 추천드려요!"
+        }
+        
+        enum Login {
+            static let induceTitle = "로그인하고 모든 기능을\n자유롭게 사용하세요!"
+            static let loginButtonTitle = "로그인 하러가기"
+            static let cancelButtonTitle = "닫기"
         }
         
         enum Unregister {
@@ -239,12 +246,30 @@ enum StringLiterals {
                 static let novelFeedCount = "0"
             }
         }
+        
+        enum Tab {
+            static let info = "정보"
+            static let feed = "피드"
+        }
     }
     
     enum Search {
+        static let title = "탐색하기"
+        static let searchbar = "작품 제목, 작가를 검색하세요"
+        
+        static let induceTitle = "이제 뭐 읽을지 고민될 땐?"
+        static let induceDescription = "장르, 연재상태, 별점, 키워드로 작품 찾기"
+        static let induceButton = "내 취향에 맞는 작품 탐색하기"
+        
+        static let sosoTitle = "소소"
+        static let sosoDescription = "다른 사람들이 최근에 읽고 있는 작품이에요"
+        
+        static let novel = "작품"
+        
         enum Empty {
-            static let description = "검색 결과가 없어요ㅠ"
-            static let register = "등록 문의하기"
+            static let description = "해당 검색어를 가진 작품은\n아직 등록되지 않았어요.."
+            static let inquiryButton = "작품 문의하러 가기"
+            static let kakaoChannelUrl = "https://pf.kakao.com/_kHxlWG"
         }
     }
     

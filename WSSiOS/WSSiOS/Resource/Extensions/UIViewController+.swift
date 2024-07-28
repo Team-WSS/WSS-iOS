@@ -7,6 +7,7 @@
 
 import UIKit
 
+import RxSwift
 import SnapKit
 import Then
 
@@ -182,6 +183,26 @@ extension UIViewController {
     func pushToDetailViewController(novelId: Int) {
         let viewController = ModuleFactory.shared.makeDetailViewController(novelId: novelId)
         self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func presentToAlertViewController(iconImage: UIImage?,
+                                      titleText: String?,
+                                      contentText: String?,
+                                      cancelTitle: String?,
+                                      actionTitle: String?,
+                                      actionBackgroundColor: CGColor?) -> Observable<Void> {
+        let alertViewController = WSSAlertViewController(iconImage: iconImage,
+                                                         titleText: titleText,
+                                                         contentText: contentText,
+                                                         cancelTitle: cancelTitle,
+                                                         actionTitle: actionTitle,
+                                                         actionBackgroundColor: actionBackgroundColor)
+        alertViewController.modalPresentationStyle = .overFullScreen
+        alertViewController.modalTransitionStyle = .crossDissolve
+        
+        self.present(alertViewController, animated: true)
+        
+        return alertViewController.actionButtonTap
     }
 }
 

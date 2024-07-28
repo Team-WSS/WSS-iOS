@@ -5,82 +5,59 @@
 //  Created by Seoyeon Choi on 2/29/24.
 //
 
-import Foundation
+import UIKit
 
 import RxSwift
 import RxCocoa
+import RxGesture
 
 final class SearchViewModel: ViewModelType {
 
     //MARK: - Properties
     
-    private let novelRepository: NovelRepository
+    private let searchRepository: SearchRepository
     private let disposeBag = DisposeBag()
     
     //MARK: - Inputs
     
     struct Input {
-        let searchTextUpdated: ControlProperty<String>
-        let backButtonTapped: ControlEvent<Void>
-        let searchCellSelected: ControlEvent<IndexPath>
+        let searhBarDidTap: Observable<UITapGestureRecognizer>
     }
     
     //MARK: - Outputs
     
     struct Output {
-        var searchResultList = BehaviorRelay<[SearchNovel]>(value: [])
-        let backToHome = PublishRelay<Bool>()
-        let navigateToRegisterNormal = PublishRelay<IndexPath>()
+        var sosoPickList = BehaviorRelay<[SosoPickNovel]>(value: [])
+        let searchBarEnabled = PublishRelay<Bool>()
     }
     
     //MARK: - init
   
-    init(novelRepository: NovelRepository) {
-        self.novelRepository = novelRepository
+    init(searchRepository: SearchRepository) {
+        self.searchRepository = searchRepository
     }
     
     //MARK: - API
     
-    private func getDataFromAPI(searchWord: String) -> Observable<SearchNovels> {
-        novelRepository.getSearchNovels(searchWord: searchWord)
-            .observe(on: MainScheduler.instance)
-    }
 }
 
 //MARK: - Methods
 
 extension SearchViewModel {
-    
-    func transform(from input: Input, disposeBag: RxSwift.DisposeBag) -> Output {
+    func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
         
-        input.searchTextUpdated
-            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
-            .flatMapLatest { text in
-                if text.isEmpty {
-                    return Observable<[SearchNovel]>.empty()
-                }
-                else {
-                    return self.getDataFromAPI(searchWord: text)
-                        .map { $0.novels }
-                }
-            }
-            .subscribe( onNext: { novels in
-                output.searchResultList.accept(novels)
-            }, onError: { error in
+        searchRepository.getSosoPickNovels()
+            .subscribe(with: self, onNext: { owner, data in
+                output.sosoPickList.accept(data)
+            }, onError: { owner, error in
                 print(error)
             })
             .disposed(by: disposeBag)
         
-        input.backButtonTapped
+        input.searhBarDidTap
             .subscribe(onNext: { _ in
-                output.backToHome.accept(true)
-            })
-            .disposed(by: disposeBag)
-        
-        input.searchCellSelected
-            .subscribe(onNext: { indexPath in
-                output.navigateToRegisterNormal.accept(indexPath)
+                output.searchBarEnabled.accept(true)
             })
             .disposed(by: disposeBag)
         
