@@ -14,7 +14,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
-        let navigationController = UINavigationController(rootViewController: WSSTabBarController())
+        let navigationController = UINavigationController(rootViewController: FeedEditViewController(viewModel: FeedEditViewModel(memoRepository: DefaultMemoRepository(memoService: DefaultMemoService()))))
         navigationController.isNavigationBarHidden = true
         
         self.window = UIWindow(windowScene: windowScene)

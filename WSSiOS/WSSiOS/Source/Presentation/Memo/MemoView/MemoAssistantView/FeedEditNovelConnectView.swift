@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class FeedNovelConnectView: UIView {
+final class FeedEditNovelConnectView: UIView {
     
     //MARK: - Components
     
@@ -18,7 +18,7 @@ final class FeedNovelConnectView: UIView {
     private let novelSearchView = UIView()
     private let novelSearchLabel = UILabel()
     private let searchImageView = UIImageView()
-    private let connectedNovelView = ConnectedNovelView()
+    private let connectedNovelView = FeedEditConnectedNovelView()
     
     //MARK: - Life Cycle
     

@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class ConnectedNovelView: UIView {
+final class FeedEditConnectedNovelView: UIView {
     
     //MARK: - Components
     
