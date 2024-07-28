@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class WSSDropdownButton: UIButton { 
+final class WSSDropdown: UIView { 
     
     // MARK: - UI Components
     
@@ -49,7 +49,7 @@ final class WSSDropdownButton: UIButton {
                       textColor: UIColor) {
         
         WSSDropdownManager.shared.createDropdown(superView: dropdownRootView,
-                                                 dropdownButton: self,
+                                                 dropdownView: self,
                                                  dropdownWidth: dropdownWidth,
                                                  dropdownData: dropdownData,
                                                  textColor: textColor)

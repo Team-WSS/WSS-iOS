@@ -61,9 +61,9 @@ final class MyPageChangeNickNameViewModel: ViewModelType {
         input.completeButtonDidTap
             .withLatestFrom(output.completeButtonIsAble)
             .filter { isAble in isAble }
-//            .flatMapLatest { [unowned self] _ in
-//                patchUserNickName(nickname: self.updateNicknameText)
-//            }
+            .flatMapLatest { [unowned self] _ in
+                patchUserNickName(nickname: self.updateNicknameText)
+            }
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, result in
                 output.completeButtonAction.accept(true)
@@ -102,7 +102,7 @@ final class MyPageChangeNickNameViewModel: ViewModelType {
     
     //MARK: - API
     
-//    private func patchUserNickName(nickname: String) -> Observable<Void> {
-//        return self.userRepository.patchUserName(userNickName: nickname)
-//    }
+    private func patchUserNickName(nickname: String) -> Observable<Void> {
+        return self.userRepository.patchUserName(userNickName: nickname)
+    }
 }

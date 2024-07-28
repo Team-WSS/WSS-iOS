@@ -57,4 +57,10 @@ final class MyPageInventoryCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Data
     
+    func bindData(data: UserAvatar, representativeId: Int) {
+        myPageAvaterImageView.kfSetImage(url: data.avatarImg)
+        
+        let isRepresentative = representativeId == data.avatarId
+        myPageAvaterImageView.layer.borderColor = isRepresentative ? UIColor.wssPrimary100.cgColor : UIColor.clear.cgColor
+    }
 }

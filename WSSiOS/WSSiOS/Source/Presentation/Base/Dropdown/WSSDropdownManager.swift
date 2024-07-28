@@ -23,7 +23,7 @@ class WSSDropdownManager {
     // MARK: - Create Dropdown
     
     func createDropdown(superView: UIView,
-                        dropdownButton: WSSDropdownButton,
+                        dropdownView: WSSDropdown,
                         dropdownWidth: Double,
                         dropdownData: [String],
                         textColor: UIColor) {
@@ -33,12 +33,12 @@ class WSSDropdownManager {
         dropdownTableView.isHidden = true
         dropdownTableView.cellTextColor = textColor
         
-        superView.addSubviews(dropdownButton,
+        superView.addSubviews(dropdownView,
                              dropdownTableView)
         
         dropdownTableView.snp.makeConstraints {
-            $0.top.equalTo(dropdownButton.snp.bottom)
-            $0.trailing.equalTo(dropdownButton.snp.trailing)
+            $0.top.equalTo(dropdownView.snp.bottom)
+            $0.trailing.equalTo(dropdownView.snp.trailing)
             $0.width.equalTo(dropdownWidth)
             
             let calculateHeight = CGFloat(dropdownData.count) * 51.0
@@ -47,8 +47,8 @@ class WSSDropdownManager {
         
         let tapGesture = UITapGestureRecognizer(target: self,
                                                 action: #selector(dropdownTapped(_:)))
-        dropdownButton.addGestureRecognizer(tapGesture)
-        dropdowns[dropdownButton] = dropdownTableView
+        dropdownView.addGestureRecognizer(tapGesture)
+        dropdowns[dropdownView] = dropdownTableView
         tapCell(dropdownView: dropdownTableView)
     }
     
