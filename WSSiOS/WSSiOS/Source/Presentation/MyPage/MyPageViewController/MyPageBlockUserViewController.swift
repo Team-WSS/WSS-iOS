@@ -28,7 +28,7 @@ final class MyPageBlockUserViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        register()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -43,8 +43,8 @@ final class MyPageBlockUserViewController: UIViewController {
     
     private func register() {
         rootView.tableView.register(
-            MyPageSettingTableViewCell.self,
-            forCellReuseIdentifier: MyPageSettingTableViewCell.cellIdentifier)
+            MyPageBlockUserTableViewCell.self,
+            forCellReuseIdentifier: MyPageBlockUserTableViewCell.cellIdentifier)
     }
     
     

@@ -154,6 +154,10 @@ enum StringLiterals {
             static let complete = "완료"
             static let nickname = "닉네임"
         }
+        
+        enum BlockUser {
+            static let buttonTitle = "차단 해제"
+        }
     }
     
     enum Library {
