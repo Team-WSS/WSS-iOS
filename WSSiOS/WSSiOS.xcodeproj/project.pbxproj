@@ -11,7 +11,7 @@
 		2C19A4F92BBA8C3F00D4D151 /* WSSDropdownTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C19A4F82BBA8C3F00D4D151 /* WSSDropdownTableViewCell.swift */; };
 		2C19A4FB2BBA8E9600D4D151 /* WSSDropdownManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C19A4FA2BBA8E9600D4D151 /* WSSDropdownManager.swift */; };
 		2C19A4FD2BBA90E700D4D151 /* WSSDropDownTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C19A4FC2BBA90E700D4D151 /* WSSDropDownTableView.swift */; };
-		2C19A5002BBD56C900D4D151 /* WSSDropdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C19A4FF2BBD56C900D4D151 /* WSSDropdown.swift */; };
+		2C19A5002BBD56C900D4D151 /* WSSDropdownButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C19A4FF2BBD56C900D4D151 /* WSSDropdownButton.swift */; };
 		2C2491812B4ADC000096F255 /* StringLiterals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2491802B4ADC000096F255 /* StringLiterals.swift */; };
 		2C2491842B4ADC230096F255 /* WSSTabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2491832B4ADC230096F255 /* WSSTabBarItem.swift */; };
 		2C2491862B4ADC420096F255 /* WSSTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2491852B4ADC420096F255 /* WSSTabBarController.swift */; };
@@ -27,13 +27,15 @@
 		2C60306D2B5445EC0031544C /* LibraryTabCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C60306C2B5445EC0031544C /* LibraryTabCollectionViewCell.swift */; };
 		2C60306F2B54EDDD0031544C /* LibraryDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C60306E2B54EDDC0031544C /* LibraryDescriptionView.swift */; };
 		2C6030712B54F23F0031544C /* LibraryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6030702B54F23F0031544C /* LibraryListView.swift */; };
-		2C6030772B55263F0031544C /* UserResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6030762B55263F0031544C /* UserResult.swift */; };
 		2C60307B2B55D9160031544C /* UIImageView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C60307A2B55D9160031544C /* UIImageView+.swift */; };
 		2C79CB952B45A0A400734E1F /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2C79CB942B45A0A400734E1F /* Pretendard-SemiBold.otf */; };
 		2C79CB972B45A0AB00734E1F /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2C79CB962B45A0AB00734E1F /* Pretendard-Medium.otf */; };
 		2C79CB992B45A0B200734E1F /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2C79CB982B45A0B200734E1F /* Pretendard-Bold.otf */; };
 		2C79CB9B2B45A0B700734E1F /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2C79CB9A2B45A0B700734E1F /* Pretendard-Regular.otf */; };
 		2C79CB9D2B45A1DD00734E1F /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C79CB9C2B45A1DD00734E1F /* UIFont+.swift */; };
+		2C9A19652C567AE40043044A /* MyProfileResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9A19642C567AE40043044A /* MyProfileResult.swift */; };
+		2C9A19672C567CC20043044A /* MyPageProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9A19662C567CC20043044A /* MyPageProfileHeaderView.swift */; };
+		2C9A19692C567D6B0043044A /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9A19682C567D6B0043044A /* MyPageViewModel.swift */; };
 		2CA2F64E2B527B060045B4C2 /* MyPageCustomModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2F64D2B527B060045B4C2 /* MyPageCustomModalView.swift */; };
 		2CA2F6502B527B3A0045B4C2 /* MyPageCustomModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2F64F2B527B3A0045B4C2 /* MyPageCustomModalViewController.swift */; };
 		2CA2F6522B527B590045B4C2 /* MyPageModalAvatarFeatureLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2F6512B527B590045B4C2 /* MyPageModalAvatarFeatureLabelView.swift */; };
@@ -286,7 +288,7 @@
 		2C19A4F82BBA8C3F00D4D151 /* WSSDropdownTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSDropdownTableViewCell.swift; sourceTree = "<group>"; };
 		2C19A4FA2BBA8E9600D4D151 /* WSSDropdownManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSDropdownManager.swift; sourceTree = "<group>"; };
 		2C19A4FC2BBA90E700D4D151 /* WSSDropDownTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSDropDownTableView.swift; sourceTree = "<group>"; };
-		2C19A4FF2BBD56C900D4D151 /* WSSDropdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSDropdown.swift; sourceTree = "<group>"; };
+		2C19A4FF2BBD56C900D4D151 /* WSSDropdownButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSDropdownButton.swift; sourceTree = "<group>"; };
 		2C2491802B4ADC000096F255 /* StringLiterals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringLiterals.swift; sourceTree = "<group>"; };
 		2C2491832B4ADC230096F255 /* WSSTabBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSTabBarItem.swift; sourceTree = "<group>"; };
 		2C2491852B4ADC420096F255 /* WSSTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSTabBarController.swift; sourceTree = "<group>"; };
@@ -302,13 +304,15 @@
 		2C60306C2B5445EC0031544C /* LibraryTabCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryTabCollectionViewCell.swift; sourceTree = "<group>"; };
 		2C60306E2B54EDDC0031544C /* LibraryDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryDescriptionView.swift; sourceTree = "<group>"; };
 		2C6030702B54F23F0031544C /* LibraryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryListView.swift; sourceTree = "<group>"; };
-		2C6030762B55263F0031544C /* UserResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserResult.swift; sourceTree = "<group>"; };
 		2C60307A2B55D9160031544C /* UIImageView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+.swift"; sourceTree = "<group>"; };
 		2C79CB942B45A0A400734E1F /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
 		2C79CB962B45A0AB00734E1F /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
 		2C79CB982B45A0B200734E1F /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
 		2C79CB9A2B45A0B700734E1F /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
 		2C79CB9C2B45A1DD00734E1F /* UIFont+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+.swift"; sourceTree = "<group>"; };
+		2C9A19642C567AE40043044A /* MyProfileResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyProfileResult.swift; sourceTree = "<group>"; };
+		2C9A19662C567CC20043044A /* MyPageProfileHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageProfileHeaderView.swift; sourceTree = "<group>"; };
+		2C9A19682C567D6B0043044A /* MyPageViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
 		2CA2F64D2B527B060045B4C2 /* MyPageCustomModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageCustomModalView.swift; sourceTree = "<group>"; };
 		2CA2F64F2B527B3A0045B4C2 /* MyPageCustomModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageCustomModalViewController.swift; sourceTree = "<group>"; };
 		2CA2F6512B527B590045B4C2 /* MyPageModalAvatarFeatureLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageModalAvatarFeatureLabelView.swift; sourceTree = "<group>"; };
@@ -586,7 +590,7 @@
 				2C19A4F82BBA8C3F00D4D151 /* WSSDropdownTableViewCell.swift */,
 				2C19A4FC2BBA90E700D4D151 /* WSSDropDownTableView.swift */,
 				2C19A4FA2BBA8E9600D4D151 /* WSSDropdownManager.swift */,
-				2C19A4FF2BBD56C900D4D151 /* WSSDropdown.swift */,
+				2C19A4FF2BBD56C900D4D151 /* WSSDropdownButton.swift */,
 			);
 			path = Dropdown;
 			sourceTree = "<group>";
@@ -725,6 +729,7 @@
 			isa = PBXGroup;
 			children = (
 				2CCBF9FF2B4DBFD200D787C2 /* MyPageChangeNickNameViewModel.swift */,
+				2C9A19682C567D6B0043044A /* MyPageViewModel.swift */,
 				2C421FE72B96DC0F000DCB87 /* MyPageCustomModalViewModel.swift */,
 			);
 			path = MyPageViewModel;
@@ -733,6 +738,7 @@
 		2CCBF9FE2B4DBF6A00D787C2 /* MyPageAssistantView */ = {
 			isa = PBXGroup;
 			children = (
+				2C9A19662C567CC20043044A /* MyPageProfileHeaderView.swift */,
 				2CCBFA012B4DC10500D787C2 /* MyPageProfileView.swift */,
 				2CCBFA032B4DD73D00D787C2 /* MyPageTallyView.swift */,
 				2CCBFA052B4DD85600D787C2 /* MyPageTallyReuseView.swift */,
@@ -1436,7 +1442,7 @@
 			isa = PBXGroup;
 			children = (
 				A1B903E42B58140800398890 /* UserNovelListResult.swift */,
-				2C6030762B55263F0031544C /* UserResult.swift */,
+				2C9A19642C567AE40043044A /* MyProfileResult.swift */,
 				A1EF35682B52FD9B00A94C53 /* AvatarResult.swift */,
 				A1493BC22B55022E004DD84A /* MemoResult.swift */,
 				CD3E5AA12B55190400C0A659 /* UserNovelResult.swift */,
@@ -1836,6 +1842,7 @@
 				C9063A972BD3F868006AD8F9 /* HomeRealtimePopularView.swift in Sources */,
 				A1708F182B4D8E2F00E35E50 /* HomeView.swift in Sources */,
 				2C19A4FD2BBA90E700D4D151 /* WSSDropDownTableView.swift in Sources */,
+				2C9A19672C567CC20043044A /* MyPageProfileHeaderView.swift in Sources */,
 				2CD2291C2B42E685005400BE /* AppDelegate.swift in Sources */,
 				2CD911542C0D8A17006B8D72 /* FeedCollectionViewCell.swift in Sources */,
 				A1708F162B4D8E2700E35E50 /* HomeHeaderView.swift in Sources */,
@@ -1872,6 +1879,7 @@
 				CDE596D82B5770CE00D99DA1 /* WSSToastView.swift in Sources */,
 				39D4A5D22BDC0902004FC834 /* NovelDetailHeaderResult.swift in Sources */,
 				A1A1F9D42B4873B500705F44 /* SearchEmptyView.swift in Sources */,
+				2C9A19692C567D6B0043044A /* MyPageViewModel.swift in Sources */,
 				C9AF1AE22BCC234300208BC9 /* HomeTodayPopularView.swift in Sources */,
 				2CD9115E2C0D8A28006B8D72 /* FeedGenreViewController.swift in Sources */,
 				39CC16902B529AB6003F56AE /* RegisterNormalReadStatusView.swift in Sources */,
@@ -1884,7 +1892,7 @@
 				B9AC1BD82BF0BDDD006EDE92 /* NoticeRepository.swift in Sources */,
 				39CD5E082B4F2BBE00668B9A /* RegisterNormalKeywordSelectionView.swift in Sources */,
 				2CD2FE402C43E7B60033366C /* WSSAlertViewController.swift in Sources */,
-				2C19A5002BBD56C900D4D151 /* WSSDropdown.swift in Sources */,
+				2C19A5002BBD56C900D4D151 /* WSSDropdownButton.swift in Sources */,
 				2CA2F6602B530B660045B4C2 /* LibraryView.swift in Sources */,
 				2CD2291E2B42E685005400BE /* SceneDelegate.swift in Sources */,
 				2CD911612C0D8B71006B8D72 /* FeedViewModel.swift in Sources */,
@@ -1990,7 +1998,6 @@
 				39CD5E062B4F20A600668B9A /* RegisterNormalDividerView.swift in Sources */,
 				CDA5F03E2C2FDB6B00FCF15C /* FeedEditView.swift in Sources */,
 				A122C9DD2B5309D100DFCFE4 /* (null) in Sources */,
-				2C6030772B55263F0031544C /* UserResult.swift in Sources */,
 				2CD911482C0D88F8006B8D72 /* FeedRepository.swift in Sources */,
 				2C2491862B4ADC420096F255 /* WSSTabBarController.swift in Sources */,
 				392A292F2B4F07FF0065EB97 /* RegisterNormalReadDateView.swift in Sources */,
@@ -2032,6 +2039,7 @@
 				2C421FE82B96DC0F000DCB87 /* MyPageCustomModalViewModel.swift in Sources */,
 				2CD911502C0D8A0D006B8D72 /* FeedReactView.swift in Sources */,
 				CD39F2D02B50CD4700B73A5C /* TrashNovelDetailInfoReadStatusView.swift in Sources */,
+				2C9A19652C567AE40043044A /* MyProfileResult.swift in Sources */,
 				CD39F2E22B50EFCB00B73A5C /* LeftAlignedCollectionViewFlowLayout.swift in Sources */,
 				CD39F2B82B4FE0FB00B73A5C /* TrashNovelDetailViewController.swift in Sources */,
 				CD39F2DE2B50E11000B73A5C /* TrashNovelDetailInfoKeywordCollectionViewCell.swift in Sources */,
