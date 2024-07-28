@@ -69,6 +69,7 @@ final class MyPageViewController: UIViewController {
             dropdownButtonDidTap: dropdownButton.rx.tap)
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
+        
         output.profileData
             .bind(with: self, onNext: { owner, data in
                 owner.rootView.headerView.bindData(data: data)
