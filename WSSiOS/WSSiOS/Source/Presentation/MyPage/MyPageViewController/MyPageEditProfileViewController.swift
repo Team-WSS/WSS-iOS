@@ -83,11 +83,19 @@ final class MyPageEditProfileViewController: UIViewController, UIScrollViewDeleg
         
         let output = self.viewModel.transform(from: input, disposeBag: self.disposeBag)
         
+        output.bindUserData
+            .bind(with: self, onNext: { owner, data in
+                output.nicknameText.accept(data.nickname)
+                output.introText.accept(data.intro)
+            })
+            .disposed(by: disposeBag)
+        
         output.bindGenreCell
             .bind(to: rootView.genreCollectionView.rx.items(
                 cellIdentifier: MyPageEditProfileGenreCollectionViewCell.cellIdentifier,
                 cellType: MyPageEditProfileGenreCollectionViewCell.self)) { row, element, cell in
-                    cell.bindData(genre: element, isSelected: true)
+                    cell.bindData(genre: element)
+                    cell.updateCell(isSelected: false)
                 }
                 .disposed(by: disposeBag)
         
@@ -125,6 +133,12 @@ final class MyPageEditProfileViewController: UIViewController, UIScrollViewDeleg
                 if !editing {
                     owner.rootView.introTextView.endEditing(true)
                 }
+            })
+            .disposed(by: disposeBag)
+        
+        output.updateCell
+            .bind(with: self, onNext: { owner, indexPath in
+                //selected
             })
             .disposed(by: disposeBag)
     }

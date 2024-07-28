@@ -36,16 +36,17 @@ final class MyPageEditProfileGenreCollectionViewCell: UICollectionViewCell {
     private func setLayout() {
         genreKeywordLink.snp.makeConstraints {
             $0.edges.equalToSuperview()
-            $0.height.equalTo(35)
+            $0.height.equalTo(37)
         }
     }
     
     //MARK: - Data
     
-    func bindData(genre: String, isSelected: Bool) {
-        genreKeywordLink.do {
-            $0.setText(genre)
-            $0.updateColor(isSelected)
-        }
+    func bindData(genre: String) {
+        genreKeywordLink.setText(genre)
+    }
+    
+    func updateCell(isSelected: Bool) {
+        genreKeywordLink.updateColor(isSelected)
     }
 }

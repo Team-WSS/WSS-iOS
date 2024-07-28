@@ -25,6 +25,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
     //더미 데이터
     private var userNickname = "밝보"
     private var userIntro = "ㅎㅇ"
+    private var userImage = ""
     private var genre = ["로맨스", "드라마"]
     
     //MARK: - Life Cycle
@@ -46,7 +47,11 @@ final class MyPageEditProfileViewModel: ViewModelType {
     }
     
     struct Output {
-        let bindUserData = BehaviorRelay<[String]>(value: [""])
+        let bindUserData = BehaviorRelay<MyProfileResult>(value: MyProfileResult(
+            nickname: "",
+            intro: "",
+            avatarImage: "",
+            genrePreferences: [""]))
         //TODO: 서연이 코드 합치면서 수정하기
         let bindGenreCell = BehaviorRelay<[String]>(value: ["로맨스", "로판", "판타지", "현판", "무협", "BL", "라노벨", "미스터리", "드라마"])
         let popViewController = PublishRelay<Bool>() 
@@ -58,11 +63,18 @@ final class MyPageEditProfileViewModel: ViewModelType {
         let introText = BehaviorRelay<String>(value: "")
         let editingTextView = BehaviorRelay<Bool>(value: false)
         
+        let updateCell = PublishRelay<IndexPath>()
         let completeButtonIsAble = BehaviorRelay<Bool>(value: false)
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
+        
+        output.bindUserData.accept(MyProfileResult(
+            nickname: self.userNickname,
+            intro: self.userIntro,
+            avatarImage: self.userImage,
+            genrePreferences: self.genreList))
         
         input.backButtonDidTap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
@@ -130,7 +142,6 @@ final class MyPageEditProfileViewModel: ViewModelType {
             .subscribe(with: self, onNext: { owner, text in
                 output.introText.accept(String(text.prefix(MyPageEditProfileViewModel.introLimit)))
                 if owner.userIntro ==  output.introText.value {
-                    output.editingTextView.accept(false)
                     output.completeButtonIsAble.accept(false)
                 } else {
                     output.completeButtonIsAble.accept(true)
@@ -144,8 +155,12 @@ final class MyPageEditProfileViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        //TODO: 장르 체크 output 추가 구현 예정
-       
+        input.genreCellTap
+            .bind(with: self, onNext: { owner, indexPath in
+                output.updateCell.accept(indexPath)
+            })
+            .disposed(by: disposeBag)
+        
         return output
     }
     
@@ -153,7 +168,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
     
     
     //MARK: - API
-   
+    
 }
 
 
