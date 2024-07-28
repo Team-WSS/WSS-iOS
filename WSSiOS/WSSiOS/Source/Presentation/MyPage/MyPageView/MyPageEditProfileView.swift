@@ -219,7 +219,11 @@ final class MyPageEditProfileView: UIView {
     
     private func setLayout() {
         profileView.snp.makeConstraints {
-            $0.top.equalTo(safeAreaLayoutGuide.snp.top).inset(38)
+            if UIScreen.isSE {
+                $0.top.equalTo(safeAreaLayoutGuide.snp.top).inset(38-7)
+            } else {
+                $0.top.equalTo(safeAreaLayoutGuide.snp.top).inset(38)
+            }
             $0.centerX.equalToSuperview()
             $0.size.equalTo(94)
             
@@ -241,7 +245,11 @@ final class MyPageEditProfileView: UIView {
         }     
         
         nicknameView.snp.makeConstraints {
-            $0.top.equalTo(profileView.snp.bottom).offset(29)
+            if UIScreen.isSE {
+                $0.top.equalTo(profileView.snp.bottom).offset(29-7)
+            } else {
+                $0.top.equalTo(profileView.snp.bottom).offset(29)
+            }
             $0.width.equalToSuperview()
             
             nicknameLabel.snp.makeConstraints {
