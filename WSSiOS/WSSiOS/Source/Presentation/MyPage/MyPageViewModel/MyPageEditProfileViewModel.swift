@@ -5,7 +5,6 @@
 //  Created by 신지원 on 7/26/24.
 //
 
-import Foundation
 import UIKit
 
 import RxSwift
@@ -63,7 +62,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
         
         let nicknameText = BehaviorRelay<String>(value: "")
         let editingTextField = BehaviorRelay<Bool>(value: false)
-        let isShwonWarning = PublishRelay<StringLiterals.MyPage.EditProfileWarningMessage>() 
+        let isShownWarning = PublishRelay<StringLiterals.MyPage.EditProfileWarningMessage>() 
         let checkButtonIsAbled = BehaviorRelay<Bool>(value: false)
         
         let introText = BehaviorRelay<String>(value: "")

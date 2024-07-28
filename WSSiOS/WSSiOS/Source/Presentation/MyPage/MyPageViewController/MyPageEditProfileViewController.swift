@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxGesture
 
-final class MyPageEditProfileViewController: UIViewController, UIScrollViewDelegate {
+final class MyPageEditProfileViewController: UIViewController {
     
     //MARK: - Properties
     

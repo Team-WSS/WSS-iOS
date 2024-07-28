@@ -11,10 +11,12 @@ import SnapKit
 import Then
 
 final class MyPageEditProfileGenreCollectionViewCell: UICollectionViewCell {
-    
-    //MARK: - Life Cycle
+
+    //MARK: - Components
     
     private let genreKeywordLink = KeywordLink()
+    
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
