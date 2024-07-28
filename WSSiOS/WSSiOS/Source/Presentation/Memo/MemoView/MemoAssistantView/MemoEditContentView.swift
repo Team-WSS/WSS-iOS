@@ -56,13 +56,13 @@ final class MemoEditContentView: UIView {
     //MARK: - Data
     
     func bindData(memoContent: String) {
-        self.memoTextView.do {
-            $0.makeAttribute(with: memoContent)?
-                .lineSpacing(spacingPercentage: 140)
-                .kerning(kerningPixel: -0.8)
-                .applyAttribute()
-            $0.font = .Body1
-        }
+//        self.memoTextView.do {
+//            $0.makeAttribute(with: memoContent)?
+//                .lineSpacing(spacingPercentage: 140)
+//                .kerning(kerningPixel: -0.8)
+//                .applyAttribute()
+//            $0.font = .Body1
+//        }
     }
     
     //MARK: - Custom Method

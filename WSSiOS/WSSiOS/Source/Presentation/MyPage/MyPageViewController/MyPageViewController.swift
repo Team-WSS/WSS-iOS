@@ -181,13 +181,7 @@ final class MyPageViewController: UIViewController {
                                               currentRepresentativeAvatar: owner.currentPresentativeAvatar)
             })
             .disposed(by: disposeBag)
-        
-        rootView.myPageTallyView.myPageUserNameButton.rx.tap
-            .throttle(.seconds(3), scheduler: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, _ in 
-                self.pushToChangeNicknameViewController(userNickname: owner.userNickname)
-            })
-            .disposed(by: disposeBag)
+    
         
         let tapGestureForRegister = UITapGestureRecognizer(target: self, action: #selector(pushToRegisterTabBar))
         let tapGestureForRecord = UITapGestureRecognizer(target: self, action: #selector(pushToRecordTabBar))
@@ -258,16 +252,6 @@ extension MyPageViewController {
         
         modalVC.modalPresentationStyle = .overFullScreen
         present(modalVC, animated: true)
-    }
-    
-    private func pushChangeNickNameViewController() {
-        rootView.myPageTallyView.myPageUserNameButton.rx.tap
-            .throttle(.seconds(3), scheduler: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, _ in 
-                self.hideTabBar()
-                self.pushToChangeNicknameViewController(userNickname: owner.userNickname)
-            })
-            .disposed(by: disposeBag)
     }
     
     //MARK: - notification
