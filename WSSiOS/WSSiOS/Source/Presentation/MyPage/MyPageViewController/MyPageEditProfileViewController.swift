@@ -141,6 +141,12 @@ final class MyPageEditProfileViewController: UIViewController, UIScrollViewDeleg
                 //selected
             })
             .disposed(by: disposeBag)
+        
+        output.completeButtonIsAbled
+            .bind(with: self, onNext: { owner, isAbled in
+                owner.rootView.isAbledCompleteButton(isAbled: isAbled)
+            })
+            .disposed(by: disposeBag)
     }
 }
 

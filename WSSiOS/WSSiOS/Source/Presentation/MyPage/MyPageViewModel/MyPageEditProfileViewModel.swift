@@ -20,6 +20,11 @@ final class MyPageEditProfileViewModel: ViewModelType {
     
     static let nicknameLimit = 10
     static let introLimit = 40
+    private var updateImage = BehaviorRelay<Bool>(value: true)
+    private var updateNickname = BehaviorRelay<Bool>(value: true)
+    private var updateIntro = BehaviorRelay<Bool>(value: true)
+    private var updateGenre = BehaviorRelay<Bool>(value: true)
+    private var updateCompleteButton = BehaviorRelay<Bool>(value: false)
     
     //더미 데이터
     private var userNickname = "밝보"
@@ -59,12 +64,13 @@ final class MyPageEditProfileViewModel: ViewModelType {
         let nicknameText = BehaviorRelay<String>(value: "")
         let editingTextField = BehaviorRelay<Bool>(value: false)
         let isShwonWarning = PublishRelay<StringLiterals.MyPage.EditProfileWarningMessage>() 
+        let checkButtonIsAbled = BehaviorRelay<Bool>(value: false)
         
         let introText = BehaviorRelay<String>(value: "")
         let editingTextView = BehaviorRelay<Bool>(value: false)
         
         let updateCell = PublishRelay<IndexPath>()
-        let completeButtonIsAble = BehaviorRelay<Bool>(value: false)
+        let completeButtonIsAbled = BehaviorRelay<Bool>(value: false)
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -95,12 +101,23 @@ final class MyPageEditProfileViewModel: ViewModelType {
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
                 //VC 이동
+                owner.updateImage.accept(true)
             })
             .disposed(by: disposeBag)
         
         input.updateNicknameText
             .subscribe(with: self, onNext: { owner, text in
                 output.nicknameText.accept(String(text.prefix(MyPageEditProfileViewModel.nicknameLimit)))
+                
+                owner.updateNickname.accept(false)
+
+                if owner.userNickname == output.nicknameText.value {
+                    output.checkButtonIsAbled.accept(false)
+                } else {
+                    owner.updateNickname.accept(true)
+                    output.checkButtonIsAbled.accept(true)
+                    owner.checkCompleteButton()
+                }
             })
             .disposed(by: disposeBag)
         
@@ -113,7 +130,9 @@ final class MyPageEditProfileViewModel: ViewModelType {
         input.clearButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
                 output.nicknameText.accept("")
+                owner.updateNickname.accept(false)
                 output.editingTextField.accept(true)
+                output.completeButtonIsAbled.accept(false)
             })
             .disposed(by: disposeBag)
         
@@ -124,16 +143,11 @@ final class MyPageEditProfileViewModel: ViewModelType {
                 //TODO: 현재 임시 더미 넣어놓음 중복 체크 서버 연결 후 수정
                 if owner.userNickname == output.nicknameText.value {
                     output.editingTextField.accept(false)
-                    output.completeButtonIsAble.accept(false)
-                } else if output.nicknameText.value.count < 2 {
-                    //서버연결
-                    output.isShwonWarning.accept(.guid)
-                    output.completeButtonIsAble.accept(false)
-                }
-                else {
+                    owner.updateNickname.accept(false)
+                } else {
                     //TODO: 중복 체크 완료시
                     output.editingTextField.accept(false)
-                    output.completeButtonIsAble.accept(true)
+                    owner.updateNickname.accept(true)
                 }
             })
             .disposed(by: disposeBag)
@@ -142,9 +156,10 @@ final class MyPageEditProfileViewModel: ViewModelType {
             .subscribe(with: self, onNext: { owner, text in
                 output.introText.accept(String(text.prefix(MyPageEditProfileViewModel.introLimit)))
                 if owner.userIntro ==  output.introText.value {
-                    output.completeButtonIsAble.accept(false)
+                    owner.updateIntro.accept(false)
                 } else {
-                    output.completeButtonIsAble.accept(true)
+                    owner.updateIntro.accept(true)
+                    owner.checkCompleteButton()
                 }
             })
             .disposed(by: disposeBag)
@@ -157,7 +172,15 @@ final class MyPageEditProfileViewModel: ViewModelType {
         
         input.genreCellTap
             .bind(with: self, onNext: { owner, indexPath in
+                owner.updateGenre.accept(true)
                 output.updateCell.accept(indexPath)
+                owner.checkCompleteButton()
+            })
+            .disposed(by: disposeBag)
+        
+        updateCompleteButton
+            .bind(with: self, onNext: { owner, update in
+                output.completeButtonIsAbled.accept(update)
             })
             .disposed(by: disposeBag)
         
@@ -166,6 +189,13 @@ final class MyPageEditProfileViewModel: ViewModelType {
     
     //MARK: - Custom Method
     
+    private func checkCompleteButton() {
+        if self.updateGenre.value && self.updateImage.value && self.updateIntro.value && self.updateNickname.value {
+            updateCompleteButton.accept(true)
+        } else {
+            updateCompleteButton.accept(false)
+        }
+    }
     
     //MARK: - API
     

@@ -187,7 +187,7 @@ final class MyPageEditProfileView: UIView {
         
         completeButton.do {
             $0.setTitle(StringLiterals.MyPage.EditProfile.completeTitle, for: .normal)
-            $0.setTitleColor(.wssPrimary100, for: .normal)
+            $0.setTitleColor(.wssGray200, for: .normal)
             $0.titleLabel?.font = .Title2
         }
     }
@@ -365,18 +365,21 @@ extension MyPageEditProfileView {
                 $0.layer.borderColor = UIColor.wssGray70.cgColor
                 $0.layer.borderWidth = 1
             }
-            
-            checkButton.do {
-                $0.setTitleColor(.wssPrimary100, for: .normal)
-                $0.backgroundColor = .wssPrimary50
-            }
-            
         } else {
             nicknameTextField.do {
                 $0.backgroundColor = .wssGray50
                 $0.layer.borderWidth = 0
             }
-            
+        }
+    }
+    
+    func isAbledCheckButton(isAbled: Bool) {
+        if isAbled {
+            checkButton.do {
+                $0.setTitleColor(.wssPrimary100, for: .normal)
+                $0.backgroundColor = .wssPrimary50
+            }
+        } else {
             checkButton.do {
                 $0.setTitleColor(.wssGray200, for: .normal)
                 $0.backgroundColor = .wssGray70
@@ -432,6 +435,14 @@ extension MyPageEditProfileView {
         
         clearButton.do {
             $0.setImage(.icCancelWarning, for: .normal)
+        }
+    }
+    
+    func isAbledCompleteButton(isAbled: Bool) {
+        if isAbled {
+            completeButton.setTitleColor(.wssPrimary100, for: .normal)
+        } else {
+            completeButton.setTitleColor(.wssGray200, for: .normal)
         }
     }
     
