@@ -72,7 +72,6 @@ final class MyPageEditProfileViewController: UIViewController, UIScrollViewDeleg
             backButtonDidTap: rootView.backButton.rx.tap,
             completeButtonDidTap: rootView.completeButton.rx.tap,
             profileViewDidTap: rootView.profileView.rx.tapGesture().when(.recognized).asObservable(),
-            viewDidTap: view.rx.tapGesture(), 
             updateNicknameText: rootView.nicknameTextField.rx.text.orEmpty.asObservable(), 
             textFieldBeginEditing: rootView.nicknameTextField.rx.controlEvent(.editingDidBegin),
             clearButtonDidTap: rootView.clearButton.rx.tap,
@@ -88,8 +87,7 @@ final class MyPageEditProfileViewController: UIViewController, UIScrollViewDeleg
             .bind(to: rootView.genreCollectionView.rx.items(
                 cellIdentifier: MyPageEditProfileGenreCollectionViewCell.cellIdentifier,
                 cellType: MyPageEditProfileGenreCollectionViewCell.self)) { row, element, cell in
-                    cell.bindData(genre: element, isSelected: false)
-                    cell.isUserInteractionEnabled = true
+                    cell.bindData(genre: element, isSelected: true)
                 }
                 .disposed(by: disposeBag)
         

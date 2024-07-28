@@ -22,13 +22,17 @@ final class MyPageEditProfileViewModel: ViewModelType {
     static let nicknameLimit = 10
     static let introLimit = 40
     
+    //더미 데이터
+    private var userNickname = "밝보"
+    private var userIntro = "ㅎㅇ"
+    private var genre = ["로맨스", "드라마"]
+    
     //MARK: - Life Cycle
     
     struct Input {
         let backButtonDidTap: ControlEvent<Void>
         let completeButtonDidTap: ControlEvent<Void>
         let profileViewDidTap: Observable<UITapGestureRecognizer>
-        let viewDidTap: ControlEvent<UITapGestureRecognizer>
         
         let updateNicknameText: Observable<String>
         let textFieldBeginEditing: ControlEvent<Void>
@@ -42,12 +46,14 @@ final class MyPageEditProfileViewModel: ViewModelType {
     }
     
     struct Output {
+        let bindUserData = BehaviorRelay<[String]>(value: [""])
         //TODO: 서연이 코드 합치면서 수정하기
         let bindGenreCell = BehaviorRelay<[String]>(value: ["로맨스", "로판", "판타지", "현판", "무협", "BL", "라노벨", "미스터리", "드라마"])
         let popViewController = PublishRelay<Bool>() 
         
         let nicknameText = BehaviorRelay<String>(value: "")
         let editingTextField = BehaviorRelay<Bool>(value: false)
+        let isShwonWarning = PublishRelay<StringLiterals.MyPage.EditProfileWarningMessage>() 
         
         let introText = BehaviorRelay<String>(value: "")
         let editingTextView = BehaviorRelay<Bool>(value: false)
@@ -73,13 +79,6 @@ final class MyPageEditProfileViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.viewDidTap
-            .subscribe(onNext: { _ in
-                output.editingTextField.accept(false)
-                output.editingTextView.accept(false)
-            })
-            .disposed(by: disposeBag)
-        
         input.profileViewDidTap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
@@ -102,20 +101,40 @@ final class MyPageEditProfileViewModel: ViewModelType {
         input.clearButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
                 output.nicknameText.accept("")
+                output.editingTextField.accept(true)
             })
             .disposed(by: disposeBag)
         
         input.checkButtonDidTap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
-                //닉네임 체크
-                //완료시 서버연결
+                
+                //TODO: 현재 임시 더미 넣어놓음 중복 체크 서버 연결 후 수정
+                if owner.userNickname == output.nicknameText.value {
+                    output.editingTextField.accept(false)
+                    output.completeButtonIsAble.accept(false)
+                } else if output.nicknameText.value.count < 2 {
+                    //서버연결
+                    output.isShwonWarning.accept(.guid)
+                    output.completeButtonIsAble.accept(false)
+                }
+                else {
+                    //TODO: 중복 체크 완료시
+                    output.editingTextField.accept(false)
+                    output.completeButtonIsAble.accept(true)
+                }
             })
             .disposed(by: disposeBag)
         
         input.updateIntroText
             .subscribe(with: self, onNext: { owner, text in
                 output.introText.accept(String(text.prefix(MyPageEditProfileViewModel.introLimit)))
+                if owner.userIntro ==  output.introText.value {
+                    output.editingTextView.accept(false)
+                    output.completeButtonIsAble.accept(false)
+                } else {
+                    output.completeButtonIsAble.accept(true)
+                }
             })
             .disposed(by: disposeBag)
         
@@ -124,6 +143,8 @@ final class MyPageEditProfileViewModel: ViewModelType {
                 output.editingTextView.accept(true)
             })
             .disposed(by: disposeBag)
+        
+        //TODO: 장르 체크 output 추가 구현 예정
        
         return output
     }
