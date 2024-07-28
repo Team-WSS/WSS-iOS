@@ -69,12 +69,11 @@ final class FeedCollectionViewCell: UICollectionViewCell {
         }
         
         genreLabel.do {
-            $0.font = .Body2
-            $0.textColor = .Gray200
+            $0.textColor = .wssGray50
         }
         
         divideView.do {
-            $0.backgroundColor = .Gray50
+            $0.backgroundColor = .wssGray50
         }
     }
     
@@ -177,11 +176,7 @@ final class FeedCollectionViewCell: UICollectionViewCell {
             }.joined(separator: ", ")
         
         genreLabel.do {
-            $0.text = categoriesText
-            $0.makeAttribute(with: $0.text)?
-                .lineSpacing(spacingPercentage: 0)
-                .kerning(kerningPixel: -0.6)
-                .applyAttribute()
+            $0.applyWSSFont(.body2, with: categoriesText)
         }
     }
 }
