@@ -59,10 +59,6 @@ final class FeedContentView: UIView {
             $0.textColor = .wssGray300
         }
         
-        spoilerButton.do {
-            $0.updateToggle(false)
-        }
-        
         feedTextWrapperView.do {
             $0.backgroundColor = .wssGray50
             $0.layer.cornerRadius = 14
@@ -143,17 +139,23 @@ final class FeedContentView: UIView {
     
     //MARK: - Data
     
-    func bindData(memoContent: String) {
+    func bindData(feedContent: String) {
         self.feedTextView.do {
-            $0.makeAttribute(with: memoContent)?
+            $0.font = .Body2
+            $0.makeAttribute(with: feedContent)?
                 .lineSpacing(spacingPercentage: 150)
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
-            $0.font = .Body2
         }
         
         self.letterCountLabel.do {
-            $0.applyWSSFont(.body2, with: "(\(memoContent.count)/2000)")
+            $0.applyWSSFont(.body2, with: "(\(feedContent.count)/2000)")
+        }
+    }
+    
+    func bindData(isSpoiler: Bool) {
+        self.spoilerButton.do {
+            $0.updateToggle(isSpoiler)
         }
     }
 }

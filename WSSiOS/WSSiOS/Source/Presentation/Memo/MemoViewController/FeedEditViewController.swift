@@ -29,6 +29,11 @@ final class FeedEditViewController: UIViewController {
     init(viewModel: FeedEditViewModel) {
         self.feedEditViewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        
+        self.rootView.feedContentView.bindData(isSpoiler: viewModel.isSpoiler)
+        if let initialFeedContent = viewModel.initialFeedContent {
+            self.rootView.feedContentView.bindData(feedContent: initialFeedContent)
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -105,6 +110,17 @@ final class FeedEditViewController: UIViewController {
         output.categoryListData.bind(to: rootView.feedCategoryView.categoryCollectionView.rx.items(
             cellIdentifier: FeedCategoryCollectionViewCell.cellIdentifier,
             cellType: FeedCategoryCollectionViewCell.self)) { item, element, cell in
+                let indexPath = IndexPath(item: item, section: 0)
+                
+                // 성별에 따른 리스트는 추후 구현
+                if let englishCategory = FeedDetailWomanKoreanGenre(rawValue: element)?.toEnglish {
+                    if self.feedEditViewModel.relevantCategories.contains(englishCategory) {
+                        self.rootView.feedCategoryView.categoryCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
+                    } else {
+                        self.rootView.feedCategoryView.categoryCollectionView.deselectItem(at: indexPath, animated: false)
+                    }
+                }
+                
                 cell.bindData(category: element)
             }
             .disposed(by: disposeBag)
@@ -115,7 +131,7 @@ final class FeedEditViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.hasSpoiler
+        output.isSpoiler
             .subscribe(with: self, onNext: { owner, hasSpoiler in
                 owner.rootView.feedContentView.spoilerButton.updateToggle(hasSpoiler)
             })
@@ -123,7 +139,7 @@ final class FeedEditViewController: UIViewController {
         
         output.feedContentWithLengthLimit
             .subscribe(with: self, onNext: { owner, feedContentWithLengthLimit in
-                owner.rootView.feedContentView.bindData(memoContent: feedContentWithLengthLimit)
+                owner.rootView.feedContentView.bindData(feedContent: feedContentWithLengthLimit)
             })
             .disposed(by: disposeBag)
         
@@ -145,7 +161,7 @@ extension FeedEditViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var text: String?
         
-        text = self.feedEditViewModel.dummyCategoryList[indexPath.item]
+        text = self.feedEditViewModel.relevantCategoryList[indexPath.item]
         
         guard let unwrappedText = text else {
             return CGSize(width: 0, height: 0)

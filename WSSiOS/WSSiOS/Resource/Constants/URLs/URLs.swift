@@ -49,6 +49,9 @@ enum URLs {
             return "/user-novels/\(userNovelId)/memo"
         }
         static let postFeed = "/feeds"
+        static func putFeed(feedId: Int) -> String {
+            return "/feeds/\(feedId)"
+        }
         static func patchMemo(memoId: Int) -> String {
             return "/memos/\(memoId)"
         }
