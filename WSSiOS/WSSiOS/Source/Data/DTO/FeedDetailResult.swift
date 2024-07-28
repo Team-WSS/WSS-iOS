@@ -22,7 +22,7 @@ struct Feed {
     var novelTitle: String
     var novelRatingCount: Int
     var novelRating: Float
-    var genres: [Genre]
+    var genres: [NovelGenre]
     
     var isSpoiler: Bool
     var isModified: Bool

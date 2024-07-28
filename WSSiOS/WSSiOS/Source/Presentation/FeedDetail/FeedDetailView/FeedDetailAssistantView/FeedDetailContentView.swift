@@ -98,7 +98,7 @@ final class FeedDetailContentView: UIView {
                                rating: data.novelRating, 
                                participants: data.novelRatingCount)
         
-        let genres = data.genres.map { $0.withKorean }.joined(separator: ", ")
+        let genres = data.genres.map { $0.toKorean }.joined(separator: ", ")
         
         genreLabel.do {
             $0.applyWSSFont(.body2, with: genres)
