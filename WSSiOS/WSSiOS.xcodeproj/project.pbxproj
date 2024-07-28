@@ -12,6 +12,8 @@
 		2C19A4FB2BBA8E9600D4D151 /* WSSDropdownManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C19A4FA2BBA8E9600D4D151 /* WSSDropdownManager.swift */; };
 		2C19A4FD2BBA90E700D4D151 /* WSSDropDownTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C19A4FC2BBA90E700D4D151 /* WSSDropDownTableView.swift */; };
 		2C19A5002BBD56C900D4D151 /* WSSDropdownButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C19A4FF2BBD56C900D4D151 /* WSSDropdownButton.swift */; };
+		2C22AE6E2C56E99A00BF6E94 /* MyPageBlockUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C22AE6D2C56E99A00BF6E94 /* MyPageBlockUserViewController.swift */; };
+		2C22AE702C56E9C100BF6E94 /* MyPageBlockUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C22AE6F2C56E9C100BF6E94 /* MyPageBlockUserView.swift */; };
 		2C2491812B4ADC000096F255 /* StringLiterals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2491802B4ADC000096F255 /* StringLiterals.swift */; };
 		2C2491842B4ADC230096F255 /* WSSTabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2491832B4ADC230096F255 /* WSSTabBarItem.swift */; };
 		2C2491862B4ADC420096F255 /* WSSTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2491852B4ADC420096F255 /* WSSTabBarController.swift */; };
@@ -292,6 +294,8 @@
 		2C19A4FA2BBA8E9600D4D151 /* WSSDropdownManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSDropdownManager.swift; sourceTree = "<group>"; };
 		2C19A4FC2BBA90E700D4D151 /* WSSDropDownTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSDropDownTableView.swift; sourceTree = "<group>"; };
 		2C19A4FF2BBD56C900D4D151 /* WSSDropdownButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSDropdownButton.swift; sourceTree = "<group>"; };
+		2C22AE6D2C56E99A00BF6E94 /* MyPageBlockUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageBlockUserViewController.swift; sourceTree = "<group>"; };
+		2C22AE6F2C56E9C100BF6E94 /* MyPageBlockUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageBlockUserView.swift; sourceTree = "<group>"; };
 		2C2491802B4ADC000096F255 /* StringLiterals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringLiterals.swift; sourceTree = "<group>"; };
 		2C2491832B4ADC230096F255 /* WSSTabBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSTabBarItem.swift; sourceTree = "<group>"; };
 		2C2491852B4ADC420096F255 /* WSSTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSTabBarController.swift; sourceTree = "<group>"; };
@@ -716,6 +720,7 @@
 				2CA2F64F2B527B3A0045B4C2 /* MyPageCustomModalViewController.swift */,
 				2C9A196E2C56923B0043044A /* MyPageSettingViewController.swift */,
 				2CB613F22B575E4500FC3F89 /* MyPageInfoViewController.swift */,
+				2C22AE6D2C56E99A00BF6E94 /* MyPageBlockUserViewController.swift */,
 			);
 			path = MyPageViewController;
 			sourceTree = "<group>";
@@ -728,6 +733,7 @@
 				2CA2F64D2B527B060045B4C2 /* MyPageCustomModalView.swift */,
 				2CB613F42B575E6A00FC3F89 /* MyPageInfoView.swift */,
 				2C9A196C2C5692360043044A /* MyPageSettingView.swift */,
+				2C22AE6F2C56E9C100BF6E94 /* MyPageBlockUserView.swift */,
 				2C5D0F572B4FDE7500C76D3C /* MyPageCell */,
 				2CCBF9FE2B4DBF6A00D787C2 /* MyPageAssistantView */,
 			);
@@ -1932,6 +1938,7 @@
 				CD3E5A742B5424D600C0A659 /* MemoEditView.swift in Sources */,
 				39CC16812B51246E003F56AE /* RegisterNormalView.swift in Sources */,
 				39B75ADE2B59BA87005DD8B9 /* UIScreen+.swift in Sources */,
+				2C22AE702C56E9C100BF6E94 /* MyPageBlockUserView.swift in Sources */,
 				2CD911562C0D8A1A006B8D72 /* FeedPageBarCollectionViewCell.swift in Sources */,
 				39BA7F752BCABF1D0045B2B7 /* KeywordLink.swift in Sources */,
 				A122C9DB2B5309AF00DFCFE4 /* (null) in Sources */,
@@ -1975,6 +1982,7 @@
 				B98748632C3581A70039ACE5 /* NormalSearchCollectionViewCell.swift in Sources */,
 				CDA5F0452C2FE41F00FCF15C /* FeedEditContentView.swift in Sources */,
 				A122C9E32B530A8800DFCFE4 /* (null) in Sources */,
+				2C22AE6E2C56E99A00BF6E94 /* MyPageBlockUserViewController.swift in Sources */,
 				CD39F2C52B4FFE7400B73A5C /* TrashNovelDetailCreateMemoView.swift in Sources */,
 				CD39F2DA2B50DDBF00B73A5C /* TrashNovelDetailInfoGenreView.swift in Sources */,
 				2CD9114A2C0D8948006B8D72 /* FeedDetailContentView.swift in Sources */,

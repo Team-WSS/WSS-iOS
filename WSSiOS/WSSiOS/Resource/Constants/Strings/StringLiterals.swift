@@ -35,6 +35,7 @@ enum StringLiterals {
             static let notice = "알림"
             static let myPageSetting = "설정"
             static let myPageInfo = "계정설정"
+            static let myPageBlockUser = "차단유저 목록"
         }
     }
     
