@@ -30,9 +30,9 @@ final class FeedEditViewController: UIViewController {
         self.feedEditViewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         
-        self.rootView.feedContentView.bindData(isSpoiler: viewModel.isSpoiler)
+        self.rootView.feedEditContentView.bindData(isSpoiler: viewModel.isSpoiler)
         if let initialFeedContent = viewModel.initialFeedContent {
-            self.rootView.feedContentView.bindData(feedContent: initialFeedContent)
+            self.rootView.feedEditContentView.bindData(feedContent: initialFeedContent)
         }
     }
     
@@ -72,11 +72,11 @@ final class FeedEditViewController: UIViewController {
     }
     
     private func register() {
-        rootView.feedCategoryView.categoryCollectionView.register(FeedCategoryCollectionViewCell.self, forCellWithReuseIdentifier: FeedCategoryCollectionViewCell.cellIdentifier)
+        rootView.feedEditCategoryView.categoryCollectionView.register(FeedCategoryCollectionViewCell.self, forCellWithReuseIdentifier: FeedCategoryCollectionViewCell.cellIdentifier)
     }
     
     private func delegate() {
-        rootView.feedCategoryView.categoryCollectionView.rx
+        rootView.feedEditCategoryView.categoryCollectionView.rx
             .setDelegate(self)
             .disposed(by: disposeBag)
     }
@@ -91,12 +91,12 @@ final class FeedEditViewController: UIViewController {
             }).when(.recognized).asObservable(),
             backButtonDidTap: rootView.backButton.rx.tap,
             completeButtonDidTap: rootView.completeButton.rx.tap,
-            spoilerButtonDidTap: rootView.feedContentView.spoilerButton.rx.tap,
-            categoryCollectionViewItemSelected: rootView.feedCategoryView.categoryCollectionView.rx.itemSelected.asObservable(),
-            categoryCollectionViewItemDeselected: rootView.feedCategoryView.categoryCollectionView.rx.itemDeselected.asObservable(),
-            feedContentUpdated: rootView.feedContentView.feedTextView.rx.text.orEmpty.asObservable(),
-            feedContentViewDidBeginEditing: rootView.feedContentView.feedTextView.rx.didBeginEditing,
-            feedContentViewDidEndEditing: rootView.feedContentView.feedTextView.rx.didEndEditing
+            spoilerButtonDidTap: rootView.feedEditContentView.spoilerButton.rx.tap,
+            categoryCollectionViewItemSelected: rootView.feedEditCategoryView.categoryCollectionView.rx.itemSelected.asObservable(),
+            categoryCollectionViewItemDeselected: rootView.feedEditCategoryView.categoryCollectionView.rx.itemDeselected.asObservable(),
+            feedContentUpdated: rootView.feedEditContentView.feedTextView.rx.text.orEmpty.asObservable(),
+            feedContentViewDidBeginEditing: rootView.feedEditContentView.feedTextView.rx.didBeginEditing,
+            feedContentViewDidEndEditing: rootView.feedEditContentView.feedTextView.rx.didEndEditing
         )
         
         let output = self.feedEditViewModel.transform(from: input, disposeBag: self.disposeBag)
@@ -107,7 +107,7 @@ final class FeedEditViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.categoryListData.bind(to: rootView.feedCategoryView.categoryCollectionView.rx.items(
+        output.categoryListData.bind(to: rootView.feedEditCategoryView.categoryCollectionView.rx.items(
             cellIdentifier: FeedCategoryCollectionViewCell.cellIdentifier,
             cellType: FeedCategoryCollectionViewCell.self)) { item, element, cell in
                 let indexPath = IndexPath(item: item, section: 0)
@@ -115,9 +115,9 @@ final class FeedEditViewController: UIViewController {
                 // 성별에 따른 리스트는 추후 구현
                 if let englishCategory = FeedDetailWomanKoreanGenre(rawValue: element)?.toEnglish {
                     if self.feedEditViewModel.relevantCategories.contains(englishCategory) {
-                        self.rootView.feedCategoryView.categoryCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
+                        self.rootView.feedEditCategoryView.categoryCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
                     } else {
-                        self.rootView.feedCategoryView.categoryCollectionView.deselectItem(at: indexPath, animated: false)
+                        self.rootView.feedEditCategoryView.categoryCollectionView.deselectItem(at: indexPath, animated: false)
                     }
                 }
                 
@@ -133,13 +133,13 @@ final class FeedEditViewController: UIViewController {
         
         output.isSpoiler
             .subscribe(with: self, onNext: { owner, hasSpoiler in
-                owner.rootView.feedContentView.spoilerButton.updateToggle(hasSpoiler)
+                owner.rootView.feedEditContentView.spoilerButton.updateToggle(hasSpoiler)
             })
             .disposed(by: disposeBag)
         
         output.feedContentWithLengthLimit
             .subscribe(with: self, onNext: { owner, feedContentWithLengthLimit in
-                owner.rootView.feedContentView.bindData(feedContent: feedContentWithLengthLimit)
+                owner.rootView.feedEditContentView.bindData(feedContent: feedContentWithLengthLimit)
             })
             .disposed(by: disposeBag)
         
@@ -151,7 +151,7 @@ final class FeedEditViewController: UIViewController {
         
         output.showPlaceholder
             .subscribe(with: self, onNext: { owner, showPlaceholder in
-                owner.rootView.feedContentView.placeholderLabel.isHidden = !showPlaceholder
+                owner.rootView.feedEditContentView.placeholderLabel.isHidden = !showPlaceholder
             })
             .disposed(by: disposeBag)
     }

@@ -98,7 +98,7 @@ final class FeedEditViewModel: ViewModelType {
         } else {
             input.completeButtonDidTap
                 .flatMapLatest {
-                    self.postFeed(relevantCategories: self.relevantCategories, feedContent: "asdfasdf", novelId: self.novelId, isSpoiler: self.isSpoiler)
+                    self.postFeed(relevantCategories: self.relevantCategories, feedContent: self.updatedFeedContent, novelId: self.novelId, isSpoiler: self.isSpoiler)
                 }
                 .subscribe(onNext: { data in
                     print(data)
@@ -121,12 +121,7 @@ final class FeedEditViewModel: ViewModelType {
                 if let englishCategory = FeedDetailWomanKoreanGenre(rawValue: selectedCategory)?.toEnglish {
                     owner.relevantCategories.append(englishCategory)
                 }
-                print(owner.relevantCategories)
-                if owner.isValidFeedContent && !owner.relevantCategories.isEmpty {
-                    output.completeButtonIsAbled.accept(true)
-                } else {
-                    output.completeButtonIsAbled.accept(false)
-                }
+                output.completeButtonIsAbled.accept(owner.isValidFeedContent && !owner.relevantCategories.isEmpty)
             })
             .disposed(by: disposeBag)
         
@@ -134,11 +129,7 @@ final class FeedEditViewModel: ViewModelType {
             .subscribe(with: self, onNext: { owner, indexPath in
                 let deselectedCategory = owner.relevantCategoryList[indexPath.item]
                 owner.relevantCategories.removeAll { $0 == deselectedCategory }
-                if owner.isValidFeedContent && !owner.relevantCategories.isEmpty {
-                    output.completeButtonIsAbled.accept(true)
-                } else {
-                    output.completeButtonIsAbled.accept(false)
-                }
+                output.completeButtonIsAbled.accept(owner.isValidFeedContent && !owner.relevantCategories.isEmpty)
             })
             .disposed(by: disposeBag)
         
@@ -147,28 +138,15 @@ final class FeedEditViewModel: ViewModelType {
                 owner.updatedFeedContent = text
                 output.feedContentWithLengthLimit.accept(String(text.prefix(owner.maximumFeedContentCount)))
                 
-                if text.count == 0 {
-                    output.showPlaceholder.accept(true)
-                } else {
-                    output.showPlaceholder.accept(false)
-                }
-                
                 let isEmpty = text.count == 0
                 let isOverLimit = text.count > owner.maximumFeedContentCount
                 let isWrongFormat = owner.feedContentPredicate.evaluate(with: text)
                 let isNotChanged = text == owner.initialFeedContent
                 
-                if isEmpty || isOverLimit || isWrongFormat || isNotChanged {
-                    owner.isValidFeedContent = true
-                } else {
-                    owner.isValidFeedContent = true
-                }
+                owner.isValidFeedContent = !(isEmpty || isOverLimit || isWrongFormat || isNotChanged)
                 
-                if owner.isValidFeedContent && !owner.relevantCategories.isEmpty {
-                    output.completeButtonIsAbled.accept(true)
-                } else {
-                    output.completeButtonIsAbled.accept(false)
-                }
+                output.showPlaceholder.accept(isEmpty)
+                output.completeButtonIsAbled.accept(owner.isValidFeedContent && !owner.relevantCategories.isEmpty)
             })
             .disposed(by: disposeBag)
         

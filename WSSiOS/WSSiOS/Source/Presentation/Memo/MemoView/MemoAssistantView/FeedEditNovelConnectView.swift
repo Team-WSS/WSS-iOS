@@ -1,5 +1,5 @@
 //
-//  FeedNovelConnectView.swift
+//  FeedEditNovelConnectView.swift
 //  WSSiOS
 //
 //  Created by Hyowon Jeon on 6/29/24.
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class FeedNovelConnectView: UIView {
+final class FeedEditNovelConnectView: UIView {
     
     //MARK: - Components
     
@@ -18,7 +18,7 @@ final class FeedNovelConnectView: UIView {
     private let novelSearchView = UIView()
     private let novelSearchLabel = UILabel()
     private let searchImageView = UIImageView()
-    private let connectedNovelView = ConnectedNovelView()
+    private let feedEditConnectedNovelView = FeedEditConnectedNovelView()
     
     //MARK: - Life Cycle
     
@@ -65,7 +65,7 @@ final class FeedNovelConnectView: UIView {
     private func setHierarchy() {
         self.addSubviews(novelConnectLabel,
                          novelSearchView,
-                         connectedNovelView)
+                         feedEditConnectedNovelView)
         novelSearchView.addSubviews(novelSearchLabel,
                                     searchImageView)
     }
@@ -90,9 +90,10 @@ final class FeedNovelConnectView: UIView {
         searchImageView.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.trailing.equalToSuperview().inset(15)
+            $0.size.equalTo(25)
         }
         
-        connectedNovelView.snp.makeConstraints {
+        feedEditConnectedNovelView.snp.makeConstraints {
             $0.top.equalTo(novelSearchView.snp.bottom).offset(12)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.bottom.equalToSuperview()

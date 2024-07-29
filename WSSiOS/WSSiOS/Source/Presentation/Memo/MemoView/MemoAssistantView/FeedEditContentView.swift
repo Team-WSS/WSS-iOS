@@ -1,5 +1,5 @@
 //
-//  FeedContentView.swift
+//  FeedEditContentView.swift
 //  WSSiOS
 //
 //  Created by Hyowon Jeon on 6/29/24.
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class FeedContentView: UIView {
+final class FeedEditContentView: UIView {
 
     //MARK: - Components
     
@@ -103,6 +103,7 @@ final class FeedContentView: UIView {
         essentialImageView.snp.makeConstraints {
             $0.top.equalTo(writeContentLabel.snp.top).offset(2)
             $0.leading.equalTo(writeContentLabel.snp.trailing).offset(2)
+            $0.size.equalTo(8)
         }
         
         spoilerLabel.snp.makeConstraints {
