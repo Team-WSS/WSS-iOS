@@ -15,6 +15,8 @@
 		2C22AE6E2C56E99A00BF6E94 /* MyPageBlockUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C22AE6D2C56E99A00BF6E94 /* MyPageBlockUserViewController.swift */; };
 		2C22AE702C56E9C100BF6E94 /* MyPageBlockUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C22AE6F2C56E9C100BF6E94 /* MyPageBlockUserView.swift */; };
 		2C22AE722C56EAD000BF6E94 /* MyPageBlockUserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C22AE712C56EAD000BF6E94 /* MyPageBlockUserTableViewCell.swift */; };
+		2C22AE742C56EDB300BF6E94 /* MyPageBlockUserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C22AE732C56EDB300BF6E94 /* MyPageBlockUserViewModel.swift */; };
+		2C22AE762C56EE3900BF6E94 /* BlockUserResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C22AE752C56EE3900BF6E94 /* BlockUserResult.swift */; };
 		2C2491812B4ADC000096F255 /* StringLiterals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2491802B4ADC000096F255 /* StringLiterals.swift */; };
 		2C2491842B4ADC230096F255 /* WSSTabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2491832B4ADC230096F255 /* WSSTabBarItem.swift */; };
 		2C2491862B4ADC420096F255 /* WSSTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2491852B4ADC420096F255 /* WSSTabBarController.swift */; };
@@ -298,6 +300,8 @@
 		2C22AE6D2C56E99A00BF6E94 /* MyPageBlockUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageBlockUserViewController.swift; sourceTree = "<group>"; };
 		2C22AE6F2C56E9C100BF6E94 /* MyPageBlockUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageBlockUserView.swift; sourceTree = "<group>"; };
 		2C22AE712C56EAD000BF6E94 /* MyPageBlockUserTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageBlockUserTableViewCell.swift; sourceTree = "<group>"; };
+		2C22AE732C56EDB300BF6E94 /* MyPageBlockUserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageBlockUserViewModel.swift; sourceTree = "<group>"; };
+		2C22AE752C56EE3900BF6E94 /* BlockUserResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockUserResult.swift; sourceTree = "<group>"; };
 		2C2491802B4ADC000096F255 /* StringLiterals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringLiterals.swift; sourceTree = "<group>"; };
 		2C2491832B4ADC230096F255 /* WSSTabBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSTabBarItem.swift; sourceTree = "<group>"; };
 		2C2491852B4ADC420096F255 /* WSSTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSTabBarController.swift; sourceTree = "<group>"; };
@@ -750,6 +754,7 @@
 				2CCBF9FF2B4DBFD200D787C2 /* MyPageChangeNickNameViewModel.swift */,
 				2C9A19682C567D6B0043044A /* MyPageViewModel.swift */,
 				2C421FE72B96DC0F000DCB87 /* MyPageCustomModalViewModel.swift */,
+				2C22AE732C56EDB300BF6E94 /* MyPageBlockUserViewModel.swift */,
 			);
 			path = MyPageViewModel;
 			sourceTree = "<group>";
@@ -1472,6 +1477,7 @@
 				39D4A5D12BDC0902004FC834 /* NovelDetailHeaderResult.swift */,
 				2CD911452C0D88CA006B8D72 /* TotalFeedResult.swift */,
 				B9AC1BD92BF0BE23006EDE92 /* NoticeResult.swift */,
+				2C22AE752C56EE3900BF6E94 /* BlockUserResult.swift */,
 			);
 			path = DTO;
 			sourceTree = "<group>";
@@ -1838,6 +1844,7 @@
 				2CD9115A2C0D8A23006B8D72 /* FeedView.swift in Sources */,
 				2C60307B2B55D9160031544C /* UIImageView+.swift in Sources */,
 				B9095D2A2C3950B4007521EF /* HomeNoticeDetailView.swift in Sources */,
+				2C22AE762C56EE3900BF6E94 /* BlockUserResult.swift in Sources */,
 				A1EF35692B52FD9B00A94C53 /* AvatarResult.swift in Sources */,
 				B971D8792C0388E0008934D8 /* SearchRepository.swift in Sources */,
 				B9E565FF2C0452AA00DB51FF /* NormalSearchEmptyView.swift in Sources */,
@@ -1949,6 +1956,7 @@
 				A1EF35432B52F75800A94C53 /* NovelRepository.swift in Sources */,
 				2C5D0F5D2B50100000C76D3C /* MyPageSettingCollectionViewCell.swift in Sources */,
 				C9AF1AE42BCC28EE00208BC9 /* HomeTodayPopularCollectionViewCell.swift in Sources */,
+				2C22AE742C56EDB300BF6E94 /* MyPageBlockUserViewModel.swift in Sources */,
 				39CC168A2B51D965003F56AE /* RegisterSuccessView.swift in Sources */,
 				CDE596DA2B57C4BE00D99DA1 /* UITextView+.swift in Sources */,
 				2C5D0F612B50525700C76D3C /* MyPageChangeNicknameView.swift in Sources */,

@@ -14,7 +14,7 @@ final class MyPageBlockUserView: UIView {
     
     //MARK: - Components
     
-    var tableView = UITableView(frame: .zero, style: .plain)
+    var blockTableView = UITableView(frame: .zero, style: .plain)
     lazy var backButton = UIButton()
     
     
@@ -37,7 +37,7 @@ final class MyPageBlockUserView: UIView {
     private func setUI() {
         self.backgroundColor = .wssWhite
         
-        tableView.do {
+        blockTableView.do {
             $0.showsVerticalScrollIndicator = false
             $0.isScrollEnabled = true
             $0.separatorStyle = .singleLine
@@ -51,11 +51,11 @@ final class MyPageBlockUserView: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubview(tableView)
+        self.addSubview(blockTableView)
     }
     
     private func setLayout() {
-        tableView.snp.makeConstraints {
+        blockTableView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
         

@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class MyPageBlockUserTableViewCell: UICollectionViewCell {
+final class MyPageBlockUserTableViewCell: UITableViewCell {
     
     //MARK: - Components
     
@@ -20,15 +20,14 @@ final class MyPageBlockUserTableViewCell: UICollectionViewCell {
     
     //MARK: - Life Cycle
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         setUI()
         setHierarchy()
         setLayout()
     }
     
-    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
