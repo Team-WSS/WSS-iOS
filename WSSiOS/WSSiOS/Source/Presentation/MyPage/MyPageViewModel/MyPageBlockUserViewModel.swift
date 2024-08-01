@@ -14,6 +14,7 @@ final class MyPageBlockUserViewModel: ViewModelType {
     
     //MARK: - Properties
     
+    private let userRepository: UserRepository
     private var dummyData = [
         blockList(blockId: 0, userId: 0, nickname: "", avatarImage: ""),
         blockList(blockId: 0, userId: 0, nickname: "", avatarImage: "")
@@ -40,6 +41,8 @@ final class MyPageBlockUserViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        //서버연결
+        
         let blockUserResult = BlockUserResult(blocks: dummyData)
         let bindCell = Observable.just(blockUserResult.blocks)
         
@@ -47,6 +50,10 @@ final class MyPageBlockUserViewModel: ViewModelType {
     }
     
     //MARK: - API
+    
+    private func getBlockUserData(avatar: Int) -> Observable<[BlockUserResult]> {
+        return self.avatarRepository.getAvatarData(avatarId: avatar)
+    }
     
 }
 

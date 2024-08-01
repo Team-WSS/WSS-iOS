@@ -14,6 +14,7 @@ protocol UserRepository {
     func getUserEmail() -> Observable<String>
     func patchUserName(userNickName: String) -> Observable<Void>
     func getUserCharacter() -> Observable<UserCharacter>
+    func getBlocksList() -> Observable<BlockUserResult>
 }
 
 struct DefaultUserRepository: UserRepository {
@@ -37,8 +38,8 @@ struct DefaultUserRepository: UserRepository {
     }
     
     func getUserEmail() -> RxSwift.Observable<String> {
-            return Observable.just("shinjiwonZZang")
-        }
+        return Observable.just("shinjiwonZZang")
+    }
     
     func patchUserName(userNickName: String) -> RxSwift.Observable<Void> {
         return userService.patchUserName(userNickName: userNickName)
@@ -48,5 +49,14 @@ struct DefaultUserRepository: UserRepository {
     func getUserCharacter() -> Observable<UserCharacter> {
         return userService.getUserCharacterData()
             .asObservable()
+    }
+    
+    func getBlocksList() -> RxSwift.Observable<BlockUserResult> {
+        let blockListData = [
+            blockList(blockId: 0, userId: 0, nickname: "지원이", avatarImage: ""),
+            blockList(blockId: 1, userId: 1, nickname: "지원이잉비나당", avatarImage: "avatar2")
+        ]
+        let blockUserResult = BlockUserResult(blocks: blockListData)
+        return Observable.just(blockUserResult)
     }
 }
