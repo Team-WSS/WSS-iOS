@@ -15,6 +15,8 @@ import Then
 
 final class MyPageBlockUserTableViewCell: UITableViewCell {
     
+    //MARK: - Properties
+    
     var disposeBag = DisposeBag()
     
     //MARK: - Components

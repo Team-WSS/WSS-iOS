@@ -16,9 +16,9 @@ final class MyPageBlockUserViewModel: ViewModelType {
     
     private let userRepository: UserRepository
     private var bindCellReleay = BehaviorRelay<[blockList]>(value: [])
-    private let showEmptyView = BehaviorRelay<Bool>(value: false)
+    private let showEmptyView = PublishRelay<Bool>()
     private let popViewController = PublishRelay<Bool>()
-    private let reloadTableView = PublishRelay<Bool>()
+    private let showToastMessage = PublishRelay<String>()
     
     init(userRepository: UserRepository) {
         self.userRepository = userRepository
@@ -35,7 +35,7 @@ final class MyPageBlockUserViewModel: ViewModelType {
         let showEmptyView: Driver<Bool>
         let popViewController: PublishRelay<Bool>
         let bindCell: BehaviorRelay<[blockList]>
-        let reloadTableView: PublishRelay<Bool>
+        let showToastMessage: PublishRelay<String>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -57,11 +57,16 @@ final class MyPageBlockUserViewModel: ViewModelType {
         input.unblockButtonDidTap
             .subscribe(with: self, onNext: { owner, indexPath in
                 let blocks = owner.bindCellReleay.value
+                
                 let blockID = blocks[indexPath.row].blockId
+                var nickName = blocks[indexPath.row].nickname
+                if nickName.count > 8 {
+                    nickName = nickName.prefix(8) + "..."
+                }
                 
                 owner.deleteBlockUser(blockID: blockID)
                     .subscribe(onNext: {
-                        owner.reloadTableView.accept(true)
+                        owner.showToastMessage.accept(nickName)
                     }, onError: { error in
                         print("Error: \(error)")
                     })
@@ -69,28 +74,19 @@ final class MyPageBlockUserViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        return Output(showEmptyView: showEmptyView.asDriver(),
+        return Output(showEmptyView: showEmptyView.asDriver(onErrorJustReturn: true),
                       popViewController: popViewController,
                       bindCell: bindCellReleay,
-                      reloadTableView: reloadTableView)
+                      showToastMessage: showToastMessage)
     }
     
     //MARK: - API
     
     private func getBlockUserList() -> Observable<BlockUserResult> {
-//        return self.userRepository.getBlocksList()
-        let blockUserReult = [blockList(blockId: 0, userId: 0, nickname: "jiwon", avatarImage: "https://i.pinimg.com/564x/a2/48/0a/a2480aceb3d0881e5aaa921209cf61c8.jpg"),
-                              blockList(blockId: 1, userId: 1, nickname: "ena", avatarImage: "https://i.pinimg.com/564x/a2/48/0a/a2480aceb3d0881e5aaa921209cf61c8.jpg"),
-                              blockList(blockId: 2, userId: 2, nickname: "신지원", avatarImage: "https://i.pinimg.com/564x/a2/48/0a/a2480aceb3d0881e5aaa921209cf61c8.jpg"),
-                              blockList(blockId: 3, userId: 3, nickname: "메롱메롱메롱메롱메롱", avatarImage: "https://i.pinimg.com/564x/a2/48/0a/a2480aceb3d0881e5aaa921209cf61c8.jpg"),
-                              blockList(blockId: 4, userId: 4, nickname: "짱부라부하이나", avatarImage: "https://i.pinimg.com/564x/a2/48/0a/a2480aceb3d0881e5aaa921209cf61c8.jpg")]
-        let relay = BehaviorRelay<BlockUserResult>(value: BlockUserResult(blocks: blockUserReult))
-        return relay.asObservable()
+        return self.userRepository.getBlocksList()
     }
     
     private func deleteBlockUser(blockID: Int) -> Observable<Void> {
-        print(blockID)
         return self.userRepository.deleteBlockUser(blockID: blockID)
     }
 }
-

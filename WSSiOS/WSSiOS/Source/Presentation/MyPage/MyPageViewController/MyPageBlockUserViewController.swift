@@ -91,9 +91,9 @@ final class MyPageBlockUserViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.reloadTableView
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.rootView.blockTableView.reloadData()
+        output.showToastMessage
+            .subscribe(with: self, onNext: { owner, nickname in
+                owner.showToast(.deleteBlockUser(nickname: nickname))
             })
             .disposed(by: disposeBag)
     }
