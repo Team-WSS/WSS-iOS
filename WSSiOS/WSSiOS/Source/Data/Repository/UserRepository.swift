@@ -55,15 +55,12 @@ struct DefaultUserRepository: UserRepository {
     }
     
     func getBlocksList() -> RxSwift.Observable<BlockUserResult> {
-        let blockListData = [
-            blockList(blockId: 0, userId: 0, nickname: "지원이", avatarImage: ""),
-            blockList(blockId: 1, userId: 1, nickname: "지원이잉비나당", avatarImage: "avatar2")
-        ]
-        let blockUserResult = BlockUserResult(blocks: blockListData)
-        return Observable.just(blockUserResult)
+        return blocksService.getBlocksList()
+            .asObservable()
     }
     
     func deleteBlockUser(blockID: Int) -> RxSwift.Observable<Void> {
-        return self.blocksService.deleteBlockUser(blockID: blockID).asObservable()
+        return blocksService.deleteBlockUser(blockID: blockID)
+            .asObservable()
     }
 }

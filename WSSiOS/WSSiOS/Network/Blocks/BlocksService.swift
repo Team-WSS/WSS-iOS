@@ -10,6 +10,7 @@ import Foundation
 import RxSwift
 
 protocol BlocksService {
+    func getBlocksList() -> Single<BlockUserResult>
     func deleteBlockUser(blockID: Int) -> Single<Void>
 }
 
@@ -20,6 +21,24 @@ final class DefaultBlocksService: NSObject, Networking {
 }
 
 extension DefaultBlocksService: BlocksService {
+    func getBlocksList() -> RxSwift.Single<BlockUserResult> {
+        do {
+            let request = try makeHTTPRequest(method: .get,
+                                              path: URLs.MyPage.Block.blocks,
+                                              headers: APIConstants.testTokenHeader,
+                                              body: nil)
+            
+            NetworkLogger.log(request: request)
+            
+            return urlSession.rx.data(request: request)
+                .map { try self.decode(data: $0,
+                                       to: BlockUserResult.self) }
+                .asSingle()
+        } catch {
+            return Single.error(error)
+        }
+    }
+    
     func deleteBlockUser(blockID: Int) -> RxSwift.Single<Void> {
         do {
             let request = try makeHTTPRequest(method: .delete,

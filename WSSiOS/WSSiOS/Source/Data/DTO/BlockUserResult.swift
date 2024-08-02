@@ -7,11 +7,11 @@
 
 import Foundation
 
-struct BlockUserResult {
+struct BlockUserResult: Codable {
     var blocks: [blockList]
 }
 
-struct blockList {
+struct blockList: Codable {
     var blockId: Int
     var userId: Int
     var nickname: String
