@@ -15,13 +15,13 @@ import Then
 
 final class MyPageBlockUserTableViewCell: UITableViewCell {
     
-    let disposeBag = DisposeBag()
+    var disposeBag = DisposeBag()
     
     //MARK: - Components
     
     private var userImageView = UIImageView()
     private var userNicknameLabel = UILabel()
-    private var unblockButton = UIButton()
+    var unblockButton = UIButton()
     
     //MARK: - Life Cycle
     
@@ -40,6 +40,8 @@ final class MyPageBlockUserTableViewCell: UITableViewCell {
     //MARK: - UI
     
     private func setUI() {
+        contentView.clipsToBounds = true
+        
         userImageView.do {
             $0.image = .imgProfile
             $0.layer.cornerRadius = 14
@@ -57,6 +59,7 @@ final class MyPageBlockUserTableViewCell: UITableViewCell {
             $0.layer.cornerRadius = 35/2
             $0.titleLabel?.applyWSSFont(.body3, with: StringLiterals.MyPage.BlockUser.buttonTitle)
             $0.layer.backgroundColor = UIColor.wssGray50.cgColor
+            $0.isUserInteractionEnabled = true
         }
     }
     
@@ -87,13 +90,7 @@ final class MyPageBlockUserTableViewCell: UITableViewCell {
             $0.height.equalTo(35)
         }
     }
-    
-    //MARK: - Custom Method
-    
-    var unblockButtonTap: Observable<Void> {
-        return unblockButton.rx.tap.asObservable()
-    }
-    
+
     //MARK: - Data
     
     func bindData(image: String, nickname: String) {

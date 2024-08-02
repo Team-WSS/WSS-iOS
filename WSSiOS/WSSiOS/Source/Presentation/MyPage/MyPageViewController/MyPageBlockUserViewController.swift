@@ -8,6 +8,7 @@
 import UIKit
 
 import RxSwift
+import RxRelay
 
 final class MyPageBlockUserViewController: UIViewController {
     
@@ -15,7 +16,7 @@ final class MyPageBlockUserViewController: UIViewController {
     
     private let disposeBag = DisposeBag()
     private let viewModel: MyPageBlockUserViewModel
-    private let unblockButtonTapSubject = PublishSubject<IndexPath>()
+    private let unblockButtonTapReleay = PublishRelay<IndexPath>()
     
     //MARK: - UI Components
     
@@ -66,18 +67,21 @@ final class MyPageBlockUserViewController: UIViewController {
     private func bindViewModel() {
         let input = MyPageBlockUserViewModel.Input(
             backButtonDidTap: rootView.backButton.rx.tap,
-            unblockButtonDidTap: unblockButtonTapSubject.asObservable()
+            unblockButtonDidTap: unblockButtonTapReleay.asObservable()
         )
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.bindCell
             .bind(to: rootView.blockTableView.rx.items(cellIdentifier: MyPageBlockUserTableViewCell.cellIdentifier, cellType: MyPageBlockUserTableViewCell.self)) { row, data, cell in
-                cell.bindData(image: data.avatarImage, nickname: data.nickname)
-                cell.unblockButtonTap
+                cell.unblockButton.rx.tap
                     .map { IndexPath(row: row, section: 0) }
-                    .bind(to: self.unblockButtonTapSubject)
+                    .subscribe(onNext: { indexPath in
+                        self.unblockButtonTapReleay.accept(indexPath)
+                    })
                     .disposed(by: cell.disposeBag)
+                
+                cell.bindData(image: data.avatarImage, nickname: data.nickname)
             }
             .disposed(by: disposeBag)
         

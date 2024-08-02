@@ -56,9 +56,16 @@ final class MyPageBlockUserViewModel: ViewModelType {
         
         input.unblockButtonDidTap
             .subscribe(with: self, onNext: { owner, indexPath in
-                let blockID = owner.bindCellReleay.value[indexPath.row].blockId
-                print(indexPath)
+                let blocks = owner.bindCellReleay.value
+                let blockID = blocks[indexPath.row].blockId
+                
                 owner.deleteBlockUser(blockID: blockID)
+                    .subscribe(onNext: {
+                        owner.reloadTableView.accept(true)
+                    }, onError: { error in
+                        print("Error: \(error)")
+                    })
+                    .disposed(by: disposeBag)
             })
             .disposed(by: disposeBag)
         
