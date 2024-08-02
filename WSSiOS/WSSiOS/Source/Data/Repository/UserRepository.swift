@@ -15,6 +15,7 @@ protocol UserRepository {
     func patchUserName(userNickName: String) -> Observable<Void>
     func getUserCharacter() -> Observable<UserCharacter>
     func getBlocksList() -> Observable<BlockUserResult>
+    func deleteBlockUser(blockID: Int) -> Observable<Void>
 }
 
 struct DefaultUserRepository: UserRepository {
@@ -58,5 +59,9 @@ struct DefaultUserRepository: UserRepository {
         ]
         let blockUserResult = BlockUserResult(blocks: blockListData)
         return Observable.just(blockUserResult)
+    }
+    
+    func deleteBlockUser(blockID: Int) -> RxSwift.Observable<Void> {
+        return nil
     }
 }

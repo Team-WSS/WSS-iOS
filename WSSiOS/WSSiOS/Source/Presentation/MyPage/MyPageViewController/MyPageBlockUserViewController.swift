@@ -15,6 +15,7 @@ final class MyPageBlockUserViewController: UIViewController {
     
     private let disposeBag = DisposeBag()
     private let viewModel: MyPageBlockUserViewModel
+    private let unblockButtonTapSubject = PublishSubject<IndexPath>()
     
     //MARK: - UI Components
     
@@ -64,14 +65,27 @@ final class MyPageBlockUserViewController: UIViewController {
     
     private func bindViewModel() {
         let input = MyPageBlockUserViewModel.Input(
-            backButtonDidTap: rootView.backButton.rx.tap
+            backButtonDidTap: rootView.backButton.rx.tap,
+            unblockButtonDidTap: unblockButtonTapSubject.asObservable()
         )
+        
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
-     
+        
         output.bindCell
             .bind(to: rootView.blockTableView.rx.items(cellIdentifier: MyPageBlockUserTableViewCell.cellIdentifier, cellType: MyPageBlockUserTableViewCell.self)) { row, data, cell in
                 cell.bindData(image: .avaterExample, nickname: data.nickname)
+                
+                cell.unblockButtonTap
+                    .map { IndexPath(row: row, section: 0) }
+                    .bind(to: self.unblockButtonTapSubject)
+                    .disposed(by: cell.disposeBag)
             }
+            .disposed(by: disposeBag)
+        
+        output.reloadTableView
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.rootView.blockTableView.reloadData()
+            })
             .disposed(by: disposeBag)
     }
     

@@ -7,10 +7,14 @@
 
 import UIKit
 
+import RxSwift
+import RxCocoa
 import SnapKit
 import Then
 
 final class MyPageBlockUserTableViewCell: UITableViewCell {
+    
+    let disposeBag = DisposeBag()
     
     //MARK: - Components
     
@@ -57,8 +61,8 @@ final class MyPageBlockUserTableViewCell: UITableViewCell {
     
     private func setHierarchy() {
         self.addSubviews(userImageView,
-        userNicknameLabel,
-        unblockButton)
+                         userNicknameLabel,
+                         unblockButton)
     }
     
     
@@ -80,6 +84,12 @@ final class MyPageBlockUserTableViewCell: UITableViewCell {
             $0.width.equalTo(77)
             $0.height.equalTo(35)
         }
+    }
+    
+    //MARK: - Custom Method
+    
+    var unblockButtonTap: Observable<Void> {
+        return unblockButton.rx.tap.asObservable()
     }
     
     //MARK: - Data
