@@ -73,13 +73,19 @@ final class MyPageBlockUserViewController: UIViewController {
         
         output.bindCell
             .bind(to: rootView.blockTableView.rx.items(cellIdentifier: MyPageBlockUserTableViewCell.cellIdentifier, cellType: MyPageBlockUserTableViewCell.self)) { row, data, cell in
-                cell.bindData(image: .avaterExample, nickname: data.nickname)
+                cell.bindData(image: data.avatarImage, nickname: data.nickname)
                 
                 cell.unblockButtonTap
                     .map { IndexPath(row: row, section: 0) }
                     .bind(to: self.unblockButtonTapSubject)
                     .disposed(by: cell.disposeBag)
             }
+            .disposed(by: disposeBag)
+        
+        output.showEmptyView
+            .drive(with: self, onNext: { owner, isShown in
+                owner.rootView.emptyView.isHidden = !isShown
+            })
             .disposed(by: disposeBag)
         
         output.reloadTableView

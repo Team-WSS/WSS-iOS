@@ -15,9 +15,13 @@ final class MyPageBlockUserView: UIView {
     //MARK: - Components
     
     var blockTableView = UITableView(frame: .zero, style: .plain)
+    
+    let emptyView = UIView()
+    private let emptyImageView = UIImageView()
+    private let emptyLabel = UILabel()
+    
     lazy var backButton = UIButton()
-    
-    
+
     // MARK: - Life Cycle
     
     override init(frame: CGRect) {
@@ -45,18 +49,53 @@ final class MyPageBlockUserView: UIView {
             $0.rowHeight = 70
         }
         
+        emptyView.do {
+            $0.backgroundColor = .wssWhite
+            $0.isHidden = true
+            
+            emptyImageView.do {
+                $0.image = .imgEmptyCat
+                $0.contentMode = .scaleAspectFit
+            }
+            
+            emptyLabel.do {
+                $0.textColor = .wssGray200
+                $0.textAlignment = .center
+                $0.applyWSSFont(.body2, with: StringLiterals.MyPage.BlockUser.emptyLabel)
+            }
+        }
+        
         backButton.do {
             $0.setImage(.icNavigateLeft, for: .normal)
         }
     }
     
     private func setHierarchy() {
-        self.addSubview(blockTableView)
+        self.addSubviews(blockTableView,
+        emptyView)
+        emptyView.addSubviews(emptyImageView,
+        emptyLabel)
     }
     
     private func setLayout() {
         blockTableView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+        }
+        
+        emptyView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+            
+            emptyImageView.snp.makeConstraints {
+                $0.centerY.equalToSuperview().inset(Int(emptyLabel.bounds.height) + 20)
+                $0.centerX.equalToSuperview()
+                $0.width.equalTo(166)
+                $0.height.equalTo(160)
+            }
+            
+            emptyLabel.snp.makeConstraints {
+                $0.top.equalTo(emptyImageView.snp.bottom).offset(20)
+                $0.centerX.equalToSuperview()
+            }
         }
         
         backButton.snp.makeConstraints {

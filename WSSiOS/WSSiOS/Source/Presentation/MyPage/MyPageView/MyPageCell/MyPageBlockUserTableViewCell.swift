@@ -7,6 +7,7 @@
 
 import UIKit
 
+import Kingfisher
 import RxSwift
 import RxCocoa
 import SnapKit
@@ -94,8 +95,8 @@ final class MyPageBlockUserTableViewCell: UITableViewCell {
     
     //MARK: - Data
     
-    func bindData(image: UIImage, nickname: String) {
-        userImageView.image = image
+    func bindData(image: String, nickname: String) {
+        userImageView.kfSetImage(url: image)
         userNicknameLabel.applyWSSFont(.body2, with: nickname)
     }
 }

@@ -16,6 +16,7 @@ final class MyPageBlockUserViewModel: ViewModelType {
     
     private let userRepository: UserRepository
     private var bindCellReleay = BehaviorRelay<[blockList]>(value: [])
+    private let showEmptyView = BehaviorRelay<Bool>(value: false)
     private let popViewController = PublishRelay<Bool>()
     private let reloadTableView = PublishRelay<Bool>()
     
@@ -31,6 +32,7 @@ final class MyPageBlockUserViewModel: ViewModelType {
     }
     
     struct Output {
+        let showEmptyView: Driver<Bool>
         let popViewController: PublishRelay<Bool>
         let bindCell: BehaviorRelay<[blockList]>
         let reloadTableView: PublishRelay<Bool>
@@ -45,6 +47,9 @@ final class MyPageBlockUserViewModel: ViewModelType {
         
         getBlockUserList()
             .subscribe(with: self, onNext: { owner, data in
+                if data.blocks.isEmpty {
+                    owner.showEmptyView.accept(true)
+                }
                 owner.bindCellReleay.accept(data.blocks)
             })
             .disposed(by: disposeBag)
@@ -56,7 +61,8 @@ final class MyPageBlockUserViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        return Output(popViewController: popViewController,
+        return Output(showEmptyView: showEmptyView.asDriver(),
+                      popViewController: popViewController,
                       bindCell: bindCellReleay,
                       reloadTableView: reloadTableView)
     }
