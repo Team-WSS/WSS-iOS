@@ -12,6 +12,11 @@
 		2C19A4FB2BBA8E9600D4D151 /* WSSDropdownManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C19A4FA2BBA8E9600D4D151 /* WSSDropdownManager.swift */; };
 		2C19A4FD2BBA90E700D4D151 /* WSSDropDownTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C19A4FC2BBA90E700D4D151 /* WSSDropDownTableView.swift */; };
 		2C19A5002BBD56C900D4D151 /* WSSDropdownButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C19A4FF2BBD56C900D4D151 /* WSSDropdownButton.swift */; };
+		2C22AE6E2C56E99A00BF6E94 /* MyPageBlockUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C22AE6D2C56E99A00BF6E94 /* MyPageBlockUserViewController.swift */; };
+		2C22AE702C56E9C100BF6E94 /* MyPageBlockUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C22AE6F2C56E9C100BF6E94 /* MyPageBlockUserView.swift */; };
+		2C22AE722C56EAD000BF6E94 /* MyPageBlockUserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C22AE712C56EAD000BF6E94 /* MyPageBlockUserTableViewCell.swift */; };
+		2C22AE742C56EDB300BF6E94 /* MyPageBlockUserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C22AE732C56EDB300BF6E94 /* MyPageBlockUserViewModel.swift */; };
+		2C22AE762C56EE3900BF6E94 /* BlockUserResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C22AE752C56EE3900BF6E94 /* BlockUserResult.swift */; };
 		2C2491812B4ADC000096F255 /* StringLiterals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2491802B4ADC000096F255 /* StringLiterals.swift */; };
 		2C2491842B4ADC230096F255 /* WSSTabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2491832B4ADC230096F255 /* WSSTabBarItem.swift */; };
 		2C2491862B4ADC420096F255 /* WSSTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2491852B4ADC420096F255 /* WSSTabBarController.swift */; };
@@ -39,6 +44,7 @@
 		2C9A196D2C5692370043044A /* MyPageSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9A196C2C5692360043044A /* MyPageSettingView.swift */; };
 		2C9A196F2C56923B0043044A /* MyPageSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9A196E2C56923B0043044A /* MyPageSettingViewController.swift */; };
 		2C9A19712C56925F0043044A /* MyPageInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9A19702C56925F0043044A /* MyPageInfoViewModel.swift */; };
+		2C9CBDB12C5BB4340084481F /* BlocksService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9CBDB02C5BB4340084481F /* BlocksService.swift */; };
 		2CA2F64E2B527B060045B4C2 /* MyPageCustomModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2F64D2B527B060045B4C2 /* MyPageCustomModalView.swift */; };
 		2CA2F6502B527B3A0045B4C2 /* MyPageCustomModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2F64F2B527B3A0045B4C2 /* MyPageCustomModalViewController.swift */; };
 		2CA2F6522B527B590045B4C2 /* MyPageModalAvatarFeatureLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2F6512B527B590045B4C2 /* MyPageModalAvatarFeatureLabelView.swift */; };
@@ -292,6 +298,11 @@
 		2C19A4FA2BBA8E9600D4D151 /* WSSDropdownManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSDropdownManager.swift; sourceTree = "<group>"; };
 		2C19A4FC2BBA90E700D4D151 /* WSSDropDownTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSDropDownTableView.swift; sourceTree = "<group>"; };
 		2C19A4FF2BBD56C900D4D151 /* WSSDropdownButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSDropdownButton.swift; sourceTree = "<group>"; };
+		2C22AE6D2C56E99A00BF6E94 /* MyPageBlockUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageBlockUserViewController.swift; sourceTree = "<group>"; };
+		2C22AE6F2C56E9C100BF6E94 /* MyPageBlockUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageBlockUserView.swift; sourceTree = "<group>"; };
+		2C22AE712C56EAD000BF6E94 /* MyPageBlockUserTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageBlockUserTableViewCell.swift; sourceTree = "<group>"; };
+		2C22AE732C56EDB300BF6E94 /* MyPageBlockUserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageBlockUserViewModel.swift; sourceTree = "<group>"; };
+		2C22AE752C56EE3900BF6E94 /* BlockUserResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockUserResult.swift; sourceTree = "<group>"; };
 		2C2491802B4ADC000096F255 /* StringLiterals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringLiterals.swift; sourceTree = "<group>"; };
 		2C2491832B4ADC230096F255 /* WSSTabBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSTabBarItem.swift; sourceTree = "<group>"; };
 		2C2491852B4ADC420096F255 /* WSSTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSTabBarController.swift; sourceTree = "<group>"; };
@@ -319,6 +330,7 @@
 		2C9A196C2C5692360043044A /* MyPageSettingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageSettingView.swift; sourceTree = "<group>"; };
 		2C9A196E2C56923B0043044A /* MyPageSettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageSettingViewController.swift; sourceTree = "<group>"; };
 		2C9A19702C56925F0043044A /* MyPageInfoViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageInfoViewModel.swift; sourceTree = "<group>"; };
+		2C9CBDB02C5BB4340084481F /* BlocksService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlocksService.swift; sourceTree = "<group>"; };
 		2CA2F64D2B527B060045B4C2 /* MyPageCustomModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageCustomModalView.swift; sourceTree = "<group>"; };
 		2CA2F64F2B527B3A0045B4C2 /* MyPageCustomModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageCustomModalViewController.swift; sourceTree = "<group>"; };
 		2CA2F6512B527B590045B4C2 /* MyPageModalAvatarFeatureLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageModalAvatarFeatureLabelView.swift; sourceTree = "<group>"; };
@@ -646,8 +658,17 @@
 				2C9A196A2C5692330043044A /* MyPageSettingTableViewCell.swift */,
 				2C5D0F582B4FDEC000C76D3C /* MyPageInventoryCollectionViewCell.swift */,
 				2C5D0F5C2B50100000C76D3C /* MyPageSettingCollectionViewCell.swift */,
+				2C22AE712C56EAD000BF6E94 /* MyPageBlockUserTableViewCell.swift */,
 			);
 			path = MyPageCell;
+			sourceTree = "<group>";
+		};
+		2C9CBDAF2C5BB4200084481F /* Blocks */ = {
+			isa = PBXGroup;
+			children = (
+				2C9CBDB02C5BB4340084481F /* BlocksService.swift */,
+			);
+			path = Blocks;
 			sourceTree = "<group>";
 		};
 		2CA2F6562B5303A60045B4C2 /* Library */ = {
@@ -716,6 +737,7 @@
 				2CA2F64F2B527B3A0045B4C2 /* MyPageCustomModalViewController.swift */,
 				2C9A196E2C56923B0043044A /* MyPageSettingViewController.swift */,
 				2CB613F22B575E4500FC3F89 /* MyPageInfoViewController.swift */,
+				2C22AE6D2C56E99A00BF6E94 /* MyPageBlockUserViewController.swift */,
 			);
 			path = MyPageViewController;
 			sourceTree = "<group>";
@@ -728,6 +750,7 @@
 				2CA2F64D2B527B060045B4C2 /* MyPageCustomModalView.swift */,
 				2CB613F42B575E6A00FC3F89 /* MyPageInfoView.swift */,
 				2C9A196C2C5692360043044A /* MyPageSettingView.swift */,
+				2C22AE6F2C56E9C100BF6E94 /* MyPageBlockUserView.swift */,
 				2C5D0F572B4FDE7500C76D3C /* MyPageCell */,
 				2CCBF9FE2B4DBF6A00D787C2 /* MyPageAssistantView */,
 			);
@@ -741,6 +764,7 @@
 				2CCBF9FF2B4DBFD200D787C2 /* MyPageChangeNickNameViewModel.swift */,
 				2C9A19682C567D6B0043044A /* MyPageViewModel.swift */,
 				2C421FE72B96DC0F000DCB87 /* MyPageCustomModalViewModel.swift */,
+				2C22AE732C56EDB300BF6E94 /* MyPageBlockUserViewModel.swift */,
 			);
 			path = MyPageViewModel;
 			sourceTree = "<group>";
@@ -1463,6 +1487,7 @@
 				39D4A5D12BDC0902004FC834 /* NovelDetailHeaderResult.swift */,
 				2CD911452C0D88CA006B8D72 /* TotalFeedResult.swift */,
 				B9AC1BD92BF0BE23006EDE92 /* NoticeResult.swift */,
+				2C22AE752C56EE3900BF6E94 /* BlockUserResult.swift */,
 			);
 			path = DTO;
 			sourceTree = "<group>";
@@ -1470,6 +1495,7 @@
 		A1EF35562B52FAA300A94C53 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				2C9CBDAF2C5BB4200084481F /* Blocks */,
 				B90A5E5D2C355BB4009938D9 /* Novel */,
 				2CD911402C0D87CD006B8D72 /* Feed */,
 				A122C9D52B53026700DFCFE4 /* Memo */,
@@ -1829,6 +1855,7 @@
 				2CD9115A2C0D8A23006B8D72 /* FeedView.swift in Sources */,
 				2C60307B2B55D9160031544C /* UIImageView+.swift in Sources */,
 				B9095D2A2C3950B4007521EF /* HomeNoticeDetailView.swift in Sources */,
+				2C22AE762C56EE3900BF6E94 /* BlockUserResult.swift in Sources */,
 				A1EF35692B52FD9B00A94C53 /* AvatarResult.swift in Sources */,
 				B971D8792C0388E0008934D8 /* SearchRepository.swift in Sources */,
 				B9E565FF2C0452AA00DB51FF /* NormalSearchEmptyView.swift in Sources */,
@@ -1928,16 +1955,19 @@
 				2C19A4FB2BBA8E9600D4D151 /* WSSDropdownManager.swift in Sources */,
 				B9CEDA0D2C01C97E00E62247 /* HomeUnregisterView.swift in Sources */,
 				A1B903E52B58140800398890 /* UserNovelListResult.swift in Sources */,
+				2C22AE722C56EAD000BF6E94 /* MyPageBlockUserTableViewCell.swift in Sources */,
 				B9E565F52C04517A00DB51FF /* NormalSearchViewController.swift in Sources */,
 				CD3E5A742B5424D600C0A659 /* MemoEditView.swift in Sources */,
 				39CC16812B51246E003F56AE /* RegisterNormalView.swift in Sources */,
 				39B75ADE2B59BA87005DD8B9 /* UIScreen+.swift in Sources */,
+				2C22AE702C56E9C100BF6E94 /* MyPageBlockUserView.swift in Sources */,
 				2CD911562C0D8A1A006B8D72 /* FeedPageBarCollectionViewCell.swift in Sources */,
 				39BA7F752BCABF1D0045B2B7 /* KeywordLink.swift in Sources */,
 				A122C9DB2B5309AF00DFCFE4 /* (null) in Sources */,
 				A1EF35432B52F75800A94C53 /* NovelRepository.swift in Sources */,
 				2C5D0F5D2B50100000C76D3C /* MyPageSettingCollectionViewCell.swift in Sources */,
 				C9AF1AE42BCC28EE00208BC9 /* HomeTodayPopularCollectionViewCell.swift in Sources */,
+				2C22AE742C56EDB300BF6E94 /* MyPageBlockUserViewModel.swift in Sources */,
 				39CC168A2B51D965003F56AE /* RegisterSuccessView.swift in Sources */,
 				CDE596DA2B57C4BE00D99DA1 /* UITextView+.swift in Sources */,
 				2C5D0F612B50525700C76D3C /* MyPageChangeNicknameView.swift in Sources */,
@@ -1975,6 +2005,7 @@
 				B98748632C3581A70039ACE5 /* NormalSearchCollectionViewCell.swift in Sources */,
 				CDA5F0452C2FE41F00FCF15C /* FeedEditContentView.swift in Sources */,
 				A122C9E32B530A8800DFCFE4 /* (null) in Sources */,
+				2C22AE6E2C56E99A00BF6E94 /* MyPageBlockUserViewController.swift in Sources */,
 				CD39F2C52B4FFE7400B73A5C /* TrashNovelDetailCreateMemoView.swift in Sources */,
 				CD39F2DA2B50DDBF00B73A5C /* TrashNovelDetailInfoGenreView.swift in Sources */,
 				2CD9114A2C0D8948006B8D72 /* FeedDetailContentView.swift in Sources */,
@@ -1991,6 +2022,7 @@
 				2CFE04332B66A45A0048F77A /* UICollectionViewCell+.swift in Sources */,
 				B9FE59642BF11955005815AF /* HomeInduceLoginModalView.swift in Sources */,
 				2CB613F32B575E4500FC3F89 /* MyPageInfoViewController.swift in Sources */,
+				2C9CBDB12C5BB4340084481F /* BlocksService.swift in Sources */,
 				2CCBF9F22B4D347B00D787C2 /* WSSMainButton.swift in Sources */,
 				A1CB373A2B72935900CB290F /* UITableViewCell+.swift in Sources */,
 				A1147A802B50638200141692 /* RecordViewController.swift in Sources */,

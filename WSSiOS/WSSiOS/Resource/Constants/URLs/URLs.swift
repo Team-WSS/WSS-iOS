@@ -65,4 +65,11 @@ enum URLs {
     enum Feed {
         static let getFeeds = "/feeds"
     }
+    
+    enum MyPage {
+        enum Block {
+            static let blocks = "/blocks"
+            static let userBlocks = "/blocks/{blockId}"
+        }
+    }
 }

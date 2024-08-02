@@ -17,10 +17,11 @@ enum ToastStatus {
     case memoDelete
     case avatarUnlock
     case nicknameSave
+    case deleteBlockUser(nickname: String)
     
     var toastImage: UIImage {
         switch self {
-        case .memoSaveSuccess, .nicknameSave, .memoEditSuccess:
+        case .memoSaveSuccess, .nicknameSave, .memoEditSuccess, .deleteBlockUser:
             return .icAlertSuccess
         case .memoSaveFail, .memoDelete:
             return .icAlertWarning
@@ -43,6 +44,8 @@ enum ToastStatus {
             "새 캐릭터가 열렸어요!\n마이페이지에서 확인하세요"
         case .nicknameSave:
             "닉네임을 저장했어요"
+        case .deleteBlockUser(let nickname):
+            "\(nickname)님을 차단 해제했어요"
         }
     }
 }
@@ -84,7 +87,6 @@ final class WSSToastView: UIView {
         
         descriptionLabel.do {
             $0.textColor = .wssGray50
-            $0.font = .Body1
             $0.numberOfLines = 2
         }
     }
@@ -96,18 +98,13 @@ final class WSSToastView: UIView {
     
     func bindData(_ status: ToastStatus) {
         self.toastImageView.image = status.toastImage
-        self.descriptionLabel.do {
-            $0.makeAttribute(with: status.toastText)?
-                .lineSpacing(spacingPercentage: 140)
-                .kerning(kerningPixel: -0.8)
-                .applyAttribute()
-        }
+        self.descriptionLabel.applyWSSFont(.body1, with: status.toastText)
         self.setLayout(status)
     }
     
     func setLayout(_ status: ToastStatus) {
         switch status {
-        case .memoSaveSuccess, .memoSaveFail, .memoEditSuccess, .memoDelete, .nicknameSave:
+        case .memoSaveSuccess, .memoSaveFail, .memoEditSuccess, .memoDelete, .nicknameSave, .deleteBlockUser:
             toastImageView.snp.makeConstraints {
                 $0.top.bottom.equalToSuperview().inset(14)
                 $0.leading.equalToSuperview().inset(20)

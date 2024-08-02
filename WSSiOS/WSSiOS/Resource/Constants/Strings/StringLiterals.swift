@@ -35,6 +35,7 @@ enum StringLiterals {
             static let notice = "알림"
             static let myPageSetting = "설정"
             static let myPageInfo = "계정설정"
+            static let myPageBlockUser = "차단유저 목록"
         }
     }
     
@@ -152,6 +153,11 @@ enum StringLiterals {
         enum ChangeNickname {
             static let complete = "완료"
             static let nickname = "닉네임"
+        }
+        
+        enum BlockUser {
+            static let buttonTitle = "차단 해제"
+            static let emptyLabel = "차단한 유저가 없어요"
         }
     }
     
