@@ -57,6 +57,7 @@ final class MyPageBlockUserViewModel: ViewModelType {
         input.unblockButtonDidTap
             .subscribe(with: self, onNext: { owner, indexPath in
                 let blockID = owner.bindCellReleay.value[indexPath.row].blockId
+                print(indexPath)
                 owner.deleteBlockUser(blockID: blockID)
             })
             .disposed(by: disposeBag)
@@ -70,7 +71,14 @@ final class MyPageBlockUserViewModel: ViewModelType {
     //MARK: - API
     
     private func getBlockUserList() -> Observable<BlockUserResult> {
-        return self.userRepository.getBlocksList()
+//        return self.userRepository.getBlocksList()
+        let blockUserReult = [blockList(blockId: 0, userId: 0, nickname: "jiwon", avatarImage: "https://i.pinimg.com/564x/a2/48/0a/a2480aceb3d0881e5aaa921209cf61c8.jpg"),
+                              blockList(blockId: 1, userId: 1, nickname: "ena", avatarImage: "https://i.pinimg.com/564x/a2/48/0a/a2480aceb3d0881e5aaa921209cf61c8.jpg"),
+                              blockList(blockId: 2, userId: 2, nickname: "신지원", avatarImage: "https://i.pinimg.com/564x/a2/48/0a/a2480aceb3d0881e5aaa921209cf61c8.jpg"),
+                              blockList(blockId: 3, userId: 3, nickname: "메롱메롱메롱메롱메롱", avatarImage: "https://i.pinimg.com/564x/a2/48/0a/a2480aceb3d0881e5aaa921209cf61c8.jpg"),
+                              blockList(blockId: 4, userId: 4, nickname: "짱부라부하이나", avatarImage: "https://i.pinimg.com/564x/a2/48/0a/a2480aceb3d0881e5aaa921209cf61c8.jpg")]
+        let relay = BehaviorRelay<BlockUserResult>(value: BlockUserResult(blocks: blockUserReult))
+        return relay.asObservable()
     }
     
     private func deleteBlockUser(blockID: Int) -> Observable<Void> {

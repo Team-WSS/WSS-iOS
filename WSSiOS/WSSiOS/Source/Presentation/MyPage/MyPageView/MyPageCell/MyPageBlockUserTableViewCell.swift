@@ -43,7 +43,8 @@ final class MyPageBlockUserTableViewCell: UITableViewCell {
         userImageView.do {
             $0.image = .imgProfile
             $0.layer.cornerRadius = 14
-            $0.contentMode = .scaleAspectFill
+            $0.contentMode = .scaleToFill
+            $0.clipsToBounds = true
         }
         
         userNicknameLabel.do {
@@ -53,7 +54,7 @@ final class MyPageBlockUserTableViewCell: UITableViewCell {
         unblockButton.do {
             $0.setTitle(StringLiterals.MyPage.BlockUser.buttonTitle, for: .normal)
             $0.setTitleColor(.wssGray300, for: .normal)
-            $0.layer.cornerRadius = 20
+            $0.layer.cornerRadius = 35/2
             $0.titleLabel?.applyWSSFont(.body3, with: StringLiterals.MyPage.BlockUser.buttonTitle)
             $0.layer.backgroundColor = UIColor.wssGray50.cgColor
         }

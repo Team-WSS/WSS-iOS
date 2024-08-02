@@ -74,7 +74,6 @@ final class MyPageBlockUserViewController: UIViewController {
         output.bindCell
             .bind(to: rootView.blockTableView.rx.items(cellIdentifier: MyPageBlockUserTableViewCell.cellIdentifier, cellType: MyPageBlockUserTableViewCell.self)) { row, data, cell in
                 cell.bindData(image: data.avatarImage, nickname: data.nickname)
-                
                 cell.unblockButtonTap
                     .map { IndexPath(row: row, section: 0) }
                     .bind(to: self.unblockButtonTapSubject)

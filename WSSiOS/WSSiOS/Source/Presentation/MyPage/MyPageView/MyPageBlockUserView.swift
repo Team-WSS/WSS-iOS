@@ -21,7 +21,7 @@ final class MyPageBlockUserView: UIView {
     private let emptyLabel = UILabel()
     
     lazy var backButton = UIButton()
-
+    
     // MARK: - Life Cycle
     
     override init(frame: CGRect) {
@@ -72,9 +72,9 @@ final class MyPageBlockUserView: UIView {
     
     private func setHierarchy() {
         self.addSubviews(blockTableView,
-        emptyView)
+                         emptyView)
         emptyView.addSubviews(emptyImageView,
-        emptyLabel)
+                              emptyLabel)
     }
     
     private func setLayout() {
@@ -86,8 +86,7 @@ final class MyPageBlockUserView: UIView {
             $0.edges.equalToSuperview()
             
             emptyImageView.snp.makeConstraints {
-                $0.centerY.equalToSuperview().inset(Int(emptyLabel.bounds.height) + 20)
-                $0.centerX.equalToSuperview()
+                $0.center.equalToSuperview()
                 $0.width.equalTo(166)
                 $0.height.equalTo(160)
             }
