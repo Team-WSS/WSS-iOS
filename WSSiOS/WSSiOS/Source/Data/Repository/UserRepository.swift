@@ -28,9 +28,11 @@ struct DefaultUserRepository: UserRepository {
     
     
     private var userService: UserService
+    private var blocksService: BlocksService
     
-    init(userService: UserService) {
+    init(userService: UserService, blocksService: BlocksService) {
         self.userService = userService
+        self.blocksService = blocksService
     }
     
     func getUserData() -> RxSwift.Observable<UserResult> {
@@ -62,6 +64,6 @@ struct DefaultUserRepository: UserRepository {
     }
     
     func deleteBlockUser(blockID: Int) -> RxSwift.Observable<Void> {
-        return nil
+        return self.blocksService.deleteBlockUser(blockID: blockID).asObservable()
     }
 }

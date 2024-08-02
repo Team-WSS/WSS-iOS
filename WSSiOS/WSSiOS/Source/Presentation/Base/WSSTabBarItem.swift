@@ -65,7 +65,8 @@ enum WSSTabBarItem: CaseIterable {
             return MyPageViewController(
                 viewModel: MyPageViewModel(
                     userRepository: DefaultUserRepository(
-                        userService: DefaultUserService())),
+                        userService: DefaultUserService(),
+                        blocksService: DefaultBlocksService())),
                 isMyPage: true)
         }
     }
