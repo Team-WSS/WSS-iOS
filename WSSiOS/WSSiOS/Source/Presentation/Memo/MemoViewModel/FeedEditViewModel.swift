@@ -26,7 +26,7 @@ final class FeedEditViewModel: ViewModelType {
     private let feedContentPredicate = NSPredicate(format: "SELF MATCHES %@", "^[\\s]+$")
     private let maximumFeedContentCount: Int = 2000
     
-    // 성별에 따른 리스트는 추후 구현
+    //TODO: - 성별에 따른 리스트는 추후 구현
     let relevantCategoryList = FeedDetailWomanKoreanGenre.allCases.map { $0.rawValue }
        
     //MARK: - Life Cycle
@@ -79,6 +79,7 @@ final class FeedEditViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.backButtonDidTap
+            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .subscribe(onNext: { _ in
                 output.popViewController.accept(())
             })
@@ -86,6 +87,7 @@ final class FeedEditViewModel: ViewModelType {
         
         if let feedId {
             input.completeButtonDidTap
+                .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
                 .flatMapLatest {
                     self.putFeed(feedId: feedId, relevantCategories: self.relevantCategories, feedContent: self.updatedFeedContent, novelId: self.novelId, isSpoiler: self.isSpoiler)
                 }
@@ -97,6 +99,7 @@ final class FeedEditViewModel: ViewModelType {
                 .disposed(by: disposeBag)
         } else {
             input.completeButtonDidTap
+                .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
                 .flatMapLatest {
                     self.postFeed(relevantCategories: self.relevantCategories, feedContent: self.updatedFeedContent, novelId: self.novelId, isSpoiler: self.isSpoiler)
                 }
@@ -109,6 +112,7 @@ final class FeedEditViewModel: ViewModelType {
         }
         
         input.spoilerButtonDidTap
+            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
                 output.isSpoiler.accept(!owner.isSpoiler)
                 owner.isSpoiler = !owner.isSpoiler
