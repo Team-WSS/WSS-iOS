@@ -73,10 +73,7 @@ final class NovelDetailInfoReviewAttractivePointView: UIView {
     //MARK: - Data
     
     func bindData(_ data: NovelDetailInfoResult) {
-        var attractivePoints = data.attractivePoints.reduce("") {
-            return "\($0), \($1)"
-        }
-        attractivePoints.removeFirst(2)
+        var attractivePoints = data.attractivePoints.joined(separator: ", ")
         setAttractivePointLabelText(with: attractivePoints)
     }
     
