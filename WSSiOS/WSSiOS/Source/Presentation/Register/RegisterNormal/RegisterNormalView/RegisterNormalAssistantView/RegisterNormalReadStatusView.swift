@@ -72,7 +72,7 @@ final class RegisterNormalReadStatusView: UIView {
     
     //MARK: - Custom Method
     
-    func updateReadStatusButton(status: ReadStatus) {
+    func updateReadStatusButton(status: TrashReadStatus) {
         readStatusButtons.forEach { button in
             if button.checkStatus(status) {
                 // 활성화 상태 설정
@@ -88,7 +88,7 @@ final class RegisterNormalReadStatusView: UIView {
     
     private func createButtons() -> [RegisterNormalReadStatusButton] {
         var buttons: [RegisterNormalReadStatusButton] = []
-        for status in ReadStatus.allCases {
+        for status in TrashReadStatus.allCases {
             let button = RegisterNormalReadStatusButton()
             button.do {
                 $0.setText(status.tagText)

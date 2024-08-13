@@ -96,10 +96,11 @@
 		3999BFEE2B4E6CA000984832 /* UIImageViewAlignedSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 3999BFED2B4E6CA000984832 /* UIImageViewAlignedSwift */; };
 		3999BFF02B4E6FA800984832 /* RegisterNormalBannerImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3999BFEF2B4E6FA800984832 /* RegisterNormalBannerImageView.swift */; };
 		399F29322B56633C00BBC12B /* NovelResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399F29312B56633C00BBC12B /* NovelResult.swift */; };
-		399F29352B56DA7800BBC12B /* ReadStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399F29342B56DA7800BBC12B /* ReadStatus.swift */; };
+		399F29352B56DA7800BBC12B /* TrashReadStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399F29342B56DA7800BBC12B /* TrashReadStatus.swift */; };
 		39ABD5A02B54D0A900DEA94E /* RegisterNormalDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39ABD59F2B54D0A900DEA94E /* RegisterNormalDatePicker.swift */; };
 		39AF30D12B50182F00FDC1F3 /* RegisterNormalReadStatusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39AF30D02B50182F00FDC1F3 /* RegisterNormalReadStatusButton.swift */; };
 		39B225252B70B41A001C76D0 /* RegisterNormalDifferentRadiusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B225242B70B41A001C76D0 /* RegisterNormalDifferentRadiusView.swift */; };
+		39B6B6A32C649F3300D80BD9 /* NovelDetailInfoReviewGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B6B6A22C649F3300D80BD9 /* NovelDetailInfoReviewGraph.swift */; };
 		39B75ACE2B5912B5005DD8B9 /* LottieLiterals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B75ACD2B5912B5005DD8B9 /* LottieLiterals.swift */; };
 		39B75AD62B59891D005DD8B9 /* sosocatTail.json in Resources */ = {isa = PBXBuildFile; fileRef = 39B75ACF2B59891C005DD8B9 /* sosocatTail.json */; };
 		39B75AD72B59891D005DD8B9 /* scroll.json in Resources */ = {isa = PBXBuildFile; fileRef = 39B75AD02B59891C005DD8B9 /* scroll.json */; };
@@ -335,10 +336,11 @@
 		3999BFEA2B4E6C4400984832 /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
 		3999BFEF2B4E6FA800984832 /* RegisterNormalBannerImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalBannerImageView.swift; sourceTree = "<group>"; };
 		399F29312B56633C00BBC12B /* NovelResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelResult.swift; sourceTree = "<group>"; };
-		399F29342B56DA7800BBC12B /* ReadStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadStatus.swift; sourceTree = "<group>"; };
+		399F29342B56DA7800BBC12B /* TrashReadStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashReadStatus.swift; sourceTree = "<group>"; };
 		39ABD59F2B54D0A900DEA94E /* RegisterNormalDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalDatePicker.swift; sourceTree = "<group>"; };
 		39AF30D02B50182F00FDC1F3 /* RegisterNormalReadStatusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalReadStatusButton.swift; sourceTree = "<group>"; };
 		39B225242B70B41A001C76D0 /* RegisterNormalDifferentRadiusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalDifferentRadiusView.swift; sourceTree = "<group>"; };
+		39B6B6A22C649F3300D80BD9 /* NovelDetailInfoReviewGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoReviewGraph.swift; sourceTree = "<group>"; };
 		39B75ACD2B5912B5005DD8B9 /* LottieLiterals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieLiterals.swift; sourceTree = "<group>"; };
 		39B75ACF2B59891C005DD8B9 /* sosocatTail.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sosocatTail.json; sourceTree = "<group>"; };
 		39B75AD02B59891C005DD8B9 /* scroll.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = scroll.json; sourceTree = "<group>"; };
@@ -965,7 +967,7 @@
 		399F29332B56DA6E00BBC12B /* Base */ = {
 			isa = PBXGroup;
 			children = (
-				399F29342B56DA7800BBC12B /* ReadStatus.swift */,
+				399F29342B56DA7800BBC12B /* TrashReadStatus.swift */,
 				39D4A5DF2BDF746C004FC834 /* NovelGenre.swift */,
 			);
 			path = Base;
@@ -1126,6 +1128,7 @@
 				39F850752C319BE500E93EBC /* NovelDetailInfoReviewEmptyView.swift */,
 				3908376A2C32ADEA0082DC57 /* NovelDetailInfoReviewView.swift */,
 				39599E072C356DFA00702004 /* NovelDetailInfoReviewAttractivePointView.swift */,
+				39B6B6A22C649F3300D80BD9 /* NovelDetailInfoReviewGraph.swift */,
 			);
 			path = NovelDetailInfoAssistantView;
 			sourceTree = "<group>";
@@ -1722,6 +1725,7 @@
 				CD39F2C82B50124C00B73A5C /* TrashNovelDetailMemoTableViewCell.swift in Sources */,
 				CD39F2D42B50D5C700B73A5C /* TrashNovelDetailInfoReadDateView.swift in Sources */,
 				2CD9115C2C0D8A26006B8D72 /* FeedViewController.swift in Sources */,
+				39B6B6A32C649F3300D80BD9 /* NovelDetailInfoReviewGraph.swift in Sources */,
 				CD39F2B62B4FE0E200B73A5C /* TrashNovelDetailView.swift in Sources */,
 				CD39F2E42B50F23B00B73A5C /* TrashNovelDetailInfoPlatformView.swift in Sources */,
 				B9181BDC2BEBDFA80024C800 /* HomeTasteRecommendView.swift in Sources */,
@@ -1879,7 +1883,7 @@
 				CD39F2E22B50EFCB00B73A5C /* LeftAlignedCollectionViewFlowLayout.swift in Sources */,
 				CD39F2B82B4FE0FB00B73A5C /* TrashNovelDetailViewController.swift in Sources */,
 				CD39F2DE2B50E11000B73A5C /* TrashNovelDetailInfoKeywordCollectionViewCell.swift in Sources */,
-				399F29352B56DA7800BBC12B /* ReadStatus.swift in Sources */,
+				399F29352B56DA7800BBC12B /* TrashReadStatus.swift in Sources */,
 				CD39F2C12B4FF81E00B73A5C /* UIButton+.swift in Sources */,
 				A147CBC42B4D662E0040AE39 /* SearchView.swift in Sources */,
 				A1147A842B5063BC00141692 /* RecordResultView.swift in Sources */,

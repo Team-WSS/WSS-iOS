@@ -15,7 +15,7 @@ final class TrashNovelDetailInfoReadStatusTagView: UIView {
     
     //MARK: - Properties
 
-    var readStatus: ReadStatus?
+    var readStatus: TrashReadStatus?
     
     //MARK: - Components
     
@@ -77,7 +77,7 @@ final class TrashNovelDetailInfoReadStatusTagView: UIView {
     
     //MARK: - Data
     
-    func bindData(_ status: ReadStatus) {
+    func bindData(_ status: TrashReadStatus) {
         self.tagImageView.image = status.tagImage
         self.tagLabel.do {
             $0.makeAttribute(with: status.tagText)?
