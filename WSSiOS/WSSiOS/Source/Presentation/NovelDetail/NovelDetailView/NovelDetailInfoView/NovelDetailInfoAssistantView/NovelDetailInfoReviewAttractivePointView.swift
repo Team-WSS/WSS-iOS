@@ -73,7 +73,7 @@ final class NovelDetailInfoReviewAttractivePointView: UIView {
     //MARK: - Data
     
     func bindData(_ data: NovelDetailInfoResult) {
-        var attractivePoints = data.attractivePoints.joined(separator: ", ")
+        let attractivePoints = data.attractivePoints.joined(separator: ", ")
         setAttractivePointLabelText(with: attractivePoints)
     }
     
