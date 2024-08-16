@@ -17,9 +17,7 @@ final class NovelDetailInfoReviewView: UIView {
     private let reviewStackView = UIStackView()
     private let titleLabel = UILabel()
     private let attractivePointView = NovelDetailInfoReviewAttractivePointView()
-    let keywordCollectionView = UICollectionView(frame: .zero,
-                                                      collectionViewLayout: UICollectionViewLayout())
-    private let keywordCollectionViewLayout = UICollectionViewFlowLayout()
+    let keywordView = NovelDetailInfoReviewKeywordView()
     
     //MARK: - Life Cycle
     
@@ -52,25 +50,13 @@ final class NovelDetailInfoReviewView: UIView {
                             with: StringLiterals.NovelDetail.Info.attractivePoints)
             $0.textColor = .wssBlack
         }
-        
-        keywordCollectionView.do {
-            $0.showsHorizontalScrollIndicator = false
-        }
-        
-        keywordCollectionViewLayout.do {
-            $0.scrollDirection = .horizontal
-            $0.minimumInteritemSpacing = 6
-            $0.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
-            keywordCollectionView.setCollectionViewLayout($0,
-                                                          animated: false)
-        }
     }
     
     private func setHierarchy() {
         self.addSubview(reviewStackView)
         reviewStackView.addArrangedSubviews(titleLabel,
                                             attractivePointView,
-                                            keywordCollectionView)
+                                            keywordView)
     }
     
     private func setLayout() {
@@ -93,9 +79,8 @@ final class NovelDetailInfoReviewView: UIView {
             $0.horizontalEdges.equalToSuperview().inset(20)
         }
         
-        keywordCollectionView.snp.makeConstraints {
+        keywordView.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview()
-            $0.height.equalTo(44)
         }
     }
     

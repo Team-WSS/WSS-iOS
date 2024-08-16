@@ -104,13 +104,13 @@ final class NovelDetailViewController: UIViewController {
             NovelDetailInfoPlatformCollectionViewCell.self,
             forCellWithReuseIdentifier: NovelDetailInfoPlatformCollectionViewCell.cellIdentifier)
         
-        rootView.infoView.reviewView.keywordCollectionView.register(
+        rootView.infoView.reviewView.keywordView.keywordCollectionView.register(
             NovelDetailInfoReviewKeywordCollectionViewCell.self,
             forCellWithReuseIdentifier: NovelDetailInfoReviewKeywordCollectionViewCell.cellIdentifier)
     }
     
     private func delegate() {
-        rootView.infoView.reviewView.keywordCollectionView.rx.setDelegate(self)
+        rootView.infoView.reviewView.keywordView.keywordCollectionView.rx.setDelegate(self)
             .disposed(by: disposeBag)
     }
     
@@ -199,7 +199,7 @@ final class NovelDetailViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.keywordList
-            .drive(rootView.infoView.reviewView.keywordCollectionView.rx.items(
+            .drive(rootView.infoView.reviewView.keywordView.keywordCollectionView.rx.items(
                 cellIdentifier: NovelDetailInfoReviewKeywordCollectionViewCell.cellIdentifier,
                 cellType: NovelDetailInfoReviewKeywordCollectionViewCell.self)) { _, element, cell in
                     cell.bindData(data: element)
