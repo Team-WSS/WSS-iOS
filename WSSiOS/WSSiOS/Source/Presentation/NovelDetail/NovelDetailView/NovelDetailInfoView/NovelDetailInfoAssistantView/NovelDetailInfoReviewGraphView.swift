@@ -1,5 +1,5 @@
 //
-//  NovelDetailInfoReviewGraph.swift
+//  NovelDetailInfoReviewGraphView.swift
 //  WSSiOS
 //
 //  Created by YunhakLee on 8/8/24.
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class NovelDetailInfoReviewGraph: UIView {
+final class NovelDetailInfoReviewGraphView: UIView {
     
     let readStatus: ReadStatus
     
