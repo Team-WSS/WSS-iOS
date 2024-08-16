@@ -67,7 +67,7 @@ final class NovelDetailInfoReviewEmptyView: UIView {
     private func setLayout() {
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(35)
-            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.horizontalEdges.equalToSuperview().inset(20)
         }
         
         reviewEmptyImageView.snp.makeConstraints {
@@ -79,7 +79,7 @@ final class NovelDetailInfoReviewEmptyView: UIView {
         reviewEmptyLabel.snp.makeConstraints {
             $0.top.equalTo(reviewEmptyImageView.snp.bottom).offset(20)
             $0.centerX.equalToSuperview()
-            $0.bottom.equalToSuperview().inset(105)
+            $0.bottom.equalToSuperview().inset(70)
         }
     }
 }
