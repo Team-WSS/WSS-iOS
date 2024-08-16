@@ -53,13 +53,13 @@ final class NovelDetailInfoReviewGraphStackView: UIView {
     
     private func setLayout() {
         titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(35)
+            $0.top.equalToSuperview()
             $0.horizontalEdges.equalToSuperview().inset(20)
         }
         
         graphStackView.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(30)
-            $0.bottom.equalToSuperview().inset(82)
+            $0.bottom.equalToSuperview()
             $0.centerX.equalToSuperview()
         }
     }

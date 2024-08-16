@@ -18,6 +18,7 @@ final class NovelDetailInfoReviewView: UIView {
     private let titleLabel = UILabel()
     private let attractivePointView = NovelDetailInfoReviewAttractivePointView()
     let keywordView = NovelDetailInfoReviewKeywordView()
+    private let dividerView = UIView()
     private let graphStackView = NovelDetailInfoReviewGraphStackView()
     
     //MARK: - Life Cycle
@@ -50,6 +51,10 @@ final class NovelDetailInfoReviewView: UIView {
                             with: StringLiterals.NovelDetail.Info.attractivePoint)
             $0.textColor = .wssBlack
         }
+        
+        dividerView.do {
+            $0.backgroundColor = .wssGray50
+        }
     }
     
     private func setHierarchy() {
@@ -57,6 +62,7 @@ final class NovelDetailInfoReviewView: UIView {
         reviewStackView.addArrangedSubviews(titleLabel,
                                             attractivePointView,
                                             keywordView,
+                                            dividerView,
                                             graphStackView)
     }
     
@@ -64,11 +70,13 @@ final class NovelDetailInfoReviewView: UIView {
         reviewStackView.do {
             $0.setCustomSpacing(15, after: titleLabel)
             $0.setCustomSpacing(10, after: attractivePointView)
+            $0.setCustomSpacing(40, after: keywordView)
+            $0.setCustomSpacing(35, after: dividerView)
             
             $0.snp.makeConstraints {
                 $0.top.equalToSuperview().inset(35)
                 $0.horizontalEdges.equalToSuperview()
-                $0.bottom.equalToSuperview().inset(40)
+                $0.bottom.equalToSuperview().inset(80)
             }
         }
         
@@ -82,6 +90,11 @@ final class NovelDetailInfoReviewView: UIView {
         
         keywordView.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview()
+        }
+        
+        dividerView.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview()
+            $0.height.equalTo(1)
         }
         
         graphStackView.snp.makeConstraints {
