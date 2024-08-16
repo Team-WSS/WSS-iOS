@@ -105,21 +105,22 @@ final class NovelDetailInfoReviewGraph: UIView {
     
     func bindData(_ data: NovelDetailInfoResult) {
         let statusCount = determineStatusCount(data)
-        let maxCount = determineMaxCount(data)
+        let maxCount = getTopReadStatusCount(data)
         
         if determineTopReadStatus(data) {
             updateTopStatusUI(statusCount: statusCount)
         } else {
-            updateBasicStatusUI(statusCount: statusCount, maxCount: maxCount)
+            updateBasicStatusUI(statusCount: statusCount,
+                                maxCount: maxCount)
         }
     }
     
-    private func determineMaxCount(_ data: NovelDetailInfoResult) -> Int {
+    private func getTopReadStatusCount(_ data: NovelDetailInfoResult) -> Int {
         return max(data.quitCount, data.watchedCount, data.watchingCount)
     }
     
     private func determineTopReadStatus(_ data: NovelDetailInfoResult) -> Bool {
-        let maxCount = determineMaxCount(data)
+        let maxCount = getTopReadStatusCount(data)
         
         switch maxCount {
         case data.quitCount:
@@ -129,7 +130,7 @@ final class NovelDetailInfoReviewGraph: UIView {
         case data.watchingCount:
             return readStatus == .watching
         default:
-            return false // 기본값, 이론적으로 도달하지 않아야 함
+            return false
         }
     }
     
