@@ -43,11 +43,6 @@ final class NovelDetailInfoReviewGraphView: UIView {
     //MARK: - UI
     
     private func setUI() {
-        self.do {
-            $0.layer.cornerRadius = 10
-            $0.clipsToBounds = true
-        }
-        
         stackView.do {
             $0.axis = .vertical
             $0.alignment = .center
@@ -63,6 +58,8 @@ final class NovelDetailInfoReviewGraphView: UIView {
         }
         
         graphBackgroundView.do {
+            $0.layer.cornerRadius = 10
+            $0.clipsToBounds = true
             $0.backgroundColor = .wssGray50
         }
         
@@ -104,7 +101,7 @@ final class NovelDetailInfoReviewGraphView: UIView {
     //MARK: - Data
     
     func bindData(_ data: NovelDetailInfoResult) {
-        let statusCount = determineStatusCount(data)
+        let statusCount = getReadStatusCount(data)
         let maxCount = getTopReadStatusCount(data)
         
         if determineTopReadStatus(data) {
@@ -134,7 +131,7 @@ final class NovelDetailInfoReviewGraphView: UIView {
         }
     }
     
-    private func determineStatusCount(_ data: NovelDetailInfoResult) -> Int {
+    private func getReadStatusCount(_ data: NovelDetailInfoResult) -> Int {
         switch readStatus {
         case .watched:
             data.watchedCount
@@ -178,6 +175,7 @@ final class NovelDetailInfoReviewGraphView: UIView {
     }
     
     private func updateBasicStatusUI(statusCount: Int, maxCount: Int) {
+        let graphTopInset = (1-Double(statusCount)/Double(maxCount))*100
         statusCountLabel.do {
             $0.applyWSSFont(.body5, with: "\(statusCount)")
             $0.textColor = .wssGray200
@@ -193,11 +191,10 @@ final class NovelDetailInfoReviewGraphView: UIView {
         }
         
         graphValueView.snp.remakeConstraints {
-            $0.top.equalToSuperview().inset((1-statusCount/maxCount)*100)
+            $0.top.equalToSuperview().inset(graphTopInset)
             $0.horizontalEdges.equalToSuperview()
             $0.bottom.equalToSuperview()
         }
-        
         self.layoutIfNeeded()
     }
 }
