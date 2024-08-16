@@ -15,9 +15,7 @@ final class NovelDetailInfoReviewAttractivePointView: UIView {
     //MARK: - UI Components
     
     private let attractivePointBackgroundView = UIView()
-    private let attractivePointStackView = UIStackView()
     private let attractivePointLabel = UILabel()
-    private let attractivePointDescriptionLabel = UILabel()
     
     //MARK: - Life Cycle
     
@@ -40,32 +38,21 @@ final class NovelDetailInfoReviewAttractivePointView: UIView {
             $0.backgroundColor = .wssGray50
             $0.layer.cornerRadius = 12
         }
-        
-        attractivePointStackView.do {
-            $0.axis = .horizontal
-        }
-        
-        attractivePointDescriptionLabel.do {
-            $0.font = .Title3
-            $0.applyWSSFont(.title3, with: StringLiterals.NovelDetail.Info.attractivePointDescription)
-            $0.textColor = .wssBlack
-        }
     }
     
     private func setHierarchy() {
-        self.addSubviews(attractivePointBackgroundView)
-        attractivePointBackgroundView.addSubviews(attractivePointStackView)
-        attractivePointStackView.addArrangedSubviews(attractivePointLabel,
-                                                      attractivePointDescriptionLabel)
+        self.addSubview(attractivePointBackgroundView)
+        attractivePointBackgroundView.addSubview(attractivePointLabel)
     }
     
     private func setLayout() {
         attractivePointBackgroundView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.verticalEdges.equalToSuperview()
             $0.height.equalTo(55)
+            $0.horizontalEdges.equalToSuperview().inset(20)
         }
         
-        attractivePointStackView.snp.makeConstraints {
+        attractivePointLabel.snp.makeConstraints {
             $0.center.equalToSuperview()
         }
     }
@@ -73,17 +60,20 @@ final class NovelDetailInfoReviewAttractivePointView: UIView {
     //MARK: - Data
     
     func bindData(_ data: NovelDetailInfoResult) {
-        let attractivePoints = data.attractivePoints.joined(separator: ", ")
-        setAttractivePointLabelText(with: attractivePoints)
-    }
-    
-    //MARK: - Custom Method
-    
-    private func setAttractivePointLabelText(with text: String) {
+        let attractivePointText = data.attractivePoints.joined(separator: ", ")
+        let attractivePointTotalText = attractivePointText
+                                       + StringLiterals.NovelDetail.Info.attractivePointDescription
+        let wssFont = WSSFont.title3
+        
         attractivePointLabel.do {
-            $0.font = .Title3
-            $0.applyWSSFont(.title3, with: text)
-            $0.textColor = .wssPrimary100
+            $0.font = wssFont.font
+            $0.textColor = .wssBlack
+            $0.makeAttribute(with: attractivePointTotalText)?
+                .lineHeight(wssFont.lineHeightMultiple)
+                .kerning(kerningPixel: wssFont.kerningPixel)
+                .partialColor(color: .wssPrimary100,
+                              rangeString: attractivePointText)
+                .applyAttribute()
         }
     }
 }

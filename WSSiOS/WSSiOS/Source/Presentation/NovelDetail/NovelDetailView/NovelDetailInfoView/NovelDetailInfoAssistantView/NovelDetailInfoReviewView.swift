@@ -47,7 +47,7 @@ final class NovelDetailInfoReviewView: UIView {
         
         titleLabel.do {
             $0.applyWSSFont(.title1,
-                            with: StringLiterals.NovelDetail.Info.attractivePoints)
+                            with: StringLiterals.NovelDetail.Info.attractivePoint)
             $0.textColor = .wssBlack
         }
     }
@@ -77,7 +77,7 @@ final class NovelDetailInfoReviewView: UIView {
         }
         
         attractivePointView.snp.makeConstraints {
-            $0.horizontalEdges.equalToSuperview().inset(20)
+            $0.horizontalEdges.equalToSuperview()
         }
         
         keywordView.snp.makeConstraints {
