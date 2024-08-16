@@ -242,9 +242,9 @@ enum StringLiterals {
             static let readStatus = "명이 작품을\n"
             
             enum ReadStatus {
-                static let finish = "봤어요"
-                static let reading = "같이 보고 있어요"
-                static let drop = "하차했어요"
+                static let watched = "봤어요"
+                static let watching = "같이 보고 있어요"
+                static let quit = "하차했어요"
             }
         }
     }
