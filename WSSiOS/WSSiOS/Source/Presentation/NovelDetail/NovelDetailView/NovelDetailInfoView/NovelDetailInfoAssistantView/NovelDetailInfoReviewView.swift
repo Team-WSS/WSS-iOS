@@ -18,6 +18,7 @@ final class NovelDetailInfoReviewView: UIView {
     private let titleLabel = UILabel()
     private let attractivePointView = NovelDetailInfoReviewAttractivePointView()
     let keywordView = NovelDetailInfoReviewKeywordView()
+    private let graphStackView = NovelDetailInfoReviewGraphStackView()
     
     //MARK: - Life Cycle
     
@@ -42,7 +43,6 @@ final class NovelDetailInfoReviewView: UIView {
         
         reviewStackView.do {
             $0.axis = .vertical
-            $0.alignment = .fill
         }
         
         titleLabel.do {
@@ -56,7 +56,8 @@ final class NovelDetailInfoReviewView: UIView {
         self.addSubview(reviewStackView)
         reviewStackView.addArrangedSubviews(titleLabel,
                                             attractivePointView,
-                                            keywordView)
+                                            keywordView,
+                                            graphStackView)
     }
     
     private func setLayout() {
@@ -82,11 +83,16 @@ final class NovelDetailInfoReviewView: UIView {
         keywordView.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview()
         }
+        
+        graphStackView.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview()
+        }
     }
     
     //MARK: - Data
     
     func bindData(_ data: NovelDetailInfoResult) {
         attractivePointView.bindData(data)
+        graphStackView.bindData(data)
     }
 }
