@@ -28,6 +28,8 @@ final class NovelDetailViewModel: ViewModelType {
     private let platformList = BehaviorRelay<[Platform]>(value: [])
     private let keywordList = BehaviorRelay<[Keyword]>(value: [])
     
+    private let reviewSectionVisibilities = BehaviorRelay<[ReviewSectionVisibility]>(value: [])
+    
     //MARK: - Life Cycle
     
     init(detailRepository: NovelDetailRepository, novelId: Int = 0) {
@@ -61,6 +63,7 @@ final class NovelDetailViewModel: ViewModelType {
         let isInfoDescriptionExpended: Driver<Bool>
         let platformList: Driver<[Platform]>
         let keywordList: Driver<[Keyword]>
+        let reviewSectionVisibilities: Driver<[ReviewSectionVisibility]>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -140,6 +143,26 @@ final class NovelDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        self.novelDetailInfoData
+            .subscribe(with: self, onNext: { owner, data in
+                var visibilities: [ReviewSectionVisibility] = []
+                
+                if (data.quitCount+data.watchedCount+data.watchingCount) > 0 {
+                    visibilities.append(.graph)
+                }
+                if !data.attractivePoints.isEmpty {
+                    visibilities.append(.attractivepoint)
+                }
+                if !data.keywords.isEmpty {
+                    visibilities.append(.keyword)
+                }
+                
+                owner.reviewSectionVisibilities.accept(visibilities)
+            }, onError: { owner, error in
+                owner.reviewSectionVisibilities.accept([])
+            })
+            .disposed(by: disposeBag)
+        
         return Output(
             detailHeaderData: novelDetailHeaderData.asObservable(),
             detailInfoData: novelDetailInfoData.asObserver(),
@@ -149,7 +172,8 @@ final class NovelDetailViewModel: ViewModelType {
             selectedTab: selectedTab.asDriver(),
             isInfoDescriptionExpended: isInfoDescriptionExpended.asDriver(),
             platformList: platformList.asDriver(),
-            keywordList: keywordList.asDriver()
+            keywordList: keywordList.asDriver(),
+            reviewSectionVisibilities: reviewSectionVisibilities.asDriver()
         )
     }
     
@@ -161,4 +185,10 @@ final class NovelDetailViewModel: ViewModelType {
         }
        return "\(keywordList.value[indexPath.item].keywordName) \(keywordList.value[indexPath.item].keywordCount)"
     }
+}
+
+enum ReviewSectionVisibility: Hashable {
+    case attractivepoint
+    case keyword
+    case graph
 }

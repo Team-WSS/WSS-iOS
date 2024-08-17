@@ -73,4 +73,15 @@ final class NovelDetailInfoView: UIView {
         descriptionSection.bindData(data)
         reviewView.bindData(data)
     }
+    
+    func updateVisibility(_ visibilities: [ReviewSectionVisibility]) {
+        if visibilities.isEmpty {
+            reviewView.isHidden = true
+            reviewEmptyView.isHidden = false
+        } else {
+            reviewView.isHidden = false
+            reviewEmptyView.isHidden = true
+            reviewView.bindVisibility(visibilities)
+        }
+    }
 }

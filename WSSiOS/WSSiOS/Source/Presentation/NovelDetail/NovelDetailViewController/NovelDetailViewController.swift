@@ -205,6 +205,12 @@ final class NovelDetailViewController: UIViewController {
                     cell.bindData(data: element)
                 }
                 .disposed(by: disposeBag)
+        
+        output.reviewSectionVisibilities
+            .drive(with: self, onNext: { owner, visibilities in
+                owner.rootView.infoView.updateVisibility(visibilities)
+            })
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Actions

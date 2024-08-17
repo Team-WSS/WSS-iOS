@@ -162,6 +162,7 @@ final class NovelDetailInfoReviewGraphView: UIView {
     }
     
     private func updateBasicStatusUI(statusCount: Int, maxCount: Int) {
+        guard maxCount != 0 else { return }
         let graphTopInset = (1-Double(statusCount)/Double(maxCount))*100
         
         statusCountLabel.do {

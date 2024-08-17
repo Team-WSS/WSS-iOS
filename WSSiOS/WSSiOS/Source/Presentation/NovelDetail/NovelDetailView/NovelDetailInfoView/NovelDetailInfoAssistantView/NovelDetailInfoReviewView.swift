@@ -108,4 +108,22 @@ final class NovelDetailInfoReviewView: UIView {
         attractivePointView.bindData(data)
         graphStackView.bindData(data)
     }
+    
+    func bindVisibility(_ visibilities: [ReviewSectionVisibility]) {
+        let attractiveVisible = visibilities.contains(.attractivepoint)
+        let keywordVisible = visibilities.contains(.keyword)
+        let graphVisible = visibilities.contains(.graph)
+        
+        attractivePointView.isHidden = !attractiveVisible
+        keywordView.isHidden = !keywordVisible
+        graphStackView.isHidden = !graphVisible
+        
+        if attractiveVisible && !keywordVisible {
+            reviewStackView.setCustomSpacing(40, after: attractivePointView)
+        }
+        
+        titleLabel.isHidden = !attractiveVisible && !keywordVisible
+        dividerView.isHidden = !((attractiveVisible || keywordVisible) && graphVisible)
+        
+    }
 }
