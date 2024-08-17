@@ -9,6 +9,7 @@ import UIKit
 
 import RxSwift
 import RxCocoa
+import RxGesture
 
 final class FeedNovelConnectModalViewController: UIViewController {
     
@@ -35,6 +36,10 @@ final class FeedNovelConnectModalViewController: UIViewController {
         bindAction()
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
     //MARK: - UI
     
     private func register() {
@@ -54,6 +59,26 @@ final class FeedNovelConnectModalViewController: UIViewController {
         rootView.closeButton.rx.tap
             .subscribe(with: self, onNext: { owner, _ in
                 self.dismiss(animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        rootView.feedNovelConnectSearchResultView.searchResultCollectionView.rx.itemSelected
+            .subscribe(with: self, onNext: { owner, indexpath in
+                self.view.endEditing(true)
+            })
+            .disposed(by: disposeBag)
+        
+        rootView.feedNovelConnectSearchResultView.searchResultCollectionView.rx.swipeGesture(.up)
+            .when(.recognized)
+            .subscribe(with: self, onNext: { owner, _ in
+                self.view.endEditing(true)
+            })
+            .disposed(by: disposeBag)
+        
+        rootView.feedNovelConnectSearchResultView.searchResultCollectionView.rx.swipeGesture(.down)
+            .when(.recognized)
+            .subscribe(with: self, onNext: { owner, _ in
+                self.view.endEditing(true)
             })
             .disposed(by: disposeBag)
     }
