@@ -50,10 +50,10 @@ final class NovelDetailInfoReviewAttractivePointView: UIView {
             $0.verticalEdges.equalToSuperview()
             $0.height.equalTo(55)
             $0.horizontalEdges.equalToSuperview().inset(20)
-        }
-        
-        attractivePointLabel.snp.makeConstraints {
-            $0.center.equalToSuperview()
+            
+            attractivePointLabel.snp.makeConstraints {
+                $0.center.equalToSuperview()
+            }
         }
     }
     

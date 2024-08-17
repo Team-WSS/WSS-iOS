@@ -44,16 +44,16 @@ final class NovelDetailInfoReviewView: UIView {
         
         reviewStackView.do {
             $0.axis = .vertical
-        }
-        
-        titleLabel.do {
-            $0.applyWSSFont(.title1,
-                            with: StringLiterals.NovelDetail.Info.attractivePoint)
-            $0.textColor = .wssBlack
-        }
-        
-        dividerView.do {
-            $0.backgroundColor = .wssGray50
+            
+            titleLabel.do {
+                $0.applyWSSFont(.title1,
+                                with: StringLiterals.NovelDetail.Info.attractivePoint)
+                $0.textColor = .wssBlack
+            }
+            
+            dividerView.do {
+                $0.backgroundColor = .wssGray50
+            }
         }
     }
     
@@ -78,27 +78,27 @@ final class NovelDetailInfoReviewView: UIView {
                 $0.horizontalEdges.equalToSuperview()
                 $0.bottom.equalToSuperview().inset(80)
             }
-        }
-        
-        titleLabel.snp.makeConstraints {
-            $0.horizontalEdges.equalToSuperview().inset(20)
-        }
-        
-        attractivePointView.snp.makeConstraints {
-            $0.horizontalEdges.equalToSuperview()
-        }
-        
-        keywordView.snp.makeConstraints {
-            $0.horizontalEdges.equalToSuperview()
-        }
-        
-        dividerView.snp.makeConstraints {
-            $0.horizontalEdges.equalToSuperview()
-            $0.height.equalTo(1)
-        }
-        
-        graphStackView.snp.makeConstraints {
-            $0.horizontalEdges.equalToSuperview()
+            
+            titleLabel.snp.makeConstraints {
+                $0.horizontalEdges.equalToSuperview().inset(20)
+            }
+            
+            attractivePointView.snp.makeConstraints {
+                $0.horizontalEdges.equalToSuperview()
+            }
+            
+            keywordView.snp.makeConstraints {
+                $0.horizontalEdges.equalToSuperview()
+            }
+            
+            dividerView.snp.makeConstraints {
+                $0.horizontalEdges.equalToSuperview()
+                $0.height.equalTo(1)
+            }
+            
+            graphStackView.snp.makeConstraints {
+                $0.horizontalEdges.equalToSuperview()
+            }
         }
     }
     

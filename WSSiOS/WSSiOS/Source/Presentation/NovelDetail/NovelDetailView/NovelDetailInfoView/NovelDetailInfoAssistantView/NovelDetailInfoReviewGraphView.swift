@@ -46,25 +46,26 @@ final class NovelDetailInfoReviewGraphView: UIView {
         stackView.do {
             $0.axis = .vertical
             $0.alignment = .center
-        }
-        
-        statusCountLabel.do {
-            $0.applyWSSFont(.body5, with: "0")
-            $0.textColor = .wssGray200
-        }
-        statusNameLabel.do {
-            $0.applyWSSFont(.body2, with: "봤어요")
-            $0.textColor = .wssGray200
-        }
-        
-        graphBackgroundView.do {
-            $0.layer.cornerRadius = 10
-            $0.clipsToBounds = true
-            $0.backgroundColor = .wssGray50
-        }
-        
-        graphValueView.do {
-            $0.backgroundColor = .wssGray70
+            
+            statusCountLabel.do {
+                $0.applyWSSFont(.body5, with: "0")
+                $0.textColor = .wssGray200
+            }
+            
+            statusNameLabel.do {
+                $0.applyWSSFont(.body2, with: "봤어요")
+                $0.textColor = .wssGray200
+            }
+            
+            graphBackgroundView.do {
+                $0.layer.cornerRadius = 10
+                $0.clipsToBounds = true
+                $0.backgroundColor = .wssGray50
+                
+                graphValueView.do {
+                    $0.backgroundColor = .wssGray70
+                }
+            }
         }
     }
     
@@ -84,17 +85,17 @@ final class NovelDetailInfoReviewGraphView: UIView {
                 $0.setCustomSpacing(10, after: statusCountLabel)
                 $0.setCustomSpacing(8, after: graphBackgroundView)
             }
-        }
-        
-        graphBackgroundView.snp.makeConstraints {
-            $0.width.equalTo(50)
-            $0.height.equalTo(100)
-        }
-        
-        graphValueView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(0)
-            $0.horizontalEdges.equalToSuperview()
-            $0.bottom.equalToSuperview()
+            
+            graphBackgroundView.snp.makeConstraints {
+                $0.width.equalTo(50)
+                $0.height.equalTo(100)
+                
+                graphValueView.snp.makeConstraints {
+                    $0.top.equalToSuperview().inset(0)
+                    $0.horizontalEdges.equalToSuperview()
+                    $0.bottom.equalToSuperview()
+                }
+            }
         }
     }
     
@@ -144,20 +145,6 @@ final class NovelDetailInfoReviewGraphView: UIView {
     
     //MARK: - Custom Method
     
-    private func setStatusCountLabelStyle(with text: String) {
-        statusCountLabel.do {
-            $0.applyWSSFont(.body5, with: text)
-            $0.textColor = .wssGray200
-        }
-    }
-    
-    private func setStatusNameLabelStyle(with text: String) {
-        statusNameLabel.do {
-            $0.applyWSSFont(.body2, with: text)
-            $0.textColor = .wssGray200
-        }
-    }
-    
     private func updateTopStatusUI(statusCount: Int) {
         statusCountLabel.do {
             $0.applyWSSFont(.body5, with: "\(statusCount)")
@@ -176,6 +163,7 @@ final class NovelDetailInfoReviewGraphView: UIView {
     
     private func updateBasicStatusUI(statusCount: Int, maxCount: Int) {
         let graphTopInset = (1-Double(statusCount)/Double(maxCount))*100
+        
         statusCountLabel.do {
             $0.applyWSSFont(.body5, with: "\(statusCount)")
             $0.textColor = .wssGray200
@@ -195,6 +183,7 @@ final class NovelDetailInfoReviewGraphView: UIView {
             $0.horizontalEdges.equalToSuperview()
             $0.bottom.equalToSuperview()
         }
+        
         self.layoutIfNeeded()
     }
 }

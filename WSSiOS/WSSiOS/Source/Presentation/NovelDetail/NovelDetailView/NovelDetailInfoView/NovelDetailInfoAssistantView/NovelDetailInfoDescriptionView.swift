@@ -80,12 +80,12 @@ final class NovelDetailInfoDescriptionView: UIView {
             $0.bottom.equalToSuperview()
             $0.centerX.equalToSuperview()
             $0.size.equalTo(44)
-        }
-        
-        accordionImageView.snp.makeConstraints {
-            $0.top.equalTo(9.5)
-            $0.centerX.equalToSuperview()
-            $0.size.equalTo(16)
+            
+            accordionImageView.snp.makeConstraints {
+                $0.top.equalTo(9.5)
+                $0.centerX.equalToSuperview()
+                $0.size.equalTo(16)
+            }
         }
     }
     
