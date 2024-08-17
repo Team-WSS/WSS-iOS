@@ -52,7 +52,6 @@ final class DetailSearchView: UIView {
     }
     
     private func setHierarchy() {
-        
         backgroundView.addSubviews(cancelModalButton,
                                    detailSearchHeaderView,
                                    detailSearchInfoView,

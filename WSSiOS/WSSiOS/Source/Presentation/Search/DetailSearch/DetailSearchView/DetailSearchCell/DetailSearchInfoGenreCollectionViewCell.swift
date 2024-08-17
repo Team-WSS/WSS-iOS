@@ -12,9 +12,11 @@ import Then
 
 final class DetailSearchInfoGenreCollectionViewCell: UICollectionViewCell {
     
-    //MARK: - Life Cycle
+    //MARK: - Components
     
     private let genreKeywordView = KeywordViewManager.shared.link()
+    
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
