@@ -18,12 +18,10 @@ final class DetailSearchViewModel: ViewModelType {
     
     private let cancelButtonEnabled = PublishRelay<Bool>()
     private let genreList = BehaviorRelay<[String]>(value: NovelGenre.allCases.map { $0.toKorean })
-    private let genreCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
     private let selectedTab = BehaviorRelay<DetailSearchTab>(value: DetailSearchTab.info)
     
     struct Input {
         let cancelButtonDidTap: ControlEvent<Void>
-        let genreCollectionViewContentSize: Observable<CGSize?>
         let infoTabDidTap: Observable<UITapGestureRecognizer>
         let keywordTabDidTap: Observable<UITapGestureRecognizer>
     }
@@ -31,17 +29,12 @@ final class DetailSearchViewModel: ViewModelType {
     struct Output {
         let cancelButtonEnabled: Observable<Void>
         let genreList: Driver<[String]>
-        let genreCollectionViewHeight: Driver<CGFloat>
         let selectedTab: Driver<DetailSearchTab>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         
         let cancelButtonEnabled = input.cancelButtonDidTap.asObservable()
-        
-        let genreCollectionViewContentSize = input.genreCollectionViewContentSize
-            .map { $0?.height ?? 0 }
-            .asDriver(onErrorJustReturn: 0)
 
         input.infoTabDidTap
             .subscribe(with: self, onNext: { owner, _ in
@@ -57,7 +50,6 @@ final class DetailSearchViewModel: ViewModelType {
         
         return Output(cancelButtonEnabled: cancelButtonEnabled,
                       genreList: genreList.asDriver(),
-                      genreCollectionViewHeight: genreCollectionViewContentSize,
                       selectedTab: selectedTab.asDriver())
     }
     

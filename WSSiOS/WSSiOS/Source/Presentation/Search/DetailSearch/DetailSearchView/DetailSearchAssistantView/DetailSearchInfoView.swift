@@ -121,12 +121,6 @@ final class DetailSearchInfoView: UIView {
                 $0.setText(StringLiterals.DetailSearch.ratingaboveFourPointEight)
             }
         }
-        
-        ratingBottomStackView.do {
-            $0.axis = .horizontal
-            $0.spacing = 11
-            $0.distribution = .fillEqually
-        }
     }
     
     private func setHierarchy() {
@@ -160,7 +154,7 @@ final class DetailSearchInfoView: UIView {
         }
         
         statusTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(genreCollectionView.snp.bottom).offset(32)
+            $0.top.equalTo(genreCollectionView.snp.bottom).offset(42)
             $0.leading.equalToSuperview().inset(20)
         }
         
@@ -170,7 +164,7 @@ final class DetailSearchInfoView: UIView {
         }
         
         ratingTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(statusStackView.snp.bottom).offset(32)
+            $0.top.equalTo(statusStackView.snp.bottom).offset(42)
             $0.leading.equalToSuperview().inset(20)
         }
         
@@ -182,12 +176,6 @@ final class DetailSearchInfoView: UIView {
         ratingBottomStackView.snp.makeConstraints {
             $0.top.equalTo(ratingTopStackView.snp.bottom).offset(10)
             $0.leading.trailing.equalToSuperview().inset(20)
-        }
-    }
-    
-    func updateCollectionViewHeight(height: CGFloat) {
-        genreCollectionView.snp.updateConstraints {
-            $0.height.equalTo(height)
         }
     }
 }
