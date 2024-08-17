@@ -77,10 +77,10 @@ final class HomeInterestCollectionViewCell: UICollectionViewCell {
         novelImageView.do {
             $0.layer.cornerRadius = 4
             $0.clipsToBounds = true
+            $0.contentMode = .scaleAspectFill
         }
         
         novelTitleLabel.do {
-            $0.font = .Title3
             $0.textColor = .wssBlack
         }
         
@@ -99,12 +99,10 @@ final class HomeInterestCollectionViewCell: UICollectionViewCell {
         }
         
         novelAverageRatingLabel.do {
-            $0.font = .Body5
             $0.textColor = .wssBlack
         }
         
         novelRatingNumberLabel.do {
-            $0.font = .Body5
             $0.textColor = .wssBlack
         }
         
@@ -119,12 +117,10 @@ final class HomeInterestCollectionViewCell: UICollectionViewCell {
         }
         
         userNicknameLabel.do {
-            $0.font = .Title3
             $0.textColor = .wssBlack
         }
         
         userFeedContentLabel.do {
-            $0.font = .Label1
             $0.textColor = .wssGray300
         }
     }
@@ -145,11 +141,6 @@ final class HomeInterestCollectionViewCell: UICollectionViewCell {
     }
     
     private func setLayout() {
-        self.snp.makeConstraints {
-            $0.width.equalTo(280)
-            $0.height.equalTo(251)
-        }
-        
         novelBackgroundView.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
             $0.height.equalTo(118)
@@ -165,7 +156,6 @@ final class HomeInterestCollectionViewCell: UICollectionViewCell {
             $0.top.equalTo(novelImageView.snp.top)
             $0.leading.equalTo(novelImageView.snp.trailing).offset(14)
             $0.width.equalTo(160)
-            $0.height.equalTo(42)
         }
         
         dividerLine.snp.makeConstraints {
@@ -198,31 +188,23 @@ final class HomeInterestCollectionViewCell: UICollectionViewCell {
     }
     
     func bindData(data: InterestFeed) {
-        self.novelImageView.image = UIImage(named: data.novelImage)
+        self.novelImageView.kfSetImage(url: data.novelImage)
         self.novelTitleLabel.do {
-            $0.makeAttribute(with: data.novelTitle)?
-                .kerning(kerningPixel: -0.6)
-                .lineSpacing(spacingPercentage: 150)
-                .applyAttribute()
+            $0.applyWSSFont(.title3, with: data.novelTitle)
             $0.lineBreakMode = .byTruncatingTail
             $0.lineBreakStrategy = .hangulWordPriority
             $0.numberOfLines = 2
         }
-        self.novelAverageRatingLabel.text = String(data.novelRating)
-        self.novelRatingNumberLabel.text = "(\(data.novelRatingCount))"
+        self.novelAverageRatingLabel.applyWSSFont(.body5, with: String(data.novelRating))
+        self.novelRatingNumberLabel.applyWSSFont(.body5, with: "(\(data.novelRatingCount))")
         
-        self.userProfileImageView.image = UIImage(named: data.userAvatarImage)
+        self.userProfileImageView.kfSetImage(url: data.userAvatarImage)
         self.userNicknameLabel.do {
-            $0.makeAttribute(with: "\(data.userNickname) 님의 글")?
-                .kerning(kerningPixel: -0.6)
-                .applyAttribute()
+            $0.applyWSSFont(.title3, with: "\(data.userNickname) 님의 글")
             $0.lineBreakMode = .byTruncatingTail
         }
         self.userFeedContentLabel.do {
-            $0.makeAttribute(with: data.userFeedContent)?
-                .kerning(kerningPixel: -0.4)
-                .lineSpacing(spacingPercentage: 145)
-                .applyAttribute()
+            $0.applyWSSFont(.label1, with: data.userFeedContent)
             $0.lineBreakMode = .byTruncatingTail
             $0.lineBreakStrategy = .hangulWordPriority
             $0.numberOfLines = 3

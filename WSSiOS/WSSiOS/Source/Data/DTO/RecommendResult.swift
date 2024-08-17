@@ -16,6 +16,13 @@ struct TodayPopularNovel {
     var feedContent: String
 }
 
+struct RealtimePopularFeed {
+    var feedId: Int
+    var feedContent: String
+    var feedLikeCount: Int
+    var feedCommentCount: Int
+}
+
 struct InterestFeed {
     var novelId: Int
     var novelTitle: String

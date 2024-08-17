@@ -20,12 +20,10 @@ final class HomeTasteRecommendCollectionViewCell: UICollectionViewCell {
     private var novelAuthorLabel = UILabel()
     
     /// 관심 정보
-    private var likeStackView = UIStackView()
     private var likeImageView = UIImageView()
     private var likeCountLabel = UILabel()
     
     /// 평점 정보
-    private var ratingStackView = UIStackView()
     private var ratingImageView = UIImageView()
     private var ratingAverageLabel = UILabel()
     private var ratingCountLabel = UILabel()
@@ -55,19 +53,12 @@ final class HomeTasteRecommendCollectionViewCell: UICollectionViewCell {
         }
         
         novelTitleLabel.do {
-            $0.font = .Label1
             $0.textColor = .wssBlack
         }
         
         novelAuthorLabel.do {
-            $0.font = .Body5
             $0.textColor = .wssGray200
             $0.lineBreakMode = .byTruncatingTail
-        }
-        
-        likeStackView.do {
-            $0.axis = .horizontal
-            $0.spacing = 3
         }
         
         likeImageView.do {
@@ -76,13 +67,7 @@ final class HomeTasteRecommendCollectionViewCell: UICollectionViewCell {
         }
         
         likeCountLabel.do {
-            $0.font = .Body5
             $0.textColor = .wssGray200
-        }
-        
-        ratingStackView.do {
-            $0.axis = .horizontal
-            $0.spacing = 3
         }
         
         ratingImageView.do {
@@ -91,76 +76,83 @@ final class HomeTasteRecommendCollectionViewCell: UICollectionViewCell {
         }
         
         ratingAverageLabel.do {
-            $0.font = .Body5
             $0.textColor = .wssGray200
         }
         
         ratingCountLabel.do {
-            $0.font = .Body5
             $0.textColor = .wssGray200
         }
     }
     
     private func setHierarchy() {
-        likeStackView.addArrangedSubviews(likeImageView,
-                                          likeCountLabel)
-        ratingStackView.addArrangedSubviews(ratingImageView,
-                                            ratingAverageLabel,
-                                            ratingCountLabel)
         self.addSubviews(novelImageView,
-                         likeStackView,
-                         ratingStackView,
+                         likeImageView,
+                         likeCountLabel,
+                         ratingImageView,
+                         ratingAverageLabel,
+                         ratingCountLabel,
                          novelTitleLabel,
                          novelAuthorLabel)
     }
     
     private func setLayout() {
-        self.snp.makeConstraints {
-            $0.width.equalTo(163)
-            $0.height.equalTo(319)
-        }
-        
         novelImageView.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
             $0.height.equalTo(241)
         }
         
-        likeStackView.snp.makeConstraints {
-            $0.top.equalTo(novelImageView.snp.bottom).offset(6)
+        likeImageView.snp.makeConstraints {
+            $0.size.equalTo(12)
             $0.leading.equalToSuperview()
+            $0.top.equalTo(novelImageView.snp.bottom).offset(8.5)
         }
         
-        ratingStackView.snp.makeConstraints {
-            $0.top.equalTo(likeStackView.snp.top)
-            $0.leading.equalTo(likeStackView.snp.trailing).offset(8)
+        likeCountLabel.snp.makeConstraints {
+            $0.top.equalTo(novelImageView.snp.bottom).offset(6)
+            $0.leading.equalTo(likeImageView.snp.trailing).offset(3)
+        }
+        
+        ratingImageView.snp.makeConstraints {
+            $0.size.equalTo(12)
+            $0.top.equalTo(likeImageView.snp.top)
+            $0.leading.equalTo(likeCountLabel.snp.trailing).offset(8)
+        }
+        ratingAverageLabel.snp.makeConstraints {
+            $0.top.equalTo(likeCountLabel.snp.top)
+            $0.leading.equalTo(ratingImageView.snp.trailing).offset(3)
+        }
+        
+        ratingCountLabel.snp.makeConstraints {
+            $0.top.equalTo(likeCountLabel.snp.top)
+            $0.leading.equalTo(ratingAverageLabel.snp.trailing).offset(3)
         }
         
         novelTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(likeStackView.snp.bottom).offset(2)
-            $0.leading.equalToSuperview()
-            $0.trailing.equalToSuperview().inset(23)
+            $0.top.equalTo(likeCountLabel.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
         }
         
         novelAuthorLabel.snp.makeConstraints {
-            $0.top.equalTo(novelTitleLabel.snp.bottom).offset(2)
-            $0.leading.equalToSuperview()
+            $0.top.equalTo(novelTitleLabel.snp.bottom)
+            $0.leading.trailing.bottom.equalToSuperview()
         }
     }
     
     func bindData(data: TasteRecommendNovel) {
-        self.novelImageView.image = UIImage(named: data.novelImage)
+        self.novelImageView.kfSetImage(url: data.novelImage)
+        
         self.novelTitleLabel.do {
-            $0.makeAttribute(with: data.novelTitle)?
-                .kerning(kerningPixel: -0.4)
-                .lineSpacing(spacingPercentage: 145)
-                .applyAttribute()
+            $0.applyWSSFont(.label1, with: data.novelTitle)
             $0.lineBreakMode = .byTruncatingTail
-            $0.lineBreakStrategy = .hangulWordPriority
-            $0.numberOfLines = 2
+            $0.numberOfLines = 1
         }
-        self.novelAuthorLabel.text = data.novelAuthor
-        self.likeCountLabel.text = String(data.novelLikeCount)
-        self.ratingAverageLabel.text = String(data.novelRating)
-        self.ratingCountLabel.text = "(\(data.novelRatingCount))"
+        self.novelAuthorLabel.do {
+            $0.applyWSSFont(.body5, with: data.novelAuthor)
+            $0.lineBreakMode = .byTruncatingTail
+            $0.numberOfLines = 1
+        }
+        self.likeCountLabel.applyWSSFont(.body5, with: String(data.novelLikeCount))
+        self.ratingAverageLabel.applyWSSFont(.body5, with: String(data.novelRating))
+        self.ratingCountLabel.applyWSSFont(.body5, with: "(\(data.novelRatingCount))")
     }
 }

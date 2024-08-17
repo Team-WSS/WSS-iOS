@@ -31,8 +31,10 @@ enum StringLiterals {
             static let search = "검색"
             static let myPage = "마이페이지"
             static let changeNickname = "닉네임 변경"
-            static let myPageInfo = "계정정보 확인"
             static let feed = "소소피드"
+            static let notice = "알림"
+            static let myPageSetting = "설정"
+            static let myPageInfo = "계정설정"
         }
     }
     
@@ -47,6 +49,12 @@ enum StringLiterals {
         enum SubTitle {
             static let interest = "관심 등록한 작품의 최신글이에요"
             static let recommend = "선호 장르를 기반으로 추천드려요!"
+        }
+        
+        enum Login {
+            static let induceTitle = "로그인하고 모든 기능을\n자유롭게 사용하세요!"
+            static let loginButtonTitle = "로그인 하러가기"
+            static let cancelButtonTitle = "닫기"
         }
         
         enum Unregister {
@@ -120,14 +128,25 @@ enum StringLiterals {
         }
         
         enum Setting: String, CaseIterable {
-            case accountInfo = "계정정보 확인"
-            case webSoso = "웹소소 인스타 보러가기"
+            case accountInfo = "계정정보"
+            case profileStatus = "프로필 공개 여부 설정"
+            case webSoso = "웹소소 공식 계정"
+            case qNA = "문의하기 & 의견 보내기"
+            case review = "앱 평점 남기기"
             case termsOfService = "서비스 이용약관"
         }
         
         enum SettingURL {
             static let instaURL = "https://www.instagram.com/websoso_official/"
             static let termsURL = "https://kimmjabc.notion.site/4acd397608c146cbbf8dd4fe11a82e19"
+        }
+        
+        enum SettingInfo: String, CaseIterable {
+            case changeProfile = "성별/나이 변경"
+            case email = "이메일"
+            case blockList = "차단유저 목록"
+            case logout = "로그아웃"
+            case secession = "회원탈퇴"
         }
         
         enum ChangeNickname {
@@ -250,15 +269,41 @@ enum StringLiterals {
     }
     
     enum Search {
+        static let title = "탐색하기"
+        static let searchbar = "작품 제목, 작가를 검색하세요"
+        
+        static let induceTitle = "이제 뭐 읽을지 고민될 땐?"
+        static let induceDescription = "장르, 연재상태, 별점, 키워드로 작품 찾기"
+        static let induceButton = "내 취향에 맞는 작품 탐색하기"
+        
+        static let sosoTitle = "소소"
+        static let sosoDescription = "다른 사람들이 최근에 읽고 있는 작품이에요"
+        
+        static let novel = "작품"
+        
         enum Empty {
-            static let description = "검색 결과가 없어요ㅠ"
-            static let register = "등록 문의하기"
+            static let description = "해당 검색어를 가진 작품은\n아직 등록되지 않았어요.."
+            static let inquiryButton = "작품 문의하러 가기"
+            static let kakaoChannelUrl = "https://pf.kakao.com/_kHxlWG"
         }
     }
     
     enum Memo {
         static let complete = "완료"
         static let edit = "수정"
+        enum Category {
+            static let category = "카테고리"
+            static let multipleSelect = "중복 선택 가능"
+        }
+        enum Content {
+            static let writeContent = "내용 작성하기"
+            static let spoiler = "스포일러"
+            static let placeHolder = "피드 작성 유의사항!\n\n욕설, 비방 등 상대방을 불쾌하게 하는 의견은\n작품 내용을 담은 글은 스포일러 체크해주세요."
+        }
+        enum Novel {
+            static let novelConnect = "작품 연결하기"
+            static let novelSearch = "작품 제목, 작가를 검색하세요"
+        }
     }
     
     enum DeletePopup {
