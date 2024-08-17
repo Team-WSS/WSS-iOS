@@ -20,7 +20,9 @@ final class FeedNovelConnectModalView: UIView {
     private let descriptionLabel = UILabel()
     let titleTextField = UITextField()
     let searchButton = UIButton()
+    let searchResultCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     let connectNovelButton = UIButton()
+    let connectNovelLabel = UILabel()
     
     //MARK: - Life Cycle
     
@@ -65,7 +67,7 @@ final class FeedNovelConnectModalView: UIView {
         }
         
         titleTextField.do {
-            $0.becomeFirstResponder()
+//            $0.becomeFirstResponder()
             $0.returnKeyType = .done
             $0.autocapitalizationType = .none
             $0.autocorrectionType = .no
@@ -85,6 +87,26 @@ final class FeedNovelConnectModalView: UIView {
         searchButton.do {
             $0.setImage(.icSearch, for: .normal)
         }
+        
+        searchResultCollectionView.do {
+            let layout = UICollectionViewFlowLayout()
+            layout.scrollDirection = .vertical
+            layout.minimumLineSpacing = 6
+            layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 64, right: 0)
+            layout.itemSize = CGSize(width: UIScreen.main.bounds.width, height: 105)
+            
+            $0.collectionViewLayout = layout
+        }
+        
+        connectNovelButton.do {
+            $0.backgroundColor = .wssPrimary100
+        }
+        
+        connectNovelLabel.do {
+            $0.applyWSSFont(.title2, with: "해당 작품 연결")
+            $0.textColor = .white
+            $0.isUserInteractionEnabled = false
+        }
     }
     
     private func setHierarchy() {
@@ -93,7 +115,10 @@ final class FeedNovelConnectModalView: UIView {
                                 titleLabel,
                                 descriptionLabel,
                                 titleTextField,
-                                searchButton)
+                                searchButton,
+                                searchResultCollectionView,
+                                connectNovelButton)
+        connectNovelButton.addSubview(connectNovelLabel)
     }
     
     private func setLayout() {
@@ -127,6 +152,22 @@ final class FeedNovelConnectModalView: UIView {
             $0.trailing.equalTo(titleTextField.snp.trailing).offset(-10)
             $0.centerY.equalTo(titleTextField.snp.centerY)
             $0.size.equalTo(36)
+        }
+        
+        searchResultCollectionView.snp.makeConstraints {
+            $0.top.equalTo(titleTextField.snp.bottom).offset(20)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(connectNovelButton.snp.bottom)
+        }
+        
+        connectNovelButton.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(self.safeAreaLayoutGuide)
+            $0.height.equalTo(58)
+        }
+        
+        connectNovelLabel.snp.makeConstraints {
+            $0.center.equalToSuperview()
         }
     }
 }

@@ -274,6 +274,7 @@
 		CD6613782B8B313700B90B2B /* DeletePopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6613772B8B313700B90B2B /* DeletePopupViewModel.swift */; };
 		CD6F49512C703E63005AD392 /* FeedNovelConnectModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6F49502C703E63005AD392 /* FeedNovelConnectModalViewController.swift */; };
 		CD6F49532C703E6F005AD392 /* FeedNovelConnectModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6F49522C703E6F005AD392 /* FeedNovelConnectModalView.swift */; };
+		CD6F49552C705B22005AD392 /* FeedNovelConnectCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6F49542C705B22005AD392 /* FeedNovelConnectCollectionViewCell.swift */; };
 		CDA1774B2C3EC6760089137F /* WSSToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1774A2C3EC6760089137F /* WSSToggleButton.swift */; };
 		CDA5F03A2C2FDB2200FCF15C /* FeedEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5F0392C2FDB2200FCF15C /* FeedEditViewController.swift */; };
 		CDA5F03C2C2FDB3100FCF15C /* FeedEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5F03B2C2FDB3100FCF15C /* FeedEditViewModel.swift */; };
@@ -541,6 +542,7 @@
 		CD6613772B8B313700B90B2B /* DeletePopupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletePopupViewModel.swift; sourceTree = "<group>"; };
 		CD6F49502C703E63005AD392 /* FeedNovelConnectModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedNovelConnectModalViewController.swift; sourceTree = "<group>"; };
 		CD6F49522C703E6F005AD392 /* FeedNovelConnectModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedNovelConnectModalView.swift; sourceTree = "<group>"; };
+		CD6F49542C705B22005AD392 /* FeedNovelConnectCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedNovelConnectCollectionViewCell.swift; sourceTree = "<group>"; };
 		CDA1774A2C3EC6760089137F /* WSSToggleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSToggleButton.swift; sourceTree = "<group>"; };
 		CDA5F0392C2FDB2200FCF15C /* FeedEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedEditViewController.swift; sourceTree = "<group>"; };
 		CDA5F03B2C2FDB3100FCF15C /* FeedEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedEditViewModel.swift; sourceTree = "<group>"; };
@@ -1723,6 +1725,7 @@
 			isa = PBXGroup;
 			children = (
 				CDA5F0422C2FDCD800FCF15C /* FeedCategoryCollectionViewCell.swift */,
+				CD6F49542C705B22005AD392 /* FeedNovelConnectCollectionViewCell.swift */,
 			);
 			path = MemoViewCell;
 			sourceTree = "<group>";
@@ -1897,6 +1900,7 @@
 				CDE596D82B5770CE00D99DA1 /* WSSToastView.swift in Sources */,
 				39D4A5D22BDC0902004FC834 /* NovelDetailHeaderResult.swift in Sources */,
 				A1A1F9D42B4873B500705F44 /* SearchEmptyView.swift in Sources */,
+				CD6F49552C705B22005AD392 /* FeedNovelConnectCollectionViewCell.swift in Sources */,
 				2C9A19692C567D6B0043044A /* MyPageViewModel.swift in Sources */,
 				C9AF1AE22BCC234300208BC9 /* HomeTodayPopularView.swift in Sources */,
 				2CD9115E2C0D8A28006B8D72 /* FeedGenreViewController.swift in Sources */,
