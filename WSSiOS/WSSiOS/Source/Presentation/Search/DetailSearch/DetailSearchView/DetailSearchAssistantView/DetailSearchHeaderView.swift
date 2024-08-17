@@ -54,7 +54,7 @@ final class DetailSearchHeaderView: UIView {
         }
         
         newImageView.do {
-            $0.image = .icSeachNew.withTintColor(.wssWhite)
+            $0.image = .icSearchNew.withTintColor(.wssWhite)
         }
     }
     
@@ -73,13 +73,14 @@ final class DetailSearchHeaderView: UIView {
         keywordLabel.snp.makeConstraints {
             $0.top.equalTo(infoLabel.snp.top)
             $0.leading.equalTo(infoLabel.snp.trailing).offset(22.5)
-            $0.trailing.bottom.equalToSuperview()
+            $0.trailing.equalToSuperview()
         }
         
         underLineView.snp.makeConstraints {
             $0.top.equalTo(keywordLabel.snp.bottom).offset(6)
             $0.horizontalEdges.equalTo(infoLabel.snp.horizontalEdges)
             $0.height.equalTo(2)
+            $0.bottom.equalToSuperview()
         }
         
         newImageView.snp.makeConstraints {
@@ -107,15 +108,17 @@ final class DetailSearchHeaderView: UIView {
         switch tab {
         case .info:
             self.underLineView.snp.remakeConstraints {
-                $0.top.equalTo(self.infoLabel.snp.bottom)
+                $0.top.equalTo(self.infoLabel.snp.bottom).offset(6)
                 $0.horizontalEdges.equalTo(infoLabel.snp.horizontalEdges)
                 $0.height.equalTo(2)
+                $0.bottom.equalToSuperview()
             }
         case .keyword:
             self.underLineView.snp.remakeConstraints {
-                $0.top.equalTo(keywordLabel.snp.bottom)
+                $0.top.equalTo(keywordLabel.snp.bottom).offset(6)
                 $0.horizontalEdges.equalTo(keywordLabel.snp.horizontalEdges)
                 $0.height.equalTo(2)
+                $0.bottom.equalToSuperview()
             }
         }
         self.layoutIfNeeded()
