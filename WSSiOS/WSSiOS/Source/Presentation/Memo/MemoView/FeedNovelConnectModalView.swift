@@ -54,12 +54,12 @@ final class FeedNovelConnectModalView: UIView {
         }
         
         titleLabel.do {
-            $0.applyWSSFont(.title1, with: "작품 연결하기")
+            $0.applyWSSFont(.title1, with: StringLiterals.Memo.Novel.novelConnect)
             $0.textColor = .wssBlack
         }
         
         descriptionLabel.do {
-            $0.applyWSSFont(.body2, with: "작성 중인 글과 관련된 웹소설을 선택하세요")
+            $0.applyWSSFont(.body2, with: StringLiterals.Memo.Novel.novelSelect)
             $0.textColor = .wssGray200
         }
     }

@@ -50,7 +50,7 @@ final class FeedNovelConnectSearchResultView: UIView {
         }
         
         connectNovelLabel.do {
-            $0.applyWSSFont(.title2, with: "해당 작품 연결")
+            $0.applyWSSFont(.title2, with: StringLiterals.Memo.Novel.connectSelectedNovel)
             $0.textColor = .white
             $0.isUserInteractionEnabled = false
         }
