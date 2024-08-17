@@ -181,7 +181,7 @@ extension UIViewController {
     }
     
     func pushToDetailViewController(novelId: Int) {
-        let viewController = ModuleFactory.shared.makeDetailViewController(novelId: novelId)
+        let viewController = ModuleFactory.shared.makeNovelDetailViewController(novelId: novelId)
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
