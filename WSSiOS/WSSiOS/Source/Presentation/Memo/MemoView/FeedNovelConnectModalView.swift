@@ -38,10 +38,6 @@ final class FeedNovelConnectModalView: UIView {
     //MARK: - UI
     
     private func setUI() {
-        self.do {
-            $0.backgroundColor = .black.withAlphaComponent(0.3)
-        }
-        
         contentView.do {
             $0.backgroundColor = .white
             $0.layer.cornerRadius = 20

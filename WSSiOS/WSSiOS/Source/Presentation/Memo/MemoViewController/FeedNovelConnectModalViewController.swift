@@ -58,7 +58,7 @@ final class FeedNovelConnectModalViewController: UIViewController {
     private func bindAction() {
         rootView.closeButton.rx.tap
             .subscribe(with: self, onNext: { owner, _ in
-                self.dismiss(animated: true)
+                self.dismissModalViewController()
             })
             .disposed(by: disposeBag)
         
