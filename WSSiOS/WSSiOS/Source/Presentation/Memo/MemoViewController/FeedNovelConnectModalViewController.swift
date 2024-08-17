@@ -38,13 +38,13 @@ final class FeedNovelConnectModalViewController: UIViewController {
     //MARK: - UI
     
     private func register() {
-        rootView.searchResultCollectionView.register(FeedNovelConnectCollectionViewCell.self, forCellWithReuseIdentifier: FeedNovelConnectCollectionViewCell.cellIdentifier)
+        rootView.feedNovelConnectSearchResultView.searchResultCollectionView.register(FeedNovelConnectCollectionViewCell.self, forCellWithReuseIdentifier: FeedNovelConnectCollectionViewCell.cellIdentifier)
     }
     
     //MARK: - Bind
     
     private func bindUI() {
-        searchResultList.bind(to: rootView.searchResultCollectionView.rx.items(cellIdentifier: FeedNovelConnectCollectionViewCell.cellIdentifier, cellType: FeedNovelConnectCollectionViewCell.self)) { item, element, cell in
+        searchResultList.bind(to: rootView.feedNovelConnectSearchResultView.searchResultCollectionView.rx.items(cellIdentifier: FeedNovelConnectCollectionViewCell.cellIdentifier, cellType: FeedNovelConnectCollectionViewCell.self)) { item, element, cell in
             cell.bindData(data: element)
         }
         .disposed(by: disposeBag)
