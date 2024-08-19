@@ -30,8 +30,6 @@ final class NovelDetailViewController: UIViewController {
     
     //MARK: - Components
     
-    private let backButton = UIButton()
-    private let dropDownButton = UIButton()
     private let rootView = NovelDetailView()
     
     //MARK: - Life Cycle
@@ -53,7 +51,6 @@ final class NovelDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setUI()
         registerCell()
         delegate()
         bindViewModel()
@@ -69,24 +66,10 @@ final class NovelDetailViewController: UIViewController {
     
     //MARK: - UI
     
-    private func setUI() {
-        backButton.do {
-            $0.setImage(.icNavigateLeft.withTintColor(.wssWhite,
-                                                      renderingMode: .alwaysTemplate),
-                        for: .normal)
-        }
-        
-        dropDownButton.do {
-            $0.setImage(.icDropDownDot.withTintColor(.wssWhite,
-                                                     renderingMode: .alwaysTemplate),
-                        for: .normal)
-        }
-    }
-    
     private func setNavigationBar() {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.backButton)
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.dropDownButton)
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: rootView.backButton)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rootView.dropDownButton)
     }
     
     private func setNavigationBarTextAttribute() {
@@ -219,7 +202,7 @@ final class NovelDetailViewController: UIViewController {
         return NovelDetailViewModel.Input(
             viewWillAppearEvent:  viewWillAppearEvent.asObservable(),
             scrollContentOffset: rootView.scrollView.rx.contentOffset,
-            backButtonDidTap: backButton.rx.tap,
+            backButtonDidTap: rootView.backButton.rx.tap,
             novelCoverImageButtonDidTap: rootView.headerView.novelCoverImageButton.rx.tap,
             largeNovelCoverImageDismissButtonDidTap: rootView.largeNovelCoverImageButton.dismissButton.rx.tap,
             largeNovelCoverImageBackgroundDidTap: rootView.largeNovelCoverImageButton.rx.tap,
@@ -246,16 +229,12 @@ final class NovelDetailViewController: UIViewController {
             navigationController?.navigationBar.backgroundColor = .wssWhite
             navigationItem.title = navigationTitle
             setNavigationBarTextAttribute()
-            backButton.tintColor = .wssGray200
-            dropDownButton.tintColor = .wssGray200
         } else {
             rootView.statusBarView.backgroundColor = .clear
             navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
             navigationController?.navigationBar.shadowImage = nil
             navigationController?.navigationBar.backgroundColor = .clear
             navigationItem.title = ""
-            backButton.tintColor = .wssWhite
-            dropDownButton.tintColor = .wssWhite
         }
     }
 }

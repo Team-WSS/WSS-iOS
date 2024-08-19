@@ -18,6 +18,9 @@ final class NovelDetailView: UIView {
     let scrollView = UIScrollView()
     private let contentView = UIStackView()
     
+    let backButton = UIButton()
+    let dropDownButton = UIButton()
+    
     let headerView = NovelDetailHeaderView()
     let largeNovelCoverImageButton = NovelDetailLargeCoverImageButton()
     let stickyTabBarView = NovelDetailTabBarView()
@@ -44,6 +47,15 @@ final class NovelDetailView: UIView {
     
     private func setUI() {
         self.backgroundColor = .wssWhite
+        
+        backButton.setImage(.icNavigateLeft,
+                            for: .normal)
+        
+        dropDownButton.do {
+            $0.setImage(.icDropDownDot.withRenderingMode(.alwaysTemplate),
+                      for: .normal)
+            $0.tintColor = .wssBlack
+        }
         
         statusBarView.do {
             let scenes = UIApplication.shared.connectedScenes
