@@ -16,7 +16,6 @@ final class NovelDetailHeaderCoverImageButton: UIButton {
     
     private let novelCoverShadowView = UIView()
     private let novelCoverImageView = UIImageView()
-    private let novelGenreBookmarkBackgroundImageView = UIImageView()
     private let novelGenreImageView = UIImageView()
     
     //MARK: - Life Cycle
@@ -50,14 +49,10 @@ final class NovelDetailHeaderCoverImageButton: UIButton {
                 $0.layer.cornerRadius = 8
                 $0.clipsToBounds = true
                 
-                novelGenreBookmarkBackgroundImageView.do {
-                    $0.image = .icGenreBackground
-                    $0.contentMode = .scaleAspectFit
-                    
                     novelGenreImageView.do {
+                        $0.image = .icGenreBackground
                         $0.contentMode = .scaleAspectFit
                     }
-                }
             }
         }
     }
@@ -65,9 +60,7 @@ final class NovelDetailHeaderCoverImageButton: UIButton {
     private func setHierarchy() {
         self.addSubview(novelCoverShadowView)
         novelCoverShadowView.addSubviews(novelCoverImageView,
-                                         novelGenreBookmarkBackgroundImageView)
-        novelGenreBookmarkBackgroundImageView.addSubview(novelGenreImageView)
-                         
+                                         novelGenreImageView)
     }
     
     private func setLayout() {
@@ -80,16 +73,10 @@ final class NovelDetailHeaderCoverImageButton: UIButton {
                 $0.edges.equalToSuperview()
             }
             
-            novelGenreBookmarkBackgroundImageView.snp.makeConstraints {
+            novelGenreImageView.snp.makeConstraints {
                 $0.bottom.equalToSuperview()
                 $0.trailing.equalToSuperview()
                 $0.size.equalTo(71)
-            }
-            
-            novelGenreImageView.snp.makeConstraints {
-                $0.trailing.equalToSuperview().inset(4)
-                $0.bottom.equalToSuperview().inset(5)
-                $0.size.equalTo(32)
             }
         }
     }
