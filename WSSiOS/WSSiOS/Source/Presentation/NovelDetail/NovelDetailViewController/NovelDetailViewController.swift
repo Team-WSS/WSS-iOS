@@ -64,6 +64,10 @@ final class NovelDetailViewController: UIViewController {
         setNavigationBar()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        updateNavigationBarStyle(offset: 0)
+    }
+    
     //MARK: - UI
     
     private func setNavigationBar() {
