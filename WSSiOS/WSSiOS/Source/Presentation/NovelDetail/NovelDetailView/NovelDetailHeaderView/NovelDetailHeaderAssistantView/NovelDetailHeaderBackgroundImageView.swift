@@ -13,6 +13,10 @@ import UIImageViewAlignedSwift
 
 final class NovelDetailHeaderBackgroundImageView: UIView {
     
+    //MARK: - Properties
+    
+    let blurRadius: CGFloat = 7
+    
     //MARK: - Components
     
     private let bannerImageView = UIImageViewAligned()
@@ -36,7 +40,7 @@ final class NovelDetailHeaderBackgroundImageView: UIView {
     
     private func setUI() {
         bannerImageView.do {
-            $0.image = .imgLoadingThumbnail.asBlurredBannerImage(radius: 40)
+            $0.image = .imgLoadingThumbnail.asBlurredBannerImage(radius: blurRadius)
             $0.contentMode = .scaleAspectFill
             $0.alignment = .top
             $0.clipsToBounds = true
@@ -68,9 +72,9 @@ final class NovelDetailHeaderBackgroundImageView: UIView {
     
     func bindData(_ data: NovelDetailHeaderResult) {
         if let image = UIImage(named: data.novelImage) {
-            bannerImageView.image = image.asBlurredBannerImage(radius: 40)
+            bannerImageView.image = image.asBlurredBannerImage(radius: blurRadius)
         } else {
-            bannerImageView.image = .imgLoadingThumbnail.asBlurredBannerImage(radius: 40)
+            bannerImageView.image = .imgLoadingThumbnail.asBlurredBannerImage(radius: blurRadius)
         }
     }
 }
