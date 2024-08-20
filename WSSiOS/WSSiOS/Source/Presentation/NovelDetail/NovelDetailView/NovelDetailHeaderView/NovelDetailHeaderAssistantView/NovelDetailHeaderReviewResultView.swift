@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class NovelDetailHeaderRatingButton: UIButton {
+final class NovelDetailHeaderReviewResultView: UIButton {
     
     //MARK: - Components
     
@@ -61,7 +61,6 @@ final class NovelDetailHeaderRatingButton: UIButton {
     private func setLayout() {
         stackView.snp.makeConstraints {
             $0.verticalEdges.equalToSuperview().inset(15)
-            $0.centerX.equalToSuperview()
         }
     }
     

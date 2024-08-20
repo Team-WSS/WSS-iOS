@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class NovelDetailHeaderInfoView: UIView {
+final class NovelDetailHeaderNovelInfoView: UIView {
     
     //MARK: - Properties
     
@@ -24,9 +24,9 @@ final class NovelDetailHeaderInfoView: UIView {
     private let infoLabel = UILabel()
     private let reviewStack = UIStackView()
     
-    private let interestCount = NovelDetailHeaderReviewInfoElementView()
-    private let rating = NovelDetailHeaderReviewInfoElementView()
-    private let feedCount = NovelDetailHeaderReviewInfoElementView()
+    private let interestCount = NovelDetailHeaderReviewSummaryElementView()
+    private let rating = NovelDetailHeaderReviewSummaryElementView()
+    private let feedCount = NovelDetailHeaderReviewSummaryElementView()
     
     //MARK: - Life Cycle
     
