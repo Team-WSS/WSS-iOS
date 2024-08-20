@@ -52,7 +52,6 @@ final class NovelDetailHeaderReadInfoButton: UIButton {
         stackView.do {
             $0.axis = .horizontal
             $0.alignment = .center
-            $0.spacing = 5
             
             iconImageView.image = iconImage
             
@@ -68,6 +67,9 @@ final class NovelDetailHeaderReadInfoButton: UIButton {
     }
     
     private func setLayout() {
+        self.snp.makeConstraints {
+            $0.height.equalTo(23)
+        }
         stackView.do {
             $0.snp.makeConstraints {
                 $0.verticalEdges.equalToSuperview().inset(3)
