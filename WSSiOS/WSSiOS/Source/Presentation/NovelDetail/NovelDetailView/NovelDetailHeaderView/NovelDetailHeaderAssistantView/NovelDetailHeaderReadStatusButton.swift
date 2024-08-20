@@ -56,7 +56,6 @@ final class NovelDetailHeaderReadStatusButton: UIButton {
     
     private func setHierarchy() {
         self.addSubview(stackView)
-        
         stackView.addArrangedSubviews(statusImageView,
                                       statusLabel)
     }
