@@ -152,7 +152,7 @@ final class NovelDetailInfoReviewGraphView: UIView {
         }
         
         statusNameLabel.do {
-            $0.applyWSSFont(.body2, with: readStatus.tagText)
+            $0.applyWSSFont(.body2, with: readStatus.text)
             $0.textColor = .wssPrimary200
         }
         
@@ -171,7 +171,7 @@ final class NovelDetailInfoReviewGraphView: UIView {
         }
         
         statusNameLabel.do {
-            $0.applyWSSFont(.body2, with: readStatus.tagText)
+            $0.applyWSSFont(.body2, with: readStatus.text)
             $0.textColor = .wssGray200
         }
         
