@@ -43,43 +43,54 @@ final class NovelDetailHeaderReadStatusButton: UIButton {
         stackView.do {
             $0.axis = .vertical
             $0.alignment =  .center
-        }
-        
-        statusImageView.do {
             
+            statusImageView.do {
+                $0.image = readStatus.strokeImage
+            }
+            
+            statusLabel.do {
+                $0.applyWSSFont(.body4, with: readStatus.text)
+            }
         }
     }
     
     private func setHierarchy() {
         self.addSubview(stackView)
         
-        stackView.addArrangedSubview(dummyLabel)
+        stackView.addArrangedSubviews(statusImageView,
+                                      statusLabel)
     }
     
     private func setLayout() {
-        stackView.snp.makeConstraints {
-            $0.verticalEdges.equalToSuperview().inset(15)
+        stackView.do {
+            $0.snp.makeConstraints {
+                $0.verticalEdges.equalToSuperview().inset(5)
+                $0.horizontalEdges.equalToSuperview()
+            }
+            
+            $0.spacing = 5
         }
     }
     
     //MARK: - Data
     
-    func bindData(_ data: NovelDetailHeaderResult) {
-        
+    func updateButton(selectedStatus: ReadStatus?) {
+        if selectedStatus == readStatus {
+            updateHilightedStyle()
+        } else {
+            updateNormalStyle()
+        }
     }
     
     //MARK: - Custom Method
     
-    // 별점으로 디자인이 유지되면 사용예정인 메서드
-    private func createStars() -> [UIImageView] {
-        return (0..<5).map { _ in
-            let starImageView = UIImageView().then {
-                $0.isUserInteractionEnabled = true
-                $0.image = .icStarEmpty
-                $0.contentMode = .scaleToFill
-                $0.clipsToBounds = true
-            }
-            return starImageView
-        }
+    private func updateNormalStyle() {
+        statusImageView.image = readStatus.strokeImage
+        statusLabel.textColor = .wssGray300
+    }
+    
+    private func updateHilightedStyle() {
+        statusImageView.image = readStatus.fillImage
+        statusLabel.textColor = .wssSecondary100
     }
 }
