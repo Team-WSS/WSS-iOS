@@ -48,6 +48,7 @@ final class NovelDetailHeaderReviewResultView: UIView {
         totalStackView.do {
             $0.axis = .vertical
             $0.alignment = .center
+            $0.spacing = 10
         }
         
         readStatusButtonStackView.do {
