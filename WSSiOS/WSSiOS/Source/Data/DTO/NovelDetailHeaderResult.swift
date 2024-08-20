@@ -60,7 +60,7 @@ extension NovelDetailHeaderResult {
                                 novelRatingCount: 153,
                                 feedCount: 52,
                                 userNovelRating: 5.0,
-                                readStatus: "FINISHED",
+                                readStatus: "WATCHED",
                                 startDate: "23년 12월 25일",
                                 endDate: "24년 1월 5일",
                                 isUserNovelInterest: true)

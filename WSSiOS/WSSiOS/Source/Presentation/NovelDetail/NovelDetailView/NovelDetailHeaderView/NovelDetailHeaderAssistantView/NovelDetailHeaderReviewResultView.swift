@@ -10,12 +10,16 @@ import UIKit
 import SnapKit
 import Then
 
-final class NovelDetailHeaderReviewResultView: UIButton {
+final class NovelDetailHeaderReviewResultView: UIView {
     
     //MARK: - Components
     
-    private let stackView = UIStackView()
-    private let dummyLabel = UILabel()
+    private let totalStackView = UIStackView()
+    private let readStatusButtonStackView = UIStackView()
+    private let readStatusButtons = ReadStatus.allCases.map { readStatus in
+        NovelDetailHeaderReadStatusButton(readStatus: readStatus)
+    }
+    private let divierViews = [UIView(), UIView()]
     
     //MARK: - Life Cycle
     
@@ -36,52 +40,71 @@ final class NovelDetailHeaderReviewResultView: UIButton {
     private func setUI() {
         self.do {
             $0.backgroundColor = .wssWhite
-            $0.layer.cornerRadius = 10
-            $0.layer.borderColor = UIColor.wssGray70.cgColor
+            $0.layer.cornerRadius = 15
+            $0.layer.borderColor = UIColor.wssGray80.cgColor
             $0.layer.borderWidth = 1
         }
         
-        stackView.do {
-            $0.axis = .horizontal
-            $0.alignment =  .center
+        totalStackView.do {
+            $0.axis = .vertical
+            $0.alignment = .center
         }
         
-        dummyLabel.do {
-            $0.applyWSSFont(.headline1, with: "디자인 미정")
-            $0.textColor = .wssGray80
+        readStatusButtonStackView.do {
+            $0.axis = .horizontal
+            $0.distribution = .fillEqually
+        }
+        
+        divierViews.forEach {
+            $0.backgroundColor = .wssGray70
         }
     }
     
     private func setHierarchy() {
-        self.addSubview(stackView)
-        
-        stackView.addArrangedSubview(dummyLabel)
+        self.addSubview(totalStackView)
+        totalStackView.addArrangedSubview(readStatusButtonStackView)
+        readStatusButtons.forEach { button in
+            readStatusButtonStackView.addArrangedSubview(button)
+        }
+        divierViews.forEach { view in
+            readStatusButtonStackView.addSubview(view)
+        }
     }
     
     private func setLayout() {
-        stackView.snp.makeConstraints {
-            $0.verticalEdges.equalToSuperview().inset(15)
+        totalStackView.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(12)
+            $0.bottom.equalToSuperview().inset(15)
+            $0.horizontalEdges.equalToSuperview()
+        }
+        
+        readStatusButtonStackView.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview().inset(10)
+        }
+        
+        divierViews[0].snp.makeConstraints {
+            $0.width.equalTo(1)
+            $0.centerX.equalTo(readStatusButtons[0].snp.trailing)
+            $0.height.equalToSuperview()
+        }
+        
+        divierViews[1].snp.makeConstraints {
+            $0.width.equalTo(1)
+            $0.centerX.equalTo(readStatusButtons[1].snp.trailing)
+            $0.height.equalToSuperview()
         }
     }
     
     //MARK: - Data
     
     func bindData(_ data: NovelDetailHeaderResult) {
+        let readStatus = ReadStatus(rawValue: data.readStatus ?? "")
         
+        readStatusButtons.forEach { readStatusButton in
+            readStatusButton.updateButton(selectedStatus: readStatus)
+        }
     }
     
     //MARK: - Custom Method
     
-    // 별점으로 디자인이 유지되면 사용예정인 메서드
-    private func createStars() -> [UIImageView] {
-        return (0..<5).map { _ in
-            let starImageView = UIImageView().then {
-                $0.isUserInteractionEnabled = true
-                $0.image = .icStarEmpty
-                $0.contentMode = .scaleToFill
-                $0.clipsToBounds = true
-            }
-            return starImageView
-        }
-    }
 }

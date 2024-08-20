@@ -22,7 +22,7 @@ final class NovelDetailHeaderView: UIView {
     private let novelEstimateButton = NovelDetailHeaderReviewResultView()
     private let novelInterestReviewButton = NovelDetailHeaderInterestReviewButton()
     
-    //MARK: - Life Cycle
+    //MARK: - Life CycleE
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -95,5 +95,6 @@ final class NovelDetailHeaderView: UIView {
         novelCoverImageButton.bindData(data)
         novelInfoView.bindData(data)
         novelInterestReviewButton.bindData(data)
+        novelEstimateButton.bindData(data)
     }
 }

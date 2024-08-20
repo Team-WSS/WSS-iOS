@@ -8,9 +8,9 @@
 import UIKit
 
 enum ReadStatus: String, CaseIterable {
-    case watching
-    case watched
-    case quit
+    case watching = "WATCHING"
+    case watched = "WATCHED"
+    case quit = "QUIT"
     
     var text: String {
         switch self {
