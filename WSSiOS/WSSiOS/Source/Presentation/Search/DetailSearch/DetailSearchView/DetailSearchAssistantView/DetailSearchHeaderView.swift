@@ -72,7 +72,7 @@ final class DetailSearchHeaderView: UIView {
 
         keywordLabel.snp.makeConstraints {
             $0.top.equalTo(infoLabel.snp.top)
-            $0.leading.equalTo(infoLabel.snp.trailing).offset(22.5)
+            $0.leading.equalTo(infoLabel.snp.trailing).offset(29.5)
             $0.trailing.equalToSuperview()
         }
         
