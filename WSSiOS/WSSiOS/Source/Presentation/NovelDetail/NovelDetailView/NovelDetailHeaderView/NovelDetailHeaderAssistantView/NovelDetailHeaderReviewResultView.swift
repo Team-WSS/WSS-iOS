@@ -11,10 +11,15 @@ import SnapKit
 import Then
 
 final class NovelDetailHeaderReviewResultView: UIView {
-    
+
     //MARK: - Components
     
     private let totalStackView = UIStackView()
+    
+    private let readInfoButtonStackView = UIStackView()
+    private let readInfoButtons = [NovelDetailHeaderReadInfoButton(iconImage: .icSmallStar),
+                                   NovelDetailHeaderReadInfoButton(iconImage: .icSmallCalendar)]
+    
     private let readStatusButtonStackView = UIStackView()
     private let readStatusButtons = ReadStatus.allCases.map { readStatus in
         NovelDetailHeaderReadStatusButton(readStatus: readStatus)
@@ -51,6 +56,12 @@ final class NovelDetailHeaderReviewResultView: UIView {
             $0.spacing = 10
         }
         
+        readInfoButtonStackView.do {
+            $0.axis = .horizontal
+            $0.alignment = .center
+            $0.spacing = 8
+        }
+        
         readStatusButtonStackView.do {
             $0.axis = .horizontal
             $0.distribution = .fillEqually
@@ -63,7 +74,11 @@ final class NovelDetailHeaderReviewResultView: UIView {
     
     private func setHierarchy() {
         self.addSubview(totalStackView)
-        totalStackView.addArrangedSubview(readStatusButtonStackView)
+        totalStackView.addArrangedSubviews(readInfoButtonStackView,
+                                           readStatusButtonStackView)
+        readInfoButtons.forEach { button in
+            readInfoButtonStackView.addArrangedSubview(button)
+        }
         readStatusButtons.forEach { button in
             readStatusButtonStackView.addArrangedSubview(button)
         }
@@ -76,23 +91,26 @@ final class NovelDetailHeaderReviewResultView: UIView {
         totalStackView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(12)
             $0.bottom.equalToSuperview().inset(15)
-            $0.horizontalEdges.equalToSuperview()
-        }
-        
-        readStatusButtonStackView.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview().inset(10)
         }
         
+        readStatusButtonStackView.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview()
+        }
+        
         divierViews[0].snp.makeConstraints {
+            $0.height.equalToSuperview()
+            $0.centerY.equalToSuperview()
             $0.width.equalTo(1)
             $0.centerX.equalTo(readStatusButtons[0].snp.trailing)
-            $0.height.equalToSuperview()
+            
         }
         
         divierViews[1].snp.makeConstraints {
+            $0.height.equalToSuperview()
+            $0.centerY.equalToSuperview()
             $0.width.equalTo(1)
             $0.centerX.equalTo(readStatusButtons[1].snp.trailing)
-            $0.height.equalToSuperview()
         }
     }
     
@@ -104,6 +122,28 @@ final class NovelDetailHeaderReviewResultView: UIView {
         readStatusButtons.forEach { readStatusButton in
             readStatusButton.updateButton(selectedStatus: readStatus)
         }
+        let isUserRatingExist = 0.0 != data.userNovelRating
+        let isDateExist = data.endDate != nil || data.endDate != nil
+        
+        if !isUserRatingExist && !isDateExist {
+            readInfoButtonStackView.isHidden = true
+        } else if !isUserRatingExist {
+            readInfoButtons[0].isHidden = true
+        } else if !isDateExist {
+            readInfoButtons[1].isHidden = true
+        }
+        
+        let userNovelRatingText = String(format: "%1.1f", data.userNovelRating)
+        var dateText = "~"
+        if let startDate = data.startDate {
+            dateText = "\(startDate) " + dateText
+        }
+        if let endDate = data.endDate {
+            dateText = dateText + " \(endDate)"
+        }
+        
+        readInfoButtons[0].bindData(infoText: userNovelRatingText)
+        readInfoButtons[1].bindData(infoText: dateText)
     }
     
     //MARK: - Custom Method

@@ -207,7 +207,7 @@ final class NovelDetailViewController: UIViewController {
             viewWillAppearEvent:  viewWillAppearEvent.asObservable(),
             scrollContentOffset: rootView.scrollView.rx.contentOffset,
             backButtonDidTap: rootView.backButton.rx.tap,
-            novelCoverImageButtonDidTap: rootView.headerView.novelCoverImageButton.rx.tap,
+            novelCoverImageButtonDidTap: rootView.headerView.coverImageButton.rx.tap,
             largeNovelCoverImageDismissButtonDidTap: rootView.largeNovelCoverImageButton.dismissButton.rx.tap,
             largeNovelCoverImageBackgroundDidTap: rootView.largeNovelCoverImageButton.rx.tap,
             infoTabBarButtonDidTap: rootView.tabBarView.infoButton.rx.tap,

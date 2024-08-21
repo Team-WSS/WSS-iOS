@@ -17,10 +17,10 @@ final class NovelDetailHeaderView: UIView {
     private let bannerBackgroundImageView = NovelDetailHeaderBackgroundImageView()
     
     private let stackView = UIStackView()
-    let novelCoverImageButton = NovelDetailHeaderCoverImageButton()
+    let coverImageButton = NovelDetailHeaderCoverImageButton()
     private let novelInfoView = NovelDetailHeaderNovelInfoView()
-    private let novelEstimateButton = NovelDetailHeaderReviewResultView()
-    private let novelInterestReviewButton = NovelDetailHeaderInterestReviewButton()
+    private let reviewResultView = NovelDetailHeaderReviewResultView()
+    private let interestReviewButton = NovelDetailHeaderInterestReviewButton()
     
     //MARK: - Life CycleE
     
@@ -50,10 +50,10 @@ final class NovelDetailHeaderView: UIView {
     private func setHierarchy() {
         self.addSubview(stackView)
         stackView.addArrangedSubviews(bannerBackgroundImageView,
-                                      novelCoverImageButton,
+                                      coverImageButton,
                                       novelInfoView,
-                                      novelEstimateButton,
-                                      novelInterestReviewButton)
+                                      reviewResultView,
+                                      interestReviewButton)
     }
     
     private func setLayout() {
@@ -70,20 +70,20 @@ final class NovelDetailHeaderView: UIView {
             }
             
             $0.setCustomSpacing(-148, after: bannerBackgroundImageView)
-            $0.setCustomSpacing(20, after: novelCoverImageButton)
-            $0.setCustomSpacing(26, after: novelInfoView)
-            $0.setCustomSpacing(6, after: novelEstimateButton)
+            $0.setCustomSpacing(20, after: coverImageButton)
+            $0.setCustomSpacing(20, after: novelInfoView)
+            $0.setCustomSpacing(6, after: reviewResultView)
         }
         
         novelInfoView.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview().inset(20)
         }
         
-        novelEstimateButton.snp.makeConstraints {
+        reviewResultView.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview().inset(20)
         }
         
-        novelInterestReviewButton.snp.makeConstraints {
+        interestReviewButton.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview().inset(20)
         }
     }
@@ -92,9 +92,9 @@ final class NovelDetailHeaderView: UIView {
     
     func bindData(_ data: NovelDetailHeaderResult) {
         bannerBackgroundImageView.bindData(data)
-        novelCoverImageButton.bindData(data)
+        coverImageButton.bindData(data)
         novelInfoView.bindData(data)
-        novelInterestReviewButton.bindData(data)
-        novelEstimateButton.bindData(data)
+        interestReviewButton.bindData(data)
+        reviewResultView.bindData(data)
     }
 }

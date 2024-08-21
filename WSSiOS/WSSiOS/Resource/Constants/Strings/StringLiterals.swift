@@ -235,6 +235,8 @@ enum StringLiterals {
             static let inSeries = "  ·  연재중  ·  "
             static let interest = "관심 있어요"
             static let review = "리뷰 남기기"
+            static let dateFormat = "yy. MM. dd"
+            static let KoreaTimeZone = "ko_KR"
             
             enum Loading {
                 static let novelTitle = "작품 제목"
