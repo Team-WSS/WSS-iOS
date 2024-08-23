@@ -285,6 +285,26 @@ enum StringLiterals {
         }
     }
     
+    enum DetailSearch {
+        static let info = "정보"
+        static let keyword = "키워드"
+        
+        static let genre = "장르"
+        
+        static let serialStatus = "연재상태"
+        static let statusIng = "연재중"
+        static let statusFinished = "완결작"
+        
+        static let rating = "별점"
+        static let ratingaboveThreePointFive = "3.5이상"
+        static let ratingaboveFourPointZero = "4.0이상"
+        static let ratingaboveFourPointFive = "4.5이상"
+        static let ratingaboveFourPointEight = "4.8이상"
+        
+        static let reload = "초기화"
+        static let searchNovel = "작품 찾기"
+    }
+    
     enum Memo {
         static let complete = "완료"
         static let edit = "수정"

@@ -22,4 +22,8 @@ final class KeywordViewManager {
     func label() -> KeywordLabel {
         return KeywordLabel()
     }
+    
+    func box() -> KeywordBox {
+        return KeywordBox()
+    }
 }
