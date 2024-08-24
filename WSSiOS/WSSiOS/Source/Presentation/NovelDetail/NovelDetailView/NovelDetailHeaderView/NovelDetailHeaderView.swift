@@ -65,14 +65,14 @@ final class NovelDetailHeaderView: UIView {
         stackView.do {
             $0.snp.makeConstraints {
                 $0.top.equalToSuperview()
-                $0.bottom.equalToSuperview().inset(16)
+                $0.bottom.equalToSuperview().inset(24)
                 $0.horizontalEdges.equalToSuperview()
             }
             
             $0.setCustomSpacing(-148, after: bannerBackgroundImageView)
             $0.setCustomSpacing(20, after: coverImageButton)
             $0.setCustomSpacing(20, after: novelInfoView)
-            $0.setCustomSpacing(6, after: reviewResultView)
+            $0.setCustomSpacing(16, after: reviewResultView)
         }
         
         novelInfoView.snp.makeConstraints {
