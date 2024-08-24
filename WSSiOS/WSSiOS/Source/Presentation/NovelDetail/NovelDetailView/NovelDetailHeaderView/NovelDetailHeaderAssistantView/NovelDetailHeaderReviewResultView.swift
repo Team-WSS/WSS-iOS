@@ -123,7 +123,7 @@ final class NovelDetailHeaderReviewResultView: UIView {
             readStatusButton.updateButton(selectedStatus: readStatus)
         }
         let isUserRatingExist = 0.0 != data.userNovelRating
-        let isDateExist = data.endDate != nil || data.endDate != nil
+        let isDateExist = data.startDate != nil || data.endDate != nil
         
         if !isUserRatingExist && !isDateExist {
             readInfoButtonStackView.isHidden = true
