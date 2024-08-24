@@ -233,8 +233,8 @@ enum StringLiterals {
         enum Header {
             static let complete = "  ·  완결작  ·  "
             static let inSeries = "  ·  연재중  ·  "
-            static let interest = "관심 있어요"
-            static let review = "리뷰 남기기"
+            static let interest = "관심"
+            static let review = "나도 한마디"
             static let dateFormat = "yy. MM. dd"
             static let KoreaTimeZone = "ko_KR"
             
