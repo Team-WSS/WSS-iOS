@@ -1,5 +1,5 @@
 //
-//  NovelDetailInfoDescriptionSection.swift
+//  NovelDetailInfoDescriptionView.swift
 //  WSSiOS
 //
 //  Created by 이윤학 on 6/26/24.
