@@ -97,9 +97,9 @@ final class NovelDetailInfoDescriptionView: UIView {
     
     //MARK: - Custom Method
     
-    func updateAccordionButton(_ isExpended: Bool) {
-        self.accordionImageView.image = isExpended ? .icChveronUp : .icChveronDown
-        self.descriptionLabel.numberOfLines = isExpended ? self.expandedDescriptionNumberOfLines : self.collapsedDescriptionNumberOfLines
+    func updateAccordionButton(_ isExpanded: Bool) {
+        self.accordionImageView.image = isExpanded ? .icChveronUp : .icChveronDown
+        self.descriptionLabel.numberOfLines = isExpanded ? self.expandedDescriptionNumberOfLines : self.collapsedDescriptionNumberOfLines
     }
     
     private func setDescriptionLabelText(with text: String) {
