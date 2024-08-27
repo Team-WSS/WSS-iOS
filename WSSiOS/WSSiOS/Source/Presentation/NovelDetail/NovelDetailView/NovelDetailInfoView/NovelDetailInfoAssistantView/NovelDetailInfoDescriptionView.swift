@@ -14,8 +14,8 @@ final class NovelDetailInfoDescriptionView: UIView {
     
     //MARK: - Properites
     
-    private let basicDescriptionLineLimit: Int = 3
-    private let expendedDescriptionLineLimit: Int = 0
+    private let collapsedDescriptionNumberOfLines: Int = 3
+    private let expandedDescriptionNumberOfLines: Int = 0
     
     //MARK: - Components
     
@@ -99,7 +99,7 @@ final class NovelDetailInfoDescriptionView: UIView {
     
     func updateAccordionButton(_ isExpended: Bool) {
         self.accordionImageView.image = isExpended ? .icChveronUp : .icChveronDown
-        self.descriptionLabel.numberOfLines = isExpended ? self.expendedDescriptionLineLimit : self.basicDescriptionLineLimit
+        self.descriptionLabel.numberOfLines = isExpended ? self.expandedDescriptionNumberOfLines : self.collapsedDescriptionNumberOfLines
     }
     
     private func setDescriptionLabelText(with text: String) {
@@ -109,7 +109,7 @@ final class NovelDetailInfoDescriptionView: UIView {
             $0.textAlignment = .left
             $0.lineBreakMode = .byTruncatingTail
             $0.lineBreakStrategy = .hangulWordPriority
-            $0.numberOfLines = basicDescriptionLineLimit
+            $0.numberOfLines = collapsedDescriptionNumberOfLines
         }
     }
 }
