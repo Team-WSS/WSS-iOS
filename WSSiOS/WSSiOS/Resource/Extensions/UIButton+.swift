@@ -16,6 +16,12 @@ extension UIButton {
         self.setAttributedTitle(attributedString, for: .normal)
     }
     
+    func setButtonUnderlinedAttributedTitle(text: String, font: UIFont, color: UIColor = .black) {
+        let attributedString = NSMutableAttributedString(string: text, attributes: [.font: font, .foregroundColor: color, .underlineStyle: NSUnderlineStyle.single.rawValue])
+        
+        self.setAttributedTitle(attributedString, for: .normal)
+    }
+    
     func kfSetButtonImage(url : String, state: UIControl.State) {
         if let url = URL(string: url) {
             kf.setImage(with: url,
