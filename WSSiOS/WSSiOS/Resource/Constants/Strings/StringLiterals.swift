@@ -275,6 +275,10 @@ enum StringLiterals {
             static let watched = "봤어요"
             static let quit = "하차"
         }
+        
+        enum Date {
+            static let addDate = "날짜 추가"
+        }
     }
     
     enum Search {

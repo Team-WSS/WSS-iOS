@@ -19,6 +19,7 @@ final class NovelReviewView: UIView {
     let scrollView = UIScrollView()
     let stackView = UIStackView()
     let novelReviewStatusView = NovelReviewStatusView()
+    let novelReviewDateView = NovelReviewDateView()
     
     //MARK: - Life Cycle
     
@@ -67,7 +68,8 @@ final class NovelReviewView: UIView {
     private func setHierarchy() {
         self.addSubview(scrollView)
         scrollView.addSubview(stackView)
-        stackView.addArrangedSubviews(novelReviewStatusView)
+        stackView.addArrangedSubviews(novelReviewStatusView,
+                                      novelReviewDateView)
     }
     
     private func setLayout() {

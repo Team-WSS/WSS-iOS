@@ -256,6 +256,7 @@
 		CD2D0AB12C7EF1D3007CF1F1 /* NovelReviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2D0AB02C7EF1D3007CF1F1 /* NovelReviewViewModel.swift */; };
 		CD2D0AB42C7EFEAF007CF1F1 /* NovelReviewStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2D0AB32C7EFEAF007CF1F1 /* NovelReviewStatusView.swift */; };
 		CD2D0AB92C7F0279007CF1F1 /* NovelReviewStatusCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2D0AB82C7F0279007CF1F1 /* NovelReviewStatusCollectionViewCell.swift */; };
+		CD2D0ABB2C7F182C007CF1F1 /* NovelReviewDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2D0ABA2C7F182C007CF1F1 /* NovelReviewDateView.swift */; };
 		CD39F2B62B4FE0E200B73A5C /* TrashNovelDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2B52B4FE0E200B73A5C /* TrashNovelDetailView.swift */; };
 		CD39F2B82B4FE0FB00B73A5C /* TrashNovelDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2B72B4FE0FB00B73A5C /* TrashNovelDetailViewController.swift */; };
 		CD39F2BD2B4FE98500B73A5C /* TrashNovelDetailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD39F2BC2B4FE98500B73A5C /* TrashNovelDetailHeaderView.swift */; };
@@ -550,6 +551,7 @@
 		CD2D0AB02C7EF1D3007CF1F1 /* NovelReviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelReviewViewModel.swift; sourceTree = "<group>"; };
 		CD2D0AB32C7EFEAF007CF1F1 /* NovelReviewStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelReviewStatusView.swift; sourceTree = "<group>"; };
 		CD2D0AB82C7F0279007CF1F1 /* NovelReviewStatusCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelReviewStatusCollectionViewCell.swift; sourceTree = "<group>"; };
+		CD2D0ABA2C7F182C007CF1F1 /* NovelReviewDateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelReviewDateView.swift; sourceTree = "<group>"; };
 		CD39F2B52B4FE0E200B73A5C /* TrashNovelDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashNovelDetailView.swift; sourceTree = "<group>"; };
 		CD39F2B72B4FE0FB00B73A5C /* TrashNovelDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashNovelDetailViewController.swift; sourceTree = "<group>"; };
 		CD39F2BC2B4FE98500B73A5C /* TrashNovelDetailHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashNovelDetailHeaderView.swift; sourceTree = "<group>"; };
@@ -1797,6 +1799,7 @@
 			isa = PBXGroup;
 			children = (
 				CD2D0AB32C7EFEAF007CF1F1 /* NovelReviewStatusView.swift */,
+				CD2D0ABA2C7F182C007CF1F1 /* NovelReviewDateView.swift */,
 			);
 			path = NovelDetailAssistantView;
 			sourceTree = "<group>";
@@ -2194,6 +2197,7 @@
 				B9E565F52C04517A00DB51FF /* NormalSearchViewController.swift in Sources */,
 				CD3E5A742B5424D600C0A659 /* MemoEditView.swift in Sources */,
 				39CC16812B51246E003F56AE /* RegisterNormalView.swift in Sources */,
+				CD2D0ABB2C7F182C007CF1F1 /* NovelReviewDateView.swift in Sources */,
 				39B75ADE2B59BA87005DD8B9 /* UIScreen+.swift in Sources */,
 				B96098882C27421F0084F697 /* FeedDetailViewController.swift in Sources */,
 				2CD911562C0D8A1A006B8D72 /* FeedPageBarCollectionViewCell.swift in Sources */,
