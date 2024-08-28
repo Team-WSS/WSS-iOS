@@ -10,6 +10,44 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+enum FeedDetailWomanKoreanGenreDummy: String, CaseIterable {
+    case 로맨스 = "로맨스"
+    case 로판 = "로판"
+    case BL = "BL"
+    case 판타지 = "판타지"
+    case 현판 = "현판"
+    case 무협 = "무협"
+    case 드라마 = "드라마"
+    case 미스터리 = "미스터리"
+    case 라노벨 = "라노벨"
+    case 기타 = "기타"
+    
+    var toEnglish: String {
+        switch self {
+        case .로맨스:
+            return "romance"
+        case .로판:
+            return "romanceFantasy"
+        case .BL:
+            return "BL"
+        case .판타지:
+            return "fantasy"
+        case .현판:
+            return "modernFantasy"
+        case .무협:
+            return "wuxia"
+        case .미스터리:
+            return "mystery"
+        case .드라마:
+            return "drama"
+        case .라노벨:
+            return "lightNovel"
+        case .기타:
+            return "etc"
+        }
+    }
+}
+
 final class FeedEditViewModel: ViewModelType {
     
     //MARK: - Properties
@@ -27,7 +65,7 @@ final class FeedEditViewModel: ViewModelType {
     private let maximumFeedContentCount: Int = 2000
     
     //TODO: - 성별에 따른 리스트는 추후 구현
-    let relevantCategoryList = FeedDetailWomanKoreanGenre.allCases.map { $0.rawValue }
+    let relevantCategoryList = FeedDetailWomanKoreanGenreDummy.allCases.map { $0.rawValue }
        
     //MARK: - Life Cycle
     
@@ -122,7 +160,7 @@ final class FeedEditViewModel: ViewModelType {
         input.categoryCollectionViewItemSelected
             .subscribe(with: self, onNext: { owner, indexPath in
                 let selectedCategory = owner.relevantCategoryList[indexPath.item]
-                if let englishCategory = FeedDetailWomanKoreanGenre(rawValue: selectedCategory)?.toEnglish {
+                if let englishCategory = FeedDetailWomanKoreanGenreDummy(rawValue: selectedCategory)?.toEnglish {
                     owner.relevantCategories.append(englishCategory)
                 }
                 output.completeButtonIsAbled.accept(owner.isValidFeedContent && !owner.relevantCategories.isEmpty)

@@ -113,7 +113,7 @@ final class FeedEditViewController: UIViewController {
                 let indexPath = IndexPath(item: item, section: 0)
                 
                 //TODO: - 성별에 따른 리스트는 추후 구현
-                if let englishCategory = FeedDetailWomanKoreanGenre(rawValue: element)?.toEnglish {
+                if let englishCategory = FeedDetailWomanKoreanGenreDummy(rawValue: element)?.toEnglish {
                     if self.feedEditViewModel.relevantCategories.contains(englishCategory) {
                         self.rootView.feedEditCategoryView.categoryCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
                     } else {
