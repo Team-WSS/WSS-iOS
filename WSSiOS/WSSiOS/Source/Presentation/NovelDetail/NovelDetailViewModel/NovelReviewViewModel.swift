@@ -23,15 +23,21 @@ final class NovelReviewViewModel: ViewModelType {
     }
     
     struct Input {
-        
+        let backButtonDidTap: ControlEvent<Void>
     }
     
     struct Output {
-        
+        let popViewController = PublishRelay<Void>()
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
+        
+        input .backButtonDidTap
+            .subscribe(onNext: { _ in
+                output.popViewController.accept(())
+            })
+            .disposed(by: disposeBag)
         
         return output
     }

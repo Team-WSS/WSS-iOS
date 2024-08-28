@@ -38,9 +38,35 @@ final class NovelReviewViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        setNavigationBar()
+        bindViewModel()
     }
     
     //MARK: - UI
     
+    private func setNavigationBar() {
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.rootView.backButton)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.rootView.completeButton)
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.backgroundColor = .wssWhite
+    }
     
+    //MARK: - Bind
+    
+    private func bindViewModel() {
+        let input = NovelReviewViewModel.Input(
+            backButtonDidTap: rootView.backButton.rx.tap
+        )
+        
+        let output = self.novelReviewViewModel.transform(from: input, disposeBag: self.disposeBag)
+        
+        output.popViewController
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.navigationController?.popViewController(animated: true)
+            })
+            .disposed(by: disposeBag)
+    }
 }

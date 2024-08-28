@@ -265,6 +265,12 @@ enum StringLiterals {
         }
     }
     
+    enum NovelReview {
+        enum Navigation {
+            static let complete = "완료"
+        }
+    }
+    
     enum Search {
         static let title = "탐색하기"
         static let searchbar = "작품 제목, 작가를 검색하세요"

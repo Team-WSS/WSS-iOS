@@ -14,6 +14,9 @@ final class NovelReviewView: UIView {
 
     //MARK: - Components
     
+    let backButton = UIButton()
+    let completeButton = UIButton()
+    
     //MARK: - Life Cycle
     
     override init(frame: CGRect) {
@@ -31,7 +34,19 @@ final class NovelReviewView: UIView {
     //MARK: - UI
     
     private func setUI() {
+        self.do {
+            $0.backgroundColor = .wssWhite
+        }
         
+        backButton.do {
+            $0.setImage(.icNavigateLeft.withRenderingMode(.alwaysTemplate), for: .normal)
+            $0.tintColor = .wssGray200
+        }
+        
+        completeButton.do {
+            $0.setButtonAttributedTitle(text: StringLiterals.NovelReview.Navigation.complete, font: .Title2, color: .wssGray200)
+            $0.isEnabled = false
+        }
     }
     
     private func setHierarchy() {
@@ -40,5 +55,14 @@ final class NovelReviewView: UIView {
     
     private func setLayout() {
         
+    }
+    
+    //MARK: - Custom Method
+    
+    func enableCompleteButton(isEnabled: Bool) {
+        completeButton.do {
+            $0.setButtonAttributedTitle(text: StringLiterals.NovelReview.Navigation.complete, font: .Title2, color: isEnabled ? .wssPrimary100 : .wssGray200)
+            $0.isEnabled = isEnabled
+        }
     }
 }
