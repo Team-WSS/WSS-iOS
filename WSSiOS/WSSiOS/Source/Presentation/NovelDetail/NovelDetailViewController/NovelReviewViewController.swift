@@ -17,6 +17,8 @@ final class NovelReviewViewController: UIViewController {
     private let novelReviewViewModel: NovelReviewViewModel
     private let disposeBag = DisposeBag()
     
+    private let viewDidLoadEvent = PublishRelay<Void>()
+    
     //MARK: - Components
     
     private let rootView = NovelReviewView()
@@ -40,7 +42,10 @@ final class NovelReviewViewController: UIViewController {
         super.viewDidLoad()
         
         setNavigationBar()
+        register()
         bindViewModel()
+        
+        viewDidLoadEvent.accept(())
     }
     
     //MARK: - UI
@@ -54,14 +59,24 @@ final class NovelReviewViewController: UIViewController {
         self.navigationController?.navigationBar.backgroundColor = .wssWhite
     }
     
+    private func register() {
+        rootView.novelReviewStatusView.statusCollectionView.register(NovelReviewStatusCollectionViewCell.self, forCellWithReuseIdentifier: NovelReviewStatusCollectionViewCell.cellIdentifier)
+    }
+    
     //MARK: - Bind
     
     private func bindViewModel() {
         let input = NovelReviewViewModel.Input(
+            viewDidLoadEvent: viewDidLoadEvent.asObservable(),
             backButtonDidTap: rootView.backButton.rx.tap
         )
         
         let output = self.novelReviewViewModel.transform(from: input, disposeBag: self.disposeBag)
+        
+        output.novelReviewStatusData.bind(to: rootView.novelReviewStatusView.statusCollectionView.rx.items(cellIdentifier: NovelReviewStatusCollectionViewCell.cellIdentifier, cellType: NovelReviewStatusCollectionViewCell.self)) { item, element, cell in
+            cell.bindData(status: element)
+        }
+        .disposed(by: disposeBag)
         
         output.popViewController
             .subscribe(with: self, onNext: { owner, _ in

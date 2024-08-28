@@ -23,17 +23,25 @@ final class NovelReviewViewModel: ViewModelType {
     }
     
     struct Input {
+        let viewDidLoadEvent: Observable<Void>
         let backButtonDidTap: ControlEvent<Void>
     }
     
     struct Output {
+        let novelReviewStatusData = BehaviorRelay<[NovelReviewStatus]>(value: [.watching, .watched, .quit])
         let popViewController = PublishRelay<Void>()
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
         
-        input .backButtonDidTap
+        input.viewDidLoadEvent
+            .subscribe(with: self, onNext: { owner, _ in
+                output.novelReviewStatusData.accept(NovelReviewStatus.allCases)
+            })
+            .disposed(by: disposeBag)
+        
+        input.backButtonDidTap
             .subscribe(onNext: { _ in
                 output.popViewController.accept(())
             })

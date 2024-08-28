@@ -269,6 +269,12 @@ enum StringLiterals {
         enum Navigation {
             static let complete = "완료"
         }
+        
+        enum Status {
+            static let watching = "보는 중"
+            static let watched = "봤어요"
+            static let quit = "하차"
+        }
     }
     
     enum Search {
