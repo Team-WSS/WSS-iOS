@@ -175,9 +175,6 @@ extension NovelDetailInfoResult {
                               watchingCount: 0,
                               watchedCount: 0,
                               quitCount: 0)
-
     ]
-    
-    
 }
 

@@ -92,6 +92,7 @@ final class NovelDetailInfoDescriptionView: UIView {
     //MARK: - Data
     
     func bindData(_ data: NovelDetailInfoResult) {
+        isAccordionButtonHidden(text: data.novelDescription)
         setDescriptionLabelText(with: data.novelDescription)
     }
     
@@ -100,6 +101,42 @@ final class NovelDetailInfoDescriptionView: UIView {
     func updateAccordionButton(_ isExpanded: Bool) {
         self.accordionImageView.image = isExpanded ? .icChveronUp : .icChveronDown
         self.descriptionLabel.numberOfLines = isExpanded ? self.expandedDescriptionNumberOfLines : self.collapsedDescriptionNumberOfLines
+    }
+    
+    func isAccordionButtonHidden(text: String) {
+        
+        let textHeight = getLabelHeight(text: text)
+        let threeLineHeight = getLabelHeight(text: "1\n2\n3")
+        
+        print(threeLineHeight)
+        print(textHeight)
+        
+        if textHeight <= threeLineHeight {
+            accordionButton.isHidden = true
+            descriptionLabel.snp.removeConstraints()
+            descriptionLabel.snp.makeConstraints {
+                $0.top.equalTo(titleLabel.snp.bottom).offset(14)
+                $0.horizontalEdges.equalToSuperview().inset(20)
+                $0.bottom.equalToSuperview().inset(40)
+            }
+        }
+    }
+    
+    func getLabelHeight(text: String) -> CGFloat {
+        let label = UILabel(frame: .init(x: .zero,
+                                         y: .zero,
+                                         width: UIScreen.main.bounds.width - 40,
+                                         height: .greatestFiniteMagnitude)
+        )
+        label.do {
+            $0.applyWSSFont(.body2, with: text)
+            $0.textAlignment = .left
+            $0.lineBreakStrategy = .hangulWordPriority
+            $0.numberOfLines = 0
+        }
+        label.sizeToFit()
+        let labelHeight = label.frame.height
+        return labelHeight
     }
     
     private func setDescriptionLabelText(with text: String) {
