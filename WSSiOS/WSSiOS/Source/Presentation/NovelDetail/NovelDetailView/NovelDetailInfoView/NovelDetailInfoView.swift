@@ -15,9 +15,8 @@ final class NovelDetailInfoView: UIView {
     //MARK: - Components
     
     private let stackView = UIStackView()
-    let descriptionSection = NovelDetailInfoDescriptionView()
-    let platformSection = NovelDetailInfoPlatformView()
-    
+    let descriptionView = NovelDetailInfoDescriptionView()
+    let platformView = NovelDetailInfoPlatformView()
     let reviewEmptyView = NovelDetailInfoReviewEmptyView()
     let reviewView = NovelDetailInfoReviewView()
     
@@ -48,8 +47,8 @@ final class NovelDetailInfoView: UIView {
     
     private func setHierarchy() {
         self.addSubview(stackView)
-        stackView.addArrangedSubviews(descriptionSection,
-                                      platformSection,
+        stackView.addArrangedSubviews(descriptionView,
+                                      platformView,
                                       reviewEmptyView,
                                       reviewView)
     }
@@ -62,15 +61,15 @@ final class NovelDetailInfoView: UIView {
                 $0.horizontalEdges.equalToSuperview()
             }
             
-            $0.setCustomSpacing(1, after: descriptionSection)
-            $0.setCustomSpacing(7, after: platformSection)
+            $0.setCustomSpacing(1, after: descriptionView)
+            $0.setCustomSpacing(7, after: platformView)
         }
     }
     
     //MARK: - Data
     
     func bindData(_ data: NovelDetailInfoResult) {
-        descriptionSection.bindData(data)
+        descriptionView.bindData(data)
         reviewView.bindData(data)
     }
     
