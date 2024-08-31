@@ -100,7 +100,7 @@ final class NovelDetailViewController: UIViewController {
     //MARK: - Bind
     
     private func registerCell() {
-        rootView.infoView.platformSection.platformCollectionView.register(
+        rootView.infoView.platformView.platformCollectionView.register(
             NovelDetailInfoPlatformCollectionViewCell.self,
             forCellWithReuseIdentifier: NovelDetailInfoPlatformCollectionViewCell.cellIdentifier)
         
@@ -171,7 +171,7 @@ final class NovelDetailViewController: UIViewController {
         
         output.isInfoDescriptionExpended
             .drive(with: self, onNext: { owner, isExpended in
-                owner.rootView.infoView.descriptionSection.updateAccordionButton(isExpended)
+                owner.rootView.infoView.descriptionView.updateAccordionButton(isExpended)
                 
                 let stickyoffset = owner.rootView.headerView.frame.size.height - owner.view.safeAreaInsets.top
                 let point = CGPoint(x: 0, y: stickyoffset)
@@ -182,14 +182,14 @@ final class NovelDetailViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.platformList
-            .drive(rootView.infoView.platformSection.platformCollectionView.rx.items(
+            .drive(rootView.infoView.platformView.platformCollectionView.rx.items(
                 cellIdentifier: NovelDetailInfoPlatformCollectionViewCell.cellIdentifier,
                 cellType: NovelDetailInfoPlatformCollectionViewCell.self)) { _, element, cell in
                     cell.bindData(data: element)
                 }
                 .disposed(by: disposeBag)
         
-        rootView.infoView.platformSection.platformCollectionView.rx.itemSelected
+        rootView.infoView.platformView.platformCollectionView.rx.itemSelected
             .withLatestFrom(output.platformList) {(indexPath: $0, platformList: $1)}
             .subscribe(with: self, onNext: { owner, data in
                 if let url = URL(string: data.platformList[data.indexPath.item].platformURL) {
@@ -227,7 +227,7 @@ final class NovelDetailViewController: UIViewController {
             feedTabBarButtonDidTap: rootView.tabBarView.feedButton.rx.tap,
             stickyInfoTabBarButtonDidTap: rootView.stickyTabBarView.infoButton.rx.tap,
             stickyFeedTabBarButtonDidTap: rootView.stickyTabBarView.feedButton.rx.tap,
-            descriptionAccordionButtonDidTap: rootView.infoView.descriptionSection.accordionButton.rx.tap
+            descriptionAccordionButtonDidTap: rootView.infoView.descriptionView.accordionButton.rx.tap
         )
     }
     
