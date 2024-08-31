@@ -104,12 +104,8 @@ final class NovelDetailInfoDescriptionView: UIView {
     }
     
     func isAccordionButtonHidden(text: String) {
-        
         let textHeight = getLabelHeight(text: text)
         let threeLineHeight = getLabelHeight(text: "1\n2\n3")
-        
-        print(threeLineHeight)
-        print(textHeight)
         
         if textHeight <= threeLineHeight {
             accordionButton.isHidden = true
