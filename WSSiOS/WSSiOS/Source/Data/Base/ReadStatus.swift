@@ -12,7 +12,7 @@ enum ReadStatus: String, CaseIterable {
     case watched
     case quit
     
-    var tagImage: UIImage {
+    var Image: UIImage {
         switch self {
         case .watching: return .icTagReading
         case .watched: return .icTagFinished
@@ -20,7 +20,7 @@ enum ReadStatus: String, CaseIterable {
         }
     }
     
-    var tagText: String {
+    var nameText: String {
         switch self {
         case .watching: return "보는 중"
         case .watched: return "봤어요"

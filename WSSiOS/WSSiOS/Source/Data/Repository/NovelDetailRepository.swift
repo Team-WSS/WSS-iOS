@@ -20,6 +20,6 @@ struct TestDetailRepository: NovelDetailRepository {
     }
     
     func getNovelDetailInfoData(novelId: Int) -> Observable<NovelDetailInfoResult> {
-        return Observable.just(NovelDetailInfoResult.dummyAllEmptyData[0])
+        return Observable.just(NovelDetailInfoResult.dummyFullData[0])
     }
 }
