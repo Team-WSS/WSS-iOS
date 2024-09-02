@@ -65,4 +65,8 @@ enum URLs {
     enum Feed {
         static let getFeeds = "/feeds"
     }
+    
+    enum Notice {
+        static let getNotices = "/notices"
+    }
 }
