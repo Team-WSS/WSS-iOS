@@ -1236,9 +1236,7 @@
 		A107A4A72B4DDE4900668C3E /* HomeView */ = {
 			isa = PBXGroup;
 			children = (
-				B9AC1BD12BF0B485006EDE92 /* HomeNoticeView.swift */,
 				A1708F172B4D8E2F00E35E50 /* HomeView.swift */,
-				B9095D292C3950B4007521EF /* HomeNoticeDetailView.swift */,
 				A14EDBBD2B4F05DD00906957 /* HomeCell */,
 				A1708F112B4D8DD300E35E50 /* HomeAssistantView */,
 			);
@@ -1357,7 +1355,6 @@
 				C9AF1AE32BCC28EE00208BC9 /* HomeTodayPopularCollectionViewCell.swift */,
 				B9B0CBD72BE2A09B002F4CF6 /* HomeInterestCollectionViewCell.swift */,
 				B9181BDD2BEBE2300024C800 /* HomeTasteRecommendCollectionViewCell.swift */,
-				B9AC1BD32BF0B529006EDE92 /* HomeNoticeTableViewCell.swift */,
 				B9A0FD6B2BFCF0080004252E /* HomeRealtimePopularCollectionViewCell.swift */,
 				B9A0FD6D2BFCF16F0004252E /* HomeRealtimePopularContentTableViewCell.swift */,
 			);
@@ -1367,9 +1364,9 @@
 		A1708F102B4D8DCD00E35E50 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				B96D10C22BED2ED100D4D84C /* HomeViewModel */,
-				A107A4A72B4DDE4900668C3E /* HomeView */,
-				A1708F122B4D8DDE00E35E50 /* HomeViewController */,
+				C978B30E2C87886D00C78F77 /* HomeNoticeDetail */,
+				C978B30D2C87886600C78F77 /* HomeNotice */,
+				C978B30C2C87886000C78F77 /* Home */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -1386,7 +1383,6 @@
 				B9CEDA0C2C01C97E00E62247 /* HomeUnregisterView.swift */,
 				B9FE59632BF11955005815AF /* HomeInduceLoginModalView.swift */,
 				B942C78D2BFCD39700C4A8C6 /* HomeRealtimePopularContentView.swift */,
-				B9095D2B2C39514D007521EF /* HomeNoticeDetailContentView.swift */,
 			);
 			path = HomeAssistantView;
 			sourceTree = "<group>";
@@ -1395,8 +1391,6 @@
 			isa = PBXGroup;
 			children = (
 				A1708F132B4D8DF400E35E50 /* HomeViewController.swift */,
-				B9AC1BCF2BF0B33E006EDE92 /* HomeNoticeViewController.swift */,
-				B9095D272C394FC7007521EF /* HomeNoticeDetailViewController.swift */,
 			);
 			path = HomeViewController;
 			sourceTree = "<group>";
@@ -1603,8 +1597,6 @@
 			isa = PBXGroup;
 			children = (
 				B96D10C32BED2EDB00D4D84C /* HomeViewModel.swift */,
-				B9AC1BD52BF0BB9D006EDE92 /* HomeNoticeViewModel.swift */,
-				B9095D2D2C395598007521EF /* HomeNoticeDetailViewModel.swift */,
 			);
 			path = HomeViewModel;
 			sourceTree = "<group>";
@@ -1644,6 +1636,102 @@
 				B960987F2C27201B0084F697 /* NormalSearchResultCountView.swift */,
 			);
 			path = NormalAssistantView;
+			sourceTree = "<group>";
+		};
+		C978B30C2C87886000C78F77 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				A1708F122B4D8DDE00E35E50 /* HomeViewController */,
+				A107A4A72B4DDE4900668C3E /* HomeView */,
+				B96D10C22BED2ED100D4D84C /* HomeViewModel */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		C978B30D2C87886600C78F77 /* HomeNotice */ = {
+			isa = PBXGroup;
+			children = (
+				C978B3142C8788C100C78F77 /* HomeNoticeViewController */,
+				C978B3132C8788BC00C78F77 /* HomeNoticeViewModel */,
+				C978B3122C8788B300C78F77 /* HomeNoticeView */,
+			);
+			path = HomeNotice;
+			sourceTree = "<group>";
+		};
+		C978B30E2C87886D00C78F77 /* HomeNoticeDetail */ = {
+			isa = PBXGroup;
+			children = (
+				C978B3112C87889100C78F77 /* HomeNoticeDetailView */,
+				C978B3102C87888A00C78F77 /* HomeNoticeDetailViewModel */,
+				C978B30F2C87887A00C78F77 /* HomeNoticeDetailViewController */,
+			);
+			path = HomeNoticeDetail;
+			sourceTree = "<group>";
+		};
+		C978B30F2C87887A00C78F77 /* HomeNoticeDetailViewController */ = {
+			isa = PBXGroup;
+			children = (
+				B9095D272C394FC7007521EF /* HomeNoticeDetailViewController.swift */,
+			);
+			path = HomeNoticeDetailViewController;
+			sourceTree = "<group>";
+		};
+		C978B3102C87888A00C78F77 /* HomeNoticeDetailViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				B9095D2D2C395598007521EF /* HomeNoticeDetailViewModel.swift */,
+			);
+			path = HomeNoticeDetailViewModel;
+			sourceTree = "<group>";
+		};
+		C978B3112C87889100C78F77 /* HomeNoticeDetailView */ = {
+			isa = PBXGroup;
+			children = (
+				C978B3162C87891B00C78F77 /* HomeNoticeDetailAssistantView */,
+				B9095D292C3950B4007521EF /* HomeNoticeDetailView.swift */,
+			);
+			path = HomeNoticeDetailView;
+			sourceTree = "<group>";
+		};
+		C978B3122C8788B300C78F77 /* HomeNoticeView */ = {
+			isa = PBXGroup;
+			children = (
+				C978B3152C87890C00C78F77 /* HomeNoticeCell */,
+				B9AC1BD12BF0B485006EDE92 /* HomeNoticeView.swift */,
+			);
+			path = HomeNoticeView;
+			sourceTree = "<group>";
+		};
+		C978B3132C8788BC00C78F77 /* HomeNoticeViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				B9AC1BD52BF0BB9D006EDE92 /* HomeNoticeViewModel.swift */,
+			);
+			path = HomeNoticeViewModel;
+			sourceTree = "<group>";
+		};
+		C978B3142C8788C100C78F77 /* HomeNoticeViewController */ = {
+			isa = PBXGroup;
+			children = (
+				B9AC1BCF2BF0B33E006EDE92 /* HomeNoticeViewController.swift */,
+			);
+			path = HomeNoticeViewController;
+			sourceTree = "<group>";
+		};
+		C978B3152C87890C00C78F77 /* HomeNoticeCell */ = {
+			isa = PBXGroup;
+			children = (
+				B9AC1BD32BF0B529006EDE92 /* HomeNoticeTableViewCell.swift */,
+			);
+			path = HomeNoticeCell;
+			sourceTree = "<group>";
+		};
+		C978B3162C87891B00C78F77 /* HomeNoticeDetailAssistantView */ = {
+			isa = PBXGroup;
+			children = (
+				B9095D2B2C39514D007521EF /* HomeNoticeDetailContentView.swift */,
+			);
+			path = HomeNoticeDetailAssistantView;
 			sourceTree = "<group>";
 		};
 		C98B8E752C790C3B008BF2AA /* SearchAssistantView */ = {
