@@ -16,14 +16,31 @@ protocol RecommendRepository {
     func getTasteRecommendNovels() -> Observable<[TasteRecommendNovel]>
 }
 
-/// DefaultRecommendRepository - 서버 로직 구현
-//struct DefaultRecommendRepository: RecommendRepository {
-//    private let recommendService: RecommendService
-//
-//    init(recommendService: RecommendService) {
-//        self.recommendService = recommendService
-//    }
-//}
+struct DefaultRecommendRepository: RecommendRepository {
+    
+    private let recommendService: RecommendService
+    
+    init(recommendService: RecommendService) {
+        self.recommendService = recommendService
+    }
+    
+    func getTodayPopularNovels() -> Observable<[TodayPopularNovel]> {
+        return recommendService.getTodayPopularNovels().asObservable()
+    }
+    
+    func getRealtimePopularFeeds() -> Observable<[RealtimePopularFeed]> {
+        return recommendService.getRealtimePopularFeeds().asObservable()
+    }
+    
+    func getInterestNovels() -> Observable<[InterestFeed]> {
+        return recommendService.getInterestFeeds().asObservable()
+    }
+    
+    func getTasteRecommendNovels() -> Observable<[TasteRecommendNovel]> {
+        return recommendService.getTasteRecommendNovels().asObservable()
+    }
+    
+}
 
 struct TestRecommendRepository: RecommendRepository {
     func getTodayPopularNovels() -> Observable<[TodayPopularNovel]> {

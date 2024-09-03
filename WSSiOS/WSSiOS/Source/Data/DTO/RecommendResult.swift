@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct TodayPopularNovel {
+struct TodayPopularNovel: Codable {
     var novelId: Int
     var title: String
     var novelImage: String
@@ -16,14 +16,14 @@ struct TodayPopularNovel {
     var feedContent: String
 }
 
-struct RealtimePopularFeed {
+struct RealtimePopularFeed: Codable {
     var feedId: Int
     var feedContent: String
     var feedLikeCount: Int
     var feedCommentCount: Int
 }
 
-struct InterestFeed {
+struct InterestFeed: Codable {
     var novelId: Int
     var novelTitle: String
     var novelImage: String
@@ -34,7 +34,7 @@ struct InterestFeed {
     var userFeedContent: String
 }
 
-struct TasteRecommendNovel {
+struct TasteRecommendNovel: Codable {
     var novelId: Int
     var novelTitle: String
     var novelAuthor: String

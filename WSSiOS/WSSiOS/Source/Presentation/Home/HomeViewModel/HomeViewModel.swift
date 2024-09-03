@@ -35,12 +35,9 @@ final class HomeViewModel: ViewModelType {
     
     //MARK: - init
     
-    init(recommendRepository: TestRecommendRepository) {
+    init(recommendRepository: RecommendRepository) {
         self.recommendRepository = recommendRepository
     }
-    
-    //MARK: - API
-    
 }
 
 extension HomeViewModel {

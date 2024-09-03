@@ -53,7 +53,7 @@ enum WSSTabBarItem: CaseIterable {
     var itemViewController: UIViewController {
         switch self {
         case .home:
-            return HomeViewController(viewModel: HomeViewModel(recommendRepository: TestRecommendRepository()))
+            return HomeViewController(viewModel: HomeViewModel(recommendRepository: DefaultRecommendRepository(recommendService: DefaultRecommendService())))
             
         case .search:
             return SearchViewController(viewModel: SearchViewModel(searchRepository: TestSearchRepository()))
