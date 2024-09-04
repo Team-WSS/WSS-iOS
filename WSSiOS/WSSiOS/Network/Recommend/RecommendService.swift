@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 
 protocol RecommendService {
-    func getTodayPopularNovels() -> Single<[TodayPopularNovel]>
+    func getTodayPopularNovels() -> Single<TodayPopularNovels>
     func getRealtimePopularFeeds() -> Single<[RealtimePopularFeed]>
     func getInterestFeeds() -> Single<[InterestFeed]>
     func getTasteRecommendNovels() -> Single<[TasteRecommendNovel]>
@@ -25,7 +25,7 @@ final class DefaultRecommendService: NSObject, Networking {
 
 extension DefaultRecommendService: RecommendService {
     /// 오늘의 인기작 조회
-    func getTodayPopularNovels() -> Single<[TodayPopularNovel]> {
+    func getTodayPopularNovels() -> Single<TodayPopularNovels> {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.Recommend.getTodayPopulars,
@@ -36,7 +36,7 @@ extension DefaultRecommendService: RecommendService {
             
             return urlSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
-                                       to: [TodayPopularNovel].self) }
+                                       to: TodayPopularNovels.self) }
                 .asSingle()
             
         } catch {

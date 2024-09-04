@@ -46,7 +46,7 @@ extension HomeViewModel {
 
         recommendRepository.getTodayPopularNovels()
             .subscribe(with: self, onNext: { owner, data in
-                output.todayPopularList.accept(data)
+                output.todayPopularList.accept(data.popularNovels)
             }, onError: { owner, error in
                 print(error)
             })

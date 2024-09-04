@@ -7,12 +7,16 @@
 
 import Foundation
 
+struct TodayPopularNovels: Codable {
+    var popularNovels: [TodayPopularNovel]
+}
+
 struct TodayPopularNovel: Codable {
     var novelId: Int
     var title: String
     var novelImage: String
-    var avatarImage: String
-    var nickname: String
+    var avatarImage: String?
+    var nickname: String?
     var feedContent: String
 }
 
