@@ -21,6 +21,7 @@ final class NovelReviewStatusView: UIView {
     //MARK: - Components
     
     let statusCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+    let dateButton = UIButton()
     
     //MARK: - Life Cycle
     
@@ -39,6 +40,10 @@ final class NovelReviewStatusView: UIView {
     //MARK: - UI
     
     private func setUI() {
+        self.do {
+            $0.backgroundColor = .wssWhite
+        }
+        
         statusCollectionView.do {
             let layout = UICollectionViewFlowLayout()
             layout.scrollDirection = .vertical
@@ -49,17 +54,29 @@ final class NovelReviewStatusView: UIView {
             $0.collectionViewLayout = layout
             $0.isScrollEnabled = false
         }
+        
+        dateButton.do {
+            $0.setButtonUnderlinedAttributedTitle(text: StringLiterals.NovelReview.Date.addDate, font: .Body4_2, color: .wssGray200)
+        }
     }
     
     private func setHierarchy() {
-        self.addSubview(statusCollectionView)
+        self.addSubviews(statusCollectionView,
+                         dateButton)
     }
     
     private func setLayout() {
         statusCollectionView.snp.makeConstraints {
-            $0.centerX.top.bottom.equalToSuperview()
+            $0.top.equalToSuperview().inset(45)
+            $0.centerX.equalToSuperview()
             $0.width.equalTo(315)
             $0.height.equalTo(78)
+        }
+        
+        dateButton.snp.makeConstraints {
+            $0.top.equalTo(statusCollectionView.snp.bottom).offset(17.5)
+            $0.bottom.equalToSuperview().inset(30)
+            $0.centerX.equalToSuperview()
         }
     }
 }
