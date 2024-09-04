@@ -62,7 +62,7 @@ extension HomeViewModel {
         
         recommendRepository.getInterestNovels()
             .subscribe(with: self, onNext: { owner, data in
-                output.interestList.accept(data)
+                output.interestList.accept(data.recommendFeeds)
             }, onError: { owner, error in
                 print(error)
             })
@@ -70,7 +70,7 @@ extension HomeViewModel {
         
         recommendRepository.getTasteRecommendNovels()
             .subscribe(with: self, onNext: { owner, data in
-                output.tasteRecommendList.accept(data)
+                output.tasteRecommendList.accept(data.tasteNovels)
             }, onError: { owner, error in
                 print(error)
             })

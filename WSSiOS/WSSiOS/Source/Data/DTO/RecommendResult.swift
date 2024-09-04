@@ -27,6 +27,10 @@ struct RealtimePopularFeed: Codable {
     var feedCommentCount: Int
 }
 
+struct InterestFeeds: Codable {
+    var recommendFeeds: [InterestFeed]
+}
+
 struct InterestFeed: Codable {
     var novelId: Int
     var novelTitle: String
@@ -36,6 +40,17 @@ struct InterestFeed: Codable {
     var userNickname: String
     var userAvatarImage: String
     var userFeedContent: String
+    
+    enum CodingKeys: String, CodingKey {
+        case novelId, novelTitle, novelImage, novelRating, novelRatingCount
+        case userNickname = "nickname"
+        case userAvatarImage = "avatarImage"
+        case userFeedContent = "feedContent"
+    }
+}
+
+struct TasteRecommendNovels: Codable {
+    var tasteNovels: [TasteRecommendNovel]
 }
 
 struct TasteRecommendNovel: Codable {
@@ -46,5 +61,11 @@ struct TasteRecommendNovel: Codable {
     var novelLikeCount: Int
     var novelRating: Float
     var novelRatingCount: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case novelId, novelImage, novelRating, novelRatingCount
+        case novelTitle = "title"
+        case novelAuthor = "author"
+        case novelLikeCount = "interestCount"
+    }
 }
-

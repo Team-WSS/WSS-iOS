@@ -12,8 +12,8 @@ import RxSwift
 protocol RecommendService {
     func getTodayPopularNovels() -> Single<TodayPopularNovels>
     func getRealtimePopularFeeds() -> Single<[RealtimePopularFeed]>
-    func getInterestFeeds() -> Single<[InterestFeed]>
-    func getTasteRecommendNovels() -> Single<[TasteRecommendNovel]>
+    func getInterestFeeds() -> Single<InterestFeeds>
+    func getTasteRecommendNovels() -> Single<TasteRecommendNovels>
 }
 
 final class DefaultRecommendService: NSObject, Networking {
@@ -65,7 +65,7 @@ extension DefaultRecommendService: RecommendService {
     }
     
     /// 관심글 조회
-    func getInterestFeeds() -> Single<[InterestFeed]> {
+    func getInterestFeeds() -> Single<InterestFeeds> {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.Recommend.getInterestFeeds,
@@ -76,7 +76,7 @@ extension DefaultRecommendService: RecommendService {
             
             return urlSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
-                                       to: [InterestFeed].self) }
+                                       to: InterestFeeds.self) }
                 .asSingle()
             
         } catch {
@@ -85,7 +85,7 @@ extension DefaultRecommendService: RecommendService {
     }
     
     /// 취향 추천 작품 조회
-    func getTasteRecommendNovels() -> Single<[TasteRecommendNovel]> {
+    func getTasteRecommendNovels() -> Single<TasteRecommendNovels> {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.Recommend.getTasteRecommendNovels,
@@ -96,7 +96,7 @@ extension DefaultRecommendService: RecommendService {
             
             return urlSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
-                                       to: [TasteRecommendNovel].self) }
+                                       to: TasteRecommendNovels.self) }
                 .asSingle()
             
         } catch {

@@ -12,8 +12,8 @@ import RxSwift
 protocol RecommendRepository {
     func getTodayPopularNovels() -> Observable<TodayPopularNovels>
     func getRealtimePopularFeeds() -> Observable<[RealtimePopularFeed]>
-    func getInterestNovels() -> Observable<[InterestFeed]>
-    func getTasteRecommendNovels() -> Observable<[TasteRecommendNovel]>
+    func getInterestNovels() -> Observable<InterestFeeds>
+    func getTasteRecommendNovels() -> Observable<TasteRecommendNovels>
 }
 
 struct DefaultRecommendRepository: RecommendRepository {
@@ -32,11 +32,11 @@ struct DefaultRecommendRepository: RecommendRepository {
         return recommendService.getRealtimePopularFeeds().asObservable()
     }
     
-    func getInterestNovels() -> Observable<[InterestFeed]> {
+    func getInterestNovels() -> Observable<InterestFeeds> {
         return recommendService.getInterestFeeds().asObservable()
     }
     
-    func getTasteRecommendNovels() -> Observable<[TasteRecommendNovel]> {
+    func getTasteRecommendNovels() -> Observable<TasteRecommendNovels> {
         return recommendService.getTasteRecommendNovels().asObservable()
     }
     
