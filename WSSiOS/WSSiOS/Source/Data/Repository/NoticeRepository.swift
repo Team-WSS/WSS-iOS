@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 
 protocol NoticeRepository {
-    func getNotices() -> Observable<[Notice]>
+    func getNotices() -> Observable<Notices>
 }
 
 struct DefaultNoticeRepository: NoticeRepository {
@@ -21,7 +21,7 @@ struct DefaultNoticeRepository: NoticeRepository {
         self.noticeService = noticeService
     }
     
-    func getNotices() -> Observable<[Notice]> {
+    func getNotices() -> Observable<Notices> {
         return noticeService.getNoticeList().asObservable()
     }
 }

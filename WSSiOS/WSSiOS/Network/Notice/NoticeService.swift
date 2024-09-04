@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 
 protocol NoticeService {
-    func getNoticeList() -> Single<[Notice]>
+    func getNoticeList() -> Single<Notices>
 }
 
 final class DefaultNoticeService: NSObject, Networking, NoticeService {
@@ -19,7 +19,7 @@ final class DefaultNoticeService: NSObject, Networking, NoticeService {
                                         delegate: nil,
                                         delegateQueue: nil)
     
-    func getNoticeList() -> Single<[Notice]> {
+    func getNoticeList() -> Single<Notices> {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.Notice.getNotices,
@@ -29,7 +29,7 @@ final class DefaultNoticeService: NSObject, Networking, NoticeService {
             NetworkLogger.log(request: request)
             
             return urlSession.rx.data(request: request)
-                .map { try self.decode(data: $0, to: [Notice].self) }
+                .map { try self.decode(data: $0, to: Notices.self) }
                 .asSingle()
         } catch {
             return Single.error(error)

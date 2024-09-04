@@ -7,6 +7,10 @@
 
 import Foundation
 
+struct Notices: Codable {
+    var notices: [Notice]
+}
+
 struct Notice: Codable {
     var noticeTitle: String
     var noticeContent: String
