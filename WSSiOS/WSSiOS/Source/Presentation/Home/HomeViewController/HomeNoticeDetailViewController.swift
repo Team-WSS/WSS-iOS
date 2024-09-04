@@ -8,6 +8,7 @@
 import UIKit
 
 import RxSwift
+import RxRelay
 
 final class HomeNoticeDetailViewController: UIViewController {
     
@@ -16,6 +17,9 @@ final class HomeNoticeDetailViewController: UIViewController {
     private let viewModel: HomeNoticeDetailViewModel
     private let disposeBag = DisposeBag()
     
+    private let notice: Notice
+    private let viewWillAppearEvent = BehaviorRelay(value: Notice(noticeTitle: "", noticeContent: "", createdDate: ""))
+    
     //MARK: - UI Components
     
     private let rootView = HomeNoticeDetailView()
@@ -23,8 +27,9 @@ final class HomeNoticeDetailViewController: UIViewController {
     
     //MARK: - Life Cycle
     
-    init(viewModel: HomeNoticeDetailViewModel) {
+    init(viewModel: HomeNoticeDetailViewModel, notice: Notice) {
         self.viewModel = viewModel
+        self.notice = notice
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -42,6 +47,7 @@ final class HomeNoticeDetailViewController: UIViewController {
         preparationSetNavigationBar(title: StringLiterals.Navigation.Title.notice,
                                     left: self.backButton,
                                     right: nil)
+        viewWillAppearEvent.accept(self.notice)
     }
     
     override func viewDidLoad() {
@@ -64,7 +70,7 @@ final class HomeNoticeDetailViewController: UIViewController {
     //MARK: - Bind
     
     private func bindViewModel() {
-        let input = HomeNoticeDetailViewModel.Input()
+        let input = HomeNoticeDetailViewModel.Input(viewWillAppearEvent: self.viewWillAppearEvent.asObservable())
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.noticeData
