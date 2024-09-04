@@ -19,7 +19,7 @@ final class NovelReviewView: UIView {
     let scrollView = UIScrollView()
     let stackView = UIStackView()
     let novelReviewStatusView = NovelReviewStatusView()
-    let novelReviewDateView = NovelReviewDateView()
+    let novelReviewRatingView = NovelReviewRatingView()
     
     //MARK: - Life Cycle
     
@@ -58,10 +58,10 @@ final class NovelReviewView: UIView {
         }
         
         stackView.do {
+            $0.backgroundColor = .wssGray50
+            $0.spacing = 1
             $0.alignment = .fill
             $0.axis = .vertical
-            $0.layoutMargins = UIEdgeInsets(top: 45, left: 0, bottom: 0, right: 0)
-            $0.isLayoutMarginsRelativeArrangement = true
         }
     }
     
@@ -69,7 +69,7 @@ final class NovelReviewView: UIView {
         self.addSubview(scrollView)
         scrollView.addSubview(stackView)
         stackView.addArrangedSubviews(novelReviewStatusView,
-                                      novelReviewDateView)
+                                      novelReviewRatingView)
     }
     
     private func setLayout() {
