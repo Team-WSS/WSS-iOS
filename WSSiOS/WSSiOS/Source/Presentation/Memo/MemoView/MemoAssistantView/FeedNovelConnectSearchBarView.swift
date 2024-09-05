@@ -35,10 +35,10 @@ final class FeedNovelConnectSearchBarView: UIView {
     
     private func setUI() {
         titleTextField.do {
-//            $0.becomeFirstResponder()
+            $0.becomeFirstResponder()
             $0.returnKeyType = .done
-            $0.autocapitalizationType = .none
             $0.autocorrectionType = .no
+            $0.spellCheckingType = .no
             $0.tintColor = .black
             $0.backgroundColor = .white
             $0.textColor = .wssBlack
