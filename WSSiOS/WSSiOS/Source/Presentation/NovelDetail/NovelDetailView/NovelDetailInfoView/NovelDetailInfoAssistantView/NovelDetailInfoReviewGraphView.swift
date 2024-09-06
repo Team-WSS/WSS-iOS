@@ -78,7 +78,7 @@ final class NovelDetailInfoReviewGraphView: UIView {
                 $0.height.equalTo(100)
                 
                 graphValueView.snp.makeConstraints {
-                    $0.top.equalToSuperview().inset(0)
+                    $0.top.equalToSuperview()
                     $0.horizontalEdges.equalToSuperview()
                     $0.bottom.equalToSuperview()
                 }
