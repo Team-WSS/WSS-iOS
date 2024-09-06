@@ -135,6 +135,9 @@ final class NovelDetailViewController: UIViewController {
                 let stickyoffset = owner.rootView.headerView.frame.size.height - owner.view.safeAreaInsets.top
                 let showStickyTabBar = offset.y > stickyoffset
                 owner.rootView.updateStickyTabBarShow(showStickyTabBar)
+                if offset.y < 0 {
+                    owner.rootView.scrollView.rx.contentOffset.onNext(CGPoint(x: 0, y: 0))
+                }
             })
             .disposed(by: disposeBag)
         
