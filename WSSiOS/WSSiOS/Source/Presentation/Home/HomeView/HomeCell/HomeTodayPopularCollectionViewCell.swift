@@ -197,18 +197,24 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
         }
         
         if let avatarImage = data.avatarImage {
-                self.userProfileView.kfSetImage(url: avatarImage)
-                self.userProfileView.isHidden = false
-                self.introductionImageView.isHidden = true
-            } else {
-                self.userProfileView.isHidden = true
-                self.introductionImageView.isHidden = false
-
-                self.commentTitleLabel.snp.remakeConstraints {
-                    $0.top.equalTo(introductionImageView.snp.top).offset(-2)
-                    $0.leading.equalTo(introductionImageView.snp.trailing).offset(8)
-                }
+            self.userProfileView.kfSetImage(url: avatarImage)
+            self.userProfileView.isHidden = false
+            self.introductionImageView.isHidden = true
+            
+            self.commentTitleLabel.snp.remakeConstraints {
+                $0.top.equalTo(userProfileView.snp.top)
+                $0.leading.equalTo(userProfileView.snp.trailing).offset(10)
             }
+        }
+        else {
+            self.userProfileView.isHidden = true
+            self.introductionImageView.isHidden = false
+            
+            self.commentTitleLabel.snp.remakeConstraints {
+                $0.top.equalTo(introductionImageView.snp.top).offset(-2)
+                $0.leading.equalTo(introductionImageView.snp.trailing).offset(8)
+            }
+        }
         
         self.commentTitleLabel.do {
             if let nickname = data.nickname {
