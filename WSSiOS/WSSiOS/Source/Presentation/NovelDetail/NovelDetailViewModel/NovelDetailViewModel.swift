@@ -18,16 +18,21 @@ final class NovelDetailViewModel: ViewModelType {
     private let novelDetailRepository: NovelDetailRepository
     private let novelId: Int
     
+    //Total
     private let viewWillAppearEvent = BehaviorRelay<Bool>(value: false)
+    
+    //NovelDetailHeader
     private let novelDetailHeaderData = PublishSubject<NovelDetailHeaderResult>()
-    private let novelDetailInfoData = PublishSubject<NovelDetailInfoResult>()
     private let showLargeNovelCoverImage = BehaviorRelay<Bool>(value: false)
+    
+    //Tab
     private let selectedTab = BehaviorRelay<Tab>(value: Tab.info)
     
+    //NovelDetailInfo
+    private let novelDetailInfoData = PublishSubject<NovelDetailInfoResult>()
     private let isInfoDescriptionExpended = BehaviorRelay<Bool>(value: false)
     private let platformList = BehaviorRelay<[Platform]>(value: [])
     private let keywordList = BehaviorRelay<[Keyword]>(value: [])
-    
     private let reviewSectionVisibilities = BehaviorRelay<[ReviewSectionVisibility]>(value: [])
     
     //MARK: - Life Cycle
