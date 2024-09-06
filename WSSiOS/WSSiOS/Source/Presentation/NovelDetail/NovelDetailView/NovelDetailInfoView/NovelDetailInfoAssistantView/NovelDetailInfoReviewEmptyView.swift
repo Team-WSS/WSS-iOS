@@ -80,7 +80,7 @@ final class NovelDetailInfoReviewEmptyView: UIView {
         reviewEmptyLabel.snp.makeConstraints {
             $0.top.equalTo(reviewEmptyImageView.snp.bottom).offset(20)
             $0.centerX.equalToSuperview()
-            $0.bottom.equalToSuperview().inset(80)
+            $0.bottom.equalToSuperview().inset(70)
         }
     }
 }
