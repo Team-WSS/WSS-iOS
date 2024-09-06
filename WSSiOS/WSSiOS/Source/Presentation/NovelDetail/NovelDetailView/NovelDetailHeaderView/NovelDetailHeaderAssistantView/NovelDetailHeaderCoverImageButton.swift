@@ -7,6 +7,7 @@
 
 import UIKit
 
+import Kingfisher
 import SnapKit
 import Then
 
@@ -49,10 +50,10 @@ final class NovelDetailHeaderCoverImageButton: UIButton {
                 $0.layer.cornerRadius = 8
                 $0.clipsToBounds = true
                 
-                    novelGenreImageView.do {
-                        $0.image = .icGenreBackground
-                        $0.contentMode = .scaleAspectFit
-                    }
+                novelGenreImageView.do {
+                    $0.image = .icGenreBackground
+                    $0.contentMode = .scaleAspectFit
+                }
             }
         }
     }
@@ -84,7 +85,20 @@ final class NovelDetailHeaderCoverImageButton: UIButton {
     //MARK: - Data
     
     func bindData(_ data: NovelDetailHeaderResult) {
-        novelCoverImageView.image = UIImage(named: data.novelImage)
+        novelCoverImageView.kf.indicatorType = .activity
+        novelCoverImageView.kf.setImage(with: URL(string: data.novelImage),
+                                        placeholder: nil,
+                                        options: [.transition(.fade(0.25))],
+                                        progressBlock: nil, completionHandler: { result in
+            switch(result) {
+            case .success(let imageResult):
+                self.novelCoverImageView.image = imageResult.image
+            case .failure(let error):
+                self.novelCoverImageView.image = .imgLoadingThumbnail
+                print(error)
+            }
+        })
+        
         novelGenreImageView.image = UIImage(named: data.novelGenreImage)
     }
 }
