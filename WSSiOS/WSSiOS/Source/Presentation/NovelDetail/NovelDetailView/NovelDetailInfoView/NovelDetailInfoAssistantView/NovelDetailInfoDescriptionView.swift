@@ -76,13 +76,14 @@ final class NovelDetailInfoDescriptionView: UIView {
         }
         
         accordionButton.snp.makeConstraints {
-            $0.top.equalTo(descriptionLabel.snp.bottom).offset(10)
-            $0.bottom.equalToSuperview()
+            $0.top.equalTo(descriptionLabel.snp.bottom).offset(19.5)
+            $0.bottom.equalToSuperview().inset(9.5)
             $0.centerX.equalToSuperview()
-            $0.size.equalTo(44)
+            $0.width.equalTo(44)
+            $0.height.equalTo(25)
             
             accordionImageView.snp.makeConstraints {
-                $0.top.equalTo(9.5)
+                $0.top.equalToSuperview()
                 $0.centerX.equalToSuperview()
                 $0.size.equalTo(16)
             }
