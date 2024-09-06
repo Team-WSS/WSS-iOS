@@ -250,7 +250,7 @@ enum StringLiterals {
         
         enum Tab {
             static let info = "정보"
-            static let feed = "피드"
+            static let feed = "수다"
         }
         
         enum Info {
