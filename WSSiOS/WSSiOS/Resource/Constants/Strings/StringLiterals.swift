@@ -274,7 +274,7 @@ enum StringLiterals {
         static let induceButton = "내 취향에 맞는 작품 탐색하기"
         
         static let sosoTitle = "소소"
-        static let sosoDescription = "다른 사람들이 최근에 읽고 있는 작품이에요"
+        static let sosoDescription = "사람들이 최근에 읽고 있는 웹소설이에요"
         
         static let novel = "작품"
         
