@@ -27,7 +27,7 @@ enum OldNovelGenre: String {
 }
 
 enum NovelGenre: String, CaseIterable {
-    case romance, romanceFantasy, fantasy, modernFantasy, wuxia, BL, lightNovel, mystery, drama, error
+    case romance, romanceFantasy, fantasy, modernFantasy, wuxia, BL, lightNovel, mystery, drama
     
     var toKorean: String {
         switch self {
@@ -49,8 +49,6 @@ enum NovelGenre: String, CaseIterable {
             return "미스터리"
         case .BL:
             return "BL"
-        case .error:
-            return "error"
         }
     }
 }
