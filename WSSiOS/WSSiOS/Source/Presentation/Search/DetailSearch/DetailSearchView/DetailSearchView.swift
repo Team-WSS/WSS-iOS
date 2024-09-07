@@ -37,13 +37,17 @@ final class DetailSearchView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        backgroundView.roundCorners([.topLeft, .topRight], radius: 15)
+    }
+    
     private func setUI() {
         self.backgroundColor = .black.withAlphaComponent(0.6)
         
         backgroundView.do {
             $0.backgroundColor = .wssWhite
-            $0.layer.cornerRadius = 15
-            $0.clipsToBounds = true
         }
         
         cancelModalButton.do {
@@ -52,7 +56,6 @@ final class DetailSearchView: UIView {
     }
     
     private func setHierarchy() {
-        
         backgroundView.addSubviews(cancelModalButton,
                                    detailSearchHeaderView,
                                    detailSearchInfoView,
@@ -88,7 +91,6 @@ final class DetailSearchView: UIView {
             detailSearchBottomView.snp.makeConstraints {
                 $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom)
                 $0.leading.trailing.equalToSuperview()
-                $0.height.equalTo(62)
             }
         }
     }

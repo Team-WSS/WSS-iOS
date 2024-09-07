@@ -17,7 +17,7 @@ final class RegisterNormalToggleButton: UIButton {
     
     // 상태별 스위치 배경 색상
     let onColor = UIColor.wssPrimary100
-    let offColor = UIColor.wssGray100
+    let offColor = UIColor.wssGray70
     
     // 스위치가 이동하는 애니메이션 시간
     var animationDuration: TimeInterval = 0.20

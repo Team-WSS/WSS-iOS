@@ -37,7 +37,7 @@ enum WSSFont {
         case .headline1: return 1.4
         case .title1: return 1.4
         case .title2: return 1.4
-        case .title3: return 1.0
+        case .title3: return 1.5
         case .body1: return 1.4
         case .body2: return 1.5
         case .body3: return 1.5

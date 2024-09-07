@@ -10,6 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 import RxGesture
+import RxRelay
 
 final class DetailSearchViewModel: ViewModelType {
     
@@ -17,8 +18,7 @@ final class DetailSearchViewModel: ViewModelType {
     
     /// 정보 뷰
     private let cancelButtonEnabled = PublishRelay<Bool>()
-    private let genreList = BehaviorRelay<[String]>(value: DetailSearchGenre.allCases.map { $0.withKorean })
-    private let genreCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
+    private let genreList = BehaviorRelay<[String]>(value: NovelGenre.allCases.map { $0.toKorean })
     private let selectedTab = BehaviorRelay<DetailSearchTab>(value: DetailSearchTab.info)
     
     /// 키워드 뷰
@@ -90,34 +90,5 @@ final class DetailSearchViewModel: ViewModelType {
         }
         
         return worldKeywordList.value[indexPath.item]
-    }
-}
-
-enum DetailSearchGenre: CaseIterable {
-    case romance, romanceFantasy, fantasy
-    case modernFantasy, wuxia, mystery, drama
-    case lightNovel, bl
-    
-    var withKorean: String {
-        switch self {
-        case .romance:
-            return "로맨스"
-        case .romanceFantasy:
-            return "로판"
-        case .fantasy:
-            return "판타지"
-        case .modernFantasy:
-            return "현판"
-        case .wuxia:
-            return "무협"
-        case .mystery:
-            return "미스터리"
-        case .drama:
-            return "드라마"
-        case .lightNovel:
-            return "라노벨"
-        case .bl:
-            return "BL"
-        }
     }
 }

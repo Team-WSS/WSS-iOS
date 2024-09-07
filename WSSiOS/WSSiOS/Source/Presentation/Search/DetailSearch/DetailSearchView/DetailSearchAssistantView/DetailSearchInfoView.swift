@@ -15,7 +15,7 @@ final class DetailSearchInfoView: UIView {
     //MARK: - UI Components
     
     /// 장르
-    private let genreTItleLabel = UILabel()
+    private let genreTitleLabel = UILabel()
     
     let genreCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     
@@ -53,7 +53,7 @@ final class DetailSearchInfoView: UIView {
     }
     
     private func setUI() {
-        genreTItleLabel.do {
+        genreTitleLabel.do {
             $0.applyWSSFont(.title2, with: StringLiterals.DetailSearch.genre)
             $0.textColor = .wssBlack
         }
@@ -121,12 +121,6 @@ final class DetailSearchInfoView: UIView {
                 $0.setText(StringLiterals.DetailSearch.ratingaboveFourPointEight)
             }
         }
-        
-        ratingBottomStackView.do {
-            $0.axis = .horizontal
-            $0.spacing = 11
-            $0.distribution = .fillEqually
-        }
     }
     
     private func setHierarchy() {
@@ -138,7 +132,7 @@ final class DetailSearchInfoView: UIView {
         
         ratingBottomStackView.addArrangedSubviews(aboveFourPointFiveKeywordView,
                                                   aboveFourPointEightKeywordView)
-        self.addSubviews(genreTItleLabel,
+        self.addSubviews(genreTitleLabel,
                          genreCollectionView,
                          statusTitleLabel,
                          statusStackView,
@@ -148,19 +142,19 @@ final class DetailSearchInfoView: UIView {
     }
     
     private func setLayout() {
-        genreTItleLabel.snp.makeConstraints {
+        genreTitleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(10)
             $0.leading.equalToSuperview().inset(20)
         }
         
         genreCollectionView.snp.makeConstraints {
-            $0.top.equalTo(genreTItleLabel.snp.bottom).offset(16)
+            $0.top.equalTo(genreTitleLabel.snp.bottom).offset(16)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(88)
         }
         
         statusTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(genreCollectionView.snp.bottom).offset(32)
+            $0.top.equalTo(genreCollectionView.snp.bottom).offset(42)
             $0.leading.equalToSuperview().inset(20)
         }
         
@@ -170,7 +164,7 @@ final class DetailSearchInfoView: UIView {
         }
         
         ratingTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(statusStackView.snp.bottom).offset(32)
+            $0.top.equalTo(statusStackView.snp.bottom).offset(42)
             $0.leading.equalToSuperview().inset(20)
         }
         
@@ -182,12 +176,6 @@ final class DetailSearchInfoView: UIView {
         ratingBottomStackView.snp.makeConstraints {
             $0.top.equalTo(ratingTopStackView.snp.bottom).offset(10)
             $0.leading.trailing.equalToSuperview().inset(20)
-        }
-    }
-    
-    func updateCollectionViewHeight(height: CGFloat) {
-        genreCollectionView.snp.updateConstraints {
-            $0.height.equalTo(height)
         }
     }
 }

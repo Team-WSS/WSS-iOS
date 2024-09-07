@@ -81,15 +81,10 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
             .disposed(by: disposeBag)
         
         output.genreList
-            .drive(rootView.detailSearchInfoView.genreCollectionView.rx.items(cellIdentifier: DetailSearchInfoGenreCollectionViewCell.cellIdentifier, cellType: DetailSearchInfoGenreCollectionViewCell.self)) { row, element, cell in
+            .drive(rootView.detailSearchInfoView.genreCollectionView.rx.items(cellIdentifier: DetailSearchInfoGenreCollectionViewCell.cellIdentifier, 
+                                                                              cellType: DetailSearchInfoGenreCollectionViewCell.self)) { row, element, cell in
                 cell.bindData(genre: element)
             }
-            .disposed(by: disposeBag)
-        
-        output.genreCollectionViewHeight
-            .drive(with: self, onNext: { owner, height in
-                owner.rootView.detailSearchInfoView.updateCollectionViewHeight(height: height)
-            })
             .disposed(by: disposeBag)
         
         output.selectedTab
