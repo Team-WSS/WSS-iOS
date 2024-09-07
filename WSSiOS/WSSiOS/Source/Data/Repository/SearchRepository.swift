@@ -10,21 +10,39 @@ import Foundation
 import RxSwift
 
 protocol SearchRepository {
-    func getSosoPickNovels() -> Observable<[SosoPickNovel]>
+    func getSosoPickNovels() -> Observable<SosoPickNovels>
     func getSearchNovels() -> Observable<[NormalSearchNovel]>
 }
 
+struct DefaultSearchRepository: SearchRepository {
+    private var searchService: SearchService
+    
+    init(searchService: SearchService) {
+        self.searchService = searchService
+    }
+    
+    func getSosoPickNovels() -> Observable<SosoPickNovels> {
+        return searchService.getSosopicks().asObservable()
+    }
+    
+    // 임시
+    func getSearchNovels() -> Observable<[NormalSearchNovel]> {
+        return Observable.just([])
+    }
+}
+
 struct TestSearchRepository: SearchRepository {
-    func getSosoPickNovels() -> Observable<[SosoPickNovel]> {
-        return Observable.just([SosoPickNovel(novelId: 1, novelImage: "imgTest2", novelTitle: "구리구리스"),
-                                SosoPickNovel(novelId: 1, novelImage: "imgTest2", novelTitle: "구리구리뱅"),
-                                SosoPickNovel(novelId: 1, novelImage: "imgTest2", novelTitle: "상수리 나무 아래"),
-                                SosoPickNovel(novelId: 1, novelImage: "imgTest2", novelTitle: "하수리 나무 위"),
-                                SosoPickNovel(novelId: 1, novelImage: "imgTest2", novelTitle: "하수리수리마수리"),
-                                SosoPickNovel(novelId: 1, novelImage: "imgTest2", novelTitle: "딱대"),
-                                SosoPickNovel(novelId: 1, novelImage: "imgTest2", novelTitle: "토크쇼"),
-                                SosoPickNovel(novelId: 1, novelImage: "imgTest2", novelTitle: "배고파"),
-                                SosoPickNovel(novelId: 1, novelImage: "imgTest2", novelTitle: "닭가슴살꼬치먹고싶다힝구힝구힝")])
+    func getSosoPickNovels() -> Observable<SosoPickNovels> {
+        return Observable.just(SosoPickNovels(sosoPicks: [
+            SosoPickNovel(novelId: 1, novelImage: "imgTest2", novelTitle: "구리구리스"),
+            SosoPickNovel(novelId: 1, novelImage: "imgTest2", novelTitle: "구리구리뱅"),
+            SosoPickNovel(novelId: 1, novelImage: "imgTest2", novelTitle: "상수리 나무 아래"),
+            SosoPickNovel(novelId: 1, novelImage: "imgTest2", novelTitle: "하수리 나무 위"),
+            SosoPickNovel(novelId: 1, novelImage: "imgTest2", novelTitle: "하수리수리마수리"),
+            SosoPickNovel(novelId: 1, novelImage: "imgTest2", novelTitle: "딱대"),
+            SosoPickNovel(novelId: 1, novelImage: "imgTest2", novelTitle: "토크쇼"),
+            SosoPickNovel(novelId: 1, novelImage: "imgTest2", novelTitle: "배고파"),
+            SosoPickNovel(novelId: 1, novelImage: "imgTest2", novelTitle: "닭가슴살꼬치먹고싶다힝구힝구힝")]))
     }
     
     func getSearchNovels() -> Observable<[NormalSearchNovel]> {
