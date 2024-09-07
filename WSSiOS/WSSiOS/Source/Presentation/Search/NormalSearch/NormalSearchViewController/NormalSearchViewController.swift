@@ -54,6 +54,14 @@ final class NormalSearchViewController: UIViewController {
         bindViewModel()
     }
     
+    //MARK: - UI
+    
+    private func setUI() {
+        self.view.do {
+            $0.backgroundColor = .White
+        }
+    }
+    
     //MARK: - Bind
     
     private func registerCell() {
@@ -102,16 +110,12 @@ final class NormalSearchViewController: UIViewController {
                 owner.rootView.resultView.updateCollectionViewHeight(height: height)
             })
             .disposed(by: disposeBag)
-    }
-}
-
-extension NormalSearchViewController {
-    
-    //MARK: - UI
-    
-    private func setUI() {
-        self.view.do {
-            $0.backgroundColor = .White
-        }
+        
+        rootView.headerView.backButton.rx.tap
+            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.popToLastViewController()
+            })
+            .disposed(by: disposeBag)
     }
 }

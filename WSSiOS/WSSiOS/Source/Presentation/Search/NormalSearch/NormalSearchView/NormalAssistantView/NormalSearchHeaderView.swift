@@ -39,7 +39,7 @@ final class NormalSearchHeaderView: UIView {
     
     private func setUI() {
         backButton.do {
-            $0.setImage(.icNavigateLeft, for: .normal)
+            $0.setImage(.icNavigateLeft.withTintColor(.wssBlack), for: .normal)
         }
         
         searchBackgroundView.do {
