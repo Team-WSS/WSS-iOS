@@ -234,20 +234,13 @@
 		B9FE59642BF11955005815AF /* HomeInduceLoginModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FE59632BF11955005815AF /* HomeInduceLoginModalView.swift */; };
 		C9063A972BD3F868006AD8F9 /* HomeRealtimePopularView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9063A962BD3F868006AD8F9 /* HomeRealtimePopularView.swift */; };
 		C95EADD92BD4FE4C0060CF1A /* HomeRealTimePopularFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95EADD82BD4FE4C0060CF1A /* HomeRealTimePopularFeedView.swift */; };
-		C98B8E6B2C790B6A008BF2AA /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98B8E5E2C790B6A008BF2AA /* SearchBarView.swift */; };
-		C98B8E6C2C790B6A008BF2AA /* SearchDetailInduceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98B8E5F2C790B6A008BF2AA /* SearchDetailInduceView.swift */; };
-		C98B8E6D2C790B6A008BF2AA /* SearchSosoPickView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98B8E602C790B6A008BF2AA /* SearchSosoPickView.swift */; };
-		C98B8E6E2C790B6A008BF2AA /* SosoPickCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98B8E622C790B6A008BF2AA /* SosoPickCollectionViewCell.swift */; };
-		C98B8E6F2C790B6A008BF2AA /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98B8E642C790B6A008BF2AA /* SearchView.swift */; };
-		C98B8E702C790B6A008BF2AA /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98B8E662C790B6A008BF2AA /* SearchViewController.swift */; };
-		C98B8E712C790B6A008BF2AA /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98B8E682C790B6A008BF2AA /* SearchViewModel.swift */; };
-		C98B8E7F2C790C3B008BF2AA /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98B8E722C790C3B008BF2AA /* SearchBarView.swift */; };
-		C98B8E802C790C3B008BF2AA /* SearchDetailInduceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98B8E732C790C3B008BF2AA /* SearchDetailInduceView.swift */; };
-		C98B8E812C790C3B008BF2AA /* SearchSosoPickView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98B8E742C790C3B008BF2AA /* SearchSosoPickView.swift */; };
-		C98B8E822C790C3B008BF2AA /* SosoPickCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98B8E762C790C3B008BF2AA /* SosoPickCollectionViewCell.swift */; };
-		C98B8E832C790C3B008BF2AA /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98B8E782C790C3B008BF2AA /* SearchView.swift */; };
-		C98B8E842C790C3B008BF2AA /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98B8E7A2C790C3B008BF2AA /* SearchViewController.swift */; };
-		C98B8E852C790C3B008BF2AA /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98B8E7C2C790C3B008BF2AA /* SearchViewModel.swift */; };
+		C99DDFD52C86138E00EDC0C4 /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99DDFD42C86138E00EDC0C4 /* SearchBarView.swift */; };
+		C99DDFD72C86139800EDC0C4 /* SearchDetailInduceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99DDFD62C86139700EDC0C4 /* SearchDetailInduceView.swift */; };
+		C99DDFD92C8613A000EDC0C4 /* SearchSosoPickView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99DDFD82C8613A000EDC0C4 /* SearchSosoPickView.swift */; };
+		C99DDFDB2C8613AF00EDC0C4 /* SosoPickCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99DDFDA2C8613AF00EDC0C4 /* SosoPickCollectionViewCell.swift */; };
+		C99DDFDD2C8613BC00EDC0C4 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99DDFDC2C8613BC00EDC0C4 /* SearchView.swift */; };
+		C99DDFDF2C8613C900EDC0C4 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99DDFDE2C8613C900EDC0C4 /* SearchViewController.swift */; };
+		C99DDFE12C8613D500EDC0C4 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99DDFE02C8613D500EDC0C4 /* SearchViewModel.swift */; };
 		C9AF1AE22BCC234300208BC9 /* HomeTodayPopularView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF1AE12BCC234300208BC9 /* HomeTodayPopularView.swift */; };
 		C9AF1AE42BCC28EE00208BC9 /* HomeTodayPopularCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF1AE32BCC28EE00208BC9 /* HomeTodayPopularCollectionViewCell.swift */; };
 		C9CF88B72C86205900E45BF0 /* NoticeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9CF88B62C86205900E45BF0 /* NoticeService.swift */; };
@@ -524,20 +517,13 @@
 		B9FE59632BF11955005815AF /* HomeInduceLoginModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeInduceLoginModalView.swift; sourceTree = "<group>"; };
 		C9063A962BD3F868006AD8F9 /* HomeRealtimePopularView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRealtimePopularView.swift; sourceTree = "<group>"; };
 		C95EADD82BD4FE4C0060CF1A /* HomeRealTimePopularFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRealTimePopularFeedView.swift; sourceTree = "<group>"; };
-		C98B8E5E2C790B6A008BF2AA /* SearchBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
-		C98B8E5F2C790B6A008BF2AA /* SearchDetailInduceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchDetailInduceView.swift; sourceTree = "<group>"; };
-		C98B8E602C790B6A008BF2AA /* SearchSosoPickView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchSosoPickView.swift; sourceTree = "<group>"; };
-		C98B8E622C790B6A008BF2AA /* SosoPickCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SosoPickCollectionViewCell.swift; sourceTree = "<group>"; };
-		C98B8E642C790B6A008BF2AA /* SearchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
-		C98B8E662C790B6A008BF2AA /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
-		C98B8E682C790B6A008BF2AA /* SearchViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
-		C98B8E722C790C3B008BF2AA /* SearchBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
-		C98B8E732C790C3B008BF2AA /* SearchDetailInduceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchDetailInduceView.swift; sourceTree = "<group>"; };
-		C98B8E742C790C3B008BF2AA /* SearchSosoPickView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchSosoPickView.swift; sourceTree = "<group>"; };
-		C98B8E762C790C3B008BF2AA /* SosoPickCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SosoPickCollectionViewCell.swift; sourceTree = "<group>"; };
-		C98B8E782C790C3B008BF2AA /* SearchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
-		C98B8E7A2C790C3B008BF2AA /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
-		C98B8E7C2C790C3B008BF2AA /* SearchViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
+		C99DDFD42C86138E00EDC0C4 /* SearchBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
+		C99DDFD62C86139700EDC0C4 /* SearchDetailInduceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchDetailInduceView.swift; sourceTree = "<group>"; };
+		C99DDFD82C8613A000EDC0C4 /* SearchSosoPickView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchSosoPickView.swift; sourceTree = "<group>"; };
+		C99DDFDA2C8613AF00EDC0C4 /* SosoPickCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SosoPickCollectionViewCell.swift; sourceTree = "<group>"; };
+		C99DDFDC2C8613BC00EDC0C4 /* SearchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
+		C99DDFDE2C8613C900EDC0C4 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		C99DDFE02C8613D500EDC0C4 /* SearchViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		C9AF1AE12BCC234300208BC9 /* HomeTodayPopularView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTodayPopularView.swift; sourceTree = "<group>"; };
 		C9AF1AE32BCC28EE00208BC9 /* HomeTodayPopularCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTodayPopularCollectionViewCell.swift; sourceTree = "<group>"; };
 		C9CF88B62C86205900E45BF0 /* NoticeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeService.swift; sourceTree = "<group>"; };
@@ -818,7 +804,6 @@
 		2CD2291A2B42E685005400BE /* WSSiOS */ = {
 			isa = PBXGroup;
 			children = (
-				C98B8E6A2C790B6A008BF2AA /* Search */,
 				2CD229532B42EA12005400BE /* App */,
 				2CD229482B42E92F005400BE /* Resource */,
 				2CD2294F2B42E9AD005400BE /* Source */,
@@ -1253,9 +1238,7 @@
 		A107A4A72B4DDE4900668C3E /* HomeView */ = {
 			isa = PBXGroup;
 			children = (
-				B9AC1BD12BF0B485006EDE92 /* HomeNoticeView.swift */,
 				A1708F172B4D8E2F00E35E50 /* HomeView.swift */,
-				B9095D292C3950B4007521EF /* HomeNoticeDetailView.swift */,
 				A14EDBBD2B4F05DD00906957 /* HomeCell */,
 				A1708F112B4D8DD300E35E50 /* HomeAssistantView */,
 			);
@@ -1374,7 +1357,6 @@
 				C9AF1AE32BCC28EE00208BC9 /* HomeTodayPopularCollectionViewCell.swift */,
 				B9B0CBD72BE2A09B002F4CF6 /* HomeInterestCollectionViewCell.swift */,
 				B9181BDD2BEBE2300024C800 /* HomeTasteRecommendCollectionViewCell.swift */,
-				B9AC1BD32BF0B529006EDE92 /* HomeNoticeTableViewCell.swift */,
 				B9A0FD6B2BFCF0080004252E /* HomeRealtimePopularCollectionViewCell.swift */,
 				B9A0FD6D2BFCF16F0004252E /* HomeRealtimePopularContentTableViewCell.swift */,
 			);
@@ -1384,9 +1366,9 @@
 		A1708F102B4D8DCD00E35E50 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				B96D10C22BED2ED100D4D84C /* HomeViewModel */,
-				A107A4A72B4DDE4900668C3E /* HomeView */,
-				A1708F122B4D8DDE00E35E50 /* HomeViewController */,
+				C978B30E2C87886D00C78F77 /* HomeNoticeDetail */,
+				C978B30D2C87886600C78F77 /* HomeNotice */,
+				C978B30C2C87886000C78F77 /* Home */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -1403,7 +1385,6 @@
 				B9CEDA0C2C01C97E00E62247 /* HomeUnregisterView.swift */,
 				B9FE59632BF11955005815AF /* HomeInduceLoginModalView.swift */,
 				B942C78D2BFCD39700C4A8C6 /* HomeRealtimePopularContentView.swift */,
-				B9095D2B2C39514D007521EF /* HomeNoticeDetailContentView.swift */,
 			);
 			path = HomeAssistantView;
 			sourceTree = "<group>";
@@ -1412,8 +1393,6 @@
 			isa = PBXGroup;
 			children = (
 				A1708F132B4D8DF400E35E50 /* HomeViewController.swift */,
-				B9AC1BCF2BF0B33E006EDE92 /* HomeNoticeViewController.swift */,
-				B9095D272C394FC7007521EF /* HomeNoticeDetailViewController.swift */,
 			);
 			path = HomeViewController;
 			sourceTree = "<group>";
@@ -1621,8 +1600,6 @@
 			isa = PBXGroup;
 			children = (
 				B96D10C32BED2EDB00D4D84C /* HomeViewModel.swift */,
-				B9AC1BD52BF0BB9D006EDE92 /* HomeNoticeViewModel.swift */,
-				B9095D2D2C395598007521EF /* HomeNoticeDetailViewModel.swift */,
 			);
 			path = HomeViewModel;
 			sourceTree = "<group>";
@@ -1664,67 +1641,108 @@
 			path = NormalAssistantView;
 			sourceTree = "<group>";
 		};
-		C98B8E612C790B6A008BF2AA /* SearchAssistantView */ = {
+		C978B30C2C87886000C78F77 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				C98B8E5E2C790B6A008BF2AA /* SearchBarView.swift */,
-				C98B8E5F2C790B6A008BF2AA /* SearchDetailInduceView.swift */,
-				C98B8E602C790B6A008BF2AA /* SearchSosoPickView.swift */,
+				A1708F122B4D8DDE00E35E50 /* HomeViewController */,
+				A107A4A72B4DDE4900668C3E /* HomeView */,
+				B96D10C22BED2ED100D4D84C /* HomeViewModel */,
 			);
-			path = SearchAssistantView;
+			path = Home;
 			sourceTree = "<group>";
 		};
-		C98B8E632C790B6A008BF2AA /* SearchCell */ = {
+		C978B30D2C87886600C78F77 /* HomeNotice */ = {
 			isa = PBXGroup;
 			children = (
-				C98B8E622C790B6A008BF2AA /* SosoPickCollectionViewCell.swift */,
+				C978B3142C8788C100C78F77 /* HomeNoticeViewController */,
+				C978B3132C8788BC00C78F77 /* HomeNoticeViewModel */,
+				C978B3122C8788B300C78F77 /* HomeNoticeView */,
 			);
-			path = SearchCell;
+			path = HomeNotice;
 			sourceTree = "<group>";
 		};
-		C98B8E652C790B6A008BF2AA /* SearchView */ = {
+		C978B30E2C87886D00C78F77 /* HomeNoticeDetail */ = {
 			isa = PBXGroup;
 			children = (
-				C98B8E612C790B6A008BF2AA /* SearchAssistantView */,
-				C98B8E632C790B6A008BF2AA /* SearchCell */,
-				C98B8E642C790B6A008BF2AA /* SearchView.swift */,
+				C978B3112C87889100C78F77 /* HomeNoticeDetailView */,
+				C978B3102C87888A00C78F77 /* HomeNoticeDetailViewModel */,
+				C978B30F2C87887A00C78F77 /* HomeNoticeDetailViewController */,
 			);
-			path = SearchView;
+			path = HomeNoticeDetail;
 			sourceTree = "<group>";
 		};
-		C98B8E672C790B6A008BF2AA /* SearchViewController */ = {
+		C978B30F2C87887A00C78F77 /* HomeNoticeDetailViewController */ = {
 			isa = PBXGroup;
 			children = (
-				C98B8E662C790B6A008BF2AA /* SearchViewController.swift */,
+				B9095D272C394FC7007521EF /* HomeNoticeDetailViewController.swift */,
 			);
-			path = SearchViewController;
+			path = HomeNoticeDetailViewController;
 			sourceTree = "<group>";
 		};
-		C98B8E692C790B6A008BF2AA /* SearchViewModel */ = {
+		C978B3102C87888A00C78F77 /* HomeNoticeDetailViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				C98B8E682C790B6A008BF2AA /* SearchViewModel.swift */,
+				B9095D2D2C395598007521EF /* HomeNoticeDetailViewModel.swift */,
 			);
-			path = SearchViewModel;
+			path = HomeNoticeDetailViewModel;
 			sourceTree = "<group>";
 		};
-		C98B8E6A2C790B6A008BF2AA /* Search */ = {
+		C978B3112C87889100C78F77 /* HomeNoticeDetailView */ = {
 			isa = PBXGroup;
 			children = (
-				C98B8E652C790B6A008BF2AA /* SearchView */,
-				C98B8E672C790B6A008BF2AA /* SearchViewController */,
-				C98B8E692C790B6A008BF2AA /* SearchViewModel */,
+				C978B3162C87891B00C78F77 /* HomeNoticeDetailAssistantView */,
+				B9095D292C3950B4007521EF /* HomeNoticeDetailView.swift */,
 			);
-			name = Search;
-			path = Source/Presentation/Search/Search;
+			path = HomeNoticeDetailView;
+			sourceTree = "<group>";
+		};
+		C978B3122C8788B300C78F77 /* HomeNoticeView */ = {
+			isa = PBXGroup;
+			children = (
+				C978B3152C87890C00C78F77 /* HomeNoticeCell */,
+				B9AC1BD12BF0B485006EDE92 /* HomeNoticeView.swift */,
+			);
+			path = HomeNoticeView;
+			sourceTree = "<group>";
+		};
+		C978B3132C8788BC00C78F77 /* HomeNoticeViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				B9AC1BD52BF0BB9D006EDE92 /* HomeNoticeViewModel.swift */,
+			);
+			path = HomeNoticeViewModel;
+			sourceTree = "<group>";
+		};
+		C978B3142C8788C100C78F77 /* HomeNoticeViewController */ = {
+			isa = PBXGroup;
+			children = (
+				B9AC1BCF2BF0B33E006EDE92 /* HomeNoticeViewController.swift */,
+			);
+			path = HomeNoticeViewController;
+			sourceTree = "<group>";
+		};
+		C978B3152C87890C00C78F77 /* HomeNoticeCell */ = {
+			isa = PBXGroup;
+			children = (
+				B9AC1BD32BF0B529006EDE92 /* HomeNoticeTableViewCell.swift */,
+			);
+			path = HomeNoticeCell;
+			sourceTree = "<group>";
+		};
+		C978B3162C87891B00C78F77 /* HomeNoticeDetailAssistantView */ = {
+			isa = PBXGroup;
+			children = (
+				B9095D2B2C39514D007521EF /* HomeNoticeDetailContentView.swift */,
+			);
+			path = HomeNoticeDetailAssistantView;
 			sourceTree = "<group>";
 		};
 		C98B8E752C790C3B008BF2AA /* SearchAssistantView */ = {
 			isa = PBXGroup;
 			children = (
-				C98B8E722C790C3B008BF2AA /* SearchBarView.swift */,
-				C98B8E732C790C3B008BF2AA /* SearchDetailInduceView.swift */,
-				C98B8E742C790C3B008BF2AA /* SearchSosoPickView.swift */,
+				C99DDFD82C8613A000EDC0C4 /* SearchSosoPickView.swift */,
+				C99DDFD62C86139700EDC0C4 /* SearchDetailInduceView.swift */,
+				C99DDFD42C86138E00EDC0C4 /* SearchBarView.swift */,
 			);
 			path = SearchAssistantView;
 			sourceTree = "<group>";
@@ -1732,7 +1750,7 @@
 		C98B8E772C790C3B008BF2AA /* SearchCell */ = {
 			isa = PBXGroup;
 			children = (
-				C98B8E762C790C3B008BF2AA /* SosoPickCollectionViewCell.swift */,
+				C99DDFDA2C8613AF00EDC0C4 /* SosoPickCollectionViewCell.swift */,
 			);
 			path = SearchCell;
 			sourceTree = "<group>";
@@ -1740,9 +1758,9 @@
 		C98B8E792C790C3B008BF2AA /* SearchView */ = {
 			isa = PBXGroup;
 			children = (
+				C99DDFDC2C8613BC00EDC0C4 /* SearchView.swift */,
 				C98B8E752C790C3B008BF2AA /* SearchAssistantView */,
 				C98B8E772C790C3B008BF2AA /* SearchCell */,
-				C98B8E782C790C3B008BF2AA /* SearchView.swift */,
 			);
 			path = SearchView;
 			sourceTree = "<group>";
@@ -1750,7 +1768,7 @@
 		C98B8E7B2C790C3B008BF2AA /* SearchViewController */ = {
 			isa = PBXGroup;
 			children = (
-				C98B8E7A2C790C3B008BF2AA /* SearchViewController.swift */,
+				C99DDFDE2C8613C900EDC0C4 /* SearchViewController.swift */,
 			);
 			path = SearchViewController;
 			sourceTree = "<group>";
@@ -1758,7 +1776,7 @@
 		C98B8E7D2C790C3B008BF2AA /* SearchViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				C98B8E7C2C790C3B008BF2AA /* SearchViewModel.swift */,
+				C99DDFE02C8613D500EDC0C4 /* SearchViewModel.swift */,
 			);
 			path = SearchViewModel;
 			sourceTree = "<group>";
@@ -2060,6 +2078,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B9095D2C2C39514D007521EF /* HomeNoticeDetailContentView.swift in Sources */,
+				C99DDFDB2C8613AF00EDC0C4 /* SosoPickCollectionViewCell.swift in Sources */,
 				2CD9115A2C0D8A23006B8D72 /* FeedView.swift in Sources */,
 				2C60307B2B55D9160031544C /* UIImageView+.swift in Sources */,
 				B9095D2A2C3950B4007521EF /* HomeNoticeDetailView.swift in Sources */,
@@ -2090,7 +2109,6 @@
 				2C9A19672C567CC20043044A /* MyPageProfileHeaderView.swift in Sources */,
 				2CD2291C2B42E685005400BE /* AppDelegate.swift in Sources */,
 				2CD911542C0D8A17006B8D72 /* FeedCollectionViewCell.swift in Sources */,
-				C98B8E812C790C3B008BF2AA /* SearchSosoPickView.swift in Sources */,
 				A1708F162B4D8E2700E35E50 /* HomeHeaderView.swift in Sources */,
 				2CCBF9F02B4C1FD800D787C2 /* MyPageView.swift in Sources */,
 				39BA7F6F2BCAADDF0045B2B7 /* KeywordTag.swift in Sources */,
@@ -2112,7 +2130,6 @@
 				2CD9115C2C0D8A26006B8D72 /* FeedViewController.swift in Sources */,
 				CD39F2B62B4FE0E200B73A5C /* TrashNovelDetailView.swift in Sources */,
 				CDA5F03C2C2FDB3100FCF15C /* FeedEditViewModel.swift in Sources */,
-				C98B8E6E2C790B6A008BF2AA /* SosoPickCollectionViewCell.swift in Sources */,
 				CD39F2E42B50F23B00B73A5C /* TrashNovelDetailInfoPlatformView.swift in Sources */,
 				B9181BDC2BEBDFA80024C800 /* HomeTasteRecommendView.swift in Sources */,
 				CD39F2BD2B4FE98500B73A5C /* TrashNovelDetailHeaderView.swift in Sources */,
@@ -2131,7 +2148,6 @@
 				C9AF1AE22BCC234300208BC9 /* HomeTodayPopularView.swift in Sources */,
 				2CD9115E2C0D8A28006B8D72 /* FeedGenreViewController.swift in Sources */,
 				39CC16902B529AB6003F56AE /* RegisterNormalReadStatusView.swift in Sources */,
-				C98B8E832C790C3B008BF2AA /* SearchView.swift in Sources */,
 				B92A06652C495AFF00E27652 /* DetailSearchInfoGenreCollectionViewCell.swift in Sources */,
 				B9B0CBD62BE29EA0002F4CF6 /* HomeInterestView.swift in Sources */,
 				3999BFF02B4E6FA800984832 /* RegisterNormalBannerImageView.swift in Sources */,
@@ -2139,7 +2155,6 @@
 				2C9A19712C56925F0043044A /* MyPageInfoViewModel.swift in Sources */,
 				39D4A5D02BDA50E8004FC834 /* NovelDetailRepository.swift in Sources */,
 				39CC167E2B512369003F56AE /* RegisterSuccessViewController.swift in Sources */,
-				C98B8E6B2C790B6A008BF2AA /* SearchBarView.swift in Sources */,
 				3992FA562B81E2A40079C8B8 /* RegisterNormalViewController.swift in Sources */,
 				B9AC1BD82BF0BDDD006EDE92 /* NoticeRepository.swift in Sources */,
 				39CD5E082B4F2BBE00668B9A /* RegisterNormalKeywordSelectionView.swift in Sources */,
@@ -2159,9 +2174,7 @@
 				399258182C16DAF20063FB46 /* NovelDetailHeaderInterestReviewButton.swift in Sources */,
 				B9A0FD6C2BFCF0080004252E /* HomeRealtimePopularCollectionViewCell.swift in Sources */,
 				B90A5E5E2C355BB4009938D9 /* NovelService.swift in Sources */,
-				C98B8E702C790B6A008BF2AA /* SearchViewController.swift in Sources */,
 				CD3E5A812B54253E00C0A659 /* MemoReadViewController.swift in Sources */,
-				C98B8E7F2C790C3B008BF2AA /* SearchBarView.swift in Sources */,
 				CD3E5A742B5424D600C0A659 /* MemoEditView.swift in Sources */,
 				39D4A5E42BDF90FB004FC834 /* NovelDetailHeaderRatingButton.swift in Sources */,
 				2CD911522C0D8A0F006B8D72 /* FeedNovelView.swift in Sources */,
@@ -2175,12 +2188,14 @@
 				39CC16812B51246E003F56AE /* RegisterNormalView.swift in Sources */,
 				39B75ADE2B59BA87005DD8B9 /* UIScreen+.swift in Sources */,
 				B96098882C27421F0084F697 /* FeedDetailViewController.swift in Sources */,
+				C99DDFD52C86138E00EDC0C4 /* SearchBarView.swift in Sources */,
 				2CD911562C0D8A1A006B8D72 /* FeedPageBarCollectionViewCell.swift in Sources */,
 				39BA7F752BCABF1D0045B2B7 /* KeywordLink.swift in Sources */,
 				A1EF35432B52F75800A94C53 /* NovelRepository.swift in Sources */,
 				2C5D0F5D2B50100000C76D3C /* MyPageSettingCollectionViewCell.swift in Sources */,
 				C9AF1AE42BCC28EE00208BC9 /* HomeTodayPopularCollectionViewCell.swift in Sources */,
 				39CC168A2B51D965003F56AE /* RegisterSuccessView.swift in Sources */,
+				C99DDFD92C8613A000EDC0C4 /* SearchSosoPickView.swift in Sources */,
 				CDE596DA2B57C4BE00D99DA1 /* UITextView+.swift in Sources */,
 				2C5D0F612B50525700C76D3C /* MyPageChangeNicknameView.swift in Sources */,
 				2CCBFA082B4DE38800D787C2 /* MyPageInventoryView.swift in Sources */,
@@ -2197,7 +2212,6 @@
 				A147CBC62B4D6E190040AE39 /* UIStackView+.swift in Sources */,
 				C9CF88B72C86205900E45BF0 /* NoticeService.swift in Sources */,
 				CD3E5A982B5509A500C0A659 /* DeletePopupContentView.swift in Sources */,
-				C98B8E712C790B6A008BF2AA /* SearchViewModel.swift in Sources */,
 				392A29272B4E96F30065EB97 /* UILabel+.swift in Sources */,
 				B96863D82C482E32008CFBA5 /* DetailSearchViewModel.swift in Sources */,
 				2C60306B2B54448F0031544C /* LibraryPageBar.swift in Sources */,
@@ -2216,11 +2230,11 @@
 				CD3E5A962B55099E00C0A659 /* DeletePopupView.swift in Sources */,
 				CD280A932B88A6CC00AFDD90 /* TrashNovelDetailViewModel.swift in Sources */,
 				B98748632C3581A70039ACE5 /* NormalSearchCollectionViewCell.swift in Sources */,
-				C98B8E6F2C790B6A008BF2AA /* SearchView.swift in Sources */,
 				CDA5F0452C2FE41F00FCF15C /* FeedEditContentView.swift in Sources */,
 				CD39F2C52B4FFE7400B73A5C /* TrashNovelDetailCreateMemoView.swift in Sources */,
 				CD39F2DA2B50DDBF00B73A5C /* TrashNovelDetailInfoGenreView.swift in Sources */,
 				B9A0FD6E2BFCF16F0004252E /* HomeRealtimePopularContentTableViewCell.swift in Sources */,
+				C99DDFDF2C8613C900EDC0C4 /* SearchViewController.swift in Sources */,
 				2CD9114A2C0D8948006B8D72 /* FeedContentView.swift in Sources */,
 				2CCBF9EE2B4C1FC500D787C2 /* MyPageViewController.swift in Sources */,
 				CDA5F03A2C2FDB2200FCF15C /* FeedEditViewController.swift in Sources */,
@@ -2229,7 +2243,6 @@
 				2C5D0F5F2B50523B00C76D3C /* MyPageChangeNicknameViewController.swift in Sources */,
 				B96F0F9E2C29A25200DA5483 /* FeedDetailResult.swift in Sources */,
 				B960988C2C2742B80084F697 /* FeedDetailView.swift in Sources */,
-				C98B8E822C790C3B008BF2AA /* SosoPickCollectionViewCell.swift in Sources */,
 				2CD911422C0D87E0006B8D72 /* FeedService.swift in Sources */,
 				B90145392C4D301C00A8B7EA /* DetailSearchKeywordView.swift in Sources */,
 				CD3E5A782B5424E600C0A659 /* MemoHeaderView.swift in Sources */,
@@ -2249,7 +2262,6 @@
 				2C2491812B4ADC000096F255 /* StringLiterals.swift in Sources */,
 				39F850642C28202300E93EBC /* NovelDetailInfoView.swift in Sources */,
 				B9E566052C0452E500DB51FF /* NormalSearchResultView.swift in Sources */,
-				C98B8E6D2C790B6A008BF2AA /* SearchSosoPickView.swift in Sources */,
 				2C6030712B54F23F0031544C /* LibraryListView.swift in Sources */,
 				A1EF35622B52FAF700A94C53 /* AvatarService.swift in Sources */,
 				3980D1D62C19BB2C008B9B18 /* NovelDetailLargeCoverImageView.swift in Sources */,
@@ -2258,7 +2270,6 @@
 				CDA5F03E2C2FDB6B00FCF15C /* FeedEditView.swift in Sources */,
 				2CD911482C0D88F8006B8D72 /* FeedRepository.swift in Sources */,
 				2C2491862B4ADC420096F255 /* WSSTabBarController.swift in Sources */,
-				C98B8E852C790C3B008BF2AA /* SearchViewModel.swift in Sources */,
 				392A292F2B4F07FF0065EB97 /* RegisterNormalReadDateView.swift in Sources */,
 				CD3E5A9A2B5509AB00C0A659 /* DeletePopupViewController.swift in Sources */,
 				39D4A5D42BDCC1B1004FC834 /* NovelDetailHeaderBackgroundImageView.swift in Sources */,
@@ -2267,13 +2278,13 @@
 				A18432EC2B511E7400910940 /* RecordDateView.swift in Sources */,
 				B92A06692C49877700E27652 /* DetailSearchBottomView.swift in Sources */,
 				A1DBB2FA2B4AA981000EE869 /* SearchCollectionViewCell.swift in Sources */,
-				C98B8E6C2C790B6A008BF2AA /* SearchDetailInduceView.swift in Sources */,
 				A1DBB2FA2B4AA981000EE869 /* SearchCollectionViewCell.swift in Sources */,
 				3999BFEB2B4E6C4400984832 /* RegisterViewModel.swift in Sources */,
 				B96F0F8E2C28638E00DA5483 /* FeedDetailProfileView.swift in Sources */,
 				A1493BC32B55022E004DD84A /* MemoResult.swift in Sources */,
 				A1654F0F2B540504004F78E8 /* APIConstants.swift in Sources */,
 				B9AC1BD62BF0BB9D006EDE92 /* HomeNoticeViewModel.swift in Sources */,
+				C99DDFE12C8613D500EDC0C4 /* SearchViewModel.swift in Sources */,
 				CDA5F0472C2FF60A00FCF15C /* FeedEditNovelConnectView.swift in Sources */,
 				CD3E5AA22B55190400C0A659 /* UserNovelResult.swift in Sources */,
 				A1EF35472B52F77800A94C53 /* MemoRepository.swift in Sources */,
@@ -2288,10 +2299,10 @@
 				395319272BE2865A00D075F4 /* KeywordManager.swift in Sources */,
 				A1DBB2FA2B4AA981000EE869 /* SearchCollectionViewCell.swift in Sources */,
 				39D4A5DE2BDE48FD004FC834 /* NovelDetailHeaderReviewInfoElementView.swift in Sources */,
-				C98B8E802C790C3B008BF2AA /* SearchDetailInduceView.swift in Sources */,
 				CD39F2D62B50D9A900B73A5C /* TrashNovelDetailInfoKeywordView.swift in Sources */,
 				397DE6802C2342A70026DB07 /* NovelDetailTabBarView.swift in Sources */,
 				2C9A196B2C5692330043044A /* MyPageSettingTableViewCell.swift in Sources */,
+				C99DDFD72C86139800EDC0C4 /* SearchDetailInduceView.swift in Sources */,
 				39F850662C2820FF00E93EBC /* NovelDetailFeedView.swift in Sources */,
 				2CD9114C2C0D898E006B8D72 /* FeedNavigationView.swift in Sources */,
 				CD39F2CA2B5038F400B73A5C /* TrashNovelDetailInfoView.swift in Sources */,
@@ -2326,9 +2337,9 @@
 				39B75ACE2B5912B5005DD8B9 /* LottieLiterals.swift in Sources */,
 				CDA5F0402C2FDC5200FCF15C /* FeedEditCategoryView.swift in Sources */,
 				2CCBFA002B4DBFD200D787C2 /* MyPageChangeNickNameViewModel.swift in Sources */,
-				C98B8E842C790C3B008BF2AA /* SearchViewController.swift in Sources */,
 				CD39F2BF2B4FF6DF00B73A5C /* TrashNovelDetailTabView.swift in Sources */,
 				A1EF35582B52FAC800A94C53 /* UserService.swift in Sources */,
+				C99DDFDD2C8613BC00EDC0C4 /* SearchView.swift in Sources */,
 				A1654F1A2B54052E004F78E8 /* Config.swift in Sources */,
 				2CD911582C0D8A21006B8D72 /* FeedPageBar.swift in Sources */,
 				CD39F2D82B50DA6300B73A5C /* TrashNovelDetailInfoDescriptionView.swift in Sources */,
