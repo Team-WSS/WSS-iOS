@@ -61,7 +61,7 @@ final class NovelDetailViewModel: ViewModelType {
     struct Output {
         let detailHeaderData: Observable<NovelDetailHeaderResult>
         let detailInfoData: Observable<NovelDetailInfoResult>
-        let scrollContentOffset: Driver<CGPoint>
+        let scrollContentOffset: ControlProperty<CGPoint>
         let backButtonEnabled: Observable<Void>
         let showLargeNovelCoverImage: Driver<Bool>
         let selectedTab: Driver<Tab>
@@ -171,7 +171,7 @@ final class NovelDetailViewModel: ViewModelType {
         return Output(
             detailHeaderData: novelDetailHeaderData.asObservable(),
             detailInfoData: novelDetailInfoData.asObserver(),
-            scrollContentOffset: scrollContentOffset.asDriver(),
+            scrollContentOffset: scrollContentOffset,
             backButtonEnabled: backButtonDidTap,
             showLargeNovelCoverImage: showLargeNovelCoverImage.asDriver(),
             selectedTab: selectedTab.asDriver(),

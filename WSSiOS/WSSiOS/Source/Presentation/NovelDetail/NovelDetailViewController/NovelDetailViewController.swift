@@ -129,7 +129,8 @@ final class NovelDetailViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.scrollContentOffset
-            .drive(with: self, onNext: { owner, offset in
+            .observe(on: MainScheduler.asyncInstance)
+            .subscribe(with: self, onNext: { owner, offset in
                 owner.updateNavigationBarStyle(offset: offset.y)
                 
                 let stickyoffset = owner.rootView.headerView.frame.size.height - owner.view.safeAreaInsets.top
