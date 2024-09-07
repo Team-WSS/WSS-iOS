@@ -12,7 +12,7 @@ enum ReadStatus: String, CaseIterable {
     case watched = "WATCHED"
     case quit = "QUIT"
     
-    var text: String {
+    var nameText: String {
         switch self {
         case .watching: return "보는 중"
         case .watched: return "봤어요"

@@ -7,8 +7,10 @@
 
 import UIKit
 
+import Kingfisher
 import SnapKit
 import Then
+
 
 final class NovelDetailInfoPlatformCollectionViewCell: UICollectionViewCell {
     
@@ -53,6 +55,6 @@ final class NovelDetailInfoPlatformCollectionViewCell: UICollectionViewCell {
     }
     
     func bindData(data: Platform) {
-        platformImageView.image = UIImage(named: data.platformImage)
+        platformImageView.kfSetImage(url: data.platformImage)
     }
 }

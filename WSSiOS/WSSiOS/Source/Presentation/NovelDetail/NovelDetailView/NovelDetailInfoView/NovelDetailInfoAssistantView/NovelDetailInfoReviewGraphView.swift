@@ -12,8 +12,6 @@ import Then
 
 final class NovelDetailInfoReviewGraphView: UIView {
     
-    let readStatus: ReadStatus
-    
     //MARK: - UI Components
     
     private let stackView = UIStackView()
@@ -27,8 +25,7 @@ final class NovelDetailInfoReviewGraphView: UIView {
     
     //MARK: - Life Cycle
     
-    init(readStatus: ReadStatus) {
-        self.readStatus = readStatus
+    override init(frame: CGRect) {
         super.init(frame: .zero)
         
         setUI()
@@ -46,16 +43,6 @@ final class NovelDetailInfoReviewGraphView: UIView {
         stackView.do {
             $0.axis = .vertical
             $0.alignment = .center
-            
-            statusCountLabel.do {
-                $0.applyWSSFont(.body5, with: "0")
-                $0.textColor = .wssGray200
-            }
-            
-            statusNameLabel.do {
-                $0.applyWSSFont(.body2, with: "봤어요")
-                $0.textColor = .wssGray200
-            }
             
             graphBackgroundView.do {
                 $0.layer.cornerRadius = 10
@@ -91,7 +78,7 @@ final class NovelDetailInfoReviewGraphView: UIView {
                 $0.height.equalTo(100)
                 
                 graphValueView.snp.makeConstraints {
-                    $0.top.equalToSuperview().inset(0)
+                    $0.top.equalToSuperview()
                     $0.horizontalEdges.equalToSuperview()
                     $0.bottom.equalToSuperview()
                 }
@@ -101,88 +88,28 @@ final class NovelDetailInfoReviewGraphView: UIView {
     
     //MARK: - Data
     
-    func bindData(_ data: NovelDetailInfoResult) {
-        let statusCount = getReadStatusCount(data)
-        let maxCount = getTopReadStatusCount(data)
-        
-        if determineTopReadStatus(data) {
-            updateTopStatusUI(statusCount: statusCount)
-        } else {
-            updateBasicStatusUI(statusCount: statusCount,
-                                maxCount: maxCount)
-        }
-    }
-    
-    private func getTopReadStatusCount(_ data: NovelDetailInfoResult) -> Int {
-        return max(data.quitCount, data.watchedCount, data.watchingCount)
-    }
-    
-    private func determineTopReadStatus(_ data: NovelDetailInfoResult) -> Bool {
-        let maxCount = getTopReadStatusCount(data)
-        
-        switch maxCount {
-        case data.quitCount:
-            return readStatus == .quit
-        case data.watchedCount:
-            return readStatus == .watched
-        case data.watchingCount:
-            return readStatus == .watching
-        default:
-            return false
-        }
-    }
-    
-    private func getReadStatusCount(_ data: NovelDetailInfoResult) -> Int {
-        switch readStatus {
-        case .watched:
-            data.watchedCount
-        case .watching:
-            data.watchingCount
-        case .quit:
-            data.quitCount
-        }
-    }
-    
-    //MARK: - Custom Method
-    
-    private func updateTopStatusUI(statusCount: Int) {
-        statusCountLabel.do {
-            $0.applyWSSFont(.body5, with: "\(statusCount)")
-            $0.textColor = .wssPrimary200
-        }
-        
-        statusNameLabel.do {
-            $0.applyWSSFont(.body2, with: readStatus.text)
-            $0.textColor = .wssPrimary200
-        }
-        
-        graphValueView.do {
-            $0.backgroundColor = .wssPrimary100
-        }
-    }
-    
-    private func updateBasicStatusUI(statusCount: Int, maxCount: Int) {
+    func bindData(statusText: String, statusCount: Int, maxCount: Int) {
         guard maxCount != 0 else { return }
+        
         let graphTopInset = (1-Double(statusCount)/Double(maxCount))*100
+        let isTopReadStatus = statusCount == maxCount
         
         statusCountLabel.do {
             $0.applyWSSFont(.body5, with: "\(statusCount)")
-            $0.textColor = .wssGray200
+            $0.textColor = isTopReadStatus ? .wssPrimary200 : .wssGray200
         }
         
         statusNameLabel.do {
-            $0.applyWSSFont(.body2, with: readStatus.text)
-            $0.textColor = .wssGray200
+            $0.applyWSSFont(.body2, with: statusText)
+            $0.textColor = isTopReadStatus ? .wssPrimary200 : .wssGray200
         }
         
         graphValueView.do {
-            $0.backgroundColor = .wssGray70
+            $0.backgroundColor = isTopReadStatus ? .wssPrimary100 : .wssGray70
         }
         
-        graphValueView.snp.remakeConstraints {
+        graphValueView.snp.updateConstraints {
             $0.top.equalToSuperview().inset(graphTopInset)
-            $0.horizontalEdges.equalToSuperview()
-            $0.bottom.equalToSuperview()
         }
         
         self.layoutIfNeeded()

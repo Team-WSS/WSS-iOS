@@ -1,5 +1,5 @@
 //
-//  NovelDetailInfoDescriptionSection.swift
+//  NovelDetailInfoDescriptionView.swift
 //  WSSiOS
 //
 //  Created by 이윤학 on 6/26/24.
@@ -14,8 +14,8 @@ final class NovelDetailInfoDescriptionView: UIView {
     
     //MARK: - Properites
     
-    private let basicDescriptionLineLimit: Int = 3
-    private let expendedDescriptionLineLimit: Int = 0
+    private let collapsedDescriptionNumberOfLines: Int = 3
+    private let expandedDescriptionNumberOfLines: Int = 0
     
     //MARK: - Components
     
@@ -76,13 +76,14 @@ final class NovelDetailInfoDescriptionView: UIView {
         }
         
         accordionButton.snp.makeConstraints {
-            $0.top.equalTo(descriptionLabel.snp.bottom).offset(10)
-            $0.bottom.equalToSuperview()
+            $0.top.equalTo(descriptionLabel.snp.bottom).offset(19.5)
+            $0.bottom.equalToSuperview().inset(9.5)
             $0.centerX.equalToSuperview()
-            $0.size.equalTo(44)
+            $0.width.equalTo(44)
+            $0.height.equalTo(25)
             
             accordionImageView.snp.makeConstraints {
-                $0.top.equalTo(9.5)
+                $0.top.equalToSuperview()
                 $0.centerX.equalToSuperview()
                 $0.size.equalTo(16)
             }
@@ -92,14 +93,47 @@ final class NovelDetailInfoDescriptionView: UIView {
     //MARK: - Data
     
     func bindData(_ data: NovelDetailInfoResult) {
+        isAccordionButtonHidden(text: data.novelDescription)
         setDescriptionLabelText(with: data.novelDescription)
     }
     
     //MARK: - Custom Method
     
-    func updateAccordionButton(_ isExpended: Bool) {
-        self.accordionImageView.image = isExpended ? .icChveronUp : .icChveronDown
-        self.descriptionLabel.numberOfLines = isExpended ? self.expendedDescriptionLineLimit : self.basicDescriptionLineLimit
+    func updateAccordionButton(_ isExpanded: Bool) {
+        self.accordionImageView.image = isExpanded ? .icChveronUp : .icChveronDown
+        self.descriptionLabel.numberOfLines = isExpanded ? self.expandedDescriptionNumberOfLines : self.collapsedDescriptionNumberOfLines
+    }
+    
+    func isAccordionButtonHidden(text: String) {
+        let textHeight = getLabelHeight(text: text)
+        let threeLineHeight = getLabelHeight(text: "1\n2\n3")
+        
+        if textHeight <= threeLineHeight {
+            accordionButton.isHidden = true
+            descriptionLabel.snp.removeConstraints()
+            descriptionLabel.snp.makeConstraints {
+                $0.top.equalTo(titleLabel.snp.bottom).offset(14)
+                $0.horizontalEdges.equalToSuperview().inset(20)
+                $0.bottom.equalToSuperview().inset(40)
+            }
+        }
+    }
+    
+    func getLabelHeight(text: String) -> CGFloat {
+        let label = UILabel(frame: .init(x: .zero,
+                                         y: .zero,
+                                         width: UIScreen.main.bounds.width - 40,
+                                         height: .greatestFiniteMagnitude)
+        )
+        label.do {
+            $0.applyWSSFont(.body2, with: text)
+            $0.textAlignment = .left
+            $0.lineBreakStrategy = .hangulWordPriority
+            $0.numberOfLines = 0
+        }
+        label.sizeToFit()
+        let labelHeight = label.frame.height
+        return labelHeight
     }
     
     private func setDescriptionLabelText(with text: String) {
@@ -109,7 +143,7 @@ final class NovelDetailInfoDescriptionView: UIView {
             $0.textAlignment = .left
             $0.lineBreakMode = .byTruncatingTail
             $0.lineBreakStrategy = .hangulWordPriority
-            $0.numberOfLines = basicDescriptionLineLimit
+            $0.numberOfLines = collapsedDescriptionNumberOfLines
         }
     }
 }

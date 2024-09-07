@@ -16,8 +16,8 @@ final class NovelDetailInfoReviewGraphStackView: UIView {
     
     private let titleLabel = UILabel()
     private let graphStackView = UIStackView()
-    private let graphViews = ReadStatus.allCases.map { readStatus in
-        NovelDetailInfoReviewGraphView(readStatus: readStatus)
+    private let graphViews = ReadStatus.allCases.map { _ in
+        NovelDetailInfoReviewGraphView()
     }
     
     //MARK: - Life Cycle
@@ -85,8 +85,12 @@ final class NovelDetailInfoReviewGraphStackView: UIView {
             $0.numberOfLines = 2
         }
         
-        graphViews.forEach { graphView in
-            graphView.bindData(data)
+        let statusCounts = [data.watchingCount, data.watchedCount, data.quitCount]
+        
+        for i in 0..<ReadStatus.allCases.count {
+            graphViews[i].bindData(statusText: ReadStatus.allCases[i].nameText,
+                                   statusCount: statusCounts[i],
+                                   maxCount: topReadStatusCount)
         }
     }
     
