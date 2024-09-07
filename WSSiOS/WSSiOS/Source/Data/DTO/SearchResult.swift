@@ -24,12 +24,24 @@ struct SosoPickNovel: Codable {
 }
 
 /// 일반 검색 API
-struct NormalSearchNovel {
+struct NormalSearchNovels: Codable {
+    var resultCount: Int
+    var isLoadable: Bool
+    var novels: [NormalSearchNovel]
+}
+
+struct NormalSearchNovel: Codable {
     var novelId: Int
     var novelImage: String
     var novelTitle: String
     var novelAuthor: String
     var interestCount: Int
-    var ratingAverage: Float
-    var ratingCount: Int
+    var novelRating: Float
+    var novelRatingCount: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case novelId, novelImage, interestCount, novelRating, novelRatingCount
+        case novelTitle = "title"
+        case novelAuthor = "author"
+    }
 }

@@ -78,12 +78,15 @@ final class NormalSearchViewController: UIViewController {
             normalSearchCollectionViewContentSize: rootView.resultView.normalSearchCollectionView.rx.observe(CGSize.self, "contentSize"))
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
+        output.resultCount
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, data in
+                self.rootView.resultView.resultCountView.bindData(data: data)
+            })
+            .disposed(by: disposeBag)
+        
         output.normalSearchList
             .observe(on: MainScheduler.instance)
-            .catch { error in
-                print("NormalSearchList error: \(error)")
-                return Observable.just([])
-            }
             .bind(to: rootView.resultView.normalSearchCollectionView.rx.items(
                 cellIdentifier: NormalSearchCollectionViewCell.cellIdentifier,
                 cellType: NormalSearchCollectionViewCell.self)) { row, element, cell in

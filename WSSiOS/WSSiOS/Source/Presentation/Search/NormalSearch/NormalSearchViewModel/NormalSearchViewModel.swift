@@ -18,6 +18,7 @@ final class NormalSearchViewModel: ViewModelType {
     private let disposeBag = DisposeBag()
     
     private let viewWillAppearEvent = BehaviorRelay<Bool>(value: false)
+    private let resultCount = PublishSubject<Int>()
     private let normalSearchList = PublishSubject<[NormalSearchNovel]>()
     private let backButtonEnabled = PublishRelay<Bool>()
     private let inquiryButtonEnabled = PublishRelay<Bool>()
@@ -27,6 +28,7 @@ final class NormalSearchViewModel: ViewModelType {
     
     struct Input {
         let viewWillAppearEvent: Observable<Bool>
+        let searchText: Observable<String>
         let backButtonDidTap: ControlEvent<Void>
         let inquiryButtonDidTap: ControlEvent<Void>
         let normalSearchCollectionViewContentSize: Observable<CGSize?>
@@ -35,6 +37,7 @@ final class NormalSearchViewModel: ViewModelType {
     //MARK: - Outputs
     
     struct Output {
+        let resultCount: Observable<Int>
         let normalSearchList: Observable<[NormalSearchNovel]>
         let backButtonEnabled: Observable<Void>
         let inquiryButtonEnabled: Observable<Void>
@@ -46,24 +49,17 @@ final class NormalSearchViewModel: ViewModelType {
     init(searchRepository: SearchRepository) {
         self.searchRepository = searchRepository
     }
-    
-    
-    //MARK: - API
-    
 }
 
 //MARK: - Methods
 
 extension NormalSearchViewModel {
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
-        input.viewWillAppearEvent
-            .flatMapLatest { _ in
-                self.searchRepository.getSearchNovels()
-            }
+        self.searchRepository.getSearchNovels(query: "")
             .subscribe(with: self, onNext: { owner, data in
-                owner.normalSearchList.onNext(data)
+                owner.resultCount.onNext(data.resultCount)
             }, onError: { owner, error in
-                owner.normalSearchList.onError(error)
+                owner.resultCount.onError(error)
             })
             .disposed(by: disposeBag)
         
@@ -74,7 +70,8 @@ extension NormalSearchViewModel {
         let normalSearchCollectionViewHeight = input.normalSearchCollectionViewContentSize
             .map { $0?.height ?? 0 }.asDriver(onErrorJustReturn: 0)
         
-        return Output(normalSearchList: normalSearchList.asObservable(),
+        return Output(resultCount: resultCount.asObservable(),
+                      normalSearchList: normalSearchList.asObservable(),
                       backButtonEnabled: backButtonEnabled,
                       inquiryButtonEnabled: inquiryButtonEnabled,
                       normalSearchCollectionViewHeight: normalSearchCollectionViewHeight)

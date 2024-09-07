@@ -68,6 +68,8 @@ final class SearchViewController: UIViewController {
         )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
+        
+        
         output.sosoPickList
             .bind(to: rootView.sosopickView.sosopickCollectionView.rx.items(
                 cellIdentifier: SosoPickCollectionViewCell.cellIdentifier,
@@ -78,7 +80,7 @@ final class SearchViewController: UIViewController {
         
         output.searchBarEnabled
             .bind(with: self, onNext: { owner, _ in
-                let viewController = NormalSearchViewController(viewModel: NormalSearchViewModel(searchRepository: TestSearchRepository()))
+                let viewController = NormalSearchViewController(viewModel: NormalSearchViewModel(searchRepository: DefaultSearchRepository(searchService: DefaultSearchService())))
                 viewController.navigationController?.isNavigationBarHidden = false
                 viewController.hidesBottomBarWhenPushed = true
                 owner.navigationController?.pushViewController(viewController, animated: true)
