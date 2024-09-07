@@ -89,14 +89,6 @@ final class NovelDetailViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.dropDownButton)
     }
     
-    private func setNavigationBarTextAttribute() {
-        navigationController?.navigationBar.titleTextAttributes = [
-            NSAttributedString.Key.font: UIFont.Title2,
-            NSAttributedString.Key.foregroundColor: UIColor.wssBlack,
-            NSAttributedString.Key.kern: -0.6,
-        ]
-    }
-    
     //MARK: - Bind
     
     private func registerCell() {
@@ -258,7 +250,16 @@ final class NovelDetailViewController: UIViewController {
             dropDownButton.tintColor = .wssWhite
         }
     }
+    
+    private func setNavigationBarTextAttribute() {
+        navigationController?.navigationBar.titleTextAttributes = [
+            NSAttributedString.Key.font: UIFont.Title2,
+            NSAttributedString.Key.foregroundColor: UIColor.wssBlack,
+            NSAttributedString.Key.kern: -0.6,
+        ]
+    }
 }
+
 extension NovelDetailViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         guard let text = viewModel.keywordNameForItemAt(indexPath: indexPath) else {

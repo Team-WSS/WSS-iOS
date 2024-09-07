@@ -257,7 +257,7 @@ enum StringLiterals {
             static let reviewEmpty = "독자들의 평가"
             static let reviewEmptyDescription = "아직 평가가 없어요\n최초로 남겨보세요!"
             static let attractivePoint = "독자들의 감상평"
-            static let attractivePointDescription = "가 매력적인 작품이에요"
+            static let attractivePointDescription = "(이)가 매력적인 작품이에요"
             static let readStatus = "명이 작품을\n"
             
             enum ReadStatus {
