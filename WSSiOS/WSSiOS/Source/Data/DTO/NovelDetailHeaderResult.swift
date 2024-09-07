@@ -10,7 +10,7 @@ import Foundation
 struct NovelDetailHeaderResult: Codable {
     let userNovelID: Int?
     let novelTitle, novelImage: String
-    let novelGenres: [String]
+    let novelGenres: String
     let novelGenreImage: String
     let isNovelCompleted: Bool
     let author: String
@@ -35,7 +35,7 @@ extension NovelDetailHeaderResult {
         NovelDetailHeaderResult(userNovelID: nil,
                                 novelTitle: "여자친구로 삼으려고 학생회장을 꼭 닮은 여자아이를 연성했다가 내가 하인이 됐습니다",
                                 novelImage: "https://i.pinimg.com/474x/12/82/4b/12824bae93318692634d3bf0f4a4fe13.jpg",
-                                novelGenres: ["romanceFantasy", "romance"],
+                                novelGenres: "로판/로맨스",
                                 novelGenreImage: "icGenreLabelRfDummy",
                                 isNovelCompleted: false,
                                 author: "이보라",
@@ -51,7 +51,7 @@ extension NovelDetailHeaderResult {
         NovelDetailHeaderResult(userNovelID: nil,
                                 novelTitle: "여자친구로 삼으려고 학생회장을 꼭 닮은 여자아이를 연성했다가 내가 하인이 됐습니다",
                                 novelImage: "https://i.pinimg.com/474x/12/82/4b/12824bae93318692634d3bf0f4a4fe13.jpg",
-                                novelGenres: ["romanceFantasy", "romance"],
+                                novelGenres:"로판/로맨스",
                                 novelGenreImage: "icGenreLabelRfDummy",
                                 isNovelCompleted: false,
                                 author: "이보라",
@@ -70,7 +70,7 @@ extension NovelDetailHeaderResult {
         NovelDetailHeaderResult(userNovelID: nil,
                                 novelTitle: "여자친구로 삼으려고 학생회장을 꼭 닮은 여자아이를 연성했다가 내가 하인이 됐습니다",
                                 novelImage: "https://i.pinimg.com/474x/12/82/4b/12824bae93318692634d3bf0f4a4fe13.jpg",
-                                novelGenres: ["romanceFantasy", "romance"],
+                                novelGenres: "로판/로맨스",
                                 novelGenreImage: "icGenreLabelRfDummy",
                                 isNovelCompleted: false,
                                 author: "이보라",
@@ -86,7 +86,7 @@ extension NovelDetailHeaderResult {
         NovelDetailHeaderResult(userNovelID: nil,
                                 novelTitle: "여자친구로 삼으려고 학생회장을 꼭 닮은 여자아이를 연성했다가 내가 하인이 됐습니다",
                                 novelImage: "https://i.pinimg.com/474x/12/82/4b/12824bae93318692634d3bf0f4a4fe13.jpg",
-                                novelGenres: ["romanceFantasy", "romance"],
+                                novelGenres: "로판/로맨스",
                                 novelGenreImage: "icGenreLabelRfDummy",
                                 isNovelCompleted: false,
                                 author: "이보라",
@@ -102,7 +102,7 @@ extension NovelDetailHeaderResult {
         NovelDetailHeaderResult(userNovelID: nil,
                                 novelTitle: "여자친구로 삼으려고 학생회장을 꼭 닮은 여자아이를 연성했다가 내가 하인이 됐습니다",
                                 novelImage: "https://i.pinimg.com/474x/12/82/4b/12824bae93318692634d3bf0f4a4fe13.jpg",
-                                novelGenres: ["romanceFantasy", "romance"],
+                                novelGenres: "로판/로맨스",
                                 novelGenreImage: "icGenreLabelRfDummy",
                                 isNovelCompleted: false,
                                 author: "이보라",
@@ -118,7 +118,7 @@ extension NovelDetailHeaderResult {
         NovelDetailHeaderResult(userNovelID: nil,
                                 novelTitle: "여자친구로 삼으려고 학생회장을 꼭 닮은 여자아이를 연성했다가 내가 하인이 됐습니다",
                                 novelImage: "https://i.pinimg.com/474x/12/82/4b/12824bae93318692634d3bf0f4a4fe13.jpg",
-                                novelGenres: ["romanceFantasy", "romance"],
+                                novelGenres: "로판/로맨스",
                                 novelGenreImage: "icGenreLabelRfDummy",
                                 isNovelCompleted: false,
                                 author: "이보라",
@@ -136,7 +136,7 @@ extension NovelDetailHeaderResult {
         NovelDetailHeaderResult(userNovelID: 5,
                                 novelTitle: "당신의 이해를 돕기 위하여",
                                 novelImage: "https://i.pinimg.com/474x/12/82/4b/12824bae93318692634d3bf0f4a4fe13.jpg",
-                                novelGenres: ["romanceFantasy", "romance"],
+                                novelGenres: "로판/로맨스",
                                 novelGenreImage: "icGenreLabelRfDummy",
                                 isNovelCompleted: true,
                                 author: "이보라",
@@ -152,7 +152,7 @@ extension NovelDetailHeaderResult {
         NovelDetailHeaderResult(userNovelID: 5,
                                 novelTitle: "당신의 이해를 돕기 위하여",
                                 novelImage: "https://i.pinimg.com/474x/12/82/4b/12824bae93318692634d3bf0f4a4fe13.jpg",
-                                novelGenres: ["romanceFantasy", "romance"],
+                                novelGenres:"로판/로맨스",
                                 novelGenreImage: "icGenreLabelRfDummy",
                                 isNovelCompleted: true,
                                 author: "이보라",
@@ -168,7 +168,7 @@ extension NovelDetailHeaderResult {
         NovelDetailHeaderResult(userNovelID: 5,
                                 novelTitle: "당신의 이해를 돕기 위하여",
                                 novelImage: "https://i.pinimg.com/474x/12/82/4b/12824bae93318692634d3bf0f4a4fe13.jpg",
-                                novelGenres: ["romanceFantasy", "romance"],
+                                novelGenres: "로판/로맨스",
                                 novelGenreImage: "icGenreLabelRfDummy",
                                 isNovelCompleted: true,
                                 author: "이보라",

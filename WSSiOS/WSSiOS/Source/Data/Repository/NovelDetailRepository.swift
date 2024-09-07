@@ -23,3 +23,20 @@ struct TestDetailRepository: NovelDetailRepository {
         return Observable.just(NovelDetailInfoResult.dummyFullData[0])
     }
 }
+
+struct DefaultDetailRepository: NovelDetailRepository {
+    private let novelDetailService: NovelDetailService
+
+    init(novelDetailService: NovelDetailService) {
+        self.novelDetailService = novelDetailService
+    }
+
+    func getNovelDetailHeaderData(novelId: Int) -> Observable<NovelDetailHeaderResult> {
+        return novelDetailService.getNovelDetailHeaderData(novelId: novelId).asObservable()
+    }
+    
+    func getNovelDetailInfoData(novelId: Int) -> Observable<NovelDetailInfoResult> {
+        return novelDetailService.getNovelDetailInfoData(novelId: novelId).asObservable()
+    }
+}
+

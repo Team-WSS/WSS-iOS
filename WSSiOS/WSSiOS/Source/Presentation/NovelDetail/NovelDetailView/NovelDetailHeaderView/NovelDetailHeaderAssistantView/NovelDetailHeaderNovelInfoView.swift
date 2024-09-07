@@ -96,22 +96,11 @@ final class NovelDetailHeaderNovelInfoView: UIView {
     //MARK: - Data
     
     func bindData(_ data: NovelDetailHeaderResult) {
-        var novelGenreText = ""
-        if data.novelGenres.count >= 2 {
-            let firstGenre = OldNovelGenre(rawValue: data.novelGenres[0]) ?? .error
-            let secondGenre = OldNovelGenre(rawValue: data.novelGenres[1]) ?? .error
-            
-            novelGenreText = "\(firstGenre.genreText)/\(secondGenre.genreText)"
-        } else {
-            let firstGenre = OldNovelGenre(rawValue: data.novelGenres[0]) ?? .error
-            novelGenreText = "\(firstGenre.genreText)"
-        }
-        
         let novelCompletedStatusText = data.isNovelCompleted ? StringLiterals.NovelDetail.Header.complete
                                                              : StringLiterals.NovelDetail.Header.inSeries
         
         setTitleLabelText(with: data.novelTitle)
-        setInfoLabelText(with: "\(novelGenreText)\(novelCompletedStatusText)\(data.author)")
+        setInfoLabelText(with: "\(data.novelGenres)\(novelCompletedStatusText)\(data.author)")
         interestCount.setText(with: "\(data.interestCount)")
         rating.setText(with: "\(data.novelRating) (\(data.novelRatingCount))")
         feedCount.setText(with: "\(data.feedCount)")

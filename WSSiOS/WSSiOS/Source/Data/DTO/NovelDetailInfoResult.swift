@@ -22,6 +22,12 @@ struct Keyword: Codable {
 
 struct Platform: Codable {
     let platformName, platformImage, platformURL: String
+    
+    enum CodingKeys: String, CodingKey {
+        case platformName
+        case platformImage
+        case platformURL = "platformUrl"
+    }
 }
 
 extension NovelDetailInfoResult {
