@@ -14,7 +14,12 @@ final class HomeRealtimePopularCollectionViewCell: UICollectionViewCell {
     
     //MARK: - UI Components
     
-    let tableView = UITableView(frame: .zero, style: .plain)
+    private let topDividerLine = UIView()
+    private let bottomDividerLine = UIView()
+    
+    let firstFeedView = HomeRealTimePopularFeedView()
+    let secondFeedView = HomeRealTimePopularFeedView()
+    let thirdFeedView = HomeRealTimePopularFeedView()
     
     //MARK: - Life Cycle
     
@@ -40,22 +45,54 @@ final class HomeRealtimePopularCollectionViewCell: UICollectionViewCell {
             $0.layer.cornerRadius = 14
         }
         
-        tableView.do {
-            $0.showsVerticalScrollIndicator = false
-            $0.separatorStyle = .singleLine
-            $0.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-            $0.separatorColor = .wssGray70
-            $0.rowHeight = 138
+        topDividerLine.do {
+            $0.backgroundColor = .wssGray70
+        }
+        
+        bottomDividerLine.do {
+            $0.backgroundColor = .wssGray70
         }
     }
     
     private func setHierarchy() {
-        self.addSubview(tableView)
+        self.addSubviews(firstFeedView,
+                         topDividerLine,
+                         secondFeedView,
+                         bottomDividerLine,
+                         thirdFeedView)
     }
     
     private func setLayout() {
-        tableView.snp.makeConstraints {
-            $0.edges.equalToSuperview().inset(20)
+        self.snp.makeConstraints {
+            $0.width.equalTo(335)
+            $0.height.equalTo(414)
+        }
+        
+        firstFeedView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(20)
+            $0.horizontalEdges.equalToSuperview().inset(20)
+        }
+        
+        topDividerLine.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(138)
+            $0.horizontalEdges.equalToSuperview()
+            $0.height.equalTo(1)
+        }
+        
+        secondFeedView.snp.makeConstraints {
+            $0.top.equalTo(topDividerLine.snp.bottom).offset(20)
+            $0.horizontalEdges.equalToSuperview().inset(20)
+        }
+        
+        bottomDividerLine.snp.makeConstraints {
+            $0.bottom.equalToSuperview().inset(138)
+            $0.horizontalEdges.equalToSuperview()
+            $0.height.equalTo(1)
+        }
+        
+        thirdFeedView.snp.makeConstraints {
+            $0.top.equalTo(bottomDividerLine.snp.bottom).offset(20)
+            $0.horizontalEdges.equalToSuperview().inset(20)
         }
     }
 }

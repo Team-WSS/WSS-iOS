@@ -14,13 +14,23 @@ final class HomeRealtimePopularView: UIView {
     
     //MARK: - UI Components
     
+    /// 지금 뜨는 수다글 제목 UI
     private var titleLogoImageView = UIImageView()
     private var titleLabel = UILabel()
     private var titleStackView = UIStackView()
     
+    /// 지금 뜨는 수다글 캐로셀 UI
     let realtimePopularCollectionView = UICollectionView(frame: .zero,
                                                          collectionViewLayout: UICollectionViewLayout())
     private let realtimePopularCollectionViewLayout = UICollectionViewFlowLayout()
+    
+    private let testView = HomeRealtimePopularCollectionViewCell()
+    
+    private let dotStackView = UIStackView()
+    private let firstDotImageView = UIImageView()
+    private let secondDotImageView = UIImageView()
+    private let thirdDotImageView = UIImageView()
+    
     private var scrollView = UIScrollView()
     
     //MARK: - Life Cycle
@@ -65,18 +75,52 @@ final class HomeRealtimePopularView: UIView {
             $0.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
             realtimePopularCollectionView.setCollectionViewLayout($0, animated: false)
         }
+        
+        dotStackView.do {
+            $0.axis = .horizontal
+            $0.spacing = 6
+        }
+        
+        firstDotImageView.do {
+            $0.image = .icCarouselSelected
+            $0.contentMode = .scaleAspectFit
+        }
+        
+        [secondDotImageView, thirdDotImageView].forEach {
+            $0.image = .icCarousel
+            $0.contentMode = .scaleAspectFit
+        }
     }
     
     private func setHierarchy() {
         titleStackView.addArrangedSubviews(titleLogoImageView,
                                            titleLabel)
-        self.addSubviews(titleStackView)
+        
+        dotStackView.addArrangedSubviews(firstDotImageView,
+                                         secondDotImageView,
+                                         thirdDotImageView)
+        
+        self.addSubviews(titleStackView,
+                         testView,
+                         dotStackView)
+        
     }
     
     private func setLayout() {
         titleStackView.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.leading.equalToSuperview().inset(20)
+        }
+        
+        testView.snp.makeConstraints {
+            $0.top.equalTo(titleStackView.snp.bottom).offset(14)
+            $0.leading.equalToSuperview().inset(30)
+            $0.centerX.equalToSuperview()
+        }
+        
+        dotStackView.snp.makeConstraints {
+            $0.top.equalTo(testView.snp.bottom).offset(14)
+            $0.centerX.equalToSuperview()
         }
     }
 }

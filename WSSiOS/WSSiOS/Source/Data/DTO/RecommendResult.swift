@@ -21,6 +21,13 @@ struct RealtimePopularFeed {
     var feedContent: String
     var feedLikeCount: Int
     var feedCommentCount: Int
+    var isSpoiler: Bool
+    
+    enum CodingKeys: String, CodingKey {
+        case feedId, feedContent, isSpoiler
+        case feedLikeCount = "likeCount"
+        case feedCommentCount = "commentCount"
+    }
 }
 
 struct InterestFeed {
