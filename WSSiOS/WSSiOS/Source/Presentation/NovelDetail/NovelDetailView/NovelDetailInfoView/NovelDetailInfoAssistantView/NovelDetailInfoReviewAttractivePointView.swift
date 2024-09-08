@@ -60,7 +60,11 @@ final class NovelDetailInfoReviewAttractivePointView: UIView {
     //MARK: - Data
     
     func bindData(_ data: NovelDetailInfoResult) {
-        let attractivePointText = data.attractivePoints.joined(separator: ", ")
+        let attractivePointText = data.attractivePoints
+            .map{ AttractivePoint(rawValue: $0) ?? .error }
+            .map{ $0.korean }
+            .joined(separator: ", ")
+        
         let attractivePointTotalText = attractivePointText
                                        + StringLiterals.NovelDetail.Info.attractivePointDescription
         let wssFont = WSSFont.title3
