@@ -16,11 +16,7 @@ final class FeedNovelConnectCollectionViewCell: UICollectionViewCell {
     
     override var isSelected: Bool {
         didSet {
-            if isSelected {
-                self.selectedImageView.image = .icSelectedNovel
-            } else {
-                self.selectedImageView.image = .icDeselectedNovel
-            }
+            self.selectedImageView.image = isSelected ? .icSelectedNovel : .icDeselectedNovel
         }
     }
     
