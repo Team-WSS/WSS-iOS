@@ -320,6 +320,8 @@ enum StringLiterals {
         enum Novel {
             static let novelConnect = "작품 연결하기"
             static let novelSearch = "작품 제목, 작가를 검색하세요"
+            static let novelSelect = "작성 중인 글과 관련된 웹소설을 선택하세요"
+            static let connectSelectedNovel = "해당 작품 연결"
         }
     }
     
