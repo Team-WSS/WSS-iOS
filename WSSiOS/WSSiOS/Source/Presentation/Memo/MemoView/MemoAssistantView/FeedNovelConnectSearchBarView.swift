@@ -53,7 +53,8 @@ final class FeedNovelConnectSearchBarView: UIView {
         }
         
         searchButton.do {
-            $0.setImage(.icSearch, for: .normal)
+            $0.setImage(.icSearch.withRenderingMode(.alwaysTemplate), for: .normal)
+            $0.tintColor = .wssGray300
         }
     }
     
