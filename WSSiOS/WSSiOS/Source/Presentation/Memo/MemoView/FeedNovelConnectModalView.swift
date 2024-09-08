@@ -40,7 +40,7 @@ final class FeedNovelConnectModalView: UIView {
     private func setUI() {
         contentView.do {
             $0.backgroundColor = .white
-            $0.layer.cornerRadius = 20
+            $0.layer.cornerRadius = 16
             $0.layer.maskedCorners = [.layerMinXMinYCorner,
                                       .layerMaxXMinYCorner]
         }
