@@ -12,7 +12,7 @@ enum ReadStatus: String, CaseIterable {
     case watched
     case quit
     
-    var Image: UIImage {
+    var image: UIImage {
         switch self {
         case .watching: return .icTagReading
         case .watched: return .icTagFinished
