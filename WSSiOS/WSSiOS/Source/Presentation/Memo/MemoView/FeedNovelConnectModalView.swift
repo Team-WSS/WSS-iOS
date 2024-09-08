@@ -81,7 +81,7 @@ final class FeedNovelConnectModalView: UIView {
         }
         
         titleLabel.snp.makeConstraints {
-            $0.top.equalTo(closeButton.snp.bottom).offset(20)
+            $0.top.equalTo(closeButton.snp.bottom).offset(22)
             $0.leading.equalToSuperview().inset(20)
         }
         
