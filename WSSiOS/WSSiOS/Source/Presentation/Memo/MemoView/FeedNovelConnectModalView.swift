@@ -76,7 +76,7 @@ final class FeedNovelConnectModalView: UIView {
         }
         
         closeButton.snp.makeConstraints {
-            $0.top.trailing.equalToSuperview().inset(20)
+            $0.top.trailing.equalToSuperview().inset(22)
             $0.size.equalTo(25)
         }
         
