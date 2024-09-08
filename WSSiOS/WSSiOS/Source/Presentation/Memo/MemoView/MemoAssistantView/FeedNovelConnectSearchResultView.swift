@@ -43,6 +43,7 @@ final class FeedNovelConnectSearchResultView: UIView {
             layout.itemSize = CGSize(width: UIScreen.main.bounds.width, height: 105)
             
             $0.collectionViewLayout = layout
+            $0.showsVerticalScrollIndicator = false
         }
         
         connectNovelButton.do {
