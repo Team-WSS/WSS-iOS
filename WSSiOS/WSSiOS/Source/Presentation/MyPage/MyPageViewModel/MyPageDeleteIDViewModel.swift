@@ -19,6 +19,7 @@ final class MyPageDeleteIDViewModel: ViewModelType {
     
     private let reasonCellTitle = BehaviorRelay<[String]>(value: StringLiterals.MyPage.DeleteIDReason.allCases.map { $0.rawValue })
     private let checkCellTitle = BehaviorRelay<[(String, String)]>(value: zip(StringLiterals.MyPage.DeleteIDCheckTitle.allCases, StringLiterals.MyPage.DeleteIDCheckContent.allCases).map { ($0.rawValue, $1.rawValue) })
+    
     private let reasonCellTap = BehaviorRelay<Bool>(value: false)
     
     //MARK: - Life Cycle
@@ -90,7 +91,7 @@ final class MyPageDeleteIDViewModel: ViewModelType {
             .disposed(by: disposeBag)
          
         input.didBeginEditing
-            .subscribe(onNext: { _ in
+            .subscribe(with: self, onNext: { owner, text in
                 output.tapReasonCell.accept(MyPageDeleteIDViewModel.exceptionIndexPath)
                 output.beginEditing.accept(true)
             })
@@ -110,8 +111,11 @@ final class MyPageDeleteIDViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         Observable
-            .combineLatest(reasonCellTap, output.changeAgreeButtonColor)
-            .map { $0 && $1 }
+            .combineLatest(reasonCellTap, output.tapReasonCell, input.textUpdated, output.changeAgreeButtonColor)
+            .map { tappedCell, cellIndexPath, text, tappedAgreeButton in
+                guard tappedCell, tappedAgreeButton else { return false }
+                return cellIndexPath != MyPageDeleteIDViewModel.exceptionIndexPath || !text.isEmpty
+            }
             .bind(to: output.completeButtonIsAble)
             .disposed(by: disposeBag)
         
