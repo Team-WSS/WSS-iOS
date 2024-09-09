@@ -99,7 +99,6 @@ final class MyPageDeleteIDViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        
         output.tapReasonCell
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, indexPath in
@@ -121,7 +120,6 @@ final class MyPageDeleteIDViewController: UIViewController {
         output.beginEditing
             .bind(with: self, onNext: { owner, beginEditing in
                 owner.rootView.placeholderIsHidden(isHidden: true)
-                output.tapReasonCell.accept(MyPageDeleteIDViewModel.exceptionIndexPath)
             })
             .disposed(by: disposeBag)
         

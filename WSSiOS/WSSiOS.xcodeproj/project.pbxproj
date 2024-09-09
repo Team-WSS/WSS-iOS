@@ -17,6 +17,7 @@
 		2C2491862B4ADC420096F255 /* WSSTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2491852B4ADC420096F255 /* WSSTabBarController.swift */; };
 		2C421FE82B96DC0F000DCB87 /* MyPageCustomModalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C421FE72B96DC0F000DCB87 /* MyPageCustomModalViewModel.swift */; };
 		2C42939B2B58F27000BD62AB /* LibraryEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C42939A2B58F27000BD62AB /* LibraryEmptyView.swift */; };
+		2C536C2C2C8EFC7F004C5740 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 2C536C2B2C8EFC7F004C5740 /* Then */; };
 		2C5D0F592B4FDEC000C76D3C /* MyPageInventoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5D0F582B4FDEC000C76D3C /* MyPageInventoryCollectionViewCell.swift */; };
 		2C5D0F5B2B500EF100C76D3C /* MyPageSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5D0F5A2B500EF100C76D3C /* MyPageSettingView.swift */; };
 		2C5D0F5D2B50100000C76D3C /* MyPageSettingCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5D0F5C2B50100000C76D3C /* MyPageSettingCollectionViewCell.swift */; };
@@ -62,7 +63,6 @@
 		2CD2291C2B42E685005400BE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD2291B2B42E685005400BE /* AppDelegate.swift */; };
 		2CD2291E2B42E685005400BE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD2291D2B42E685005400BE /* SceneDelegate.swift */; };
 		2CD229252B42E687005400BE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2CD229242B42E687005400BE /* Assets.xcassets */; };
-		2CD229312B42E766005400BE /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 2CD229302B42E766005400BE /* Then */; };
 		2CD229342B42E771005400BE /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 2CD229332B42E771005400BE /* SnapKit */; };
 		2CD229392B42E77F005400BE /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 2CD229382B42E77F005400BE /* Kingfisher */; };
 		2CD2293C2B42E7A2005400BE /* RxBlocking in Frameworks */ = {isa = PBXBuildFile; productRef = 2CD2293B2B42E7A2005400BE /* RxBlocking */; };
@@ -548,9 +548,9 @@
 			files = (
 				3999BFEE2B4E6CA000984832 /* UIImageViewAlignedSwift in Frameworks */,
 				CD3E5A852B54254F00C0A659 /* RxKeyboard in Frameworks */,
+				2C536C2C2C8EFC7F004C5740 /* Then in Frameworks */,
 				2CD229442B42E7A2005400BE /* RxRelay in Frameworks */,
 				2CD229392B42E77F005400BE /* Kingfisher in Frameworks */,
-				2CD229312B42E766005400BE /* Then in Frameworks */,
 				2CD229342B42E771005400BE /* SnapKit in Frameworks */,
 				2CD229472B42E7C8005400BE /* Lottie in Frameworks */,
 				2CD229402B42E7A2005400BE /* RxCocoa in Frameworks */,
@@ -1715,7 +1715,6 @@
 			);
 			name = WSSiOS;
 			packageProductDependencies = (
-				2CD229302B42E766005400BE /* Then */,
 				2CD229332B42E771005400BE /* SnapKit */,
 				2CD229382B42E77F005400BE /* Kingfisher */,
 				2CD2293B2B42E7A2005400BE /* RxBlocking */,
@@ -1726,6 +1725,7 @@
 				39EF97AB2B53E43800D2148B /* Lottie */,
 				CD3E5A842B54254F00C0A659 /* RxKeyboard */,
 				3916EC852B89B42C007835B5 /* RxGesture */,
+				2C536C2B2C8EFC7F004C5740 /* Then */,
 			);
 			productName = WSSiOS;
 			productReference = 2CD229182B42E685005400BE /* WSSiOS.app */;
@@ -1756,7 +1756,6 @@
 			);
 			mainGroup = 2CD2290F2B42E685005400BE;
 			packageReferences = (
-				2CD2292F2B42E766005400BE /* XCRemoteSwiftPackageReference "Then" */,
 				2CD229322B42E771005400BE /* XCRemoteSwiftPackageReference "SnapKit" */,
 				2CD229372B42E77F005400BE /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				2CD2293A2B42E7A2005400BE /* XCRemoteSwiftPackageReference "RxSwift" */,
@@ -1764,6 +1763,7 @@
 				3999BFEC2B4E6CA000984832 /* XCRemoteSwiftPackageReference "UIImageViewAlignedSwift" */,
 				CD3E5A832B54254F00C0A659 /* XCRemoteSwiftPackageReference "RxKeyboard" */,
 				3916EC842B89B42C007835B5 /* XCRemoteSwiftPackageReference "RxGesture" */,
+				2C536C2A2C8EFC7F004C5740 /* XCRemoteSwiftPackageReference "Then" */,
 			);
 			productRefGroup = 2CD229192B42E685005400BE /* Products */;
 			projectDirPath = "";
@@ -2269,7 +2269,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		2CD2292F2B42E766005400BE /* XCRemoteSwiftPackageReference "Then" */ = {
+		2C536C2A2C8EFC7F004C5740 /* XCRemoteSwiftPackageReference "Then" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/devxoul/Then";
 			requirement = {
@@ -2336,9 +2336,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		2CD229302B42E766005400BE /* Then */ = {
+		2C536C2B2C8EFC7F004C5740 /* Then */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 2CD2292F2B42E766005400BE /* XCRemoteSwiftPackageReference "Then" */;
+			package = 2C536C2A2C8EFC7F004C5740 /* XCRemoteSwiftPackageReference "Then" */;
 			productName = Then;
 		};
 		2CD229332B42E771005400BE /* SnapKit */ = {

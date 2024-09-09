@@ -91,6 +91,7 @@ final class MyPageDeleteIDViewModel: ViewModelType {
          
         input.didBeginEditing
             .subscribe(onNext: { _ in
+                output.tapReasonCell.accept(MyPageDeleteIDViewModel.exceptionIndexPath)
                 output.beginEditing.accept(true)
             })
             .disposed(by: disposeBag)
