@@ -150,7 +150,6 @@ final class FeedEditViewModel: ViewModelType {
         }
         
         input.spoilerButtonDidTap
-            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
                 output.isSpoiler.accept(!owner.isSpoiler)
                 owner.isSpoiler = !owner.isSpoiler
