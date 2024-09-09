@@ -8,10 +8,10 @@
 import Foundation
 
 struct BlockUserResult: Codable {
-    var blocks: [blockList]
+    var blocks: [BlockList]
 }
 
-struct blockList: Codable {
+struct BlockList: Codable {
     var blockId: Int
     var userId: Int
     var nickname: String

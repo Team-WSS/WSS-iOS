@@ -15,10 +15,10 @@ final class MyPageBlockUserViewModel: ViewModelType {
     //MARK: - Properties
     
     private let userRepository: UserRepository
-    private var bindCellReleay = BehaviorRelay<[blockList]>(value: [])
+    private var bindCellReleay = BehaviorRelay<[BlockList]>(value: [])
     private let showEmptyView = PublishRelay<Bool>()
     private let popViewController = PublishRelay<Bool>()
-    private let showToastMessage = PublishRelay<String>()
+    private let toastMessage = PublishRelay<String>()
     
     init(userRepository: UserRepository) {
         self.userRepository = userRepository
@@ -34,8 +34,8 @@ final class MyPageBlockUserViewModel: ViewModelType {
     struct Output {
         let showEmptyView: Driver<Bool>
         let popViewController: PublishRelay<Bool>
-        let bindCell: BehaviorRelay<[blockList]>
-        let showToastMessage: PublishRelay<String>
+        let bindCell: BehaviorRelay<[BlockList]>
+        let toastMessage: PublishRelay<String>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -66,7 +66,7 @@ final class MyPageBlockUserViewModel: ViewModelType {
                 
                 owner.deleteBlockUser(blockID: blockID)
                     .subscribe(onNext: {
-                        owner.showToastMessage.accept(nickName)
+                        owner.toastMessage.accept(nickName)
                     }, onError: { error in
                         print("Error: \(error)")
                     })
@@ -77,7 +77,7 @@ final class MyPageBlockUserViewModel: ViewModelType {
         return Output(showEmptyView: showEmptyView.asDriver(onErrorJustReturn: true),
                       popViewController: popViewController,
                       bindCell: bindCellReleay,
-                      showToastMessage: showToastMessage)
+                      toastMessage: toastMessage)
     }
     
     //MARK: - API

@@ -16,7 +16,7 @@ final class MyPageBlockUserViewController: UIViewController {
     
     private let disposeBag = DisposeBag()
     private let viewModel: MyPageBlockUserViewModel
-    private let unblockButtonTapReleay = PublishRelay<IndexPath>()
+    private let unblockButtonTapRelay = PublishRelay<IndexPath>()
     
     //MARK: - UI Components
     
@@ -67,7 +67,7 @@ final class MyPageBlockUserViewController: UIViewController {
     private func bindViewModel() {
         let input = MyPageBlockUserViewModel.Input(
             backButtonDidTap: rootView.backButton.rx.tap,
-            unblockButtonDidTap: unblockButtonTapReleay.asObservable()
+            unblockButtonDidTap: unblockButtonTapRelay.asObservable()
         )
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
@@ -77,7 +77,7 @@ final class MyPageBlockUserViewController: UIViewController {
                 cell.unblockButton.rx.tap
                     .map { IndexPath(row: row, section: 0) }
                     .subscribe(onNext: { indexPath in
-                        self.unblockButtonTapReleay.accept(indexPath)
+                        self.unblockButtonTapRelay.accept(indexPath)
                     })
                     .disposed(by: cell.disposeBag)
                 
@@ -91,7 +91,7 @@ final class MyPageBlockUserViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.showToastMessage
+        output.toastMessage
             .subscribe(with: self, onNext: { owner, nickname in
                 owner.showToast(.deleteBlockUser(nickname: nickname))
             })

@@ -67,6 +67,7 @@ final class MyPageBlockUserView: UIView {
         
         backButton.do {
             $0.setImage(.icNavigateLeft, for: .normal)
+            $0.tintColor = .wssGray300
         }
     }
     
@@ -98,7 +99,7 @@ final class MyPageBlockUserView: UIView {
         }
         
         backButton.snp.makeConstraints {
-            $0.size.equalTo(44)
+            $0.size.equalTo(24)
         }
     }
 }

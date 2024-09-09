@@ -66,9 +66,9 @@ final class MyPageBlockUserTableViewCell: UITableViewCell {
     
     
     private func setHierarchy() {
-        self.addSubviews(userImageView,
-                         userNicknameLabel,
-                         unblockButton)
+        contentView.addSubviews(userImageView,
+                                userNicknameLabel,
+                                unblockButton)
     }
     
     
@@ -91,7 +91,7 @@ final class MyPageBlockUserTableViewCell: UITableViewCell {
             $0.height.equalTo(35)
         }
     }
-
+    
     //MARK: - Data
     
     func bindData(image: String, nickname: String) {

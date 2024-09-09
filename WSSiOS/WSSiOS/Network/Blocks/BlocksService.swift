@@ -42,7 +42,7 @@ extension DefaultBlocksService: BlocksService {
     func deleteBlockUser(blockID: Int) -> RxSwift.Single<Void> {
         do {
             let request = try makeHTTPRequest(method: .delete,
-                                              path: URLs.MyPage.Block.userBlocks.replacingOccurrences(of: "{blockId}", with: String(blockID)),
+                                              path: URLs.MyPage.Block.userBlocks(blockID: blockID),
                                               headers: APIConstants.testTokenHeader,
                                               body: nil)
             

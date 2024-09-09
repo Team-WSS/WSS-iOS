@@ -69,7 +69,9 @@ enum URLs {
     enum MyPage {
         enum Block {
             static let blocks = "/blocks"
-            static let userBlocks = "/blocks/{blockId}"
+            static func userBlocks(blockID: Int) -> String {
+                return "/blocks/\(blockID)"
+            }
         }
     }
 }
