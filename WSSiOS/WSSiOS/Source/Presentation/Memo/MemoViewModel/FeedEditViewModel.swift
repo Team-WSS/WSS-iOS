@@ -170,7 +170,9 @@ final class FeedEditViewModel: ViewModelType {
         input.categoryCollectionViewItemDeselected
             .subscribe(with: self, onNext: { owner, indexPath in
                 let deselectedCategory = owner.relevantCategoryList[indexPath.item]
-                owner.relevantCategories.removeAll { $0 == deselectedCategory }
+                if let englishCategory = FeedDetailWomanKoreanGenreDummy(rawValue: deselectedCategory)?.toEnglish {
+                    owner.relevantCategories.removeAll { $0 == englishCategory }
+                }
                 output.completeButtonIsAbled.accept(owner.isValidFeedContent && !owner.relevantCategories.isEmpty)
             })
             .disposed(by: disposeBag)
