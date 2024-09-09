@@ -52,7 +52,7 @@ final class MyPageDeleteIDCheckTableViewCell: UITableViewCell {
     private func setHierarchy() {
         self.addSubview(checkView)
         checkView.addSubviews(titleLabel,
-        descriptionLabel)
+                              descriptionLabel)
     }
     
     private func setLayout() {

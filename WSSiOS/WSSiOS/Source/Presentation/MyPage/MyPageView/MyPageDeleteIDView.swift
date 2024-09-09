@@ -48,6 +48,7 @@ final class MyPageDeleteIDView: UIView {
         
         scrollView.do {
             $0.showsVerticalScrollIndicator = false
+            $0.delaysContentTouches = false
         }
         
         agreeDeleteIDButton.do {

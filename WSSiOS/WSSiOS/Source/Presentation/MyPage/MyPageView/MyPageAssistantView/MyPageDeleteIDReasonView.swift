@@ -53,6 +53,7 @@ final class MyPageDeleteIDReasonView: UIView {
             $0.isScrollEnabled = false
             $0.showsVerticalScrollIndicator = false
             $0.separatorStyle = .none
+            $0.delaysContentTouches = false
         }
         
         reasonTextView.do {
