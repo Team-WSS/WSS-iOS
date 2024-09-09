@@ -34,12 +34,15 @@ final class MyPageDeleteIDReasonTableViewCell: UITableViewCell {
     //MARK: - UI
     
     private func setUI() {
-        self.do {
+        contentView.do {
             $0.backgroundColor = .wssWhite
+            $0.clipsToBounds = true
+            $0.isUserInteractionEnabled = false
         }
         
         checkButton.do {
             $0.setImage(.checkDefault, for: .normal)
+            $0.isUserInteractionEnabled = true
         }
         
         titleLabel.do {
@@ -48,13 +51,14 @@ final class MyPageDeleteIDReasonTableViewCell: UITableViewCell {
     }
     
     private func setHierarchy() {
-        self.addSubviews(checkButton,
-                         titleLabel)
+        contentView.addSubviews(checkButton,
+                                titleLabel)
     }
     
     private func setLayout() {
         checkButton.snp.makeConstraints {
-            $0.leading.centerY.equalToSuperview()
+            $0.leading.equalToSuperview()
+            $0.top.bottom.equalToSuperview().inset(10)
             $0.size.equalTo(24)
         }
         

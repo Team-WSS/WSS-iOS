@@ -54,11 +54,11 @@ final class MyPageDeleteIDViewController: UIViewController {
     //MARK: - Bind
     
     private func register() {
-        rootView.reasonTableView.register(
+        rootView.reasonView.reasonTableView.register(
             MyPageDeleteIDReasonTableViewCell.self,
             forCellReuseIdentifier: MyPageDeleteIDReasonTableViewCell.cellIdentifier)
         
-        rootView.checkTableView.register(
+        rootView.checkView.checkTableView.register(
             MyPageDeleteIDCheckTableViewCell.self, forCellReuseIdentifier: MyPageDeleteIDCheckTableViewCell.cellIdentifier)
     }
     
@@ -66,17 +66,17 @@ final class MyPageDeleteIDViewController: UIViewController {
         let input = MyPageDeleteIDViewModel.Input(
             backButtonDidTap: rootView.backButton.rx.tap,
             agreeAllButtonDidTap: rootView.agreeDeleteIDButton.rx.tap,
-            reasonCellDidTap: rootView.reasonTableView.rx.itemSelected,
+            reasonCellDidTap: rootView.reasonView.reasonTableView.rx.itemSelected,
             completeButtonDidTap: rootView.completeButton.rx.tap,
             viewDidTap: view.rx.tapGesture(),
-            textUpdated: rootView.reasonTextView.rx.text.orEmpty.asObservable(),
-            didBeginEditing: rootView.reasonTextView.rx.didBeginEditing,
-            didEndEditing: rootView.reasonTextView.rx.didEndEditing)
+            textUpdated: rootView.reasonView.reasonTextView.rx.text.orEmpty.asObservable(),
+            didBeginEditing: rootView.reasonView.reasonTextView.rx.didBeginEditing,
+            didEndEditing: rootView.reasonView.reasonTextView.rx.didEndEditing)
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.bindReasonCell
-            .bind(to: rootView.reasonTableView.rx.items(
+            .bind(to: rootView.reasonView.reasonTableView.rx.items(
                 cellIdentifier: MyPageDeleteIDReasonTableViewCell.cellIdentifier,
                 cellType: MyPageDeleteIDReasonTableViewCell.self)) { row, element, cell in
                     cell.bindData(text: element)
@@ -85,7 +85,7 @@ final class MyPageDeleteIDViewController: UIViewController {
                 .disposed(by: disposeBag)
         
         output.bindCheckCell
-            .bind(to: rootView.checkTableView.rx.items(
+            .bind(to: rootView.checkView.checkTableView.rx.items(
                 cellIdentifier: MyPageDeleteIDCheckTableViewCell.cellIdentifier,
                 cellType: MyPageDeleteIDCheckTableViewCell.self)) { row, element, cell in
                     cell.bindData(title: element.0, description: element.1)
@@ -102,8 +102,8 @@ final class MyPageDeleteIDViewController: UIViewController {
         output.tapReasonCell
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, indexPath in
-                owner.rootView.reasonTableView.visibleCells.forEach { cell in
-                    let cellIndexPath = self.rootView.reasonTableView.indexPath(for: cell)
+                owner.rootView.reasonView.reasonTableView.visibleCells.forEach { cell in
+                    let cellIndexPath = self.rootView.reasonView.reasonTableView.indexPath(for: cell)
                     if let cell = cell as? MyPageDeleteIDReasonTableViewCell {
                         cell.isSelected(isSelected: cellIndexPath == indexPath)
                     }
@@ -119,7 +119,7 @@ final class MyPageDeleteIDViewController: UIViewController {
         
         output.beginEditing
             .bind(with: self, onNext: { owner, beginEditing in
-                owner.rootView.placeholderIsHidden(isHidden: true)
+                owner.rootView.reasonView.placeholderIsHidden(isHidden: true)
             })
             .disposed(by: disposeBag)
         
@@ -128,7 +128,7 @@ final class MyPageDeleteIDViewController: UIViewController {
                 owner.view.endEditing(endEditing)
                 let text = output.containText.value
                 if text.textIsEmpty() {
-                    owner.rootView.placeholderIsHidden(isHidden: false)
+                    owner.rootView.reasonView.placeholderIsHidden(isHidden: false)
                     output.containText.accept("")
                 }
             })
@@ -136,13 +136,13 @@ final class MyPageDeleteIDViewController: UIViewController {
         
         output.textCountLimit
             .bind(with: self, onNext: { owner, count in
-                owner.rootView.bindTextCount(count: count)
+                owner.rootView.reasonView.bindTextCount(count: count)
             })
             .disposed(by: disposeBag)
         
         output.containText
             .bind(with: self, onNext: { owner, text in
-                owner.rootView.bindText(text: text)
+                owner.rootView.reasonView.bindText(text: text)
             })
             .disposed(by: disposeBag)
         
