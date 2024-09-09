@@ -142,11 +142,11 @@ final class FeedEditContentView: UIView {
     
     func bindData(feedContent: String) {
         self.feedTextView.do {
-            $0.font = .Body2
             $0.makeAttribute(with: feedContent)?
                 .lineSpacing(spacingPercentage: 150)
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
+            $0.font = .Body2
         }
         
         self.letterCountLabel.do {

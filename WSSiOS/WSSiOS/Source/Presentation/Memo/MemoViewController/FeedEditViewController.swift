@@ -94,7 +94,7 @@ final class FeedEditViewController: UIViewController {
             spoilerButtonDidTap: rootView.feedEditContentView.spoilerButton.rx.tap,
             categoryCollectionViewItemSelected: rootView.feedEditCategoryView.categoryCollectionView.rx.itemSelected.asObservable(),
             categoryCollectionViewItemDeselected: rootView.feedEditCategoryView.categoryCollectionView.rx.itemDeselected.asObservable(),
-            feedContentUpdated: rootView.feedEditContentView.feedTextView.rx.text.orEmpty.asObservable(),
+            feedContentUpdated: rootView.feedEditContentView.feedTextView.rx.text.orEmpty.distinctUntilChanged().asObservable(),
             feedContentViewDidBeginEditing: rootView.feedEditContentView.feedTextView.rx.didBeginEditing,
             feedContentViewDidEndEditing: rootView.feedEditContentView.feedTextView.rx.didEndEditing
         )
@@ -132,8 +132,8 @@ final class FeedEditViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.isSpoiler
-            .subscribe(with: self, onNext: { owner, hasSpoiler in
-                owner.rootView.feedEditContentView.spoilerButton.updateToggle(hasSpoiler)
+            .subscribe(with: self, onNext: { owner, isSpoiler in
+                owner.rootView.feedEditContentView.spoilerButton.updateToggle(isSpoiler)
             })
             .disposed(by: disposeBag)
         
