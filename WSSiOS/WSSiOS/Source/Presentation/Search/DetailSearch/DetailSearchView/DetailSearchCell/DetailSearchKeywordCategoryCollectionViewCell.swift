@@ -76,7 +76,7 @@ final class DetailSearchKeywordCategoryCollectionViewCell: UICollectionViewCell 
     private func setHierarchy() {
         self.addSubviews(keywordImageView,
                          keywordTitleLabel,
-                         //keywordCollectionView,
+                         keywordCollectionView,
                          dividerView,
                          downArrowImageView)
     }
@@ -93,14 +93,14 @@ final class DetailSearchKeywordCategoryCollectionViewCell: UICollectionViewCell 
             $0.leading.equalTo(keywordImageView.snp.trailing).offset(8)
         }
         
-//        keywordCollectionView.snp.makeConstraints {
-//            $0.top.equalTo(keywordImageView.snp.bottom).offset(16)
-//            $0.leading.trailing.equalToSuperview().inset(20)
-//            $0.height.equalTo(100)
-//        }
+        keywordCollectionView.snp.makeConstraints {
+            $0.top.equalTo(keywordImageView.snp.bottom).offset(16)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(100)
+        }
         
         dividerView.snp.makeConstraints {
-            $0.top.equalTo(keywordTitleLabel.snp.bottom).offset(128)
+            $0.top.equalTo(keywordCollectionView.snp.bottom).offset(34)
             $0.horizontalEdges.equalToSuperview()
             $0.height.equalTo(1)
         }

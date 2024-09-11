@@ -44,7 +44,7 @@ final class DetailSearchKeywordView: UIView {
             $0.scrollDirection = .vertical
             $0.minimumLineSpacing = 14
             $0.itemSize = CGSize(width: (UIScreen.main.bounds.width - 24), height: 224)
-            $0.sectionInset = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
+            $0.sectionInset = UIEdgeInsets(top: 10, left: 0, bottom: 100, right: 0)
             categoryCollectionView.setCollectionViewLayout($0, animated: false)
         }
     }
@@ -63,7 +63,6 @@ final class DetailSearchKeywordView: UIView {
         categoryCollectionView.snp.makeConstraints {
             $0.top.equalTo(searchBarView.snp.bottom).offset(25)
             $0.horizontalEdges.equalToSuperview()
-            $0.height.equalTo(700)
             $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom)
         }
     }
