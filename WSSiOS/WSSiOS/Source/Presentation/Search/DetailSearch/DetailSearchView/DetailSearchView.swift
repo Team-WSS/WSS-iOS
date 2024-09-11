@@ -22,6 +22,9 @@ final class DetailSearchView: UIView {
     let detailSearchKeywordView = DetailSearchKeywordView()
     let detailSearchBottomView = DetailSearchBottomView()
     
+    // Home Indicator 배경
+    private let backgroundBottomView = UIView()
+    
     //MARK: - Life Cycle
     
     override init(frame: CGRect) {
@@ -53,6 +56,10 @@ final class DetailSearchView: UIView {
         cancelModalButton.do {
             $0.setImage(.icCacelModal.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray300), for: .normal)
         }
+        
+        backgroundBottomView.do {
+            $0.backgroundColor = .wssWhite
+        }
     }
     
     private func setHierarchy() {
@@ -61,7 +68,8 @@ final class DetailSearchView: UIView {
                                    detailSearchInfoView,
                                    detailSearchKeywordView,
                                    detailSearchBottomView)
-        self.addSubviews(backgroundView)
+        self.addSubviews(backgroundView,
+                         backgroundBottomView)
     }
     
     private func setLayout() {
@@ -92,6 +100,11 @@ final class DetailSearchView: UIView {
                 $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom)
                 $0.leading.trailing.equalToSuperview()
             }
+        }
+        
+        backgroundBottomView.snp.makeConstraints {
+            $0.top.equalTo(safeAreaLayoutGuide.snp.bottomMargin)
+            $0.horizontalEdges.bottom.equalToSuperview()
         }
     }
     

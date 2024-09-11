@@ -15,8 +15,9 @@ final class DetailSearchKeywordView: UIView {
     //MARK: - UI Components
     
     let searchBarView = DetailSearchKeywordSearchBarView()
-    let categoryBackgroundView = UIView()
-    let categoryView = DetailSearchKeywordCategoryView()
+    let categoryCollectionView = UICollectionView(frame: .zero,
+                                                  collectionViewLayout: UICollectionViewLayout())
+    private let categoryCollectionViewFlowLayout = UICollectionViewFlowLayout()
     
     //MARK: - Life Cycle
     
@@ -34,15 +35,23 @@ final class DetailSearchKeywordView: UIView {
     }
     
     private func setUI() {
-        categoryBackgroundView.do {
+        categoryCollectionView.do {
             $0.backgroundColor = .wssGray50
+            $0.showsVerticalScrollIndicator = false
+        }
+        
+        categoryCollectionViewFlowLayout.do {
+            $0.scrollDirection = .vertical
+            $0.minimumLineSpacing = 14
+            $0.itemSize = CGSize(width: (UIScreen.main.bounds.width - 24), height: 224)
+            $0.sectionInset = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
+            categoryCollectionView.setCollectionViewLayout($0, animated: false)
         }
     }
     
     private func setHierarchy() {
         self.addSubviews(searchBarView,
-                         categoryBackgroundView)
-        categoryBackgroundView.addSubview(categoryView)
+                         categoryCollectionView)
     }
     
     private func setLayout() {
@@ -51,15 +60,11 @@ final class DetailSearchKeywordView: UIView {
             $0.horizontalEdges.equalToSuperview().inset(20)
         }
         
-        categoryBackgroundView.snp.makeConstraints {
+        categoryCollectionView.snp.makeConstraints {
             $0.top.equalTo(searchBarView.snp.bottom).offset(25)
             $0.horizontalEdges.equalToSuperview()
-            $0.height.equalTo(500)
-        }
-        
-        categoryView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(10)
-            $0.horizontalEdges.equalToSuperview().inset(12)
+            $0.height.equalTo(700)
+            $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom)
         }
     }
 }

@@ -17,6 +17,8 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
     private let viewModel: DetailSearchViewModel
     private let disposeBag = DisposeBag()
     
+    private let viewWillAppearEvent = BehaviorRelay(value: false)
+    
     //MARK: - Components
     
     private let rootView = DetailSearchView()
@@ -38,6 +40,8 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        viewWillAppearEvent.accept(true)
     }
     
     override func viewDidLoad() {
@@ -52,14 +56,15 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
         rootView.detailSearchInfoView.genreCollectionView.register(DetailSearchInfoGenreCollectionViewCell.self,
                                                                    forCellWithReuseIdentifier: DetailSearchInfoGenreCollectionViewCell.cellIdentifier)
         
-        rootView.detailSearchKeywordView.categoryView.keywordCollectionView.register(DetailSearchInfoGenreCollectionViewCell.self, forCellWithReuseIdentifier: DetailSearchInfoGenreCollectionViewCell.cellIdentifier)
+        rootView.detailSearchKeywordView.categoryCollectionView.register(DetailSearchKeywordCategoryCollectionViewCell.self,
+                                                                         forCellWithReuseIdentifier: DetailSearchKeywordCategoryCollectionViewCell.cellIdentifier)
     }
     
     private func delegate() {
         rootView.detailSearchInfoView.genreCollectionView.rx.setDelegate(self)
             .disposed(by: disposeBag)
         
-        rootView.detailSearchKeywordView.categoryView.keywordCollectionView.rx.setDelegate(self)
+        rootView.detailSearchKeywordView.categoryCollectionView.rx.setDelegate(self)
             .disposed(by: disposeBag)
     }
     
@@ -67,11 +72,12 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
     
     private func bindViewModel() {
         let input = DetailSearchViewModel.Input(
+            viewWillAppearEvent: viewWillAppearEvent.asObservable(),
             cancelButtonDidTap: rootView.cancelModalButton.rx.tap,
             genreCollectionViewContentSize: rootView.detailSearchInfoView.genreCollectionView.rx.observe(CGSize.self, "contentSize"),
             infoTabDidTap: rootView.detailSearchHeaderView.infoLabel.rx.tapGesture().when(.recognized).asObservable(),
-            keywordTabDidTap: rootView.detailSearchHeaderView.keywordLabel.rx.tapGesture().when(.recognized).asObservable(),
-            keywordCollectionViewContentSize: rootView.detailSearchKeywordView.categoryView.keywordCollectionView.rx.observe(CGSize.self, "contentSize"))
+            keywordTabDidTap: rootView.detailSearchHeaderView.keywordLabel.rx.tapGesture().when(.recognized).asObservable()
+        )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.cancelButtonEnabled
@@ -81,8 +87,7 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
             .disposed(by: disposeBag)
         
         output.genreList
-            .drive(rootView.detailSearchInfoView.genreCollectionView.rx.items(cellIdentifier: DetailSearchInfoGenreCollectionViewCell.cellIdentifier, 
-                                                                              cellType: DetailSearchInfoGenreCollectionViewCell.self)) { row, element, cell in
+            .drive(rootView.detailSearchInfoView.genreCollectionView.rx.items(cellIdentifier: DetailSearchInfoGenreCollectionViewCell.cellIdentifier,cellType: DetailSearchInfoGenreCollectionViewCell.self)) { row, element, cell in
                 cell.bindData(genre: element)
             }
             .disposed(by: disposeBag)
@@ -93,16 +98,10 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
             })
             .disposed(by: disposeBag)
         
-        output.worldKeywordList
-            .drive(rootView.detailSearchKeywordView.categoryView.keywordCollectionView.rx.items(cellIdentifier: DetailSearchInfoGenreCollectionViewCell.cellIdentifier, cellType: DetailSearchInfoGenreCollectionViewCell.self)) { row, element, cell in
-                cell.bindData(genre: element)
+        output.keywordList
+            .bind(to: rootView.detailSearchKeywordView.categoryCollectionView.rx.items(cellIdentifier: DetailSearchKeywordCategoryCollectionViewCell.cellIdentifier, cellType: DetailSearchKeywordCategoryCollectionViewCell.self)) { row, element, cell in
+                cell.bindData(data: element)
             }
-            .disposed(by: disposeBag)
-        
-        output.keywordCollectionViewHeight
-            .drive(with: self, onNext: { owner, height in
-                owner.rootView.detailSearchKeywordView.categoryView.updateCollectionViewHeight(height: height)
-            })
             .disposed(by: disposeBag)
     }
 }
@@ -117,13 +116,8 @@ extension DetailSearchViewController: UICollectionViewDelegateFlowLayout {
             let width = (text as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 26
             return CGSize(width: width, height: 37)
         }
-        else if collectionView == rootView.detailSearchKeywordView.categoryView.keywordCollectionView {
-            guard let text = viewModel.worldNameForItemAt(indexPath: indexPath) else {
-                return CGSize(width: 0, height: 0)
-            }
-            
-            let width = (text as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 26
-            return CGSize(width: width, height: 37)
+        else if collectionView == rootView.detailSearchKeywordView.categoryCollectionView {
+            return CGSize(width: 350, height: 224)
         }
         else {
             return CGSize(width: 0, height: 0)

@@ -16,22 +16,23 @@ final class DetailSearchViewModel: ViewModelType {
     
     //MARK: - Properties
     
+    private let keywordRepository: KeywordRepository
+    
     /// 정보 뷰
     private let cancelButtonEnabled = PublishRelay<Bool>()
     private let genreList = BehaviorRelay<[String]>(value: NovelGenre.allCases.map { $0.toKorean })
     private let selectedTab = BehaviorRelay<DetailSearchTab>(value: DetailSearchTab.info)
     
     /// 키워드 뷰
-    private let worldKeywordList = BehaviorRelay<[String]>(value: ["서양풍/중세시대", "현대", "이세계", "SF", "동양풍/사극", "학원/아카데미", "실존역사"])
-    private let keywordCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
+    private let viewWillAppearEvent = BehaviorRelay<Bool>(value: false)
+    private let keywordList = PublishSubject<[DetailSearchCategory]>()
     
     struct Input {
+        let viewWillAppearEvent: Observable<Bool>
         let cancelButtonDidTap: ControlEvent<Void>
         let genreCollectionViewContentSize: Observable<CGSize?>
         let infoTabDidTap: Observable<UITapGestureRecognizer>
         let keywordTabDidTap: Observable<UITapGestureRecognizer>
-        
-        let keywordCollectionViewContentSize: Observable<CGSize?>
     }
     
     struct Output {
@@ -40,8 +41,13 @@ final class DetailSearchViewModel: ViewModelType {
         let genreCollectionViewHeight: Driver<CGFloat>
         let selectedTab: Driver<DetailSearchTab>
         
-        let worldKeywordList: Driver<[String]>
-        let keywordCollectionViewHeight: Driver<CGFloat>
+        let keywordList: Observable<[DetailSearchCategory]>
+    }
+    
+    //MARK: - init
+    
+    init(keywordRepository: KeywordRepository) {
+        self.keywordRepository = keywordRepository
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -50,6 +56,17 @@ final class DetailSearchViewModel: ViewModelType {
         
         let genreCollectionViewContentSize = input.genreCollectionViewContentSize
             .map { $0?.height ?? 0 }.asDriver(onErrorJustReturn: 0)
+        
+        input.viewWillAppearEvent
+            .flatMapLatest { _ in
+                self.keywordRepository.getKeywords()
+            }
+            .subscribe(with: self, onNext: { owner, data in
+                self.keywordList.onNext(data.categories)
+            }, onError: { owner, error in
+                self.keywordList.onError(error)
+            })
+            .disposed(by: disposeBag)
         
         input.infoTabDidTap
             .subscribe(with: self, onNext: { owner, _ in
@@ -63,15 +80,11 @@ final class DetailSearchViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        let keywordCollectionViewContentSize = input.keywordCollectionViewContentSize
-            .map { $0?.height ?? 0 }.asDriver(onErrorJustReturn: 0)
-        
         return Output(cancelButtonEnabled: cancelButtonEnabled,
                       genreList: genreList.asDriver(),
                       genreCollectionViewHeight: genreCollectionViewContentSize,
                       selectedTab: selectedTab.asDriver(),
-                      worldKeywordList: worldKeywordList.asDriver(),
-                      keywordCollectionViewHeight: keywordCollectionViewContentSize)
+                      keywordList: keywordList.asObservable())
     }
     
     //MARK: - Custom Method
@@ -82,13 +95,5 @@ final class DetailSearchViewModel: ViewModelType {
         }
         
         return genreList.value[indexPath.item]
-    }
-    
-    func worldNameForItemAt(indexPath: IndexPath) -> String? {
-        guard indexPath.item < worldKeywordList.value.count else {
-            return nil
-        }
-        
-        return worldKeywordList.value[indexPath.item]
     }
 }
