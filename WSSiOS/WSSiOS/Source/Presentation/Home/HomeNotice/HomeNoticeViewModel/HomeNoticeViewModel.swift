@@ -43,7 +43,7 @@ extension HomeNoticeViewModel {
         
         noticeRepository.getNotices()
             .subscribe(with: self, onNext: { owner, data in
-                output.noticeList.accept(data)
+                output.noticeList.accept(data.notices)
             }, onError: { owner, error in
                 print(error)
             })
