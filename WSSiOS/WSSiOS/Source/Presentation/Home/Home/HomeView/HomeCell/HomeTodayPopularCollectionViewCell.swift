@@ -218,10 +218,10 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
         
         self.commentTitleLabel.do {
             if let nickname = data.nickname {
-                $0.applyWSSFont(.title2, with: "\(nickname)님의 한마디")
+                $0.applyWSSFont(.title2, with: "\(nickname)\(StringLiterals.Home.TodayPopular.feed)")
             }
             else {
-                $0.applyWSSFont(.title2, with: "작품 소개")
+                $0.applyWSSFont(.title2, with: StringLiterals.Home.TodayPopular.introduction)
             }
         }
         self.commentContentLabel.do {
