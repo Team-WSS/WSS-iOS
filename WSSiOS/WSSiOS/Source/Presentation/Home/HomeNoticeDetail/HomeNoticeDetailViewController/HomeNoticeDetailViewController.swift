@@ -18,7 +18,9 @@ final class HomeNoticeDetailViewController: UIViewController {
     private let disposeBag = DisposeBag()
     
     private let notice: Notice
-    private let viewWillAppearEvent = BehaviorRelay(value: Notice(noticeTitle: "", noticeContent: "", createdDate: ""))
+    private let viewWillAppearEvent = BehaviorRelay(value: Notice(noticeTitle: "", 
+                                                                  noticeContent: "",
+                                                                  createdDate: ""))
     
     //MARK: - UI Components
     
