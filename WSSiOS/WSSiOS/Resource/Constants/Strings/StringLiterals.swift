@@ -68,6 +68,11 @@ enum StringLiterals {
                 static let recommend = "선호장르 설정하기"
             }
         }
+        
+        enum TodayPopular {
+            static let feed = "님의 한마디"
+            static let introduction = "작품 소개"
+        }
     }
     
     enum Register {
