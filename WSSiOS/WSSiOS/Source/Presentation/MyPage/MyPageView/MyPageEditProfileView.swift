@@ -44,8 +44,8 @@ final class MyPageEditProfileView: UIView {
                                                        collectionViewLayout: UICollectionViewLayout())
     
     //In VC
-    lazy var backButton = UIButton()
-    lazy var completeButton = UIButton()
+    let backButton = UIButton()
+    let completeButton = UIButton()
     
     // MARK: - Life Cycle
     
@@ -104,12 +104,17 @@ final class MyPageEditProfileView: UIView {
                 $0.leftViewMode = .always
                 $0.contentVerticalAlignment = .center
                 
+                let rightViewContainer = UIView(frame: CGRect(x: 0, y: 0, width: 44 + 13, height: 44))
+                
                 clearButton.do {
-                    var configuration = UIButton.Configuration.plain()
-                    configuration.image = .icCancel
-                    configuration.contentInsets = NSDirectionalEdgeInsets(top: 13, leading: 13, bottom: 13, trailing: 13)
-                    $0.configuration = configuration
+                    $0.setImage(.icCancel, for: .normal)
+                    $0.contentMode = .scaleAspectFit
+                    $0.frame = CGRect(x: 0, y: -13, width: 44, height: 44)
                 }
+                
+                rightViewContainer.addSubview(clearButton)
+                $0.rightView = rightViewContainer
+                $0.rightViewMode = .always
             }
             
             checkButton.do {
@@ -206,7 +211,6 @@ final class MyPageEditProfileView: UIView {
                                  nicknameWarningLabel,
                                  nicknameCountView,
                                  divide1View)
-        nicknameTextField.addSubview(clearButton)
         introView.addSubviews(introLabel,
                               introTextView,
                               introCountView,
@@ -262,11 +266,6 @@ final class MyPageEditProfileView: UIView {
                 $0.leading.equalToSuperview().inset(20)
                 $0.height.equalTo(44)
                 $0.width.equalTo(240)
-                
-                clearButton.snp.makeConstraints {
-                    $0.centerY.trailing.equalToSuperview()
-                    $0.size.equalTo(44)
-                }
             }
             
             checkButton.snp.makeConstraints {
