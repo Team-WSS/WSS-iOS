@@ -14,9 +14,14 @@ protocol NovelDetailRepository {
     func getNovelDetailInfoData(novelId: Int) -> Observable<NovelDetailInfoResult>
     func postUserInterest(novelId: Int) -> Observable<Void>
     func deleteUserInterest(novelId: Int) -> Observable<Void>
+    func deleteNovelReview(novelId: Int) -> Observable<Void>
 }
 
 struct TestDetailRepository: NovelDetailRepository {
+    func deleteNovelReview(novelId: Int) -> Observable<Void> {
+        return Observable.just(())
+    }
+    
     func postUserInterest(novelId: Int) -> Observable<Void> {
         return Observable.just(())
     }
@@ -35,6 +40,10 @@ struct TestDetailRepository: NovelDetailRepository {
 }
 
 struct DefaultDetailRepository: NovelDetailRepository {
+    func deleteNovelReview(novelId: Int) -> Observable<Void> {
+        novelDetailService.deleteNovelReview(novelId: novelId).asObservable()
+    }
+    
     func postUserInterest(novelId: Int) -> Observable<Void> {
         return novelDetailService.postUserInterest(novelId: novelId).asObservable()
     }

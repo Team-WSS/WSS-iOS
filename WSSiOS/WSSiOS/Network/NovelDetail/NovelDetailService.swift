@@ -14,6 +14,7 @@ protocol NovelDetailService {
     func getNovelDetailInfoData(novelId: Int) -> Single<NovelDetailInfoResult>
     func postUserInterest(novelId: Int) -> Single<Void>
     func deleteUserInterest(novelId: Int) -> Single<Void>
+    func deleteNovelReview(novelId: Int) -> Single<Void>
 }
 
 final class DefaultNovelDetailService: NSObject, Networking {
@@ -23,6 +24,23 @@ final class DefaultNovelDetailService: NSObject, Networking {
 }
 
 extension DefaultNovelDetailService: NovelDetailService {
+    func deleteNovelReview(novelId: Int) -> RxSwift.Single<Void> {
+        do {
+            let request = try makeHTTPRequest(method: .delete,
+                                              path: URLs.NovelDetail.novelReview(novelId: novelId),
+                                              headers: APIConstants.testTokenHeader,
+                                              body: nil)
+            
+            NetworkLogger.log(request: request)
+            
+            return urlSession.rx.data(request: request)
+                .map { _ in }
+                .asSingle()
+        } catch {
+            return Single.error(error)
+        }
+    }
+    
     func postUserInterest(novelId: Int) -> Single<Void> {
         do {
             let request = try makeHTTPRequest(method: .post,
