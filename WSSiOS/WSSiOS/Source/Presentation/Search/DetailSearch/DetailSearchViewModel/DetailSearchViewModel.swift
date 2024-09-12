@@ -80,6 +80,15 @@ final class DetailSearchViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        keywordRepository.getKeywords()
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, data in
+                self.keywordList.onNext(data.categories)
+            }, onError: { owner, error in
+                self.keywordList.onError(error)
+            })
+            .disposed(by: disposeBag)
+        
         return Output(cancelButtonEnabled: cancelButtonEnabled,
                       genreList: genreList.asDriver(),
                       genreCollectionViewHeight: genreCollectionViewContentSize,

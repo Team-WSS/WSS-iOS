@@ -7,6 +7,8 @@
 
 import UIKit
 
+import RxSwift
+
 final class DetailSearchKeywordCategoryCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Components
@@ -19,6 +21,11 @@ final class DetailSearchKeywordCategoryCollectionViewCell: UICollectionViewCell 
     private let downArrowImageView = UIImageView()
     private let upArrowImageView = UIImageView()
     
+    //MARK: - Properties
+    
+    private var keywords: [DetailSearchKeyword] = []
+    private var isExpanded: Bool = false
+    
     //MARK: - Life Cycle
     
     override init(frame: CGRect) {
@@ -27,6 +34,7 @@ final class DetailSearchKeywordCategoryCollectionViewCell: UICollectionViewCell 
         setUI()
         setHierarchy()
         setLayout()
+        setActions()
     }
     
     required init?(coder: NSCoder) {
@@ -62,6 +70,12 @@ final class DetailSearchKeywordCategoryCollectionViewCell: UICollectionViewCell 
             $0.collectionViewLayout = layout
             $0.isScrollEnabled = false
             $0.backgroundColor = .clear
+            
+            $0.register(DetailSearchInfoGenreCollectionViewCell.self,
+                        forCellWithReuseIdentifier: DetailSearchInfoGenreCollectionViewCell.cellIdentifier)
+            
+            $0.delegate = self
+            $0.dataSource = self
         }
         
         dividerView.do {
@@ -70,6 +84,7 @@ final class DetailSearchKeywordCategoryCollectionViewCell: UICollectionViewCell 
         
         downArrowImageView.do {
             $0.image = .icChevronDown
+            $0.isUserInteractionEnabled = true
         }
     }
     
@@ -96,7 +111,7 @@ final class DetailSearchKeywordCategoryCollectionViewCell: UICollectionViewCell 
         keywordCollectionView.snp.makeConstraints {
             $0.top.equalTo(keywordImageView.snp.bottom).offset(16)
             $0.leading.trailing.equalToSuperview().inset(20)
-            $0.height.equalTo(100)
+            $0.height.equalTo(82)
         }
         
         dividerView.snp.makeConstraints {
@@ -113,6 +128,32 @@ final class DetailSearchKeywordCategoryCollectionViewCell: UICollectionViewCell 
         }
     }
     
+    private func setActions() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(toggleCollectionView))
+        downArrowImageView.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func toggleCollectionView() {
+        isExpanded.toggle()
+        
+        let height = isExpanded ? calculateCollectionViewHeight() : 82
+        
+        UIView.animate(withDuration: 0.3, animations: {
+            self.updateCollectionViewHeight(height: height)
+            self.layoutIfNeeded()
+        })
+        
+        downArrowImageView.image = isExpanded ? .icChevronUp : .icChevronDown
+    }
+    
+    private func calculateCollectionViewHeight() -> CGFloat {
+        let rowCount = ceil(Double(keywords.count) / 4.0)
+        let cellHeight: CGFloat = 37
+        let spacing: CGFloat = 8
+        print(CGFloat(rowCount) * (cellHeight + spacing))
+        return CGFloat(rowCount) * (cellHeight + spacing)
+    }
+    
     func updateCollectionViewHeight(height: CGFloat) {
         keywordCollectionView.snp.updateConstraints {
             $0.height.equalTo(height)
@@ -120,8 +161,48 @@ final class DetailSearchKeywordCategoryCollectionViewCell: UICollectionViewCell 
     }
     
     func bindData(data: DetailSearchCategory) {
+        // 서버 svg파일 수정될 때 주석 삭제 예정
         //keywordImageView.kfSetImage(url: data.categoryImage)
         keywordTitleLabel.applyWSSFont(.title2, with: data.categoryName)
+        
+        keywordTitleLabel.text = data.categoryName
+        self.keywords = data.keywords
+        keywordCollectionView.reloadData()
     }
 }
 
+extension DetailSearchKeywordCategoryCollectionViewCell: UICollectionViewDelegate, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return keywords.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailSearchInfoGenreCollectionViewCell.cellIdentifier, for: indexPath) as? DetailSearchInfoGenreCollectionViewCell else {
+            return UICollectionViewCell()
+        }
+        
+        let keyword = keywords[indexPath.row]
+        cell.bindData(genre: keyword.keywordName)
+        
+        return cell
+    }
+}
+
+extension DetailSearchKeywordCategoryCollectionViewCell: UICollectionViewDelegateFlowLayout {
+    func keywordNameForItemAt(indexPath: IndexPath) -> String? {
+        guard indexPath.item < keywords.count else {
+            return nil
+        }
+        
+        return keywords[indexPath.item].keywordName
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        guard let text = keywordNameForItemAt(indexPath: indexPath) else {
+            return CGSize(width: 0, height: 0)
+        }
+        
+        let width = (text as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 26
+        return CGSize(width: width, height: 37)
+    }
+}
