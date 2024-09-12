@@ -12,9 +12,19 @@ import RxSwift
 protocol NovelDetailRepository {
     func getNovelDetailHeaderData(novelId: Int) -> Observable<NovelDetailHeaderResult>
     func getNovelDetailInfoData(novelId: Int) -> Observable<NovelDetailInfoResult>
+    func postUserInterest(novelId: Int) -> Observable<Void>
+    func deleteUserInterest(novelId: Int) -> Observable<Void>
 }
 
 struct TestDetailRepository: NovelDetailRepository {
+    func postUserInterest(novelId: Int) -> Observable<Void> {
+        return Observable.just(())
+    }
+    
+    func deleteUserInterest(novelId: Int) -> Observable<Void> {
+        return Observable.just(())
+    }
+    
     func getNovelDetailHeaderData(novelId: Int) -> Observable<NovelDetailHeaderResult> {
         return Observable.just(NovelDetailHeaderResult.dummyFullData[0])
     }
@@ -25,6 +35,14 @@ struct TestDetailRepository: NovelDetailRepository {
 }
 
 struct DefaultDetailRepository: NovelDetailRepository {
+    func postUserInterest(novelId: Int) -> Observable<Void> {
+        return novelDetailService.postUserInterest(novelId: novelId).asObservable()
+    }
+    
+    func deleteUserInterest(novelId: Int) -> Observable<Void> {
+        return novelDetailService.deleteUserInterest(novelId: novelId).asObservable()
+    }
+    
     private let novelDetailService: NovelDetailService
 
     init(novelDetailService: NovelDetailService) {
