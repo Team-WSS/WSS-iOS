@@ -13,10 +13,6 @@ enum URLs {
         static let patchUserNickname = "/users/nickname"
     }
     
-    enum Recommend {
-        static let getRecommendList = "/user-novels/soso-picks"
-    }
-    
     enum Novel {
         static let getSearchList = "/novels"
         static func getNovelInfo(novelId: Int) -> String {
@@ -64,6 +60,17 @@ enum URLs {
     
     enum Feed {
         static let getFeeds = "/feeds"
+    }
+    
+    enum Recommend {
+        static let getTodayPopulars = "/novels/popular"
+        static let getRealtimePopulars = "/feeds/popular"
+        static let getInterestFeeds = "/feeds/interest"
+        static let getTasteRecommendNovels = "/novels/taste"
+    }
+    
+    enum Notice {
+        static let getNotices = "/notices"
     }
     
     enum Keyword {

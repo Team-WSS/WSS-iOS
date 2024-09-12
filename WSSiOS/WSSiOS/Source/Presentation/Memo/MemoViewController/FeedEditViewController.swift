@@ -63,7 +63,7 @@ final class FeedEditViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.rootView.completeButton)
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.backgroundColor = .wssWhite
+        self.navigationController?.navigationBar.backgroundColor = .clear
     }
     
     private func register() {
@@ -88,7 +88,8 @@ final class FeedEditViewController: UIViewController {
             spoilerButtonDidTap: rootView.feedContentView.spoilerButton.rx.tap,
             feedContentUpdated: rootView.feedContentView.feedTextView.rx.text.orEmpty.asObservable(),
             feetContentViewDidBeginEditing: rootView.feedContentView.feedTextView.rx.didBeginEditing,
-            feetContentViewDidEndEditing: rootView.feedContentView.feedTextView.rx.didEndEditing
+            feetContentViewDidEndEditing: rootView.feedContentView.feedTextView.rx.didEndEditing,
+            novelConnectViewDidTap: rootView.feedNovelConnectView.rx.tapGesture().when(.recognized).asObservable()
         )
         
         let output = self.feedEditViewModel.transform(from: input, disposeBag: self.disposeBag)
@@ -133,6 +134,12 @@ final class FeedEditViewController: UIViewController {
         output.showPlaceholder
             .subscribe(with: self, onNext: { owner, showPlaceholder in
                 owner.rootView.feedContentView.placeholderLabel.isHidden = !showPlaceholder
+            })
+            .disposed(by: disposeBag)
+        
+        output.presentFeedEditNovelConnectModalViewController
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.presentModalViewController(FeedNovelConnectModalViewController())
             })
             .disposed(by: disposeBag)
     }

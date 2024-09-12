@@ -35,12 +35,9 @@ final class HomeViewModel: ViewModelType {
     
     //MARK: - init
     
-    init(recommendRepository: TestRecommendRepository) {
+    init(recommendRepository: RecommendRepository) {
         self.recommendRepository = recommendRepository
     }
-    
-    //MARK: - API
-    
 }
 
 extension HomeViewModel {
@@ -49,7 +46,7 @@ extension HomeViewModel {
 
         recommendRepository.getTodayPopularNovels()
             .subscribe(with: self, onNext: { owner, data in
-                output.todayPopularList.accept(data)
+                output.todayPopularList.accept(data.popularNovels)
             }, onError: { owner, error in
                 print(error)
             })
@@ -65,7 +62,7 @@ extension HomeViewModel {
         
         recommendRepository.getInterestNovels()
             .subscribe(with: self, onNext: { owner, data in
-                output.interestList.accept(data)
+                output.interestList.accept(data.recommendFeeds)
             }, onError: { owner, error in
                 print(error)
             })
@@ -73,7 +70,7 @@ extension HomeViewModel {
         
         recommendRepository.getTasteRecommendNovels()
             .subscribe(with: self, onNext: { owner, data in
-                output.tasteRecommendList.accept(data)
+                output.tasteRecommendList.accept(data.tasteNovels)
             }, onError: { owner, error in
                 print(error)
             })
