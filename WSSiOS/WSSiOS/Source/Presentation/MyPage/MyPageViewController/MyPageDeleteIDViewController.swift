@@ -129,7 +129,6 @@ final class MyPageDeleteIDViewController: UIViewController {
                 let text = output.containText.value
                 if text.textIsEmpty() {
                     owner.rootView.reasonView.placeholderIsHidden(isHidden: false)
-                    output.containText.accept("")
                 }
             })
             .disposed(by: disposeBag)

@@ -17,7 +17,6 @@
 		2C2491862B4ADC420096F255 /* WSSTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2491852B4ADC420096F255 /* WSSTabBarController.swift */; };
 		2C421FE82B96DC0F000DCB87 /* MyPageCustomModalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C421FE72B96DC0F000DCB87 /* MyPageCustomModalViewModel.swift */; };
 		2C42939B2B58F27000BD62AB /* LibraryEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C42939A2B58F27000BD62AB /* LibraryEmptyView.swift */; };
-		2C536C2C2C8EFC7F004C5740 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 2C536C2B2C8EFC7F004C5740 /* Then */; };
 		2C536C2E2C8F1F21004C5740 /* MyPageDeleteIDReasonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C536C2D2C8F1F21004C5740 /* MyPageDeleteIDReasonView.swift */; };
 		2C536C302C8F1FE0004C5740 /* MyPageDeleteIDCheckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C536C2F2C8F1FE0004C5740 /* MyPageDeleteIDCheckView.swift */; };
 		2C5D0F592B4FDEC000C76D3C /* MyPageInventoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5D0F582B4FDEC000C76D3C /* MyPageInventoryCollectionViewCell.swift */; };
@@ -37,6 +36,7 @@
 		2C79CB992B45A0B200734E1F /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2C79CB982B45A0B200734E1F /* Pretendard-Bold.otf */; };
 		2C79CB9B2B45A0B700734E1F /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2C79CB9A2B45A0B700734E1F /* Pretendard-Regular.otf */; };
 		2C79CB9D2B45A1DD00734E1F /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C79CB9C2B45A1DD00734E1F /* UIFont+.swift */; };
+		2C8C39402C92A6CE0076B00D /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 2C8C393F2C92A6CE0076B00D /* Then */; };
 		2C8F89432C50CF250056895B /* MyPageDeleteIDWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8F89422C50CF250056895B /* MyPageDeleteIDWarningView.swift */; };
 		2C8F89452C50CF470056895B /* MyPageDeleteIDWarningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8F89442C50CF470056895B /* MyPageDeleteIDWarningViewController.swift */; };
 		2C8F89472C50CFA30056895B /* MyPageDeleteIDRecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8F89462C50CFA30056895B /* MyPageDeleteIDRecordView.swift */; };
@@ -552,7 +552,7 @@
 			files = (
 				3999BFEE2B4E6CA000984832 /* UIImageViewAlignedSwift in Frameworks */,
 				CD3E5A852B54254F00C0A659 /* RxKeyboard in Frameworks */,
-				2C536C2C2C8EFC7F004C5740 /* Then in Frameworks */,
+				2C8C39402C92A6CE0076B00D /* Then in Frameworks */,
 				2CD229442B42E7A2005400BE /* RxRelay in Frameworks */,
 				2CD229392B42E77F005400BE /* Kingfisher in Frameworks */,
 				2CD229342B42E771005400BE /* SnapKit in Frameworks */,
@@ -1731,7 +1731,7 @@
 				39EF97AB2B53E43800D2148B /* Lottie */,
 				CD3E5A842B54254F00C0A659 /* RxKeyboard */,
 				3916EC852B89B42C007835B5 /* RxGesture */,
-				2C536C2B2C8EFC7F004C5740 /* Then */,
+				2C8C393F2C92A6CE0076B00D /* Then */,
 			);
 			productName = WSSiOS;
 			productReference = 2CD229182B42E685005400BE /* WSSiOS.app */;
@@ -1769,7 +1769,7 @@
 				3999BFEC2B4E6CA000984832 /* XCRemoteSwiftPackageReference "UIImageViewAlignedSwift" */,
 				CD3E5A832B54254F00C0A659 /* XCRemoteSwiftPackageReference "RxKeyboard" */,
 				3916EC842B89B42C007835B5 /* XCRemoteSwiftPackageReference "RxGesture" */,
-				2C536C2A2C8EFC7F004C5740 /* XCRemoteSwiftPackageReference "Then" */,
+				2C8C393E2C92A6CE0076B00D /* XCRemoteSwiftPackageReference "Then" */,
 			);
 			productRefGroup = 2CD229192B42E685005400BE /* Products */;
 			projectDirPath = "";
@@ -2277,7 +2277,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		2C536C2A2C8EFC7F004C5740 /* XCRemoteSwiftPackageReference "Then" */ = {
+		2C8C393E2C92A6CE0076B00D /* XCRemoteSwiftPackageReference "Then" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/devxoul/Then";
 			requirement = {
@@ -2344,9 +2344,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		2C536C2B2C8EFC7F004C5740 /* Then */ = {
+		2C8C393F2C92A6CE0076B00D /* Then */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 2C536C2A2C8EFC7F004C5740 /* XCRemoteSwiftPackageReference "Then" */;
+			package = 2C8C393E2C92A6CE0076B00D /* XCRemoteSwiftPackageReference "Then" */;
 			productName = Then;
 		};
 		2CD229332B42E771005400BE /* SnapKit */ = {
