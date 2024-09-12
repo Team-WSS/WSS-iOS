@@ -146,6 +146,12 @@ final class NovelDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.isUserNovelInterested
+            .drive(with: self, onNext: { owner, isInterested in
+                owner.rootView.headerView.interestReviewButton.updateInterestButtonState(isInterested)
+            })
+            .disposed(by: disposeBag)
+        
         output.selectedTab
             .drive(with: self, onNext: { owner, tab in
                 owner.rootView.updateTab(selected: tab)
@@ -156,11 +162,11 @@ final class NovelDetailViewController: UIViewController {
             .drive(with: self, onNext: { owner, isExpended in
                 owner.rootView.infoView.descriptionView.updateAccordionButton(isExpended)
                 
-                let stickyoffset = owner.rootView.headerView.frame.size.height - owner.view.safeAreaInsets.top
-                let point = CGPoint(x: 0, y: stickyoffset)
-                if !isExpended {
-                    owner.rootView.scrollView.rx.contentOffset.onNext(point)
-                }
+//                let stickyoffset = owner.rootView.headerView.frame.size.height - owner.view.safeAreaInsets.top
+//                let point = CGPoint(x: 0, y: stickyoffset)
+//                if !isExpended {
+//                    owner.rootView.scrollView.rx.contentOffset.onNext(point)
+//                }
             })
             .disposed(by: disposeBag)
         
@@ -200,12 +206,13 @@ final class NovelDetailViewController: UIViewController {
     
     private func createViewModelInput() -> NovelDetailViewModel.Input {
         return NovelDetailViewModel.Input(
-            viewWillAppearEvent:  viewWillAppearEvent.asObservable(),
+            viewWillAppearEvent: viewWillAppearEvent.asObservable(),
             scrollContentOffset: rootView.scrollView.rx.contentOffset,
             backButtonDidTap: rootView.backButton.rx.tap,
             novelCoverImageButtonDidTap: rootView.headerView.coverImageButton.rx.tap,
             largeNovelCoverImageDismissButtonDidTap: rootView.largeNovelCoverImageButton.dismissButton.rx.tap,
             largeNovelCoverImageBackgroundDidTap: rootView.largeNovelCoverImageButton.rx.tap,
+            interestButtonDidTap: rootView.headerView.interestReviewButton.interestButton.rx.tap,
             infoTabBarButtonDidTap: rootView.tabBarView.infoButton.rx.tap,
             feedTabBarButtonDidTap: rootView.tabBarView.feedButton.rx.tap,
             stickyInfoTabBarButtonDidTap: rootView.stickyTabBarView.infoButton.rx.tap,

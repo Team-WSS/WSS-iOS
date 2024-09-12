@@ -24,6 +24,7 @@ final class NovelDetailViewModel: ViewModelType {
     //NovelDetailHeader
     private let novelDetailHeaderData = PublishSubject<NovelDetailHeaderResult>()
     private let showLargeNovelCoverImage = BehaviorRelay<Bool>(value: false)
+    private let isUserNovelInterested = BehaviorRelay<Bool>(value: false)
     
     //Tab
     private let selectedTab = BehaviorRelay<Tab>(value: Tab.info)
@@ -45,26 +46,42 @@ final class NovelDetailViewModel: ViewModelType {
     //MARK: - Transform
     
     struct Input {
+        //Total
         let viewWillAppearEvent: Observable<Bool>
         let scrollContentOffset: ControlProperty<CGPoint>
         let backButtonDidTap: ControlEvent<Void>
+        
+        //NovelDetailHeader
         let novelCoverImageButtonDidTap: ControlEvent<Void>
         let largeNovelCoverImageDismissButtonDidTap: ControlEvent<Void>
         let largeNovelCoverImageBackgroundDidTap: ControlEvent<Void>
+        let interestButtonDidTap: ControlEvent<Void>
+        
+        //Tab
         let infoTabBarButtonDidTap: ControlEvent<Void>
         let feedTabBarButtonDidTap: ControlEvent<Void>
         let stickyInfoTabBarButtonDidTap: ControlEvent<Void>
         let stickyFeedTabBarButtonDidTap: ControlEvent<Void>
+        
+        //NovelDetailInfo
         let descriptionAccordionButtonDidTap: ControlEvent<Void>
     }
     
     struct Output {
+        //Total
         let detailHeaderData: Observable<NovelDetailHeaderResult>
         let detailInfoData: Observable<NovelDetailInfoResult>
         let scrollContentOffset: ControlProperty<CGPoint>
         let backButtonEnabled: Observable<Void>
+        
+        //NovelDetailHeader
         let showLargeNovelCoverImage: Driver<Bool>
+        let isUserNovelInterested: Driver<Bool>
+                                    
+        //Tab
         let selectedTab: Driver<Tab>
+        
+        //NovelDetailInfo
         let isInfoDescriptionExpended: Driver<Bool>
         let platformList: Driver<[Platform]>
         let keywordList: Driver<[Keyword]>
@@ -111,6 +128,21 @@ final class NovelDetailViewModel: ViewModelType {
         input.largeNovelCoverImageBackgroundDidTap
             .bind(with: self, onNext: { owner, _ in
                 owner.showLargeNovelCoverImage.accept(false)
+            })
+            .disposed(by: disposeBag)
+        
+        input.interestButtonDidTap
+            .withLatestFrom(isUserNovelInterested)
+            .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
+            .flatMapLatest{ isInterested in
+                if isInterested {
+                    self.novelDetailRepository.deleteUserInterest(novelId: self.novelId)
+                } else {
+                    self.novelDetailRepository.postUserInterest(novelId: self.novelId)
+                }
+            }
+            .bind(with: self, onNext: { owner, _ in
+                owner.isUserNovelInterested.accept(!owner.isUserNovelInterested.value)
             })
             .disposed(by: disposeBag)
         
@@ -174,6 +206,7 @@ final class NovelDetailViewModel: ViewModelType {
             scrollContentOffset: scrollContentOffset,
             backButtonEnabled: backButtonDidTap,
             showLargeNovelCoverImage: showLargeNovelCoverImage.asDriver(),
+            isUserNovelInterested: isUserNovelInterested.asDriver(),
             selectedTab: selectedTab.asDriver(),
             isInfoDescriptionExpended: isInfoDescriptionExpended.asDriver(),
             platformList: platformList.asDriver(),
