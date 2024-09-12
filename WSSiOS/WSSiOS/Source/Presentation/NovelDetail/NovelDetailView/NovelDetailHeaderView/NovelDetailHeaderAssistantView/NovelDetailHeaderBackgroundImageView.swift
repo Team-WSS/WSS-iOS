@@ -16,7 +16,7 @@ final class NovelDetailHeaderBackgroundImageView: UIView {
     
     //MARK: - Properties
     
-    let blurRadius: CGFloat = 3
+    let blurRadius: CGFloat = 2
     
     //MARK: - Components
     
