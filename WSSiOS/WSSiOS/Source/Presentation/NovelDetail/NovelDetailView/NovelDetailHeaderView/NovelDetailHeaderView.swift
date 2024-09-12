@@ -20,7 +20,7 @@ final class NovelDetailHeaderView: UIView {
     let coverImageButton = NovelDetailHeaderCoverImageButton()
     private let novelInfoView = NovelDetailHeaderNovelInfoView()
     private let reviewResultView = NovelDetailHeaderReviewResultView()
-    private let interestReviewButton = NovelDetailHeaderInterestReviewButton()
+    let interestReviewButton = NovelDetailHeaderInterestReviewButton()
     
     //MARK: - Life CycleE
     
@@ -94,7 +94,7 @@ final class NovelDetailHeaderView: UIView {
         bannerBackgroundImageView.bindData(data)
         coverImageButton.bindData(data)
         novelInfoView.bindData(data)
-        interestReviewButton.bindData(data)
+        interestReviewButton.updateInterestButtonState(data.isUserNovelInterest)
         reviewResultView.bindData(data)
     }
 }
