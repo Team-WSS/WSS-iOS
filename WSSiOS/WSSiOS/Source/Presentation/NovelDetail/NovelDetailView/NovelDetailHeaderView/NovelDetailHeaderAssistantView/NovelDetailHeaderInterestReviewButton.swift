@@ -15,7 +15,7 @@ final class NovelDetailHeaderInterestReviewButton: UIView {
     //MARK: - Components
     private let buttonStackView = UIStackView()
     
-    private let interestButton = UIButton()
+    let interestButton = UIButton()
     private let interestContentView = UIView()
     private let interestImageView = UIImageView()
     private let interestLabel = UILabel()
@@ -90,7 +90,7 @@ final class NovelDetailHeaderInterestReviewButton: UIView {
     private func setHierarchy() {
         self.addSubview(buttonStackView)
         buttonStackView.addArrangedSubviews(interestButton,
-                         reviewButton)
+                                            reviewButton)
         interestButton.addSubview(interestContentView)
         interestContentView.addSubviews(interestImageView,
                                         interestLabel)
@@ -152,8 +152,8 @@ final class NovelDetailHeaderInterestReviewButton: UIView {
     
     //MARK: - Data
     
-    func bindData(_ data: NovelDetailHeaderResult) {
-        if data.isUserNovelInterest {
+    func updateInterestButtonState(_ isUserNovelInterest: Bool) {
+        if isUserNovelInterest {
             interestButton.backgroundColor = .wssPrimary50
             interestImageView.image = .icReviewInterest
         } else {
