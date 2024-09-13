@@ -92,4 +92,10 @@ final class KeywordTag: UIView {
             $0.textColor = .wssPrimary100
         }
     }
+    
+    func setBackgroundColor(_ color: UIColor) {
+        self.do {
+            $0.backgroundColor = color
+        }
+    }
 }

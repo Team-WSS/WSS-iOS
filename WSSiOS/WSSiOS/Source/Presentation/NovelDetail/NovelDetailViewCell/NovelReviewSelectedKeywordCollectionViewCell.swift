@@ -21,6 +21,7 @@ final class NovelReviewSelectedKeywordCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        setUI()
         setHierarchy()
         setLayout()
     }
@@ -30,6 +31,12 @@ final class NovelReviewSelectedKeywordCollectionViewCell: UICollectionViewCell {
     }
     
     //MARK: - UI
+    
+    private func setUI() {
+        keywordTag.do {
+            $0.backgroundColor = .wssPrimary50
+        }
+    }
     
     private func setHierarchy() {
         self.contentView.addSubview(keywordTag)
