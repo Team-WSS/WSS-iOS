@@ -80,7 +80,8 @@ final class NovelReviewViewController: UIViewController {
         let input = NovelReviewViewModel.Input(
             viewDidLoadEvent: viewDidLoadEvent.asObservable(),
             backButtonDidTap: rootView.backButton.rx.tap,
-            selectedKeywordCollectionViewContentSize: rootView.novelReviewKeywordView.selectedKeywordCollectionView.rx.observe(CGSize.self, "contentSize")
+            selectedKeywordCollectionViewContentSize: rootView.novelReviewKeywordView.selectedKeywordCollectionView.rx.observe(CGSize.self, "contentSize"), 
+            selectedKeywordCollectionViewItemSelected: rootView.novelReviewKeywordView.selectedKeywordCollectionView.rx.itemSelected.asObservable()
         )
         
         let output = self.novelReviewViewModel.transform(from: input, disposeBag: self.disposeBag)
@@ -132,7 +133,7 @@ extension NovelReviewViewController: UICollectionViewDelegateFlowLayout {
         } else if collectionView.tag == 2 {
             var text: String?
             
-            text = self.novelReviewViewModel.dummyKeywordList[indexPath.item]
+            text = self.novelReviewViewModel.selectedKeywordList[indexPath.item]
             
             guard let unwrappedText = text else {
                 return CGSize(width: 0, height: 0)

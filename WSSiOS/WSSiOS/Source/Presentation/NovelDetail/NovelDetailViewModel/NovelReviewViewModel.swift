@@ -16,7 +16,7 @@ final class NovelReviewViewModel: ViewModelType {
     
     private let userNovelRepository: UserNovelRepository
     
-    let dummyKeywordList = ["후회", "정치물", "피폐", "빙의", "먼치킨", "기억상실"]
+    var selectedKeywordList: [String] = ["후회", "정치물", "피폐", "빙의", "먼치킨", "기억상실"]
     
     //MARK: - Life Cycle
     
@@ -28,6 +28,7 @@ final class NovelReviewViewModel: ViewModelType {
         let viewDidLoadEvent: Observable<Void>
         let backButtonDidTap: ControlEvent<Void>
         let selectedKeywordCollectionViewContentSize: Observable<CGSize?>
+        let selectedKeywordCollectionViewItemSelected: Observable<IndexPath>
     }
     
     struct Output {
@@ -45,7 +46,7 @@ final class NovelReviewViewModel: ViewModelType {
             .subscribe(with: self, onNext: { owner, _ in
                 output.novelReviewStatusData.accept(NovelReviewStatus.allCases)
                 output.attractivePointListData.accept(AttractivePoints.allCases)
-                output.selectedKeywordListData.accept(owner.dummyKeywordList)
+                output.selectedKeywordListData.accept(owner.selectedKeywordList)
             })
             .disposed(by: disposeBag)
         
@@ -58,6 +59,13 @@ final class NovelReviewViewModel: ViewModelType {
         input.selectedKeywordCollectionViewContentSize
             .map { $0?.height ?? 0 }
             .bind(to: output.selectedKeywordCollectionViewHeight)
+            .disposed(by: disposeBag)
+        
+        input.selectedKeywordCollectionViewItemSelected
+            .subscribe(with: self, onNext: { owner, indexPath in
+                owner.selectedKeywordList.remove(at: indexPath.item)
+                output.selectedKeywordListData.accept(owner.selectedKeywordList)
+            })
             .disposed(by: disposeBag)
         
         return output
