@@ -27,6 +27,7 @@ final class NovelReviewViewModel: ViewModelType {
     struct Input {
         let viewDidLoadEvent: Observable<Void>
         let backButtonDidTap: ControlEvent<Void>
+        let selectedKeywordCollectionViewContentSize: Observable<CGSize?>
     }
     
     struct Output {
@@ -34,6 +35,7 @@ final class NovelReviewViewModel: ViewModelType {
         let novelReviewStatusData = BehaviorRelay<[NovelReviewStatus]>(value: [.watching, .watched, .quit])
         let attractivePointListData = PublishRelay<[AttractivePoints]>()
         let selectedKeywordListData = PublishRelay<[String]>()
+        let selectedKeywordCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -51,6 +53,11 @@ final class NovelReviewViewModel: ViewModelType {
             .subscribe(onNext: { _ in
                 output.popViewController.accept(())
             })
+            .disposed(by: disposeBag)
+        
+        input.selectedKeywordCollectionViewContentSize
+            .map { $0?.height ?? 0 }
+            .bind(to: output.selectedKeywordCollectionViewHeight)
             .disposed(by: disposeBag)
         
         return output

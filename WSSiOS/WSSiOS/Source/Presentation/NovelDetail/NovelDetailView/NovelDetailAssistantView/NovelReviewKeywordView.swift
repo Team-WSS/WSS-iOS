@@ -18,7 +18,7 @@ final class NovelReviewKeywordView: UIView {
     private let keywordSearchBarView = UIView()
     private let placeholderLabel = UILabel()
     private let searchButton = UIButton()
-    let keywordCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+    let selectedKeywordCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     
     //MARK: - Life Cycle
     
@@ -61,7 +61,7 @@ final class NovelReviewKeywordView: UIView {
             $0.tintColor = .wssGray300
         }
         
-        keywordCollectionView.do {
+        selectedKeywordCollectionView.do {
             let layout = CenterAlignedCollectionViewFlowLayout()
             layout.minimumInteritemSpacing = 8
             layout.minimumLineSpacing = 8
@@ -75,7 +75,7 @@ final class NovelReviewKeywordView: UIView {
     private func setHierarchy() {
         self.addSubviews(titleLabel,
                          keywordSearchBarView,
-                         keywordCollectionView)
+                         selectedKeywordCollectionView)
         keywordSearchBarView.addSubviews(placeholderLabel,
                                          searchButton)
     }
@@ -103,10 +103,10 @@ final class NovelReviewKeywordView: UIView {
             }
         }
         
-        keywordCollectionView.snp.makeConstraints {
+        selectedKeywordCollectionView.snp.makeConstraints {
             $0.top.equalTo(keywordSearchBarView.snp.bottom).offset(22)
             $0.leading.trailing.equalToSuperview().inset(20)
-            $0.height.equalTo(200)
+            $0.height.equalTo(0)
             $0.bottom.equalToSuperview().inset(70)
         }
     }
@@ -114,7 +114,7 @@ final class NovelReviewKeywordView: UIView {
     //MARK: - Custom Method
     
     func updateCollectionViewHeight(height: CGFloat) {
-        keywordCollectionView.snp.updateConstraints {
+        selectedKeywordCollectionView.snp.updateConstraints {
             $0.height.equalTo(height)
         }
     }

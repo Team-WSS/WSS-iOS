@@ -61,7 +61,7 @@ final class NovelReviewViewController: UIViewController {
     private func register() {
         rootView.novelReviewStatusView.statusCollectionView.register(NovelReviewStatusCollectionViewCell.self, forCellWithReuseIdentifier: NovelReviewStatusCollectionViewCell.cellIdentifier)
         rootView.novelReviewAttractivePointView.attractivePointCollectionView.register(NovelReviewAttractivePointCollectionViewCell.self, forCellWithReuseIdentifier: NovelReviewAttractivePointCollectionViewCell.cellIdentifier)
-        rootView.novelReviewKeywordView.keywordCollectionView.register(NovelReviewSelectedKeywordCollectionViewCell.self, forCellWithReuseIdentifier: NovelReviewSelectedKeywordCollectionViewCell.cellIdentifier)
+        rootView.novelReviewKeywordView.selectedKeywordCollectionView.register(NovelReviewSelectedKeywordCollectionViewCell.self, forCellWithReuseIdentifier: NovelReviewSelectedKeywordCollectionViewCell.cellIdentifier)
     }
     
     private func delegate() {
@@ -69,7 +69,7 @@ final class NovelReviewViewController: UIViewController {
             .setDelegate(self)
             .disposed(by: disposeBag)
         
-        rootView.novelReviewKeywordView.keywordCollectionView.rx
+        rootView.novelReviewKeywordView.selectedKeywordCollectionView.rx
             .setDelegate(self)
             .disposed(by: disposeBag)
     }
@@ -79,7 +79,8 @@ final class NovelReviewViewController: UIViewController {
     private func bindViewModel() {
         let input = NovelReviewViewModel.Input(
             viewDidLoadEvent: viewDidLoadEvent.asObservable(),
-            backButtonDidTap: rootView.backButton.rx.tap
+            backButtonDidTap: rootView.backButton.rx.tap,
+            selectedKeywordCollectionViewContentSize: rootView.novelReviewKeywordView.selectedKeywordCollectionView.rx.observe(CGSize.self, "contentSize")
         )
         
         let output = self.novelReviewViewModel.transform(from: input, disposeBag: self.disposeBag)
@@ -100,10 +101,16 @@ final class NovelReviewViewController: UIViewController {
         }
         .disposed(by: disposeBag)
         
-        output.selectedKeywordListData.bind(to: rootView.novelReviewKeywordView.keywordCollectionView.rx.items(cellIdentifier: NovelReviewSelectedKeywordCollectionViewCell.cellIdentifier, cellType: NovelReviewSelectedKeywordCollectionViewCell.self)) { item, element, cell in
+        output.selectedKeywordListData.bind(to: rootView.novelReviewKeywordView.selectedKeywordCollectionView.rx.items(cellIdentifier: NovelReviewSelectedKeywordCollectionViewCell.cellIdentifier, cellType: NovelReviewSelectedKeywordCollectionViewCell.self)) { item, element, cell in
             cell.bindData(keyword: element)
         }
         .disposed(by: disposeBag)
+        
+        output.selectedKeywordCollectionViewHeight
+            .subscribe(with: self, onNext: { owner, height in
+                owner.rootView.novelReviewKeywordView.updateCollectionViewHeight(height: height)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
