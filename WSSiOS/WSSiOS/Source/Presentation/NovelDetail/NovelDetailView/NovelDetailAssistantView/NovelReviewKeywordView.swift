@@ -104,7 +104,7 @@ final class NovelReviewKeywordView: UIView {
         }
         
         keywordCollectionView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(22)
+            $0.top.equalTo(keywordSearchBarView.snp.bottom).offset(22)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(200)
             $0.bottom.equalToSuperview().inset(70)
