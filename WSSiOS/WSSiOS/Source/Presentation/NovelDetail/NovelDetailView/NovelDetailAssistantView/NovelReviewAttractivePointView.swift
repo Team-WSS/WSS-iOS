@@ -64,6 +64,7 @@ final class NovelReviewAttractivePointView: UIView {
             $0.collectionViewLayout = layout
             $0.isScrollEnabled = false
             $0.allowsMultipleSelection = true
+            $0.tag = 1
         }
     }
     
@@ -79,7 +80,8 @@ final class NovelReviewAttractivePointView: UIView {
         }
         
         attractivePointCollectionView.snp.makeConstraints {
-            $0.centerX.leading.trailing.equalToSuperview()
+            $0.centerX.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(20)
             $0.top.equalTo(titleLabel.snp.bottom).offset(10)
             $0.bottom.equalToSuperview().inset(32)
             $0.height.equalTo(37)

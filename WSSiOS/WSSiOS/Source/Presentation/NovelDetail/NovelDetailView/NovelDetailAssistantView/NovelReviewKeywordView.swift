@@ -18,6 +18,7 @@ final class NovelReviewKeywordView: UIView {
     private let keywordSearchBarView = UIView()
     private let placeholderLabel = UILabel()
     private let searchButton = UIButton()
+    let keywordCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     
     //MARK: - Life Cycle
     
@@ -59,12 +60,23 @@ final class NovelReviewKeywordView: UIView {
             $0.setImage(.icSearch.withRenderingMode(.alwaysTemplate), for: .normal)
             $0.tintColor = .wssGray300
         }
+        
+        keywordCollectionView.do {
+            let layout = CenterAlignedCollectionViewFlowLayout()
+            layout.minimumInteritemSpacing = 8
+            layout.minimumLineSpacing = 8
+            
+            $0.collectionViewLayout = layout
+            $0.isScrollEnabled = false
+            $0.tag = 2
+        }
     }
     
     private func setHierarchy() {
         self.addSubviews(titleLabel,
-                         keywordSearchBarView)
-        keywordSearchBarView.addSubviews(placeholderLabel, 
+                         keywordSearchBarView,
+                         keywordCollectionView)
+        keywordSearchBarView.addSubviews(placeholderLabel,
                                          searchButton)
     }
     
@@ -89,6 +101,21 @@ final class NovelReviewKeywordView: UIView {
                 $0.trailing.equalToSuperview().inset(10)
                 $0.size.equalTo(36)
             }
+        }
+        
+        keywordCollectionView.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(22)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(200)
+            $0.bottom.equalToSuperview().inset(70)
+        }
+    }
+    
+    //MARK: - Custom Method
+    
+    func updateCollectionViewHeight(height: CGFloat) {
+        keywordCollectionView.snp.updateConstraints {
+            $0.height.equalTo(height)
         }
     }
 }

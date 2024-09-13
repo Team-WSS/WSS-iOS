@@ -60,12 +60,16 @@ final class NovelReviewViewController: UIViewController {
     
     private func register() {
         rootView.novelReviewStatusView.statusCollectionView.register(NovelReviewStatusCollectionViewCell.self, forCellWithReuseIdentifier: NovelReviewStatusCollectionViewCell.cellIdentifier)
-        
         rootView.novelReviewAttractivePointView.attractivePointCollectionView.register(NovelReviewAttractivePointCollectionViewCell.self, forCellWithReuseIdentifier: NovelReviewAttractivePointCollectionViewCell.cellIdentifier)
+        rootView.novelReviewKeywordView.keywordCollectionView.register(NovelReviewSelectedKeywordCollectionViewCell.self, forCellWithReuseIdentifier: NovelReviewSelectedKeywordCollectionViewCell.cellIdentifier)
     }
     
     private func delegate() {
         rootView.novelReviewAttractivePointView.attractivePointCollectionView.rx
+            .setDelegate(self)
+            .disposed(by: disposeBag)
+        
+        rootView.novelReviewKeywordView.keywordCollectionView.rx
             .setDelegate(self)
             .disposed(by: disposeBag)
     }
@@ -95,21 +99,42 @@ final class NovelReviewViewController: UIViewController {
             cell.bindData(attractivePoint: element)
         }
         .disposed(by: disposeBag)
+        
+        output.selectedKeywordListData.bind(to: rootView.novelReviewKeywordView.keywordCollectionView.rx.items(cellIdentifier: NovelReviewSelectedKeywordCollectionViewCell.cellIdentifier, cellType: NovelReviewSelectedKeywordCollectionViewCell.self)) { item, element, cell in
+            cell.bindData(keyword: element)
+        }
+        .disposed(by: disposeBag)
     }
 }
 
 extension NovelReviewViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        var text: String?
         
-        let attractivePointList = AttractivePoints.allCases.map { $0.koreanString }
-        text = attractivePointList[indexPath.item]
-        
-        guard let unwrappedText = text else {
-            return CGSize(width: 0, height: 0)
+        if collectionView.tag == 1 {
+            var text: String?
+            
+            let attractivePointList = AttractivePoints.allCases.map { $0.koreanString }
+            text = attractivePointList[indexPath.item]
+            
+            guard let unwrappedText = text else {
+                return CGSize(width: 0, height: 0)
+            }
+            
+            let width = (unwrappedText as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 26
+            return CGSize(width: width, height: 37)
+        } else if collectionView.tag == 2 {
+            var text: String?
+            
+            text = self.novelReviewViewModel.dummyKeywordList[indexPath.item]
+            
+            guard let unwrappedText = text else {
+                return CGSize(width: 0, height: 0)
+            }
+            
+            let width = (unwrappedText as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 52
+            return CGSize(width: width, height: 37)
+        } else {
+            return CGSize()
         }
-        
-        let width = (unwrappedText as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 26
-        return CGSize(width: width, height: 37)
     }
 }

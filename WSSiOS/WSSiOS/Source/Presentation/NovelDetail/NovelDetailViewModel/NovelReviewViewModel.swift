@@ -16,6 +16,8 @@ final class NovelReviewViewModel: ViewModelType {
     
     private let userNovelRepository: UserNovelRepository
     
+    let dummyKeywordList = ["후회", "정치물", "피폐", "빙의", "먼치킨", "기억상실"]
+    
     //MARK: - Life Cycle
     
     init(userNovelRepository: UserNovelRepository) {
@@ -31,6 +33,7 @@ final class NovelReviewViewModel: ViewModelType {
         let popViewController = PublishRelay<Void>()
         let novelReviewStatusData = BehaviorRelay<[NovelReviewStatus]>(value: [.watching, .watched, .quit])
         let attractivePointListData = PublishRelay<[AttractivePoints]>()
+        let selectedKeywordListData = PublishRelay<[String]>()
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -40,6 +43,7 @@ final class NovelReviewViewModel: ViewModelType {
             .subscribe(with: self, onNext: { owner, _ in
                 output.novelReviewStatusData.accept(NovelReviewStatus.allCases)
                 output.attractivePointListData.accept(AttractivePoints.allCases)
+                output.selectedKeywordListData.accept(owner.dummyKeywordList)
             })
             .disposed(by: disposeBag)
         

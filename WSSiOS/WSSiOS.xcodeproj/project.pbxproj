@@ -298,6 +298,7 @@
 		CD803B372C93FCF3006EBAF8 /* NovelReviewAttractivePointCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD803B362C93FCF3006EBAF8 /* NovelReviewAttractivePointCollectionViewCell.swift */; };
 		CD803B392C940989006EBAF8 /* CenterAlignedCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD803B382C940989006EBAF8 /* CenterAlignedCollectionViewFlowLayout.swift */; };
 		CD803B3B2C940B88006EBAF8 /* NovelReviewKeywordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD803B3A2C940B88006EBAF8 /* NovelReviewKeywordView.swift */; };
+		CD803B3D2C941123006EBAF8 /* NovelReviewSelectedKeywordCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD803B3C2C941123006EBAF8 /* NovelReviewSelectedKeywordCollectionViewCell.swift */; };
 		CDA1774B2C3EC6760089137F /* WSSToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1774A2C3EC6760089137F /* WSSToggleButton.swift */; };
 		CDA5F03A2C2FDB2200FCF15C /* FeedEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5F0392C2FDB2200FCF15C /* FeedEditViewController.swift */; };
 		CDA5F03C2C2FDB3100FCF15C /* FeedEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5F03B2C2FDB3100FCF15C /* FeedEditViewModel.swift */; };
@@ -596,6 +597,7 @@
 		CD803B362C93FCF3006EBAF8 /* NovelReviewAttractivePointCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelReviewAttractivePointCollectionViewCell.swift; sourceTree = "<group>"; };
 		CD803B382C940989006EBAF8 /* CenterAlignedCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenterAlignedCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		CD803B3A2C940B88006EBAF8 /* NovelReviewKeywordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelReviewKeywordView.swift; sourceTree = "<group>"; };
+		CD803B3C2C941123006EBAF8 /* NovelReviewSelectedKeywordCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelReviewSelectedKeywordCollectionViewCell.swift; sourceTree = "<group>"; };
 		CDA1774A2C3EC6760089137F /* WSSToggleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSToggleButton.swift; sourceTree = "<group>"; };
 		CDA5F0392C2FDB2200FCF15C /* FeedEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedEditViewController.swift; sourceTree = "<group>"; };
 		CDA5F03B2C2FDB3100FCF15C /* FeedEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedEditViewModel.swift; sourceTree = "<group>"; };
@@ -1820,6 +1822,7 @@
 			children = (
 				CD2D0AB82C7F0279007CF1F1 /* NovelReviewStatusCollectionViewCell.swift */,
 				CD803B362C93FCF3006EBAF8 /* NovelReviewAttractivePointCollectionViewCell.swift */,
+				CD803B3C2C941123006EBAF8 /* NovelReviewSelectedKeywordCollectionViewCell.swift */,
 			);
 			path = NovelDetailViewCell;
 			sourceTree = "<group>";
@@ -2248,6 +2251,7 @@
 				39B225252B70B41A001C76D0 /* RegisterNormalDifferentRadiusView.swift in Sources */,
 				A1EF35412B52F74A00A94C53 /* RecommendRepository.swift in Sources */,
 				2C2491842B4ADC230096F255 /* WSSTabBarItem.swift in Sources */,
+				CD803B3D2C941123006EBAF8 /* NovelReviewSelectedKeywordCollectionViewCell.swift in Sources */,
 				CD6613702B8A225E00B90B2B /* MemoReadViewModel.swift in Sources */,
 				39CC168C2B526991003F56AE /* WSSSectionTitleView.swift in Sources */,
 				A1147A8A2B506BA500141692 /* RecordHeaderAlignmentView.swift in Sources */,
