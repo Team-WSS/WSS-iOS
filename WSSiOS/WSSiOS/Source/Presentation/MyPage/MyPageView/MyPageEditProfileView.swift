@@ -104,12 +104,12 @@ final class MyPageEditProfileView: UIView {
                 $0.leftViewMode = .always
                 $0.contentVerticalAlignment = .center
                 
-                let rightViewContainer = UIView(frame: CGRect(x: 0, y: 0, width: 44 + 13, height: 44))
+                let rightViewContainer = UIView(frame: CGRect(x: -13, y: 0, width: 44, height: 44))
                 
                 clearButton.do {
                     $0.setImage(.icCancel, for: .normal)
                     $0.contentMode = .scaleAspectFit
-                    $0.frame = CGRect(x: 0, y: -13, width: 44, height: 44)
+                    $0.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
                 }
                 
                 rightViewContainer.addSubview(clearButton)

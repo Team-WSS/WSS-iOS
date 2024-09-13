@@ -35,12 +35,12 @@
 		2C6030712B54F23F0031544C /* LibraryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6030702B54F23F0031544C /* LibraryListView.swift */; };
 		2C6030772B55263F0031544C /* UserResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6030762B55263F0031544C /* UserResult.swift */; };
 		2C60307B2B55D9160031544C /* UIImageView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C60307A2B55D9160031544C /* UIImageView+.swift */; };
+		2C6E7DC42C943C90007D424D /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 2C6E7DC32C943C90007D424D /* Then */; };
 		2C79CB952B45A0A400734E1F /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2C79CB942B45A0A400734E1F /* Pretendard-SemiBold.otf */; };
 		2C79CB972B45A0AB00734E1F /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2C79CB962B45A0AB00734E1F /* Pretendard-Medium.otf */; };
 		2C79CB992B45A0B200734E1F /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2C79CB982B45A0B200734E1F /* Pretendard-Bold.otf */; };
 		2C79CB9B2B45A0B700734E1F /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2C79CB9A2B45A0B700734E1F /* Pretendard-Regular.otf */; };
 		2C79CB9D2B45A1DD00734E1F /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C79CB9C2B45A1DD00734E1F /* UIFont+.swift */; };
-		2C85249C2C911D0B00D86BB7 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 2C85249B2C911D0B00D86BB7 /* Then */; };
 		2CA2F64E2B527B060045B4C2 /* MyPageCustomModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2F64D2B527B060045B4C2 /* MyPageCustomModalView.swift */; };
 		2CA2F6502B527B3A0045B4C2 /* MyPageCustomModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2F64F2B527B3A0045B4C2 /* MyPageCustomModalViewController.swift */; };
 		2CA2F6522B527B590045B4C2 /* MyPageModalAvatarFeatureLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2F6512B527B590045B4C2 /* MyPageModalAvatarFeatureLabelView.swift */; };
@@ -542,7 +542,7 @@
 			files = (
 				3999BFEE2B4E6CA000984832 /* UIImageViewAlignedSwift in Frameworks */,
 				CD3E5A852B54254F00C0A659 /* RxKeyboard in Frameworks */,
-				2C85249C2C911D0B00D86BB7 /* Then in Frameworks */,
+				2C6E7DC42C943C90007D424D /* Then in Frameworks */,
 				2CD229442B42E7A2005400BE /* RxRelay in Frameworks */,
 				2CD229392B42E77F005400BE /* Kingfisher in Frameworks */,
 				2CD229342B42E771005400BE /* SnapKit in Frameworks */,
@@ -1716,7 +1716,7 @@
 				39EF97AB2B53E43800D2148B /* Lottie */,
 				CD3E5A842B54254F00C0A659 /* RxKeyboard */,
 				3916EC852B89B42C007835B5 /* RxGesture */,
-				2C85249B2C911D0B00D86BB7 /* Then */,
+				2C6E7DC32C943C90007D424D /* Then */,
 			);
 			productName = WSSiOS;
 			productReference = 2CD229182B42E685005400BE /* WSSiOS.app */;
@@ -1754,7 +1754,7 @@
 				3999BFEC2B4E6CA000984832 /* XCRemoteSwiftPackageReference "UIImageViewAlignedSwift" */,
 				CD3E5A832B54254F00C0A659 /* XCRemoteSwiftPackageReference "RxKeyboard" */,
 				3916EC842B89B42C007835B5 /* XCRemoteSwiftPackageReference "RxGesture" */,
-				2C85249A2C911D0B00D86BB7 /* XCRemoteSwiftPackageReference "Then" */,
+				2C6E7DC22C943C90007D424D /* XCRemoteSwiftPackageReference "Then" */,
 			);
 			productRefGroup = 2CD229192B42E685005400BE /* Products */;
 			projectDirPath = "";
@@ -2255,7 +2255,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		2C85249A2C911D0B00D86BB7 /* XCRemoteSwiftPackageReference "Then" */ = {
+		2C6E7DC22C943C90007D424D /* XCRemoteSwiftPackageReference "Then" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/devxoul/Then";
 			requirement = {
@@ -2322,9 +2322,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		2C85249B2C911D0B00D86BB7 /* Then */ = {
+		2C6E7DC32C943C90007D424D /* Then */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 2C85249A2C911D0B00D86BB7 /* XCRemoteSwiftPackageReference "Then" */;
+			package = 2C6E7DC22C943C90007D424D /* XCRemoteSwiftPackageReference "Then" */;
 			productName = Then;
 		};
 		2CD229332B42E771005400BE /* SnapKit */ = {

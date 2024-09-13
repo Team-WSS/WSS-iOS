@@ -43,6 +43,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
         let clearButtonDidTap: ControlEvent<Void>
         let checkButtonDidTap: ControlEvent<Void>
         
+        let viewDidTap: ControlEvent<UITapGestureRecognizer>
         let updateIntroText: Observable<String>
         let textViewBeginEditing: ControlEvent<Void>
         
@@ -67,6 +68,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
         
         let introText = BehaviorRelay<String>(value: "")
         let editingTextView = BehaviorRelay<Bool>(value: false)
+        let endEditing = PublishRelay<Bool>()
         
         let updateCell = PublishRelay<IndexPath>()
         let completeButtonIsAbled = BehaviorRelay<Bool>(value: false)
@@ -148,6 +150,12 @@ final class MyPageEditProfileViewModel: ViewModelType {
                     output.editingTextField.accept(false)
                     owner.updateNickname.accept(true)
                 }
+            })
+            .disposed(by: disposeBag)
+        
+        input.viewDidTap
+            .subscribe(onNext: { _ in
+                output.endEditing.accept(true)
             })
             .disposed(by: disposeBag)
         

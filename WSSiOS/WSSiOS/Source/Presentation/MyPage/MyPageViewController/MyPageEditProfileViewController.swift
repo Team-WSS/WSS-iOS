@@ -76,6 +76,7 @@ final class MyPageEditProfileViewController: UIViewController {
             textFieldBeginEditing: rootView.nicknameTextField.rx.controlEvent(.editingDidBegin),
             clearButtonDidTap: rootView.clearButton.rx.tap,
             checkButtonDidTap: rootView.checkButton.rx.tap,
+            viewDidTap: view.rx.tapGesture(),
             updateIntroText: rootView.introTextView.rx.text.orEmpty.asObservable(),
             textViewBeginEditing: rootView.introTextView.rx.didBeginEditing,
             genreCellTap: rootView.genreCollectionView.rx.itemSelected
@@ -133,6 +134,12 @@ final class MyPageEditProfileViewController: UIViewController {
                 if !editing {
                     owner.rootView.introTextView.endEditing(true)
                 }
+            })
+            .disposed(by: disposeBag)
+         
+        output.endEditing
+            .bind(with: self, onNext: { owner, endEditing in
+                owner.view.endEditing(endEditing)
             })
             .disposed(by: disposeBag)
         
