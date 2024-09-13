@@ -279,6 +279,10 @@ enum StringLiterals {
         enum Date {
             static let addDate = "날짜 추가"
         }
+        
+        enum AttractivePoint {
+            static let attractivePoint = "매력포인트"
+        }
     }
     
     enum Search {

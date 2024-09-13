@@ -28,8 +28,9 @@ final class NovelReviewViewModel: ViewModelType {
     }
     
     struct Output {
-        let novelReviewStatusData = BehaviorRelay<[NovelReviewStatus]>(value: [.watching, .watched, .quit])
         let popViewController = PublishRelay<Void>()
+        let novelReviewStatusData = BehaviorRelay<[NovelReviewStatus]>(value: [.watching, .watched, .quit])
+        let attractivePointListData = PublishRelay<[AttractivePoints]>()
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -38,6 +39,7 @@ final class NovelReviewViewModel: ViewModelType {
         input.viewDidLoadEvent
             .subscribe(with: self, onNext: { owner, _ in
                 output.novelReviewStatusData.accept(NovelReviewStatus.allCases)
+                output.attractivePointListData.accept(AttractivePoints.allCases)
             })
             .disposed(by: disposeBag)
         

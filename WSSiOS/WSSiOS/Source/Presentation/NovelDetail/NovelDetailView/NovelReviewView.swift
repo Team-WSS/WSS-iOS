@@ -20,6 +20,7 @@ final class NovelReviewView: UIView {
     let stackView = UIStackView()
     let novelReviewStatusView = NovelReviewStatusView()
     let novelReviewRatingView = NovelReviewRatingView()
+    let novelReviewAttractivePointView = NovelReviewAttractivePointView()
     
     //MARK: - Life Cycle
     
@@ -69,7 +70,8 @@ final class NovelReviewView: UIView {
         self.addSubview(scrollView)
         scrollView.addSubview(stackView)
         stackView.addArrangedSubviews(novelReviewStatusView,
-                                      novelReviewRatingView)
+                                      novelReviewRatingView,
+                                      novelReviewAttractivePointView)
     }
     
     private func setLayout() {

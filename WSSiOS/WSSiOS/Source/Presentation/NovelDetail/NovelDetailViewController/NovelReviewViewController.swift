@@ -43,6 +43,7 @@ final class NovelReviewViewController: UIViewController {
         
         setNavigationBar()
         register()
+        delegate()
         bindViewModel()
         
         viewDidLoadEvent.accept(())
@@ -59,6 +60,14 @@ final class NovelReviewViewController: UIViewController {
     
     private func register() {
         rootView.novelReviewStatusView.statusCollectionView.register(NovelReviewStatusCollectionViewCell.self, forCellWithReuseIdentifier: NovelReviewStatusCollectionViewCell.cellIdentifier)
+        
+        rootView.novelReviewAttractivePointView.attractivePointCollectionView.register(NovelReviewAttractivePointCollectionViewCell.self, forCellWithReuseIdentifier: NovelReviewAttractivePointCollectionViewCell.cellIdentifier)
+    }
+    
+    private func delegate() {
+        rootView.novelReviewAttractivePointView.attractivePointCollectionView.rx
+            .setDelegate(self)
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Bind
@@ -71,15 +80,36 @@ final class NovelReviewViewController: UIViewController {
         
         let output = self.novelReviewViewModel.transform(from: input, disposeBag: self.disposeBag)
         
-        output.novelReviewStatusData.bind(to: rootView.novelReviewStatusView.statusCollectionView.rx.items(cellIdentifier: NovelReviewStatusCollectionViewCell.cellIdentifier, cellType: NovelReviewStatusCollectionViewCell.self)) { item, element, cell in
-            cell.bindData(status: element)
-        }
-        .disposed(by: disposeBag)
-        
         output.popViewController
             .subscribe(with: self, onNext: { owner, _ in
                 owner.navigationController?.popViewController(animated: true)
             })
             .disposed(by: disposeBag)
+        
+        output.novelReviewStatusData.bind(to: rootView.novelReviewStatusView.statusCollectionView.rx.items(cellIdentifier: NovelReviewStatusCollectionViewCell.cellIdentifier, cellType: NovelReviewStatusCollectionViewCell.self)) { item, element, cell in
+            cell.bindData(status: element)
+        }
+        .disposed(by: disposeBag)
+        
+        output.attractivePointListData.bind(to: rootView.novelReviewAttractivePointView.attractivePointCollectionView.rx.items(cellIdentifier: NovelReviewAttractivePointCollectionViewCell.cellIdentifier, cellType: NovelReviewAttractivePointCollectionViewCell.self)) { item, element, cell in
+            cell.bindData(attractivePoint: element)
+        }
+        .disposed(by: disposeBag)
+    }
+}
+
+extension NovelReviewViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        var text: String?
+        
+        let attractivePointList = AttractivePoints.allCases.map { $0.koreanString }
+        text = attractivePointList[indexPath.item]
+        
+        guard let unwrappedText = text else {
+            return CGSize(width: 0, height: 0)
+        }
+        
+        let width = (unwrappedText as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 26
+        return CGSize(width: width, height: 37)
     }
 }
