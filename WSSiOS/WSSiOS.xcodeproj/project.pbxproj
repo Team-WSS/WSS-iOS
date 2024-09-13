@@ -296,6 +296,7 @@
 		CD6613782B8B313700B90B2B /* DeletePopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6613772B8B313700B90B2B /* DeletePopupViewModel.swift */; };
 		CD803B352C93F711006EBAF8 /* NovelReviewAttractivePointView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD803B342C93F711006EBAF8 /* NovelReviewAttractivePointView.swift */; };
 		CD803B372C93FCF3006EBAF8 /* NovelReviewAttractivePointCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD803B362C93FCF3006EBAF8 /* NovelReviewAttractivePointCollectionViewCell.swift */; };
+		CD803B392C940989006EBAF8 /* CenterAlignedCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD803B382C940989006EBAF8 /* CenterAlignedCollectionViewFlowLayout.swift */; };
 		CDA1774B2C3EC6760089137F /* WSSToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1774A2C3EC6760089137F /* WSSToggleButton.swift */; };
 		CDA5F03A2C2FDB2200FCF15C /* FeedEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5F0392C2FDB2200FCF15C /* FeedEditViewController.swift */; };
 		CDA5F03C2C2FDB3100FCF15C /* FeedEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5F03B2C2FDB3100FCF15C /* FeedEditViewModel.swift */; };
@@ -592,6 +593,7 @@
 		CD6613772B8B313700B90B2B /* DeletePopupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletePopupViewModel.swift; sourceTree = "<group>"; };
 		CD803B342C93F711006EBAF8 /* NovelReviewAttractivePointView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelReviewAttractivePointView.swift; sourceTree = "<group>"; };
 		CD803B362C93FCF3006EBAF8 /* NovelReviewAttractivePointCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelReviewAttractivePointCollectionViewCell.swift; sourceTree = "<group>"; };
+		CD803B382C940989006EBAF8 /* CenterAlignedCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenterAlignedCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		CDA1774A2C3EC6760089137F /* WSSToggleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSToggleButton.swift; sourceTree = "<group>"; };
 		CDA5F0392C2FDB2200FCF15C /* FeedEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedEditViewController.swift; sourceTree = "<group>"; };
 		CDA5F03B2C2FDB3100FCF15C /* FeedEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedEditViewModel.swift; sourceTree = "<group>"; };
@@ -679,6 +681,7 @@
 				CDE596D72B5770CE00D99DA1 /* WSSToastView.swift */,
 				CDA1774A2C3EC6760089137F /* WSSToggleButton.swift */,
 				39B75ADF2B59C6A7005DD8B9 /* LaunchScreen.storyboard */,
+				CD803B382C940989006EBAF8 /* CenterAlignedCollectionViewFlowLayout.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -2275,6 +2278,7 @@
 				A1CB373A2B72935900CB290F /* UITableViewCell+.swift in Sources */,
 				A1147A802B50638200141692 /* RecordViewController.swift in Sources */,
 				B9F7401D2C047E360018D0C6 /* NormalSearchViewModel.swift in Sources */,
+				CD803B392C940989006EBAF8 /* CenterAlignedCollectionViewFlowLayout.swift in Sources */,
 				39ABD5A02B54D0A900DEA94E /* RegisterNormalDatePicker.swift in Sources */,
 				39D4A5C92BDA4C5A004FC834 /* NovelDetailViewController.swift in Sources */,
 				CD2D0AB92C7F0279007CF1F1 /* NovelReviewStatusCollectionViewCell.swift in Sources */,

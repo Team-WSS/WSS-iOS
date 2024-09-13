@@ -58,7 +58,7 @@ final class NovelReviewAttractivePointView: UIView {
         }
         
         attractivePointCollectionView.do {
-            let layout = UICollectionViewFlowLayout()
+            let layout = CenterAlignedCollectionViewFlowLayout()
             layout.minimumInteritemSpacing = 6
 
             $0.collectionViewLayout = layout
@@ -79,10 +79,9 @@ final class NovelReviewAttractivePointView: UIView {
         }
         
         attractivePointCollectionView.snp.makeConstraints {
-            $0.centerX.equalToSuperview()
+            $0.centerX.leading.trailing.equalToSuperview()
             $0.top.equalTo(titleLabel.snp.bottom).offset(10)
             $0.bottom.equalToSuperview().inset(32)
-            $0.width.equalTo(323)
             $0.height.equalTo(37)
         }
     }
