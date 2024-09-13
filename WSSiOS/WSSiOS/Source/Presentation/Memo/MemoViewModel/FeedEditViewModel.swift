@@ -89,6 +89,7 @@ final class FeedEditViewModel: ViewModelType {
         let feedContentUpdated: Observable<String>
         let feedContentViewDidBeginEditing: ControlEvent<Void>
         let feedContentViewDidEndEditing: ControlEvent<Void>
+        let novelConnectViewDidTap: Observable<UITapGestureRecognizer>
     }
     
     struct Output {
@@ -99,6 +100,7 @@ final class FeedEditViewModel: ViewModelType {
         let feedContentWithLengthLimit = BehaviorRelay<String>(value: "")
         let completeButtonIsAbled = BehaviorRelay<Bool>(value: false)
         let showPlaceholder = PublishRelay<Bool>()
+        let presentFeedEditNovelConnectModalViewController = PublishRelay<Void>()
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -202,6 +204,12 @@ final class FeedEditViewModel: ViewModelType {
         input.feedContentViewDidEndEditing
             .subscribe(with: self, onNext: { owner, _ in
                 output.showPlaceholder.accept(owner.updatedFeedContent.count == 0 ? true : false)
+            })
+            .disposed(by: disposeBag)
+        
+        input.novelConnectViewDidTap
+            .subscribe(with: self, onNext: { owner, _ in
+                output.presentFeedEditNovelConnectModalViewController.accept(())
             })
             .disposed(by: disposeBag)
         

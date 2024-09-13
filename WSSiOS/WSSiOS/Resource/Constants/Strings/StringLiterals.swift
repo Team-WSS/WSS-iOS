@@ -31,9 +31,10 @@ enum StringLiterals {
             static let search = "검색"
             static let myPage = "마이페이지"
             static let changeNickname = "닉네임 변경"
-            static let myPageInfo = "계정정보 확인"
             static let feed = "소소피드"
             static let notice = "알림"
+            static let myPageSetting = "설정"
+            static let myPageInfo = "계정설정"
         }
     }
     
@@ -127,14 +128,25 @@ enum StringLiterals {
         }
         
         enum Setting: String, CaseIterable {
-            case accountInfo = "계정정보 확인"
-            case webSoso = "웹소소 인스타 보러가기"
+            case accountInfo = "계정정보"
+            case profileStatus = "프로필 공개 여부 설정"
+            case webSoso = "웹소소 공식 계정"
+            case qNA = "문의하기 & 의견 보내기"
+            case review = "앱 평점 남기기"
             case termsOfService = "서비스 이용약관"
         }
         
         enum SettingURL {
             static let instaURL = "https://www.instagram.com/websoso_official/"
             static let termsURL = "https://kimmjabc.notion.site/4acd397608c146cbbf8dd4fe11a82e19"
+        }
+        
+        enum SettingInfo: String, CaseIterable {
+            case changeProfile = "성별/나이 변경"
+            case email = "이메일"
+            case blockList = "차단유저 목록"
+            case logout = "로그아웃"
+            case secession = "회원탈퇴"
         }
         
         enum ChangeNickname {
@@ -273,6 +285,26 @@ enum StringLiterals {
         }
     }
     
+    enum DetailSearch {
+        static let info = "정보"
+        static let keyword = "키워드"
+        
+        static let genre = "장르"
+        
+        static let serialStatus = "연재상태"
+        static let statusIng = "연재중"
+        static let statusFinished = "완결작"
+        
+        static let rating = "별점"
+        static let ratingaboveThreePointFive = "3.5이상"
+        static let ratingaboveFourPointZero = "4.0이상"
+        static let ratingaboveFourPointFive = "4.5이상"
+        static let ratingaboveFourPointEight = "4.8이상"
+        
+        static let reload = "초기화"
+        static let searchNovel = "작품 찾기"
+    }
+    
     enum Memo {
         static let complete = "완료"
         static let edit = "수정"
@@ -288,6 +320,8 @@ enum StringLiterals {
         enum Novel {
             static let novelConnect = "작품 연결하기"
             static let novelSearch = "작품 제목, 작가를 검색하세요"
+            static let novelSelect = "작성 중인 글과 관련된 웹소설을 선택하세요"
+            static let connectSelectedNovel = "해당 작품 연결"
         }
     }
     
@@ -321,5 +355,10 @@ enum StringLiterals {
     enum Feed {
         static let spoilerText = "스포일러가 포함된 글 보기"
         static let modifiedText = "(수정됨)"
+    }
+    
+    enum FeedDetail {
+        static let title = "수다글"
+        static let reply = "댓글"
     }
 }

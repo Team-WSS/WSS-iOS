@@ -68,7 +68,7 @@ final class FeedEditViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.rootView.completeButton)
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.backgroundColor = .wssWhite
+        self.navigationController?.navigationBar.backgroundColor = .clear
     }
     
     private func register() {
@@ -96,7 +96,8 @@ final class FeedEditViewController: UIViewController {
             categoryCollectionViewItemDeselected: rootView.feedEditCategoryView.categoryCollectionView.rx.itemDeselected.asObservable(),
             feedContentUpdated: rootView.feedEditContentView.feedTextView.rx.text.orEmpty.distinctUntilChanged().asObservable(),
             feedContentViewDidBeginEditing: rootView.feedEditContentView.feedTextView.rx.didBeginEditing,
-            feedContentViewDidEndEditing: rootView.feedEditContentView.feedTextView.rx.didEndEditing
+            feedContentViewDidEndEditing: rootView.feedEditContentView.feedTextView.rx.didEndEditing,
+            novelConnectViewDidTap: rootView.feedEditNovelConnectView.rx.tapGesture().when(.recognized).asObservable()
         )
         
         let output = self.feedEditViewModel.transform(from: input, disposeBag: self.disposeBag)
@@ -152,6 +153,12 @@ final class FeedEditViewController: UIViewController {
         output.showPlaceholder
             .subscribe(with: self, onNext: { owner, showPlaceholder in
                 owner.rootView.feedEditContentView.placeholderLabel.isHidden = !showPlaceholder
+            })
+            .disposed(by: disposeBag)
+        
+        output.presentFeedEditNovelConnectModalViewController
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.presentModalViewController(FeedNovelConnectModalViewController())
             })
             .disposed(by: disposeBag)
     }
