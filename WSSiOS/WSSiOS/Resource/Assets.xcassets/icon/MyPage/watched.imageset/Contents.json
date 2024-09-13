@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Component 3-5.svg",
+      "filename" : "quitting-10.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "quitting-11.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "quitting-12.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
