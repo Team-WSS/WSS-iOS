@@ -50,13 +50,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
         let genreCellTap: ControlEvent<IndexPath>
     }
     
-    struct Output {
-        let bindUserData = BehaviorRelay<MyProfileResult>(value: MyProfileResult(
-            nickname: "",
-            intro: "",
-            avatarImage: "",
-            genrePreferences: [""]))
-        
+    struct Output {        
         //TODO: 서연이 코드 합치면서 수정하기
         let bindGenreCell = BehaviorRelay<[String]>(value: ["로맨스", "로판", "판타지", "현판", "무협", "BL", "라노벨", "미스터리", "드라마"])
         let popViewController = PublishRelay<Bool>() 
@@ -77,11 +71,9 @@ final class MyPageEditProfileViewModel: ViewModelType {
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
         
-        output.bindUserData.accept(MyProfileResult(
-            nickname: self.userNickname,
-            intro: self.userIntro,
-            avatarImage: self.userImage,
-            genrePreferences: self.genreList))
+        //유저 정보 서버연결
+        output.nicknameText.accept(self.userNickname)
+        output.introText.accept(self.userIntro)
         
         input.backButtonDidTap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)

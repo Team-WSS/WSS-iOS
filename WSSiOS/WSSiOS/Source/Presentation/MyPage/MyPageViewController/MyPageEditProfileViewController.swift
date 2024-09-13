@@ -84,13 +84,6 @@ final class MyPageEditProfileViewController: UIViewController {
         
         let output = self.viewModel.transform(from: input, disposeBag: self.disposeBag)
         
-        output.bindUserData
-            .bind(with: self, onNext: { owner, data in
-                output.nicknameText.accept(data.nickname)
-                output.introText.accept(data.intro)
-            })
-            .disposed(by: disposeBag)
-        
         output.bindGenreCell
             .bind(to: rootView.genreCollectionView.rx.items(
                 cellIdentifier: MyPageEditProfileGenreCollectionViewCell.cellIdentifier,
