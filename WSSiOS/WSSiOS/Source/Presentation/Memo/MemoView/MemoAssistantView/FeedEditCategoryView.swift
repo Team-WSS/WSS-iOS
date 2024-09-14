@@ -1,5 +1,5 @@
 //
-//  FeedCategoryView.swift
+//  FeedEditCategoryView.swift
 //  WSSiOS
 //
 //  Created by Hyowon Jeon on 6/29/24.
@@ -83,6 +83,7 @@ final class FeedEditCategoryView: UIView {
         essentialImageView.snp.makeConstraints {
             $0.top.equalTo(categoryLabel.snp.top).offset(2)
             $0.leading.equalTo(categoryLabel.snp.trailing).offset(2)
+            $0.size.equalTo(8)
         }
         
         multipleSelectLabel.snp.makeConstraints {
@@ -93,7 +94,7 @@ final class FeedEditCategoryView: UIView {
         categoryCollectionView.snp.makeConstraints {
             $0.top.equalTo(categoryLabel.snp.bottom).offset(14)
             $0.leading.equalToSuperview().inset(20)
-            $0.trailing.equalToSuperview().inset(18)
+            $0.trailing.equalToSuperview().inset(20)
             $0.bottom.equalToSuperview()
             $0.height.equalTo(84)
         }

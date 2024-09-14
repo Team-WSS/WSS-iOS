@@ -1,5 +1,5 @@
 //
-//  FeedContentView.swift
+//  FeedEditContentView.swift
 //  WSSiOS
 //
 //  Created by Hyowon Jeon on 6/29/24.
@@ -59,10 +59,6 @@ final class FeedEditContentView: UIView {
             $0.textColor = .wssGray300
         }
         
-        spoilerButton.do {
-            $0.updateToggle(false)
-        }
-        
         feedTextWrapperView.do {
             $0.backgroundColor = .wssGray50
             $0.layer.cornerRadius = 14
@@ -107,6 +103,7 @@ final class FeedEditContentView: UIView {
         essentialImageView.snp.makeConstraints {
             $0.top.equalTo(writeContentLabel.snp.top).offset(2)
             $0.leading.equalTo(writeContentLabel.snp.trailing).offset(2)
+            $0.size.equalTo(8)
         }
         
         spoilerLabel.snp.makeConstraints {
@@ -143,9 +140,9 @@ final class FeedEditContentView: UIView {
     
     //MARK: - Data
     
-    func bindData(memoContent: String) {
+    func bindData(feedContent: String) {
         self.feedTextView.do {
-            $0.makeAttribute(with: memoContent)?
+            $0.makeAttribute(with: feedContent)?
                 .lineSpacing(spacingPercentage: 150)
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
@@ -153,7 +150,13 @@ final class FeedEditContentView: UIView {
         }
         
         self.letterCountLabel.do {
-            $0.applyWSSFont(.body2, with: "(\(memoContent.count)/2000)")
+            $0.applyWSSFont(.body2, with: "(\(feedContent.count)/2000)")
+        }
+    }
+    
+    func bindData(isSpoiler: Bool) {
+        self.spoilerButton.do {
+            $0.updateToggle(isSpoiler)
         }
     }
 }
