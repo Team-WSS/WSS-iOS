@@ -105,6 +105,7 @@
 		399F29322B56633C00BBC12B /* NovelResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399F29312B56633C00BBC12B /* NovelResult.swift */; };
 		399F29352B56DA7800BBC12B /* TrashReadStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399F29342B56DA7800BBC12B /* TrashReadStatus.swift */; };
 		39ABD5A02B54D0A900DEA94E /* RegisterNormalDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39ABD59F2B54D0A900DEA94E /* RegisterNormalDatePicker.swift */; };
+		39ACEC532C95BCB20064772F /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39ACEC522C95BCB20064772F /* TestViewController.swift */; };
 		39AF30D12B50182F00FDC1F3 /* RegisterNormalReadStatusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39AF30D02B50182F00FDC1F3 /* RegisterNormalReadStatusButton.swift */; };
 		39B225252B70B41A001C76D0 /* RegisterNormalDifferentRadiusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B225242B70B41A001C76D0 /* RegisterNormalDifferentRadiusView.swift */; };
 		39B6B6A32C649F3300D80BD9 /* NovelDetailInfoReviewGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B6B6A22C649F3300D80BD9 /* NovelDetailInfoReviewGraphView.swift */; };
@@ -407,6 +408,7 @@
 		399F29312B56633C00BBC12B /* NovelResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelResult.swift; sourceTree = "<group>"; };
 		399F29342B56DA7800BBC12B /* TrashReadStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashReadStatus.swift; sourceTree = "<group>"; };
 		39ABD59F2B54D0A900DEA94E /* RegisterNormalDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalDatePicker.swift; sourceTree = "<group>"; };
+		39ACEC522C95BCB20064772F /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		39AF30D02B50182F00FDC1F3 /* RegisterNormalReadStatusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalReadStatusButton.swift; sourceTree = "<group>"; };
 		39B225242B70B41A001C76D0 /* RegisterNormalDifferentRadiusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalDifferentRadiusView.swift; sourceTree = "<group>"; };
 		39B6B6A22C649F3300D80BD9 /* NovelDetailInfoReviewGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoReviewGraphView.swift; sourceTree = "<group>"; };
@@ -1206,6 +1208,7 @@
 			isa = PBXGroup;
 			children = (
 				39D4A5C82BDA4C5A004FC834 /* NovelDetailViewController.swift */,
+				39ACEC522C95BCB20064772F /* TestViewController.swift */,
 			);
 			path = NovelDetailViewController;
 			sourceTree = "<group>";
@@ -2152,6 +2155,7 @@
 			files = (
 				B9095D2C2C39514D007521EF /* HomeNoticeDetailContentView.swift in Sources */,
 				C99DDFDB2C8613AF00EDC0C4 /* SosoPickCollectionViewCell.swift in Sources */,
+				39ACEC532C95BCB20064772F /* TestViewController.swift in Sources */,
 				2CD9115A2C0D8A23006B8D72 /* FeedView.swift in Sources */,
 				2C60307B2B55D9160031544C /* UIImageView+.swift in Sources */,
 				B9095D2A2C3950B4007521EF /* HomeNoticeDetailView.swift in Sources */,
