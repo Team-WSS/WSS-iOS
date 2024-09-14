@@ -59,7 +59,7 @@ final class TrashNovelDetailInfoReadDateView: UIView {
         }
         
         waveLabel.do {
-            $0.makeAttribute(with: StringLiterals.NovelDetail.Info.tilde)?
+            $0.makeAttribute(with: "")?
                 .lineSpacing(spacingPercentage: 150)
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
@@ -116,7 +116,7 @@ final class TrashNovelDetailInfoReadDateView: UIView {
         }
         if let endDate = endDate {
             self.readDateLabel.do {
-                $0.makeAttribute(with: StringLiterals.NovelDetail.Info.endDate)?
+                $0.makeAttribute(with: "")?
                     .kerning(kerningPixel: -0.6)
                     .applyAttribute()
             }
@@ -129,7 +129,7 @@ final class TrashNovelDetailInfoReadDateView: UIView {
             self.waveLabel.isHidden = false
         } else {
             self.readDateLabel.do {
-                $0.makeAttribute(with: StringLiterals.NovelDetail.Info.startDate)?
+                $0.makeAttribute(with: "")?
                     .kerning(kerningPixel: -0.6)
                     .applyAttribute()
             }

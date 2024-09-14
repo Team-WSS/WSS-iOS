@@ -10,11 +10,15 @@ import UIKit
 import SnapKit
 import Then
 
-final class NovelDetailInfoView: UIButton {
+final class NovelDetailInfoView: UIView {
     
     //MARK: - Components
     
-    private let dummyLabel = UILabel()
+    private let stackView = UIStackView()
+    let descriptionView = NovelDetailInfoDescriptionView()
+    let platformView = NovelDetailInfoPlatformView()
+    let reviewEmptyView = NovelDetailInfoReviewEmptyView()
+    let reviewView = NovelDetailInfoReviewView()
     
     //MARK: - Life Cycle
     
@@ -33,27 +37,50 @@ final class NovelDetailInfoView: UIButton {
     //MARK: - UI
     
     private func setUI() {
-        self.do {
-            $0.backgroundColor = .wssWhite
-        }
+        self.backgroundColor = .wssGray50
         
-        dummyLabel.do {
-            $0.applyWSSFont(.headline1, with: "Info View")
-            $0.textColor = .wssGray80
+        stackView.do {
+            $0.axis = .vertical
+            $0.alignment = .fill
         }
     }
     
     private func setHierarchy() {
-        self.addSubview(dummyLabel)
+        self.addSubview(stackView)
+        stackView.addArrangedSubviews(descriptionView,
+                                      platformView,
+                                      reviewEmptyView,
+                                      reviewView)
     }
     
     private func setLayout() {
-        self.snp.makeConstraints {
-            $0.height.equalTo(1000)
+        stackView.do {
+            $0.snp.makeConstraints {
+                $0.top.equalToSuperview()
+                $0.bottom.equalToSuperview()
+                $0.horizontalEdges.equalToSuperview()
+            }
+            
+            $0.setCustomSpacing(1, after: descriptionView)
+            $0.setCustomSpacing(7, after: platformView)
         }
-        
-        dummyLabel.snp.makeConstraints {
-            $0.center.equalToSuperview()
+    }
+    
+    //MARK: - Data
+    
+    func bindData(_ data: NovelDetailInfoResult) {
+        descriptionView.bindData(data)
+        reviewView.bindData(data)
+    }
+    
+    func updateVisibility(_ visibilities: [ReviewSectionVisibility]) {
+        if visibilities.isEmpty {
+            reviewView.isHidden = true
+            reviewEmptyView.isHidden = false
+        } else {
+            reviewView.isHidden = false
+            reviewEmptyView.isHidden = true
+            reviewView.bindVisibility(visibilities)
         }
     }
 }

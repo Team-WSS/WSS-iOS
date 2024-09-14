@@ -230,19 +230,6 @@ enum StringLiterals {
             static let newMemo = "새로운 메모를 작성해보세요"
         }
         
-        enum Info {
-            static let info = "정보"
-            static let rating = "나의 평가"
-            static let readStatus = "읽기 상태"
-            static let tilde = "~"
-            static let startDate = "시작 날짜"
-            static let endDate = "읽은 날짜"
-            static let keyword = "키워드"
-            static let description = "작품 소개"
-            static let genre = "장르"
-            static let platform = "작품 보러가기"
-        }
-        
         enum Setting {
             static let novelDelete = "작품을 서재에서 삭제"
             static let novelEdit = "작품 정보 수정"
@@ -267,6 +254,22 @@ enum StringLiterals {
         enum Tab {
             static let info = "정보"
             static let feed = "피드"
+        }
+        
+        enum Info {
+            static let description = "작품 소개"
+            static let platform = "작품 보러가기"
+            static let reviewEmpty = "독자들의 평가"
+            static let reviewEmptyDescription = "아직 평가가 없어요\n최초로 남겨보세요!"
+            static let attractivePoint = "독자들의 감상평"
+            static let attractivePointDescription = "(이)가 매력적인 작품이에요"
+            static let readStatus = "명이 작품을\n"
+            
+            enum ReadStatus {
+                static let watched = "봤어요"
+                static let watching = "같이 보고 있어요"
+                static let quit = "하차했어요"
+            }
         }
     }
     

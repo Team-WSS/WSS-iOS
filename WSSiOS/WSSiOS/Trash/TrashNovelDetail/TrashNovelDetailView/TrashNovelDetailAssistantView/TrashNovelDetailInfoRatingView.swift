@@ -36,7 +36,7 @@ final class TrashNovelDetailInfoRatingView: UIView {
     
     private func setUI() {
         ratingLabel.do {
-            $0.makeAttribute(with: StringLiterals.NovelDetail.Info.rating)?
+            $0.makeAttribute(with: "")?
                 .kerning(kerningPixel: -0.6)
                 .applyAttribute()
             $0.textColor = .wssBlack
