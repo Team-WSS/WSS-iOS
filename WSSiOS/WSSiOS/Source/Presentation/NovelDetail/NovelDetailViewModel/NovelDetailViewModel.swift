@@ -235,7 +235,7 @@ final class NovelDetailViewModel: ViewModelType {
     }
 }
 
-enum ReviewSectionVisibility: Hashable {
+enum ReviewSectionVisibility {
     case attractivepoint
     case keyword
     case graph
