@@ -19,8 +19,8 @@ final class NovelDetailHeaderView: UIView {
     private let stackView = UIStackView()
     let coverImageButton = NovelDetailHeaderCoverImageButton()
     private let novelInfoView = NovelDetailHeaderNovelInfoView()
-    private let reviewResultView = NovelDetailHeaderReviewResultView()
-    let interestReviewButton = NovelDetailHeaderInterestReviewButton()
+    let reviewResultView = NovelDetailHeaderReviewResultView()
+    let interestReviewButton = NovelDetailHeaderInterestFeedWriteButton()
     
     //MARK: - Life CycleE
     

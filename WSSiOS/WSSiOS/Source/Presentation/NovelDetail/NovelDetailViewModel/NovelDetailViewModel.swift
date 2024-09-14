@@ -55,7 +55,9 @@ final class NovelDetailViewModel: ViewModelType {
         let novelCoverImageButtonDidTap: ControlEvent<Void>
         let largeNovelCoverImageDismissButtonDidTap: ControlEvent<Void>
         let largeNovelCoverImageBackgroundDidTap: ControlEvent<Void>
+        let reviewResultButtonDidTap: Observable<ReadStatus?>
         let interestButtonDidTap: ControlEvent<Void>
+        let feedWriteButtonDidTap: ControlEvent<Void>
         
         //Tab
         let infoTabBarButtonDidTap: ControlEvent<Void>
@@ -77,7 +79,9 @@ final class NovelDetailViewModel: ViewModelType {
         //NovelDetailHeader
         let showLargeNovelCoverImage: Driver<Bool>
         let isUserNovelInterested: Driver<Bool>
-                                    
+        let feedWriteButtonEnabled: Observable<Void>
+        let pushToReviewEnabled: Observable<ReadStatus?>
+                                            
         //Tab
         let selectedTab: Driver<Tab>
         
@@ -131,6 +135,8 @@ final class NovelDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        let reviewResultButtonDidTap = input.reviewResultButtonDidTap
+        
         input.interestButtonDidTap
             .withLatestFrom(isUserNovelInterested)
             .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
@@ -145,6 +151,8 @@ final class NovelDetailViewModel: ViewModelType {
                 owner.isUserNovelInterested.accept(!owner.isUserNovelInterested.value)
             })
             .disposed(by: disposeBag)
+        
+        let feedWriteButtonDidTap = input.feedWriteButtonDidTap.asObservable()
         
         let scrollContentOffset = input.scrollContentOffset
         
@@ -207,6 +215,8 @@ final class NovelDetailViewModel: ViewModelType {
             backButtonEnabled: backButtonDidTap,
             showLargeNovelCoverImage: showLargeNovelCoverImage.asDriver(),
             isUserNovelInterested: isUserNovelInterested.asDriver(),
+            feedWriteButtonEnabled: feedWriteButtonDidTap,
+            pushToReviewEnabled: reviewResultButtonDidTap,
             selectedTab: selectedTab.asDriver(),
             isInfoDescriptionExpended: isInfoDescriptionExpended.asDriver(),
             platformList: platformList.asDriver(),

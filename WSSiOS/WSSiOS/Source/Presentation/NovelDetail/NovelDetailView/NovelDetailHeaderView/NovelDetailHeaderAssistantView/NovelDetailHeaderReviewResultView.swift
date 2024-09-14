@@ -17,11 +17,11 @@ final class NovelDetailHeaderReviewResultView: UIView {
     private let totalStackView = UIStackView()
     
     private let readInfoButtonStackView = UIStackView()
-    private let readInfoButtons = [NovelDetailHeaderReadInfoButton(iconImage: .icSmallStar),
+    let readInfoButtons = [NovelDetailHeaderReadInfoButton(iconImage: .icSmallStar),
                                    NovelDetailHeaderReadInfoButton(iconImage: .icSmallCalendar)]
     
     private let readStatusButtonStackView = UIStackView()
-    private let readStatusButtons = ReadStatus.allCases.map { readStatus in
+    let readStatusButtons = ReadStatus.allCases.map { readStatus in
         NovelDetailHeaderReadStatusButton(readStatus: readStatus)
     }
     private let divierViews = [UIView(), UIView()]

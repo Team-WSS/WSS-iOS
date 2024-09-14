@@ -101,6 +101,9 @@ final class NovelDetailViewController: UIViewController {
     }
     
     private func bindViewModelOutput(_ output: NovelDetailViewModel.Output) {
+        
+        //MARK: - Bind/Total
+        
         output.detailHeaderData
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
@@ -135,14 +138,27 @@ final class NovelDetailViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.backButtonEnabled
+            .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
         
+        //MARK: - Bind/NovelDetailHeader
+        
         output.showLargeNovelCoverImage
             .drive(with: self, onNext: { owner, isShow in
                 owner.showLargeNovelCoverImageView(isShow)
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushToReviewEnabled
+            .observe(on: MainScheduler.instance)
+            .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, value in
+                //MARK: - Todo. 탭이 잘 안됨 . .
+                // 작품 평가 View로 이동, 선택한 readStatus 값은 바로 반영해줌
+                print("작품 평가 View로 이동, readStatus: \(String(describing: value))")
             })
             .disposed(by: disposeBag)
         
@@ -152,21 +168,34 @@ final class NovelDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.feedWriteButtonEnabled
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                // 수다글 작성 View로 이동
+                print("수다글 작성 View로 이동")
+            })
+            .disposed(by: disposeBag)
+        
+        //MARK: - Bind/Tab
+        
         output.selectedTab
             .drive(with: self, onNext: { owner, tab in
                 owner.rootView.updateTab(selected: tab)
             })
             .disposed(by: disposeBag)
         
+        //MARK: - Bind/NovelDetailInfo
+        
         output.isInfoDescriptionExpended
             .drive(with: self, onNext: { owner, isExpended in
                 owner.rootView.infoView.descriptionView.updateAccordionButton(isExpended)
                 
-//                let stickyoffset = owner.rootView.headerView.frame.size.height - owner.view.safeAreaInsets.top
-//                let point = CGPoint(x: 0, y: stickyoffset)
-//                if !isExpended {
-//                    owner.rootView.scrollView.rx.contentOffset.onNext(point)
-//                }
+                // 아코디언 접으면 화면 위치를 옮겨주는 기능인데.. 필요 없는 것 같기도 하고?
+                //                let stickyoffset = owner.rootView.headerView.frame.size.height - owner.view.safeAreaInsets.top
+                //                let point = CGPoint(x: 0, y: stickyoffset)
+                //                if !isExpended {
+                //                    owner.rootView.scrollView.rx.contentOffset.onNext(point)
+                //                }
             })
             .disposed(by: disposeBag)
         
@@ -205,6 +234,17 @@ final class NovelDetailViewController: UIViewController {
     //MARK: - Actions
     
     private func createViewModelInput() -> NovelDetailViewModel.Input {
+        let reviewResultButtonDidTap = Observable<ReadStatus?>.merge(
+            rootView.headerView.reviewResultView.readStatusButtons
+                .map{ button in
+                    button.rx.tap.map { button.readStatus }
+                }
+            + rootView.headerView.reviewResultView.readInfoButtons
+                .map{
+                    button in
+                    button.rx.tap.map { nil }
+                })
+        
         return NovelDetailViewModel.Input(
             viewWillAppearEvent: viewWillAppearEvent.asObservable(),
             scrollContentOffset: rootView.scrollView.rx.contentOffset,
@@ -212,7 +252,9 @@ final class NovelDetailViewController: UIViewController {
             novelCoverImageButtonDidTap: rootView.headerView.coverImageButton.rx.tap,
             largeNovelCoverImageDismissButtonDidTap: rootView.largeNovelCoverImageButton.dismissButton.rx.tap,
             largeNovelCoverImageBackgroundDidTap: rootView.largeNovelCoverImageButton.rx.tap,
+            reviewResultButtonDidTap: reviewResultButtonDidTap,
             interestButtonDidTap: rootView.headerView.interestReviewButton.interestButton.rx.tap,
+            feedWriteButtonDidTap: rootView.headerView.interestReviewButton.feedWriteButton.rx.tap,
             infoTabBarButtonDidTap: rootView.tabBarView.infoButton.rx.tap,
             feedTabBarButtonDidTap: rootView.tabBarView.feedButton.rx.tap,
             stickyInfoTabBarButtonDidTap: rootView.stickyTabBarView.infoButton.rx.tap,
