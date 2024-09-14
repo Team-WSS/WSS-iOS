@@ -24,7 +24,8 @@ final class DetailSearchKeywordCategoryCollectionViewCell: UICollectionViewCell 
     //MARK: - Properties
     
     private var keywords: [DetailSearchKeyword] = []
-    private var isExpanded: Bool = false
+    var isExpanded: Bool = false
+    private let disposeBag = DisposeBag()
     
     //MARK: - Life Cycle
     
@@ -35,6 +36,7 @@ final class DetailSearchKeywordCategoryCollectionViewCell: UICollectionViewCell 
         setHierarchy()
         setLayout()
         setActions()
+        observeContentSize()
     }
     
     required init?(coder: NSCoder) {
@@ -111,7 +113,7 @@ final class DetailSearchKeywordCategoryCollectionViewCell: UICollectionViewCell 
         keywordCollectionView.snp.makeConstraints {
             $0.top.equalTo(keywordImageView.snp.bottom).offset(16)
             $0.leading.trailing.equalToSuperview().inset(20)
-            $0.height.equalTo(82)
+            $0.height.equalTo(78)
         }
         
         dividerView.snp.makeConstraints {
@@ -133,27 +135,15 @@ final class DetailSearchKeywordCategoryCollectionViewCell: UICollectionViewCell 
         downArrowImageView.addGestureRecognizer(tapGesture)
     }
     
-    @objc private func toggleCollectionView() {
+    @objc func toggleCollectionView() {
         isExpanded.toggle()
-        
-        let height = isExpanded ? calculateCollectionViewHeight() : 82
-        
-        UIView.animate(withDuration: 0.3, animations: {
-            self.updateCollectionViewHeight(height: height)
-            self.layoutIfNeeded()
-        })
-        
         downArrowImageView.image = isExpanded ? .icChevronUp : .icChevronDown
+        
+        UIView.animate(withDuration: 0.3) {
+            self.superview?.layoutIfNeeded()
+        }
     }
-    
-    private func calculateCollectionViewHeight() -> CGFloat {
-        let rowCount = ceil(Double(keywords.count) / 4.0)
-        let cellHeight: CGFloat = 37
-        let spacing: CGFloat = 8
-        print(CGFloat(rowCount) * (cellHeight + spacing))
-        return CGFloat(rowCount) * (cellHeight + spacing)
-    }
-    
+
     func updateCollectionViewHeight(height: CGFloat) {
         keywordCollectionView.snp.updateConstraints {
             $0.height.equalTo(height)
@@ -168,6 +158,15 @@ final class DetailSearchKeywordCategoryCollectionViewCell: UICollectionViewCell 
         keywordTitleLabel.text = data.categoryName
         self.keywords = data.keywords
         keywordCollectionView.reloadData()
+    }
+    
+   private func observeContentSize() {
+       keywordCollectionView.rx.observe(CGSize.self, "contentSize")
+           .compactMap { $0 }
+           .subscribe(with: self, onNext: { owner, size in
+               self.updateCollectionViewHeight(height: size.height)
+           })
+           .disposed(by: disposeBag)
     }
 }
 

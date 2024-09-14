@@ -43,7 +43,6 @@ final class DetailSearchKeywordView: UIView {
         categoryCollectionViewFlowLayout.do {
             $0.scrollDirection = .vertical
             $0.minimumLineSpacing = 14
-            $0.itemSize = CGSize(width: (UIScreen.main.bounds.width - 24), height: 224)
             $0.sectionInset = UIEdgeInsets(top: 10, left: 0, bottom: 100, right: 0)
             categoryCollectionView.setCollectionViewLayout($0, animated: false)
         }
