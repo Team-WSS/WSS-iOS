@@ -1,5 +1,5 @@
 //
-//  FeedNovelConnectView.swift
+//  FeedEditNovelConnectView.swift
 //  WSSiOS
 //
 //  Created by Hyowon Jeon on 6/29/24.
@@ -90,6 +90,7 @@ final class FeedEditNovelConnectView: UIView {
         searchImageView.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.trailing.equalToSuperview().inset(15)
+            $0.size.equalTo(25)
         }
         
         connectedNovelView.snp.makeConstraints {

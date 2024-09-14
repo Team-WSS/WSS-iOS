@@ -1,5 +1,5 @@
 //
-//  ConnectedNovelView.swift
+//  FeedEditConnectedNovelView.swift
 //  WSSiOS
 //
 //  Created by Hyowon Jeon on 6/29/24.

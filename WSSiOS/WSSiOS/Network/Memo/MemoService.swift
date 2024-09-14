@@ -12,6 +12,8 @@ import RxSwift
 protocol MemoService {
     func getRecordMemos(lastId: Int, sort: String) -> Single<RecordMemos>
     func postMemo(userNovelId: Int, memoContent: String) -> Single<IsAvatarUnlocked>
+    func postFeed(relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool) -> Single<Void>
+    func putFeed(feedId: Int, relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool) -> Single<Void>
     func getMemoDetail(memoId: Int) -> Single<MemoDetail>
     func deleteMemo(memoId: Int) -> Single<Void>
     func patchMemo(memoId: Int, memoContent: String) -> Single<Void>
@@ -63,6 +65,48 @@ extension DefaultMemoService: MemoService {
             
             return urlSession.rx.data(request: request)
                 .map { try self.decode(data: $0, to: IsAvatarUnlocked.self) }
+                .asSingle()
+        } catch {
+            return Single.error(error)
+        }
+    }
+    
+    func postFeed(relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool) -> Single<Void> {
+        guard let feedContentData = try? JSONEncoder().encode(FeedContent(relevantCategories: relevantCategories, feedContent: feedContent, novelId: novelId, isSpoiler: isSpoiler)) else {
+            return Single.error(NetworkServiceError.invalidRequestError)
+        }
+        
+        do {
+            let request = try makeHTTPRequest(method: .post,
+                                              path: URLs.Memo.postFeed,
+                                              headers: APIConstants.testTokenHeader,
+                                              body: feedContentData)
+            
+            NetworkLogger.log(request: request)
+            
+            return urlSession.rx.data(request: request)
+                .map { _ in }
+                .asSingle()
+        } catch {
+            return Single.error(error)
+        }
+    }
+    
+    func putFeed(feedId: Int, relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool) -> Single<Void> {
+        guard let feedContentData = try? JSONEncoder().encode(FeedContent(relevantCategories: relevantCategories, feedContent: feedContent, novelId: novelId, isSpoiler: isSpoiler)) else {
+            return Single.error(NetworkServiceError.invalidRequestError)
+        }
+        
+        do {
+            let request = try makeHTTPRequest(method: .put,
+                                              path: URLs.Memo.putFeed(feedId: feedId),
+                                              headers: APIConstants.testTokenHeader,
+                                              body: feedContentData)
+            
+            NetworkLogger.log(request: request)
+            
+            return urlSession.rx.data(request: request)
+                .map { _ in }
                 .asSingle()
         } catch {
             return Single.error(error)

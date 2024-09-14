@@ -14,13 +14,12 @@ final class HomeNoticeDetailViewModel: ViewModelType {
     
     //MARK: - Properties
     
-    private let noticeRepository: NoticeRepository
     private let disposeBag = DisposeBag()
     
     // MARK: - Inputs
     
     struct Input {
-        
+        let viewWillAppearEvent: Observable<Notice>
     }
     
     // MARK: - Outputs
@@ -28,21 +27,15 @@ final class HomeNoticeDetailViewModel: ViewModelType {
     struct Output {
         let noticeData = BehaviorRelay<Notice>(value: Notice(noticeTitle: "", noticeContent: "", createdDate: ""))
     }
-    
-    //MARK: - init
-    
-    init(noticeRepository: NoticeRepository) {
-        self.noticeRepository = noticeRepository
-    }
 }
 
 extension HomeNoticeDetailViewModel {
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
         
-        noticeRepository.getNotices()
+        input.viewWillAppearEvent
             .subscribe(with: self, onNext: { owner, data in
-                output.noticeData.accept(data[0])
+                output.noticeData.accept(data)
             })
             .disposed(by: disposeBag)
         
