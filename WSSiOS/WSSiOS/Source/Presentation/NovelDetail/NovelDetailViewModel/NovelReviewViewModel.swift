@@ -20,6 +20,9 @@ final class NovelReviewViewModel: ViewModelType {
     private var starRating: Float = 0.0
     var selectedKeywordList: [String] = ["후회", "정치물", "피폐", "빙의", "먼치킨", "기억상실"]
     
+    private let minStarRating: Float = 0.0
+    private let maxStarRating: Float = 5.0
+    
     //MARK: - Life Cycle
     
     init(userNovelRepository: UserNovelRepository) {
@@ -31,6 +34,7 @@ final class NovelReviewViewModel: ViewModelType {
         let backButtonDidTap: ControlEvent<Void>
         let statusCollectionViewItemSelected: Observable<IndexPath>
         let starRatingTapGesture: Observable<(location: CGPoint, width: CGFloat, index: Int)>
+        let starRatingPanGesture: Observable<(location: CGPoint, width: CGFloat)>
         let selectedKeywordCollectionViewContentSize: Observable<CGSize?>
         let selectedKeywordCollectionViewItemSelected: Observable<IndexPath>
     }
@@ -72,6 +76,16 @@ final class NovelReviewViewModel: ViewModelType {
                 let halfWidth = value.width / 2
                 let isOverHalf = value.location.x > halfWidth
                 let rating = Float(value.index) + (isOverHalf ? 1.0 : 0.5)
+                
+                owner.starRating = rating
+                output.starRating.accept(rating)
+            })
+            .disposed(by: disposeBag)
+        
+        input.starRatingPanGesture
+            .subscribe(with: self, onNext: { owner, value in
+                let rawRating = Float(value.location.x / value.width * 10).rounded(.up) / 2.0
+                let rating = min(max(rawRating, owner.minStarRating), owner.maxStarRating)
                 
                 owner.starRating = rating
                 output.starRating.accept(rating)

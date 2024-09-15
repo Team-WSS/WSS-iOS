@@ -9,6 +9,7 @@ import UIKit
 
 import RxSwift
 import RxCocoa
+import RxGesture
 
 final class NovelReviewViewController: UIViewController {
     
@@ -91,6 +92,15 @@ final class NovelReviewViewController: UIViewController {
                         }
                 }
             ),
+            starRatingPanGesture: rootView.novelReviewRatingView.starImageStackView.rx.panGesture()
+                .when(.changed)
+                .map { recognizer in
+                    let starImageStackView = self.rootView.novelReviewRatingView.starImageStackView
+                    
+                    let location = recognizer.location(in: starImageStackView)
+                    let width = starImageStackView.frame.width
+                    return (location, width)
+                },
             selectedKeywordCollectionViewContentSize: rootView.novelReviewKeywordView.selectedKeywordCollectionView.rx.observe(CGSize.self, "contentSize"),
             selectedKeywordCollectionViewItemSelected: rootView.novelReviewKeywordView.selectedKeywordCollectionView.rx.itemSelected.asObservable()
         )
