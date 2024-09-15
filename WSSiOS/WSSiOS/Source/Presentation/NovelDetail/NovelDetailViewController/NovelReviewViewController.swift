@@ -81,6 +81,16 @@ final class NovelReviewViewController: UIViewController {
             viewDidLoadEvent: viewDidLoadEvent.asObservable(),
             backButtonDidTap: rootView.backButton.rx.tap,
             statusCollectionViewItemSelected: rootView.novelReviewStatusView.statusCollectionView.rx.itemSelected.asObservable(),
+            starRatingTapGesture: Observable.merge(
+                rootView.novelReviewRatingView.starImageViews.enumerated().map { index, imageView in
+                    imageView.rx.tapGesture()
+                        .when(.recognized)
+                        .map { recognizer in
+                            let location = recognizer.location(in: imageView)
+                            return (location, imageView.frame.width, index)
+                        }
+                }
+            ),
             selectedKeywordCollectionViewContentSize: rootView.novelReviewKeywordView.selectedKeywordCollectionView.rx.observe(CGSize.self, "contentSize"),
             selectedKeywordCollectionViewItemSelected: rootView.novelReviewKeywordView.selectedKeywordCollectionView.rx.itemSelected.asObservable()
         )
@@ -97,6 +107,12 @@ final class NovelReviewViewController: UIViewController {
             cell.bindData(status: element)
         }
         .disposed(by: disposeBag)
+        
+        output.starRating
+            .subscribe(with: self, onNext: { owner, rating in
+                owner.rootView.novelReviewRatingView.updateStarImages(rating: rating)
+            })
+            .disposed(by: disposeBag)
         
         output.attractivePointListData.bind(to: rootView.novelReviewAttractivePointView.attractivePointCollectionView.rx.items(cellIdentifier: NovelReviewAttractivePointCollectionViewCell.cellIdentifier, cellType: NovelReviewAttractivePointCollectionViewCell.self)) { item, element, cell in
             cell.bindData(attractivePoint: element)

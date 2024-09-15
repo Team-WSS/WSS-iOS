@@ -16,7 +16,8 @@ final class NovelReviewViewModel: ViewModelType {
     
     private let userNovelRepository: UserNovelRepository
     
-    var novelReviewStatus: NovelReviewStatus?
+    private var novelReviewStatus: NovelReviewStatus?
+    private var starRating: Float = 0.0
     var selectedKeywordList: [String] = ["후회", "정치물", "피폐", "빙의", "먼치킨", "기억상실"]
     
     //MARK: - Life Cycle
@@ -29,6 +30,7 @@ final class NovelReviewViewModel: ViewModelType {
         let viewDidLoadEvent: Observable<Void>
         let backButtonDidTap: ControlEvent<Void>
         let statusCollectionViewItemSelected: Observable<IndexPath>
+        let starRatingTapGesture: Observable<(location: CGPoint, width: CGFloat, index: Int)>
         let selectedKeywordCollectionViewContentSize: Observable<CGSize?>
         let selectedKeywordCollectionViewItemSelected: Observable<IndexPath>
     }
@@ -36,6 +38,7 @@ final class NovelReviewViewModel: ViewModelType {
     struct Output {
         let popViewController = PublishRelay<Void>()
         let novelReviewStatusData = BehaviorRelay<[NovelReviewStatus]>(value: [.watching, .watched, .quit])
+        let starRating = PublishRelay<Float>()
         let attractivePointListData = PublishRelay<[AttractivePoints]>()
         let selectedKeywordListData = PublishRelay<[String]>()
         let selectedKeywordCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
@@ -61,6 +64,17 @@ final class NovelReviewViewModel: ViewModelType {
         input.statusCollectionViewItemSelected
             .subscribe(with: self, onNext: { owner, indexPath in
                 owner.novelReviewStatus = NovelReviewStatus.allCases[indexPath.item]
+            })
+            .disposed(by: disposeBag)
+        
+        input.starRatingTapGesture
+            .subscribe(with: self, onNext: { owner, value in
+                let halfWidth = value.width / 2
+                let isOverHalf = value.location.x > halfWidth
+                let rating = Float(value.index) + (isOverHalf ? 1.0 : 0.5)
+                
+                owner.starRating = rating
+                output.starRating.accept(rating)
             })
             .disposed(by: disposeBag)
         

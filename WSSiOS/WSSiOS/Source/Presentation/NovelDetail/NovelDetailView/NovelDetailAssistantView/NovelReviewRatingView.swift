@@ -80,4 +80,20 @@ final class NovelReviewRatingView: UIView {
             return starImageView
         }
     }
+    
+    func updateStarImages(rating: Float) {
+        let fullStars = Int(rating)
+        let hasHalfStar = rating.truncatingRemainder(dividingBy: 1) >= 0.5
+
+        for (index, imageView) in starImageViews.enumerated() {
+            switch index {
+            case ..<fullStars:
+                imageView.image = .icStarFill
+            case fullStars where hasHalfStar:
+                imageView.image = .icStarHalf
+            default:
+                imageView.image = .icStarEmpty
+            }
+        }
+    }
 }
