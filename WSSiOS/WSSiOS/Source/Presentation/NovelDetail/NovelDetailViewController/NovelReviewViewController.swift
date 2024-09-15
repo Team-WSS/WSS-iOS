@@ -80,7 +80,8 @@ final class NovelReviewViewController: UIViewController {
         let input = NovelReviewViewModel.Input(
             viewDidLoadEvent: viewDidLoadEvent.asObservable(),
             backButtonDidTap: rootView.backButton.rx.tap,
-            selectedKeywordCollectionViewContentSize: rootView.novelReviewKeywordView.selectedKeywordCollectionView.rx.observe(CGSize.self, "contentSize"), 
+            statusCollectionViewItemSelected: rootView.novelReviewStatusView.statusCollectionView.rx.itemSelected.asObservable(),
+            selectedKeywordCollectionViewContentSize: rootView.novelReviewKeywordView.selectedKeywordCollectionView.rx.observe(CGSize.self, "contentSize"),
             selectedKeywordCollectionViewItemSelected: rootView.novelReviewKeywordView.selectedKeywordCollectionView.rx.itemSelected.asObservable()
         )
         

@@ -16,6 +16,7 @@ final class NovelReviewViewModel: ViewModelType {
     
     private let userNovelRepository: UserNovelRepository
     
+    var novelReviewStatus: NovelReviewStatus?
     var selectedKeywordList: [String] = ["후회", "정치물", "피폐", "빙의", "먼치킨", "기억상실"]
     
     //MARK: - Life Cycle
@@ -27,6 +28,7 @@ final class NovelReviewViewModel: ViewModelType {
     struct Input {
         let viewDidLoadEvent: Observable<Void>
         let backButtonDidTap: ControlEvent<Void>
+        let statusCollectionViewItemSelected: Observable<IndexPath>
         let selectedKeywordCollectionViewContentSize: Observable<CGSize?>
         let selectedKeywordCollectionViewItemSelected: Observable<IndexPath>
     }
@@ -53,6 +55,12 @@ final class NovelReviewViewModel: ViewModelType {
         input.backButtonDidTap
             .subscribe(onNext: { _ in
                 output.popViewController.accept(())
+            })
+            .disposed(by: disposeBag)
+        
+        input.statusCollectionViewItemSelected
+            .subscribe(with: self, onNext: { owner, indexPath in
+                owner.novelReviewStatus = NovelReviewStatus.allCases[indexPath.item]
             })
             .disposed(by: disposeBag)
         
