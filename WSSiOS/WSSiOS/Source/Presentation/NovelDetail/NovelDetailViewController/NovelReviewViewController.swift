@@ -101,6 +101,8 @@ final class NovelReviewViewController: UIViewController {
                     let width = starImageStackView.frame.width
                     return (location, width)
                 },
+            attractivePointCollectionViewItemSelected: rootView.novelReviewAttractivePointView.attractivePointCollectionView.rx.itemSelected.asObservable(),
+            attractivePointCollectionViewItemDeselected: rootView.novelReviewAttractivePointView.attractivePointCollectionView.rx.itemDeselected.asObservable(),
             selectedKeywordCollectionViewContentSize: rootView.novelReviewKeywordView.selectedKeywordCollectionView.rx.observe(CGSize.self, "contentSize"),
             selectedKeywordCollectionViewItemSelected: rootView.novelReviewKeywordView.selectedKeywordCollectionView.rx.itemSelected.asObservable()
         )

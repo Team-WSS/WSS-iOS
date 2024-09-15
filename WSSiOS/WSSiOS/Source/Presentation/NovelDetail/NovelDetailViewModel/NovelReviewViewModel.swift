@@ -18,6 +18,7 @@ final class NovelReviewViewModel: ViewModelType {
     
     private var novelReviewStatus: NovelReviewStatus?
     private var starRating: Float = 0.0
+    private var attractivePointList: [String] = []
     var selectedKeywordList: [String] = ["후회", "정치물", "피폐", "빙의", "먼치킨", "기억상실"]
     
     private let minStarRating: Float = 0.0
@@ -35,6 +36,8 @@ final class NovelReviewViewModel: ViewModelType {
         let statusCollectionViewItemSelected: Observable<IndexPath>
         let starRatingTapGesture: Observable<(location: CGPoint, width: CGFloat, index: Int)>
         let starRatingPanGesture: Observable<(location: CGPoint, width: CGFloat)>
+        let attractivePointCollectionViewItemSelected: Observable<IndexPath>
+        let attractivePointCollectionViewItemDeselected: Observable<IndexPath>
         let selectedKeywordCollectionViewContentSize: Observable<CGSize?>
         let selectedKeywordCollectionViewItemSelected: Observable<IndexPath>
     }
@@ -89,6 +92,18 @@ final class NovelReviewViewModel: ViewModelType {
                 
                 owner.starRating = rating
                 output.starRating.accept(rating)
+            })
+            .disposed(by: disposeBag)
+        
+        input.attractivePointCollectionViewItemSelected
+            .subscribe(with: self, onNext: { owner, indexPath in
+                owner.attractivePointList.append(AttractivePoints.allCases[indexPath.item].rawValue)
+            })
+            .disposed(by: disposeBag)
+        
+        input.attractivePointCollectionViewItemDeselected
+            .subscribe(with: self, onNext: { owner, indexPath in
+                owner.attractivePointList.removeAll { $0 == AttractivePoints.allCases[indexPath.item].rawValue }
             })
             .disposed(by: disposeBag)
         

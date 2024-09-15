@@ -10,8 +10,12 @@ import UIKit
 import SnapKit
 import Then
 
-enum AttractivePoints: CaseIterable {
-    case worldview, material, character, relationship, vibe
+enum AttractivePoints: String, CaseIterable {
+    case worldview = "worldview"
+    case material = "material"
+    case character = "character"
+    case relationship = "relationship"
+    case vibe = "vibe"
     
     var koreanString: String {
         switch self {
