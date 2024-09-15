@@ -23,6 +23,7 @@ final class NovelReviewViewModel: ViewModelType {
     
     private let minStarRating: Float = 0.0
     private let maxStarRating: Float = 5.0
+    private let attractivePointLimit: Int = 3
     
     //MARK: - Life Cycle
     
@@ -47,6 +48,7 @@ final class NovelReviewViewModel: ViewModelType {
         let novelReviewStatusData = BehaviorRelay<[NovelReviewStatus]>(value: [.watching, .watched, .quit])
         let starRating = PublishRelay<Float>()
         let attractivePointListData = PublishRelay<[AttractivePoints]>()
+        let isAttractivePointCountOverLimit = PublishRelay<IndexPath>()
         let selectedKeywordListData = PublishRelay<[String]>()
         let selectedKeywordCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
     }
@@ -97,7 +99,11 @@ final class NovelReviewViewModel: ViewModelType {
         
         input.attractivePointCollectionViewItemSelected
             .subscribe(with: self, onNext: { owner, indexPath in
-                owner.attractivePointList.append(AttractivePoints.allCases[indexPath.item].rawValue)
+                if owner.attractivePointList.count >= owner.attractivePointLimit {
+                    output.isAttractivePointCountOverLimit.accept(indexPath)
+                } else {
+                    owner.attractivePointList.append(AttractivePoints.allCases[indexPath.item].rawValue)
+                }
             })
             .disposed(by: disposeBag)
         

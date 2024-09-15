@@ -131,6 +131,12 @@ final class NovelReviewViewController: UIViewController {
         }
         .disposed(by: disposeBag)
         
+        output.isAttractivePointCountOverLimit
+            .subscribe(with: self, onNext: { owner, indexPath in
+                owner.rootView.novelReviewAttractivePointView.attractivePointCollectionView.deselectItem(at: indexPath, animated: false)
+            })
+            .disposed(by: disposeBag)
+        
         output.selectedKeywordListData.bind(to: rootView.novelReviewKeywordView.selectedKeywordCollectionView.rx.items(cellIdentifier: NovelReviewSelectedKeywordCollectionViewCell.cellIdentifier, cellType: NovelReviewSelectedKeywordCollectionViewCell.self)) { item, element, cell in
             cell.bindData(keyword: element)
         }
