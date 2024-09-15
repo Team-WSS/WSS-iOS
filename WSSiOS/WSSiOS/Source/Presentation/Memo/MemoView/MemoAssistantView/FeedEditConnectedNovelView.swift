@@ -17,7 +17,7 @@ final class FeedEditConnectedNovelView: UIView {
     private let contentView = UIView()
     private let novelConnectImageView = UIImageView()
     private let novelTitleLabel = UILabel()
-    private let removeButton = UIButton()
+    let removeButton = UIButton()
     
     //MARK: - Life Cycle
     

@@ -92,6 +92,7 @@ final class FeedEditViewModel: ViewModelType {
         let feedContentViewDidEndEditing: ControlEvent<Void>
         let novelConnectViewDidTap: Observable<UITapGestureRecognizer>
         let feedNovelConnectedNotification: Observable<Notification>
+        let novelRemoveButtonDidTap: ControlEvent<Void>
     }
     
     struct Output {
@@ -221,6 +222,13 @@ final class FeedEditViewModel: ViewModelType {
                 guard let connectedNovel = notification.object as? NormalSearchNovel else { return }
                 owner.connectedNovel = connectedNovel
                 output.connectedNovelTitle.accept(connectedNovel.novelTitle)
+            })
+            .disposed(by: disposeBag)
+        
+        input.novelRemoveButtonDidTap
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.connectedNovel = nil
+                output.connectedNovelTitle.accept(nil)
             })
             .disposed(by: disposeBag)
         

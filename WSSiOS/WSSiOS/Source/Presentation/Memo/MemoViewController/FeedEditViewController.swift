@@ -98,7 +98,8 @@ final class FeedEditViewController: UIViewController {
             feedContentViewDidBeginEditing: rootView.feedEditContentView.feedTextView.rx.didBeginEditing,
             feedContentViewDidEndEditing: rootView.feedEditContentView.feedTextView.rx.didEndEditing,
             novelConnectViewDidTap: rootView.feedEditNovelConnectView.rx.tapGesture().when(.recognized).asObservable(),
-            feedNovelConnectedNotification: NotificationCenter.default.rx.notification(Notification.Name("FeedNovelConnected")).asObservable()
+            feedNovelConnectedNotification: NotificationCenter.default.rx.notification(Notification.Name("FeedNovelConnected")).asObservable(),
+            novelRemoveButtonDidTap: rootView.feedEditConnectedNovelView.removeButton.rx.tap
         )
         
         let output = self.feedEditViewModel.transform(from: input, disposeBag: self.disposeBag)
