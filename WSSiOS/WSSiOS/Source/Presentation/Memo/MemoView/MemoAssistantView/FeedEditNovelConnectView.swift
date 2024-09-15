@@ -18,7 +18,6 @@ final class FeedEditNovelConnectView: UIView {
     private let novelSearchView = UIView()
     private let novelSearchLabel = UILabel()
     private let searchImageView = UIImageView()
-    private let connectedNovelView = FeedEditConnectedNovelView()
     
     //MARK: - Life Cycle
     
@@ -60,16 +59,11 @@ final class FeedEditNovelConnectView: UIView {
             $0.image = .icSearch.withRenderingMode(.alwaysTemplate)
             $0.tintColor = .wssGray300
         }
-        
-        connectedNovelView.do {
-            $0.isHidden = true
-        }
     }
     
     private func setHierarchy() {
         self.addSubviews(novelConnectLabel,
-                         novelSearchView,
-                         connectedNovelView)
+                         novelSearchView)
         novelSearchView.addSubviews(novelSearchLabel,
                                     searchImageView)
     }
@@ -83,6 +77,7 @@ final class FeedEditNovelConnectView: UIView {
         novelSearchView.snp.makeConstraints {
             $0.top.equalTo(novelConnectLabel.snp.bottom).offset(17)
             $0.leading.trailing.equalToSuperview().inset(20)
+            $0.bottom.equalToSuperview()
             $0.height.equalTo(42)
         }
         
@@ -95,12 +90,6 @@ final class FeedEditNovelConnectView: UIView {
             $0.centerY.equalToSuperview()
             $0.trailing.equalToSuperview().inset(15)
             $0.size.equalTo(25)
-        }
-        
-        connectedNovelView.snp.makeConstraints {
-            $0.top.equalTo(novelSearchView.snp.bottom).offset(12)
-            $0.leading.trailing.equalToSuperview().inset(20)
-            $0.bottom.equalToSuperview()
         }
     }
 }

@@ -11,37 +11,37 @@ import RxSwift
 import RxCocoa
 
 enum FeedDetailWomanKoreanGenreDummy: String, CaseIterable {
-    case 로맨스 = "로맨스"
-    case 로판 = "로판"
-    case BL = "BL"
     case 판타지 = "판타지"
     case 현판 = "현판"
+    case 로맨스 = "로맨스"
+    case 로판 = "로판"
     case 무협 = "무협"
     case 드라마 = "드라마"
     case 미스터리 = "미스터리"
     case 라노벨 = "라노벨"
+    case BL = "BL"
     case 기타 = "기타"
     
     var toEnglish: String {
         switch self {
-        case .로맨스:
-            return "romance"
-        case .로판:
-            return "romanceFantasy"
-        case .BL:
-            return "BL"
         case .판타지:
             return "fantasy"
         case .현판:
             return "modernFantasy"
+        case .로맨스:
+            return "romance"
+        case .로판:
+            return "romanceFantasy"
         case .무협:
             return "wuxia"
-        case .미스터리:
-            return "mystery"
         case .드라마:
             return "drama"
+        case .미스터리:
+            return "mystery"
         case .라노벨:
             return "lightNovel"
+        case .BL:
+            return "BL"
         case .기타:
             return "etc"
         }
@@ -63,6 +63,7 @@ final class FeedEditViewModel: ViewModelType {
     private var updatedFeedContent: String = ""
     private let feedContentPredicate = NSPredicate(format: "SELF MATCHES %@", "^[\\s]+$")
     private let maximumFeedContentCount: Int = 2000
+    private var connectedNovel: NormalSearchNovel?
     
     //TODO: - 성별에 따른 리스트는 추후 구현
     let relevantCategoryList = FeedDetailWomanKoreanGenreDummy.allCases.map { $0.rawValue }
@@ -90,6 +91,7 @@ final class FeedEditViewModel: ViewModelType {
         let feedContentViewDidBeginEditing: ControlEvent<Void>
         let feedContentViewDidEndEditing: ControlEvent<Void>
         let novelConnectViewDidTap: Observable<UITapGestureRecognizer>
+        let feedNovelConnectedNotification: Observable<Notification>
     }
     
     struct Output {
@@ -101,6 +103,7 @@ final class FeedEditViewModel: ViewModelType {
         let completeButtonIsAbled = BehaviorRelay<Bool>(value: false)
         let showPlaceholder = PublishRelay<Bool>()
         let presentFeedEditNovelConnectModalViewController = PublishRelay<Void>()
+        let connectedNovelTitle = PublishRelay<String?>()
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -210,6 +213,14 @@ final class FeedEditViewModel: ViewModelType {
         input.novelConnectViewDidTap
             .subscribe(with: self, onNext: { owner, _ in
                 output.presentFeedEditNovelConnectModalViewController.accept(())
+            })
+            .disposed(by: disposeBag)
+        
+        input.feedNovelConnectedNotification
+            .subscribe(with: self, onNext: { owner, notification in
+                guard let connectedNovel = notification.object as? NormalSearchNovel else { return }
+                owner.connectedNovel = connectedNovel
+                output.connectedNovelTitle.accept(connectedNovel.novelTitle)
             })
             .disposed(by: disposeBag)
         

@@ -63,7 +63,8 @@ final class FeedNovelConnectModalViewController: UIViewController {
             searchResultCollectionViewItemSelected: rootView.feedNovelConnectSearchResultView.searchResultCollectionView.rx.itemSelected.asObservable(),
             searchResultCollectionViewSwipeGesture: rootView.feedNovelConnectSearchResultView.searchResultCollectionView.rx.swipeGesture([.up, .down])
                 .when(.recognized)
-                .asObservable()
+                .asObservable(),
+            connectNovelButtonDidTap: rootView.feedNovelConnectSearchResultView.connectNovelButton.rx.tap
         )
         
         let output = self.feedNovelConnectModalViewModel.transform(from: input, disposeBag: self.disposeBag)
@@ -84,5 +85,11 @@ final class FeedNovelConnectModalViewController: UIViewController {
             cell.bindData(data: element)
         }
         .disposed(by: disposeBag)
+        
+        output.showConnectNovelButton
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.rootView.feedNovelConnectSearchResultView.showConnectNovelButton()
+            })
+            .disposed(by: disposeBag)
     }
 }

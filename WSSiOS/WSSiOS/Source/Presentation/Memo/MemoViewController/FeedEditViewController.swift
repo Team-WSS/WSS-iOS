@@ -97,7 +97,8 @@ final class FeedEditViewController: UIViewController {
             feedContentUpdated: rootView.feedEditContentView.feedTextView.rx.text.orEmpty.distinctUntilChanged().asObservable(),
             feedContentViewDidBeginEditing: rootView.feedEditContentView.feedTextView.rx.didBeginEditing,
             feedContentViewDidEndEditing: rootView.feedEditContentView.feedTextView.rx.didEndEditing,
-            novelConnectViewDidTap: rootView.feedEditNovelConnectView.rx.tapGesture().when(.recognized).asObservable()
+            novelConnectViewDidTap: rootView.feedEditNovelConnectView.rx.tapGesture().when(.recognized).asObservable(),
+            feedNovelConnectedNotification: NotificationCenter.default.rx.notification(Notification.Name("FeedNovelConnected")).asObservable()
         )
         
         let output = self.feedEditViewModel.transform(from: input, disposeBag: self.disposeBag)
@@ -159,6 +160,12 @@ final class FeedEditViewController: UIViewController {
         output.presentFeedEditNovelConnectModalViewController
             .subscribe(with: self, onNext: { owner, _ in
                 owner.presentModalViewController(FeedNovelConnectModalViewController(viewModel: FeedNovelConnectModalViewModel()))
+            })
+            .disposed(by: disposeBag)
+        
+        output.connectedNovelTitle
+            .subscribe(with: self, onNext: { owner, novelTitle in
+                owner.rootView.feedEditConnectedNovelView.bindData(novelTitle: novelTitle)
             })
             .disposed(by: disposeBag)
     }

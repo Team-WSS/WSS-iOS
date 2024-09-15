@@ -17,10 +17,11 @@ final class FeedEditView: UIView {
     let backButton = UIButton()
     let completeButton = UIButton()
     let scrollView = UIScrollView()
-    private let contentView = UIStackView()
+    private let stackView = UIStackView()
     let feedEditCategoryView = FeedEditCategoryView()
     let feedEditContentView = FeedEditContentView()
     let feedEditNovelConnectView = FeedEditNovelConnectView()
+    let feedEditConnectedNovelView = FeedEditConnectedNovelView()
     
     //MARK: - Life Cycle
     
@@ -59,7 +60,7 @@ final class FeedEditView: UIView {
             $0.contentInset = UIEdgeInsets(top: 14.0, left: 0.0, bottom: 80.0, right: 0.0)
         }
         
-        contentView.do {
+        stackView.do {
             $0.alignment = .fill
             $0.axis = .vertical
             $0.spacing = 42
@@ -68,10 +69,11 @@ final class FeedEditView: UIView {
     
     private func setHierarchy() {
         self.addSubview(scrollView)
-        scrollView.addSubview(contentView)
-        contentView.addArrangedSubviews(feedEditCategoryView,
-                                        feedEditContentView,
-                                        feedEditNovelConnectView)
+        scrollView.addSubview(stackView)
+        stackView.addArrangedSubviews(feedEditCategoryView,
+                                      feedEditContentView,
+                                      feedEditNovelConnectView,
+                                      feedEditConnectedNovelView)
     }
     
     private func setLayout() {
@@ -80,9 +82,13 @@ final class FeedEditView: UIView {
             $0.leading.trailing.bottom.equalToSuperview()
         }
         
-        contentView.snp.makeConstraints {
+        stackView.snp.makeConstraints {
             $0.edges.equalTo(scrollView.contentLayoutGuide)
             $0.width.equalTo(UIScreen.main.bounds.width)
+            
+            stackView.do {
+                $0.setCustomSpacing(12, after: feedEditNovelConnectView)
+            }
         }
     }
     

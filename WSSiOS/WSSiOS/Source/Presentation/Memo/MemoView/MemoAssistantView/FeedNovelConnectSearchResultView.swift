@@ -48,6 +48,7 @@ final class FeedNovelConnectSearchResultView: UIView {
         
         connectNovelButton.do {
             $0.backgroundColor = .wssPrimary100
+            $0.isHidden = true
         }
         
         connectNovelLabel.do {
@@ -75,6 +76,14 @@ final class FeedNovelConnectSearchResultView: UIView {
         
         connectNovelLabel.snp.makeConstraints {
             $0.center.equalToSuperview()
+        }
+    }
+    
+    //MARK: - Custom Method
+    
+    func showConnectNovelButton() {
+        connectNovelButton.do {
+            $0.isHidden = false
         }
     }
 }
