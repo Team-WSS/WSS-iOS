@@ -45,6 +45,7 @@ final class NovelReviewViewModel: ViewModelType {
     
     struct Output {
         let popViewController = PublishRelay<Void>()
+        let isCompleteButtonEnabled = BehaviorRelay<Bool>(value: false)
         let novelReviewStatusData = BehaviorRelay<[NovelReviewStatus]>(value: [.watching, .watched, .quit])
         let starRating = PublishRelay<Float>()
         let attractivePointListData = PublishRelay<[AttractivePoints]>()
@@ -73,6 +74,7 @@ final class NovelReviewViewModel: ViewModelType {
         input.statusCollectionViewItemSelected
             .subscribe(with: self, onNext: { owner, indexPath in
                 owner.novelReviewStatus = NovelReviewStatus.allCases[indexPath.item]
+                output.isCompleteButtonEnabled.accept(true)
             })
             .disposed(by: disposeBag)
         
