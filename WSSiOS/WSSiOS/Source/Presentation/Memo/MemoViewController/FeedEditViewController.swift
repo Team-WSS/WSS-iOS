@@ -158,7 +158,7 @@ final class FeedEditViewController: UIViewController {
         
         output.presentFeedEditNovelConnectModalViewController
             .subscribe(with: self, onNext: { owner, _ in
-                owner.presentModalViewController(FeedNovelConnectModalViewController())
+                owner.presentModalViewController(FeedNovelConnectModalViewController(viewModel: FeedNovelConnectModalViewModel()))
             })
             .disposed(by: disposeBag)
     }

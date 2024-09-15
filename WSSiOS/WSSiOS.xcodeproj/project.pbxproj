@@ -311,6 +311,7 @@
 		CDE596D62B57708D00D99DA1 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D52B57708D00D99DA1 /* UIViewController+.swift */; };
 		CDE596D82B5770CE00D99DA1 /* WSSToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D72B5770CE00D99DA1 /* WSSToastView.swift */; };
 		CDE596DA2B57C4BE00D99DA1 /* UITextView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D92B57C4BE00D99DA1 /* UITextView+.swift */; };
+		CDEFE8272C9708870002D987 /* FeedNovelConnectModalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEFE8262C9708870002D987 /* FeedNovelConnectModalViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -610,6 +611,7 @@
 		CDE596D52B57708D00D99DA1 /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
 		CDE596D72B5770CE00D99DA1 /* WSSToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSToastView.swift; sourceTree = "<group>"; };
 		CDE596D92B57C4BE00D99DA1 /* UITextView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+.swift"; sourceTree = "<group>"; };
+		CDEFE8262C9708870002D987 /* FeedNovelConnectModalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedNovelConnectModalViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2019,6 +2021,7 @@
 				CD6613742B8A283500B90B2B /* MemoEditViewModel.swift */,
 				CD66136F2B8A225E00B90B2B /* MemoReadViewModel.swift */,
 				CDA5F03B2C2FDB3100FCF15C /* FeedEditViewModel.swift */,
+				CDEFE8262C9708870002D987 /* FeedNovelConnectModalViewModel.swift */,
 			);
 			path = MemoViewModel;
 			sourceTree = "<group>";
@@ -2426,6 +2429,7 @@
 				A1EF35582B52FAC800A94C53 /* UserService.swift in Sources */,
 				C99DDFDD2C8613BC00EDC0C4 /* SearchView.swift in Sources */,
 				A1654F1A2B54052E004F78E8 /* Config.swift in Sources */,
+				CDEFE8272C9708870002D987 /* FeedNovelConnectModalViewModel.swift in Sources */,
 				2CD911582C0D8A21006B8D72 /* FeedPageBar.swift in Sources */,
 				CD39F2D82B50DA6300B73A5C /* TrashNovelDetailInfoDescriptionView.swift in Sources */,
 				39F8506D2C2BFB3E00E93EBC /* NovelDetailInfoDescriptionView.swift in Sources */,

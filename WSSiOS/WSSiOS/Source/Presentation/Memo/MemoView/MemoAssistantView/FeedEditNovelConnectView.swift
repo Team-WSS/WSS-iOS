@@ -60,6 +60,10 @@ final class FeedEditNovelConnectView: UIView {
             $0.image = .icSearch.withRenderingMode(.alwaysTemplate)
             $0.tintColor = .wssGray300
         }
+        
+        connectedNovelView.do {
+            $0.isHidden = true
+        }
     }
     
     private func setHierarchy() {
