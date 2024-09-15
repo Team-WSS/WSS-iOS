@@ -134,6 +134,7 @@ final class NovelReviewViewController: UIViewController {
         output.isAttractivePointCountOverLimit
             .subscribe(with: self, onNext: { owner, indexPath in
                 owner.rootView.novelReviewAttractivePointView.attractivePointCollectionView.deselectItem(at: indexPath, animated: false)
+                owner.showToast(.selectionOverLimit(count: 3))
             })
             .disposed(by: disposeBag)
         
