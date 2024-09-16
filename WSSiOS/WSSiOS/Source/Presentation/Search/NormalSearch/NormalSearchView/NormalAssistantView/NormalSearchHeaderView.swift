@@ -17,7 +17,7 @@ final class NormalSearchHeaderView: UIView {
     let backButton = UIButton()
     private let searchBackgroundView = UIView()
     let searchTextField = UITextField()
-    private let searchClearButton = UIButton()
+    let searchClearButton = UIButton()
     let searchButton = UIButton()
     
     //MARK: - Life Cycle

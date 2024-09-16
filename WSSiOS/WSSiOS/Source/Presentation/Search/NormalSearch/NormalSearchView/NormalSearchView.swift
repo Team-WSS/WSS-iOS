@@ -25,6 +25,9 @@ final class NormalSearchView: UIView {
         
         setHierarchy()
         setLayout()
+        
+        resultView.isHidden = true
+        emptyView.isHidden = true
     }
     
     required init?(coder: NSCoder) {
@@ -35,7 +38,8 @@ final class NormalSearchView: UIView {
 
     private func setHierarchy() {
         self.addSubviews(headerView,
-                         resultView)
+                         resultView,
+                         emptyView)
     }
     
     private func setLayout() {
@@ -46,7 +50,12 @@ final class NormalSearchView: UIView {
         
         resultView.snp.makeConstraints {
             $0.top.equalTo(headerView.snp.bottom)
-            $0.leading.trailing.bottom.equalToSuperview()
+            $0.horizontalEdges.bottom.equalToSuperview()
+        }
+        
+        emptyView.snp.makeConstraints {
+            $0.top.equalTo(headerView.snp.bottom)
+            $0.horizontalEdges.bottom.equalToSuperview()
         }
     }
 }

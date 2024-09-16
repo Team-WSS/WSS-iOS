@@ -27,6 +27,7 @@ final class NormalSearchViewModel: ViewModelType {
         let searchTextUpdated: ControlProperty<String>
         let returnKeyDidTap: ControlEvent<Void>
         let searchButtonDidTap: ControlEvent<Void>
+        let clearButtonDidTap: ControlEvent<Void>
         let backButtonDidTap: ControlEvent<Void>
         let inquiryButtonDidTap: ControlEvent<Void>
         let normalSearchCollectionViewContentSize: Observable<CGSize?>
@@ -38,6 +39,7 @@ final class NormalSearchViewModel: ViewModelType {
         let resultCount: Observable<Int>
         let normalSearchList: Observable<[NormalSearchNovel]>
         let searchButtonEnabled: Observable<Void>
+        let clearButtonEnabled: Observable<Void>
         let backButtonEnabled: Observable<Void>
         let inquiryButtonEnabled: Observable<Void>
         let normalSearchCollectionViewHeight: Driver<CGFloat>
@@ -55,6 +57,7 @@ final class NormalSearchViewModel: ViewModelType {
 
         input.returnKeyDidTap
             .withLatestFrom(input.searchTextUpdated)
+            .distinctUntilChanged()
             .filter { !$0.isEmpty }
             .flatMapLatest { text in
                 self.searchRepository.getSearchNovels(query: text)
@@ -67,6 +70,7 @@ final class NormalSearchViewModel: ViewModelType {
         
         input.searchButtonDidTap
             .withLatestFrom(input.searchTextUpdated)
+            .distinctUntilChanged()
             .filter { !$0.isEmpty }
             .flatMapLatest { text in
                 self.searchRepository.getSearchNovels(query: text)
@@ -78,6 +82,7 @@ final class NormalSearchViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         let searchButtonEnabled = input.searchButtonDidTap.asObservable()
+        let clearButtonEnabled = input.clearButtonDidTap.asObservable()
         let backButtonEnabled = input.backButtonDidTap.asObservable()
         let inquiryButtonEnabled = input.inquiryButtonDidTap.asObservable()
         
@@ -87,8 +92,9 @@ final class NormalSearchViewModel: ViewModelType {
         return Output(resultCount: resultCount.asObservable(),
                       normalSearchList: normalSearchList.asObservable(),
                       searchButtonEnabled: searchButtonEnabled.asObservable(),
-                      backButtonEnabled: backButtonEnabled,
-                      inquiryButtonEnabled: inquiryButtonEnabled,
+                      clearButtonEnabled: clearButtonEnabled.asObservable(),
+                      backButtonEnabled: backButtonEnabled.asObservable(),
+                      inquiryButtonEnabled: inquiryButtonEnabled.asObservable(),
                       normalSearchCollectionViewHeight: normalSearchCollectionViewHeight)
     }
 }

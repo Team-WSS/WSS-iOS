@@ -81,6 +81,7 @@ final class NormalSearchViewController: UIViewController {
             searchTextUpdated: rootView.headerView.searchTextField.rx.text.orEmpty,
             returnKeyDidTap: rootView.headerView.searchTextField.rx.controlEvent(.editingDidEndOnExit),
             searchButtonDidTap: rootView.headerView.searchButton.rx.tap,
+            clearButtonDidTap: rootView.headerView.searchClearButton.rx.tap,
             backButtonDidTap: rootView.headerView.backButton.rx.tap,
             inquiryButtonDidTap: rootView.emptyView.inquiryButton.rx.tap,
             normalSearchCollectionViewContentSize: rootView.resultView.normalSearchCollectionView.rx.observe(CGSize.self, "contentSize"))
@@ -105,15 +106,13 @@ final class NormalSearchViewController: UIViewController {
         output.normalSearchList
             .asDriver(onErrorJustReturn: [])
             .drive(with: self, onNext: { owner, novels in
-                if novels.isEmpty && !(owner.rootView.headerView.searchTextField.text ?? "").isEmpty {
-                    owner.view.addSubview(owner.emptyView)
-                    owner.emptyView.snp.makeConstraints {
-                        $0.top.equalTo(owner.rootView.headerView.snp.bottom)
-                        $0.horizontalEdges.bottom.equalToSuperview()
-                    }
+                if novels.isEmpty || (owner.rootView.headerView.searchTextField.text == "") {
+                    owner.rootView.emptyView.isHidden = false
+                    owner.rootView.resultView.isHidden = true
                     owner.rootView.resultView.resultCountView.isHidden = true
                 } else {
-                    owner.emptyView.removeFromSuperview()
+                    owner.rootView.emptyView.isHidden = true
+                    owner.rootView.resultView.isHidden = false
                     owner.rootView.resultView.resultCountView.isHidden = false
                 }
             })
@@ -122,6 +121,12 @@ final class NormalSearchViewController: UIViewController {
         output.searchButtonEnabled
             .subscribe(with: self, onNext: { owner, _ in
                 self.view.endEditing(true)
+            })
+            .disposed(by: disposeBag)
+        
+        output.clearButtonEnabled
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.rootView.headerView.searchTextField.text = ""
             })
             .disposed(by: disposeBag)
         
@@ -146,7 +151,7 @@ final class NormalSearchViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.inquiryButtonEnabled
-            .bind(with: self, onNext: { owner, _ in
+            .subscribe(with: self, onNext: { owner, _ in
                 if let url = URL(string: StringLiterals.Search.Empty.kakaoChannelUrl) {
                     UIApplication.shared.open(url, options: [:])
                 }
