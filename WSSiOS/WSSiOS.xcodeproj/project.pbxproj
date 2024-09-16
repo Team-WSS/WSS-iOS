@@ -1856,20 +1856,20 @@
 			path = Search;
 			sourceTree = "<group>";
 		};
-		C9CF88B52C86204E00E45BF0 /* Notice */ = {
-			isa = PBXGroup;
-			children = (
-				C9CF88B62C86205900E45BF0 /* NoticeService.swift */,
-			);
-			path = Notice;
-			sourceTree = "<group>";
-		};
 		C9A3CD432C8C3B9C00B43BFB /* SearchService */ = {
 			isa = PBXGroup;
 			children = (
 				C9A3CD442C8C3BA500B43BFB /* SearchService.swift */,
 			);
 			path = SearchService;
+			sourceTree = "<group>";
+		};
+		C9CF88B52C86204E00E45BF0 /* Notice */ = {
+			isa = PBXGroup;
+			children = (
+				C9CF88B62C86205900E45BF0 /* NoticeService.swift */,
+			);
+			path = Notice;
 			sourceTree = "<group>";
 		};
 		CD280A8F2B88A69400AFDD90 /* TrashNovelDetailViewModel */ = {
@@ -2578,7 +2578,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 202401192;
-				DEVELOPMENT_TEAM = D23XDL6TZZ;
+				DEVELOPMENT_TEAM = 9SVDHQS4M3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WSSiOS/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "웹소소";
@@ -2609,7 +2609,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 202401192;
-				DEVELOPMENT_TEAM = D23XDL6TZZ;
+				DEVELOPMENT_TEAM = 9SVDHQS4M3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WSSiOS/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "웹소소";
