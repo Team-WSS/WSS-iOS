@@ -1,5 +1,5 @@
 //
-//  NovelDetailLargeCoverImageView.swift
+//  NovelDetailLargeCoverImageButton.swift
 //  WSSiOS
 //
 //  Created by 이윤학 on 6/12/24.

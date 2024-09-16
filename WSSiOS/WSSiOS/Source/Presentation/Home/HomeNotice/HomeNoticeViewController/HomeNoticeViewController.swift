@@ -15,7 +15,6 @@ final class HomeNoticeViewController: UIViewController {
     
     private let viewModel: HomeNoticeViewModel
     private let disposeBag = DisposeBag()
-    private var backButton = UIButton()
     
     //MARK: - UI Components
     
@@ -40,15 +39,14 @@ final class HomeNoticeViewController: UIViewController {
         super.viewWillAppear(animated)
         
         swipeBackGesture()
-        preparationSetNavigationBar(title: StringLiterals.Navigation.Title.notice,
-                                    left: self.backButton,
-                                    right: nil)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setUI()
+        setNavigationBar()
+        
         registerCell()
         bindViewModel()
     }
@@ -57,10 +55,12 @@ final class HomeNoticeViewController: UIViewController {
     
     private func setUI() {
         self.view.backgroundColor = .wssWhite
-        
-        backButton.do {
-            $0.setImage(.icNavigateLeft, for: .normal)
-        }
+    }
+    
+    private func setNavigationBar() {
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
+        self.navigationItem.titleView = self.rootView.viewTitleLabel
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.rootView.backButton)
     }
     
     //MARK: - Bind
@@ -87,14 +87,15 @@ final class HomeNoticeViewController: UIViewController {
         
         output.selectedNoticeCellIndexPath
             .bind(with: self, onNext: { owner, indexPath in
-                let viewController = HomeNoticeDetailViewController(viewModel: HomeNoticeDetailViewModel(noticeRepository: TestNoticeRepository()))
+                let viewController = HomeNoticeDetailViewController(viewModel: HomeNoticeDetailViewModel(),
+                                                                    notice: output.noticeList.value[indexPath.row])
                 viewController.navigationController?.isNavigationBarHidden = false
                 viewController.hidesBottomBarWhenPushed = true
                 owner.navigationController?.pushViewController(viewController, animated: true)
             })
             .disposed(by: disposeBag)
         
-        self.backButton.rx.tap
+        rootView.backButton.rx.tap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
                 owner.popToLastViewController()
