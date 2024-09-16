@@ -17,9 +17,11 @@ final class NormalSearchViewModel: ViewModelType {
     private let searchRepository: SearchRepository
     private let disposeBag = DisposeBag()
     
+    private let searchText = BehaviorRelay<String>(value: "")
+    private let currentPage = BehaviorRelay<Int>(value: 0)
+    private let isLoadable = BehaviorRelay<Bool>(value: false)
     private let resultCount = PublishSubject<Int>()
     private let normalSearchList = PublishSubject<[NormalSearchNovel]>()
-    private let normalSearchCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
     
     //MARK: - Inputs
     
@@ -54,17 +56,21 @@ final class NormalSearchViewModel: ViewModelType {
     //MARK: - Methods
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
-
+        
         input.returnKeyDidTap
             .withLatestFrom(input.searchTextUpdated)
             .distinctUntilChanged()
             .filter { !$0.isEmpty }
+            .do(onNext: { text in
+                self.searchText.accept(text)
+            })
             .flatMapLatest { text in
-                self.searchRepository.getSearchNovels(query: text)
+                self.searchRepository.getSearchNovels(query: text, page: 0)
             }
             .subscribe(with: self, onNext: { owner, data in
                 owner.normalSearchList.onNext(data.novels)
                 owner.resultCount.onNext(data.resultCount)
+                owner.isLoadable.accept(data.isLoadable)
             })
             .disposed(by: disposeBag)
         
@@ -72,12 +78,16 @@ final class NormalSearchViewModel: ViewModelType {
             .withLatestFrom(input.searchTextUpdated)
             .distinctUntilChanged()
             .filter { !$0.isEmpty }
+            .do(onNext: { text in
+                self.searchText.accept(text)
+            })
             .flatMapLatest { text in
-                self.searchRepository.getSearchNovels(query: text)
+                self.searchRepository.getSearchNovels(query: text, page: 0)
             }
             .subscribe(with: self, onNext: { owner, data in
                 owner.normalSearchList.onNext(data.novels)
                 owner.resultCount.onNext(data.resultCount)
+                owner.isLoadable.accept(data.isLoadable)
             })
             .disposed(by: disposeBag)
         

@@ -106,11 +106,17 @@ final class NormalSearchViewController: UIViewController {
         output.normalSearchList
             .asDriver(onErrorJustReturn: [])
             .drive(with: self, onNext: { owner, novels in
-                if novels.isEmpty || (owner.rootView.headerView.searchTextField.text == "") {
+                if owner.rootView.headerView.searchTextField.text == "" {
+                    owner.rootView.emptyView.isHidden = true
+                    owner.rootView.resultView.isHidden = true
+                    owner.rootView.resultView.resultCountView.isHidden = true
+                }
+                else if novels.isEmpty && !(owner.rootView.headerView.searchTextField.text == "") {
                     owner.rootView.emptyView.isHidden = false
                     owner.rootView.resultView.isHidden = true
                     owner.rootView.resultView.resultCountView.isHidden = true
-                } else {
+                }
+                else {
                     owner.rootView.emptyView.isHidden = true
                     owner.rootView.resultView.isHidden = false
                     owner.rootView.resultView.resultCountView.isHidden = false
