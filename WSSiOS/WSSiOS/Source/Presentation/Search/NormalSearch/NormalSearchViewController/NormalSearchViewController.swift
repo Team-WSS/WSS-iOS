@@ -79,7 +79,8 @@ final class NormalSearchViewController: UIViewController {
     private func bindViewModel() {
         let input = NormalSearchViewModel.Input(
             searchTextUpdated: rootView.headerView.searchTextField.rx.text.orEmpty,
-            searchTextReturnKeyPressed: rootView.headerView.searchTextField.rx.controlEvent(.editingDidEndOnExit),
+            returnKeyDidTap: rootView.headerView.searchTextField.rx.controlEvent(.editingDidEndOnExit),
+            searchButtonDidTap: rootView.headerView.searchButton.rx.tap,
             backButtonDidTap: rootView.headerView.backButton.rx.tap,
             inquiryButtonDidTap: rootView.emptyView.inquiryButton.rx.tap,
             normalSearchCollectionViewContentSize: rootView.resultView.normalSearchCollectionView.rx.observe(CGSize.self, "contentSize"))
@@ -115,6 +116,12 @@ final class NormalSearchViewController: UIViewController {
                     owner.emptyView.removeFromSuperview()
                     owner.rootView.resultView.resultCountView.isHidden = false
                 }
+            })
+            .disposed(by: disposeBag)
+        
+        output.searchButtonEnabled
+            .subscribe(with: self, onNext: { owner, _ in
+                self.view.endEditing(true)
             })
             .disposed(by: disposeBag)
         

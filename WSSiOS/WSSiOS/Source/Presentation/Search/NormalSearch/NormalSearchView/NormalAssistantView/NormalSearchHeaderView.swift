@@ -18,7 +18,7 @@ final class NormalSearchHeaderView: UIView {
     private let searchBackgroundView = UIView()
     let searchTextField = UITextField()
     private let searchClearButton = UIButton()
-    private let searchImageView = UIImageView()
+    let searchButton = UIButton()
     
     //MARK: - Life Cycle
     
@@ -60,17 +60,15 @@ final class NormalSearchHeaderView: UIView {
             $0.setImage(.icSearchCancel, for: .normal)
         }
         
-        searchImageView.do {
-            $0.image = .icSearch                
-                .withRenderingMode(.alwaysOriginal)
-                .withTintColor(.wssGray300)
+        searchButton.do {
+            $0.setImage(.icSearch.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray300), for: .normal)
             $0.contentMode = .scaleAspectFit
         }
     }
     
     private func setHierarchy() {
         searchBackgroundView.addSubviews(searchTextField,
-                                         searchImageView)
+                                         searchButton)
         self.addSubviews(backButton,
                          searchBackgroundView)
     }
@@ -87,7 +85,7 @@ final class NormalSearchHeaderView: UIView {
             $0.leading.equalToSuperview().inset(16)
         }
         
-        searchImageView.snp.makeConstraints {
+        searchButton.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.leading.equalTo(searchTextField.snp.trailing).offset(15)
             $0.trailing.equalToSuperview().inset(15)

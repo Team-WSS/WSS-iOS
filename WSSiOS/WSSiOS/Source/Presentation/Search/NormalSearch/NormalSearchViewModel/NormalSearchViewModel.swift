@@ -19,15 +19,14 @@ final class NormalSearchViewModel: ViewModelType {
     
     private let resultCount = PublishSubject<Int>()
     private let normalSearchList = PublishSubject<[NormalSearchNovel]>()
-    private let backButtonEnabled = PublishRelay<Bool>()
-    private let inquiryButtonEnabled = PublishRelay<Bool>()
     private let normalSearchCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
     
     //MARK: - Inputs
     
     struct Input {
         let searchTextUpdated: ControlProperty<String>
-        let searchTextReturnKeyPressed: ControlEvent<Void>
+        let returnKeyDidTap: ControlEvent<Void>
+        let searchButtonDidTap: ControlEvent<Void>
         let backButtonDidTap: ControlEvent<Void>
         let inquiryButtonDidTap: ControlEvent<Void>
         let normalSearchCollectionViewContentSize: Observable<CGSize?>
@@ -38,6 +37,7 @@ final class NormalSearchViewModel: ViewModelType {
     struct Output {
         let resultCount: Observable<Int>
         let normalSearchList: Observable<[NormalSearchNovel]>
+        let searchButtonEnabled: Observable<Void>
         let backButtonEnabled: Observable<Void>
         let inquiryButtonEnabled: Observable<Void>
         let normalSearchCollectionViewHeight: Driver<CGFloat>
@@ -53,7 +53,7 @@ final class NormalSearchViewModel: ViewModelType {
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
 
-        input.searchTextReturnKeyPressed
+        input.returnKeyDidTap
             .withLatestFrom(input.searchTextUpdated)
             .filter { !$0.isEmpty }
             .flatMapLatest { text in
@@ -65,8 +65,20 @@ final class NormalSearchViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        let backButtonEnabled = input.backButtonDidTap.asObservable()
+        input.searchButtonDidTap
+            .withLatestFrom(input.searchTextUpdated)
+            .filter { !$0.isEmpty }
+            .flatMapLatest { text in
+                self.searchRepository.getSearchNovels(query: text)
+            }
+            .subscribe(with: self, onNext: { owner, data in
+                owner.normalSearchList.onNext(data.novels)
+                owner.resultCount.onNext(data.resultCount)
+            })
+            .disposed(by: disposeBag)
         
+        let searchButtonEnabled = input.searchButtonDidTap.asObservable()
+        let backButtonEnabled = input.backButtonDidTap.asObservable()
         let inquiryButtonEnabled = input.inquiryButtonDidTap.asObservable()
         
         let normalSearchCollectionViewHeight = input.normalSearchCollectionViewContentSize
@@ -74,6 +86,7 @@ final class NormalSearchViewModel: ViewModelType {
         
         return Output(resultCount: resultCount.asObservable(),
                       normalSearchList: normalSearchList.asObservable(),
+                      searchButtonEnabled: searchButtonEnabled.asObservable(),
                       backButtonEnabled: backButtonEnabled,
                       inquiryButtonEnabled: inquiryButtonEnabled,
                       normalSearchCollectionViewHeight: normalSearchCollectionViewHeight)
