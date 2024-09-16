@@ -111,6 +111,7 @@ final class NovelDetailHeaderCoverImageButton: UIButton {
             }
         })
         
-        novelGenreImageView.kfSetImage(url: data.novelGenreImage)
+        let genreImageURLString = self.makeBucketImageURLString(path: data.novelGenreImage)
+        novelGenreImageView.kfSetImage(url: genreImageURLString)
     }
 }
