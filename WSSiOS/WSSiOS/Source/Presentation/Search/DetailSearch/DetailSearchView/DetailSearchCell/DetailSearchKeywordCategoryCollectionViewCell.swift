@@ -53,7 +53,6 @@ final class DetailSearchKeywordCategoryCollectionViewCell: UICollectionViewCell 
         }
         
         keywordImageView.do {
-            $0.image = .icCategoryWorld
             $0.layer.cornerRadius = 10.67
             $0.contentMode = .scaleAspectFit
             $0.clipsToBounds = true
@@ -151,10 +150,8 @@ final class DetailSearchKeywordCategoryCollectionViewCell: UICollectionViewCell 
     }
     
     func bindData(data: DetailSearchCategory) {
-        // 서버 svg파일 수정될 때 주석 삭제 예정
-        //keywordImageView.kfSetImage(url: data.categoryImage)
+        keywordImageView.kfSetImage(url: makeBucketImageURLString(path: data.categoryImage))
         keywordTitleLabel.applyWSSFont(.title2, with: data.categoryName)
-        
         keywordTitleLabel.text = data.categoryName
         self.keywords = data.keywords
         keywordCollectionView.reloadData()
