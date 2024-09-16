@@ -18,9 +18,9 @@ final class FeedEditView: UIView {
     let completeButton = UIButton()
     let scrollView = UIScrollView()
     private let contentView = UIStackView()
-    let feedCategoryView = FeedEditCategoryView()
-    let feedContentView = FeedEditContentView()
-    let feedNovelConnectView = FeedEditNovelConnectView()
+    let feedEditCategoryView = FeedEditCategoryView()
+    let feedEditContentView = FeedEditContentView()
+    let feedEditNovelConnectView = FeedEditNovelConnectView()
     
     //MARK: - Life Cycle
     
@@ -69,9 +69,9 @@ final class FeedEditView: UIView {
     private func setHierarchy() {
         self.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        contentView.addArrangedSubviews(feedCategoryView,
-                                        feedContentView,
-                                        feedNovelConnectView)
+        contentView.addArrangedSubviews(feedEditCategoryView,
+                                        feedEditContentView,
+                                        feedEditNovelConnectView)
     }
     
     private func setLayout() {
@@ -82,23 +82,16 @@ final class FeedEditView: UIView {
         
         contentView.snp.makeConstraints {
             $0.edges.equalTo(scrollView.contentLayoutGuide)
-            $0.width.equalToSuperview()
+            $0.width.equalTo(UIScreen.main.bounds.width)
         }
     }
     
     //MARK: - Custom Method
     
     func enableCompleteButton(isAbled: Bool) {
-        if isAbled {
-            completeButton.do {
-                $0.setButtonAttributedTitle(text: StringLiterals.Memo.complete, font: .Title2, color: .wssPrimary100)
-                $0.isEnabled = true
-            }
-        } else {
-            completeButton.do {
-                $0.setButtonAttributedTitle(text: StringLiterals.Memo.complete, font: .Title2, color: .wssGray200)
-                $0.isEnabled = false
-            }
+        completeButton.do {
+            $0.setButtonAttributedTitle(text: StringLiterals.Memo.complete, font: .Title2, color: isAbled ? .wssPrimary100 : .wssGray200)
+            $0.isEnabled = isAbled
         }
     }
 }

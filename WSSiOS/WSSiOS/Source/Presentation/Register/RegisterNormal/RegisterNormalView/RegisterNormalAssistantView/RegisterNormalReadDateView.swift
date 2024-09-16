@@ -119,7 +119,7 @@ final class RegisterNormalReadDateView: UIView {
     
     //MARK: - Custom Method
     
-    func updateDatePickerButton(_ status: ReadStatus) {
+    func updateDatePickerButton(_ status: TrashReadStatus) {
         titleView.setText(status.dateText)
         
         switch status {

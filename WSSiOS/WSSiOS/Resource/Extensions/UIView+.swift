@@ -18,4 +18,11 @@ extension UIView {
         mask.path = path.cgPath
         self.layer.mask = mask
     }
+    
+    func makeBucketImageURLString(path: String) -> String {
+        let bucketURL = Bundle.main.object(forInfoDictionaryKey: Config.Keys.Plist.bucketURL) as? String ?? "Error"
+        let scale = Int(UITraitCollection.current.displayScale)
+        
+        return "\(bucketURL)\(path)@\(scale)x.png"
+    }
 }

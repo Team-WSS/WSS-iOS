@@ -16,8 +16,8 @@ protocol UserNovelRepository {
                           sortType: String) -> Observable<UserNovelList>
     func getUserNovel(userNovelId: Int) -> Observable<UserNovelDetail>
     func deleteUserNovel(userNovelId: Int) -> Observable<Void>
-    func postUserNovel(novelId: Int, userNovelRating: Float?, userNovelReadStatus: ReadStatus, userNovelReadStartDate: String?, userNovelReadEndDate: String?) -> Observable<UserNovelId>
-    func patchUserNovel(userNovelId: Int, userNovelRating: Float?, userNovelReadStatus: ReadStatus, userNovelReadStartDate: String?, userNovelReadEndDate: String?) -> Observable<Void>
+    func postUserNovel(novelId: Int, userNovelRating: Float?, userNovelReadStatus: TrashReadStatus, userNovelReadStartDate: String?, userNovelReadEndDate: String?) -> Observable<UserNovelId>
+    func patchUserNovel(userNovelId: Int, userNovelRating: Float?, userNovelReadStatus: TrashReadStatus, userNovelReadStartDate: String?, userNovelReadEndDate: String?) -> Observable<Void>
 }
 
 struct DefaultUserNovelRepository: UserNovelRepository {
@@ -45,7 +45,7 @@ struct DefaultUserNovelRepository: UserNovelRepository {
             .asObservable()
     }
     
-    func postUserNovel(novelId: Int, userNovelRating: Float?, userNovelReadStatus: ReadStatus, userNovelReadStartDate: String?, userNovelReadEndDate: String?) -> Observable<UserNovelId> {
+    func postUserNovel(novelId: Int, userNovelRating: Float?, userNovelReadStatus: TrashReadStatus, userNovelReadStartDate: String?, userNovelReadEndDate: String?) -> Observable<UserNovelId> {
         return userNovelService
             .postUserNovel(novelId: novelId,
                               userNovelRating: userNovelRating,
@@ -55,7 +55,7 @@ struct DefaultUserNovelRepository: UserNovelRepository {
             ).asObservable()
     }
     
-    func patchUserNovel(userNovelId: Int, userNovelRating: Float?, userNovelReadStatus: ReadStatus, userNovelReadStartDate: String?, userNovelReadEndDate: String?) -> Observable<Void> {
+    func patchUserNovel(userNovelId: Int, userNovelRating: Float?, userNovelReadStatus: TrashReadStatus, userNovelReadStartDate: String?, userNovelReadEndDate: String?) -> Observable<Void> {
         return userNovelService
             .patchUserNovel(userNovelId: userNovelId,
                               userNovelRating: userNovelRating,

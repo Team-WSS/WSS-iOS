@@ -51,7 +51,7 @@ final class TrashNovelDetailTabView: UIView {
         
         infoButton.do {
             $0.isSelected = false
-            $0.setTitle(StringLiterals.NovelDetail.Info.info, for: .normal)
+            $0.setTitle("", for: .normal)
             $0.titleLabel?.font = .Title2
             $0.setTitleColor(.wssGray200, for: .normal)
             $0.setTitleColor(.wssBlack, for: .selected)
