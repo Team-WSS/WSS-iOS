@@ -9,6 +9,7 @@ import UIKit
 
 import RxSwift
 import RxCocoa
+import RxGesture
 import Then
 
 final class NormalSearchViewController: UIViewController {
@@ -23,6 +24,7 @@ final class NormalSearchViewController: UIViewController {
     //MARK: - Components
     
     private let rootView = NormalSearchView()
+    private let emptyView = NormalSearchEmptyView()
     
     //MARK: - Life Cycle
     
@@ -54,6 +56,10 @@ final class NormalSearchViewController: UIViewController {
         bindViewModel()
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
     //MARK: - UI
     
     private func setUI() {
@@ -72,7 +78,8 @@ final class NormalSearchViewController: UIViewController {
     
     private func bindViewModel() {
         let input = NormalSearchViewModel.Input(
-            viewWillAppearEvent: viewWillAppearEvent.asObservable(),
+            searchTextUpdated: rootView.headerView.searchTextField.rx.text.orEmpty,
+            searchTextReturnKeyPressed: rootView.headerView.searchTextField.rx.controlEvent(.editingDidEndOnExit),
             backButtonDidTap: rootView.headerView.backButton.rx.tap,
             inquiryButtonDidTap: rootView.emptyView.inquiryButton.rx.tap,
             normalSearchCollectionViewContentSize: rootView.resultView.normalSearchCollectionView.rx.observe(CGSize.self, "contentSize"))
@@ -93,6 +100,37 @@ final class NormalSearchViewController: UIViewController {
                     cell.bindData(data: element)
                 }
                 .disposed(by: disposeBag)
+        
+        output.normalSearchList
+            .asDriver(onErrorJustReturn: [])
+            .drive(with: self, onNext: { owner, novels in
+                if novels.isEmpty && !(owner.rootView.headerView.searchTextField.text ?? "").isEmpty {
+                    owner.view.addSubview(owner.emptyView)
+                    owner.emptyView.snp.makeConstraints {
+                        $0.top.equalTo(owner.rootView.headerView.snp.bottom)
+                        $0.horizontalEdges.bottom.equalToSuperview()
+                    }
+                    owner.rootView.resultView.resultCountView.isHidden = true
+                } else {
+                    owner.emptyView.removeFromSuperview()
+                    owner.rootView.resultView.resultCountView.isHidden = false
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        rootView.resultView.normalSearchCollectionView.rx.swipeGesture(.up)
+            .when(.recognized)
+            .subscribe(with: self, onNext: { owner, _ in
+                self.view.endEditing(true)
+            })
+            .disposed(by: disposeBag)
+        
+        rootView.resultView.normalSearchCollectionView.rx.swipeGesture(.down)
+            .when(.recognized)
+            .subscribe(with: self, onNext: { owner, _ in
+                self.view.endEditing(true)
+            })
+            .disposed(by: disposeBag)
         
         output.backButtonEnabled
             .bind(with: self, onNext: { owner, _ in

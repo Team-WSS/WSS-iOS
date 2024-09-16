@@ -17,7 +17,6 @@ final class NormalSearchViewModel: ViewModelType {
     private let searchRepository: SearchRepository
     private let disposeBag = DisposeBag()
     
-    private let viewWillAppearEvent = BehaviorRelay<Bool>(value: false)
     private let resultCount = PublishSubject<Int>()
     private let normalSearchList = PublishSubject<[NormalSearchNovel]>()
     private let backButtonEnabled = PublishRelay<Bool>()
@@ -27,8 +26,8 @@ final class NormalSearchViewModel: ViewModelType {
     //MARK: - Inputs
     
     struct Input {
-        let viewWillAppearEvent: Observable<Bool>
-        let searchText: Observable<String>
+        let searchTextUpdated: ControlProperty<String>
+        let searchTextReturnKeyPressed: ControlEvent<Void>
         let backButtonDidTap: ControlEvent<Void>
         let inquiryButtonDidTap: ControlEvent<Void>
         let normalSearchCollectionViewContentSize: Observable<CGSize?>
@@ -49,17 +48,20 @@ final class NormalSearchViewModel: ViewModelType {
     init(searchRepository: SearchRepository) {
         self.searchRepository = searchRepository
     }
-}
-
-//MARK: - Methods
-
-extension NormalSearchViewModel {
+    
+    //MARK: - Methods
+    
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
-        self.searchRepository.getSearchNovels(query: "")
+
+        input.searchTextReturnKeyPressed
+            .withLatestFrom(input.searchTextUpdated)
+            .filter { !$0.isEmpty }
+            .flatMapLatest { text in
+                self.searchRepository.getSearchNovels(query: text)
+            }
             .subscribe(with: self, onNext: { owner, data in
+                owner.normalSearchList.onNext(data.novels)
                 owner.resultCount.onNext(data.resultCount)
-            }, onError: { owner, error in
-                owner.resultCount.onError(error)
             })
             .disposed(by: disposeBag)
         

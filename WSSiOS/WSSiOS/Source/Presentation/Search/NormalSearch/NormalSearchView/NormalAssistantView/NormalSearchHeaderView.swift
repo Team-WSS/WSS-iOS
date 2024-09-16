@@ -16,7 +16,7 @@ final class NormalSearchHeaderView: UIView {
     
     let backButton = UIButton()
     private let searchBackgroundView = UIView()
-    private let searchTextField = UITextField()
+    let searchTextField = UITextField()
     private let searchClearButton = UIButton()
     private let searchImageView = UIImageView()
     
