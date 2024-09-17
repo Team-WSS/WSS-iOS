@@ -42,6 +42,7 @@ final class NormalSearchViewModel: ViewModelType {
     struct Output {
         let resultCount: Observable<Int>
         let normalSearchList: Observable<[NormalSearchNovel]>
+        let returnKeyEnabled: Observable<Void>
         let searchButtonEnabled: Observable<Void>
         let clearButtonEnabled: Observable<Void>
         let backButtonEnabled: Observable<Void>
@@ -100,6 +101,7 @@ final class NormalSearchViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        let returnKeyEnabled = input.returnKeyDidTap.asObservable()
         let searchButtonEnabled = input.searchButtonDidTap.asObservable()
         let clearButtonEnabled = input.clearButtonDidTap.asObservable()
         let backButtonEnabled = input.backButtonDidTap.asObservable()
@@ -110,6 +112,7 @@ final class NormalSearchViewModel: ViewModelType {
         
         return Output(resultCount: resultCount.asObservable(),
                       normalSearchList: normalSearchList.asObservable(),
+                      returnKeyEnabled: returnKeyEnabled.asObservable(),
                       searchButtonEnabled: searchButtonEnabled.asObservable(),
                       clearButtonEnabled: clearButtonEnabled.asObservable(),
                       backButtonEnabled: backButtonEnabled.asObservable(),

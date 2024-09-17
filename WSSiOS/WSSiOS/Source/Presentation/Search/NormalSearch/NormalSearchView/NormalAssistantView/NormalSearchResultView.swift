@@ -13,7 +13,8 @@ import Then
 final class NormalSearchResultView: UIView {
     
     //MARK: - Components
-    private let scrollView = UIScrollView()
+    
+    let scrollView = UIScrollView()
     private let contentView = UIView()
     let resultCountView = NormalSearchResultCountView()
     let normalSearchCollectionView = UICollectionView(frame: .zero,

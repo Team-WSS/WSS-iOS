@@ -65,10 +65,7 @@ final class NormalSearchViewController: UIViewController {
     }
     
     private func setUI() {
-        self.view.do {
-            $0.backgroundColor = .White
-        }
-        
+        self.view.backgroundColor = .wssWhite
         self.rootView.headerView.searchTextField.becomeFirstResponder()
     }
     
@@ -129,9 +126,16 @@ final class NormalSearchViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.returnKeyEnabled
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.rootView.resultView.scrollView.setContentOffset(.zero, animated: false)
+            })
+            .disposed(by: disposeBag)
+        
         output.searchButtonEnabled
             .subscribe(with: self, onNext: { owner, _ in
-                self.view.endEditing(true)
+                owner.view.endEditing(true)
+                owner.rootView.resultView.scrollView.setContentOffset(.zero, animated: false)
             })
             .disposed(by: disposeBag)
         
