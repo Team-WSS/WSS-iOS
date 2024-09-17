@@ -259,6 +259,7 @@
 		CD1F7DFE2C994A0E0039972C /* NovelKeywordSelectModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1F7DFD2C994A0E0039972C /* NovelKeywordSelectModalViewController.swift */; };
 		CD1F7E002C994A180039972C /* NovelKeywordSelectModalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1F7DFF2C994A180039972C /* NovelKeywordSelectModalViewModel.swift */; };
 		CD1F7E022C994AA00039972C /* NovelKeywordSelectModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1F7E012C994AA00039972C /* NovelKeywordSelectModalView.swift */; };
+		CD1F7E042C9955390039972C /* NovelKeywordSelectSearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1F7E032C9955390039972C /* NovelKeywordSelectSearchBarView.swift */; };
 		CD280A932B88A6CC00AFDD90 /* TrashNovelDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD280A922B88A6CC00AFDD90 /* TrashNovelDetailViewModel.swift */; };
 		CD2D0AAD2C7EF1A2007CF1F1 /* NovelReviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2D0AAC2C7EF1A2007CF1F1 /* NovelReviewViewController.swift */; };
 		CD2D0AAF2C7EF1BF007CF1F1 /* NovelReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2D0AAE2C7EF1BF007CF1F1 /* NovelReviewView.swift */; };
@@ -573,6 +574,7 @@
 		CD1F7DFD2C994A0E0039972C /* NovelKeywordSelectModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelKeywordSelectModalViewController.swift; sourceTree = "<group>"; };
 		CD1F7DFF2C994A180039972C /* NovelKeywordSelectModalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelKeywordSelectModalViewModel.swift; sourceTree = "<group>"; };
 		CD1F7E012C994AA00039972C /* NovelKeywordSelectModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelKeywordSelectModalView.swift; sourceTree = "<group>"; };
+		CD1F7E032C9955390039972C /* NovelKeywordSelectSearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelKeywordSelectSearchBarView.swift; sourceTree = "<group>"; };
 		CD280A922B88A6CC00AFDD90 /* TrashNovelDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashNovelDetailViewModel.swift; sourceTree = "<group>"; };
 		CD2D0AAC2C7EF1A2007CF1F1 /* NovelReviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelReviewViewController.swift; sourceTree = "<group>"; };
 		CD2D0AAE2C7EF1BF007CF1F1 /* NovelReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelReviewView.swift; sourceTree = "<group>"; };
@@ -1913,6 +1915,7 @@
 				CD2D0ABC2C7F1F39007CF1F1 /* NovelReviewRatingView.swift */,
 				CD803B342C93F711006EBAF8 /* NovelReviewAttractivePointView.swift */,
 				CD803B3A2C940B88006EBAF8 /* NovelReviewKeywordView.swift */,
+				CD1F7E032C9955390039972C /* NovelKeywordSelectSearchBarView.swift */,
 			);
 			path = NovelDetailAssistantView;
 			sourceTree = "<group>";
@@ -2217,6 +2220,7 @@
 				CD3E5A732B5424D600C0A659 /* MemoReadView.swift in Sources */,
 				399F29322B56633C00BBC12B /* NovelResult.swift in Sources */,
 				B96F0F942C298F3F00DA5483 /* FeedDetailReplyView.swift in Sources */,
+				CD1F7E042C9955390039972C /* NovelKeywordSelectSearchBarView.swift in Sources */,
 				CD3E5A732B5424D600C0A659 /* MemoReadView.swift in Sources */,
 				CD6F49512C703E63005AD392 /* FeedNovelConnectModalViewController.swift in Sources */,
 				A1EF35492B52F7B000A94C53 /* AvatarRepository.swift in Sources */,

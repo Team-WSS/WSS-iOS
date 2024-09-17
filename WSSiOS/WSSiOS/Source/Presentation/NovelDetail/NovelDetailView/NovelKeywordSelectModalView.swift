@@ -17,6 +17,7 @@ final class NovelKeywordSelectModalView: UIView {
     let contentView = UIView()
     let closeButton = UIButton()
     private let titleLabel = UILabel()
+    let novelKeywordSelectSearchBarView = NovelKeywordSelectSearchBarView()
     
     //MARK: - Life Cycle
     
@@ -55,7 +56,8 @@ final class NovelKeywordSelectModalView: UIView {
     private func setHierarchy() {
         self.addSubview(contentView)
         contentView.addSubviews(closeButton,
-                                titleLabel)
+                                titleLabel,
+                                novelKeywordSelectSearchBarView)
     }
     
     private func setLayout() {
@@ -71,6 +73,11 @@ final class NovelKeywordSelectModalView: UIView {
         
         titleLabel.snp.makeConstraints {
             $0.top.leading.equalToSuperview().inset(25)
+        }
+        
+        novelKeywordSelectSearchBarView.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom).offset(24)
+            $0.leading.trailing.equalToSuperview()
         }
     }
 }
