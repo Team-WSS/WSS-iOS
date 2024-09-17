@@ -101,7 +101,8 @@
 		395928992C988A4200E7B17B /* LoginRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395928982C988A4200E7B17B /* LoginRepository.swift */; };
 		3959289C2C9951AD00E7B17B /* LoginCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3959289B2C9951AD00E7B17B /* LoginCarouselView.swift */; };
 		3959289E2C99525A00E7B17B /* LoginPlatformButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3959289D2C99525A00E7B17B /* LoginPlatformButton.swift */; };
-		395928A02C99527500E7B17B /* LoginBottomButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3959289F2C99527500E7B17B /* LoginBottomButtons.swift */; };
+		395928A02C99527500E7B17B /* LoginSkipButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3959289F2C99527500E7B17B /* LoginSkipButton.swift */; };
+		395928A22C99559100E7B17B /* LoginPlatformButtonStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395928A12C99559100E7B17B /* LoginPlatformButtonStackView.swift */; };
 		39599E082C356DFA00702004 /* NovelDetailInfoReviewAttractivePointView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39599E072C356DFA00702004 /* NovelDetailInfoReviewAttractivePointView.swift */; };
 		39599E0C2C3572B500702004 /* NovelDetailInfoReviewKeywordCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39599E0B2C3572B500702004 /* NovelDetailInfoReviewKeywordCollectionViewCell.swift */; };
 		397DE6802C2342A70026DB07 /* NovelDetailTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 397DE67F2C2342A70026DB07 /* NovelDetailTabBarView.swift */; };
@@ -414,7 +415,8 @@
 		395928982C988A4200E7B17B /* LoginRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRepository.swift; sourceTree = "<group>"; };
 		3959289B2C9951AD00E7B17B /* LoginCarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCarouselView.swift; sourceTree = "<group>"; };
 		3959289D2C99525A00E7B17B /* LoginPlatformButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPlatformButton.swift; sourceTree = "<group>"; };
-		3959289F2C99527500E7B17B /* LoginBottomButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginBottomButtons.swift; sourceTree = "<group>"; };
+		3959289F2C99527500E7B17B /* LoginSkipButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSkipButton.swift; sourceTree = "<group>"; };
+		395928A12C99559100E7B17B /* LoginPlatformButtonStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPlatformButtonStackView.swift; sourceTree = "<group>"; };
 		39599E072C356DFA00702004 /* NovelDetailInfoReviewAttractivePointView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoReviewAttractivePointView.swift; sourceTree = "<group>"; };
 		39599E0B2C3572B500702004 /* NovelDetailInfoReviewKeywordCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoReviewKeywordCollectionViewCell.swift; sourceTree = "<group>"; };
 		397DE67F2C2342A70026DB07 /* NovelDetailTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailTabBarView.swift; sourceTree = "<group>"; };
@@ -1127,8 +1129,9 @@
 			isa = PBXGroup;
 			children = (
 				3959289B2C9951AD00E7B17B /* LoginCarouselView.swift */,
-				3959289F2C99527500E7B17B /* LoginBottomButtons.swift */,
+				395928A12C99559100E7B17B /* LoginPlatformButtonStackView.swift */,
 				3959289D2C99525A00E7B17B /* LoginPlatformButton.swift */,
+				3959289F2C99527500E7B17B /* LoginSkipButton.swift */,
 			);
 			path = LoginAssistantView;
 			sourceTree = "<group>";
@@ -2243,7 +2246,7 @@
 				2C60307B2B55D9160031544C /* UIImageView+.swift in Sources */,
 				B9095D2A2C3950B4007521EF /* HomeNoticeDetailView.swift in Sources */,
 				A1EF35692B52FD9B00A94C53 /* AvatarResult.swift in Sources */,
-				395928A02C99527500E7B17B /* LoginBottomButtons.swift in Sources */,
+				395928A02C99527500E7B17B /* LoginSkipButton.swift in Sources */,
 				B971D8792C0388E0008934D8 /* SearchRepository.swift in Sources */,
 				B9E565FF2C0452AA00DB51FF /* NormalSearchEmptyView.swift in Sources */,
 				B96863DA2C482E8C008CFBA5 /* DetailSearchView.swift in Sources */,
@@ -2347,6 +2350,7 @@
 				39CD5E102B4FEC0F00668B9A /* RegisterNormalToggleButton.swift in Sources */,
 				399258182C16DAF20063FB46 /* NovelDetailHeaderInterestFeedWriteButton.swift in Sources */,
 				B9A0FD6C2BFCF0080004252E /* HomeRealtimePopularCollectionViewCell.swift in Sources */,
+				395928A22C99559100E7B17B /* LoginPlatformButtonStackView.swift in Sources */,
 				B90A5E5E2C355BB4009938D9 /* NovelService.swift in Sources */,
 				CD3E5A812B54253E00C0A659 /* MemoReadViewController.swift in Sources */,
 				CD3E5A742B5424D600C0A659 /* MemoEditView.swift in Sources */,
