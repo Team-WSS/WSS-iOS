@@ -63,7 +63,6 @@ final class FeedEditViewModel: ViewModelType {
     private var updatedFeedContent: String = ""
     private let feedContentPredicate = NSPredicate(format: "SELF MATCHES %@", "^[\\s]+$")
     private let maximumFeedContentCount: Int = 2000
-    private var connectedNovel: NormalSearchNovel?
     
     //TODO: - 성별에 따른 리스트는 추후 구현
     let relevantCategoryList = FeedDetailWomanKoreanGenreDummy.allCases.map { $0.rawValue }
@@ -220,14 +219,14 @@ final class FeedEditViewModel: ViewModelType {
         input.feedNovelConnectedNotification
             .subscribe(with: self, onNext: { owner, notification in
                 guard let connectedNovel = notification.object as? NormalSearchNovel else { return }
-                owner.connectedNovel = connectedNovel
+                owner.novelId = connectedNovel.novelId
                 output.connectedNovelTitle.accept(connectedNovel.novelTitle)
             })
             .disposed(by: disposeBag)
         
         input.novelRemoveButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
-                owner.connectedNovel = nil
+                owner.novelId = nil
                 output.connectedNovelTitle.accept(nil)
             })
             .disposed(by: disposeBag)
