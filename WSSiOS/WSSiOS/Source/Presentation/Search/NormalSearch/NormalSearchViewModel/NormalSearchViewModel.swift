@@ -22,6 +22,7 @@ final class NormalSearchViewModel: ViewModelType {
     private let isLoadable = BehaviorRelay<Bool>(value: false)
     private let resultCount = PublishSubject<Int>()
     private let normalSearchList = PublishSubject<[NormalSearchNovel]>()
+    private let normalSearchCellIndexPath = PublishRelay<IndexPath>()
     
     //MARK: - Inputs
     
@@ -33,6 +34,7 @@ final class NormalSearchViewModel: ViewModelType {
         let backButtonDidTap: ControlEvent<Void>
         let inquiryButtonDidTap: ControlEvent<Void>
         let normalSearchCollectionViewContentSize: Observable<CGSize?>
+        let normalSearchCellSelected: ControlEvent<IndexPath>
     }
     
     //MARK: - Outputs
@@ -45,6 +47,7 @@ final class NormalSearchViewModel: ViewModelType {
         let backButtonEnabled: Observable<Void>
         let inquiryButtonEnabled: Observable<Void>
         let normalSearchCollectionViewHeight: Driver<CGFloat>
+        let normalSearchCellEnabled: Observable<IndexPath>
     }
     
     //MARK: - init
@@ -91,6 +94,12 @@ final class NormalSearchViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        input.normalSearchCellSelected
+            .subscribe(with: self, onNext: { owner, indexPath in
+                owner.normalSearchCellIndexPath.accept(indexPath)
+            })
+            .disposed(by: disposeBag)
+        
         let searchButtonEnabled = input.searchButtonDidTap.asObservable()
         let clearButtonEnabled = input.clearButtonDidTap.asObservable()
         let backButtonEnabled = input.backButtonDidTap.asObservable()
@@ -105,6 +114,7 @@ final class NormalSearchViewModel: ViewModelType {
                       clearButtonEnabled: clearButtonEnabled.asObservable(),
                       backButtonEnabled: backButtonEnabled.asObservable(),
                       inquiryButtonEnabled: inquiryButtonEnabled.asObservable(),
-                      normalSearchCollectionViewHeight: normalSearchCollectionViewHeight)
+                      normalSearchCollectionViewHeight: normalSearchCollectionViewHeight,
+                      normalSearchCellEnabled: normalSearchCellIndexPath.asObservable())
     }
 }

@@ -19,8 +19,6 @@ final class NormalSearchViewController: UIViewController {
     private let viewModel: NormalSearchViewModel
     private let disposeBag = DisposeBag()
     
-    private let viewWillAppearEvent = BehaviorRelay(value: false)
-    
     //MARK: - Components
     
     private let rootView = NormalSearchView()
@@ -44,7 +42,7 @@ final class NormalSearchViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        viewWillAppearEvent.accept(true)
+        setNavigationBar()
         swipeBackGesture()
     }
     
@@ -62,10 +60,16 @@ final class NormalSearchViewController: UIViewController {
     
     //MARK: - UI
     
+    private func setNavigationBar() {
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
+    }
+    
     private func setUI() {
         self.view.do {
             $0.backgroundColor = .White
         }
+        
+        self.rootView.headerView.searchTextField.becomeFirstResponder()
     }
     
     //MARK: - Bind
@@ -84,7 +88,8 @@ final class NormalSearchViewController: UIViewController {
             clearButtonDidTap: rootView.headerView.searchClearButton.rx.tap,
             backButtonDidTap: rootView.headerView.backButton.rx.tap,
             inquiryButtonDidTap: rootView.emptyView.inquiryButton.rx.tap,
-            normalSearchCollectionViewContentSize: rootView.resultView.normalSearchCollectionView.rx.observe(CGSize.self, "contentSize"))
+            normalSearchCollectionViewContentSize: rootView.resultView.normalSearchCollectionView.rx.observe(CGSize.self, "contentSize"),
+            normalSearchCellSelected: rootView.resultView.normalSearchCollectionView.rx.itemSelected)
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.resultCount
@@ -136,20 +141,6 @@ final class NormalSearchViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        rootView.resultView.normalSearchCollectionView.rx.swipeGesture(.up)
-            .when(.recognized)
-            .subscribe(with: self, onNext: { owner, _ in
-                self.view.endEditing(true)
-            })
-            .disposed(by: disposeBag)
-        
-        rootView.resultView.normalSearchCollectionView.rx.swipeGesture(.down)
-            .when(.recognized)
-            .subscribe(with: self, onNext: { owner, _ in
-                self.view.endEditing(true)
-            })
-            .disposed(by: disposeBag)
-        
         output.backButtonEnabled
             .bind(with: self, onNext: { owner, _ in
                 owner.popToLastViewController()
@@ -170,10 +161,31 @@ final class NormalSearchViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.normalSearchCellEnabled
+            .subscribe(with: self, onNext: { owner, indexPath in
+                //TODO: API 연결 후 수정 예정
+                owner.pushToDetailViewController(novelId: 0)
+            })
+            .disposed(by: disposeBag)
+        
         rootView.headerView.backButton.rx.tap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
                 owner.popToLastViewController()
+            })
+            .disposed(by: disposeBag)
+        
+        rootView.resultView.normalSearchCollectionView.rx.swipeGesture(.up)
+            .when(.recognized)
+            .subscribe(with: self, onNext: { owner, _ in
+                self.view.endEditing(true)
+            })
+            .disposed(by: disposeBag)
+        
+        rootView.resultView.normalSearchCollectionView.rx.swipeGesture(.down)
+            .when(.recognized)
+            .subscribe(with: self, onNext: { owner, _ in
+                self.view.endEditing(true)
             })
             .disposed(by: disposeBag)
     }
