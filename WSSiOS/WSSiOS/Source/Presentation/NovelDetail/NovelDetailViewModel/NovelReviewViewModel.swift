@@ -14,8 +14,6 @@ final class NovelReviewViewModel: ViewModelType {
     
     //MARK: - Properties
     
-    private let userNovelRepository: UserNovelRepository
-    
     private var novelReviewStatus: NovelReviewStatus?
     private var starRating: Float = 0.0
     private var attractivePointList: [String] = []
@@ -26,10 +24,6 @@ final class NovelReviewViewModel: ViewModelType {
     private let attractivePointLimit: Int = 3
     
     //MARK: - Life Cycle
-    
-    init(userNovelRepository: UserNovelRepository) {
-        self.userNovelRepository = userNovelRepository
-    }
     
     struct Input {
         let viewDidLoadEvent: Observable<Void>

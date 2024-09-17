@@ -45,7 +45,7 @@ enum ToastStatus {
         case .nicknameSave:
             "닉네임을 저장했어요"
         case .selectionOverLimit(let count):
-            "\(count)개까지 선택 가능해요!"
+            "\(count)개까지 선택 가능해요"
         }
     }
 }
