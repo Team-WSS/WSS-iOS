@@ -20,7 +20,7 @@ final class LoginViewController: UIViewController {
     
     //MARK: - Components
     
-    private let rootView = NovelDetailView()
+    private let rootView = LoginView()
     
     //MARK: - Life Cycle
     

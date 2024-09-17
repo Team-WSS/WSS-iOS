@@ -43,7 +43,7 @@ final class TestViewController: UIViewController {
             $0.center.equalToSuperview()
         }
         button.rx.tap.bind {
-            self.pushToDetailViewController(novelId: 10)
+            self.pushToLoginViewController()
         }.disposed(by: disposeBag)
     }
     
