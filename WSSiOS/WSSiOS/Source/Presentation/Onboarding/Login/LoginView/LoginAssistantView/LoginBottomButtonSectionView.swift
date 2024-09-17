@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class LoginBottomButtons: UIView {
+final class LoginBottomButtonSectionView: UIView {
     
     //MARK: - Components
     
