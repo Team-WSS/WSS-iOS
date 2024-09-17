@@ -205,6 +205,16 @@ extension UIViewController {
         return alertViewController.actionButtonTap
     }
     
+    func pushToMyPageDeleteIDWarningViewController() {
+        let viewController = MyPageDeleteIDWarningViewController()
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func pushToMyPageDeleteIDViewController() {
+        let viewController = MyPageDeleteIDViewController(viewModel: MyPageDeleteIDViewModel())
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
     func pushToMyPageInfoViewController() {
         let viewController = MyPageInfoViewController(
             viewModel: MyPageInfoViewModel(
@@ -212,7 +222,7 @@ extension UIViewController {
                     userService: DefaultUserService())))
         self.navigationController?.pushViewController(viewController, animated: true)
     }
-        
+
     func presentModalViewController(_ viewController: UIViewController) {
         let blackOverlayView = UIView(frame: self.view.bounds).then {
             $0.backgroundColor = UIColor.black.withAlphaComponent(0)
