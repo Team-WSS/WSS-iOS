@@ -33,6 +33,7 @@ final class NovelReviewViewModel: ViewModelType {
         let starRatingPanGesture: Observable<(location: CGPoint, width: CGFloat)>
         let attractivePointCollectionViewItemSelected: Observable<IndexPath>
         let attractivePointCollectionViewItemDeselected: Observable<IndexPath>
+        let keywordSearchViewDidTap: Observable<UITapGestureRecognizer>
         let selectedKeywordCollectionViewContentSize: Observable<CGSize?>
         let selectedKeywordCollectionViewItemSelected: Observable<IndexPath>
     }
@@ -44,6 +45,7 @@ final class NovelReviewViewModel: ViewModelType {
         let starRating = PublishRelay<Float>()
         let attractivePointListData = PublishRelay<[AttractivePoints]>()
         let isAttractivePointCountOverLimit = PublishRelay<IndexPath>()
+        let presentNovelKeywordSelectModalViewController = PublishRelay<Void>()
         let selectedKeywordListData = PublishRelay<[String]>()
         let selectedKeywordCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
     }
@@ -106,6 +108,12 @@ final class NovelReviewViewModel: ViewModelType {
         input.attractivePointCollectionViewItemDeselected
             .subscribe(with: self, onNext: { owner, indexPath in
                 owner.attractivePointList.removeAll { $0 == AttractivePoints.allCases[indexPath.item].rawValue }
+            })
+            .disposed(by: disposeBag)
+        
+        input.keywordSearchViewDidTap
+            .subscribe(onNext: { _ in
+                output.presentNovelKeywordSelectModalViewController.accept(())
             })
             .disposed(by: disposeBag)
         

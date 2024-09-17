@@ -103,6 +103,7 @@ final class NovelReviewViewController: UIViewController {
                 },
             attractivePointCollectionViewItemSelected: rootView.novelReviewAttractivePointView.attractivePointCollectionView.rx.itemSelected.asObservable(),
             attractivePointCollectionViewItemDeselected: rootView.novelReviewAttractivePointView.attractivePointCollectionView.rx.itemDeselected.asObservable(),
+            keywordSearchViewDidTap: rootView.novelReviewKeywordView.keywordSearchBarView.rx.tapGesture().when(.recognized).asObservable(),
             selectedKeywordCollectionViewContentSize: rootView.novelReviewKeywordView.selectedKeywordCollectionView.rx.observe(CGSize.self, "contentSize"),
             selectedKeywordCollectionViewItemSelected: rootView.novelReviewKeywordView.selectedKeywordCollectionView.rx.itemSelected.asObservable()
         )
@@ -141,6 +142,12 @@ final class NovelReviewViewController: UIViewController {
             .subscribe(with: self, onNext: { owner, indexPath in
                 owner.rootView.novelReviewAttractivePointView.attractivePointCollectionView.deselectItem(at: indexPath, animated: false)
                 owner.showToast(.selectionOverLimit(count: 3))
+            })
+            .disposed(by: disposeBag)
+        
+        output.presentNovelKeywordSelectModalViewController
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.presentModalViewController(NovelKeywordSelectModalViewController(viewModel: NovelKeywordSelectModalViewModel()))
             })
             .disposed(by: disposeBag)
         

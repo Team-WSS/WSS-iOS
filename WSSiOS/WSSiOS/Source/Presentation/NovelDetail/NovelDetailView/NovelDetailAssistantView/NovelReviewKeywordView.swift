@@ -15,7 +15,7 @@ final class NovelReviewKeywordView: UIView {
     //MARK: - Components
     
     private let titleLabel = UILabel()
-    private let keywordSearchBarView = UIView()
+    let keywordSearchBarView = UIView()
     private let placeholderLabel = UILabel()
     private let searchButton = UIButton()
     let selectedKeywordCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
