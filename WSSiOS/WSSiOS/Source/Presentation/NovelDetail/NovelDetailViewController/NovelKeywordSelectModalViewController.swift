@@ -51,10 +51,14 @@ final class NovelKeywordSelectModalViewController: UIViewController {
     //MARK: - UI
     
     private func register() {
+        rootView.novelSelectedKeywordListView.selectedKeywordCollectionView.register(NovelSelectedKeywordCollectionViewCell.self, forCellWithReuseIdentifier: NovelSelectedKeywordCollectionViewCell.cellIdentifier)
         rootView.novelKeywordSelectSearchResultView.searchResultCollectionView.register(NovelKeywordSelectSearchResultCollectionViewCell.self, forCellWithReuseIdentifier: NovelKeywordSelectSearchResultCollectionViewCell.cellIdentifier)
     }
     
     private func delegate() {
+        rootView.novelSelectedKeywordListView.selectedKeywordCollectionView.rx
+            .setDelegate(self)
+            .disposed(by: disposeBag)
         rootView.novelKeywordSelectSearchResultView.searchResultCollectionView.rx
             .setDelegate(self)
             .disposed(by: disposeBag)
@@ -70,8 +74,8 @@ final class NovelKeywordSelectModalViewController: UIViewController {
             searchResultCollectionViewContentSize: rootView.novelKeywordSelectSearchResultView.searchResultCollectionView.rx.observe(CGSize.self, "contentSize"),
             searchResultCollectionViewItemSelected: rootView.novelKeywordSelectSearchResultView.searchResultCollectionView.rx.itemSelected.asObservable(),
             searchResultCollectionViewItemDeselected: rootView.novelKeywordSelectSearchResultView.searchResultCollectionView.rx.itemDeselected.asObservable(),
-            resetButtonDidTap: rootView.resetButton.rx.tap,
-            selectButtonDidTap: rootView.selectButton.rx.tap
+            resetButtonDidTap: rootView.novelKeywordSelectModalButtonView.resetButton.rx.tap,
+            selectButtonDidTap: rootView.novelKeywordSelectModalButtonView.selectButton.rx.tap
         )
         
         let output = self.novelKeywordSelectModalViewModel.transform(from: input, disposeBag: self.disposeBag)
@@ -106,9 +110,15 @@ final class NovelKeywordSelectModalViewController: UIViewController {
         
         output.selectedKeywordListData
             .subscribe(with: self, onNext: { owner, selectedKeywordList in
-                owner.rootView.updateSelectLabelText(keywordCount: selectedKeywordList.count)
+                owner.rootView.novelKeywordSelectModalButtonView.updateSelectLabelText(keywordCount: selectedKeywordList.count)
             })
             .disposed(by: disposeBag)
+        
+        output.selectedKeywordListData.bind(to: rootView.novelSelectedKeywordListView.selectedKeywordCollectionView.rx.items(cellIdentifier: NovelSelectedKeywordCollectionViewCell.cellIdentifier, cellType: NovelSelectedKeywordCollectionViewCell.self)) { item, element, cell in
+            cell.bindData(keyword: element)
+        }
+        .disposed(by: disposeBag)
+        
         
         output.isKeywordCountOverLimit
             .subscribe(with: self, onNext: { owner, indexPath in
@@ -121,15 +131,31 @@ final class NovelKeywordSelectModalViewController: UIViewController {
 
 extension NovelKeywordSelectModalViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        var text: String?
         
-        text = self.novelKeywordSelectModalViewModel.keywordSearchResultList[indexPath.item]
-        
-        guard let unwrappedText = text else {
-            return CGSize(width: 0, height: 0)
+        if collectionView.tag == 1 {
+            var text: String?
+            
+            text = self.novelKeywordSelectModalViewModel.selectedKeywordList[indexPath.item]
+            
+            guard let unwrappedText = text else {
+                return CGSize(width: 0, height: 0)
+            }
+            
+            let width = (unwrappedText as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 52
+            return CGSize(width: width, height: 35)
+        } else if collectionView.tag == 2 {
+            var text: String?
+            
+            text = self.novelKeywordSelectModalViewModel.keywordSearchResultList[indexPath.item]
+            
+            guard let unwrappedText = text else {
+                return CGSize(width: 0, height: 0)
+            }
+            
+            let width = (unwrappedText as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 26
+            return CGSize(width: width, height: 35)
+        } else {
+            return CGSize()
         }
-        
-        let width = (unwrappedText as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 26
-        return CGSize(width: width, height: 35)
     }
 }

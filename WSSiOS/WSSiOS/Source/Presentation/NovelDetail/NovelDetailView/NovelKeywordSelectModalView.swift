@@ -19,12 +19,8 @@ final class NovelKeywordSelectModalView: UIView {
     private let titleLabel = UILabel()
     let novelKeywordSelectSearchBarView = NovelKeywordSelectSearchBarView()
     let novelKeywordSelectSearchResultView = NovelKeywordSelectSearchResultView()
-    let resetButton = UIButton()
-    private let resetButtonTitleView = UIView()
-    private let resetImageView = UIImageView()
-    private let resetLabel = UILabel()
-    let selectButton = UIButton()
-    private let selectLabel = UILabel()
+    let novelKeywordSelectModalButtonView = NovelKeywordSelectModalButtonView()
+    let novelSelectedKeywordListView = NovelSelectedKeywordListView()
     
     //MARK: - Life Cycle
     
@@ -58,27 +54,6 @@ final class NovelKeywordSelectModalView: UIView {
             $0.applyWSSFont(.title1, with: StringLiterals.NovelReview.KeywordSearch.keywordSelect)
             $0.textColor = .wssBlack
         }
-        
-        resetButton.do {
-            $0.backgroundColor = .wssGray50
-        }
-        
-        resetImageView.do {
-            $0.image = .icReset
-        }
-        
-        resetLabel.do {
-            $0.applyWSSFont(.title2, with: StringLiterals.NovelReview.KeywordSearch.reset)
-            $0.textColor = .wssGray300
-        }
-        
-        selectButton.do {
-            $0.backgroundColor = .wssPrimary100
-        }
-        
-        selectLabel.do {
-            $0.textColor = .wssWhite
-        }
     }
     
     private func setHierarchy() {
@@ -87,12 +62,8 @@ final class NovelKeywordSelectModalView: UIView {
                                 titleLabel,
                                 novelKeywordSelectSearchBarView,
                                 novelKeywordSelectSearchResultView,
-                                resetButton,
-                                selectButton)
-        resetButton.addSubview(resetButtonTitleView)
-        resetButtonTitleView.addSubviews(resetImageView,
-                                         resetLabel)
-        selectButton.addSubview(selectLabel)
+                                novelKeywordSelectModalButtonView,
+                                novelSelectedKeywordListView)
     }
     
     private func setLayout() {
@@ -120,36 +91,14 @@ final class NovelKeywordSelectModalView: UIView {
             $0.leading.trailing.equalToSuperview()
         }
         
-        resetButton.snp.makeConstraints {
-            $0.leading.equalToSuperview()
+        novelKeywordSelectModalButtonView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview()
             $0.bottom.equalTo(self.safeAreaLayoutGuide)
-            $0.width.equalTo(133)
-            $0.height.equalTo(62)
-            
-            resetButtonTitleView.snp.makeConstraints {
-                $0.center.equalToSuperview()
-                
-                resetImageView.snp.makeConstraints {
-                    $0.leading.centerY.equalToSuperview()
-                    $0.size.equalTo(14)
-                }
-                
-                resetLabel.snp.makeConstraints {
-                    $0.top.trailing.bottom.equalToSuperview()
-                    $0.leading.equalTo(resetImageView.snp.trailing).offset(4)
-                }
-            }
         }
         
-        selectButton.snp.makeConstraints {
-            $0.leading.equalTo(resetButton.snp.trailing)
-            $0.trailing.equalToSuperview()
-            $0.bottom.equalTo(self.safeAreaLayoutGuide)
-            $0.height.equalTo(62)
-            
-            selectLabel.snp.makeConstraints {
-                $0.center.equalToSuperview()
-            }
+        novelSelectedKeywordListView.snp.makeConstraints {
+            $0.top.equalTo(novelKeywordSelectSearchBarView.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
         }
     }
     
@@ -158,12 +107,6 @@ final class NovelKeywordSelectModalView: UIView {
     func showSearchResultView(show: Bool) {
         novelKeywordSelectSearchResultView.do {
             $0.isHidden = !show
-        }
-    }
-    
-    func updateSelectLabelText(keywordCount: Int) {
-        selectLabel.do {
-            $0.applyWSSFont(.title2, with: "\(keywordCount)개 선택")
         }
     }
 }

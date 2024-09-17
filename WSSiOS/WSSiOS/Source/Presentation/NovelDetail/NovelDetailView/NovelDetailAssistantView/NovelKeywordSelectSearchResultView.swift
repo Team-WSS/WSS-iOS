@@ -48,6 +48,7 @@ final class NovelKeywordSelectSearchResultView: UIView {
             $0.collectionViewLayout = layout
             $0.isScrollEnabled = false
             $0.allowsMultipleSelection = true
+            $0.tag = 2
         }
     }
     

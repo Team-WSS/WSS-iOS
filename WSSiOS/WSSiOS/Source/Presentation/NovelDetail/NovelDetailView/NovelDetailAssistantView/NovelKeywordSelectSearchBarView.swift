@@ -69,7 +69,8 @@ final class NovelKeywordSelectSearchBarView: UIView {
     
     private func setLayout() {
         keywordTextField.snp.makeConstraints {
-            $0.top.bottom.equalToSuperview()
+            $0.top.equalToSuperview()
+            $0.bottom.equalToSuperview().inset(24)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(42)
         }
