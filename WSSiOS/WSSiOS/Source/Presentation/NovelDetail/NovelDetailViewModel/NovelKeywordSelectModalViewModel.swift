@@ -20,6 +20,7 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
     //MARK: - Life Cycle
     
     struct Input {
+        let viewDidLoadEvent: Observable<Void>
         let closeButtonDidTap: ControlEvent<Void>
         let searchButtonDidTap: ControlEvent<Void>
         let searchResultCollectionViewContentSize: Observable<CGSize?>
@@ -31,10 +32,17 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
         let dismissModalViewController = PublishRelay<Void>()
         let keywordSearchResultListData = BehaviorRelay<[String]>(value: [])
         let searchResultCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
+        let selectedKeywordListData = PublishRelay<[String]>()
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
+        
+        input.viewDidLoadEvent
+            .subscribe(with: self, onNext: { owner, _ in
+                output.selectedKeywordListData.accept(owner.selectedKeywordList)
+            })
+            .disposed(by: disposeBag)
         
         input.closeButtonDidTap
             .subscribe(onNext: { _ in
@@ -56,14 +64,14 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
         input.searchResultCollectionViewItemSelected
             .subscribe(with: self, onNext: { owner, indexPath in
                 owner.selectedKeywordList.append(owner.keywordSearchResultList[indexPath.item])
-                print(owner.selectedKeywordList)
+                output.selectedKeywordListData.accept(owner.selectedKeywordList)
             })
             .disposed(by: disposeBag)
         
         input.searchResultCollectionViewItemDeselected
             .subscribe(with: self, onNext: { owner, indexPath in
                 owner.selectedKeywordList.removeAll { $0 == owner.keywordSearchResultList[indexPath.item] }
-                print(owner.selectedKeywordList)
+                output.selectedKeywordListData.accept(owner.selectedKeywordList)
             })
             .disposed(by: disposeBag)
         
