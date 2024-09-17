@@ -29,6 +29,7 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
         let viewDidLoadEvent: Observable<Void>
         let closeButtonDidTap: ControlEvent<Void>
         let searchButtonDidTap: ControlEvent<Void>
+        let selectedKeywordCollectionViewItemSelected: Observable<IndexPath>
         let searchResultCollectionViewContentSize: Observable<CGSize?>
         let searchResultCollectionViewItemSelected: Observable<IndexPath>
         let searchResultCollectionViewItemDeselected: Observable<IndexPath>
@@ -61,6 +62,14 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
         
         input.searchButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
+                output.keywordSearchResultListData.accept(owner.keywordSearchResultList)
+            })
+            .disposed(by: disposeBag)
+        
+        input.selectedKeywordCollectionViewItemSelected
+            .subscribe(with: self, onNext: { owner, indexPath in
+                owner.selectedKeywordList.remove(at: indexPath.item)
+                output.selectedKeywordListData.accept(owner.selectedKeywordList)
                 output.keywordSearchResultListData.accept(owner.keywordSearchResultList)
             })
             .disposed(by: disposeBag)

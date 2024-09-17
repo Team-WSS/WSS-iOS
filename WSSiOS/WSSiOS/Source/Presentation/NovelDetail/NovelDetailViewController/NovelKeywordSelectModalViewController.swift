@@ -71,6 +71,7 @@ final class NovelKeywordSelectModalViewController: UIViewController {
             viewDidLoadEvent: viewDidLoadEvent.asObservable(),
             closeButtonDidTap: rootView.closeButton.rx.tap,
             searchButtonDidTap: rootView.novelKeywordSelectSearchBarView.searchButton.rx.tap,
+            selectedKeywordCollectionViewItemSelected: rootView.novelSelectedKeywordListView.selectedKeywordCollectionView.rx.itemSelected.asObservable(),
             searchResultCollectionViewContentSize: rootView.novelKeywordSelectSearchResultView.searchResultCollectionView.rx.observe(CGSize.self, "contentSize"),
             searchResultCollectionViewItemSelected: rootView.novelKeywordSelectSearchResultView.searchResultCollectionView.rx.itemSelected.asObservable(),
             searchResultCollectionViewItemDeselected: rootView.novelKeywordSelectSearchResultView.searchResultCollectionView.rx.itemDeselected.asObservable(),
@@ -97,6 +98,8 @@ final class NovelKeywordSelectModalViewController: UIViewController {
             
             if self.novelKeywordSelectModalViewModel.selectedKeywordList.contains(element) {
                 self.rootView.novelKeywordSelectSearchResultView.searchResultCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
+            } else {
+                self.rootView.novelKeywordSelectSearchResultView.searchResultCollectionView.deselectItem(at: indexPath, animated: false)
             }
             cell.bindData(keyword: element)
         }
