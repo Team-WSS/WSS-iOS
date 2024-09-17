@@ -51,8 +51,7 @@
 		2C9A196D2C5692370043044A /* MyPageSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9A196C2C5692360043044A /* MyPageSettingView.swift */; };
 		2C9A196F2C56923B0043044A /* MyPageSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9A196E2C56923B0043044A /* MyPageSettingViewController.swift */; };
 		2C9A19712C56925F0043044A /* MyPageInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9A19702C56925F0043044A /* MyPageInfoViewModel.swift */; };
-		2CA2F64E2B527B060045B4C2 /* MyPageCustomModalView.swift in Sourc
-    es */ = {isa = PBXBuildFile; fileRef = 2CA2F64D2B527B060045B4C2 /* MyPageCustomModalView.swift */; };
+		2CA2F64E2B527B060045B4C2 /* MyPageCustomModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2F64D2B527B060045B4C2 /* MyPageCustomModalView.swift */; };
 		2CA2F6502B527B3A0045B4C2 /* MyPageCustomModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2F64F2B527B3A0045B4C2 /* MyPageCustomModalViewController.swift */; };
 		2CA2F6522B527B590045B4C2 /* MyPageModalAvatarFeatureLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2F6512B527B590045B4C2 /* MyPageModalAvatarFeatureLabelView.swift */; };
 		2CA2F65B2B53041E0045B4C2 /* LibraryBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2F65A2B53041E0045B4C2 /* LibraryBaseViewController.swift */; };
@@ -1450,7 +1449,6 @@
 				B9B0CBD72BE2A09B002F4CF6 /* HomeInterestCollectionViewCell.swift */,
 				B9181BDD2BEBE2300024C800 /* HomeTasteRecommendCollectionViewCell.swift */,
 				B9A0FD6B2BFCF0080004252E /* HomeRealtimePopularCollectionViewCell.swift */,
-				B9A0FD6D2BFCF16F0004252E /* HomeRealtimePopularContentTableViewCell.swift */,
 			);
 			path = HomeCell;
 			sourceTree = "<group>";
@@ -1885,155 +1883,6 @@
 			path = Search;
 			sourceTree = "<group>";
 		};
-		C9CF88A42C86182B00E45BF0 /* Home */ = {
-			isa = PBXGroup;
-			children = (
-				C9CF88A72C86184100E45BF0 /* HomeViewController */,
-				C9CF88A62C86183B00E45BF0 /* HomeViewModel */,
-				C9CF88A52C86183300E45BF0 /* HomeView */,
-			);
-			path = Home;
-			sourceTree = "<group>";
-		};
-		C9CF88A52C86183300E45BF0 /* HomeView */ = {
-			isa = PBXGroup;
-			children = (
-				C9CF88A92C86187700E45BF0 /* HomeAssistantView */,
-				C9CF88A82C86187000E45BF0 /* HomeCell */,
-				A1708F172B4D8E2F00E35E50 /* HomeView.swift */,
-			);
-			path = HomeView;
-			sourceTree = "<group>";
-		};
-		C9CF88A62C86183B00E45BF0 /* HomeViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				B96D10C32BED2EDB00D4D84C /* HomeViewModel.swift */,
-			);
-			path = HomeViewModel;
-			sourceTree = "<group>";
-		};
-		C9CF88A72C86184100E45BF0 /* HomeViewController */ = {
-			isa = PBXGroup;
-			children = (
-				A1708F132B4D8DF400E35E50 /* HomeViewController.swift */,
-			);
-			path = HomeViewController;
-			sourceTree = "<group>";
-		};
-		C9CF88A82C86187000E45BF0 /* HomeCell */ = {
-			isa = PBXGroup;
-			children = (
-				B9A0FD6B2BFCF0080004252E /* HomeRealtimePopularCollectionViewCell.swift */,
-				C9AF1AE32BCC28EE00208BC9 /* HomeTodayPopularCollectionViewCell.swift */,
-				B9B0CBD72BE2A09B002F4CF6 /* HomeInterestCollectionViewCell.swift */,
-				B9181BDD2BEBE2300024C800 /* HomeTasteRecommendCollectionViewCell.swift */,
-			);
-			path = HomeCell;
-			sourceTree = "<group>";
-		};
-		C9CF88A92C86187700E45BF0 /* HomeAssistantView */ = {
-			isa = PBXGroup;
-			children = (
-				C95EADD82BD4FE4C0060CF1A /* HomeRealTimePopularFeedView.swift */,
-				A1708F152B4D8E2700E35E50 /* HomeHeaderView.swift */,
-				C9AF1AE12BCC234300208BC9 /* HomeTodayPopularView.swift */,
-				C9063A962BD3F868006AD8F9 /* HomeRealtimePopularView.swift */,
-				B9B0CBD52BE29EA0002F4CF6 /* HomeInterestView.swift */,
-				B9181BDB2BEBDFA80024C800 /* HomeTasteRecommendView.swift */,
-				B9CEDA0C2C01C97E00E62247 /* HomeUnregisterView.swift */,
-				B9FE59632BF11955005815AF /* HomeInduceLoginModalView.swift */,
-				B942C78D2BFCD39700C4A8C6 /* HomeRealtimePopularContentView.swift */,
-			);
-			path = HomeAssistantView;
-			sourceTree = "<group>";
-		};
-		C9CF88AA2C8618AA00E45BF0 /* HomeNotice */ = {
-			isa = PBXGroup;
-			children = (
-				C9CF88AD2C8618C400E45BF0 /* HomeNoticeViewModel */,
-				C9CF88AC2C8618BE00E45BF0 /* HomeNoticeView */,
-				C9CF88AB2C8618B600E45BF0 /* HomeNoticeViewController */,
-			);
-			path = HomeNotice;
-			sourceTree = "<group>";
-		};
-		C9CF88AB2C8618B600E45BF0 /* HomeNoticeViewController */ = {
-			isa = PBXGroup;
-			children = (
-				B9AC1BCF2BF0B33E006EDE92 /* HomeNoticeViewController.swift */,
-			);
-			path = HomeNoticeViewController;
-			sourceTree = "<group>";
-		};
-		C9CF88AC2C8618BE00E45BF0 /* HomeNoticeView */ = {
-			isa = PBXGroup;
-			children = (
-				C9CF88AE2C8618DD00E45BF0 /* HomeNoticeCell */,
-				B9AC1BD12BF0B485006EDE92 /* HomeNoticeView.swift */,
-			);
-			path = HomeNoticeView;
-			sourceTree = "<group>";
-		};
-		C9CF88AD2C8618C400E45BF0 /* HomeNoticeViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				B9AC1BD52BF0BB9D006EDE92 /* HomeNoticeViewModel.swift */,
-			);
-			path = HomeNoticeViewModel;
-			sourceTree = "<group>";
-		};
-		C9CF88AE2C8618DD00E45BF0 /* HomeNoticeCell */ = {
-			isa = PBXGroup;
-			children = (
-				B9AC1BD32BF0B529006EDE92 /* HomeNoticeTableViewCell.swift */,
-			);
-			path = HomeNoticeCell;
-			sourceTree = "<group>";
-		};
-		C9CF88B02C86190800E45BF0 /* HomeNoticeDetail */ = {
-			isa = PBXGroup;
-			children = (
-				C9CF88B32C86197400E45BF0 /* HomeNoticeDetailViewModel */,
-				C9CF88B22C86195F00E45BF0 /* HomeNoticeDetailViewController */,
-				C9CF88B12C86195800E45BF0 /* HomeNoticeDetailView */,
-			);
-			path = HomeNoticeDetail;
-			sourceTree = "<group>";
-		};
-		C9CF88B12C86195800E45BF0 /* HomeNoticeDetailView */ = {
-			isa = PBXGroup;
-			children = (
-				C9CF88B42C86199400E45BF0 /* HomeNoticeDetailAssistantView */,
-				B9095D292C3950B4007521EF /* HomeNoticeDetailView.swift */,
-			);
-			path = HomeNoticeDetailView;
-			sourceTree = "<group>";
-		};
-		C9CF88B22C86195F00E45BF0 /* HomeNoticeDetailViewController */ = {
-			isa = PBXGroup;
-			children = (
-				B9095D272C394FC7007521EF /* HomeNoticeDetailViewController.swift */,
-			);
-			path = HomeNoticeDetailViewController;
-			sourceTree = "<group>";
-		};
-		C9CF88B32C86197400E45BF0 /* HomeNoticeDetailViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				B9095D2D2C395598007521EF /* HomeNoticeDetailViewModel.swift */,
-			);
-			path = HomeNoticeDetailViewModel;
-			sourceTree = "<group>";
-		};
-		C9CF88B42C86199400E45BF0 /* HomeNoticeDetailAssistantView */ = {
-			isa = PBXGroup;
-			children = (
-				B9095D2B2C39514D007521EF /* HomeNoticeDetailContentView.swift */,
-			);
-			path = HomeNoticeDetailAssistantView;
-			sourceTree = "<group>";
-		};
 		C9CF88B52C86204E00E45BF0 /* Notice */ = {
 			isa = PBXGroup;
 			children = (
@@ -2422,7 +2271,7 @@
 				B96F0F902C28678800DA5483 /* FeedDetailContentView.swift in Sources */,
 				2CD2FE402C43E7B60033366C /* WSSAlertViewController.swift in Sources */,
 				2C8F89512C50E5200056895B /* MyPageDeleteIDReasonTableViewCell.swift in Sources */,
-				2C19A5002BBD56C900D4D151 /* WSSDropdown.swift in Sources */,
+				2C19A5002BBD56C900D4D151 /* WSSDropdownButton.swift in Sources */,
 				2CA2F6602B530B660045B4C2 /* LibraryView.swift in Sources */,
 				2CD2291E2B42E685005400BE /* SceneDelegate.swift in Sources */,
 				2CD911612C0D8B71006B8D72 /* FeedViewModel.swift in Sources */,
@@ -2500,7 +2349,6 @@
 				CD39F2DA2B50DDBF00B73A5C /* TrashNovelDetailInfoGenreView.swift in Sources */,
 				39F686FE2C6F5D5C0065999F /* NovelDetailInfoReviewGraphStackView.swift in Sources */,
 				2CD9114A2C0D8948006B8D72 /* FeedContentView.swift in Sources */,
-				B9A0FD6E2BFCF16F0004252E /* HomeRealtimePopularContentTableViewCell.swift in Sources */,
 				C99DDFDF2C8613C900EDC0C4 /* SearchViewController.swift in Sources */,
 				2CD9114A2C0D8948006B8D72 /* FeedContentView.swift in Sources */,
 				2CCBF9EE2B4C1FC500D787C2 /* MyPageViewController.swift in Sources */,
@@ -2583,7 +2431,6 @@
 				A1EF35452B52F76C00A94C53 /* UserNovelRepository.swift in Sources */,
 				CD39F2C32B4FFDF900B73A5C /* TrashNovelDetailMemoView.swift in Sources */,
 				CD3E5AB32B565DFF00C0A659 /* NovelMemoResult.swift in Sources */,
-				A122C9E12B530A4100DFCFE4 /* (null) in Sources */,
 				2C8F89472C50CFA30056895B /* MyPageDeleteIDRecordView.swift in Sources */,
 				2C421FE82B96DC0F000DCB87 /* MyPageCustomModalViewModel.swift in Sources */,
 				B9059CBC2C484C2700D7CA86 /* DetailSearchInfoView.swift in Sources */,
@@ -2759,7 +2606,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 202401192;
-				DEVELOPMENT_TEAM = D23XDL6TZZ;
+				DEVELOPMENT_TEAM = 9SVDHQS4M3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WSSiOS/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "웹소소";
@@ -2791,7 +2638,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 202401192;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 9SVDHQS4M3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WSSiOS/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "웹소소";
