@@ -12,7 +12,7 @@ import RxCocoa
 import RxGesture
 import Then
 
-final class NormalSearchViewController: UIViewController {
+final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
     
     //MARK: - Properties
     
@@ -78,6 +78,11 @@ final class NormalSearchViewController: UIViewController {
     }
     
     private func bindViewModel() {
+        let reachedBottom = rootView.resultView.scrollView.rx.didScroll
+            .map { [weak self] in self?.isNearBottomEdge() ?? false }
+            .filter { $0 }
+            .map { _ in () }
+        
         let input = NormalSearchViewModel.Input(
             searchTextUpdated: rootView.headerView.searchTextField.rx.text.orEmpty,
             returnKeyDidTap: rootView.headerView.searchTextField.rx.controlEvent(.editingDidEndOnExit),
@@ -86,7 +91,8 @@ final class NormalSearchViewController: UIViewController {
             backButtonDidTap: rootView.headerView.backButton.rx.tap,
             inquiryButtonDidTap: rootView.emptyView.inquiryButton.rx.tap,
             normalSearchCollectionViewContentSize: rootView.resultView.normalSearchCollectionView.rx.observe(CGSize.self, "contentSize"),
-            normalSearchCellSelected: rootView.resultView.normalSearchCollectionView.rx.itemSelected)
+            normalSearchCellSelected: rootView.resultView.normalSearchCollectionView.rx.itemSelected,
+            reachedBottom: reachedBottom.asObservable())
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.resultCount
@@ -192,5 +198,15 @@ final class NormalSearchViewController: UIViewController {
                 self.view.endEditing(true)
             })
             .disposed(by: disposeBag)
+    }
+    
+    private func isNearBottomEdge() -> Bool {
+        guard self.rootView.resultView.scrollView.contentSize.height > 0 else {
+            return false
+        }
+        
+        let checkNearBottomEdge = self.rootView.resultView.scrollView.contentOffset.y + self.rootView.resultView.scrollView.bounds.size.height + 1.0 >= self.rootView.resultView.scrollView.contentSize.height
+        
+        return checkNearBottomEdge
     }
 }

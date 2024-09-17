@@ -83,7 +83,7 @@ final class NormalSearchResultView: UIView {
         normalSearchCollectionView.snp.makeConstraints {
             $0.top.equalTo(resultCountView.snp.bottom).offset(16)
             $0.leading.trailing.bottom.equalToSuperview()
-            $0.height.equalTo(300) // 기본 heigth값 적용
+            $0.height.equalTo(300)
         }
     }
     

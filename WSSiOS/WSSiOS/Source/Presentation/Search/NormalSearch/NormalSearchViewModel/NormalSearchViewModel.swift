@@ -21,7 +21,7 @@ final class NormalSearchViewModel: ViewModelType {
     private let currentPage = BehaviorRelay<Int>(value: 0)
     private let isLoadable = BehaviorRelay<Bool>(value: false)
     private let resultCount = PublishSubject<Int>()
-    private let normalSearchList = PublishSubject<[NormalSearchNovel]>()
+    private let normalSearchList = BehaviorRelay<[NormalSearchNovel]>(value: [])
     private let normalSearchCellIndexPath = PublishRelay<IndexPath>()
     
     //MARK: - Inputs
@@ -35,6 +35,7 @@ final class NormalSearchViewModel: ViewModelType {
         let inquiryButtonDidTap: ControlEvent<Void>
         let normalSearchCollectionViewContentSize: Observable<CGSize?>
         let normalSearchCellSelected: ControlEvent<IndexPath>
+        let reachedBottom: Observable<Void>
     }
     
     //MARK: - Outputs
@@ -61,36 +62,42 @@ final class NormalSearchViewModel: ViewModelType {
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         
-        input.returnKeyDidTap
+        let searchRequest = Observable.merge(input.returnKeyDidTap.asObservable(), input.searchButtonDidTap.asObservable())
             .withLatestFrom(input.searchTextUpdated)
             .distinctUntilChanged()
             .filter { !$0.isEmpty }
             .do(onNext: { text in
                 self.searchText.accept(text)
+                self.currentPage.accept(0)
             })
             .flatMapLatest { text in
                 self.searchRepository.getSearchNovels(query: text, page: 0)
             }
+            .share()
+        
+        searchRequest
             .subscribe(with: self, onNext: { owner, data in
-                owner.normalSearchList.onNext(data.novels)
+                owner.normalSearchList.accept(data.novels)
                 owner.resultCount.onNext(data.resultCount)
                 owner.isLoadable.accept(data.isLoadable)
             })
             .disposed(by: disposeBag)
         
-        input.searchButtonDidTap
-            .withLatestFrom(input.searchTextUpdated)
-            .distinctUntilChanged()
-            .filter { !$0.isEmpty }
-            .do(onNext: { text in
-                self.searchText.accept(text)
-            })
-            .flatMapLatest { text in
-                self.searchRepository.getSearchNovels(query: text, page: 0)
+        input.reachedBottom
+            .withLatestFrom(isLoadable)
+            .filter { $0 }
+            .withLatestFrom(currentPage)
+            .flatMapLatest { [weak self] page -> Observable<NormalSearchNovels> in
+                guard let self = self else { return .empty() }
+                let nextPage = page + 1
+                return self.searchRepository.getSearchNovels(query: self.searchText.value, page: nextPage)
+                    .do(onNext: { _ in
+                        self.currentPage.accept(nextPage)
+                    })
             }
             .subscribe(with: self, onNext: { owner, data in
-                owner.normalSearchList.onNext(data.novels)
-                owner.resultCount.onNext(data.resultCount)
+                let updatedList = owner.normalSearchList.value + data.novels
+                owner.normalSearchList.accept(updatedList)
                 owner.isLoadable.accept(data.isLoadable)
             })
             .disposed(by: disposeBag)

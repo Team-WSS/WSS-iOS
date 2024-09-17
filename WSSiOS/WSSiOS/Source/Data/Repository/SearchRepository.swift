@@ -16,6 +16,7 @@ protocol SearchRepository {
 
 struct DefaultSearchRepository: SearchRepository {
     private var searchService: SearchService
+    private let searchSize = 20
     
     init(searchService: SearchService) {
         self.searchService = searchService
@@ -26,7 +27,7 @@ struct DefaultSearchRepository: SearchRepository {
     }
     
     func getSearchNovels(query: String, page: Int) -> Observable<NormalSearchNovels> {
-        return searchService.searchNormalNovels(query: query, page: page, size: 30).asObservable()
+        return searchService.searchNormalNovels(query: query, page: page, size: searchSize).asObservable()
     }
 }
 
