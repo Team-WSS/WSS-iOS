@@ -68,6 +68,11 @@ enum StringLiterals {
                 static let recommend = "선호장르 설정하기"
             }
         }
+        
+        enum TodayPopular {
+            static let feed = "님의 한마디"
+            static let introduction = "작품 소개"
+        }
     }
     
     enum Register {
@@ -225,19 +230,6 @@ enum StringLiterals {
             static let newMemo = "새로운 메모를 작성해보세요"
         }
         
-        enum Info {
-            static let info = "정보"
-            static let rating = "나의 평가"
-            static let readStatus = "읽기 상태"
-            static let tilde = "~"
-            static let startDate = "시작 날짜"
-            static let endDate = "읽은 날짜"
-            static let keyword = "키워드"
-            static let description = "작품 소개"
-            static let genre = "장르"
-            static let platform = "작품 보러가기"
-        }
-        
         enum Setting {
             static let novelDelete = "작품을 서재에서 삭제"
             static let novelEdit = "작품 정보 수정"
@@ -262,6 +254,22 @@ enum StringLiterals {
         enum Tab {
             static let info = "정보"
             static let feed = "피드"
+        }
+        
+        enum Info {
+            static let description = "작품 소개"
+            static let platform = "작품 보러가기"
+            static let reviewEmpty = "독자들의 평가"
+            static let reviewEmptyDescription = "아직 평가가 없어요\n최초로 남겨보세요!"
+            static let attractivePoint = "독자들의 감상평"
+            static let attractivePointDescription = "(이)가 매력적인 작품이에요"
+            static let readStatus = "명이 작품을\n"
+            
+            enum ReadStatus {
+                static let watched = "봤어요"
+                static let watching = "같이 보고 있어요"
+                static let quit = "하차했어요"
+            }
         }
     }
     
@@ -345,6 +353,8 @@ enum StringLiterals {
         enum Novel {
             static let novelConnect = "작품 연결하기"
             static let novelSearch = "작품 제목, 작가를 검색하세요"
+            static let novelSelect = "작성 중인 글과 관련된 웹소설을 선택하세요"
+            static let connectSelectedNovel = "해당 작품 연결"
         }
     }
     

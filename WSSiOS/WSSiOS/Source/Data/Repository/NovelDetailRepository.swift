@@ -10,11 +10,16 @@ import Foundation
 import RxSwift
 
 protocol NovelDetailRepository {
-    func getNovelBasic(novelId: Int) -> Observable<NovelDetailHeaderResult>
+    func getNovelDetailHeaderData(novelId: Int) -> Observable<NovelDetailHeaderResult>
+    func getNovelDetailInfoData(novelId: Int) -> Observable<NovelDetailInfoResult>
 }
 
 struct TestDetailRepository: NovelDetailRepository {
-    func getNovelBasic(novelId: Int) -> Observable<NovelDetailHeaderResult> {
+    func getNovelDetailHeaderData(novelId: Int) -> Observable<NovelDetailHeaderResult> {
         return Observable.just(NovelDetailHeaderResult.dummyData[0])
+    }
+    
+    func getNovelDetailInfoData(novelId: Int) -> Observable<NovelDetailInfoResult> {
+        return Observable.just(NovelDetailInfoResult.dummyAllEmptyData[0])
     }
 }

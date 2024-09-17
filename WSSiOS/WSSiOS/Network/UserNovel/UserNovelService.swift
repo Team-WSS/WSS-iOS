@@ -16,8 +16,8 @@ protocol UserNovelService {
                           sortType: String) -> Single<UserNovelList>
     func getUserNovel(userNovelId: Int) -> Single<UserNovelDetail>
     func deleteUserNovel(userNovelId: Int) -> Single<Void>
-    func postUserNovel(novelId: Int, userNovelRating: Float?, userNovelReadStatus: ReadStatus, userNovelReadStartDate: String?, userNovelReadEndDate: String?) -> Single<UserNovelId>
-    func patchUserNovel(userNovelId: Int, userNovelRating: Float?, userNovelReadStatus: ReadStatus, userNovelReadStartDate: String?, userNovelReadEndDate: String?) -> Single<Void>
+    func postUserNovel(novelId: Int, userNovelRating: Float?, userNovelReadStatus: TrashReadStatus, userNovelReadStartDate: String?, userNovelReadEndDate: String?) -> Single<UserNovelId>
+    func patchUserNovel(userNovelId: Int, userNovelRating: Float?, userNovelReadStatus: TrashReadStatus, userNovelReadStartDate: String?, userNovelReadEndDate: String?) -> Single<Void>
 }
 
 final class DefaultUserNovelService: NSObject, Networking {
@@ -93,7 +93,7 @@ extension DefaultUserNovelService: UserNovelService {
         }
     }
     
-    func postUserNovel(novelId: Int, userNovelRating: Float?, userNovelReadStatus: ReadStatus, userNovelReadStartDate: String?, userNovelReadEndDate: String?) -> Single<UserNovelId> {
+    func postUserNovel(novelId: Int, userNovelRating: Float?, userNovelReadStatus: TrashReadStatus, userNovelReadStartDate: String?, userNovelReadEndDate: String?) -> Single<UserNovelId> {
         guard let userNovelBasic = try? JSONEncoder()
             .encode(UserNovelBasicInfo(userNovelRating: userNovelRating,
                                        userNovelReadStatus: userNovelReadStatus.rawValue,
@@ -119,7 +119,7 @@ extension DefaultUserNovelService: UserNovelService {
         }
     }
     
-    func patchUserNovel(userNovelId: Int, userNovelRating: Float?, userNovelReadStatus: ReadStatus, userNovelReadStartDate: String?, userNovelReadEndDate: String?) -> Single<Void> {
+    func patchUserNovel(userNovelId: Int, userNovelRating: Float?, userNovelReadStatus: TrashReadStatus, userNovelReadStartDate: String?, userNovelReadEndDate: String?) -> Single<Void> {
         guard let userNovelBasic = try? JSONEncoder()
             .encode(UserNovelBasicInfo(userNovelRating: userNovelRating,
                                        userNovelReadStatus: userNovelReadStatus.rawValue,
