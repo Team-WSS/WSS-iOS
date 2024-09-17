@@ -62,7 +62,8 @@ final class NormalSearchViewModel: ViewModelType {
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         
-        let searchRequest = Observable.merge(input.returnKeyDidTap.asObservable(), input.searchButtonDidTap.asObservable())
+        let searchRequest = Observable.merge(input.returnKeyDidTap.asObservable(), 
+                                             input.searchButtonDidTap.asObservable())
             .withLatestFrom(input.searchTextUpdated)
             .distinctUntilChanged()
             .filter { !$0.isEmpty }
@@ -87,8 +88,7 @@ final class NormalSearchViewModel: ViewModelType {
             .withLatestFrom(isLoadable)
             .filter { $0 }
             .withLatestFrom(currentPage)
-            .flatMapLatest { [weak self] page -> Observable<NormalSearchNovels> in
-                guard let self = self else { return .empty() }
+            .flatMapLatest { page -> Observable<NormalSearchNovels> in
                 let nextPage = page + 1
                 return self.searchRepository.getSearchNovels(query: self.searchText.value, page: nextPage)
                     .do(onNext: { _ in

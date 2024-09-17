@@ -79,7 +79,7 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
     
     private func bindViewModel() {
         let reachedBottom = rootView.resultView.scrollView.rx.didScroll
-            .map { [weak self] in self?.isNearBottomEdge() ?? false }
+            .map { self.isNearBottomEdge() }
             .filter { $0 }
             .map { _ in () }
         
