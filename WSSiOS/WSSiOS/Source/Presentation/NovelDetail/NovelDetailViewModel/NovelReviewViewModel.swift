@@ -46,7 +46,7 @@ final class NovelReviewViewModel: ViewModelType {
         let starRating = PublishRelay<Float>()
         let attractivePointListData = PublishRelay<[AttractivePoints]>()
         let isAttractivePointCountOverLimit = PublishRelay<IndexPath>()
-        let presentNovelKeywordSelectModalViewController = PublishRelay<Void>()
+        let presentNovelKeywordSelectModalViewController = PublishRelay<[String]>()
         let selectedKeywordListData = PublishRelay<[String]>()
         let selectedKeywordCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
     }
@@ -113,8 +113,8 @@ final class NovelReviewViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.keywordSearchViewDidTap
-            .subscribe(onNext: { _ in
-                output.presentNovelKeywordSelectModalViewController.accept(())
+            .subscribe(with: self, onNext: { owner, _ in
+                output.presentNovelKeywordSelectModalViewController.accept((owner.selectedKeywordList))
             })
             .disposed(by: disposeBag)
         

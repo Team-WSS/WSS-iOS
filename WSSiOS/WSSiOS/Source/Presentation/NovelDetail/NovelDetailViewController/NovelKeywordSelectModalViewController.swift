@@ -89,6 +89,11 @@ final class NovelKeywordSelectModalViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.keywordSearchResultListData.bind(to: rootView.novelKeywordSelectSearchResultView.searchResultCollectionView.rx.items(cellIdentifier: NovelKeywordSelectSearchResultCollectionViewCell.cellIdentifier, cellType: NovelKeywordSelectSearchResultCollectionViewCell.self)) { item, element, cell in
+            let indexPath = IndexPath(item: item, section: 0)
+            
+            if self.novelKeywordSelectModalViewModel.selectedKeywordList.contains(element) {
+                self.rootView.novelKeywordSelectSearchResultView.searchResultCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
+            }
             cell.bindData(keyword: element)
         }
         .disposed(by: disposeBag)

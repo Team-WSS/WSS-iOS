@@ -15,11 +15,15 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
     //MARK: - Properties
     
     var keywordSearchResultList: [String] = ["환생생", "환생남주", "환생이", "환생물", "환생", "환환생", "환생여주", "환환환생", "후회", "정치물", "피폐", "빙의", "먼치킨", "기억상실", "가가", "나나", "다다다", "라라랄", "마마마마마", "밥", "사삿", "아아앙", "자자", "차촟", "카카카", "타톹", "파포", "하히히"]
-    var selectedKeywordList: [String] = []
+    var selectedKeywordList: [String]
     
     private let keywordLimit: Int = 20
     
     //MARK: - Life Cycle
+    
+    init(selectedKeywordList: [String]) {
+        self.selectedKeywordList = selectedKeywordList
+    }
     
     struct Input {
         let viewDidLoadEvent: Observable<Void>

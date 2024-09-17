@@ -147,8 +147,8 @@ final class NovelReviewViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.presentNovelKeywordSelectModalViewController
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.presentModalViewController(NovelKeywordSelectModalViewController(viewModel: NovelKeywordSelectModalViewModel()))
+            .subscribe(with: self, onNext: { owner, selectedKeywordList in
+                owner.presentModalViewController(NovelKeywordSelectModalViewController(viewModel: NovelKeywordSelectModalViewModel(selectedKeywordList: selectedKeywordList)))
             })
             .disposed(by: disposeBag)
         
