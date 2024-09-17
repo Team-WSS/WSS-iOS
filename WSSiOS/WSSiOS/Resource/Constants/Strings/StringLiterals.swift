@@ -223,6 +223,12 @@ enum StringLiterals {
         }
     }
     
+    enum Onboarding {
+        enum Login {
+            static let skip = "회원가입 없이 둘러보기"
+        }
+    }
+    
     enum NovelDetail {
         enum Memo {
             static let memo = "메모"
