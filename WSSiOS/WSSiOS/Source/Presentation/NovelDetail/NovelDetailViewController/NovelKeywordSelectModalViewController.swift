@@ -69,6 +69,8 @@ final class NovelKeywordSelectModalViewController: UIViewController {
     private func bindViewModel() {
         let input = NovelKeywordSelectModalViewModel.Input(
             viewDidLoadEvent: viewDidLoadEvent.asObservable(),
+            updatedEnteredText: rootView.novelKeywordSelectSearchBarView.keywordTextField.rx.text.orEmpty.distinctUntilChanged().asObservable(),
+            searchCancelButtonDidTap: rootView.novelKeywordSelectSearchBarView.searchCancelButton.rx.tap,
             closeButtonDidTap: rootView.closeButton.rx.tap,
             searchButtonDidTap: rootView.novelKeywordSelectSearchBarView.searchButton.rx.tap,
             selectedKeywordCollectionViewItemSelected: rootView.novelSelectedKeywordListView.selectedKeywordCollectionView.rx.itemSelected.asObservable(),
@@ -84,6 +86,12 @@ final class NovelKeywordSelectModalViewController: UIViewController {
         output.dismissModalViewController
             .subscribe(with: self, onNext: { owner, _ in
                 owner.dismissModalViewController()
+            })
+            .disposed(by: disposeBag)
+        
+        output.enteredText
+            .subscribe(with: self, onNext: { owner, text in
+                owner.rootView.novelKeywordSelectSearchBarView.keywordTextField.text = text
             })
             .disposed(by: disposeBag)
         

@@ -14,6 +14,7 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
     
     //MARK: - Properties
     
+    var enteredText: String = ""
     var keywordSearchResultList: [String] = ["환생생", "환생남주", "환생이", "환생물", "환생", "환환생", "환생여주", "환환환생", "후회", "정치물", "피폐", "빙의", "먼치킨", "기억상실", "가가", "나나", "다다다", "라라랄", "마마마마마", "밥", "사삿", "아아앙", "자자", "차촟", "카카카", "타톹", "파포", "하히히"]
     var selectedKeywordList: [String]
     
@@ -27,6 +28,8 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
     
     struct Input {
         let viewDidLoadEvent: Observable<Void>
+        let updatedEnteredText: Observable<String>
+        let searchCancelButtonDidTap: ControlEvent<Void>
         let closeButtonDidTap: ControlEvent<Void>
         let searchButtonDidTap: ControlEvent<Void>
         let selectedKeywordCollectionViewItemSelected: Observable<IndexPath>
@@ -39,6 +42,7 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
     
     struct Output {
         let dismissModalViewController = PublishRelay<Void>()
+        let enteredText = PublishRelay<String>()
         let selectedKeywordListData = PublishRelay<[String]>()
         let keywordSearchResultListData = BehaviorRelay<[String]>(value: [])
         let searchResultCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
@@ -51,6 +55,20 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
         input.viewDidLoadEvent
             .subscribe(with: self, onNext: { owner, _ in
                 output.selectedKeywordListData.accept(owner.selectedKeywordList)
+            })
+            .disposed(by: disposeBag)
+        
+        input.updatedEnteredText
+            .subscribe(with: self, onNext: { owner, text in
+                owner.enteredText = text
+                output.enteredText.accept(owner.enteredText)
+             })
+            .disposed(by: disposeBag)
+        
+        input.searchCancelButtonDidTap
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.enteredText = ""
+                output.enteredText.accept(owner.enteredText)
             })
             .disposed(by: disposeBag)
         
