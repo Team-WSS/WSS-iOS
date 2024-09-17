@@ -39,9 +39,9 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
     
     struct Output {
         let dismissModalViewController = PublishRelay<Void>()
+        let selectedKeywordListData = PublishRelay<[String]>()
         let keywordSearchResultListData = BehaviorRelay<[String]>(value: [])
         let searchResultCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
-        let selectedKeywordListData = PublishRelay<[String]>()
         let isKeywordCountOverLimit = PublishRelay<IndexPath>()
     }
     
@@ -94,6 +94,14 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
             .subscribe(with: self, onNext: { owner, indexPath in
                 owner.selectedKeywordList.removeAll { $0 == owner.keywordSearchResultList[indexPath.item] }
                 output.selectedKeywordListData.accept(owner.selectedKeywordList)
+            })
+            .disposed(by: disposeBag)
+        
+        input.resetButtonDidTap
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.selectedKeywordList = []
+                output.selectedKeywordListData.accept(owner.selectedKeywordList)
+                output.keywordSearchResultListData.accept(owner.keywordSearchResultList)
             })
             .disposed(by: disposeBag)
         

@@ -302,6 +302,7 @@ enum StringLiterals {
             static let placeholder = "키워드를 검색하세요"
             static let searchResult = "검색결과"
             static let reset = "초기화"
+            static let selectButtonText = "개 선택"
         }
     }
     

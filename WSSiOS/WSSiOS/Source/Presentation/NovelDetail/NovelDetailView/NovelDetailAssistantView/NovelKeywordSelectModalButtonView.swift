@@ -42,13 +42,19 @@ final class NovelKeywordSelectModalButtonView: UIView {
             $0.backgroundColor = .wssGray50
         }
         
+        resetButtonTitleView.do {
+            $0.isUserInteractionEnabled = false
+        }
+        
         resetImageView.do {
             $0.image = .icReset
+            $0.isUserInteractionEnabled = false
         }
         
         resetLabel.do {
             $0.applyWSSFont(.title2, with: StringLiterals.NovelReview.KeywordSearch.reset)
             $0.textColor = .wssGray300
+            $0.isUserInteractionEnabled = false
         }
         
         selectButton.do {
@@ -57,6 +63,7 @@ final class NovelKeywordSelectModalButtonView: UIView {
         
         selectLabel.do {
             $0.textColor = .wssWhite
+            $0.isUserInteractionEnabled = false
         }
     }
     
@@ -105,7 +112,7 @@ final class NovelKeywordSelectModalButtonView: UIView {
     
     func updateSelectLabelText(keywordCount: Int) {
         selectLabel.do {
-            $0.applyWSSFont(.title2, with: "\(keywordCount)개 선택")
+            $0.applyWSSFont(.title2, with: "\(keywordCount)\(StringLiterals.NovelReview.KeywordSearch.selectButtonText)")
         }
     }
 }

@@ -87,6 +87,17 @@ final class NovelKeywordSelectModalViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.selectedKeywordListData
+            .subscribe(with: self, onNext: { owner, selectedKeywordList in
+                owner.rootView.novelKeywordSelectModalButtonView.updateSelectLabelText(keywordCount: selectedKeywordList.count)
+            })
+            .disposed(by: disposeBag)
+        
+        output.selectedKeywordListData.bind(to: rootView.novelSelectedKeywordListView.selectedKeywordCollectionView.rx.items(cellIdentifier: NovelSelectedKeywordCollectionViewCell.cellIdentifier, cellType: NovelSelectedKeywordCollectionViewCell.self)) { item, element, cell in
+            cell.bindData(keyword: element)
+        }
+        .disposed(by: disposeBag)
+        
         output.keywordSearchResultListData
             .subscribe(with: self, onNext: { owner, searchResultList in
                 owner.rootView.showSearchResultView(show: !searchResultList.isEmpty)
@@ -110,18 +121,6 @@ final class NovelKeywordSelectModalViewController: UIViewController {
                 owner.rootView.novelKeywordSelectSearchResultView.updateCollectionViewHeight(height: height)
             })
             .disposed(by: disposeBag)
-        
-        output.selectedKeywordListData
-            .subscribe(with: self, onNext: { owner, selectedKeywordList in
-                owner.rootView.novelKeywordSelectModalButtonView.updateSelectLabelText(keywordCount: selectedKeywordList.count)
-            })
-            .disposed(by: disposeBag)
-        
-        output.selectedKeywordListData.bind(to: rootView.novelSelectedKeywordListView.selectedKeywordCollectionView.rx.items(cellIdentifier: NovelSelectedKeywordCollectionViewCell.cellIdentifier, cellType: NovelSelectedKeywordCollectionViewCell.self)) { item, element, cell in
-            cell.bindData(keyword: element)
-        }
-        .disposed(by: disposeBag)
-        
         
         output.isKeywordCountOverLimit
             .subscribe(with: self, onNext: { owner, indexPath in
