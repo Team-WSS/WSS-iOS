@@ -12,6 +12,10 @@ protocol RegisterModuleFactory {
     func makeRegisterSuccessViewController(userNovelId: Int) -> UIViewController
 }
 
+protocol OnboardingModuleFactory {
+    func makeLoginViewController() -> UIViewController
+}
+
 protocol NovelDetailModuleFactory {
     func makeNovelDetailViewController(novelId: Int) -> UIViewController
 }
@@ -40,5 +44,11 @@ extension ModuleFactory: NovelDetailModuleFactory {
             viewModel: NovelDetailViewModel(
                 detailRepository: DefaultDetailRepository(novelDetailService: DefaultNovelDetailService()),
                 novelId: novelId))
+    }
+}
+
+extension ModuleFactory: OnboardingModuleFactory {
+    func makeLoginViewController() -> UIViewController {
+        return LoginViewController(viewModel: LoginViewModel())
     }
 }
