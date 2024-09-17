@@ -45,13 +45,12 @@ final class FeedReactView: UIView {
             $0.backgroundColor = .wssWhite
         }
         
-        likeIcon .do {
-            $0.image = UIImage(resource: .icThumbUp)
+        likeIcon.do {
+            $0.image = .icThumbUp
             $0.contentMode = .scaleAspectFit
         }
         
         likeRatingLabel.do {
-            $0.font = .Body5
             $0.textColor = .Gray200
         }
         
@@ -60,12 +59,11 @@ final class FeedReactView: UIView {
         }
         
         commentIcon.do {
-            $0.image = UIImage(resource: .icComment)
+            $0.image = .icComment
             $0.contentMode = .scaleAspectFit
         }
         
         commentRatingLabel.do {
-            $0.font = .Body5
             $0.textColor = .Gray200
         }
     }
@@ -100,7 +98,7 @@ final class FeedReactView: UIView {
         
         commentView.snp.makeConstraints {
             $0.top.bottom.equalToSuperview()
-            $0.leading.equalTo(likeView.snp.trailing).offset(6)
+            $0.leading.equalTo(likeView.snp.trailing).offset(18)
         }
         
         commentIcon.snp.makeConstraints {
@@ -119,16 +117,8 @@ final class FeedReactView: UIView {
     //MARK: - Data
     
     func bindData(likeRating: Int, isLiked: Bool, commentRating: Int) {
-        likeRatingLabel.text = String(likeRating)
         likeIcon.image = UIImage(resource: isLiked ? .icThumbUpFill : .icThumbUp)
-        commentRatingLabel.text = String(commentRating)
-        
-        [likeRatingLabel, commentRatingLabel].forEach {
-            $0.do {
-                $0.makeAttribute(with: $0.text)?
-                    .kerning(kerningPixel: -0.6)
-                    .applyAttribute()
-            }
-        }
+        likeRatingLabel.applyWSSFont(.title3, with: String(likeRating))
+        commentRatingLabel.applyWSSFont(.title3, with: String(commentRating))
     }
 }

@@ -181,7 +181,7 @@ extension UIViewController {
     }
     
     func pushToDetailViewController(novelId: Int) {
-        let viewController = ModuleFactory.shared.makeDetailViewController(novelId: novelId)
+        let viewController = ModuleFactory.shared.makeNovelDetailViewController(novelId: novelId)
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
@@ -222,7 +222,7 @@ extension UIViewController {
                     userService: DefaultUserService())))
         self.navigationController?.pushViewController(viewController, animated: true)
     }
-    
+
     func presentModalViewController(_ viewController: UIViewController) {
         let blackOverlayView = UIView(frame: self.view.bounds).then {
             $0.backgroundColor = UIColor.black.withAlphaComponent(0)

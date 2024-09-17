@@ -18,7 +18,7 @@ final class FeedCollectionViewCell: UICollectionViewCell {
     private let userView = FeedUserView()
     private let novelView = FeedNovelView()
     private let reactView = FeedReactView()
-    private let detailContentView = FeedDetailContentView()
+    private let detailContentView = FeedContentView()
     
     private let dotIcon = UIImageView()
     private let restTimeLabel = UILabel()
@@ -69,12 +69,11 @@ final class FeedCollectionViewCell: UICollectionViewCell {
         }
         
         genreLabel.do {
-            $0.font = .Body2
-            $0.textColor = .Gray200
+            $0.textColor = .wssGray50
         }
         
         divideView.do {
-            $0.backgroundColor = .Gray50
+            $0.backgroundColor = .wssGray50
         }
     }
     
@@ -173,15 +172,11 @@ final class FeedCollectionViewCell: UICollectionViewCell {
 
         let categoriesText = data.relevantCategories
             .compactMap{
-                ReplaceGenre(rawValue: $0)?.withKorean
+                FeedGenre(rawValue: $0)?.withKorean
             }.joined(separator: ", ")
         
         genreLabel.do {
-            $0.text = categoriesText
-            $0.makeAttribute(with: $0.text)?
-                .lineSpacing(spacingPercentage: 0)
-                .kerning(kerningPixel: -0.6)
-                .applyAttribute()
+            $0.applyWSSFont(.body2, with: categoriesText)
         }
     }
 }
