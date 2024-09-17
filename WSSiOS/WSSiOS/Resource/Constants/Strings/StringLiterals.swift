@@ -47,8 +47,8 @@ enum StringLiterals {
         }
         
         enum SubTitle {
-            static let interest = "관심 등록한 작품의 최신글이에요"
-            static let recommend = "선호 장르를 기반으로 추천드려요!"
+            static let interest = "관심 등록한 작품의 최근 수다예요"
+            static let recommend = "선호 장르를 기반으로 추천해 드려요"
         }
         
         enum Login {
@@ -59,7 +59,7 @@ enum StringLiterals {
         
         enum Unregister {
             enum Title {
-                static let interest = "아직 관심작품이 없어요\n관심 등록하고 피드 소식을 빠르게 확인하세요!"
+                static let interest = "관심작품의 최신 소식을 모아서 볼 수 있어요.\n좋아하는 웹소설을 관심 등록 해볼까요?"
                 static let recommend = "로맨스, 로판, 판타지, 현판 등\n선호장르를 기반으로 웹소설을 추천해 드려요!"
             }
             
@@ -76,6 +76,7 @@ enum StringLiterals {
         
         enum Interest {
             static let feed = "님의 한마디"
+            static let empty = "아직 관심 등록한 작품과 관련된 글이 없어요"
         }
     }
     
