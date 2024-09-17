@@ -12,8 +12,8 @@ protocol RegisterModuleFactory {
     func makeRegisterSuccessViewController(userNovelId: Int) -> UIViewController
 }
 
-protocol DetailModuleFactory {
-    func makeDetailViewController(novelId: Int) -> UIViewController
+protocol NovelDetailModuleFactory {
+    func makeNovelDetailViewController(novelId: Int) -> UIViewController
 }
 
 final class ModuleFactory {
@@ -34,8 +34,8 @@ extension ModuleFactory: RegisterModuleFactory {
     }
 }
 
-extension ModuleFactory: DetailModuleFactory {
-    func makeDetailViewController(novelId: Int) -> UIViewController {
+extension ModuleFactory: NovelDetailModuleFactory {
+    func makeNovelDetailViewController(novelId: Int) -> UIViewController {
         return NovelDetailViewController(
             viewModel: NovelDetailViewModel(
                 detailRepository: TestDetailRepository(),

@@ -14,6 +14,9 @@ final class HomeNoticeDetailView: UIView {
     
     //MARK: - UI Components
     
+    let backButton = UIButton()
+    let viewTitleLabel = UILabel()
+    
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     let noticeContentView = HomeNoticeDetailContentView()
@@ -34,6 +37,15 @@ final class HomeNoticeDetailView: UIView {
     }
     
     private func setUI() {
+        backButton.do {
+            $0.setImage(.icNavigateLeft.withRenderingMode(.alwaysOriginal).withTintColor(.wssBlack), for: .normal)
+        }
+        
+        viewTitleLabel.do {
+            $0.applyWSSFont(.title2, with: StringLiterals.Navigation.Title.notice)
+            $0.textColor = .wssBlack
+        }
+        
         scrollView.do {
             $0.showsVerticalScrollIndicator = false
         }

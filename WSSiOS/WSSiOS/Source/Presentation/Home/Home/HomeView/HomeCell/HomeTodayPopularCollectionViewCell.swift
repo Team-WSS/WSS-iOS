@@ -20,6 +20,7 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
     /// 유저 피드 글 정보
     private let blurBackgroundView = UIView()
     private let userProfileView = UIImageView()
+    private let introductionImageView = UIImageView()
     private let commentTitleLabel = UILabel()
     private let commaStartedImageView = UIImageView()
     private let commaFinishedImageView = UIImageView()
@@ -85,6 +86,11 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
             $0.clipsToBounds = true
         }
         
+        introductionImageView.do {
+            $0.image = .icIntroduction
+            $0.contentMode = .scaleAspectFit
+        }
+        
         commentTitleLabel.do {
             $0.textColor = .wssGray300
         }
@@ -110,6 +116,7 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
                                         novelImageView,
                                         blurBackgroundView)
         blurBackgroundView.addSubviews(userProfileView,
+                                       introductionImageView,
                                        commentTitleLabel,
                                        commaStartedImageView,
                                        commentContentLabel,
@@ -129,7 +136,7 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
         novelTitleLabel.snp.makeConstraints {
             $0.top.equalTo(bestTagImageView.snp.bottom).offset(7)
             $0.centerX.equalToSuperview()
-            $0.width.equalTo(233)
+            $0.horizontalEdges.equalToSuperview().inset(20)
         }
         
         novelImageView.snp.makeConstraints {
@@ -148,6 +155,11 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
         userProfileView.snp.makeConstraints {
             $0.top.leading.equalToSuperview().offset(18)
             $0.size.equalTo(24)
+        }
+        
+        introductionImageView.snp.makeConstraints {
+            $0.top.leading.equalToSuperview().offset(18)
+            $0.size.equalTo(18)
         }
         
         commentTitleLabel.snp.makeConstraints {
@@ -176,11 +188,41 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
         self.novelTitleLabel.do {
             $0.applyWSSFont(.title2, with: data.title)
             $0.lineBreakMode = .byTruncatingTail
+            $0.textAlignment = .center
         }
         self.novelImageView.kfSetImage(url: data.novelImage)
-        self.userProfileView.kfSetImage(url: data.avatarImage)
+        
+        if let avatarImage = data.avatarImage {
+            self.userProfileView.kfSetImage(url: avatarImage)
+        }
+        
+        if let avatarImage = data.avatarImage {
+            self.userProfileView.kfSetImage(url: avatarImage)
+            self.userProfileView.isHidden = false
+            self.introductionImageView.isHidden = true
+            
+            self.commentTitleLabel.snp.remakeConstraints {
+                $0.top.equalTo(userProfileView.snp.top)
+                $0.leading.equalTo(userProfileView.snp.trailing).offset(10)
+            }
+        }
+        else {
+            self.userProfileView.isHidden = true
+            self.introductionImageView.isHidden = false
+            
+            self.commentTitleLabel.snp.remakeConstraints {
+                $0.top.equalTo(introductionImageView.snp.top).offset(-2)
+                $0.leading.equalTo(introductionImageView.snp.trailing).offset(8)
+            }
+        }
+        
         self.commentTitleLabel.do {
-            $0.applyWSSFont(.title2, with: "\(data.nickname)님의 글")
+            if let nickname = data.nickname {
+                $0.applyWSSFont(.title2, with: "\(nickname)\(StringLiterals.Home.TodayPopular.feed)")
+            }
+            else {
+                $0.applyWSSFont(.title2, with: StringLiterals.Home.TodayPopular.introduction)
+            }
         }
         self.commentContentLabel.do {
             $0.applyWSSFont(.label1, with: data.feedContent)

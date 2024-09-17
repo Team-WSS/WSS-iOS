@@ -112,7 +112,7 @@ final class HomeViewController: UIViewController {
         
         output.navigateToAnnoucementView
             .bind(with: self, onNext: { owner, _ in
-                let viewController = HomeNoticeViewController(viewModel: HomeNoticeViewModel(noticeRepository: TestNoticeRepository()))
+                let viewController = HomeNoticeViewController(viewModel: HomeNoticeViewModel(noticeRepository: DefaultNoticeRepository(noticeService: DefaultNoticeService() )))
                 viewController.navigationController?.isNavigationBarHidden = false
                 viewController.hidesBottomBarWhenPushed = true
                 owner.navigationController?.pushViewController(viewController, animated: true)

@@ -181,7 +181,7 @@ extension UIViewController {
     }
     
     func pushToDetailViewController(novelId: Int) {
-        let viewController = ModuleFactory.shared.makeDetailViewController(novelId: novelId)
+        let viewController = ModuleFactory.shared.makeNovelDetailViewController(novelId: novelId)
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
@@ -205,12 +205,51 @@ extension UIViewController {
         return alertViewController.actionButtonTap
     }
     
+    func pushToMyPageDeleteIDWarningViewController() {
+        let viewController = MyPageDeleteIDWarningViewController()
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func pushToMyPageDeleteIDViewController() {
+        let viewController = MyPageDeleteIDViewController(viewModel: MyPageDeleteIDViewModel())
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
     func pushToMyPageInfoViewController() {
         let viewController = MyPageInfoViewController(
             viewModel: MyPageInfoViewModel(
                 userRepository: DefaultUserRepository(
                     userService: DefaultUserService())))
         self.navigationController?.pushViewController(viewController, animated: true)
+    }
+
+    func presentModalViewController(_ viewController: UIViewController) {
+        let blackOverlayView = UIView(frame: self.view.bounds).then {
+            $0.backgroundColor = UIColor.black.withAlphaComponent(0)
+            $0.tag = 999
+        }
+        
+        self.view.addSubview(blackOverlayView)
+        
+        UIView.animate(withDuration: 0.3) {
+            blackOverlayView.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        }
+        
+        viewController.modalPresentationStyle = .overFullScreen
+        
+        self.present(viewController, animated: true)
+    }
+    
+    func dismissModalViewController() {
+        guard let blackOverlayView = self.presentingViewController?.view.viewWithTag(999) else { return }
+        
+        UIView.animate(withDuration: 0.3, animations: {
+            blackOverlayView.backgroundColor = UIColor.black.withAlphaComponent(0)
+        }, completion: { _ in
+            blackOverlayView.removeFromSuperview()
+        })
+        
+        self.dismiss(animated: true)
     }
 }
 

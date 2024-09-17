@@ -95,7 +95,7 @@ final class NovelDetailView: UIView {
         
         contentView.snp.makeConstraints {
             $0.horizontalEdges.top.equalTo(scrollView.contentLayoutGuide)
-            $0.bottom.equalToSuperview().inset(1000)
+            $0.bottom.equalToSuperview()
             $0.width.equalToSuperview()
         }
         
@@ -106,9 +106,13 @@ final class NovelDetailView: UIView {
     
     //MARK: - Data
     
-    func bindData(_ data: NovelDetailHeaderResult) {
+    func bindHeaderData(_ data: NovelDetailHeaderResult) {
         headerView.bindData(data)
         largeNovelCoverImageButton.bindData(data)
+    }
+    
+    func bindInfoData(_ data: NovelDetailInfoResult) {
+        infoView.bindData(data)
     }
     
     func updateStickyTabBarShow(_ isShow: Bool) {

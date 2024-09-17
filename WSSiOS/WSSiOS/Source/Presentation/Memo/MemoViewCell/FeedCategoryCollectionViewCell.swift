@@ -16,11 +16,7 @@ final class FeedCategoryCollectionViewCell: UICollectionViewCell {
     
     override var isSelected: Bool {
         didSet {
-            if isSelected {
-                self.keywordLink.updateColor(true)
-            } else {
-                self.keywordLink.updateColor(false)
-            }
+            self.keywordLink.updateColor(isSelected)
         }
     }
     

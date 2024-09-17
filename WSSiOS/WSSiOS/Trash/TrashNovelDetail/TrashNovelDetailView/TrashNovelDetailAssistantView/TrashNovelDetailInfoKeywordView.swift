@@ -34,13 +34,13 @@ final class TrashNovelDetailInfoKeywordView: UIView {
     //MARK: - UI
     
     private func setUI() {
-        keywordLabel.do {
-            $0.makeAttribute(with: StringLiterals.NovelDetail.Info.keyword)?
-                .kerning(kerningPixel: -0.6)
-                .applyAttribute()
-            $0.textColor = .wssBlack
-            $0.font = .Title1
-        }
+//        keywordLabel.do {
+//            $0.makeAttribute(with: StringLiterals.NovelDetail.Info.keyword)?
+//                .kerning(kerningPixel: -0.6)
+//                .applyAttribute()
+//            $0.textColor = .wssBlack
+//            $0.font = .Title1
+//        }
         
         keywordCollectionView.do {
             let layout = LeftAlignedCollectionViewFlowLayout()
