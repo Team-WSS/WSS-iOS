@@ -17,7 +17,7 @@ final class NovelReviewViewModel: ViewModelType {
     private var novelReviewStatus: NovelReviewStatus?
     private var starRating: Float = 0.0
     private var attractivePointList: [String] = []
-    var selectedKeywordList: [String] = ["후회", "정치물", "피폐", "빙의", "먼치킨", "기억상실"]
+    var selectedKeywordList: [String] = []
     
     private let minStarRating: Float = 0.0
     private let maxStarRating: Float = 5.0
@@ -36,6 +36,7 @@ final class NovelReviewViewModel: ViewModelType {
         let keywordSearchViewDidTap: Observable<UITapGestureRecognizer>
         let selectedKeywordCollectionViewContentSize: Observable<CGSize?>
         let selectedKeywordCollectionViewItemSelected: Observable<IndexPath>
+        let novelReviewKeywordSelectedNotification: Observable<Notification>
     }
     
     struct Output {
@@ -125,6 +126,14 @@ final class NovelReviewViewModel: ViewModelType {
         input.selectedKeywordCollectionViewItemSelected
             .subscribe(with: self, onNext: { owner, indexPath in
                 owner.selectedKeywordList.remove(at: indexPath.item)
+                output.selectedKeywordListData.accept(owner.selectedKeywordList)
+            })
+            .disposed(by: disposeBag)
+        
+        input.novelReviewKeywordSelectedNotification
+            .subscribe(with: self, onNext: { owner, notification in
+                guard let selectedKeywordList = notification.object as? [String] else { return }
+                owner.selectedKeywordList = selectedKeywordList
                 output.selectedKeywordListData.accept(owner.selectedKeywordList)
             })
             .disposed(by: disposeBag)

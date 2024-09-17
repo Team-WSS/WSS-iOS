@@ -14,7 +14,7 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
     
     //MARK: - Properties
     
-    var keywordSearchResultList: [String] = ["환생생", "환생남주", "환생이", "환생물", "환생", "환환생", "환생여주", "환환환생", "ㅇㄹ", "아아", "가가", "나나", "다다다", "라라랄", "마마마마마", "밥", "사삿", "아아앙", "자자", "차촟", "카카카", "타톹", "파포", "하히히"]
+    var keywordSearchResultList: [String] = ["환생생", "환생남주", "환생이", "환생물", "환생", "환환생", "환생여주", "환환환생", "후회", "정치물", "피폐", "빙의", "먼치킨", "기억상실", "가가", "나나", "다다다", "라라랄", "마마마마마", "밥", "사삿", "아아앙", "자자", "차촟", "카카카", "타톹", "파포", "하히히"]
     var selectedKeywordList: [String] = []
     
     private let keywordLimit: Int = 20
@@ -28,6 +28,8 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
         let searchResultCollectionViewContentSize: Observable<CGSize?>
         let searchResultCollectionViewItemSelected: Observable<IndexPath>
         let searchResultCollectionViewItemDeselected: Observable<IndexPath>
+        let resetButtonDidTap: ControlEvent<Void>
+        let selectButtonDidTap: ControlEvent<Void>
     }
     
     struct Output {
@@ -79,6 +81,13 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
             .subscribe(with: self, onNext: { owner, indexPath in
                 owner.selectedKeywordList.removeAll { $0 == owner.keywordSearchResultList[indexPath.item] }
                 output.selectedKeywordListData.accept(owner.selectedKeywordList)
+            })
+            .disposed(by: disposeBag)
+        
+        input.selectButtonDidTap
+            .subscribe(with: self, onNext: { owner, _ in
+                NotificationCenter.default.post(name: NSNotification.Name("NovelReviewKeywordSelected"), object: owner.selectedKeywordList)
+                output.dismissModalViewController.accept(())
             })
             .disposed(by: disposeBag)
         

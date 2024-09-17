@@ -59,6 +59,7 @@ final class NovelReviewKeywordView: UIView {
         searchButton.do {
             $0.setImage(.icSearch.withRenderingMode(.alwaysTemplate), for: .normal)
             $0.tintColor = .wssGray300
+            $0.isEnabled = false
         }
         
         selectedKeywordCollectionView.do {
