@@ -169,6 +169,12 @@ final class FeedEditViewController: UIViewController {
                 owner.rootView.feedEditConnectedNovelView.bindData(novelTitle: novelTitle)
             })
             .disposed(by: disposeBag)
+        
+        output.showAlreadyConnectedToast
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.showToast(.novelAlreadyConnected)
+            })
+            .disposed(by: disposeBag)
     }
 }
 

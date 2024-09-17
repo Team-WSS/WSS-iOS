@@ -104,6 +104,7 @@ final class FeedEditViewModel: ViewModelType {
         let showPlaceholder = PublishRelay<Bool>()
         let presentFeedEditNovelConnectModalViewController = PublishRelay<Void>()
         let connectedNovelTitle = PublishRelay<String?>()
+        let showAlreadyConnectedToast = PublishRelay<Void>()
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -212,7 +213,11 @@ final class FeedEditViewModel: ViewModelType {
         
         input.novelConnectViewDidTap
             .subscribe(with: self, onNext: { owner, _ in
-                output.presentFeedEditNovelConnectModalViewController.accept(())
+                if owner.novelId != nil {
+                    output.showAlreadyConnectedToast.accept(())
+                } else {
+                    output.presentFeedEditNovelConnectModalViewController.accept(())
+                }
             })
             .disposed(by: disposeBag)
         

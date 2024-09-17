@@ -17,10 +17,11 @@ enum ToastStatus {
     case memoDelete
     case avatarUnlock
     case nicknameSave
+    case novelAlreadyConnected
     
     var toastImage: UIImage {
         switch self {
-        case .memoSaveSuccess, .nicknameSave, .memoEditSuccess:
+        case .memoSaveSuccess, .nicknameSave, .memoEditSuccess, .novelAlreadyConnected:
             return .icAlertSuccess
         case .memoSaveFail, .memoDelete:
             return .icAlertWarning
@@ -43,6 +44,8 @@ enum ToastStatus {
             "새 캐릭터가 열렸어요!\n마이페이지에서 확인하세요"
         case .nicknameSave:
             "닉네임을 저장했어요"
+        case .novelAlreadyConnected:
+            "하나의 작품만 연결할 수 있어요"
         }
     }
 }
@@ -107,7 +110,7 @@ final class WSSToastView: UIView {
     
     func setLayout(_ status: ToastStatus) {
         switch status {
-        case .memoSaveSuccess, .memoSaveFail, .memoEditSuccess, .memoDelete, .nicknameSave:
+        case .memoSaveSuccess, .memoSaveFail, .memoEditSuccess, .memoDelete, .nicknameSave, .novelAlreadyConnected:
             toastImageView.snp.makeConstraints {
                 $0.top.bottom.equalToSuperview().inset(14)
                 $0.leading.equalToSuperview().inset(20)
