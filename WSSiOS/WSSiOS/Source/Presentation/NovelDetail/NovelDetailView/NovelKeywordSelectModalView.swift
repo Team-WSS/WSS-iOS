@@ -87,7 +87,7 @@ final class NovelKeywordSelectModalView: UIView {
         }
         
         novelKeywordSelectSearchResultView.snp.makeConstraints {
-            $0.top.equalTo(novelKeywordSelectSearchBarView.snp.bottom).offset(24)
+            $0.top.equalTo(novelKeywordSelectSearchBarView.snp.bottom)
             $0.leading.trailing.equalToSuperview()
         }
         
@@ -107,6 +107,16 @@ final class NovelKeywordSelectModalView: UIView {
     func showSearchResultView(show: Bool) {
         novelKeywordSelectSearchResultView.do {
             $0.isHidden = !show
+        }
+    }
+    
+    func updateNovelKeywordSelectModalViewLayout(isSelectedKeyword: Bool) {
+        novelSelectedKeywordListView.do {
+            $0.isHidden = !isSelectedKeyword
+        }
+        
+        novelKeywordSelectSearchResultView.snp.updateConstraints {
+            $0.top.equalTo(novelKeywordSelectSearchBarView.snp.bottom).offset(isSelectedKeyword ? 53 : 0)
         }
     }
 }

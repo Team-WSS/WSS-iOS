@@ -90,6 +90,7 @@ final class NovelKeywordSelectModalViewController: UIViewController {
         output.selectedKeywordListData
             .subscribe(with: self, onNext: { owner, selectedKeywordList in
                 owner.rootView.novelKeywordSelectModalButtonView.updateSelectLabelText(keywordCount: selectedKeywordList.count)
+                owner.rootView.updateNovelKeywordSelectModalViewLayout(isSelectedKeyword: !selectedKeywordList.isEmpty)
             })
             .disposed(by: disposeBag)
         
