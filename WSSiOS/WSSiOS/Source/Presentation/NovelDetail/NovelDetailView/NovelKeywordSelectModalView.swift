@@ -18,6 +18,7 @@ final class NovelKeywordSelectModalView: UIView {
     let closeButton = UIButton()
     private let titleLabel = UILabel()
     let novelKeywordSelectSearchBarView = NovelKeywordSelectSearchBarView()
+    let novelKeywordSelectSearchResultView = NovelKeywordSelectSearchResultView()
     
     //MARK: - Life Cycle
     
@@ -48,7 +49,7 @@ final class NovelKeywordSelectModalView: UIView {
         }
         
         titleLabel.do {
-            $0.applyWSSFont(.title1, with: StringLiterals.NovelReview.Keyword.keywordSelect)
+            $0.applyWSSFont(.title1, with: StringLiterals.NovelReview.KeywordSearch.keywordSelect)
             $0.textColor = .wssBlack
         }
     }
@@ -57,7 +58,8 @@ final class NovelKeywordSelectModalView: UIView {
         self.addSubview(contentView)
         contentView.addSubviews(closeButton,
                                 titleLabel,
-                                novelKeywordSelectSearchBarView)
+                                novelKeywordSelectSearchBarView,
+                                novelKeywordSelectSearchResultView)
     }
     
     private func setLayout() {
@@ -78,6 +80,19 @@ final class NovelKeywordSelectModalView: UIView {
         novelKeywordSelectSearchBarView.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(24)
             $0.leading.trailing.equalToSuperview()
+        }
+        
+        novelKeywordSelectSearchResultView.snp.makeConstraints {
+            $0.top.equalTo(novelKeywordSelectSearchBarView.snp.bottom).offset(24)
+            $0.leading.trailing.equalToSuperview()
+        }
+    }
+    
+    //MARK: - Custom Method
+    
+    func showSearchResultView(show: Bool) {
+        novelKeywordSelectSearchResultView.do {
+            $0.isHidden = !show
         }
     }
 }

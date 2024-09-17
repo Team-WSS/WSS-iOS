@@ -260,6 +260,8 @@
 		CD1F7E002C994A180039972C /* NovelKeywordSelectModalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1F7DFF2C994A180039972C /* NovelKeywordSelectModalViewModel.swift */; };
 		CD1F7E022C994AA00039972C /* NovelKeywordSelectModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1F7E012C994AA00039972C /* NovelKeywordSelectModalView.swift */; };
 		CD1F7E042C9955390039972C /* NovelKeywordSelectSearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1F7E032C9955390039972C /* NovelKeywordSelectSearchBarView.swift */; };
+		CD1F7E062C9967780039972C /* NovelKeywordSelectSearchResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1F7E052C9967780039972C /* NovelKeywordSelectSearchResultView.swift */; };
+		CD1F7E082C9968950039972C /* NovelKeywordSelectSearchResultCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1F7E072C9968950039972C /* NovelKeywordSelectSearchResultCollectionViewCell.swift */; };
 		CD280A932B88A6CC00AFDD90 /* TrashNovelDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD280A922B88A6CC00AFDD90 /* TrashNovelDetailViewModel.swift */; };
 		CD2D0AAD2C7EF1A2007CF1F1 /* NovelReviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2D0AAC2C7EF1A2007CF1F1 /* NovelReviewViewController.swift */; };
 		CD2D0AAF2C7EF1BF007CF1F1 /* NovelReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2D0AAE2C7EF1BF007CF1F1 /* NovelReviewView.swift */; };
@@ -575,6 +577,8 @@
 		CD1F7DFF2C994A180039972C /* NovelKeywordSelectModalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelKeywordSelectModalViewModel.swift; sourceTree = "<group>"; };
 		CD1F7E012C994AA00039972C /* NovelKeywordSelectModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelKeywordSelectModalView.swift; sourceTree = "<group>"; };
 		CD1F7E032C9955390039972C /* NovelKeywordSelectSearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelKeywordSelectSearchBarView.swift; sourceTree = "<group>"; };
+		CD1F7E052C9967780039972C /* NovelKeywordSelectSearchResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelKeywordSelectSearchResultView.swift; sourceTree = "<group>"; };
+		CD1F7E072C9968950039972C /* NovelKeywordSelectSearchResultCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelKeywordSelectSearchResultCollectionViewCell.swift; sourceTree = "<group>"; };
 		CD280A922B88A6CC00AFDD90 /* TrashNovelDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashNovelDetailViewModel.swift; sourceTree = "<group>"; };
 		CD2D0AAC2C7EF1A2007CF1F1 /* NovelReviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelReviewViewController.swift; sourceTree = "<group>"; };
 		CD2D0AAE2C7EF1BF007CF1F1 /* NovelReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelReviewView.swift; sourceTree = "<group>"; };
@@ -1916,6 +1920,7 @@
 				CD803B342C93F711006EBAF8 /* NovelReviewAttractivePointView.swift */,
 				CD803B3A2C940B88006EBAF8 /* NovelReviewKeywordView.swift */,
 				CD1F7E032C9955390039972C /* NovelKeywordSelectSearchBarView.swift */,
+				CD1F7E052C9967780039972C /* NovelKeywordSelectSearchResultView.swift */,
 			);
 			path = NovelDetailAssistantView;
 			sourceTree = "<group>";
@@ -1926,6 +1931,7 @@
 				CD2D0AB82C7F0279007CF1F1 /* NovelReviewStatusCollectionViewCell.swift */,
 				CD803B362C93FCF3006EBAF8 /* NovelReviewAttractivePointCollectionViewCell.swift */,
 				CD803B3C2C941123006EBAF8 /* NovelReviewSelectedKeywordCollectionViewCell.swift */,
+				CD1F7E072C9968950039972C /* NovelKeywordSelectSearchResultCollectionViewCell.swift */,
 			);
 			path = NovelDetailViewCell;
 			sourceTree = "<group>";
@@ -2335,6 +2341,7 @@
 				39BA7F752BCABF1D0045B2B7 /* KeywordLink.swift in Sources */,
 				A1EF35432B52F75800A94C53 /* NovelRepository.swift in Sources */,
 				2C5D0F5D2B50100000C76D3C /* MyPageSettingCollectionViewCell.swift in Sources */,
+				CD1F7E082C9968950039972C /* NovelKeywordSelectSearchResultCollectionViewCell.swift in Sources */,
 				CD1F7DFE2C994A0E0039972C /* NovelKeywordSelectModalViewController.swift in Sources */,
 				C9AF1AE42BCC28EE00208BC9 /* HomeTodayPopularCollectionViewCell.swift in Sources */,
 				39CC168A2B51D965003F56AE /* RegisterSuccessView.swift in Sources */,
@@ -2404,6 +2411,7 @@
 				2CFE04332B66A45A0048F77A /* UICollectionViewCell+.swift in Sources */,
 				B9FE59642BF11955005815AF /* HomeInduceLoginModalView.swift in Sources */,
 				2CB613F32B575E4500FC3F89 /* MyPageInfoViewController.swift in Sources */,
+				CD1F7E062C9967780039972C /* NovelKeywordSelectSearchResultView.swift in Sources */,
 				2CCBF9F22B4D347B00D787C2 /* WSSMainButton.swift in Sources */,
 				A1CB373A2B72935900CB290F /* UITableViewCell+.swift in Sources */,
 				A1147A802B50638200141692 /* RecordViewController.swift in Sources */,

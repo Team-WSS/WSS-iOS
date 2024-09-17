@@ -295,7 +295,12 @@ enum StringLiterals {
         enum Keyword {
             static let keyword = "키워드"
             static let placeholder = "키워드로 작품을 소개해 봐요"
+        }
+        
+        enum KeywordSearch {
             static let keywordSelect = "키워드 선택"
+            static let placeholder = "키워드를 검색하세요"
+            static let searchResult = "검색결과"
         }
     }
     

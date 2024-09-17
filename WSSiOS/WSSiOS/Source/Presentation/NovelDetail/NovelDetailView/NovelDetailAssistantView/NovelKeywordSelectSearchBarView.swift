@@ -36,13 +36,13 @@ final class NovelKeywordSelectSearchBarView: UIView {
     
     private func setUI() {
         keywordTextField.do {
-            $0.becomeFirstResponder()
             $0.returnKeyType = .done
             $0.autocorrectionType = .no
             $0.spellCheckingType = .no
             $0.tintColor = .black
             $0.backgroundColor = .wssGray50
             $0.textColor = .wssBlack
+            $0.placeholder = StringLiterals.NovelReview.KeywordSearch.placeholder
             $0.font = .Body4
             $0.layer.cornerRadius = 14
             $0.leftView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 16.0, height: 0.0))
