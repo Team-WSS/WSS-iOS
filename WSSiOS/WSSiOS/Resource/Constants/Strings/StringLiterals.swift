@@ -35,6 +35,8 @@ enum StringLiterals {
             static let feed = "소소피드"
             static let notice = "알림"
             static let deleteID = "회원탈퇴"
+            static let myPageSetting = "설정"
+            static let myPageInfo = "계정설정"
         }
     }
     
