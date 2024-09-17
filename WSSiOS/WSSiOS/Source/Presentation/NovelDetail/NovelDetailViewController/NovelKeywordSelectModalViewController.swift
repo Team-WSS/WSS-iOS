@@ -102,6 +102,13 @@ final class NovelKeywordSelectModalViewController: UIViewController {
                 owner.rootView.updateSelectLabelText(keywordCount: selectedKeywordList.count)
             })
             .disposed(by: disposeBag)
+        
+        output.isKeywordCountOverLimit
+            .subscribe(with: self, onNext: { owner, indexPath in
+                owner.rootView.novelKeywordSelectSearchResultView.searchResultCollectionView.deselectItem(at: indexPath, animated: false)
+                owner.showToast(.selectionOverLimit(count: 20))
+            })
+            .disposed(by: disposeBag)
     }
 }
 

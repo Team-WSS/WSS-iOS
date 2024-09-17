@@ -14,8 +14,10 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
     
     //MARK: - Properties
     
-    var keywordSearchResultList: [String] = ["환생생", "환생남주", "환생이", "환생물", "환생", "환환생", "환생여주", "환환환생"]
+    var keywordSearchResultList: [String] = ["환생생", "환생남주", "환생이", "환생물", "환생", "환환생", "환생여주", "환환환생", "ㅇㄹ", "아아", "가가", "나나", "다다다", "라라랄", "마마마마마", "밥", "사삿", "아아앙", "자자", "차촟", "카카카", "타톹", "파포", "하히히"]
     var selectedKeywordList: [String] = []
+    
+    private let keywordLimit: Int = 20
     
     //MARK: - Life Cycle
     
@@ -33,6 +35,7 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
         let keywordSearchResultListData = BehaviorRelay<[String]>(value: [])
         let searchResultCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
         let selectedKeywordListData = PublishRelay<[String]>()
+        let isKeywordCountOverLimit = PublishRelay<IndexPath>()
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -63,7 +66,11 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
         
         input.searchResultCollectionViewItemSelected
             .subscribe(with: self, onNext: { owner, indexPath in
-                owner.selectedKeywordList.append(owner.keywordSearchResultList[indexPath.item])
+                if owner.selectedKeywordList.count >= owner.keywordLimit {
+                    output.isKeywordCountOverLimit.accept(indexPath)
+                } else {
+                    owner.selectedKeywordList.append(owner.keywordSearchResultList[indexPath.item])
+                }
                 output.selectedKeywordListData.accept(owner.selectedKeywordList)
             })
             .disposed(by: disposeBag)
