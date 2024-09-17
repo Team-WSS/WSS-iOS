@@ -73,6 +73,10 @@ enum StringLiterals {
             static let feed = "님의 한마디"
             static let introduction = "작품 소개"
         }
+        
+        enum Interest {
+            static let feed = "님의 한마디"
+        }
     }
     
     enum Register {

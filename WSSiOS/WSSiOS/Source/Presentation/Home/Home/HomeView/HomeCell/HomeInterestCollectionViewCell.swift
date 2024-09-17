@@ -200,7 +200,7 @@ final class HomeInterestCollectionViewCell: UICollectionViewCell {
         
         self.userProfileImageView.kfSetImage(url: data.userAvatarImage)
         self.userNicknameLabel.do {
-            $0.applyWSSFont(.title3, with: "\(data.userNickname) 님의 글")
+            $0.applyWSSFont(.title3, with: "\(data.userNickname) \(StringLiterals.Home.Interest.feed)")
             $0.lineBreakMode = .byTruncatingTail
         }
         self.userFeedContentLabel.do {
