@@ -10,16 +10,21 @@ import UIKit
 import SnapKit
 import Then
 
-final class LoginPlatformButton: UIView {
+final class LoginPlatformButton: UIButton {
+    
+    //MARK: - Properties
+    
+    let platformImage: UIImage
     
     //MARK: - Components
-   
     
+    let platformImageView = UIImageView()
     
     //MARK: - Life Cycle
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(_ platformImage: UIImage) {
+        self.platformImage = platformImage
+        super.init(frame: .zero)
         
         setUI()
         setHierarchy()
@@ -33,14 +38,20 @@ final class LoginPlatformButton: UIView {
     //MARK: - UI
     
     private func setUI() {
-        
+        platformImageView.do {
+            $0.contentMode = .scaleAspectFit
+            $0.image = platformImage
+        }
     }
     
     private func setHierarchy() {
-       
+        self.addSubview(platformImageView)
     }
     
     private func setLayout() {
-       
+        platformImageView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+            $0.size.equalTo(52)
+        }
     }
 }
