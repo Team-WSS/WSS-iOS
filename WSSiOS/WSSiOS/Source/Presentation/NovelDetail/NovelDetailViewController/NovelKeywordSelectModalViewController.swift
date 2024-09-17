@@ -40,5 +40,23 @@ final class NovelKeywordSelectModalViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        bindViewModel()
+    }
+    
+    //MARK: - Bind
+    
+    private func bindViewModel() {
+        let input = NovelKeywordSelectModalViewModel.Input(
+                closeButtonDidTap: rootView.closeButton.rx.tap
+            )
+        
+        let output = self.novelKeywordSelectModalViewModel.transform(from: input, disposeBag: self.disposeBag)
+        
+        output.dismissModalViewController
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.dismissModalViewController()
+            })
+            .disposed(by: disposeBag)
     }
 }

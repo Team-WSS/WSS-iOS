@@ -56,7 +56,7 @@ final class NovelReviewViewController: UIViewController {
         self.preparationSetNavigationBar(title: "당신의 이해를 돕기 위하여", left: rootView.backButton, right: rootView.completeButton)
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.backgroundColor = .wssWhite
+        self.navigationController?.navigationBar.backgroundColor = .clear
     }
     
     private func register() {
