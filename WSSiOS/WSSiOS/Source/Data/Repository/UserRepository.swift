@@ -13,6 +13,8 @@ protocol UserRepository {
     func getUserData() -> Observable<UserResult>
     func patchUserName(userNickName: String) -> Observable<Void>
     func getUserCharacter() -> Observable<UserCharacter>
+    func getUserProfileVisibility() -> Observable<UserProfileVisibility>
+    func patchUserProfileVisibility(isProfilePublic: Bool) -> Observable<Void>
 }
 
 struct DefaultUserRepository: UserRepository {
@@ -39,10 +41,12 @@ struct DefaultUserRepository: UserRepository {
     }
     
     func getUserProfileVisibility() -> Observable<UserProfileVisibility> {
-        
+        return userService.getUserProfileVisibility()
+            .asObservable()
     }
     
-    func patchUserProfileVisibility() -> Observable<Void> {
-        
+    func patchUserProfileVisibility(isProfilePublic: Bool) -> Observable<Void> {
+        return userService.patchUserProfileVisibility(isProfilePublic: isProfilePublic)
+            .asObservable()
     }
 }
