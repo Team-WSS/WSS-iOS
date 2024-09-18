@@ -185,14 +185,7 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
             })
             .disposed(by: disposeBag)
         
-        rootView.resultView.normalSearchCollectionView.rx.swipeGesture(.up)
-            .when(.recognized)
-            .subscribe(with: self, onNext: { owner, _ in
-                self.view.endEditing(true)
-            })
-            .disposed(by: disposeBag)
-        
-        rootView.resultView.normalSearchCollectionView.rx.swipeGesture(.down)
+        rootView.resultView.normalSearchCollectionView.rx.swipeGesture([.up, .down])
             .when(.recognized)
             .subscribe(with: self, onNext: { owner, _ in
                 self.view.endEditing(true)
