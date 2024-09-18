@@ -101,7 +101,7 @@ final class HomeRealtimePopularView: UIView {
                                          thirdDotImageView)
         
         self.addSubviews(titleStackView,
-                         testView,
+                         realtimePopularCollectionView,
                          dotStackView)
         
     }
@@ -112,14 +112,14 @@ final class HomeRealtimePopularView: UIView {
             $0.leading.equalToSuperview().inset(20)
         }
         
-        testView.snp.makeConstraints {
+        realtimePopularCollectionView.snp.makeConstraints {
             $0.top.equalTo(titleStackView.snp.bottom).offset(14)
-            $0.leading.equalToSuperview().inset(30)
-            $0.centerX.equalToSuperview()
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(414)
         }
         
         dotStackView.snp.makeConstraints {
-            $0.top.equalTo(testView.snp.bottom).offset(14)
+            $0.top.equalTo(realtimePopularCollectionView.snp.bottom).offset(14)
             $0.centerX.equalToSuperview()
         }
     }

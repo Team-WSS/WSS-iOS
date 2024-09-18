@@ -63,18 +63,13 @@ final class HomeRealtimePopularCollectionViewCell: UICollectionViewCell {
     }
     
     private func setLayout() {
-        self.snp.makeConstraints {
-            $0.width.equalTo(335)
-            $0.height.equalTo(414)
-        }
-        
         firstFeedView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(20)
             $0.horizontalEdges.equalToSuperview().inset(20)
         }
         
         topDividerLine.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(138)
+            $0.top.equalTo(firstFeedView.snp.bottom).offset(20)
             $0.horizontalEdges.equalToSuperview()
             $0.height.equalTo(1)
         }
@@ -85,7 +80,7 @@ final class HomeRealtimePopularCollectionViewCell: UICollectionViewCell {
         }
         
         bottomDividerLine.snp.makeConstraints {
-            $0.bottom.equalToSuperview().inset(138)
+            $0.top.equalTo(secondFeedView.snp.bottom).offset(20)
             $0.horizontalEdges.equalToSuperview()
             $0.height.equalTo(1)
         }
@@ -93,6 +88,13 @@ final class HomeRealtimePopularCollectionViewCell: UICollectionViewCell {
         thirdFeedView.snp.makeConstraints {
             $0.top.equalTo(bottomDividerLine.snp.bottom).offset(20)
             $0.horizontalEdges.equalToSuperview().inset(20)
+            $0.bottom.equalToSuperview().inset(20)
         }
+    }
+    
+    func bindData(data: [RealtimePopularFeed]) {
+        firstFeedView.bindData(data: data[0])
+        secondFeedView.bindData(data: data[1])
+        thirdFeedView.bindData(data: data[2])
     }
 }
