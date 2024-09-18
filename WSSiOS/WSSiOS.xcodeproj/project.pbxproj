@@ -63,6 +63,9 @@
 		2CB613F32B575E4500FC3F89 /* MyPageInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB613F22B575E4500FC3F89 /* MyPageInfoViewController.swift */; };
 		2CB613F52B575E6A00FC3F89 /* MyPageInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB613F42B575E6A00FC3F89 /* MyPageInfoView.swift */; };
 		2CC4CCCB2C9AF8B000FB863B /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 2CC4CCCA2C9AF8B000FB863B /* Then */; };
+		2CC4CCD82C9B340900FB863B /* MyPageProfileVisibilityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC4CCD72C9B340800FB863B /* MyPageProfileVisibilityView.swift */; };
+		2CC4CCDA2C9B341300FB863B /* MyPageProfileVisibilityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC4CCD92C9B341200FB863B /* MyPageProfileVisibilityViewModel.swift */; };
+		2CC4CCDC2C9B341900FB863B /* MyPageProfileVisibilityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC4CCDB2C9B341900FB863B /* MyPageProfileVisibilityViewController.swift */; };
 		2CCBF9EE2B4C1FC500D787C2 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBF9ED2B4C1FC500D787C2 /* MyPageViewController.swift */; };
 		2CCBF9F02B4C1FD800D787C2 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBF9EF2B4C1FD800D787C2 /* MyPageView.swift */; };
 		2CCBF9F22B4D347B00D787C2 /* WSSMainButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBF9F12B4D347B00D787C2 /* WSSMainButton.swift */; };
@@ -384,6 +387,9 @@
 		2CA2F6612B530BBF0045B4C2 /* LibraryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryCollectionViewCell.swift; sourceTree = "<group>"; };
 		2CB613F22B575E4500FC3F89 /* MyPageInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageInfoViewController.swift; sourceTree = "<group>"; };
 		2CB613F42B575E6A00FC3F89 /* MyPageInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageInfoView.swift; sourceTree = "<group>"; };
+		2CC4CCD72C9B340800FB863B /* MyPageProfileVisibilityView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageProfileVisibilityView.swift; sourceTree = "<group>"; };
+		2CC4CCD92C9B341200FB863B /* MyPageProfileVisibilityViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageProfileVisibilityViewModel.swift; sourceTree = "<group>"; };
+		2CC4CCDB2C9B341900FB863B /* MyPageProfileVisibilityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageProfileVisibilityViewController.swift; sourceTree = "<group>"; };
 		2CCBF9ED2B4C1FC500D787C2 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		2CCBF9EF2B4C1FD800D787C2 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
 		2CCBF9F12B4D347B00D787C2 /* WSSMainButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSMainButton.swift; sourceTree = "<group>"; };
@@ -813,6 +819,7 @@
 		2CCBF9EA2B4C1E3700D787C2 /* MyPageViewController */ = {
 			isa = PBXGroup;
 			children = (
+				2CC4CCDB2C9B341900FB863B /* MyPageProfileVisibilityViewController.swift */,
 				2CCBF9ED2B4C1FC500D787C2 /* MyPageViewController.swift */,
 				2C5D0F5E2B50523B00C76D3C /* MyPageChangeNicknameViewController.swift */,
 				2C9A196E2C56923B0043044A /* MyPageSettingViewController.swift */,
@@ -827,6 +834,7 @@
 		2CCBF9EB2B4C1E4600D787C2 /* MyPageView */ = {
 			isa = PBXGroup;
 			children = (
+				2CC4CCD72C9B340800FB863B /* MyPageProfileVisibilityView.swift */,
 				2CCBF9EF2B4C1FD800D787C2 /* MyPageView.swift */,
 				2C5D0F602B50525700C76D3C /* MyPageChangeNicknameView.swift */,
 				2CB613F42B575E6A00FC3F89 /* MyPageInfoView.swift */,
@@ -843,6 +851,7 @@
 		2CCBF9FD2B4DBF4200D787C2 /* MyPageViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				2CC4CCD92C9B341200FB863B /* MyPageProfileVisibilityViewModel.swift */,
 				2C9A19702C56925F0043044A /* MyPageInfoViewModel.swift */,
 				2CCBF9FF2B4DBFD200D787C2 /* MyPageChangeNickNameViewModel.swift */,
 				2C9A19682C567D6B0043044A /* MyPageViewModel.swift */,
@@ -2228,6 +2237,7 @@
 				CD3E5A822B54253E00C0A659 /* MemoEditViewController.swift in Sources */,
 				B9AC1BD22BF0B485006EDE92 /* HomeNoticeView.swift in Sources */,
 				C9063A972BD3F868006AD8F9 /* HomeRealtimePopularView.swift in Sources */,
+				2CC4CCDC2C9B341900FB863B /* MyPageProfileVisibilityViewController.swift in Sources */,
 				A1708F182B4D8E2F00E35E50 /* HomeView.swift in Sources */,
 				2C19A4FD2BBA90E700D4D151 /* WSSDropDownTableView.swift in Sources */,
 				2C9A19672C567CC20043044A /* MyPageProfileHeaderView.swift in Sources */,
@@ -2276,6 +2286,7 @@
 				CD6F49552C705B22005AD392 /* FeedNovelConnectCollectionViewCell.swift in Sources */,
 				2C9A19692C567D6B0043044A /* MyPageViewModel.swift in Sources */,
 				C9AF1AE22BCC234300208BC9 /* HomeTodayPopularView.swift in Sources */,
+				2CC4CCD82C9B340900FB863B /* MyPageProfileVisibilityView.swift in Sources */,
 				2CD9115E2C0D8A28006B8D72 /* FeedGenreViewController.swift in Sources */,
 				39F687002C6F60400065999F /* ReadStatus.swift in Sources */,
 				39CC16902B529AB6003F56AE /* RegisterNormalReadStatusView.swift in Sources */,
@@ -2375,6 +2386,7 @@
 				CD39F2DA2B50DDBF00B73A5C /* TrashNovelDetailInfoGenreView.swift in Sources */,
 				39F686FE2C6F5D5C0065999F /* NovelDetailInfoReviewGraphStackView.swift in Sources */,
 				2CD9114A2C0D8948006B8D72 /* FeedContentView.swift in Sources */,
+				2CC4CCDA2C9B341300FB863B /* MyPageProfileVisibilityViewModel.swift in Sources */,
 				B9A0FD6E2BFCF16F0004252E /* HomeRealtimePopularContentTableViewCell.swift in Sources */,
 				C99DDFDF2C8613C900EDC0C4 /* SearchViewController.swift in Sources */,
 				2CD9114A2C0D8948006B8D72 /* FeedContentView.swift in Sources */,
