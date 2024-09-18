@@ -37,4 +37,12 @@ struct DefaultUserRepository: UserRepository {
         return userService.getUserCharacterData()
             .asObservable()
     }
+    
+    func getUserProfileVisibility() -> Observable<UserProfileVisibility> {
+        
+    }
+    
+    func patchUserProfileVisibility() -> Observable<Void> {
+        
+    }
 }

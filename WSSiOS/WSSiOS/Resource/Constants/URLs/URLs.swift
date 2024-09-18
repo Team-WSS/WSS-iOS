@@ -11,6 +11,7 @@ enum URLs {
     enum User {
         static let getUserInfo = "/users/info"
         static let patchUserNickname = "/users/nickname"
+        static let isProfileVisibility = "/users/profile-status"
     }
     
     enum Recommend {
