@@ -36,6 +36,7 @@ final class NormalSearchViewModel: ViewModelType {
         let normalSearchCollectionViewContentSize: Observable<CGSize?>
         let normalSearchCellSelected: ControlEvent<IndexPath>
         let reachedBottom: Observable<Void>
+        let normalSearchCollectionViewSwipeGesture: Observable<UISwipeGestureRecognizer>
     }
     
     //MARK: - Outputs
@@ -50,6 +51,7 @@ final class NormalSearchViewModel: ViewModelType {
         let inquiryButtonEnabled: Observable<Void>
         let normalSearchCollectionViewHeight: Driver<CGFloat>
         let normalSearchCellEnabled: Observable<IndexPath>
+        let endEditing: Observable<Void>
     }
     
     //MARK: - init
@@ -62,7 +64,7 @@ final class NormalSearchViewModel: ViewModelType {
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         
-        let searchRequest = Observable.merge(input.returnKeyDidTap.asObservable(), 
+        let searchRequest = Observable.merge(input.returnKeyDidTap.asObservable(),
                                              input.searchButtonDidTap.asObservable())
             .withLatestFrom(input.searchTextUpdated)
             .distinctUntilChanged()
@@ -117,6 +119,9 @@ final class NormalSearchViewModel: ViewModelType {
         let normalSearchCollectionViewHeight = input.normalSearchCollectionViewContentSize
             .map { $0?.height ?? 0 }.asDriver(onErrorJustReturn: 0)
         
+        let endEditing = input.normalSearchCollectionViewSwipeGesture
+            .map { _ in () }
+        
         return Output(resultCount: resultCount.asObservable(),
                       normalSearchList: normalSearchList.asObservable(),
                       returnKeyEnabled: returnKeyEnabled.asObservable(),
@@ -125,6 +130,7 @@ final class NormalSearchViewModel: ViewModelType {
                       backButtonEnabled: backButtonEnabled.asObservable(),
                       inquiryButtonEnabled: inquiryButtonEnabled.asObservable(),
                       normalSearchCollectionViewHeight: normalSearchCollectionViewHeight,
-                      normalSearchCellEnabled: normalSearchCellIndexPath.asObservable())
+                      normalSearchCellEnabled: normalSearchCellIndexPath.asObservable(),
+                      endEditing: endEditing)
     }
 }

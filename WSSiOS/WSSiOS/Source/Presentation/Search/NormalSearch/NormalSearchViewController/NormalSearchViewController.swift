@@ -81,6 +81,11 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
             .map { self.isNearBottomEdge() }
             .filter { $0 }
             .map { _ in () }
+            .asObservable()
+        
+        let collectionViewSwipeGesture = rootView.resultView.normalSearchCollectionView.rx.swipeGesture([.up, .down])
+            .when(.recognized)
+            .asObservable()
         
         let input = NormalSearchViewModel.Input(
             searchTextUpdated: rootView.headerView.searchTextField.rx.text.orEmpty,
@@ -91,7 +96,8 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
             inquiryButtonDidTap: rootView.emptyView.inquiryButton.rx.tap,
             normalSearchCollectionViewContentSize: rootView.resultView.normalSearchCollectionView.rx.observe(CGSize.self, "contentSize"),
             normalSearchCellSelected: rootView.resultView.normalSearchCollectionView.rx.itemSelected,
-            reachedBottom: reachedBottom.asObservable())
+            reachedBottom: reachedBottom,
+            normalSearchCollectionViewSwipeGesture: collectionViewSwipeGesture)
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.resultCount
@@ -177,17 +183,16 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
             })
             .disposed(by: disposeBag)
         
+        output.endEditing
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.view.endEditing(true)
+            })
+            .disposed(by: disposeBag)
+        
         rootView.headerView.backButton.rx.tap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
                 owner.popToLastViewController()
-            })
-            .disposed(by: disposeBag)
-        
-        rootView.resultView.normalSearchCollectionView.rx.swipeGesture([.up, .down])
-            .when(.recognized)
-            .subscribe(with: self, onNext: { owner, _ in
-                self.view.endEditing(true)
             })
             .disposed(by: disposeBag)
     }
