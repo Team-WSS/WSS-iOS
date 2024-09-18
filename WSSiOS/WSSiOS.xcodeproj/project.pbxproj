@@ -803,6 +803,8 @@
 		2CCBF9E92B4C1E2200D787C2 /* MyPage */ = {
 			isa = PBXGroup;
 			children = (
+				2CDB20BF2C9B6EDE0005C39B /* Setting */,
+				2CDB20BE2C9B6EC30005C39B /* Profile */,
 				2CCBF9EB2B4C1E4600D787C2 /* MyPageView */,
 				2CCBF9EA2B4C1E3700D787C2 /* MyPageViewController */,
 				2CCBF9FD2B4DBF4200D787C2 /* MyPageViewModel */,
@@ -1077,6 +1079,68 @@
 				2CD911602C0D8B71006B8D72 /* FeedViewModel.swift */,
 			);
 			path = FeedViewModel;
+			sourceTree = "<group>";
+		};
+		2CDB20BE2C9B6EC30005C39B /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				2CDB20C22C9B6F000005C39B /* ProfileViewModel */,
+				2CDB20C12C9B6EF10005C39B /* ProfileViewController */,
+				2CDB20C02C9B6EE70005C39B /* ProfileView */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		2CDB20BF2C9B6EDE0005C39B /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				2CDB20C52C9B6F160005C39B /* SettingViewModel */,
+				2CDB20C42C9B6F0E0005C39B /* SettingViewController */,
+				2CDB20C32C9B6F070005C39B /* SettingView */,
+			);
+			path = Setting;
+			sourceTree = "<group>";
+		};
+		2CDB20C02C9B6EE70005C39B /* ProfileView */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ProfileView;
+			sourceTree = "<group>";
+		};
+		2CDB20C12C9B6EF10005C39B /* ProfileViewController */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ProfileViewController;
+			sourceTree = "<group>";
+		};
+		2CDB20C22C9B6F000005C39B /* ProfileViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ProfileViewModel;
+			sourceTree = "<group>";
+		};
+		2CDB20C32C9B6F070005C39B /* SettingView */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = SettingView;
+			sourceTree = "<group>";
+		};
+		2CDB20C42C9B6F0E0005C39B /* SettingViewController */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = SettingViewController;
+			sourceTree = "<group>";
+		};
+		2CDB20C52C9B6F160005C39B /* SettingViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = SettingViewModel;
 			sourceTree = "<group>";
 		};
 		2CE078192B8089670028F2B0 /* Protocol */ = {
