@@ -10,7 +10,6 @@ import UIKit
 import RxSwift
 import RxCocoa
 import RxGesture
-import Then
 
 final class SearchViewController: UIViewController {
     
@@ -53,6 +52,12 @@ final class SearchViewController: UIViewController {
         bindViewModel()
     }
     
+    //MARK: - UI
+    
+    private func setUI() {
+        self.view.backgroundColor = .wssWhite
+    }
+    
     //MARK: - Bind
     
     private func registerCell() {
@@ -67,8 +72,6 @@ final class SearchViewController: UIViewController {
             induceButtonDidTap: rootView.searchDetailInduceView.rx.tapGesture().when(.recognized).asObservable()
         )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
-        
-        
         
         output.sosoPickList
             .bind(to: rootView.sosopickView.sosopickCollectionView.rx.items(
@@ -97,30 +100,3 @@ final class SearchViewController: UIViewController {
             .disposed(by: disposeBag)
     }
 }
-
-extension SearchViewController {
-    
-    //MARK: - UI
-    
-    private func setUI() {
-        self.view.do {
-            $0.backgroundColor = .White
-        }
-    }
-}
-
-//MARK: - Extension
-//
-//extension SearchViewController: UISearchBarDelegate {
-//    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-//        rootView.headerView.searchBar.resignFirstResponder()
-//    }
-//
-//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
-//        self.view.endEditing(true)
-//    }
-//
-//    private func showSearchBarAndFocus() {
-//        rootView.headerView.searchBar.becomeFirstResponder()
-//    }
-//}
