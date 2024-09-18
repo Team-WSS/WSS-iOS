@@ -57,8 +57,7 @@ final class MyPageProfileVisibilityView: UIView {
         }
         
         backButton.do {
-            $0.setImage(.icNavigateLeft.withTintColor(.wssGray300, renderingMode: .alwaysTemplate),
-                        for: .normal)
+            $0.setImage(.icNavigateLeft.withRenderingMode(.alwaysOriginal), for: .normal)
         }
         
         completeButton.do {
@@ -82,7 +81,7 @@ final class MyPageProfileVisibilityView: UIView {
         }
         
         profilePrivateLabel.snp.makeConstraints {
-            $0.leading.equalToSuperview().inset(40)
+            $0.leading.equalToSuperview().inset(30)
             $0.centerY.equalToSuperview()
         }
         
