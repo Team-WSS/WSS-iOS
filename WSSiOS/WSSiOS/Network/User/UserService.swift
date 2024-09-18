@@ -13,6 +13,8 @@ protocol UserService {
     func getUserData() -> Single<UserResult>
     func patchUserName(userNickName: String) -> Single<Void>
     func getUserCharacterData() -> Single<UserCharacter>
+    func getUserProfileVisibility() -> Single<UserProfileVisibility>
+    func patchUserProfileVisibility(isProfilePublic: Bool) -> Single<Void>
 }
 
 final class DefaultUserService: NSObject, Networking {
@@ -79,6 +81,49 @@ extension DefaultUserService: UserService {
             return urlSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: UserCharacter.self) }
+                .asSingle()
+        } catch {
+            return Single.error(error)
+        }
+    }
+    
+    func getUserProfileVisibility() -> RxSwift.Single<UserProfileVisibility> {
+        do {
+            let request = try makeHTTPRequest(method: .get,
+                                              path: URLs.User.isProfileVisibility,
+                                              headers: APIConstants.testTokenHeader,
+                                              body: nil)
+            NetworkLogger.log(request: request)
+            
+            return urlSession.rx.data(request: request)
+                .map {
+                    try self.decode(data: $0,
+                                    to: UserProfileVisibility.self)
+                }
+                .asSingle()
+        } catch {
+            return Single.error(error)
+        }
+    }
+    
+    func patchUserProfileVisibility(isProfilePublic: Bool) -> RxSwift.Single<Void> {
+        guard let userProfileVisibility = try? JSONEncoder().encode(UserProfileVisibility(isProfilePublic: isProfilePublic))  else {
+            return .error(NetworkServiceError.invalidRequestError)
+        }
+        
+        do {
+            let request = try makeHTTPRequest(method: .patch,
+                                              path: URLs.User.isProfileVisibility,
+                                              queryItems: makeUserProfileVisibilityQueryItems(isProfilePublic: isProfilePublic),
+                                              headers: APIConstants.testTokenHeader,
+                                              body: nil)
+            NetworkLogger.log(request: request)
+            
+            return urlSession.rx.data(request: request)
+                .map {
+                    try self.decode(data: $0,
+                                    to: UserProfileVisibility.self)
+                }
                 .asSingle()
         } catch {
             return Single.error(error)
