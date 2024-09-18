@@ -77,7 +77,7 @@ final class MyPageSettingViewController: UIViewController {
                     owner.pushToMyPageInfoViewController()
                 case 1:
                     print("프로필 공개 여부 설정")
-                    //pushVC
+                    owner.pushToMyPageProfileVisibilityViewController()
                 case 2:
                     print("웹소소 공식 계정")
                     if let url = URL(string: StringLiterals.MyPage.SettingURL.instaURL) {
