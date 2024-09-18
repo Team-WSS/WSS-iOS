@@ -125,7 +125,8 @@ extension UIViewController {
             userNickName: userNickname,
             viewModel: MyPageChangeNickNameViewModel(
                 userRepository: DefaultUserRepository(
-                    userService: DefaultUserService()),
+                    userService: DefaultUserService(),
+                    blocksService: DefaultBlocksService()),
                 userNickname: userNickname))
         self.navigationController?.pushViewController(viewController, animated: true)
     }
@@ -219,7 +220,8 @@ extension UIViewController {
         let viewController = MyPageInfoViewController(
             viewModel: MyPageInfoViewModel(
                 userRepository: DefaultUserRepository(
-                    userService: DefaultUserService())))
+                    userService: DefaultUserService(),
+                    blocksService: DefaultBlocksService())))
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 

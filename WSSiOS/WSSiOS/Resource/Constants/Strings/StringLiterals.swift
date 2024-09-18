@@ -36,6 +36,7 @@ enum StringLiterals {
             static let deleteID = "회원탈퇴"
             static let myPageSetting = "설정"
             static let myPageInfo = "계정설정"
+            static let myPageBlockUser = "차단유저 목록"
         }
     }
     
@@ -160,6 +161,11 @@ enum StringLiterals {
             static let nickname = "닉네임"
         }
         
+        enum BlockUser {
+            static let buttonTitle = "차단 해제"
+            static let emptyLabel = "차단한 유저가 없어요"
+        }
+      
         enum DeleteIDWarning {
             static let title = "정말 탈퇴하시겠어요?"
             static let description = "남겼던 평가와 기록들이 모두 사라져요.."
