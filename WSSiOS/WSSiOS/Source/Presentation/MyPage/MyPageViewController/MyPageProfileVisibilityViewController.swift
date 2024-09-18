@@ -7,6 +7,8 @@
 
 import UIKit
 
+import RxSwift
+
 final class MyPageProfileVisibilityViewController: UIViewController {
     
     //MARK: - Properties
@@ -37,6 +39,7 @@ final class MyPageProfileVisibilityViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        bindViewModel()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -50,7 +53,6 @@ final class MyPageProfileVisibilityViewController: UIViewController {
     //MARK: - Bind
     
     private func bindViewModel() {
-        
         let input = MyPageProfileVisibilityViewModel.Input(
             isVisibilityToggleButtonDidTap: rootView.profilePrivateToggleButton.rx.tap,
             backButtonDidTap: rootView.backButton.rx.tap,
@@ -58,7 +60,17 @@ final class MyPageProfileVisibilityViewController: UIViewController {
         
         let output = viewModel.transform(from: input, disposeBag: self.disposeBag)
         
+        output.changePrivateToggleButton
+            .subscribe(with: self, onNext: { owner, isPublic in
+                owner.rootView.bindData(isPrivate: !isPublic)
+            })
+            .disposed(by: disposeBag)
         
+        output.popViewControllerAction
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.popToLastViewController()
+            })
+            .disposed(by: disposeBag)
     }
     
 }
