@@ -20,6 +20,12 @@ protocol UserService {
 final class DefaultUserService: NSObject, Networking {
     private let userNickNameQueryItems: [URLQueryItem] = [URLQueryItem(name: "userNickname",
                                                                        value: String(describing: 10))]
+    
+    func makeUserProfileVisibilityQueryItems(isProfilePublic: Bool) -> [URLQueryItem] {
+        return [ URLQueryItem(name: "isProfilePublic",
+                              value: String(isProfilePublic))]
+    }
+    
     private var urlSession: URLSession = URLSession(configuration: URLSessionConfiguration.default,
                                                     delegate: nil,
                                                     delegateQueue: nil)
@@ -90,7 +96,7 @@ extension DefaultUserService: UserService {
     func getUserProfileVisibility() -> RxSwift.Single<UserProfileVisibility> {
         do {
             let request = try makeHTTPRequest(method: .get,
-                                              path: URLs.User.isProfileVisibility,
+                                              path: URLs.MyPage.ProfileVisibility.isProfileVisibility,
                                               headers: APIConstants.testTokenHeader,
                                               body: nil)
             NetworkLogger.log(request: request)
@@ -113,7 +119,7 @@ extension DefaultUserService: UserService {
         
         do {
             let request = try makeHTTPRequest(method: .patch,
-                                              path: URLs.User.isProfileVisibility,
+                                              path: URLs.MyPage.ProfileVisibility.isProfileVisibility,
                                               queryItems: makeUserProfileVisibilityQueryItems(isProfilePublic: isProfilePublic),
                                               headers: APIConstants.testTokenHeader,
                                               body: nil)

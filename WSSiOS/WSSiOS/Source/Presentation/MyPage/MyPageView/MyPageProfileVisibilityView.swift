@@ -53,7 +53,7 @@ final class MyPageProfileVisibilityView: UIView {
         }
         
         profilePrivateToggleButton.do {
-            $0.setImage(.icUnSelectNovel, for: .normal)
+            $0.setImage(.checkDefault, for: .normal)
         }
         
         backButton.do {
@@ -104,7 +104,7 @@ final class MyPageProfileVisibilityView: UIView {
     //MARK: - Data
     
     func bindData(isPrivate: Bool) {
-        profilePrivateToggleButton.setImage(isPrivate ? .icSelectNovel : .icUnSelectNovel,
+        profilePrivateToggleButton.setImage(isPrivate ? .checkSelected : .checkDefault,
                                             for: .normal)
     }
     
