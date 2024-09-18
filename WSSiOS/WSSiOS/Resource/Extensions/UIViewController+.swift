@@ -194,6 +194,18 @@ extension UIViewController {
         
         return alertViewController.actionButtonTap
     }
+    
+    func pushToMyPageProfileVisibilityViewController() {
+        let viewController = MyPageProfileVisibilityViewController(
+            viewModel: MyPageProfileVisibilityViewModel(
+                userRepository: DefaultUserRepository(
+                    userService: DefaultUserService()
+                )
+            )
+        )
+        
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
 }
 
 extension UIViewController: UIGestureRecognizerDelegate {
