@@ -39,7 +39,6 @@
 		2C79CB992B45A0B200734E1F /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2C79CB982B45A0B200734E1F /* Pretendard-Bold.otf */; };
 		2C79CB9B2B45A0B700734E1F /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2C79CB9A2B45A0B700734E1F /* Pretendard-Regular.otf */; };
 		2C79CB9D2B45A1DD00734E1F /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C79CB9C2B45A1DD00734E1F /* UIFont+.swift */; };
-		2C8C39402C92A6CE0076B00D /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 2C8C393F2C92A6CE0076B00D /* Then */; };
 		2C8F89432C50CF250056895B /* MyPageDeleteIDWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8F89422C50CF250056895B /* MyPageDeleteIDWarningView.swift */; };
 		2C8F89452C50CF470056895B /* MyPageDeleteIDWarningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8F89442C50CF470056895B /* MyPageDeleteIDWarningViewController.swift */; };
 		2C8F89472C50CFA30056895B /* MyPageDeleteIDRecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8F89462C50CFA30056895B /* MyPageDeleteIDRecordView.swift */; };
@@ -63,7 +62,7 @@
 		2CA2F6622B530BBF0045B4C2 /* LibraryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2F6612B530BBF0045B4C2 /* LibraryCollectionViewCell.swift */; };
 		2CB613F32B575E4500FC3F89 /* MyPageInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB613F22B575E4500FC3F89 /* MyPageInfoViewController.swift */; };
 		2CB613F52B575E6A00FC3F89 /* MyPageInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB613F42B575E6A00FC3F89 /* MyPageInfoView.swift */; };
-		2CC4CCC82C9AF59100FB863B /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 2CC4CCC72C9AF59100FB863B /* Then */; };
+		2CC4CCCB2C9AF8B000FB863B /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 2CC4CCCA2C9AF8B000FB863B /* Then */; };
 		2CCBF9EE2B4C1FC500D787C2 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBF9ED2B4C1FC500D787C2 /* MyPageViewController.swift */; };
 		2CCBF9F02B4C1FD800D787C2 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBF9EF2B4C1FD800D787C2 /* MyPageView.swift */; };
 		2CCBF9F22B4D347B00D787C2 /* WSSMainButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBF9F12B4D347B00D787C2 /* WSSMainButton.swift */; };
@@ -650,7 +649,7 @@
 			files = (
 				3999BFEE2B4E6CA000984832 /* UIImageViewAlignedSwift in Frameworks */,
 				CD3E5A852B54254F00C0A659 /* RxKeyboard in Frameworks */,
-				2C8C39402C92A6CE0076B00D /* Then in Frameworks */,
+				2CC4CCCB2C9AF8B000FB863B /* Then in Frameworks */,
 				2CD229442B42E7A2005400BE /* RxRelay in Frameworks */,
 				2CD229392B42E77F005400BE /* Kingfisher in Frameworks */,
 				2CD229342B42E771005400BE /* SnapKit in Frameworks */,
@@ -2121,7 +2120,7 @@
 				39EF97AB2B53E43800D2148B /* Lottie */,
 				CD3E5A842B54254F00C0A659 /* RxKeyboard */,
 				3916EC852B89B42C007835B5 /* RxGesture */,
-				2C8C393F2C92A6CE0076B00D /* Then */,
+				2CC4CCCA2C9AF8B000FB863B /* Then */,
 			);
 			productName = WSSiOS;
 			productReference = 2CD229182B42E685005400BE /* WSSiOS.app */;
@@ -2159,7 +2158,7 @@
 				3999BFEC2B4E6CA000984832 /* XCRemoteSwiftPackageReference "UIImageViewAlignedSwift" */,
 				CD3E5A832B54254F00C0A659 /* XCRemoteSwiftPackageReference "RxKeyboard" */,
 				3916EC842B89B42C007835B5 /* XCRemoteSwiftPackageReference "RxGesture" */,
-				2C8C393E2C92A6CE0076B00D /* XCRemoteSwiftPackageReference "Then" */,
+				2CC4CCC92C9AF8B000FB863B /* XCRemoteSwiftPackageReference "Then" */,
 			);
 			productRefGroup = 2CD229192B42E685005400BE /* Products */;
 			projectDirPath = "";
@@ -2295,7 +2294,7 @@
 				B96F0F902C28678800DA5483 /* FeedDetailContentView.swift in Sources */,
 				2CD2FE402C43E7B60033366C /* WSSAlertViewController.swift in Sources */,
 				2C8F89512C50E5200056895B /* MyPageDeleteIDReasonTableViewCell.swift in Sources */,
-				2C19A5002BBD56C900D4D151 /* WSSDropdown.swift in Sources */,
+				2C19A5002BBD56C900D4D151 /* WSSDropdownButton.swift in Sources */,
 				2CA2F6602B530B660045B4C2 /* LibraryView.swift in Sources */,
 				2CD2291E2B42E685005400BE /* SceneDelegate.swift in Sources */,
 				2CD911612C0D8B71006B8D72 /* FeedViewModel.swift in Sources */,
@@ -2371,7 +2370,6 @@
 				CD280A932B88A6CC00AFDD90 /* TrashNovelDetailViewModel.swift in Sources */,
 				B98748632C3581A70039ACE5 /* NormalSearchCollectionViewCell.swift in Sources */,
 				CDA5F0452C2FE41F00FCF15C /* FeedEditContentView.swift in Sources */,
-				A122C9E32B530A8800DFCFE4 /* (null) in Sources */,
 				2C22AE6E2C56E99A00BF6E94 /* MyPageBlockUserViewController.swift in Sources */,
 				CD39F2C52B4FFE7400B73A5C /* TrashNovelDetailCreateMemoView.swift in Sources */,
 				CD39F2DA2B50DDBF00B73A5C /* TrashNovelDetailInfoGenreView.swift in Sources */,
@@ -2461,7 +2459,6 @@
 				A1EF35452B52F76C00A94C53 /* UserNovelRepository.swift in Sources */,
 				CD39F2C32B4FFDF900B73A5C /* TrashNovelDetailMemoView.swift in Sources */,
 				CD3E5AB32B565DFF00C0A659 /* NovelMemoResult.swift in Sources */,
-				A122C9E12B530A4100DFCFE4 /* (null) in Sources */,
 				2C8F89472C50CFA30056895B /* MyPageDeleteIDRecordView.swift in Sources */,
 				2C421FE82B96DC0F000DCB87 /* MyPageCustomModalViewModel.swift in Sources */,
 				B9059CBC2C484C2700D7CA86 /* DetailSearchInfoView.swift in Sources */,
@@ -2719,7 +2716,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		2C8C393E2C92A6CE0076B00D /* XCRemoteSwiftPackageReference "Then" */ = {
+		2CC4CCC92C9AF8B000FB863B /* XCRemoteSwiftPackageReference "Then" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/devxoul/Then";
 			requirement = {
@@ -2786,9 +2783,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		2C8C393F2C92A6CE0076B00D /* Then */ = {
+		2CC4CCCA2C9AF8B000FB863B /* Then */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 2C8C393E2C92A6CE0076B00D /* XCRemoteSwiftPackageReference "Then" */;
+			package = 2CC4CCC92C9AF8B000FB863B /* XCRemoteSwiftPackageReference "Then" */;
 			productName = Then;
 		};
 		2CD229332B42E771005400BE /* SnapKit */ = {

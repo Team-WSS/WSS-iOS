@@ -73,6 +73,7 @@ enum URLs {
                 return "/blocks/\(blockID)"
             }
         }
+    }
 
     enum Recommend {
         static let getTodayPopulars = "/novels/popular"
