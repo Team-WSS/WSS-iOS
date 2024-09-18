@@ -157,6 +157,7 @@ enum StringLiterals {
         
         enum isVisiableProfile {
             static let completeTitle = "완료"
+            static let isPrivateProfile = "비공개"
         }
     }
     

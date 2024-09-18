@@ -14,6 +14,11 @@ final class MyPageProfileVisibilityView: UIView {
     
     //MARK: - Components
     
+    private let profilePrivateView = UIView()
+    private let profilePrivateLabel = UILabel()
+    let profilePrivateToggleButton = UIButton()
+    
+    //In VC
     let backButton = UIButton()
     let completeButton = UIButton()
     
@@ -23,7 +28,7 @@ final class MyPageProfileVisibilityView: UIView {
         super.init(frame: frame)
         
         setUI()
-//        setHierarchy()
+        setHierarchy()
         setLayout()
     }
     
@@ -38,6 +43,19 @@ final class MyPageProfileVisibilityView: UIView {
             $0.backgroundColor = .wssWhite
         }
         
+        profilePrivateView.do {
+            $0.backgroundColor = .wssWhite
+        }
+        
+        profilePrivateLabel.do {
+            $0.textColor = .wssBlack
+            $0.applyWSSFont(.body1, with: StringLiterals.MyPage.isVisiableProfile.isPrivateProfile)
+        }
+        
+        profilePrivateToggleButton.do {
+            $0.setImage(.icUnSelectNovel, for: .normal)
+        }
+        
         backButton.do {
             $0.setImage(.icNavigateLeft.withTintColor(.wssGray300, renderingMode: .alwaysTemplate),
                         for: .normal)
@@ -50,11 +68,29 @@ final class MyPageProfileVisibilityView: UIView {
         }
     }
     
-//    private func setHierarchy() {
-//        self.addSubview()
-//    }
+    private func setHierarchy() {
+        self.addSubview(profilePrivateView)
+        profilePrivateView.addSubviews(profilePrivateLabel,
+                                       profilePrivateToggleButton)
+    }
     
     private func setLayout() {
+        profilePrivateView.snp.makeConstraints {
+            $0.top.width.equalToSuperview()
+            $0.height.equalTo(63)
+        }
+        
+        profilePrivateLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(20)
+            $0.centerY.equalToSuperview()
+        }
+        
+        profilePrivateToggleButton.snp.makeConstraints {
+            $0.size.equalTo(44)
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalToSuperview().inset(20)
+        }
+        
         backButton.snp.makeConstraints {
             $0.size.equalTo(44)
         }
@@ -66,6 +102,11 @@ final class MyPageProfileVisibilityView: UIView {
     }
     
     //MARK: - Data
+    
+    func bindData(isPrivate: Bool) {
+        profilePrivateToggleButton.setImage(isPrivate ? .icSelectNovel : .icUnSelectNovel,
+                                            for: .normal)
+    }
     
 }
 
