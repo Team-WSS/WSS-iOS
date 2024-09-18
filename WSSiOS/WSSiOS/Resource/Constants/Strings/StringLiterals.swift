@@ -74,6 +74,10 @@ enum StringLiterals {
             static let feed = "님의 한마디"
             static let introduction = "작품 소개"
         }
+        
+        enum RealTimePopular {
+            static let spoiler = "스포일러가 포함된 글 보기"
+        }
     }
     
     enum Register {

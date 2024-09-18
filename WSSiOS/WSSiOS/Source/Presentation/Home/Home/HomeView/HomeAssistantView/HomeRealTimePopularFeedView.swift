@@ -14,7 +14,7 @@ final class HomeRealTimePopularFeedView: UIView {
     
     //MARK: - UI Components
     
-    private let feedContentLabel = UILabel()
+    let feedContentLabel = UILabel()
     
     private let likeImageView = UIImageView()
     private let likeCountLabel = UILabel()
@@ -40,15 +40,6 @@ final class HomeRealTimePopularFeedView: UIView {
     }
     
     private func setUI() {
-        feedContentLabel.do {
-            $0.font = .Body3
-            $0.textColor = .wssBlack
-            $0.applyWSSFont(.body3, with: "판소추천해요! 완결난지는 좀 되었는데 추천합니다. scp 같은 이상현상 물품을 모아놓은 창고를 관리하는 주인공입니다. 배경은 현대판타지이고 우리나라 세계관에가깝다구요! 정말 재미재미허니잼")
-            $0.numberOfLines = 3
-            $0.lineBreakMode = .byTruncatingTail
-            $0.lineBreakStrategy = .hangulWordPriority
-        }
-        
         likeImageView.do {
             $0.image = .icLikeDefault
             $0.contentMode = .scaleAspectFit
@@ -57,7 +48,6 @@ final class HomeRealTimePopularFeedView: UIView {
         likeCountLabel.do {
             $0.font = .Body4
             $0.textColor = .Gray200
-            $0.applyWSSFont(.body4, with: "234")
         }
         
         likeStackView.do {
@@ -74,7 +64,6 @@ final class HomeRealTimePopularFeedView: UIView {
         commentCountLabel.do {
             $0.font = .Body4
             $0.textColor = .Gray200
-            $0.applyWSSFont(.body4, with: "123")
         }
         
         commentStackView.do {
@@ -85,9 +74,9 @@ final class HomeRealTimePopularFeedView: UIView {
     }
     
     private func setHierarchy() {
-        likeStackView.addArrangedSubviews(likeImageView, 
+        likeStackView.addArrangedSubviews(likeImageView,
                                           likeCountLabel)
-        commentStackView.addArrangedSubviews(commentImageView, 
+        commentStackView.addArrangedSubviews(commentImageView,
                                              commentCountLabel)
         self.addSubviews(feedContentLabel,
                          likeStackView,
@@ -95,12 +84,15 @@ final class HomeRealTimePopularFeedView: UIView {
     }
     
     private func setLayout() {
+        self.snp.makeConstraints {
+            $0.height.equalTo(98)
+        }
+        
         feedContentLabel.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
         }
         
         likeStackView.snp.makeConstraints {
-            $0.top.equalTo(feedContentLabel.snp.bottom).offset(16)
             $0.leading.bottom.equalToSuperview()
             $0.height.equalTo(19)
             
@@ -110,7 +102,7 @@ final class HomeRealTimePopularFeedView: UIView {
         }
         
         commentStackView.snp.makeConstraints {
-            $0.top.equalTo(likeStackView.snp.top)
+            $0.bottom.equalTo(likeStackView.snp.bottom)
             $0.leading.equalTo(likeStackView.snp.trailing).offset(18)
             $0.height.equalTo(19)
             $0.bottom.equalToSuperview()
@@ -119,5 +111,24 @@ final class HomeRealTimePopularFeedView: UIView {
                 $0.size.equalTo(16)
             }
         }
+    }
+    
+    func bindData(data: RealtimePopularFeed) {
+        feedContentLabel.do {
+            if data.isSpoiler {
+                $0.applyWSSFont(.body2, with: StringLiterals.Home.RealTimePopular.spoiler)
+                $0.textColor = .wssSecondary100
+            }
+            else {
+                $0.applyWSSFont(.body3, with: data.feedContent)
+                $0.textColor = .wssBlack
+            }
+            $0.numberOfLines = 3
+            $0.lineBreakMode = .byTruncatingTail
+            $0.lineBreakStrategy = .hangulWordPriority
+        }
+        
+        likeCountLabel.applyWSSFont(.body4, with: String(data.feedLikeCount))
+        commentCountLabel.applyWSSFont(.body4, with: String(data.feedCommentCount))
     }
 }
