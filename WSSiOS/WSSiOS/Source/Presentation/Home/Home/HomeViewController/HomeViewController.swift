@@ -104,9 +104,15 @@ final class HomeViewController: UIViewController {
                 cellType: HomeRealtimePopularCollectionViewCell.self)) { row, element, cell in
                     cell.bindData(data: element)
                 }
-                .disposed(by: disposeBag)
-        
-        
+            .disposed(by: disposeBag)
+
+            output.realtimePopularData
+            .map { $0.compactMap { $0 } }
+            .bind(with: self, onNext: { owner, realtimePopularItems in
+                owner.rootView.realtimePopularView.configureDots(numberOfItems: realtimePopularItems.count)
+            })
+            .disposed(by: disposeBag)
+
         output.interestList
             .bind(to: rootView.interestView.interestCollectionView.rx.items(
                 cellIdentifier: HomeInterestCollectionViewCell.cellIdentifier,
@@ -145,4 +151,13 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
             targetContentOffset.pointee = CGPoint(x: index * cellWidth - scrollView.contentInset.left, y: scrollView.contentInset.top)
         }
     }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView == rootView.realtimePopularView.realtimePopularCollectionView {
+            let pageWidth = scrollView.frame.width
+            let currentPage = Int((scrollView.contentOffset.x + pageWidth / 2) / pageWidth)
+            rootView.realtimePopularView.updateDots(currentPage: currentPage)
+        }
+    }
 }
+

@@ -27,9 +27,7 @@ final class HomeRealtimePopularView: UIView {
     private let testView = HomeRealtimePopularCollectionViewCell()
     
     private let dotStackView = UIStackView()
-    private let firstDotImageView = UIImageView()
-    private let secondDotImageView = UIImageView()
-    private let thirdDotImageView = UIImageView()
+    private var dotImageViews: [UIImageView] = []
     
     private var scrollView = UIScrollView()
     
@@ -84,26 +82,12 @@ final class HomeRealtimePopularView: UIView {
             $0.axis = .horizontal
             $0.spacing = 6
         }
-        
-        firstDotImageView.do {
-            $0.image = .icCarouselSelected
-            $0.contentMode = .scaleAspectFit
-        }
-        
-        [secondDotImageView, thirdDotImageView].forEach {
-            $0.image = .icCarousel
-            $0.contentMode = .scaleAspectFit
-        }
     }
     
     private func setHierarchy() {
         titleStackView.addArrangedSubviews(titleLogoImageView,
                                            titleLabel)
-        
-        dotStackView.addArrangedSubviews(firstDotImageView,
-                                         secondDotImageView,
-                                         thirdDotImageView)
-        
+ 
         self.addSubviews(titleStackView,
                          realtimePopularCollectionView,
                          dotStackView)
@@ -125,6 +109,27 @@ final class HomeRealtimePopularView: UIView {
         dotStackView.snp.makeConstraints {
             $0.top.equalTo(realtimePopularCollectionView.snp.bottom).offset(14)
             $0.centerX.bottom.equalToSuperview()
+        }
+    }
+    
+    func configureDots(numberOfItems: Int) {
+        DispatchQueue.main.async {
+            self.dotStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+            self.dotImageViews.removeAll()
+            
+            for i in 0..<numberOfItems {
+                let dotImageView = UIImageView()
+                dotImageView.contentMode = .scaleAspectFit
+                dotImageView.image = i == 0 ? .icCarouselSelected : .icCarousel
+                self.dotStackView.addArrangedSubview(dotImageView)
+                self.dotImageViews.append(dotImageView)
+            }
+        }
+    }
+    
+    func updateDots(currentPage: Int) {
+        dotImageViews.enumerated().forEach { index, imageView in
+            imageView.image = index == currentPage ? .icCarouselSelected : .icCarousel
         }
     }
 }
