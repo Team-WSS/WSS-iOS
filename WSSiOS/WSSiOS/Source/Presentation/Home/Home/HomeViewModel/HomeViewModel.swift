@@ -17,6 +17,8 @@ final class HomeViewModel: ViewModelType {
     private let recommendRepository: RecommendRepository
     private let disposeBag = DisposeBag()
     
+    let cellsDataRelay = BehaviorRelay<[[RealtimePopularFeed]]>(value: [])
+    
     // MARK: - Inputs
     
     struct Input {
@@ -43,7 +45,7 @@ final class HomeViewModel: ViewModelType {
 extension HomeViewModel {
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
-
+        
         recommendRepository.getTodayPopularNovels()
             .subscribe(with: self, onNext: { owner, data in
                 output.todayPopularList.accept(data.popularNovels)
@@ -54,7 +56,13 @@ extension HomeViewModel {
         
         recommendRepository.getRealtimePopularFeeds()
             .subscribe(with: self, onNext: { owner, data in
-                output.realtimePopularList.accept(data)
+                output.realtimePopularList.accept(data.popularFeeds)
+                
+                let groupedData = stride(from: 0, to: data.popularFeeds.count, by: 3)
+                    .map { index in
+                        Array(data.popularFeeds[index..<min(index + 3, data.popularFeeds.count)])
+                    }
+                self.cellsDataRelay.accept(groupedData)
             }, onError: { owner, error in
                 print(error)
             })

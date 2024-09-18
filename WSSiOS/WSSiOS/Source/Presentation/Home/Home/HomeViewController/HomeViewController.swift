@@ -55,9 +55,7 @@ final class HomeViewController: UIViewController {
     //MARK: - UI
     
     private func setUI() {
-        self.view.do {
-            $0.backgroundColor = .wssWhite
-        }
+        self.view.backgroundColor = .wssWhite
     }
     
     //MARK: - Bind
@@ -93,6 +91,16 @@ final class HomeViewController: UIViewController {
                     cell.bindData(data: element)
                 }
                 .disposed(by: disposeBag)
+        
+        viewModel.cellsDataRelay
+            .map { $0.compactMap { $0 } }
+            .bind(to: rootView.realtimePopularView.realtimePopularCollectionView.rx.items(
+                cellIdentifier: HomeRealtimePopularCollectionViewCell.cellIdentifier,
+                cellType: HomeRealtimePopularCollectionViewCell.self)) { row, element, cell in
+                    cell.bindData(data: element)
+                }
+                .disposed(by: disposeBag)
+        
         
         output.interestList
             .bind(to: rootView.interestView.interestCollectionView.rx.items(
