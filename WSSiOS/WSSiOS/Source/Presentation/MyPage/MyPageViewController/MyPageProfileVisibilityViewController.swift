@@ -50,3 +50,13 @@ final class MyPageProfileVisibilityViewController: UIViewController {
     
     
 }
+
+//MARK: - UI
+
+extension MyPageProfileVisibilityViewController {
+    private func setNavigation() {
+        preparationSetNavigationBar(title: StringLiterals.Navigation.Title.isVisibleProfile,
+                                    left: self.rootView.backButton,
+                                    right: self.rootView.completeButton)
+    }
+}

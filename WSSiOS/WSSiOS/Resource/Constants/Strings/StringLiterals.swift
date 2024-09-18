@@ -35,6 +35,7 @@ enum StringLiterals {
             static let feed = "소소피드"
             static let notice = "알림"
             static let editProfile = "프로필 편집"
+            static let isVisibleProfile = "프로필 공개여부"
         }
     }
     
@@ -152,6 +153,10 @@ enum StringLiterals {
             case exist = "이미 사용 중인 닉네임이에요"
             case guid = "한글. 영문, 숫자 2~10자까지 입력가능해요"
             case noUse = "사용할 수 없는 단어가 포함되어 있어요"
+        }
+        
+        enum isVisiableProfile {
+            static let completeTitle = "완료"
         }
     }
     
