@@ -120,7 +120,7 @@ final class HomeRealtimePopularView: UIView {
         
         dotStackView.snp.makeConstraints {
             $0.top.equalTo(realtimePopularCollectionView.snp.bottom).offset(14)
-            $0.centerX.equalToSuperview()
+            $0.centerX.bottom.equalToSuperview()
         }
     }
 }

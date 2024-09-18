@@ -41,12 +41,11 @@ final class HomeRealTimePopularFeedView: UIView {
     
     private func setUI() {
         likeImageView.do {
-            $0.image = .icLikeDefault
+            $0.image = .icLikeDefault.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray200)
             $0.contentMode = .scaleAspectFit
         }
         
         likeCountLabel.do {
-            $0.font = .Body4
             $0.textColor = .Gray200
         }
         
@@ -57,12 +56,11 @@ final class HomeRealTimePopularFeedView: UIView {
         }
         
         commentImageView.do {
-            $0.image = .icComment
+            $0.image = .icComment.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray200)
             $0.contentMode = .scaleAspectFit
         }
         
         commentCountLabel.do {
-            $0.font = .Body4
             $0.textColor = .Gray200
         }
         
