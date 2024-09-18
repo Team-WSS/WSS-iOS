@@ -66,6 +66,10 @@ final class HomeRealtimePopularView: UIView {
         
         realtimePopularCollectionView.do {
             $0.showsHorizontalScrollIndicator = false
+            $0.isPagingEnabled = false
+            $0.isScrollEnabled = true
+            $0.contentInsetAdjustmentBehavior = .never
+            $0.decelerationRate = .fast
         }
         
         realtimePopularCollectionViewLayout.do {

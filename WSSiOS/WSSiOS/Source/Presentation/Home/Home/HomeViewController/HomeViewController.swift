@@ -49,6 +49,7 @@ final class HomeViewController: UIViewController {
         
         setUI()
         registerCell()
+        setDelegate()
         bindViewModel()
     }
     
@@ -76,6 +77,10 @@ final class HomeViewController: UIViewController {
         rootView.tasteRecommendView.tasteRecommendCollectionView.register(
             HomeTasteRecommendCollectionViewCell.self,
             forCellWithReuseIdentifier: HomeTasteRecommendCollectionViewCell.cellIdentifier)
+    }
+    
+    private func setDelegate() {
+        rootView.realtimePopularView.realtimePopularCollectionView.delegate = self
     }
     
     private func bindViewModel() {
@@ -126,5 +131,18 @@ final class HomeViewController: UIViewController {
                 owner.navigationController?.pushViewController(viewController, animated: true)
             })
             .disposed(by: disposeBag)
+    }
+}
+
+extension HomeViewController: UICollectionViewDelegateFlowLayout {
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView,
+                                   withVelocity velocity: CGPoint,
+                                   targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        if scrollView == rootView.realtimePopularView.realtimePopularCollectionView {
+            let scrolledOffsetX = targetContentOffset.pointee.x + scrollView.contentInset.left
+            let cellWidth: CGFloat = 335
+            let index = round(scrolledOffsetX / cellWidth)
+            targetContentOffset.pointee = CGPoint(x: index * cellWidth - scrollView.contentInset.left, y: scrollView.contentInset.top)
+        }
     }
 }
