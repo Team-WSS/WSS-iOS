@@ -18,7 +18,7 @@ final class FeedCollectionViewCell: UICollectionViewCell {
     private let userView = FeedUserView()
     private let novelView = FeedNovelView()
     private let reactView = FeedReactView()
-    private let detailContentView = FeedDetailContentView()
+    private let detailContentView = FeedContentView()
     
     private let dotIcon = UIImageView()
     private let restTimeLabel = UILabel()
