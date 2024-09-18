@@ -17,7 +17,11 @@ final class HomeViewModel: ViewModelType {
     private let recommendRepository: RecommendRepository
     private let disposeBag = DisposeBag()
     
-    let cellsDataRelay = BehaviorRelay<[[RealtimePopularFeed]]>(value: [])
+    private let todayPopularList = PublishSubject<[TodayPopularNovel]>()
+    private let realtimePopularList = PublishSubject<[RealtimePopularFeed]>()
+    private let realtimePopularDataRelay = BehaviorRelay<[[RealtimePopularFeed]]>(value: [])
+    private let interestList = PublishSubject<[InterestFeed]>()
+    private let tasteRecommendList = PublishSubject<[TasteRecommendNovel]>()
     
     // MARK: - Inputs
     
@@ -28,11 +32,12 @@ final class HomeViewModel: ViewModelType {
     //MARK: - Outputs
     
     struct Output {
-        var todayPopularList = BehaviorRelay<[TodayPopularNovel]>(value: [])
-        var realtimePopularList = BehaviorRelay<[RealtimePopularFeed]>(value: [])
-        var interestList = BehaviorRelay<[InterestFeed]>(value: [])
-        var tasteRecommendList = BehaviorRelay<[TasteRecommendNovel]>(value: [])
-        let navigateToAnnoucementView = PublishRelay<Bool>()
+        var todayPopularList: Observable<[TodayPopularNovel]>
+        var realtimePopularList: Observable<[RealtimePopularFeed]>
+        var realtimePopularData: Observable<[[RealtimePopularFeed]]>
+        var interestList: Observable<[InterestFeed]>
+        var tasteRecommendList: Observable<[TasteRecommendNovel]>
+        let announcemnetButtonEnabled: Observable<Void>
     }
     
     //MARK: - init
@@ -44,52 +49,51 @@ final class HomeViewModel: ViewModelType {
 
 extension HomeViewModel {
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
-        let output = Output()
-        
         recommendRepository.getTodayPopularNovels()
             .subscribe(with: self, onNext: { owner, data in
-                output.todayPopularList.accept(data.popularNovels)
+                owner.todayPopularList.onNext(data.popularNovels)
             }, onError: { owner, error in
-                print(error)
+                owner.todayPopularList.onError(error)
             })
             .disposed(by: disposeBag)
         
         recommendRepository.getRealtimePopularFeeds()
             .subscribe(with: self, onNext: { owner, data in
-                output.realtimePopularList.accept(data.popularFeeds)
+                owner.realtimePopularList.onNext(data.popularFeeds)
                 
                 let groupedData = stride(from: 0, to: data.popularFeeds.count, by: 3)
                     .map { index in
                         Array(data.popularFeeds[index..<min(index + 3, data.popularFeeds.count)])
                     }
-                self.cellsDataRelay.accept(groupedData)
+                self.realtimePopularDataRelay.accept(groupedData)
             }, onError: { owner, error in
-                print(error)
+                owner.realtimePopularList.onError(error)
             })
             .disposed(by: disposeBag)
         
         recommendRepository.getInterestNovels()
             .subscribe(with: self, onNext: { owner, data in
-                output.interestList.accept(data.recommendFeeds)
+                owner.interestList.onNext(data.recommendFeeds)
             }, onError: { owner, error in
-                print(error)
+                owner.interestList.onError(error)
             })
             .disposed(by: disposeBag)
         
         recommendRepository.getTasteRecommendNovels()
             .subscribe(with: self, onNext: { owner, data in
-                output.tasteRecommendList.accept(data.tasteNovels)
+                owner.tasteRecommendList.onNext(data.tasteNovels)
             }, onError: { owner, error in
-                print(error)
+                owner.tasteRecommendList.onError(error)
             })
             .disposed(by: disposeBag)
         
-        input.announcementButtonTapped
-            .subscribe(onNext: { _ in
-                output.navigateToAnnoucementView.accept(true)
-            })
-            .disposed(by: disposeBag)
+        let announcemnetButtonEnabled = input.announcementButtonTapped.asObservable()
         
-        return output
+        return Output(todayPopularList: todayPopularList.asObservable(),
+                      realtimePopularList: realtimePopularList.asObservable(),
+                      realtimePopularData: realtimePopularDataRelay.asObservable(),
+                      interestList: interestList.asObservable(),
+                      tasteRecommendList: tasteRecommendList.asObservable(),
+                      announcemnetButtonEnabled: announcemnetButtonEnabled.asObservable())
     }
 }

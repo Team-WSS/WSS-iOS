@@ -92,7 +92,7 @@ final class HomeViewController: UIViewController {
                 }
                 .disposed(by: disposeBag)
         
-        viewModel.cellsDataRelay
+        output.realtimePopularData
             .map { $0.compactMap { $0 } }
             .bind(to: rootView.realtimePopularView.realtimePopularCollectionView.rx.items(
                 cellIdentifier: HomeRealtimePopularCollectionViewCell.cellIdentifier,
@@ -118,7 +118,7 @@ final class HomeViewController: UIViewController {
                 }
                 .disposed(by: disposeBag)
         
-        output.navigateToAnnoucementView
+        output.announcemnetButtonEnabled
             .bind(with: self, onNext: { owner, _ in
                 let viewController = HomeNoticeViewController(viewModel: HomeNoticeViewModel(noticeRepository: DefaultNoticeRepository(noticeService: DefaultNoticeService() )))
                 viewController.navigationController?.isNavigationBarHidden = false
