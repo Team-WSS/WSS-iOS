@@ -12,6 +12,7 @@ final class MyPageProfileVisibilityViewController: UIViewController {
     //MARK: - Properties
     
     private let viewModel: MyPageProfileVisibilityViewModel
+    private let disposeBag = DisposeBag()
     
     //MARK: - Components
     
@@ -48,6 +49,17 @@ final class MyPageProfileVisibilityViewController: UIViewController {
     
     //MARK: - Bind
     
+    private func bindViewModel() {
+        
+        let input = MyPageProfileVisibilityViewModel.Input(
+            isVisibilityToggleButtonDidTap: rootView.profilePrivateToggleButton.rx.tap,
+            backButtonDidTap: rootView.backButton.rx.tap,
+            completeButtonDidTap: rootView.completeButton.rx.tap)
+        
+        let output = viewModel.transform(from: input, disposeBag: self.disposeBag)
+        
+        
+    }
     
 }
 
