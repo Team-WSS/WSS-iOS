@@ -76,12 +76,13 @@ final class MyPageProfileVisibilityView: UIView {
     
     private func setLayout() {
         profilePrivateView.snp.makeConstraints {
-            $0.top.width.equalToSuperview()
+            $0.top.equalTo(safeAreaLayoutGuide.snp.top)
+            $0.width.equalToSuperview()
             $0.height.equalTo(63)
         }
         
         profilePrivateLabel.snp.makeConstraints {
-            $0.leading.equalToSuperview().inset(20)
+            $0.leading.equalToSuperview().inset(40)
             $0.centerY.equalToSuperview()
         }
         
