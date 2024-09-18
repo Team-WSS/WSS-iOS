@@ -41,3 +41,7 @@ struct UserAvatar: Codable {
 struct UserNickNameResult: Codable {
     let userNickname: String
 }
+
+struct UserProfileVisibility: Codable {
+    let isProfilePublic: Bool
+}

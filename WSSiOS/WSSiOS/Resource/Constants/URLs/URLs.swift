@@ -73,6 +73,9 @@ enum URLs {
                 return "/blocks/\(blockID)"
             }
         }
+        enum ProfileVisibility {
+            static let isProfileVisibility = "/users/profile-status"
+        }
     }
 
     enum Recommend {
