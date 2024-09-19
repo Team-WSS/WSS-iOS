@@ -5,7 +5,7 @@
 //  Created by YunhakLee on 9/17/24.
 //
 
-import Foundation
+import UIKit
 
 import RxSwift
 import RxCocoa
@@ -14,6 +14,14 @@ import Then
 final class LoginViewModel: ViewModelType {
     
     //MARK: - Properties
+    
+    private let bannerImages = BehaviorRelay<[UIImage]>(value: [UIImage(resource: .imgLoginBanner4),
+                                                                UIImage(resource: .imgLoginBanner1),
+                                                                UIImage(resource: .imgLoginBanner2),
+                                                                UIImage(resource: .imgLoginBanner3),
+                                                                UIImage(resource: .imgLoginBanner4),
+                                                                UIImage(resource: .imgLoginBanner1)])
+
     
     //MARK: - Life Cycle
     
@@ -29,11 +37,13 @@ final class LoginViewModel: ViewModelType {
     }
     
     struct Output {
-        
+        let bannerImages: Driver<[UIImage]>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         
-        return Output()
+        return Output(
+            bannerImages: bannerImages.asDriver()
+        )
     }
 }

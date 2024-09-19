@@ -16,6 +16,8 @@ final class LoginView: UIView {
    
     let backgroundImgaeView = UIImageView()
     
+    let carouselView = LoginCarouselView()
+    let carouselIndicatorView = LoginCarouselIndicatorView()
     let platformButtonStackView = LoginPlatformButtonStackView()
     let skipButton = LoginSkipButton()
     
@@ -43,12 +45,16 @@ final class LoginView: UIView {
             $0.contentMode = .scaleAspectFill
             $0.clipsToBounds = true
         }
+        
+        carouselIndicatorView.updateUI(selectedIndex: 1)
     }
     
     private func setHierarchy() {
-        self.addSubview(backgroundImgaeView)
-        backgroundImgaeView.addSubviews(platformButtonStackView,
-                                        skipButton)
+        self.addSubviews(backgroundImgaeView,
+                        carouselView,
+                        carouselIndicatorView,
+                        platformButtonStackView,
+                        skipButton)
     }
     
     private func setLayout() {
@@ -56,9 +62,19 @@ final class LoginView: UIView {
             $0.edges.equalToSuperview()
         }
         
+        carouselView.snp.makeConstraints {
+            $0.top.equalTo(self.safeAreaLayoutGuide)
+            $0.horizontalEdges.equalToSuperview()
+        }
+        
+        carouselIndicatorView.snp.makeConstraints {
+            $0.top.equalTo(carouselView.snp.bottom).offset(UIScreen.isSE ? 0 : 30)
+            $0.horizontalEdges.equalToSuperview()
+        }
+        
         platformButtonStackView.snp.makeConstraints {
-            $0.bottom.equalTo(skipButton.snp.top).offset(-34)
             $0.centerX.equalToSuperview()
+            $0.bottom.equalTo(skipButton.snp.top).offset(-34)
         }
         
         skipButton.snp.makeConstraints {
