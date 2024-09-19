@@ -50,6 +50,7 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
         
         setUI()
         registerCell()
+        setDelegate()
         bindViewModel()
     }
     
@@ -74,6 +75,10 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
         rootView.resultView.normalSearchCollectionView.register(
             NormalSearchCollectionViewCell.self,
             forCellWithReuseIdentifier: NormalSearchCollectionViewCell.cellIdentifier)
+    }
+    
+    private func setDelegate() {
+        rootView.headerView.searchTextField.delegate = self
     }
     
     private func bindViewModel() {
@@ -205,5 +210,15 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
         let checkNearBottomEdge = self.rootView.resultView.scrollView.contentOffset.y + self.rootView.resultView.scrollView.bounds.size.height + 1.0 >= self.rootView.resultView.scrollView.contentSize.height
         
         return checkNearBottomEdge
+    }
+}
+
+extension NormalSearchViewController: UITextFieldDelegate {
+    func textField(_ textField: UITextField, 
+                   shouldChangeCharactersIn range: NSRange,
+                   replacementString string: String) -> Bool {
+        let currentText = textField.text ?? ""
+        let newText = (currentText as NSString).replacingCharacters(in: range, with: string)
+        return newText.count <= 30
     }
 }
