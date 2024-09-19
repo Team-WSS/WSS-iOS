@@ -27,7 +27,9 @@ struct DefaultSearchRepository: SearchRepository {
     }
     
     func getSearchNovels(query: String, page: Int) -> Observable<NormalSearchNovels> {
-        return searchService.searchNormalNovels(query: query, page: page, size: searchSize).asObservable()
+        return searchService.searchNormalNovels(query: query, 
+                                                page: page,
+                                                size: searchSize).asObservable()
     }
 }
 
