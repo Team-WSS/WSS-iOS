@@ -66,6 +66,15 @@ enum URLs {
         static let getFeeds = "/feeds"
     }
     
+    enum MyPage {
+        enum Block {
+            static let blocks = "/blocks"
+            static func userBlocks(blockID: Int) -> String {
+                return "/blocks/\(blockID)"
+            }
+        }
+    }
+
     enum Recommend {
         static let getTodayPopulars = "/novels/popular"
         static let getRealtimePopulars = "/feeds/popular"

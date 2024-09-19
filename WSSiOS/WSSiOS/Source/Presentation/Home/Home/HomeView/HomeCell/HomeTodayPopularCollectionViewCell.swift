@@ -82,7 +82,7 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
         
         userProfileView.do {
             $0.layer.cornerRadius = 8
-            $0.contentMode = .scaleAspectFit
+            $0.contentMode = .scaleAspectFill
             $0.clipsToBounds = true
         }
         
@@ -193,11 +193,7 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
         self.novelImageView.kfSetImage(url: data.novelImage)
         
         if let avatarImage = data.avatarImage {
-            self.userProfileView.kfSetImage(url: avatarImage)
-        }
-        
-        if let avatarImage = data.avatarImage {
-            self.userProfileView.kfSetImage(url: avatarImage)
+            self.userProfileView.kfSetImage(url: makeBucketImageURLString(path: avatarImage))
             self.userProfileView.isHidden = false
             self.introductionImageView.isHidden = true
             
@@ -218,7 +214,7 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
         
         self.commentTitleLabel.do {
             if let nickname = data.nickname {
-                $0.applyWSSFont(.title2, with: "\(nickname)\(StringLiterals.Home.TodayPopular.feed)")
+                $0.applyWSSFont(.title2, with: "\(nickname) \(StringLiterals.Home.TodayPopular.feed)")
             }
             else {
                 $0.applyWSSFont(.title2, with: StringLiterals.Home.TodayPopular.introduction)
