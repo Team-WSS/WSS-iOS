@@ -60,6 +60,25 @@ final class NormalSearchViewModel: ViewModelType {
         self.searchRepository = searchRepository
     }
     
+    //MARK: - API
+    
+    private func getNormalSearchList(query: String, page: Int) -> Observable<NormalSearchNovels>{
+        return searchRepository.getSearchNovels(query: query, page: page)
+            .do(onNext: { data in
+                if page == 0 {
+                    self.normalSearchList.accept(data.novels)
+                } else {
+                    let updatedList = self.normalSearchList.value + data.novels
+                    self.normalSearchList.accept(updatedList)
+                }
+                self.resultCount.onNext(data.resultCount)
+                self.isLoadable.accept(data.isLoadable)
+                self.currentPage.accept(page)
+            }, onError: { error in
+                print(error.localizedDescription)
+            })
+    }
+    
     //MARK: - Methods
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -74,16 +93,12 @@ final class NormalSearchViewModel: ViewModelType {
                 self.currentPage.accept(0)
             })
             .flatMapLatest { text in
-                self.searchRepository.getSearchNovels(query: text, page: 0)
+                self.getNormalSearchList(query: text, page: 0)
             }
             .share()
         
         searchRequest
-            .subscribe(with: self, onNext: { owner, data in
-                owner.normalSearchList.accept(data.novels)
-                owner.resultCount.onNext(data.resultCount)
-                owner.isLoadable.accept(data.isLoadable)
-            })
+            .subscribe()
             .disposed(by: disposeBag)
         
         input.reachedBottom
@@ -92,7 +107,7 @@ final class NormalSearchViewModel: ViewModelType {
             .withLatestFrom(currentPage)
             .flatMapLatest { page -> Observable<NormalSearchNovels> in
                 let nextPage = page + 1
-                return self.searchRepository.getSearchNovels(query: self.searchText.value, page: nextPage)
+                return self.getNormalSearchList(query: self.searchText.value, page: nextPage)
                     .do(onNext: { _ in
                         self.currentPage.accept(nextPage)
                     })
