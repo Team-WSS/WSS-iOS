@@ -52,9 +52,7 @@ final class LoginPlatformButtonStackView: UIView {
     
     private func setLayout() {
         stackView.snp.makeConstraints {
-            $0.verticalEdges.equalToSuperview()
-            $0.height.equalTo(52)
-            $0.centerX.equalToSuperview()
+            $0.edges.equalToSuperview()
         }       
     }
 }
