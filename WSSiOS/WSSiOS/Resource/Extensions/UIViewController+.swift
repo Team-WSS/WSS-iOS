@@ -120,17 +120,6 @@ extension UIViewController {
         ), animated: true)
     }
     
-    func pushToChangeNicknameViewController(userNickname: String) {
-        let viewController = MyPageChangeNicknameViewController(
-            userNickName: userNickname,
-            viewModel: MyPageChangeNickNameViewModel(
-                userRepository: DefaultUserRepository(
-                    userService: DefaultUserService(),
-                    blocksService: DefaultBlocksService()),
-                userNickname: userNickname))
-        self.navigationController?.pushViewController(viewController, animated: true)
-    }
-    
     func presentDeleteUserNovelViewController(userNovelId: Int) {
         let viewController = DeletePopupViewController(
             viewModel: DeletePopupViewModel(
