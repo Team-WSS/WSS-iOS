@@ -137,13 +137,13 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
             })
             .disposed(by: disposeBag)
         
-        output.returnKeyEnabled
+        output.scrollToTop
             .subscribe(with: self, onNext: { owner, _ in
                 owner.rootView.resultView.scrollView.setContentOffset(.zero, animated: false)
             })
             .disposed(by: disposeBag)
         
-        output.searchButtonEnabled
+        output.scrollToTopAndendEditing
             .subscribe(with: self, onNext: { owner, _ in
                 owner.view.endEditing(true)
                 owner.rootView.resultView.scrollView.setContentOffset(.zero, animated: false)

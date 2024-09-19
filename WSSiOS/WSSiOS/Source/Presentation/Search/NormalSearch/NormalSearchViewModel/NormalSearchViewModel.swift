@@ -44,8 +44,8 @@ final class NormalSearchViewModel: ViewModelType {
     struct Output {
         let resultCount: Observable<Int>
         let normalSearchList: Observable<[NormalSearchNovel]>
-        let returnKeyEnabled: Observable<Void>
-        let searchButtonEnabled: Observable<Void>
+        let scrollToTop: Observable<Void>
+        let scrollToTopAndendEditing: Observable<Void>
         let clearButtonEnabled: Observable<Void>
         let backButtonEnabled: Observable<Void>
         let inquiryButtonEnabled: Observable<Void>
@@ -124,8 +124,8 @@ final class NormalSearchViewModel: ViewModelType {
         
         return Output(resultCount: resultCount.asObservable(),
                       normalSearchList: normalSearchList.asObservable(),
-                      returnKeyEnabled: returnKeyEnabled.asObservable(),
-                      searchButtonEnabled: searchButtonEnabled.asObservable(),
+                      scrollToTop: returnKeyEnabled.asObservable(),
+                      scrollToTopAndendEditing: searchButtonEnabled.asObservable(),
                       clearButtonEnabled: clearButtonEnabled.asObservable(),
                       backButtonEnabled: backButtonEnabled.asObservable(),
                       inquiryButtonEnabled: inquiryButtonEnabled.asObservable(),
