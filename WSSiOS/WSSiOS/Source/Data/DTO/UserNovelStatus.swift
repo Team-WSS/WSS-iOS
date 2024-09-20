@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct UserNovelStatus {
+struct UserNovelStatus: Codable {
     var interestNovelCount: Int
     var watchingNovelCount: Int
     var watchedNovelCount: Int

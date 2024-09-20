@@ -13,7 +13,7 @@ protocol UserService {
     func getUserData() -> Single<UserResult>
     func patchUserName(userNickName: String) -> Single<Void>
     func getUserCharacterData() -> Single<UserCharacter>
-    func getUserNovelStatus() -> Single<UserNovelS>
+    func getUserNovelStatus() -> Single<UserNovelStatus>
 }
 
 final class DefaultUserService: NSObject, Networking {
@@ -80,6 +80,24 @@ extension DefaultUserService: UserService {
             return urlSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: UserCharacter.self) }
+                .asSingle()
+        } catch {
+            return Single.error(error)
+        }
+    }
+    
+    func getUserNovelStatus() -> RxSwift.Single<UserNovelStatus> {
+        do {
+            let request = try makeHTTPRequest(method: .get,
+                                              path: URLs.User.getUserNovelStatus,
+                                              headers: APIConstants.testTokenHeader,
+                                              body: nil)
+            
+            NetworkLogger.log(request: request)
+            
+            return urlSession.rx.data(request: request)
+                .map { try self.decode(data: $0,
+                                       to: UserNovelStatus.self) }
                 .asSingle()
         } catch {
             return Single.error(error)
