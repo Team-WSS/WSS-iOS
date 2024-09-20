@@ -54,8 +54,10 @@ final class LoginViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        rootView.carouselView.bannerCollectionView.setContentOffset(CGPoint(x: LoginCarouselMetric.collectionViewWidth, y: 0), animated: false)
+        setCarouselViewInitialState()
     }
+    
+    //MARK: - UI
     
     private func registerCell() {
         rootView.carouselView.bannerCollectionView.register(
@@ -90,24 +92,65 @@ final class LoginViewController: UIViewController {
                 print(data.indexPath.row)
             })
             .disposed(by: disposeBag)
+        
+        output.autoScrollTrigger
+            .drive(with: self, onNext: { owner, _ in
+                owner.scrollToNextItem()
+            })
+            .disposed(by: disposeBag)
+        
+        output.indicatorIndex
+            .distinctUntilChanged()
+            .drive(with: self, onNext: { owner, index in
+                owner.rootView.carouselIndicatorView.updateUI(selectedIndex: index)
+            })
+            .disposed(by: disposeBag)
     }
     
     private func createViewModelInput() -> LoginViewModel.Input {
+        
         return LoginViewModel.Input(
-           
+            bannerCollectionViewContentOffset: rootView.carouselView.bannerCollectionView.rx.contentOffset
         )
+    }
+    
+    //MARK: - Custom Method
+    
+    /// banner 다음 항목으로 이동
+    private func scrollToNextItem() {
+        let currentOffset = rootView.carouselView.bannerCollectionView.contentOffset
+        let width = LoginBannerMetric.width
+        let nextOffset = currentOffset.x + width
+        
+        rootView.carouselView.bannerCollectionView.setContentOffset(CGPoint(x: nextOffset, y: 0), animated: true)
+    }
+    
+    /// 무한스크롤 구현을 위해 밀린 contentOffset 수정, 자동 스크롤 시작
+    private func setCarouselViewInitialState() {
+        rootView.carouselView.bannerCollectionView.setContentOffset(CGPoint(x: LoginBannerMetric.width, y: 0), animated: false)
+        viewModel.resumeAutoScroll()
     }
 }
 
 extension LoginViewController: UICollectionViewDelegateFlowLayout {
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let maxIndex = 5
+        let width = LoginBannerMetric.width
         
-        if scrollView.contentOffset.x == 0 {
-            scrollView.setContentOffset(CGPoint(x: LoginCarouselMetric.collectionViewWidth * Double(maxIndex-1), y: 0), animated: false)
+        if scrollView.contentOffset.x <= 0 {
+            scrollView.contentOffset.x = width * Double(maxIndex - 1)
+        } else if scrollView.contentOffset.x >= width * Double(maxIndex) {
+            scrollView.contentOffset.x = width
         }
-        if scrollView.contentOffset.x == LoginCarouselMetric.collectionViewWidth * Double(maxIndex) {
-            scrollView.setContentOffset(CGPoint(x: LoginCarouselMetric.collectionViewWidth, y: 0), animated: false)
-        }
+    }
+    
+    // 사용자가 스크롤을 시작할 때 자동 스크롤을 일시 중지
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        viewModel.pauseAutoScroll()
+    }
+    
+    // 사용자의 스크롤이 끝나면 자동 스크롤을 재개
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        viewModel.resumeAutoScroll()
     }
 }
