@@ -66,6 +66,9 @@ final class FeedDetailViewController: UIViewController {
     private func delegate() {
         rootView.replyView.replyCollectionView.rx.setDelegate(self)
             .disposed(by: disposeBag)
+        
+        rootView.replyWritingView.replyWritingTextView.rx.setDelegate(self)
+            .disposed(by: disposeBag)
     }
     
     private func bindViewModel() {
@@ -126,4 +129,25 @@ extension FeedDetailViewController: UICollectionViewDelegateFlowLayout {
         let finalHeight = height * CGFloat(numberOfLines) + 28
         return CGSize(width: UIScreen.main.bounds.width - 40, height: finalHeight)
     }
+}
+
+extension FeedDetailViewController: UITextViewDelegate {
+    func textViewDidChange(_ textView: UITextView) {
+            
+            let size = CGSize(width: view.frame.width, height: .infinity)
+            let estimatedSize = textView.sizeThatFits(size)
+            
+            textView.constraints.forEach { (constraint) in
+            
+              /// 180 이하일때는 더 이상 줄어들지 않게하기
+                if estimatedSize.height <= 180 {
+                
+                }
+                else {
+                    if constraint.firstAttribute == .height {
+                        constraint.constant = estimatedSize.height
+                    }
+                }
+            }
+        }
 }
