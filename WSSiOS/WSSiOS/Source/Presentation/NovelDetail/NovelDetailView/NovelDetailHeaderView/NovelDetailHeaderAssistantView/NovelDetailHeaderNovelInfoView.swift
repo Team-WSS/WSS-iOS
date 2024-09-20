@@ -126,8 +126,8 @@ final class NovelDetailHeaderNovelInfoView: UIView {
     
     private func setInfoLabelText(with text: String) {
         infoLabel.do {
-            $0.applyWSSFont(.body2, with: text)
-            $0.textColor = .wssGray300
+            $0.applyWSSFont(.body3, with: text)
+            $0.textColor = .wssGray200
             $0.textAlignment = .center
             $0.numberOfLines = 1
         }
