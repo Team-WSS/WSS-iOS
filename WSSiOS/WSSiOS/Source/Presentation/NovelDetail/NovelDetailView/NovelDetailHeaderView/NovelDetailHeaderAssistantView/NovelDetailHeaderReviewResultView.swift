@@ -98,19 +98,13 @@ final class NovelDetailHeaderReviewResultView: UIView {
             $0.horizontalEdges.equalToSuperview()
         }
         
-        divierViews[0].snp.makeConstraints {
-            $0.height.equalToSuperview()
-            $0.centerY.equalToSuperview()
-            $0.width.equalTo(1)
-            $0.centerX.equalTo(readStatusButtons[0].snp.trailing)
-            
-        }
-        
-        divierViews[1].snp.makeConstraints {
-            $0.height.equalToSuperview()
-            $0.centerY.equalToSuperview()
-            $0.width.equalTo(1)
-            $0.centerX.equalTo(readStatusButtons[1].snp.trailing)
+        divierViews.enumerated().forEach { index, divierView in
+            divierView.snp.makeConstraints {
+                $0.height.equalToSuperview()
+                $0.centerY.equalToSuperview()
+                $0.width.equalTo(1)
+                $0.centerX.equalTo(readStatusButtons[index].snp.trailing)
+            }
         }
     }
     
