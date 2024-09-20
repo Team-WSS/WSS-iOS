@@ -32,13 +32,14 @@ final class MyPageEditProfileGenreCollectionViewCell: UICollectionViewCell {
     //MARK: - UI
     
     private func setHierarchy() {
-        self.addSubview(genreKeywordLink)
+        self.addSubview(contentView)
+        contentView.addSubview(genreKeywordLink)
     }
     
     private func setLayout() {
         genreKeywordLink.snp.makeConstraints {
             $0.edges.equalToSuperview()
-            $0.height.equalTo(37)
+            $0.height.equalTo(35)
         }
     }
     
