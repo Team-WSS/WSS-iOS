@@ -22,7 +22,7 @@ final class NovelDetailHeaderView: UIView {
     private let reviewResultView = NovelDetailHeaderReviewResultView()
     private let interestReviewButton = NovelDetailHeaderInterestReviewButton()
     
-    //MARK: - Life CycleE
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
