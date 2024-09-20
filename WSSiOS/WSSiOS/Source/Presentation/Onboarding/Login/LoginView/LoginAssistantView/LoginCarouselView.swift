@@ -40,8 +40,8 @@ final class LoginCarouselView: UIView {
         bannerCollectionViewLayout.do {
             $0.scrollDirection = .horizontal
             $0.minimumLineSpacing = 0
-            $0.itemSize = CGSize(width: LoginCarouselMetric.collectionViewWidth,
-                                 height:  LoginCarouselMetric.collectionViewHeight)
+            $0.itemSize = CGSize(width: LoginBannerMetric.width,
+                                 height:  LoginBannerMetric.height)
            bannerCollectionView.setCollectionViewLayout($0,
                                                         animated: false)
         }
@@ -54,7 +54,7 @@ final class LoginCarouselView: UIView {
             $0.isPagingEnabled = true
         }
         
-        bannerCollectionView.setContentOffset(CGPoint(x: LoginCarouselMetric.collectionViewWidth,
+        bannerCollectionView.setContentOffset(CGPoint(x: LoginBannerMetric.width,
                                                       y: 0),
                                               animated: false)
     }
@@ -66,15 +66,15 @@ final class LoginCarouselView: UIView {
     private func setLayout() {
         bannerCollectionView.snp.makeConstraints {
             $0.edges.equalToSuperview()
-            $0.height.equalTo(LoginCarouselMetric.collectionViewHeight)
+            $0.height.equalTo(LoginBannerMetric.height)
         }
     }
 }
 
-enum LoginCarouselMetric {
+enum LoginBannerMetric {
     static let imageRatio: CGFloat = 1.368
-    static let collectionViewWidth = UIScreen.main.bounds.width
-    static var collectionViewHeight: CGFloat {
-        return UIScreen.isSE ? 460 : collectionViewWidth * imageRatio
+    static let width = UIScreen.main.bounds.width
+    static var height: CGFloat {
+        return UIScreen.isSE ? 460 : width * imageRatio
     }
 }
