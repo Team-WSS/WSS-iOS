@@ -14,7 +14,7 @@ final class NovelDetailHeaderReadInfoButton: UIButton {
     
     //MARK: - Properties
     
-    let height: CGFloat = 23
+    private let height: CGFloat = 23
     let iconImage: UIImage
     
     //MARK: - Components
