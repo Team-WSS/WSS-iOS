@@ -90,7 +90,7 @@ final class NovelDetailHeaderInterestReviewButton: UIView {
     private func setHierarchy() {
         self.addSubview(buttonStackView)
         buttonStackView.addArrangedSubviews(interestButton,
-                         reviewButton)
+                                            reviewButton)
         interestButton.addSubview(interestContentView)
         interestContentView.addSubviews(interestImageView,
                                         interestLabel)
