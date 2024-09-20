@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct UserNovelStatusResult {
+struct UserNovelStatus {
     var interestNovelCount: Int
     var watchingNovelCount: Int
     var watchedNovelCount: Int

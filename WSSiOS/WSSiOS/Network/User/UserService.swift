@@ -13,6 +13,7 @@ protocol UserService {
     func getUserData() -> Single<UserResult>
     func patchUserName(userNickName: String) -> Single<Void>
     func getUserCharacterData() -> Single<UserCharacter>
+    func getUserNovelStatus() -> Single<UserNovelS>
 }
 
 final class DefaultUserService: NSObject, Networking {

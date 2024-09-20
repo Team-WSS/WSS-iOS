@@ -13,7 +13,7 @@ final class MyPageDeleteIDWarningViewController: UIViewController {
     
     //MARK: - Properties
     
-    private let dummy = UserNovelStatusResult(interestNovelCount: 1, watchingNovelCount: 100, watchedNovelCount: 333, quitNovelCount: 29)
+    private let dummy = UserNovelStatus(interestNovelCount: 1, watchingNovelCount: 100, watchedNovelCount: 333, quitNovelCount: 29)
     private let disposeBag = DisposeBag()
     
     //MARK: - Components
