@@ -16,6 +16,7 @@ final class LoginCarouselIndicatorDotView: UIView {
     
     private let index: Int
     
+    private let animationDuration = 0.20
     private let height = 7.23
     private let basicWidth = 7.23
     private let selectedWidth = 17.16
@@ -55,12 +56,17 @@ final class LoginCarouselIndicatorDotView: UIView {
     func updateUI(selectedIndex: Int) {
         let isSelected = selectedIndex == index
         
-        self.do {
-            $0.backgroundColor = isSelected ? .wssPrimary100 : .wssGray100
-            
-            $0.snp.updateConstraints {
-                $0.width.equalTo(isSelected ? selectedWidth : basicWidth )
+        // layoutIfNeeded()를 애니메이션 블록 밖으로 이동
+        self.layoutIfNeeded()
+        
+        UIView.animate(withDuration: self.animationDuration) {
+            self.snp.updateConstraints {
+                $0.width.equalTo(isSelected ? self.selectedWidth : self.basicWidth)
             }
+            self.backgroundColor = isSelected ? .wssPrimary100 : .wssGray100
+            
+            // 애니메이션 블록 내부에서 layoutIfNeeded() 호출
+            self.superview?.layoutIfNeeded()
         }
     }
 }
