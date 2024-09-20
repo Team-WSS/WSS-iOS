@@ -128,7 +128,6 @@ final class NovelDetailHeaderInterestReviewButton: UIView {
             }
         }
         
-        
         reviewButton.snp.makeConstraints {
             $0.verticalEdges.equalToSuperview()
             
