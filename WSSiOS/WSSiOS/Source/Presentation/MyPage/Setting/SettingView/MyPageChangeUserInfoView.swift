@@ -167,9 +167,23 @@ final class MyPageChangeUserInfoView: UIView {
     
     //MARK: - Data
     
-    //MARK: - CustomMethod
+    func bindData(data: ChangeUserInfo) {
+        changeGenderButton(gender: data.gender)
+        changeBirthYearLabel(year: data.birth)
+    }
     
-    func selectGenderButton(button: UIButton, select: Bool) {
+    //MARK: - CustomMethod
+    func changeGenderButton(gender: String) {
+        if gender == "M" {
+            selectGenderButton(button: genderMaleButton, select: true)
+            selectGenderButton(button: genderFemaleButton, select: false)
+        } else if gender == "F" {
+            selectGenderButton(button: genderMaleButton, select: false)
+            selectGenderButton(button: genderFemaleButton, select: true)
+        }
+    }
+    
+    private func selectGenderButton(button: UIButton, select: Bool) {
         button.do {
             var text = button == genderMaleButton ? StringLiterals.MyPage.ChangeUserInfo.male : StringLiterals.MyPage.ChangeUserInfo.female
             $0.setButtonAttributedTitle(text: text, font: .Body2, color: select ? .wssPrimary100 : .wssGray300)
@@ -178,6 +192,10 @@ final class MyPageChangeUserInfoView: UIView {
             $0.layer.borderColor = select ? UIColor.wssPrimary50.cgColor : UIColor.clear.cgColor
             $0.layer.cornerRadius = 8
         }
+    }
+    
+    private func changeBirthYearLabel(year: Int) {
+        birthYearLabel.applyWSSFont(.body2, with: String(year))
     }
     
     func isEnabledCompleteButton(isEnabled: Bool) {

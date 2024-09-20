@@ -61,15 +61,15 @@ final class MyPageChangeUserInfoViewController: UIViewController {
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
+        output.dataBind
+            .bind(with: self, onNext: { owner, data in
+                owner.rootView.bindData(data: data)
+            })
+            .disposed(by: disposeBag)
+        
         output.changeGender
-            .subscribe(with: self, onNext: { owner, index in
-                if index == 0 {
-                    owner.rootView.selectGenderButton(button: owner.rootView.genderMaleButton, select: true)
-                    owner.rootView.selectGenderButton(button: owner.rootView.genderFemaleButton, select: false)
-                } else if index == 1 {
-                    owner.rootView.selectGenderButton(button: owner.rootView.genderMaleButton, select: false)
-                    owner.rootView.selectGenderButton(button: owner.rootView.genderFemaleButton, select: true)
-                }
+            .subscribe(with: self, onNext: { owner, gender in
+                owner.rootView.changeGenderButton(gender: gender)
             })
             .disposed(by: disposeBag)
         
@@ -82,6 +82,7 @@ final class MyPageChangeUserInfoViewController: UIViewController {
         output.changeCompleteButton
             .subscribe(with: self, onNext: { owner, isEnabled in
                 owner.rootView.isEnabledCompleteButton(isEnabled: isEnabled)
+                print(isEnabled)
             })
             .disposed(by: disposeBag)
     }

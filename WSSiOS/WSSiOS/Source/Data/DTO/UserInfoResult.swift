@@ -34,3 +34,8 @@ struct UserInfo: Codable {
     let gender: String
     let birth: Int
 }
+
+struct ChangeUserInfo: Codable {
+    let gender: String
+    let birth: Int
+}

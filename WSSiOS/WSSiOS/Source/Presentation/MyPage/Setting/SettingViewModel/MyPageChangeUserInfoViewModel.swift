@@ -16,52 +16,55 @@ final class MyPageChangeUserInfoViewModel: ViewModelType {
     //MARK: - Properties
     
     private let userRepository: UserRepository
-    private let gender: String
-    private let birth: String
+    private let userInfo: ChangeUserInfo
     
     private var currentGender = ""
-    private var currentBirth = ""
+    private var currentBirth = 0
     
     //MARK: - Life Cycle
     
-    init(userRepository: UserRepository, gender: String, birth: String) {
+    init(userRepository: UserRepository, userInfo: ChangeUserInfo) {
         self.userRepository = userRepository
-        self.gender = gender
-        self.birth = birth
+        self.userInfo = userInfo
         
-        self.currentGender = self.gender
-        self.currentBirth = self.birth
+        self.currentGender = self.userInfo.gender
+        self.currentBirth = self.userInfo.birth
     }
     
     struct Input {
         let maleButtonTapped: ControlEvent<Void>
         let femaleButtonTapped: ControlEvent<Void>
         let birthViewTapped: ControlEvent<UITapGestureRecognizer>
+        let backButtonTapped: ControlEvent<Void>
         let completeButtonTapped: ControlEvent<Void>
     }
     
     struct Output {
-        let dataBind = BehaviorRelay<[String]>(value: [""])
-        let changeGender = BehaviorRelay<Int>(value: 0)
+        let dataBind = BehaviorRelay<ChangeUserInfo>(value: ChangeUserInfo(gender: "", 
+                                                                           birth: 0))
+        let changeGender = BehaviorRelay<String>(value: "")
         let showBottomSheet = PublishRelay<Bool>()
         let changeCompleteButton = PublishRelay<Bool>()
+        let popViewConroller = PublishRelay<Bool>()
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
-
-        output.dataBind.accept([gender, birth])
+        
+        output.dataBind.accept(self.userInfo)
         
         input.maleButtonTapped
             .subscribe(with: self, onNext: { owner, _ in
-                output.changeGender.accept(0)
+                owner.currentGender = "M"
+                output.changeGender.accept("M")
                 output.changeCompleteButton.accept(owner.checkIsEnabledCompleteButton())
             })
             .disposed(by: disposeBag)
         
         input.femaleButtonTapped
             .subscribe(with: self, onNext: { owner, _ in
-                output.changeGender.accept(1)
+                owner.currentGender = "F"
+                output.changeGender.accept("F")
                 output.changeCompleteButton.accept(owner.checkIsEnabledCompleteButton())
             })
             .disposed(by: disposeBag)
@@ -72,12 +75,20 @@ final class MyPageChangeUserInfoViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        input.backButtonTapped
+            .throttle(.seconds(3), scheduler: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, _ in
+                output.popViewConroller.accept(true)
+            })
+            .disposed(by: disposeBag)
+        
         input.completeButtonTapped
+            .throttle(.seconds(3), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
                 //서버통신
             })
             .disposed(by: disposeBag)
- 
+        
         return output
     }
     
@@ -86,7 +97,7 @@ final class MyPageChangeUserInfoViewModel: ViewModelType {
     //MARK: - Custom Method
     
     private func checkIsEnabledCompleteButton() -> Bool {
-        return !(gender == currentBirth && birth == currentBirth)
+        return userInfo.gender != currentGender || userInfo.birth != currentBirth
     }
 }
 
