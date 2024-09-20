@@ -55,6 +55,7 @@ final class MyPageDeleteIDWarningViewController: UIViewController {
     
     private func bindData() {
         userRepository.getUserNovelStatus()
+            .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, status in 
                 owner.rootView.bindData(count: status)
             },onError: { owner, error in
