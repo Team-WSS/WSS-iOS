@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 import RxSwift
 import RxCocoa
@@ -35,11 +36,12 @@ final class MyPageChangeUserInfoViewModel: ViewModelType {
     struct Input {
         let maleButtonTapped: ControlEvent<Void>
         let femaleButtonTapped: ControlEvent<Void>
-        let birthViewTapped: ControlEvent<Void>
+        let birthViewTapped: ControlEvent<UITapGestureRecognizer>
         let completeButtonTapped: ControlEvent<Void>
     }
     
     struct Output {
+        let dataBind = BehaviorRelay<[String]>(value: [""])
         let changeGender = BehaviorRelay<Int>(value: 0)
         let showBottomSheet = PublishRelay<Bool>()
         let changeCompleteButton = PublishRelay<Bool>()
@@ -48,6 +50,8 @@ final class MyPageChangeUserInfoViewModel: ViewModelType {
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
 
+        output.dataBind.accept([gender, birth])
+        
         input.maleButtonTapped
             .subscribe(with: self, onNext: { owner, _ in
                 output.changeGender.accept(0)

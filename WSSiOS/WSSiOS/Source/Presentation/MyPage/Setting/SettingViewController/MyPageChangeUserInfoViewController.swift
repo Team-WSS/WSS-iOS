@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 
 final class MyPageChangeUserInfoViewController: UIViewController {
-     
+    
     //MARK: - Properties
     
     private var viewModel: MyPageChangeUserInfoViewModel
@@ -51,9 +51,39 @@ final class MyPageChangeUserInfoViewController: UIViewController {
     }
     
     //MARK: - Bind
-
+    
     private func bindViewModel() {
+        let input = MyPageChangeUserInfoViewModel.Input(
+            maleButtonTapped: rootView.genderMaleButton.rx.tap,
+            femaleButtonTapped: rootView.genderFemaleButton.rx.tap,
+            birthViewTapped: rootView.birthButtonView.rx.tapGesture(),
+            completeButtonTapped: rootView.completeButton.rx.tap)
         
+        let output = viewModel.transform(from: input, disposeBag: disposeBag)
+        
+        output.changeGender
+            .subscribe(with: self, onNext: { owner, index in
+                if index == 0 {
+                    owner.rootView.selectGenderButton(button: owner.rootView.genderMaleButton, select: true)
+                    owner.rootView.selectGenderButton(button: owner.rootView.genderFemaleButton, select: false)
+                } else if index == 1 {
+                    owner.rootView.selectGenderButton(button: owner.rootView.genderMaleButton, select: false)
+                    owner.rootView.selectGenderButton(button: owner.rootView.genderFemaleButton, select: true)
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        output.showBottomSheet
+            .subscribe(with: self, onNext: { owner, _ in
+                //VC 이동
+            })
+            .disposed(by: disposeBag)
+        
+        output.changeCompleteButton
+            .subscribe(with: self, onNext: { owner, isEnabled in
+                owner.rootView.isEnabledCompleteButton(isEnabled: isEnabled)
+            })
+            .disposed(by: disposeBag)
     }
 }
 

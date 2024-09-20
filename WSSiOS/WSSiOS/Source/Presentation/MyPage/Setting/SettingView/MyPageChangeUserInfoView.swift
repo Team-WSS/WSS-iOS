@@ -21,7 +21,7 @@ final class MyPageChangeUserInfoView: UIView {
     private let dividerView = UIView()
     
     private let birthLabel = UILabel()
-    private let birthButtonView = UIView()
+    let birthButtonView = UIView()
     var birthYearLabel = UILabel()
     private let birthArrowImageView = UIImageView()
     
@@ -71,13 +71,16 @@ final class MyPageChangeUserInfoView: UIView {
         birthButtonView.do {
             $0.backgroundColor = .wssGray50
             $0.layer.cornerRadius = 8
+            $0.isUserInteractionEnabled = true
             
             birthYearLabel.do {
                 $0.textColor = .wssBlack
+                $0.isUserInteractionEnabled = false
             }
             
             birthArrowImageView.do {
                 $0.image = .icDropDown.withTintColor(.wssGray300, renderingMode: .alwaysOriginal)
+                $0.isUserInteractionEnabled = false
             }
         }
         
@@ -166,7 +169,7 @@ final class MyPageChangeUserInfoView: UIView {
     
     //MARK: - CustomMethod
     
-    private func selectGenderButton(button: UIButton, select: Bool) {
+    func selectGenderButton(button: UIButton, select: Bool) {
         button.do {
             var text = button == genderMaleButton ? StringLiterals.MyPage.ChangeUserInfo.male : StringLiterals.MyPage.ChangeUserInfo.female
             $0.setButtonAttributedTitle(text: text, font: .Body2, color: select ? .wssPrimary100 : .wssGray300)
