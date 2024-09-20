@@ -15,6 +15,7 @@ protocol UserService {
     func getUserCharacterData() -> Single<UserCharacter>
     func getUserNovelStatus() -> Single<UserNovelStatus>
     func getUserInfo() -> Single<UserInfo>
+    func putUserInfo(gender: String, birth: Int) -> Single<Void>
 }
 
 final class DefaultUserService: NSObject, Networking {

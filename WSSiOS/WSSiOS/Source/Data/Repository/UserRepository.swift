@@ -11,7 +11,8 @@ import RxSwift
 
 protocol UserRepository {
     func getMyProfileData() -> Observable<MyProfileResult>
-    func getUserEmail() -> Observable<String>
+    func getUserInfo() -> Observable<UserInfo>
+    func putUserInfo(gender: String, Birth: Int) -> Observable<Void>
     func patchUserName(userNickName: String) -> Observable<Void>
     func getUserCharacter() -> Observable<UserCharacter>
     func getBlocksList() -> Observable<BlockUserResult>
@@ -41,8 +42,14 @@ struct DefaultUserRepository: UserRepository {
             .asObservable()
     }
     
-    func getUserEmail() -> RxSwift.Observable<String> {
-        return Observable.just("shinjiwonZZang")
+    func getUserInfo() -> RxSwift.Observable<UserInfo> {
+        return userService.getUserInfo()
+            .asObservable()
+    }
+    
+    func putUserInfo(gender: String, Birth: Int) -> RxSwift.Observable<Void> {
+        return userService.putUserInfo(gender: gender, birth: birth)
+            .asObservable()
     }
     
     func patchUserName(userNickName: String) -> RxSwift.Observable<Void> {

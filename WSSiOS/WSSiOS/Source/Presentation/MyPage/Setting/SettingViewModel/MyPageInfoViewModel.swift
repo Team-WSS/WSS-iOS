@@ -47,7 +47,7 @@ final class MyPageInfoViewModel: ViewModelType {
     //MARK: - API
     
     private func getUserEmail() -> Observable<String> {
-        return userRepository.getUserEmail()
+        return userRepository.getUserInfo()
     }
 }
 
