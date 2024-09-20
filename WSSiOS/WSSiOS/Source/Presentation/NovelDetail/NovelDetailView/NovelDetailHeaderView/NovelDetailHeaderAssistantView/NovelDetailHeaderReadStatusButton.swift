@@ -67,6 +67,10 @@ final class NovelDetailHeaderReadStatusButton: UIButton {
                 $0.horizontalEdges.equalToSuperview()
             }
             
+            statusImageView.snp.makeConstraints {
+                $0.size.equalTo(20)
+            }
+            
             $0.spacing = 5
         }
     }
