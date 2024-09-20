@@ -43,7 +43,7 @@
 		2C8F89432C50CF250056895B /* MyPageDeleteIDWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8F89422C50CF250056895B /* MyPageDeleteIDWarningView.swift */; };
 		2C8F89452C50CF470056895B /* MyPageDeleteIDWarningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8F89442C50CF470056895B /* MyPageDeleteIDWarningViewController.swift */; };
 		2C8F89472C50CFA30056895B /* MyPageDeleteIDRecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8F89462C50CFA30056895B /* MyPageDeleteIDRecordView.swift */; };
-		2C8F89492C50D37A0056895B /* UserNovelStatusResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8F89482C50D37A0056895B /* UserNovelStatusResult.swift */; };
+		2C8F89492C50D37A0056895B /* UserNovelStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8F89482C50D37A0056895B /* UserNovelStatus.swift */; };
 		2C8F894B2C50DFEB0056895B /* MyPageDeleteIDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8F894A2C50DFEB0056895B /* MyPageDeleteIDViewController.swift */; };
 		2C8F894D2C50E0060056895B /* MyPageDeleteIDView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8F894C2C50E0060056895B /* MyPageDeleteIDView.swift */; };
 		2C8F89512C50E5200056895B /* MyPageDeleteIDReasonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8F89502C50E5200056895B /* MyPageDeleteIDReasonTableViewCell.swift */; };
@@ -364,7 +364,7 @@
 		2C8F89422C50CF250056895B /* MyPageDeleteIDWarningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageDeleteIDWarningView.swift; sourceTree = "<group>"; };
 		2C8F89442C50CF470056895B /* MyPageDeleteIDWarningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageDeleteIDWarningViewController.swift; sourceTree = "<group>"; };
 		2C8F89462C50CFA30056895B /* MyPageDeleteIDRecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageDeleteIDRecordView.swift; sourceTree = "<group>"; };
-		2C8F89482C50D37A0056895B /* UserNovelStatusResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNovelStatusResult.swift; sourceTree = "<group>"; };
+		2C8F89482C50D37A0056895B /* UserNovelStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNovelStatus.swift; sourceTree = "<group>"; };
 		2C8F894A2C50DFEB0056895B /* MyPageDeleteIDViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageDeleteIDViewController.swift; sourceTree = "<group>"; };
 		2C8F894C2C50E0060056895B /* MyPageDeleteIDView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageDeleteIDView.swift; sourceTree = "<group>"; };
 		2C8F89502C50E5200056895B /* MyPageDeleteIDReasonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageDeleteIDReasonTableViewCell.swift; sourceTree = "<group>"; };
@@ -1649,7 +1649,7 @@
 				2CD911452C0D88CA006B8D72 /* TotalFeedResult.swift */,
 				B9AC1BD92BF0BE23006EDE92 /* NoticeResult.swift */,
 				2C22AE752C56EE3900BF6E94 /* BlockUserResult.swift */,
-				2C8F89482C50D37A0056895B /* UserNovelStatusResult.swift */,
+				2C8F89482C50D37A0056895B /* UserNovelStatus.swift */,
 				B96F0F9D2C29A25200DA5483 /* FeedDetailResult.swift */,
 			);
 			path = DTO;
@@ -2296,7 +2296,7 @@
 				B9095D2C2C39514D007521EF /* HomeNoticeDetailContentView.swift in Sources */,
 				C99DDFDB2C8613AF00EDC0C4 /* SosoPickCollectionViewCell.swift in Sources */,
 				2CD9115A2C0D8A23006B8D72 /* FeedView.swift in Sources */,
-				2C8F89492C50D37A0056895B /* UserNovelStatusResult.swift in Sources */,
+				2C8F89492C50D37A0056895B /* UserNovelStatus.swift in Sources */,
 				2C60307B2B55D9160031544C /* UIImageView+.swift in Sources */,
 				B9095D2A2C3950B4007521EF /* HomeNoticeDetailView.swift in Sources */,
 				2C22AE762C56EE3900BF6E94 /* BlockUserResult.swift in Sources */,
