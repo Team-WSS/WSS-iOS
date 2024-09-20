@@ -37,6 +37,7 @@ enum StringLiterals {
             static let myPageSetting = "설정"
             static let myPageInfo = "계정설정"
             static let myPageBlockUser = "차단유저 목록"
+            static let myPageChangeUserInfo = "성별/나이 변경"
         }
     }
     
