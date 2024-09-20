@@ -103,6 +103,7 @@
 		2CFA9A112C9D7EA300A4A820 /* MyPageChangeUserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CFA9A102C9D7EA300A4A820 /* MyPageChangeUserInfoView.swift */; };
 		2CFA9A132C9D7EE600A4A820 /* MyPageChangeUserInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CFA9A122C9D7EE600A4A820 /* MyPageChangeUserInfoViewModel.swift */; };
 		2CFA9A162C9D8C6E00A4A820 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 2CFA9A152C9D8C6E00A4A820 /* Then */; };
+		2CFA9A182C9D9AD500A4A820 /* UserInfoResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CFA9A172C9D9AD500A4A820 /* UserInfoResult.swift */; };
 		2CFE04332B66A45A0048F77A /* UICollectionViewCell+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CFE04322B66A45A0048F77A /* UICollectionViewCell+.swift */; };
 		3908376B2C32ADEA0082DC57 /* NovelDetailInfoReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3908376A2C32ADEA0082DC57 /* NovelDetailInfoReviewView.swift */; };
 		3916EC862B89B42C007835B5 /* RxGesture in Frameworks */ = {isa = PBXBuildFile; productRef = 3916EC852B89B42C007835B5 /* RxGesture */; };
@@ -423,6 +424,7 @@
 		2CFA9A0E2C9D7E8600A4A820 /* MyPageChangeUserInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageChangeUserInfoViewController.swift; sourceTree = "<group>"; };
 		2CFA9A102C9D7EA300A4A820 /* MyPageChangeUserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageChangeUserInfoView.swift; sourceTree = "<group>"; };
 		2CFA9A122C9D7EE600A4A820 /* MyPageChangeUserInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageChangeUserInfoViewModel.swift; sourceTree = "<group>"; };
+		2CFA9A172C9D9AD500A4A820 /* UserInfoResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoResult.swift; sourceTree = "<group>"; };
 		2CFE04322B66A45A0048F77A /* UICollectionViewCell+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+.swift"; sourceTree = "<group>"; };
 		3908376A2C32ADEA0082DC57 /* NovelDetailInfoReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoReviewView.swift; sourceTree = "<group>"; };
 		3916EC882B89D23D007835B5 /* ModuleFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleFactory.swift; sourceTree = "<group>"; };
@@ -1660,6 +1662,7 @@
 				2C22AE752C56EE3900BF6E94 /* BlockUserResult.swift */,
 				2C8F89482C50D37A0056895B /* UserNovelStatus.swift */,
 				B96F0F9D2C29A25200DA5483 /* FeedDetailResult.swift */,
+				2CFA9A172C9D9AD500A4A820 /* UserInfoResult.swift */,
 			);
 			path = DTO;
 			sourceTree = "<group>";
@@ -2451,6 +2454,7 @@
 				2C5D0F592B4FDEC000C76D3C /* TrashMyPageInventoryCollectionViewCell.swift in Sources */,
 				392A29232B4E89FD0065EB97 /* RegisterNormalNovelInfoWithRatingView.swift in Sources */,
 				CDA5F0492C30248A00FCF15C /* FeedEditConnectedNovelView.swift in Sources */,
+				2CFA9A182C9D9AD500A4A820 /* UserInfoResult.swift in Sources */,
 				2C79CB9D2B45A1DD00734E1F /* UIFont+.swift in Sources */,
 				B9095D2E2C395598007521EF /* HomeNoticeDetailViewModel.swift in Sources */,
 				A147CBC62B4D6E190040AE39 /* UIStackView+.swift in Sources */,
