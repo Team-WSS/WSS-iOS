@@ -82,7 +82,6 @@ final class MyPageChangeUserInfoViewController: UIViewController {
         output.changeCompleteButton
             .subscribe(with: self, onNext: { owner, isEnabled in
                 owner.rootView.isEnabledCompleteButton(isEnabled: isEnabled)
-                print(isEnabled)
             })
             .disposed(by: disposeBag)
     }
