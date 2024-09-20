@@ -21,8 +21,8 @@ final class NovelDetailHeaderReviewResultView: UIView {
                                    NovelDetailHeaderReadInfoButton(iconImage: .icSmallCalendar)]
     
     private let readStatusButtonStackView = UIStackView()
-    private let readStatusButtons = ReadStatus.allCases.map { readStatus in
-        NovelDetailHeaderReadStatusButton(readStatus: readStatus)
+    private let readStatusButtons = ReadStatus.allCases.map {
+        NovelDetailHeaderReadStatusButton(readStatus: $0)
     }
     private let divierViews = [UIView(), UIView()]
     
