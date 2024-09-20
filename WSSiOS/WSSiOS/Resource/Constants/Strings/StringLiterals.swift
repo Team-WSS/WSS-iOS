@@ -210,6 +210,14 @@ enum StringLiterals {
             case second = "리뷰, 피드 게시글, 댓글은 탈퇴 시 자동으로 삭제되지 않아요. 탈퇴 전 개별적으로 삭제해 주세요."
             case third = "계정 정보는 탈퇴 즉시 삭제되어 바로 재가입 가능하지만, 회원가입부터 작품 평가를 다시 해야 해요."
         }
+        
+        enum ChangeUserInfo {
+            static let gender = "성별"
+            static let male = "남성"
+            static let female = "여성"
+            static let birthYear = "출생연도"
+            static let complete = "완료"
+        }
     }
     
     enum Library {
