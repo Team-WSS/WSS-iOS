@@ -14,6 +14,7 @@ final class NovelDetailHeaderReadInfoButton: UIButton {
     
     //MARK: - Properties
     
+    let height: CGFloat = 23
     let iconImage: UIImage
     
     //MARK: - Components
@@ -44,7 +45,7 @@ final class NovelDetailHeaderReadInfoButton: UIButton {
     private func setUI() {
         self.do {
             $0.backgroundColor = .wssWhite
-            $0.layer.cornerRadius = 11.5
+            $0.layer.cornerRadius = height/2
             $0.layer.borderColor = UIColor.wssGray80.cgColor
             $0.layer.borderWidth = 1
         }
@@ -68,7 +69,7 @@ final class NovelDetailHeaderReadInfoButton: UIButton {
     
     private func setLayout() {
         self.snp.makeConstraints {
-            $0.height.equalTo(23)
+            $0.height.equalTo(height)
         }
         stackView.do {
             $0.snp.makeConstraints {
