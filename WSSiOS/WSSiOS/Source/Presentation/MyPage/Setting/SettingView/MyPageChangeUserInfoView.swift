@@ -55,8 +55,8 @@ final class MyPageChangeUserInfoView: UIView {
             $0.applyWSSFont(.body2, with: StringLiterals.MyPage.ChangeUserInfo.gender)
         }
         
-        [genderMaleButton, genderFemaleButton].enumerated().forEach { index, button in
-            selectGenderButton(button: button, index: index, select: false)
+        [genderMaleButton, genderFemaleButton].forEach {
+            selectGenderButton(button: $0, select: false)
         }
         
         dividerView.do {
@@ -166,17 +166,14 @@ final class MyPageChangeUserInfoView: UIView {
     
     //MARK: - CustomMethod
     
-    private func selectGenderButton(button: UIButton, index: Int, select: Bool) {
+    private func selectGenderButton(button: UIButton, select: Bool) {
         button.do {
-            var config = UIButton.Configuration.filled()
-            config.title = index == 0 ? StringLiterals.MyPage.ChangeUserInfo.male : StringLiterals.MyPage.ChangeUserInfo.female
-            config.baseBackgroundColor = select ? .wssPrimary50 : .wssGray50
-            config.baseForegroundColor = select ? .wssPrimary100 : .wssGray300
-            
+            var text = button == genderMaleButton ? StringLiterals.MyPage.ChangeUserInfo.male : StringLiterals.MyPage.ChangeUserInfo.female
+            $0.setButtonAttributedTitle(text: text, font: .Body2, color: select ? .wssPrimary100 : .wssGray300)
+            $0.backgroundColor = select ? .wssPrimary50 : .wssGray50
             $0.layer.borderWidth = 1
             $0.layer.borderColor = select ? UIColor.wssPrimary50.cgColor : UIColor.clear.cgColor
             $0.layer.cornerRadius = 8
-            $0.configuration = config
         }
     }
     
