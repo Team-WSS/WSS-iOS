@@ -50,6 +50,10 @@ final class LoginCarouselIndicatorView: UIView {
     }
     
     private func setLayout() {
+        self.snp.makeConstraints {
+            $0.height.equalTo(7.23)
+        }
+        
         dotStackView.snp.makeConstraints {
             $0.verticalEdges.equalToSuperview()
             $0.centerX.equalToSuperview()
