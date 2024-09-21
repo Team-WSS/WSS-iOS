@@ -14,7 +14,7 @@ final class NovelReviewViewModel: ViewModelType {
     
     //MARK: - Properties
     
-    private var novelReviewStatus: NovelReviewStatus?
+    private var readStatus: ReadStatus?
     private var starRating: Float = 0.0
     private var attractivePointList: [String] = []
     var selectedKeywordList: [String] = []
@@ -43,7 +43,7 @@ final class NovelReviewViewModel: ViewModelType {
     struct Output {
         let popViewController = PublishRelay<Void>()
         let isCompleteButtonEnabled = BehaviorRelay<Bool>(value: false)
-        let novelReviewStatusData = BehaviorRelay<[NovelReviewStatus]>(value: [.watching, .watched, .quit])
+        let readStatusData = BehaviorRelay<[ReadStatus]>(value: [.watching, .watched, .quit])
         let presentNovelDateSelectModalViewController = PublishRelay<Void>()
         let starRating = PublishRelay<Float>()
         let attractivePointListData = PublishRelay<[AttractivePoints]>()
@@ -58,7 +58,7 @@ final class NovelReviewViewModel: ViewModelType {
         
         input.viewDidLoadEvent
             .subscribe(with: self, onNext: { owner, _ in
-                output.novelReviewStatusData.accept(NovelReviewStatus.allCases)
+                output.readStatusData.accept(ReadStatus.allCases)
                 output.attractivePointListData.accept(AttractivePoints.allCases)
                 output.selectedKeywordListData.accept(owner.selectedKeywordList)
             })
@@ -72,7 +72,7 @@ final class NovelReviewViewModel: ViewModelType {
         
         input.statusCollectionViewItemSelected
             .subscribe(with: self, onNext: { owner, indexPath in
-                owner.novelReviewStatus = NovelReviewStatus.allCases[indexPath.item]
+                owner.readStatus = ReadStatus.allCases[indexPath.item]
                 output.isCompleteButtonEnabled.accept(true)
             })
             .disposed(by: disposeBag)
