@@ -9,6 +9,7 @@ import UIKit
 
 import RxSwift
 import RxCocoa
+import RxKeyboard
 
 final class FeedDetailViewController: UIViewController {
     
@@ -45,6 +46,10 @@ final class FeedDetailViewController: UIViewController {
         bindViewModel()
         registerCell()
         delegate()
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
     }
     
     //MARK: - UI
@@ -109,6 +114,17 @@ final class FeedDetailViewController: UIViewController {
         output.replyCollectionViewHeight
             .drive(with: self, onNext: { owner, height in
                 owner.rootView.replyView.updateCollectionViewHeight(height: height)
+            })
+            .disposed(by: disposeBag)
+        
+        RxKeyboard.instance.visibleHeight
+            .drive(with: self, onNext: { owner, keyboardHeight in
+                print("현재 키보드 높이: \(keyboardHeight)")
+                let height = keyboardHeight > 0 ? -keyboardHeight + self.rootView.safeAreaInsets.bottom : 0
+                self.rootView.replyWritingView.snp.updateConstraints {
+                    $0.bottom.equalTo(self.rootView.safeAreaLayoutGuide).offset(height)
+                }
+                self.rootView.layoutIfNeeded()
             })
             .disposed(by: disposeBag)
     }
