@@ -69,7 +69,6 @@ final class NovelDateSelectModalDateButtonView: UIView {
         }
         
         startDateLabel.do {
-            $0.applyWSSFont(.body4, with: StringLiterals.NovelReview.Date.startDate)
             $0.isUserInteractionEnabled = false
         }
         
@@ -94,7 +93,6 @@ final class NovelDateSelectModalDateButtonView: UIView {
         }
         
         endDateLabel.do {
-            $0.applyWSSFont(.body4, with: StringLiterals.NovelReview.Date.endDate)
             $0.isUserInteractionEnabled = false
         }
     }
@@ -136,5 +134,17 @@ final class NovelDateSelectModalDateButtonView: UIView {
         endDateButton.backgroundColor = isStartDateSelected ? .wssGray50 : .white
         endDateTitleLabel.textColor = isStartDateSelected ? .wssGray200 : .black
         endDateLabel.textColor = isStartDateSelected ? .wssGray200 : .black
+    }
+    
+    func updateStartDate(startDate: String) {
+        startDateLabel.do {
+            $0.applyWSSFont(.body4, with: startDate)
+        }
+    }
+    
+    func updateEndDate(endDate: String) {
+        endDateLabel.do {
+            $0.applyWSSFont(.body4, with: endDate)
+        }
     }
 }

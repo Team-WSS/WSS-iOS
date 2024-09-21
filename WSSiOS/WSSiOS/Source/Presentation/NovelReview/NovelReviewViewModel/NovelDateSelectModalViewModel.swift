@@ -15,13 +15,17 @@ final class NovelDateSelectModalViewModel: ViewModelType {
     //MARK: - Properties
     
     private var readStatus: ReadStatus
-    
     private var isStartDateEditing: Bool = true
+    private var startDate: Date
+    private var endDate: Date
     
     //MARK: - Life Cycle
     
     init(readStatus: ReadStatus) {
         self.readStatus = readStatus
+        
+        self.startDate = Date()
+        self.endDate = Date()
     }
     
     struct Input {
@@ -29,12 +33,16 @@ final class NovelDateSelectModalViewModel: ViewModelType {
         let closeButtonDidTap: ControlEvent<Void>
         let startDateButonDidTap: ControlEvent<Void>
         let endDateButonDidTap: ControlEvent<Void>
+        let datePickerDateDidChanged: ControlEvent<Date>
     }
     
     struct Output {
         let dismissModalViewController = PublishRelay<Void>()
         let readStatusData = PublishRelay<ReadStatus>()
         let isStartDateEditing = PublishRelay<Bool>()
+        let startDateData = PublishRelay<Date>()
+        let endDateData = PublishRelay<Date>()
+        let setDatePickerDate = PublishRelay<Date>()
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -45,10 +53,15 @@ final class NovelDateSelectModalViewModel: ViewModelType {
                 output.readStatusData.accept(owner.readStatus)
                 
                 if owner.readStatus == .quit {
-                    output.isStartDateEditing.accept(false)
+                    owner.isStartDateEditing = false
+                    output.isStartDateEditing.accept(owner.isStartDateEditing)
                 } else {
-                    output.isStartDateEditing.accept(true)
+                    owner.isStartDateEditing = true
+                    output.isStartDateEditing.accept(owner.isStartDateEditing)
                 }
+                
+                output.startDateData.accept(owner.startDate)
+                output.endDateData.accept(owner.endDate)
             })
             .disposed(by: disposeBag)
         
@@ -59,14 +72,33 @@ final class NovelDateSelectModalViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.startDateButonDidTap
-            .subscribe(onNext: { _ in
-                output.isStartDateEditing.accept(true)
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.isStartDateEditing = true
+                output.isStartDateEditing.accept(owner.isStartDateEditing)
+                output.setDatePickerDate.accept(owner.startDate)
             })
             .disposed(by: disposeBag)
         
         input.endDateButonDidTap
-            .subscribe(onNext: { _ in
-                output.isStartDateEditing.accept(false)
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.isStartDateEditing = false
+                output.isStartDateEditing.accept(owner.isStartDateEditing)
+                output.setDatePickerDate.accept(owner.endDate)
+            })
+            .disposed(by: disposeBag)
+        
+        input.datePickerDateDidChanged
+            .subscribe(with: self, onNext: { owner, date in
+                if owner.isStartDateEditing {
+                    owner.startDate = date
+                    output.startDateData.accept(owner.startDate)
+                } else {
+                    owner.endDate = date
+                    output.endDateData.accept(owner.endDate)
+                }
+                
+                print("startDate", owner.startDate)
+                print("endDate", owner.endDate)
             })
             .disposed(by: disposeBag)
         

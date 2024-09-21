@@ -50,4 +50,12 @@ final class NovelDateSelectModalDatePickerView: UIView {
             $0.height.equalTo(111)
         }
     }
+    
+    //MARK: - Data
+    
+    func bindData(date: Date) {
+        datePicker.do {
+            $0.date = date
+        }
+    }
 }

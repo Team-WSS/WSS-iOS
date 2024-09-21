@@ -9,6 +9,7 @@ import UIKit
 
 import RxSwift
 import RxCocoa
+import Then
 
 final class NovelDateSelectModalViewController: UIViewController {
     
@@ -18,6 +19,11 @@ final class NovelDateSelectModalViewController: UIViewController {
     private let disposeBag = DisposeBag()
     
     private let viewDidLoadEvent = PublishRelay<Void>()
+    
+    private let dateFormatter = DateFormatter().then {
+        $0.dateFormat = StringLiterals.Register.Normal.DatePicker.dateFormat
+        $0.timeZone = TimeZone(identifier: StringLiterals.Register.Normal.DatePicker.KoreaTimeZone)
+    }
     
     //MARK: - Components
     
@@ -55,7 +61,8 @@ final class NovelDateSelectModalViewController: UIViewController {
             viewDidLoadEvent: viewDidLoadEvent.asObservable(),
             closeButtonDidTap: rootView.closeButton.rx.tap,
             startDateButonDidTap: rootView.novelDateSelectModalDateButtonView.startDateButton.rx.tap,
-            endDateButonDidTap: rootView.novelDateSelectModalDateButtonView.endDateButton.rx.tap
+            endDateButonDidTap: rootView.novelDateSelectModalDateButtonView.endDateButton.rx.tap,
+            datePickerDateDidChanged: rootView.novelDateSelectModalDatePickerView.datePicker.rx.date.changed
         )
         
         let output = self.novelDateSelectModalViewModel.transform(from: input, disposeBag: self.disposeBag)
@@ -75,6 +82,24 @@ final class NovelDateSelectModalViewController: UIViewController {
         output.isStartDateEditing
             .subscribe(with: self, onNext: { owner, isStartDateEditing in
                 owner.rootView.novelDateSelectModalDateButtonView.updateDateButtonStyle(isStartDateSelected: isStartDateEditing)
+            })
+            .disposed(by: disposeBag)
+        
+        output.startDateData
+            .subscribe(with: self, onNext: { owner, startDateData in
+                owner.rootView.novelDateSelectModalDateButtonView.updateStartDate(startDate: owner.dateFormatter.string(from: startDateData))
+            })
+            .disposed(by: disposeBag)
+        
+        output.endDateData
+            .subscribe(with: self, onNext: { owner, endDateData in
+                owner.rootView.novelDateSelectModalDateButtonView.updateEndDate(endDate: owner.dateFormatter.string(from: endDateData))
+            })
+            .disposed(by: disposeBag)
+        
+        output.setDatePickerDate
+            .subscribe(with: self, onNext: { owner, date in
+                owner.rootView.novelDateSelectModalDatePickerView.bindData(date: date)
             })
             .disposed(by: disposeBag)
     }
