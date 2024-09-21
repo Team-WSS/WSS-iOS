@@ -109,6 +109,7 @@ final class HomeViewController: UIViewController {
         
         output.realtimePopularData
             .map { $0.compactMap { $0 } }
+            .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, realtimePopularItems in
                 owner.rootView.realtimePopularView.configureDots(numberOfItems: realtimePopularItems.count)
             })

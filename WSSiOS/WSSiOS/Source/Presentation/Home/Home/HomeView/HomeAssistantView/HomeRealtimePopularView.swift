@@ -87,7 +87,7 @@ final class HomeRealtimePopularView: UIView {
     private func setHierarchy() {
         titleStackView.addArrangedSubviews(titleLogoImageView,
                                            titleLabel)
- 
+        
         self.addSubviews(titleStackView,
                          realtimePopularCollectionView,
                          dotStackView)
@@ -113,17 +113,15 @@ final class HomeRealtimePopularView: UIView {
     }
     
     func configureDots(numberOfItems: Int) {
-        DispatchQueue.main.async {
-            self.dotStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
-            self.dotImageViews.removeAll()
-            
-            for i in 0..<numberOfItems {
-                let dotImageView = UIImageView()
-                dotImageView.contentMode = .scaleAspectFit
-                dotImageView.image = i == 0 ? .icCarouselSelected : .icCarousel
-                self.dotStackView.addArrangedSubview(dotImageView)
-                self.dotImageViews.append(dotImageView)
-            }
+        self.dotStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        self.dotImageViews.removeAll()
+        
+        for i in 0..<numberOfItems {
+            let dotImageView = UIImageView()
+            dotImageView.contentMode = .scaleAspectFit
+            dotImageView.image = i == 0 ? .icCarouselSelected : .icCarousel
+            self.dotStackView.addArrangedSubview(dotImageView)
+            self.dotImageViews.append(dotImageView)
         }
     }
     
