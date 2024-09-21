@@ -54,6 +54,7 @@ final class NormalSearchHeaderView: UIView {
             $0.font = .Label1
             $0.rightView = searchClearButton
             $0.rightViewMode = .whileEditing
+            $0.tintColor = .wssBlack
         }
         
         searchClearButton.do {
