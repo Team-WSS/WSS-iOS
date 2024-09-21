@@ -94,7 +94,7 @@ final class FeedDetailReplyWritingView: UIView {
             $0.top.equalTo(userProfileImageView.snp.top)
             $0.centerY.equalToSuperview()
             $0.leading.equalTo(userProfileImageView.snp.trailing).offset(12)
-            $0.trailing.equalToSuperview().inset(20)
+            $0.trailing.equalToSuperview().inset(17)
             $0.height.equalTo(42)
             
             replyWritingTextView.snp.makeConstraints {

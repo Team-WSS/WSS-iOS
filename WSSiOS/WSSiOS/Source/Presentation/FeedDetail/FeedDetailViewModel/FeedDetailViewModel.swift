@@ -14,19 +14,19 @@ final class FeedDetailViewModel: ViewModelType {
     
     //MARK: - Properties
     
-    private let feedRepository: FeedRepository
+    private let feedDetailRepository: FeedDetailRepository
     private let disposeBag = DisposeBag()
     private let feedId: Int
     
     private let feedProfileData = BehaviorRelay<Feed?>(value: nil)
     private let feedDetailData =  BehaviorRelay<Feed?>(value: nil)
-    private let commentsData = BehaviorRelay<[Comment]>(value: [])
+    private let commentsData = BehaviorRelay<[FeedComment]>(value: [])
     private let replyCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
     
     //MARK: - Life Cycle
     
-    init(feedRepository: FeedRepository, feedId: Int) {
-        self.feedRepository = feedRepository
+    init(feedDetailRepository: FeedDetailRepository, feedId: Int) {
+        self.feedDetailRepository = feedDetailRepository
         self.feedId = feedId
     }
     
@@ -37,12 +37,12 @@ final class FeedDetailViewModel: ViewModelType {
     struct Output {
         let feedProfileData: Driver<Feed?>
         let feedDetailData : Driver<Feed?>
-        let commentsData: Driver<[Comment]>
+        let commentsData: Driver<[FeedComment]>
         let replyCollectionViewHeight: Driver<CGFloat>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
-        feedRepository.getSingleFeedData(feedId: feedId)
+        feedDetailRepository.getSingleFeedData(feedId: feedId)
             .subscribe(with: self, onNext: { owner, data in
                 owner.feedProfileData.accept(data)
                 owner.feedDetailData.accept(data)
@@ -51,7 +51,7 @@ final class FeedDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        feedRepository.getSingleFeedComments(feedId: feedId)
+        feedDetailRepository.getSingleFeedComments(feedId: feedId)
             .subscribe(with: self, onNext: { owner, data in
                 owner.commentsData.accept(data.comments)
             }, onError: { owner, error in

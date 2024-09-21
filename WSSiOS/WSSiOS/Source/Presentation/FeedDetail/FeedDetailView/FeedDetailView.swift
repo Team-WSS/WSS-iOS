@@ -105,4 +105,9 @@ final class FeedDetailView: UIView {
             $0.bottom.equalTo(self.safeAreaLayoutGuide)
         }
     }
+    
+    func bindData(data: Feed) {
+        profileView.bindData(data: data)
+        feedContentView.bindData(data: data)
+    }
 }
