@@ -24,6 +24,7 @@ final class MyPageInfoViewModel: ViewModelType {
     
     struct Input {
         let backButtonDidTap: ControlEvent<Void>
+        let updateUserInfo: BehaviorRelay<Bool>
     }
     
     struct Output {
@@ -34,11 +35,24 @@ final class MyPageInfoViewModel: ViewModelType {
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
-       
+        
         input.backButtonDidTap
             .throttle(.seconds(3), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
                 output.popViewController.accept(true)
+            })
+            .disposed(by: disposeBag)
+        
+        input.updateUserInfo
+            .subscribe(with: self, onNext: { owner, update in
+                if update {
+                    owner.getUserInfo()
+                        .subscribe(with: self, onNext: { owner, data in
+                            output.genderAndBirth.accept(ChangeUserInfo(gender: data.gender,
+                                                                        birth: data.birth))
+                        })
+                        .disposed(by: disposeBag)
+                }
             })
             .disposed(by: disposeBag)
         

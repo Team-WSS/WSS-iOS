@@ -8,7 +8,6 @@
 import UIKit
 
 import RxSwift
-import Then
 import RxRelay
 
 final class MyPageInfoViewController: UIViewController {
@@ -18,6 +17,7 @@ final class MyPageInfoViewController: UIViewController {
     private let disposeBag = DisposeBag()
     private let viewModel: MyPageInfoViewModel
     private let settingList = StringLiterals.MyPage.SettingInfo.allCases.map { $0.rawValue }
+    private let updateDataRelay = BehaviorRelay(value: false)
     private let emailRelay = BehaviorRelay(value: "")
     private var genderAndBirthData = ChangeUserInfo(gender: "", birth: 0)
     
@@ -51,7 +51,7 @@ final class MyPageInfoViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         setNavigationBar()
         hideTabBar()
         swipeBackGesture()
@@ -108,7 +108,8 @@ final class MyPageInfoViewController: UIViewController {
     
     private func bindViewModel() {
         let input = MyPageInfoViewModel.Input(
-            backButtonDidTap: rootView.backButton.rx.tap)
+            backButtonDidTap: rootView.backButton.rx.tap,
+            updateUserInfo: self.updateDataRelay)
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -133,11 +134,34 @@ final class MyPageInfoViewController: UIViewController {
     }
 }
 
-extension MyPageInfoViewController {
+extension MyPageInfoViewController: MyPageChangeUserInfoDelegate {    
+    
+    //MARK: - UI
+    
     private func setNavigationBar() {
         preparationSetNavigationBar(title: StringLiterals.Navigation.Title.myPageInfo,
                                     left: self.rootView.backButton,
                                     right: nil)
+    }
+    
+    //MARK: - Delegate
+    
+    private func pushToChangeUserInfoViewController(userInfo: ChangeUserInfo) {
+        let viewController = MyPageChangeUserInfoViewController(
+            viewModel: MyPageChangeUserInfoViewModel(
+                userRepository: DefaultUserRepository(
+                    userService: DefaultUserService(),
+                    blocksService: DefaultBlocksService()),
+                userInfo: userInfo)
+        )
+        
+        viewController.delegate = self
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func updateUserInfo() {
+        self.updateDataRelay.accept(true)
+        print("돌아와써")
     }
 }
 

@@ -248,17 +248,6 @@ extension UIViewController {
         self.dismiss(animated: true)
     }
     
-    func pushToChangeUserInfoViewController(userInfo: ChangeUserInfo) {
-        let viewController = MyPageChangeUserInfoViewController(
-            viewModel: MyPageChangeUserInfoViewModel(
-                userRepository: DefaultUserRepository(
-                    userService: DefaultUserService(),
-                    blocksService: DefaultBlocksService()),
-                userInfo: userInfo)
-        )
-        self.navigationController?.pushViewController(viewController, animated: true)
-    }
-    
     func pushToBlockIDViewController() {
         let viewController = MyPageBlockUserViewController(
             viewModel:MyPageBlockUserViewModel(

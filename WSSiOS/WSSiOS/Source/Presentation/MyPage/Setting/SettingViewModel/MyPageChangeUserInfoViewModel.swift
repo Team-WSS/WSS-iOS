@@ -85,7 +85,14 @@ final class MyPageChangeUserInfoViewModel: ViewModelType {
         input.completeButtonTapped
             .throttle(.seconds(3), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
-                //서버통신
+                owner.putUserInfo(gender: owner.currentGender, birth: owner.currentBirth)
+                    .subscribe(with: self, onNext: { owner, _ in
+                        
+                        output.popViewConroller.accept(true)
+                    }, onError: { owner, error in
+                        print(error)
+                    })
+                    .disposed(by: disposeBag)
             })
             .disposed(by: disposeBag)
         
@@ -93,6 +100,11 @@ final class MyPageChangeUserInfoViewModel: ViewModelType {
     }
     
     //MARK: - API
+    
+    private func putUserInfo(gender: String, birth: Int) -> Observable<Void> {
+        return userRepository.putUserInfo(gender: gender, birth: birth) 
+            .observe(on: MainScheduler.instance)
+    }
     
     //MARK: - Custom Method
     
