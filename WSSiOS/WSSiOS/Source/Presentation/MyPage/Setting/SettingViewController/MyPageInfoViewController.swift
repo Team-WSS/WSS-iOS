@@ -82,6 +82,7 @@ final class MyPageInfoViewController: UIViewController {
                     cell.bindData(title: element)
                     if row == 1 {
                         cell.bindDescriptionData(title: self.emailRelay.value)
+                        cell.cellIconImageView.isHidden = true
                     }
                 }
                 .disposed(by: disposeBag)
@@ -96,16 +97,16 @@ final class MyPageInfoViewController: UIViewController {
                     owner.pushToChangeUserInfoViewController(userInfo: owner.genderAndBirthData)
                 case 1:
                     print("이메일")
-                    //pushVC
+                    break;
                 case 2:
                     print("차단유저 목록")
-                    //pushVC
+                    owner.pushToBlockIDViewController()
                 case 3:
                     print("로그아웃")
                     //pushModalVC
                 case 4:
                     print("회원탈퇴")
-                    //pushVC
+                    owner.pushToMyPageDeleteIDWarningViewController()
                 default: break
                 }
             })

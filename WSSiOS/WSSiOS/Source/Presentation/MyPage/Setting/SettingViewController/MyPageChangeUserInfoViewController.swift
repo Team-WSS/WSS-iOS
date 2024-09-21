@@ -85,6 +85,12 @@ final class MyPageChangeUserInfoViewController: UIViewController {
                 owner.rootView.isEnabledCompleteButton(isEnabled: isEnabled)
             })
             .disposed(by: disposeBag)
+        
+        output.popViewConroller
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.popToLastViewController()
+            })
+            .disposed(by: disposeBag)
     }
 }
 

@@ -258,6 +258,19 @@ extension UIViewController {
         )
         self.navigationController?.pushViewController(viewController, animated: true)
     }
+    
+    func pushToBlockIDViewController() {
+        let viewController = MyPageBlockUserViewController(
+            viewModel:MyPageBlockUserViewModel(
+                userRepository: DefaultUserRepository(
+                    userService: DefaultUserService(),
+                    blocksService: DefaultBlocksService()
+                )
+            )
+        )
+        
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
 }
 
 extension UIViewController: UIGestureRecognizerDelegate {
