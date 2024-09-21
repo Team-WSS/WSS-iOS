@@ -53,7 +53,7 @@ final class NovelReviewAttractivePointView: UIView {
     
     private func setUI() {
         self.do {
-            $0.backgroundColor = .white
+            $0.backgroundColor = .wssWhite
         }
         
         titleLabel.do {
