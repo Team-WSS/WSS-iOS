@@ -50,6 +50,7 @@ final class NovelDateSelectModalButtonView: UIView {
         removeLabel.do {
             $0.applyWSSFont(.body1, with: StringLiterals.NovelReview.Date.removeDate)
             $0.textColor = .wssPrimary100
+            $0.isUserInteractionEnabled = false
         }
     }
     

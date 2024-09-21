@@ -17,6 +17,8 @@ final class NovelDateSelectModalViewController: UIViewController {
     private let novelDateSelectModalViewModel: NovelDateSelectModalViewModel
     private let disposeBag = DisposeBag()
     
+    private let viewDidLoadEvent = PublishRelay<Void>()
+    
     //MARK: - Components
     
     private let rootView = NovelDateSelectModalView()
@@ -40,6 +42,8 @@ final class NovelDateSelectModalViewController: UIViewController {
         super.viewDidLoad()
         
         bindViewModel()
+        
+        viewDidLoadEvent.accept(())
     }
     
     //MARK: - UI
@@ -48,6 +52,7 @@ final class NovelDateSelectModalViewController: UIViewController {
     
     private func bindViewModel() {
         let input = NovelDateSelectModalViewModel.Input(
+            viewDidLoadEvent: viewDidLoadEvent.asObservable(),
             closeButtonDidTap: rootView.closeButton.rx.tap
         )
         
@@ -56,6 +61,12 @@ final class NovelDateSelectModalViewController: UIViewController {
         output.dismissModalViewController
             .subscribe(with: self, onNext: { owner, _ in
                 owner.dismissModalViewController()
+            })
+            .disposed(by: disposeBag)
+        
+        output.readStatusData
+            .subscribe(with: self, onNext: { owner, readStatus in
+                owner.rootView.bindData(readStatus: readStatus)
             })
             .disposed(by: disposeBag)
     }

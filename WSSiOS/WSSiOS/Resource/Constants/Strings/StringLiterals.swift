@@ -288,6 +288,8 @@ enum StringLiterals {
             static let addDate = "날짜 추가"
             static let complete = "완료"
             static let removeDate = "날짜 삭제"
+            static let startDate = "시작 날짜"
+            static let endDate = "종료 날짜"
         }
         
         enum AttractivePoint {

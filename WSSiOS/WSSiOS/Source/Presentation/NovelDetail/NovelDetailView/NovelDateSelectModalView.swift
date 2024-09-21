@@ -18,6 +18,7 @@ final class NovelDateSelectModalView: UIView {
     private let indicatorBackgroundView = UIView()
     let closeButton = UIButton()
     let stackView = UIStackView()
+    let novelDateSelectModalTitleView = NovelDateSelectModalTitleView()
     let novelDateSelectModalButtonView = NovelDateSelectModalButtonView()
     
     //MARK: - Life Cycle
@@ -63,7 +64,8 @@ final class NovelDateSelectModalView: UIView {
                          indicatorBackgroundView)
         contentView.addSubviews(closeButton,
                                 stackView)
-        stackView.addArrangedSubviews(novelDateSelectModalButtonView)
+        stackView.addArrangedSubviews(novelDateSelectModalTitleView,
+                                      novelDateSelectModalButtonView)
     }
     
     private func setLayout() {
@@ -86,6 +88,23 @@ final class NovelDateSelectModalView: UIView {
             $0.top.equalTo(closeButton.snp.bottom)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.bottom.equalToSuperview()
+            
+            stackView.do {
+                $0.setCustomSpacing(25, after: novelDateSelectModalTitleView)
+            }
+        }
+    }
+    
+    //MARK: - Data
+    
+    func bindData(readStatus: ReadStatus) {
+        switch readStatus {
+        case .watching:
+            self.novelDateSelectModalTitleView.bindData(title: StringLiterals.NovelReview.Date.startDate)
+        case .watched:
+            self.novelDateSelectModalTitleView.removeFromSuperview()
+        case .quit:
+            self.novelDateSelectModalTitleView.bindData(title: StringLiterals.NovelReview.Date.endDate)
         }
     }
 }
