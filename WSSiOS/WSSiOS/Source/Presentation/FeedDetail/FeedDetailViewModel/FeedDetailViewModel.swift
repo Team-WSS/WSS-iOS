@@ -20,7 +20,6 @@ final class FeedDetailViewModel: ViewModelType {
     
     private let feedProfileData = BehaviorRelay<Feed?>(value: nil)
     private let feedDetailData =  BehaviorRelay<Feed?>(value: nil)
-    private let commentCountLabel = BehaviorRelay<Int>(value: 0)
     private let commentsData = BehaviorRelay<[Comment]>(value: [])
     private let replyCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
     
@@ -38,7 +37,6 @@ final class FeedDetailViewModel: ViewModelType {
     struct Output {
         let feedProfileData: Driver<Feed?>
         let feedDetailData : Driver<Feed?>
-        let commentCountLabel: Driver<Int>
         let commentsData: Driver<[Comment]>
         let replyCollectionViewHeight: Driver<CGFloat>
     }
@@ -55,7 +53,6 @@ final class FeedDetailViewModel: ViewModelType {
         
         feedRepository.getSingleFeedComments(feedId: feedId)
             .subscribe(with: self, onNext: { owner, data in
-                owner.commentCountLabel.accept(data.commentCount)
                 owner.commentsData.accept(data.comments)
             }, onError: { owner, error in
                 print(error)
@@ -67,7 +64,6 @@ final class FeedDetailViewModel: ViewModelType {
         
         return Output(feedProfileData: feedProfileData.asDriver(),
                       feedDetailData: feedDetailData.asDriver(),
-                      commentCountLabel: commentCountLabel.asDriver(),
                       commentsData: commentsData.asDriver(),
                       replyCollectionViewHeight: replyCollectionViewContentSize)
     }

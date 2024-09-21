@@ -97,12 +97,6 @@ final class FeedDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.commentCountLabel
-            .drive(with: self, onNext: { owner, data in
-                owner.rootView.replyView.bindData(commentCount: data)
-            })
-            .disposed(by: disposeBag)
-        
         output.commentsData
             .drive(rootView.replyView.replyCollectionView.rx.items(
                 cellIdentifier: FeedDetailReplyCollectionViewCell.cellIdentifier,
