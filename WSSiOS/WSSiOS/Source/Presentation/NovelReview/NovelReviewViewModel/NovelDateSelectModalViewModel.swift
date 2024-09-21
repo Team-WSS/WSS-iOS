@@ -110,6 +110,7 @@ final class NovelDateSelectModalViewModel: ViewModelType {
         
         input.removeButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
+                NotificationCenter.default.post(name: NSNotification.Name("NovelReviewDateRemoved"), object: nil)
                 output.dismissModalViewController.accept(())
             })
             .disposed(by: disposeBag)

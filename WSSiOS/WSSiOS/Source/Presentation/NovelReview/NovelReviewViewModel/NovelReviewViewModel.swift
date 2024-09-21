@@ -46,6 +46,7 @@ final class NovelReviewViewModel: ViewModelType {
         let selectedKeywordCollectionViewItemSelected: Observable<IndexPath>
         let novelReviewKeywordSelectedNotification: Observable<Notification>
         let novelReviewDateSelectedNotification: Observable<Notification>
+        let novelReviewDateRemovedNotification: Observable<Notification>
     }
     
     struct Output {
@@ -164,6 +165,14 @@ final class NovelReviewViewModel: ViewModelType {
                 guard let startDateEndDateData = notification.object as? [Date] else { return }
                 owner.startDate = startDateEndDateData[0]
                 owner.endDate = startDateEndDateData[1]
+                output.startDateEndDateData.accept([owner.startDate, owner.endDate])
+            })
+            .disposed(by: disposeBag)
+        
+        input.novelReviewDateRemovedNotification
+            .subscribe(with: self, onNext: { owner, notification in
+                owner.startDate = nil
+                owner.endDate = nil
                 output.startDateEndDateData.accept([owner.startDate, owner.endDate])
             })
             .disposed(by: disposeBag)
