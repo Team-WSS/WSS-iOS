@@ -1256,7 +1256,6 @@
 				39D4A5C82BDA4C5A004FC834 /* NovelDetailViewController.swift */,
 				CD2D0AAC2C7EF1A2007CF1F1 /* NovelReviewViewController.swift */,
 				CD1F7DFD2C994A0E0039972C /* NovelKeywordSelectModalViewController.swift */,
-				CD8747A02C9EB37000D0ADAD /* NovelDateSelectModalViewController.swift */,
 			);
 			path = NovelDetailViewController;
 			sourceTree = "<group>";
@@ -1264,10 +1263,10 @@
 		39D4A5C62BDA4BF6004FC834 /* NovelDetailView */ = {
 			isa = PBXGroup;
 			children = (
+				CD8747B02C9EEC1F00D0ADAD /* NovelReviewAssistantView2 */,
 				39D4A5CC2BDA4C6D004FC834 /* NovelDetailView.swift */,
 				CD2D0AAE2C7EF1BF007CF1F1 /* NovelReviewView.swift */,
 				CD1F7E012C994AA00039972C /* NovelKeywordSelectModalView.swift */,
-				CD8747A22C9EB37F00D0ADAD /* NovelDateSelectModalView.swift */,
 				CD2D0AB22C7EFE6A007CF1F1 /* NovelDetailAssistantView */,
 				397DE6792C22C8740026DB07 /* NovelDetailHeaderView */,
 				397DE67E2C23427D0026DB07 /* NovelDetailTabBarView */,
@@ -1283,7 +1282,6 @@
 				39D4A5CA2BDA4C62004FC834 /* NovelDetailViewModel.swift */,
 				CD2D0AB02C7EF1D3007CF1F1 /* NovelReviewViewModel.swift */,
 				CD1F7DFF2C994A180039972C /* NovelKeywordSelectModalViewModel.swift */,
-				CD8747A42C9EB39900D0ADAD /* NovelDateSelectModalViewModel.swift */,
 			);
 			path = NovelDetailViewModel;
 			sourceTree = "<group>";
@@ -1942,8 +1940,6 @@
 				CD1F7E052C9967780039972C /* NovelKeywordSelectSearchResultView.swift */,
 				CD1F7E0B2C99AB7C0039972C /* NovelSelectedKeywordListView.swift */,
 				CD1F7E092C99A8DC0039972C /* NovelKeywordSelectModalButtonView.swift */,
-				CD8747A82C9EDA3000D0ADAD /* NovelDateSelectModalTitleView.swift */,
-				CD8747A62C9EC4F900D0ADAD /* NovelDateSelectModalButtonView.swift */,
 			);
 			path = NovelDetailAssistantView;
 			sourceTree = "<group>";
@@ -2120,6 +2116,18 @@
 				CD6613772B8B313700B90B2B /* DeletePopupViewModel.swift */,
 			);
 			path = DeletePopupViewModel;
+			sourceTree = "<group>";
+		};
+		CD8747B02C9EEC1F00D0ADAD /* NovelReviewAssistantView2 */ = {
+			isa = PBXGroup;
+			children = (
+				CD8747A42C9EB39900D0ADAD /* NovelDateSelectModalViewModel.swift */,
+				CD8747A02C9EB37000D0ADAD /* NovelDateSelectModalViewController.swift */,
+				CD8747A22C9EB37F00D0ADAD /* NovelDateSelectModalView.swift */,
+				CD8747A82C9EDA3000D0ADAD /* NovelDateSelectModalTitleView.swift */,
+				CD8747A62C9EC4F900D0ADAD /* NovelDateSelectModalButtonView.swift */,
+			);
+			path = NovelReviewAssistantView2;
 			sourceTree = "<group>";
 		};
 		CDA5F0412C2FDCBD00FCF15C /* MemoViewCell */ = {
