@@ -44,7 +44,7 @@ final class MyPageChangeUserInfoViewModel: ViewModelType {
                                                                            birth: 0))
         let changeGender = BehaviorRelay<String>(value: "")
         let showBottomSheet = PublishRelay<Bool>()
-        let changeCompleteButton = PublishRelay<Bool>()
+        let changeCompleteButton = BehaviorRelay<Bool>(value: false)
         let popViewConroller = PublishRelay<Bool>()
     }
     
@@ -85,14 +85,17 @@ final class MyPageChangeUserInfoViewModel: ViewModelType {
         input.completeButtonTapped
             .throttle(.seconds(3), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
-                owner.putUserInfo(gender: owner.currentGender, birth: owner.currentBirth)
-                    .subscribe(with: self, onNext: { owner, _ in
-                        
-                        output.popViewConroller.accept(true)
-                    }, onError: { owner, error in
-                        print(error)
-                    })
-                    .disposed(by: disposeBag)
+                let isEnabled = output.changeCompleteButton.value
+                if isEnabled {
+                    owner.putUserInfo(gender: owner.currentGender, birth: owner.currentBirth)
+                        .subscribe(with: self, onNext: { owner, _ in
+                            
+                            output.popViewConroller.accept(true)
+                        }, onError: { owner, error in
+                            print(error)
+                        })
+                        .disposed(by: disposeBag)
+                }
             })
             .disposed(by: disposeBag)
         
