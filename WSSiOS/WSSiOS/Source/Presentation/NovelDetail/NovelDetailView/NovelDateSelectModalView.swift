@@ -14,7 +14,8 @@ final class NovelDateSelectModalView: UIView {
     
     //MARK: - Components
     
-    
+    let contentView = UIView()
+    let closeButton = UIButton()
     
     //MARK: - Life Cycle
     
@@ -33,11 +34,32 @@ final class NovelDateSelectModalView: UIView {
     //MARK: - UI
     
     private func setUI() {
+        contentView.do {
+            $0.backgroundColor = .white
+            $0.layer.cornerRadius = 16
+            $0.layer.maskedCorners = [.layerMinXMinYCorner,
+                                      .layerMaxXMinYCorner]
+        }
+        
+        closeButton.do {
+            $0.setImage(.icCacelModal, for: .normal)
+        }
     }
     
     private func setHierarchy() {
+        self.addSubview(contentView)
+        contentView.addSubviews(closeButton)
     }
     
     private func setLayout() {
+        contentView.snp.makeConstraints {
+            $0.leading.trailing.bottom.equalToSuperview()
+            $0.height.equalTo(UIScreen.main.bounds.height - 81)
+        }
+        
+        closeButton.snp.makeConstraints {
+            $0.top.trailing.equalToSuperview().inset(20)
+            $0.size.equalTo(25)
+        }
     }
 }

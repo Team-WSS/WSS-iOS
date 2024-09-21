@@ -29,6 +29,7 @@ final class NovelReviewViewModel: ViewModelType {
         let viewDidLoadEvent: Observable<Void>
         let backButtonDidTap: ControlEvent<Void>
         let statusCollectionViewItemSelected: Observable<IndexPath>
+        let dateButtonDidTap: ControlEvent<Void>
         let starRatingTapGesture: Observable<(location: CGPoint, width: CGFloat, index: Int)>
         let starRatingPanGesture: Observable<(location: CGPoint, width: CGFloat)>
         let attractivePointCollectionViewItemSelected: Observable<IndexPath>
@@ -43,6 +44,7 @@ final class NovelReviewViewModel: ViewModelType {
         let popViewController = PublishRelay<Void>()
         let isCompleteButtonEnabled = BehaviorRelay<Bool>(value: false)
         let novelReviewStatusData = BehaviorRelay<[NovelReviewStatus]>(value: [.watching, .watched, .quit])
+        let presentNovelDateSelectModalViewController = PublishRelay<Void>()
         let starRating = PublishRelay<Float>()
         let attractivePointListData = PublishRelay<[AttractivePoints]>()
         let isAttractivePointCountOverLimit = PublishRelay<IndexPath>()
@@ -72,6 +74,12 @@ final class NovelReviewViewModel: ViewModelType {
             .subscribe(with: self, onNext: { owner, indexPath in
                 owner.novelReviewStatus = NovelReviewStatus.allCases[indexPath.item]
                 output.isCompleteButtonEnabled.accept(true)
+            })
+            .disposed(by: disposeBag)
+        
+        input.dateButtonDidTap
+            .subscribe(with: self, onNext: { owner, _ in
+                output.presentNovelDateSelectModalViewController.accept(())
             })
             .disposed(by: disposeBag)
         

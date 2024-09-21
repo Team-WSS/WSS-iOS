@@ -82,6 +82,7 @@ final class NovelReviewViewController: UIViewController {
             viewDidLoadEvent: viewDidLoadEvent.asObservable(),
             backButtonDidTap: rootView.backButton.rx.tap,
             statusCollectionViewItemSelected: rootView.novelReviewStatusView.statusCollectionView.rx.itemSelected.asObservable(),
+            dateButtonDidTap: rootView.novelReviewStatusView.dateButton.rx.tap,
             starRatingTapGesture: Observable.merge(
                 rootView.novelReviewRatingView.starImageViews.enumerated().map { index, imageView in
                     imageView.rx.tapGesture()
@@ -127,6 +128,12 @@ final class NovelReviewViewController: UIViewController {
             cell.bindData(status: element)
         }
         .disposed(by: disposeBag)
+        
+        output.presentNovelDateSelectModalViewController
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.presentModalViewController(NovelDateSelectModalViewController(viewModel: NovelDateSelectModalViewModel()))
+            })
+            .disposed(by: disposeBag)
         
         output.starRating
             .subscribe(with: self, onNext: { owner, rating in

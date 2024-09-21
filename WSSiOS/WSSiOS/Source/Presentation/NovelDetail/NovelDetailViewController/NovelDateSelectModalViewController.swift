@@ -19,6 +19,8 @@ final class NovelDateSelectModalViewController: UIViewController {
     
     //MARK: - Components
     
+    private let rootView = NovelDateSelectModalView()
+    
     //MARK: - Life Cycle
     
     init(viewModel: NovelDateSelectModalViewModel) {
@@ -30,19 +32,31 @@ final class NovelDateSelectModalViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func loadView() {
+        self.view = rootView
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        bindViewModel()
     }
     
     //MARK: - UI
     
     //MARK: - Bind
     
-    private func bindViewModle() {
-        let input = NovelDateSelectModalViewModel.Input()
+    private func bindViewModel() {
+        let input = NovelDateSelectModalViewModel.Input(
+            closeButtonDidTap: rootView.closeButton.rx.tap
+        )
         
-        let outptu = self.novelDateSelectModalViewModel.transform(from: input, disposeBag: self.disposeBag)
+        let output = self.novelDateSelectModalViewModel.transform(from: input, disposeBag: self.disposeBag)
+        
+        output.dismissModalViewController
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.dismissModalViewController()
+            })
+            .disposed(by: disposeBag)
     }
 }
