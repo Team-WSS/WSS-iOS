@@ -25,8 +25,6 @@ final class MyPageInfoViewController: UIViewController {
     
     private var rootView = MyPageSettingView()
     
-    private let backButton = UIButton()
-    
     // MARK: - Life Cycle
     
     init(viewModel: MyPageInfoViewModel) {
@@ -46,21 +44,17 @@ final class MyPageInfoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        swipeBackGesture()
-        
-        setUI()
         register()
         bindCell()
-        bindAction()
         bindViewModel()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        preparationSetNavigationBar(title: StringLiterals.Navigation.Title.myPageInfo,
-                                    left: backButton,
-                                    right: nil)
+        setNavigationBar()
+        hideTabBar()
+        swipeBackGesture()
     }
     
     //MARK: - Delegate
@@ -82,7 +76,6 @@ final class MyPageInfoViewController: UIViewController {
                     cell.bindData(title: element)
                     if row == 1 {
                         cell.bindDescriptionData(title: self.emailRelay.value)
-                        cell.cellIconImageView.isHidden = true
                     }
                 }
                 .disposed(by: disposeBag)
@@ -113,18 +106,17 @@ final class MyPageInfoViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    private func bindAction() {
-        self.backButton.rx.tap
-            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, _ in
+    private func bindViewModel() {
+        let input = MyPageInfoViewModel.Input(
+            backButtonDidTap: rootView.backButton.rx.tap)
+        
+        let output = viewModel.transform(from: input, disposeBag: disposeBag)
+        
+        output.popViewController
+            .bind(with: self, onNext: { owner, _ in
                 owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
-    }
-    
-    private func bindViewModel() {
-        let input = MyPageInfoViewModel.Input()
-        let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.bindEmail
             .bind(with: self, onNext: { owner, email in
@@ -142,9 +134,10 @@ final class MyPageInfoViewController: UIViewController {
 }
 
 extension MyPageInfoViewController {
-    private func setUI() {
-        backButton.do {
-            $0.setImage(.icNavigateLeft, for: .normal)
-        }
+    private func setNavigationBar() {
+        preparationSetNavigationBar(title: StringLiterals.Navigation.Title.myPageInfo,
+                                    left: self.rootView.backButton,
+                                    right: nil)
     }
 }
+

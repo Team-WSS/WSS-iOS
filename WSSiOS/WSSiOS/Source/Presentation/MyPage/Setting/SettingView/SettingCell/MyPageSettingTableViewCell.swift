@@ -15,10 +15,10 @@ final class MyPageSettingTableViewCell: UITableViewCell {
     //MARK: - Components
     
     private let stackView = UIStackView()
-    let cellLabel = UILabel()
-    let cellDescriptionLabel = UILabel()
+    private let cellLabel = UILabel()
+    private let cellDescriptionLabel = UILabel()
     
-    let cellIconImageView = UIImageView(image: .icNavigateRight)
+    private let cellIconImageView = UIImageView(image: .icNavigateRight)
     
     //MARK: - Life Cycle
     
@@ -89,5 +89,6 @@ final class MyPageSettingTableViewCell: UITableViewCell {
     func bindDescriptionData(title: String) {
         cellDescriptionLabel.applyWSSFont(.body3, with: title)
         cellDescriptionLabel.isHidden = false
+        cellIconImageView.isHidden = true
     }
 }

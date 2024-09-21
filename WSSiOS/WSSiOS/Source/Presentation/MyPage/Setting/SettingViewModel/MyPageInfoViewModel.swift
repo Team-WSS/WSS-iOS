@@ -23,10 +23,11 @@ final class MyPageInfoViewModel: ViewModelType {
     }
     
     struct Input {
-    
+        let backButtonDidTap: ControlEvent<Void>
     }
     
     struct Output {
+        let popViewController = PublishRelay<Bool>()
         let bindEmail = BehaviorRelay(value: "")
         let genderAndBirth = PublishRelay<ChangeUserInfo>()
     }
@@ -34,6 +35,13 @@ final class MyPageInfoViewModel: ViewModelType {
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
        
+        input.backButtonDidTap
+            .throttle(.seconds(3), scheduler: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, _ in
+                output.popViewController.accept(true)
+            })
+            .disposed(by: disposeBag)
+        
         getUserInfo()
             .subscribe(with: self, onNext: { owner, data in
                 output.bindEmail.accept(data.email)
