@@ -16,6 +16,7 @@ final class NovelReviewStatusView: UIView {
     
     let statusCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     let dateButton = UIButton()
+    private let dateFormatter = DateFormatter()
     
     //MARK: - Life Cycle
     
@@ -52,6 +53,11 @@ final class NovelReviewStatusView: UIView {
         dateButton.do {
             $0.setButtonUnderlinedAttributedTitle(text: StringLiterals.NovelReview.Date.addDate, font: .Body4_2, color: .wssGray200)
         }
+        
+        dateFormatter.do {
+            $0.dateFormat = "yy년 M월 d일"
+            $0.timeZone = TimeZone(identifier: "ko_KR")
+        }
     }
     
     private func setHierarchy() {
@@ -71,6 +77,40 @@ final class NovelReviewStatusView: UIView {
             $0.top.equalTo(statusCollectionView.snp.bottom).offset(17.5)
             $0.bottom.equalToSuperview().inset(30)
             $0.centerX.equalToSuperview()
+        }
+    }
+    
+    //MARK: - Data
+    
+    func bindData(readStatus: ReadStatus, startDate: Date?, endDate: Date?) {
+        if startDate == nil && endDate == nil {
+            dateButton.do {
+                $0.setButtonUnderlinedAttributedTitle(
+                    text: StringLiterals.NovelReview.Date.addDate,
+                    font: .Body4_2,
+                    color: .wssGray200
+                )
+            }
+        } else {
+            var startDateString = startDate.map { dateFormatter.string(from: $0) } ?? ""
+            var endDateString = endDate.map { dateFormatter.string(from: $0) } ?? ""
+            
+            switch readStatus {
+            case .watching:
+                endDateString = ""
+            case .quit:
+                startDateString = ""
+            default:
+                break
+            }
+
+            dateButton.do {
+                $0.setButtonUnderlinedAttributedTitle(
+                    text: "\(startDateString) ~ \(endDateString)",
+                    font: .Body4_2,
+                    color: .wssGray200
+                )
+            }
         }
     }
 }

@@ -9,12 +9,15 @@ import UIKit
 
 import RxSwift
 import RxCocoa
+import Then
 
 final class NovelReviewViewModel: ViewModelType {
     
     //MARK: - Properties
     
     private var readStatus: ReadStatus?
+    private var startDate: Date?
+    private var endDate: Date?
     private var starRating: Float = 0.0
     private var attractivePointList: [String] = []
     var selectedKeywordList: [String] = []
@@ -22,6 +25,10 @@ final class NovelReviewViewModel: ViewModelType {
     private let minStarRating: Float = 0.0
     private let maxStarRating: Float = 5.0
     private let attractivePointLimit: Int = 3
+    private let dateFormatter = DateFormatter().then {
+        $0.dateFormat = "yyyy-MM-dd"
+        $0.timeZone = TimeZone(identifier: "ko_KR")
+    }
     
     //MARK: - Life Cycle
     
@@ -38,13 +45,16 @@ final class NovelReviewViewModel: ViewModelType {
         let selectedKeywordCollectionViewContentSize: Observable<CGSize?>
         let selectedKeywordCollectionViewItemSelected: Observable<IndexPath>
         let novelReviewKeywordSelectedNotification: Observable<Notification>
+        let novelReviewDateSelectedNotification: Observable<Notification>
     }
     
     struct Output {
         let popViewController = PublishRelay<Void>()
         let isCompleteButtonEnabled = BehaviorRelay<Bool>(value: false)
-        let readStatusData = BehaviorRelay<[ReadStatus]>(value: [.watching, .watched, .quit])
+        let readStatusListData = PublishRelay<[ReadStatus]>()
+        let readStatusData = PublishRelay<ReadStatus>()
         let presentNovelDateSelectModalViewController = PublishRelay<ReadStatus>()
+        let startDateEndDateData = PublishRelay<[Date?]>()
         let starRating = PublishRelay<Float>()
         let attractivePointListData = PublishRelay<[AttractivePoints]>()
         let isAttractivePointCountOverLimit = PublishRelay<IndexPath>()
@@ -58,7 +68,8 @@ final class NovelReviewViewModel: ViewModelType {
         
         input.viewDidLoadEvent
             .subscribe(with: self, onNext: { owner, _ in
-                output.readStatusData.accept(ReadStatus.allCases)
+                output.readStatusListData.accept(ReadStatus.allCases)
+                output.startDateEndDateData.accept([owner.startDate, owner.endDate])
                 output.attractivePointListData.accept(AttractivePoints.allCases)
                 output.selectedKeywordListData.accept(owner.selectedKeywordList)
             })
@@ -73,6 +84,7 @@ final class NovelReviewViewModel: ViewModelType {
         input.statusCollectionViewItemSelected
             .subscribe(with: self, onNext: { owner, indexPath in
                 owner.readStatus = ReadStatus.allCases[indexPath.item]
+                output.readStatusData.accept(ReadStatus.allCases[indexPath.item])
                 output.isCompleteButtonEnabled.accept(true)
             })
             .disposed(by: disposeBag)
@@ -144,6 +156,15 @@ final class NovelReviewViewModel: ViewModelType {
                 guard let selectedKeywordList = notification.object as? [String] else { return }
                 owner.selectedKeywordList = selectedKeywordList
                 output.selectedKeywordListData.accept(owner.selectedKeywordList)
+            })
+            .disposed(by: disposeBag)
+        
+        input.novelReviewDateSelectedNotification
+            .subscribe(with: self, onNext: { owner, notification in
+                guard let startDateEndDateData = notification.object as? [Date] else { return }
+                owner.startDate = startDateEndDateData[0]
+                owner.endDate = startDateEndDateData[1]
+                output.startDateEndDateData.accept([owner.startDate, owner.endDate])
             })
             .disposed(by: disposeBag)
         

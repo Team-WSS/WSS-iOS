@@ -21,8 +21,8 @@ final class NovelDateSelectModalViewController: UIViewController {
     private let viewDidLoadEvent = PublishRelay<Void>()
     
     private let dateFormatter = DateFormatter().then {
-        $0.dateFormat = StringLiterals.Register.Normal.DatePicker.dateFormat
-        $0.timeZone = TimeZone(identifier: StringLiterals.Register.Normal.DatePicker.KoreaTimeZone)
+        $0.dateFormat = "yyyy-MM-dd"
+        $0.timeZone = TimeZone(identifier: "ko_KR")
     }
     
     //MARK: - Components
@@ -62,7 +62,9 @@ final class NovelDateSelectModalViewController: UIViewController {
             closeButtonDidTap: rootView.closeButton.rx.tap,
             startDateButonDidTap: rootView.novelDateSelectModalDateButtonView.startDateButton.rx.tap,
             endDateButonDidTap: rootView.novelDateSelectModalDateButtonView.endDateButton.rx.tap,
-            datePickerDateDidChanged: rootView.novelDateSelectModalDatePickerView.datePicker.rx.date.changed
+            datePickerDateDidChanged: rootView.novelDateSelectModalDatePickerView.datePicker.rx.date.changed,
+            completeButtonDidTap: rootView.novelDateSelectModalButtonView.completeButton.rx.tap,
+            removeButtonDidTap: rootView.novelDateSelectModalButtonView.removeButton.rx.tap
         )
         
         let output = self.novelDateSelectModalViewModel.transform(from: input, disposeBag: self.disposeBag)

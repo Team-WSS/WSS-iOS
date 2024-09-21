@@ -107,7 +107,9 @@ final class NovelReviewViewController: UIViewController {
             keywordSearchViewDidTap: rootView.novelReviewKeywordView.keywordSearchBarView.rx.tapGesture().when(.recognized).asObservable(),
             selectedKeywordCollectionViewContentSize: rootView.novelReviewKeywordView.selectedKeywordCollectionView.rx.observe(CGSize.self, "contentSize"),
             selectedKeywordCollectionViewItemSelected: rootView.novelReviewKeywordView.selectedKeywordCollectionView.rx.itemSelected.asObservable(),
-            novelReviewKeywordSelectedNotification: NotificationCenter.default.rx.notification(Notification.Name("NovelReviewKeywordSelected")).asObservable()
+            novelReviewKeywordSelectedNotification: NotificationCenter.default.rx.notification(Notification.Name("NovelReviewKeywordSelected")).asObservable(),
+            novelReviewDateSelectedNotification: NotificationCenter.default.rx.notification(Notification.Name("NovelReviewDateSelected")).asObservable()
+
         )
         
         let output = self.novelReviewViewModel.transform(from: input, disposeBag: self.disposeBag)
@@ -124,7 +126,7 @@ final class NovelReviewViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.readStatusData.bind(to: rootView.novelReviewStatusView.statusCollectionView.rx.items(cellIdentifier: NovelReviewStatusCollectionViewCell.cellIdentifier, cellType: NovelReviewStatusCollectionViewCell.self)) { item, element, cell in
+        output.readStatusListData.bind(to: rootView.novelReviewStatusView.statusCollectionView.rx.items(cellIdentifier: NovelReviewStatusCollectionViewCell.cellIdentifier, cellType: NovelReviewStatusCollectionViewCell.self)) { item, element, cell in
             cell.bindData(status: element)
         }
         .disposed(by: disposeBag)
@@ -132,6 +134,16 @@ final class NovelReviewViewController: UIViewController {
         output.presentNovelDateSelectModalViewController
             .subscribe(with: self, onNext: { owner, readStatus in
                 owner.presentModalViewController(NovelDateSelectModalViewController(viewModel: NovelDateSelectModalViewModel(readStatus: readStatus)))
+            })
+            .disposed(by: disposeBag)
+        
+        Observable.combineLatest(output.readStatusData, output.startDateEndDateData)
+            .subscribe(with: self, onNext: { owner, combinedData in
+                let (readStatus, startDateEndDate) = combinedData
+                owner.rootView.novelReviewStatusView.bindData(readStatus: readStatus,
+                                                              startDate: startDateEndDate[0],
+                                                              endDate: startDateEndDate[1])
+
             })
             .disposed(by: disposeBag)
         

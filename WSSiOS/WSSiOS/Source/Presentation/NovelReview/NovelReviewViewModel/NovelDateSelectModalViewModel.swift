@@ -34,6 +34,8 @@ final class NovelDateSelectModalViewModel: ViewModelType {
         let startDateButonDidTap: ControlEvent<Void>
         let endDateButonDidTap: ControlEvent<Void>
         let datePickerDateDidChanged: ControlEvent<Date>
+        let completeButtonDidTap: ControlEvent<Void>
+        let removeButtonDidTap: ControlEvent<Void>
     }
     
     struct Output {
@@ -96,9 +98,19 @@ final class NovelDateSelectModalViewModel: ViewModelType {
                     owner.endDate = date
                     output.endDateData.accept(owner.endDate)
                 }
-                
-                print("startDate", owner.startDate)
-                print("endDate", owner.endDate)
+            })
+            .disposed(by: disposeBag)
+        
+        input.completeButtonDidTap
+            .subscribe(with: self, onNext: { owner, _ in
+                NotificationCenter.default.post(name: NSNotification.Name("NovelReviewDateSelected"), object: [owner.startDate, owner.endDate])
+                output.dismissModalViewController.accept(())
+            })
+            .disposed(by: disposeBag)
+        
+        input.removeButtonDidTap
+            .subscribe(with: self, onNext: { owner, _ in
+                output.dismissModalViewController.accept(())
             })
             .disposed(by: disposeBag)
         
