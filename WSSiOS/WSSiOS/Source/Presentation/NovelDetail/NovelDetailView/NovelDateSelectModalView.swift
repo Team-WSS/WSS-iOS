@@ -15,7 +15,10 @@ final class NovelDateSelectModalView: UIView {
     //MARK: - Components
     
     let contentView = UIView()
+    private let indicatorBackgroundView = UIView()
     let closeButton = UIButton()
+    let stackView = UIStackView()
+    let novelDateSelectModalButtonView = NovelDateSelectModalButtonView()
     
     //MARK: - Life Cycle
     
@@ -35,31 +38,54 @@ final class NovelDateSelectModalView: UIView {
     
     private func setUI() {
         contentView.do {
-            $0.backgroundColor = .white
+            $0.backgroundColor = .wssWhite
             $0.layer.cornerRadius = 16
             $0.layer.maskedCorners = [.layerMinXMinYCorner,
                                       .layerMaxXMinYCorner]
         }
         
+        indicatorBackgroundView.do {
+            $0.backgroundColor = .wssWhite
+        }
+        
         closeButton.do {
             $0.setImage(.icCacelModal, for: .normal)
+        }
+        
+        stackView.do {
+            $0.alignment = .fill
+            $0.axis = .vertical
         }
     }
     
     private func setHierarchy() {
-        self.addSubview(contentView)
-        contentView.addSubviews(closeButton)
+        self.addSubviews(contentView,
+                         indicatorBackgroundView)
+        contentView.addSubviews(closeButton,
+                                stackView)
+        stackView.addArrangedSubviews(novelDateSelectModalButtonView)
     }
     
     private func setLayout() {
         contentView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(self.safeAreaLayoutGuide)
+        }
+        
+        indicatorBackgroundView.snp.makeConstraints {
+            $0.top.equalTo(contentView.snp.bottom)
             $0.leading.trailing.bottom.equalToSuperview()
-            $0.height.equalTo(UIScreen.main.bounds.height - 81)
         }
         
         closeButton.snp.makeConstraints {
             $0.top.trailing.equalToSuperview().inset(20)
             $0.size.equalTo(25)
+        }
+        
+        stackView.snp.makeConstraints {
+            $0.top.equalTo(closeButton.snp.bottom)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.bottom.equalToSuperview()
         }
     }
 }
