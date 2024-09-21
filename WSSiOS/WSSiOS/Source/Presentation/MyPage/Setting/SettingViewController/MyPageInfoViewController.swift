@@ -19,6 +19,7 @@ final class MyPageInfoViewController: UIViewController {
     private let viewModel: MyPageInfoViewModel
     private let settingList = StringLiterals.MyPage.SettingInfo.allCases.map { $0.rawValue }
     private let emailRelay = BehaviorRelay(value: "")
+    private var genderAndBirthData = ChangeUserInfo(gender: "", birth: 0)
     
     //MARK: - UI Components
     
@@ -92,7 +93,7 @@ final class MyPageInfoViewController: UIViewController {
                 switch indexPath.row {
                 case 0:
                     print("성별/나이 변경")
-                    //pushVC
+                    owner.pushToChangeUserInfoViewController(userInfo: owner.genderAndBirthData)
                 case 1:
                     print("이메일")
                     //pushVC
@@ -124,15 +125,16 @@ final class MyPageInfoViewController: UIViewController {
         let input = MyPageInfoViewModel.Input()
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
-        output.email
-            .subscribe(with: self, onNext: { owner, email in
+        output.bindEmail
+            .bind(with: self, onNext: { owner, email in
                 owner.emailRelay.accept(email)
+                owner.rootView.tableView.reloadData()
             })
             .disposed(by: disposeBag)
         
-        emailRelay
-            .bind(onNext: { [weak self] _ in
-                self?.rootView.tableView.reloadData()
+        output.genderAndBirth
+            .bind(with: self, onNext: { owner, data in
+                owner.genderAndBirthData = ChangeUserInfo(gender: data.gender, birth: data.birth)
             })
             .disposed(by: disposeBag)
     }

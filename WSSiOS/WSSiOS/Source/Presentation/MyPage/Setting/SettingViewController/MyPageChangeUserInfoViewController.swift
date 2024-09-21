@@ -57,6 +57,7 @@ final class MyPageChangeUserInfoViewController: UIViewController {
             maleButtonTapped: rootView.genderMaleButton.rx.tap,
             femaleButtonTapped: rootView.genderFemaleButton.rx.tap,
             birthViewTapped: rootView.birthButtonView.rx.tapGesture(),
+            backButtonTapped: rootView.backButton.rx.tap,
             completeButtonTapped: rootView.completeButton.rx.tap)
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
