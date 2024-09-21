@@ -59,10 +59,15 @@ final class HomeRealtimePopularCollectionViewCell: UICollectionViewCell {
     }
     
     func bindData(data: [RealtimePopularFeed]) {
-        guard data.count == 3 else { return }
+        let feedViews = [firstFeedView, secondFeedView, thirdFeedView]
         
-        firstFeedView.bindData(data: data[0])
-        secondFeedView.bindData(data: data[1])
-        thirdFeedView.bindData(data: data[2])
+        for (index, feedView) in feedViews.enumerated() {
+            if data.indices.contains(index) {
+                feedView.bindData(data: data[index])
+                feedView.isHidden = false
+            } else {
+                feedView.isHidden = true
+            }
+        }
     }
 }
