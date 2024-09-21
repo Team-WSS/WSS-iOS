@@ -73,7 +73,7 @@ final class NovelReviewStatusCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Data
     
-    func bindData(status: NovelReviewStatus) {
+    func bindData(status: ReadStatus) {
         switch status {
         case .watching:
             statusImageView.do {
