@@ -15,7 +15,8 @@ final class FeedDetailReplyWritingView: UIView {
     //MARK: - UI Components
     
     private let userProfileImageView = UIImageView()
-    private let textViewBackgroundView = UIView()
+    let textViewBackgroundView = UIView()
+    private let replyWritingPlaceHolderLabel = UILabel()
     let replyWritingTextView = UITextView()
     private let replyButton = UIButton()
     
@@ -50,13 +51,18 @@ final class FeedDetailReplyWritingView: UIView {
             $0.backgroundColor = .wssGray50
             $0.layer.cornerRadius = 14
             
+            replyWritingPlaceHolderLabel.do {
+                $0.applyWSSFont(.body3, with: "댓글을 남겨보세요")
+                $0.textColor = .wssGray200
+            }
+            
             replyWritingTextView.do {
-                // plceHolder 설정
                 $0.textColor = .wssBlack
-                $0.font = .Body3
+                $0.applyWSSFont(.body3, with: "")
                 $0.tintColor = .wssBlack
                 $0.backgroundColor = .wssGray50
-                $0.isScrollEnabled = false
+                $0.textContainer.lineFragmentPadding = 0
+                $0.textContainerInset = .zero
             }
             
             replyButton.do {
@@ -75,7 +81,7 @@ final class FeedDetailReplyWritingView: UIView {
     
     private func setLayout() {
         self.snp.makeConstraints {
-            $0.height.equalTo(76)
+            $0.height.greaterThanOrEqualTo(76)
         }
         
         userProfileImageView.snp.makeConstraints {
@@ -89,16 +95,17 @@ final class FeedDetailReplyWritingView: UIView {
             $0.centerY.equalToSuperview()
             $0.leading.equalTo(userProfileImageView.snp.trailing).offset(12)
             $0.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(42)
             
             replyWritingTextView.snp.makeConstraints {
                 $0.centerY.equalToSuperview()
                 $0.leading.equalToSuperview().inset(16)
-                $0.height.lessThanOrEqualTo(84)
+                $0.height.equalTo(19)
             }
             
             replyButton.snp.makeConstraints {
                 $0.top.equalToSuperview().inset(7)
-                $0.leading.equalTo(replyWritingTextView.snp.trailing).offset(6)
+                $0.leading.equalTo(replyWritingTextView.snp.trailing)
                 $0.trailing.equalToSuperview().inset(16)
                 $0.size.equalTo(28)
             }

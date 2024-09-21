@@ -133,21 +133,24 @@ extension FeedDetailViewController: UICollectionViewDelegateFlowLayout {
 
 extension FeedDetailViewController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
-            
-            let size = CGSize(width: view.frame.width, height: .infinity)
-            let estimatedSize = textView.sizeThatFits(size)
-            
-            textView.constraints.forEach { (constraint) in
-            
-              /// 180 이하일때는 더 이상 줄어들지 않게하기
-                if estimatedSize.height <= 180 {
-                
-                }
-                else {
-                    if constraint.firstAttribute == .height {
-                        constraint.constant = estimatedSize.height
-                    }
-                }
-            }
+        let size = CGSize(width: rootView.replyWritingView.replyWritingTextView.frame.width, height: .infinity)
+        let estimatedSize = textView.sizeThatFits(size)
+        
+        let lineHeight = textView.font?.lineHeight ?? 0
+        let numberOfLines = Int(estimatedSize.height / lineHeight)
+        
+        rootView.replyWritingView.replyWritingTextView.snp.updateConstraints {
+            $0.height.equalTo(min(estimatedSize.height, 84))
         }
+        
+        rootView.replyWritingView.textViewBackgroundView.snp.updateConstraints {
+            $0.height.equalTo(min(estimatedSize.height + 14, 98))
+        }
+        
+        rootView.replyWritingView.replyWritingTextView.isScrollEnabled = numberOfLines > 4
+        
+        UIView.animate(withDuration: 0.2) {
+            self.rootView.replyWritingView.layoutIfNeeded()
+        }
+    }
 }
