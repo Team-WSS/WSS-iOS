@@ -105,15 +105,15 @@ final class HomeViewController: UIViewController {
                 cellType: HomeRealtimePopularCollectionViewCell.self)) { row, element, cell in
                     cell.bindData(data: element)
                 }
-            .disposed(by: disposeBag)
-
-            output.realtimePopularData
+                .disposed(by: disposeBag)
+        
+        output.realtimePopularData
             .map { $0.compactMap { $0 } }
             .bind(with: self, onNext: { owner, realtimePopularItems in
                 owner.rootView.realtimePopularView.configureDots(numberOfItems: realtimePopularItems.count)
             })
             .disposed(by: disposeBag)
-
+        
         output.interestList
             .bind(to: rootView.interestView.interestCollectionView.rx.items(
                 cellIdentifier: HomeInterestCollectionViewCell.cellIdentifier,
