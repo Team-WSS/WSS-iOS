@@ -62,7 +62,7 @@ final class NormalSearchViewModel: ViewModelType {
     
     //MARK: - API
     
-    private func getNormalSearchList(query: String, page: Int) -> Observable<NormalSearchNovels>{
+    private func getNormalSearchList(query: String, page: Int) -> Observable<NormalSearchNovels> {
         return searchRepository.getSearchNovels(query: query, page: page)
             .do(onNext: { data in
                 if page == 0 {
