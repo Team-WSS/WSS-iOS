@@ -38,7 +38,10 @@ final class MyPageSettingTableViewCell: UITableViewCell {
     //MARK: - UI
     
     private func setUI() {
-        self.backgroundColor = .wssWhite
+        self.do{
+            $0.backgroundColor = .wssWhite
+            $0.selectionStyle = .none
+        }
         
         stackView.do {
             $0.axis = .vertical
