@@ -53,7 +53,9 @@ final class NovelDateSelectModalViewController: UIViewController {
     private func bindViewModel() {
         let input = NovelDateSelectModalViewModel.Input(
             viewDidLoadEvent: viewDidLoadEvent.asObservable(),
-            closeButtonDidTap: rootView.closeButton.rx.tap
+            closeButtonDidTap: rootView.closeButton.rx.tap,
+            startDateButonDidTap: rootView.novelDateSelectModalDateButtonView.startDateButton.rx.tap,
+            endDateButonDidTap: rootView.novelDateSelectModalDateButtonView.endDateButton.rx.tap
         )
         
         let output = self.novelDateSelectModalViewModel.transform(from: input, disposeBag: self.disposeBag)
@@ -67,6 +69,12 @@ final class NovelDateSelectModalViewController: UIViewController {
         output.readStatusData
             .subscribe(with: self, onNext: { owner, readStatus in
                 owner.rootView.bindData(readStatus: readStatus)
+            })
+            .disposed(by: disposeBag)
+        
+        output.isStartDateEditing
+            .subscribe(with: self, onNext: { owner, isStartDateEditing in
+                owner.rootView.novelDateSelectModalDateButtonView.updateDateButonStyle(isStartDateSelected: isStartDateEditing)
             })
             .disposed(by: disposeBag)
     }

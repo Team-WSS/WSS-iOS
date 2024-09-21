@@ -16,9 +16,10 @@ final class NovelDateSelectModalView: UIView {
     
     let contentView = UIView()
     private let indicatorBackgroundView = UIView()
-    let closeButton = UIButton()
     let stackView = UIStackView()
+    let closeButton = UIButton()
     let novelDateSelectModalTitleView = NovelDateSelectModalTitleView()
+    let novelDateSelectModalDateButtonView = NovelDateSelectModalDateButtonView()
     let novelDateSelectModalButtonView = NovelDateSelectModalButtonView()
     
     //MARK: - Life Cycle
@@ -62,9 +63,10 @@ final class NovelDateSelectModalView: UIView {
     private func setHierarchy() {
         self.addSubviews(contentView,
                          indicatorBackgroundView)
-        contentView.addSubviews(closeButton,
-                                stackView)
+        contentView.addSubviews(stackView,
+                                closeButton)
         stackView.addArrangedSubviews(novelDateSelectModalTitleView,
+                                      novelDateSelectModalDateButtonView,
                                       novelDateSelectModalButtonView)
     }
     
@@ -79,19 +81,20 @@ final class NovelDateSelectModalView: UIView {
             $0.leading.trailing.bottom.equalToSuperview()
         }
         
-        closeButton.snp.makeConstraints {
-            $0.top.trailing.equalToSuperview().inset(20)
-            $0.size.equalTo(25)
-        }
-        
         stackView.snp.makeConstraints {
-            $0.top.equalTo(closeButton.snp.bottom)
+            $0.top.equalToSuperview().inset(65)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.bottom.equalToSuperview()
             
             stackView.do {
                 $0.setCustomSpacing(25, after: novelDateSelectModalTitleView)
+                $0.setCustomSpacing(17, after: novelDateSelectModalDateButtonView)
             }
+        }
+        
+        closeButton.snp.makeConstraints {
+            $0.top.trailing.equalToSuperview()
+            $0.size.equalTo(65)
         }
     }
     
@@ -101,10 +104,24 @@ final class NovelDateSelectModalView: UIView {
         switch readStatus {
         case .watching:
             self.novelDateSelectModalTitleView.bindData(title: StringLiterals.NovelReview.Date.startDate)
+            self.novelDateSelectModalDateButtonView.removeFromSuperview()
+            
+            stackView.snp.updateConstraints {
+                $0.top.equalToSuperview().inset(25)
+            }
         case .watched:
             self.novelDateSelectModalTitleView.removeFromSuperview()
+            
+            stackView.snp.updateConstraints {
+                $0.top.equalToSuperview().inset(65)
+            }
         case .quit:
             self.novelDateSelectModalTitleView.bindData(title: StringLiterals.NovelReview.Date.endDate)
+            self.novelDateSelectModalDateButtonView.removeFromSuperview()
+            
+            stackView.snp.updateConstraints {
+                $0.top.equalToSuperview().inset(25)
+            }
         }
     }
 }
