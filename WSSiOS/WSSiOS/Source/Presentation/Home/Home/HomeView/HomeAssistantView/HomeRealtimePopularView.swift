@@ -24,7 +24,9 @@ final class HomeRealtimePopularView: UIView {
                                                          collectionViewLayout: UICollectionViewLayout())
     private let realtimePopularCollectionViewLayout = UICollectionViewFlowLayout()
     
-    private let testView = HomeRealtimePopularCollectionViewCell()
+    private let backgroundView = UIView()
+    private let topDividerView = UIView()
+    private let bottomDividerView = UIView()
     
     private let dotStackView = UIStackView()
     private var dotImageViews: [UIImageView] = []
@@ -72,10 +74,19 @@ final class HomeRealtimePopularView: UIView {
         
         realtimePopularCollectionViewLayout.do {
             $0.scrollDirection = .horizontal
-            $0.minimumLineSpacing = 10
-            $0.itemSize = CGSize(width: 335, height: 414)
-            $0.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+            $0.minimumLineSpacing = 0
+            $0.itemSize = CGSize(width: UIScreen.main.bounds.width - 40, height: 414)
             realtimePopularCollectionView.setCollectionViewLayout($0, animated: false)
+        }
+        
+        backgroundView.do {
+            $0.layer.borderColor = UIColor.wssGray70.cgColor
+            $0.layer.borderWidth = 1
+            $0.layer.cornerRadius = 14
+        }
+        
+        [topDividerView, bottomDividerView].forEach {
+            $0.backgroundColor = .wssGray70
         }
         
         dotStackView.do {
@@ -87,11 +98,12 @@ final class HomeRealtimePopularView: UIView {
     private func setHierarchy() {
         titleStackView.addArrangedSubviews(titleLogoImageView,
                                            titleLabel)
-        
+        backgroundView.addSubviews(realtimePopularCollectionView,
+                                   topDividerView,
+                                   bottomDividerView)
         self.addSubviews(titleStackView,
-                         realtimePopularCollectionView,
+                         backgroundView,
                          dotStackView)
-        
     }
     
     private func setLayout() {
@@ -100,14 +112,31 @@ final class HomeRealtimePopularView: UIView {
             $0.leading.equalToSuperview().inset(20)
         }
         
-        realtimePopularCollectionView.snp.makeConstraints {
+        backgroundView.snp.makeConstraints {
             $0.top.equalTo(titleStackView.snp.bottom).offset(14)
-            $0.leading.trailing.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview().inset(20)
             $0.height.equalTo(414)
+            
+            realtimePopularCollectionView.snp.makeConstraints {
+                $0.top.horizontalEdges.equalToSuperview()
+                $0.height.equalTo(414)
+            }
+            
+            topDividerView.snp.makeConstraints {
+                $0.top.equalToSuperview().inset(138)
+                $0.horizontalEdges.equalToSuperview()
+                $0.height.equalTo(1)
+            }
+            
+            bottomDividerView.snp.makeConstraints {
+                $0.bottom.equalToSuperview().inset(138)
+                $0.horizontalEdges.equalToSuperview()
+                $0.height.equalTo(1)
+            }
         }
         
         dotStackView.snp.makeConstraints {
-            $0.top.equalTo(realtimePopularCollectionView.snp.bottom).offset(14)
+            $0.top.equalTo(backgroundView.snp.bottom).offset(14)
             $0.centerX.bottom.equalToSuperview()
         }
     }

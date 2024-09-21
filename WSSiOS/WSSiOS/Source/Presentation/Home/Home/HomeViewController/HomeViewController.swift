@@ -148,7 +148,7 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
                                    targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         if scrollView == rootView.realtimePopularView.realtimePopularCollectionView {
             let scrolledOffsetX = targetContentOffset.pointee.x + scrollView.contentInset.left
-            let cellWidth: CGFloat = 335
+            let cellWidth: CGFloat = UIScreen.main.bounds.width - 40
             let index = round(scrolledOffsetX / cellWidth)
             targetContentOffset.pointee = CGPoint(x: index * cellWidth - scrollView.contentInset.left, y: scrollView.contentInset.top)
         }
