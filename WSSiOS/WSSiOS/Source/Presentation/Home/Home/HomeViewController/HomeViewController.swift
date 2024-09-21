@@ -130,7 +130,7 @@ final class HomeViewController: UIViewController {
                 }
                 .disposed(by: disposeBag)
         
-        output.announcemnetButtonEnabled
+        output.navigateToAnnouncementView
             .bind(with: self, onNext: { owner, _ in
                 let viewController = HomeNoticeViewController(viewModel: HomeNoticeViewModel(noticeRepository: DefaultNoticeRepository(noticeService: DefaultNoticeService() )))
                 viewController.navigationController?.isNavigationBarHidden = false

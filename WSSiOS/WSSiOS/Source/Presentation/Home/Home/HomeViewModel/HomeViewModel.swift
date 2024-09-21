@@ -37,7 +37,7 @@ final class HomeViewModel: ViewModelType {
         var realtimePopularData: Observable<[[RealtimePopularFeed]]>
         var interestList: Observable<[InterestFeed]>
         var tasteRecommendList: Observable<[TasteRecommendNovel]>
-        let announcemnetButtonEnabled: Observable<Void>
+        let navigateToAnnouncementView: Observable<Void>
     }
     
     //MARK: - init
@@ -87,13 +87,13 @@ extension HomeViewModel {
             })
             .disposed(by: disposeBag)
         
-        let announcemnetButtonEnabled = input.announcementButtonTapped.asObservable()
+        let navigateToAnnouncementView = input.announcementButtonTapped.asObservable()
         
         return Output(todayPopularList: todayPopularList.asObservable(),
                       realtimePopularList: realtimePopularList.asObservable(),
                       realtimePopularData: realtimePopularDataRelay.asObservable(),
                       interestList: interestList.asObservable(),
                       tasteRecommendList: tasteRecommendList.asObservable(),
-                      announcemnetButtonEnabled: announcemnetButtonEnabled.asObservable())
+                      navigateToAnnouncementView: navigateToAnnouncementView.asObservable())
     }
 }
