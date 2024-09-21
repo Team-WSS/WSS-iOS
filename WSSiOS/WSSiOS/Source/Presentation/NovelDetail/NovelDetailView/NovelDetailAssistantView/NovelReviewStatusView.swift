@@ -10,12 +10,6 @@ import UIKit
 import SnapKit
 import Then
 
-enum NovelReviewStatus: CaseIterable {
-    case watching
-    case watched
-    case quit
-}
-
 final class NovelReviewStatusView: UIView {
     
     //MARK: - Components
