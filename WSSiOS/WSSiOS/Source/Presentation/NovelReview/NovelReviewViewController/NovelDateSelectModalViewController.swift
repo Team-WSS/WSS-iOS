@@ -74,7 +74,7 @@ final class NovelDateSelectModalViewController: UIViewController {
         
         output.isStartDateEditing
             .subscribe(with: self, onNext: { owner, isStartDateEditing in
-                owner.rootView.novelDateSelectModalDateButtonView.updateDateButonStyle(isStartDateSelected: isStartDateEditing)
+                owner.rootView.novelDateSelectModalDateButtonView.updateDateButtonStyle(isStartDateSelected: isStartDateEditing)
             })
             .disposed(by: disposeBag)
     }

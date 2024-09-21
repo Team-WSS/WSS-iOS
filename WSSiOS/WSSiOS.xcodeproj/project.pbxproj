@@ -325,6 +325,7 @@
 		CD8747A72C9EC4F900D0ADAD /* NovelDateSelectModalButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8747A62C9EC4F900D0ADAD /* NovelDateSelectModalButtonView.swift */; };
 		CD8747A92C9EDA3000D0ADAD /* NovelDateSelectModalTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8747A82C9EDA3000D0ADAD /* NovelDateSelectModalTitleView.swift */; };
 		CD8747B52C9EF31E00D0ADAD /* NovelDateSelectModalDateButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8747B42C9EF31E00D0ADAD /* NovelDateSelectModalDateButtonView.swift */; };
+		CD8747B72C9F050800D0ADAD /* NovelDateSelectModalDatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8747B62C9F050800D0ADAD /* NovelDateSelectModalDatePickerView.swift */; };
 		CDA1774B2C3EC6760089137F /* WSSToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1774A2C3EC6760089137F /* WSSToggleButton.swift */; };
 		CDA5F03A2C2FDB2200FCF15C /* FeedEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5F0392C2FDB2200FCF15C /* FeedEditViewController.swift */; };
 		CDA5F03C2C2FDB3100FCF15C /* FeedEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5F03B2C2FDB3100FCF15C /* FeedEditViewModel.swift */; };
@@ -650,6 +651,7 @@
 		CD8747A62C9EC4F900D0ADAD /* NovelDateSelectModalButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDateSelectModalButtonView.swift; sourceTree = "<group>"; };
 		CD8747A82C9EDA3000D0ADAD /* NovelDateSelectModalTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDateSelectModalTitleView.swift; sourceTree = "<group>"; };
 		CD8747B42C9EF31E00D0ADAD /* NovelDateSelectModalDateButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDateSelectModalDateButtonView.swift; sourceTree = "<group>"; };
+		CD8747B62C9F050800D0ADAD /* NovelDateSelectModalDatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDateSelectModalDatePickerView.swift; sourceTree = "<group>"; };
 		CDA1774A2C3EC6760089137F /* WSSToggleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSToggleButton.swift; sourceTree = "<group>"; };
 		CDA5F0392C2FDB2200FCF15C /* FeedEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedEditViewController.swift; sourceTree = "<group>"; };
 		CDA5F03B2C2FDB3100FCF15C /* FeedEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedEditViewModel.swift; sourceTree = "<group>"; };
@@ -2152,6 +2154,7 @@
 				CD1F7E092C99A8DC0039972C /* NovelKeywordSelectModalButtonView.swift */,
 				CD8747A82C9EDA3000D0ADAD /* NovelDateSelectModalTitleView.swift */,
 				CD8747B42C9EF31E00D0ADAD /* NovelDateSelectModalDateButtonView.swift */,
+				CD8747B62C9F050800D0ADAD /* NovelDateSelectModalDatePickerView.swift */,
 				CD8747A62C9EC4F900D0ADAD /* NovelDateSelectModalButtonView.swift */,
 			);
 			path = NovelReviewAssistantView;
@@ -2483,6 +2486,7 @@
 				A1147A802B50638200141692 /* RecordViewController.swift in Sources */,
 				B9F7401D2C047E360018D0C6 /* NormalSearchViewModel.swift in Sources */,
 				CD803B392C940989006EBAF8 /* CenterAlignedCollectionViewFlowLayout.swift in Sources */,
+				CD8747B72C9F050800D0ADAD /* NovelDateSelectModalDatePickerView.swift in Sources */,
 				39ABD5A02B54D0A900DEA94E /* RegisterNormalDatePicker.swift in Sources */,
 				39D4A5C92BDA4C5A004FC834 /* NovelDetailViewController.swift in Sources */,
 				CD2D0AB92C7F0279007CF1F1 /* NovelReviewStatusCollectionViewCell.swift in Sources */,

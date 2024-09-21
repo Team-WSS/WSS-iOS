@@ -20,6 +20,7 @@ final class NovelDateSelectModalView: UIView {
     let closeButton = UIButton()
     let novelDateSelectModalTitleView = NovelDateSelectModalTitleView()
     let novelDateSelectModalDateButtonView = NovelDateSelectModalDateButtonView()
+    let novelDateSelectModalDatePickerView = NovelDateSelectModalDatePickerView()
     let novelDateSelectModalButtonView = NovelDateSelectModalButtonView()
     
     //MARK: - Life Cycle
@@ -67,6 +68,7 @@ final class NovelDateSelectModalView: UIView {
                                 closeButton)
         stackView.addArrangedSubviews(novelDateSelectModalTitleView,
                                       novelDateSelectModalDateButtonView,
+                                      novelDateSelectModalDatePickerView,
                                       novelDateSelectModalButtonView)
     }
     
@@ -89,6 +91,7 @@ final class NovelDateSelectModalView: UIView {
             stackView.do {
                 $0.setCustomSpacing(25, after: novelDateSelectModalTitleView)
                 $0.setCustomSpacing(17, after: novelDateSelectModalDateButtonView)
+                $0.setCustomSpacing(30, after: novelDateSelectModalDatePickerView)
             }
         }
         

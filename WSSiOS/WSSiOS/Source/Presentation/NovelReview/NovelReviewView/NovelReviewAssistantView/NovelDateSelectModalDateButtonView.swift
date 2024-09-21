@@ -128,13 +128,13 @@ final class NovelDateSelectModalDateButtonView: UIView {
     
     //MARK: - Custom Method
     
-    func updateDateButonStyle(isStartDateSelected: Bool) {
-        startDateButton.do {
-            $0.backgroundColor = isStartDateSelected ? .white : .wssGray50
-        }
+    func updateDateButtonStyle(isStartDateSelected: Bool) {
+        startDateButton.backgroundColor = isStartDateSelected ? .white : .wssGray50
+        startDateTitleLabel.textColor = isStartDateSelected ? .black : .wssGray200
+        startDateLabel.textColor = isStartDateSelected ? .black : .wssGray200
         
-        endDateButton.do {
-            $0.backgroundColor = isStartDateSelected ? .wssGray50 : .white
-        }
+        endDateButton.backgroundColor = isStartDateSelected ? .wssGray50 : .white
+        endDateTitleLabel.textColor = isStartDateSelected ? .wssGray200 : .black
+        endDateLabel.textColor = isStartDateSelected ? .wssGray200 : .black
     }
 }
