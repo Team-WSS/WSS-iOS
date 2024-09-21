@@ -44,7 +44,7 @@ final class NovelReviewViewModel: ViewModelType {
         let popViewController = PublishRelay<Void>()
         let isCompleteButtonEnabled = BehaviorRelay<Bool>(value: false)
         let readStatusData = BehaviorRelay<[ReadStatus]>(value: [.watching, .watched, .quit])
-        let presentNovelDateSelectModalViewController = PublishRelay<Void>()
+        let presentNovelDateSelectModalViewController = PublishRelay<ReadStatus>()
         let starRating = PublishRelay<Float>()
         let attractivePointListData = PublishRelay<[AttractivePoints]>()
         let isAttractivePointCountOverLimit = PublishRelay<IndexPath>()
@@ -79,7 +79,8 @@ final class NovelReviewViewModel: ViewModelType {
         
         input.dateButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
-                output.presentNovelDateSelectModalViewController.accept(())
+                guard let readStatus = self.readStatus else { return }
+                output.presentNovelDateSelectModalViewController.accept(readStatus)
             })
             .disposed(by: disposeBag)
         

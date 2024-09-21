@@ -130,8 +130,8 @@ final class NovelReviewViewController: UIViewController {
         .disposed(by: disposeBag)
         
         output.presentNovelDateSelectModalViewController
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.presentModalViewController(NovelDateSelectModalViewController(viewModel: NovelDateSelectModalViewModel()))
+            .subscribe(with: self, onNext: { owner, readStatus in
+                owner.presentModalViewController(NovelDateSelectModalViewController(viewModel: NovelDateSelectModalViewModel(readStatus: readStatus)))
             })
             .disposed(by: disposeBag)
         

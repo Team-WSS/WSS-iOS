@@ -14,7 +14,13 @@ final class NovelDateSelectModalViewModel: ViewModelType {
     
     //MARK: - Properties
     
+    private var readStatus: ReadStatus
+    
     //MARK: - Life Cycle
+    
+    init(readStatus: ReadStatus) {
+        self.readStatus = readStatus
+    }
     
     struct Input {
         let closeButtonDidTap: ControlEvent<Void>
