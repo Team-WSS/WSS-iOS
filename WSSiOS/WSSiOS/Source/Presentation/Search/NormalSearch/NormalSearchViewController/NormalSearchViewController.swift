@@ -162,7 +162,8 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
             .disposed(by: disposeBag)
         
         output.backButtonEnabled
-            .bind(with: self, onNext: { owner, _ in
+            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, _ in
                 owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
@@ -191,13 +192,6 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
         output.endEditing
             .subscribe(with: self, onNext: { owner, _ in
                 owner.view.endEditing(true)
-            })
-            .disposed(by: disposeBag)
-        
-        rootView.headerView.backButton.rx.tap
-            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
     }
