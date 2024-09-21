@@ -93,6 +93,8 @@ final class HomeRealtimePopularCollectionViewCell: UICollectionViewCell {
     }
     
     func bindData(data: [RealtimePopularFeed]) {
+        guard data.count == 3 else { return }
+        
         firstFeedView.bindData(data: data[0])
         secondFeedView.bindData(data: data[1])
         thirdFeedView.bindData(data: data[2])
