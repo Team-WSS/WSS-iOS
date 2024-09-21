@@ -80,7 +80,8 @@ final class HomeViewController: UIViewController {
     }
     
     private func setDelegate() {
-        rootView.realtimePopularView.realtimePopularCollectionView.delegate = self
+        rootView.realtimePopularView.realtimePopularCollectionView.rx.setDelegate(self)
+            .disposed(by: disposeBag)
     }
     
     private func bindViewModel() {
