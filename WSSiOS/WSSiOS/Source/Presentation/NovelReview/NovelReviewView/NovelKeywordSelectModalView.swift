@@ -40,7 +40,7 @@ final class NovelKeywordSelectModalView: UIView {
     
     private func setUI() {
         contentView.do {
-            $0.backgroundColor = .white
+            $0.backgroundColor = .wssWhite
             $0.layer.cornerRadius = 16
             $0.layer.maskedCorners = [.layerMinXMinYCorner,
                                       .layerMaxXMinYCorner]
