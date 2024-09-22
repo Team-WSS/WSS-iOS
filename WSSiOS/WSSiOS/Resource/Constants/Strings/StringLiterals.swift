@@ -33,8 +33,10 @@ enum StringLiterals {
             static let changeNickname = "닉네임 변경"
             static let feed = "소소피드"
             static let notice = "알림"
+            static let deleteID = "회원탈퇴"
             static let myPageSetting = "설정"
             static let myPageInfo = "계정설정"
+            static let myPageBlockUser = "차단유저 목록"
         }
     }
     
@@ -47,8 +49,8 @@ enum StringLiterals {
         }
         
         enum SubTitle {
-            static let interest = "관심 등록한 작품의 최신글이에요"
-            static let recommend = "선호 장르를 기반으로 추천드려요!"
+            static let interest = "관심 등록한 작품의 최근 수다예요"
+            static let recommend = "선호 장르를 기반으로 추천해 드려요"
         }
         
         enum Login {
@@ -59,7 +61,7 @@ enum StringLiterals {
         
         enum Unregister {
             enum Title {
-                static let interest = "아직 관심작품이 없어요\n관심 등록하고 피드 소식을 빠르게 확인하세요!"
+                static let interest = "관심작품의 최신 소식을 모아서 볼 수 있어요.\n좋아하는 웹소설을 관심 등록 해볼까요?"
                 static let recommend = "로맨스, 로판, 판타지, 현판 등\n선호장르를 기반으로 웹소설을 추천해 드려요!"
             }
             
@@ -72,6 +74,11 @@ enum StringLiterals {
         enum TodayPopular {
             static let feed = "님의 한마디"
             static let introduction = "작품 소개"
+        }
+        
+        enum Interest {
+            static let feed = "님의 한마디"
+            static let empty = "아직 관심 등록한 작품과 관련된 글이 없어요"
         }
     }
     
@@ -157,6 +164,50 @@ enum StringLiterals {
         enum ChangeNickname {
             static let complete = "완료"
             static let nickname = "닉네임"
+        }
+        
+        enum BlockUser {
+            static let buttonTitle = "차단 해제"
+            static let emptyLabel = "차단한 유저가 없어요"
+        }
+      
+        enum DeleteIDWarning {
+            static let title = "정말 탈퇴하시겠어요?"
+            static let description = "남겼던 평가와 기록들이 모두 사라져요.."
+            static let buttonTitle = "탈퇴하기"
+            
+            static let interest = "관심"
+            static let watching = "보는 중"
+            static let watched = "봤어요"
+            static let quit = "하차"
+        }
+        
+        enum DeleteID {
+            static let reasonTitle = "탈퇴사유를 알려주세요."
+            static let reasonTitleColor = "탈퇴사유"
+            static let reasonPlaceHolder = "위 항목 외의 탈퇴 사유를 자유롭게 작성해 주세요."
+            static let checkTitle = "탈퇴하기 전에 확인해주세요"
+            static let agreeTitle = "위 주의사항을 모두 확인했고, 탈퇴에 동의합니다."
+        }
+        
+        enum DeleteIDReason: String, CaseIterable {
+            case first = "자주 사용하지 않아서"
+            case second = "이용이 불편하고 장애가 많아서"
+            case third = "삭제하고 싶은 내용이 있어서"
+            case fourth = " 원하는 작품이 없어서"
+            case etc = "직접 입력"
+        }
+        
+        enum DeleteIDCheckTitle: String, CaseIterable {
+            case first = "삭제된 계정 정보는 복구할 수 없어요"
+            case second = "게시글 및 댓글은 자동 삭제되지 않아요"
+            case third = "처음부터 다시 가입해야 해요"
+        }
+        
+        enum DeleteIDCheckContent: String, CaseIterable {
+            case first = "회원님이 평가하고 기록한 서재 정보와 계정 정보는 탈퇴 즉시 삭제되며, 절대 복구할 수 없어요."
+            case second = "리뷰, 피드 게시글, 댓글은 탈퇴 시 자동으로 삭제되지 않아요. 탈퇴 전 개별적으로 삭제해 주세요."
+            case third = "계정 정보는 탈퇴 즉시 삭제되어 바로 재가입 가능하지만, 회원가입부터 작품 평가를 다시 해야 해요."
         }
     }
     

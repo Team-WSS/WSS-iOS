@@ -67,6 +67,10 @@ final class NovelDetailHeaderReadStatusButton: UIButton {
                 $0.horizontalEdges.equalToSuperview()
             }
             
+            statusImageView.snp.makeConstraints {
+                $0.size.equalTo(20)
+            }
+            
             $0.spacing = 5
         }
     }
@@ -74,22 +78,11 @@ final class NovelDetailHeaderReadStatusButton: UIButton {
     //MARK: - Data
     
     func updateButton(selectedStatus: ReadStatus?) {
-        if selectedStatus == readStatus {
-            updateHilightedStyle()
-        } else {
-            updateNormalStyle()
-        }
-    }
-    
-    //MARK: - Custom Method
-    
-    private func updateNormalStyle() {
-        statusImageView.image = readStatus.strokeImage
-        statusLabel.textColor = .wssGray300
-    }
-    
-    private func updateHilightedStyle() {
-        statusImageView.image = readStatus.fillImage
-        statusLabel.textColor = .wssSecondary100
+        let isSelected = selectedStatus == readStatus
+        
+        statusImageView.image = isSelected ? readStatus.fillImage
+                                           : readStatus.strokeImage
+        statusLabel.textColor = isSelected ? .wssSecondary100
+                                           : .wssGray300
     }
 }

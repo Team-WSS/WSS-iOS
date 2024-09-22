@@ -48,7 +48,7 @@ final class NovelDetailView: UIView {
     private func setUI() {
         self.backgroundColor = .wssWhite
         
-        backButton.setImage(.icNavigateLeft,
+        backButton.setImage(.icNavigateLeft.withTintColor(.wssBlack),
                             for: .normal)
         
         dropDownButton.do {

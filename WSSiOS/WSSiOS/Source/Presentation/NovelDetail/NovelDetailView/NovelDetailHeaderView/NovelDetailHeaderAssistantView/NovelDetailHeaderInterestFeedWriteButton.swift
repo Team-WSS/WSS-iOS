@@ -128,7 +128,6 @@ final class NovelDetailHeaderInterestFeedWriteButton: UIView {
             }
         }
         
-        
         feedWriteButton.snp.makeConstraints {
             $0.verticalEdges.equalToSuperview()
             
