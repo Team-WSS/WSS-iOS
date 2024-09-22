@@ -24,7 +24,7 @@ final class DefaultNovelDetailService: NSObject, Networking {
 }
 
 extension DefaultNovelDetailService: NovelDetailService {
-    func deleteNovelReview(novelId: Int) -> RxSwift.Single<Void> {
+    func deleteNovelReview(novelId: Int) -> Single<Void> {
         do {
             let request = try makeHTTPRequest(method: .delete,
                                               path: URLs.NovelDetail.novelReview(novelId: novelId),

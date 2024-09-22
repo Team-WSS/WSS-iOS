@@ -291,8 +291,6 @@ enum StringLiterals {
             static let inSeries = "  ·  연재중  ·  "
             static let interest = "관심"
             static let feedWrite = "나도 한마디"
-            static let dateFormat = "yy. MM. dd"
-            static let KoreaTimeZone = "ko_KR"
             
             enum Loading {
                 static let novelTitle = "작품 제목"
