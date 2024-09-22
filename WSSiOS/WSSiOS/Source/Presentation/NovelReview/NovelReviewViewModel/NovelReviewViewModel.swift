@@ -54,7 +54,7 @@ final class NovelReviewViewModel: ViewModelType {
         let isCompleteButtonEnabled = BehaviorRelay<Bool>(value: false)
         let readStatusListData = PublishRelay<[ReadStatus]>()
         let readStatusData = PublishRelay<ReadStatus>()
-        let presentNovelDateSelectModalViewController = PublishRelay<ReadStatus>()
+        let presentNovelDateSelectModalViewController = PublishRelay<(ReadStatus, Date?, Date?)>()
         let startDateEndDateData = PublishRelay<[Date?]>()
         let starRating = PublishRelay<Float>()
         let attractivePointListData = PublishRelay<[AttractivePoints]>()
@@ -93,7 +93,9 @@ final class NovelReviewViewModel: ViewModelType {
         input.dateButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
                 guard let readStatus = self.readStatus else { return }
-                output.presentNovelDateSelectModalViewController.accept(readStatus)
+                output.presentNovelDateSelectModalViewController.accept((readStatus,
+                                                                         owner.startDate,
+                                                                         owner.endDate))
             })
             .disposed(by: disposeBag)
         

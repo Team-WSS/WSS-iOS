@@ -132,8 +132,9 @@ final class NovelReviewViewController: UIViewController {
         .disposed(by: disposeBag)
         
         output.presentNovelDateSelectModalViewController
-            .subscribe(with: self, onNext: { owner, readStatus in
-                owner.presentModalViewController(NovelDateSelectModalViewController(viewModel: NovelDateSelectModalViewModel(readStatus: readStatus)))
+            .subscribe(with: self, onNext: { owner, tuple in
+                let (readStatus, startDate, endDate) = tuple
+                owner.presentModalViewController(NovelDateSelectModalViewController(viewModel: NovelDateSelectModalViewModel(readStatus: readStatus, startDate: startDate, endDate: endDate)))
             })
             .disposed(by: disposeBag)
         

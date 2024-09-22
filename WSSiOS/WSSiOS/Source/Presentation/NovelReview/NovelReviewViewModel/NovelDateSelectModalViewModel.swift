@@ -21,11 +21,11 @@ final class NovelDateSelectModalViewModel: ViewModelType {
     
     //MARK: - Life Cycle
     
-    init(readStatus: ReadStatus) {
+    init(readStatus: ReadStatus, startDate: Date?, endDate: Date?) {
         self.readStatus = readStatus
         
-        self.startDate = Date()
-        self.endDate = Date()
+        self.startDate = startDate ?? Date()
+        self.endDate = endDate ?? Date()
     }
     
     struct Input {
@@ -64,6 +64,12 @@ final class NovelDateSelectModalViewModel: ViewModelType {
                 
                 output.startDateData.accept(owner.startDate)
                 output.endDateData.accept(owner.endDate)
+                
+                if owner.isStartDateEditing {
+                    output.setDatePickerDate.accept(owner.startDate)
+                } else {
+                    output.setDatePickerDate.accept(owner.endDate)
+                }
             })
             .disposed(by: disposeBag)
         
