@@ -68,14 +68,11 @@ final class FeedDetailViewModel: ViewModelType {
             .map { $0?.height ?? 0 }.asDriver(onErrorJustReturn: 0)
         
         input.likeButtonTapped
+            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
             .withLatestFrom(likeButtonState)
             .flatMapLatest { isLiked -> Observable<Void> in
                 let request: Observable<Void>
-                if isLiked {
-                    request = self.feedDetailRepository.deleteFeedLike(feedId: self.feedId)
-                } else {
-                    request = self.feedDetailRepository.postFeedLike(feedId: self.feedId)
-                }
+                request = isLiked ? self.feedDetailRepository.deleteFeedLike(feedId: self.feedId) : self.feedDetailRepository.postFeedLike(feedId: self.feedId)
                 return request
                     .do(onNext: {
                         self.likeButtonState.accept(!isLiked)
