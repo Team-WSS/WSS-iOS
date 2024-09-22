@@ -106,6 +106,11 @@ final class NovelDateSelectModalViewModel: ViewModelType {
                     } else {
                         owner.startDate = date
                         output.startDateData.accept(owner.startDate)
+                        
+                        if owner.startDate > owner.endDate {
+                            owner.endDate = owner.startDate
+                            output.endDateData.accept(owner.endDate)
+                        }
                     }
                 } else {
                     if isFutureDate {
