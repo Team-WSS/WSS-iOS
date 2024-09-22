@@ -45,7 +45,7 @@ final class NovelReviewSelectedKeywordCollectionViewCell: UICollectionViewCell {
     private func setLayout() {
         keywordTag.snp.makeConstraints {
             $0.edges.equalToSuperview()
-            $0.height.equalTo(37)
+            $0.height.equalTo(35)
         }
     }
     

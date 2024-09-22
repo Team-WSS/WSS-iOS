@@ -88,7 +88,7 @@ final class NovelReviewAttractivePointView: UIView {
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.top.equalTo(titleLabel.snp.bottom).offset(10)
             $0.bottom.equalToSuperview().inset(32)
-            $0.height.equalTo(37)
+            $0.height.equalTo(35)
         }
     }
 }
