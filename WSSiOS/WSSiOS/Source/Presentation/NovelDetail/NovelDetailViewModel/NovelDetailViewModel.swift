@@ -135,7 +135,7 @@ final class NovelDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        let reviewResultButtonDidTap = input.reviewResultButtonDidTap
+        let pushToReviewViewController = input.reviewResultButtonDidTap
         
         input.interestButtonDidTap
             .withLatestFrom(isUserNovelInterested)
@@ -152,7 +152,7 @@ final class NovelDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        let feedWriteButtonDidTap = input.feedWriteButtonDidTap.asObservable()
+        let pushTofeedWriteViewController = input.feedWriteButtonDidTap.asObservable()
         
         let scrollContentOffset = input.scrollContentOffset
         
@@ -215,8 +215,8 @@ final class NovelDetailViewModel: ViewModelType {
             popToLastViewController: backButtonDidTap,
             showLargeNovelCoverImage: showLargeNovelCoverImage.asDriver(),
             isUserNovelInterested: isUserNovelInterested.asDriver(),
-            pushTofeedWriteViewController: feedWriteButtonDidTap,
-            pushToReviewViewController: reviewResultButtonDidTap,
+            pushTofeedWriteViewController: pushTofeedWriteViewController,
+            pushToReviewViewController: pushToReviewViewController,
             selectedTab: selectedTab.asDriver(),
             isInfoDescriptionExpended: isInfoDescriptionExpended.asDriver(),
             platformList: platformList.asDriver(),
