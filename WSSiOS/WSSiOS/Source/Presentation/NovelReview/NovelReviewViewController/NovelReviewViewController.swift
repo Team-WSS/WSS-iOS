@@ -179,7 +179,7 @@ extension NovelReviewViewController: UICollectionViewDelegateFlowLayout {
             }
             
             let width = (unwrappedText as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 26
-            return CGSize(width: width, height: 37)
+            return CGSize(width: width, height: 35)
         } else if collectionView.tag == 2 {
             var text: String?
             
@@ -190,7 +190,7 @@ extension NovelReviewViewController: UICollectionViewDelegateFlowLayout {
             }
             
             let width = (unwrappedText as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 52
-            return CGSize(width: width, height: 37)
+            return CGSize(width: width, height: 35)
         } else {
             return CGSize()
         }
