@@ -14,7 +14,7 @@ final class FeedDetailView: UIView {
     
     //MARK: - Components
     
-    private let scrollView = UIScrollView()
+    let scrollView = UIScrollView()
     private let contentView = UIView()
     
     let backButton = UIButton()
@@ -66,12 +66,12 @@ final class FeedDetailView: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubview(scrollView)
+        self.addSubviews(scrollView,
+                         replyWritingView)
         scrollView.addSubview(contentView)
         contentView.addSubviews(profileView,
                                 feedContentView,
-                                replyView,
-                                replyWritingView)
+                                replyView)
     }
     
     private func setLayout() {
@@ -102,7 +102,7 @@ final class FeedDetailView: UIView {
         
         replyWritingView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalTo(self.safeAreaLayoutGuide)
+            $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
         }
     }
     

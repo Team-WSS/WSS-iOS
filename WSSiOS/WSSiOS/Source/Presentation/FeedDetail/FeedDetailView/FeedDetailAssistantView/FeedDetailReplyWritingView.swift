@@ -61,8 +61,7 @@ final class FeedDetailReplyWritingView: UIView {
                 $0.applyWSSFont(.body3, with: "")
                 $0.tintColor = .wssBlack
                 $0.backgroundColor = .wssGray50
-                $0.textContainer.lineFragmentPadding = 0
-                $0.textContainerInset = .zero
+                $0.textContainerInset = UIEdgeInsets(top: 7, left: 0, bottom: 7, right: 0)
             }
             
             replyButton.do {

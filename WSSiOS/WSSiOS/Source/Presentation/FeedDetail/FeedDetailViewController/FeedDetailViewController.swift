@@ -36,7 +36,7 @@ final class FeedDetailViewController: UIViewController {
     override func loadView() {
         self.view = rootView
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -112,13 +112,28 @@ final class FeedDetailViewController: UIViewController {
             .disposed(by: disposeBag)
         
         RxKeyboard.instance.visibleHeight
+            .skip(1)
             .drive(with: self, onNext: { owner, keyboardHeight in
                 print("현재 키보드 높이: \(keyboardHeight)")
                 let height = keyboardHeight > 0 ? -keyboardHeight + self.rootView.safeAreaInsets.bottom : 0
                 self.rootView.replyWritingView.snp.updateConstraints {
-                    $0.bottom.equalTo(self.rootView.safeAreaLayoutGuide).offset(height)
+                    $0.bottom.equalTo(self.rootView.safeAreaLayoutGuide.snp.bottom).offset(height)
                 }
                 self.rootView.layoutIfNeeded()
+            })
+            .disposed(by: disposeBag)
+        
+        rootView.scrollView.rx.swipeGesture(.up)
+            .when(.recognized)
+            .subscribe(with: self, onNext: { owner, _ in
+                self.view.endEditing(true)
+            })
+            .disposed(by: disposeBag)
+        
+        rootView.scrollView.rx.swipeGesture(.down)
+            .when(.recognized)
+            .subscribe(with: self, onNext: { owner, _ in
+                self.view.endEditing(true)
             })
             .disposed(by: disposeBag)
     }
@@ -154,10 +169,10 @@ extension FeedDetailViewController: UITextViewDelegate {
         }
         
         rootView.replyWritingView.textViewBackgroundView.snp.updateConstraints {
-            $0.height.equalTo(min(estimatedSize.height + 14, 98))
+            $0.height.equalTo(min(estimatedSize.height + 14, 84))
         }
         
-        rootView.replyWritingView.replyWritingTextView.isScrollEnabled = numberOfLines > 4
+        rootView.replyWritingView.replyWritingTextView.isScrollEnabled = numberOfLines > 3
         
         UIView.animate(withDuration: 0.2) {
             self.rootView.replyWritingView.layoutIfNeeded()
