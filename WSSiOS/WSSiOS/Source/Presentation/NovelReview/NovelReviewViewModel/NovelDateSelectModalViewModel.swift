@@ -101,20 +101,32 @@ final class NovelDateSelectModalViewModel: ViewModelType {
                 let isFutureDate = date > today
                 
                 if owner.isStartDateEditing {
-                    if isFutureDate {
+                    if isFutureDate { // 미래의 날짜일 경우
                         output.setDatePickerDate.accept(owner.startDate)
                     } else {
                         owner.startDate = date
                         output.startDateData.accept(owner.startDate)
                         
+                        // 시작날짜가 종료날짜보다 미래일 경우, 종료날짜를 시작날짜와 동일하게 설정
                         if owner.startDate > owner.endDate {
                             owner.endDate = owner.startDate
                             output.endDateData.accept(owner.endDate)
                         }
                     }
                 } else {
-                    if isFutureDate {
+                    if isFutureDate { // 미래의 날짜일 경우
                         output.setDatePickerDate.accept(owner.endDate)
+                    } else if owner.startDate > date { // 종료날짜가 시작날짜보다 과거일 경우
+                        if owner.readStatus == .quit { // 읽기 상태가 '하차'일 경우
+                            owner.endDate = date
+                            output.endDateData.accept(owner.endDate)
+                            
+                            // 시작날짜를 종료날짜와 동일하게 설정
+                            owner.startDate = owner.endDate
+                            output.startDateData.accept(owner.startDate)
+                        } else { // 읽기 상태가 '봤어요'일 경우
+                            output.setDatePickerDate.accept(owner.endDate)
+                        }
                     } else {
                         owner.endDate = date
                         output.endDateData.accept(owner.endDate)
