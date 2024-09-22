@@ -81,19 +81,10 @@ final class FeedDetailViewController: UIViewController {
             replyCollectionViewContentSize: rootView.replyView.replyCollectionView.rx.observe(CGSize.self, "contentSize"))
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
-        output.feedProfileData
-            .drive(with: self, onNext: { owner, data in
-                if let data = data {
-                    owner.rootView.profileView.bindData(data: data)
-                }
-            })
-            .disposed(by: disposeBag)
-        
-        output.feedDetailData
-            .drive(with: self, onNext: { owner, data in
-                if let data = data {
-                    owner.rootView.feedContentView.bindData(data: data)
-                }
+        output.feedData
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, data in
+                owner.rootView.bindData(data)
             })
             .disposed(by: disposeBag)
         
@@ -114,7 +105,6 @@ final class FeedDetailViewController: UIViewController {
         RxKeyboard.instance.visibleHeight
             .skip(1)
             .drive(with: self, onNext: { owner, keyboardHeight in
-                print("현재 키보드 높이: \(keyboardHeight)")
                 let height = keyboardHeight > 0 ? -keyboardHeight + self.rootView.safeAreaInsets.bottom : 0
                 self.rootView.replyWritingView.snp.updateConstraints {
                     $0.bottom.equalTo(self.rootView.safeAreaLayoutGuide.snp.bottom).offset(height)

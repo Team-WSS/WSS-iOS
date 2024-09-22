@@ -18,8 +18,7 @@ final class FeedDetailViewModel: ViewModelType {
     private let disposeBag = DisposeBag()
     private let feedId: Int
     
-    private let feedProfileData = BehaviorRelay<Feed?>(value: nil)
-    private let feedDetailData =  BehaviorRelay<Feed?>(value: nil)
+    private let feedData = PublishSubject<Feed>()
     private let commentsData = BehaviorRelay<[FeedComment]>(value: [])
     private let replyCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
     
@@ -35,8 +34,7 @@ final class FeedDetailViewModel: ViewModelType {
     }
     
     struct Output {
-        let feedProfileData: Driver<Feed?>
-        let feedDetailData : Driver<Feed?>
+        let feedData: Observable<Feed>
         let commentsData: Driver<[FeedComment]>
         let replyCollectionViewHeight: Driver<CGFloat>
     }
@@ -44,10 +42,9 @@ final class FeedDetailViewModel: ViewModelType {
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         feedDetailRepository.getSingleFeedData(feedId: feedId)
             .subscribe(with: self, onNext: { owner, data in
-                owner.feedProfileData.accept(data)
-                owner.feedDetailData.accept(data)
+                owner.feedData.onNext(data)
             }, onError: { owner, error in
-                print(error)
+                owner.feedData.onError(error)
             })
             .disposed(by: disposeBag)
         
@@ -62,8 +59,7 @@ final class FeedDetailViewModel: ViewModelType {
         let replyCollectionViewContentSize = input.replyCollectionViewContentSize
             .map { $0?.height ?? 0 }.asDriver(onErrorJustReturn: 0)
         
-        return Output(feedProfileData: feedProfileData.asDriver(),
-                      feedDetailData: feedDetailData.asDriver(),
+        return Output(feedData: feedData.asObservable(),
                       commentsData: commentsData.asDriver(),
                       replyCollectionViewHeight: replyCollectionViewContentSize)
     }

@@ -106,7 +106,7 @@ final class FeedDetailView: UIView {
         }
     }
     
-    func bindData(data: Feed) {
+    func bindData(_ data: Feed) {
         profileView.bindData(data: data)
         feedContentView.bindData(data: data)
     }
