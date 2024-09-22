@@ -22,6 +22,9 @@ final class FeedDetailViewModel: ViewModelType {
     private let commentsData = BehaviorRelay<[FeedComment]>(value: [])
     private let replyCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
     
+    private let likeCount = BehaviorRelay<Int>(value: 0)
+    private let likeButtonState = BehaviorRelay<Bool>(value: false)
+    
     //MARK: - Life Cycle
     
     init(feedDetailRepository: FeedDetailRepository, feedId: Int) {
@@ -31,18 +34,23 @@ final class FeedDetailViewModel: ViewModelType {
     
     struct Input {
         let replyCollectionViewContentSize: Observable<CGSize?>
+        let likeButtonTapped: ControlEvent<Void>
     }
     
     struct Output {
         let feedData: Observable<Feed>
         let commentsData: Driver<[FeedComment]>
         let replyCollectionViewHeight: Driver<CGFloat>
+        let likeCount: Driver<Int>
+        let likeButtonEnabled: Driver<Bool>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         feedDetailRepository.getSingleFeedData(feedId: feedId)
             .subscribe(with: self, onNext: { owner, data in
                 owner.feedData.onNext(data)
+                owner.likeButtonState.accept(data.isLiked)
+                owner.likeCount.accept(data.likeCount)
             }, onError: { owner, error in
                 owner.feedData.onError(error)
             })
@@ -59,9 +67,30 @@ final class FeedDetailViewModel: ViewModelType {
         let replyCollectionViewContentSize = input.replyCollectionViewContentSize
             .map { $0?.height ?? 0 }.asDriver(onErrorJustReturn: 0)
         
+        input.likeButtonTapped
+            .withLatestFrom(likeButtonState)
+            .flatMapLatest { isLiked -> Observable<Void> in
+                let request: Observable<Void>
+                if isLiked {
+                    request = self.feedDetailRepository.deleteFeedLike(feedId: self.feedId)
+                } else {
+                    request = self.feedDetailRepository.postFeedLike(feedId: self.feedId)
+                }
+                return request
+                    .do(onNext: {
+                        self.likeButtonState.accept(!isLiked)
+                        let newCount = isLiked ? self.likeCount.value - 1 : self.likeCount.value + 1
+                        self.likeCount.accept(newCount)
+                    })
+            }
+            .subscribe()
+            .disposed(by: disposeBag)
+        
         return Output(feedData: feedData.asObservable(),
                       commentsData: commentsData.asDriver(),
-                      replyCollectionViewHeight: replyCollectionViewContentSize)
+                      replyCollectionViewHeight: replyCollectionViewContentSize,
+                      likeCount: likeCount.asDriver(),
+                      likeButtonEnabled: likeButtonState.asDriver())
     }
     
     //MARK: - Custom Method

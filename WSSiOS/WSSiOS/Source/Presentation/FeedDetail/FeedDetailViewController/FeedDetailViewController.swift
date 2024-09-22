@@ -78,7 +78,8 @@ final class FeedDetailViewController: UIViewController {
     
     private func bindViewModel() {
         let input = FeedDetailViewModel.Input(
-            replyCollectionViewContentSize: rootView.replyView.replyCollectionView.rx.observe(CGSize.self, "contentSize"))
+            replyCollectionViewContentSize: rootView.replyView.replyCollectionView.rx.observe(CGSize.self, "contentSize"),
+            likeButtonTapped: rootView.feedContentView.reactView.likeButton.rx.tap)
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.feedData
@@ -95,6 +96,18 @@ final class FeedDetailViewController: UIViewController {
                     cell.bindData(data: element)
                 }
                 .disposed(by: disposeBag)
+        
+        output.likeButtonEnabled
+            .drive(with: self, onNext: { owner, isLiked in
+                owner.rootView.feedContentView.reactView.updateLikeState(isLiked)
+            })
+            .disposed(by: disposeBag)
+        
+        output.likeCount
+            .drive(with: self, onNext: { owner, count in
+                owner.rootView.feedContentView.reactView.updateLikeCount(count)
+            })
+            .disposed(by: disposeBag)
         
         output.replyCollectionViewHeight
             .drive(with: self, onNext: { owner, height in

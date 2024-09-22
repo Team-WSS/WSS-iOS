@@ -17,7 +17,7 @@ final class FeedDetailContentView: UIView {
     private let contentLabel = UILabel()
     private let linkNovelView = FeedNovelView()
     private let genreLabel = UILabel()
-    private let reactView = FeedReactView()
+    let reactView = FeedReactView()
     private let dividerView = UIView()
     
     //MARK: - Life Cycle
