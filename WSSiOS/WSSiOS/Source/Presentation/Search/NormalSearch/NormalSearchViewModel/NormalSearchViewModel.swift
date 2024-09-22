@@ -112,11 +112,7 @@ final class NormalSearchViewModel: ViewModelType {
                         self.currentPage.accept(nextPage)
                     })
             }
-            .subscribe(with: self, onNext: { owner, data in
-                let updatedList = owner.normalSearchList.value + data.novels
-                owner.normalSearchList.accept(updatedList)
-                owner.isLoadable.accept(data.isLoadable)
-            })
+            .subscribe()
             .disposed(by: disposeBag)
         
         input.normalSearchCellSelected
