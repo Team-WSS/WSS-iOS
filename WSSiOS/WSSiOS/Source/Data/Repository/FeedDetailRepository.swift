@@ -12,6 +12,8 @@ import RxSwift
 protocol FeedDetailRepository {
     func getSingleFeedData(feedId: Int) -> Observable<Feed>
     func getSingleFeedComments(feedId: Int) -> Observable<FeedComments>
+    func postFeedLike(feedId: Int) -> Observable<Void>
+    func deleteFeedLike(feedId: Int) -> Observable<Void>
 }
 
 struct TestFeedDetailRepository: FeedDetailRepository {
@@ -63,6 +65,14 @@ struct TestFeedDetailRepository: FeedDetailRepository {
                                                               isMyComment: false)
                                            ]))
     }
+    
+    func postFeedLike(feedId: Int) -> Observable<Void> {
+        return Observable.just(())
+    }
+    
+    func deleteFeedLike(feedId: Int) -> Observable<Void> {
+        return Observable.just(())
+    }
 }
 
 struct DefaultFeedDetailRepository: FeedDetailRepository {
@@ -78,5 +88,13 @@ struct DefaultFeedDetailRepository: FeedDetailRepository {
     
     func getSingleFeedComments(feedId: Int) -> Observable<FeedComments> {
         return feedDetailService.getFeedComments(feedId: feedId).asObservable()
+    }
+    
+    func postFeedLike(feedId: Int) -> Observable<Void> {
+        return feedDetailService.postFeedLike(feedId: feedId).asObservable()
+    }
+    
+    func deleteFeedLike(feedId: Int) -> Observable<Void> {
+        return feedDetailService.deleteFeedLike(feedId: feedId).asObservable()
     }
 }

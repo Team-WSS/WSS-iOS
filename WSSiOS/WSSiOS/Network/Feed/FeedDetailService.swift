@@ -12,6 +12,8 @@ import RxSwift
 protocol FeedDetailService {
     func getFeed(feedId: Int) -> Single<Feed>
     func getFeedComments(feedId: Int) -> Single<FeedComments>
+    func postFeedLike(feedId: Int) -> Single<Void>
+    func deleteFeedLike(feedId: Int) -> Single<Void>
 }
 
 final class DefaultFeedDetailService: NSObject, Networking, FeedDetailService {
@@ -57,4 +59,39 @@ final class DefaultFeedDetailService: NSObject, Networking, FeedDetailService {
         }
     }
     
+    func postFeedLike(feedId: Int) -> Single<Void> {
+        do {
+            let request = try makeHTTPRequest(method: .post,
+                                              path: URLs.Feed.postFeedLike(feedId: feedId),
+                                              headers: APIConstants.testTokenHeader,
+                                              body: nil)
+
+            NetworkLogger.log(request: request)
+
+            return urlSession.rx.data(request: request)
+                .map { _ in }
+                .asSingle()
+
+        } catch {
+            return Single.error(error)
+        }
+    }
+    
+    func deleteFeedLike(feedId: Int) -> Single<Void> {
+        do {
+            let request = try makeHTTPRequest(method: .delete,
+                                              path: URLs.Feed.deleteFeedLike(feedId: feedId),
+                                              headers: APIConstants.testTokenHeader,
+                                              body: nil)
+
+            NetworkLogger.log(request: request)
+
+            return urlSession.rx.data(request: request)
+                .map { _ in }
+                .asSingle()
+
+        } catch {
+            return Single.error(error)
+        }
+    }
 }
