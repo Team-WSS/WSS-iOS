@@ -156,8 +156,8 @@ final class NovelDetailViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, value in
-                //MARK: - Todo. 탭이 잘 안됨 . .
-                // 작품 평가 View로 이동, 선택한 readStatus 값은 바로 반영해줌
+                // 작품 평가 View로 이동, readStatus버튼으로 이동한 경우,
+                // 선택한 readStatus 값은 바로 반영해줌
                 print("작품 평가 View로 이동, readStatus: \(String(describing: value))")
             })
             .disposed(by: disposeBag)
@@ -189,13 +189,6 @@ final class NovelDetailViewController: UIViewController {
         output.isInfoDescriptionExpended
             .drive(with: self, onNext: { owner, isExpended in
                 owner.rootView.infoView.descriptionView.updateAccordionButton(isExpended)
-                
-                // 아코디언 접으면 화면 위치를 옮겨주는 기능인데.. 필요 없는 것 같기도 하고?
-                //                let stickyoffset = owner.rootView.headerView.frame.size.height - owner.view.safeAreaInsets.top
-                //                let point = CGPoint(x: 0, y: stickyoffset)
-                //                if !isExpended {
-                //                    owner.rootView.scrollView.rx.contentOffset.onNext(point)
-                //                }
             })
             .disposed(by: disposeBag)
         
