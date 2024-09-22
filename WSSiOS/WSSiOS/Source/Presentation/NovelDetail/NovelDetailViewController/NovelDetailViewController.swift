@@ -30,8 +30,6 @@ final class NovelDetailViewController: UIViewController {
     
     //MARK: - Components
     
-    private let backButton = UIButton()
-    private let dropDownButton = UIButton()
     private let rootView = NovelDetailView()
     
     //MARK: - Life Cycle
@@ -53,7 +51,6 @@ final class NovelDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setUI()
         registerCell()
         delegate()
         bindViewModel()
@@ -67,26 +64,16 @@ final class NovelDetailViewController: UIViewController {
         setNavigationBar()
     }
     
-    //MARK: - UI
-    
-    private func setUI() {
-        backButton.do {
-            $0.setImage(.icNavigateLeft.withTintColor(.wssWhite,
-                                                      renderingMode: .alwaysTemplate),
-                        for: .normal)
-        }
-        
-        dropDownButton.do {
-            $0.setImage(.icDropDownDot.withTintColor(.wssWhite,
-                                                     renderingMode: .alwaysTemplate),
-                        for: .normal)
-        }
+    override func viewWillDisappear(_ animated: Bool) {
+        updateNavigationBarStyle(offset: 0)
     }
+    
+    //MARK: - UI
     
     private func setNavigationBar() {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.backButton)
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.dropDownButton)
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: rootView.backButton)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rootView.dropDownButton)
     }
     
     //MARK: - Bind
@@ -134,12 +121,16 @@ final class NovelDetailViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.scrollContentOffset
-            .drive(with: self, onNext: { owner, offset in
+            .observe(on: MainScheduler.asyncInstance)
+            .subscribe(with: self, onNext: { owner, offset in
                 owner.updateNavigationBarStyle(offset: offset.y)
                 
                 let stickyoffset = owner.rootView.headerView.frame.size.height - owner.view.safeAreaInsets.top
                 let showStickyTabBar = offset.y > stickyoffset
                 owner.rootView.updateStickyTabBarShow(showStickyTabBar)
+                if offset.y < 0 {
+                    owner.rootView.scrollView.rx.contentOffset.onNext(CGPoint(x: 0, y: 0))
+                }
             })
             .disposed(by: disposeBag)
         
@@ -211,8 +202,8 @@ final class NovelDetailViewController: UIViewController {
         return NovelDetailViewModel.Input(
             viewWillAppearEvent:  viewWillAppearEvent.asObservable(),
             scrollContentOffset: rootView.scrollView.rx.contentOffset,
-            backButtonDidTap: backButton.rx.tap,
-            novelCoverImageButtonDidTap: rootView.headerView.novelCoverImageButton.rx.tap,
+            backButtonDidTap: rootView.backButton.rx.tap,
+            novelCoverImageButtonDidTap: rootView.headerView.coverImageButton.rx.tap,
             largeNovelCoverImageDismissButtonDidTap: rootView.largeNovelCoverImageButton.dismissButton.rx.tap,
             largeNovelCoverImageBackgroundDidTap: rootView.largeNovelCoverImageButton.rx.tap,
             infoTabBarButtonDidTap: rootView.tabBarView.infoButton.rx.tap,
@@ -238,16 +229,12 @@ final class NovelDetailViewController: UIViewController {
             navigationController?.navigationBar.backgroundColor = .wssWhite
             navigationItem.title = navigationTitle
             setNavigationBarTextAttribute()
-            backButton.tintColor = .wssGray200
-            dropDownButton.tintColor = .wssGray200
         } else {
             rootView.statusBarView.backgroundColor = .clear
             navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
             navigationController?.navigationBar.shadowImage = nil
             navigationController?.navigationBar.backgroundColor = .clear
             navigationItem.title = ""
-            backButton.tintColor = .wssWhite
-            dropDownButton.tintColor = .wssWhite
         }
     }
     

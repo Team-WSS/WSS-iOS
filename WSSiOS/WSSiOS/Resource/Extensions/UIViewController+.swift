@@ -120,16 +120,6 @@ extension UIViewController {
         ), animated: true)
     }
     
-    func pushToChangeNicknameViewController(userNickname: String) {
-        let viewController = MyPageChangeNicknameViewController(
-            userNickName: userNickname,
-            viewModel: MyPageChangeNickNameViewModel(
-                userRepository: DefaultUserRepository(
-                    userService: DefaultUserService()),
-                userNickname: userNickname))
-        self.navigationController?.pushViewController(viewController, animated: true)
-    }
-    
     func presentDeleteUserNovelViewController(userNovelId: Int) {
         let viewController = DeletePopupViewController(
             viewModel: DeletePopupViewModel(
@@ -206,7 +196,12 @@ extension UIViewController {
     }
     
     func pushToMyPageDeleteIDWarningViewController() {
-        let viewController = MyPageDeleteIDWarningViewController()
+        let viewController = MyPageDeleteIDWarningViewController(
+            userRepository: DefaultUserRepository(
+                userService: DefaultUserService(),
+                blocksService: DefaultBlocksService()
+            )
+        )
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
@@ -219,10 +214,11 @@ extension UIViewController {
         let viewController = MyPageInfoViewController(
             viewModel: MyPageInfoViewModel(
                 userRepository: DefaultUserRepository(
-                    userService: DefaultUserService())))
+                    userService: DefaultUserService(),
+                    blocksService: DefaultBlocksService())))
         self.navigationController?.pushViewController(viewController, animated: true)
     }
-
+    
     func presentModalViewController(_ viewController: UIViewController) {
         let blackOverlayView = UIView(frame: self.view.bounds).then {
             $0.backgroundColor = UIColor.black.withAlphaComponent(0)

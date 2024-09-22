@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "ic=stopped, status=filled.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

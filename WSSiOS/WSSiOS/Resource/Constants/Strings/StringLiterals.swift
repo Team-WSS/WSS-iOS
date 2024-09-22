@@ -36,6 +36,7 @@ enum StringLiterals {
             static let deleteID = "회원탈퇴"
             static let myPageSetting = "설정"
             static let myPageInfo = "계정설정"
+            static let myPageBlockUser = "차단유저 목록"
         }
     }
     
@@ -48,8 +49,8 @@ enum StringLiterals {
         }
         
         enum SubTitle {
-            static let interest = "관심 등록한 작품의 최신글이에요"
-            static let recommend = "선호 장르를 기반으로 추천드려요!"
+            static let interest = "관심 등록한 작품의 최근 수다예요"
+            static let recommend = "선호 장르를 기반으로 추천해 드려요"
         }
         
         enum Login {
@@ -60,7 +61,7 @@ enum StringLiterals {
         
         enum Unregister {
             enum Title {
-                static let interest = "아직 관심작품이 없어요\n관심 등록하고 피드 소식을 빠르게 확인하세요!"
+                static let interest = "관심작품의 최신 소식을 모아서 볼 수 있어요.\n좋아하는 웹소설을 관심 등록 해볼까요?"
                 static let recommend = "로맨스, 로판, 판타지, 현판 등\n선호장르를 기반으로 웹소설을 추천해 드려요!"
             }
             
@@ -77,6 +78,11 @@ enum StringLiterals {
         
         enum RealTimePopular {
             static let spoiler = "스포일러가 포함된 글 보기"
+        }
+        
+        enum Interest {
+            static let feed = "님의 한마디"
+            static let empty = "아직 관심 등록한 작품과 관련된 글이 없어요"
         }
     }
     
@@ -164,6 +170,11 @@ enum StringLiterals {
             static let nickname = "닉네임"
         }
         
+        enum BlockUser {
+            static let buttonTitle = "차단 해제"
+            static let emptyLabel = "차단한 유저가 없어요"
+        }
+      
         enum DeleteIDWarning {
             static let title = "정말 탈퇴하시겠어요?"
             static let description = "남겼던 평가와 기록들이 모두 사라져요.."
@@ -282,8 +293,10 @@ enum StringLiterals {
         enum Header {
             static let complete = "  ·  완결작  ·  "
             static let inSeries = "  ·  연재중  ·  "
-            static let interest = "관심 있어요"
-            static let review = "리뷰 남기기"
+            static let interest = "관심"
+            static let review = "나도 한마디"
+            static let dateFormat = "yy. MM. dd"
+            static let KoreaTimeZone = "ko_KR"
             
             enum Loading {
                 static let novelTitle = "작품 제목"
@@ -297,7 +310,7 @@ enum StringLiterals {
         
         enum Tab {
             static let info = "정보"
-            static let feed = "피드"
+            static let feed = "수다"
         }
         
         enum Info {
@@ -321,12 +334,12 @@ enum StringLiterals {
         static let title = "탐색하기"
         static let searchbar = "작품 제목, 작가를 검색하세요"
         
-        static let induceTitle = "이제 뭐 읽을지 고민될 땐?"
+        static let induceTitle = "뭐 읽을지 고민될 땐?"
         static let induceDescription = "장르, 연재상태, 별점, 키워드로 작품 찾기"
-        static let induceButton = "내 취향에 맞는 작품 탐색하기"
+        static let induceButton = "내 취향에 맞는 웹소설 찾기"
         
         static let sosoTitle = "소소"
-        static let sosoDescription = "다른 사람들이 최근에 읽고 있는 작품이에요"
+        static let sosoDescription = "사람들이 최근에 읽고 있는 웹소설이에요"
         
         static let novel = "작품"
         
