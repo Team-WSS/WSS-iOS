@@ -9,20 +9,19 @@ import UIKit
 
 import RxSwift
 import RxCocoa
-import Then
+import RxGesture
 
-final class NormalSearchViewController: UIViewController {
+final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
     
     //MARK: - Properties
     
     private let viewModel: NormalSearchViewModel
     private let disposeBag = DisposeBag()
     
-    private let viewWillAppearEvent = BehaviorRelay(value: false)
-    
     //MARK: - Components
     
     private let rootView = NormalSearchView()
+    private let emptyView = NormalSearchEmptyView()
     
     //MARK: - Life Cycle
     
@@ -42,7 +41,7 @@ final class NormalSearchViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        viewWillAppearEvent.accept(true)
+        setNavigationBar()
         swipeBackGesture()
     }
     
@@ -51,7 +50,23 @@ final class NormalSearchViewController: UIViewController {
         
         setUI()
         registerCell()
+        setDelegate()
         bindViewModel()
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
+    //MARK: - UI
+    
+    private func setNavigationBar() {
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
+    }
+    
+    private func setUI() {
+        self.view.backgroundColor = .wssWhite
+        self.rootView.headerView.searchTextField.becomeFirstResponder()
     }
     
     //MARK: - Bind
@@ -62,20 +77,43 @@ final class NormalSearchViewController: UIViewController {
             forCellWithReuseIdentifier: NormalSearchCollectionViewCell.cellIdentifier)
     }
     
+    private func setDelegate() {
+        rootView.headerView.searchTextField.delegate = self
+    }
+    
     private func bindViewModel() {
+        let reachedBottom = rootView.resultView.scrollView.rx.didScroll
+            .map { self.isNearBottomEdge() }
+            .filter { $0 }
+            .map { _ in () }
+            .asObservable()
+        
+        let collectionViewSwipeGesture = rootView.resultView.normalSearchCollectionView.rx.swipeGesture([.up, .down])
+            .when(.recognized)
+            .asObservable()
+        
         let input = NormalSearchViewModel.Input(
-            viewWillAppearEvent: viewWillAppearEvent.asObservable(),
+            searchTextUpdated: rootView.headerView.searchTextField.rx.text.orEmpty,
+            returnKeyDidTap: rootView.headerView.searchTextField.rx.controlEvent(.editingDidEndOnExit),
+            searchButtonDidTap: rootView.headerView.searchButton.rx.tap,
+            clearButtonDidTap: rootView.headerView.searchClearButton.rx.tap,
             backButtonDidTap: rootView.headerView.backButton.rx.tap,
             inquiryButtonDidTap: rootView.emptyView.inquiryButton.rx.tap,
-            normalSearchCollectionViewContentSize: rootView.resultView.normalSearchCollectionView.rx.observe(CGSize.self, "contentSize"))
+            normalSearchCollectionViewContentSize: rootView.resultView.normalSearchCollectionView.rx.observe(CGSize.self, "contentSize"),
+            normalSearchCellSelected: rootView.resultView.normalSearchCollectionView.rx.itemSelected,
+            reachedBottom: reachedBottom,
+            normalSearchCollectionViewSwipeGesture: collectionViewSwipeGesture)
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
+        
+        output.resultCount
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, data in
+                self.rootView.resultView.resultCountView.bindData(data: data)
+            })
+            .disposed(by: disposeBag)
         
         output.normalSearchList
             .observe(on: MainScheduler.instance)
-            .catch { error in
-                print("NormalSearchList error: \(error)")
-                return Observable.just([])
-            }
             .bind(to: rootView.resultView.normalSearchCollectionView.rx.items(
                 cellIdentifier: NormalSearchCollectionViewCell.cellIdentifier,
                 cellType: NormalSearchCollectionViewCell.self)) { row, element, cell in
@@ -83,14 +121,55 @@ final class NormalSearchViewController: UIViewController {
                 }
                 .disposed(by: disposeBag)
         
+        output.normalSearchList
+            .asDriver(onErrorJustReturn: [])
+            .drive(with: self, onNext: { owner, novels in
+                if owner.rootView.headerView.searchTextField.text == "" {
+                    owner.rootView.emptyView.isHidden = true
+                    owner.rootView.resultView.isHidden = true
+                    owner.rootView.resultView.resultCountView.isHidden = true
+                }
+                else if novels.isEmpty && !(owner.rootView.headerView.searchTextField.text == "") {
+                    owner.rootView.emptyView.isHidden = false
+                    owner.rootView.resultView.isHidden = true
+                    owner.rootView.resultView.resultCountView.isHidden = true
+                }
+                else {
+                    owner.rootView.emptyView.isHidden = true
+                    owner.rootView.resultView.isHidden = false
+                    owner.rootView.resultView.resultCountView.isHidden = false
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        output.scrollToTop
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.rootView.resultView.scrollView.setContentOffset(.zero, animated: false)
+            })
+            .disposed(by: disposeBag)
+        
+        output.scrollToTopAndendEditing
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.view.endEditing(true)
+                owner.rootView.resultView.scrollView.setContentOffset(.zero, animated: false)
+            })
+            .disposed(by: disposeBag)
+        
+        output.clearButtonEnabled
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.rootView.headerView.searchTextField.text = ""
+            })
+            .disposed(by: disposeBag)
+        
         output.backButtonEnabled
-            .bind(with: self, onNext: { owner, _ in
+            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, _ in
                 owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
         
         output.inquiryButtonEnabled
-            .bind(with: self, onNext: { owner, _ in
+            .subscribe(with: self, onNext: { owner, _ in
                 if let url = URL(string: StringLiterals.Search.Empty.kakaoChannelUrl) {
                     UIApplication.shared.open(url, options: [:])
                 }
@@ -102,16 +181,38 @@ final class NormalSearchViewController: UIViewController {
                 owner.rootView.resultView.updateCollectionViewHeight(height: height)
             })
             .disposed(by: disposeBag)
+        
+        output.normalSearchCellEnabled
+            .subscribe(with: self, onNext: { owner, indexPath in
+                //TODO: API 연결 후 수정 예정
+                owner.pushToDetailViewController(novelId: 0)
+            })
+            .disposed(by: disposeBag)
+        
+        output.endEditing
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.view.endEditing(true)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func isNearBottomEdge() -> Bool {
+        guard self.rootView.resultView.scrollView.contentSize.height > 0 else {
+            return false
+        }
+        
+        let checkNearBottomEdge = self.rootView.resultView.scrollView.contentOffset.y + self.rootView.resultView.scrollView.bounds.size.height + 1.0 >= self.rootView.resultView.scrollView.contentSize.height
+        
+        return checkNearBottomEdge
     }
 }
 
-extension NormalSearchViewController {
-    
-    //MARK: - UI
-    
-    private func setUI() {
-        self.view.do {
-            $0.backgroundColor = .White
-        }
+extension NormalSearchViewController: UITextFieldDelegate {
+    func textField(_ textField: UITextField, 
+                   shouldChangeCharactersIn range: NSRange,
+                   replacementString string: String) -> Bool {
+        let currentText = textField.text ?? ""
+        let newText = (currentText as NSString).replacingCharacters(in: range, with: string)
+        return newText.count <= 30
     }
 }
