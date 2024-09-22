@@ -10,6 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 import RxKeyboard
+import RxGesture
 
 final class FeedDetailViewController: UIViewController {
     
@@ -46,10 +47,6 @@ final class FeedDetailViewController: UIViewController {
         bindViewModel()
         registerCell()
         delegate()
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
     }
     
     //MARK: - UI
@@ -126,14 +123,7 @@ final class FeedDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        rootView.scrollView.rx.swipeGesture(.up)
-            .when(.recognized)
-            .subscribe(with: self, onNext: { owner, _ in
-                self.view.endEditing(true)
-            })
-            .disposed(by: disposeBag)
-        
-        rootView.scrollView.rx.swipeGesture(.down)
+        rootView.scrollView.rx.tapGesture()
             .when(.recognized)
             .subscribe(with: self, onNext: { owner, _ in
                 self.view.endEditing(true)
