@@ -46,7 +46,7 @@ final class FeedDetailViewModel: ViewModelType {
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
-        feedDetailRepository.getSingleFeedData(feedId: feedId)
+        getSingleFeed(feedId)
             .subscribe(with: self, onNext: { owner, data in
                 owner.feedData.onNext(data)
                 owner.likeButtonState.accept(data.isLiked)
@@ -56,7 +56,7 @@ final class FeedDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        feedDetailRepository.getSingleFeedComments(feedId: feedId)
+        getSingleFeedComments(feedId)
             .subscribe(with: self, onNext: { owner, data in
                 owner.commentsData.accept(data.comments)
             }, onError: { owner, error in
@@ -72,7 +72,7 @@ final class FeedDetailViewModel: ViewModelType {
             .withLatestFrom(likeButtonState)
             .flatMapLatest { isLiked -> Observable<Void> in
                 let request: Observable<Void>
-                request = isLiked ? self.feedDetailRepository.deleteFeedLike(feedId: self.feedId) : self.feedDetailRepository.postFeedLike(feedId: self.feedId)
+                request = isLiked ? self.deleteFeedLike(self.feedId) : self.postFeedLike(self.feedId)
                 return request
                     .do(onNext: {
                         self.likeButtonState.accept(!isLiked)
@@ -88,6 +88,24 @@ final class FeedDetailViewModel: ViewModelType {
                       replyCollectionViewHeight: replyCollectionViewContentSize,
                       likeCount: likeCount.asDriver(),
                       likeButtonEnabled: likeButtonState.asDriver())
+    }
+    
+    //MARK: = API
+    
+    func getSingleFeed(_ feedId: Int) -> Observable<Feed> {
+        return feedDetailRepository.getSingleFeedData(feedId: feedId)
+    }
+    
+    func getSingleFeedComments(_ feedId: Int) -> Observable<FeedComments> {
+        return feedDetailRepository.getSingleFeedComments(feedId: feedId)
+    }
+    
+    func postFeedLike(_ feedId: Int) -> Observable<Void> {
+        return feedDetailRepository.postFeedLike(feedId: feedId)
+    }
+    
+    func deleteFeedLike(_ feedId: Int) -> Observable<Void> {
+        return feedDetailRepository.deleteFeedLike(feedId: feedId)
     }
     
     //MARK: - Custom Method
