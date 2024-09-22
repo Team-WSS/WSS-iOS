@@ -99,6 +99,7 @@ final class NovelDetailViewModel: ViewModelType {
             }
             .subscribe(with: self, onNext: { owner, data in
                 owner.novelDetailHeaderData.onNext(data)
+                owner.isUserNovelInterested.accept(data.isUserNovelInterest)
             }, onError: { owner, error in
                 owner.novelDetailHeaderData.onError(error)
             })
