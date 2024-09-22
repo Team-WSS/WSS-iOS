@@ -17,7 +17,7 @@ protocol NovelDetailRepository {
     func deleteNovelReview(novelId: Int) -> Observable<Void>
 }
 
-struct TestDetailRepository: NovelDetailRepository {
+struct TestNovelDetailRepository: NovelDetailRepository {
     func deleteNovelReview(novelId: Int) -> Observable<Void> {
         return Observable.just(())
     }
@@ -39,7 +39,7 @@ struct TestDetailRepository: NovelDetailRepository {
     }
 }
 
-struct DefaultDetailRepository: NovelDetailRepository {
+struct DefaultNovelDetailRepository: NovelDetailRepository {
     func deleteNovelReview(novelId: Int) -> Observable<Void> {
         novelDetailService.deleteNovelReview(novelId: novelId).asObservable()
     }

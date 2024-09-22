@@ -38,8 +38,8 @@ final class NovelDetailViewModel: ViewModelType {
     
     //MARK: - Life Cycle
     
-    init(detailRepository: NovelDetailRepository, novelId: Int = 0) {
-        self.novelDetailRepository = detailRepository
+    init(novelDetailRepository: NovelDetailRepository, novelId: Int = 0) {
+        self.novelDetailRepository = novelDetailRepository
         self.novelId = novelId
     }
     
@@ -74,13 +74,13 @@ final class NovelDetailViewModel: ViewModelType {
         let detailHeaderData: Observable<NovelDetailHeaderResult>
         let detailInfoData: Observable<NovelDetailInfoResult>
         let scrollContentOffset: ControlProperty<CGPoint>
-        let backButtonEnabled: Observable<Void>
+        let popToLastViewController: Observable<Void>
         
         //NovelDetailHeader
         let showLargeNovelCoverImage: Driver<Bool>
         let isUserNovelInterested: Driver<Bool>
-        let feedWriteButtonEnabled: Observable<Void>
-        let pushToReviewEnabled: Observable<ReadStatus?>
+        let pushTofeedWriteViewController: Observable<Void>
+        let pushToReviewViewController: Observable<ReadStatus?>
                                             
         //Tab
         let selectedTab: Driver<Tab>
@@ -212,11 +212,11 @@ final class NovelDetailViewModel: ViewModelType {
             detailHeaderData: novelDetailHeaderData.asObservable(),
             detailInfoData: novelDetailInfoData.asObserver(),
             scrollContentOffset: scrollContentOffset,
-            backButtonEnabled: backButtonDidTap,
+            popToLastViewController: backButtonDidTap,
             showLargeNovelCoverImage: showLargeNovelCoverImage.asDriver(),
             isUserNovelInterested: isUserNovelInterested.asDriver(),
-            feedWriteButtonEnabled: feedWriteButtonDidTap,
-            pushToReviewEnabled: reviewResultButtonDidTap,
+            pushTofeedWriteViewController: feedWriteButtonDidTap,
+            pushToReviewViewController: reviewResultButtonDidTap,
             selectedTab: selectedTab.asDriver(),
             isInfoDescriptionExpended: isInfoDescriptionExpended.asDriver(),
             platformList: platformList.asDriver(),

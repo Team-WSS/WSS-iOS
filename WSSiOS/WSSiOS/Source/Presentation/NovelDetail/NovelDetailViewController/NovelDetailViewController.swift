@@ -137,7 +137,7 @@ final class NovelDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.backButtonEnabled
+        output.popToLastViewController
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 owner.popToLastViewController()
@@ -152,7 +152,7 @@ final class NovelDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.pushToReviewEnabled
+        output.pushToReviewViewController
             .observe(on: MainScheduler.instance)
             .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, value in
@@ -168,7 +168,7 @@ final class NovelDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.feedWriteButtonEnabled
+        output.pushTofeedWriteViewController
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 // 수다글 작성 View로 이동
