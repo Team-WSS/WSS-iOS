@@ -56,6 +56,8 @@
 		2C9A196D2C5692370043044A /* MyPageSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9A196C2C5692360043044A /* MyPageSettingView.swift */; };
 		2C9A196F2C56923B0043044A /* MyPageSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9A196E2C56923B0043044A /* MyPageSettingViewController.swift */; };
 		2C9A19712C56925F0043044A /* MyPageInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9A19702C56925F0043044A /* MyPageInfoViewModel.swift */; };
+		2CA2F64E2B527B060045B4C2 /* MyPageCustomModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2F64D2B527B060045B4C2 /* MyPageCustomModalView.swift */; };
+		2CA2F6502B527B3A0045B4C2 /* MyPageCustomModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2F64F2B527B3A0045B4C2 /* MyPageCustomModalViewController.swift */; };
 		2C9CBDB12C5BB4340084481F /* BlocksService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9CBDB02C5BB4340084481F /* BlocksService.swift */; };
 		2CA2F6522B527B590045B4C2 /* TrashMyPageModalAvatarFeatureLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2F6512B527B590045B4C2 /* TrashMyPageModalAvatarFeatureLabelView.swift */; };
 		2CA2F65B2B53041E0045B4C2 /* LibraryBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2F65A2B53041E0045B4C2 /* LibraryBaseViewController.swift */; };
@@ -227,7 +229,6 @@
 		B92A06672C49858800E27652 /* DetailSearchHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92A06662C49858800E27652 /* DetailSearchHeaderView.swift */; };
 		B92A06692C49877700E27652 /* DetailSearchBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92A06682C49877700E27652 /* DetailSearchBottomView.swift */; };
 		B933BED32C4916DC00365077 /* KeywordBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = B933BED22C4916DC00365077 /* KeywordBox.swift */; };
-		B942C78E2BFCD39700C4A8C6 /* HomeRealtimePopularContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B942C78D2BFCD39700C4A8C6 /* HomeRealtimePopularContentView.swift */; };
 		B96098802C27201B0084F697 /* NormalSearchResultCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B960987F2C27201B0084F697 /* NormalSearchResultCountView.swift */; };
 		B96098882C27421F0084F697 /* FeedDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B96098872C27421F0084F697 /* FeedDetailViewController.swift */; };
 		B960988A2C2742680084F697 /* FeedDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B96098892C2742680084F697 /* FeedDetailViewModel.swift */; };
@@ -244,7 +245,6 @@
 		B971D8792C0388E0008934D8 /* SearchRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B971D8782C0388E0008934D8 /* SearchRepository.swift */; };
 		B98748632C3581A70039ACE5 /* NormalSearchCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E565FB2C04526000DB51FF /* NormalSearchCollectionViewCell.swift */; };
 		B9A0FD6C2BFCF0080004252E /* HomeRealtimePopularCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A0FD6B2BFCF0080004252E /* HomeRealtimePopularCollectionViewCell.swift */; };
-		B9A0FD6E2BFCF16F0004252E /* HomeRealtimePopularContentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A0FD6D2BFCF16F0004252E /* HomeRealtimePopularContentTableViewCell.swift */; };
 		B9AC1BD02BF0B33E006EDE92 /* HomeNoticeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AC1BCF2BF0B33E006EDE92 /* HomeNoticeViewController.swift */; };
 		B9AC1BD22BF0B485006EDE92 /* HomeNoticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AC1BD12BF0B485006EDE92 /* HomeNoticeView.swift */; };
 		B9AC1BD42BF0B529006EDE92 /* HomeNoticeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AC1BD32BF0B529006EDE92 /* HomeNoticeTableViewCell.swift */; };
@@ -545,7 +545,6 @@
 		B92A06662C49858800E27652 /* DetailSearchHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailSearchHeaderView.swift; sourceTree = "<group>"; };
 		B92A06682C49877700E27652 /* DetailSearchBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailSearchBottomView.swift; sourceTree = "<group>"; };
 		B933BED22C4916DC00365077 /* KeywordBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeywordBox.swift; sourceTree = "<group>"; };
-		B942C78D2BFCD39700C4A8C6 /* HomeRealtimePopularContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRealtimePopularContentView.swift; sourceTree = "<group>"; };
 		B960987F2C27201B0084F697 /* NormalSearchResultCountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalSearchResultCountView.swift; sourceTree = "<group>"; };
 		B96098872C27421F0084F697 /* FeedDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDetailViewController.swift; sourceTree = "<group>"; };
 		B96098892C2742680084F697 /* FeedDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDetailViewModel.swift; sourceTree = "<group>"; };
@@ -561,7 +560,6 @@
 		B96F0F9D2C29A25200DA5483 /* FeedDetailResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDetailResult.swift; sourceTree = "<group>"; };
 		B971D8782C0388E0008934D8 /* SearchRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRepository.swift; sourceTree = "<group>"; };
 		B9A0FD6B2BFCF0080004252E /* HomeRealtimePopularCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRealtimePopularCollectionViewCell.swift; sourceTree = "<group>"; };
-		B9A0FD6D2BFCF16F0004252E /* HomeRealtimePopularContentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRealtimePopularContentTableViewCell.swift; sourceTree = "<group>"; };
 		B9AC1BCF2BF0B33E006EDE92 /* HomeNoticeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNoticeViewController.swift; sourceTree = "<group>"; };
 		B9AC1BD12BF0B485006EDE92 /* HomeNoticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNoticeView.swift; sourceTree = "<group>"; };
 		B9AC1BD32BF0B529006EDE92 /* HomeNoticeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNoticeTableViewCell.swift; sourceTree = "<group>"; };
@@ -1573,7 +1571,6 @@
 				B9B0CBD72BE2A09B002F4CF6 /* HomeInterestCollectionViewCell.swift */,
 				B9181BDD2BEBE2300024C800 /* HomeTasteRecommendCollectionViewCell.swift */,
 				B9A0FD6B2BFCF0080004252E /* HomeRealtimePopularCollectionViewCell.swift */,
-				B9A0FD6D2BFCF16F0004252E /* HomeRealtimePopularContentTableViewCell.swift */,
 			);
 			path = HomeCell;
 			sourceTree = "<group>";
@@ -1599,7 +1596,6 @@
 				B9181BDB2BEBDFA80024C800 /* HomeTasteRecommendView.swift */,
 				B9CEDA0C2C01C97E00E62247 /* HomeUnregisterView.swift */,
 				B9FE59632BF11955005815AF /* HomeInduceLoginModalView.swift */,
-				B942C78D2BFCD39700C4A8C6 /* HomeRealtimePopularContentView.swift */,
 			);
 			path = HomeAssistantView;
 			sourceTree = "<group>";
@@ -2490,7 +2486,6 @@
 				CD39F2DA2B50DDBF00B73A5C /* TrashNovelDetailInfoGenreView.swift in Sources */,
 				39F686FE2C6F5D5C0065999F /* NovelDetailInfoReviewGraphStackView.swift in Sources */,
 				2CD9114A2C0D8948006B8D72 /* FeedContentView.swift in Sources */,
-				B9A0FD6E2BFCF16F0004252E /* HomeRealtimePopularContentTableViewCell.swift in Sources */,
 				C99DDFDF2C8613C900EDC0C4 /* SearchViewController.swift in Sources */,
 				2CD9114A2C0D8948006B8D72 /* FeedContentView.swift in Sources */,
 				2CCBF9EE2B4C1FC500D787C2 /* MyPageViewController.swift in Sources */,
@@ -2784,7 +2779,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 202401192;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 9SVDHQS4M3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WSSiOS/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "웹소소";

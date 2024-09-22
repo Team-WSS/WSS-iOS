@@ -11,7 +11,7 @@ import RxSwift
 
 protocol RecommendService {
     func getTodayPopularNovels() -> Single<TodayPopularNovels>
-    func getRealtimePopularFeeds() -> Single<[RealtimePopularFeed]>
+    func getRealtimePopularFeeds() -> Single<RealtimePopularFeeds>
     func getInterestFeeds() -> Single<InterestFeeds>
     func getTasteRecommendNovels() -> Single<TasteRecommendNovels>
 }
@@ -45,7 +45,7 @@ extension DefaultRecommendService: RecommendService {
     }
     
     /// 지금 뜨는 수다글 조회
-    func getRealtimePopularFeeds() -> Single<[RealtimePopularFeed]> {
+    func getRealtimePopularFeeds() -> Single<RealtimePopularFeeds> {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.Recommend.getRealtimePopulars,
@@ -56,7 +56,7 @@ extension DefaultRecommendService: RecommendService {
             
             return urlSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
-                                       to: [RealtimePopularFeed].self) }
+                                       to: RealtimePopularFeeds.self) }
                 .asSingle()
             
         } catch {
