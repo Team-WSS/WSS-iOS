@@ -84,6 +84,7 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
     private func bindViewModel() {
         let reachedBottom = rootView.resultView.scrollView.rx.didScroll
             .map { self.isNearBottomEdge() }
+            .distinctUntilChanged()
             .filter { $0 }
             .map { _ in () }
             .asObservable()
