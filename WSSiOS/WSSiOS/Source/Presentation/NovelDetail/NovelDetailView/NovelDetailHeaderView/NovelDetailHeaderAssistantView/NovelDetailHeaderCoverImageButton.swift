@@ -7,6 +7,7 @@
 
 import UIKit
 
+import Kingfisher
 import SnapKit
 import Then
 
@@ -16,7 +17,6 @@ final class NovelDetailHeaderCoverImageButton: UIButton {
     
     private let novelCoverShadowView = UIView()
     private let novelCoverImageView = UIImageView()
-    private let novelGenreBookmarkBackgroundImageView = UIImageView()
     private let novelGenreImageView = UIImageView()
     
     //MARK: - Life Cycle
@@ -50,13 +50,9 @@ final class NovelDetailHeaderCoverImageButton: UIButton {
                 $0.layer.cornerRadius = 8
                 $0.clipsToBounds = true
                 
-                novelGenreBookmarkBackgroundImageView.do {
+                novelGenreImageView.do {
                     $0.image = .icGenreBackground
                     $0.contentMode = .scaleAspectFit
-                    
-                    novelGenreImageView.do {
-                        $0.contentMode = .scaleAspectFit
-                    }
                 }
             }
         }
@@ -65,9 +61,7 @@ final class NovelDetailHeaderCoverImageButton: UIButton {
     private func setHierarchy() {
         self.addSubview(novelCoverShadowView)
         novelCoverShadowView.addSubviews(novelCoverImageView,
-                                         novelGenreBookmarkBackgroundImageView)
-        novelGenreBookmarkBackgroundImageView.addSubview(novelGenreImageView)
-                         
+                                         novelGenreImageView)
     }
     
     private func setLayout() {
@@ -80,16 +74,10 @@ final class NovelDetailHeaderCoverImageButton: UIButton {
                 $0.edges.equalToSuperview()
             }
             
-            novelGenreBookmarkBackgroundImageView.snp.makeConstraints {
+            novelGenreImageView.snp.makeConstraints {
                 $0.bottom.equalToSuperview()
                 $0.trailing.equalToSuperview()
                 $0.size.equalTo(71)
-            }
-            
-            novelGenreImageView.snp.makeConstraints {
-                $0.trailing.equalToSuperview().inset(4)
-                $0.bottom.equalToSuperview().inset(5)
-                $0.size.equalTo(32)
             }
         }
     }
@@ -97,7 +85,20 @@ final class NovelDetailHeaderCoverImageButton: UIButton {
     //MARK: - Data
     
     func bindData(_ data: NovelDetailHeaderResult) {
-        novelCoverImageView.image = UIImage(named: data.novelImage)
+        novelCoverImageView.kf.indicatorType = .activity
+        novelCoverImageView.kf.setImage(with: URL(string: data.novelImage),
+                                        placeholder: nil,
+                                        options: [.transition(.fade(0.25))],
+                                        progressBlock: nil, completionHandler: { result in
+            switch(result) {
+            case .success(let imageResult):
+                self.novelCoverImageView.image = imageResult.image
+            case .failure(let error):
+                self.novelCoverImageView.image = .imgLoadingThumbnail
+                print(error)
+            }
+        })
+        
         novelGenreImageView.image = UIImage(named: data.novelGenreImage)
     }
 }

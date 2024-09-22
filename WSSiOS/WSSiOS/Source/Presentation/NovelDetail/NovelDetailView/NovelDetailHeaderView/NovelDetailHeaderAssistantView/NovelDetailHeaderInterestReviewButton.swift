@@ -13,16 +13,15 @@ import Then
 final class NovelDetailHeaderInterestReviewButton: UIView {
     
     //MARK: - Components
+    private let buttonStackView = UIStackView()
     
     private let interestButton = UIButton()
-    private let interestStackView = UIStackView()
-    private let intersetImageView = UIImageView()
+    private let interestContentView = UIView()
+    private let interestImageView = UIImageView()
     private let interestLabel = UILabel()
     
-    private let dividerView = UIView()
-    
     private let reviewButton = UIButton()
-    private let reviewStackView = UIStackView()
+    private let reviewContentView = UIView()
     private let reviewImageView = UIImageView()
     private let reviewLabel = UILabel()
     
@@ -43,92 +42,110 @@ final class NovelDetailHeaderInterestReviewButton: UIView {
     //MARK: - UI
     
     private func setUI() {
-        self.do {
+        buttonStackView.do {
+            $0.spacing = 8
+            $0.distribution = .fillEqually
+            $0.alignment = .center
+        }
+        
+        interestButton.do {
             $0.backgroundColor = .wssWhite
-            $0.layer.cornerRadius = 10
-            $0.layer.borderColor = UIColor.wssGray70.cgColor
+            $0.layer.cornerRadius = 15
+            $0.layer.borderColor = UIColor.wssPrimary100.cgColor
             $0.layer.borderWidth = 1
-        }
-        
-        interestStackView.do {
-            $0.axis = .horizontal
-            $0.spacing = 9
-            $0.alignment = .center
-            $0.isUserInteractionEnabled = false
             
-            intersetImageView.do {
-                $0.image = .icReviewNotInterest
-            }
-            
-            interestLabel.do {
-                $0.applyWSSFont(.body5, with: StringLiterals.NovelDetail.Header.interest)
-                $0.textColor = .wssGray300
+            interestContentView.do {
+                $0.isUserInteractionEnabled = false
+                
+                interestImageView.do {
+                    $0.image = .icReviewNotInterest
+                }
+                
+                interestLabel.do {
+                    $0.applyWSSFont(.body4, with: StringLiterals.NovelDetail.Header.interest)
+                    $0.textColor = .wssPrimary100
+                }
             }
         }
         
-        dividerView.do {
-            $0.backgroundColor = .wssGray70
-        }
-        
-        reviewStackView.do {
-            $0.axis = .horizontal
-            $0.spacing = 9
-            $0.alignment = .center
-            $0.isUserInteractionEnabled = false
+        reviewButton.do {
+            $0.backgroundColor = .wssPrimary100
+            $0.layer.cornerRadius = 15
             
-            reviewImageView.do {
-                $0.image = .icReviewWrite
-            }
-            
-            reviewLabel.do {
-                $0.applyWSSFont(.body5, with: StringLiterals.NovelDetail.Header.review)
-                $0.textColor = .wssGray300
+            reviewContentView.do {
+                $0.isUserInteractionEnabled = false
+                
+                reviewImageView.do {
+                    $0.image = .icReviewWrite
+                }
+                
+                reviewLabel.do {
+                    $0.applyWSSFont(.body4, with: StringLiterals.NovelDetail.Header.review)
+                    $0.textColor = .wssWhite
+                }
             }
         }
     }
     
     private func setHierarchy() {
-        self.addSubviews(interestButton,
-                         dividerView,
-                         reviewButton)
-        interestButton.addSubview(interestStackView)
-        interestStackView.addArrangedSubviews(intersetImageView,
-                                              interestLabel)
-        reviewButton.addSubview(reviewStackView)
-        reviewStackView.addArrangedSubviews(reviewImageView,
-                                            reviewLabel)
+        self.addSubview(buttonStackView)
+        buttonStackView.addArrangedSubviews(interestButton,
+                                            reviewButton)
+        interestButton.addSubview(interestContentView)
+        interestContentView.addSubviews(interestImageView,
+                                        interestLabel)
+        reviewButton.addSubview(reviewContentView)
+        reviewContentView.addSubviews(reviewImageView,
+                                      reviewLabel)
     }
     
     private func setLayout() {
         self.snp.makeConstraints {
-            $0.height.equalTo(44)
+            $0.height.equalTo(40)
+        }
+        
+        buttonStackView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
         
         interestButton.snp.makeConstraints {
             $0.verticalEdges.equalToSuperview()
-            $0.leading.equalToSuperview()
-            $0.trailing.equalTo(dividerView.snp.centerX)
-        }
-        
-        interestStackView.snp.makeConstraints {
-            $0.center.equalToSuperview()
-        }
-        
-        dividerView.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.height.equalTo(25)
-            $0.centerX.equalToSuperview()
-            $0.width.equalTo(1)
+            
+            interestContentView.snp.makeConstraints {
+                $0.center.equalToSuperview()
+                
+                interestImageView.snp.makeConstraints {
+                    $0.leading.equalToSuperview()
+                    $0.size.equalTo(20)
+                    $0.verticalEdges.equalToSuperview()
+                }
+                
+                interestLabel.snp.makeConstraints {
+                    $0.leading.equalTo(interestImageView.snp.trailing).offset(9)
+                    $0.centerY.equalToSuperview()
+                    $0.trailing.equalToSuperview().inset(6)
+                }
+            }
         }
         
         reviewButton.snp.makeConstraints {
             $0.verticalEdges.equalToSuperview()
-            $0.leading.equalTo(dividerView.snp.centerX)
-            $0.trailing.equalToSuperview()
-        }
-        
-        reviewStackView.snp.makeConstraints {
-            $0.center.equalToSuperview()
+            
+            reviewContentView.snp.makeConstraints {
+                $0.center.equalToSuperview()
+                
+                reviewImageView.snp.makeConstraints {
+                    $0.leading.equalToSuperview()
+                    $0.size.equalTo(20)
+                    $0.verticalEdges.equalToSuperview()
+                }
+                
+                reviewLabel.snp.makeConstraints {
+                    $0.leading.equalTo(reviewImageView.snp.trailing).offset(9)
+                    $0.centerY.equalToSuperview()
+                    $0.trailing.equalToSuperview().inset(6)
+                }
+            }
         }
     }
     
@@ -136,11 +153,11 @@ final class NovelDetailHeaderInterestReviewButton: UIView {
     
     func bindData(_ data: NovelDetailHeaderResult) {
         if data.isUserNovelInterest {
-            intersetImageView.image = .icReviewInterest
-            interestLabel.textColor = .wssPrimary200
+            interestButton.backgroundColor = .wssPrimary50
+            interestImageView.image = .icReviewInterest
         } else {
-            intersetImageView.image = .icReviewNotInterest
-            interestLabel.textColor = .wssGray300
+            interestButton.backgroundColor = .wssWhite
+            interestImageView.image = .icReviewNotInterest
         }
     }
 }

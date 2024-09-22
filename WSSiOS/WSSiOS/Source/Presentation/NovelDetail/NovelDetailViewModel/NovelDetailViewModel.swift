@@ -18,16 +18,21 @@ final class NovelDetailViewModel: ViewModelType {
     private let novelDetailRepository: NovelDetailRepository
     private let novelId: Int
     
+    //Total
     private let viewWillAppearEvent = BehaviorRelay<Bool>(value: false)
+    
+    //NovelDetailHeader
     private let novelDetailHeaderData = PublishSubject<NovelDetailHeaderResult>()
-    private let novelDetailInfoData = PublishSubject<NovelDetailInfoResult>()
     private let showLargeNovelCoverImage = BehaviorRelay<Bool>(value: false)
+    
+    //Tab
     private let selectedTab = BehaviorRelay<Tab>(value: Tab.info)
     
+    //NovelDetailInfo
+    private let novelDetailInfoData = PublishSubject<NovelDetailInfoResult>()
     private let isInfoDescriptionExpended = BehaviorRelay<Bool>(value: false)
     private let platformList = BehaviorRelay<[Platform]>(value: [])
     private let keywordList = BehaviorRelay<[Keyword]>(value: [])
-    
     private let reviewSectionVisibilities = BehaviorRelay<[ReviewSectionVisibility]>(value: [])
     
     //MARK: - Life Cycle
@@ -56,7 +61,7 @@ final class NovelDetailViewModel: ViewModelType {
     struct Output {
         let detailHeaderData: Observable<NovelDetailHeaderResult>
         let detailInfoData: Observable<NovelDetailInfoResult>
-        let scrollContentOffset: Driver<CGPoint>
+        let scrollContentOffset: ControlProperty<CGPoint>
         let backButtonEnabled: Observable<Void>
         let showLargeNovelCoverImage: Driver<Bool>
         let selectedTab: Driver<Tab>
@@ -166,7 +171,7 @@ final class NovelDetailViewModel: ViewModelType {
         return Output(
             detailHeaderData: novelDetailHeaderData.asObservable(),
             detailInfoData: novelDetailInfoData.asObserver(),
-            scrollContentOffset: scrollContentOffset.asDriver(),
+            scrollContentOffset: scrollContentOffset,
             backButtonEnabled: backButtonDidTap,
             showLargeNovelCoverImage: showLargeNovelCoverImage.asDriver(),
             selectedTab: selectedTab.asDriver(),
