@@ -99,7 +99,6 @@ final class HomeViewController: UIViewController {
                 .disposed(by: disposeBag)
         
         output.realtimePopularData
-            .map { $0.compactMap { $0 } }
             .bind(to: rootView.realtimePopularView.realtimePopularCollectionView.rx.items(
                 cellIdentifier: HomeRealtimePopularCollectionViewCell.cellIdentifier,
                 cellType: HomeRealtimePopularCollectionViewCell.self)) { row, element, cell in
@@ -108,7 +107,6 @@ final class HomeViewController: UIViewController {
                 .disposed(by: disposeBag)
         
         output.realtimePopularData
-            .map { $0.compactMap { $0 } }
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, realtimePopularItems in
                 owner.rootView.realtimePopularView.configureDots(numberOfItems: realtimePopularItems.count)
