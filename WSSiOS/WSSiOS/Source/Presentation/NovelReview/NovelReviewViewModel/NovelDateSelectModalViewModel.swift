@@ -97,12 +97,23 @@ final class NovelDateSelectModalViewModel: ViewModelType {
         
         input.datePickerDateDidChanged
             .subscribe(with: self, onNext: { owner, date in
+                let today = Date()
+                let isFutureDate = date > today
+                
                 if owner.isStartDateEditing {
-                    owner.startDate = date
-                    output.startDateData.accept(owner.startDate)
+                    if isFutureDate {
+                        output.setDatePickerDate.accept(owner.startDate)
+                    } else {
+                        owner.startDate = date
+                        output.startDateData.accept(owner.startDate)
+                    }
                 } else {
-                    owner.endDate = date
-                    output.endDateData.accept(owner.endDate)
+                    if isFutureDate {
+                        output.setDatePickerDate.accept(owner.endDate)
+                    } else {
+                        owner.endDate = date
+                        output.endDateData.accept(owner.endDate)
+                    }
                 }
             })
             .disposed(by: disposeBag)
