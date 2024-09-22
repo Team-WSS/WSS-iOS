@@ -17,8 +17,8 @@ final class MyPageInfoViewController: UIViewController {
     private let disposeBag = DisposeBag()
     private let viewModel: MyPageInfoViewModel
     private let settingList = StringLiterals.MyPage.SettingInfo.allCases.map { $0.rawValue }
-    private let updateDataRelay = BehaviorRelay(value: false)
-    private let emailRelay = BehaviorRelay(value: "")
+    private let updateDataRelay = BehaviorRelay<Bool>(value: false)
+    private let emailRelay = BehaviorRelay<String>(value: "")
     private var genderAndBirthData = ChangeUserInfo(gender: "", birth: 0)
     
     //MARK: - UI Components

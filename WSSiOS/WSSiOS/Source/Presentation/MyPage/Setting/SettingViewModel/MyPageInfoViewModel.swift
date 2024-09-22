@@ -29,7 +29,7 @@ final class MyPageInfoViewModel: ViewModelType {
     
     struct Output {
         let popViewController = PublishRelay<Bool>()
-        let bindEmail = BehaviorRelay(value: "")
+        let bindEmail = BehaviorRelay<String>(value: "")
         let genderAndBirth = PublishRelay<ChangeUserInfo>()
     }
     

@@ -23,7 +23,7 @@ final class DefaultUserService: NSObject, Networking {
                                                                        value: String(describing: 10))]
     
     private func makeUserInfoQueryItems(gender: String,
-                                        birth:Int) -> [URLQueryItem] {
+                                        birth: Int) -> [URLQueryItem] {
         return [
             URLQueryItem(name: "gender", value: gender),
             URLQueryItem(name: "birth", value: String(describing: birth))

@@ -88,8 +88,7 @@ final class MyPageChangeUserInfoViewModel: ViewModelType {
                 let isEnabled = output.changeCompleteButton.value
                 if isEnabled {
                     owner.putUserInfo(gender: owner.currentGender, birth: owner.currentBirth)
-                        .subscribe(with: self, onNext: { owner, _ in
-                            
+                        .subscribe(with: self, onNext: { owner, _ in 
                             output.popViewConroller.accept(true)
                         }, onError: { owner, error in
                             print(error)

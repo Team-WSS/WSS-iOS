@@ -79,7 +79,7 @@ final class MyPageChangeUserInfoView: UIView {
             }
             
             birthArrowImageView.do {
-                $0.image = .icDropDown.withTintColor(.wssGray300, renderingMode: .alwaysOriginal)
+                $0.image = .icDownArrow.withTintColor(.wssGray300, renderingMode: .alwaysOriginal)
                 $0.isUserInteractionEnabled = false
             }
         }
@@ -150,7 +150,7 @@ final class MyPageChangeUserInfoView: UIView {
             
             birthArrowImageView.snp.makeConstraints {
                 $0.centerY.equalToSuperview()
-                $0.trailing.equalToSuperview().inset(13.5)
+                $0.trailing.equalToSuperview().inset(20)
                 $0.size.equalTo(16)
             }
         }
@@ -189,7 +189,7 @@ final class MyPageChangeUserInfoView: UIView {
             $0.setButtonAttributedTitle(text: text, font: .Body2, color: select ? .wssPrimary100 : .wssGray300)
             $0.backgroundColor = select ? .wssPrimary50 : .wssGray50
             $0.layer.borderWidth = 1
-            $0.layer.borderColor = select ? UIColor.wssPrimary50.cgColor : UIColor.clear.cgColor
+            $0.layer.borderColor = select ? UIColor.wssPrimary100.cgColor : UIColor.clear.cgColor
             $0.layer.cornerRadius = 8
         }
     }

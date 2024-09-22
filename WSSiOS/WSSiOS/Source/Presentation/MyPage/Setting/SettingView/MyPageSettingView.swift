@@ -60,7 +60,7 @@ final class MyPageSettingView: UIView {
         }
         
         backButton.snp.makeConstraints {
-            $0.size.equalTo(24)
+            $0.size.equalTo(44)
         }
     }
 }
