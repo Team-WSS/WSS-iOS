@@ -27,6 +27,7 @@ final class FeedNovelConnectModalViewModel: ViewModelType {
     // Output
     private let dismissModalViewController = PublishRelay<Void>()
     private let endEditing = PublishRelay<Void>()
+    private let scrollToTop = PublishRelay<Void>()
     private let normalSearchList = BehaviorRelay<[NormalSearchNovel]>(value: [])
     private let showConnectNovelButton = PublishRelay<Void>()
     
@@ -49,6 +50,7 @@ final class FeedNovelConnectModalViewModel: ViewModelType {
     struct Output {
         let dismissModalViewController: Observable<Void>
         let endEditing: Observable<Void>
+        let scrollToTop: Observable<Void>
         let normalSearchList: Observable<[NormalSearchNovel]>
         let showConnectNovelButton: Observable<Void>
     }
@@ -79,14 +81,13 @@ final class FeedNovelConnectModalViewModel: ViewModelType {
                 owner.endEditing.accept(())
                 owner.normalSearchList.accept(data.novels)
                 owner.isLoadable = data.isLoadable
+                owner.scrollToTop.accept(())
             })
             .disposed(by: disposeBag)
         
         input.searchResultCollectionViewReachedBottom
             .filter { reachedBottom in
-                return reachedBottom
-                && self.isFetching == false
-                && self.isLoadable == true
+                return reachedBottom && !self.isFetching && self.isLoadable
             }
             .do(onNext: { _ in
                 self.isFetching = true
@@ -132,6 +133,7 @@ final class FeedNovelConnectModalViewModel: ViewModelType {
         
         return Output(dismissModalViewController: dismissModalViewController.asObservable(),
                       endEditing: endEditing.asObservable(),
+                      scrollToTop: scrollToTop.asObservable(),
                       normalSearchList: normalSearchList.asObservable(),
                       showConnectNovelButton: showConnectNovelButton.asObservable())
     }

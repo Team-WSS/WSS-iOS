@@ -92,6 +92,12 @@ final class FeedNovelConnectModalViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.scrollToTop
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.rootView.feedNovelConnectSearchResultView.searchResultCollectionView.setContentOffset(.zero, animated: true)
+            })
+            .disposed(by: disposeBag)
+        
         output.normalSearchList.bind(to: rootView.feedNovelConnectSearchResultView.searchResultCollectionView.rx.items(cellIdentifier: FeedNovelConnectCollectionViewCell.cellIdentifier, cellType: FeedNovelConnectCollectionViewCell.self)) { item, element, cell in
             cell.bindData(data: element)
         }
