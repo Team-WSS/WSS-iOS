@@ -35,6 +35,7 @@ final class MyPageChangeUserBirthTableViewCell: UITableViewCell {
     private func setUI() {
         self.do {
             $0.backgroundColor = .clear
+            $0.selectionStyle = .none
         }
         
         birthLabel.do {
