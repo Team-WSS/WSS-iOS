@@ -31,7 +31,6 @@ final class FeedEditViewController: UIViewController {
         self.feedEditViewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         
-        self.rootView.feedEditContentView.bindData(isSpoiler: viewModel.isSpoiler)
         if let initialFeedContent = viewModel.initialFeedContent {
             self.rootView.feedEditContentView.bindData(feedContent: initialFeedContent)
         }

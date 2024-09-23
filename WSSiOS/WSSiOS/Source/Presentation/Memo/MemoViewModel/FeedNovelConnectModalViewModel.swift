@@ -16,8 +16,8 @@ final class FeedNovelConnectModalViewModel: ViewModelType {
     
     private let searchRepository: SearchRepository
     
-    private let searchText = BehaviorRelay<String>(value: "")
     private var selectedNovel = BehaviorRelay<NormalSearchNovel?>(value: nil)
+    private var searchText: String = ""
     
     // 무한스크롤
     private var currentPage: Int = 0
@@ -64,20 +64,20 @@ final class FeedNovelConnectModalViewModel: ViewModelType {
         
         input.searchTextUpdated
             .subscribe(with: self, onNext: { owner, text in
-                owner.searchText.accept(text)
+                owner.searchText = text
             })
             .disposed(by: disposeBag)
         
         input.searchButtonDidTap
             .filter {
-                !self.searchText.value.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                !self.searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
             }
             .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
             .do(onNext: { _ in
                 self.currentPage = 0
             })
             .flatMapLatest {
-                self.getNormalSearchList(query: self.searchText.value, page: self.currentPage)
+                self.getNormalSearchList(query: self.searchText, page: self.currentPage)
             }
             .subscribe(with: self, onNext: { owner, data in
                 owner.endEditing.accept(())
@@ -95,7 +95,7 @@ final class FeedNovelConnectModalViewModel: ViewModelType {
                 self.isFetching = true
             })
             .flatMapLatest { _ in
-                self.getNormalSearchList(query: self.searchText.value, page: self.currentPage + 1)
+                self.getNormalSearchList(query: self.searchText, page: self.currentPage + 1)
                     .do(onNext: { _ in
                         self.currentPage += 1
                         self.isFetching = false
@@ -146,21 +146,5 @@ final class FeedNovelConnectModalViewModel: ViewModelType {
         searchRepository.getSearchNovels(query: query, page: page)
             .observe(on: MainScheduler.instance)
     }
-    
-//    private func getNormalSearchList(query: String, page: Int) -> Observable<NormalSearchNovels> {
-//        return searchRepository.getSearchNovels(query: query, page: page)
-//            .do(onNext: { data in
-//                if page == 0 {
-//                    self.normalSearchList.accept(data.novels)
-//                } else {
-//                    let updatedList = self.normalSearchList.value + data.novels
-//                    self.normalSearchList.accept(updatedList)
-//                }
-//                self.isLoadable.accept(data.isLoadable)
-//                self.currentPage.accept(page)
-//            }, onError: { error in
-//                print(error.localizedDescription)
-//            })
-//    }
 }
 

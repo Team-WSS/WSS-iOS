@@ -59,13 +59,25 @@ final class FeedEditViewModel: ViewModelType {
     let initialFeedContent: String?
     private var novelId: Int?
     var relevantCategories: [String] = []
-    var isSpoiler: Bool = false
     private var updatedFeedContent: String = ""
     private let feedContentPredicate = NSPredicate(format: "SELF MATCHES %@", "^[\\s]+$")
     private let maximumFeedContentCount: Int = 2000
     
     //TODO: - 성별에 따른 리스트는 추후 구현
     let relevantCategoryList = FeedDetailWomanKoreanGenreDummy.allCases.map { $0.rawValue }
+    
+    // Output
+    private let endEditing = PublishRelay<Bool>()
+    private let categoryListData = PublishRelay<[String]>()
+    private let popViewController = PublishRelay<Void>()
+    private let isSpoiler = BehaviorRelay<Bool>(value: false)
+    private let feedContentWithLengthLimit = BehaviorRelay<String>(value: "")
+    private let completeButtonIsAbled = BehaviorRelay<Bool>(value: false)
+    private let showPlaceholder = PublishRelay<Bool>()
+    private let presentFeedEditNovelConnectModalViewController = PublishRelay<Void>()
+    private let connectedNovelTitle = PublishRelay<String?>()
+    private let showAlreadyConnectedToast = PublishRelay<Void>()
+    private let showStopEditingAlert = PublishRelay<Void>()
        
     //MARK: - Life Cycle
     
@@ -75,7 +87,7 @@ final class FeedEditViewModel: ViewModelType {
         self.relevantCategories = relevantCategories
         self.initialFeedContent = initialFeedContent
         self.novelId = novelId
-        self.isSpoiler = isSpoiler
+        self.isSpoiler.accept(isSpoiler)
     }
     
     struct Input {
@@ -96,71 +108,71 @@ final class FeedEditViewModel: ViewModelType {
     }
     
     struct Output {
-        let endEditing = PublishRelay<Bool>()
-        let categoryListData = PublishRelay<[String]>()
-        let popViewController = PublishRelay<Void>()
-        let isSpoiler = PublishRelay<Bool>()
-        let feedContentWithLengthLimit = BehaviorRelay<String>(value: "")
-        let completeButtonIsAbled = BehaviorRelay<Bool>(value: false)
-        let showPlaceholder = PublishRelay<Bool>()
-        let presentFeedEditNovelConnectModalViewController = PublishRelay<Void>()
-        let connectedNovelTitle = PublishRelay<String?>()
-        let showAlreadyConnectedToast = PublishRelay<Void>()
-        let showStopEditingAlert = PublishRelay<Void>()
+        let endEditing: Observable<Bool>
+        let categoryListData: Observable<[String]>
+        let popViewController: Observable<Void>
+        let isSpoiler: Observable<Bool>
+        let feedContentWithLengthLimit: Observable<String>
+        let completeButtonIsAbled: Observable<Bool>
+        let showPlaceholder: Observable<Bool>
+        let presentFeedEditNovelConnectModalViewController: Observable<Void>
+        let connectedNovelTitle: Observable<String?>
+        let showAlreadyConnectedToast: Observable<Void>
+        let showStopEditingAlert: Observable<Void>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
-        let output = Output()
-        
         input.viewDidTap
-            .subscribe(onNext: { _ in
-                output.endEditing.accept(true)
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.endEditing.accept(true)
             })
             .disposed(by: disposeBag)
         
         input.viewWillAppearEvent
             .subscribe(with: self, onNext: { owner, _ in
-                output.categoryListData.accept(owner.relevantCategoryList)
+                owner.categoryListData.accept(owner.relevantCategoryList)
             })
             .disposed(by: disposeBag)
         
         input.backButtonDidTap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
-            .subscribe(onNext: { _ in
-                output.showStopEditingAlert.accept(())
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.showStopEditingAlert.accept(())
             })
             .disposed(by: disposeBag)
         
         if let feedId {
             input.completeButtonDidTap
                 .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
-                .flatMapLatest {
-                    self.putFeed(feedId: feedId, relevantCategories: self.relevantCategories, feedContent: self.updatedFeedContent, novelId: self.novelId, isSpoiler: self.isSpoiler)
+                .withLatestFrom(isSpoiler)
+                .flatMapLatest { isSpoiler in
+                    self.putFeed(feedId: feedId, relevantCategories: self.relevantCategories, feedContent: self.updatedFeedContent, novelId: self.novelId, isSpoiler: isSpoiler)
                 }
-                .subscribe(onNext: { data in
-                    print(data)
-                }, onError: { error in
+                .subscribe(with: self, onNext: { owner, _ in
+                    owner.popViewController.accept(())
+                }, onError: { owner, error  in
                     print(error)
                 })
                 .disposed(by: disposeBag)
         } else {
             input.completeButtonDidTap
                 .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
-                .flatMapLatest {
-                    self.postFeed(relevantCategories: self.relevantCategories, feedContent: self.updatedFeedContent, novelId: self.novelId, isSpoiler: self.isSpoiler)
+                .withLatestFrom(isSpoiler)
+                .flatMapLatest { isSpoiler in
+                    self.postFeed(relevantCategories: self.relevantCategories, feedContent: self.updatedFeedContent, novelId: self.novelId, isSpoiler: isSpoiler)
                 }
-                .subscribe(onNext: { data in
-                    print(data)
-                }, onError: { error in
+                .subscribe(with: self, onNext: { owner, _ in
+                    owner.popViewController.accept(())
+                }, onError: { owner, error  in
                     print(error)
                 })
                 .disposed(by: disposeBag)
         }
         
         input.spoilerButtonDidTap
-            .subscribe(with: self, onNext: { owner, _ in
-                output.isSpoiler.accept(!owner.isSpoiler)
-                owner.isSpoiler = !owner.isSpoiler
+            .withLatestFrom(isSpoiler)
+            .subscribe(with: self, onNext: { owner, isSpoiler in
+                owner.isSpoiler.accept(!isSpoiler)
             })
             .disposed(by: disposeBag)
         
@@ -170,7 +182,7 @@ final class FeedEditViewModel: ViewModelType {
                 if let englishCategory = FeedDetailWomanKoreanGenreDummy(rawValue: selectedCategory)?.toEnglish {
                     owner.relevantCategories.append(englishCategory)
                 }
-                output.completeButtonIsAbled.accept(owner.isValidFeedContent && !owner.relevantCategories.isEmpty)
+                owner.completeButtonIsAbled.accept(owner.isValidFeedContent && !owner.relevantCategories.isEmpty)
             })
             .disposed(by: disposeBag)
         
@@ -180,14 +192,14 @@ final class FeedEditViewModel: ViewModelType {
                 if let englishCategory = FeedDetailWomanKoreanGenreDummy(rawValue: deselectedCategory)?.toEnglish {
                     owner.relevantCategories.removeAll { $0 == englishCategory }
                 }
-                output.completeButtonIsAbled.accept(owner.isValidFeedContent && !owner.relevantCategories.isEmpty)
+                owner.completeButtonIsAbled.accept(owner.isValidFeedContent && !owner.relevantCategories.isEmpty)
             })
             .disposed(by: disposeBag)
         
         input.feedContentUpdated
             .subscribe(with: self, onNext: { owner, text in
                 owner.updatedFeedContent = text
-                output.feedContentWithLengthLimit.accept(String(text.prefix(owner.maximumFeedContentCount)))
+                owner.feedContentWithLengthLimit.accept(String(text.prefix(owner.maximumFeedContentCount)))
                 
                 let isEmpty = text.count == 0
                 let isOverLimit = text.count > owner.maximumFeedContentCount
@@ -196,29 +208,29 @@ final class FeedEditViewModel: ViewModelType {
                 
                 owner.isValidFeedContent = !(isEmpty || isOverLimit || isWrongFormat || isNotChanged)
                 
-                output.showPlaceholder.accept(isEmpty)
-                output.completeButtonIsAbled.accept(owner.isValidFeedContent && !owner.relevantCategories.isEmpty)
+                owner.showPlaceholder.accept(isEmpty)
+                owner.completeButtonIsAbled.accept(owner.isValidFeedContent && !owner.relevantCategories.isEmpty)
             })
             .disposed(by: disposeBag)
         
         input.feedContentViewDidBeginEditing
-            .subscribe(onNext: { _ in
-                output.showPlaceholder.accept(false)
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.showPlaceholder.accept(false)
             })
             .disposed(by: disposeBag)
         
         input.feedContentViewDidEndEditing
             .subscribe(with: self, onNext: { owner, _ in
-                output.showPlaceholder.accept(owner.updatedFeedContent.count == 0 ? true : false)
+                owner.showPlaceholder.accept(owner.updatedFeedContent.count == 0 ? true : false)
             })
             .disposed(by: disposeBag)
         
         input.novelConnectViewDidTap
             .subscribe(with: self, onNext: { owner, _ in
                 if owner.novelId != nil {
-                    output.showAlreadyConnectedToast.accept(())
+                    owner.showAlreadyConnectedToast.accept(())
                 } else {
-                    output.presentFeedEditNovelConnectModalViewController.accept(())
+                    owner.presentFeedEditNovelConnectModalViewController.accept(())
                 }
             })
             .disposed(by: disposeBag)
@@ -227,24 +239,34 @@ final class FeedEditViewModel: ViewModelType {
             .subscribe(with: self, onNext: { owner, notification in
                 guard let connectedNovel = notification.object as? NormalSearchNovel else { return }
                 owner.novelId = connectedNovel.novelId
-                output.connectedNovelTitle.accept(connectedNovel.novelTitle)
+                owner.connectedNovelTitle.accept(connectedNovel.novelTitle)
             })
             .disposed(by: disposeBag)
         
         input.novelRemoveButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
                 owner.novelId = nil
-                output.connectedNovelTitle.accept(nil)
+                owner.connectedNovelTitle.accept(nil)
             })
             .disposed(by: disposeBag)
         
         input.stopEditButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
-                output.popViewController.accept(())
+                owner.popViewController.accept(())
             })
             .disposed(by: disposeBag)
         
-        return output
+        return Output(endEditing: endEditing.asObservable(),
+                      categoryListData: categoryListData.asObservable(),
+                      popViewController: popViewController.asObservable(),
+                      isSpoiler: isSpoiler.asObservable(),
+                      feedContentWithLengthLimit: feedContentWithLengthLimit.asObservable(),
+                      completeButtonIsAbled: completeButtonIsAbled.asObservable(),
+                      showPlaceholder: showPlaceholder.asObservable(),
+                      presentFeedEditNovelConnectModalViewController: presentFeedEditNovelConnectModalViewController.asObservable(),
+                      connectedNovelTitle: connectedNovelTitle.asObservable(),
+                      showAlreadyConnectedToast: showAlreadyConnectedToast.asObservable(),
+                      showStopEditingAlert: showStopEditingAlert.asObservable())
     }
     
     //MARK: - API

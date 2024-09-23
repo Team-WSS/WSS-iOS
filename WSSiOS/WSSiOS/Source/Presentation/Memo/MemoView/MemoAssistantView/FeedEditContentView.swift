@@ -153,10 +153,4 @@ final class FeedEditContentView: UIView {
             $0.applyWSSFont(.body2, with: "(\(feedContent.count)/2000)")
         }
     }
-    
-    func bindData(isSpoiler: Bool) {
-        self.spoilerButton.do {
-            $0.updateToggle(isSpoiler)
-        }
-    }
 }
