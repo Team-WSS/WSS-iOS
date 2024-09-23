@@ -103,10 +103,10 @@ final class MyPageInfoViewController: UIViewController {
                 case 3:
                     print("로그아웃")
                     owner.presentToAlertViewController(iconImage: .icAlertWarningCircle,
-                                                       titleText: StringLiterals.Alert.logout,
+                                                       titleText: StringLiterals.Alert.logoutTitle,
                                                        contentText: nil,
-                                                       cancelTitle: "취소",
-                                                       actionTitle: "로그아웃",
+                                                       cancelTitle: StringLiterals.Alert.cancel,
+                                                       actionTitle: StringLiterals.Alert.logoutTitle,
                                                        actionBackgroundColor: UIColor.wssPrimary100.cgColor)
                     .subscribe({ _ in 
                         owner.logoutRelay.accept(true)

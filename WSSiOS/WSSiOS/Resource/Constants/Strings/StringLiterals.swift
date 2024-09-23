@@ -41,7 +41,9 @@ enum StringLiterals {
     }
     
     enum Alert {
-        static let logout = "로그아웃 할까요?"
+        static let logoutTitle = "로그아웃 할까요?"
+        static let cancel = "취소"
+        static let logout = "로그아웃"
     }
     
     enum Home {
