@@ -12,6 +12,8 @@ import Then
 
 final class MyPageChangeUserBirthView: UIView {
     
+    static let cellHeight: CGFloat = 37
+    
     //MARK: - Components
     
     let contentView = UIView()
@@ -53,6 +55,11 @@ final class MyPageChangeUserBirthView: UIView {
         cancelButton.do {
             $0.setImage(.icCancelModal.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray300), for: .normal)
         }
+        
+        tableView.do {
+            $0.rowHeight = MyPageChangeUserBirthView.cellHeight
+            $0.isScrollEnabled = true
+        }
     }
     
     private func setHierarchy() {
@@ -66,17 +73,26 @@ final class MyPageChangeUserBirthView: UIView {
     private func setLayout() {
         contentView.snp.makeConstraints {
             $0.leading.trailing.bottom.equalToSuperview()
-            $0.height.equalTo(UIScreen.main.bounds.height - 81)
+            $0.height.equalTo(375)
         }
         
         titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(15)
-            $0.leading.equalToSuperview().inset(20)
+            $0.top.leading.equalToSuperview().inset(25)
         }
         
         cancelButton.snp.makeConstraints {
             $0.top.trailing.equalToSuperview()
             $0.size.equalTo(65)
+        }
+        
+        tableView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.top.equalTo(cancelButton.snp.bottom).offset(10)
+            $0.height.equalTo(MyPageChangeUserBirthView.cellHeight * 3)
+        }
+        
+        completeButton.snp.makeConstraints {
+            $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom).offset(-10)
         }
     }
 }

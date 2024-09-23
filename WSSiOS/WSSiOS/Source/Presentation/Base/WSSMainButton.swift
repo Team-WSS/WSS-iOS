@@ -35,7 +35,6 @@ final class WSSMainButton: UIButton {
                 $0.centerX.equalToSuperview()
                 $0.leading.equalToSuperview().inset(20)
                 $0.height.equalTo(53)
-                $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).offset(10)
             }
         }
     }
