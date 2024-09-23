@@ -90,7 +90,11 @@ final class MyPageChangeUserBirthView: UIView {
     private func setLayout() {
         contentView.snp.makeConstraints {
             $0.leading.trailing.bottom.equalToSuperview()
-            $0.height.equalTo(375)
+            if UIScreen.isSE {
+                $0.height.equalTo(279)
+            } else {
+                $0.height.equalTo(314)
+            }
         }
         
         titleLabel.snp.makeConstraints {

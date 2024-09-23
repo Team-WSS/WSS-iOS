@@ -14,7 +14,7 @@ final class MyPageChangeUserBirthTableViewCell: UITableViewCell {
     
     //MARK: - Components
     
-    private let birthLabel = UILabel()
+    let birthLabel = UILabel()
     
     //MARK: - Life Cycle
     

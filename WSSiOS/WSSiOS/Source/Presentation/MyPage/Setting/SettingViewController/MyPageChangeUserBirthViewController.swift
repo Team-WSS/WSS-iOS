@@ -16,7 +16,7 @@ final class MyPageChangeUserBirthViewController: UIViewController {
     
     private let userBirth: Int
     
-    private let birthRange = Observable.just(Array(1900...2024))
+    private let birthRange = Observable.just(Array(1900...2025))
     private let disposeBag = DisposeBag()
     
     //MARK: - Components
