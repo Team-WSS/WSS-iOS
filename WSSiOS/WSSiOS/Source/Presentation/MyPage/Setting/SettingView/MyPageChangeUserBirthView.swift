@@ -21,7 +21,7 @@ final class MyPageChangeUserBirthView: UIView {
     let cancelButton = UIButton()
     let completeButton = WSSMainButton(title: "완료")
     
-    private let tableView = UITableView()
+    let tableView = UITableView()
     
     // MARK: - Life Cycle
     
@@ -60,6 +60,7 @@ final class MyPageChangeUserBirthView: UIView {
             $0.rowHeight = MyPageChangeUserBirthView.cellHeight
             $0.isScrollEnabled = true
             $0.showsVerticalScrollIndicator = false
+            $0.separatorStyle = .none
         }
     }
     
