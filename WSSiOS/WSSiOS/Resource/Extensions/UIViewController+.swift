@@ -92,34 +92,6 @@ extension UIViewController {
         }
     }
     
-    func pushToMemoReadViewController(memoId: Int) {
-        self.navigationController?.pushViewController(
-            MemoReadViewController(
-                viewModel: MemoReadViewModel(
-                    memoRepository: DefaultMemoRepository(
-                        memoService: DefaultMemoService()
-                    )
-                ),
-                memoId: memoId
-            ), animated: true)
-    }
-    
-    func pushToMemoEditViewController(userNovelId: Int? = nil, memoId: Int? = nil, novelTitle: String, novelAuthor: String, novelImage: String, memoContent: String? = nil) {
-        self.navigationController?.pushViewController(MemoEditViewController(
-            viewModel: MemoEditViewModel(
-                memoRepository: DefaultMemoRepository(
-                    memoService: DefaultMemoService()
-                ),
-                userNovelId: userNovelId,
-                memoId: memoId,
-                memoContent: memoContent
-            ),
-            novelTitle: novelTitle,
-            novelAuthor: novelAuthor,
-            novelImage: novelImage
-        ), animated: true)
-    }
-    
     func presentDeleteUserNovelViewController(userNovelId: Int) {
         let viewController = DeletePopupViewController(
             viewModel: DeletePopupViewModel(
