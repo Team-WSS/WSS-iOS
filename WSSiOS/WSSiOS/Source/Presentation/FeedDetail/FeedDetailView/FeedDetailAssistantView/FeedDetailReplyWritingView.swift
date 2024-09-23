@@ -52,7 +52,7 @@ final class FeedDetailReplyWritingView: UIView {
             $0.layer.cornerRadius = 14
             
             replyWritingPlaceHolderLabel.do {
-                $0.applyWSSFont(.body3, with: "댓글을 남겨보세요")
+                $0.applyWSSFont(.body3, with: StringLiterals.FeedDetail.placeHolder)
                 $0.textColor = .wssGray200
             }
             
