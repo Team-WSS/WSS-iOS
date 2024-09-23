@@ -63,3 +63,7 @@ struct FeedComment: Codable {
         case userProfileImage = "avatarImage"
     }
 }
+
+struct FeedCommentContent: Codable {
+    var commentContent: String
+}

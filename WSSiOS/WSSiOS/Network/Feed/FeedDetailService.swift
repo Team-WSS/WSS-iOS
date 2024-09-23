@@ -14,6 +14,10 @@ protocol FeedDetailService {
     func getFeedComments(feedId: Int) -> Single<FeedComments>
     func postFeedLike(feedId: Int) -> Single<Void>
     func deleteFeedLike(feedId: Int) -> Single<Void>
+    
+    func postFeedComment(feedId: Int) -> Single<FeedCommentContent>
+    func putFeedComment(feedId: Int, commentId: Int) -> Single<FeedCommentContent>
+    func deleteFeedComment(feedId: Int, commentId: Int) -> Single<Void>
 }
 
 final class DefaultFeedDetailService: NSObject, Networking, FeedDetailService {
@@ -27,14 +31,14 @@ final class DefaultFeedDetailService: NSObject, Networking, FeedDetailService {
                                               path: URLs.Feed.getSingleFeed(feedId: feedId),
                                               headers: APIConstants.testTokenHeader,
                                               body: nil)
-
+            
             NetworkLogger.log(request: request)
-
+            
             return urlSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: Feed.self) }
                 .asSingle()
-
+            
         } catch {
             return Single.error(error)
         }
@@ -46,14 +50,14 @@ final class DefaultFeedDetailService: NSObject, Networking, FeedDetailService {
                                               path: URLs.Feed.getSingleFeedComments(feedId: feedId),
                                               headers: APIConstants.testTokenHeader,
                                               body: nil)
-
+            
             NetworkLogger.log(request: request)
-
+            
             return urlSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: FeedComments.self) }
                 .asSingle()
-
+            
         } catch {
             return Single.error(error)
         }
@@ -65,13 +69,13 @@ final class DefaultFeedDetailService: NSObject, Networking, FeedDetailService {
                                               path: URLs.Feed.postFeedLike(feedId: feedId),
                                               headers: APIConstants.testTokenHeader,
                                               body: nil)
-
+            
             NetworkLogger.log(request: request)
-
+            
             return urlSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
-
+            
         } catch {
             return Single.error(error)
         }
@@ -83,13 +87,69 @@ final class DefaultFeedDetailService: NSObject, Networking, FeedDetailService {
                                               path: URLs.Feed.deleteFeedLike(feedId: feedId),
                                               headers: APIConstants.testTokenHeader,
                                               body: nil)
-
+            
             NetworkLogger.log(request: request)
-
+            
             return urlSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
-
+            
+        } catch {
+            return Single.error(error)
+        }
+    }
+    
+    func postFeedComment(feedId: Int) -> Single<FeedCommentContent> {
+        do {
+            let request = try makeHTTPRequest(method: .delete,
+                                              path: URLs.Feed.postComment(feedId: feedId),
+                                              headers: APIConstants.testTokenHeader,
+                                              body: nil)
+            
+            NetworkLogger.log(request: request)
+            
+            return urlSession.rx.data(request: request)
+                .map { try self.decode(data: $0,
+                                       to: FeedCommentContent.self) }
+                .asSingle()
+            
+        } catch {
+            return Single.error(error)
+        }
+    }
+    
+    func putFeedComment(feedId: Int, commentId: Int) -> Single<FeedCommentContent> {
+        do {
+            let request = try makeHTTPRequest(method: .delete,
+                                              path: URLs.Feed.putComment(feedId: feedId, commentId: commentId),
+                                              headers: APIConstants.testTokenHeader,
+                                              body: nil)
+            
+            NetworkLogger.log(request: request)
+            
+            return urlSession.rx.data(request: request)
+                .map { try self.decode(data: $0,
+                                       to: FeedCommentContent.self) }
+                .asSingle()
+            
+        } catch {
+            return Single.error(error)
+        }
+    }
+    
+    func deleteFeedComment(feedId: Int, commentId: Int) -> Single<Void> {
+        do {
+            let request = try makeHTTPRequest(method: .delete,
+                                              path: URLs.Feed.deleteComment(feedId: feedId, commentId: commentId),
+                                              headers: APIConstants.testTokenHeader,
+                                              body: nil)
+            
+            NetworkLogger.log(request: request)
+            
+            return urlSession.rx.data(request: request)
+                .map { _ in }
+                .asSingle()
+            
         } catch {
             return Single.error(error)
         }
