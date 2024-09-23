@@ -232,6 +232,11 @@ extension TextAttributeSet {
     func lineHeight(_ multiple: CGFloat) -> TextAttributeSet {
         let lineHeight = self.label.font.pointSize * multiple
         
+        guard !lineHeight.isNaN else {
+            print("Error: lineHeight is NaN")
+            return self
+        }
+        
         let style = NSMutableParagraphStyle().then {
             $0.maximumLineHeight = lineHeight
             $0.minimumLineHeight = lineHeight
@@ -248,7 +253,7 @@ extension TextAttributeSet {
             value: (lineHeight - self.label.font.lineHeight) / 2,
             range: NSRange(location: 0, length: attributedString.length)
         )
-
+        
         return self
     }
     

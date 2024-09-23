@@ -12,7 +12,7 @@ import Then
 
 final class NormalSearchResultCountView: UIView {
     
-    let titleLabel = UILabel()
+    private let titleLabel = UILabel()
     let novelCountLabel = UILabel()
     private let stackView = UIStackView()
     
@@ -35,7 +35,6 @@ final class NormalSearchResultCountView: UIView {
         }
         
         novelCountLabel.do {
-            $0.applyWSSFont(.body4, with: "124")
             $0.textColor = .wssGray100
         }
         
@@ -55,5 +54,9 @@ final class NormalSearchResultCountView: UIView {
         stackView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+    }
+    
+    func bindData(data: Int) {
+        novelCountLabel.applyWSSFont(.body4, with: String(describing: data))
     }
 }

@@ -7,6 +7,7 @@
 
 import Foundation
 
+// 오늘의 인기작
 struct TodayPopularNovels: Codable {
     var popularNovels: [TodayPopularNovel]
 }
@@ -20,13 +21,26 @@ struct TodayPopularNovel: Codable {
     var feedContent: String
 }
 
+// 지금 뜨는 수다글
+struct RealtimePopularFeeds: Codable {
+    var popularFeeds: [RealtimePopularFeed]
+}
+
 struct RealtimePopularFeed: Codable {
     var feedId: Int
     var feedContent: String
     var feedLikeCount: Int
     var feedCommentCount: Int
+    var isSpoiler: Bool
+    
+    enum CodingKeys: String, CodingKey {
+        case feedId, feedContent, isSpoiler
+        case feedLikeCount = "likeCount"
+        case feedCommentCount = "commentCount"
+    }
 }
 
+// 관심글
 struct InterestFeeds: Codable {
     var recommendFeeds: [InterestFeed]
 }
@@ -49,6 +63,7 @@ struct InterestFeed: Codable {
     }
 }
 
+// 선호 장르 추천
 struct TasteRecommendNovels: Codable {
     var tasteNovels: [TasteRecommendNovel]
 }

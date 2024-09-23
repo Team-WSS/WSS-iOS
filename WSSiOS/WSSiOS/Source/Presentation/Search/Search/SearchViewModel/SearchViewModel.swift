@@ -51,7 +51,7 @@ extension SearchViewModel {
         
         searchRepository.getSosoPickNovels()
             .subscribe(with: self, onNext: { owner, data in
-                output.sosoPickList.accept(data)
+                output.sosoPickList.accept(data.sosoPicks)
             }, onError: { owner, error in
                 print(error)
             })
