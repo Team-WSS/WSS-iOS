@@ -82,7 +82,7 @@ final class FeedNovelConnectModalViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.searchResultList.bind(to: rootView.feedNovelConnectSearchResultView.searchResultCollectionView.rx.items(cellIdentifier: FeedNovelConnectCollectionViewCell.cellIdentifier, cellType: FeedNovelConnectCollectionViewCell.self)) { item, element, cell in
+        output.normalSearchList.bind(to: rootView.feedNovelConnectSearchResultView.searchResultCollectionView.rx.items(cellIdentifier: FeedNovelConnectCollectionViewCell.cellIdentifier, cellType: FeedNovelConnectCollectionViewCell.self)) { item, element, cell in
             cell.bindData(data: element)
         }
         .disposed(by: disposeBag)
