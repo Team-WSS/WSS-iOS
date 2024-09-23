@@ -92,6 +92,7 @@ final class FeedEditViewModel: ViewModelType {
         let novelConnectViewDidTap: Observable<UITapGestureRecognizer>
         let feedNovelConnectedNotification: Observable<Notification>
         let novelRemoveButtonDidTap: ControlEvent<Void>
+        let stopEditButtonDidTap: Observable<Void>
     }
     
     struct Output {
@@ -105,6 +106,7 @@ final class FeedEditViewModel: ViewModelType {
         let presentFeedEditNovelConnectModalViewController = PublishRelay<Void>()
         let connectedNovelTitle = PublishRelay<String?>()
         let showAlreadyConnectedToast = PublishRelay<Void>()
+        let showStopEditingAlert = PublishRelay<Void>()
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -125,7 +127,7 @@ final class FeedEditViewModel: ViewModelType {
         input.backButtonDidTap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .subscribe(onNext: { _ in
-                output.popViewController.accept(())
+                output.showStopEditingAlert.accept(())
             })
             .disposed(by: disposeBag)
         
@@ -233,6 +235,12 @@ final class FeedEditViewModel: ViewModelType {
             .subscribe(with: self, onNext: { owner, _ in
                 owner.novelId = nil
                 output.connectedNovelTitle.accept(nil)
+            })
+            .disposed(by: disposeBag)
+        
+        input.stopEditButtonDidTap
+            .subscribe(with: self, onNext: { owner, _ in
+                output.popViewController.accept(())
             })
             .disposed(by: disposeBag)
         

@@ -19,6 +19,7 @@ final class FeedEditViewController: UIViewController {
     private let disposeBag = DisposeBag()
     
     private let viewWillAppearEvent = PublishRelay<Void>()
+    private let stopEditingEvent = PublishRelay<Void>()
     
     //MARK: - Components
 
@@ -99,7 +100,8 @@ final class FeedEditViewController: UIViewController {
             feedContentViewDidEndEditing: rootView.feedEditContentView.feedTextView.rx.didEndEditing,
             novelConnectViewDidTap: rootView.feedEditNovelConnectView.rx.tapGesture().when(.recognized).asObservable(),
             feedNovelConnectedNotification: NotificationCenter.default.rx.notification(Notification.Name("FeedNovelConnected")).asObservable(),
-            novelRemoveButtonDidTap: rootView.feedEditConnectedNovelView.removeButton.rx.tap
+            novelRemoveButtonDidTap: rootView.feedEditConnectedNovelView.removeButton.rx.tap,
+            stopEditButtonDidTap: stopEditingEvent.asObservable()
         )
         
         let output = self.feedEditViewModel.transform(from: input, disposeBag: self.disposeBag)
@@ -173,6 +175,21 @@ final class FeedEditViewController: UIViewController {
         output.showAlreadyConnectedToast
             .subscribe(with: self, onNext: { owner, _ in
                 owner.showToast(.novelAlreadyConnected)
+            })
+            .disposed(by: disposeBag)
+        
+        output.showStopEditingAlert
+            .flatMapLatest { [weak self] _ -> Observable<Void> in
+                guard let self = self else { return Observable.just(()) }
+                return self.presentToAlertViewController(iconImage: .icAlertWarningCircle,
+                                                         titleText: "글 작성을 그만하시겠어요?",
+                                                         contentText: nil,
+                                                         cancelTitle: "계속 작성",
+                                                         actionTitle: "그만하기",
+                                                         actionBackgroundColor: UIColor.wssSecondary100.cgColor)
+            }
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.stopEditingEvent.accept(())
             })
             .disposed(by: disposeBag)
     }
