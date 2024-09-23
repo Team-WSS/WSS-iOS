@@ -51,7 +51,7 @@ final class MyPageChangeUserBirthView: UIView {
         }
         
         cancelButton.do {
-            $0.setImage(.icCancel.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray300), for: .normal)
+            $0.setImage(.icCancelModal.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray300), for: .normal)
         }
     }
     
