@@ -59,6 +59,7 @@ final class FeedNovelConnectModalViewController: UIViewController {
     private func bindViewModel() {
         let input = FeedNovelConnectModalViewModel.Input(
             closeButtonDidTap: rootView.closeButton.rx.tap,
+            searchTextUpdated: rootView.feedNovelConnectSearchBarView.titleTextField.rx.text.orEmpty.asObservable(),
             searchButtonDidTap: rootView.feedNovelConnectSearchBarView.searchButton.rx.tap,
             searchResultCollectionViewItemSelected: rootView.feedNovelConnectSearchResultView.searchResultCollectionView.rx.itemSelected.asObservable(),
             searchResultCollectionViewSwipeGesture: rootView.feedNovelConnectSearchResultView.searchResultCollectionView.rx.swipeGesture([.up, .down])

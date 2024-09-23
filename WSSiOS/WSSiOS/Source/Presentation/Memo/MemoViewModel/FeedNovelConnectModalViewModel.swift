@@ -17,10 +17,13 @@ final class FeedNovelConnectModalViewModel: ViewModelType {
     private let searchResultList: [NormalSearchNovel] = [NormalSearchNovel(novelId: 0, novelImage: "", novelTitle: "당신의 이해를 돕기 위해", novelAuthor: "이보라", interestCount: 0, novelRating: 0, novelRatingCount: 0), NormalSearchNovel(novelId: 0, novelImage: "", novelTitle: "당신의 이해를 돕기 위해", novelAuthor: "이보라", interestCount: 0, novelRating: 0, novelRatingCount: 0), NormalSearchNovel(novelId: 0, novelImage: "", novelTitle: "당신의 이해를 돕기 위해", novelAuthor: "이보라", interestCount: 0, novelRating: 0, novelRatingCount: 0), NormalSearchNovel(novelId: 0, novelImage: "", novelTitle: "당신의 이해를 돕기 위해", novelAuthor: "이보라", interestCount: 0, novelRating: 0, novelRatingCount: 0), NormalSearchNovel(novelId: 0, novelImage: "", novelTitle: "당신의 이해를 돕기 위해", novelAuthor: "이보라", interestCount: 0, novelRating: 0, novelRatingCount: 0), NormalSearchNovel(novelId: 0, novelImage: "", novelTitle: "당신의 이해를 돕기 위해", novelAuthor: "이보라", interestCount: 0, novelRating: 0, novelRatingCount: 0)]
     private var selectedNovel: NormalSearchNovel?
     
+    private let searchText = BehaviorRelay<String>(value: "")
+    
     //MARK: - Life Cycle
     
     struct Input {
         let closeButtonDidTap: ControlEvent<Void>
+        let searchTextUpdated: Observable<String>
         let searchButtonDidTap: ControlEvent<Void>
         let searchResultCollectionViewItemSelected: Observable<IndexPath>
         let searchResultCollectionViewSwipeGesture: Observable<UISwipeGestureRecognizer>
@@ -40,6 +43,13 @@ final class FeedNovelConnectModalViewModel: ViewModelType {
         input.closeButtonDidTap
             .subscribe(onNext: { _ in
                 output.dismissModalViewController.accept(())
+            })
+            .disposed(by: disposeBag)
+        
+        input.searchTextUpdated
+            .subscribe(with: self, onNext: { owner, text in
+                print(text)
+                owner.searchText.accept(text)
             })
             .disposed(by: disposeBag)
         

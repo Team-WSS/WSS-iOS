@@ -239,6 +239,8 @@ final class FeedEditViewModel: ViewModelType {
         return output
     }
     
+    //MARK: - API
+    
     private func postFeed(relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool) -> Observable<Void> {
         memoRepository.postFeed(relevantCategories: relevantCategories, feedContent: feedContent, novelId: novelId, isSpoiler: isSpoiler)
             .observe(on: MainScheduler.instance)
