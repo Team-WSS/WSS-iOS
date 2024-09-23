@@ -149,6 +149,7 @@ enum StringLiterals {
         }
         
         enum EditProfileWarningMessage: String {
+            case noGap = "공백은 포함될 수 없어요"
             case exist = "이미 사용 중인 닉네임이에요"
             case guid = "한글. 영문, 숫자 2~10자까지 입력가능해요"
             case noUse = "사용할 수 없는 단어가 포함되어 있어요"
