@@ -11,6 +11,7 @@ import RxSwift
 
 final class MyPageChangeUserBirthViewController: UIViewController {
     
+    
     //MARK: - Properties
     
     private let userBirth: Int
@@ -45,11 +46,14 @@ final class MyPageChangeUserBirthViewController: UIViewController {
         bindAction()
     }
     
+    //MARK: - Bind
+    
     private func register() {
         rootView.tableView.register(MyPageChangeUserBirthTableViewCell.self,
                                     forCellReuseIdentifier: MyPageChangeUserBirthTableViewCell.cellIdentifier)
+        rootView.tableView.rx.setDelegate(self)
+            .disposed(by: disposeBag)
     }
-    //MARK: - Bind
     
     private func bindAction() {
         rootView.cancelButton.rx.tap 
@@ -72,5 +76,29 @@ final class MyPageChangeUserBirthViewController: UIViewController {
                     cell.bindYear(year: year)
                 }
                 .disposed(by: disposeBag)
+        
+        rootView.tableView.rx.modelSelected(Int.self)
+            .subscribe(onNext: { year in
+                print("선택된 값: \(year)")
+            })
+            .disposed(by: disposeBag)
+    }
+}
+
+extension MyPageChangeUserBirthViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        isCenterCell()
+    }
+    
+    private func isCenterCell() {
+        let visibleCell = rootView.tableView.indexPathsForVisibleRows
+        if let visibleCell = visibleCell, visibleCell.count == 3 {
+            let centerCell = visibleCell[1]
+            for (index, indexPath) in visibleCell.enumerated() {
+                    if let cell = rootView.tableView.cellForRow(at: indexPath) as? MyPageChangeUserBirthTableViewCell {
+                        cell.highlightedCell(isHighlighted: indexPath == centerCell)
+                    }
+            }
+        }
     }
 }
