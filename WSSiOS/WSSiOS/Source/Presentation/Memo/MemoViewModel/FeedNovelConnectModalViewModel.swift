@@ -15,9 +15,14 @@ final class FeedNovelConnectModalViewModel: ViewModelType {
     //MARK: - Properties
     
     private let searchResultList: [NormalSearchNovel] = [NormalSearchNovel(novelId: 0, novelImage: "", novelTitle: "당신의 이해를 돕기 위해", novelAuthor: "이보라", interestCount: 0, novelRating: 0, novelRatingCount: 0), NormalSearchNovel(novelId: 0, novelImage: "", novelTitle: "당신의 이해를 돕기 위해", novelAuthor: "이보라", interestCount: 0, novelRating: 0, novelRatingCount: 0), NormalSearchNovel(novelId: 0, novelImage: "", novelTitle: "당신의 이해를 돕기 위해", novelAuthor: "이보라", interestCount: 0, novelRating: 0, novelRatingCount: 0), NormalSearchNovel(novelId: 0, novelImage: "", novelTitle: "당신의 이해를 돕기 위해", novelAuthor: "이보라", interestCount: 0, novelRating: 0, novelRatingCount: 0), NormalSearchNovel(novelId: 0, novelImage: "", novelTitle: "당신의 이해를 돕기 위해", novelAuthor: "이보라", interestCount: 0, novelRating: 0, novelRatingCount: 0), NormalSearchNovel(novelId: 0, novelImage: "", novelTitle: "당신의 이해를 돕기 위해", novelAuthor: "이보라", interestCount: 0, novelRating: 0, novelRatingCount: 0)]
+    private let searchText = BehaviorRelay<String>(value: "")
     private var selectedNovel: NormalSearchNovel?
     
-    private let searchText = BehaviorRelay<String>(value: "")
+    // Output
+    private let dismissModalViewController = PublishRelay<Void>()
+    private let endEditing = PublishRelay<Void>()
+    private let normalSearchList = PublishRelay<[NormalSearchNovel]>()
+    private let showConnectNovelButton = PublishRelay<Void>()
     
     //MARK: - Life Cycle
     
@@ -31,18 +36,16 @@ final class FeedNovelConnectModalViewModel: ViewModelType {
     }
     
     struct Output {
-        let dismissModalViewController = PublishRelay<Void>()
-        let endEditing = PublishRelay<Void>()
-        let searchResultList = PublishRelay<[NormalSearchNovel]>()
-        let showConnectNovelButton = PublishRelay<Void>()
+        let dismissModalViewController: Observable<Void>
+        let endEditing: Observable<Void>
+        let searchResultList: Observable<[NormalSearchNovel]>
+        let showConnectNovelButton: Observable<Void>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
-        let output = Output()
-        
         input.closeButtonDidTap
-            .subscribe(onNext: { _ in
-                output.dismissModalViewController.accept(())
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.dismissModalViewController.accept(())
             })
             .disposed(by: disposeBag)
         
@@ -55,22 +58,22 @@ final class FeedNovelConnectModalViewModel: ViewModelType {
         
         input.searchButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
-                output.searchResultList.accept(owner.searchResultList)
-                output.endEditing.accept(())
+                owner.normalSearchList.accept(owner.searchResultList)
+                owner.endEditing.accept(())
             })
             .disposed(by: disposeBag)
         
         input.searchResultCollectionViewItemSelected
             .subscribe(with: self, onNext: { owner, indexPath in
-                output.endEditing.accept(())
-                output.showConnectNovelButton.accept(())
+                owner.endEditing.accept(())
+                owner.showConnectNovelButton.accept(())
                 owner.selectedNovel = owner.searchResultList[indexPath.item]
             })
             .disposed(by: disposeBag)
         
         input.searchResultCollectionViewSwipeGesture
-            .subscribe(onNext: { _ in
-                output.endEditing.accept(())
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.endEditing.accept(())
             })
             .disposed(by: disposeBag)
         
@@ -78,11 +81,14 @@ final class FeedNovelConnectModalViewModel: ViewModelType {
             .subscribe(with: self, onNext: { owner, _ in
                 guard let selectedNovel = owner.selectedNovel else { return }
                 NotificationCenter.default.post(name: NSNotification.Name("FeedNovelConnected"), object: selectedNovel)
-                output.dismissModalViewController.accept(())
+                owner.dismissModalViewController.accept(())
             })
             .disposed(by: disposeBag)
         
-        return output
+        return Output(dismissModalViewController: dismissModalViewController.asObservable(),
+                      endEditing: endEditing.asObservable(),
+                      searchResultList: normalSearchList.asObservable(),
+                      showConnectNovelButton: showConnectNovelButton.asObservable())
     }
 }
 
