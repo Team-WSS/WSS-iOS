@@ -78,19 +78,16 @@ final class MyPageChangeUserBirthViewController: UIViewController {
                 .disposed(by: disposeBag)
         
         rootView.tableView.rx.modelSelected(Int.self)
-            .subscribe(onNext: { year in
-                print("선택된 값: \(year)")
+            .subscribe(with: self, onNext: { owner, year in
+                let cellRow = year - 1900
+                let cellIndexPath = IndexPath(row: cellRow, section: 0)
+                owner.rootView.tableView.scrollToRow(at: cellIndexPath, at: .middle, animated: true)
             })
             .disposed(by: disposeBag)
     }
 }
 
 extension MyPageChangeUserBirthViewController: UIScrollViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.scrollToRow(at: indexPath, at: .middle, animated: true)
-        isCenterCell()
-    }
-    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         isCenterCell()
     }
