@@ -86,6 +86,11 @@ final class MyPageChangeUserBirthViewController: UIViewController {
 }
 
 extension MyPageChangeUserBirthViewController: UIScrollViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.scrollToRow(at: indexPath, at: .middle, animated: true)
+        isCenterCell()
+    }
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         isCenterCell()
     }
@@ -94,10 +99,10 @@ extension MyPageChangeUserBirthViewController: UIScrollViewDelegate {
         let visibleCell = rootView.tableView.indexPathsForVisibleRows
         if let visibleCell = visibleCell, visibleCell.count == 3 {
             let centerCell = visibleCell[1]
-            for (index, indexPath) in visibleCell.enumerated() {
-                    if let cell = rootView.tableView.cellForRow(at: indexPath) as? MyPageChangeUserBirthTableViewCell {
-                        cell.highlightedCell(isHighlighted: indexPath == centerCell)
-                    }
+            for (_, indexPath) in visibleCell.enumerated() {
+                if let cell = rootView.tableView.cellForRow(at: indexPath) as? MyPageChangeUserBirthTableViewCell {
+                    cell.highlightedCell(isHighlighted: indexPath == centerCell)
+                }
             }
         }
     }

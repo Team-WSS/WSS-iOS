@@ -115,7 +115,7 @@ final class MyPageChangeUserBirthView: UIView {
             $0.leading.trailing.equalToSuperview().inset(20)
             
             checkImageView.snp.makeConstraints {
-                $0.centerX.equalToSuperview().inset(-41)
+                $0.leading.equalToSuperview().inset(115.5)
                 $0.centerY.equalToSuperview()
                 $0.size.equalTo(22)
             }
