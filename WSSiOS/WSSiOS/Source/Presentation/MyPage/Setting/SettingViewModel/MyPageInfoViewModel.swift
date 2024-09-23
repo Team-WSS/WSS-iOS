@@ -23,7 +23,7 @@ final class MyPageInfoViewModel: ViewModelType {
     }
     
     struct Input {
-    
+        let logoutButtonTapped: PublishRelay<Bool>
     }
     
     struct Output {
@@ -41,6 +41,14 @@ final class MyPageInfoViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        input.logoutButtonTapped
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.logout()
+            }, onError: { owner, error in
+                print(error)
+            })
+            .disposed(by: disposeBag)
+        
         return output
     }
     
@@ -48,6 +56,10 @@ final class MyPageInfoViewModel: ViewModelType {
     
     private func getUserEmail() -> Observable<String> {
         return userRepository.getUserEmail()
+    }
+    
+    private func logout() {
+        print("로그아웃 로직 구현")
     }
 }
 

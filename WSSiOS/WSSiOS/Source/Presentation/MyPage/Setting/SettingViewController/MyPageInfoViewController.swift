@@ -132,7 +132,7 @@ final class MyPageInfoViewController: UIViewController {
     }
     
     private func bindViewModel() {
-        let input = MyPageInfoViewModel.Input()
+        let input = MyPageInfoViewModel.Input(logoutButtonTapped: self.logoutRelay)
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.email
