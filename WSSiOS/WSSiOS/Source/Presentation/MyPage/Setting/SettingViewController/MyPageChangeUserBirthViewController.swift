@@ -42,6 +42,7 @@ final class MyPageChangeUserBirthViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        delegate()
         register()
         bindAction()
     }
@@ -58,6 +59,9 @@ final class MyPageChangeUserBirthViewController: UIViewController {
     private func register() {
         rootView.tableView.register(MyPageChangeUserBirthTableViewCell.self,
                                     forCellReuseIdentifier: MyPageChangeUserBirthTableViewCell.cellIdentifier)
+    }
+    
+    private func delegate() {
         rootView.tableView.rx.setDelegate(self)
             .disposed(by: disposeBag)
     }
