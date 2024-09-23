@@ -46,6 +46,13 @@ final class MyPageChangeUserBirthViewController: UIViewController {
         bindAction()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        scrollToSelectedCell(year: userBirth)
+        isCenterCell()
+    }
+    
     //MARK: - Bind
     
     private func register() {
@@ -79,17 +86,35 @@ final class MyPageChangeUserBirthViewController: UIViewController {
         
         rootView.tableView.rx.modelSelected(Int.self)
             .subscribe(with: self, onNext: { owner, year in
-                let cellRow = year - 1900
-                let cellIndexPath = IndexPath(row: cellRow, section: 0)
-                owner.rootView.tableView.scrollToRow(at: cellIndexPath, at: .middle, animated: true)
+                owner.scrollToSelectedCell(year: year)
             })
             .disposed(by: disposeBag)
     }
 }
 
+//MARK: - UIScrollViewDelegate
+
 extension MyPageChangeUserBirthViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         isCenterCell()
+    }
+    
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        isCenterCell()
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        isCenterCell()
+    }
+}
+
+//MARK: - Custom Method
+
+extension MyPageChangeUserBirthViewController {
+    private func scrollToSelectedCell(year: Int) {
+        let cellRow = year - 1900
+        let cellIndexPath = IndexPath(row: cellRow, section: 0)
+        self.rootView.tableView.scrollToRow(at: cellIndexPath, at: .middle, animated: true)
     }
     
     private func isCenterCell() {
