@@ -18,8 +18,11 @@ final class FeedNovelConnectModalViewModel: ViewModelType {
     
     private let searchText = BehaviorRelay<String>(value: "")
     private var selectedNovel = BehaviorRelay<NormalSearchNovel?>(value: nil)
-    private let currentPage = BehaviorRelay<Int>(value: 0)
-    private let isLoadable = BehaviorRelay<Bool>(value: false)
+    
+    // 무한스크롤
+    private var currentPage: Int = 0
+    private var isLoadable: Bool = false
+    private var isFetching: Bool = false
     
     // Output
     private let dismissModalViewController = PublishRelay<Void>()
@@ -37,6 +40,7 @@ final class FeedNovelConnectModalViewModel: ViewModelType {
         let closeButtonDidTap: ControlEvent<Void>
         let searchTextUpdated: Observable<String>
         let searchButtonDidTap: ControlEvent<Void>
+        let searchResultCollectionViewReachedBottom: Observable<Bool>
         let searchResultCollectionViewItemSelected: Observable<IndexPath>
         let searchResultCollectionViewSwipeGesture: Observable<UISwipeGestureRecognizer>
         let connectNovelButtonDidTap: ControlEvent<Void>
@@ -64,12 +68,43 @@ final class FeedNovelConnectModalViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.searchButtonDidTap
+            .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
+            .do(onNext: { _ in
+                self.currentPage = 0
+            })
             .flatMapLatest {
-                self.getNormalSearchList(query: self.searchText.value, page: 0)
+                self.getNormalSearchList(query: self.searchText.value, page: self.currentPage)
             }
             .subscribe(with: self, onNext: { owner, data in
                 owner.endEditing.accept(())
                 owner.normalSearchList.accept(data.novels)
+                owner.isLoadable = data.isLoadable
+            })
+            .disposed(by: disposeBag)
+        
+        input.searchResultCollectionViewReachedBottom
+            .filter { reachedBottom in
+                return reachedBottom
+                && self.isFetching == false
+                && self.isLoadable == true
+            }
+            .do(onNext: { _ in
+                self.isFetching = true
+            })
+            .flatMapLatest { _ in
+                self.getNormalSearchList(query: self.searchText.value, page: self.currentPage + 1)
+                    .do(onNext: { _ in
+                        self.currentPage += 1
+                        self.isFetching = false
+                    }, onError: { _ in
+                        self.isFetching = false
+                    })
+            }
+            .subscribe(with: self, onNext: { owner, data in
+                owner.endEditing.accept(())
+                let newData = owner.normalSearchList.value + data.novels
+                owner.normalSearchList.accept(newData)
+                owner.isLoadable = data.isLoadable
             })
             .disposed(by: disposeBag)
         

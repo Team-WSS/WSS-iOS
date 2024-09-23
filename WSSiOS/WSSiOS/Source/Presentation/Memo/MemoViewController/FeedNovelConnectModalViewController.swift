@@ -61,6 +61,16 @@ final class FeedNovelConnectModalViewController: UIViewController {
             closeButtonDidTap: rootView.closeButton.rx.tap,
             searchTextUpdated: rootView.feedNovelConnectSearchBarView.titleTextField.rx.text.orEmpty.asObservable(),
             searchButtonDidTap: rootView.feedNovelConnectSearchBarView.searchButton.rx.tap,
+            searchResultCollectionViewReachedBottom: rootView.feedNovelConnectSearchResultView.searchResultCollectionView.rx.contentOffset.map { [weak self] contentOffset in
+                guard let self = self else { return false }
+                let contentHeight = self.rootView.feedNovelConnectSearchResultView.searchResultCollectionView.contentSize.height
+                let collectionViewHeight = self.rootView.feedNovelConnectSearchResultView.searchResultCollectionView.frame.size.height
+                let offsetY = contentOffset.y
+                
+                // 스크롤이 바닥에 도달했는지 확인
+                return offsetY + collectionViewHeight >= contentHeight
+            }
+            .distinctUntilChanged(),
             searchResultCollectionViewItemSelected: rootView.feedNovelConnectSearchResultView.searchResultCollectionView.rx.itemSelected.asObservable(),
             searchResultCollectionViewSwipeGesture: rootView.feedNovelConnectSearchResultView.searchResultCollectionView.rx.swipeGesture([.up, .down])
                 .when(.recognized)
