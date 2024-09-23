@@ -15,7 +15,6 @@ final class MyPageChangeUserBirthTableViewCell: UITableViewCell {
     //MARK: - Components
     
     private let birthLabel = UILabel()
-    private let checkImageView = UIImageView()
     
     //MARK: - Life Cycle
     
@@ -35,34 +34,21 @@ final class MyPageChangeUserBirthTableViewCell: UITableViewCell {
     
     private func setUI() {
         self.do {
-            $0.backgroundColor = .wssWhite
-            $0.layer.cornerRadius = 12
+            $0.backgroundColor = .clear
         }
         
         birthLabel.do {
             $0.textColor = .wssGray200
         }
-        
-        checkImageView.do {
-            $0.image = .icCheck
-            $0.isHidden = true
-        }
     }
     
     private func setHierarchy() {
-        self.addSubviews(birthLabel,
-                         checkImageView)
+        self.addSubview(birthLabel)
     }
     
     private func setLayout() {
         birthLabel.snp.makeConstraints {
             $0.center.equalToSuperview()
-        }
-        
-        checkImageView.snp.makeConstraints {
-            $0.trailing.equalTo(birthLabel.snp.leading).offset(-10)
-            $0.centerY.equalToSuperview()
-            $0.size.equalTo(22)
         }
     }
     
@@ -73,8 +59,6 @@ final class MyPageChangeUserBirthTableViewCell: UITableViewCell {
     }
     
     func highlightedCell(isHighlighted: Bool) {
-        self.backgroundColor = isHighlighted ? .wssPrimary20 : .wssWhite
         birthLabel.textColor = isHighlighted ? .wssBlack : .wssGray200
-        checkImageView.isHidden = isHighlighted ? false : true
     }
 }

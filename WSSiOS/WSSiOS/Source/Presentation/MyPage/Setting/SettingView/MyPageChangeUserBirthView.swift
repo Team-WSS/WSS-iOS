@@ -21,6 +21,9 @@ final class MyPageChangeUserBirthView: UIView {
     let cancelButton = UIButton()
     let completeButton = WSSMainButton(title: "완료")
     
+    private let selectedView = UIView()
+    private let checkImageView = UIImageView()
+    
     let tableView = UITableView()
     
     // MARK: - Life Cycle
@@ -56,7 +59,17 @@ final class MyPageChangeUserBirthView: UIView {
             $0.setImage(.icCancelModal.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray300), for: .normal)
         }
         
+        selectedView.do {
+            $0.backgroundColor = .wssPrimary20
+            $0.layer.cornerRadius = 12
+            
+            checkImageView.do {
+                $0.image = .icCheck
+            }
+        }
+        
         tableView.do {
+            $0.backgroundColor = .clear
             $0.rowHeight = MyPageChangeUserBirthView.cellHeight
             $0.isScrollEnabled = true
             $0.showsVerticalScrollIndicator = false
@@ -67,10 +80,12 @@ final class MyPageChangeUserBirthView: UIView {
     
     private func setHierarchy() {
         self.addSubview(contentView)
-        contentView.addSubviews(tableView,
-                                titleLabel,
+        contentView.addSubviews(titleLabel,
                                 cancelButton,
-                                completeButton)
+                                completeButton,
+                                selectedView,
+                                tableView)
+        selectedView.addSubview(checkImageView)
     }
     
     private func setLayout() {
@@ -92,6 +107,18 @@ final class MyPageChangeUserBirthView: UIView {
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.top.equalTo(cancelButton.snp.bottom).offset(10)
             $0.height.equalTo(MyPageChangeUserBirthView.cellHeight * 3)
+        }
+        
+        selectedView.snp.makeConstraints {
+            $0.centerY.equalTo(tableView.snp.centerY)
+            $0.height.equalTo(MyPageChangeUserBirthView.cellHeight)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            
+            checkImageView.snp.makeConstraints {
+                $0.centerX.equalToSuperview().inset(-41)
+                $0.centerY.equalToSuperview()
+                $0.size.equalTo(22)
+            }
         }
         
         completeButton.snp.makeConstraints {
