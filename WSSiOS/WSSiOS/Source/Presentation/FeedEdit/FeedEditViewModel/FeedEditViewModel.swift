@@ -10,49 +10,13 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-enum FeedDetailWomanKoreanGenreDummy: String, CaseIterable {
-    case 판타지 = "판타지"
-    case 현판 = "현판"
-    case 로맨스 = "로맨스"
-    case 로판 = "로판"
-    case 무협 = "무협"
-    case 드라마 = "드라마"
-    case 미스터리 = "미스터리"
-    case 라노벨 = "라노벨"
-    case BL = "BL"
-    case 기타 = "기타"
-    
-    var toEnglish: String {
-        switch self {
-        case .판타지:
-            return "fantasy"
-        case .현판:
-            return "modernFantasy"
-        case .로맨스:
-            return "romance"
-        case .로판:
-            return "romanceFantasy"
-        case .무협:
-            return "wuxia"
-        case .드라마:
-            return "drama"
-        case .미스터리:
-            return "mystery"
-        case .라노벨:
-            return "lightNovel"
-        case .BL:
-            return "BL"
-        case .기타:
-            return "etc"
-        }
-    }
-}
-
 final class FeedEditViewModel: ViewModelType {
     
     //MARK: - Properties
         
     private let memoRepository: MemoRepository
+    
+    let relevantCategoryList: [NewNovelGenre] = NewNovelGenre.feedEditGenres
     
     private var isValidFeedContent: Bool = false
     private let feedId: Int?
@@ -62,13 +26,10 @@ final class FeedEditViewModel: ViewModelType {
     private var updatedFeedContent: String = ""
     private let feedContentPredicate = NSPredicate(format: "SELF MATCHES %@", "^[\\s]+$")
     private let maximumFeedContentCount: Int = 2000
-    
-    //TODO: - 성별에 따른 리스트는 추후 구현
-    let relevantCategoryList = FeedDetailWomanKoreanGenreDummy.allCases.map { $0.rawValue }
-    
+        
     // Output
     private let endEditing = PublishRelay<Bool>()
-    private let categoryListData = PublishRelay<[String]>()
+    private let categoryListData = PublishRelay<[NewNovelGenre]>()
     private let popViewController = PublishRelay<Void>()
     private let isSpoiler = BehaviorRelay<Bool>(value: false)
     private let feedContentWithLengthLimit = BehaviorRelay<String>(value: "")
@@ -109,7 +70,7 @@ final class FeedEditViewModel: ViewModelType {
     
     struct Output {
         let endEditing: Observable<Bool>
-        let categoryListData: Observable<[String]>
+        let categoryListData: Observable<[NewNovelGenre]>
         let popViewController: Observable<Void>
         let isSpoiler: Observable<Bool>
         let feedContentWithLengthLimit: Observable<String>
@@ -178,20 +139,14 @@ final class FeedEditViewModel: ViewModelType {
         
         input.categoryCollectionViewItemSelected
             .subscribe(with: self, onNext: { owner, indexPath in
-                let selectedCategory = owner.relevantCategoryList[indexPath.item]
-                if let englishCategory = FeedDetailWomanKoreanGenreDummy(rawValue: selectedCategory)?.toEnglish {
-                    owner.relevantCategories.append(englishCategory)
-                }
+                owner.relevantCategories.append(owner.relevantCategoryList[indexPath.item].rawValue)
                 owner.completeButtonIsAbled.accept(owner.isValidFeedContent && !owner.relevantCategories.isEmpty)
             })
             .disposed(by: disposeBag)
         
         input.categoryCollectionViewItemDeselected
             .subscribe(with: self, onNext: { owner, indexPath in
-                let deselectedCategory = owner.relevantCategoryList[indexPath.item]
-                if let englishCategory = FeedDetailWomanKoreanGenreDummy(rawValue: deselectedCategory)?.toEnglish {
-                    owner.relevantCategories.removeAll { $0 == englishCategory }
-                }
+                owner.relevantCategories.removeAll { $0 == owner.relevantCategoryList[indexPath.item].rawValue}
                 owner.completeButtonIsAbled.accept(owner.isValidFeedContent && !owner.relevantCategories.isEmpty)
             })
             .disposed(by: disposeBag)

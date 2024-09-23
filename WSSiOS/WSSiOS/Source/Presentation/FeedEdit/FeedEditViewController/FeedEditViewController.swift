@@ -116,13 +116,10 @@ final class FeedEditViewController: UIViewController {
             cellType: FeedCategoryCollectionViewCell.self)) { item, element, cell in
                 let indexPath = IndexPath(item: item, section: 0)
                 
-                //TODO: - 성별에 따른 리스트는 추후 구현
-                if let englishCategory = FeedDetailWomanKoreanGenreDummy(rawValue: element)?.toEnglish {
-                    if self.feedEditViewModel.relevantCategories.contains(englishCategory) {
-                        self.rootView.feedEditCategoryView.categoryCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
-                    } else {
-                        self.rootView.feedEditCategoryView.categoryCollectionView.deselectItem(at: indexPath, animated: false)
-                    }
+                if self.feedEditViewModel.relevantCategories.contains(element.rawValue) {
+                    self.rootView.feedEditCategoryView.categoryCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
+                } else {
+                    self.rootView.feedEditCategoryView.categoryCollectionView.deselectItem(at: indexPath, animated: false)
                 }
                 
                 cell.bindData(category: element)
@@ -198,7 +195,7 @@ extension FeedEditViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var text: String?
         
-        text = self.feedEditViewModel.relevantCategoryList[indexPath.item]
+        text = self.feedEditViewModel.relevantCategoryList[indexPath.item].withKorean
         
         guard let unwrappedText = text else {
             return CGSize(width: 0, height: 0)

@@ -52,7 +52,7 @@ final class FeedCategoryCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Data
     
-    func bindData(category: String) {
-        self.keywordLink.setText(category)
+    func bindData(category: NewNovelGenre) {
+        self.keywordLink.setText(category.withKorean)
     }
 }
