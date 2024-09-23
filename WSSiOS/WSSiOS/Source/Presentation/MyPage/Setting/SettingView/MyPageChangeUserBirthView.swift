@@ -59,6 +59,7 @@ final class MyPageChangeUserBirthView: UIView {
         tableView.do {
             $0.rowHeight = MyPageChangeUserBirthView.cellHeight
             $0.isScrollEnabled = true
+            $0.showsVerticalScrollIndicator = false
         }
     }
     
