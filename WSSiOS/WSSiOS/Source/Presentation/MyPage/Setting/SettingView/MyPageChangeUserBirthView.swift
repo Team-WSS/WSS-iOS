@@ -12,6 +12,8 @@ import Then
 
 final class MyPageChangeUserBirthView: UIView {
     
+    //MARK: - Properties
+    
     static let cellHeight: CGFloat = 37
     
     //MARK: - Components

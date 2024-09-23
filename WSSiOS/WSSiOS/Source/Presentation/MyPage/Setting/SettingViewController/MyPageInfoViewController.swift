@@ -106,7 +106,7 @@ final class MyPageInfoViewController: UIViewController {
                                                        titleText: StringLiterals.Alert.logoutTitle,
                                                        contentText: nil,
                                                        cancelTitle: StringLiterals.Alert.cancel,
-                                                       actionTitle: StringLiterals.Alert.logoutTitle,
+                                                       actionTitle: StringLiterals.Alert.logout,
                                                        actionBackgroundColor: UIColor.wssPrimary100.cgColor)
                     .subscribe({ _ in 
                         owner.logoutRelay.accept(true)

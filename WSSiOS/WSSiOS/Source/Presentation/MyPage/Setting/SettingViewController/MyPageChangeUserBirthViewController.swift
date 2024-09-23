@@ -11,7 +11,6 @@ import RxSwift
 
 final class MyPageChangeUserBirthViewController: UIViewController {
     
-    
     //MARK: - Properties
     
     private let userBirth: Int
