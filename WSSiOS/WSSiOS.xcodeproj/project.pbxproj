@@ -42,6 +42,7 @@
 		2C79CB9D2B45A1DD00734E1F /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C79CB9C2B45A1DD00734E1F /* UIFont+.swift */; };
 		2C81DF872CA150DE00148F97 /* MyPageChangeUserBirthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C81DF862CA150DE00148F97 /* MyPageChangeUserBirthViewController.swift */; };
 		2C81DF892CA1512500148F97 /* MyPageChangeUserBirthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C81DF882CA1512400148F97 /* MyPageChangeUserBirthView.swift */; };
+		2C81DF8B2CA15F6F00148F97 /* MyPageChangeUserBirthTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C81DF8A2CA15F6F00148F97 /* MyPageChangeUserBirthTableViewCell.swift */; };
 		2C8F89432C50CF250056895B /* MyPageDeleteIDWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8F89422C50CF250056895B /* MyPageDeleteIDWarningView.swift */; };
 		2C8F89452C50CF470056895B /* MyPageDeleteIDWarningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8F89442C50CF470056895B /* MyPageDeleteIDWarningViewController.swift */; };
 		2C8F89472C50CFA30056895B /* MyPageDeleteIDRecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8F89462C50CFA30056895B /* MyPageDeleteIDRecordView.swift */; };
@@ -366,6 +367,7 @@
 		2C79CB9C2B45A1DD00734E1F /* UIFont+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+.swift"; sourceTree = "<group>"; };
 		2C81DF862CA150DE00148F97 /* MyPageChangeUserBirthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageChangeUserBirthViewController.swift; sourceTree = "<group>"; };
 		2C81DF882CA1512400148F97 /* MyPageChangeUserBirthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageChangeUserBirthView.swift; sourceTree = "<group>"; };
+		2C81DF8A2CA15F6F00148F97 /* MyPageChangeUserBirthTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageChangeUserBirthTableViewCell.swift; sourceTree = "<group>"; };
 		2C8F89422C50CF250056895B /* MyPageDeleteIDWarningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageDeleteIDWarningView.swift; sourceTree = "<group>"; };
 		2C8F89442C50CF470056895B /* MyPageDeleteIDWarningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageDeleteIDWarningViewController.swift; sourceTree = "<group>"; };
 		2C8F89462C50CFA30056895B /* MyPageDeleteIDRecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageDeleteIDRecordView.swift; sourceTree = "<group>"; };
@@ -1148,6 +1150,7 @@
 				2C9A196A2C5692330043044A /* MyPageSettingTableViewCell.swift */,
 				2C8F89502C50E5200056895B /* MyPageDeleteIDReasonTableViewCell.swift */,
 				2C8F89562C50FC520056895B /* MyPageDeleteIDCheckTableViewCell.swift */,
+				2C81DF8A2CA15F6F00148F97 /* MyPageChangeUserBirthTableViewCell.swift */,
 			);
 			path = SettingCell;
 			sourceTree = "<group>";
@@ -2509,6 +2512,7 @@
 				A1147A862B5063CA00141692 /* RecordHeaderView.swift in Sources */,
 				39F850762C319BE500E93EBC /* NovelDetailInfoReviewEmptyView.swift in Sources */,
 				2CFE04332B66A45A0048F77A /* UICollectionViewCell+.swift in Sources */,
+				2C81DF8B2CA15F6F00148F97 /* MyPageChangeUserBirthTableViewCell.swift in Sources */,
 				B9FE59642BF11955005815AF /* HomeInduceLoginModalView.swift in Sources */,
 				2CB613F32B575E4500FC3F89 /* MyPageInfoViewController.swift in Sources */,
 				2C9CBDB12C5BB4340084481F /* BlocksService.swift in Sources */,
