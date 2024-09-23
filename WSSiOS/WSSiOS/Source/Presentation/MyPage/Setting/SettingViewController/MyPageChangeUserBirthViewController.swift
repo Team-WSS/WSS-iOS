@@ -17,7 +17,7 @@ final class MyPageChangeUserBirthViewController: UIViewController {
     
     //MARK: - Components
     
-    private let rootView = MyPageDeleteIDView()
+    private let rootView = MyPageChangeUserBirthView()
     
     // MARK: - Life Cycle
     
