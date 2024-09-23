@@ -64,12 +64,14 @@ final class FeedNovelConnectModalViewModel: ViewModelType {
         
         input.searchTextUpdated
             .subscribe(with: self, onNext: { owner, text in
-                print(text)
                 owner.searchText.accept(text)
             })
             .disposed(by: disposeBag)
         
         input.searchButtonDidTap
+            .filter {
+                !self.searchText.value.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            }
             .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
             .do(onNext: { _ in
                 self.currentPage = 0
