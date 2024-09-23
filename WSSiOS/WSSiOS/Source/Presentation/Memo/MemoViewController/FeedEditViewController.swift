@@ -205,6 +205,6 @@ extension FeedEditViewController: UICollectionViewDelegateFlowLayout {
         }
         
         let width = (unwrappedText as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 26
-        return CGSize(width: width, height: 37)
+        return CGSize(width: width, height: 35)
     }
 }
