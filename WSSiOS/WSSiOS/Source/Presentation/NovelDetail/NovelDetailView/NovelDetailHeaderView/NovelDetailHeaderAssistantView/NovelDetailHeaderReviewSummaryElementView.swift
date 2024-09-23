@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class NovelDetailHeaderReviewInfoElementView: UIView {
+final class NovelDetailHeaderReviewSummaryElementView: UIView {
     
     //MARK: - Components
     

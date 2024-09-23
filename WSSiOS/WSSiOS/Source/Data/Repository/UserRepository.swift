@@ -16,6 +16,7 @@ protocol UserRepository {
     func getUserCharacter() -> Observable<UserCharacter>
     func getBlocksList() -> Observable<BlockUserResult>
     func deleteBlockUser(blockID: Int) -> Observable<Void>
+    func getUserNovelStatus() -> Observable<UserNovelStatus>
 }
 
 struct DefaultUserRepository: UserRepository {
@@ -61,6 +62,11 @@ struct DefaultUserRepository: UserRepository {
     
     func deleteBlockUser(blockID: Int) -> RxSwift.Observable<Void> {
         return blocksService.deleteBlockUser(blockID: blockID)
+            .asObservable()
+    }
+    
+    func getUserNovelStatus() -> RxSwift.Observable<UserNovelStatus> {
+        return userService.getUserNovelStatus()
             .asObservable()
     }
 }

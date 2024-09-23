@@ -8,23 +8,31 @@
 import UIKit
 
 enum ReadStatus: String, CaseIterable {
-    case watching
-    case watched
-    case quit
-    
-    var image: UIImage {
-        switch self {
-        case .watching: return .icTagReading
-        case .watched: return .icTagFinished
-        case .quit: return .icTagStop
-        }
-    }
+    case watching = "WATCHING"
+    case watched = "WATCHED"
+    case quit = "QUIT"
     
     var nameText: String {
         switch self {
         case .watching: return "보는 중"
         case .watched: return "봤어요"
         case .quit: return "하차"
+        }
+    }
+    
+    var fillImage: UIImage {
+        switch self {
+        case .watching: return .icWatchingFill
+        case .watched: return .icWatchedFill
+        case .quit: return .icQuitFill
+        }
+    }
+    
+    var strokeImage: UIImage {
+        switch self {
+        case .watching: return .icWatchingStroke
+        case .watched: return .icWatchedStroke
+        case .quit: return .icQuitStroke
         }
     }
     

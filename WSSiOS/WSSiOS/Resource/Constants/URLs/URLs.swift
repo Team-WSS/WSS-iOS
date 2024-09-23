@@ -9,8 +9,10 @@ import Foundation
 
 enum URLs {
     enum User {
-        static let getUserInfo = "/users/info"
-        static let patchUserNickname = "/users/nickname"
+        private static let userBasePath = "/users"
+        static let getUserInfo = userBasePath + "/info"
+        static let patchUserNickname = userBasePath + "/nickname"
+        static let getUserNovelStatus = userBasePath + "/user-novel-stats"
     }
     
     enum Novel {
@@ -96,5 +98,10 @@ enum URLs {
     
     enum Notice {
         static let getNotices = "/notices"
+    }
+    
+    enum Search {
+        static let sosoPick = "/soso-picks"
+        static let normalSearch = "/novels"
     }
 }

@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class NovelDetailHeaderInfoView: UIView {
+final class NovelDetailHeaderNovelInfoView: UIView {
     
     //MARK: - Properties
     
@@ -24,9 +24,9 @@ final class NovelDetailHeaderInfoView: UIView {
     private let infoLabel = UILabel()
     private let reviewStack = UIStackView()
     
-    private let interestCount = NovelDetailHeaderReviewInfoElementView()
-    private let rating = NovelDetailHeaderReviewInfoElementView()
-    private let feedCount = NovelDetailHeaderReviewInfoElementView()
+    private let interestCount = NovelDetailHeaderReviewSummaryElementView()
+    private let rating = NovelDetailHeaderReviewSummaryElementView()
+    private let feedCount = NovelDetailHeaderReviewSummaryElementView()
     
     //MARK: - Life Cycle
     
@@ -96,16 +96,10 @@ final class NovelDetailHeaderInfoView: UIView {
     //MARK: - Data
     
     func bindData(_ data: NovelDetailHeaderResult) {
-        var novelGenreText = ""
-        if data.novelGenres.count >= 2 {
-            let firstGenre = OldNovelGenre(rawValue: data.novelGenres[0]) ?? .error
-            let secondGenre = OldNovelGenre(rawValue: data.novelGenres[1]) ?? .error
-            
-            novelGenreText = "\(firstGenre.genreText)/\(secondGenre.genreText)"
-        } else {
-            let firstGenre = OldNovelGenre(rawValue: data.novelGenres[0]) ?? .error
-            novelGenreText = "\(firstGenre.genreText)"
-        }
+        let novelGenreText = data.novelGenres
+            .map { OldNovelGenre(rawValue: $0) ?? .error }
+            .map { $0.genreText }
+            .joined(separator: "/")
         
         let novelCompletedStatusText = data.isNovelCompleted ? StringLiterals.NovelDetail.Header.complete
                                                              : StringLiterals.NovelDetail.Header.inSeries
@@ -132,8 +126,8 @@ final class NovelDetailHeaderInfoView: UIView {
     
     private func setInfoLabelText(with text: String) {
         infoLabel.do {
-            $0.applyWSSFont(.body2, with: text)
-            $0.textColor = .wssGray300
+            $0.applyWSSFont(.body3, with: text)
+            $0.textColor = .wssGray200
             $0.textAlignment = .center
             $0.numberOfLines = 1
         }

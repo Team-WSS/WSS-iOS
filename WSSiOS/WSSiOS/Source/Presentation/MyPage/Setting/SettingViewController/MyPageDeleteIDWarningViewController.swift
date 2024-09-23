@@ -13,14 +13,24 @@ final class MyPageDeleteIDWarningViewController: UIViewController {
     
     //MARK: - Properties
     
-    private let dummy = UserNovelStatusResult(interestNovelCount: 1, watchingNovelCount: 100, watchedNovelCount: 333, quitNovelCount: 29)
     private let disposeBag = DisposeBag()
+    private let userRepository: UserRepository
     
     //MARK: - Components
     
     private let rootView = MyPageDeleteIDWarningView()
     
     // MARK: - Life Cycle
+    
+    init(userRepository: UserRepository) {
+        self.userRepository = userRepository
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func loadView() {
         self.view = rootView
@@ -29,19 +39,30 @@ final class MyPageDeleteIDWarningViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        rootView.bindData(count: dummy)
+        bindData()
         bindAction()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-    
+        
         setNavigationBar()
         hideTabBar()
         swipeBackGesture()
     }
-
+    
     //MARK: - Bind
+    
+    private func bindData() {
+        userRepository.getUserNovelStatus()
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, status in 
+                owner.rootView.bindData(count: status)
+            },onError: { owner, error in
+                print(error)
+            })
+            .disposed(by: disposeBag)
+    }
     
     private func bindAction() {
         rootView.backButton.rx.tap
