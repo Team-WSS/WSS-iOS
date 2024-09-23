@@ -40,6 +40,10 @@ enum StringLiterals {
         }
     }
     
+    enum Alert {
+        static let logout = "로그아웃 할까요?"
+    }
+    
     enum Home {
         enum Title {
             static let todayPopular = "오늘의 인기작"

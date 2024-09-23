@@ -19,6 +19,7 @@ final class MyPageInfoViewController: UIViewController {
     private let viewModel: MyPageInfoViewModel
     private let settingList = StringLiterals.MyPage.SettingInfo.allCases.map { $0.rawValue }
     private let emailRelay = BehaviorRelay(value: "")
+    private let logoutRelay = PublishRelay<Bool>()
     
     //MARK: - UI Components
     
@@ -101,7 +102,17 @@ final class MyPageInfoViewController: UIViewController {
                     //pushVC
                 case 3:
                     print("로그아웃")
-                    //pushModalVC
+                    owner.presentToAlertViewController(iconImage: .icAlertWarningCircle,
+                                                       titleText: StringLiterals.Alert.logout,
+                                                       contentText: nil,
+                                                       cancelTitle: "취소",
+                                                       actionTitle: "로그아웃",
+                                                       actionBackgroundColor: UIColor.wssPrimary100.cgColor)
+                    .subscribe({ _ in 
+                        owner.logoutRelay.accept(true)
+                    })
+                    .disposed(by: owner.disposeBag)
+                    
                 case 4:
                     print("회원탈퇴")
                     //pushVC
