@@ -74,7 +74,6 @@ final class MyPageChangeUserBirthView: UIView {
             $0.isScrollEnabled = true
             $0.showsVerticalScrollIndicator = false
             $0.separatorStyle = .none
-            $0.isPagingEnabled = true
         }
     }
     

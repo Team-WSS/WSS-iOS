@@ -46,11 +46,11 @@ final class MyPageChangeUserBirthViewController: UIViewController {
         bindAction()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
         scrollToSelectedCell(year: userBirth)
-        isCenterCell()
+        checkCenterCell()
     }
     
     //MARK: - Bind
@@ -84,11 +84,11 @@ final class MyPageChangeUserBirthViewController: UIViewController {
                 }
                 .disposed(by: disposeBag)
         
-        //        rootView.tableView.rx.modelSelected(Int.self)
-        //            .subscribe(with: self, onNext: { owner, year in
-        //                owner.scrollToSelectedCell(year: year)
-        //            })
-        //            .disposed(by: disposeBag)
+        rootView.tableView.rx.modelSelected(Int.self)
+            .subscribe(with: self, onNext: { owner, year in
+                owner.scrollToSelectedCell(year: year)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
@@ -101,7 +101,18 @@ extension MyPageChangeUserBirthViewController: UIScrollViewDelegate {
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         checkCenterCell()
-        print("declear end")
+    }
+    
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        guard let tableView = scrollView as? UITableView else { return }
+        
+        let currentY = targetContentOffset.pointee.y
+        
+        let cellHeight = tableView.rowHeight
+        let closestCellIndex = round(currentY / cellHeight)
+        let clesestCellY = closestCellIndex * cellHeight
+        
+        targetContentOffset.pointee.y = clesestCellY
     }
 }
 
