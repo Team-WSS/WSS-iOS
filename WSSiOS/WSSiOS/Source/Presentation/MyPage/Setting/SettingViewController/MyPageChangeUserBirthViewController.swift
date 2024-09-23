@@ -84,11 +84,11 @@ final class MyPageChangeUserBirthViewController: UIViewController {
                 }
                 .disposed(by: disposeBag)
         
-        rootView.tableView.rx.modelSelected(Int.self)
-            .subscribe(with: self, onNext: { owner, year in
-                owner.scrollToSelectedCell(year: year)
-            })
-            .disposed(by: disposeBag)
+        //        rootView.tableView.rx.modelSelected(Int.self)
+        //            .subscribe(with: self, onNext: { owner, year in
+        //                owner.scrollToSelectedCell(year: year)
+        //            })
+        //            .disposed(by: disposeBag)
     }
 }
 
@@ -96,15 +96,12 @@ final class MyPageChangeUserBirthViewController: UIViewController {
 
 extension MyPageChangeUserBirthViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        isCenterCell()
-    }
-    
-    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-        isCenterCell()
+        checkCenterCell()
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        isCenterCell()
+        checkCenterCell()
+        print("declear end")
     }
 }
 
@@ -117,13 +114,13 @@ extension MyPageChangeUserBirthViewController {
         self.rootView.tableView.scrollToRow(at: cellIndexPath, at: .middle, animated: true)
     }
     
-    private func isCenterCell() {
-        let visibleCell = rootView.tableView.indexPathsForVisibleRows
-        if let visibleCell = visibleCell, visibleCell.count == 3 {
-            let centerCell = visibleCell[1]
-            for (_, indexPath) in visibleCell.enumerated() {
+    private func checkCenterCell() {
+        let centerPoint = CGPoint(x: rootView.tableView.bounds.midX, y: rootView.tableView.bounds.midY)
+        if let centerIndexPath = rootView.tableView.indexPathForRow(at: centerPoint) {
+            for indexPath in rootView.tableView.indexPathsForVisibleRows ?? [] {
                 if let cell = rootView.tableView.cellForRow(at: indexPath) as? MyPageChangeUserBirthTableViewCell {
-                    cell.highlightedCell(isHighlighted: indexPath == centerCell)
+                    let isCenter = indexPath == centerIndexPath
+                    cell.highlightedCell(isHighlighted: isCenter)
                 }
             }
         }
