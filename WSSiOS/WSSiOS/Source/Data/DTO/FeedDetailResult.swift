@@ -43,11 +43,11 @@ struct Feed: Decodable {
 }
 
 /// 소소피드 댓글 전체 조회
-struct FeedComments: Codable {
+struct FeedComments: Decodable {
     var comments: [FeedComment]
 }
 
-struct FeedComment: Codable {
+struct FeedComment: Decodable {
     var userId: Int
     var userNickname: String
     var userProfileImage: String
