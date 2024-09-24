@@ -86,13 +86,6 @@ final class LoginViewController: UIViewController {
                 }
                 .disposed(by: disposeBag)
         
-        rootView.carouselView.bannerCollectionView.rx.itemSelected
-            .withLatestFrom(output.bannerImages) {(indexPath: $0, platformList: $1)}
-            .subscribe(with: self, onNext: { owner, data in
-                print(data.indexPath.row)
-            })
-            .disposed(by: disposeBag)
-        
         output.autoScrollTrigger
             .drive(with: self, onNext: { owner, _ in
                 owner.scrollToNextItem()
