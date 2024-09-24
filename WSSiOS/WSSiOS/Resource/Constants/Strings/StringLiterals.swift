@@ -33,22 +33,24 @@ enum StringLiterals {
             static let changeNickname = "닉네임 변경"
             static let feed = "소소피드"
             static let notice = "알림"
+            static let deleteID = "회원탈퇴"
             static let myPageSetting = "설정"
             static let myPageInfo = "계정설정"
+            static let myPageBlockUser = "차단유저 목록"
         }
     }
     
     enum Home {
         enum Title {
             static let todayPopular = "오늘의 인기작"
-            static let realtimePopular = "실시간 인기글"
+            static let realtimePopular = "지금 뜨는 수다글"
             static let interest = "님의 관심글"
             static let recommend = "이 웹소설은 어때요?"
         }
         
         enum SubTitle {
-            static let interest = "관심 등록한 작품의 최신글이에요"
-            static let recommend = "선호 장르를 기반으로 추천드려요!"
+            static let interest = "관심 등록한 작품의 최근 수다예요"
+            static let recommend = "선호 장르를 기반으로 추천해 드려요"
         }
         
         enum Login {
@@ -59,7 +61,7 @@ enum StringLiterals {
         
         enum Unregister {
             enum Title {
-                static let interest = "아직 관심작품이 없어요\n관심 등록하고 피드 소식을 빠르게 확인하세요!"
+                static let interest = "관심작품의 최신 소식을 모아서 볼 수 있어요.\n좋아하는 웹소설을 관심 등록 해볼까요?"
                 static let recommend = "로맨스, 로판, 판타지, 현판 등\n선호장르를 기반으로 웹소설을 추천해 드려요!"
             }
             
@@ -72,6 +74,15 @@ enum StringLiterals {
         enum TodayPopular {
             static let feed = "님의 한마디"
             static let introduction = "작품 소개"
+        }
+        
+        enum RealTimePopular {
+            static let spoiler = "스포일러가 포함된 글 보기"
+        }
+        
+        enum Interest {
+            static let feed = "님의 한마디"
+            static let empty = "아직 관심 등록한 작품과 관련된 글이 없어요"
         }
     }
     
@@ -158,6 +169,50 @@ enum StringLiterals {
             static let complete = "완료"
             static let nickname = "닉네임"
         }
+        
+        enum BlockUser {
+            static let buttonTitle = "차단 해제"
+            static let emptyLabel = "차단한 유저가 없어요"
+        }
+      
+        enum DeleteIDWarning {
+            static let title = "정말 탈퇴하시겠어요?"
+            static let description = "남겼던 평가와 기록들이 모두 사라져요.."
+            static let buttonTitle = "탈퇴하기"
+            
+            static let interest = "관심"
+            static let watching = "보는 중"
+            static let watched = "봤어요"
+            static let quit = "하차"
+        }
+        
+        enum DeleteID {
+            static let reasonTitle = "탈퇴사유를 알려주세요."
+            static let reasonTitleColor = "탈퇴사유"
+            static let reasonPlaceHolder = "위 항목 외의 탈퇴 사유를 자유롭게 작성해 주세요."
+            static let checkTitle = "탈퇴하기 전에 확인해주세요"
+            static let agreeTitle = "위 주의사항을 모두 확인했고, 탈퇴에 동의합니다."
+        }
+        
+        enum DeleteIDReason: String, CaseIterable {
+            case first = "자주 사용하지 않아서"
+            case second = "이용이 불편하고 장애가 많아서"
+            case third = "삭제하고 싶은 내용이 있어서"
+            case fourth = " 원하는 작품이 없어서"
+            case etc = "직접 입력"
+        }
+        
+        enum DeleteIDCheckTitle: String, CaseIterable {
+            case first = "삭제된 계정 정보는 복구할 수 없어요"
+            case second = "게시글 및 댓글은 자동 삭제되지 않아요"
+            case third = "처음부터 다시 가입해야 해요"
+        }
+        
+        enum DeleteIDCheckContent: String, CaseIterable {
+            case first = "회원님이 평가하고 기록한 서재 정보와 계정 정보는 탈퇴 즉시 삭제되며, 절대 복구할 수 없어요."
+            case second = "리뷰, 피드 게시글, 댓글은 탈퇴 시 자동으로 삭제되지 않아요. 탈퇴 전 개별적으로 삭제해 주세요."
+            case third = "계정 정보는 탈퇴 즉시 삭제되어 바로 재가입 가능하지만, 회원가입부터 작품 평가를 다시 해야 해요."
+        }
     }
     
     enum Library {
@@ -230,19 +285,6 @@ enum StringLiterals {
             static let newMemo = "새로운 메모를 작성해보세요"
         }
         
-        enum Info {
-            static let info = "정보"
-            static let rating = "나의 평가"
-            static let readStatus = "읽기 상태"
-            static let tilde = "~"
-            static let startDate = "시작 날짜"
-            static let endDate = "읽은 날짜"
-            static let keyword = "키워드"
-            static let description = "작품 소개"
-            static let genre = "장르"
-            static let platform = "작품 보러가기"
-        }
-        
         enum Setting {
             static let novelDelete = "작품을 서재에서 삭제"
             static let novelEdit = "작품 정보 수정"
@@ -251,8 +293,10 @@ enum StringLiterals {
         enum Header {
             static let complete = "  ·  완결작  ·  "
             static let inSeries = "  ·  연재중  ·  "
-            static let interest = "관심 있어요"
-            static let review = "리뷰 남기기"
+            static let interest = "관심"
+            static let review = "나도 한마디"
+            static let dateFormat = "yy. MM. dd"
+            static let KoreaTimeZone = "ko_KR"
             
             enum Loading {
                 static let novelTitle = "작품 제목"
@@ -266,7 +310,23 @@ enum StringLiterals {
         
         enum Tab {
             static let info = "정보"
-            static let feed = "피드"
+            static let feed = "수다"
+        }
+        
+        enum Info {
+            static let description = "작품 소개"
+            static let platform = "작품 보러가기"
+            static let reviewEmpty = "독자들의 평가"
+            static let reviewEmptyDescription = "아직 평가가 없어요\n최초로 남겨보세요!"
+            static let attractivePoint = "독자들의 감상평"
+            static let attractivePointDescription = "(이)가 매력적인 작품이에요"
+            static let readStatus = "명이 작품을\n"
+            
+            enum ReadStatus {
+                static let watched = "봤어요"
+                static let watching = "같이 보고 있어요"
+                static let quit = "하차했어요"
+            }
         }
     }
     
@@ -274,12 +334,12 @@ enum StringLiterals {
         static let title = "탐색하기"
         static let searchbar = "작품 제목, 작가를 검색하세요"
         
-        static let induceTitle = "이제 뭐 읽을지 고민될 땐?"
+        static let induceTitle = "뭐 읽을지 고민될 땐?"
         static let induceDescription = "장르, 연재상태, 별점, 키워드로 작품 찾기"
-        static let induceButton = "내 취향에 맞는 작품 탐색하기"
+        static let induceButton = "내 취향에 맞는 웹소설 찾기"
         
         static let sosoTitle = "소소"
-        static let sosoDescription = "다른 사람들이 최근에 읽고 있는 작품이에요"
+        static let sosoDescription = "사람들이 최근에 읽고 있는 웹소설이에요"
         
         static let novel = "작품"
         

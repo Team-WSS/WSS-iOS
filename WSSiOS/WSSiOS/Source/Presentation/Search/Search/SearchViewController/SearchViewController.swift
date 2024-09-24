@@ -10,7 +10,6 @@ import UIKit
 import RxSwift
 import RxCocoa
 import RxGesture
-import Then
 
 final class SearchViewController: UIViewController {
     
@@ -53,6 +52,12 @@ final class SearchViewController: UIViewController {
         bindViewModel()
     }
     
+    //MARK: - UI
+    
+    private func setUI() {
+        self.view.backgroundColor = .wssWhite
+    }
+    
     //MARK: - Bind
     
     private func registerCell() {
@@ -78,7 +83,7 @@ final class SearchViewController: UIViewController {
         
         output.searchBarEnabled
             .bind(with: self, onNext: { owner, _ in
-                let viewController = NormalSearchViewController(viewModel: NormalSearchViewModel(searchRepository: TestSearchRepository()))
+                let viewController = NormalSearchViewController(viewModel: NormalSearchViewModel(searchRepository: DefaultSearchRepository(searchService: DefaultSearchService())))
                 viewController.navigationController?.isNavigationBarHidden = false
                 viewController.hidesBottomBarWhenPushed = true
                 owner.navigationController?.pushViewController(viewController, animated: true)
@@ -95,30 +100,3 @@ final class SearchViewController: UIViewController {
             .disposed(by: disposeBag)
     }
 }
-
-extension SearchViewController {
-    
-    //MARK: - UI
-    
-    private func setUI() {
-        self.view.do {
-            $0.backgroundColor = .White
-        }
-    }
-}
-
-//MARK: - Extension
-//
-//extension SearchViewController: UISearchBarDelegate {
-//    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-//        rootView.headerView.searchBar.resignFirstResponder()
-//    }
-//
-//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
-//        self.view.endEditing(true)
-//    }
-//
-//    private func showSearchBarAndFocus() {
-//        rootView.headerView.searchBar.becomeFirstResponder()
-//    }
-//}

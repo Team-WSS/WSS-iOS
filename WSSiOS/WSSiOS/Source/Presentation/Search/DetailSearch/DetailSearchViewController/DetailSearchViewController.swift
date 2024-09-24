@@ -114,13 +114,13 @@ extension DetailSearchViewController: UICollectionViewDelegateFlowLayout {
             }
             
             let width = (text as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 26
-            return CGSize(width: width, height: 37)
+            return CGSize(width: width, height: 35)
         }
         else if collectionView == rootView.detailSearchKeywordView.categoryCollectionView {
             guard let cell = collectionView.cellForItem(at: indexPath) as? DetailSearchKeywordCategoryCollectionViewCell else {
-                return CGSize(width: 350, height: 228)
+                return CGSize(width: 350, height: 224)
             }
-            let height = cell.isExpanded ? cell.keywordCollectionView.contentSize.height + 146 : 228
+            let height = cell.isExpanded ? cell.keywordCollectionView.contentSize.height + 146 : 224
             return CGSize(width: 350, height: height)
         }
         else {

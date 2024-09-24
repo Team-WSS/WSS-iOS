@@ -18,6 +18,9 @@ final class NovelDetailView: UIView {
     let scrollView = UIScrollView()
     private let contentView = UIStackView()
     
+    let backButton = UIButton()
+    let dropDownButton = UIButton()
+    
     let headerView = NovelDetailHeaderView()
     let largeNovelCoverImageButton = NovelDetailLargeCoverImageButton()
     let stickyTabBarView = NovelDetailTabBarView()
@@ -44,6 +47,15 @@ final class NovelDetailView: UIView {
     
     private func setUI() {
         self.backgroundColor = .wssWhite
+        
+        backButton.setImage(.icNavigateLeft.withTintColor(.wssBlack),
+                            for: .normal)
+        
+        dropDownButton.do {
+            $0.setImage(.icDropDownDot.withRenderingMode(.alwaysTemplate),
+                      for: .normal)
+            $0.tintColor = .wssBlack
+        }
         
         statusBarView.do {
             let scenes = UIApplication.shared.connectedScenes
@@ -95,7 +107,7 @@ final class NovelDetailView: UIView {
         
         contentView.snp.makeConstraints {
             $0.horizontalEdges.top.equalTo(scrollView.contentLayoutGuide)
-            $0.bottom.equalToSuperview().inset(1000)
+            $0.bottom.equalToSuperview()
             $0.width.equalToSuperview()
         }
         
@@ -106,9 +118,13 @@ final class NovelDetailView: UIView {
     
     //MARK: - Data
     
-    func bindData(_ data: NovelDetailHeaderResult) {
+    func bindHeaderData(_ data: NovelDetailHeaderResult) {
         headerView.bindData(data)
         largeNovelCoverImageButton.bindData(data)
+    }
+    
+    func bindInfoData(_ data: NovelDetailInfoResult) {
+        infoView.bindData(data)
     }
     
     func updateStickyTabBarShow(_ isShow: Bool) {

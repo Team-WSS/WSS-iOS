@@ -7,10 +7,8 @@
 
 import UIKit
 
-import Kingfisher
 import RxSwift
 import RxCocoa
-import RxGesture
 import SnapKit
 import Then
 
@@ -32,8 +30,6 @@ final class NovelDetailViewController: UIViewController {
     
     //MARK: - Components
     
-    private let backButton = UIButton()
-    private let dropDownButton = UIButton()
     private let rootView = NovelDetailView()
     
     //MARK: - Life Cycle
@@ -55,7 +51,8 @@ final class NovelDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setUI()
+        registerCell()
+        delegate()
         bindViewModel()
         swipeBackGesture()
     }
@@ -67,37 +64,34 @@ final class NovelDetailViewController: UIViewController {
         setNavigationBar()
     }
     
-    //MARK: - UI
-    
-    private func setUI() {
-        backButton.do {
-            $0.setImage(.icNavigateLeft.withTintColor(.wssWhite,
-                                                      renderingMode: .alwaysTemplate),
-                        for: .normal)
-        }
-        
-        dropDownButton.do {
-            $0.setImage(.icDropDownDot.withTintColor(.wssWhite,
-                                                     renderingMode: .alwaysTemplate),
-                        for: .normal)
-        }
+    override func viewWillDisappear(_ animated: Bool) {
+        updateNavigationBarStyle(offset: 0)
     }
+    
+    //MARK: - UI
     
     private func setNavigationBar() {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.backButton)
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.dropDownButton)
-    }
-    
-    private func setNavigationBarTextAttribute() {
-        navigationController?.navigationBar.titleTextAttributes = [
-            NSAttributedString.Key.font: UIFont.Title2,
-            NSAttributedString.Key.foregroundColor: UIColor.wssBlack,
-            NSAttributedString.Key.kern: -0.6,
-        ]
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: rootView.backButton)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rootView.dropDownButton)
     }
     
     //MARK: - Bind
+    
+    private func registerCell() {
+        rootView.infoView.platformView.platformCollectionView.register(
+            NovelDetailInfoPlatformCollectionViewCell.self,
+            forCellWithReuseIdentifier: NovelDetailInfoPlatformCollectionViewCell.cellIdentifier)
+        
+        rootView.infoView.reviewView.keywordView.keywordCollectionView.register(
+            NovelDetailInfoReviewKeywordCollectionViewCell.self,
+            forCellWithReuseIdentifier: NovelDetailInfoReviewKeywordCollectionViewCell.cellIdentifier)
+    }
+    
+    private func delegate() {
+        rootView.infoView.reviewView.keywordView.keywordCollectionView.rx.setDelegate(self)
+            .disposed(by: disposeBag)
+    }
     
     private func bindViewModel() {
         let input = createViewModelInput()
@@ -107,23 +101,36 @@ final class NovelDetailViewController: UIViewController {
     }
     
     private func bindViewModelOutput(_ output: NovelDetailViewModel.Output) {
-        output.detailBasicData
+        output.detailHeaderData
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
-                owner.rootView.bindData(data)
+                owner.rootView.bindHeaderData(data)
                 owner.navigationTitle = data.novelTitle
             }, onError: { owner, error in
                 print(error)
             })
             .disposed(by: disposeBag)
         
+        output.detailInfoData
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, data in
+                owner.rootView.bindInfoData(data)
+            }, onError: { owner, error in
+                print(error)
+            })
+            .disposed(by: disposeBag)
+        
         output.scrollContentOffset
-            .drive(with: self, onNext: { owner, offset in
+            .observe(on: MainScheduler.asyncInstance)
+            .subscribe(with: self, onNext: { owner, offset in
                 owner.updateNavigationBarStyle(offset: offset.y)
                 
                 let stickyoffset = owner.rootView.headerView.frame.size.height - owner.view.safeAreaInsets.top
                 let showStickyTabBar = offset.y > stickyoffset
                 owner.rootView.updateStickyTabBarShow(showStickyTabBar)
+                if offset.y < 0 {
+                    owner.rootView.scrollView.rx.contentOffset.onNext(CGPoint(x: 0, y: 0))
+                }
             })
             .disposed(by: disposeBag)
         
@@ -144,6 +151,49 @@ final class NovelDetailViewController: UIViewController {
                 owner.rootView.updateTab(selected: tab)
             })
             .disposed(by: disposeBag)
+        
+        output.isInfoDescriptionExpended
+            .drive(with: self, onNext: { owner, isExpended in
+                owner.rootView.infoView.descriptionView.updateAccordionButton(isExpended)
+                
+                let stickyoffset = owner.rootView.headerView.frame.size.height - owner.view.safeAreaInsets.top
+                let point = CGPoint(x: 0, y: stickyoffset)
+                if !isExpended {
+                    owner.rootView.scrollView.rx.contentOffset.onNext(point)
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        output.platformList
+            .drive(rootView.infoView.platformView.platformCollectionView.rx.items(
+                cellIdentifier: NovelDetailInfoPlatformCollectionViewCell.cellIdentifier,
+                cellType: NovelDetailInfoPlatformCollectionViewCell.self)) { _, element, cell in
+                    cell.bindData(data: element)
+                }
+                .disposed(by: disposeBag)
+        
+        rootView.infoView.platformView.platformCollectionView.rx.itemSelected
+            .withLatestFrom(output.platformList) {(indexPath: $0, platformList: $1)}
+            .subscribe(with: self, onNext: { owner, data in
+                if let url = URL(string: data.platformList[data.indexPath.item].platformURL) {
+                    UIApplication.shared.open(url, options: [:])
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        output.keywordList
+            .drive(rootView.infoView.reviewView.keywordView.keywordCollectionView.rx.items(
+                cellIdentifier: NovelDetailInfoReviewKeywordCollectionViewCell.cellIdentifier,
+                cellType: NovelDetailInfoReviewKeywordCollectionViewCell.self)) { _, element, cell in
+                    cell.bindData(data: element)
+                }
+                .disposed(by: disposeBag)
+        
+        output.reviewSectionVisibilities
+            .drive(with: self, onNext: { owner, visibilities in
+                owner.rootView.infoView.updateVisibility(visibilities)
+            })
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Actions
@@ -152,14 +202,15 @@ final class NovelDetailViewController: UIViewController {
         return NovelDetailViewModel.Input(
             viewWillAppearEvent:  viewWillAppearEvent.asObservable(),
             scrollContentOffset: rootView.scrollView.rx.contentOffset,
-            backButtonDidTap: backButton.rx.tap,
-            novelCoverImageButtonDidTap: rootView.headerView.novelCoverImageButton.rx.tap,
+            backButtonDidTap: rootView.backButton.rx.tap,
+            novelCoverImageButtonDidTap: rootView.headerView.coverImageButton.rx.tap,
             largeNovelCoverImageDismissButtonDidTap: rootView.largeNovelCoverImageButton.dismissButton.rx.tap,
             largeNovelCoverImageBackgroundDidTap: rootView.largeNovelCoverImageButton.rx.tap,
             infoTabBarButtonDidTap: rootView.tabBarView.infoButton.rx.tap,
             feedTabBarButtonDidTap: rootView.tabBarView.feedButton.rx.tap,
             stickyInfoTabBarButtonDidTap: rootView.stickyTabBarView.infoButton.rx.tap,
-            stickyFeedTabBarButtonDidTap: rootView.stickyTabBarView.feedButton.rx.tap
+            stickyFeedTabBarButtonDidTap: rootView.stickyTabBarView.feedButton.rx.tap,
+            descriptionAccordionButtonDidTap: rootView.infoView.descriptionView.accordionButton.rx.tap
         )
     }
     
@@ -178,16 +229,31 @@ final class NovelDetailViewController: UIViewController {
             navigationController?.navigationBar.backgroundColor = .wssWhite
             navigationItem.title = navigationTitle
             setNavigationBarTextAttribute()
-            backButton.tintColor = .wssGray200
-            dropDownButton.tintColor = .wssGray200
         } else {
             rootView.statusBarView.backgroundColor = .clear
             navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
             navigationController?.navigationBar.shadowImage = nil
             navigationController?.navigationBar.backgroundColor = .clear
             navigationItem.title = ""
-            backButton.tintColor = .wssWhite
-            dropDownButton.tintColor = .wssWhite
         }
+    }
+    
+    private func setNavigationBarTextAttribute() {
+        navigationController?.navigationBar.titleTextAttributes = [
+            NSAttributedString.Key.font: UIFont.Title2,
+            NSAttributedString.Key.foregroundColor: UIColor.wssBlack,
+            NSAttributedString.Key.kern: -0.6,
+        ]
+    }
+}
+
+extension NovelDetailViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        guard let text = viewModel.keywordNameForItemAt(indexPath: indexPath) else {
+            return CGSize(width: 0, height: 0)
+        }
+        
+        let width = (text as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 24
+        return CGSize(width: width, height: 37)
     }
 }

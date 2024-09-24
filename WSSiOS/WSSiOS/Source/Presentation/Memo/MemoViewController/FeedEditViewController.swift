@@ -29,6 +29,11 @@ final class FeedEditViewController: UIViewController {
     init(viewModel: FeedEditViewModel) {
         self.feedEditViewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        
+        self.rootView.feedEditContentView.bindData(isSpoiler: viewModel.isSpoiler)
+        if let initialFeedContent = viewModel.initialFeedContent {
+            self.rootView.feedEditContentView.bindData(feedContent: initialFeedContent)
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -67,11 +72,11 @@ final class FeedEditViewController: UIViewController {
     }
     
     private func register() {
-        rootView.feedCategoryView.categoryCollectionView.register(FeedCategoryCollectionViewCell.self, forCellWithReuseIdentifier: FeedCategoryCollectionViewCell.cellIdentifier)
+        rootView.feedEditCategoryView.categoryCollectionView.register(FeedCategoryCollectionViewCell.self, forCellWithReuseIdentifier: FeedCategoryCollectionViewCell.cellIdentifier)
     }
     
     private func delegate() {
-        rootView.feedCategoryView.categoryCollectionView.rx
+        rootView.feedEditCategoryView.categoryCollectionView.rx
             .setDelegate(self)
             .disposed(by: disposeBag)
     }
@@ -85,11 +90,14 @@ final class FeedEditViewController: UIViewController {
                 gestureRecognizer.cancelsTouchesInView = false
             }).when(.recognized).asObservable(),
             backButtonDidTap: rootView.backButton.rx.tap,
-            spoilerButtonDidTap: rootView.feedContentView.spoilerButton.rx.tap,
-            feedContentUpdated: rootView.feedContentView.feedTextView.rx.text.orEmpty.asObservable(),
-            feetContentViewDidBeginEditing: rootView.feedContentView.feedTextView.rx.didBeginEditing,
-            feetContentViewDidEndEditing: rootView.feedContentView.feedTextView.rx.didEndEditing,
-            novelConnectViewDidTap: rootView.feedNovelConnectView.rx.tapGesture().when(.recognized).asObservable()
+            completeButtonDidTap: rootView.completeButton.rx.tap,
+            spoilerButtonDidTap: rootView.feedEditContentView.spoilerButton.rx.tap,
+            categoryCollectionViewItemSelected: rootView.feedEditCategoryView.categoryCollectionView.rx.itemSelected.asObservable(),
+            categoryCollectionViewItemDeselected: rootView.feedEditCategoryView.categoryCollectionView.rx.itemDeselected.asObservable(),
+            feedContentUpdated: rootView.feedEditContentView.feedTextView.rx.text.orEmpty.distinctUntilChanged().asObservable(),
+            feedContentViewDidBeginEditing: rootView.feedEditContentView.feedTextView.rx.didBeginEditing,
+            feedContentViewDidEndEditing: rootView.feedEditContentView.feedTextView.rx.didEndEditing,
+            novelConnectViewDidTap: rootView.feedEditNovelConnectView.rx.tapGesture().when(.recognized).asObservable()
         )
         
         let output = self.feedEditViewModel.transform(from: input, disposeBag: self.disposeBag)
@@ -100,9 +108,20 @@ final class FeedEditViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.categoryListData.bind(to: rootView.feedCategoryView.categoryCollectionView.rx.items(
+        output.categoryListData.bind(to: rootView.feedEditCategoryView.categoryCollectionView.rx.items(
             cellIdentifier: FeedCategoryCollectionViewCell.cellIdentifier,
             cellType: FeedCategoryCollectionViewCell.self)) { item, element, cell in
+                let indexPath = IndexPath(item: item, section: 0)
+                
+                //TODO: - 성별에 따른 리스트는 추후 구현
+                if let englishCategory = FeedDetailWomanKoreanGenreDummy(rawValue: element)?.toEnglish {
+                    if self.feedEditViewModel.relevantCategories.contains(englishCategory) {
+                        self.rootView.feedEditCategoryView.categoryCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
+                    } else {
+                        self.rootView.feedEditCategoryView.categoryCollectionView.deselectItem(at: indexPath, animated: false)
+                    }
+                }
+                
                 cell.bindData(category: element)
             }
             .disposed(by: disposeBag)
@@ -113,15 +132,15 @@ final class FeedEditViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.hasSpoiler
-            .subscribe(with: self, onNext: { owner, hasSpoiler in
-                owner.rootView.feedContentView.spoilerButton.updateToggle(hasSpoiler)
+        output.isSpoiler
+            .subscribe(with: self, onNext: { owner, isSpoiler in
+                owner.rootView.feedEditContentView.spoilerButton.updateToggle(isSpoiler)
             })
             .disposed(by: disposeBag)
         
         output.feedContentWithLengthLimit
             .subscribe(with: self, onNext: { owner, feedContentWithLengthLimit in
-                owner.rootView.feedContentView.bindData(memoContent: feedContentWithLengthLimit)
+                owner.rootView.feedEditContentView.bindData(feedContent: feedContentWithLengthLimit)
             })
             .disposed(by: disposeBag)
         
@@ -133,7 +152,7 @@ final class FeedEditViewController: UIViewController {
         
         output.showPlaceholder
             .subscribe(with: self, onNext: { owner, showPlaceholder in
-                owner.rootView.feedContentView.placeholderLabel.isHidden = !showPlaceholder
+                owner.rootView.feedEditContentView.placeholderLabel.isHidden = !showPlaceholder
             })
             .disposed(by: disposeBag)
         
@@ -149,7 +168,7 @@ extension FeedEditViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var text: String?
         
-        text = self.feedEditViewModel.dummyCategoryList[indexPath.item]
+        text = self.feedEditViewModel.relevantCategoryList[indexPath.item]
         
         guard let unwrappedText = text else {
             return CGSize(width: 0, height: 0)
