@@ -27,6 +27,8 @@ final class LoginViewModel: ViewModelType {
     private let autoScrollTrigger = PublishRelay<Void>()
     private var autoScrollDisposable: Disposable?
     
+    private let loginSuccess = PublishRelay<Void>()
+    
     //MARK: - Life Cycle
     
     
@@ -34,13 +36,14 @@ final class LoginViewModel: ViewModelType {
     
     struct Input {
         let bannerCollectionViewContentOffset: ControlProperty<CGPoint>
-        //let manualScrollTrigger: Observable<Void>
+        let loginButtonDidTap: Observable<LoginButtonType>
     }
     
     struct Output {
         let bannerImages: Driver<[UIImage]>
         let indicatorIndex: Driver<Int>
         let autoScrollTrigger: Driver<Void>
+        let navigateToOnboarding: Observable<Void>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -63,10 +66,33 @@ final class LoginViewModel: ViewModelType {
         let autoScrollTrigger = self.autoScrollTrigger
             .asDriver(onErrorJustReturn: ())
         
+        input.loginButtonDidTap
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
+            .flatMapLatest { type in
+                // Login 작업
+                switch type {
+                case .kakao:
+                    self.repositoryLoginMethod()
+                case .naver:
+                    self.repositoryLoginMethod()
+                case .apple:
+                    self.repositoryLoginMethod()
+                case .skip:
+                    self.repositoryLoginMethod()
+                }
+            }
+            .subscribe(with: self, onNext: { owner, _ in
+                // Login 작업 종료 후
+                print("Login 성공 및 종료")
+                owner.loginSuccess.accept(())
+            })
+            .disposed(by: disposeBag)
+        
         return Output(
             bannerImages: bannerImages.asDriver(),
             indicatorIndex: indicatorIndex.asDriver(),
-            autoScrollTrigger: autoScrollTrigger
+            autoScrollTrigger: autoScrollTrigger,
+            navigateToOnboarding: loginSuccess.asObservable()
         )
     }
     
@@ -82,6 +108,12 @@ final class LoginViewModel: ViewModelType {
             .subscribe(onNext: { [weak self] _ in
                 self?.autoScrollTrigger.accept(())
             })
+    }
+    
+    func repositoryLoginMethod() -> Observable<Void> {
+        // 레포지토리에 구현할 각 로그인 메서드. 아마 ..?
+        print("Login 성공")
+        return Observable.just(())
     }
 }
 

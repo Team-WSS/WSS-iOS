@@ -105,18 +105,33 @@ final class LoginViewController: UIViewController {
                 owner.rootView.carouselIndicatorView.updateUI(selectedIndex: index)
             })
             .disposed(by: disposeBag)
+        
+        output.navigateToOnboarding
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                // 온보딩 뷰로 이동
+                print("온보딩 뷰로 이동")
+            })
+            .disposed(by: disposeBag)
     }
     
     private func createViewModelInput() -> LoginViewModel.Input {
+        let loginButtonDidTap = Observable.merge(
+            rootView.platformButtonStackView.kakaoLoginButton.rx.tap.map { LoginButtonType.kakao },
+            rootView.platformButtonStackView.naverLoginButton.rx.tap.map { LoginButtonType.naver },
+            rootView.platformButtonStackView.appleLoginButton.rx.tap.map { LoginButtonType.apple },
+            rootView.skipButton.rx.tap.map { LoginButtonType.skip }
+        )
         
         return LoginViewModel.Input(
-            bannerCollectionViewContentOffset: rootView.carouselView.bannerCollectionView.rx.contentOffset
+            bannerCollectionViewContentOffset: rootView.carouselView.bannerCollectionView.rx.contentOffset,
+            loginButtonDidTap: loginButtonDidTap
         )
     }
     
     //MARK: - Custom Method
     
-    /// banner 다음 항목으로 이동
+    /// banner의 다음 항목으로 이동
     private func scrollToNextItem() {
         let currentOffset = rootView.carouselView.bannerCollectionView.contentOffset
         let width = LoginBannerMetric.width
@@ -153,4 +168,8 @@ extension LoginViewController: UICollectionViewDelegateFlowLayout {
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         viewModel.resumeAutoScroll()
     }
+}
+
+enum LoginButtonType {
+    case kakao, naver, apple, skip
 }
