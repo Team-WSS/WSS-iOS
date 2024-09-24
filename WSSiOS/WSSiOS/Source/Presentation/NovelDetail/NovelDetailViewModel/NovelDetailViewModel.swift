@@ -22,7 +22,7 @@ final class NovelDetailViewModel: ViewModelType {
     private let viewWillAppearEvent = BehaviorRelay<Bool>(value: false)
     
     //NovelDetailHeader
-    private let novelDetailHeaderData = PublishSubject<NovelDetailHeaderResult>()
+    private let novelDetailHeaderData = PublishSubject<NovelDetailHeaderEntity>()
     private let showLargeNovelCoverImage = BehaviorRelay<Bool>(value: false)
     private let isUserNovelInterested = BehaviorRelay<Bool>(value: false)
     
@@ -71,7 +71,7 @@ final class NovelDetailViewModel: ViewModelType {
     
     struct Output {
         //Total
-        let detailHeaderData: Observable<NovelDetailHeaderResult>
+        let detailHeaderData: Observable<NovelDetailHeaderEntity>
         let detailInfoData: Observable<NovelDetailInfoResult>
         let scrollContentOffset: ControlProperty<CGPoint>
         let popToLastViewController: Observable<Void>
@@ -139,8 +139,9 @@ final class NovelDetailViewModel: ViewModelType {
         let pushToReviewViewController = input.reviewResultButtonDidTap
         
         input.interestButtonDidTap
-            .withLatestFrom(isUserNovelInterested)
             .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
+            .withUnretained(isUserNovelInterested)
+            .withLatestFrom(isUserNovelInterested)
             .flatMapLatest{ isInterested in
                 if isInterested {
                     self.novelDetailRepository.deleteUserInterest(novelId: self.novelId)
@@ -153,11 +154,15 @@ final class NovelDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        let pushTofeedWriteViewController = input.feedWriteButtonDidTap.asObservable()
+        let pushTofeedWriteViewController = input.feedWriteButtonDidTap
+            .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
+            .asObservable()
         
         let scrollContentOffset = input.scrollContentOffset
         
-        let backButtonDidTap = input.backButtonDidTap.asObservable()
+        let backButtonDidTap = input.backButtonDidTap
+            .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
+            .asObservable()
         
         input.infoTabBarButtonDidTap
             .bind(with: self, onNext: { owner, _ in

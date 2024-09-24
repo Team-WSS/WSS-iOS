@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 
 protocol NovelDetailRepository {
-    func getNovelDetailHeaderData(novelId: Int) -> Observable<NovelDetailHeaderResult>
+    func getNovelDetailHeaderData(novelId: Int) -> Observable<NovelDetailHeaderEntity>
     func getNovelDetailInfoData(novelId: Int) -> Observable<NovelDetailInfoResult>
     func postUserInterest(novelId: Int) -> Observable<Void>
     func deleteUserInterest(novelId: Int) -> Observable<Void>
@@ -30,8 +30,8 @@ struct TestNovelDetailRepository: NovelDetailRepository {
         return Observable.just(())
     }
     
-    func getNovelDetailHeaderData(novelId: Int) -> Observable<NovelDetailHeaderResult> {
-        return Observable.just(NovelDetailHeaderResult.dummyFullData[0])
+    func getNovelDetailHeaderData(novelId: Int) -> Observable<NovelDetailHeaderEntity> {
+        return Observable.just(NovelDetailHeaderResult.dummyFullData[0]).flatMap { $0.transform() }
     }
     
     func getNovelDetailInfoData(novelId: Int) -> Observable<NovelDetailInfoResult> {
@@ -48,8 +48,8 @@ struct DefaultNovelDetailRepository {
 }
 
 extension DefaultNovelDetailRepository: NovelDetailRepository  {
-    func getNovelDetailHeaderData(novelId: Int) -> Observable<NovelDetailHeaderResult> {
-        return novelDetailService.getNovelDetailHeaderData(novelId: novelId).asObservable()
+    func getNovelDetailHeaderData(novelId: Int) -> Observable<NovelDetailHeaderEntity> {
+        return novelDetailService.getNovelDetailHeaderData(novelId: novelId).asObservable().flatMap{ $0.transform() }
     }
     
     func getNovelDetailInfoData(novelId: Int) -> Observable<NovelDetailInfoResult> {

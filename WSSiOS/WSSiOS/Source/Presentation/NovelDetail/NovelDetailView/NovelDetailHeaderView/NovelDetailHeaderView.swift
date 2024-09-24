@@ -90,9 +90,9 @@ final class NovelDetailHeaderView: UIView {
     
     //MARK: - Data
     
-    func bindData(_ data: NovelDetailHeaderResult) {
-        bannerBackgroundImageView.bindData(data)
-        coverImageButton.bindData(data)
+    func bindData(_ data: NovelDetailHeaderEntity) {
+        bannerBackgroundImageView.bindData(data.novelImage)
+        coverImageButton.bindData(data.novelImage, data.novelGenreImage)
         novelInfoView.bindData(data)
         interestReviewButton.updateInterestButtonState(data.isUserNovelInterest)
         reviewResultView.bindData(data)

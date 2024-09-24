@@ -71,17 +71,7 @@ final class NovelDetailHeaderBackgroundImageView: UIView {
     
     //MARK: - Data
     
-    func bindData(_ data: NovelDetailHeaderResult) {
-        if let novelImageUrl = URL(string: data.novelImage) {
-            KingfisherManager.shared.retrieveImage(with: novelImageUrl, completionHandler: { result in
-            switch(result) {
-            case .success(let imageResult):
-                let blurredImage = imageResult.image.asBlurredBannerImage(radius: self.blurRadius)
-                self.bannerImageView.image = blurredImage
-            case .failure(let error):
-                print(error)
-                }
-            })
-        }
+    func bindData(_ novelImage: UIImage) {
+        self.bannerImageView.image = novelImage.asBlurredBannerImage(radius: self.blurRadius)
     }
 }

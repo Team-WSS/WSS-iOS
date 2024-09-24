@@ -96,22 +96,8 @@ final class NovelDetailHeaderCoverImageButton: UIButton {
     
     //MARK: - Data
     
-    func bindData(_ data: NovelDetailHeaderResult) {
-        novelCoverImageView.kf.indicatorType = .activity
-        novelCoverImageView.kf.setImage(with: URL(string: data.novelImage),
-                                        placeholder: nil,
-                                        options: [.transition(.fade(0.5))],
-                                        progressBlock: nil, completionHandler: { result in
-            switch(result) {
-            case .success(let imageResult):
-                self.novelCoverImageView.image = imageResult.image
-            case .failure(let error):
-                self.novelCoverImageView.image = .imgLoadingThumbnail
-                print(error)
-            }
-        })
-        
-        let genreImageURLString = self.makeBucketImageURLString(path: data.novelGenreImage)
-        novelGenreImageView.kfSetImage(url: genreImageURLString)
+    func bindData(_ novelImage: UIImage, _ novelGenreImage: UIImage) {
+        novelCoverImageView.image = novelImage
+        novelGenreImageView.image = novelGenreImage
     }
 }

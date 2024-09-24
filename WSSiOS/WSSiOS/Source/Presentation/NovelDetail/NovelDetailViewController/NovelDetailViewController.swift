@@ -30,7 +30,7 @@ final class NovelDetailViewController: UIViewController {
     
     //MARK: - Components
     
-    private let rootView = NovelDetailView()
+    private var rootView = NovelDetailView()
     
     //MARK: - Life Cycle
     
@@ -109,6 +109,7 @@ final class NovelDetailViewController: UIViewController {
             .subscribe(with: self, onNext: { owner, data in
                 owner.rootView.bindHeaderData(data)
                 owner.navigationTitle = data.novelTitle
+                owner.setNavigationBar()
             }, onError: { owner, error in
                 print(error)
             })

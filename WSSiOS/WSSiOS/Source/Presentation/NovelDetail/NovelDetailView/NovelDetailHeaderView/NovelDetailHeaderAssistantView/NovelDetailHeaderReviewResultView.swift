@@ -110,36 +110,26 @@ final class NovelDetailHeaderReviewResultView: UIView {
     
     //MARK: - Data
     
-    func bindData(_ data: NovelDetailHeaderResult) {
-        let readStatus = ReadStatus(rawValue: data.readStatus ?? "")
-        
-        readStatusButtons.forEach { readStatusButton in
-            readStatusButton.updateButton(selectedStatus: readStatus)
+    func bindData(_ data: NovelDetailHeaderEntity) {
+        readStatusButtons.forEach {
+            $0.updateButton(selectedStatus: data.readStatus)
         }
-        let isUserRatingExist = 0.0 != data.userNovelRating
-        let isDateExist = data.startDate != nil || data.endDate != nil
-        
-        if !isUserRatingExist && !isDateExist {
-            readInfoButtonStackView.isHidden = true
-        } else if !isUserRatingExist {
-            readInfoButtons[0].isHidden = true
-        } else if !isDateExist {
-            readInfoButtons[1].isHidden = true
-        }
-        
-        let userNovelRatingText = String(format: "%1.1f", data.userNovelRating)
-        var dateText = "~"
-        if let startDate = data.startDate {
-            dateText = "\(startDate) " + dateText
-        }
-        if let endDate = data.endDate {
-            dateText = dateText + " \(endDate)"
-        }
-        
-        readInfoButtons[0].bindData(infoText: userNovelRatingText)
-        readInfoButtons[1].bindData(infoText: dateText)
+        bindVisibility(data.isUserNovelRatingExist, data.isReadDateExist)
+       
+        readInfoButtons[0].bindData(infoText: data.userNovelRatingText)
+        readInfoButtons[1].bindData(infoText: data.readDateText)
     }
     
     //MARK: - Custom Method
+    
+    func bindVisibility(_ isUserNovelRatingExist: Bool, _ isReadDateExist: Bool) {
+        if !isUserNovelRatingExist && !isReadDateExist {
+            readInfoButtonStackView.isHidden = true
+        } else if !isUserNovelRatingExist {
+            readInfoButtons[0].isHidden = true
+        } else if !isReadDateExist {
+            readInfoButtons[1].isHidden = true
+        }
+    }
     
 }
