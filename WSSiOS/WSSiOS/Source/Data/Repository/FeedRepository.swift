@@ -15,6 +15,8 @@ protocol FeedRepository {
                      size: Int) -> Observable<TotalFeed>
     func getSingleFeedData(feedId: Int) -> Observable<Feed>
     func getSingleFeedComments(feedId: Int) -> Observable<FeedComment>
+    func postFeed(relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool) -> Observable<Void>
+    func putFeed(feedId: Int, relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool) -> Observable<Void>
 }
 
 struct TestFeedRepository: FeedRepository {
@@ -85,6 +87,15 @@ struct TestFeedRepository: FeedRepository {
                                                               isMyComment: false)
                                            ]))
     }
+    
+    func postFeed(relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool) -> Observable<Void> {
+        return Observable.just(())
+    }
+    
+    func putFeed(feedId: Int, relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool) -> Observable<Void> {
+        return Observable.just(())
+    }
+    
 }
 
 struct DefaultFeedRepository: FeedRepository {
@@ -145,4 +156,15 @@ struct DefaultFeedRepository: FeedRepository {
                                                               isMyComment: false)
                                            ]))
     }
+    
+    func postFeed(relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool) -> Observable<Void> {
+        return feedService.postFeed(relevantCategories: relevantCategories, feedContent: feedContent, novelId: novelId, isSpoiler: isSpoiler)
+            .asObservable()
+    }
+    
+    func putFeed(feedId: Int, relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool) -> Observable<Void> {
+        return feedService.putFeed(feedId: feedId, relevantCategories: relevantCategories, feedContent: feedContent, novelId: novelId, isSpoiler: isSpoiler)
+            .asObservable()
+    }
+    
 }

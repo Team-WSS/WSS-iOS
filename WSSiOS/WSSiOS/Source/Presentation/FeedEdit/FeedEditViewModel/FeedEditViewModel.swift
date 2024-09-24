@@ -14,7 +14,7 @@ final class FeedEditViewModel: ViewModelType {
     
     //MARK: - Properties
         
-    private let memoRepository: MemoRepository
+    private let feedRepository: FeedRepository
     
     let relevantCategoryList: [NewNovelGenre] = NewNovelGenre.feedEditGenres
     
@@ -42,8 +42,8 @@ final class FeedEditViewModel: ViewModelType {
        
     //MARK: - Life Cycle
     
-    init(memoRepository: MemoRepository, feedId: Int? = nil, relevantCategories: [String] = [], initialFeedContent: String? = nil, novelId: Int? = nil, isSpoiler: Bool = false) {
-        self.memoRepository = memoRepository
+    init(feedRepository: FeedRepository, feedId: Int? = nil, relevantCategories: [String] = [], initialFeedContent: String? = nil, novelId: Int? = nil, isSpoiler: Bool = false) {
+        self.feedRepository = feedRepository
         self.feedId = feedId
         self.relevantCategories = relevantCategories
         self.initialFeedContent = initialFeedContent
@@ -227,12 +227,12 @@ final class FeedEditViewModel: ViewModelType {
     //MARK: - API
     
     private func postFeed(relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool) -> Observable<Void> {
-        memoRepository.postFeed(relevantCategories: relevantCategories, feedContent: feedContent, novelId: novelId, isSpoiler: isSpoiler)
+        feedRepository.postFeed(relevantCategories: relevantCategories, feedContent: feedContent, novelId: novelId, isSpoiler: isSpoiler)
             .observe(on: MainScheduler.instance)
     }
     
     private func putFeed(feedId: Int, relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool) -> Observable<Void> {
-        memoRepository.putFeed(feedId: feedId, relevantCategories: relevantCategories, feedContent: feedContent, novelId: novelId, isSpoiler: isSpoiler)
+        feedRepository.putFeed(feedId: feedId, relevantCategories: relevantCategories, feedContent: feedContent, novelId: novelId, isSpoiler: isSpoiler)
             .observe(on: MainScheduler.instance)
     }
 }
