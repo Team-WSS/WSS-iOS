@@ -331,6 +331,7 @@
 		CDE596D62B57708D00D99DA1 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D52B57708D00D99DA1 /* UIViewController+.swift */; };
 		CDE596D82B5770CE00D99DA1 /* WSSToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D72B5770CE00D99DA1 /* WSSToastView.swift */; };
 		CDE596DA2B57C4BE00D99DA1 /* UITextView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D92B57C4BE00D99DA1 /* UITextView+.swift */; };
+		CDF27CDA2CA253B30072C0F7 /* AttractivePoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF27CD92CA253B30072C0F7 /* AttractivePoints.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -650,6 +651,7 @@
 		CDE596D52B57708D00D99DA1 /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
 		CDE596D72B5770CE00D99DA1 /* WSSToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSToastView.swift; sourceTree = "<group>"; };
 		CDE596D92B57C4BE00D99DA1 /* UITextView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+.swift"; sourceTree = "<group>"; };
+		CDF27CD92CA253B30072C0F7 /* AttractivePoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttractivePoints.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1163,6 +1165,7 @@
 				399F29342B56DA7800BBC12B /* TrashReadStatus.swift */,
 				39D4A5DF2BDF746C004FC834 /* NovelGenre.swift */,
 				39F686FF2C6F60400065999F /* ReadStatus.swift */,
+				CDF27CD92CA253B30072C0F7 /* AttractivePoints.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -2351,6 +2354,7 @@
 				2C19A5002BBD56C900D4D151 /* WSSDropdownButton.swift in Sources */,
 				2CA2F6602B530B660045B4C2 /* LibraryView.swift in Sources */,
 				2CD2291E2B42E685005400BE /* SceneDelegate.swift in Sources */,
+				CDF27CDA2CA253B30072C0F7 /* AttractivePoints.swift in Sources */,
 				2CD911612C0D8B71006B8D72 /* FeedViewModel.swift in Sources */,
 				2CB613F52B575E6A00FC3F89 /* MyPageInfoView.swift in Sources */,
 				39D4A5D62BDD0913004FC834 /* NovelDetailHeaderView.swift in Sources */,

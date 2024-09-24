@@ -102,7 +102,8 @@ final class NovelKeywordSelectModalViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.selectedKeywordListData.bind(to: rootView.novelSelectedKeywordListView.selectedKeywordCollectionView.rx.items(cellIdentifier: NovelSelectedKeywordCollectionViewCell.cellIdentifier, cellType: NovelSelectedKeywordCollectionViewCell.self)) { item, element, cell in
+        output.selectedKeywordListData
+            .bind(to: rootView.novelSelectedKeywordListView.selectedKeywordCollectionView.rx.items(cellIdentifier: NovelSelectedKeywordCollectionViewCell.cellIdentifier, cellType: NovelSelectedKeywordCollectionViewCell.self)) { item, element, cell in
             cell.bindData(keyword: element)
         }
         .disposed(by: disposeBag)
@@ -113,7 +114,8 @@ final class NovelKeywordSelectModalViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.keywordSearchResultListData.bind(to: rootView.novelKeywordSelectSearchResultView.searchResultCollectionView.rx.items(cellIdentifier: NovelKeywordSelectSearchResultCollectionViewCell.cellIdentifier, cellType: NovelKeywordSelectSearchResultCollectionViewCell.self)) { item, element, cell in
+        output.keywordSearchResultListData
+            .bind(to: rootView.novelKeywordSelectSearchResultView.searchResultCollectionView.rx.items(cellIdentifier: NovelKeywordSelectSearchResultCollectionViewCell.cellIdentifier, cellType: NovelKeywordSelectSearchResultCollectionViewCell.self)) { item, element, cell in
             let indexPath = IndexPath(item: item, section: 0)
             
             if self.novelKeywordSelectModalViewModel.selectedKeywordList.contains(element) {

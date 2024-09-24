@@ -14,7 +14,7 @@ final class NovelKeywordSelectModalView: UIView {
     
     //MARK: - Components
     
-    let contentView = UIView()
+    private let contentView = UIView()
     let closeButton = UIButton()
     private let titleLabel = UILabel()
     let novelKeywordSelectSearchBarView = NovelKeywordSelectSearchBarView()
@@ -73,8 +73,8 @@ final class NovelKeywordSelectModalView: UIView {
         }
         
         closeButton.snp.makeConstraints {
-            $0.top.trailing.equalToSuperview().inset(20)
-            $0.size.equalTo(25)
+            $0.top.trailing.equalToSuperview()
+            $0.size.equalTo(65)
         }
         
         titleLabel.snp.makeConstraints {
