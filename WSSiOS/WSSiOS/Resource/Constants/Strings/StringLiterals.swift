@@ -50,7 +50,7 @@ enum StringLiterals {
         
         enum SubTitle {
             static let interest = "관심 등록한 작품의 최근 수다예요"
-            static let recommend = "선호 장르를 기반으로 추천해 드려요"
+            static let recommend = "선호 장르를 기반으로 추천해드려요"
         }
         
         enum Login {
