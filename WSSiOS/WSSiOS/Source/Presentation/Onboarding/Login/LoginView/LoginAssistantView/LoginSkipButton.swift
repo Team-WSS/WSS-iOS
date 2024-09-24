@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class LoginSkipButton: UIView {
+final class LoginSkipButton: UIButton {
     
     //MARK: - Components
     
@@ -43,6 +43,7 @@ final class LoginSkipButton: UIView {
         skipButtonLabel.do {
             $0.applyWSSFont(.title1, with: StringLiterals.Onboarding.Login.skip)
             $0.textColor = .wssPrimary100
+            $0.isUserInteractionEnabled = false
         }
     }
     
