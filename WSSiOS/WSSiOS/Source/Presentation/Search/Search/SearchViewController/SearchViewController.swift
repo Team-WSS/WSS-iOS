@@ -90,7 +90,7 @@ final class SearchViewController: UIViewController {
                 let detailSearchViewController = DetailSearchViewController(viewModel: DetailSearchViewModel(keywordRepository: DefaultKeywordRepository(keywordService: DefaultKeywordService())))
                 detailSearchViewController.navigationController?.isNavigationBarHidden = false
                 detailSearchViewController.hidesBottomBarWhenPushed = true
-                owner.navigationController?.pushViewController(detailSearchViewController, animated: false)
+                owner.presentModalViewController(detailSearchViewController)
             })
             .disposed(by: disposeBag)
     }

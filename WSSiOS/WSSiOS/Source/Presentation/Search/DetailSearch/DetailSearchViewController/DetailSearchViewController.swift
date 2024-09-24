@@ -82,7 +82,7 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
         
         output.cancelButtonEnabled
             .bind(with: self, onNext: { owner, _ in
-                owner.navigationController?.popViewController(animated: false)
+                owner.dismissModalViewController()
             })
             .disposed(by: disposeBag)
         
