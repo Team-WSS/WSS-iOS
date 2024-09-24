@@ -17,7 +17,7 @@ final class NovelReviewKeywordView: UIView {
     private let titleLabel = UILabel()
     let keywordSearchBarView = UIView()
     private let placeholderLabel = UILabel()
-    private let searchButton = UIButton()
+    private let searchImageView = UIImageView()
     let selectedKeywordCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     
     //MARK: - Life Cycle
@@ -56,10 +56,9 @@ final class NovelReviewKeywordView: UIView {
             $0.textColor = .wssGray200
         }
         
-        searchButton.do {
-            $0.setImage(.icSearch.withRenderingMode(.alwaysTemplate), for: .normal)
+        searchImageView.do {
+            $0.image = .icSearch.withRenderingMode(.alwaysTemplate)
             $0.tintColor = .wssGray300
-            $0.isEnabled = false
         }
         
         selectedKeywordCollectionView.do {
@@ -78,7 +77,7 @@ final class NovelReviewKeywordView: UIView {
                          keywordSearchBarView,
                          selectedKeywordCollectionView)
         keywordSearchBarView.addSubviews(placeholderLabel,
-                                         searchButton)
+                                         searchImageView)
     }
     
     private func setLayout() {
@@ -97,10 +96,10 @@ final class NovelReviewKeywordView: UIView {
                 $0.height.equalTo(42)
             }
             
-            searchButton.snp.makeConstraints {
+            searchImageView.snp.makeConstraints {
                 $0.centerY.equalToSuperview()
-                $0.trailing.equalToSuperview().inset(10)
-                $0.size.equalTo(36)
+                $0.trailing.equalToSuperview().inset(15)
+                $0.size.equalTo(25)
             }
         }
         
