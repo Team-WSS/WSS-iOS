@@ -70,7 +70,7 @@ final class FeedNovelConnectModalViewModel: ViewModelType {
         
         input.searchButtonDidTap
             .filter {
-                !self.searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                !self.searchText.textIsEmpty()
             }
             .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
             .do(onNext: { _ in
