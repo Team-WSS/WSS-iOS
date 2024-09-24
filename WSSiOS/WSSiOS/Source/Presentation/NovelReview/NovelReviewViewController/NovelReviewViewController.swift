@@ -126,10 +126,18 @@ final class NovelReviewViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.readStatusListData.bind(to: rootView.novelReviewStatusView.statusCollectionView.rx.items(cellIdentifier: NovelReviewStatusCollectionViewCell.cellIdentifier, cellType: NovelReviewStatusCollectionViewCell.self)) { item, element, cell in
-            cell.bindData(status: element)
-        }
-        .disposed(by: disposeBag)
+        output.readStatusListData
+            .bind(to: rootView.novelReviewStatusView.statusCollectionView.rx.items(cellIdentifier: NovelReviewStatusCollectionViewCell.cellIdentifier, cellType: NovelReviewStatusCollectionViewCell.self)) { item, element, cell in
+                let indexPath = IndexPath(item: item, section: 0)
+                
+                if self.novelReviewViewModel.readStatus == element {
+                    self.rootView.novelReviewStatusView.statusCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
+                } else {
+                    self.rootView.novelReviewStatusView.statusCollectionView.deselectItem(at: indexPath, animated: false)
+                }
+                cell.bindData(status: element)
+            }
+            .disposed(by: disposeBag)
         
         output.presentNovelDateSelectModalViewController
             .subscribe(with: self, onNext: { owner, tuple in
@@ -154,10 +162,11 @@ final class NovelReviewViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.attractivePointListData.bind(to: rootView.novelReviewAttractivePointView.attractivePointCollectionView.rx.items(cellIdentifier: NovelReviewAttractivePointCollectionViewCell.cellIdentifier, cellType: NovelReviewAttractivePointCollectionViewCell.self)) { item, element, cell in
-            cell.bindData(attractivePoint: element)
-        }
-        .disposed(by: disposeBag)
+        output.attractivePointListData
+            .bind(to: rootView.novelReviewAttractivePointView.attractivePointCollectionView.rx.items(cellIdentifier: NovelReviewAttractivePointCollectionViewCell.cellIdentifier, cellType: NovelReviewAttractivePointCollectionViewCell.self)) { item, element, cell in
+                cell.bindData(attractivePoint: element)
+            }
+            .disposed(by: disposeBag)
         
         output.isAttractivePointCountOverLimit
             .subscribe(with: self, onNext: { owner, indexPath in
@@ -172,9 +181,10 @@ final class NovelReviewViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.selectedKeywordListData.bind(to: rootView.novelReviewKeywordView.selectedKeywordCollectionView.rx.items(cellIdentifier: NovelReviewSelectedKeywordCollectionViewCell.cellIdentifier, cellType: NovelReviewSelectedKeywordCollectionViewCell.self)) { item, element, cell in
-            cell.bindData(keyword: element)
-        }
+        output.selectedKeywordListData
+            .bind(to: rootView.novelReviewKeywordView.selectedKeywordCollectionView.rx.items(cellIdentifier: NovelReviewSelectedKeywordCollectionViewCell.cellIdentifier, cellType: NovelReviewSelectedKeywordCollectionViewCell.self)) { item, element, cell in
+                cell.bindData(keyword: element)
+            }
         .disposed(by: disposeBag)
         
         output.selectedKeywordCollectionViewHeight
@@ -203,7 +213,7 @@ extension NovelReviewViewController: UICollectionViewDelegateFlowLayout {
         } else if collectionView.tag == 2 {
             var text: String?
             
-            text = self.novelReviewViewModel.selectedKeywordList[indexPath.item]
+            text = self.novelReviewViewModel.selectedKeywordListData.value[indexPath.item]
             
             guard let unwrappedText = text else {
                 return CGSize(width: 0, height: 0)
