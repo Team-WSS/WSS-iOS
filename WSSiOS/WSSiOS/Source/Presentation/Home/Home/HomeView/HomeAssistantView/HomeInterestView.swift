@@ -39,7 +39,7 @@ final class HomeInterestView: UIView {
     
     private func setUI() {
         titleLabel.do {
-            $0.applyWSSFont(.headline1, with: "일이삼사오육칠팔구십 \(StringLiterals.Home.Title.interest)")
+            $0.applyWSSFont(.headline1, with: "일이삼사오육칠팔구십\(StringLiterals.Home.Title.interest)")
             $0.textColor = .wssBlack
         }
         
