@@ -15,6 +15,7 @@ final class KingFisherRxHelper {
     private init() {}
     static let shared = KingFisherRxHelper()
     
+    /// 버킷 이미지 URL 생성
     static func makeBucketImageURL(path: String) -> URL? {
         let bucketURL = Bundle.main.object(forInfoDictionaryKey: Config.Keys.Plist.bucketURL) as? String ?? "Error"
         let scale = Int(UITraitCollection.current.displayScale)
@@ -22,6 +23,7 @@ final class KingFisherRxHelper {
         return URL(string: "\(bucketURL)\(path)@\(scale)x.png")
     }
     
+    /// http로 시작하는, 실제 이미지 URL인 경우 바로 반환, 그 외에는 버킷 이미지 URL 형태로 반환
     static func makeImageURLString(path: String) -> URL? {
         if path.hasPrefix("http") {
             return URL(string: path)
@@ -30,6 +32,7 @@ final class KingFisherRxHelper {
         }
     }
     
+    /// 킹피셔 에러를 Observable에 담아 반환하기 위한 메서드
     static func kingFisherImage(urlString: String) -> Observable<UIImage> {
         return Observable.create { observer in
             
