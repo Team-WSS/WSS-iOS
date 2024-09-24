@@ -183,7 +183,7 @@ extension NovelReviewViewController: UICollectionViewDelegateFlowLayout {
         } else if collectionView.tag == 2 {
             var text: String?
             
-            text = self.novelReviewViewModel.selectedKeywordList[indexPath.item]
+            text = self.novelReviewViewModel.selectedKeywordListData.value[indexPath.item]
             
             guard let unwrappedText = text else {
                 return CGSize(width: 0, height: 0)
