@@ -75,6 +75,6 @@ enum LoginBannerMetric {
     static let imageRatio: CGFloat = 1.368
     static let width = UIScreen.main.bounds.width
     static var height: CGFloat {
-        return UIScreen.isSE ? 460 : width * imageRatio
+        return UIScreen.isSE ? 436 : width * imageRatio
     }
 }

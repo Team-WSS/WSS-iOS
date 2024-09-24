@@ -68,7 +68,7 @@ final class LoginView: UIView {
         }
         
         carouselIndicatorView.snp.makeConstraints {
-            $0.top.equalTo(carouselView.snp.bottom).offset(UIScreen.isSE ? 0 : 30)
+            $0.top.equalTo(carouselView.snp.bottom).offset(24)
             $0.horizontalEdges.equalToSuperview()
         }
         
