@@ -82,7 +82,7 @@ enum StringLiterals {
         
         enum Interest {
             static let feed = "님의 한마디"
-            static let empty = "아직 관심 등록한 작품과 관련된 글이 없어요"
+            static let empty = "관심 등록한 작품과 관련된 글이 없어요"
         }
     }
     
