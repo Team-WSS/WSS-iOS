@@ -14,7 +14,7 @@ final class NovelReviewViewModel: ViewModelType {
     
     //MARK: - Properties
     
-    private var readStatus: ReadStatus?
+    var readStatus: ReadStatus
     private var selectedAttractivePointList: [String] = []
     
     private let minStarRating: Float = 0.0
@@ -25,7 +25,8 @@ final class NovelReviewViewModel: ViewModelType {
     
     private let popViewController = PublishRelay<Void>()
     private let isCompleteButtonEnabled = BehaviorRelay<Bool>(value: false)
-    private let readStatusData = PublishRelay<[ReadStatus]>()
+    private let readStatusListData = PublishRelay<[ReadStatus]>()
+    private let readStatusData = PublishRelay<ReadStatus>()
     private let starRating = BehaviorRelay<Float>(value: 0.0)
     private let attractivePointListData = PublishRelay<[AttractivePoints]>()
     private let isAttractivePointCountOverLimit = PublishRelay<IndexPath>()
@@ -34,6 +35,10 @@ final class NovelReviewViewModel: ViewModelType {
     private let selectedKeywordCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
     
     //MARK: - Life Cycle
+    
+    init(readStatus: ReadStatus) {
+        self.readStatus = readStatus
+    }
     
     struct Input {
         let viewDidLoadEvent: Observable<Void>
@@ -52,7 +57,8 @@ final class NovelReviewViewModel: ViewModelType {
     struct Output {
         let popViewController: Observable<Void>
         let isCompleteButtonEnabled: Observable<Bool>
-        let readStatusData: Observable<[ReadStatus]>
+        let readStatusListData: Observable<[ReadStatus]>
+        let readStatusData: Observable<ReadStatus>
         let starRating: Observable<Float>
         let attractivePointListData: Observable<[AttractivePoints]>
         let isAttractivePointCountOverLimit: Observable<IndexPath>
@@ -64,7 +70,7 @@ final class NovelReviewViewModel: ViewModelType {
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         input.viewDidLoadEvent
             .subscribe(with: self, onNext: { owner, _ in
-                owner.readStatusData.accept(ReadStatus.allCases)
+                owner.readStatusListData.accept(ReadStatus.allCases)
                 owner.attractivePointListData.accept(AttractivePoints.allCases)
             })
             .disposed(by: disposeBag)
@@ -146,6 +152,7 @@ final class NovelReviewViewModel: ViewModelType {
         
         return Output(popViewController: popViewController.asObservable(),
                       isCompleteButtonEnabled: isCompleteButtonEnabled.asObservable(),
+                      readStatusListData: readStatusListData.asObservable(),
                       readStatusData: readStatusData.asObservable(),
                       starRating: starRating.asObservable(),
                       attractivePointListData: attractivePointListData.asObservable(),

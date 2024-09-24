@@ -104,9 +104,9 @@ final class NovelKeywordSelectModalViewController: UIViewController {
         
         output.selectedKeywordListData
             .bind(to: rootView.novelSelectedKeywordListView.selectedKeywordCollectionView.rx.items(cellIdentifier: NovelSelectedKeywordCollectionViewCell.cellIdentifier, cellType: NovelSelectedKeywordCollectionViewCell.self)) { item, element, cell in
-            cell.bindData(keyword: element)
-        }
-        .disposed(by: disposeBag)
+                cell.bindData(keyword: element)
+            }
+            .disposed(by: disposeBag)
         
         output.keywordSearchResultListData
             .subscribe(with: self, onNext: { owner, searchResultList in
@@ -116,16 +116,16 @@ final class NovelKeywordSelectModalViewController: UIViewController {
         
         output.keywordSearchResultListData
             .bind(to: rootView.novelKeywordSelectSearchResultView.searchResultCollectionView.rx.items(cellIdentifier: NovelKeywordSelectSearchResultCollectionViewCell.cellIdentifier, cellType: NovelKeywordSelectSearchResultCollectionViewCell.self)) { item, element, cell in
-            let indexPath = IndexPath(item: item, section: 0)
-            
-            if self.novelKeywordSelectModalViewModel.selectedKeywordList.contains(element) {
-                self.rootView.novelKeywordSelectSearchResultView.searchResultCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
-            } else {
-                self.rootView.novelKeywordSelectSearchResultView.searchResultCollectionView.deselectItem(at: indexPath, animated: false)
+                let indexPath = IndexPath(item: item, section: 0)
+                
+                if self.novelKeywordSelectModalViewModel.selectedKeywordList.contains(element) {
+                    self.rootView.novelKeywordSelectSearchResultView.searchResultCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
+                } else {
+                    self.rootView.novelKeywordSelectSearchResultView.searchResultCollectionView.deselectItem(at: indexPath, animated: false)
+                }
+                cell.bindData(keyword: element)
             }
-            cell.bindData(keyword: element)
-        }
-        .disposed(by: disposeBag)
+            .disposed(by: disposeBag)
         
         output.searchResultCollectionViewHeight
             .subscribe(with: self, onNext: { owner, height in
