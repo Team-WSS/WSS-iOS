@@ -890,6 +890,7 @@
 			isa = PBXGroup;
 			children = (
 				2CD229242B42E687005400BE /* Assets.xcassets */,
+				3916EC872B89D1D9007835B5 /* Helper */,
 				39EF97B12B54498E00D2148B /* Lottie */,
 				2CD2294B2B42E97E005400BE /* Fonts */,
 				2CD229492B42E952005400BE /* Constants */,
@@ -901,7 +902,6 @@
 		2CD229492B42E952005400BE /* Constants */ = {
 			isa = PBXGroup;
 			children = (
-				3916EC872B89D1D9007835B5 /* Helper */,
 				A122C9F42B5314F000DFCFE4 /* URLs */,
 				A122C9F02B53146100DFCFE4 /* Config */,
 				2C24917F2B4ADBF20096F255 /* Strings */,
