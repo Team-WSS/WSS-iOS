@@ -217,7 +217,7 @@ final class RegisterNormalDatePicker: UIButton {
     
     //MARK: - Custom Method
     
-    func updateDatePickerTitle(status: ReadStatus) {
+    func updateDatePickerTitle(status: TrashReadStatus) {
         if status == .FINISH {
             finishStatusView.isHidden = false
             readingStatusLabel.isHidden = true

@@ -18,10 +18,22 @@ final class NovelDetailViewModel: ViewModelType {
     private let novelDetailRepository: NovelDetailRepository
     private let novelId: Int
     
+    //Total
     private let viewWillAppearEvent = BehaviorRelay<Bool>(value: false)
+    
+    //NovelDetailHeader
     private let novelDetailHeaderData = PublishSubject<NovelDetailHeaderResult>()
     private let showLargeNovelCoverImage = BehaviorRelay<Bool>(value: false)
+    
+    //Tab
     private let selectedTab = BehaviorRelay<Tab>(value: Tab.info)
+    
+    //NovelDetailInfo
+    private let novelDetailInfoData = PublishSubject<NovelDetailInfoResult>()
+    private let isInfoDescriptionExpended = BehaviorRelay<Bool>(value: false)
+    private let platformList = BehaviorRelay<[Platform]>(value: [])
+    private let keywordList = BehaviorRelay<[Keyword]>(value: [])
+    private let reviewSectionVisibilities = BehaviorRelay<[ReviewSectionVisibility]>(value: [])
     
     //MARK: - Life Cycle
     
@@ -43,25 +55,44 @@ final class NovelDetailViewModel: ViewModelType {
         let feedTabBarButtonDidTap: ControlEvent<Void>
         let stickyInfoTabBarButtonDidTap: ControlEvent<Void>
         let stickyFeedTabBarButtonDidTap: ControlEvent<Void>
+        let descriptionAccordionButtonDidTap: ControlEvent<Void>
     }
     
     struct Output {
-        let detailBasicData: Observable<NovelDetailHeaderResult>
-        let scrollContentOffset: Driver<CGPoint>
+        let detailHeaderData: Observable<NovelDetailHeaderResult>
+        let detailInfoData: Observable<NovelDetailInfoResult>
+        let scrollContentOffset: ControlProperty<CGPoint>
         let backButtonEnabled: Observable<Void>
         let showLargeNovelCoverImage: Driver<Bool>
         let selectedTab: Driver<Tab>
+        let isInfoDescriptionExpended: Driver<Bool>
+        let platformList: Driver<[Platform]>
+        let keywordList: Driver<[Keyword]>
+        let reviewSectionVisibilities: Driver<[ReviewSectionVisibility]>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         input.viewWillAppearEvent
             .flatMapLatest { _ in
-                self.novelDetailRepository.getNovelBasic(novelId: self.novelId)
+                self.novelDetailRepository.getNovelDetailHeaderData(novelId: self.novelId)
             }
             .subscribe(with: self, onNext: { owner, data in
                 owner.novelDetailHeaderData.onNext(data)
             }, onError: { owner, error in
                 owner.novelDetailHeaderData.onError(error)
+            })
+            .disposed(by: disposeBag)
+        
+        input.viewWillAppearEvent
+            .flatMapLatest { _ in
+                self.novelDetailRepository.getNovelDetailInfoData(novelId: self.novelId)
+            }
+            .subscribe(with: self, onNext: { owner, data in
+                owner.novelDetailInfoData.onNext(data)
+                owner.platformList.accept(data.platforms)
+                owner.keywordList.accept(data.keywords)
+            }, onError: { owner, error in
+                owner.novelDetailInfoData.onError(error)
             })
             .disposed(by: disposeBag)
         
@@ -82,7 +113,6 @@ final class NovelDetailViewModel: ViewModelType {
                 owner.showLargeNovelCoverImage.accept(false)
             })
             .disposed(by: disposeBag)
-        
         
         let scrollContentOffset = input.scrollContentOffset
         
@@ -112,12 +142,58 @@ final class NovelDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        input.descriptionAccordionButtonDidTap
+            .bind(with: self, onNext: { owner, _ in
+                owner.isInfoDescriptionExpended.accept(!owner.isInfoDescriptionExpended.value)
+            })
+            .disposed(by: disposeBag)
+        
+        self.novelDetailInfoData
+            .subscribe(with: self, onNext: { owner, data in
+                var visibilities: [ReviewSectionVisibility] = []
+                
+                if (data.quitCount+data.watchedCount+data.watchingCount) > 0 {
+                    visibilities.append(.graph)
+                }
+                if !data.attractivePoints.isEmpty {
+                    visibilities.append(.attractivepoint)
+                }
+                if !data.keywords.isEmpty {
+                    visibilities.append(.keyword)
+                }
+                
+                owner.reviewSectionVisibilities.accept(visibilities)
+            }, onError: { owner, error in
+                owner.reviewSectionVisibilities.accept([])
+            })
+            .disposed(by: disposeBag)
+        
         return Output(
-            detailBasicData: novelDetailHeaderData.asObservable(),
-            scrollContentOffset: scrollContentOffset.asDriver(),
+            detailHeaderData: novelDetailHeaderData.asObservable(),
+            detailInfoData: novelDetailInfoData.asObserver(),
+            scrollContentOffset: scrollContentOffset,
             backButtonEnabled: backButtonDidTap,
             showLargeNovelCoverImage: showLargeNovelCoverImage.asDriver(),
-            selectedTab: selectedTab.asDriver()
+            selectedTab: selectedTab.asDriver(),
+            isInfoDescriptionExpended: isInfoDescriptionExpended.asDriver(),
+            platformList: platformList.asDriver(),
+            keywordList: keywordList.asDriver(),
+            reviewSectionVisibilities: reviewSectionVisibilities.asDriver()
         )
     }
+    
+    //MARK: - Custom Method
+    
+    func keywordNameForItemAt(indexPath: IndexPath) -> String? {
+        guard indexPath.item < keywordList.value.count else {
+            return nil
+        }
+       return "\(keywordList.value[indexPath.item].keywordName) \(keywordList.value[indexPath.item].keywordCount)"
+    }
+}
+
+enum ReviewSectionVisibility: Hashable {
+    case attractivepoint
+    case keyword
+    case graph
 }

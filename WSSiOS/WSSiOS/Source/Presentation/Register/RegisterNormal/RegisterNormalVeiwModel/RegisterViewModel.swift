@@ -26,7 +26,7 @@ final class RegisterViewModel: ViewModelType {
     private let disposeBag = DisposeBag()
     private let novelBasicData = PublishSubject<NovelBasicData>()
     private let starRating = BehaviorRelay<Float>(value: 0.0)
-    private let readStatus = BehaviorRelay<ReadStatus>(value: .FINISH)
+    private let readStatus = BehaviorRelay<TrashReadStatus>(value: .FINISH)
     private let isDateExist = BehaviorRelay<Bool>(value: true)
     private let startDate = BehaviorRelay<Date>(value: Date())
     private let endDate = BehaviorRelay<Date>(value: Date())
@@ -62,7 +62,7 @@ final class RegisterViewModel: ViewModelType {
         let scrollContentOffset: ControlProperty<CGPoint>
         let starRatingTapGesture: Observable<(location: CGPoint, width: CGFloat, index: Int)>
         let starRatingPanGesture: Observable<(location: CGPoint, width: CGFloat)>
-        let readStatusButtonTap: Observable<ReadStatus>
+        let readStatusButtonTap: Observable<TrashReadStatus>
         let readDateToggleButtonTap: ControlEvent<Void>
         let datePickerButtonTap: ControlEvent<Void>
         let customDatePickerBackgroundTap: ControlEvent<Void>
@@ -79,7 +79,7 @@ final class RegisterViewModel: ViewModelType {
         let novelBasicData: Observable<NovelBasicData>
         let scrollContentOffset: Driver<CGPoint>
         let starRating: Driver<Float>
-        let readStatus: Driver<ReadStatus>
+        let readStatus: Driver<TrashReadStatus>
         let isDateExist: Driver<Bool>
         let startDate: Driver<Date>
         let endDate: Driver<Date>
@@ -318,7 +318,7 @@ final class RegisterViewModel: ViewModelType {
         self.userNovelId = userData.userNovelID
         
         self.starRating.accept(userData.userNovelRating ?? minStarRating)
-        let status = ReadStatus(rawValue: userData.userNovelReadStatus) ?? .FINISH
+        let status = TrashReadStatus(rawValue: userData.userNovelReadStatus) ?? .FINISH
         var start = userData.userNovelReadDate.userNovelReadStartDate ?? ""
         var end = userData.userNovelReadDate.userNovelReadEndDate ?? ""
         

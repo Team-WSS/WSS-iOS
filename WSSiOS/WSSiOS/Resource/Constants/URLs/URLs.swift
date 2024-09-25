@@ -9,12 +9,10 @@ import Foundation
 
 enum URLs {
     enum User {
-        static let getUserInfo = "/users/info"
-        static let patchUserNickname = "/users/nickname"
-    }
-    
-    enum Recommend {
-        static let getRecommendList = "/user-novels/soso-picks"
+        private static let userBasePath = "/users"
+        static let getUserInfo = userBasePath + "/info"
+        static let patchUserNickname = userBasePath + "/nickname"
+        static let getUserNovelStatus = userBasePath + "/user-novel-stats"
     }
     
     enum Novel {
@@ -48,6 +46,10 @@ enum URLs {
         static func postMemo(userNovelId: Int) -> String {
             return "/user-novels/\(userNovelId)/memo"
         }
+        static let postFeed = "/feeds"
+        static func putFeed(feedId: Int) -> String {
+            return "/feeds/\(feedId)"
+        }
         static func patchMemo(memoId: Int) -> String {
             return "/memos/\(memoId)"
         }
@@ -64,5 +66,30 @@ enum URLs {
     
     enum Feed {
         static let getFeeds = "/feeds"
+    }
+    
+    enum MyPage {
+        enum Block {
+            static let blocks = "/blocks"
+            static func userBlocks(blockID: Int) -> String {
+                return "/blocks/\(blockID)"
+            }
+        }
+    }
+
+    enum Recommend {
+        static let getTodayPopulars = "/novels/popular"
+        static let getRealtimePopulars = "/feeds/popular"
+        static let getInterestFeeds = "/feeds/interest"
+        static let getTasteRecommendNovels = "/novels/taste"
+    }
+    
+    enum Notice {
+        static let getNotices = "/notices"
+    }
+    
+    enum Search {
+        static let sosoPick = "/soso-picks"
+        static let normalSearch = "/novels"
     }
 }
