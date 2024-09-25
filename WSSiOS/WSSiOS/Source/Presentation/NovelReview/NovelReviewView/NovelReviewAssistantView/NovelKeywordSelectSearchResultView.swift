@@ -44,9 +44,10 @@ final class NovelKeywordSelectSearchResultView: UIView {
             layout.scrollDirection = .vertical
             layout.minimumLineSpacing = 8
             layout.minimumInteritemSpacing = 6
+            layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 28, right: 0)
 
             $0.collectionViewLayout = layout
-            $0.isScrollEnabled = false
+            $0.showsVerticalScrollIndicator = false
             $0.allowsMultipleSelection = true
             $0.tag = 2
         }
@@ -66,16 +67,7 @@ final class NovelKeywordSelectSearchResultView: UIView {
         searchResultCollectionView.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(20)
             $0.leading.trailing.equalToSuperview().inset(20)
-            $0.bottom.equalToSuperview().inset(28)
-            $0.height.equalTo(0)
-        }
-    }
-    
-    //MARK: - Custom Method
-    
-    func updateCollectionViewHeight(height: CGFloat) {
-        searchResultCollectionView.snp.updateConstraints {
-            $0.height.equalTo(height)
+            $0.bottom.equalToSuperview()
         }
     }
 }
