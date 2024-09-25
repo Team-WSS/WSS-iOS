@@ -36,7 +36,7 @@ final class FeedEditViewModel: ViewModelType {
     private let completeButtonIsAbled = BehaviorRelay<Bool>(value: false)
     private let showPlaceholder = PublishRelay<Bool>()
     private let presentFeedEditNovelConnectModalViewController = PublishRelay<Void>()
-    private let connectedNovelTitle = PublishRelay<String?>()
+    private let connectedNovelTitle = BehaviorRelay<String?>(value: nil)
     private let showAlreadyConnectedToast = PublishRelay<Void>()
     private let showStopEditingAlert = PublishRelay<Void>()
        
@@ -48,6 +48,8 @@ final class FeedEditViewModel: ViewModelType {
         self.relevantCategories = relevantCategories
         self.initialFeedContent = initialFeedContent
         self.novelId = novelId
+        
+        self.connectedNovelTitle.accept(novelTitle)
         self.isSpoiler.accept(isSpoiler)
     }
     
