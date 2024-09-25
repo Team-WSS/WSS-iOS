@@ -61,16 +61,7 @@ final class FeedNovelConnectModalViewController: UIViewController {
             closeButtonDidTap: rootView.closeButton.rx.tap,
             searchTextUpdated: rootView.feedNovelConnectSearchBarView.titleTextField.rx.text.orEmpty.asObservable(),
             searchButtonDidTap: rootView.feedNovelConnectSearchBarView.searchButton.rx.tap,
-            searchResultCollectionViewReachedBottom: rootView.feedNovelConnectSearchResultView.searchResultCollectionView.rx.contentOffset.map { [weak self] contentOffset in
-                guard let self = self else { return false }
-                let contentHeight = self.rootView.feedNovelConnectSearchResultView.searchResultCollectionView.contentSize.height
-                let collectionViewHeight = self.rootView.feedNovelConnectSearchResultView.searchResultCollectionView.frame.size.height
-                let offsetY = contentOffset.y
-                
-                // 스크롤이 바닥에 도달했는지 확인
-                return offsetY + collectionViewHeight >= contentHeight
-            }
-            .distinctUntilChanged(),
+            searchResultCollectionViewReachedBottom: observeReachedBottom(rootView.feedNovelConnectSearchResultView.searchResultCollectionView),
             searchResultCollectionViewItemSelected: rootView.feedNovelConnectSearchResultView.searchResultCollectionView.rx.itemSelected.asObservable(),
             searchResultCollectionViewSwipeGesture: rootView.feedNovelConnectSearchResultView.searchResultCollectionView.rx.swipeGesture([.up, .down])
                 .when(.recognized)
@@ -108,5 +99,19 @@ final class FeedNovelConnectModalViewController: UIViewController {
                 owner.rootView.feedNovelConnectSearchResultView.showConnectNovelButton()
             })
             .disposed(by: disposeBag)
+    }
+    
+    // MARK: - Custom Method
+    
+    private func observeReachedBottom(_ scrollView: UIScrollView) -> Observable<Bool> {
+        return scrollView.rx.contentOffset
+            .map { contentOffset in
+                let contentHeight = scrollView.contentSize.height
+                let viewHeight = scrollView.frame.size.height
+                let offsetY = contentOffset.y
+                
+                return offsetY + viewHeight >= contentHeight
+            }
+            .distinctUntilChanged()
     }
 }
