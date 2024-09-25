@@ -92,7 +92,7 @@ final class MyPageChangeUserInfoViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.popViewConroller
+        output.popViewController
             .subscribe(with: self, onNext: { owner, _ in
                 owner.delegate?.updateUserInfo()
                 owner.popToLastViewController()

@@ -11,9 +11,9 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-struct Gender {
-    enum male = "M"
-    enum female = "F"
+enum Gender {
+    static let male = "M"
+    static let female = "F"
 }
 
 final class MyPageChangeUserInfoViewModel: ViewModelType {
@@ -50,7 +50,7 @@ final class MyPageChangeUserInfoViewModel: ViewModelType {
         let changeGender = BehaviorRelay<String>(value: "")
         let showBottomSheet = PublishRelay<Bool>()
         let changeCompleteButton = BehaviorRelay<Bool>(value: false)
-        let popViewConroller = PublishRelay<Bool>()
+        let popViewController = PublishRelay<Void>()
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -83,7 +83,7 @@ final class MyPageChangeUserInfoViewModel: ViewModelType {
         input.backButtonTapped
             .throttle(.seconds(3), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
-                output.popViewConroller.accept(true)
+                output.popViewController
             })
             .disposed(by: disposeBag)
         
@@ -94,7 +94,7 @@ final class MyPageChangeUserInfoViewModel: ViewModelType {
                 if isEnabled {
                     owner.putUserInfo(gender: owner.currentGender, birth: owner.currentBirth)
                         .subscribe(with: self, onNext: { owner, _ in 
-                            output.popViewConroller.accept(true)
+                            output.popViewController
                         }, onError: { owner, error in
                             print(error)
                         })
