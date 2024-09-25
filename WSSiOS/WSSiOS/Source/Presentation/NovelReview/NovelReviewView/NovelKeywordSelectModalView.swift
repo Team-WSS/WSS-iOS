@@ -18,9 +18,10 @@ final class NovelKeywordSelectModalView: UIView {
     let closeButton = UIButton()
     private let titleLabel = UILabel()
     let novelKeywordSelectSearchBarView = NovelKeywordSelectSearchBarView()
+    let novelSelectedKeywordListView = NovelSelectedKeywordListView()
+    private let dividerView = UIView()
     let novelKeywordSelectSearchResultView = NovelKeywordSelectSearchResultView()
     let novelKeywordSelectModalButtonView = NovelKeywordSelectModalButtonView()
-    let novelSelectedKeywordListView = NovelSelectedKeywordListView()
     
     //MARK: - Life Cycle
     
@@ -54,6 +55,10 @@ final class NovelKeywordSelectModalView: UIView {
             $0.applyWSSFont(.title1, with: StringLiterals.NovelReview.KeywordSearch.keywordSelect)
             $0.textColor = .wssBlack
         }
+        
+        dividerView.do {
+            $0.backgroundColor = .wssGray50
+        }
     }
     
     private func setHierarchy() {
@@ -61,9 +66,10 @@ final class NovelKeywordSelectModalView: UIView {
         contentView.addSubviews(closeButton,
                                 titleLabel,
                                 novelKeywordSelectSearchBarView,
+                                novelSelectedKeywordListView,
+                                dividerView,
                                 novelKeywordSelectSearchResultView,
-                                novelKeywordSelectModalButtonView,
-                                novelSelectedKeywordListView)
+                                novelKeywordSelectModalButtonView)
     }
     
     private func setLayout() {
@@ -86,6 +92,17 @@ final class NovelKeywordSelectModalView: UIView {
             $0.leading.trailing.equalToSuperview()
         }
         
+        novelSelectedKeywordListView.snp.makeConstraints {
+            $0.top.equalTo(novelKeywordSelectSearchBarView.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
+        }
+        
+        dividerView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(novelKeywordSelectSearchResultView.snp.top)
+            $0.height.equalTo(1)
+        }
+        
         novelKeywordSelectSearchResultView.snp.makeConstraints {
             $0.top.equalTo(novelKeywordSelectSearchBarView.snp.bottom)
             $0.leading.trailing.equalToSuperview()
@@ -95,11 +112,6 @@ final class NovelKeywordSelectModalView: UIView {
         novelKeywordSelectModalButtonView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalTo(self.safeAreaLayoutGuide)
-        }
-        
-        novelSelectedKeywordListView.snp.makeConstraints {
-            $0.top.equalTo(novelKeywordSelectSearchBarView.snp.bottom)
-            $0.leading.trailing.equalToSuperview()
         }
     }
     
