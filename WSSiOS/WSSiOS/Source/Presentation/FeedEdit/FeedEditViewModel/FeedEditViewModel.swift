@@ -19,14 +19,15 @@ final class FeedEditViewModel: ViewModelType {
     let relevantCategoryList: [NewNovelGenre] = NewNovelGenre.feedEditGenres
     
     private var isValidFeedContent: Bool = false
-    private let feedId: Int?
-    let initialFeedContent: String?
-    private var novelId: Int?
-    var relevantCategories: [NewNovelGenre] = []
-    private var updatedFeedContent: String = ""
     private let feedContentPredicate = NSPredicate(format: "SELF MATCHES %@", "^[\\s]+$")
     private let maximumFeedContentCount: Int = 2000
-        
+    
+    private let feedId: Int?
+    var relevantCategories: [NewNovelGenre] = []
+    private var novelId: Int?
+    let initialFeedContent: String
+    private var updatedFeedContent: String = ""
+    
     // Output
     private let endEditing = PublishRelay<Bool>()
     private let categoryListData = BehaviorRelay<[NewNovelGenre]>(value: NewNovelGenre.feedEditGenres)
@@ -34,7 +35,7 @@ final class FeedEditViewModel: ViewModelType {
     private let isSpoiler = BehaviorRelay<Bool>(value: false)
     private let feedContentWithLengthLimit = BehaviorRelay<String>(value: "")
     private let completeButtonIsAbled = BehaviorRelay<Bool>(value: false)
-    private let showPlaceholder = PublishRelay<Bool>()
+    private let showPlaceholder = BehaviorRelay<Bool>(value: true)
     private let presentFeedEditNovelConnectModalViewController = PublishRelay<Void>()
     private let connectedNovelTitle = BehaviorRelay<String?>(value: nil)
     private let showAlreadyConnectedToast = PublishRelay<Void>()
@@ -42,7 +43,7 @@ final class FeedEditViewModel: ViewModelType {
        
     //MARK: - Life Cycle
     
-    init(feedRepository: FeedRepository, feedId: Int? = nil, relevantCategories: [NewNovelGenre] = [], initialFeedContent: String? = nil, novelId: Int? = nil, novelTitle: String? = nil, isSpoiler: Bool = false) {
+    init(feedRepository: FeedRepository, feedId: Int? = nil, relevantCategories: [NewNovelGenre] = [], initialFeedContent: String = "", novelId: Int? = nil, novelTitle: String? = nil, isSpoiler: Bool = false) {
         self.feedRepository = feedRepository
         self.feedId = feedId
         self.relevantCategories = relevantCategories

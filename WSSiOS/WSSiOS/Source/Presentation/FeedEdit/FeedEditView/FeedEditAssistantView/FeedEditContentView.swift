@@ -70,6 +70,7 @@ final class FeedEditContentView: UIView {
             $0.textContainer.lineFragmentPadding = 0
             $0.textContainerInset = .zero
             $0.tintColor = .wssBlack
+            $0.font = .Body2
         }
         
         placeholderLabel.do {

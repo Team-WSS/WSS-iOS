@@ -30,9 +30,7 @@ final class FeedEditViewController: UIViewController {
         self.feedEditViewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         
-        if let initialFeedContent = viewModel.initialFeedContent {
-            self.rootView.feedEditContentView.bindData(feedContent: initialFeedContent)
-        }
+        self.rootView.feedEditContentView.bindData(feedContent: viewModel.initialFeedContent)
     }
     
     required init?(coder: NSCoder) {
