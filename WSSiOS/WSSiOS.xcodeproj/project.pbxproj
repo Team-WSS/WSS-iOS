@@ -752,14 +752,8 @@
 		2C5D0F572B4FDE7500C76D3C /* TrashMyPageCell */ = {
 			isa = PBXGroup;
 			children = (
-<<<<<<< HEAD
-				2C5D0F582B4FDEC000C76D3C /* MyPageInventoryCollectionViewCell.swift */,
-				2C5D0F5C2B50100000C76D3C /* MyPageSettingCollectionViewCell.swift */,
-				2C2B0BAE2C53A08F00BCEC19 /* MyPageEditProfileGenreCollectionViewCell.swift */,
-=======
 				2C5D0F5C2B50100000C76D3C /* TrashMyPageSettingCollectionViewCell.swift */,
 				2C5D0F582B4FDEC000C76D3C /* TrashMyPageInventoryCollectionViewCell.swift */,
->>>>>>> main
 			);
 			path = TrashMyPageCell;
 			sourceTree = "<group>";
@@ -832,15 +826,7 @@
 		2CCBF9EA2B4C1E3700D787C2 /* TrashMyPageViewController */ = {
 			isa = PBXGroup;
 			children = (
-<<<<<<< HEAD
-				2CCBF9ED2B4C1FC500D787C2 /* MyPageViewController.swift */,
-				2C5D0F5E2B50523B00C76D3C /* MyPageChangeNicknameViewController.swift */,
-				2CA2F64F2B527B3A0045B4C2 /* MyPageCustomModalViewController.swift */,
-				2CB613F22B575E4500FC3F89 /* MyPageInfoViewController.swift */,
-				2C2B0BA22C53422400BCEC19 /* MyPageEditProfileViewController.swift */,
-=======
 				2C5D0F5E2B50523B00C76D3C /* TrashMyPageChangeNicknameViewController.swift */,
->>>>>>> main
 			);
 			path = TrashMyPageViewController;
 			sourceTree = "<group>";
@@ -848,19 +834,9 @@
 		2CCBF9EB2B4C1E4600D787C2 /* TrashMyPageView */ = {
 			isa = PBXGroup;
 			children = (
-<<<<<<< HEAD
-				2CCBF9EF2B4C1FD800D787C2 /* MyPageView.swift */,
-				2C5D0F602B50525700C76D3C /* MyPageChangeNicknameView.swift */,
-				2CA2F64D2B527B060045B4C2 /* MyPageCustomModalView.swift */,
-				2CB613F42B575E6A00FC3F89 /* MyPageInfoView.swift */,
-				2C2B0BA42C53429900BCEC19 /* MyPageEditProfileView.swift */,
-				2C5D0F572B4FDE7500C76D3C /* MyPageCell */,
-				2CCBF9FE2B4DBF6A00D787C2 /* MyPageAssistantView */,
-=======
 				2C5D0F602B50525700C76D3C /* TrashMyPageChangeNicknameView.swift */,
 				2C5D0F572B4FDE7500C76D3C /* TrashMyPageCell */,
 				2CCBF9FE2B4DBF6A00D787C2 /* TrashMyPageAssistantView */,
->>>>>>> main
 			);
 			path = TrashMyPageView;
 			sourceTree = "<group>";
@@ -868,14 +844,8 @@
 		2CCBF9FD2B4DBF4200D787C2 /* TrashMyPageViewModel */ = {
 			isa = PBXGroup;
 			children = (
-<<<<<<< HEAD
-				2CCBF9FF2B4DBFD200D787C2 /* MyPageChangeNickNameViewModel.swift */,
-				2C421FE72B96DC0F000DCB87 /* MyPageCustomModalViewModel.swift */,
-				2C2B0BB22C53A2D300BCEC19 /* MyPageEditProfileViewModel.swift */,
-=======
 				2CCBF9FF2B4DBFD200D787C2 /* TrashMyPageChangeNickNameViewModel.swift */,
 				2C421FE72B96DC0F000DCB87 /* TrashMyPageCustomModalViewModel.swift */,
->>>>>>> main
 			);
 			path = TrashMyPageViewModel;
 			sourceTree = "<group>";
@@ -883,18 +853,8 @@
 		2CCBF9FE2B4DBF6A00D787C2 /* TrashMyPageAssistantView */ = {
 			isa = PBXGroup;
 			children = (
-<<<<<<< HEAD
-				2CCBFA012B4DC10500D787C2 /* MyPageProfileView.swift */,
-				2CCBFA032B4DD73D00D787C2 /* MyPageTallyView.swift */,
-				2CCBFA052B4DD85600D787C2 /* MyPageTallyReuseView.swift */,
-				2CCBFA072B4DE38800D787C2 /* MyPageInventoryView.swift */,
-				2C5D0F5A2B500EF100C76D3C /* MyPageSettingView.swift */,
-				2CA2F6512B527B590045B4C2 /* MyPageModalAvatarFeatureLabelView.swift */,
-				2C2B0BAC2C53978B00BCEC19 /* MyPageCountView.swift */,
-=======
 				2CCBFA072B4DE38800D787C2 /* TrashMyPageInventoryView.swift */,
 				2CA2F6512B527B590045B4C2 /* TrashMyPageModalAvatarFeatureLabelView.swift */,
->>>>>>> main
 			);
 			path = TrashMyPageAssistantView;
 			sourceTree = "<group>";
@@ -2283,11 +2243,7 @@
 				39EF97AB2B53E43800D2148B /* Lottie */,
 				CD3E5A842B54254F00C0A659 /* RxKeyboard */,
 				3916EC852B89B42C007835B5 /* RxGesture */,
-<<<<<<< HEAD
-				2CFA9A0C2C9D778D00A4A820 /* Then */,
-=======
 				2C67506E2C9BEB5A0008B4EF /* Then */,
->>>>>>> main
 			);
 			productName = WSSiOS;
 			productReference = 2CD229182B42E685005400BE /* WSSiOS.app */;
@@ -2325,11 +2281,7 @@
 				3999BFEC2B4E6CA000984832 /* XCRemoteSwiftPackageReference "UIImageViewAlignedSwift" */,
 				CD3E5A832B54254F00C0A659 /* XCRemoteSwiftPackageReference "RxKeyboard" */,
 				3916EC842B89B42C007835B5 /* XCRemoteSwiftPackageReference "RxGesture" */,
-<<<<<<< HEAD
-				2CFA9A0B2C9D778D00A4A820 /* XCRemoteSwiftPackageReference "Then" */,
-=======
 				2C67506D2C9BEB5A0008B4EF /* XCRemoteSwiftPackageReference "Then" */,
->>>>>>> main
 			);
 			productRefGroup = 2CD229192B42E685005400BE /* Products */;
 			projectDirPath = "";
@@ -2480,18 +2432,11 @@
 				399258182C16DAF20063FB46 /* NovelDetailHeaderInterestReviewButton.swift in Sources */,
 				B9A0FD6C2BFCF0080004252E /* HomeRealtimePopularCollectionViewCell.swift in Sources */,
 				B90A5E5E2C355BB4009938D9 /* NovelService.swift in Sources */,
-<<<<<<< HEAD
 				2C2B0BB32C53A2D300BCEC19 /* MyPageEditProfileViewModel.swift in Sources */,
 				A122C9DF2B530A1A00DFCFE4 /* (null) in Sources */,
 				CD3E5A812B54253E00C0A659 /* MemoReadViewController.swift in Sources */,
 				CD3E5A742B5424D600C0A659 /* MemoEditView.swift in Sources */,
-				2C2B0BA32C53422400BCEC19 /* MyPageEditProfileViewController.swift in Sources */,
-				39D4A5E42BDF90FB004FC834 /* NovelDetailHeaderRatingButton.swift in Sources */,
-=======
-				CD3E5A812B54253E00C0A659 /* MemoReadViewController.swift in Sources */,
-				CD3E5A742B5424D600C0A659 /* MemoEditView.swift in Sources */,
 				39D4A5E42BDF90FB004FC834 /* NovelDetailHeaderReviewResultView.swift in Sources */,
->>>>>>> main
 				2CD911522C0D8A0F006B8D72 /* FeedNovelView.swift in Sources */,
 				2C2B0BA52C53429900BCEC19 /* MyPageEditProfileView.swift in Sources */,
 				CD3E5A812B54253E00C0A659 /* MemoReadViewController.swift in Sources */,
@@ -2571,11 +2516,8 @@
 				B96F0F9E2C29A25200DA5483 /* FeedDetailResult.swift in Sources */,
 				B960988C2C2742B80084F697 /* FeedDetailView.swift in Sources */,
 				2CD911422C0D87E0006B8D72 /* FeedService.swift in Sources */,
-<<<<<<< HEAD
 				2C2B0BB52C53C73900BCEC19 /* UITextField+.swift in Sources */,
-=======
 				B90145392C4D301C00A8B7EA /* DetailSearchKeywordView.swift in Sources */,
->>>>>>> main
 				CD3E5A782B5424E600C0A659 /* MemoHeaderView.swift in Sources */,
 				2C01F9852B482EB700D90FFE /* UserRepository.swift in Sources */,
 				B960988A2C2742680084F697 /* FeedDetailViewModel.swift in Sources */,
@@ -2636,12 +2578,9 @@
 				39D4A5DE2BDE48FD004FC834 /* NovelDetailHeaderReviewSummaryElementView.swift in Sources */,
 				CD39F2D62B50D9A900B73A5C /* TrashNovelDetailInfoKeywordView.swift in Sources */,
 				397DE6802C2342A70026DB07 /* NovelDetailTabBarView.swift in Sources */,
-<<<<<<< HEAD
 				2C2B0BAD2C53978B00BCEC19 /* MyPageCountView.swift in Sources */,
-=======
 				2C9A196B2C5692330043044A /* MyPageSettingTableViewCell.swift in Sources */,
 				C99DDFD72C86139800EDC0C4 /* SearchDetailInduceView.swift in Sources */,
->>>>>>> main
 				39F850662C2820FF00E93EBC /* NovelDetailFeedView.swift in Sources */,
 				2C8F89592C5105E90056895B /* MyPageDeleteIDViewModel.swift in Sources */,
 				2CD9114C2C0D898E006B8D72 /* FeedNavigationView.swift in Sources */,
@@ -2908,8 +2847,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-<<<<<<< HEAD
-=======
 		2C67506D2C9BEB5A0008B4EF /* XCRemoteSwiftPackageReference "Then" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/devxoul/Then";
@@ -2918,7 +2855,6 @@
 				minimumVersion = 3.0.0;
 			};
 		};
->>>>>>> main
 		2CD229322B42E771005400BE /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit";
@@ -2986,14 +2922,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-<<<<<<< HEAD
-=======
 		2C67506E2C9BEB5A0008B4EF /* Then */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2C67506D2C9BEB5A0008B4EF /* XCRemoteSwiftPackageReference "Then" */;
 			productName = Then;
 		};
->>>>>>> main
 		2CD229332B42E771005400BE /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2CD229322B42E771005400BE /* XCRemoteSwiftPackageReference "SnapKit" */;
