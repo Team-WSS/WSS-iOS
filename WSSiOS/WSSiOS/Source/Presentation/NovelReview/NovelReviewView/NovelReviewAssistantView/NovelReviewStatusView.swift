@@ -43,7 +43,6 @@ final class NovelReviewStatusView: UIView {
             layout.scrollDirection = .vertical
             layout.minimumInteritemSpacing = 0
             layout.itemSize = CGSize(width: 105, height: 78)
-
             
             $0.collectionViewLayout = layout
             $0.isScrollEnabled = false
