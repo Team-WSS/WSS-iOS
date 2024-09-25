@@ -158,10 +158,6 @@ enum StringLiterals {
             static let termsURL = "https://kimmjabc.notion.site/4acd397608c146cbbf8dd4fe11a82e19"
         }
         
-        enum EditProfile {
-            static let completeTitle = "완료"
-        }
-
         enum SettingInfo: String, CaseIterable {
             case changeProfile = "성별/나이 변경"
             case email = "이메일"
@@ -170,7 +166,7 @@ enum StringLiterals {
             case secession = "회원탈퇴"
         }
         
-        enum ChangeNickname {
+        enum EditProfile {
             static let complete = "완료"
             static let nickname = "닉네임"
             static let nicknameCheck = "중복확인"

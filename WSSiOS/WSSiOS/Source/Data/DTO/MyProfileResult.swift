@@ -12,8 +12,6 @@ struct MyProfileResult {
     let genrePreferences: [String]
 }
 
-<<<<<<< HEAD:WSSiOS/WSSiOS/Source/Data/DTO/UserResult.swift
-=======
 extension MyProfileResult {
     static let dummyData = 
     MyProfileResult(nickname: "밝보",
@@ -22,7 +20,6 @@ extension MyProfileResult {
                     genrePreferences: ["romance", "fantasy", "wuxia"])
 }
 
->>>>>>> main:WSSiOS/WSSiOS/Source/Data/DTO/MyProfileResult.swift
 struct UserResult: Codable {
     let representativeAvatarGenreBadge,
         representativeAvatarTag,

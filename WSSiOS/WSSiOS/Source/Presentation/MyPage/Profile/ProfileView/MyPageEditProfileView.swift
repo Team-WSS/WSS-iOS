@@ -191,7 +191,7 @@ final class MyPageEditProfileView: UIView {
         }
         
         completeButton.do {
-            $0.setTitle(StringLiterals.MyPage.EditProfile.completeTitle, for: .normal)
+            $0.setTitle(StringLiterals.MyPage.EditProfile.complete, for: .normal)
             $0.setTitleColor(.wssGray200, for: .normal)
             $0.titleLabel?.font = .Title2
         }
