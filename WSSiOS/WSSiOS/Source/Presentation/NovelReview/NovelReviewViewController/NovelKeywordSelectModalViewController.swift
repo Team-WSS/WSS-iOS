@@ -74,7 +74,6 @@ final class NovelKeywordSelectModalViewController: UIViewController {
             closeButtonDidTap: rootView.closeButton.rx.tap,
             searchButtonDidTap: rootView.novelKeywordSelectSearchBarView.searchButton.rx.tap,
             selectedKeywordCollectionViewItemSelected: rootView.novelSelectedKeywordListView.selectedKeywordCollectionView.rx.itemSelected.asObservable(),
-            searchResultCollectionViewContentSize: rootView.novelKeywordSelectSearchResultView.searchResultCollectionView.rx.observe(CGSize.self, "contentSize"),
             searchResultCollectionViewItemSelected: rootView.novelKeywordSelectSearchResultView.searchResultCollectionView.rx.itemSelected.asObservable(),
             searchResultCollectionViewItemDeselected: rootView.novelKeywordSelectSearchResultView.searchResultCollectionView.rx.itemDeselected.asObservable(),
             resetButtonDidTap: rootView.novelKeywordSelectModalButtonView.resetButton.rx.tap,
@@ -125,12 +124,6 @@ final class NovelKeywordSelectModalViewController: UIViewController {
                 }
                 cell.bindData(keyword: element)
             }
-            .disposed(by: disposeBag)
-        
-        output.searchResultCollectionViewHeight
-            .subscribe(with: self, onNext: { owner, height in
-                owner.rootView.novelKeywordSelectSearchResultView.updateCollectionViewHeight(height: height)
-            })
             .disposed(by: disposeBag)
         
         output.isKeywordCountOverLimit

@@ -89,6 +89,7 @@ final class NovelKeywordSelectModalView: UIView {
         novelKeywordSelectSearchResultView.snp.makeConstraints {
             $0.top.equalTo(novelKeywordSelectSearchBarView.snp.bottom)
             $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(novelKeywordSelectModalButtonView.snp.top)
         }
         
         novelKeywordSelectModalButtonView.snp.makeConstraints {

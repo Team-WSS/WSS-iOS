@@ -41,7 +41,6 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
         let closeButtonDidTap: ControlEvent<Void>
         let searchButtonDidTap: ControlEvent<Void>
         let selectedKeywordCollectionViewItemSelected: Observable<IndexPath>
-        let searchResultCollectionViewContentSize: Observable<CGSize?>
         let searchResultCollectionViewItemSelected: Observable<IndexPath>
         let searchResultCollectionViewItemDeselected: Observable<IndexPath>
         let resetButtonDidTap: ControlEvent<Void>
@@ -53,7 +52,6 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
         let enteredText: Observable<String>
         let selectedKeywordListData: Observable<[String]>
         let keywordSearchResultListData: Observable<[String]>
-        let searchResultCollectionViewHeight: Observable<CGFloat>
         let isKeywordCountOverLimit: Observable<IndexPath>
     }
     
@@ -96,11 +94,6 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.searchResultCollectionViewContentSize
-            .map { $0?.height ?? 0 }
-            .bind(to: self.searchResultCollectionViewHeight)
-            .disposed(by: disposeBag)
-        
         input.searchResultCollectionViewItemSelected
             .subscribe(with: self, onNext: { owner, indexPath in
                 if owner.selectedKeywordList.count >= owner.keywordLimit {
@@ -138,7 +131,6 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
                       enteredText: enteredText.asObservable(),
                       selectedKeywordListData: selectedKeywordListData.asObservable(),
                       keywordSearchResultListData: keywordSearchResultListData.asObservable(),
-                      searchResultCollectionViewHeight: searchResultCollectionViewHeight.asObservable(),
                       isKeywordCountOverLimit: isKeywordCountOverLimit.asObservable())
     }
 }
