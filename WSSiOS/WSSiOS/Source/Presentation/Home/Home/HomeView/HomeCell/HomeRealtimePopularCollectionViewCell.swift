@@ -14,14 +14,15 @@ final class HomeRealtimePopularCollectionViewCell: UICollectionViewCell {
     
     //MARK: - UI Components
     
-    let tableView = UITableView(frame: .zero, style: .plain)
+    let firstFeedView = HomeRealTimePopularFeedView()
+    let secondFeedView = HomeRealTimePopularFeedView()
+    let thirdFeedView = HomeRealTimePopularFeedView()
     
     //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        setUI()
         setHierarchy()
         setLayout()
     }
@@ -33,29 +34,40 @@ final class HomeRealtimePopularCollectionViewCell: UICollectionViewCell {
     
     //MARK: - UI
     
-    private func setUI() {
-        self.do {
-            $0.layer.borderColor = UIColor.wssGray70.cgColor
-            $0.layer.borderWidth = 1
-            $0.layer.cornerRadius = 14
-        }
-        
-        tableView.do {
-            $0.showsVerticalScrollIndicator = false
-            $0.separatorStyle = .singleLine
-            $0.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-            $0.separatorColor = .wssGray70
-            $0.rowHeight = 138
-        }
-    }
-    
     private func setHierarchy() {
-        self.addSubview(tableView)
+        self.addSubviews(firstFeedView,
+                         secondFeedView,
+                         thirdFeedView)
     }
     
     private func setLayout() {
-        tableView.snp.makeConstraints {
-            $0.edges.equalToSuperview().inset(20)
+        firstFeedView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(20)
+            $0.horizontalEdges.equalToSuperview().inset(20)
+        }
+        
+        secondFeedView.snp.makeConstraints {
+            $0.top.equalTo(firstFeedView.snp.bottom).offset(40)
+            $0.horizontalEdges.equalToSuperview().inset(20)
+        }
+        
+        thirdFeedView.snp.makeConstraints {
+            $0.top.equalTo(secondFeedView.snp.bottom).offset(40)
+            $0.horizontalEdges.equalToSuperview().inset(20)
+            $0.bottom.equalToSuperview().inset(20)
+        }
+    }
+    
+    func bindData(data: [RealtimePopularFeed]) {
+        let feedViews = [firstFeedView, secondFeedView, thirdFeedView]
+        
+        for (index, feedView) in feedViews.enumerated() {
+            if data.indices.contains(index) {
+                feedView.bindData(data: data[index])
+                feedView.isHidden = false
+            } else {
+                feedView.isHidden = true
+            }
         }
     }
 }

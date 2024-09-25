@@ -16,10 +16,10 @@ protocol NovelDetailRepository {
 
 struct TestDetailRepository: NovelDetailRepository {
     func getNovelDetailHeaderData(novelId: Int) -> Observable<NovelDetailHeaderResult> {
-        return Observable.just(NovelDetailHeaderResult.dummyData[0])
+        return Observable.just(NovelDetailHeaderResult.dummyFullData[0])
     }
     
     func getNovelDetailInfoData(novelId: Int) -> Observable<NovelDetailInfoResult> {
-        return Observable.just(NovelDetailInfoResult.dummyAllEmptyData[0])
+        return Observable.just(NovelDetailInfoResult.dummyFullData[0])
     }
 }

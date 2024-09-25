@@ -33,6 +33,7 @@ enum StringLiterals {
             static let changeNickname = "닉네임 변경"
             static let feed = "소소피드"
             static let notice = "알림"
+            static let editProfile = "프로필 편집"
             static let deleteID = "회원탈퇴"
             static let myPageSetting = "설정"
             static let myPageInfo = "계정설정"
@@ -44,14 +45,14 @@ enum StringLiterals {
     enum Home {
         enum Title {
             static let todayPopular = "오늘의 인기작"
-            static let realtimePopular = "실시간 인기글"
+            static let realtimePopular = "지금 뜨는 수다글"
             static let interest = "님의 관심글"
             static let recommend = "이 웹소설은 어때요?"
         }
         
         enum SubTitle {
             static let interest = "관심 등록한 작품의 최근 수다예요"
-            static let recommend = "선호 장르를 기반으로 추천해 드려요"
+            static let recommend = "선호 장르를 기반으로 추천해드려요"
         }
         
         enum Login {
@@ -63,7 +64,7 @@ enum StringLiterals {
         enum Unregister {
             enum Title {
                 static let interest = "관심작품의 최신 소식을 모아서 볼 수 있어요.\n좋아하는 웹소설을 관심 등록 해볼까요?"
-                static let recommend = "로맨스, 로판, 판타지, 현판 등\n선호장르를 기반으로 웹소설을 추천해 드려요!"
+                static let recommend = "로맨스, 로판, 판타지, 현판 등\n선호장르를 기반으로 웹소설을 추천해드려요!"
             }
             
             enum ButtonTItle {
@@ -77,9 +78,13 @@ enum StringLiterals {
             static let introduction = "작품 소개"
         }
         
+        enum RealTimePopular {
+            static let spoiler = "스포일러가 포함된 글 보기"
+        }
+        
         enum Interest {
             static let feed = "님의 한마디"
-            static let empty = "아직 관심 등록한 작품과 관련된 글이 없어요"
+            static let empty = "관심 등록한 작품과 관련된 글이 없어요"
         }
     }
     
@@ -162,9 +167,21 @@ enum StringLiterals {
             case secession = "회원탈퇴"
         }
         
-        enum ChangeNickname {
+        enum EditProfile {
             static let complete = "완료"
             static let nickname = "닉네임"
+            static let nicknameCheck = "중복확인"
+            static let intro = "소개"
+            static let introPlaceholder = "소개글을 적어보세요!"
+            static let genre = "선호장르"
+            static let genreDescription = "선택한 장르에 맞춰 작품을 추천해 드려요"
+        }
+        
+        enum EditProfileWarningMessage: String {
+            case noGap = "공백은 포함될 수 없어요"
+            case exist = "이미 사용 중인 닉네임이에요"
+            case guid = "한글. 영문, 숫자 2~10자까지 입력가능해요"
+            case noUse = "사용할 수 없는 단어가 포함되어 있어요"
         }
         
         enum BlockUser {
@@ -298,8 +315,10 @@ enum StringLiterals {
         enum Header {
             static let complete = "  ·  완결작  ·  "
             static let inSeries = "  ·  연재중  ·  "
-            static let interest = "관심 있어요"
-            static let review = "리뷰 남기기"
+            static let interest = "관심"
+            static let review = "나도 한마디"
+            static let dateFormat = "yy. MM. dd"
+            static let KoreaTimeZone = "ko_KR"
             
             enum Loading {
                 static let novelTitle = "작품 제목"
@@ -313,7 +332,7 @@ enum StringLiterals {
         
         enum Tab {
             static let info = "정보"
-            static let feed = "피드"
+            static let feed = "수다"
         }
         
         enum Info {
@@ -337,12 +356,12 @@ enum StringLiterals {
         static let title = "탐색하기"
         static let searchbar = "작품 제목, 작가를 검색하세요"
         
-        static let induceTitle = "이제 뭐 읽을지 고민될 땐?"
+        static let induceTitle = "뭐 읽을지 고민될 땐?"
         static let induceDescription = "장르, 연재상태, 별점, 키워드로 작품 찾기"
-        static let induceButton = "내 취향에 맞는 작품 탐색하기"
+        static let induceButton = "내 취향에 맞는 웹소설 찾기"
         
         static let sosoTitle = "소소"
-        static let sosoDescription = "다른 사람들이 최근에 읽고 있는 작품이에요"
+        static let sosoDescription = "다른 독자들이 최근에 읽고 있는 웹소설이에요"
         
         static let novel = "작품"
         

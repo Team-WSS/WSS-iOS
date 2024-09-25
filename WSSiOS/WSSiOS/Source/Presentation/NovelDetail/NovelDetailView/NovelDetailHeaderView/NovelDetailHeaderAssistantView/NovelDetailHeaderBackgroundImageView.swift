@@ -7,11 +7,16 @@
 
 import UIKit
 
+import Kingfisher
 import SnapKit
 import Then
 import UIImageViewAlignedSwift
 
 final class NovelDetailHeaderBackgroundImageView: UIView {
+    
+    //MARK: - Properties
+    
+    private let blurRadius: CGFloat = 6
     
     //MARK: - Components
     
@@ -36,7 +41,7 @@ final class NovelDetailHeaderBackgroundImageView: UIView {
     
     private func setUI() {
         bannerImageView.do {
-            $0.image = .imgLoadingThumbnail.asBlurredBannerImage(radius: 40)
+            $0.image = .imgLoadingThumbnail.asBlurredBannerImage(radius: blurRadius)
             $0.contentMode = .scaleAspectFill
             $0.alignment = .top
             $0.clipsToBounds = true
@@ -67,10 +72,16 @@ final class NovelDetailHeaderBackgroundImageView: UIView {
     //MARK: - Data
     
     func bindData(_ data: NovelDetailHeaderResult) {
-        if let image = UIImage(named: data.novelImage) {
-            bannerImageView.image = image.asBlurredBannerImage(radius: 40)
-        } else {
-            bannerImageView.image = .imgLoadingThumbnail.asBlurredBannerImage(radius: 40)
+        if let novelImageUrl = URL(string: data.novelImage) {
+            KingfisherManager.shared.retrieveImage(with: novelImageUrl, completionHandler: { result in
+            switch(result) {
+            case .success(let imageResult):
+                let blurredImage = imageResult.image.asBlurredBannerImage(radius: self.blurRadius)
+                self.bannerImageView.image = blurredImage
+            case .failure(let error):
+                print(error)
+                }
+            })
         }
     }
 }
