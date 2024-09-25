@@ -156,7 +156,7 @@ final class MyPageChangeUserInfoView: UIView {
         }
         
         backButton.snp.makeConstraints {
-            $0.size.equalTo(44)
+            $0.size.equalTo(24)
         }
         
         completeButton.snp.makeConstraints {

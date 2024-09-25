@@ -99,7 +99,7 @@ final class MyPageBlockUserView: UIView {
         }
         
         backButton.snp.makeConstraints {
-            $0.size.equalTo(44)
+            $0.size.equalTo(24)
         }
     }
 }
