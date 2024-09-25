@@ -33,6 +33,7 @@ enum StringLiterals {
             static let changeNickname = "닉네임 변경"
             static let feed = "소소피드"
             static let notice = "알림"
+            static let editProfile = "프로필 편집"
             static let deleteID = "회원탈퇴"
             static let myPageSetting = "설정"
             static let myPageInfo = "계정설정"
@@ -165,9 +166,21 @@ enum StringLiterals {
             case secession = "회원탈퇴"
         }
         
-        enum ChangeNickname {
+        enum EditProfile {
             static let complete = "완료"
             static let nickname = "닉네임"
+            static let nicknameCheck = "중복확인"
+            static let intro = "소개"
+            static let introPlaceholder = "소개글을 적어보세요!"
+            static let genre = "선호장르"
+            static let genreDescription = "선택한 장르에 맞춰 작품을 추천해 드려요"
+        }
+        
+        enum EditProfileWarningMessage: String {
+            case noGap = "공백은 포함될 수 없어요"
+            case exist = "이미 사용 중인 닉네임이에요"
+            case guid = "한글. 영문, 숫자 2~10자까지 입력가능해요"
+            case noUse = "사용할 수 없는 단어가 포함되어 있어요"
         }
         
         enum BlockUser {
