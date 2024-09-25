@@ -22,14 +22,14 @@ final class FeedEditViewModel: ViewModelType {
     private let feedId: Int?
     let initialFeedContent: String?
     private var novelId: Int?
-    var relevantCategories: [String] = []
+    var relevantCategories: [NewNovelGenre] = []
     private var updatedFeedContent: String = ""
     private let feedContentPredicate = NSPredicate(format: "SELF MATCHES %@", "^[\\s]+$")
     private let maximumFeedContentCount: Int = 2000
         
     // Output
     private let endEditing = PublishRelay<Bool>()
-    private let categoryListData = PublishRelay<[NewNovelGenre]>()
+    private let categoryListData = BehaviorRelay<[NewNovelGenre]>(value: NewNovelGenre.feedEditGenres)
     private let popViewController = PublishRelay<Void>()
     private let isSpoiler = BehaviorRelay<Bool>(value: false)
     private let feedContentWithLengthLimit = BehaviorRelay<String>(value: "")
@@ -42,7 +42,7 @@ final class FeedEditViewModel: ViewModelType {
        
     //MARK: - Life Cycle
     
-    init(feedRepository: FeedRepository, feedId: Int? = nil, relevantCategories: [String] = [], initialFeedContent: String? = nil, novelId: Int? = nil, isSpoiler: Bool = false) {
+    init(feedRepository: FeedRepository, feedId: Int? = nil, relevantCategories: [NewNovelGenre] = [], initialFeedContent: String? = nil, novelId: Int? = nil, novelTitle: String? = nil, isSpoiler: Bool = false) {
         self.feedRepository = feedRepository
         self.feedId = feedId
         self.relevantCategories = relevantCategories
@@ -52,7 +52,6 @@ final class FeedEditViewModel: ViewModelType {
     }
     
     struct Input {
-        let viewWillAppearEvent: Observable<Void>
         let viewDidTap: Observable<UITapGestureRecognizer>
         let backButtonDidTap: ControlEvent<Void>
         let completeButtonDidTap: ControlEvent<Void>
@@ -89,12 +88,6 @@ final class FeedEditViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.viewWillAppearEvent
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.categoryListData.accept(owner.relevantCategoryList)
-            })
-            .disposed(by: disposeBag)
-        
         input.backButtonDidTap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
@@ -107,7 +100,7 @@ final class FeedEditViewModel: ViewModelType {
                 .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
                 .withLatestFrom(isSpoiler)
                 .flatMapLatest { isSpoiler in
-                    self.putFeed(feedId: feedId, relevantCategories: self.relevantCategories, feedContent: self.updatedFeedContent, novelId: self.novelId, isSpoiler: isSpoiler)
+                    self.putFeed(feedId: feedId, relevantCategories: self.relevantCategories.map { $0.rawValue }, feedContent: self.updatedFeedContent, novelId: self.novelId, isSpoiler: isSpoiler)
                 }
                 .subscribe(with: self, onNext: { owner, _ in
                     owner.popViewController.accept(())
@@ -120,7 +113,7 @@ final class FeedEditViewModel: ViewModelType {
                 .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
                 .withLatestFrom(isSpoiler)
                 .flatMapLatest { isSpoiler in
-                    self.postFeed(relevantCategories: self.relevantCategories, feedContent: self.updatedFeedContent, novelId: self.novelId, isSpoiler: isSpoiler)
+                    self.postFeed(relevantCategories: self.relevantCategories.map { $0.rawValue }, feedContent: self.updatedFeedContent, novelId: self.novelId, isSpoiler: isSpoiler)
                 }
                 .subscribe(with: self, onNext: { owner, _ in
                     owner.popViewController.accept(())
@@ -139,14 +132,14 @@ final class FeedEditViewModel: ViewModelType {
         
         input.categoryCollectionViewItemSelected
             .subscribe(with: self, onNext: { owner, indexPath in
-                owner.relevantCategories.append(owner.relevantCategoryList[indexPath.item].rawValue)
+                owner.relevantCategories.append(owner.relevantCategoryList[indexPath.item])
                 owner.completeButtonIsAbled.accept(owner.isValidFeedContent && !owner.relevantCategories.isEmpty)
             })
             .disposed(by: disposeBag)
         
         input.categoryCollectionViewItemDeselected
             .subscribe(with: self, onNext: { owner, indexPath in
-                owner.relevantCategories.removeAll { $0 == owner.relevantCategoryList[indexPath.item].rawValue}
+                owner.relevantCategories.removeAll { $0 == owner.relevantCategoryList[indexPath.item]}
                 owner.completeButtonIsAbled.accept(owner.isValidFeedContent && !owner.relevantCategories.isEmpty)
             })
             .disposed(by: disposeBag)
