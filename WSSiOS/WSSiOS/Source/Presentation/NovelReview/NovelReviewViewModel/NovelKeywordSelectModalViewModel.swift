@@ -25,7 +25,6 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
     private let enteredText = BehaviorRelay<String>(value: "")
     private let selectedKeywordListData = BehaviorRelay<[String]>(value: [])
     private let keywordSearchResultListData = BehaviorRelay<[String]>(value: [])
-    private let searchResultCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
     private let isKeywordCountOverLimit = PublishRelay<IndexPath>()
     
     //MARK: - Life Cycle
@@ -116,7 +115,8 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
             .subscribe(with: self, onNext: { owner, _ in
                 owner.selectedKeywordList = []
                 owner.selectedKeywordListData.accept(owner.selectedKeywordList)
-                owner.keywordSearchResultListData.accept(owner.keywordSearchResultList)
+                owner.enteredText.accept("")
+                owner.keywordSearchResultListData.accept([])
             })
             .disposed(by: disposeBag)
         
