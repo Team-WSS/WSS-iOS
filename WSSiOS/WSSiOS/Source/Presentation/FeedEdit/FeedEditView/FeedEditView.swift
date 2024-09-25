@@ -50,7 +50,7 @@ final class FeedEditView: UIView {
         }
         
         completeButton.do {
-            $0.setButtonAttributedTitle(text: StringLiterals.Memo.complete, font: .Title2, color: .wssPrimary100)
+            $0.setButtonAttributedTitle(text: StringLiterals.FeedEdit.complete, font: .Title2, color: .wssPrimary100)
             $0.isEnabled = false
         }
         
@@ -96,7 +96,7 @@ final class FeedEditView: UIView {
     
     func enableCompleteButton(isAbled: Bool) {
         completeButton.do {
-            $0.setButtonAttributedTitle(text: StringLiterals.Memo.complete, font: .Title2, color: isAbled ? .wssPrimary100 : .wssGray200)
+            $0.setButtonAttributedTitle(text: StringLiterals.FeedEdit.complete, font: .Title2, color: isAbled ? .wssPrimary100 : .wssGray200)
             $0.isEnabled = isAbled
         }
     }

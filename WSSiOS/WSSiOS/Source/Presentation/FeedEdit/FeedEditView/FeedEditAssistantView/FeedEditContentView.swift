@@ -45,7 +45,7 @@ final class FeedEditContentView: UIView {
         }
         
         writeContentLabel.do {
-            $0.applyWSSFont(.title2, with: StringLiterals.Memo.Content.writeContent)
+            $0.applyWSSFont(.title2, with: StringLiterals.FeedEdit.Content.writeContent)
             $0.textColor = .wssBlack
         }
         
@@ -55,7 +55,7 @@ final class FeedEditContentView: UIView {
         }
         
         spoilerLabel.do {
-            $0.applyWSSFont(.label1, with: StringLiterals.Memo.Content.spoiler)
+            $0.applyWSSFont(.label1, with: StringLiterals.FeedEdit.Content.spoiler)
             $0.textColor = .wssGray300
         }
         
@@ -73,7 +73,7 @@ final class FeedEditContentView: UIView {
         }
         
         placeholderLabel.do {
-            $0.applyWSSFont(.body2, with: StringLiterals.Memo.Content.placeHolder)
+            $0.applyWSSFont(.body2, with: StringLiterals.FeedEdit.Content.placeHolder)
             $0.textColor = .wssGray200
             $0.numberOfLines = 0
         }

@@ -178,10 +178,10 @@ final class FeedEditViewController: UIViewController {
             .flatMapLatest { [weak self] _ -> Observable<Void> in
                 guard let self = self else { return Observable.just(()) }
                 return self.presentToAlertViewController(iconImage: .icAlertWarningCircle,
-                                                         titleText: "글 작성을 그만하시겠어요?",
+                                                         titleText: StringLiterals.FeedEdit.Alert.titleText,
                                                          contentText: nil,
-                                                         cancelTitle: "계속 작성",
-                                                         actionTitle: "그만하기",
+                                                         cancelTitle: StringLiterals.FeedEdit.Alert.cancelTitle,
+                                                         actionTitle: StringLiterals.FeedEdit.Alert.actionTitle,
                                                          actionBackgroundColor: UIColor.wssSecondary100.cgColor)
             }
             .subscribe(with: self, onNext: { owner, _ in

@@ -41,7 +41,7 @@ final class FeedEditNovelConnectView: UIView {
         }
         
         novelConnectLabel.do {
-            $0.applyWSSFont(.title2, with: StringLiterals.Memo.Novel.novelConnect)
+            $0.applyWSSFont(.title2, with: StringLiterals.FeedEdit.Novel.novelConnect)
             $0.textColor = .wssBlack
         }
         
@@ -51,7 +51,7 @@ final class FeedEditNovelConnectView: UIView {
         }
         
         novelSearchLabel.do {
-            $0.applyWSSFont(.label1, with: StringLiterals.Memo.Novel.novelSearch)
+            $0.applyWSSFont(.label1, with: StringLiterals.FeedEdit.Novel.novelSearch)
             $0.textColor = .wssGray200
         }
         

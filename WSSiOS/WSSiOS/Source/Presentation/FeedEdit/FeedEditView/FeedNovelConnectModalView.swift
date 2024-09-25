@@ -50,12 +50,12 @@ final class FeedNovelConnectModalView: UIView {
         }
         
         titleLabel.do {
-            $0.applyWSSFont(.title1, with: StringLiterals.Memo.Novel.novelConnect)
+            $0.applyWSSFont(.title1, with: StringLiterals.FeedEdit.Novel.novelConnect)
             $0.textColor = .wssBlack
         }
         
         descriptionLabel.do {
-            $0.applyWSSFont(.body2, with: StringLiterals.Memo.Novel.novelSelect)
+            $0.applyWSSFont(.body2, with: StringLiterals.FeedEdit.Novel.novelSelect)
             $0.textColor = .wssGray200
         }
     }
