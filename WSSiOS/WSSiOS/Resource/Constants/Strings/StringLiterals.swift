@@ -33,14 +33,11 @@ enum StringLiterals {
             static let changeNickname = "닉네임 변경"
             static let feed = "소소피드"
             static let notice = "알림"
-<<<<<<< HEAD
             static let editProfile = "프로필 편집"
-=======
             static let deleteID = "회원탈퇴"
             static let myPageSetting = "설정"
             static let myPageInfo = "계정설정"
             static let myPageBlockUser = "차단유저 목록"
->>>>>>> main
         }
     }
     
@@ -161,10 +158,10 @@ enum StringLiterals {
             static let termsURL = "https://kimmjabc.notion.site/4acd397608c146cbbf8dd4fe11a82e19"
         }
         
-<<<<<<< HEAD
         enum EditProfile {
             static let completeTitle = "완료"
-=======
+        }
+
         enum SettingInfo: String, CaseIterable {
             case changeProfile = "성별/나이 변경"
             case email = "이메일"
@@ -175,7 +172,6 @@ enum StringLiterals {
         
         enum ChangeNickname {
             static let complete = "완료"
->>>>>>> main
             static let nickname = "닉네임"
             static let nicknameCheck = "중복확인"
             static let intro = "소개"
