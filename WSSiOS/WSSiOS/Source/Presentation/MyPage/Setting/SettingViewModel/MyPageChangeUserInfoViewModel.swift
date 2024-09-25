@@ -11,6 +11,11 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+struct Gender {
+    enum male = "M"
+    enum female = "F"
+}
+
 final class MyPageChangeUserInfoViewModel: ViewModelType {
     
     //MARK: - Properties
@@ -54,23 +59,23 @@ final class MyPageChangeUserInfoViewModel: ViewModelType {
         output.dataBind.accept(self.userInfo)
         
         input.maleButtonTapped
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.currentGender = "M"
-                output.changeGender.accept("M")
+            .bind(with: self, onNext: { owner, _ in
+                owner.currentGender = Gender.male
+                output.changeGender.accept(Gender.male)
                 output.changeCompleteButton.accept(owner.checkIsEnabledCompleteButton())
             })
             .disposed(by: disposeBag)
         
         input.femaleButtonTapped
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.currentGender = "F"
-                output.changeGender.accept("F")
+            .bind(with: self, onNext: { owner, _ in
+                owner.currentGender = Gender.female
+                output.changeGender.accept(Gender.female)
                 output.changeCompleteButton.accept(owner.checkIsEnabledCompleteButton())
             })
             .disposed(by: disposeBag)
         
         input.birthViewTapped
-            .subscribe(with: self, onNext: { owner, _ in
+            .bind(with: self, onNext: { owner, _ in
                 output.showBottomSheet.accept(true)
             })
             .disposed(by: disposeBag)
@@ -84,7 +89,7 @@ final class MyPageChangeUserInfoViewModel: ViewModelType {
         
         input.completeButtonTapped
             .throttle(.seconds(3), scheduler: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, _ in
+            .bind(with: self, onNext: { owner, _ in
                 let isEnabled = output.changeCompleteButton.value
                 if isEnabled {
                     owner.putUserInfo(gender: owner.currentGender, birth: owner.currentBirth)
