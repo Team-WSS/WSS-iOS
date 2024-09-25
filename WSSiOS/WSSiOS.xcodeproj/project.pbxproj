@@ -20,6 +20,7 @@
 		2C2491812B4ADC000096F255 /* StringLiterals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2491802B4ADC000096F255 /* StringLiterals.swift */; };
 		2C2491842B4ADC230096F255 /* WSSTabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2491832B4ADC230096F255 /* WSSTabBarItem.swift */; };
 		2C2491862B4ADC420096F255 /* WSSTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2491852B4ADC420096F255 /* WSSTabBarController.swift */; };
+		2C41E0D72CA49C2600FFD233 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 2C41E0D62CA49C2600FFD233 /* Then */; };
 		2C421FE82B96DC0F000DCB87 /* TrashMyPageCustomModalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C421FE72B96DC0F000DCB87 /* TrashMyPageCustomModalViewModel.swift */; };
 		2C42939B2B58F27000BD62AB /* LibraryEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C42939A2B58F27000BD62AB /* LibraryEmptyView.swift */; };
 		2C536C2E2C8F1F21004C5740 /* MyPageDeleteIDReasonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C536C2D2C8F1F21004C5740 /* MyPageDeleteIDReasonView.swift */; };
@@ -62,7 +63,6 @@
 		2CA2F6622B530BBF0045B4C2 /* LibraryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2F6612B530BBF0045B4C2 /* LibraryCollectionViewCell.swift */; };
 		2CB613F32B575E4500FC3F89 /* MyPageInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB613F22B575E4500FC3F89 /* MyPageInfoViewController.swift */; };
 		2CB613F52B575E6A00FC3F89 /* MyPageInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB613F42B575E6A00FC3F89 /* MyPageInfoView.swift */; };
-		2CBFE7062CA41D1E0076E7A5 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 2CBFE7052CA41D1E0076E7A5 /* Then */; };
 		2CCBF9EE2B4C1FC500D787C2 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBF9ED2B4C1FC500D787C2 /* MyPageViewController.swift */; };
 		2CCBF9F02B4C1FD800D787C2 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBF9EF2B4C1FD800D787C2 /* MyPageView.swift */; };
 		2CCBF9F22B4D347B00D787C2 /* WSSMainButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBF9F12B4D347B00D787C2 /* WSSMainButton.swift */; };
@@ -657,7 +657,7 @@
 			files = (
 				3999BFEE2B4E6CA000984832 /* UIImageViewAlignedSwift in Frameworks */,
 				CD3E5A852B54254F00C0A659 /* RxKeyboard in Frameworks */,
-				2CBFE7062CA41D1E0076E7A5 /* Then in Frameworks */,
+				2C41E0D72CA49C2600FFD233 /* Then in Frameworks */,
 				2CD229442B42E7A2005400BE /* RxRelay in Frameworks */,
 				2CD229392B42E77F005400BE /* Kingfisher in Frameworks */,
 				2CD229342B42E771005400BE /* SnapKit in Frameworks */,
@@ -2228,7 +2228,7 @@
 				39EF97AB2B53E43800D2148B /* Lottie */,
 				CD3E5A842B54254F00C0A659 /* RxKeyboard */,
 				3916EC852B89B42C007835B5 /* RxGesture */,
-				2CBFE7052CA41D1E0076E7A5 /* Then */,
+				2C41E0D62CA49C2600FFD233 /* Then */,
 			);
 			productName = WSSiOS;
 			productReference = 2CD229182B42E685005400BE /* WSSiOS.app */;
@@ -2266,7 +2266,7 @@
 				3999BFEC2B4E6CA000984832 /* XCRemoteSwiftPackageReference "UIImageViewAlignedSwift" */,
 				CD3E5A832B54254F00C0A659 /* XCRemoteSwiftPackageReference "RxKeyboard" */,
 				3916EC842B89B42C007835B5 /* XCRemoteSwiftPackageReference "RxGesture" */,
-				2CBFE7042CA41D1E0076E7A5 /* XCRemoteSwiftPackageReference "Then" */,
+				2C41E0D52CA49C2600FFD233 /* XCRemoteSwiftPackageReference "Then" */,
 			);
 			productRefGroup = 2CD229192B42E685005400BE /* Products */;
 			projectDirPath = "";
@@ -2828,7 +2828,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		2CBFE7042CA41D1E0076E7A5 /* XCRemoteSwiftPackageReference "Then" */ = {
+		2C41E0D52CA49C2600FFD233 /* XCRemoteSwiftPackageReference "Then" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/devxoul/Then";
 			requirement = {
@@ -2895,9 +2895,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		2CBFE7052CA41D1E0076E7A5 /* Then */ = {
+		2C41E0D62CA49C2600FFD233 /* Then */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 2CBFE7042CA41D1E0076E7A5 /* XCRemoteSwiftPackageReference "Then" */;
+			package = 2C41E0D52CA49C2600FFD233 /* XCRemoteSwiftPackageReference "Then" */;
 			productName = Then;
 		};
 		2CD229332B42E771005400BE /* SnapKit */ = {
