@@ -20,6 +20,7 @@
 		2C2491812B4ADC000096F255 /* StringLiterals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2491802B4ADC000096F255 /* StringLiterals.swift */; };
 		2C2491842B4ADC230096F255 /* WSSTabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2491832B4ADC230096F255 /* WSSTabBarItem.swift */; };
 		2C2491862B4ADC420096F255 /* WSSTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2491852B4ADC420096F255 /* WSSTabBarController.swift */; };
+		2C41E0D72CA49C2600FFD233 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 2C41E0D62CA49C2600FFD233 /* Then */; };
 		2C2B0BB52C53C73900BCEC19 /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2B0BB42C53C73900BCEC19 /* UITextField+.swift */; };
 		2C41E0CC2CA4948400FFD233 /* MyPageCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C41E0CB2CA4948400FFD233 /* MyPageCountView.swift */; };
 		2C41E0CE2CA4949C00FFD233 /* MyPageEditProfileGenreCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C41E0CD2CA4949C00FFD233 /* MyPageEditProfileGenreCollectionViewCell.swift */; };
@@ -40,7 +41,6 @@
 		2C60306F2B54EDDD0031544C /* LibraryDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C60306E2B54EDDC0031544C /* LibraryDescriptionView.swift */; };
 		2C6030712B54F23F0031544C /* LibraryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6030702B54F23F0031544C /* LibraryListView.swift */; };
 		2C60307B2B55D9160031544C /* UIImageView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C60307A2B55D9160031544C /* UIImageView+.swift */; };
-		2C67506F2C9BEB5A0008B4EF /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 2C67506E2C9BEB5A0008B4EF /* Then */; };
 		2C79CB952B45A0A400734E1F /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2C79CB942B45A0A400734E1F /* Pretendard-SemiBold.otf */; };
 		2C79CB972B45A0AB00734E1F /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2C79CB962B45A0AB00734E1F /* Pretendard-Medium.otf */; };
 		2C79CB992B45A0B200734E1F /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2C79CB982B45A0B200734E1F /* Pretendard-Bold.otf */; };
@@ -106,6 +106,10 @@
 		2CD9115E2C0D8A28006B8D72 /* FeedGenreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD9115D2C0D8A28006B8D72 /* FeedGenreViewController.swift */; };
 		2CD911612C0D8B71006B8D72 /* FeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD911602C0D8B71006B8D72 /* FeedViewModel.swift */; };
 		2CE078182B80894B0028F2B0 /* ViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CE078172B80894B0028F2B0 /* ViewModelType.swift */; };
+		2CFA9A0F2C9D7E8600A4A820 /* MyPageChangeUserInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CFA9A0E2C9D7E8600A4A820 /* MyPageChangeUserInfoViewController.swift */; };
+		2CFA9A112C9D7EA300A4A820 /* MyPageChangeUserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CFA9A102C9D7EA300A4A820 /* MyPageChangeUserInfoView.swift */; };
+		2CFA9A132C9D7EE600A4A820 /* MyPageChangeUserInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CFA9A122C9D7EE600A4A820 /* MyPageChangeUserInfoViewModel.swift */; };
+		2CFA9A182C9D9AD500A4A820 /* UserInfoResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CFA9A172C9D9AD500A4A820 /* UserInfoResult.swift */; };
 		2CFE04332B66A45A0048F77A /* UICollectionViewCell+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CFE04322B66A45A0048F77A /* UICollectionViewCell+.swift */; };
 		3908376B2C32ADEA0082DC57 /* NovelDetailInfoReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3908376A2C32ADEA0082DC57 /* NovelDetailInfoReviewView.swift */; };
 		3916EC862B89B42C007835B5 /* RxGesture in Frameworks */ = {isa = PBXBuildFile; productRef = 3916EC852B89B42C007835B5 /* RxGesture */; };
@@ -434,6 +438,10 @@
 		2CD9115D2C0D8A28006B8D72 /* FeedGenreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedGenreViewController.swift; sourceTree = "<group>"; };
 		2CD911602C0D8B71006B8D72 /* FeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewModel.swift; sourceTree = "<group>"; };
 		2CE078172B80894B0028F2B0 /* ViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
+		2CFA9A0E2C9D7E8600A4A820 /* MyPageChangeUserInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageChangeUserInfoViewController.swift; sourceTree = "<group>"; };
+		2CFA9A102C9D7EA300A4A820 /* MyPageChangeUserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageChangeUserInfoView.swift; sourceTree = "<group>"; };
+		2CFA9A122C9D7EE600A4A820 /* MyPageChangeUserInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageChangeUserInfoViewModel.swift; sourceTree = "<group>"; };
+		2CFA9A172C9D9AD500A4A820 /* UserInfoResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoResult.swift; sourceTree = "<group>"; };
 		2CFE04322B66A45A0048F77A /* UICollectionViewCell+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+.swift"; sourceTree = "<group>"; };
 		3908376A2C32ADEA0082DC57 /* NovelDetailInfoReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoReviewView.swift; sourceTree = "<group>"; };
 		3916EC882B89D23D007835B5 /* ModuleFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleFactory.swift; sourceTree = "<group>"; };
@@ -667,7 +675,7 @@
 			files = (
 				3999BFEE2B4E6CA000984832 /* UIImageViewAlignedSwift in Frameworks */,
 				CD3E5A852B54254F00C0A659 /* RxKeyboard in Frameworks */,
-				2C67506F2C9BEB5A0008B4EF /* Then in Frameworks */,
+				2C41E0D72CA49C2600FFD233 /* Then in Frameworks */,
 				2CD229442B42E7A2005400BE /* RxRelay in Frameworks */,
 				2CD229392B42E77F005400BE /* Kingfisher in Frameworks */,
 				2CD229342B42E771005400BE /* SnapKit in Frameworks */,
@@ -1150,6 +1158,7 @@
 				2C8F894C2C50E0060056895B /* MyPageDeleteIDView.swift */,
 				2C9A196C2C5692360043044A /* MyPageSettingView.swift */,
 				2C22AE6F2C56E9C100BF6E94 /* MyPageBlockUserView.swift */,
+				2CFA9A102C9D7EA300A4A820 /* MyPageChangeUserInfoView.swift */,
 			);
 			path = SettingView;
 			sourceTree = "<group>";
@@ -1162,6 +1171,7 @@
 				2C22AE6D2C56E99A00BF6E94 /* MyPageBlockUserViewController.swift */,
 				2C8F89442C50CF470056895B /* MyPageDeleteIDWarningViewController.swift */,
 				2C8F894A2C50DFEB0056895B /* MyPageDeleteIDViewController.swift */,
+				2CFA9A0E2C9D7E8600A4A820 /* MyPageChangeUserInfoViewController.swift */,
 			);
 			path = SettingViewController;
 			sourceTree = "<group>";
@@ -1172,6 +1182,7 @@
 				2C8F89582C5105E90056895B /* MyPageDeleteIDViewModel.swift */,
 				2C22AE732C56EDB300BF6E94 /* MyPageBlockUserViewModel.swift */,
 				2C9A19702C56925F0043044A /* MyPageInfoViewModel.swift */,
+				2CFA9A122C9D7EE600A4A820 /* MyPageChangeUserInfoViewModel.swift */,
 			);
 			path = SettingViewModel;
 			sourceTree = "<group>";
@@ -1695,6 +1706,7 @@
 				2C22AE752C56EE3900BF6E94 /* BlockUserResult.swift */,
 				2C8F89482C50D37A0056895B /* UserNovelStatus.swift */,
 				B96F0F9D2C29A25200DA5483 /* FeedDetailResult.swift */,
+				2CFA9A172C9D9AD500A4A820 /* UserInfoResult.swift */,
 			);
 			path = DTO;
 			sourceTree = "<group>";
@@ -2269,7 +2281,7 @@
 				39EF97AB2B53E43800D2148B /* Lottie */,
 				CD3E5A842B54254F00C0A659 /* RxKeyboard */,
 				3916EC852B89B42C007835B5 /* RxGesture */,
-				2C67506E2C9BEB5A0008B4EF /* Then */,
+				2C41E0D62CA49C2600FFD233 /* Then */,
 			);
 			productName = WSSiOS;
 			productReference = 2CD229182B42E685005400BE /* WSSiOS.app */;
@@ -2307,7 +2319,7 @@
 				3999BFEC2B4E6CA000984832 /* XCRemoteSwiftPackageReference "UIImageViewAlignedSwift" */,
 				CD3E5A832B54254F00C0A659 /* XCRemoteSwiftPackageReference "RxKeyboard" */,
 				3916EC842B89B42C007835B5 /* XCRemoteSwiftPackageReference "RxGesture" */,
-				2C67506D2C9BEB5A0008B4EF /* XCRemoteSwiftPackageReference "Then" */,
+				2C41E0D52CA49C2600FFD233 /* XCRemoteSwiftPackageReference "Then" */,
 			);
 			productRefGroup = 2CD229192B42E685005400BE /* Products */;
 			projectDirPath = "";
@@ -2388,11 +2400,13 @@
 				2C41E0D02CA494B800FFD233 /* MyPageEditProfileView.swift in Sources */,
 				2C41E0CE2CA4949C00FFD233 /* MyPageEditProfileGenreCollectionViewCell.swift in Sources */,
 				39F8506A2C29C1FB00E93EBC /* NovelDetailInfoResult.swift in Sources */,
+				2CFA9A0F2C9D7E8600A4A820 /* MyPageChangeUserInfoViewController.swift in Sources */,
 				2CCBF9F02B4C1FD800D787C2 /* MyPageView.swift in Sources */,
 				39BA7F6F2BCAADDF0045B2B7 /* KeywordTag.swift in Sources */,
 				2C9A196F2C56923B0043044A /* MyPageSettingViewController.swift in Sources */,
 				39AF30D12B50182F00FDC1F3 /* RegisterNormalReadStatusButton.swift in Sources */,
 				39D4A5E02BDF746C004FC834 /* NovelGenre.swift in Sources */,
+				2CFA9A132C9D7EE600A4A820 /* MyPageChangeUserInfoViewModel.swift in Sources */,
 				A1C3EC532B46962F00D997C2 /* UIImage+.swift in Sources */,
 				B96863D62C482E14008CFBA5 /* DetailSearchViewController.swift in Sources */,
 				39CD5E0C2B4F3D0700668B9A /* RegisterNormalNovelSummaryView.swift in Sources */,
@@ -2498,6 +2512,7 @@
 				2C5D0F592B4FDEC000C76D3C /* TrashMyPageInventoryCollectionViewCell.swift in Sources */,
 				392A29232B4E89FD0065EB97 /* RegisterNormalNovelInfoWithRatingView.swift in Sources */,
 				CDA5F0492C30248A00FCF15C /* FeedEditConnectedNovelView.swift in Sources */,
+				2CFA9A182C9D9AD500A4A820 /* UserInfoResult.swift in Sources */,
 				2C79CB9D2B45A1DD00734E1F /* UIFont+.swift in Sources */,
 				B9095D2E2C395598007521EF /* HomeNoticeDetailViewModel.swift in Sources */,
 				A147CBC62B4D6E190040AE39 /* UIStackView+.swift in Sources */,
@@ -2544,6 +2559,7 @@
 				2C2B0BB52C53C73900BCEC19 /* UITextField+.swift in Sources */,
 				B90145392C4D301C00A8B7EA /* DetailSearchKeywordView.swift in Sources */,
 				CD3E5A782B5424E600C0A659 /* MemoHeaderView.swift in Sources */,
+				2CFA9A112C9D7EA300A4A820 /* MyPageChangeUserInfoView.swift in Sources */,
 				2C01F9852B482EB700D90FFE /* UserRepository.swift in Sources */,
 				B960988A2C2742680084F697 /* FeedDetailViewModel.swift in Sources */,
 				A1147A862B5063CA00141692 /* RecordHeaderView.swift in Sources */,
@@ -2872,7 +2888,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		2C67506D2C9BEB5A0008B4EF /* XCRemoteSwiftPackageReference "Then" */ = {
+		2C41E0D52CA49C2600FFD233 /* XCRemoteSwiftPackageReference "Then" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/devxoul/Then";
 			requirement = {
@@ -2939,9 +2955,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		2C67506E2C9BEB5A0008B4EF /* Then */ = {
+		2C41E0D62CA49C2600FFD233 /* Then */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 2C67506D2C9BEB5A0008B4EF /* XCRemoteSwiftPackageReference "Then" */;
+			package = 2C41E0D52CA49C2600FFD233 /* XCRemoteSwiftPackageReference "Then" */;
 			productName = Then;
 		};
 		2CD229332B42E771005400BE /* SnapKit */ = {

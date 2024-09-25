@@ -10,9 +10,10 @@ import Foundation
 enum URLs {
     enum User {
         private static let userBasePath = "/users"
-        static let getUserInfo = userBasePath + "/info"
+        static let afterDelete = userBasePath + "추후 삭제"
         static let patchUserNickname = userBasePath + "/nickname"
         static let getUserNovelStatus = userBasePath + "/user-novel-stats"
+        static let userInfo = userBasePath + "/info"
     }
     
     enum Novel {
