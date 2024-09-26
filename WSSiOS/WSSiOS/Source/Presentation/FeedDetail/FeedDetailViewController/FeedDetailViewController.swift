@@ -9,6 +9,8 @@ import UIKit
 
 import RxSwift
 import RxCocoa
+import RxKeyboard
+import RxGesture
 
 final class FeedDetailViewController: UIViewController {
     
@@ -35,7 +37,7 @@ final class FeedDetailViewController: UIViewController {
     override func loadView() {
         self.view = rootView
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -66,32 +68,21 @@ final class FeedDetailViewController: UIViewController {
     private func delegate() {
         rootView.replyView.replyCollectionView.rx.setDelegate(self)
             .disposed(by: disposeBag)
+        
+        rootView.replyWritingView.replyWritingTextView.rx.setDelegate(self)
+            .disposed(by: disposeBag)
     }
     
     private func bindViewModel() {
         let input = FeedDetailViewModel.Input(
-            replyCollectionViewContentSize: rootView.replyView.replyCollectionView.rx.observe(CGSize.self, "contentSize"))
+            replyCollectionViewContentSize: rootView.replyView.replyCollectionView.rx.observe(CGSize.self, "contentSize"),
+            likeButtonTapped: rootView.feedContentView.reactView.likeButton.rx.tap)
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
-        output.feedProfileData
-            .drive(with: self, onNext: { owner, data in
-                if let data = data {
-                    owner.rootView.profileView.bindData(data: data)
-                }
-            })
-            .disposed(by: disposeBag)
-        
-        output.feedDetailData
-            .drive(with: self, onNext: { owner, data in
-                if let data = data {
-                    owner.rootView.feedContentView.bindData(data: data)
-                }
-            })
-            .disposed(by: disposeBag)
-        
-        output.commentCountLabel
-            .drive(with: self, onNext: { owner, data in
-                owner.rootView.replyView.bindData(commentCount: data)
+        output.feedData
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, data in
+                owner.rootView.bindData(data)
             })
             .disposed(by: disposeBag)
         
@@ -103,9 +94,39 @@ final class FeedDetailViewController: UIViewController {
                 }
                 .disposed(by: disposeBag)
         
+        output.likeButtonEnabled
+            .drive(with: self, onNext: { owner, isLiked in
+                owner.rootView.feedContentView.reactView.updateLikeState(isLiked)
+            })
+            .disposed(by: disposeBag)
+        
+        output.likeCount
+            .drive(with: self, onNext: { owner, count in
+                owner.rootView.feedContentView.reactView.updateLikeCount(count)
+            })
+            .disposed(by: disposeBag)
+        
         output.replyCollectionViewHeight
             .drive(with: self, onNext: { owner, height in
                 owner.rootView.replyView.updateCollectionViewHeight(height: height)
+            })
+            .disposed(by: disposeBag)
+        
+        RxKeyboard.instance.visibleHeight
+            .skip(1)
+            .drive(with: self, onNext: { owner, keyboardHeight in
+                let height = keyboardHeight > 0 ? -keyboardHeight + self.rootView.safeAreaInsets.bottom : 0
+                self.rootView.replyWritingView.snp.updateConstraints {
+                    $0.bottom.equalTo(self.rootView.safeAreaLayoutGuide.snp.bottom).offset(height)
+                }
+                self.rootView.layoutIfNeeded()
+            })
+            .disposed(by: disposeBag)
+        
+        rootView.scrollView.rx.tapGesture()
+            .when(.recognized)
+            .subscribe(with: self, onNext: { owner, _ in
+                self.view.endEditing(true)
             })
             .disposed(by: disposeBag)
     }
@@ -127,3 +148,30 @@ extension FeedDetailViewController: UICollectionViewDelegateFlowLayout {
         return CGSize(width: UIScreen.main.bounds.width - 40, height: finalHeight)
     }
 }
+
+extension FeedDetailViewController: UITextViewDelegate {
+    func textViewDidChange(_ textView: UITextView) {
+        let size = CGSize(width: rootView.replyWritingView.replyWritingTextView.frame.width, height: .infinity)
+        let estimatedSize = textView.sizeThatFits(size)
+        
+        let lineHeight = textView.font?.lineHeight ?? 0
+        let numberOfLines = Int(estimatedSize.height / lineHeight)
+        
+        let backgroundHeight: CGFloat
+        
+        backgroundHeight = numberOfLines == 1 ? 42 : min(estimatedSize.height + 14, 84)
+
+        rootView.replyWritingView.replyWritingTextView.snp.updateConstraints {
+            $0.height.equalTo(min(estimatedSize.height, 84))
+        }
+        
+        rootView.replyWritingView.textViewBackgroundView.snp.updateConstraints {
+            $0.height.equalTo(backgroundHeight)
+        }
+        
+        rootView.replyWritingView.replyWritingTextView.isScrollEnabled = numberOfLines > 3
+
+        self.rootView.replyWritingView.layoutIfNeeded()
+    }
+}
+
