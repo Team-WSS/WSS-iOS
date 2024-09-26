@@ -395,6 +395,11 @@ enum StringLiterals {
     enum Memo {
         static let complete = "완료"
         static let edit = "수정"
+    }
+    
+    enum FeedEdit {
+        static let complete = "완료"
+        static let edit = "수정"
         enum Category {
             static let category = "카테고리"
             static let multipleSelect = "중복 선택 가능"
@@ -409,6 +414,11 @@ enum StringLiterals {
             static let novelSearch = "작품 제목, 작가를 검색하세요"
             static let novelSelect = "작성 중인 글과 관련된 웹소설을 선택하세요"
             static let connectSelectedNovel = "해당 작품 연결"
+        }
+        enum Alert {
+            static let titleText = "글 작성을 그만하시겠어요?"
+            static let cancelTitle = "계속 작성"
+            static let actionTitle = "그만하기"
         }
     }
     

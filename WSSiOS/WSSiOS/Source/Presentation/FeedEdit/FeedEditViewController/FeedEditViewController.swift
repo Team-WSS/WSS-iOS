@@ -18,7 +18,7 @@ final class FeedEditViewController: UIViewController {
     private let feedEditViewModel: FeedEditViewModel
     private let disposeBag = DisposeBag()
     
-    private let viewWillAppearEvent = PublishRelay<Void>()
+    private let stopEditingEvent = PublishRelay<Void>()
     
     //MARK: - Components
 
@@ -30,10 +30,7 @@ final class FeedEditViewController: UIViewController {
         self.feedEditViewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         
-        self.rootView.feedEditContentView.bindData(isSpoiler: viewModel.isSpoiler)
-        if let initialFeedContent = viewModel.initialFeedContent {
-            self.rootView.feedEditContentView.bindData(feedContent: initialFeedContent)
-        }
+        self.rootView.feedEditContentView.bindData(feedContent: viewModel.initialFeedContent)
     }
     
     required init?(coder: NSCoder) {
@@ -52,12 +49,6 @@ final class FeedEditViewController: UIViewController {
          register()
          delegate()
          bindViewModel()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        viewWillAppearEvent.accept(())
     }
     
     //MARK: - UI
@@ -85,7 +76,6 @@ final class FeedEditViewController: UIViewController {
     
     private func bindViewModel() {
         let input = FeedEditViewModel.Input(
-            viewWillAppearEvent: viewWillAppearEvent.asObservable(),
             viewDidTap: view.rx.tapGesture(configuration: { gestureRecognizer, delegate in
                 gestureRecognizer.cancelsTouchesInView = false
             }).when(.recognized).asObservable(),
@@ -97,7 +87,10 @@ final class FeedEditViewController: UIViewController {
             feedContentUpdated: rootView.feedEditContentView.feedTextView.rx.text.orEmpty.distinctUntilChanged().asObservable(),
             feedContentViewDidBeginEditing: rootView.feedEditContentView.feedTextView.rx.didBeginEditing,
             feedContentViewDidEndEditing: rootView.feedEditContentView.feedTextView.rx.didEndEditing,
-            novelConnectViewDidTap: rootView.feedEditNovelConnectView.rx.tapGesture().when(.recognized).asObservable()
+            novelConnectViewDidTap: rootView.feedEditNovelConnectView.rx.tapGesture().when(.recognized).asObservable(),
+            feedNovelConnectedNotification: NotificationCenter.default.rx.notification(Notification.Name("FeedNovelConnected")).asObservable(),
+            novelRemoveButtonDidTap: rootView.feedEditConnectedNovelView.removeButton.rx.tap,
+            stopEditButtonDidTap: stopEditingEvent.asObservable()
         )
         
         let output = self.feedEditViewModel.transform(from: input, disposeBag: self.disposeBag)
@@ -113,13 +106,10 @@ final class FeedEditViewController: UIViewController {
             cellType: FeedCategoryCollectionViewCell.self)) { item, element, cell in
                 let indexPath = IndexPath(item: item, section: 0)
                 
-                //TODO: - 성별에 따른 리스트는 추후 구현
-                if let englishCategory = FeedDetailWomanKoreanGenreDummy(rawValue: element)?.toEnglish {
-                    if self.feedEditViewModel.relevantCategories.contains(englishCategory) {
-                        self.rootView.feedEditCategoryView.categoryCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
-                    } else {
-                        self.rootView.feedEditCategoryView.categoryCollectionView.deselectItem(at: indexPath, animated: false)
-                    }
+                if self.feedEditViewModel.relevantCategories.contains(element) {
+                    self.rootView.feedEditCategoryView.categoryCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
+                } else {
+                    self.rootView.feedEditCategoryView.categoryCollectionView.deselectItem(at: indexPath, animated: false)
                 }
                 
                 cell.bindData(category: element)
@@ -158,7 +148,34 @@ final class FeedEditViewController: UIViewController {
         
         output.presentFeedEditNovelConnectModalViewController
             .subscribe(with: self, onNext: { owner, _ in
-                owner.presentModalViewController(FeedNovelConnectModalViewController())
+                owner.presentModalViewController(FeedNovelConnectModalViewController(viewModel: FeedNovelConnectModalViewModel(searchRepository: DefaultSearchRepository(searchService: DefaultSearchService()))))
+            })
+            .disposed(by: disposeBag)
+        
+        output.connectedNovelTitle
+            .subscribe(with: self, onNext: { owner, novelTitle in
+                owner.rootView.feedEditConnectedNovelView.bindData(novelTitle: novelTitle)
+            })
+            .disposed(by: disposeBag)
+        
+        output.showAlreadyConnectedToast
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.showToast(.novelAlreadyConnected)
+            })
+            .disposed(by: disposeBag)
+        
+        output.showStopEditingAlert
+            .flatMapLatest { [weak self] _ -> Observable<Void> in
+                guard let self = self else { return Observable.just(()) }
+                return self.presentToAlertViewController(iconImage: .icAlertWarningCircle,
+                                                         titleText: StringLiterals.FeedEdit.Alert.titleText,
+                                                         contentText: nil,
+                                                         cancelTitle: StringLiterals.FeedEdit.Alert.cancelTitle,
+                                                         actionTitle: StringLiterals.FeedEdit.Alert.actionTitle,
+                                                         actionBackgroundColor: UIColor.wssSecondary100.cgColor)
+            }
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.stopEditingEvent.accept(())
             })
             .disposed(by: disposeBag)
     }
@@ -168,13 +185,13 @@ extension FeedEditViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var text: String?
         
-        text = self.feedEditViewModel.relevantCategoryList[indexPath.item]
+        text = self.feedEditViewModel.relevantCategoryList[indexPath.item].withKorean
         
         guard let unwrappedText = text else {
             return CGSize(width: 0, height: 0)
         }
         
         let width = (unwrappedText as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 26
-        return CGSize(width: width, height: 37)
+        return CGSize(width: width, height: 35)
     }
 }

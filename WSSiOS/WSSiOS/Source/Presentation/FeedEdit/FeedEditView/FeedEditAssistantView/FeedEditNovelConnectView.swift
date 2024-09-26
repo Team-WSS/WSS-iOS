@@ -18,7 +18,6 @@ final class FeedEditNovelConnectView: UIView {
     private let novelSearchView = UIView()
     private let novelSearchLabel = UILabel()
     private let searchImageView = UIImageView()
-    private let connectedNovelView = FeedEditConnectedNovelView()
     
     //MARK: - Life Cycle
     
@@ -42,7 +41,7 @@ final class FeedEditNovelConnectView: UIView {
         }
         
         novelConnectLabel.do {
-            $0.applyWSSFont(.title2, with: StringLiterals.Memo.Novel.novelConnect)
+            $0.applyWSSFont(.title2, with: StringLiterals.FeedEdit.Novel.novelConnect)
             $0.textColor = .wssBlack
         }
         
@@ -52,7 +51,7 @@ final class FeedEditNovelConnectView: UIView {
         }
         
         novelSearchLabel.do {
-            $0.applyWSSFont(.label1, with: StringLiterals.Memo.Novel.novelSearch)
+            $0.applyWSSFont(.label1, with: StringLiterals.FeedEdit.Novel.novelSearch)
             $0.textColor = .wssGray200
         }
         
@@ -64,8 +63,7 @@ final class FeedEditNovelConnectView: UIView {
     
     private func setHierarchy() {
         self.addSubviews(novelConnectLabel,
-                         novelSearchView,
-                         connectedNovelView)
+                         novelSearchView)
         novelSearchView.addSubviews(novelSearchLabel,
                                     searchImageView)
     }
@@ -79,6 +77,7 @@ final class FeedEditNovelConnectView: UIView {
         novelSearchView.snp.makeConstraints {
             $0.top.equalTo(novelConnectLabel.snp.bottom).offset(17)
             $0.leading.trailing.equalToSuperview().inset(20)
+            $0.bottom.equalToSuperview()
             $0.height.equalTo(42)
         }
         
@@ -91,12 +90,6 @@ final class FeedEditNovelConnectView: UIView {
             $0.centerY.equalToSuperview()
             $0.trailing.equalToSuperview().inset(15)
             $0.size.equalTo(25)
-        }
-        
-        connectedNovelView.snp.makeConstraints {
-            $0.top.equalTo(novelSearchView.snp.bottom).offset(12)
-            $0.leading.trailing.equalToSuperview().inset(20)
-            $0.bottom.equalToSuperview()
         }
     }
 }

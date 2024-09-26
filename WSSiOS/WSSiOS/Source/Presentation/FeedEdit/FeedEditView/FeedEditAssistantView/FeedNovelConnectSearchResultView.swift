@@ -48,10 +48,11 @@ final class FeedNovelConnectSearchResultView: UIView {
         
         connectNovelButton.do {
             $0.backgroundColor = .wssPrimary100
+            $0.isHidden = true
         }
         
         connectNovelLabel.do {
-            $0.applyWSSFont(.title2, with: StringLiterals.Memo.Novel.connectSelectedNovel)
+            $0.applyWSSFont(.title2, with: StringLiterals.FeedEdit.Novel.connectSelectedNovel)
             $0.textColor = .white
             $0.isUserInteractionEnabled = false
         }
@@ -75,6 +76,14 @@ final class FeedNovelConnectSearchResultView: UIView {
         
         connectNovelLabel.snp.makeConstraints {
             $0.center.equalToSuperview()
+        }
+    }
+    
+    //MARK: - Custom Method
+    
+    func showConnectNovelButton() {
+        connectNovelButton.do {
+            $0.isHidden = false
         }
     }
 }

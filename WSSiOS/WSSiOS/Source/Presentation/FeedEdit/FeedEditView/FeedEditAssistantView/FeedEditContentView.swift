@@ -45,7 +45,7 @@ final class FeedEditContentView: UIView {
         }
         
         writeContentLabel.do {
-            $0.applyWSSFont(.title2, with: StringLiterals.Memo.Content.writeContent)
+            $0.applyWSSFont(.title2, with: StringLiterals.FeedEdit.Content.writeContent)
             $0.textColor = .wssBlack
         }
         
@@ -55,7 +55,7 @@ final class FeedEditContentView: UIView {
         }
         
         spoilerLabel.do {
-            $0.applyWSSFont(.label1, with: StringLiterals.Memo.Content.spoiler)
+            $0.applyWSSFont(.label1, with: StringLiterals.FeedEdit.Content.spoiler)
             $0.textColor = .wssGray300
         }
         
@@ -70,10 +70,11 @@ final class FeedEditContentView: UIView {
             $0.textContainer.lineFragmentPadding = 0
             $0.textContainerInset = .zero
             $0.tintColor = .wssBlack
+            $0.font = .Body2
         }
         
         placeholderLabel.do {
-            $0.applyWSSFont(.body2, with: StringLiterals.Memo.Content.placeHolder)
+            $0.applyWSSFont(.body2, with: StringLiterals.FeedEdit.Content.placeHolder)
             $0.textColor = .wssGray200
             $0.numberOfLines = 0
         }
@@ -151,12 +152,6 @@ final class FeedEditContentView: UIView {
         
         self.letterCountLabel.do {
             $0.applyWSSFont(.body2, with: "(\(feedContent.count)/2000)")
-        }
-    }
-    
-    func bindData(isSpoiler: Bool) {
-        self.spoilerButton.do {
-            $0.updateToggle(isSpoiler)
         }
     }
 }

@@ -14,9 +14,10 @@ final class FeedEditConnectedNovelView: UIView {
     
     //MARK: - Components
     
+    private let contentView = UIView()
     private let novelConnectImageView = UIImageView()
     private let novelTitleLabel = UILabel()
-    private let removeButton = UIButton()
+    let removeButton = UIButton()
     
     //MARK: - Life Cycle
     
@@ -36,6 +37,10 @@ final class FeedEditConnectedNovelView: UIView {
     
     private func setUI() {
         self.do {
+            $0.isHidden = true
+        }
+        
+        contentView.do {
             $0.backgroundColor = .wssPrimary20
             $0.layer.cornerRadius = 14
         }
@@ -55,15 +60,22 @@ final class FeedEditConnectedNovelView: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubviews(novelConnectImageView,
-                         novelTitleLabel,
-                         removeButton)
+        self.addSubview(contentView)
+        contentView.addSubviews(novelConnectImageView,
+                                novelTitleLabel,
+                                removeButton)
     }
     
     private func setLayout() {
+        contentView.snp.makeConstraints {
+            $0.top.bottom.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(48)
+        }
+        
         novelConnectImageView.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
             $0.leading.equalToSuperview().inset(16)
-            $0.top.bottom.equalToSuperview().inset(15)
             $0.size.equalTo(18)
         }
         
@@ -76,14 +88,21 @@ final class FeedEditConnectedNovelView: UIView {
         removeButton.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.trailing.equalToSuperview().inset(16)
+            $0.size.equalTo(18)
         }
     }
     
     //MARK: - Data
     
-    func bindData(novelTitle: String) {
-        self.novelTitleLabel.do {
-            $0.applyWSSFont(.title3, with: novelTitle)
+    func bindData(novelTitle: String?) {
+        if let novelTitle {
+            self.isHidden = false
+            
+            self.novelTitleLabel.do {
+                $0.applyWSSFont(.title3, with: novelTitle)
+            }
+        } else {
+            self.isHidden = true
         }
     }
 }
