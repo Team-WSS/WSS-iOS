@@ -19,6 +19,7 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
     private let novelDetailFeedContentView = NovelDetailFeedContentView()
     private let novelDetailFeedConnectedNovelView = NovelDetailFeedConnectedNovelView()
     private let novelDetailFeedCategoryView = NovelDetailFeedCategoryView()
+    private let novelDetailFeedReactView = NovelDetailFeedReactView()
     
     //MARK: - Life Cycle
     
@@ -53,12 +54,14 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
         stackView.addArrangedSubviews(novelDetailFeedHeaderView,
                                       novelDetailFeedContentView,
                                       novelDetailFeedConnectedNovelView,
-                                      novelDetailFeedCategoryView)
+                                      novelDetailFeedCategoryView,
+                                      novelDetailFeedReactView)
     }
     
     private func setLayout() {
         stackView.snp.makeConstraints {
-            $0.edges.equalToSuperview().inset(20)
+            $0.top.leading.trailing.equalToSuperview().inset(20)
+            $0.bottom.equalToSuperview().inset(24)
             
             stackView.do {
                 $0.setCustomSpacing(12, after: novelDetailFeedHeaderView)
@@ -82,5 +85,8 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
                                                    novelRatingCount: feed.novelRatingCount,
                                                    novelRating: feed.novelRating)
         novelDetailFeedCategoryView.bindData(relevantCategories: feed.relevantCategories)
+        novelDetailFeedReactView.bindData(isLiked: feed.isLiked,
+                                          likeCount: feed.likeCount,
+                                          commentCount: feed.commentCount)
     }
 }

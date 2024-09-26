@@ -362,6 +362,7 @@
 		CD863EE52CA5C6E00037DC08 /* NovelDetailFeedContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD863EE42CA5C6DF0037DC08 /* NovelDetailFeedContentView.swift */; };
 		CD863EE72CA5CB0B0037DC08 /* NovelDetailFeedConnectedNovelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD863EE62CA5CB0B0037DC08 /* NovelDetailFeedConnectedNovelView.swift */; };
 		CD863EE92CA5CDC20037DC08 /* NovelDetailFeedCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD863EE82CA5CDC20037DC08 /* NovelDetailFeedCategoryView.swift */; };
+		CD863EEB2CA5CECD0037DC08 /* NovelDetailFeedReactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD863EEA2CA5CECD0037DC08 /* NovelDetailFeedReactView.swift */; };
 		CDA1774B2C3EC6760089137F /* WSSToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1774A2C3EC6760089137F /* WSSToggleButton.swift */; };
 		CDA5F03A2C2FDB2200FCF15C /* FeedEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5F0392C2FDB2200FCF15C /* FeedEditViewController.swift */; };
 		CDA5F03C2C2FDB3100FCF15C /* FeedEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5F03B2C2FDB3100FCF15C /* FeedEditViewModel.swift */; };
@@ -726,6 +727,7 @@
 		CD863EE42CA5C6DF0037DC08 /* NovelDetailFeedContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailFeedContentView.swift; sourceTree = "<group>"; };
 		CD863EE62CA5CB0B0037DC08 /* NovelDetailFeedConnectedNovelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailFeedConnectedNovelView.swift; sourceTree = "<group>"; };
 		CD863EE82CA5CDC20037DC08 /* NovelDetailFeedCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailFeedCategoryView.swift; sourceTree = "<group>"; };
+		CD863EEA2CA5CECD0037DC08 /* NovelDetailFeedReactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailFeedReactView.swift; sourceTree = "<group>"; };
 		CDA1774A2C3EC6760089137F /* WSSToggleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSToggleButton.swift; sourceTree = "<group>"; };
 		CDA5F0392C2FDB2200FCF15C /* FeedEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedEditViewController.swift; sourceTree = "<group>"; };
 		CDA5F03B2C2FDB3100FCF15C /* FeedEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedEditViewModel.swift; sourceTree = "<group>"; };
@@ -2345,6 +2347,7 @@
 				CD863EE42CA5C6DF0037DC08 /* NovelDetailFeedContentView.swift */,
 				CD863EE62CA5CB0B0037DC08 /* NovelDetailFeedConnectedNovelView.swift */,
 				CD863EE82CA5CDC20037DC08 /* NovelDetailFeedCategoryView.swift */,
+				CD863EEA2CA5CECD0037DC08 /* NovelDetailFeedReactView.swift */,
 			);
 			path = NovelDetailFeedCell;
 			sourceTree = "<group>";
@@ -2934,6 +2937,7 @@
 				C99DDFDD2C8613BC00EDC0C4 /* SearchView.swift in Sources */,
 				CD2D0AAD2C7EF1A2007CF1F1 /* NovelReviewViewController.swift in Sources */,
 				A1654F1A2B54052E004F78E8 /* Config.swift in Sources */,
+				CD863EEB2CA5CECD0037DC08 /* NovelDetailFeedReactView.swift in Sources */,
 				CDEFE8272C9708870002D987 /* FeedNovelConnectModalViewModel.swift in Sources */,
 				2CD911582C0D8A21006B8D72 /* FeedPageBar.swift in Sources */,
 				CD39F2D82B50DA6300B73A5C /* TrashNovelDetailInfoDescriptionView.swift in Sources */,
