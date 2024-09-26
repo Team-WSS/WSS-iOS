@@ -39,9 +39,10 @@ final class NovelDetailViewModel: ViewModelType {
     private let reviewSectionVisibilities = BehaviorRelay<[ReviewSectionVisibility]>(value: [])
     
     //NovelDetailFeed
-    private let feedList = PublishSubject<[TotalFeeds]>()
-    private let isLoadable: Bool = false
-    private let isFetching: Bool = false
+    private var isLoadable: Bool = false
+    private var isFetching: Bool = false
+    private var lastFeedId: Int = 0
+    private let feedList = BehaviorRelay<[NovelDetailFeed]>(value: [])
     private let novelDetailFeedTableViewHeight = PublishRelay<CGFloat>()
     
     //MARK: - Life Cycle
@@ -104,7 +105,7 @@ final class NovelDetailViewModel: ViewModelType {
         let reviewSectionVisibilities: Driver<[ReviewSectionVisibility]>
         
         //NovelDetailFeed
-        let feedList: Observable<[TotalFeeds]>
+        let feedList: Observable<[NovelDetailFeed]>
         let novelDetailFeedTableViewHeight: Observable<CGFloat>
     }
     
@@ -198,23 +199,11 @@ final class NovelDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-//        input.feedTabBarButtonDidTap
-//            .bind(with: self, onNext: { owner, _ in
-//                owner.selectedTab.accept(.feed)
-//            })
-//            .disposed(by: disposeBag)
-        
         input.stickyInfoTabBarButtonDidTap
             .bind(with: self, onNext: { owner, _ in
                 owner.selectedTab.accept(.info)
             })
             .disposed(by: disposeBag)
-        
-//        input.stickyFeedTabBarButtonDidTap
-//            .bind(with: self, onNext: { owner, _ in
-//                owner.selectedTab.accept(.feed)
-//            })
-//            .disposed(by: disposeBag)
         
         Observable.merge(
             input.feedTabBarButtonDidTap.asObservable(),
@@ -223,11 +212,17 @@ final class NovelDetailViewModel: ViewModelType {
         .do(onNext: {
             self.selectedTab.accept(.feed)
         })
-        .flatMapLatest {
-            self.getNovelDetailFeedData(novelId: 1, lastFeedId: 0)
+        .flatMapLatest { _ in
+            self.getNovelDetailFeedData(novelId: self.novelId, lastFeedId: self.lastFeedId)
         }
         .subscribe(with: self, onNext: { owner, data in
-            owner.feedList.onNext(data.feeds)
+            owner.isLoadable = data.isLoadable
+            if let lastFeed = data.feeds.last {
+                owner.lastFeedId = lastFeed.feedId
+            }
+            owner.feedList.accept(data.feeds)
+        }, onError: { owner, error in
+            print("Error: \(error)")
         })
         .disposed(by: disposeBag)
         
@@ -243,8 +238,27 @@ final class NovelDetailViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.scrollViewReachedBottom
-            .subscribe(with: self, onNext: { owner, bottom in
-                print("novelDetailFeedTableViewReachedBottom", bottom)
+            .filter { reachedBottom in
+                return reachedBottom && !self.isFetching && self.isLoadable
+            }
+            .do(onNext: { _ in
+                self.isFetching = true
+            })
+            .flatMapLatest {_ in 
+                self.getNovelDetailFeedData(novelId: self.novelId, lastFeedId: self.lastFeedId)
+                    .do(onNext: { _ in
+                        self.isFetching = false
+                    })
+            }
+            .subscribe(with: self, onNext: { owner, data in
+                owner.isLoadable = data.isLoadable
+                if let lastFeed = data.feeds.last {
+                    owner.lastFeedId = lastFeed.feedId
+                }
+                let newData = owner.feedList.value + data.feeds
+                owner.feedList.accept(newData)
+            }, onError: { owner, error in
+                print("Error: \(error)")
             })
             .disposed(by: disposeBag)
         

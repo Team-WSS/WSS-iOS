@@ -74,13 +74,13 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
     
     //MARK: - Data
     
-    func bindData(feed: TotalFeeds) {
+    func bindData(feed: NovelDetailFeed) {
         novelDetailFeedHeaderView.bindData(avatarImage: feed.avatarImage,
                                            nickname: feed.nickname,
                                            createdDate: feed.createdDate,
                                            isModified: feed.isModified)
         novelDetailFeedContentView.bindData(feedContent: feed.feedContent,
-                                            isSpoiler: feed.isSpolier)
+                                            isSpoiler: feed.isSpoiler)
         novelDetailFeedConnectedNovelView.bindData(title: feed.title,
                                                    novelRatingCount: feed.novelRatingCount,
                                                    novelRating: feed.novelRating)

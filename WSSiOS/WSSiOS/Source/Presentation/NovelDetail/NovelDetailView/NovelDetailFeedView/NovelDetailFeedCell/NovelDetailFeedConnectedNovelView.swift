@@ -105,7 +105,7 @@ final class NovelDetailFeedConnectedNovelView: UIView {
     
     //MARK: - Data
     
-    func bindData(title: String, novelRatingCount: Int, novelRating: Float) {
+    func bindData(title: String, novelRatingCount: Int, novelRating: Double) {
         titleLabel.do {
             $0.applyWSSFont(.title3, with: title)
             $0.lineBreakMode = .byTruncatingTail

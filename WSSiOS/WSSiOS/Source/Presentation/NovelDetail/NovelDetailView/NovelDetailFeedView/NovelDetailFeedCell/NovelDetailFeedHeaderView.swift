@@ -41,6 +41,7 @@ final class NovelDetailFeedHeaderView: UIView {
         userImageView.do {
             $0.contentMode = .scaleAspectFill
             $0.layer.cornerRadius = 12
+            $0.clipsToBounds = true
         }
         
         userNicknameLabel.do {
@@ -112,7 +113,7 @@ final class NovelDetailFeedHeaderView: UIView {
     //MARK: - Data
     
     func bindData(avatarImage: String, nickname: String, createdDate: String, isModified: Bool) {
-        userImageView.kfSetImage(url: avatarImage)
+        userImageView.kfSetImage(url: makeBucketImageURLString(path: avatarImage))
         userNicknameLabel.applyWSSFont(.title2, with: nickname)
         createdDateLabel.applyWSSFont(.body5, with: createdDate)
         isModifiedLabel.isHidden = !isModified
