@@ -360,6 +360,7 @@ enum StringLiterals {
             
             enum Cell {
                 static let isModified = "(수정됨)"
+                static let isSpoiler = "스포일러가 포함된 글 보기"
             }
         }
     }

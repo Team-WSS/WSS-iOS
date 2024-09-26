@@ -15,7 +15,8 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
     //MARK: - Components
     
     private let stackView = UIStackView()
-    let novelDetailFeedHeaderView = NovelDetailFeedHeaderView()
+    private let novelDetailFeedHeaderView = NovelDetailFeedHeaderView()
+    private let novelDetailFeedContentView = NovelDetailFeedContentView()
     
     //MARK: - Life Cycle
     
@@ -47,7 +48,8 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
     
     private func setHierarchy() {
         self.addSubview(stackView)
-        stackView.addArrangedSubviews(novelDetailFeedHeaderView)
+        stackView.addArrangedSubviews(novelDetailFeedHeaderView,
+                                      novelDetailFeedContentView)
     }
     
     private func setLayout() {
@@ -56,6 +58,7 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
             
             stackView.do {
                 $0.setCustomSpacing(12, after: novelDetailFeedHeaderView)
+                $0.setCustomSpacing(20, after: novelDetailFeedContentView)
             }
         }
     }
@@ -67,5 +70,7 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
                                            nickname: feed.nickname,
                                            createdDate: feed.createdDate,
                                            isModified: feed.isModified)
+        novelDetailFeedContentView.bindData(feedContent: feed.feedContent,
+                                            isSpoiler: feed.isSpolier)
     }
 }
