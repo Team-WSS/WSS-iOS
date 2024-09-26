@@ -17,8 +17,9 @@ final class MyPageInfoViewController: UIViewController {
     private let disposeBag = DisposeBag()
     private let viewModel: MyPageInfoViewModel
     private let settingList = StringLiterals.MyPage.SettingInfo.allCases.map { $0.rawValue }
+    private let emailRelay = BehaviorRelay(value: "")
+    private let logoutRelay = PublishRelay<Bool>()
     private let updateDataRelay = BehaviorRelay<Bool>(value: false)
-    private let emailRelay = BehaviorRelay<String>(value: "")
     private var genderAndBirthData = ChangeUserInfo(gender: "", birth: 0)
     
     //MARK: - UI Components
@@ -96,7 +97,17 @@ final class MyPageInfoViewController: UIViewController {
                     owner.pushToBlockIDViewController()
                 case 3:
                     print("로그아웃")
-                    //pushModalVC
+                    owner.presentToAlertViewController(iconImage: .icAlertWarningCircle,
+                                                       titleText: StringLiterals.Alert.logoutTitle,
+                                                       contentText: nil,
+                                                       cancelTitle: StringLiterals.Alert.cancel,
+                                                       actionTitle: StringLiterals.Alert.logout,
+                                                       actionBackgroundColor: UIColor.wssPrimary100.cgColor)
+                    .subscribe({ _ in 
+                        owner.logoutRelay.accept(true)
+                    })
+                    .disposed(by: owner.disposeBag)
+                    
                 case 4:
                     print("회원탈퇴")
                     owner.pushToMyPageDeleteIDWarningViewController()
@@ -108,6 +119,7 @@ final class MyPageInfoViewController: UIViewController {
     
     private func bindViewModel() {
         let input = MyPageInfoViewModel.Input(
+            logoutButtonTapped: self.logoutRelay,
             backButtonDidTap: rootView.backButton.rx.tap,
             updateUserInfo: self.updateDataRelay)
         

@@ -23,6 +23,7 @@ final class MyPageInfoViewModel: ViewModelType {
     }
     
     struct Input {
+        let logoutButtonTapped: PublishRelay<Bool>
         let backButtonDidTap: ControlEvent<Void>
         let updateUserInfo: BehaviorRelay<Bool>
     }
@@ -66,6 +67,14 @@ final class MyPageInfoViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        input.logoutButtonTapped
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.logout()
+            }, onError: { owner, error in
+                print(error)
+            })
+            .disposed(by: disposeBag)
+        
         return output
     }
     
@@ -74,6 +83,10 @@ final class MyPageInfoViewModel: ViewModelType {
     private func getUserInfo() -> Observable<UserInfo> {
         return userRepository.getUserInfo()
             .observe(on: MainScheduler.instance)
+    }
+    
+    private func logout() {
+        print("로그아웃 로직 구현")
     }
 }
 
