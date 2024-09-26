@@ -22,9 +22,8 @@ final class MyPageDeleteIDView: UIView {
     lazy var agreeDeleteIDButton = UIButton()
     private let agreeDeleteIDLabel = UILabel()
     
-    lazy var completeButton = UIButton()
-    
     //In NavigationBar
+    lazy var completeButton = UIButton()
     lazy var backButton = UIButton()
     
     // MARK: - Life Cycle
@@ -124,6 +123,10 @@ final class MyPageDeleteIDView: UIView {
             $0.leading.trailing.equalToSuperview().inset(16)
             $0.height.equalTo(53)
             $0.bottom.equalToSuperview().inset(10)
+        }
+        
+        backButton.snp.makeConstraints {
+            $0.size.equalTo(24)
         }
     }
 }
