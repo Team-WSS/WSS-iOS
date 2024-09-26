@@ -457,5 +457,6 @@ enum StringLiterals {
     enum FeedDetail {
         static let title = "수다글"
         static let reply = "댓글"
+        static let placeHolder = "댓글을 남겨보세요"
     }
 }

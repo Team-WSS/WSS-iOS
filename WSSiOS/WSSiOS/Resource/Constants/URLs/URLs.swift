@@ -67,6 +67,18 @@ enum URLs {
     
     enum Feed {
         static let getFeeds = "/feeds"
+        static func getSingleFeed(feedId: Int) -> String {
+            return "/feeds/\(feedId)"
+        }
+        static func getSingleFeedComments(feedId: Int) -> String {
+            return "/feeds/\(feedId)/comments"
+        }
+        static func postFeedLike(feedId: Int) -> String {
+            return "/feeds/\(feedId)/likes"
+        }
+        static func deleteFeedLike(feedId: Int) -> String {
+            return "/feeds/\(feedId)/likes"
+        }
     }
     
     enum MyPage {

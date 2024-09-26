@@ -14,48 +14,50 @@ final class FeedDetailViewModel: ViewModelType {
     
     //MARK: - Properties
     
-    private let feedRepository: FeedRepository
+    private let feedDetailRepository: FeedDetailRepository
     private let disposeBag = DisposeBag()
     private let feedId: Int
     
-    private let feedProfileData = BehaviorRelay<Feed?>(value: nil)
-    private let feedDetailData =  BehaviorRelay<Feed?>(value: nil)
-    private let commentCountLabel = BehaviorRelay<Int>(value: 0)
-    private let commentsData = BehaviorRelay<[Comment]>(value: [])
+    private let feedData = PublishSubject<Feed>()
+    private let commentsData = BehaviorRelay<[FeedComment]>(value: [])
     private let replyCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
+    
+    private let likeCount = BehaviorRelay<Int>(value: 0)
+    private let likeButtonState = BehaviorRelay<Bool>(value: false)
     
     //MARK: - Life Cycle
     
-    init(feedRepository: FeedRepository, feedId: Int) {
-        self.feedRepository = feedRepository
+    init(feedDetailRepository: FeedDetailRepository, feedId: Int) {
+        self.feedDetailRepository = feedDetailRepository
         self.feedId = feedId
     }
     
     struct Input {
         let replyCollectionViewContentSize: Observable<CGSize?>
+        let likeButtonTapped: ControlEvent<Void>
     }
     
     struct Output {
-        let feedProfileData: Driver<Feed?>
-        let feedDetailData : Driver<Feed?>
-        let commentCountLabel: Driver<Int>
-        let commentsData: Driver<[Comment]>
+        let feedData: Observable<Feed>
+        let commentsData: Driver<[FeedComment]>
         let replyCollectionViewHeight: Driver<CGFloat>
+        let likeCount: Driver<Int>
+        let likeButtonEnabled: Driver<Bool>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
-        feedRepository.getSingleFeedData(feedId: feedId)
+        getSingleFeed(feedId)
             .subscribe(with: self, onNext: { owner, data in
-                owner.feedProfileData.accept(data)
-                owner.feedDetailData.accept(data)
+                owner.feedData.onNext(data)
+                owner.likeButtonState.accept(data.isLiked)
+                owner.likeCount.accept(data.likeCount)
             }, onError: { owner, error in
-                print(error)
+                owner.feedData.onError(error)
             })
             .disposed(by: disposeBag)
         
-        feedRepository.getSingleFeedComments(feedId: feedId)
+        getSingleFeedComments(feedId)
             .subscribe(with: self, onNext: { owner, data in
-                owner.commentCountLabel.accept(data.commentCount)
                 owner.commentsData.accept(data.comments)
             }, onError: { owner, error in
                 print(error)
@@ -65,11 +67,45 @@ final class FeedDetailViewModel: ViewModelType {
         let replyCollectionViewContentSize = input.replyCollectionViewContentSize
             .map { $0?.height ?? 0 }.asDriver(onErrorJustReturn: 0)
         
-        return Output(feedProfileData: feedProfileData.asDriver(),
-                      feedDetailData: feedDetailData.asDriver(),
-                      commentCountLabel: commentCountLabel.asDriver(),
+        input.likeButtonTapped
+            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
+            .withLatestFrom(likeButtonState)
+            .flatMapLatest { isLiked -> Observable<Void> in
+                let request: Observable<Void>
+                request = isLiked ? self.deleteFeedLike(self.feedId) : self.postFeedLike(self.feedId)
+                return request
+                    .do(onNext: {
+                        self.likeButtonState.accept(!isLiked)
+                        let newCount = isLiked ? self.likeCount.value - 1 : self.likeCount.value + 1
+                        self.likeCount.accept(newCount)
+                    })
+            }
+            .subscribe()
+            .disposed(by: disposeBag)
+        
+        return Output(feedData: feedData.asObservable(),
                       commentsData: commentsData.asDriver(),
-                      replyCollectionViewHeight: replyCollectionViewContentSize)
+                      replyCollectionViewHeight: replyCollectionViewContentSize,
+                      likeCount: likeCount.asDriver(),
+                      likeButtonEnabled: likeButtonState.asDriver())
+    }
+    
+    //MARK: = API
+    
+    func getSingleFeed(_ feedId: Int) -> Observable<Feed> {
+        return feedDetailRepository.getSingleFeedData(feedId: feedId)
+    }
+    
+    func getSingleFeedComments(_ feedId: Int) -> Observable<FeedComments> {
+        return feedDetailRepository.getSingleFeedComments(feedId: feedId)
+    }
+    
+    func postFeedLike(_ feedId: Int) -> Observable<Void> {
+        return feedDetailRepository.postFeedLike(feedId: feedId)
+    }
+    
+    func deleteFeedLike(_ feedId: Int) -> Observable<Void> {
+        return feedDetailRepository.deleteFeedLike(feedId: feedId)
     }
     
     //MARK: - Custom Method
