@@ -86,6 +86,10 @@ final class NovelDetailViewController: UIViewController {
         rootView.infoView.reviewView.keywordView.keywordCollectionView.register(
             NovelDetailInfoReviewKeywordCollectionViewCell.self,
             forCellWithReuseIdentifier: NovelDetailInfoReviewKeywordCollectionViewCell.cellIdentifier)
+        
+        rootView.feedView.feedListView.feedTableView.register(
+            NovelDetailFeedTableViewCell.self,
+            forCellReuseIdentifier: NovelDetailFeedTableViewCell.cellIdentifier)
     }
     
     private func delegate() {
@@ -222,6 +226,22 @@ final class NovelDetailViewController: UIViewController {
                 owner.rootView.infoView.updateVisibility(visibilities)
             })
             .disposed(by: disposeBag)
+        
+        //MARK: - Bind/NovelDetailFeed
+        
+        output.feedList
+            .bind(to: rootView.feedView.feedListView.feedTableView.rx.items(
+                cellIdentifier: NovelDetailFeedTableViewCell.cellIdentifier,
+                cellType: NovelDetailFeedTableViewCell.self)) { _, element, cell in
+                    cell.bindData(feed: element)
+                }
+                .disposed(by: disposeBag)
+        
+        output.novelDetailFeedTableViewHeight
+            .subscribe(with: self, onNext: { owner, height in
+                owner.rootView.feedView.feedListView.updateTableViewHeight(height: height)
+            })
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Actions
@@ -252,7 +272,8 @@ final class NovelDetailViewController: UIViewController {
             feedTabBarButtonDidTap: rootView.tabBarView.feedButton.rx.tap,
             stickyInfoTabBarButtonDidTap: rootView.stickyTabBarView.infoButton.rx.tap,
             stickyFeedTabBarButtonDidTap: rootView.stickyTabBarView.feedButton.rx.tap,
-            descriptionAccordionButtonDidTap: rootView.infoView.descriptionView.accordionButton.rx.tap
+            descriptionAccordionButtonDidTap: rootView.infoView.descriptionView.accordionButton.rx.tap,
+            novelDetailFeedTableViewContentSize: rootView.feedView.feedListView.feedTableView.rx.observe(CGSize.self, "contentSize")
         )
     }
     

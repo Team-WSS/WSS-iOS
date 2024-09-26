@@ -38,6 +38,12 @@ final class NovelDetailViewModel: ViewModelType {
     private let keywordList = BehaviorRelay<[Keyword]>(value: [])
     private let reviewSectionVisibilities = BehaviorRelay<[ReviewSectionVisibility]>(value: [])
     
+    //NovelDetailFeed
+    private let feedList = PublishSubject<[TotalFeeds]>()
+    private let isLoadable: Bool = false
+    private let isFetching: Bool = false
+    private let novelDetailFeedTableViewHeight = PublishRelay<CGFloat>()
+    
     //MARK: - Life Cycle
     
     init(novelDetailRepository: NovelDetailRepository, novelId: Int = 0) {
@@ -69,6 +75,9 @@ final class NovelDetailViewModel: ViewModelType {
         
         //NovelDetailInfo
         let descriptionAccordionButtonDidTap: ControlEvent<Void>
+        
+        //NovelDetailFeed
+        let novelDetailFeedTableViewContentSize: Observable<CGSize?>
     }
     
     struct Output {
@@ -92,6 +101,10 @@ final class NovelDetailViewModel: ViewModelType {
         let platformList: Driver<[Platform]>
         let keywordList: Driver<[Keyword]>
         let reviewSectionVisibilities: Driver<[ReviewSectionVisibility]>
+        
+        //NovelDetailFeed
+        let feedList: Observable<[TotalFeeds]>
+        let novelDetailFeedTableViewHeight: Observable<CGFloat>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -184,11 +197,11 @@ final class NovelDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.feedTabBarButtonDidTap
-            .bind(with: self, onNext: { owner, _ in
-                owner.selectedTab.accept(.feed)
-            })
-            .disposed(by: disposeBag)
+//        input.feedTabBarButtonDidTap
+//            .bind(with: self, onNext: { owner, _ in
+//                owner.selectedTab.accept(.feed)
+//            })
+//            .disposed(by: disposeBag)
         
         input.stickyInfoTabBarButtonDidTap
             .bind(with: self, onNext: { owner, _ in
@@ -196,16 +209,36 @@ final class NovelDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.stickyFeedTabBarButtonDidTap
-            .bind(with: self, onNext: { owner, _ in
-                owner.selectedTab.accept(.feed)
-            })
-            .disposed(by: disposeBag)
+//        input.stickyFeedTabBarButtonDidTap
+//            .bind(with: self, onNext: { owner, _ in
+//                owner.selectedTab.accept(.feed)
+//            })
+//            .disposed(by: disposeBag)
+        
+        Observable.merge(
+            input.feedTabBarButtonDidTap.asObservable(),
+            input.stickyFeedTabBarButtonDidTap.asObservable()
+        )
+        .do(onNext: {
+            self.selectedTab.accept(.feed)
+        })
+        .flatMapLatest {
+            self.getNovelDetailFeedData(novelId: 1, lastFeedId: 0)
+        }
+        .subscribe(with: self, onNext: { owner, data in
+            owner.feedList.onNext(data.feeds)
+        })
+        .disposed(by: disposeBag)
         
         input.descriptionAccordionButtonDidTap
             .bind(with: self, onNext: { owner, _ in
                 owner.isInfoDescriptionExpended.accept(!owner.isInfoDescriptionExpended.value)
             })
+            .disposed(by: disposeBag)
+        
+        input.novelDetailFeedTableViewContentSize
+            .map { $0?.height ?? 0 }
+            .bind(to: self.novelDetailFeedTableViewHeight)
             .disposed(by: disposeBag)
         
         self.novelDetailInfoData
@@ -241,8 +274,17 @@ final class NovelDetailViewModel: ViewModelType {
             isInfoDescriptionExpended: isInfoDescriptionExpended.asDriver(),
             platformList: platformList.asDriver(),
             keywordList: keywordList.asDriver(),
-            reviewSectionVisibilities: reviewSectionVisibilities.asDriver()
+            reviewSectionVisibilities: reviewSectionVisibilities.asDriver(),
+            feedList: feedList.asObservable(),
+            novelDetailFeedTableViewHeight: novelDetailFeedTableViewHeight.asObservable()
         )
+    }
+    
+    //MARK: - API
+    
+    private func getNovelDetailFeedData(novelId: Int, lastFeedId: Int) -> Observable<NovelDetailFeedResult> {
+        novelDetailRepository.getNovelDetailFeedData(novelId: novelId, lastFeedId: lastFeedId)
+            .observe(on: MainScheduler.instance)
     }
     
     //MARK: - Custom Method

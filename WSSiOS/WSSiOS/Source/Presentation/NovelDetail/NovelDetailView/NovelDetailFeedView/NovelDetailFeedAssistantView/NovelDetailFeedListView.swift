@@ -48,7 +48,7 @@ final class NovelDetailFeedListView: UIView {
     private func setLayout() {
         feedTableView.snp.makeConstraints {
             $0.edges.equalToSuperview()
-            $0.height.equalTo(1000)
+            $0.height.equalTo(0)
         }
     }
     
