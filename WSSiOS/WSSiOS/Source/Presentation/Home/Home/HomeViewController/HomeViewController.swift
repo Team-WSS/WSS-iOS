@@ -86,7 +86,8 @@ final class HomeViewController: UIViewController {
     
     private func bindViewModel() {
         let input = HomeViewModel.Input(
-            announcementButtonTapped: rootView.headerView.announcementButton.rx.tap
+            announcementButtonTapped: rootView.headerView.announcementButton.rx.tap,
+            todayPopularCellSelected: rootView.todayPopularView.todayPopularCollectionView.rx.itemSelected
         )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -135,6 +136,15 @@ final class HomeViewController: UIViewController {
                 viewController.navigationController?.isNavigationBarHidden = false
                 viewController.hidesBottomBarWhenPushed = true
                 owner.navigationController?.pushViewController(viewController, animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        output.navigateToNovelDetailInfoView
+            .withLatestFrom(output.todayPopularList) { (indexPath, novelList) in
+                return novelList[indexPath.row].novelId
+            }
+            .subscribe(with: self, onNext: { owner, novelId in
+                owner.pushToDetailViewController(novelId: novelId)
             })
             .disposed(by: disposeBag)
     }

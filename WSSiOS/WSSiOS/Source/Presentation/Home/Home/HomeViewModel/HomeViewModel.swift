@@ -23,10 +23,13 @@ final class HomeViewModel: ViewModelType {
     private let interestList = PublishSubject<[InterestFeed]>()
     private let tasteRecommendList = PublishSubject<[TasteRecommendNovel]>()
     
+    private let todayPopularCellIndexPath = PublishRelay<IndexPath>()
+    
     // MARK: - Inputs
     
     struct Input {
         let announcementButtonTapped: ControlEvent<Void>
+        let todayPopularCellSelected: ControlEvent<IndexPath>
     }
     
     //MARK: - Outputs
@@ -38,6 +41,7 @@ final class HomeViewModel: ViewModelType {
         var interestList: Observable<[InterestFeed]>
         var tasteRecommendList: Observable<[TasteRecommendNovel]>
         let navigateToAnnouncementView: Observable<Void>
+        let navigateToNovelDetailInfoView: Observable<IndexPath>
     }
     
     //MARK: - init
@@ -87,6 +91,12 @@ extension HomeViewModel {
             })
             .disposed(by: disposeBag)
         
+        input.todayPopularCellSelected
+            .subscribe(with: self, onNext: { owner, indexPath in
+                owner.todayPopularCellIndexPath.accept(indexPath)
+            })
+            .disposed(by: disposeBag)
+        
         let navigateToAnnouncementView = input.announcementButtonTapped.asObservable()
         
         return Output(todayPopularList: todayPopularList.asObservable(),
@@ -94,6 +104,7 @@ extension HomeViewModel {
                       realtimePopularData: realtimePopularDataRelay.asObservable(),
                       interestList: interestList.asObservable(),
                       tasteRecommendList: tasteRecommendList.asObservable(),
-                      navigateToAnnouncementView: navigateToAnnouncementView.asObservable())
+                      navigateToAnnouncementView: navigateToAnnouncementView.asObservable(),
+                      navigateToNovelDetailInfoView: todayPopularCellIndexPath.asObservable())
     }
 }
