@@ -2,36 +2,38 @@
 //  MyPageViewController.swift
 //  WSSiOS
 //
-//  Created by 신지원 on 7/9/24.
+//  Created by 신지원 on 1/8/24.
 //
 
 import UIKit
 
 import RxSwift
 import RxCocoa
+import SnapKit
+import Then
 
 final class MyPageViewController: UIViewController {
     
     //MARK: - Properties
     
+    private var avaterListRelay = BehaviorRelay<[UserAvatar]>(value: [])
     private let disposeBag = DisposeBag()
-    private let viewModel: MyPageViewModel
-    
-    private var isMyPageRelay: BehaviorRelay<Bool>
-    private let headerViewHeightRelay = BehaviorRelay<Double>(value: 0)
+    private let userRepository: UserRepository
+    private let avatarRepository: AvatarRepository
+    private let settingData = StringLiterals.MyPage.Setting.allCases.map { $0.rawValue }
+    private lazy var userNickname = ""
+    private lazy var representativeAvatarId = 0
+    private var currentPresentativeAvatar = false
     
     //MARK: - UI Components
     
     private var rootView = MyPageView()
     
-    private lazy var settingButton = UIButton()
-    private lazy var dropdownButton = WSSDropdownButton()
-    
     // MARK: - Life Cycle
     
-    init(viewModel: MyPageViewModel, isMyPage: Bool) {
-        self.viewModel = viewModel
-        self.isMyPageRelay = BehaviorRelay(value: isMyPage)
+    init(userRepository: UserRepository, avatarRepository: AvatarRepository) {
+        self.userRepository = userRepository 
+        self.avatarRepository = avatarRepository
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -42,52 +44,192 @@ final class MyPageViewController: UIViewController {
     
     override func loadView() {
         self.view = rootView
-        
-        decideUI(isMyPage: isMyPageRelay.value)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        bindViewModel()
+        preparationSetNavigationBar(title: StringLiterals.Navigation.Title.myPage,
+                                    left: nil,
+                                    right: nil)
+        setAppearance()
+        register()
+        bindUserData()
+        bindAction()
+        addNotificationCenter()
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
-        headerViewHeightRelay.accept(rootView.headerView.layer.frame.height)
+        showTabBar()
     }
-
+    
+    //MARK: - NavigationBar
+    
+    private func setAppearance() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .wssWhite
+        self.navigationController?.navigationBar.standardAppearance = appearance
+        self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
+    }
+    
     //MARK: - Bind
     
-    private func bindViewModel() {
-        let input = MyPageViewModel.Input(
-            isMyPage: isMyPageRelay.asDriver(),
-            headerViewHeight: headerViewHeightRelay.asDriver(),
-            scrollOffset: rootView.scrollView.rx.contentOffset.asDriver(),
-            settingButtonDidTap: settingButton.rx.tap,
-            dropdownButtonDidTap: dropdownButton.rx.tap)
+    private func register() {
+        rootView.myPageInventoryView.myPageAvaterCollectionView.register(MyPageInventoryCollectionViewCell.self, forCellWithReuseIdentifier: MyPageInventoryCollectionViewCell.cellIdentifier)
         
-        let output = viewModel.transform(from: input, disposeBag: disposeBag)
+        rootView.myPageSettingView.myPageSettingCollectionView.register(MyPageSettingCollectionViewCell.self, forCellWithReuseIdentifier: MyPageSettingCollectionViewCell.cellIdentifier)
+    }
+    
+    private func bindUserData() {
+        userRepository.getUserData()
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, data in 
+                owner.rootView.bindData(data)
+                owner.representativeAvatarId = data.representativeAvatarId
+                owner.userNickname = data.userNickname
+                owner.avaterListRelay.accept(data.userAvatars)
+                owner.bindColletionView()
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindColletionView() {
+        avaterListRelay
+            .bind(to: rootView.myPageInventoryView.myPageAvaterCollectionView.rx.items(
+                cellIdentifier: "MyPageInventoryCollectionViewCell",
+                cellType: MyPageInventoryCollectionViewCell.self)) { [weak self] (row, element, cell) in
+                    cell.bindData(data: element, representativeId: self?.representativeAvatarId ?? 0)
+                }
+                .disposed(by: disposeBag)
         
-        output.profileData
-            .bind(with: self, onNext: { owner, data in
-                owner.rootView.headerView.bindData(data: data)
+        Observable.just(settingData)
+            .bind(to: rootView.myPageSettingView.myPageSettingCollectionView.rx.items(
+                cellIdentifier: "MyPageSettingCollectionViewCell",
+                cellType: MyPageSettingCollectionViewCell.self)) { (row, element, cell) in
+                    cell.myPageSettingCellLabel.text = element
+                }
+                .disposed(by: disposeBag)
+        
+        //초기값 100으로 설정, 아무 의미 없음, 초기값 설정마저 안하고 싶은데 방법을 모르겠음
+        let collectionViewHeightConstraint = rootView.myPageSettingView.myPageSettingCollectionView.heightAnchor.constraint(equalToConstant: 100)
+        collectionViewHeightConstraint.isActive = true
+        let settingDataCount = CGFloat(settingData.count)
+        let calculatedHeight = settingDataCount * 64.0 + (settingDataCount - 1) * 1.0 + 24.0
+        collectionViewHeightConstraint.constant = calculatedHeight
+        view.layoutIfNeeded()
+    }
+    
+    private func bindDataAgain() {
+        getDataFromAPI(disposeBag: disposeBag) { data, list in 
+            self.updateUI(userData: data, avatarList: list)
+        }
+    }
+    
+    private func updateUI(userData: UserResult, avatarList: [UserAvatar]) {
+        self.rootView.bindData(userData)
+        self.representativeAvatarId = userData.representativeAvatarId
+        self.avaterListRelay.accept(avatarList)
+    }
+    
+    //MARK: - Actions
+    
+    private func bindAction() {
+        rootView.myPageSettingView.myPageSettingCollectionView.rx.itemSelected
+            .compactMap { StringLiterals.MyPage.Setting(rawValue: self.settingData[$0.row]) }
+            .subscribe(with: self, onNext: { owner, option in
+                switch option {
+                case .accountInfo:
+                    let infoViewController = MyPageInfoViewController()
+                    infoViewController.rootView.bindData(self.userNickname)
+                    self.hideTabBar()
+                    self.navigationController?.pushViewController(infoViewController, animated: true)
+                    
+                case .webSoso:
+                    if let openApp = URL(string: StringLiterals.MyPage.SettingURL.instaURL), UIApplication.shared.canOpenURL(openApp) {
+                        UIApplication.shared.open(openApp, options: [:], completionHandler: nil)
+                    } else {
+                        if let url = URL(string: StringLiterals.MyPage.SettingURL.instaURL) {
+                            UIApplication.shared.open(url, options: [:])
+                        }
+                    }
+                    
+                case .termsOfService:
+                    if let url = URL(string: StringLiterals.MyPage.SettingURL.termsURL) {
+                        UIApplication.shared.open(url, options: [:])
+                    }
+                }
             })
             .disposed(by: disposeBag)
         
-        output.updateNavigationEnabled
-            .asDriver()
-            .drive(with: self, onNext: { owner, update in 
-                owner.rootView.scrolledStstickyHeaderView.isHidden = !update
-                owner.rootView.mainStickyHeaderView.isHidden = update
-                owner.rootView.headerView.isHidden = update
+        rootView.myPageInventoryView.myPageAvaterCollectionView.rx.itemSelected
+            .subscribe(with: self, onNext: { owner, indexPath in
+                let avatars = self.avaterListRelay.value
                 
-                if update {
-                    owner.navigationItem.title = StringLiterals.Navigation.Title.myPage
-                } else {
-                    owner.navigationItem.title = ""
+                if owner.representativeAvatarId == avatars[indexPath.row].avatarId {
+                    owner.currentPresentativeAvatar = true
                 }
+                else {
+                    owner.currentPresentativeAvatar = false
+                }
+                
+                owner.pushModalViewController(avatarId: avatars[indexPath.row].avatarId,
+                                              hasAvatar: avatars[indexPath.row].hasAvatar,
+                                              currentRepresentativeAvatar: owner.currentPresentativeAvatar)
+            })
+            .disposed(by: disposeBag)
+    
+        
+        let tapGestureForRegister = UITapGestureRecognizer(target: self, action: #selector(pushToRegisterTabBar))
+        let tapGestureForRecord = UITapGestureRecognizer(target: self, action: #selector(pushToRecordTabBar))
+        
+        rootView.myPageTallyView.myPageRegisterView.addGestureRecognizer(tapGestureForRegister)
+        rootView.myPageTallyView.myPageRecordView.addGestureRecognizer(tapGestureForRecord)
+    }
+    
+    @objc
+    func pushToRegisterTabBar() {
+        if self.navigationController?.tabBarController?.selectedIndex == 3 {
+            UIView.performWithoutAnimation {
+                let tabBar = WSSTabBarController()
+                tabBar.selectedIndex = 1
+                let navigationController = UINavigationController(rootViewController: tabBar)
+                navigationController.isNavigationBarHidden = true
+                self.view.window?.rootViewController = navigationController
+                self.view.window?.makeKeyAndVisible()
+            }
+        }
+    }
+    
+    @objc
+    func pushToRecordTabBar() {
+        if self.navigationController?.tabBarController?.selectedIndex == 3 {
+            UIView.performWithoutAnimation {
+                let tabBar = WSSTabBarController()
+                tabBar.selectedIndex = 2
+                let navigationController = UINavigationController(rootViewController: tabBar)
+                navigationController.isNavigationBarHidden = true
+                self.view.window?.rootViewController = navigationController
+                self.view.window?.makeKeyAndVisible()
+            }
+        }
+    }
+    
+    //MARK: - API
+    
+    private func getDataFromAPI(disposeBag: DisposeBag,
+                                completion: @escaping (UserResult, [UserAvatar]) -> Void) {
+        self.userRepository.getUserData()
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, userData in
+                owner.representativeAvatarId = userData.representativeAvatarId
+                owner.userNickname = userData.userNickname
+                completion(userData, userData.userAvatars)
+            }, onError: { error, _ in
+                print(error)
             })
             .disposed(by: disposeBag)
     }
@@ -95,41 +237,36 @@ final class MyPageViewController: UIViewController {
 
 extension MyPageViewController {
     
-    //MARK: - UI
+    //MARK: - push To ViewController
     
-    private func decideUI(isMyPage: Bool) {
-        let button = setButton(isMyPage: isMyPage)
+    @objc
+    func pushModalViewController(avatarId: Int,
+                                 hasAvatar: Bool,
+                                 currentRepresentativeAvatar: Bool) {
+        let modalVC = MyPageCustomModalViewController(
+            viewModel: MyPageCustomModalViewModel(
+                avatarRepository: avatarRepository,
+                avatarId: avatarId,
+                modalHasAvatar: hasAvatar,
+                currentRepresentativeAvatar: currentRepresentativeAvatar))
         
-        //TODO: - 타인 프로필도 타이틀이 마이페이지인지 확인해야 함
-        preparationSetNavigationBar(title: StringLiterals.Navigation.Title.myPage,
-                                    left: nil,
-                                    right: button)
-        
-        rootView.headerView.userImageChangeButton.isHidden = !isMyPage
+        modalVC.modalPresentationStyle = .overFullScreen
+        present(modalVC, animated: true)
     }
     
-    private func setButton(isMyPage: Bool) -> UIButton {
-        if isMyPage {
-            settingButton.do {
-                $0.setImage(UIImage(resource: .icSetting), for: .normal)
-            }
-            return settingButton
-            
-        } else {
-            
-            //TODO: - 드롭다운 에러,,, 🥹
-            dropdownButton.do {
-                $0.makeDropdown(dropdownRootView: self.view,
-                                dropdownWidth: 120,
-                                dropdownData: ["차단하기"],
-                                textColor: .wssBlack)
-            }
-            self.view.addSubview(dropdownButton)
-            dropdownButton.snp.makeConstraints {
-                $0.trailing.equalToSuperview().inset(10)
-                $0.size.equalTo(44)
-            }
-            return dropdownButton
-        }
+    //MARK: - notification
+    
+    private func addNotificationCenter() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.checkNotification(notification:)),
+            name: NSNotification.Name("AvatarChanged"),
+            object: nil
+        )
+    }
+    
+    @objc 
+    func checkNotification(notification: Notification) {
+        bindDataAgain()
     }
 }

@@ -198,10 +198,11 @@ final class HomeInterestCollectionViewCell: UICollectionViewCell {
         self.novelAverageRatingLabel.applyWSSFont(.body5, with: String(data.novelRating))
         self.novelRatingNumberLabel.applyWSSFont(.body5, with: "(\(data.novelRatingCount))")
         
-        self.userProfileImageView.kfSetImage(url: data.userAvatarImage)
+        self.userProfileImageView.kfSetImage(url: makeBucketImageURLString(path: data.userAvatarImage))
         self.userNicknameLabel.do {
-            $0.applyWSSFont(.title3, with: "\(data.userNickname) 님의 글")
+            $0.applyWSSFont(.title3, with: "\(data.userNickname)\(StringLiterals.Home.Interest.feed)")
             $0.lineBreakMode = .byTruncatingTail
+            $0.numberOfLines = 1
         }
         self.userFeedContentLabel.do {
             $0.applyWSSFont(.label1, with: data.userFeedContent)
