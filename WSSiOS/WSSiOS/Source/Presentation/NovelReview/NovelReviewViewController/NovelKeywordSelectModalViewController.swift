@@ -70,6 +70,8 @@ final class NovelKeywordSelectModalViewController: UIViewController {
         let input = NovelKeywordSelectModalViewModel.Input(
             viewDidLoadEvent: viewDidLoadEvent.asObservable(),
             updatedEnteredText: rootView.novelKeywordSelectSearchBarView.keywordTextField.rx.text.orEmpty.distinctUntilChanged().asObservable(),
+            keywordTextFieldEditingDidBegin: rootView.novelKeywordSelectSearchBarView.keywordTextField.rx.controlEvent(.editingDidBegin).asControlEvent(),
+            keywordTextFieldEditingDidEnd: rootView.novelKeywordSelectSearchBarView.keywordTextField.rx.controlEvent(.editingDidEnd).asControlEvent(),
             searchCancelButtonDidTap: rootView.novelKeywordSelectSearchBarView.searchCancelButton.rx.tap,
             closeButtonDidTap: rootView.closeButton.rx.tap,
             searchButtonDidTap: rootView.novelKeywordSelectSearchBarView.searchButton.rx.tap,
@@ -91,6 +93,18 @@ final class NovelKeywordSelectModalViewController: UIViewController {
         output.enteredText
             .subscribe(with: self, onNext: { owner, text in
                 owner.rootView.novelKeywordSelectSearchBarView.keywordTextField.text = text
+            })
+            .disposed(by: disposeBag)
+        
+        output.isKeywordTextFieldEditing
+            .subscribe(with: self, onNext: { owner, isEditing in
+                owner.rootView.novelKeywordSelectSearchBarView.updateKeywordTextField(isEditing: isEditing)
+            })
+            .disposed(by: disposeBag)
+        
+        output.endEditing
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.view.endEditing(true)
             })
             .disposed(by: disposeBag)
         
