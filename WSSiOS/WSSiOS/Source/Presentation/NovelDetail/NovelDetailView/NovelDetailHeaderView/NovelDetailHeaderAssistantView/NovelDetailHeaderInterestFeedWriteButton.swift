@@ -13,6 +13,7 @@ import Then
 final class NovelDetailHeaderInterestFeedWriteButton: UIView {
     
     //MARK: - Components
+    
     private let buttonStackView = UIStackView()
     
     let interestButton = UIButton()
