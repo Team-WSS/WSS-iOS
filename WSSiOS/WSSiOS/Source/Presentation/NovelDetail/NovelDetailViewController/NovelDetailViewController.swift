@@ -109,6 +109,7 @@ final class NovelDetailViewController: UIViewController {
             .subscribe(with: self, onNext: { owner, data in
                 owner.rootView.bindHeaderData(data)
                 owner.navigationTitle = data.novelTitle
+                owner.setNavigationBar()
             }, onError: { owner, error in
                 print(error)
             })
@@ -137,7 +138,7 @@ final class NovelDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.backButtonEnabled
+        output.popToLastViewController
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 owner.popToLastViewController()
@@ -152,13 +153,12 @@ final class NovelDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.pushToReviewEnabled
+        output.pushToReviewViewController
             .observe(on: MainScheduler.instance)
-            .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, value in
-                //MARK: - Todo. 탭이 잘 안됨 . .
-                // 작품 평가 View로 이동, 선택한 readStatus 값은 바로 반영해줌
-                print("작품 평가 View로 이동, readStatus: \(String(describing: value))")
+            .bind(with: self, onNext: { owner, readStatus in
+                // 작품 평가 View로 이동, readStatus버튼으로 이동한 경우, 선택한 readStatus 값은 바로 반영해줌
+                // 날짜나 별점 버튼으로 이동하는 경우 현재 readStatus를 보냄.
+                print("작품 평가 View로 이동, readStatus: \(String(describing: readStatus))")
             })
             .disposed(by: disposeBag)
         
@@ -168,11 +168,11 @@ final class NovelDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.feedWriteButtonEnabled
+        output.pushTofeedWriteViewController
             .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, _ in
+            .bind(with: self, onNext: { owner, genre in
                 // 수다글 작성 View로 이동
-                print("수다글 작성 View로 이동")
+                print("수다글 작성 View로 이동, genre: \(String(describing: genre))")
             })
             .disposed(by: disposeBag)
         
@@ -189,13 +189,6 @@ final class NovelDetailViewController: UIViewController {
         output.isInfoDescriptionExpended
             .drive(with: self, onNext: { owner, isExpended in
                 owner.rootView.infoView.descriptionView.updateAccordionButton(isExpended)
-                
-                // 아코디언 접으면 화면 위치를 옮겨주는 기능인데.. 필요 없는 것 같기도 하고?
-                //                let stickyoffset = owner.rootView.headerView.frame.size.height - owner.view.safeAreaInsets.top
-                //                let point = CGPoint(x: 0, y: stickyoffset)
-                //                if !isExpended {
-                //                    owner.rootView.scrollView.rx.contentOffset.onNext(point)
-                //                }
             })
             .disposed(by: disposeBag)
         

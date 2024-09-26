@@ -1,29 +1,26 @@
 //
-//  AttractivePoint.swift
+//  AttractivePoints.swift
 //  WSSiOS
 //
-//  Created by YunhakLee on 9/8/24.
+//  Created by Hyowon Jeon on 9/24/24.
 //
 
 import Foundation
 
-enum AttractivePoint: String {
-    case worldview, material, character, relationship, vibe, error
+enum AttractivePoint: String, CaseIterable {
+    case worldview = "worldview"
+    case material = "material"
+    case character = "character"
+    case relationship = "relationship"
+    case vibe = "vibe"
     
-    var korean: String {
+    var koreanString: String {
         switch self {
-        case .worldview:
-            "세계관"
-        case .material:
-            "소재"
-        case .character:
-            "캐릭터"
-        case .relationship:
-            "관계"
-        case .vibe:
-            "분위기"
-        case .error:
-            "에러"
+        case .worldview: "세계관"
+        case .material: "소재"
+        case .character: "캐릭터"
+        case .relationship: "관계"
+        case .vibe: "분위기"
         }
     }
 }

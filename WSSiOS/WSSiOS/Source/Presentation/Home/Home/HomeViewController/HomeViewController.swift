@@ -49,15 +49,14 @@ final class HomeViewController: UIViewController {
         
         setUI()
         registerCell()
+        setDelegate()
         bindViewModel()
     }
     
     //MARK: - UI
     
     private func setUI() {
-        self.view.do {
-            $0.backgroundColor = .wssWhite
-        }
+        self.view.backgroundColor = .wssWhite
     }
     
     //MARK: - Bind
@@ -80,6 +79,11 @@ final class HomeViewController: UIViewController {
             forCellWithReuseIdentifier: HomeTasteRecommendCollectionViewCell.cellIdentifier)
     }
     
+    private func setDelegate() {
+        rootView.realtimePopularView.realtimePopularCollectionView.rx.setDelegate(self)
+            .disposed(by: disposeBag)
+    }
+    
     private func bindViewModel() {
         let input = HomeViewModel.Input(
             announcementButtonTapped: rootView.headerView.announcementButton.rx.tap
@@ -93,6 +97,21 @@ final class HomeViewController: UIViewController {
                     cell.bindData(data: element)
                 }
                 .disposed(by: disposeBag)
+        
+        output.realtimePopularData
+            .bind(to: rootView.realtimePopularView.realtimePopularCollectionView.rx.items(
+                cellIdentifier: HomeRealtimePopularCollectionViewCell.cellIdentifier,
+                cellType: HomeRealtimePopularCollectionViewCell.self)) { row, element, cell in
+                    cell.bindData(data: element)
+                }
+                .disposed(by: disposeBag)
+        
+        output.realtimePopularData
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, realtimePopularItems in
+                owner.rootView.realtimePopularView.configureDots(numberOfItems: realtimePopularItems.count)
+            })
+            .disposed(by: disposeBag)
         
         output.interestList
             .bind(to: rootView.interestView.interestCollectionView.rx.items(
@@ -110,7 +129,7 @@ final class HomeViewController: UIViewController {
                 }
                 .disposed(by: disposeBag)
         
-        output.navigateToAnnoucementView
+        output.navigateToAnnouncementView
             .bind(with: self, onNext: { owner, _ in
                 let viewController = HomeNoticeViewController(viewModel: HomeNoticeViewModel(noticeRepository: DefaultNoticeRepository(noticeService: DefaultNoticeService() )))
                 viewController.navigationController?.isNavigationBarHidden = false
@@ -120,3 +139,25 @@ final class HomeViewController: UIViewController {
             .disposed(by: disposeBag)
     }
 }
+
+extension HomeViewController: UICollectionViewDelegateFlowLayout {
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView,
+                                   withVelocity velocity: CGPoint,
+                                   targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        if scrollView == rootView.realtimePopularView.realtimePopularCollectionView {
+            let scrolledOffsetX = targetContentOffset.pointee.x + scrollView.contentInset.left
+            let cellWidth: CGFloat = UIScreen.main.bounds.width - 40
+            let index = round(scrolledOffsetX / cellWidth)
+            targetContentOffset.pointee = CGPoint(x: index * cellWidth - scrollView.contentInset.left, y: scrollView.contentInset.top)
+        }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView == rootView.realtimePopularView.realtimePopularCollectionView {
+            let pageWidth = scrollView.frame.width
+            let currentPage = Int((scrollView.contentOffset.x + pageWidth / 2) / pageWidth)
+            rootView.realtimePopularView.updateDots(currentPage: currentPage)
+        }
+    }
+}
+

@@ -51,7 +51,7 @@ final class DetailSearchView: UIView {
         }
         
         cancelModalButton.do {
-            $0.setImage(.icCacelModal.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray300), for: .normal)
+            $0.setImage(.icCancelModal.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray300), for: .normal)
         }
     }
     

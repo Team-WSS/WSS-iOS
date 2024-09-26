@@ -11,9 +11,13 @@ import RxSwift
 
 protocol UserRepository {
     func getMyProfileData() -> Observable<MyProfileResult>
-    func getUserEmail() -> Observable<String>
+    func getUserInfo() -> Observable<UserInfo>
+    func putUserInfo(gender: String, birth: Int) -> Observable<Void>
     func patchUserName(userNickName: String) -> Observable<Void>
     func getUserCharacter() -> Observable<UserCharacter>
+    func getBlocksList() -> Observable<BlockUserResult>
+    func deleteBlockUser(blockID: Int) -> Observable<Void>
+    func getUserNovelStatus() -> Observable<UserNovelStatus>
 }
 
 struct DefaultUserRepository: UserRepository {
@@ -26,9 +30,11 @@ struct DefaultUserRepository: UserRepository {
     
     
     private var userService: UserService
+    private var blocksService: BlocksService
     
-    init(userService: UserService) {
+    init(userService: UserService, blocksService: BlocksService) {
         self.userService = userService
+        self.blocksService = blocksService
     }
     
     func getUserData() -> RxSwift.Observable<UserResult> {
@@ -36,9 +42,15 @@ struct DefaultUserRepository: UserRepository {
             .asObservable()
     }
     
-    func getUserEmail() -> RxSwift.Observable<String> {
-            return Observable.just("shinjiwonZZang")
-        }
+    func getUserInfo() -> RxSwift.Observable<UserInfo> {
+        return userService.getUserInfo()
+            .asObservable()
+    }
+    
+    func putUserInfo(gender: String, birth: Int) -> RxSwift.Observable<Void> {
+        return userService.putUserInfo(gender: gender, birth: birth)
+            .asObservable()
+    }
     
     func patchUserName(userNickName: String) -> RxSwift.Observable<Void> {
         return userService.patchUserName(userNickName: userNickName)
@@ -47,6 +59,21 @@ struct DefaultUserRepository: UserRepository {
     
     func getUserCharacter() -> Observable<UserCharacter> {
         return userService.getUserCharacterData()
+            .asObservable()
+    }
+    
+    func getBlocksList() -> RxSwift.Observable<BlockUserResult> {
+        return blocksService.getBlocksList()
+            .asObservable()
+    }
+    
+    func deleteBlockUser(blockID: Int) -> RxSwift.Observable<Void> {
+        return blocksService.deleteBlockUser(blockID: blockID)
+            .asObservable()
+    }
+    
+    func getUserNovelStatus() -> RxSwift.Observable<UserNovelStatus> {
+        return userService.getUserNovelStatus()
             .asObservable()
     }
 }

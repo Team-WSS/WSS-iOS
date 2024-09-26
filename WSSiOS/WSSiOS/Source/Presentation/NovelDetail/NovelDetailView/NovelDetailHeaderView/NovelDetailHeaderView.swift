@@ -22,7 +22,7 @@ final class NovelDetailHeaderView: UIView {
     let reviewResultView = NovelDetailHeaderReviewResultView()
     let interestReviewButton = NovelDetailHeaderInterestFeedWriteButton()
     
-    //MARK: - Life CycleE
+    //MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -59,7 +59,7 @@ final class NovelDetailHeaderView: UIView {
     private func setLayout() {
         bannerBackgroundImageView.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview()
-            $0.height.equalTo(248)
+            $0.height.equalTo(330)
         }
         
         stackView.do {
@@ -69,7 +69,7 @@ final class NovelDetailHeaderView: UIView {
                 $0.horizontalEdges.equalToSuperview()
             }
             
-            $0.setCustomSpacing(-148, after: bannerBackgroundImageView)
+            $0.setCustomSpacing(-230, after: bannerBackgroundImageView)
             $0.setCustomSpacing(20, after: coverImageButton)
             $0.setCustomSpacing(20, after: novelInfoView)
             $0.setCustomSpacing(16, after: reviewResultView)
@@ -90,9 +90,9 @@ final class NovelDetailHeaderView: UIView {
     
     //MARK: - Data
     
-    func bindData(_ data: NovelDetailHeaderResult) {
-        bannerBackgroundImageView.bindData(data)
-        coverImageButton.bindData(data)
+    func bindData(_ data: NovelDetailHeaderEntity) {
+        bannerBackgroundImageView.bindData(data.novelImage)
+        coverImageButton.bindData(data.novelImage, data.novelGenreImage)
         novelInfoView.bindData(data)
         interestReviewButton.updateInterestButtonState(data.isUserNovelInterest)
         reviewResultView.bindData(data)

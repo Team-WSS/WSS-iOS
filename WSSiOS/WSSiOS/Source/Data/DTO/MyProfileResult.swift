@@ -19,25 +19,3 @@ extension MyProfileResult {
                     avatarImage: "https://mblogthumb-phinf.pstatic.net/MjAyMjAzMjlfMSAg/MDAxNjQ4NDgwNzgwMzkw.yDLPqC9ouJxYoJSgicANH0CPNvFdcixexP7hZaPlCl4g.n7yZDyGC06_gRTwEnAKIhj5bM04laVpNuKRz29dP83wg.JPEG.38qudehd/IMG_8635.JPG?type=w800",
                     genrePreferences: ["romance", "fantasy", "wuxia"])
 }
-
-struct UserResult: Codable {
-    let representativeAvatarGenreBadge,
-        representativeAvatarTag,
-        representativeAvatarLineContent,
-        representativeAvatarImg,
-        userNickname: String
-    let representativeAvatarId, 
-        userNovelCount,
-        memoCount: Int
-    let userAvatars: [UserAvatar]
-}
-
-struct UserAvatar: Codable {
-    let avatarId: Int
-    let avatarImg: String
-    let hasAvatar: Bool
-}
-
-struct UserNickNameResult: Codable {
-    let userNickname: String
-}

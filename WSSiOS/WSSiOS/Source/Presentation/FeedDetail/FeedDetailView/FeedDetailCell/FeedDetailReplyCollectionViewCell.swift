@@ -117,8 +117,8 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func bindData(data: Comment) {
-        self.userProfileImageView.kfSetImage(url: data.userProfileImage)
+    func bindData(data: FeedComment) {
+        self.userProfileImageView.kfSetImage(url: makeBucketImageURLString(path: data.userProfileImage))
         self.userNicknameLabel.applyWSSFont(.title2, with: data.userNickname)
         self.createdDateLabel.applyWSSFont(.body5, with: data.createdDate)
         if data.isModified {

@@ -51,6 +51,13 @@ final class LoginViewModel: ViewModelType {
             .bind(with: self, onNext: { owner, value in
                 let scrollOffset = value.x
                 
+                //0.0 - 0.5 -> 3
+                //0.5 - 1.5 -> 0
+                //1.5 - 2.5 -> 1
+                //2.5 - 3.5 -> 2
+                //3.5 - 4.5 -> 3
+                //4.5 - 5.0 -> 0 대로 index가 잡혀야 해서, 이를 계산하는 과정.
+                
                 var index = Int((scrollOffset + LoginBannerMetric.width/2.0)/LoginBannerMetric.width) - 1
                 
                 if index == 4 {
@@ -67,19 +74,9 @@ final class LoginViewModel: ViewModelType {
             .asDriver(onErrorJustReturn: ())
         
         input.loginButtonDidTap
-            .throttle(.seconds(1), scheduler: MainScheduler.instance)
+            .debounce(.seconds(1), scheduler: MainScheduler.instance)
             .flatMapLatest { type in
-                // Login 작업
-                switch type {
-                case .kakao:
-                    self.repositoryLoginMethod()
-                case .naver:
-                    self.repositoryLoginMethod()
-                case .apple:
-                    self.repositoryLoginMethod()
-                case .skip:
-                    self.repositoryLoginMethod()
-                }
+                self.repositoryLoginMethod(type: type)
             }
             .subscribe(with: self, onNext: { owner, _ in
                 // Login 작업 종료 후
@@ -110,16 +107,9 @@ final class LoginViewModel: ViewModelType {
             })
     }
     
-    func repositoryLoginMethod() -> Observable<Void> {
+    func repositoryLoginMethod(type: LoginButtonType) -> Observable<Void> {
         // 레포지토리에 구현할 각 로그인 메서드. 아마 ..?
-        print("Login 성공")
+        print("\(String(describing: type)) Login 성공")
         return Observable.just(())
     }
 }
-
-//0.0 - 0.5 -> 3
-//0.5 - 1.5 -> 0
-//1.5 - 2.5 -> 1
-//2.5 - 3.5 -> 2
-//3.5 - 4.5 -> 3
-//4.5 - 5.0 -> 0

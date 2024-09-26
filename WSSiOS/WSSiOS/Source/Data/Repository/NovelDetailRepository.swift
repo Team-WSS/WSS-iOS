@@ -10,14 +10,14 @@ import Foundation
 import RxSwift
 
 protocol NovelDetailRepository {
-    func getNovelDetailHeaderData(novelId: Int) -> Observable<NovelDetailHeaderResult>
+    func getNovelDetailHeaderData(novelId: Int) -> Observable<NovelDetailHeaderEntity>
     func getNovelDetailInfoData(novelId: Int) -> Observable<NovelDetailInfoResult>
     func postUserInterest(novelId: Int) -> Observable<Void>
     func deleteUserInterest(novelId: Int) -> Observable<Void>
     func deleteNovelReview(novelId: Int) -> Observable<Void>
 }
 
-struct TestDetailRepository: NovelDetailRepository {
+struct TestNovelDetailRepository: NovelDetailRepository {
     func deleteNovelReview(novelId: Int) -> Observable<Void> {
         return Observable.just(())
     }
@@ -30,8 +30,8 @@ struct TestDetailRepository: NovelDetailRepository {
         return Observable.just(())
     }
     
-    func getNovelDetailHeaderData(novelId: Int) -> Observable<NovelDetailHeaderResult> {
-        return Observable.just(NovelDetailHeaderResult.dummyFullData[0])
+    func getNovelDetailHeaderData(novelId: Int) -> Observable<NovelDetailHeaderEntity> {
+        return Observable.just(NovelDetailHeaderResult.dummyFullData[0]).flatMap { $0.transform() }
     }
     
     func getNovelDetailInfoData(novelId: Int) -> Observable<NovelDetailInfoResult> {
@@ -39,7 +39,23 @@ struct TestDetailRepository: NovelDetailRepository {
     }
 }
 
-struct DefaultDetailRepository: NovelDetailRepository {
+struct DefaultNovelDetailRepository {
+    private let novelDetailService: NovelDetailService
+
+    init(novelDetailService: NovelDetailService) {
+        self.novelDetailService = novelDetailService
+    }
+}
+
+extension DefaultNovelDetailRepository: NovelDetailRepository  {
+    func getNovelDetailHeaderData(novelId: Int) -> Observable<NovelDetailHeaderEntity> {
+        return novelDetailService.getNovelDetailHeaderData(novelId: novelId).asObservable().flatMap{ $0.transform() }
+    }
+    
+    func getNovelDetailInfoData(novelId: Int) -> Observable<NovelDetailInfoResult> {
+        return novelDetailService.getNovelDetailInfoData(novelId: novelId).asObservable()
+    }
+    
     func deleteNovelReview(novelId: Int) -> Observable<Void> {
         novelDetailService.deleteNovelReview(novelId: novelId).asObservable()
     }
@@ -50,20 +66,6 @@ struct DefaultDetailRepository: NovelDetailRepository {
     
     func deleteUserInterest(novelId: Int) -> Observable<Void> {
         return novelDetailService.deleteUserInterest(novelId: novelId).asObservable()
-    }
-    
-    private let novelDetailService: NovelDetailService
-
-    init(novelDetailService: NovelDetailService) {
-        self.novelDetailService = novelDetailService
-    }
-
-    func getNovelDetailHeaderData(novelId: Int) -> Observable<NovelDetailHeaderResult> {
-        return novelDetailService.getNovelDetailHeaderData(novelId: novelId).asObservable()
-    }
-    
-    func getNovelDetailInfoData(novelId: Int) -> Observable<NovelDetailInfoResult> {
-        return novelDetailService.getNovelDetailInfoData(novelId: novelId).asObservable()
     }
 }
 

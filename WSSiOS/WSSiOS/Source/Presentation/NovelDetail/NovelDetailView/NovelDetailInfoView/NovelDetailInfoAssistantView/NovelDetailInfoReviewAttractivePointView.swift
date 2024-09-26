@@ -61,8 +61,8 @@ final class NovelDetailInfoReviewAttractivePointView: UIView {
     
     func bindData(_ data: NovelDetailInfoResult) {
         let attractivePointText = data.attractivePoints
-            .map{ AttractivePoint(rawValue: $0) ?? .error }
-            .map{ $0.korean }
+            .compactMap{ AttractivePoint(rawValue: $0) }
+            .map{ $0.koreanString }
             .joined(separator: ", ")
         
         let attractivePointTotalText = attractivePointText

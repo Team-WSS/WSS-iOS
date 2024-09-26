@@ -95,15 +95,12 @@ final class NovelDetailHeaderNovelInfoView: UIView {
     
     //MARK: - Data
     
-    func bindData(_ data: NovelDetailHeaderResult) {
-        let novelCompletedStatusText = data.isNovelCompleted ? StringLiterals.NovelDetail.Header.complete
-                                                             : StringLiterals.NovelDetail.Header.inSeries
-        
+    func bindData(_ data: NovelDetailHeaderEntity) {
         setTitleLabelText(with: data.novelTitle)
-        setInfoLabelText(with: "\(data.novelGenres)\(novelCompletedStatusText)\(data.author)")
-        interestCount.setText(with: "\(data.interestCount)")
-        rating.setText(with: "\(data.novelRating) (\(data.novelRatingCount))")
-        feedCount.setText(with: "\(data.feedCount)")
+        setInfoLabelText(with: "\(data.novelGenre)\(data.novelCompletion)\(data.novelAuthor)")
+        interestCount.setText(with: data.interestCountText)
+        rating.setText(with: data.novelRatingText)
+        feedCount.setText(with: data.feedCountText)
     }
     
     //MARK: - Custom Method
@@ -121,8 +118,8 @@ final class NovelDetailHeaderNovelInfoView: UIView {
     
     private func setInfoLabelText(with text: String) {
         infoLabel.do {
-            $0.applyWSSFont(.body2, with: text)
-            $0.textColor = .wssGray300
+            $0.applyWSSFont(.body3, with: text)
+            $0.textColor = .wssGray200
             $0.textAlignment = .center
             $0.numberOfLines = 1
         }

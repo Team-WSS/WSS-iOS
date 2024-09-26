@@ -67,6 +67,7 @@ final class HomeTodayPopularView: UIView {
         todayPopularCollectionView.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(16)
             $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(377)
             $0.bottom.equalToSuperview()
         }
     }

@@ -109,6 +109,7 @@ final class LoginViewController: UIViewController {
     }
     
     private func createViewModelInput() -> LoginViewModel.Input {
+        // 로그인 버튼들 전체
         let loginButtonDidTap = Observable.merge(
             rootView.platformButtonStackView.kakaoLoginButton.rx.tap.map { LoginButtonType.kakao },
             rootView.platformButtonStackView.naverLoginButton.rx.tap.map { LoginButtonType.naver },
@@ -128,7 +129,7 @@ final class LoginViewController: UIViewController {
     private func scrollToNextItem() {
         let currentOffset = rootView.carouselView.bannerCollectionView.contentOffset
         let width = LoginBannerMetric.width
-        let nextOffset = currentOffset.x + width
+        let nextOffset = ((currentOffset.x/width) + 1) * width // 그냥 width 만큼만 이동시키면, 가끔 현재 위치가 어긋난 채로 메서드가 실행될 때 계속 어긋난 채로 스크롤 될 수 있어서 나눠주고 다시 곱해준다!
         
         rootView.carouselView.bannerCollectionView.setContentOffset(CGPoint(x: nextOffset, y: 0), animated: true)
     }
@@ -161,8 +162,4 @@ extension LoginViewController: UICollectionViewDelegateFlowLayout {
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         viewModel.resumeAutoScroll()
     }
-}
-
-enum LoginButtonType {
-    case kakao, naver, apple, skip
 }

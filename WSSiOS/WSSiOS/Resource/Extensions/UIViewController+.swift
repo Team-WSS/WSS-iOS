@@ -13,6 +13,10 @@ import Then
 
 extension UIViewController {
     func showToast(_ toastStatus: ToastStatus) {
+        if let existingToastView = self.view.subviews.first(where: { $0 is WSSToastView }) {
+            existingToastView.removeFromSuperview()
+        }
+        
         let toastView = WSSToastView(toastStatus)
         
         self.view.addSubview(toastView)
@@ -22,12 +26,10 @@ extension UIViewController {
             $0.top.equalTo(view.snp.bottom).offset(-212)
         }
         
-        UIView.animate(withDuration: 0, animations: {
-            toastView.alpha = 1
+        UIView.animate(withDuration: 0.3, delay: 3.0, animations: {
+            toastView.alpha = 0
         }, completion: { _ in
-            UIView.animate(withDuration: 0.3, delay: 3.0) {
-                toastView.alpha = 0
-            }
+            toastView.removeFromSuperview()
         })
     }
     
@@ -120,16 +122,6 @@ extension UIViewController {
         ), animated: true)
     }
     
-    func pushToChangeNicknameViewController(userNickname: String) {
-        let viewController = MyPageChangeNicknameViewController(
-            userNickName: userNickname,
-            viewModel: MyPageChangeNickNameViewModel(
-                userRepository: DefaultUserRepository(
-                    userService: DefaultUserService()),
-                userNickname: userNickname))
-        self.navigationController?.pushViewController(viewController, animated: true)
-    }
-    
     func presentDeleteUserNovelViewController(userNovelId: Int) {
         let viewController = DeletePopupViewController(
             viewModel: DeletePopupViewModel(
@@ -210,14 +202,30 @@ extension UIViewController {
         return alertViewController.actionButtonTap
     }
     
+    func pushToMyPageDeleteIDWarningViewController() {
+        let viewController = MyPageDeleteIDWarningViewController(
+            userRepository: DefaultUserRepository(
+                userService: DefaultUserService(),
+                blocksService: DefaultBlocksService()
+            )
+        )
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func pushToMyPageDeleteIDViewController() {
+        let viewController = MyPageDeleteIDViewController(viewModel: MyPageDeleteIDViewModel())
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
     func pushToMyPageInfoViewController() {
         let viewController = MyPageInfoViewController(
             viewModel: MyPageInfoViewModel(
                 userRepository: DefaultUserRepository(
-                    userService: DefaultUserService())))
+                    userService: DefaultUserService(),
+                    blocksService: DefaultBlocksService())))
         self.navigationController?.pushViewController(viewController, animated: true)
     }
-        
+    
     func presentModalViewController(_ viewController: UIViewController) {
         let blackOverlayView = UIView(frame: self.view.bounds).then {
             $0.backgroundColor = UIColor.black.withAlphaComponent(0)
@@ -245,6 +253,19 @@ extension UIViewController {
         })
         
         self.dismiss(animated: true)
+    }
+    
+    func pushToBlockIDViewController() {
+        let viewController = MyPageBlockUserViewController(
+            viewModel:MyPageBlockUserViewModel(
+                userRepository: DefaultUserRepository(
+                    userService: DefaultUserService(),
+                    blocksService: DefaultBlocksService()
+                )
+            )
+        )
+        
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
 }
 

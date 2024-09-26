@@ -26,6 +26,24 @@ extension UILabel {
         }
     }
     
+    func applyWSSFontWithUnderLine(_ font: WSSFont, with text: String?) {
+        self.applyFontAttributeWithUnderline(text: text,
+                                             lineHeightMultiple: font.lineHeightMultiple,
+                                             kerningPixel: font.kerningPixel,
+                                             font: font.font)
+    }
+    
+    func applyFontAttributeWithUnderline(text: String?, lineHeightMultiple: CGFloat, kerningPixel: Double, font: UIFont) {
+        self.do {
+            $0.font = font
+            $0.makeAttribute(with: text)?
+                .lineHeight(lineHeightMultiple)
+                .kerning(kerningPixel: kerningPixel)
+                .underlineStyle(.single)
+                .applyAttribute()
+        }
+    }
+    
     func fontHeadline1Attribute(with text: String) {
         self.do {
             $0.makeAttribute(with: text)?
@@ -211,6 +229,16 @@ extension TextAttributeSet {
         return self
     }
     
+    func underlineStyle(_ style: NSUnderlineStyle) -> TextAttributeSet {
+        self.attributedString.addAttribute(
+            .underlineStyle,
+            value: style.rawValue,
+            range: NSRange(location: 0, length: attributedString.length)
+        )
+        
+        return self
+    }
+    
     func partialColor(color: UIColor, rangeString: String) -> TextAttributeSet {
         let range = (self.attributedString.string as NSString).range(of: rangeString)
         if range.location != NSNotFound {
@@ -232,6 +260,11 @@ extension TextAttributeSet {
     func lineHeight(_ multiple: CGFloat) -> TextAttributeSet {
         let lineHeight = self.label.font.pointSize * multiple
         
+        guard !lineHeight.isNaN else {
+            print("Error: lineHeight is NaN")
+            return self
+        }
+        
         let style = NSMutableParagraphStyle().then {
             $0.maximumLineHeight = lineHeight
             $0.minimumLineHeight = lineHeight
@@ -248,7 +281,7 @@ extension TextAttributeSet {
             value: (lineHeight - self.label.font.lineHeight) / 2,
             range: NSRange(location: 0, length: attributedString.length)
         )
-
+        
         return self
     }
     
