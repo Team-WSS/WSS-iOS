@@ -20,8 +20,6 @@ final class MyPageSettingViewController: UIViewController {
     
     private var rootView = MyPageSettingView()
     
-    private let backButton = UIButton()
-    
     // MARK: - Life Cycle
 
     override func loadView() {
@@ -31,20 +29,17 @@ final class MyPageSettingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        swipeBackGesture()
-        
-        setUI()
         register()
         bindCell()
         bindAction()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        preparationSetNavigationBar(title: StringLiterals.Navigation.Title.myPageSetting,
-                                    left: self.backButton,
-                                    right: nil)
+        setNavigationBar()
+        swipeBackGesture()
+        hideTabBar()
     }
     
     //MARK: - Delegate
@@ -54,7 +49,6 @@ final class MyPageSettingViewController: UIViewController {
             MyPageSettingTableViewCell.self,
             forCellReuseIdentifier: MyPageSettingTableViewCell.cellIdentifier)
     }
-    
     
     //MARK: - Bind
     
@@ -66,6 +60,16 @@ final class MyPageSettingViewController: UIViewController {
                     cell.bindData(title: element)
                 }
                 .disposed(by: disposeBag)
+    }
+    
+    //MARK: - Action
+    
+    private func bindAction() {
+        self.rootView.backButton.rx.tap
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.popToLastViewController()
+            })
+            .disposed(by: disposeBag)
         
         rootView.tableView.rx.itemSelected
             .subscribe(with: self, onNext: { owner, indexPath in
@@ -103,22 +107,14 @@ final class MyPageSettingViewController: UIViewController {
             })
             .disposed(by: disposeBag)
     }
-    
-    //MARK: - Action
-    
-    private func bindAction() {
-        backButton.rx.tap
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.popToLastViewController()
-            })
-            .disposed(by: disposeBag)
-    }
 }
 
+//MARK: - UI
+
 extension MyPageSettingViewController {
-    private func setUI() {
-        backButton.do {
-            $0.setImage(.icNavigateLeft, for: .normal)
-        }
+    private func setNavigationBar() {
+        preparationSetNavigationBar(title: StringLiterals.Navigation.Title.myPageSetting,
+                                    left: self.rootView.backButton,
+                                    right: nil)
     }
 }

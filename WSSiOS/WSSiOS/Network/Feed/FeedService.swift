@@ -13,6 +13,8 @@ protocol FeedService {
     func getFeedList(category: String,
                      lastFeedId: Int,
                      size: Int) -> Single<TotalFeed>
+    func postFeed(relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool) -> Single<Void>
+    func putFeed(feedId: Int, relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool) -> Single<Void>
 }
 
 final class DefaultFeedService: NSObject, Networking, FeedService {
@@ -51,5 +53,46 @@ final class DefaultFeedService: NSObject, Networking, FeedService {
             return Single.error(error)
         }
     }
-
+    
+    func postFeed(relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool) -> Single<Void> {
+        guard let feedContentData = try? JSONEncoder().encode(FeedContent(relevantCategories: relevantCategories, feedContent: feedContent, novelId: novelId, isSpoiler: isSpoiler)) else {
+            return Single.error(NetworkServiceError.invalidRequestError)
+        }
+        
+        do {
+            let request = try makeHTTPRequest(method: .post,
+                                              path: URLs.Memo.postFeed,
+                                              headers: APIConstants.testTokenHeader,
+                                              body: feedContentData)
+            
+            NetworkLogger.log(request: request)
+            
+            return urlSession.rx.data(request: request)
+                .map { _ in }
+                .asSingle()
+        } catch {
+            return Single.error(error)
+        }
+    }
+    
+    func putFeed(feedId: Int, relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool) -> Single<Void> {
+        guard let feedContentData = try? JSONEncoder().encode(FeedContent(relevantCategories: relevantCategories, feedContent: feedContent, novelId: novelId, isSpoiler: isSpoiler)) else {
+            return Single.error(NetworkServiceError.invalidRequestError)
+        }
+        
+        do {
+            let request = try makeHTTPRequest(method: .put,
+                                              path: URLs.Memo.putFeed(feedId: feedId),
+                                              headers: APIConstants.testTokenHeader,
+                                              body: feedContentData)
+            
+            NetworkLogger.log(request: request)
+            
+            return urlSession.rx.data(request: request)
+                .map { _ in }
+                .asSingle()
+        } catch {
+            return Single.error(error)
+        }
+    }
 }

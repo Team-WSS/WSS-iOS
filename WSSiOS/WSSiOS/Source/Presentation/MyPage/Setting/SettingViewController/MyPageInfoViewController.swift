@@ -8,7 +8,6 @@
 import UIKit
 
 import RxSwift
-import Then
 import RxRelay
 
 final class MyPageInfoViewController: UIViewController {
@@ -18,13 +17,13 @@ final class MyPageInfoViewController: UIViewController {
     private let disposeBag = DisposeBag()
     private let viewModel: MyPageInfoViewModel
     private let settingList = StringLiterals.MyPage.SettingInfo.allCases.map { $0.rawValue }
-    private let emailRelay = BehaviorRelay(value: "")
+    private let updateDataRelay = BehaviorRelay<Bool>(value: false)
+    private let emailRelay = BehaviorRelay<String>(value: "")
+    private var genderAndBirthData = ChangeUserInfo(gender: "", birth: 0)
     
     //MARK: - UI Components
     
     private var rootView = MyPageSettingView()
-    
-    private let backButton = UIButton()
     
     // MARK: - Life Cycle
     
@@ -45,21 +44,17 @@ final class MyPageInfoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        swipeBackGesture()
-        
-        setUI()
         register()
         bindCell()
-        bindAction()
         bindViewModel()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        preparationSetNavigationBar(title: StringLiterals.Navigation.Title.myPageInfo,
-                                    left: backButton,
-                                    right: nil)
+
+        setNavigationBar()
+        hideTabBar()
+        swipeBackGesture()
     }
     
     //MARK: - Delegate
@@ -92,56 +87,81 @@ final class MyPageInfoViewController: UIViewController {
                 switch indexPath.row {
                 case 0:
                     print("성별/나이 변경")
-                    //pushVC
+                    owner.pushToChangeUserInfoViewController(userInfo: owner.genderAndBirthData)
                 case 1:
                     print("이메일")
-                    //pushVC
+                    break;
                 case 2:
                     print("차단유저 목록")
-                    //pushVC
+                    owner.pushToBlockIDViewController()
                 case 3:
                     print("로그아웃")
                     //pushModalVC
                 case 4:
                     print("회원탈퇴")
-                    //pushVC
+                    owner.pushToMyPageDeleteIDWarningViewController()
                 default: break
                 }
             })
             .disposed(by: disposeBag)
     }
     
-    private func bindAction() {
-        self.backButton.rx.tap
-            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, _ in
+    private func bindViewModel() {
+        let input = MyPageInfoViewModel.Input(
+            backButtonDidTap: rootView.backButton.rx.tap,
+            updateUserInfo: self.updateDataRelay)
+        
+        let output = viewModel.transform(from: input, disposeBag: disposeBag)
+        
+        output.popViewController
+            .bind(with: self, onNext: { owner, _ in
                 owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
-    }
-    
-    private func bindViewModel() {
-        let input = MyPageInfoViewModel.Input()
-        let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
-        output.email
-            .subscribe(with: self, onNext: { owner, email in
+        output.bindEmail
+            .bind(with: self, onNext: { owner, email in
                 owner.emailRelay.accept(email)
+                owner.rootView.tableView.reloadData()
             })
             .disposed(by: disposeBag)
         
-        emailRelay
-            .bind(onNext: { [weak self] _ in
-                self?.rootView.tableView.reloadData()
+        output.genderAndBirth
+            .bind(with: self, onNext: { owner, data in
+                owner.genderAndBirthData = ChangeUserInfo(gender: data.gender, birth: data.birth)
             })
             .disposed(by: disposeBag)
     }
 }
 
-extension MyPageInfoViewController {
-    private func setUI() {
-        backButton.do {
-            $0.setImage(.icNavigateLeft, for: .normal)
-        }
+extension MyPageInfoViewController: MyPageChangeUserInfoDelegate {    
+    
+    //MARK: - UI
+    
+    private func setNavigationBar() {
+        preparationSetNavigationBar(title: StringLiterals.Navigation.Title.myPageInfo,
+                                    left: self.rootView.backButton,
+                                    right: nil)
+    }
+    
+    //MARK: - Delegate
+    
+    private func pushToChangeUserInfoViewController(userInfo: ChangeUserInfo) {
+        let viewController = MyPageChangeUserInfoViewController(
+            viewModel: MyPageChangeUserInfoViewModel(
+                userRepository: DefaultUserRepository(
+                    userService: DefaultUserService(),
+                    blocksService: DefaultBlocksService()),
+                userInfo: userInfo)
+        )
+        
+        viewController.delegate = self
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func updateUserInfo() {
+        self.updateDataRelay.accept(true)
+        print("돌아와써")
     }
 }
+

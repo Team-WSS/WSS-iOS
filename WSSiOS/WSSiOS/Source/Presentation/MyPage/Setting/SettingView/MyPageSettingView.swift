@@ -15,6 +15,7 @@ final class MyPageSettingView: UIView {
     //MARK: - Components
     
     var tableView = UITableView(frame: .zero, style: .plain)
+    let backButton = UIButton()
     
     // MARK: - Life Cycle
     
@@ -43,6 +44,10 @@ final class MyPageSettingView: UIView {
             $0.separatorColor = .wssGray50
             $0.rowHeight = 64
         }
+        
+        backButton.do {
+            $0.setImage(.icNavigateLeft.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray200), for: .normal)
+        }
     }
     
     private func setHierarchy() {
@@ -52,6 +57,10 @@ final class MyPageSettingView: UIView {
     private func setLayout() {
         tableView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+        }
+        
+        backButton.snp.makeConstraints {
+            $0.size.equalTo(24)
         }
     }
 }
