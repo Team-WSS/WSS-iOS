@@ -109,7 +109,7 @@ final class LoginViewController: UIViewController {
     }
     
     private func createViewModelInput() -> LoginViewModel.Input {
-        // 로그인 버튼들 전체
+        // 로그인 버튼들 전체가 같은 debounce로 제어되어야 하므로, 모든 탭 이벤트를 하나의 Observable로 연결해줌.
         let loginButtonDidTap = Observable.merge(
             rootView.platformButtonStackView.kakaoLoginButton.rx.tap.map { LoginButtonType.kakao },
             rootView.platformButtonStackView.naverLoginButton.rx.tap.map { LoginButtonType.naver },
