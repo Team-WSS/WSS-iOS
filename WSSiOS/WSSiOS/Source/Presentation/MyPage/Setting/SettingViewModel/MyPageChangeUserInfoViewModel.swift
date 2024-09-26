@@ -48,7 +48,7 @@ final class MyPageChangeUserInfoViewModel: ViewModelType {
         let dataBind = BehaviorRelay<ChangeUserInfo>(value: ChangeUserInfo(gender: "", 
                                                                            birth: 0))
         let changeGender = BehaviorRelay<String>(value: "")
-        let showBottomSheet = PublishRelay<Bool>()
+        let showBottomSheet = PublishRelay<Int>()
         let changeCompleteButton = BehaviorRelay<Bool>(value: false)
         let popViewController = PublishRelay<Void>()
     }
@@ -76,7 +76,7 @@ final class MyPageChangeUserInfoViewModel: ViewModelType {
         
         input.birthViewTapped
             .bind(with: self, onNext: { owner, _ in
-                output.showBottomSheet.accept(true)
+                output.showBottomSheet.accept(owner.currentBirth)
             })
             .disposed(by: disposeBag)
         
@@ -94,7 +94,7 @@ final class MyPageChangeUserInfoViewModel: ViewModelType {
                 if isEnabled {
                     owner.putUserInfo(gender: owner.currentGender, birth: owner.currentBirth)
                         .subscribe(with: self, onNext: { owner, _ in 
-                            output.popViewController
+                            output.popViewController.accept(())
                         }, onError: { owner, error in
                             print(error)
                         })

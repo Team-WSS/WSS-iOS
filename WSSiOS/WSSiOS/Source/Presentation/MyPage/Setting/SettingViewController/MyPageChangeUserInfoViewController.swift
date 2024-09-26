@@ -81,8 +81,8 @@ final class MyPageChangeUserInfoViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.showBottomSheet
-            .subscribe(with: self, onNext: { owner, _ in
-                //VC 이동
+            .subscribe(with: self, onNext: { owner, birth in
+                owner.presentModalViewController(MyPageChangeUserBirthViewController(userBirth: birth))
             })
             .disposed(by: disposeBag)
         
