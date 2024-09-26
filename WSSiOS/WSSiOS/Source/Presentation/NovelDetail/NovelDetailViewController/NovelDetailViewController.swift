@@ -30,7 +30,7 @@ final class NovelDetailViewController: UIViewController {
     
     //MARK: - Components
     
-    private var rootView = NovelDetailView()
+    private let rootView = NovelDetailView()
     
     //MARK: - Life Cycle
     
