@@ -83,7 +83,7 @@ final class MyPageChangeUserInfoViewModel: ViewModelType {
         input.backButtonTapped
             .throttle(.seconds(3), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
-                output.popViewController
+                output.popViewController.accept(())
             })
             .disposed(by: disposeBag)
         

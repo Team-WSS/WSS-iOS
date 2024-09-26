@@ -20,7 +20,6 @@ final class MyPageInfoViewController: UIViewController {
     private let emailRelay = BehaviorRelay(value: "")
     private let logoutRelay = PublishRelay<Bool>()
     private let updateDataRelay = BehaviorRelay<Bool>(value: false)
-    private let emailRelay = BehaviorRelay<String>(value: "")
     private var genderAndBirthData = ChangeUserInfo(gender: "", birth: 0)
     
     //MARK: - UI Components
@@ -119,8 +118,8 @@ final class MyPageInfoViewController: UIViewController {
     }
     
     private func bindViewModel() {
-        let input = MyPageInfoViewModel.Input(logoutButtonTapped: self.logoutRelay)
         let input = MyPageInfoViewModel.Input(
+            logoutButtonTapped: self.logoutRelay,
             backButtonDidTap: rootView.backButton.rx.tap,
             updateUserInfo: self.updateDataRelay)
         
