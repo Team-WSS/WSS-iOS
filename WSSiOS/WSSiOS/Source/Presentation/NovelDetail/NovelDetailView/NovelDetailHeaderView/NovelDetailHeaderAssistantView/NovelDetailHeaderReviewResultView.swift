@@ -11,14 +11,14 @@ import SnapKit
 import Then
 
 final class NovelDetailHeaderReviewResultView: UIView {
-
+    
     //MARK: - Components
     
     private let totalStackView = UIStackView()
     
     private let readInfoButtonStackView = UIStackView()
     let readInfoButtons = [NovelDetailHeaderReadInfoButton(iconImage: .icSmallStar),
-                                   NovelDetailHeaderReadInfoButton(iconImage: .icSmallCalendar)]
+                           NovelDetailHeaderReadInfoButton(iconImage: .icSmallCalendar)]
     
     private let readStatusButtonStackView = UIStackView()
     let readStatusButtons = ReadStatus.allCases.map {
@@ -115,7 +115,7 @@ final class NovelDetailHeaderReviewResultView: UIView {
             $0.updateButton(selectedStatus: data.readStatus)
         }
         bindVisibility(data.isUserNovelRatingExist, data.isReadDateExist)
-       
+        
         readInfoButtons[0].bindData(infoText: data.userNovelRatingText)
         readInfoButtons[1].bindData(infoText: data.readDateText)
     }
