@@ -53,6 +53,7 @@ final class KingFisherRxHelper {
             
             return Disposables.create {
                 task?.cancel()
-            }        }
+            }
+        }
     }
 }
