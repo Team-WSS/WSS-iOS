@@ -78,6 +78,7 @@ final class NovelDetailViewModel: ViewModelType {
         
         //NovelDetailFeed
         let novelDetailFeedTableViewContentSize: Observable<CGSize?>
+        let scrollViewReachedBottom: Observable<Bool>
     }
     
     struct Output {
@@ -239,6 +240,12 @@ final class NovelDetailViewModel: ViewModelType {
         input.novelDetailFeedTableViewContentSize
             .map { $0?.height ?? 0 }
             .bind(to: self.novelDetailFeedTableViewHeight)
+            .disposed(by: disposeBag)
+        
+        input.scrollViewReachedBottom
+            .subscribe(with: self, onNext: { owner, bottom in
+                print("novelDetailFeedTableViewReachedBottom", bottom)
+            })
             .disposed(by: disposeBag)
         
         self.novelDetailInfoData

@@ -273,7 +273,8 @@ final class NovelDetailViewController: UIViewController {
             stickyInfoTabBarButtonDidTap: rootView.stickyTabBarView.infoButton.rx.tap,
             stickyFeedTabBarButtonDidTap: rootView.stickyTabBarView.feedButton.rx.tap,
             descriptionAccordionButtonDidTap: rootView.infoView.descriptionView.accordionButton.rx.tap,
-            novelDetailFeedTableViewContentSize: rootView.feedView.feedListView.feedTableView.rx.observe(CGSize.self, "contentSize")
+            novelDetailFeedTableViewContentSize: rootView.feedView.feedListView.feedTableView.rx.observe(CGSize.self, "contentSize"),
+            scrollViewReachedBottom: observeReachedBottom(rootView.scrollView)
         )
     }
     
@@ -307,6 +308,18 @@ final class NovelDetailViewController: UIViewController {
             NSAttributedString.Key.foregroundColor: UIColor.wssBlack,
             NSAttributedString.Key.kern: -0.6,
         ]
+    }
+    
+    private func observeReachedBottom(_ scrollView: UIScrollView) -> Observable<Bool> {
+        return scrollView.rx.contentOffset
+            .map { contentOffset in
+                let contentHeight = scrollView.contentSize.height
+                let viewHeight = scrollView.frame.size.height
+                let offsetY = contentOffset.y
+                
+                return offsetY + viewHeight >= contentHeight
+            }
+            .distinctUntilChanged()
     }
 }
 
