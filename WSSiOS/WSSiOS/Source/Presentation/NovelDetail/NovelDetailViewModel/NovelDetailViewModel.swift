@@ -26,6 +26,7 @@ final class NovelDetailViewModel: ViewModelType {
     private let showLargeNovelCoverImage = BehaviorRelay<Bool>(value: false)
     private let isUserNovelInterested = BehaviorRelay<Bool>(value: false)
     private let readStatus = BehaviorRelay<ReadStatus?>(value: nil)
+    private let novelGenre = BehaviorRelay<[NewNovelGenre]>(value: [])
     
     //Tab
     private let selectedTab = BehaviorRelay<Tab>(value: Tab.info)
@@ -80,9 +81,9 @@ final class NovelDetailViewModel: ViewModelType {
         //NovelDetailHeader
         let showLargeNovelCoverImage: Driver<Bool>
         let isUserNovelInterested: Driver<Bool>
-        let pushTofeedWriteViewController: Observable<Void>
+        let pushTofeedWriteViewController: Observable<[NewNovelGenre]>
         let pushToReviewViewController: Observable<ReadStatus>
-                                            
+        
         //Tab
         let selectedTab: Driver<Tab>
         
@@ -102,6 +103,10 @@ final class NovelDetailViewModel: ViewModelType {
                 owner.novelDetailHeaderData.onNext(data)
                 owner.isUserNovelInterested.accept(data.isUserNovelInterest)
                 owner.readStatus.accept(data.readStatus)
+                
+                owner.novelGenre.onNext(data.novelGenre.split{ $0 == "/"}
+                    .map{ String($0) }
+                    .map { NewNovelGenre.withKoreanRawValue(from: $0) })
             }, onError: { owner, error in
                 owner.novelDetailHeaderData.onError(error)
             })
@@ -138,11 +143,14 @@ final class NovelDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        let pushToReviewViewController = input.reviewResultButtonDidTap.map {
-            let selectedReadStatus = $0 ?? self.readStatus.value
-            guard let selectedReadStatus else { throw RxError.noElements }
-            return selectedReadStatus
-        }
+        let pushToReviewViewController = input.reviewResultButtonDidTap
+            .map {
+                let selectedReadStatus = $0 ?? self.readStatus.value
+                guard let selectedReadStatus else { throw RxError.noElements }
+                return selectedReadStatus
+            }
+            .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
+            .asObservable()
         
         input.interestButtonDidTap
             .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
@@ -160,7 +168,7 @@ final class NovelDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        let pushTofeedWriteViewController = input.feedWriteButtonDidTap
+        let pushTofeedWriteViewController = input.feedWriteButtonDidTap.map { _ in self.novelGenre.value }
             .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
             .asObservable()
         
@@ -243,7 +251,7 @@ final class NovelDetailViewModel: ViewModelType {
         guard indexPath.item < keywordList.value.count else {
             return nil
         }
-       return "\(keywordList.value[indexPath.item].keywordName) \(keywordList.value[indexPath.item].keywordCount)"
+        return "\(keywordList.value[indexPath.item].keywordName) \(keywordList.value[indexPath.item].keywordCount)"
     }
 }
 

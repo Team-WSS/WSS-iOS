@@ -155,11 +155,10 @@ final class NovelDetailViewController: UIViewController {
         
         output.pushToReviewViewController
             .observe(on: MainScheduler.instance)
-            .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, value in
+            .bind(with: self, onNext: { owner, readStatus in
                 // 작품 평가 View로 이동, readStatus버튼으로 이동한 경우, 선택한 readStatus 값은 바로 반영해줌
                 // 날짜나 별점 버튼으로 이동하는 경우 현재 readStatus를 보냄.
-                print("작품 평가 View로 이동, readStatus: \(String(describing: value))")
+                print("작품 평가 View로 이동, readStatus: \(String(describing: readStatus))")
             })
             .disposed(by: disposeBag)
         
@@ -171,9 +170,9 @@ final class NovelDetailViewController: UIViewController {
         
         output.pushTofeedWriteViewController
             .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, _ in
+            .bind(with: self, onNext: { owner, genre in
                 // 수다글 작성 View로 이동
-                print("수다글 작성 View로 이동")
+                print("수다글 작성 View로 이동, genre: \(String(describing: genre))")
             })
             .disposed(by: disposeBag)
         
