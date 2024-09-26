@@ -25,6 +25,7 @@ final class NovelDetailViewModel: ViewModelType {
     private let novelDetailHeaderData = PublishSubject<NovelDetailHeaderEntity>()
     private let showLargeNovelCoverImage = BehaviorRelay<Bool>(value: false)
     private let isUserNovelInterested = BehaviorRelay<Bool>(value: false)
+    private let readStatus = BehaviorRelay<ReadStatus?>(value: nil)
     
     //Tab
     private let selectedTab = BehaviorRelay<Tab>(value: Tab.info)
@@ -80,7 +81,7 @@ final class NovelDetailViewModel: ViewModelType {
         let showLargeNovelCoverImage: Driver<Bool>
         let isUserNovelInterested: Driver<Bool>
         let pushTofeedWriteViewController: Observable<Void>
-        let pushToReviewViewController: Observable<ReadStatus?>
+        let pushToReviewViewController: Observable<ReadStatus>
                                             
         //Tab
         let selectedTab: Driver<Tab>
@@ -100,6 +101,7 @@ final class NovelDetailViewModel: ViewModelType {
             .subscribe(with: self, onNext: { owner, data in
                 owner.novelDetailHeaderData.onNext(data)
                 owner.isUserNovelInterested.accept(data.isUserNovelInterest)
+                owner.readStatus.accept(data.readStatus)
             }, onError: { owner, error in
                 owner.novelDetailHeaderData.onError(error)
             })
@@ -136,7 +138,11 @@ final class NovelDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        let pushToReviewViewController = input.reviewResultButtonDidTap
+        let pushToReviewViewController = input.reviewResultButtonDidTap.map {
+            let selectedReadStatus = $0 ?? self.readStatus.value
+            guard let selectedReadStatus else { throw RxError.noElements }
+            return selectedReadStatus
+        }
         
         input.interestButtonDidTap
             .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)

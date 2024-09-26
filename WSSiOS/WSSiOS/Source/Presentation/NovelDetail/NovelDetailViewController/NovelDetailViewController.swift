@@ -157,8 +157,8 @@ final class NovelDetailViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, value in
-                // 작품 평가 View로 이동, readStatus버튼으로 이동한 경우,
-                // 선택한 readStatus 값은 바로 반영해줌
+                // 작품 평가 View로 이동, readStatus버튼으로 이동한 경우, 선택한 readStatus 값은 바로 반영해줌
+                // 날짜나 별점 버튼으로 이동하는 경우 현재 readStatus를 보냄.
                 print("작품 평가 View로 이동, readStatus: \(String(describing: value))")
             })
             .disposed(by: disposeBag)
