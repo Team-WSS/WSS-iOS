@@ -48,7 +48,7 @@ final class NovelDetailLargeCoverImageButton: UIButton {
         }
         
         dismissButton.do {
-            $0.setImage(.icCacelModal.withTintColor(.wssWhite,
+            $0.setImage(.icCancelModal.withTintColor(.wssWhite,
                                                     renderingMode: .alwaysOriginal),
                         for: .normal)
         }

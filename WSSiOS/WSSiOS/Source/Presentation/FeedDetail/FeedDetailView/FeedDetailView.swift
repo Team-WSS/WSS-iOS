@@ -14,7 +14,7 @@ final class FeedDetailView: UIView {
     
     //MARK: - Components
     
-    private let scrollView = UIScrollView()
+    let scrollView = UIScrollView()
     private let contentView = UIView()
     
     let backButton = UIButton()
@@ -24,6 +24,7 @@ final class FeedDetailView: UIView {
     let profileView = FeedDetailProfileView()
     let feedContentView = FeedDetailContentView()
     let replyView = FeedDetailReplyView()
+    let replyWritingView = FeedDetailReplyWritingView()
     
     // MARK: - Life Cycle
     
@@ -65,7 +66,8 @@ final class FeedDetailView: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubview(scrollView)
+        self.addSubviews(scrollView,
+                         replyWritingView)
         scrollView.addSubview(contentView)
         contentView.addSubviews(profileView,
                                 feedContentView,
@@ -97,5 +99,15 @@ final class FeedDetailView: UIView {
             $0.top.equalTo(feedContentView.snp.bottom)
             $0.leading.trailing.bottom.equalToSuperview()
         }
+        
+        replyWritingView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
+        }
+    }
+    
+    func bindData(_ data: Feed) {
+        profileView.bindData(data: data)
+        feedContentView.bindData(data: data)
     }
 }

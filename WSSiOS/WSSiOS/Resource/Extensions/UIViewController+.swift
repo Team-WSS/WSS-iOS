@@ -13,6 +13,10 @@ import Then
 
 extension UIViewController {
     func showToast(_ toastStatus: ToastStatus) {
+        if let existingToastView = self.view.subviews.first(where: { $0 is WSSToastView }) {
+            existingToastView.removeFromSuperview()
+        }
+        
         let toastView = WSSToastView(toastStatus)
         
         self.view.addSubview(toastView)
@@ -22,12 +26,10 @@ extension UIViewController {
             $0.top.equalTo(view.snp.bottom).offset(-212)
         }
         
-        UIView.animate(withDuration: 0, animations: {
-            toastView.alpha = 1
+        UIView.animate(withDuration: 0.3, delay: 3.0, animations: {
+            toastView.alpha = 0
         }, completion: { _ in
-            UIView.animate(withDuration: 0.3, delay: 3.0) {
-                toastView.alpha = 0
-            }
+            toastView.removeFromSuperview()
         })
     }
     
@@ -246,6 +248,19 @@ extension UIViewController {
         })
         
         self.dismiss(animated: true)
+    }
+    
+    func pushToBlockIDViewController() {
+        let viewController = MyPageBlockUserViewController(
+            viewModel:MyPageBlockUserViewModel(
+                userRepository: DefaultUserRepository(
+                    userService: DefaultUserService(),
+                    blocksService: DefaultBlocksService()
+                )
+            )
+        )
+        
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
 }
 

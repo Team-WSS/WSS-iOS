@@ -96,6 +96,12 @@ final class MyPageBlockUserViewController: UIViewController {
                 owner.showToast(.deleteBlockUser(nickname: nickname))
             })
             .disposed(by: disposeBag)
+        
+        output.popViewController
+            .bind(with: self, onNext: { owner, _ in
+                owner.popToLastViewController()
+            })
+            .disposed(by: disposeBag)
     }
     
     private func setNavigation() {

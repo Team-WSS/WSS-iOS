@@ -69,12 +69,7 @@ final class SosoPickCollectionViewCell: UICollectionViewCell {
     }
     
     func bindData(data: SosoPickNovel) {
-        if let novelImage = UIImage(named: data.novelImage) {
-            self.novelImageView.image = novelImage
-        }
-        else {
-            self.novelImageView.image = .imgLoadingThumbnail
-        }
+        self.novelImageView.kfSetImage(url: data.novelImage)
         self.novelTitleLabel.do {
             $0.applyWSSFont(.label1, with: data.novelTitle)
             $0.lineBreakMode = .byTruncatingTail

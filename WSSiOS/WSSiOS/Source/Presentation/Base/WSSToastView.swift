@@ -18,10 +18,12 @@ enum ToastStatus {
     case avatarUnlock
     case nicknameSave
     case deleteBlockUser(nickname: String)
-    
+    case novelAlreadyConnected
+    case selectionOverLimit(count: Int)
+
     var toastImage: UIImage {
         switch self {
-        case .memoSaveSuccess, .nicknameSave, .memoEditSuccess, .deleteBlockUser:
+        case .memoSaveSuccess, .nicknameSave, .memoEditSuccess, .deleteBlockUser, .novelAlreadyConnected, .selectionOverLimit:
             return .icAlertSuccess
         case .memoSaveFail, .memoDelete:
             return .icAlertWarning
@@ -46,6 +48,10 @@ enum ToastStatus {
             "닉네임을 저장했어요"
         case .deleteBlockUser(let nickname):
             "\(nickname)님을 차단 해제했어요"
+        case .novelAlreadyConnected:
+            "하나의 작품만 연결할 수 있어요"
+        case .selectionOverLimit(let count):
+            "\(count)개까지 선택 가능해요"
         }
     }
 }
@@ -104,7 +110,8 @@ final class WSSToastView: UIView {
     
     func setLayout(_ status: ToastStatus) {
         switch status {
-        case .memoSaveSuccess, .memoSaveFail, .memoEditSuccess, .memoDelete, .nicknameSave, .deleteBlockUser:
+        case .memoSaveSuccess, .memoSaveFail, .memoEditSuccess, .memoDelete, .nicknameSave, .deleteBlockUser, .novelAlreadyConnected, .selectionOverLimit:
+
             toastImageView.snp.makeConstraints {
                 $0.top.bottom.equalToSuperview().inset(14)
                 $0.leading.equalToSuperview().inset(20)

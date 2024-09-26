@@ -23,19 +23,53 @@ final class MyPageInfoViewModel: ViewModelType {
     }
     
     struct Input {
-    
+        let logoutButtonTapped: PublishRelay<Bool>
+        let backButtonDidTap: ControlEvent<Void>
+        let updateUserInfo: BehaviorRelay<Bool>
     }
     
     struct Output {
-        let email = BehaviorRelay(value: "")
+        let popViewController = PublishRelay<Bool>()
+        let bindEmail = BehaviorRelay<String>(value: "")
+        let genderAndBirth = PublishRelay<ChangeUserInfo>()
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
-       
-        getUserEmail()
-            .subscribe(with: self, onNext: { owner, email in
-                output.email.accept(email)
+        
+        input.backButtonDidTap
+            .throttle(.seconds(3), scheduler: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, _ in
+                output.popViewController.accept(true)
+            })
+            .disposed(by: disposeBag)
+        
+        input.updateUserInfo
+            .subscribe(with: self, onNext: { owner, update in
+                if update {
+                    owner.getUserInfo()
+                        .subscribe(with: self, onNext: { owner, data in
+                            output.genderAndBirth.accept(ChangeUserInfo(gender: data.gender,
+                                                                        birth: data.birth))
+                        })
+                        .disposed(by: disposeBag)
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        getUserInfo()
+            .subscribe(with: self, onNext: { owner, data in
+                output.bindEmail.accept(data.email)
+                output.genderAndBirth.accept(ChangeUserInfo(gender: data.gender,
+                                                            birth: data.birth))
+            }, onError: { owner, error in
+                print(error)
+            })
+            .disposed(by: disposeBag)
+        
+        input.logoutButtonTapped
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.logout()
             }, onError: { owner, error in
                 print(error)
             })
@@ -46,8 +80,13 @@ final class MyPageInfoViewModel: ViewModelType {
     
     //MARK: - API
     
-    private func getUserEmail() -> Observable<String> {
-        return userRepository.getUserEmail()
+    private func getUserInfo() -> Observable<UserInfo> {
+        return userRepository.getUserInfo()
+            .observe(on: MainScheduler.instance)
+    }
+    
+    private func logout() {
+        print("로그아웃 로직 구현")
     }
 }
 

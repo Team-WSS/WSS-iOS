@@ -10,9 +10,10 @@ import Foundation
 enum URLs {
     enum User {
         private static let userBasePath = "/users"
-        static let getUserInfo = userBasePath + "/info"
+        static let afterDelete = userBasePath + "추후 삭제"
         static let patchUserNickname = userBasePath + "/nickname"
         static let getUserNovelStatus = userBasePath + "/user-novel-stats"
+        static let userInfo = userBasePath + "/info"
     }
     
     enum Novel {
@@ -81,6 +82,18 @@ enum URLs {
     
     enum Feed {
         static let getFeeds = "/feeds"
+        static func getSingleFeed(feedId: Int) -> String {
+            return "/feeds/\(feedId)"
+        }
+        static func getSingleFeedComments(feedId: Int) -> String {
+            return "/feeds/\(feedId)/comments"
+        }
+        static func postFeedLike(feedId: Int) -> String {
+            return "/feeds/\(feedId)/likes"
+        }
+        static func deleteFeedLike(feedId: Int) -> String {
+            return "/feeds/\(feedId)/likes"
+        }
     }
     
     enum MyPage {
@@ -101,5 +114,10 @@ enum URLs {
     
     enum Notice {
         static let getNotices = "/notices"
+    }
+    
+    enum Search {
+        static let sosoPick = "/soso-picks"
+        static let normalSearch = "/novels"
     }
 }

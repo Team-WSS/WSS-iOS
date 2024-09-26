@@ -14,9 +14,6 @@ final class FeedDetailReplyView: UIView {
     
     //MARK: - UI Components
     
-    private let replyTitleStackView = UIStackView()
-    private let replyTitleLabel = UILabel()
-    let replyCountLabel = UILabel()
     let replyCollectionView = UICollectionView(frame: .zero,
                                                collectionViewLayout: UICollectionViewLayout())
     private let replyCollectionViewLayout = UICollectionViewFlowLayout()
@@ -37,55 +34,28 @@ final class FeedDetailReplyView: UIView {
     }
     
     private func setUI() {
-        replyTitleStackView.do {
-            $0.axis = .horizontal
-            $0.spacing = 2
-        }
-        
-        replyTitleLabel.do {
-            $0.applyWSSFont(.title2, with: StringLiterals.FeedDetail.reply)
-            $0.textColor = .wssBlack
-        }
-        
-        replyCountLabel.do {
-            $0.textColor = .wssPrimary100
-        }
-        
         replyCollectionView.do {
             $0.showsVerticalScrollIndicator = false
         }
         
         replyCollectionViewLayout.do {
             $0.scrollDirection = .vertical
-            $0.itemSize = CGSize(width: UIScreen.main.bounds.width-40, height: 45)
+            $0.itemSize = CGSize(width: UIScreen.main.bounds.width - 40, height: 45)
             $0.minimumLineSpacing = 22
             replyCollectionView.setCollectionViewLayout($0, animated: true)
         }
     }
     
     private func setHierarchy() {
-        replyTitleStackView.addArrangedSubviews(replyTitleLabel,
-                                                replyCountLabel)
-        self.addSubviews(replyTitleStackView,
-                         replyCollectionView)
+        self.addSubview(replyCollectionView)
     }
     
     private func setLayout() {
-        replyTitleStackView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(16)
-            $0.leading.equalToSuperview().inset(20)
-        }
-        
         replyCollectionView.snp.makeConstraints {
-            $0.top.equalTo(replyTitleStackView.snp.bottom).offset(24)
-            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.top.horizontalEdges.equalToSuperview().inset(20)
             $0.bottom.equalToSuperview().inset(40)
-            $0.height.equalTo(20) // updateHeight을 위한 임시값 저장
+            $0.height.equalTo(20)
         }
-    }
-    
-    func bindData(commentCount: Int) {
-        replyCountLabel.applyWSSFont(.title2, with: String(commentCount))
     }
     
     //MARK: - Custom Method
