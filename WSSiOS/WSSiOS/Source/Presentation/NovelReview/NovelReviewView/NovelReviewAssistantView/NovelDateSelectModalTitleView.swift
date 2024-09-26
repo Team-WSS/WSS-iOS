@@ -21,6 +21,7 @@ final class NovelDateSelectModalTitleView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        setUI()
         setHierarchy()
         setLayout()
     }
@@ -30,6 +31,12 @@ final class NovelDateSelectModalTitleView: UIView {
     }
     
     //MARK: - UI
+    
+    private func setUI() {
+        titleLabel.do {
+            $0.textColor = .wssBlack
+        }
+    }
     
     private func setHierarchy() {
         self.addSubview(titleLabel)
