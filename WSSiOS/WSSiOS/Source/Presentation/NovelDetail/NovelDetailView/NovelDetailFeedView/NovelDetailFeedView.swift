@@ -15,6 +15,7 @@ final class NovelDetailFeedView: UIButton {
     //MARK: - Components
     
     private let emptyView = NovelDetailFeedEmptyView()
+    let feedListView = NovelDetailFeedListView()
     
     //MARK: - Life Cycle
     
@@ -37,11 +38,11 @@ final class NovelDetailFeedView: UIButton {
     }
     
     private func setHierarchy() {
-        self.addSubviews(emptyView)
+        self.addSubviews(feedListView)
     }
     
     private func setLayout() {
-        emptyView.snp.makeConstraints {
+        feedListView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
     }

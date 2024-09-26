@@ -357,6 +357,10 @@ enum StringLiterals {
         
         enum Feed {
             static let emptyDescription = "아직 글이 없어요\n최초로 남겨보세요!"
+            
+            enum Cell {
+                static let isModified = "(수정됨)"
+            }
         }
     }
     
