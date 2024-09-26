@@ -104,7 +104,7 @@ final class NovelDetailViewModel: ViewModelType {
                 owner.isUserNovelInterested.accept(data.isUserNovelInterest)
                 owner.readStatus.accept(data.readStatus)
                 
-                owner.novelGenre.onNext(data.novelGenre.split{ $0 == "/"}
+                owner.novelGenre.accept(data.novelGenre.split{ $0 == "/"}
                     .map{ String($0) }
                     .map { NewNovelGenre.withKoreanRawValue(from: $0) })
             }, onError: { owner, error in
