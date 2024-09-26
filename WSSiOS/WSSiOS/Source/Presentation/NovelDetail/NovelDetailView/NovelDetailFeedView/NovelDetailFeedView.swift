@@ -14,7 +14,7 @@ final class NovelDetailFeedView: UIButton {
     
     //MARK: - Components
     
-    private let dummyLabel = UILabel()
+    private let emptyView = NovelDetailFeedEmptyView()
     
     //MARK: - Life Cycle
     
@@ -33,27 +33,16 @@ final class NovelDetailFeedView: UIButton {
     //MARK: - UI
     
     private func setUI() {
-        self.do {
-            $0.backgroundColor = .wssWhite
-        }
-        
-        dummyLabel.do {
-            $0.applyWSSFont(.headline1, with: "Feed View")
-            $0.textColor = .wssGray80
-        }
+    
     }
     
     private func setHierarchy() {
-        self.addSubview(dummyLabel)
+        self.addSubviews(emptyView)
     }
     
     private func setLayout() {
-        self.snp.makeConstraints {
-            $0.height.equalTo(500)
-        }
-        
-        dummyLabel.snp.makeConstraints {
-            $0.center.equalToSuperview()
+        emptyView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
 }
