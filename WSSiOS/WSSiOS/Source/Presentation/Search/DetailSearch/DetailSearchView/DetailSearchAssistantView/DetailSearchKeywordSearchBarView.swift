@@ -14,7 +14,6 @@ final class DetailSearchKeywordSearchBarView: UIView {
     
     //MARK: - UI Components
 
-    private let searchPlaceHolderLabel = UILabel()
     private let searchTextField = UITextField()
     private let searchClearButton = UIButton()
     private let searchImageView = UIImageView()
@@ -42,16 +41,14 @@ final class DetailSearchKeywordSearchBarView: UIView {
             $0.clipsToBounds = true
         }
         
-        searchPlaceHolderLabel.do {
-            $0.applyWSSFont(.label1, with: "키워드를 검색하세요")
-            $0.textColor = .wssGray200
-        }
-        
         searchTextField.do {
+            $0.autocorrectionType = .no
+            $0.spellCheckingType = .no
             $0.textColor = .wssBlack
             $0.font = .Label1
             $0.rightView = searchClearButton
             $0.rightViewMode = .whileEditing
+            $0.placeholder = StringLiterals.DetailSearch.placeHolder
         }
         
         searchClearButton.do {
@@ -67,8 +64,7 @@ final class DetailSearchKeywordSearchBarView: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubviews(searchPlaceHolderLabel,
-                         searchTextField,
+        self.addSubviews(searchTextField,
                          searchImageView)
     }
     
@@ -76,12 +72,7 @@ final class DetailSearchKeywordSearchBarView: UIView {
         self.snp.makeConstraints {
             $0.height.equalTo(42)
         }
-        
-        searchPlaceHolderLabel.snp.makeConstraints {
-            $0.leading.equalToSuperview().inset(16)
-            $0.centerY.equalToSuperview()
-        }
-        
+
         searchTextField.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(16)
             $0.centerY.equalToSuperview()

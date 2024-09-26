@@ -374,6 +374,8 @@ enum StringLiterals {
         static let character = "캐릭터"
         static let relation = "관계"
         static let vibe = "분위기/전개"
+        
+        static let placeHolder = "키워드를 검색하세요"
     }
     
     enum Memo {
