@@ -181,7 +181,7 @@ extension NovelReviewViewController: UICollectionViewDelegateFlowLayout {
         if collectionView == self.rootView.novelReviewAttractivePointView.attractivePointCollectionView {
             var text: String?
             
-            let attractivePointList = AttractivePoints.allCases.map { $0.koreanString }
+            let attractivePointList = AttractivePoint.allCases.map { $0.koreanString }
             text = attractivePointList[indexPath.item]
             
             guard let unwrappedText = text else {

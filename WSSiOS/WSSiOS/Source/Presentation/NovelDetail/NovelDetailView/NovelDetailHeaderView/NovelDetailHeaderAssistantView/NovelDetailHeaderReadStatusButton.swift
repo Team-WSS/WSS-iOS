@@ -42,7 +42,8 @@ final class NovelDetailHeaderReadStatusButton: UIButton {
     private func setUI() {
         stackView.do {
             $0.axis = .vertical
-            $0.alignment =  .center
+            $0.alignment = .center
+            $0.isUserInteractionEnabled = false
             
             statusImageView.do {
                 $0.image = readStatus.strokeImage

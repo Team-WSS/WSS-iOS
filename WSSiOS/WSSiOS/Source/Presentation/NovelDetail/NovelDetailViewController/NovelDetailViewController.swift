@@ -101,11 +101,15 @@ final class NovelDetailViewController: UIViewController {
     }
     
     private func bindViewModelOutput(_ output: NovelDetailViewModel.Output) {
+        
+        //MARK: - Bind/Total
+        
         output.detailHeaderData
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
                 owner.rootView.bindHeaderData(data)
                 owner.navigationTitle = data.novelTitle
+                owner.setNavigationBar()
             }, onError: { owner, error in
                 print(error)
             })
@@ -134,11 +138,14 @@ final class NovelDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.backButtonEnabled
+        output.popToLastViewController
+            .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
+        
+        //MARK: - Bind/NovelDetailHeader
         
         output.showLargeNovelCoverImage
             .drive(with: self, onNext: { owner, isShow in
@@ -146,21 +153,42 @@ final class NovelDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.pushToReviewViewController
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, readStatus in
+                // 작품 평가 View로 이동, readStatus버튼으로 이동한 경우, 선택한 readStatus 값은 바로 반영해줌
+                // 날짜나 별점 버튼으로 이동하는 경우 현재 readStatus를 보냄.
+                print("작품 평가 View로 이동, readStatus: \(String(describing: readStatus))")
+            })
+            .disposed(by: disposeBag)
+        
+        output.isUserNovelInterested
+            .drive(with: self, onNext: { owner, isInterested in
+                owner.rootView.headerView.interestReviewButton.updateInterestButtonState(isInterested)
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushTofeedWriteViewController
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, genre in
+                // 수다글 작성 View로 이동
+                print("수다글 작성 View로 이동, genre: \(String(describing: genre))")
+            })
+            .disposed(by: disposeBag)
+        
+        //MARK: - Bind/Tab
+        
         output.selectedTab
             .drive(with: self, onNext: { owner, tab in
                 owner.rootView.updateTab(selected: tab)
             })
             .disposed(by: disposeBag)
         
+        //MARK: - Bind/NovelDetailInfo
+        
         output.isInfoDescriptionExpended
             .drive(with: self, onNext: { owner, isExpended in
                 owner.rootView.infoView.descriptionView.updateAccordionButton(isExpended)
-                
-                let stickyoffset = owner.rootView.headerView.frame.size.height - owner.view.safeAreaInsets.top
-                let point = CGPoint(x: 0, y: stickyoffset)
-                if !isExpended {
-                    owner.rootView.scrollView.rx.contentOffset.onNext(point)
-                }
             })
             .disposed(by: disposeBag)
         
@@ -199,13 +227,27 @@ final class NovelDetailViewController: UIViewController {
     //MARK: - Actions
     
     private func createViewModelInput() -> NovelDetailViewModel.Input {
+        let reviewResultButtonDidTap = Observable<ReadStatus?>.merge(
+            rootView.headerView.reviewResultView.readStatusButtons
+                .map{ button in
+                    button.rx.tap.map { button.readStatus }
+                }
+            + rootView.headerView.reviewResultView.readInfoButtons
+                .map{
+                    button in
+                    button.rx.tap.map { nil }
+                })
+        
         return NovelDetailViewModel.Input(
-            viewWillAppearEvent:  viewWillAppearEvent.asObservable(),
+            viewWillAppearEvent: viewWillAppearEvent.asObservable(),
             scrollContentOffset: rootView.scrollView.rx.contentOffset,
             backButtonDidTap: rootView.backButton.rx.tap,
             novelCoverImageButtonDidTap: rootView.headerView.coverImageButton.rx.tap,
             largeNovelCoverImageDismissButtonDidTap: rootView.largeNovelCoverImageButton.dismissButton.rx.tap,
             largeNovelCoverImageBackgroundDidTap: rootView.largeNovelCoverImageButton.rx.tap,
+            reviewResultButtonDidTap: reviewResultButtonDidTap,
+            interestButtonDidTap: rootView.headerView.interestReviewButton.interestButton.rx.tap,
+            feedWriteButtonDidTap: rootView.headerView.interestReviewButton.feedWriteButton.rx.tap,
             infoTabBarButtonDidTap: rootView.tabBarView.infoButton.rx.tap,
             feedTabBarButtonDidTap: rootView.tabBarView.feedButton.rx.tap,
             stickyInfoTabBarButtonDidTap: rootView.stickyTabBarView.infoButton.rx.tap,

@@ -38,7 +38,11 @@ extension ModuleFactory: NovelDetailModuleFactory {
     func makeNovelDetailViewController(novelId: Int) -> UIViewController {
         return NovelDetailViewController(
             viewModel: NovelDetailViewModel(
-                detailRepository: TestDetailRepository(),
+                novelDetailRepository: DefaultNovelDetailRepository(novelDetailService: DefaultNovelDetailService()),
                 novelId: novelId))
+    }
+    
+    func makeTestNovelDetailViewController(novelId: Int) -> UIViewController {
+        return NovelDetailViewController(viewModel: NovelDetailViewModel(novelDetailRepository: TestNovelDetailRepository()))
     }
 }

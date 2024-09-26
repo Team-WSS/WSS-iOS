@@ -23,6 +23,21 @@ enum URLs {
         }
     }
     
+    enum NovelDetail {
+        static func novelDetailHeader(novelId: Int) -> String {
+            return "/novels/\(novelId)"
+        }
+        static func novelDetailInfo(novelId: Int) -> String {
+            return "/novels/\(novelId)/info"
+        }
+        static func novelIsInterest(novelId: Int) -> String {
+            return "/novels/\(novelId)/is-interest"
+        }
+        static func novelReview(novelId: Int) -> String {
+            return "/user-novels/\(novelId)"
+        }
+    }
+    
     enum UserNovel {
         static func getUserNovel(userNovelId: Int) -> String {
             return "/user-novels/\(userNovelId)"

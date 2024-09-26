@@ -55,6 +55,7 @@ final class NovelDetailInfoPlatformCollectionViewCell: UICollectionViewCell {
     }
     
     func bindData(data: Platform) {
-        platformImageView.kfSetImage(url: data.platformImage)
+        let urlString = self.makeBucketImageURLString(path: data.platformImage)
+        platformImageView.kfSetImage(url: urlString)
     }
 }

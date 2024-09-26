@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum AttractivePoints: String, CaseIterable {
+enum AttractivePoint: String, CaseIterable {
     case worldview = "worldview"
     case material = "material"
     case character = "character"
