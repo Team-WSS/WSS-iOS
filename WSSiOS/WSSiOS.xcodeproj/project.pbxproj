@@ -354,6 +354,7 @@
 		CD803B392C940989006EBAF8 /* CenterAlignedCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD803B382C940989006EBAF8 /* CenterAlignedCollectionViewFlowLayout.swift */; };
 		CD803B3B2C940B88006EBAF8 /* NovelReviewKeywordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD803B3A2C940B88006EBAF8 /* NovelReviewKeywordView.swift */; };
 		CD803B3D2C941123006EBAF8 /* NovelReviewSelectedKeywordCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD803B3C2C941123006EBAF8 /* NovelReviewSelectedKeywordCollectionViewCell.swift */; };
+		CD863ED72CA54E7C0037DC08 /* NovelDetailFeedResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD863ED62CA54E7C0037DC08 /* NovelDetailFeedResult.swift */; };
 		CDA1774B2C3EC6760089137F /* WSSToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1774A2C3EC6760089137F /* WSSToggleButton.swift */; };
 		CDA5F03A2C2FDB2200FCF15C /* FeedEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5F0392C2FDB2200FCF15C /* FeedEditViewController.swift */; };
 		CDA5F03C2C2FDB3100FCF15C /* FeedEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5F03B2C2FDB3100FCF15C /* FeedEditViewModel.swift */; };
@@ -710,6 +711,7 @@
 		CD803B382C940989006EBAF8 /* CenterAlignedCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenterAlignedCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		CD803B3A2C940B88006EBAF8 /* NovelReviewKeywordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelReviewKeywordView.swift; sourceTree = "<group>"; };
 		CD803B3C2C941123006EBAF8 /* NovelReviewSelectedKeywordCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelReviewSelectedKeywordCollectionViewCell.swift; sourceTree = "<group>"; };
+		CD863ED62CA54E7C0037DC08 /* NovelDetailFeedResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailFeedResult.swift; sourceTree = "<group>"; };
 		CDA1774A2C3EC6760089137F /* WSSToggleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSToggleButton.swift; sourceTree = "<group>"; };
 		CDA5F0392C2FDB2200FCF15C /* FeedEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedEditViewController.swift; sourceTree = "<group>"; };
 		CDA5F03B2C2FDB3100FCF15C /* FeedEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedEditViewModel.swift; sourceTree = "<group>"; };
@@ -1774,6 +1776,7 @@
 				A123C49E2B56FB7800D32AEB /* SearchResult.swift */,
 				39D4A5D12BDC0902004FC834 /* NovelDetailHeaderResult.swift */,
 				39F850692C29C1FB00E93EBC /* NovelDetailInfoResult.swift */,
+				CD863ED62CA54E7C0037DC08 /* NovelDetailFeedResult.swift */,
 				2CD911452C0D88CA006B8D72 /* TotalFeedResult.swift */,
 				B9AC1BD92BF0BE23006EDE92 /* NoticeResult.swift */,
 				2C22AE752C56EE3900BF6E94 /* BlockUserResult.swift */,
@@ -2700,6 +2703,7 @@
 				2C5D0F5D2B50100000C76D3C /* TrashMyPageSettingCollectionViewCell.swift in Sources */,
 				2C5D0F5D2B50100000C76D3C /* TrashMyPageSettingCollectionViewCell.swift in Sources */,
 				CD1F7E082C9968950039972C /* NovelKeywordSelectSearchResultCollectionViewCell.swift in Sources */,
+				CD863ED72CA54E7C0037DC08 /* NovelDetailFeedResult.swift in Sources */,
 				CD1F7DFE2C994A0E0039972C /* NovelKeywordSelectModalViewController.swift in Sources */,
 				C9AF1AE42BCC28EE00208BC9 /* HomeTodayPopularCollectionViewCell.swift in Sources */,
 				2C22AE742C56EDB300BF6E94 /* MyPageBlockUserViewModel.swift in Sources */,
