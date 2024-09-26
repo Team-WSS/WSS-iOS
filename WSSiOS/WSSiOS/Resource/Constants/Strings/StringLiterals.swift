@@ -352,6 +352,39 @@ enum StringLiterals {
         }
     }
     
+    enum NovelReview {
+        enum Navigation {
+            static let complete = "완료"
+        }
+        
+        enum Status {
+            static let watching = "보는 중"
+            static let watched = "봤어요"
+            static let quit = "하차"
+        }
+        
+        enum Date {
+            static let addDate = "날짜 추가"
+        }
+        
+        enum AttractivePoint {
+            static let attractivePoint = "매력포인트"
+        }
+        
+        enum Keyword {
+            static let keyword = "키워드"
+            static let placeholder = "키워드로 작품을 소개해 봐요"
+        }
+        
+        enum KeywordSearch {
+            static let keywordSelect = "키워드 선택"
+            static let placeholder = "키워드를 검색하세요"
+            static let searchResult = "검색결과"
+            static let reset = "초기화"
+            static let selectButtonText = "개 선택"
+        }
+    }
+    
     enum Search {
         static let title = "탐색하기"
         static let searchbar = "작품 제목, 작가를 검색하세요"
