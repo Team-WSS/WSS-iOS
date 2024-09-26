@@ -23,9 +23,10 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
     
     private let dismissModalViewController = PublishRelay<Void>()
     private let enteredText = BehaviorRelay<String>(value: "")
+    private let isKeywordTextFieldEditing = BehaviorRelay<Bool>(value: false)
+    private let endEditing = PublishRelay<Void>()
     private let selectedKeywordListData = BehaviorRelay<[String]>(value: [])
     private let keywordSearchResultListData = BehaviorRelay<[String]>(value: [])
-    private let searchResultCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
     private let isKeywordCountOverLimit = PublishRelay<IndexPath>()
     
     //MARK: - Life Cycle
@@ -37,6 +38,8 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
     struct Input {
         let viewDidLoadEvent: Observable<Void>
         let updatedEnteredText: Observable<String>
+        let keywordTextFieldEditingDidBegin: ControlEvent<Void>
+        let keywordTextFieldEditingDidEnd: ControlEvent<Void>
         let searchCancelButtonDidTap: ControlEvent<Void>
         let closeButtonDidTap: ControlEvent<Void>
         let searchButtonDidTap: ControlEvent<Void>
@@ -50,6 +53,8 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
     struct Output {
         let dismissModalViewController: Observable<Void>
         let enteredText: Observable<String>
+        let isKeywordTextFieldEditing: Observable<Bool>
+        let endEditing: Observable<Void>
         let selectedKeywordListData: Observable<[String]>
         let keywordSearchResultListData: Observable<[String]>
         let isKeywordCountOverLimit: Observable<IndexPath>
@@ -68,6 +73,18 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
              })
             .disposed(by: disposeBag)
         
+        input.keywordTextFieldEditingDidBegin
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.isKeywordTextFieldEditing.accept(true)
+            })
+            .disposed(by: disposeBag)
+        
+        input.keywordTextFieldEditingDidEnd
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.isKeywordTextFieldEditing.accept(false)
+            })
+            .disposed(by: disposeBag)
+        
         input.searchCancelButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
                 owner.enteredText.accept("")
@@ -82,12 +99,14 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
         
         input.searchButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
+                owner.endEditing.accept(())
                 owner.keywordSearchResultListData.accept(owner.keywordSearchResultList)
             })
             .disposed(by: disposeBag)
         
         input.selectedKeywordCollectionViewItemSelected
             .subscribe(with: self, onNext: { owner, indexPath in
+                owner.endEditing.accept(())
                 owner.selectedKeywordList.remove(at: indexPath.item)
                 owner.selectedKeywordListData.accept(owner.selectedKeywordList)
                 owner.keywordSearchResultListData.accept(owner.keywordSearchResultList)
@@ -102,6 +121,7 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
                     owner.selectedKeywordList.append(owner.keywordSearchResultList[indexPath.item])
                 }
                 owner.selectedKeywordListData.accept(owner.selectedKeywordList)
+                owner.endEditing.accept(())
             })
             .disposed(by: disposeBag)
         
@@ -109,6 +129,7 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
             .subscribe(with: self, onNext: { owner, indexPath in
                 owner.selectedKeywordList.removeAll { $0 == owner.keywordSearchResultList[indexPath.item] }
                 owner.selectedKeywordListData.accept(owner.selectedKeywordList)
+                owner.endEditing.accept(())
             })
             .disposed(by: disposeBag)
         
@@ -116,7 +137,8 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
             .subscribe(with: self, onNext: { owner, _ in
                 owner.selectedKeywordList = []
                 owner.selectedKeywordListData.accept(owner.selectedKeywordList)
-                owner.keywordSearchResultListData.accept(owner.keywordSearchResultList)
+                owner.enteredText.accept("")
+                owner.keywordSearchResultListData.accept([])
             })
             .disposed(by: disposeBag)
         
@@ -129,6 +151,8 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
         
         return Output(dismissModalViewController: dismissModalViewController.asObservable(),
                       enteredText: enteredText.asObservable(),
+                      isKeywordTextFieldEditing: isKeywordTextFieldEditing.asObservable(),
+                      endEditing: endEditing.asObservable(),
                       selectedKeywordListData: selectedKeywordListData.asObservable(),
                       keywordSearchResultListData: keywordSearchResultListData.asObservable(),
                       isKeywordCountOverLimit: isKeywordCountOverLimit.asObservable())

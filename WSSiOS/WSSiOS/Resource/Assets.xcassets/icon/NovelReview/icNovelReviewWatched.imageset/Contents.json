@@ -1,17 +1,15 @@
 {
   "images" : [
     {
-      "filename" : "Status=icTagFinished.png",
+      "filename" : "Status=icTagFinished.svg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Status=icTagFinished@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Status=icTagFinished@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

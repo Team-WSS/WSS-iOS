@@ -68,7 +68,6 @@ final class NovelReviewKeywordView: UIView {
             
             $0.collectionViewLayout = layout
             $0.isScrollEnabled = false
-            $0.tag = 2
         }
     }
     
@@ -87,7 +86,7 @@ final class NovelReviewKeywordView: UIView {
         }
         
         keywordSearchBarView.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(13)
+            $0.top.equalTo(titleLabel.snp.bottom).offset(10)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(42)
             

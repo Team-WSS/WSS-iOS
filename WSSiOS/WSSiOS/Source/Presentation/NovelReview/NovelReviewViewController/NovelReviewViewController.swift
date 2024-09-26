@@ -82,7 +82,9 @@ final class NovelReviewViewController: UIViewController {
             viewDidLoadEvent: viewDidLoadEvent.asObservable(),
             backButtonDidTap: rootView.backButton.rx.tap,
             statusCollectionViewItemSelected: rootView.novelReviewStatusView.statusCollectionView.rx.itemSelected.asObservable(),
-            dateButtonDidTap: rootView.novelReviewStatusView.dateButton.rx.tap,
+            dateLabelTapGesture: rootView.novelReviewStatusView.dateLabel.rx.tapGesture()
+                .when(.recognized)
+                .asObservable(),
             starRatingTapGesture: Observable.merge(
                 rootView.novelReviewRatingView.starImageViews.enumerated().map { index, imageView in
                     imageView.rx.tapGesture()
@@ -198,7 +200,7 @@ final class NovelReviewViewController: UIViewController {
 extension NovelReviewViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        if collectionView.tag == 1 {
+        if collectionView == self.rootView.novelReviewAttractivePointView.attractivePointCollectionView {
             var text: String?
             
             let attractivePointList = AttractivePoints.allCases.map { $0.koreanString }
@@ -210,7 +212,7 @@ extension NovelReviewViewController: UICollectionViewDelegateFlowLayout {
             
             let width = (unwrappedText as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 26
             return CGSize(width: width, height: 35)
-        } else if collectionView.tag == 2 {
+        } else if collectionView == self.rootView.novelReviewKeywordView.selectedKeywordCollectionView {
             var text: String?
             
             text = self.novelReviewViewModel.selectedKeywordListData.value[indexPath.item]

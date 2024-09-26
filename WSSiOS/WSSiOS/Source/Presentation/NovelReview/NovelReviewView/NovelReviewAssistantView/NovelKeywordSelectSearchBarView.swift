@@ -45,6 +45,7 @@ final class NovelKeywordSelectSearchBarView: UIView {
             $0.placeholder = StringLiterals.NovelReview.KeywordSearch.placeholder
             $0.font = .Body4
             $0.layer.cornerRadius = 14
+            $0.layer.borderColor = UIColor.wssGray70.cgColor
             $0.leftView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 16.0, height: 0.0))
             $0.rightView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 82.0, height: 0.0))
             $0.leftViewMode = .always
@@ -85,6 +86,15 @@ final class NovelKeywordSelectSearchBarView: UIView {
             $0.trailing.equalTo(keywordTextField.snp.trailing).offset(-10)
             $0.centerY.equalTo(keywordTextField.snp.centerY)
             $0.size.equalTo(36)
+        }
+    }
+    
+    // MARK: - Custom Method
+    
+    func updateKeywordTextField(isEditing: Bool) {
+        keywordTextField.do {
+            $0.backgroundColor = isEditing ? .wssWhite : .wssGray50
+            $0.layer.borderWidth = isEditing ? 1 : 0
         }
     }
 }

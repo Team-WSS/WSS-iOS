@@ -56,7 +56,7 @@ final class NovelReviewViewModel: ViewModelType {
         let viewDidLoadEvent: Observable<Void>
         let backButtonDidTap: ControlEvent<Void>
         let statusCollectionViewItemSelected: Observable<IndexPath>
-        let dateButtonDidTap: ControlEvent<Void>
+        let dateLabelTapGesture: Observable<UITapGestureRecognizer>
         let starRatingTapGesture: Observable<(location: CGPoint, width: CGFloat, index: Int)>
         let starRatingPanGesture: Observable<(location: CGPoint, width: CGFloat)>
         let attractivePointCollectionViewItemSelected: Observable<IndexPath>
@@ -109,7 +109,7 @@ final class NovelReviewViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.dateButtonDidTap
+        input.dateLabelTapGesture
             .subscribe(with: self, onNext: { owner, _ in
                 owner.presentNovelDateSelectModalViewController.accept((owner.readStatus,
                                                                          owner.startDate,

@@ -17,7 +17,7 @@ final class FeedDetailContentView: UIView {
     private let contentLabel = UILabel()
     private let linkNovelView = FeedNovelView()
     private let genreLabel = UILabel()
-    private let reactView = FeedReactView()
+    let reactView = FeedReactView()
     private let dividerView = UIView()
     
     //MARK: - Life Cycle
@@ -98,7 +98,7 @@ final class FeedDetailContentView: UIView {
                                rating: data.novelRating, 
                                participants: data.novelRatingCount)
         
-        let genres = data.genres.map { $0.toKorean }.joined(separator: ", ")
+        let genres = data.genres.joined(separator: ", ")
         
         genreLabel.do {
             $0.applyWSSFont(.body2, with: genres)
