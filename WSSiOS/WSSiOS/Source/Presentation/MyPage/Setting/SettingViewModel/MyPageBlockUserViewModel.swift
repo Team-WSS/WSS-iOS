@@ -40,6 +40,7 @@ final class MyPageBlockUserViewModel: ViewModelType {
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         input.backButtonDidTap
+            .throttle(.seconds(3), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
                 owner.popViewController.accept(true)
             })
@@ -55,6 +56,7 @@ final class MyPageBlockUserViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.unblockButtonDidTap
+            .throttle(.seconds(2), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, indexPath in
                 let blocks = owner.bindCellReleay.value
                 
