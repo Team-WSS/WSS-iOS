@@ -87,7 +87,8 @@ final class HomeViewController: UIViewController {
     private func bindViewModel() {
         let input = HomeViewModel.Input(
             announcementButtonTapped: rootView.headerView.announcementButton.rx.tap,
-            todayPopularCellSelected: rootView.todayPopularView.todayPopularCollectionView.rx.itemSelected
+            todayPopularCellSelected: rootView.todayPopularView.todayPopularCollectionView.rx.itemSelected,
+            tasteRecommendCellSelected: rootView.tasteRecommendView.tasteRecommendCollectionView.rx.itemSelected
         )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -140,9 +141,20 @@ final class HomeViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.navigateToNovelDetailInfoView
-            .withLatestFrom(output.todayPopularList) { (indexPath, novelList) in
-                return novelList[indexPath.row].novelId
+            .withLatestFrom(Observable.combineLatest(output.todayPopularList, output.tasteRecommendList)) { (indexPathSection, lists) in
+                let (indexPath, section) = indexPathSection
+                let (todayPopularList, tasteRecommendList) = lists
+
+                switch section {
+                case 0:
+                    return todayPopularList[indexPath.row].novelId
+                case 1:
+                    return tasteRecommendList[indexPath.row].novelId
+                default:
+                    return nil
+                }
             }
+            .compactMap { $0 }
             .subscribe(with: self, onNext: { owner, novelId in
                 owner.pushToDetailViewController(novelId: novelId)
             })

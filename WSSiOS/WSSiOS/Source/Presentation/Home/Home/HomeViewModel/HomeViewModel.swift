@@ -24,12 +24,14 @@ final class HomeViewModel: ViewModelType {
     private let tasteRecommendList = PublishSubject<[TasteRecommendNovel]>()
     
     private let todayPopularCellIndexPath = PublishRelay<IndexPath>()
+    private let tasteRecommendCellIndexPath = PublishRelay<IndexPath>()
     
     // MARK: - Inputs
     
     struct Input {
         let announcementButtonTapped: ControlEvent<Void>
         let todayPopularCellSelected: ControlEvent<IndexPath>
+        let tasteRecommendCellSelected: ControlEvent<IndexPath>
     }
     
     //MARK: - Outputs
@@ -41,7 +43,7 @@ final class HomeViewModel: ViewModelType {
         var interestList: Observable<[InterestFeed]>
         var tasteRecommendList: Observable<[TasteRecommendNovel]>
         let navigateToAnnouncementView: Observable<Void>
-        let navigateToNovelDetailInfoView: Observable<IndexPath>
+        let navigateToNovelDetailInfoView: Observable<(IndexPath, Int)>
     }
     
     //MARK: - init
@@ -97,7 +99,18 @@ extension HomeViewModel {
             })
             .disposed(by: disposeBag)
         
+        input.tasteRecommendCellSelected
+            .subscribe(with: self, onNext: { owner, indexPath in
+                owner.tasteRecommendCellIndexPath.accept(indexPath)
+            })
+            .disposed(by: disposeBag)
+        
         let navigateToAnnouncementView = input.announcementButtonTapped.asObservable()
+        
+        let navigateToNovelDetailInfoView = Observable.merge(
+            todayPopularCellIndexPath.map { indexPath in (indexPath, 0) },
+            tasteRecommendCellIndexPath.map { indexPath in (indexPath, 1) }
+        )
         
         return Output(todayPopularList: todayPopularList.asObservable(),
                       realtimePopularList: realtimePopularList.asObservable(),
@@ -105,6 +118,6 @@ extension HomeViewModel {
                       interestList: interestList.asObservable(),
                       tasteRecommendList: tasteRecommendList.asObservable(),
                       navigateToAnnouncementView: navigateToAnnouncementView.asObservable(),
-                      navigateToNovelDetailInfoView: todayPopularCellIndexPath.asObservable())
+                      navigateToNovelDetailInfoView: navigateToNovelDetailInfoView)
     }
 }
