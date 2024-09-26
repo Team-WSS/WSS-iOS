@@ -174,6 +174,9 @@ extension UIViewController {
     
     func pushToDetailViewController(novelId: Int) {
         let viewController = ModuleFactory.shared.makeNovelDetailViewController(novelId: novelId)
+        viewController.navigationController?.isNavigationBarHidden = false
+        viewController.hidesBottomBarWhenPushed = true
+        
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
