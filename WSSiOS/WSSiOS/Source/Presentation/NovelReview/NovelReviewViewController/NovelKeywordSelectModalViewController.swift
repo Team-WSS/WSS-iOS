@@ -18,8 +18,11 @@ final class NovelKeywordSelectModalViewController: UIViewController {
     private let disposeBag = DisposeBag()
     
     private let viewDidLoadEvent = PublishRelay<Void>()
+    private let keywordCategoryListData = BehaviorRelay<[KeywordCategory]>(value: [])
     private let selectedKeywordData = PublishRelay<KeywordData>()
     private let deselectedKeywordData = PublishRelay<KeywordData>()
+    
+    private var keywordCategoryList: [KeywordCategory] = []
     
     //MARK: - Components
     
@@ -118,6 +121,7 @@ final class NovelKeywordSelectModalViewController: UIViewController {
             .subscribe(with: self, onNext: { owner, selectedKeywordList in
                 owner.rootView.novelKeywordSelectModalButtonView.updateSelectLabelText(keywordCount: selectedKeywordList.count)
                 owner.rootView.updateNovelKeywordSelectModalViewLayout(isSelectedKeyword: !selectedKeywordList.isEmpty)
+                owner.keywordCategoryListData.accept(owner.keywordCategoryList)
             })
             .disposed(by: disposeBag)
         
@@ -149,7 +153,9 @@ final class NovelKeywordSelectModalViewController: UIViewController {
         
         output.keywordCategoryListData
             .subscribe(with: self, onNext: { owner, keywordCategoryListData in
-                owner.setupStackView(categories: keywordCategoryListData)
+                owner.keywordCategoryList = keywordCategoryListData
+                owner.keywordCategoryListData.accept(owner.keywordCategoryList)
+                owner.setupKeywordCategoryStackView()
             })
             .disposed(by: disposeBag)
         
@@ -169,13 +175,14 @@ final class NovelKeywordSelectModalViewController: UIViewController {
     
     //MARK: - Custom Method
     
-    func setupStackView(categories: [KeywordCategory]) {
-        for category in categories {
+    private func setupKeywordCategoryStackView() {
+        for (index, category) in self.keywordCategoryList.enumerated() {
             let novelKeywordSelectCategoryView = NovelKeywordSelectCategoryView(keywordCategory: category)
             
             self.rootView.novelKeywordSelectCategoryListView.stackView.addArrangedSubview(novelKeywordSelectCategoryView)
             
-            Observable.just(category.keywords)
+            keywordCategoryListData
+                .map { categories in categories[index].keywords }
                 .bind(to: novelKeywordSelectCategoryView.categoryCollectionView.rx.items(cellIdentifier: NovelKeywordSelectSearchResultCollectionViewCell.cellIdentifier, cellType: NovelKeywordSelectSearchResultCollectionViewCell.self)) { item, element, cell in
                     let indexPath = IndexPath(item: item, section: 0)
                     
