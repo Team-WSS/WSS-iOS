@@ -194,7 +194,7 @@ enum StringLiterals {
             static let buttonTitle = "차단 해제"
             static let emptyLabel = "차단한 유저가 없어요"
         }
-      
+        
         enum DeleteIDWarning {
             static let title = "정말 탈퇴하시겠어요?"
             static let description = "남겼던 평가와 기록들이 모두 사라져요.."
@@ -303,6 +303,15 @@ enum StringLiterals {
         
         var sizeData: Int {
             return 500
+        }
+    }
+    
+    enum Onboarding {
+        enum NickName {
+            static let title = "닉네임을 입력하세요"
+            static let description = "10자 이내의 닉네임을 입력해주세요"
+            static let textFieldPlaceholder = "닉네임"
+            static let duplicateCheckButton = "중복확인"
         }
     }
     
