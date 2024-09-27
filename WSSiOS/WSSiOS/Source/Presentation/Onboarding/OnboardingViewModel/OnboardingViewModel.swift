@@ -25,6 +25,7 @@ final class OnboardingViewModel: ViewModelType {
     let isNicknameFieldEditing = BehaviorRelay<Bool>(value: false)
     let isDuplicateCheckButtonEnabled = BehaviorRelay<Bool>(value: false)
     let isNicknameAvailable = BehaviorRelay<NicknameAvailablity>(value: .notStarted)
+    let isNextButtonAvailable = BehaviorRelay<Bool>(value: false)
     
     //MARK: - Life Cycle
     
@@ -41,6 +42,7 @@ final class OnboardingViewModel: ViewModelType {
         let isNicknameTextFieldEditing: Driver<Bool>
         let isDuplicateCheckButtonEnabled: Driver<Bool>
         let isNicknameAvailable: Driver<NicknameAvailablity>
+        let isNextButtonAvailable: Driver<Bool>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -72,13 +74,16 @@ final class OnboardingViewModel: ViewModelType {
         self.isNicknameAvailable
             .bind(with: self, onNext: { owner, availablity in
                 owner.isDuplicateCheckButtonEnabled.accept(availablity == .unknown)
+                owner.isNextButtonAvailable.accept(availablity == .available)
             })
             .disposed(by: disposeBag)
+        
         
         return Output(
             isNicknameTextFieldEditing: isNicknameFieldEditing.asDriver(),
             isDuplicateCheckButtonEnabled: isDuplicateCheckButtonEnabled.asDriver(),
-            isNicknameAvailable: isNicknameAvailable.asDriver()
+            isNicknameAvailable: isNicknameAvailable.asDriver(),
+            isNextButtonAvailable: isNextButtonAvailable.asDriver()
         )
     }
 }

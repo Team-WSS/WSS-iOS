@@ -20,7 +20,7 @@ final class OnboardingNicknameView: UIView {
     private let textFieldInnerButton = UIButton()
     private let duplicateCheckButton = UIButton()
     private let duplicateCheckButtonLabel = UILabel()
-    private let bottomButton = OnboardingBottomButtonView()
+    let bottomButton = OnboardingBottomButtonView()
     
     //MARK: - Life Cycle
     

@@ -42,10 +42,7 @@ final class OnboardingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        registerCell()
-        delegate()
         bindViewModel()
-        swipeBackGesture()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -70,14 +67,6 @@ final class OnboardingViewController: UIViewController {
     }
     
     //MARK: - Bind
-    
-    private func registerCell() {
-       
-    }
-    
-    private func delegate() {
-      
-    }
     
     private func bindViewModel() {
         let input = createViewModelInput()
@@ -107,6 +96,11 @@ final class OnboardingViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.isNextButtonAvailable
+            .drive(with: self, onNext: { owner, isEnabled in
+                owner.rootView.nickNameView.bottomButton.updateButtonEnabled(isEnabled)
+            })
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Actions
