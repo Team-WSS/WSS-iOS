@@ -76,7 +76,6 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
         input.updatedEnteredText
             .subscribe(with: self, onNext: { owner, text in
                 owner.enteredText.accept(text)
-                print(text)
              })
             .disposed(by: disposeBag)
         
