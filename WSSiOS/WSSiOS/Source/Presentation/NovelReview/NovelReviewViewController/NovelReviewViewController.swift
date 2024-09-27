@@ -81,6 +81,7 @@ final class NovelReviewViewController: UIViewController {
         let input = NovelReviewViewModel.Input(
             viewDidLoadEvent: viewDidLoadEvent.asObservable(),
             backButtonDidTap: rootView.backButton.rx.tap,
+            completeButtonDidTap: rootView.completeButton.rx.tap,
             statusCollectionViewItemSelected: rootView.novelReviewStatusView.statusCollectionView.rx.itemSelected.asObservable(),
             dateLabelTapGesture: rootView.novelReviewStatusView.dateLabel.rx.tapGesture()
                 .when(.recognized)

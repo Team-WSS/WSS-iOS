@@ -59,6 +59,7 @@ final class NovelReviewViewModel: ViewModelType {
     struct Input {
         let viewDidLoadEvent: Observable<Void>
         let backButtonDidTap: ControlEvent<Void>
+        let completeButtonDidTap: ControlEvent<Void>
         let statusCollectionViewItemSelected: Observable<IndexPath>
         let dateLabelTapGesture: Observable<UITapGestureRecognizer>
         let starRatingTapGesture: Observable<(location: CGPoint, width: CGFloat, index: Int)>
@@ -93,8 +94,8 @@ final class NovelReviewViewModel: ViewModelType {
                 self.getNovelReview(novelId: self.novelId)
             }
             .subscribe(with: self, onNext: { owner, data in
-                owner.startDate = data.startDate.map { owner.dateFormatter.date(from: $0) ?? Date() }
-                owner.endDate = data.endDate.map { owner.dateFormatter.date(from: $0) ?? Date() }
+                owner.startDate = data.startDate.flatMap { owner.dateFormatter.date(from: $0) }
+                owner.endDate = data.endDate.flatMap { owner.dateFormatter.date(from: $0) }
                 owner.startDateEndDateData.accept([owner.startDate, owner.endDate])
                 owner.starRating.accept(data.userNovelRating)
                 owner.selectedKeywordListData.accept(data.keywords)
@@ -107,8 +108,33 @@ final class NovelReviewViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.backButtonDidTap
+            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
                 owner.popViewController.accept(())
+            })
+            .disposed(by: disposeBag)
+        
+        input.completeButtonDidTap
+            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
+            .flatMapLatest {
+                let startDateString = self.readStatus != .quit ? self.startDate.map { self.dateFormatter.string(from: $0) } : nil
+                let endDateString = self.readStatus != .watching ? self.endDate.map { self.dateFormatter.string(from: $0) } : nil
+                let keywordIdList = self.selectedKeywordListData.value.map { $0.keywordId }
+                
+                return self.putNovelReview(
+                    novelId: self.novelId,
+                    userNovelRating: self.starRating.value,
+                    status: self.readStatus.rawValue,
+                    startDate: startDateString,
+                    endDate: endDateString,
+                    attractivePoints: self.selectedAttractivePointList,
+                    keywordIds: keywordIdList
+                )
+            }
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.popViewController.accept(())
+            }, onError: { owner, error  in
+                print(error)
             })
             .disposed(by: disposeBag)
         
