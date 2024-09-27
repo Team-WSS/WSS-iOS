@@ -99,8 +99,7 @@ extension MyPageViewController {
     
     private func decideUI(isMyPage: Bool) {
         let button = setButton(isMyPage: isMyPage)
-        
-        //TODO: - 타인 프로필도 타이틀이 마이페이지인지 확인해야 함
+
         preparationSetNavigationBar(title: StringLiterals.Navigation.Title.myPage,
                                     left: nil,
                                     right: button)
@@ -116,19 +115,13 @@ extension MyPageViewController {
             return settingButton
             
         } else {
-            
-            //TODO: - 드롭다운 에러,,, 🥹
             dropdownButton.do {
-                $0.makeDropdown(dropdownRootView: self.view,
+                $0.makeDropdown(dropdownRootView: self.rootView,
                                 dropdownWidth: 120,
-                                dropdownData: ["차단하기"],
+                                dropdownData: ["수정하기", "삭제하기"],
                                 textColor: .wssBlack)
             }
-            self.view.addSubview(dropdownButton)
-            dropdownButton.snp.makeConstraints {
-                $0.trailing.equalToSuperview().inset(10)
-                $0.size.equalTo(44)
-            }
+
             return dropdownButton
         }
     }

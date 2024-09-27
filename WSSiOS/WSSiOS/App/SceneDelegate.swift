@@ -16,7 +16,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         self.window = UIWindow(windowScene: windowScene)
         
-       setRootToLoginViewController()
+        setRootToLoginViewController()
         
         self.window?.makeKeyAndVisible()
     }
