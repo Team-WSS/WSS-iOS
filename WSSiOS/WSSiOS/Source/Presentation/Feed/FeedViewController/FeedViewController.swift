@@ -16,7 +16,6 @@ final class FeedViewController: UIViewController {
     //MARK: - Properties
     
     private let disposeBag = DisposeBag()
-    private lazy var selectedTabIndex = PublishSubject<Int>()
     private var categoryList = BehaviorRelay<[String]>(value: [""])
     private let viewModel: FeedViewModel
     
@@ -53,8 +52,6 @@ final class FeedViewController: UIViewController {
         bindViewModel()
         setupPages()
         bindColletionView()
-        
-        setAction()
     }
     
     //MARK: - Bind
@@ -109,15 +106,17 @@ final class FeedViewController: UIViewController {
                                               completion: nil)
     }
     
-    //TODO: - 추후 ViewModel 로 뺄 예정
-    
-    private func setAction() {
-        pageBar.feedPageBarCollectionView.rx.itemSelected
-            .map{$0.row}
-            .bind(to: selectedTabIndex)
+    private func bindViewModel() {
+        let input = FeedViewModel.Input(pageBarTapped: pageBar.feedPageBarCollectionView.rx.itemSelected)
+        let output = viewModel.transform(from: input, disposeBag: disposeBag)
+        
+        output.categoryList
+            .bind(with: self, onNext: { owner, category in
+                owner.categoryList.accept(category)
+            })
             .disposed(by: disposeBag)
         
-        selectedTabIndex
+        output.selectedTabIndex
             .subscribe(with: self, onNext: { owner, index in 
                 owner.pageBar.feedPageBarCollectionView.scrollToItem(
                     at: IndexPath(item: index, section: 0),
@@ -130,17 +129,6 @@ final class FeedViewController: UIViewController {
                                                             direction: direction,
                                                             animated: true,
                                                             completion: nil)
-            })
-            .disposed(by: disposeBag)
-    }
-    
-    private func bindViewModel() {
-        let input = FeedViewModel.Input()
-        let output = viewModel.transform(from: input, disposeBag: disposeBag)
-        
-        output.categoryList
-            .bind(with: self, onNext: { owner, category in
-                owner.categoryList.accept(category)
             })
             .disposed(by: disposeBag)
     }

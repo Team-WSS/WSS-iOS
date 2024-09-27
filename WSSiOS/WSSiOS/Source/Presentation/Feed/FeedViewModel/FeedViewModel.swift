@@ -8,7 +8,7 @@
 import Foundation
 
 import RxSwift
-import RxRelay
+import RxCocoa
 
 final class FeedViewModel: ViewModelType {
     
@@ -29,12 +29,13 @@ final class FeedViewModel: ViewModelType {
     }
     
     struct Input {
-        
+        let pageBarTapped: ControlEvent<IndexPath>
     }
     
     struct Output {
         let categoryList = BehaviorRelay<[String]>(value: [""])
         let feedList = PublishRelay<[TotalFeeds]>()
+        let selectedTabIndex = PublishSubject<Int>()
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -45,15 +46,19 @@ final class FeedViewModel: ViewModelType {
         } else if gender == "F" {
             output.categoryList.accept(femaleCategory)
         }
-
-        feedRepository.getFeedData(category: "all",
-                                   lastFeedId: 1)
-        .subscribe(with: self, onNext: { owner, data in
-            output.feedList.accept(data.feeds)
-        }, onError: { owner, error in
-            print(error)
-        })
-        .disposed(by: disposeBag)
+        
+        feedRepository.getFeedData(category: "all", lastFeedId: 1)
+            .subscribe(with: self, onNext: { owner, data in
+                output.feedList.accept(data.feeds)
+            }, onError: { owner, error in
+                print(error)
+            })
+            .disposed(by: disposeBag)
+        
+        input.pageBarTapped
+            .map{$0.row}
+            .bind(to: output.selectedTabIndex)
+            .disposed(by: disposeBag)
         
         return output
     }
