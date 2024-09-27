@@ -101,8 +101,8 @@ final class LoginViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 // 온보딩 뷰로 이동
-                print("온보딩 뷰로 이동")
                 print("Token: \(APIConstants.testToken)")
+                owner.loginCompleted()
             })
             .disposed(by: disposeBag)
     }
@@ -137,6 +137,13 @@ final class LoginViewController: UIViewController {
     private func setCarouselViewInitialState() {
         rootView.carouselView.bannerCollectionView.setContentOffset(CGPoint(x: LoginBannerMetric.width, y: 0), animated: false)
         viewModel.resumeAutoScroll()
+    }
+    
+    private func loginCompleted() {
+        guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else {
+            return
+        }
+        sceneDelegate.setRootToWSSTabBarController()
     }
 }
 
