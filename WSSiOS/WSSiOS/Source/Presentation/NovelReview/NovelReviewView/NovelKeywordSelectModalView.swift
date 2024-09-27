@@ -159,5 +159,9 @@ final class NovelKeywordSelectModalView: UIView {
         novelKeywordSelectSearchResultView.snp.updateConstraints {
             $0.top.equalTo(novelKeywordSelectSearchBarView.snp.bottom).offset(isSelectedKeyword ? 53 : 0)
         }
+        
+        novelKeywordSelectCategoryListView.snp.updateConstraints {
+            $0.top.equalTo(novelKeywordSelectSearchBarView.snp.bottom).offset(isSelectedKeyword ? 53 : 0)
+        }
     }
 }

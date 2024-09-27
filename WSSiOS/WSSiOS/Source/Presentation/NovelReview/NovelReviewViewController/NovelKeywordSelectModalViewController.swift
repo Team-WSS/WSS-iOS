@@ -18,6 +18,8 @@ final class NovelKeywordSelectModalViewController: UIViewController {
     private let disposeBag = DisposeBag()
     
     private let viewDidLoadEvent = PublishRelay<Void>()
+    private let selectedKeywordData = PublishRelay<KeywordData>()
+    private let deselectedKeywordData = PublishRelay<KeywordData>()
     
     //MARK: - Components
     
@@ -81,7 +83,9 @@ final class NovelKeywordSelectModalViewController: UIViewController {
             searchResultCollectionViewItemDeselected: rootView.novelKeywordSelectSearchResultView.searchResultCollectionView.rx.itemDeselected.asObservable(),
             resetButtonDidTap: rootView.novelKeywordSelectModalButtonView.resetButton.rx.tap,
             selectButtonDidTap: rootView.novelKeywordSelectModalButtonView.selectButton.rx.tap,
-            contactButtonDidTap: rootView.novelKeywordSelectEmptyView.contactButton.rx.tap
+            contactButtonDidTap: rootView.novelKeywordSelectEmptyView.contactButton.rx.tap,
+            selectedKeywordData: selectedKeywordData.asObservable(),
+            deselectedKeywordData: deselectedKeywordData.asObservable()
         )
         
         let output = self.novelKeywordSelectModalViewModel.transform(from: input, disposeBag: self.disposeBag)
@@ -166,22 +170,39 @@ final class NovelKeywordSelectModalViewController: UIViewController {
     //MARK: - Custom Method
     
     func setupStackView(categories: [KeywordCategory]) {
-        for (index, category) in categories.enumerated() {
+        for category in categories {
             let novelKeywordSelectCategoryView = NovelKeywordSelectCategoryView(keywordCategory: category)
             
             self.rootView.novelKeywordSelectCategoryListView.stackView.addArrangedSubview(novelKeywordSelectCategoryView)
             
             Observable.just(category.keywords)
                 .bind(to: novelKeywordSelectCategoryView.categoryCollectionView.rx.items(cellIdentifier: NovelKeywordSelectSearchResultCollectionViewCell.cellIdentifier, cellType: NovelKeywordSelectSearchResultCollectionViewCell.self)) { item, element, cell in
-                    //                    let indexPath = IndexPath(item: item, section: 0)
-                    //
-                    //                    if self.novelKeywordSelectModalViewModel.selectedKeywordList.contains(where: { $0.keywordId == element.keywordId }) {
-                    //                        novelKeywordSelectCategoryView.categoryCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
-                    //                    } else {
-                    //                        novelKeywordSelectCategoryView.categoryCollectionView.deselectItem(at: indexPath, animated: false)
-                    //                    }
+                    let indexPath = IndexPath(item: item, section: 0)
+                    
+                    if self.novelKeywordSelectModalViewModel.selectedKeywordList.contains(where: { $0.keywordId == element.keywordId }) {
+                        novelKeywordSelectCategoryView.categoryCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
+                    } else {
+                        novelKeywordSelectCategoryView.categoryCollectionView.deselectItem(at: indexPath, animated: false)
+                    }
                     cell.bindData(keyword: element)
                 }
+                .disposed(by: disposeBag)
+            
+            novelKeywordSelectCategoryView.categoryCollectionView.rx.itemSelected
+                .subscribe(with: self, onNext: { owner, indexPath in
+                    if owner.novelKeywordSelectModalViewModel.selectedKeywordList.count >= owner.novelKeywordSelectModalViewModel.keywordLimit {
+                        novelKeywordSelectCategoryView.categoryCollectionView.deselectItem(at: indexPath, animated: false)
+                        owner.showToast(.selectionOverLimit(count: 20))
+                    } else {
+                        owner.selectedKeywordData.accept(category.keywords[indexPath.item])
+                    }
+                })
+                .disposed(by: disposeBag)
+            
+            novelKeywordSelectCategoryView.categoryCollectionView.rx.itemDeselected
+                .subscribe(with: self, onNext: { owner, indexPath in
+                    owner.deselectedKeywordData.accept(category.keywords[indexPath.item])
+                })
                 .disposed(by: disposeBag)
             
             novelKeywordSelectCategoryView.expandButton.rx.tap

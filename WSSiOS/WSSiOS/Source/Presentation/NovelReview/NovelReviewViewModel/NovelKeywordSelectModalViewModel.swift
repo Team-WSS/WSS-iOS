@@ -18,7 +18,7 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
     var keywordSearchResultList: [KeywordData] = []
     var selectedKeywordList: [KeywordData]
     
-    private let keywordLimit: Int = 20
+    let keywordLimit: Int = 20
     
     // Output
     
@@ -26,7 +26,7 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
     private let enteredText = BehaviorRelay<String>(value: "")
     private let isKeywordTextFieldEditing = BehaviorRelay<Bool>(value: false)
     private let endEditing = PublishRelay<Void>()
-    private let selectedKeywordListData = BehaviorRelay<[KeywordData]>(value: [])
+    private let selectedKeywordListData = PublishRelay<[KeywordData]>()
     private let keywordSearchResultListData = PublishRelay<[KeywordData]>()
     private let keywordCategoryListData = PublishRelay<[KeywordCategory]>()
     private let isKeywordCountOverLimit = PublishRelay<IndexPath>()
@@ -54,6 +54,8 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
         let resetButtonDidTap: ControlEvent<Void>
         let selectButtonDidTap: ControlEvent<Void>
         let contactButtonDidTap: ControlEvent<Void>
+        let selectedKeywordData: Observable<KeywordData>
+        let deselectedKeywordData: Observable<KeywordData>
     }
     
     struct Output {
@@ -159,6 +161,20 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
                 owner.selectedKeywordList.removeAll { $0.keywordName == owner.keywordSearchResultList[indexPath.item].keywordName }
                 owner.selectedKeywordListData.accept(owner.selectedKeywordList)
                 owner.endEditing.accept(())
+            })
+            .disposed(by: disposeBag)
+        
+        input.selectedKeywordData
+            .subscribe(with: self, onNext: { owner, keyword in
+                owner.selectedKeywordList.append(keyword)
+                owner.selectedKeywordListData.accept(owner.selectedKeywordList)
+            })
+            .disposed(by: disposeBag)
+        
+        input.deselectedKeywordData
+            .subscribe(with: self, onNext: { owner, keyword in
+                owner.selectedKeywordList.removeAll { $0.keywordName == keyword.keywordName }
+                owner.selectedKeywordListData.accept(owner.selectedKeywordList)
             })
             .disposed(by: disposeBag)
         
