@@ -14,6 +14,7 @@ final class OnboardingView: UIView {
     
     //MARK: - Components
     
+    let progressView = OnboardingProgressView()
     let nickNameView = OnboardingNickNameView()
     
     //MARK: - Life Cycle
@@ -37,13 +38,19 @@ final class OnboardingView: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubview(nickNameView)
+        self.addSubviews(progressView,
+                        nickNameView)
     }
     
     private func setLayout() {
+        progressView.snp.makeConstraints {
+            $0.top.equalTo(self.safeAreaLayoutGuide).offset(3)
+            $0.horizontalEdges.equalToSuperview()
+        }
+        
         nickNameView.snp.makeConstraints {
+            $0.top.equalTo(progressView.snp.bottom)
             $0.bottom.horizontalEdges.equalToSuperview()
-            $0.top.equalTo(self.safeAreaLayoutGuide)
         }
     }
 }
