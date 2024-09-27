@@ -100,11 +100,13 @@ final class MyPageInfoViewController: UIViewController {
                     owner.presentToAlertViewController(iconImage: .icAlertWarningCircle,
                                                        titleText: StringLiterals.Alert.logoutTitle,
                                                        contentText: nil,
-                                                       cancelTitle: StringLiterals.Alert.cancel,
-                                                       actionTitle: StringLiterals.Alert.logout,
-                                                       actionBackgroundColor: UIColor.wssPrimary100.cgColor)
-                    .subscribe({ _ in 
-                        owner.logoutRelay.accept(true)
+                                                       leftTitle: StringLiterals.Alert.cancel,
+                                                       rightTitle: StringLiterals.Alert.logout,
+                                                       rightBackgroundColor: UIColor.wssPrimary100.cgColor)
+                    .subscribe(with: self, onNext: { owner, buttonType in
+                        if buttonType == .right {
+                            owner.logoutRelay.accept(true)
+                        }
                     })
                     .disposed(by: owner.disposeBag)
                     

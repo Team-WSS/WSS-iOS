@@ -421,8 +421,8 @@ enum StringLiterals {
         
         enum Alert {
             static let titleText = "평가를 그만할까요?"
-            static let cancelTitle = "계속 작성"
-            static let actionTitle = "그만하기"
+            static let writeTitle = "계속 작성"
+            static let stopTitle = "그만하기"
         }
     }
     
@@ -491,8 +491,8 @@ enum StringLiterals {
         }
         enum Alert {
             static let titleText = "글 작성을 그만하시겠어요?"
-            static let cancelTitle = "계속 작성"
-            static let actionTitle = "그만하기"
+            static let writeTitle = "계속 작성"
+            static let stopTitle = "그만하기"
         }
     }
     

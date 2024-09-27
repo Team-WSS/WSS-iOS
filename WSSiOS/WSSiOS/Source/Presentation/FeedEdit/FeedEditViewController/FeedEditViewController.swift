@@ -170,17 +170,18 @@ final class FeedEditViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.showStopEditingAlert
-            .flatMapLatest { [weak self] _ -> Observable<Void> in
-                guard let self = self else { return Observable.just(()) }
+            .flatMapLatest { _ -> Observable<AlertButtonType> in
                 return self.presentToAlertViewController(iconImage: .icAlertWarningCircle,
                                                          titleText: StringLiterals.FeedEdit.Alert.titleText,
                                                          contentText: nil,
-                                                         cancelTitle: StringLiterals.FeedEdit.Alert.cancelTitle,
-                                                         actionTitle: StringLiterals.FeedEdit.Alert.actionTitle,
-                                                         actionBackgroundColor: UIColor.wssSecondary100.cgColor)
+                                                         leftTitle: StringLiterals.FeedEdit.Alert.stopTitle,
+                                                         rightTitle: StringLiterals.FeedEdit.Alert.writeTitle,
+                                                         rightBackgroundColor: UIColor.wssPrimary100.cgColor)
             }
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.stopEditingEvent.accept(())
+            .subscribe(with: self, onNext: { owner, buttonType in
+                if buttonType == .left {
+                    owner.stopEditingEvent.accept(())
+                }
             })
             .disposed(by: disposeBag)
     }
