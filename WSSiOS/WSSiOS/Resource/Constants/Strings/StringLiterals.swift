@@ -408,6 +408,12 @@ enum StringLiterals {
             static let unregisteredKeyword = "해당 키워드는\n아직 등록되지 않았어요.."
             static let contact = "키워드 문의하러 가기"
         }
+        
+        enum Alert {
+            static let titleText = "평가를 그만할까요?"
+            static let cancelTitle = "계속 작성"
+            static let actionTitle = "그만하기"
+        }
     }
     
     enum Search {

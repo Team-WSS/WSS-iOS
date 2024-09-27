@@ -48,6 +48,7 @@ final class NovelReviewViewModel: ViewModelType {
     private let presentNovelKeywordSelectModalViewController = PublishRelay<[KeywordData]>()
     let selectedKeywordListData = BehaviorRelay<[KeywordData]>(value: [])
     private let selectedKeywordCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
+    private let showStopReviewingAlert = PublishRelay<Void>()
     
     //MARK: - Life Cycle
     
@@ -74,6 +75,7 @@ final class NovelReviewViewModel: ViewModelType {
         let novelReviewKeywordSelectedNotification: Observable<Notification>
         let novelReviewDateSelectedNotification: Observable<Notification>
         let novelReviewDateRemovedNotification: Observable<Notification>
+        let stopReviewButtonDidTap: Observable<Void>
     }
     
     struct Output {
@@ -88,6 +90,7 @@ final class NovelReviewViewModel: ViewModelType {
         let presentNovelKeywordSelectModalViewController: Observable<[KeywordData]>
         let selectedKeywordListData: Observable<[KeywordData]>
         let selectedKeywordCollectionViewHeight: Observable<CGFloat>
+        let showStopReviewingAlert: Observable<Void>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -115,7 +118,7 @@ final class NovelReviewViewModel: ViewModelType {
         input.backButtonDidTap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
-                owner.popViewController.accept(())
+                owner.showStopReviewingAlert.accept(())
             })
             .disposed(by: disposeBag)
         
@@ -249,6 +252,12 @@ final class NovelReviewViewModel: ViewModelType {
                 owner.startDateEndDateData.accept([owner.startDate, owner.endDate])
             })
             .disposed(by: disposeBag)
+        
+        input.stopReviewButtonDidTap
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.popViewController.accept(())
+            })
+            .disposed(by: disposeBag)
 
         return Output(popViewController: popViewController.asObservable(),
                       readStatusListData: readStatusListData.asObservable(),
@@ -260,7 +269,8 @@ final class NovelReviewViewModel: ViewModelType {
                       isAttractivePointCountOverLimit: isAttractivePointCountOverLimit.asObservable(),
                       presentNovelKeywordSelectModalViewController: presentNovelKeywordSelectModalViewController.asObservable(),
                       selectedKeywordListData: selectedKeywordListData.asObservable(),
-                      selectedKeywordCollectionViewHeight: selectedKeywordCollectionViewHeight.asObservable())
+                      selectedKeywordCollectionViewHeight: selectedKeywordCollectionViewHeight.asObservable(),
+                      showStopReviewingAlert: showStopReviewingAlert.asObservable())
     }
     
     //MARK: - API

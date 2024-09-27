@@ -19,6 +19,7 @@ final class NovelReviewViewController: UIViewController {
     private let disposeBag = DisposeBag()
     
     private let viewDidLoadEvent = PublishRelay<Void>()
+    private let stopReviewingEvent = PublishRelay<Void>()
     
     //MARK: - Components
     
@@ -112,7 +113,8 @@ final class NovelReviewViewController: UIViewController {
             selectedKeywordCollectionViewItemSelected: rootView.novelReviewKeywordView.selectedKeywordCollectionView.rx.itemSelected.asObservable(),
             novelReviewKeywordSelectedNotification: NotificationCenter.default.rx.notification(Notification.Name("NovelReviewKeywordSelected")).asObservable(),
             novelReviewDateSelectedNotification: NotificationCenter.default.rx.notification(Notification.Name("NovelReviewDateSelected")).asObservable(),
-            novelReviewDateRemovedNotification: NotificationCenter.default.rx.notification(Notification.Name("NovelReviewDateRemoved")).asObservable()
+            novelReviewDateRemovedNotification: NotificationCenter.default.rx.notification(Notification.Name("NovelReviewDateRemoved")).asObservable(),
+            stopReviewButtonDidTap: stopReviewingEvent.asObservable()
         )
         
         let output = self.novelReviewViewModel.transform(from: input, disposeBag: self.disposeBag)
@@ -194,6 +196,21 @@ final class NovelReviewViewController: UIViewController {
         output.selectedKeywordCollectionViewHeight
             .subscribe(with: self, onNext: { owner, height in
                 owner.rootView.novelReviewKeywordView.updateCollectionViewHeight(height: height)
+            })
+            .disposed(by: disposeBag)
+        
+        output.showStopReviewingAlert
+            .flatMapLatest { [weak self] _ -> Observable<Void> in
+                guard let self = self else { return Observable.just(()) }
+                return self.presentToAlertViewController(iconImage: .icAlertWarningCircle,
+                                                         titleText: StringLiterals.NovelReview.Alert.titleText,
+                                                         contentText: nil,
+                                                         cancelTitle: StringLiterals.NovelReview.Alert.cancelTitle,
+                                                         actionTitle: StringLiterals.NovelReview.Alert.actionTitle,
+                                                         actionBackgroundColor: UIColor.wssPrimary100.cgColor)
+            }
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.stopReviewingEvent.accept(())
             })
             .disposed(by: disposeBag)
     }
