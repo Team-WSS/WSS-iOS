@@ -280,6 +280,17 @@ extension UIViewController {
         
         self.navigationController?.pushViewController(viewController, animated: true)
     }
+    
+    func pushToNovelReviewViewController(readStatus: ReadStatus, novelId: Int) {
+        let viewController = NovelReviewViewController(
+            viewModel: NovelReviewViewModel(
+                readStatus: readStatus,
+                novelId: novelId
+            )
+        )
+        
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
 }
 
 extension UIViewController: UIGestureRecognizerDelegate {
