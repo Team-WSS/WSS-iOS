@@ -91,7 +91,10 @@ final class HomeViewController: UIViewController {
     private func bindViewModel() {
         let input = HomeViewModel.Input(
             announcementButtonTapped: rootView.headerView.announcementButton.rx.tap,
-            registerInterestNovelButtonTapped: rootView.interestView.unregisterView.registerButton.rx.tap
+            registerInterestNovelButtonTapped: rootView.interestView.unregisterView.registerButton.rx.tap,
+            setPreferredGenresButtonTapped: rootView.tasteRecommendView.unregisterView.registerButton.rx.tap,
+            induceModalViewLoginButtonTapped: rootView.induceLoginModalView.loginButton.rx.tap,
+            induceModalViewCancelButtonTapped: rootView.induceLoginModalView.cancelButton.rx.tap
         )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -151,6 +154,27 @@ final class HomeViewController: UIViewController {
                 owner.navigationController?.pushViewController(normalSearchViewController, animated: true)
             })
             .disposed(by: disposeBag)
+        
+        output.navigateToLoginView
+            .bind(with: self, onNext: { owner, _ in
+                guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else {
+                    return
+                }
+                sceneDelegate.setRootToLoginViewController()
+            })
+            .disposed(by: disposeBag)
+        
+        output.showInduceLoginModalView
+            .drive(with: self, onNext: { owner, isShow in
+                owner.showInduceLoginModalView(isShow)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    //MARK: - Custom Method
+    
+    private func showInduceLoginModalView(_ isShow: Bool) {
+        rootView.induceLoginModalView.isHidden = !isShow
     }
 }
 

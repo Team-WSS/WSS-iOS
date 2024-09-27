@@ -19,7 +19,7 @@ final class HomeTasteRecommendView: UIView {
     let tasteRecommendCollectionView = UICollectionView(frame: .zero,
                                                         collectionViewLayout: UICollectionViewLayout())
     private let tasteRecommendCollectionViewLayout = UICollectionViewFlowLayout()
-    private let unregisterView = HomeUnregisterView(.tasteRecommend)
+    let unregisterView = HomeUnregisterView(.tasteRecommend)
     
     //MARK: - Life Cycle
     

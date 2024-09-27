@@ -21,6 +21,7 @@ final class HomeView: UIView {
     let realtimePopularView = HomeRealtimePopularView()
     let interestView: HomeInterestView
     let tasteRecommendView: HomeTasteRecommendView
+    let induceLoginModalView = HomeInduceLoginModalView()
     
     //MARK: - Life Cycle
     
@@ -43,11 +44,16 @@ final class HomeView: UIView {
         scrollView.do {
             $0.showsVerticalScrollIndicator = false
         }
+        
+        induceLoginModalView.do {
+            $0.isHidden = true
+        }
     }
     
     private func setHierarchy() {
         self.addSubviews(headerView,
-                         scrollView)
+                         scrollView,
+                         induceLoginModalView)
         self.scrollView.addSubview(contentView)
         contentView.addSubviews(todayPopularView,
                                 realtimePopularView,
@@ -66,6 +72,10 @@ final class HomeView: UIView {
             $0.top.equalTo(headerView.snp.bottom)
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
+        }
+        
+        induceLoginModalView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
         
         contentView.snp.makeConstraints {
