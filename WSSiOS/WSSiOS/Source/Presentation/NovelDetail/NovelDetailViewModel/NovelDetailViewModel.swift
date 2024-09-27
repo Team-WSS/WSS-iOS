@@ -17,6 +17,7 @@ final class NovelDetailViewModel: ViewModelType {
     
     private let novelDetailRepository: NovelDetailRepository
     private let novelId: Int
+    private var novelTitle: String = ""
     
     //Total
     private let viewWillAppearEvent = BehaviorRelay<Bool>(value: false)
@@ -93,7 +94,7 @@ final class NovelDetailViewModel: ViewModelType {
         //NovelDetailHeader
         let showLargeNovelCoverImage: Driver<Bool>
         let isUserNovelInterested: Driver<Bool>
-        let pushTofeedWriteViewController: Observable<[NewNovelGenre]>
+        let pushTofeedWriteViewController: Observable<(genre: [NewNovelGenre], novelId: Int, novelTitle: String)>
         let pushToReviewViewController: Observable<ReadStatus>
         
         //Tab
@@ -116,6 +117,7 @@ final class NovelDetailViewModel: ViewModelType {
                 self.novelDetailRepository.getNovelDetailHeaderData(novelId: self.novelId)
             }
             .subscribe(with: self, onNext: { owner, data in
+                owner.novelTitle = data.novelTitle
                 owner.novelDetailHeaderData.onNext(data)
                 owner.isUserNovelInterested.accept(data.isUserNovelInterest)
                 owner.readStatus.accept(data.readStatus)
@@ -185,8 +187,16 @@ final class NovelDetailViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         let pushTofeedWriteViewController = Observable.merge(
-            input.feedWriteButtonDidTap.map { _ in self.novelGenre.value },
-            input.createFeedButtonDidTap.map { _ in self.novelGenre.value }
+            input.feedWriteButtonDidTap.map { _ in
+                (genre: self.novelGenre.value,
+                 novelId: self.novelId,
+                 novelTitle: self.novelTitle)
+            },
+            input.createFeedButtonDidTap.map { _ in
+                (genre: self.novelGenre.value,
+                 novelId: self.novelId,
+                 novelTitle: self.novelTitle)
+            }
         )
         .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
         .asObservable()

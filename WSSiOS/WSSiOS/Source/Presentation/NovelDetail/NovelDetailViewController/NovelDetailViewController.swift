@@ -174,8 +174,11 @@ final class NovelDetailViewController: UIViewController {
         
         output.pushTofeedWriteViewController
             .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, genre in
-                owner.pushToFeedEditViewController(relevantCategories: genre)
+            .bind(with: self, onNext: { owner, result in
+                let (genre, novelId, novelTitle) = result
+                owner.pushToFeedEditViewController(relevantCategories: genre,
+                                                   novelId: novelId,
+                                                   novelTitle: novelTitle)
             })
             .disposed(by: disposeBag)
         
