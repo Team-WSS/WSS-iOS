@@ -23,10 +23,17 @@ final class OnboardingViewModel: ViewModelType {
     
     //MARK: - Properties
     
+    // Nickname
     let isNicknameFieldEditing = BehaviorRelay<Bool>(value: false)
     let isDuplicateCheckButtonEnabled = BehaviorRelay<Bool>(value: false)
     let isNicknameAvailable = BehaviorRelay<NicknameAvailablity>(value: .notStarted)
-    let isNextButtonAvailable = BehaviorRelay<Bool>(value: false)
+    let isNicknameNextButtonAvailable = BehaviorRelay<Bool>(value: false)
+    
+    // BirthGender
+    
+    let selectedGender = BehaviorRelay<OnboardingGender?>(value: nil)
+    
+    // Total
     let moveToLastStage = PublishRelay<Void>()
     let moveToNextStage = PublishRelay<Void>()
     let moveToHomeViewController = PublishRelay<Void>()
@@ -38,19 +45,31 @@ final class OnboardingViewModel: ViewModelType {
     //MARK: - Transform
     
     struct Input {
+        // Nickname
         let nicknameTextFieldEditingDidBegin: ControlEvent<Void>
         let nicknameTextFieldEditingDidEnd: ControlEvent<Void>
         let nicknameTextFieldText: Observable<String>
         let duplicateCheckButtonDidTap: ControlEvent<Void>
+        
+        // BirthGender
+        let genderButtonDidTap: Observable<OnboardingGender>
+        
+        // Total
         let nextButtonDidTap: ControlEvent<Void>
         let backButtonDidTap: ControlEvent<Void>
     }
     
     struct Output {
+        // Nickname
         let isNicknameTextFieldEditing: Driver<Bool>
         let isDuplicateCheckButtonEnabled: Driver<Bool>
         let nicknameAvailablity: Driver<NicknameAvailablity>
-        let isNextButtonAvailable: Driver<Bool>
+        let isNicknameNextButtonAvailable: Driver<Bool>
+        
+        // BirthGender
+        let selectedGender: Driver<OnboardingGender?>
+        
+        // Total
         let stageIndex: Driver<Int>
         let moveToLastStage: Driver<Void>
         let moveToNextStage: Driver<Void>
@@ -97,7 +116,7 @@ final class OnboardingViewModel: ViewModelType {
         self.isNicknameAvailable
             .bind(with: self, onNext: { owner, availablity in
                 owner.isDuplicateCheckButtonEnabled.accept(availablity == .unknown)
-                owner.isNextButtonAvailable.accept(availablity == .available)
+                owner.isNicknameNextButtonAvailable.accept(availablity == .available)
             })
             .disposed(by: disposeBag)
         
@@ -105,6 +124,12 @@ final class OnboardingViewModel: ViewModelType {
             .bind(with: self, onNext: { owner, _ in
                 // API 연결 필요, 지금은 무조건 성공한다고 가정.
                 owner.isNicknameAvailable.accept(.available)
+            })
+            .disposed(by: disposeBag)
+        
+        input.genderButtonDidTap
+            .bind(with: self, onNext: { owner, selectedGender in
+                owner.selectedGender.accept(selectedGender)
             })
             .disposed(by: disposeBag)
         
@@ -126,7 +151,8 @@ final class OnboardingViewModel: ViewModelType {
             isNicknameTextFieldEditing: isNicknameFieldEditing.asDriver(),
             isDuplicateCheckButtonEnabled: isDuplicateCheckButtonEnabled.asDriver(),
             nicknameAvailablity: isNicknameAvailable.asDriver(),
-            isNextButtonAvailable: isNextButtonAvailable.asDriver(),
+            isNicknameNextButtonAvailable: isNicknameNextButtonAvailable.asDriver(),
+            selectedGender: selectedGender.asDriver(),
             stageIndex: stageIndex.asDriver(),
             moveToLastStage: moveToLastStage.asDriver(onErrorJustReturn: ()),
             moveToNextStage: moveToNextStage.asDriver(onErrorJustReturn: ()),

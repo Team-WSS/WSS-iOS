@@ -40,7 +40,7 @@ final class OnboardingViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-  
+        
         bindViewModel()
     }
     
@@ -103,9 +103,17 @@ final class OnboardingViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.isNextButtonAvailable
+        output.isNicknameNextButtonAvailable
             .drive(with: self, onNext: { owner, isEnabled in
                 owner.rootView.nickNameView.bottomButton.updateButtonEnabled(isEnabled)
+            })
+            .disposed(by: disposeBag)
+        
+        output.selectedGender
+            .drive(with: self, onNext: { owner, selectedGender in
+                if let selectedGender {
+                    owner.rootView.birthGenderView.updateGenderButton(selectedGender: selectedGender)
+                }
             })
             .disposed(by: disposeBag)
         
@@ -133,11 +141,18 @@ final class OnboardingViewController: UIViewController {
     //MARK: - Actions
     
     private func createViewModelInput() -> OnboardingViewModel.Input {
+        let genderButtonDidTap = Observable.merge(
+            rootView.birthGenderView.genderButtons
+                .map { button in
+                    button.rx.tap.map { button.gender }
+                })
+        
         return OnboardingViewModel.Input(
             nicknameTextFieldEditingDidBegin: self.rootView.nickNameView.nicknameTextField.rx.controlEvent(.editingDidBegin),
             nicknameTextFieldEditingDidEnd: self.rootView.nickNameView.nicknameTextField.rx.controlEvent(.editingDidEnd),
             nicknameTextFieldText: self.rootView.nickNameView.nicknameTextField.rx.text.orEmpty.distinctUntilChanged(),
             duplicateCheckButtonDidTap: self.rootView.nickNameView.duplicateCheckButton.rx.tap,
+            genderButtonDidTap: genderButtonDidTap,
             nextButtonDidTap: self.rootView.nickNameView.bottomButton.button.rx.tap,
             backButtonDidTap: rootView.backButton.rx.tap
         )

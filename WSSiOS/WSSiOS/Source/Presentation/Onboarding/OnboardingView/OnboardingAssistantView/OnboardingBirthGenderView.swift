@@ -19,7 +19,7 @@ final class OnboardingBirthGenderView: UIView {
     
     private let genderTitleLabel = UILabel()
     private let genderButtonStackView = UIStackView()
-    private let genderButtons = OnboardingGender.allCases.map { OnboardingGenderButton(gender: $0) }
+    let genderButtons = OnboardingGender.allCases.map { OnboardingGenderButton(gender: $0) }
     
     private let birthTitleLabel = UILabel()
     private let selectBirthButton = UIButton()
@@ -162,5 +162,10 @@ final class OnboardingBirthGenderView: UIView {
     
     // MARK: - Custom Method
     
+    func updateGenderButton(selectedGender: OnboardingGender) {
+        genderButtons.forEach {
+            $0.updateButton(selectedGender: selectedGender)
+        }
+    }
 }
 
