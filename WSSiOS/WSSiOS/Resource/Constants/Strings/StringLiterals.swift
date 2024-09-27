@@ -310,6 +310,14 @@ enum StringLiterals {
         
         static let nextButton = "다음으로"
         
+        enum BirthGender {
+            static let title = "성별, 출생연도를 선택하세요"
+            static let description = "해당 정보는 추천에 활용되며, 언제든 변경할 수 있어요"
+            static let genderTitle = "성별"
+            static let birthTitle = "출생연도"
+            static let birthPlaceholder = "태어난 해를 입력하세요"
+        }
+        
         enum NickName {
             static let title = "닉네임을 입력하세요"
             static let description = "10자 이내의 닉네임을 입력해주세요"

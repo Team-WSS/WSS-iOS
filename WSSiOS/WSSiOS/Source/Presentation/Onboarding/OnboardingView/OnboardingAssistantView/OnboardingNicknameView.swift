@@ -201,7 +201,7 @@ final class OnboardingNicknameView: UIView {
     }
     
     func updateNickNameStatusDescriptionLabel(availablity: NicknameAvailablity) {
-        var descriptionText = availablity == .available ? "사용 가능한 닉네임이에요" : "한글, 영문, 숫자 2~10자까지 입력 가능해요"
+        let descriptionText = availablity == .available ? "사용 가능한 닉네임이에요" : "한글, 영문, 숫자 2~10자까지 입력 가능해요"
         nickNameStatusDescriptionLabel.do {
             $0.isHidden = availablity == .notStarted || availablity == .unknown
             $0.applyWSSFont(.body2, with: descriptionText)
