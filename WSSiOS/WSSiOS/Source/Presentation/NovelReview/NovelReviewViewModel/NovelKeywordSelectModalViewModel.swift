@@ -173,7 +173,7 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
     
     //MARK: - API
     
-    private func searchKeyword(query: String?) -> Observable<SearchKeywordResult> {
+    private func searchKeyword(query: String? = nil) -> Observable<SearchKeywordResult> {
         keywordRepository.searchKeyword(query: query)
             .observe(on: MainScheduler.instance)
     }
