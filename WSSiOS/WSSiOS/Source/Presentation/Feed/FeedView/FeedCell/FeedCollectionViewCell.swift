@@ -161,9 +161,9 @@ final class FeedCollectionViewCell: UICollectionViewCell {
         detailContentView.bindData(content: data.feedContent,
                                    isSpolier: data.isSpoiler)
         
-        novelView.bindData(title: data.title,
-                           rating: data.novelRating,
-                           participants: data.novelRatingCount)
+        novelView.bindData(title: data.title ?? "",
+                           rating: data.novelRating ?? 0,
+                           participants: data.novelRatingCount ?? 0)
         
         reactView.bindData(likeRating: data.likeCount,
                            isLiked: data.isLiked,

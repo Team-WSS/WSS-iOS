@@ -23,10 +23,10 @@ struct TotalFeeds: Codable {
     let likeCount: Int
     let isLiked: Bool
     let commentCount: Int
-    let novelId: Int
-    let title: String
-    let novelRatingCount: Int
-    let novelRating: Float
+    let novelId: Int?
+    let title: String?
+    let novelRatingCount: Int?
+    let novelRating: Float?
     let relevantCategories: [String]
     let isSpoiler: Bool
     let isModified: Bool
