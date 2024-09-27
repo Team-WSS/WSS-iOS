@@ -30,10 +30,23 @@ enum URLs {
         static func novelDetailInfo(novelId: Int) -> String {
             return "/novels/\(novelId)/info"
         }
+        static func novelDetailFeed(novelId: Int) -> String {
+            return "/novels/\(novelId)/feeds"
+        }
         static func novelIsInterest(novelId: Int) -> String {
             return "/novels/\(novelId)/is-interest"
         }
         static func novelReview(novelId: Int) -> String {
+            return "/user-novels/\(novelId)"
+        }
+    }
+    
+    enum NovelReview {
+        static let postNovelReview = "/user-novels"
+        static func getNovelReview(novelId: Int) -> String {
+            return "/user-novels/\(novelId)"
+        }
+        static func putNovelReview(novelId: Int) -> String {
             return "/user-novels/\(novelId)"
         }
     }
@@ -119,5 +132,13 @@ enum URLs {
     enum Search {
         static let sosoPick = "/soso-picks"
         static let normalSearch = "/novels"
+    }
+    
+    enum Keyword {
+        static let searchKeyword = "/keywords"
+    }
+    
+    enum Contact {
+        static let kakao = "http://pf.kakao.com/_kHxlWG"
     }
 }

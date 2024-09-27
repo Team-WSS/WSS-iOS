@@ -21,11 +21,11 @@ final class HomeInduceLoginModalView: UIView {
     private let titleLabel = UILabel()
     
     /// 로그인 버튼 및 버튼 내 라벨
-    private var loginButton = UIButton()
+    var loginButton = UIButton()
     private let loginButtonLabel = UILabel()
     
     /// 닫기 버튼 및 버튼 내 라벨
-    private var cancelButton = UIButton()
+    var cancelButton = UIButton()
     private let cancelButtonLabel = UILabel()
     
     //MARK: - Life Cycle

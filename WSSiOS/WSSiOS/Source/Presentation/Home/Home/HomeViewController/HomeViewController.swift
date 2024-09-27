@@ -18,14 +18,18 @@ final class HomeViewController: UIViewController {
     private let viewModel: HomeViewModel
     private let disposeBag = DisposeBag()
     
+    private let isLoggedIn: Bool
+    
     //MARK: - UI Components
     
-    private let rootView = HomeView()
+    private let rootView: HomeView
     
     //MARK: - Life Cycle
     
-    init(viewModel: HomeViewModel) {
+    init(viewModel: HomeViewModel, isLoggedIn: Bool) {
         self.viewModel = viewModel
+        self.isLoggedIn = isLoggedIn
+        self.rootView = HomeView(frame: .zero, isLoggedIn: isLoggedIn)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -86,7 +90,11 @@ final class HomeViewController: UIViewController {
     
     private func bindViewModel() {
         let input = HomeViewModel.Input(
-            announcementButtonTapped: rootView.headerView.announcementButton.rx.tap
+            announcementButtonTapped: rootView.headerView.announcementButton.rx.tap,
+            registerInterestNovelButtonTapped: rootView.interestView.unregisterView.registerButton.rx.tap,
+            setPreferredGenresButtonTapped: rootView.tasteRecommendView.unregisterView.registerButton.rx.tap,
+            induceModalViewLoginButtonTapped: rootView.induceLoginModalView.loginButton.rx.tap,
+            induceModalViewCancelButtonTapped: rootView.induceLoginModalView.cancelButton.rx.tap
         )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -137,6 +145,36 @@ final class HomeViewController: UIViewController {
                 owner.navigationController?.pushViewController(viewController, animated: true)
             })
             .disposed(by: disposeBag)
+        
+        output.navigateToNormalSearchView
+            .bind(with: self, onNext: { owner, _ in
+                let normalSearchViewController = NormalSearchViewController(viewModel: NormalSearchViewModel(searchRepository: DefaultSearchRepository(searchService: DefaultSearchService())))
+                normalSearchViewController.navigationController?.isNavigationBarHidden = false
+                normalSearchViewController.hidesBottomBarWhenPushed = true
+                owner.navigationController?.pushViewController(normalSearchViewController, animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        output.navigateToLoginView
+            .bind(with: self, onNext: { owner, _ in
+                guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else {
+                    return
+                }
+                sceneDelegate.setRootToLoginViewController()
+            })
+            .disposed(by: disposeBag)
+        
+        output.showInduceLoginModalView
+            .drive(with: self, onNext: { owner, isShow in
+                owner.showInduceLoginModalView(isShow)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    //MARK: - Custom Method
+    
+    private func showInduceLoginModalView(_ isShow: Bool) {
+        rootView.induceLoginModalView.isHidden = !isShow
     }
 }
 

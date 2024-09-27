@@ -9,8 +9,6 @@ import UIKit
 
 import RxSwift
 import RxCocoa
-import SnapKit
-import Then
 
 final class OnboardingViewController: UIViewController {
     
@@ -62,7 +60,6 @@ final class OnboardingViewController: UIViewController {
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.backgroundColor = .wssWhite
-        navigationItem.title = ""
         navigationItem.setHidesBackButton(true, animated: true)
     }
     
@@ -102,6 +99,12 @@ final class OnboardingViewController: UIViewController {
                 owner.rootView.nickNameView.bottomButton.updateButtonEnabled(isEnabled)
             })
             .disposed(by: disposeBag)
+        
+        output.moveToHomeViewController
+            .drive(with: self, onNext: { owner, _ in
+                owner.onBoardingCompleted()
+            })
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Actions
@@ -112,7 +115,17 @@ final class OnboardingViewController: UIViewController {
             nicknameTextFieldEditingDidBegin: self.rootView.nickNameView.nicknameTextField.rx.controlEvent(.editingDidBegin),
             nicknameTextFieldEditingDidEnd: self.rootView.nickNameView.nicknameTextField.rx.controlEvent(.editingDidEnd),
             nicknameTextFieldText: self.rootView.nickNameView.nicknameTextField.rx.text.orEmpty.distinctUntilChanged(),
-            duplicateCheckButtonDidTap: self.rootView.nickNameView.duplicateCheckButton.rx.tap
+            duplicateCheckButtonDidTap: self.rootView.nickNameView.duplicateCheckButton.rx.tap,
+            nextButtonDidTap: self.rootView.nickNameView.bottomButton.button.rx.tap
         )
+    }
+    
+    //MARK: - Custom Method
+    
+    private func onBoardingCompleted() {
+        guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else {
+            return
+        }
+        sceneDelegate.setRootToWSSTabBarController()
     }
 }
