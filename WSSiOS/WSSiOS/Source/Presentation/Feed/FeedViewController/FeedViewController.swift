@@ -16,8 +16,9 @@ final class FeedViewController: UIViewController {
     //MARK: - Properties
     
     private let disposeBag = DisposeBag()
-    private let dummyTitle = dummyFeedPageBarTitle
     private lazy var selectedTabIndex = PublishSubject<Int>()
+    private var categoryList = BehaviorRelay<[String]>(value: [""])
+    private let viewModel: FeedViewModel
     
     //MARK: - Components
     
@@ -30,6 +31,16 @@ final class FeedViewController: UIViewController {
     
     // MARK: - Life Cycle
     
+    init(viewModel: FeedViewModel) {
+        self.viewModel = viewModel
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -39,6 +50,7 @@ final class FeedViewController: UIViewController {
         
         register()
         delegate()
+        bindViewModel()
         setupPages()
         bindColletionView()
         
@@ -58,7 +70,7 @@ final class FeedViewController: UIViewController {
     }
     
     private func bindColletionView() {
-        Observable.just(dummyTitle)
+        categoryList
             .bind(to: pageBar.feedPageBarCollectionView.rx.items(
                 cellIdentifier: FeedPageBarCollectionViewCell.cellIdentifier,
                 cellType: FeedPageBarCollectionViewCell.self)) { (row, element, cell) in
@@ -76,12 +88,12 @@ final class FeedViewController: UIViewController {
     }
     
     private func setupPages() {
-        for _ in 0..<dummyTitle.count {
+        for _ in 0..<categoryList.value.count {
             let viewController = FeedGenreViewController(
                 viewModel: FeedViewModel(
                     feedRepository: DefaultFeedRepository(
                         feedService: DefaultFeedService()
-                    )
+                    ), gender: "F"
                 ), feedsDummy: dummyFeedData)
             
             pages.append(viewController)
@@ -121,6 +133,17 @@ final class FeedViewController: UIViewController {
             })
             .disposed(by: disposeBag)
     }
+    
+    private func bindViewModel() {
+        let input = FeedViewModel.Input()
+        let output = viewModel.transform(from: input, disposeBag: disposeBag)
+        
+        output.categoryList
+            .bind(with: self, onNext: { owner, category in
+                owner.categoryList.accept(category)
+            })
+            .disposed(by: disposeBag)
+    }
 }
 
 extension FeedViewController: UICollectionViewDelegateFlowLayout {
@@ -128,9 +151,9 @@ extension FeedViewController: UICollectionViewDelegateFlowLayout {
         
         switch collectionView {
         case pageBar.feedPageBarCollectionView:
-            guard indexPath.item < dummyTitle.count else { return CGSize(width: 0, height: 0) }
+            guard indexPath.item < categoryList.value.count else { return CGSize(width: 0, height: 0) }
             
-            let text = dummyTitle[indexPath.row]
+            let text = categoryList.value[indexPath.row]
             let height: CGFloat = 41
             
             let pageTitleLabel = UILabel()

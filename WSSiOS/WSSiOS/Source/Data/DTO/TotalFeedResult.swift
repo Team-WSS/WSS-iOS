@@ -153,5 +153,3 @@ let dummyFeedData = [TotalFeeds(userId: 123,
                                 isSpolier: false,
                                 isModified: false,
                                 isMyFeed: false)]
-
-let dummyFeedPageBarTitle = ["판타지", "현판", "무협", "드라마", "미스터리", "라노벨", "로맨스", "로판", "BL", "기타"]
