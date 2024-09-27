@@ -39,7 +39,7 @@ final class OnboardingViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+  
         bindViewModel()
     }
     
@@ -73,6 +73,12 @@ final class OnboardingViewController: UIViewController {
     }
     
     private func bindViewModelOutput(_ output: OnboardingViewModel.Output) {
+        output.stageIndex
+            .drive(with: self, onNext: { owner, stage in
+                owner.rootView.progressView.updateProgressView(stage)
+            })
+            .disposed(by: disposeBag)
+        
         Observable.combineLatest(
             output.isNicknameTextFieldEditing.asObservable(),
             output.nicknameAvailablity.asObservable()
@@ -97,6 +103,13 @@ final class OnboardingViewController: UIViewController {
         output.isNextButtonAvailable
             .drive(with: self, onNext: { owner, isEnabled in
                 owner.rootView.nickNameView.bottomButton.updateButtonEnabled(isEnabled)
+            })
+            .disposed(by: disposeBag)
+        
+        output.moveToNextStage
+            .drive(with: self, onNext: { owner, _ in
+                owner.view.endEditing(true)
+                owner.scrollToNextItem()
             })
             .disposed(by: disposeBag)
         
@@ -127,5 +140,13 @@ final class OnboardingViewController: UIViewController {
             return
         }
         sceneDelegate.setRootToWSSTabBarController()
+    }
+    
+    private func scrollToNextItem() {
+        let currentOffset = rootView.scrollView.contentOffset
+        let width = UIScreen.main.bounds.width
+        let nextOffset = currentOffset.x + width
+        
+        rootView.scrollView.setContentOffset(CGPoint(x: nextOffset, y: 0), animated: true)
     }
 }

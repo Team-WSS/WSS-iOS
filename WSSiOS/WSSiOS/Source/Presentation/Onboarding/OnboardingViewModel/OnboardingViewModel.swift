@@ -25,7 +25,9 @@ final class OnboardingViewModel: ViewModelType {
     let isDuplicateCheckButtonEnabled = BehaviorRelay<Bool>(value: false)
     let isNicknameAvailable = BehaviorRelay<NicknameAvailablity>(value: .notStarted)
     let isNextButtonAvailable = BehaviorRelay<Bool>(value: false)
+    let moveToNextStage = PublishRelay<Void>()
     let moveToHomeViewController = PublishRelay<Void>()
+    let stageIndex = BehaviorRelay<Int>(value: 0)
     
     //MARK: - Life Cycle
     
@@ -45,6 +47,8 @@ final class OnboardingViewModel: ViewModelType {
         let isDuplicateCheckButtonEnabled: Driver<Bool>
         let nicknameAvailablity: Driver<NicknameAvailablity>
         let isNextButtonAvailable: Driver<Bool>
+        let stageIndex: Driver<Int>
+        let moveToNextStage: Driver<Void>
         let moveToHomeViewController: Driver<Void>
     }
     
@@ -90,9 +94,15 @@ final class OnboardingViewModel: ViewModelType {
         
         input.nextButtonDidTap
             .throttle(.seconds(1), scheduler: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, _ in
-                // 만든 부분까지만 보여주고, 바로 홈으로 이동
-                owner.moveToHomeViewController.accept(())
+            .withLatestFrom(stageIndex)
+            .bind(with: self, onNext: { owner, stage in
+                // 만든 부분까지만 보여주고, 바로 홈으로 이동. 지금은 1번까지 만들어져 있음.
+                if stage >= 1 {
+                    owner.moveToHomeViewController.accept(())
+                } else if stage >= 0 {
+                    owner.stageIndex.accept(stage + 1)
+                    owner.moveToNextStage.accept(())
+                }
             })
             .disposed(by: disposeBag)
         
@@ -101,6 +111,8 @@ final class OnboardingViewModel: ViewModelType {
             isDuplicateCheckButtonEnabled: isDuplicateCheckButtonEnabled.asDriver(),
             nicknameAvailablity: isNicknameAvailable.asDriver(),
             isNextButtonAvailable: isNextButtonAvailable.asDriver(),
+            stageIndex: stageIndex.asDriver(),
+            moveToNextStage: moveToNextStage.asDriver(onErrorJustReturn: ()),
             moveToHomeViewController: moveToHomeViewController.asDriver(onErrorJustReturn: ())
         )
     }
