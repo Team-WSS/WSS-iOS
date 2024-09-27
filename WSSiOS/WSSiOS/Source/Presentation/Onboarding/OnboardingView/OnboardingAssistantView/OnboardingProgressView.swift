@@ -14,7 +14,7 @@ final class OnboardingProgressView: UIView {
     
     //MARK: - Properties
     
-    let animationDuration = 0.20
+    private let animationDuration = 0.20
     
     //MARK: - Components
     
