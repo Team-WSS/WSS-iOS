@@ -96,6 +96,7 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
         input.keywordTextFieldEditingDidBegin
             .subscribe(with: self, onNext: { owner, _ in
                 owner.isKeywordTextFieldEditing.accept(true)
+                owner.showEmptyView.accept(false)
                 owner.showCategoryListView.accept(false)
             })
             .disposed(by: disposeBag)
