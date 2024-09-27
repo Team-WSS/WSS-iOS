@@ -20,6 +20,7 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
     private let novelDetailFeedConnectedNovelView = NovelDetailFeedConnectedNovelView()
     private let novelDetailFeedCategoryView = NovelDetailFeedCategoryView()
     private let novelDetailFeedReactView = NovelDetailFeedReactView()
+    private let dividerView = UIView()
     
     //MARK: - Life Cycle
     
@@ -47,10 +48,15 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
             $0.distribution = .fill
             $0.alignment = .fill
         }
+        
+        dividerView.do {
+            $0.backgroundColor = .wssGray50
+        }
     }
     
     private func setHierarchy() {
-        self.addSubview(stackView)
+        self.addSubviews(stackView,
+                         dividerView)
         stackView.addArrangedSubviews(novelDetailFeedHeaderView,
                                       novelDetailFeedContentView,
                                       novelDetailFeedConnectedNovelView,
@@ -69,6 +75,11 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
                 $0.setCustomSpacing(20, after: novelDetailFeedConnectedNovelView)
                 $0.setCustomSpacing(24, after: novelDetailFeedCategoryView)
             }
+        }
+        
+        dividerView.snp.makeConstraints {
+            $0.bottom.leading.trailing.equalToSuperview()
+            $0.height.equalTo(1)
         }
     }
     
