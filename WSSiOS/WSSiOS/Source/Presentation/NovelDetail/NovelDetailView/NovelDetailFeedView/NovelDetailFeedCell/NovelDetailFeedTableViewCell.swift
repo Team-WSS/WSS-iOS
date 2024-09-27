@@ -66,8 +66,7 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
     
     private func setLayout() {
         stackView.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview().inset(20)
-            $0.bottom.equalToSuperview().inset(24)
+            $0.edges.equalToSuperview().inset(20)
             
             stackView.do {
                 $0.setCustomSpacing(12, after: novelDetailFeedHeaderView)
