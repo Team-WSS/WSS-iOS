@@ -19,6 +19,8 @@ final class NovelKeywordSelectCategoryView: UIView {
     private let disposeBag = DisposeBag()
     
     private let keywordCategory: KeywordCategory
+    private var isExpanded: Bool = false
+    var collectionViewHeight: CGFloat = 0
     
     //MARK: - Components
     
@@ -148,6 +150,16 @@ final class NovelKeywordSelectCategoryView: UIView {
                 $0.size.equalTo(44)
             }
         }
+    }
+    
+    //MARK: - Custom Methos
+    
+    func expandCategoryCollectionView() {
+        categoryCollectionView.snp.updateConstraints {
+            $0.height.equalTo(isExpanded ? 78 : self.collectionViewHeight)
+        }
+        
+        self.isExpanded = !self.isExpanded
     }
 }
 

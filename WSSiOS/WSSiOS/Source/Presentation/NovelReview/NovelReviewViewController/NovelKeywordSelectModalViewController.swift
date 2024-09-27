@@ -166,22 +166,35 @@ final class NovelKeywordSelectModalViewController: UIViewController {
     //MARK: - Custom Method
     
     func setupStackView(categories: [KeywordCategory]) {
-        for category in categories {
-        let novelKeywordSelectCategoryView = NovelKeywordSelectCategoryView(keywordCategory: category)
-        
+        for (index, category) in categories.enumerated() {
+            let novelKeywordSelectCategoryView = NovelKeywordSelectCategoryView(keywordCategory: category)
+            
             self.rootView.novelKeywordSelectCategoryListView.stackView.addArrangedSubview(novelKeywordSelectCategoryView)
-                                    
+            
             Observable.just(category.keywords)
                 .bind(to: novelKeywordSelectCategoryView.categoryCollectionView.rx.items(cellIdentifier: NovelKeywordSelectSearchResultCollectionViewCell.cellIdentifier, cellType: NovelKeywordSelectSearchResultCollectionViewCell.self)) { item, element, cell in
-//                    let indexPath = IndexPath(item: item, section: 0)
-//                    
-//                    if self.novelKeywordSelectModalViewModel.selectedKeywordList.contains(where: { $0.keywordId == element.keywordId }) {
-//                        novelKeywordSelectCategoryView.categoryCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
-//                    } else {
-//                        novelKeywordSelectCategoryView.categoryCollectionView.deselectItem(at: indexPath, animated: false)
-//                    }
+                    //                    let indexPath = IndexPath(item: item, section: 0)
+                    //
+                    //                    if self.novelKeywordSelectModalViewModel.selectedKeywordList.contains(where: { $0.keywordId == element.keywordId }) {
+                    //                        novelKeywordSelectCategoryView.categoryCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
+                    //                    } else {
+                    //                        novelKeywordSelectCategoryView.categoryCollectionView.deselectItem(at: indexPath, animated: false)
+                    //                    }
                     cell.bindData(keyword: element)
                 }
+                .disposed(by: disposeBag)
+            
+            novelKeywordSelectCategoryView.expandButton.rx.tap
+                .subscribe(onNext: { _ in
+                    novelKeywordSelectCategoryView.expandCategoryCollectionView()
+                })
+                .disposed(by: disposeBag)
+            
+            novelKeywordSelectCategoryView.categoryCollectionView.rx.observe(CGSize.self, "contentSize")
+                .map { $0?.height ?? 0 }
+                .subscribe(onNext: { height in
+                    novelKeywordSelectCategoryView.collectionViewHeight = height
+                })
                 .disposed(by: disposeBag)
         }
     }
