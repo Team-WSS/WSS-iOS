@@ -22,6 +22,7 @@ final class NovelKeywordSelectModalView: UIView {
     private let dividerView = UIView()
     let novelKeywordSelectEmptyView = NovelKeywordSelectEmptyView()
     let novelKeywordSelectSearchResultView = NovelKeywordSelectSearchResultView()
+    let novelKeywordSelectCategoryListView = NovelKeywordSelectCategoryListView()
     let novelKeywordSelectModalButtonView = NovelKeywordSelectModalButtonView()
     
     //MARK: - Life Cycle
@@ -79,6 +80,7 @@ final class NovelKeywordSelectModalView: UIView {
                                 dividerView,
                                 novelKeywordSelectEmptyView,
                                 novelKeywordSelectSearchResultView,
+                                novelKeywordSelectCategoryListView,
                                 novelKeywordSelectModalButtonView)
     }
     
@@ -123,6 +125,12 @@ final class NovelKeywordSelectModalView: UIView {
             $0.bottom.equalTo(novelKeywordSelectModalButtonView.snp.top)
         }
         
+        novelKeywordSelectCategoryListView.snp.makeConstraints {
+            $0.top.equalTo(novelKeywordSelectSearchBarView.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(novelKeywordSelectModalButtonView.snp.top)
+        }
+        
         novelKeywordSelectModalButtonView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalTo(self.safeAreaLayoutGuide)
@@ -131,12 +139,16 @@ final class NovelKeywordSelectModalView: UIView {
     
     //MARK: - Custom Method
     
+    func showEmptyView(show: Bool) {
+        novelKeywordSelectEmptyView.isHidden = !show
+    }
+    
     func showSearchResultView(show: Bool) {
         novelKeywordSelectSearchResultView.isHidden = !show
     }
     
-    func showEmptyView(show: Bool) {
-        novelKeywordSelectEmptyView.isHidden = !show
+    func showCategoryListView(show: Bool) {
+        novelKeywordSelectCategoryListView.isHidden = !show
     }
     
     func updateNovelKeywordSelectModalViewLayout(isSelectedKeyword: Bool) {

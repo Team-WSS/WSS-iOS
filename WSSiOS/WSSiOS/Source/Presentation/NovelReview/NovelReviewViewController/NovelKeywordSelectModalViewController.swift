@@ -143,6 +143,12 @@ final class NovelKeywordSelectModalViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
+        output.keywordCategoryListData
+            .subscribe(with: self, onNext: { owner, keywordCategoryListData in
+                owner.setupStackView(categories: keywordCategoryListData)
+            })
+            .disposed(by: disposeBag)
+        
         output.isKeywordCountOverLimit
             .subscribe(with: self, onNext: { owner, indexPath in
                 owner.rootView.novelKeywordSelectSearchResultView.searchResultCollectionView.deselectItem(at: indexPath, animated: false)
@@ -155,6 +161,35 @@ final class NovelKeywordSelectModalViewController: UIViewController {
                 owner.rootView.showEmptyView(show: show)
             })
             .disposed(by: disposeBag)
+    }
+    
+    //MARK: - Custom Method
+    
+    func setupStackView(categories: [KeywordCategory]) {
+        for category in categories {
+        let novelKeywordSelectCategoryView = NovelKeywordSelectCategoryView(keywordCategory: category)
+        
+            self.rootView.novelKeywordSelectCategoryListView.stackView.addArrangedSubview(novelKeywordSelectCategoryView)
+            
+            novelKeywordSelectCategoryView.categoryCollectionView.register(NovelKeywordSelectSearchResultCollectionViewCell.self, forCellWithReuseIdentifier: NovelKeywordSelectSearchResultCollectionViewCell.cellIdentifier)
+        
+            novelKeywordSelectCategoryView.categoryCollectionView.rx
+                .setDelegate(self)
+                .disposed(by: disposeBag)
+                        
+            Observable.just(category.keywords)
+                .bind(to: novelKeywordSelectCategoryView.categoryCollectionView.rx.items(cellIdentifier: NovelKeywordSelectSearchResultCollectionViewCell.cellIdentifier, cellType: NovelKeywordSelectSearchResultCollectionViewCell.self)) { item, element, cell in
+//                    let indexPath = IndexPath(item: item, section: 0)
+//                    
+//                    if self.novelKeywordSelectModalViewModel.selectedKeywordList.contains(where: { $0.keywordId == element.keywordId }) {
+//                        novelKeywordSelectCategoryView.categoryCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
+//                    } else {
+//                        novelKeywordSelectCategoryView.categoryCollectionView.deselectItem(at: indexPath, animated: false)
+//                    }
+                    cell.bindData(keyword: element)
+                }
+                .disposed(by: disposeBag)
+        }
     }
 }
 
