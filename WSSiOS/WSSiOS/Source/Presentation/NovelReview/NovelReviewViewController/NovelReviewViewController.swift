@@ -157,7 +157,7 @@ final class NovelReviewViewController: UIViewController {
         
         output.presentNovelKeywordSelectModalViewController
             .subscribe(with: self, onNext: { owner, selectedKeywordList in
-                owner.presentModalViewController(NovelKeywordSelectModalViewController(viewModel: NovelKeywordSelectModalViewModel(selectedKeywordList: selectedKeywordList)))
+                owner.presentModalViewController(NovelKeywordSelectModalViewController(viewModel: NovelKeywordSelectModalViewModel(keywordRepository: DefaultKeywordRepository(keywordService: DefaultKeywordService()), selectedKeywordList: selectedKeywordList)))
             })
             .disposed(by: disposeBag)
         
@@ -193,7 +193,7 @@ extension NovelReviewViewController: UICollectionViewDelegateFlowLayout {
         } else if collectionView == self.rootView.novelReviewKeywordView.selectedKeywordCollectionView {
             var text: String?
             
-            text = self.novelReviewViewModel.selectedKeywordListData.value[indexPath.item]
+            text = self.novelReviewViewModel.selectedKeywordListData.value[indexPath.item].keywordName
             
             guard let unwrappedText = text else {
                 return CGSize(width: 0, height: 0)

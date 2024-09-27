@@ -14,8 +14,9 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
     
     //MARK: - Properties
     
-    var keywordSearchResultList: [String] = ["환생생", "환생남주", "환생이", "환생물", "환생", "환환생", "환생여주", "환환환생", "후회", "정치물", "피폐", "빙의", "먼치킨", "기억상실", "가가", "나나", "다다다", "라라랄", "마마마마마", "밥", "사삿", "아아앙", "자자", "차촟", "카카카", "타톹", "파포", "하히히"]
-    var selectedKeywordList: [String]
+    private let keywordRepository: KeywordRepository
+    var keywordSearchResultList: [KeywordData] = []
+    var selectedKeywordList: [KeywordData]
     
     private let keywordLimit: Int = 20
     
@@ -25,13 +26,14 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
     private let enteredText = BehaviorRelay<String>(value: "")
     private let isKeywordTextFieldEditing = BehaviorRelay<Bool>(value: false)
     private let endEditing = PublishRelay<Void>()
-    private let selectedKeywordListData = BehaviorRelay<[String]>(value: [])
-    private let keywordSearchResultListData = BehaviorRelay<[String]>(value: [])
+    private let selectedKeywordListData = BehaviorRelay<[KeywordData]>(value: [])
+    private let keywordSearchResultListData = BehaviorRelay<[KeywordData]>(value: [])
     private let isKeywordCountOverLimit = PublishRelay<IndexPath>()
     
     //MARK: - Life Cycle
     
-    init(selectedKeywordList: [String]) {
+    init(keywordRepository: KeywordRepository, selectedKeywordList: [KeywordData]) {
+        self.keywordRepository = keywordRepository
         self.selectedKeywordList = selectedKeywordList
     }
     
@@ -55,8 +57,8 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
         let enteredText: Observable<String>
         let isKeywordTextFieldEditing: Observable<Bool>
         let endEditing: Observable<Void>
-        let selectedKeywordListData: Observable<[String]>
-        let keywordSearchResultListData: Observable<[String]>
+        let selectedKeywordListData: Observable<[KeywordData]>
+        let keywordSearchResultListData: Observable<[KeywordData]>
         let isKeywordCountOverLimit: Observable<IndexPath>
     }
     
@@ -70,6 +72,7 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
         input.updatedEnteredText
             .subscribe(with: self, onNext: { owner, text in
                 owner.enteredText.accept(text)
+                print(text)
              })
             .disposed(by: disposeBag)
         
@@ -98,9 +101,19 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.searchButtonDidTap
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.endEditing.accept(())
+            .do(onNext: {
+                self.endEditing.accept(())
+            })
+            .withLatestFrom(enteredText)
+            .flatMapLatest { enteredText in
+                self.searchKeyword(query: enteredText)
+            }
+            .subscribe(with: self, onNext: { owner, data in
+                owner.keywordSearchResultList = data.categories.flatMap { $0.keywords }
                 owner.keywordSearchResultListData.accept(owner.keywordSearchResultList)
+
+            }, onError: { owner, error in
+                print(error)
             })
             .disposed(by: disposeBag)
         
@@ -127,7 +140,7 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
         
         input.searchResultCollectionViewItemDeselected
             .subscribe(with: self, onNext: { owner, indexPath in
-                owner.selectedKeywordList.removeAll { $0 == owner.keywordSearchResultList[indexPath.item] }
+                owner.selectedKeywordList.removeAll { $0.keywordName == owner.keywordSearchResultList[indexPath.item].keywordName }
                 owner.selectedKeywordListData.accept(owner.selectedKeywordList)
                 owner.endEditing.accept(())
             })
@@ -156,5 +169,12 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
                       selectedKeywordListData: selectedKeywordListData.asObservable(),
                       keywordSearchResultListData: keywordSearchResultListData.asObservable(),
                       isKeywordCountOverLimit: isKeywordCountOverLimit.asObservable())
+    }
+    
+    //MARK: - API
+    
+    private func searchKeyword(query: String?) -> Observable<SearchKeywordResult> {
+        keywordRepository.searchKeyword(query: query)
+            .observe(on: MainScheduler.instance)
     }
 }

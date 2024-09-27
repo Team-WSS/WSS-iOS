@@ -51,7 +51,7 @@ final class NovelReviewSelectedKeywordCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Data
     
-    func bindData(keyword: String) {
-        self.keywordTag.setText(keyword)
+    func bindData(keyword: KeywordData) {
+        self.keywordTag.setText(keyword.keywordName)
     }
 }
