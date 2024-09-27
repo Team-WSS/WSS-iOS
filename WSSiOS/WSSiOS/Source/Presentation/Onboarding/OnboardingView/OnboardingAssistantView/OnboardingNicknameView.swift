@@ -20,6 +20,7 @@ final class OnboardingNicknameView: UIView {
     private let textFieldInnerButton = UIButton()
     let duplicateCheckButton = UIButton()
     private let duplicateCheckButtonLabel = UILabel()
+    private let nickNameStatusDescriptionLabel = UILabel()
     let bottomButton = OnboardingBottomButtonView()
     
     //MARK: - Life Cycle
@@ -83,6 +84,10 @@ final class OnboardingNicknameView: UIView {
             $0.isUserInteractionEnabled = false
         }
         
+        nickNameStatusDescriptionLabel.do {
+            $0.isHidden = true
+        }
+        
         bottomButton.do {
             $0.setText(text: StringLiterals.Onboarding.nextButton)
         }
@@ -93,6 +98,7 @@ final class OnboardingNicknameView: UIView {
                          descriptionLabel,
                          nicknameTextField,
                          duplicateCheckButton,
+                         nickNameStatusDescriptionLabel,
                          bottomButton)
         nicknameTextField.addSubview(textFieldInnerButton)
         duplicateCheckButton.addSubview(duplicateCheckButtonLabel)
@@ -127,6 +133,11 @@ final class OnboardingNicknameView: UIView {
             $0.center.equalToSuperview()
         }
         
+        nickNameStatusDescriptionLabel.snp.makeConstraints {
+            $0.top.equalTo(nicknameTextField.snp.bottom).offset(12)
+            $0.leading.equalToSuperview().inset(20)
+        }
+        
         textFieldInnerButton.snp.makeConstraints {
             $0.verticalEdges.trailing.equalToSuperview()
             $0.size.equalTo(44)
@@ -140,10 +151,10 @@ final class OnboardingNicknameView: UIView {
     
     // MARK: - Custom Method
     
-    func updatenickNameTextField(isEditing: Bool, isAvailable: NicknameAvailablity) {
+    func updateNicknameTextField(isEditing: Bool, availablity: NicknameAvailablity) {
         var borderColor: CGColor = UIColor.wssGray70.cgColor
         
-        switch isAvailable {
+        switch availablity {
         case .available:
             borderColor = UIColor.wssPrimary100.cgColor
         case .notAvailable:
@@ -170,10 +181,10 @@ final class OnboardingNicknameView: UIView {
         }
     }
     
-    func updateTextFieldInnerButton(isEditing: Bool, isAvailable: NicknameAvailablity) {
+    func updateTextFieldInnerButton(isEditing: Bool, availablity: NicknameAvailablity) {
         var buttonImage: UIImage = .icCancelDark
         
-        switch isAvailable {
+        switch availablity {
         case .available:
             buttonImage = .icNickNameAvailable
         case .notAvailable:
@@ -185,7 +196,16 @@ final class OnboardingNicknameView: UIView {
         textFieldInnerButton.do {
             $0.isHidden = !isEditing
             $0.setImage(buttonImage, for: .normal)
-            $0.isEnabled = !(isAvailable == .available) || isEditing
+            $0.isEnabled = !(availablity == .available) || isEditing
+        }
+    }
+    
+    func updateNickNameStatusDescriptionLabel(availablity: NicknameAvailablity) {
+        var descriptionText = availablity == .available ? "사용 가능한 닉네임이에요" : "한글, 영문, 숫자 2~10자까지 입력 가능해요"
+        nickNameStatusDescriptionLabel.do {
+            $0.isHidden = availablity == .notStarted || availablity == .unknown
+            $0.applyWSSFont(.body2, with: descriptionText)
+            $0.textColor = availablity == .available ? .wssPrimary100 : .wssSecondary100
         }
     }
 }

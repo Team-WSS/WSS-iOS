@@ -78,15 +78,16 @@ final class OnboardingViewController: UIViewController {
     private func bindViewModelOutput(_ output: OnboardingViewModel.Output) {
         Observable.combineLatest(
             output.isNicknameTextFieldEditing.asObservable(),
-            output.isNicknameAvailable.asObservable()
+            output.nicknameAvailablity.asObservable()
         )
         .observe(on: MainScheduler.instance)
         .bind(with: self, onNext: { owner, tuple in
-            let (isEditing, isAvailable) = tuple
-            owner.rootView.nickNameView.updatenickNameTextField(isEditing: isEditing,
-                                                                isAvailable: isAvailable)
+            let (isEditing, availablity) = tuple
+            owner.rootView.nickNameView.updateNicknameTextField(isEditing: isEditing,
+                                                                availablity: availablity)
             owner.rootView.nickNameView.updateTextFieldInnerButton(isEditing: isEditing,
-                                                                   isAvailable: isAvailable)
+                                                                   availablity: availablity)
+            owner.rootView.nickNameView.updateNickNameStatusDescriptionLabel(availablity: availablity)
         })
         .disposed(by: disposeBag)
         

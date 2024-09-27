@@ -42,7 +42,7 @@ final class OnboardingViewModel: ViewModelType {
     struct Output {
         let isNicknameTextFieldEditing: Driver<Bool>
         let isDuplicateCheckButtonEnabled: Driver<Bool>
-        let isNicknameAvailable: Driver<NicknameAvailablity>
+        let nicknameAvailablity: Driver<NicknameAvailablity>
         let isNextButtonAvailable: Driver<Bool>
     }
     
@@ -89,7 +89,7 @@ final class OnboardingViewModel: ViewModelType {
         return Output(
             isNicknameTextFieldEditing: isNicknameFieldEditing.asDriver(),
             isDuplicateCheckButtonEnabled: isDuplicateCheckButtonEnabled.asDriver(),
-            isNicknameAvailable: isNicknameAvailable.asDriver(),
+            nicknameAvailablity: isNicknameAvailable.asDriver(),
             isNextButtonAvailable: isNextButtonAvailable.asDriver()
         )
     }
