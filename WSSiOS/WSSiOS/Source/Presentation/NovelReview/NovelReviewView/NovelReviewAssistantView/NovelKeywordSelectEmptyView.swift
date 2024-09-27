@@ -70,7 +70,7 @@ final class NovelKeywordSelectEmptyView: UIView {
     
     private func setLayout() {
         imageView.snp.makeConstraints {
-            $0.centerX.equalToSuperview()
+            $0.centerX.top.equalToSuperview()
             $0.width.equalTo(39)
             $0.height.equalTo(48)
         }

@@ -114,8 +114,7 @@ final class NovelKeywordSelectModalView: UIView {
         }
         
         novelKeywordSelectEmptyView.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalTo(novelKeywordSelectModalButtonView.snp.top).offset(-169)
+            $0.leading.trailing.centerY.equalToSuperview()
         }
         
         novelKeywordSelectSearchResultView.snp.makeConstraints {
