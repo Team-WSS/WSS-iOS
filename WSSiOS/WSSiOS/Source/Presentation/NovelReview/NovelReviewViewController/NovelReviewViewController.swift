@@ -122,12 +122,6 @@ final class NovelReviewViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.isCompleteButtonEnabled
-            .subscribe(with: self, onNext: { owner, isEnabled in
-                owner.rootView.enableCompleteButton(isEnabled: isEnabled)
-            })
-            .disposed(by: disposeBag)
-        
         output.readStatusListData
             .bind(to: rootView.novelReviewStatusView.statusCollectionView.rx.items(cellIdentifier: NovelReviewStatusCollectionViewCell.cellIdentifier, cellType: NovelReviewStatusCollectionViewCell.self)) { item, element, cell in
                 let indexPath = IndexPath(item: item, section: 0)

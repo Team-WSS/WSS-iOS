@@ -38,7 +38,6 @@ final class NovelReviewViewModel: ViewModelType {
     // Output
     
     private let popViewController = PublishRelay<Void>()
-    private let isCompleteButtonEnabled = BehaviorRelay<Bool>(value: false)
     private let readStatusListData = PublishRelay<[ReadStatus]>()
     private let readStatusData = PublishRelay<ReadStatus>()
     private let presentNovelDateSelectModalViewController = PublishRelay<(ReadStatus, Date?, Date?)>()
@@ -78,7 +77,6 @@ final class NovelReviewViewModel: ViewModelType {
     
     struct Output {
         let popViewController: Observable<Void>
-        let isCompleteButtonEnabled: Observable<Bool>
         let readStatusListData: Observable<[ReadStatus]>
         let readStatusData: Observable<ReadStatus>
         let presentNovelDateSelectModalViewController: Observable<(ReadStatus, Date?, Date?)>
@@ -112,7 +110,6 @@ final class NovelReviewViewModel: ViewModelType {
             .subscribe(with: self, onNext: { owner, indexPath in
                 owner.readStatus = ReadStatus.allCases[indexPath.item]
                 owner.readStatusData.accept(owner.readStatus)
-                owner.isCompleteButtonEnabled.accept(true)
             })
             .disposed(by: disposeBag)
         
@@ -204,7 +201,6 @@ final class NovelReviewViewModel: ViewModelType {
             .disposed(by: disposeBag)
 
         return Output(popViewController: popViewController.asObservable(),
-                      isCompleteButtonEnabled: isCompleteButtonEnabled.asObservable(),
                       readStatusListData: readStatusListData.asObservable(),
                       readStatusData: readStatusData.asObservable(),
                       presentNovelDateSelectModalViewController: presentNovelDateSelectModalViewController.asObservable(),
