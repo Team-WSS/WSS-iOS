@@ -107,7 +107,7 @@ final class LoginViewModel: ViewModelType {
             })
     }
     
-    func repositoryLoginMethod(type: LoginButtonType) -> Observable<Void> {
+    private func repositoryLoginMethod(type: LoginButtonType) -> Observable<Void> {
         // 레포지토리에 구현할 각 로그인 메서드. 아마 ..?
         print("\(String(describing: type)) Login 성공")
         if type == .skip {
