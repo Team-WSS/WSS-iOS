@@ -383,6 +383,7 @@
 		CDA5F0472C2FF60A00FCF15C /* FeedEditNovelConnectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5F0462C2FF60A00FCF15C /* FeedEditNovelConnectView.swift */; };
 		CDA5F0492C30248A00FCF15C /* FeedEditConnectedNovelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5F0482C30248A00FCF15C /* FeedEditConnectedNovelView.swift */; };
 		CDC03F4D2CA6C492002D301F /* NovelReviewService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC03F4C2CA6C492002D301F /* NovelReviewService.swift */; };
+		CDC03F4F2CA6C4E0002D301F /* NovelReviewRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC03F4E2CA6C4E0002D301F /* NovelReviewRepository.swift */; };
 		CDE596D62B57708D00D99DA1 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D52B57708D00D99DA1 /* UIViewController+.swift */; };
 		CDE596D82B5770CE00D99DA1 /* WSSToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D72B5770CE00D99DA1 /* WSSToastView.swift */; };
 		CDE596DA2B57C4BE00D99DA1 /* UITextView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D92B57C4BE00D99DA1 /* UITextView+.swift */; };
@@ -759,6 +760,7 @@
 		CDA5F0462C2FF60A00FCF15C /* FeedEditNovelConnectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedEditNovelConnectView.swift; sourceTree = "<group>"; };
 		CDA5F0482C30248A00FCF15C /* FeedEditConnectedNovelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedEditConnectedNovelView.swift; sourceTree = "<group>"; };
 		CDC03F4C2CA6C492002D301F /* NovelReviewService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelReviewService.swift; sourceTree = "<group>"; };
+		CDC03F4E2CA6C4E0002D301F /* NovelReviewRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelReviewRepository.swift; sourceTree = "<group>"; };
 		CDE596D52B57708D00D99DA1 /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
 		CDE596D72B5770CE00D99DA1 /* WSSToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSToastView.swift; sourceTree = "<group>"; };
 		CDE596D92B57C4BE00D99DA1 /* UITextView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+.swift"; sourceTree = "<group>"; };
@@ -803,6 +805,7 @@
 				39D4A5CF2BDA50E8004FC834 /* NovelDetailRepository.swift */,
 				2CD911472C0D88F8006B8D72 /* FeedRepository.swift */,
 				B9AC1BD72BF0BDDD006EDE92 /* NoticeRepository.swift */,
+				CDC03F4E2CA6C4E0002D301F /* NovelReviewRepository.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -3021,6 +3024,7 @@
 				A1A1F9D22B4873A100705F44 /* SearchResultView.swift in Sources */,
 				2C81DF872CA150DE00148F97 /* MyPageChangeUserBirthViewController.swift in Sources */,
 				395928932C98889B00E7B17B /* LoginView.swift in Sources */,
+				CDC03F4F2CA6C4E0002D301F /* NovelReviewRepository.swift in Sources */,
 				CD8747B52C9EF31E00D0ADAD /* NovelDateSelectModalDateButtonView.swift in Sources */,
 				B9AC1BD02BF0B33E006EDE92 /* HomeNoticeViewController.swift in Sources */,
 				2C41E0CC2CA4948400FFD233 /* MyPageCountView.swift in Sources */,
