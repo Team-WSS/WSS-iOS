@@ -1,5 +1,5 @@
 //
-//  LoginCLoginbannerCollectionViewCellell.swift
+//  LoginBannerCollectionViewCell.swift
 //  WSSiOS
 //
 //  Created by YunhakLee on 9/18/24.
@@ -11,7 +11,7 @@ import Kingfisher
 import SnapKit
 import Then
 
-final class LoginbannerCollectionViewCell: UICollectionViewCell {
+final class LoginBannerCollectionViewCell: UICollectionViewCell {
     
     //MARK: - UI Components
     

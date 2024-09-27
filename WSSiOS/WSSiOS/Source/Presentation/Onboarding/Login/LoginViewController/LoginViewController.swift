@@ -59,8 +59,8 @@ final class LoginViewController: UIViewController {
     
     private func registerCell() {
         rootView.carouselView.bannerCollectionView.register(
-            LoginbannerCollectionViewCell.self,
-            forCellWithReuseIdentifier: LoginbannerCollectionViewCell.cellIdentifier)
+            LoginBannerCollectionViewCell.self,
+            forCellWithReuseIdentifier: LoginBannerCollectionViewCell.cellIdentifier)
     }
     
     private func delegate() {
@@ -78,8 +78,8 @@ final class LoginViewController: UIViewController {
     private func bindViewModelOutput(_ output: LoginViewModel.Output) {
         output.bannerImages
             .drive(rootView.carouselView.bannerCollectionView.rx.items(
-                cellIdentifier: LoginbannerCollectionViewCell.cellIdentifier,
-                cellType: LoginbannerCollectionViewCell.self)) { _, element, cell in
+                cellIdentifier: LoginBannerCollectionViewCell.cellIdentifier,
+                cellType: LoginBannerCollectionViewCell.self)) { _, element, cell in
                     cell.bindData(image: element)
                 }
                 .disposed(by: disposeBag)

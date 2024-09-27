@@ -140,7 +140,7 @@
 		3980D1D62C19BB2C008B9B18 /* NovelDetailLargeCoverImageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3980D1D52C19BB2C008B9B18 /* NovelDetailLargeCoverImageButton.swift */; };
 		399258182C16DAF20063FB46 /* NovelDetailHeaderInterestFeedWriteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399258172C16DAF20063FB46 /* NovelDetailHeaderInterestFeedWriteButton.swift */; };
 		3992FA562B81E2A40079C8B8 /* RegisterNormalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3992FA552B81E2A40079C8B8 /* RegisterNormalViewController.swift */; };
-		399492F32C9A8ADE00298F16 /* LoginbannerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399492F22C9A8ADE00298F16 /* LoginbannerCollectionViewCell.swift */; };
+		399492F32C9A8ADE00298F16 /* LoginBannerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399492F22C9A8ADE00298F16 /* LoginBannerCollectionViewCell.swift */; };
 		3999BFEB2B4E6C4400984832 /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3999BFEA2B4E6C4400984832 /* RegisterViewModel.swift */; };
 		3999BFEE2B4E6CA000984832 /* UIImageViewAlignedSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 3999BFED2B4E6CA000984832 /* UIImageViewAlignedSwift */; };
 		3999BFF02B4E6FA800984832 /* RegisterNormalBannerImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3999BFEF2B4E6FA800984832 /* RegisterNormalBannerImageView.swift */; };
@@ -510,7 +510,7 @@
 		3980D1D52C19BB2C008B9B18 /* NovelDetailLargeCoverImageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailLargeCoverImageButton.swift; sourceTree = "<group>"; };
 		399258172C16DAF20063FB46 /* NovelDetailHeaderInterestFeedWriteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailHeaderInterestFeedWriteButton.swift; sourceTree = "<group>"; };
 		3992FA552B81E2A40079C8B8 /* RegisterNormalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalViewController.swift; sourceTree = "<group>"; };
-		399492F22C9A8ADE00298F16 /* LoginbannerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginbannerCollectionViewCell.swift; sourceTree = "<group>"; };
+		399492F22C9A8ADE00298F16 /* LoginBannerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginBannerCollectionViewCell.swift; sourceTree = "<group>"; };
 		3999BFEA2B4E6C4400984832 /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
 		3999BFEF2B4E6FA800984832 /* RegisterNormalBannerImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalBannerImageView.swift; sourceTree = "<group>"; };
 		399F29312B56633C00BBC12B /* NovelResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelResult.swift; sourceTree = "<group>"; };
@@ -1421,7 +1421,7 @@
 		399492F12C9A8A8B00298F16 /* LoginCell */ = {
 			isa = PBXGroup;
 			children = (
-				399492F22C9A8ADE00298F16 /* LoginbannerCollectionViewCell.swift */,
+				399492F22C9A8ADE00298F16 /* LoginBannerCollectionViewCell.swift */,
 			);
 			path = LoginCell;
 			sourceTree = "<group>";
@@ -2912,7 +2912,7 @@
 				2CD229572B42EA75005400BE /* UIColor+.swift in Sources */,
 				A18432EC2B511E7400910940 /* RecordDateView.swift in Sources */,
 				B92A06692C49877700E27652 /* DetailSearchBottomView.swift in Sources */,
-				399492F32C9A8ADE00298F16 /* LoginbannerCollectionViewCell.swift in Sources */,
+				399492F32C9A8ADE00298F16 /* LoginBannerCollectionViewCell.swift in Sources */,
 				A1DBB2FA2B4AA981000EE869 /* SearchCollectionViewCell.swift in Sources */,
 				A1DBB2FA2B4AA981000EE869 /* SearchCollectionViewCell.swift in Sources */,
 				3999BFEB2B4E6C4400984832 /* RegisterViewModel.swift in Sources */,

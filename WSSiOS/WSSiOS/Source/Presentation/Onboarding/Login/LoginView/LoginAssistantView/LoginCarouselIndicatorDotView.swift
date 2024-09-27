@@ -61,8 +61,7 @@ final class LoginCarouselIndicatorDotView: UIView {
                 $0.width.equalTo(isSelected ? self.selectedWidth : self.basicWidth)
             }
             self.backgroundColor = isSelected ? .wssPrimary100 : .wssGray100
-            
-            // 애니메이션 블록 내부에서 layoutIfNeeded() 호출
+
             self.superview?.layoutIfNeeded()
         }
     }
