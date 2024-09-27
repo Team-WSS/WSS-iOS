@@ -200,17 +200,18 @@ final class NovelReviewViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.showStopReviewingAlert
-            .flatMapLatest { [weak self] _ -> Observable<Void> in
-                guard let self = self else { return Observable.just(()) }
+            .flatMapLatest { _ -> Observable<AlertButtonType> in
                 return self.presentToAlertViewController(iconImage: .icAlertWarningCircle,
                                                          titleText: StringLiterals.NovelReview.Alert.titleText,
                                                          contentText: nil,
-                                                         cancelTitle: StringLiterals.NovelReview.Alert.cancelTitle,
-                                                         actionTitle: StringLiterals.NovelReview.Alert.actionTitle,
-                                                         actionBackgroundColor: UIColor.wssPrimary100.cgColor)
+                                                         leftTitle: StringLiterals.NovelReview.Alert.stopTitle,
+                                                         rightTitle: StringLiterals.NovelReview.Alert.writeTitle,
+                                                         rightBackgroundColor: UIColor.wssPrimary100.cgColor)
             }
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.stopReviewingEvent.accept(())
+            .subscribe(with: self, onNext: { owner, buttonType in
+                if buttonType == .left {
+                    owner.stopReviewingEvent.accept(())
+                }
             })
             .disposed(by: disposeBag)
     }
