@@ -182,6 +182,11 @@ extension UIViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
+    func pushToOnboardingViewController() {
+        let viewController = ModuleFactory.shared.makeOnboardingViewController()
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
     func presentToAlertViewController(iconImage: UIImage?,
                                       titleText: String?,
                                       contentText: String?,
