@@ -26,6 +26,7 @@ final class HomeViewModel: ViewModelType {
     private let tasteRecommendList = PublishSubject<[TasteRecommendNovel]>()
     
     private let todayPopularCellIndexPath = PublishRelay<IndexPath>()
+    private let interestCellIndexPath = PublishRelay<IndexPath>()
     private let tasteRecommendCellIndexPath = PublishRelay<IndexPath>()
     
     // MARK: - Inputs
@@ -37,6 +38,7 @@ final class HomeViewModel: ViewModelType {
         let induceModalViewLoginButtonTapped: ControlEvent<Void>
         let induceModalViewCancelButtonTapped: ControlEvent<Void>
         let todayPopularCellSelected: ControlEvent<IndexPath>
+        let interestCellSelected: ControlEvent<IndexPath>
         let tasteRecommendCellSelected: ControlEvent<IndexPath>
     }
     
@@ -110,7 +112,7 @@ extension HomeViewModel {
                 owner.showInduceLoginModalView.accept(true)
             })
             .disposed(by: disposeBag)
-
+        
         input.induceModalViewCancelButtonTapped
             .subscribe(with: self, onNext: { owner, _ in
                 owner.showInduceLoginModalView.accept(false)
@@ -120,6 +122,12 @@ extension HomeViewModel {
         input.todayPopularCellSelected
             .subscribe(with: self, onNext: { owner, indexPath in
                 owner.todayPopularCellIndexPath.accept(indexPath)
+            })
+            .disposed(by: disposeBag)
+        
+        input.interestCellSelected
+            .subscribe(with: self, onNext: { owner, indexPath in
+                owner.interestCellIndexPath.accept(indexPath)
             })
             .disposed(by: disposeBag)
         
@@ -135,7 +143,8 @@ extension HomeViewModel {
         
         let navigateToNovelDetailInfoView = Observable.merge(
             todayPopularCellIndexPath.map { indexPath in (indexPath, 0) },
-            tasteRecommendCellIndexPath.map { indexPath in (indexPath, 1) }
+            interestCellIndexPath.map { indexPath in (indexPath, 1) },
+            tasteRecommendCellIndexPath.map { indexPath in (indexPath, 2) }
         )
         
         return Output(todayPopularList: todayPopularList.asObservable(),

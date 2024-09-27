@@ -96,6 +96,7 @@ final class HomeViewController: UIViewController {
             induceModalViewLoginButtonTapped: rootView.induceLoginModalView.loginButton.rx.tap,
             induceModalViewCancelButtonTapped: rootView.induceLoginModalView.cancelButton.rx.tap,
             todayPopularCellSelected: rootView.todayPopularView.todayPopularCollectionView.rx.itemSelected,
+            interestCellSelected: rootView.interestView.interestCollectionView.rx.itemSelected,
             tasteRecommendCellSelected: rootView.tasteRecommendView.tasteRecommendCollectionView.rx.itemSelected
         )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
@@ -173,14 +174,18 @@ final class HomeViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.navigateToNovelDetailInfoView
-            .withLatestFrom(Observable.combineLatest(output.todayPopularList, output.tasteRecommendList)) { (indexPathSection, lists) in
+            .withLatestFrom(Observable.combineLatest(output.todayPopularList,
+                                                     output.interestList,
+                                                     output.tasteRecommendList)) { (indexPathSection, lists) in
                 let (indexPath, section) = indexPathSection
-                let (todayPopularList, tasteRecommendList) = lists
+                let (todayPopularList, interestList, tasteRecommendList) = lists
 
                 switch section {
                 case 0:
                     return todayPopularList[indexPath.row].novelId
                 case 1:
+                    return interestList[indexPath.row].novelId
+                case 2:
                     return tasteRecommendList[indexPath.row].novelId
                 default:
                     return nil
