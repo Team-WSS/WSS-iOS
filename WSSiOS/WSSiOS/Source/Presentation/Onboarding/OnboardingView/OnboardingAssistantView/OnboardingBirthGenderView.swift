@@ -26,7 +26,6 @@ final class OnboardingBirthGenderView: UIView {
     private let selectedBirthLabel = UILabel()
     private let selectBirthButtonImageView = UIImageView()
     
-
     let bottomButton = OnboardingBottomButtonView()
     
     //MARK: - Life Cycle
