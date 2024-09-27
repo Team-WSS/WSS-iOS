@@ -14,6 +14,7 @@ final class OnboardingView: UIView {
     
     //MARK: - Components
     
+    let backButton = UIButton()
     let progressView = OnboardingProgressView()
     
     let scrollView = UIScrollView()
@@ -39,6 +40,9 @@ final class OnboardingView: UIView {
     
     private func setUI() {
         self.backgroundColor = .wssWhite
+        
+        backButton.setImage(.icNavigateLeft.withTintColor(.wssBlack),
+                            for: .normal)
         
         scrollView.do {
             $0.contentInsetAdjustmentBehavior = .never

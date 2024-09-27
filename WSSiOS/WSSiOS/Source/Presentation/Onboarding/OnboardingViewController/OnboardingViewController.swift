@@ -61,6 +61,7 @@ final class OnboardingViewController: UIViewController {
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.backgroundColor = .wssWhite
         navigationItem.setHidesBackButton(true, animated: true)
+        self.navigationItem.leftBarButtonItem = nil
     }
     
     //MARK: - Bind
@@ -76,6 +77,7 @@ final class OnboardingViewController: UIViewController {
         output.stageIndex
             .drive(with: self, onNext: { owner, stage in
                 owner.rootView.progressView.updateProgressView(stage)
+                owner.setNavigationBar(stage: stage)
             })
             .disposed(by: disposeBag)
         
@@ -148,5 +150,10 @@ final class OnboardingViewController: UIViewController {
         let nextOffset = currentOffset.x + width
         
         rootView.scrollView.setContentOffset(CGPoint(x: nextOffset, y: 0), animated: true)
+    }
+    
+    private func setNavigationBar(stage: Int) {
+        navigationItem.setHidesBackButton(stage == 0, animated: true)
+        self.navigationItem.leftBarButtonItem = stage == 0 ? nil : UIBarButtonItem(customView: rootView.backButton)
     }
 }
