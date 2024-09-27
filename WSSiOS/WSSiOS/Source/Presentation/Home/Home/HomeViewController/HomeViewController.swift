@@ -114,6 +114,13 @@ final class HomeViewController: UIViewController {
                 cellIdentifier: HomeRealtimePopularCollectionViewCell.cellIdentifier,
                 cellType: HomeRealtimePopularCollectionViewCell.self)) { row, element, cell in
                     cell.bindData(data: element)
+                    cell.onFeedViewTapped = { feedId in
+                        if let intFeedId = Int(feedId) {
+                            self.pushToFeedDetailViewController(feedId: intFeedId)
+                        } else {
+                            print("Invalid feedId: \(feedId)")
+                        }
+                    }
                 }
                 .disposed(by: disposeBag)
         
