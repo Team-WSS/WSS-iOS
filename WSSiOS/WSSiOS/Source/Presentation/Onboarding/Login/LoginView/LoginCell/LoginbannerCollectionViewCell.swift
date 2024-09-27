@@ -51,11 +51,6 @@ final class LoginbannerCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        bindData(image: nil)
-      }
-    
     func bindData(image: UIImage) {
         bannerImageView.image = image
     }
