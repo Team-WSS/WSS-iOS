@@ -112,6 +112,15 @@ final class LoginViewController: UIViewController {
                 owner.pushToOnboardingViewController()
             })
             .disposed(by: disposeBag)
+        
+        output.navigateToHome
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                // 온보딩 뷰로 이동
+                print("Token: \(APIConstants.testToken)")
+                owner.loginCompleted()
+            })
+            .disposed(by: disposeBag)
     }
     
     private func createViewModelInput() -> LoginViewModel.Input {

@@ -129,6 +129,9 @@
 		3935876B2C99682400F005B4 /* LoginCarouselIndicatorDotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3935876A2C99682400F005B4 /* LoginCarouselIndicatorDotView.swift */; };
 		393CAC3C2CA6AFD8004B4DB6 /* OnboardingBottomButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393CAC3B2CA6AFD8004B4DB6 /* OnboardingBottomButtonView.swift */; };
 		393CAC402CA6D10C004B4DB6 /* OnboardingProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393CAC3F2CA6D10C004B4DB6 /* OnboardingProgressView.swift */; };
+		393CAC442CA72760004B4DB6 /* OnboardingBirthGenderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393CAC432CA72760004B4DB6 /* OnboardingBirthGenderView.swift */; };
+		393CAC462CA727E3004B4DB6 /* Gender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393CAC452CA727E3004B4DB6 /* Gender.swift */; };
+		393CAC482CA72A2E004B4DB6 /* OnboardingGenderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393CAC472CA72A2E004B4DB6 /* OnboardingGenderButton.swift */; };
 		394CFD352CA00AD80053C8EA /* NovelDetailHeaderEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394CFD342CA00AD80053C8EA /* NovelDetailHeaderEntity.swift */; };
 		394CFD3B2CA2E7760053C8EA /* KingFisherRxHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394CFD3A2CA2E7760053C8EA /* KingFisherRxHelper.swift */; };
 		395319272BE2865A00D075F4 /* KeywordManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395319262BE2865A00D075F4 /* KeywordManager.swift */; };
@@ -528,6 +531,9 @@
 		3935876A2C99682400F005B4 /* LoginCarouselIndicatorDotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCarouselIndicatorDotView.swift; sourceTree = "<group>"; };
 		393CAC3B2CA6AFD8004B4DB6 /* OnboardingBottomButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingBottomButtonView.swift; sourceTree = "<group>"; };
 		393CAC3F2CA6D10C004B4DB6 /* OnboardingProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingProgressView.swift; sourceTree = "<group>"; };
+		393CAC432CA72760004B4DB6 /* OnboardingBirthGenderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingBirthGenderView.swift; sourceTree = "<group>"; };
+		393CAC452CA727E3004B4DB6 /* Gender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gender.swift; sourceTree = "<group>"; };
+		393CAC472CA72A2E004B4DB6 /* OnboardingGenderButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingGenderButton.swift; sourceTree = "<group>"; };
 		394CFD342CA00AD80053C8EA /* NovelDetailHeaderEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailHeaderEntity.swift; sourceTree = "<group>"; };
 		394CFD3A2CA2E7760053C8EA /* KingFisherRxHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KingFisherRxHelper.swift; sourceTree = "<group>"; };
 		395319262BE2865A00D075F4 /* KeywordManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeywordManager.swift; sourceTree = "<group>"; };
@@ -1322,8 +1328,8 @@
 			children = (
 				2C8F89582C5105E90056895B /* MyPageDeleteIDViewModel.swift */,
 				2C22AE732C56EDB300BF6E94 /* MyPageBlockUserViewModel.swift */,
-				2C9A19702C56925F0043044A /* MyPageInfoViewModel.swift */,
 				2CFA9A122C9D7EE600A4A820 /* MyPageChangeUserInfoViewModel.swift */,
+				2C9A19702C56925F0043044A /* MyPageInfoViewModel.swift */,
 			);
 			path = SettingViewModel;
 			sourceTree = "<group>";
@@ -1436,6 +1442,8 @@
 			isa = PBXGroup;
 			children = (
 				3931020D2CA5D6CB002CBEA0 /* OnboardingNicknameView.swift */,
+				393CAC432CA72760004B4DB6 /* OnboardingBirthGenderView.swift */,
+				393CAC472CA72A2E004B4DB6 /* OnboardingGenderButton.swift */,
 				393CAC3B2CA6AFD8004B4DB6 /* OnboardingBottomButtonView.swift */,
 				393CAC3F2CA6D10C004B4DB6 /* OnboardingProgressView.swift */,
 			);
@@ -1585,6 +1593,7 @@
 				39F686FF2C6F60400065999F /* ReadStatus.swift */,
 				CDF27CD92CA253B30072C0F7 /* AttractivePoint.swift */,
 				393101FF2CA54F2F002CBEA0 /* LoginButtonType.swift */,
+				393CAC452CA727E3004B4DB6 /* Gender.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -2924,6 +2933,7 @@
 				2CB613F52B575E6A00FC3F89 /* MyPageInfoView.swift in Sources */,
 				39D4A5D62BDD0913004FC834 /* NovelDetailHeaderView.swift in Sources */,
 				A1522CF52B8257F3003A4078 /* RecordViewModel.swift in Sources */,
+				393CAC442CA72760004B4DB6 /* OnboardingBirthGenderView.swift in Sources */,
 				39D4A5DC2BDD420D004FC834 /* NovelDetailHeaderNovelInfoView.swift in Sources */,
 				2CD9114E2C0D8A0B006B8D72 /* FeedUserView.swift in Sources */,
 				CD8747A12C9EB37000D0ADAD /* NovelDateSelectModalViewController.swift in Sources */,
@@ -2949,10 +2959,12 @@
 				A1B903E52B58140800398890 /* UserNovelListResult.swift in Sources */,
 				3931020A2CA5D381002CBEA0 /* OnboardingViewController.swift in Sources */,
 				2C22AE722C56EAD000BF6E94 /* MyPageBlockUserTableViewCell.swift in Sources */,
+				393CAC462CA727E3004B4DB6 /* Gender.swift in Sources */,
 				CD1F7E0A2C99A8DC0039972C /* NovelKeywordSelectModalButtonView.swift in Sources */,
 				CDC03F472CA67BE8002D301F /* NovelKeywordSelectEmptyView.swift in Sources */,
 				B9E565F52C04517A00DB51FF /* NormalSearchViewController.swift in Sources */,
 				CD3E5A742B5424D600C0A659 /* MemoEditView.swift in Sources */,
+				393CAC482CA72A2E004B4DB6 /* OnboardingGenderButton.swift in Sources */,
 				39CC16812B51246E003F56AE /* RegisterNormalView.swift in Sources */,
 				39B75ADE2B59BA87005DD8B9 /* UIScreen+.swift in Sources */,
 				2C22AE702C56E9C100BF6E94 /* MyPageBlockUserView.swift in Sources */,
@@ -3316,7 +3328,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 202401192;
-				DEVELOPMENT_TEAM = 9SVDHQS4M3;
+				DEVELOPMENT_TEAM = D23XDL6TZZ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WSSiOS/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "웹소소";
@@ -3348,7 +3360,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 202401192;
-				DEVELOPMENT_TEAM = 9SVDHQS4M3;
+				DEVELOPMENT_TEAM = D23XDL6TZZ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WSSiOS/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "웹소소";

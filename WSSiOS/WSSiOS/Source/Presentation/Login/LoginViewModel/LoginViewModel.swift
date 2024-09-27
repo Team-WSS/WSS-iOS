@@ -27,7 +27,8 @@ final class LoginViewModel: ViewModelType {
     private let autoScrollTrigger = PublishRelay<Void>()
     private var autoScrollDisposable: Disposable?
     
-    private let loginSuccess = PublishRelay<Void>()
+    private let navigateToHome = PublishRelay<Void>()
+    private let navigateToOnboarding = PublishRelay<Void>()
     
     //MARK: - Life Cycle
     
@@ -44,6 +45,7 @@ final class LoginViewModel: ViewModelType {
         let indicatorIndex: Driver<Int>
         let autoScrollTrigger: Driver<Void>
         let navigateToOnboarding: Observable<Void>
+        let navigateToHome: Observable<Void>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -78,10 +80,10 @@ final class LoginViewModel: ViewModelType {
             .flatMapLatest { type in
                 self.repositoryLoginMethod(type: type)
             }
-            .subscribe(with: self, onNext: { owner, _ in
+            .subscribe(with: self, onNext: { owner, type in
                 // Login 작업 종료 후
                 print("Login 성공 및 종료")
-                owner.loginSuccess.accept(())
+                type == .skip ? owner.navigateToHome.accept(()) : owner.navigateToOnboarding.accept(())
             })
             .disposed(by: disposeBag)
         
@@ -89,7 +91,8 @@ final class LoginViewModel: ViewModelType {
             bannerImages: bannerImages.asDriver(),
             indicatorIndex: indicatorIndex.asDriver(),
             autoScrollTrigger: autoScrollTrigger,
-            navigateToOnboarding: loginSuccess.asObservable()
+            navigateToOnboarding: navigateToOnboarding.asObservable(),
+            navigateToHome: navigateToHome.asObservable()
         )
     }
     
@@ -107,7 +110,7 @@ final class LoginViewModel: ViewModelType {
             })
     }
     
-    private func repositoryLoginMethod(type: LoginButtonType) -> Observable<Void> {
+    private func repositoryLoginMethod(type: LoginButtonType) -> Observable<LoginButtonType> {
         // 레포지토리에 구현할 각 로그인 메서드. 아마 ..?
         print("\(String(describing: type)) Login 성공")
         if type == .skip {
@@ -115,6 +118,6 @@ final class LoginViewModel: ViewModelType {
         } else {
             APIConstants.isLogined = true
         }
-        return Observable.just(())
+        return Observable.just(type)
     }
 }
