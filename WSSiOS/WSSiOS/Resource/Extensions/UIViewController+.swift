@@ -303,6 +303,13 @@ extension UIViewController {
         
         self.navigationController?.pushViewController(viewController, animated: true)
     }
+    
+    func pushToFeedDetailViewController(feedId: Int) {
+        let viewController = FeedDetailViewController(viewModel: FeedDetailViewModel(feedDetailRepository: DefaultFeedDetailRepository(feedDetailService: DefaultFeedDetailService()), feedId: feedId))
+        viewController.navigationController?.isNavigationBarHidden = false
+        viewController.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
 }
 
 extension UIViewController: UIGestureRecognizerDelegate {
