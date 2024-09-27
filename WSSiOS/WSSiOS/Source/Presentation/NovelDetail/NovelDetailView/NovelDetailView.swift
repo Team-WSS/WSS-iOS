@@ -91,7 +91,6 @@ final class NovelDetailView: UIView {
             $0.topRightRadius = 32.5
             $0.bottomLeftRadius = 32.5
             $0.bottomRightRadius = 10.0
-//            $0.isHidden = true
         }
     }
     
