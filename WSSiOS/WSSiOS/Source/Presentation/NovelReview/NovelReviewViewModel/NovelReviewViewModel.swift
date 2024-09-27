@@ -9,6 +9,7 @@ import UIKit
 
 import RxSwift
 import RxCocoa
+import Then
 
 final class NovelReviewViewModel: ViewModelType {
     
@@ -17,10 +18,19 @@ final class NovelReviewViewModel: ViewModelType {
     var readStatus: ReadStatus
     private let novelId: Int
     private var selectedAttractivePointList: [String] = []
+
+    private var startDate: Date?
+    private var endDate: Date?
+    private var attractivePointList: [String] = []
+    var selectedKeywordList: [String] = []
     
     private let minStarRating: Float = 0.0
     private let maxStarRating: Float = 5.0
     private let attractivePointLimit: Int = 3
+    private let dateFormatter = DateFormatter().then {
+        $0.dateFormat = "yyyy-MM-dd"
+        $0.timeZone = TimeZone(identifier: "ko_KR")
+    }
     
     // Output
     
@@ -28,6 +38,8 @@ final class NovelReviewViewModel: ViewModelType {
     private let isCompleteButtonEnabled = BehaviorRelay<Bool>(value: false)
     private let readStatusListData = PublishRelay<[ReadStatus]>()
     private let readStatusData = PublishRelay<ReadStatus>()
+    private let presentNovelDateSelectModalViewController = PublishRelay<(ReadStatus, Date?, Date?)>()
+    private let startDateEndDateData = PublishRelay<[Date?]>()
     private let starRating = BehaviorRelay<Float>(value: 0.0)
     private let attractivePointListData = PublishRelay<[AttractivePoint]>()
     private let isAttractivePointCountOverLimit = PublishRelay<IndexPath>()
@@ -46,6 +58,7 @@ final class NovelReviewViewModel: ViewModelType {
         let viewDidLoadEvent: Observable<Void>
         let backButtonDidTap: ControlEvent<Void>
         let statusCollectionViewItemSelected: Observable<IndexPath>
+        let dateLabelTapGesture: Observable<UITapGestureRecognizer>
         let starRatingTapGesture: Observable<(location: CGPoint, width: CGFloat, index: Int)>
         let starRatingPanGesture: Observable<(location: CGPoint, width: CGFloat)>
         let attractivePointCollectionViewItemSelected: Observable<IndexPath>
@@ -54,6 +67,8 @@ final class NovelReviewViewModel: ViewModelType {
         let selectedKeywordCollectionViewContentSize: Observable<CGSize?>
         let selectedKeywordCollectionViewItemSelected: Observable<IndexPath>
         let novelReviewKeywordSelectedNotification: Observable<Notification>
+        let novelReviewDateSelectedNotification: Observable<Notification>
+        let novelReviewDateRemovedNotification: Observable<Notification>
     }
     
     struct Output {
@@ -61,6 +76,8 @@ final class NovelReviewViewModel: ViewModelType {
         let isCompleteButtonEnabled: Observable<Bool>
         let readStatusListData: Observable<[ReadStatus]>
         let readStatusData: Observable<ReadStatus>
+        let presentNovelDateSelectModalViewController: Observable<(ReadStatus, Date?, Date?)>
+        let startDateEndDateData: Observable<[Date?]>
         let starRating: Observable<Float>
         let attractivePointListData: Observable<[AttractivePoint]>
         let isAttractivePointCountOverLimit: Observable<IndexPath>
@@ -72,8 +89,11 @@ final class NovelReviewViewModel: ViewModelType {
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         input.viewDidLoadEvent
             .subscribe(with: self, onNext: { owner, _ in
+                owner.readStatusData.accept(owner.readStatus)
                 owner.readStatusListData.accept(ReadStatus.allCases)
+                owner.startDateEndDateData.accept([owner.startDate, owner.endDate])
                 owner.attractivePointListData.accept(AttractivePoint.allCases)
+                owner.selectedKeywordListData.accept(owner.selectedKeywordList)
             })
             .disposed(by: disposeBag)
         
@@ -86,7 +106,16 @@ final class NovelReviewViewModel: ViewModelType {
         input.statusCollectionViewItemSelected
             .subscribe(with: self, onNext: { owner, indexPath in
                 owner.readStatus = ReadStatus.allCases[indexPath.item]
+                owner.readStatusData.accept(owner.readStatus)
                 owner.isCompleteButtonEnabled.accept(true)
+            })
+            .disposed(by: disposeBag)
+        
+        input.dateLabelTapGesture
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.presentNovelDateSelectModalViewController.accept((owner.readStatus,
+                                                                         owner.startDate,
+                                                                         owner.endDate))
             })
             .disposed(by: disposeBag)
         
@@ -152,10 +181,29 @@ final class NovelReviewViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        input.novelReviewDateSelectedNotification
+            .subscribe(with: self, onNext: { owner, notification in
+                guard let startDateEndDateData = notification.object as? [Date] else { return }
+                owner.startDate = startDateEndDateData[0]
+                owner.endDate = startDateEndDateData[1]
+                owner.startDateEndDateData.accept([owner.startDate, owner.endDate])
+            })
+            .disposed(by: disposeBag)
+        
+        input.novelReviewDateRemovedNotification
+            .subscribe(with: self, onNext: { owner, notification in
+                owner.startDate = nil
+                owner.endDate = nil
+                owner.startDateEndDateData.accept([owner.startDate, owner.endDate])
+            })
+            .disposed(by: disposeBag)
+
         return Output(popViewController: popViewController.asObservable(),
                       isCompleteButtonEnabled: isCompleteButtonEnabled.asObservable(),
                       readStatusListData: readStatusListData.asObservable(),
                       readStatusData: readStatusData.asObservable(),
+                      presentNovelDateSelectModalViewController: presentNovelDateSelectModalViewController.asObservable(),
+                      startDateEndDateData: startDateEndDateData.asObservable(),
                       starRating: starRating.asObservable(),
                       attractivePointListData: attractivePointListData.asObservable(),
                       isAttractivePointCountOverLimit: isAttractivePointCountOverLimit.asObservable(),

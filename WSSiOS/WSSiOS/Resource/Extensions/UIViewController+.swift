@@ -177,6 +177,11 @@ extension UIViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
+    func pushToLoginViewController() {
+        let viewController = ModuleFactory.shared.makeLoginViewController()
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
     func presentToAlertViewController(iconImage: UIImage?,
                                       titleText: String?,
                                       contentText: String?,
