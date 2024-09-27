@@ -53,7 +53,7 @@ final class NovelReviewViewController: UIViewController {
     //MARK: - UI
     
     private func setNavigationBar() {
-        self.preparationSetNavigationBar(title: self.novelReviewViewModel.novelTite, left: rootView.backButton, right: rootView.completeButton)
+        self.preparationSetNavigationBar(title: self.novelReviewViewModel.novelTitle, left: rootView.backButton, right: rootView.completeButton)
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.backgroundColor = .clear
@@ -160,6 +160,13 @@ final class NovelReviewViewController: UIViewController {
         
         output.attractivePointListData
             .bind(to: rootView.novelReviewAttractivePointView.attractivePointCollectionView.rx.items(cellIdentifier: NovelReviewAttractivePointCollectionViewCell.cellIdentifier, cellType: NovelReviewAttractivePointCollectionViewCell.self)) { item, element, cell in
+                let indexPath = IndexPath(item: item, section: 0)
+                
+                if self.novelReviewViewModel.selectedAttractivePointList.contains(element.rawValue) {
+                    self.rootView.novelReviewAttractivePointView.attractivePointCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
+                } else {
+                    self.rootView.novelReviewAttractivePointView.attractivePointCollectionView.deselectItem(at: indexPath, animated: false)
+                }
                 cell.bindData(attractivePoint: element)
             }
             .disposed(by: disposeBag)

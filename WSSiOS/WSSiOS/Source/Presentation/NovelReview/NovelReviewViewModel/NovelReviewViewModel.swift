@@ -19,13 +19,11 @@ final class NovelReviewViewModel: ViewModelType {
     
     var readStatus: ReadStatus
     private let novelId: Int
-    let novelTite: String
-    private var selectedAttractivePointList: [String] = []
+    let novelTitle: String
 
     private var startDate: Date?
     private var endDate: Date?
-    private var attractivePointList: [String] = []
-    var selectedKeywordList: [KeywordData] = []
+    var selectedAttractivePointList: [String] = []
     
     private let minStarRating: Float = 0.0
     private let maxStarRating: Float = 5.0
@@ -55,7 +53,7 @@ final class NovelReviewViewModel: ViewModelType {
         self.novelReviewRepository = novelReviewRepository
         self.readStatus = readStatus
         self.novelId = novelId
-        self.novelTite = novelTitle
+        self.novelTitle = novelTitle
     }
     
     struct Input {
@@ -91,12 +89,20 @@ final class NovelReviewViewModel: ViewModelType {
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         input.viewDidLoadEvent
-            .subscribe(with: self, onNext: { owner, _ in
+            .flatMapLatest {
+                self.getNovelReview(novelId: self.novelId)
+            }
+            .subscribe(with: self, onNext: { owner, data in
+                owner.startDate = data.startDate.map { owner.dateFormatter.date(from: $0) ?? Date() }
+                owner.endDate = data.endDate.map { owner.dateFormatter.date(from: $0) ?? Date() }
+                owner.startDateEndDateData.accept([owner.startDate, owner.endDate])
+                owner.starRating.accept(data.userNovelRating)
+                owner.selectedKeywordListData.accept(data.keywords)
+                owner.selectedAttractivePointList = data.attractivePoints
+                
                 owner.readStatusData.accept(owner.readStatus)
                 owner.readStatusListData.accept(ReadStatus.allCases)
-                owner.startDateEndDateData.accept([owner.startDate, owner.endDate])
                 owner.attractivePointListData.accept(AttractivePoint.allCases)
-                owner.selectedKeywordListData.accept(owner.selectedKeywordList)
             })
             .disposed(by: disposeBag)
         
