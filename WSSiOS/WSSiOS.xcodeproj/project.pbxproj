@@ -125,7 +125,7 @@
 		393102072CA5D369002CBEA0 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393102062CA5D369002CBEA0 /* OnboardingView.swift */; };
 		3931020A2CA5D381002CBEA0 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393102092CA5D381002CBEA0 /* OnboardingViewController.swift */; };
 		3931020C2CA5D389002CBEA0 /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3931020B2CA5D389002CBEA0 /* OnboardingViewModel.swift */; };
-		3931020E2CA5D6CB002CBEA0 /* OnboardingNickNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3931020D2CA5D6CB002CBEA0 /* OnboardingNickNameView.swift */; };
+		3931020E2CA5D6CB002CBEA0 /* OnboardingNicknameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3931020D2CA5D6CB002CBEA0 /* OnboardingNicknameView.swift */; };
 		3935876B2C99682400F005B4 /* LoginCarouselIndicatorDotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3935876A2C99682400F005B4 /* LoginCarouselIndicatorDotView.swift */; };
 		393CAC3C2CA6AFD8004B4DB6 /* OnboardingBottomButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393CAC3B2CA6AFD8004B4DB6 /* OnboardingBottomButtonView.swift */; };
 		393CAC402CA6D10C004B4DB6 /* OnboardingProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393CAC3F2CA6D10C004B4DB6 /* OnboardingProgressView.swift */; };
@@ -508,7 +508,7 @@
 		393102062CA5D369002CBEA0 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		393102092CA5D381002CBEA0 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		3931020B2CA5D389002CBEA0 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
-		3931020D2CA5D6CB002CBEA0 /* OnboardingNickNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingNickNameView.swift; sourceTree = "<group>"; };
+		3931020D2CA5D6CB002CBEA0 /* OnboardingNicknameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingNicknameView.swift; sourceTree = "<group>"; };
 		3935876A2C99682400F005B4 /* LoginCarouselIndicatorDotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCarouselIndicatorDotView.swift; sourceTree = "<group>"; };
 		393CAC3B2CA6AFD8004B4DB6 /* OnboardingBottomButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingBottomButtonView.swift; sourceTree = "<group>"; };
 		393CAC3F2CA6D10C004B4DB6 /* OnboardingProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingProgressView.swift; sourceTree = "<group>"; };
@@ -1401,7 +1401,7 @@
 		393102052CA5D342002CBEA0 /* OnboardingAssistantView */ = {
 			isa = PBXGroup;
 			children = (
-				3931020D2CA5D6CB002CBEA0 /* OnboardingNickNameView.swift */,
+				3931020D2CA5D6CB002CBEA0 /* OnboardingNicknameView.swift */,
 				393CAC3B2CA6AFD8004B4DB6 /* OnboardingBottomButtonView.swift */,
 				393CAC3F2CA6D10C004B4DB6 /* OnboardingProgressView.swift */,
 			);
@@ -2840,7 +2840,7 @@
 				2CD9114E2C0D8A0B006B8D72 /* FeedUserView.swift in Sources */,
 				CD8747A12C9EB37000D0ADAD /* NovelDateSelectModalViewController.swift in Sources */,
 				39CD5E102B4FEC0F00668B9A /* RegisterNormalToggleButton.swift in Sources */,
-				3931020E2CA5D6CB002CBEA0 /* OnboardingNickNameView.swift in Sources */,
+				3931020E2CA5D6CB002CBEA0 /* OnboardingNicknameView.swift in Sources */,
 				399258182C16DAF20063FB46 /* NovelDetailHeaderInterestFeedWriteButton.swift in Sources */,
 				B9A0FD6C2BFCF0080004252E /* HomeRealtimePopularCollectionViewCell.swift in Sources */,
 				395928A22C99559100E7B17B /* LoginPlatformButtonStackView.swift in Sources */,

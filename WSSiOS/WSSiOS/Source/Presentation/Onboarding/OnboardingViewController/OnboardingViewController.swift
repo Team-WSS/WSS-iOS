@@ -87,17 +87,26 @@ final class OnboardingViewController: UIViewController {
     }
     
     private func bindViewModelOutput(_ output: OnboardingViewModel.Output) {
-        output.isKeywordTextFieldEditing
-            .drive(with: self, onNext: { owner, isEditing in
-                owner.rootView.nickNameView.updatenickNameTextField(isEditing: isEditing)
-            })
-            .disposed(by: disposeBag)
+        Observable.combineLatest(
+            output.isNicknameTextFieldEditing.asObservable(),
+            output.isNicknameAvailable.asObservable()
+        )
+        .observe(on: MainScheduler.instance)
+        .bind(with: self, onNext: { owner, tuple in
+            let (isEditing, isAvailable) = tuple
+            owner.rootView.nickNameView.updatenickNameTextField(isEditing: isEditing,
+                                                                isAvailable: isAvailable)
+            owner.rootView.nickNameView.updateTextFieldInnerButton(isEditing: isEditing,
+                                                                   isAvailable: isAvailable)
+        })
+        .disposed(by: disposeBag)
         
         output.isDuplicateCheckButtonEnabled
             .drive(with: self, onNext: { owner, isEnabled in
                 owner.rootView.nickNameView.updateDuplicateCheckButton(isEnabled: isEnabled)
             })
             .disposed(by: disposeBag)
+        
     }
     
     //MARK: - Actions
@@ -105,9 +114,9 @@ final class OnboardingViewController: UIViewController {
     private func createViewModelInput() -> OnboardingViewModel.Input {
         
         return OnboardingViewModel.Input(
-            nickNameTextFieldEditingDidBegin: self.rootView.nickNameView.nickNameTextField.rx.controlEvent(.editingDidBegin),
-            nickNameTextFieldEditingDidEnd: self.rootView.nickNameView.nickNameTextField.rx.controlEvent(.editingDidEnd),
-            nickNameTextFieldText: self.rootView.nickNameView.nickNameTextField.rx.text.orEmpty.distinctUntilChanged()
+            nicknameTextFieldEditingDidBegin: self.rootView.nickNameView.nicknameTextField.rx.controlEvent(.editingDidBegin),
+            nicknameTextFieldEditingDidEnd: self.rootView.nickNameView.nicknameTextField.rx.controlEvent(.editingDidEnd),
+            nicknameTextFieldText: self.rootView.nickNameView.nicknameTextField.rx.text.orEmpty.distinctUntilChanged()
         )
     }
 }

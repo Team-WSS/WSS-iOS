@@ -10,13 +10,13 @@ import UIKit
 import SnapKit
 import Then
 
-final class OnboardingNickNameView: UIView {
+final class OnboardingNicknameView: UIView {
     
     //MARK: - Components
     
     private let titleLabel = UILabel()
     private let descriptionLabel = UILabel()
-    let nickNameTextField = UITextField()
+    let nicknameTextField = UITextField()
     private let textFieldInnerButton = UIButton()
     private let duplicateCheckButton = UIButton()
     private let duplicateCheckButtonLabel = UILabel()
@@ -51,7 +51,7 @@ final class OnboardingNickNameView: UIView {
             $0.textColor = .wssGray200
         }
         
-        nickNameTextField.do {
+        nicknameTextField.do {
             $0.returnKeyType = .done
             $0.tintColor = .wssBlack
             $0.backgroundColor = .wssGray50
@@ -91,10 +91,10 @@ final class OnboardingNickNameView: UIView {
     private func setHierarchy() {
         self.addSubviews(titleLabel,
                          descriptionLabel,
-                         nickNameTextField,
+                         nicknameTextField,
                          duplicateCheckButton,
                          bottomButton)
-        nickNameTextField.addSubview(textFieldInnerButton)
+        nicknameTextField.addSubview(textFieldInnerButton)
         duplicateCheckButton.addSubview(duplicateCheckButtonLabel)
     }
     
@@ -109,7 +109,7 @@ final class OnboardingNickNameView: UIView {
             $0.leading.equalToSuperview().inset(20)
         }
         
-        nickNameTextField.snp.makeConstraints {
+        nicknameTextField.snp.makeConstraints {
             $0.top.equalTo(descriptionLabel.snp.bottom).offset(61)
             $0.height.equalTo(44)
             $0.leading.equalToSuperview().inset(20)
@@ -118,7 +118,7 @@ final class OnboardingNickNameView: UIView {
         duplicateCheckButton.snp.makeConstraints {
             $0.top.equalTo(descriptionLabel.snp.bottom).offset(61)
             $0.height.equalTo(44)
-            $0.leading.equalTo(nickNameTextField.snp.trailing).offset(7)
+            $0.leading.equalTo(nicknameTextField.snp.trailing).offset(7)
             $0.trailing.equalToSuperview().inset(20)
             $0.width.equalTo(88)
         }
@@ -140,10 +140,22 @@ final class OnboardingNickNameView: UIView {
     
     // MARK: - Custom Method
     
-    func updatenickNameTextField(isEditing: Bool) {
-        nickNameTextField.do {
+    func updatenickNameTextField(isEditing: Bool, isAvailable: NicknameAvailablity) {
+        var borderColor: CGColor = UIColor.wssGray70.cgColor
+        
+        switch isAvailable {
+        case .available:
+            borderColor = UIColor.wssPrimary100.cgColor
+        case .notAvailable:
+            borderColor = UIColor.wssSecondary100.cgColor
+        default:
+            borderColor = UIColor.wssGray70.cgColor
+        }
+        
+        nicknameTextField.do {
             $0.backgroundColor = isEditing ? .wssWhite : .wssGray50
             $0.layer.borderWidth = isEditing ? 1 : 0
+            $0.layer.borderColor = borderColor
         }
     }
     
@@ -155,6 +167,25 @@ final class OnboardingNickNameView: UIView {
         
         duplicateCheckButtonLabel.do {
             $0.textColor = isEnabled ? .wssPrimary100 : .wssGray200
+        }
+    }
+    
+    func updateTextFieldInnerButton(isEditing: Bool, isAvailable: NicknameAvailablity) {
+        var buttonImage: UIImage = .icCancelDark
+        
+        switch isAvailable {
+        case .available:
+            buttonImage = .icNickNameAvailable
+        case .notAvailable:
+            buttonImage = .icNickNameError
+        default:
+            break
+        }
+        
+        textFieldInnerButton.do {
+            $0.isHidden = !isEditing
+            $0.setImage(buttonImage, for: .normal)
+            $0.isEnabled = !(isAvailable == .available) || isEditing
         }
     }
 }

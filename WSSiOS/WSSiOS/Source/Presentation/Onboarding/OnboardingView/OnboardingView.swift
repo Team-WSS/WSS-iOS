@@ -15,7 +15,7 @@ final class OnboardingView: UIView {
     //MARK: - Components
     
     let progressView = OnboardingProgressView()
-    let nickNameView = OnboardingNickNameView()
+    let nickNameView = OnboardingNicknameView()
     
     //MARK: - Life Cycle
     
