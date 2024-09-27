@@ -210,6 +210,8 @@ final class NovelDetailViewModel: ViewModelType {
             input.stickyFeedTabBarButtonDidTap.asObservable()
         )
         .do(onNext: {
+            self.isLoadable = false
+            self.lastFeedId = 0
             self.selectedTab.accept(.feed)
         })
         .flatMapLatest { _ in

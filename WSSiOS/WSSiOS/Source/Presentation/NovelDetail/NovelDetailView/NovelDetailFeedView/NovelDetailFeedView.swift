@@ -14,6 +14,7 @@ final class NovelDetailFeedView: UIButton {
     
     //MARK: - Components
     
+    private let stackView = UIStackView()
     private let emptyView = NovelDetailFeedEmptyView()
     let feedListView = NovelDetailFeedListView()
     
@@ -34,16 +35,33 @@ final class NovelDetailFeedView: UIButton {
     //MARK: - UI
     
     private func setUI() {
-    
+        stackView.do {
+            $0.axis = .vertical
+            $0.alignment = .fill
+            $0.distribution = .fill
+        }
     }
     
     private func setHierarchy() {
-        self.addSubviews(feedListView)
+        self.addSubview(stackView)
+        stackView.addArrangedSubview(feedListView)
     }
     
     private func setLayout() {
-        feedListView.snp.makeConstraints {
+        stackView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+        }
+    }
+    
+    //MARK: - Data
+    
+    func bindData(isEmpty: Bool) {
+        if isEmpty {
+            feedListView.removeFromSuperview()
+            stackView.addArrangedSubview(emptyView)
+        } else {
+            emptyView.removeFromSuperview()
+            stackView.addArrangedSubview(feedListView)
         }
     }
 }

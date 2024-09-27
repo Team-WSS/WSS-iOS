@@ -237,6 +237,13 @@ final class NovelDetailViewController: UIViewController {
                 }
                 .disposed(by: disposeBag)
         
+        output.feedList
+            .skip(1)
+            .subscribe(with: self, onNext: { owner, feedList in
+                owner.rootView.feedView.bindData(isEmpty: feedList.isEmpty)
+            })
+            .disposed(by: disposeBag)
+        
         output.novelDetailFeedTableViewHeight
             .subscribe(with: self, onNext: { owner, height in
                 owner.rootView.feedView.feedListView.updateTableViewHeight(height: height)
