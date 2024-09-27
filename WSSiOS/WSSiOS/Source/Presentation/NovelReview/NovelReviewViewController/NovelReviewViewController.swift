@@ -82,6 +82,9 @@ final class NovelReviewViewController: UIViewController {
             viewDidLoadEvent: viewDidLoadEvent.asObservable(),
             backButtonDidTap: rootView.backButton.rx.tap,
             statusCollectionViewItemSelected: rootView.novelReviewStatusView.statusCollectionView.rx.itemSelected.asObservable(),
+            dateLabelTapGesture: rootView.novelReviewStatusView.dateLabel.rx.tapGesture()
+                .when(.recognized)
+                .asObservable(),
             starRatingTapGesture: Observable.merge(
                 rootView.novelReviewRatingView.starImageViews.enumerated().map { index, imageView in
                     imageView.rx.tapGesture()
@@ -106,7 +109,9 @@ final class NovelReviewViewController: UIViewController {
             keywordSearchViewDidTap: rootView.novelReviewKeywordView.keywordSearchBarView.rx.tapGesture().when(.recognized).asObservable(),
             selectedKeywordCollectionViewContentSize: rootView.novelReviewKeywordView.selectedKeywordCollectionView.rx.observe(CGSize.self, "contentSize"),
             selectedKeywordCollectionViewItemSelected: rootView.novelReviewKeywordView.selectedKeywordCollectionView.rx.itemSelected.asObservable(),
-            novelReviewKeywordSelectedNotification: NotificationCenter.default.rx.notification(Notification.Name("NovelReviewKeywordSelected")).asObservable()
+            novelReviewKeywordSelectedNotification: NotificationCenter.default.rx.notification(Notification.Name("NovelReviewKeywordSelected")).asObservable(),
+            novelReviewDateSelectedNotification: NotificationCenter.default.rx.notification(Notification.Name("NovelReviewDateSelected")).asObservable(),
+            novelReviewDateRemovedNotification: NotificationCenter.default.rx.notification(Notification.Name("NovelReviewDateRemoved")).asObservable()
         )
         
         let output = self.novelReviewViewModel.transform(from: input, disposeBag: self.disposeBag)
@@ -134,6 +139,23 @@ final class NovelReviewViewController: UIViewController {
                 }
                 cell.bindData(status: element)
             }
+            .disposed(by: disposeBag)
+        
+        output.presentNovelDateSelectModalViewController
+            .subscribe(with: self, onNext: { owner, tuple in
+                let (readStatus, startDate, endDate) = tuple
+                owner.presentModalViewController(NovelDateSelectModalViewController(viewModel: NovelDateSelectModalViewModel(readStatus: readStatus, startDate: startDate, endDate: endDate)))
+            })
+            .disposed(by: disposeBag)
+        
+        Observable.combineLatest(output.readStatusData, output.startDateEndDateData)
+            .subscribe(with: self, onNext: { owner, combinedData in
+                let (readStatus, startDateEndDate) = combinedData
+                owner.rootView.novelReviewStatusView.bindData(readStatus: readStatus,
+                                                              startDate: startDateEndDate[0],
+                                                              endDate: startDateEndDate[1])
+
+            })
             .disposed(by: disposeBag)
         
         output.starRating

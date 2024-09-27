@@ -366,6 +366,13 @@
 		CD803B392C940989006EBAF8 /* CenterAlignedCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD803B382C940989006EBAF8 /* CenterAlignedCollectionViewFlowLayout.swift */; };
 		CD803B3B2C940B88006EBAF8 /* NovelReviewKeywordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD803B3A2C940B88006EBAF8 /* NovelReviewKeywordView.swift */; };
 		CD803B3D2C941123006EBAF8 /* NovelReviewSelectedKeywordCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD803B3C2C941123006EBAF8 /* NovelReviewSelectedKeywordCollectionViewCell.swift */; };
+		CD8747A12C9EB37000D0ADAD /* NovelDateSelectModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8747A02C9EB37000D0ADAD /* NovelDateSelectModalViewController.swift */; };
+		CD8747A32C9EB37F00D0ADAD /* NovelDateSelectModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8747A22C9EB37F00D0ADAD /* NovelDateSelectModalView.swift */; };
+		CD8747A52C9EB39900D0ADAD /* NovelDateSelectModalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8747A42C9EB39900D0ADAD /* NovelDateSelectModalViewModel.swift */; };
+		CD8747A72C9EC4F900D0ADAD /* NovelDateSelectModalButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8747A62C9EC4F900D0ADAD /* NovelDateSelectModalButtonView.swift */; };
+		CD8747A92C9EDA3000D0ADAD /* NovelDateSelectModalTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8747A82C9EDA3000D0ADAD /* NovelDateSelectModalTitleView.swift */; };
+		CD8747B52C9EF31E00D0ADAD /* NovelDateSelectModalDateButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8747B42C9EF31E00D0ADAD /* NovelDateSelectModalDateButtonView.swift */; };
+		CD8747B72C9F050800D0ADAD /* NovelDateSelectModalDatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8747B62C9F050800D0ADAD /* NovelDateSelectModalDatePickerView.swift */; };
 		CDA1774B2C3EC6760089137F /* WSSToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1774A2C3EC6760089137F /* WSSToggleButton.swift */; };
 		CDA5F03A2C2FDB2200FCF15C /* FeedEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5F0392C2FDB2200FCF15C /* FeedEditViewController.swift */; };
 		CDA5F03C2C2FDB3100FCF15C /* FeedEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5F03B2C2FDB3100FCF15C /* FeedEditViewModel.swift */; };
@@ -734,6 +741,13 @@
 		CD803B382C940989006EBAF8 /* CenterAlignedCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenterAlignedCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		CD803B3A2C940B88006EBAF8 /* NovelReviewKeywordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelReviewKeywordView.swift; sourceTree = "<group>"; };
 		CD803B3C2C941123006EBAF8 /* NovelReviewSelectedKeywordCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelReviewSelectedKeywordCollectionViewCell.swift; sourceTree = "<group>"; };
+		CD8747A02C9EB37000D0ADAD /* NovelDateSelectModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDateSelectModalViewController.swift; sourceTree = "<group>"; };
+		CD8747A22C9EB37F00D0ADAD /* NovelDateSelectModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDateSelectModalView.swift; sourceTree = "<group>"; };
+		CD8747A42C9EB39900D0ADAD /* NovelDateSelectModalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDateSelectModalViewModel.swift; sourceTree = "<group>"; };
+		CD8747A62C9EC4F900D0ADAD /* NovelDateSelectModalButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDateSelectModalButtonView.swift; sourceTree = "<group>"; };
+		CD8747A82C9EDA3000D0ADAD /* NovelDateSelectModalTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDateSelectModalTitleView.swift; sourceTree = "<group>"; };
+		CD8747B42C9EF31E00D0ADAD /* NovelDateSelectModalDateButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDateSelectModalDateButtonView.swift; sourceTree = "<group>"; };
+		CD8747B62C9F050800D0ADAD /* NovelDateSelectModalDatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDateSelectModalDatePickerView.swift; sourceTree = "<group>"; };
 		CDA1774A2C3EC6760089137F /* WSSToggleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSToggleButton.swift; sourceTree = "<group>"; };
 		CDA5F0392C2FDB2200FCF15C /* FeedEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedEditViewController.swift; sourceTree = "<group>"; };
 		CDA5F03B2C2FDB3100FCF15C /* FeedEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedEditViewModel.swift; sourceTree = "<group>"; };
@@ -2417,6 +2431,7 @@
 			children = (
 				CD2D0AAC2C7EF1A2007CF1F1 /* NovelReviewViewController.swift */,
 				CD1F7DFD2C994A0E0039972C /* NovelKeywordSelectModalViewController.swift */,
+				CD8747A02C9EB37000D0ADAD /* NovelDateSelectModalViewController.swift */,
 			);
 			path = NovelReviewViewController;
 			sourceTree = "<group>";
@@ -2426,6 +2441,7 @@
 			children = (
 				CD2D0AB02C7EF1D3007CF1F1 /* NovelReviewViewModel.swift */,
 				CD1F7DFF2C994A180039972C /* NovelKeywordSelectModalViewModel.swift */,
+				CD8747A42C9EB39900D0ADAD /* NovelDateSelectModalViewModel.swift */,
 			);
 			path = NovelReviewViewModel;
 			sourceTree = "<group>";
@@ -2435,6 +2451,7 @@
 			children = (
 				CD2D0AAE2C7EF1BF007CF1F1 /* NovelReviewView.swift */,
 				CD1F7E012C994AA00039972C /* NovelKeywordSelectModalView.swift */,
+				CD8747A22C9EB37F00D0ADAD /* NovelDateSelectModalView.swift */,
 				CD8747AF2C9EEB2300D0ADAD /* NovelReviewAssistantView */,
 			);
 			path = NovelReviewView;
@@ -2463,6 +2480,10 @@
 				CD1F7E052C9967780039972C /* NovelKeywordSelectSearchResultView.swift */,
 				CD1F7E0B2C99AB7C0039972C /* NovelSelectedKeywordListView.swift */,
 				CD1F7E092C99A8DC0039972C /* NovelKeywordSelectModalButtonView.swift */,
+				CD8747A82C9EDA3000D0ADAD /* NovelDateSelectModalTitleView.swift */,
+				CD8747B42C9EF31E00D0ADAD /* NovelDateSelectModalDateButtonView.swift */,
+				CD8747B62C9F050800D0ADAD /* NovelDateSelectModalDatePickerView.swift */,
+				CD8747A62C9EC4F900D0ADAD /* NovelDateSelectModalButtonView.swift */,
 			);
 			path = NovelReviewAssistantView;
 			sourceTree = "<group>";
@@ -2766,6 +2787,7 @@
 				A1522CF52B8257F3003A4078 /* RecordViewModel.swift in Sources */,
 				39D4A5DC2BDD420D004FC834 /* NovelDetailHeaderNovelInfoView.swift in Sources */,
 				2CD9114E2C0D8A0B006B8D72 /* FeedUserView.swift in Sources */,
+				CD8747A12C9EB37000D0ADAD /* NovelDateSelectModalViewController.swift in Sources */,
 				39CD5E102B4FEC0F00668B9A /* RegisterNormalToggleButton.swift in Sources */,
 				399258182C16DAF20063FB46 /* NovelDetailHeaderInterestFeedWriteButton.swift in Sources */,
 				B9A0FD6C2BFCF0080004252E /* HomeRealtimePopularCollectionViewCell.swift in Sources */,
@@ -2776,6 +2798,7 @@
 				39D4A5E42BDF90FB004FC834 /* NovelDetailHeaderReviewResultView.swift in Sources */,
 				39D4A5E42BDF90FB004FC834 /* NovelDetailHeaderReviewResultView.swift in Sources */,
 				CD803B352C93F711006EBAF8 /* NovelReviewAttractivePointView.swift in Sources */,
+				CD8747A72C9EC4F900D0ADAD /* NovelDateSelectModalButtonView.swift in Sources */,
 				2CD911522C0D8A0F006B8D72 /* FeedNovelView.swift in Sources */,
 				CD3E5A812B54253E00C0A659 /* MemoReadViewController.swift in Sources */,
 				A197A4C12B56BB6000E5A701 /* UserCharacterResult.swift in Sources */,
@@ -2796,6 +2819,7 @@
 				2CD911562C0D8A1A006B8D72 /* FeedPageBarCollectionViewCell.swift in Sources */,
 				39BA7F752BCABF1D0045B2B7 /* KeywordLink.swift in Sources */,
 				A1EF35432B52F75800A94C53 /* NovelRepository.swift in Sources */,
+				CD8747A92C9EDA3000D0ADAD /* NovelDateSelectModalTitleView.swift in Sources */,
 				2C5D0F5D2B50100000C76D3C /* TrashMyPageSettingCollectionViewCell.swift in Sources */,
 				2C5D0F5D2B50100000C76D3C /* TrashMyPageSettingCollectionViewCell.swift in Sources */,
 				CD1F7E082C9968950039972C /* NovelKeywordSelectSearchResultCollectionViewCell.swift in Sources */,
@@ -2816,6 +2840,8 @@
 				CD3E5A792B5424E600C0A659 /* MemoEditContentView.swift in Sources */,
 				B9181BDE2BEBE2300024C800 /* HomeTasteRecommendCollectionViewCell.swift in Sources */,
 				2C5D0F592B4FDEC000C76D3C /* TrashMyPageInventoryCollectionViewCell.swift in Sources */,
+				CD8747A52C9EB39900D0ADAD /* NovelDateSelectModalViewModel.swift in Sources */,
+				2C5D0F592B4FDEC000C76D3C /* MyPageInventoryCollectionViewCell.swift in Sources */,
 				392A29232B4E89FD0065EB97 /* RegisterNormalNovelInfoWithRatingView.swift in Sources */,
 				CDA5F0492C30248A00FCF15C /* FeedEditConnectedNovelView.swift in Sources */,
 				2CFA9A182C9D9AD500A4A820 /* UserInfoResult.swift in Sources */,
@@ -2835,6 +2861,7 @@
 				2CA2F6522B527B590045B4C2 /* TrashMyPageModalAvatarFeatureLabelView.swift in Sources */,
 				A197A4C32B56D0C200E5A701 /* RecommendResult.swift in Sources */,
 				CD6613752B8A283500B90B2B /* MemoEditViewModel.swift in Sources */,
+				CD8747A32C9EB37F00D0ADAD /* NovelDateSelectModalView.swift in Sources */,
 				39B225252B70B41A001C76D0 /* RegisterNormalDifferentRadiusView.swift in Sources */,
 				394CFD352CA00AD80053C8EA /* NovelDetailHeaderEntity.swift in Sources */,
 				A1EF35412B52F74A00A94C53 /* RecommendRepository.swift in Sources */,
@@ -2888,6 +2915,7 @@
 				A1147A802B50638200141692 /* RecordViewController.swift in Sources */,
 				B9F7401D2C047E360018D0C6 /* NormalSearchViewModel.swift in Sources */,
 				CD803B392C940989006EBAF8 /* CenterAlignedCollectionViewFlowLayout.swift in Sources */,
+				CD8747B72C9F050800D0ADAD /* NovelDateSelectModalDatePickerView.swift in Sources */,
 				39ABD5A02B54D0A900DEA94E /* RegisterNormalDatePicker.swift in Sources */,
 				39D4A5C92BDA4C5A004FC834 /* NovelDetailViewController.swift in Sources */,
 				CD2D0AB92C7F0279007CF1F1 /* NovelReviewStatusCollectionViewCell.swift in Sources */,
@@ -2981,6 +3009,7 @@
 				A1A1F9D22B4873A100705F44 /* SearchResultView.swift in Sources */,
 				2C81DF872CA150DE00148F97 /* MyPageChangeUserBirthViewController.swift in Sources */,
 				395928932C98889B00E7B17B /* LoginView.swift in Sources */,
+				CD8747B52C9EF31E00D0ADAD /* NovelDateSelectModalDateButtonView.swift in Sources */,
 				B9AC1BD02BF0B33E006EDE92 /* HomeNoticeViewController.swift in Sources */,
 				2C41E0CC2CA4948400FFD233 /* MyPageCountView.swift in Sources */,
 				39B75ACE2B5912B5005DD8B9 /* LottieLiterals.swift in Sources */,
