@@ -20,6 +20,8 @@ final class NovelReviewViewModel: ViewModelType {
     var readStatus: ReadStatus
     private let novelId: Int
     let novelTitle: String
+    
+    private var isNovelReviewExist: Bool = false
 
     private var startDate: Date?
     private var endDate: Date?
@@ -94,6 +96,7 @@ final class NovelReviewViewModel: ViewModelType {
                 self.getNovelReview(novelId: self.novelId)
             }
             .subscribe(with: self, onNext: { owner, data in
+                owner.isNovelReviewExist = data.status != nil
                 owner.startDate = data.startDate.flatMap { owner.dateFormatter.date(from: $0) }
                 owner.endDate = data.endDate.flatMap { owner.dateFormatter.date(from: $0) }
                 owner.startDateEndDateData.accept([owner.startDate, owner.endDate])
@@ -121,15 +124,27 @@ final class NovelReviewViewModel: ViewModelType {
                 let endDateString = self.readStatus != .watching ? self.endDate.map { self.dateFormatter.string(from: $0) } : nil
                 let keywordIdList = self.selectedKeywordListData.value.map { $0.keywordId }
                 
-                return self.putNovelReview(
-                    novelId: self.novelId,
-                    userNovelRating: self.starRating.value,
-                    status: self.readStatus.rawValue,
-                    startDate: startDateString,
-                    endDate: endDateString,
-                    attractivePoints: self.selectedAttractivePointList,
-                    keywordIds: keywordIdList
-                )
+                if self.isNovelReviewExist {
+                    return self.putNovelReview(
+                        novelId: self.novelId,
+                        userNovelRating: self.starRating.value,
+                        status: self.readStatus.rawValue,
+                        startDate: startDateString,
+                        endDate: endDateString,
+                        attractivePoints: self.selectedAttractivePointList,
+                        keywordIds: keywordIdList
+                    )
+                } else {
+                    return self.postNovelReview(
+                        novelId: self.novelId,
+                        userNovelRating: self.starRating.value,
+                        status: self.readStatus.rawValue,
+                        startDate: startDateString,
+                        endDate: endDateString,
+                        attractivePoints: self.selectedAttractivePointList,
+                        keywordIds: keywordIdList
+                    )
+                }
             }
             .subscribe(with: self, onNext: { owner, _ in
                 owner.popViewController.accept(())
