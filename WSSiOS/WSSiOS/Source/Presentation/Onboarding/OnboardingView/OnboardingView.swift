@@ -33,7 +33,7 @@ final class OnboardingView: UIView {
     //MARK: - UI
     
     private func setUI() {
-       
+        self.backgroundColor = .wssWhite
     }
     
     private func setHierarchy() {
@@ -42,7 +42,8 @@ final class OnboardingView: UIView {
     
     private func setLayout() {
         nickNameView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.bottom.horizontalEdges.equalToSuperview()
+            $0.top.equalTo(self.safeAreaLayoutGuide)
         }
     }
 }
