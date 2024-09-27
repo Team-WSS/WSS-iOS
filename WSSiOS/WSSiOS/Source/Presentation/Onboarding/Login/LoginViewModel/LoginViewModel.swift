@@ -102,8 +102,8 @@ final class LoginViewModel: ViewModelType {
     func resumeAutoScroll() {
         autoScrollDisposable?.dispose()
         autoScrollDisposable = Observable<Int>.interval(.milliseconds(2000), scheduler: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] _ in
-                self?.autoScrollTrigger.accept(())
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.autoScrollTrigger.accept(())
             })
     }
     
