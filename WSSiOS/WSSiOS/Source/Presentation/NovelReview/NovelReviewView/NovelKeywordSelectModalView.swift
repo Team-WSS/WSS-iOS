@@ -49,7 +49,7 @@ final class NovelKeywordSelectModalView: UIView {
         }
         
         closeButton.do {
-            $0.setImage(.icCacelModal, for: .normal)
+            $0.setImage(.icCancelModal, for: .normal)
         }
         
         titleLabel.do {

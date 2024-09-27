@@ -39,7 +39,7 @@ final class NovelKeywordSelectSearchBarView: UIView {
             $0.returnKeyType = .done
             $0.autocorrectionType = .no
             $0.spellCheckingType = .no
-            $0.tintColor = .black
+            $0.tintColor = .wssBlack
             $0.backgroundColor = .wssGray50
             $0.textColor = .wssBlack
             $0.placeholder = StringLiterals.NovelReview.KeywordSearch.placeholder
