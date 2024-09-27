@@ -38,6 +38,16 @@ enum URLs {
         }
     }
     
+    enum NovelReview {
+        static let postNovelReview = "/user-novels"
+        static func getNovelReview(novelId: Int) -> String {
+            return "/user-novels/\(novelId)"
+        }
+        static func putNovelReview(novelId: Int) -> String {
+            return "/user-novels/\(novelId)"
+        }
+    }
+    
     enum UserNovel {
         static func getUserNovel(userNovelId: Int) -> String {
             return "/user-novels/\(userNovelId)"

@@ -382,6 +382,7 @@
 		CDA5F0452C2FE41F00FCF15C /* FeedEditContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5F0442C2FE41F00FCF15C /* FeedEditContentView.swift */; };
 		CDA5F0472C2FF60A00FCF15C /* FeedEditNovelConnectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5F0462C2FF60A00FCF15C /* FeedEditNovelConnectView.swift */; };
 		CDA5F0492C30248A00FCF15C /* FeedEditConnectedNovelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5F0482C30248A00FCF15C /* FeedEditConnectedNovelView.swift */; };
+		CDC03F4D2CA6C492002D301F /* NovelReviewService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC03F4C2CA6C492002D301F /* NovelReviewService.swift */; };
 		CDE596D62B57708D00D99DA1 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D52B57708D00D99DA1 /* UIViewController+.swift */; };
 		CDE596D82B5770CE00D99DA1 /* WSSToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D72B5770CE00D99DA1 /* WSSToastView.swift */; };
 		CDE596DA2B57C4BE00D99DA1 /* UITextView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D92B57C4BE00D99DA1 /* UITextView+.swift */; };
@@ -757,6 +758,7 @@
 		CDA5F0442C2FE41F00FCF15C /* FeedEditContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedEditContentView.swift; sourceTree = "<group>"; };
 		CDA5F0462C2FF60A00FCF15C /* FeedEditNovelConnectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedEditNovelConnectView.swift; sourceTree = "<group>"; };
 		CDA5F0482C30248A00FCF15C /* FeedEditConnectedNovelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedEditConnectedNovelView.swift; sourceTree = "<group>"; };
+		CDC03F4C2CA6C492002D301F /* NovelReviewService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelReviewService.swift; sourceTree = "<group>"; };
 		CDE596D52B57708D00D99DA1 /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
 		CDE596D72B5770CE00D99DA1 /* WSSToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSToastView.swift; sourceTree = "<group>"; };
 		CDE596D92B57C4BE00D99DA1 /* UITextView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+.swift"; sourceTree = "<group>"; };
@@ -1893,6 +1895,7 @@
 		A1EF35562B52FAA300A94C53 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				CDC03F4B2CA6C488002D301F /* NovelReview */,
 				2C9CBDAF2C5BB4200084481F /* Blocks */,
 				C9CF88B52C86204E00E45BF0 /* Notice */,
 				C9A3CD432C8C3B9C00B43BFB /* SearchService */,
@@ -2495,6 +2498,14 @@
 			path = MemoViewCell;
 			sourceTree = "<group>";
 		};
+		CDC03F4B2CA6C488002D301F /* NovelReview */ = {
+			isa = PBXGroup;
+			children = (
+				CDC03F4C2CA6C492002D301F /* NovelReviewService.swift */,
+			);
+			path = NovelReview;
+			sourceTree = "<group>";
+		};
 		CDF27CD32CA1AA560072C0F7 /* FeedEdit */ = {
 			isa = PBXGroup;
 			children = (
@@ -2774,6 +2785,7 @@
 				39CD5E082B4F2BBE00668B9A /* RegisterNormalKeywordSelectionView.swift in Sources */,
 				2C19A5002BBD56C900D4D151 /* WSSDropdownButton.swift in Sources */,
 				B96F0F902C28678800DA5483 /* FeedDetailContentView.swift in Sources */,
+				CDC03F4D2CA6C492002D301F /* NovelReviewService.swift in Sources */,
 				2CD2FE402C43E7B60033366C /* WSSAlertViewController.swift in Sources */,
 				2C8F89512C50E5200056895B /* MyPageDeleteIDReasonTableViewCell.swift in Sources */,
 				2C19A5002BBD56C900D4D151 /* WSSDropdownButton.swift in Sources */,
@@ -2841,7 +2853,7 @@
 				B9181BDE2BEBE2300024C800 /* HomeTasteRecommendCollectionViewCell.swift in Sources */,
 				2C5D0F592B4FDEC000C76D3C /* TrashMyPageInventoryCollectionViewCell.swift in Sources */,
 				CD8747A52C9EB39900D0ADAD /* NovelDateSelectModalViewModel.swift in Sources */,
-				2C5D0F592B4FDEC000C76D3C /* MyPageInventoryCollectionViewCell.swift in Sources */,
+				2C5D0F592B4FDEC000C76D3C /* TrashMyPageInventoryCollectionViewCell.swift in Sources */,
 				392A29232B4E89FD0065EB97 /* RegisterNormalNovelInfoWithRatingView.swift in Sources */,
 				CDA5F0492C30248A00FCF15C /* FeedEditConnectedNovelView.swift in Sources */,
 				2CFA9A182C9D9AD500A4A820 /* UserInfoResult.swift in Sources */,
