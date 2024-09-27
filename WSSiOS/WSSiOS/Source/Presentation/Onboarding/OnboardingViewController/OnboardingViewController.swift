@@ -7,8 +7,9 @@
 
 import UIKit
 
-import RxSwift
 import RxCocoa
+import RxGesture
+import RxSwift
 
 final class OnboardingViewController: UIViewController {
     
@@ -108,6 +109,13 @@ final class OnboardingViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.moveToLastStage
+            .drive(with: self, onNext: { owner, _ in
+                owner.view.endEditing(true)
+                owner.scrollToLastItem()
+            })
+            .disposed(by: disposeBag)
+        
         output.moveToNextStage
             .drive(with: self, onNext: { owner, _ in
                 owner.view.endEditing(true)
@@ -125,13 +133,13 @@ final class OnboardingViewController: UIViewController {
     //MARK: - Actions
     
     private func createViewModelInput() -> OnboardingViewModel.Input {
-        
         return OnboardingViewModel.Input(
             nicknameTextFieldEditingDidBegin: self.rootView.nickNameView.nicknameTextField.rx.controlEvent(.editingDidBegin),
             nicknameTextFieldEditingDidEnd: self.rootView.nickNameView.nicknameTextField.rx.controlEvent(.editingDidEnd),
             nicknameTextFieldText: self.rootView.nickNameView.nicknameTextField.rx.text.orEmpty.distinctUntilChanged(),
             duplicateCheckButtonDidTap: self.rootView.nickNameView.duplicateCheckButton.rx.tap,
-            nextButtonDidTap: self.rootView.nickNameView.bottomButton.button.rx.tap
+            nextButtonDidTap: self.rootView.nickNameView.bottomButton.button.rx.tap,
+            backButtonDidTap: rootView.backButton.rx.tap
         )
     }
     
@@ -148,6 +156,14 @@ final class OnboardingViewController: UIViewController {
         let currentOffset = rootView.scrollView.contentOffset
         let width = UIScreen.main.bounds.width
         let nextOffset = currentOffset.x + width
+        
+        rootView.scrollView.setContentOffset(CGPoint(x: nextOffset, y: 0), animated: true)
+    }
+    
+    private func scrollToLastItem() {
+        let currentOffset = rootView.scrollView.contentOffset
+        let width = UIScreen.main.bounds.width
+        let nextOffset = currentOffset.x - width
         
         rootView.scrollView.setContentOffset(CGPoint(x: nextOffset, y: 0), animated: true)
     }

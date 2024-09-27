@@ -74,6 +74,7 @@ final class OnboardingView: UIView {
         contentView.snp.makeConstraints {
             $0.edges.equalTo(scrollView.contentLayoutGuide)
             $0.height.equalToSuperview()
+            $0.width.equalTo(UIScreen.main.bounds.width * 2)
         }
         
         nickNameView.snp.makeConstraints {

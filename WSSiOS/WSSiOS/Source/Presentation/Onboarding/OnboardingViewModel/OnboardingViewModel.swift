@@ -5,10 +5,12 @@
 //  Created by YunhakLee on 9/27/24.
 //
 
-import Foundation
+import UIKit
 
-import RxSwift
 import RxCocoa
+import RxGesture
+import RxSwift
+
 
 enum NicknameAvailablity {
     case available
@@ -25,6 +27,7 @@ final class OnboardingViewModel: ViewModelType {
     let isDuplicateCheckButtonEnabled = BehaviorRelay<Bool>(value: false)
     let isNicknameAvailable = BehaviorRelay<NicknameAvailablity>(value: .notStarted)
     let isNextButtonAvailable = BehaviorRelay<Bool>(value: false)
+    let moveToLastStage = PublishRelay<Void>()
     let moveToNextStage = PublishRelay<Void>()
     let moveToHomeViewController = PublishRelay<Void>()
     let stageIndex = BehaviorRelay<Int>(value: 0)
@@ -40,6 +43,7 @@ final class OnboardingViewModel: ViewModelType {
         let nicknameTextFieldText: Observable<String>
         let duplicateCheckButtonDidTap: ControlEvent<Void>
         let nextButtonDidTap: ControlEvent<Void>
+        let backButtonDidTap: ControlEvent<Void>
     }
     
     struct Output {
@@ -48,11 +52,23 @@ final class OnboardingViewModel: ViewModelType {
         let nicknameAvailablity: Driver<NicknameAvailablity>
         let isNextButtonAvailable: Driver<Bool>
         let stageIndex: Driver<Int>
+        let moveToLastStage: Driver<Void>
         let moveToNextStage: Driver<Void>
         let moveToHomeViewController: Driver<Void>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
+        input.backButtonDidTap
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
+            .withLatestFrom(stageIndex)
+            .bind(with: self, onNext: { owner, stage in
+                if stage > 0 {
+                    owner.stageIndex.accept(stage - 1)
+                    owner.moveToLastStage.accept(())
+                }
+            })
+            .disposed(by: disposeBag)
+        
         input.nicknameTextFieldEditingDidBegin
             .bind(with: self, onNext: { owner, _ in
                 owner.isNicknameFieldEditing.accept(true)
@@ -112,6 +128,7 @@ final class OnboardingViewModel: ViewModelType {
             nicknameAvailablity: isNicknameAvailable.asDriver(),
             isNextButtonAvailable: isNextButtonAvailable.asDriver(),
             stageIndex: stageIndex.asDriver(),
+            moveToLastStage: moveToLastStage.asDriver(onErrorJustReturn: ()),
             moveToNextStage: moveToNextStage.asDriver(onErrorJustReturn: ()),
             moveToHomeViewController: moveToHomeViewController.asDriver(onErrorJustReturn: ())
         )
