@@ -25,7 +25,7 @@ final class DetailSearchViewModel: ViewModelType {
     
     /// 키워드 뷰
     private let viewWillAppearEvent = BehaviorRelay<Bool>(value: false)
-    private let keywordList = PublishSubject<[DetailSearchCategory]>()
+    private let keywordList = PublishSubject<[KeywordCategory]>()
     
     struct Input {
         let viewWillAppearEvent: Observable<Bool>
@@ -41,7 +41,7 @@ final class DetailSearchViewModel: ViewModelType {
         let genreCollectionViewHeight: Driver<CGFloat>
         let selectedTab: Driver<DetailSearchTab>
         
-        let keywordList: Observable<[DetailSearchCategory]>
+        let keywordList: Observable<[KeywordCategory]>
     }
     
     //MARK: - init
@@ -59,7 +59,7 @@ final class DetailSearchViewModel: ViewModelType {
         
         input.viewWillAppearEvent
             .flatMapLatest { _ in
-                self.keywordRepository.getKeywords()
+                self.keywordRepository.searchKeyword(query: nil)
             }
             .subscribe(with: self, onNext: { owner, data in
                 self.keywordList.onNext(data.categories)
@@ -80,7 +80,7 @@ final class DetailSearchViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        keywordRepository.getKeywords()
+        keywordRepository.searchKeyword(query: nil)
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
                 self.keywordList.onNext(data.categories)

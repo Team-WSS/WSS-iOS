@@ -2,7 +2,7 @@
 //  KeywordService.swift
 //  WSSiOS
 //
-//  Created by Seoyeon Choi on 9/10/24.
+//  Created by Hyowon Jeon on 9/27/24.
 //
 
 import Foundation
@@ -10,29 +10,35 @@ import Foundation
 import RxSwift
 
 protocol KeywordService {
-    func getSearchKeywords(query: String) -> Single<DetailSearchCategories>
+    func searchKeyword(query: String?) -> Single<SearchKeywordResult>
 }
 
-final class DefaultKeywordService: NSObject, Networking {
+final class DefaultKeywordService: NSObject, Networking, KeywordService {
     private var urlSession: URLSession = URLSession(configuration: URLSessionConfiguration.default,
                                                     delegate: nil,
                                                     delegateQueue: nil)
-}
 
-extension DefaultKeywordService: KeywordService {
-    func getSearchKeywords(query: String) -> Single<DetailSearchCategories> {
+    func searchKeyword(query: String? = nil) -> RxSwift.Single<SearchKeywordResult> {
+        var searchKeywordQueryItems: [URLQueryItem] = []
+        
+        if let query {
+            searchKeywordQueryItems.append(URLQueryItem(name: "query", value: query))
+        }
+        
         do {
             let request = try makeHTTPRequest(method: .get,
-                                              path: URLs.Keyword.getKeywords,
+                                              path: URLs.Keyword.searchKeyword,
+                                              queryItems: searchKeywordQueryItems,
                                               headers: APIConstants.testTokenHeader,
                                               body: nil)
-            
+
             NetworkLogger.log(request: request)
-            
+
             return urlSession.rx.data(request: request)
-                .map {try self.decode(data: $0,
-                                      to: DetailSearchCategories.self) }
+                .map { try self.decode(data: $0,
+                                       to: SearchKeywordResult.self) }
                 .asSingle()
+
         } catch {
             return Single.error(error)
         }

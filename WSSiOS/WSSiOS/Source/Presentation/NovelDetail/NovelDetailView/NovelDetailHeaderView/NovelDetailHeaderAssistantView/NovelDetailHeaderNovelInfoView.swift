@@ -95,20 +95,12 @@ final class NovelDetailHeaderNovelInfoView: UIView {
     
     //MARK: - Data
     
-    func bindData(_ data: NovelDetailHeaderResult) {
-        let novelGenreText = data.novelGenres
-            .map { OldNovelGenre(rawValue: $0) ?? .error }
-            .map { $0.genreText }
-            .joined(separator: "/")
-        
-        let novelCompletedStatusText = data.isNovelCompleted ? StringLiterals.NovelDetail.Header.complete
-                                                             : StringLiterals.NovelDetail.Header.inSeries
-        
+    func bindData(_ data: NovelDetailHeaderEntity) {
         setTitleLabelText(with: data.novelTitle)
-        setInfoLabelText(with: "\(novelGenreText)\(novelCompletedStatusText)\(data.author)")
-        interestCount.setText(with: "\(data.interestCount)")
-        rating.setText(with: "\(data.novelRating) (\(data.novelRatingCount))")
-        feedCount.setText(with: "\(data.feedCount)")
+        setInfoLabelText(with: "\(data.novelGenre)\(data.novelCompletion)\(data.novelAuthor)")
+        interestCount.setText(with: data.interestCountText)
+        rating.setText(with: data.novelRatingText)
+        feedCount.setText(with: data.feedCountText)
     }
     
     //MARK: - Custom Method

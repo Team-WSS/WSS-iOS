@@ -13,6 +13,10 @@ import Then
 
 extension UIViewController {
     func showToast(_ toastStatus: ToastStatus) {
+        if let existingToastView = self.view.subviews.first(where: { $0 is WSSToastView }) {
+            existingToastView.removeFromSuperview()
+        }
+        
         let toastView = WSSToastView(toastStatus)
         
         self.view.addSubview(toastView)
@@ -22,12 +26,10 @@ extension UIViewController {
             $0.top.equalTo(view.snp.bottom).offset(-212)
         }
         
-        UIView.animate(withDuration: 0, animations: {
-            toastView.alpha = 1
+        UIView.animate(withDuration: 0.3, delay: 3.0, animations: {
+            toastView.alpha = 0
         }, completion: { _ in
-            UIView.animate(withDuration: 0.3, delay: 3.0) {
-                toastView.alpha = 0
-            }
+            toastView.removeFromSuperview()
         })
     }
     
@@ -79,7 +81,7 @@ extension UIViewController {
     
     func moveToNovelDetailViewController(userNovelId: Int) {
         if self.navigationController?.tabBarController?.selectedIndex == 0 {
-            let tabBar = WSSTabBarController()
+            let tabBar = WSSTabBarController(isLoggedIn: true)
             tabBar.selectedIndex = 1
             let navigationController = UINavigationController(rootViewController: tabBar)
             navigationController.setNavigationBarHidden(true, animated: true)
@@ -175,24 +177,37 @@ extension UIViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
+    func pushToLoginViewController() {
+        let viewController = ModuleFactory.shared.makeLoginViewController()
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func pushToOnboardingViewController() {
+        let viewController = ModuleFactory.shared.makeOnboardingViewController()
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
     func presentToAlertViewController(iconImage: UIImage?,
                                       titleText: String?,
                                       contentText: String?,
-                                      cancelTitle: String?,
-                                      actionTitle: String?,
-                                      actionBackgroundColor: CGColor?) -> Observable<Void> {
+                                      leftTitle: String?,
+                                      rightTitle: String?,
+                                      rightBackgroundColor: CGColor?) -> Observable<AlertButtonType> {
         let alertViewController = WSSAlertViewController(iconImage: iconImage,
                                                          titleText: titleText,
                                                          contentText: contentText,
-                                                         cancelTitle: cancelTitle,
-                                                         actionTitle: actionTitle,
-                                                         actionBackgroundColor: actionBackgroundColor)
+                                                         leftTitle: leftTitle,
+                                                         rightTitle: rightTitle,
+                                                         rightBackgroundColor: rightBackgroundColor)
         alertViewController.modalPresentationStyle = .overFullScreen
         alertViewController.modalTransitionStyle = .crossDissolve
         
         self.present(alertViewController, animated: true)
         
-        return alertViewController.actionButtonTap
+        let leftButtonTap = alertViewController.leftButtonTap.map { AlertButtonType.left }
+        let rightButtonTap = alertViewController.rightButtonTap.map { AlertButtonType.right }
+        
+        return Observable.merge(leftButtonTap, rightButtonTap)
     }
     
     func pushToMyPageDeleteIDWarningViewController() {
@@ -246,6 +261,52 @@ extension UIViewController {
         })
         
         self.dismiss(animated: true)
+    }
+    
+    func pushToBlockIDViewController() {
+        let viewController = MyPageBlockUserViewController(
+            viewModel:MyPageBlockUserViewModel(
+                userRepository: DefaultUserRepository(
+                    userService: DefaultUserService(),
+                    blocksService: DefaultBlocksService()
+                )
+            )
+        )
+        
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func pushToFeedEditViewController(feedId: Int? = nil, relevantCategories: [NewNovelGenre] = [], initialFeedContent: String = "", novelId: Int? = nil, novelTitle: String? = nil, isSpoiler: Bool = false) {
+        let viewController = FeedEditViewController(
+            viewModel: FeedEditViewModel(
+                feedRepository: DefaultFeedRepository(
+                    feedService: DefaultFeedService()
+                ),
+                feedId: feedId,
+                relevantCategories: relevantCategories,
+                initialFeedContent: initialFeedContent,
+                novelId: novelId,
+                novelTitle: novelTitle,
+                isSpoiler: isSpoiler
+            )
+        )
+        
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func pushToNovelReviewViewController(readStatus: ReadStatus, novelId: Int, novelTitle: String) {
+        let viewController = NovelReviewViewController(
+            viewModel: NovelReviewViewModel(
+                novelReviewRepository: DefaultNovelReviewRepository(
+                    novelReviewService: DefaultNovelReviewService()
+                ),
+                readStatus: readStatus,
+                novelId: novelId,
+                novelTitle: novelTitle
+            )
+        )
+        
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
 }
 

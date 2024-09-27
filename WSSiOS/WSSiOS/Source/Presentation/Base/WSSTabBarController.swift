@@ -11,6 +11,17 @@ import Then
 
 final class WSSTabBarController: UITabBarController {
     
+    private let isLoggedIn: Bool
+    
+    init(isLoggedIn: Bool) {
+        self.isLoggedIn = isLoggedIn
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     //MARK: - Life Cycle
     
     override func viewDidLoad() {
@@ -42,7 +53,7 @@ final class WSSTabBarController: UITabBarController {
             let border = CALayer()
             border.backgroundColor = UIColor.wssGray50.cgColor
             border.frame = CGRect(x: 0, y: 0, width: $0.frame.width, height: 1)
-
+            
             $0.layer.addSublayer(border)
             $0.isTranslucent = false
             $0.itemPositioning = .centered
@@ -57,11 +68,12 @@ final class WSSTabBarController: UITabBarController {
         var navigationControllers = [UINavigationController]()
         
         for item in WSSTabBarItem.allCases {
+            let viewController = item.itemViewController(isLoggedIn: isLoggedIn)
             let navigationController = createNavigationController(
                 normalImage: item.normalItemImage,
                 selectedImage: item.selectedItemImage,
                 title: item.itemTitle,
-                viewController: item.itemViewController
+                viewController: viewController
             )
             navigationControllers.append(navigationController)
         }

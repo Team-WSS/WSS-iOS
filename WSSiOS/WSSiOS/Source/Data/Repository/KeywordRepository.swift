@@ -2,7 +2,7 @@
 //  KeywordRepository.swift
 //  WSSiOS
 //
-//  Created by Seoyeon Choi on 9/10/24.
+//  Created by Hyowon Jeon on 9/27/24.
 //
 
 import Foundation
@@ -10,27 +10,19 @@ import Foundation
 import RxSwift
 
 protocol KeywordRepository {
-    func getKeywords() -> Observable<DetailSearchCategories>
+    func searchKeyword(query: String?) -> Observable<SearchKeywordResult>
 }
 
 struct DefaultKeywordRepository: KeywordRepository {
-    private let keywordService: KeywordService
+    
+    private var keywordService: KeywordService
     
     init(keywordService: KeywordService) {
         self.keywordService = keywordService
     }
     
-    func getKeywords() -> Observable<DetailSearchCategories> {
-        return keywordService.getSearchKeywords(query: "").asObservable()
-    }
-}
-
-struct TestKeywordRepository: KeywordRepository {
-    func getKeywords() -> Observable<DetailSearchCategories> {
-        return Observable.just(DetailSearchCategories(categories: [
-            DetailSearchCategory(categoryName: "세계관",
-                                 categoryImage: "",
-                                 keywords: [DetailSearchKeyword(keywordId: 1, keywordName: "이세계")])
-        ]))
+    func searchKeyword(query: String?) -> Observable<SearchKeywordResult> {
+        return keywordService.searchKeyword(query: query)
+            .asObservable()
     }
 }

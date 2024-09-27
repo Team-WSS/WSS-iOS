@@ -200,7 +200,7 @@ final class HomeInterestCollectionViewCell: UICollectionViewCell {
         
         self.userProfileImageView.kfSetImage(url: makeBucketImageURLString(path: data.userAvatarImage))
         self.userNicknameLabel.do {
-            $0.applyWSSFont(.title3, with: "\(data.userNickname) \(StringLiterals.Home.Interest.feed)")
+            $0.applyWSSFont(.title3, with: "\(data.userNickname)\(StringLiterals.Home.Interest.feed)")
             $0.lineBreakMode = .byTruncatingTail
             $0.numberOfLines = 1
         }

@@ -57,6 +57,10 @@ final class KeywordTag: UIView {
                 $0.setImage(.icKeywordCancel, for: .normal)
             }
         }
+        
+        keywordLabel.do {
+            $0.textColor = .wssPrimary100
+        }
     }
     
     private func setHierarchy() {
@@ -84,12 +88,13 @@ final class KeywordTag: UIView {
     
     func setText(_ text: String) {
         keywordLabel.do {
-            $0.makeAttribute(with: text)?
-                .lineSpacing(spacingPercentage: 150)
-                .kerning(kerningPixel: -0.6)
-                .applyAttribute()
-            $0.font = .Body2
-            $0.textColor = .wssPrimary100
+            $0.applyWSSFont(.body2, with: text)
+        }
+    }
+    
+    func setBackgroundColor(_ color: UIColor) {
+        self.do {
+            $0.backgroundColor = color
         }
     }
 }

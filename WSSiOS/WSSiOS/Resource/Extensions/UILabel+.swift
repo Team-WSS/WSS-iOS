@@ -26,6 +26,24 @@ extension UILabel {
         }
     }
     
+    func applyWSSFontWithUnderLine(_ font: WSSFont, with text: String?) {
+        self.applyFontAttributeWithUnderline(text: text,
+                                             lineHeightMultiple: font.lineHeightMultiple,
+                                             kerningPixel: font.kerningPixel,
+                                             font: font.font)
+    }
+    
+    func applyFontAttributeWithUnderline(text: String?, lineHeightMultiple: CGFloat, kerningPixel: Double, font: UIFont) {
+        self.do {
+            $0.font = font
+            $0.makeAttribute(with: text)?
+                .lineHeight(lineHeightMultiple)
+                .kerning(kerningPixel: kerningPixel)
+                .underlineStyle(.single)
+                .applyAttribute()
+        }
+    }
+    
     func fontHeadline1Attribute(with text: String) {
         self.do {
             $0.makeAttribute(with: text)?
@@ -206,6 +224,16 @@ extension TextAttributeSet {
             .kern,
             value: kerningPixel,
             range: NSRange(location: 0, length: attributedString.length - 1)
+        )
+        
+        return self
+    }
+    
+    func underlineStyle(_ style: NSUnderlineStyle) -> TextAttributeSet {
+        self.attributedString.addAttribute(
+            .underlineStyle,
+            value: style.rawValue,
+            range: NSRange(location: 0, length: attributedString.length)
         )
         
         return self

@@ -10,6 +10,11 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+enum AlertButtonType {
+    case left
+    case right
+}
+
 final class WSSAlertViewController: UIViewController {
     
     //MARK: - Properties
@@ -19,13 +24,18 @@ final class WSSAlertViewController: UIViewController {
     private var alertIconImage: UIImage?
     private var alertTitle: String?
     private var alertContent: String?
-    private var cancelTitle: String?
-    private var actionTitle: String?
-    private var actionBackgroundColor: CGColor?
+    private var leftTitle: String?
+    private var rightTitle: String?
+    private var rightBackgroundColor: CGColor?
     
-    private let actionButtonTapSubject = PublishSubject<Void>()
-    var actionButtonTap: Observable<Void> {
-        return actionButtonTapSubject.asObservable()
+    private let leftButtonTapSubject = PublishSubject<Void>()
+    var leftButtonTap: Observable<Void> {
+        return leftButtonTapSubject.asObservable()
+    }
+    
+    private let rightButtonTapSubject = PublishSubject<Void>()
+    var rightButtonTap: Observable<Void> {
+        return rightButtonTapSubject.asObservable()
     }
     
     //MARK: - UI Components
@@ -37,16 +47,16 @@ final class WSSAlertViewController: UIViewController {
     init(iconImage: UIImage?,
          titleText: String?,
          contentText: String?,
-         cancelTitle: String?,
-         actionTitle: String?,
-         actionBackgroundColor: CGColor?) {
+         leftTitle: String?,
+         rightTitle: String?,
+         rightBackgroundColor: CGColor?) {
         
         self.alertIconImage = iconImage
         self.alertTitle = titleText
         self.alertContent = contentText
-        self.cancelTitle = cancelTitle
-        self.actionTitle = actionTitle
-        self.actionBackgroundColor = actionBackgroundColor
+        self.leftTitle = leftTitle
+        self.rightTitle = rightTitle
+        self.rightBackgroundColor = rightBackgroundColor
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -60,9 +70,9 @@ final class WSSAlertViewController: UIViewController {
         rootView.updateLayout(alertImage: alertIconImage,
                               alertTitle: alertTitle,
                               alertContent: alertContent,
-                              cancelTitle: cancelTitle,
-                              actionTitle: actionTitle,
-                              actionBackgroundColor: actionBackgroundColor)
+                              leftTitle: leftTitle,
+                              rightTitle: rightTitle,
+                              rightBackgroundColor: rightBackgroundColor)
     }
     
     override func viewDidLoad() {
@@ -72,19 +82,20 @@ final class WSSAlertViewController: UIViewController {
     }
     
     private func bindGesture() {
-        rootView.cancelButton.rx.tap
+        rootView.leftButton.rx.tap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
-                print("\(String(describing: owner.cancelTitle))Button Tap 💖")
+                owner.leftButtonTapSubject.onNext(())
+                print("\(String(describing: owner.leftTitle))Button Tap 💖")
                 owner.dismiss(animated: true)
             })
             .disposed(by: disposeBag)
         
-        rootView.actionButton.rx.tap
+        rootView.rightButton.rx.tap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
-                owner.actionButtonTapSubject.onNext(())
-                print("\(String(describing: owner.actionTitle))Button Tap 💖")
+                owner.rightButtonTapSubject.onNext(())
+                print("\(String(describing: owner.rightTitle))Button Tap 💖")
                 owner.dismiss(animated: true)
             })
             .disposed(by: disposeBag)

@@ -23,7 +23,7 @@ final class DetailSearchKeywordCategoryCollectionViewCell: UICollectionViewCell 
     
     //MARK: - Properties
     
-    private var keywords: [DetailSearchKeyword] = []
+    private var keywords: [KeywordData] = []
     var isExpanded: Bool = false
     private let disposeBag = DisposeBag()
     
@@ -149,7 +149,7 @@ final class DetailSearchKeywordCategoryCollectionViewCell: UICollectionViewCell 
         }
     }
     
-    func bindData(data: DetailSearchCategory) {
+    func bindData(data: KeywordCategory) {
         keywordImageView.kfSetImage(url: makeBucketImageURLString(path: data.categoryImage))
         keywordTitleLabel.applyWSSFont(.title2, with: data.categoryName)
         keywordTitleLabel.text = data.categoryName
