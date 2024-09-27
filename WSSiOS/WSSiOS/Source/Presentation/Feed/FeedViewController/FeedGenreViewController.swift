@@ -80,26 +80,21 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
 
 extension FeedGenreViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        guard let feeds = try? feedData.value, indexPath.item < feeds.count 
-        else { return CGSize(width: UIScreen.main.bounds.width, height: 289) }
-        
-        let isSpolier = feeds[indexPath.row].isSpoiler
-        let content = isSpolier ? StringLiterals.Feed.spoilerText : feeds[indexPath.row].feedContent
-        let width = UIScreen.main.bounds.width
-        
-        let feedContentLabel = UILabel().then {
-            $0.applyWSSFont(.body2, with: content)
-            $0.textColor = isSpolier ? .wssSecondary100 : .wssBlack
-            $0.textAlignment = .natural
-            $0.numberOfLines = 5
-            $0.lineBreakMode = .byTruncatingTail
-            $0.lineBreakStrategy = .hangulWordPriority
+        guard let feeds = try? feedData.value, indexPath.item < feeds.count else {
+            return CGSize(width: collectionView.frame.width, height: 289)
         }
+
+        let cell = FeedCollectionViewCell(frame: CGRect(x: 0, y: 0, width: collectionView.frame.width, height: 0))
+
+        let feed = feeds[indexPath.item]
+        cell.bindData(data: feed)
+
+        cell.setNeedsLayout()
+        cell.layoutIfNeeded()
         
-        let maxSize = CGSize(width: width, height: 115)
-        let requiredSize = feedContentLabel.sizeThatFits(maxSize)
-        let finalHeight = min(requiredSize.height, 115)
-        
-        return CGSize(width: width, height: finalHeight + 266)
+        let targetSize = CGSize(width: collectionView.frame.width, height: UIView.layoutFittingCompressedSize.height)
+        let size = cell.systemLayoutSizeFitting(targetSize)
+
+        return CGSize(width: collectionView.frame.width, height: size.height)
     }
 }

@@ -64,13 +64,13 @@ final class FeedReactView: UIView {
         }
         
         commentRatingLabel.do {
-            $0.textColor = .Gray200
+            $0.textColor = .wssGray200
         }
     }
     
     private func setHierarchy() {
-        addSubviews(likeView,
-                    commentView)
+        self.addSubviews(likeView,
+                         commentView)
         
         likeView.addSubviews(likeButton,
                              likeRatingLabel)
@@ -82,35 +82,31 @@ final class FeedReactView: UIView {
     private func setLayout() {
         likeView.snp.makeConstraints {
             $0.top.leading.bottom.equalToSuperview()
-        }
-        
-        likeButton.snp.makeConstraints {
-            $0.top.bottom.equalToSuperview().inset(8.5)
-            $0.leading.equalToSuperview()
-            $0.size.equalTo(20)
-        }
-        
-        likeRatingLabel.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.leading.equalTo(likeButton.snp.trailing).offset(5)
-            $0.trailing.equalToSuperview()
+            
+            likeButton.snp.makeConstraints {
+                $0.centerY.leading.equalToSuperview()
+                $0.size.equalTo(20)
+            }
+            
+            likeRatingLabel.snp.makeConstraints {
+                $0.centerY.trailing.equalToSuperview()
+                $0.leading.equalTo(likeButton.snp.trailing).offset(5)
+            }
         }
         
         commentView.snp.makeConstraints {
             $0.top.bottom.equalToSuperview()
             $0.leading.equalTo(likeView.snp.trailing).offset(18)
-        }
-        
-        commentIcon.snp.makeConstraints {
-            $0.top.bottom.equalToSuperview().inset(8.5)
-            $0.leading.equalToSuperview()
-            $0.size.equalTo(20)
-        }
-        
-        commentRatingLabel.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.leading.equalTo(commentIcon.snp.trailing).offset(5)
-            $0.trailing.equalToSuperview()
+            
+            commentIcon.snp.makeConstraints {
+                $0.centerY.leading.equalToSuperview()
+                $0.size.equalTo(20)
+            }
+            
+            commentRatingLabel.snp.makeConstraints {
+                $0.centerY.trailing.equalToSuperview()
+                $0.leading.equalTo(commentIcon.snp.trailing).offset(5)
+            }
         }
     }
     

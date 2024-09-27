@@ -78,7 +78,7 @@ final class FeedNovelView: UIView {
     
     private func setLayout() {
         novelLinkIcon.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
+            $0.top.bottom.equalToSuperview().inset(14)
             $0.leading.equalToSuperview().inset(16)
             $0.size.equalTo(20)
         }
@@ -119,8 +119,14 @@ final class FeedNovelView: UIView {
             $0.applyWSSFont(.title3, with: $0.text)
         }
         
-        novelRatingLabel.text = String(rating)
-        novelRatingLabel.applyWSSFont(.label1, with: String(rating))
-        novelRatingParticipantsLabel.applyWSSFont(.label1, with: " (" + String(participants) + ")" )
+        if rating == -1 {
+            [novelStarIcon, novelRatingLabel, novelRatingParticipantsLabel].forEach {
+                $0.isHidden = true
+            }
+        } else {
+            novelRatingLabel.text = String(rating)
+            novelRatingLabel.applyWSSFont(.label1, with: String(rating))
+            novelRatingParticipantsLabel.applyWSSFont(.label1, with: " (" + String(participants) + ")" )
+        }
     }
 }

@@ -28,10 +28,22 @@ final class FeedGenreViewModel: ViewModelType {
     
     struct Input {
         let loadMoreTrigger: Observable<Void>
+//        let profileTapped: ControlEvent<Void>
+//        let dropdownTapped: ControlEvent<Void>
+//        let contentTapped: ControlEvent<Void>
+//        let novelTapped: ControlEvent<Void>
+//        let likedTapped: ControlEvent<Void>
+//        let commentTapped: ControlEvent<Void>
     }
     
     struct Output {
         let feedList = BehaviorRelay<[TotalFeeds]>(value: [])
+        let profileTapped = PublishRelay<Void>()
+        let dropdownTapped = PublishRelay<Void>()
+        let contentTapped = PublishRelay<Void>()
+        let novelTapped = PublishRelay<Void>()
+        let likedTapped = PublishRelay<Void>()
+        let commentTapped = PublishRelay<Void>()
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {

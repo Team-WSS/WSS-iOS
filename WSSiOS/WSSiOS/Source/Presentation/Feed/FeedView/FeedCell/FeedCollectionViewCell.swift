@@ -15,16 +15,13 @@ final class FeedCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Components
     
-    private let userView = FeedUserView()
-    private let novelView = FeedNovelView()
-    private let reactView = FeedReactView()
-    private let detailContentView = FeedContentView()
-    
-    private let dotIcon = UIImageView()
-    private let restTimeLabel = UILabel()
-    private let modifiedLabel = UILabel()
-    private let dropdownIcon = UIImageView()
+    let stackView = UIStackView()
+    let userView = FeedUserView()
+    let novelView = FeedNovelView()
+    let reactView = FeedReactView()
+    let detailContentView = FeedContentView()
     private let genreLabel = UILabel()
+    private let emptyView = UIView()
     private let divideView = UIView()
     
     //MARK: - Life Cycle
@@ -49,26 +46,14 @@ final class FeedCollectionViewCell: UICollectionViewCell {
             $0.backgroundColor = .wssWhite
         }
         
-        dotIcon.do {
-            $0.image = UIImage(resource: .icDot)
-        }
-        
-        restTimeLabel.do {
-            $0.textColor = .wssBlack
-        }
-        
-        modifiedLabel.do {
-            $0.applyWSSFont(.body5, with: StringLiterals.Feed.modifiedText)
-            $0.textColor = .wssGray200
-            $0.isHidden = true
-        }
-        
-        dropdownIcon.do {
-            $0.image = UIImage(resource: .icDropDownDot)
+        stackView.do {
+            $0.axis = .vertical
+            $0.distribution = .fill
+            $0.alignment = .leading
         }
         
         genreLabel.do {
-            $0.textColor = .wssGray50
+            $0.textColor = .wssGray200
         }
         
         divideView.do {
@@ -77,73 +62,91 @@ final class FeedCollectionViewCell: UICollectionViewCell {
     }
     
     private func setHierarchy() {
-        addSubviews(userView,
-                    dotIcon,
-                    restTimeLabel,
-                    modifiedLabel,
-                    dropdownIcon,
-                    detailContentView,
-                    novelView,
-                    genreLabel,
-                    reactView,
-                    divideView)
+        self.addSubviews(stackView,
+                         divideView)
+        stackView.addArrangedSubviews(userView,
+                                      detailContentView,
+                                      novelView,
+                                      genreLabel,
+                                      reactView,
+                                      emptyView)
     }
     
     
     private func setLayout() {
+        stackView.snp.makeConstraints {
+            $0.top.leading.trailing.equalToSuperview().inset(20)
+            
+            stackView.do {
+                $0.setCustomSpacing(12, after: userView)
+                $0.setCustomSpacing(20, after: detailContentView)
+                $0.setCustomSpacing(20, after: novelView)
+                $0.setCustomSpacing(24, after: genreLabel)
+            }
+        }
+        
         userView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(28)
-            $0.leading.equalToSuperview().inset(20)
-            $0.height.equalTo(36)
-        }
-        
-        dotIcon.snp.makeConstraints {
-            $0.centerY.equalTo(userView.snp.centerY)
-            $0.leading.equalTo(userView.snp.trailing).offset(6)
-            $0.size.equalTo(8)
-        }
-        
-        restTimeLabel.snp.makeConstraints {
-            $0.centerY.equalTo(dotIcon.snp.centerY)
-            $0.leading.equalTo(dotIcon.snp.trailing).offset(6)
-        }
-        
-        modifiedLabel.snp.makeConstraints {
-            $0.centerY.equalTo(restTimeLabel.snp.centerY)
-            $0.leading.equalTo(restTimeLabel.snp.trailing).offset(6)
-        }
-        
-        //TODO: - 추후 extension 으로 수정
-        dropdownIcon.snp.makeConstraints {
-            $0.top.trailing.equalToSuperview().inset(40)
+            $0.width.equalToSuperview()
+            $0.height.equalTo(38)
         }
         
         detailContentView.snp.makeConstraints {
-            $0.top.equalTo(userView.snp.bottom).offset(12)
-            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.width.equalToSuperview()
         }
         
         novelView.snp.makeConstraints {
-            $0.top.equalTo(detailContentView.snp.bottom).offset(20)
-            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.width.equalToSuperview()
             $0.height.equalTo(48)
-        }
-        
-        genreLabel.snp.makeConstraints {
-            $0.top.equalTo(novelView.snp.bottom).offset(20)
-            $0.leading.equalToSuperview().inset(20)
+            
         }
         
         reactView.snp.makeConstraints {
-            $0.top.equalTo(genreLabel.snp.bottom).offset(24)
-            $0.leading.equalToSuperview().inset(20)
+            $0.width.equalToSuperview()
+            $0.height.equalTo(37)
+        }
+        
+        emptyView.snp.makeConstraints {
+            $0.width.equalToSuperview()
+            $0.height.equalTo(24)
         }
         
         divideView.snp.makeConstraints {
-            $0.top.equalTo(reactView.snp.bottom).offset(24)
+            $0.top.equalTo(stackView.snp.bottom)
             $0.width.bottom.equalToSuperview()
             $0.height.equalTo(1)
         }
+        //        userView.snp.makeConstraints {
+        //            $0.top.leading.trailing.equalToSuperview().inset(20)
+        //        }
+        //        
+        //        detailContentView.snp.makeConstraints {
+        //            $0.top.equalTo(userView.snp.bottom).offset(12)
+        //            $0.leading.trailing.equalToSuperview().inset(20)
+        //        }
+        //        
+        //        novelView.snp.makeConstraints {
+        //            $0.top.equalTo(detailContentView.snp.bottom).offset(20)
+        //            $0.leading.trailing.equalToSuperview().inset(20)
+        //            $0.height.equalTo(48)
+        //            
+        //        }
+        //        
+        //        genreLabel.snp.makeConstraints {
+        //            $0.top.equalTo(novelView.snp.bottom).offset(20)
+        //            $0.leading.trailing.equalToSuperview().inset(20)
+        //            
+        //        }
+        //        
+        //        reactView.snp.makeConstraints {
+        //            $0.top.equalTo(genreLabel.snp.bottom).offset(24)
+        //            $0.leading.equalToSuperview().inset(20)
+        //        }
+        //        
+        //        divideView.snp.makeConstraints {
+        //            $0.top.equalTo(reactView.snp.bottom).offset(24)
+        //            $0.width.bottom.equalToSuperview()
+        //            $0.height.equalTo(1)
+        //        }
     }
     
     //MARK: - Data
@@ -153,26 +156,38 @@ final class FeedCollectionViewCell: UICollectionViewCell {
         //TODO: - dropDown 설정하면서 myFeed 구분하기
         
         userView.bindData(imageURL: data.avatarImage,
-                          nickname: data.nickname)
-        
-        restTimeLabel.applyWSSFont(.body5, with: data.createdDate)
-        modifiedLabel.isHidden = !data.isModified
+                          nickname: data.nickname,
+                          createdDate: data.createdDate,
+                          isModified: data.isModified)
         
         detailContentView.bindData(content: data.feedContent,
                                    isSpolier: data.isSpoiler)
         
-        novelView.bindData(title: data.title ?? "",
-                           rating: data.novelRating ?? 0,
-                           participants: data.novelRatingCount ?? 0)
+        if data.title == nil {
+            if let index = stackView.arrangedSubviews.firstIndex(of: novelView) {
+                stackView.removeArrangedSubview(novelView)
+                novelView.removeFromSuperview()
+            }
+        } else {
+            if let index = stackView.arrangedSubviews.firstIndex(of: genreLabel) {
+                if !stackView.arrangedSubviews.contains(novelView) {
+                    stackView.insertArrangedSubview(novelView, at: index)
+                }
+            }
+            
+            novelView.bindData(
+                title: data.title ?? "",
+                rating: data.novelRating ?? -1,
+                participants: data.novelRatingCount ?? -1
+            )
+        }
         
         reactView.bindData(likeRating: data.likeCount,
                            isLiked: data.isLiked,
                            commentRating: data.commentCount)
         
         let categoriesText = data.relevantCategories
-            .compactMap{
-                FeedGenre(rawValue: $0)?.withKorean
-            }.joined(separator: ", ")
+            .joined(separator: ", ")
         
         genreLabel.applyWSSFont(.body2, with: categoriesText)
     }
