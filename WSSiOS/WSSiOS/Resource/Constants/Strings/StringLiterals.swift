@@ -307,6 +307,9 @@ enum StringLiterals {
     }
     
     enum Onboarding {
+        
+        static let nextButton = "다음으로"
+        
         enum NickName {
             static let title = "닉네임을 입력하세요"
             static let description = "10자 이내의 닉네임을 입력해주세요"

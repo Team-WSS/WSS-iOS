@@ -19,7 +19,8 @@ final class OnboardingNickNameView: UIView {
     private let nickNameTextField = UITextField()
     private let textFieldInnerButton = UIButton()
     private let duplicateCheckButton = UIButton()
-    private let dubplicateCheckButtonLabel = UILabel()
+    private let duplicateCheckButtonLabel = UILabel()
+    private let bottomButton = OnboardingBottomButtonView()
     
     //MARK: - Life Cycle
     
@@ -38,6 +39,8 @@ final class OnboardingNickNameView: UIView {
     //MARK: - UI
     
     private func setUI() {
+        self.backgroundColor  = .wssWhite
+        
         titleLabel.do {
             $0.applyWSSFont(.headline1, with: StringLiterals.Onboarding.NickName.title)
             $0.textColor = .wssBlack
@@ -59,7 +62,7 @@ final class OnboardingNickNameView: UIView {
             $0.leftView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 16.0, height: 0.0))
             $0.rightView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 44.0, height: 44.0))
             $0.leftViewMode = .always
-            $0.rightViewMode = .whileEditing
+            $0.rightViewMode = .always
         }
         
         textFieldInnerButton.do {
@@ -71,10 +74,14 @@ final class OnboardingNickNameView: UIView {
             $0.layer.cornerRadius = 15
         }
         
-        dubplicateCheckButtonLabel.do {
+        duplicateCheckButtonLabel.do {
             $0.applyWSSFont(.body2, with: StringLiterals.Onboarding.NickName.duplicateCheckButton)
             $0.textColor = .wssGray200
             $0.isUserInteractionEnabled = false
+        }
+        
+        bottomButton.do {
+            $0.setText(text: StringLiterals.Onboarding.nextButton)
         }
     }
     
@@ -82,9 +89,10 @@ final class OnboardingNickNameView: UIView {
         self.addSubviews(titleLabel,
                          descriptionLabel,
                          nickNameTextField,
-                         duplicateCheckButton)
+                         duplicateCheckButton,
+                         bottomButton)
         nickNameTextField.addSubview(textFieldInnerButton)
-        duplicateCheckButton.addSubview(dubplicateCheckButtonLabel)
+        duplicateCheckButton.addSubview(duplicateCheckButtonLabel)
     }
     
     private func setLayout() {
@@ -110,6 +118,20 @@ final class OnboardingNickNameView: UIView {
             $0.leading.equalTo(nickNameTextField.snp.trailing).offset(7)
             $0.trailing.equalToSuperview().inset(20)
             $0.width.equalTo(88)
+        }
+        
+        duplicateCheckButtonLabel.snp.makeConstraints {
+            $0.center.equalToSuperview()
+        }
+        
+        textFieldInnerButton.snp.makeConstraints {
+            $0.verticalEdges.trailing.equalToSuperview()
+            $0.size.equalTo(44)
+        }
+        
+        bottomButton.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview()
+            $0.bottom.equalTo(self.keyboardLayoutGuide.snp.top)
         }
     }
 }
