@@ -50,8 +50,7 @@ final class NovelReviewView: UIView {
         }
         
         completeButton.do {
-            $0.setButtonAttributedTitle(text: StringLiterals.NovelReview.Navigation.complete, font: .Title2, color: .wssGray200)
-            $0.isEnabled = false
+            $0.setButtonAttributedTitle(text: StringLiterals.NovelReview.Navigation.complete, font: .Title2, color: .wssPrimary100)
         }
         
         scrollView.do {
@@ -85,15 +84,6 @@ final class NovelReviewView: UIView {
         stackView.snp.makeConstraints {
             $0.edges.equalTo(scrollView.contentLayoutGuide)
             $0.width.equalToSuperview()
-        }
-    }
-    
-    //MARK: - Custom Method
-    
-    func enableCompleteButton(isEnabled: Bool) {
-        completeButton.do {
-            $0.setButtonAttributedTitle(text: StringLiterals.NovelReview.Navigation.complete, font: .Title2, color: isEnabled ? .wssPrimary100 : .wssGray200)
-            $0.isEnabled = isEnabled
         }
     }
 }

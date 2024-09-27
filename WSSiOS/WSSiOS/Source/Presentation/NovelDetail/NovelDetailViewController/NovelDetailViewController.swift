@@ -251,6 +251,14 @@ final class NovelDetailViewController: UIViewController {
                 owner.rootView.feedView.feedListView.updateTableViewHeight(height: height)
             })
             .disposed(by: disposeBag)
+        
+        //MARK: - Bind/NovelReview
+        
+        output.showNovelReviewedToast
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.showToast(.novelReviewed)
+            })
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Actions
@@ -284,7 +292,8 @@ final class NovelDetailViewController: UIViewController {
             descriptionAccordionButtonDidTap: rootView.infoView.descriptionView.accordionButton.rx.tap,
             novelDetailFeedTableViewContentSize: rootView.feedView.feedListView.feedTableView.rx.observe(CGSize.self, "contentSize"),
             scrollViewReachedBottom: observeReachedBottom(rootView.scrollView),
-            createFeedButtonDidTap: rootView.createFeedButton.rx.tap
+            createFeedButtonDidTap: rootView.createFeedButton.rx.tap,
+            novelReviewedNotification: NotificationCenter.default.rx.notification(Notification.Name("NovelReviewed")).asObservable()
         )
     }
     

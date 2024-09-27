@@ -15,11 +15,11 @@ enum ToastStatus {
     case memoSaveFail
     case memoEditSuccess
     case memoDelete
-    case avatarUnlock
     case nicknameSave
     case deleteBlockUser(nickname: String)
     case novelAlreadyConnected
     case selectionOverLimit(count: Int)
+    case novelReviewed
 
     var toastImage: UIImage {
         switch self {
@@ -27,7 +27,7 @@ enum ToastStatus {
             return .icAlertSuccess
         case .memoSaveFail, .memoDelete:
             return .icAlertWarning
-        case .avatarUnlock:
+        case .novelReviewed:
             return .icAlertCheck
         }
     }
@@ -42,8 +42,6 @@ enum ToastStatus {
             "메모를 수정했어요"
         case .memoDelete:
             "메모를 삭제했어요"
-        case .avatarUnlock:
-            "새 캐릭터가 열렸어요!\n마이페이지에서 확인하세요"
         case .nicknameSave:
             "닉네임을 저장했어요"
         case .deleteBlockUser(let nickname):
@@ -52,6 +50,8 @@ enum ToastStatus {
             "하나의 작품만 연결할 수 있어요"
         case .selectionOverLimit(let count):
             "\(count)개까지 선택 가능해요"
+        case .novelReviewed:
+            "평가 완료!"
         }
     }
 }
@@ -71,6 +71,7 @@ final class WSSToastView: UIView {
         
         setUI()
         setHierachy()
+        setLayout()
         
         bindData(toastStatus)
     }
@@ -79,7 +80,7 @@ final class WSSToastView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Custom Method
+    // MARK: - UI
     
     private func setUI() {
         self.do {
@@ -102,39 +103,24 @@ final class WSSToastView: UIView {
                          descriptionLabel)
     }
     
-    func bindData(_ status: ToastStatus) {
-        self.toastImageView.image = status.toastImage
-        self.descriptionLabel.applyWSSFont(.body1, with: status.toastText)
-        self.setLayout(status)
+    private func setLayout() {
+        toastImageView.snp.makeConstraints {
+            $0.top.bottom.equalToSuperview().inset(14)
+            $0.leading.equalToSuperview().inset(20)
+            $0.size.equalTo(24)
+        }
+        
+        descriptionLabel.snp.makeConstraints {
+            $0.top.bottom.equalToSuperview().inset(14)
+            $0.leading.equalTo(toastImageView.snp.trailing).offset(8)
+            $0.trailing.equalToSuperview().inset(20)
+        }
     }
     
-    func setLayout(_ status: ToastStatus) {
-        switch status {
-        case .memoSaveSuccess, .memoSaveFail, .memoEditSuccess, .memoDelete, .nicknameSave, .deleteBlockUser, .novelAlreadyConnected, .selectionOverLimit:
-
-            toastImageView.snp.makeConstraints {
-                $0.top.bottom.equalToSuperview().inset(14)
-                $0.leading.equalToSuperview().inset(20)
-                $0.size.equalTo(24)
-            }
-            
-            descriptionLabel.snp.makeConstraints {
-                $0.top.bottom.equalToSuperview().inset(14)
-                $0.leading.equalTo(toastImageView.snp.trailing).offset(8)
-                $0.trailing.equalToSuperview().inset(20)
-            }
-        case .avatarUnlock:
-            toastImageView.snp.makeConstraints {
-                $0.top.equalToSuperview().inset(14)
-                $0.leading.equalToSuperview().inset(20)
-                $0.size.equalTo(24)
-            }
-            
-            descriptionLabel.snp.makeConstraints {
-                $0.top.bottom.equalToSuperview().inset(14)
-                $0.leading.equalTo(toastImageView.snp.trailing).offset(8)
-                $0.trailing.equalToSuperview().inset(60)
-            }
-        }
+    //MARK: - Data
+    
+    private func bindData(_ status: ToastStatus) {
+        self.toastImageView.image = status.toastImage
+        self.descriptionLabel.applyWSSFont(.body1, with: status.toastText)
     }
 }
