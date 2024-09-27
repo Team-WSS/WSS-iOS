@@ -15,6 +15,9 @@ final class OnboardingView: UIView {
     //MARK: - Components
     
     let progressView = OnboardingProgressView()
+    
+    let scrollView = UIScrollView()
+    let contentView = UIView()
     let nickNameView = OnboardingNicknameView()
     let birthGenderView = OnboardingBirthGenderView()
     
@@ -37,13 +40,18 @@ final class OnboardingView: UIView {
     private func setUI() {
         self.backgroundColor = .wssWhite
         
-        nickNameView.isHidden = true
+        scrollView.do {
+            $0.contentInsetAdjustmentBehavior = .never
+            $0.showsHorizontalScrollIndicator = false
+        }
     }
     
     private func setHierarchy() {
         self.addSubviews(progressView,
-                         nickNameView,
-                         birthGenderView)
+                         scrollView)
+        scrollView.addSubview(contentView)
+        contentView.addSubviews(nickNameView,
+                               birthGenderView)
     }
     
     private func setLayout() {
@@ -52,14 +60,27 @@ final class OnboardingView: UIView {
             $0.horizontalEdges.equalToSuperview()
         }
         
-        nickNameView.snp.makeConstraints {
+        scrollView.snp.makeConstraints {
             $0.top.equalTo(progressView.snp.bottom)
             $0.bottom.horizontalEdges.equalToSuperview()
         }
         
+        contentView.snp.makeConstraints {
+            $0.edges.equalTo(scrollView.contentLayoutGuide)
+            $0.height.equalToSuperview()
+        }
+        
+        nickNameView.snp.makeConstraints {
+            $0.verticalEdges.equalToSuperview()
+            $0.leading.equalToSuperview()
+            $0.width.equalTo(UIScreen.main.bounds.width)
+        }
+        
         birthGenderView.snp.makeConstraints {
-            $0.top.equalTo(progressView.snp.bottom)
-            $0.bottom.horizontalEdges.equalToSuperview()
+            $0.verticalEdges.equalToSuperview()
+            $0.leading.equalTo(nickNameView.snp.trailing)
+            $0.trailing.equalToSuperview()
+            $0.width.equalTo(UIScreen.main.bounds.width)
         }
     }
 }
