@@ -28,6 +28,7 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
     private let endEditing = PublishRelay<Void>()
     private let selectedKeywordListData = BehaviorRelay<[KeywordData]>(value: [])
     private let keywordSearchResultListData = PublishRelay<[KeywordData]>()
+    private let keywordCategoryListData = PublishRelay<[KeywordCategory]>()
     private let isKeywordCountOverLimit = PublishRelay<IndexPath>()
     private let showEmptyView = PublishRelay<Bool>()
     
@@ -62,14 +63,23 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
         let endEditing: Observable<Void>
         let selectedKeywordListData: Observable<[KeywordData]>
         let keywordSearchResultListData: Observable<[KeywordData]>
+        let keywordCategoryListData: Observable<[KeywordCategory]>
         let isKeywordCountOverLimit: Observable<IndexPath>
         let showEmptyView: Observable<Bool>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         input.viewDidLoadEvent
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.selectedKeywordListData.accept(owner.selectedKeywordList)
+            .do(onNext: {
+                self.selectedKeywordListData.accept(self.selectedKeywordList)
+            })
+            .flatMapLatest {
+                self.searchKeyword()
+            }
+            .subscribe(with: self, onNext: { owner, data in
+                owner.keywordCategoryListData.accept(data.categories)
+            }, onError: { owner, error in
+                print(error)
             })
             .disposed(by: disposeBag)
         
@@ -185,6 +195,7 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
                       endEditing: endEditing.asObservable(),
                       selectedKeywordListData: selectedKeywordListData.asObservable(),
                       keywordSearchResultListData: keywordSearchResultListData.asObservable(),
+                      keywordCategoryListData: keywordCategoryListData.asObservable(),
                       isKeywordCountOverLimit: isKeywordCountOverLimit.asObservable(),
                       showEmptyView: showEmptyView.asObservable())
     }
