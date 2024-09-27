@@ -22,7 +22,7 @@ final class OnboardingBirthGenderView: UIView {
     let genderButtons = OnboardingGender.allCases.map { OnboardingGenderButton(gender: $0) }
     
     private let birthTitleLabel = UILabel()
-    private let selectBirthButton = UIButton()
+    let selectBirthButton = UIButton()
     private let selectedBirthLabel = UILabel()
     private let selectBirthButtonImageView = UIImageView()
     

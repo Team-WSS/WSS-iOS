@@ -30,8 +30,9 @@ final class OnboardingViewModel: ViewModelType {
     let isNicknameNextButtonAvailable = BehaviorRelay<Bool>(value: false)
     
     // BirthGender
-    
     let selectedGender = BehaviorRelay<OnboardingGender?>(value: nil)
+    let selectedBirth = BehaviorRelay<Int?>(value: nil)
+    let isBirthGenderNextButtonAvailable = BehaviorRelay<Bool>(value: false)
     
     // Total
     let moveToLastStage = PublishRelay<Void>()
@@ -53,9 +54,10 @@ final class OnboardingViewModel: ViewModelType {
         
         // BirthGender
         let genderButtonDidTap: Observable<OnboardingGender>
+        let selectBirthButtonDidTap: ControlEvent<Void>
         
         // Total
-        let nextButtonDidTap: ControlEvent<Void>
+        let nextButtonDidTap: Observable<Void>
         let backButtonDidTap: ControlEvent<Void>
     }
     
@@ -68,6 +70,8 @@ final class OnboardingViewModel: ViewModelType {
         
         // BirthGender
         let selectedGender: Driver<OnboardingGender?>
+        let showDatePickerModal: Driver<Void>
+        let isBirthGenderNextButtonAvailable: Driver<Bool>
         
         // Total
         let stageIndex: Driver<Int>
@@ -133,6 +137,16 @@ final class OnboardingViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        let showDatePickerModal = input.selectBirthButtonDidTap.asDriver()
+        
+        self.selectedGender
+            .bind(with: self, onNext: { owner, selectedGender in
+                if selectedGender != nil {
+                    owner.isBirthGenderNextButtonAvailable.accept(true)
+                }
+            })
+            .disposed(by: disposeBag)
+        
         input.nextButtonDidTap
             .throttle(.seconds(1), scheduler: MainScheduler.instance)
             .withLatestFrom(stageIndex)
@@ -153,6 +167,8 @@ final class OnboardingViewModel: ViewModelType {
             nicknameAvailablity: isNicknameAvailable.asDriver(),
             isNicknameNextButtonAvailable: isNicknameNextButtonAvailable.asDriver(),
             selectedGender: selectedGender.asDriver(),
+            showDatePickerModal: showDatePickerModal,
+            isBirthGenderNextButtonAvailable: isBirthGenderNextButtonAvailable.asDriver(),
             stageIndex: stageIndex.asDriver(),
             moveToLastStage: moveToLastStage.asDriver(onErrorJustReturn: ()),
             moveToNextStage: moveToNextStage.asDriver(onErrorJustReturn: ()),

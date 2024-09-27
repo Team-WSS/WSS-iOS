@@ -117,6 +117,19 @@ final class OnboardingViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.showDatePickerModal
+            .drive(with: self, onNext: { owner, _ in
+                owner.presentModalViewController(MyPageChangeUserBirthViewController(userBirth: 1999))
+                owner.updateNavigationBarVisibility(isShow: false)
+            })
+            .disposed(by: disposeBag)
+        
+        output.isBirthGenderNextButtonAvailable
+            .drive(with: self, onNext: { owner, isEnabled in
+                owner.rootView.birthGenderView.bottomButton.updateButtonEnabled(isEnabled)
+            })
+            .disposed(by: disposeBag)
+        
         output.moveToLastStage
             .drive(with: self, onNext: { owner, _ in
                 owner.view.endEditing(true)
@@ -146,6 +159,10 @@ final class OnboardingViewController: UIViewController {
                 .map { button in
                     button.rx.tap.map { button.gender }
                 })
+        let nextButtonDidTap = Observable.merge(
+            self.rootView.nickNameView.bottomButton.button.rx.tap.asObservable(),
+            self.rootView.birthGenderView.bottomButton.button.rx.tap.asObservable()
+        )
         
         return OnboardingViewModel.Input(
             nicknameTextFieldEditingDidBegin: self.rootView.nickNameView.nicknameTextField.rx.controlEvent(.editingDidBegin),
@@ -153,7 +170,8 @@ final class OnboardingViewController: UIViewController {
             nicknameTextFieldText: self.rootView.nickNameView.nicknameTextField.rx.text.orEmpty.distinctUntilChanged(),
             duplicateCheckButtonDidTap: self.rootView.nickNameView.duplicateCheckButton.rx.tap,
             genderButtonDidTap: genderButtonDidTap,
-            nextButtonDidTap: self.rootView.nickNameView.bottomButton.button.rx.tap,
+            selectBirthButtonDidTap: self.rootView.birthGenderView.selectBirthButton.rx.tap,
+            nextButtonDidTap: nextButtonDidTap,
             backButtonDidTap: rootView.backButton.rx.tap
         )
     }
@@ -186,5 +204,17 @@ final class OnboardingViewController: UIViewController {
     private func setNavigationBar(stage: Int) {
         navigationItem.setHidesBackButton(stage == 0, animated: true)
         self.navigationItem.leftBarButtonItem = stage == 0 ? nil : UIBarButtonItem(customView: rootView.backButton)
+    }
+    
+    private func updateNavigationBarVisibility(isShow: Bool) {
+        if isShow {
+            navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+            navigationController?.navigationBar.shadowImage = UIImage()
+            navigationController?.navigationBar.backgroundColor = .wssWhite
+        } else {
+            navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+            navigationController?.navigationBar.shadowImage = nil
+            navigationController?.navigationBar.backgroundColor = .clear
+        }
     }
 }
