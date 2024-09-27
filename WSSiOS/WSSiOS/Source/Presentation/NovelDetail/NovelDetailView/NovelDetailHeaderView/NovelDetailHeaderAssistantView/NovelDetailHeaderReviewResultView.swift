@@ -126,10 +126,13 @@ final class NovelDetailHeaderReviewResultView: UIView {
         if !isUserNovelRatingExist && !isReadDateExist {
             readInfoButtonStackView.isHidden = true
         } else if !isUserNovelRatingExist {
+            readInfoButtonStackView.isHidden = false
             readInfoButtons[0].isHidden = true
+            readInfoButtons[1].isHidden = false
         } else if !isReadDateExist {
+            readInfoButtonStackView.isHidden = false
+            readInfoButtons[0].isHidden = false
             readInfoButtons[1].isHidden = true
         }
     }
-    
 }
