@@ -43,6 +43,7 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
         let updatedEnteredText: Observable<String>
         let keywordTextFieldEditingDidBegin: ControlEvent<Void>
         let keywordTextFieldEditingDidEnd: ControlEvent<Void>
+        let keywordTextFieldEditingDidEndOnExit: ControlEvent<Void>
         let searchCancelButtonDidTap: ControlEvent<Void>
         let closeButtonDidTap: ControlEvent<Void>
         let searchButtonDidTap: ControlEvent<Void>
@@ -104,22 +105,25 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.searchButtonDidTap
-            .do(onNext: {
-                self.endEditing.accept(())
-            })
-            .withLatestFrom(enteredText)
-            .flatMapLatest { enteredText in
-                self.searchKeyword(query: enteredText)
-            }
-            .subscribe(with: self, onNext: { owner, data in
-                owner.keywordSearchResultList = data.categories.flatMap { $0.keywords }
-                owner.keywordSearchResultListData.accept(owner.keywordSearchResultList)
-
-            }, onError: { owner, error in
-                print(error)
-            })
-            .disposed(by: disposeBag)
+        Observable.merge(
+            input.keywordTextFieldEditingDidEndOnExit.asObservable(),
+            input.searchButtonDidTap.asObservable()
+        )
+        .do(onNext: {
+            self.endEditing.accept(())
+        })
+        .withLatestFrom(enteredText)
+        .flatMapLatest { enteredText in
+            self.searchKeyword(query: enteredText)
+        }
+        .subscribe(with: self, onNext: { owner, data in
+            owner.keywordSearchResultList = data.categories.flatMap { $0.keywords }
+            owner.keywordSearchResultListData.accept(owner.keywordSearchResultList)
+            
+        }, onError: { owner, error in
+            print(error)
+        })
+        .disposed(by: disposeBag)
         
         input.selectedKeywordCollectionViewItemSelected
             .subscribe(with: self, onNext: { owner, indexPath in
