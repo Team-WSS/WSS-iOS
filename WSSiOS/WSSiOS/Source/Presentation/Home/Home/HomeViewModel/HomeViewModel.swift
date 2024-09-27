@@ -16,6 +16,7 @@ final class HomeViewModel: ViewModelType {
     
     private let recommendRepository: RecommendRepository
     private let disposeBag = DisposeBag()
+    private let isLoggedIn: Bool
     
     private let todayPopularList = PublishSubject<[TodayPopularNovel]>()
     private let realtimePopularList = PublishSubject<[RealtimePopularFeed]>()
@@ -42,8 +43,9 @@ final class HomeViewModel: ViewModelType {
     
     //MARK: - init
     
-    init(recommendRepository: RecommendRepository) {
+    init(recommendRepository: RecommendRepository, isLoggedIn: Bool) {
         self.recommendRepository = recommendRepository
+        self.isLoggedIn = isLoggedIn
     }
 }
 
@@ -71,21 +73,23 @@ extension HomeViewModel {
             })
             .disposed(by: disposeBag)
         
-        recommendRepository.getInterestNovels()
-            .subscribe(with: self, onNext: { owner, data in
-                owner.interestList.onNext(data.recommendFeeds)
-            }, onError: { owner, error in
-                owner.interestList.onError(error)
-            })
-            .disposed(by: disposeBag)
-        
-        recommendRepository.getTasteRecommendNovels()
-            .subscribe(with: self, onNext: { owner, data in
-                owner.tasteRecommendList.onNext(data.tasteNovels)
-            }, onError: { owner, error in
-                owner.tasteRecommendList.onError(error)
-            })
-            .disposed(by: disposeBag)
+        if isLoggedIn {
+            recommendRepository.getInterestNovels()
+                .subscribe(with: self, onNext: { owner, data in
+                    owner.interestList.onNext(data.recommendFeeds)
+                }, onError: { owner, error in
+                    owner.interestList.onError(error)
+                })
+                .disposed(by: disposeBag)
+            
+            recommendRepository.getTasteRecommendNovels()
+                .subscribe(with: self, onNext: { owner, data in
+                    owner.tasteRecommendList.onNext(data.tasteNovels)
+                }, onError: { owner, error in
+                    owner.tasteRecommendList.onError(error)
+                })
+                .disposed(by: disposeBag)
+        }
         
         let navigateToAnnouncementView = input.announcementButtonTapped.asObservable()
         
