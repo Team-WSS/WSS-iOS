@@ -149,6 +149,25 @@ final class NovelDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        input.viewWillAppearEvent
+            .do(onNext: { _ in
+                self.isLoadable = false
+                self.lastFeedId = 0
+            })
+            .flatMapLatest { _ in
+                self.getNovelDetailFeedData(novelId: self.novelId, lastFeedId: self.lastFeedId)
+            }
+            .subscribe(with: self, onNext: { owner, data in
+                owner.isLoadable = data.isLoadable
+                if let lastFeed = data.feeds.last {
+                    owner.lastFeedId = lastFeed.feedId
+                }
+                owner.feedList.accept(data.feeds)
+            }, onError: { owner, error in
+                print("Error: \(error)")
+            })
+            .disposed(by: disposeBag)
+        
         input.novelCoverImageButtonDidTap
             .bind(with: self, onNext: { owner, _ in
                 owner.showLargeNovelCoverImage.accept(true)
