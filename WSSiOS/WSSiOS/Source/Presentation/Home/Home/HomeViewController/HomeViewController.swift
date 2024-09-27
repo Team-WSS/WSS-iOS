@@ -18,14 +18,17 @@ final class HomeViewController: UIViewController {
     private let viewModel: HomeViewModel
     private let disposeBag = DisposeBag()
     
+    private let isLoggedIn: Bool
+    
     //MARK: - UI Components
     
     private let rootView = HomeView()
     
     //MARK: - Life Cycle
     
-    init(viewModel: HomeViewModel) {
+    init(viewModel: HomeViewModel, isLoggedIn: Bool) {
         self.viewModel = viewModel
+        self.isLoggedIn = isLoggedIn
         super.init(nibName: nil, bundle: nil)
     }
     

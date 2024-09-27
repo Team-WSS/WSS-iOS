@@ -18,7 +18,7 @@ struct APIConstants {
     static let boundary = "Boundary-\(UUID().uuidString)"
     static var isLogined: Bool = false
     static var testToken: String {
-        isLogined ? (Bundle.main.object(forInfoDictionaryKey: Config.Keys.Plist.testToken) as? String ?? "") : ""
+        isLogined ? (Bundle.main.object(forInfoDictionaryKey: Config.Keys.Plist.testToken) as? String ?? "") : (Bundle.main.object(forInfoDictionaryKey: Config.Keys.Plist.testToken) as? String ?? "")
     }
 }
 
