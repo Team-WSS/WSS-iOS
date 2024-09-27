@@ -59,6 +59,7 @@ final class OnboardingNickNameView: UIView {
             $0.placeholder = StringLiterals.Onboarding.NickName.textFieldPlaceholder
             $0.font = .Body2
             $0.layer.cornerRadius = 12
+            $0.layer.borderColor = UIColor.wssGray70.cgColor
             $0.leftView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 16.0, height: 0.0))
             $0.rightView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 44.0, height: 44.0))
             $0.leftViewMode = .always
@@ -132,6 +133,15 @@ final class OnboardingNickNameView: UIView {
         bottomButton.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview()
             $0.bottom.equalTo(self.keyboardLayoutGuide.snp.top)
+        }
+    }
+    
+    // MARK: - Custom Method
+    
+    func updatenickNameTextField(isEditing: Bool) {
+        nickNameTextField.do {
+            $0.backgroundColor = isEditing ? .wssWhite : .wssGray50
+            $0.layer.borderWidth = isEditing ? 1 : 0
         }
     }
 }
