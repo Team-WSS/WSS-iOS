@@ -18,8 +18,6 @@ final class LoginCarouselView: UIView {
                                                       collectionViewLayout: UICollectionViewLayout())
     private let bannerCollectionViewLayout = UICollectionViewFlowLayout()
     
-
-    
     //MARK: - Life Cycle
     
     override init(frame: CGRect) {

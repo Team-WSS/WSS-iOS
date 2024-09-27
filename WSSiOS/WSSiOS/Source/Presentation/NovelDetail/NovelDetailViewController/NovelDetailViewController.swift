@@ -9,8 +9,6 @@ import UIKit
 
 import RxSwift
 import RxCocoa
-import SnapKit
-import Then
 
 /// Detail View
 final class NovelDetailViewController: UIViewController {

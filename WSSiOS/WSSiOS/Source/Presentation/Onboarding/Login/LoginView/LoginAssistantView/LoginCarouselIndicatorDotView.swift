@@ -56,9 +56,6 @@ final class LoginCarouselIndicatorDotView: UIView {
     func updateUI(selectedIndex: Int) {
         let isSelected = selectedIndex == index
         
-        // layoutIfNeeded()를 애니메이션 블록 밖으로 이동
-        self.layoutIfNeeded()
-        
         UIView.animate(withDuration: self.animationDuration) {
             self.snp.updateConstraints {
                 $0.width.equalTo(isSelected ? self.selectedWidth : self.basicWidth)

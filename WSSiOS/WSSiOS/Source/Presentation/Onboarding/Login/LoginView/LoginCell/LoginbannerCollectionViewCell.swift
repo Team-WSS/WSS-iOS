@@ -11,7 +11,6 @@ import Kingfisher
 import SnapKit
 import Then
 
-
 final class LoginbannerCollectionViewCell: UICollectionViewCell {
     
     //MARK: - UI Components
