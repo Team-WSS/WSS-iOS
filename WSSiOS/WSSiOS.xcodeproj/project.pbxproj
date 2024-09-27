@@ -131,6 +131,7 @@
 		393CAC402CA6D10C004B4DB6 /* OnboardingProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393CAC3F2CA6D10C004B4DB6 /* OnboardingProgressView.swift */; };
 		393CAC442CA72760004B4DB6 /* OnboardingBirthGenderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393CAC432CA72760004B4DB6 /* OnboardingBirthGenderView.swift */; };
 		393CAC462CA727E3004B4DB6 /* Gender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393CAC452CA727E3004B4DB6 /* Gender.swift */; };
+		393CAC482CA72A2E004B4DB6 /* OnboardingGenderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393CAC472CA72A2E004B4DB6 /* OnboardingGenderButton.swift */; };
 		394CFD352CA00AD80053C8EA /* NovelDetailHeaderEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394CFD342CA00AD80053C8EA /* NovelDetailHeaderEntity.swift */; };
 		394CFD3B2CA2E7760053C8EA /* KingFisherRxHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394CFD3A2CA2E7760053C8EA /* KingFisherRxHelper.swift */; };
 		395319272BE2865A00D075F4 /* KeywordManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395319262BE2865A00D075F4 /* KeywordManager.swift */; };
@@ -516,6 +517,7 @@
 		393CAC3F2CA6D10C004B4DB6 /* OnboardingProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingProgressView.swift; sourceTree = "<group>"; };
 		393CAC432CA72760004B4DB6 /* OnboardingBirthGenderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingBirthGenderView.swift; sourceTree = "<group>"; };
 		393CAC452CA727E3004B4DB6 /* Gender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gender.swift; sourceTree = "<group>"; };
+		393CAC472CA72A2E004B4DB6 /* OnboardingGenderButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingGenderButton.swift; sourceTree = "<group>"; };
 		394CFD342CA00AD80053C8EA /* NovelDetailHeaderEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailHeaderEntity.swift; sourceTree = "<group>"; };
 		394CFD3A2CA2E7760053C8EA /* KingFisherRxHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KingFisherRxHelper.swift; sourceTree = "<group>"; };
 		395319262BE2865A00D075F4 /* KeywordManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeywordManager.swift; sourceTree = "<group>"; };
@@ -1407,6 +1409,7 @@
 			children = (
 				3931020D2CA5D6CB002CBEA0 /* OnboardingNicknameView.swift */,
 				393CAC432CA72760004B4DB6 /* OnboardingBirthGenderView.swift */,
+				393CAC472CA72A2E004B4DB6 /* OnboardingGenderButton.swift */,
 				393CAC3B2CA6AFD8004B4DB6 /* OnboardingBottomButtonView.swift */,
 				393CAC3F2CA6D10C004B4DB6 /* OnboardingProgressView.swift */,
 			);
@@ -2871,6 +2874,7 @@
 				CD1F7E0A2C99A8DC0039972C /* NovelKeywordSelectModalButtonView.swift in Sources */,
 				B9E565F52C04517A00DB51FF /* NormalSearchViewController.swift in Sources */,
 				CD3E5A742B5424D600C0A659 /* MemoEditView.swift in Sources */,
+				393CAC482CA72A2E004B4DB6 /* OnboardingGenderButton.swift in Sources */,
 				39CC16812B51246E003F56AE /* RegisterNormalView.swift in Sources */,
 				39B75ADE2B59BA87005DD8B9 /* UIScreen+.swift in Sources */,
 				2C22AE702C56E9C100BF6E94 /* MyPageBlockUserView.swift in Sources */,
