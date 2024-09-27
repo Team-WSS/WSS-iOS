@@ -20,10 +20,10 @@ final class WSSAlertButtonView: UIView {
     var alertTitleLabel = UILabel()
     var alertContentLabel = UILabel()
     private let buttonStackView = UIStackView()
-    var cancelButton = UIButton()
-    var cancelButtonTitleLabel = UILabel()
-    var actionButton = UIButton()
-    var actionButtonTitleLabel = UILabel()
+    var leftButton = UIButton()
+    var leftButtonTitleLabel = UILabel()
+    var rightButton = UIButton()
+    var rightButtonTitleLabel = UILabel()
     
     // MARK: - Life Cycle
     
@@ -68,10 +68,10 @@ final class WSSAlertButtonView: UIView {
                                       alertTitleLabel,
                                       alertContentLabel,
                                       buttonStackView)
-        buttonStackView.addArrangedSubviews(cancelButton,
-                                            actionButton)
-        cancelButton.addSubview(cancelButtonTitleLabel)
-        actionButton.addSubview(actionButtonTitleLabel)
+        buttonStackView.addArrangedSubviews(leftButton,
+                                            rightButton)
+        leftButton.addSubview(leftButtonTitleLabel)
+        rightButton.addSubview(rightButtonTitleLabel)
     }
     
     private func setLayout() {
@@ -102,13 +102,13 @@ final class WSSAlertButtonView: UIView {
             }
         }
         
-        [cancelButton, actionButton].forEach { button in
+        [leftButton, rightButton].forEach { button in
             button.snp.makeConstraints {
                 $0.height.equalToSuperview()
             }
         }
         
-        [cancelButtonTitleLabel, actionButtonTitleLabel].forEach { label in
+        [leftButtonTitleLabel, rightButtonTitleLabel].forEach { label in
             label.snp.makeConstraints {
                 $0.center.equalToSuperview()
             }
@@ -120,9 +120,9 @@ extension WSSAlertButtonView {
     func updateLayout(alertImage: UIImage?,
                       alertTitle: String?,
                       alertContent: String?,
-                      cancelTitle: String?,
-                      actionTitle: String?,
-                      actionBackgroundColor: CGColor?) {
+                      leftTitle: String?,
+                      rightTitle: String?,
+                      rightBackgroundColor: CGColor?) {
         
         if let alertImage {
             alertImageView.image = alertImage
@@ -153,40 +153,40 @@ extension WSSAlertButtonView {
             stackView.setCustomSpacing(18, after: alertTitleLabel)
         }
         
-        if let cancelTitle {
-            cancelButton.do {
+        if let leftTitle {
+            leftButton.do {
                 $0.layer.backgroundColor = UIColor.wssGray50.cgColor
                 $0.layer.cornerRadius = 8
             }
             
-            cancelButtonTitleLabel.do {
+            leftButtonTitleLabel.do {
                 $0.isUserInteractionEnabled = false
-                $0.applyWSSFont(.label1, with: cancelTitle)
+                $0.applyWSSFont(.label1, with: leftTitle)
                 $0.textColor = .wssGray300
             }
             
         } else {
-            cancelButton.removeFromSuperview()
-            actionButton.snp.makeConstraints {
+            leftButton.removeFromSuperview()
+            rightButton.snp.makeConstraints {
                 $0.height.width.equalToSuperview()
             }
         }
         
-        if let actionTitle {
-            actionButton.do {
-                $0.layer.backgroundColor = actionBackgroundColor
+        if let rightTitle {
+            rightButton.do {
+                $0.layer.backgroundColor = rightBackgroundColor
                 $0.layer.cornerRadius = 8
             }
             
-            actionButtonTitleLabel.do {
+            rightButtonTitleLabel.do {
                 $0.isUserInteractionEnabled = false
-                $0.applyWSSFont(.label1, with: actionTitle)
+                $0.applyWSSFont(.label1, with: rightTitle)
                 $0.textColor = .wssWhite
             }
             
         } else {
-            actionButton.removeFromSuperview()
-            cancelButton.snp.makeConstraints {
+            rightButton.removeFromSuperview()
+            leftButton.snp.makeConstraints {
                 $0.height.width.equalToSuperview()
             }
         }

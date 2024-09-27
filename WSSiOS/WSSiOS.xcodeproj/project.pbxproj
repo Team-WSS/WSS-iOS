@@ -21,6 +21,7 @@
 		2C2491842B4ADC230096F255 /* WSSTabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2491832B4ADC230096F255 /* WSSTabBarItem.swift */; };
 		2C2491862B4ADC420096F255 /* WSSTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2491852B4ADC420096F255 /* WSSTabBarController.swift */; };
 		2C2B0BB52C53C73900BCEC19 /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2B0BB42C53C73900BCEC19 /* UITextField+.swift */; };
+		2C3B08752CA737A5002802D5 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 2C3B08742CA737A5002802D5 /* Then */; };
 		2C41E0CC2CA4948400FFD233 /* MyPageCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C41E0CB2CA4948400FFD233 /* MyPageCountView.swift */; };
 		2C41E0CE2CA4949C00FFD233 /* MyPageEditProfileGenreCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C41E0CD2CA4949C00FFD233 /* MyPageEditProfileGenreCollectionViewCell.swift */; };
 		2C41E0D02CA494B800FFD233 /* MyPageEditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C41E0CF2CA494B800FFD233 /* MyPageEditProfileView.swift */; };
@@ -57,6 +58,7 @@
 		2C8F89512C50E5200056895B /* MyPageDeleteIDReasonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8F89502C50E5200056895B /* MyPageDeleteIDReasonTableViewCell.swift */; };
 		2C8F89572C50FC520056895B /* MyPageDeleteIDCheckTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8F89562C50FC520056895B /* MyPageDeleteIDCheckTableViewCell.swift */; };
 		2C8F89592C5105E90056895B /* MyPageDeleteIDViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8F89582C5105E90056895B /* MyPageDeleteIDViewModel.swift */; };
+		2C95AEF32CA6DF85001A5559 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 2C95AEF22CA6DF85001A5559 /* SnapKit */; };
 		2C9A19652C567AE40043044A /* MyProfileResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9A19642C567AE40043044A /* MyProfileResult.swift */; };
 		2C9A19672C567CC20043044A /* MyPageProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9A19662C567CC20043044A /* MyPageProfileHeaderView.swift */; };
 		2C9A19692C567D6B0043044A /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9A19682C567D6B0043044A /* MyPageViewModel.swift */; };
@@ -71,7 +73,6 @@
 		2CA2F6622B530BBF0045B4C2 /* LibraryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2F6612B530BBF0045B4C2 /* LibraryCollectionViewCell.swift */; };
 		2CB613F32B575E4500FC3F89 /* MyPageInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB613F22B575E4500FC3F89 /* MyPageInfoViewController.swift */; };
 		2CB613F52B575E6A00FC3F89 /* MyPageInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB613F42B575E6A00FC3F89 /* MyPageInfoView.swift */; };
-		2CCBD6422CA52F4000B01913 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 2CCBD6412CA52F4000B01913 /* Then */; };
 		2CCBF9EE2B4C1FC500D787C2 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBF9ED2B4C1FC500D787C2 /* MyPageViewController.swift */; };
 		2CCBF9F02B4C1FD800D787C2 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBF9EF2B4C1FD800D787C2 /* MyPageView.swift */; };
 		2CCBF9F22B4D347B00D787C2 /* WSSMainButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBF9F12B4D347B00D787C2 /* WSSMainButton.swift */; };
@@ -83,7 +84,6 @@
 		2CD2291C2B42E685005400BE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD2291B2B42E685005400BE /* AppDelegate.swift */; };
 		2CD2291E2B42E685005400BE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD2291D2B42E685005400BE /* SceneDelegate.swift */; };
 		2CD229252B42E687005400BE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2CD229242B42E687005400BE /* Assets.xcassets */; };
-		2CD229342B42E771005400BE /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 2CD229332B42E771005400BE /* SnapKit */; };
 		2CD229392B42E77F005400BE /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 2CD229382B42E77F005400BE /* Kingfisher */; };
 		2CD2293C2B42E7A2005400BE /* RxBlocking in Frameworks */ = {isa = PBXBuildFile; productRef = 2CD2293B2B42E7A2005400BE /* RxBlocking */; };
 		2CD229402B42E7A2005400BE /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 2CD2293F2B42E7A2005400BE /* RxCocoa */; };
@@ -821,15 +821,15 @@
 			files = (
 				3999BFEE2B4E6CA000984832 /* UIImageViewAlignedSwift in Frameworks */,
 				CD3E5A852B54254F00C0A659 /* RxKeyboard in Frameworks */,
-				2CCBD6422CA52F4000B01913 /* Then in Frameworks */,
+				2C3B08752CA737A5002802D5 /* Then in Frameworks */,
 				2CD229442B42E7A2005400BE /* RxRelay in Frameworks */,
 				2CD229392B42E77F005400BE /* Kingfisher in Frameworks */,
-				2CD229342B42E771005400BE /* SnapKit in Frameworks */,
 				2CD229472B42E7C8005400BE /* Lottie in Frameworks */,
 				2CD229402B42E7A2005400BE /* RxCocoa in Frameworks */,
 				3916EC862B89B42C007835B5 /* RxGesture in Frameworks */,
 				2CD2293C2B42E7A2005400BE /* RxBlocking in Frameworks */,
 				39EF97AC2B53E43800D2148B /* Lottie in Frameworks */,
+				2C95AEF32CA6DF85001A5559 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2712,7 +2712,6 @@
 			);
 			name = WSSiOS;
 			packageProductDependencies = (
-				2CD229332B42E771005400BE /* SnapKit */,
 				2CD229382B42E77F005400BE /* Kingfisher */,
 				2CD2293B2B42E7A2005400BE /* RxBlocking */,
 				2CD2293F2B42E7A2005400BE /* RxCocoa */,
@@ -2722,7 +2721,8 @@
 				39EF97AB2B53E43800D2148B /* Lottie */,
 				CD3E5A842B54254F00C0A659 /* RxKeyboard */,
 				3916EC852B89B42C007835B5 /* RxGesture */,
-				2CCBD6412CA52F4000B01913 /* Then */,
+				2C95AEF22CA6DF85001A5559 /* SnapKit */,
+				2C3B08742CA737A5002802D5 /* Then */,
 			);
 			productName = WSSiOS;
 			productReference = 2CD229182B42E685005400BE /* WSSiOS.app */;
@@ -2753,14 +2753,14 @@
 			);
 			mainGroup = 2CD2290F2B42E685005400BE;
 			packageReferences = (
-				2CD229322B42E771005400BE /* XCRemoteSwiftPackageReference "SnapKit" */,
 				2CD229372B42E77F005400BE /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				2CD2293A2B42E7A2005400BE /* XCRemoteSwiftPackageReference "RxSwift" */,
 				2CD229452B42E7C8005400BE /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				3999BFEC2B4E6CA000984832 /* XCRemoteSwiftPackageReference "UIImageViewAlignedSwift" */,
 				CD3E5A832B54254F00C0A659 /* XCRemoteSwiftPackageReference "RxKeyboard" */,
 				3916EC842B89B42C007835B5 /* XCRemoteSwiftPackageReference "RxGesture" */,
-				2CCBD6402CA52F4000B01913 /* XCRemoteSwiftPackageReference "Then" */,
+				2C95AEF12CA6DF85001A5559 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				2C3B08732CA737A5002802D5 /* XCRemoteSwiftPackageReference "Then" */,
 			);
 			productRefGroup = 2CD229192B42E685005400BE /* Products */;
 			projectDirPath = "";
@@ -3328,7 +3328,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 202401192;
-				DEVELOPMENT_TEAM = D23XDL6TZZ;
+				DEVELOPMENT_TEAM = 9SVDHQS4M3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WSSiOS/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "웹소소";
@@ -3360,7 +3360,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 202401192;
-				DEVELOPMENT_TEAM = D23XDL6TZZ;
+				DEVELOPMENT_TEAM = 9SVDHQS4M3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WSSiOS/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "웹소소";
@@ -3408,7 +3408,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		2CCBD6402CA52F4000B01913 /* XCRemoteSwiftPackageReference "Then" */ = {
+		2C3B08732CA737A5002802D5 /* XCRemoteSwiftPackageReference "Then" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/devxoul/Then";
 			requirement = {
@@ -3416,12 +3416,12 @@
 				minimumVersion = 3.0.0;
 			};
 		};
-		2CD229322B42E771005400BE /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+		2C95AEF12CA6DF85001A5559 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 5.7.0;
+				minimumVersion = 5.7.1;
 			};
 		};
 		2CD229372B42E77F005400BE /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
@@ -3475,14 +3475,14 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		2CCBD6412CA52F4000B01913 /* Then */ = {
+		2C3B08742CA737A5002802D5 /* Then */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 2CCBD6402CA52F4000B01913 /* XCRemoteSwiftPackageReference "Then" */;
+			package = 2C3B08732CA737A5002802D5 /* XCRemoteSwiftPackageReference "Then" */;
 			productName = Then;
 		};
-		2CD229332B42E771005400BE /* SnapKit */ = {
+		2C95AEF22CA6DF85001A5559 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 2CD229322B42E771005400BE /* XCRemoteSwiftPackageReference "SnapKit" */;
+			package = 2C95AEF12CA6DF85001A5559 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
 		};
 		2CD229382B42E77F005400BE /* Kingfisher */ = {

@@ -18,6 +18,10 @@ final class HomeRealtimePopularCollectionViewCell: UICollectionViewCell {
     let secondFeedView = HomeRealTimePopularFeedView()
     let thirdFeedView = HomeRealTimePopularFeedView()
     
+    //MARK: - Properties
+    
+    var onFeedViewTapped: ((String) -> Void)?
+    
     //MARK: - Life Cycle
     
     override init(frame: CGRect) {
@@ -25,6 +29,7 @@ final class HomeRealtimePopularCollectionViewCell: UICollectionViewCell {
         
         setHierarchy()
         setLayout()
+        setupTapGesture()
     }
     
     @available(*, unavailable)
@@ -35,9 +40,7 @@ final class HomeRealtimePopularCollectionViewCell: UICollectionViewCell {
     //MARK: - UI
     
     private func setHierarchy() {
-        self.addSubviews(firstFeedView,
-                         secondFeedView,
-                         thirdFeedView)
+        self.addSubviews(firstFeedView, secondFeedView, thirdFeedView)
     }
     
     private func setLayout() {
@@ -58,6 +61,22 @@ final class HomeRealtimePopularCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    private func setupTapGesture() {
+        let feedViews = [firstFeedView, secondFeedView, thirdFeedView]
+        
+        for (index, feedView) in feedViews.enumerated() {
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(feedViewTapped(_:)))
+            feedView.addGestureRecognizer(tapGesture)
+            feedView.isUserInteractionEnabled = true
+            feedView.tag = index
+        }
+    }
+    
+    @objc private func feedViewTapped(_ sender: UITapGestureRecognizer) {
+        guard let feedView = sender.view, let feedId = feedView.accessibilityIdentifier else { return }
+        onFeedViewTapped?(feedId)
+    }
+    
     func bindData(data: [RealtimePopularFeed]) {
         let feedViews = [firstFeedView, secondFeedView, thirdFeedView]
         
@@ -65,6 +84,7 @@ final class HomeRealtimePopularCollectionViewCell: UICollectionViewCell {
             if data.indices.contains(index) {
                 feedView.bindData(data: data[index])
                 feedView.isHidden = false
+                feedView.accessibilityIdentifier = String(data[index].feedId)
             } else {
                 feedView.isHidden = true
             }
