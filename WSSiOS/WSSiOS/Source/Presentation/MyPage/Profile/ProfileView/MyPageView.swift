@@ -24,7 +24,7 @@ final class MyPageView: UIView {
     let dummyView = UIView().then {
         $0.backgroundColor = .wssGray70
     }
-    
+
     // MARK: - Life Cycle
     
     override init(frame: CGRect) {

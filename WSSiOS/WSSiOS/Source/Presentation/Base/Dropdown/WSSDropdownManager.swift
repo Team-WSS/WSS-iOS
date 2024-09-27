@@ -22,7 +22,7 @@ class WSSDropdownManager {
     
     // MARK: - Create Dropdown
     
-    func createDropdown(superView: UIView,
+    func createDropdown(dropdownRootView: UIView,
                         dropdownButton: WSSDropdownButton,
                         dropdownWidth: Double,
                         dropdownData: [String],
@@ -32,13 +32,12 @@ class WSSDropdownManager {
         dropdownTableView.dropdownData.onNext(dropdownData)
         dropdownTableView.isHidden = true
         dropdownTableView.cellTextColor = textColor
-        
-        superView.addSubviews(dropdownButton,
-                             dropdownTableView)
+
+        dropdownRootView.addSubview(dropdownTableView)
         
         dropdownTableView.snp.makeConstraints {
-            $0.top.equalTo(dropdownButton.snp.bottom)
-            $0.trailing.equalTo(dropdownButton.snp.trailing)
+            $0.top.equalToSuperview().inset(100)
+            $0.trailing.equalToSuperview().inset(20.5)
             $0.width.equalTo(dropdownWidth)
             
             let calculateHeight = CGFloat(dropdownData.count) * 51.0
