@@ -15,6 +15,7 @@ final class OnboardingViewModel: ViewModelType {
     
     //MARK: - Properties
     
+    let isKeywordTextFieldEditing = BehaviorRelay<Bool>(value: false)
     
     //MARK: - Life Cycle
     
@@ -22,16 +23,32 @@ final class OnboardingViewModel: ViewModelType {
     //MARK: - Transform
     
     struct Input {
-       
+        let nickNameTextFieldEditingDidBegin: ControlEvent<Void>
+        let nickNameTextFieldEditingDidEnd: ControlEvent<Void>
+        let nickNameTextFieldText: Observable<String>
     }
     
     struct Output {
-        
+        let isKeywordTextFieldEditing: Driver<Bool>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
-       
-        return Output()
+        input.nickNameTextFieldEditingDidBegin
+            .bind(with: self, onNext:  { owner, _ in
+                owner.isKeywordTextFieldEditing.accept(true)
+            })
+            .disposed(by: disposeBag)
+        
+        input.nickNameTextFieldEditingDidEnd
+            .withLatestFrom(input.nickNameTextFieldText)
+            .bind(with: self, onNext:  { owner, value in
+                owner.isKeywordTextFieldEditing.accept(!value.isEmpty)
+            })
+            .disposed(by: disposeBag)
+        
+        return Output(
+            isKeywordTextFieldEditing: isKeywordTextFieldEditing.asDriver()
+        )
     }
     
   

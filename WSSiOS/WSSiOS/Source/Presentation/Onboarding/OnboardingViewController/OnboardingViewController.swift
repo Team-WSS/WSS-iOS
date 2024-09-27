@@ -87,23 +87,21 @@ final class OnboardingViewController: UIViewController {
     }
     
     private func bindViewModelOutput(_ output: OnboardingViewModel.Output) {
-        
+        output.isKeywordTextFieldEditing
+            .drive(with: self, onNext: { owner, isEditing in
+                owner.rootView.nickNameView.updatenickNameTextField(isEditing: isEditing)
+            })
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Actions
     
     private func createViewModelInput() -> OnboardingViewModel.Input {
         
-        return OnboardingViewModel.Input()
-    }
-    
-    //MARK: - Custom Method
-    
-    private func setNavigationBarTextAttribute() {
-        navigationController?.navigationBar.titleTextAttributes = [
-            NSAttributedString.Key.font: UIFont.Title2,
-            NSAttributedString.Key.foregroundColor: UIColor.wssBlack,
-            NSAttributedString.Key.kern: -0.6,
-        ]
+        return OnboardingViewModel.Input(
+            nickNameTextFieldEditingDidBegin: self.rootView.nickNameView.nickNameTextField.rx.controlEvent(.editingDidBegin),
+            nickNameTextFieldEditingDidEnd: self.rootView.nickNameView.nickNameTextField.rx.controlEvent(.editingDidEnd),
+            nickNameTextFieldText: self.rootView.nickNameView.nickNameTextField.rx.text.orEmpty.distinctUntilChanged()
+        )
     }
 }
