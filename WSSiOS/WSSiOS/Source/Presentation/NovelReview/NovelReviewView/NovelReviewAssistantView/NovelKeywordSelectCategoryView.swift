@@ -7,6 +7,8 @@
 
 import UIKit
 
+import RxSwift
+import RxCocoa
 import SnapKit
 import Then
 
@@ -14,7 +16,9 @@ final class NovelKeywordSelectCategoryView: UIView {
     
     //MARK: - Properties
     
-    let keywordCategory: KeywordCategory
+    private let disposeBag = DisposeBag()
+    
+    private let keywordCategory: KeywordCategory
     
     //MARK: - Components
     
@@ -32,6 +36,8 @@ final class NovelKeywordSelectCategoryView: UIView {
         self.keywordCategory = keywordCategory
         super.init(frame: .zero)
         
+        register()
+        delegate()
         setUI()
         setHierarchy()
         setLayout()
@@ -42,6 +48,16 @@ final class NovelKeywordSelectCategoryView: UIView {
     }
     
     //MARK: - UI
+    
+    private func register() {
+        categoryCollectionView.register(NovelKeywordSelectSearchResultCollectionViewCell.self, forCellWithReuseIdentifier: NovelKeywordSelectSearchResultCollectionViewCell.cellIdentifier)
+    }
+    
+    private func delegate() {
+        categoryCollectionView.rx
+            .setDelegate(self)
+            .disposed(by: disposeBag)
+    }
     
     private func setUI() {
         contentView.do {
@@ -132,5 +148,21 @@ final class NovelKeywordSelectCategoryView: UIView {
                 $0.size.equalTo(44)
             }
         }
+    }
+}
+
+extension NovelKeywordSelectCategoryView: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        var text: String?
+        
+        text = self.keywordCategory.keywords[indexPath.item].keywordName
+        
+        guard let unwrappedText = text else {
+            return CGSize(width: 0, height: 0)
+        }
+        
+        let width = (unwrappedText as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 26
+        return CGSize(width: width, height: 35)
     }
 }

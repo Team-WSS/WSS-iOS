@@ -170,13 +170,7 @@ final class NovelKeywordSelectModalViewController: UIViewController {
         let novelKeywordSelectCategoryView = NovelKeywordSelectCategoryView(keywordCategory: category)
         
             self.rootView.novelKeywordSelectCategoryListView.stackView.addArrangedSubview(novelKeywordSelectCategoryView)
-            
-            novelKeywordSelectCategoryView.categoryCollectionView.register(NovelKeywordSelectSearchResultCollectionViewCell.self, forCellWithReuseIdentifier: NovelKeywordSelectSearchResultCollectionViewCell.cellIdentifier)
-        
-            novelKeywordSelectCategoryView.categoryCollectionView.rx
-                .setDelegate(self)
-                .disposed(by: disposeBag)
-                        
+                                    
             Observable.just(category.keywords)
                 .bind(to: novelKeywordSelectCategoryView.categoryCollectionView.rx.items(cellIdentifier: NovelKeywordSelectSearchResultCollectionViewCell.cellIdentifier, cellType: NovelKeywordSelectSearchResultCollectionViewCell.self)) { item, element, cell in
 //                    let indexPath = IndexPath(item: item, section: 0)
