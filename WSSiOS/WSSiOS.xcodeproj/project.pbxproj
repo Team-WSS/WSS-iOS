@@ -366,6 +366,7 @@
 		CDC03F412CA67207002D301F /* KeywordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC03F402CA67207002D301F /* KeywordService.swift */; };
 		CDC03F432CA67266002D301F /* SearchKeywordResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC03F422CA67266002D301F /* SearchKeywordResult.swift */; };
 		CDC03F452CA67421002D301F /* KeywordRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC03F442CA67421002D301F /* KeywordRepository.swift */; };
+		CDC03F472CA67BE8002D301F /* NovelKeywordSelectEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC03F462CA67BE8002D301F /* NovelKeywordSelectEmptyView.swift */; };
 		CDE596D62B57708D00D99DA1 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D52B57708D00D99DA1 /* UIViewController+.swift */; };
 		CDE596D82B5770CE00D99DA1 /* WSSToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D72B5770CE00D99DA1 /* WSSToastView.swift */; };
 		CDE596DA2B57C4BE00D99DA1 /* UITextView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D92B57C4BE00D99DA1 /* UITextView+.swift */; };
@@ -725,6 +726,7 @@
 		CDC03F402CA67207002D301F /* KeywordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeywordService.swift; sourceTree = "<group>"; };
 		CDC03F422CA67266002D301F /* SearchKeywordResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchKeywordResult.swift; sourceTree = "<group>"; };
 		CDC03F442CA67421002D301F /* KeywordRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeywordRepository.swift; sourceTree = "<group>"; };
+		CDC03F462CA67BE8002D301F /* NovelKeywordSelectEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelKeywordSelectEmptyView.swift; sourceTree = "<group>"; };
 		CDE596D52B57708D00D99DA1 /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
 		CDE596D72B5770CE00D99DA1 /* WSSToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSToastView.swift; sourceTree = "<group>"; };
 		CDE596D92B57C4BE00D99DA1 /* UITextView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+.swift"; sourceTree = "<group>"; };
@@ -2380,6 +2382,7 @@
 				CD1F7E052C9967780039972C /* NovelKeywordSelectSearchResultView.swift */,
 				CD1F7E0B2C99AB7C0039972C /* NovelSelectedKeywordListView.swift */,
 				CD1F7E092C99A8DC0039972C /* NovelKeywordSelectModalButtonView.swift */,
+				CDC03F462CA67BE8002D301F /* NovelKeywordSelectEmptyView.swift */,
 			);
 			path = NovelReviewAssistantView;
 			sourceTree = "<group>";
@@ -2705,6 +2708,7 @@
 				A1B903E52B58140800398890 /* UserNovelListResult.swift in Sources */,
 				2C22AE722C56EAD000BF6E94 /* MyPageBlockUserTableViewCell.swift in Sources */,
 				CD1F7E0A2C99A8DC0039972C /* NovelKeywordSelectModalButtonView.swift in Sources */,
+				CDC03F472CA67BE8002D301F /* NovelKeywordSelectEmptyView.swift in Sources */,
 				B9E565F52C04517A00DB51FF /* NormalSearchViewController.swift in Sources */,
 				CD3E5A742B5424D600C0A659 /* MemoEditView.swift in Sources */,
 				39CC16812B51246E003F56AE /* RegisterNormalView.swift in Sources */,

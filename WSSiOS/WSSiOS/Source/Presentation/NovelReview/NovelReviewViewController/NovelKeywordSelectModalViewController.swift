@@ -124,6 +124,7 @@ final class NovelKeywordSelectModalViewController: UIViewController {
         output.keywordSearchResultListData
             .subscribe(with: self, onNext: { owner, searchResultList in
                 owner.rootView.showSearchResultView(show: !searchResultList.isEmpty)
+                owner.rootView.showEmptyView(show: searchResultList.isEmpty)
             })
             .disposed(by: disposeBag)
         
@@ -144,6 +145,12 @@ final class NovelKeywordSelectModalViewController: UIViewController {
             .subscribe(with: self, onNext: { owner, indexPath in
                 owner.rootView.novelKeywordSelectSearchResultView.searchResultCollectionView.deselectItem(at: indexPath, animated: false)
                 owner.showToast(.selectionOverLimit(count: 20))
+            })
+            .disposed(by: disposeBag)
+        
+        output.showEmptyView
+            .subscribe(with: self, onNext: { owner, show in
+                owner.rootView.showEmptyView(show: show)
             })
             .disposed(by: disposeBag)
     }

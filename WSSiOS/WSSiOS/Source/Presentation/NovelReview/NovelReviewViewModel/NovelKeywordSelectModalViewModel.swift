@@ -27,8 +27,9 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
     private let isKeywordTextFieldEditing = BehaviorRelay<Bool>(value: false)
     private let endEditing = PublishRelay<Void>()
     private let selectedKeywordListData = BehaviorRelay<[KeywordData]>(value: [])
-    private let keywordSearchResultListData = BehaviorRelay<[KeywordData]>(value: [])
+    private let keywordSearchResultListData = PublishRelay<[KeywordData]>()
     private let isKeywordCountOverLimit = PublishRelay<IndexPath>()
+    private let showEmptyView = PublishRelay<Bool>()
     
     //MARK: - Life Cycle
     
@@ -60,6 +61,7 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
         let selectedKeywordListData: Observable<[KeywordData]>
         let keywordSearchResultListData: Observable<[KeywordData]>
         let isKeywordCountOverLimit: Observable<IndexPath>
+        let showEmptyView: Observable<Bool>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -91,6 +93,7 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
         input.searchCancelButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
                 owner.enteredText.accept("")
+                owner.showEmptyView.accept(false)
             })
             .disposed(by: disposeBag)
         
@@ -152,6 +155,7 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
                 owner.selectedKeywordListData.accept(owner.selectedKeywordList)
                 owner.enteredText.accept("")
                 owner.keywordSearchResultListData.accept([])
+                owner.showEmptyView.accept(false)
             })
             .disposed(by: disposeBag)
         
@@ -168,7 +172,8 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
                       endEditing: endEditing.asObservable(),
                       selectedKeywordListData: selectedKeywordListData.asObservable(),
                       keywordSearchResultListData: keywordSearchResultListData.asObservable(),
-                      isKeywordCountOverLimit: isKeywordCountOverLimit.asObservable())
+                      isKeywordCountOverLimit: isKeywordCountOverLimit.asObservable(),
+                      showEmptyView: showEmptyView.asObservable())
     }
     
     //MARK: - API
