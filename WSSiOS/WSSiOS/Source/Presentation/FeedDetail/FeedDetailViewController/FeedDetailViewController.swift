@@ -38,17 +38,16 @@ final class FeedDetailViewController: UIViewController {
         self.view = rootView
     }
     
-   override func viewWillAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-       swipeBackGesture()
+        hideTabBar()
+        setNavigationBar()
+        swipeBackGesture()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        hideTabBar()
-        setNavigationBar()
         
         bindViewModel()
         registerCell()
@@ -173,7 +172,7 @@ extension FeedDetailViewController: UITextViewDelegate {
         let backgroundHeight: CGFloat
         
         backgroundHeight = numberOfLines == 1 ? 42 : min(estimatedSize.height + 14, 84)
-
+        
         rootView.replyWritingView.replyWritingTextView.snp.updateConstraints {
             $0.height.equalTo(min(estimatedSize.height, 84))
         }
@@ -183,7 +182,7 @@ extension FeedDetailViewController: UITextViewDelegate {
         }
         
         rootView.replyWritingView.replyWritingTextView.isScrollEnabled = numberOfLines > 3
-
+        
         self.rootView.replyWritingView.layoutIfNeeded()
     }
 }
