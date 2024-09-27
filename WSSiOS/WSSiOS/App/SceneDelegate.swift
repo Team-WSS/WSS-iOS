@@ -14,12 +14,24 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
-        let navigationController = UINavigationController(rootViewController: MyPageViewController(viewModel: MyPageViewModel(userRepository: DefaultUserRepository(userService: DefaultUserService(), blocksService: DefaultBlocksService())), isMyPage: false))
-        navigationController.isNavigationBarHidden = true
-        
         self.window = UIWindow(windowScene: windowScene)
-        self.window?.rootViewController = navigationController
+        
+        setRootToLoginViewController()
+        
         self.window?.makeKeyAndVisible()
+    }
+    
+    func setRootToWSSTabBarController() {
+        let isLoggedIn = APIConstants.isLogined
+        let navigationController = UINavigationController(rootViewController: WSSTabBarController(isLoggedIn: isLoggedIn))
+        navigationController.isNavigationBarHidden = true
+        window?.rootViewController = navigationController
+    }
+    
+    func setRootToLoginViewController() {
+        let navigationController = UINavigationController(rootViewController: ModuleFactory.shared.makeLoginViewController())
+        navigationController.isNavigationBarHidden = true
+        window?.rootViewController = navigationController
     }
     
     func sceneDidDisconnect(_ scene: UIScene) {
