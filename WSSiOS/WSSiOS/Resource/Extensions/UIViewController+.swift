@@ -81,7 +81,7 @@ extension UIViewController {
     
     func moveToNovelDetailViewController(userNovelId: Int) {
         if self.navigationController?.tabBarController?.selectedIndex == 0 {
-            let tabBar = WSSTabBarController()
+            let tabBar = WSSTabBarController(isLoggedIn: true)
             tabBar.selectedIndex = 1
             let navigationController = UINavigationController(rootViewController: tabBar)
             navigationController.setNavigationBarHidden(true, animated: true)
@@ -180,6 +180,11 @@ extension UIViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
+    func pushToLoginViewController() {
+        let viewController = ModuleFactory.shared.makeLoginViewController()
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
     func presentToAlertViewController(iconImage: UIImage?,
                                       titleText: String?,
                                       contentText: String?,
@@ -260,6 +265,39 @@ extension UIViewController {
                     userService: DefaultUserService(),
                     blocksService: DefaultBlocksService()
                 )
+            )
+        )
+        
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func pushToFeedEditViewController(feedId: Int? = nil, relevantCategories: [NewNovelGenre] = [], initialFeedContent: String = "", novelId: Int? = nil, novelTitle: String? = nil, isSpoiler: Bool = false) {
+        let viewController = FeedEditViewController(
+            viewModel: FeedEditViewModel(
+                feedRepository: DefaultFeedRepository(
+                    feedService: DefaultFeedService()
+                ),
+                feedId: feedId,
+                relevantCategories: relevantCategories,
+                initialFeedContent: initialFeedContent,
+                novelId: novelId,
+                novelTitle: novelTitle,
+                isSpoiler: isSpoiler
+            )
+        )
+        
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func pushToNovelReviewViewController(readStatus: ReadStatus, novelId: Int, novelTitle: String) {
+        let viewController = NovelReviewViewController(
+            viewModel: NovelReviewViewModel(
+                novelReviewRepository: DefaultNovelReviewRepository(
+                    novelReviewService: DefaultNovelReviewService()
+                ),
+                readStatus: readStatus,
+                novelId: novelId,
+                novelTitle: novelTitle
             )
         )
         

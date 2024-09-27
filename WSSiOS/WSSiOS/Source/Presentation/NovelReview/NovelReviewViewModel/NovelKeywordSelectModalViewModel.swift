@@ -14,8 +14,9 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
     
     //MARK: - Properties
     
-    var keywordSearchResultList: [String] = ["환생생", "환생남주", "환생이", "환생물", "환생", "환환생", "환생여주", "환환환생", "후회", "정치물", "피폐", "빙의", "먼치킨", "기억상실", "가가", "나나", "다다다", "라라랄", "마마마마마", "밥", "사삿", "아아앙", "자자", "차촟", "카카카", "타톹", "파포", "하히히"]
-    var selectedKeywordList: [String]
+    private let keywordRepository: KeywordRepository
+    var keywordSearchResultList: [KeywordData] = []
+    var selectedKeywordList: [KeywordData]
     
     private let keywordLimit: Int = 20
     
@@ -25,13 +26,15 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
     private let enteredText = BehaviorRelay<String>(value: "")
     private let isKeywordTextFieldEditing = BehaviorRelay<Bool>(value: false)
     private let endEditing = PublishRelay<Void>()
-    private let selectedKeywordListData = BehaviorRelay<[String]>(value: [])
-    private let keywordSearchResultListData = BehaviorRelay<[String]>(value: [])
+    private let selectedKeywordListData = BehaviorRelay<[KeywordData]>(value: [])
+    private let keywordSearchResultListData = PublishRelay<[KeywordData]>()
     private let isKeywordCountOverLimit = PublishRelay<IndexPath>()
+    private let showEmptyView = PublishRelay<Bool>()
     
     //MARK: - Life Cycle
     
-    init(selectedKeywordList: [String]) {
+    init(keywordRepository: KeywordRepository, selectedKeywordList: [KeywordData]) {
+        self.keywordRepository = keywordRepository
         self.selectedKeywordList = selectedKeywordList
     }
     
@@ -40,6 +43,7 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
         let updatedEnteredText: Observable<String>
         let keywordTextFieldEditingDidBegin: ControlEvent<Void>
         let keywordTextFieldEditingDidEnd: ControlEvent<Void>
+        let keywordTextFieldEditingDidEndOnExit: ControlEvent<Void>
         let searchCancelButtonDidTap: ControlEvent<Void>
         let closeButtonDidTap: ControlEvent<Void>
         let searchButtonDidTap: ControlEvent<Void>
@@ -48,6 +52,7 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
         let searchResultCollectionViewItemDeselected: Observable<IndexPath>
         let resetButtonDidTap: ControlEvent<Void>
         let selectButtonDidTap: ControlEvent<Void>
+        let contactButtonDidTap: ControlEvent<Void>
     }
     
     struct Output {
@@ -55,9 +60,10 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
         let enteredText: Observable<String>
         let isKeywordTextFieldEditing: Observable<Bool>
         let endEditing: Observable<Void>
-        let selectedKeywordListData: Observable<[String]>
-        let keywordSearchResultListData: Observable<[String]>
+        let selectedKeywordListData: Observable<[KeywordData]>
+        let keywordSearchResultListData: Observable<[KeywordData]>
         let isKeywordCountOverLimit: Observable<IndexPath>
+        let showEmptyView: Observable<Bool>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -88,6 +94,7 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
         input.searchCancelButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
                 owner.enteredText.accept("")
+                owner.showEmptyView.accept(false)
             })
             .disposed(by: disposeBag)
         
@@ -97,12 +104,24 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.searchButtonDidTap
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.endEditing.accept(())
-                owner.keywordSearchResultListData.accept(owner.keywordSearchResultList)
-            })
-            .disposed(by: disposeBag)
+        Observable.merge(
+            input.keywordTextFieldEditingDidEndOnExit.asObservable(),
+            input.searchButtonDidTap.asObservable()
+        )
+        .do(onNext: {
+            self.endEditing.accept(())
+        })
+        .withLatestFrom(enteredText)
+        .flatMapLatest { enteredText in
+            self.searchKeyword(query: enteredText)
+        }
+        .subscribe(with: self, onNext: { owner, data in
+            owner.keywordSearchResultList = data.categories.flatMap { $0.keywords }
+            owner.keywordSearchResultListData.accept(owner.keywordSearchResultList)
+        }, onError: { owner, error in
+            print(error)
+        })
+        .disposed(by: disposeBag)
         
         input.selectedKeywordCollectionViewItemSelected
             .subscribe(with: self, onNext: { owner, indexPath in
@@ -127,7 +146,7 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
         
         input.searchResultCollectionViewItemDeselected
             .subscribe(with: self, onNext: { owner, indexPath in
-                owner.selectedKeywordList.removeAll { $0 == owner.keywordSearchResultList[indexPath.item] }
+                owner.selectedKeywordList.removeAll { $0.keywordName == owner.keywordSearchResultList[indexPath.item].keywordName }
                 owner.selectedKeywordListData.accept(owner.selectedKeywordList)
                 owner.endEditing.accept(())
             })
@@ -139,6 +158,7 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
                 owner.selectedKeywordListData.accept(owner.selectedKeywordList)
                 owner.enteredText.accept("")
                 owner.keywordSearchResultListData.accept([])
+                owner.showEmptyView.accept(false)
             })
             .disposed(by: disposeBag)
         
@@ -149,12 +169,30 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        input.contactButtonDidTap
+            .subscribe(with: self, onNext: { owner, _ in
+                if let url = URL(string: URLs.Contact.kakao) {
+                    if UIApplication.shared.canOpenURL(url) {
+                        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                    }
+                }
+            })
+            .disposed(by: disposeBag)
+        
         return Output(dismissModalViewController: dismissModalViewController.asObservable(),
                       enteredText: enteredText.asObservable(),
                       isKeywordTextFieldEditing: isKeywordTextFieldEditing.asObservable(),
                       endEditing: endEditing.asObservable(),
                       selectedKeywordListData: selectedKeywordListData.asObservable(),
                       keywordSearchResultListData: keywordSearchResultListData.asObservable(),
-                      isKeywordCountOverLimit: isKeywordCountOverLimit.asObservable())
+                      isKeywordCountOverLimit: isKeywordCountOverLimit.asObservable(),
+                      showEmptyView: showEmptyView.asObservable())
+    }
+    
+    //MARK: - API
+    
+    private func searchKeyword(query: String? = nil) -> Observable<SearchKeywordResult> {
+        keywordRepository.searchKeyword(query: query)
+            .observe(on: MainScheduler.instance)
     }
 }

@@ -19,6 +19,7 @@ final class NovelReviewViewController: UIViewController {
     private let disposeBag = DisposeBag()
     
     private let viewDidLoadEvent = PublishRelay<Void>()
+    private let stopReviewingEvent = PublishRelay<Void>()
     
     //MARK: - Components
     
@@ -53,7 +54,7 @@ final class NovelReviewViewController: UIViewController {
     //MARK: - UI
     
     private func setNavigationBar() {
-        self.preparationSetNavigationBar(title: "당신의 이해를 돕기 위하여", left: rootView.backButton, right: rootView.completeButton)
+        self.preparationSetNavigationBar(title: self.novelReviewViewModel.novelTitle, left: rootView.backButton, right: rootView.completeButton)
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.backgroundColor = .clear
@@ -81,7 +82,11 @@ final class NovelReviewViewController: UIViewController {
         let input = NovelReviewViewModel.Input(
             viewDidLoadEvent: viewDidLoadEvent.asObservable(),
             backButtonDidTap: rootView.backButton.rx.tap,
+            completeButtonDidTap: rootView.completeButton.rx.tap,
             statusCollectionViewItemSelected: rootView.novelReviewStatusView.statusCollectionView.rx.itemSelected.asObservable(),
+            dateLabelTapGesture: rootView.novelReviewStatusView.dateLabel.rx.tapGesture()
+                .when(.recognized)
+                .asObservable(),
             starRatingTapGesture: Observable.merge(
                 rootView.novelReviewRatingView.starImageViews.enumerated().map { index, imageView in
                     imageView.rx.tapGesture()
@@ -106,7 +111,10 @@ final class NovelReviewViewController: UIViewController {
             keywordSearchViewDidTap: rootView.novelReviewKeywordView.keywordSearchBarView.rx.tapGesture().when(.recognized).asObservable(),
             selectedKeywordCollectionViewContentSize: rootView.novelReviewKeywordView.selectedKeywordCollectionView.rx.observe(CGSize.self, "contentSize"),
             selectedKeywordCollectionViewItemSelected: rootView.novelReviewKeywordView.selectedKeywordCollectionView.rx.itemSelected.asObservable(),
-            novelReviewKeywordSelectedNotification: NotificationCenter.default.rx.notification(Notification.Name("NovelReviewKeywordSelected")).asObservable()
+            novelReviewKeywordSelectedNotification: NotificationCenter.default.rx.notification(Notification.Name("NovelReviewKeywordSelected")).asObservable(),
+            novelReviewDateSelectedNotification: NotificationCenter.default.rx.notification(Notification.Name("NovelReviewDateSelected")).asObservable(),
+            novelReviewDateRemovedNotification: NotificationCenter.default.rx.notification(Notification.Name("NovelReviewDateRemoved")).asObservable(),
+            stopReviewButtonDidTap: stopReviewingEvent.asObservable()
         )
         
         let output = self.novelReviewViewModel.transform(from: input, disposeBag: self.disposeBag)
@@ -114,12 +122,6 @@ final class NovelReviewViewController: UIViewController {
         output.popViewController
             .subscribe(with: self, onNext: { owner, _ in
                 owner.navigationController?.popViewController(animated: true)
-            })
-            .disposed(by: disposeBag)
-        
-        output.isCompleteButtonEnabled
-            .subscribe(with: self, onNext: { owner, isEnabled in
-                owner.rootView.enableCompleteButton(isEnabled: isEnabled)
             })
             .disposed(by: disposeBag)
         
@@ -136,6 +138,23 @@ final class NovelReviewViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
+        output.presentNovelDateSelectModalViewController
+            .subscribe(with: self, onNext: { owner, tuple in
+                let (readStatus, startDate, endDate) = tuple
+                owner.presentModalViewController(NovelDateSelectModalViewController(viewModel: NovelDateSelectModalViewModel(readStatus: readStatus, startDate: startDate, endDate: endDate)))
+            })
+            .disposed(by: disposeBag)
+        
+        Observable.combineLatest(output.readStatusData, output.startDateEndDateData)
+            .subscribe(with: self, onNext: { owner, combinedData in
+                let (readStatus, startDateEndDate) = combinedData
+                owner.rootView.novelReviewStatusView.bindData(readStatus: readStatus,
+                                                              startDate: startDateEndDate[0],
+                                                              endDate: startDateEndDate[1])
+
+            })
+            .disposed(by: disposeBag)
+        
         output.starRating
             .subscribe(with: self, onNext: { owner, rating in
                 owner.rootView.novelReviewRatingView.updateStarImages(rating: rating)
@@ -144,6 +163,13 @@ final class NovelReviewViewController: UIViewController {
         
         output.attractivePointListData
             .bind(to: rootView.novelReviewAttractivePointView.attractivePointCollectionView.rx.items(cellIdentifier: NovelReviewAttractivePointCollectionViewCell.cellIdentifier, cellType: NovelReviewAttractivePointCollectionViewCell.self)) { item, element, cell in
+                let indexPath = IndexPath(item: item, section: 0)
+                
+                if self.novelReviewViewModel.selectedAttractivePointList.contains(element.rawValue) {
+                    self.rootView.novelReviewAttractivePointView.attractivePointCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
+                } else {
+                    self.rootView.novelReviewAttractivePointView.attractivePointCollectionView.deselectItem(at: indexPath, animated: false)
+                }
                 cell.bindData(attractivePoint: element)
             }
             .disposed(by: disposeBag)
@@ -157,7 +183,7 @@ final class NovelReviewViewController: UIViewController {
         
         output.presentNovelKeywordSelectModalViewController
             .subscribe(with: self, onNext: { owner, selectedKeywordList in
-                owner.presentModalViewController(NovelKeywordSelectModalViewController(viewModel: NovelKeywordSelectModalViewModel(selectedKeywordList: selectedKeywordList)))
+                owner.presentModalViewController(NovelKeywordSelectModalViewController(viewModel: NovelKeywordSelectModalViewModel(keywordRepository: DefaultKeywordRepository(keywordService: DefaultKeywordService()), selectedKeywordList: selectedKeywordList)))
             })
             .disposed(by: disposeBag)
         
@@ -170,6 +196,21 @@ final class NovelReviewViewController: UIViewController {
         output.selectedKeywordCollectionViewHeight
             .subscribe(with: self, onNext: { owner, height in
                 owner.rootView.novelReviewKeywordView.updateCollectionViewHeight(height: height)
+            })
+            .disposed(by: disposeBag)
+        
+        output.showStopReviewingAlert
+            .flatMapLatest { [weak self] _ -> Observable<Void> in
+                guard let self = self else { return Observable.just(()) }
+                return self.presentToAlertViewController(iconImage: .icAlertWarningCircle,
+                                                         titleText: StringLiterals.NovelReview.Alert.titleText,
+                                                         contentText: nil,
+                                                         cancelTitle: StringLiterals.NovelReview.Alert.cancelTitle,
+                                                         actionTitle: StringLiterals.NovelReview.Alert.actionTitle,
+                                                         actionBackgroundColor: UIColor.wssPrimary100.cgColor)
+            }
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.stopReviewingEvent.accept(())
             })
             .disposed(by: disposeBag)
     }
@@ -193,7 +234,7 @@ extension NovelReviewViewController: UICollectionViewDelegateFlowLayout {
         } else if collectionView == self.rootView.novelReviewKeywordView.selectedKeywordCollectionView {
             var text: String?
             
-            text = self.novelReviewViewModel.selectedKeywordListData.value[indexPath.item]
+            text = self.novelReviewViewModel.selectedKeywordListData.value[indexPath.item].keywordName
             
             guard let unwrappedText = text else {
                 return CGSize(width: 0, height: 0)

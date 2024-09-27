@@ -53,6 +53,7 @@ enum StringLiterals {
             static let todayPopular = "오늘의 인기작"
             static let realtimePopular = "지금 뜨는 수다글"
             static let interest = "님의 관심글"
+            static let notLoggedInInterest = "관심글"
             static let recommend = "이 웹소설은 어때요?"
         }
         
@@ -306,6 +307,12 @@ enum StringLiterals {
         }
     }
     
+    enum Onboarding {
+        enum Login {
+            static let skip = "회원가입 없이 둘러보기"
+        }
+    }
+    
     enum NovelDetail {
         enum Memo {
             static let memo = "메모"
@@ -354,6 +361,15 @@ enum StringLiterals {
                 static let quit = "하차했어요"
             }
         }
+        
+        enum Feed {
+            static let emptyDescription = "아직 글이 없어요\n최초로 남겨보세요!"
+            
+            enum Cell {
+                static let isModified = "(수정됨)"
+                static let isSpoiler = "스포일러가 포함된 글 보기"
+            }
+        }
     }
     
     enum NovelReview {
@@ -369,6 +385,10 @@ enum StringLiterals {
         
         enum Date {
             static let addDate = "날짜 추가"
+            static let complete = "완료"
+            static let removeDate = "날짜 삭제"
+            static let startDate = "시작 날짜"
+            static let endDate = "종료 날짜"
         }
         
         enum AttractivePoint {
@@ -386,6 +406,14 @@ enum StringLiterals {
             static let searchResult = "검색결과"
             static let reset = "초기화"
             static let selectButtonText = "개 선택"
+            static let unregisteredKeyword = "해당 키워드는\n아직 등록되지 않았어요.."
+            static let contact = "키워드 문의하러 가기"
+        }
+        
+        enum Alert {
+            static let titleText = "평가를 그만할까요?"
+            static let cancelTitle = "계속 작성"
+            static let actionTitle = "그만하기"
         }
     }
     
