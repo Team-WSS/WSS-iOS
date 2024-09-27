@@ -90,7 +90,7 @@ final class NovelReviewViewModel: ViewModelType {
                 owner.readStatusData.accept(owner.readStatus)
                 owner.readStatusListData.accept(ReadStatus.allCases)
                 owner.startDateEndDateData.accept([owner.startDate, owner.endDate])
-                owner.attractivePointListData.accept(AttractivePoints.allCases)
+                owner.attractivePointListData.accept(AttractivePoint.allCases)
                 owner.selectedKeywordListData.accept(owner.selectedKeywordList)
             })
             .disposed(by: disposeBag)
