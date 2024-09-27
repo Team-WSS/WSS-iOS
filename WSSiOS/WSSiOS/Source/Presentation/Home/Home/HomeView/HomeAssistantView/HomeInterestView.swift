@@ -20,16 +20,16 @@ final class HomeInterestView: UIView {
     let interestCollectionView = UICollectionView(frame: .zero,
                                                   collectionViewLayout: UICollectionViewLayout())
     private let interestCollectionViewLayout = UICollectionViewFlowLayout()
-    private let unregisterView = HomeUnregisterView(.interest)
+    let unregisterView = HomeUnregisterView(.interest)
     
     //MARK: - Life Cycle
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(isLoggedIn: Bool) {
+        super.init(frame: .zero)
         
-        setUI()
+        setUI(isLoggedIn: isLoggedIn)
         setHierarchy()
-        setLayout()
+        setLayout(isLoggedIn: isLoggedIn)
     }
     
     @available(*, unavailable)
@@ -37,9 +37,9 @@ final class HomeInterestView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setUI() {
+    private func setUI(isLoggedIn: Bool) {
         titleLabel.do {
-            $0.applyWSSFont(.headline1, with: "일이삼사오육칠팔구십\(StringLiterals.Home.Title.interest)")
+            $0.applyWSSFont(.headline1, with: isLoggedIn ? "일이삼사오육칠팔구십\(StringLiterals.Home.Title.interest)" : StringLiterals.Home.Title.notLoggedInInterest)
             $0.textColor = .wssBlack
         }
         
@@ -59,15 +59,27 @@ final class HomeInterestView: UIView {
             $0.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
             interestCollectionView.setCollectionViewLayout($0, animated: false)
         }
+        
+        if isLoggedIn {
+            subTitleLabel.isHidden = false
+            unregisterView.isHidden = true
+            interestCollectionView.isHidden = false
+        }
+        else {
+            subTitleLabel.isHidden = true
+            unregisterView.isHidden = false
+            interestCollectionView.isHidden = true
+        }
     }
     
     private func setHierarchy() {
         self.addSubviews(titleLabel,
                          subTitleLabel,
-                         interestCollectionView)
+                         interestCollectionView,
+                         unregisterView)
     }
     
-    private func setLayout() {
+    private func setLayout(isLoggedIn: Bool) {
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.leading.equalToSuperview().inset(20)
@@ -78,16 +90,19 @@ final class HomeInterestView: UIView {
             $0.leading.equalTo(titleLabel.snp.leading)
         }
         
-        interestCollectionView.snp.makeConstraints {
-            $0.top.equalTo(subTitleLabel.snp.bottom)
-            $0.leading.trailing.bottom.equalToSuperview()
-            $0.height.equalTo(301)
+        if isLoggedIn {
+            interestCollectionView.snp.makeConstraints {
+                $0.top.equalTo(subTitleLabel.snp.bottom)
+                $0.leading.trailing.bottom.equalToSuperview()
+                $0.height.equalTo(301)
+            }
         }
-        
-        /// 비로그인일 때
-//        unregisterView.snp.makeConstraints {
-//            $0.top.equalTo(subTitleLabel.snp.bottom).offset(20)
-//            $0.leading.trailing.equalToSuperview().inset(20)
-//        }
+        else {
+            unregisterView.snp.makeConstraints {
+                $0.top.equalTo(titleLabel.snp.bottom).offset(11)
+                $0.leading.trailing.equalToSuperview().inset(20)
+                $0.bottom.equalToSuperview()
+            }
+        }
     }
 }

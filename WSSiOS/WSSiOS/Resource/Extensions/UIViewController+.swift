@@ -81,7 +81,7 @@ extension UIViewController {
     
     func moveToNovelDetailViewController(userNovelId: Int) {
         if self.navigationController?.tabBarController?.selectedIndex == 0 {
-            let tabBar = WSSTabBarController()
+            let tabBar = WSSTabBarController(isLoggedIn: true)
             tabBar.selectedIndex = 1
             let navigationController = UINavigationController(rootViewController: tabBar)
             navigationController.setNavigationBarHidden(true, animated: true)
@@ -179,6 +179,11 @@ extension UIViewController {
     
     func pushToLoginViewController() {
         let viewController = ModuleFactory.shared.makeLoginViewController()
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func pushToOnboardingViewController() {
+        let viewController = ModuleFactory.shared.makeOnboardingViewController()
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
