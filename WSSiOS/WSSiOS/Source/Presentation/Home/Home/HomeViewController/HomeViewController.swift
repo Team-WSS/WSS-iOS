@@ -44,8 +44,8 @@ final class HomeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        showTabBar()
         navigationController?.setNavigationBarHidden(true, animated: false)
+        showTabBar()
     }
     
     override func viewDidLoad() {
@@ -94,7 +94,10 @@ final class HomeViewController: UIViewController {
             registerInterestNovelButtonTapped: rootView.interestView.unregisterView.registerButton.rx.tap,
             setPreferredGenresButtonTapped: rootView.tasteRecommendView.unregisterView.registerButton.rx.tap,
             induceModalViewLoginButtonTapped: rootView.induceLoginModalView.loginButton.rx.tap,
-            induceModalViewCancelButtonTapped: rootView.induceLoginModalView.cancelButton.rx.tap
+            induceModalViewCancelButtonTapped: rootView.induceLoginModalView.cancelButton.rx.tap,
+            todayPopularCellSelected: rootView.todayPopularView.todayPopularCollectionView.rx.itemSelected,
+            interestCellSelected: rootView.interestView.interestCollectionView.rx.itemSelected,
+            tasteRecommendCellSelected: rootView.tasteRecommendView.tasteRecommendCollectionView.rx.itemSelected
         )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -111,6 +114,13 @@ final class HomeViewController: UIViewController {
                 cellIdentifier: HomeRealtimePopularCollectionViewCell.cellIdentifier,
                 cellType: HomeRealtimePopularCollectionViewCell.self)) { row, element, cell in
                     cell.bindData(data: element)
+                    cell.onFeedViewTapped = { feedId in
+                        if let intFeedId = Int(feedId) {
+                            self.pushToFeedDetailViewController(feedId: intFeedId)
+                        } else {
+                            print("Invalid feedId: \(feedId)")
+                        }
+                    }
                 }
                 .disposed(by: disposeBag)
         
@@ -167,6 +177,30 @@ final class HomeViewController: UIViewController {
         output.showInduceLoginModalView
             .drive(with: self, onNext: { owner, isShow in
                 owner.showInduceLoginModalView(isShow)
+            })
+            .disposed(by: disposeBag)
+        
+        output.navigateToNovelDetailInfoView
+            .withLatestFrom(Observable.combineLatest(output.todayPopularList,
+                                                     output.interestList,
+                                                     output.tasteRecommendList)) { (indexPathSection, lists) in
+                let (indexPath, section) = indexPathSection
+                let (todayPopularList, interestList, tasteRecommendList) = lists
+
+                switch section {
+                case 0:
+                    return todayPopularList[indexPath.row].novelId
+                case 1:
+                    return interestList[indexPath.row].novelId
+                case 2:
+                    return tasteRecommendList[indexPath.row].novelId
+                default:
+                    return nil
+                }
+            }
+            .compactMap { $0 }
+            .subscribe(with: self, onNext: { owner, novelId in
+                owner.pushToDetailViewController(novelId: novelId)
             })
             .disposed(by: disposeBag)
     }

@@ -69,7 +69,8 @@ final class SearchViewController: UIViewController {
     private func bindViewModel() {
         let input = SearchViewModel.Input(
             searhBarDidTap: rootView.searchbarView.rx.tapGesture().when(.recognized).asObservable(),
-            induceButtonDidTap: rootView.searchDetailInduceView.rx.tapGesture().when(.recognized).asObservable()
+            induceButtonDidTap: rootView.searchDetailInduceView.rx.tapGesture().when(.recognized).asObservable(),
+            sosoPickCellSelected: rootView.sosopickView.sosopickCollectionView.rx.itemSelected.asObservable()
         )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -96,6 +97,13 @@ final class SearchViewController: UIViewController {
                 detailSearchViewController.navigationController?.isNavigationBarHidden = false
                 detailSearchViewController.hidesBottomBarWhenPushed = true
                 owner.navigationController?.pushViewController(detailSearchViewController, animated: false)
+            })
+            .disposed(by: disposeBag)
+        
+        output.navigateToNovelDetailView
+            .bind(with: self, onNext: { owner, indexPath in
+                let novelId = output.sosoPickList.value[indexPath.row].novelId
+                owner.pushToDetailViewController(novelId: novelId)
             })
             .disposed(by: disposeBag)
     }
