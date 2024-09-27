@@ -38,6 +38,12 @@ final class FeedDetailViewController: UIViewController {
         self.view = rootView
     }
     
+   override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+       swipeBackGesture()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
