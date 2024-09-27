@@ -44,6 +44,7 @@ final class MyPageProfileVisibilityViewModel: ViewModelType {
     
     struct Output {        
         let changePrivateToggleButton = PublishRelay<Bool>()
+        let changeCompleteButton = PublishRelay<Bool>()
         let popViewControllerAction = PublishRelay<Bool>()
     }
     
@@ -54,16 +55,18 @@ final class MyPageProfileVisibilityViewModel: ViewModelType {
             .subscribe(with: self, onNext: { owner, _ in 
                 owner.currentStatus.toggle()
                 output.changePrivateToggleButton.accept(owner.currentStatus)
+                output.changeCompleteButton.accept(owner.initStatus != owner.currentStatus)
             })
             .disposed(by: disposeBag)
         
         input.completeButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in 
-                guard owner.initStatus == owner.currentStatus else { return }
+                guard owner.initStatus != owner.currentStatus else { return }
                 
                 owner.patchUserProfileVisibility(isProfilePublic: owner.currentStatus)
                     .subscribe(onNext: {
                         output.popViewControllerAction.accept(true)
+                        //TODO: - toastMessage
                     }, onError: { error in
                         print(error)
                     })

@@ -126,10 +126,7 @@ extension DefaultUserService: UserService {
             NetworkLogger.log(request: request)
             
             return urlSession.rx.data(request: request)
-                .map {
-                    try self.decode(data: $0,
-                                    to: UserProfileVisibility.self)
-                }
+                .map { _ in }
                 .asSingle()
         } catch {
             return Single.error(error)

@@ -66,8 +66,14 @@ final class MyPageProfileVisibilityViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.changeCompleteButton
+            .subscribe(with: self, onNext: { owner, change in
+                owner.rootView.changeCompleteButton(change: change)
+            })
+            .disposed(by: disposeBag)
+        
         output.popViewControllerAction
-            .subscribe(with: self, onNext: { owner, _ in
+            .bind(with: self, onNext: { owner, _ in
                 owner.popToLastViewController()
             })
             .disposed(by: disposeBag)

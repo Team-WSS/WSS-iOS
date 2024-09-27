@@ -62,7 +62,7 @@ final class MyPageProfileVisibilityView: UIView {
         
         completeButton.do {
             $0.setTitle(StringLiterals.MyPage.isVisiableProfile.completeTitle, for: .normal)
-            $0.setTitleColor(.wssPrimary100, for: .normal)
+            $0.setTitleColor(.wssGray200, for: .normal)
             $0.titleLabel?.applyWSSFont(.title2, with: StringLiterals.MyPage.isVisiableProfile.completeTitle)
         }
     }
@@ -92,7 +92,7 @@ final class MyPageProfileVisibilityView: UIView {
         }
         
         backButton.snp.makeConstraints {
-            $0.size.equalTo(44)
+            $0.size.equalTo(24)
         }
         
         completeButton.snp.makeConstraints {
@@ -108,5 +108,11 @@ final class MyPageProfileVisibilityView: UIView {
                                             for: .normal)
     }
     
+    func changeCompleteButton(change: Bool) {
+        completeButton.do {
+            $0.setTitleColor(change ? .wssPrimary100: .wssGray200,
+                             for: .normal)
+        }
+    }
 }
 
