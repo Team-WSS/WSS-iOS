@@ -118,7 +118,6 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
         .subscribe(with: self, onNext: { owner, data in
             owner.keywordSearchResultList = data.categories.flatMap { $0.keywords }
             owner.keywordSearchResultListData.accept(owner.keywordSearchResultList)
-            
         }, onError: { owner, error in
             print(error)
         })
