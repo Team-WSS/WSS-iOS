@@ -133,6 +133,10 @@ final class NovelDetailHeaderReviewResultView: UIView {
             readInfoButtonStackView.isHidden = false
             readInfoButtons[0].isHidden = false
             readInfoButtons[1].isHidden = true
+        } else {
+            readInfoButtonStackView.isHidden = false
+            readInfoButtons[0].isHidden = false
+            readInfoButtons[1].isHidden = false
         }
     }
 }
