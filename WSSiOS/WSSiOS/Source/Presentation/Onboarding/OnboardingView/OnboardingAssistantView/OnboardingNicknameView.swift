@@ -18,7 +18,7 @@ final class OnboardingNicknameView: UIView {
     private let descriptionLabel = UILabel()
     let nicknameTextField = UITextField()
     private let textFieldInnerButton = UIButton()
-    private let duplicateCheckButton = UIButton()
+    let duplicateCheckButton = UIButton()
     private let duplicateCheckButtonLabel = UILabel()
     let bottomButton = OnboardingBottomButtonView()
     

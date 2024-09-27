@@ -36,6 +36,7 @@ final class OnboardingViewModel: ViewModelType {
         let nicknameTextFieldEditingDidBegin: ControlEvent<Void>
         let nicknameTextFieldEditingDidEnd: ControlEvent<Void>
         let nicknameTextFieldText: Observable<String>
+        let duplicateCheckButtonDidTap: ControlEvent<Void>
     }
     
     struct Output {
@@ -78,6 +79,12 @@ final class OnboardingViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        input.duplicateCheckButtonDidTap
+            .bind(with: self, onNext: { owner, _ in
+                // API 연결 필요, 지금은 무조건 성공한다고 가정.
+                owner.isNicknameAvailable.accept(.available)
+            })
+            .disposed(by: disposeBag)
         
         return Output(
             isNicknameTextFieldEditing: isNicknameFieldEditing.asDriver(),
