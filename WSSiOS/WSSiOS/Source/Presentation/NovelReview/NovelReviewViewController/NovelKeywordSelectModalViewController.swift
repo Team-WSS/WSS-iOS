@@ -79,7 +79,8 @@ final class NovelKeywordSelectModalViewController: UIViewController {
             searchResultCollectionViewItemSelected: rootView.novelKeywordSelectSearchResultView.searchResultCollectionView.rx.itemSelected.asObservable(),
             searchResultCollectionViewItemDeselected: rootView.novelKeywordSelectSearchResultView.searchResultCollectionView.rx.itemDeselected.asObservable(),
             resetButtonDidTap: rootView.novelKeywordSelectModalButtonView.resetButton.rx.tap,
-            selectButtonDidTap: rootView.novelKeywordSelectModalButtonView.selectButton.rx.tap
+            selectButtonDidTap: rootView.novelKeywordSelectModalButtonView.selectButton.rx.tap,
+            contactButtonDidTap: rootView.novelKeywordSelectEmptyView.contactButton.rx.tap
         )
         
         let output = self.novelKeywordSelectModalViewModel.transform(from: input, disposeBag: self.disposeBag)

@@ -16,7 +16,7 @@ final class NovelKeywordSelectEmptyView: UIView {
     
     private let imageView = UIImageView()
     private let descriptionLabel = UILabel()
-    let contactButton = UILabel()
+    let contactButton = UIButton()
     private let contactLabel = UILabel()
     
     //MARK: - Life Cycle

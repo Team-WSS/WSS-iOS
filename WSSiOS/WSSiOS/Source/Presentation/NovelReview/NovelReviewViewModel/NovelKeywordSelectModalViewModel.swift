@@ -51,6 +51,7 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
         let searchResultCollectionViewItemDeselected: Observable<IndexPath>
         let resetButtonDidTap: ControlEvent<Void>
         let selectButtonDidTap: ControlEvent<Void>
+        let contactButtonDidTap: ControlEvent<Void>
     }
     
     struct Output {
@@ -163,6 +164,13 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
             .subscribe(with: self, onNext: { owner, _ in
                 NotificationCenter.default.post(name: NSNotification.Name("NovelReviewKeywordSelected"), object: owner.selectedKeywordList)
                 owner.dismissModalViewController.accept(())
+            })
+            .disposed(by: disposeBag)
+        
+        input.contactButtonDidTap
+            .subscribe(with: self, onNext: { owner, _ in
+                //키워드 문의 뷰로 이동
+                print("contactButtonDidTap")
             })
             .disposed(by: disposeBag)
         
