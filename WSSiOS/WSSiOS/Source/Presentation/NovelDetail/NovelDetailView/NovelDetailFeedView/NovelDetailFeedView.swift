@@ -38,7 +38,6 @@ final class NovelDetailFeedView: UIButton {
         stackView.do {
             $0.axis = .vertical
             $0.alignment = .fill
-            $0.distribution = .fill
         }
     }
     

@@ -45,7 +45,6 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
         
         stackView.do {
             $0.axis = .vertical
-            $0.distribution = .fill
             $0.alignment = .fill
         }
         
