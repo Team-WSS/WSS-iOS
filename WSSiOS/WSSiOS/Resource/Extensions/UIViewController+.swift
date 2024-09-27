@@ -267,6 +267,35 @@ extension UIViewController {
         
         self.navigationController?.pushViewController(viewController, animated: true)
     }
+    
+    func pushToFeedEditViewController(feedId: Int? = nil, relevantCategories: [NewNovelGenre] = [], initialFeedContent: String = "", novelId: Int? = nil, novelTitle: String? = nil, isSpoiler: Bool = false) {
+        let viewController = FeedEditViewController(
+            viewModel: FeedEditViewModel(
+                feedRepository: DefaultFeedRepository(
+                    feedService: DefaultFeedService()
+                ),
+                feedId: feedId,
+                relevantCategories: relevantCategories,
+                initialFeedContent: initialFeedContent,
+                novelId: novelId,
+                novelTitle: novelTitle,
+                isSpoiler: isSpoiler
+            )
+        )
+        
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func pushToNovelReviewViewController(readStatus: ReadStatus, novelId: Int) {
+        let viewController = NovelReviewViewController(
+            viewModel: NovelReviewViewModel(
+                readStatus: readStatus,
+                novelId: novelId
+            )
+        )
+        
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
 }
 
 extension UIViewController: UIGestureRecognizerDelegate {

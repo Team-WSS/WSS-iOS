@@ -30,6 +30,9 @@ enum URLs {
         static func novelDetailInfo(novelId: Int) -> String {
             return "/novels/\(novelId)/info"
         }
+        static func novelDetailFeed(novelId: Int) -> String {
+            return "/novels/\(novelId)/feeds"
+        }
         static func novelIsInterest(novelId: Int) -> String {
             return "/novels/\(novelId)/is-interest"
         }

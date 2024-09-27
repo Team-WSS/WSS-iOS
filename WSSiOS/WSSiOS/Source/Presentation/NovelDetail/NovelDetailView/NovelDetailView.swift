@@ -29,6 +29,8 @@ final class NovelDetailView: UIView {
     let infoView = NovelDetailInfoView()
     let feedView = NovelDetailFeedView()
     
+    let createFeedButton = DifferentRadiusButton()
+    
     //MARK: - Life Cycle
     
     override init(frame: CGRect) {
@@ -81,13 +83,23 @@ final class NovelDetailView: UIView {
             $0.alignment = .fill
             $0.axis = .vertical
         }
+        
+        createFeedButton.do {
+            $0.backgroundColor = .wssBlack
+            $0.setImage(.icPencilSmall, for: .normal)
+            $0.topLeftRadius = 32.5
+            $0.topRightRadius = 32.5
+            $0.bottomLeftRadius = 32.5
+            $0.bottomRightRadius = 10.0
+        }
     }
     
     private func setHierarchy() {
         self.addSubviews(scrollView,
                          statusBarView,
                          stickyTabBarView,
-                         largeNovelCoverImageButton)
+                         largeNovelCoverImageButton,
+                         createFeedButton)
         scrollView.addSubview(contentView)
         contentView.addArrangedSubviews(headerView,
                                         tabBarView,
@@ -114,6 +126,12 @@ final class NovelDetailView: UIView {
         largeNovelCoverImageButton.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+        
+        createFeedButton.snp.makeConstraints {
+            $0.trailing.equalToSuperview().inset(26)
+            $0.bottom.equalTo(self.safeAreaLayoutGuide).inset(10)
+            $0.size.equalTo(65)
+        }
     }
     
     //MARK: - Data
@@ -135,6 +153,10 @@ final class NovelDetailView: UIView {
         tabBarView.updateTabBar(selected: tab)
         stickyTabBarView.updateTabBar(selected: tab)
         updateSelectedTabView(selected: tab)
+    }
+    
+    func showCreateFeedButton(show: Bool) {
+        createFeedButton.isHidden = !show
     }
     
     private func updateSelectedTabView(selected tab: Tab) {
