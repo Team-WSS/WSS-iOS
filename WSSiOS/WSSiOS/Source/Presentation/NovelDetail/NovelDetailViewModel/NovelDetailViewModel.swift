@@ -188,17 +188,14 @@ final class NovelDetailViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         let pushTofeedWriteViewController = Observable.merge(
-            input.feedWriteButtonDidTap.map { _ in
-                (genre: self.novelGenre.value,
-                 novelId: self.novelId,
-                 novelTitle: self.novelTitle)
-            },
-            input.createFeedButtonDidTap.map { _ in
-                (genre: self.novelGenre.value,
-                 novelId: self.novelId,
-                 novelTitle: self.novelTitle)
-            }
+            input.feedWriteButtonDidTap.asObservable(),
+            input.createFeedButtonDidTap.asObservable()
         )
+        .map { _ in
+            (genre: self.novelGenre.value,
+             novelId: self.novelId,
+             novelTitle: self.novelTitle)
+        }
         .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
         .asObservable()
         
