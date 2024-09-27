@@ -59,7 +59,7 @@ enum WSSTabBarItem: CaseIterable {
             return SearchViewController(viewModel: SearchViewModel(searchRepository: DefaultSearchRepository(searchService: DefaultSearchService())))
             
         case .feed:
-            return FeedViewController(viewModel: FeedViewModel(feedRepository: DefaultFeedRepository(feedService: DefaultFeedService()), gender: "F"))
+            return FeedViewController(viewModel: FeedViewModel(gender: "F"))
             
         case .myPage:
             return MyPageViewController(

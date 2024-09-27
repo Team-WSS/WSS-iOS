@@ -85,13 +85,15 @@ final class FeedViewController: UIViewController {
     }
     
     private func setupPages() {
-        for _ in 0..<categoryList.value.count {
+        for pageIndex in 0..<categoryList.value.count {
+            let category = NewNovelGenre.withKoreanRawValue(from: categoryList.value[pageIndex])
             let viewController = FeedGenreViewController(
-                viewModel: FeedViewModel(
+                viewModel: FeedGenreViewModel(
                     feedRepository: DefaultFeedRepository(
                         feedService: DefaultFeedService()
-                    ), gender: "F"
-                ), feedsDummy: dummyFeedData)
+                    ), category: category.rawValue
+                )
+            )
             
             pages.append(viewController)
         }

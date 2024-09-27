@@ -13,9 +13,7 @@ import RxCocoa
 final class FeedViewModel: ViewModelType {
     
     //MARK: - Properties
-    
-    private let feedRepository: FeedRepository
-    
+
     //로그인 시 성별 정보 받아야 함
     private var gender: String = "F"
     let maleCategory = ["전체","판타지", "현판", "무협", "드라마", "미스터리", "라노벨", "로맨스", "로판", "BL", "기타"]
@@ -23,8 +21,7 @@ final class FeedViewModel: ViewModelType {
     
     //MARK: - Life Cycle
     
-    init(feedRepository: FeedRepository, gender: String) {
-        self.feedRepository = feedRepository
+    init(gender: String) {
         self.gender = gender
     }
     
@@ -34,7 +31,6 @@ final class FeedViewModel: ViewModelType {
     
     struct Output {
         let categoryList = BehaviorRelay<[String]>(value: [""])
-        let feedList = PublishRelay<[TotalFeeds]>()
         let selectedTabIndex = PublishSubject<Int>()
     }
     
@@ -47,28 +43,11 @@ final class FeedViewModel: ViewModelType {
             output.categoryList.accept(femaleCategory)
         }
         
-        feedRepository.getFeedData(category: "all", lastFeedId: 1)
-            .subscribe(with: self, onNext: { owner, data in
-                output.feedList.accept(data.feeds)
-            }, onError: { owner, error in
-                print(error)
-            })
-            .disposed(by: disposeBag)
-        
         input.pageBarTapped
             .map{$0.row}
             .bind(to: output.selectedTabIndex)
             .disposed(by: disposeBag)
         
         return output
-    }
-    
-    //MARK: - Custom Method
-    
-    
-    //MARK: - API
-    
-    private func getFeedData(category: String, lastFeedId: Int) -> Observable<TotalFeed> {
-        return self.feedRepository.getFeedData(category: category, lastFeedId: lastFeedId)
     }
 }

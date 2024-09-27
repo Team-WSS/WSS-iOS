@@ -21,6 +21,7 @@
 		2C2491842B4ADC230096F255 /* WSSTabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2491832B4ADC230096F255 /* WSSTabBarItem.swift */; };
 		2C2491862B4ADC420096F255 /* WSSTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2491852B4ADC420096F255 /* WSSTabBarController.swift */; };
 		2C2B0BB52C53C73900BCEC19 /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2B0BB42C53C73900BCEC19 /* UITextField+.swift */; };
+		2C3B08772CA74358002802D5 /* FeedGenreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C3B08762CA74358002802D5 /* FeedGenreViewModel.swift */; };
 		2C41E0CC2CA4948400FFD233 /* MyPageCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C41E0CB2CA4948400FFD233 /* MyPageCountView.swift */; };
 		2C41E0CE2CA4949C00FFD233 /* MyPageEditProfileGenreCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C41E0CD2CA4949C00FFD233 /* MyPageEditProfileGenreCollectionViewCell.swift */; };
 		2C41E0D02CA494B800FFD233 /* MyPageEditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C41E0CF2CA494B800FFD233 /* MyPageEditProfileView.swift */; };
@@ -104,7 +105,7 @@
 		2CD911542C0D8A17006B8D72 /* FeedCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD911532C0D8A17006B8D72 /* FeedCollectionViewCell.swift */; };
 		2CD911562C0D8A1A006B8D72 /* FeedPageBarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD911552C0D8A1A006B8D72 /* FeedPageBarCollectionViewCell.swift */; };
 		2CD911582C0D8A21006B8D72 /* FeedPageBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD911572C0D8A21006B8D72 /* FeedPageBar.swift */; };
-		2CD9115A2C0D8A23006B8D72 /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD911592C0D8A23006B8D72 /* FeedView.swift */; };
+		2CD9115A2C0D8A23006B8D72 /* FeedGenreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD911592C0D8A23006B8D72 /* FeedGenreView.swift */; };
 		2CD9115C2C0D8A26006B8D72 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD9115B2C0D8A26006B8D72 /* FeedViewController.swift */; };
 		2CD9115E2C0D8A28006B8D72 /* FeedGenreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD9115D2C0D8A28006B8D72 /* FeedGenreViewController.swift */; };
 		2CD911612C0D8B71006B8D72 /* FeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD911602C0D8B71006B8D72 /* FeedViewModel.swift */; };
@@ -366,13 +367,6 @@
 		CD803B392C940989006EBAF8 /* CenterAlignedCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD803B382C940989006EBAF8 /* CenterAlignedCollectionViewFlowLayout.swift */; };
 		CD803B3B2C940B88006EBAF8 /* NovelReviewKeywordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD803B3A2C940B88006EBAF8 /* NovelReviewKeywordView.swift */; };
 		CD803B3D2C941123006EBAF8 /* NovelReviewSelectedKeywordCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD803B3C2C941123006EBAF8 /* NovelReviewSelectedKeywordCollectionViewCell.swift */; };
-		CD8747A12C9EB37000D0ADAD /* NovelDateSelectModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8747A02C9EB37000D0ADAD /* NovelDateSelectModalViewController.swift */; };
-		CD8747A32C9EB37F00D0ADAD /* NovelDateSelectModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8747A22C9EB37F00D0ADAD /* NovelDateSelectModalView.swift */; };
-		CD8747A52C9EB39900D0ADAD /* NovelDateSelectModalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8747A42C9EB39900D0ADAD /* NovelDateSelectModalViewModel.swift */; };
-		CD8747A72C9EC4F900D0ADAD /* NovelDateSelectModalButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8747A62C9EC4F900D0ADAD /* NovelDateSelectModalButtonView.swift */; };
-		CD8747A92C9EDA3000D0ADAD /* NovelDateSelectModalTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8747A82C9EDA3000D0ADAD /* NovelDateSelectModalTitleView.swift */; };
-		CD8747B52C9EF31E00D0ADAD /* NovelDateSelectModalDateButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8747B42C9EF31E00D0ADAD /* NovelDateSelectModalDateButtonView.swift */; };
-		CD8747B72C9F050800D0ADAD /* NovelDateSelectModalDatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8747B62C9F050800D0ADAD /* NovelDateSelectModalDatePickerView.swift */; };
 		CD863ED72CA54E7C0037DC08 /* NovelDetailFeedResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD863ED62CA54E7C0037DC08 /* NovelDetailFeedResult.swift */; };
 		CD863EDA2CA5B7F70037DC08 /* NovelDetailFeedEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD863ED92CA5B7F70037DC08 /* NovelDetailFeedEmptyView.swift */; };
 		CD863EDC2CA5BAF30037DC08 /* NovelDetailFeedListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD863EDB2CA5BAF30037DC08 /* NovelDetailFeedListView.swift */; };
@@ -382,6 +376,13 @@
 		CD863EE72CA5CB0B0037DC08 /* NovelDetailFeedConnectedNovelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD863EE62CA5CB0B0037DC08 /* NovelDetailFeedConnectedNovelView.swift */; };
 		CD863EE92CA5CDC20037DC08 /* NovelDetailFeedCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD863EE82CA5CDC20037DC08 /* NovelDetailFeedCategoryView.swift */; };
 		CD863EEB2CA5CECD0037DC08 /* NovelDetailFeedReactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD863EEA2CA5CECD0037DC08 /* NovelDetailFeedReactView.swift */; };
+		CD8747A12C9EB37000D0ADAD /* NovelDateSelectModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8747A02C9EB37000D0ADAD /* NovelDateSelectModalViewController.swift */; };
+		CD8747A32C9EB37F00D0ADAD /* NovelDateSelectModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8747A22C9EB37F00D0ADAD /* NovelDateSelectModalView.swift */; };
+		CD8747A52C9EB39900D0ADAD /* NovelDateSelectModalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8747A42C9EB39900D0ADAD /* NovelDateSelectModalViewModel.swift */; };
+		CD8747A72C9EC4F900D0ADAD /* NovelDateSelectModalButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8747A62C9EC4F900D0ADAD /* NovelDateSelectModalButtonView.swift */; };
+		CD8747A92C9EDA3000D0ADAD /* NovelDateSelectModalTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8747A82C9EDA3000D0ADAD /* NovelDateSelectModalTitleView.swift */; };
+		CD8747B52C9EF31E00D0ADAD /* NovelDateSelectModalDateButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8747B42C9EF31E00D0ADAD /* NovelDateSelectModalDateButtonView.swift */; };
+		CD8747B72C9F050800D0ADAD /* NovelDateSelectModalDatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8747B62C9F050800D0ADAD /* NovelDateSelectModalDatePickerView.swift */; };
 		CDA1774B2C3EC6760089137F /* WSSToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA1774A2C3EC6760089137F /* WSSToggleButton.swift */; };
 		CDA5F03A2C2FDB2200FCF15C /* FeedEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5F0392C2FDB2200FCF15C /* FeedEditViewController.swift */; };
 		CDA5F03C2C2FDB3100FCF15C /* FeedEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5F03B2C2FDB3100FCF15C /* FeedEditViewModel.swift */; };
@@ -420,6 +421,7 @@
 		2C2491832B4ADC230096F255 /* WSSTabBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSTabBarItem.swift; sourceTree = "<group>"; };
 		2C2491852B4ADC420096F255 /* WSSTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSTabBarController.swift; sourceTree = "<group>"; };
 		2C2B0BB42C53C73900BCEC19 /* UITextField+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+.swift"; sourceTree = "<group>"; };
+		2C3B08762CA74358002802D5 /* FeedGenreViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedGenreViewModel.swift; sourceTree = "<group>"; };
 		2C41E0CB2CA4948400FFD233 /* MyPageCountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageCountView.swift; sourceTree = "<group>"; };
 		2C41E0CD2CA4949C00FFD233 /* MyPageEditProfileGenreCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageEditProfileGenreCollectionViewCell.swift; sourceTree = "<group>"; };
 		2C41E0CF2CA494B800FFD233 /* MyPageEditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageEditProfileView.swift; sourceTree = "<group>"; };
@@ -498,7 +500,7 @@
 		2CD911532C0D8A17006B8D72 /* FeedCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedCollectionViewCell.swift; sourceTree = "<group>"; };
 		2CD911552C0D8A1A006B8D72 /* FeedPageBarCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedPageBarCollectionViewCell.swift; sourceTree = "<group>"; };
 		2CD911572C0D8A21006B8D72 /* FeedPageBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedPageBar.swift; sourceTree = "<group>"; };
-		2CD911592C0D8A23006B8D72 /* FeedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedView.swift; sourceTree = "<group>"; };
+		2CD911592C0D8A23006B8D72 /* FeedGenreView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedGenreView.swift; sourceTree = "<group>"; };
 		2CD9115B2C0D8A26006B8D72 /* FeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		2CD9115D2C0D8A28006B8D72 /* FeedGenreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedGenreViewController.swift; sourceTree = "<group>"; };
 		2CD911602C0D8B71006B8D72 /* FeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewModel.swift; sourceTree = "<group>"; };
@@ -757,13 +759,6 @@
 		CD803B382C940989006EBAF8 /* CenterAlignedCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenterAlignedCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		CD803B3A2C940B88006EBAF8 /* NovelReviewKeywordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelReviewKeywordView.swift; sourceTree = "<group>"; };
 		CD803B3C2C941123006EBAF8 /* NovelReviewSelectedKeywordCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelReviewSelectedKeywordCollectionViewCell.swift; sourceTree = "<group>"; };
-		CD8747A02C9EB37000D0ADAD /* NovelDateSelectModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDateSelectModalViewController.swift; sourceTree = "<group>"; };
-		CD8747A22C9EB37F00D0ADAD /* NovelDateSelectModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDateSelectModalView.swift; sourceTree = "<group>"; };
-		CD8747A42C9EB39900D0ADAD /* NovelDateSelectModalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDateSelectModalViewModel.swift; sourceTree = "<group>"; };
-		CD8747A62C9EC4F900D0ADAD /* NovelDateSelectModalButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDateSelectModalButtonView.swift; sourceTree = "<group>"; };
-		CD8747A82C9EDA3000D0ADAD /* NovelDateSelectModalTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDateSelectModalTitleView.swift; sourceTree = "<group>"; };
-		CD8747B42C9EF31E00D0ADAD /* NovelDateSelectModalDateButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDateSelectModalDateButtonView.swift; sourceTree = "<group>"; };
-		CD8747B62C9F050800D0ADAD /* NovelDateSelectModalDatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDateSelectModalDatePickerView.swift; sourceTree = "<group>"; };
 		CD863ED62CA54E7C0037DC08 /* NovelDetailFeedResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailFeedResult.swift; sourceTree = "<group>"; };
 		CD863ED92CA5B7F70037DC08 /* NovelDetailFeedEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailFeedEmptyView.swift; sourceTree = "<group>"; };
 		CD863EDB2CA5BAF30037DC08 /* NovelDetailFeedListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailFeedListView.swift; sourceTree = "<group>"; };
@@ -773,6 +768,13 @@
 		CD863EE62CA5CB0B0037DC08 /* NovelDetailFeedConnectedNovelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailFeedConnectedNovelView.swift; sourceTree = "<group>"; };
 		CD863EE82CA5CDC20037DC08 /* NovelDetailFeedCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailFeedCategoryView.swift; sourceTree = "<group>"; };
 		CD863EEA2CA5CECD0037DC08 /* NovelDetailFeedReactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailFeedReactView.swift; sourceTree = "<group>"; };
+		CD8747A02C9EB37000D0ADAD /* NovelDateSelectModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDateSelectModalViewController.swift; sourceTree = "<group>"; };
+		CD8747A22C9EB37F00D0ADAD /* NovelDateSelectModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDateSelectModalView.swift; sourceTree = "<group>"; };
+		CD8747A42C9EB39900D0ADAD /* NovelDateSelectModalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDateSelectModalViewModel.swift; sourceTree = "<group>"; };
+		CD8747A62C9EC4F900D0ADAD /* NovelDateSelectModalButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDateSelectModalButtonView.swift; sourceTree = "<group>"; };
+		CD8747A82C9EDA3000D0ADAD /* NovelDateSelectModalTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDateSelectModalTitleView.swift; sourceTree = "<group>"; };
+		CD8747B42C9EF31E00D0ADAD /* NovelDateSelectModalDateButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDateSelectModalDateButtonView.swift; sourceTree = "<group>"; };
+		CD8747B62C9F050800D0ADAD /* NovelDateSelectModalDatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDateSelectModalDatePickerView.swift; sourceTree = "<group>"; };
 		CDA1774A2C3EC6760089137F /* WSSToggleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSToggleButton.swift; sourceTree = "<group>"; };
 		CDA5F0392C2FDB2200FCF15C /* FeedEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedEditViewController.swift; sourceTree = "<group>"; };
 		CDA5F03B2C2FDB3100FCF15C /* FeedEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedEditViewModel.swift; sourceTree = "<group>"; };
@@ -1180,7 +1182,7 @@
 			isa = PBXGroup;
 			children = (
 				2CD911572C0D8A21006B8D72 /* FeedPageBar.swift */,
-				2CD911592C0D8A23006B8D72 /* FeedView.swift */,
+				2CD911592C0D8A23006B8D72 /* FeedGenreView.swift */,
 				2CD9113F2C0D87B2006B8D72 /* FeedCell */,
 				2CD9113E2C0D87A9006B8D72 /* FeedAssistantView */,
 			);
@@ -1221,6 +1223,7 @@
 			isa = PBXGroup;
 			children = (
 				2CD911602C0D8B71006B8D72 /* FeedViewModel.swift */,
+				2C3B08762CA74358002802D5 /* FeedGenreViewModel.swift */,
 			);
 			path = FeedViewModel;
 			sourceTree = "<group>";
@@ -2742,7 +2745,7 @@
 			files = (
 				B9095D2C2C39514D007521EF /* HomeNoticeDetailContentView.swift in Sources */,
 				C99DDFDB2C8613AF00EDC0C4 /* SosoPickCollectionViewCell.swift in Sources */,
-				2CD9115A2C0D8A23006B8D72 /* FeedView.swift in Sources */,
+				2CD9115A2C0D8A23006B8D72 /* FeedGenreView.swift in Sources */,
 				2C8F89492C50D37A0056895B /* UserNovelStatus.swift in Sources */,
 				2C60307B2B55D9160031544C /* UIImageView+.swift in Sources */,
 				B9095D2A2C3950B4007521EF /* HomeNoticeDetailView.swift in Sources */,
@@ -2886,6 +2889,7 @@
 				CD3E5A742B5424D600C0A659 /* MemoEditView.swift in Sources */,
 				39D4A5E42BDF90FB004FC834 /* NovelDetailHeaderReviewResultView.swift in Sources */,
 				39D4A5E42BDF90FB004FC834 /* NovelDetailHeaderReviewResultView.swift in Sources */,
+				2C3B08772CA74358002802D5 /* FeedGenreViewModel.swift in Sources */,
 				CD803B352C93F711006EBAF8 /* NovelReviewAttractivePointView.swift in Sources */,
 				CD8747A72C9EC4F900D0ADAD /* NovelDateSelectModalButtonView.swift in Sources */,
 				2CD911522C0D8A0F006B8D72 /* FeedNovelView.swift in Sources */,
