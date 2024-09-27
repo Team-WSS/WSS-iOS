@@ -97,8 +97,10 @@ final class NovelReviewViewModel: ViewModelType {
             }
             .subscribe(with: self, onNext: { owner, data in
                 owner.isNovelReviewExist = data.status != nil
-                owner.startDate = data.startDate.flatMap { owner.dateFormatter.date(from: $0) }
-                owner.endDate = data.endDate.flatMap { owner.dateFormatter.date(from: $0) }
+                if data.startDate != nil || data.endDate != nil {
+                    owner.startDate = data.startDate.flatMap { owner.dateFormatter.date(from: $0) } ?? Date()
+                    owner.endDate = data.endDate.flatMap { owner.dateFormatter.date(from: $0) } ?? Date()
+                }
                 owner.startDateEndDateData.accept([owner.startDate, owner.endDate])
                 owner.starRating.accept(data.userNovelRating)
                 owner.selectedKeywordListData.accept(data.keywords)
