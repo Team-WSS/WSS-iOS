@@ -62,8 +62,11 @@ final class OnboardingViewController: UIViewController {
     
     private func setNavigationBar() {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
-//        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: rootView.backButton)
-//        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rootView.dropDownButton)
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.backgroundColor = .wssWhite
+        navigationItem.title = ""
+        navigationItem.setHidesBackButton(true, animated: true)
     }
     
     //MARK: - Bind
