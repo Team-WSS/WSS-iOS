@@ -53,7 +53,7 @@ final class NovelReviewViewController: UIViewController {
     //MARK: - UI
     
     private func setNavigationBar() {
-        self.preparationSetNavigationBar(title: "당신의 이해를 돕기 위하여", left: rootView.backButton, right: rootView.completeButton)
+        self.preparationSetNavigationBar(title: self.novelReviewViewModel.novelTite, left: rootView.backButton, right: rootView.completeButton)
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.backgroundColor = .clear
@@ -179,7 +179,7 @@ final class NovelReviewViewController: UIViewController {
         
         output.presentNovelKeywordSelectModalViewController
             .subscribe(with: self, onNext: { owner, selectedKeywordList in
-                owner.presentModalViewController(NovelKeywordSelectModalViewController(viewModel: NovelKeywordSelectModalViewModel(selectedKeywordList: selectedKeywordList)))
+                owner.presentModalViewController(NovelKeywordSelectModalViewController(viewModel: NovelKeywordSelectModalViewModel(keywordRepository: DefaultKeywordRepository(keywordService: DefaultKeywordService()), selectedKeywordList: selectedKeywordList)))
             })
             .disposed(by: disposeBag)
         
@@ -215,7 +215,7 @@ extension NovelReviewViewController: UICollectionViewDelegateFlowLayout {
         } else if collectionView == self.rootView.novelReviewKeywordView.selectedKeywordCollectionView {
             var text: String?
             
-            text = self.novelReviewViewModel.selectedKeywordListData.value[indexPath.item]
+            text = self.novelReviewViewModel.selectedKeywordListData.value[indexPath.item].keywordName
             
             guard let unwrappedText = text else {
                 return CGSize(width: 0, height: 0)

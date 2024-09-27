@@ -405,6 +405,8 @@ enum StringLiterals {
             static let searchResult = "검색결과"
             static let reset = "초기화"
             static let selectButtonText = "개 선택"
+            static let unregisteredKeyword = "해당 키워드는\n아직 등록되지 않았어요.."
+            static let contact = "키워드 문의하러 가기"
         }
     }
     

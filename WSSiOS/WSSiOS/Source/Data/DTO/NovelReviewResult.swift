@@ -17,11 +17,6 @@ struct NovelReviewResult: Codable {
     let keywords: [KeywordData]
 }
 
-struct KeywordData: Codable {
-    let keywordId: Int
-    let keywordName: String
-}
-
 struct PostNovelReviewContent: Codable {
     let novelId: Int
     let userNovelRating: Float

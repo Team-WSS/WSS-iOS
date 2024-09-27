@@ -286,11 +286,15 @@ extension UIViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func pushToNovelReviewViewController(readStatus: ReadStatus, novelId: Int) {
+    func pushToNovelReviewViewController(readStatus: ReadStatus, novelId: Int, novelTitle: String) {
         let viewController = NovelReviewViewController(
             viewModel: NovelReviewViewModel(
+                novelReviewRepository: DefaultNovelReviewRepository(
+                    novelReviewService: DefaultNovelReviewService()
+                ),
                 readStatus: readStatus,
-                novelId: novelId
+                novelId: novelId,
+                novelTitle: novelTitle
             )
         )
         

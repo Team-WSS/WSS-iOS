@@ -19,12 +19,13 @@ final class NovelReviewViewModel: ViewModelType {
     
     var readStatus: ReadStatus
     private let novelId: Int
+    let novelTite: String
     private var selectedAttractivePointList: [String] = []
 
     private var startDate: Date?
     private var endDate: Date?
     private var attractivePointList: [String] = []
-    var selectedKeywordList: [String] = []
+    var selectedKeywordList: [KeywordData] = []
     
     private let minStarRating: Float = 0.0
     private let maxStarRating: Float = 5.0
@@ -45,16 +46,17 @@ final class NovelReviewViewModel: ViewModelType {
     private let starRating = BehaviorRelay<Float>(value: 0.0)
     private let attractivePointListData = PublishRelay<[AttractivePoint]>()
     private let isAttractivePointCountOverLimit = PublishRelay<IndexPath>()
-    private let presentNovelKeywordSelectModalViewController = PublishRelay<[String]>()
-    let selectedKeywordListData = BehaviorRelay<[String]>(value: [])
+    private let presentNovelKeywordSelectModalViewController = PublishRelay<[KeywordData]>()
+    let selectedKeywordListData = BehaviorRelay<[KeywordData]>(value: [])
     private let selectedKeywordCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
     
     //MARK: - Life Cycle
     
-    init(novelReviewRepository: NovelReviewRepository, readStatus: ReadStatus, novelId: Int) {
+    init(novelReviewRepository: NovelReviewRepository, readStatus: ReadStatus, novelId: Int, novelTitle: String) {
         self.novelReviewRepository = novelReviewRepository
         self.readStatus = readStatus
         self.novelId = novelId
+        self.novelTite = novelTitle
     }
     
     struct Input {
@@ -84,8 +86,8 @@ final class NovelReviewViewModel: ViewModelType {
         let starRating: Observable<Float>
         let attractivePointListData: Observable<[AttractivePoint]>
         let isAttractivePointCountOverLimit: Observable<IndexPath>
-        let presentNovelKeywordSelectModalViewController: Observable<[String]>
-        let selectedKeywordListData: Observable<[String]>
+        let presentNovelKeywordSelectModalViewController: Observable<[KeywordData]>
+        let selectedKeywordListData: Observable<[KeywordData]>
         let selectedKeywordCollectionViewHeight: Observable<CGFloat>
     }
     
@@ -179,7 +181,7 @@ final class NovelReviewViewModel: ViewModelType {
         
         input.novelReviewKeywordSelectedNotification
             .subscribe(with: self, onNext: { owner, notification in
-                guard let selectedKeywordListData = notification.object as? [String] else { return }
+                guard let selectedKeywordListData = notification.object as? [KeywordData] else { return }
                 owner.selectedKeywordListData.accept(selectedKeywordListData)
             })
             .disposed(by: disposeBag)
