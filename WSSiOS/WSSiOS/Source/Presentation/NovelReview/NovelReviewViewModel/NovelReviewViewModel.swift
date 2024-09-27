@@ -92,6 +92,11 @@ final class NovelReviewViewModel: ViewModelType {
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         input.viewDidLoadEvent
+            .do(onNext: {
+                self.readStatusData.accept(self.readStatus)
+                self.readStatusListData.accept(ReadStatus.allCases)
+                self.attractivePointListData.accept(AttractivePoint.allCases)
+            })
             .flatMapLatest {
                 self.getNovelReview(novelId: self.novelId)
             }
@@ -105,10 +110,6 @@ final class NovelReviewViewModel: ViewModelType {
                 owner.starRating.accept(data.userNovelRating)
                 owner.selectedKeywordListData.accept(data.keywords)
                 owner.selectedAttractivePointList = data.attractivePoints
-                
-                owner.readStatusData.accept(owner.readStatus)
-                owner.readStatusListData.accept(ReadStatus.allCases)
-                owner.attractivePointListData.accept(AttractivePoint.allCases)
             })
             .disposed(by: disposeBag)
         
@@ -149,6 +150,7 @@ final class NovelReviewViewModel: ViewModelType {
                 }
             }
             .subscribe(with: self, onNext: { owner, _ in
+                NotificationCenter.default.post(name: NSNotification.Name("NovelReviewed"), object: nil)
                 owner.popViewController.accept(())
             }, onError: { owner, error  in
                 print(error)

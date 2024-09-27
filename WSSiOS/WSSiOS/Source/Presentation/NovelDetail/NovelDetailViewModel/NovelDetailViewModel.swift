@@ -82,6 +82,9 @@ final class NovelDetailViewModel: ViewModelType {
         let novelDetailFeedTableViewContentSize: Observable<CGSize?>
         let scrollViewReachedBottom: Observable<Bool>
         let createFeedButtonDidTap: ControlEvent<Void>
+        
+        //NovelReview
+        let novelReviewedNotification: Observable<Notification>
     }
     
     struct Output {
@@ -109,6 +112,9 @@ final class NovelDetailViewModel: ViewModelType {
         //NovelDetailFeed
         let feedList: Observable<[NovelDetailFeed]>
         let novelDetailFeedTableViewHeight: Observable<CGFloat>
+        
+        //NovelReview
+        let showNovelReviewedToast: Observable<Void>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -297,6 +303,10 @@ final class NovelDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        let showNovelReviewedToast = input.novelReviewedNotification
+            .map { _ in () }
+            .asObservable()
+        
         return Output(
             detailHeaderData: novelDetailHeaderData.asObservable(),
             detailInfoData: novelDetailInfoData.asObserver(),
@@ -312,7 +322,8 @@ final class NovelDetailViewModel: ViewModelType {
             keywordList: keywordList.asDriver(),
             reviewSectionVisibilities: reviewSectionVisibilities.asDriver(),
             feedList: feedList.asObservable(),
-            novelDetailFeedTableViewHeight: novelDetailFeedTableViewHeight.asObservable()
+            novelDetailFeedTableViewHeight: novelDetailFeedTableViewHeight.asObservable(),
+            showNovelReviewedToast: showNovelReviewedToast
         )
     }
     
