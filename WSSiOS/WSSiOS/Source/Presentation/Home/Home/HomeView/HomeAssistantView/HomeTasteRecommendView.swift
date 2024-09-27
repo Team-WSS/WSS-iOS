@@ -17,18 +17,18 @@ final class HomeTasteRecommendView: UIView {
     private var titleLabel = UILabel()
     private var subTitleLabel = UILabel()
     let tasteRecommendCollectionView = UICollectionView(frame: .zero,
-                                                      collectionViewLayout: UICollectionViewLayout())
+                                                        collectionViewLayout: UICollectionViewLayout())
     private let tasteRecommendCollectionViewLayout = UICollectionViewFlowLayout()
     private let unregisterView = HomeUnregisterView(.tasteRecommend)
     
     //MARK: - Life Cycle
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(isLoggedIn: Bool) {
+        super.init(frame: .zero)
         
-        setUI()
+        setUI(isLoggedIn: isLoggedIn)
         setHierarchy()
-        setLayout()
+        setLayout(isLoggedIn: isLoggedIn)
     }
     
     @available(*, unavailable)
@@ -36,7 +36,7 @@ final class HomeTasteRecommendView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setUI() {
+    private func setUI(isLoggedIn: Bool) {
         titleLabel.do {
             $0.applyWSSFont(.headline1, with: StringLiterals.Home.Title.recommend)
             $0.textColor = .wssBlack
@@ -59,35 +59,51 @@ final class HomeTasteRecommendView: UIView {
             $0.itemSize = CGSize(width: (UIScreen.main.bounds.width - 49) / 2, height: 300)
             tasteRecommendCollectionView.setCollectionViewLayout($0, animated: false)
         }
+        
+        if isLoggedIn {
+            subTitleLabel.isHidden = false
+            tasteRecommendCollectionView.isHidden = false
+            unregisterView.isHidden = true
+        }
+        else {
+            subTitleLabel.isHidden = true
+            tasteRecommendCollectionView.isHidden = true
+            unregisterView.isHidden = false
+        }
     }
     
     private func setHierarchy() {
         self.addSubviews(titleLabel,
                          subTitleLabel,
-                         tasteRecommendCollectionView)
+                         tasteRecommendCollectionView,
+                         unregisterView)
     }
     
-    private func setLayout() {
+    private func setLayout(isLoggedIn: Bool) {
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.leading.equalToSuperview().inset(20)
         }
-        
-        subTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(2)
-            $0.leading.equalTo(titleLabel.snp.leading)
+
+        if isLoggedIn {
+            subTitleLabel.snp.makeConstraints {
+                $0.top.equalTo(titleLabel.snp.bottom).offset(2)
+                $0.leading.equalTo(titleLabel.snp.leading)
+            }
+            
+            tasteRecommendCollectionView.snp.makeConstraints {
+                $0.top.equalTo(subTitleLabel.snp.bottom).offset(20)
+                $0.leading.trailing.equalToSuperview().inset(20)
+                $0.height.equalTo(1591)
+                $0.bottom.equalToSuperview()
+            }
         }
-        
-        tasteRecommendCollectionView.snp.makeConstraints {
-            $0.top.equalTo(subTitleLabel.snp.bottom).offset(20)
-            $0.leading.trailing.equalToSuperview().inset(20)
-            $0.bottom.equalToSuperview()
+        else {
+            unregisterView.snp.makeConstraints {
+                $0.top.equalTo(titleLabel.snp.bottom).offset(11)
+                $0.leading.trailing.equalToSuperview().inset(20)
+                $0.bottom.equalToSuperview().inset(56)
+            }
         }
-        
-        /// 비로그인일 때
-//        unregisterView.snp.makeConstraints {
-//            $0.top.equalTo(subTitleLabel.snp.bottom).offset(20)
-//            $0.leading.trailing.equalToSuperview().inset(20)
-//        }
     }
 }

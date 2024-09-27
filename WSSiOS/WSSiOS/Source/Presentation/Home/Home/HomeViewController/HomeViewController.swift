@@ -22,13 +22,14 @@ final class HomeViewController: UIViewController {
     
     //MARK: - UI Components
     
-    private let rootView = HomeView()
+    private let rootView: HomeView
     
     //MARK: - Life Cycle
     
     init(viewModel: HomeViewModel, isLoggedIn: Bool) {
         self.viewModel = viewModel
         self.isLoggedIn = isLoggedIn
+        self.rootView = HomeView(frame: .zero, isLoggedIn: isLoggedIn)
         super.init(nibName: nil, bundle: nil)
     }
     

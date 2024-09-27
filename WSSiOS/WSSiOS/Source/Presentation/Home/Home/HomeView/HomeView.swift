@@ -19,17 +19,19 @@ final class HomeView: UIView {
     let headerView = HomeHeaderView()
     let todayPopularView = HomeTodayPopularView()
     let realtimePopularView = HomeRealtimePopularView()
-    let interestView = HomeInterestView()
-    let tasteRecommendView = HomeTasteRecommendView()
+    let interestView: HomeInterestView
+    let tasteRecommendView: HomeTasteRecommendView
     
     //MARK: - Life Cycle
     
-    override init(frame: CGRect) {
+    init(frame: CGRect, isLoggedIn: Bool) {
+        self.interestView = HomeInterestView(isLoggedIn: isLoggedIn)
+        self.tasteRecommendView = HomeTasteRecommendView(isLoggedIn: isLoggedIn)
         super.init(frame: frame)
         
         setUI()
         setHierarchy()
-        setLayout()
+        setLayout(isLoggedIn: isLoggedIn)
     }
     
     @available(*, unavailable)
@@ -53,7 +55,7 @@ final class HomeView: UIView {
                                 tasteRecommendView)
     }
     
-    private func setLayout() {
+    private func setLayout(isLoggedIn: Bool) {
         headerView.snp.makeConstraints {
             $0.top.equalTo(self.safeAreaLayoutGuide.snp.top)
             $0.height.equalTo(50)
@@ -88,9 +90,8 @@ final class HomeView: UIView {
         }
         
         tasteRecommendView.snp.makeConstraints {
-            $0.top.equalTo(interestView.snp.bottom).offset(36)
+            $0.top.equalTo(interestView.snp.bottom).offset(isLoggedIn ? 36 : 56)
             $0.horizontalEdges.bottom.equalToSuperview()
-            $0.height.equalTo(1700)
         }
     }
 }
