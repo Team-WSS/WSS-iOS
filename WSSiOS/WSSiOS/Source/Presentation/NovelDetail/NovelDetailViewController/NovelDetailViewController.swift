@@ -282,7 +282,8 @@ final class NovelDetailViewController: UIViewController {
             stickyFeedTabBarButtonDidTap: rootView.stickyTabBarView.feedButton.rx.tap,
             descriptionAccordionButtonDidTap: rootView.infoView.descriptionView.accordionButton.rx.tap,
             novelDetailFeedTableViewContentSize: rootView.feedView.feedListView.feedTableView.rx.observe(CGSize.self, "contentSize"),
-            scrollViewReachedBottom: observeReachedBottom(rootView.scrollView)
+            scrollViewReachedBottom: observeReachedBottom(rootView.scrollView),
+            createFeedButtonDidTap: rootView.createFeedButton.rx.tap
         )
     }
     

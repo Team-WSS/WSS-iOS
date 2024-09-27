@@ -80,6 +80,7 @@ final class NovelDetailViewModel: ViewModelType {
         //NovelDetailFeed
         let novelDetailFeedTableViewContentSize: Observable<CGSize?>
         let scrollViewReachedBottom: Observable<Bool>
+        let createFeedButtonDidTap: ControlEvent<Void>
     }
     
     struct Output {
@@ -183,9 +184,12 @@ final class NovelDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        let pushTofeedWriteViewController = input.feedWriteButtonDidTap.map { _ in self.novelGenre.value }
-            .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
-            .asObservable()
+        let pushTofeedWriteViewController = Observable.merge(
+            input.feedWriteButtonDidTap.map { _ in self.novelGenre.value },
+            input.createFeedButtonDidTap.map { _ in self.novelGenre.value }
+        )
+        .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
+        .asObservable()
         
         let scrollContentOffset = input.scrollContentOffset
         
