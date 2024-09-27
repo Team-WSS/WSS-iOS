@@ -185,6 +185,7 @@ final class NovelDetailViewController: UIViewController {
         output.selectedTab
             .drive(with: self, onNext: { owner, tab in
                 owner.rootView.updateTab(selected: tab)
+                owner.rootView.showCreateFeedButton(show: tab == .feed)
             })
             .disposed(by: disposeBag)
         
