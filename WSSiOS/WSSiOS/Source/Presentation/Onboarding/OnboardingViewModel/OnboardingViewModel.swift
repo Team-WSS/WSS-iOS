@@ -9,7 +9,6 @@ import Foundation
 
 import RxSwift
 import RxCocoa
-import Then
 
 enum NicknameAvailablity {
     case available
@@ -26,6 +25,7 @@ final class OnboardingViewModel: ViewModelType {
     let isDuplicateCheckButtonEnabled = BehaviorRelay<Bool>(value: false)
     let isNicknameAvailable = BehaviorRelay<NicknameAvailablity>(value: .notStarted)
     let isNextButtonAvailable = BehaviorRelay<Bool>(value: false)
+    let moveToHomeViewController = PublishRelay<Void>()
     
     //MARK: - Life Cycle
     
@@ -37,6 +37,7 @@ final class OnboardingViewModel: ViewModelType {
         let nicknameTextFieldEditingDidEnd: ControlEvent<Void>
         let nicknameTextFieldText: Observable<String>
         let duplicateCheckButtonDidTap: ControlEvent<Void>
+        let nextButtonDidTap: ControlEvent<Void>
     }
     
     struct Output {
@@ -44,6 +45,7 @@ final class OnboardingViewModel: ViewModelType {
         let isDuplicateCheckButtonEnabled: Driver<Bool>
         let nicknameAvailablity: Driver<NicknameAvailablity>
         let isNextButtonAvailable: Driver<Bool>
+        let moveToHomeViewController: Driver<Void>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -86,11 +88,20 @@ final class OnboardingViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        input.nextButtonDidTap
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                // 만든 부분까지만 보여주고, 바로 홈으로 이동
+                owner.moveToHomeViewController.accept(())
+            })
+            .disposed(by: disposeBag)
+        
         return Output(
             isNicknameTextFieldEditing: isNicknameFieldEditing.asDriver(),
             isDuplicateCheckButtonEnabled: isDuplicateCheckButtonEnabled.asDriver(),
             nicknameAvailablity: isNicknameAvailable.asDriver(),
-            isNextButtonAvailable: isNextButtonAvailable.asDriver()
+            isNextButtonAvailable: isNextButtonAvailable.asDriver(),
+            moveToHomeViewController: moveToHomeViewController.asDriver(onErrorJustReturn: ())
         )
     }
 }

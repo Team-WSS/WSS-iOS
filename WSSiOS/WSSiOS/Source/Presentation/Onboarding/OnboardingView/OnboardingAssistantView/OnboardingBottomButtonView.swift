@@ -14,7 +14,7 @@ final class OnboardingBottomButtonView: UIView {
     
     //MARK: - Components
     
-    private let button = UIButton()
+    let button = UIButton()
     private let buttonLabel = UILabel()
     
     //MARK: - Life Cycle
