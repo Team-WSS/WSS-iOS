@@ -20,7 +20,7 @@ final class HomeInterestView: UIView {
     let interestCollectionView = UICollectionView(frame: .zero,
                                                   collectionViewLayout: UICollectionViewLayout())
     private let interestCollectionViewLayout = UICollectionViewFlowLayout()
-    private let unregisterView = HomeUnregisterView(.interest)
+    let unregisterView = HomeUnregisterView(.interest)
     
     //MARK: - Life Cycle
     

@@ -28,6 +28,7 @@ final class HomeViewModel: ViewModelType {
     
     struct Input {
         let announcementButtonTapped: ControlEvent<Void>
+        let registerInterestNovelButtonTapped: ControlEvent<Void>
     }
     
     //MARK: - Outputs
@@ -39,6 +40,7 @@ final class HomeViewModel: ViewModelType {
         var interestList: Observable<[InterestFeed]>
         var tasteRecommendList: Observable<[TasteRecommendNovel]>
         let navigateToAnnouncementView: Observable<Void>
+        let navigateToNormalSearchView: Observable<Void>
     }
     
     //MARK: - init
@@ -92,12 +94,14 @@ extension HomeViewModel {
         }
         
         let navigateToAnnouncementView = input.announcementButtonTapped.asObservable()
+        let navigateToNormalSearchView = input.registerInterestNovelButtonTapped.asObservable()
         
         return Output(todayPopularList: todayPopularList.asObservable(),
                       realtimePopularList: realtimePopularList.asObservable(),
                       realtimePopularData: realtimePopularDataRelay.asObservable(),
                       interestList: interestList.asObservable(),
                       tasteRecommendList: tasteRecommendList.asObservable(),
-                      navigateToAnnouncementView: navigateToAnnouncementView.asObservable())
+                      navigateToAnnouncementView: navigateToAnnouncementView,
+                      navigateToNormalSearchView: navigateToNormalSearchView)
     }
 }

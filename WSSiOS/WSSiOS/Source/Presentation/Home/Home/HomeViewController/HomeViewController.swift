@@ -90,7 +90,8 @@ final class HomeViewController: UIViewController {
     
     private func bindViewModel() {
         let input = HomeViewModel.Input(
-            announcementButtonTapped: rootView.headerView.announcementButton.rx.tap
+            announcementButtonTapped: rootView.headerView.announcementButton.rx.tap,
+            registerInterestNovelButtonTapped: rootView.interestView.unregisterView.registerButton.rx.tap
         )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -139,6 +140,15 @@ final class HomeViewController: UIViewController {
                 viewController.navigationController?.isNavigationBarHidden = false
                 viewController.hidesBottomBarWhenPushed = true
                 owner.navigationController?.pushViewController(viewController, animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        output.navigateToNormalSearchView
+            .bind(with: self, onNext: { owner, _ in
+                let normalSearchViewController = NormalSearchViewController(viewModel: NormalSearchViewModel(searchRepository: DefaultSearchRepository(searchService: DefaultSearchService())))
+                normalSearchViewController.navigationController?.isNavigationBarHidden = false
+                normalSearchViewController.hidesBottomBarWhenPushed = true
+                owner.navigationController?.pushViewController(normalSearchViewController, animated: true)
             })
             .disposed(by: disposeBag)
     }
