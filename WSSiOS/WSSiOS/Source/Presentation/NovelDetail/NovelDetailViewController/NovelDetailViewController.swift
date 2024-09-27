@@ -84,6 +84,10 @@ final class NovelDetailViewController: UIViewController {
         rootView.infoView.reviewView.keywordView.keywordCollectionView.register(
             NovelDetailInfoReviewKeywordCollectionViewCell.self,
             forCellWithReuseIdentifier: NovelDetailInfoReviewKeywordCollectionViewCell.cellIdentifier)
+        
+        rootView.feedView.feedListView.feedTableView.register(
+            NovelDetailFeedTableViewCell.self,
+            forCellReuseIdentifier: NovelDetailFeedTableViewCell.cellIdentifier)
     }
     
     private func delegate() {
@@ -153,10 +157,10 @@ final class NovelDetailViewController: UIViewController {
         
         output.pushToReviewViewController
             .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, readStatus in
-                // 작품 평가 View로 이동, readStatus버튼으로 이동한 경우, 선택한 readStatus 값은 바로 반영해줌
-                // 날짜나 별점 버튼으로 이동하는 경우 현재 readStatus를 보냄.
-                print("작품 평가 View로 이동, readStatus: \(String(describing: readStatus))")
+            .bind(with: self, onNext: { owner, result in
+                let (readStatus, novelId) = result
+                owner.pushToNovelReviewViewController(readStatus: readStatus,
+                                                      novelId: novelId)
             })
             .disposed(by: disposeBag)
         
@@ -168,9 +172,11 @@ final class NovelDetailViewController: UIViewController {
         
         output.pushTofeedWriteViewController
             .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, genre in
-                // 수다글 작성 View로 이동
-                print("수다글 작성 View로 이동, genre: \(String(describing: genre))")
+            .bind(with: self, onNext: { owner, result in
+                let (genre, novelId, novelTitle) = result
+                owner.pushToFeedEditViewController(relevantCategories: genre,
+                                                   novelId: novelId,
+                                                   novelTitle: novelTitle)
             })
             .disposed(by: disposeBag)
         
@@ -179,6 +185,7 @@ final class NovelDetailViewController: UIViewController {
         output.selectedTab
             .drive(with: self, onNext: { owner, tab in
                 owner.rootView.updateTab(selected: tab)
+                owner.rootView.showCreateFeedButton(show: tab == .feed)
             })
             .disposed(by: disposeBag)
         
@@ -220,6 +227,29 @@ final class NovelDetailViewController: UIViewController {
                 owner.rootView.infoView.updateVisibility(visibilities)
             })
             .disposed(by: disposeBag)
+        
+        //MARK: - Bind/NovelDetailFeed
+        
+        output.feedList
+            .bind(to: rootView.feedView.feedListView.feedTableView.rx.items(
+                cellIdentifier: NovelDetailFeedTableViewCell.cellIdentifier,
+                cellType: NovelDetailFeedTableViewCell.self)) { _, element, cell in
+                    cell.bindData(feed: element)
+                }
+                .disposed(by: disposeBag)
+        
+        output.feedList
+            .skip(1)
+            .subscribe(with: self, onNext: { owner, feedList in
+                owner.rootView.feedView.bindData(isEmpty: feedList.isEmpty)
+            })
+            .disposed(by: disposeBag)
+        
+        output.novelDetailFeedTableViewHeight
+            .subscribe(with: self, onNext: { owner, height in
+                owner.rootView.feedView.feedListView.updateTableViewHeight(height: height)
+            })
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Actions
@@ -250,7 +280,10 @@ final class NovelDetailViewController: UIViewController {
             feedTabBarButtonDidTap: rootView.tabBarView.feedButton.rx.tap,
             stickyInfoTabBarButtonDidTap: rootView.stickyTabBarView.infoButton.rx.tap,
             stickyFeedTabBarButtonDidTap: rootView.stickyTabBarView.feedButton.rx.tap,
-            descriptionAccordionButtonDidTap: rootView.infoView.descriptionView.accordionButton.rx.tap
+            descriptionAccordionButtonDidTap: rootView.infoView.descriptionView.accordionButton.rx.tap,
+            novelDetailFeedTableViewContentSize: rootView.feedView.feedListView.feedTableView.rx.observe(CGSize.self, "contentSize"),
+            scrollViewReachedBottom: observeReachedBottom(rootView.scrollView),
+            createFeedButtonDidTap: rootView.createFeedButton.rx.tap
         )
     }
     
@@ -284,6 +317,18 @@ final class NovelDetailViewController: UIViewController {
             NSAttributedString.Key.foregroundColor: UIColor.wssBlack,
             NSAttributedString.Key.kern: -0.6,
         ]
+    }
+    
+    private func observeReachedBottom(_ scrollView: UIScrollView) -> Observable<Bool> {
+        return scrollView.rx.contentOffset
+            .map { contentOffset in
+                let contentHeight = scrollView.contentSize.height
+                let viewHeight = scrollView.frame.size.height
+                let offsetY = contentOffset.y
+                
+                return offsetY + viewHeight >= contentHeight
+            }
+            .distinctUntilChanged()
     }
 }
 
