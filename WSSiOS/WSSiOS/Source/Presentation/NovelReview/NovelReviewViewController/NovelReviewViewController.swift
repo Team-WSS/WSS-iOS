@@ -53,7 +53,7 @@ final class NovelReviewViewController: UIViewController {
     //MARK: - UI
     
     private func setNavigationBar() {
-        self.preparationSetNavigationBar(title: "당신의 이해를 돕기 위하여", left: rootView.backButton, right: rootView.completeButton)
+        self.preparationSetNavigationBar(title: self.novelReviewViewModel.novelTite, left: rootView.backButton, right: rootView.completeButton)
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.backgroundColor = .clear

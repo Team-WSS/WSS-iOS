@@ -15,6 +15,7 @@ final class NovelReviewViewModel: ViewModelType {
     //MARK: - Properties
     
     var readStatus: ReadStatus
+    let novelTite: String
     private var selectedAttractivePointList: [String] = []
     
     private let minStarRating: Float = 0.0
@@ -36,8 +37,9 @@ final class NovelReviewViewModel: ViewModelType {
     
     //MARK: - Life Cycle
     
-    init(readStatus: ReadStatus) {
+    init(readStatus: ReadStatus, novelTitle: String) {
         self.readStatus = readStatus
+        self.novelTite = novelTitle
     }
     
     struct Input {
