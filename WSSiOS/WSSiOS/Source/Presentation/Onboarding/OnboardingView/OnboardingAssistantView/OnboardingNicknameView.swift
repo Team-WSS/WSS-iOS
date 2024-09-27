@@ -40,7 +40,7 @@ final class OnboardingNicknameView: UIView {
     //MARK: - UI
     
     private func setUI() {
-        self.backgroundColor  = .wssWhite
+        self.backgroundColor = .wssWhite
         
         titleLabel.do {
             $0.applyWSSFont(.headline1, with: StringLiterals.Onboarding.NickName.title)

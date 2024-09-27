@@ -16,6 +16,7 @@ final class OnboardingView: UIView {
     
     let progressView = OnboardingProgressView()
     let nickNameView = OnboardingNicknameView()
+    let birthGenderView = OnboardingBirthGenderView()
     
     //MARK: - Life Cycle
     
@@ -35,11 +36,14 @@ final class OnboardingView: UIView {
     
     private func setUI() {
         self.backgroundColor = .wssWhite
+        
+        nickNameView.isHidden = true
     }
     
     private func setHierarchy() {
         self.addSubviews(progressView,
-                        nickNameView)
+                         nickNameView,
+                         birthGenderView)
     }
     
     private func setLayout() {
@@ -49,6 +53,11 @@ final class OnboardingView: UIView {
         }
         
         nickNameView.snp.makeConstraints {
+            $0.top.equalTo(progressView.snp.bottom)
+            $0.bottom.horizontalEdges.equalToSuperview()
+        }
+        
+        birthGenderView.snp.makeConstraints {
             $0.top.equalTo(progressView.snp.bottom)
             $0.bottom.horizontalEdges.equalToSuperview()
         }
