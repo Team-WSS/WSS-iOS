@@ -15,15 +15,17 @@ final class NovelReviewViewModel: ViewModelType {
     
     //MARK: - Properties
     
+    private let novelReviewRepository: NovelReviewRepository
+    
     var readStatus: ReadStatus
     private let novelId: Int
-    let novelTite: String
-    private var selectedAttractivePointList: [String] = []
+    let novelTitle: String
+    
+    private var isNovelReviewExist: Bool = false
 
     private var startDate: Date?
     private var endDate: Date?
-    private var attractivePointList: [String] = []
-    var selectedKeywordList: [KeywordData] = []
+    var selectedAttractivePointList: [String] = []
     
     private let minStarRating: Float = 0.0
     private let maxStarRating: Float = 5.0
@@ -36,7 +38,6 @@ final class NovelReviewViewModel: ViewModelType {
     // Output
     
     private let popViewController = PublishRelay<Void>()
-    private let isCompleteButtonEnabled = BehaviorRelay<Bool>(value: false)
     private let readStatusListData = PublishRelay<[ReadStatus]>()
     private let readStatusData = PublishRelay<ReadStatus>()
     private let presentNovelDateSelectModalViewController = PublishRelay<(ReadStatus, Date?, Date?)>()
@@ -47,18 +48,21 @@ final class NovelReviewViewModel: ViewModelType {
     private let presentNovelKeywordSelectModalViewController = PublishRelay<[KeywordData]>()
     let selectedKeywordListData = BehaviorRelay<[KeywordData]>(value: [])
     private let selectedKeywordCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
+    private let showStopReviewingAlert = PublishRelay<Void>()
     
     //MARK: - Life Cycle
     
-    init(readStatus: ReadStatus, novelId: Int, novelTitle: String) {
+    init(novelReviewRepository: NovelReviewRepository, readStatus: ReadStatus, novelId: Int, novelTitle: String) {
+        self.novelReviewRepository = novelReviewRepository
         self.readStatus = readStatus
         self.novelId = novelId
-        self.novelTite = novelTitle
+        self.novelTitle = novelTitle
     }
     
     struct Input {
         let viewDidLoadEvent: Observable<Void>
         let backButtonDidTap: ControlEvent<Void>
+        let completeButtonDidTap: ControlEvent<Void>
         let statusCollectionViewItemSelected: Observable<IndexPath>
         let dateLabelTapGesture: Observable<UITapGestureRecognizer>
         let starRatingTapGesture: Observable<(location: CGPoint, width: CGFloat, index: Int)>
@@ -71,11 +75,11 @@ final class NovelReviewViewModel: ViewModelType {
         let novelReviewKeywordSelectedNotification: Observable<Notification>
         let novelReviewDateSelectedNotification: Observable<Notification>
         let novelReviewDateRemovedNotification: Observable<Notification>
+        let stopReviewButtonDidTap: Observable<Void>
     }
     
     struct Output {
         let popViewController: Observable<Void>
-        let isCompleteButtonEnabled: Observable<Bool>
         let readStatusListData: Observable<[ReadStatus]>
         let readStatusData: Observable<ReadStatus>
         let presentNovelDateSelectModalViewController: Observable<(ReadStatus, Date?, Date?)>
@@ -86,22 +90,72 @@ final class NovelReviewViewModel: ViewModelType {
         let presentNovelKeywordSelectModalViewController: Observable<[KeywordData]>
         let selectedKeywordListData: Observable<[KeywordData]>
         let selectedKeywordCollectionViewHeight: Observable<CGFloat>
+        let showStopReviewingAlert: Observable<Void>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         input.viewDidLoadEvent
-            .subscribe(with: self, onNext: { owner, _ in
+            .flatMapLatest {
+                self.getNovelReview(novelId: self.novelId)
+            }
+            .subscribe(with: self, onNext: { owner, data in
+                owner.isNovelReviewExist = data.status != nil
+                if data.startDate != nil || data.endDate != nil {
+                    owner.startDate = data.startDate.flatMap { owner.dateFormatter.date(from: $0) } ?? Date()
+                    owner.endDate = data.endDate.flatMap { owner.dateFormatter.date(from: $0) } ?? Date()
+                }
+                owner.startDateEndDateData.accept([owner.startDate, owner.endDate])
+                owner.starRating.accept(data.userNovelRating)
+                owner.selectedKeywordListData.accept(data.keywords)
+                owner.selectedAttractivePointList = data.attractivePoints
+                
                 owner.readStatusData.accept(owner.readStatus)
                 owner.readStatusListData.accept(ReadStatus.allCases)
-                owner.startDateEndDateData.accept([owner.startDate, owner.endDate])
                 owner.attractivePointListData.accept(AttractivePoint.allCases)
-                owner.selectedKeywordListData.accept(owner.selectedKeywordList)
             })
             .disposed(by: disposeBag)
         
         input.backButtonDidTap
+            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
+                owner.showStopReviewingAlert.accept(())
+            })
+            .disposed(by: disposeBag)
+        
+        input.completeButtonDidTap
+            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
+            .flatMapLatest {
+                let startDateString = self.readStatus != .quit ? self.startDate.map { self.dateFormatter.string(from: $0) } : nil
+                let endDateString = self.readStatus != .watching ? self.endDate.map { self.dateFormatter.string(from: $0) } : nil
+                let keywordIdList = self.selectedKeywordListData.value.map { $0.keywordId }
+                
+                if self.isNovelReviewExist {
+                    return self.putNovelReview(
+                        novelId: self.novelId,
+                        userNovelRating: self.starRating.value,
+                        status: self.readStatus.rawValue,
+                        startDate: startDateString,
+                        endDate: endDateString,
+                        attractivePoints: self.selectedAttractivePointList,
+                        keywordIds: keywordIdList
+                    )
+                } else {
+                    return self.postNovelReview(
+                        novelId: self.novelId,
+                        userNovelRating: self.starRating.value,
+                        status: self.readStatus.rawValue,
+                        startDate: startDateString,
+                        endDate: endDateString,
+                        attractivePoints: self.selectedAttractivePointList,
+                        keywordIds: keywordIdList
+                    )
+                }
+            }
+            .subscribe(with: self, onNext: { owner, _ in
+                NotificationCenter.default.post(name: NSNotification.Name("NovelReviewed"), object: nil)
                 owner.popViewController.accept(())
+            }, onError: { owner, error  in
+                print(error)
             })
             .disposed(by: disposeBag)
         
@@ -109,7 +163,6 @@ final class NovelReviewViewModel: ViewModelType {
             .subscribe(with: self, onNext: { owner, indexPath in
                 owner.readStatus = ReadStatus.allCases[indexPath.item]
                 owner.readStatusData.accept(owner.readStatus)
-                owner.isCompleteButtonEnabled.accept(true)
             })
             .disposed(by: disposeBag)
         
@@ -199,9 +252,14 @@ final class NovelReviewViewModel: ViewModelType {
                 owner.startDateEndDateData.accept([owner.startDate, owner.endDate])
             })
             .disposed(by: disposeBag)
+        
+        input.stopReviewButtonDidTap
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.popViewController.accept(())
+            })
+            .disposed(by: disposeBag)
 
         return Output(popViewController: popViewController.asObservable(),
-                      isCompleteButtonEnabled: isCompleteButtonEnabled.asObservable(),
                       readStatusListData: readStatusListData.asObservable(),
                       readStatusData: readStatusData.asObservable(),
                       presentNovelDateSelectModalViewController: presentNovelDateSelectModalViewController.asObservable(),
@@ -211,6 +269,48 @@ final class NovelReviewViewModel: ViewModelType {
                       isAttractivePointCountOverLimit: isAttractivePointCountOverLimit.asObservable(),
                       presentNovelKeywordSelectModalViewController: presentNovelKeywordSelectModalViewController.asObservable(),
                       selectedKeywordListData: selectedKeywordListData.asObservable(),
-                      selectedKeywordCollectionViewHeight: selectedKeywordCollectionViewHeight.asObservable())
+                      selectedKeywordCollectionViewHeight: selectedKeywordCollectionViewHeight.asObservable(),
+                      showStopReviewingAlert: showStopReviewingAlert.asObservable())
+    }
+    
+    //MARK: - API
+    
+    private func postNovelReview(novelId: Int,
+                                 userNovelRating: Float,
+                                 status: String,
+                                 startDate: String?,
+                                 endDate: String?,
+                                 attractivePoints: [String],
+                                 keywordIds: [Int]) -> Observable<Void> {
+        novelReviewRepository.postNovelReview(novelId: novelId,
+                                              userNovelRating: userNovelRating,
+                                              status: status,
+                                              startDate: startDate,
+                                              endDate: endDate,
+                                              attractivePoints: attractivePoints,
+                                              keywordIds: keywordIds)
+        .observe(on: MainScheduler.instance)
+    }
+    
+    private func putNovelReview(novelId: Int,
+                                 userNovelRating: Float,
+                                 status: String,
+                                 startDate: String?,
+                                 endDate: String?,
+                                 attractivePoints: [String],
+                                 keywordIds: [Int]) -> Observable<Void> {
+        novelReviewRepository.putNovelReview(novelId: novelId,
+                                              userNovelRating: userNovelRating,
+                                              status: status,
+                                              startDate: startDate,
+                                              endDate: endDate,
+                                              attractivePoints: attractivePoints,
+                                              keywordIds: keywordIds)
+        .observe(on: MainScheduler.instance)
+    }
+    
+    private func getNovelReview(novelId: Int) -> Observable<NovelReviewResult> {
+        novelReviewRepository.getNovelReview(novelId: novelId)
+            .observe(on: MainScheduler.instance)
     }
 }

@@ -82,6 +82,9 @@ final class NovelDetailViewModel: ViewModelType {
         let novelDetailFeedTableViewContentSize: Observable<CGSize?>
         let scrollViewReachedBottom: Observable<Bool>
         let createFeedButtonDidTap: ControlEvent<Void>
+        
+        //NovelReview
+        let novelReviewedNotification: Observable<Notification>
     }
     
     struct Output {
@@ -109,6 +112,9 @@ final class NovelDetailViewModel: ViewModelType {
         //NovelDetailFeed
         let feedList: Observable<[NovelDetailFeed]>
         let novelDetailFeedTableViewHeight: Observable<CGFloat>
+        
+        //NovelReview
+        let showNovelReviewedToast: Observable<Void>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -140,6 +146,25 @@ final class NovelDetailViewModel: ViewModelType {
                 owner.keywordList.accept(data.keywords)
             }, onError: { owner, error in
                 owner.novelDetailInfoData.onError(error)
+            })
+            .disposed(by: disposeBag)
+        
+        input.viewWillAppearEvent
+            .do(onNext: { _ in
+                self.isLoadable = false
+                self.lastFeedId = 0
+            })
+            .flatMapLatest { _ in
+                self.getNovelDetailFeedData(novelId: self.novelId, lastFeedId: self.lastFeedId)
+            }
+            .subscribe(with: self, onNext: { owner, data in
+                owner.isLoadable = data.isLoadable
+                if let lastFeed = data.feeds.last {
+                    owner.lastFeedId = lastFeed.feedId
+                }
+                owner.feedList.accept(data.feeds)
+            }, onError: { owner, error in
+                print("Error: \(error)")
             })
             .disposed(by: disposeBag)
         
@@ -297,6 +322,10 @@ final class NovelDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        let showNovelReviewedToast = input.novelReviewedNotification
+            .map { _ in () }
+            .asObservable()
+        
         return Output(
             detailHeaderData: novelDetailHeaderData.asObservable(),
             detailInfoData: novelDetailInfoData.asObserver(),
@@ -312,7 +341,8 @@ final class NovelDetailViewModel: ViewModelType {
             keywordList: keywordList.asDriver(),
             reviewSectionVisibilities: reviewSectionVisibilities.asDriver(),
             feedList: feedList.asObservable(),
-            novelDetailFeedTableViewHeight: novelDetailFeedTableViewHeight.asObservable()
+            novelDetailFeedTableViewHeight: novelDetailFeedTableViewHeight.asObservable(),
+            showNovelReviewedToast: showNovelReviewedToast
         )
     }
     

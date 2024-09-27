@@ -122,7 +122,13 @@
 		392A29272B4E96F30065EB97 /* UILabel+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392A29262B4E96F30065EB97 /* UILabel+.swift */; };
 		392A292F2B4F07FF0065EB97 /* RegisterNormalReadDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392A292E2B4F07FF0065EB97 /* RegisterNormalReadDateView.swift */; };
 		393102002CA54F2F002CBEA0 /* LoginButtonType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393101FF2CA54F2F002CBEA0 /* LoginButtonType.swift */; };
+		393102072CA5D369002CBEA0 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393102062CA5D369002CBEA0 /* OnboardingView.swift */; };
+		3931020A2CA5D381002CBEA0 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393102092CA5D381002CBEA0 /* OnboardingViewController.swift */; };
+		3931020C2CA5D389002CBEA0 /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3931020B2CA5D389002CBEA0 /* OnboardingViewModel.swift */; };
+		3931020E2CA5D6CB002CBEA0 /* OnboardingNicknameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3931020D2CA5D6CB002CBEA0 /* OnboardingNicknameView.swift */; };
 		3935876B2C99682400F005B4 /* LoginCarouselIndicatorDotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3935876A2C99682400F005B4 /* LoginCarouselIndicatorDotView.swift */; };
+		393CAC3C2CA6AFD8004B4DB6 /* OnboardingBottomButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393CAC3B2CA6AFD8004B4DB6 /* OnboardingBottomButtonView.swift */; };
+		393CAC402CA6D10C004B4DB6 /* OnboardingProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393CAC3F2CA6D10C004B4DB6 /* OnboardingProgressView.swift */; };
 		394CFD352CA00AD80053C8EA /* NovelDetailHeaderEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394CFD342CA00AD80053C8EA /* NovelDetailHeaderEntity.swift */; };
 		394CFD3B2CA2E7760053C8EA /* KingFisherRxHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394CFD3A2CA2E7760053C8EA /* KingFisherRxHelper.swift */; };
 		395319272BE2865A00D075F4 /* KeywordManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395319262BE2865A00D075F4 /* KeywordManager.swift */; };
@@ -395,6 +401,9 @@
 		CDC03F432CA67266002D301F /* SearchKeywordResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC03F422CA67266002D301F /* SearchKeywordResult.swift */; };
 		CDC03F452CA67421002D301F /* KeywordRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC03F442CA67421002D301F /* KeywordRepository.swift */; };
 		CDC03F472CA67BE8002D301F /* NovelKeywordSelectEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC03F462CA67BE8002D301F /* NovelKeywordSelectEmptyView.swift */; };
+		CDC03F4D2CA6C492002D301F /* NovelReviewService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC03F4C2CA6C492002D301F /* NovelReviewService.swift */; };
+		CDC03F4F2CA6C4E0002D301F /* NovelReviewRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC03F4E2CA6C4E0002D301F /* NovelReviewRepository.swift */; };
+		CDC03F512CA6C5CD002D301F /* NovelReviewResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC03F502CA6C5CD002D301F /* NovelReviewResult.swift */; };
 		CDC03F552CA71F01002D301F /* NovelKeywordSelectCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC03F542CA71F01002D301F /* NovelKeywordSelectCategoryView.swift */; };
 		CDC03F572CA721C3002D301F /* NovelKeywordSelectCategoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC03F562CA721C3002D301F /* NovelKeywordSelectCategoryListView.swift */; };
 		CDE596D62B57708D00D99DA1 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D52B57708D00D99DA1 /* UIViewController+.swift */; };
@@ -514,7 +523,13 @@
 		392A29262B4E96F30065EB97 /* UILabel+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+.swift"; sourceTree = "<group>"; };
 		392A292E2B4F07FF0065EB97 /* RegisterNormalReadDateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalReadDateView.swift; sourceTree = "<group>"; };
 		393101FF2CA54F2F002CBEA0 /* LoginButtonType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginButtonType.swift; sourceTree = "<group>"; };
+		393102062CA5D369002CBEA0 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		393102092CA5D381002CBEA0 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
+		3931020B2CA5D389002CBEA0 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
+		3931020D2CA5D6CB002CBEA0 /* OnboardingNicknameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingNicknameView.swift; sourceTree = "<group>"; };
 		3935876A2C99682400F005B4 /* LoginCarouselIndicatorDotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCarouselIndicatorDotView.swift; sourceTree = "<group>"; };
+		393CAC3B2CA6AFD8004B4DB6 /* OnboardingBottomButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingBottomButtonView.swift; sourceTree = "<group>"; };
+		393CAC3F2CA6D10C004B4DB6 /* OnboardingProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingProgressView.swift; sourceTree = "<group>"; };
 		394CFD342CA00AD80053C8EA /* NovelDetailHeaderEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailHeaderEntity.swift; sourceTree = "<group>"; };
 		394CFD3A2CA2E7760053C8EA /* KingFisherRxHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KingFisherRxHelper.swift; sourceTree = "<group>"; };
 		395319262BE2865A00D075F4 /* KeywordManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeywordManager.swift; sourceTree = "<group>"; };
@@ -785,6 +800,9 @@
 		CDC03F422CA67266002D301F /* SearchKeywordResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchKeywordResult.swift; sourceTree = "<group>"; };
 		CDC03F442CA67421002D301F /* KeywordRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeywordRepository.swift; sourceTree = "<group>"; };
 		CDC03F462CA67BE8002D301F /* NovelKeywordSelectEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelKeywordSelectEmptyView.swift; sourceTree = "<group>"; };
+		CDC03F4C2CA6C492002D301F /* NovelReviewService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelReviewService.swift; sourceTree = "<group>"; };
+		CDC03F4E2CA6C4E0002D301F /* NovelReviewRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelReviewRepository.swift; sourceTree = "<group>"; };
+		CDC03F502CA6C5CD002D301F /* NovelReviewResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelReviewResult.swift; sourceTree = "<group>"; };
 		CDC03F542CA71F01002D301F /* NovelKeywordSelectCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelKeywordSelectCategoryView.swift; sourceTree = "<group>"; };
 		CDC03F562CA721C3002D301F /* NovelKeywordSelectCategoryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelKeywordSelectCategoryListView.swift; sourceTree = "<group>"; };
 		CDE596D52B57708D00D99DA1 /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
@@ -832,6 +850,7 @@
 				2CD911472C0D88F8006B8D72 /* FeedRepository.swift */,
 				B9AC1BD72BF0BDDD006EDE92 /* NoticeRepository.swift */,
 				CDC03F442CA67421002D301F /* KeywordRepository.swift */,
+				CDC03F4E2CA6C4E0002D301F /* NovelReviewRepository.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -1108,7 +1127,8 @@
 			isa = PBXGroup;
 			children = (
 				CD8747AA2C9EEAEC00D0ADAD /* NovelReview */,
-				3959288D2C98885000E7B17B /* Onboarding */,
+				3959288E2C98885E00E7B17B /* Login */,
+				393102012CA5D2F0002CBEA0 /* Onboarding */,
 				39D4A5C42BDA4B82004FC834 /* NovelDetail */,
 				B96098832C2741DE0084F697 /* FeedDetail */,
 				CDF27CD32CA1AA560072C0F7 /* FeedEdit */,
@@ -1381,20 +1401,57 @@
 			path = Helper;
 			sourceTree = "<group>";
 		};
+		393102012CA5D2F0002CBEA0 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				393102022CA5D2FB002CBEA0 /* OnboardingView */,
+				393102042CA5D335002CBEA0 /* OnboardingViewController */,
+				393102032CA5D32C002CBEA0 /* OnboardingViewModel */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		393102022CA5D2FB002CBEA0 /* OnboardingView */ = {
+			isa = PBXGroup;
+			children = (
+				393102062CA5D369002CBEA0 /* OnboardingView.swift */,
+				393102052CA5D342002CBEA0 /* OnboardingAssistantView */,
+			);
+			path = OnboardingView;
+			sourceTree = "<group>";
+		};
+		393102032CA5D32C002CBEA0 /* OnboardingViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				3931020B2CA5D389002CBEA0 /* OnboardingViewModel.swift */,
+			);
+			path = OnboardingViewModel;
+			sourceTree = "<group>";
+		};
+		393102042CA5D335002CBEA0 /* OnboardingViewController */ = {
+			isa = PBXGroup;
+			children = (
+				393102092CA5D381002CBEA0 /* OnboardingViewController.swift */,
+			);
+			path = OnboardingViewController;
+			sourceTree = "<group>";
+		};
+		393102052CA5D342002CBEA0 /* OnboardingAssistantView */ = {
+			isa = PBXGroup;
+			children = (
+				3931020D2CA5D6CB002CBEA0 /* OnboardingNicknameView.swift */,
+				393CAC3B2CA6AFD8004B4DB6 /* OnboardingBottomButtonView.swift */,
+				393CAC3F2CA6D10C004B4DB6 /* OnboardingProgressView.swift */,
+			);
+			path = OnboardingAssistantView;
+			sourceTree = "<group>";
+		};
 		394CFD392CA2E70B0053C8EA /* Entity */ = {
 			isa = PBXGroup;
 			children = (
 				394CFD342CA00AD80053C8EA /* NovelDetailHeaderEntity.swift */,
 			);
 			path = Entity;
-			sourceTree = "<group>";
-		};
-		3959288D2C98885000E7B17B /* Onboarding */ = {
-			isa = PBXGroup;
-			children = (
-				3959288E2C98885E00E7B17B /* Login */,
-			);
-			path = Onboarding;
 			sourceTree = "<group>";
 		};
 		3959288E2C98885E00E7B17B /* Login */ = {
@@ -1921,6 +1978,7 @@
 				B96F0F9D2C29A25200DA5483 /* FeedDetailResult.swift */,
 				2CFA9A172C9D9AD500A4A820 /* UserInfoResult.swift */,
 				CDC03F422CA67266002D301F /* SearchKeywordResult.swift */,
+				CDC03F502CA6C5CD002D301F /* NovelReviewResult.swift */,
 			);
 			path = DTO;
 			sourceTree = "<group>";
@@ -1929,6 +1987,7 @@
 			isa = PBXGroup;
 			children = (
 				CDC03F3F2CA671FB002D301F /* Keyword */,
+				CDC03F4B2CA6C488002D301F /* NovelReview */,
 				2C9CBDAF2C5BB4200084481F /* Blocks */,
 				C9CF88B52C86204E00E45BF0 /* Notice */,
 				C9A3CD432C8C3B9C00B43BFB /* SearchService */,
@@ -2564,6 +2623,14 @@
 			path = Keyword;
 			sourceTree = "<group>";
 		};
+		CDC03F4B2CA6C488002D301F /* NovelReview */ = {
+			isa = PBXGroup;
+			children = (
+				CDC03F4C2CA6C492002D301F /* NovelReviewService.swift */,
+			);
+			path = NovelReview;
+			sourceTree = "<group>";
+		};
 		CDF27CD32CA1AA560072C0F7 /* FeedEdit */ = {
 			isa = PBXGroup;
 			children = (
@@ -2740,6 +2807,7 @@
 				2C536C2E2C8F1F21004C5740 /* MyPageDeleteIDReasonView.swift in Sources */,
 				395928A02C99527500E7B17B /* LoginSkipButton.swift in Sources */,
 				B971D8792C0388E0008934D8 /* SearchRepository.swift in Sources */,
+				CDC03F512CA6C5CD002D301F /* NovelReviewResult.swift in Sources */,
 				B9E565FF2C0452AA00DB51FF /* NormalSearchEmptyView.swift in Sources */,
 				B96863DA2C482E8C008CFBA5 /* DetailSearchView.swift in Sources */,
 				A18432EA2B511C4300910940 /* RecordTableViewCell.swift in Sources */,
@@ -2796,6 +2864,7 @@
 				3908376B2C32ADEA0082DC57 /* NovelDetailInfoReviewView.swift in Sources */,
 				CDE596D62B57708D00D99DA1 /* UIViewController+.swift in Sources */,
 				39BA7F772BCAC3E60045B2B7 /* keywordLabel.swift in Sources */,
+				3931020C2CA5D389002CBEA0 /* OnboardingViewModel.swift in Sources */,
 				C9D56ED62C9D2B4D00FEDFDA /* FeedDetailReplyWritingView.swift in Sources */,
 				A1654F162B540513004F78E8 /* NetworkLogger.swift in Sources */,
 				2C60306F2B54EDDD0031544C /* LibraryDescriptionView.swift in Sources */,
@@ -2850,6 +2919,7 @@
 				39CD5E082B4F2BBE00668B9A /* RegisterNormalKeywordSelectionView.swift in Sources */,
 				2C19A5002BBD56C900D4D151 /* WSSDropdownButton.swift in Sources */,
 				B96F0F902C28678800DA5483 /* FeedDetailContentView.swift in Sources */,
+				CDC03F4D2CA6C492002D301F /* NovelReviewService.swift in Sources */,
 				2CD2FE402C43E7B60033366C /* WSSAlertViewController.swift in Sources */,
 				2C8F89512C50E5200056895B /* MyPageDeleteIDReasonTableViewCell.swift in Sources */,
 				2C19A5002BBD56C900D4D151 /* WSSDropdownButton.swift in Sources */,
@@ -2865,6 +2935,7 @@
 				2CD9114E2C0D8A0B006B8D72 /* FeedUserView.swift in Sources */,
 				CD8747A12C9EB37000D0ADAD /* NovelDateSelectModalViewController.swift in Sources */,
 				39CD5E102B4FEC0F00668B9A /* RegisterNormalToggleButton.swift in Sources */,
+				3931020E2CA5D6CB002CBEA0 /* OnboardingNicknameView.swift in Sources */,
 				399258182C16DAF20063FB46 /* NovelDetailHeaderInterestFeedWriteButton.swift in Sources */,
 				CDC03F412CA67207002D301F /* KeywordService.swift in Sources */,
 				B9A0FD6C2BFCF0080004252E /* HomeRealtimePopularCollectionViewCell.swift in Sources */,
@@ -2883,6 +2954,7 @@
 				B9CEDA0D2C01C97E00E62247 /* HomeUnregisterView.swift in Sources */,
 				39599E082C356DFA00702004 /* NovelDetailInfoReviewAttractivePointView.swift in Sources */,
 				A1B903E52B58140800398890 /* UserNovelListResult.swift in Sources */,
+				3931020A2CA5D381002CBEA0 /* OnboardingViewController.swift in Sources */,
 				2C22AE722C56EAD000BF6E94 /* MyPageBlockUserTableViewCell.swift in Sources */,
 				CD1F7E0A2C99A8DC0039972C /* NovelKeywordSelectModalButtonView.swift in Sources */,
 				CDC03F472CA67BE8002D301F /* NovelKeywordSelectEmptyView.swift in Sources */,
@@ -2892,6 +2964,7 @@
 				39B75ADE2B59BA87005DD8B9 /* UIScreen+.swift in Sources */,
 				2C22AE702C56E9C100BF6E94 /* MyPageBlockUserView.swift in Sources */,
 				2C81DF892CA1512500148F97 /* MyPageChangeUserBirthView.swift in Sources */,
+				393102072CA5D369002CBEA0 /* OnboardingView.swift in Sources */,
 				B96098882C27421F0084F697 /* FeedDetailViewController.swift in Sources */,
 				C99DDFD52C86138E00EDC0C4 /* SearchBarView.swift in Sources */,
 				2CD911562C0D8A1A006B8D72 /* FeedPageBarCollectionViewCell.swift in Sources */,
@@ -2952,6 +3025,7 @@
 				A1147A8A2B506BA500141692 /* RecordHeaderAlignmentView.swift in Sources */,
 				CD3E5A962B55099E00C0A659 /* DeletePopupView.swift in Sources */,
 				CD280A932B88A6CC00AFDD90 /* TrashNovelDetailViewModel.swift in Sources */,
+				393CAC402CA6D10C004B4DB6 /* OnboardingProgressView.swift in Sources */,
 				B98748632C3581A70039ACE5 /* NormalSearchCollectionViewCell.swift in Sources */,
 				CDA5F0452C2FE41F00FCF15C /* FeedEditContentView.swift in Sources */,
 				2C22AE6E2C56E99A00BF6E94 /* MyPageBlockUserViewController.swift in Sources */,
@@ -2987,6 +3061,7 @@
 				2C81DF8B2CA15F6F00148F97 /* MyPageChangeUserBirthTableViewCell.swift in Sources */,
 				B9FE59642BF11955005815AF /* HomeInduceLoginModalView.swift in Sources */,
 				2CB613F32B575E4500FC3F89 /* MyPageInfoViewController.swift in Sources */,
+				393CAC3C2CA6AFD8004B4DB6 /* OnboardingBottomButtonView.swift in Sources */,
 				2C9CBDB12C5BB4340084481F /* BlocksService.swift in Sources */,
 				CD1F7E062C9967780039972C /* NovelKeywordSelectSearchResultView.swift in Sources */,
 				2CCBF9F22B4D347B00D787C2 /* WSSMainButton.swift in Sources */,
@@ -3091,6 +3166,7 @@
 				A1A1F9D22B4873A100705F44 /* SearchResultView.swift in Sources */,
 				2C81DF872CA150DE00148F97 /* MyPageChangeUserBirthViewController.swift in Sources */,
 				395928932C98889B00E7B17B /* LoginView.swift in Sources */,
+				CDC03F4F2CA6C4E0002D301F /* NovelReviewRepository.swift in Sources */,
 				CD8747B52C9EF31E00D0ADAD /* NovelDateSelectModalDateButtonView.swift in Sources */,
 				B9AC1BD02BF0B33E006EDE92 /* HomeNoticeViewController.swift in Sources */,
 				2C41E0CC2CA4948400FFD233 /* MyPageCountView.swift in Sources */,
