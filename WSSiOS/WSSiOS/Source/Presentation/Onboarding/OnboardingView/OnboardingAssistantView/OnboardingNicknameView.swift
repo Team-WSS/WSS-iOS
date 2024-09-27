@@ -74,7 +74,7 @@ final class OnboardingNicknameView: UIView {
         
         duplicateCheckButton.do {
             $0.backgroundColor = .wssGray70
-            $0.layer.cornerRadius = 15
+            $0.layer.cornerRadius = 12
             $0.isEnabled = false
         }
         
