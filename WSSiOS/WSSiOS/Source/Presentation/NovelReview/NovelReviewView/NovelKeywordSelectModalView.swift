@@ -20,6 +20,7 @@ final class NovelKeywordSelectModalView: UIView {
     let novelKeywordSelectSearchBarView = NovelKeywordSelectSearchBarView()
     let novelSelectedKeywordListView = NovelSelectedKeywordListView()
     private let dividerView = UIView()
+    let novelKeywordSelectEmptyView = NovelKeywordSelectEmptyView()
     let novelKeywordSelectSearchResultView = NovelKeywordSelectSearchResultView()
     let novelKeywordSelectModalButtonView = NovelKeywordSelectModalButtonView()
     
@@ -59,6 +60,14 @@ final class NovelKeywordSelectModalView: UIView {
         dividerView.do {
             $0.backgroundColor = .wssGray50
         }
+        
+        novelKeywordSelectEmptyView.do {
+            $0.isHidden = true
+        }
+        
+        novelKeywordSelectSearchResultView.do {
+            $0.isHidden = true
+        }
     }
     
     private func setHierarchy() {
@@ -68,6 +77,7 @@ final class NovelKeywordSelectModalView: UIView {
                                 novelKeywordSelectSearchBarView,
                                 novelSelectedKeywordListView,
                                 dividerView,
+                                novelKeywordSelectEmptyView,
                                 novelKeywordSelectSearchResultView,
                                 novelKeywordSelectModalButtonView)
     }
@@ -103,6 +113,10 @@ final class NovelKeywordSelectModalView: UIView {
             $0.height.equalTo(1)
         }
         
+        novelKeywordSelectEmptyView.snp.makeConstraints {
+            $0.leading.trailing.centerY.equalToSuperview()
+        }
+        
         novelKeywordSelectSearchResultView.snp.makeConstraints {
             $0.top.equalTo(novelKeywordSelectSearchBarView.snp.bottom)
             $0.leading.trailing.equalToSuperview()
@@ -118,9 +132,11 @@ final class NovelKeywordSelectModalView: UIView {
     //MARK: - Custom Method
     
     func showSearchResultView(show: Bool) {
-        novelKeywordSelectSearchResultView.do {
-            $0.isHidden = !show
-        }
+        novelKeywordSelectSearchResultView.isHidden = !show
+    }
+    
+    func showEmptyView(show: Bool) {
+        novelKeywordSelectEmptyView.isHidden = !show
     }
     
     func updateNovelKeywordSelectModalViewLayout(isSelectedKeyword: Bool) {

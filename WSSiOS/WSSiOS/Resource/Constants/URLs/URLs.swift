@@ -123,4 +123,12 @@ enum URLs {
         static let sosoPick = "/soso-picks"
         static let normalSearch = "/novels"
     }
+    
+    enum Keyword {
+        static let searchKeyword = "/keywords"
+    }
+    
+    enum Contact {
+        static let kakao = "http://pf.kakao.com/_kHxlWG"
+    }
 }

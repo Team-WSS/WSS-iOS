@@ -158,9 +158,10 @@ final class NovelDetailViewController: UIViewController {
         output.pushToReviewViewController
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, result in
-                let (readStatus, novelId) = result
+                let (readStatus, novelId, novelTitle) = result
                 owner.pushToNovelReviewViewController(readStatus: readStatus,
-                                                      novelId: novelId)
+                                                      novelId: novelId,
+                                                      novelTitle: novelTitle)
             })
             .disposed(by: disposeBag)
         

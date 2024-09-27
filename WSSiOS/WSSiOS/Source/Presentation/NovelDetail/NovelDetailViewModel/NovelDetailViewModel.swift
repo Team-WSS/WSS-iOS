@@ -95,7 +95,7 @@ final class NovelDetailViewModel: ViewModelType {
         let showLargeNovelCoverImage: Driver<Bool>
         let isUserNovelInterested: Driver<Bool>
         let pushTofeedWriteViewController: Observable<(genre: [NewNovelGenre], novelId: Int, novelTitle: String)>
-        let pushToReviewViewController: Observable<(readStatus: ReadStatus, novelId: Int)>
+        let pushToReviewViewController: Observable<(readStatus: ReadStatus, novelId: Int, novelTitle: String)>
         
         //Tab
         let selectedTab: Driver<Tab>
@@ -166,7 +166,8 @@ final class NovelDetailViewModel: ViewModelType {
                 let selectedReadStatus = $0 ?? self.readStatus.value
                 guard let selectedReadStatus else { throw RxError.noElements }
                 return (readStatus: selectedReadStatus,
-                        novelId: self.novelId)
+                        novelId: self.novelId,
+                        novelTitle: self.novelTitle)
             }
             .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
             .asObservable()
