@@ -16,10 +16,16 @@ final class OnboardingBirthGenderView: UIView {
     
     private let titleLabel = UILabel()
     private let descriptionLabel = UILabel()
+    
     private let genderTitleLabel = UILabel()
     private let genderButtonStackView = UIStackView()
     private let genderButtons = OnboardingGender.allCases.map { OnboardingGenderButton(gender: $0) }
+    
     private let birthTitleLabel = UILabel()
+    private let selectBirthButton = UIButton()
+    private let selectedBirthLabel = UILabel()
+    private let selectBirthButtonImageView = UIImageView()
+    
 
     let bottomButton = OnboardingBottomButtonView()
     
@@ -69,6 +75,23 @@ final class OnboardingBirthGenderView: UIView {
             $0.textColor = .wssBlack
         }
         
+        selectBirthButton.do {
+            $0.backgroundColor = .wssGray50
+            $0.layer.cornerRadius = 8
+        }
+        
+        selectedBirthLabel.do {
+            $0.applyWSSFont(.body2, with: StringLiterals.Onboarding.BirthGender.birthPlaceholder)
+            $0.textColor = .wssGray200
+            $0.isUserInteractionEnabled = false
+        }
+        
+        selectBirthButtonImageView.do {
+            $0.image = .icChveronDown
+            $0.contentMode = .scaleAspectFit
+            $0.isUserInteractionEnabled = false
+        }
+        
         bottomButton.do {
             $0.setText(text: StringLiterals.Onboarding.nextButton)
         }
@@ -80,8 +103,11 @@ final class OnboardingBirthGenderView: UIView {
                          genderTitleLabel,
                          genderButtonStackView,
                          birthTitleLabel,
+                         selectBirthButton,
                          bottomButton)
         genderButtons.forEach { genderButtonStackView.addArrangedSubview($0) }
+        selectBirthButton.addSubviews(selectedBirthLabel,
+                                      selectBirthButtonImageView)
     }
     
     private func setLayout() {
@@ -109,6 +135,23 @@ final class OnboardingBirthGenderView: UIView {
         birthTitleLabel.snp.makeConstraints {
             $0.top.equalTo(genderButtonStackView.snp.bottom).offset(40)
             $0.leading.equalToSuperview().inset(20)
+        }
+        
+        selectBirthButton.snp.makeConstraints {
+            $0.top.equalTo(birthTitleLabel.snp.bottom).offset(6)
+            $0.horizontalEdges.equalToSuperview().inset(20)
+            $0.height.equalTo(43)
+        }
+        
+        selectedBirthLabel.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.leading.equalToSuperview().inset(20)
+        }
+        
+        selectBirthButtonImageView.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalToSuperview().inset(20)
+            $0.size.equalTo(16)
         }
         
         bottomButton.snp.makeConstraints {
