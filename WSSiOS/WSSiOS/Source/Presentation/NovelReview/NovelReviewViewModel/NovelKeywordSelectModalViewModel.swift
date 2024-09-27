@@ -171,8 +171,11 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
         
         input.contactButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
-                //키워드 문의 뷰로 이동
-                print("contactButtonDidTap")
+                if let url = URL(string: URLs.Contact.kakao) {
+                    if UIApplication.shared.canOpenURL(url) {
+                        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                    }
+                }
             })
             .disposed(by: disposeBag)
         
