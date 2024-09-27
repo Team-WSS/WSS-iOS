@@ -175,8 +175,7 @@ final class NovelDetailViewController: UIViewController {
         output.pushTofeedWriteViewController
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, genre in
-                // 수다글 작성 View로 이동
-                print("수다글 작성 View로 이동, genre: \(String(describing: genre))")
+                owner.pushToFeedEditViewController(relevantCategories: genre)
             })
             .disposed(by: disposeBag)
         
