@@ -56,7 +56,7 @@ final class LoginbannerCollectionViewCell: UICollectionViewCell {
         bindData(image: nil)
       }
     
-    func bindData(image: UIImage?) {
+    func bindData(image: UIImage) {
         bannerImageView.image = image
     }
 }
