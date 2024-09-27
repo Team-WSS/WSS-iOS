@@ -97,7 +97,7 @@ final class NovelKeywordSelectCategoryView: UIView {
         }
         
         arrowImageView.do {
-//            $0.image = .icChevronDown
+            $0.image = .icChevronDown
             $0.isUserInteractionEnabled = false
         }
     }
@@ -147,7 +147,7 @@ final class NovelKeywordSelectCategoryView: UIView {
             
             arrowImageView.snp.makeConstraints {
                 $0.center.equalToSuperview()
-                $0.size.equalTo(44)
+                $0.size.equalTo(16)
             }
         }
     }
@@ -155,11 +155,13 @@ final class NovelKeywordSelectCategoryView: UIView {
     //MARK: - Custom Methos
     
     func expandCategoryCollectionView() {
+        self.isExpanded = !self.isExpanded
+        
         categoryCollectionView.snp.updateConstraints {
-            $0.height.equalTo(isExpanded ? 78 : self.collectionViewHeight)
+            $0.height.equalTo(isExpanded ? self.collectionViewHeight : 78)
         }
         
-        self.isExpanded = !self.isExpanded
+        arrowImageView.image = isExpanded ? .icChevronUp : .icChevronDown
     }
 }
 
