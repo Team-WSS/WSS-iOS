@@ -42,7 +42,6 @@ final class FeedUserView: UIView {
         }
         
         userNicknameLabel.do {
-            $0.font = .Title2
             $0.textColor = .wssBlack
         }
     }
@@ -68,11 +67,6 @@ final class FeedUserView: UIView {
     
     func bindData(imageURL: String, nickname: String) {
         userImageView.kfSetImage(url: imageURL)
-        userNicknameLabel.do {
-            $0.text = nickname.truncateText(maxLength: 10)
-            $0.makeAttribute(with: $0.text)?
-                .kerning(kerningPixel: -0.6)
-                .applyAttribute()
-        }
+        userNicknameLabel.applyWSSFont(.title2, with: nickname.truncateText(maxLength: 10))
     }
 }

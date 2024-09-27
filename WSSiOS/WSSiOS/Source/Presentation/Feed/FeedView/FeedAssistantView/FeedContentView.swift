@@ -53,14 +53,8 @@ final class FeedContentView: UIView {
     
     func bindData(content: String, isSpolier: Bool) {
         detailContentLabel.do {
-            $0.text = isSpolier ? StringLiterals.Feed.spoilerText : content
-            $0.makeAttribute(with: $0.text)?
-                .lineHeight(1.5)
-                .kerning(kerningPixel: -0.6)
-                .applyAttribute()
+            $0.applyWSSFont(.body2, with: isSpolier ? StringLiterals.Feed.spoilerText : content)
             $0.textColor = isSpolier ? .wssSecondary100 : .wssBlack
-            
-            $0.font = .Body2
             $0.textAlignment = .natural
             $0.numberOfLines = 5
             $0.lineBreakMode = .byTruncatingTail

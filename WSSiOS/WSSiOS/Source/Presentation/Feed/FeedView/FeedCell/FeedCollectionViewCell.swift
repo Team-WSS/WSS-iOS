@@ -54,14 +54,13 @@ final class FeedCollectionViewCell: UICollectionViewCell {
         }
         
         restTimeLabel.do {
-            $0.font = .Body5
             $0.textColor = .wssBlack
         }
         
         modifiedLabel.do {
-            $0.text = StringLiterals.Feed.modifiedText
-            $0.font = .Body5
-            $0.textColor = .Gray200
+            $0.applyWSSFont(.body5, with: StringLiterals.Feed.modifiedText)
+            $0.textColor = .wssGray200
+            $0.isHidden = true
         }
         
         dropdownIcon.do {
@@ -156,7 +155,7 @@ final class FeedCollectionViewCell: UICollectionViewCell {
         userView.bindData(imageURL: data.avatarImage,
                           nickname: data.nickname)
         
-        restTimeLabel.text = data.createdDate
+        restTimeLabel.applyWSSFont(.body5, with: data.createdDate)
         modifiedLabel.isHidden = !data.isModified
         
         detailContentView.bindData(content: data.feedContent,
@@ -169,15 +168,13 @@ final class FeedCollectionViewCell: UICollectionViewCell {
         reactView.bindData(likeRating: data.likeCount,
                            isLiked: data.isLiked,
                            commentRating: data.commentCount)
-
+        
         let categoriesText = data.relevantCategories
             .compactMap{
                 FeedGenre(rawValue: $0)?.withKorean
             }.joined(separator: ", ")
         
-        genreLabel.do {
-            $0.applyWSSFont(.body2, with: categoriesText)
-        }
+        genreLabel.applyWSSFont(.body2, with: categoriesText)
     }
 }
 
