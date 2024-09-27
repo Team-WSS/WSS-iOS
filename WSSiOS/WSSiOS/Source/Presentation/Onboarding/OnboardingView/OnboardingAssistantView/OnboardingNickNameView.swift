@@ -68,11 +68,13 @@ final class OnboardingNickNameView: UIView {
         
         textFieldInnerButton.do {
             $0.setImage(.icCancelDark, for: .normal)
+            $0.isHidden = true
         }
         
         duplicateCheckButton.do {
             $0.backgroundColor = .wssGray70
             $0.layer.cornerRadius = 15
+            $0.isEnabled = false
         }
         
         duplicateCheckButtonLabel.do {
@@ -142,6 +144,17 @@ final class OnboardingNickNameView: UIView {
         nickNameTextField.do {
             $0.backgroundColor = isEditing ? .wssWhite : .wssGray50
             $0.layer.borderWidth = isEditing ? 1 : 0
+        }
+    }
+    
+    func updateDuplicateCheckButton(isEnabled: Bool) {
+        duplicateCheckButton.do {
+            $0.isEnabled = isEnabled
+            $0.backgroundColor = isEnabled ? .wssPrimary50 : .wssGray70
+        }
+        
+        duplicateCheckButtonLabel.do {
+            $0.textColor = isEnabled ? .wssPrimary100 : .wssGray200
         }
     }
 }

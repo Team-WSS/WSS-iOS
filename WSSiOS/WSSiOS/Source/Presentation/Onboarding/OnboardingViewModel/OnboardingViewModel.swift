@@ -16,6 +16,7 @@ final class OnboardingViewModel: ViewModelType {
     //MARK: - Properties
     
     let isKeywordTextFieldEditing = BehaviorRelay<Bool>(value: false)
+    let isDuplicateCheckButtonEnabled = BehaviorRelay<Bool>(value: false)
     
     //MARK: - Life Cycle
     
@@ -30,24 +31,32 @@ final class OnboardingViewModel: ViewModelType {
     
     struct Output {
         let isKeywordTextFieldEditing: Driver<Bool>
+        let isDuplicateCheckButtonEnabled: Driver<Bool>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         input.nickNameTextFieldEditingDidBegin
-            .bind(with: self, onNext:  { owner, _ in
+            .bind(with: self, onNext: { owner, _ in
                 owner.isKeywordTextFieldEditing.accept(true)
             })
             .disposed(by: disposeBag)
         
         input.nickNameTextFieldEditingDidEnd
             .withLatestFrom(input.nickNameTextFieldText)
-            .bind(with: self, onNext:  { owner, value in
-                owner.isKeywordTextFieldEditing.accept(!value.isEmpty)
+            .bind(with: self, onNext: { owner, text in
+                owner.isKeywordTextFieldEditing.accept(!text.isEmpty)
+            })
+            .disposed(by: disposeBag)
+        
+        input.nickNameTextFieldText
+            .bind(with: self, onNext: { owner, text in
+                owner.isDuplicateCheckButtonEnabled.accept(!text.isEmpty)
             })
             .disposed(by: disposeBag)
         
         return Output(
-            isKeywordTextFieldEditing: isKeywordTextFieldEditing.asDriver()
+            isKeywordTextFieldEditing: isKeywordTextFieldEditing.asDriver(),
+            isDuplicateCheckButtonEnabled: isDuplicateCheckButtonEnabled.asDriver()
         )
     }
     

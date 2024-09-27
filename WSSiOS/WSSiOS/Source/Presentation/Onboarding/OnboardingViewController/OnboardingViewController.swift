@@ -92,6 +92,12 @@ final class OnboardingViewController: UIViewController {
                 owner.rootView.nickNameView.updatenickNameTextField(isEditing: isEditing)
             })
             .disposed(by: disposeBag)
+        
+        output.isDuplicateCheckButtonEnabled
+            .drive(with: self, onNext: { owner, isEnabled in
+                owner.rootView.nickNameView.updateDuplicateCheckButton(isEnabled: isEnabled)
+            })
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Actions
