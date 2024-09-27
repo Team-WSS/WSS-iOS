@@ -103,12 +103,12 @@ final class TrashNovelDetailViewController: UIViewController {
             object: nil
         )
         
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(self.avatarUnlocked(_:)),
-            name: NSNotification.Name("AvatarUnlocked"),
-            object: nil
-        )
+//        NotificationCenter.default.addObserver(
+//            self,
+//            selector: #selector(self.avatarUnlocked(_:)),
+//            name: NSNotification.Name("AvatarUnlocked"),
+//            object: nil
+//        )
         
         NotificationCenter.default.addObserver(
             self,
@@ -334,9 +334,9 @@ final class TrashNovelDetailViewController: UIViewController {
         showToast(.memoDelete)
     }
     
-    @objc func avatarUnlocked(_ notification: Notification) {
-        showToast(.avatarUnlock)
-    }
+//    @objc func avatarUnlocked(_ notification: Notification) {
+//        showToast(.avatarUnlock)
+//    }
     
     @objc func deletedNovel(_ notification: Notification) {
         self.navigationController?.popViewController(animated: true)

@@ -14,7 +14,9 @@ final class NovelDetailFeedView: UIButton {
     
     //MARK: - Components
     
-    private let dummyLabel = UILabel()
+    private let stackView = UIStackView()
+    private let emptyView = NovelDetailFeedEmptyView()
+    let feedListView = NovelDetailFeedListView()
     
     //MARK: - Life Cycle
     
@@ -33,27 +35,32 @@ final class NovelDetailFeedView: UIButton {
     //MARK: - UI
     
     private func setUI() {
-        self.do {
-            $0.backgroundColor = .wssWhite
-        }
-        
-        dummyLabel.do {
-            $0.applyWSSFont(.headline1, with: "Feed View")
-            $0.textColor = .wssGray80
+        stackView.do {
+            $0.axis = .vertical
+            $0.alignment = .fill
         }
     }
     
     private func setHierarchy() {
-        self.addSubview(dummyLabel)
+        self.addSubview(stackView)
+        stackView.addArrangedSubview(feedListView)
     }
     
     private func setLayout() {
-        self.snp.makeConstraints {
-            $0.height.equalTo(500)
+        stackView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
-        
-        dummyLabel.snp.makeConstraints {
-            $0.center.equalToSuperview()
+    }
+    
+    //MARK: - Data
+    
+    func bindData(isEmpty: Bool) {
+        if isEmpty {
+            feedListView.removeFromSuperview()
+            stackView.addArrangedSubview(emptyView)
+        } else {
+            emptyView.removeFromSuperview()
+            stackView.addArrangedSubview(feedListView)
         }
     }
 }

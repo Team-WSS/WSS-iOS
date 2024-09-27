@@ -40,12 +40,17 @@ final class FeedEditViewController: UIViewController {
      override func loadView() {
          self.view = rootView
      }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        setNavigationBar()
+    }
 
      override func viewDidLoad() {
          super.viewDidLoad()
          
          hideTabBar()
-         setNavigationBar()
          register()
          delegate()
          bindViewModel()
@@ -54,7 +59,7 @@ final class FeedEditViewController: UIViewController {
     //MARK: - UI
     
     private func setNavigationBar() {
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.rootView.backButton)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.rootView.completeButton)
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)

@@ -52,7 +52,7 @@ final class NovelKeywordSelectSearchResultCollectionViewCell: UICollectionViewCe
     
     //MARK: - Data
     
-    func bindData(keyword: String) {
-        self.keywordLink.setText(keyword)
+    func bindData(keyword: KeywordData) {
+        self.keywordLink.setText(keyword.keywordName)
     }
 }
