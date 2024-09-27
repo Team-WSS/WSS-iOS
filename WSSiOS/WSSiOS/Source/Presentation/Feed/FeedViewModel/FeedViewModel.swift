@@ -23,7 +23,7 @@ final class FeedViewModel: ViewModelType {
     }
     
     struct Input {
-       
+        
     }
     
     struct Output {
@@ -32,16 +32,15 @@ final class FeedViewModel: ViewModelType {
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
-      
+        
         feedRepository.getFeedData(category: "romance",
-                                   lastFeedId: 1,
-                                   size: 5)
-                    .subscribe(with: self, onNext: { owner, data in
-                        output.feedList.accept(data.feeds)
-                    }, onError: { owner, error in
-                        print(error)
-                    })
-                    .disposed(by: disposeBag)
+                                   lastFeedId: 1)
+        .subscribe(with: self, onNext: { owner, data in
+            output.feedList.accept(data.feeds)
+        }, onError: { owner, error in
+            print(error)
+        })
+        .disposed(by: disposeBag)
         
         return output
     }
@@ -51,10 +50,7 @@ final class FeedViewModel: ViewModelType {
     
     //MARK: - API
     
-//    private func getFeedData(avatar: Int) -> Observable<TotalFeed> {
-//        return self.feedRepository.getFeedData(category: "romance",
-//                                               lastFeedId: -1,
-//                                               size: 5)
-//    }
-    
+    private func getFeedData(category: String, lastFeedId: Int) -> Observable<TotalFeed> {
+        return self.feedRepository.getFeedData(category: category, lastFeedId: lastFeedId)
+    }
 }
