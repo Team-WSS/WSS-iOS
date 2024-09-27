@@ -31,6 +31,7 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
     private let keywordCategoryListData = PublishRelay<[KeywordCategory]>()
     private let isKeywordCountOverLimit = PublishRelay<IndexPath>()
     private let showEmptyView = PublishRelay<Bool>()
+    private let showCategoryListView = PublishRelay<Bool>()
     
     //MARK: - Life Cycle
     
@@ -68,6 +69,7 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
         let keywordCategoryListData: Observable<[KeywordCategory]>
         let isKeywordCountOverLimit: Observable<IndexPath>
         let showEmptyView: Observable<Bool>
+        let showCategoryListView: Observable<Bool>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -94,6 +96,7 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
         input.keywordTextFieldEditingDidBegin
             .subscribe(with: self, onNext: { owner, _ in
                 owner.isKeywordTextFieldEditing.accept(true)
+                owner.showCategoryListView.accept(false)
             })
             .disposed(by: disposeBag)
         
@@ -107,6 +110,9 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
             .subscribe(with: self, onNext: { owner, _ in
                 owner.enteredText.accept("")
                 owner.showEmptyView.accept(false)
+                owner.showCategoryListView.accept(true)
+                owner.isKeywordTextFieldEditing.accept(false)
+                owner.endEditing.accept(())
             })
             .disposed(by: disposeBag)
         
@@ -125,11 +131,20 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
         })
         .withLatestFrom(enteredText)
         .flatMapLatest { enteredText in
-            self.searchKeyword(query: enteredText)
+            if enteredText.isEmpty {
+                return self.searchKeyword()
+            } else {
+                return self.searchKeyword(query: enteredText)
+            }
         }
         .subscribe(with: self, onNext: { owner, data in
-            owner.keywordSearchResultList = data.categories.flatMap { $0.keywords }
-            owner.keywordSearchResultListData.accept(owner.keywordSearchResultList)
+            print(data)
+            if owner.enteredText.value.isEmpty {
+                owner.keywordCategoryListData.accept(data.categories)
+            } else {
+                owner.keywordSearchResultList = data.categories.flatMap { $0.keywords }
+                owner.keywordSearchResultListData.accept(owner.keywordSearchResultList)
+            }
         }, onError: { owner, error in
             print(error)
         })
@@ -185,6 +200,7 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
                 owner.enteredText.accept("")
                 owner.keywordSearchResultListData.accept([])
                 owner.showEmptyView.accept(false)
+                owner.showCategoryListView.accept(true)
             })
             .disposed(by: disposeBag)
         
@@ -213,7 +229,8 @@ final class NovelKeywordSelectModalViewModel: ViewModelType {
                       keywordSearchResultListData: keywordSearchResultListData.asObservable(),
                       keywordCategoryListData: keywordCategoryListData.asObservable(),
                       isKeywordCountOverLimit: isKeywordCountOverLimit.asObservable(),
-                      showEmptyView: showEmptyView.asObservable())
+                      showEmptyView: showEmptyView.asObservable(),
+                      showCategoryListView: showCategoryListView.asObservable())
     }
     
     //MARK: - API

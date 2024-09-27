@@ -156,6 +156,7 @@ final class NovelKeywordSelectModalViewController: UIViewController {
                 owner.keywordCategoryList = keywordCategoryListData
                 owner.keywordCategoryListData.accept(owner.keywordCategoryList)
                 owner.setupKeywordCategoryStackView()
+                owner.rootView.showCategoryListView(show: true)
             })
             .disposed(by: disposeBag)
         
@@ -169,6 +170,12 @@ final class NovelKeywordSelectModalViewController: UIViewController {
         output.showEmptyView
             .subscribe(with: self, onNext: { owner, show in
                 owner.rootView.showEmptyView(show: show)
+            })
+            .disposed(by: disposeBag)
+        
+        output.showCategoryListView
+            .subscribe(with: self, onNext: { owner, show in
+                owner.rootView.showCategoryListView(show: show)
             })
             .disposed(by: disposeBag)
     }
