@@ -47,7 +47,7 @@ final class HomeUnregisterView: UIView {
     //MARK: - UI Components
     
     private var titleLabel = UILabel()
-    private var registerButton = UIButton()
+    var registerButton = UIButton()
     private let registerButtonLabel = UILabel()
     
     //MARK: - Life Cycle
