@@ -83,7 +83,7 @@ extension FeedGenreViewController: UICollectionViewDelegateFlowLayout {
         guard let feeds = try? feedData.value, indexPath.item < feeds.count 
         else { return CGSize(width: UIScreen.main.bounds.width, height: 289) }
         
-        let isSpolier = feeds[indexPath.row].isSpolier
+        let isSpolier = feeds[indexPath.row].isSpoiler
         let content = isSpolier ? StringLiterals.Feed.spoilerText : feeds[indexPath.row].feedContent
         let width = UIScreen.main.bounds.width
         

@@ -159,7 +159,7 @@ final class FeedCollectionViewCell: UICollectionViewCell {
         modifiedLabel.isHidden = !data.isModified
         
         detailContentView.bindData(content: data.feedContent,
-                                   isSpolier: data.isSpolier)
+                                   isSpolier: data.isSpoiler)
         
         novelView.bindData(title: data.title,
                            rating: data.novelRating,

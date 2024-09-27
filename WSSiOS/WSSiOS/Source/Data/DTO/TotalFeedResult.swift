@@ -14,10 +14,10 @@ struct TotalFeed: Codable {
 }
 
 struct TotalFeeds: Codable {
+    let feedId: Int
     let userId: Int
     let nickname: String
     let avatarImage: String
-    let feedId: Int
     let createdDate: String
     let feedContent: String
     let likeCount: Int
@@ -28,7 +28,7 @@ struct TotalFeeds: Codable {
     let novelRatingCount: Int
     let novelRating: Float
     let relevantCategories: [String]
-    let isSpolier: Bool
+    let isSpoiler: Bool
     let isModified: Bool
     let isMyFeed: Bool
 }
