@@ -72,6 +72,7 @@ final class NovelKeywordSelectModalViewController: UIViewController {
             updatedEnteredText: rootView.novelKeywordSelectSearchBarView.keywordTextField.rx.text.orEmpty.distinctUntilChanged().asObservable(),
             keywordTextFieldEditingDidBegin: rootView.novelKeywordSelectSearchBarView.keywordTextField.rx.controlEvent(.editingDidBegin).asControlEvent(),
             keywordTextFieldEditingDidEnd: rootView.novelKeywordSelectSearchBarView.keywordTextField.rx.controlEvent(.editingDidEnd).asControlEvent(),
+            keywordTextFieldEditingDidEndOnExit: rootView.novelKeywordSelectSearchBarView.keywordTextField.rx.controlEvent(.editingDidEndOnExit).asControlEvent(),
             searchCancelButtonDidTap: rootView.novelKeywordSelectSearchBarView.searchCancelButton.rx.tap,
             closeButtonDidTap: rootView.closeButton.rx.tap,
             searchButtonDidTap: rootView.novelKeywordSelectSearchBarView.searchButton.rx.tap,
@@ -79,7 +80,8 @@ final class NovelKeywordSelectModalViewController: UIViewController {
             searchResultCollectionViewItemSelected: rootView.novelKeywordSelectSearchResultView.searchResultCollectionView.rx.itemSelected.asObservable(),
             searchResultCollectionViewItemDeselected: rootView.novelKeywordSelectSearchResultView.searchResultCollectionView.rx.itemDeselected.asObservable(),
             resetButtonDidTap: rootView.novelKeywordSelectModalButtonView.resetButton.rx.tap,
-            selectButtonDidTap: rootView.novelKeywordSelectModalButtonView.selectButton.rx.tap
+            selectButtonDidTap: rootView.novelKeywordSelectModalButtonView.selectButton.rx.tap,
+            contactButtonDidTap: rootView.novelKeywordSelectEmptyView.contactButton.rx.tap
         )
         
         let output = self.novelKeywordSelectModalViewModel.transform(from: input, disposeBag: self.disposeBag)
@@ -124,6 +126,7 @@ final class NovelKeywordSelectModalViewController: UIViewController {
         output.keywordSearchResultListData
             .subscribe(with: self, onNext: { owner, searchResultList in
                 owner.rootView.showSearchResultView(show: !searchResultList.isEmpty)
+                owner.rootView.showEmptyView(show: searchResultList.isEmpty)
             })
             .disposed(by: disposeBag)
         
@@ -131,7 +134,7 @@ final class NovelKeywordSelectModalViewController: UIViewController {
             .bind(to: rootView.novelKeywordSelectSearchResultView.searchResultCollectionView.rx.items(cellIdentifier: NovelKeywordSelectSearchResultCollectionViewCell.cellIdentifier, cellType: NovelKeywordSelectSearchResultCollectionViewCell.self)) { item, element, cell in
                 let indexPath = IndexPath(item: item, section: 0)
                 
-                if self.novelKeywordSelectModalViewModel.selectedKeywordList.contains(element) {
+                if self.novelKeywordSelectModalViewModel.selectedKeywordList.contains(where: { $0.keywordId == element.keywordId }) {
                     self.rootView.novelKeywordSelectSearchResultView.searchResultCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
                 } else {
                     self.rootView.novelKeywordSelectSearchResultView.searchResultCollectionView.deselectItem(at: indexPath, animated: false)
@@ -146,6 +149,12 @@ final class NovelKeywordSelectModalViewController: UIViewController {
                 owner.showToast(.selectionOverLimit(count: 20))
             })
             .disposed(by: disposeBag)
+        
+        output.showEmptyView
+            .subscribe(with: self, onNext: { owner, show in
+                owner.rootView.showEmptyView(show: show)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
@@ -155,7 +164,7 @@ extension NovelKeywordSelectModalViewController: UICollectionViewDelegateFlowLay
         if collectionView.tag == 1 {
             var text: String?
             
-            text = self.novelKeywordSelectModalViewModel.selectedKeywordList[indexPath.item]
+            text = self.novelKeywordSelectModalViewModel.selectedKeywordList[indexPath.item].keywordName
             
             guard let unwrappedText = text else {
                 return CGSize(width: 0, height: 0)
@@ -166,7 +175,7 @@ extension NovelKeywordSelectModalViewController: UICollectionViewDelegateFlowLay
         } else if collectionView.tag == 2 {
             var text: String?
             
-            text = self.novelKeywordSelectModalViewModel.keywordSearchResultList[indexPath.item]
+            text = self.novelKeywordSelectModalViewModel.keywordSearchResultList[indexPath.item].keywordName
             
             guard let unwrappedText = text else {
                 return CGSize(width: 0, height: 0)

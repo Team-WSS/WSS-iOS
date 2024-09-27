@@ -16,6 +16,8 @@ final class HomeViewModel: ViewModelType {
     
     private let recommendRepository: RecommendRepository
     private let disposeBag = DisposeBag()
+    private let isLoggedIn: Bool
+    private let showInduceLoginModalView = BehaviorRelay<Bool>(value: false)
     
     private let todayPopularList = PublishSubject<[TodayPopularNovel]>()
     private let realtimePopularList = PublishSubject<[RealtimePopularFeed]>()
@@ -27,6 +29,10 @@ final class HomeViewModel: ViewModelType {
     
     struct Input {
         let announcementButtonTapped: ControlEvent<Void>
+        let registerInterestNovelButtonTapped: ControlEvent<Void>
+        let setPreferredGenresButtonTapped: ControlEvent<Void>
+        let induceModalViewLoginButtonTapped: ControlEvent<Void>
+        let induceModalViewCancelButtonTapped: ControlEvent<Void>
     }
     
     //MARK: - Outputs
@@ -38,12 +44,16 @@ final class HomeViewModel: ViewModelType {
         var interestList: Observable<[InterestFeed]>
         var tasteRecommendList: Observable<[TasteRecommendNovel]>
         let navigateToAnnouncementView: Observable<Void>
+        let navigateToNormalSearchView: Observable<Void>
+        let navigateToLoginView: Observable<Void>
+        let showInduceLoginModalView: Driver<Bool>
     }
     
     //MARK: - init
     
-    init(recommendRepository: RecommendRepository) {
+    init(recommendRepository: RecommendRepository, isLoggedIn: Bool) {
         self.recommendRepository = recommendRepository
+        self.isLoggedIn = isLoggedIn
     }
 }
 
@@ -71,29 +81,48 @@ extension HomeViewModel {
             })
             .disposed(by: disposeBag)
         
-        recommendRepository.getInterestNovels()
-            .subscribe(with: self, onNext: { owner, data in
-                owner.interestList.onNext(data.recommendFeeds)
-            }, onError: { owner, error in
-                owner.interestList.onError(error)
+        if isLoggedIn {
+            recommendRepository.getInterestNovels()
+                .subscribe(with: self, onNext: { owner, data in
+                    owner.interestList.onNext(data.recommendFeeds)
+                }, onError: { owner, error in
+                    owner.interestList.onError(error)
+                })
+                .disposed(by: disposeBag)
+            
+            recommendRepository.getTasteRecommendNovels()
+                .subscribe(with: self, onNext: { owner, data in
+                    owner.tasteRecommendList.onNext(data.tasteNovels)
+                }, onError: { owner, error in
+                    owner.tasteRecommendList.onError(error)
+                })
+                .disposed(by: disposeBag)
+        }
+        
+        input.setPreferredGenresButtonTapped
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.showInduceLoginModalView.accept(true)
             })
             .disposed(by: disposeBag)
-        
-        recommendRepository.getTasteRecommendNovels()
-            .subscribe(with: self, onNext: { owner, data in
-                owner.tasteRecommendList.onNext(data.tasteNovels)
-            }, onError: { owner, error in
-                owner.tasteRecommendList.onError(error)
+
+        input.induceModalViewCancelButtonTapped
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.showInduceLoginModalView.accept(false)
             })
             .disposed(by: disposeBag)
         
         let navigateToAnnouncementView = input.announcementButtonTapped.asObservable()
+        let navigateToNormalSearchView = input.registerInterestNovelButtonTapped.asObservable()
+        let navigateToLoginView = input.induceModalViewLoginButtonTapped.asObservable()
         
         return Output(todayPopularList: todayPopularList.asObservable(),
                       realtimePopularList: realtimePopularList.asObservable(),
                       realtimePopularData: realtimePopularDataRelay.asObservable(),
                       interestList: interestList.asObservable(),
                       tasteRecommendList: tasteRecommendList.asObservable(),
-                      navigateToAnnouncementView: navigateToAnnouncementView.asObservable())
+                      navigateToAnnouncementView: navigateToAnnouncementView,
+                      navigateToNormalSearchView: navigateToNormalSearchView,
+                      navigateToLoginView: navigateToLoginView,
+                      showInduceLoginModalView: showInduceLoginModalView.asDriver())
     }
 }

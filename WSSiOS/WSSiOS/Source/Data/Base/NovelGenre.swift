@@ -136,6 +136,35 @@ enum NewNovelGenre: String, CaseIterable {
             return "error"
         }
     }
+    
+    static func withKoreanRawValue(from genre: String) -> NewNovelGenre {
+        switch genre {
+        case "전체":
+            return .all
+        case "판타지":
+            return .fantasy
+        case "현판":
+            return .modernFantasy
+        case "무협":
+            return .wuxia
+        case  "드라마":
+            return .drama
+        case "미스터리":
+            return .mystery
+        case "라노벨":
+            return .lightNovel
+        case "로맨스":
+            return .romance
+        case "로판":
+            return .romanceFantasy
+        case  "BL":
+            return .bl
+        case "기타":
+            return .etc
+        default :
+            return .error
+        }
+    }
 }
 
 extension NewNovelGenre {

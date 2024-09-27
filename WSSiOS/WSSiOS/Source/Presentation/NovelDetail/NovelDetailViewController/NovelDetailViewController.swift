@@ -9,8 +9,6 @@ import UIKit
 
 import RxSwift
 import RxCocoa
-import SnapKit
-import Then
 
 /// Detail View
 final class NovelDetailViewController: UIViewController {
@@ -86,6 +84,10 @@ final class NovelDetailViewController: UIViewController {
         rootView.infoView.reviewView.keywordView.keywordCollectionView.register(
             NovelDetailInfoReviewKeywordCollectionViewCell.self,
             forCellWithReuseIdentifier: NovelDetailInfoReviewKeywordCollectionViewCell.cellIdentifier)
+        
+        rootView.feedView.feedListView.feedTableView.register(
+            NovelDetailFeedTableViewCell.self,
+            forCellReuseIdentifier: NovelDetailFeedTableViewCell.cellIdentifier)
     }
     
     private func delegate() {
@@ -101,11 +103,15 @@ final class NovelDetailViewController: UIViewController {
     }
     
     private func bindViewModelOutput(_ output: NovelDetailViewModel.Output) {
+        
+        //MARK: - Bind/Total
+        
         output.detailHeaderData
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
                 owner.rootView.bindHeaderData(data)
                 owner.navigationTitle = data.novelTitle
+                owner.setNavigationBar()
             }, onError: { owner, error in
                 print(error)
             })
@@ -134,11 +140,14 @@ final class NovelDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.backButtonEnabled
+        output.popToLastViewController
+            .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
+        
+        //MARK: - Bind/NovelDetailHeader
         
         output.showLargeNovelCoverImage
             .drive(with: self, onNext: { owner, isShow in
@@ -146,21 +155,46 @@ final class NovelDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.pushToReviewViewController
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, result in
+                let (readStatus, novelId, novelTitle) = result
+                owner.pushToNovelReviewViewController(readStatus: readStatus,
+                                                      novelId: novelId,
+                                                      novelTitle: novelTitle)
+            })
+            .disposed(by: disposeBag)
+        
+        output.isUserNovelInterested
+            .drive(with: self, onNext: { owner, isInterested in
+                owner.rootView.headerView.interestReviewButton.updateInterestButtonState(isInterested)
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushTofeedWriteViewController
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, result in
+                let (genre, novelId, novelTitle) = result
+                owner.pushToFeedEditViewController(relevantCategories: genre,
+                                                   novelId: novelId,
+                                                   novelTitle: novelTitle)
+            })
+            .disposed(by: disposeBag)
+        
+        //MARK: - Bind/Tab
+        
         output.selectedTab
             .drive(with: self, onNext: { owner, tab in
                 owner.rootView.updateTab(selected: tab)
+                owner.rootView.showCreateFeedButton(show: tab == .feed)
             })
             .disposed(by: disposeBag)
+        
+        //MARK: - Bind/NovelDetailInfo
         
         output.isInfoDescriptionExpended
             .drive(with: self, onNext: { owner, isExpended in
                 owner.rootView.infoView.descriptionView.updateAccordionButton(isExpended)
-                
-                let stickyoffset = owner.rootView.headerView.frame.size.height - owner.view.safeAreaInsets.top
-                let point = CGPoint(x: 0, y: stickyoffset)
-                if !isExpended {
-                    owner.rootView.scrollView.rx.contentOffset.onNext(point)
-                }
             })
             .disposed(by: disposeBag)
         
@@ -194,23 +228,72 @@ final class NovelDetailViewController: UIViewController {
                 owner.rootView.infoView.updateVisibility(visibilities)
             })
             .disposed(by: disposeBag)
+        
+        //MARK: - Bind/NovelDetailFeed
+        
+        output.feedList
+            .bind(to: rootView.feedView.feedListView.feedTableView.rx.items(
+                cellIdentifier: NovelDetailFeedTableViewCell.cellIdentifier,
+                cellType: NovelDetailFeedTableViewCell.self)) { _, element, cell in
+                    cell.bindData(feed: element)
+                }
+                .disposed(by: disposeBag)
+        
+        output.feedList
+            .skip(1)
+            .subscribe(with: self, onNext: { owner, feedList in
+                owner.rootView.feedView.bindData(isEmpty: feedList.isEmpty)
+            })
+            .disposed(by: disposeBag)
+        
+        output.novelDetailFeedTableViewHeight
+            .subscribe(with: self, onNext: { owner, height in
+                owner.rootView.feedView.feedListView.updateTableViewHeight(height: height)
+            })
+            .disposed(by: disposeBag)
+        
+        //MARK: - Bind/NovelReview
+        
+        output.showNovelReviewedToast
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.showToast(.novelReviewed)
+            })
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Actions
     
     private func createViewModelInput() -> NovelDetailViewModel.Input {
+        let reviewResultButtonDidTap = Observable<ReadStatus?>.merge(
+            rootView.headerView.reviewResultView.readStatusButtons
+                .map{ button in
+                    button.rx.tap.map { button.readStatus }
+                }
+            + rootView.headerView.reviewResultView.readInfoButtons
+                .map{
+                    button in
+                    button.rx.tap.map { nil }
+                })
+        
         return NovelDetailViewModel.Input(
-            viewWillAppearEvent:  viewWillAppearEvent.asObservable(),
+            viewWillAppearEvent: viewWillAppearEvent.asObservable(),
             scrollContentOffset: rootView.scrollView.rx.contentOffset,
             backButtonDidTap: rootView.backButton.rx.tap,
             novelCoverImageButtonDidTap: rootView.headerView.coverImageButton.rx.tap,
             largeNovelCoverImageDismissButtonDidTap: rootView.largeNovelCoverImageButton.dismissButton.rx.tap,
             largeNovelCoverImageBackgroundDidTap: rootView.largeNovelCoverImageButton.rx.tap,
+            reviewResultButtonDidTap: reviewResultButtonDidTap,
+            interestButtonDidTap: rootView.headerView.interestReviewButton.interestButton.rx.tap,
+            feedWriteButtonDidTap: rootView.headerView.interestReviewButton.feedWriteButton.rx.tap,
             infoTabBarButtonDidTap: rootView.tabBarView.infoButton.rx.tap,
             feedTabBarButtonDidTap: rootView.tabBarView.feedButton.rx.tap,
             stickyInfoTabBarButtonDidTap: rootView.stickyTabBarView.infoButton.rx.tap,
             stickyFeedTabBarButtonDidTap: rootView.stickyTabBarView.feedButton.rx.tap,
-            descriptionAccordionButtonDidTap: rootView.infoView.descriptionView.accordionButton.rx.tap
+            descriptionAccordionButtonDidTap: rootView.infoView.descriptionView.accordionButton.rx.tap,
+            novelDetailFeedTableViewContentSize: rootView.feedView.feedListView.feedTableView.rx.observe(CGSize.self, "contentSize"),
+            scrollViewReachedBottom: observeReachedBottom(rootView.scrollView),
+            createFeedButtonDidTap: rootView.createFeedButton.rx.tap,
+            novelReviewedNotification: NotificationCenter.default.rx.notification(Notification.Name("NovelReviewed")).asObservable()
         )
     }
     
@@ -244,6 +327,18 @@ final class NovelDetailViewController: UIViewController {
             NSAttributedString.Key.foregroundColor: UIColor.wssBlack,
             NSAttributedString.Key.kern: -0.6,
         ]
+    }
+    
+    private func observeReachedBottom(_ scrollView: UIScrollView) -> Observable<Bool> {
+        return scrollView.rx.contentOffset
+            .map { contentOffset in
+                let contentHeight = scrollView.contentSize.height
+                let viewHeight = scrollView.frame.size.height
+                let offsetY = contentOffset.y
+                
+                return offsetY + viewHeight >= contentHeight
+            }
+            .distinctUntilChanged()
     }
 }
 

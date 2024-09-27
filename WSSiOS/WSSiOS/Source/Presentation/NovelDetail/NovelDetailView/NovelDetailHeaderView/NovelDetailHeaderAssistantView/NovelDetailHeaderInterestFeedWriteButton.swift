@@ -1,5 +1,5 @@
 //
-//  NovelDetailHeaderInterestReviewButton.swift
+//  NovelDetailHeaderInterestFeedWriteButton.swift
 //  WSSiOS
 //
 //  Created by 이윤학 on 6/10/24.
@@ -10,20 +10,21 @@ import UIKit
 import SnapKit
 import Then
 
-final class NovelDetailHeaderInterestReviewButton: UIView {
+final class NovelDetailHeaderInterestFeedWriteButton: UIView {
     
     //MARK: - Components
+    
     private let buttonStackView = UIStackView()
     
-    private let interestButton = UIButton()
+    let interestButton = UIButton()
     private let interestContentView = UIView()
     private let interestImageView = UIImageView()
     private let interestLabel = UILabel()
     
-    private let reviewButton = UIButton()
-    private let reviewContentView = UIView()
-    private let reviewImageView = UIImageView()
-    private let reviewLabel = UILabel()
+    let feedWriteButton = UIButton()
+    private let feedWriteContentView = UIView()
+    private let feedWriteImageView = UIImageView()
+    private let feedWriteLabel = UILabel()
     
     //MARK: - Life Cycle
     
@@ -68,19 +69,19 @@ final class NovelDetailHeaderInterestReviewButton: UIView {
             }
         }
         
-        reviewButton.do {
+        feedWriteButton.do {
             $0.backgroundColor = .wssPrimary100
             $0.layer.cornerRadius = 15
             
-            reviewContentView.do {
+            feedWriteContentView.do {
                 $0.isUserInteractionEnabled = false
                 
-                reviewImageView.do {
+                feedWriteImageView.do {
                     $0.image = .icReviewWrite
                 }
                 
-                reviewLabel.do {
-                    $0.applyWSSFont(.body4, with: StringLiterals.NovelDetail.Header.review)
+                feedWriteLabel.do {
+                    $0.applyWSSFont(.body4, with: StringLiterals.NovelDetail.Header.feedWrite)
                     $0.textColor = .wssWhite
                 }
             }
@@ -90,13 +91,13 @@ final class NovelDetailHeaderInterestReviewButton: UIView {
     private func setHierarchy() {
         self.addSubview(buttonStackView)
         buttonStackView.addArrangedSubviews(interestButton,
-                                            reviewButton)
+                                            feedWriteButton)
         interestButton.addSubview(interestContentView)
         interestContentView.addSubviews(interestImageView,
                                         interestLabel)
-        reviewButton.addSubview(reviewContentView)
-        reviewContentView.addSubviews(reviewImageView,
-                                      reviewLabel)
+        feedWriteButton.addSubview(feedWriteContentView)
+        feedWriteContentView.addSubviews(feedWriteImageView,
+                                      feedWriteLabel)
     }
     
     private func setLayout() {
@@ -128,20 +129,20 @@ final class NovelDetailHeaderInterestReviewButton: UIView {
             }
         }
         
-        reviewButton.snp.makeConstraints {
+        feedWriteButton.snp.makeConstraints {
             $0.verticalEdges.equalToSuperview()
             
-            reviewContentView.snp.makeConstraints {
+            feedWriteContentView.snp.makeConstraints {
                 $0.center.equalToSuperview()
                 
-                reviewImageView.snp.makeConstraints {
+                feedWriteImageView.snp.makeConstraints {
                     $0.leading.equalToSuperview()
                     $0.size.equalTo(20)
                     $0.verticalEdges.equalToSuperview()
                 }
                 
-                reviewLabel.snp.makeConstraints {
-                    $0.leading.equalTo(reviewImageView.snp.trailing).offset(9)
+                feedWriteLabel.snp.makeConstraints {
+                    $0.leading.equalTo(feedWriteImageView.snp.trailing).offset(9)
                     $0.centerY.equalToSuperview()
                     $0.trailing.equalToSuperview().inset(6)
                 }
@@ -151,8 +152,8 @@ final class NovelDetailHeaderInterestReviewButton: UIView {
     
     //MARK: - Data
     
-    func bindData(_ data: NovelDetailHeaderResult) {
-        if data.isUserNovelInterest {
+    func updateInterestButtonState(_ isUserNovelInterest: Bool) {
+        if isUserNovelInterest {
             interestButton.backgroundColor = .wssPrimary50
             interestImageView.image = .icReviewInterest
         } else {
