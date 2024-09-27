@@ -23,6 +23,7 @@ final class SearchViewModel: ViewModelType {
     struct Input {
         let searhBarDidTap: Observable<UITapGestureRecognizer>
         let induceButtonDidTap: Observable<UITapGestureRecognizer>
+        let sosoPickCellSelected: Observable<IndexPath>
     }
     
     //MARK: - Outputs
@@ -31,6 +32,7 @@ final class SearchViewModel: ViewModelType {
         var sosoPickList = BehaviorRelay<[SosoPickNovel]>(value: [])
         let searchBarEnabled = PublishRelay<Bool>()
         let induceButtonEnabled = PublishRelay<Bool>()
+        let navigateToNovelDetailView = PublishRelay<IndexPath>()
     }
     
     //MARK: - init
@@ -66,6 +68,12 @@ extension SearchViewModel {
         input.induceButtonDidTap
             .subscribe(onNext: { _ in
                 output.induceButtonEnabled.accept(true)
+            })
+            .disposed(by: disposeBag)
+        
+        input.sosoPickCellSelected
+            .subscribe(onNext: { indexPath in
+                output.navigateToNovelDetailView.accept(indexPath)
             })
             .disposed(by: disposeBag)
         
