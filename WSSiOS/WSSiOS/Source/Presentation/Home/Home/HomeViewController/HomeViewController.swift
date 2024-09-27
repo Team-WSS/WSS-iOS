@@ -45,7 +45,6 @@ final class HomeViewController: UIViewController {
         super.viewWillAppear(animated)
         
         showTabBar()
-        navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
     override func viewDidLoad() {
@@ -61,6 +60,7 @@ final class HomeViewController: UIViewController {
     
     private func setUI() {
         self.view.backgroundColor = .wssWhite
+        navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
     //MARK: - Bind
