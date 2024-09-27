@@ -102,6 +102,7 @@ final class LoginViewController: UIViewController {
             .bind(with: self, onNext: { owner, _ in
                 // 온보딩 뷰로 이동
                 print("온보딩 뷰로 이동")
+                print("Token: \(APIConstants.testToken)")
             })
             .disposed(by: disposeBag)
     }
