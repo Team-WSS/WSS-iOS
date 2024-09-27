@@ -19,8 +19,8 @@ final class NovelDetailHeaderView: UIView {
     private let stackView = UIStackView()
     let coverImageButton = NovelDetailHeaderCoverImageButton()
     private let novelInfoView = NovelDetailHeaderNovelInfoView()
-    private let reviewResultView = NovelDetailHeaderReviewResultView()
-    private let interestReviewButton = NovelDetailHeaderInterestReviewButton()
+    let reviewResultView = NovelDetailHeaderReviewResultView()
+    let interestReviewButton = NovelDetailHeaderInterestFeedWriteButton()
     
     //MARK: - Life Cycle
     
@@ -90,11 +90,11 @@ final class NovelDetailHeaderView: UIView {
     
     //MARK: - Data
     
-    func bindData(_ data: NovelDetailHeaderResult) {
-        bannerBackgroundImageView.bindData(data)
-        coverImageButton.bindData(data)
+    func bindData(_ data: NovelDetailHeaderEntity) {
+        bannerBackgroundImageView.bindData(data.novelImage)
+        coverImageButton.bindData(data.novelImage, data.novelGenreImage)
         novelInfoView.bindData(data)
-        interestReviewButton.bindData(data)
+        interestReviewButton.updateInterestButtonState(data.isUserNovelInterest)
         reviewResultView.bindData(data)
     }
 }

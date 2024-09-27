@@ -52,7 +52,7 @@ final class NovelReviewAttractivePointCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Data
     
-    func bindData(attractivePoint: AttractivePoints) {
+    func bindData(attractivePoint: AttractivePoint) {
         self.keywordLink.setText(attractivePoint.koreanString)
     }
 }

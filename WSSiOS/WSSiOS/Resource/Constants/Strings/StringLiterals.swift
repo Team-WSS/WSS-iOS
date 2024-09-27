@@ -42,6 +42,12 @@ enum StringLiterals {
         }
     }
     
+    enum Alert {
+        static let logoutTitle = "로그아웃 할까요?"
+        static let cancel = "취소"
+        static let logout = "로그아웃"
+    }
+    
     enum Home {
         enum Title {
             static let todayPopular = "오늘의 인기작"
@@ -316,9 +322,7 @@ enum StringLiterals {
             static let complete = "  ·  완결작  ·  "
             static let inSeries = "  ·  연재중  ·  "
             static let interest = "관심"
-            static let review = "나도 한마디"
-            static let dateFormat = "yy. MM. dd"
-            static let KoreaTimeZone = "ko_KR"
+            static let feedWrite = "나도 한마디"
             
             enum Loading {
                 static let novelTitle = "작품 제목"

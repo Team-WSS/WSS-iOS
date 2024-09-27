@@ -22,8 +22,11 @@ final class NovelDetailViewModel: ViewModelType {
     private let viewWillAppearEvent = BehaviorRelay<Bool>(value: false)
     
     //NovelDetailHeader
-    private let novelDetailHeaderData = PublishSubject<NovelDetailHeaderResult>()
+    private let novelDetailHeaderData = PublishSubject<NovelDetailHeaderEntity>()
     private let showLargeNovelCoverImage = BehaviorRelay<Bool>(value: false)
+    private let isUserNovelInterested = BehaviorRelay<Bool>(value: false)
+    private let readStatus = BehaviorRelay<ReadStatus?>(value: nil)
+    private let novelGenre = BehaviorRelay<[NewNovelGenre]>(value: [])
     
     //Tab
     private let selectedTab = BehaviorRelay<Tab>(value: Tab.info)
@@ -37,34 +40,54 @@ final class NovelDetailViewModel: ViewModelType {
     
     //MARK: - Life Cycle
     
-    init(detailRepository: NovelDetailRepository, novelId: Int = 0) {
-        self.novelDetailRepository = detailRepository
+    init(novelDetailRepository: NovelDetailRepository, novelId: Int = 0) {
+        self.novelDetailRepository = novelDetailRepository
         self.novelId = novelId
     }
     
     //MARK: - Transform
     
     struct Input {
+        //Total
         let viewWillAppearEvent: Observable<Bool>
         let scrollContentOffset: ControlProperty<CGPoint>
         let backButtonDidTap: ControlEvent<Void>
+        
+        //NovelDetailHeader
         let novelCoverImageButtonDidTap: ControlEvent<Void>
         let largeNovelCoverImageDismissButtonDidTap: ControlEvent<Void>
         let largeNovelCoverImageBackgroundDidTap: ControlEvent<Void>
+        let reviewResultButtonDidTap: Observable<ReadStatus?>
+        let interestButtonDidTap: ControlEvent<Void>
+        let feedWriteButtonDidTap: ControlEvent<Void>
+        
+        //Tab
         let infoTabBarButtonDidTap: ControlEvent<Void>
         let feedTabBarButtonDidTap: ControlEvent<Void>
         let stickyInfoTabBarButtonDidTap: ControlEvent<Void>
         let stickyFeedTabBarButtonDidTap: ControlEvent<Void>
+        
+        //NovelDetailInfo
         let descriptionAccordionButtonDidTap: ControlEvent<Void>
     }
     
     struct Output {
-        let detailHeaderData: Observable<NovelDetailHeaderResult>
+        //Total
+        let detailHeaderData: Observable<NovelDetailHeaderEntity>
         let detailInfoData: Observable<NovelDetailInfoResult>
         let scrollContentOffset: ControlProperty<CGPoint>
-        let backButtonEnabled: Observable<Void>
+        let popToLastViewController: Observable<Void>
+        
+        //NovelDetailHeader
         let showLargeNovelCoverImage: Driver<Bool>
+        let isUserNovelInterested: Driver<Bool>
+        let pushTofeedWriteViewController: Observable<[NewNovelGenre]>
+        let pushToReviewViewController: Observable<ReadStatus>
+        
+        //Tab
         let selectedTab: Driver<Tab>
+        
+        //NovelDetailInfo
         let isInfoDescriptionExpended: Driver<Bool>
         let platformList: Driver<[Platform]>
         let keywordList: Driver<[Keyword]>
@@ -78,6 +101,12 @@ final class NovelDetailViewModel: ViewModelType {
             }
             .subscribe(with: self, onNext: { owner, data in
                 owner.novelDetailHeaderData.onNext(data)
+                owner.isUserNovelInterested.accept(data.isUserNovelInterest)
+                owner.readStatus.accept(data.readStatus)
+                
+                owner.novelGenre.accept(data.novelGenre.split{ $0 == "/"}
+                    .map{ String($0) }
+                    .map { NewNovelGenre.withKoreanRawValue(from: $0) })
             }, onError: { owner, error in
                 owner.novelDetailHeaderData.onError(error)
             })
@@ -114,9 +143,40 @@ final class NovelDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        let pushToReviewViewController = input.reviewResultButtonDidTap
+            .map {
+                let selectedReadStatus = $0 ?? self.readStatus.value
+                guard let selectedReadStatus else { throw RxError.noElements }
+                return selectedReadStatus
+            }
+            .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
+            .asObservable()
+        
+        input.interestButtonDidTap
+            .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
+            .withUnretained(isUserNovelInterested)
+            .withLatestFrom(isUserNovelInterested)
+            .flatMapLatest{ isInterested in
+                if isInterested {
+                    self.novelDetailRepository.deleteUserInterest(novelId: self.novelId)
+                } else {
+                    self.novelDetailRepository.postUserInterest(novelId: self.novelId)
+                }
+            }
+            .bind(with: self, onNext: { owner, _ in
+                owner.isUserNovelInterested.accept(!owner.isUserNovelInterested.value)
+            })
+            .disposed(by: disposeBag)
+        
+        let pushTofeedWriteViewController = input.feedWriteButtonDidTap.map { _ in self.novelGenre.value }
+            .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
+            .asObservable()
+        
         let scrollContentOffset = input.scrollContentOffset
         
-        let backButtonDidTap = input.backButtonDidTap.asObservable()
+        let backButtonDidTap = input.backButtonDidTap
+            .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
+            .asObservable()
         
         input.infoTabBarButtonDidTap
             .bind(with: self, onNext: { owner, _ in
@@ -172,8 +232,11 @@ final class NovelDetailViewModel: ViewModelType {
             detailHeaderData: novelDetailHeaderData.asObservable(),
             detailInfoData: novelDetailInfoData.asObserver(),
             scrollContentOffset: scrollContentOffset,
-            backButtonEnabled: backButtonDidTap,
+            popToLastViewController: backButtonDidTap,
             showLargeNovelCoverImage: showLargeNovelCoverImage.asDriver(),
+            isUserNovelInterested: isUserNovelInterested.asDriver(),
+            pushTofeedWriteViewController: pushTofeedWriteViewController,
+            pushToReviewViewController: pushToReviewViewController,
             selectedTab: selectedTab.asDriver(),
             isInfoDescriptionExpended: isInfoDescriptionExpended.asDriver(),
             platformList: platformList.asDriver(),
@@ -188,11 +251,11 @@ final class NovelDetailViewModel: ViewModelType {
         guard indexPath.item < keywordList.value.count else {
             return nil
         }
-       return "\(keywordList.value[indexPath.item].keywordName) \(keywordList.value[indexPath.item].keywordCount)"
+        return "\(keywordList.value[indexPath.item].keywordName) \(keywordList.value[indexPath.item].keywordCount)"
     }
 }
 
-enum ReviewSectionVisibility: Hashable {
+enum ReviewSectionVisibility {
     case attractivepoint
     case keyword
     case graph

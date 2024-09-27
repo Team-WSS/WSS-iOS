@@ -40,7 +40,7 @@ final class NovelReviewViewModel: ViewModelType {
     private let presentNovelDateSelectModalViewController = PublishRelay<(ReadStatus, Date?, Date?)>()
     private let startDateEndDateData = PublishRelay<[Date?]>()
     private let starRating = BehaviorRelay<Float>(value: 0.0)
-    private let attractivePointListData = PublishRelay<[AttractivePoints]>()
+    private let attractivePointListData = PublishRelay<[AttractivePoint]>()
     private let isAttractivePointCountOverLimit = PublishRelay<IndexPath>()
     private let presentNovelKeywordSelectModalViewController = PublishRelay<[String]>()
     let selectedKeywordListData = BehaviorRelay<[String]>(value: [])
@@ -77,7 +77,7 @@ final class NovelReviewViewModel: ViewModelType {
         let presentNovelDateSelectModalViewController: Observable<(ReadStatus, Date?, Date?)>
         let startDateEndDateData: Observable<[Date?]>
         let starRating: Observable<Float>
-        let attractivePointListData: Observable<[AttractivePoints]>
+        let attractivePointListData: Observable<[AttractivePoint]>
         let isAttractivePointCountOverLimit: Observable<IndexPath>
         let presentNovelKeywordSelectModalViewController: Observable<[String]>
         let selectedKeywordListData: Observable<[String]>
@@ -141,14 +141,14 @@ final class NovelReviewViewModel: ViewModelType {
                 if owner.selectedAttractivePointList.count >= owner.attractivePointLimit {
                     owner.isAttractivePointCountOverLimit.accept(indexPath)
                 } else {
-                    owner.selectedAttractivePointList.append(AttractivePoints.allCases[indexPath.item].rawValue)
+                    owner.selectedAttractivePointList.append(AttractivePoint.allCases[indexPath.item].rawValue)
                 }
             })
             .disposed(by: disposeBag)
         
         input.attractivePointCollectionViewItemDeselected
             .subscribe(with: self, onNext: { owner, indexPath in
-                owner.selectedAttractivePointList.removeAll { $0 == AttractivePoints.allCases[indexPath.item].rawValue }
+                owner.selectedAttractivePointList.removeAll { $0 == AttractivePoint.allCases[indexPath.item].rawValue }
             })
             .disposed(by: disposeBag)
         
