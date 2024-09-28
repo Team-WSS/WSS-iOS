@@ -41,6 +41,7 @@ final class HomeViewModel: ViewModelType {
         let todayPopularCellSelected: ControlEvent<IndexPath>
         let interestCellSelected: ControlEvent<IndexPath>
         let tasteRecommendCellSelected: ControlEvent<IndexPath>
+        let tasteRecommendCollectionViewContentSize: Observable<CGSize?>
     }
     
     //MARK: - Outputs
@@ -56,6 +57,7 @@ final class HomeViewModel: ViewModelType {
         let navigateToLoginView: Observable<Void>
         let showInduceLoginModalView: Driver<Bool>
         let navigateToNovelDetailInfoView: Observable<(IndexPath, Int)>
+        let tasteRecommendCollectionViewHeight: Driver<CGFloat>
     }
     
     //MARK: - init
@@ -151,6 +153,9 @@ extension HomeViewModel {
             tasteRecommendCellIndexPath.map { indexPath in (indexPath, 2) }
         )
         
+        let tasteRecommendCollectionViewHeight = input.tasteRecommendCollectionViewContentSize
+            .map { $0?.height ?? 0 }.asDriver(onErrorJustReturn: 0)
+        
         return Output(todayPopularList: todayPopularList.asObservable(),
                       realtimePopularList: realtimePopularList.asObservable(),
                       realtimePopularData: realtimePopularDataRelay.asObservable(),
@@ -160,6 +165,7 @@ extension HomeViewModel {
                       navigateToNormalSearchView: navigateToNormalSearchView,
                       navigateToLoginView: navigateToLoginView,
                       showInduceLoginModalView: showInduceLoginModalView.asDriver(),
-                      navigateToNovelDetailInfoView: navigateToNovelDetailInfoView)
+                      navigateToNovelDetailInfoView: navigateToNovelDetailInfoView,
+                      tasteRecommendCollectionViewHeight: tasteRecommendCollectionViewHeight)
     }
 }

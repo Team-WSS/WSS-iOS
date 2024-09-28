@@ -94,7 +94,7 @@ final class HomeTasteRecommendView: UIView {
             tasteRecommendCollectionView.snp.makeConstraints {
                 $0.top.equalTo(subTitleLabel.snp.bottom).offset(20)
                 $0.leading.trailing.equalToSuperview().inset(20)
-                $0.height.equalTo(1591)
+                $0.height.equalTo(0)
                 $0.bottom.equalToSuperview()
             }
         }
@@ -104,6 +104,14 @@ final class HomeTasteRecommendView: UIView {
                 $0.leading.trailing.equalToSuperview().inset(20)
                 $0.bottom.equalToSuperview().inset(56)
             }
+        }
+    }
+    
+    //MARK: - Custom Method
+    
+    func updateCollectionViewHeight(height: CGFloat) {
+        tasteRecommendCollectionView.snp.updateConstraints {
+            $0.height.equalTo(height)
         }
     }
 }

@@ -100,7 +100,8 @@ final class HomeViewController: UIViewController {
             induceModalViewCancelButtonTapped: rootView.induceLoginModalView.cancelButton.rx.tap,
             todayPopularCellSelected: rootView.todayPopularView.todayPopularCollectionView.rx.itemSelected,
             interestCellSelected: rootView.interestView.interestCollectionView.rx.itemSelected,
-            tasteRecommendCellSelected: rootView.tasteRecommendView.tasteRecommendCollectionView.rx.itemSelected
+            tasteRecommendCellSelected: rootView.tasteRecommendView.tasteRecommendCollectionView.rx.itemSelected,
+            tasteRecommendCollectionViewContentSize: rootView.tasteRecommendView.tasteRecommendCollectionView.rx.observe(CGSize.self, "contentSize")
         )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -206,6 +207,13 @@ final class HomeViewController: UIViewController {
                 owner.pushToDetailViewController(novelId: novelId)
             })
             .disposed(by: disposeBag)
+        
+        output.tasteRecommendCollectionViewHeight
+            .drive(with: self, onNext: { owner, height in
+                owner.rootView.tasteRecommendView.updateCollectionViewHeight(height: height)
+            })
+            .disposed(by: disposeBag)
+        
     }
     
     //MARK: - Custom Method
