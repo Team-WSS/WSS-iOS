@@ -329,6 +329,14 @@ extension UIViewController {
     func pushToSettingViewController() {
         let viewController = MyPageSettingViewController()
         viewController.hidesBottomBarWhenPushed = true
+        
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func pushToMyPageEditViewController() {
+        let viewController = MyPageEditProfileViewController(viewModel: MyPageEditProfileViewModel())
+        
+        viewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 }
