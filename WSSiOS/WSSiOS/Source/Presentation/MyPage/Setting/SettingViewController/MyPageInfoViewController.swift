@@ -52,7 +52,7 @@ final class MyPageInfoViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        
         setNavigationBar()
         hideTabBar()
         swipeBackGesture()

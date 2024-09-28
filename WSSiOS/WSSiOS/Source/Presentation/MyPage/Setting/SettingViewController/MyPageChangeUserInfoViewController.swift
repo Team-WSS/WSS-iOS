@@ -59,12 +59,18 @@ final class MyPageChangeUserInfoViewController: UIViewController {
     //MARK: - Bind
     
     private func bindViewModel() {
+        let getNotificationUserBirth = NotificationCenter.default.rx.notification(NSNotification.Name("UserBirth"))
+            .compactMap { notification -> Int? in
+                return notification.userInfo?["userBirth"] as? Int
+            }
+        
         let input = MyPageChangeUserInfoViewModel.Input(
             maleButtonTapped: rootView.genderMaleButton.rx.tap,
             femaleButtonTapped: rootView.genderFemaleButton.rx.tap,
             birthViewTapped: rootView.birthButtonView.rx.tapGesture(),
             backButtonTapped: rootView.backButton.rx.tap,
-            completeButtonTapped: rootView.completeButton.rx.tap)
+            completeButtonTapped: rootView.completeButton.rx.tap,
+            getNotificationUserBirth: getNotificationUserBirth)
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -96,6 +102,12 @@ final class MyPageChangeUserInfoViewController: UIViewController {
             .subscribe(with: self, onNext: { owner, _ in
                 owner.delegate?.updateUserInfo()
                 owner.popToLastViewController()
+            })
+            .disposed(by: disposeBag)
+        
+        output.changeBirth
+            .subscribe(with: self, onNext: { owner, birth in
+                owner.rootView.changeBirthYearLabel(year: birth)
             })
             .disposed(by: disposeBag)
     }

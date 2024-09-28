@@ -328,6 +328,7 @@ extension UIViewController {
     
     func pushToSettingViewController() {
         let viewController = MyPageSettingViewController()
+        viewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 }
