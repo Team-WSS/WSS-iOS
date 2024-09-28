@@ -14,10 +14,12 @@ final class DetailSearchKeywordView: UIView {
     
     //MARK: - UI Components
     
-    let searchBarView = DetailSearchKeywordSearchBarView()
-    let categoryCollectionView = UICollectionView(frame: .zero,
-                                                  collectionViewLayout: UICollectionViewLayout())
-    private let categoryCollectionViewFlowLayout = UICollectionViewFlowLayout()
+    let novelKeywordSelectSearchBarView = NovelKeywordSelectSearchBarView()
+    let novelSelectedKeywordListView = NovelSelectedKeywordListView()
+    private let dividerView = UIView()
+    let novelKeywordSelectEmptyView = NovelKeywordSelectEmptyView()
+    let novelKeywordSelectSearchResultView = NovelKeywordSelectSearchResultView()
+    let novelKeywordSelectModalButtonView = NovelKeywordSelectModalButtonView()
     
     //MARK: - Life Cycle
     
@@ -35,34 +37,78 @@ final class DetailSearchKeywordView: UIView {
     }
     
     private func setUI() {
-        categoryCollectionView.do {
+        dividerView.do {
             $0.backgroundColor = .wssGray50
-            $0.showsVerticalScrollIndicator = false
         }
         
-        categoryCollectionViewFlowLayout.do {
-            $0.scrollDirection = .vertical
-            $0.minimumLineSpacing = 14
-            $0.sectionInset = UIEdgeInsets(top: 10, left: 0, bottom: 100, right: 0)
-            categoryCollectionView.setCollectionViewLayout($0, animated: false)
+        novelKeywordSelectEmptyView.do {
+            $0.isHidden = true
+        }
+        
+        novelKeywordSelectSearchResultView.do {
+            $0.isHidden = true
         }
     }
     
     private func setHierarchy() {
-        self.addSubviews(searchBarView,
-                         categoryCollectionView)
+        self.addSubviews(novelKeywordSelectSearchBarView,
+                         novelSelectedKeywordListView,
+                         dividerView,
+                         novelKeywordSelectEmptyView,
+                         novelKeywordSelectSearchResultView,
+                         novelKeywordSelectModalButtonView)
     }
     
     private func setLayout() {
-        searchBarView.snp.makeConstraints {
+        novelKeywordSelectSearchBarView.snp.makeConstraints {
             $0.top.equalToSuperview()
-            $0.horizontalEdges.equalToSuperview().inset(20)
+            $0.leading.trailing.equalToSuperview()
         }
         
-        categoryCollectionView.snp.makeConstraints {
-            $0.top.equalTo(searchBarView.snp.bottom).offset(25)
-            $0.horizontalEdges.equalToSuperview()
-            $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom)
+        novelSelectedKeywordListView.snp.makeConstraints {
+            $0.top.equalTo(novelKeywordSelectSearchBarView.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
+        }
+        
+        dividerView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(novelKeywordSelectSearchResultView.snp.top)
+            $0.height.equalTo(1)
+        }
+        
+        novelKeywordSelectEmptyView.snp.makeConstraints {
+            $0.leading.trailing.centerY.equalToSuperview()
+        }
+        
+        novelKeywordSelectSearchResultView.snp.makeConstraints {
+            $0.top.equalTo(novelKeywordSelectSearchBarView.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(novelKeywordSelectModalButtonView.snp.top)
+        }
+        
+        novelKeywordSelectModalButtonView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(self.safeAreaLayoutGuide)
+        }
+    }
+    
+    //MARK: - Custom Method
+    
+    func showSearchResultView(show: Bool) {
+        novelKeywordSelectSearchResultView.isHidden = !show
+    }
+    
+    func showEmptyView(show: Bool) {
+        novelKeywordSelectEmptyView.isHidden = !show
+    }
+    
+    func updateNovelKeywordSelectModalViewLayout(isSelectedKeyword: Bool) {
+        novelSelectedKeywordListView.do {
+            $0.isHidden = !isSelectedKeyword
+        }
+        
+        novelKeywordSelectSearchResultView.snp.updateConstraints {
+            $0.top.equalTo(novelKeywordSelectSearchBarView.snp.bottom).offset(isSelectedKeyword ? 53 : 0)
         }
     }
 }
