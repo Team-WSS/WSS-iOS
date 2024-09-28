@@ -132,21 +132,17 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
 
 extension FeedGenreViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        guard let feeds = try? feedData.value, indexPath.item < feeds.count else {
-            return CGSize(width: collectionView.frame.width, height: 289)
-        }
+        let feed = feedData.value[indexPath.row]
         
         let cell = FeedCollectionViewCell(frame: CGRect(x: 0, y: 0, width: collectionView.frame.width, height: 0))
-        
-        let feed = feeds[indexPath.item]
         cell.bindData(data: feed)
         
         cell.setNeedsLayout()
         cell.layoutIfNeeded()
         
         let targetSize = CGSize(width: collectionView.frame.width, height: UIView.layoutFittingCompressedSize.height)
-        let size = cell.systemLayoutSizeFitting(targetSize)
+        let estimatedSize = cell.systemLayoutSizeFitting(targetSize)
         
-        return CGSize(width: collectionView.frame.width, height: size.height)
+        return CGSize(width: collectionView.frame.width, height: estimatedSize.height)
     }
 }
