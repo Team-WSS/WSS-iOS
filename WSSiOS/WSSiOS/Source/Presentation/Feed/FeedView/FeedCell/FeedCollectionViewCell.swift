@@ -7,25 +7,36 @@
 
 import UIKit
 
+import RxSwift
 import Kingfisher
 import SnapKit
 import Then
 
 final class FeedCollectionViewCell: UICollectionViewCell {
     
+    //MARK: - Properties
+    
+    private var isLiked = true
+    private var isLikedCount = 0
+    var disposeBag = DisposeBag()
+    
     //MARK: - Components
     
-    private let userView = FeedUserView()
-    private let novelView = FeedNovelView()
-    private let reactView = FeedReactView()
-    private let detailContentView = FeedContentView()
-    
-    private let dotIcon = UIImageView()
-    private let restTimeLabel = UILabel()
-    private let modifiedLabel = UILabel()
-    private let dropdownIcon = UIImageView()
+    private let stackView = UIStackView()
+    let userView = FeedUserView()
+    let novelView = FeedNovelView()
+    let reactView = FeedReactView()
+    let detailContentView = FeedContentView()
     private let genreLabel = UILabel()
+    private let emptyView = UIView()
     private let divideView = UIView()
+    
+    var profileTapHandler: (() -> Void)?
+    var contentTapHandler: (() -> Void)?
+    var novelTapHandler: (() -> Void)?
+    var likedTapHandler: (() -> Void)?
+    var commentTapHandler: (() -> Void)?
+    
     
     //MARK: - Life Cycle
     
@@ -35,6 +46,8 @@ final class FeedCollectionViewCell: UICollectionViewCell {
         setUI()
         setHierarchy()
         setLayout()
+        
+        addTapGestures()
     }
     
     @available(*, unavailable)
@@ -49,27 +62,14 @@ final class FeedCollectionViewCell: UICollectionViewCell {
             $0.backgroundColor = .wssWhite
         }
         
-        dotIcon.do {
-            $0.image = UIImage(resource: .icDot)
-        }
-        
-        restTimeLabel.do {
-            $0.font = .Body5
-            $0.textColor = .wssBlack
-        }
-        
-        modifiedLabel.do {
-            $0.text = StringLiterals.Feed.modifiedText
-            $0.font = .Body5
-            $0.textColor = .Gray200
-        }
-        
-        dropdownIcon.do {
-            $0.image = UIImage(resource: .icDropDownDot)
+        stackView.do {
+            $0.axis = .vertical
+            $0.distribution = .fill
+            $0.alignment = .leading
         }
         
         genreLabel.do {
-            $0.textColor = .wssGray50
+            $0.textColor = .wssGray200
         }
         
         divideView.do {
@@ -78,73 +78,108 @@ final class FeedCollectionViewCell: UICollectionViewCell {
     }
     
     private func setHierarchy() {
-        addSubviews(userView,
-                    dotIcon,
-                    restTimeLabel,
-                    modifiedLabel,
-                    dropdownIcon,
-                    detailContentView,
-                    novelView,
-                    genreLabel,
-                    reactView,
-                    divideView)
+        self.addSubviews(stackView,
+                         divideView)
+        stackView.addArrangedSubviews(userView,
+                                      detailContentView,
+                                      novelView,
+                                      genreLabel,
+                                      reactView,
+                                      emptyView)
     }
     
     
     private func setLayout() {
+        stackView.snp.makeConstraints {
+            $0.top.leading.trailing.equalToSuperview().inset(20)
+            
+            stackView.do {
+                $0.setCustomSpacing(12, after: userView)
+                $0.setCustomSpacing(20, after: detailContentView)
+                $0.setCustomSpacing(20, after: novelView)
+                $0.setCustomSpacing(24, after: genreLabel)
+            }
+        }
+        
         userView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(28)
-            $0.leading.equalToSuperview().inset(20)
-            $0.height.equalTo(36)
-        }
-        
-        dotIcon.snp.makeConstraints {
-            $0.centerY.equalTo(userView.snp.centerY)
-            $0.leading.equalTo(userView.snp.trailing).offset(6)
-            $0.size.equalTo(8)
-        }
-        
-        restTimeLabel.snp.makeConstraints {
-            $0.centerY.equalTo(dotIcon.snp.centerY)
-            $0.leading.equalTo(dotIcon.snp.trailing).offset(6)
-        }
-        
-        modifiedLabel.snp.makeConstraints {
-            $0.centerY.equalTo(restTimeLabel.snp.centerY)
-            $0.leading.equalTo(restTimeLabel.snp.trailing).offset(6)
-        }
-        
-        //TODO: - 추후 extension 으로 수정
-        dropdownIcon.snp.makeConstraints {
-            $0.top.trailing.equalToSuperview().inset(40)
+            $0.width.equalToSuperview()
+            $0.height.equalTo(38)
         }
         
         detailContentView.snp.makeConstraints {
-            $0.top.equalTo(userView.snp.bottom).offset(12)
-            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.width.equalToSuperview()
         }
         
         novelView.snp.makeConstraints {
-            $0.top.equalTo(detailContentView.snp.bottom).offset(20)
-            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.width.equalToSuperview()
             $0.height.equalTo(48)
-        }
-        
-        genreLabel.snp.makeConstraints {
-            $0.top.equalTo(novelView.snp.bottom).offset(20)
-            $0.leading.equalToSuperview().inset(20)
+            
         }
         
         reactView.snp.makeConstraints {
-            $0.top.equalTo(genreLabel.snp.bottom).offset(24)
-            $0.leading.equalToSuperview().inset(20)
+            $0.width.equalToSuperview()
+            $0.height.equalTo(37)
+        }
+        
+        emptyView.snp.makeConstraints {
+            $0.width.equalToSuperview()
+            $0.height.equalTo(24)
         }
         
         divideView.snp.makeConstraints {
-            $0.top.equalTo(reactView.snp.bottom).offset(24)
+            $0.top.equalTo(stackView.snp.bottom)
             $0.width.bottom.equalToSuperview()
             $0.height.equalTo(1)
         }
+    }
+    
+    //MARK: - Action
+    
+    private func addTapGestures() {
+        let profileTap = UITapGestureRecognizer(target: self, action: #selector(handleProfileTap))
+        userView.addGestureRecognizer(profileTap)
+        userView.isUserInteractionEnabled = true
+        
+        let contentTap = UITapGestureRecognizer(target: self, action: #selector(handleContentTap))
+        detailContentView.addGestureRecognizer(contentTap)
+        detailContentView.isUserInteractionEnabled = true
+        
+        let novelTap = UITapGestureRecognizer(target: self, action: #selector(handleNovelTap))
+        novelView.addGestureRecognizer(novelTap)
+        novelView.isUserInteractionEnabled = true
+        
+        let likedTap = UITapGestureRecognizer(target: self, action: #selector(handleLikedTap))
+        reactView.likeButton.addGestureRecognizer(likedTap)
+        reactView.likeButton.isUserInteractionEnabled = true
+        
+        let commentTap = UITapGestureRecognizer(target: self, action: #selector(handleCommentTap))
+        reactView.commentView.addGestureRecognizer(commentTap)
+        reactView.commentView.isUserInteractionEnabled = true
+    }
+    
+    @objc private func handleProfileTap() {
+        profileTapHandler?()
+    }
+    
+    @objc private func handleContentTap() {
+        contentTapHandler?()
+    }
+    
+    @objc private func handleNovelTap() {
+        novelTapHandler?()
+    }
+    
+    @objc private func handleLikedTap() {
+        likedTapHandler?()
+        
+        isLiked.toggle()
+        reactView.updateLikeState(isLiked)
+        isLikedCount = isLiked ? isLikedCount + 1 : isLikedCount - 1
+        reactView.updateLikeCount(isLikedCount)
+    }
+    
+    @objc private func handleCommentTap() {
+        commentTapHandler?()
     }
     
     //MARK: - Data
@@ -154,30 +189,43 @@ final class FeedCollectionViewCell: UICollectionViewCell {
         //TODO: - dropDown 설정하면서 myFeed 구분하기
         
         userView.bindData(imageURL: data.avatarImage,
-                          nickname: data.nickname)
-        
-        restTimeLabel.text = data.createdDate
-        modifiedLabel.isHidden = !data.isModified
+                          nickname: data.nickname,
+                          createdDate: data.createdDate,
+                          isModified: data.isModified)
         
         detailContentView.bindData(content: data.feedContent,
-                                   isSpolier: data.isSpolier)
+                                   isSpolier: data.isSpoiler)
         
-        novelView.bindData(title: data.title,
-                           rating: data.novelRating,
-                           participants: data.novelRatingCount)
+        if data.title == nil {
+            if let index = stackView.arrangedSubviews.firstIndex(of: novelView) {
+                stackView.removeArrangedSubview(novelView)
+                novelView.removeFromSuperview()
+            }
+        } else {
+            if let index = stackView.arrangedSubviews.firstIndex(of: genreLabel) {
+                if !stackView.arrangedSubviews.contains(novelView) {
+                    stackView.insertArrangedSubview(novelView, at: index)
+                }
+            }
+            
+            novelView.bindData(
+                title: data.title ?? "",
+                rating: data.novelRating ?? -1,
+                participants: data.novelRatingCount ?? -1
+            )
+        }
         
         reactView.bindData(likeRating: data.likeCount,
                            isLiked: data.isLiked,
                            commentRating: data.commentCount)
-
-        let categoriesText = data.relevantCategories
-            .compactMap{
-                FeedGenre(rawValue: $0)?.withKorean
-            }.joined(separator: ", ")
         
-        genreLabel.do {
-            $0.applyWSSFont(.body2, with: categoriesText)
-        }
+        isLiked = data.isLiked
+        isLikedCount = data.likeCount
+        
+        let categoriesText = data.relevantCategories
+            .joined(separator: ", ")
+        
+        genreLabel.applyWSSFont(.body2, with: categoriesText)
     }
 }
 

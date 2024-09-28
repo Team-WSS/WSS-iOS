@@ -24,6 +24,7 @@ final class FeedDetailViewModel: ViewModelType {
     
     private let likeCount = BehaviorRelay<Int>(value: 0)
     private let likeButtonState = BehaviorRelay<Bool>(value: false)
+    private let backButtonState = PublishRelay<Void>()
     
     //MARK: - Life Cycle
     
@@ -33,6 +34,7 @@ final class FeedDetailViewModel: ViewModelType {
     }
     
     struct Input {
+        let backButtonTapped: ControlEvent<Void>
         let replyCollectionViewContentSize: Observable<CGSize?>
         let likeButtonTapped: ControlEvent<Void>
         let backButtonTapped: ControlEvent<Void>

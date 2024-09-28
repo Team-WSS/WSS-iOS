@@ -333,6 +333,16 @@ extension UIViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
+    func pushToMyPageViewController(isMyPage: Bool) {
+        let viewController = MyPageViewController(
+            viewModel: MyPageViewModel(
+                userRepository: DefaultUserRepository(
+                    userService: DefaultUserService(),
+                    blocksService: DefaultBlocksService()
+                )
+            ),
+            isMyPage: isMyPage)
+        
     func pushToMyPageEditViewController() {
         let viewController = MyPageEditProfileViewController(viewModel: MyPageEditProfileViewModel())
         

@@ -80,6 +80,7 @@ final class FeedDetailViewController: UIViewController {
     
     private func bindViewModel() {
         let input = FeedDetailViewModel.Input(
+            backButtonTapped: rootView.backButton.rx.tap,
             replyCollectionViewContentSize: rootView.replyView.replyCollectionView.rx.observe(CGSize.self, "contentSize"),
             likeButtonTapped: rootView.feedContentView.reactView.likeButton.rx.tap,
             backButtonTapped: rootView.backButton.rx.tap)
@@ -139,6 +140,12 @@ final class FeedDetailViewController: UIViewController {
             .when(.recognized)
             .subscribe(with: self, onNext: { owner, _ in
                 self.view.endEditing(true)
+            })
+            .disposed(by: disposeBag)
+        
+        output.popToLastViewController
+            .bind(with: self, onNext: { owner, _ in
+                owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
     }
