@@ -79,11 +79,11 @@ final class LibraryViewController: UIViewController {
     private func bindCell() {
         Observable.just(tabBarList)
             .bind(to: libraryPageBar.libraryTabCollectionView.rx.items(
-            cellIdentifier: "LibraryTabCollectionViewCell",
-            cellType: LibraryTabCollectionViewCell.self)) { (row, element, cell) in
-                cell.bindData(data: element)
-            }
-            .disposed(by: disposeBag)
+                cellIdentifier: "LibraryTabCollectionViewCell",
+                cellType: LibraryTabCollectionViewCell.self)) { (row, element, cell) in
+                    cell.bindData(data: element)
+                }
+                .disposed(by: disposeBag)
         
         libraryPageBar.libraryTabCollectionView.rx.itemSelected
             .map { indexPath in
@@ -93,8 +93,8 @@ final class LibraryViewController: UIViewController {
             .disposed(by: disposeBag)
         
         libraryPageBar.libraryTabCollectionView.selectItem(at: IndexPath(item: 0, section: 0),
-                                                                 animated: true,
-                                                                 scrollPosition: [])
+                                                           animated: true,
+                                                           scrollPosition: [])
     }
     
     private func delegate() {
@@ -290,29 +290,13 @@ extension LibraryViewController {
     @objc
     func showNovelInfo(_ notification: Notification) {
         guard let userNovelId = notification.object as? Int else { return }
-        self.navigationController?.pushViewController(TrashNovelDetailViewController(
-            viewModel: TrashNovelDetailViewModel(
-                userNovelRepository: DefaultUserNovelRepository(
-                    userNovelService: DefaultUserNovelService()
-                ),
-                selectedMenu: .info
-            ),
-            userNovelId: userNovelId
-        ), animated: true)
+        self.moveToNovelDetailViewController(userNovelId: userNovelId)
     }
     
     @objc
     func showNovelMemo(_ notification: Notification) {
         guard let userNovelId = notification.object as? Int else { return }
-        self.navigationController?.pushViewController(TrashNovelDetailViewController(
-            viewModel: TrashNovelDetailViewModel(
-                userNovelRepository: DefaultUserNovelRepository(
-                    userNovelService: DefaultUserNovelService()
-                ),
-                selectedMenu: .memo
-            ),
-            userNovelId: userNovelId
-        ), animated: true)
+        self.moveToNovelDetailViewController(userNovelId: userNovelId)
     }
 }
 

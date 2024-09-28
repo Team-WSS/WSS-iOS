@@ -34,9 +34,9 @@ final class MyPageViewModel: ViewModelType {
     
     struct Output {
         let profileData = BehaviorSubject<MyProfileResult>(value: MyProfileResult(nickname: "",
-                                                                                intro: "",
-                                                                                avatarImage: "", genrePreferences: []))
-        let settingButtonEnabled = BehaviorRelay(value: false)
+                                                                                  intro: "",
+                                                                                  avatarImage: "", genrePreferences: []))
+        let settingButtonEnabled = PublishRelay<Void>()
         let dropdownButtonEnabled = BehaviorRelay(value: false)
         let updateNavigationEnabled = BehaviorRelay<Bool>(value: false)
     }
@@ -58,7 +58,7 @@ final class MyPageViewModel: ViewModelType {
                 owner.height = height
             })
             .disposed(by: disposeBag)
-                  
+        
         input.scrollOffset
             .asObservable()
             .map{ $0.y }
@@ -70,7 +70,13 @@ final class MyPageViewModel: ViewModelType {
                 }
             })
             .disposed(by: disposeBag)
-
+        
+        input.settingButtonDidTap
+            .bind(with: self, onNext: { owner, _ in 
+                output.settingButtonEnabled.accept(())
+            })
+            .disposed(by: disposeBag)
+        
         return output
     }
     

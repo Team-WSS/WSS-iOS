@@ -90,6 +90,13 @@ final class MyPageViewController: UIViewController {
                 }
             })
             .disposed(by: disposeBag)
+        
+        output.settingButtonEnabled
+            .bind(with: self, onNext: { owner, _ in
+                owner.pushToSettingViewController()
+            })
+            .disposed(by: disposeBag)
+        
     }
 }
 

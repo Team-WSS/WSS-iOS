@@ -135,12 +135,7 @@ final class LibraryBaseViewController: UIViewController {
             }
             .compactMap { $0 }
             .subscribe(with: self, onNext: { owner, selectedItem in
-                owner.navigationController?.pushViewController(TrashNovelDetailViewController(
-                    viewModel: TrashNovelDetailViewModel(
-                        userNovelRepository: DefaultUserNovelRepository(
-                            userNovelService: DefaultUserNovelService()
-                        )
-                    ), userNovelId: selectedItem.userNovelId), animated: true)
+                owner.moveToNovelDetailViewController(userNovelId: selectedItem.userNovelId)
             })
             .disposed(by: disposeBag)
         
