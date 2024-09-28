@@ -51,10 +51,10 @@ final class SearchView: UIView {
     
     private func setHierarchy() {
         self.addSubviews(scrollView,
-                         titleLabel)
+                         titleLabel,
+                         searchbarView)
         scrollView.addSubview(contentView)
-        contentView.addSubviews(searchbarView,
-                                searchDetailInduceView,
+        contentView.addSubviews(searchDetailInduceView,
                                 sosopickView)
     }
     
@@ -64,8 +64,14 @@ final class SearchView: UIView {
             $0.leading.equalToSuperview().inset(20)
         }
         
+        searchbarView.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom).offset(20)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(42)
+        }
+        
         scrollView.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(10)
+            $0.top.equalTo(searchbarView.snp.bottom).offset(10)
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalTo(self.safeAreaLayoutGuide)
         }
@@ -77,14 +83,8 @@ final class SearchView: UIView {
             $0.width.equalTo(scrollView.snp.width)
         }
         
-        searchbarView.snp.makeConstraints {
-            $0.top.equalToSuperview()
-            $0.leading.trailing.equalToSuperview().inset(20)
-            $0.height.equalTo(42)
-        }
-        
         searchDetailInduceView.snp.makeConstraints {
-            $0.top.equalTo(searchbarView.snp.bottom).offset(14)
+            $0.top.equalToSuperview()
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(256)
         }
