@@ -60,6 +60,7 @@ final class NovelDetailViewController: UIViewController {
         
         viewWillAppearEvent.accept(true)
         setNavigationBar()
+        self.hidesBottomBarWhenPushed = true
     }
     
     override func viewWillDisappear(_ animated: Bool) {
