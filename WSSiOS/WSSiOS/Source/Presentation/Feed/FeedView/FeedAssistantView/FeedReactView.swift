@@ -84,7 +84,7 @@ final class FeedReactView: UIView {
             $0.top.leading.bottom.equalToSuperview()
             
             likeButton.snp.makeConstraints {
-                $0.centerY.leading.equalToSuperview()
+                $0.top.bottom.centerY.leading.equalToSuperview()
                 $0.size.equalTo(20)
             }
             
