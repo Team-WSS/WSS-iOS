@@ -343,6 +343,9 @@ extension UIViewController {
             ),
             isMyPage: isMyPage)
         
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
     func pushToMyPageEditViewController() {
         let viewController = MyPageEditProfileViewController(viewModel: MyPageEditProfileViewModel())
         

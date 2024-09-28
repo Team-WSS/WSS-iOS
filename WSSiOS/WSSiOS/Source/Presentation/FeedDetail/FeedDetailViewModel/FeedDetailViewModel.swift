@@ -37,7 +37,6 @@ final class FeedDetailViewModel: ViewModelType {
         let backButtonTapped: ControlEvent<Void>
         let replyCollectionViewContentSize: Observable<CGSize?>
         let likeButtonTapped: ControlEvent<Void>
-        let backButtonTapped: ControlEvent<Void>
     }
     
     struct Output {
