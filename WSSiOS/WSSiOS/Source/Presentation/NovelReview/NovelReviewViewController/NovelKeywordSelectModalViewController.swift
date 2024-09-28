@@ -18,6 +18,11 @@ final class NovelKeywordSelectModalViewController: UIViewController {
     private let disposeBag = DisposeBag()
     
     private let viewDidLoadEvent = PublishRelay<Void>()
+    private let keywordCategoryListData = BehaviorRelay<[KeywordCategory]>(value: [])
+    private let selectedKeywordData = PublishRelay<KeywordData>()
+    private let deselectedKeywordData = PublishRelay<KeywordData>()
+    
+    private var keywordCategoryList: [KeywordCategory] = []
     
     //MARK: - Components
     
@@ -81,7 +86,9 @@ final class NovelKeywordSelectModalViewController: UIViewController {
             searchResultCollectionViewItemDeselected: rootView.novelKeywordSelectSearchResultView.searchResultCollectionView.rx.itemDeselected.asObservable(),
             resetButtonDidTap: rootView.novelKeywordSelectModalButtonView.resetButton.rx.tap,
             selectButtonDidTap: rootView.novelKeywordSelectModalButtonView.selectButton.rx.tap,
-            contactButtonDidTap: rootView.novelKeywordSelectEmptyView.contactButton.rx.tap
+            contactButtonDidTap: rootView.novelKeywordSelectEmptyView.contactButton.rx.tap,
+            selectedKeywordData: selectedKeywordData.asObservable(),
+            deselectedKeywordData: deselectedKeywordData.asObservable()
         )
         
         let output = self.novelKeywordSelectModalViewModel.transform(from: input, disposeBag: self.disposeBag)
@@ -114,6 +121,7 @@ final class NovelKeywordSelectModalViewController: UIViewController {
             .subscribe(with: self, onNext: { owner, selectedKeywordList in
                 owner.rootView.novelKeywordSelectModalButtonView.updateSelectLabelText(keywordCount: selectedKeywordList.count)
                 owner.rootView.updateNovelKeywordSelectModalViewLayout(isSelectedKeyword: !selectedKeywordList.isEmpty)
+                owner.keywordCategoryListData.accept(owner.keywordCategoryList)
             })
             .disposed(by: disposeBag)
         
@@ -143,6 +151,15 @@ final class NovelKeywordSelectModalViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
+        output.keywordCategoryListData
+            .subscribe(with: self, onNext: { owner, keywordCategoryListData in
+                owner.keywordCategoryList = keywordCategoryListData
+                owner.keywordCategoryListData.accept(owner.keywordCategoryList)
+                owner.setupKeywordCategoryStackView()
+                owner.rootView.showCategoryListView(show: true)
+            })
+            .disposed(by: disposeBag)
+        
         output.isKeywordCountOverLimit
             .subscribe(with: self, onNext: { owner, indexPath in
                 owner.rootView.novelKeywordSelectSearchResultView.searchResultCollectionView.deselectItem(at: indexPath, animated: false)
@@ -155,6 +172,66 @@ final class NovelKeywordSelectModalViewController: UIViewController {
                 owner.rootView.showEmptyView(show: show)
             })
             .disposed(by: disposeBag)
+        
+        output.showCategoryListView
+            .subscribe(with: self, onNext: { owner, show in
+                owner.rootView.showCategoryListView(show: show)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    //MARK: - Custom Method
+    
+    private func setupKeywordCategoryStackView() {
+        for (index, category) in self.keywordCategoryList.enumerated() {
+            let novelKeywordSelectCategoryView = NovelKeywordSelectCategoryView(keywordCategory: category)
+            
+            self.rootView.novelKeywordSelectCategoryListView.stackView.addArrangedSubview(novelKeywordSelectCategoryView)
+            
+            keywordCategoryListData
+                .map { categories in categories[index].keywords }
+                .bind(to: novelKeywordSelectCategoryView.categoryCollectionView.rx.items(cellIdentifier: NovelKeywordSelectSearchResultCollectionViewCell.cellIdentifier, cellType: NovelKeywordSelectSearchResultCollectionViewCell.self)) { item, element, cell in
+                    let indexPath = IndexPath(item: item, section: 0)
+                    
+                    if self.novelKeywordSelectModalViewModel.selectedKeywordList.contains(where: { $0.keywordId == element.keywordId }) {
+                        novelKeywordSelectCategoryView.categoryCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
+                    } else {
+                        novelKeywordSelectCategoryView.categoryCollectionView.deselectItem(at: indexPath, animated: false)
+                    }
+                    cell.bindData(keyword: element)
+                }
+                .disposed(by: disposeBag)
+            
+            novelKeywordSelectCategoryView.categoryCollectionView.rx.itemSelected
+                .subscribe(with: self, onNext: { owner, indexPath in
+                    if owner.novelKeywordSelectModalViewModel.selectedKeywordList.count >= owner.novelKeywordSelectModalViewModel.keywordLimit {
+                        novelKeywordSelectCategoryView.categoryCollectionView.deselectItem(at: indexPath, animated: false)
+                        owner.showToast(.selectionOverLimit(count: 20))
+                    } else {
+                        owner.selectedKeywordData.accept(category.keywords[indexPath.item])
+                    }
+                })
+                .disposed(by: disposeBag)
+            
+            novelKeywordSelectCategoryView.categoryCollectionView.rx.itemDeselected
+                .subscribe(with: self, onNext: { owner, indexPath in
+                    owner.deselectedKeywordData.accept(category.keywords[indexPath.item])
+                })
+                .disposed(by: disposeBag)
+            
+            novelKeywordSelectCategoryView.expandButton.rx.tap
+                .subscribe(onNext: { _ in
+                    novelKeywordSelectCategoryView.expandCategoryCollectionView()
+                })
+                .disposed(by: disposeBag)
+            
+            novelKeywordSelectCategoryView.categoryCollectionView.rx.observe(CGSize.self, "contentSize")
+                .map { $0?.height ?? 0 }
+                .subscribe(onNext: { height in
+                    novelKeywordSelectCategoryView.collectionViewHeight = height
+                })
+                .disposed(by: disposeBag)
+        }
     }
 }
 

@@ -407,6 +407,8 @@
 		CDC03F4D2CA6C492002D301F /* NovelReviewService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC03F4C2CA6C492002D301F /* NovelReviewService.swift */; };
 		CDC03F4F2CA6C4E0002D301F /* NovelReviewRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC03F4E2CA6C4E0002D301F /* NovelReviewRepository.swift */; };
 		CDC03F512CA6C5CD002D301F /* NovelReviewResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC03F502CA6C5CD002D301F /* NovelReviewResult.swift */; };
+		CDC03F552CA71F01002D301F /* NovelKeywordSelectCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC03F542CA71F01002D301F /* NovelKeywordSelectCategoryView.swift */; };
+		CDC03F572CA721C3002D301F /* NovelKeywordSelectCategoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC03F562CA721C3002D301F /* NovelKeywordSelectCategoryListView.swift */; };
 		CDE596D62B57708D00D99DA1 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D52B57708D00D99DA1 /* UIViewController+.swift */; };
 		CDE596D82B5770CE00D99DA1 /* WSSToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D72B5770CE00D99DA1 /* WSSToastView.swift */; };
 		CDE596DA2B57C4BE00D99DA1 /* UITextView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D92B57C4BE00D99DA1 /* UITextView+.swift */; };
@@ -807,6 +809,8 @@
 		CDC03F4C2CA6C492002D301F /* NovelReviewService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelReviewService.swift; sourceTree = "<group>"; };
 		CDC03F4E2CA6C4E0002D301F /* NovelReviewRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelReviewRepository.swift; sourceTree = "<group>"; };
 		CDC03F502CA6C5CD002D301F /* NovelReviewResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelReviewResult.swift; sourceTree = "<group>"; };
+		CDC03F542CA71F01002D301F /* NovelKeywordSelectCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelKeywordSelectCategoryView.swift; sourceTree = "<group>"; };
+		CDC03F562CA721C3002D301F /* NovelKeywordSelectCategoryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelKeywordSelectCategoryListView.swift; sourceTree = "<group>"; };
 		CDE596D52B57708D00D99DA1 /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
 		CDE596D72B5770CE00D99DA1 /* WSSToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSToastView.swift; sourceTree = "<group>"; };
 		CDE596D92B57C4BE00D99DA1 /* UITextView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+.swift"; sourceTree = "<group>"; };
@@ -2607,6 +2611,8 @@
 				CD8747B42C9EF31E00D0ADAD /* NovelDateSelectModalDateButtonView.swift */,
 				CD8747B62C9F050800D0ADAD /* NovelDateSelectModalDatePickerView.swift */,
 				CD8747A62C9EC4F900D0ADAD /* NovelDateSelectModalButtonView.swift */,
+				CDC03F542CA71F01002D301F /* NovelKeywordSelectCategoryView.swift */,
+				CDC03F562CA721C3002D301F /* NovelKeywordSelectCategoryListView.swift */,
 			);
 			path = NovelReviewAssistantView;
 			sourceTree = "<group>";
@@ -2849,6 +2855,7 @@
 				2C41E0CE2CA4949C00FFD233 /* MyPageEditProfileGenreCollectionViewCell.swift in Sources */,
 				395928972C9888B800E7B17B /* LoginViewModel.swift in Sources */,
 				39F8506A2C29C1FB00E93EBC /* NovelDetailInfoResult.swift in Sources */,
+				CDC03F552CA71F01002D301F /* NovelKeywordSelectCategoryView.swift in Sources */,
 				CDC03F432CA67266002D301F /* SearchKeywordResult.swift in Sources */,
 				2CFA9A0F2C9D7E8600A4A820 /* MyPageChangeUserInfoViewController.swift in Sources */,
 				2CCBF9F02B4C1FD800D787C2 /* MyPageView.swift in Sources */,
@@ -3130,6 +3137,7 @@
 				C99DDFD72C86139800EDC0C4 /* SearchDetailInduceView.swift in Sources */,
 				39F850662C2820FF00E93EBC /* NovelDetailFeedView.swift in Sources */,
 				2C8F89592C5105E90056895B /* MyPageDeleteIDViewModel.swift in Sources */,
+				CDC03F572CA721C3002D301F /* NovelKeywordSelectCategoryListView.swift in Sources */,
 				2CD9114C2C0D898E006B8D72 /* FeedNavigationView.swift in Sources */,
 				CD39F2CA2B5038F400B73A5C /* TrashNovelDetailInfoView.swift in Sources */,
 				CD1F7E0E2C99ADC90039972C /* NovelSelectedKeywordCollectionViewCell.swift in Sources */,
