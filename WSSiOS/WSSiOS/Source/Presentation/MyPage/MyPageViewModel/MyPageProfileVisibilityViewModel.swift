@@ -19,7 +19,7 @@ final class MyPageProfileVisibilityViewModel: ViewModelType {
     
     //초기값 부여
     private var initStatus: Bool = true
-    private var currentStatus: Bool = true
+    private var isPublic: Bool = true
     
     //MARK: - Life Cycle
     
@@ -33,7 +33,8 @@ final class MyPageProfileVisibilityViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        self.currentStatus = self.initStatus
+        self.isPublic = self.initStatus
+        print(self.isPublic, "💖")
     }
     
     struct Input {
@@ -53,17 +54,17 @@ final class MyPageProfileVisibilityViewModel: ViewModelType {
         
         input.isVisibilityToggleButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in 
-                owner.currentStatus.toggle()
-                output.changePrivateToggleButton.accept(owner.currentStatus)
-                output.changeCompleteButton.accept(owner.initStatus != owner.currentStatus)
+                owner.isPublic.toggle()
+                output.changePrivateToggleButton.accept(owner.isPublic)
+                output.changeCompleteButton.accept(owner.initStatus != owner.isPublic)
             })
             .disposed(by: disposeBag)
         
         input.completeButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in 
-                guard owner.initStatus != owner.currentStatus else { return }
+                guard owner.initStatus != owner.isPublic else { return }
                 
-                owner.patchUserProfileVisibility(isProfilePublic: owner.currentStatus)
+                owner.patchUserProfileVisibility(isProfilePublic: owner.isPublic)
                     .subscribe(onNext: {
                         output.popViewControllerAction.accept(true)
                         //TODO: - toastMessage

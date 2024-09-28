@@ -55,6 +55,7 @@
 		2C9A196D2C5692370043044A /* MyPageSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9A196C2C5692360043044A /* MyPageSettingView.swift */; };
 		2C9A196F2C56923B0043044A /* MyPageSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9A196E2C56923B0043044A /* MyPageSettingViewController.swift */; };
 		2C9A19712C56925F0043044A /* MyPageInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9A19702C56925F0043044A /* MyPageInfoViewModel.swift */; };
+		2C9BDDA42CA79BCA0026D038 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 2C9BDDA32CA79BCA0026D038 /* Then */; };
 		2C9CBDB12C5BB4340084481F /* BlocksService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9CBDB02C5BB4340084481F /* BlocksService.swift */; };
 		2CA2F6522B527B590045B4C2 /* MyPageModalAvatarFeatureLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2F6512B527B590045B4C2 /* MyPageModalAvatarFeatureLabelView.swift */; };
 		2CA2F65B2B53041E0045B4C2 /* LibraryBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2F65A2B53041E0045B4C2 /* LibraryBaseViewController.swift */; };
@@ -62,7 +63,6 @@
 		2CA2F6622B530BBF0045B4C2 /* LibraryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2F6612B530BBF0045B4C2 /* LibraryCollectionViewCell.swift */; };
 		2CB613F32B575E4500FC3F89 /* MyPageInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB613F22B575E4500FC3F89 /* MyPageInfoViewController.swift */; };
 		2CB613F52B575E6A00FC3F89 /* MyPageInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB613F42B575E6A00FC3F89 /* MyPageInfoView.swift */; };
-		2CC4CCCB2C9AF8B000FB863B /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 2CC4CCCA2C9AF8B000FB863B /* Then */; };
 		2CC4CCD82C9B340900FB863B /* MyPageProfileVisibilityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC4CCD72C9B340800FB863B /* MyPageProfileVisibilityView.swift */; };
 		2CC4CCDA2C9B341300FB863B /* MyPageProfileVisibilityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC4CCD92C9B341200FB863B /* MyPageProfileVisibilityViewModel.swift */; };
 		2CC4CCDC2C9B341900FB863B /* MyPageProfileVisibilityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC4CCDB2C9B341900FB863B /* MyPageProfileVisibilityViewController.swift */; };
@@ -655,7 +655,7 @@
 			files = (
 				3999BFEE2B4E6CA000984832 /* UIImageViewAlignedSwift in Frameworks */,
 				CD3E5A852B54254F00C0A659 /* RxKeyboard in Frameworks */,
-				2CC4CCCB2C9AF8B000FB863B /* Then in Frameworks */,
+				2C9BDDA42CA79BCA0026D038 /* Then in Frameworks */,
 				2CD229442B42E7A2005400BE /* RxRelay in Frameworks */,
 				2CD229392B42E77F005400BE /* Kingfisher in Frameworks */,
 				2CD229342B42E771005400BE /* SnapKit in Frameworks */,
@@ -2129,7 +2129,7 @@
 				39EF97AB2B53E43800D2148B /* Lottie */,
 				CD3E5A842B54254F00C0A659 /* RxKeyboard */,
 				3916EC852B89B42C007835B5 /* RxGesture */,
-				2CC4CCCA2C9AF8B000FB863B /* Then */,
+				2C9BDDA32CA79BCA0026D038 /* Then */,
 			);
 			productName = WSSiOS;
 			productReference = 2CD229182B42E685005400BE /* WSSiOS.app */;
@@ -2167,7 +2167,7 @@
 				3999BFEC2B4E6CA000984832 /* XCRemoteSwiftPackageReference "UIImageViewAlignedSwift" */,
 				CD3E5A832B54254F00C0A659 /* XCRemoteSwiftPackageReference "RxKeyboard" */,
 				3916EC842B89B42C007835B5 /* XCRemoteSwiftPackageReference "RxGesture" */,
-				2CC4CCC92C9AF8B000FB863B /* XCRemoteSwiftPackageReference "Then" */,
+				2C9BDDA22CA79BCA0026D038 /* XCRemoteSwiftPackageReference "Then" */,
 			);
 			productRefGroup = 2CD229192B42E685005400BE /* Products */;
 			projectDirPath = "";
@@ -2728,7 +2728,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		2CC4CCC92C9AF8B000FB863B /* XCRemoteSwiftPackageReference "Then" */ = {
+		2C9BDDA22CA79BCA0026D038 /* XCRemoteSwiftPackageReference "Then" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/devxoul/Then";
 			requirement = {
@@ -2795,9 +2795,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		2CC4CCCA2C9AF8B000FB863B /* Then */ = {
+		2C9BDDA32CA79BCA0026D038 /* Then */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 2CC4CCC92C9AF8B000FB863B /* XCRemoteSwiftPackageReference "Then" */;
+			package = 2C9BDDA22CA79BCA0026D038 /* XCRemoteSwiftPackageReference "Then" */;
 			productName = Then;
 		};
 		2CD229332B42E771005400BE /* SnapKit */ = {
