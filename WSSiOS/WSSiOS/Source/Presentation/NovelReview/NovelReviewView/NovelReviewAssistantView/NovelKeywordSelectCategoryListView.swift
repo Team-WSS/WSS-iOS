@@ -58,7 +58,6 @@ final class NovelKeywordSelectCategoryListView: UIView {
         
         stackView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(10)
-//            $0.leading.trailing.equalToSuperview().inset(12)
             $0.bottom.equalToSuperview().inset(40)
             $0.width.equalToSuperview()
         }
