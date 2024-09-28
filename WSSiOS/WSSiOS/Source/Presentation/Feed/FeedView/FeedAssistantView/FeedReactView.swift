@@ -18,7 +18,7 @@ final class FeedReactView: UIView {
     let likeButton = UIButton()
     let likeRatingLabel = UILabel()
     
-    private let commentView = UIView()
+    let commentView = UIView()
     private let commentIcon = UIImageView()
     private let commentRatingLabel = UILabel()
     

@@ -61,7 +61,17 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func bindViewModel() {
-        let input = FeedGenreViewModel.Input(loadMoreTrigger: loadMoreTrigger)
+        
+        let profileTapped = PublishSubject<Int>()
+        let contentTapped = PublishSubject<Int>()
+        let novelTapped = PublishSubject<Int>()
+        let commentTapped = PublishSubject<Int>()
+        
+        let input = FeedGenreViewModel.Input(loadMoreTrigger: loadMoreTrigger,
+                                             profileTapped: profileTapped,
+                                             contentTapped: contentTapped,
+                                             novelTapped: novelTapped,
+                                             commentTapped: commentTapped)
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.feedList
@@ -72,9 +82,51 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
             .bind(to: rootView.feedCollectionView.rx.items(
                 cellIdentifier: FeedCollectionViewCell.cellIdentifier,
                 cellType: FeedCollectionViewCell.self)) { (row, element, cell) in
+                    cell.userView.rx.tapGesture()
+                        .when(.recognized)
+                        .map { _ in element.userId }
+                        .bind(to: profileTapped)
+                        .disposed(by: cell.disposeBag)
+                    
+                    cell.detailContentView.rx.tapGesture()
+                        .when(.recognized)
+                        .map { _ in element.feedId }
+                        .bind(to: contentTapped)
+                        .disposed(by: cell.disposeBag)
+                    
+                    cell.novelView.rx.tapGesture()
+                        .when(.recognized)
+                        .map { _ in element.novelId ?? 0 }
+                        .bind(to: novelTapped)
+                        .disposed(by: cell.disposeBag)
+                    
+                    cell.reactView.commentView.rx.tapGesture()
+                        .when(.recognized)
+                        .map { _ in element.feedId }
+                        .bind(to: commentTapped)
+                        .disposed(by: cell.disposeBag)
+                    
                     cell.bindData(data: element)
                 }
                 .disposed(by: disposeBag)
+        
+        //        output.pushToMyPageViewController
+        //            .bind(with: self, onNext: { owner, userlId in
+        //                owner.pushToMyPageViewController(isMyPage: <#T##Bool#>)
+        //            })
+        //            .disposed(by: disposeBag)
+        
+        output.pushToFeedDetailViewController
+            .subscribe(with: self, onNext: { owner, feedId in
+                self.pushToFeedDetailViewController(feedId: feedId)
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushToNovelDetailViewController
+            .subscribe(with: self, onNext: { owner, novelId in
+                self.pushToDetailViewController(novelId: novelId)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
@@ -83,18 +135,18 @@ extension FeedGenreViewController: UICollectionViewDelegateFlowLayout {
         guard let feeds = try? feedData.value, indexPath.item < feeds.count else {
             return CGSize(width: collectionView.frame.width, height: 289)
         }
-
+        
         let cell = FeedCollectionViewCell(frame: CGRect(x: 0, y: 0, width: collectionView.frame.width, height: 0))
-
+        
         let feed = feeds[indexPath.item]
         cell.bindData(data: feed)
-
+        
         cell.setNeedsLayout()
         cell.layoutIfNeeded()
         
         let targetSize = CGSize(width: collectionView.frame.width, height: UIView.layoutFittingCompressedSize.height)
         let size = cell.systemLayoutSizeFitting(targetSize)
-
+        
         return CGSize(width: collectionView.frame.width, height: size.height)
     }
 }

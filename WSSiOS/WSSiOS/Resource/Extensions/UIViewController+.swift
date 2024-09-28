@@ -300,6 +300,31 @@ extension UIViewController {
         
         self.navigationController?.pushViewController(viewController, animated: true)
     }
+    
+    func pushToFeedDetailViewController(feedId: Int) {
+        let viewController = FeedDetailViewController(
+            viewModel: FeedDetailViewModel(
+                feedDetailRepository: DefaultFeedDetailRepository(
+                    feedDetailService: DefaultFeedDetailService()
+                ),
+                feedId: feedId)
+        )
+        
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func pushToMyPageViewController(isMyPage: Bool) {
+        let viewController = MyPageViewController(
+            viewModel: MyPageViewModel(
+                userRepository: DefaultUserRepository(
+                    userService: DefaultUserService(),
+                    blocksService: DefaultBlocksService()
+                )
+            ),
+            isMyPage: isMyPage)
+        
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
 }
 
 extension UIViewController: UIGestureRecognizerDelegate {

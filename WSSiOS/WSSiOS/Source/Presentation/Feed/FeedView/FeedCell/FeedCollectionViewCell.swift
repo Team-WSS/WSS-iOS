@@ -7,15 +7,20 @@
 
 import UIKit
 
+import RxSwift
 import Kingfisher
 import SnapKit
 import Then
 
 final class FeedCollectionViewCell: UICollectionViewCell {
     
+    //MARK: - Properties
+    
+    var disposeBag = DisposeBag()
+    
     //MARK: - Components
     
-    let stackView = UIStackView()
+    private let stackView = UIStackView()
     let userView = FeedUserView()
     let novelView = FeedNovelView()
     let reactView = FeedReactView()
@@ -32,6 +37,8 @@ final class FeedCollectionViewCell: UICollectionViewCell {
         setUI()
         setHierarchy()
         setLayout()
+        
+        addTapGestures()
     }
     
     @available(*, unavailable)
@@ -115,38 +122,15 @@ final class FeedCollectionViewCell: UICollectionViewCell {
             $0.width.bottom.equalToSuperview()
             $0.height.equalTo(1)
         }
-        //        userView.snp.makeConstraints {
-        //            $0.top.leading.trailing.equalToSuperview().inset(20)
-        //        }
-        //        
-        //        detailContentView.snp.makeConstraints {
-        //            $0.top.equalTo(userView.snp.bottom).offset(12)
-        //            $0.leading.trailing.equalToSuperview().inset(20)
-        //        }
-        //        
-        //        novelView.snp.makeConstraints {
-        //            $0.top.equalTo(detailContentView.snp.bottom).offset(20)
-        //            $0.leading.trailing.equalToSuperview().inset(20)
-        //            $0.height.equalTo(48)
-        //            
-        //        }
-        //        
-        //        genreLabel.snp.makeConstraints {
-        //            $0.top.equalTo(novelView.snp.bottom).offset(20)
-        //            $0.leading.trailing.equalToSuperview().inset(20)
-        //            
-        //        }
-        //        
-        //        reactView.snp.makeConstraints {
-        //            $0.top.equalTo(genreLabel.snp.bottom).offset(24)
-        //            $0.leading.equalToSuperview().inset(20)
-        //        }
-        //        
-        //        divideView.snp.makeConstraints {
-        //            $0.top.equalTo(reactView.snp.bottom).offset(24)
-        //            $0.width.bottom.equalToSuperview()
-        //            $0.height.equalTo(1)
-        //        }
+    }
+    
+    //MARK: - Action
+    
+    private func addTapGestures() {
+        userView.isUserInteractionEnabled = true
+        novelView.isUserInteractionEnabled = true
+        reactView.isUserInteractionEnabled = true
+        detailContentView.isUserInteractionEnabled = true
     }
     
     //MARK: - Data
