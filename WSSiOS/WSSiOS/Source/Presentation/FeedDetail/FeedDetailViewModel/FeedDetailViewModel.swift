@@ -24,6 +24,7 @@ final class FeedDetailViewModel: ViewModelType {
     
     private let likeCount = BehaviorRelay<Int>(value: 0)
     private let likeButtonState = BehaviorRelay<Bool>(value: false)
+    private let backButtonState = PublishRelay<Void>()
     
     //MARK: - Life Cycle
     
@@ -33,6 +34,7 @@ final class FeedDetailViewModel: ViewModelType {
     }
     
     struct Input {
+        let backButtonTapped: ControlEvent<Void>
         let replyCollectionViewContentSize: Observable<CGSize?>
         let likeButtonTapped: ControlEvent<Void>
     }
@@ -43,6 +45,7 @@ final class FeedDetailViewModel: ViewModelType {
         let replyCollectionViewHeight: Driver<CGFloat>
         let likeCount: Driver<Int>
         let likeButtonEnabled: Driver<Bool>
+        let popToLastViewController: Observable<Void>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -83,11 +86,20 @@ final class FeedDetailViewModel: ViewModelType {
             .subscribe()
             .disposed(by: disposeBag)
         
+        input.backButtonTapped
+            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.backButtonState.accept(())
+            })
+            .disposed(by: disposeBag)
+        
+        
         return Output(feedData: feedData.asObservable(),
                       commentsData: commentsData.asDriver(),
                       replyCollectionViewHeight: replyCollectionViewContentSize,
                       likeCount: likeCount.asDriver(),
-                      likeButtonEnabled: likeButtonState.asDriver())
+                      likeButtonEnabled: likeButtonState.asDriver(),
+                      popToLastViewController: backButtonState.asObservable())
     }
     
     //MARK: = API
