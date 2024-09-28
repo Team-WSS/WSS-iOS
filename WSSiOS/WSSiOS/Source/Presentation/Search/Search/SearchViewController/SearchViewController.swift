@@ -41,6 +41,7 @@ final class SearchViewController: UIViewController {
         super.viewWillAppear(animated)
         
         showTabBar()
+        setNavigationBar()
     }
     
     override func viewDidLoad() {
@@ -56,6 +57,10 @@ final class SearchViewController: UIViewController {
     
     private func setUI() {
         self.view.backgroundColor = .wssWhite
+    }
+    
+    private func setNavigationBar() {
+        self.navigationController?.isNavigationBarHidden = true
     }
     
     //MARK: - Bind

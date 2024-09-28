@@ -19,6 +19,7 @@ final class HomeViewController: UIViewController {
     private let disposeBag = DisposeBag()
     
     private let isLoggedIn: Bool
+    private let viewWillAppearEvent = PublishRelay<Void>()
     
     //MARK: - UI Components
     
@@ -46,6 +47,7 @@ final class HomeViewController: UIViewController {
         
         navigationController?.setNavigationBarHidden(true, animated: false)
         showTabBar()
+        viewWillAppearEvent.accept(())
     }
     
     override func viewDidLoad() {
@@ -90,6 +92,7 @@ final class HomeViewController: UIViewController {
     
     private func bindViewModel() {
         let input = HomeViewModel.Input(
+            viewWillAppearEvent: viewWillAppearEvent.asObservable(),
             announcementButtonTapped: rootView.headerView.announcementButton.rx.tap,
             registerInterestNovelButtonTapped: rootView.interestView.unregisterView.registerButton.rx.tap,
             setPreferredGenresButtonTapped: rootView.tasteRecommendView.unregisterView.registerButton.rx.tap,
@@ -97,7 +100,8 @@ final class HomeViewController: UIViewController {
             induceModalViewCancelButtonTapped: rootView.induceLoginModalView.cancelButton.rx.tap,
             todayPopularCellSelected: rootView.todayPopularView.todayPopularCollectionView.rx.itemSelected,
             interestCellSelected: rootView.interestView.interestCollectionView.rx.itemSelected,
-            tasteRecommendCellSelected: rootView.tasteRecommendView.tasteRecommendCollectionView.rx.itemSelected
+            tasteRecommendCellSelected: rootView.tasteRecommendView.tasteRecommendCollectionView.rx.itemSelected,
+            tasteRecommendCollectionViewContentSize: rootView.tasteRecommendView.tasteRecommendCollectionView.rx.observe(CGSize.self, "contentSize")
         )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -203,6 +207,13 @@ final class HomeViewController: UIViewController {
                 owner.pushToDetailViewController(novelId: novelId)
             })
             .disposed(by: disposeBag)
+        
+        output.tasteRecommendCollectionViewHeight
+            .drive(with: self, onNext: { owner, height in
+                owner.rootView.tasteRecommendView.updateCollectionViewHeight(height: height)
+            })
+            .disposed(by: disposeBag)
+        
     }
     
     //MARK: - Custom Method

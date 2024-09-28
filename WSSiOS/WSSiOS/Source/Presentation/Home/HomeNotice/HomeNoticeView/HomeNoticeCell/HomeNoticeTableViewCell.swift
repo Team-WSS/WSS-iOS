@@ -45,7 +45,7 @@ final class HomeNoticeTableViewCell: UITableViewCell {
         }
         
         adminProfileImageView.do {
-            $0.image = .adminProfile
+            $0.image = .icAlertNews
             $0.layer.cornerRadius = 11.25
             $0.clipsToBounds = true
         }

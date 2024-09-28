@@ -32,6 +32,7 @@ final class HomeViewModel: ViewModelType {
     // MARK: - Inputs
     
     struct Input {
+        let viewWillAppearEvent: Observable<Void>
         let announcementButtonTapped: ControlEvent<Void>
         let registerInterestNovelButtonTapped: ControlEvent<Void>
         let setPreferredGenresButtonTapped: ControlEvent<Void>
@@ -40,6 +41,7 @@ final class HomeViewModel: ViewModelType {
         let todayPopularCellSelected: ControlEvent<IndexPath>
         let interestCellSelected: ControlEvent<IndexPath>
         let tasteRecommendCellSelected: ControlEvent<IndexPath>
+        let tasteRecommendCollectionViewContentSize: Observable<CGSize?>
     }
     
     //MARK: - Outputs
@@ -55,6 +57,7 @@ final class HomeViewModel: ViewModelType {
         let navigateToLoginView: Observable<Void>
         let showInduceLoginModalView: Driver<Bool>
         let navigateToNovelDetailInfoView: Observable<(IndexPath, Int)>
+        let tasteRecommendCollectionViewHeight: Driver<CGFloat>
     }
     
     //MARK: - init
@@ -75,7 +78,10 @@ extension HomeViewModel {
             })
             .disposed(by: disposeBag)
         
-        recommendRepository.getRealtimePopularFeeds()
+        input.viewWillAppearEvent
+            .flatMapLatest {
+                self.recommendRepository.getRealtimePopularFeeds()
+            }
             .subscribe(with: self, onNext: { owner, data in
                 owner.realtimePopularList.onNext(data.popularFeeds)
                 
@@ -147,6 +153,9 @@ extension HomeViewModel {
             tasteRecommendCellIndexPath.map { indexPath in (indexPath, 2) }
         )
         
+        let tasteRecommendCollectionViewHeight = input.tasteRecommendCollectionViewContentSize
+            .map { $0?.height ?? 0 }.asDriver(onErrorJustReturn: 0)
+        
         return Output(todayPopularList: todayPopularList.asObservable(),
                       realtimePopularList: realtimePopularList.asObservable(),
                       realtimePopularData: realtimePopularDataRelay.asObservable(),
@@ -156,6 +165,7 @@ extension HomeViewModel {
                       navigateToNormalSearchView: navigateToNormalSearchView,
                       navigateToLoginView: navigateToLoginView,
                       showInduceLoginModalView: showInduceLoginModalView.asDriver(),
-                      navigateToNovelDetailInfoView: navigateToNovelDetailInfoView)
+                      navigateToNovelDetailInfoView: navigateToNovelDetailInfoView,
+                      tasteRecommendCollectionViewHeight: tasteRecommendCollectionViewHeight)
     }
 }

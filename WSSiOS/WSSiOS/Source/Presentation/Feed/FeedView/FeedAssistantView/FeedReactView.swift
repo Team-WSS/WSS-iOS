@@ -46,12 +46,12 @@ final class FeedReactView: UIView {
         }
         
         likeButton.do {
-            $0.setImage(.icThumbUp, for: .normal)
+            $0.setImage(.icThumbUp.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray200), for: .normal)
             $0.contentMode = .scaleAspectFit
         }
         
         likeRatingLabel.do {
-            $0.textColor = .Gray200
+            $0.textColor = .wssGray200
         }
         
         commentView.do {
