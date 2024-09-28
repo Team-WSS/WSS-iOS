@@ -61,7 +61,7 @@ final class NovelDetailHeaderReadInfoButton: UIButton {
             }
             
             navigationImageView.do {
-                $0.image = .icChveronRightMini
+                $0.image = .icChevronRightMini
                 $0.contentMode = .scaleAspectFit
             }
         }

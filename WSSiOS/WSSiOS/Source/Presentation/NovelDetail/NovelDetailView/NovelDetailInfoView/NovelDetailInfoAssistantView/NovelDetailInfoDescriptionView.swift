@@ -52,7 +52,7 @@ final class NovelDetailInfoDescriptionView: UIView {
         }
         
         accordionImageView.do {
-            $0.image = .icChveronDown
+            $0.image = .icChevronDown
             $0.isUserInteractionEnabled = false
         }
     }
@@ -100,7 +100,7 @@ final class NovelDetailInfoDescriptionView: UIView {
     //MARK: - Custom Method
     
     func updateAccordionButton(_ isExpanded: Bool) {
-        self.accordionImageView.image = isExpanded ? .icChveronUp : .icChveronDown
+        self.accordionImageView.image = isExpanded ? .icChevronUp : .icChevronDown
         self.descriptionLabel.numberOfLines = isExpanded ? self.expandedDescriptionNumberOfLines : self.collapsedDescriptionNumberOfLines
     }
     

@@ -25,6 +25,7 @@ final class MyPageChangeUserInfoViewModel: ViewModelType {
     
     private var currentGender = ""
     private var currentBirth = 0
+    private var isEnabledCompleteButton = BehaviorRelay<Bool>(value: true)
     
     //MARK: - Life Cycle
     
@@ -42,6 +43,7 @@ final class MyPageChangeUserInfoViewModel: ViewModelType {
         let birthViewTapped: ControlEvent<UITapGestureRecognizer>
         let backButtonTapped: ControlEvent<Void>
         let completeButtonTapped: ControlEvent<Void>
+        let getNotificationUserBirth: Observable<Int>
     }
     
     struct Output {
@@ -51,6 +53,7 @@ final class MyPageChangeUserInfoViewModel: ViewModelType {
         let showBottomSheet = PublishRelay<Int>()
         let changeCompleteButton = BehaviorRelay<Bool>(value: false)
         let popViewController = PublishRelay<Void>()
+        let changeBirth = PublishRelay<Int>()
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -100,6 +103,15 @@ final class MyPageChangeUserInfoViewModel: ViewModelType {
                         })
                         .disposed(by: disposeBag)
                 }
+            })
+            .disposed(by: disposeBag)
+        
+        input.getNotificationUserBirth
+            .bind(with: self, onNext: { owner, birth in
+                owner.currentBirth = birth
+                output.changeBirth.accept(birth)
+                output.changeCompleteButton.accept(owner.checkIsEnabledCompleteButton())
+                
             })
             .disposed(by: disposeBag)
         

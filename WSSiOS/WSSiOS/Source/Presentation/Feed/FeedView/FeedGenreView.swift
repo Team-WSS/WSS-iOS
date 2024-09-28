@@ -1,5 +1,5 @@
 //
-//  FeedView.swift
+//  FeedGenreView.swift
 //  WSSiOS
 //
 //  Created by 신지원 on 5/14/24.
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class FeedView: UIView {
+final class FeedGenreView: UIView {
     
     //MARK: - Components
     

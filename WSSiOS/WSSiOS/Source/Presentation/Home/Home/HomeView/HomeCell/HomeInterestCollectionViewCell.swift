@@ -152,21 +152,21 @@ final class HomeInterestCollectionViewCell: UICollectionViewCell {
             $0.height.equalTo(87)
         }
         
-        novelTitleLabel.snp.makeConstraints {
+        novelRatingStackView.snp.makeConstraints {
             $0.top.equalTo(novelImageView.snp.top)
             $0.leading.equalTo(novelImageView.snp.trailing).offset(14)
-            $0.width.equalTo(160)
+        }
+        
+        novelTitleLabel.snp.makeConstraints {
+            $0.top.equalTo(novelRatingStackView.snp.bottom).offset(10)
+            $0.leading.equalTo(novelRatingStackView.snp.leading)
+            $0.trailing.equalToSuperview().inset(31)
         }
         
         dividerLine.snp.makeConstraints {
             $0.bottom.equalTo(novelBackgroundView.snp.bottom)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(1)
-        }
-        
-        novelRatingStackView.snp.makeConstraints {
-            $0.top.equalTo(novelTitleLabel.snp.bottom).offset(10)
-            $0.leading.equalTo(novelTitleLabel.snp.leading)
         }
         
         userProfileImageView.snp.makeConstraints {

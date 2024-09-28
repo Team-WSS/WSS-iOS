@@ -194,7 +194,7 @@ final class MyPageChangeUserInfoView: UIView {
         }
     }
     
-    private func changeBirthYearLabel(year: Int) {
+    func changeBirthYearLabel(year: Int) {
         birthYearLabel.applyWSSFont(.body2, with: String(year))
     }
     

@@ -66,7 +66,8 @@ final class MyPageViewController: UIViewController {
             headerViewHeight: headerViewHeightRelay.asDriver(),
             scrollOffset: rootView.scrollView.rx.contentOffset.asDriver(),
             settingButtonDidTap: settingButton.rx.tap,
-            dropdownButtonDidTap: dropdownButton.rx.tap)
+            dropdownButtonDidTap: dropdownButton.rx.tap,
+            editButtonTapoed: rootView.headerView.userImageChangeButton.rx.tap)
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -88,6 +89,18 @@ final class MyPageViewController: UIViewController {
                 } else {
                     owner.navigationItem.title = ""
                 }
+            })
+            .disposed(by: disposeBag)
+        
+        output.settingButtonEnabled
+            .bind(with: self, onNext: { owner, _ in
+                owner.pushToSettingViewController()
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushToEditViewController
+            .bind(with: self, onNext: { owner, _ in
+                owner.pushToMyPageEditViewController()
             })
             .disposed(by: disposeBag)
     }

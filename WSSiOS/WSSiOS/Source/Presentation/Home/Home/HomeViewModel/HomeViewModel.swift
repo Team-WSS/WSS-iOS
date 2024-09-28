@@ -25,14 +25,23 @@ final class HomeViewModel: ViewModelType {
     private let interestList = PublishSubject<[InterestFeed]>()
     private let tasteRecommendList = PublishSubject<[TasteRecommendNovel]>()
     
+    private let todayPopularCellIndexPath = PublishRelay<IndexPath>()
+    private let interestCellIndexPath = PublishRelay<IndexPath>()
+    private let tasteRecommendCellIndexPath = PublishRelay<IndexPath>()
+    
     // MARK: - Inputs
     
     struct Input {
+        let viewWillAppearEvent: Observable<Void>
         let announcementButtonTapped: ControlEvent<Void>
         let registerInterestNovelButtonTapped: ControlEvent<Void>
         let setPreferredGenresButtonTapped: ControlEvent<Void>
         let induceModalViewLoginButtonTapped: ControlEvent<Void>
         let induceModalViewCancelButtonTapped: ControlEvent<Void>
+        let todayPopularCellSelected: ControlEvent<IndexPath>
+        let interestCellSelected: ControlEvent<IndexPath>
+        let tasteRecommendCellSelected: ControlEvent<IndexPath>
+        let tasteRecommendCollectionViewContentSize: Observable<CGSize?>
     }
     
     //MARK: - Outputs
@@ -47,6 +56,8 @@ final class HomeViewModel: ViewModelType {
         let navigateToNormalSearchView: Observable<Void>
         let navigateToLoginView: Observable<Void>
         let showInduceLoginModalView: Driver<Bool>
+        let navigateToNovelDetailInfoView: Observable<(IndexPath, Int)>
+        let tasteRecommendCollectionViewHeight: Driver<CGFloat>
     }
     
     //MARK: - init
@@ -67,7 +78,10 @@ extension HomeViewModel {
             })
             .disposed(by: disposeBag)
         
-        recommendRepository.getRealtimePopularFeeds()
+        input.viewWillAppearEvent
+            .flatMapLatest {
+                self.recommendRepository.getRealtimePopularFeeds()
+            }
             .subscribe(with: self, onNext: { owner, data in
                 owner.realtimePopularList.onNext(data.popularFeeds)
                 
@@ -104,16 +118,43 @@ extension HomeViewModel {
                 owner.showInduceLoginModalView.accept(true)
             })
             .disposed(by: disposeBag)
-
+        
         input.induceModalViewCancelButtonTapped
             .subscribe(with: self, onNext: { owner, _ in
                 owner.showInduceLoginModalView.accept(false)
             })
             .disposed(by: disposeBag)
         
+        input.todayPopularCellSelected
+            .subscribe(with: self, onNext: { owner, indexPath in
+                owner.todayPopularCellIndexPath.accept(indexPath)
+            })
+            .disposed(by: disposeBag)
+        
+        input.interestCellSelected
+            .subscribe(with: self, onNext: { owner, indexPath in
+                owner.interestCellIndexPath.accept(indexPath)
+            })
+            .disposed(by: disposeBag)
+        
+        input.tasteRecommendCellSelected
+            .subscribe(with: self, onNext: { owner, indexPath in
+                owner.tasteRecommendCellIndexPath.accept(indexPath)
+            })
+            .disposed(by: disposeBag)
+        
         let navigateToAnnouncementView = input.announcementButtonTapped.asObservable()
         let navigateToNormalSearchView = input.registerInterestNovelButtonTapped.asObservable()
         let navigateToLoginView = input.induceModalViewLoginButtonTapped.asObservable()
+        
+        let navigateToNovelDetailInfoView = Observable.merge(
+            todayPopularCellIndexPath.map { indexPath in (indexPath, 0) },
+            interestCellIndexPath.map { indexPath in (indexPath, 1) },
+            tasteRecommendCellIndexPath.map { indexPath in (indexPath, 2) }
+        )
+        
+        let tasteRecommendCollectionViewHeight = input.tasteRecommendCollectionViewContentSize
+            .map { $0?.height ?? 0 }.asDriver(onErrorJustReturn: 0)
         
         return Output(todayPopularList: todayPopularList.asObservable(),
                       realtimePopularList: realtimePopularList.asObservable(),
@@ -123,6 +164,8 @@ extension HomeViewModel {
                       navigateToAnnouncementView: navigateToAnnouncementView,
                       navigateToNormalSearchView: navigateToNormalSearchView,
                       navigateToLoginView: navigateToLoginView,
-                      showInduceLoginModalView: showInduceLoginModalView.asDriver())
+                      showInduceLoginModalView: showInduceLoginModalView.asDriver(),
+                      navigateToNovelDetailInfoView: navigateToNovelDetailInfoView,
+                      tasteRecommendCollectionViewHeight: tasteRecommendCollectionViewHeight)
     }
 }
