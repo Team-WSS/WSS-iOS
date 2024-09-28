@@ -86,7 +86,7 @@ final class OnboardingBirthGenderView: UIView {
         }
         
         selectBirthButtonImageView.do {
-            $0.image = .icChveronDown
+            $0.image = .icChevronDown
             $0.contentMode = .scaleAspectFit
             $0.isUserInteractionEnabled = false
         }
