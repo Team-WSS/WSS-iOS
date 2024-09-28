@@ -19,6 +19,7 @@ final class HomeViewController: UIViewController {
     private let disposeBag = DisposeBag()
     
     private let isLoggedIn: Bool
+    private let viewWillAppearEvent = PublishRelay<Void>()
     
     //MARK: - UI Components
     
@@ -46,6 +47,7 @@ final class HomeViewController: UIViewController {
         
         navigationController?.setNavigationBarHidden(true, animated: false)
         showTabBar()
+        viewWillAppearEvent.accept(())
     }
     
     override func viewDidLoad() {
@@ -90,6 +92,7 @@ final class HomeViewController: UIViewController {
     
     private func bindViewModel() {
         let input = HomeViewModel.Input(
+            viewWillAppearEvent: viewWillAppearEvent.asObservable(),
             announcementButtonTapped: rootView.headerView.announcementButton.rx.tap,
             registerInterestNovelButtonTapped: rootView.interestView.unregisterView.registerButton.rx.tap,
             setPreferredGenresButtonTapped: rootView.tasteRecommendView.unregisterView.registerButton.rx.tap,

@@ -32,6 +32,7 @@ final class HomeViewModel: ViewModelType {
     // MARK: - Inputs
     
     struct Input {
+        let viewWillAppearEvent: Observable<Void>
         let announcementButtonTapped: ControlEvent<Void>
         let registerInterestNovelButtonTapped: ControlEvent<Void>
         let setPreferredGenresButtonTapped: ControlEvent<Void>
@@ -75,7 +76,10 @@ extension HomeViewModel {
             })
             .disposed(by: disposeBag)
         
-        recommendRepository.getRealtimePopularFeeds()
+        input.viewWillAppearEvent
+            .flatMapLatest {
+                self.recommendRepository.getRealtimePopularFeeds()
+            }
             .subscribe(with: self, onNext: { owner, data in
                 owner.realtimePopularList.onNext(data.popularFeeds)
                 
