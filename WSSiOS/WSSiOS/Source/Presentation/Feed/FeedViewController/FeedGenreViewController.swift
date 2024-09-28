@@ -48,6 +48,17 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
         bindViewModel()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        hideTabBar()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        showTabBar()
+        self.navigationController?.isNavigationBarHidden = true
+    }
+    
     //MARK: - Bind
     
     private func register() {
