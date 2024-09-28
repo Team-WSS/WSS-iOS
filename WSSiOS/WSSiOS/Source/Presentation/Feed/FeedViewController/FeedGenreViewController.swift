@@ -48,15 +48,9 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
         bindViewModel()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        hideTabBar()
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
-        showTabBar()
         self.navigationController?.isNavigationBarHidden = true
+        showTabBar()
     }
     
     //MARK: - Bind
@@ -76,12 +70,14 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
         let profileTapped = PublishSubject<Int>()
         let contentTapped = PublishSubject<Int>()
         let novelTapped = PublishSubject<Int>()
+        let likedTapped = PublishSubject<Bool>()
         let commentTapped = PublishSubject<Int>()
         
         let input = FeedGenreViewModel.Input(loadMoreTrigger: loadMoreTrigger,
                                              profileTapped: profileTapped,
                                              contentTapped: contentTapped,
                                              novelTapped: novelTapped,
+                                             likedTapped: likedTapped,
                                              commentTapped: commentTapped)
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -92,49 +88,42 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
         feedData
             .bind(to: rootView.feedCollectionView.rx.items(
                 cellIdentifier: FeedCollectionViewCell.cellIdentifier,
-                cellType: FeedCollectionViewCell.self)) { (row, element, cell) in
-                    cell.userView.rx.tapGesture()
-                        .when(.recognized)
-                        .map { _ in element.userId }
-                        .bind(to: profileTapped)
-                        .disposed(by: cell.disposeBag)
+                cellType: FeedCollectionViewCell.self)) { (row, element, cell) in                   
                     
-                    cell.detailContentView.rx.tapGesture()
-                        .when(.recognized)
-                        .map { _ in element.feedId }
-                        .bind(to: contentTapped)
-                        .disposed(by: cell.disposeBag)
+                    cell.profileTapHandler = {
+                        profileTapped.onNext(element.userId)
+                    }
                     
-                    cell.novelView.rx.tapGesture()
-                        .when(.recognized)
-                        .map { _ in element.novelId ?? 0 }
-                        .bind(to: novelTapped)
-                        .disposed(by: cell.disposeBag)
+                    cell.contentTapHandler = {
+                        contentTapped.onNext(element.feedId)
+                    }
                     
-                    cell.reactView.commentView.rx.tapGesture()
-                        .when(.recognized)
-                        .map { _ in element.feedId }
-                        .bind(to: commentTapped)
-                        .disposed(by: cell.disposeBag)
+                    cell.novelTapHandler = {
+                        if let novelId = element.novelId {
+                            novelTapped.onNext(novelId)
+                        }
+                    }
+                    
+                    cell.commentTapHandler = {
+                        commentTapped.onNext(element.feedId)
+                    }
                     
                     cell.bindData(data: element)
                 }
                 .disposed(by: disposeBag)
         
-        //        output.pushToMyPageViewController
-        //            .bind(with: self, onNext: { owner, userlId in
-        //                owner.pushToMyPageViewController(isMyPage: <#T##Bool#>)
-        //            })
-        //            .disposed(by: disposeBag)
-        
         output.pushToFeedDetailViewController
+            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, feedId in
+                print(feedId, "📌")
                 self.pushToFeedDetailViewController(feedId: feedId)
             })
             .disposed(by: disposeBag)
         
         output.pushToNovelDetailViewController
+            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, novelId in
+                print(novelId, "📌📌")
                 self.pushToDetailViewController(novelId: novelId)
             })
             .disposed(by: disposeBag)

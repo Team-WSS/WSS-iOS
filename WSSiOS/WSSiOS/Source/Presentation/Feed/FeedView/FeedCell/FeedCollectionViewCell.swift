@@ -16,6 +16,8 @@ final class FeedCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Properties
     
+    private var isLiked = true
+    private var isLikedCount = 0
     var disposeBag = DisposeBag()
     
     //MARK: - Components
@@ -28,6 +30,13 @@ final class FeedCollectionViewCell: UICollectionViewCell {
     private let genreLabel = UILabel()
     private let emptyView = UIView()
     private let divideView = UIView()
+    
+    var profileTapHandler: (() -> Void)?
+    var contentTapHandler: (() -> Void)?
+    var novelTapHandler: (() -> Void)?
+    var likedTapHandler: (() -> Void)?
+    var commentTapHandler: (() -> Void)?
+    
     
     //MARK: - Life Cycle
     
@@ -127,10 +136,50 @@ final class FeedCollectionViewCell: UICollectionViewCell {
     //MARK: - Action
     
     private func addTapGestures() {
+        let profileTap = UITapGestureRecognizer(target: self, action: #selector(handleProfileTap))
+        userView.addGestureRecognizer(profileTap)
         userView.isUserInteractionEnabled = true
-        novelView.isUserInteractionEnabled = true
-        reactView.isUserInteractionEnabled = true
+        
+        let contentTap = UITapGestureRecognizer(target: self, action: #selector(handleContentTap))
+        detailContentView.addGestureRecognizer(contentTap)
         detailContentView.isUserInteractionEnabled = true
+        
+        let novelTap = UITapGestureRecognizer(target: self, action: #selector(handleNovelTap))
+        novelView.addGestureRecognizer(novelTap)
+        novelView.isUserInteractionEnabled = true
+        
+        let likedTap = UITapGestureRecognizer(target: self, action: #selector(handleLikedTap))
+        reactView.likeButton.addGestureRecognizer(likedTap)
+        reactView.likeButton.isUserInteractionEnabled = true
+        
+        let commentTap = UITapGestureRecognizer(target: self, action: #selector(handleCommentTap))
+        reactView.commentView.addGestureRecognizer(commentTap)
+        reactView.commentView.isUserInteractionEnabled = true
+    }
+    
+    @objc private func handleProfileTap() {
+        profileTapHandler?()
+    }
+    
+    @objc private func handleContentTap() {
+        contentTapHandler?()
+    }
+    
+    @objc private func handleNovelTap() {
+        novelTapHandler?()
+    }
+    
+    @objc private func handleLikedTap() {
+        likedTapHandler?()
+        
+        isLiked.toggle()
+        reactView.updateLikeState(isLiked)
+        isLikedCount = isLiked ? isLikedCount + 1 : isLikedCount - 1
+        reactView.updateLikeCount(isLikedCount)
+    }
+    
+    @objc private func handleCommentTap() {
+        commentTapHandler?()
     }
     
     //MARK: - Data
@@ -169,6 +218,9 @@ final class FeedCollectionViewCell: UICollectionViewCell {
         reactView.bindData(likeRating: data.likeCount,
                            isLiked: data.isLiked,
                            commentRating: data.commentCount)
+        
+        isLiked = data.isLiked
+        isLikedCount = data.likeCount
         
         let categoriesText = data.relevantCategories
             .joined(separator: ", ")

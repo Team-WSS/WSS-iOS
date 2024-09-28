@@ -18,7 +18,7 @@ final class FeedGenreViewModel: ViewModelType {
     private let category: String
     private var lastFeedId: Int = 0
     private var isLoading = false
-    
+
     //MARK: - Life Cycle
     
     init(feedRepository: FeedRepository, category: String) {
@@ -29,10 +29,9 @@ final class FeedGenreViewModel: ViewModelType {
     struct Input {
         let loadMoreTrigger: Observable<Void>
         let profileTapped: PublishSubject<Int>
-//        let dropdownTapped: ControlEvent<Void>
         let contentTapped: PublishSubject<Int>
         let novelTapped: PublishSubject<Int>
-//        let likedTapped: Observable<Void>
+        let likedTapped: PublishSubject<Bool>
         let commentTapped: PublishSubject<Int>
     }
     
@@ -43,7 +42,7 @@ final class FeedGenreViewModel: ViewModelType {
         let pushToFeedDetailViewController = PublishRelay<Int>()
         let pushToNovelDetailViewController = PublishRelay<Int>()
         let likedTapped = PublishRelay<Void>()
-        let pushToFeedDetailViewControllerWithKeyboard = PublishRelay<Int>()
+//        let pushToFeedDetailViewControllerWithKeyboard = PublishRelay<Int>()
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -82,7 +81,7 @@ final class FeedGenreViewModel: ViewModelType {
         input.commentTapped
             .throttle(.seconds(2), scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, feedId in
-                output.pushToFeedDetailViewControllerWithKeyboard.accept(feedId)
+                output.pushToFeedDetailViewController.accept(feedId)
             })
             .disposed(by: disposeBag)
                   
