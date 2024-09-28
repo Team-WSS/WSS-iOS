@@ -66,7 +66,8 @@ final class MyPageViewController: UIViewController {
             headerViewHeight: headerViewHeightRelay.asDriver(),
             scrollOffset: rootView.scrollView.rx.contentOffset.asDriver(),
             settingButtonDidTap: settingButton.rx.tap,
-            dropdownButtonDidTap: dropdownButton.rx.tap)
+            dropdownButtonDidTap: dropdownButton.rx.tap,
+            editButtonTapoed: rootView.headerView.userImageChangeButton.rx.tap)
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -90,6 +91,18 @@ final class MyPageViewController: UIViewController {
                 }
             })
             .disposed(by: disposeBag)
+        
+        output.settingButtonEnabled
+            .bind(with: self, onNext: { owner, _ in
+                owner.pushToSettingViewController()
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushToEditViewController
+            .bind(with: self, onNext: { owner, _ in
+                owner.pushToMyPageEditViewController()
+            })
+            .disposed(by: disposeBag)
     }
 }
 
@@ -99,8 +112,7 @@ extension MyPageViewController {
     
     private func decideUI(isMyPage: Bool) {
         let button = setButton(isMyPage: isMyPage)
-        
-        //TODO: - 타인 프로필도 타이틀이 마이페이지인지 확인해야 함
+
         preparationSetNavigationBar(title: StringLiterals.Navigation.Title.myPage,
                                     left: nil,
                                     right: button)
@@ -116,19 +128,13 @@ extension MyPageViewController {
             return settingButton
             
         } else {
-            
-            //TODO: - 드롭다운 에러,,, 🥹
             dropdownButton.do {
-                $0.makeDropdown(dropdownRootView: self.view,
+                $0.makeDropdown(dropdownRootView: self.rootView,
                                 dropdownWidth: 120,
-                                dropdownData: ["차단하기"],
+                                dropdownData: ["수정하기", "삭제하기"],
                                 textColor: .wssBlack)
             }
-            self.view.addSubview(dropdownButton)
-            dropdownButton.snp.makeConstraints {
-                $0.trailing.equalToSuperview().inset(10)
-                $0.size.equalTo(44)
-            }
+
             return dropdownButton
         }
     }

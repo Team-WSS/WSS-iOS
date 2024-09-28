@@ -81,7 +81,7 @@ extension UIViewController {
     
     func moveToNovelDetailViewController(userNovelId: Int) {
         if self.navigationController?.tabBarController?.selectedIndex == 0 {
-            let tabBar = WSSTabBarController()
+            let tabBar = WSSTabBarController(isLoggedIn: true)
             tabBar.selectedIndex = 1
             let navigationController = UINavigationController(rootViewController: tabBar)
             navigationController.setNavigationBarHidden(true, animated: true)
@@ -174,6 +174,9 @@ extension UIViewController {
     
     func pushToDetailViewController(novelId: Int) {
         let viewController = ModuleFactory.shared.makeNovelDetailViewController(novelId: novelId)
+        viewController.navigationController?.isNavigationBarHidden = false
+        viewController.hidesBottomBarWhenPushed = true
+        
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
@@ -182,24 +185,32 @@ extension UIViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
+    func pushToOnboardingViewController() {
+        let viewController = ModuleFactory.shared.makeOnboardingViewController()
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
     func presentToAlertViewController(iconImage: UIImage?,
                                       titleText: String?,
                                       contentText: String?,
-                                      cancelTitle: String?,
-                                      actionTitle: String?,
-                                      actionBackgroundColor: CGColor?) -> Observable<Void> {
+                                      leftTitle: String?,
+                                      rightTitle: String?,
+                                      rightBackgroundColor: CGColor?) -> Observable<AlertButtonType> {
         let alertViewController = WSSAlertViewController(iconImage: iconImage,
                                                          titleText: titleText,
                                                          contentText: contentText,
-                                                         cancelTitle: cancelTitle,
-                                                         actionTitle: actionTitle,
-                                                         actionBackgroundColor: actionBackgroundColor)
+                                                         leftTitle: leftTitle,
+                                                         rightTitle: rightTitle,
+                                                         rightBackgroundColor: rightBackgroundColor)
         alertViewController.modalPresentationStyle = .overFullScreen
         alertViewController.modalTransitionStyle = .crossDissolve
         
         self.present(alertViewController, animated: true)
         
-        return alertViewController.actionButtonTap
+        let leftButtonTap = alertViewController.leftButtonTap.map { AlertButtonType.left }
+        let rightButtonTap = alertViewController.rightButtonTap.map { AlertButtonType.right }
+        
+        return Observable.merge(leftButtonTap, rightButtonTap)
     }
     
     func pushToMyPageDeleteIDWarningViewController() {
@@ -307,8 +318,17 @@ extension UIViewController {
                 feedDetailRepository: DefaultFeedDetailRepository(
                     feedDetailService: DefaultFeedDetailService()
                 ),
-                feedId: feedId)
+                feedId: feedId
+            )
         )
+        viewController.navigationController?.isNavigationBarHidden = false
+        viewController.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func pushToSettingViewController() {
+        let viewController = MyPageSettingViewController()
+        viewController.hidesBottomBarWhenPushed = true
         
         self.navigationController?.pushViewController(viewController, animated: true)
     }
@@ -323,6 +343,10 @@ extension UIViewController {
             ),
             isMyPage: isMyPage)
         
+    func pushToMyPageEditViewController() {
+        let viewController = MyPageEditProfileViewController(viewModel: MyPageEditProfileViewModel())
+        
+        viewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 }

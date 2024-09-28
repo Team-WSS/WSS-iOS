@@ -48,7 +48,7 @@ final class WSSDropdownButton: UIButton {
                       dropdownData: [String],
                       textColor: UIColor) {
         
-        WSSDropdownManager.shared.createDropdown(superView: dropdownRootView,
+        WSSDropdownManager.shared.createDropdown(dropdownRootView: dropdownRootView,
                                                  dropdownButton: self,
                                                  dropdownWidth: dropdownWidth,
                                                  dropdownData: dropdownData,

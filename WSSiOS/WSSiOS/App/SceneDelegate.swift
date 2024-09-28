@@ -16,13 +16,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         self.window = UIWindow(windowScene: windowScene)
         
-       setRootToLoginViewController()
+        setRootToLoginViewController()
         
         self.window?.makeKeyAndVisible()
     }
     
     func setRootToWSSTabBarController() {
-        let navigationController = UINavigationController(rootViewController: WSSTabBarController())
+        let isLoggedIn = APIConstants.isLogined
+        let navigationController = UINavigationController(rootViewController: WSSTabBarController(isLoggedIn: isLoggedIn))
         navigationController.isNavigationBarHidden = true
         window?.rootViewController = navigationController
     }

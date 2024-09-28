@@ -37,6 +37,7 @@ final class FeedDetailViewModel: ViewModelType {
         let backButtonTapped: ControlEvent<Void>
         let replyCollectionViewContentSize: Observable<CGSize?>
         let likeButtonTapped: ControlEvent<Void>
+        let backButtonTapped: ControlEvent<Void>
     }
     
     struct Output {
@@ -45,7 +46,7 @@ final class FeedDetailViewModel: ViewModelType {
         let replyCollectionViewHeight: Driver<CGFloat>
         let likeCount: Driver<Int>
         let likeButtonEnabled: Driver<Bool>
-        let popToLastViewController: Observable<Void>
+        let backButtonEnabled: Driver<Void>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -86,20 +87,14 @@ final class FeedDetailViewModel: ViewModelType {
             .subscribe()
             .disposed(by: disposeBag)
         
-        input.backButtonTapped
-            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.backButtonState.accept(())
-            })
-            .disposed(by: disposeBag)
-        
+        let backButtonEnabled = input.backButtonTapped.asDriver()
         
         return Output(feedData: feedData.asObservable(),
                       commentsData: commentsData.asDriver(),
                       replyCollectionViewHeight: replyCollectionViewContentSize,
                       likeCount: likeCount.asDriver(),
                       likeButtonEnabled: likeButtonState.asDriver(),
-                      popToLastViewController: backButtonState.asObservable())
+                      backButtonEnabled: backButtonEnabled)
     }
     
     //MARK: = API

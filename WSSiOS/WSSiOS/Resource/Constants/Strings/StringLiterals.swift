@@ -53,6 +53,7 @@ enum StringLiterals {
             static let todayPopular = "오늘의 인기작"
             static let realtimePopular = "지금 뜨는 수다글"
             static let interest = "님의 관심글"
+            static let notLoggedInInterest = "관심글"
             static let recommend = "이 웹소설은 어때요?"
         }
         
@@ -194,7 +195,7 @@ enum StringLiterals {
             static let buttonTitle = "차단 해제"
             static let emptyLabel = "차단한 유저가 없어요"
         }
-      
+        
         enum DeleteIDWarning {
             static let title = "정말 탈퇴하시겠어요?"
             static let description = "남겼던 평가와 기록들이 모두 사라져요.."
@@ -307,11 +308,28 @@ enum StringLiterals {
     }
     
     enum Onboarding {
+        
+        static let nextButton = "다음으로"
+        
+        enum BirthGender {
+            static let title = "성별, 출생연도를 선택하세요"
+            static let description = "해당 정보는 추천에 활용되며, 언제든 변경할 수 있어요"
+            static let genderTitle = "성별"
+            static let birthTitle = "출생연도"
+            static let birthPlaceholder = "태어난 해를 입력하세요"
+        }
+        
+        enum NickName {
+            static let title = "닉네임을 입력하세요"
+            static let description = "10자 이내의 닉네임을 입력해주세요"
+            static let textFieldPlaceholder = "닉네임"
+            static let duplicateCheckButton = "중복확인"
+        }
+    
         enum Login {
             static let skip = "회원가입 없이 둘러보기"
         }
     }
-    
     enum NovelDetail {
         enum Memo {
             static let memo = "메모"
@@ -411,8 +429,8 @@ enum StringLiterals {
         
         enum Alert {
             static let titleText = "평가를 그만할까요?"
-            static let cancelTitle = "계속 작성"
-            static let actionTitle = "그만하기"
+            static let writeTitle = "계속 작성"
+            static let stopTitle = "그만하기"
         }
     }
     
@@ -481,8 +499,8 @@ enum StringLiterals {
         }
         enum Alert {
             static let titleText = "글 작성을 그만하시겠어요?"
-            static let cancelTitle = "계속 작성"
-            static let actionTitle = "그만하기"
+            static let writeTitle = "계속 작성"
+            static let stopTitle = "그만하기"
         }
     }
     

@@ -38,11 +38,16 @@ final class FeedDetailViewController: UIViewController {
         self.view = rootView
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
         hideTabBar()
         setNavigationBar()
+        swipeBackGesture()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
         bindViewModel()
         registerCell()
@@ -77,7 +82,8 @@ final class FeedDetailViewController: UIViewController {
         let input = FeedDetailViewModel.Input(
             backButtonTapped: rootView.backButton.rx.tap,
             replyCollectionViewContentSize: rootView.replyView.replyCollectionView.rx.observe(CGSize.self, "contentSize"),
-            likeButtonTapped: rootView.feedContentView.reactView.likeButton.rx.tap)
+            likeButtonTapped: rootView.feedContentView.reactView.likeButton.rx.tap,
+            backButtonTapped: rootView.backButton.rx.tap)
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.feedData
@@ -110,6 +116,12 @@ final class FeedDetailViewController: UIViewController {
         output.replyCollectionViewHeight
             .drive(with: self, onNext: { owner, height in
                 owner.rootView.replyView.updateCollectionViewHeight(height: height)
+            })
+            .disposed(by: disposeBag)
+        
+        output.backButtonEnabled
+            .drive(with: self, onNext: { owner, _ in
+                owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
         
@@ -167,7 +179,7 @@ extension FeedDetailViewController: UITextViewDelegate {
         let backgroundHeight: CGFloat
         
         backgroundHeight = numberOfLines == 1 ? 42 : min(estimatedSize.height + 14, 84)
-
+        
         rootView.replyWritingView.replyWritingTextView.snp.updateConstraints {
             $0.height.equalTo(min(estimatedSize.height, 84))
         }
@@ -177,7 +189,7 @@ extension FeedDetailViewController: UITextViewDelegate {
         }
         
         rootView.replyWritingView.replyWritingTextView.isScrollEnabled = numberOfLines > 3
-
+        
         self.rootView.replyWritingView.layoutIfNeeded()
     }
 }

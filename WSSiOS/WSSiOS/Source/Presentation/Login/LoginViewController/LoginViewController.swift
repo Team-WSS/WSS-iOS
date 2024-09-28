@@ -47,6 +47,8 @@ final class LoginViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        setNavigationBar()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -56,6 +58,10 @@ final class LoginViewController: UIViewController {
     }
     
     //MARK: - UI
+    
+    private func setNavigationBar() {
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
+    }
     
     private func registerCell() {
         rootView.carouselView.bannerCollectionView.register(
@@ -98,6 +104,16 @@ final class LoginViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.navigateToOnboarding
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                // 온보딩 뷰로 이동
+                print("Token: \(APIConstants.testToken)")
+                //owner.loginCompleted()
+                owner.pushToOnboardingViewController()
+            })
+            .disposed(by: disposeBag)
+        
+        output.navigateToHome
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 // 온보딩 뷰로 이동

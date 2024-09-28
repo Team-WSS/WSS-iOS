@@ -13,7 +13,7 @@ final class MyPageChangeUserBirthViewController: UIViewController {
     
     //MARK: - Properties
     
-    private let userBirth: Int
+    private var userBirth: Int
     
     private let birthRange = Observable.just(Array(1900...2025))
     private let disposeBag = DisposeBag()
@@ -74,7 +74,12 @@ final class MyPageChangeUserBirthViewController: UIViewController {
         
         rootView.completeButton.rx.tap
             .bind(with: self, onNext: { owner, _ in
-                //로직 추가
+                if let centerYear = owner.getCenterCellYear() {
+                    owner.userBirth = centerYear
+                    
+                    NotificationCenter.default.post(name: NSNotification.Name("UserBirth"), object: nil, userInfo: ["userBirth": owner.userBirth])
+                }
+                
                 owner.dismissModalViewController()
             })
             .disposed(by: disposeBag)
@@ -138,5 +143,13 @@ extension MyPageChangeUserBirthViewController {
                 }
             }
         }
+    }
+    
+    private func getCenterCellYear() -> Int? {
+        let centerPoint = CGPoint(x: rootView.tableView.bounds.midX, y: rootView.tableView.bounds.midY)
+        if let centerIndexPath = rootView.tableView.indexPathForRow(at: centerPoint) {
+            return 1900 + centerIndexPath.row
+        }
+        return nil
     }
 }

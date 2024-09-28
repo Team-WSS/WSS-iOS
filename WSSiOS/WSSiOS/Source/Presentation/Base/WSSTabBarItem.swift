@@ -50,10 +50,10 @@ enum WSSTabBarItem: CaseIterable {
         }
     }
     
-    var itemViewController: UIViewController {
+    func itemViewController(isLoggedIn: Bool) -> UIViewController {
         switch self {
         case .home:
-            return HomeViewController(viewModel: HomeViewModel(recommendRepository: DefaultRecommendRepository(recommendService: DefaultRecommendService())))
+            return HomeViewController(viewModel: HomeViewModel(recommendRepository: DefaultRecommendRepository(recommendService: DefaultRecommendService()), isLoggedIn: isLoggedIn), isLoggedIn: isLoggedIn)
             
         case .search:
             return SearchViewController(viewModel: SearchViewModel(searchRepository: DefaultSearchRepository(searchService: DefaultSearchService())))
