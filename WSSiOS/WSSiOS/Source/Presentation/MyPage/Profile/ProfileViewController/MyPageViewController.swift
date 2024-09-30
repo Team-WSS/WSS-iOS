@@ -18,6 +18,7 @@ final class MyPageViewController: UIViewController {
     private let viewModel: MyPageViewModel
     
     private var isMyPageRelay: BehaviorRelay<Bool>
+    private var dropDownCellTap = PublishSubject<String>()
     private let headerViewHeightRelay = BehaviorRelay<Double>(value: 0)
     
     //MARK: - UI Components
@@ -57,7 +58,7 @@ final class MyPageViewController: UIViewController {
         
         headerViewHeightRelay.accept(rootView.headerView.layer.frame.height)
     }
-
+    
     //MARK: - Bind
     
     private func bindViewModel() {
@@ -66,7 +67,7 @@ final class MyPageViewController: UIViewController {
             headerViewHeight: headerViewHeightRelay.asDriver(),
             scrollOffset: rootView.scrollView.rx.contentOffset.asDriver(),
             settingButtonDidTap: settingButton.rx.tap,
-            dropdownButtonDidTap: dropdownButton.rx.tap,
+            dropdownButtonDidTap: dropDownCellTap,
             editButtonTapoed: rootView.headerView.userImageChangeButton.rx.tap)
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
@@ -103,6 +104,12 @@ final class MyPageViewController: UIViewController {
                 owner.pushToMyPageEditViewController()
             })
             .disposed(by: disposeBag)
+        
+        output.dropdownButtonEnabled
+            .bind(with: self, onNext: { owner, data in
+                print(data)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
@@ -111,11 +118,11 @@ extension MyPageViewController {
     //MARK: - UI
     
     private func decideUI(isMyPage: Bool) {
-        let button = setButton(isMyPage: isMyPage)
-
+        let button = setButton(isMyPage: false)
+        
         preparationSetNavigationBar(title: StringLiterals.Navigation.Title.myPage,
                                     left: nil,
-                                    right: button)
+                                    right: dropdownButton)
         
         rootView.headerView.userImageChangeButton.isHidden = !isMyPage
     }
@@ -133,8 +140,10 @@ extension MyPageViewController {
                                 dropdownWidth: 120,
                                 dropdownData: ["수정하기", "삭제하기"],
                                 textColor: .wssBlack)
+                .bind(to: dropDownCellTap)
+                .disposed(by: disposeBag)
             }
-
+            
             return dropdownButton
         }
     }
