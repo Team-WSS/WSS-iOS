@@ -20,7 +20,7 @@ final class DetailSearchViewModel: ViewModelType {
     var keywordSearchResultList: [KeywordData] = []
     var selectedKeywordList: [KeywordData]
     
-    private let keywordLimit: Int = 20
+    let keywordLimit: Int = 20
     
     /// 정보 뷰
     private let cancelButtonEnabled = PublishRelay<Bool>()
@@ -30,20 +30,19 @@ final class DetailSearchViewModel: ViewModelType {
     /// 키워드 뷰
     private let viewWillAppearEvent = BehaviorRelay<Bool>(value: false)
     private let keywordList = PublishSubject<[KeywordCategory]>()
-//    private let selectedKeywordListData = BehaviorRelay<[KeywordData]>(value: [])
-//    private let keywordSearchResultListData = PublishRelay<[KeywordData]>()
-//    private let isKeywordCountOverLimit = PublishRelay<IndexPath>()
-//    private let showEmptyView = PublishRelay<Bool>()
     
     //효원이꺼
+    
     private let dismissModalViewController = PublishRelay<Void>()
     private let enteredText = BehaviorRelay<String>(value: "")
     private let isKeywordTextFieldEditing = BehaviorRelay<Bool>(value: false)
     private let endEditing = PublishRelay<Void>()
-    private let selectedKeywordListData = BehaviorRelay<[KeywordData]>(value: [])
+    private let selectedKeywordListData = PublishRelay<[KeywordData]>()
     private let keywordSearchResultListData = PublishRelay<[KeywordData]>()
+    private let keywordCategoryListData = PublishRelay<[KeywordCategory]>()
     private let isKeywordCountOverLimit = PublishRelay<IndexPath>()
     private let showEmptyView = PublishRelay<Bool>()
+    private let showCategoryListView = PublishRelay<Bool>()
     
     struct Input {
         let viewWillAppearEvent: Observable<Bool>
@@ -66,6 +65,8 @@ final class DetailSearchViewModel: ViewModelType {
         let resetButtonDidTap: ControlEvent<Void>
         let selectButtonDidTap: ControlEvent<Void>
         let contactButtonDidTap: ControlEvent<Void>
+        let selectedKeywordData: Observable<KeywordData>
+        let deselectedKeywordData: Observable<KeywordData>
     }
     
     struct Output {
@@ -74,16 +75,16 @@ final class DetailSearchViewModel: ViewModelType {
         let genreCollectionViewHeight: Driver<CGFloat>
         let selectedTab: Driver<DetailSearchTab>
         
-        //let keywordList: Observable<[KeywordCategory]>
-        
         let dismissModalViewController: Observable<Void>
         let enteredText: Observable<String>
         let isKeywordTextFieldEditing: Observable<Bool>
         let endEditing: Observable<Void>
         let selectedKeywordListData: Observable<[KeywordData]>
         let keywordSearchResultListData: Observable<[KeywordData]>
+        let keywordCategoryListData: Observable<[KeywordCategory]>
         let isKeywordCountOverLimit: Observable<IndexPath>
         let showEmptyView: Observable<Bool>
+        let showCategoryListView: Observable<Bool>
     }
     
     //MARK: - init
@@ -133,20 +134,30 @@ final class DetailSearchViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.viewDidLoadEvent
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.selectedKeywordListData.accept(owner.selectedKeywordList)
+            .do(onNext: {
+                self.selectedKeywordListData.accept(self.selectedKeywordList)
+            })
+            .flatMapLatest {
+                self.searchKeyword()
+            }
+            .subscribe(with: self, onNext: { owner, data in
+                owner.keywordCategoryListData.accept(data.categories)
+            }, onError: { owner, error in
+                print(error)
             })
             .disposed(by: disposeBag)
         
         input.updatedEnteredText
             .subscribe(with: self, onNext: { owner, text in
                 owner.enteredText.accept(text)
-             })
+            })
             .disposed(by: disposeBag)
         
         input.keywordTextFieldEditingDidBegin
             .subscribe(with: self, onNext: { owner, _ in
                 owner.isKeywordTextFieldEditing.accept(true)
+                owner.showEmptyView.accept(false)
+                owner.showCategoryListView.accept(false)
             })
             .disposed(by: disposeBag)
         
@@ -160,6 +171,9 @@ final class DetailSearchViewModel: ViewModelType {
             .subscribe(with: self, onNext: { owner, _ in
                 owner.enteredText.accept("")
                 owner.showEmptyView.accept(false)
+                owner.showCategoryListView.accept(true)
+                owner.isKeywordTextFieldEditing.accept(false)
+                owner.endEditing.accept(())
             })
             .disposed(by: disposeBag)
         
@@ -178,11 +192,20 @@ final class DetailSearchViewModel: ViewModelType {
         })
         .withLatestFrom(enteredText)
         .flatMapLatest { enteredText in
-            self.searchKeyword(query: enteredText)
+            if enteredText.isEmpty {
+                return self.searchKeyword()
+            } else {
+                return self.searchKeyword(query: enteredText)
+            }
         }
         .subscribe(with: self, onNext: { owner, data in
-            owner.keywordSearchResultList = data.categories.flatMap { $0.keywords }
-            owner.keywordSearchResultListData.accept(owner.keywordSearchResultList)
+            print(data)
+            if owner.enteredText.value.isEmpty {
+                owner.keywordCategoryListData.accept(data.categories)
+            } else {
+                owner.keywordSearchResultList = data.categories.flatMap { $0.keywords }
+                owner.keywordSearchResultListData.accept(owner.keywordSearchResultList)
+            }
         }, onError: { owner, error in
             print(error)
         })
@@ -217,6 +240,20 @@ final class DetailSearchViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        input.selectedKeywordData
+            .subscribe(with: self, onNext: { owner, keyword in
+                owner.selectedKeywordList.append(keyword)
+                owner.selectedKeywordListData.accept(owner.selectedKeywordList)
+            })
+            .disposed(by: disposeBag)
+        
+        input.deselectedKeywordData
+            .subscribe(with: self, onNext: { owner, keyword in
+                owner.selectedKeywordList.removeAll { $0.keywordName == keyword.keywordName }
+                owner.selectedKeywordListData.accept(owner.selectedKeywordList)
+            })
+            .disposed(by: disposeBag)
+        
         input.resetButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
                 owner.selectedKeywordList = []
@@ -224,6 +261,7 @@ final class DetailSearchViewModel: ViewModelType {
                 owner.enteredText.accept("")
                 owner.keywordSearchResultListData.accept([])
                 owner.showEmptyView.accept(false)
+                owner.showCategoryListView.accept(true)
             })
             .disposed(by: disposeBag)
         
@@ -245,20 +283,20 @@ final class DetailSearchViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         
-        return Output(cancelButtonEnabled: cancelButtonEnabled,
+        return Output(cancelButtonEnabled: cancelButtonEnabled.asObservable(),
                       genreList: genreList.asDriver(),
                       genreCollectionViewHeight: genreCollectionViewContentSize,
                       selectedTab: selectedTab.asDriver(),
-                      //keywordList: keywordList.asObservable(),
                       dismissModalViewController: dismissModalViewController.asObservable(),
-                                    enteredText: enteredText.asObservable(),
-                                    isKeywordTextFieldEditing: isKeywordTextFieldEditing.asObservable(),
-                                    endEditing: endEditing.asObservable(),
-                                    selectedKeywordListData: selectedKeywordListData.asObservable(),
-                                    keywordSearchResultListData: keywordSearchResultListData.asObservable(),
-                                    isKeywordCountOverLimit: isKeywordCountOverLimit.asObservable(),
-                                    showEmptyView: showEmptyView.asObservable()
-        )
+                      enteredText: enteredText.asObservable(),
+                      isKeywordTextFieldEditing: isKeywordTextFieldEditing.asObservable(),
+                      endEditing: endEditing.asObservable(),
+                      selectedKeywordListData: selectedKeywordListData.asObservable(),
+                      keywordSearchResultListData: keywordSearchResultListData.asObservable(),
+                      keywordCategoryListData: keywordCategoryListData.asObservable(),
+                      isKeywordCountOverLimit: isKeywordCountOverLimit.asObservable(),
+                      showEmptyView: showEmptyView.asObservable(),
+                      showCategoryListView: showCategoryListView.asObservable())
     }
     
     //MARK: - API

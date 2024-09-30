@@ -14,11 +14,13 @@ final class DetailSearchKeywordView: UIView {
     
     //MARK: - UI Components
     
+    private let contentView = UIView()
     let novelKeywordSelectSearchBarView = NovelKeywordSelectSearchBarView()
     let novelSelectedKeywordListView = NovelSelectedKeywordListView()
     private let dividerView = UIView()
     let novelKeywordSelectEmptyView = NovelKeywordSelectEmptyView()
     let novelKeywordSelectSearchResultView = NovelKeywordSelectSearchResultView()
+    let novelKeywordSelectCategoryListView = NovelKeywordSelectCategoryListView()
     let novelKeywordSelectModalButtonView = NovelKeywordSelectModalButtonView()
     
     //MARK: - Life Cycle
@@ -37,6 +39,13 @@ final class DetailSearchKeywordView: UIView {
     }
     
     private func setUI() {
+        
+        contentView.do {
+            $0.backgroundColor = .wssWhite
+            $0.layer.cornerRadius = 16
+            $0.layer.maskedCorners = [.layerMinXMinYCorner,
+                                      .layerMaxXMinYCorner]
+        }
         dividerView.do {
             $0.backgroundColor = .wssGray50
         }
@@ -51,15 +60,22 @@ final class DetailSearchKeywordView: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubviews(novelKeywordSelectSearchBarView,
-                         novelSelectedKeywordListView,
-                         dividerView,
-                         novelKeywordSelectEmptyView,
-                         novelKeywordSelectSearchResultView,
-                         novelKeywordSelectModalButtonView)
+        self.addSubview(contentView)
+        contentView.addSubviews(novelKeywordSelectSearchBarView,
+                                novelSelectedKeywordListView,
+                                dividerView,
+                                novelKeywordSelectEmptyView,
+                                novelKeywordSelectSearchResultView,
+                                novelKeywordSelectCategoryListView,
+                                novelKeywordSelectModalButtonView)
     }
     
     private func setLayout() {
+        contentView.snp.makeConstraints {
+            $0.leading.trailing.bottom.equalToSuperview()
+            $0.height.equalTo(UIScreen.main.bounds.height - 81)
+        }
+        
         novelKeywordSelectSearchBarView.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.leading.trailing.equalToSuperview()
@@ -94,12 +110,16 @@ final class DetailSearchKeywordView: UIView {
     
     //MARK: - Custom Method
     
+    func showEmptyView(show: Bool) {
+        novelKeywordSelectEmptyView.isHidden = !show
+    }
+    
     func showSearchResultView(show: Bool) {
         novelKeywordSelectSearchResultView.isHidden = !show
     }
     
-    func showEmptyView(show: Bool) {
-        novelKeywordSelectEmptyView.isHidden = !show
+    func showCategoryListView(show: Bool) {
+        novelKeywordSelectCategoryListView.isHidden = !show
     }
     
     func updateNovelKeywordSelectModalViewLayout(isSelectedKeyword: Bool) {
@@ -108,6 +128,10 @@ final class DetailSearchKeywordView: UIView {
         }
         
         novelKeywordSelectSearchResultView.snp.updateConstraints {
+            $0.top.equalTo(novelKeywordSelectSearchBarView.snp.bottom).offset(isSelectedKeyword ? 53 : 0)
+        }
+        
+        novelKeywordSelectCategoryListView.snp.updateConstraints {
             $0.top.equalTo(novelKeywordSelectSearchBarView.snp.bottom).offset(isSelectedKeyword ? 53 : 0)
         }
     }
