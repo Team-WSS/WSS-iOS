@@ -12,6 +12,11 @@ import RxCocoa
 import SnapKit
 import Then
 
+enum SelfLayout {
+    case autoInNavigationBar
+    case customLayout
+}
+
 class WSSDropdownManager {
     
     // MARK: - Properties
@@ -22,11 +27,13 @@ class WSSDropdownManager {
     
     // MARK: - Create Dropdown
     
-    func createDropdown(dropdownRootView: UIView,
-                        dropdownButton: WSSDropdownButton,
+    func createDropdown(dropdownButton: WSSDropdownButton,
+                        dropdownRootView: UIView,
+                        dropdownLayout: SelfLayout,
                         dropdownWidth: Double,
                         dropdownData: [String],
-                        textColor: UIColor) -> Observable<String> {
+                        textColor: UIColor,
+                        customLayout: @escaping (UIView) -> Void?) -> Observable<String> {
         
         let dropdownTableView = WSSDropdownTableView().then {
             $0.dropdownData.onNext(dropdownData)
@@ -35,21 +42,27 @@ class WSSDropdownManager {
         }
         
         dropdownRootView.addSubview(dropdownTableView)
-        
         DispatchQueue.main.async {
             dropdownTableView.snp.makeConstraints {
-                if let window = dropdownButton.window {
-                    let buttonFrame = dropdownButton.convert(dropdownButton.bounds, to: window)
-                    $0.top.equalTo(dropdownRootView.snp.top).offset(buttonFrame.maxY + 0.5)
-                }
-                $0.trailing.equalToSuperview().inset(20.5)
-                $0.width.equalTo(dropdownWidth)
                 
+                //레이아웃 분기처리
+                if dropdownLayout == SelfLayout.customLayout {
+                    customLayout(dropdownTableView)
+                } else {
+                    if let window = dropdownButton.window {
+                        let buttonFrame = dropdownButton.convert(dropdownButton.bounds, to: window)
+                        $0.top.equalTo(dropdownRootView.snp.top).offset(buttonFrame.maxY + 10)
+                    }
+                    $0.trailing.equalToSuperview().inset(20.5)
+                }
+                
+                $0.width.equalTo(dropdownWidth)
                 let calculateHeight = CGFloat(dropdownData.count) * 51.0
                 $0.height.equalTo(calculateHeight)
             }
         }
         
+        //gesture 처리
         let tapGesture = UITapGestureRecognizer(target: self,
                                                 action: #selector(dropdownTapped(_:)))
         dropdownButton.addGestureRecognizer(tapGesture)
@@ -66,7 +79,7 @@ class WSSDropdownManager {
 }
 
 extension WSSDropdownManager {
-    func tapCell(dropdownView: WSSDropdownTableView) -> Observable<String> {
+    private func tapCell(dropdownView: WSSDropdownTableView) -> Observable<String> {
         
         let tapCellIndex = BehaviorSubject<String>(value: "")
         

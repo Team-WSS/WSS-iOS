@@ -47,14 +47,18 @@ final class WSSDropdownButton: UIButton {
     
     func makeDropdown(dropdownRootView: UIView,
                       dropdownWidth: Double,
+                      dropdownLayout: SelfLayout = .autoInNavigationBar,
                       dropdownData: [String],
-                      textColor: UIColor) -> Observable<String> {
+                      textColor: UIColor,
+                      customLayout: @escaping (UIView) -> Void = { _ in }) -> Observable<String> {
         
-        let tapCellIndex = WSSDropdownManager.shared.createDropdown(dropdownRootView: dropdownRootView,
-                                                                    dropdownButton: self,
+        let tapCellIndex = WSSDropdownManager.shared.createDropdown(dropdownButton: self,
+                                                                    dropdownRootView: dropdownRootView,
+                                                                    dropdownLayout: dropdownLayout,
                                                                     dropdownWidth: dropdownWidth,
                                                                     dropdownData: dropdownData,
-                                                                    textColor: textColor)
+                                                                    textColor: textColor,
+                                                                    customLayout: customLayout)
        
         return tapCellIndex
     }

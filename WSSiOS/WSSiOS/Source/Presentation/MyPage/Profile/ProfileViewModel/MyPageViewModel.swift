@@ -87,7 +87,9 @@ final class MyPageViewModel: ViewModelType {
         
         input.dropdownButtonDidTap
             .bind(with: self, onNext: { owner, data in
-                output.dropdownButtonEnabled.accept(data)
+                if data == "수정하기" {
+                    output.dropdownButtonEnabled.accept(data)
+                }
             })
         
         return output
