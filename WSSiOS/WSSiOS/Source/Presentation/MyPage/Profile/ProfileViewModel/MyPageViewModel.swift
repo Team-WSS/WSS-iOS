@@ -29,7 +29,7 @@ final class MyPageViewModel: ViewModelType {
         let headerViewHeight: Driver<Double>
         let scrollOffset: Driver<CGPoint>
         let settingButtonDidTap: ControlEvent<Void>
-        let dropdownButtonDidTap: ControlEvent<Void>
+        let dropdownButtonDidTap: Observable<String>
         let editButtonTapoed: ControlEvent<Void>
     }
     
@@ -38,7 +38,7 @@ final class MyPageViewModel: ViewModelType {
                                                                                   intro: "",
                                                                                   avatarImage: "", genrePreferences: []))
         let settingButtonEnabled = PublishRelay<Void>()
-        let dropdownButtonEnabled = BehaviorRelay(value: false)
+        let dropdownButtonEnabled = PublishRelay<String>()
         let updateNavigationEnabled = BehaviorRelay<Bool>(value: false)
         let pushToEditViewController = PublishRelay<Void>()
     }
@@ -84,6 +84,11 @@ final class MyPageViewModel: ViewModelType {
                 output.pushToEditViewController.accept(())
             })
             .disposed(by: disposeBag)
+        
+        input.dropdownButtonDidTap
+            .bind(with: self, onNext: { owner, data in
+                output.dropdownButtonEnabled.accept(data)
+            })
         
         return output
     }

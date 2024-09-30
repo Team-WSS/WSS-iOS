@@ -7,6 +7,7 @@
 
 import UIKit
 
+import RxSwift
 import SnapKit
 import Then
 
@@ -14,6 +15,7 @@ final class WSSDropdownButton: UIButton {
     
     // MARK: - UI Components
     
+    private let disposeBag = DisposeBag()
     private let dropdownImageView = UIImageView(image: UIImage(resource: .icDropDownDot))
     
     // MARK: - Life Cycles
@@ -46,12 +48,14 @@ final class WSSDropdownButton: UIButton {
     func makeDropdown(dropdownRootView: UIView,
                       dropdownWidth: Double,
                       dropdownData: [String],
-                      textColor: UIColor) {
+                      textColor: UIColor) -> Observable<String> {
         
-        WSSDropdownManager.shared.createDropdown(dropdownRootView: dropdownRootView,
-                                                 dropdownButton: self,
-                                                 dropdownWidth: dropdownWidth,
-                                                 dropdownData: dropdownData,
-                                                 textColor: textColor)
+        let tapCellIndex = WSSDropdownManager.shared.createDropdown(dropdownRootView: dropdownRootView,
+                                                                    dropdownButton: self,
+                                                                    dropdownWidth: dropdownWidth,
+                                                                    dropdownData: dropdownData,
+                                                                    textColor: textColor)
+       
+        return tapCellIndex
     }
 }

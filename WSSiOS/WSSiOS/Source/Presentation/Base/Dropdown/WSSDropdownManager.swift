@@ -26,7 +26,7 @@ class WSSDropdownManager {
                         dropdownButton: WSSDropdownButton,
                         dropdownWidth: Double,
                         dropdownData: [String],
-                        textColor: UIColor) {
+                        textColor: UIColor) -> Observable<String> {
         
         let dropdownTableView = WSSDropdownTableView().then {
             $0.dropdownData.onNext(dropdownData)
@@ -54,7 +54,8 @@ class WSSDropdownManager {
                                                 action: #selector(dropdownTapped(_:)))
         dropdownButton.addGestureRecognizer(tapGesture)
         dropdowns[dropdownButton] = dropdownTableView
-        tapCell(dropdownView: dropdownTableView)
+        
+        return tapCell(dropdownView: dropdownTableView)
     }
     
     @objc
@@ -65,12 +66,16 @@ class WSSDropdownManager {
 }
 
 extension WSSDropdownManager {
-    private func tapCell(dropdownView: WSSDropdownTableView) {
+    func tapCell(dropdownView: WSSDropdownTableView) -> Observable<String> {
+        
+        let tapCellIndex = BehaviorSubject<String>(value: "")
+        
         dropdownView.dropdownTableView.rx.modelSelected(String.self)
             .subscribe(onNext: { cell in
-                print(cell)
+                tapCellIndex.onNext(cell)
                 dropdownView.isHidden.toggle()
             })
             .disposed(by: disposeBag)
+        return tapCellIndex.asObservable()
     }
 }
