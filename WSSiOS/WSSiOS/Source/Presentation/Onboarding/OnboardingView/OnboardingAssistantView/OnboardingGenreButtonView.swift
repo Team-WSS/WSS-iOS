@@ -94,7 +94,7 @@ final class OnboardingGenreButtonView: UIView {
             }
             
             checkImageView.snp.makeConstraints {
-                $0.centerY.equalToSuperview()
+                $0.center.equalToSuperview()
                 $0.size.equalTo(buttonImageSize)
             }
         }
