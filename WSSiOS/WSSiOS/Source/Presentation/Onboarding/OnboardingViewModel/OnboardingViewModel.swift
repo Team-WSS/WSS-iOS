@@ -34,6 +34,9 @@ final class OnboardingViewModel: ViewModelType {
     let selectedBirth = BehaviorRelay<Int?>(value: nil)
     let isBirthGenderNextButtonAvailable = BehaviorRelay<Bool>(value: false)
     
+    // GenrePreference
+    let selectedGenres = BehaviorRelay<[NewNovelGenre]>(value: [])
+    
     // Total
     let moveToLastStage = PublishRelay<Void>()
     let moveToNextStage = PublishRelay<Void>()
@@ -57,6 +60,9 @@ final class OnboardingViewModel: ViewModelType {
         let genderButtonDidTap: Observable<OnboardingGender>
         let selectBirthButtonDidTap: ControlEvent<Void>
         
+        // GenrePreference
+        let genreButtonDidTap: Observable<NewNovelGenre>
+        
         // Total
         let nextButtonDidTap: Observable<Void>
         let backButtonDidTap: ControlEvent<Void>
@@ -74,6 +80,9 @@ final class OnboardingViewModel: ViewModelType {
         let selectedGender: Driver<OnboardingGender?>
         let showDatePickerModal: Driver<Void>
         let isBirthGenderNextButtonAvailable: Driver<Bool>
+        
+        // GenrePrefernece
+        let selectedGenres: Driver<[NewNovelGenre]>
         
         // Total
         let stageIndex: Driver<Int>
@@ -172,6 +181,18 @@ final class OnboardingViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        input.genreButtonDidTap
+            .bind(with: self, onNext: { owner, genre in
+                var selectedGenres = owner.selectedGenres.value
+                if selectedGenres.contains(genre) {
+                    selectedGenres.removeAll(where: { $0 == genre })
+                } else {
+                    selectedGenres.append(genre)
+                }
+                owner.selectedGenres.accept(selectedGenres)
+            })
+            .disposed(by: disposeBag)
+        
         return Output(
             isNicknameTextFieldEditing: isNicknameFieldEditing.asDriver(),
             isDuplicateCheckButtonEnabled: isDuplicateCheckButtonEnabled.asDriver(),
@@ -180,6 +201,7 @@ final class OnboardingViewModel: ViewModelType {
             selectedGender: selectedGender.asDriver(),
             showDatePickerModal: showDatePickerModal,
             isBirthGenderNextButtonAvailable: isBirthGenderNextButtonAvailable.asDriver(),
+            selectedGenres: selectedGenres.asDriver(),
             stageIndex: stageIndex.asDriver(),
             moveToLastStage: moveToLastStage.asDriver(onErrorJustReturn: ()),
             moveToNextStage: moveToNextStage.asDriver(onErrorJustReturn: ()),

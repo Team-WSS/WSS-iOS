@@ -121,5 +121,10 @@ final class OnboardingGenrePreferenceView: UIView {
     
     // MARK: - Custom Method
     
+    func updateGenreButtons(selectedGenres: [NewNovelGenre]) {
+        genreButtons.forEach {
+            $0.updateButton(selectedGenres: selectedGenres)
+        }
+    }
 }
 

@@ -27,7 +27,7 @@ final class OnboardingGenreButtonView: UIView {
     
     //MARK: - Components
     
-    private let genreButton = UIButton()
+    let genreButton = UIButton()
     private let genreImageView = UIImageView()
     private let checkImageView = UIImageView()
     private let genreLabel = UILabel()

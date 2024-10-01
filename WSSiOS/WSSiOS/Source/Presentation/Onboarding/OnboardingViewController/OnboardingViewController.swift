@@ -154,6 +154,12 @@ final class OnboardingViewController: UIViewController {
                 owner.onBoardingCompleted()
             })
             .disposed(by: disposeBag)
+        
+        output.selectedGenres
+            .drive(with: self, onNext: { owner, selectedGenres in
+                owner.rootView.genrePreferenceView.updateGenreButtons(selectedGenres: selectedGenres)
+            })
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Actions
@@ -169,6 +175,13 @@ final class OnboardingViewController: UIViewController {
             self.rootView.birthGenderView.bottomButton.button.rx.tap.asObservable()
         )
         
+        let genreButtonDidTap = Observable.merge(
+            self.rootView.genrePreferenceView.genreButtons
+                .map { view in
+                    view.genreButton.rx.tap.map { view.genre }
+                }
+            )
+        
         return OnboardingViewModel.Input(
             nicknameTextFieldEditingDidBegin: self.rootView.nickNameView.nicknameTextField.rx.controlEvent(.editingDidBegin),
             nicknameTextFieldEditingDidEnd: self.rootView.nickNameView.nicknameTextField.rx.controlEvent(.editingDidEnd),
@@ -176,6 +189,7 @@ final class OnboardingViewController: UIViewController {
             duplicateCheckButtonDidTap: self.rootView.nickNameView.duplicateCheckButton.rx.tap,
             genderButtonDidTap: genderButtonDidTap,
             selectBirthButtonDidTap: self.rootView.birthGenderView.selectBirthButton.rx.tap,
+            genreButtonDidTap: genreButtonDidTap,
             nextButtonDidTap: nextButtonDidTap,
             backButtonDidTap: rootView.backButton.rx.tap,
             scrollViewContentOffset: self.rootView.scrollView.rx.contentOffset
