@@ -15,6 +15,7 @@ final class OnboardingView: UIView {
     //MARK: - Components
     
     let backButton = UIButton()
+    let skipButton = UIButton()
     let progressView = OnboardingProgressView()
     
     let scrollView = UIScrollView()
@@ -44,6 +45,14 @@ final class OnboardingView: UIView {
         
         backButton.setImage(.icNavigateLeft.withTintColor(.wssBlack),
                             for: .normal)
+        
+        skipButton.do {
+            $0.setTitle(StringLiterals.Onboarding.GenrePreference.skipButton,
+                        for: .normal)
+            $0.titleLabel?.applyWSSFont(.body2,
+                                        with: StringLiterals.Onboarding.GenrePreference.skipButton)
+            $0.setTitleColor(.wssGray300, for: .normal)
+        }
         
         scrollView.do {
             $0.contentInsetAdjustmentBehavior = .never

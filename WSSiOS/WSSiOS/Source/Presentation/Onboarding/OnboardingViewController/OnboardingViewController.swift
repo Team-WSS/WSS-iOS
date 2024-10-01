@@ -199,7 +199,8 @@ final class OnboardingViewController: UIViewController {
             genreButtonDidTap: genreButtonDidTap,
             nextButtonDidTap: nextButtonDidTap,
             backButtonDidTap: rootView.backButton.rx.tap,
-            scrollViewContentOffset: self.rootView.scrollView.rx.contentOffset
+            scrollViewContentOffset: self.rootView.scrollView.rx.contentOffset,
+            skipButtonDidTap: rootView.skipButton.rx.tap
         )
     }
     
@@ -231,6 +232,7 @@ final class OnboardingViewController: UIViewController {
     private func setNavigationBar(stage: Int) {
         navigationItem.setHidesBackButton(stage == 0, animated: true)
         self.navigationItem.leftBarButtonItem = stage == 0 ? nil : UIBarButtonItem(customView: rootView.backButton)
+        self.navigationItem.rightBarButtonItem = stage != 2 ? nil : UIBarButtonItem(customView: rootView.skipButton)
     }
     
     private func updateNavigationBarVisibility(isShow: Bool) {

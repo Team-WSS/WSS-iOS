@@ -68,6 +68,7 @@ final class OnboardingViewModel: ViewModelType {
         let nextButtonDidTap: Observable<Void>
         let backButtonDidTap: ControlEvent<Void>
         let scrollViewContentOffset: ControlProperty<CGPoint>
+        let skipButtonDidTap: ControlEvent<Void>
     }
     
     struct Output {
@@ -193,6 +194,12 @@ final class OnboardingViewModel: ViewModelType {
                 }
                 owner.selectedGenres.accept(selectedGenres)
                 owner.isGenrePreferenceNextButtonAvailable.accept(!selectedGenres.isEmpty) 
+            })
+            .disposed(by: disposeBag)
+        
+        input.skipButtonDidTap
+            .bind(with: self, onNext: { owner, _ in
+                owner.moveToHomeViewController.accept(())
             })
             .disposed(by: disposeBag)
         

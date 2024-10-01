@@ -16,7 +16,6 @@ final class OnboardingGenrePreferenceView: UIView {
     
     private let titleLabel = UILabel()
     private let descriptionLabel = UILabel()
-    let skipButton = UIButton()
     
     let genreButtons: [OnboardingGenreButtonView] = NewNovelGenre.onboardingGenres
         .map { OnboardingGenreButtonView(genre: $0) }
@@ -44,13 +43,6 @@ final class OnboardingGenrePreferenceView: UIView {
     
     private func setUI() {
         self.backgroundColor = .wssWhite
-        
-        skipButton.do {
-            $0.setTitle(StringLiterals.Onboarding.GenrePreference.skipButton,
-                        for: .normal)
-            $0.titleLabel?.applyWSSFont(.body2, with: StringLiterals.Onboarding.GenrePreference.skipButton)
-            $0.setTitleColor(.wssGray300, for: .normal)
-        }
         
         titleLabel.do {
             $0.applyWSSFont(.headline1, with: StringLiterals.Onboarding.GenrePreference.title)
