@@ -16,7 +16,7 @@ final class OnboardingGenrePreferenceView: UIView {
     
     private let titleLabel = UILabel()
     private let descriptionLabel = UILabel()
-    private let skipButton = UIButton()
+    let skipButton = UIButton()
     
     let genreButtons: [OnboardingGenreButtonView] = NewNovelGenre.onboardingGenres
         .map { OnboardingGenreButtonView(genre: $0) }

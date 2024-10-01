@@ -160,6 +160,12 @@ final class OnboardingViewController: UIViewController {
                 owner.rootView.genrePreferenceView.updateGenreButtons(selectedGenres: selectedGenres)
             })
             .disposed(by: disposeBag)
+        
+        output.isGenrePreferenceNextButtonAvailable
+            .drive(with: self, onNext: { owner, isEnabled in
+                owner.rootView.genrePreferenceView.bottomButton.updateButtonEnabled(isEnabled)
+            })
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Actions
@@ -172,7 +178,8 @@ final class OnboardingViewController: UIViewController {
                 })
         let nextButtonDidTap = Observable.merge(
             self.rootView.nickNameView.bottomButton.button.rx.tap.asObservable(),
-            self.rootView.birthGenderView.bottomButton.button.rx.tap.asObservable()
+            self.rootView.birthGenderView.bottomButton.button.rx.tap.asObservable(),
+            self.rootView.genrePreferenceView.bottomButton.button.rx.tap.asObservable()
         )
         
         let genreButtonDidTap = Observable.merge(

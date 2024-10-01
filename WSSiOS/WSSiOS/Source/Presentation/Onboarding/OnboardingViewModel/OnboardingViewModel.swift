@@ -36,6 +36,7 @@ final class OnboardingViewModel: ViewModelType {
     
     // GenrePreference
     let selectedGenres = BehaviorRelay<[NewNovelGenre]>(value: [])
+    let isGenrePreferenceNextButtonAvailable = BehaviorRelay<Bool>(value: false)
     
     // Total
     let moveToLastStage = PublishRelay<Void>()
@@ -83,6 +84,7 @@ final class OnboardingViewModel: ViewModelType {
         
         // GenrePrefernece
         let selectedGenres: Driver<[NewNovelGenre]>
+        let isGenrePreferenceNextButtonAvailable: Driver<Bool>
         
         // Total
         let stageIndex: Driver<Int>
@@ -190,6 +192,7 @@ final class OnboardingViewModel: ViewModelType {
                     selectedGenres.append(genre)
                 }
                 owner.selectedGenres.accept(selectedGenres)
+                owner.isGenrePreferenceNextButtonAvailable.accept(!selectedGenres.isEmpty) 
             })
             .disposed(by: disposeBag)
         
@@ -202,6 +205,7 @@ final class OnboardingViewModel: ViewModelType {
             showDatePickerModal: showDatePickerModal,
             isBirthGenderNextButtonAvailable: isBirthGenderNextButtonAvailable.asDriver(),
             selectedGenres: selectedGenres.asDriver(),
+            isGenrePreferenceNextButtonAvailable: isGenrePreferenceNextButtonAvailable.asDriver(),
             stageIndex: stageIndex.asDriver(),
             moveToLastStage: moveToLastStage.asDriver(onErrorJustReturn: ()),
             moveToNextStage: moveToNextStage.asDriver(onErrorJustReturn: ()),
