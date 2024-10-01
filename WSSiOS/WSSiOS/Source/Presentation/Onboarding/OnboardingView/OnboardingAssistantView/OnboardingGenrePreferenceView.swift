@@ -18,6 +18,12 @@ final class OnboardingGenrePreferenceView: UIView {
     private let descriptionLabel = UILabel()
     private let skipButton = UIButton()
     
+    let genreButtons: [OnboardingGenreButtonView] = NewNovelGenre.onboardingGenres
+        .map { OnboardingGenreButtonView(genre: $0) }
+    
+    let totalGenreStackView = UIStackView()
+    let genreLineStackViews = [UIStackView(), UIStackView(), UIStackView()]
+    
     let bottomButton = OnboardingBottomButtonView()
     
     //MARK: - Life Cycle
@@ -56,6 +62,18 @@ final class OnboardingGenrePreferenceView: UIView {
             $0.textColor = .wssGray200
         }
         
+        totalGenreStackView.do {
+            $0.axis = .vertical
+            $0.spacing = 25
+        }
+        
+        genreLineStackViews.forEach {
+            $0.do {
+                $0.axis = .horizontal
+                $0.spacing = 24
+            }
+        }
+        
         bottomButton.do {
             $0.setText(text: StringLiterals.Onboarding.GenrePreference.completeButton)
         }
@@ -64,7 +82,19 @@ final class OnboardingGenrePreferenceView: UIView {
     private func setHierarchy() {
         self.addSubviews(titleLabel,
                          descriptionLabel,
+                         totalGenreStackView,
                          bottomButton)
+        
+        genreLineStackViews.forEach {
+            totalGenreStackView.addArrangedSubview($0)
+        }
+        
+        genreLineStackViews.enumerated().forEach { (index, stackView) in
+            let startIndex = index*3
+            genreButtons[startIndex...(startIndex+2)].forEach {
+                genreLineStackViews[index].addArrangedSubview($0)
+            }
+        }
     }
     
     private func setLayout() {
@@ -76,6 +106,11 @@ final class OnboardingGenrePreferenceView: UIView {
         descriptionLabel.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(8)
             $0.leading.equalToSuperview().inset(20)
+        }
+        
+        totalGenreStackView.snp.makeConstraints {
+            $0.top.equalTo(descriptionLabel.snp.bottom).offset(UIScreen.isSE ? 20 : 50)
+            $0.centerX.equalToSuperview()
         }
         
         bottomButton.snp.makeConstraints {
