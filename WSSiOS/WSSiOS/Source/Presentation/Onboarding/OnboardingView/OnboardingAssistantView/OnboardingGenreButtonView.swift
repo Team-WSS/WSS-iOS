@@ -16,7 +16,14 @@ final class OnboardingGenreButtonView: UIView {
     
     let genre: NewNovelGenre
     
-    private let buttonHeight: CGFloat = 83
+    private let buttonPaddingSum: CGFloat = 126
+    private var buttonSize: CGFloat {
+        return (UIScreen.main.bounds.width - buttonPaddingSum) / 3.0
+    }
+    private let buttonImageRatio: CGFloat = 44/83
+    private var buttonImageSize: CGFloat {
+        return buttonSize * buttonImageRatio
+    }
     
     //MARK: - Components
     
@@ -45,7 +52,7 @@ final class OnboardingGenreButtonView: UIView {
     private func setUI() {
         genreButton.do {
             $0.backgroundColor = .wssGray50
-            $0.layer.cornerRadius = buttonHeight/2
+            $0.layer.cornerRadius = buttonSize/2
             $0.layer.borderColor = UIColor.wssPrimary100.cgColor
             
             genreImageView.do {
@@ -79,21 +86,21 @@ final class OnboardingGenreButtonView: UIView {
         genreButton.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.horizontalEdges.equalToSuperview()
-            $0.size.equalTo(buttonHeight)
+            $0.size.equalTo(buttonSize)
             
             genreImageView.snp.makeConstraints {
                 $0.center.equalToSuperview()
-                $0.size.equalTo(44)
+                $0.size.equalTo(buttonImageSize)
             }
             
             checkImageView.snp.makeConstraints {
                 $0.centerY.equalToSuperview()
-                $0.size.equalTo(44)
+                $0.size.equalTo(buttonImageSize)
             }
         }
         
         genreLabel.snp.makeConstraints {
-            $0.top.equalTo(genreButton.snp.bottom).inset(10)
+            $0.top.equalTo(genreButton.snp.bottom).offset(10)
             $0.centerX.equalToSuperview()
             $0.bottom.equalToSuperview()
         }
