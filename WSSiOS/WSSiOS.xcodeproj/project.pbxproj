@@ -1456,8 +1456,8 @@
 				393CAC432CA72760004B4DB6 /* OnboardingBirthGenderView.swift */,
 				39DFB0EC2CABDFC000F87951 /* OnboardingGenrePreferenceView.swift */,
 				39DFB0EE2CABE47B00F87951 /* OnboardingGenreButtonView.swift */,
-				393CAC3F2CA6D10C004B4DB6 /* OnboardingProgressView.swift */,
 				393CAC472CA72A2E004B4DB6 /* OnboardingGenderButton.swift */,
+				393CAC3F2CA6D10C004B4DB6 /* OnboardingProgressView.swift */,
 				393CAC3B2CA6AFD8004B4DB6 /* OnboardingBottomButtonView.swift */,
 			);
 			path = OnboardingAssistantView;
