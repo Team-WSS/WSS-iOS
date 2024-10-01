@@ -152,7 +152,7 @@ final class OnboardingViewModel: ViewModelType {
             .withLatestFrom(stageIndex)
             .bind(with: self, onNext: { owner, stage in
                 // 만든 부분까지만 보여주고, 바로 홈으로 이동. 지금은 1번까지 만들어져 있음.
-                if stage >= 1 {
+                if stage >= 2 {
                     owner.moveToHomeViewController.accept(())
                 } else if stage >= 0 {
                     owner.stageIndex.accept(stage + 1)

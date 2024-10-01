@@ -21,6 +21,7 @@ final class OnboardingView: UIView {
     let contentView = UIView()
     let nickNameView = OnboardingNicknameView()
     let birthGenderView = OnboardingBirthGenderView()
+    let genrePreferenceView = OnboardingGenrePreferenceView()
     
     //MARK: - Life Cycle
     
@@ -57,7 +58,8 @@ final class OnboardingView: UIView {
                          scrollView)
         scrollView.addSubview(contentView)
         contentView.addSubviews(nickNameView,
-                               birthGenderView)
+                                birthGenderView,
+                                genrePreferenceView)
     }
     
     private func setLayout() {
@@ -86,6 +88,12 @@ final class OnboardingView: UIView {
         birthGenderView.snp.makeConstraints {
             $0.verticalEdges.equalToSuperview()
             $0.leading.equalTo(nickNameView.snp.trailing)
+            $0.width.equalTo(UIScreen.main.bounds.width)
+        }
+        
+        genrePreferenceView.snp.makeConstraints {
+            $0.verticalEdges.equalToSuperview()
+            $0.leading.equalTo(birthGenderView.snp.trailing)
             $0.trailing.equalToSuperview()
             $0.width.equalTo(UIScreen.main.bounds.width)
         }
