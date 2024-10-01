@@ -43,6 +43,7 @@ final class OnboardingGenrePreferenceView: UIView {
             $0.setTitle(StringLiterals.Onboarding.GenrePreference.skipButton,
                         for: .normal)
             $0.titleLabel?.applyWSSFont(.body2, with: StringLiterals.Onboarding.GenrePreference.skipButton)
+            $0.setTitleColor(.wssGray300, for: .normal)
         }
         
         titleLabel.do {
