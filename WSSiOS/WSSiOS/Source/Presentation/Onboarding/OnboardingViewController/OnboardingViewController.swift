@@ -77,8 +77,13 @@ final class OnboardingViewController: UIViewController {
     private func bindViewModelOutput(_ output: OnboardingViewModel.Output) {
         output.stageIndex
             .drive(with: self, onNext: { owner, stage in
-                owner.rootView.progressView.updateProgressView(stage)
                 owner.setNavigationBar(stage: stage)
+            })
+            .disposed(by: disposeBag)
+        
+        output.progressOffset
+            .drive(with: self, onNext: { owner, offset in
+                owner.rootView.progressView.updateProgressView(offset)
             })
             .disposed(by: disposeBag)
         
@@ -172,7 +177,8 @@ final class OnboardingViewController: UIViewController {
             genderButtonDidTap: genderButtonDidTap,
             selectBirthButtonDidTap: self.rootView.birthGenderView.selectBirthButton.rx.tap,
             nextButtonDidTap: nextButtonDidTap,
-            backButtonDidTap: rootView.backButton.rx.tap
+            backButtonDidTap: rootView.backButton.rx.tap,
+            scrollViewContentOffset: self.rootView.scrollView.rx.contentOffset
         )
     }
     

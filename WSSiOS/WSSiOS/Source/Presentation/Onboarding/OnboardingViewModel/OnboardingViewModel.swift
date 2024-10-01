@@ -39,6 +39,7 @@ final class OnboardingViewModel: ViewModelType {
     let moveToNextStage = PublishRelay<Void>()
     let moveToHomeViewController = PublishRelay<Void>()
     let stageIndex = BehaviorRelay<Int>(value: 0)
+    let progressOffset = BehaviorRelay<CGFloat>(value: 0)
     
     //MARK: - Life Cycle
     
@@ -59,6 +60,7 @@ final class OnboardingViewModel: ViewModelType {
         // Total
         let nextButtonDidTap: Observable<Void>
         let backButtonDidTap: ControlEvent<Void>
+        let scrollViewContentOffset: ControlProperty<CGPoint>
     }
     
     struct Output {
@@ -78,6 +80,7 @@ final class OnboardingViewModel: ViewModelType {
         let moveToLastStage: Driver<Void>
         let moveToNextStage: Driver<Void>
         let moveToHomeViewController: Driver<Void>
+        let progressOffset: Driver<CGFloat>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -161,6 +164,14 @@ final class OnboardingViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        input.scrollViewContentOffset
+            .bind(with: self, onNext: { owner, offset in
+                let screenWidth =  UIScreen.main.bounds.width
+                let offset = screenWidth - (offset.x + screenWidth)/3
+                owner.progressOffset.accept(offset)
+            })
+            .disposed(by: disposeBag)
+        
         return Output(
             isNicknameTextFieldEditing: isNicknameFieldEditing.asDriver(),
             isDuplicateCheckButtonEnabled: isDuplicateCheckButtonEnabled.asDriver(),
@@ -172,7 +183,8 @@ final class OnboardingViewModel: ViewModelType {
             stageIndex: stageIndex.asDriver(),
             moveToLastStage: moveToLastStage.asDriver(onErrorJustReturn: ()),
             moveToNextStage: moveToNextStage.asDriver(onErrorJustReturn: ()),
-            moveToHomeViewController: moveToHomeViewController.asDriver(onErrorJustReturn: ())
+            moveToHomeViewController: moveToHomeViewController.asDriver(onErrorJustReturn: ()),
+            progressOffset: progressOffset.asDriver()
         )
     }
 }

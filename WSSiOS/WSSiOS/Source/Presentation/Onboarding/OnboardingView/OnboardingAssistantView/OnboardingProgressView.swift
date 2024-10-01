@@ -66,16 +66,12 @@ final class OnboardingProgressView: UIView {
     
     //MARK: - Data
     
-    func updateProgressView(_ stage: Int) {
-        let trailingInset = UIScreen.main.bounds.width/3*CGFloat(2 - stage)
-        
-        UIView.animate(withDuration: self.animationDuration) {
-            self.progressView.snp.updateConstraints {
-                $0.verticalEdges.leading.equalToSuperview()
-                $0.trailing.equalToSuperview().inset(trailingInset)
-            }
-            
-            self.superview?.layoutIfNeeded()
+    func updateProgressView(_ offset: CGFloat) {
+        self.progressView.snp.updateConstraints {
+            $0.verticalEdges.leading.equalToSuperview()
+            $0.trailing.equalToSuperview().inset(offset)
         }
+        
+        self.superview?.layoutIfNeeded()
     }
 }
