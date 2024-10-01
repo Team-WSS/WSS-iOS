@@ -40,7 +40,6 @@ final class OnboardingProgressView: UIView {
     private func setUI() {
         backgroundView.do {
             $0.backgroundColor = .wssGray70
-           
         }
         
         progressView.do {
