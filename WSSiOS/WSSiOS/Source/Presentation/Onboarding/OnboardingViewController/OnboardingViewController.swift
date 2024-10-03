@@ -124,7 +124,7 @@ final class OnboardingViewController: UIViewController {
         
         output.showDatePickerModal
             .drive(with: self, onNext: { owner, _ in
-                owner.presentModalViewController(MyPageChangeUserBirthViewController(userBirth: 1999))
+                owner.presentModalViewController(MyPageChangeUserBirthViewController(userBirth: 2000))
                 owner.updateNavigationBarVisibility(isShow: false)
             })
             .disposed(by: disposeBag)
