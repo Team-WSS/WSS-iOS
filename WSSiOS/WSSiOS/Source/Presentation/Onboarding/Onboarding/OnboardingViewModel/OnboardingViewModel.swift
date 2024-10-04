@@ -77,16 +77,16 @@ final class OnboardingViewModel: ViewModelType {
         let isNicknameTextFieldEditing: Driver<Bool>
         let isDuplicateCheckButtonEnabled: Driver<Bool>
         let nicknameAvailablity: Driver<NicknameAvailablity>
-        let isNicknameNextButtonAvailable: Driver<Bool>
+        let isNicknameNextButtonEnabled: Driver<Bool>
         
         // BirthGender
         let selectedGender: Driver<OnboardingGender?>
         let showDatePickerModal: Driver<Void>
-        let isBirthGenderNextButtonAvailable: Driver<Bool>
+        let isBirthGenderNextButtonEnabled: Driver<Bool>
         
         // GenrePrefernece
         let selectedGenres: Driver<[NewNovelGenre]>
-        let isGenrePreferenceNextButtonAvailable: Driver<Bool>
+        let isGenrePreferenceNextButtonEnabled: Driver<Bool>
         
         // Total
         let stageIndex: Driver<Int>
@@ -97,17 +97,7 @@ final class OnboardingViewModel: ViewModelType {
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
-        input.backButtonDidTap
-            .throttle(.seconds(1), scheduler: MainScheduler.instance)
-            .withLatestFrom(stageIndex)
-            .bind(with: self, onNext: { owner, stage in
-                if stage > 0 {
-                    owner.stageIndex.accept(stage - 1)
-                    owner.moveToLastStage.accept(())
-                }
-            })
-            .disposed(by: disposeBag)
-        
+        // Nickname
         input.nicknameTextFieldEditingDidBegin
             .bind(with: self, onNext: { owner, _ in
                 owner.isNicknameFieldEditing.accept(true)
@@ -149,6 +139,7 @@ final class OnboardingViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        // BirthGender
         input.genderButtonDidTap
             .bind(with: self, onNext: { owner, selectedGender in
                 owner.selectedGender.accept(selectedGender)
@@ -159,34 +150,14 @@ final class OnboardingViewModel: ViewModelType {
         
         self.selectedGender
             .bind(with: self, onNext: { owner, selectedGender in
+                // DatePicker 관련된 것은 나중에 적용 예정, 지금은 성별만 선택하면 넘어갈 수 있음
                 if selectedGender != nil {
                     owner.isBirthGenderNextButtonAvailable.accept(true)
                 }
             })
             .disposed(by: disposeBag)
         
-        input.nextButtonDidTap
-            .throttle(.seconds(1), scheduler: MainScheduler.instance)
-            .withLatestFrom(stageIndex)
-            .bind(with: self, onNext: { owner, stage in
-                // 만든 부분까지만 보여주고, 바로 홈으로 이동. 지금은 1번까지 만들어져 있음.
-                if stage >= 2 {
-                    owner.moveToOnboardingSuccessViewController.accept(owner.nickname.value)
-                } else if stage >= 0 {
-                    owner.stageIndex.accept(stage + 1)
-                    owner.moveToNextStage.accept(())
-                }
-            })
-            .disposed(by: disposeBag)
-        
-        input.scrollViewContentOffset
-            .bind(with: self, onNext: { owner, offset in
-                let screenWidth =  UIScreen.main.bounds.width
-                let offset = screenWidth - (offset.x + screenWidth)/3
-                owner.progressOffset.accept(offset)
-            })
-            .disposed(by: disposeBag)
-        
+        // GenrePreference
         input.genreButtonDidTap
             .bind(with: self, onNext: { owner, genre in
                 var selectedGenres = owner.selectedGenres.value
@@ -208,16 +179,50 @@ final class OnboardingViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        // Total
+        input.backButtonDidTap
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
+            .withLatestFrom(stageIndex)
+            .bind(with: self, onNext: { owner, stage in
+                if stage > 0 {
+                    owner.stageIndex.accept(stage - 1)
+                    owner.moveToLastStage.accept(())
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        input.nextButtonDidTap
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
+            .withLatestFrom(stageIndex)
+            .bind(with: self, onNext: { owner, stage in
+                // 만든 부분까지만 보여주고, 바로 홈으로 이동. 지금은 1번까지 만들어져 있음.
+                if stage >= 2 {
+                    owner.moveToOnboardingSuccessViewController.accept(owner.nickname.value)
+                } else if stage >= 0 {
+                    owner.stageIndex.accept(stage + 1)
+                    owner.moveToNextStage.accept(())
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        input.scrollViewContentOffset
+            .bind(with: self, onNext: { owner, offset in
+                let screenWidth = UIScreen.main.bounds.width
+                let offset = screenWidth - (offset.x + screenWidth)/3
+                owner.progressOffset.accept(offset)
+            })
+            .disposed(by: disposeBag)
+        
         return Output(
             isNicknameTextFieldEditing: isNicknameFieldEditing.asDriver(),
             isDuplicateCheckButtonEnabled: isDuplicateCheckButtonEnabled.asDriver(),
             nicknameAvailablity: isNicknameAvailable.asDriver(),
-            isNicknameNextButtonAvailable: isNicknameNextButtonAvailable.asDriver(),
+            isNicknameNextButtonEnabled: isNicknameNextButtonAvailable.asDriver(),
             selectedGender: selectedGender.asDriver(),
             showDatePickerModal: showDatePickerModal,
-            isBirthGenderNextButtonAvailable: isBirthGenderNextButtonAvailable.asDriver(),
+            isBirthGenderNextButtonEnabled: isBirthGenderNextButtonAvailable.asDriver(),
             selectedGenres: selectedGenres.asDriver(),
-            isGenrePreferenceNextButtonAvailable: isGenrePreferenceNextButtonAvailable.asDriver(),
+            isGenrePreferenceNextButtonEnabled: isGenrePreferenceNextButtonAvailable.asDriver(),
             stageIndex: stageIndex.asDriver(),
             moveToLastStage: moveToLastStage.asDriver(onErrorJustReturn: ()),
             moveToNextStage: moveToNextStage.asDriver(onErrorJustReturn: ()),

@@ -75,18 +75,7 @@ final class OnboardingViewController: UIViewController {
     }
     
     private func bindViewModelOutput(_ output: OnboardingViewModel.Output) {
-        output.stageIndex
-            .drive(with: self, onNext: { owner, stage in
-                owner.setNavigationBar(stage: stage)
-            })
-            .disposed(by: disposeBag)
-        
-        output.progressOffset
-            .drive(with: self, onNext: { owner, offset in
-                owner.rootView.progressView.updateProgressView(offset)
-            })
-            .disposed(by: disposeBag)
-        
+        // Nickname
         Observable.combineLatest(
             output.isNicknameTextFieldEditing.asObservable(),
             output.nicknameAvailablity.asObservable()
@@ -108,12 +97,13 @@ final class OnboardingViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.isNicknameNextButtonAvailable
+        output.isNicknameNextButtonEnabled
             .drive(with: self, onNext: { owner, isEnabled in
                 owner.rootView.nickNameView.bottomButton.updateButtonEnabled(isEnabled)
             })
             .disposed(by: disposeBag)
         
+        // BirthGender
         output.selectedGender
             .drive(with: self, onNext: { owner, selectedGender in
                 if let selectedGender {
@@ -129,9 +119,41 @@ final class OnboardingViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.isBirthGenderNextButtonAvailable
+        output.isBirthGenderNextButtonEnabled
             .drive(with: self, onNext: { owner, isEnabled in
                 owner.rootView.birthGenderView.bottomButton.updateButtonEnabled(isEnabled)
+            })
+            .disposed(by: disposeBag)
+        
+        // GenrePreference
+        output.selectedGenres
+            .drive(with: self, onNext: { owner, selectedGenres in
+                owner.rootView.genrePreferenceView.updateGenreButtons(selectedGenres: selectedGenres)
+            })
+            .disposed(by: disposeBag)
+        
+        output.isGenrePreferenceNextButtonEnabled
+            .drive(with: self, onNext: { owner, isEnabled in
+                owner.rootView.genrePreferenceView.bottomButton.updateButtonEnabled(isEnabled)
+            })
+            .disposed(by: disposeBag)
+        
+        output.moveToOnboardingSuccessViewController
+            .drive(with: self, onNext: { owner, nickname in
+                owner.presentToOnboardingSuccessViewController(nickname: nickname)
+            })
+            .disposed(by: disposeBag)
+        
+        // Total
+        output.stageIndex
+            .drive(with: self, onNext: { owner, stage in
+                owner.setNavigationBar(stage: stage)
+            })
+            .disposed(by: disposeBag)
+        
+        output.progressOffset
+            .drive(with: self, onNext: { owner, offset in
+                owner.rootView.progressView.updateProgressView(offset)
             })
             .disposed(by: disposeBag)
         
@@ -148,24 +170,6 @@ final class OnboardingViewController: UIViewController {
                 owner.scrollToNextItem()
             })
             .disposed(by: disposeBag)
-        
-        output.moveToOnboardingSuccessViewController
-            .drive(with: self, onNext: { owner, nickname in
-                owner.presentToOnboardingSuccessViewController(nickname: nickname)
-            })
-            .disposed(by: disposeBag)
-        
-        output.selectedGenres
-            .drive(with: self, onNext: { owner, selectedGenres in
-                owner.rootView.genrePreferenceView.updateGenreButtons(selectedGenres: selectedGenres)
-            })
-            .disposed(by: disposeBag)
-        
-        output.isGenrePreferenceNextButtonAvailable
-            .drive(with: self, onNext: { owner, isEnabled in
-                owner.rootView.genrePreferenceView.bottomButton.updateButtonEnabled(isEnabled)
-            })
-            .disposed(by: disposeBag)
     }
     
     //MARK: - Actions
@@ -176,11 +180,6 @@ final class OnboardingViewController: UIViewController {
                 .map { button in
                     button.rx.tap.map { button.gender }
                 })
-        let nextButtonDidTap = Observable.merge(
-            self.rootView.nickNameView.bottomButton.button.rx.tap.asObservable(),
-            self.rootView.birthGenderView.bottomButton.button.rx.tap.asObservable(),
-            self.rootView.genrePreferenceView.bottomButton.button.rx.tap.asObservable()
-        )
         
         let genreButtonDidTap = Observable.merge(
             self.rootView.genrePreferenceView.genreButtons
@@ -188,6 +187,12 @@ final class OnboardingViewController: UIViewController {
                     view.genreButton.rx.tap.map { view.genre }
                 }
             )
+        
+        let nextButtonDidTap = Observable.merge(
+            self.rootView.nickNameView.bottomButton.button.rx.tap.asObservable(),
+            self.rootView.birthGenderView.bottomButton.button.rx.tap.asObservable(),
+            self.rootView.genrePreferenceView.bottomButton.button.rx.tap.asObservable()
+        )
         
         return OnboardingViewModel.Input(
             nicknameTextFieldEditingDidBegin: self.rootView.nickNameView.nicknameTextField.rx.controlEvent(.editingDidBegin),
