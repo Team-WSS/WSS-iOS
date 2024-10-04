@@ -127,6 +127,8 @@
 		3931020A2CA5D381002CBEA0 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393102092CA5D381002CBEA0 /* OnboardingViewController.swift */; };
 		3931020C2CA5D389002CBEA0 /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3931020B2CA5D389002CBEA0 /* OnboardingViewModel.swift */; };
 		3931020E2CA5D6CB002CBEA0 /* OnboardingNicknameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3931020D2CA5D6CB002CBEA0 /* OnboardingNicknameView.swift */; };
+		3932B59D2CAFCDBF00C1A736 /* OnboardingSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3932B59C2CAFCDBF00C1A736 /* OnboardingSuccessViewController.swift */; };
+		3932B5A32CAFCE6000C1A736 /* OnboardingSuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3932B5A22CAFCE6000C1A736 /* OnboardingSuccessView.swift */; };
 		3935876B2C99682400F005B4 /* LoginCarouselIndicatorDotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3935876A2C99682400F005B4 /* LoginCarouselIndicatorDotView.swift */; };
 		393CAC3C2CA6AFD8004B4DB6 /* OnboardingBottomButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393CAC3B2CA6AFD8004B4DB6 /* OnboardingBottomButtonView.swift */; };
 		393CAC402CA6D10C004B4DB6 /* OnboardingProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393CAC3F2CA6D10C004B4DB6 /* OnboardingProgressView.swift */; };
@@ -534,6 +536,8 @@
 		393102092CA5D381002CBEA0 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		3931020B2CA5D389002CBEA0 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
 		3931020D2CA5D6CB002CBEA0 /* OnboardingNicknameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingNicknameView.swift; sourceTree = "<group>"; };
+		3932B59C2CAFCDBF00C1A736 /* OnboardingSuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSuccessViewController.swift; sourceTree = "<group>"; };
+		3932B5A22CAFCE6000C1A736 /* OnboardingSuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSuccessView.swift; sourceTree = "<group>"; };
 		3935876A2C99682400F005B4 /* LoginCarouselIndicatorDotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCarouselIndicatorDotView.swift; sourceTree = "<group>"; };
 		393CAC3B2CA6AFD8004B4DB6 /* OnboardingBottomButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingBottomButtonView.swift; sourceTree = "<group>"; };
 		393CAC3F2CA6D10C004B4DB6 /* OnboardingProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingProgressView.swift; sourceTree = "<group>"; };
@@ -1417,9 +1421,8 @@
 		393102012CA5D2F0002CBEA0 /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
-				393102022CA5D2FB002CBEA0 /* OnboardingView */,
-				393102042CA5D335002CBEA0 /* OnboardingViewController */,
-				393102032CA5D32C002CBEA0 /* OnboardingViewModel */,
+				3932B59F2CAFCE1D00C1A736 /* Onboarding */,
+				3932B59E2CAFCDE800C1A736 /* OnboardingSuccess */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -1461,6 +1464,41 @@
 				393CAC3B2CA6AFD8004B4DB6 /* OnboardingBottomButtonView.swift */,
 			);
 			path = OnboardingAssistantView;
+			sourceTree = "<group>";
+		};
+		3932B59E2CAFCDE800C1A736 /* OnboardingSuccess */ = {
+			isa = PBXGroup;
+			children = (
+				3932B5A12CAFCE4500C1A736 /* OnboardingSuccessViewController */,
+				3932B5A02CAFCE3D00C1A736 /* OnboardingSuccessView */,
+			);
+			path = OnboardingSuccess;
+			sourceTree = "<group>";
+		};
+		3932B59F2CAFCE1D00C1A736 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				393102022CA5D2FB002CBEA0 /* OnboardingView */,
+				393102042CA5D335002CBEA0 /* OnboardingViewController */,
+				393102032CA5D32C002CBEA0 /* OnboardingViewModel */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		3932B5A02CAFCE3D00C1A736 /* OnboardingSuccessView */ = {
+			isa = PBXGroup;
+			children = (
+				3932B5A22CAFCE6000C1A736 /* OnboardingSuccessView.swift */,
+			);
+			path = OnboardingSuccessView;
+			sourceTree = "<group>";
+		};
+		3932B5A12CAFCE4500C1A736 /* OnboardingSuccessViewController */ = {
+			isa = PBXGroup;
+			children = (
+				3932B59C2CAFCDBF00C1A736 /* OnboardingSuccessViewController.swift */,
+			);
+			path = OnboardingSuccessViewController;
 			sourceTree = "<group>";
 		};
 		394CFD392CA2E70B0053C8EA /* Entity */ = {
@@ -2834,6 +2872,7 @@
 				CD3E5A732B5424D600C0A659 /* MemoReadView.swift in Sources */,
 				399F29322B56633C00BBC12B /* NovelResult.swift in Sources */,
 				B96F0F942C298F3F00DA5483 /* FeedDetailReplyView.swift in Sources */,
+				3932B59D2CAFCDBF00C1A736 /* OnboardingSuccessViewController.swift in Sources */,
 				CD1F7E042C9955390039972C /* NovelKeywordSelectSearchBarView.swift in Sources */,
 				CD863EE72CA5CB0B0037DC08 /* NovelDetailFeedConnectedNovelView.swift in Sources */,
 				CD6F49512C703E63005AD392 /* FeedNovelConnectModalViewController.swift in Sources */,
@@ -3166,6 +3205,7 @@
 				CDA1774B2C3EC6760089137F /* WSSToggleButton.swift in Sources */,
 				CD2D0AB12C7EF1D3007CF1F1 /* NovelReviewViewModel.swift in Sources */,
 				A1A1F9CF2B48738200705F44 /* SearchHeaderView.swift in Sources */,
+				3932B5A32CAFCE6000C1A736 /* OnboardingSuccessView.swift in Sources */,
 				2CA2F65B2B53041E0045B4C2 /* LibraryBaseViewController.swift in Sources */,
 				2CCBFA022B4DC10500D787C2 /* MyPageProfileView.swift in Sources */,
 				2C42939B2B58F27000BD62AB /* LibraryEmptyView.swift in Sources */,
