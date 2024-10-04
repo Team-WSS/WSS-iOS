@@ -311,6 +311,14 @@ enum StringLiterals {
         
         static let nextButton = "다음으로"
         
+        enum Success {
+            static let title = "웹소소와 계약 완료!"
+            static func description(name: String) -> String {
+                return "\(name)님, 만나서 반가워요!"
+            }
+            static let completeButton = "웹소소 시작하기"
+        }
+        
         enum GenrePreference {
             static let title = "평소 즐겨보는 장르를 선택하세요"
             static let description = "선호 장르를 기반으로 웹소설을 추천해드려요"
