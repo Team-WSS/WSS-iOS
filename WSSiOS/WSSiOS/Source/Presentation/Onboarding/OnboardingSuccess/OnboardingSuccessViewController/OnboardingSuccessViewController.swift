@@ -30,8 +30,8 @@ final class OnboardingSuccessViewController: UIViewController {
         
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+   override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
         self.navigationController?.setNavigationBarHidden(true, animated: true)
     }

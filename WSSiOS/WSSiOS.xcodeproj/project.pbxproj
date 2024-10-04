@@ -159,12 +159,12 @@
 		399F29322B56633C00BBC12B /* NovelResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399F29312B56633C00BBC12B /* NovelResult.swift */; };
 		399F29352B56DA7800BBC12B /* TrashReadStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399F29342B56DA7800BBC12B /* TrashReadStatus.swift */; };
 		39ABD5A02B54D0A900DEA94E /* RegisterNormalDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39ABD59F2B54D0A900DEA94E /* RegisterNormalDatePicker.swift */; };
+		39AD55B32CAFDF6500CBDA7A /* scroll.json in Resources */ = {isa = PBXBuildFile; fileRef = 39AD55B22CAFDF6500CBDA7A /* scroll.json */; };
 		39AF30D12B50182F00FDC1F3 /* RegisterNormalReadStatusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39AF30D02B50182F00FDC1F3 /* RegisterNormalReadStatusButton.swift */; };
 		39B225252B70B41A001C76D0 /* RegisterNormalDifferentRadiusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B225242B70B41A001C76D0 /* RegisterNormalDifferentRadiusView.swift */; };
 		39B6B6A32C649F3300D80BD9 /* NovelDetailInfoReviewGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B6B6A22C649F3300D80BD9 /* NovelDetailInfoReviewGraphView.swift */; };
-		39B75ACE2B5912B5005DD8B9 /* LottieLiterals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B75ACD2B5912B5005DD8B9 /* LottieLiterals.swift */; };
+		39B75ACE2B5912B5005DD8B9 /* Lottie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B75ACD2B5912B5005DD8B9 /* Lottie.swift */; };
 		39B75AD62B59891D005DD8B9 /* sosocatTail.json in Resources */ = {isa = PBXBuildFile; fileRef = 39B75ACF2B59891C005DD8B9 /* sosocatTail.json */; };
-		39B75AD72B59891D005DD8B9 /* scroll.json in Resources */ = {isa = PBXBuildFile; fileRef = 39B75AD02B59891C005DD8B9 /* scroll.json */; };
 		39B75AD82B59891D005DD8B9 /* regressorGreeting.json in Resources */ = {isa = PBXBuildFile; fileRef = 39B75AD12B59891D005DD8B9 /* regressorGreeting.json */; };
 		39B75AD92B59891D005DD8B9 /* villainessTea.json in Resources */ = {isa = PBXBuildFile; fileRef = 39B75AD22B59891D005DD8B9 /* villainessTea.json */; };
 		39B75ADA2B59891D005DD8B9 /* villainessFan.json in Resources */ = {isa = PBXBuildFile; fileRef = 39B75AD32B59891D005DD8B9 /* villainessFan.json */; };
@@ -567,12 +567,12 @@
 		399F29312B56633C00BBC12B /* NovelResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelResult.swift; sourceTree = "<group>"; };
 		399F29342B56DA7800BBC12B /* TrashReadStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashReadStatus.swift; sourceTree = "<group>"; };
 		39ABD59F2B54D0A900DEA94E /* RegisterNormalDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalDatePicker.swift; sourceTree = "<group>"; };
+		39AD55B22CAFDF6500CBDA7A /* scroll.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = scroll.json; sourceTree = "<group>"; };
 		39AF30D02B50182F00FDC1F3 /* RegisterNormalReadStatusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalReadStatusButton.swift; sourceTree = "<group>"; };
 		39B225242B70B41A001C76D0 /* RegisterNormalDifferentRadiusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalDifferentRadiusView.swift; sourceTree = "<group>"; };
 		39B6B6A22C649F3300D80BD9 /* NovelDetailInfoReviewGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoReviewGraphView.swift; sourceTree = "<group>"; };
-		39B75ACD2B5912B5005DD8B9 /* LottieLiterals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieLiterals.swift; sourceTree = "<group>"; };
+		39B75ACD2B5912B5005DD8B9 /* Lottie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lottie.swift; sourceTree = "<group>"; };
 		39B75ACF2B59891C005DD8B9 /* sosocatTail.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sosocatTail.json; sourceTree = "<group>"; };
-		39B75AD02B59891C005DD8B9 /* scroll.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = scroll.json; sourceTree = "<group>"; };
 		39B75AD12B59891D005DD8B9 /* regressorGreeting.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = regressorGreeting.json; sourceTree = "<group>"; };
 		39B75AD22B59891D005DD8B9 /* villainessTea.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = villainessTea.json; sourceTree = "<group>"; };
 		39B75AD32B59891D005DD8B9 /* villainessFan.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = villainessFan.json; sourceTree = "<group>"; };
@@ -1652,7 +1652,7 @@
 		39B75ACC2B5912A0005DD8B9 /* Lotties */ = {
 			isa = PBXGroup;
 			children = (
-				39B75ACD2B5912B5005DD8B9 /* LottieLiterals.swift */,
+				39B75ACD2B5912B5005DD8B9 /* Lottie.swift */,
 			);
 			path = Lotties;
 			sourceTree = "<group>";
@@ -1769,13 +1769,13 @@
 		39EF97B12B54498E00D2148B /* Lottie */ = {
 			isa = PBXGroup;
 			children = (
-				39B75AD02B59891C005DD8B9 /* scroll.json */,
 				39B75AD12B59891D005DD8B9 /* regressorGreeting.json */,
 				39B75AD42B59891D005DD8B9 /* regressorSword.json */,
 				39B75AD52B59891D005DD8B9 /* sosocatBread.json */,
 				39B75ACF2B59891C005DD8B9 /* sosocatTail.json */,
 				39B75AD32B59891D005DD8B9 /* villainessFan.json */,
 				39B75AD22B59891D005DD8B9 /* villainessTea.json */,
+				39AD55B22CAFDF6500CBDA7A /* scroll.json */,
 			);
 			path = Lottie;
 			sourceTree = "<group>";
@@ -2832,9 +2832,9 @@
 				2CD229252B42E687005400BE /* Assets.xcassets in Resources */,
 				2C79CB992B45A0B200734E1F /* Pretendard-Bold.otf in Resources */,
 				39B75ADA2B59891D005DD8B9 /* villainessFan.json in Resources */,
-				39B75AD72B59891D005DD8B9 /* scroll.json in Resources */,
 				39B75AD92B59891D005DD8B9 /* villainessTea.json in Resources */,
 				39B75ADB2B59891D005DD8B9 /* regressorSword.json in Resources */,
+				39AD55B32CAFDF6500CBDA7A /* scroll.json in Resources */,
 				39B75AE02B59C6A7005DD8B9 /* LaunchScreen.storyboard in Resources */,
 				39B75AD62B59891D005DD8B9 /* sosocatTail.json in Resources */,
 				2C79CB9B2B45A0B700734E1F /* Pretendard-Regular.otf in Resources */,
@@ -3220,7 +3220,7 @@
 				CD8747B52C9EF31E00D0ADAD /* NovelDateSelectModalDateButtonView.swift in Sources */,
 				B9AC1BD02BF0B33E006EDE92 /* HomeNoticeViewController.swift in Sources */,
 				2C41E0CC2CA4948400FFD233 /* MyPageCountView.swift in Sources */,
-				39B75ACE2B5912B5005DD8B9 /* LottieLiterals.swift in Sources */,
+				39B75ACE2B5912B5005DD8B9 /* Lottie.swift in Sources */,
 				CDA5F0402C2FDC5200FCF15C /* FeedEditCategoryView.swift in Sources */,
 				C96A0E212C9F2EDB00A6EA87 /* FeedDetailRepository.swift in Sources */,
 				2CCBFA002B4DBFD200D787C2 /* TrashMyPageChangeNickNameViewModel.swift in Sources */,

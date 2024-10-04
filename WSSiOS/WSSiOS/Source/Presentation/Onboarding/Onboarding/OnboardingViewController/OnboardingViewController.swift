@@ -149,9 +149,9 @@ final class OnboardingViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.moveToHomeViewController
+        output.moveToOnboardingSuccessViewController
             .drive(with: self, onNext: { owner, _ in
-                owner.onBoardingCompleted()
+                owner.pushToOnboardingSuccessViewController()
             })
             .disposed(by: disposeBag)
         
@@ -205,13 +205,6 @@ final class OnboardingViewController: UIViewController {
     }
     
     //MARK: - Custom Method
-    
-    private func onBoardingCompleted() {
-        guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else {
-            return
-        }
-        sceneDelegate.setRootToWSSTabBarController()
-    }
     
     private func scrollToNextItem() {
         let currentOffset = rootView.scrollView.contentOffset

@@ -91,7 +91,7 @@ final class OnboardingViewModel: ViewModelType {
         let stageIndex: Driver<Int>
         let moveToLastStage: Driver<Void>
         let moveToNextStage: Driver<Void>
-        let moveToHomeViewController: Driver<Void>
+        let moveToOnboardingSuccessViewController: Driver<Void>
         let progressOffset: Driver<CGFloat>
     }
     
@@ -216,7 +216,7 @@ final class OnboardingViewModel: ViewModelType {
             stageIndex: stageIndex.asDriver(),
             moveToLastStage: moveToLastStage.asDriver(onErrorJustReturn: ()),
             moveToNextStage: moveToNextStage.asDriver(onErrorJustReturn: ()),
-            moveToHomeViewController: moveToHomeViewController.asDriver(onErrorJustReturn: ()),
+            moveToOnboardingSuccessViewController: moveToHomeViewController.asDriver(onErrorJustReturn: ()),
             progressOffset: progressOffset.asDriver()
         )
     }

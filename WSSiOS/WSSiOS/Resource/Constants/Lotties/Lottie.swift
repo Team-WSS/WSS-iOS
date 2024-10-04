@@ -9,8 +9,8 @@ import Foundation
 
 import Lottie
 
-enum LottieLiterals {
-    enum Register {
+enum Lottie {
+    enum Onboarding {
         static let success = LottieAnimationView(name: "scroll")
     }
     

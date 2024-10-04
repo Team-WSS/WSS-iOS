@@ -190,6 +190,11 @@ extension UIViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
+    func pushToOnboardingSuccessViewController() {
+        let viewController = ModuleFactory.shared.makeOnboardingSuccessViewController()
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
     func presentToAlertViewController(iconImage: UIImage?,
                                       titleText: String?,
                                       contentText: String?,
