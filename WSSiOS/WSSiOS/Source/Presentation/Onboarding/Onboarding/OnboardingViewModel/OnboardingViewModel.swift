@@ -24,6 +24,7 @@ final class OnboardingViewModel: ViewModelType {
     //MARK: - Properties
     
     // Nickname
+    let nickname = BehaviorRelay<String>(value: "")
     let isNicknameFieldEditing = BehaviorRelay<Bool>(value: false)
     let isDuplicateCheckButtonEnabled = BehaviorRelay<Bool>(value: false)
     let isNicknameAvailable = BehaviorRelay<NicknameAvailablity>(value: .notStarted)
@@ -41,7 +42,7 @@ final class OnboardingViewModel: ViewModelType {
     // Total
     let moveToLastStage = PublishRelay<Void>()
     let moveToNextStage = PublishRelay<Void>()
-    let moveToHomeViewController = PublishRelay<Void>()
+    let moveToOnboardingSuccessViewController = PublishRelay<String>()
     let stageIndex = BehaviorRelay<Int>(value: 0)
     let progressOffset = BehaviorRelay<CGFloat>(value: 0)
     
@@ -91,7 +92,7 @@ final class OnboardingViewModel: ViewModelType {
         let stageIndex: Driver<Int>
         let moveToLastStage: Driver<Void>
         let moveToNextStage: Driver<Void>
-        let moveToOnboardingSuccessViewController: Driver<Void>
+        let moveToOnboardingSuccessViewController: Driver<String>
         let progressOffset: Driver<CGFloat>
     }
     
@@ -140,9 +141,11 @@ final class OnboardingViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.duplicateCheckButtonDidTap
-            .bind(with: self, onNext: { owner, _ in
+            .withLatestFrom(input.nicknameTextFieldText)
+            .bind(with: self, onNext: { owner, nickname in
                 // API 연결 필요, 지금은 무조건 성공한다고 가정.
                 owner.isNicknameAvailable.accept(.available)
+                owner.nickname.accept(nickname)
             })
             .disposed(by: disposeBag)
         
@@ -168,7 +171,7 @@ final class OnboardingViewModel: ViewModelType {
             .bind(with: self, onNext: { owner, stage in
                 // 만든 부분까지만 보여주고, 바로 홈으로 이동. 지금은 1번까지 만들어져 있음.
                 if stage >= 2 {
-                    owner.moveToHomeViewController.accept(())
+                    owner.moveToOnboardingSuccessViewController.accept(owner.nickname.value)
                 } else if stage >= 0 {
                     owner.stageIndex.accept(stage + 1)
                     owner.moveToNextStage.accept(())
@@ -198,8 +201,10 @@ final class OnboardingViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.skipButtonDidTap
-            .bind(with: self, onNext: { owner, _ in
-                owner.moveToHomeViewController.accept(())
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
+            .withLatestFrom(nickname)
+            .bind(with: self, onNext: { owner, nickname in
+                owner.moveToOnboardingSuccessViewController.accept(nickname)
             })
             .disposed(by: disposeBag)
         
@@ -216,7 +221,7 @@ final class OnboardingViewModel: ViewModelType {
             stageIndex: stageIndex.asDriver(),
             moveToLastStage: moveToLastStage.asDriver(onErrorJustReturn: ()),
             moveToNextStage: moveToNextStage.asDriver(onErrorJustReturn: ()),
-            moveToOnboardingSuccessViewController: moveToHomeViewController.asDriver(onErrorJustReturn: ()),
+            moveToOnboardingSuccessViewController: moveToOnboardingSuccessViewController.asDriver(onErrorJustReturn: "Error"),
             progressOffset: progressOffset.asDriver()
         )
     }

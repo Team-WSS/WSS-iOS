@@ -45,7 +45,8 @@ final class OnboardingSuccessView: UIView {
         }
         
         descriptionLabel.do {
-            $0.applyWSSFont(.body2, with: StringLiterals.Onboarding.Success.description(name: "테스트"))
+            $0.applyWSSFont(.body2,
+                            with: StringLiterals.Onboarding.Success.description(name: "테스트"))
             $0.textColor = .wssGray300
         }
         
@@ -87,6 +88,11 @@ final class OnboardingSuccessView: UIView {
             $0.horizontalEdges.equalToSuperview()
             $0.bottom.equalTo(self.safeAreaLayoutGuide)
         }
+    }
+    
+    func updateNickname(_ nickname: String) {
+        descriptionLabel.applyWSSFont(.body2,
+                                      with: StringLiterals.Onboarding.Success.description(name: nickname))
     }
 }
 

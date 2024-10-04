@@ -150,8 +150,8 @@ final class OnboardingViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.moveToOnboardingSuccessViewController
-            .drive(with: self, onNext: { owner, _ in
-                owner.pushToOnboardingSuccessViewController()
+            .drive(with: self, onNext: { owner, nickname in
+                owner.presentToOnboardingSuccessViewController(nickname: nickname)
             })
             .disposed(by: disposeBag)
         

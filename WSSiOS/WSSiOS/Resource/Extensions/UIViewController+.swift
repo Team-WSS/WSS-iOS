@@ -190,8 +190,8 @@ extension UIViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func presentToOnboardingSuccessViewController() {
-        let viewController = ModuleFactory.shared.makeOnboardingSuccessViewController()
+    func presentToOnboardingSuccessViewController(nickname: String) {
+        let viewController = ModuleFactory.shared.makeOnboardingSuccessViewController(nickname: nickname)
         viewController.modalPresentationStyle = .fullScreen
         self.present(viewController, animated: true)
     }
