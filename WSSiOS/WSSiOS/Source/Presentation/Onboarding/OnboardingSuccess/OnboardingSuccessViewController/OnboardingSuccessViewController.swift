@@ -28,11 +28,31 @@ final class OnboardingSuccessViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        bindAction()
     }
     
    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         self.navigationController?.setNavigationBarHidden(true, animated: true)
+    }
+    
+    //MARK: - Bind
+    
+    func bindAction() {
+        rootView.completeButton.button.rx.tap
+            .bind(with: self, onNext: { owner, _ in
+                owner.onboardingCompleted()
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    //MARK: - Custom Method
+    
+    private func onboardingCompleted() {
+        guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else {
+            return
+        }
+        sceneDelegate.setRootToWSSTabBarController()
     }
 }
