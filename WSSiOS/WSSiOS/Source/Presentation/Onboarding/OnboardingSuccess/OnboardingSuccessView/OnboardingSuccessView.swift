@@ -13,10 +13,6 @@ import Then
 
 final class OnboardingSuccessView: UIView {
     
-    //MARK: - Properties
-    
-    private let lottieSize: CGFloat = UIScreen.main.bounds.width - 75
-    
     //MARK: - Components
     
     private let titleLabel = UILabel()
@@ -82,7 +78,7 @@ final class OnboardingSuccessView: UIView {
         }
         
         lottieView.snp.makeConstraints {
-            $0.size.equalTo(lottieSize)
+            $0.size.equalTo(300)
             $0.centerX.equalToSuperview().offset(11)
             $0.centerY.equalToSuperview().offset(-8)
         }
