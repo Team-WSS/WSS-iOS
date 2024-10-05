@@ -17,7 +17,7 @@ final class OnboardingNicknameView: UIView {
     private let titleLabel = UILabel()
     private let descriptionLabel = UILabel()
     let nicknameTextField = UITextField()
-    private let textFieldInnerButton = UIButton()
+    let textFieldInnerButton = UIButton()
     let duplicateCheckButton = UIButton()
     private let duplicateCheckButtonLabel = UILabel()
     private let nickNameStatusDescriptionLabel = UILabel()
@@ -97,10 +97,10 @@ final class OnboardingNicknameView: UIView {
         self.addSubviews(titleLabel,
                          descriptionLabel,
                          nicknameTextField,
+                         textFieldInnerButton,
                          duplicateCheckButton,
                          nickNameStatusDescriptionLabel,
                          bottomButton)
-        nicknameTextField.addSubview(textFieldInnerButton)
         duplicateCheckButton.addSubview(duplicateCheckButtonLabel)
     }
     
@@ -121,6 +121,12 @@ final class OnboardingNicknameView: UIView {
             $0.leading.equalToSuperview().inset(20)
         }
         
+        textFieldInnerButton.snp.makeConstraints {
+            $0.verticalEdges.equalTo(nicknameTextField.snp.verticalEdges)
+            $0.trailing.equalTo(nicknameTextField.snp.trailing)
+            $0.size.equalTo(44)
+        }
+        
         duplicateCheckButton.snp.makeConstraints {
             $0.top.equalTo(descriptionLabel.snp.bottom).offset(61)
             $0.height.equalTo(44)
@@ -136,11 +142,6 @@ final class OnboardingNicknameView: UIView {
         nickNameStatusDescriptionLabel.snp.makeConstraints {
             $0.top.equalTo(nicknameTextField.snp.bottom).offset(12)
             $0.leading.equalToSuperview().inset(20)
-        }
-        
-        textFieldInnerButton.snp.makeConstraints {
-            $0.verticalEdges.trailing.equalToSuperview()
-            $0.size.equalTo(44)
         }
         
         bottomButton.snp.makeConstraints {
@@ -196,7 +197,7 @@ final class OnboardingNicknameView: UIView {
         textFieldInnerButton.do {
             $0.isHidden = !isEditing
             $0.setImage(buttonImage, for: .normal)
-            $0.isEnabled = !(availablity == .available)
+            $0.isUserInteractionEnabled = !(availablity == .available)
         }
     }
     

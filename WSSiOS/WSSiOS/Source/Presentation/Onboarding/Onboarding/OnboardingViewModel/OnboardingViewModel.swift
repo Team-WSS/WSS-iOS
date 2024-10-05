@@ -50,6 +50,7 @@ final class OnboardingViewModel: ViewModelType {
         let nicknameTextFieldEditingDidBegin: ControlEvent<Void>
         let nicknameTextFieldEditingDidEnd: ControlEvent<Void>
         let nicknameTextFieldText: Observable<String>
+        let textFieldInnerButtonDidTap: ControlEvent<Void>
         let duplicateCheckButtonDidTap: ControlEvent<Void>
         
         // BirthGender
@@ -131,6 +132,13 @@ final class OnboardingViewModel: ViewModelType {
             .bind(with: self, onNext: { owner, availablity in
                 owner.isDuplicateCheckButtonEnabled.accept(availablity == .unknown )
                 owner.isNicknameNextButtonAvailable.accept(availablity == .available)
+            })
+            .disposed(by: disposeBag)
+        
+        input.textFieldInnerButtonDidTap
+            .bind(with: self, onNext: { owner, _ in
+                owner.nicknameText.accept("")
+                print("clear")
             })
             .disposed(by: disposeBag)
         

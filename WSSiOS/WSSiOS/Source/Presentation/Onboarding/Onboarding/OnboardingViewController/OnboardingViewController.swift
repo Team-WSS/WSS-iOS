@@ -208,6 +208,7 @@ final class OnboardingViewController: UIViewController {
             nicknameTextFieldEditingDidBegin: self.rootView.nickNameView.nicknameTextField.rx.controlEvent(.editingDidBegin),
             nicknameTextFieldEditingDidEnd: self.rootView.nickNameView.nicknameTextField.rx.controlEvent(.editingDidEnd),
             nicknameTextFieldText: self.rootView.nickNameView.nicknameTextField.rx.text.orEmpty.distinctUntilChanged(),
+            textFieldInnerButtonDidTap: self.rootView.nickNameView.textFieldInnerButton.rx.tap,
             duplicateCheckButtonDidTap: self.rootView.nickNameView.duplicateCheckButton.rx.tap,
             genderButtonDidTap: genderButtonDidTap,
             selectBirthButtonDidTap: self.rootView.birthGenderView.selectBirthButton.rx.tap,
