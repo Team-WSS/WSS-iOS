@@ -196,16 +196,15 @@ final class OnboardingNicknameView: UIView {
         textFieldInnerButton.do {
             $0.isHidden = !isEditing
             $0.setImage(buttonImage, for: .normal)
-            $0.isEnabled = !(availablity == .available) || isEditing
+            $0.isEnabled = !(availablity == .available)
         }
     }
     
     func updateNickNameStatusDescriptionLabel(availablity: NicknameAvailablity) {
-        let descriptionText = availablity == .available ? "사용 가능한 닉네임이에요" : "한글, 영문, 숫자 2~10자까지 입력 가능해요"
         nickNameStatusDescriptionLabel.do {
-            $0.isHidden = availablity == .notStarted || availablity == .unknown
-            $0.applyWSSFont(.body2, with: descriptionText)
-            $0.textColor = availablity == .available ? .wssPrimary100 : .wssSecondary100
+            $0.isHidden = availablity.descriptionIsHidden()
+            $0.applyWSSFont(.body2, with:  availablity.description())
+            $0.textColor = availablity.color()
         }
     }
 }

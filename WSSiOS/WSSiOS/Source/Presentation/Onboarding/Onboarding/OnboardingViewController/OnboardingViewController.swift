@@ -41,6 +41,7 @@ final class OnboardingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        rootView.nickNameView.nicknameTextField.delegate = self
         bindViewModel()
     }
     
@@ -90,6 +91,15 @@ final class OnboardingViewController: UIViewController {
             owner.rootView.nickNameView.updateNickNameStatusDescriptionLabel(availablity: availablity)
         })
         .disposed(by: disposeBag)
+        
+        output.nicknameText
+            .drive(with: self, onNext: { owner, nickname in
+                let textField = owner.rootView.nickNameView.nicknameTextField
+                if textField.text != nickname {
+                    textField.text = nickname
+                }
+            })
+            .disposed(by: disposeBag)
         
         output.isDuplicateCheckButtonEnabled
             .drive(with: self, onNext: { owner, isEnabled in
@@ -245,3 +255,12 @@ final class OnboardingViewController: UIViewController {
         }
     }
 }
+
+extension OnboardingViewController: UITextFieldDelegate {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard let text = textField.text else { return true }
+        let newLength = text.count + string.count - range.length
+        return newLength <= 10
+    }
+}
+

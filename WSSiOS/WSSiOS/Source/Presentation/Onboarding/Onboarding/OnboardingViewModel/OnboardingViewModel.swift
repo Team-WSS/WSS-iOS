@@ -12,22 +12,16 @@ import RxGesture
 import RxSwift
 
 
-enum NicknameAvailablity {
-    case available
-    case notAvailable
-    case unknown
-    case notStarted
-}
-
 final class OnboardingViewModel: ViewModelType {
     
     //MARK: - Properties
     
     // Nickname
-    let nickname = BehaviorRelay<String>(value: "")
+    let nicknameText = BehaviorRelay<String>(value: "")
     let isNicknameFieldEditing = BehaviorRelay<Bool>(value: false)
     let isDuplicateCheckButtonEnabled = BehaviorRelay<Bool>(value: false)
     let isNicknameAvailable = BehaviorRelay<NicknameAvailablity>(value: .notStarted)
+    let nicknameNotAvailableReason = BehaviorRelay<NicknameNotAvailableReason?>(value: nil)
     let isNicknameNextButtonAvailable = BehaviorRelay<Bool>(value: false)
     
     // BirthGender
@@ -77,7 +71,9 @@ final class OnboardingViewModel: ViewModelType {
         let isNicknameTextFieldEditing: Driver<Bool>
         let isDuplicateCheckButtonEnabled: Driver<Bool>
         let nicknameAvailablity: Driver<NicknameAvailablity>
+        let nicknameNotAvailableReason: Driver<NicknameNotAvailableReason?>
         let isNicknameNextButtonEnabled: Driver<Bool>
+        let nicknameText: Driver<String>
         
         // BirthGender
         let selectedGender: Driver<OnboardingGender?>
@@ -112,20 +108,28 @@ final class OnboardingViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.nicknameTextFieldText
+            .distinctUntilChanged()
             .bind(with: self, onNext: { owner, text in
                 if text.isEmpty {
                     owner.isNicknameAvailable.accept(.notStarted)
-                } else if text.count >= 2 && text.count <= 10 {
-                    owner.isNicknameAvailable.accept(.unknown)
+                    owner.nicknameText.accept("")
+                } else if !owner.isValidNicknameCharacters(text) {
+                    if text.contains(where: { $0 == " " }) {
+                        owner.isNicknameAvailable.accept(.notAvailable(reason: .whiteSpaceIncluded))
+                    } else {
+                        owner.isNicknameAvailable.accept(.notAvailable(reason: .invalidChacterOrLimitExceeded))
+                    }
                 } else {
-                    owner.isNicknameAvailable.accept(.notAvailable)
+                    owner.isNicknameAvailable.accept(.unknown)
                 }
+                
+                owner.nicknameText.accept(text)
             })
             .disposed(by: disposeBag)
         
         self.isNicknameAvailable
             .bind(with: self, onNext: { owner, availablity in
-                owner.isDuplicateCheckButtonEnabled.accept(availablity == .unknown)
+                owner.isDuplicateCheckButtonEnabled.accept(availablity == .unknown )
                 owner.isNicknameNextButtonAvailable.accept(availablity == .available)
             })
             .disposed(by: disposeBag)
@@ -135,7 +139,7 @@ final class OnboardingViewModel: ViewModelType {
             .bind(with: self, onNext: { owner, nickname in
                 // API 연결 필요, 지금은 무조건 성공한다고 가정.
                 owner.isNicknameAvailable.accept(.available)
-                owner.nickname.accept(nickname)
+                owner.nicknameText.accept(nickname)
             })
             .disposed(by: disposeBag)
         
@@ -167,13 +171,13 @@ final class OnboardingViewModel: ViewModelType {
                     selectedGenres.append(genre)
                 }
                 owner.selectedGenres.accept(selectedGenres)
-                owner.isGenrePreferenceNextButtonAvailable.accept(!selectedGenres.isEmpty) 
+                owner.isGenrePreferenceNextButtonAvailable.accept(!selectedGenres.isEmpty)
             })
             .disposed(by: disposeBag)
         
         input.skipButtonDidTap
             .throttle(.seconds(1), scheduler: MainScheduler.instance)
-            .withLatestFrom(nickname)
+            .withLatestFrom(nicknameText)
             .bind(with: self, onNext: { owner, nickname in
                 owner.moveToOnboardingSuccessViewController.accept(nickname)
             })
@@ -197,7 +201,7 @@ final class OnboardingViewModel: ViewModelType {
             .bind(with: self, onNext: { owner, stage in
                 // 만든 부분까지만 보여주고, 바로 홈으로 이동. 지금은 1번까지 만들어져 있음.
                 if stage >= 2 {
-                    owner.moveToOnboardingSuccessViewController.accept(owner.nickname.value)
+                    owner.moveToOnboardingSuccessViewController.accept(owner.nicknameText.value)
                 } else if stage >= 0 {
                     owner.stageIndex.accept(stage + 1)
                     owner.moveToNextStage.accept(())
@@ -217,7 +221,9 @@ final class OnboardingViewModel: ViewModelType {
             isNicknameTextFieldEditing: isNicknameFieldEditing.asDriver(),
             isDuplicateCheckButtonEnabled: isDuplicateCheckButtonEnabled.asDriver(),
             nicknameAvailablity: isNicknameAvailable.asDriver(),
+            nicknameNotAvailableReason: nicknameNotAvailableReason.asDriver(),
             isNicknameNextButtonEnabled: isNicknameNextButtonAvailable.asDriver(),
+            nicknameText: nicknameText.asDriver(),
             selectedGender: selectedGender.asDriver(),
             showDatePickerModal: showDatePickerModal,
             isBirthGenderNextButtonEnabled: isBirthGenderNextButtonAvailable.asDriver(),
@@ -229,5 +235,10 @@ final class OnboardingViewModel: ViewModelType {
             moveToOnboardingSuccessViewController: moveToOnboardingSuccessViewController.asDriver(onErrorJustReturn: "Error"),
             progressOffset: progressOffset.asDriver()
         )
+    }
+    
+    private func isValidNicknameCharacters(_ text: String) -> Bool {
+        let pattern = "^[a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ]{2,10}$"
+        return text.range(of: pattern, options: .regularExpression) != nil
     }
 }
