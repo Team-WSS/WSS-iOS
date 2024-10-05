@@ -111,18 +111,7 @@ final class OnboardingViewModel: ViewModelType {
         
         input.nicknameTextFieldText
             .bind(with: self, onNext: { owner, text in
-                print(text)
-                if text.isEmpty {
-                    owner.isNicknameAvailable.accept(.notStarted)
-                } else if !owner.isValidNicknameCharacters(text) {
-                    if text.contains(where: { $0 == " " }) {
-                        owner.isNicknameAvailable.accept(.notAvailable(reason: .whiteSpaceIncluded))
-                    } else {
-                        owner.isNicknameAvailable.accept(.notAvailable(reason: .invalidChacterOrLimitExceeded))
-                    }
-                } else {
-                    owner.isNicknameAvailable.accept(.unknown)
-                }
+                owner.checkNicknameAvailability(text)
             })
             .disposed(by: disposeBag)
         
@@ -241,6 +230,22 @@ final class OnboardingViewModel: ViewModelType {
             moveToOnboardingSuccessViewController: moveToOnboardingSuccessViewController.asDriver(onErrorJustReturn: "Error"),
             progressOffset: progressOffset.asDriver()
         )
+    }
+    
+    //MARK: - Custom Method
+    
+    private func checkNicknameAvailability(_ nickname: String) {
+        if nickname.isEmpty {
+            self.isNicknameAvailable.accept(.notStarted)
+        } else if !self.isValidNicknameCharacters(nickname) {
+            if nickname.contains(where: { $0 == " " }) {
+                self.isNicknameAvailable.accept(.notAvailable(reason: .whiteSpaceIncluded))
+            } else {
+                self.isNicknameAvailable.accept(.notAvailable(reason: .invalidChacterOrLimitExceeded))
+            }
+        } else {
+            self.isNicknameAvailable.accept(.unknown)
+        }
     }
     
     private func isValidNicknameCharacters(_ text: String) -> Bool {
