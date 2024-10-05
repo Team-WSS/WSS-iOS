@@ -92,12 +92,9 @@ final class OnboardingViewController: UIViewController {
         })
         .disposed(by: disposeBag)
         
-        output.nicknameText
-            .drive(with: self, onNext: { owner, nickname in
-                let textField = owner.rootView.nickNameView.nicknameTextField
-                if textField.text != nickname {
-                    textField.text = nickname
-                }
+        output.nicknameTextFieldClear
+            .drive(with: self, onNext: { owner, _ in
+                owner.rootView.nickNameView.nicknameTextField.text = ""
             })
             .disposed(by: disposeBag)
         

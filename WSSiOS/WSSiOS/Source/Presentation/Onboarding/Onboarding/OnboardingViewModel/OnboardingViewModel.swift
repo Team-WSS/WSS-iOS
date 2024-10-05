@@ -19,6 +19,7 @@ final class OnboardingViewModel: ViewModelType {
     // Nickname
     let nicknameText = BehaviorRelay<String>(value: "")
     let isNicknameFieldEditing = BehaviorRelay<Bool>(value: false)
+    let nicknameTextFieldClear = PublishRelay<Void>()
     let isDuplicateCheckButtonEnabled = BehaviorRelay<Bool>(value: false)
     let isNicknameAvailable = BehaviorRelay<NicknameAvailablity>(value: .notStarted)
     let nicknameNotAvailableReason = BehaviorRelay<NicknameNotAvailableReason?>(value: nil)
@@ -70,11 +71,11 @@ final class OnboardingViewModel: ViewModelType {
     struct Output {
         // Nickname
         let isNicknameTextFieldEditing: Driver<Bool>
+        let nicknameTextFieldClear: Driver<Void>
         let isDuplicateCheckButtonEnabled: Driver<Bool>
         let nicknameAvailablity: Driver<NicknameAvailablity>
         let nicknameNotAvailableReason: Driver<NicknameNotAvailableReason?>
         let isNicknameNextButtonEnabled: Driver<Bool>
-        let nicknameText: Driver<String>
         
         // BirthGender
         let selectedGender: Driver<OnboardingGender?>
@@ -109,11 +110,10 @@ final class OnboardingViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.nicknameTextFieldText
-            .distinctUntilChanged()
             .bind(with: self, onNext: { owner, text in
+                print(text)
                 if text.isEmpty {
                     owner.isNicknameAvailable.accept(.notStarted)
-                    owner.nicknameText.accept("")
                 } else if !owner.isValidNicknameCharacters(text) {
                     if text.contains(where: { $0 == " " }) {
                         owner.isNicknameAvailable.accept(.notAvailable(reason: .whiteSpaceIncluded))
@@ -123,22 +123,20 @@ final class OnboardingViewModel: ViewModelType {
                 } else {
                     owner.isNicknameAvailable.accept(.unknown)
                 }
-                
-                owner.nicknameText.accept(text)
             })
             .disposed(by: disposeBag)
         
         self.isNicknameAvailable
             .bind(with: self, onNext: { owner, availablity in
-                owner.isDuplicateCheckButtonEnabled.accept(availablity == .unknown )
+                owner.isDuplicateCheckButtonEnabled.accept(availablity == .unknown)
                 owner.isNicknameNextButtonAvailable.accept(availablity == .available)
             })
             .disposed(by: disposeBag)
         
         input.textFieldInnerButtonDidTap
-            .bind(with: self, onNext: { owner, _ in
-                owner.nicknameText.accept("")
-                print("clear")
+            .bind(with: self, onNext: { owner, availablity in
+                owner.nicknameTextFieldClear.accept(())
+                owner.isNicknameAvailable.accept(.notStarted)
             })
             .disposed(by: disposeBag)
         
@@ -227,11 +225,11 @@ final class OnboardingViewModel: ViewModelType {
         
         return Output(
             isNicknameTextFieldEditing: isNicknameFieldEditing.asDriver(),
+            nicknameTextFieldClear: nicknameTextFieldClear.asDriver(onErrorJustReturn: ()),
             isDuplicateCheckButtonEnabled: isDuplicateCheckButtonEnabled.asDriver(),
             nicknameAvailablity: isNicknameAvailable.asDriver(),
             nicknameNotAvailableReason: nicknameNotAvailableReason.asDriver(),
             isNicknameNextButtonEnabled: isNicknameNextButtonAvailable.asDriver(),
-            nicknameText: nicknameText.asDriver(),
             selectedGender: selectedGender.asDriver(),
             showDatePickerModal: showDatePickerModal,
             isBirthGenderNextButtonEnabled: isBirthGenderNextButtonAvailable.asDriver(),
