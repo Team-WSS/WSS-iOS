@@ -19,29 +19,29 @@ final class OnboardingViewModel: ViewModelType {
     private let onboardingRepository: OnboardingRepository
     
     // Nickname
-    let nicknameText = BehaviorRelay<String>(value: "")
-    let isNicknameFieldEditing = BehaviorRelay<Bool>(value: false)
-    let nicknameTextFieldClear = PublishRelay<Void>()
-    let isDuplicateCheckButtonEnabled = BehaviorRelay<Bool>(value: false)
-    let isNicknameAvailable = BehaviorRelay<NicknameAvailablity>(value: .notStarted)
-    let nicknameNotAvailableReason = BehaviorRelay<NicknameNotAvailableReason?>(value: nil)
-    let isNicknameNextButtonAvailable = BehaviorRelay<Bool>(value: false)
+    private let nicknameText = BehaviorRelay<String>(value: "")
+    private let isNicknameFieldEditing = BehaviorRelay<Bool>(value: false)
+    private let nicknameTextFieldClear = PublishRelay<Void>()
+    private let isDuplicateCheckButtonEnabled = BehaviorRelay<Bool>(value: false)
+    private let isNicknameAvailable = BehaviorRelay<NicknameAvailablity>(value: .notStarted)
+    private let nicknameNotAvailableReason = BehaviorRelay<NicknameNotAvailableReason?>(value: nil)
+    private let isNicknameNextButtonAvailable = BehaviorRelay<Bool>(value: false)
     
     // BirthGender
-    let selectedGender = BehaviorRelay<OnboardingGender?>(value: nil)
-    let selectedBirth = BehaviorRelay<Int?>(value: nil)
-    let isBirthGenderNextButtonAvailable = BehaviorRelay<Bool>(value: false)
+    private let selectedGender = BehaviorRelay<OnboardingGender?>(value: nil)
+    private let selectedBirth = BehaviorRelay<Int?>(value: nil)
+    private let isBirthGenderNextButtonAvailable = BehaviorRelay<Bool>(value: false)
     
     // GenrePreference
-    let selectedGenres = BehaviorRelay<[NewNovelGenre]>(value: [])
-    let isGenrePreferenceNextButtonAvailable = BehaviorRelay<Bool>(value: false)
+    private let selectedGenres = BehaviorRelay<[NewNovelGenre]>(value: [])
+    private let isGenrePreferenceNextButtonAvailable = BehaviorRelay<Bool>(value: false)
     
     // Total
-    let moveToLastStage = PublishRelay<Void>()
-    let moveToNextStage = PublishRelay<Void>()
-    let moveToOnboardingSuccessViewController = PublishRelay<String>()
-    let stageIndex = BehaviorRelay<Int>(value: 0)
-    let progressOffset = BehaviorRelay<CGFloat>(value: 0)
+    private let moveToLastStage = PublishRelay<Void>()
+    private let moveToNextStage = PublishRelay<Void>()
+    private let moveToOnboardingSuccessViewController = PublishRelay<String>()
+    private let stageIndex = BehaviorRelay<Int>(value: 0)
+    private let progressOffset = BehaviorRelay<CGFloat>(value: 0)
     
     //MARK: - Life Cycle
     
