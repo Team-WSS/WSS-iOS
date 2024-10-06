@@ -16,6 +16,8 @@ final class OnboardingViewModel: ViewModelType {
     
     //MARK: - Properties
     
+    let onboardingRepository: OnboardingRepository
+    
     // Nickname
     let nicknameText = BehaviorRelay<String>(value: "")
     let isNicknameFieldEditing = BehaviorRelay<Bool>(value: false)
@@ -43,6 +45,9 @@ final class OnboardingViewModel: ViewModelType {
     
     //MARK: - Life Cycle
     
+    init(onboardingRepository: OnboardingRepository) {
+        self.onboardingRepository = onboardingRepository
+    }
     
     //MARK: - Transform
     
@@ -122,6 +127,14 @@ final class OnboardingViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        self.isNicknameAvailable
+            .filter { $0 == .available }
+            .withLatestFrom(input.nicknameTextFieldText)
+            .bind(with: self, onNext: { owner, nickname in
+                owner.nicknameText.accept(nickname)
+            })
+            .disposed(by: disposeBag)
+        
         input.textFieldInnerButtonDidTap
             .bind(with: self, onNext: { owner, availablity in
                 owner.nicknameTextFieldClear.accept(())
@@ -131,10 +144,16 @@ final class OnboardingViewModel: ViewModelType {
         
         input.duplicateCheckButtonDidTap
             .withLatestFrom(input.nicknameTextFieldText)
-            .bind(with: self, onNext: { owner, nickname in
-                // API 연결 필요, 지금은 무조건 성공한다고 가정.
-                owner.isNicknameAvailable.accept(.available)
-                owner.nicknameText.accept(nickname)
+            .flatMapLatest{ nickName in
+                self.onboardingRepository.getNicknameisValid(nickName)
+            }
+            .map { $0.isValid }
+            .bind(with: self, onNext: { owner, isValid in
+                if isValid {
+                    owner.isNicknameAvailable.accept(.available)
+                } else {
+                    owner.isNicknameAvailable.accept(.notAvailable(reason: .duplicated))
+                }
             })
             .disposed(by: disposeBag)
         
