@@ -5,7 +5,7 @@
 //  Created by 이윤학 on 4/29/24.
 //
 
-import Foundation
+import UIKit
 
 enum OldNovelGenre: String {
     case romanceFantasy, romance, fantasy, modernFantasy, drama, lightNovel, wuxia, mystery, BL, error
@@ -124,8 +124,34 @@ enum NewNovelGenre: String, CaseIterable {
             return .error
         }
     }
+    
+    var image: UIImage {
+        switch self {
+        case .fantasy:
+            return .icGenreF
+        case .modernFantasy:
+            return .icGenreHF
+        case .wuxia:
+            return .icGenreMH
+        case .drama:
+            return .icGenreD
+        case .mystery:
+            return .icGenreMT
+        case .lightNovel:
+            return .icGenreLN
+        case .romance:
+            return .icGenreR
+        case .romanceFantasy:
+            return .icGenreRF
+        case .bl:
+            return .icGenreBL
+        default :
+            return .icGenreRF
+        }
+    }
 }
 
 extension NewNovelGenre {
     static let feedEditGenres: [NewNovelGenre] = [.fantasy, .modernFantasy, .romance, .romanceFantasy, .wuxia, .drama, .mystery, .lightNovel, .bl, .etc]
+    static let onboardingGenres: [NewNovelGenre] = [.romance, .romanceFantasy, .bl, .fantasy, .modernFantasy, .wuxia, .lightNovel, .drama, .mystery]
 }

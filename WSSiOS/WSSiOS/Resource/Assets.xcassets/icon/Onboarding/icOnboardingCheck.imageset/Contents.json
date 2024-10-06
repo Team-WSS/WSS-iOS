@@ -1,17 +1,15 @@
 {
   "images" : [
     {
-      "filename" : "genre=icGenreBL.png",
+      "filename" : "icOnboardingCheck.svg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "genre=icGenreBL@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "genre=icGenreBL@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
