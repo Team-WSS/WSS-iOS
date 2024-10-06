@@ -8,6 +8,10 @@
 import Foundation
 
 enum URLs {
+    enum Onboarding {
+        static let nicknameCheck = "/users/nickname/check"
+    }
+    
     enum User {
         private static let userBasePath = "/users"
         static let afterDelete = userBasePath + "추후 삭제"

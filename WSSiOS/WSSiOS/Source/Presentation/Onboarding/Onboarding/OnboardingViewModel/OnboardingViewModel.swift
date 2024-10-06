@@ -16,7 +16,7 @@ final class OnboardingViewModel: ViewModelType {
     
     //MARK: - Properties
     
-    let onboardingRepository: OnboardingRepository
+    private let onboardingRepository: OnboardingRepository
     
     // Nickname
     let nicknameText = BehaviorRelay<String>(value: "")

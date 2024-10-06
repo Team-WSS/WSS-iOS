@@ -20,8 +20,14 @@ struct TestOnboardingRepository: OnboardingRepository {
 }
 
 struct DefaultOnboardingRepository: OnboardingRepository {
-    func getNicknameisValid(_ nickname: String) -> RxSwift.Observable<OnboardingResult> {
-        return Observable.just(OnboardingResult(isValid: true))
+    private let onboardingService: OnboardingService
+    
+    init(onboardingService: OnboardingService) {
+        self.onboardingService = onboardingService
+    }
+    
+    func getNicknameisValid(_ nickname: String) -> Observable<OnboardingResult> {
+        return onboardingService.getNicknameisValid(nickname).asObservable()
     }
 }
 
