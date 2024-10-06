@@ -148,12 +148,14 @@ final class OnboardingViewModel: ViewModelType {
                 self.onboardingRepository.getNicknameisValid(nickName)
             }
             .map { $0.isValid }
-            .bind(with: self, onNext: { owner, isValid in
+            .subscribe(with: self, onNext: { owner, isValid in
                 if isValid {
                     owner.isNicknameAvailable.accept(.available)
                 } else {
                     owner.isNicknameAvailable.accept(.notAvailable(reason: .duplicated))
                 }
+            }, onError: { owner, error in
+                print(error.localizedDescription)
             })
             .disposed(by: disposeBag)
         

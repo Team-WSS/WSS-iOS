@@ -25,22 +25,56 @@ extension DefaultOnboardingService: OnboardingService {
             URLQueryItem(name: "nickname", value: String(describing: nickname))
         ]
         
-        do {
-            let request = try makeHTTPRequest(method: .get,
-                                              path: URLs.Onboarding.nicknameCheck,
-                                              queryItems: nicknameisValidQueryItems,
-                                              headers: APIConstants.testTokenHeader,
-                                              body: nil)
+        return Single.create { single in
+            do {
+                let request = try self.makeHTTPRequest(
+                    method: .get,
+                    path: URLs.Onboarding.nicknameCheck,
+                    queryItems: nicknameisValidQueryItems,
+                    headers: APIConstants.testTokenHeader,
+                    body: nil
+                )
+                
+                NetworkLogger.log(request: request)
+                
+                let task = self.urlSession.dataTask(with: request) { data, response, error in
+                    if let error = error {
+                        single(.failure(error))
+                        return
+                    }
+                    
+                    guard let response = response as? HTTPURLResponse else {
+                        single(.failure(NewNetworkServiceError.unknownError))
+                        return
+                    }
+                    
+                    guard let data = data else {
+                        single(.failure(NewNetworkServiceError.emptyDataError))
+                        return
+                    }
+                    
+                    if 200..<300 ~= response.statusCode {
+                        do {
+                            let result = try self.decode(data: data, to: OnboardingResult.self)
+                            single(.success(result))
+                        } catch {
+                            single(.failure(NewNetworkServiceError.responseDecodingError))
+                        }
+                    } else {
+                        let result = try? self.decode(data: data, to: ServerErrorResponse.self)
+                        single(.failure(NewNetworkServiceError(statusCode: response.statusCode, errorResponse: result)))
+                    }
+                   
+                }
+                task.resume()
+                return Disposables.create {
+                    task.cancel()
+                }
+            } catch {
+                single(.failure(error))
+            }
             
-            NetworkLogger.log(request: request)
-            
-            return urlSession.rx.data(request: request)
-                .map { try self.decode(data: $0,
-                                       to: OnboardingResult.self) }
-                .asSingle()
-            
-        } catch {
-            return Single.error(error)
+            return Disposables.create()
         }
     }
 }
