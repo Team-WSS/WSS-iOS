@@ -144,18 +144,8 @@ final class OnboardingViewModel: ViewModelType {
         
         input.duplicateCheckButtonDidTap
             .withLatestFrom(input.nicknameTextFieldText)
-            .flatMapLatest{ nickName in
-                self.onboardingRepository.getNicknameisValid(nickName)
-            }
-            .map { $0.isValid }
-            .subscribe(with: self, onNext: { owner, isValid in
-                if isValid {
-                    owner.isNicknameAvailable.accept(.available)
-                } else {
-                    owner.isNicknameAvailable.accept(.notAvailable(reason: .duplicated))
-                }
-            }, onError: { owner, error in
-                print(error.localizedDescription)
+            .bind(with: self, onNext: { owner, nickname in
+                owner.checkNicknameisValid(nickname, disposeBag: disposeBag)
             })
             .disposed(by: disposeBag)
         
@@ -272,5 +262,21 @@ final class OnboardingViewModel: ViewModelType {
     private func isValidNicknameCharacters(_ text: String) -> Bool {
         let pattern = "^[a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ]{2,10}$"
         return text.range(of: pattern, options: .regularExpression) != nil
+    }
+    
+    private func checkNicknameisValid(_ nickname: String, disposeBag: DisposeBag) {
+        self.onboardingRepository.getNicknameisValid(nickname)
+            .map { $0.isValid }
+            .subscribe(with: self, onNext: { owner, isValid in
+                if isValid {
+                    owner.isNicknameAvailable.accept(.available)
+                } else {
+                    owner.isNicknameAvailable.accept(.notAvailable(reason: .duplicated))
+                }
+            }, onError: { owner, error in
+                owner.isNicknameAvailable.accept(.notAvailable(reason: .invalidChacterOrLimitExceeded))
+                print(error.localizedDescription)
+            })
+            .disposed(by: disposeBag)
     }
 }
