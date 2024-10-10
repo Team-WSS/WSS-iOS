@@ -13,8 +13,8 @@ enum OnboardingGender: String, CaseIterable {
     
     func koreanString() -> String {
         switch self {
-        case .male: return "남자"
-        case .female: return "여자"
+        case .male: return "남성"
+        case .female: return "여성"
         }
     }
 }

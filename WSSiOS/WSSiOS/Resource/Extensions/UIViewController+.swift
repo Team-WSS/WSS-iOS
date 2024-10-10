@@ -190,6 +190,12 @@ extension UIViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
+    func presentToOnboardingSuccessViewController(nickname: String) {
+        let viewController = ModuleFactory.shared.makeOnboardingSuccessViewController(nickname: nickname)
+        viewController.modalPresentationStyle = .fullScreen
+        self.present(viewController, animated: true)
+    }
+    
     func presentToAlertViewController(iconImage: UIImage?,
                                       titleText: String?,
                                       contentText: String?,
