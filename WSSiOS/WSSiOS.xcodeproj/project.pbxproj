@@ -709,8 +709,6 @@
 		C96A0E1E2C9F2B9000A6EA87 /* FeedDetailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDetailService.swift; sourceTree = "<group>"; };
 		C96A0E202C9F2ED500A6EA87 /* FeedDetailRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDetailRepository.swift; sourceTree = "<group>"; };
 		C974EDA02C8F573300F29703 /* DetailSearchKeywordCategoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailSearchKeywordCategoryCollectionViewCell.swift; sourceTree = "<group>"; };
-		C974EDA32C8F590100F29703 /* KeywordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeywordService.swift; sourceTree = "<group>"; };
-		C974EDA72C8F59C300F29703 /* KeywordRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeywordRepository.swift; sourceTree = "<group>"; };
 		C99DDFD42C86138E00EDC0C4 /* SearchBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
 		C99DDFD62C86139700EDC0C4 /* SearchDetailInduceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchDetailInduceView.swift; sourceTree = "<group>"; };
 		C99DDFD82C8613A000EDC0C4 /* SearchSosoPickView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchSosoPickView.swift; sourceTree = "<group>"; };
@@ -1045,7 +1043,6 @@
 			children = (
 				2CD2291A2B42E685005400BE /* WSSiOS */,
 				2CD229192B42E685005400BE /* Products */,
-				C966F9002CA747ED00B4EF2C /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -2204,15 +2201,6 @@
 				B960987F2C27201B0084F697 /* NormalSearchResultCountView.swift */,
 			);
 			path = NormalAssistantView;
-			sourceTree = "<group>";
-		};
-		C966F9002CA747ED00B4EF2C /* Recovered References */ = {
-			isa = PBXGroup;
-			children = (
-				C974EDA72C8F59C300F29703 /* KeywordRepository.swift */,
-				C974EDA32C8F590100F29703 /* KeywordService.swift */,
-			);
-			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 		C978B30C2C87886000C78F77 /* Home */ = {

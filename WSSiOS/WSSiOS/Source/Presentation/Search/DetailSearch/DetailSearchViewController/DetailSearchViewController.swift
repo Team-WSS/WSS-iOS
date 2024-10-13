@@ -69,12 +69,15 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func delegate() {
-        rootView.detailSearchInfoView.genreCollectionView.rx.setDelegate(self)
+        rootView.detailSearchInfoView
+            .genreCollectionView.rx
+            .setDelegate(self)
             .disposed(by: disposeBag)
         
         rootView.detailSearchKeywordView.novelSelectedKeywordListView.selectedKeywordCollectionView.rx
             .setDelegate(self)
             .disposed(by: disposeBag)
+        
         rootView.detailSearchKeywordView.novelKeywordSelectSearchResultView.searchResultCollectionView.rx
             .setDelegate(self)
             .disposed(by: disposeBag)
@@ -84,33 +87,47 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
     
     private func bindViewModel() {
         let input = DetailSearchViewModel.Input(
-            viewWillAppearEvent: viewWillAppearEvent.asObservable(),
-            cancelButtonDidTap: rootView.cancelModalButton.rx.tap,
-            genreCollectionViewContentSize: rootView.detailSearchInfoView.genreCollectionView.rx.observe(CGSize.self, "contentSize"),
+            closeButtonDidTap: rootView.cancelModalButton.rx.tap,
             infoTabDidTap: rootView.detailSearchHeaderView.infoLabel.rx.tapGesture().when(.recognized).asObservable(),
             keywordTabDidTap: rootView.detailSearchHeaderView.keywordLabel.rx.tapGesture().when(.recognized).asObservable(),
+            resetButtonDidTap: rootView.detailSearchBottomView.resetButton.rx.tap,
+            selectButtonDidTap: rootView.detailSearchBottomView.searchButton.rx.tap,
+            genreCollectionViewContentSize: rootView.detailSearchInfoView.genreCollectionView.rx.observe(CGSize.self, "contentSize"),
             viewDidLoadEvent: viewDidLoadEvent.asObservable(),
             updatedEnteredText: rootView.detailSearchKeywordView.novelKeywordSelectSearchBarView.keywordTextField.rx.text.orEmpty.distinctUntilChanged().asObservable(),
             keywordTextFieldEditingDidBegin: rootView.detailSearchKeywordView.novelKeywordSelectSearchBarView.keywordTextField.rx.controlEvent(.editingDidBegin).asControlEvent(),
             keywordTextFieldEditingDidEnd: rootView.detailSearchKeywordView.novelKeywordSelectSearchBarView.keywordTextField.rx.controlEvent(.editingDidEnd).asControlEvent(),
             keywordTextFieldEditingDidEndOnExit: rootView.detailSearchKeywordView.novelKeywordSelectSearchBarView.keywordTextField.rx.controlEvent(.editingDidEndOnExit).asControlEvent(),
             searchCancelButtonDidTap: rootView.detailSearchKeywordView.novelKeywordSelectSearchBarView.searchCancelButton.rx.tap,
-            closeButtonDidTap: rootView.cancelModalButton.rx.tap,
             searchButtonDidTap: rootView.detailSearchKeywordView.novelKeywordSelectSearchBarView.searchButton.rx.tap,
             selectedKeywordCollectionViewItemSelected: rootView.detailSearchKeywordView.novelSelectedKeywordListView.selectedKeywordCollectionView.rx.itemSelected.asObservable(),
             searchResultCollectionViewItemSelected: rootView.detailSearchKeywordView.novelKeywordSelectSearchResultView.searchResultCollectionView.rx.itemSelected.asObservable(),
             searchResultCollectionViewItemDeselected: rootView.detailSearchKeywordView.novelKeywordSelectSearchResultView.searchResultCollectionView.rx.itemDeselected.asObservable(),
-            resetButtonDidTap: rootView.detailSearchKeywordView.novelKeywordSelectModalButtonView.resetButton.rx.tap,
-            selectButtonDidTap: rootView.detailSearchKeywordView.novelKeywordSelectModalButtonView.selectButton.rx.tap,
             contactButtonDidTap: rootView.detailSearchKeywordView.novelKeywordSelectEmptyView.contactButton.rx.tap,
             selectedKeywordData: selectedKeywordData.asObservable(),
             deselectedKeywordData: deselectedKeywordData.asObservable()
         )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
-        output.cancelButtonEnabled
+        output.dismissModalViewController
             .bind(with: self, onNext: { owner, _ in
                 owner.dismissModalViewController()
+            })
+            .disposed(by: disposeBag)
+        
+        output.selectedTab
+            .drive(with: self, onNext: { owner, tab in
+                owner.rootView.updateTab(selected: tab)
+            })
+            .disposed(by: disposeBag)
+        
+        output.showKeywordNewImageView
+            .bind(with: self, onNext: { owner, isHidden in
+                if isHidden {
+                    owner.rootView.detailSearchHeaderView.newKeywordImageView.isHidden = true
+                } else {
+                    owner.rootView.detailSearchHeaderView.newKeywordImageView.isHidden = false
+                }
             })
             .disposed(by: disposeBag)
         
@@ -120,17 +137,6 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
             }
             .disposed(by: disposeBag)
         
-        output.selectedTab
-            .drive(with: self, onNext: { owner, tab in
-                owner.rootView.updateTab(selected: tab)
-            })
-            .disposed(by: disposeBag)
-        
-        output.dismissModalViewController
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.dismissModalViewController()
-            })
-            .disposed(by: disposeBag)
         
         output.enteredText
             .subscribe(with: self, onNext: { owner, text in
@@ -152,7 +158,6 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
         
         output.selectedKeywordListData
             .subscribe(with: self, onNext: { owner, selectedKeywordList in
-                owner.rootView.detailSearchKeywordView.novelKeywordSelectModalButtonView.updateSelectLabelText(keywordCount: selectedKeywordList.count)
                 owner.rootView.detailSearchKeywordView.updateNovelKeywordSelectModalViewLayout(isSelectedKeyword: !selectedKeywordList.isEmpty)
                 owner.keywordCategoryListData.accept(owner.keywordCategoryList)
             })
@@ -278,7 +283,7 @@ extension DetailSearchViewController: UICollectionViewDelegateFlowLayout {
             let width = (text as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 26
             return CGSize(width: width, height: 35)
         }
-        if collectionView ==  rootView.detailSearchKeywordView.novelSelectedKeywordListView.selectedKeywordCollectionView{
+        else if collectionView ==  rootView.detailSearchKeywordView.novelSelectedKeywordListView.selectedKeywordCollectionView{
             var text: String?
             
             text = self.viewModel.selectedKeywordList[indexPath.item].keywordName
@@ -289,7 +294,8 @@ extension DetailSearchViewController: UICollectionViewDelegateFlowLayout {
             
             let width = (unwrappedText as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 52
             return CGSize(width: width, height: 35)
-        } else if collectionView == rootView.detailSearchKeywordView.novelKeywordSelectSearchResultView.searchResultCollectionView {
+        }
+        else if collectionView == rootView.detailSearchKeywordView.novelKeywordSelectSearchResultView.searchResultCollectionView {
             var text: String?
             
             text = self.viewModel.keywordSearchResultList[indexPath.item].keywordName
@@ -300,9 +306,9 @@ extension DetailSearchViewController: UICollectionViewDelegateFlowLayout {
             
             let width = (unwrappedText as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 26
             return CGSize(width: width, height: 35)
-        } else {
+        }
+        else {
             return CGSize()
         }
     }
-
 }

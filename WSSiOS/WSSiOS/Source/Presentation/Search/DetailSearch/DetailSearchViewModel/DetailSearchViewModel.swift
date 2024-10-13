@@ -22,18 +22,14 @@ final class DetailSearchViewModel: ViewModelType {
     
     let keywordLimit: Int = 20
     
-    /// 정보 뷰
-    private let cancelButtonEnabled = PublishRelay<Bool>()
-    private let genreList = BehaviorRelay<[String]>(value: NovelGenre.allCases.map { $0.toKorean })
+    // 전체
+    private let dismissModalViewController = PublishRelay<Void>()
     private let selectedTab = BehaviorRelay<DetailSearchTab>(value: DetailSearchTab.info)
     
-    /// 키워드 뷰
-    private let viewWillAppearEvent = BehaviorRelay<Bool>(value: false)
-    private let keywordList = PublishSubject<[KeywordCategory]>()
+    // 정보
+    private let genreList = BehaviorRelay<[String]>(value: NovelGenre.allCases.map { $0.toKorean })
     
-    //효원이꺼
-    
-    private let dismissModalViewController = PublishRelay<Void>()
+    // 키워드
     private let enteredText = BehaviorRelay<String>(value: "")
     private let isKeywordTextFieldEditing = BehaviorRelay<Bool>(value: false)
     private let endEditing = PublishRelay<Void>()
@@ -45,37 +41,41 @@ final class DetailSearchViewModel: ViewModelType {
     private let showCategoryListView = PublishRelay<Bool>()
     
     struct Input {
-        let viewWillAppearEvent: Observable<Bool>
-        let cancelButtonDidTap: ControlEvent<Void>
-        let genreCollectionViewContentSize: Observable<CGSize?>
+        // 전체
+        let closeButtonDidTap: ControlEvent<Void>
         let infoTabDidTap: Observable<UITapGestureRecognizer>
         let keywordTabDidTap: Observable<UITapGestureRecognizer>
+        let resetButtonDidTap: ControlEvent<Void>
+        let selectButtonDidTap: ControlEvent<Void>
         
+        // 정보
+        let genreCollectionViewContentSize: Observable<CGSize?>
+        
+        // 키워드
         let viewDidLoadEvent: Observable<Void>
         let updatedEnteredText: Observable<String>
         let keywordTextFieldEditingDidBegin: ControlEvent<Void>
         let keywordTextFieldEditingDidEnd: ControlEvent<Void>
         let keywordTextFieldEditingDidEndOnExit: ControlEvent<Void>
         let searchCancelButtonDidTap: ControlEvent<Void>
-        let closeButtonDidTap: ControlEvent<Void>
         let searchButtonDidTap: ControlEvent<Void>
         let selectedKeywordCollectionViewItemSelected: Observable<IndexPath>
         let searchResultCollectionViewItemSelected: Observable<IndexPath>
         let searchResultCollectionViewItemDeselected: Observable<IndexPath>
-        let resetButtonDidTap: ControlEvent<Void>
-        let selectButtonDidTap: ControlEvent<Void>
         let contactButtonDidTap: ControlEvent<Void>
         let selectedKeywordData: Observable<KeywordData>
         let deselectedKeywordData: Observable<KeywordData>
     }
     
     struct Output {
-        let cancelButtonEnabled: Observable<Void>
+        let dismissModalViewController: Observable<Void>
+        let selectedTab: Driver<DetailSearchTab>
+        // let showInfoNewImageView: Observable<Bool>
+        let showKeywordNewImageView: Observable<Bool>
+        
         let genreList: Driver<[String]>
         let genreCollectionViewHeight: Driver<CGFloat>
-        let selectedTab: Driver<DetailSearchTab>
         
-        let dismissModalViewController: Observable<Void>
         let enteredText: Observable<String>
         let isKeywordTextFieldEditing: Observable<Bool>
         let endEditing: Observable<Void>
@@ -95,20 +95,10 @@ final class DetailSearchViewModel: ViewModelType {
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
-        
-        let cancelButtonEnabled = input.cancelButtonDidTap.asObservable()
-        
-        let genreCollectionViewContentSize = input.genreCollectionViewContentSize
-            .map { $0?.height ?? 0 }.asDriver(onErrorJustReturn: 0)
-        
-        input.viewWillAppearEvent
-            .flatMapLatest { _ in
-                self.keywordRepository.searchKeyword(query: nil)
-            }
-            .subscribe(with: self, onNext: { owner, data in
-                self.keywordList.onNext(data.categories)
-            }, onError: { owner, error in
-                self.keywordList.onError(error)
+        // 전체
+        input.closeButtonDidTap
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.dismissModalViewController.accept(())
             })
             .disposed(by: disposeBag)
         
@@ -124,15 +114,29 @@ final class DetailSearchViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        keywordRepository.searchKeyword(query: nil)
-            .observe(on: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, data in
-                self.keywordList.onNext(data.categories)
-            }, onError: { owner, error in
-                self.keywordList.onError(error)
+        input.resetButtonDidTap
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.selectedKeywordList = []
+                owner.selectedKeywordListData.accept(owner.selectedKeywordList)
+                owner.enteredText.accept("")
+                owner.keywordSearchResultListData.accept([])
+                owner.showEmptyView.accept(false)
+                owner.showCategoryListView.accept(true)
             })
             .disposed(by: disposeBag)
         
+        input.selectButtonDidTap
+            .subscribe(with: self, onNext: { owner, _ in
+                NotificationCenter.default.post(name: NSNotification.Name("NovelReviewKeywordSelected"), object: owner.selectedKeywordList)
+                owner.dismissModalViewController.accept(())
+            })
+            .disposed(by: disposeBag)
+        
+        // 정보
+        let genreCollectionViewContentSize = input.genreCollectionViewContentSize
+            .map { $0?.height ?? 0 }.asDriver(onErrorJustReturn: 0)
+        
+        // 키워드
         input.viewDidLoadEvent
             .do(onNext: {
                 self.selectedKeywordListData.accept(self.selectedKeywordList)
@@ -174,12 +178,6 @@ final class DetailSearchViewModel: ViewModelType {
                 owner.showCategoryListView.accept(true)
                 owner.isKeywordTextFieldEditing.accept(false)
                 owner.endEditing.accept(())
-            })
-            .disposed(by: disposeBag)
-        
-        input.closeButtonDidTap
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.dismissModalViewController.accept(())
             })
             .disposed(by: disposeBag)
         
@@ -254,24 +252,6 @@ final class DetailSearchViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.resetButtonDidTap
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.selectedKeywordList = []
-                owner.selectedKeywordListData.accept(owner.selectedKeywordList)
-                owner.enteredText.accept("")
-                owner.keywordSearchResultListData.accept([])
-                owner.showEmptyView.accept(false)
-                owner.showCategoryListView.accept(true)
-            })
-            .disposed(by: disposeBag)
-        
-        input.selectButtonDidTap
-            .subscribe(with: self, onNext: { owner, _ in
-                NotificationCenter.default.post(name: NSNotification.Name("NovelReviewKeywordSelected"), object: owner.selectedKeywordList)
-                owner.dismissModalViewController.accept(())
-            })
-            .disposed(by: disposeBag)
-        
         input.contactButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
                 if let url = URL(string: URLs.Contact.kakao) {
@@ -282,12 +262,15 @@ final class DetailSearchViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        
-        return Output(cancelButtonEnabled: cancelButtonEnabled.asObservable(),
+        let showKeywordNewImageView = selectedKeywordListData
+                .map { $0.count <= 0 }
+                .asObservable()
+              
+        return Output(dismissModalViewController: dismissModalViewController.asObservable(),
+                      selectedTab: selectedTab.asDriver(),
+                      showKeywordNewImageView: showKeywordNewImageView.asObservable(),
                       genreList: genreList.asDriver(),
                       genreCollectionViewHeight: genreCollectionViewContentSize,
-                      selectedTab: selectedTab.asDriver(),
-                      dismissModalViewController: dismissModalViewController.asObservable(),
                       enteredText: enteredText.asObservable(),
                       isKeywordTextFieldEditing: isKeywordTextFieldEditing.asObservable(),
                       endEditing: endEditing.asObservable(),
