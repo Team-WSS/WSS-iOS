@@ -16,7 +16,7 @@ final class FeedDetailViewModel: ViewModelType {
     
     private let feedDetailRepository: FeedDetailRepository
     private let disposeBag = DisposeBag()
-    private let feedId: Int
+    let feedId: Int
     
     private let feedData = PublishSubject<Feed>()
     private let commentsData = BehaviorRelay<[FeedComment]>(value: [])
@@ -136,6 +136,14 @@ final class FeedDetailViewModel: ViewModelType {
     
     func deleteFeedLike(_ feedId: Int) -> Observable<Void> {
         return feedDetailRepository.deleteFeedLike(feedId: feedId)
+    }
+    
+    func postSpoilerFeed(_ feedId: Int) -> Observable<Void> {
+        return feedDetailRepository.postSpoilerFeed(feedId: feedId)
+    }
+    
+    func postImpertinenceFeed(_ feedId: Int) -> Observable<Void> {
+        return feedDetailRepository.postImpertinenceFeed(feedId: feedId)
     }
     
     //MARK: - Custom Method
