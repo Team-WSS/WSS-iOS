@@ -160,24 +160,20 @@ final class FeedDetailViewController: UIViewController {
                                                          rightTitle: "신고",
                                                          rightBackgroundColor: UIColor.wssPrimary100.cgColor)
             }
-            .subscribe(with: self, onNext: { owner, buttonType in
-                if buttonType == .right {
-                    owner.dismiss(animated: true) {
-                        owner.viewModel.postSpoilerFeed(owner.viewModel.feedId)
-                            .subscribe(with: self, onNext: { owner, _ in
-                                owner.rootView.dropdownView.isHidden = true
-                                _ = owner.presentToAlertViewController(iconImage: .icReportCheck,
-                                                                       titleText: "신고가 접수되었어요!",
-                                                                       contentText: nil,
-                                                                       leftTitle: nil,
-                                                                       rightTitle: "확인",
-                                                                       rightBackgroundColor: UIColor.wssPrimary100.cgColor)
-                            }, onError: { owner, error in
-                                
-                            })
-                            .disposed(by: owner.disposeBag)
-                    }
+            .subscribe(with: self, onNext: { owner, _ in
+                _ = owner.viewModel.postSpoilerFeed(owner.viewModel.feedId)
+                owner.rootView.dropdownView.isHidden = true
+                owner.dismiss(animated: true) {
+                    _ = owner.presentToAlertViewController(iconImage: .icReportCheck,
+                                                           titleText: "신고가 접수되었어요!",
+                                                           contentText: nil,
+                                                           leftTitle: nil,
+                                                           rightTitle: "확인",
+                                                           rightBackgroundColor: UIColor.wssPrimary100.cgColor)
                 }
+            }, onError: { owner, error in
+                // 에러 처리
+                print("Error: \(error)")
             })
             .disposed(by: disposeBag)
         
@@ -193,19 +189,14 @@ final class FeedDetailViewController: UIViewController {
             .subscribe(with: self, onNext: { owner, buttonType in
                 if buttonType == .right {
                     owner.dismiss(animated: true) {
-                        owner.viewModel.postImpertinenceFeed(owner.viewModel.feedId)
-                            .subscribe(with: self, onNext: { owner, _ in
-                                owner.rootView.dropdownView.isHidden = true
-                                _ = owner.presentToAlertViewController(iconImage: .icReportCheck,
-                                                                       titleText: "신고가 접수되었어요!",
-                                                                       contentText: "해당 글이 커뮤니티 가이드를\n위반했는지 검토할게요",
-                                                                       leftTitle: nil,
-                                                                       rightTitle: "확인",
-                                                                       rightBackgroundColor: UIColor.wssPrimary100.cgColor)
-                            }, onError: { owner, error in
-                                
-                            })
-                            .disposed(by: owner.disposeBag)
+                        _ = owner.viewModel.postImpertinenceFeed(owner.viewModel.feedId)
+                        owner.rootView.dropdownView.isHidden = true
+                        _ = owner.presentToAlertViewController(iconImage: .icReportCheck,
+                                                               titleText: "신고가 접수되었어요!",
+                                                               contentText: "해당 글이 커뮤니티 가이드를\n위반했는지 검토할게요",
+                                                               leftTitle: nil,
+                                                               rightTitle: "확인",
+                                                               rightBackgroundColor: UIColor.wssPrimary100.cgColor)
                     }
                 }
             })
