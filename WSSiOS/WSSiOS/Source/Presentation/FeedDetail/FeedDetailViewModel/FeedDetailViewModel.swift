@@ -24,8 +24,10 @@ final class FeedDetailViewModel: ViewModelType {
     
     private let likeCount = BehaviorRelay<Int>(value: 0)
     private let likeButtonState = BehaviorRelay<Bool>(value: false)
-    private let backButtonState = PublishRelay<Void>()
     
+    private let showDropdownView = BehaviorRelay<Bool>(value: false)
+    private let isMyFeed = BehaviorRelay<Bool>(value: false)
+ 
     //MARK: - Life Cycle
     
     init(feedDetailRepository: FeedDetailRepository, feedId: Int) {
@@ -37,6 +39,10 @@ final class FeedDetailViewModel: ViewModelType {
         let backButtonTapped: ControlEvent<Void>
         let replyCollectionViewContentSize: Observable<CGSize?>
         let likeButtonTapped: ControlEvent<Void>
+        
+        let dropdownButtonTapped: ControlEvent<Void>
+        let spoilerButtonTapped: ControlEvent<Void>
+        let improperButtonTapped: ControlEvent<Void>
     }
     
     struct Output {
@@ -46,6 +52,11 @@ final class FeedDetailViewModel: ViewModelType {
         let likeCount: Driver<Int>
         let likeButtonEnabled: Driver<Bool>
         let backButtonEnabled: Driver<Void>
+        
+        let showDropdownView: Driver<Bool>
+        let isMyFeed: Driver<Bool>
+        let showSpoilerAlertView: Observable<Void>
+        let showImproperAlertView: Observable<Void>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -54,6 +65,7 @@ final class FeedDetailViewModel: ViewModelType {
                 owner.feedData.onNext(data)
                 owner.likeButtonState.accept(data.isLiked)
                 owner.likeCount.accept(data.likeCount)
+                owner.isMyFeed.accept(data.isMyFeed)
             }, onError: { owner, error in
                 owner.feedData.onError(error)
             })
@@ -87,13 +99,25 @@ final class FeedDetailViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         let backButtonEnabled = input.backButtonTapped.asDriver()
+        let showSpoilerAlertView = input.spoilerButtonTapped.asObservable()
+        let showImproperAlertView = input.improperButtonTapped.asObservable()
+        
+        input.dropdownButtonTapped
+            .withLatestFrom(showDropdownView)
+            .map { !$0 }
+            .bind(to: showDropdownView)
+            .disposed(by: disposeBag)
         
         return Output(feedData: feedData.asObservable(),
                       commentsData: commentsData.asDriver(),
                       replyCollectionViewHeight: replyCollectionViewContentSize,
                       likeCount: likeCount.asDriver(),
                       likeButtonEnabled: likeButtonState.asDriver(),
-                      backButtonEnabled: backButtonEnabled)
+                      backButtonEnabled: backButtonEnabled,
+                      showDropdownView: showDropdownView.asDriver(),
+                      isMyFeed: isMyFeed.asDriver(),
+                      showSpoilerAlertView: showSpoilerAlertView,
+                      showImproperAlertView: showImproperAlertView)
     }
     
     //MARK: = API

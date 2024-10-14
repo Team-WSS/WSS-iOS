@@ -60,7 +60,7 @@ final class FeedDetailViewController: UIViewController {
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         self.navigationItem.titleView = self.rootView.viewTitleLabel
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.rootView.backButton)
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.rootView.dotsButton)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.rootView.dropdownButton)
     }
     
     //MARK: - Bind
@@ -82,7 +82,10 @@ final class FeedDetailViewController: UIViewController {
         let input = FeedDetailViewModel.Input(
             backButtonTapped: rootView.backButton.rx.tap,
             replyCollectionViewContentSize: rootView.replyView.replyCollectionView.rx.observe(CGSize.self, "contentSize"),
-            likeButtonTapped: rootView.feedContentView.reactView.likeButton.rx.tap)
+            likeButtonTapped: rootView.feedContentView.reactView.likeButton.rx.tap,
+            dropdownButtonTapped: rootView.dropdownButton.rx.tap,
+            spoilerButtonTapped: rootView.dropdownView.topDropdownButton.rx.tap,
+            improperButtonTapped: rootView.dropdownView.bottomDropdownButton.rx.tap)
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.feedData
@@ -139,6 +142,68 @@ final class FeedDetailViewController: UIViewController {
             .when(.recognized)
             .subscribe(with: self, onNext: { owner, _ in
                 self.view.endEditing(true)
+            })
+            .disposed(by: disposeBag)
+        
+        output.showDropdownView
+            .drive(with: self, onNext: { owner, isShow in
+                owner.rootView.dropdownView.isHidden = !isShow
+            })
+            .disposed(by: disposeBag)
+        
+        output.showSpoilerAlertView
+            .flatMapLatest { _ -> Observable<AlertButtonType> in
+                return self.presentToAlertViewController(iconImage: .icAlertWarningCircle,
+                                                         titleText: "해당 글이 스포일러를 포함하고 있나요?",
+                                                         contentText: nil,
+                                                         leftTitle: "취소",
+                                                         rightTitle: "신고",
+                                                         rightBackgroundColor: UIColor.wssPrimary100.cgColor)
+            }
+            .subscribe(with: self, onNext: { owner, buttonType in
+                if buttonType == .right {
+                    owner.dismiss(animated: true) {
+                        owner.rootView.dropdownView.isHidden = true
+                        _ = owner.presentToAlertViewController(iconImage: .icReportCheck,
+                                                               titleText: "신고가 접수되었어요!",
+                                                               contentText: nil,
+                                                               leftTitle: nil,
+                                                               rightTitle: "확인",
+                                                               rightBackgroundColor: UIColor.wssPrimary100.cgColor)
+                        
+                    }
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        output.showImproperAlertView
+            .flatMapLatest { _ -> Observable<AlertButtonType> in
+                return self.presentToAlertViewController(iconImage: .icAlertWarningCircle,
+                                                         titleText: "해당 글에 부적절한 표현이\n사용되었나요?",
+                                                         contentText: nil,
+                                                         leftTitle: "취소",
+                                                         rightTitle: "신고",
+                                                         rightBackgroundColor: UIColor.wssPrimary100.cgColor)
+            }
+            .subscribe(with: self, onNext: { owner, buttonType in
+                if buttonType == .right {
+                    owner.dismiss(animated: true) {
+                        owner.rootView.dropdownView.isHidden = true
+                        _ = owner.presentToAlertViewController(iconImage: .icReportCheck,
+                                                               titleText: "신고가 접수되었어요!",
+                                                               contentText: "해당 글이 커뮤니티 가이드를\n위반했는지 검토할게요",
+                                                               leftTitle: nil,
+                                                               rightTitle: "확인",
+                                                               rightBackgroundColor: UIColor.wssPrimary100.cgColor)
+                        
+                    }
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        output.isMyFeed
+            .drive(with: self, onNext: { owner, isMyFeed in
+                owner.rootView.dropdownView.configureDropdown(isMyFeed: isMyFeed)
             })
             .disposed(by: disposeBag)
     }
