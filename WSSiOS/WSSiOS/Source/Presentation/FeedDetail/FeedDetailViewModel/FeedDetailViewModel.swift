@@ -146,7 +146,7 @@ final class FeedDetailViewModel: ViewModelType {
                       showDeleteAlertView: showDeleteAlertView)
     }
     
-    //MARK: = API
+    //MARK: - API
     
     func getSingleFeed(_ feedId: Int) -> Observable<Feed> {
         return feedDetailRepository.getSingleFeedData(feedId: feedId)

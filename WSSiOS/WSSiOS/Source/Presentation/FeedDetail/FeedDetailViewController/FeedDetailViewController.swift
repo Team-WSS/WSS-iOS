@@ -167,10 +167,10 @@ final class FeedDetailViewController: UIViewController {
         output.showDeleteAlertView
             .flatMapLatest { _ -> Observable<AlertButtonType> in
                 return self.presentToAlertViewController(iconImage: .icAlertWarningCircle,
-                                                         titleText: "해당 글을 삭제할까요?",
-                                                         contentText: "삭제한 글은 되돌릴 수 없어요",
-                                                         leftTitle: "취소",
-                                                         rightTitle: "삭제",
+                                                         titleText: StringLiterals.FeedDetail.deleteTitle,
+                                                         contentText: StringLiterals.FeedDetail.deleteContent,
+                                                         leftTitle: StringLiterals.FeedDetail.cancel,
+                                                         rightTitle: StringLiterals.FeedDetail.delete,
                                                          rightBackgroundColor: UIColor.wssSecondary100.cgColor)
             }
             .subscribe(with: self, onNext: { owner, buttonType in
@@ -187,10 +187,10 @@ final class FeedDetailViewController: UIViewController {
         output.showSpoilerAlertView
             .flatMapLatest { _ -> Observable<AlertButtonType> in
                 return self.presentToAlertViewController(iconImage: .icAlertWarningCircle,
-                                                         titleText: "해당 글이 스포일러를 포함하고 있나요?",
+                                                         titleText: StringLiterals.FeedDetail.spoilerTitle,
                                                          contentText: nil,
-                                                         leftTitle: "취소",
-                                                         rightTitle: "신고",
+                                                         leftTitle: StringLiterals.FeedDetail.cancel,
+                                                         rightTitle: StringLiterals.FeedDetail.report,
                                                          rightBackgroundColor: UIColor.wssPrimary100.cgColor)
             }
             .subscribe(with: self, onNext: { owner, buttonType in
@@ -201,10 +201,10 @@ final class FeedDetailViewController: UIViewController {
                         .disposed(by: owner.disposeBag)
                     owner.dismiss(animated: true) {
                         _ = owner.presentToAlertViewController(iconImage: .icReportCheck,
-                                                               titleText: "신고가 접수되었어요!",
+                                                               titleText: StringLiterals.FeedDetail.reportResult,
                                                                contentText: nil,
                                                                leftTitle: nil,
-                                                               rightTitle: "확인",
+                                                               rightTitle: StringLiterals.FeedDetail.confirm,
                                                                rightBackgroundColor: UIColor.wssPrimary100.cgColor)
                     }
                 }
@@ -214,10 +214,10 @@ final class FeedDetailViewController: UIViewController {
         output.showImproperAlertView
             .flatMapLatest { _ -> Observable<AlertButtonType> in
                 return self.presentToAlertViewController(iconImage: .icAlertWarningCircle,
-                                                         titleText: "해당 글에 부적절한 표현이\n사용되었나요?",
+                                                         titleText: StringLiterals.FeedDetail.impertinentTitle,
                                                          contentText: nil,
-                                                         leftTitle: "취소",
-                                                         rightTitle: "신고",
+                                                         leftTitle: StringLiterals.FeedDetail.cancel,
+                                                         rightTitle: StringLiterals.FeedDetail.report,
                                                          rightBackgroundColor: UIColor.wssPrimary100.cgColor)
             }
             .subscribe(with: self, onNext: { owner, buttonType in
@@ -228,10 +228,10 @@ final class FeedDetailViewController: UIViewController {
                         .disposed(by: owner.disposeBag)
                     owner.dismiss(animated: true) {
                         _ = owner.presentToAlertViewController(iconImage: .icReportCheck,
-                                                               titleText: "신고가 접수되었어요!",
-                                                               contentText: "해당 글이 커뮤니티 가이드를\n위반했는지 검토할게요",
+                                                               titleText: StringLiterals.FeedDetail.reportResult,
+                                                               contentText: StringLiterals.FeedDetail.impertinentContent,
                                                                leftTitle: nil,
-                                                               rightTitle: "확인",
+                                                               rightTitle: StringLiterals.FeedDetail.confirm,
                                                                rightBackgroundColor: UIColor.wssPrimary100.cgColor)
                     }
                 }
