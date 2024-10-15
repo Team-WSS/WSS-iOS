@@ -176,7 +176,10 @@ final class FeedDetailViewController: UIViewController {
             .subscribe(with: self, onNext: { owner, buttonType in
                 owner.rootView.dropdownView.isHidden = true
                 if buttonType == .right {
-                    _ = owner.viewModel.deleteFeed(owner.viewModel.feedId)
+                    owner.viewModel.deleteFeed(owner.viewModel.feedId)
+                        .subscribe()
+                        .disposed(by: owner.disposeBag)
+                    owner.popToLastViewController()
                 }
             })
             .disposed(by: disposeBag)
@@ -193,7 +196,9 @@ final class FeedDetailViewController: UIViewController {
             .subscribe(with: self, onNext: { owner, buttonType in
                 owner.rootView.dropdownView.isHidden = true
                 if buttonType == .right {
-                    _ = owner.viewModel.postSpoilerFeed(owner.viewModel.feedId)
+                    owner.viewModel.postSpoilerFeed(owner.viewModel.feedId)
+                        .subscribe()
+                        .disposed(by: owner.disposeBag)
                     owner.dismiss(animated: true) {
                         _ = owner.presentToAlertViewController(iconImage: .icReportCheck,
                                                                titleText: "신고가 접수되었어요!",
@@ -218,7 +223,9 @@ final class FeedDetailViewController: UIViewController {
             .subscribe(with: self, onNext: { owner, buttonType in
                 owner.rootView.dropdownView.isHidden = true
                 if buttonType == .right {
-                    _ = owner.viewModel.postImpertinenceFeed(owner.viewModel.feedId)
+                    owner.viewModel.postImpertinenceFeed(owner.viewModel.feedId)
+                        .subscribe()
+                        .disposed(by: owner.disposeBag)
                     owner.dismiss(animated: true) {
                         _ = owner.presentToAlertViewController(iconImage: .icReportCheck,
                                                                titleText: "신고가 접수되었어요!",
