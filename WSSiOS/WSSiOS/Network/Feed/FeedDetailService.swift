@@ -17,6 +17,8 @@ protocol FeedDetailService {
     
     func postSpoilerFeed(feedId: Int) -> Single<Void>
     func postImpertinenceFeed(feedId: Int) -> Single<Void>
+    
+    func deleteFeed(feedId: Int) -> Single<Void>
 }
 
 final class DefaultFeedDetailService: NSObject, Networking, FeedDetailService {
@@ -100,7 +102,7 @@ final class DefaultFeedDetailService: NSObject, Networking, FeedDetailService {
     
     func postSpoilerFeed(feedId: Int) -> Single<Void> {
         do {
-            let request = try makeHTTPRequest(method: .delete,
+            let request = try makeHTTPRequest(method: .post,
                                               path: URLs.Feed.postSpoilerFeed(feedId: feedId),
                                               headers: APIConstants.testTokenHeader,
                                               body: nil)
@@ -118,8 +120,26 @@ final class DefaultFeedDetailService: NSObject, Networking, FeedDetailService {
     
     func postImpertinenceFeed(feedId: Int) -> Single<Void> {
         do {
-            let request = try makeHTTPRequest(method: .delete,
+            let request = try makeHTTPRequest(method: .post,
                                               path: URLs.Feed.postImpertinenceFeed(feedId: feedId),
+                                              headers: APIConstants.testTokenHeader,
+                                              body: nil)
+            
+            NetworkLogger.log(request: request)
+            
+            return urlSession.rx.data(request: request)
+                .map { _ in }
+                .asSingle()
+            
+        } catch {
+            return Single.error(error)
+        }
+    }
+    
+    func deleteFeed(feedId: Int) -> Single<Void> {
+        do {
+            let request = try makeHTTPRequest(method: .delete,
+                                              path: URLs.Feed.deleteFeed(feedId: feedId),
                                               headers: APIConstants.testTokenHeader,
                                               body: nil)
             
