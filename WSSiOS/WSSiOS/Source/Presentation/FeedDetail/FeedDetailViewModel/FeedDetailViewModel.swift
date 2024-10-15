@@ -27,7 +27,7 @@ final class FeedDetailViewModel: ViewModelType {
     
     private let showDropdownView = BehaviorRelay<Bool>(value: false)
     private let isMyFeed = BehaviorRelay<Bool>(value: false)
- 
+    
     //MARK: - Life Cycle
     
     init(feedDetailRepository: FeedDetailRepository, feedId: Int) {
@@ -41,8 +41,8 @@ final class FeedDetailViewModel: ViewModelType {
         let likeButtonTapped: ControlEvent<Void>
         
         let dropdownButtonTapped: ControlEvent<Void>
-        let spoilerButtonTapped: ControlEvent<Void>
-        let improperButtonTapped: ControlEvent<Void>
+        let dropdownTopButtonTapped: ControlEvent<Void>
+        let dropdownBottomButtonTapped: ControlEvent<Void>
     }
     
     struct Output {
@@ -57,6 +57,8 @@ final class FeedDetailViewModel: ViewModelType {
         let isMyFeed: Driver<Bool>
         let showSpoilerAlertView: Observable<Void>
         let showImproperAlertView: Observable<Void>
+        let pushToFeedEditViewController: Observable<Void>
+        let showDeleteAlertView: Observable<Void>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -99,14 +101,36 @@ final class FeedDetailViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         let backButtonEnabled = input.backButtonTapped.asDriver()
-        let showSpoilerAlertView = input.spoilerButtonTapped.asObservable()
-        let showImproperAlertView = input.improperButtonTapped.asObservable()
         
         input.dropdownButtonTapped
             .withLatestFrom(showDropdownView)
             .map { !$0 }
             .bind(to: showDropdownView)
             .disposed(by: disposeBag)
+        
+        let pushToFeedEditViewController = input.dropdownTopButtonTapped
+            .withLatestFrom(isMyFeed)
+            .flatMapLatest { isMyFeed -> Observable<Void> in
+                return isMyFeed ? Observable.just(()) : Observable.empty()
+            }
+        
+        let showDeleteAlertView = input.dropdownBottomButtonTapped
+            .withLatestFrom(isMyFeed)
+            .flatMapLatest { isMyFeed -> Observable<Void> in
+                return isMyFeed ? Observable.just(()) : Observable.empty()
+            }
+        
+        let showSpoilerAlertView = input.dropdownTopButtonTapped
+            .withLatestFrom(isMyFeed)
+            .flatMapLatest { isMyFeed -> Observable<Void> in
+                return !isMyFeed ? Observable.just(()) : Observable.empty()
+            }
+        
+        let showImproperAlertView = input.dropdownBottomButtonTapped
+            .withLatestFrom(isMyFeed)
+            .flatMapLatest { isMyFeed -> Observable<Void> in
+                return !isMyFeed ? Observable.just(()) : Observable.empty()
+            }
         
         return Output(feedData: feedData.asObservable(),
                       commentsData: commentsData.asDriver(),
@@ -117,7 +141,9 @@ final class FeedDetailViewModel: ViewModelType {
                       showDropdownView: showDropdownView.asDriver(),
                       isMyFeed: isMyFeed.asDriver(),
                       showSpoilerAlertView: showSpoilerAlertView,
-                      showImproperAlertView: showImproperAlertView)
+                      showImproperAlertView: showImproperAlertView,
+                      pushToFeedEditViewController: pushToFeedEditViewController,
+                      showDeleteAlertView: showDeleteAlertView)
     }
     
     //MARK: = API
@@ -144,6 +170,10 @@ final class FeedDetailViewModel: ViewModelType {
     
     func postImpertinenceFeed(_ feedId: Int) -> Observable<Void> {
         return feedDetailRepository.postImpertinenceFeed(feedId: feedId)
+    }
+    
+    func deleteFeed(_ feedId: Int) -> Observable<Void> {
+        return feedDetailRepository.deleteFeed(feedId: feedId)
     }
     
     //MARK: - Custom Method

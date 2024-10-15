@@ -84,8 +84,8 @@ final class FeedDetailViewController: UIViewController {
             replyCollectionViewContentSize: rootView.replyView.replyCollectionView.rx.observe(CGSize.self, "contentSize"),
             likeButtonTapped: rootView.feedContentView.reactView.likeButton.rx.tap,
             dropdownButtonTapped: rootView.dropdownButton.rx.tap,
-            spoilerButtonTapped: rootView.dropdownView.topDropdownButton.rx.tap,
-            improperButtonTapped: rootView.dropdownView.bottomDropdownButton.rx.tap)
+            dropdownTopButtonTapped: rootView.dropdownView.topDropdownButton.rx.tap,
+            dropdownBottomButtonTapped: rootView.dropdownView.bottomDropdownButton.rx.tap)
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.feedData
@@ -151,6 +151,36 @@ final class FeedDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.isMyFeed
+            .drive(with: self, onNext: { owner, isMyFeed in
+                owner.rootView.dropdownView.configureDropdown(isMyFeed: isMyFeed)
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushToFeedEditViewController
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.rootView.dropdownView.isHidden = true
+                owner.pushToFeedEditViewController(feedId: owner.viewModel.feedId)
+            })
+            .disposed(by: disposeBag)
+        
+        output.showDeleteAlertView
+            .flatMapLatest { _ -> Observable<AlertButtonType> in
+                return self.presentToAlertViewController(iconImage: .icAlertWarningCircle,
+                                                         titleText: "해당 글을 삭제할까요?",
+                                                         contentText: "삭제한 글은 되돌릴 수 없어요",
+                                                         leftTitle: "취소",
+                                                         rightTitle: "삭제",
+                                                         rightBackgroundColor: UIColor.wssSecondary100.cgColor)
+            }
+            .subscribe(with: self, onNext: { owner, buttonType in
+                owner.rootView.dropdownView.isHidden = true
+                if buttonType == .right {
+                    _ = owner.viewModel.deleteFeed(owner.viewModel.feedId)
+                }
+            })
+            .disposed(by: disposeBag)
+        
         output.showSpoilerAlertView
             .flatMapLatest { _ -> Observable<AlertButtonType> in
                 return self.presentToAlertViewController(iconImage: .icAlertWarningCircle,
@@ -160,20 +190,19 @@ final class FeedDetailViewController: UIViewController {
                                                          rightTitle: "신고",
                                                          rightBackgroundColor: UIColor.wssPrimary100.cgColor)
             }
-            .subscribe(with: self, onNext: { owner, _ in
-                _ = owner.viewModel.postSpoilerFeed(owner.viewModel.feedId)
+            .subscribe(with: self, onNext: { owner, buttonType in
                 owner.rootView.dropdownView.isHidden = true
-                owner.dismiss(animated: true) {
-                    _ = owner.presentToAlertViewController(iconImage: .icReportCheck,
-                                                           titleText: "신고가 접수되었어요!",
-                                                           contentText: nil,
-                                                           leftTitle: nil,
-                                                           rightTitle: "확인",
-                                                           rightBackgroundColor: UIColor.wssPrimary100.cgColor)
+                if buttonType == .right {
+                    _ = owner.viewModel.postSpoilerFeed(owner.viewModel.feedId)
+                    owner.dismiss(animated: true) {
+                        _ = owner.presentToAlertViewController(iconImage: .icReportCheck,
+                                                               titleText: "신고가 접수되었어요!",
+                                                               contentText: nil,
+                                                               leftTitle: nil,
+                                                               rightTitle: "확인",
+                                                               rightBackgroundColor: UIColor.wssPrimary100.cgColor)
+                    }
                 }
-            }, onError: { owner, error in
-                // 에러 처리
-                print("Error: \(error)")
             })
             .disposed(by: disposeBag)
         
@@ -187,10 +216,10 @@ final class FeedDetailViewController: UIViewController {
                                                          rightBackgroundColor: UIColor.wssPrimary100.cgColor)
             }
             .subscribe(with: self, onNext: { owner, buttonType in
+                owner.rootView.dropdownView.isHidden = true
                 if buttonType == .right {
+                    _ = owner.viewModel.postImpertinenceFeed(owner.viewModel.feedId)
                     owner.dismiss(animated: true) {
-                        _ = owner.viewModel.postImpertinenceFeed(owner.viewModel.feedId)
-                        owner.rootView.dropdownView.isHidden = true
                         _ = owner.presentToAlertViewController(iconImage: .icReportCheck,
                                                                titleText: "신고가 접수되었어요!",
                                                                contentText: "해당 글이 커뮤니티 가이드를\n위반했는지 검토할게요",
@@ -199,12 +228,6 @@ final class FeedDetailViewController: UIViewController {
                                                                rightBackgroundColor: UIColor.wssPrimary100.cgColor)
                     }
                 }
-            })
-            .disposed(by: disposeBag)
-        
-        output.isMyFeed
-            .drive(with: self, onNext: { owner, isMyFeed in
-                owner.rootView.dropdownView.configureDropdown(isMyFeed: isMyFeed)
             })
             .disposed(by: disposeBag)
     }

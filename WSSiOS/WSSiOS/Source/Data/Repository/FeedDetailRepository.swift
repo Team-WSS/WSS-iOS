@@ -18,6 +18,8 @@ protocol FeedDetailRepository {
     
     func postSpoilerFeed(feedId: Int) -> Observable<Void>
     func postImpertinenceFeed(feedId: Int) -> Observable<Void>
+    
+    func deleteFeed(feedId: Int) -> Observable<Void>
 }
 
 struct TestFeedDetailRepository: FeedDetailRepository {
@@ -85,6 +87,10 @@ struct TestFeedDetailRepository: FeedDetailRepository {
     func postImpertinenceFeed(feedId: Int) -> Observable<Void> {
         return Observable.just(())
     }
+    
+    func deleteFeed(feedId: Int) -> Observable<Void> {
+        return Observable.just(())
+    }
 }
 
 struct DefaultFeedDetailRepository: FeedDetailRepository {
@@ -116,5 +122,9 @@ struct DefaultFeedDetailRepository: FeedDetailRepository {
     
     func postImpertinenceFeed(feedId: Int) -> Observable<Void> {
         return feedDetailService.postImpertinenceFeed(feedId: feedId).asObservable()
+    }
+    
+    func deleteFeed(feedId: Int) -> Observable<Void> {
+        return feedDetailService.deleteFeed(feedId: feedId).asObservable()
     }
 }
