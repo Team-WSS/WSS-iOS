@@ -53,7 +53,6 @@ final class FeedDetailDropdownView: UIView {
         }
         
         topDropdownLabel.do {
-            $0.applyWSSFont(.body2, with: "스포일러 신고")
             $0.textColor = .wssSecondary100
             $0.isUserInteractionEnabled = false
         }
@@ -63,7 +62,6 @@ final class FeedDetailDropdownView: UIView {
         }
         
         bottomDropdownLabel.do {
-            $0.applyWSSFont(.body2, with: "부적절한 표현 신고")
             $0.textColor = .wssSecondary100
             $0.isUserInteractionEnabled = false
         }
@@ -111,12 +109,16 @@ final class FeedDetailDropdownView: UIView {
     
     func configureDropdown(isMyFeed: Bool) {
         if isMyFeed {
-            topDropdownLabel.applyWSSFont(.body2, with: "수정하기")
-            bottomDropdownLabel.applyWSSFont(.body2, with: "삭제하기")
+            topDropdownLabel.applyWSSFont(.body2, with: StringLiterals.FeedDetail.edit)
+            bottomDropdownLabel.applyWSSFont(.body2, with: StringLiterals.FeedDetail.delete)
+            topDropdownLabel.textColor = .wssBlack
+            bottomDropdownLabel.textColor = .wssBlack
         }
         else {
-            topDropdownLabel.applyWSSFont(.body2, with: "스포일러 신고")
-            bottomDropdownLabel.applyWSSFont(.body2, with: "부적절한 표현 신고")
+            topDropdownLabel.applyWSSFont(.body2, with: StringLiterals.FeedDetail.reportSpoiler)
+            bottomDropdownLabel.applyWSSFont(.body2, with: StringLiterals.FeedDetail.reportImpertinence)
+            topDropdownLabel.textColor = .wssSecondary100
+            bottomDropdownLabel.textColor = .wssSecondary100
         }
     }
 }

@@ -171,7 +171,7 @@ final class FeedDetailViewController: UIViewController {
                                                          contentText: StringLiterals.FeedDetail.deleteContent,
                                                          leftTitle: StringLiterals.FeedDetail.cancel,
                                                          rightTitle: StringLiterals.FeedDetail.delete,
-                                                         rightBackgroundColor: UIColor.wssBlack.cgColor)
+                                                         rightBackgroundColor: UIColor.wssSecondary100.cgColor)
             }
             .subscribe(with: self, onNext: { owner, buttonType in
                 owner.rootView.dropdownView.isHidden = true
