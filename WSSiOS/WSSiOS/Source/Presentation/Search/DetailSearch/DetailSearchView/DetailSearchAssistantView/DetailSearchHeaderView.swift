@@ -19,9 +19,10 @@ final class DetailSearchHeaderView: UIView {
     //MARK: - UI Components
     
     let infoLabel = UILabel()
+    let newInfoImageView = UIImageView()
     let keywordLabel = UILabel()
+    let newKeywordImageView = UIImageView()
     let underLineView = UIView()
-    let newImageView = UIImageView()
     
     //MARK: - Life Cycle
     
@@ -53,21 +54,29 @@ final class DetailSearchHeaderView: UIView {
             $0.backgroundColor = .wssPrimary100
         }
         
-        newImageView.do {
-            $0.image = .icSearchNew.withTintColor(.wssWhite)
+        [newInfoImageView, newKeywordImageView].forEach {
+            $0.image = .icSearchNew.withTintColor(.wssPrimary100)
+            $0.isHidden = true
         }
     }
     
     private func setHierarchy() {
         self.addSubviews(infoLabel,
+                         newInfoImageView,
                          keywordLabel,
-                         underLineView,
-                         newImageView)
+                         newKeywordImageView,
+                         underLineView)
     }
     
     private func setLayout() {
         infoLabel.snp.makeConstraints {
             $0.top.leading.equalToSuperview()
+        }
+        
+        newInfoImageView.snp.makeConstraints {
+            $0.top.equalTo(infoLabel.snp.top)
+            $0.leading.equalTo(infoLabel.snp.trailing).offset(3)
+            $0.size.equalTo(4)
         }
 
         keywordLabel.snp.makeConstraints {
@@ -76,17 +85,17 @@ final class DetailSearchHeaderView: UIView {
             $0.trailing.equalToSuperview()
         }
         
+        newKeywordImageView.snp.makeConstraints {
+            $0.top.equalTo(keywordLabel.snp.top)
+            $0.leading.equalTo(keywordLabel.snp.trailing).offset(3)
+            $0.size.equalTo(4)
+        }
+        
         underLineView.snp.makeConstraints {
             $0.top.equalTo(keywordLabel.snp.bottom).offset(6)
             $0.horizontalEdges.equalTo(infoLabel.snp.horizontalEdges)
             $0.height.equalTo(2)
             $0.bottom.equalToSuperview()
-        }
-        
-        newImageView.snp.makeConstraints {
-            $0.top.equalTo(infoLabel.snp.top)
-            $0.leading.equalTo(infoLabel.snp.trailing).offset(3)
-            $0.size.equalTo(4)
         }
     }
     
