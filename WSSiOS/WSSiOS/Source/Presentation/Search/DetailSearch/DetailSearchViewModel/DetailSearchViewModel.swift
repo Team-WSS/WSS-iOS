@@ -126,6 +126,7 @@ final class DetailSearchViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.selectButtonDidTap
+            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
                 NotificationCenter.default.post(name: NSNotification.Name("NovelReviewKeywordSelected"), object: owner.selectedKeywordList)
                 owner.dismissModalViewController.accept(())
@@ -134,7 +135,8 @@ final class DetailSearchViewModel: ViewModelType {
         
         // 정보
         let genreCollectionViewContentSize = input.genreCollectionViewContentSize
-            .map { $0?.height ?? 0 }.asDriver(onErrorJustReturn: 0)
+            .map { $0?.height ?? 0 }
+            .asDriver(onErrorJustReturn: 0)
         
         // 키워드
         input.viewDidLoadEvent
@@ -172,6 +174,7 @@ final class DetailSearchViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.searchCancelButtonDidTap
+            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
                 owner.enteredText.accept("")
                 owner.showEmptyView.accept(false)
