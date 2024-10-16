@@ -16,7 +16,7 @@ final class FeedDetailViewModel: ViewModelType {
     
     private let feedDetailRepository: FeedDetailRepository
     private let disposeBag = DisposeBag()
-    private let feedId: Int
+    let feedId: Int
     
     private let feedData = PublishSubject<Feed>()
     private let commentsData = BehaviorRelay<[FeedComment]>(value: [])
@@ -24,7 +24,9 @@ final class FeedDetailViewModel: ViewModelType {
     
     private let likeCount = BehaviorRelay<Int>(value: 0)
     private let likeButtonState = BehaviorRelay<Bool>(value: false)
-    private let backButtonState = PublishRelay<Void>()
+    
+    private let showDropdownView = BehaviorRelay<Bool>(value: false)
+    private let isMyFeed = BehaviorRelay<Bool>(value: false)
     
     //MARK: - Life Cycle
     
@@ -37,6 +39,10 @@ final class FeedDetailViewModel: ViewModelType {
         let backButtonTapped: ControlEvent<Void>
         let replyCollectionViewContentSize: Observable<CGSize?>
         let likeButtonTapped: ControlEvent<Void>
+        
+        let dropdownButtonTapped: ControlEvent<Void>
+        let dropdownTopButtonTapped: ControlEvent<Void>
+        let dropdownBottomButtonTapped: ControlEvent<Void>
     }
     
     struct Output {
@@ -46,6 +52,13 @@ final class FeedDetailViewModel: ViewModelType {
         let likeCount: Driver<Int>
         let likeButtonEnabled: Driver<Bool>
         let backButtonEnabled: Driver<Void>
+        
+        let showDropdownView: Driver<Bool>
+        let isMyFeed: Driver<Bool>
+        let showSpoilerAlertView: Observable<Void>
+        let showImproperAlertView: Observable<Void>
+        let pushToFeedEditViewController: Observable<Void>
+        let showDeleteAlertView: Observable<Void>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -54,6 +67,7 @@ final class FeedDetailViewModel: ViewModelType {
                 owner.feedData.onNext(data)
                 owner.likeButtonState.accept(data.isLiked)
                 owner.likeCount.accept(data.likeCount)
+                owner.isMyFeed.accept(data.isMyFeed)
             }, onError: { owner, error in
                 owner.feedData.onError(error)
             })
@@ -88,15 +102,51 @@ final class FeedDetailViewModel: ViewModelType {
         
         let backButtonEnabled = input.backButtonTapped.asDriver()
         
+        input.dropdownButtonTapped
+            .withLatestFrom(showDropdownView)
+            .map { !$0 }
+            .bind(to: showDropdownView)
+            .disposed(by: disposeBag)
+        
+        let pushToFeedEditViewController = input.dropdownTopButtonTapped
+            .withLatestFrom(isMyFeed)
+            .flatMapLatest { isMyFeed -> Observable<Void> in
+                return isMyFeed ? Observable.just(()) : Observable.empty()
+            }
+        
+        let showDeleteAlertView = input.dropdownBottomButtonTapped
+            .withLatestFrom(isMyFeed)
+            .flatMapLatest { isMyFeed -> Observable<Void> in
+                return isMyFeed ? Observable.just(()) : Observable.empty()
+            }
+        
+        let showSpoilerAlertView = input.dropdownTopButtonTapped
+            .withLatestFrom(isMyFeed)
+            .flatMapLatest { isMyFeed -> Observable<Void> in
+                return !isMyFeed ? Observable.just(()) : Observable.empty()
+            }
+        
+        let showImproperAlertView = input.dropdownBottomButtonTapped
+            .withLatestFrom(isMyFeed)
+            .flatMapLatest { isMyFeed -> Observable<Void> in
+                return !isMyFeed ? Observable.just(()) : Observable.empty()
+            }
+        
         return Output(feedData: feedData.asObservable(),
                       commentsData: commentsData.asDriver(),
                       replyCollectionViewHeight: replyCollectionViewContentSize,
                       likeCount: likeCount.asDriver(),
                       likeButtonEnabled: likeButtonState.asDriver(),
-                      backButtonEnabled: backButtonEnabled)
+                      backButtonEnabled: backButtonEnabled,
+                      showDropdownView: showDropdownView.asDriver(),
+                      isMyFeed: isMyFeed.asDriver(),
+                      showSpoilerAlertView: showSpoilerAlertView,
+                      showImproperAlertView: showImproperAlertView,
+                      pushToFeedEditViewController: pushToFeedEditViewController,
+                      showDeleteAlertView: showDeleteAlertView)
     }
     
-    //MARK: = API
+    //MARK: - API
     
     func getSingleFeed(_ feedId: Int) -> Observable<Feed> {
         return feedDetailRepository.getSingleFeedData(feedId: feedId)
@@ -112,6 +162,18 @@ final class FeedDetailViewModel: ViewModelType {
     
     func deleteFeedLike(_ feedId: Int) -> Observable<Void> {
         return feedDetailRepository.deleteFeedLike(feedId: feedId)
+    }
+    
+    func postSpoilerFeed(_ feedId: Int) -> Observable<Void> {
+        return feedDetailRepository.postSpoilerFeed(feedId: feedId)
+    }
+    
+    func postImpertinenceFeed(_ feedId: Int) -> Observable<Void> {
+        return feedDetailRepository.postImpertinenceFeed(feedId: feedId)
+    }
+    
+    func deleteFeed(_ feedId: Int) -> Observable<Void> {
+        return feedDetailRepository.deleteFeed(feedId: feedId)
     }
     
     //MARK: - Custom Method

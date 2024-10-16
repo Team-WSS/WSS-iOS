@@ -12,8 +12,14 @@ import RxSwift
 protocol FeedDetailRepository {
     func getSingleFeedData(feedId: Int) -> Observable<Feed>
     func getSingleFeedComments(feedId: Int) -> Observable<FeedComments>
+    
     func postFeedLike(feedId: Int) -> Observable<Void>
     func deleteFeedLike(feedId: Int) -> Observable<Void>
+    
+    func postSpoilerFeed(feedId: Int) -> Observable<Void>
+    func postImpertinenceFeed(feedId: Int) -> Observable<Void>
+    
+    func deleteFeed(feedId: Int) -> Observable<Void>
 }
 
 struct TestFeedDetailRepository: FeedDetailRepository {
@@ -73,6 +79,18 @@ struct TestFeedDetailRepository: FeedDetailRepository {
     func deleteFeedLike(feedId: Int) -> Observable<Void> {
         return Observable.just(())
     }
+    
+    func postSpoilerFeed(feedId: Int) -> Observable<Void> {
+        return Observable.just(())
+    }
+    
+    func postImpertinenceFeed(feedId: Int) -> Observable<Void> {
+        return Observable.just(())
+    }
+    
+    func deleteFeed(feedId: Int) -> Observable<Void> {
+        return Observable.just(())
+    }
 }
 
 struct DefaultFeedDetailRepository: FeedDetailRepository {
@@ -96,5 +114,17 @@ struct DefaultFeedDetailRepository: FeedDetailRepository {
     
     func deleteFeedLike(feedId: Int) -> Observable<Void> {
         return feedDetailService.deleteFeedLike(feedId: feedId).asObservable()
+    }
+    
+    func postSpoilerFeed(feedId: Int) -> Observable<Void> {
+        return feedDetailService.postSpoilerFeed(feedId: feedId).asObservable()
+    }
+    
+    func postImpertinenceFeed(feedId: Int) -> Observable<Void> {
+        return feedDetailService.postImpertinenceFeed(feedId: feedId).asObservable()
+    }
+    
+    func deleteFeed(feedId: Int) -> Observable<Void> {
+        return feedDetailService.deleteFeed(feedId: feedId).asObservable()
     }
 }
