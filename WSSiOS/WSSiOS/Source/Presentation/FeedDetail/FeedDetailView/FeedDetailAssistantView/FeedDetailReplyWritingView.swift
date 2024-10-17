@@ -18,7 +18,7 @@ final class FeedDetailReplyWritingView: UIView {
     let textViewBackgroundView = UIView()
     let replyWritingPlaceHolderLabel = UILabel()
     let replyWritingTextView = UITextView()
-    private let replyButton = UIButton()
+    let replyButton = UIButton()
     
     //MARK: - Life Cycle
     
@@ -114,6 +114,16 @@ final class FeedDetailReplyWritingView: UIView {
                 $0.trailing.equalToSuperview().inset(11)
                 $0.size.equalTo(28)
             }
+        }
+    }
+    
+    //MARK: - Custom Methods
+    
+    func enableSendButton(_ isEnabled: Bool) {
+        replyButton.do {
+            $0.isEnabled = isEnabled
+            $0.setImage(isEnabled ? .icCommentRegister.withRenderingMode(.alwaysOriginal).withTintColor(.wssPrimary100) : .icCommentRegister.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray100),
+                        for: .normal)
         }
     }
 }

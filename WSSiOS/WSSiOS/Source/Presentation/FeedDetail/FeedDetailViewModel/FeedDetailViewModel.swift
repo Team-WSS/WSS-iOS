@@ -22,9 +22,19 @@ final class FeedDetailViewModel: ViewModelType {
     private let commentsData = BehaviorRelay<[FeedComment]>(value: [])
     private let replyCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
     
+    // 관심 버튼
     private let likeCount = BehaviorRelay<Int>(value: 0)
     private let likeButtonState = BehaviorRelay<Bool>(value: false)
     private let backButtonState = PublishRelay<Void>()
+    
+    // 댓글 작성
+    private let endEditing = PublishRelay<Bool>()
+    private var updatedCommentContent: String = ""
+    private var isValidCommentContent: Bool = false
+    private let maximumCommentContentCount: Int = 500
+    private let commentContentWithLengthLimit = BehaviorRelay<String>(value: "")
+    private let showPlaceholder = BehaviorRelay<Bool>(value: true)
+    private let sendButtonEnabled = BehaviorRelay<Bool>(value: false)
     
     //MARK: - Life Cycle
     
@@ -37,6 +47,13 @@ final class FeedDetailViewModel: ViewModelType {
         let backButtonTapped: ControlEvent<Void>
         let replyCollectionViewContentSize: Observable<CGSize?>
         let likeButtonTapped: ControlEvent<Void>
+        
+        let viewDidTap: Observable<UITapGestureRecognizer>
+        let commentContentUpdated: Observable<String>
+        let commentContentViewDidBeginEditing: ControlEvent<Void>
+        let commentContentViewDidEndEditing: ControlEvent<Void>
+        let replyCommentCollectionViewSwipeGesture: Observable<UISwipeGestureRecognizer>
+        let sendButtonTapped: ControlEvent<Void>
     }
     
     struct Output {
@@ -46,6 +63,11 @@ final class FeedDetailViewModel: ViewModelType {
         let likeCount: Driver<Int>
         let likeButtonEnabled: Driver<Bool>
         let backButtonEnabled: Driver<Void>
+        
+        let showPlaceholder: Observable<Bool>
+        let endEditing: Observable<Bool>
+        let commentContentWithLengthLimit: Observable<String>
+        let sendButtonEnabled: Observable<Bool>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -67,6 +89,8 @@ final class FeedDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        let backButtonEnabled = input.backButtonTapped.asDriver()
+        
         let replyCollectionViewContentSize = input.replyCollectionViewContentSize
             .map { $0?.height ?? 0 }.asDriver(onErrorJustReturn: 0)
         
@@ -86,15 +110,75 @@ final class FeedDetailViewModel: ViewModelType {
             .subscribe()
             .disposed(by: disposeBag)
         
-        let backButtonEnabled = input.backButtonTapped.asDriver()
+        input.viewDidTap
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.endEditing.accept(true)
+            })
+            .disposed(by: disposeBag)
+        
+        input.commentContentUpdated
+            .subscribe(with: self, onNext: { owner, comment in
+                owner.updatedCommentContent = comment
+                owner.commentContentWithLengthLimit.accept(String(comment.prefix(owner.maximumCommentContentCount)))
+                
+                let isEmpty = comment.count == 0
+                let isOverLimit = comment.count > owner.maximumCommentContentCount
+                
+                owner.isValidCommentContent = !(isEmpty || isOverLimit)
+                
+                owner.showPlaceholder.accept(isEmpty)
+                owner.sendButtonEnabled.accept(owner.isValidCommentContent)
+            })
+            .disposed(by: disposeBag)
+        
+        input.commentContentViewDidBeginEditing
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.showPlaceholder.accept(false)
+            })
+            .disposed(by: disposeBag)
+        
+        input.commentContentViewDidEndEditing
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.showPlaceholder.accept(owner.updatedCommentContent.count == 0 ? true : false)
+            })
+            .disposed(by: disposeBag)
+        
+        input.replyCommentCollectionViewSwipeGesture
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.endEditing.accept(true)
+            })
+            .disposed(by: disposeBag)
+        
+        input.sendButtonTapped
+            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
+            .flatMapLatest { () -> Observable<Void> in
+                return self.postComment(self.feedId, self.updatedCommentContent)
+                    .flatMapLatest { _ in
+                        self.getSingleFeedComments(self.feedId)
+                            .do(onNext: { newComments in
+                                self.commentsData.accept(newComments.comments)
+                            })
+                            .map { _ in () }
+                    }
+                    .do(onNext: {
+                        self.updatedCommentContent = ""
+                    })
+            }
+            .subscribe()
+            .disposed(by: disposeBag)
         
         return Output(feedData: feedData.asObservable(),
                       commentsData: commentsData.asDriver(),
                       replyCollectionViewHeight: replyCollectionViewContentSize,
                       likeCount: likeCount.asDriver(),
                       likeButtonEnabled: likeButtonState.asDriver(),
-                      backButtonEnabled: backButtonEnabled)
+                      backButtonEnabled: backButtonEnabled,
+                      showPlaceholder: showPlaceholder.asObservable(),
+                      endEditing: endEditing.asObservable(),
+                      commentContentWithLengthLimit: commentContentWithLengthLimit.asObservable(),
+                      sendButtonEnabled: sendButtonEnabled.asObservable())
     }
+    
     
     //MARK: = API
     
@@ -112,6 +196,18 @@ final class FeedDetailViewModel: ViewModelType {
     
     func deleteFeedLike(_ feedId: Int) -> Observable<Void> {
         return feedDetailRepository.deleteFeedLike(feedId: feedId)
+    }
+    
+    func postComment(_ feedId: Int, _ commentContent: String) -> Observable<Void> {
+        return feedDetailRepository.postComment(feedId: feedId, commentContent: commentContent)
+    }
+    
+    func putComment(_ feedId: Int, commentId: Int, commentContent: String) -> Observable<Void> {
+        return feedDetailRepository.putComment(feedId: feedId, commentId: commentId, commentContent: commentContent)
+    }
+    
+    func deleteComment(_ feedId: Int, commentId: Int) -> Observable<Void> {
+        return feedDetailRepository.deleteComment(feedId: feedId, commentId: commentId)
     }
     
     //MARK: - Custom Method

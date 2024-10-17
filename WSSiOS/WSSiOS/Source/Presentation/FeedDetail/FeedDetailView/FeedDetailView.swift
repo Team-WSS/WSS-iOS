@@ -106,6 +106,8 @@ final class FeedDetailView: UIView {
         }
     }
     
+    //MARK: - Custom Methods
+    
     func bindData(_ data: Feed) {
         profileView.bindData(data: data)
         feedContentView.bindData(data: data)
