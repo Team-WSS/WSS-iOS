@@ -79,10 +79,26 @@ final class FeedDetailViewController: UIViewController {
     }
     
     private func bindViewModel() {
+        let viewDidTap = view.rx.tapGesture(configuration: { gestureRecognizer, delegate in
+            gestureRecognizer.cancelsTouchesInView = false
+        })
+            .when(.recognized)
+            .asObservable()
+        
+        let replyCommentCollectionViewSwipeGesture = rootView.scrollView.rx.swipeGesture([.up, .down])
+            .when(.recognized)
+            .asObservable()
+        
         let input = FeedDetailViewModel.Input(
             backButtonTapped: rootView.backButton.rx.tap,
             replyCollectionViewContentSize: rootView.replyView.replyCollectionView.rx.observe(CGSize.self, "contentSize"),
-            likeButtonTapped: rootView.feedContentView.reactView.likeButton.rx.tap)
+            likeButtonTapped: rootView.feedContentView.reactView.likeButton.rx.tap,
+            viewDidTap: viewDidTap,
+            commentContentUpdated: rootView.replyWritingView.replyWritingTextView.rx.text.orEmpty.distinctUntilChanged().asObservable(),
+            commentContentViewDidBeginEditing: rootView.replyWritingView.replyWritingTextView.rx.didBeginEditing,
+            commentContentViewDidEndEditing: rootView.replyWritingView.replyWritingTextView.rx.didEndEditing,
+            replyCommentCollectionViewSwipeGesture: replyCommentCollectionViewSwipeGesture,
+            sendButtonTapped: rootView.replyWritingView.replyButton.rx.tap)
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.feedData
@@ -139,6 +155,30 @@ final class FeedDetailViewController: UIViewController {
             .when(.recognized)
             .subscribe(with: self, onNext: { owner, _ in
                 self.view.endEditing(true)
+            })
+            .disposed(by: disposeBag)
+        
+        output.endEditing
+            .subscribe(with: self, onNext: { owner, endEditing in
+                owner.rootView.scrollView.endEditing(endEditing)
+            })
+            .disposed(by: disposeBag)
+        
+        output.commentContentWithLengthLimit
+            .subscribe(with: self, onNext: { owner, limit in
+                
+            })
+            .disposed(by: disposeBag)
+        
+        output.sendButtonEnabled
+            .subscribe(with: self, onNext: { owner, enabled in
+                owner.rootView.replyWritingView.enableSendButton(enabled)
+            })
+            .disposed(by: disposeBag)
+        
+        output.showPlaceholder
+            .subscribe(with: self, onNext: { owner, showPlaceholder in
+                owner.rootView.replyWritingView.replyWritingPlaceHolderLabel.isHidden = !showPlaceholder
             })
             .disposed(by: disposeBag)
     }
