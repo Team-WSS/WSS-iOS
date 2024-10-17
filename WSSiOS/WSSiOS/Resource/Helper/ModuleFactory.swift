@@ -15,6 +15,7 @@ protocol RegisterModuleFactory {
 protocol OnboardingModuleFactory {
     func makeLoginViewController() -> UIViewController
     func makeOnboardingViewController() -> UIViewController
+    func makeOnboardingSuccessViewController(nickname: String) -> UIViewController
 }
 
 protocol NovelDetailModuleFactory {
@@ -58,6 +59,10 @@ extension ModuleFactory: OnboardingModuleFactory {
     }
     
     func makeOnboardingViewController() -> UIViewController {
-        return OnboardingViewController(viewModel: OnboardingViewModel())
+        return OnboardingViewController(viewModel: OnboardingViewModel(onboardingRepository: DefaultOnboardingRepository(onboardingService: DefaultOnboardingService())))
+    }
+    
+    func makeOnboardingSuccessViewController(nickname: String) -> UIViewController {
+        return OnboardingSuccessViewController(nickname: nickname)
     }
 }
