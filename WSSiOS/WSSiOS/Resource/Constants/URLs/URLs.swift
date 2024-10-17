@@ -10,15 +10,44 @@ import Foundation
 enum URLs {
     enum User {
         private static let userBasePath = "/users"
-        static let getUserInfo = userBasePath + "/info"
+        static let afterDelete = userBasePath + "추후 삭제"
         static let patchUserNickname = userBasePath + "/nickname"
         static let getUserNovelStatus = userBasePath + "/user-novel-stats"
+        static let userInfo = userBasePath + "/info"
     }
     
     enum Novel {
         static let getSearchList = "/novels"
         static func getNovelInfo(novelId: Int) -> String {
             return "/novels/\(novelId)"
+        }
+    }
+    
+    enum NovelDetail {
+        static func novelDetailHeader(novelId: Int) -> String {
+            return "/novels/\(novelId)"
+        }
+        static func novelDetailInfo(novelId: Int) -> String {
+            return "/novels/\(novelId)/info"
+        }
+        static func novelDetailFeed(novelId: Int) -> String {
+            return "/novels/\(novelId)/feeds"
+        }
+        static func novelIsInterest(novelId: Int) -> String {
+            return "/novels/\(novelId)/is-interest"
+        }
+        static func novelReview(novelId: Int) -> String {
+            return "/user-novels/\(novelId)"
+        }
+    }
+    
+    enum NovelReview {
+        static let postNovelReview = "/user-novels"
+        static func getNovelReview(novelId: Int) -> String {
+            return "/user-novels/\(novelId)"
+        }
+        static func putNovelReview(novelId: Int) -> String {
+            return "/user-novels/\(novelId)"
         }
     }
     
@@ -120,5 +149,13 @@ enum URLs {
     enum Search {
         static let sosoPick = "/soso-picks"
         static let normalSearch = "/novels"
+    }
+    
+    enum Keyword {
+        static let searchKeyword = "/keywords"
+    }
+    
+    enum Contact {
+        static let kakao = "http://pf.kakao.com/_kHxlWG"
     }
 }

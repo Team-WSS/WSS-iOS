@@ -33,11 +33,19 @@ enum StringLiterals {
             static let changeNickname = "닉네임 변경"
             static let feed = "소소피드"
             static let notice = "알림"
+            static let editProfile = "프로필 편집"
             static let deleteID = "회원탈퇴"
             static let myPageSetting = "설정"
             static let myPageInfo = "계정설정"
             static let myPageBlockUser = "차단유저 목록"
+            static let myPageChangeUserInfo = "성별/나이 변경"
         }
+    }
+    
+    enum Alert {
+        static let logoutTitle = "로그아웃 할까요?"
+        static let cancel = "취소"
+        static let logout = "로그아웃"
     }
     
     enum Home {
@@ -45,12 +53,13 @@ enum StringLiterals {
             static let todayPopular = "오늘의 인기작"
             static let realtimePopular = "지금 뜨는 수다글"
             static let interest = "님의 관심글"
+            static let notLoggedInInterest = "관심글"
             static let recommend = "이 웹소설은 어때요?"
         }
         
         enum SubTitle {
             static let interest = "관심 등록한 작품의 최근 수다예요"
-            static let recommend = "선호 장르를 기반으로 추천해 드려요"
+            static let recommend = "선호 장르를 기반으로 추천해드려요"
         }
         
         enum Login {
@@ -62,7 +71,7 @@ enum StringLiterals {
         enum Unregister {
             enum Title {
                 static let interest = "관심작품의 최신 소식을 모아서 볼 수 있어요.\n좋아하는 웹소설을 관심 등록 해볼까요?"
-                static let recommend = "로맨스, 로판, 판타지, 현판 등\n선호장르를 기반으로 웹소설을 추천해 드려요!"
+                static let recommend = "로맨스, 로판, 판타지, 현판 등\n선호장르를 기반으로 웹소설을 추천해드려요!"
             }
             
             enum ButtonTItle {
@@ -82,7 +91,7 @@ enum StringLiterals {
         
         enum Interest {
             static let feed = "님의 한마디"
-            static let empty = "아직 관심 등록한 작품과 관련된 글이 없어요"
+            static let empty = "관심 등록한 작품과 관련된 글이 없어요"
         }
     }
     
@@ -165,16 +174,28 @@ enum StringLiterals {
             case secession = "회원탈퇴"
         }
         
-        enum ChangeNickname {
+        enum EditProfile {
             static let complete = "완료"
             static let nickname = "닉네임"
+            static let nicknameCheck = "중복확인"
+            static let intro = "소개"
+            static let introPlaceholder = "소개글을 적어보세요!"
+            static let genre = "선호장르"
+            static let genreDescription = "선택한 장르에 맞춰 작품을 추천해 드려요"
+        }
+        
+        enum EditProfileWarningMessage: String {
+            case noGap = "공백은 포함될 수 없어요"
+            case exist = "이미 사용 중인 닉네임이에요"
+            case guid = "한글. 영문, 숫자 2~10자까지 입력가능해요"
+            case noUse = "사용할 수 없는 단어가 포함되어 있어요"
         }
         
         enum BlockUser {
             static let buttonTitle = "차단 해제"
             static let emptyLabel = "차단한 유저가 없어요"
         }
-      
+        
         enum DeleteIDWarning {
             static let title = "정말 탈퇴하시겠어요?"
             static let description = "남겼던 평가와 기록들이 모두 사라져요.."
@@ -212,6 +233,14 @@ enum StringLiterals {
             case first = "회원님이 평가하고 기록한 서재 정보와 계정 정보는 탈퇴 즉시 삭제되며, 절대 복구할 수 없어요."
             case second = "리뷰, 피드 게시글, 댓글은 탈퇴 시 자동으로 삭제되지 않아요. 탈퇴 전 개별적으로 삭제해 주세요."
             case third = "계정 정보는 탈퇴 즉시 삭제되어 바로 재가입 가능하지만, 회원가입부터 작품 평가를 다시 해야 해요."
+        }
+        
+        enum ChangeUserInfo {
+            static let gender = "성별"
+            static let male = "남성"
+            static let female = "여성"
+            static let birthYear = "출생연도"
+            static let complete = "완료"
         }
     }
     
@@ -278,6 +307,29 @@ enum StringLiterals {
         }
     }
     
+    enum Onboarding {
+        
+        static let nextButton = "다음으로"
+        
+        enum BirthGender {
+            static let title = "성별, 출생연도를 선택하세요"
+            static let description = "해당 정보는 추천에 활용되며, 언제든 변경할 수 있어요"
+            static let genderTitle = "성별"
+            static let birthTitle = "출생연도"
+            static let birthPlaceholder = "태어난 해를 입력하세요"
+        }
+        
+        enum NickName {
+            static let title = "닉네임을 입력하세요"
+            static let description = "10자 이내의 닉네임을 입력해주세요"
+            static let textFieldPlaceholder = "닉네임"
+            static let duplicateCheckButton = "중복확인"
+        }
+    
+        enum Login {
+            static let skip = "회원가입 없이 둘러보기"
+        }
+    }
     enum NovelDetail {
         enum Memo {
             static let memo = "메모"
@@ -294,9 +346,7 @@ enum StringLiterals {
             static let complete = "  ·  완결작  ·  "
             static let inSeries = "  ·  연재중  ·  "
             static let interest = "관심"
-            static let review = "나도 한마디"
-            static let dateFormat = "yy. MM. dd"
-            static let KoreaTimeZone = "ko_KR"
+            static let feedWrite = "나도 한마디"
             
             enum Loading {
                 static let novelTitle = "작품 제목"
@@ -328,6 +378,60 @@ enum StringLiterals {
                 static let quit = "하차했어요"
             }
         }
+        
+        enum Feed {
+            static let emptyDescription = "아직 글이 없어요\n최초로 남겨보세요!"
+            
+            enum Cell {
+                static let isModified = "(수정됨)"
+                static let isSpoiler = "스포일러가 포함된 글 보기"
+            }
+        }
+    }
+    
+    enum NovelReview {
+        enum Navigation {
+            static let complete = "완료"
+        }
+        
+        enum Status {
+            static let watching = "보는 중"
+            static let watched = "봤어요"
+            static let quit = "하차"
+        }
+        
+        enum Date {
+            static let addDate = "날짜 추가"
+            static let complete = "완료"
+            static let removeDate = "날짜 삭제"
+            static let startDate = "시작 날짜"
+            static let endDate = "종료 날짜"
+        }
+        
+        enum AttractivePoint {
+            static let attractivePoint = "매력포인트"
+        }
+        
+        enum Keyword {
+            static let keyword = "키워드"
+            static let placeholder = "키워드로 작품을 소개해 봐요"
+        }
+        
+        enum KeywordSearch {
+            static let keywordSelect = "키워드 선택"
+            static let placeholder = "키워드를 검색하세요"
+            static let searchResult = "검색결과"
+            static let reset = "초기화"
+            static let selectButtonText = "개 선택"
+            static let unregisteredKeyword = "해당 키워드는\n아직 등록되지 않았어요.."
+            static let contact = "키워드 문의하러 가기"
+        }
+        
+        enum Alert {
+            static let titleText = "평가를 그만할까요?"
+            static let writeTitle = "계속 작성"
+            static let stopTitle = "그만하기"
+        }
     }
     
     enum Search {
@@ -339,7 +443,7 @@ enum StringLiterals {
         static let induceButton = "내 취향에 맞는 웹소설 찾기"
         
         static let sosoTitle = "소소"
-        static let sosoDescription = "사람들이 최근에 읽고 있는 웹소설이에요"
+        static let sosoDescription = "다른 독자들이 최근에 읽고 있는 웹소설이에요"
         
         static let novel = "작품"
         
@@ -368,9 +472,22 @@ enum StringLiterals {
         
         static let reload = "초기화"
         static let searchNovel = "작품 찾기"
+        
+        static let world = "세계관"
+        static let subject = "소재"
+        static let character = "캐릭터"
+        static let relation = "관계"
+        static let vibe = "분위기/전개"
+        
+        static let placeHolder = "키워드를 검색하세요"
     }
     
     enum Memo {
+        static let complete = "완료"
+        static let edit = "수정"
+    }
+    
+    enum FeedEdit {
         static let complete = "완료"
         static let edit = "수정"
         enum Category {
@@ -387,6 +504,11 @@ enum StringLiterals {
             static let novelSearch = "작품 제목, 작가를 검색하세요"
             static let novelSelect = "작성 중인 글과 관련된 웹소설을 선택하세요"
             static let connectSelectedNovel = "해당 작품 연결"
+        }
+        enum Alert {
+            static let titleText = "글 작성을 그만하시겠어요?"
+            static let writeTitle = "계속 작성"
+            static let stopTitle = "그만하기"
         }
     }
     

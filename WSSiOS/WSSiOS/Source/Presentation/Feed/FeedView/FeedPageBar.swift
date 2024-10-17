@@ -39,7 +39,7 @@ final class FeedPageBar: UIView {
         feedPageBarCollectionView.do {
             let layout = UICollectionViewFlowLayout().then {
                 $0.scrollDirection = .horizontal
-                $0.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+                $0.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
                 $0.minimumLineSpacing = 6
             }
             
@@ -55,7 +55,7 @@ final class FeedPageBar: UIView {
     private func setLayout() {
         feedPageBarCollectionView.snp.makeConstraints() {
             $0.top.bottom.equalToSuperview()
-            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.leading.trailing.equalToSuperview()
         }
     }
 }

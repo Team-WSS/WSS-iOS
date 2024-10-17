@@ -18,6 +18,7 @@ final class MyPageViewController: UIViewController {
     private let viewModel: MyPageViewModel
     
     private var isMyPageRelay: BehaviorRelay<Bool>
+    private var dropDownCellTap = PublishSubject<String>()
     private let headerViewHeightRelay = BehaviorRelay<Double>(value: 0)
     
     //MARK: - UI Components
@@ -57,7 +58,7 @@ final class MyPageViewController: UIViewController {
         
         headerViewHeightRelay.accept(rootView.headerView.layer.frame.height)
     }
-
+    
     //MARK: - Bind
     
     private func bindViewModel() {
@@ -66,7 +67,8 @@ final class MyPageViewController: UIViewController {
             headerViewHeight: headerViewHeightRelay.asDriver(),
             scrollOffset: rootView.scrollView.rx.contentOffset.asDriver(),
             settingButtonDidTap: settingButton.rx.tap,
-            dropdownButtonDidTap: dropdownButton.rx.tap)
+            dropdownButtonDidTap: dropDownCellTap,
+            editButtonTapoed: rootView.headerView.userImageChangeButton.rx.tap)
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -90,6 +92,24 @@ final class MyPageViewController: UIViewController {
                 }
             })
             .disposed(by: disposeBag)
+        
+        output.settingButtonEnabled
+            .bind(with: self, onNext: { owner, _ in
+                owner.pushToSettingViewController()
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushToEditViewController
+            .bind(with: self, onNext: { owner, _ in
+                owner.pushToMyPageEditViewController()
+            })
+            .disposed(by: disposeBag)
+        
+        output.dropdownButtonEnabled
+            .bind(with: self, onNext: { owner, data in
+                print(data)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
@@ -98,12 +118,11 @@ extension MyPageViewController {
     //MARK: - UI
     
     private func decideUI(isMyPage: Bool) {
-        let button = setButton(isMyPage: isMyPage)
+        let button = setButton(isMyPage: false)
         
-        //TODO: - 타인 프로필도 타이틀이 마이페이지인지 확인해야 함
         preparationSetNavigationBar(title: StringLiterals.Navigation.Title.myPage,
                                     left: nil,
-                                    right: button)
+                                    right: dropdownButton)
         
         rootView.headerView.userImageChangeButton.isHidden = !isMyPage
     }
@@ -116,19 +135,15 @@ extension MyPageViewController {
             return settingButton
             
         } else {
-            
-            //TODO: - 드롭다운 에러,,, 🥹
             dropdownButton.do {
-                $0.makeDropdown(dropdownRootView: self.view,
+                $0.makeDropdown(dropdownRootView: self.rootView,
                                 dropdownWidth: 120,
-                                dropdownData: ["차단하기"],
+                                dropdownData: ["수정하기", "삭제하기"],
                                 textColor: .wssBlack)
+                .bind(to: dropDownCellTap)
+                .disposed(by: disposeBag)
             }
-            self.view.addSubview(dropdownButton)
-            dropdownButton.snp.makeConstraints {
-                $0.trailing.equalToSuperview().inset(10)
-                $0.size.equalTo(44)
-            }
+            
             return dropdownButton
         }
     }

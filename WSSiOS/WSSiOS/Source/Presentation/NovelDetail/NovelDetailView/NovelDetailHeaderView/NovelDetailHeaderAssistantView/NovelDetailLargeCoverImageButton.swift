@@ -48,7 +48,7 @@ final class NovelDetailLargeCoverImageButton: UIButton {
         }
         
         dismissButton.do {
-            $0.setImage(.icCacelModal.withTintColor(.wssWhite,
+            $0.setImage(.icCancelModal.withTintColor(.wssWhite,
                                                     renderingMode: .alwaysOriginal),
                         for: .normal)
         }
@@ -73,35 +73,23 @@ final class NovelDetailLargeCoverImageButton: UIButton {
     
     //MARK: - Data
     
-    func bindData(_ data: NovelDetailHeaderResult) {
-        if let novelImageUrl = URL(string: data.novelImage) {
-            KingfisherManager.shared.retrieveImage(with: novelImageUrl, completionHandler: { result in
-                switch(result) {
-                case .success(let imageResult):
-                    // 이미지 자체 비율 그대로 이미지 뷰의 사이즈를 잡는 과정,
-                    // 이때 세로가 긴 이미지는 세로 길이 제한에 맞추고, 가로가 긴 이미지는 가로 길이 제한에 맞춘다.
-                    let imageSize = imageResult.image.size
-                    let screenSize = UIScreen.main.bounds
-                    let imageRatio = (imageSize.height/imageSize.width)
-                    let heightInset: CGFloat = UIScreen.isSE ? 100 : 200
-                    
-                    if (screenSize.width-40)*imageRatio > (screenSize.height-heightInset) {
-                        self.novelCoverImageView.snp.makeConstraints {
-                            $0.height.equalTo(screenSize.height-heightInset)
-                            $0.width.equalTo((screenSize.height-heightInset)/imageRatio)
-                        }
-                    } else {
-                        self.novelCoverImageView.snp.makeConstraints {
-                            $0.height.equalTo((screenSize.width-40)*imageRatio)
-                            $0.width.equalTo(screenSize.width-40)
-                        }
-                    }
-                    self.novelCoverImageView.image = imageResult.image
-                case .failure(let error):
-                    self.novelCoverImageView.image = .imgLoadingThumbnail
-                    print(error)
-                }
-            })
+    func bindData(_ novelImage: UIImage) {
+        let imageSize = novelImage.size
+        let screenSize = UIScreen.main.bounds
+        let imageRatio = (imageSize.height/imageSize.width)
+        let heightInset: CGFloat = UIScreen.isSE ? 100 : 200
+        
+        if (screenSize.width-40)*imageRatio > (screenSize.height-heightInset) {
+            self.novelCoverImageView.snp.makeConstraints {
+                $0.height.equalTo(screenSize.height-heightInset)
+                $0.width.equalTo((screenSize.height-heightInset)/imageRatio)
+            }
+        } else {
+            self.novelCoverImageView.snp.makeConstraints {
+                $0.height.equalTo((screenSize.width-40)*imageRatio)
+                $0.width.equalTo(screenSize.width-40)
+            }
         }
+        self.novelCoverImageView.image = novelImage
     }
 }

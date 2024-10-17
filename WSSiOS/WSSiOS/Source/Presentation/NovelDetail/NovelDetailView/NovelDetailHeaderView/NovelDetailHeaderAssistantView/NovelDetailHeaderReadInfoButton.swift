@@ -53,10 +53,17 @@ final class NovelDetailHeaderReadInfoButton: UIButton {
         stackView.do {
             $0.axis = .horizontal
             $0.alignment = .center
+            $0.isUserInteractionEnabled = false
             
-            iconImageView.image = iconImage
+            iconImageView.do {
+                $0.image = iconImage
+                $0.contentMode = .scaleAspectFit
+            }
             
-            navigationImageView.image = .icChveronRightMini
+            navigationImageView.do {
+                $0.image = .icChevronRightMini
+                $0.contentMode = .scaleAspectFit
+            }
         }
     }
     
@@ -79,6 +86,14 @@ final class NovelDetailHeaderReadInfoButton: UIButton {
             }
             
             $0.spacing = 5
+            
+            iconImageView.snp.makeConstraints {
+                $0.size.equalTo(14)
+            }
+            
+            navigationImageView.snp.makeConstraints {
+                $0.size.equalTo(14)
+            }
         }
     }
     
@@ -88,6 +103,7 @@ final class NovelDetailHeaderReadInfoButton: UIButton {
         readInfoLabel.do {
             $0.applyWSSFont(.body5, with: infoText)
             $0.textColor = .wssGray300
+            $0.numberOfLines = 1
         }
     }
 }

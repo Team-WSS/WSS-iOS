@@ -11,17 +11,17 @@ import SnapKit
 import Then
 
 final class NovelDetailHeaderReviewResultView: UIView {
-
+    
     //MARK: - Components
     
     private let totalStackView = UIStackView()
     
     private let readInfoButtonStackView = UIStackView()
-    private let readInfoButtons = [NovelDetailHeaderReadInfoButton(iconImage: .icSmallStar),
-                                   NovelDetailHeaderReadInfoButton(iconImage: .icSmallCalendar)]
+    let readInfoButtons = [NovelDetailHeaderReadInfoButton(iconImage: .icSmallStar),
+                           NovelDetailHeaderReadInfoButton(iconImage: .icSmallCalendar)]
     
     private let readStatusButtonStackView = UIStackView()
-    private let readStatusButtons = ReadStatus.allCases.map {
+    let readStatusButtons = ReadStatus.allCases.map {
         NovelDetailHeaderReadStatusButton(readStatus: $0)
     }
     private let divierViews = [UIView(), UIView()]
@@ -110,36 +110,33 @@ final class NovelDetailHeaderReviewResultView: UIView {
     
     //MARK: - Data
     
-    func bindData(_ data: NovelDetailHeaderResult) {
-        let readStatus = ReadStatus(rawValue: data.readStatus ?? "")
-        
-        readStatusButtons.forEach { readStatusButton in
-            readStatusButton.updateButton(selectedStatus: readStatus)
+    func bindData(_ data: NovelDetailHeaderEntity) {
+        readStatusButtons.forEach {
+            $0.updateButton(selectedStatus: data.readStatus)
         }
-        let isUserRatingExist = 0.0 != data.userNovelRating
-        let isDateExist = data.startDate != nil || data.endDate != nil
+        bindVisibility(data.isUserNovelRatingExist, data.isReadDateExist)
         
-        if !isUserRatingExist && !isDateExist {
-            readInfoButtonStackView.isHidden = true
-        } else if !isUserRatingExist {
-            readInfoButtons[0].isHidden = true
-        } else if !isDateExist {
-            readInfoButtons[1].isHidden = true
-        }
-        
-        let userNovelRatingText = String(format: "%1.1f", data.userNovelRating)
-        var dateText = "~"
-        if let startDate = data.startDate {
-            dateText = "\(startDate) " + dateText
-        }
-        if let endDate = data.endDate {
-            dateText = dateText + " \(endDate)"
-        }
-        
-        readInfoButtons[0].bindData(infoText: userNovelRatingText)
-        readInfoButtons[1].bindData(infoText: dateText)
+        readInfoButtons[0].bindData(infoText: data.userNovelRatingText)
+        readInfoButtons[1].bindData(infoText: data.readDateText)
     }
     
     //MARK: - Custom Method
     
+    func bindVisibility(_ isUserNovelRatingExist: Bool, _ isReadDateExist: Bool) {
+        if !isUserNovelRatingExist && !isReadDateExist {
+            readInfoButtonStackView.isHidden = true
+        } else if !isUserNovelRatingExist {
+            readInfoButtonStackView.isHidden = false
+            readInfoButtons[0].isHidden = true
+            readInfoButtons[1].isHidden = false
+        } else if !isReadDateExist {
+            readInfoButtonStackView.isHidden = false
+            readInfoButtons[0].isHidden = false
+            readInfoButtons[1].isHidden = true
+        } else {
+            readInfoButtonStackView.isHidden = false
+            readInfoButtons[0].isHidden = false
+            readInfoButtons[1].isHidden = false
+        }
+    }
 }

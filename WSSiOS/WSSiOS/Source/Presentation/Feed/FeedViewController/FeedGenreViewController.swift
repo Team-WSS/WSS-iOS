@@ -8,25 +8,27 @@
 import UIKit
 
 import RxSwift
+import RxRelay
 
 class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
-
+    
     //MARK: - Properties
-
-    private var feedsDummy: [TotalFeeds]
+    
     private let disposeBag = DisposeBag()
+    private let loadMoreTrigger = PublishSubject<Void>()
+    private let feedData = BehaviorRelay<[TotalFeeds]>(value: [])
     
     //MARK: - Components
     
-    private var rootView = FeedView()
-    private var viewModel: FeedViewModel
+    private var rootView = FeedGenreView()
+    private var viewModel: FeedGenreViewModel
     
     // MARK: - Life Cycle
     
-    init(viewModel: FeedViewModel, feedsDummy: [TotalFeeds]) {
+    init(viewModel: FeedGenreViewModel) {
         
         self.viewModel = viewModel
-        self.feedsDummy = feedsDummy
+        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -42,8 +44,13 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
         super.viewDidLoad()
         
         register()
-        bindData()
         delegate()
+        bindViewModel()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.isNavigationBarHidden = true
+        showTabBar()
     }
     
     //MARK: - Bind
@@ -53,46 +60,89 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
                                              forCellWithReuseIdentifier: FeedCollectionViewCell.cellIdentifier)
     }
     
-    private func bindData() {
-        Observable.just(feedsDummy)
-            .bind(to: rootView.feedCollectionView.rx.items(
-                cellIdentifier: FeedCollectionViewCell.cellIdentifier,
-                cellType: FeedCollectionViewCell.self)) { (row, element, cell) in
-                    cell.bindData(data: element)
-                }
-                .disposed(by: disposeBag)
-    }
-    
     private func delegate() {
         rootView.feedCollectionView.rx
             .setDelegate(self).disposed(by: disposeBag)
+    }
+    
+    private func bindViewModel() {
+        
+        let profileTapped = PublishSubject<Int>()
+        let contentTapped = PublishSubject<Int>()
+        let novelTapped = PublishSubject<Int>()
+        let likedTapped = PublishSubject<Bool>()
+        let commentTapped = PublishSubject<Int>()
+        
+        let input = FeedGenreViewModel.Input(loadMoreTrigger: loadMoreTrigger,
+                                             profileTapped: profileTapped,
+                                             contentTapped: contentTapped,
+                                             novelTapped: novelTapped,
+                                             likedTapped: likedTapped,
+                                             commentTapped: commentTapped)
+        let output = viewModel.transform(from: input, disposeBag: disposeBag)
+        
+        output.feedList
+            .bind(to: feedData)
+            .disposed(by: disposeBag)
+        
+        feedData
+            .bind(to: rootView.feedCollectionView.rx.items(
+                cellIdentifier: FeedCollectionViewCell.cellIdentifier,
+                cellType: FeedCollectionViewCell.self)) { (row, element, cell) in                   
+                    
+                    cell.profileTapHandler = {
+                        profileTapped.onNext(element.userId)
+                    }
+                    
+                    cell.contentTapHandler = {
+                        contentTapped.onNext(element.feedId)
+                    }
+                    
+                    cell.novelTapHandler = {
+                        if let novelId = element.novelId {
+                            novelTapped.onNext(novelId)
+                        }
+                    }
+                    
+                    cell.commentTapHandler = {
+                        commentTapped.onNext(element.feedId)
+                    }
+                    
+                    cell.bindData(data: element)
+                }
+                .disposed(by: disposeBag)
+        
+        output.pushToFeedDetailViewController
+            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, feedId in
+                print(feedId, "📌")
+                self.pushToFeedDetailViewController(feedId: feedId)
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushToNovelDetailViewController
+            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, novelId in
+                print(novelId, "📌📌")
+                self.pushToDetailViewController(novelId: novelId)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
 extension FeedGenreViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        guard let feeds = try? dummyFeedData, indexPath.item < feeds.count 
-        else { return CGSize(width: UIScreen.main.bounds.width, height: 289) }
+        let feed = feedData.value[indexPath.row]
         
-        let text = feeds[indexPath.row].isSpolier ? StringLiterals.Feed.spoilerText : feeds[indexPath.row].feedContent
-        let width = UIScreen.main.bounds.width
+        let cell = FeedCollectionViewCell(frame: CGRect(x: 0, y: 0, width: collectionView.frame.width, height: 0))
+        cell.bindData(data: feed)
         
-        let feedContentLabel = UILabel().then {
-            $0.text = text
-            $0.makeAttribute(with: $0.text)?
-                .lineHeight(1.5)
-                .kerning(kerningPixel: -0.6)
-                .applyAttribute()
-            $0.font = .Body2
-            $0.numberOfLines = 5
-        }
+        cell.setNeedsLayout()
+        cell.layoutIfNeeded()
         
-        //TODO: - Font 높이 계산해서 동적 height 할당
+        let targetSize = CGSize(width: collectionView.frame.width, height: UIView.layoutFittingCompressedSize.height)
+        let estimatedSize = cell.systemLayoutSizeFitting(targetSize)
         
-        let maxSize = CGSize(width: width, height: 115)
-        let requiredSize = feedContentLabel.sizeThatFits(maxSize)
-        let finalHeight = min(requiredSize.height, 115)
-        
-        return CGSize(width: width, height: finalHeight + 266)
+        return CGSize(width: collectionView.frame.width, height: estimatedSize.height)
     }
 }
