@@ -16,7 +16,7 @@ final class FeedDetailReplyWritingView: UIView {
     
     private let userProfileImageView = UIImageView()
     let textViewBackgroundView = UIView()
-    private let replyWritingPlaceHolderLabel = UILabel()
+    let replyWritingPlaceHolderLabel = UILabel()
     let replyWritingTextView = UITextView()
     private let replyButton = UIButton()
     
@@ -76,6 +76,7 @@ final class FeedDetailReplyWritingView: UIView {
         
         textViewBackgroundView.addSubviews(replyWritingTextView,
                                            replyButton)
+        replyWritingTextView.addSubview(replyWritingPlaceHolderLabel)
     }
     
     private func setLayout() {
@@ -100,6 +101,11 @@ final class FeedDetailReplyWritingView: UIView {
                 $0.centerY.equalToSuperview()
                 $0.leading.equalToSuperview().inset(16)
                 $0.height.equalTo(19)
+                
+                replyWritingPlaceHolderLabel.snp.makeConstraints {
+                    $0.leading.equalToSuperview().inset(6)
+                    $0.centerY.equalToSuperview()
+                }
             }
             
             replyButton.snp.makeConstraints {
