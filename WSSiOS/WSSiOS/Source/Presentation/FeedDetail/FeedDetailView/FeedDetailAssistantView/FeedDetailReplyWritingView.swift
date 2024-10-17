@@ -105,7 +105,7 @@ final class FeedDetailReplyWritingView: UIView {
             replyButton.snp.makeConstraints {
                 $0.top.equalToSuperview().inset(7)
                 $0.leading.equalTo(replyWritingTextView.snp.trailing)
-                $0.trailing.equalToSuperview().inset(16)
+                $0.trailing.equalToSuperview().inset(11)
                 $0.size.equalTo(28)
             }
         }
