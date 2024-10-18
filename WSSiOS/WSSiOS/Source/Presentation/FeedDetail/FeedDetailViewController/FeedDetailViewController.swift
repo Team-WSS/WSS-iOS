@@ -148,7 +148,14 @@ final class FeedDetailViewController: UIViewController {
                 self.rootView.replyWritingView.snp.updateConstraints {
                     $0.bottom.equalTo(self.rootView.safeAreaLayoutGuide.snp.bottom).offset(height)
                 }
-                self.rootView.layoutIfNeeded()
+                
+                self.rootView.replyView.snp.updateConstraints {
+                    $0.bottom.equalToSuperview().offset(height)
+                }
+                
+                UIView.animate(withDuration: 0.25) {
+                    self.rootView.layoutIfNeeded()
+                }
             })
             .disposed(by: disposeBag)
         
