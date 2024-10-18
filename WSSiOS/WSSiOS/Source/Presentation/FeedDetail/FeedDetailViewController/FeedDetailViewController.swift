@@ -93,6 +93,7 @@ final class FeedDetailViewController: UIViewController {
             backButtonTapped: rootView.backButton.rx.tap,
             replyCollectionViewContentSize: rootView.replyView.replyCollectionView.rx.observe(CGSize.self, "contentSize"),
             likeButtonTapped: rootView.feedContentView.reactView.likeButton.rx.tap,
+            linkNovelViewTapped: rootView.feedContentView.linkNovelView.rx.tapGesture().when(.recognized).asObservable(),
             viewDidTap: viewDidTap,
             commentContentUpdated: rootView.replyWritingView.replyWritingTextView.rx.text.orEmpty.distinctUntilChanged().asObservable(),
             commentContentViewDidBeginEditing: rootView.replyWritingView.replyWritingTextView.rx.didBeginEditing,
@@ -155,6 +156,12 @@ final class FeedDetailViewController: UIViewController {
             .when(.recognized)
             .subscribe(with: self, onNext: { owner, _ in
                 self.view.endEditing(true)
+            })
+            .disposed(by: disposeBag)
+        
+        output.presentNovelDetailViewController
+            .subscribe(with: self, onNext: { owner, novelId in
+                owner.pushToDetailViewController(novelId: novelId)
             })
             .disposed(by: disposeBag)
         

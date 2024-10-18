@@ -22,6 +22,10 @@ final class FeedDetailViewModel: ViewModelType {
     private let commentsData = BehaviorRelay<[FeedComment]>(value: [])
     private let replyCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
     
+    // 작품 연결
+    private var novelId: Int?
+    private let presentNovelDetailViewController = PublishRelay<Int>()
+    
     // 관심 버튼
     private let likeCount = BehaviorRelay<Int>(value: 0)
     private let likeButtonState = BehaviorRelay<Bool>(value: false)
@@ -49,6 +53,10 @@ final class FeedDetailViewModel: ViewModelType {
         let replyCollectionViewContentSize: Observable<CGSize?>
         let likeButtonTapped: ControlEvent<Void>
         
+        // 작품 연결
+        let linkNovelViewTapped: Observable<UITapGestureRecognizer>
+        
+        // 댓글 작성
         let viewDidTap: Observable<UITapGestureRecognizer>
         let commentContentUpdated: Observable<String>
         let commentContentViewDidBeginEditing: ControlEvent<Void>
@@ -65,6 +73,10 @@ final class FeedDetailViewModel: ViewModelType {
         let likeButtonEnabled: Driver<Bool>
         let backButtonEnabled: Driver<Void>
         
+        // 작품 연결
+        let presentNovelDetailViewController: Observable<Int>
+        
+        // 댓글 작성
         let showPlaceholder: Observable<Bool>
         let endEditing: Observable<Bool>
         let commentContentWithLengthLimit: Observable<String>
@@ -78,6 +90,7 @@ final class FeedDetailViewModel: ViewModelType {
                 owner.feedData.onNext(data)
                 owner.likeButtonState.accept(data.isLiked)
                 owner.likeCount.accept(data.likeCount)
+                owner.novelId = data.novelId
             }, onError: { owner, error in
                 owner.feedData.onError(error)
             })
@@ -112,6 +125,14 @@ final class FeedDetailViewModel: ViewModelType {
             .subscribe()
             .disposed(by: disposeBag)
         
+        input.linkNovelViewTapped
+            .subscribe(with: self, onNext: { owner, _ in
+                if let novelId = owner.novelId {
+                    owner.presentNovelDetailViewController.accept(novelId)
+                }
+            })
+            .disposed(by: disposeBag)
+        
         input.viewDidTap
             .subscribe(with: self, onNext: { owner, _ in
                 owner.endEditing.accept(true)
@@ -120,8 +141,11 @@ final class FeedDetailViewModel: ViewModelType {
         
         input.commentContentUpdated
             .subscribe(with: self, onNext: { owner, comment in
-                owner.updatedCommentContent = comment
-                owner.commentContentWithLengthLimit.accept(String(comment.prefix(owner.maximumCommentContentCount)))
+                if comment.count <= owner.maximumCommentContentCount {
+                    owner.updatedCommentContent = comment
+                }
+                let limitedComment = String(comment.prefix(owner.maximumCommentContentCount))
+                owner.commentContentWithLengthLimit.accept(limitedComment)
                 
                 let isEmpty = comment.count == 0
                 let isOverLimit = comment.count > owner.maximumCommentContentCount
@@ -179,6 +203,7 @@ final class FeedDetailViewModel: ViewModelType {
                       likeCount: likeCount.asDriver(),
                       likeButtonEnabled: likeButtonState.asDriver(),
                       backButtonEnabled: backButtonEnabled,
+                      presentNovelDetailViewController: presentNovelDetailViewController.asObservable(),
                       showPlaceholder: showPlaceholder.asObservable(),
                       endEditing: endEditing.asObservable(),
                       commentContentWithLengthLimit: commentContentWithLengthLimit.asObservable(),
