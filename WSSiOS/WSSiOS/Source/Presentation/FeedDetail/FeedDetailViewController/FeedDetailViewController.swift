@@ -177,8 +177,17 @@ final class FeedDetailViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.showPlaceholder
+            .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, showPlaceholder in
                 owner.rootView.replyWritingView.replyWritingPlaceHolderLabel.isHidden = !showPlaceholder
+            })
+            .disposed(by: disposeBag)
+        
+        output.textViewEmpty
+            .bind(with: self, onNext: { owner, isEmpty in
+                if isEmpty {
+                    owner.rootView.replyWritingView.makeTextViewEmpty()
+                }
             })
             .disposed(by: disposeBag)
     }

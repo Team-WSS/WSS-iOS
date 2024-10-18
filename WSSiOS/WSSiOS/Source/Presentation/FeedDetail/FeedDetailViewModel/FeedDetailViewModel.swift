@@ -35,6 +35,7 @@ final class FeedDetailViewModel: ViewModelType {
     private let commentContentWithLengthLimit = BehaviorRelay<String>(value: "")
     private let showPlaceholder = BehaviorRelay<Bool>(value: true)
     private let sendButtonEnabled = BehaviorRelay<Bool>(value: false)
+    private let textViewEmpty = BehaviorRelay<Bool>(value: true)
     
     //MARK: - Life Cycle
     
@@ -68,6 +69,7 @@ final class FeedDetailViewModel: ViewModelType {
         let endEditing: Observable<Bool>
         let commentContentWithLengthLimit: Observable<String>
         let sendButtonEnabled: Observable<Bool>
+        let textViewEmpty: Observable<Bool>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -125,7 +127,7 @@ final class FeedDetailViewModel: ViewModelType {
                 let isOverLimit = comment.count > owner.maximumCommentContentCount
                 
                 owner.isValidCommentContent = !(isEmpty || isOverLimit)
-                
+                owner.textViewEmpty.accept(isEmpty)
                 owner.showPlaceholder.accept(isEmpty)
                 owner.sendButtonEnabled.accept(owner.isValidCommentContent)
             })
@@ -160,8 +162,12 @@ final class FeedDetailViewModel: ViewModelType {
                             })
                             .map { _ in () }
                     }
+                    .observe(on: MainScheduler.instance)
                     .do(onNext: {
                         self.updatedCommentContent = ""
+                        self.textViewEmpty.accept(true)
+                        self.commentContentWithLengthLimit.accept("")
+                        self.showPlaceholder.accept(true)
                     })
             }
             .subscribe()
@@ -176,7 +182,8 @@ final class FeedDetailViewModel: ViewModelType {
                       showPlaceholder: showPlaceholder.asObservable(),
                       endEditing: endEditing.asObservable(),
                       commentContentWithLengthLimit: commentContentWithLengthLimit.asObservable(),
-                      sendButtonEnabled: sendButtonEnabled.asObservable())
+                      sendButtonEnabled: sendButtonEnabled.asObservable(),
+                      textViewEmpty: textViewEmpty.asObservable())
     }
     
     

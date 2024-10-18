@@ -126,4 +126,8 @@ final class FeedDetailReplyWritingView: UIView {
                         for: .normal)
         }
     }
+    
+    func makeTextViewEmpty() {
+        replyWritingTextView.text = ""
+    }
 }
