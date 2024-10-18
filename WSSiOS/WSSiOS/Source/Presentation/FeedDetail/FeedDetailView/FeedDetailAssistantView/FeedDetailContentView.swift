@@ -15,7 +15,7 @@ final class FeedDetailContentView: UIView {
     //MARK: - UI Components
     
     private let contentLabel = UILabel()
-    private let linkNovelView = FeedNovelView()
+    let linkNovelView = FeedNovelView()
     private let genreLabel = UILabel()
     let reactView = FeedReactView()
     private let dividerView = UIView()
@@ -94,9 +94,24 @@ final class FeedDetailContentView: UIView {
             $0.lineBreakStrategy = .hangulWordPriority
         }
         
-        linkNovelView.bindData(title: data.novelTitle,
-                               rating: data.novelRating, 
-                               participants: data.novelRatingCount)
+        if let title = data.novelTitle, let rating = data.novelRating, let count = data.novelRatingCount {
+            linkNovelView.isHidden = false
+            linkNovelView.snp.remakeConstraints {
+                $0.top.equalTo(contentLabel.snp.bottom).offset(20)
+                $0.leading.trailing.equalToSuperview().inset(20)
+                $0.height.equalTo(48)
+            }
+            linkNovelView.bindData(title: title,
+                                   rating: rating,
+                                   participants: count)
+        }
+        else {
+            linkNovelView.isHidden = true
+            genreLabel.snp.remakeConstraints {
+                $0.top.equalTo(contentLabel.snp.bottom).offset(20)
+                $0.leading.trailing.equalToSuperview().inset(20)
+            }
+        }
         
         let genres = data.genres.joined(separator: ", ")
         
