@@ -94,10 +94,23 @@ final class FeedDetailContentView: UIView {
             $0.lineBreakStrategy = .hangulWordPriority
         }
         
-        if let title = data.novelTitle {
+        if let title = data.novelTitle, let rating = data.novelRating, let count = data.novelRatingCount {
+            linkNovelView.isHidden = false
+            linkNovelView.snp.remakeConstraints {
+                $0.top.equalTo(contentLabel.snp.bottom).offset(20)
+                $0.leading.trailing.equalToSuperview().inset(20)
+                $0.height.equalTo(48)
+            }
             linkNovelView.bindData(title: title,
-                                   rating: data.novelRating,
-                                   participants: data.novelRatingCount)
+                                   rating: rating,
+                                   participants: count)
+        }
+        else {
+            linkNovelView.isHidden = true
+            genreLabel.snp.remakeConstraints {
+                $0.top.equalTo(contentLabel.snp.bottom).offset(20)
+                $0.leading.trailing.equalToSuperview().inset(20)
+            }
         }
         
         let genres = data.genres.joined(separator: ", ")

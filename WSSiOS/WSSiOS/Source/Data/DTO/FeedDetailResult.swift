@@ -24,8 +24,8 @@ struct Feed: Decodable {
     
     var novelId: Int?
     var novelTitle: String?
-    var novelRatingCount: Int
-    var novelRating: Float
+    var novelRatingCount: Int?
+    var novelRating: Float?
     var genres: [String]
     
     var isSpoiler: Bool
