@@ -22,8 +22,8 @@ struct Feed: Decodable {
     
     var commentCount: Int
     
-    var novelId: Int
-    var novelTitle: String
+    var novelId: Int?
+    var novelTitle: String?
     var novelRatingCount: Int
     var novelRating: Float
     var genres: [String]
