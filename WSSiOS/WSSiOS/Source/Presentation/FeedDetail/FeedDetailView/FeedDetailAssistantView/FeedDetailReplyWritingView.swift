@@ -121,7 +121,7 @@ final class FeedDetailReplyWritingView: UIView {
     
     func enableSendButton(_ isEnabled: Bool) {
         replyButton.do {
-            $0.isEnabled = isEnabled
+            $0.isUserInteractionEnabled = isEnabled
             $0.setImage(isEnabled ? .icCommentRegister.withRenderingMode(.alwaysOriginal).withTintColor(.wssPrimary100) : .icCommentRegister.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray100),
                         for: .normal)
         }
@@ -129,5 +129,11 @@ final class FeedDetailReplyWritingView: UIView {
     
     func makeTextViewEmpty() {
         replyWritingTextView.text = ""
+        replyWritingTextView.snp.updateConstraints {
+            $0.height.equalTo(19)
+        }
+        textViewBackgroundView.snp.updateConstraints {
+            $0.height.equalTo(42)
+        }
     }
 }

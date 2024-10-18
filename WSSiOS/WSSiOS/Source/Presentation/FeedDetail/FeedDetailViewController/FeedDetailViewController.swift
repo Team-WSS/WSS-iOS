@@ -203,18 +203,36 @@ final class FeedDetailViewController: UIViewController {
 extension FeedDetailViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         guard let text = viewModel.replyContentForItemAt(indexPath: indexPath) else {
-            return CGSize(width: 0, height: 0)
-        }
+                return CGSize(width: 0, height: 0)
+            }
+
+            let labelWidth: CGFloat = 247
+
+            let font = UIFont.Body2
+
+            let boundingRect = (text as NSString).boundingRect(
+                with: CGSize(width: labelWidth, height: .greatestFiniteMagnitude),
+                options: [.usesLineFragmentOrigin, .usesFontLeading],
+                attributes: [
+                    NSAttributedString.Key.font: font,
+                    NSAttributedString.Key.kern: -0.6
+                ],
+                context: nil
+            )
+
+            let lineHeight = font.lineHeight
+            let numberOfLines = ceil(boundingRect.height / lineHeight)
+            let padding: CGFloat = 28
         
-        guard let numberOfLines = viewModel.replyContentNumberOfLines(indexPath: indexPath) else {
-            return CGSize(width: 0, height: 0)
+            print("boundingRect.height: \(boundingRect.height)")
+            print("numberOfLines: \(numberOfLines)")
+
+            let finalHeight = ceil(lineHeight * numberOfLines) + padding
+            
+            let cellWidth = UIScreen.main.bounds.width - 40
+
+            return CGSize(width: cellWidth, height: finalHeight)
         }
-        
-        let height = (text as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2,
-                                                              NSAttributedString.Key.kern: -0.6]).height
-        let finalHeight = height * CGFloat(numberOfLines) + 28
-        return CGSize(width: UIScreen.main.bounds.width - 40, height: finalHeight)
-    }
 }
 
 extension FeedDetailViewController: UITextViewDelegate {
