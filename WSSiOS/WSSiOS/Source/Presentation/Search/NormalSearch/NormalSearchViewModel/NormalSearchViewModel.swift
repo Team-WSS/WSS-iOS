@@ -24,11 +24,15 @@ final class NormalSearchViewModel: ViewModelType {
     private let normalSearchList = BehaviorRelay<[NormalSearchNovel]>(value: [])
 
     private let pushToNovelDetailViewController = PublishRelay<Int>()
+    private let isSearchTextFieldEditing = BehaviorRelay<Bool>(value: false)
+    private let showEmptyView = PublishRelay<Bool>()
     
     //MARK: - Inputs
     
     struct Input {
         let searchTextUpdated: ControlProperty<String>
+        let searchTextFieldEditingDidBegin: ControlEvent<Void>
+        let searchTextFieldEditingDidEnd: ControlEvent<Void>
         let returnKeyDidTap: ControlEvent<Void>
         let searchButtonDidTap: ControlEvent<Void>
         let clearButtonDidTap: ControlEvent<Void>
@@ -48,10 +52,11 @@ final class NormalSearchViewModel: ViewModelType {
         let scrollToTop: Observable<Void>
         let scrollToTopAndendEditing: Observable<Void>
         let clearButtonEnabled: Observable<Void>
-        let backButtonEnabled: Observable<Void>
+        let popViewController: Observable<Void>
         let inquiryButtonEnabled: Observable<Void>
         let normalSearchCollectionViewHeight: Driver<CGFloat>
         let pushToNovelDetailViewController: Observable<Int>
+        let isSearchTextFieldEditing: Observable<Bool>
         let endEditing: Observable<Void>
     }
     
@@ -102,6 +107,19 @@ final class NormalSearchViewModel: ViewModelType {
             .subscribe()
             .disposed(by: disposeBag)
         
+        input.searchTextFieldEditingDidBegin
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.isSearchTextFieldEditing.accept(true)
+                owner.showEmptyView.accept(false)
+            })
+            .disposed(by: disposeBag)
+        
+        input.searchTextFieldEditingDidEnd
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.isSearchTextFieldEditing.accept(false)
+            })
+            .disposed(by: disposeBag)
+        
         input.reachedBottom
             .withLatestFrom(isLoadable)
             .filter { $0 }
@@ -126,7 +144,7 @@ final class NormalSearchViewModel: ViewModelType {
         let returnKeyEnabled = input.returnKeyDidTap.asObservable()
         let searchButtonEnabled = input.searchButtonDidTap.asObservable()
         let clearButtonEnabled = input.clearButtonDidTap.asObservable()
-        let backButtonEnabled = input.backButtonDidTap.asObservable()
+        let popViewController = input.backButtonDidTap.asObservable()
         let inquiryButtonEnabled = input.inquiryButtonDidTap.asObservable()
         
         let normalSearchCollectionViewHeight = input.normalSearchCollectionViewContentSize
@@ -140,10 +158,11 @@ final class NormalSearchViewModel: ViewModelType {
                       scrollToTop: returnKeyEnabled.asObservable(),
                       scrollToTopAndendEditing: searchButtonEnabled.asObservable(),
                       clearButtonEnabled: clearButtonEnabled.asObservable(),
-                      backButtonEnabled: backButtonEnabled.asObservable(),
+                      popViewController: popViewController.asObservable(),
                       inquiryButtonEnabled: inquiryButtonEnabled.asObservable(),
                       normalSearchCollectionViewHeight: normalSearchCollectionViewHeight,
                       pushToNovelDetailViewController: pushToNovelDetailViewController.asObservable(),
+                      isSearchTextFieldEditing: isSearchTextFieldEditing.asObservable(),
                       endEditing: endEditing)
     }
 }
