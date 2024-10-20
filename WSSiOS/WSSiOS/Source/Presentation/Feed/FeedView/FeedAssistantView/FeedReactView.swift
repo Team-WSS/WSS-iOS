@@ -126,7 +126,7 @@ final class FeedReactView: UIView {
         likeRatingLabel.applyWSSFont(.title3, with: String(count))
     }
     
-    func updateCommnetCount(_ count: Int) {
+    func updateCommentCount(_ count: Int) {
         commentRatingLabel.applyWSSFont(.title3, with: String(count))
     }
 }

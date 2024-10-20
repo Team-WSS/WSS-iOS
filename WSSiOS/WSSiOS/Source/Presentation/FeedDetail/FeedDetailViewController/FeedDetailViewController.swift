@@ -174,7 +174,7 @@ final class FeedDetailViewController: UIViewController {
         
         output.commentCount
             .drive(with: self, onNext: { owner, count in
-                owner.rootView.feedContentView.reactView.updateCommnetCount(count)
+                owner.rootView.feedContentView.reactView.updateCommentCount(count)
             })
             .disposed(by: disposeBag)
         
