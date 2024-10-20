@@ -25,7 +25,6 @@ final class NormalSearchViewModel: ViewModelType {
 
     private let pushToNovelDetailViewController = PublishRelay<Int>()
     private let isSearchTextFieldEditing = BehaviorRelay<Bool>(value: false)
-    private let showEmptyView = PublishRelay<Bool>()
     
     //MARK: - Inputs
     
@@ -110,7 +109,6 @@ final class NormalSearchViewModel: ViewModelType {
         input.searchTextFieldEditingDidBegin
             .subscribe(with: self, onNext: { owner, _ in
                 owner.isSearchTextFieldEditing.accept(true)
-                owner.showEmptyView.accept(false)
             })
             .disposed(by: disposeBag)
         
