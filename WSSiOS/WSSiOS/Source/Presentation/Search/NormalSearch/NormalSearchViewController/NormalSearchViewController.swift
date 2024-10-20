@@ -95,6 +95,8 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
         
         let input = NormalSearchViewModel.Input(
             searchTextUpdated: rootView.headerView.searchTextField.rx.text.orEmpty,
+            searchTextFieldEditingDidBegin: rootView.headerView.searchTextField.rx.controlEvent(.editingDidBegin).asControlEvent(),
+            searchTextFieldEditingDidEnd: rootView.headerView.searchTextField.rx.controlEvent(.editingDidEnd).asControlEvent(),
             returnKeyDidTap: rootView.headerView.searchTextField.rx.controlEvent(.editingDidEndOnExit),
             searchButtonDidTap: rootView.headerView.searchButton.rx.tap,
             clearButtonDidTap: rootView.headerView.searchClearButton.rx.tap,
@@ -162,7 +164,7 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
             })
             .disposed(by: disposeBag)
         
-        output.backButtonEnabled
+        output.popViewController
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
                 owner.popToLastViewController()
@@ -183,10 +185,15 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
             })
             .disposed(by: disposeBag)
         
-        output.normalSearchCellEnabled
-            .subscribe(with: self, onNext: { owner, indexPath in
-                //TODO: API 연결 후 수정 예정
-                owner.pushToDetailViewController(novelId: 0)
+        output.pushToNovelDetailViewController
+            .subscribe(with: self, onNext: { owner, novelId in
+                owner.pushToDetailViewController(novelId: novelId)
+            })
+            .disposed(by: disposeBag)
+        
+        output.isSearchTextFieldEditing
+            .subscribe(with: self, onNext: { owner, isEditing in
+                owner.rootView.headerView.updateSearchTextField(isEditing: isEditing)
             })
             .disposed(by: disposeBag)
         
