@@ -15,7 +15,6 @@ final class NormalSearchHeaderView: UIView {
     //MARK: - Components
     
     let backButton = UIButton()
-    private let searchBackgroundView = UIView()
     let searchTextField = UITextField()
     let searchClearButton = UIButton()
     let searchButton = UIButton()
@@ -42,19 +41,21 @@ final class NormalSearchHeaderView: UIView {
             $0.setImage(.icNavigateLeft.withTintColor(.wssBlack), for: .normal)
         }
         
-        searchBackgroundView.do {
-            $0.backgroundColor = .wssWhite
+        searchTextField.do {
+            $0.returnKeyType = .done
+            $0.autocorrectionType = .no
+            $0.spellCheckingType = .no
+            $0.tintColor = .wssBlack
+            $0.backgroundColor = .wssGray50
+            $0.textColor = .wssBlack
+            $0.placeholder = StringLiterals.NovelReview.KeywordSearch.placeholder
+            $0.font = .Body4
             $0.layer.cornerRadius = 14
             $0.layer.borderColor = UIColor.wssGray70.cgColor
-            $0.layer.borderWidth = 1
-        }
-        
-        searchTextField.do {
-            $0.textColor = .wssBlack
-            $0.font = .Label1
-            $0.rightView = searchClearButton
-            $0.rightViewMode = .whileEditing
-            $0.tintColor = .wssBlack
+            $0.leftView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 16.0, height: 0.0))
+            $0.rightView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 82.0, height: 0.0))
+            $0.leftViewMode = .always
+            $0.rightViewMode = .always
         }
         
         searchClearButton.do {
@@ -68,37 +69,46 @@ final class NormalSearchHeaderView: UIView {
     }
     
     private func setHierarchy() {
-        searchBackgroundView.addSubviews(searchTextField,
-                                         searchButton)
         self.addSubviews(backButton,
-                         searchBackgroundView)
+                         searchTextField,
+                         searchClearButton,
+                         searchButton)
     }
     
     private func setLayout() {
         backButton.snp.makeConstraints {
             $0.top.equalToSuperview().inset(10)
-            $0.leading.equalToSuperview().inset(16)
-            $0.size.equalTo(24)
+            $0.leading.equalToSuperview().inset(6)
+            $0.size.equalTo(44)
         }
         
         searchTextField.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.leading.equalToSuperview().inset(16)
-        }
-        
-        searchButton.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.leading.equalTo(searchTextField.snp.trailing).offset(15)
-            $0.trailing.equalToSuperview().inset(15)
-            $0.size.equalTo(25)
-        }
-        
-        searchBackgroundView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(2)
-            $0.leading.equalTo(backButton.snp.trailing).offset(16)
+            $0.top.equalTo(backButton.snp.top)
+            $0.leading.equalTo(backButton.snp.trailing).offset(6)
             $0.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(42)
             $0.bottom.equalToSuperview().inset(11)
+        }
+        
+        searchClearButton.snp.makeConstraints {
+            $0.trailing.equalTo(searchButton.snp.leading)
+            $0.centerY.equalTo(searchTextField.snp.centerY)
+            $0.size.equalTo(36)
+        }
+        
+        searchButton.snp.makeConstraints {
+            $0.trailing.equalTo(searchTextField.snp.trailing).offset(-10)
+            $0.centerY.equalTo(searchTextField.snp.centerY)
+            $0.size.equalTo(36)
+        }
+    }
+    
+    // MARK: - Custom Method
+    
+    func updateSearchTextField(isEditing: Bool) {
+        searchTextField.do {
+            $0.backgroundColor = isEditing ? .wssWhite : .wssGray50
+            $0.layer.borderWidth = isEditing ? 1 : 0
         }
     }
 }
