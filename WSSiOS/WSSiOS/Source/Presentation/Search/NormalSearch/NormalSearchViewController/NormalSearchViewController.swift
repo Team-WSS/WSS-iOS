@@ -183,16 +183,16 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
             })
             .disposed(by: disposeBag)
         
-        output.normalSearchCellEnabled
-            .subscribe(with: self, onNext: { owner, indexPath in
-                //TODO: API 연결 후 수정 예정
-                owner.pushToDetailViewController(novelId: 0)
+        output.pushToNovelDetailViewController
+            .subscribe(with: self, onNext: { owner, novelId in
+                owner.pushToDetailViewController(novelId: novelId)
             })
             .disposed(by: disposeBag)
         
         output.endEditing
             .subscribe(with: self, onNext: { owner, _ in
                 owner.view.endEditing(true)
+                owner.rootView.headerView.updateSearchTextField(isEditing: true)
             })
             .disposed(by: disposeBag)
     }

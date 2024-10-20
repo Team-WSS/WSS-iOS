@@ -22,7 +22,8 @@ final class NormalSearchViewModel: ViewModelType {
     private let isLoadable = BehaviorRelay<Bool>(value: false)
     private let resultCount = PublishSubject<Int>()
     private let normalSearchList = BehaviorRelay<[NormalSearchNovel]>(value: [])
-    private let normalSearchCellIndexPath = PublishRelay<IndexPath>()
+
+    private let pushToNovelDetailViewController = PublishRelay<Int>()
     
     //MARK: - Inputs
     
@@ -50,7 +51,7 @@ final class NormalSearchViewModel: ViewModelType {
         let backButtonEnabled: Observable<Void>
         let inquiryButtonEnabled: Observable<Void>
         let normalSearchCollectionViewHeight: Driver<CGFloat>
-        let normalSearchCellEnabled: Observable<IndexPath>
+        let pushToNovelDetailViewController: Observable<Int>
         let endEditing: Observable<Void>
     }
     
@@ -117,7 +118,8 @@ final class NormalSearchViewModel: ViewModelType {
         
         input.normalSearchCellSelected
             .subscribe(with: self, onNext: { owner, indexPath in
-                owner.normalSearchCellIndexPath.accept(indexPath)
+                let novelId = owner.normalSearchList.value[indexPath.row].novelId
+                owner.pushToNovelDetailViewController.accept(novelId)
             })
             .disposed(by: disposeBag)
         
@@ -141,7 +143,7 @@ final class NormalSearchViewModel: ViewModelType {
                       backButtonEnabled: backButtonEnabled.asObservable(),
                       inquiryButtonEnabled: inquiryButtonEnabled.asObservable(),
                       normalSearchCollectionViewHeight: normalSearchCollectionViewHeight,
-                      normalSearchCellEnabled: normalSearchCellIndexPath.asObservable(),
+                      pushToNovelDetailViewController: pushToNovelDetailViewController.asObservable(),
                       endEditing: endEditing)
     }
 }
