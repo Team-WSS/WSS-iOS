@@ -79,10 +79,27 @@ final class FeedDetailViewController: UIViewController {
     }
     
     private func bindViewModel() {
+        let viewDidTap = view.rx.tapGesture(configuration: { gestureRecognizer, delegate in
+            gestureRecognizer.cancelsTouchesInView = false
+        })
+            .when(.recognized)
+            .asObservable()
+        
+        let replyCommentCollectionViewSwipeGesture = rootView.scrollView.rx.swipeGesture([.up, .down])
+            .when(.recognized)
+            .asObservable()
+        
         let input = FeedDetailViewModel.Input(
             backButtonTapped: rootView.backButton.rx.tap,
             replyCollectionViewContentSize: rootView.replyView.replyCollectionView.rx.observe(CGSize.self, "contentSize"),
-            likeButtonTapped: rootView.feedContentView.reactView.likeButton.rx.tap)
+            likeButtonTapped: rootView.feedContentView.reactView.likeButton.rx.tap,
+            linkNovelViewTapped: rootView.feedContentView.linkNovelView.rx.tapGesture().when(.recognized).asObservable(),
+            viewDidTap: viewDidTap,
+            commentContentUpdated: rootView.replyWritingView.replyWritingTextView.rx.text.orEmpty.distinctUntilChanged().asObservable(),
+            commentContentViewDidBeginEditing: rootView.replyWritingView.replyWritingTextView.rx.didBeginEditing,
+            commentContentViewDidEndEditing: rootView.replyWritingView.replyWritingTextView.rx.didEndEditing,
+            replyCommentCollectionViewSwipeGesture: replyCommentCollectionViewSwipeGesture,
+            sendButtonTapped: rootView.replyWritingView.replyButton.rx.tap)
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.feedData
@@ -131,7 +148,14 @@ final class FeedDetailViewController: UIViewController {
                 self.rootView.replyWritingView.snp.updateConstraints {
                     $0.bottom.equalTo(self.rootView.safeAreaLayoutGuide.snp.bottom).offset(height)
                 }
-                self.rootView.layoutIfNeeded()
+                
+                self.rootView.replyView.snp.updateConstraints {
+                    $0.bottom.equalToSuperview().offset(height)
+                }
+                
+                UIView.animate(withDuration: 0.25) {
+                    self.rootView.layoutIfNeeded()
+                }
             })
             .disposed(by: disposeBag)
         
@@ -141,24 +165,87 @@ final class FeedDetailViewController: UIViewController {
                 self.view.endEditing(true)
             })
             .disposed(by: disposeBag)
+        
+        output.presentNovelDetailViewController
+            .subscribe(with: self, onNext: { owner, novelId in
+                owner.pushToDetailViewController(novelId: novelId)
+            })
+            .disposed(by: disposeBag)
+        
+        output.commentCount
+            .drive(with: self, onNext: { owner, count in
+                owner.rootView.feedContentView.reactView.updateCommentCount(count)
+            })
+            .disposed(by: disposeBag)
+        
+        output.endEditing
+            .subscribe(with: self, onNext: { owner, endEditing in
+                owner.rootView.scrollView.endEditing(endEditing)
+            })
+            .disposed(by: disposeBag)
+        
+        output.commentContentWithLengthLimit
+            .subscribe(with: self, onNext: { owner, limit in
+                
+            })
+            .disposed(by: disposeBag)
+        
+        output.sendButtonEnabled
+            .subscribe(with: self, onNext: { owner, enabled in
+                owner.rootView.replyWritingView.enableSendButton(enabled)
+            })
+            .disposed(by: disposeBag)
+        
+        output.showPlaceholder
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, showPlaceholder in
+                owner.rootView.replyWritingView.replyWritingPlaceHolderLabel.isHidden = !showPlaceholder
+            })
+            .disposed(by: disposeBag)
+        
+        output.textViewEmpty
+            .bind(with: self, onNext: { owner, isEmpty in
+                if isEmpty {
+                    owner.rootView.replyWritingView.makeTextViewEmpty()
+                }
+            })
+            .disposed(by: disposeBag)
     }
 }
 
 extension FeedDetailViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         guard let text = viewModel.replyContentForItemAt(indexPath: indexPath) else {
-            return CGSize(width: 0, height: 0)
-        }
+                return CGSize(width: 0, height: 0)
+            }
+
+            let labelWidth: CGFloat = 247
+
+            let font = UIFont.Body2
+
+            let boundingRect = (text as NSString).boundingRect(
+                with: CGSize(width: labelWidth, height: .greatestFiniteMagnitude),
+                options: [.usesLineFragmentOrigin, .usesFontLeading],
+                attributes: [
+                    NSAttributedString.Key.font: font,
+                    NSAttributedString.Key.kern: -0.6
+                ],
+                context: nil
+            )
+
+            let lineHeight = font.lineHeight
+            let numberOfLines = ceil(boundingRect.height / lineHeight)
+            let padding: CGFloat = 28
         
-        guard let numberOfLines = viewModel.replyContentNumberOfLines(indexPath: indexPath) else {
-            return CGSize(width: 0, height: 0)
+            print("boundingRect.height: \(boundingRect.height)")
+            print("numberOfLines: \(numberOfLines)")
+
+            let finalHeight = ceil(lineHeight * numberOfLines) + padding
+            
+            let cellWidth = UIScreen.main.bounds.width - 40
+
+            return CGSize(width: cellWidth, height: finalHeight)
         }
-        
-        let height = (text as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2,
-                                                              NSAttributedString.Key.kern: -0.6]).height
-        let finalHeight = height * CGFloat(numberOfLines) + 28
-        return CGSize(width: UIScreen.main.bounds.width - 40, height: finalHeight)
-    }
 }
 
 extension FeedDetailViewController: UITextViewDelegate {

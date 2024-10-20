@@ -25,6 +25,7 @@ final class FeedDetailView: UIView {
     let feedContentView = FeedDetailContentView()
     let replyView = FeedDetailReplyView()
     let replyWritingView = FeedDetailReplyWritingView()
+    private let replyBottomView = UIView()
     
     // MARK: - Life Cycle
     
@@ -63,11 +64,16 @@ final class FeedDetailView: UIView {
         scrollView.do {
             $0.showsVerticalScrollIndicator = false
         }
+        
+        replyBottomView.do {
+            $0.backgroundColor = .wssWhite
+        }
     }
     
     private func setHierarchy() {
         self.addSubviews(scrollView,
-                         replyWritingView)
+                         replyWritingView,
+                         replyBottomView)
         scrollView.addSubview(contentView)
         contentView.addSubviews(profileView,
                                 feedContentView,
@@ -104,7 +110,15 @@ final class FeedDetailView: UIView {
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
         }
+        
+        replyBottomView.snp.makeConstraints {
+            $0.top.equalTo(self.safeAreaLayoutGuide.snp.bottomMargin)
+            $0.horizontalEdges.equalToSuperview()
+            $0.bottom.equalToSuperview()
+        }
     }
+    
+    //MARK: - Custom Methods
     
     func bindData(_ data: Feed) {
         profileView.bindData(data: data)
