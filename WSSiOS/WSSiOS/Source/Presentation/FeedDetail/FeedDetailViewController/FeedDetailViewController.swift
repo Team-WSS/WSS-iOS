@@ -172,6 +172,12 @@ final class FeedDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.commentCount
+            .drive(with: self, onNext: { owner, count in
+                owner.rootView.feedContentView.reactView.updateCommnetCount(count)
+            })
+            .disposed(by: disposeBag)
+        
         output.endEditing
             .subscribe(with: self, onNext: { owner, endEditing in
                 owner.rootView.scrollView.endEditing(endEditing)

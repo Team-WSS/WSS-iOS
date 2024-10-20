@@ -32,6 +32,7 @@ final class FeedDetailViewModel: ViewModelType {
     private let backButtonState = PublishRelay<Void>()
     
     // 댓글 작성
+    private let commentCount = BehaviorRelay<Int>(value: 0)
     private let endEditing = PublishRelay<Bool>()
     private var updatedCommentContent: String = ""
     private var isValidCommentContent: Bool = false
@@ -77,6 +78,7 @@ final class FeedDetailViewModel: ViewModelType {
         let presentNovelDetailViewController: Observable<Int>
         
         // 댓글 작성
+        let commentCount: Driver<Int>
         let showPlaceholder: Observable<Bool>
         let endEditing: Observable<Bool>
         let commentContentWithLengthLimit: Observable<String>
@@ -91,6 +93,7 @@ final class FeedDetailViewModel: ViewModelType {
                 owner.likeButtonState.accept(data.isLiked)
                 owner.likeCount.accept(data.likeCount)
                 owner.novelId = data.novelId
+                owner.commentCount.accept(data.commentCount)
             }, onError: { owner, error in
                 owner.feedData.onError(error)
             })
@@ -192,6 +195,9 @@ final class FeedDetailViewModel: ViewModelType {
                         self.textViewEmpty.accept(true)
                         self.commentContentWithLengthLimit.accept("")
                         self.showPlaceholder.accept(true)
+                        
+                        let newCommentCount = self.commentCount.value + 1
+                        self.commentCount.accept(newCommentCount)
                     })
             }
             .subscribe()
@@ -204,6 +210,7 @@ final class FeedDetailViewModel: ViewModelType {
                       likeButtonEnabled: likeButtonState.asDriver(),
                       backButtonEnabled: backButtonEnabled,
                       presentNovelDetailViewController: presentNovelDetailViewController.asObservable(),
+                      commentCount: commentCount.asDriver(),
                       showPlaceholder: showPlaceholder.asObservable(),
                       endEditing: endEditing.asObservable(),
                       commentContentWithLengthLimit: commentContentWithLengthLimit.asObservable(),
