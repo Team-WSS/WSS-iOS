@@ -12,9 +12,17 @@ import Then
 
 final class DetailSearchInfoGenreCollectionViewCell: UICollectionViewCell {
     
+    //MARK: - Properties
+    
+    override var isSelected: Bool {
+        didSet {
+            self.genreKeywordView.updateColor(isSelected)
+        }
+    }
+    
     //MARK: - Components
     
-    private let genreKeywordView = KeywordViewManager.shared.link()
+    private let genreKeywordView = KeywordLink()
     
     //MARK: - Life Cycle
     
@@ -38,6 +46,7 @@ final class DetailSearchInfoGenreCollectionViewCell: UICollectionViewCell {
     private func setLayout() {
         genreKeywordView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+            $0.height.equalTo(35)
         }
     }
 
