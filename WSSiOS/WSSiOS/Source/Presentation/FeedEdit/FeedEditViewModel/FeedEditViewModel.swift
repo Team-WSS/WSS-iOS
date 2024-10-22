@@ -188,7 +188,7 @@ final class FeedEditViewModel: ViewModelType {
         
         input.feedNovelConnectedNotification
             .subscribe(with: self, onNext: { owner, notification in
-                guard let connectedNovel = notification.object as? NormalSearchNovel else { return }
+                guard let connectedNovel = notification.object as? SearchNovel else { return }
                 owner.novelId = connectedNovel.novelId
                 owner.connectedNovelTitle.accept(connectedNovel.novelTitle)
             })

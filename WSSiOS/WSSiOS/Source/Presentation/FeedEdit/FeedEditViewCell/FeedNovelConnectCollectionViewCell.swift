@@ -106,7 +106,7 @@ final class FeedNovelConnectCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Data
     
-    func bindData(data: NormalSearchNovel) {
+    func bindData(data: SearchNovel) {
         self.coverImageView.kfSetImage(url: data.novelImage)
         
         self.titleLabel.do {
