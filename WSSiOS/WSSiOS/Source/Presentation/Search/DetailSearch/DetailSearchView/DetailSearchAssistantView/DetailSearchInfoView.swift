@@ -67,6 +67,7 @@ final class DetailSearchInfoView: UIView {
             $0.collectionViewLayout = layout
             $0.isScrollEnabled = false
             $0.backgroundColor = .clear
+            $0.allowsMultipleSelection = true
         }
         
         statusTitleLabel.do {
