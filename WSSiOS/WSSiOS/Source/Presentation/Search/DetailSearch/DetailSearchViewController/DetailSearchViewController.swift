@@ -17,7 +17,6 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
     private let viewModel: DetailSearchViewModel
     private let disposeBag = DisposeBag()
     
-    private let viewWillAppearEvent = BehaviorRelay(value: false)
     private let viewDidLoadEvent = PublishRelay<Void>()
     private let keywordCategoryListData = BehaviorRelay<[KeywordCategory]>(value: [])
     private let selectedKeywordData = PublishRelay<KeywordData>()
@@ -42,12 +41,6 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
     
     override func loadView() {
         self.view = rootView
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        viewWillAppearEvent.accept(true)
     }
     
     override func viewDidLoad() {
@@ -87,19 +80,21 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
     
     private func bindViewModel() {
         let input = DetailSearchViewModel.Input(
+            viewDidLoadEvent: viewDidLoadEvent.asObservable(),
             closeButtonDidTap: rootView.cancelModalButton.rx.tap,
             infoTabDidTap: rootView.detailSearchHeaderView.infoLabel.rx.tapGesture().when(.recognized).asObservable(),
             keywordTabDidTap: rootView.detailSearchHeaderView.keywordLabel.rx.tapGesture().when(.recognized).asObservable(),
             resetButtonDidTap: rootView.detailSearchBottomView.resetButton.rx.tap,
-            selectButtonDidTap: rootView.detailSearchBottomView.searchButton.rx.tap,
+            searchNovelButtonDidTap: rootView.detailSearchBottomView.searchButton.rx.tap,
             genreCollectionViewContentSize: rootView.detailSearchInfoView.genreCollectionView.rx.observe(CGSize.self, "contentSize"),
-            viewDidLoadEvent: viewDidLoadEvent.asObservable(),
+            genreColletionViewItemSelected: rootView.detailSearchInfoView.genreCollectionView.rx.itemSelected.asObservable(),
+            genreColletionViewItemDeselected: rootView.detailSearchInfoView.genreCollectionView.rx.itemDeselected.asObservable(),
             updatedEnteredText: rootView.detailSearchKeywordView.novelKeywordSelectSearchBarView.keywordTextField.rx.text.orEmpty.distinctUntilChanged().asObservable(),
             keywordTextFieldEditingDidBegin: rootView.detailSearchKeywordView.novelKeywordSelectSearchBarView.keywordTextField.rx.controlEvent(.editingDidBegin).asControlEvent(),
             keywordTextFieldEditingDidEnd: rootView.detailSearchKeywordView.novelKeywordSelectSearchBarView.keywordTextField.rx.controlEvent(.editingDidEnd).asControlEvent(),
             keywordTextFieldEditingDidEndOnExit: rootView.detailSearchKeywordView.novelKeywordSelectSearchBarView.keywordTextField.rx.controlEvent(.editingDidEndOnExit).asControlEvent(),
             searchCancelButtonDidTap: rootView.detailSearchKeywordView.novelKeywordSelectSearchBarView.searchCancelButton.rx.tap,
-            searchButtonDidTap: rootView.detailSearchKeywordView.novelKeywordSelectSearchBarView.searchButton.rx.tap,
+            searchKeywordButtonDidTap: rootView.detailSearchKeywordView.novelKeywordSelectSearchBarView.searchButton.rx.tap,
             selectedKeywordCollectionViewItemSelected: rootView.detailSearchKeywordView.novelSelectedKeywordListView.selectedKeywordCollectionView.rx.itemSelected.asObservable(),
             searchResultCollectionViewItemSelected: rootView.detailSearchKeywordView.novelKeywordSelectSearchResultView.searchResultCollectionView.rx.itemSelected.asObservable(),
             searchResultCollectionViewItemDeselected: rootView.detailSearchKeywordView.novelKeywordSelectSearchResultView.searchResultCollectionView.rx.itemDeselected.asObservable(),
@@ -131,9 +126,16 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
             })
             .disposed(by: disposeBag)
         
-        output.genreList
-            .drive(rootView.detailSearchInfoView.genreCollectionView.rx.items(cellIdentifier: DetailSearchInfoGenreCollectionViewCell.cellIdentifier,cellType: DetailSearchInfoGenreCollectionViewCell.self)) { row, element, cell in
-                cell.bindData(genre: element)
+        output.genreListData
+            .bind(to: rootView.detailSearchInfoView.genreCollectionView.rx.items(cellIdentifier: DetailSearchInfoGenreCollectionViewCell.cellIdentifier,cellType: DetailSearchInfoGenreCollectionViewCell.self)) { item, element, cell in
+                let indexPath = IndexPath(item: item, section: 0)
+                
+                if self.viewModel.selectedGenreList.contains(element) {
+                    self.rootView.detailSearchInfoView.genreCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
+                } else {
+                    self.rootView.detailSearchInfoView.genreCollectionView.deselectItem(at: indexPath, animated: false)
+                }
+                cell.bindData(genre: element.toKorean)
             }
             .disposed(by: disposeBag)
         
@@ -276,11 +278,16 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
 extension DetailSearchViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if collectionView == rootView.detailSearchInfoView.genreCollectionView {
-            guard let text = viewModel.genreNameForItemAt(indexPath: indexPath) else {
+            var text: String?
+            
+            let novelGenreList = NovelGenre.allCases.map { $0.toKorean }
+            text = novelGenreList[indexPath.item]
+            
+            guard let unwrappedText = text else {
                 return CGSize(width: 0, height: 0)
             }
             
-            let width = (text as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 26
+            let width = (unwrappedText as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 26
             return CGSize(width: width, height: 35)
         }
         else if collectionView ==  rootView.detailSearchKeywordView.novelSelectedKeywordListView.selectedKeywordCollectionView{
