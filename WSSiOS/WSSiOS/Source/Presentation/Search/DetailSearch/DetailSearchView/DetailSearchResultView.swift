@@ -14,8 +14,8 @@ final class DetailSearchResultView: UIView {
     
     //MARK: - UI Components
     
-    private let headerView = DetailSearchResultHeaderView()
-    private let novelView = DetailSearchResultNovelView()
+    let headerView = DetailSearchResultHeaderView()
+    let novelView = DetailSearchResultNovelView()
     
     //MARK: - Life Cycle
     

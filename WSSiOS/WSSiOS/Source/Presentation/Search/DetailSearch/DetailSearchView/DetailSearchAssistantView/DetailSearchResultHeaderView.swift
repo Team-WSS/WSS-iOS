@@ -11,7 +11,7 @@ final class DetailSearchResultHeaderView: UIView {
     
     //MARK: - UI Components
     
-    private let backButton = UIButton()
+    let backButton = UIButton()
     
     private let backgroundView = UIView()
     private let headerLabel = UILabel()
