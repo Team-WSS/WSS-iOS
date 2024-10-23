@@ -23,14 +23,21 @@ struct SosoPickNovel: Codable {
     }
 }
 
-/// 일반 검색 API
+/// 일반 탐색 API
 struct NormalSearchNovels: Codable {
     var resultCount: Int
     var isLoadable: Bool
-    var novels: [NormalSearchNovel]
+    var novels: [SearchNovel]
 }
 
-struct NormalSearchNovel: Codable {
+/// 상세 탐색 API
+struct DetailSearchNovels: Codable {
+    var resultCount: Int
+    var isLoadable: Bool
+    var novels: [SearchNovel]
+}
+
+struct SearchNovel: Codable {
     var novelId: Int
     var novelImage: String
     var novelTitle: String

@@ -42,6 +42,7 @@ final class SearchViewController: UIViewController {
         
         showTabBar()
         setNavigationBar()
+        bindNotifications()
     }
     
     override func viewDidLoad() {
@@ -51,6 +52,12 @@ final class SearchViewController: UIViewController {
         registerCell()
         
         bindViewModel()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        NotificationCenter.default.removeObserver(self)
     }
     
     //MARK: - UI
@@ -98,7 +105,7 @@ final class SearchViewController: UIViewController {
         
         output.induceButtonEnabled
             .bind(with: self, onNext: { owner, _ in
-                let detailSearchViewController = DetailSearchViewController(viewModel: DetailSearchViewModel(keywordRepository: DefaultKeywordRepository(keywordService: DefaultKeywordService()), selectedKeywordList: []))
+                let detailSearchViewController = DetailSearchViewController(viewModel: DetailSearchViewModel(keywordRepository: DefaultKeywordRepository(keywordService: DefaultKeywordService()), searchRepository: DefaultSearchRepository(searchService: DefaultSearchService()),selectedKeywordList: []))
                 detailSearchViewController.navigationController?.isNavigationBarHidden = false
                 detailSearchViewController.hidesBottomBarWhenPushed = true
                 owner.presentModalViewController(detailSearchViewController)
@@ -109,6 +116,21 @@ final class SearchViewController: UIViewController {
             .bind(with: self, onNext: { owner, indexPath in
                 let novelId = output.sosoPickList.value[indexPath.row].novelId
                 owner.pushToDetailViewController(novelId: novelId)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindNotifications() {
+        NotificationCenter.default.rx.notification(NSNotification.Name("PushToDetailSearchResult"))
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, notification in
+                if let detailSearchNovels = notification.object as? DetailSearchNovels {
+                    let detailSearchResultViewModel = DetailSearchResultViewModel(detailSearchNovels: detailSearchNovels)
+                    let detailSearchResultViewController = DetailSearchResultViewController(viewModel: detailSearchResultViewModel)
+                    detailSearchResultViewController.navigationController?.isNavigationBarHidden = false
+                    detailSearchResultViewController.hidesBottomBarWhenPushed = true
+                    owner.navigationController?.pushViewController(detailSearchResultViewController, animated: true)
+                }
             })
             .disposed(by: disposeBag)
     }

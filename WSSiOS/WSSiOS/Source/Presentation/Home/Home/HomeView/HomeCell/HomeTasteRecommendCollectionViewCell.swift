@@ -155,4 +155,22 @@ final class HomeTasteRecommendCollectionViewCell: UICollectionViewCell {
         self.ratingAverageLabel.applyWSSFont(.body5, with: String(data.novelRating))
         self.ratingCountLabel.applyWSSFont(.body5, with: "(\(data.novelRatingCount))")
     }
+    
+    func bindData(data: SearchNovel) {
+        self.novelImageView.kfSetImage(url: data.novelImage)
+        
+        self.novelTitleLabel.do {
+            $0.applyWSSFont(.label1, with: data.novelTitle)
+            $0.lineBreakMode = .byTruncatingTail
+            $0.numberOfLines = 1
+        }
+        self.novelAuthorLabel.do {
+            $0.applyWSSFont(.body5, with: data.novelAuthor)
+            $0.lineBreakMode = .byTruncatingTail
+            $0.numberOfLines = 1
+        }
+        self.likeCountLabel.applyWSSFont(.body5, with: String(data.interestCount))
+        self.ratingAverageLabel.applyWSSFont(.body5, with: String(data.novelRating))
+        self.ratingCountLabel.applyWSSFont(.body5, with: "(\(data.novelRatingCount))")
+    }
 }
