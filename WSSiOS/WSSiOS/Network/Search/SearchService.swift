@@ -14,7 +14,7 @@ protocol SearchService {
     func searchNormalNovels(query: String, page: Int, size: Int) -> Single<NormalSearchNovels>
     func searchDetailNovels(genres: [String],
                             isCompleted: Bool?,
-                            novelRating: Float,
+                            novelRating: Float?,
                             keywordIds: [Int],
                             page: Int,
                             size: Int) -> Single<DetailSearchNovels>
@@ -75,14 +75,13 @@ extension DefaultSearchService: SearchService {
     
     func searchDetailNovels(genres: [String],
                             isCompleted: Bool?,
-                            novelRating: Float,
+                            novelRating: Float?,
                             keywordIds: [Int],
                             page: Int,
                             size: Int) -> Single<DetailSearchNovels> {
         
         var detailSearchQueryItems: [URLQueryItem] = [
             URLQueryItem(name: "genres", value: genres.joined(separator: ",")),
-            URLQueryItem(name: "novelRating", value: String(novelRating)),
             URLQueryItem(name: "keywordIds", value: keywordIds.map { String($0) }.joined(separator: ",")),
             URLQueryItem(name: "page", value: String(page)),
             URLQueryItem(name: "size", value: String(size))
@@ -90,6 +89,10 @@ extension DefaultSearchService: SearchService {
         
         if let isCompleted = isCompleted {
             detailSearchQueryItems.append(URLQueryItem(name: "isCompleted", value: String(isCompleted)))
+        }
+        
+        if let novelRating = novelRating {
+            detailSearchQueryItems.append(URLQueryItem(name: "novelRating", value: String(novelRating)))
         }
         
         do {
