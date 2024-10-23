@@ -47,7 +47,7 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
         super.viewDidLoad()
         
         registerCell()
-        delegate()
+        setDelegate()
         bindViewModel()
         
         viewDidLoadEvent.accept(())
@@ -63,7 +63,7 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
                                                                                                                 forCellWithReuseIdentifier: NovelKeywordSelectSearchResultCollectionViewCell.cellIdentifier)
     }
     
-    private func delegate() {
+    private func setDelegate() {
         rootView.detailSearchInfoView
             .genreCollectionView.rx
             .setDelegate(self)

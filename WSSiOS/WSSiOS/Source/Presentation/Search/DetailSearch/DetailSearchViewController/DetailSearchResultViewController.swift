@@ -7,10 +7,16 @@
 
 import UIKit
 
-final class DetailSearchResultViewController: UIViewController {
+import RxSwift
+import RxCocoa
+
+final class DetailSearchResultViewController: UIViewController, UIScrollViewDelegate {
     
     //MARK: - Properties
-
+    
+    private let viewModel: DetailSearchResultViewModel
+    private let disposeBag = DisposeBag()
+    
     
     //MARK: - Components
     
@@ -18,7 +24,8 @@ final class DetailSearchResultViewController: UIViewController {
     
     //MARK: - Life Cycle
     
-    init() {
+    init(viewModel: DetailSearchResultViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -28,6 +35,12 @@ final class DetailSearchResultViewController: UIViewController {
     
     override func loadView() {
         self.view = rootView
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        swipeBackGesture()
     }
     
     override func viewDidLoad() {

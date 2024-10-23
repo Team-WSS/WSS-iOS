@@ -33,6 +33,7 @@ final class SearchViewModel: ViewModelType {
         let searchBarEnabled = PublishRelay<Bool>()
         let induceButtonEnabled = PublishRelay<Bool>()
         let navigateToNovelDetailView = PublishRelay<IndexPath>()
+        let pushToDetailSearchResultView = PublishRelay<Void>()
     }
     
     //MARK: - init

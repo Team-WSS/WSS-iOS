@@ -22,6 +22,7 @@ final class DetailSearchViewModel: ViewModelType {
     // 전체
     private let dismissModalViewController = PublishRelay<Void>()
     let selectedTab = BehaviorRelay<DetailSearchTab>(value: DetailSearchTab.info)
+    private let pushToDetailSearchResultViewControllerNotificationName = Notification.Name("PushToDetailSearchResult")
     
     // 정보
     private let genreListData = PublishRelay<[NovelGenre]>()
@@ -173,13 +174,14 @@ final class DetailSearchViewModel: ViewModelType {
                                             novelRating: novelRating,
                                             keywordIds: keywordIds,
                                             page: 0)
-                    
-                    .subscribe(onNext: { result in
-                        print("Search result: \(result)")
-                    }, onError: { error in
-                        print("Error: \(error)")
-                    })
-                    .disposed(by: disposeBag)
+                
+                .subscribe(onNext: { result in
+                    NotificationCenter.default.post(name: owner.pushToDetailSearchResultViewControllerNotificationName,
+                                                    object: result)
+                }, onError: { error in
+                    print("Error: \(error)")
+                })
+                .disposed(by: disposeBag)
                 
                 owner.dismissModalViewController.accept(())
             })
