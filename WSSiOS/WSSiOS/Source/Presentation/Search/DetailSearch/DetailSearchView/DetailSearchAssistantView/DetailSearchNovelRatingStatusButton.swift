@@ -1,5 +1,5 @@
 //
-//  DetailSearchCompletedStatusButton.swift
+//  DetailSearchNovelRatingStatusButton.swift
 //  WSSiOS
 //
 //  Created by Seoyeon Choi on 10/23/24.
@@ -10,11 +10,11 @@ import UIKit
 import SnapKit
 import Then
 
-final class DetailSearchCompletedStatusButton: UIButton {
+final class DetailSearchNovelRatingStatusButton: UIButton {
     
     //MARK: - Properties
     
-    let status: CompletedStatus
+    let status: NovelRatingStatus
 
     //MARK: - Components
 
@@ -22,7 +22,7 @@ final class DetailSearchCompletedStatusButton: UIButton {
     
     //MARK: - Life Cycle
     
-    init(status: CompletedStatus) {
+    init(status: NovelRatingStatus) {
         self.status = status
         super.init(frame: .zero)
         
@@ -63,8 +63,8 @@ final class DetailSearchCompletedStatusButton: UIButton {
     
     // MARK: - Custom Method
     
-    func updateButton(selectedCompletedStatus: CompletedStatus) {
-        let isSelected = selectedCompletedStatus == status
+    func updateButton(selectedNovelRatingStatus: NovelRatingStatus) {
+        let isSelected = selectedNovelRatingStatus == status
         
         self.do {
             $0.backgroundColor = isSelected ? .wssPrimary50 : .wssGray50
@@ -76,3 +76,4 @@ final class DetailSearchCompletedStatusButton: UIButton {
         }
     }
 }
+

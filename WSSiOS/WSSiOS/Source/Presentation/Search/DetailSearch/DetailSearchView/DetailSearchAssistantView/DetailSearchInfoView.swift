@@ -31,10 +31,7 @@ final class DetailSearchInfoView: UIView {
     private let ratingTopStackView = UIStackView()
     private let ratingBottomStackView = UIStackView()
     
-    private let aboveThreePointFiveKeywordView = KeywordViewManager.shared.box()
-    private let aboveFourPointZeroKeywordView = KeywordViewManager.shared.box()
-    private let aboveFourPointFiveKeywordView = KeywordViewManager.shared.box()
-    private let aboveFourPointEightKeywordView = KeywordViewManager.shared.box()
+    let novelRatingStatusButtons = NovelRatingStatus.allCases.map { DetailSearchNovelRatingStatusButton(status: $0) }
     
     //MARK: - Life Cycle
     
@@ -89,39 +86,24 @@ final class DetailSearchInfoView: UIView {
             $0.axis = .horizontal
             $0.spacing = 11
             $0.distribution = .fillEqually
-            
-            aboveThreePointFiveKeywordView.do {
-                $0.setText(StringLiterals.DetailSearch.ratingaboveThreePointFive)
-            }
-            
-            aboveFourPointZeroKeywordView.do {
-                $0.setText(StringLiterals.DetailSearch.ratingaboveFourPointZero)
-            }
         }
         
         ratingBottomStackView.do {
             $0.axis = .horizontal
             $0.spacing = 11
             $0.distribution = .fillEqually
-            
-            aboveFourPointFiveKeywordView.do {
-                $0.setText(StringLiterals.DetailSearch.ratingaboveFourPointFive)
-            }
-            
-            aboveFourPointEightKeywordView.do {
-                $0.setText(StringLiterals.DetailSearch.ratingaboveFourPointEight)
-            }
         }
     }
     
     private func setHierarchy() {
         completedStatusButtons.forEach { statusStackView.addArrangedSubview($0) }
         
-        ratingTopStackView.addArrangedSubviews(aboveThreePointFiveKeywordView,
-                                               aboveFourPointZeroKeywordView)
+        let topRowButtons = Array(novelRatingStatusButtons.prefix(2))
+        let bottomRowButtons = Array(novelRatingStatusButtons.suffix(2))
         
-        ratingBottomStackView.addArrangedSubviews(aboveFourPointFiveKeywordView,
-                                                  aboveFourPointEightKeywordView)
+        topRowButtons.forEach { ratingTopStackView.addArrangedSubview($0) }
+        bottomRowButtons.forEach { ratingBottomStackView.addArrangedSubview($0) }
+        
         self.addSubviews(genreTitleLabel,
                          genreCollectionView,
                          statusTitleLabel,
@@ -162,17 +144,25 @@ final class DetailSearchInfoView: UIView {
         ratingTopStackView.snp.makeConstraints {
             $0.top.equalTo(ratingTitleLabel.snp.bottom).offset(16)
             $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(43)
         }
         
         ratingBottomStackView.snp.makeConstraints {
             $0.top.equalTo(ratingTopStackView.snp.bottom).offset(10)
             $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(43)
         }
     }
     
     func updateCompletedKeyword(_ selectedCompletedStatus: CompletedStatus) {
         completedStatusButtons.forEach {
             $0.updateButton(selectedCompletedStatus: selectedCompletedStatus)
+        }
+    }
+    
+    func updateNovelRatingKeyword(_ selectedNovelRatingStatus: NovelRatingStatus) {
+        novelRatingStatusButtons.forEach {
+            $0.updateButton(selectedNovelRatingStatus: selectedNovelRatingStatus)
         }
     }
 }
