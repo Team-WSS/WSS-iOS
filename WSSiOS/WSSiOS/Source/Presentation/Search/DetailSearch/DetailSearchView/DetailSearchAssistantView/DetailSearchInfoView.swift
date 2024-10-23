@@ -23,9 +23,8 @@ final class DetailSearchInfoView: UIView {
     private let statusTitleLabel = UILabel()
     
     private let statusStackView = UIStackView()
-    private let ingStatusKeywordView = KeywordViewManager.shared.box()
-    private let finishedStatusKeywordView = KeywordViewManager.shared.box()
-
+    let completedStatusButtons = CompletedStatus.allCases.map { DetailSearchCompletedStatusButton(status: $0) }
+    
     /// 평점
     private let ratingTitleLabel = UILabel()
     
@@ -36,7 +35,7 @@ final class DetailSearchInfoView: UIView {
     private let aboveFourPointZeroKeywordView = KeywordViewManager.shared.box()
     private let aboveFourPointFiveKeywordView = KeywordViewManager.shared.box()
     private let aboveFourPointEightKeywordView = KeywordViewManager.shared.box()
-
+    
     //MARK: - Life Cycle
     
     override init(frame: CGRect) {
@@ -63,7 +62,7 @@ final class DetailSearchInfoView: UIView {
             layout.scrollDirection = .vertical
             layout.minimumLineSpacing = 14
             layout.minimumInteritemSpacing = 6
-
+            
             $0.collectionViewLayout = layout
             $0.isScrollEnabled = false
             $0.backgroundColor = .clear
@@ -79,15 +78,6 @@ final class DetailSearchInfoView: UIView {
             $0.axis = .horizontal
             $0.spacing = 11
             $0.distribution = .fillEqually
-            
-            ingStatusKeywordView.do {
-                $0.setText(StringLiterals.DetailSearch.statusIng)
-                $0.updateColor(true)
-            }
-            
-            finishedStatusKeywordView.do {
-                $0.setText(StringLiterals.DetailSearch.statusFinished)
-            }
         }
         
         ratingTitleLabel.do {
@@ -125,8 +115,7 @@ final class DetailSearchInfoView: UIView {
     }
     
     private func setHierarchy() {
-        statusStackView.addArrangedSubviews(ingStatusKeywordView,
-                                            finishedStatusKeywordView)
+        completedStatusButtons.forEach { statusStackView.addArrangedSubview($0) }
         
         ratingTopStackView.addArrangedSubviews(aboveThreePointFiveKeywordView,
                                                aboveFourPointZeroKeywordView)
@@ -137,7 +126,7 @@ final class DetailSearchInfoView: UIView {
                          genreCollectionView,
                          statusTitleLabel,
                          statusStackView,
-                         ratingTitleLabel, 
+                         ratingTitleLabel,
                          ratingTopStackView,
                          ratingBottomStackView)
     }
@@ -162,6 +151,7 @@ final class DetailSearchInfoView: UIView {
         statusStackView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.top.equalTo(statusTitleLabel.snp.bottom).offset(16)
+            $0.height.equalTo(43)
         }
         
         ratingTitleLabel.snp.makeConstraints {
@@ -177,6 +167,12 @@ final class DetailSearchInfoView: UIView {
         ratingBottomStackView.snp.makeConstraints {
             $0.top.equalTo(ratingTopStackView.snp.bottom).offset(10)
             $0.leading.trailing.equalToSuperview().inset(20)
+        }
+    }
+    
+    func updateCompletedKeyword(_ selectedCompletedStatus: CompletedStatus) {
+        completedStatusButtons.forEach {
+            $0.updateButton(selectedCompletedStatus: selectedCompletedStatus)
         }
     }
 }
