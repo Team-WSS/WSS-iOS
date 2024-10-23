@@ -14,10 +14,11 @@ final class DetailSearchResultNovelView: UIView {
     
     //MARK: - UI Components
     
+    let scrollView = UIScrollView()
+    private let contentView = UIView()
     private let novelTitleLabel = UILabel()
-    private let novelCountLabel = UILabel()
-    
-    private let resultNovelCollectionView = UICollectionView(frame: .zero,
+    let novelCountLabel = UILabel()
+    let resultNovelCollectionView = UICollectionView(frame: .zero,
                                                              collectionViewLayout: UICollectionViewLayout())
     private let resultNovelCollectionViewLayout = UICollectionViewFlowLayout()
     
@@ -37,6 +38,10 @@ final class DetailSearchResultNovelView: UIView {
     }
     
     private func setUI() {
+        scrollView.do {
+            $0.showsVerticalScrollIndicator = false
+        }
+        
         novelTitleLabel.do {
             $0.applyWSSFont(.title1, with: "작품")
             $0.textColor = .wssBlack
@@ -57,20 +62,32 @@ final class DetailSearchResultNovelView: UIView {
             $0.minimumLineSpacing = 18
             $0.minimumInteritemSpacing = 9
             $0.itemSize = CGSize(width: (UIScreen.main.bounds.width - 49) / 2, height: 300)
-            $0.sectionInset = UIEdgeInsets(top: 10, left: 0, bottom: 40, right: 0)
+            $0.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 40, right: 0)
             resultNovelCollectionView.setCollectionViewLayout($0, animated: false)
         }
     }
     
     private func setHierarchy() {
-        self.addSubviews(novelTitleLabel,
+        self.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        contentView.addSubviews(novelTitleLabel,
                          novelCountLabel,
                          resultNovelCollectionView)
     }
     
     private func setLayout() {
+        scrollView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
+        contentView.snp.makeConstraints {
+            $0.edges.equalTo(scrollView.contentLayoutGuide)
+            $0.height.greaterThanOrEqualTo(self.snp.height).priority(.low)
+            $0.width.equalTo(scrollView.snp.width)
+        }
+        
         novelTitleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview()
+            $0.top.equalToSuperview().inset(10)
             $0.leading.equalToSuperview()
         }
         
