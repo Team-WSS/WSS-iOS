@@ -250,9 +250,13 @@ final class OnboardingViewModel: ViewModelType {
             self.isNicknameAvailable.accept(.notStarted)
         } else if !self.isValidNicknameCharacters(nickname) {
             if nickname.contains(where: { $0 == " " }) {
-                self.isNicknameAvailable.accept(.notAvailable(reason: .whiteSpaceIncluded))
+                self.isNicknameAvailable.accept(
+                    .notAvailable(reason: .whiteSpaceIncluded)
+                )
             } else {
-                self.isNicknameAvailable.accept(.notAvailable(reason: .invalidChacterOrLimitExceeded))
+                self.isNicknameAvailable.accept(
+                    .notAvailable(reason: .invalidChacterOrLimitExceeded)
+                )
             }
         } else {
             self.isNicknameAvailable.accept(.unknown)
@@ -275,7 +279,7 @@ final class OnboardingViewModel: ViewModelType {
                 }
             }, onError: { owner, error in
                 owner.isNicknameAvailable.accept(.notAvailable(reason: .invalidChacterOrLimitExceeded))
-                print(error.localizedDescription)
+                print(error)
             })
             .disposed(by: disposeBag)
     }

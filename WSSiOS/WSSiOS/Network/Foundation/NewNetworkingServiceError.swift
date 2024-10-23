@@ -7,15 +7,13 @@
 
 import Foundation
 
-enum NewNetworkServiceError: Error, LocalizedError, CustomStringConvertible {
+enum NewNetworkServiceError: Error, CustomStringConvertible {
     case invalidURLError
     case httpError(statusCode: Int, code: String?, message: String?)
     case responseDecodingError
     case requestBodyEncodingError
     case emptyDataError
     case unknownError
-
-    public var errorDescription: String? { description }
     
     init(statusCode: Int, errorResponse: ServerErrorResponse? = nil) {
         switch statusCode {
