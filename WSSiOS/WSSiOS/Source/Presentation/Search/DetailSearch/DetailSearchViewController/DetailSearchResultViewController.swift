@@ -17,7 +17,6 @@ final class DetailSearchResultViewController: UIViewController, UIScrollViewDele
     private let viewModel: DetailSearchResultViewModel
     private let disposeBag = DisposeBag()
     
-    
     //MARK: - Components
     
     private let rootView = DetailSearchResultView()
@@ -80,16 +79,24 @@ final class DetailSearchResultViewController: UIViewController, UIScrollViewDele
             })
             .disposed(by: disposeBag)
         
-        viewModel.getNovelsObservable()
+        viewModel.getDetailSearchNovelsObservable()
+            .map { $0.novels }
             .bind(to: rootView.novelView.resultNovelCollectionView.rx.items(cellIdentifier: HomeTasteRecommendCollectionViewCell.cellIdentifier, cellType: HomeTasteRecommendCollectionViewCell.self)) { row, element, cell in
                 cell.bindData(data: element)
-                print(element.novelTitle)
             }
             .disposed(by: disposeBag)
         
         output.novelCollectionViewHeight
             .subscribe(with: self, onNext: { owner, height in
                 owner.rootView.novelView.updateCollectionViewHeight(height: height)
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.getDetailSearchNovelsObservable()
+            .map { $0.resultCount }
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, count in
+                owner.rootView.novelView.updateNovelCountLabel(count: count)
             })
             .disposed(by: disposeBag)
     }

@@ -33,8 +33,8 @@ final class DetailSearchResultViewModel: ViewModelType {
         self.detailSearchNovels = detailSearchNovels
     }
     
-    func getNovelsObservable() -> Observable<[SearchNovel]> {
-        return Observable.just(detailSearchNovels.novels)
+    func getDetailSearchNovelsObservable() -> Observable<DetailSearchNovels> {
+        return Observable.just(detailSearchNovels)
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -50,6 +50,6 @@ final class DetailSearchResultViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         return Output(popViewController: popViewController.asObservable(),
-        novelCollectionViewHeight: novelCollectionViewHeight.asObservable())
+                      novelCollectionViewHeight: novelCollectionViewHeight.asObservable())
     }
 }
