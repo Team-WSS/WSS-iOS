@@ -57,8 +57,10 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
         rootView.detailSearchInfoView.genreCollectionView.register(DetailSearchInfoGenreCollectionViewCell.self,
                                                                    forCellWithReuseIdentifier: DetailSearchInfoGenreCollectionViewCell.cellIdentifier)
         
-        rootView.detailSearchKeywordView.novelSelectedKeywordListView.selectedKeywordCollectionView.register(NovelSelectedKeywordCollectionViewCell.self, forCellWithReuseIdentifier: NovelSelectedKeywordCollectionViewCell.cellIdentifier)
-        rootView.detailSearchKeywordView.novelKeywordSelectSearchResultView.searchResultCollectionView.register(NovelKeywordSelectSearchResultCollectionViewCell.self, forCellWithReuseIdentifier: NovelKeywordSelectSearchResultCollectionViewCell.cellIdentifier)
+        rootView.detailSearchKeywordView.novelSelectedKeywordListView.selectedKeywordCollectionView.register(NovelSelectedKeywordCollectionViewCell.self,
+                                                                                                             forCellWithReuseIdentifier: NovelSelectedKeywordCollectionViewCell.cellIdentifier)
+        rootView.detailSearchKeywordView.novelKeywordSelectSearchResultView.searchResultCollectionView.register(NovelKeywordSelectSearchResultCollectionViewCell.self,
+                                                                                                                forCellWithReuseIdentifier: NovelKeywordSelectSearchResultCollectionViewCell.cellIdentifier)
     }
     
     private func delegate() {
@@ -79,6 +81,11 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
     //MARK: - Bind
     
     private func bindViewModel() {
+        let completedStatusButtonDidTap = Observable.merge(
+            rootView.detailSearchInfoView.completedStatusButtons
+                .map { button in
+                    button.rx.tap.map { button.status }
+                })
         let input = DetailSearchViewModel.Input(
             viewDidLoadEvent: viewDidLoadEvent.asObservable(),
             closeButtonDidTap: rootView.cancelModalButton.rx.tap,
@@ -89,6 +96,7 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
             genreCollectionViewContentSize: rootView.detailSearchInfoView.genreCollectionView.rx.observe(CGSize.self, "contentSize"),
             genreColletionViewItemSelected: rootView.detailSearchInfoView.genreCollectionView.rx.itemSelected.asObservable(),
             genreColletionViewItemDeselected: rootView.detailSearchInfoView.genreCollectionView.rx.itemDeselected.asObservable(),
+            completedButtonDidTap: completedStatusButtonDidTap,
             updatedEnteredText: rootView.detailSearchKeywordView.novelKeywordSelectSearchBarView.keywordTextField.rx.text.orEmpty.distinctUntilChanged().asObservable(),
             keywordTextFieldEditingDidBegin: rootView.detailSearchKeywordView.novelKeywordSelectSearchBarView.keywordTextField.rx.controlEvent(.editingDidBegin).asControlEvent(),
             keywordTextFieldEditingDidEnd: rootView.detailSearchKeywordView.novelKeywordSelectSearchBarView.keywordTextField.rx.controlEvent(.editingDidEnd).asControlEvent(),
@@ -139,6 +147,13 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
             }
             .disposed(by: disposeBag)
         
+        output.selectedCompletedStatus
+            .drive(with: self, onNext: { owner, selectedCompletedStatus in
+                if let selectedCompletedStatus {
+                    owner.rootView.detailSearchInfoView.updateCompletedKeyword(selectedCompletedStatus)
+                }
+            })
+            .disposed(by: disposeBag)
         
         output.enteredText
             .subscribe(with: self, onNext: { owner, text in

@@ -26,8 +26,8 @@ final class DetailSearchViewModel: ViewModelType {
     // 정보
     private let genreListData = PublishRelay<[NovelGenre]>()
     var selectedGenreList: [NovelGenre] = []
-    private let selectedIsCompleted: Bool = false
-    private let selectedRating: Float = 0
+    private var selectedCompletedStatus = BehaviorRelay<CompletedStatus?>(value: nil)
+    private let selectedRating: Float? = nil
     
     // 키워드
     var keywordSearchResultList: [KeywordData] = []
@@ -58,6 +58,8 @@ final class DetailSearchViewModel: ViewModelType {
         let genreColletionViewItemSelected: Observable<IndexPath>
         let genreColletionViewItemDeselected: Observable<IndexPath>
         
+        let completedButtonDidTap: Observable<CompletedStatus>
+        
         // 키워드
         let updatedEnteredText: Observable<String>
         let keywordTextFieldEditingDidBegin: ControlEvent<Void>
@@ -83,6 +85,7 @@ final class DetailSearchViewModel: ViewModelType {
         // 정보
         let genreListData: Observable<[NovelGenre]>
         let genreCollectionViewHeight: Driver<CGFloat>
+        let selectedCompletedStatus: Driver<CompletedStatus?>
         
         // 키워드
         let enteredText: Observable<String>
@@ -161,14 +164,14 @@ final class DetailSearchViewModel: ViewModelType {
             .subscribe(with: self, onNext: { owner, _ in
                 let keywordIds = owner.selectedKeywordList.map { $0.keywordId }
                 let genres: [String] = owner.selectedGenreList.map { $0.rawValue }
-                let isCompleted = true
+                let isCompleted = owner.selectedCompletedStatus.value?.isCompleted
                 let novelRating: Float = 3.5
-                
                 owner.getDetailSearchNovels(genres: genres,
                                             isCompleted: isCompleted,
                                             novelRating: novelRating,
                                             keywordIds: keywordIds,
-                                            page: 1)
+                                            page: 0)
+                    
                     .subscribe(onNext: { result in
                         print("Search result: \(result)")
                     }, onError: { error in
@@ -194,6 +197,12 @@ final class DetailSearchViewModel: ViewModelType {
         input.genreColletionViewItemDeselected
             .subscribe(with: self, onNext: { owner, indexPath in
                 owner.selectedGenreList.removeAll { $0 == NovelGenre.allCases[indexPath.row] }
+            })
+            .disposed(by: disposeBag)
+        
+        input.completedButtonDidTap
+            .subscribe(with: self, onNext: { owner, selectedCompletedStatus in
+                owner.selectedCompletedStatus.accept(selectedCompletedStatus)
             })
             .disposed(by: disposeBag)
         
@@ -319,6 +328,7 @@ final class DetailSearchViewModel: ViewModelType {
                       showKeywordNewImageView: showKeywordNewImageView.asObservable(),
                       genreListData: genreListData.asObservable(),
                       genreCollectionViewHeight: genreCollectionViewContentSize,
+                      selectedCompletedStatus: selectedCompletedStatus.asDriver(),
                       enteredText: enteredText.asObservable(),
                       isKeywordTextFieldEditing: isKeywordTextFieldEditing.asObservable(),
                       endEditing: endEditing.asObservable(),
@@ -338,7 +348,7 @@ final class DetailSearchViewModel: ViewModelType {
     }
     
     private func getDetailSearchNovels(genres: [String],
-                                       isCompleted: Bool,
+                                       isCompleted: Bool?,
                                        novelRating: Float,
                                        keywordIds: [Int],
                                        page: Int) -> Observable<DetailSearchNovels> {
