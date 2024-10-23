@@ -48,7 +48,6 @@ final class DetailSearchResultNovelView: UIView {
         }
         
         novelCountLabel.do {
-            $0.applyWSSFont(.body4, with: "1003")
             $0.textColor = .wssGray100
         }
         
@@ -110,5 +109,9 @@ final class DetailSearchResultNovelView: UIView {
         resultNovelCollectionView.snp.updateConstraints {
             $0.height.equalTo(height)
         }
+    }
+    
+    func updateNovelCountLabel(count: Int) {
+        novelCountLabel.applyWSSFont(.body4, with: String(describing: count))
     }
 }
