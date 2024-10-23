@@ -13,7 +13,7 @@ protocol SearchRepository {
     func getSosoPickNovels() -> Observable<SosoPickNovels>
     func getSearchNovels(query: String, page: Int) -> Observable<NormalSearchNovels>
     func getDetailSearchNovels(genres: [String],
-                               isCompleted: Bool,
+                               isCompleted: Bool?,
                                novelRating: Float,
                                keywordIds: [Int],
                                page: Int) -> Observable<DetailSearchNovels>
@@ -38,7 +38,7 @@ struct DefaultSearchRepository: SearchRepository {
     }
     
     func getDetailSearchNovels(genres: [String],
-                               isCompleted: Bool,
+                               isCompleted: Bool?,
                                novelRating: Float,
                                keywordIds: [Int],
                                page: Int) -> Observable<DetailSearchNovels> {
@@ -81,7 +81,7 @@ struct TestSearchRepository: SearchRepository {
             SearchNovel(novelId: 2, novelImage: "https://i.pinimg.com/564x/f7/8f/e1/f78fe156e361a321b5d1334e5f21f031.jpg", novelTitle: "구리구리구리구리구리구리", novelAuthor: "구리스구리스최서연최서연", interestCount: 123, novelRating: 2.34, novelRatingCount: 21)]))
     }
     
-    func getDetailSearchNovels(genres: [String], isCompleted: Bool, novelRating: Float, keywordIds: [Int], page: Int) -> Observable<DetailSearchNovels> {
+    func getDetailSearchNovels(genres: [String], isCompleted: Bool?, novelRating: Float, keywordIds: [Int], page: Int) -> Observable<DetailSearchNovels> {
         return Observable.just(DetailSearchNovels(resultCount: 1116,
                                                   isLoadable: true,
                                                   novels: [SearchNovel(novelId: 2, novelImage: "https://i.pinimg.com/564x/f7/8f/e1/f78fe156e361a321b5d1334e5f21f031.jpg", novelTitle: "구리구리구리구리구리구리구리구리구리구리구리구리구리구리구리구리구구리구리구리구리구리구리구리구리구리구리구리구리구리구리구리구리구리구리리구리", novelAuthor: "구리스구리스최서연최서연구리구리구리구리구리구리구리구리구리구리구리구리", interestCount: 13, novelRating: 2.34, novelRatingCount: 221),
