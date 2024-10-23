@@ -15,6 +15,7 @@ final class DetailSearchResultView: UIView {
     //MARK: - UI Components
     
     private let headerView = DetailSearchResultHeaderView()
+    private let novelView = DetailSearchResultNovelView()
     
     //MARK: - Life Cycle
     
@@ -36,13 +37,20 @@ final class DetailSearchResultView: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubviews(headerView)
+        self.addSubviews(headerView,
+                         novelView)
     }
     
     private func setLayout() {
         headerView.snp.makeConstraints {
-            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top)
+            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).inset(1)
             $0.horizontalEdges.equalToSuperview()
+        }
+        
+        novelView.snp.makeConstraints {
+            $0.top.equalTo(headerView.snp.bottom)
+            $0.horizontalEdges.equalToSuperview().inset(20)
+            $0.bottom.equalToSuperview()
         }
     }
 }

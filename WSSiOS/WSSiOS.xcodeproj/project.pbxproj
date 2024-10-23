@@ -301,6 +301,7 @@
 		B9B0CBD62BE29EA0002F4CF6 /* HomeInterestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B0CBD52BE29EA0002F4CF6 /* HomeInterestView.swift */; };
 		B9B0CBD82BE2A09B002F4CF6 /* HomeInterestCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B0CBD72BE2A09B002F4CF6 /* HomeInterestCollectionViewCell.swift */; };
 		B9CEDA0D2C01C97E00E62247 /* HomeUnregisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9CEDA0C2C01C97E00E62247 /* HomeUnregisterView.swift */; };
+		B9DC62022CC9391A00E87DD7 /* DetailSearchResultNovelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9DC62012CC9391A00E87DD7 /* DetailSearchResultNovelView.swift */; };
 		B9E565F52C04517A00DB51FF /* NormalSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E565F42C04517A00DB51FF /* NormalSearchViewController.swift */; };
 		B9E565F92C04520A00DB51FF /* NormalSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E565F82C04520A00DB51FF /* NormalSearchView.swift */; };
 		B9E565FF2C0452AA00DB51FF /* NormalSearchEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E565FE2C0452AA00DB51FF /* NormalSearchEmptyView.swift */; };
@@ -716,6 +717,7 @@
 		B9B0CBD52BE29EA0002F4CF6 /* HomeInterestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeInterestView.swift; sourceTree = "<group>"; };
 		B9B0CBD72BE2A09B002F4CF6 /* HomeInterestCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeInterestCollectionViewCell.swift; sourceTree = "<group>"; };
 		B9CEDA0C2C01C97E00E62247 /* HomeUnregisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeUnregisterView.swift; sourceTree = "<group>"; };
+		B9DC62012CC9391A00E87DD7 /* DetailSearchResultNovelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailSearchResultNovelView.swift; sourceTree = "<group>"; };
 		B9E565F42C04517A00DB51FF /* NormalSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalSearchViewController.swift; sourceTree = "<group>"; };
 		B9E565F82C04520A00DB51FF /* NormalSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalSearchView.swift; sourceTree = "<group>"; };
 		B9E565FB2C04526000DB51FF /* NormalSearchCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalSearchCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -2112,6 +2114,7 @@
 				B974EA3C2CC8BC4400169639 /* DetailSearchCompletedStatusButton.swift */,
 				B974EA422CC8E57100169639 /* DetailSearchNovelRatingStatusButton.swift */,
 				B974EA462CC902E800169639 /* DetailSearchResultHeaderView.swift */,
+				B9DC62012CC9391A00E87DD7 /* DetailSearchResultNovelView.swift */,
 			);
 			path = DetailSearchAssistantView;
 			sourceTree = "<group>";
@@ -3024,6 +3027,7 @@
 				39CD5E082B4F2BBE00668B9A /* RegisterNormalKeywordSelectionView.swift in Sources */,
 				2C19A5002BBD56C900D4D151 /* WSSDropdownButton.swift in Sources */,
 				B96F0F902C28678800DA5483 /* FeedDetailContentView.swift in Sources */,
+				B9DC62022CC9391A00E87DD7 /* DetailSearchResultNovelView.swift in Sources */,
 				CDC03F4D2CA6C492002D301F /* NovelReviewService.swift in Sources */,
 				2CD2FE402C43E7B60033366C /* WSSAlertViewController.swift in Sources */,
 				2C8F89512C50E5200056895B /* MyPageDeleteIDReasonTableViewCell.swift in Sources */,
