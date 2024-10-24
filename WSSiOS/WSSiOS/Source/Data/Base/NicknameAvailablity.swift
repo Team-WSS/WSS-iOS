@@ -49,6 +49,7 @@ enum NicknameNotAvailableReason {
     case invalidChacterOrLimitExceeded
     case whiteSpaceIncluded
     case duplicated
+    case notChanged
     
     func description() -> String {
         switch self {
@@ -58,6 +59,8 @@ enum NicknameNotAvailableReason {
             return "공백은 포함될 수 없어요 "
         case .duplicated:
             return "이미 사용 중인 닉네임이에요"
+        case .notChanged:
+            return "현재 사용 중인 닉네임이에요"
         }
     }
 }

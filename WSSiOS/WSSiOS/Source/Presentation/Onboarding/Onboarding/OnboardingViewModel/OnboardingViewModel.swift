@@ -24,7 +24,6 @@ final class OnboardingViewModel: ViewModelType {
     private let nicknameTextFieldClear = PublishRelay<Void>()
     private let isDuplicateCheckButtonEnabled = BehaviorRelay<Bool>(value: false)
     private let isNicknameAvailable = BehaviorRelay<NicknameAvailablity>(value: .notStarted)
-    private let nicknameNotAvailableReason = BehaviorRelay<NicknameNotAvailableReason?>(value: nil)
     private let isNicknameNextButtonAvailable = BehaviorRelay<Bool>(value: false)
     
     // BirthGender
@@ -42,6 +41,7 @@ final class OnboardingViewModel: ViewModelType {
     private let moveToOnboardingSuccessViewController = PublishRelay<String>()
     private let stageIndex = BehaviorRelay<Int>(value: 0)
     private let progressOffset = BehaviorRelay<CGFloat>(value: 0)
+    private let showNetworkErrorView = PublishRelay<Void>()
     
     //MARK: - Life Cycle
     
@@ -79,7 +79,6 @@ final class OnboardingViewModel: ViewModelType {
         let nicknameTextFieldClear: Driver<Void>
         let isDuplicateCheckButtonEnabled: Driver<Bool>
         let nicknameAvailablity: Driver<NicknameAvailablity>
-        let nicknameNotAvailableReason: Driver<NicknameNotAvailableReason?>
         let isNicknameNextButtonEnabled: Driver<Bool>
         
         // BirthGender
@@ -115,6 +114,7 @@ final class OnboardingViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.nicknameTextFieldText
+            .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, text in
                 owner.checkNicknameAvailability(text)
             })
@@ -228,7 +228,6 @@ final class OnboardingViewModel: ViewModelType {
             nicknameTextFieldClear: nicknameTextFieldClear.asDriver(onErrorJustReturn: ()),
             isDuplicateCheckButtonEnabled: isDuplicateCheckButtonEnabled.asDriver(),
             nicknameAvailablity: isNicknameAvailable.asDriver(),
-            nicknameNotAvailableReason: nicknameNotAvailableReason.asDriver(),
             isNicknameNextButtonEnabled: isNicknameNextButtonAvailable.asDriver(),
             selectedGender: selectedGender.asDriver(),
             showDatePickerModal: showDatePickerModal,
@@ -264,22 +263,47 @@ final class OnboardingViewModel: ViewModelType {
     }
     
     private func isValidNicknameCharacters(_ text: String) -> Bool {
-        let pattern = "^[a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ]{2,10}$"
+        let pattern = "^[a-zA-Z0-9가-힣]{2,10}$"
         return text.range(of: pattern, options: .regularExpression) != nil
     }
     
     private func checkNicknameisValid(_ nickname: String, disposeBag: DisposeBag) {
         self.onboardingRepository.getNicknameisValid(nickname)
             .map { $0.isValid }
-            .subscribe(with: self, onNext: { owner, isValid in
+            .subscribe(with: self, onSuccess: { owner, isValid in
                 if isValid {
                     owner.isNicknameAvailable.accept(.available)
                 } else {
-                    owner.isNicknameAvailable.accept(.notAvailable(reason: .duplicated))
+                    owner.isNicknameAvailable.accept(
+                        .notAvailable(reason: .duplicated)
+                    )
                 }
-            }, onError: { owner, error in
-                owner.isNicknameAvailable.accept(.notAvailable(reason: .invalidChacterOrLimitExceeded))
-                print(error)
+            }, onFailure: { owner, error in
+                guard let networkError = error as? NewNetworkServiceError else {
+                    owner.showNetworkErrorView.accept(())
+                    return
+                }
+                
+                switch networkError {
+                case .httpError(let statusCode, let code, _):
+                    if (500...599).contains(statusCode) {
+                        owner.showNetworkErrorView.accept(())
+                    } else {
+                        let reason: NicknameNotAvailableReason
+                        switch code {
+                        case "USER-003":
+                            reason = .whiteSpaceIncluded
+                        case "USER-014":
+                            reason = .notChanged
+                        default:
+                            reason = .invalidChacterOrLimitExceeded
+                        }
+                        
+                        owner.isNicknameAvailable.accept(.notAvailable(reason: reason))
+                    }
+                default:
+                    owner.showNetworkErrorView.accept(())
+                }
             })
             .disposed(by: disposeBag)
     }
