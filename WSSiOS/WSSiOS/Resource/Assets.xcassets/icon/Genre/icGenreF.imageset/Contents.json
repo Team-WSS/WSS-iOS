@@ -1,8 +1,19 @@
 {
   "images" : [
     {
-      "filename" : "icGenreF.svg",
-      "idiom" : "universal"
+      "filename" : "genre=icGenreF.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "genre=icGenreF@2x.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "genre=icGenreF@3x.png",
+      "idiom" : "universal",
+      "scale" : "3x"
     }
   ],
   "info" : {
