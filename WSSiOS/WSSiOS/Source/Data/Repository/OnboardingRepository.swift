@@ -10,12 +10,12 @@ import Foundation
 import RxSwift
 
 protocol OnboardingRepository {
-    func getNicknameisValid(_ nickname: String) -> Observable<OnboardingResult>
+    func getNicknameisValid(_ nickname: String) -> Single<OnboardingResult>
 }
 
 struct TestOnboardingRepository: OnboardingRepository {
-    func getNicknameisValid(_ nickname: String) -> Observable<OnboardingResult> {
-        return Observable.just(OnboardingResult(isValid: false))
+    func getNicknameisValid(_ nickname: String) -> Single<OnboardingResult> {
+        return Single.just(OnboardingResult(isValid: false))
     }
 }
 
@@ -26,8 +26,8 @@ struct DefaultOnboardingRepository: OnboardingRepository {
         self.onboardingService = onboardingService
     }
     
-    func getNicknameisValid(_ nickname: String) -> Observable<OnboardingResult> {
-        return onboardingService.getNicknameisValid(nickname).asObservable()
+    func getNicknameisValid(_ nickname: String) -> Single<OnboardingResult> {
+        return onboardingService.getNicknameisValid(nickname)
     }
 }
 
