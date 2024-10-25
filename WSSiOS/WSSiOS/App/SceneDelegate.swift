@@ -25,9 +25,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let isLoggedIn = APIConstants.isLogined
         let navigationController = UINavigationController(rootViewController: WSSTabBarController(isLoggedIn: isLoggedIn))
         navigationController.isNavigationBarHidden = true
-        window?.rootViewController = navigationController
+        guard let window else { return }
+        UIView.transition(with: window,
+                          duration: 0.3,
+                          options: .transitionCrossDissolve,
+                          animations: {
+            window.rootViewController = navigationController },
+                          completion: nil)
     }
-
+    
     func setRootToLoginViewController() {
         let navigationController = UINavigationController(rootViewController: ModuleFactory.shared.makeLoginViewController())
         navigationController.isNavigationBarHidden = true
