@@ -45,8 +45,6 @@ final class OnboardingSuccessView: UIView {
         }
         
         descriptionLabel.do {
-            $0.applyWSSFont(.body2,
-                            with: StringLiterals.Onboarding.Success.description(name: "테스트"))
             $0.textColor = .wssGray300
         }
         

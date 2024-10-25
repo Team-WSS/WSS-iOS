@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>TEST_TOKEN</key>
+	<string>$(TEST_TOKEN)</string>
 	<key>BASE_URL</key>
 	<string>$(BASE_URL)</string>
 	<key>BUCKET_URL</key>
@@ -11,8 +13,6 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
-	<key>TEST_TOKEN</key>
-	<string>$(TEST_TOKEN)</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Pretendard-Bold.otf</string>
