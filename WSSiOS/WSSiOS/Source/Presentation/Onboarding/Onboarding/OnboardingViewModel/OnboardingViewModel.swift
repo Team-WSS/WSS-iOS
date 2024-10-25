@@ -28,7 +28,7 @@ final class OnboardingViewModel: ViewModelType {
     
     // BirthGender
     private let selectedGender = BehaviorRelay<OnboardingGender?>(value: nil)
-    private let selectedBirth = BehaviorRelay<Int?>(value: nil)
+    private let selectedBirth = BehaviorRelay<Int?>(value: 2000)
     private let isBirthGenderNextButtonAvailable = BehaviorRelay<Bool>(value: false)
     
     // GenrePreference

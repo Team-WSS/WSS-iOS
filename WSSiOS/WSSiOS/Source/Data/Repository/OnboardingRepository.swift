@@ -38,7 +38,7 @@ struct DefaultOnboardingRepository: OnboardingRepository {
     func postUserProfile(nickname: String, gender: OnboardingGender, birth: Int, genrePreference: [NewNovelGenre]) -> Single<Void> {
         let userInfoResult = UserInfoResult(
             nickname: nickname,
-            gender: gender.koreanString(),
+            gender: gender.rawValue,
             birth: birth,
             genrePreference: genrePreference.map { $0.rawValue }
         )
