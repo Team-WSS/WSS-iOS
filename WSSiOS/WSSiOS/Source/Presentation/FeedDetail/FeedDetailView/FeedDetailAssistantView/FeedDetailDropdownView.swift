@@ -13,9 +13,7 @@ import Then
 final class FeedDetailDropdownView: UIView {
     
     //MARK: - UI Components
-    
-    private let shadowBackgroundView = UIView()
-    
+
     let topDropdownButton = UIButton()
     private let topDropdownLabel = UILabel()
     
