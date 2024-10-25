@@ -93,7 +93,7 @@ final class FeedDetailView: UIView {
         }
         
         dropdownView.snp.makeConstraints {
-            $0.top.equalTo(profileView.snp.top).inset(-20)
+            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top)
             $0.trailing.equalToSuperview().inset(20)
         }
         
