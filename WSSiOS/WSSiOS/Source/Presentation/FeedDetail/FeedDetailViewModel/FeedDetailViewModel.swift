@@ -28,6 +28,11 @@ final class FeedDetailViewModel: ViewModelType {
     private let showDropdownView = BehaviorRelay<Bool>(value: false)
     private let isMyFeed = BehaviorRelay<Bool>(value: false)
     
+    let showSpoilerAlertView = PublishRelay<Void>()
+    let showImproperAlertView = PublishRelay<Void>()
+    let pushToFeedEditViewController = PublishRelay<Void>()
+    let showDeleteAlertView = PublishRelay<Void>()
+    
     //MARK: - Life Cycle
     
     init(feedDetailRepository: FeedDetailRepository, feedId: Int) {
@@ -40,9 +45,8 @@ final class FeedDetailViewModel: ViewModelType {
         let replyCollectionViewContentSize: Observable<CGSize?>
         let likeButtonDidTap: ControlEvent<Void>
         
-        let dropdownButtonDidTap: ControlEvent<Void>
-        let dropdownTopButtonDidTap: ControlEvent<Void>
-        let dropdownBottomButtonDidTap: ControlEvent<Void>
+        let dotsButtonDidTap: ControlEvent<Void>
+        let dropdownButtonDidTap: Observable<DropdownButtonType>
     }
     
     struct Output {
@@ -102,35 +106,23 @@ final class FeedDetailViewModel: ViewModelType {
         
         let popViewController = input.backButtonDidTap.asDriver()
         
-        input.dropdownButtonDidTap
+        input.dotsButtonDidTap
             .withLatestFrom(showDropdownView)
             .map { !$0 }
             .bind(to: showDropdownView)
             .disposed(by: disposeBag)
         
-        let pushToFeedEditViewController = input.dropdownTopButtonDidTap
-            .withLatestFrom(isMyFeed)
-            .flatMapLatest { isMyFeed -> Observable<Void> in
-                return isMyFeed ? Observable.just(()) : Observable.empty()
-            }
-        
-        let showDeleteAlertView = input.dropdownBottomButtonDidTap
-            .withLatestFrom(isMyFeed)
-            .flatMapLatest { isMyFeed -> Observable<Void> in
-                return isMyFeed ? Observable.just(()) : Observable.empty()
-            }
-        
-        let showSpoilerAlertView = input.dropdownTopButtonDidTap
-            .withLatestFrom(isMyFeed)
-            .flatMapLatest { isMyFeed -> Observable<Void> in
-                return !isMyFeed ? Observable.just(()) : Observable.empty()
-            }
-        
-        let showImproperAlertView = input.dropdownBottomButtonDidTap
-            .withLatestFrom(isMyFeed)
-            .flatMapLatest { isMyFeed -> Observable<Void> in
-                return !isMyFeed ? Observable.just(()) : Observable.empty()
-            }
+        input.dropdownButtonDidTap
+            .map { ($0, self.isMyFeed.value) }
+            .subscribe( with: self, onNext: { owner, result in
+                switch result {
+                case (.top, true): owner.pushToFeedEditViewController.accept(())
+                case (.bottom, true): owner.showDeleteAlertView.accept(())
+                case (.top, false): owner.showSpoilerAlertView.accept(())
+                case (.bottom, false): owner.showImproperAlertView.accept(())
+                }
+            })
+            .disposed(by: disposeBag)
         
         return Output(feedData: feedData.asObservable(),
                       commentsData: commentsData.asDriver(),
@@ -140,10 +132,10 @@ final class FeedDetailViewModel: ViewModelType {
                       popViewController: popViewController,
                       showDropdownView: showDropdownView.asDriver(),
                       isMyFeed: isMyFeed.asDriver(),
-                      showSpoilerAlertView: showSpoilerAlertView,
-                      showImproperAlertView: showImproperAlertView,
-                      pushToFeedEditViewController: pushToFeedEditViewController,
-                      showDeleteAlertView: showDeleteAlertView)
+                      showSpoilerAlertView: showSpoilerAlertView.asObservable(),
+                      showImproperAlertView: showImproperAlertView.asObservable(),
+                      pushToFeedEditViewController: pushToFeedEditViewController.asObservable(),
+                      showDeleteAlertView: showDeleteAlertView.asObservable())
     }
     
     //MARK: - API
@@ -206,4 +198,9 @@ final class FeedDetailViewModel: ViewModelType {
         
         return numberOfLines
     }
+}
+
+enum DropdownButtonType {
+    case top
+    case bottom
 }

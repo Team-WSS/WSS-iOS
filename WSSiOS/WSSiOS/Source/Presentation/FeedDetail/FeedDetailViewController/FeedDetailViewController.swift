@@ -79,13 +79,18 @@ final class FeedDetailViewController: UIViewController {
     }
     
     private func bindViewModel() {
+        let dropdownButtonDidTap = Observable.merge(
+            rootView.dropdownView.topDropdownButton.rx.tap.map { DropdownButtonType.top },
+            rootView.dropdownView.bottomDropdownButton.rx.tap.map { DropdownButtonType.bottom }
+        )
+        
         let input = FeedDetailViewModel.Input(
             backButtonDidTap: rootView.backButton.rx.tap,
             replyCollectionViewContentSize: rootView.replyView.replyCollectionView.rx.observe(CGSize.self, "contentSize"),
             likeButtonDidTap: rootView.feedContentView.reactView.likeButton.rx.tap,
-            dropdownButtonDidTap: rootView.dropdownButton.rx.tap,
-            dropdownTopButtonDidTap: rootView.dropdownView.topDropdownButton.rx.tap,
-            dropdownBottomButtonDidTap: rootView.dropdownView.bottomDropdownButton.rx.tap)
+            dotsButtonDidTap: rootView.dropdownButton.rx.tap,
+            dropdownButtonDidTap: dropdownButtonDidTap)
+        
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.feedData
