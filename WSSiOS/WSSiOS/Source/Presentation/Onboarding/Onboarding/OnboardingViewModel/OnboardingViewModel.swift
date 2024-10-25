@@ -38,6 +38,7 @@ final class OnboardingViewModel: ViewModelType {
     // Total
     private let moveToLastStage = PublishRelay<Void>()
     private let moveToNextStage = PublishRelay<Void>()
+    private let endOnboarding = PublishRelay<Void>()
     private let moveToOnboardingSuccessViewController = PublishRelay<String>()
     private let stageIndex = BehaviorRelay<Int>(value: 0)
     private let progressOffset = BehaviorRelay<CGFloat>(value: 0)
@@ -185,7 +186,7 @@ final class OnboardingViewModel: ViewModelType {
             .throttle(.seconds(1), scheduler: MainScheduler.instance)
             .withLatestFrom(nicknameText)
             .bind(with: self, onNext: { owner, nickname in
-                owner.moveToOnboardingSuccessViewController.accept(nickname)
+                owner.endOnboarding.accept(())
             })
             .disposed(by: disposeBag)
         
@@ -205,9 +206,8 @@ final class OnboardingViewModel: ViewModelType {
             .throttle(.seconds(1), scheduler: MainScheduler.instance)
             .withLatestFrom(stageIndex)
             .bind(with: self, onNext: { owner, stage in
-                // 만든 부분까지만 보여주고, 바로 홈으로 이동. 지금은 1번까지 만들어져 있음.
                 if stage >= 2 {
-                    owner.moveToOnboardingSuccessViewController.accept(owner.nicknameText.value)
+                    owner.endOnboarding.accept(())
                 } else if stage >= 0 {
                     owner.stageIndex.accept(stage + 1)
                     owner.moveToNextStage.accept(())
@@ -220,6 +220,12 @@ final class OnboardingViewModel: ViewModelType {
                 let screenWidth = UIScreen.main.bounds.width
                 let offset = screenWidth - (offset.x + screenWidth)/3
                 owner.progressOffset.accept(offset)
+            })
+            .disposed(by: disposeBag)
+        
+        endOnboarding
+            .bind(with: self, onNext: { owner, _ in
+                owner.postUserProfile(disposeBag: disposeBag)
             })
             .disposed(by: disposeBag)
         
@@ -306,5 +312,27 @@ final class OnboardingViewModel: ViewModelType {
                 }
             })
             .disposed(by: disposeBag)
+    }
+    
+    private func postUserProfile(disposeBag: DisposeBag) {
+        guard let gender = self.selectedGender.value,
+              let birth = self.selectedBirth.value else {
+            print("RetrunToGenderBirthPage")
+            return
+        }
+        
+        self.onboardingRepository.postUserProfile(
+            nickname: self.nicknameText.value,
+            gender: gender,
+            birth: birth,
+            genrePreference: self.selectedGenres.value
+        )
+        .subscribe(with: self, onSuccess: { owner, _ in
+            owner.moveToOnboardingSuccessViewController.accept(owner.nicknameText.value)
+        }, onFailure: { owner, error in
+            owner.showNetworkErrorView.accept(())
+            print(error)
+        })
+        .disposed(by: disposeBag)
     }
 }

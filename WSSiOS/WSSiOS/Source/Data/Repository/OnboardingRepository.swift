@@ -11,11 +11,16 @@ import RxSwift
 
 protocol OnboardingRepository {
     func getNicknameisValid(_ nickname: String) -> Single<OnboardingResult>
+    func postUserProfile(nickname: String, gender: OnboardingGender, birth: Int, genrePreference: [NewNovelGenre]) -> Single<Void>
 }
 
 struct TestOnboardingRepository: OnboardingRepository {
     func getNicknameisValid(_ nickname: String) -> Single<OnboardingResult> {
         return Single.just(OnboardingResult(isValid: false))
+    }
+    
+    func postUserProfile(nickname: String, gender: OnboardingGender, birth: Int, genrePreference: [NewNovelGenre]) -> Single<Void> {
+        return Single.just(())
     }
 }
 
@@ -28,6 +33,16 @@ struct DefaultOnboardingRepository: OnboardingRepository {
     
     func getNicknameisValid(_ nickname: String) -> Single<OnboardingResult> {
         return onboardingService.getNicknameisValid(nickname)
+    }
+    
+    func postUserProfile(nickname: String, gender: OnboardingGender, birth: Int, genrePreference: [NewNovelGenre]) -> Single<Void> {
+        let userInfoResult = UserInfoResult(
+            nickname: nickname,
+            gender: gender.koreanString(),
+            birth: birth,
+            genrePreference: genrePreference.map { $0.rawValue }
+        )
+        return onboardingService.postUserProfile(userInfoResult: userInfoResult)
     }
 }
 
