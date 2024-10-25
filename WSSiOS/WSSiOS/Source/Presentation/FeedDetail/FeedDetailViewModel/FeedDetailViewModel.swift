@@ -50,12 +50,12 @@ final class FeedDetailViewModel: ViewModelType {
     }
     
     struct Input {
-        let backButtonTapped: ControlEvent<Void>
+        let backButtonDidTap: ControlEvent<Void>
         let replyCollectionViewContentSize: Observable<CGSize?>
-        let likeButtonTapped: ControlEvent<Void>
+        let likeButtonDidTap: ControlEvent<Void>
         
         // 작품 연결
-        let linkNovelViewTapped: Observable<UITapGestureRecognizer>
+        let linkNovelViewDidTap: Observable<UITapGestureRecognizer>
         
         // 댓글 작성
         let viewDidTap: Observable<UITapGestureRecognizer>
@@ -63,7 +63,7 @@ final class FeedDetailViewModel: ViewModelType {
         let commentContentViewDidBeginEditing: ControlEvent<Void>
         let commentContentViewDidEndEditing: ControlEvent<Void>
         let replyCommentCollectionViewSwipeGesture: Observable<UISwipeGestureRecognizer>
-        let sendButtonTapped: ControlEvent<Void>
+        let sendButtonDidTap: ControlEvent<Void>
     }
     
     struct Output {
@@ -107,12 +107,12 @@ final class FeedDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        let backButtonEnabled = input.backButtonTapped.asDriver()
+        let backButtonEnabled = input.backButtonDidTap.asDriver()
         
         let replyCollectionViewContentSize = input.replyCollectionViewContentSize
             .map { $0?.height ?? 0 }.asDriver(onErrorJustReturn: 0)
         
-        input.likeButtonTapped
+        input.likeButtonDidTap
             .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
             .withLatestFrom(likeButtonState)
             .flatMapLatest { isLiked -> Observable<Void> in
@@ -128,7 +128,7 @@ final class FeedDetailViewModel: ViewModelType {
             .subscribe()
             .disposed(by: disposeBag)
         
-        input.linkNovelViewTapped
+        input.linkNovelViewDidTap
             .subscribe(with: self, onNext: { owner, _ in
                 if let novelId = owner.novelId {
                     owner.presentNovelDetailViewController.accept(novelId)
@@ -178,7 +178,7 @@ final class FeedDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.sendButtonTapped
+        input.sendButtonDidTap
             .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
             .flatMapLatest { () -> Observable<Void> in
                 return self.postComment(self.feedId, self.updatedCommentContent)

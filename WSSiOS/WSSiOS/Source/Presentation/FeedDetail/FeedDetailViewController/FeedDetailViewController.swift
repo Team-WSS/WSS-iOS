@@ -90,16 +90,16 @@ final class FeedDetailViewController: UIViewController {
             .asObservable()
         
         let input = FeedDetailViewModel.Input(
-            backButtonTapped: rootView.backButton.rx.tap,
+            backButtonDidTap: rootView.backButton.rx.tap,
             replyCollectionViewContentSize: rootView.replyView.replyCollectionView.rx.observe(CGSize.self, "contentSize"),
-            likeButtonTapped: rootView.feedContentView.reactView.likeButton.rx.tap,
-            linkNovelViewTapped: rootView.feedContentView.linkNovelView.rx.tapGesture().when(.recognized).asObservable(),
+            likeButtonDidTap: rootView.feedContentView.reactView.likeButton.rx.tap,
+            linkNovelViewDidTap: rootView.feedContentView.linkNovelView.rx.tapGesture().when(.recognized).asObservable(),
             viewDidTap: viewDidTap,
             commentContentUpdated: rootView.replyWritingView.replyWritingTextView.rx.text.orEmpty.distinctUntilChanged().asObservable(),
             commentContentViewDidBeginEditing: rootView.replyWritingView.replyWritingTextView.rx.didBeginEditing,
             commentContentViewDidEndEditing: rootView.replyWritingView.replyWritingTextView.rx.didEndEditing,
             replyCommentCollectionViewSwipeGesture: replyCommentCollectionViewSwipeGesture,
-            sendButtonTapped: rootView.replyWritingView.replyButton.rx.tap)
+            sendButtonDidTap: rootView.replyWritingView.replyButton.rx.tap)
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.feedData
