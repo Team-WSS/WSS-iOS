@@ -285,7 +285,7 @@ final class OnboardingViewModel: ViewModelType {
                     )
                 }
             }, onFailure: { owner, error in
-                guard let networkError = error as? NewNetworkServiceError else {
+                guard let networkError = error as? ServiceError else {
                     owner.showNetworkErrorView.accept(())
                     return
                 }

@@ -1,5 +1,5 @@
 //
-//  NewNetworkingServiceError.swift
+//  ServiceError.swift
 //  WSSiOS
 //
 //  Created by YunhakLee on 10/6/24.
@@ -7,8 +7,7 @@
 
 import Foundation
 
-enum NewNetworkServiceError: Error, CustomStringConvertible {
-    case invalidURLError
+enum ServiceError: Error, CustomStringConvertible {
     case httpError(statusCode: Int, code: String?, message: String?)
     case responseDecodingError
     case requestBodyEncodingError
@@ -28,8 +27,6 @@ enum NewNetworkServiceError: Error, CustomStringConvertible {
     
     var description: String {
         switch self {
-        case .invalidURLError:
-            return "INVALID_URL_ERROR"
         case .httpError(let statusCode, let code, let message):
             switch statusCode {
             case 400:

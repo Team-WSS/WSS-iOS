@@ -45,12 +45,12 @@ extension DefaultOnboardingService: OnboardingService {
                     }
                     
                     guard let response = response as? HTTPURLResponse else {
-                        single(.failure(NewNetworkServiceError.unknownError))
+                        single(.failure(ServiceError.unknownError))
                         return
                     }
                     
                     guard let data = data else {
-                        single(.failure(NewNetworkServiceError.emptyDataError))
+                        single(.failure(ServiceError.emptyDataError))
                         return
                     }
                     
@@ -59,11 +59,11 @@ extension DefaultOnboardingService: OnboardingService {
                             let result = try self.decode(data: data, to: OnboardingResult.self)
                             single(.success(result))
                         } catch {
-                            single(.failure(NewNetworkServiceError.responseDecodingError))
+                            single(.failure(ServiceError.responseDecodingError))
                         }
                     } else {
                         let result = try? self.decode(data: data, to: ServerErrorResponse.self)
-                        single(.failure(NewNetworkServiceError(statusCode: response.statusCode, errorResponse: result)))
+                        single(.failure(ServiceError(statusCode: response.statusCode, errorResponse: result)))
                     }
                 }
                 task.resume()
@@ -101,7 +101,7 @@ extension DefaultOnboardingService: OnboardingService {
                     }
                     
                     guard let response = response as? HTTPURLResponse else {
-                        single(.failure(NewNetworkServiceError.unknownError))
+                        single(.failure(ServiceError.unknownError))
                         return
                     }
                     
@@ -110,7 +110,7 @@ extension DefaultOnboardingService: OnboardingService {
                     } else {
                         if let data,
                            let result = try? self.decode(data: data, to: ServerErrorResponse.self) {
-                            single(.failure(NewNetworkServiceError(statusCode: response.statusCode, errorResponse: result)))
+                            single(.failure(ServiceError(statusCode: response.statusCode, errorResponse: result)))
                         }
                     }
                 }
