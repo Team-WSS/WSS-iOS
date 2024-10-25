@@ -76,7 +76,7 @@ final class LoginViewModel: ViewModelType {
             .asDriver(onErrorJustReturn: ())
         
         input.loginButtonDidTap
-            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
             .flatMapLatest { type in
                 self.repositoryLoginMethod(type: type)
             }
