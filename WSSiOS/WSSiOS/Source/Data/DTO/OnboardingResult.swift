@@ -10,3 +10,10 @@ import Foundation
 struct OnboardingResult: Codable {
     let isValid: Bool
 }
+
+struct UserInfoResult: Codable {
+    let nickname: String
+    let gender: String
+    let birth: Int
+    let genrePreference: [String]
+}

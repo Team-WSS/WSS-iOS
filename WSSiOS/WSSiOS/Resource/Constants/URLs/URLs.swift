@@ -10,6 +10,7 @@ import Foundation
 enum URLs {
     enum Onboarding {
         static let nicknameCheck = "/users/nickname/check"
+        static let postProfile = "/users/profile"
     }
     
     enum User {
