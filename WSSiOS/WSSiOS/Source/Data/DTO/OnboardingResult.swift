@@ -15,5 +15,5 @@ struct UserInfoResult: Codable {
     let nickname: String
     let gender: String
     let birth: Int
-    let genrePreference: [String]
+    let genrePreferences: [String]
 }

@@ -82,6 +82,7 @@ extension DefaultOnboardingService: OnboardingService {
         guard let userInfo = try? JSONEncoder().encode(userInfoResult) else {
             return Single.error(NetworkServiceError.invalidRequestError)
         }
+        print(userInfo)
         
         return Single.create { single in
             do {

@@ -325,7 +325,7 @@ final class OnboardingViewModel: ViewModelType {
             nickname: self.nicknameText.value,
             gender: gender,
             birth: birth,
-            genrePreference: self.selectedGenres.value
+            genrePreferences: self.selectedGenres.value
         )
         .subscribe(with: self, onSuccess: { owner, _ in
             owner.moveToOnboardingSuccessViewController.accept(owner.nicknameText.value)
