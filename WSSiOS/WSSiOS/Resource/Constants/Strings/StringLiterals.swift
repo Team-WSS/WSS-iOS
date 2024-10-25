@@ -487,6 +487,14 @@ enum StringLiterals {
         
         static let reload = "초기화"
         static let searchNovel = "작품 찾기"
+        
+        static let world = "세계관"
+        static let subject = "소재"
+        static let character = "캐릭터"
+        static let relation = "관계"
+        static let vibe = "분위기/전개"
+        
+        static let placeHolder = "키워드를 검색하세요"
     }
     
     enum Memo {

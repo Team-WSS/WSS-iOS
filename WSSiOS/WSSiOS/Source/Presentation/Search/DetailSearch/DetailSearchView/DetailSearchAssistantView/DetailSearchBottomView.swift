@@ -16,11 +16,11 @@ final class DetailSearchBottomView: UIView {
     
     private let bottomStackView = UIStackView()
     
-    let reloadButtonView = UIView()
-    private let reloadImageView = UIImageView()
-    private let reloadButtonLabel = UILabel()
+    let resetButton = UIButton()
+    private let resetImageView = UIImageView()
+    private let resetButtonLabel = UILabel()
     
-    let searchButtonView = UIView()
+    let searchButton = UIButton()
     private let searchButtonLabel = UILabel()
     
     //MARK: - Life Cycle
@@ -44,21 +44,21 @@ final class DetailSearchBottomView: UIView {
             $0.spacing = 0
         }
         
-        reloadButtonView.do {
+        resetButton.do {
             $0.backgroundColor = .wssGray50
         }
         
-        reloadImageView.do {
+        resetImageView.do {
             $0.image = .icReload.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray300)
             $0.contentMode = .scaleAspectFit
         }
         
-        reloadButtonLabel.do {
+        resetButtonLabel.do {
             $0.applyWSSFont(.title2, with: StringLiterals.DetailSearch.reload)
             $0.textColor = .wssGray300
         }
         
-        searchButtonView.do {
+        searchButton.do {
             $0.backgroundColor = .wssPrimary100
         }
         
@@ -69,11 +69,11 @@ final class DetailSearchBottomView: UIView {
     }
     
     private func setHierarchy() {
-        reloadButtonView.addSubviews(reloadImageView,
-                                     reloadButtonLabel)
-        searchButtonView.addSubview(searchButtonLabel)
-        bottomStackView.addArrangedSubviews(reloadButtonView
-                                            ,searchButtonView)
+        resetButton.addSubviews(resetImageView,
+                                resetButtonLabel)
+        searchButton.addSubview(searchButtonLabel)
+        bottomStackView.addArrangedSubviews(resetButton,
+                                            searchButton)
         self.addSubview(bottomStackView)
     }
     
@@ -82,22 +82,22 @@ final class DetailSearchBottomView: UIView {
             $0.edges.equalToSuperview()
             $0.height.equalTo(62)
             
-            reloadButtonView.snp.makeConstraints {
+            resetButton.snp.makeConstraints {
                 $0.width.equalTo(133)
                 
-                reloadImageView.snp.makeConstraints {
+                resetImageView.snp.makeConstraints {
                     $0.top.equalToSuperview().inset(24)
                     $0.leading.equalToSuperview().inset(37)
                     $0.size.equalTo(14)
                 }
                 
-                reloadButtonLabel.snp.makeConstraints {
+                resetButtonLabel.snp.makeConstraints {
                     $0.top.equalToSuperview().inset(20)
-                    $0.leading.equalTo(reloadImageView.snp.trailing).offset(4)
+                    $0.leading.equalTo(resetImageView.snp.trailing).offset(4)
                 }
             }
             
-            searchButtonView.snp.makeConstraints {
+            searchButton.snp.makeConstraints {
                 $0.width.equalTo(UIScreen.main.bounds.width - 133)
                 
                 searchButtonLabel.snp.makeConstraints {

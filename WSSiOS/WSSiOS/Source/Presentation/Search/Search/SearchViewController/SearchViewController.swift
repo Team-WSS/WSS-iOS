@@ -98,10 +98,10 @@ final class SearchViewController: UIViewController {
         
         output.induceButtonEnabled
             .bind(with: self, onNext: { owner, _ in
-                let detailSearchViewController = DetailSearchViewController(viewModel: DetailSearchViewModel())
+                let detailSearchViewController = DetailSearchViewController(viewModel: DetailSearchViewModel(keywordRepository: DefaultKeywordRepository(keywordService: DefaultKeywordService()), selectedKeywordList: []))
                 detailSearchViewController.navigationController?.isNavigationBarHidden = false
                 detailSearchViewController.hidesBottomBarWhenPushed = true
-                owner.navigationController?.pushViewController(detailSearchViewController, animated: false)
+                owner.presentModalViewController(detailSearchViewController)
             })
             .disposed(by: disposeBag)
         
