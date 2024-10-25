@@ -36,13 +36,13 @@ final class FeedDetailViewModel: ViewModelType {
     }
     
     struct Input {
-        let backButtonTapped: ControlEvent<Void>
+        let backButtonDidTap: ControlEvent<Void>
         let replyCollectionViewContentSize: Observable<CGSize?>
-        let likeButtonTapped: ControlEvent<Void>
+        let likeButtonDidTap: ControlEvent<Void>
         
-        let dropdownButtonTapped: ControlEvent<Void>
-        let dropdownTopButtonTapped: ControlEvent<Void>
-        let dropdownBottomButtonTapped: ControlEvent<Void>
+        let dropdownButtonDidTap: ControlEvent<Void>
+        let dropdownTopButtonDidTap: ControlEvent<Void>
+        let dropdownBottomButtonDidTap: ControlEvent<Void>
     }
     
     struct Output {
@@ -50,8 +50,8 @@ final class FeedDetailViewModel: ViewModelType {
         let commentsData: Driver<[FeedComment]>
         let replyCollectionViewHeight: Driver<CGFloat>
         let likeCount: Driver<Int>
-        let likeButtonEnabled: Driver<Bool>
-        let backButtonEnabled: Driver<Void>
+        let likeButtonToggle: Driver<Bool>
+        let popViewController: Driver<Void>
         
         let showDropdownView: Driver<Bool>
         let isMyFeed: Driver<Bool>
@@ -84,7 +84,7 @@ final class FeedDetailViewModel: ViewModelType {
         let replyCollectionViewContentSize = input.replyCollectionViewContentSize
             .map { $0?.height ?? 0 }.asDriver(onErrorJustReturn: 0)
         
-        input.likeButtonTapped
+        input.likeButtonDidTap
             .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
             .withLatestFrom(likeButtonState)
             .flatMapLatest { isLiked -> Observable<Void> in
@@ -100,33 +100,33 @@ final class FeedDetailViewModel: ViewModelType {
             .subscribe()
             .disposed(by: disposeBag)
         
-        let backButtonEnabled = input.backButtonTapped.asDriver()
+        let popViewController = input.backButtonDidTap.asDriver()
         
-        input.dropdownButtonTapped
+        input.dropdownButtonDidTap
             .withLatestFrom(showDropdownView)
             .map { !$0 }
             .bind(to: showDropdownView)
             .disposed(by: disposeBag)
         
-        let pushToFeedEditViewController = input.dropdownTopButtonTapped
+        let pushToFeedEditViewController = input.dropdownTopButtonDidTap
             .withLatestFrom(isMyFeed)
             .flatMapLatest { isMyFeed -> Observable<Void> in
                 return isMyFeed ? Observable.just(()) : Observable.empty()
             }
         
-        let showDeleteAlertView = input.dropdownBottomButtonTapped
+        let showDeleteAlertView = input.dropdownBottomButtonDidTap
             .withLatestFrom(isMyFeed)
             .flatMapLatest { isMyFeed -> Observable<Void> in
                 return isMyFeed ? Observable.just(()) : Observable.empty()
             }
         
-        let showSpoilerAlertView = input.dropdownTopButtonTapped
+        let showSpoilerAlertView = input.dropdownTopButtonDidTap
             .withLatestFrom(isMyFeed)
             .flatMapLatest { isMyFeed -> Observable<Void> in
                 return !isMyFeed ? Observable.just(()) : Observable.empty()
             }
         
-        let showImproperAlertView = input.dropdownBottomButtonTapped
+        let showImproperAlertView = input.dropdownBottomButtonDidTap
             .withLatestFrom(isMyFeed)
             .flatMapLatest { isMyFeed -> Observable<Void> in
                 return !isMyFeed ? Observable.just(()) : Observable.empty()
@@ -136,8 +136,8 @@ final class FeedDetailViewModel: ViewModelType {
                       commentsData: commentsData.asDriver(),
                       replyCollectionViewHeight: replyCollectionViewContentSize,
                       likeCount: likeCount.asDriver(),
-                      likeButtonEnabled: likeButtonState.asDriver(),
-                      backButtonEnabled: backButtonEnabled,
+                      likeButtonToggle: likeButtonState.asDriver(),
+                      popViewController: popViewController,
                       showDropdownView: showDropdownView.asDriver(),
                       isMyFeed: isMyFeed.asDriver(),
                       showSpoilerAlertView: showSpoilerAlertView,

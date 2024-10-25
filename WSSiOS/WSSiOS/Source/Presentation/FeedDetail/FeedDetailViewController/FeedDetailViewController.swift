@@ -80,12 +80,12 @@ final class FeedDetailViewController: UIViewController {
     
     private func bindViewModel() {
         let input = FeedDetailViewModel.Input(
-            backButtonTapped: rootView.backButton.rx.tap,
+            backButtonDidTap: rootView.backButton.rx.tap,
             replyCollectionViewContentSize: rootView.replyView.replyCollectionView.rx.observe(CGSize.self, "contentSize"),
-            likeButtonTapped: rootView.feedContentView.reactView.likeButton.rx.tap,
-            dropdownButtonTapped: rootView.dropdownButton.rx.tap,
-            dropdownTopButtonTapped: rootView.dropdownView.topDropdownButton.rx.tap,
-            dropdownBottomButtonTapped: rootView.dropdownView.bottomDropdownButton.rx.tap)
+            likeButtonDidTap: rootView.feedContentView.reactView.likeButton.rx.tap,
+            dropdownButtonDidTap: rootView.dropdownButton.rx.tap,
+            dropdownTopButtonDidTap: rootView.dropdownView.topDropdownButton.rx.tap,
+            dropdownBottomButtonDidTap: rootView.dropdownView.bottomDropdownButton.rx.tap)
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.feedData
@@ -103,7 +103,7 @@ final class FeedDetailViewController: UIViewController {
                 }
                 .disposed(by: disposeBag)
         
-        output.likeButtonEnabled
+        output.likeButtonToggle
             .drive(with: self, onNext: { owner, isLiked in
                 owner.rootView.feedContentView.reactView.updateLikeState(isLiked)
             })
@@ -121,7 +121,7 @@ final class FeedDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.backButtonEnabled
+        output.popViewController
             .drive(with: self, onNext: { owner, _ in
                 owner.popToLastViewController()
             })
