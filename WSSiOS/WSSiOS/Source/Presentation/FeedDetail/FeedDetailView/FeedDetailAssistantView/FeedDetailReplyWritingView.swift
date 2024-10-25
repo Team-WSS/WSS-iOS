@@ -62,6 +62,9 @@ final class FeedDetailReplyWritingView: UIView {
                 $0.tintColor = .wssBlack
                 $0.backgroundColor = .wssGray50
                 $0.textContainerInset = UIEdgeInsets(top: 7, left: 0, bottom: 7, right: 0)
+                
+                $0.textContainer.lineFragmentPadding = 0
+                $0.textContainerInset = .zero
             }
             
             replyButton.do {
@@ -103,7 +106,7 @@ final class FeedDetailReplyWritingView: UIView {
                 $0.height.equalTo(21)
                 
                 replyWritingPlaceHolderLabel.snp.makeConstraints {
-                    $0.leading.equalToSuperview().inset(6)
+                    $0.leading.equalToSuperview()
                     $0.centerY.equalToSuperview()
                 }
             }
