@@ -54,13 +54,18 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func registerCell() {
-        rootView.detailSearchInfoView.genreCollectionView.register(DetailSearchInfoGenreCollectionViewCell.self,
-                                                                   forCellWithReuseIdentifier: DetailSearchInfoGenreCollectionViewCell.cellIdentifier)
+        //정보뷰
+        rootView.detailSearchInfoView.genreCollectionView
+            .register(DetailSearchInfoGenreCollectionViewCell.self,
+                      forCellWithReuseIdentifier: DetailSearchInfoGenreCollectionViewCell.cellIdentifier)
+        rootView.detailSearchKeywordView.novelSelectedKeywordListView.selectedKeywordCollectionView
         
-        rootView.detailSearchKeywordView.novelSelectedKeywordListView.selectedKeywordCollectionView.register(NovelSelectedKeywordCollectionViewCell.self,
-                                                                                                             forCellWithReuseIdentifier: NovelSelectedKeywordCollectionViewCell.cellIdentifier)
-        rootView.detailSearchKeywordView.novelKeywordSelectSearchResultView.searchResultCollectionView.register(NovelKeywordSelectSearchResultCollectionViewCell.self,
-                                                                                                                forCellWithReuseIdentifier: NovelKeywordSelectSearchResultCollectionViewCell.cellIdentifier)
+        //키워드뷰
+            .register(NovelSelectedKeywordCollectionViewCell.self,
+                      forCellWithReuseIdentifier: NovelSelectedKeywordCollectionViewCell.cellIdentifier)
+        rootView.detailSearchKeywordView.novelKeywordSelectSearchResultView.searchResultCollectionView
+            .register(NovelKeywordSelectSearchResultCollectionViewCell.self,
+                      forCellWithReuseIdentifier: NovelKeywordSelectSearchResultCollectionViewCell.cellIdentifier)
     }
     
     private func setDelegate() {
@@ -69,11 +74,13 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
             .setDelegate(self)
             .disposed(by: disposeBag)
         
-        rootView.detailSearchKeywordView.novelSelectedKeywordListView.selectedKeywordCollectionView.rx
+        rootView.detailSearchKeywordView.novelSelectedKeywordListView
+            .selectedKeywordCollectionView.rx
             .setDelegate(self)
             .disposed(by: disposeBag)
         
-        rootView.detailSearchKeywordView.novelKeywordSelectSearchResultView.searchResultCollectionView.rx
+        rootView.detailSearchKeywordView.novelKeywordSelectSearchResultView
+            .searchResultCollectionView.rx
             .setDelegate(self)
             .disposed(by: disposeBag)
     }
