@@ -5,7 +5,7 @@
 //  Created by Seoyeon Choi on 10/23/24.
 //
 
-import Foundation
+import UIKit
 
 import RxSwift
 import RxCocoa
@@ -19,17 +19,20 @@ final class DetailSearchResultViewModel: ViewModelType {
     private let popViewController = PublishRelay<Void>()
     private let novelCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
     private let pushToNovelDetailViewController = PublishRelay<Int>()
+    private let presentDetailSearchModal = PublishRelay<Void>()
     
     struct Input {
         let backButtonDidTap: ControlEvent<Void>
         let novelCollectionViewContentSize: Observable<CGSize?>
         let novelResultCellSelected: ControlEvent<IndexPath>
+        let searchHeaderViewDidTap: Observable<UITapGestureRecognizer>
     }
     
     struct Output {
         let popViewController: Observable<Void>
         let novelCollectionViewHeight: Observable<CGFloat>
         let pushToNovelDetailViewController: Observable<Int>
+        let presentDetailSearchModal: Observable<Void>
     }
     
     init(detailSearchNovels: DetailSearchNovels) {
@@ -59,8 +62,15 @@ final class DetailSearchResultViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        input.searchHeaderViewDidTap
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.presentDetailSearchModal.accept(())
+            })
+            .disposed(by: disposeBag)
+        
         return Output(popViewController: popViewController.asObservable(),
                       novelCollectionViewHeight: novelCollectionViewHeight.asObservable(),
-                      pushToNovelDetailViewController: pushToNovelDetailViewController.asObservable())
+                      pushToNovelDetailViewController: pushToNovelDetailViewController.asObservable(),
+                      presentDetailSearchModal: presentDetailSearchModal.asObservable())
     }
 }

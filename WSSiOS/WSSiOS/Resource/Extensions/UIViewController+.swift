@@ -358,6 +358,11 @@ extension UIViewController {
         viewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(viewController, animated: true)
     }
+    
+    func presentToDetailSearchViewController(selectedKeywordList: [KeywordData]) {
+        let detailSearchViewController = DetailSearchViewController(viewModel: DetailSearchViewModel(keywordRepository: DefaultKeywordRepository(keywordService: DefaultKeywordService()), searchRepository: DefaultSearchRepository(searchService: DefaultSearchService()), selectedKeywordList: selectedKeywordList))
+        self.presentModalViewController(detailSearchViewController)
+    }
 }
 
 extension UIViewController: UIGestureRecognizerDelegate {
