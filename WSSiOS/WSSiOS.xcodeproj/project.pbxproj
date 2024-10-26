@@ -315,6 +315,7 @@
 		C9A3CD452C8C3BA500B43BFB /* SearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A3CD442C8C3BA500B43BFB /* SearchService.swift */; };
 		C9AF1AE22BCC234300208BC9 /* HomeTodayPopularView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF1AE12BCC234300208BC9 /* HomeTodayPopularView.swift */; };
 		C9AF1AE42BCC28EE00208BC9 /* HomeTodayPopularCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF1AE32BCC28EE00208BC9 /* HomeTodayPopularCollectionViewCell.swift */; };
+		C9CE229B2CBD5ECE00996225 /* FeedDetailDropdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9CE229A2CBD5ECE00996225 /* FeedDetailDropdownView.swift */; };
 		C9CF88B72C86205900E45BF0 /* NoticeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9CF88B62C86205900E45BF0 /* NoticeService.swift */; };
 		C9D56ED62C9D2B4D00FEDFDA /* FeedDetailReplyWritingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D56ED52C9D2B4D00FEDFDA /* FeedDetailReplyWritingView.swift */; };
 		CD1F7DFE2C994A0E0039972C /* NovelKeywordSelectModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1F7DFD2C994A0E0039972C /* NovelKeywordSelectModalViewController.swift */; };
@@ -723,6 +724,7 @@
 		C9A3CD442C8C3BA500B43BFB /* SearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchService.swift; sourceTree = "<group>"; };
 		C9AF1AE12BCC234300208BC9 /* HomeTodayPopularView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTodayPopularView.swift; sourceTree = "<group>"; };
 		C9AF1AE32BCC28EE00208BC9 /* HomeTodayPopularCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTodayPopularCollectionViewCell.swift; sourceTree = "<group>"; };
+		C9CE229A2CBD5ECE00996225 /* FeedDetailDropdownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDetailDropdownView.swift; sourceTree = "<group>"; };
 		C9CF88B62C86205900E45BF0 /* NoticeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeService.swift; sourceTree = "<group>"; };
 		C9D56ED52C9D2B4D00FEDFDA /* FeedDetailReplyWritingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDetailReplyWritingView.swift; sourceTree = "<group>"; };
 		CD1F7DFD2C994A0E0039972C /* NovelKeywordSelectModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelKeywordSelectModalViewController.swift; sourceTree = "<group>"; };
@@ -2234,6 +2236,7 @@
 				B96F0F8F2C28678800DA5483 /* FeedDetailContentView.swift */,
 				B96F0F932C298F3F00DA5483 /* FeedDetailReplyView.swift */,
 				C9D56ED52C9D2B4D00FEDFDA /* FeedDetailReplyWritingView.swift */,
+				C9CE229A2CBD5ECE00996225 /* FeedDetailDropdownView.swift */,
 			);
 			path = FeedDetailAssistantView;
 			sourceTree = "<group>";
@@ -3072,6 +3075,7 @@
 				CD8747A52C9EB39900D0ADAD /* NovelDateSelectModalViewModel.swift in Sources */,
 				392A29232B4E89FD0065EB97 /* RegisterNormalNovelInfoWithRatingView.swift in Sources */,
 				CDA5F0492C30248A00FCF15C /* FeedEditConnectedNovelView.swift in Sources */,
+				C9CE229B2CBD5ECE00996225 /* FeedDetailDropdownView.swift in Sources */,
 				2CFA9A182C9D9AD500A4A820 /* UserInfoResult.swift in Sources */,
 				2C79CB9D2B45A1DD00734E1F /* UIFont+.swift in Sources */,
 				B9095D2E2C395598007521EF /* HomeNoticeDetailViewModel.swift in Sources */,

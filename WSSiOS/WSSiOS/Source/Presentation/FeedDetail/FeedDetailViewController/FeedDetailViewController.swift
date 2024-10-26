@@ -60,7 +60,7 @@ final class FeedDetailViewController: UIViewController {
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         self.navigationItem.titleView = self.rootView.viewTitleLabel
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.rootView.backButton)
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.rootView.dotsButton)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.rootView.dropdownButton)
     }
     
     //MARK: - Bind
@@ -79,10 +79,18 @@ final class FeedDetailViewController: UIViewController {
     }
     
     private func bindViewModel() {
+        let dropdownButtonDidTap = Observable.merge(
+            rootView.dropdownView.topDropdownButton.rx.tap.map { DropdownButtonType.top },
+            rootView.dropdownView.bottomDropdownButton.rx.tap.map { DropdownButtonType.bottom }
+        )
+        
         let input = FeedDetailViewModel.Input(
-            backButtonTapped: rootView.backButton.rx.tap,
+            backButtonDidTap: rootView.backButton.rx.tap,
             replyCollectionViewContentSize: rootView.replyView.replyCollectionView.rx.observe(CGSize.self, "contentSize"),
-            likeButtonTapped: rootView.feedContentView.reactView.likeButton.rx.tap)
+            likeButtonDidTap: rootView.feedContentView.reactView.likeButton.rx.tap,
+            dotsButtonDidTap: rootView.dropdownButton.rx.tap,
+            dropdownButtonDidTap: dropdownButtonDidTap)
+        
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.feedData
@@ -100,7 +108,7 @@ final class FeedDetailViewController: UIViewController {
                 }
                 .disposed(by: disposeBag)
         
-        output.likeButtonEnabled
+        output.likeButtonToggle
             .drive(with: self, onNext: { owner, isLiked in
                 owner.rootView.feedContentView.reactView.updateLikeState(isLiked)
             })
@@ -118,7 +126,7 @@ final class FeedDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.backButtonEnabled
+        output.popViewController
             .drive(with: self, onNext: { owner, _ in
                 owner.popToLastViewController()
             })
@@ -139,6 +147,99 @@ final class FeedDetailViewController: UIViewController {
             .when(.recognized)
             .subscribe(with: self, onNext: { owner, _ in
                 self.view.endEditing(true)
+            })
+            .disposed(by: disposeBag)
+        
+        output.showDropdownView
+            .drive(with: self, onNext: { owner, isShow in
+                owner.rootView.dropdownView.isHidden = !isShow
+            })
+            .disposed(by: disposeBag)
+        
+        output.isMyFeed
+            .drive(with: self, onNext: { owner, isMyFeed in
+                owner.rootView.dropdownView.configureDropdown(isMyFeed: isMyFeed)
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushToFeedEditViewController
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.rootView.dropdownView.isHidden = true
+                owner.pushToFeedEditViewController(feedId: owner.viewModel.feedId)
+            })
+            .disposed(by: disposeBag)
+        
+        output.showDeleteAlertView
+            .flatMapLatest { _ -> Observable<AlertButtonType> in
+                return self.presentToAlertViewController(iconImage: .icAlertWarningCircle,
+                                                         titleText: StringLiterals.FeedDetail.deleteTitle,
+                                                         contentText: StringLiterals.FeedDetail.deleteContent,
+                                                         leftTitle: StringLiterals.FeedDetail.cancel,
+                                                         rightTitle: StringLiterals.FeedDetail.delete,
+                                                         rightBackgroundColor: UIColor.wssSecondary100.cgColor)
+            }
+            .subscribe(with: self, onNext: { owner, buttonType in
+                owner.rootView.dropdownView.isHidden = true
+                if buttonType == .right {
+                    owner.viewModel.deleteFeed(owner.viewModel.feedId)
+                        .subscribe()
+                        .disposed(by: owner.disposeBag)
+                    owner.popToLastViewController()
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        output.showSpoilerAlertView
+            .flatMapLatest { _ -> Observable<AlertButtonType> in
+                return self.presentToAlertViewController(iconImage: .icAlertWarningCircle,
+                                                         titleText: StringLiterals.FeedDetail.spoilerTitle,
+                                                         contentText: nil,
+                                                         leftTitle: StringLiterals.FeedDetail.cancel,
+                                                         rightTitle: StringLiterals.FeedDetail.report,
+                                                         rightBackgroundColor: UIColor.wssPrimary100.cgColor)
+            }
+            .subscribe(with: self, onNext: { owner, buttonType in
+                owner.rootView.dropdownView.isHidden = true
+                if buttonType == .right {
+                    owner.viewModel.postSpoilerFeed(owner.viewModel.feedId)
+                        .subscribe()
+                        .disposed(by: owner.disposeBag)
+                    owner.dismiss(animated: true) {
+                        _ = owner.presentToAlertViewController(iconImage: .icReportCheck,
+                                                               titleText: StringLiterals.FeedDetail.reportResult,
+                                                               contentText: nil,
+                                                               leftTitle: nil,
+                                                               rightTitle: StringLiterals.FeedDetail.confirm,
+                                                               rightBackgroundColor: UIColor.wssPrimary100.cgColor)
+                    }
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        output.showImproperAlertView
+            .flatMapLatest { _ -> Observable<AlertButtonType> in
+                return self.presentToAlertViewController(iconImage: .icAlertWarningCircle,
+                                                         titleText: StringLiterals.FeedDetail.impertinentTitle,
+                                                         contentText: nil,
+                                                         leftTitle: StringLiterals.FeedDetail.cancel,
+                                                         rightTitle: StringLiterals.FeedDetail.report,
+                                                         rightBackgroundColor: UIColor.wssPrimary100.cgColor)
+            }
+            .subscribe(with: self, onNext: { owner, buttonType in
+                owner.rootView.dropdownView.isHidden = true
+                if buttonType == .right {
+                    owner.viewModel.postImpertinenceFeed(owner.viewModel.feedId)
+                        .subscribe()
+                        .disposed(by: owner.disposeBag)
+                    owner.dismiss(animated: true) {
+                        _ = owner.presentToAlertViewController(iconImage: .icReportCheck,
+                                                               titleText: StringLiterals.FeedDetail.reportResult,
+                                                               contentText: StringLiterals.FeedDetail.impertinentContent,
+                                                               leftTitle: nil,
+                                                               rightTitle: StringLiterals.FeedDetail.confirm,
+                                                               rightBackgroundColor: UIColor.wssPrimary100.cgColor)
+                    }
+                }
             })
             .disposed(by: disposeBag)
     }

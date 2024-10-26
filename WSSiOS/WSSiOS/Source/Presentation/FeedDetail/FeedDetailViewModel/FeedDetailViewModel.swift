@@ -16,7 +16,7 @@ final class FeedDetailViewModel: ViewModelType {
     
     private let feedDetailRepository: FeedDetailRepository
     private let disposeBag = DisposeBag()
-    private let feedId: Int
+    let feedId: Int
     
     private let feedData = PublishSubject<Feed>()
     private let commentsData = BehaviorRelay<[FeedComment]>(value: [])
@@ -24,7 +24,14 @@ final class FeedDetailViewModel: ViewModelType {
     
     private let likeCount = BehaviorRelay<Int>(value: 0)
     private let likeButtonState = BehaviorRelay<Bool>(value: false)
-    private let backButtonState = PublishRelay<Void>()
+    
+    private let showDropdownView = BehaviorRelay<Bool>(value: false)
+    private let isMyFeed = BehaviorRelay<Bool>(value: false)
+    
+    let showSpoilerAlertView = PublishRelay<Void>()
+    let showImproperAlertView = PublishRelay<Void>()
+    let pushToFeedEditViewController = PublishRelay<Void>()
+    let showDeleteAlertView = PublishRelay<Void>()
     
     //MARK: - Life Cycle
     
@@ -34,9 +41,12 @@ final class FeedDetailViewModel: ViewModelType {
     }
     
     struct Input {
-        let backButtonTapped: ControlEvent<Void>
+        let backButtonDidTap: ControlEvent<Void>
         let replyCollectionViewContentSize: Observable<CGSize?>
-        let likeButtonTapped: ControlEvent<Void>
+        let likeButtonDidTap: ControlEvent<Void>
+        
+        let dotsButtonDidTap: ControlEvent<Void>
+        let dropdownButtonDidTap: Observable<DropdownButtonType>
     }
     
     struct Output {
@@ -44,8 +54,15 @@ final class FeedDetailViewModel: ViewModelType {
         let commentsData: Driver<[FeedComment]>
         let replyCollectionViewHeight: Driver<CGFloat>
         let likeCount: Driver<Int>
-        let likeButtonEnabled: Driver<Bool>
-        let backButtonEnabled: Driver<Void>
+        let likeButtonToggle: Driver<Bool>
+        let popViewController: Driver<Void>
+        
+        let showDropdownView: Driver<Bool>
+        let isMyFeed: Driver<Bool>
+        let showSpoilerAlertView: Observable<Void>
+        let showImproperAlertView: Observable<Void>
+        let pushToFeedEditViewController: Observable<Void>
+        let showDeleteAlertView: Observable<Void>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -54,6 +71,7 @@ final class FeedDetailViewModel: ViewModelType {
                 owner.feedData.onNext(data)
                 owner.likeButtonState.accept(data.isLiked)
                 owner.likeCount.accept(data.likeCount)
+                owner.isMyFeed.accept(data.isMyFeed)
             }, onError: { owner, error in
                 owner.feedData.onError(error)
             })
@@ -70,7 +88,7 @@ final class FeedDetailViewModel: ViewModelType {
         let replyCollectionViewContentSize = input.replyCollectionViewContentSize
             .map { $0?.height ?? 0 }.asDriver(onErrorJustReturn: 0)
         
-        input.likeButtonTapped
+        input.likeButtonDidTap
             .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
             .withLatestFrom(likeButtonState)
             .flatMapLatest { isLiked -> Observable<Void> in
@@ -86,17 +104,41 @@ final class FeedDetailViewModel: ViewModelType {
             .subscribe()
             .disposed(by: disposeBag)
         
-        let backButtonEnabled = input.backButtonTapped.asDriver()
+        let popViewController = input.backButtonDidTap.asDriver()
+        
+        input.dotsButtonDidTap
+            .withLatestFrom(showDropdownView)
+            .map { !$0 }
+            .bind(to: showDropdownView)
+            .disposed(by: disposeBag)
+        
+        input.dropdownButtonDidTap
+            .map { ($0, self.isMyFeed.value) }
+            .subscribe( with: self, onNext: { owner, result in
+                switch result {
+                case (.top, true): owner.pushToFeedEditViewController.accept(())
+                case (.bottom, true): owner.showDeleteAlertView.accept(())
+                case (.top, false): owner.showSpoilerAlertView.accept(())
+                case (.bottom, false): owner.showImproperAlertView.accept(())
+                }
+            })
+            .disposed(by: disposeBag)
         
         return Output(feedData: feedData.asObservable(),
                       commentsData: commentsData.asDriver(),
                       replyCollectionViewHeight: replyCollectionViewContentSize,
                       likeCount: likeCount.asDriver(),
-                      likeButtonEnabled: likeButtonState.asDriver(),
-                      backButtonEnabled: backButtonEnabled)
+                      likeButtonToggle: likeButtonState.asDriver(),
+                      popViewController: popViewController,
+                      showDropdownView: showDropdownView.asDriver(),
+                      isMyFeed: isMyFeed.asDriver(),
+                      showSpoilerAlertView: showSpoilerAlertView.asObservable(),
+                      showImproperAlertView: showImproperAlertView.asObservable(),
+                      pushToFeedEditViewController: pushToFeedEditViewController.asObservable(),
+                      showDeleteAlertView: showDeleteAlertView.asObservable())
     }
     
-    //MARK: = API
+    //MARK: - API
     
     func getSingleFeed(_ feedId: Int) -> Observable<Feed> {
         return feedDetailRepository.getSingleFeedData(feedId: feedId)
@@ -112,6 +154,18 @@ final class FeedDetailViewModel: ViewModelType {
     
     func deleteFeedLike(_ feedId: Int) -> Observable<Void> {
         return feedDetailRepository.deleteFeedLike(feedId: feedId)
+    }
+    
+    func postSpoilerFeed(_ feedId: Int) -> Observable<Void> {
+        return feedDetailRepository.postSpoilerFeed(feedId: feedId)
+    }
+    
+    func postImpertinenceFeed(_ feedId: Int) -> Observable<Void> {
+        return feedDetailRepository.postImpertinenceFeed(feedId: feedId)
+    }
+    
+    func deleteFeed(_ feedId: Int) -> Observable<Void> {
+        return feedDetailRepository.deleteFeed(feedId: feedId)
     }
     
     //MARK: - Custom Method
@@ -144,4 +198,9 @@ final class FeedDetailViewModel: ViewModelType {
         
         return numberOfLines
     }
+}
+
+enum DropdownButtonType {
+    case top
+    case bottom
 }
