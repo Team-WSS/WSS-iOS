@@ -311,6 +311,21 @@ enum StringLiterals {
         
         static let nextButton = "다음으로"
         
+        enum Success {
+            static let title = "웹소소와 계약 완료!"
+            static func description(name: String) -> String {
+                return "\(name)님, 만나서 반가워요!"
+            }
+            static let completeButton = "웹소소 시작하기"
+        }
+        
+        enum GenrePreference {
+            static let title = "평소 즐겨보는 장르를 선택하세요"
+            static let description = "선호 장르를 기반으로 웹소설을 추천해드려요"
+            static let completeButton = "완료"
+            static let skipButton = "건너뛰기"
+        }
+        
         enum BirthGender {
             static let title = "성별, 출생연도를 선택하세요"
             static let description = "해당 정보는 추천에 활용되며, 언제든 변경할 수 있어요"
@@ -548,5 +563,24 @@ enum StringLiterals {
         static let title = "수다글"
         static let reply = "댓글"
         static let placeHolder = "댓글을 남겨보세요"
+        
+        static let edit = "수정하기"
+        
+        static let delete = "삭제하기"
+        static let deleteTitle = "해당 글을 삭제할까요?"
+        static let deleteContent = "삭제한 글은 되돌릴 수 없어요"
+        
+        static let cancel = "취소"
+        static let report = "신고"
+        static let confirm = "확인"
+        
+        static let reportSpoiler = "스포일러 신고"
+        static let spoilerTitle = "해당 글이 스포일러를 포함하고 있나요?"
+        
+        static let reportImpertinence = "부적절한 표현 신고"
+        static let impertinentTitle = "해당 글에 부적절한 표현이\n사용되었나요?"
+        static let impertinentContent = "해당 글이 커뮤니티 가이드를\n위반했는지 검토할게요"
+        
+        static let reportResult = "신고가 접수되었어요!"
     }
 }

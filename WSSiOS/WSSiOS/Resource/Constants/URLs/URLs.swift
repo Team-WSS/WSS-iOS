@@ -124,6 +124,15 @@ enum URLs {
         static func deleteComment(feedId: Int, commentId: Int) -> String {
             return "/feeds/\(feedId)/comments/\(commentId)"
         }
+        static func postSpoilerFeed(feedId: Int) -> String {
+            return "/feeds/\(feedId)/spoiler"
+        }
+        static func postImpertinenceFeed(feedId: Int) -> String {
+            return "/feeds/\(feedId)/impertinence"
+        }
+        static func deleteFeed(feedId: Int) -> String {
+            return "/feeds/\(feedId)"
+        }
     }
     
     enum MyPage {

@@ -19,7 +19,9 @@ final class FeedDetailView: UIView {
     
     let backButton = UIButton()
     let viewTitleLabel = UILabel()
-    let dotsButton = UIButton()
+    
+    let dropdownButton = UIButton()
+    let dropdownView = FeedDetailDropdownView()
     
     let profileView = FeedDetailProfileView()
     let feedContentView = FeedDetailContentView()
@@ -57,8 +59,12 @@ final class FeedDetailView: UIView {
             $0.textColor = .wssBlack
         }
         
-        dotsButton.do {
+        dropdownButton.do {
             $0.setImage(.icThreedots.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray100), for: .normal)
+        }
+        
+        dropdownView.do {
+            $0.isHidden = true
         }
         
         scrollView.do {
@@ -73,7 +79,8 @@ final class FeedDetailView: UIView {
     private func setHierarchy() {
         self.addSubviews(scrollView,
                          replyWritingView,
-                         replyBottomView)
+                         replyBottomView,
+                         dropdownView)
         scrollView.addSubview(contentView)
         contentView.addSubviews(profileView,
                                 feedContentView,
@@ -89,6 +96,11 @@ final class FeedDetailView: UIView {
         contentView.snp.makeConstraints {
             $0.edges.equalTo(scrollView.contentLayoutGuide)
             $0.width.equalTo(scrollView.snp.width)
+        }
+        
+        dropdownView.snp.makeConstraints {
+            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top)
+            $0.trailing.equalToSuperview().inset(20)
         }
         
         profileView.snp.makeConstraints {

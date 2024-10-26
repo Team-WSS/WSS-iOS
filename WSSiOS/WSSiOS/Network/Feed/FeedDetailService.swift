@@ -18,6 +18,11 @@ protocol FeedDetailService {
     func postComment(feedId: Int, commentContent: String) -> Single<Void>
     func putComment(feedId: Int, commentId: Int, commentContent: String) -> Single<Void>
     func deleteComment(feedId: Int, commentId: Int) -> Single<Void>
+    
+    func postSpoilerFeed(feedId: Int) -> Single<Void>
+    func postImpertinenceFeed(feedId: Int) -> Single<Void>
+    
+    func deleteFeed(feedId: Int) -> Single<Void>
 }
 
 final class DefaultFeedDetailService: NSObject, Networking, FeedDetailService {
@@ -147,6 +152,60 @@ final class DefaultFeedDetailService: NSObject, Networking, FeedDetailService {
         do {
             let request = try makeHTTPRequest(method: .delete,
                                               path: URLs.Feed.deleteComment(feedId: feedId, commentId: commentId),
+                                              headers: APIConstants.testTokenHeader,
+                                              body: nil)
+            
+            NetworkLogger.log(request: request)
+            
+            return urlSession.rx.data(request: request)
+                .map { _ in }
+                .asSingle()
+            
+        } catch {
+            return Single.error(error)
+        }
+    }
+    
+    func postSpoilerFeed(feedId: Int) -> Single<Void> {
+        do {
+            let request = try makeHTTPRequest(method: .post,
+                                              path: URLs.Feed.postSpoilerFeed(feedId: feedId),
+                                              headers: APIConstants.testTokenHeader,
+                                              body: nil)
+            
+            NetworkLogger.log(request: request)
+            
+            return urlSession.rx.data(request: request)
+                .map { _ in }
+                .asSingle()
+            
+        } catch {
+            return Single.error(error)
+        }
+    }
+    
+    func postImpertinenceFeed(feedId: Int) -> Single<Void> {
+        do {
+            let request = try makeHTTPRequest(method: .post,
+                                              path: URLs.Feed.postImpertinenceFeed(feedId: feedId),
+                                              headers: APIConstants.testTokenHeader,
+                                              body: nil)
+            
+            NetworkLogger.log(request: request)
+            
+            return urlSession.rx.data(request: request)
+                .map { _ in }
+                .asSingle()
+            
+        } catch {
+            return Single.error(error)
+        }
+    }
+    
+    func deleteFeed(feedId: Int) -> Single<Void> {
+        do {
+            let request = try makeHTTPRequest(method: .delete,
+                                              path: URLs.Feed.deleteFeed(feedId: feedId),
                                               headers: APIConstants.testTokenHeader,
                                               body: nil)
             

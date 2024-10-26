@@ -12,12 +12,18 @@ import RxSwift
 protocol FeedDetailRepository {
     func getSingleFeedData(feedId: Int) -> Observable<Feed>
     func getSingleFeedComments(feedId: Int) -> Observable<FeedComments>
+    
     func postFeedLike(feedId: Int) -> Observable<Void>
     func deleteFeedLike(feedId: Int) -> Observable<Void>
     
     func postComment(feedId: Int, commentContent: String) -> Observable<Void>
     func putComment(feedId: Int, commentId: Int, commentContent: String) -> Observable<Void>
     func deleteComment(feedId: Int, commentId: Int) -> Observable<Void>
+    
+    func postSpoilerFeed(feedId: Int) -> Observable<Void>
+    func postImpertinenceFeed(feedId: Int) -> Observable<Void>
+    
+    func deleteFeed(feedId: Int) -> Observable<Void>
 }
 
 struct TestFeedDetailRepository: FeedDetailRepository {
@@ -89,6 +95,18 @@ struct TestFeedDetailRepository: FeedDetailRepository {
     func deleteComment(feedId: Int, commentId: Int) -> Observable<Void> {
         return Observable.just(())
     }
+    
+    func postSpoilerFeed(feedId: Int) -> Observable<Void> {
+        return Observable.just(())
+    }
+    
+    func postImpertinenceFeed(feedId: Int) -> Observable<Void> {
+        return Observable.just(())
+    }
+    
+    func deleteFeed(feedId: Int) -> Observable<Void> {
+        return Observable.just(())
+    }
 }
 
 struct DefaultFeedDetailRepository: FeedDetailRepository {
@@ -124,5 +142,17 @@ struct DefaultFeedDetailRepository: FeedDetailRepository {
     
     func deleteComment(feedId: Int, commentId: Int) -> Observable<Void> {
         return feedDetailService.deleteComment(feedId: feedId, commentId: commentId).asObservable()
+    }
+    
+    func postSpoilerFeed(feedId: Int) -> Observable<Void> {
+        return feedDetailService.postSpoilerFeed(feedId: feedId).asObservable()
+    }
+    
+    func postImpertinenceFeed(feedId: Int) -> Observable<Void> {
+        return feedDetailService.postImpertinenceFeed(feedId: feedId).asObservable()
+    }
+    
+    func deleteFeed(feedId: Int) -> Observable<Void> {
+        return feedDetailService.deleteFeed(feedId: feedId).asObservable()
     }
 }
