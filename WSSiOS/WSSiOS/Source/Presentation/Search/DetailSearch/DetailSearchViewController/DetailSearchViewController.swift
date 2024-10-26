@@ -139,13 +139,15 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
             })
             .disposed(by: disposeBag)
         
+        output.showInfoNewImageView
+            .bind(with: self, onNext: { owner, show in
+                owner.rootView.detailSearchHeaderView.newInfoImageView.isHidden = show ? false : true
+            })
+            .disposed(by: disposeBag)
+        
         output.showKeywordNewImageView
-            .bind(with: self, onNext: { owner, isHidden in
-                if isHidden {
-                    owner.rootView.detailSearchHeaderView.newKeywordImageView.isHidden = true
-                } else {
-                    owner.rootView.detailSearchHeaderView.newKeywordImageView.isHidden = false
-                }
+            .bind(with: self, onNext: { owner, show in
+                owner.rootView.detailSearchHeaderView.newKeywordImageView.isHidden = show ? false : true
             })
             .disposed(by: disposeBag)
         

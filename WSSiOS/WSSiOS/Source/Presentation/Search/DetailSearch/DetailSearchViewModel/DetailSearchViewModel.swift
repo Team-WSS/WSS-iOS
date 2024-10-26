@@ -27,6 +27,7 @@ final class DetailSearchViewModel: ViewModelType {
     // 정보
     private let genreListData = PublishRelay<[NovelGenre]>()
     var selectedGenreList: [NovelGenre] = []
+    private var selectedGenreListData = PublishRelay<[NovelGenre]>()
     private var selectedCompletedStatus = BehaviorRelay<CompletedStatus?>(value: nil)
     private var selectedNovelRatingStatus = BehaviorRelay<NovelRatingStatus?>(value: nil)
     
@@ -81,7 +82,7 @@ final class DetailSearchViewModel: ViewModelType {
         // 전체
         let dismissModalViewController: Observable<Void>
         let selectedTab: Driver<DetailSearchTab>
-        // let showInfoNewImageView: Observable<Bool>
+        let showInfoNewImageView: Observable<Bool>
         let showKeywordNewImageView: Observable<Bool>
         
         // 정보
@@ -111,7 +112,6 @@ final class DetailSearchViewModel: ViewModelType {
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
-        
         // 전체
         input.viewDidLoadEvent
             .subscribe(with: self, onNext: { owner, _ in
@@ -195,12 +195,14 @@ final class DetailSearchViewModel: ViewModelType {
         input.genreColletionViewItemSelected
             .subscribe(with: self, onNext: { owner, indexPath in
                 owner.selectedGenreList.append(NovelGenre.allCases[indexPath.row])
+                owner.selectedGenreListData.accept(owner.selectedGenreList)
             })
             .disposed(by: disposeBag)
         
         input.genreColletionViewItemDeselected
             .subscribe(with: self, onNext: { owner, indexPath in
                 owner.selectedGenreList.removeAll { $0 == NovelGenre.allCases[indexPath.row] }
+                owner.selectedGenreListData.accept(owner.selectedGenreList)
             })
             .disposed(by: disposeBag)
         
@@ -337,12 +339,21 @@ final class DetailSearchViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        let showInfoNewImageView = Observable
+            .combineLatest(
+                selectedGenreListData.map { $0.count > 0 },
+                selectedCompletedStatus.map { $0 != nil },
+                selectedNovelRatingStatus.map { $0 != nil }
+            )
+            .map { $0 || $1 || $2 }
+        
         let showKeywordNewImageView = selectedKeywordListData
-            .map { $0.count <= 0 }
+            .map { $0.count > 0 }
             .asObservable()
         
         return Output(dismissModalViewController: dismissModalViewController.asObservable(),
                       selectedTab: selectedTab.asDriver(),
+                      showInfoNewImageView: showInfoNewImageView,
                       showKeywordNewImageView: showKeywordNewImageView.asObservable(),
                       genreListData: genreListData.asObservable(),
                       genreCollectionViewHeight: genreCollectionViewContentSize,
