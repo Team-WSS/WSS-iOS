@@ -63,7 +63,7 @@ final class DetailSearchCompletedStatusButton: UIButton {
     
     // MARK: - Custom Method
     
-    func updateButton(selectedCompletedStatus: CompletedStatus) {
+    func updateButton(selectedCompletedStatus: CompletedStatus?) {
         let isSelected = selectedCompletedStatus == status
         
         self.do {

@@ -206,13 +206,21 @@ final class DetailSearchViewModel: ViewModelType {
         
         input.completedButtonDidTap
             .subscribe(with: self, onNext: { owner, selectedCompletedStatus in
-                owner.selectedCompletedStatus.accept(selectedCompletedStatus)
+                if owner.selectedCompletedStatus.value == selectedCompletedStatus {
+                    owner.selectedCompletedStatus.accept(nil)
+                } else {
+                    owner.selectedCompletedStatus.accept(selectedCompletedStatus)
+                }
             })
             .disposed(by: disposeBag)
         
         input.novelRatingButtonDidTap
             .subscribe(with: self, onNext: { owner, selectedNovelRatingStatus in
-                owner.selectedNovelRatingStatus.accept(selectedNovelRatingStatus)
+                if owner.selectedNovelRatingStatus.value == selectedNovelRatingStatus {
+                    owner.selectedNovelRatingStatus.accept(nil)
+                } else {
+                    owner.selectedNovelRatingStatus.accept(selectedNovelRatingStatus)
+                }
             })
             .disposed(by: disposeBag)
         

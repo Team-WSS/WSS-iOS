@@ -164,17 +164,13 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
         
         output.selectedCompletedStatus
             .drive(with: self, onNext: { owner, selectedCompletedStatus in
-                if let selectedCompletedStatus {
-                    owner.rootView.detailSearchInfoView.updateCompletedKeyword(selectedCompletedStatus)
-                }
+                owner.rootView.detailSearchInfoView.updateCompletedKeyword(selectedCompletedStatus)
             })
             .disposed(by: disposeBag)
         
         output.selectedNovelRatingStatus
             .drive(with: self, onNext: { owner, selectedNovelRatingStatus in
-                if let selectedNovelRatingStatus {
-                    owner.rootView.detailSearchInfoView.updateNovelRatingKeyword(selectedNovelRatingStatus)
-                }
+                owner.rootView.detailSearchInfoView.updateNovelRatingKeyword(selectedNovelRatingStatus)
             })
             .disposed(by: disposeBag)
         
