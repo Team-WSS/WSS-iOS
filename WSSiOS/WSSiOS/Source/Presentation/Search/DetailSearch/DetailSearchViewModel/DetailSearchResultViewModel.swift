@@ -18,15 +18,18 @@ final class DetailSearchResultViewModel: ViewModelType {
     
     private let popViewController = PublishRelay<Void>()
     private let novelCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
+    private let pushToNovelDetailViewController = PublishRelay<Int>()
     
     struct Input {
         let backButtonDidTap: ControlEvent<Void>
         let novelCollectionViewContentSize: Observable<CGSize?>
+        let novelResultCellSelected: ControlEvent<IndexPath>
     }
     
     struct Output {
         let popViewController: Observable<Void>
         let novelCollectionViewHeight: Observable<CGFloat>
+        let pushToNovelDetailViewController: Observable<Int>
     }
     
     init(detailSearchNovels: DetailSearchNovels) {
@@ -49,7 +52,15 @@ final class DetailSearchResultViewModel: ViewModelType {
             .bind(to: self.novelCollectionViewHeight)
             .disposed(by: disposeBag)
         
+        input.novelResultCellSelected
+            .subscribe(with: self, onNext: { owner, indexPath in
+                let novelId = owner.detailSearchNovels.novels[indexPath.row].novelId
+                owner.pushToNovelDetailViewController.accept(novelId)
+            })
+            .disposed(by: disposeBag)
+        
         return Output(popViewController: popViewController.asObservable(),
-                      novelCollectionViewHeight: novelCollectionViewHeight.asObservable())
+                      novelCollectionViewHeight: novelCollectionViewHeight.asObservable(),
+                      pushToNovelDetailViewController: pushToNovelDetailViewController.asObservable())
     }
 }

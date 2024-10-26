@@ -54,12 +54,6 @@ final class SearchViewController: UIViewController {
         bindViewModel()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        NotificationCenter.default.removeObserver(self)
-    }
-    
     //MARK: - UI
     
     private func setUI() {

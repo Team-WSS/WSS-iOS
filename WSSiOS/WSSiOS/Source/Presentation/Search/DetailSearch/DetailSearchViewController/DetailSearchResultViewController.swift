@@ -39,6 +39,7 @@ final class DetailSearchResultViewController: UIViewController, UIScrollViewDele
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        setNavigationBar()
         swipeBackGesture()
     }
     
@@ -49,6 +50,10 @@ final class DetailSearchResultViewController: UIViewController, UIScrollViewDele
         setDelegate()
         
         bindViewModel()
+    }
+    
+    private func setNavigationBar() {
+        self.navigationController?.isNavigationBarHidden = true
     }
     
     private func registerCell() {
@@ -68,7 +73,8 @@ final class DetailSearchResultViewController: UIViewController, UIScrollViewDele
     private func bindViewModel() {
         let input = DetailSearchResultViewModel.Input(
             backButtonDidTap: rootView.headerView.backButton.rx.tap,
-            novelCollectionViewContentSize: rootView.novelView.resultNovelCollectionView.rx.observe(CGSize.self, "contentSize")
+            novelCollectionViewContentSize: rootView.novelView.resultNovelCollectionView.rx.observe(CGSize.self, "contentSize"),
+            novelResultCellSelected: rootView.novelView.resultNovelCollectionView.rx.itemSelected
         )
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
@@ -97,6 +103,12 @@ final class DetailSearchResultViewController: UIViewController, UIScrollViewDele
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, count in
                 owner.rootView.novelView.updateNovelCountLabel(count: count)
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushToNovelDetailViewController
+            .subscribe(with: self, onNext: { owner, novelId in
+                owner.pushToDetailViewController(novelId: novelId)
             })
             .disposed(by: disposeBag)
     }
