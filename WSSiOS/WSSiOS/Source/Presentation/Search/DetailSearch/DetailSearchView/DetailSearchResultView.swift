@@ -16,6 +16,7 @@ final class DetailSearchResultView: UIView {
     
     let headerView = DetailSearchResultHeaderView()
     let novelView = DetailSearchResultNovelView()
+    let emptyView = DetailSearchResultEmptyView()
     
     //MARK: - Life Cycle
     
@@ -34,11 +35,15 @@ final class DetailSearchResultView: UIView {
     
     private func setUI() {
         self.backgroundColor = .wssWhite
+        
+        novelView.isHidden = true
+        emptyView.isHidden = true
     }
     
     private func setHierarchy() {
         self.addSubviews(headerView,
-                         novelView)
+                         novelView,
+                         emptyView)
     }
     
     private func setLayout() {
@@ -51,6 +56,10 @@ final class DetailSearchResultView: UIView {
             $0.top.equalTo(headerView.snp.bottom)
             $0.horizontalEdges.equalToSuperview().inset(20)
             $0.bottom.equalToSuperview()
+        }
+        
+        emptyView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
 }
