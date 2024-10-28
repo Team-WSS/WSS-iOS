@@ -28,7 +28,7 @@ final class OnboardingViewModel: ViewModelType {
     
     // BirthGender
     private let selectedGender = BehaviorRelay<OnboardingGender?>(value: nil)
-    private let selectedBirth = BehaviorRelay<Int?>(value: 2000)
+    private let selectedBirth = BehaviorRelay<Int?>(value: nil)
     private let isBirthGenderNextButtonAvailable = BehaviorRelay<Bool>(value: false)
     
     // GenrePreference
@@ -63,6 +63,7 @@ final class OnboardingViewModel: ViewModelType {
         // BirthGender
         let genderButtonDidTap: Observable<OnboardingGender>
         let selectBirthButtonDidTap: ControlEvent<Void>
+        let selectedBirth: Observable<Int?>
         
         // GenrePreference
         let genreButtonDidTap: Observable<NewNovelGenre>
@@ -84,7 +85,8 @@ final class OnboardingViewModel: ViewModelType {
         
         // BirthGender
         let selectedGender: Driver<OnboardingGender?>
-        let showDatePickerModal: Driver<Void>
+        let showBirthPickerModal: Driver<Void>
+        let selectedBirth: Driver<Int?>
         let isBirthGenderNextButtonEnabled: Driver<Bool>
         
         // GenrePrefernece
@@ -157,7 +159,7 @@ final class OnboardingViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        let showDatePickerModal = input.selectBirthButtonDidTap.asDriver()
+        let showBirthPickerModal = input.selectBirthButtonDidTap.asDriver()
         
         self.selectedGender
             .bind(with: self, onNext: { owner, selectedGender in
@@ -165,6 +167,12 @@ final class OnboardingViewModel: ViewModelType {
                 if selectedGender != nil {
                     owner.isBirthGenderNextButtonAvailable.accept(true)
                 }
+            })
+            .disposed(by: disposeBag)
+        
+        input.selectedBirth
+            .bind(with: self, onNext: { owner, birth in
+                owner.selectedBirth.accept(birth)
             })
             .disposed(by: disposeBag)
         
@@ -236,7 +244,8 @@ final class OnboardingViewModel: ViewModelType {
             nicknameAvailablity: isNicknameAvailable.asDriver(),
             isNicknameNextButtonEnabled: isNicknameNextButtonAvailable.asDriver(),
             selectedGender: selectedGender.asDriver(),
-            showDatePickerModal: showDatePickerModal,
+            showBirthPickerModal: showBirthPickerModal,
+            selectedBirth: selectedBirth.asDriver(),
             isBirthGenderNextButtonEnabled: isBirthGenderNextButtonAvailable.asDriver(),
             selectedGenres: selectedGenres.asDriver(),
             isGenrePreferenceNextButtonEnabled: isGenrePreferenceNextButtonAvailable.asDriver(),
