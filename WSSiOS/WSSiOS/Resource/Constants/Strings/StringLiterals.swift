@@ -9,6 +9,11 @@ import Foundation
 
 enum StringLiterals {
     
+    enum BirthPicker {
+        static let title = "출생연도"
+        static let completeButton = "완료"
+    }
+    
     enum Loading {
         static let novelTitle = "작품 제목"
         static let novelAuthor = "작품 작가"
