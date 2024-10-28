@@ -13,7 +13,7 @@ final class BirthPickerViewController: UIViewController {
     
     //MARK: - Properties
     
-    private var userBirth: Int
+    private var birth: Int
     
     private let birthRange = Observable.just(Array(1900...2025))
     private let disposeBag = DisposeBag()
@@ -24,8 +24,8 @@ final class BirthPickerViewController: UIViewController {
     
     // MARK: - Life Cycle
     
-    init(userBirth: Int) {
-        self.userBirth = userBirth
+    init(birth: Int) {
+        self.birth = birth
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -49,7 +49,7 @@ final class BirthPickerViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        scrollToSelectedCell(year: userBirth)
+        scrollToSelectedCell(year: birth)
         checkCenterCell()
     }
     
@@ -75,9 +75,9 @@ final class BirthPickerViewController: UIViewController {
         rootView.completeButton.rx.tap
             .bind(with: self, onNext: { owner, _ in
                 if let centerYear = owner.getCenterCellYear() {
-                    owner.userBirth = centerYear
+                    owner.birth = centerYear
                     
-                    NotificationCenter.default.post(name: NSNotification.Name("Birth"), object: nil, userInfo: ["Birth": owner.userBirth])
+                    NotificationCenter.default.post(name: NSNotification.Name("Birth"), object: nil, userInfo: ["Birth": owner.birth])
                 }
                 
                 owner.dismissModalViewController()
