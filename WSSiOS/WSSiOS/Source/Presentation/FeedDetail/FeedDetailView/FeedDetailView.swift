@@ -19,14 +19,15 @@ final class FeedDetailView: UIView {
     
     let backButton = UIButton()
     let viewTitleLabel = UILabel()
+    
     let dropdownButton = UIButton()
+    let dropdownView = FeedDetailDropdownView()
     
     let profileView = FeedDetailProfileView()
     let feedContentView = FeedDetailContentView()
     let replyView = FeedDetailReplyView()
     let replyWritingView = FeedDetailReplyWritingView()
-    
-    let dropdownView = FeedDetailDropdownView()
+    private let replyBottomView = UIView()
     
     // MARK: - Life Cycle
     
@@ -62,18 +63,23 @@ final class FeedDetailView: UIView {
             $0.setImage(.icThreedots.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray100), for: .normal)
         }
         
+        dropdownView.do {
+            $0.isHidden = true
+        }
+        
         scrollView.do {
             $0.showsVerticalScrollIndicator = false
         }
         
-        dropdownView.do {
-            $0.isHidden = true
+        replyBottomView.do {
+            $0.backgroundColor = .wssWhite
         }
     }
     
     private func setHierarchy() {
         self.addSubviews(scrollView,
                          replyWritingView,
+                         replyBottomView,
                          dropdownView)
         scrollView.addSubview(contentView)
         contentView.addSubviews(profileView,
@@ -116,7 +122,15 @@ final class FeedDetailView: UIView {
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
         }
+        
+        replyBottomView.snp.makeConstraints {
+            $0.top.equalTo(self.safeAreaLayoutGuide.snp.bottomMargin)
+            $0.horizontalEdges.equalToSuperview()
+            $0.bottom.equalToSuperview()
+        }
     }
+    
+    //MARK: - Custom Methods
     
     func bindData(_ data: Feed) {
         profileView.bindData(data: data)

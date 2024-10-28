@@ -22,9 +22,26 @@ final class FeedDetailViewModel: ViewModelType {
     private let commentsData = BehaviorRelay<[FeedComment]>(value: [])
     private let replyCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
     
+    // 작품 연결
+    private var novelId: Int?
+    private let presentNovelDetailViewController = PublishRelay<Int>()
+    
+    // 관심 버튼
     private let likeCount = BehaviorRelay<Int>(value: 0)
     private let likeButtonState = BehaviorRelay<Bool>(value: false)
     
+    // 댓글 작성
+    private let commentCount = BehaviorRelay<Int>(value: 0)
+    private let endEditing = PublishRelay<Bool>()
+    private var updatedCommentContent: String = ""
+    private var isValidCommentContent: Bool = false
+    private let maximumCommentContentCount: Int = 500
+    private let commentContentWithLengthLimit = BehaviorRelay<String>(value: "")
+    private let showPlaceholder = BehaviorRelay<Bool>(value: true)
+    private let sendButtonEnabled = BehaviorRelay<Bool>(value: false)
+    private let textViewEmpty = BehaviorRelay<Bool>(value: true)
+    
+    // 피드 드롭다운
     private let showDropdownView = BehaviorRelay<Bool>(value: false)
     private let isMyFeed = BehaviorRelay<Bool>(value: false)
     
@@ -45,6 +62,18 @@ final class FeedDetailViewModel: ViewModelType {
         let replyCollectionViewContentSize: Observable<CGSize?>
         let likeButtonDidTap: ControlEvent<Void>
         
+        // 작품 연결
+        let linkNovelViewDidTap: Observable<UITapGestureRecognizer>
+        
+        // 댓글 작성
+        let viewDidTap: Observable<UITapGestureRecognizer>
+        let commentContentUpdated: Observable<String>
+        let commentContentViewDidBeginEditing: ControlEvent<Void>
+        let commentContentViewDidEndEditing: ControlEvent<Void>
+        let replyCommentCollectionViewSwipeGesture: Observable<UISwipeGestureRecognizer>
+        let sendButtonDidTap: ControlEvent<Void>
+        
+        // 피드 드롭다운
         let dotsButtonDidTap: ControlEvent<Void>
         let dropdownButtonDidTap: Observable<DropdownButtonType>
     }
@@ -52,11 +81,25 @@ final class FeedDetailViewModel: ViewModelType {
     struct Output {
         let feedData: Observable<Feed>
         let commentsData: Driver<[FeedComment]>
+        let popViewController: Driver<Void>
         let replyCollectionViewHeight: Driver<CGFloat>
+        
+        // 관심 버튼
         let likeCount: Driver<Int>
         let likeButtonToggle: Driver<Bool>
-        let popViewController: Driver<Void>
         
+        // 작품 연결
+        let presentNovelDetailViewController: Observable<Int>
+        
+        // 댓글 작성
+        let commentCount: Driver<Int>
+        let showPlaceholder: Observable<Bool>
+        let endEditing: Observable<Bool>
+        let commentContentWithLengthLimit: Observable<String>
+        let sendButtonEnabled: Observable<Bool>
+        let textViewEmpty: Observable<Bool>
+        
+        // 피드 드롭다운
         let showDropdownView: Driver<Bool>
         let isMyFeed: Driver<Bool>
         let showSpoilerAlertView: Observable<Void>
@@ -71,6 +114,8 @@ final class FeedDetailViewModel: ViewModelType {
                 owner.feedData.onNext(data)
                 owner.likeButtonState.accept(data.isLiked)
                 owner.likeCount.accept(data.likeCount)
+                owner.novelId = data.novelId
+                owner.commentCount.accept(data.commentCount)
                 owner.isMyFeed.accept(data.isMyFeed)
             }, onError: { owner, error in
                 owner.feedData.onError(error)
@@ -84,6 +129,8 @@ final class FeedDetailViewModel: ViewModelType {
                 print(error)
             })
             .disposed(by: disposeBag)
+        
+        let popViewController = input.backButtonDidTap.asDriver()
         
         let replyCollectionViewContentSize = input.replyCollectionViewContentSize
             .map { $0?.height ?? 0 }.asDriver(onErrorJustReturn: 0)
@@ -104,7 +151,80 @@ final class FeedDetailViewModel: ViewModelType {
             .subscribe()
             .disposed(by: disposeBag)
         
-        let popViewController = input.backButtonDidTap.asDriver()
+        input.linkNovelViewDidTap
+            .subscribe(with: self, onNext: { owner, _ in
+                if let novelId = owner.novelId {
+                    owner.presentNovelDetailViewController.accept(novelId)
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        input.viewDidTap
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.endEditing.accept(true)
+            })
+            .disposed(by: disposeBag)
+        
+        input.commentContentUpdated
+            .subscribe(with: self, onNext: { owner, comment in
+                if comment.count <= owner.maximumCommentContentCount {
+                    owner.updatedCommentContent = comment
+                }
+                let limitedComment = String(comment.prefix(owner.maximumCommentContentCount))
+                owner.commentContentWithLengthLimit.accept(limitedComment)
+                
+                let isEmpty = comment.count == 0
+                let isOverLimit = comment.count > owner.maximumCommentContentCount
+                
+                owner.isValidCommentContent = !(isEmpty || isOverLimit)
+                owner.textViewEmpty.accept(isEmpty)
+                owner.showPlaceholder.accept(isEmpty)
+                owner.sendButtonEnabled.accept(owner.isValidCommentContent)
+            })
+            .disposed(by: disposeBag)
+        
+        input.commentContentViewDidBeginEditing
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.showPlaceholder.accept(false)
+            })
+            .disposed(by: disposeBag)
+        
+        input.commentContentViewDidEndEditing
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.showPlaceholder.accept(owner.updatedCommentContent.count == 0 ? true : false)
+            })
+            .disposed(by: disposeBag)
+        
+        input.replyCommentCollectionViewSwipeGesture
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.endEditing.accept(true)
+            })
+            .disposed(by: disposeBag)
+        
+        input.sendButtonDidTap
+            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
+            .flatMapLatest { () -> Observable<Void> in
+                return self.postComment(self.feedId, self.updatedCommentContent)
+                    .flatMapLatest { _ in
+                        self.getSingleFeedComments(self.feedId)
+                            .do(onNext: { newComments in
+                                self.commentsData.accept(newComments.comments)
+                            })
+                            .map { _ in () }
+                    }
+                    .observe(on: MainScheduler.instance)
+                    .do(onNext: {
+                        self.updatedCommentContent = ""
+                        self.textViewEmpty.accept(true)
+                        self.commentContentWithLengthLimit.accept("")
+                        self.showPlaceholder.accept(true)
+                        
+                        let newCommentCount = self.commentCount.value + 1
+                        self.commentCount.accept(newCommentCount)
+                    })
+            }
+            .subscribe()
+            .disposed(by: disposeBag)
         
         input.dotsButtonDidTap
             .withLatestFrom(showDropdownView)
@@ -126,10 +246,17 @@ final class FeedDetailViewModel: ViewModelType {
         
         return Output(feedData: feedData.asObservable(),
                       commentsData: commentsData.asDriver(),
+                      popViewController: popViewController,
                       replyCollectionViewHeight: replyCollectionViewContentSize,
                       likeCount: likeCount.asDriver(),
                       likeButtonToggle: likeButtonState.asDriver(),
-                      popViewController: popViewController,
+                      presentNovelDetailViewController: presentNovelDetailViewController.asObservable(),
+                      commentCount: commentCount.asDriver(),
+                      showPlaceholder: showPlaceholder.asObservable(),
+                      endEditing: endEditing.asObservable(),
+                      commentContentWithLengthLimit: commentContentWithLengthLimit.asObservable(),
+                      sendButtonEnabled: sendButtonEnabled.asObservable(),
+                      textViewEmpty: textViewEmpty.asObservable(),
                       showDropdownView: showDropdownView.asDriver(),
                       isMyFeed: isMyFeed.asDriver(),
                       showSpoilerAlertView: showSpoilerAlertView.asObservable(),
@@ -154,6 +281,18 @@ final class FeedDetailViewModel: ViewModelType {
     
     func deleteFeedLike(_ feedId: Int) -> Observable<Void> {
         return feedDetailRepository.deleteFeedLike(feedId: feedId)
+    }
+    
+    func postComment(_ feedId: Int, _ commentContent: String) -> Observable<Void> {
+        return feedDetailRepository.postComment(feedId: feedId, commentContent: commentContent)
+    }
+    
+    func putComment(_ feedId: Int, commentId: Int, commentContent: String) -> Observable<Void> {
+        return feedDetailRepository.putComment(feedId: feedId, commentId: commentId, commentContent: commentContent)
+    }
+    
+    func deleteComment(_ feedId: Int, commentId: Int) -> Observable<Void> {
+        return feedDetailRepository.deleteComment(feedId: feedId, commentId: commentId)
     }
     
     func postSpoilerFeed(_ feedId: Int) -> Observable<Void> {

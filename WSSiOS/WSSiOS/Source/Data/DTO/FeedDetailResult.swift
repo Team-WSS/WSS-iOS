@@ -22,10 +22,10 @@ struct Feed: Decodable {
     
     var commentCount: Int
     
-    var novelId: Int
-    var novelTitle: String
-    var novelRatingCount: Int
-    var novelRating: Float
+    var novelId: Int?
+    var novelTitle: String?
+    var novelRatingCount: Int?
+    var novelRating: Float?
     var genres: [String]
     
     var isSpoiler: Bool
@@ -43,11 +43,11 @@ struct Feed: Decodable {
 }
 
 /// 소소피드 댓글 전체 조회
-struct FeedComments: Codable {
+struct FeedComments: Decodable {
     var comments: [FeedComment]
 }
 
-struct FeedComment: Codable {
+struct FeedComment: Decodable {
     var userId: Int
     var userNickname: String
     var userProfileImage: String
@@ -62,4 +62,8 @@ struct FeedComment: Codable {
         case userNickname = "nickname"
         case userProfileImage = "avatarImage"
     }
+}
+
+struct FeedCommentContent: Codable {
+    var commentContent: String
 }
