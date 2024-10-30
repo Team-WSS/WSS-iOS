@@ -17,6 +17,8 @@ final class DetailSearchResultViewController: UIViewController, UIScrollViewDele
     private let viewModel: DetailSearchResultViewModel
     private let disposeBag = DisposeBag()
     
+    private let viewDidLoadEvent = PublishRelay<Void>()
+    
     //MARK: - Components
     
     private let rootView = DetailSearchResultView()
@@ -48,8 +50,10 @@ final class DetailSearchResultViewController: UIViewController, UIScrollViewDele
         
         registerCell()
         setDelegate()
-        
+
         bindViewModel()
+        
+        viewDidLoadEvent.accept(())
     }
     
     private func setNavigationBar() {
@@ -75,7 +79,8 @@ final class DetailSearchResultViewController: UIViewController, UIScrollViewDele
             backButtonDidTap: rootView.headerView.backButton.rx.tap,
             novelCollectionViewContentSize: rootView.novelView.resultNovelCollectionView.rx.observe(CGSize.self, "contentSize"),
             novelResultCellSelected: rootView.novelView.resultNovelCollectionView.rx.itemSelected,
-            searchHeaderViewDidTap: rootView.headerView.backgroundView.rx.tapGesture().when(.recognized).asObservable()
+            searchHeaderViewDidTap: rootView.headerView.backgroundView.rx.tapGesture().when(.recognized).asObservable(),
+            viewDidLoadEvent: self.viewDidLoadEvent.asObservable()
         )
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
@@ -86,7 +91,7 @@ final class DetailSearchResultViewController: UIViewController, UIScrollViewDele
             })
             .disposed(by: disposeBag)
         
-        viewModel.getDetailSearchNovelsObservable()
+        output.filteredNovelsData
             .map { $0.novels }
             .bind(to: rootView.novelView.resultNovelCollectionView.rx.items(cellIdentifier: HomeTasteRecommendCollectionViewCell.cellIdentifier, cellType: HomeTasteRecommendCollectionViewCell.self)) { row, element, cell in
                 cell.bindData(data: element)
@@ -99,7 +104,7 @@ final class DetailSearchResultViewController: UIViewController, UIScrollViewDele
             })
             .disposed(by: disposeBag)
         
-        viewModel.getDetailSearchNovelsObservable()
+        output.filteredNovelsData
             .map { $0.resultCount }
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, count in

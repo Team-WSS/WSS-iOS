@@ -14,18 +14,22 @@ final class DetailSearchResultViewModel: ViewModelType {
     
     //MARK: - Properties
     
-    let detailSearchNovels: DetailSearchNovels
+    let filteredNovels: DetailSearchNovels
     
     private let popViewController = PublishRelay<Void>()
     private let novelCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
     private let pushToNovelDetailViewController = PublishRelay<Int>()
     private let presentDetailSearchModal = PublishRelay<Void>()
     
+    private let filteredNovelsData = PublishRelay<DetailSearchNovels>()
+    
     struct Input {
         let backButtonDidTap: ControlEvent<Void>
         let novelCollectionViewContentSize: Observable<CGSize?>
         let novelResultCellSelected: ControlEvent<IndexPath>
         let searchHeaderViewDidTap: Observable<UITapGestureRecognizer>
+        
+        let viewDidLoadEvent: Observable<Void>
     }
     
     struct Output {
@@ -33,14 +37,12 @@ final class DetailSearchResultViewModel: ViewModelType {
         let novelCollectionViewHeight: Observable<CGFloat>
         let pushToNovelDetailViewController: Observable<Int>
         let presentDetailSearchModal: Observable<Void>
+        
+        let filteredNovelsData: Observable<DetailSearchNovels>
     }
     
-    init(detailSearchNovels: DetailSearchNovels) {
-        self.detailSearchNovels = detailSearchNovels
-    }
-    
-    func getDetailSearchNovelsObservable() -> Observable<DetailSearchNovels> {
-        return Observable.just(detailSearchNovels)
+    init(filteredNovels: DetailSearchNovels) {
+        self.filteredNovels = filteredNovels
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -56,10 +58,10 @@ final class DetailSearchResultViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.novelResultCellSelected
-            .subscribe(with: self, onNext: { owner, indexPath in
-                let novelId = owner.detailSearchNovels.novels[indexPath.row].novelId
-                owner.pushToNovelDetailViewController.accept(novelId)
-            })
+            .withLatestFrom(filteredNovelsData) { indexPath, data in
+                data.novels[indexPath.row].novelId
+            }
+            .bind(to: pushToNovelDetailViewController)
             .disposed(by: disposeBag)
         
         input.searchHeaderViewDidTap
@@ -68,9 +70,17 @@ final class DetailSearchResultViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        input.viewDidLoadEvent
+            .do(onNext: {
+                self.filteredNovelsData.accept(self.filteredNovels)
+            })
+            .subscribe()
+            .disposed(by: disposeBag)
+        
         return Output(popViewController: popViewController.asObservable(),
                       novelCollectionViewHeight: novelCollectionViewHeight.asObservable(),
                       pushToNovelDetailViewController: pushToNovelDetailViewController.asObservable(),
-                      presentDetailSearchModal: presentDetailSearchModal.asObservable())
+                      presentDetailSearchModal: presentDetailSearchModal.asObservable(),
+                      filteredNovelsData: filteredNovelsData.asObservable())
     }
 }

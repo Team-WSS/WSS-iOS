@@ -42,7 +42,6 @@ final class SearchViewController: UIViewController {
         
         showTabBar()
         setNavigationBar()
-        bindNotifications()
     }
     
     override func viewDidLoad() {
@@ -76,7 +75,8 @@ final class SearchViewController: UIViewController {
         let input = SearchViewModel.Input(
             searhBarDidTap: rootView.searchbarView.rx.tapGesture().when(.recognized).asObservable(),
             induceButtonDidTap: rootView.searchDetailInduceView.rx.tapGesture().when(.recognized).asObservable(),
-            sosoPickCellSelected: rootView.sosopickView.sosopickCollectionView.rx.itemSelected.asObservable()
+            sosoPickCellSelected: rootView.sosopickView.sosopickCollectionView.rx.itemSelected.asObservable(),
+            pushToDetailSearchResultNotification: NotificationCenter.default.rx.notification(Notification.Name("PushToDetailSearchResult")).asObservable()
         )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -112,14 +112,12 @@ final class SearchViewController: UIViewController {
                 owner.pushToDetailViewController(novelId: novelId)
             })
             .disposed(by: disposeBag)
-    }
-    
-    private func bindNotifications() {
-        NotificationCenter.default.rx.notification(NSNotification.Name("PushToDetailSearchResult"))
+        
+        output.pushToDetailSearchResultView
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, notification in
-                if let detailSearchNovels = notification.object as? DetailSearchNovels {
-                    let detailSearchResultViewModel = DetailSearchResultViewModel(detailSearchNovels: detailSearchNovels)
+                if let filteredNovels = notification.object as? DetailSearchNovels {
+                    let detailSearchResultViewModel = DetailSearchResultViewModel(filteredNovels: filteredNovels)
                     let detailSearchResultViewController = DetailSearchResultViewController(viewModel: detailSearchResultViewModel)
                     detailSearchResultViewController.navigationController?.isNavigationBarHidden = false
                     detailSearchResultViewController.hidesBottomBarWhenPushed = true
