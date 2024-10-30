@@ -22,6 +22,7 @@ final class DetailSearchResultViewModel: ViewModelType {
     private let presentDetailSearchModal = PublishRelay<Void>()
     
     private let filteredNovelsData = PublishRelay<DetailSearchNovels>()
+    private let showEmptyView = PublishRelay<Bool>()
     
     struct Input {
         let backButtonDidTap: ControlEvent<Void>
@@ -39,6 +40,7 @@ final class DetailSearchResultViewModel: ViewModelType {
         let presentDetailSearchModal: Observable<Void>
         
         let filteredNovelsData: Observable<DetailSearchNovels>
+        let showEmptyView: Observable<Bool>
     }
     
     init(filteredNovels: DetailSearchNovels) {
@@ -77,10 +79,16 @@ final class DetailSearchResultViewModel: ViewModelType {
             .subscribe()
             .disposed(by: disposeBag)
         
+        filteredNovelsData
+            .map { $0.novels.isEmpty }
+            .bind(to: showEmptyView)
+            .disposed(by: disposeBag)
+        
         return Output(popViewController: popViewController.asObservable(),
                       novelCollectionViewHeight: novelCollectionViewHeight.asObservable(),
                       pushToNovelDetailViewController: pushToNovelDetailViewController.asObservable(),
                       presentDetailSearchModal: presentDetailSearchModal.asObservable(),
-                      filteredNovelsData: filteredNovelsData.asObservable())
+                      filteredNovelsData: filteredNovelsData.asObservable(),
+                      showEmptyView: showEmptyView.asObservable())
     }
 }

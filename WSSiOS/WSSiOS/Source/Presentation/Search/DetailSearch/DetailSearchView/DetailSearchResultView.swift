@@ -62,4 +62,11 @@ final class DetailSearchResultView: UIView {
             $0.edges.equalToSuperview()
         }
     }
+    
+    //MARK: - Custom Method
+    
+    func showEmptyView(show: Bool) {
+        emptyView.isHidden = !show
+        novelView.isHidden = show
+    }
 }

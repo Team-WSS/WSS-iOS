@@ -123,5 +123,11 @@ final class DetailSearchResultViewController: UIViewController, UIScrollViewDele
                 owner.presentToDetailSearchViewController(selectedKeywordList: [])
             })
             .disposed(by: disposeBag)
+        
+        output.showEmptyView
+            .subscribe(with: self, onNext: { owner, show in
+                owner.rootView.showEmptyView(show: show)
+            })
+            .disposed(by: disposeBag)
     }
 }
