@@ -14,15 +14,28 @@ final class DetailSearchResultViewModel: ViewModelType {
     
     //MARK: - Properties
     
-    let filteredNovels: DetailSearchNovels
+    private let searchRepository: SearchRepository
     
+    // API 쿼리
+    let keywordIds: [Int]
+    let genres: [String]
+    let isCompleted: Bool?
+    let novelRating: Float?
+    
+    // 무한 스크롤
+    private var currentPage: Int = 0
+    private var isLoadable: Bool = false
+    private var isFetching: Bool = false
+    
+    // Output
     private let popViewController = PublishRelay<Void>()
     private let novelCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
     private let pushToNovelDetailViewController = PublishRelay<Int>()
     private let presentDetailSearchModal = PublishRelay<Void>()
-    
-    private let filteredNovelsData = PublishRelay<DetailSearchNovels>()
     private let showEmptyView = PublishRelay<Bool>()
+    
+    private let filteredNovelsData = BehaviorRelay<[SearchNovel]>(value: [])
+    private let resultCount = BehaviorRelay<Int>(value: 0)
     
     struct Input {
         let backButtonDidTap: ControlEvent<Void>
@@ -31,6 +44,7 @@ final class DetailSearchResultViewModel: ViewModelType {
         let searchHeaderViewDidTap: Observable<UITapGestureRecognizer>
         
         let viewDidLoadEvent: Observable<Void>
+        let novelCollectionViewReachedBottom: Observable<Bool>
     }
     
     struct Output {
@@ -39,12 +53,21 @@ final class DetailSearchResultViewModel: ViewModelType {
         let pushToNovelDetailViewController: Observable<Int>
         let presentDetailSearchModal: Observable<Void>
         
-        let filteredNovelsData: Observable<DetailSearchNovels>
+        let filteredNovelsData: Observable<[SearchNovel]>
+        let resultCount: Driver<Int>
         let showEmptyView: Observable<Bool>
     }
     
-    init(filteredNovels: DetailSearchNovels) {
-        self.filteredNovels = filteredNovels
+    init(searchRepository: SearchRepository,
+         keywordIds: [Int],
+         genres: [String],
+         isCompleted: Bool?,
+         novelRating: Float?) {
+        self.searchRepository = searchRepository
+        self.keywordIds = keywordIds
+        self.genres = genres
+        self.isCompleted = isCompleted
+        self.novelRating = novelRating
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -61,7 +84,7 @@ final class DetailSearchResultViewModel: ViewModelType {
         
         input.novelResultCellSelected
             .withLatestFrom(filteredNovelsData) { indexPath, data in
-                data.novels[indexPath.row].novelId
+                data[indexPath.row].novelId
             }
             .bind(to: pushToNovelDetailViewController)
             .disposed(by: disposeBag)
@@ -73,15 +96,55 @@ final class DetailSearchResultViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.viewDidLoadEvent
-            .do(onNext: {
-                self.filteredNovelsData.accept(self.filteredNovels)
+            .flatMapLatest {
+                return self.getDetailSearchNovels(
+                    genres: self.genres,
+                    isCompleted: self.isCompleted,
+                    novelRating: self.novelRating,
+                    keywordIds: self.keywordIds,
+                    page: 0
+                )
+            }
+            .subscribe(onNext: { result in
+                self.filteredNovelsData.accept(result.novels)
+                self.resultCount.accept(result.resultCount)
+                self.isLoadable = result.isLoadable
+            }, onError: { error in
+                print("Error fetching novels: \(error)")
             })
-            .subscribe()
             .disposed(by: disposeBag)
         
         filteredNovelsData
-            .map { $0.novels.isEmpty }
+            .map { $0.isEmpty }
             .bind(to: showEmptyView)
+            .disposed(by: disposeBag)
+        
+        input.novelCollectionViewReachedBottom
+            .filter { reachedBottom in
+                return reachedBottom && !self.isFetching && self.isLoadable
+            }
+            .do(onNext: { _ in
+                self.isFetching = true
+            })
+            .flatMapLatest { _ in
+                self.getDetailSearchNovels(
+                    genres: self.genres,
+                    isCompleted: self.isCompleted,
+                    novelRating: self.novelRating,
+                    keywordIds: self.keywordIds,
+                    page: self.currentPage + 1)
+                    .do(onNext: { _ in
+                        self.currentPage += 1
+                        self.isFetching = false
+                    }, onError: { _ in
+                        self.isFetching = false
+                    })
+            }
+            .subscribe(with: self, onNext: { owner, data in
+                let newData = owner.filteredNovelsData.value + data.novels
+                owner.filteredNovelsData.accept(newData)
+                owner.isLoadable = data.isLoadable
+            })
             .disposed(by: disposeBag)
         
         return Output(popViewController: popViewController.asObservable(),
@@ -89,6 +152,21 @@ final class DetailSearchResultViewModel: ViewModelType {
                       pushToNovelDetailViewController: pushToNovelDetailViewController.asObservable(),
                       presentDetailSearchModal: presentDetailSearchModal.asObservable(),
                       filteredNovelsData: filteredNovelsData.asObservable(),
+                      resultCount: resultCount.asDriver(),
                       showEmptyView: showEmptyView.asObservable())
+    }
+    
+    //MARK: - API
+    
+    private func getDetailSearchNovels(genres: [String],
+                                       isCompleted: Bool?,
+                                       novelRating: Float?,
+                                       keywordIds: [Int],
+                                       page: Int) -> Observable<DetailSearchNovels> {
+        searchRepository.getDetailSearchNovels(genres: genres,
+                                               isCompleted: isCompleted,
+                                               novelRating: novelRating,
+                                               keywordIds: keywordIds,
+                                               page: page)
     }
 }

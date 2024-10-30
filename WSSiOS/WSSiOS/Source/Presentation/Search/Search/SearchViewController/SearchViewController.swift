@@ -99,7 +99,7 @@ final class SearchViewController: UIViewController {
         
         output.induceButtonEnabled
             .bind(with: self, onNext: { owner, _ in
-                let detailSearchViewController = DetailSearchViewController(viewModel: DetailSearchViewModel(keywordRepository: DefaultKeywordRepository(keywordService: DefaultKeywordService()), searchRepository: DefaultSearchRepository(searchService: DefaultSearchService()),selectedKeywordList: []))
+                let detailSearchViewController = DetailSearchViewController(viewModel: DetailSearchViewModel(keywordRepository: DefaultKeywordRepository(keywordService: DefaultKeywordService()), selectedKeywordList: []))
                 detailSearchViewController.navigationController?.isNavigationBarHidden = false
                 detailSearchViewController.hidesBottomBarWhenPushed = true
                 owner.presentModalViewController(detailSearchViewController)
@@ -116,11 +116,25 @@ final class SearchViewController: UIViewController {
         output.pushToDetailSearchResultView
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, notification in
-                if let filteredNovels = notification.object as? DetailSearchNovels {
-                    let detailSearchResultViewModel = DetailSearchResultViewModel(filteredNovels: filteredNovels)
+                if let userInfo = notification.userInfo {
+                    let keywordIds = userInfo["keywordIds"] as? [Int]
+                    let genres = userInfo["genres"] as? [String]
+                    let isCompleted = userInfo["isCompleted"] as? Bool
+                    let novelRating = userInfo["novelRating"] as? Float
+                    
+                    let detailSearchResultViewModel = DetailSearchResultViewModel(
+                        searchRepository: DefaultSearchRepository(searchService: DefaultSearchService()),
+                        keywordIds: keywordIds ?? [],
+                        genres: genres ?? [],
+                        isCompleted: isCompleted,
+                        novelRating: novelRating
+                    )
+
                     let detailSearchResultViewController = DetailSearchResultViewController(viewModel: detailSearchResultViewModel)
+                    
                     detailSearchResultViewController.navigationController?.isNavigationBarHidden = false
                     detailSearchResultViewController.hidesBottomBarWhenPushed = true
+                    
                     owner.navigationController?.pushViewController(detailSearchResultViewController, animated: true)
                 }
             })

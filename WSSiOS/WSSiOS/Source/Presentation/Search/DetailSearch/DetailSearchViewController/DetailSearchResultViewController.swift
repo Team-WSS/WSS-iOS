@@ -80,7 +80,8 @@ final class DetailSearchResultViewController: UIViewController, UIScrollViewDele
             novelCollectionViewContentSize: rootView.novelView.resultNovelCollectionView.rx.observe(CGSize.self, "contentSize"),
             novelResultCellSelected: rootView.novelView.resultNovelCollectionView.rx.itemSelected,
             searchHeaderViewDidTap: rootView.headerView.backgroundView.rx.tapGesture().when(.recognized).asObservable(),
-            viewDidLoadEvent: self.viewDidLoadEvent.asObservable()
+            viewDidLoadEvent: self.viewDidLoadEvent.asObservable(),
+            novelCollectionViewReachedBottom: observeReachedBottom(rootView.novelView.scrollView)
         )
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
@@ -92,7 +93,7 @@ final class DetailSearchResultViewController: UIViewController, UIScrollViewDele
             .disposed(by: disposeBag)
         
         output.filteredNovelsData
-            .map { $0.novels }
+            .map { $0 }
             .bind(to: rootView.novelView.resultNovelCollectionView.rx.items(cellIdentifier: HomeTasteRecommendCollectionViewCell.cellIdentifier, cellType: HomeTasteRecommendCollectionViewCell.self)) { row, element, cell in
                 cell.bindData(data: element)
             }
@@ -104,10 +105,8 @@ final class DetailSearchResultViewController: UIViewController, UIScrollViewDele
             })
             .disposed(by: disposeBag)
         
-        output.filteredNovelsData
-            .map { $0.resultCount }
-            .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, count in
+        output.resultCount
+            .drive(with: self, onNext: { owner, count in
                 owner.rootView.novelView.updateNovelCountLabel(count: count)
             })
             .disposed(by: disposeBag)
@@ -125,9 +124,24 @@ final class DetailSearchResultViewController: UIViewController, UIScrollViewDele
             .disposed(by: disposeBag)
         
         output.showEmptyView
+            .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, show in
                 owner.rootView.showEmptyView(show: show)
             })
             .disposed(by: disposeBag)
+    }
+    
+    // MARK: - Custom Method
+    
+    private func observeReachedBottom(_ scrollView: UIScrollView) -> Observable<Bool> {
+        return scrollView.rx.contentOffset
+            .map { contentOffset in
+                let contentHeight = scrollView.contentSize.height
+                let viewHeight = scrollView.frame.size.height
+                let offsetY = contentOffset.y
+
+                return offsetY + viewHeight >= contentHeight
+            }
+            .distinctUntilChanged()
     }
 }

@@ -17,7 +17,6 @@ final class DetailSearchViewModel: ViewModelType {
     //MARK: - Properties
     
     private let keywordRepository: KeywordRepository
-    private let searchRepository: SearchRepository
     
     // 전체
     private let dismissModalViewController = PublishRelay<Void>()
@@ -27,7 +26,7 @@ final class DetailSearchViewModel: ViewModelType {
     // 정보
     private let genreListData = PublishRelay<[NovelGenre]>()
     var selectedGenreList: [NovelGenre] = []
-    private var selectedGenreListData = PublishRelay<[NovelGenre]>()
+    var selectedGenreListData = PublishRelay<[NovelGenre]>()
     private var selectedCompletedStatus = BehaviorRelay<CompletedStatus?>(value: nil)
     private var selectedNovelRatingStatus = BehaviorRelay<NovelRatingStatus?>(value: nil)
     
@@ -105,9 +104,8 @@ final class DetailSearchViewModel: ViewModelType {
     
     //MARK: - init
     
-    init(keywordRepository: KeywordRepository, searchRepository: SearchRepository, selectedKeywordList: [KeywordData]) {
+    init(keywordRepository: KeywordRepository, selectedKeywordList: [KeywordData]) {
         self.keywordRepository = keywordRepository
-        self.searchRepository = searchRepository
         self.selectedKeywordList = selectedKeywordList
     }
     
@@ -153,6 +151,13 @@ final class DetailSearchViewModel: ViewModelType {
         
         input.resetButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
+                // 정보뷰
+                owner.selectedGenreList = []
+                owner.selectedGenreListData.accept(owner.selectedGenreList)
+                owner.selectedCompletedStatus.accept(nil)
+                owner.selectedNovelRatingStatus.accept(nil)
+                
+                // 키워드뷰
                 owner.selectedKeywordList = []
                 owner.selectedKeywordListData.accept(owner.selectedKeywordList)
                 owner.enteredText.accept("")
@@ -169,20 +174,16 @@ final class DetailSearchViewModel: ViewModelType {
                 let genres: [String] = owner.selectedGenreList.map { $0.rawValue }
                 let isCompleted = owner.selectedCompletedStatus.value?.isCompleted
                 let novelRating = owner.selectedNovelRatingStatus.value?.toFloat
-                owner.getDetailSearchNovels(genres: genres,
-                                            isCompleted: isCompleted,
-                                            novelRating: novelRating,
-                                            keywordIds: keywordIds,
-                                            page: 0)
                 
-                .subscribe(onNext: { result in
+                let userInfo: [AnyHashable: Any] = [
+                            "keywordIds": keywordIds,
+                            "genres": genres,
+                            "isCompleted": isCompleted as Any,
+                            "novelRating": novelRating as Any
+                        ]
                     NotificationCenter.default.post(name: owner.pushToDetailSearchResultViewControllerNotificationName,
-                                                    object: result)
-                }, onError: { error in
-                    print("Error: \(error)")
-                })
-                .disposed(by: disposeBag)
-                
+                                                    object: nil,
+                                                    userInfo: userInfo)
                 owner.dismissModalViewController.accept(())
             })
             .disposed(by: disposeBag)
@@ -375,17 +376,5 @@ final class DetailSearchViewModel: ViewModelType {
     private func searchKeyword(query: String? = nil) -> Observable<SearchKeywordResult> {
         keywordRepository.searchKeyword(query: query)
             .observe(on: MainScheduler.instance)
-    }
-    
-    private func getDetailSearchNovels(genres: [String],
-                                       isCompleted: Bool?,
-                                       novelRating: Float?,
-                                       keywordIds: [Int],
-                                       page: Int) -> Observable<DetailSearchNovels> {
-        searchRepository.getDetailSearchNovels(genres: genres,
-                                               isCompleted: isCompleted,
-                                               novelRating: novelRating,
-                                               keywordIds: keywordIds,
-                                               page: page)
     }
 }
