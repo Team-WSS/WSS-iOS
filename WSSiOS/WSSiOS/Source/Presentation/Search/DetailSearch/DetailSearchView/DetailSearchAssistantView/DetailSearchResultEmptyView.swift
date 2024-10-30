@@ -45,9 +45,10 @@ final class DetailSearchResultEmptyView: UIView {
         }
         
         emptyDescriptionLabel.do {
-            $0.applyWSSFont(.body1, with: "해당하는 작품이 없어요\n검색의 범위를 더 넓혀보세요")
+            $0.applyWSSFont(.body1, with: StringLiterals.DetailSearch.empty)
             $0.textColor = .wssGray200
             $0.textAlignment = .center
+            $0.numberOfLines = 2
         }
     }
     
