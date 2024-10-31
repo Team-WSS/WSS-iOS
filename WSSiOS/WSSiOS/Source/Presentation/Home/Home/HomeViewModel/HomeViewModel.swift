@@ -17,7 +17,7 @@ final class HomeViewModel: ViewModelType {
     private let recommendRepository: RecommendRepository
     private let disposeBag = DisposeBag()
     private let isLoggedIn: Bool
-    private let showInduceLoginModalView = BehaviorRelay<Bool>(value: false)
+    let showInduceLoginModalView = BehaviorRelay<Bool>(value: false)
     
     private let todayPopularList = PublishSubject<[TodayPopularNovel]>()
     private let realtimePopularList = PublishSubject<[RealtimePopularFeed]>()
@@ -28,6 +28,7 @@ final class HomeViewModel: ViewModelType {
     private let todayPopularCellIndexPath = PublishRelay<IndexPath>()
     private let interestCellIndexPath = PublishRelay<IndexPath>()
     private let tasteRecommendCellIndexPath = PublishRelay<IndexPath>()
+    private let navigateToAnnouncementView = PublishRelay<Void>()
     
     // MARK: - Inputs
     
@@ -127,7 +128,11 @@ extension HomeViewModel {
         
         input.todayPopularCellSelected
             .subscribe(with: self, onNext: { owner, indexPath in
-                owner.todayPopularCellIndexPath.accept(indexPath)
+                if owner.isLoggedIn {
+                    owner.todayPopularCellIndexPath.accept(indexPath)
+                } else {
+                    owner.showInduceLoginModalView.accept(true)
+                }
             })
             .disposed(by: disposeBag)
         
@@ -143,7 +148,16 @@ extension HomeViewModel {
             })
             .disposed(by: disposeBag)
         
-        let navigateToAnnouncementView = input.announcementButtonTapped.asObservable()
+        input.announcementButtonTapped
+            .subscribe(with: self, onNext: { owner, _ in
+                if owner.isLoggedIn {
+                    owner.navigateToAnnouncementView.accept(())
+                } else {
+                    owner.showInduceLoginModalView.accept(true)
+                }
+            })
+            .disposed(by: disposeBag)
+        
         let navigateToNormalSearchView = input.registerInterestNovelButtonTapped.asObservable()
         let navigateToLoginView = input.induceModalViewLoginButtonTapped.asObservable()
         
@@ -161,7 +175,7 @@ extension HomeViewModel {
                       realtimePopularData: realtimePopularDataRelay.asObservable(),
                       interestList: interestList.asObservable(),
                       tasteRecommendList: tasteRecommendList.asObservable(),
-                      navigateToAnnouncementView: navigateToAnnouncementView,
+                      navigateToAnnouncementView: navigateToAnnouncementView.asObservable(),
                       navigateToNormalSearchView: navigateToNormalSearchView,
                       navigateToLoginView: navigateToLoginView,
                       showInduceLoginModalView: showInduceLoginModalView.asDriver(),

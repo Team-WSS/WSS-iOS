@@ -119,10 +119,14 @@ final class HomeViewController: UIViewController {
                 cellType: HomeRealtimePopularCollectionViewCell.self)) { row, element, cell in
                     cell.bindData(data: element)
                     cell.onFeedViewTapped = { feedId in
-                        if let intFeedId = Int(feedId) {
-                            self.pushToFeedDetailViewController(feedId: intFeedId)
+                        if self.isLoggedIn {
+                            if let intFeedId = Int(feedId) {
+                                self.pushToFeedDetailViewController(feedId: intFeedId)
+                            } else {
+                                print("Invalid feedId: \(feedId)")
+                            }
                         } else {
-                            print("Invalid feedId: \(feedId)")
+                            self.viewModel.showInduceLoginModalView.accept(true)
                         }
                     }
                 }
