@@ -50,6 +50,15 @@ final class FeedDetailViewModel: ViewModelType {
     let pushToFeedEditViewController = PublishRelay<Void>()
     let showDeleteAlertView = PublishRelay<Void>()
     
+    // 댓글 드롭다운
+    private let showCommentDropdownView = BehaviorRelay<Bool>(value: false)
+    private let isMyComment = BehaviorRelay<Bool>(value: false)
+    
+    let showCommentSpoilerAlertView = PublishRelay<Void>()
+    let showCommentImproperAlertView = PublishRelay<Void>()
+    // 댓글 수정
+    let showCommentDeleteAlertView = PublishRelay<Void>()
+    
     //MARK: - Life Cycle
     
     init(feedDetailRepository: FeedDetailRepository, feedId: Int) {
@@ -76,6 +85,10 @@ final class FeedDetailViewModel: ViewModelType {
         // 피드 드롭다운
         let dotsButtonDidTap: ControlEvent<Void>
         let dropdownButtonDidTap: Observable<DropdownButtonType>
+        
+        // 댓글 드롭다운
+        let commentDotsButtonDidTap: PublishSubject<Int>
+        let commentDropdownButtonDidTap: PublishSubject<DropdownButtonType>
     }
     
     struct Output {
@@ -106,6 +119,14 @@ final class FeedDetailViewModel: ViewModelType {
         let showImproperAlertView: Observable<Void>
         let pushToFeedEditViewController: Observable<Void>
         let showDeleteAlertView: Observable<Void>
+        
+        // 댓글 드롭다운
+        let showCommentDropdownView: Driver<Bool>
+        let isMyComment: Driver<Bool>
+        let showCommentSpoilerAlertView: Observable<Void>
+        let showCommentImproperAlertView: Observable<Void>
+        // 댓글 수정하기
+        let showCommentDeleteAlertView: Observable<Void>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -244,6 +265,24 @@ final class FeedDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        input.commentDotsButtonDidTap
+            .withLatestFrom(showCommentDropdownView)
+            .map { !$0 }
+            .bind(to: showCommentDropdownView)
+            .disposed(by: disposeBag)
+        
+        input.commentDropdownButtonDidTap
+            .map { ($0, self.isMyComment.value) }
+            .subscribe( with: self, onNext: { owner, result in
+                switch result {
+                case (.top, true): owner.pushToFeedEditViewController.accept(())
+                case (.bottom, true): owner.showCommentDeleteAlertView.accept(())
+                case (.top, false): owner.showCommentSpoilerAlertView.accept(())
+                case (.bottom, false): owner.showCommentImproperAlertView.accept(())
+                }
+            })
+            .disposed(by: disposeBag)
+        
         return Output(feedData: feedData.asObservable(),
                       commentsData: commentsData.asDriver(),
                       popViewController: popViewController,
@@ -262,7 +301,12 @@ final class FeedDetailViewModel: ViewModelType {
                       showSpoilerAlertView: showSpoilerAlertView.asObservable(),
                       showImproperAlertView: showImproperAlertView.asObservable(),
                       pushToFeedEditViewController: pushToFeedEditViewController.asObservable(),
-                      showDeleteAlertView: showDeleteAlertView.asObservable())
+                      showDeleteAlertView: showDeleteAlertView.asObservable(),
+                      showCommentDropdownView: showCommentDropdownView.asDriver(),
+                      isMyComment: isMyComment.asDriver(),
+                      showCommentSpoilerAlertView: showCommentSpoilerAlertView.asObservable(),
+                      showCommentImproperAlertView: showCommentImproperAlertView.asObservable(),
+                      showCommentDeleteAlertView: showCommentDeleteAlertView.asObservable())
     }
     
     //MARK: - API
@@ -305,6 +349,14 @@ final class FeedDetailViewModel: ViewModelType {
     
     func deleteFeed(_ feedId: Int) -> Observable<Void> {
         return feedDetailRepository.deleteFeed(feedId: feedId)
+    }
+    
+    func postSpoilerComment(_ feedId: Int,_ commentId: Int) -> Observable<Void> {
+        return feedDetailRepository.postSpoilerComment(feedId: feedId, commentId: commentId)
+    }
+    
+    func postImpertinenceComment(_ feedId: Int,_ commentId: Int) -> Observable<Void> {
+        return feedDetailRepository.postImpertinenceComment(feedId: feedId, commentId: commentId)
     }
     
     //MARK: - Custom Method

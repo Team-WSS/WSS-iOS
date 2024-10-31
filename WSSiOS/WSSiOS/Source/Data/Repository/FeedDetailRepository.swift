@@ -24,6 +24,9 @@ protocol FeedDetailRepository {
     func postImpertinenceFeed(feedId: Int) -> Observable<Void>
     
     func deleteFeed(feedId: Int) -> Observable<Void>
+    
+    func postSpoilerComment(feedId: Int, commentId: Int) -> Observable<Void>
+    func postImpertinenceComment(feedId: Int, commentId: Int) -> Observable<Void>
 }
 
 struct TestFeedDetailRepository: FeedDetailRepository {
@@ -107,6 +110,14 @@ struct TestFeedDetailRepository: FeedDetailRepository {
     func deleteFeed(feedId: Int) -> Observable<Void> {
         return Observable.just(())
     }
+    
+    func postSpoilerComment(feedId: Int, commentId: Int) -> Observable<Void> {
+        return Observable.just(())
+    }
+    
+    func postImpertinenceComment(feedId: Int, commentId: Int) -> Observable<Void> {
+        return Observable.just(())
+    }
 }
 
 struct DefaultFeedDetailRepository: FeedDetailRepository {
@@ -154,5 +165,13 @@ struct DefaultFeedDetailRepository: FeedDetailRepository {
     
     func deleteFeed(feedId: Int) -> Observable<Void> {
         return feedDetailService.deleteFeed(feedId: feedId).asObservable()
+    }
+    
+    func postSpoilerComment(feedId: Int, commentId: Int) -> Observable<Void> {
+        return feedDetailService.postSpoilerComment(feedId: feedId, commentId: commentId).asObservable()
+    }
+    
+    func postImpertinenceComment(feedId: Int, commentId: Int) -> Observable<Void> {
+        return feedDetailService.postImpertinenceComment(feedId: feedId, commentId: commentId).asObservable()
     }
 }
