@@ -17,6 +17,7 @@ final class NormalSearchView: UIView {
     let headerView = NormalSearchHeaderView()
     let resultView = NormalSearchResultView()
     let emptyView = NormalSearchEmptyView()
+    let induceLoginModalView = HomeInduceLoginModalView()
     
     // MARK: - Life Cycle
     
@@ -28,6 +29,7 @@ final class NormalSearchView: UIView {
         
         resultView.isHidden = true
         emptyView.isHidden = true
+        induceLoginModalView.isHidden = true
     }
     
     required init?(coder: NSCoder) {
@@ -39,7 +41,8 @@ final class NormalSearchView: UIView {
     private func setHierarchy() {
         self.addSubviews(headerView,
                          resultView,
-                         emptyView)
+                         emptyView,
+                         induceLoginModalView)
     }
     
     private func setLayout() {
@@ -56,6 +59,10 @@ final class NormalSearchView: UIView {
         emptyView.snp.makeConstraints {
             $0.top.equalTo(headerView.snp.bottom)
             $0.horizontalEdges.bottom.equalToSuperview()
+        }
+        
+        induceLoginModalView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
 }

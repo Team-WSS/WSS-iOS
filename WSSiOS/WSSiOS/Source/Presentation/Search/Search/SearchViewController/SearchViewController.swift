@@ -18,14 +18,17 @@ final class SearchViewController: UIViewController {
     private let viewModel: SearchViewModel
     private let disposeBag = DisposeBag()
     
+    private var isLoggedIn: Bool
+    
     //MARK: - Components
     
     private let rootView = SearchView()
     
     //MARK: - Life Cycle
     
-    init(viewModel: SearchViewModel) {
+    init(viewModel: SearchViewModel, isLoggedIn: Bool) {
         self.viewModel = viewModel
+        self.isLoggedIn = isLoggedIn
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -91,10 +94,7 @@ final class SearchViewController: UIViewController {
         
         output.pushToNormalSearchViewController
             .bind(with: self, onNext: { owner, _ in
-                let viewController = NormalSearchViewController(viewModel: NormalSearchViewModel(searchRepository: DefaultSearchRepository(searchService: DefaultSearchService())))
-                viewController.navigationController?.isNavigationBarHidden = false
-                viewController.hidesBottomBarWhenPushed = true
-                owner.navigationController?.pushViewController(viewController, animated: true)
+                owner.pushToNormalSearchViewController(isLoggedIn: owner.isLoggedIn)
             })
             .disposed(by: disposeBag)
         

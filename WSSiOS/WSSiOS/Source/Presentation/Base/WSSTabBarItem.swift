@@ -56,7 +56,7 @@ enum WSSTabBarItem: CaseIterable {
             return HomeViewController(viewModel: HomeViewModel(recommendRepository: DefaultRecommendRepository(recommendService: DefaultRecommendService()), isLoggedIn: isLoggedIn), isLoggedIn: isLoggedIn)
             
         case .search:
-            return SearchViewController(viewModel: SearchViewModel(searchRepository: DefaultSearchRepository(searchService: DefaultSearchService()), isLoggedIn: isLoggedIn))
+            return SearchViewController(viewModel: SearchViewModel(searchRepository: DefaultSearchRepository(searchService: DefaultSearchService()), isLoggedIn: isLoggedIn), isLoggedIn: isLoggedIn)
             
         case .feed:
             return FeedViewController(viewModel: FeedViewModel(gender: "F"))

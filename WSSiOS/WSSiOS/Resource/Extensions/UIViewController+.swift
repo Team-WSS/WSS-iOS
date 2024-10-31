@@ -358,6 +358,14 @@ extension UIViewController {
         viewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(viewController, animated: true)
     }
+    
+    func pushToNormalSearchViewController(isLoggedIn: Bool) {
+        let viewController = NormalSearchViewController(viewModel: NormalSearchViewModel(searchRepository: DefaultSearchRepository(searchService: DefaultSearchService()), isLoggedIn: isLoggedIn))
+        
+        viewController.navigationController?.isNavigationBarHidden = false
+        viewController.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
 }
 
 extension UIViewController: UIGestureRecognizerDelegate {
