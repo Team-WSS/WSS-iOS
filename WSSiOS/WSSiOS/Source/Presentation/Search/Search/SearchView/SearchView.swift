@@ -21,6 +21,7 @@ final class SearchView: UIView {
     let searchbarView = SearchBarView()
     let searchDetailInduceView = SearchDetailInduceView()
     let sosopickView = SearchSosoPickView()
+    let induceLoginModalView = HomeInduceLoginModalView()
     
     // MARK: - Life Cycle
     
@@ -47,12 +48,17 @@ final class SearchView: UIView {
             $0.fontHeadline1Attribute(with: StringLiterals.Search.title)
             $0.textColor = .wssBlack
         }
+        
+        induceLoginModalView.do {
+            $0.isHidden = true
+        }
     }
     
     private func setHierarchy() {
         self.addSubviews(scrollView,
                          titleLabel,
-                         searchbarView)
+                         searchbarView,
+                         induceLoginModalView)
         scrollView.addSubview(contentView)
         contentView.addSubviews(searchDetailInduceView,
                                 sosopickView)
@@ -68,6 +74,10 @@ final class SearchView: UIView {
             $0.top.equalTo(titleLabel.snp.bottom).offset(20)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(42)
+        }
+        
+        induceLoginModalView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
         
         scrollView.snp.makeConstraints {

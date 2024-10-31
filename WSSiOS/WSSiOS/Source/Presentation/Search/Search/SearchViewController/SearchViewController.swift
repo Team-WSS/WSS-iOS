@@ -75,7 +75,9 @@ final class SearchViewController: UIViewController {
         let input = SearchViewModel.Input(
             searhBarDidTap: rootView.searchbarView.rx.tapGesture().when(.recognized).asObservable(),
             induceButtonDidTap: rootView.searchDetailInduceView.rx.tapGesture().when(.recognized).asObservable(),
-            sosoPickCellSelected: rootView.sosopickView.sosopickCollectionView.rx.itemSelected.asObservable()
+            sosoPickCellSelected: rootView.sosopickView.sosopickCollectionView.rx.itemSelected.asObservable(),
+            induceModalViewLoginButtonDidtap: rootView.induceLoginModalView.loginButton.rx.tap,
+            induceModalViewCancelButtonDidtap: rootView.induceLoginModalView.cancelButton.rx.tap
         )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -87,7 +89,7 @@ final class SearchViewController: UIViewController {
                 }
                 .disposed(by: disposeBag)
         
-        output.searchBarEnabled
+        output.pushToNormalSearchViewController
             .bind(with: self, onNext: { owner, _ in
                 let viewController = NormalSearchViewController(viewModel: NormalSearchViewModel(searchRepository: DefaultSearchRepository(searchService: DefaultSearchService())))
                 viewController.navigationController?.isNavigationBarHidden = false
@@ -96,7 +98,7 @@ final class SearchViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.induceButtonEnabled
+        output.pushToDetailSearchViewController
             .bind(with: self, onNext: { owner, _ in
                 let detailSearchViewController = DetailSearchViewController(viewModel: DetailSearchViewModel(keywordRepository: DefaultKeywordRepository(keywordService: DefaultKeywordService()), selectedKeywordList: []))
                 detailSearchViewController.navigationController?.isNavigationBarHidden = false
@@ -105,10 +107,27 @@ final class SearchViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.navigateToNovelDetailView
-            .bind(with: self, onNext: { owner, indexPath in
-                let novelId = output.sosoPickList.value[indexPath.row].novelId
+        output.pushToNovelDetailViewController
+            .withLatestFrom(output.sosoPickList) { indexPath, sosoPickList in
+                sosoPickList[indexPath.row].novelId
+            }
+            .bind(with: self, onNext: { owner, novelId in
                 owner.pushToDetailViewController(novelId: novelId)
+            })
+            .disposed(by: disposeBag)
+        
+        output.showInduceLoginModalView
+            .bind(with: self, onNext: { owner, show in
+                owner.rootView.induceLoginModalView.isHidden = !show
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushToLoginViewController
+            .bind(with: self, onNext: { owner, _ in
+                guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else {
+                    return
+                }
+                sceneDelegate.setRootToLoginViewController()
             })
             .disposed(by: disposeBag)
     }
