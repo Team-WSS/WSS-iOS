@@ -294,33 +294,38 @@ final class OnboardingViewModel: ViewModelType {
                     )
                 }
             }, onFailure: { owner, error in
-                guard let networkError = error as? ServiceError else {
+                guard let networkError = error as? RxCocoaURLError else {
                     owner.showNetworkErrorView.accept(())
                     return
                 }
                 
                 switch networkError {
-                case .httpError(let statusCode, let code, _):
-                    if (500...599).contains(statusCode) {
-                        owner.showNetworkErrorView.accept(())
+                case .httpRequestFailed(_, let data):
+                    if let data,
+                       let errorResponse = try? JSONDecoder().decode(ServerErrorResponse.self, from: data) {
+                        owner.acceptNicknameNotAvailableReason(from: errorResponse.code)
                     } else {
-                        let reason: NicknameNotAvailableReason
-                        switch code {
-                        case "USER-003":
-                            reason = .whiteSpaceIncluded
-                        case "USER-014":
-                            reason = .notChanged
-                        default:
-                            reason = .invalidChacterOrLimitExceeded
-                        }
-                        
-                        owner.isNicknameAvailable.accept(.notAvailable(reason: reason))
+                        owner.showNetworkErrorView.accept(())
                     }
                 default:
                     owner.showNetworkErrorView.accept(())
                 }
             })
             .disposed(by: disposeBag)
+    }
+    
+    private func acceptNicknameNotAvailableReason(from code: String) {
+        let reason: NicknameNotAvailableReason
+        switch code {
+        case "USER-003":
+            reason = .whiteSpaceIncluded
+        case "USER-014":
+            reason = .notChanged
+        default:
+            reason = .invalidChacterOrLimitExceeded
+        }
+        
+        self.isNicknameAvailable.accept(.notAvailable(reason: reason))
     }
     
     private func postUserProfile(disposeBag: DisposeBag) {
