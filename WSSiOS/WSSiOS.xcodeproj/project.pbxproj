@@ -116,6 +116,7 @@
 		2CFA9A182C9D9AD500A4A820 /* UserInfoResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CFA9A172C9D9AD500A4A820 /* UserInfoResult.swift */; };
 		2CFE04332B66A45A0048F77A /* UICollectionViewCell+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CFE04322B66A45A0048F77A /* UICollectionViewCell+.swift */; };
 		3908376B2C32ADEA0082DC57 /* NovelDetailInfoReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3908376A2C32ADEA0082DC57 /* NovelDetailInfoReviewView.swift */; };
+		390F546C2CD54541002D24E1 /* scroll.json in Resources */ = {isa = PBXBuildFile; fileRef = 390F546B2CD54541002D24E1 /* scroll.json */; };
 		3910137C2CCF5EC6001894E5 /* BirthPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3910137B2CCF5EC6001894E5 /* BirthPickerView.swift */; };
 		3910137E2CCF5FD8001894E5 /* BirthPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3910137D2CCF5FD3001894E5 /* BirthPickerViewController.swift */; };
 		39119FA82C8C482800E9E6FA /* NovelDetailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39119FA72C8C482800E9E6FA /* NovelDetailService.swift */; };
@@ -166,7 +167,6 @@
 		399F29322B56633C00BBC12B /* NovelResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399F29312B56633C00BBC12B /* NovelResult.swift */; };
 		399F29352B56DA7800BBC12B /* TrashReadStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399F29342B56DA7800BBC12B /* TrashReadStatus.swift */; };
 		39ABD5A02B54D0A900DEA94E /* RegisterNormalDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39ABD59F2B54D0A900DEA94E /* RegisterNormalDatePicker.swift */; };
-		39AD55B32CAFDF6500CBDA7A /* scroll.json in Resources */ = {isa = PBXBuildFile; fileRef = 39AD55B22CAFDF6500CBDA7A /* scroll.json */; };
 		39AF30D12B50182F00FDC1F3 /* RegisterNormalReadStatusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39AF30D02B50182F00FDC1F3 /* RegisterNormalReadStatusButton.swift */; };
 		39B225252B70B41A001C76D0 /* RegisterNormalDifferentRadiusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B225242B70B41A001C76D0 /* RegisterNormalDifferentRadiusView.swift */; };
 		39B6B6A32C649F3300D80BD9 /* NovelDetailInfoReviewGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B6B6A22C649F3300D80BD9 /* NovelDetailInfoReviewGraphView.swift */; };
@@ -533,6 +533,7 @@
 		2CFA9A172C9D9AD500A4A820 /* UserInfoResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoResult.swift; sourceTree = "<group>"; };
 		2CFE04322B66A45A0048F77A /* UICollectionViewCell+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+.swift"; sourceTree = "<group>"; };
 		3908376A2C32ADEA0082DC57 /* NovelDetailInfoReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoReviewView.swift; sourceTree = "<group>"; };
+		390F546B2CD54541002D24E1 /* scroll.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = scroll.json; sourceTree = "<group>"; };
 		3910137B2CCF5EC6001894E5 /* BirthPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthPickerView.swift; sourceTree = "<group>"; };
 		3910137D2CCF5FD3001894E5 /* BirthPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthPickerViewController.swift; sourceTree = "<group>"; };
 		39119FA72C8C482800E9E6FA /* NovelDetailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailService.swift; sourceTree = "<group>"; };
@@ -581,7 +582,6 @@
 		399F29312B56633C00BBC12B /* NovelResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelResult.swift; sourceTree = "<group>"; };
 		399F29342B56DA7800BBC12B /* TrashReadStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashReadStatus.swift; sourceTree = "<group>"; };
 		39ABD59F2B54D0A900DEA94E /* RegisterNormalDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalDatePicker.swift; sourceTree = "<group>"; };
-		39AD55B22CAFDF6500CBDA7A /* scroll.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = scroll.json; sourceTree = "<group>"; };
 		39AF30D02B50182F00FDC1F3 /* RegisterNormalReadStatusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalReadStatusButton.swift; sourceTree = "<group>"; };
 		39B225242B70B41A001C76D0 /* RegisterNormalDifferentRadiusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalDifferentRadiusView.swift; sourceTree = "<group>"; };
 		39B6B6A22C649F3300D80BD9 /* NovelDetailInfoReviewGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoReviewGraphView.swift; sourceTree = "<group>"; };
@@ -1827,13 +1827,13 @@
 		39EF97B12B54498E00D2148B /* Lottie */ = {
 			isa = PBXGroup;
 			children = (
+				390F546B2CD54541002D24E1 /* scroll.json */,
 				39B75AD12B59891D005DD8B9 /* regressorGreeting.json */,
 				39B75AD42B59891D005DD8B9 /* regressorSword.json */,
 				39B75AD52B59891D005DD8B9 /* sosocatBread.json */,
 				39B75ACF2B59891C005DD8B9 /* sosocatTail.json */,
 				39B75AD32B59891D005DD8B9 /* villainessFan.json */,
 				39B75AD22B59891D005DD8B9 /* villainessTea.json */,
-				39AD55B22CAFDF6500CBDA7A /* scroll.json */,
 			);
 			path = Lottie;
 			sourceTree = "<group>";
@@ -2895,7 +2895,6 @@
 				39B75ADA2B59891D005DD8B9 /* villainessFan.json in Resources */,
 				39B75AD92B59891D005DD8B9 /* villainessTea.json in Resources */,
 				39B75ADB2B59891D005DD8B9 /* regressorSword.json in Resources */,
-				39AD55B32CAFDF6500CBDA7A /* scroll.json in Resources */,
 				39B75AE02B59C6A7005DD8B9 /* LaunchScreen.storyboard in Resources */,
 				39B75AD62B59891D005DD8B9 /* sosocatTail.json in Resources */,
 				2C79CB9B2B45A0B700734E1F /* Pretendard-Regular.otf in Resources */,
@@ -2903,6 +2902,7 @@
 				2C79CB952B45A0A400734E1F /* Pretendard-SemiBold.otf in Resources */,
 				39B75ADC2B59891D005DD8B9 /* sosocatBread.json in Resources */,
 				2C79CB972B45A0AB00734E1F /* Pretendard-Medium.otf in Resources */,
+				390F546C2CD54541002D24E1 /* scroll.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
