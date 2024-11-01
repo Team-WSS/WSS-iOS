@@ -161,10 +161,11 @@ final class OnboardingViewModel: ViewModelType {
         
         let showBirthPickerModal = input.selectBirthButtonDidTap.asDriver()
         
-        self.selectedGender
-            .bind(with: self, onNext: { owner, selectedGender in
-                // DatePicker 관련된 것은 나중에 적용 예정, 지금은 성별만 선택하면 넘어갈 수 있음
-                if selectedGender != nil {
+        Observable
+            .combineLatest(selectedGender.asObservable(), selectedBirth.asObservable())
+            .bind(with: self, onNext: { owner, value in
+                let (gender, birth) = value
+                if gender != nil && birth != nil {
                     owner.isBirthGenderNextButtonAvailable.accept(true)
                 }
             })
