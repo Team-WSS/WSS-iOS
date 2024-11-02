@@ -776,6 +776,7 @@
 		CD3E5AA12B55190400C0A659 /* UserNovelResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNovelResult.swift; sourceTree = "<group>"; };
 		CD3E5AAA2B56173C00C0A659 /* TrashNovelDetailMemoSettingButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashNovelDetailMemoSettingButtonView.swift; sourceTree = "<group>"; };
 		CD3E5AB22B565DFF00C0A659 /* NovelMemoResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelMemoResult.swift; sourceTree = "<group>"; };
+		CD514C8D2CD5D6DB007A27A8 /* WSSiOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WSSiOS.entitlements; sourceTree = "<group>"; };
 		CD66136F2B8A225E00B90B2B /* MemoReadViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoReadViewModel.swift; sourceTree = "<group>"; };
 		CD6613742B8A283500B90B2B /* MemoEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoEditViewModel.swift; sourceTree = "<group>"; };
 		CD6613772B8B313700B90B2B /* DeletePopupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletePopupViewModel.swift; sourceTree = "<group>"; };
@@ -1063,6 +1064,7 @@
 		2CD2291A2B42E685005400BE /* WSSiOS */ = {
 			isa = PBXGroup;
 			children = (
+				CD514C8D2CD5D6DB007A27A8 /* WSSiOS.entitlements */,
 				2CD229532B42EA12005400BE /* App */,
 				2CD229482B42E92F005400BE /* Resource */,
 				2CD2294F2B42E9AD005400BE /* Source */,
@@ -3401,6 +3403,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = WSSiOS/WSSiOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 202401192;
 				DEVELOPMENT_TEAM = 9SVDHQS4M3;
@@ -3436,6 +3439,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = WSSiOS/WSSiOS.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 202401192;
