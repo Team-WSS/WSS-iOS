@@ -5,6 +5,7 @@
 //  Created by YunhakLee on 9/17/24.
 //
 
+import AuthenticationServices
 import UIKit
 
 import RxSwift
@@ -14,6 +15,8 @@ import Then
 final class LoginViewModel: ViewModelType {
     
     //MARK: - Properties
+    
+    private let authRepository: AuthRepository
     
     private let bannerImages = BehaviorRelay<[UIImage]>(
         value: [UIImage(resource: .imgLoginBanner4),
@@ -32,6 +35,9 @@ final class LoginViewModel: ViewModelType {
     
     //MARK: - Life Cycle
     
+    init(authRepository: AuthRepository) {
+        self.authRepository = authRepository
+    }
     
     //MARK: - Transform
     
