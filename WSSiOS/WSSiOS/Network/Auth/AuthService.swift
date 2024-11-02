@@ -28,7 +28,7 @@ final class DefaultAuthService: NSObject, Networking, AuthService {
             let request = try makeHTTPRequest(method: .post,
                                               path: URLs.Auth.loginWithApple,
                                               headers: APIConstants.noTokenHeader,
-                                              body: nil)
+                                              body: appleLoginBody)
 
             NetworkLogger.log(request: request)
 
