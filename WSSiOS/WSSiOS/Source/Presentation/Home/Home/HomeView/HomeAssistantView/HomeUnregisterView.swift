@@ -13,6 +13,7 @@ import Then
 enum UnregisterType {
     case interest
     case tasteRecommend
+    case emptyInterest
     
     var title: String {
         switch self {
@@ -20,24 +21,30 @@ enum UnregisterType {
             return StringLiterals.Home.Unregister.Title.interest
         case .tasteRecommend:
             return StringLiterals.Home.Unregister.Title.recommend
+        case .emptyInterest:
+            return StringLiterals.Home.Unregister.Title.emptyInterest
         }
     }
     
-    var buttonTitle: String {
+    var buttonTitle: String? {
         switch self {
         case .interest:
             return StringLiterals.Home.Unregister.ButtonTItle.interest
         case .tasteRecommend:
             return StringLiterals.Home.Unregister.ButtonTItle.recommend
+        case .emptyInterest:
+            return nil
         }
     }
     
-    var buttonColor: UIColor {
+    var buttonColor: UIColor? {
         switch self {
         case .interest:
             return .wssSecondary100
         case .tasteRecommend:
             return .wssPrimary100
+        case .emptyInterest:
+            return nil
         }
     }
 }
@@ -82,11 +89,13 @@ final class HomeUnregisterView: UIView {
         registerButton.do {
             $0.setTitleColor(.wssWhite, for: .normal)
             $0.layer.cornerRadius = 8
+            $0.isHidden = true
         }
         
         registerButtonLabel.do {
             $0.textColor = .wssWhite
             $0.isUserInteractionEnabled = false
+            $0.isHidden = true
         }
     }
     
@@ -120,13 +129,19 @@ final class HomeUnregisterView: UIView {
             $0.applyWSSFont(.body2, with: type.title)
             $0.numberOfLines = 2
         }
-        
-        self.registerButton.do {
-            $0.backgroundColor = type.buttonColor
-        }
-        
-        self.registerButtonLabel.do {
-            $0.applyWSSFont(.title3, with: type.buttonTitle)
+        if let buttonTitle = type.buttonTitle {
+            registerButton.isHidden = false
+            registerButtonLabel.isHidden = false
+            registerButton.backgroundColor = type.buttonColor
+            registerButtonLabel.applyWSSFont(.title3, with: buttonTitle)
+        } else {
+            registerButton.isHidden = true
+            registerButtonLabel.isHidden = true
+            
+            titleLabel.snp.remakeConstraints {
+                $0.verticalEdges.equalToSuperview().inset(20)
+                $0.leading.equalToSuperview().inset(24)
+            }
         }
     }
 }
