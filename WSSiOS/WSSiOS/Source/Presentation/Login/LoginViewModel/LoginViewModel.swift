@@ -86,12 +86,7 @@ final class LoginViewModel: NSObject, ViewModelType {
         
         input.loginButtonDidTap
             .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
-            .flatMapLatest { type in
-                self.repositoryLoginMethod(type: type)
-            }
             .subscribe(with: self, onNext: { owner, type in
-                // Login 작업 종료 후
-                print("Login 성공 및 종료")
                 switch type {
                 case .skip:
                     owner.navigateToHome.accept(())
@@ -123,7 +118,6 @@ final class LoginViewModel: NSObject, ViewModelType {
                 print(error)
             })
             .disposed(by: disposeBag)
-                       
         
         return Output(
             bannerImages: bannerImages.asDriver(),
@@ -189,7 +183,10 @@ extension LoginViewModel: ASAuthorizationControllerDelegate {
                                email: credential.email))
     }
     
-    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+    func authorizationController(
+        controller: ASAuthorizationController,
+        didCompleteWithError error: Error
+    ) {
         print("error \(error)")
     }
 }
