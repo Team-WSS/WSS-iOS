@@ -10,6 +10,8 @@ import Foundation
 enum StringLiterals {
     
     enum Loading {
+        static let loadingTitle = "로딩 중"
+        static let loadingDescription = "잠시만 기다려주세요"
         static let novelTitle = "작품 제목"
         static let novelAuthor = "작품 작가"
         static let novelGenre = "작품 장르"

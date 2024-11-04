@@ -52,12 +52,12 @@ final class WSSLoadingView: UIView {
         }
         
         titleLabel.do {
-            $0.applyWSSFont(.title2, with: "로딩 중")
+            $0.applyWSSFont(.title2, with: StringLiterals.Loading.loadingTitle)
             $0.textColor = .wssPrimary100
         }
         
         descriptionLabel.do {
-            $0.applyWSSFont(.body2, with: "잠시만 기다려주세요")
+            $0.applyWSSFont(.body2, with: StringLiterals.Loading.loadingDescription)
             $0.textColor = .wssGray200
         }
     }
