@@ -14,8 +14,6 @@ final class WSSLoadingView: UIView {
     
     // MARK: - UI Components
     
-    private let 
-    
     // MARK: - Life Cycle
     
     override init(frame: CGRect) {
