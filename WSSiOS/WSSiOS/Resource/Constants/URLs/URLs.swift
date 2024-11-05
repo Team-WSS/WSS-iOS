@@ -158,6 +158,7 @@ enum URLs {
     enum Search {
         static let sosoPick = "/soso-picks"
         static let normalSearch = "/novels"
+        static let detailSearch = "/novels/filtered"
     }
     
     enum Keyword {

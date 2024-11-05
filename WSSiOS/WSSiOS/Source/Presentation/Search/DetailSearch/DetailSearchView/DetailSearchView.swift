@@ -95,6 +95,7 @@ final class DetailSearchView: UIView {
             detailSearchInfoView.snp.makeConstraints {
                 $0.top.equalTo(detailSearchHeaderView.snp.bottom).offset(UIScreen.isSE ? 15 : 30)
                 $0.leading.trailing.equalToSuperview()
+                $0.bottom.equalTo(detailSearchBottomView.snp.top)
             }
             
             detailSearchBottomView.snp.makeConstraints {
