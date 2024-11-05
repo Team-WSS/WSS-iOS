@@ -42,6 +42,7 @@ final class FeedDetailReplyView: UIView {
             $0.scrollDirection = .vertical
             $0.itemSize = CGSize(width: UIScreen.main.bounds.width - 40, height: 45)
             $0.minimumLineSpacing = 22
+            $0.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 60, right: 0)
             replyCollectionView.setCollectionViewLayout($0, animated: true)
         }
     }

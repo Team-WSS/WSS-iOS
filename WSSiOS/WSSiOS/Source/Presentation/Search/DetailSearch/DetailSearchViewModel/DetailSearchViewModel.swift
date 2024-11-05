@@ -110,6 +110,7 @@ final class DetailSearchViewModel: ViewModelType {
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
+        
         // 전체
         input.viewDidLoadEvent
             .subscribe(with: self, onNext: { owner, _ in

@@ -15,6 +15,10 @@ protocol FeedDetailService {
     func postFeedLike(feedId: Int) -> Single<Void>
     func deleteFeedLike(feedId: Int) -> Single<Void>
     
+    func postComment(feedId: Int, commentContent: String) -> Single<Void>
+    func putComment(feedId: Int, commentId: Int, commentContent: String) -> Single<Void>
+    func deleteComment(feedId: Int, commentId: Int) -> Single<Void>
+    
     func postSpoilerFeed(feedId: Int) -> Single<Void>
     func postImpertinenceFeed(feedId: Int) -> Single<Void>
     
@@ -86,6 +90,68 @@ final class DefaultFeedDetailService: NSObject, Networking, FeedDetailService {
         do {
             let request = try makeHTTPRequest(method: .delete,
                                               path: URLs.Feed.deleteFeedLike(feedId: feedId),
+                                              headers: APIConstants.testTokenHeader,
+                                              body: nil)
+            
+            NetworkLogger.log(request: request)
+            
+            return urlSession.rx.data(request: request)
+                .map { _ in }
+                .asSingle()
+            
+        } catch {
+            return Single.error(error)
+        }
+    }
+    
+    func postComment(feedId: Int, commentContent: String) -> Single<Void> {
+        guard let commentContent = try? JSONEncoder().encode(FeedCommentContent(commentContent: commentContent)) else {
+            return Single.error(NetworkServiceError.invalidRequestError)
+        }
+        
+        do {
+            let request = try makeHTTPRequest(method: .post,
+                                              path: URLs.Feed.postComment(feedId: feedId),
+                                              headers: APIConstants.testTokenHeader,
+                                              body: commentContent)
+            
+            NetworkLogger.log(request: request)
+            
+            return urlSession.rx.data(request: request)
+                .map { _ in }
+                .asSingle()
+            
+        } catch {
+            return Single.error(error)
+        }
+    }
+    
+    func putComment(feedId: Int, commentId: Int, commentContent: String) -> Single<Void> {
+        guard let commentContent = try? JSONEncoder().encode(FeedCommentContent(commentContent: commentContent)) else {
+            return Single.error(NetworkServiceError.invalidRequestError)
+        }
+        
+        do {
+            let request = try makeHTTPRequest(method: .put,
+                                              path: URLs.Feed.putComment(feedId: feedId, commentId: commentId),
+                                              headers: APIConstants.testTokenHeader,
+                                              body: commentContent)
+            
+            NetworkLogger.log(request: request)
+            
+            return urlSession.rx.data(request: request)
+                .map { _ in }
+                .asSingle()
+            
+        } catch {
+            return Single.error(error)
+        }
+    }
+    
+    func deleteComment(feedId: Int, commentId: Int) -> Single<Void> {
+        do {
+            let request = try makeHTTPRequest(method: .delete,
+                                              path: URLs.Feed.deleteComment(feedId: feedId, commentId: commentId),
                                               headers: APIConstants.testTokenHeader,
                                               body: nil)
             

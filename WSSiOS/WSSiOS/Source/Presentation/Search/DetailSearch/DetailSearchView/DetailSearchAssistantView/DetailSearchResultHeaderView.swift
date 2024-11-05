@@ -44,12 +44,10 @@ final class DetailSearchResultHeaderView: UIView {
             headerLabel.do {
                 $0.applyWSSFont(.body4, with: "장르, 연재상태, 별점, 키워드 적용")
                 $0.textColor = .wssGray200
-                $0.isUserInteractionEnabled = false
             }
             
             controllerImageView.do {
                 $0.image = .icController.withRenderingMode(.alwaysOriginal).withTintColor(.wssBlack)
-                $0.isUserInteractionEnabled = false
             }
         }
     }

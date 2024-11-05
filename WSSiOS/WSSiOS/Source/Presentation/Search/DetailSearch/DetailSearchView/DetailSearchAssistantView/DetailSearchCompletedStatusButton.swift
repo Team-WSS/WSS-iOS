@@ -15,9 +15,9 @@ final class DetailSearchCompletedStatusButton: UIButton {
     //MARK: - Properties
     
     let status: CompletedStatus
-
+    
     //MARK: - Components
-
+    
     private let buttonLabel = UILabel()
     
     //MARK: - Life Cycle

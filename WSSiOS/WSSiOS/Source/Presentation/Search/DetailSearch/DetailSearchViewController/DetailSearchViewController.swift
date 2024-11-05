@@ -164,6 +164,7 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
             }
             .disposed(by: disposeBag)
         
+        
         output.selectedCompletedStatus
             .drive(with: self, onNext: { owner, selectedCompletedStatus in
                 owner.rootView.detailSearchInfoView.updateCompletedKeyword(selectedCompletedStatus)

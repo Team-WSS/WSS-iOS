@@ -43,7 +43,7 @@ final class DetailSearchResultNovelView: UIView {
         }
         
         novelTitleLabel.do {
-            $0.applyWSSFont(.title1, with: "작품")
+            $0.applyWSSFont(.title1, with: StringLiterals.Search.novel)
             $0.textColor = .wssBlack
         }
         

@@ -2094,8 +2094,8 @@
 				CDC03F4B2CA6C488002D301F /* NovelReview */,
 				2C9CBDAF2C5BB4200084481F /* Blocks */,
 				C9CF88B52C86204E00E45BF0 /* Notice */,
-				C9A3CD432C8C3B9C00B43BFB /* SearchService */,
 				39119FA62C8C481700E9E6FA /* NovelDetail */,
+				C9A3CD432C8C3B9C00B43BFB /* Search */,
 				B90A5E5D2C355BB4009938D9 /* Novel */,
 				2CD911402C0D87CD006B8D72 /* Feed */,
 				A122C9D52B53026700DFCFE4 /* Memo */,
@@ -2448,12 +2448,12 @@
 			path = Search;
 			sourceTree = "<group>";
 		};
-		C9A3CD432C8C3B9C00B43BFB /* SearchService */ = {
+		C9A3CD432C8C3B9C00B43BFB /* Search */ = {
 			isa = PBXGroup;
 			children = (
 				C9A3CD442C8C3BA500B43BFB /* SearchService.swift */,
 			);
-			path = SearchService;
+			path = Search;
 			sourceTree = "<group>";
 		};
 		C9CF88B52C86204E00E45BF0 /* Notice */ = {
