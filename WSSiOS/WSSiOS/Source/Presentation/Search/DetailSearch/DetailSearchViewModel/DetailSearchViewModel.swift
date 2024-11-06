@@ -25,8 +25,9 @@ final class DetailSearchViewModel: ViewModelType {
     
     // 정보
     private let genreListData = PublishRelay<[NovelGenre]>()
-    var selectedGenreList: [NovelGenre] = []
+    var selectedGenreList: [NovelGenre] = [] // 추후 이전뷰에서 받아올 데이터
     var selectedGenreListData = PublishRelay<[NovelGenre]>()
+    private let genreSearchResultListData = PublishRelay<[NovelGenre]>()
     private var selectedCompletedStatus = BehaviorRelay<CompletedStatus?>(value: nil)
     private var selectedNovelRatingStatus = BehaviorRelay<NovelRatingStatus?>(value: nil)
     
@@ -55,7 +56,6 @@ final class DetailSearchViewModel: ViewModelType {
         let searchNovelButtonDidTap: ControlEvent<Void>
         
         // 정보
-        let genreCollectionViewContentSize: Observable<CGSize?>
         let genreColletionViewItemSelected: Observable<IndexPath>
         let genreColletionViewItemDeselected: Observable<IndexPath>
         
@@ -86,7 +86,6 @@ final class DetailSearchViewModel: ViewModelType {
         
         // 정보
         let genreListData: Observable<[NovelGenre]>
-        let genreCollectionViewHeight: Driver<CGFloat>
         let selectedCompletedStatus: Driver<CompletedStatus?>
         let selectedNovelRatingStatus: Driver<NovelRatingStatus?>
         
@@ -110,7 +109,6 @@ final class DetailSearchViewModel: ViewModelType {
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
-        
         // 전체
         input.viewDidLoadEvent
             .subscribe(with: self, onNext: { owner, _ in
@@ -188,11 +186,6 @@ final class DetailSearchViewModel: ViewModelType {
                 owner.dismissModalViewController.accept(())
             })
             .disposed(by: disposeBag)
-        
-        // 정보
-        let genreCollectionViewContentSize = input.genreCollectionViewContentSize
-            .map { $0?.height ?? 0 }
-            .asDriver(onErrorJustReturn: 0)
         
         input.genreColletionViewItemSelected
             .subscribe(with: self, onNext: { owner, indexPath in
@@ -358,7 +351,6 @@ final class DetailSearchViewModel: ViewModelType {
                       showInfoNewImageView: showInfoNewImageView,
                       showKeywordNewImageView: showKeywordNewImageView.asObservable(),
                       genreListData: genreListData.asObservable(),
-                      genreCollectionViewHeight: genreCollectionViewContentSize,
                       selectedCompletedStatus: selectedCompletedStatus.asDriver(),
                       selectedNovelRatingStatus: selectedNovelRatingStatus.asDriver(),
                       enteredText: enteredText.asObservable(),

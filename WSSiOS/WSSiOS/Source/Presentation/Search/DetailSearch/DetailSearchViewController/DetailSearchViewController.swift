@@ -107,7 +107,6 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
             keywordTabDidTap: rootView.detailSearchHeaderView.keywordLabel.rx.tapGesture().when(.recognized).asObservable(),
             resetButtonDidTap: rootView.detailSearchBottomView.resetButton.rx.tap,
             searchNovelButtonDidTap: rootView.detailSearchBottomView.searchButton.rx.tap,
-            genreCollectionViewContentSize: rootView.detailSearchInfoView.genreCollectionView.rx.observe(CGSize.self, "contentSize"),
             genreColletionViewItemSelected: rootView.detailSearchInfoView.genreCollectionView.rx.itemSelected.asObservable(),
             genreColletionViewItemDeselected: rootView.detailSearchInfoView.genreCollectionView.rx.itemDeselected.asObservable(),
             completedButtonDidTap: completedStatusButtonDidTap,
@@ -127,6 +126,7 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
         )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
+        // 전체
         output.dismissModalViewController
             .bind(with: self, onNext: { owner, _ in
                 owner.dismissModalViewController()
@@ -151,6 +151,7 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
             })
             .disposed(by: disposeBag)
         
+        // 정보 뷰
         output.genreListData
             .bind(to: rootView.detailSearchInfoView.genreCollectionView.rx.items(cellIdentifier: DetailSearchInfoGenreCollectionViewCell.cellIdentifier,cellType: DetailSearchInfoGenreCollectionViewCell.self)) { item, element, cell in
                 let indexPath = IndexPath(item: item, section: 0)
@@ -177,6 +178,7 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
             })
             .disposed(by: disposeBag)
         
+        // 키워드 뷰
         output.enteredText
             .subscribe(with: self, onNext: { owner, text in
                 owner.rootView.detailSearchKeywordView.novelKeywordSelectSearchBarView.keywordTextField.text = text
