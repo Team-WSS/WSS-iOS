@@ -170,7 +170,5 @@ final class DetailSearchInfoView: UIView {
         genreCollectionView.indexPathsForSelectedItems?.forEach { indexPath in
             genreCollectionView.deselectItem(at: indexPath, animated: false)
         }
-        completedStatusButtons.forEach { $0.updateButton(selectedCompletedStatus: nil) }
-        novelRatingStatusButtons.forEach { $0.updateButton(selectedNovelRatingStatus: nil) }
     }
 }

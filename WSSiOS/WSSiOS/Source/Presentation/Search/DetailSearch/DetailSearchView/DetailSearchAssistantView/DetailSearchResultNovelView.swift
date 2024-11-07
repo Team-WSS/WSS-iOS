@@ -97,9 +97,8 @@ final class DetailSearchResultNovelView: UIView {
         
         resultNovelCollectionView.snp.makeConstraints {
             $0.top.equalTo(novelTitleLabel.snp.bottom).offset(14)
-            $0.horizontalEdges.equalToSuperview()
+            $0.horizontalEdges.bottom.equalToSuperview()
             $0.height.equalTo(0)
-            $0.bottom.equalToSuperview()
         }
     }
     

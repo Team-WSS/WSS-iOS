@@ -27,7 +27,7 @@ final class DetailSearchViewModel: ViewModelType {
     private let pushToUpdateDetailSearchResultViewControllerNotificationName = Notification.Name("PushToUpdateDetailSearchResult")
     
     // 정보
-    var selectedGenreList: [NovelGenre] = []
+    private var selectedGenreList: [NovelGenre] = []
     let selectedGenreListData = BehaviorRelay<[NovelGenre]>(value: [])
     private let genreListData = PublishRelay<[NovelGenre]>()
     private var selectedCompletedStatus = BehaviorRelay<CompletedStatus?>(value: nil)
@@ -168,6 +168,8 @@ final class DetailSearchViewModel: ViewModelType {
                 owner.selectedGenreList = []
                 owner.selectedGenreListData.accept(owner.selectedGenreList)
                 owner.resetSelectedInfoData.accept(())
+                owner.selectedCompletedStatus.accept(nil)
+                owner.selectedNovelRatingStatus.accept(nil)
                 
                 // 키워드뷰
                 owner.selectedKeywordList = []
