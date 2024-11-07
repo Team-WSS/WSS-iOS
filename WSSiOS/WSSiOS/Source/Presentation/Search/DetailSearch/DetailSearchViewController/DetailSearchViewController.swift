@@ -178,6 +178,12 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
             })
             .disposed(by: disposeBag)
         
+        output.resetSelectedInfoData
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.rootView.detailSearchInfoView.resetAllStates()
+            })
+            .disposed(by: disposeBag)
+        
         // 키워드 뷰
         output.enteredText
             .subscribe(with: self, onNext: { owner, text in

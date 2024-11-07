@@ -24,12 +24,12 @@ final class DetailSearchViewModel: ViewModelType {
     private let pushToDetailSearchResultViewControllerNotificationName = Notification.Name("PushToDetailSearchResult")
     
     // 정보
-    private let genreListData = PublishRelay<[NovelGenre]>()
-    var selectedGenreList: [NovelGenre] = [] // 추후 이전뷰에서 받아올 데이터
-    var selectedGenreListData = PublishRelay<[NovelGenre]>()
-    private let genreSearchResultListData = PublishRelay<[NovelGenre]>()
+    var selectedGenreList: [NovelGenre] = []// 넘겨받아오는 장르
+    private let selectedGenreListData = PublishRelay<[NovelGenre]>() // 유저가 실시간으로 선택한 장르 배열
+    private let genreListData = PublishRelay<[NovelGenre]>() // 컬렉션뷰에 뿌려줄 장르 데이터
     private var selectedCompletedStatus = BehaviorRelay<CompletedStatus?>(value: nil)
     private var selectedNovelRatingStatus = BehaviorRelay<NovelRatingStatus?>(value: nil)
+    private let resetSelectedInfoData = PublishRelay<Void>()
     
     // 키워드
     var keywordSearchResultList: [KeywordData] = []
@@ -88,6 +88,7 @@ final class DetailSearchViewModel: ViewModelType {
         let genreListData: Observable<[NovelGenre]>
         let selectedCompletedStatus: Driver<CompletedStatus?>
         let selectedNovelRatingStatus: Driver<NovelRatingStatus?>
+        let resetSelectedInfoData: Observable<Void>
         
         // 키워드
         let enteredText: Observable<String>
@@ -153,8 +154,7 @@ final class DetailSearchViewModel: ViewModelType {
                 // 정보뷰
                 owner.selectedGenreList = []
                 owner.selectedGenreListData.accept(owner.selectedGenreList)
-                owner.selectedCompletedStatus.accept(nil)
-                owner.selectedNovelRatingStatus.accept(nil)
+                owner.resetSelectedInfoData.accept(())
                 
                 // 키워드뷰
                 owner.selectedKeywordList = []
@@ -353,6 +353,7 @@ final class DetailSearchViewModel: ViewModelType {
                       genreListData: genreListData.asObservable(),
                       selectedCompletedStatus: selectedCompletedStatus.asDriver(),
                       selectedNovelRatingStatus: selectedNovelRatingStatus.asDriver(),
+                      resetSelectedInfoData: resetSelectedInfoData.asObservable(),
                       enteredText: enteredText.asObservable(),
                       isKeywordTextFieldEditing: isKeywordTextFieldEditing.asObservable(),
                       endEditing: endEditing.asObservable(),
