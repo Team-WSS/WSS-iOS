@@ -157,10 +157,13 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
             .bind(to: rootView.detailSearchInfoView.genreCollectionView.rx.items(cellIdentifier: DetailSearchInfoGenreCollectionViewCell.cellIdentifier,cellType: DetailSearchInfoGenreCollectionViewCell.self)) { item, element, cell in
                 let indexPath = IndexPath(item: item, section: 0)
                 
-                if self.viewModel.selectedGenreList.contains(element) {
-                    self.rootView.detailSearchInfoView.genreCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
+                if self.viewModel.selectedGenreListData.value.contains(element) {
+                    self.rootView.detailSearchInfoView.genreCollectionView.selectItem(at: indexPath,
+                                                                                      animated: false,
+                                                                                      scrollPosition: [])
                 } else {
-                    self.rootView.detailSearchInfoView.genreCollectionView.deselectItem(at: indexPath, animated: false)
+                    self.rootView.detailSearchInfoView.genreCollectionView.deselectItem(at: indexPath,
+                                                                                        animated: false)
                 }
                 cell.bindData(genre: element.toKorean)
             }

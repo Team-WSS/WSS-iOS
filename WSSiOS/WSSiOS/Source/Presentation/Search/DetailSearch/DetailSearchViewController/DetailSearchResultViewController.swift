@@ -119,9 +119,10 @@ final class DetailSearchResultViewController: UIViewController, UIScrollViewDele
             .disposed(by: disposeBag)
         
         output.presentDetailSearchModal
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.presentToDetailSearchViewController(selectedKeywordList: [],
-                                                          previousViewInfo: .resultSearchBar)
+            .subscribe(with: self, onNext: { owner, data in
+                owner.presentToDetailSearchViewController(selectedKeywordList: data.keywords,
+                                                          previousViewInfo: .resultSearchBar,
+                                                          selectedFilteredQuery: data)
             })
             .disposed(by: disposeBag)
         

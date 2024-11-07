@@ -17,8 +17,8 @@ final class DetailSearchResultViewModel: ViewModelType {
     private let searchRepository: SearchRepository
     
     // API 쿼리
-    var keywordIds: [Int]
-    var genres: [String]
+    var keywords: [KeywordData]
+    var genres: [NovelGenre]
     var isCompleted: Bool?
     var novelRating: Float?
     
@@ -31,7 +31,7 @@ final class DetailSearchResultViewModel: ViewModelType {
     private let popViewController = PublishRelay<Void>()
     private let novelCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
     private let pushToNovelDetailViewController = PublishRelay<Int>()
-    private let presentDetailSearchModal = PublishRelay<Void>()
+    private let presentDetailSearchModal = PublishRelay<SearchFilterQuery>()
     private let showEmptyView = PublishRelay<Bool>()
     
     private let filteredNovelsData = BehaviorRelay<[SearchNovel]>(value: [])
@@ -53,7 +53,7 @@ final class DetailSearchResultViewModel: ViewModelType {
         let popViewController: Observable<Void>
         let novelCollectionViewHeight: Observable<CGFloat>
         let pushToNovelDetailViewController: Observable<Int>
-        let presentDetailSearchModal: Observable<Void>
+        let presentDetailSearchModal: Observable<SearchFilterQuery>
         
         let filteredNovelsData: Observable<[SearchNovel]>
         let resultCount: Driver<Int>
@@ -61,12 +61,12 @@ final class DetailSearchResultViewModel: ViewModelType {
     }
     
     init(searchRepository: SearchRepository,
-         keywordIds: [Int],
-         genres: [String],
+         keywords: [KeywordData],
+         genres: [NovelGenre],
          isCompleted: Bool?,
          novelRating: Float?) {
         self.searchRepository = searchRepository
-        self.keywordIds = keywordIds
+        self.keywords = keywords
         self.genres = genres
         self.isCompleted = isCompleted
         self.novelRating = novelRating
@@ -93,17 +93,23 @@ final class DetailSearchResultViewModel: ViewModelType {
         
         input.searchHeaderViewDidTap
             .subscribe(with: self, onNext: { owner, _ in
-                owner.presentDetailSearchModal.accept(())
+                let filterQuery = SearchFilterQuery(
+                    keywords: owner.keywords,
+                    genres: owner.genres,
+                    isCompleted: owner.isCompleted,
+                    novelRating: owner.novelRating
+                )
+                owner.presentDetailSearchModal.accept(filterQuery)
             })
             .disposed(by: disposeBag)
         
         input.viewDidLoadEvent
             .flatMapLatest {
                 return self.getDetailSearchNovels(
-                    genres: self.genres,
+                    genres: self.genres.map { $0.rawValue },
                     isCompleted: self.isCompleted,
                     novelRating: self.novelRating,
-                    keywordIds: self.keywordIds,
+                    keywordIds: self.keywords.map { $0.keywordId },
                     page: 0
                 )
             }
@@ -130,10 +136,10 @@ final class DetailSearchResultViewModel: ViewModelType {
             })
             .flatMapLatest { _ in
                 self.getDetailSearchNovels(
-                    genres: self.genres,
+                    genres: self.genres.map { $0.rawValue },
                     isCompleted: self.isCompleted,
                     novelRating: self.novelRating,
-                    keywordIds: self.keywordIds,
+                    keywordIds: self.keywords.map { $0.keywordId },
                     page: self.currentPage + 1)
                 .do(onNext: { _ in
                     self.currentPage += 1
@@ -155,22 +161,22 @@ final class DetailSearchResultViewModel: ViewModelType {
                 owner.filteredNovelsData.accept([])
                 
                 if let userInfo = notification.userInfo {
-                    let keywordIds = userInfo["keywordIds"] as? [Int]
-                    let genres = userInfo["genres"] as? [String]
+                    let keywords = userInfo["keywords"] as? [KeywordData]
+                    let genres = userInfo["genres"] as? [NovelGenre]
                     let isCompleted = userInfo["isCompleted"] as? Bool
                     let novelRating = userInfo["novelRating"] as? Float
                     
-                    owner.keywordIds = keywordIds ?? []
+                    owner.keywords = keywords ?? []
                     owner.genres = genres ?? []
                     owner.isCompleted = isCompleted
                     owner.novelRating = novelRating
                     owner.currentPage = 0
                     
                     owner.getDetailSearchNovels(
-                        genres: owner.genres,
+                        genres: owner.genres.map { $0.rawValue },
                         isCompleted: owner.isCompleted,
                         novelRating: owner.novelRating,
-                        keywordIds: owner.keywordIds,
+                        keywordIds: owner.keywords.map { $0.keywordId },
                         page: 0
                     )
                     .subscribe(onNext: { result in
@@ -207,4 +213,11 @@ final class DetailSearchResultViewModel: ViewModelType {
                                                keywordIds: keywordIds,
                                                page: page)
     }
+}
+
+struct SearchFilterQuery {
+    let keywords: [KeywordData]
+    let genres: [NovelGenre]
+    let isCompleted: Bool?
+    let novelRating: Float?
 }

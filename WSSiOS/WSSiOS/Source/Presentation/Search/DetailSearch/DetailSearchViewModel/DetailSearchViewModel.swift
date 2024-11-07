@@ -18,6 +18,7 @@ final class DetailSearchViewModel: ViewModelType {
     
     private let keywordRepository: KeywordRepository
     private let previousViewInfo: PreviousViewType
+    private let selectedFilteredQuery: SearchFilterQuery
     
     // 전체
     private let dismissModalViewController = PublishRelay<Void>()
@@ -26,9 +27,9 @@ final class DetailSearchViewModel: ViewModelType {
     private let pushToUpdateDetailSearchResultViewControllerNotificationName = Notification.Name("PushToUpdateDetailSearchResult")
     
     // 정보
-    var selectedGenreList: [NovelGenre] = []// 넘겨받아오는 장르
-    private let selectedGenreListData = PublishRelay<[NovelGenre]>() // 유저가 실시간으로 선택한 장르 배열
-    private let genreListData = PublishRelay<[NovelGenre]>() // 컬렉션뷰에 뿌려줄 장르 데이터
+    var selectedGenreList: [NovelGenre] = []
+    let selectedGenreListData = BehaviorRelay<[NovelGenre]>(value: [])
+    private let genreListData = PublishRelay<[NovelGenre]>()
     private var selectedCompletedStatus = BehaviorRelay<CompletedStatus?>(value: nil)
     private var selectedNovelRatingStatus = BehaviorRelay<NovelRatingStatus?>(value: nil)
     private let resetSelectedInfoData = PublishRelay<Void>()
@@ -109,10 +110,12 @@ final class DetailSearchViewModel: ViewModelType {
     
     init(keywordRepository: KeywordRepository,
          selectedKeywordList: [KeywordData],
-         previousViewInfo: PreviousViewType) {
+         previousViewInfo: PreviousViewType,
+         selectedFilteredQuery: SearchFilterQuery) {
         self.keywordRepository = keywordRepository
         self.selectedKeywordList = selectedKeywordList
         self.previousViewInfo = previousViewInfo
+        self.selectedFilteredQuery = selectedFilteredQuery
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -120,6 +123,10 @@ final class DetailSearchViewModel: ViewModelType {
         input.viewDidLoadEvent
             .subscribe(with: self, onNext: { owner, _ in
                 owner.genreListData.accept(NovelGenre.allCases)
+                owner.selectedGenreListData.accept(owner.selectedFilteredQuery.genres)
+                owner.selectedKeywordListData.accept(owner.selectedFilteredQuery.keywords)
+                owner.selectedCompletedStatus.accept(owner.selectedFilteredQuery.isCompleted.map { CompletedStatus(isCompleted: $0) })
+                owner.selectedNovelRatingStatus.accept(owner.selectedFilteredQuery.novelRating.map { NovelRatingStatus(toFloat: $0) })
             })
             .disposed(by: disposeBag)
         
@@ -175,13 +182,13 @@ final class DetailSearchViewModel: ViewModelType {
         input.searchNovelButtonDidTap
             .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
-                let keywordIds = owner.selectedKeywordList.map { $0.keywordId }
-                let genres: [String] = owner.selectedGenreList.map { $0.rawValue }
+                let keywords = owner.selectedKeywordList
+                let genres: [NovelGenre] = owner.selectedGenreListData.value
                 let isCompleted = owner.selectedCompletedStatus.value?.isCompleted
                 let novelRating = owner.selectedNovelRatingStatus.value?.toFloat
                 
                 let userInfo: [AnyHashable: Any] = [
-                    "keywordIds": keywordIds,
+                    "keywords": keywords,
                     "genres": genres,
                     "isCompleted": isCompleted as Any,
                     "novelRating": novelRating as Any
