@@ -359,8 +359,8 @@ extension UIViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func presentToDetailSearchViewController(selectedKeywordList: [KeywordData]) {
-        let detailSearchViewController = DetailSearchViewController(viewModel: DetailSearchViewModel(keywordRepository: DefaultKeywordRepository(keywordService: DefaultKeywordService()), selectedKeywordList: selectedKeywordList))
+    func presentToDetailSearchViewController(selectedKeywordList: [KeywordData], previousViewInfo: PreviousViewType) {
+        let detailSearchViewController = DetailSearchViewController(viewModel: DetailSearchViewModel(keywordRepository: DefaultKeywordRepository(keywordService: DefaultKeywordService()), selectedKeywordList: selectedKeywordList, previousViewInfo: previousViewInfo))
         self.presentModalViewController(detailSearchViewController)
     }
 }

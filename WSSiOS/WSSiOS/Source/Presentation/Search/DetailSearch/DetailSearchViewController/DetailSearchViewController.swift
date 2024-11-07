@@ -107,6 +107,7 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
             keywordTabDidTap: rootView.detailSearchHeaderView.keywordLabel.rx.tapGesture().when(.recognized).asObservable(),
             resetButtonDidTap: rootView.detailSearchBottomView.resetButton.rx.tap,
             searchNovelButtonDidTap: rootView.detailSearchBottomView.searchButton.rx.tap,
+            updateDetailSearchResultData: NotificationCenter.default.rx.notification(Notification.Name("PushToUpateDetailSearchResult")).asObservable(),
             genreColletionViewItemSelected: rootView.detailSearchInfoView.genreCollectionView.rx.itemSelected.asObservable(),
             genreColletionViewItemDeselected: rootView.detailSearchInfoView.genreCollectionView.rx.itemDeselected.asObservable(),
             completedButtonDidTap: completedStatusButtonDidTap,

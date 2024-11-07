@@ -17,10 +17,10 @@ final class DetailSearchResultViewModel: ViewModelType {
     private let searchRepository: SearchRepository
     
     // API 쿼리
-    let keywordIds: [Int]
-    let genres: [String]
-    let isCompleted: Bool?
-    let novelRating: Float?
+    var keywordIds: [Int]
+    var genres: [String]
+    var isCompleted: Bool?
+    var novelRating: Float?
     
     // 무한 스크롤
     private var currentPage: Int = 0
@@ -36,6 +36,7 @@ final class DetailSearchResultViewModel: ViewModelType {
     
     private let filteredNovelsData = BehaviorRelay<[SearchNovel]>(value: [])
     private let resultCount = BehaviorRelay<Int>(value: 0)
+    private let updateDetailSearchResultNotification = PublishRelay<Notification>()
     
     struct Input {
         let backButtonDidTap: ControlEvent<Void>
@@ -45,6 +46,7 @@ final class DetailSearchResultViewModel: ViewModelType {
         
         let viewDidLoadEvent: Observable<Void>
         let novelCollectionViewReachedBottom: Observable<Bool>
+        let updateDetailSearchResultNotification: Observable<Notification>
     }
     
     struct Output {
@@ -133,17 +135,53 @@ final class DetailSearchResultViewModel: ViewModelType {
                     novelRating: self.novelRating,
                     keywordIds: self.keywordIds,
                     page: self.currentPage + 1)
-                    .do(onNext: { _ in
-                        self.currentPage += 1
-                        self.isFetching = false
-                    }, onError: { _ in
-                        self.isFetching = false
-                    })
+                .do(onNext: { _ in
+                    self.currentPage += 1
+                    self.isFetching = false
+                }, onError: { _ in
+                    self.isFetching = false
+                })
             }
             .subscribe(with: self, onNext: { owner, data in
                 let newData = owner.filteredNovelsData.value + data.novels
                 owner.filteredNovelsData.accept(newData)
                 owner.isLoadable = data.isLoadable
+            })
+            .disposed(by: disposeBag)
+        
+        input.updateDetailSearchResultNotification
+            .subscribe(with: self, onNext: { owner, notification in
+                owner.updateDetailSearchResultNotification.accept(notification)
+                owner.filteredNovelsData.accept([])
+                
+                if let userInfo = notification.userInfo {
+                    let keywordIds = userInfo["keywordIds"] as? [Int]
+                    let genres = userInfo["genres"] as? [String]
+                    let isCompleted = userInfo["isCompleted"] as? Bool
+                    let novelRating = userInfo["novelRating"] as? Float
+                    
+                    owner.keywordIds = keywordIds ?? []
+                    owner.genres = genres ?? []
+                    owner.isCompleted = isCompleted
+                    owner.novelRating = novelRating
+                    owner.currentPage = 0
+                    
+                    owner.getDetailSearchNovels(
+                        genres: owner.genres,
+                        isCompleted: owner.isCompleted,
+                        novelRating: owner.novelRating,
+                        keywordIds: owner.keywordIds,
+                        page: 0
+                    )
+                    .subscribe(onNext: { result in
+                        owner.filteredNovelsData.accept(result.novels)
+                        owner.resultCount.accept(result.resultCount)
+                        owner.isLoadable = result.isLoadable
+                    }, onError: { error in
+                        print("Error fetching novels: \(error)")
+                    })
+                    .disposed(by: disposeBag)
+                }
             })
             .disposed(by: disposeBag)
         

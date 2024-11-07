@@ -17,11 +17,13 @@ final class DetailSearchViewModel: ViewModelType {
     //MARK: - Properties
     
     private let keywordRepository: KeywordRepository
+    private let previousViewInfo: PreviousViewType
     
     // 전체
     private let dismissModalViewController = PublishRelay<Void>()
     let selectedTab = BehaviorRelay<DetailSearchTab>(value: DetailSearchTab.info)
     private let pushToDetailSearchResultViewControllerNotificationName = Notification.Name("PushToDetailSearchResult")
+    private let pushToUpdateDetailSearchResultViewControllerNotificationName = Notification.Name("PushToUpdateDetailSearchResult")
     
     // 정보
     var selectedGenreList: [NovelGenre] = []// 넘겨받아오는 장르
@@ -54,6 +56,7 @@ final class DetailSearchViewModel: ViewModelType {
         let keywordTabDidTap: Observable<UITapGestureRecognizer>
         let resetButtonDidTap: ControlEvent<Void>
         let searchNovelButtonDidTap: ControlEvent<Void>
+        let updateDetailSearchResultData: Observable<Notification>
         
         // 정보
         let genreColletionViewItemSelected: Observable<IndexPath>
@@ -104,9 +107,12 @@ final class DetailSearchViewModel: ViewModelType {
     
     //MARK: - init
     
-    init(keywordRepository: KeywordRepository, selectedKeywordList: [KeywordData]) {
+    init(keywordRepository: KeywordRepository,
+         selectedKeywordList: [KeywordData],
+         previousViewInfo: PreviousViewType) {
         self.keywordRepository = keywordRepository
         self.selectedKeywordList = selectedKeywordList
+        self.previousViewInfo = previousViewInfo
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -175,15 +181,23 @@ final class DetailSearchViewModel: ViewModelType {
                 let novelRating = owner.selectedNovelRatingStatus.value?.toFloat
                 
                 let userInfo: [AnyHashable: Any] = [
-                            "keywordIds": keywordIds,
-                            "genres": genres,
-                            "isCompleted": isCompleted as Any,
-                            "novelRating": novelRating as Any
-                        ]
+                    "keywordIds": keywordIds,
+                    "genres": genres,
+                    "isCompleted": isCompleted as Any,
+                    "novelRating": novelRating as Any
+                ]
+                
+                if owner.previousViewInfo == .search {
                     NotificationCenter.default.post(name: owner.pushToDetailSearchResultViewControllerNotificationName,
                                                     object: nil,
                                                     userInfo: userInfo)
-                owner.dismissModalViewController.accept(())
+                    owner.dismissModalViewController.accept(())
+                } else {
+                    NotificationCenter.default.post(name: owner.pushToUpdateDetailSearchResultViewControllerNotificationName,
+                                                    object: nil,
+                                                    userInfo: userInfo)
+                    owner.dismissModalViewController.accept(())
+                }
             })
             .disposed(by: disposeBag)
         
@@ -371,4 +385,9 @@ final class DetailSearchViewModel: ViewModelType {
         keywordRepository.searchKeyword(query: query)
             .observe(on: MainScheduler.instance)
     }
+}
+
+enum PreviousViewType {
+    case search
+    case resultSearchBar
 }
