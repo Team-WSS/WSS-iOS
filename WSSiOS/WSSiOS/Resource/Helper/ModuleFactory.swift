@@ -55,7 +55,7 @@ extension ModuleFactory: NovelDetailModuleFactory {
 
 extension ModuleFactory: OnboardingModuleFactory {
     func makeLoginViewController() -> UIViewController {
-        return LoginViewController(viewModel: LoginViewModel())
+        return LoginViewController(viewModel: LoginViewModel(authRepository: DefaultAuthRepository(authService: DefaultAuthService())))
     }
     
     func makeOnboardingViewController() -> UIViewController {

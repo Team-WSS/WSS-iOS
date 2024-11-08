@@ -377,6 +377,9 @@
 		CD3E5AA22B55190400C0A659 /* UserNovelResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5AA12B55190400C0A659 /* UserNovelResult.swift */; };
 		CD3E5AAB2B56173C00C0A659 /* TrashNovelDetailMemoSettingButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5AAA2B56173C00C0A659 /* TrashNovelDetailMemoSettingButtonView.swift */; };
 		CD3E5AB32B565DFF00C0A659 /* NovelMemoResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3E5AB22B565DFF00C0A659 /* NovelMemoResult.swift */; };
+		CD514C922CD5DB87007A27A8 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD514C912CD5DB87007A27A8 /* AuthService.swift */; };
+		CD514C942CD5DB96007A27A8 /* AuthRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD514C932CD5DB96007A27A8 /* AuthRepository.swift */; };
+		CD514C962CD5DC22007A27A8 /* AuthResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD514C952CD5DC22007A27A8 /* AuthResult.swift */; };
 		CD6613702B8A225E00B90B2B /* MemoReadViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD66136F2B8A225E00B90B2B /* MemoReadViewModel.swift */; };
 		CD6613752B8A283500B90B2B /* MemoEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6613742B8A283500B90B2B /* MemoEditViewModel.swift */; };
 		CD6613782B8B313700B90B2B /* DeletePopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6613772B8B313700B90B2B /* DeletePopupViewModel.swift */; };
@@ -794,6 +797,10 @@
 		CD3E5AA12B55190400C0A659 /* UserNovelResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNovelResult.swift; sourceTree = "<group>"; };
 		CD3E5AAA2B56173C00C0A659 /* TrashNovelDetailMemoSettingButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashNovelDetailMemoSettingButtonView.swift; sourceTree = "<group>"; };
 		CD3E5AB22B565DFF00C0A659 /* NovelMemoResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelMemoResult.swift; sourceTree = "<group>"; };
+		CD514C8D2CD5D6DB007A27A8 /* WSSiOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WSSiOS.entitlements; sourceTree = "<group>"; };
+		CD514C912CD5DB87007A27A8 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		CD514C932CD5DB96007A27A8 /* AuthRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRepository.swift; sourceTree = "<group>"; };
+		CD514C952CD5DC22007A27A8 /* AuthResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthResult.swift; sourceTree = "<group>"; };
 		CD66136F2B8A225E00B90B2B /* MemoReadViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoReadViewModel.swift; sourceTree = "<group>"; };
 		CD6613742B8A283500B90B2B /* MemoEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoEditViewModel.swift; sourceTree = "<group>"; };
 		CD6613772B8B313700B90B2B /* DeletePopupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletePopupViewModel.swift; sourceTree = "<group>"; };
@@ -887,6 +894,7 @@
 				B9AC1BD72BF0BDDD006EDE92 /* NoticeRepository.swift */,
 				CDC03F442CA67421002D301F /* KeywordRepository.swift */,
 				CDC03F4E2CA6C4E0002D301F /* NovelReviewRepository.swift */,
+				CD514C932CD5DB96007A27A8 /* AuthRepository.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -1081,6 +1089,7 @@
 		2CD2291A2B42E685005400BE /* WSSiOS */ = {
 			isa = PBXGroup;
 			children = (
+				CD514C8D2CD5D6DB007A27A8 /* WSSiOS.entitlements */,
 				2CD229532B42EA12005400BE /* App */,
 				2CD229482B42E92F005400BE /* Resource */,
 				2CD2294F2B42E9AD005400BE /* Source */,
@@ -2081,6 +2090,7 @@
 				2CFA9A172C9D9AD500A4A820 /* UserInfoResult.swift */,
 				CDC03F422CA67266002D301F /* SearchKeywordResult.swift */,
 				CDC03F502CA6C5CD002D301F /* NovelReviewResult.swift */,
+				CD514C952CD5DC22007A27A8 /* AuthResult.swift */,
 			);
 			path = DTO;
 			sourceTree = "<group>";
@@ -2088,6 +2098,7 @@
 		A1EF35562B52FAA300A94C53 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				CD514C902CD5DB7B007A27A8 /* Auth */,
 				CDC03F3F2CA671FB002D301F /* Keyword */,
 				CDC03F4B2CA6C488002D301F /* NovelReview */,
 				2C9CBDAF2C5BB4200084481F /* Blocks */,
@@ -2603,6 +2614,14 @@
 			path = DeletePopupAssistantView;
 			sourceTree = "<group>";
 		};
+		CD514C902CD5DB7B007A27A8 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				CD514C912CD5DB87007A27A8 /* AuthService.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
 		CD66136C2B8A21F400B90B2B /* MemoViewModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -3059,6 +3078,7 @@
 				39D4A5E42BDF90FB004FC834 /* NovelDetailHeaderReviewResultView.swift in Sources */,
 				2C3B08772CA74358002802D5 /* FeedGenreViewModel.swift in Sources */,
 				CD803B352C93F711006EBAF8 /* NovelReviewAttractivePointView.swift in Sources */,
+				CD514C942CD5DB96007A27A8 /* AuthRepository.swift in Sources */,
 				CD8747A72C9EC4F900D0ADAD /* NovelDateSelectModalButtonView.swift in Sources */,
 				2CD911522C0D8A0F006B8D72 /* FeedNovelView.swift in Sources */,
 				A197A4C12B56BB6000E5A701 /* UserCharacterResult.swift in Sources */,
@@ -3115,6 +3135,7 @@
 				A147CBC62B4D6E190040AE39 /* UIStackView+.swift in Sources */,
 				C9CF88B72C86205900E45BF0 /* NoticeService.swift in Sources */,
 				CD3E5A982B5509A500C0A659 /* DeletePopupContentView.swift in Sources */,
+				CD514C962CD5DC22007A27A8 /* AuthResult.swift in Sources */,
 				392A29272B4E96F30065EB97 /* UILabel+.swift in Sources */,
 				B96863D82C482E32008CFBA5 /* DetailSearchViewModel.swift in Sources */,
 				CD6F49592C70637A005AD392 /* FeedNovelConnectSearchBarView.swift in Sources */,
@@ -3272,6 +3293,7 @@
 				3932B5A32CAFCE6000C1A736 /* OnboardingSuccessView.swift in Sources */,
 				2CA2F65B2B53041E0045B4C2 /* LibraryBaseViewController.swift in Sources */,
 				2CCBFA022B4DC10500D787C2 /* MyPageProfileView.swift in Sources */,
+				CD514C922CD5DB87007A27A8 /* AuthService.swift in Sources */,
 				2C42939B2B58F27000BD62AB /* LibraryEmptyView.swift in Sources */,
 				39D4A5D82BDD23FE004FC834 /* NovelDetailHeaderCoverImageButton.swift in Sources */,
 				39F850742C2D514C00E93EBC /* NovelDetailInfoPlatformCollectionViewCell.swift in Sources */,
@@ -3437,6 +3459,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = WSSiOS/WSSiOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 202401192;
 				DEVELOPMENT_TEAM = 9SVDHQS4M3;
@@ -3472,6 +3495,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = WSSiOS/WSSiOS.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 202401192;

@@ -5,15 +5,18 @@
 //  Created by YunhakLee on 9/17/24.
 //
 
+import AuthenticationServices
 import UIKit
 
 import RxSwift
 import RxCocoa
 import Then
 
-final class LoginViewModel: ViewModelType {
+final class LoginViewModel: NSObject, ViewModelType {
     
     //MARK: - Properties
+    
+    private let authRepository: AuthRepository
     
     private let bannerImages = BehaviorRelay<[UIImage]>(
         value: [UIImage(resource: .imgLoginBanner4),
@@ -30,8 +33,14 @@ final class LoginViewModel: ViewModelType {
     private let navigateToHome = PublishRelay<Void>()
     private let navigateToOnboarding = PublishRelay<Void>()
     
+    private let loginWithApple = PublishRelay<(userIdentifier: String,
+                                               email: String?)>()
+    
     //MARK: - Life Cycle
     
+    init(authRepository: AuthRepository) {
+        self.authRepository = authRepository
+    }
     
     //MARK: - Transform
     
@@ -77,13 +86,36 @@ final class LoginViewModel: ViewModelType {
         
         input.loginButtonDidTap
             .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
-            .flatMapLatest { type in
-                self.repositoryLoginMethod(type: type)
-            }
             .subscribe(with: self, onNext: { owner, type in
-                // Login 작업 종료 후
-                print("Login 성공 및 종료")
-                type == .skip ? owner.navigateToHome.accept(()) : owner.navigateToOnboarding.accept(())
+                switch type {
+                case .skip:
+                    owner.navigateToHome.accept(())
+                case .kakao:
+                    owner.navigateToOnboarding.accept(())
+                case .naver:
+                    owner.navigateToOnboarding.accept(())
+                case .apple:
+                    owner.requestAppleLogin() // 애플로그인 요청
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        // 애플로그인 후 userIdentifier와 email을 받아와서 로그인 요청
+        loginWithApple
+            .flatMapLatest { userIdentifier, email in
+                self.loginWithApple(userIdentifier: userIdentifier,
+                                    email: email)
+            }
+            .subscribe(with: self, onNext: { owner, result in
+                UserDefaults.standard.setValue(result.Authorization, forKey: "ACCESS_TOKEN")
+                UserDefaults.standard.setValue(result.refreshToken, forKey: "REFRESH_TOKEN")
+                if result.isRegister {
+                    owner.navigateToHome.accept(())
+                } else {
+                    owner.navigateToOnboarding.accept(())
+                }
+            }, onError: { owner, error  in
+                print(error)
             })
             .disposed(by: disposeBag)
         
@@ -119,5 +151,42 @@ final class LoginViewModel: ViewModelType {
             APIConstants.isLogined = true
         }
         return Observable.just(type)
+    }
+    
+    private func requestAppleLogin() {
+        let request = ASAuthorizationAppleIDProvider().createRequest()
+        request.requestedScopes = [.email]
+        
+        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+        authorizationController.delegate = self
+        authorizationController.performRequests()
+    }
+    
+    //MARK: - API
+    
+    private func loginWithApple(userIdentifier: String, email: String?) -> Observable<LoginResult> {
+        authRepository.loginWithApple(userIdentifier: userIdentifier, email: email)
+            .observe(on: MainScheduler.instance)
+    }
+}
+
+extension LoginViewModel: ASAuthorizationControllerDelegate {
+    func authorizationController(
+        controller: ASAuthorizationController,
+        didCompleteWithAuthorization authorization: ASAuthorization
+    ) {
+        guard let credential = authorization.credential as? ASAuthorizationAppleIDCredential else {
+            return
+        }
+        
+        loginWithApple.accept((userIdentifier: credential.user,
+                               email: credential.email))
+    }
+    
+    func authorizationController(
+        controller: ASAuthorizationController,
+        didCompleteWithError error: Error
+    ) {
+        print("error \(error)")
     }
 }

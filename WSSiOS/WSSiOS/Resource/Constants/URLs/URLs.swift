@@ -8,6 +8,10 @@
 import Foundation
 
 enum URLs {
+    enum Auth {
+        static let loginWithApple = "/auth/login/apple"
+    }
+    
     enum User {
         private static let userBasePath = "/users"
         static let afterDelete = userBasePath + "추후 삭제"
