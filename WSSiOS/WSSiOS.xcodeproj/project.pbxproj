@@ -116,6 +116,9 @@
 		2CFA9A182C9D9AD500A4A820 /* UserInfoResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CFA9A172C9D9AD500A4A820 /* UserInfoResult.swift */; };
 		2CFE04332B66A45A0048F77A /* UICollectionViewCell+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CFE04322B66A45A0048F77A /* UICollectionViewCell+.swift */; };
 		3908376B2C32ADEA0082DC57 /* NovelDetailInfoReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3908376A2C32ADEA0082DC57 /* NovelDetailInfoReviewView.swift */; };
+		390F546C2CD54541002D24E1 /* scroll.json in Resources */ = {isa = PBXBuildFile; fileRef = 390F546B2CD54541002D24E1 /* scroll.json */; };
+		3910137C2CCF5EC6001894E5 /* BirthPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3910137B2CCF5EC6001894E5 /* BirthPickerView.swift */; };
+		3910137E2CCF5FD8001894E5 /* BirthPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3910137D2CCF5FD3001894E5 /* BirthPickerViewController.swift */; };
 		39119FA82C8C482800E9E6FA /* NovelDetailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39119FA72C8C482800E9E6FA /* NovelDetailService.swift */; };
 		3916EC862B89B42C007835B5 /* RxGesture in Frameworks */ = {isa = PBXBuildFile; productRef = 3916EC852B89B42C007835B5 /* RxGesture */; };
 		3916EC892B89D23D007835B5 /* ModuleFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3916EC882B89D23D007835B5 /* ModuleFactory.swift */; };
@@ -148,6 +151,11 @@
 		395928A22C99559100E7B17B /* LoginPlatformButtonStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395928A12C99559100E7B17B /* LoginPlatformButtonStackView.swift */; };
 		39599E082C356DFA00702004 /* NovelDetailInfoReviewAttractivePointView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39599E072C356DFA00702004 /* NovelDetailInfoReviewAttractivePointView.swift */; };
 		39599E0C2C3572B500702004 /* NovelDetailInfoReviewKeywordCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39599E0B2C3572B500702004 /* NovelDetailInfoReviewKeywordCollectionViewCell.swift */; };
+		396C7C542CB1A197003C9712 /* NicknameAvailablity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 396C7C532CB1A197003C9712 /* NicknameAvailablity.swift */; };
+		396C7C562CB24F03003C9712 /* OnboardingRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 396C7C552CB24F03003C9712 /* OnboardingRepository.swift */; };
+		396C7C582CB24F68003C9712 /* OnboardingResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 396C7C572CB24F68003C9712 /* OnboardingResult.swift */; };
+		396C7C5B2CB2542F003C9712 /* OnboardingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 396C7C5A2CB2542F003C9712 /* OnboardingService.swift */; };
+		396C7C5D2CB27AC2003C9712 /* ServerErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 396C7C5C2CB27AC2003C9712 /* ServerErrorResponse.swift */; };
 		397DE6802C2342A70026DB07 /* NovelDetailTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 397DE67F2C2342A70026DB07 /* NovelDetailTabBarView.swift */; };
 		3980D1D62C19BB2C008B9B18 /* NovelDetailLargeCoverImageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3980D1D52C19BB2C008B9B18 /* NovelDetailLargeCoverImageButton.swift */; };
 		399258182C16DAF20063FB46 /* NovelDetailHeaderInterestFeedWriteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399258172C16DAF20063FB46 /* NovelDetailHeaderInterestFeedWriteButton.swift */; };
@@ -159,7 +167,6 @@
 		399F29322B56633C00BBC12B /* NovelResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399F29312B56633C00BBC12B /* NovelResult.swift */; };
 		399F29352B56DA7800BBC12B /* TrashReadStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399F29342B56DA7800BBC12B /* TrashReadStatus.swift */; };
 		39ABD5A02B54D0A900DEA94E /* RegisterNormalDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39ABD59F2B54D0A900DEA94E /* RegisterNormalDatePicker.swift */; };
-		39AD55B32CAFDF6500CBDA7A /* scroll.json in Resources */ = {isa = PBXBuildFile; fileRef = 39AD55B22CAFDF6500CBDA7A /* scroll.json */; };
 		39AF30D12B50182F00FDC1F3 /* RegisterNormalReadStatusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39AF30D02B50182F00FDC1F3 /* RegisterNormalReadStatusButton.swift */; };
 		39B225252B70B41A001C76D0 /* RegisterNormalDifferentRadiusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B225242B70B41A001C76D0 /* RegisterNormalDifferentRadiusView.swift */; };
 		39B6B6A32C649F3300D80BD9 /* NovelDetailInfoReviewGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B6B6A22C649F3300D80BD9 /* NovelDetailInfoReviewGraphView.swift */; };
@@ -540,6 +547,9 @@
 		2CFA9A172C9D9AD500A4A820 /* UserInfoResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoResult.swift; sourceTree = "<group>"; };
 		2CFE04322B66A45A0048F77A /* UICollectionViewCell+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+.swift"; sourceTree = "<group>"; };
 		3908376A2C32ADEA0082DC57 /* NovelDetailInfoReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoReviewView.swift; sourceTree = "<group>"; };
+		390F546B2CD54541002D24E1 /* scroll.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = scroll.json; sourceTree = "<group>"; };
+		3910137B2CCF5EC6001894E5 /* BirthPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthPickerView.swift; sourceTree = "<group>"; };
+		3910137D2CCF5FD3001894E5 /* BirthPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthPickerViewController.swift; sourceTree = "<group>"; };
 		39119FA72C8C482800E9E6FA /* NovelDetailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailService.swift; sourceTree = "<group>"; };
 		3916EC882B89D23D007835B5 /* ModuleFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleFactory.swift; sourceTree = "<group>"; };
 		392A29222B4E89FD0065EB97 /* RegisterNormalNovelInfoWithRatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalNovelInfoWithRatingView.swift; sourceTree = "<group>"; };
@@ -571,6 +581,11 @@
 		395928A12C99559100E7B17B /* LoginPlatformButtonStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPlatformButtonStackView.swift; sourceTree = "<group>"; };
 		39599E072C356DFA00702004 /* NovelDetailInfoReviewAttractivePointView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoReviewAttractivePointView.swift; sourceTree = "<group>"; };
 		39599E0B2C3572B500702004 /* NovelDetailInfoReviewKeywordCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoReviewKeywordCollectionViewCell.swift; sourceTree = "<group>"; };
+		396C7C532CB1A197003C9712 /* NicknameAvailablity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameAvailablity.swift; sourceTree = "<group>"; };
+		396C7C552CB24F03003C9712 /* OnboardingRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingRepository.swift; sourceTree = "<group>"; };
+		396C7C572CB24F68003C9712 /* OnboardingResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingResult.swift; sourceTree = "<group>"; };
+		396C7C5A2CB2542F003C9712 /* OnboardingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingService.swift; sourceTree = "<group>"; };
+		396C7C5C2CB27AC2003C9712 /* ServerErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerErrorResponse.swift; sourceTree = "<group>"; };
 		397DE67F2C2342A70026DB07 /* NovelDetailTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailTabBarView.swift; sourceTree = "<group>"; };
 		3980D1D52C19BB2C008B9B18 /* NovelDetailLargeCoverImageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailLargeCoverImageButton.swift; sourceTree = "<group>"; };
 		399258172C16DAF20063FB46 /* NovelDetailHeaderInterestFeedWriteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailHeaderInterestFeedWriteButton.swift; sourceTree = "<group>"; };
@@ -581,7 +596,6 @@
 		399F29312B56633C00BBC12B /* NovelResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelResult.swift; sourceTree = "<group>"; };
 		399F29342B56DA7800BBC12B /* TrashReadStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashReadStatus.swift; sourceTree = "<group>"; };
 		39ABD59F2B54D0A900DEA94E /* RegisterNormalDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalDatePicker.swift; sourceTree = "<group>"; };
-		39AD55B22CAFDF6500CBDA7A /* scroll.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = scroll.json; sourceTree = "<group>"; };
 		39AF30D02B50182F00FDC1F3 /* RegisterNormalReadStatusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalReadStatusButton.swift; sourceTree = "<group>"; };
 		39B225242B70B41A001C76D0 /* RegisterNormalDifferentRadiusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalDifferentRadiusView.swift; sourceTree = "<group>"; };
 		39B6B6A22C649F3300D80BD9 /* NovelDetailInfoReviewGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoReviewGraphView.swift; sourceTree = "<group>"; };
@@ -885,6 +899,7 @@
 				C96A0E202C9F2ED500A6EA87 /* FeedDetailRepository.swift */,
 				2C01F9842B482EB700D90FFE /* UserRepository.swift */,
 				395928982C988A4200E7B17B /* LoginRepository.swift */,
+				396C7C552CB24F03003C9712 /* OnboardingRepository.swift */,
 				A1EF35402B52F74A00A94C53 /* RecommendRepository.swift */,
 				A1EF35422B52F75800A94C53 /* NovelRepository.swift */,
 				A1EF35442B52F76C00A94C53 /* UserNovelRepository.swift */,
@@ -923,6 +938,7 @@
 		2C2491822B4ADC1D0096F255 /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				391013782CCF5C33001894E5 /* BirthPicker */,
 				2CD2FE3C2C43BEF40033366C /* AlertButton */,
 				2C19A4FE2BBD567F00D4D151 /* Dropdown */,
 				39BA7F6D2BCAAD620045B2B7 /* KeywordLabel */,
@@ -1432,6 +1448,15 @@
 			path = Protocol;
 			sourceTree = "<group>";
 		};
+		391013782CCF5C33001894E5 /* BirthPicker */ = {
+			isa = PBXGroup;
+			children = (
+				3910137D2CCF5FD3001894E5 /* BirthPickerViewController.swift */,
+				3910137B2CCF5EC6001894E5 /* BirthPickerView.swift */,
+			);
+			path = BirthPicker;
+			sourceTree = "<group>";
+		};
 		39119FA62C8C481700E9E6FA /* NovelDetail */ = {
 			isa = PBXGroup;
 			children = (
@@ -1587,6 +1612,14 @@
 			path = LoginAssistantView;
 			sourceTree = "<group>";
 		};
+		396C7C592CB2541A003C9712 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				396C7C5A2CB2542F003C9712 /* OnboardingService.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
 		397DE6792C22C8740026DB07 /* NovelDetailHeaderView */ = {
 			isa = PBXGroup;
 			children = (
@@ -1676,6 +1709,7 @@
 				393CAC452CA727E3004B4DB6 /* Gender.swift */,
 				B974EA3E2CC8BC8700169639 /* CompletedStatus.swift */,
 				B974EA402CC8E40C00169639 /* NovelRatingStatus.swift */,
+				396C7C532CB1A197003C9712 /* NicknameAvailablity.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -1826,13 +1860,13 @@
 		39EF97B12B54498E00D2148B /* Lottie */ = {
 			isa = PBXGroup;
 			children = (
+				390F546B2CD54541002D24E1 /* scroll.json */,
 				39B75AD12B59891D005DD8B9 /* regressorGreeting.json */,
 				39B75AD42B59891D005DD8B9 /* regressorSword.json */,
 				39B75AD52B59891D005DD8B9 /* sosocatBread.json */,
 				39B75ACF2B59891C005DD8B9 /* sosocatTail.json */,
 				39B75AD32B59891D005DD8B9 /* villainessFan.json */,
 				39B75AD22B59891D005DD8B9 /* villainessTea.json */,
-				39AD55B22CAFDF6500CBDA7A /* scroll.json */,
 			);
 			path = Lottie;
 			sourceTree = "<group>";
@@ -1977,6 +2011,7 @@
 				A1654F132B540513004F78E8 /* NetworkLogger.swift */,
 				A1654F0D2B540504004F78E8 /* APIConstants.swift */,
 				A1654F0E2B540504004F78E8 /* HTTPMethod.swift */,
+				396C7C5C2CB27AC2003C9712 /* ServerErrorResponse.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -2093,6 +2128,7 @@
 				CDC03F422CA67266002D301F /* SearchKeywordResult.swift */,
 				CDC03F502CA6C5CD002D301F /* NovelReviewResult.swift */,
 				CD514C952CD5DC22007A27A8 /* AuthResult.swift */,
+				396C7C572CB24F68003C9712 /* OnboardingResult.swift */,
 			);
 			path = DTO;
 			sourceTree = "<group>";
@@ -2101,6 +2137,7 @@
 			isa = PBXGroup;
 			children = (
 				CD514C902CD5DB7B007A27A8 /* Auth */,
+				396C7C592CB2541A003C9712 /* Onboarding */,
 				CDC03F3F2CA671FB002D301F /* Keyword */,
 				CDC03F4B2CA6C488002D301F /* NovelReview */,
 				2C9CBDAF2C5BB4200084481F /* Blocks */,
@@ -2910,7 +2947,6 @@
 				39B75ADA2B59891D005DD8B9 /* villainessFan.json in Resources */,
 				39B75AD92B59891D005DD8B9 /* villainessTea.json in Resources */,
 				39B75ADB2B59891D005DD8B9 /* regressorSword.json in Resources */,
-				39AD55B32CAFDF6500CBDA7A /* scroll.json in Resources */,
 				39B75AE02B59C6A7005DD8B9 /* LaunchScreen.storyboard in Resources */,
 				39B75AD62B59891D005DD8B9 /* sosocatTail.json in Resources */,
 				2C79CB9B2B45A0B700734E1F /* Pretendard-Regular.otf in Resources */,
@@ -2918,6 +2954,7 @@
 				2C79CB952B45A0A400734E1F /* Pretendard-SemiBold.otf in Resources */,
 				39B75ADC2B59891D005DD8B9 /* sosocatBread.json in Resources */,
 				2C79CB972B45A0AB00734E1F /* Pretendard-Medium.otf in Resources */,
+				390F546C2CD54541002D24E1 /* scroll.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3049,6 +3086,7 @@
 				39CC167E2B512369003F56AE /* RegisterSuccessViewController.swift in Sources */,
 				3992FA562B81E2A40079C8B8 /* RegisterNormalViewController.swift in Sources */,
 				B9AC1BD82BF0BDDD006EDE92 /* NoticeRepository.swift in Sources */,
+				396C7C5D2CB27AC2003C9712 /* ServerErrorResponse.swift in Sources */,
 				39CD5E082B4F2BBE00668B9A /* RegisterNormalKeywordSelectionView.swift in Sources */,
 				2C19A5002BBD56C900D4D151 /* WSSDropdownButton.swift in Sources */,
 				B96F0F902C28678800DA5483 /* FeedDetailContentView.swift in Sources */,
@@ -3120,11 +3158,13 @@
 				CDE596DA2B57C4BE00D99DA1 /* UITextView+.swift in Sources */,
 				2C5D0F612B50525700C76D3C /* TrashMyPageChangeNicknameView.swift in Sources */,
 				2CCBFA082B4DE38800D787C2 /* TrashMyPageInventoryView.swift in Sources */,
+				3910137E2CCF5FD8001894E5 /* BirthPickerViewController.swift in Sources */,
 				A1EF35602B52FAEF00A94C53 /* MemoService.swift in Sources */,
 				B96D10C42BED2EDB00D4D84C /* HomeViewModel.swift in Sources */,
 				393102002CA54F2F002CBEA0 /* LoginButtonType.swift in Sources */,
 				39D4A5CD2BDA4C6D004FC834 /* NovelDetailView.swift in Sources */,
 				CD3E5A792B5424E600C0A659 /* MemoEditContentView.swift in Sources */,
+				396C7C582CB24F68003C9712 /* OnboardingResult.swift in Sources */,
 				B9181BDE2BEBE2300024C800 /* HomeTasteRecommendCollectionViewCell.swift in Sources */,
 				2C5D0F592B4FDEC000C76D3C /* TrashMyPageInventoryCollectionViewCell.swift in Sources */,
 				CD8747A52C9EB39900D0ADAD /* NovelDateSelectModalViewModel.swift in Sources */,
@@ -3144,6 +3184,7 @@
 				CD6F49592C70637A005AD392 /* FeedNovelConnectSearchBarView.swift in Sources */,
 				B974EA472CC902E800169639 /* DetailSearchResultHeaderView.swift in Sources */,
 				2C60306B2B54448F0031544C /* LibraryPageBar.swift in Sources */,
+				396C7C562CB24F03003C9712 /* OnboardingRepository.swift in Sources */,
 				39599E0C2C3572B500702004 /* NovelDetailInfoReviewKeywordCollectionViewCell.swift in Sources */,
 				39E8FD922C743D8000AD6F30 /* NovelDetailHeaderReadInfoButton.swift in Sources */,
 				CD803B372C93FCF3006EBAF8 /* NovelReviewAttractivePointCollectionViewCell.swift in Sources */,
@@ -3169,6 +3210,7 @@
 				2C22AE6E2C56E99A00BF6E94 /* MyPageBlockUserViewController.swift in Sources */,
 				CD39F2C52B4FFE7400B73A5C /* TrashNovelDetailCreateMemoView.swift in Sources */,
 				CD39F2DA2B50DDBF00B73A5C /* TrashNovelDetailInfoGenreView.swift in Sources */,
+				396C7C542CB1A197003C9712 /* NicknameAvailablity.swift in Sources */,
 				CD1F7E0C2C99AB7C0039972C /* NovelSelectedKeywordListView.swift in Sources */,
 				39F686FE2C6F5D5C0065999F /* NovelDetailInfoReviewGraphStackView.swift in Sources */,
 				395928952C9888A600E7B17B /* LoginViewController.swift in Sources */,
@@ -3237,8 +3279,10 @@
 				A18432EC2B511E7400910940 /* RecordDateView.swift in Sources */,
 				B92A06692C49877700E27652 /* DetailSearchBottomView.swift in Sources */,
 				399492F32C9A8ADE00298F16 /* LoginBannerCollectionViewCell.swift in Sources */,
+				3910137C2CCF5EC6001894E5 /* BirthPickerView.swift in Sources */,
 				A1DBB2FA2B4AA981000EE869 /* SearchCollectionViewCell.swift in Sources */,
 				3999BFEB2B4E6C4400984832 /* RegisterViewModel.swift in Sources */,
+				396C7C5B2CB2542F003C9712 /* OnboardingService.swift in Sources */,
 				B96F0F8E2C28638E00DA5483 /* FeedDetailProfileView.swift in Sources */,
 				A1493BC32B55022E004DD84A /* MemoResult.swift in Sources */,
 				A1654F0F2B540504004F78E8 /* APIConstants.swift in Sources */,
@@ -3466,7 +3510,7 @@
 				CODE_SIGN_ENTITLEMENTS = WSSiOS/WSSiOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 202401192;
-				DEVELOPMENT_TEAM = 9SVDHQS4M3;
+				DEVELOPMENT_TEAM = D23XDL6TZZ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WSSiOS/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "웹소소";
@@ -3503,7 +3547,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 202401192;
-				DEVELOPMENT_TEAM = L22KGAL4ND;
+				DEVELOPMENT_TEAM = D23XDL6TZZ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WSSiOS/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "웹소소";

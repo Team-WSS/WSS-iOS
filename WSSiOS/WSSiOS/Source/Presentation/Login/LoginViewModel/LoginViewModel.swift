@@ -107,8 +107,10 @@ final class LoginViewModel: NSObject, ViewModelType {
                                     email: email)
             }
             .subscribe(with: self, onNext: { owner, result in
-                UserDefaults.standard.setValue(result.Authorization, forKey: "ACCESS_TOKEN")
-                UserDefaults.standard.setValue(result.refreshToken, forKey: "REFRESH_TOKEN")
+                UserDefaults.standard.setValue(result.Authorization,
+                                               forKey: StringLiterals.UserDefault.accessToken)
+                UserDefaults.standard.setValue(result.refreshToken,
+                                               forKey:  StringLiterals.UserDefault.refreshToken)
                 if result.isRegister {
                     owner.navigateToHome.accept(())
                 } else {
