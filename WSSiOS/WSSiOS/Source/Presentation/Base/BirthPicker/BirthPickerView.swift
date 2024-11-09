@@ -18,7 +18,7 @@ final class BirthPickerView: UIView {
     
     //MARK: - Components
     
-    let contentView = UIView()
+    private let contentView = UIView()
     private let titleLabel = UILabel()
     let cancelButton = UIButton()
     let completeButton = WSSMainButton(title: StringLiterals.BirthPicker.completeButton)
