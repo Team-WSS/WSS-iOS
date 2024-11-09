@@ -16,6 +16,7 @@ final class OnboardingViewModel: ViewModelType {
     
     //MARK: - Properties
     
+    private let nicknamePattern = "^[a-zA-Z0-9가-힣]{2,10}$"
     private let onboardingRepository: OnboardingRepository
     
     // Nickname
@@ -279,8 +280,7 @@ final class OnboardingViewModel: ViewModelType {
     }
     
     private func isValidNicknameCharacters(_ text: String) -> Bool {
-        let pattern = "^[a-zA-Z0-9가-힣]{2,10}$"
-        return text.range(of: pattern, options: .regularExpression) != nil
+        return text.range(of: nicknamePattern, options: .regularExpression) != nil
     }
     
     private func checkNicknameisValid(_ nickname: String, disposeBag: DisposeBag) {
