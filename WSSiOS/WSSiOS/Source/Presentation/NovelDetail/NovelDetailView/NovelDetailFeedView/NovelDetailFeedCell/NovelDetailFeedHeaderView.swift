@@ -20,7 +20,8 @@ final class NovelDetailFeedHeaderView: UIView {
     private let dotImageView = UIImageView()
     private let createdDateLabel = UILabel()
     private let isModifiedLabel = UILabel()
-    let dropdownButton = UIButton()
+    let dropdownButtonView = UIView()
+    private let dropdownImageView = UIImageView()
     
     // MARK: - Life Cycle
     
@@ -71,8 +72,8 @@ final class NovelDetailFeedHeaderView: UIView {
             $0.textColor = .wssGray200
         }
         
-        dropdownButton.do {
-            $0.setImage(.icDropDownDot, for: .normal)
+        dropdownImageView.do {
+            $0.image = .icDropDownDot
         }
     }
     
@@ -81,9 +82,10 @@ final class NovelDetailFeedHeaderView: UIView {
                          dotImageView,
                          createdDateLabel,
                          isModifiedLabel,
-                         dropdownButton)
+                         dropdownButtonView)
         profileView.addArrangedSubviews(userImageView,
                                      userNicknameLabel)
+        dropdownButtonView.addSubview(dropdownImageView)
     }
     
     private func setLayout() {
@@ -111,7 +113,12 @@ final class NovelDetailFeedHeaderView: UIView {
             $0.leading.equalTo(createdDateLabel.snp.trailing).offset(6)
         }
         
-        dropdownButton.snp.makeConstraints {
+        dropdownButtonView.snp.makeConstraints {
+            $0.top.trailing.bottom.equalToSuperview()
+            $0.size.equalTo(38)
+        }
+        
+        dropdownImageView.snp.makeConstraints {
             $0.centerY.trailing.equalToSuperview()
             $0.size.equalTo(18)
         }

@@ -28,7 +28,7 @@ final class NovelDetailViewController: UIViewController {
     
     //NovelDetailFeed
     private let novelDetailFeedProfileViewDidTap = PublishRelay<Int>()
-    private let novelDetailFeedDropdownButtonDidTap = PublishRelay<Int>()
+    private let novelDetailFeedDropdownButtonDidTap = PublishRelay<(Int, Bool)>()
     private let novelDetailFeedConnectedNovelViewDidTap = PublishRelay<Int>()
     private let novelDetailFeedLikeViewDidTap = PublishRelay<(Int, Bool)>()
     
@@ -278,6 +278,14 @@ final class NovelDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.toggleDropdownView
+            .subscribe(with: self, onNext: { owner, data in
+                let (indexPath, isMyFeed) = data
+                owner.rootView.feedView.feedListView.toggleDropdownView(indexPath: indexPath,
+                                                                        isMyFeed: isMyFeed)
+            })
+            .disposed(by: disposeBag)
+        
         //MARK: - Bind/NovelReview
         
         output.showNovelReviewedToast
@@ -389,8 +397,8 @@ extension NovelDetailViewController: FeedTableViewDelegate {
         self.novelDetailFeedProfileViewDidTap.accept(userId)
     }
     
-    func dropdownButtonDidTap(feedId: Int) {
-        self.novelDetailFeedDropdownButtonDidTap.accept(feedId)
+    func dropdownButtonDidTap(feedId: Int, isMyFeed: Bool) {
+        self.novelDetailFeedDropdownButtonDidTap.accept((feedId, isMyFeed))
     }
     
     func connectedNovelViewDidTap(novelId: Int) {

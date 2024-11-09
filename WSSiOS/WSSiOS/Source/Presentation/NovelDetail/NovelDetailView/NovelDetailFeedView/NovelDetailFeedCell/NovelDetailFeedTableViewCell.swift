@@ -15,7 +15,7 @@ import Then
 
 protocol FeedTableViewDelegate: AnyObject {
     func profileViewDidTap(userId: Int)
-    func dropdownButtonDidTap(feedId: Int)
+    func dropdownButtonDidTap(feedId: Int, isMyFeed: Bool)
     func connectedNovelViewDidTap(novelId: Int)
     func likeViewDidTap(feedId: Int, isLiked: Bool)
 }
@@ -111,10 +111,11 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
             })
             .disposed(by: disposeBag)
         
-        novelDetailFeedHeaderView.dropdownButton.rx.tap
+        novelDetailFeedHeaderView.dropdownButtonView.rx.tapGesture()
+            .when(.recognized)
             .withLatestFrom(feed)
             .subscribe(with: self, onNext: { owner, feed in
-                owner.delegate?.dropdownButtonDidTap(feedId: feed.feedId)
+                owner.delegate?.dropdownButtonDidTap(feedId: feed.feedId, isMyFeed: feed.isMyFeed)
             })
             .disposed(by: disposeBag)
         

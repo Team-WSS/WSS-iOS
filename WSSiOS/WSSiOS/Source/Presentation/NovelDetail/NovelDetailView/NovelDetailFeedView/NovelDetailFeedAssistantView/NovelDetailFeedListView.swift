@@ -15,6 +15,7 @@ final class NovelDetailFeedListView: UIView {
     //MARK: - Components
     
     let feedTableView = UITableView(frame: .zero, style: .plain)
+    let dropdownView = FeedDetailDropdownView()
     
     //MARK: - Life Cycle
     
@@ -38,10 +39,15 @@ final class NovelDetailFeedListView: UIView {
             $0.separatorStyle = .none
             $0.isScrollEnabled = false
         }
+        
+        dropdownView.do {
+            $0.isHidden = true
+        }
     }
     
     private func setHierarchy() {
-        self.addSubview(feedTableView)
+        self.addSubviews(feedTableView,
+                         dropdownView)
     }
     
     private func setLayout() {
@@ -50,6 +56,11 @@ final class NovelDetailFeedListView: UIView {
             $0.bottom.equalToSuperview().inset(28)
             $0.height.equalTo(0)
         }
+        
+        dropdownView.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.trailing.equalToSuperview().inset(20)
+        }
     }
     
     //MARK: - Custom Method
@@ -57,6 +68,25 @@ final class NovelDetailFeedListView: UIView {
     func updateTableViewHeight(height: CGFloat) {
         feedTableView.snp.updateConstraints {
             $0.height.equalTo(height)
+        }
+    }
+    
+    func toggleDropdownView(indexPath: IndexPath, isMyFeed: Bool) {
+        dropdownView.do {
+            $0.configureDropdown(isMyFeed: isMyFeed)
+            $0.isHidden.toggle()
+        }
+        updateDropdownViewLayout(indexPath: indexPath)
+    }
+    
+    func updateDropdownViewLayout(indexPath: IndexPath) {
+        guard let cell = feedTableView.cellForRow(at: indexPath) else { return }
+
+        let cellFrameInSuperview = cell.convert(cell.bounds, to: self)
+        
+        dropdownView.snp.updateConstraints {
+            $0.top.equalToSuperview().inset(cellFrameInSuperview.minY + 58)
+            $0.trailing.equalToSuperview().inset(20)
         }
     }
 }

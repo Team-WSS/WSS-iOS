@@ -48,6 +48,7 @@ final class NovelDetailViewModel: ViewModelType {
     private let feedList = BehaviorRelay<[NovelDetailFeed]>(value: [])
     private let novelDetailFeedTableViewHeight = PublishRelay<CGFloat>()
     private let pushToFeedDetailViewController = PublishRelay<Int>()
+    private let toggleDropdownView = PublishRelay<(IndexPath, Bool)>()
     
     //MARK: - Life Cycle
     
@@ -86,7 +87,7 @@ final class NovelDetailViewModel: ViewModelType {
         let novelDetailFeedTableViewContentSize: Observable<CGSize?>
         let novelDetailFeedTableViewItemSelected: Observable<IndexPath>
         let novelDetailFeedProfileViewDidTap: Observable<Int>
-        let novelDetailFeedDropdownButtonDidTap: Observable<Int>
+        let novelDetailFeedDropdownButtonDidTap: Observable<(Int, Bool)>
         let novelDetailFeedConnectedNovelViewDidTap: Observable<Int>
         let novelDetailFeedLikeViewDidTap: Observable<(Int, Bool)>
         let scrollViewReachedBottom: Observable<Bool>
@@ -124,6 +125,7 @@ final class NovelDetailViewModel: ViewModelType {
         let pushToFeedDetailViewController: Observable<Int>
         let pushToUserViewController: Observable<Int>
         let pushToNovelDetailViewController: Observable<Int>
+        let toggleDropdownView: Observable<(IndexPath, Bool)>
         
         //NovelReview
         let showNovelReviewedToast: Observable<Void>
@@ -296,8 +298,12 @@ final class NovelDetailViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.novelDetailFeedDropdownButtonDidTap
-            .subscribe(with: self, onNext: { owner, feedId in
-                print("DropdownButtonDidTap: \(feedId)")
+            .subscribe(with: self, onNext: { owner, data in
+                let (feedId, isMyFeed) = data
+                if let index = owner.feedList.value.firstIndex(where: { $0.feedId == feedId }) {
+                    let indexPath = IndexPath(row: index, section: 0)
+                    owner.toggleDropdownView.accept((indexPath, isMyFeed))
+                }
             })
             .disposed(by: disposeBag)
         
@@ -396,6 +402,7 @@ final class NovelDetailViewModel: ViewModelType {
             pushToFeedDetailViewController: pushToFeedDetailViewController.asObservable(),
             pushToUserViewController: input.novelDetailFeedProfileViewDidTap.asObservable(),
             pushToNovelDetailViewController: input.novelDetailFeedConnectedNovelViewDidTap.asObservable(),
+            toggleDropdownView: toggleDropdownView.asObservable(),
             showNovelReviewedToast: showNovelReviewedToast
         )
     }
