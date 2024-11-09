@@ -7,15 +7,31 @@
 
 import UIKit
 
+import RxSwift
+import RxCocoa
+import RxGesture
 import SnapKit
 import Then
 
+protocol FeedTableViewDelegate: AnyObject {
+    func profileViewDidTap(userId: Int)
+    func dropdownButtonDidTap(feedId: Int)
+    func connectedNovelViewDidTap(novelId: Int)
+}
+
 final class NovelDetailFeedTableViewCell: UITableViewCell {
+    
+    // MARK: - Properties
+    
+    private let disposeBag = DisposeBag()
+    weak var delegate: FeedTableViewDelegate?
+    
+    private let feed = PublishRelay<NovelDetailFeed>()
     
     //MARK: - Components
     
     private let stackView = UIStackView()
-    private let novelDetailFeedHeaderView = NovelDetailFeedHeaderView()
+    let novelDetailFeedHeaderView = NovelDetailFeedHeaderView()
     private let novelDetailFeedContentView = NovelDetailFeedContentView()
     private let novelDetailFeedConnectedNovelView = NovelDetailFeedConnectedNovelView()
     private let novelDetailFeedCategoryView = NovelDetailFeedCategoryView()
@@ -30,6 +46,8 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
         setUI()
         setHierarchy()
         setLayout()
+        
+        bindAction()
     }
     
     required init?(coder: NSCoder) {
@@ -54,8 +72,8 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
     }
     
     private func setHierarchy() {
-        self.addSubviews(stackView,
-                         dividerView)
+        contentView.addSubviews(stackView,
+                                dividerView)
         stackView.addArrangedSubviews(novelDetailFeedHeaderView,
                                       novelDetailFeedContentView,
                                       novelDetailFeedConnectedNovelView,
@@ -81,9 +99,38 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
         }
     }
     
+    //MARK: - Bind
+    
+    private func bindAction() {
+        novelDetailFeedHeaderView.profileView.rx.tapGesture()
+            .when(.recognized)
+            .withLatestFrom(feed)
+            .subscribe(with: self, onNext: { owner, feed in
+                owner.delegate?.profileViewDidTap(userId: feed.userId)
+            })
+            .disposed(by: disposeBag)
+        
+        novelDetailFeedHeaderView.dropdownButton.rx.tap
+            .withLatestFrom(feed)
+            .subscribe(with: self, onNext: { owner, feed in
+                owner.delegate?.dropdownButtonDidTap(feedId: feed.feedId)
+            })
+            .disposed(by: disposeBag)
+        
+        novelDetailFeedConnectedNovelView.rx.tapGesture()
+            .when(.recognized)
+            .withLatestFrom(feed)
+            .subscribe(with: self, onNext: { owner, feed in
+                owner.delegate?.connectedNovelViewDidTap(novelId: feed.novelId)
+            })
+            .disposed(by: disposeBag)
+    }
+    
     //MARK: - Data
     
     func bindData(feed: NovelDetailFeed) {
+        self.feed.accept(feed)
+        
         novelDetailFeedHeaderView.bindData(avatarImage: feed.avatarImage,
                                            nickname: feed.nickname,
                                            createdDate: feed.createdDate,

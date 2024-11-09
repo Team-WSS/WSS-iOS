@@ -26,6 +26,11 @@ final class NovelDetailViewController: UIViewController {
         $0.timeZone = TimeZone(identifier: StringLiterals.Register.Normal.DatePicker.KoreaTimeZone)
     }
     
+    //NovelDetailFeed
+    private let novelDetailFeedProfileViewDidTap = PublishRelay<Int>()
+    private let novelDetailFeedDropdownButtonDidTap = PublishRelay<Int>()
+    private let novelDetailFeedConnectedNovelViewDidTap = PublishRelay<Int>()
+    
     //MARK: - Components
     
     private let rootView = NovelDetailView()
@@ -237,6 +242,7 @@ final class NovelDetailViewController: UIViewController {
                 cellIdentifier: NovelDetailFeedTableViewCell.cellIdentifier,
                 cellType: NovelDetailFeedTableViewCell.self)) { _, element, cell in
                     cell.bindData(feed: element)
+                    cell.delegate = self
                 }
                 .disposed(by: disposeBag)
         
@@ -256,6 +262,12 @@ final class NovelDetailViewController: UIViewController {
         output.pushToFeedDetailViewController
             .subscribe(with: self, onNext: { owner, feedId in
                 owner.pushToFeedDetailViewController(feedId: feedId)
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushToNovelDetailViewController
+            .subscribe(with: self, onNext: { owner, novelId in
+                owner.pushToDetailViewController(novelId: novelId)
             })
             .disposed(by: disposeBag)
         
@@ -299,6 +311,9 @@ final class NovelDetailViewController: UIViewController {
             descriptionAccordionButtonDidTap: rootView.infoView.descriptionView.accordionButton.rx.tap,
             novelDetailFeedTableViewContentSize: rootView.feedView.feedListView.feedTableView.rx.observe(CGSize.self, "contentSize"),
             novelDetailFeedTableViewItemSelected: rootView.feedView.feedListView.feedTableView.rx.itemSelected.asObservable(),
+            novelDetailFeedProfileViewDidTap: novelDetailFeedProfileViewDidTap.asObservable(),
+            novelDetailFeedDropdownButtonDidTap: novelDetailFeedDropdownButtonDidTap.asObservable(),
+            novelDetailFeedConnectedNovelViewDidTap: novelDetailFeedConnectedNovelViewDidTap.asObservable(),
             scrollViewReachedBottom: observeReachedBottom(rootView.scrollView),
             createFeedButtonDidTap: rootView.createFeedButton.rx.tap,
             novelReviewedNotification: NotificationCenter.default.rx.notification(Notification.Name("NovelReviewed")).asObservable()
@@ -358,5 +373,19 @@ extension NovelDetailViewController: UICollectionViewDelegateFlowLayout {
         
         let width = (text as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 24
         return CGSize(width: width, height: 37)
+    }
+}
+
+extension NovelDetailViewController: FeedTableViewDelegate {
+    func profileViewDidTap(userId: Int) {
+        self.novelDetailFeedProfileViewDidTap.accept(userId)
+    }
+    
+    func dropdownButtonDidTap(feedId: Int) {
+        self.novelDetailFeedDropdownButtonDidTap.accept(feedId)
+    }
+    
+    func connectedNovelViewDidTap(novelId: Int) {
+        self.novelDetailFeedConnectedNovelViewDidTap.accept(novelId)
     }
 }

@@ -82,6 +82,9 @@ final class NovelDetailViewModel: ViewModelType {
         //NovelDetailFeed
         let novelDetailFeedTableViewContentSize: Observable<CGSize?>
         let novelDetailFeedTableViewItemSelected: Observable<IndexPath>
+        let novelDetailFeedProfileViewDidTap: Observable<Int>
+        let novelDetailFeedDropdownButtonDidTap: Observable<Int>
+        let novelDetailFeedConnectedNovelViewDidTap: Observable<Int>
         let scrollViewReachedBottom: Observable<Bool>
         let createFeedButtonDidTap: ControlEvent<Void>
         
@@ -115,6 +118,7 @@ final class NovelDetailViewModel: ViewModelType {
         let feedList: Observable<[NovelDetailFeed]>
         let novelDetailFeedTableViewHeight: Observable<CGFloat>
         let pushToFeedDetailViewController: Observable<Int>
+        let pushToNovelDetailViewController: Observable<Int>
         
         //NovelReview
         let showNovelReviewedToast: Observable<Void>
@@ -286,6 +290,18 @@ final class NovelDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        input.novelDetailFeedProfileViewDidTap
+            .subscribe(with: self, onNext: { owner, userId in
+                print("ProfileViewDidTap: \(userId)")
+            })
+            .disposed(by: disposeBag)
+        
+        input.novelDetailFeedDropdownButtonDidTap
+            .subscribe(with: self, onNext: { owner, feedId in
+                print("DropdownButtonDidTap: \(feedId)")
+            })
+            .disposed(by: disposeBag)
+        
         input.scrollViewReachedBottom
             .filter { reachedBottom in
                 return reachedBottom && !self.isFetching && self.isLoadable
@@ -352,6 +368,7 @@ final class NovelDetailViewModel: ViewModelType {
             feedList: feedList.asObservable(),
             novelDetailFeedTableViewHeight: novelDetailFeedTableViewHeight.asObservable(),
             pushToFeedDetailViewController: pushToFeedDetailViewController.asObservable(),
+            pushToNovelDetailViewController: input.novelDetailFeedConnectedNovelViewDidTap.asObservable(),
             showNovelReviewedToast: showNovelReviewedToast
         )
     }
