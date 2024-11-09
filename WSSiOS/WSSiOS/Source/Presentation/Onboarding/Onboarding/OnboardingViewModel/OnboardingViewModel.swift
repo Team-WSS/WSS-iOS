@@ -343,6 +343,8 @@ final class OnboardingViewModel: ViewModelType {
             genrePreferences: self.selectedGenres.value
         )
         .subscribe(with: self, onSuccess: { owner, _ in
+            UserDefaults.standard.setValue(gender.rawValue, forKey: "USER_GENDER")
+            UserDefaults.standard.setValue(self.nicknameText.value, forKey: "USER_NICKNAME")
             owner.moveToOnboardingSuccessViewController.accept(owner.nicknameText.value)
         }, onFailure: { owner, error in
             owner.showNetworkErrorView.accept(())
