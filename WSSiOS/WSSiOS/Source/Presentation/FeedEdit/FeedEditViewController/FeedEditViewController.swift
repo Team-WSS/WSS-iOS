@@ -30,8 +30,6 @@ final class FeedEditViewController: UIViewController {
     init(viewModel: FeedEditViewModel) {
         self.feedEditViewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-        
-        self.rootView.feedEditContentView.bindData(feedContent: viewModel.initialFeedContent)
     }
     
     required init?(coder: NSCoder) {
@@ -131,6 +129,12 @@ final class FeedEditViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.initialFeedContent
+            .subscribe(with: self, onNext: { owner, feedContent in
+                owner.rootView.feedEditContentView.bindData(feedContent: feedContent)
+            })
+            .disposed(by: disposeBag)
+
         output.isSpoiler
             .subscribe(with: self, onNext: { owner, isSpoiler in
                 owner.rootView.feedEditContentView.spoilerButton.updateToggle(isSpoiler)

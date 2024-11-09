@@ -26,13 +26,13 @@ final class FeedEditViewModel: ViewModelType {
     private let feedId: Int?
     var relevantCategories: [NewNovelGenre] = []
     private var novelId: Int?
-    let initialFeedContent: String
     private var updatedFeedContent: String = ""
     
     // Output
     private let endEditing = PublishRelay<Bool>()
     private let categoryListData = BehaviorRelay<[NewNovelGenre]>(value: NewNovelGenre.feedEditGenres)
     private let popViewController = PublishRelay<Void>()
+    private let initialFeedContent = BehaviorRelay<String>(value: "")
     private let isSpoiler = BehaviorRelay<Bool>(value: false)
     private let feedContentWithLengthLimit = BehaviorRelay<String>(value: "")
     private let completeButtonIsAbled = BehaviorRelay<Bool>(value: false)
@@ -44,16 +44,14 @@ final class FeedEditViewModel: ViewModelType {
        
     //MARK: - Life Cycle
     
-    init(feedRepository: FeedRepository, feedDetailRepository: FeedDetailRepository, feedId: Int? = nil, relevantCategories: [NewNovelGenre] = [], initialFeedContent: String = "", novelId: Int? = nil, novelTitle: String? = nil, isSpoiler: Bool = false) {
+    init(feedRepository: FeedRepository, feedDetailRepository: FeedDetailRepository, feedId: Int? = nil, relevantCategories: [NewNovelGenre] = [], novelId: Int? = nil, novelTitle: String? = nil) {
         self.feedRepository = feedRepository
         self.feedDetailRepository = feedDetailRepository
         self.feedId = feedId
         self.relevantCategories = relevantCategories
-        self.initialFeedContent = initialFeedContent
         self.novelId = novelId
         
         self.connectedNovelTitle.accept(novelTitle)
-        self.isSpoiler.accept(isSpoiler)
     }
     
     struct Input {
@@ -77,6 +75,7 @@ final class FeedEditViewModel: ViewModelType {
         let endEditing: Observable<Bool>
         let categoryListData: Observable<[NewNovelGenre]>
         let popViewController: Observable<Void>
+        let initialFeedContent: Observable<String>
         let isSpoiler: Observable<Bool>
         let feedContentWithLengthLimit: Observable<String>
         let completeButtonIsAbled: Observable<Bool>
@@ -95,6 +94,13 @@ final class FeedEditViewModel: ViewModelType {
             }
             .subscribe(with: self, onNext: { owner, data in
                 print(data)
+                self.relevantCategories = data.genres.map { NewNovelGenre.withKoreanRawValue(from: $0) }
+                self.categoryListData.accept(NewNovelGenre.feedEditGenres)
+                self.initialFeedContent.accept(data.feedContent)
+                
+                self.novelId = data.novelId
+                self.connectedNovelTitle.accept(data.novelTitle)
+                self.isSpoiler.accept(data.isSpoiler)
             }, onError: { owner, error in
                 print(error)
             })
@@ -170,7 +176,7 @@ final class FeedEditViewModel: ViewModelType {
                 let isEmpty = text.count == 0
                 let isOverLimit = text.count > owner.maximumFeedContentCount
                 let isWrongFormat = owner.feedContentPredicate.evaluate(with: text)
-                let isNotChanged = text == owner.initialFeedContent
+                let isNotChanged = text == owner.initialFeedContent.value
                 
                 owner.isValidFeedContent = !(isEmpty || isOverLimit || isWrongFormat || isNotChanged)
                 
@@ -225,6 +231,7 @@ final class FeedEditViewModel: ViewModelType {
         return Output(endEditing: endEditing.asObservable(),
                       categoryListData: categoryListData.asObservable(),
                       popViewController: popViewController.asObservable(),
+                      initialFeedContent: initialFeedContent.asObservable(),
                       isSpoiler: isSpoiler.asObservable(),
                       feedContentWithLengthLimit: feedContentWithLengthLimit.asObservable(),
                       completeButtonIsAbled: completeButtonIsAbled.asObservable(),

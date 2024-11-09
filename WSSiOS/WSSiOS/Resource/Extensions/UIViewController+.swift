@@ -285,7 +285,10 @@ extension UIViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func pushToFeedEditViewController(feedId: Int? = nil, relevantCategories: [NewNovelGenre] = [], initialFeedContent: String = "", novelId: Int? = nil, novelTitle: String? = nil, isSpoiler: Bool = false) {
+    func pushToFeedEditViewController(feedId: Int? = nil,
+                                      relevantCategories: [NewNovelGenre] = [],
+                                      novelId: Int? = nil,
+                                      novelTitle: String? = nil) {
         let viewController = FeedEditViewController(
             viewModel: FeedEditViewModel(
                 feedRepository: DefaultFeedRepository(
@@ -296,10 +299,8 @@ extension UIViewController {
                 ),
                 feedId: feedId,
                 relevantCategories: relevantCategories,
-                initialFeedContent: initialFeedContent,
                 novelId: novelId,
-                novelTitle: novelTitle,
-                isSpoiler: isSpoiler
+                novelTitle: novelTitle
             )
         )
         
