@@ -12,6 +12,12 @@ import Then
 
 final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
     
+    // MARK: - Properties
+    
+    var threeDotsButtonDidTap: (() -> Void)?
+    var dropdownTopButtonDidTap: (() -> Void)?
+    var dropdownBottomButtonDidTap: (() -> Void)?
+    
     //MARK: - Components
     
     private var userProfileImageView = UIImageView()
@@ -33,6 +39,8 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
         setUI()
         setHierarchy()
         setLayout()
+        
+        setActions()
     }
     
     required init?(coder: NSCoder) {
@@ -121,6 +129,46 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
             $0.trailing.equalToSuperview().inset(20)
             $0.centerY.equalTo(userProfileImageView.snp.centerY)
         }
+        
+        dropdownView.snp.makeConstraints {
+            $0.top.equalTo(threeDotsButton.snp.bottom)
+            $0.trailing.equalToSuperview()
+        }
+    }
+    
+    private func setActions() {
+        threeDotsButton.addTarget(self, action: #selector(threeDotsButtonTapped), for: .touchUpInside)
+        
+        dropdownView.topDropdownButton.addTarget(self, action: #selector(topButtonTapped), for: .touchUpInside)
+        dropdownView.bottomDropdownButton.addTarget(self, action: #selector(bottomButtonTapped), for: .touchUpInside)
+    }
+    
+    @objc private func threeDotsButtonTapped() {
+        guard let collectionView = self.superview as? UICollectionView,
+              let parentView = collectionView.superview else {
+            return
+        }
+
+        if dropdownView.isHidden {
+            let buttonPosition = threeDotsButton.convert(CGPoint(x: 0, y: threeDotsButton.bounds.height), to: parentView)
+            dropdownView.frame.origin = CGPoint(x: buttonPosition.x, y: buttonPosition.y + threeDotsButton.bounds.height)
+        
+            parentView.addSubview(dropdownView)
+            dropdownView.isHidden = false
+        } else {
+            dropdownView.removeFromSuperview()
+            dropdownView.isHidden = true
+        }
+
+        threeDotsButtonDidTap?()
+    }
+
+    @objc private func topButtonTapped() {
+        dropdownTopButtonDidTap?()
+    }
+    
+    @objc private func bottomButtonTapped() {
+        dropdownBottomButtonDidTap?()
     }
     
     func bindData(data: FeedComment) {

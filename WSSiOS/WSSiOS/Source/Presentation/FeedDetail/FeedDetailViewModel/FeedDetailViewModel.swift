@@ -19,7 +19,7 @@ final class FeedDetailViewModel: ViewModelType {
     let feedId: Int
     
     private let feedData = PublishSubject<Feed>()
-    private let commentsData = BehaviorRelay<[FeedComment]>(value: [])
+    let commentsData = BehaviorRelay<[FeedComment]>(value: [])
     private let replyCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
     
     // 작품 연결
@@ -31,7 +31,7 @@ final class FeedDetailViewModel: ViewModelType {
     private let likeButtonState = BehaviorRelay<Bool>(value: false)
     
     // 댓글 작성
-    private let commentCount = BehaviorRelay<Int>(value: 0)
+    let commentCount = BehaviorRelay<Int>(value: 0)
     private let endEditing = PublishRelay<Bool>()
     private var updatedCommentContent: String = ""
     private var isValidCommentContent: Bool = false
@@ -51,9 +51,7 @@ final class FeedDetailViewModel: ViewModelType {
     let showDeleteAlertView = PublishRelay<Void>()
     
     // 댓글 드롭다운
-    private let showCommentDropdownView = BehaviorRelay<Bool>(value: false)
-    private let isMyComment = BehaviorRelay<Bool>(value: false)
-    
+    var selectedCommentId: Int?
     let showCommentSpoilerAlertView = PublishRelay<Void>()
     let showCommentImproperAlertView = PublishRelay<Void>()
     // 댓글 수정
@@ -85,10 +83,6 @@ final class FeedDetailViewModel: ViewModelType {
         // 피드 드롭다운
         let dotsButtonDidTap: ControlEvent<Void>
         let dropdownButtonDidTap: Observable<DropdownButtonType>
-        
-        // 댓글 드롭다운
-        let commentDotsButtonDidTap: PublishSubject<Int>
-        let commentDropdownButtonDidTap: PublishSubject<DropdownButtonType>
     }
     
     struct Output {
@@ -121,11 +115,9 @@ final class FeedDetailViewModel: ViewModelType {
         let showDeleteAlertView: Observable<Void>
         
         // 댓글 드롭다운
-        let showCommentDropdownView: Driver<Bool>
-        let isMyComment: Driver<Bool>
         let showCommentSpoilerAlertView: Observable<Void>
         let showCommentImproperAlertView: Observable<Void>
-        // 댓글 수정하기
+        // 댓글 수정하기 추가해야 함
         let showCommentDeleteAlertView: Observable<Void>
     }
     
@@ -265,24 +257,6 @@ final class FeedDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.commentDotsButtonDidTap
-            .withLatestFrom(showCommentDropdownView)
-            .map { !$0 }
-            .bind(to: showCommentDropdownView)
-            .disposed(by: disposeBag)
-        
-        input.commentDropdownButtonDidTap
-            .map { ($0, self.isMyComment.value) }
-            .subscribe( with: self, onNext: { owner, result in
-                switch result {
-                case (.top, true): owner.pushToFeedEditViewController.accept(())
-                case (.bottom, true): owner.showCommentDeleteAlertView.accept(())
-                case (.top, false): owner.showCommentSpoilerAlertView.accept(())
-                case (.bottom, false): owner.showCommentImproperAlertView.accept(())
-                }
-            })
-            .disposed(by: disposeBag)
-        
         return Output(feedData: feedData.asObservable(),
                       commentsData: commentsData.asDriver(),
                       popViewController: popViewController,
@@ -302,8 +276,6 @@ final class FeedDetailViewModel: ViewModelType {
                       showImproperAlertView: showImproperAlertView.asObservable(),
                       pushToFeedEditViewController: pushToFeedEditViewController.asObservable(),
                       showDeleteAlertView: showDeleteAlertView.asObservable(),
-                      showCommentDropdownView: showCommentDropdownView.asDriver(),
-                      isMyComment: isMyComment.asDriver(),
                       showCommentSpoilerAlertView: showCommentSpoilerAlertView.asObservable(),
                       showCommentImproperAlertView: showCommentImproperAlertView.asObservable(),
                       showCommentDeleteAlertView: showCommentDeleteAlertView.asObservable())

@@ -120,6 +120,32 @@ final class FeedDetailViewController: UIViewController {
                 cellIdentifier: FeedDetailReplyCollectionViewCell.cellIdentifier,
                 cellType: FeedDetailReplyCollectionViewCell.self)) { row, element, cell in
                     cell.bindData(data: element)
+                    cell.threeDotsButtonDidTap = {
+                        cell.dropdownView.configureDropdown(isMine: element.isMyComment)
+                        self.viewModel.selectedCommentId = element.commentId
+                    }
+                    if element.isMyComment {
+                        cell.dropdownTopButtonDidTap = {
+                            print("댓글 수정 API 호출")
+                            cell.dropdownView.isHidden = true
+                        }
+                        cell.dropdownBottomButtonDidTap = {
+                            print("댓글 삭제 API 호출")
+                            self.viewModel.showCommentDeleteAlertView.accept(())
+                            cell.dropdownView.isHidden = true
+                        }
+                    } else {
+                        cell.dropdownTopButtonDidTap = {
+                            print("스포일러 신고 API 호출")
+                            self.viewModel.showCommentSpoilerAlertView.accept(())
+                            cell.dropdownView.isHidden = true
+                        }
+                        cell.dropdownBottomButtonDidTap = {
+                            print("부적절한 표현 신고 API 호출")
+                            self.viewModel.showCommentImproperAlertView.accept(())
+                            cell.dropdownView.isHidden = true
+                        }
+                    }
                 }
                 .disposed(by: disposeBag)
         
@@ -225,7 +251,7 @@ final class FeedDetailViewController: UIViewController {
         
         output.isMyFeed
             .drive(with: self, onNext: { owner, isMyFeed in
-                owner.rootView.dropdownView.configureDropdown(isMyFeed: isMyFeed)
+                owner.rootView.dropdownView.configureDropdown(isMine: isMyFeed)
             })
             .disposed(by: disposeBag)
         
@@ -309,6 +335,34 @@ final class FeedDetailViewController: UIViewController {
                 }
             })
             .disposed(by: disposeBag)
+        
+        output.showCommentDeleteAlertView
+            .flatMapLatest { _ -> Observable<AlertButtonType> in
+                return self.presentToAlertViewController(iconImage: .icAlertWarningCircle,
+                                                         titleText: StringLiterals.FeedDetail.deleteMineTitle,
+                                                         contentText: StringLiterals.FeedDetail.deleteContent,
+                                                         leftTitle: StringLiterals.FeedDetail.cancel,
+                                                         rightTitle: StringLiterals.FeedDetail.delete,
+                                                         rightBackgroundColor: UIColor.wssSecondary100.cgColor)
+            }
+            .subscribe(with: self, onNext: { owner, buttonType in
+                if buttonType == .right {
+                    guard let commentId = owner.viewModel.selectedCommentId else { return }
+                    owner.viewModel.deleteComment(owner.viewModel.feedId, commentId: commentId)
+                        .subscribe(onNext: {
+                            owner.viewModel.getSingleFeedComments(owner.viewModel.feedId)
+                                .do(onNext: { newComments in
+                                    owner.viewModel.commentsData.accept(newComments.comments)
+                                })
+                                .subscribe()
+                                .disposed(by: owner.disposeBag)
+                            
+                            owner.viewModel.commentCount.accept(owner.viewModel.commentCount.value - 1)
+                        })
+                        .disposed(by: owner.disposeBag)
+                }
+            })
+            .disposed(by: disposeBag)
     }
 }
 extension FeedDetailViewController: UICollectionViewDelegateFlowLayout {
@@ -368,4 +422,3 @@ extension FeedDetailViewController: UITextViewDelegate {
         self.rootView.replyWritingView.layoutIfNeeded()
     }
 }
-

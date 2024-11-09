@@ -582,5 +582,7 @@ enum StringLiterals {
         static let impertinentContent = "해당 글이 커뮤니티 가이드를\n위반했는지 검토할게요"
         
         static let reportResult = "신고가 접수되었어요!"
+        
+        static let deleteMineTitle = "내 댓글을 삭제할까요?"
     }
 }
