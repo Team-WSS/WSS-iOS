@@ -8,6 +8,12 @@
 import Foundation
 
 enum StringLiterals {
+    enum UserDefault {
+        static let accessToken = "ACCESS_TOKEN"
+        static let refreshToken = "REFRESH_TOKEN"
+        static let userGender = "USER_GENDER"
+        static let userNickname = "USER_NICKNAME"
+    }
     
     enum BirthPicker {
         static let title = "출생연도"
