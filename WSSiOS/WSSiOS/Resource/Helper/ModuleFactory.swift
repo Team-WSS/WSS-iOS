@@ -45,11 +45,12 @@ extension ModuleFactory: NovelDetailModuleFactory {
         return NovelDetailViewController(
             viewModel: NovelDetailViewModel(
                 novelDetailRepository: DefaultNovelDetailRepository(novelDetailService: DefaultNovelDetailService()),
+                feedDetailRepository: DefaultFeedDetailRepository(feedDetailService: DefaultFeedDetailService()),
                 novelId: novelId))
     }
     
     func makeTestNovelDetailViewController(novelId: Int) -> UIViewController {
-        return NovelDetailViewController(viewModel: NovelDetailViewModel(novelDetailRepository: TestNovelDetailRepository()))
+        return NovelDetailViewController(viewModel: NovelDetailViewModel(novelDetailRepository: TestNovelDetailRepository(), feedDetailRepository: DefaultFeedDetailRepository(feedDetailService: DefaultFeedDetailService())))
     }
 }
 

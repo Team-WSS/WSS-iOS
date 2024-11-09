@@ -16,6 +16,8 @@ final class NovelDetailViewModel: ViewModelType {
     //MARK: - Properties
     
     private let novelDetailRepository: NovelDetailRepository
+    private let feedDetailRepository: FeedDetailRepository
+    
     private let novelId: Int
     private var novelTitle: String = ""
     
@@ -49,8 +51,9 @@ final class NovelDetailViewModel: ViewModelType {
     
     //MARK: - Life Cycle
     
-    init(novelDetailRepository: NovelDetailRepository, novelId: Int = 0) {
+    init(novelDetailRepository: NovelDetailRepository, feedDetailRepository: FeedDetailRepository, novelId: Int = 0) {
         self.novelDetailRepository = novelDetailRepository
+        self.feedDetailRepository = feedDetailRepository
         self.novelId = novelId
     }
     
@@ -85,6 +88,7 @@ final class NovelDetailViewModel: ViewModelType {
         let novelDetailFeedProfileViewDidTap: Observable<Int>
         let novelDetailFeedDropdownButtonDidTap: Observable<Int>
         let novelDetailFeedConnectedNovelViewDidTap: Observable<Int>
+        let novelDetailFeedLikeViewDidTap: Observable<(Int, Bool)>
         let scrollViewReachedBottom: Observable<Bool>
         let createFeedButtonDidTap: ControlEvent<Void>
         
@@ -297,6 +301,33 @@ final class NovelDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        input.novelDetailFeedLikeViewDidTap
+            .flatMapLatest { data in
+                let (feedId, isLiked) = data
+                if isLiked {
+                    return self.deleteFeedLike(feedId)
+                } else {
+                    return self.postFeedLike(feedId)
+                }
+            }
+            .do(onNext: { _ in
+                self.isLoadable = false
+                self.lastFeedId = 0
+            })
+            .flatMapLatest { _ in
+                self.getNovelDetailFeedData(novelId: self.novelId, lastFeedId: self.lastFeedId)
+            }
+            .subscribe(with: self, onNext: { owner, data in
+                owner.isLoadable = data.isLoadable
+                if let lastFeed = data.feeds.last {
+                    owner.lastFeedId = lastFeed.feedId
+                }
+                owner.feedList.accept(data.feeds)
+            }, onError: { owner, error in
+                print("Error: \(error)")
+            })
+            .disposed(by: disposeBag)
+        
         input.scrollViewReachedBottom
             .filter { reachedBottom in
                 return reachedBottom && !self.isFetching && self.isLoadable
@@ -373,6 +404,16 @@ final class NovelDetailViewModel: ViewModelType {
     
     private func getNovelDetailFeedData(novelId: Int, lastFeedId: Int) -> Observable<NovelDetailFeedResult> {
         novelDetailRepository.getNovelDetailFeedData(novelId: novelId, lastFeedId: lastFeedId)
+            .observe(on: MainScheduler.instance)
+    }
+    
+    func postFeedLike(_ feedId: Int) -> Observable<Void> {
+        feedDetailRepository.postFeedLike(feedId: feedId)
+            .observe(on: MainScheduler.instance)
+    }
+    
+    func deleteFeedLike(_ feedId: Int) -> Observable<Void> {
+        feedDetailRepository.deleteFeedLike(feedId: feedId)
             .observe(on: MainScheduler.instance)
     }
     

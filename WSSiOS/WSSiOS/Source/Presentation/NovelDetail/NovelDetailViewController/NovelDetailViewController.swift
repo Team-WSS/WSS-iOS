@@ -30,6 +30,7 @@ final class NovelDetailViewController: UIViewController {
     private let novelDetailFeedProfileViewDidTap = PublishRelay<Int>()
     private let novelDetailFeedDropdownButtonDidTap = PublishRelay<Int>()
     private let novelDetailFeedConnectedNovelViewDidTap = PublishRelay<Int>()
+    private let novelDetailFeedLikeViewDidTap = PublishRelay<(Int, Bool)>()
     
     //MARK: - Components
     
@@ -320,6 +321,7 @@ final class NovelDetailViewController: UIViewController {
             novelDetailFeedProfileViewDidTap: novelDetailFeedProfileViewDidTap.asObservable(),
             novelDetailFeedDropdownButtonDidTap: novelDetailFeedDropdownButtonDidTap.asObservable(),
             novelDetailFeedConnectedNovelViewDidTap: novelDetailFeedConnectedNovelViewDidTap.asObservable(),
+            novelDetailFeedLikeViewDidTap: novelDetailFeedLikeViewDidTap.asObservable(),
             scrollViewReachedBottom: observeReachedBottom(rootView.scrollView),
             createFeedButtonDidTap: rootView.createFeedButton.rx.tap,
             novelReviewedNotification: NotificationCenter.default.rx.notification(Notification.Name("NovelReviewed")).asObservable()
@@ -393,5 +395,9 @@ extension NovelDetailViewController: FeedTableViewDelegate {
     
     func connectedNovelViewDidTap(novelId: Int) {
         self.novelDetailFeedConnectedNovelViewDidTap.accept(novelId)
+    }
+    
+    func likeViewDidTap(feedId: Int, isLiked: Bool) {
+        self.novelDetailFeedLikeViewDidTap.accept((feedId, isLiked))
     }
 }

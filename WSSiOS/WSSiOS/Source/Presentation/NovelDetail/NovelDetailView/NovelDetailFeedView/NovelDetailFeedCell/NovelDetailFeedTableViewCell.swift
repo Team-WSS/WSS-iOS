@@ -17,6 +17,7 @@ protocol FeedTableViewDelegate: AnyObject {
     func profileViewDidTap(userId: Int)
     func dropdownButtonDidTap(feedId: Int)
     func connectedNovelViewDidTap(novelId: Int)
+    func likeViewDidTap(feedId: Int, isLiked: Bool)
 }
 
 final class NovelDetailFeedTableViewCell: UITableViewCell {
@@ -122,6 +123,14 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
             .withLatestFrom(feed)
             .subscribe(with: self, onNext: { owner, feed in
                 owner.delegate?.connectedNovelViewDidTap(novelId: feed.novelId)
+            })
+            .disposed(by: disposeBag)
+        
+        novelDetailFeedReactView.likeView.rx.tapGesture()
+            .when(.recognized)
+            .withLatestFrom(feed)
+            .subscribe(with: self, onNext: { owner, feed in
+                owner.delegate?.likeViewDidTap(feedId: feed.feedId, isLiked: feed.isLiked)
             })
             .disposed(by: disposeBag)
     }
