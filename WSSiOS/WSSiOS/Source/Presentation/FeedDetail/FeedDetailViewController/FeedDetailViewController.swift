@@ -311,7 +311,6 @@ final class FeedDetailViewController: UIViewController {
             .disposed(by: disposeBag)
     }
 }
-
 extension FeedDetailViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         guard let text = viewModel.replyContentForItemAt(indexPath: indexPath) else {
@@ -336,12 +335,9 @@ extension FeedDetailViewController: UICollectionViewDelegateFlowLayout {
         let numberOfLines = ceil(boundingRect.height / lineHeight)
         let padding: CGFloat = 28
         
-        print("boundingRect.height: \(boundingRect.height)")
-        print("numberOfLines: \(numberOfLines)")
-        
         let finalHeight = ceil(lineHeight * numberOfLines) + padding
         
-        let cellWidth = UIScreen.main.bounds.width - 40
+        let cellWidth = UIScreen.main.bounds.width
         
         return CGSize(width: cellWidth, height: finalHeight)
     }

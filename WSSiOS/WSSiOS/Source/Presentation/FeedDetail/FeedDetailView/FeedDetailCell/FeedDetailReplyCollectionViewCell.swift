@@ -23,6 +23,8 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
     private let replyContentLabel = UILabel()
     private let threeDotsButton = UIButton()
     
+    let dropdownView = FeedDetailDropdownView()
+    
     //MARK: - Life Cycle
     
     override init(frame: CGRect) {
@@ -74,8 +76,12 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
         }
         
         threeDotsButton.do {
-            $0.setImage(.icThreedots.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray100), for: .normal)
+            $0.setImage(.icThreedots.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray200), for: .normal)
             $0.contentMode = .scaleAspectFit
+        }
+        
+        dropdownView.do {
+            $0.isHidden = true
         }
     }
     
@@ -87,12 +93,13 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
         self.addSubviews(userProfileImageView,
                          userStackview,
                          replyContentLabel,
-                         threeDotsButton)
+                         threeDotsButton,
+                         dropdownView)
     }
     
     private func setLayout() {
         userProfileImageView.snp.makeConstraints {
-            $0.leading.equalToSuperview()
+            $0.leading.equalToSuperview().inset(20)
             $0.size.equalTo(36)
             $0.top.equalToSuperview().inset(4.5)
         }
@@ -110,9 +117,8 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
         }
         
         threeDotsButton.snp.makeConstraints {
-            $0.size.equalTo(18)
-            $0.leading.equalTo(replyContentLabel.snp.trailing).offset(20)
-            $0.trailing.equalToSuperview()
+            $0.size.equalTo(42)
+            $0.trailing.equalToSuperview().inset(20)
             $0.centerY.equalTo(userProfileImageView.snp.centerY)
         }
     }

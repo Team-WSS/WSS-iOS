@@ -40,9 +40,9 @@ final class FeedDetailReplyView: UIView {
         
         replyCollectionViewLayout.do {
             $0.scrollDirection = .vertical
-            $0.itemSize = CGSize(width: UIScreen.main.bounds.width - 40, height: 45)
+            $0.itemSize = CGSize(width: UIScreen.main.bounds.width, height: 45)
             $0.minimumLineSpacing = 22
-            $0.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 60, right: 0)
+            $0.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 120, right: 0)
             replyCollectionView.setCollectionViewLayout($0, animated: true)
         }
     }
@@ -53,7 +53,8 @@ final class FeedDetailReplyView: UIView {
     
     private func setLayout() {
         replyCollectionView.snp.makeConstraints {
-            $0.top.horizontalEdges.equalToSuperview().inset(20)
+            $0.top.equalToSuperview().inset(20)
+            $0.horizontalEdges.equalToSuperview()
             $0.bottom.equalToSuperview().inset(40)
             $0.height.equalTo(20)
         }
