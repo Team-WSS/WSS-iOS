@@ -124,11 +124,7 @@ final class OnboardingViewController: UIViewController {
             .withLatestFrom(output.selectedBirth)
             .drive(with: self, onNext: { owner, value in
                 owner.updateNavigationBarVisibility(isShow: false)
-                if let value {
-                    owner.presentModalViewController(BirthPickerViewController(birth: value))
-                } else {
-                    owner.presentModalViewController(BirthPickerViewController(birth: 2000))
-                }
+                owner.presentModalViewController(BirthPickerViewController(birth: value ?? 2000))
             })
             .disposed(by: disposeBag)
         
