@@ -118,6 +118,7 @@ final class NovelDetailViewModel: ViewModelType {
         let feedList: Observable<[NovelDetailFeed]>
         let novelDetailFeedTableViewHeight: Observable<CGFloat>
         let pushToFeedDetailViewController: Observable<Int>
+        let pushToUserViewController: Observable<Int>
         let pushToNovelDetailViewController: Observable<Int>
         
         //NovelReview
@@ -290,12 +291,6 @@ final class NovelDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.novelDetailFeedProfileViewDidTap
-            .subscribe(with: self, onNext: { owner, userId in
-                print("ProfileViewDidTap: \(userId)")
-            })
-            .disposed(by: disposeBag)
-        
         input.novelDetailFeedDropdownButtonDidTap
             .subscribe(with: self, onNext: { owner, feedId in
                 print("DropdownButtonDidTap: \(feedId)")
@@ -368,6 +363,7 @@ final class NovelDetailViewModel: ViewModelType {
             feedList: feedList.asObservable(),
             novelDetailFeedTableViewHeight: novelDetailFeedTableViewHeight.asObservable(),
             pushToFeedDetailViewController: pushToFeedDetailViewController.asObservable(),
+            pushToUserViewController: input.novelDetailFeedProfileViewDidTap.asObservable(),
             pushToNovelDetailViewController: input.novelDetailFeedConnectedNovelViewDidTap.asObservable(),
             showNovelReviewedToast: showNovelReviewedToast
         )

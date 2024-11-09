@@ -265,6 +265,12 @@ final class NovelDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.pushToUserViewController
+            .subscribe(with: self, onNext: { owner, userId in
+                owner.pushToMyPageViewController(isMyPage: false)
+            })
+            .disposed(by: disposeBag)
+        
         output.pushToNovelDetailViewController
             .subscribe(with: self, onNext: { owner, novelId in
                 owner.pushToDetailViewController(novelId: novelId)
