@@ -45,6 +45,7 @@ final class NovelDetailViewModel: ViewModelType {
     private var lastFeedId: Int = 0
     private let feedList = BehaviorRelay<[NovelDetailFeed]>(value: [])
     private let novelDetailFeedTableViewHeight = PublishRelay<CGFloat>()
+    private let pushToFeedDetailViewController = PublishRelay<Int>()
     
     //MARK: - Life Cycle
     
@@ -80,6 +81,7 @@ final class NovelDetailViewModel: ViewModelType {
         
         //NovelDetailFeed
         let novelDetailFeedTableViewContentSize: Observable<CGSize?>
+        let novelDetailFeedTableViewItemSelected: Observable<IndexPath>
         let scrollViewReachedBottom: Observable<Bool>
         let createFeedButtonDidTap: ControlEvent<Void>
         
@@ -112,6 +114,7 @@ final class NovelDetailViewModel: ViewModelType {
         //NovelDetailFeed
         let feedList: Observable<[NovelDetailFeed]>
         let novelDetailFeedTableViewHeight: Observable<CGFloat>
+        let pushToFeedDetailViewController: Observable<Int>
         
         //NovelReview
         let showNovelReviewedToast: Observable<Void>
@@ -277,6 +280,12 @@ final class NovelDetailViewModel: ViewModelType {
             .bind(to: self.novelDetailFeedTableViewHeight)
             .disposed(by: disposeBag)
         
+        input.novelDetailFeedTableViewItemSelected
+            .subscribe(with: self, onNext: { owner, indexPath in
+                owner.pushToFeedDetailViewController.accept(owner.feedList.value[indexPath.item].feedId)
+            })
+            .disposed(by: disposeBag)
+        
         input.scrollViewReachedBottom
             .filter { reachedBottom in
                 return reachedBottom && !self.isFetching && self.isLoadable
@@ -342,6 +351,7 @@ final class NovelDetailViewModel: ViewModelType {
             reviewSectionVisibilities: reviewSectionVisibilities.asDriver(),
             feedList: feedList.asObservable(),
             novelDetailFeedTableViewHeight: novelDetailFeedTableViewHeight.asObservable(),
+            pushToFeedDetailViewController: pushToFeedDetailViewController.asObservable(),
             showNovelReviewedToast: showNovelReviewedToast
         )
     }

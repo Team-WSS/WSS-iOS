@@ -253,6 +253,12 @@ final class NovelDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.pushToFeedDetailViewController
+            .subscribe(with: self, onNext: { owner, feedId in
+                owner.pushToFeedDetailViewController(feedId: feedId)
+            })
+            .disposed(by: disposeBag)
+        
         //MARK: - Bind/NovelReview
         
         output.showNovelReviewedToast
@@ -292,6 +298,7 @@ final class NovelDetailViewController: UIViewController {
             stickyFeedTabBarButtonDidTap: rootView.stickyTabBarView.feedButton.rx.tap,
             descriptionAccordionButtonDidTap: rootView.infoView.descriptionView.accordionButton.rx.tap,
             novelDetailFeedTableViewContentSize: rootView.feedView.feedListView.feedTableView.rx.observe(CGSize.self, "contentSize"),
+            novelDetailFeedTableViewItemSelected: rootView.feedView.feedListView.feedTableView.rx.itemSelected.asObservable(),
             scrollViewReachedBottom: observeReachedBottom(rootView.scrollView),
             createFeedButtonDidTap: rootView.createFeedButton.rx.tap,
             novelReviewedNotification: NotificationCenter.default.rx.notification(Notification.Name("NovelReviewed")).asObservable()
