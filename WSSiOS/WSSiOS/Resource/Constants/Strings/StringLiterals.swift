@@ -21,9 +21,17 @@ enum StringLiterals {
     }
     
     enum Loading {
+        static let loadingTitle = "로딩 중"
+        static let loadingDescription = "잠시만 기다려주세요"
         static let novelTitle = "작품 제목"
         static let novelAuthor = "작품 작가"
         static let novelGenre = "작품 장르"
+    }
+    
+    enum Error {
+        static let title = "네트워크 연결에\n실패했어요"
+        static let description = "연결 상태를 확인한 후\n다시 시도해 보세요"
+        static let refreshButton = "페이지 다시 불러오기"
     }
     
     enum Tabbar {

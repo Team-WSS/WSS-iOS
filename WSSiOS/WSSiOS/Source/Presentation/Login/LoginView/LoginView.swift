@@ -13,7 +13,7 @@ import Then
 final class LoginView: UIView {
     
     //MARK: - Components
-   
+    
     let backgroundImgaeView = UIImageView()
     
     let carouselView = LoginCarouselView()
@@ -51,10 +51,10 @@ final class LoginView: UIView {
     
     private func setHierarchy() {
         self.addSubviews(backgroundImgaeView,
-                        carouselView,
-                        carouselIndicatorView,
-                        platformButtonStackView,
-                        skipButton)
+                         carouselView,
+                         carouselIndicatorView,
+                         platformButtonStackView,
+                         skipButton)
     }
     
     private func setLayout() {

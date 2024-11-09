@@ -116,6 +116,9 @@
 		2CFA9A182C9D9AD500A4A820 /* UserInfoResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CFA9A172C9D9AD500A4A820 /* UserInfoResult.swift */; };
 		2CFE04332B66A45A0048F77A /* UICollectionViewCell+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CFE04322B66A45A0048F77A /* UICollectionViewCell+.swift */; };
 		3908376B2C32ADEA0082DC57 /* NovelDetailInfoReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3908376A2C32ADEA0082DC57 /* NovelDetailInfoReviewView.swift */; };
+		39099EF12CD8895E00FCA8DE /* WSSLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39099EF02CD8895D00FCA8DE /* WSSLoadingView.swift */; };
+		39099EF32CD88A1200FCA8DE /* loading.json in Resources */ = {isa = PBXBuildFile; fileRef = 39099EF22CD88A1200FCA8DE /* loading.json */; };
+		39099EF52CD8AF6D00FCA8DE /* WSSNetworkErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39099EF42CD8AF6D00FCA8DE /* WSSNetworkErrorView.swift */; };
 		390F546C2CD54541002D24E1 /* scroll.json in Resources */ = {isa = PBXBuildFile; fileRef = 390F546B2CD54541002D24E1 /* scroll.json */; };
 		3910137C2CCF5EC6001894E5 /* BirthPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3910137B2CCF5EC6001894E5 /* BirthPickerView.swift */; };
 		3910137E2CCF5FD8001894E5 /* BirthPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3910137D2CCF5FD3001894E5 /* BirthPickerViewController.swift */; };
@@ -547,6 +550,9 @@
 		2CFA9A172C9D9AD500A4A820 /* UserInfoResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoResult.swift; sourceTree = "<group>"; };
 		2CFE04322B66A45A0048F77A /* UICollectionViewCell+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+.swift"; sourceTree = "<group>"; };
 		3908376A2C32ADEA0082DC57 /* NovelDetailInfoReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoReviewView.swift; sourceTree = "<group>"; };
+		39099EF02CD8895D00FCA8DE /* WSSLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSLoadingView.swift; sourceTree = "<group>"; };
+		39099EF22CD88A1200FCA8DE /* loading.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = loading.json; sourceTree = "<group>"; };
+		39099EF42CD8AF6D00FCA8DE /* WSSNetworkErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSNetworkErrorView.swift; sourceTree = "<group>"; };
 		390F546B2CD54541002D24E1 /* scroll.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = scroll.json; sourceTree = "<group>"; };
 		3910137B2CCF5EC6001894E5 /* BirthPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthPickerView.swift; sourceTree = "<group>"; };
 		3910137D2CCF5FD3001894E5 /* BirthPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthPickerViewController.swift; sourceTree = "<group>"; };
@@ -938,6 +944,7 @@
 		2C2491822B4ADC1D0096F255 /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				39099EEF2CD8894F00FCA8DE /* NetworkView */,
 				391013782CCF5C33001894E5 /* BirthPicker */,
 				2CD2FE3C2C43BEF40033366C /* AlertButton */,
 				2C19A4FE2BBD567F00D4D151 /* Dropdown */,
@@ -1448,6 +1455,15 @@
 			path = Protocol;
 			sourceTree = "<group>";
 		};
+		39099EEF2CD8894F00FCA8DE /* NetworkView */ = {
+			isa = PBXGroup;
+			children = (
+				39099EF02CD8895D00FCA8DE /* WSSLoadingView.swift */,
+				39099EF42CD8AF6D00FCA8DE /* WSSNetworkErrorView.swift */,
+			);
+			path = NetworkView;
+			sourceTree = "<group>";
+		};
 		391013782CCF5C33001894E5 /* BirthPicker */ = {
 			isa = PBXGroup;
 			children = (
@@ -1867,6 +1883,8 @@
 				39B75ACF2B59891C005DD8B9 /* sosocatTail.json */,
 				39B75AD32B59891D005DD8B9 /* villainessFan.json */,
 				39B75AD22B59891D005DD8B9 /* villainessTea.json */,
+				39AD55B22CAFDF6500CBDA7A /* scroll.json */,
+				39099EF22CD88A1200FCA8DE /* loading.json */,
 			);
 			path = Lottie;
 			sourceTree = "<group>";
@@ -2946,6 +2964,7 @@
 				2C79CB992B45A0B200734E1F /* Pretendard-Bold.otf in Resources */,
 				39B75ADA2B59891D005DD8B9 /* villainessFan.json in Resources */,
 				39B75AD92B59891D005DD8B9 /* villainessTea.json in Resources */,
+				39099EF32CD88A1200FCA8DE /* loading.json in Resources */,
 				39B75ADB2B59891D005DD8B9 /* regressorSword.json in Resources */,
 				39B75AE02B59C6A7005DD8B9 /* LaunchScreen.storyboard in Resources */,
 				39B75AD62B59891D005DD8B9 /* sosocatTail.json in Resources */,
@@ -2973,6 +2992,7 @@
 				B9095D2A2C3950B4007521EF /* HomeNoticeDetailView.swift in Sources */,
 				2C22AE762C56EE3900BF6E94 /* BlockUserResult.swift in Sources */,
 				A1EF35692B52FD9B00A94C53 /* AvatarResult.swift in Sources */,
+				39099EF52CD8AF6D00FCA8DE /* WSSNetworkErrorView.swift in Sources */,
 				2C536C2E2C8F1F21004C5740 /* MyPageDeleteIDReasonView.swift in Sources */,
 				395928A02C99527500E7B17B /* LoginSkipButton.swift in Sources */,
 				B971D8792C0388E0008934D8 /* SearchRepository.swift in Sources */,
@@ -3306,6 +3326,7 @@
 				2C9A196B2C5692330043044A /* MyPageSettingTableViewCell.swift in Sources */,
 				C99DDFD72C86139800EDC0C4 /* SearchDetailInduceView.swift in Sources */,
 				39F850662C2820FF00E93EBC /* NovelDetailFeedView.swift in Sources */,
+				39099EF12CD8895E00FCA8DE /* WSSLoadingView.swift in Sources */,
 				2C8F89592C5105E90056895B /* MyPageDeleteIDViewModel.swift in Sources */,
 				CDC03F572CA721C3002D301F /* NovelKeywordSelectCategoryListView.swift in Sources */,
 				2CD9114C2C0D898E006B8D72 /* FeedNavigationView.swift in Sources */,
