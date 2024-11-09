@@ -17,6 +17,12 @@ enum StringLiterals {
         static let novelGenre = "작품 장르"
     }
     
+    enum Error {
+        static let title = "네트워크 연결에\n실패했어요"
+        static let description = "연결 상태를 확인한 후\n다시 시도해 보세요"
+        static let refreshButton = "페이지 다시 불러오기"
+    }
+    
     enum Tabbar {
         enum Title {
             static let home = "홈"
