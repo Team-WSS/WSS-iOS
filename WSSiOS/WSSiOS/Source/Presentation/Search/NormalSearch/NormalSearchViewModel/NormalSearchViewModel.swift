@@ -25,6 +25,8 @@ final class NormalSearchViewModel: ViewModelType {
     private let isSearchTextFieldEditing = BehaviorRelay<Bool>(value: false)
     private let normalSearchList = BehaviorRelay<[SearchNovel]>(value: [])
     private let normalSearchCellIndexPath = PublishRelay<IndexPath>()
+    private let isSearchTextFieldEditing = BehaviorRelay<Bool>(value: false)
+    private let pushToNovelDetailViewController = PublishRelay<Int>()
     
     //MARK: - Inputs
     

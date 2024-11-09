@@ -495,6 +495,8 @@ enum StringLiterals {
         static let vibe = "분위기/전개"
         
         static let placeHolder = "키워드를 검색하세요"
+        
+        static let empty = "해당하는 작품이 없어요\n검색의 범위를 더 넓혀보세요"
     }
     
     enum Memo {

@@ -24,4 +24,8 @@ enum CompletedStatus: String, CaseIterable {
         case .notCompleted: return false
         }
     }
+    
+    init(isCompleted: Bool) {
+        self = isCompleted ? .completed : .notCompleted
+    }
 }

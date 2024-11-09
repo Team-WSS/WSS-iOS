@@ -17,18 +17,22 @@ final class DetailSearchViewModel: ViewModelType {
     //MARK: - Properties
     
     private let keywordRepository: KeywordRepository
-    private let searchRepository: SearchRepository
+    private let previousViewInfo: PreviousViewType
+    private let selectedFilteredQuery: SearchFilterQuery
     
     // 전체
     private let dismissModalViewController = PublishRelay<Void>()
     let selectedTab = BehaviorRelay<DetailSearchTab>(value: DetailSearchTab.info)
     private let pushToDetailSearchResultViewControllerNotificationName = Notification.Name("PushToDetailSearchResult")
+    private let pushToUpdateDetailSearchResultViewControllerNotificationName = Notification.Name("PushToUpdateDetailSearchResult")
     
     // 정보
+    private var selectedGenreList: [NovelGenre] = []
+    let selectedGenreListData = BehaviorRelay<[NovelGenre]>(value: [])
     private let genreListData = PublishRelay<[NovelGenre]>()
-    var selectedGenreList: [NovelGenre] = []
     private var selectedCompletedStatus = BehaviorRelay<CompletedStatus?>(value: nil)
     private var selectedNovelRatingStatus = BehaviorRelay<NovelRatingStatus?>(value: nil)
+    private let resetSelectedInfoData = PublishRelay<Void>()
     
     // 키워드
     var keywordSearchResultList: [KeywordData] = []
@@ -53,9 +57,9 @@ final class DetailSearchViewModel: ViewModelType {
         let keywordTabDidTap: Observable<UITapGestureRecognizer>
         let resetButtonDidTap: ControlEvent<Void>
         let searchNovelButtonDidTap: ControlEvent<Void>
+        let updateDetailSearchResultData: Observable<Notification>
         
         // 정보
-        let genreCollectionViewContentSize: Observable<CGSize?>
         let genreColletionViewItemSelected: Observable<IndexPath>
         let genreColletionViewItemDeselected: Observable<IndexPath>
         
@@ -81,14 +85,14 @@ final class DetailSearchViewModel: ViewModelType {
         // 전체
         let dismissModalViewController: Observable<Void>
         let selectedTab: Driver<DetailSearchTab>
-        // let showInfoNewImageView: Observable<Bool>
+        let showInfoNewImageView: Observable<Bool>
         let showKeywordNewImageView: Observable<Bool>
         
         // 정보
         let genreListData: Observable<[NovelGenre]>
-        let genreCollectionViewHeight: Driver<CGFloat>
         let selectedCompletedStatus: Driver<CompletedStatus?>
         let selectedNovelRatingStatus: Driver<NovelRatingStatus?>
+        let resetSelectedInfoData: Observable<Void>
         
         // 키워드
         let enteredText: Observable<String>
@@ -104,18 +108,25 @@ final class DetailSearchViewModel: ViewModelType {
     
     //MARK: - init
     
-    init(keywordRepository: KeywordRepository, searchRepository: SearchRepository, selectedKeywordList: [KeywordData]) {
+    init(keywordRepository: KeywordRepository,
+         selectedKeywordList: [KeywordData],
+         previousViewInfo: PreviousViewType,
+         selectedFilteredQuery: SearchFilterQuery) {
         self.keywordRepository = keywordRepository
-        self.searchRepository = searchRepository
         self.selectedKeywordList = selectedKeywordList
+        self.previousViewInfo = previousViewInfo
+        self.selectedFilteredQuery = selectedFilteredQuery
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
-        
         // 전체
         input.viewDidLoadEvent
             .subscribe(with: self, onNext: { owner, _ in
                 owner.genreListData.accept(NovelGenre.allCases)
+                owner.selectedGenreListData.accept(owner.selectedFilteredQuery.genres)
+                owner.selectedKeywordListData.accept(owner.selectedFilteredQuery.keywords)
+                owner.selectedCompletedStatus.accept(owner.selectedFilteredQuery.isCompleted.map { CompletedStatus(isCompleted: $0) })
+                owner.selectedNovelRatingStatus.accept(owner.selectedFilteredQuery.novelRating.map { NovelRatingStatus(toFloat: $0) })
             })
             .disposed(by: disposeBag)
         
@@ -153,6 +164,14 @@ final class DetailSearchViewModel: ViewModelType {
         
         input.resetButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
+                // 정보뷰
+                owner.selectedGenreList = []
+                owner.selectedGenreListData.accept(owner.selectedGenreList)
+                owner.resetSelectedInfoData.accept(())
+                owner.selectedCompletedStatus.accept(nil)
+                owner.selectedNovelRatingStatus.accept(nil)
+                
+                // 키워드뷰
                 owner.selectedKeywordList = []
                 owner.selectedKeywordListData.accept(owner.selectedKeywordList)
                 owner.enteredText.accept("")
@@ -165,54 +184,65 @@ final class DetailSearchViewModel: ViewModelType {
         input.searchNovelButtonDidTap
             .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
-                let keywordIds = owner.selectedKeywordList.map { $0.keywordId }
-                let genres: [String] = owner.selectedGenreList.map { $0.rawValue }
+                let keywords = owner.selectedKeywordList
+                let genres: [NovelGenre] = owner.selectedGenreListData.value
                 let isCompleted = owner.selectedCompletedStatus.value?.isCompleted
                 let novelRating = owner.selectedNovelRatingStatus.value?.toFloat
-                owner.getDetailSearchNovels(genres: genres,
-                                            isCompleted: isCompleted,
-                                            novelRating: novelRating,
-                                            keywordIds: keywordIds,
-                                            page: 0)
                 
-                .subscribe(onNext: { result in
+                let userInfo: [AnyHashable: Any] = [
+                    "keywords": keywords,
+                    "genres": genres,
+                    "isCompleted": isCompleted as Any,
+                    "novelRating": novelRating as Any
+                ]
+                
+                if owner.previousViewInfo == .search {
                     NotificationCenter.default.post(name: owner.pushToDetailSearchResultViewControllerNotificationName,
-                                                    object: result)
-                }, onError: { error in
-                    print("Error: \(error)")
-                })
-                .disposed(by: disposeBag)
-                
-                owner.dismissModalViewController.accept(())
+                                                    object: nil,
+                                                    userInfo: userInfo)
+                    owner.dismissModalViewController.accept(())
+                } else {
+                    NotificationCenter.default.post(name: owner.pushToUpdateDetailSearchResultViewControllerNotificationName,
+                                                    object: nil,
+                                                    userInfo: userInfo)
+                    owner.dismissModalViewController.accept(())
+                }
             })
             .disposed(by: disposeBag)
         
-        // 정보
-        let genreCollectionViewContentSize = input.genreCollectionViewContentSize
-            .map { $0?.height ?? 0 }
-            .asDriver(onErrorJustReturn: 0)
-        
         input.genreColletionViewItemSelected
             .subscribe(with: self, onNext: { owner, indexPath in
+                owner.selectedGenreList = owner.selectedGenreListData.value
                 owner.selectedGenreList.append(NovelGenre.allCases[indexPath.row])
+                owner.selectedGenreListData.accept(owner.selectedGenreList)
             })
             .disposed(by: disposeBag)
         
         input.genreColletionViewItemDeselected
             .subscribe(with: self, onNext: { owner, indexPath in
+                owner.selectedGenreList = owner.selectedGenreListData.value
                 owner.selectedGenreList.removeAll { $0 == NovelGenre.allCases[indexPath.row] }
+                owner.selectedGenreListData.accept(owner.selectedGenreList)
             })
             .disposed(by: disposeBag)
         
         input.completedButtonDidTap
             .subscribe(with: self, onNext: { owner, selectedCompletedStatus in
-                owner.selectedCompletedStatus.accept(selectedCompletedStatus)
+                if owner.selectedCompletedStatus.value == selectedCompletedStatus {
+                    owner.selectedCompletedStatus.accept(nil)
+                } else {
+                    owner.selectedCompletedStatus.accept(selectedCompletedStatus)
+                }
             })
             .disposed(by: disposeBag)
         
         input.novelRatingButtonDidTap
             .subscribe(with: self, onNext: { owner, selectedNovelRatingStatus in
-                owner.selectedNovelRatingStatus.accept(selectedNovelRatingStatus)
+                if owner.selectedNovelRatingStatus.value == selectedNovelRatingStatus {
+                    owner.selectedNovelRatingStatus.accept(nil)
+                } else {
+                    owner.selectedNovelRatingStatus.accept(selectedNovelRatingStatus)
+                }
             })
             .disposed(by: disposeBag)
         
@@ -329,17 +359,26 @@ final class DetailSearchViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        let showInfoNewImageView = Observable
+            .combineLatest(
+                selectedGenreListData.map { $0.count > 0 },
+                selectedCompletedStatus.map { $0 != nil },
+                selectedNovelRatingStatus.map { $0 != nil }
+            )
+            .map { $0 || $1 || $2 }
+        
         let showKeywordNewImageView = selectedKeywordListData
-            .map { $0.count <= 0 }
+            .map { $0.count > 0 }
             .asObservable()
         
         return Output(dismissModalViewController: dismissModalViewController.asObservable(),
                       selectedTab: selectedTab.asDriver(),
+                      showInfoNewImageView: showInfoNewImageView,
                       showKeywordNewImageView: showKeywordNewImageView.asObservable(),
                       genreListData: genreListData.asObservable(),
-                      genreCollectionViewHeight: genreCollectionViewContentSize,
                       selectedCompletedStatus: selectedCompletedStatus.asDriver(),
                       selectedNovelRatingStatus: selectedNovelRatingStatus.asDriver(),
+                      resetSelectedInfoData: resetSelectedInfoData.asObservable(),
                       enteredText: enteredText.asObservable(),
                       isKeywordTextFieldEditing: isKeywordTextFieldEditing.asObservable(),
                       endEditing: endEditing.asObservable(),
@@ -357,16 +396,9 @@ final class DetailSearchViewModel: ViewModelType {
         keywordRepository.searchKeyword(query: query)
             .observe(on: MainScheduler.instance)
     }
-    
-    private func getDetailSearchNovels(genres: [String],
-                                       isCompleted: Bool?,
-                                       novelRating: Float?,
-                                       keywordIds: [Int],
-                                       page: Int) -> Observable<DetailSearchNovels> {
-        searchRepository.getDetailSearchNovels(genres: genres,
-                                               isCompleted: isCompleted,
-                                               novelRating: novelRating,
-                                               keywordIds: keywordIds,
-                                               page: page)
-    }
+}
+
+enum PreviousViewType {
+    case search
+    case resultSearchBar
 }
