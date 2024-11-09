@@ -13,7 +13,7 @@ final class DetailSearchResultHeaderView: UIView {
     
     let backButton = UIButton()
     
-    private let backgroundView = UIView()
+    let backgroundView = UIView()
     private let headerLabel = UILabel()
     private let controllerImageView = UIImageView()
     

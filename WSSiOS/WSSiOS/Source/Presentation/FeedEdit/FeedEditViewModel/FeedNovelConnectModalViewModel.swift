@@ -44,6 +44,7 @@ final class FeedNovelConnectModalViewModel: ViewModelType {
         let searchResultCollectionViewReachedBottom: Observable<Bool>
         let searchResultCollectionViewItemSelected: Observable<IndexPath>
         let searchResultCollectionViewSwipeGesture: Observable<UISwipeGestureRecognizer>
+        let keyboardDoneButtonDidTap: Observable<Void>
         let connectNovelButtonDidTap: ControlEvent<Void>
     }
     
@@ -68,8 +69,11 @@ final class FeedNovelConnectModalViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.searchButtonDidTap
-            .filter {
+        Observable.merge(
+            input.searchButtonDidTap.asObservable(),
+            input.keyboardDoneButtonDidTap
+        )
+        .filter {
                 !self.searchText.textIsEmpty()
             }
             .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)

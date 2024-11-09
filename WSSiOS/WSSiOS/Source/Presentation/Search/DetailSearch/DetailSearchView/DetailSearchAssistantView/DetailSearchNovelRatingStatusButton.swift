@@ -63,7 +63,7 @@ final class DetailSearchNovelRatingStatusButton: UIButton {
     
     // MARK: - Custom Method
     
-    func updateButton(selectedNovelRatingStatus: NovelRatingStatus) {
+    func updateButton(selectedNovelRatingStatus: NovelRatingStatus?) {
         let isSelected = selectedNovelRatingStatus == status
         
         self.do {

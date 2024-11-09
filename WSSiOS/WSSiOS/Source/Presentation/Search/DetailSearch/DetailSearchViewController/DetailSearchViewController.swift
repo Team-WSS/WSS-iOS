@@ -54,13 +54,18 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func registerCell() {
-        rootView.detailSearchInfoView.genreCollectionView.register(DetailSearchInfoGenreCollectionViewCell.self,
-                                                                   forCellWithReuseIdentifier: DetailSearchInfoGenreCollectionViewCell.cellIdentifier)
+        //정보뷰
+        rootView.detailSearchInfoView.genreCollectionView
+            .register(DetailSearchInfoGenreCollectionViewCell.self,
+                      forCellWithReuseIdentifier: DetailSearchInfoGenreCollectionViewCell.cellIdentifier)
+        rootView.detailSearchKeywordView.novelSelectedKeywordListView.selectedKeywordCollectionView
         
-        rootView.detailSearchKeywordView.novelSelectedKeywordListView.selectedKeywordCollectionView.register(NovelSelectedKeywordCollectionViewCell.self,
-                                                                                                             forCellWithReuseIdentifier: NovelSelectedKeywordCollectionViewCell.cellIdentifier)
-        rootView.detailSearchKeywordView.novelKeywordSelectSearchResultView.searchResultCollectionView.register(NovelKeywordSelectSearchResultCollectionViewCell.self,
-                                                                                                                forCellWithReuseIdentifier: NovelKeywordSelectSearchResultCollectionViewCell.cellIdentifier)
+        //키워드뷰
+            .register(NovelSelectedKeywordCollectionViewCell.self,
+                      forCellWithReuseIdentifier: NovelSelectedKeywordCollectionViewCell.cellIdentifier)
+        rootView.detailSearchKeywordView.novelKeywordSelectSearchResultView.searchResultCollectionView
+            .register(NovelKeywordSelectSearchResultCollectionViewCell.self,
+                      forCellWithReuseIdentifier: NovelKeywordSelectSearchResultCollectionViewCell.cellIdentifier)
     }
     
     private func setDelegate() {
@@ -69,11 +74,13 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
             .setDelegate(self)
             .disposed(by: disposeBag)
         
-        rootView.detailSearchKeywordView.novelSelectedKeywordListView.selectedKeywordCollectionView.rx
+        rootView.detailSearchKeywordView.novelSelectedKeywordListView
+            .selectedKeywordCollectionView.rx
             .setDelegate(self)
             .disposed(by: disposeBag)
         
-        rootView.detailSearchKeywordView.novelKeywordSelectSearchResultView.searchResultCollectionView.rx
+        rootView.detailSearchKeywordView.novelKeywordSelectSearchResultView
+            .searchResultCollectionView.rx
             .setDelegate(self)
             .disposed(by: disposeBag)
     }
@@ -100,7 +107,7 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
             keywordTabDidTap: rootView.detailSearchHeaderView.keywordLabel.rx.tapGesture().when(.recognized).asObservable(),
             resetButtonDidTap: rootView.detailSearchBottomView.resetButton.rx.tap,
             searchNovelButtonDidTap: rootView.detailSearchBottomView.searchButton.rx.tap,
-            genreCollectionViewContentSize: rootView.detailSearchInfoView.genreCollectionView.rx.observe(CGSize.self, "contentSize"),
+            updateDetailSearchResultData: NotificationCenter.default.rx.notification(Notification.Name("PushToUpateDetailSearchResult")).asObservable(),
             genreColletionViewItemSelected: rootView.detailSearchInfoView.genreCollectionView.rx.itemSelected.asObservable(),
             genreColletionViewItemDeselected: rootView.detailSearchInfoView.genreCollectionView.rx.itemDeselected.asObservable(),
             completedButtonDidTap: completedStatusButtonDidTap,
@@ -120,6 +127,7 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
         )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
+        // 전체
         output.dismissModalViewController
             .bind(with: self, onNext: { owner, _ in
                 owner.dismissModalViewController()
@@ -132,45 +140,55 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
             })
             .disposed(by: disposeBag)
         
-        output.showKeywordNewImageView
-            .bind(with: self, onNext: { owner, isHidden in
-                if isHidden {
-                    owner.rootView.detailSearchHeaderView.newKeywordImageView.isHidden = true
-                } else {
-                    owner.rootView.detailSearchHeaderView.newKeywordImageView.isHidden = false
-                }
+        output.showInfoNewImageView
+            .bind(with: self, onNext: { owner, show in
+                owner.rootView.detailSearchHeaderView.newInfoImageView.isHidden = show ? false : true
             })
             .disposed(by: disposeBag)
         
+        output.showKeywordNewImageView
+            .bind(with: self, onNext: { owner, show in
+                owner.rootView.detailSearchHeaderView.newKeywordImageView.isHidden = show ? false : true
+            })
+            .disposed(by: disposeBag)
+        
+        // 정보 뷰
         output.genreListData
             .bind(to: rootView.detailSearchInfoView.genreCollectionView.rx.items(cellIdentifier: DetailSearchInfoGenreCollectionViewCell.cellIdentifier,cellType: DetailSearchInfoGenreCollectionViewCell.self)) { item, element, cell in
                 let indexPath = IndexPath(item: item, section: 0)
                 
-                if self.viewModel.selectedGenreList.contains(element) {
-                    self.rootView.detailSearchInfoView.genreCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
+                if self.viewModel.selectedGenreListData.value.contains(element) {
+                    self.rootView.detailSearchInfoView.genreCollectionView.selectItem(at: indexPath,
+                                                                                      animated: false,
+                                                                                      scrollPosition: [])
                 } else {
-                    self.rootView.detailSearchInfoView.genreCollectionView.deselectItem(at: indexPath, animated: false)
+                    self.rootView.detailSearchInfoView.genreCollectionView.deselectItem(at: indexPath,
+                                                                                        animated: false)
                 }
                 cell.bindData(genre: element.toKorean)
             }
             .disposed(by: disposeBag)
         
+        
         output.selectedCompletedStatus
             .drive(with: self, onNext: { owner, selectedCompletedStatus in
-                if let selectedCompletedStatus {
-                    owner.rootView.detailSearchInfoView.updateCompletedKeyword(selectedCompletedStatus)
-                }
+                owner.rootView.detailSearchInfoView.updateCompletedKeyword(selectedCompletedStatus)
             })
             .disposed(by: disposeBag)
         
         output.selectedNovelRatingStatus
             .drive(with: self, onNext: { owner, selectedNovelRatingStatus in
-                if let selectedNovelRatingStatus {
-                    owner.rootView.detailSearchInfoView.updateNovelRatingKeyword(selectedNovelRatingStatus)
-                }
+                owner.rootView.detailSearchInfoView.updateNovelRatingKeyword(selectedNovelRatingStatus)
             })
             .disposed(by: disposeBag)
         
+        output.resetSelectedInfoData
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.rootView.detailSearchInfoView.resetAllStates()
+            })
+            .disposed(by: disposeBag)
+        
+        // 키워드 뷰
         output.enteredText
             .subscribe(with: self, onNext: { owner, text in
                 owner.rootView.detailSearchKeywordView.novelKeywordSelectSearchBarView.keywordTextField.text = text
