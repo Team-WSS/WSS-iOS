@@ -291,6 +291,9 @@ extension UIViewController {
                 feedRepository: DefaultFeedRepository(
                     feedService: DefaultFeedService()
                 ),
+                feedDetailRepository: DefaultFeedDetailRepository(
+                    feedDetailService: DefaultFeedDetailService()
+                ),
                 feedId: feedId,
                 relevantCategories: relevantCategories,
                 initialFeedContent: initialFeedContent,

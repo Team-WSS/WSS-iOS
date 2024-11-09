@@ -15,6 +15,7 @@ final class FeedEditViewModel: ViewModelType {
     //MARK: - Properties
         
     private let feedRepository: FeedRepository
+    private let feedDetailRepository: FeedDetailRepository
     
     let relevantCategoryList: [NewNovelGenre] = NewNovelGenre.feedEditGenres
     
@@ -43,8 +44,9 @@ final class FeedEditViewModel: ViewModelType {
        
     //MARK: - Life Cycle
     
-    init(feedRepository: FeedRepository, feedId: Int? = nil, relevantCategories: [NewNovelGenre] = [], initialFeedContent: String = "", novelId: Int? = nil, novelTitle: String? = nil, isSpoiler: Bool = false) {
+    init(feedRepository: FeedRepository, feedDetailRepository: FeedDetailRepository, feedId: Int? = nil, relevantCategories: [NewNovelGenre] = [], initialFeedContent: String = "", novelId: Int? = nil, novelTitle: String? = nil, isSpoiler: Bool = false) {
         self.feedRepository = feedRepository
+        self.feedDetailRepository = feedDetailRepository
         self.feedId = feedId
         self.relevantCategories = relevantCategories
         self.initialFeedContent = initialFeedContent
@@ -55,6 +57,7 @@ final class FeedEditViewModel: ViewModelType {
     }
     
     struct Input {
+        let viewDidLoadEvent: Observable<Void>
         let viewDidTap: Observable<UITapGestureRecognizer>
         let backButtonDidTap: ControlEvent<Void>
         let completeButtonDidTap: ControlEvent<Void>
@@ -85,6 +88,18 @@ final class FeedEditViewModel: ViewModelType {
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
+        input.viewDidLoadEvent
+            .compactMap { [weak self] in self?.feedId }
+            .flatMapLatest { feedId in
+                self.getSingleFeed(feedId)
+            }
+            .subscribe(with: self, onNext: { owner, data in
+                print(data)
+            }, onError: { owner, error in
+                print(error)
+            })
+            .disposed(by: disposeBag)
+        
         input.viewDidTap
             .subscribe(with: self, onNext: { owner, _ in
                 owner.endEditing.accept(true)
@@ -221,6 +236,11 @@ final class FeedEditViewModel: ViewModelType {
     }
     
     //MARK: - API
+    
+    private func getSingleFeed(_ feedId: Int) -> Observable<Feed> {
+        return feedDetailRepository.getSingleFeedData(feedId: feedId)
+            .observe(on: MainScheduler.instance)
+    }
     
     private func postFeed(relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool) -> Observable<Void> {
         feedRepository.postFeed(relevantCategories: relevantCategories, feedContent: feedContent, novelId: novelId, isSpoiler: isSpoiler)

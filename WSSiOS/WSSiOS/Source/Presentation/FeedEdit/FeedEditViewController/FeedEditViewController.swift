@@ -18,6 +18,7 @@ final class FeedEditViewController: UIViewController {
     private let feedEditViewModel: FeedEditViewModel
     private let disposeBag = DisposeBag()
     
+    private let viewDidLoadEvent = PublishRelay<Void>()
     private let stopEditingEvent = PublishRelay<Void>()
     
     //MARK: - Components
@@ -54,6 +55,8 @@ final class FeedEditViewController: UIViewController {
          register()
          delegate()
          bindViewModel()
+         
+         viewDidLoadEvent.accept(())
     }
     
     //MARK: - UI
@@ -81,6 +84,7 @@ final class FeedEditViewController: UIViewController {
     
     private func bindViewModel() {
         let input = FeedEditViewModel.Input(
+            viewDidLoadEvent: viewDidLoadEvent.asObservable(),
             viewDidTap: view.rx.tapGesture(configuration: { gestureRecognizer, delegate in
                 gestureRecognizer.cancelsTouchesInView = false
             }).when(.recognized).asObservable(),
