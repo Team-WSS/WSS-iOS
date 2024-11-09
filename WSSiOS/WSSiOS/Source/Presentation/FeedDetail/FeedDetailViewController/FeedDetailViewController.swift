@@ -130,7 +130,6 @@ final class FeedDetailViewController: UIViewController {
                             cell.dropdownView.isHidden = true
                         }
                         cell.dropdownBottomButtonDidTap = {
-                            print("댓글 삭제 API 호출")
                             self.viewModel.showCommentDeleteAlertView.accept(())
                             cell.dropdownView.isHidden = true
                         }
@@ -332,6 +331,62 @@ final class FeedDetailViewController: UIViewController {
                         .subscribe()
                         .disposed(by: owner.disposeBag)
                     owner.popToLastViewController()
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        output.showCommentSpoilerAlertView
+            .flatMapLatest { _ -> Observable<AlertButtonType> in
+                return self.presentToAlertViewController(iconImage: .icAlertWarningCircle,
+                                                         titleText: StringLiterals.FeedDetail.spoilerTitle,
+                                                         contentText: nil,
+                                                         leftTitle: StringLiterals.FeedDetail.cancel,
+                                                         rightTitle: StringLiterals.FeedDetail.report,
+                                                         rightBackgroundColor: UIColor.wssPrimary100.cgColor)
+            }
+            .subscribe(with: self, onNext: { owner, buttonType in
+                owner.rootView.dropdownView.isHidden = true
+                if buttonType == .right {
+                    guard let commentId = owner.viewModel.selectedCommentId else { return }
+                    owner.viewModel.postSpoilerComment(owner.viewModel.feedId, commentId)
+                        .subscribe()
+                        .disposed(by: owner.disposeBag)
+                    owner.dismiss(animated: true) {
+                        _ = owner.presentToAlertViewController(iconImage: .icReportCheck,
+                                                               titleText: StringLiterals.FeedDetail.reportResult,
+                                                               contentText: nil,
+                                                               leftTitle: nil,
+                                                               rightTitle: StringLiterals.FeedDetail.confirm,
+                                                               rightBackgroundColor: UIColor.wssPrimary100.cgColor)
+                    }
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        output.showCommentImproperAlertView
+            .flatMapLatest { _ -> Observable<AlertButtonType> in
+                return self.presentToAlertViewController(iconImage: .icAlertWarningCircle,
+                                                         titleText: StringLiterals.FeedDetail.impertinentTitle,
+                                                         contentText: nil,
+                                                         leftTitle: StringLiterals.FeedDetail.cancel,
+                                                         rightTitle: StringLiterals.FeedDetail.report,
+                                                         rightBackgroundColor: UIColor.wssPrimary100.cgColor)
+            }
+            .subscribe(with: self, onNext: { owner, buttonType in
+                owner.rootView.dropdownView.isHidden = true
+                if buttonType == .right {
+                    guard let commentId = owner.viewModel.selectedCommentId else { return }
+                    owner.viewModel.postImpertinenceComment(owner.viewModel.feedId, commentId)
+                        .subscribe()
+                        .disposed(by: owner.disposeBag)
+                    owner.dismiss(animated: true) {
+                        _ = owner.presentToAlertViewController(iconImage: .icReportCheck,
+                                                               titleText: StringLiterals.FeedDetail.reportResult,
+                                                               contentText: StringLiterals.FeedDetail.impertinentContent,
+                                                               leftTitle: nil,
+                                                               rightTitle: StringLiterals.FeedDetail.confirm,
+                                                               rightBackgroundColor: UIColor.wssPrimary100.cgColor)
+                    }
                 }
             })
             .disposed(by: disposeBag)
