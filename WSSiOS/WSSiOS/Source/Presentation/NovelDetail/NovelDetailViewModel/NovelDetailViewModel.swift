@@ -48,7 +48,15 @@ final class NovelDetailViewModel: ViewModelType {
     private let feedList = BehaviorRelay<[NovelDetailFeed]>(value: [])
     private let novelDetailFeedTableViewHeight = PublishRelay<CGFloat>()
     private let pushToFeedDetailViewController = PublishRelay<Int>()
-    private let toggleDropdownView = PublishRelay<(IndexPath, Bool)>()
+    private let showDropdownView = PublishRelay<(IndexPath, Bool)>()
+    private let hideDropdownView = PublishRelay<Void>()
+    private let toggleDropdownView = PublishRelay<Void>()
+    private let showSpoilerAlertView = PublishRelay<((Int) -> Observable<Void>, Int)>()
+    private let showImproperAlertView = PublishRelay<((Int) -> Observable<Void>, Int)>()
+    private let pushToFeedEditViewController = PublishRelay<Int>()
+    private let showDeleteAlertView = PublishRelay<((Int) -> Observable<Void>, Int)>()
+    private var feedId: Int = 0
+    private var isMyFeed: Bool = false
     
     //MARK: - Life Cycle
     
@@ -88,8 +96,10 @@ final class NovelDetailViewModel: ViewModelType {
         let novelDetailFeedTableViewItemSelected: Observable<IndexPath>
         let novelDetailFeedProfileViewDidTap: Observable<Int>
         let novelDetailFeedDropdownButtonDidTap: Observable<(Int, Bool)>
+        let dropdownButtonDidTap: Observable<DropdownButtonType>
         let novelDetailFeedConnectedNovelViewDidTap: Observable<Int>
         let novelDetailFeedLikeViewDidTap: Observable<(Int, Bool)>
+        let reloadNovelDetailFeed: Observable<Void>
         let scrollViewReachedBottom: Observable<Bool>
         let createFeedButtonDidTap: ControlEvent<Void>
         
@@ -125,7 +135,13 @@ final class NovelDetailViewModel: ViewModelType {
         let pushToFeedDetailViewController: Observable<Int>
         let pushToUserViewController: Observable<Int>
         let pushToNovelDetailViewController: Observable<Int>
-        let toggleDropdownView: Observable<(IndexPath, Bool)>
+        let showDropdownView: Observable<(IndexPath, Bool)>
+        let hideDropdownView: Observable<Void>
+        let toggleDropdownView: Observable<Void>
+        let showSpoilerAlertView: Observable<((Int) -> Observable<Void>, Int)>
+        let showImproperAlertView: Observable<((Int) -> Observable<Void>, Int)>
+        let pushToFeedEditViewController: Observable<Int>
+        let showDeleteAlertView: Observable<((Int) -> Observable<Void>, Int)>
         
         //NovelReview
         let showNovelReviewedToast: Observable<Void>
@@ -293,6 +309,7 @@ final class NovelDetailViewModel: ViewModelType {
         
         input.novelDetailFeedTableViewItemSelected
             .subscribe(with: self, onNext: { owner, indexPath in
+                owner.hideDropdownView.accept(())
                 owner.pushToFeedDetailViewController.accept(owner.feedList.value[indexPath.item].feedId)
             })
             .disposed(by: disposeBag)
@@ -300,9 +317,28 @@ final class NovelDetailViewModel: ViewModelType {
         input.novelDetailFeedDropdownButtonDidTap
             .subscribe(with: self, onNext: { owner, data in
                 let (feedId, isMyFeed) = data
-                if let index = owner.feedList.value.firstIndex(where: { $0.feedId == feedId }) {
-                    let indexPath = IndexPath(row: index, section: 0)
-                    owner.toggleDropdownView.accept((indexPath, isMyFeed))
+                if owner.feedId == feedId {
+                    owner.toggleDropdownView.accept(())
+                } else {
+                    if let index = owner.feedList.value.firstIndex(where: { $0.feedId == feedId }) {
+                        let indexPath = IndexPath(row: index, section: 0)
+                        owner.showDropdownView.accept((indexPath, isMyFeed))
+                    }
+                }
+                owner.feedId = feedId
+                owner.isMyFeed = isMyFeed
+            })
+            .disposed(by: disposeBag)
+        
+        input.dropdownButtonDidTap
+            .map { ($0, self.isMyFeed) }
+            .subscribe( with: self, onNext: { owner, result in
+                owner.hideDropdownView.accept(())
+                switch result {
+                case (.top, true): owner.pushToFeedEditViewController.accept(owner.feedId)
+                case (.bottom, true): owner.showDeleteAlertView.accept((owner.deleteFeed, owner.feedId))
+                case (.top, false): owner.showSpoilerAlertView.accept((owner.postSpoilerFeed, owner.feedId))
+                case (.bottom, false): owner.showImproperAlertView.accept((owner.postImpertinenceFeed, owner.feedId))
                 }
             })
             .disposed(by: disposeBag)
@@ -316,6 +352,25 @@ final class NovelDetailViewModel: ViewModelType {
                     return self.postFeedLike(feedId)
                 }
             }
+            .do(onNext: { _ in
+                self.isLoadable = false
+                self.lastFeedId = 0
+            })
+            .flatMapLatest { _ in
+                self.getNovelDetailFeedData(novelId: self.novelId, lastFeedId: self.lastFeedId)
+            }
+            .subscribe(with: self, onNext: { owner, data in
+                owner.isLoadable = data.isLoadable
+                if let lastFeed = data.feeds.last {
+                    owner.lastFeedId = lastFeed.feedId
+                }
+                owner.feedList.accept(data.feeds)
+            }, onError: { owner, error in
+                print("Error: \(error)")
+            })
+            .disposed(by: disposeBag)
+        
+        input.reloadNovelDetailFeed
             .do(onNext: { _ in
                 self.isLoadable = false
                 self.lastFeedId = 0
@@ -402,7 +457,13 @@ final class NovelDetailViewModel: ViewModelType {
             pushToFeedDetailViewController: pushToFeedDetailViewController.asObservable(),
             pushToUserViewController: input.novelDetailFeedProfileViewDidTap.asObservable(),
             pushToNovelDetailViewController: input.novelDetailFeedConnectedNovelViewDidTap.asObservable(),
+            showDropdownView: showDropdownView.asObservable(),
+            hideDropdownView: hideDropdownView.asObservable(),
             toggleDropdownView: toggleDropdownView.asObservable(),
+            showSpoilerAlertView: showSpoilerAlertView.asObservable(),
+            showImproperAlertView: showImproperAlertView.asObservable(),
+            pushToFeedEditViewController: pushToFeedEditViewController.asObservable(),
+            showDeleteAlertView: showDeleteAlertView.asObservable(),
             showNovelReviewedToast: showNovelReviewedToast
         )
     }
@@ -421,6 +482,21 @@ final class NovelDetailViewModel: ViewModelType {
     
     func deleteFeedLike(_ feedId: Int) -> Observable<Void> {
         feedDetailRepository.deleteFeedLike(feedId: feedId)
+            .observe(on: MainScheduler.instance)
+    }
+    
+    func postSpoilerFeed(_ feedId: Int) -> Observable<Void> {
+        feedDetailRepository.postSpoilerFeed(feedId: feedId)
+            .observe(on: MainScheduler.instance)
+    }
+    
+    func postImpertinenceFeed(_ feedId: Int) -> Observable<Void> {
+        feedDetailRepository.postImpertinenceFeed(feedId: feedId)
+            .observe(on: MainScheduler.instance)
+    }
+    
+    func deleteFeed(_ feedId: Int) -> Observable<Void> {
+        feedDetailRepository.deleteFeed(feedId: feedId)
             .observe(on: MainScheduler.instance)
     }
     

@@ -48,10 +48,6 @@ extension ModuleFactory: NovelDetailModuleFactory {
                 feedDetailRepository: DefaultFeedDetailRepository(feedDetailService: DefaultFeedDetailService()),
                 novelId: novelId))
     }
-    
-    func makeTestNovelDetailViewController(novelId: Int) -> UIViewController {
-        return NovelDetailViewController(viewModel: NovelDetailViewModel(novelDetailRepository: TestNovelDetailRepository(), feedDetailRepository: DefaultFeedDetailRepository(feedDetailService: DefaultFeedDetailService())))
-    }
 }
 
 extension ModuleFactory: OnboardingModuleFactory {

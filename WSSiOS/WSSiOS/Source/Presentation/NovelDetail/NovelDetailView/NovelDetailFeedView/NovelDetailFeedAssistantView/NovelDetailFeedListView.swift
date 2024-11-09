@@ -71,12 +71,20 @@ final class NovelDetailFeedListView: UIView {
         }
     }
     
-    func toggleDropdownView(indexPath: IndexPath, isMyFeed: Bool) {
+    func showDropdownView(indexPath: IndexPath, isMyFeed: Bool) {
         dropdownView.do {
             $0.configureDropdown(isMyFeed: isMyFeed)
-            $0.isHidden.toggle()
+            $0.isHidden = false
         }
         updateDropdownViewLayout(indexPath: indexPath)
+    }
+    
+    func hideDropdownView() {
+        dropdownView.isHidden = true
+    }
+    
+    func toggleDropdownView() {
+        dropdownView.isHidden.toggle()
     }
     
     func updateDropdownViewLayout(indexPath: IndexPath) {
