@@ -103,7 +103,6 @@ final class FeedEditViewModel: ViewModelType {
                 self.getSingleFeed(feedId)
             }
             .subscribe(with: self, onNext: { owner, data in
-                print(data)
                 owner.initialRelevantCategories = data.genres.map { NewNovelGenre.withKoreanRawValue(from: $0) }
                 owner.newRelevantCategories = data.genres.map { NewNovelGenre.withKoreanRawValue(from: $0) }
                 owner.categoryListData.accept(self.relevantCategoryList)
