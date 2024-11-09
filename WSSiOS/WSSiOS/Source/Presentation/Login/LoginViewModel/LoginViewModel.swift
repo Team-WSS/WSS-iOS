@@ -89,12 +89,16 @@ final class LoginViewModel: NSObject, ViewModelType {
             .subscribe(with: self, onNext: { owner, type in
                 switch type {
                 case .skip:
+                    APIConstants.isLogined = false
                     owner.navigateToHome.accept(())
                 case .kakao:
+                    APIConstants.isLogined = true
                     owner.navigateToOnboarding.accept(())
                 case .naver:
+                    APIConstants.isLogined = true
                     owner.navigateToOnboarding.accept(())
                 case .apple:
+                    APIConstants.isLogined = true
                     owner.requestAppleLogin() // 애플로그인 요청
                 }
             })
