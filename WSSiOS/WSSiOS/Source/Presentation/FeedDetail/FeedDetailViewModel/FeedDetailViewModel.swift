@@ -52,9 +52,10 @@ final class FeedDetailViewModel: ViewModelType {
     
     // 댓글 드롭다운
     var selectedCommentId: Int?
+    var selectedCommentContent: String?
     let showCommentSpoilerAlertView = PublishRelay<Void>()
     let showCommentImproperAlertView = PublishRelay<Void>()
-    // 댓글 수정
+    let myCommentEditing = PublishRelay<Void>()
     let showCommentDeleteAlertView = PublishRelay<Void>()
     
     //MARK: - Life Cycle
@@ -117,7 +118,7 @@ final class FeedDetailViewModel: ViewModelType {
         // 댓글 드롭다운
         let showCommentSpoilerAlertView: Observable<Void>
         let showCommentImproperAlertView: Observable<Void>
-        // 댓글 수정하기 추가해야 함
+        let myCommentEditing: Observable<Void>
         let showCommentDeleteAlertView: Observable<Void>
     }
     
@@ -278,6 +279,7 @@ final class FeedDetailViewModel: ViewModelType {
                       showDeleteAlertView: showDeleteAlertView.asObservable(),
                       showCommentSpoilerAlertView: showCommentSpoilerAlertView.asObservable(),
                       showCommentImproperAlertView: showCommentImproperAlertView.asObservable(),
+                      myCommentEditing: myCommentEditing.asObservable(),
                       showCommentDeleteAlertView: showCommentDeleteAlertView.asObservable())
     }
     

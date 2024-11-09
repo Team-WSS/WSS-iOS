@@ -139,4 +139,23 @@ final class FeedDetailReplyWritingView: UIView {
             $0.height.equalTo(42)
         }
     }
+    
+    func setCommentText(_ text: String) {
+            replyWritingTextView.text = text
+            replyWritingPlaceHolderLabel.isHidden = !text.isEmpty
+            updateTextViewHeight()
+        }
+        
+        private func updateTextViewHeight() {
+            let size = CGSize(width: replyWritingTextView.frame.width, height: .infinity)
+            let estimatedSize = replyWritingTextView.sizeThatFits(size)
+            
+            replyWritingTextView.snp.updateConstraints {
+                $0.height.equalTo(estimatedSize.height)
+            }
+            
+            textViewBackgroundView.snp.updateConstraints {
+                $0.height.equalTo(estimatedSize.height + 21)
+            }
+        }
 }

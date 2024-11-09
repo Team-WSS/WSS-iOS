@@ -127,6 +127,9 @@ final class FeedDetailViewController: UIViewController {
                     if element.isMyComment {
                         cell.dropdownTopButtonDidTap = {
                             print("댓글 수정 API 호출")
+                            self.rootView.replyWritingView.replyWritingTextView.becomeFirstResponder()
+                            self.viewModel.selectedCommentContent = element.commentContent
+                            self.viewModel.myCommentEditing.accept(())
                             cell.dropdownView.isHidden = true
                         }
                         cell.dropdownBottomButtonDidTap = {
@@ -135,12 +138,10 @@ final class FeedDetailViewController: UIViewController {
                         }
                     } else {
                         cell.dropdownTopButtonDidTap = {
-                            print("스포일러 신고 API 호출")
                             self.viewModel.showCommentSpoilerAlertView.accept(())
                             cell.dropdownView.isHidden = true
                         }
                         cell.dropdownBottomButtonDidTap = {
-                            print("부적절한 표현 신고 API 호출")
                             self.viewModel.showCommentImproperAlertView.accept(())
                             cell.dropdownView.isHidden = true
                         }
@@ -387,6 +388,14 @@ final class FeedDetailViewController: UIViewController {
                                                                rightTitle: StringLiterals.FeedDetail.confirm,
                                                                rightBackgroundColor: UIColor.wssPrimary100.cgColor)
                     }
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        output.myCommentEditing
+            .subscribe(with: self, onNext: { owner, _ in
+                if let commentContent = owner.viewModel.selectedCommentContent {
+                    owner.rootView.replyWritingView.setCommentText(commentContent)
                 }
             })
             .disposed(by: disposeBag)
