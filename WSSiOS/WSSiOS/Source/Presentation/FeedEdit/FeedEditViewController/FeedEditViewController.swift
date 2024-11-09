@@ -113,7 +113,7 @@ final class FeedEditViewController: UIViewController {
             cellType: FeedCategoryCollectionViewCell.self)) { item, element, cell in
                 let indexPath = IndexPath(item: item, section: 0)
                 
-                if self.feedEditViewModel.relevantCategories.contains(element) {
+                if self.feedEditViewModel.newRelevantCategories.contains(element) {
                     self.rootView.feedEditCategoryView.categoryCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
                 } else {
                     self.rootView.feedEditCategoryView.categoryCollectionView.deselectItem(at: indexPath, animated: false)

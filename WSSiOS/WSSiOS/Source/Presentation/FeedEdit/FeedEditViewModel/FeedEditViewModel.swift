@@ -13,7 +13,7 @@ import RxCocoa
 final class FeedEditViewModel: ViewModelType {
     
     //MARK: - Properties
-        
+    
     private let feedRepository: FeedRepository
     private let feedDetailRepository: FeedDetailRepository
     
@@ -24,9 +24,18 @@ final class FeedEditViewModel: ViewModelType {
     private let maximumFeedContentCount: Int = 2000
     
     private let feedId: Int?
-    var relevantCategories: [NewNovelGenre] = []
-    private var novelId: Int?
-    private var updatedFeedContent: String = ""
+    var newRelevantCategories: [NewNovelGenre] = []
+    private var newNovelId: Int?
+    private var newFeedContent: String = ""
+    
+    // 기존 피드 수정
+    private var initialRelevantCategories: [NewNovelGenre]?
+    private var initialIsSpoiler: Bool?
+    private var initialNovelId: Int?
+    private var isRelevantCategoriesChanged: Bool = false
+    private var isFeedContentChanged: Bool = false
+    private var isSpoilerChanged: Bool = false
+    private var isNovelIdChanged: Bool = false
     
     // Output
     private let endEditing = PublishRelay<Bool>()
@@ -41,15 +50,16 @@ final class FeedEditViewModel: ViewModelType {
     private let connectedNovelTitle = BehaviorRelay<String?>(value: nil)
     private let showAlreadyConnectedToast = PublishRelay<Void>()
     private let showStopEditingAlert = PublishRelay<Void>()
-       
+    
     //MARK: - Life Cycle
     
     init(feedRepository: FeedRepository, feedDetailRepository: FeedDetailRepository, feedId: Int? = nil, relevantCategories: [NewNovelGenre] = [], novelId: Int? = nil, novelTitle: String? = nil) {
         self.feedRepository = feedRepository
         self.feedDetailRepository = feedDetailRepository
+        
         self.feedId = feedId
-        self.relevantCategories = relevantCategories
-        self.novelId = novelId
+        self.newRelevantCategories = relevantCategories
+        self.newNovelId = novelId
         
         self.connectedNovelTitle.accept(novelTitle)
     }
@@ -94,13 +104,18 @@ final class FeedEditViewModel: ViewModelType {
             }
             .subscribe(with: self, onNext: { owner, data in
                 print(data)
-                self.relevantCategories = data.genres.map { NewNovelGenre.withKoreanRawValue(from: $0) }
-                self.categoryListData.accept(NewNovelGenre.feedEditGenres)
-                self.initialFeedContent.accept(data.feedContent)
+                owner.initialRelevantCategories = data.genres.map { NewNovelGenre.withKoreanRawValue(from: $0) }
+                owner.newRelevantCategories = data.genres.map { NewNovelGenre.withKoreanRawValue(from: $0) }
+                owner.categoryListData.accept(self.relevantCategoryList)
                 
-                self.novelId = data.novelId
-                self.connectedNovelTitle.accept(data.novelTitle)
-                self.isSpoiler.accept(data.isSpoiler)
+                owner.initialFeedContent.accept(data.feedContent)
+                
+                owner.initialNovelId = data.novelId
+                owner.newNovelId = data.novelId
+                owner.connectedNovelTitle.accept(data.novelTitle)
+                
+                owner.initialIsSpoiler = data.isSpoiler
+                owner.isSpoiler.accept(data.isSpoiler)
             }, onError: { owner, error in
                 print(error)
             })
@@ -124,7 +139,7 @@ final class FeedEditViewModel: ViewModelType {
                 .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
                 .withLatestFrom(isSpoiler)
                 .flatMapLatest { isSpoiler in
-                    self.putFeed(feedId: feedId, relevantCategories: self.relevantCategories.map { $0.rawValue }, feedContent: self.updatedFeedContent, novelId: self.novelId, isSpoiler: isSpoiler)
+                    self.putFeed(feedId: feedId, relevantCategories: self.newRelevantCategories.map { $0.rawValue }, feedContent: self.newFeedContent, novelId: self.newNovelId, isSpoiler: isSpoiler)
                 }
                 .subscribe(with: self, onNext: { owner, _ in
                     owner.popViewController.accept(())
@@ -137,7 +152,7 @@ final class FeedEditViewModel: ViewModelType {
                 .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
                 .withLatestFrom(isSpoiler)
                 .flatMapLatest { isSpoiler in
-                    self.postFeed(relevantCategories: self.relevantCategories.map { $0.rawValue }, feedContent: self.updatedFeedContent, novelId: self.novelId, isSpoiler: isSpoiler)
+                    self.postFeed(relevantCategories: self.newRelevantCategories.map { $0.rawValue }, feedContent: self.newFeedContent, novelId: self.newNovelId, isSpoiler: isSpoiler)
                 }
                 .subscribe(with: self, onNext: { owner, _ in
                     owner.popViewController.accept(())
@@ -151,37 +166,42 @@ final class FeedEditViewModel: ViewModelType {
             .withLatestFrom(isSpoiler)
             .subscribe(with: self, onNext: { owner, isSpoiler in
                 owner.isSpoiler.accept(!isSpoiler)
+                owner.isSpoilerChanged = owner.initialIsSpoiler != owner.isSpoiler.value
+                owner.checkIfCompleteButtonIsAbled()
             })
             .disposed(by: disposeBag)
         
         input.categoryCollectionViewItemSelected
             .subscribe(with: self, onNext: { owner, indexPath in
-                owner.relevantCategories.append(owner.relevantCategoryList[indexPath.item])
-                owner.completeButtonIsAbled.accept(owner.isValidFeedContent && !owner.relevantCategories.isEmpty)
+                owner.newRelevantCategories.append(owner.relevantCategoryList[indexPath.item])
+                owner.isRelevantCategoriesChanged = Set(self.initialRelevantCategories ?? []) != Set(self.newRelevantCategories)
+                owner.checkIfCompleteButtonIsAbled()
             })
             .disposed(by: disposeBag)
         
         input.categoryCollectionViewItemDeselected
             .subscribe(with: self, onNext: { owner, indexPath in
-                owner.relevantCategories.removeAll { $0 == owner.relevantCategoryList[indexPath.item]}
-                owner.completeButtonIsAbled.accept(owner.isValidFeedContent && !owner.relevantCategories.isEmpty)
+                owner.newRelevantCategories.removeAll { $0 == owner.relevantCategoryList[indexPath.item]}
+                owner.isRelevantCategoriesChanged = Set(self.initialRelevantCategories ?? []) != Set(self.newRelevantCategories)
+                owner.checkIfCompleteButtonIsAbled()
             })
             .disposed(by: disposeBag)
         
         input.feedContentUpdated
             .subscribe(with: self, onNext: { owner, text in
-                owner.updatedFeedContent = text
+                owner.newFeedContent = text
                 owner.feedContentWithLengthLimit.accept(String(text.prefix(owner.maximumFeedContentCount)))
                 
                 let isEmpty = text.count == 0
                 let isOverLimit = text.count > owner.maximumFeedContentCount
                 let isWrongFormat = owner.feedContentPredicate.evaluate(with: text)
-                let isNotChanged = text == owner.initialFeedContent.value
                 
-                owner.isValidFeedContent = !(isEmpty || isOverLimit || isWrongFormat || isNotChanged)
+                owner.isValidFeedContent = !(isEmpty || isOverLimit || isWrongFormat)
+                
+                owner.isFeedContentChanged = text != owner.initialFeedContent.value
                 
                 owner.showPlaceholder.accept(isEmpty)
-                owner.completeButtonIsAbled.accept(owner.isValidFeedContent && !owner.relevantCategories.isEmpty)
+                owner.checkIfCompleteButtonIsAbled()
             })
             .disposed(by: disposeBag)
         
@@ -193,13 +213,13 @@ final class FeedEditViewModel: ViewModelType {
         
         input.feedContentViewDidEndEditing
             .subscribe(with: self, onNext: { owner, _ in
-                owner.showPlaceholder.accept(owner.updatedFeedContent.count == 0 ? true : false)
+                owner.showPlaceholder.accept(owner.newFeedContent.count == 0 ? true : false)
             })
             .disposed(by: disposeBag)
         
         input.novelConnectViewDidTap
             .subscribe(with: self, onNext: { owner, _ in
-                if owner.novelId != nil {
+                if owner.newNovelId != nil {
                     owner.showAlreadyConnectedToast.accept(())
                 } else {
                     owner.presentFeedEditNovelConnectModalViewController.accept(())
@@ -210,15 +230,19 @@ final class FeedEditViewModel: ViewModelType {
         input.feedNovelConnectedNotification
             .subscribe(with: self, onNext: { owner, notification in
                 guard let connectedNovel = notification.object as? SearchNovel else { return }
-                owner.novelId = connectedNovel.novelId
+                owner.newNovelId = connectedNovel.novelId
+                owner.isNovelIdChanged = owner.initialNovelId != owner.newNovelId
                 owner.connectedNovelTitle.accept(connectedNovel.novelTitle)
+                owner.checkIfCompleteButtonIsAbled()
             })
             .disposed(by: disposeBag)
         
         input.novelRemoveButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
-                owner.novelId = nil
+                owner.newNovelId = nil
+                owner.isNovelIdChanged = owner.initialNovelId != owner.newNovelId
                 owner.connectedNovelTitle.accept(nil)
+                owner.checkIfCompleteButtonIsAbled()
             })
             .disposed(by: disposeBag)
         
@@ -240,6 +264,17 @@ final class FeedEditViewModel: ViewModelType {
                       connectedNovelTitle: connectedNovelTitle.asObservable(),
                       showAlreadyConnectedToast: showAlreadyConnectedToast.asObservable(),
                       showStopEditingAlert: showStopEditingAlert.asObservable())
+    }
+    
+    // MARK: - Custom Method
+    
+    func isInitialFeedChanged() -> Bool {
+        return feedId != nil ? isRelevantCategoriesChanged || isFeedContentChanged || isSpoilerChanged || isNovelIdChanged : true
+        
+    }
+    
+    func checkIfCompleteButtonIsAbled() {
+        self.completeButtonIsAbled.accept(self.isValidFeedContent && !self.newRelevantCategories.isEmpty && self.isInitialFeedChanged())
     }
     
     //MARK: - API
