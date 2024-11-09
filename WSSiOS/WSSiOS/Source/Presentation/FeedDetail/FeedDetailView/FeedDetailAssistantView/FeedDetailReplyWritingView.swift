@@ -16,9 +16,9 @@ final class FeedDetailReplyWritingView: UIView {
     
     private let userProfileImageView = UIImageView()
     let textViewBackgroundView = UIView()
-    private let replyWritingPlaceHolderLabel = UILabel()
+    let replyWritingPlaceHolderLabel = UILabel()
     let replyWritingTextView = UITextView()
-    private let replyButton = UIButton()
+    let replyButton = UIButton()
     
     //MARK: - Life Cycle
     
@@ -62,6 +62,9 @@ final class FeedDetailReplyWritingView: UIView {
                 $0.tintColor = .wssBlack
                 $0.backgroundColor = .wssGray50
                 $0.textContainerInset = UIEdgeInsets(top: 7, left: 0, bottom: 7, right: 0)
+                
+                $0.textContainer.lineFragmentPadding = 0
+                $0.textContainerInset = .zero
             }
             
             replyButton.do {
@@ -76,6 +79,7 @@ final class FeedDetailReplyWritingView: UIView {
         
         textViewBackgroundView.addSubviews(replyWritingTextView,
                                            replyButton)
+        replyWritingTextView.addSubview(replyWritingPlaceHolderLabel)
     }
     
     private func setLayout() {
@@ -99,15 +103,40 @@ final class FeedDetailReplyWritingView: UIView {
             replyWritingTextView.snp.makeConstraints {
                 $0.centerY.equalToSuperview()
                 $0.leading.equalToSuperview().inset(16)
-                $0.height.equalTo(19)
+                $0.height.equalTo(21)
+                
+                replyWritingPlaceHolderLabel.snp.makeConstraints {
+                    $0.leading.equalToSuperview()
+                    $0.centerY.equalToSuperview()
+                }
             }
             
             replyButton.snp.makeConstraints {
                 $0.top.equalToSuperview().inset(7)
                 $0.leading.equalTo(replyWritingTextView.snp.trailing)
-                $0.trailing.equalToSuperview().inset(16)
+                $0.trailing.equalToSuperview().inset(11)
                 $0.size.equalTo(28)
             }
+        }
+    }
+    
+    //MARK: - Custom Methods
+    
+    func enableSendButton(_ isEnabled: Bool) {
+        replyButton.do {
+            $0.isUserInteractionEnabled = isEnabled
+            $0.setImage(isEnabled ? .icCommentRegister.withRenderingMode(.alwaysOriginal).withTintColor(.wssPrimary100) : .icCommentRegister.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray100),
+                        for: .normal)
+        }
+    }
+    
+    func makeTextViewEmpty() {
+        replyWritingTextView.text = ""
+        replyWritingTextView.snp.updateConstraints {
+            $0.height.equalTo(21)
+        }
+        textViewBackgroundView.snp.updateConstraints {
+            $0.height.equalTo(42)
         }
     }
 }

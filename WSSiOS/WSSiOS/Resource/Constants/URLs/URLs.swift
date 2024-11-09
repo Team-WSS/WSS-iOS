@@ -8,6 +8,10 @@
 import Foundation
 
 enum URLs {
+    enum Auth {
+        static let loginWithApple = "/auth/login/apple"
+    }
+    
     enum Onboarding {
         static let nicknameCheck = "/users/nickname/check"
         static let postProfile = "/users/profile"
@@ -99,18 +103,44 @@ enum URLs {
     }
     
     enum Feed {
+        // 전체 피드 조회
         static let getFeeds = "/feeds"
+        
+        // 단건 피드 조회
         static func getSingleFeed(feedId: Int) -> String {
             return "/feeds/\(feedId)"
         }
+        // 단건 피드 내 댓글 조회
         static func getSingleFeedComments(feedId: Int) -> String {
             return "/feeds/\(feedId)/comments"
         }
+        
+        // 단건 피드 내 좋아요 등록, 삭제
         static func postFeedLike(feedId: Int) -> String {
             return "/feeds/\(feedId)/likes"
         }
         static func deleteFeedLike(feedId: Int) -> String {
             return "/feeds/\(feedId)/likes"
+        }
+        
+        // 댓글 작성, 수정, 삭제
+        static func postComment(feedId: Int) -> String {
+            return "/feeds/\(feedId)/comments"
+        }
+        static func putComment(feedId: Int, commentId: Int) -> String {
+            return "/feeds/\(feedId)/comments/\(commentId)"
+        }
+        static func deleteComment(feedId: Int, commentId: Int) -> String {
+            return "/feeds/\(feedId)/comments/\(commentId)"
+        }
+        static func postSpoilerFeed(feedId: Int) -> String {
+            return "/feeds/\(feedId)/spoiler"
+        }
+        static func postImpertinenceFeed(feedId: Int) -> String {
+            return "/feeds/\(feedId)/impertinence"
+        }
+        static func deleteFeed(feedId: Int) -> String {
+            return "/feeds/\(feedId)"
         }
     }
     
@@ -137,6 +167,7 @@ enum URLs {
     enum Search {
         static let sosoPick = "/soso-picks"
         static let normalSearch = "/novels"
+        static let detailSearch = "/novels/filtered"
     }
     
     enum Keyword {

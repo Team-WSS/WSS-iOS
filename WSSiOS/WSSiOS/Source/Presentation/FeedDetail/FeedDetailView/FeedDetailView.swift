@@ -19,12 +19,15 @@ final class FeedDetailView: UIView {
     
     let backButton = UIButton()
     let viewTitleLabel = UILabel()
-    let dotsButton = UIButton()
+    
+    let dropdownButton = UIButton()
+    let dropdownView = FeedDetailDropdownView()
     
     let profileView = FeedDetailProfileView()
     let feedContentView = FeedDetailContentView()
     let replyView = FeedDetailReplyView()
     let replyWritingView = FeedDetailReplyWritingView()
+    private let replyBottomView = UIView()
     
     // MARK: - Life Cycle
     
@@ -56,18 +59,28 @@ final class FeedDetailView: UIView {
             $0.textColor = .wssBlack
         }
         
-        dotsButton.do {
+        dropdownButton.do {
             $0.setImage(.icThreedots.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray100), for: .normal)
+        }
+        
+        dropdownView.do {
+            $0.isHidden = true
         }
         
         scrollView.do {
             $0.showsVerticalScrollIndicator = false
         }
+        
+        replyBottomView.do {
+            $0.backgroundColor = .wssWhite
+        }
     }
     
     private func setHierarchy() {
         self.addSubviews(scrollView,
-                         replyWritingView)
+                         replyWritingView,
+                         replyBottomView,
+                         dropdownView)
         scrollView.addSubview(contentView)
         contentView.addSubviews(profileView,
                                 feedContentView,
@@ -83,6 +96,11 @@ final class FeedDetailView: UIView {
         contentView.snp.makeConstraints {
             $0.edges.equalTo(scrollView.contentLayoutGuide)
             $0.width.equalTo(scrollView.snp.width)
+        }
+        
+        dropdownView.snp.makeConstraints {
+            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top)
+            $0.trailing.equalToSuperview().inset(20)
         }
         
         profileView.snp.makeConstraints {
@@ -104,7 +122,15 @@ final class FeedDetailView: UIView {
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
         }
+        
+        replyBottomView.snp.makeConstraints {
+            $0.top.equalTo(self.safeAreaLayoutGuide.snp.bottomMargin)
+            $0.horizontalEdges.equalToSuperview()
+            $0.bottom.equalToSuperview()
+        }
     }
+    
+    //MARK: - Custom Methods
     
     func bindData(_ data: Feed) {
         profileView.bindData(data: data)

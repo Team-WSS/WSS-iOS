@@ -12,8 +12,18 @@ import RxSwift
 protocol FeedDetailRepository {
     func getSingleFeedData(feedId: Int) -> Observable<Feed>
     func getSingleFeedComments(feedId: Int) -> Observable<FeedComments>
+    
     func postFeedLike(feedId: Int) -> Observable<Void>
     func deleteFeedLike(feedId: Int) -> Observable<Void>
+    
+    func postComment(feedId: Int, commentContent: String) -> Observable<Void>
+    func putComment(feedId: Int, commentId: Int, commentContent: String) -> Observable<Void>
+    func deleteComment(feedId: Int, commentId: Int) -> Observable<Void>
+    
+    func postSpoilerFeed(feedId: Int) -> Observable<Void>
+    func postImpertinenceFeed(feedId: Int) -> Observable<Void>
+    
+    func deleteFeed(feedId: Int) -> Observable<Void>
 }
 
 struct TestFeedDetailRepository: FeedDetailRepository {
@@ -40,30 +50,30 @@ struct TestFeedDetailRepository: FeedDetailRepository {
     
     func getSingleFeedComments(feedId: Int) -> Observable<FeedComments> {
         return Observable.just(FeedComments(comments: [FeedComment(userId: 1,
-                                                              userNickname: "구리스",
-                                                              userProfileImage: "https://i.pinimg.com/564x/d6/01/72/d60172b19b2a70f0e64282ac769cbe00.jpg",
-                                                              commentId: 1,
-                                                              createdDate: "10월 3일",
-                                                              commentContent: "진짜 재미있다 ㄷㄷ",
-                                                              isModified: true,
-                                                              isMyComment: true),
+                                                                   userNickname: "구리스",
+                                                                   userProfileImage: "https://i.pinimg.com/564x/d6/01/72/d60172b19b2a70f0e64282ac769cbe00.jpg",
+                                                                   commentId: 1,
+                                                                   createdDate: "10월 3일",
+                                                                   commentContent: "진짜 재미있다 ㄷㄷ",
+                                                                   isModified: true,
+                                                                   isMyComment: true),
                                                        FeedComment(userId: 1,
-                                                              userNickname: "진토",
-                                                              userProfileImage: "https://i.pinimg.com/564x/1e/a8/30/1ea83070ec8c2618b0626c8955592c46.jpg",
-                                                              commentId: 1,
-                                                              createdDate: "11월 16일",
-                                                              commentContent: "진짜 더 재미있다 ㄷㄷ",
-                                                              isModified: false,
-                                                              isMyComment: false),
+                                                                   userNickname: "진토",
+                                                                   userProfileImage: "https://i.pinimg.com/564x/1e/a8/30/1ea83070ec8c2618b0626c8955592c46.jpg",
+                                                                   commentId: 1,
+                                                                   createdDate: "11월 16일",
+                                                                   commentContent: "진짜 더 재미있다 ㄷㄷ",
+                                                                   isModified: false,
+                                                                   isMyComment: false),
                                                        FeedComment(userId: 1,
-                                                              userNickname: "이안",
-                                                              userProfileImage: "https://i.pinimg.com/736x/b8/56/31/b8563131f893fe4979a9d1b9d978e5a0.jpg",
-                                                              commentId: 1,
-                                                              createdDate: "7월 11일",
-                                                              commentContent: "오늘 우연히 본 영화가 너무 재미있어서 시간 가는 줄 몰랐어요! 이야기도 탄탄하고 배우들의 연기도 훌륭해서 몰입할 수밖에 없었죠. 특히 결말 부분에서는 반전이 있어서 정말 놀랐어요. 영화가 끝난 후에도 여운이 남아 계속 생각하게 되더라고요. 다음에 친구들과 다시 한 번 보고 싶어요. 이런 영화를 더 자주 봤으면 좋겠어요. 여러분도 꼭 한 번 보세요!",
-                                                              isModified: true,
-                                                              isMyComment: false)
-                                           ]))
+                                                                   userNickname: "이안",
+                                                                   userProfileImage: "https://i.pinimg.com/736x/b8/56/31/b8563131f893fe4979a9d1b9d978e5a0.jpg",
+                                                                   commentId: 1,
+                                                                   createdDate: "7월 11일",
+                                                                   commentContent: "오늘 우연히 본 영화가 너무 재미있어서 시간 가는 줄 몰랐어요! 이야기도 탄탄하고 배우들의 연기도 훌륭해서 몰입할 수밖에 없었죠. 특히 결말 부분에서는 반전이 있어서 정말 놀랐어요. 영화가 끝난 후에도 여운이 남아 계속 생각하게 되더라고요. 다음에 친구들과 다시 한 번 보고 싶어요. 이런 영화를 더 자주 봤으면 좋겠어요. 여러분도 꼭 한 번 보세요!",
+                                                                   isModified: true,
+                                                                   isMyComment: false)
+        ]))
     }
     
     func postFeedLike(feedId: Int) -> Observable<Void> {
@@ -71,6 +81,30 @@ struct TestFeedDetailRepository: FeedDetailRepository {
     }
     
     func deleteFeedLike(feedId: Int) -> Observable<Void> {
+        return Observable.just(())
+    }
+    
+    func postComment(feedId: Int, commentContent: String) -> Observable<Void> {
+        return Observable.just(())
+    }
+    
+    func putComment(feedId: Int, commentId: Int, commentContent: String) -> Observable<Void> {
+        return Observable.just(())
+    }
+    
+    func deleteComment(feedId: Int, commentId: Int) -> Observable<Void> {
+        return Observable.just(())
+    }
+    
+    func postSpoilerFeed(feedId: Int) -> Observable<Void> {
+        return Observable.just(())
+    }
+    
+    func postImpertinenceFeed(feedId: Int) -> Observable<Void> {
+        return Observable.just(())
+    }
+    
+    func deleteFeed(feedId: Int) -> Observable<Void> {
         return Observable.just(())
     }
 }
@@ -96,5 +130,29 @@ struct DefaultFeedDetailRepository: FeedDetailRepository {
     
     func deleteFeedLike(feedId: Int) -> Observable<Void> {
         return feedDetailService.deleteFeedLike(feedId: feedId).asObservable()
+    }
+    
+    func postComment(feedId: Int, commentContent: String) -> Observable<Void> {
+        return feedDetailService.postComment(feedId: feedId, commentContent: commentContent).asObservable()
+    }
+    
+    func putComment(feedId: Int, commentId: Int, commentContent: String) -> Observable<Void> {
+        return feedDetailService.putComment(feedId: feedId, commentId: commentId, commentContent: commentContent).asObservable()
+    }
+    
+    func deleteComment(feedId: Int, commentId: Int) -> Observable<Void> {
+        return feedDetailService.deleteComment(feedId: feedId, commentId: commentId).asObservable()
+    }
+    
+    func postSpoilerFeed(feedId: Int) -> Observable<Void> {
+        return feedDetailService.postSpoilerFeed(feedId: feedId).asObservable()
+    }
+    
+    func postImpertinenceFeed(feedId: Int) -> Observable<Void> {
+        return feedDetailService.postImpertinenceFeed(feedId: feedId).asObservable()
+    }
+    
+    func deleteFeed(feedId: Int) -> Observable<Void> {
+        return feedDetailService.deleteFeed(feedId: feedId).asObservable()
     }
 }
