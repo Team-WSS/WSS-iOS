@@ -166,19 +166,5 @@ final class OnboardingBirthGenderView: UIView {
             $0.updateButton(selectedGender: selectedGender)
         }
     }
-    
-    func updateBirthLabel(selectedBirth: Int?) {
-        if let selectedBirth {
-            selectedBirthLabel.do {
-                $0.applyWSSFont(.body2, with: "\(String(describing: selectedBirth))")
-                $0.textColor = .wssBlack
-            }
-        } else {
-            selectedBirthLabel.do {
-                $0.applyWSSFont(.body2, with: StringLiterals.Onboarding.BirthGender.birthPlaceholder)
-                $0.textColor = .wssGray200
-            }
-        }
-    }
 }
 

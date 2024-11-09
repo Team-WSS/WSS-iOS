@@ -17,7 +17,6 @@ final class OnboardingViewController: UIViewController {
     
     private let viewModel: OnboardingViewModel
     let disposeBag = DisposeBag()
-    let selectedBirth = BehaviorSubject<Int?>(value: nil)
     
     //MARK: - Components
     
@@ -42,7 +41,6 @@ final class OnboardingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        rootView.nickNameView.nicknameTextField.delegate = self
         bindViewModel()
     }
     
@@ -93,12 +91,6 @@ final class OnboardingViewController: UIViewController {
         })
         .disposed(by: disposeBag)
         
-        output.nicknameTextFieldClear
-            .drive(with: self, onNext: { owner, _ in
-                owner.rootView.nickNameView.nicknameTextField.text = ""
-            })
-            .disposed(by: disposeBag)
-        
         output.isDuplicateCheckButtonEnabled
             .drive(with: self, onNext: { owner, isEnabled in
                 owner.rootView.nickNameView.updateDuplicateCheckButton(isEnabled: isEnabled)
@@ -120,17 +112,10 @@ final class OnboardingViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.showBirthPickerModal
-            .withLatestFrom(output.selectedBirth)
-            .drive(with: self, onNext: { owner, value in
+        output.showDatePickerModal
+            .drive(with: self, onNext: { owner, _ in
+                owner.presentModalViewController(MyPageChangeUserBirthViewController(userBirth: 2000))
                 owner.updateNavigationBarVisibility(isShow: false)
-                owner.presentModalViewController(BirthPickerViewController(birth: value ?? 2000))
-            })
-            .disposed(by: disposeBag)
-        
-        output.selectedBirth
-            .drive(with: self, onNext: { owner, value in
-                owner.rootView.birthGenderView.updateBirthLabel(selectedBirth: value)
             })
             .disposed(by: disposeBag)
         
@@ -203,11 +188,6 @@ final class OnboardingViewController: UIViewController {
                 }
             )
         
-        let getNotificationBirth = NotificationCenter.default.rx.notification(NSNotification.Name("Birth"))
-            .map { notification -> Int? in
-                return notification.userInfo?["Birth"] as? Int
-            }
-        
         let nextButtonDidTap = Observable.merge(
             self.rootView.nickNameView.bottomButton.button.rx.tap.asObservable(),
             self.rootView.birthGenderView.bottomButton.button.rx.tap.asObservable(),
@@ -218,11 +198,9 @@ final class OnboardingViewController: UIViewController {
             nicknameTextFieldEditingDidBegin: self.rootView.nickNameView.nicknameTextField.rx.controlEvent(.editingDidBegin),
             nicknameTextFieldEditingDidEnd: self.rootView.nickNameView.nicknameTextField.rx.controlEvent(.editingDidEnd),
             nicknameTextFieldText: self.rootView.nickNameView.nicknameTextField.rx.text.orEmpty.distinctUntilChanged(),
-            textFieldInnerButtonDidTap: self.rootView.nickNameView.textFieldInnerButton.rx.tap,
             duplicateCheckButtonDidTap: self.rootView.nickNameView.duplicateCheckButton.rx.tap,
             genderButtonDidTap: genderButtonDidTap,
             selectBirthButtonDidTap: self.rootView.birthGenderView.selectBirthButton.rx.tap,
-            selectedBirth: getNotificationBirth,
             genreButtonDidTap: genreButtonDidTap,
             nextButtonDidTap: nextButtonDidTap,
             backButtonDidTap: rootView.backButton.rx.tap,
@@ -267,12 +245,3 @@ final class OnboardingViewController: UIViewController {
         }
     }
 }
-
-extension OnboardingViewController: UITextFieldDelegate {
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        guard let text = textField.text else { return true }
-        let newLength = text.count + string.count - range.length
-        return newLength <= 10
-    }
-}
-
