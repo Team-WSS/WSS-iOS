@@ -16,7 +16,7 @@ final class FeedNovelConnectModalViewModel: ViewModelType {
     
     private let searchRepository: SearchRepository
     
-    private var selectedNovel = BehaviorRelay<NormalSearchNovel?>(value: nil)
+    private var selectedNovel = BehaviorRelay<SearchNovel?>(value: nil)
     private var searchText: String = ""
     
     // 무한스크롤
@@ -28,7 +28,7 @@ final class FeedNovelConnectModalViewModel: ViewModelType {
     private let dismissModalViewController = PublishRelay<Void>()
     private let endEditing = PublishRelay<Void>()
     private let scrollToTop = PublishRelay<Void>()
-    private let normalSearchList = BehaviorRelay<[NormalSearchNovel]>(value: [])
+    private let normalSearchList = BehaviorRelay<[SearchNovel]>(value: [])
     private let showConnectNovelButton = PublishRelay<Void>()
     
     //MARK: - Life Cycle
@@ -44,6 +44,7 @@ final class FeedNovelConnectModalViewModel: ViewModelType {
         let searchResultCollectionViewReachedBottom: Observable<Bool>
         let searchResultCollectionViewItemSelected: Observable<IndexPath>
         let searchResultCollectionViewSwipeGesture: Observable<UISwipeGestureRecognizer>
+        let keyboardDoneButtonDidTap: Observable<Void>
         let connectNovelButtonDidTap: ControlEvent<Void>
     }
     
@@ -51,7 +52,7 @@ final class FeedNovelConnectModalViewModel: ViewModelType {
         let dismissModalViewController: Observable<Void>
         let endEditing: Observable<Void>
         let scrollToTop: Observable<Void>
-        let normalSearchList: Observable<[NormalSearchNovel]>
+        let normalSearchList: Observable<[SearchNovel]>
         let showConnectNovelButton: Observable<Void>
     }
     
@@ -68,8 +69,11 @@ final class FeedNovelConnectModalViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.searchButtonDidTap
-            .filter {
+        Observable.merge(
+            input.searchButtonDidTap.asObservable(),
+            input.keyboardDoneButtonDidTap
+        )
+        .filter {
                 !self.searchText.textIsEmpty()
             }
             .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)

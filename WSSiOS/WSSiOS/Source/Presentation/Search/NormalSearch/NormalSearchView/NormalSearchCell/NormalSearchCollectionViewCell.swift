@@ -138,8 +138,7 @@ final class NormalSearchCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func bindData(data: NormalSearchNovel) {
-        
+    func bindData(data: SearchNovel) {
         self.novelImageView.kfSetImage(url: data.novelImage)
         
         self.novelTitleLabel.do {

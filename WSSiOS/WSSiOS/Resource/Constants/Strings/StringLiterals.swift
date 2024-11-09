@@ -8,6 +8,17 @@
 import Foundation
 
 enum StringLiterals {
+    enum UserDefault {
+        static let accessToken = "ACCESS_TOKEN"
+        static let refreshToken = "REFRESH_TOKEN"
+        static let userGender = "USER_GENDER"
+        static let userNickname = "USER_NICKNAME"
+    }
+    
+    enum BirthPicker {
+        static let title = "출생연도"
+        static let completeButton = "완료"
+    }
     
     enum Loading {
         static let loadingTitle = "로딩 중"
@@ -503,6 +514,8 @@ enum StringLiterals {
         static let vibe = "분위기/전개"
         
         static let placeHolder = "키워드를 검색하세요"
+        
+        static let empty = "해당하는 작품이 없어요\n검색의 범위를 더 넓혀보세요"
     }
     
     enum Memo {
