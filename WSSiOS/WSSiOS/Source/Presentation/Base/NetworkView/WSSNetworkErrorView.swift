@@ -55,11 +55,15 @@ final class WSSNetworkErrorView: UIView {
         titleLabel.do {
             $0.applyWSSFont(.title1, with: StringLiterals.Error.title)
             $0.textColor = .wssBlack
+            $0.textAlignment = .center
+            $0.numberOfLines = 2
         }
         
         descriptionLabel.do {
             $0.applyWSSFont(.body2, with: StringLiterals.Error.description)
             $0.textColor = .wssGray300
+            $0.textAlignment = .center
+            $0.numberOfLines = 2
         }
         
         refreshButton.do {
@@ -86,8 +90,7 @@ final class WSSNetworkErrorView: UIView {
     private func setLayout() {
         stackView.snp.makeConstraints {
             $0.width.equalToSuperview()
-            $0.centerY.equalToSuperview().offset(-32)
-            
+            $0.centerY.equalToSuperview()            
             stackView.do {
                 $0.setCustomSpacing(41, after: errorImageView)
                 $0.setCustomSpacing(10, after: titleLabel)
