@@ -269,7 +269,6 @@ final class FeedEditViewModel: ViewModelType {
     
     func isInitialFeedChanged() -> Bool {
         return feedId != nil ? isRelevantCategoriesChanged || isFeedContentChanged || isSpoilerChanged || isNovelIdChanged : true
-        
     }
     
     func checkIfCompleteButtonIsAbled() {
