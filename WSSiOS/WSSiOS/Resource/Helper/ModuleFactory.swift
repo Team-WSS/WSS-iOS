@@ -59,7 +59,7 @@ extension ModuleFactory: OnboardingModuleFactory {
     }
     
     func makeOnboardingViewController() -> UIViewController {
-        return OnboardingViewController(viewModel: OnboardingViewModel())
+        return OnboardingViewController(viewModel: OnboardingViewModel(onboardingRepository: DefaultOnboardingRepository(onboardingService: DefaultOnboardingService())))
     }
     
     func makeOnboardingSuccessViewController(nickname: String) -> UIViewController {
