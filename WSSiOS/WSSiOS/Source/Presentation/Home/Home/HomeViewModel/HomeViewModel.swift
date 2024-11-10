@@ -16,7 +16,8 @@ final class HomeViewModel: ViewModelType {
     
     private let recommendRepository: RecommendRepository
     private let disposeBag = DisposeBag()
-    private let showInduceLoginModalView = BehaviorRelay<Bool>(value: false)
+    
+    private let isLoggedIn = APIConstants.isLogined
     
     private let todayPopularList = PublishSubject<[TodayPopularNovel]>()
     private let realtimePopularList = PublishSubject<[RealtimePopularFeed]>()
@@ -27,18 +28,22 @@ final class HomeViewModel: ViewModelType {
     private let todayPopularCellIndexPath = PublishRelay<IndexPath>()
     private let interestCellIndexPath = PublishRelay<IndexPath>()
     private let tasteRecommendCellIndexPath = PublishRelay<IndexPath>()
+    let pushToInduceLoginViewController = PublishRelay<Void>()
+    private let pushToAnnouncementViewController = PublishRelay<Void>()
     
     // MARK: - Inputs
     
     struct Input {
         let viewWillAppearEvent: Observable<Void>
-        let announcementButtonTapped: ControlEvent<Void>
-        let registerInterestNovelButtonTapped: ControlEvent<Void>
-        let setPreferredGenresButtonTapped: ControlEvent<Void>
+        let announcementButtonDidTap: ControlEvent<Void>
         let todayPopularCellSelected: ControlEvent<IndexPath>
         let interestCellSelected: ControlEvent<IndexPath>
         let tasteRecommendCellSelected: ControlEvent<IndexPath>
         let tasteRecommendCollectionViewContentSize: Observable<CGSize?>
+        
+        // 비로그인
+        let registerInterestNovelButtonTapped: ControlEvent<Void>
+        let setPreferredGenresButtonTapped: ControlEvent<Void>
     }
     
     //MARK: - Outputs
@@ -49,10 +54,13 @@ final class HomeViewModel: ViewModelType {
         var realtimePopularData: Observable<[[RealtimePopularFeed]]>
         var interestList: Observable<[InterestFeed]>
         var tasteRecommendList: Observable<[TasteRecommendNovel]>
-        let navigateToAnnouncementView: Observable<Void>
-        let navigateToNormalSearchView: Observable<Void>
-        let navigateToNovelDetailInfoView: Observable<(IndexPath, Int)>
+        let pushToAnnouncementViewController: Observable<Void>
+        let pushToNovelDetailInfoViewController: Observable<(IndexPath, Int)>
         let tasteRecommendCollectionViewHeight: Driver<CGFloat>
+        
+        // 비로그인
+        let pushToNormalSearchViewController: Observable<Void>
+        let pushToInduceLoginViewController: Observable<Void>
     }
     
     //MARK: - init
@@ -64,7 +72,7 @@ final class HomeViewModel: ViewModelType {
 
 extension HomeViewModel {
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
-        recommendRepository.getTodayPopularNovels()
+        self.getTodayPopularNovels()
             .subscribe(with: self, onNext: { owner, data in
                 owner.todayPopularList.onNext(data.popularNovels)
             }, onError: { owner, error in
@@ -74,7 +82,7 @@ extension HomeViewModel {
         
         input.viewWillAppearEvent
             .flatMapLatest {
-                self.recommendRepository.getRealtimePopularFeeds()
+                self.getRealtimePopularFeeds()
             }
             .subscribe(with: self, onNext: { owner, data in
                 owner.realtimePopularList.onNext(data.popularFeeds)
@@ -89,7 +97,8 @@ extension HomeViewModel {
             })
             .disposed(by: disposeBag)
         
-            recommendRepository.getInterestNovels()
+        if isLoggedIn {
+            self.getInterestFeeds()
                 .subscribe(with: self, onNext: { owner, data in
                     owner.interestList.onNext(data.recommendFeeds)
                 }, onError: { owner, error in
@@ -97,23 +106,28 @@ extension HomeViewModel {
                 })
                 .disposed(by: disposeBag)
             
-            recommendRepository.getTasteRecommendNovels()
+            self.getTasteRecommendNovels()
                 .subscribe(with: self, onNext: { owner, data in
                     owner.tasteRecommendList.onNext(data.tasteNovels)
                 }, onError: { owner, error in
                     owner.tasteRecommendList.onError(error)
                 })
                 .disposed(by: disposeBag)
+        }
         
         input.setPreferredGenresButtonTapped
             .subscribe(with: self, onNext: { owner, _ in
-                owner.showInduceLoginModalView.accept(true)
+                owner.pushToInduceLoginViewController.accept(())
             })
             .disposed(by: disposeBag)
         
         input.todayPopularCellSelected
             .subscribe(with: self, onNext: { owner, indexPath in
-                owner.todayPopularCellIndexPath.accept(indexPath)
+                if owner.isLoggedIn {
+                    owner.todayPopularCellIndexPath.accept(indexPath)
+                } else {
+                    owner.pushToInduceLoginViewController.accept(())
+                }
             })
             .disposed(by: disposeBag)
         
@@ -129,10 +143,19 @@ extension HomeViewModel {
             })
             .disposed(by: disposeBag)
         
-        let navigateToAnnouncementView = input.announcementButtonTapped.asObservable()
-        let navigateToNormalSearchView = input.registerInterestNovelButtonTapped.asObservable()
+        input.announcementButtonDidTap
+            .subscribe(with: self, onNext: { owner, _ in
+                if owner.isLoggedIn {
+                    owner.pushToAnnouncementViewController.accept(())
+                } else {
+                    owner.pushToInduceLoginViewController.accept(())
+                }
+            })
+            .disposed(by: disposeBag)
         
-        let navigateToNovelDetailInfoView = Observable.merge(
+        let pushToNormalSearchViewController = input.registerInterestNovelButtonTapped.asObservable()
+        
+        let pushToNovelDetailInfoViewController = Observable.merge(
             todayPopularCellIndexPath.map { indexPath in (indexPath, 0) },
             interestCellIndexPath.map { indexPath in (indexPath, 1) },
             tasteRecommendCellIndexPath.map { indexPath in (indexPath, 2) }
@@ -146,9 +169,28 @@ extension HomeViewModel {
                       realtimePopularData: realtimePopularDataRelay.asObservable(),
                       interestList: interestList.asObservable(),
                       tasteRecommendList: tasteRecommendList.asObservable(),
-                      navigateToAnnouncementView: navigateToAnnouncementView,
-                      navigateToNormalSearchView: navigateToNormalSearchView,
-                      navigateToNovelDetailInfoView: navigateToNovelDetailInfoView,
-                      tasteRecommendCollectionViewHeight: tasteRecommendCollectionViewHeight)
+                      pushToAnnouncementViewController: pushToAnnouncementViewController.asObservable(),
+                      pushToNovelDetailInfoViewController: pushToNovelDetailInfoViewController,
+                      tasteRecommendCollectionViewHeight: tasteRecommendCollectionViewHeight,
+                      pushToNormalSearchViewController: pushToNormalSearchViewController,
+                      pushToInduceLoginViewController: pushToInduceLoginViewController.asObservable())
+    }
+    
+    //MARK: - API
+    
+    func getTodayPopularNovels() -> Observable<TodayPopularNovels> {
+        return recommendRepository.getTodayPopularNovels()
+    }
+    
+    func getRealtimePopularFeeds() -> Observable<RealtimePopularFeeds> {
+        return recommendRepository.getRealtimePopularFeeds()
+    }
+    
+    func getInterestFeeds() -> Observable<InterestFeeds> {
+        return recommendRepository.getInterestFeeds()
+    }
+    
+    func getTasteRecommendNovels() -> Observable<TasteRecommendNovels> {
+        return recommendRepository.getTasteRecommendNovels()
     }
 }

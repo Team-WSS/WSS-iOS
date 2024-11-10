@@ -17,7 +17,8 @@ final class HomeViewController: UIViewController {
     
     private let viewModel: HomeViewModel
     private let disposeBag = DisposeBag()
-
+    
+    private let isLoggedIn = APIConstants.isLogined
     private let viewWillAppearEvent = PublishRelay<Void>()
     
     //MARK: - UI Components
@@ -91,13 +92,13 @@ final class HomeViewController: UIViewController {
     private func bindViewModel() {
         let input = HomeViewModel.Input(
             viewWillAppearEvent: viewWillAppearEvent.asObservable(),
-            announcementButtonTapped: rootView.headerView.announcementButton.rx.tap,
-            registerInterestNovelButtonTapped: rootView.interestView.unregisterView.registerButton.rx.tap,
-            setPreferredGenresButtonTapped: rootView.tasteRecommendView.unregisterView.registerButton.rx.tap,
+            announcementButtonDidTap: rootView.headerView.announcementButton.rx.tap,
             todayPopularCellSelected: rootView.todayPopularView.todayPopularCollectionView.rx.itemSelected,
             interestCellSelected: rootView.interestView.interestCollectionView.rx.itemSelected,
             tasteRecommendCellSelected: rootView.tasteRecommendView.tasteRecommendCollectionView.rx.itemSelected,
-            tasteRecommendCollectionViewContentSize: rootView.tasteRecommendView.tasteRecommendCollectionView.rx.observe(CGSize.self, "contentSize")
+            tasteRecommendCollectionViewContentSize: rootView.tasteRecommendView.tasteRecommendCollectionView.rx.observe(CGSize.self, "contentSize"),
+            registerInterestNovelButtonTapped: rootView.interestView.unregisterView.registerButton.rx.tap,
+            setPreferredGenresButtonTapped: rootView.tasteRecommendView.unregisterView.registerButton.rx.tap
         )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -115,10 +116,14 @@ final class HomeViewController: UIViewController {
                 cellType: HomeRealtimePopularCollectionViewCell.self)) { row, element, cell in
                     cell.bindData(data: element)
                     cell.onFeedViewTapped = { feedId in
-                        if let intFeedId = Int(feedId) {
-                            self.pushToFeedDetailViewController(feedId: intFeedId)
+                        if self.isLoggedIn {
+                            if let intFeedId = Int(feedId) {
+                                self.pushToFeedDetailViewController(feedId: intFeedId)
+                            } else {
+                                print("Invalid feedId: \(feedId)")
+                            }
                         } else {
-                            print("Invalid feedId: \(feedId)")
+                            self.viewModel.pushToInduceLoginViewController.accept(())
                         }
                     }
                 }
@@ -147,7 +152,7 @@ final class HomeViewController: UIViewController {
                 }
                 .disposed(by: disposeBag)
         
-        output.navigateToAnnouncementView
+        output.pushToAnnouncementViewController
             .bind(with: self, onNext: { owner, _ in
                 let viewController = HomeNoticeViewController(viewModel: HomeNoticeViewModel(noticeRepository: DefaultNoticeRepository(noticeService: DefaultNoticeService() )))
                 viewController.navigationController?.isNavigationBarHidden = false
@@ -156,7 +161,7 @@ final class HomeViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.navigateToNormalSearchView
+        output.pushToNormalSearchViewController
             .bind(with: self, onNext: { owner, _ in
                 let normalSearchViewController = NormalSearchViewController(viewModel: NormalSearchViewModel(searchRepository: DefaultSearchRepository(searchService: DefaultSearchService())))
                 normalSearchViewController.navigationController?.isNavigationBarHidden = false
@@ -165,13 +170,13 @@ final class HomeViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.navigateToNovelDetailInfoView
+        output.pushToNovelDetailInfoViewController
             .withLatestFrom(Observable.combineLatest(output.todayPopularList,
                                                      output.interestList,
                                                      output.tasteRecommendList)) { (indexPathSection, lists) in
                 let (indexPath, section) = indexPathSection
                 let (todayPopularList, interestList, tasteRecommendList) = lists
-
+                
                 switch section {
                 case 0:
                     return todayPopularList[indexPath.row].novelId
@@ -186,6 +191,12 @@ final class HomeViewController: UIViewController {
             .compactMap { $0 }
             .subscribe(with: self, onNext: { owner, novelId in
                 owner.pushToDetailViewController(novelId: novelId)
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushToInduceLoginViewController
+            .bind(with: self, onNext: { owner, _ in
+                owner.pushToInduceLoginViewController()
             })
             .disposed(by: disposeBag)
         
