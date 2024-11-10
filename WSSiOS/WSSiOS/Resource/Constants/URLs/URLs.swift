@@ -12,6 +12,11 @@ enum URLs {
         static let loginWithApple = "/auth/login/apple"
     }
     
+    enum Onboarding {
+        static let nicknameCheck = "/users/nickname/check"
+        static let postProfile = "/users/profile"
+    }
+    
     enum User {
         private static let userBasePath = "/users"
         static let afterDelete = userBasePath + "추후 삭제"

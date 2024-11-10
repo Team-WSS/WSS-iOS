@@ -89,12 +89,16 @@ final class LoginViewModel: NSObject, ViewModelType {
             .subscribe(with: self, onNext: { owner, type in
                 switch type {
                 case .skip:
+                    APIConstants.isLogined = false
                     owner.navigateToHome.accept(())
                 case .kakao:
+                    APIConstants.isLogined = true
                     owner.navigateToOnboarding.accept(())
                 case .naver:
+                    APIConstants.isLogined = true
                     owner.navigateToOnboarding.accept(())
                 case .apple:
+                    APIConstants.isLogined = true
                     owner.requestAppleLogin() // 애플로그인 요청
                 }
             })
@@ -107,8 +111,10 @@ final class LoginViewModel: NSObject, ViewModelType {
                                     email: email)
             }
             .subscribe(with: self, onNext: { owner, result in
-                UserDefaults.standard.setValue(result.Authorization, forKey: "ACCESS_TOKEN")
-                UserDefaults.standard.setValue(result.refreshToken, forKey: "REFRESH_TOKEN")
+                UserDefaults.standard.setValue(result.Authorization,
+                                               forKey: StringLiterals.UserDefault.accessToken)
+                UserDefaults.standard.setValue(result.refreshToken,
+                                               forKey:  StringLiterals.UserDefault.refreshToken)
                 if result.isRegister {
                     owner.navigateToHome.accept(())
                 } else {

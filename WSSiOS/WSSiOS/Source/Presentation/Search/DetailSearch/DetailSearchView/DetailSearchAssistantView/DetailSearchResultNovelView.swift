@@ -81,7 +81,6 @@ final class DetailSearchResultNovelView: UIView {
         
         contentView.snp.makeConstraints {
             $0.edges.equalTo(scrollView.contentLayoutGuide)
-            $0.height.greaterThanOrEqualTo(self.snp.height).priority(.low)
             $0.width.equalTo(scrollView.snp.width)
         }
         
@@ -97,9 +96,8 @@ final class DetailSearchResultNovelView: UIView {
         
         resultNovelCollectionView.snp.makeConstraints {
             $0.top.equalTo(novelTitleLabel.snp.bottom).offset(14)
-            $0.horizontalEdges.equalToSuperview()
+            $0.horizontalEdges.bottom.equalToSuperview()
             $0.height.equalTo(0)
-            $0.bottom.equalToSuperview()
         }
     }
     

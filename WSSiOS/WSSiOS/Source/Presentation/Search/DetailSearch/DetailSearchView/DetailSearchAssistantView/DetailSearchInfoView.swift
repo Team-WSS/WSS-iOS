@@ -154,15 +154,21 @@ final class DetailSearchInfoView: UIView {
         }
     }
     
-    func updateCompletedKeyword(_ selectedCompletedStatus: CompletedStatus) {
+    func updateCompletedKeyword(_ selectedCompletedStatus: CompletedStatus?) {
         completedStatusButtons.forEach {
             $0.updateButton(selectedCompletedStatus: selectedCompletedStatus)
         }
     }
     
-    func updateNovelRatingKeyword(_ selectedNovelRatingStatus: NovelRatingStatus) {
+    func updateNovelRatingKeyword(_ selectedNovelRatingStatus: NovelRatingStatus?) {
         novelRatingStatusButtons.forEach {
             $0.updateButton(selectedNovelRatingStatus: selectedNovelRatingStatus)
+        }
+    }
+    
+    func resetAllStates() {
+        genreCollectionView.indexPathsForSelectedItems?.forEach { indexPath in
+            genreCollectionView.deselectItem(at: indexPath, animated: false)
         }
     }
 }

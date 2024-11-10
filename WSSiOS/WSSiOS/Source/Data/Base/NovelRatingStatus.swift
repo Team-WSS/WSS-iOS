@@ -30,4 +30,19 @@ enum NovelRatingStatus: String, CaseIterable {
         case .aboveFourPointEight: return "4.8이상"
         }
     }
+    
+    init(toFloat: Float) {
+        switch toFloat {
+        case 3.5:
+            self = .aboveThreePointFive
+        case 4.0:
+            self = .aboveFourPointZero
+        case 4.5:
+            self = .aboveFourPointFive
+        case 4.8:
+            self = .aboveFourPointEight
+        default:
+            self = .aboveFourPointEight
+        }
+    }
 }

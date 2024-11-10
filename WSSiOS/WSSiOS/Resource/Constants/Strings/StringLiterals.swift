@@ -8,11 +8,30 @@
 import Foundation
 
 enum StringLiterals {
+    enum UserDefault {
+        static let accessToken = "ACCESS_TOKEN"
+        static let refreshToken = "REFRESH_TOKEN"
+        static let userGender = "USER_GENDER"
+        static let userNickname = "USER_NICKNAME"
+    }
+    
+    enum BirthPicker {
+        static let title = "출생연도"
+        static let completeButton = "완료"
+    }
     
     enum Loading {
+        static let loadingTitle = "로딩 중"
+        static let loadingDescription = "잠시만 기다려주세요"
         static let novelTitle = "작품 제목"
         static let novelAuthor = "작품 작가"
         static let novelGenre = "작품 장르"
+    }
+    
+    enum Error {
+        static let title = "네트워크 연결에\n실패했어요"
+        static let description = "연결 상태를 확인한 후\n다시 시도해 보세요"
+        static let refreshButton = "페이지 다시 불러오기"
     }
     
     enum Tabbar {
@@ -495,6 +514,8 @@ enum StringLiterals {
         static let vibe = "분위기/전개"
         
         static let placeHolder = "키워드를 검색하세요"
+        
+        static let empty = "해당하는 작품이 없어요\n검색의 범위를 더 넓혀보세요"
     }
     
     enum Memo {
