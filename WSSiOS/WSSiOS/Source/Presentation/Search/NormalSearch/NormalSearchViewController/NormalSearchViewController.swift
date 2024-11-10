@@ -105,9 +105,7 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
             normalSearchCollectionViewContentSize: rootView.resultView.normalSearchCollectionView.rx.observe(CGSize.self, "contentSize"),
             normalSearchCellSelected: rootView.resultView.normalSearchCollectionView.rx.itemSelected,
             reachedBottom: reachedBottom,
-            normalSearchCollectionViewSwipeGesture: collectionViewSwipeGesture,
-            induceModalViewLoginButtonDidtap: rootView.induceLoginModalView.loginButton.rx.tap,
-            induceModalViewCancelButtonDidtap: rootView.induceLoginModalView.cancelButton.rx.tap)
+            normalSearchCollectionViewSwipeGesture: collectionViewSwipeGesture)
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.resultCount
@@ -202,21 +200,6 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
         output.endEditing
             .subscribe(with: self, onNext: { owner, _ in
                 owner.view.endEditing(true)
-            })
-            .disposed(by: disposeBag)
-        
-        output.pushToLoginViewController
-            .bind(with: self, onNext: { owner, _ in
-                guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else {
-                    return
-                }
-                sceneDelegate.setRootToLoginViewController()
-            })
-            .disposed(by: disposeBag)
-        
-        output.showInduceLoginModalView
-            .bind(with: self, onNext: { owner, isShow in
-                owner.rootView.induceLoginModalView.isHidden = !isShow
             })
             .disposed(by: disposeBag)
     }

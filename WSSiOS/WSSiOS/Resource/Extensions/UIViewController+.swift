@@ -360,7 +360,13 @@ extension UIViewController {
     }
     
     func pushToNormalSearchViewController(isLoggedIn: Bool) {
-        let viewController = NormalSearchViewController(viewModel: NormalSearchViewModel(searchRepository: DefaultSearchRepository(searchService: DefaultSearchService()), isLoggedIn: isLoggedIn))
+        let viewController = NormalSearchViewController(
+            viewModel: NormalSearchViewModel(
+                searchRepository: DefaultSearchRepository(
+                    searchService: DefaultSearchService()
+                )
+            )
+        )
         
         viewController.navigationController?.isNavigationBarHidden = false
         viewController.hidesBottomBarWhenPushed = true

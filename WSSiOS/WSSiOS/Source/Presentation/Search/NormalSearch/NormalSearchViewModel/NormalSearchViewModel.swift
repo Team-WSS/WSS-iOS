@@ -16,7 +16,6 @@ final class NormalSearchViewModel: ViewModelType {
     
     private let searchRepository: SearchRepository
     private let disposeBag = DisposeBag()
-    private let isLoggedIn: Bool
     
     private let searchText = BehaviorRelay<String>(value: "")
     private let currentPage = BehaviorRelay<Int>(value: 0)
@@ -26,10 +25,7 @@ final class NormalSearchViewModel: ViewModelType {
 
     private let pushToNovelDetailViewController = PublishRelay<Int>()
     private let isSearchTextFieldEditing = BehaviorRelay<Bool>(value: false)
-    
-    private let pushToLoginViewController = PublishRelay<Void>()
-    private let showInduceLoginModalView = BehaviorRelay<Bool>(value: false)
-    
+  
     //MARK: - Inputs
     
     struct Input {
@@ -45,10 +41,6 @@ final class NormalSearchViewModel: ViewModelType {
         let normalSearchCellSelected: ControlEvent<IndexPath>
         let reachedBottom: Observable<Void>
         let normalSearchCollectionViewSwipeGesture: Observable<UISwipeGestureRecognizer>
-        
-        // 로그인 유도모달
-        let induceModalViewLoginButtonDidtap: ControlEvent<Void>
-        let induceModalViewCancelButtonDidtap: ControlEvent<Void>
     }
     
     //MARK: - Outputs
@@ -65,17 +57,12 @@ final class NormalSearchViewModel: ViewModelType {
         let pushToNovelDetailViewController: Observable<Int>
         let isSearchTextFieldEditing: Observable<Bool>
         let endEditing: Observable<Void>
-        
-        // 로그인 유도모달
-        let pushToLoginViewController: Observable<Void>
-        let showInduceLoginModalView: Observable<Bool>
     }
     
     //MARK: - init
     
-    init(searchRepository: SearchRepository, isLoggedIn: Bool) {
+    init(searchRepository: SearchRepository) {
         self.searchRepository = searchRepository
-        self.isLoggedIn = isLoggedIn
     }
     
     //MARK: - API
@@ -147,12 +134,8 @@ final class NormalSearchViewModel: ViewModelType {
         
         input.normalSearchCellSelected
             .subscribe(with: self, onNext: { owner, indexPath in
-                if owner.isLoggedIn {
-                    let novelId = owner.normalSearchList.value[indexPath.row].novelId
-                    owner.pushToNovelDetailViewController.accept(novelId)
-                } else {
-                    owner.showInduceLoginModalView.accept(true)
-                }
+                let novelId = owner.normalSearchList.value[indexPath.row].novelId
+                owner.pushToNovelDetailViewController.accept(novelId)
             })
             .disposed(by: disposeBag)
         
@@ -168,18 +151,6 @@ final class NormalSearchViewModel: ViewModelType {
         let endEditing = input.normalSearchCollectionViewSwipeGesture
             .map { _ in () }
         
-        input.induceModalViewLoginButtonDidtap
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.pushToLoginViewController.accept(())
-            })
-            .disposed(by: disposeBag)
-        
-        input.induceModalViewCancelButtonDidtap
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.showInduceLoginModalView.accept(false)
-            })
-            .disposed(by: disposeBag)
-        
         return Output(resultCount: resultCount.asObservable(),
                       normalSearchList: normalSearchList.asObservable(),
                       scrollToTop: returnKeyEnabled.asObservable(),
@@ -190,8 +161,6 @@ final class NormalSearchViewModel: ViewModelType {
                       normalSearchCollectionViewHeight: normalSearchCollectionViewHeight,
                       pushToNovelDetailViewController: pushToNovelDetailViewController.asObservable(),
                       isSearchTextFieldEditing: isSearchTextFieldEditing.asObservable(),
-                      endEditing: endEditing,
-                      pushToLoginViewController: pushToLoginViewController.asObservable(),
-                      showInduceLoginModalView: showInduceLoginModalView.asObservable())
+                      endEditing: endEditing)
     }
 }
