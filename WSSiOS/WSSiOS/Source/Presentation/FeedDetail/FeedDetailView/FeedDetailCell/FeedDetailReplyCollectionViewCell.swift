@@ -7,16 +7,23 @@
 
 import UIKit
 
+import RxSwift
+import RxCocoa
 import SnapKit
 import Then
+
+protocol FeedDetailReplyCollectionDelegate: AnyObject {
+    func dropdownButtonDidTap(commentId: Int, isMyComment: Bool)
+}
 
 final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Properties
     
-    var threeDotsButtonDidTap: (() -> Void)?
-    var dropdownTopButtonDidTap: (() -> Void)?
-    var dropdownBottomButtonDidTap: (() -> Void)?
+    private let disposeBag = DisposeBag()
+    weak var delegate: FeedDetailReplyCollectionDelegate?
+    
+    private let comment = PublishRelay<FeedComment>()
     
     //MARK: - Components
     
@@ -29,8 +36,6 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
     private let replyContentLabel = UILabel()
     private let threeDotsButton = UIButton()
     
-    let dropdownView = FeedDetailDropdownView()
-    
     //MARK: - Life Cycle
     
     override init(frame: CGRect) {
@@ -40,7 +45,7 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
         setHierarchy()
         setLayout()
         
-        setActions()
+        bindAction()
     }
     
     required init?(coder: NSCoder) {
@@ -87,10 +92,6 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
             $0.setImage(.icThreedots.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray200), for: .normal)
             $0.contentMode = .scaleAspectFit
         }
-        
-        dropdownView.do {
-            $0.isHidden = true
-        }
     }
     
     private func setHierarchy() {
@@ -101,8 +102,7 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
         self.addSubviews(userProfileImageView,
                          userStackview,
                          replyContentLabel,
-                         threeDotsButton,
-                         dropdownView)
+                         threeDotsButton)
     }
     
     private func setLayout() {
@@ -129,49 +129,22 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
             $0.trailing.equalToSuperview().inset(20)
             $0.centerY.equalTo(userProfileImageView.snp.centerY)
         }
-        
-        dropdownView.snp.makeConstraints {
-            $0.top.equalTo(threeDotsButton.snp.bottom)
-            $0.trailing.equalToSuperview()
-        }
     }
     
-    private func setActions() {
-        threeDotsButton.addTarget(self, action: #selector(threeDotsButtonTapped), for: .touchUpInside)
-        
-        dropdownView.topDropdownButton.addTarget(self, action: #selector(topButtonTapped), for: .touchUpInside)
-        dropdownView.bottomDropdownButton.addTarget(self, action: #selector(bottomButtonTapped), for: .touchUpInside)
-    }
+    //MARK: - Bind
     
-    @objc private func threeDotsButtonTapped() {
-        guard let collectionView = self.superview as? UICollectionView,
-              let parentView = collectionView.superview else {
-            return
-        }
-
-        if dropdownView.isHidden {
-            let buttonPosition = threeDotsButton.convert(CGPoint(x: 0, y: threeDotsButton.bounds.height), to: parentView)
-            dropdownView.frame.origin = CGPoint(x: buttonPosition.x, y: buttonPosition.y + threeDotsButton.bounds.height)
-        
-            parentView.addSubview(dropdownView)
-            dropdownView.isHidden = false
-        } else {
-            dropdownView.removeFromSuperview()
-            dropdownView.isHidden = true
-        }
-
-        threeDotsButtonDidTap?()
-    }
-
-    @objc private func topButtonTapped() {
-        dropdownTopButtonDidTap?()
-    }
-    
-    @objc private func bottomButtonTapped() {
-        dropdownBottomButtonDidTap?()
+    private func bindAction() {
+        threeDotsButton.rx.tap
+            .withLatestFrom(comment)
+            .subscribe(with: self, onNext: { owner, comment in
+                owner.delegate?.dropdownButtonDidTap(commentId: comment.commentId, isMyComment: comment.isMyComment)
+            })
+            .disposed(by: disposeBag)
     }
     
     func bindData(data: FeedComment) {
+        self.comment.accept(data)
+        
         self.userProfileImageView.kfSetImage(url: makeBucketImageURLString(path: data.userProfileImage))
         self.userNicknameLabel.applyWSSFont(.title2, with: data.userNickname)
         self.createdDateLabel.applyWSSFont(.body5, with: data.createdDate)

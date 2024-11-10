@@ -53,6 +53,10 @@ final class FeedDetailViewModel: ViewModelType {
     // 댓글 드롭다운
     var selectedCommentId: Int?
     var selectedCommentContent: String?
+    private var isMyComment: Bool = false
+    private let showCommentDropdownView = PublishRelay<(IndexPath, Bool)>()
+    private let hideCommentDropdownView = PublishRelay<Void>()
+    private let toggleDropdownView = PublishRelay<Void>()
     let showCommentSpoilerAlertView = PublishRelay<Void>()
     let showCommentImproperAlertView = PublishRelay<Void>()
     let myCommentEditing = PublishRelay<Void>()
@@ -84,6 +88,9 @@ final class FeedDetailViewModel: ViewModelType {
         // 피드 드롭다운
         let dotsButtonDidTap: ControlEvent<Void>
         let dropdownButtonDidTap: Observable<DropdownButtonType>
+        
+        // 댓글 드롭다운
+        let commentDropdownButtonDidTap: Observable<(Int, Bool)>
     }
     
     struct Output {
@@ -116,6 +123,9 @@ final class FeedDetailViewModel: ViewModelType {
         let showDeleteAlertView: Observable<Void>
         
         // 댓글 드롭다운
+        let showCommentDropdownView: Observable<(IndexPath, Bool)>
+        let hideCommentDropdownView: Observable<Void>
+        let toggleDropdownView: Observable<Void>
         let showCommentSpoilerAlertView: Observable<Void>
         let showCommentImproperAlertView: Observable<Void>
         let myCommentEditing: Observable<Void>
@@ -258,6 +268,22 @@ final class FeedDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        input.commentDropdownButtonDidTap
+            .subscribe(with: self, onNext: { owner, data in
+                let (commentId, isMyComment) = data
+                if owner.selectedCommentId == commentId {
+                    owner.toggleDropdownView.accept(())
+                } else {
+                    if let index = owner.commentsData.value.firstIndex(where: { $0.commentId == commentId }) {
+                        let indexPath = IndexPath(row: index, section: 0)
+                        owner.showCommentDropdownView.accept((indexPath, isMyComment))
+                    }
+                }
+                owner.selectedCommentId = commentId
+                owner.isMyComment = isMyComment
+            })
+            .disposed(by: disposeBag)
+        
         return Output(feedData: feedData.asObservable(),
                       commentsData: commentsData.asDriver(),
                       popViewController: popViewController,
@@ -277,6 +303,9 @@ final class FeedDetailViewModel: ViewModelType {
                       showImproperAlertView: showImproperAlertView.asObservable(),
                       pushToFeedEditViewController: pushToFeedEditViewController.asObservable(),
                       showDeleteAlertView: showDeleteAlertView.asObservable(),
+                      showCommentDropdownView: showCommentDropdownView.asObservable(),
+                      hideCommentDropdownView: hideCommentDropdownView.asObservable(),
+                      toggleDropdownView: toggleDropdownView.asObservable(),
                       showCommentSpoilerAlertView: showCommentSpoilerAlertView.asObservable(),
                       showCommentImproperAlertView: showCommentImproperAlertView.asObservable(),
                       myCommentEditing: myCommentEditing.asObservable(),

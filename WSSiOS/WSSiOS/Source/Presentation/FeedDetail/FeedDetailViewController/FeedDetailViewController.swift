@@ -19,6 +19,8 @@ final class FeedDetailViewController: UIViewController {
     private let viewModel: FeedDetailViewModel
     private let disposeBag = DisposeBag()
     
+    private let commentDropdownButtonDidTap = PublishRelay<(Int, Bool)>()
+    
     //MARK: - UI Components
     
     private let rootView = FeedDetailView()
@@ -105,7 +107,8 @@ final class FeedDetailViewController: UIViewController {
             replyCommentCollectionViewSwipeGesture: replyCommentCollectionViewSwipeGesture,
             sendButtonDidTap: rootView.replyWritingView.replyButton.rx.tap,
             dotsButtonDidTap: rootView.dropdownButton.rx.tap,
-            dropdownButtonDidTap: dropdownButtonDidTap)
+            dropdownButtonDidTap: dropdownButtonDidTap,
+            commentDropdownButtonDidTap: commentDropdownButtonDidTap.asObservable())
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.feedData
@@ -120,32 +123,7 @@ final class FeedDetailViewController: UIViewController {
                 cellIdentifier: FeedDetailReplyCollectionViewCell.cellIdentifier,
                 cellType: FeedDetailReplyCollectionViewCell.self)) { row, element, cell in
                     cell.bindData(data: element)
-                    cell.threeDotsButtonDidTap = {
-                        cell.dropdownView.configureDropdown(isMine: element.isMyComment)
-                        self.viewModel.selectedCommentId = element.commentId
-                    }
-                    if element.isMyComment {
-                        cell.dropdownTopButtonDidTap = {
-                            print("댓글 수정 API 호출")
-                            self.rootView.replyWritingView.replyWritingTextView.becomeFirstResponder()
-                            self.viewModel.selectedCommentContent = element.commentContent
-                            self.viewModel.myCommentEditing.accept(())
-                            cell.dropdownView.isHidden = true
-                        }
-                        cell.dropdownBottomButtonDidTap = {
-                            self.viewModel.showCommentDeleteAlertView.accept(())
-                            cell.dropdownView.isHidden = true
-                        }
-                    } else {
-                        cell.dropdownTopButtonDidTap = {
-                            self.viewModel.showCommentSpoilerAlertView.accept(())
-                            cell.dropdownView.isHidden = true
-                        }
-                        cell.dropdownBottomButtonDidTap = {
-                            self.viewModel.showCommentImproperAlertView.accept(())
-                            cell.dropdownView.isHidden = true
-                        }
-                    }
+                    cell.delegate = self
                 }
                 .disposed(by: disposeBag)
         
@@ -336,6 +314,26 @@ final class FeedDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.showCommentDropdownView
+            .subscribe(with: self, onNext: { owner, data in
+                let (indexPath, isMyComment) = data
+                owner.rootView.replyView.showDropdownView(indexPath: indexPath,
+                                                          isMyComment: isMyComment)
+            })
+            .disposed(by: disposeBag)
+        
+        output.hideCommentDropdownView
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.rootView.replyView.hideDropdownView()
+            })
+            .disposed(by: disposeBag)
+        
+        output.toggleDropdownView
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.rootView.replyView.toggleDropdownView()
+            })
+            .disposed(by: disposeBag)
+        
         output.showCommentSpoilerAlertView
             .flatMapLatest { _ -> Observable<AlertButtonType> in
                 return self.presentToAlertViewController(iconImage: .icAlertWarningCircle,
@@ -484,5 +482,11 @@ extension FeedDetailViewController: UITextViewDelegate {
         rootView.replyWritingView.replyWritingTextView.isScrollEnabled = numberOfLines > 3
         
         self.rootView.replyWritingView.layoutIfNeeded()
+    }
+}
+
+extension FeedDetailViewController: FeedDetailReplyCollectionDelegate {
+    func dropdownButtonDidTap(commentId: Int, isMyComment: Bool) {
+        self.commentDropdownButtonDidTap.accept((commentId, isMyComment))
     }
 }
