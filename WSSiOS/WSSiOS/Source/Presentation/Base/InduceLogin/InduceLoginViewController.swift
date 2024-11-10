@@ -7,10 +7,14 @@
 
 import UIKit
 
+import RxSwift
+import RxCocoa
+
 final class InduceLoginViewController: UIViewController {
     
     //MARK: - Properties
     
+    private let disposeBag = DisposeBag()
     
     //MARK: - UI Components
     
@@ -33,12 +37,28 @@ final class InduceLoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setAction()
+        
     }
     
     private func setUI() {
-        self.view.backgroundColor = .wssWhite
+        
     }
     
-    //MARK: - Bind
-    
+    private func setAction() {
+        rootView.loginButton.rx.tap
+            .bind(with: self, onNext: { owner, _ in
+                guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else {
+                    return
+                }
+                sceneDelegate.setRootToLoginViewController()
+            })
+            .disposed(by: disposeBag)
+        
+        rootView.cancelButton.rx.tap
+            .bind(with: self, onNext: { owner, _ in
+                owner.popToLastViewControllerWithoutAnimation()
+            })
+            .disposed(by: disposeBag)
+    }
 }

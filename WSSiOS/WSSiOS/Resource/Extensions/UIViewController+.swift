@@ -168,6 +168,10 @@ extension UIViewController {
         self.navigationController?.popViewController(animated: true)
     }
     
+    func popToLastViewControllerWithoutAnimation() {
+        self.navigationController?.popViewController(animated: false)
+    }
+    
     func popToRootViewController() {
         self.navigationController?.popToRootViewController(animated: true)
     }

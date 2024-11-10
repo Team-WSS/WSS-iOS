@@ -44,6 +44,8 @@ final class InduceLoginView: UIView {
     }
     
     private func setUI() {
+        self.isOpaque = false
+        
         backgroundView.do {
             $0.backgroundColor = .wssBlack60
         }
