@@ -38,12 +38,9 @@ final class InduceLoginViewController: UIViewController {
         super.viewDidLoad()
         
         setAction()
-        
     }
     
-    private func setUI() {
-        
-    }
+    //MARK: - Custom Methods
     
     private func setAction() {
         rootView.loginButton.rx.tap
