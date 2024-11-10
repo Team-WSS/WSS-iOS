@@ -123,7 +123,7 @@ final class HomeViewController: UIViewController {
                                 print("Invalid feedId: \(feedId)")
                             }
                         } else {
-                            self.viewModel.pushToInduceLoginViewController.accept(())
+                            self.viewModel.presentInduceLoginViewController.accept(())
                         }
                     }
                 }
@@ -194,9 +194,9 @@ final class HomeViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.pushToInduceLoginViewController
+        output.presentInduceLoginViewController
             .bind(with: self, onNext: { owner, _ in
-                owner.pushToInduceLoginViewController()
+                owner.presentInduceLoginViewController()
             })
             .disposed(by: disposeBag)
         

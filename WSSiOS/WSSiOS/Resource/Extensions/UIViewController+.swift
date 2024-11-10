@@ -380,10 +380,15 @@ extension UIViewController {
         self.presentModalViewController(detailSearchViewController)
     }
     
-    func pushToInduceLoginViewController() {
+    func presentInduceLoginViewController() {
         let viewController = InduceLoginViewController()
+        viewController.modalPresentationStyle = .overFullScreen
         
-        self.navigationController?.pushViewController(viewController, animated: false)
+        self.present(viewController, animated: false)
+    }
+    
+    func dismissViewController() {
+        self.dismiss(animated: false)
     }
 }
 

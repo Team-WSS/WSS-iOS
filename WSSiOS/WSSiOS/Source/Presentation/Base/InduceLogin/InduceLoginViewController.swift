@@ -57,7 +57,7 @@ final class InduceLoginViewController: UIViewController {
         
         rootView.cancelButton.rx.tap
             .bind(with: self, onNext: { owner, _ in
-                owner.popToLastViewControllerWithoutAnimation()
+                owner.dismissViewController()
             })
             .disposed(by: disposeBag)
     }

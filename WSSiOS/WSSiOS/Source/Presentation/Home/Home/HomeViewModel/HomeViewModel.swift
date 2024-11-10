@@ -28,7 +28,7 @@ final class HomeViewModel: ViewModelType {
     private let todayPopularCellIndexPath = PublishRelay<IndexPath>()
     private let interestCellIndexPath = PublishRelay<IndexPath>()
     private let tasteRecommendCellIndexPath = PublishRelay<IndexPath>()
-    let pushToInduceLoginViewController = PublishRelay<Void>()
+    let presentInduceLoginViewController = PublishRelay<Void>()
     private let pushToAnnouncementViewController = PublishRelay<Void>()
     
     // MARK: - Inputs
@@ -60,7 +60,7 @@ final class HomeViewModel: ViewModelType {
         
         // 비로그인
         let pushToNormalSearchViewController: Observable<Void>
-        let pushToInduceLoginViewController: Observable<Void>
+        let presentInduceLoginViewController: Observable<Void>
     }
     
     //MARK: - init
@@ -117,7 +117,7 @@ extension HomeViewModel {
         
         input.setPreferredGenresButtonTapped
             .subscribe(with: self, onNext: { owner, _ in
-                owner.pushToInduceLoginViewController.accept(())
+                owner.presentInduceLoginViewController.accept(())
             })
             .disposed(by: disposeBag)
         
@@ -126,7 +126,7 @@ extension HomeViewModel {
                 if owner.isLoggedIn {
                     owner.todayPopularCellIndexPath.accept(indexPath)
                 } else {
-                    owner.pushToInduceLoginViewController.accept(())
+                    owner.presentInduceLoginViewController.accept(())
                 }
             })
             .disposed(by: disposeBag)
@@ -148,7 +148,7 @@ extension HomeViewModel {
                 if owner.isLoggedIn {
                     owner.pushToAnnouncementViewController.accept(())
                 } else {
-                    owner.pushToInduceLoginViewController.accept(())
+                    owner.presentInduceLoginViewController.accept(())
                 }
             })
             .disposed(by: disposeBag)
@@ -173,7 +173,7 @@ extension HomeViewModel {
                       pushToNovelDetailInfoViewController: pushToNovelDetailInfoViewController,
                       tasteRecommendCollectionViewHeight: tasteRecommendCollectionViewHeight,
                       pushToNormalSearchViewController: pushToNormalSearchViewController,
-                      pushToInduceLoginViewController: pushToInduceLoginViewController.asObservable())
+                      presentInduceLoginViewController: presentInduceLoginViewController.asObservable())
     }
     
     //MARK: - API
