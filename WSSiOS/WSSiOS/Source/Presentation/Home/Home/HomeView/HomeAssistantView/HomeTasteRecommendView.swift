@@ -23,12 +23,12 @@ final class HomeTasteRecommendView: UIView {
     
     //MARK: - Life Cycle
     
-    init(isLoggedIn: Bool) {
+    init() {
         super.init(frame: .zero)
         
-        setUI(isLoggedIn: isLoggedIn)
+        setUI()
         setHierarchy()
-        setLayout(isLoggedIn: isLoggedIn)
+        setLayout()
     }
     
     @available(*, unavailable)
@@ -36,7 +36,7 @@ final class HomeTasteRecommendView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setUI(isLoggedIn: Bool) {
+    private func setUI() {
         titleLabel.do {
             $0.applyWSSFont(.headline1, with: StringLiterals.Home.Title.recommend)
             $0.textColor = .wssBlack
@@ -59,17 +59,6 @@ final class HomeTasteRecommendView: UIView {
             $0.itemSize = CGSize(width: (UIScreen.main.bounds.width - 49) / 2, height: 300)
             tasteRecommendCollectionView.setCollectionViewLayout($0, animated: false)
         }
-        
-        if isLoggedIn {
-            subTitleLabel.isHidden = false
-            tasteRecommendCollectionView.isHidden = false
-            unregisterView.isHidden = true
-        }
-        else {
-            subTitleLabel.isHidden = true
-            tasteRecommendCollectionView.isHidden = true
-            unregisterView.isHidden = false
-        }
     }
     
     private func setHierarchy() {
@@ -79,31 +68,27 @@ final class HomeTasteRecommendView: UIView {
                          unregisterView)
     }
     
-    private func setLayout(isLoggedIn: Bool) {
+    private func setLayout() {
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.leading.equalToSuperview().inset(20)
         }
-
-        if isLoggedIn {
-            subTitleLabel.snp.makeConstraints {
-                $0.top.equalTo(titleLabel.snp.bottom).offset(2)
-                $0.leading.equalTo(titleLabel.snp.leading)
-            }
-            
-            tasteRecommendCollectionView.snp.makeConstraints {
-                $0.top.equalTo(subTitleLabel.snp.bottom).offset(20)
-                $0.leading.trailing.equalToSuperview().inset(20)
-                $0.height.equalTo(0)
-                $0.bottom.equalToSuperview()
-            }
+        subTitleLabel.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom).offset(2)
+            $0.leading.equalTo(titleLabel.snp.leading)
         }
-        else {
-            unregisterView.snp.makeConstraints {
-                $0.top.equalTo(titleLabel.snp.bottom).offset(11)
-                $0.leading.trailing.equalToSuperview().inset(20)
-                $0.bottom.equalToSuperview().inset(56)
-            }
+        
+        tasteRecommendCollectionView.snp.makeConstraints {
+            $0.top.equalTo(subTitleLabel.snp.bottom).offset(20)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(0)
+            $0.bottom.equalToSuperview()
+        }
+        
+        unregisterView.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom).offset(11)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.bottom.equalToSuperview().inset(56)
         }
     }
     

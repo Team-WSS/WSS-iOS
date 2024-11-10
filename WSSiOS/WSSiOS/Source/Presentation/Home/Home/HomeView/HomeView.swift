@@ -19,20 +19,17 @@ final class HomeView: UIView {
     let headerView = HomeHeaderView()
     let todayPopularView = HomeTodayPopularView()
     let realtimePopularView = HomeRealtimePopularView()
-    let interestView: HomeInterestView
-    let tasteRecommendView: HomeTasteRecommendView
-    let induceLoginModalView = HomeInduceLoginModalView()
+    let interestView = HomeInterestView()
+    let tasteRecommendView = HomeTasteRecommendView()
     
     //MARK: - Life Cycle
     
-    init(frame: CGRect, isLoggedIn: Bool) {
-        self.interestView = HomeInterestView(isLoggedIn: isLoggedIn)
-        self.tasteRecommendView = HomeTasteRecommendView(isLoggedIn: isLoggedIn)
+    override init(frame: CGRect) {
         super.init(frame: frame)
         
         setUI()
         setHierarchy()
-        setLayout(isLoggedIn: isLoggedIn)
+        setLayout()
     }
     
     @available(*, unavailable)
@@ -44,16 +41,11 @@ final class HomeView: UIView {
         scrollView.do {
             $0.showsVerticalScrollIndicator = false
         }
-        
-        induceLoginModalView.do {
-            $0.isHidden = true
-        }
     }
     
     private func setHierarchy() {
         self.addSubviews(headerView,
-                         scrollView,
-                         induceLoginModalView)
+                         scrollView)
         self.scrollView.addSubview(contentView)
         contentView.addSubviews(todayPopularView,
                                 realtimePopularView,
@@ -61,7 +53,7 @@ final class HomeView: UIView {
                                 tasteRecommendView)
     }
     
-    private func setLayout(isLoggedIn: Bool) {
+    private func setLayout() {
         headerView.snp.makeConstraints {
             $0.top.equalTo(self.safeAreaLayoutGuide.snp.top)
             $0.height.equalTo(50)
@@ -73,11 +65,7 @@ final class HomeView: UIView {
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
         }
-        
-        induceLoginModalView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
-        
+
         contentView.snp.makeConstraints {
             $0.top.equalTo(scrollView.contentLayoutGuide).inset(18)
             $0.leading.trailing.bottom.equalTo(scrollView.contentLayoutGuide)
@@ -100,7 +88,7 @@ final class HomeView: UIView {
         }
         
         tasteRecommendView.snp.makeConstraints {
-            $0.top.equalTo(interestView.snp.bottom).offset(isLoggedIn ? 36 : 56)
+            $0.top.equalTo(interestView.snp.bottom).offset(36)
             $0.horizontalEdges.bottom.equalToSuperview()
         }
     }

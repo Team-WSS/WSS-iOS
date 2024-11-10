@@ -17,8 +17,7 @@ final class HomeViewController: UIViewController {
     
     private let viewModel: HomeViewModel
     private let disposeBag = DisposeBag()
-    
-    private let isLoggedIn: Bool
+
     private let viewWillAppearEvent = PublishRelay<Void>()
     
     //MARK: - UI Components
@@ -27,10 +26,9 @@ final class HomeViewController: UIViewController {
     
     //MARK: - Life Cycle
     
-    init(viewModel: HomeViewModel, isLoggedIn: Bool) {
+    init(viewModel: HomeViewModel) {
         self.viewModel = viewModel
-        self.isLoggedIn = isLoggedIn
-        self.rootView = HomeView(frame: .zero, isLoggedIn: isLoggedIn)
+        self.rootView = HomeView(frame: .zero)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -96,8 +94,6 @@ final class HomeViewController: UIViewController {
             announcementButtonTapped: rootView.headerView.announcementButton.rx.tap,
             registerInterestNovelButtonTapped: rootView.interestView.unregisterView.registerButton.rx.tap,
             setPreferredGenresButtonTapped: rootView.tasteRecommendView.unregisterView.registerButton.rx.tap,
-            induceModalViewLoginButtonTapped: rootView.induceLoginModalView.loginButton.rx.tap,
-            induceModalViewCancelButtonTapped: rootView.induceLoginModalView.cancelButton.rx.tap,
             todayPopularCellSelected: rootView.todayPopularView.todayPopularCollectionView.rx.itemSelected,
             interestCellSelected: rootView.interestView.interestCollectionView.rx.itemSelected,
             tasteRecommendCellSelected: rootView.tasteRecommendView.tasteRecommendCollectionView.rx.itemSelected,
@@ -169,21 +165,6 @@ final class HomeViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.navigateToLoginView
-            .bind(with: self, onNext: { owner, _ in
-                guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else {
-                    return
-                }
-                sceneDelegate.setRootToLoginViewController()
-            })
-            .disposed(by: disposeBag)
-        
-        output.showInduceLoginModalView
-            .drive(with: self, onNext: { owner, isShow in
-                owner.showInduceLoginModalView(isShow)
-            })
-            .disposed(by: disposeBag)
-        
         output.navigateToNovelDetailInfoView
             .withLatestFrom(Observable.combineLatest(output.todayPopularList,
                                                      output.interestList,
@@ -213,13 +194,6 @@ final class HomeViewController: UIViewController {
                 owner.rootView.tasteRecommendView.updateCollectionViewHeight(height: height)
             })
             .disposed(by: disposeBag)
-        
-    }
-    
-    //MARK: - Custom Method
-    
-    private func showInduceLoginModalView(_ isShow: Bool) {
-        rootView.induceLoginModalView.isHidden = !isShow
     }
 }
 

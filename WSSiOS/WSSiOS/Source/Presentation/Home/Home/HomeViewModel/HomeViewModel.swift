@@ -16,7 +16,6 @@ final class HomeViewModel: ViewModelType {
     
     private let recommendRepository: RecommendRepository
     private let disposeBag = DisposeBag()
-    private let isLoggedIn: Bool
     private let showInduceLoginModalView = BehaviorRelay<Bool>(value: false)
     
     private let todayPopularList = PublishSubject<[TodayPopularNovel]>()
@@ -36,8 +35,6 @@ final class HomeViewModel: ViewModelType {
         let announcementButtonTapped: ControlEvent<Void>
         let registerInterestNovelButtonTapped: ControlEvent<Void>
         let setPreferredGenresButtonTapped: ControlEvent<Void>
-        let induceModalViewLoginButtonTapped: ControlEvent<Void>
-        let induceModalViewCancelButtonTapped: ControlEvent<Void>
         let todayPopularCellSelected: ControlEvent<IndexPath>
         let interestCellSelected: ControlEvent<IndexPath>
         let tasteRecommendCellSelected: ControlEvent<IndexPath>
@@ -54,17 +51,14 @@ final class HomeViewModel: ViewModelType {
         var tasteRecommendList: Observable<[TasteRecommendNovel]>
         let navigateToAnnouncementView: Observable<Void>
         let navigateToNormalSearchView: Observable<Void>
-        let navigateToLoginView: Observable<Void>
-        let showInduceLoginModalView: Driver<Bool>
         let navigateToNovelDetailInfoView: Observable<(IndexPath, Int)>
         let tasteRecommendCollectionViewHeight: Driver<CGFloat>
     }
     
     //MARK: - init
     
-    init(recommendRepository: RecommendRepository, isLoggedIn: Bool) {
+    init(recommendRepository: RecommendRepository) {
         self.recommendRepository = recommendRepository
-        self.isLoggedIn = isLoggedIn
     }
 }
 
@@ -95,7 +89,6 @@ extension HomeViewModel {
             })
             .disposed(by: disposeBag)
         
-        if isLoggedIn {
             recommendRepository.getInterestNovels()
                 .subscribe(with: self, onNext: { owner, data in
                     owner.interestList.onNext(data.recommendFeeds)
@@ -111,17 +104,10 @@ extension HomeViewModel {
                     owner.tasteRecommendList.onError(error)
                 })
                 .disposed(by: disposeBag)
-        }
         
         input.setPreferredGenresButtonTapped
             .subscribe(with: self, onNext: { owner, _ in
                 owner.showInduceLoginModalView.accept(true)
-            })
-            .disposed(by: disposeBag)
-        
-        input.induceModalViewCancelButtonTapped
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.showInduceLoginModalView.accept(false)
             })
             .disposed(by: disposeBag)
         
@@ -145,7 +131,6 @@ extension HomeViewModel {
         
         let navigateToAnnouncementView = input.announcementButtonTapped.asObservable()
         let navigateToNormalSearchView = input.registerInterestNovelButtonTapped.asObservable()
-        let navigateToLoginView = input.induceModalViewLoginButtonTapped.asObservable()
         
         let navigateToNovelDetailInfoView = Observable.merge(
             todayPopularCellIndexPath.map { indexPath in (indexPath, 0) },
@@ -163,8 +148,6 @@ extension HomeViewModel {
                       tasteRecommendList: tasteRecommendList.asObservable(),
                       navigateToAnnouncementView: navigateToAnnouncementView,
                       navigateToNormalSearchView: navigateToNormalSearchView,
-                      navigateToLoginView: navigateToLoginView,
-                      showInduceLoginModalView: showInduceLoginModalView.asDriver(),
                       navigateToNovelDetailInfoView: navigateToNovelDetailInfoView,
                       tasteRecommendCollectionViewHeight: tasteRecommendCollectionViewHeight)
     }
