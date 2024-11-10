@@ -58,6 +58,7 @@ final class HomeTasteRecommendView: UIView {
             $0.scrollDirection = .vertical
             $0.minimumLineSpacing = 18
             $0.minimumInteritemSpacing = 9
+            $0.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 40, right: 0)
             $0.itemSize = CGSize(width: (UIScreen.main.bounds.width - 49) / 2, height: 300)
             tasteRecommendCollectionView.setCollectionViewLayout($0, animated: false)
         }
