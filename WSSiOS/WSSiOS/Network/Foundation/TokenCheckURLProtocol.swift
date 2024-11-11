@@ -5,7 +5,6 @@
 //  Created by YunhakLee on 11/10/24.
 //
 
-import Foundation
 import RxSwift
 import UIKit
 
@@ -66,7 +65,7 @@ class TokenCheckURLProtocol: URLProtocol {
                             retryTask.resume()
                         }, onFailure: { owner, error in
                             print("====== Fail To Get New Token ====== ")
-                            // 실패 시 처리 (예: 로그인 화면으로 이동)
+                            // 실패 시 토큰을 삭제하고 로그인 VC로 이동
                             DispatchQueue.main.async {
                                 owner.deleteTokens()
                                 owner.moveToLoginViewController()
@@ -84,7 +83,7 @@ class TokenCheckURLProtocol: URLProtocol {
                     self.client?.urlProtocolDidFinishLoading(self)
                 }
             } else if let error = error {
-                // 에러 처리
+                // 일반적인 에러 처리
                 self.client?.urlProtocol(self, didFailWithError: error)
             }
         }
