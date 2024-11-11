@@ -138,6 +138,12 @@ final class FeedDetailViewController: UIViewController {
                 }
                 .disposed(by: disposeBag)
         
+        output.myProfileData
+            .subscribe(with: self, onNext: { owner, data in
+                owner.rootView.replyWritingView.bindUserProfile(data)
+            })
+            .disposed(by: disposeBag)
+        
         output.popViewController
             .drive(with: self, onNext: { owner, _ in
                 owner.popToLastViewController()

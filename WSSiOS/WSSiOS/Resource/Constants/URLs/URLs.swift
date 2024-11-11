@@ -14,6 +14,7 @@ enum URLs {
         static let patchUserNickname = userBasePath + "/nickname"
         static let getUserNovelStatus = userBasePath + "/user-novel-stats"
         static let userInfo = userBasePath + "/info"
+        static let myProfile = userBasePath + "/my-profile"
     }
     
     enum Novel {

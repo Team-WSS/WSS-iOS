@@ -15,11 +15,13 @@ final class FeedDetailViewModel: ViewModelType {
     //MARK: - Properties
     
     private let feedDetailRepository: FeedDetailRepository
+    private let userRepository: UserRepository
     private let disposeBag = DisposeBag()
-    let feedId: Int
     
+    let feedId: Int
     private let feedData = PublishSubject<Feed>()
     let commentsData = BehaviorRelay<[FeedComment]>(value: [])
+    private let myProfileData = PublishRelay<MyProfileResult>()
     private let replyCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
     
     // 작품 연결
@@ -66,8 +68,9 @@ final class FeedDetailViewModel: ViewModelType {
     
     //MARK: - Life Cycle
     
-    init(feedDetailRepository: FeedDetailRepository, feedId: Int) {
+    init(feedDetailRepository: FeedDetailRepository, userRepository: UserRepository, feedId: Int) {
         self.feedDetailRepository = feedDetailRepository
+        self.userRepository = userRepository
         self.feedId = feedId
     }
     
@@ -100,6 +103,7 @@ final class FeedDetailViewModel: ViewModelType {
     struct Output {
         let feedData: Observable<Feed>
         let commentsData: Driver<[FeedComment]>
+        let myProfileData: Observable<MyProfileResult>
         let popViewController: Driver<Void>
         let replyCollectionViewHeight: Driver<CGFloat>
         
@@ -155,6 +159,14 @@ final class FeedDetailViewModel: ViewModelType {
         getSingleFeedComments(feedId)
             .subscribe(with: self, onNext: { owner, data in
                 owner.commentsData.accept(data.comments)
+            }, onError: { owner, error in
+                print(error)
+            })
+            .disposed(by: disposeBag)
+        
+        getMyProfile()
+            .subscribe(with: self, onNext: { owner, data in
+                owner.myProfileData.accept(data)
             }, onError: { owner, error in
                 print(error)
             })
@@ -334,6 +346,7 @@ final class FeedDetailViewModel: ViewModelType {
         
         return Output(feedData: feedData.asObservable(),
                       commentsData: commentsData.asDriver(),
+                      myProfileData: myProfileData.asObservable(),
                       popViewController: popViewController,
                       replyCollectionViewHeight: replyCollectionViewContentSize,
                       likeCount: likeCount.asDriver(),
@@ -412,6 +425,11 @@ final class FeedDetailViewModel: ViewModelType {
     
     func postImpertinenceComment(_ feedId: Int, _ commentId: Int) -> Observable<Void> {
         return feedDetailRepository.postImpertinenceComment(feedId: feedId, commentId: commentId)
+            .observe(on: MainScheduler.instance)
+    }
+    
+    func getMyProfile() -> Observable<MyProfileResult> {
+        return userRepository.getMyProfileData()
             .observe(on: MainScheduler.instance)
     }
     
