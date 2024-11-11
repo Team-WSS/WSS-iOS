@@ -84,11 +84,7 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
             $0.applyWSSFont(.body5, with: StringLiterals.Feed.modifiedText)
             $0.textColor = .wssGray200
         }
-        
-        replyContentLabel.do {
-            $0.textColor = .wssBlack
-        }
-        
+
         threeDotsButton.do {
             $0.setImage(.icThreedots.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray200), for: .normal)
             $0.contentMode = .scaleAspectFit
@@ -147,12 +143,30 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
         self.comment.accept(data)
         
         self.userProfileImageView.kfSetImage(url: makeBucketImageURLString(path: data.userProfileImage))
-        self.userNicknameLabel.applyWSSFont(.title2, with: data.userNickname)
+        self.userNicknameLabel.do {
+            if data.isBlocked {
+                $0.applyWSSFont(.title2, with: StringLiterals.FeedDetail.deleteAccountUserNickname)
+            } else {
+                $0.applyWSSFont(.title2, with: data.userNickname)
+            }
+        }
         self.createdDateLabel.applyWSSFont(.body5, with: data.createdDate)
         self.isModifiedLabel.isHidden = !data.isModified
         self.replyContentLabel.do {
-            $0.applyWSSFont(.body2, with: data.commentContent)
-            $0.numberOfLines = 0
+            if data.isSpoiler {
+                $0.applyWSSFont(.body2, with: StringLiterals.FeedDetail.spoilerComment)
+                $0.textColor = .wssSecondary100
+            } else if data.isBlocked {
+                $0.applyWSSFont(.body2, with: StringLiterals.FeedDetail.blockedComment)
+                $0.textColor = .wssGray200
+            } else if data.isHidden {
+                $0.applyWSSFont(.body2, with: StringLiterals.FeedDetail.hiddenComment)
+                $0.textColor = .wssGray200
+            } else {
+                $0.applyWSSFont(.body2, with: data.commentContent)
+                $0.textColor = .wssBlack
+                $0.numberOfLines = 0
+            }
         }
     }
 }
