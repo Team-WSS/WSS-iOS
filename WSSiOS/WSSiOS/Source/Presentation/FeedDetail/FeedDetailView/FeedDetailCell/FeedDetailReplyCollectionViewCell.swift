@@ -81,6 +81,7 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
         }
         
         isModifiedLabel.do {
+            $0.applyWSSFont(.body5, with: StringLiterals.Feed.modifiedText)
             $0.textColor = .wssGray200
         }
         
@@ -148,9 +149,7 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
         self.userProfileImageView.kfSetImage(url: makeBucketImageURLString(path: data.userProfileImage))
         self.userNicknameLabel.applyWSSFont(.title2, with: data.userNickname)
         self.createdDateLabel.applyWSSFont(.body5, with: data.createdDate)
-        if data.isModified {
-            self.isModifiedLabel.applyWSSFont(.body5, with: StringLiterals.Feed.modifiedText)
-        }
+        self.isModifiedLabel.isHidden = !data.isModified
         self.replyContentLabel.do {
             $0.applyWSSFont(.body2, with: data.commentContent)
             $0.numberOfLines = 0
