@@ -118,6 +118,7 @@ final class FeedDetailViewController: UIViewController {
         )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
+        // 전체
         output.feedData
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
@@ -146,6 +147,7 @@ final class FeedDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        // 관심 버튼
         output.likeCount
             .drive(with: self, onNext: { owner, count in
                 owner.rootView.feedContentView.reactView.updateLikeCount(count)
@@ -158,6 +160,14 @@ final class FeedDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        // 작품 연결
+        output.presentNovelDetailViewController
+            .subscribe(with: self, onNext: { owner, novelId in
+                owner.pushToDetailViewController(novelId: novelId)
+            })
+            .disposed(by: disposeBag)
+        
+        // 댓글 작성
         RxKeyboard.instance.visibleHeight
             .skip(1)
             .drive(with: self, onNext: { owner, keyboardHeight in
@@ -183,12 +193,6 @@ final class FeedDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.presentNovelDetailViewController
-            .subscribe(with: self, onNext: { owner, novelId in
-                owner.pushToDetailViewController(novelId: novelId)
-            })
-            .disposed(by: disposeBag)
-        
         output.commentCount
             .drive(with: self, onNext: { owner, count in
                 owner.rootView.feedContentView.reactView.updateCommentCount(count)
@@ -210,7 +214,7 @@ final class FeedDetailViewController: UIViewController {
         
         output.commentContentWithLengthLimit
             .subscribe(with: self, onNext: { owner, limit in
-                
+                // 댓글 500자 제한
             })
             .disposed(by: disposeBag)
         
@@ -221,6 +225,7 @@ final class FeedDetailViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.textViewEmpty
+            .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, isEmpty in
                 if isEmpty {
                     owner.rootView.replyWritingView.makeTextViewEmpty()
@@ -228,6 +233,7 @@ final class FeedDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        // 피드 드롭다운
         output.showDropdownView
             .drive(with: self, onNext: { owner, isShow in
                 owner.rootView.dropdownView.isHidden = !isShow
@@ -240,6 +246,7 @@ final class FeedDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        // 피드 드롭다운 내 이벤트
         output.showSpoilerAlertView
             .flatMapLatest { _ -> Observable<AlertButtonType> in
                 return self.presentToAlertViewController(
@@ -331,6 +338,7 @@ final class FeedDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        // 댓글 드롭다운
         output.showCommentDropdownView
             .subscribe(with: self, onNext: { owner, data in
                 let (indexPath, isMyComment) = data
@@ -351,6 +359,7 @@ final class FeedDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        // 댓글 드롭다운 내 이벤트
         output.showCommentSpoilerAlertView
             .flatMapLatest { postSpoilerComment, commentId in
                 self.presentToAlertViewController(
@@ -422,9 +431,8 @@ final class FeedDetailViewController: UIViewController {
         
         output.myCommentEditing
             .subscribe(with: self, onNext: { owner, _ in
-                if let commentContent = owner.viewModel.selectedCommentContent {
-                    owner.rootView.replyWritingView.setCommentText(commentContent)
-                }
+                owner.rootView.replyWritingView.replyWritingTextView.becomeFirstResponder()
+                owner.rootView.replyWritingView.setCommentText(owner.viewModel.selectedCommentContent)
             })
             .disposed(by: disposeBag)
         

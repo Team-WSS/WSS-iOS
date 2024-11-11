@@ -52,7 +52,7 @@ final class FeedDetailViewModel: ViewModelType {
     
     // 댓글 드롭다운
     var selectedCommentId: Int = 0
-    var selectedCommentContent: String?
+    var selectedCommentContent: String = ""
     private var isMyComment: Bool = false
     private let showCommentDropdownView = PublishRelay<(IndexPath, Bool)>()
     private let hideCommentDropdownView = PublishRelay<Void>()
@@ -60,6 +60,7 @@ final class FeedDetailViewModel: ViewModelType {
     // 댓글 드롭다운 내 이벤트
     let showCommentSpoilerAlertView  = PublishRelay<((Int, Int) -> Observable<Void>, Int)>()
     let showCommentImproperAlertView  = PublishRelay<((Int, Int) -> Observable<Void>, Int)>()
+    var isCommentEditing: Bool = false
     let myCommentEditing = PublishRelay<Void>()
     let showCommentDeleteAlertView  = PublishRelay<((Int, Int) -> Observable<Void>, Int)>()
     
@@ -232,7 +233,10 @@ final class FeedDetailViewModel: ViewModelType {
         input.sendButtonDidTap
             .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
             .flatMapLatest { () -> Observable<Void> in
-                return self.postComment(self.feedId, self.updatedCommentContent)
+                if self.isCommentEditing {
+                    return self.putComment(self.feedId,
+                                           self.selectedCommentId,
+                                           self.updatedCommentContent)
                     .flatMapLatest { _ in
                         self.getSingleFeedComments(self.feedId)
                             .do(onNext: { newComments in
@@ -240,16 +244,31 @@ final class FeedDetailViewModel: ViewModelType {
                             })
                             .map { _ in () }
                     }
-                    .observe(on: MainScheduler.instance)
                     .do(onNext: {
                         self.updatedCommentContent = ""
                         self.textViewEmpty.accept(true)
                         self.commentContentWithLengthLimit.accept("")
                         self.showPlaceholder.accept(true)
-                        
-                        let newCommentCount = self.commentCount.value + 1
-                        self.commentCount.accept(newCommentCount)
                     })
+                } else {
+                    return self.postComment(self.feedId, self.updatedCommentContent)
+                        .flatMapLatest { _ in
+                            self.getSingleFeedComments(self.feedId)
+                                .do(onNext: { newComments in
+                                    self.commentsData.accept(newComments.comments)
+                                })
+                                .map { _ in () }
+                        }
+                        .do(onNext: {
+                            self.updatedCommentContent = ""
+                            self.textViewEmpty.accept(true)
+                            self.commentContentWithLengthLimit.accept("")
+                            self.showPlaceholder.accept(true)
+                            
+                            let newCommentCount = self.commentCount.value + 1
+                            self.commentCount.accept(newCommentCount)
+                        })
+                }
             }
             .subscribe()
             .disposed(by: disposeBag)
@@ -281,6 +300,7 @@ final class FeedDetailViewModel: ViewModelType {
                     if let index = owner.commentsData.value.firstIndex(where: { $0.commentId == commentId }) {
                         let indexPath = IndexPath(row: index, section: 0)
                         owner.showCommentDropdownView.accept((indexPath, isMyComment))
+                        owner.selectedCommentContent = owner.commentsData.value[index].commentContent
                     }
                 }
                 owner.selectedCommentId = commentId
@@ -293,7 +313,9 @@ final class FeedDetailViewModel: ViewModelType {
             .subscribe(with: self, onNext: { owner, result in
                 owner.hideCommentDropdownView.accept(())
                 switch result {
-                case (.top, true): owner.pushToFeedEditViewController.accept(())
+                case (.top, true):
+                    owner.isCommentEditing = true
+                    owner.myCommentEditing.accept(())
                 case (.bottom, true): owner.showCommentDeleteAlertView.accept((owner.deleteComment, owner.selectedCommentId))
                 case (.top, false): owner.showCommentSpoilerAlertView.accept((owner.postSpoilerComment, owner.selectedCommentId))
                 case (.bottom, false): owner.showCommentImproperAlertView.accept((owner.postImpertinenceComment, owner.selectedCommentId))
@@ -349,10 +371,12 @@ final class FeedDetailViewModel: ViewModelType {
     
     func postComment(_ feedId: Int, _ commentContent: String) -> Observable<Void> {
         return feedDetailRepository.postComment(feedId: feedId, commentContent: commentContent)
+            .observe(on: MainScheduler.instance)
     }
     
-    func putComment(_ feedId: Int, commentId: Int, commentContent: String) -> Observable<Void> {
+    func putComment(_ feedId: Int, _ commentId: Int, _ commentContent: String) -> Observable<Void> {
         return feedDetailRepository.putComment(feedId: feedId, commentId: commentId, commentContent: commentContent)
+            .observe(on: MainScheduler.instance)
     }
     
     func deleteComment(_ feedId: Int, _ commentId: Int) -> Observable<Void> {
