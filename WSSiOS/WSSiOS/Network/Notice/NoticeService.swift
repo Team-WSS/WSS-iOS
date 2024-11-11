@@ -28,7 +28,7 @@ final class DefaultNoticeService: NSObject, Networking, NoticeService {
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0, to: Notices.self) }
                 .asSingle()
         } catch {

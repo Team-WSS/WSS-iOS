@@ -18,11 +18,7 @@ protocol NovelDetailService {
     func deleteNovelReview(novelId: Int) -> Single<Void>
 }
 
-final class DefaultNovelDetailService: NSObject, Networking {
-    private var urlSession: URLSession = URLSession(configuration: URLSessionConfiguration.default,
-                                                    delegate: nil,
-                                                    delegateQueue: nil)
-}
+final class DefaultNovelDetailService: NSObject, Networking { }
 
 extension DefaultNovelDetailService: NovelDetailService {
     func deleteNovelReview(novelId: Int) -> Single<Void> {
@@ -34,7 +30,7 @@ extension DefaultNovelDetailService: NovelDetailService {
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
         } catch {
@@ -51,7 +47,7 @@ extension DefaultNovelDetailService: NovelDetailService {
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
         } catch {
@@ -68,7 +64,7 @@ extension DefaultNovelDetailService: NovelDetailService {
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
         } catch {
@@ -85,7 +81,7 @@ extension DefaultNovelDetailService: NovelDetailService {
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: NovelDetailHeaderResult.self) }
                 .asSingle()
@@ -103,7 +99,7 @@ extension DefaultNovelDetailService: NovelDetailService {
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: NovelDetailInfoResult.self) }
                 .asSingle()
@@ -126,7 +122,7 @@ extension DefaultNovelDetailService: NovelDetailService {
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: NovelDetailFeedResult.self) }
                 .asSingle()

@@ -29,10 +29,6 @@ final class DefaultUserService: NSObject, Networking {
             URLQueryItem(name: "birth", value: String(describing: birth))
         ]
     }
-    
-    private var urlSession: URLSession = URLSession(configuration: URLSessionConfiguration.default,
-                                                    delegate: nil,
-                                                    delegateQueue: nil)
 }
 
 extension DefaultUserService: UserService {
@@ -46,7 +42,7 @@ extension DefaultUserService: UserService {
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: UserResult.self) }
                 .asSingle()
@@ -71,7 +67,7 @@ extension DefaultUserService: UserService {
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
         } catch {
@@ -88,7 +84,7 @@ extension DefaultUserService: UserService {
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: UserCharacter.self) }
                 .asSingle()
@@ -106,7 +102,7 @@ extension DefaultUserService: UserService {
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: UserNovelStatus.self) }
                 .asSingle()
@@ -124,7 +120,7 @@ extension DefaultUserService: UserService {
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: UserInfo.self) }
                 .asSingle()
@@ -151,7 +147,7 @@ extension DefaultUserService: UserService {
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
         } catch {

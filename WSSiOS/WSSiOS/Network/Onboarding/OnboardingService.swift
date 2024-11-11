@@ -14,11 +14,7 @@ protocol OnboardingService {
     func postUserProfile(userInfoResult: UserInfoResult) -> Single<Void>
 }
 
-final class DefaultOnboardingService: NSObject, Networking {
-    private var urlSession: URLSession = URLSession(configuration: URLSessionConfiguration.default,
-                                                    delegate: nil,
-                                                    delegateQueue: nil)
-}
+final class DefaultOnboardingService: NSObject, Networking { }
 
 extension DefaultOnboardingService: OnboardingService {
     func getNicknameisValid(_ nickname: String) -> Single<OnboardingResult> {
@@ -37,7 +33,7 @@ extension DefaultOnboardingService: OnboardingService {
             
             NetworkLogger.log(request: request)
             
-            return customUrlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: OnboardingResult.self) }
                 .asSingle()
@@ -61,7 +57,7 @@ extension DefaultOnboardingService: OnboardingService {
             
             NetworkLogger.log(request: request)
             
-            return customUrlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
         } catch {

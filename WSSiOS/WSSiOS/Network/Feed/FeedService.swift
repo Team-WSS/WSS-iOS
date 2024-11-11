@@ -28,10 +28,6 @@ final class DefaultFeedService: NSObject, Networking, FeedService {
         ]
     }
 
-    private var urlSession: URLSession = URLSession(configuration: URLSessionConfiguration.default,
-                                                    delegate: nil,
-                                                    delegateQueue: nil)
-
     func getFeedList(category: String, lastFeedId: Int, size: Int) -> RxSwift.Single<TotalFeed> {
         do {
             let request = try makeHTTPRequest(method: .get,
@@ -44,7 +40,7 @@ final class DefaultFeedService: NSObject, Networking, FeedService {
 
             NetworkLogger.log(request: request)
 
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: TotalFeed.self) }
                 .asSingle()
@@ -67,7 +63,7 @@ final class DefaultFeedService: NSObject, Networking, FeedService {
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
         } catch {
@@ -88,7 +84,7 @@ final class DefaultFeedService: NSObject, Networking, FeedService {
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
         } catch {

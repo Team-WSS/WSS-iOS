@@ -28,10 +28,6 @@ protocol NovelReviewService {
 }
 
 final class DefaultNovelReviewService: NSObject, Networking, NovelReviewService {
-    private var urlSession: URLSession = URLSession(configuration: URLSessionConfiguration.default,
-                                                    delegate: nil,
-                                                    delegateQueue: nil)
-    
     func postNovelReview(novelId: Int,
                          userNovelRating: Float,
                          status: String,
@@ -51,7 +47,7 @@ final class DefaultNovelReviewService: NSObject, Networking, NovelReviewService 
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
         } catch {
@@ -78,7 +74,7 @@ final class DefaultNovelReviewService: NSObject, Networking, NovelReviewService 
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
         } catch {
@@ -95,7 +91,7 @@ final class DefaultNovelReviewService: NSObject, Networking, NovelReviewService 
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: NovelReviewResult.self) }
                 .asSingle()

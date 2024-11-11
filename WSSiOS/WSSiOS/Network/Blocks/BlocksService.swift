@@ -14,11 +14,7 @@ protocol BlocksService {
     func deleteBlockUser(blockID: Int) -> Single<Void>
 }
 
-final class DefaultBlocksService: NSObject, Networking {
-    private var urlSession: URLSession = URLSession(configuration: URLSessionConfiguration.default,
-                                                    delegate: nil,
-                                                    delegateQueue: nil)
-}
+final class DefaultBlocksService: NSObject, Networking { }
 
 extension DefaultBlocksService: BlocksService {
     func getBlocksList() -> RxSwift.Single<BlockUserResult> {
@@ -30,7 +26,7 @@ extension DefaultBlocksService: BlocksService {
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: BlockUserResult.self) }
                 .asSingle()
@@ -49,7 +45,7 @@ extension DefaultBlocksService: BlocksService {
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
         } catch {

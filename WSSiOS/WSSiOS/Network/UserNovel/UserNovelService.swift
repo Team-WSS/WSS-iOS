@@ -29,10 +29,6 @@ final class DefaultUserNovelService: NSObject, Networking {
             URLQueryItem(name: "sortType", value: sortType)
         ]
     }
-    
-    private var urlSession: URLSession = URLSession(configuration: URLSessionConfiguration.default,
-                                                    delegate: nil,
-                                                    delegateQueue: nil)
 }
 
 extension DefaultUserNovelService: UserNovelService {
@@ -49,7 +45,7 @@ extension DefaultUserNovelService: UserNovelService {
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: UserNovelList.self) }
                 .asSingle()
@@ -67,7 +63,7 @@ extension DefaultUserNovelService: UserNovelService {
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: UserNovelDetail.self) }
                 .asSingle()
@@ -85,7 +81,7 @@ extension DefaultUserNovelService: UserNovelService {
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
         } catch {
@@ -111,7 +107,7 @@ extension DefaultUserNovelService: UserNovelService {
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0, to: UserNovelId.self) }
                 .asSingle()
         } catch {
@@ -137,7 +133,7 @@ extension DefaultUserNovelService: UserNovelService {
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
         } catch {

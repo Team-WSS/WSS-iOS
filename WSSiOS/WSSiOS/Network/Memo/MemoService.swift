@@ -19,9 +19,6 @@ protocol MemoService {
 
 final class DefaultMemoService: NSObject, Networking {
     private var recordListSize = 1000
-    private var urlSession = URLSession(configuration: URLSessionConfiguration.default,
-                                        delegate: nil,
-                                        delegateQueue: nil)
 }
 
 extension DefaultMemoService: MemoService {
@@ -40,7 +37,7 @@ extension DefaultMemoService: MemoService {
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0, to: RecordMemos.self) }
                 .asSingle()
         } catch {
@@ -61,7 +58,7 @@ extension DefaultMemoService: MemoService {
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0, to: IsAvatarUnlocked.self) }
                 .asSingle()
         } catch {
@@ -78,7 +75,7 @@ extension DefaultMemoService: MemoService {
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0, to: MemoDetail.self) }
                 .asSingle()
         } catch {
@@ -95,7 +92,7 @@ extension DefaultMemoService: MemoService {
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
         } catch {
@@ -116,7 +113,7 @@ extension DefaultMemoService: MemoService {
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
         } catch {

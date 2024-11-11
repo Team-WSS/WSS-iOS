@@ -16,10 +16,6 @@ protocol AuthService {
 }
 
 final class DefaultAuthService: NSObject, Networking, AuthService {
-    private var urlSession: URLSession = URLSession(configuration: URLSessionConfiguration.default,
-                                                    delegate: nil,
-                                                    delegateQueue: nil)
-    
     func loginWithApple(userIdentifier: String, email: String?) -> RxSwift.Single<LoginResult> {
         guard let appleLoginBody = try? JSONEncoder().encode(AppleLoginBody(userIdentifier: userIdentifier, email: email)) else {
             return Single.error(NetworkServiceError.invalidRequestError)
@@ -33,7 +29,7 @@ final class DefaultAuthService: NSObject, Networking, AuthService {
 
             NetworkLogger.log(request: request)
 
-            return urlSession.rx.data(request: request)
+            return basicURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: LoginResult.self) }
                 .asSingle()
@@ -60,7 +56,7 @@ final class DefaultAuthService: NSObject, Networking, AuthService {
 
             NetworkLogger.log(request: request)
 
-            return urlSession.rx.data(request: request)
+            return basicURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: ReissueResult.self) }
                 .asSingle()

@@ -16,12 +16,7 @@ protocol RecommendService {
     func getTasteRecommendNovels() -> Single<TasteRecommendNovels>
 }
 
-final class DefaultRecommendService: NSObject, Networking {
-    
-    private var urlSession = URLSession(configuration: URLSessionConfiguration.default,
-                                        delegate: nil,
-                                        delegateQueue: nil)
-}
+final class DefaultRecommendService: NSObject, Networking { }
 
 extension DefaultRecommendService: RecommendService {
     /// 오늘의 인기작 조회
@@ -34,7 +29,7 @@ extension DefaultRecommendService: RecommendService {
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: TodayPopularNovels.self) }
                 .asSingle()
@@ -54,7 +49,7 @@ extension DefaultRecommendService: RecommendService {
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: RealtimePopularFeeds.self) }
                 .asSingle()
@@ -74,7 +69,7 @@ extension DefaultRecommendService: RecommendService {
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: InterestFeeds.self) }
                 .asSingle()
@@ -94,7 +89,7 @@ extension DefaultRecommendService: RecommendService {
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: TasteRecommendNovels.self) }
                 .asSingle()

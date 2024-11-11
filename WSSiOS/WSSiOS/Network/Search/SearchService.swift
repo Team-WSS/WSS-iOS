@@ -20,12 +20,7 @@ protocol SearchService {
                             size: Int) -> Single<DetailSearchNovels>
 }
 
-final class DefaultSearchService: NSObject, Networking {
-    
-    private var urlSession = URLSession(configuration: URLSessionConfiguration.default,
-                                        delegate: nil,
-                                        delegateQueue: nil)
-}
+final class DefaultSearchService: NSObject, Networking { }
 
 extension DefaultSearchService: SearchService {
     func getSosopicks() -> Single<SosoPickNovels> {
@@ -37,7 +32,7 @@ extension DefaultSearchService: SearchService {
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: SosoPickNovels.self) }
                 .asSingle()
@@ -63,7 +58,7 @@ extension DefaultSearchService: SearchService {
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: NormalSearchNovels.self) }
                 .asSingle()
@@ -104,7 +99,7 @@ extension DefaultSearchService: SearchService {
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: DetailSearchNovels.self) }
                 .asSingle()
