@@ -193,7 +193,7 @@ final class FeedDetailViewController: UIViewController {
                     self.rootView.layoutIfNeeded()
                 } completion: { _ in
                     owner.rootView.scrollView.setContentOffset(
-                        CGPoint(x: 0, y: max(0, owner.rootView.scrollView.contentSize.height - owner.rootView.scrollView.bounds.height)),
+                        CGPoint(x: 0, y: max(0, owner.rootView.scrollView.contentSize.height - owner.rootView.scrollView.bounds.height + 20)),
                         animated: true
                     )
                 }

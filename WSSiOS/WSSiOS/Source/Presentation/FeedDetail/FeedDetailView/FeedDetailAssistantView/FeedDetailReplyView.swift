@@ -43,7 +43,7 @@ final class FeedDetailReplyView: UIView {
             $0.scrollDirection = .vertical
             $0.itemSize = CGSize(width: UIScreen.main.bounds.width, height: 45)
             $0.minimumLineSpacing = 22
-            $0.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 120, right: 0)
+            $0.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 60, right: 0)
             replyCollectionView.setCollectionViewLayout($0, animated: true)
         }
         
@@ -99,9 +99,10 @@ final class FeedDetailReplyView: UIView {
         guard let cell = replyCollectionView.cellForItem(at: indexPath) else { return }
         
         let cellFrameInSuperview = cell.convert(cell.bounds, to: self)
+        let isLastTwoCells = indexPath.item >= replyCollectionView.numberOfItems(inSection: indexPath.section) - 2
         
         dropdownView.snp.updateConstraints {
-            $0.top.equalToSuperview().inset(cellFrameInSuperview.minY + 40)
+            $0.top.equalToSuperview().inset(isLastTwoCells ? cellFrameInSuperview.minY - dropdownView.frame.height : cellFrameInSuperview.minY + 40)
             $0.trailing.equalToSuperview().inset(20)
         }
     }
