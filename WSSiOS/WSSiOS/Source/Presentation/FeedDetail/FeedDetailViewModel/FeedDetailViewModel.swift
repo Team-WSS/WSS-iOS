@@ -60,11 +60,11 @@ final class FeedDetailViewModel: ViewModelType {
     private let hideCommentDropdownView = PublishRelay<Void>()
     private let toggleDropdownView = PublishRelay<Void>()
     // 댓글 드롭다운 내 이벤트
-    let showCommentSpoilerAlertView  = PublishRelay<((Int, Int) -> Observable<Void>, Int)>()
-    let showCommentImproperAlertView  = PublishRelay<((Int, Int) -> Observable<Void>, Int)>()
+    let showCommentSpoilerAlertView  = PublishRelay<((Int, Int) -> Observable<Void>, Int, Int)>()
+    let showCommentImproperAlertView  = PublishRelay<((Int, Int) -> Observable<Void>, Int, Int)>()
     var isCommentEditing: Bool = false
     let myCommentEditing = PublishRelay<Void>()
-    let showCommentDeleteAlertView  = PublishRelay<((Int, Int) -> Observable<Void>, Int)>()
+    let showCommentDeleteAlertView  = PublishRelay<((Int, Int) -> Observable<Void>, Int, Int)>()
     
     //MARK: - Life Cycle
     
@@ -136,10 +136,10 @@ final class FeedDetailViewModel: ViewModelType {
         let hideCommentDropdownView: Observable<Void>
         let toggleDropdownView: Observable<Void>
         // 댓글 드롭다운 내 이벤트
-        let showCommentSpoilerAlertView: Observable<((Int, Int) -> Observable<Void>, Int)>
-        let showCommentImproperAlertView: Observable<((Int, Int) -> Observable<Void>, Int)>
+        let showCommentSpoilerAlertView: Observable<((Int, Int) -> Observable<Void>, Int, Int)>
+        let showCommentImproperAlertView: Observable<((Int, Int) -> Observable<Void>, Int, Int)>
         let myCommentEditing: Observable<Void>
-        let showCommentDeleteAlertView: Observable<((Int, Int) -> Observable<Void>, Int)>
+        let showCommentDeleteAlertView: Observable<((Int, Int) -> Observable<Void>, Int, Int)>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -330,10 +330,16 @@ final class FeedDetailViewModel: ViewModelType {
                     owner.isCommentEditing = true
                     owner.myCommentEditing.accept(())
                 case (.bottom, true):
-                    owner.showCommentDeleteAlertView.accept((owner.deleteComment, owner.selectedCommentId))
+                    owner.showCommentDeleteAlertView.accept((owner.deleteComment,
+                                                             owner.feedId,
+                                                             owner.selectedCommentId))
                     owner.commentCount.accept(owner.commentCount.value - 1)
-                case (.top, false): owner.showCommentSpoilerAlertView.accept((owner.postSpoilerComment, owner.selectedCommentId))
-                case (.bottom, false): owner.showCommentImproperAlertView.accept((owner.postImpertinenceComment, owner.selectedCommentId))
+                case (.top, false): owner.showCommentSpoilerAlertView.accept((owner.postSpoilerComment,
+                                                                              owner.feedId,
+                                                                              owner.selectedCommentId))
+                case (.bottom, false): owner.showCommentImproperAlertView.accept((owner.postImpertinenceComment,
+                                                                                  owner.feedId,
+                                                                                  owner.selectedCommentId))
                 }
             })
             .disposed(by: disposeBag)

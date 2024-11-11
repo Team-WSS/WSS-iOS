@@ -376,7 +376,7 @@ final class FeedDetailViewController: UIViewController {
         
         // 댓글 드롭다운 내 이벤트
         output.showCommentDeleteAlertView
-            .flatMapLatest { deleteComment, commentId in
+            .flatMapLatest { deleteComment, feedId, commentId in
                 self.presentToAlertViewController(
                     iconImage: .icAlertWarningCircle,
                     titleText: StringLiterals.FeedDetail.deleteMineTitle,
@@ -387,7 +387,7 @@ final class FeedDetailViewController: UIViewController {
                 )
                 .flatMapLatest { buttonType in
                     if buttonType == .right {
-                        return deleteComment(self.viewModel.feedId, commentId)
+                        return deleteComment(feedId, commentId)
                     } else {
                         return Observable.empty()
                     }
@@ -401,7 +401,7 @@ final class FeedDetailViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.showCommentSpoilerAlertView
-            .flatMapLatest { postSpoilerComment, commentId in
+            .flatMapLatest { postSpoilerComment, feedId ,commentId in
                 self.presentToAlertViewController(
                     iconImage: .icAlertWarningCircle,
                     titleText: StringLiterals.FeedDetail.spoilerTitle,
@@ -412,7 +412,7 @@ final class FeedDetailViewController: UIViewController {
                 )
                 .flatMapLatest { buttonType in
                     if buttonType == .right {
-                        return postSpoilerComment(self.viewModel.feedId, commentId)
+                        return postSpoilerComment(feedId, commentId)
                     } else {
                         return Observable.empty()
                     }
@@ -437,7 +437,7 @@ final class FeedDetailViewController: UIViewController {
         
         
         output.showCommentImproperAlertView
-            .flatMapLatest { postImpertinenceComment, commentId in
+            .flatMapLatest { postImpertinenceComment, feedId, commentId in
                 self.presentToAlertViewController(
                     iconImage: .icAlertWarningCircle,
                     titleText: StringLiterals.FeedDetail.impertinentTitle,
@@ -448,7 +448,7 @@ final class FeedDetailViewController: UIViewController {
                 )
                 .flatMapLatest { buttonType in
                     if buttonType == .right {
-                        return postImpertinenceComment(self.viewModel.feedId, commentId)
+                        return postImpertinenceComment(feedId, commentId)
                     } else {
                         return Observable.empty()
                     }
