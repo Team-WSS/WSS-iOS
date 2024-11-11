@@ -20,6 +20,7 @@ final class FeedDetailViewController: UIViewController {
     private let disposeBag = DisposeBag()
     
     private let commentDotsButtonDidTap = PublishRelay<(Int, Bool)>()
+    private let maximumCommentContentCount: Int = 500
     
     //MARK: - UI Components
     
@@ -216,12 +217,6 @@ final class FeedDetailViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 owner.rootView.replyWritingView.replyWritingTextView.resignFirstResponder()
-            })
-            .disposed(by: disposeBag)
-        
-        output.commentContentWithLengthLimit
-            .subscribe(with: self, onNext: { owner, limit in
-                // 댓글 500자 제한
             })
             .disposed(by: disposeBag)
         
@@ -503,6 +498,10 @@ extension FeedDetailViewController: UICollectionViewDelegateFlowLayout {
 
 extension FeedDetailViewController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
+        if textView.text.count > maximumCommentContentCount {
+            textView.deleteBackward()
+        }
+        
         let size = CGSize(width: rootView.replyWritingView.replyWritingTextView.frame.width, height: .infinity)
         let estimatedSize = textView.sizeThatFits(size)
         

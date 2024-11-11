@@ -37,8 +37,6 @@ final class FeedDetailViewModel: ViewModelType {
     var initialCommentContent: String = ""
     private var updatedCommentContent: String = ""
     private var isValidCommentContent: Bool = false
-    private let maximumCommentContentCount: Int = 500
-    private let commentContentWithLengthLimit = BehaviorRelay<String>(value: "")
     private let showPlaceholder = BehaviorRelay<Bool>(value: true)
     private let sendButtonEnabled = BehaviorRelay<Bool>(value: false)
     private let textViewEmpty = BehaviorRelay<Bool>(value: true)
@@ -116,7 +114,6 @@ final class FeedDetailViewModel: ViewModelType {
         let showPlaceholder: Observable<Bool>
         let endEditing: Observable<Bool>
         let textViewResignFirstResponder: Observable<Void>
-        let commentContentWithLengthLimit: Observable<String>
         let sendButtonEnabled: Observable<Bool>
         let textViewEmpty: Observable<Bool>
         
@@ -199,17 +196,12 @@ final class FeedDetailViewModel: ViewModelType {
         
         input.commentContentUpdated
             .subscribe(with: self, onNext: { owner, comment in
-                if comment.count <= owner.maximumCommentContentCount {
-                    owner.updatedCommentContent = comment
-                }
-                let limitedComment = String(comment.prefix(owner.maximumCommentContentCount))
-                owner.commentContentWithLengthLimit.accept(limitedComment)
+                owner.updatedCommentContent = comment
                 
                 let isEmpty = comment.count == 0
-                let isOverLimit = comment.count > owner.maximumCommentContentCount
                 let isNotChanged = comment == owner.initialCommentContent
                 
-                owner.isValidCommentContent = !(isEmpty || isOverLimit || isNotChanged)
+                owner.isValidCommentContent = !(isEmpty || isNotChanged)
                 owner.textViewEmpty.accept(isEmpty)
                 owner.showPlaceholder.accept(isEmpty)
                 owner.sendButtonEnabled.accept(owner.isValidCommentContent)
@@ -252,7 +244,6 @@ final class FeedDetailViewModel: ViewModelType {
                         self.textViewResignFirstResponder.accept(())
                         self.updatedCommentContent = ""
                         self.textViewEmpty.accept(true)
-                        self.commentContentWithLengthLimit.accept("")
                         self.showPlaceholder.accept(true)
                         self.isCommentEditing = false
                     })
@@ -269,7 +260,6 @@ final class FeedDetailViewModel: ViewModelType {
                             self.textViewResignFirstResponder.accept(())
                             self.updatedCommentContent = ""
                             self.textViewEmpty.accept(true)
-                            self.commentContentWithLengthLimit.accept("")
                             self.showPlaceholder.accept(true)
                             
                             let newCommentCount = self.commentCount.value + 1
@@ -341,7 +331,6 @@ final class FeedDetailViewModel: ViewModelType {
                       showPlaceholder: showPlaceholder.asObservable(),
                       endEditing: endEditing.asObservable(),
                       textViewResignFirstResponder: textViewResignFirstResponder.asObservable(),
-                      commentContentWithLengthLimit: commentContentWithLengthLimit.asObservable(),
                       sendButtonEnabled: sendButtonEnabled.asObservable(),
                       textViewEmpty: textViewEmpty.asObservable(),
                       showDropdownView: showDropdownView.asDriver(),
