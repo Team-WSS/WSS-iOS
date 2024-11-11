@@ -429,6 +429,7 @@ final class FeedDetailViewController: UIViewController {
                         rightBackgroundColor: UIColor.wssPrimary100.cgColor
                     )
                 }
+                owner.reloadComments.accept(())
             }, onError: { owner, error in
                 print("Error: \(error)")
             })
@@ -464,6 +465,7 @@ final class FeedDetailViewController: UIViewController {
                         rightBackgroundColor: UIColor.wssPrimary100.cgColor
                     )
                 }
+                owner.reloadComments.accept(())
             }, onError: { owner, error in
                 print("Error: \(error)")
             })
