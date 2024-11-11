@@ -39,7 +39,7 @@ final class DefaultFeedService: NSObject, Networking, FeedService {
                                               queryItems: makeFeedListQuery(category: category,
                                                                             lastFeedId: lastFeedId,
                                                                             size: size),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
 
             NetworkLogger.log(request: request)
@@ -62,7 +62,7 @@ final class DefaultFeedService: NSObject, Networking, FeedService {
         do {
             let request = try makeHTTPRequest(method: .post,
                                               path: URLs.Memo.postFeed,
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: feedContentData)
             
             NetworkLogger.log(request: request)
@@ -83,7 +83,7 @@ final class DefaultFeedService: NSObject, Networking, FeedService {
         do {
             let request = try makeHTTPRequest(method: .put,
                                               path: URLs.Memo.putFeed(feedId: feedId),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: feedContentData)
             
             NetworkLogger.log(request: request)

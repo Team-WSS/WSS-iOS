@@ -35,7 +35,7 @@ extension DefaultMemoService: MemoService {
             let request = try makeHTTPRequest(method: .get,
                                                path: URLs.Memo.getMemoList,
                                                queryItems: recordListQueryItems,
-                                               headers: APIConstants.testTokenHeader,
+                                               headers: APIConstants.accessTokenHeader,
                                                body: nil)
             
             NetworkLogger.log(request: request)
@@ -56,7 +56,7 @@ extension DefaultMemoService: MemoService {
         do {
             let request = try makeHTTPRequest(method: .post,
                                               path: URLs.Memo.postMemo(userNovelId: userNovelId),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: memoContentData)
             
             NetworkLogger.log(request: request)
@@ -73,7 +73,7 @@ extension DefaultMemoService: MemoService {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.Memo.getMemo(memoId: memoId),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
@@ -90,7 +90,7 @@ extension DefaultMemoService: MemoService {
         do {
             let request = try makeHTTPRequest(method: .delete,
                                                path: URLs.Memo.deleteMemo(memoId: memoId),
-                                               headers: APIConstants.testTokenHeader,
+                                               headers: APIConstants.accessTokenHeader,
                                                body: nil)
             
             NetworkLogger.log(request: request)
@@ -111,7 +111,7 @@ extension DefaultMemoService: MemoService {
         do {
             let request = try makeHTTPRequest(method: .patch,
                                               path: URLs.Memo.patchMemo(memoId: memoId),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: memoContentData)
             
             NetworkLogger.log(request: request)

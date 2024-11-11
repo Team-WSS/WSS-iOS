@@ -29,7 +29,7 @@ extension DefaultRecommendService: RecommendService {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.Recommend.getTodayPopulars,
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
@@ -49,7 +49,7 @@ extension DefaultRecommendService: RecommendService {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.Recommend.getRealtimePopulars,
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
@@ -69,7 +69,7 @@ extension DefaultRecommendService: RecommendService {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.Recommend.getInterestFeeds,
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
@@ -89,7 +89,7 @@ extension DefaultRecommendService: RecommendService {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.Recommend.getTasteRecommendNovels,
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)

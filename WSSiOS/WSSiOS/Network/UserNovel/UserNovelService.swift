@@ -44,7 +44,7 @@ extension DefaultUserNovelService: UserNovelService {
                                                                              lastUserNovelId: lastUserNovelId,
                                                                              size: size,
                                                                              sortType: sortType),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
@@ -62,7 +62,7 @@ extension DefaultUserNovelService: UserNovelService {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.UserNovel.getUserNovel(userNovelId: userNovelId),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
@@ -80,7 +80,7 @@ extension DefaultUserNovelService: UserNovelService {
         do {
             let request = try makeHTTPRequest(method: .delete,
                                               path: URLs.UserNovel.deleteUserNovel(userNovelId: userNovelId),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
@@ -106,7 +106,7 @@ extension DefaultUserNovelService: UserNovelService {
         do {
             let request = try makeHTTPRequest(method: .post,
                                                path: URLs.UserNovel.postUserNovel(novelId: novelId),
-                                               headers: APIConstants.testTokenHeader,
+                                               headers: APIConstants.accessTokenHeader,
                                                body: userNovelBasic)
             
             NetworkLogger.log(request: request)
@@ -132,7 +132,7 @@ extension DefaultUserNovelService: UserNovelService {
         do {
             let request = try makeHTTPRequest(method: .patch,
                                                path: URLs.UserNovel.patchUserNovel(userNovelId: userNovelId),
-                                               headers: APIConstants.testTokenHeader,
+                                               headers: APIConstants.accessTokenHeader,
                                                body: userNovelBasic)
             
             NetworkLogger.log(request: request)

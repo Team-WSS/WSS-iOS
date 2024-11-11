@@ -46,7 +46,7 @@ final class DefaultNovelReviewService: NSObject, Networking, NovelReviewService 
         do {
             let request = try makeHTTPRequest(method: .post,
                                               path: URLs.NovelReview.postNovelReview,
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: novelReviewContentData)
             
             NetworkLogger.log(request: request)
@@ -73,7 +73,7 @@ final class DefaultNovelReviewService: NSObject, Networking, NovelReviewService 
         do {
             let request = try makeHTTPRequest(method: .put,
                                               path: URLs.NovelReview.putNovelReview(novelId: novelId),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: novelReviewContentData)
             
             NetworkLogger.log(request: request)
@@ -90,7 +90,7 @@ final class DefaultNovelReviewService: NSObject, Networking, NovelReviewService 
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.NovelReview.getNovelReview(novelId: novelId),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)

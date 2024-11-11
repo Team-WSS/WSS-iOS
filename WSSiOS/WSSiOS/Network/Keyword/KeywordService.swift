@@ -29,7 +29,7 @@ final class DefaultKeywordService: NSObject, Networking, KeywordService {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.Keyword.searchKeyword,
                                               queryItems: searchKeywordQueryItems,
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
 
             NetworkLogger.log(request: request)

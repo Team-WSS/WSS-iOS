@@ -25,7 +25,7 @@ extension DefaultBlocksService: BlocksService {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.MyPage.Block.blocks,
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
@@ -43,7 +43,7 @@ extension DefaultBlocksService: BlocksService {
         do {
             let request = try makeHTTPRequest(method: .delete,
                                               path: URLs.MyPage.Block.userBlocks(blockID: blockID),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             

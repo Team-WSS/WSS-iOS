@@ -24,7 +24,7 @@ extension DefaultNovelService: NovelService {
         do {
             let request = try makeHTTPRequest(method: .get,
                                                path: URLs.Novel.getNovelInfo(novelId: novelId),
-                                               headers: APIConstants.testTokenHeader,
+                                               headers: APIConstants.accessTokenHeader,
                                                body: nil)
             
             NetworkLogger.log(request: request)

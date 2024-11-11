@@ -29,7 +29,7 @@ extension DefaultNovelDetailService: NovelDetailService {
         do {
             let request = try makeHTTPRequest(method: .delete,
                                               path: URLs.NovelDetail.novelReview(novelId: novelId),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
@@ -46,7 +46,7 @@ extension DefaultNovelDetailService: NovelDetailService {
         do {
             let request = try makeHTTPRequest(method: .post,
                                               path: URLs.NovelDetail.novelIsInterest(novelId: novelId),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
@@ -63,7 +63,7 @@ extension DefaultNovelDetailService: NovelDetailService {
         do {
             let request = try makeHTTPRequest(method: .delete,
                                               path: URLs.NovelDetail.novelIsInterest(novelId: novelId),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
@@ -80,7 +80,7 @@ extension DefaultNovelDetailService: NovelDetailService {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.NovelDetail.novelDetailHeader(novelId: novelId),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
@@ -98,7 +98,7 @@ extension DefaultNovelDetailService: NovelDetailService {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.NovelDetail.novelDetailInfo(novelId: novelId),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
@@ -121,7 +121,7 @@ extension DefaultNovelDetailService: NovelDetailService {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.NovelDetail.novelDetailFeed(novelId: novelId),
                                               queryItems: novelDetailFeedQueryItems,
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)

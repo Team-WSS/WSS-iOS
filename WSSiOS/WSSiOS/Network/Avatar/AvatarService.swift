@@ -26,7 +26,7 @@ extension DefaultAvatarService: AvatarService {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.Avatar.getAvatarDetail.replacingOccurrences(of: "{avatarId}", with: String(avatarId)),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
@@ -51,7 +51,7 @@ extension DefaultAvatarService: AvatarService {
             let request = try makeHTTPRequest(method: .patch,
                                               path: URLs.Avatar.patchRepAvatar,
                                               queryItems: avatarListQueryItems,
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: avatarIdData)
             
             NetworkLogger.log(request: request)

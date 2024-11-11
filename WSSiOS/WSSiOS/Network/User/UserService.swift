@@ -40,7 +40,7 @@ extension DefaultUserService: UserService {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.User.afterDelete,
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             
@@ -66,7 +66,7 @@ extension DefaultUserService: UserService {
             let request = try makeHTTPRequest(method: .patch,
                                               path: URLs.User.patchUserNickname,
                                               queryItems: userNickNameQueryItems,
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: userNickNameData)
             
             NetworkLogger.log(request: request)
@@ -83,7 +83,7 @@ extension DefaultUserService: UserService {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.Avatar.getRepAvatar,
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
@@ -101,7 +101,7 @@ extension DefaultUserService: UserService {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.User.getUserNovelStatus,
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
@@ -119,7 +119,7 @@ extension DefaultUserService: UserService {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.User.userInfo,
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
@@ -146,7 +146,7 @@ extension DefaultUserService: UserService {
             let request = try makeHTTPRequest(method: .put,
                                               path: URLs.User.userInfo,
                                               queryItems: makeUserInfoQueryItems(gender: gender, birth: birth),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: userInfoData)
             
             NetworkLogger.log(request: request)

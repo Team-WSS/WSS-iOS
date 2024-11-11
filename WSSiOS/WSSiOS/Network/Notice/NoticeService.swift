@@ -23,7 +23,7 @@ final class DefaultNoticeService: NSObject, Networking, NoticeService {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.Notice.getNotices,
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)

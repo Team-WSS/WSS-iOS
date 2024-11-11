@@ -32,7 +32,7 @@ extension DefaultSearchService: SearchService {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.Search.sosoPick,
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
@@ -58,7 +58,7 @@ extension DefaultSearchService: SearchService {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.Search.normalSearch,
                                               queryItems: normalSearchQueryItems,
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
@@ -99,7 +99,7 @@ extension DefaultSearchService: SearchService {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.Search.detailSearch,
                                               queryItems: detailSearchQueryItems,
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)

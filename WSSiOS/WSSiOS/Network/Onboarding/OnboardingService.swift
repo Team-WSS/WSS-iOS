@@ -31,13 +31,13 @@ extension DefaultOnboardingService: OnboardingService {
                 method: .get,
                 path: URLs.Onboarding.nicknameCheck,
                 queryItems: nicknameisValidQueryItems,
-                headers: APIConstants.testTokenHeader,
+                headers: APIConstants.accessTokenHeader,
                 body: nil
             )
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return customUrlSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: OnboardingResult.self) }
                 .asSingle()
@@ -55,13 +55,13 @@ extension DefaultOnboardingService: OnboardingService {
             let request = try self.makeHTTPRequest(
                 method: .post,
                 path: URLs.Onboarding.postProfile,
-                headers: APIConstants.testTokenHeader,
+                headers: APIConstants.accessTokenHeader,
                 body: userInfo
             )
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return customUrlSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
         } catch {

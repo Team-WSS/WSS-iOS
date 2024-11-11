@@ -1885,7 +1885,6 @@
 				39B75ACF2B59891C005DD8B9 /* sosocatTail.json */,
 				39B75AD32B59891D005DD8B9 /* villainessFan.json */,
 				39B75AD22B59891D005DD8B9 /* villainessTea.json */,
-				39AD55B22CAFDF6500CBDA7A /* scroll.json */,
 				39099EF22CD88A1200FCA8DE /* loading.json */,
 			);
 			path = Lottie;
