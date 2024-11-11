@@ -293,7 +293,7 @@ final class FeedDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.showImproperAlertView
+        output.showImpertinenceAlertView
             .flatMapLatest { _ -> Observable<AlertButtonType> in
                 return self.presentToAlertViewController(
                     iconImage: .icAlertWarningCircle,
@@ -436,7 +436,7 @@ final class FeedDetailViewController: UIViewController {
             .disposed(by: disposeBag)
         
         
-        output.showCommentImproperAlertView
+        output.showCommentImpertinenceAlertView
             .flatMapLatest { postImpertinenceComment, feedId, commentId in
                 self.presentToAlertViewController(
                     iconImage: .icAlertWarningCircle,

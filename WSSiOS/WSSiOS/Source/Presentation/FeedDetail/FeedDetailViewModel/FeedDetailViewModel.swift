@@ -48,7 +48,7 @@ final class FeedDetailViewModel: ViewModelType {
     private let isMyFeed = BehaviorRelay<Bool>(value: false)
     
     let showSpoilerAlertView = PublishRelay<Void>()
-    let showImproperAlertView = PublishRelay<Void>()
+    let showImpertinenceAlertView = PublishRelay<Void>()
     let pushToFeedEditViewController = PublishRelay<Void>()
     let showDeleteAlertView = PublishRelay<Void>()
     
@@ -61,7 +61,7 @@ final class FeedDetailViewModel: ViewModelType {
     private let toggleDropdownView = PublishRelay<Void>()
     // 댓글 드롭다운 내 이벤트
     let showCommentSpoilerAlertView  = PublishRelay<((Int, Int) -> Observable<Void>, Int, Int)>()
-    let showCommentImproperAlertView  = PublishRelay<((Int, Int) -> Observable<Void>, Int, Int)>()
+    let showCommentImpertinenceAlertView  = PublishRelay<((Int, Int) -> Observable<Void>, Int, Int)>()
     var isCommentEditing: Bool = false
     let myCommentEditing = PublishRelay<Void>()
     let showCommentDeleteAlertView  = PublishRelay<((Int, Int) -> Observable<Void>, Int, Int)>()
@@ -127,7 +127,7 @@ final class FeedDetailViewModel: ViewModelType {
         let isMyFeed: Driver<Bool>
         // 피드 드롭다운 내 이벤트
         let showSpoilerAlertView: Observable<Void>
-        let showImproperAlertView: Observable<Void>
+        let showImpertinenceAlertView: Observable<Void>
         let pushToFeedEditViewController: Observable<Void>
         let showDeleteAlertView: Observable<Void>
         
@@ -137,7 +137,7 @@ final class FeedDetailViewModel: ViewModelType {
         let toggleDropdownView: Observable<Void>
         // 댓글 드롭다운 내 이벤트
         let showCommentSpoilerAlertView: Observable<((Int, Int) -> Observable<Void>, Int, Int)>
-        let showCommentImproperAlertView: Observable<((Int, Int) -> Observable<Void>, Int, Int)>
+        let showCommentImpertinenceAlertView: Observable<((Int, Int) -> Observable<Void>, Int, Int)>
         let myCommentEditing: Observable<Void>
         let showCommentDeleteAlertView: Observable<((Int, Int) -> Observable<Void>, Int, Int)>
     }
@@ -299,7 +299,7 @@ final class FeedDetailViewModel: ViewModelType {
                 case (.top, true): owner.pushToFeedEditViewController.accept(())
                 case (.bottom, true): owner.showDeleteAlertView.accept(())
                 case (.top, false): owner.showSpoilerAlertView.accept(())
-                case (.bottom, false): owner.showImproperAlertView.accept(())
+                case (.bottom, false): owner.showImpertinenceAlertView.accept(())
                 }
             })
             .disposed(by: disposeBag)
@@ -337,7 +337,7 @@ final class FeedDetailViewModel: ViewModelType {
                 case (.top, false): owner.showCommentSpoilerAlertView.accept((owner.postSpoilerComment,
                                                                               owner.feedId,
                                                                               owner.selectedCommentId))
-                case (.bottom, false): owner.showCommentImproperAlertView.accept((owner.postImpertinenceComment,
+                case (.bottom, false): owner.showCommentImpertinenceAlertView.accept((owner.postImpertinenceComment,
                                                                                   owner.feedId,
                                                                                   owner.selectedCommentId))
                 }
@@ -372,14 +372,14 @@ final class FeedDetailViewModel: ViewModelType {
                       showDropdownView: showDropdownView.asDriver(),
                       isMyFeed: isMyFeed.asDriver(),
                       showSpoilerAlertView: showSpoilerAlertView.asObservable(),
-                      showImproperAlertView: showImproperAlertView.asObservable(),
+                      showImpertinenceAlertView: showImpertinenceAlertView.asObservable(),
                       pushToFeedEditViewController: pushToFeedEditViewController.asObservable(),
                       showDeleteAlertView: showDeleteAlertView.asObservable(),
                       showCommentDropdownView: showCommentDropdownView.asObservable(),
                       hideCommentDropdownView: hideCommentDropdownView.asObservable(),
                       toggleDropdownView: toggleDropdownView.asObservable(),
                       showCommentSpoilerAlertView: showCommentSpoilerAlertView.asObservable(),
-                      showCommentImproperAlertView: showCommentImproperAlertView.asObservable(),
+                      showCommentImpertinenceAlertView: showCommentImpertinenceAlertView.asObservable(),
                       myCommentEditing: myCommentEditing.asObservable(),
                       showCommentDeleteAlertView: showCommentDeleteAlertView.asObservable())
     }
