@@ -34,6 +34,7 @@ final class FeedDetailViewModel: ViewModelType {
     let commentCount = BehaviorRelay<Int>(value: 0)
     private let endEditing = PublishRelay<Bool>()
     private let textViewResignFirstResponder = PublishRelay<Void>()
+    var initialCommentContent: String = ""
     private var updatedCommentContent: String = ""
     private var isValidCommentContent: Bool = false
     private let maximumCommentContentCount: Int = 500
@@ -206,8 +207,9 @@ final class FeedDetailViewModel: ViewModelType {
                 
                 let isEmpty = comment.count == 0
                 let isOverLimit = comment.count > owner.maximumCommentContentCount
+                let isNotChanged = comment == owner.initialCommentContent
                 
-                owner.isValidCommentContent = !(isEmpty || isOverLimit)
+                owner.isValidCommentContent = !(isEmpty || isOverLimit || isNotChanged)
                 owner.textViewEmpty.accept(isEmpty)
                 owner.showPlaceholder.accept(isEmpty)
                 owner.sendButtonEnabled.accept(owner.isValidCommentContent)
@@ -305,7 +307,7 @@ final class FeedDetailViewModel: ViewModelType {
                     if let index = owner.commentsData.value.firstIndex(where: { $0.commentId == commentId }) {
                         let indexPath = IndexPath(row: index, section: 0)
                         owner.showCommentDropdownView.accept((indexPath, isMyComment))
-                        owner.selectedCommentContent = owner.commentsData.value[index].commentContent
+                        owner.initialCommentContent = owner.commentsData.value[index].commentContent
                     }
                 }
                 owner.selectedCommentId = commentId

@@ -439,7 +439,7 @@ final class FeedDetailViewController: UIViewController {
         output.myCommentEditing
             .subscribe(with: self, onNext: { owner, _ in
                 owner.rootView.replyWritingView.replyWritingTextView.becomeFirstResponder()
-                owner.rootView.replyWritingView.setCommentText(owner.viewModel.selectedCommentContent)
+                owner.rootView.replyWritingView.setCommentText(owner.viewModel.initialCommentContent)
             })
             .disposed(by: disposeBag)
         
