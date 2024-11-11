@@ -20,16 +20,19 @@ final class HomeInterestView: UIView {
     let interestCollectionView = UICollectionView(frame: .zero,
                                                   collectionViewLayout: UICollectionViewLayout())
     private let interestCollectionViewLayout = UICollectionViewFlowLayout()
+    
+    private let isLoggedIn = APIConstants.isLogined
+    private let userNickname = UserDefaults.standard.string(forKey: StringLiterals.UserDefault.userNickname)
     let unregisterView = HomeUnregisterView(.interest)
     
     //MARK: - Life Cycle
     
-    init(isLoggedIn: Bool) {
+    init() {
         super.init(frame: .zero)
         
-        setUI(isLoggedIn: isLoggedIn)
+        setUI()
         setHierarchy()
-        setLayout(isLoggedIn: isLoggedIn)
+        setLayout()
     }
     
     @available(*, unavailable)
@@ -37,9 +40,9 @@ final class HomeInterestView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setUI(isLoggedIn: Bool) {
+    private func setUI() {
         titleLabel.do {
-            $0.applyWSSFont(.headline1, with: isLoggedIn ? "일이삼사오육칠팔구십\(StringLiterals.Home.Title.interest)" : StringLiterals.Home.Title.notLoggedInInterest)
+            $0.applyWSSFont(.headline1, with: isLoggedIn ? "\(userNickname ?? "")\(StringLiterals.Home.Title.interest)" : StringLiterals.Home.Title.notLoggedInInterest)
             $0.textColor = .wssBlack
         }
         
@@ -79,7 +82,7 @@ final class HomeInterestView: UIView {
                          unregisterView)
     }
     
-    private func setLayout(isLoggedIn: Bool) {
+    private func setLayout() {
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.leading.equalToSuperview().inset(20)
@@ -96,8 +99,7 @@ final class HomeInterestView: UIView {
                 $0.leading.trailing.bottom.equalToSuperview()
                 $0.height.equalTo(301)
             }
-        }
-        else {
+        } else {
             unregisterView.snp.makeConstraints {
                 $0.top.equalTo(titleLabel.snp.bottom).offset(11)
                 $0.leading.trailing.equalToSuperview().inset(20)

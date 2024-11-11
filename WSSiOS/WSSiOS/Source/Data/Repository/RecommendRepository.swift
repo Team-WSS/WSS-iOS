@@ -12,7 +12,7 @@ import RxSwift
 protocol RecommendRepository {
     func getTodayPopularNovels() -> Observable<TodayPopularNovels>
     func getRealtimePopularFeeds() -> Observable<RealtimePopularFeeds>
-    func getInterestNovels() -> Observable<InterestFeeds>
+    func getInterestFeeds() -> Observable<InterestFeeds>
     func getTasteRecommendNovels() -> Observable<TasteRecommendNovels>
 }
 
@@ -32,7 +32,7 @@ struct DefaultRecommendRepository: RecommendRepository {
         return recommendService.getRealtimePopularFeeds().asObservable()
     }
     
-    func getInterestNovels() -> Observable<InterestFeeds> {
+    func getInterestFeeds() -> Observable<InterestFeeds> {
         return recommendService.getInterestFeeds().asObservable()
     }
     
@@ -96,7 +96,7 @@ struct TestRecommendRepository: RecommendRepository {
             RealtimePopularFeed(feedId: 1, feedContent: "주인공이 당연히 엘로디인 줄 알았는데.... 표지에 두명이 나온 이유가 있구나..... 당연히 주인공이 하나일거라고 생각하면 안 되는 거구나..ㅠㅠㅠ 신데렐라와 멧밭쥐 두 주인공의 넘 아름다운 이야기야 따흑 근데 세라 친어머니 죽고 재혼한 건데 계보에도 안 올릴 수가 있나... 외가가 망해 없어지기라도 했나?", feedLikeCount: 123, feedCommentCount: 234, isSpoiler: false)]))
     }
     
-    func getInterestNovels() -> Observable<InterestFeeds> {
+    func getInterestFeeds() -> Observable<InterestFeeds> {
         return Observable.just(InterestFeeds(recommendFeeds: [
             InterestFeed(novelId: 1, novelTitle: "신데렐라는 이 멧밭쥐가 데려갑니다", novelImage: "https://i.pinimg.com/736x/53/95/06/539506e93756577d5068c9dfca600be5.jpg", novelRating: 4.21, novelRatingCount: 1003, userNickname: "구리스", userAvatarImage: "https://i.pinimg.com/474x/b3/17/f3/b317f39796d1974de83f01f4ffeb32c3.jpg", userFeedContent: "주인공이 당연히 엘로디인 줄 알았는데.... 표지에 두명이 나온 이유가 있구나..... 당연히 주인공이 하나일거라고 생각하면 안 되는 거구나..ㅠㅠㅠ 신데렐라와 멧밭쥐 두 주인공의 넘 아름다운 이야기야 따흑 근데 세라 친어머니 죽고 재혼한 건데 계보에도 안 올릴 수가 있나... 외가가 망해 없어지기라도 했나?"),
             InterestFeed(novelId: 1, novelTitle: "신데렐라는 이 멧밭쥐가 데려갑니다", novelImage: "https://i.pinimg.com/736x/53/95/06/539506e93756577d5068c9dfca600be5.jpg", novelRating: 4.21, novelRatingCount: 1003, userNickname: "구리스", userAvatarImage: "https://i.pinimg.com/474x/b3/17/f3/b317f39796d1974de83f01f4ffeb32c3.jpg", userFeedContent: "주인공이 당연히 엘로디인 줄 알았는데.... 표지에 두명이 나온 이유가 있구나..... 당연히 주인공이 하나일거라고 생각하면 안 되는 거구나..ㅠㅠㅠ 신데렐라와 멧밭쥐 두 주인공의 넘 아름다운 이야기야 따흑 근데 세라 친어머니 죽고 재혼한 건데 계보에도 안 올릴 수가 있나... 외가가 망해 없어지기라도 했나?"),

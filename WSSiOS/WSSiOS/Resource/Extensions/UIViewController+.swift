@@ -81,7 +81,7 @@ extension UIViewController {
     
     func moveToNovelDetailViewController(userNovelId: Int) {
         if self.navigationController?.tabBarController?.selectedIndex == 0 {
-            let tabBar = WSSTabBarController(isLoggedIn: true)
+            let tabBar = WSSTabBarController()
             tabBar.selectedIndex = 1
             let navigationController = UINavigationController(rootViewController: tabBar)
             navigationController.setNavigationBarHidden(true, animated: true)
@@ -374,6 +374,17 @@ extension UIViewController {
                 previousViewInfo: previousViewInfo,
                 selectedFilteredQuery: selectedFilteredQuery))
         self.presentModalViewController(detailSearchViewController)
+    }
+    
+    func presentInduceLoginViewController() {
+        let viewController = InduceLoginViewController()
+        viewController.modalPresentationStyle = .overFullScreen
+        
+        self.present(viewController, animated: false)
+    }
+    
+    func dismissViewController() {
+        self.dismiss(animated: false)
     }
 }
 

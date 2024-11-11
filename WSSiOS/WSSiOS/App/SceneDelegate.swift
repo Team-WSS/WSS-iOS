@@ -22,8 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     func setRootToWSSTabBarController() {
-        let isLoggedIn = APIConstants.isLogined
-        let navigationController = UINavigationController(rootViewController: WSSTabBarController(isLoggedIn: isLoggedIn))
+        let navigationController = UINavigationController(rootViewController: WSSTabBarController())
         navigationController.isNavigationBarHidden = true
         guard let window else { return }
         UIView.transition(with: window,
