@@ -259,6 +259,7 @@ final class FeedDetailViewModel: ViewModelType {
                         self.textViewEmpty.accept(true)
                         self.showPlaceholder.accept(true)
                         self.isCommentEditing = false
+                        self.selectedCommentId = 0
                     })
                 } else {
                     return self.postComment(self.feedId, self.updatedCommentContent)
@@ -274,6 +275,7 @@ final class FeedDetailViewModel: ViewModelType {
                             self.updatedCommentContent = ""
                             self.textViewEmpty.accept(true)
                             self.showPlaceholder.accept(true)
+                            self.selectedCommentId = 0
                             
                             let newCommentCount = self.commentCount.value + 1
                             self.commentCount.accept(newCommentCount)

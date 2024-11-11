@@ -149,13 +149,17 @@ final class FeedDetailReplyWritingView: UIView {
     private func updateTextViewHeight() {
         let size = CGSize(width: replyWritingTextView.frame.width, height: .infinity)
         let estimatedSize = replyWritingTextView.sizeThatFits(size)
+        let lineHeight = replyWritingTextView.font?.lineHeight ?? 0
+        let numberOfLines = Int(estimatedSize.height / lineHeight)
+        let backgroundHeight: CGFloat
+        backgroundHeight = numberOfLines == 1 ? 42 : min(estimatedSize.height + 14, 84)
         
         replyWritingTextView.snp.updateConstraints {
-            $0.height.equalTo(estimatedSize.height)
+            $0.height.equalTo(min(estimatedSize.height, 84))
         }
         
         textViewBackgroundView.snp.updateConstraints {
-            $0.height.equalTo(estimatedSize.height + 21)
+            $0.height.equalTo(backgroundHeight)
         }
     }
     
