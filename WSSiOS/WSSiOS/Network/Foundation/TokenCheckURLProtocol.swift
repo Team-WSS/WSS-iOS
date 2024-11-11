@@ -1,5 +1,5 @@
 //
-//  WSSURLProtocol.swift
+//  TokenCheckURLProtocol.swift
 //  WSSiOS
 //
 //  Created by YunhakLee on 11/10/24.
@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 import UIKit
 
-class WSSURLProtocol: URLProtocol {
+class TokenCheckURLProtocol: URLProtocol {
     
     private let disposeBag = DisposeBag()
     
@@ -97,7 +97,7 @@ class WSSURLProtocol: URLProtocol {
     }
 }
 
-extension WSSURLProtocol {
+extension TokenCheckURLProtocol {
     private func updateTokens(result: ReissueResult) {
         UserDefaults.standard.setValue(result.Authorization,
                                        forKey: StringLiterals.UserDefault.accessToken)
