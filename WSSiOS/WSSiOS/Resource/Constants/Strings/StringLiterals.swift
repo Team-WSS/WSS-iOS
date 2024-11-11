@@ -584,5 +584,6 @@ enum StringLiterals {
         static let reportResult = "신고가 접수되었어요!"
         
         static let deleteMineTitle = "내 댓글을 삭제할까요?"
+        static let deleteMineContent = "삭제한 댓글은 되돌릴 수 없어요"
     }
 }

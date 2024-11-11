@@ -443,7 +443,7 @@ final class FeedDetailViewController: UIViewController {
                 self.presentToAlertViewController(
                     iconImage: .icAlertWarningCircle,
                     titleText: StringLiterals.FeedDetail.deleteMineTitle,
-                    contentText: StringLiterals.FeedDetail.deleteContent,
+                    contentText: StringLiterals.FeedDetail.deleteMineContent,
                     leftTitle: StringLiterals.FeedDetail.cancel,
                     rightTitle: StringLiterals.FeedDetail.delete,
                     rightBackgroundColor: UIColor.wssSecondary100.cgColor
