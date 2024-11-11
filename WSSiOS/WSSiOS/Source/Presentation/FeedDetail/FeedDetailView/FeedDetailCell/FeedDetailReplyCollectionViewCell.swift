@@ -153,20 +153,22 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
         self.createdDateLabel.applyWSSFont(.body5, with: data.createdDate)
         self.isModifiedLabel.isHidden = !data.isModified
         self.replyContentLabel.do {
-            if data.isSpoiler {
-                $0.applyWSSFont(.body2, with: StringLiterals.FeedDetail.spoilerComment)
-                $0.textColor = .wssSecondary100
-            } else if data.isBlocked {
+            if data.isBlocked {
                 $0.applyWSSFont(.body2, with: StringLiterals.FeedDetail.blockedComment)
                 $0.textColor = .wssGray200
             } else if data.isHidden {
                 $0.applyWSSFont(.body2, with: StringLiterals.FeedDetail.hiddenComment)
                 $0.textColor = .wssGray200
+            } else if data.isSpoiler {
+                $0.applyWSSFont(.body2, with: StringLiterals.FeedDetail.spoilerComment)
+                $0.textColor = .wssSecondary100
             } else {
                 $0.applyWSSFont(.body2, with: data.commentContent)
                 $0.textColor = .wssBlack
                 $0.numberOfLines = 0
             }
         }
+        
+        self.threeDotsButton.isHidden = data.isHidden || data.isBlocked
     }
 }
