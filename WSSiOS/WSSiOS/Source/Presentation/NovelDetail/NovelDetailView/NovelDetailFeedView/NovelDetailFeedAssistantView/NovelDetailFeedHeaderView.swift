@@ -73,7 +73,7 @@ final class NovelDetailFeedHeaderView: UIView {
         }
         
         dropdownImageView.do {
-            $0.image = .icDropDownDot
+            $0.image = .icThreedots.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray100)
         }
     }
     
