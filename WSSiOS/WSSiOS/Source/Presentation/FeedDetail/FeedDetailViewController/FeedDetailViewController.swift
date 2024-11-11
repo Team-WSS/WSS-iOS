@@ -185,6 +185,11 @@ final class FeedDetailViewController: UIViewController {
                 
                 UIView.animate(withDuration: 0.25) {
                     self.rootView.layoutIfNeeded()
+                } completion: { _ in
+                    owner.rootView.scrollView.setContentOffset(
+                        CGPoint(x: 0, y: max(0, owner.rootView.scrollView.contentSize.height - owner.rootView.scrollView.bounds.height)),
+                        animated: true
+                    )
                 }
             })
             .disposed(by: disposeBag)
