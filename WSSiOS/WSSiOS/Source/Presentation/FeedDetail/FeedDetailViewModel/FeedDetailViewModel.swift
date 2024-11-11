@@ -94,6 +94,7 @@ final class FeedDetailViewModel: ViewModelType {
         // 댓글 드롭다운
         let commentdotsButtonDidTap: Observable<(Int, Bool)>
         let commentDropdownDidTap: Observable<DropdownButtonType>
+        let reloadComments: Observable<Void>
     }
     
     struct Output {
@@ -317,6 +318,17 @@ final class FeedDetailViewModel: ViewModelType {
                 case (.top, false): owner.showCommentSpoilerAlertView.accept((owner.postSpoilerComment, owner.selectedCommentId))
                 case (.bottom, false): owner.showCommentImproperAlertView.accept((owner.postImpertinenceComment, owner.selectedCommentId))
                 }
+            })
+            .disposed(by: disposeBag)
+        
+        input.reloadComments
+            .flatMapLatest {
+                return self.getSingleFeedComments(self.feedId)
+            }
+            .subscribe(with: self, onNext: { owner, data in
+                owner.commentsData.accept(data.comments)
+            }, onError: { owner, error in
+                print(error)
             })
             .disposed(by: disposeBag)
         

@@ -19,8 +19,9 @@ final class FeedDetailViewController: UIViewController {
     private let viewModel: FeedDetailViewModel
     private let disposeBag = DisposeBag()
     
-    private let commentDotsButtonDidTap = PublishRelay<(Int, Bool)>()
     private let maximumCommentContentCount: Int = 500
+    private let commentDotsButtonDidTap = PublishRelay<(Int, Bool)>()
+    private let reloadComments = PublishRelay<Void>()
     
     //MARK: - UI Components
     
@@ -115,7 +116,8 @@ final class FeedDetailViewController: UIViewController {
             dotsButtonDidTap: rootView.dropdownButton.rx.tap,
             dropdownButtonDidTap: dropdownButtonDidTap,
             commentdotsButtonDidTap: commentDotsButtonDidTap.asObservable(),
-            commentDropdownDidTap: commentDropdownButtonDidTap
+            commentDropdownDidTap: commentDropdownButtonDidTap,
+            reloadComments: reloadComments.asObservable()
         )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -362,6 +364,31 @@ final class FeedDetailViewController: UIViewController {
             .disposed(by: disposeBag)
         
         // 댓글 드롭다운 내 이벤트
+        output.showCommentDeleteAlertView
+            .flatMapLatest { deleteComment, commentId in
+                self.presentToAlertViewController(
+                    iconImage: .icAlertWarningCircle,
+                    titleText: StringLiterals.FeedDetail.deleteMineTitle,
+                    contentText: StringLiterals.FeedDetail.deleteMineContent,
+                    leftTitle: StringLiterals.FeedDetail.cancel,
+                    rightTitle: StringLiterals.FeedDetail.delete,
+                    rightBackgroundColor: UIColor.wssSecondary100.cgColor
+                )
+                .flatMapLatest { buttonType in
+                    if buttonType == .right {
+                        return deleteComment(self.viewModel.feedId, commentId)
+                    } else {
+                        return Observable.empty()
+                    }
+                }
+            }
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.reloadComments.accept(())
+            }, onError: { owner, error in
+                print("Error: \(error)")
+            })
+            .disposed(by: disposeBag)
+        
         output.showCommentSpoilerAlertView
             .flatMapLatest { postSpoilerComment, commentId in
                 self.presentToAlertViewController(
@@ -435,31 +462,6 @@ final class FeedDetailViewController: UIViewController {
             .subscribe(with: self, onNext: { owner, _ in
                 owner.rootView.replyWritingView.replyWritingTextView.becomeFirstResponder()
                 owner.rootView.replyWritingView.setCommentText(owner.viewModel.initialCommentContent)
-            })
-            .disposed(by: disposeBag)
-        
-        output.showCommentDeleteAlertView
-            .flatMapLatest { deleteComment, commentId in
-                self.presentToAlertViewController(
-                    iconImage: .icAlertWarningCircle,
-                    titleText: StringLiterals.FeedDetail.deleteMineTitle,
-                    contentText: StringLiterals.FeedDetail.deleteMineContent,
-                    leftTitle: StringLiterals.FeedDetail.cancel,
-                    rightTitle: StringLiterals.FeedDetail.delete,
-                    rightBackgroundColor: UIColor.wssSecondary100.cgColor
-                )
-                .flatMapLatest { buttonType in
-                    if buttonType == .right {
-                        return deleteComment(self.viewModel.feedId, commentId)
-                    } else {
-                        return Observable.empty()
-                    }
-                }
-            }
-            .subscribe(with: self, onNext: { owner, _ in
-                // 피드 리로딩
-            }, onError: { owner, error in
-                print("Error: \(error)")
             })
             .disposed(by: disposeBag)
     }
