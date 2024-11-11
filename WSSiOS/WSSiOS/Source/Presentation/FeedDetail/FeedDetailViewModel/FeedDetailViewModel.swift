@@ -326,7 +326,9 @@ final class FeedDetailViewModel: ViewModelType {
                 case (.top, true):
                     owner.isCommentEditing = true
                     owner.myCommentEditing.accept(())
-                case (.bottom, true): owner.showCommentDeleteAlertView.accept((owner.deleteComment, owner.selectedCommentId))
+                case (.bottom, true):
+                    owner.showCommentDeleteAlertView.accept((owner.deleteComment, owner.selectedCommentId))
+                    owner.commentCount.accept(owner.commentCount.value - 1)
                 case (.top, false): owner.showCommentSpoilerAlertView.accept((owner.postSpoilerComment, owner.selectedCommentId))
                 case (.bottom, false): owner.showCommentImproperAlertView.accept((owner.postImpertinenceComment, owner.selectedCommentId))
                 }
