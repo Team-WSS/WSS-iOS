@@ -212,6 +212,13 @@ final class FeedDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.textViewResignFirstResponder
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                owner.rootView.replyWritingView.replyWritingTextView.resignFirstResponder()
+            })
+            .disposed(by: disposeBag)
+        
         output.commentContentWithLengthLimit
             .subscribe(with: self, onNext: { owner, limit in
                 // 댓글 500자 제한

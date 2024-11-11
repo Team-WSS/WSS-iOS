@@ -33,6 +33,7 @@ final class FeedDetailViewModel: ViewModelType {
     // 댓글 작성
     let commentCount = BehaviorRelay<Int>(value: 0)
     private let endEditing = PublishRelay<Bool>()
+    private let textViewResignFirstResponder = PublishRelay<Void>()
     private var updatedCommentContent: String = ""
     private var isValidCommentContent: Bool = false
     private let maximumCommentContentCount: Int = 500
@@ -113,6 +114,7 @@ final class FeedDetailViewModel: ViewModelType {
         let commentCount: Driver<Int>
         let showPlaceholder: Observable<Bool>
         let endEditing: Observable<Bool>
+        let textViewResignFirstResponder: Observable<Void>
         let commentContentWithLengthLimit: Observable<String>
         let sendButtonEnabled: Observable<Bool>
         let textViewEmpty: Observable<Bool>
@@ -245,10 +247,12 @@ final class FeedDetailViewModel: ViewModelType {
                             .map { _ in () }
                     }
                     .do(onNext: {
+                        self.textViewResignFirstResponder.accept(())
                         self.updatedCommentContent = ""
                         self.textViewEmpty.accept(true)
                         self.commentContentWithLengthLimit.accept("")
                         self.showPlaceholder.accept(true)
+                        self.isCommentEditing = false
                     })
                 } else {
                     return self.postComment(self.feedId, self.updatedCommentContent)
@@ -260,6 +264,7 @@ final class FeedDetailViewModel: ViewModelType {
                                 .map { _ in () }
                         }
                         .do(onNext: {
+                            self.textViewResignFirstResponder.accept(())
                             self.updatedCommentContent = ""
                             self.textViewEmpty.accept(true)
                             self.commentContentWithLengthLimit.accept("")
@@ -333,6 +338,7 @@ final class FeedDetailViewModel: ViewModelType {
                       commentCount: commentCount.asDriver(),
                       showPlaceholder: showPlaceholder.asObservable(),
                       endEditing: endEditing.asObservable(),
+                      textViewResignFirstResponder: textViewResignFirstResponder.asObservable(),
                       commentContentWithLengthLimit: commentContentWithLengthLimit.asObservable(),
                       sendButtonEnabled: sendButtonEnabled.asObservable(),
                       textViewEmpty: textViewEmpty.asObservable(),
