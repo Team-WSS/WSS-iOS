@@ -13,7 +13,7 @@ import SnapKit
 import Then
 
 protocol FeedDetailReplyCollectionDelegate: AnyObject {
-    func dropdownButtonDidTap(commentId: Int, isMyComment: Bool)
+    func dotsButtonDidTap(commentId: Int, isMyComment: Bool)
 }
 
 final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
@@ -137,7 +137,7 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
         threeDotsButton.rx.tap
             .withLatestFrom(comment)
             .subscribe(with: self, onNext: { owner, comment in
-                owner.delegate?.dropdownButtonDidTap(commentId: comment.commentId, isMyComment: comment.isMyComment)
+                owner.delegate?.dotsButtonDidTap(commentId: comment.commentId, isMyComment: comment.isMyComment)
             })
             .disposed(by: disposeBag)
     }

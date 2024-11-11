@@ -19,7 +19,7 @@ final class FeedDetailViewController: UIViewController {
     private let viewModel: FeedDetailViewModel
     private let disposeBag = DisposeBag()
     
-    private let commentDropdownButtonDidTap = PublishRelay<(Int, Bool)>()
+    private let commentDotsButtonDidTap = PublishRelay<(Int, Bool)>()
     
     //MARK: - UI Components
     
@@ -95,6 +95,11 @@ final class FeedDetailViewController: UIViewController {
             rootView.dropdownView.bottomDropdownButton.rx.tap.map { DropdownButtonType.bottom }
         )
         
+        let commentDropdownButtonDidTap = Observable.merge(
+            rootView.replyView.dropdownView.topDropdownButton.rx.tap.map { DropdownButtonType.top },
+            rootView.replyView.dropdownView.bottomDropdownButton.rx.tap.map { DropdownButtonType.bottom }
+        )
+        
         let input = FeedDetailViewModel.Input(
             backButtonDidTap: rootView.backButton.rx.tap,
             replyCollectionViewContentSize: rootView.replyView.replyCollectionView.rx.observe(CGSize.self, "contentSize"),
@@ -108,7 +113,9 @@ final class FeedDetailViewController: UIViewController {
             sendButtonDidTap: rootView.replyWritingView.replyButton.rx.tap,
             dotsButtonDidTap: rootView.dropdownButton.rx.tap,
             dropdownButtonDidTap: dropdownButtonDidTap,
-            commentDropdownButtonDidTap: commentDropdownButtonDidTap.asObservable())
+            commentdotsButtonDidTap: commentDotsButtonDidTap.asObservable(),
+            commentDropdownDidTap: commentDropdownButtonDidTap
+        )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.feedData
@@ -235,12 +242,14 @@ final class FeedDetailViewController: UIViewController {
         
         output.showSpoilerAlertView
             .flatMapLatest { _ -> Observable<AlertButtonType> in
-                return self.presentToAlertViewController(iconImage: .icAlertWarningCircle,
-                                                         titleText: StringLiterals.FeedDetail.spoilerTitle,
-                                                         contentText: nil,
-                                                         leftTitle: StringLiterals.FeedDetail.cancel,
-                                                         rightTitle: StringLiterals.FeedDetail.report,
-                                                         rightBackgroundColor: UIColor.wssPrimary100.cgColor)
+                return self.presentToAlertViewController(
+                    iconImage: .icAlertWarningCircle,
+                    titleText: StringLiterals.FeedDetail.spoilerTitle,
+                    contentText: nil,
+                    leftTitle: StringLiterals.FeedDetail.cancel,
+                    rightTitle: StringLiterals.FeedDetail.report,
+                    rightBackgroundColor: UIColor.wssPrimary100.cgColor
+                )
             }
             .subscribe(with: self, onNext: { owner, buttonType in
                 owner.rootView.dropdownView.isHidden = true
@@ -249,12 +258,14 @@ final class FeedDetailViewController: UIViewController {
                         .subscribe()
                         .disposed(by: owner.disposeBag)
                     owner.dismiss(animated: true) {
-                        _ = owner.presentToAlertViewController(iconImage: .icReportCheck,
-                                                               titleText: StringLiterals.FeedDetail.reportResult,
-                                                               contentText: nil,
-                                                               leftTitle: nil,
-                                                               rightTitle: StringLiterals.FeedDetail.confirm,
-                                                               rightBackgroundColor: UIColor.wssPrimary100.cgColor)
+                        _ = owner.presentToAlertViewController(
+                            iconImage: .icReportCheck,
+                            titleText: StringLiterals.FeedDetail.reportResult,
+                            contentText: nil,
+                            leftTitle: nil,
+                            rightTitle: StringLiterals.FeedDetail.confirm,
+                            rightBackgroundColor: UIColor.wssPrimary100.cgColor
+                        )
                     }
                 }
             })
@@ -262,12 +273,14 @@ final class FeedDetailViewController: UIViewController {
         
         output.showImproperAlertView
             .flatMapLatest { _ -> Observable<AlertButtonType> in
-                return self.presentToAlertViewController(iconImage: .icAlertWarningCircle,
-                                                         titleText: StringLiterals.FeedDetail.impertinentTitle,
-                                                         contentText: nil,
-                                                         leftTitle: StringLiterals.FeedDetail.cancel,
-                                                         rightTitle: StringLiterals.FeedDetail.report,
-                                                         rightBackgroundColor: UIColor.wssPrimary100.cgColor)
+                return self.presentToAlertViewController(
+                    iconImage: .icAlertWarningCircle,
+                    titleText: StringLiterals.FeedDetail.impertinentTitle,
+                    contentText: nil,
+                    leftTitle: StringLiterals.FeedDetail.cancel,
+                    rightTitle: StringLiterals.FeedDetail.report,
+                    rightBackgroundColor: UIColor.wssPrimary100.cgColor
+                )
             }
             .subscribe(with: self, onNext: { owner, buttonType in
                 owner.rootView.dropdownView.isHidden = true
@@ -276,12 +289,14 @@ final class FeedDetailViewController: UIViewController {
                         .subscribe()
                         .disposed(by: owner.disposeBag)
                     owner.dismiss(animated: true) {
-                        _ = owner.presentToAlertViewController(iconImage: .icReportCheck,
-                                                               titleText: StringLiterals.FeedDetail.reportResult,
-                                                               contentText: StringLiterals.FeedDetail.impertinentContent,
-                                                               leftTitle: nil,
-                                                               rightTitle: StringLiterals.FeedDetail.confirm,
-                                                               rightBackgroundColor: UIColor.wssPrimary100.cgColor)
+                        _ = owner.presentToAlertViewController(
+                            iconImage: .icReportCheck,
+                            titleText: StringLiterals.FeedDetail.reportResult,
+                            contentText: StringLiterals.FeedDetail.impertinentContent,
+                            leftTitle: nil,
+                            rightTitle: StringLiterals.FeedDetail.confirm,
+                            rightBackgroundColor: UIColor.wssPrimary100.cgColor
+                        )
                     }
                 }
             })
@@ -296,12 +311,14 @@ final class FeedDetailViewController: UIViewController {
         
         output.showDeleteAlertView
             .flatMapLatest { _ -> Observable<AlertButtonType> in
-                return self.presentToAlertViewController(iconImage: .icAlertWarningCircle,
-                                                         titleText: StringLiterals.FeedDetail.deleteTitle,
-                                                         contentText: StringLiterals.FeedDetail.deleteContent,
-                                                         leftTitle: StringLiterals.FeedDetail.cancel,
-                                                         rightTitle: StringLiterals.FeedDetail.delete,
-                                                         rightBackgroundColor: UIColor.wssSecondary100.cgColor)
+                return self.presentToAlertViewController(
+                    iconImage: .icAlertWarningCircle,
+                    titleText: StringLiterals.FeedDetail.deleteTitle,
+                    contentText: StringLiterals.FeedDetail.deleteContent,
+                    leftTitle: StringLiterals.FeedDetail.cancel,
+                    rightTitle: StringLiterals.FeedDetail.delete,
+                    rightBackgroundColor: UIColor.wssSecondary100.cgColor
+                )
             }
             .subscribe(with: self, onNext: { owner, buttonType in
                 owner.rootView.dropdownView.isHidden = true
@@ -335,58 +352,71 @@ final class FeedDetailViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.showCommentSpoilerAlertView
-            .flatMapLatest { _ -> Observable<AlertButtonType> in
-                return self.presentToAlertViewController(iconImage: .icAlertWarningCircle,
-                                                         titleText: StringLiterals.FeedDetail.spoilerTitle,
-                                                         contentText: nil,
-                                                         leftTitle: StringLiterals.FeedDetail.cancel,
-                                                         rightTitle: StringLiterals.FeedDetail.report,
-                                                         rightBackgroundColor: UIColor.wssPrimary100.cgColor)
-            }
-            .subscribe(with: self, onNext: { owner, buttonType in
-                owner.rootView.dropdownView.isHidden = true
-                if buttonType == .right {
-                    guard let commentId = owner.viewModel.selectedCommentId else { return }
-                    owner.viewModel.postSpoilerComment(owner.viewModel.feedId, commentId)
-                        .subscribe()
-                        .disposed(by: owner.disposeBag)
-                    owner.dismiss(animated: true) {
-                        _ = owner.presentToAlertViewController(iconImage: .icReportCheck,
-                                                               titleText: StringLiterals.FeedDetail.reportResult,
-                                                               contentText: nil,
-                                                               leftTitle: nil,
-                                                               rightTitle: StringLiterals.FeedDetail.confirm,
-                                                               rightBackgroundColor: UIColor.wssPrimary100.cgColor)
+            .flatMapLatest { postSpoilerComment, commentId in
+                self.presentToAlertViewController(
+                    iconImage: .icAlertWarningCircle,
+                    titleText: StringLiterals.FeedDetail.spoilerTitle,
+                    contentText: nil,
+                    leftTitle: StringLiterals.FeedDetail.cancel,
+                    rightTitle: StringLiterals.FeedDetail.report,
+                    rightBackgroundColor: UIColor.wssPrimary100.cgColor
+                )
+                .flatMapLatest { buttonType in
+                    if buttonType == .right {
+                        return postSpoilerComment(self.viewModel.feedId, commentId)
+                    } else {
+                        return Observable.empty()
                     }
                 }
+            }
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.dismiss(animated: true) {
+                    _ = owner.presentToAlertViewController(
+                        iconImage: .icReportCheck,
+                        titleText: StringLiterals.FeedDetail.reportResult,
+                        contentText: nil,
+                        leftTitle: nil,
+                        rightTitle: StringLiterals.FeedDetail.confirm,
+                        rightBackgroundColor: UIColor.wssPrimary100.cgColor
+                    )
+                }
+            }, onError: { owner, error in
+                print("Error: \(error)")
             })
             .disposed(by: disposeBag)
         
+        
         output.showCommentImproperAlertView
-            .flatMapLatest { _ -> Observable<AlertButtonType> in
-                return self.presentToAlertViewController(iconImage: .icAlertWarningCircle,
-                                                         titleText: StringLiterals.FeedDetail.impertinentTitle,
-                                                         contentText: nil,
-                                                         leftTitle: StringLiterals.FeedDetail.cancel,
-                                                         rightTitle: StringLiterals.FeedDetail.report,
-                                                         rightBackgroundColor: UIColor.wssPrimary100.cgColor)
-            }
-            .subscribe(with: self, onNext: { owner, buttonType in
-                owner.rootView.dropdownView.isHidden = true
-                if buttonType == .right {
-                    guard let commentId = owner.viewModel.selectedCommentId else { return }
-                    owner.viewModel.postImpertinenceComment(owner.viewModel.feedId, commentId)
-                        .subscribe()
-                        .disposed(by: owner.disposeBag)
-                    owner.dismiss(animated: true) {
-                        _ = owner.presentToAlertViewController(iconImage: .icReportCheck,
-                                                               titleText: StringLiterals.FeedDetail.reportResult,
-                                                               contentText: StringLiterals.FeedDetail.impertinentContent,
-                                                               leftTitle: nil,
-                                                               rightTitle: StringLiterals.FeedDetail.confirm,
-                                                               rightBackgroundColor: UIColor.wssPrimary100.cgColor)
+            .flatMapLatest { postImpertinenceComment, commentId in
+                self.presentToAlertViewController(
+                    iconImage: .icAlertWarningCircle,
+                    titleText: StringLiterals.FeedDetail.impertinentTitle,
+                    contentText: nil,
+                    leftTitle: StringLiterals.FeedDetail.cancel,
+                    rightTitle: StringLiterals.FeedDetail.report,
+                    rightBackgroundColor: UIColor.wssPrimary100.cgColor
+                )
+                .flatMapLatest { buttonType in
+                    if buttonType == .right {
+                        return postImpertinenceComment(self.viewModel.feedId, commentId)
+                    } else {
+                        return Observable.empty()
                     }
                 }
+            }
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.dismiss(animated: true) {
+                    _ = owner.presentToAlertViewController(
+                        iconImage: .icReportCheck,
+                        titleText: StringLiterals.FeedDetail.reportResult,
+                        contentText: StringLiterals.FeedDetail.impertinentContent,
+                        leftTitle: nil,
+                        rightTitle: StringLiterals.FeedDetail.confirm,
+                        rightBackgroundColor: UIColor.wssPrimary100.cgColor
+                    )
+                }
+            }, onError: { owner, error in
+                print("Error: \(error)")
             })
             .disposed(by: disposeBag)
         
@@ -399,30 +429,27 @@ final class FeedDetailViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.showCommentDeleteAlertView
-            .flatMapLatest { _ -> Observable<AlertButtonType> in
-                return self.presentToAlertViewController(iconImage: .icAlertWarningCircle,
-                                                         titleText: StringLiterals.FeedDetail.deleteMineTitle,
-                                                         contentText: StringLiterals.FeedDetail.deleteContent,
-                                                         leftTitle: StringLiterals.FeedDetail.cancel,
-                                                         rightTitle: StringLiterals.FeedDetail.delete,
-                                                         rightBackgroundColor: UIColor.wssSecondary100.cgColor)
-            }
-            .subscribe(with: self, onNext: { owner, buttonType in
-                if buttonType == .right {
-                    guard let commentId = owner.viewModel.selectedCommentId else { return }
-                    owner.viewModel.deleteComment(owner.viewModel.feedId, commentId: commentId)
-                        .subscribe(onNext: {
-                            owner.viewModel.getSingleFeedComments(owner.viewModel.feedId)
-                                .do(onNext: { newComments in
-                                    owner.viewModel.commentsData.accept(newComments.comments)
-                                })
-                                .subscribe()
-                                .disposed(by: owner.disposeBag)
-                            
-                            owner.viewModel.commentCount.accept(owner.viewModel.commentCount.value - 1)
-                        })
-                        .disposed(by: owner.disposeBag)
+            .flatMapLatest { deleteComment, commentId in
+                self.presentToAlertViewController(
+                    iconImage: .icAlertWarningCircle,
+                    titleText: StringLiterals.FeedDetail.deleteMineTitle,
+                    contentText: StringLiterals.FeedDetail.deleteContent,
+                    leftTitle: StringLiterals.FeedDetail.cancel,
+                    rightTitle: StringLiterals.FeedDetail.delete,
+                    rightBackgroundColor: UIColor.wssSecondary100.cgColor
+                )
+                .flatMapLatest { buttonType in
+                    if buttonType == .right {
+                        return deleteComment(self.viewModel.feedId, commentId)
+                    } else {
+                        return Observable.empty()
+                    }
                 }
+            }
+            .subscribe(with: self, onNext: { owner, _ in
+                // 피드 리로딩
+            }, onError: { owner, error in
+                print("Error: \(error)")
             })
             .disposed(by: disposeBag)
     }
@@ -486,7 +513,7 @@ extension FeedDetailViewController: UITextViewDelegate {
 }
 
 extension FeedDetailViewController: FeedDetailReplyCollectionDelegate {
-    func dropdownButtonDidTap(commentId: Int, isMyComment: Bool) {
-        self.commentDropdownButtonDidTap.accept((commentId, isMyComment))
+    func dotsButtonDidTap(commentId: Int, isMyComment: Bool) {
+        self.commentDotsButtonDidTap.accept((commentId, isMyComment))
     }
 }
