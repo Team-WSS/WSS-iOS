@@ -211,10 +211,11 @@ final class FeedDetailViewModel: ViewModelType {
             .subscribe(with: self, onNext: { owner, comment in
                 owner.updatedCommentContent = comment
                 
-                let isEmpty = comment.count == 0
+                let isEmpty = comment.isEmpty
+                let containsOnlyNewlinesOrWhitespace = comment.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
                 let isNotChanged = comment == owner.initialCommentContent
                 
-                owner.isValidCommentContent = !(isEmpty || isNotChanged)
+                owner.isValidCommentContent = !(containsOnlyNewlinesOrWhitespace || isNotChanged)
                 owner.textViewEmpty.accept(isEmpty)
                 owner.showPlaceholder.accept(isEmpty)
                 owner.sendButtonEnabled.accept(owner.isValidCommentContent)
