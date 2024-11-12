@@ -82,41 +82,25 @@ extension HomeViewModel {
             })
             .disposed(by: disposeBag)
         
-        self.getRealtimePopularFeeds()
-            .subscribe(with: self, onNext: { owner, data in
-                owner.realtimePopularList.onNext(data.popularFeeds)
-                
-                let groupedData = stride(from: 0, to: data.popularFeeds.count, by: 3)
-                    .map { index in
-                        Array(data.popularFeeds[index..<min(index + 3, data.popularFeeds.count)])
-                    }
-                owner.realtimePopularDataRelay.accept(groupedData)
-            })
-            .disposed(by: disposeBag)
-        
         input.viewWillAppearEvent
             .flatMapLatest {
-                if self.isLoggedIn {
-                    return Observable.zip(
-                        self.getRealtimePopularFeeds(),
-                        self.getInterestFeeds()
-                    )
-                } else {
-                    return Observable.just((RealtimePopularFeeds(popularFeeds: []),
-                                            InterestFeeds(recommendFeeds: [])))
-                }
+                let realtimeFeedsObservable = self.getRealtimePopularFeeds()
+                let interestFeedsObservable = self.isLoggedIn ? self.getInterestFeeds() : Observable.just(InterestFeeds(recommendFeeds: []))
+                
+                return Observable.zip(realtimeFeedsObservable, interestFeedsObservable)
             }
             .subscribe(with: self, onNext: { owner, data in
                 let realtimeFeeds = data.0
                 let interestFeeds = data.1
                 
+                owner.realtimePopularList.onNext(realtimeFeeds.popularFeeds)
+                let groupedData = stride(from: 0, to: realtimeFeeds.popularFeeds.count, by: 3)
+                    .map { index in
+                        Array(realtimeFeeds.popularFeeds[index..<min(index + 3, realtimeFeeds.popularFeeds.count)])
+                    }
+                owner.realtimePopularDataRelay.accept(groupedData)
+                
                 if owner.isLoggedIn {
-                    owner.realtimePopularList.onNext(realtimeFeeds.popularFeeds)
-                    let groupedData = stride(from: 0, to: realtimeFeeds.popularFeeds.count, by: 3)
-                        .map { index in
-                            Array(realtimeFeeds.popularFeeds[index..<min(index + 3, realtimeFeeds.popularFeeds.count)])
-                        }
-                    owner.realtimePopularDataRelay.accept(groupedData)
                     owner.interestList.onNext(interestFeeds.recommendFeeds)
                     owner.updateInterestView.accept((true, interestFeeds.recommendFeeds.isEmpty))
                 } else {
