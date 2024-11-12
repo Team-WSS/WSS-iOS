@@ -30,7 +30,7 @@ final class HomeViewModel: ViewModelType {
     private let tasteRecommendCellIndexPath = PublishRelay<IndexPath>()
     let presentInduceLoginViewController = PublishRelay<Void>()
     private let pushToAnnouncementViewController = PublishRelay<Void>()
-    private let showInterestEmptyView = PublishRelay<Bool>()
+    private let updateInterestView = PublishRelay<(Bool, Bool)>()
     
     // MARK: - Inputs
     
@@ -58,7 +58,7 @@ final class HomeViewModel: ViewModelType {
         let pushToAnnouncementViewController: Observable<Void>
         let pushToNovelDetailInfoViewController: Observable<(IndexPath, Int)>
         let tasteRecommendCollectionViewHeight: Driver<CGFloat>
-        let showInterestEmptyView: Observable<Bool>
+        let updateInterestView: Observable<(Bool, Bool)>
         
         // 비로그인
         let pushToNormalSearchViewController: Observable<Void>
@@ -82,54 +82,51 @@ extension HomeViewModel {
             })
             .disposed(by: disposeBag)
         
+        self.getRealtimePopularFeeds()
+            .subscribe(with: self, onNext: { owner, data in
+                owner.realtimePopularList.onNext(data.popularFeeds)
+                
+                let groupedData = stride(from: 0, to: data.popularFeeds.count, by: 3)
+                    .map { index in
+                        Array(data.popularFeeds[index..<min(index + 3, data.popularFeeds.count)])
+                    }
+                owner.realtimePopularDataRelay.accept(groupedData)
+            })
+            .disposed(by: disposeBag)
+        
         input.viewWillAppearEvent
             .flatMapLatest {
-                Observable.zip(
-                    self.getRealtimePopularFeeds(),
-                    self.getInterestFeeds()
-                )
+                if self.isLoggedIn {
+                    return Observable.zip(
+                        self.getRealtimePopularFeeds(),
+                        self.getInterestFeeds()
+                    )
+                } else {
+                    return Observable.just((RealtimePopularFeeds(popularFeeds: []),
+                                            InterestFeeds(recommendFeeds: [])))
+                }
             }
             .subscribe(with: self, onNext: { owner, data in
                 let realtimeFeeds = data.0
                 let interestFeeds = data.1
                 
-                owner.realtimePopularList.onNext(realtimeFeeds.popularFeeds)
-                
-                let groupedData = stride(from: 0, to: realtimeFeeds.popularFeeds.count, by: 3)
-                    .map { index in
-                        Array(realtimeFeeds.popularFeeds[index..<min(index + 3, realtimeFeeds.popularFeeds.count)])
-                    }
-                owner.realtimePopularDataRelay.accept(groupedData)
-                owner.interestList.onNext(interestFeeds.recommendFeeds)
-                print("🍀관심글 개수: \(interestFeeds.recommendFeeds.count)")
-                if interestFeeds.recommendFeeds.isEmpty {
-                    owner.showInterestEmptyView.accept(true)
+                if owner.isLoggedIn {
+                    owner.realtimePopularList.onNext(realtimeFeeds.popularFeeds)
+                    let groupedData = stride(from: 0, to: realtimeFeeds.popularFeeds.count, by: 3)
+                        .map { index in
+                            Array(realtimeFeeds.popularFeeds[index..<min(index + 3, realtimeFeeds.popularFeeds.count)])
+                        }
+                    owner.realtimePopularDataRelay.accept(groupedData)
+                    owner.interestList.onNext(interestFeeds.recommendFeeds)
+                    owner.updateInterestView.accept((true, interestFeeds.recommendFeeds.isEmpty))
                 } else {
-                    owner.showInterestEmptyView.accept(false)
+                    owner.updateInterestView.accept((false, true))
                 }
             }, onError: { owner, error in
                 owner.realtimePopularList.onError(error)
                 owner.interestList.onError(error)
             })
             .disposed(by: disposeBag)
-        
-        if isLoggedIn {
-            self.getInterestFeeds()
-                .subscribe(with: self, onNext: { owner, data in
-                    owner.interestList.onNext(data.recommendFeeds)
-                }, onError: { owner, error in
-                    owner.interestList.onError(error)
-                })
-                .disposed(by: disposeBag)
-            
-            self.getTasteRecommendNovels()
-                .subscribe(with: self, onNext: { owner, data in
-                    owner.tasteRecommendList.onNext(data.tasteNovels)
-                }, onError: { owner, error in
-                    owner.tasteRecommendList.onError(error)
-                })
-                .disposed(by: disposeBag)
-        }
         
         input.setPreferredGenresButtonTapped
             .subscribe(with: self, onNext: { owner, _ in
@@ -188,7 +185,7 @@ extension HomeViewModel {
                       pushToAnnouncementViewController: pushToAnnouncementViewController.asObservable(),
                       pushToNovelDetailInfoViewController: pushToNovelDetailInfoViewController,
                       tasteRecommendCollectionViewHeight: tasteRecommendCollectionViewHeight,
-                      showInterestEmptyView: showInterestEmptyView.asObservable(),
+                      updateInterestView: updateInterestView.asObservable(),
                       pushToNormalSearchViewController: pushToNormalSearchViewController,
                       presentInduceLoginViewController: presentInduceLoginViewController.asObservable())
     }

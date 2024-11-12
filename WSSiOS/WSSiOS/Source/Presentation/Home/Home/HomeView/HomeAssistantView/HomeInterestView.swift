@@ -21,10 +21,9 @@ final class HomeInterestView: UIView {
                                                   collectionViewLayout: UICollectionViewLayout())
     private let interestCollectionViewLayout = UICollectionViewFlowLayout()
     
-    private let isLoggedIn = APIConstants.isLogined
     private let userNickname = UserDefaults.standard.string(forKey: StringLiterals.UserDefault.userNickname)
     let unregisterView = HomeUnregisterView(.interest)
-    let interestEmptyView = HomeUnregisterView(.interestEmpty)
+    private let interestEmptyView = HomeInterestEmptyView()
     
     //MARK: - Life Cycle
     
@@ -32,8 +31,6 @@ final class HomeInterestView: UIView {
         super.init(frame: .zero)
         
         setUI()
-        setHierarchy()
-        setLayout()
     }
     
     @available(*, unavailable)
@@ -43,7 +40,7 @@ final class HomeInterestView: UIView {
     
     private func setUI() {
         titleLabel.do {
-            $0.applyWSSFont(.headline1, with: isLoggedIn ? "\(userNickname ?? "")\(StringLiterals.Home.Title.interest)" : StringLiterals.Home.Title.notLoggedInInterest)
+            $0.applyWSSFont(.headline1, with: StringLiterals.Home.Title.notLoggedInInterest)
             $0.textColor = .wssBlack
         }
         
@@ -65,63 +62,66 @@ final class HomeInterestView: UIView {
         }
     }
     
-    private func setHierarchy() {
-        self.addSubviews(titleLabel,
-                         subTitleLabel,
-                         interestCollectionView,
-                         unregisterView,
-                         interestEmptyView)
-    }
-    
-    private func setLayout() {
-        titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview()
-            $0.leading.equalToSuperview().inset(20)
-        }
-        
-        subTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(2)
-            $0.leading.equalTo(titleLabel.snp.leading)
-        }
-        
-        interestCollectionView.snp.makeConstraints {
-            $0.top.equalTo(subTitleLabel.snp.bottom)
-            $0.leading.trailing.bottom.equalToSuperview()
-            $0.height.equalTo(301)
-        }
-        
-        interestEmptyView.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(11)
-            $0.leading.trailing.equalToSuperview().inset(20)
-            $0.bottom.equalToSuperview()
-        }
-        
-        unregisterView.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(11)
-            $0.leading.trailing.equalToSuperview().inset(20)
-            $0.bottom.equalToSuperview()
-        }
-    }
-    
     //MARK: - Custom Method
     
-    func updateView(for dataAvailable: Bool) {
-        if isLoggedIn {
-            unregisterView.isHidden = true
+    func updateView(_ isLogined: Bool, _ dataAvailable: Bool) {
+        if isLogined {
             if dataAvailable {
-                interestCollectionView.isHidden = false
-                interestEmptyView.isHidden = true
-                subTitleLabel.isHidden = false
+                if let nickname = userNickname {
+                    titleLabel.applyWSSFont(.headline1, with: "\(nickname)\(StringLiterals.Home.Title.interest)")
+                }
+                self.addSubviews(titleLabel,
+                                 subTitleLabel,
+                                 interestCollectionView)
+                titleLabel.snp.makeConstraints {
+                    $0.top.equalToSuperview()
+                    $0.leading.equalToSuperview().inset(20)
+                }
+                subTitleLabel.snp.makeConstraints {
+                    $0.top.equalTo(titleLabel.snp.bottom).offset(2)
+                    $0.leading.equalTo(titleLabel.snp.leading)
+                }
+                interestCollectionView.snp.makeConstraints {
+                    $0.top.equalTo(subTitleLabel.snp.bottom)
+                    $0.leading.trailing.bottom.equalToSuperview()
+                    $0.height.equalTo(301)
+                }
+                unregisterView.removeFromSuperview()
+                interestEmptyView.removeFromSuperview()
+                
             } else {
-                interestCollectionView.isHidden = true
-                interestEmptyView.isHidden = false
-                subTitleLabel.isHidden = true
+                titleLabel.applyWSSFont(.headline1, with: StringLiterals.Home.Title.notLoggedInInterest)
+                interestCollectionView.removeFromSuperview()
+                self.addSubviews(titleLabel,
+                                 interestEmptyView)
+                titleLabel.snp.makeConstraints {
+                    $0.top.equalToSuperview()
+                    $0.leading.equalToSuperview().inset(20)
+                }
+                interestEmptyView.snp.makeConstraints {
+                    $0.top.equalTo(titleLabel.snp.bottom).offset(11)
+                    $0.leading.trailing.equalToSuperview().inset(20)
+                    $0.bottom.equalToSuperview().inset(20)
+                }
+                unregisterView.removeFromSuperview()
+                subTitleLabel.removeFromSuperview()
             }
         } else {
-            unregisterView.isHidden = false
-            interestCollectionView.isHidden = true
-            interestEmptyView.isHidden = true
-            subTitleLabel.isHidden = true
+            titleLabel.applyWSSFont(.headline1, with: StringLiterals.Home.Title.notLoggedInInterest)
+            self.addSubviews(titleLabel,
+                             unregisterView)
+            titleLabel.snp.makeConstraints {
+                $0.top.equalToSuperview()
+                $0.leading.equalToSuperview().inset(20)
+            }
+            unregisterView.snp.makeConstraints {
+                $0.top.equalTo(titleLabel.snp.bottom).offset(11)
+                $0.leading.trailing.equalToSuperview().inset(20)
+                $0.bottom.equalToSuperview().inset(20)
+            }
+            interestCollectionView.removeFromSuperview()
+            interestEmptyView.removeFromSuperview()
+            subTitleLabel.removeFromSuperview()
         }
     }
 }

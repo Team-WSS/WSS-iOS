@@ -206,10 +206,11 @@ final class HomeViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.showInterestEmptyView
+        output.updateInterestView
             .observe(on: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, isShow in
-                owner.rootView.interestView.updateView(for: !isShow)
+            .subscribe(with: self, onNext: { owner, data in
+                print("data.0: \(data.0)")
+                owner.rootView.interestView.updateView(data.0, !data.1)
             })
             .disposed(by: disposeBag)
     }
