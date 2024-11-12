@@ -21,6 +21,7 @@ final class FeedDetailViewController: UIViewController {
     
     private let maximumCommentContentCount: Int = 500
     private let commentDotsButtonDidTap = PublishRelay<(Int, Bool)>()
+    private let commentSpoilerTextDidTap = PublishRelay<(Int, Bool)>()
     private let reloadComments = PublishRelay<Void>()
     
     //MARK: - UI Components
@@ -113,6 +114,7 @@ final class FeedDetailViewController: UIViewController {
             commentContentViewDidEndEditing: rootView.replyWritingView.replyWritingTextView.rx.didEndEditing,
             replyCommentCollectionViewSwipeGesture: replyCommentCollectionViewSwipeGesture,
             sendButtonDidTap: rootView.replyWritingView.replyButton.rx.tap,
+            commentSpoilerTextDidTap: commentSpoilerTextDidTap.asObservable(),
             dotsButtonDidTap: rootView.dropdownButton.rx.tap,
             dropdownButtonDidTap: dropdownButtonDidTap,
             commentdotsButtonDidTap: commentDotsButtonDidTap.asObservable(),
@@ -544,5 +546,9 @@ extension FeedDetailViewController: UITextViewDelegate {
 extension FeedDetailViewController: FeedDetailReplyCollectionDelegate {
     func dotsButtonDidTap(commentId: Int, isMyComment: Bool) {
         self.commentDotsButtonDidTap.accept((commentId, isMyComment))
+    }
+    
+    func spoilerTextDidTap(commentId: Int, isMyComment: Bool) {
+        self.commentSpoilerTextDidTap.accept((commentId, isMyComment))
     }
 }

@@ -14,6 +14,7 @@ import Then
 
 protocol FeedDetailReplyCollectionDelegate: AnyObject {
     func dotsButtonDidTap(commentId: Int, isMyComment: Bool)
+    func spoilerTextDidTap(commentId: Int, isMyComment: Bool)
 }
 
 final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
@@ -137,6 +138,22 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
                 owner.delegate?.dotsButtonDidTap(commentId: comment.commentId, isMyComment: comment.isMyComment)
             })
             .disposed(by: disposeBag)
+
+        replyContentLabel.rx.tapGesture()
+            .when(.recognized)
+            .withLatestFrom(comment)
+            .filter { $0.isSpoiler }
+            .subscribe(with: self, onNext: { owner, comment in
+                owner.delegate?.spoilerTextDidTap(commentId: comment.commentId, isMyComment: comment.isMyComment)
+                owner.showFullText(for: comment)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func showFullText(for comment: FeedComment) {
+        replyContentLabel.applyWSSFont(.body2, with: comment.commentContent)
+        replyContentLabel.textColor = .wssBlack
+        replyContentLabel.numberOfLines = 0
     }
     
     func bindData(data: FeedComment) {
@@ -156,16 +173,20 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
             if data.isBlocked {
                 $0.applyWSSFont(.body2, with: StringLiterals.FeedDetail.blockedComment)
                 $0.textColor = .wssGray200
+                $0.isUserInteractionEnabled = false
             } else if data.isHidden {
                 $0.applyWSSFont(.body2, with: StringLiterals.FeedDetail.hiddenComment)
                 $0.textColor = .wssGray200
+                $0.isUserInteractionEnabled = false
             } else if data.isSpoiler {
                 $0.applyWSSFont(.body2, with: StringLiterals.FeedDetail.spoilerComment)
                 $0.textColor = .wssSecondary100
+                $0.isUserInteractionEnabled = true
             } else {
                 $0.applyWSSFont(.body2, with: data.commentContent)
                 $0.textColor = .wssBlack
                 $0.numberOfLines = 0
+                $0.isUserInteractionEnabled = false
             }
         }
         
