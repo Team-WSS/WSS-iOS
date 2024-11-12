@@ -30,6 +30,7 @@ final class HomeViewModel: ViewModelType {
     private let tasteRecommendCellIndexPath = PublishRelay<IndexPath>()
     let presentInduceLoginViewController = PublishRelay<Void>()
     private let pushToAnnouncementViewController = PublishRelay<Void>()
+    private let showInterestEmptyView = PublishRelay<Bool>()
     
     // MARK: - Inputs
     
@@ -57,6 +58,7 @@ final class HomeViewModel: ViewModelType {
         let pushToAnnouncementViewController: Observable<Void>
         let pushToNovelDetailInfoViewController: Observable<(IndexPath, Int)>
         let tasteRecommendCollectionViewHeight: Driver<CGFloat>
+        let showInterestEmptyView: Observable<Bool>
         
         // 비로그인
         let pushToNormalSearchViewController: Observable<Void>
@@ -99,6 +101,12 @@ extension HomeViewModel {
                     }
                 owner.realtimePopularDataRelay.accept(groupedData)
                 owner.interestList.onNext(interestFeeds.recommendFeeds)
+                print("🍀관심글 개수: \(interestFeeds.recommendFeeds.count)")
+                if interestFeeds.recommendFeeds.isEmpty {
+                    owner.showInterestEmptyView.accept(true)
+                } else {
+                    owner.showInterestEmptyView.accept(false)
+                }
             }, onError: { owner, error in
                 owner.realtimePopularList.onError(error)
                 owner.interestList.onError(error)
@@ -180,6 +188,7 @@ extension HomeViewModel {
                       pushToAnnouncementViewController: pushToAnnouncementViewController.asObservable(),
                       pushToNovelDetailInfoViewController: pushToNovelDetailInfoViewController,
                       tasteRecommendCollectionViewHeight: tasteRecommendCollectionViewHeight,
+                      showInterestEmptyView: showInterestEmptyView.asObservable(),
                       pushToNormalSearchViewController: pushToNormalSearchViewController,
                       presentInduceLoginViewController: presentInduceLoginViewController.asObservable())
     }

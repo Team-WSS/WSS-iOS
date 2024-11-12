@@ -205,6 +205,13 @@ final class HomeViewController: UIViewController {
                 owner.rootView.tasteRecommendView.updateCollectionViewHeight(height: height)
             })
             .disposed(by: disposeBag)
+        
+        output.showInterestEmptyView
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, isShow in
+                owner.rootView.interestView.updateView(for: !isShow)
+            })
+            .disposed(by: disposeBag)
     }
 }
 

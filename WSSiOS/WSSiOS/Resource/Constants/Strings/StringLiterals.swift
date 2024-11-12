@@ -91,6 +91,7 @@ enum StringLiterals {
             enum Title {
                 static let interest = "관심작품의 최신 소식을 모아서 볼 수 있어요.\n좋아하는 웹소설을 관심 등록 해볼까요?"
                 static let recommend = "로맨스, 로판, 판타지, 현판 등\n선호장르를 기반으로 웹소설을 추천해드려요!"
+                static let interestEmpty = "관심 등록한 작품과 관련된 글이 없어요"
             }
             
             enum ButtonTItle {

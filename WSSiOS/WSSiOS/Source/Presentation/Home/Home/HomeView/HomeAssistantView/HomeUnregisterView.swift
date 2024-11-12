@@ -13,6 +13,7 @@ import Then
 enum UnregisterType {
     case interest
     case tasteRecommend
+    case interestEmpty
     
     var title: String {
         switch self {
@@ -20,24 +21,30 @@ enum UnregisterType {
             return StringLiterals.Home.Unregister.Title.interest
         case .tasteRecommend:
             return StringLiterals.Home.Unregister.Title.recommend
+        case .interestEmpty:
+            return StringLiterals.Home.Unregister.Title.interestEmpty
         }
     }
     
-    var buttonTitle: String {
+    var buttonTitle: String? {
         switch self {
         case .interest:
             return StringLiterals.Home.Unregister.ButtonTItle.interest
         case .tasteRecommend:
             return StringLiterals.Home.Unregister.ButtonTItle.recommend
+        case .interestEmpty:
+            return nil
         }
     }
     
-    var buttonColor: UIColor {
+    var buttonColor: UIColor? {
         switch self {
         case .interest:
             return .wssSecondary100
         case .tasteRecommend:
             return .wssPrimary100
+        case .interestEmpty:
+            return nil
         }
     }
 }
@@ -121,13 +128,41 @@ final class HomeUnregisterView: UIView {
             $0.numberOfLines = 2
         }
         
-        self.registerButton.do {
-            $0.backgroundColor = type.buttonColor
+        if let buttonTitle = type.buttonTitle, let buttonColor = type.buttonColor {
+            self.registerButton.do {
+                $0.isHidden = false
+                $0.backgroundColor = buttonColor
+            }
+            self.registerButtonLabel.do {
+                $0.applyWSSFont(.title3, with: buttonTitle)
+            }
+        } else {
+            self.registerButton.isHidden = true
         }
         
-        self.registerButtonLabel.do {
-            $0.applyWSSFont(.title3, with: type.buttonTitle)
+        self.updateLayoutForUnregisterType(type)
+    }
+    
+    private func updateLayoutForUnregisterType(_ type: UnregisterType) {
+        if type.buttonTitle == nil {
+            titleLabel.snp.remakeConstraints {
+                $0.top.equalToSuperview().inset(20)
+                $0.leading.equalToSuperview().inset(24)
+                $0.bottom.equalToSuperview().inset(20)
+            }
+        } else {
+            titleLabel.snp.remakeConstraints {
+                $0.top.equalToSuperview().inset(20)
+                $0.leading.equalToSuperview().inset(24)
+            }
+            
+            registerButton.snp.remakeConstraints {
+                $0.top.equalTo(titleLabel.snp.bottom).offset(14)
+                $0.leading.equalTo(titleLabel.snp.leading)
+                $0.width.equalTo(138)
+                $0.height.equalTo(33)
+                $0.bottom.equalToSuperview().inset(20)
+            }
         }
     }
 }
-
