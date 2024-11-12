@@ -64,9 +64,25 @@ final class HomeInterestView: UIView {
     
     //MARK: - Custom Method
     
-    func updateView(_ isLogined: Bool, _ dataAvailable: Bool) {
+    func updateView(_ isLogined: Bool, _ isEmpty: Bool) {
         if isLogined {
-            if dataAvailable {
+            if isEmpty {
+                titleLabel.applyWSSFont(.headline1, with: StringLiterals.Home.Title.notLoggedInInterest)
+                interestCollectionView.removeFromSuperview()
+                self.addSubviews(titleLabel,
+                                 interestEmptyView)
+                titleLabel.snp.makeConstraints {
+                    $0.top.equalToSuperview()
+                    $0.leading.equalToSuperview().inset(20)
+                }
+                interestEmptyView.snp.makeConstraints {
+                    $0.top.equalTo(titleLabel.snp.bottom).offset(11)
+                    $0.leading.trailing.equalToSuperview().inset(20)
+                    $0.bottom.equalToSuperview().inset(20)
+                }
+                unregisterView.removeFromSuperview()
+                subTitleLabel.removeFromSuperview()
+            } else {
                 if let nickname = userNickname {
                     titleLabel.applyWSSFont(.headline1, with: "\(nickname)\(StringLiterals.Home.Title.interest)")
                 }
@@ -88,23 +104,6 @@ final class HomeInterestView: UIView {
                 }
                 unregisterView.removeFromSuperview()
                 interestEmptyView.removeFromSuperview()
-                
-            } else {
-                titleLabel.applyWSSFont(.headline1, with: StringLiterals.Home.Title.notLoggedInInterest)
-                interestCollectionView.removeFromSuperview()
-                self.addSubviews(titleLabel,
-                                 interestEmptyView)
-                titleLabel.snp.makeConstraints {
-                    $0.top.equalToSuperview()
-                    $0.leading.equalToSuperview().inset(20)
-                }
-                interestEmptyView.snp.makeConstraints {
-                    $0.top.equalTo(titleLabel.snp.bottom).offset(11)
-                    $0.leading.trailing.equalToSuperview().inset(20)
-                    $0.bottom.equalToSuperview().inset(20)
-                }
-                unregisterView.removeFromSuperview()
-                subTitleLabel.removeFromSuperview()
             }
         } else {
             titleLabel.applyWSSFont(.headline1, with: StringLiterals.Home.Title.notLoggedInInterest)

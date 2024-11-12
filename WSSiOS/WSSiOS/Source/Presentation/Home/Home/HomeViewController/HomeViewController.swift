@@ -209,8 +209,9 @@ final class HomeViewController: UIViewController {
         output.updateInterestView
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
-                print("data.0: \(data.0)")
-                owner.rootView.interestView.updateView(data.0, !data.1)
+                let isLogined = data.0
+                let isEmpty = data.1
+                owner.rootView.interestView.updateView(isLogined, isEmpty)
             })
             .disposed(by: disposeBag)
     }
