@@ -389,6 +389,7 @@ final class FeedDetailViewController: UIViewController {
                 )
                 .flatMapLatest { buttonType in
                     if buttonType == .right {
+                        self.viewModel.commentCount.accept(self.viewModel.commentCount.value - 1)
                         return deleteComment(feedId, commentId)
                     } else {
                         return Observable.empty()

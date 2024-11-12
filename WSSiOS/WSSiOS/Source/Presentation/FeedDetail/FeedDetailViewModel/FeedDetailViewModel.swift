@@ -334,7 +334,6 @@ final class FeedDetailViewModel: ViewModelType {
                     owner.showCommentDeleteAlertView.accept((owner.deleteComment,
                                                              owner.feedId,
                                                              owner.selectedCommentId))
-                    owner.commentCount.accept(owner.commentCount.value - 1)
                 case (.top, false): owner.showCommentSpoilerAlertView.accept((owner.postSpoilerComment,
                                                                               owner.feedId,
                                                                               owner.selectedCommentId))
