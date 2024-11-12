@@ -17,7 +17,6 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
     private let viewModel: DetailSearchViewModel
     private let disposeBag = DisposeBag()
     
-    private let viewWillAppearEvent = BehaviorRelay(value: false)
     private let viewDidLoadEvent = PublishRelay<Void>()
     private let keywordCategoryListData = BehaviorRelay<[KeywordCategory]>(value: [])
     private let selectedKeywordData = PublishRelay<KeywordData>()
@@ -44,41 +43,44 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
         self.view = rootView
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        viewWillAppearEvent.accept(true)
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         registerCell()
-        delegate()
+        setDelegate()
         bindViewModel()
         
         viewDidLoadEvent.accept(())
     }
     
     private func registerCell() {
-        rootView.detailSearchInfoView.genreCollectionView.register(DetailSearchInfoGenreCollectionViewCell.self,
-                                                                   forCellWithReuseIdentifier: DetailSearchInfoGenreCollectionViewCell.cellIdentifier)
+        //정보뷰
+        rootView.detailSearchInfoView.genreCollectionView
+            .register(DetailSearchInfoGenreCollectionViewCell.self,
+                      forCellWithReuseIdentifier: DetailSearchInfoGenreCollectionViewCell.cellIdentifier)
+        rootView.detailSearchKeywordView.novelSelectedKeywordListView.selectedKeywordCollectionView
         
-        rootView.detailSearchKeywordView.novelSelectedKeywordListView.selectedKeywordCollectionView.register(NovelSelectedKeywordCollectionViewCell.self, forCellWithReuseIdentifier: NovelSelectedKeywordCollectionViewCell.cellIdentifier)
-        rootView.detailSearchKeywordView.novelKeywordSelectSearchResultView.searchResultCollectionView.register(NovelKeywordSelectSearchResultCollectionViewCell.self, forCellWithReuseIdentifier: NovelKeywordSelectSearchResultCollectionViewCell.cellIdentifier)
+        //키워드뷰
+            .register(NovelSelectedKeywordCollectionViewCell.self,
+                      forCellWithReuseIdentifier: NovelSelectedKeywordCollectionViewCell.cellIdentifier)
+        rootView.detailSearchKeywordView.novelKeywordSelectSearchResultView.searchResultCollectionView
+            .register(NovelKeywordSelectSearchResultCollectionViewCell.self,
+                      forCellWithReuseIdentifier: NovelKeywordSelectSearchResultCollectionViewCell.cellIdentifier)
     }
     
-    private func delegate() {
+    private func setDelegate() {
         rootView.detailSearchInfoView
             .genreCollectionView.rx
             .setDelegate(self)
             .disposed(by: disposeBag)
         
-        rootView.detailSearchKeywordView.novelSelectedKeywordListView.selectedKeywordCollectionView.rx
+        rootView.detailSearchKeywordView.novelSelectedKeywordListView
+            .selectedKeywordCollectionView.rx
             .setDelegate(self)
             .disposed(by: disposeBag)
         
-        rootView.detailSearchKeywordView.novelKeywordSelectSearchResultView.searchResultCollectionView.rx
+        rootView.detailSearchKeywordView.novelKeywordSelectSearchResultView
+            .searchResultCollectionView.rx
             .setDelegate(self)
             .disposed(by: disposeBag)
     }
@@ -86,20 +88,36 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
     //MARK: - Bind
     
     private func bindViewModel() {
+        let completedStatusButtonDidTap = Observable.merge(
+            rootView.detailSearchInfoView.completedStatusButtons
+                .map { button in
+                    button.rx.tap.map { button.status }
+                })
+        
+        let novelRatingStatusButtonDidTap = Observable.merge(
+            rootView.detailSearchInfoView.novelRatingStatusButtons
+                .map { button in
+                    button.rx.tap.map { button.status }
+                })
+        
         let input = DetailSearchViewModel.Input(
+            viewDidLoadEvent: viewDidLoadEvent.asObservable(),
             closeButtonDidTap: rootView.cancelModalButton.rx.tap,
             infoTabDidTap: rootView.detailSearchHeaderView.infoLabel.rx.tapGesture().when(.recognized).asObservable(),
             keywordTabDidTap: rootView.detailSearchHeaderView.keywordLabel.rx.tapGesture().when(.recognized).asObservable(),
             resetButtonDidTap: rootView.detailSearchBottomView.resetButton.rx.tap,
-            selectButtonDidTap: rootView.detailSearchBottomView.searchButton.rx.tap,
-            genreCollectionViewContentSize: rootView.detailSearchInfoView.genreCollectionView.rx.observe(CGSize.self, "contentSize"),
-            viewDidLoadEvent: viewDidLoadEvent.asObservable(),
+            searchNovelButtonDidTap: rootView.detailSearchBottomView.searchButton.rx.tap,
+            updateDetailSearchResultData: NotificationCenter.default.rx.notification(Notification.Name("PushToUpateDetailSearchResult")).asObservable(),
+            genreColletionViewItemSelected: rootView.detailSearchInfoView.genreCollectionView.rx.itemSelected.asObservable(),
+            genreColletionViewItemDeselected: rootView.detailSearchInfoView.genreCollectionView.rx.itemDeselected.asObservable(),
+            completedButtonDidTap: completedStatusButtonDidTap,
+            novelRatingButtonDidTap: novelRatingStatusButtonDidTap,
             updatedEnteredText: rootView.detailSearchKeywordView.novelKeywordSelectSearchBarView.keywordTextField.rx.text.orEmpty.distinctUntilChanged().asObservable(),
             keywordTextFieldEditingDidBegin: rootView.detailSearchKeywordView.novelKeywordSelectSearchBarView.keywordTextField.rx.controlEvent(.editingDidBegin).asControlEvent(),
             keywordTextFieldEditingDidEnd: rootView.detailSearchKeywordView.novelKeywordSelectSearchBarView.keywordTextField.rx.controlEvent(.editingDidEnd).asControlEvent(),
             keywordTextFieldEditingDidEndOnExit: rootView.detailSearchKeywordView.novelKeywordSelectSearchBarView.keywordTextField.rx.controlEvent(.editingDidEndOnExit).asControlEvent(),
             searchCancelButtonDidTap: rootView.detailSearchKeywordView.novelKeywordSelectSearchBarView.searchCancelButton.rx.tap,
-            searchButtonDidTap: rootView.detailSearchKeywordView.novelKeywordSelectSearchBarView.searchButton.rx.tap,
+            searchKeywordButtonDidTap: rootView.detailSearchKeywordView.novelKeywordSelectSearchBarView.searchButton.rx.tap,
             selectedKeywordCollectionViewItemSelected: rootView.detailSearchKeywordView.novelSelectedKeywordListView.selectedKeywordCollectionView.rx.itemSelected.asObservable(),
             searchResultCollectionViewItemSelected: rootView.detailSearchKeywordView.novelKeywordSelectSearchResultView.searchResultCollectionView.rx.itemSelected.asObservable(),
             searchResultCollectionViewItemDeselected: rootView.detailSearchKeywordView.novelKeywordSelectSearchResultView.searchResultCollectionView.rx.itemDeselected.asObservable(),
@@ -109,6 +127,7 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
         )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
+        // 전체
         output.dismissModalViewController
             .bind(with: self, onNext: { owner, _ in
                 owner.dismissModalViewController()
@@ -121,23 +140,55 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
             })
             .disposed(by: disposeBag)
         
-        output.showKeywordNewImageView
-            .bind(with: self, onNext: { owner, isHidden in
-                if isHidden {
-                    owner.rootView.detailSearchHeaderView.newKeywordImageView.isHidden = true
-                } else {
-                    owner.rootView.detailSearchHeaderView.newKeywordImageView.isHidden = false
-                }
+        output.showInfoNewImageView
+            .bind(with: self, onNext: { owner, show in
+                owner.rootView.detailSearchHeaderView.newInfoImageView.isHidden = show ? false : true
             })
             .disposed(by: disposeBag)
         
-        output.genreList
-            .drive(rootView.detailSearchInfoView.genreCollectionView.rx.items(cellIdentifier: DetailSearchInfoGenreCollectionViewCell.cellIdentifier,cellType: DetailSearchInfoGenreCollectionViewCell.self)) { row, element, cell in
-                cell.bindData(genre: element)
+        output.showKeywordNewImageView
+            .bind(with: self, onNext: { owner, show in
+                owner.rootView.detailSearchHeaderView.newKeywordImageView.isHidden = show ? false : true
+            })
+            .disposed(by: disposeBag)
+        
+        // 정보 뷰
+        output.genreListData
+            .bind(to: rootView.detailSearchInfoView.genreCollectionView.rx.items(cellIdentifier: DetailSearchInfoGenreCollectionViewCell.cellIdentifier,cellType: DetailSearchInfoGenreCollectionViewCell.self)) { item, element, cell in
+                let indexPath = IndexPath(item: item, section: 0)
+                
+                if self.viewModel.selectedGenreListData.value.contains(element) {
+                    self.rootView.detailSearchInfoView.genreCollectionView.selectItem(at: indexPath,
+                                                                                      animated: false,
+                                                                                      scrollPosition: [])
+                } else {
+                    self.rootView.detailSearchInfoView.genreCollectionView.deselectItem(at: indexPath,
+                                                                                        animated: false)
+                }
+                cell.bindData(genre: element.toKorean)
             }
             .disposed(by: disposeBag)
         
         
+        output.selectedCompletedStatus
+            .drive(with: self, onNext: { owner, selectedCompletedStatus in
+                owner.rootView.detailSearchInfoView.updateCompletedKeyword(selectedCompletedStatus)
+            })
+            .disposed(by: disposeBag)
+        
+        output.selectedNovelRatingStatus
+            .drive(with: self, onNext: { owner, selectedNovelRatingStatus in
+                owner.rootView.detailSearchInfoView.updateNovelRatingKeyword(selectedNovelRatingStatus)
+            })
+            .disposed(by: disposeBag)
+        
+        output.resetSelectedInfoData
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.rootView.detailSearchInfoView.resetAllStates()
+            })
+            .disposed(by: disposeBag)
+        
+        // 키워드 뷰
         output.enteredText
             .subscribe(with: self, onNext: { owner, text in
                 owner.rootView.detailSearchKeywordView.novelKeywordSelectSearchBarView.keywordTextField.text = text
@@ -276,11 +327,16 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
 extension DetailSearchViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if collectionView == rootView.detailSearchInfoView.genreCollectionView {
-            guard let text = viewModel.genreNameForItemAt(indexPath: indexPath) else {
+            var text: String?
+            
+            let novelGenreList = NovelGenre.allCases.map { $0.toKorean }
+            text = novelGenreList[indexPath.item]
+            
+            guard let unwrappedText = text else {
                 return CGSize(width: 0, height: 0)
             }
             
-            let width = (text as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 26
+            let width = (unwrappedText as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 26
             return CGSize(width: width, height: 35)
         }
         else if collectionView ==  rootView.detailSearchKeywordView.novelSelectedKeywordListView.selectedKeywordCollectionView{

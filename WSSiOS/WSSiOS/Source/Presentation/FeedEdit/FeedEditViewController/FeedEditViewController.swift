@@ -18,6 +18,7 @@ final class FeedEditViewController: UIViewController {
     private let feedEditViewModel: FeedEditViewModel
     private let disposeBag = DisposeBag()
     
+    private let viewDidLoadEvent = PublishRelay<Void>()
     private let stopEditingEvent = PublishRelay<Void>()
     
     //MARK: - Components
@@ -29,8 +30,6 @@ final class FeedEditViewController: UIViewController {
     init(viewModel: FeedEditViewModel) {
         self.feedEditViewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-        
-        self.rootView.feedEditContentView.bindData(feedContent: viewModel.initialFeedContent)
     }
     
     required init?(coder: NSCoder) {
@@ -54,6 +53,8 @@ final class FeedEditViewController: UIViewController {
          register()
          delegate()
          bindViewModel()
+         
+         viewDidLoadEvent.accept(())
     }
     
     //MARK: - UI
@@ -81,6 +82,7 @@ final class FeedEditViewController: UIViewController {
     
     private func bindViewModel() {
         let input = FeedEditViewModel.Input(
+            viewDidLoadEvent: viewDidLoadEvent.asObservable(),
             viewDidTap: view.rx.tapGesture(configuration: { gestureRecognizer, delegate in
                 gestureRecognizer.cancelsTouchesInView = false
             }).when(.recognized).asObservable(),
@@ -111,7 +113,7 @@ final class FeedEditViewController: UIViewController {
             cellType: FeedCategoryCollectionViewCell.self)) { item, element, cell in
                 let indexPath = IndexPath(item: item, section: 0)
                 
-                if self.feedEditViewModel.relevantCategories.contains(element) {
+                if self.feedEditViewModel.newRelevantCategories.contains(element) {
                     self.rootView.feedEditCategoryView.categoryCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
                 } else {
                     self.rootView.feedEditCategoryView.categoryCollectionView.deselectItem(at: indexPath, animated: false)
@@ -127,6 +129,12 @@ final class FeedEditViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.initialFeedContent
+            .subscribe(with: self, onNext: { owner, feedContent in
+                owner.rootView.feedEditContentView.bindData(feedContent: feedContent)
+            })
+            .disposed(by: disposeBag)
+
         output.isSpoiler
             .subscribe(with: self, onNext: { owner, isSpoiler in
                 owner.rootView.feedEditContentView.spoilerButton.updateToggle(isSpoiler)

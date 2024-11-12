@@ -81,7 +81,7 @@ extension UIViewController {
     
     func moveToNovelDetailViewController(userNovelId: Int) {
         if self.navigationController?.tabBarController?.selectedIndex == 0 {
-            let tabBar = WSSTabBarController(isLoggedIn: true)
+            let tabBar = WSSTabBarController()
             tabBar.selectedIndex = 1
             let navigationController = UINavigationController(rootViewController: tabBar)
             navigationController.setNavigationBarHidden(true, animated: true)
@@ -285,18 +285,22 @@ extension UIViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func pushToFeedEditViewController(feedId: Int? = nil, relevantCategories: [NewNovelGenre] = [], initialFeedContent: String = "", novelId: Int? = nil, novelTitle: String? = nil, isSpoiler: Bool = false) {
+    func pushToFeedEditViewController(feedId: Int? = nil,
+                                      relevantCategories: [NewNovelGenre] = [],
+                                      novelId: Int? = nil,
+                                      novelTitle: String? = nil) {
         let viewController = FeedEditViewController(
             viewModel: FeedEditViewModel(
                 feedRepository: DefaultFeedRepository(
                     feedService: DefaultFeedService()
                 ),
+                feedDetailRepository: DefaultFeedDetailRepository(
+                    feedDetailService: DefaultFeedDetailService()
+                ),
                 feedId: feedId,
                 relevantCategories: relevantCategories,
-                initialFeedContent: initialFeedContent,
                 novelId: novelId,
-                novelTitle: novelTitle,
-                isSpoiler: isSpoiler
+                novelTitle: novelTitle
             )
         )
         
@@ -360,6 +364,30 @@ extension UIViewController {
         
         viewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func presentToDetailSearchViewController(selectedKeywordList: [KeywordData],
+                                             previousViewInfo: PreviousViewType,
+                                             selectedFilteredQuery: SearchFilterQuery) {
+        let detailSearchViewController = DetailSearchViewController(
+            viewModel: DetailSearchViewModel(
+                keywordRepository: DefaultKeywordRepository(
+                    keywordService: DefaultKeywordService()),
+                selectedKeywordList: selectedKeywordList,
+                previousViewInfo: previousViewInfo,
+                selectedFilteredQuery: selectedFilteredQuery))
+        self.presentModalViewController(detailSearchViewController)
+    }
+    
+    func presentInduceLoginViewController() {
+        let viewController = InduceLoginViewController()
+        viewController.modalPresentationStyle = .overFullScreen
+        
+        self.present(viewController, animated: false)
+    }
+    
+    func dismissViewController() {
+        self.dismiss(animated: false)
     }
 }
 

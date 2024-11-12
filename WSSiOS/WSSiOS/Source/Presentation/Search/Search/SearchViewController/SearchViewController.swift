@@ -53,6 +53,12 @@ final class SearchViewController: UIViewController {
         bindViewModel()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     //MARK: - UI
     
     private func setUI() {
@@ -75,7 +81,8 @@ final class SearchViewController: UIViewController {
         let input = SearchViewModel.Input(
             searhBarDidTap: rootView.searchbarView.rx.tapGesture().when(.recognized).asObservable(),
             induceButtonDidTap: rootView.searchDetailInduceView.rx.tapGesture().when(.recognized).asObservable(),
-            sosoPickCellSelected: rootView.sosopickView.sosopickCollectionView.rx.itemSelected.asObservable()
+            sosoPickCellSelected: rootView.sosopickView.sosopickCollectionView.rx.itemSelected.asObservable(),
+            pushToDetailSearchResultNotification: NotificationCenter.default.rx.notification(Notification.Name("PushToDetailSearchResult")).asObservable()
         )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -98,10 +105,12 @@ final class SearchViewController: UIViewController {
         
         output.induceButtonEnabled
             .bind(with: self, onNext: { owner, _ in
-                let detailSearchViewController = DetailSearchViewController(viewModel: DetailSearchViewModel(keywordRepository: DefaultKeywordRepository(keywordService: DefaultKeywordService()), selectedKeywordList: []))
-                detailSearchViewController.navigationController?.isNavigationBarHidden = false
-                detailSearchViewController.hidesBottomBarWhenPushed = true
-                owner.presentModalViewController(detailSearchViewController)
+                owner.presentToDetailSearchViewController(selectedKeywordList: [],
+                                                          previousViewInfo: .search,
+                                                          selectedFilteredQuery: SearchFilterQuery(keywords: [],
+                                                                                                   genres: [],
+                                                                                                   isCompleted: nil,
+                                                                                                   novelRating: nil))
             })
             .disposed(by: disposeBag)
         
@@ -109,6 +118,33 @@ final class SearchViewController: UIViewController {
             .bind(with: self, onNext: { owner, indexPath in
                 let novelId = output.sosoPickList.value[indexPath.row].novelId
                 owner.pushToDetailViewController(novelId: novelId)
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushToDetailSearchResultView
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, notification in
+                if let userInfo = notification.userInfo {
+                    let keywords = userInfo["keywords"] as? [KeywordData]
+                    let genres = userInfo["genres"] as? [NovelGenre]
+                    let isCompleted = userInfo["isCompleted"] as? Bool
+                    let novelRating = userInfo["novelRating"] as? Float
+                    
+                    let detailSearchResultViewModel = DetailSearchResultViewModel(
+                        searchRepository: DefaultSearchRepository(searchService: DefaultSearchService()),
+                        keywords: keywords ?? [],
+                        genres: genres ?? [],
+                        isCompleted: isCompleted,
+                        novelRating: novelRating
+                    )
+
+                    let detailSearchResultViewController = DetailSearchResultViewController(viewModel: detailSearchResultViewModel)
+                    
+                    detailSearchResultViewController.navigationController?.isNavigationBarHidden = false
+                    detailSearchResultViewController.hidesBottomBarWhenPushed = true
+                    
+                    owner.navigationController?.pushViewController(detailSearchResultViewController, animated: true)
+                }
             })
             .disposed(by: disposeBag)
     }

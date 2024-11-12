@@ -66,6 +66,7 @@ final class FeedNovelConnectModalViewController: UIViewController {
             searchResultCollectionViewSwipeGesture: rootView.feedNovelConnectSearchResultView.searchResultCollectionView.rx.swipeGesture([.up, .down])
                 .when(.recognized)
                 .asObservable(),
+            keyboardDoneButtonDidTap: rootView.feedNovelConnectSearchBarView.titleTextField.rx.controlEvent(.editingDidEndOnExit).asObservable(),
             connectNovelButtonDidTap: rootView.feedNovelConnectSearchResultView.connectNovelButton.rx.tap
         )
         

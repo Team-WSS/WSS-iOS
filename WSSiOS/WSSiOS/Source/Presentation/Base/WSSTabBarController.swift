@@ -10,11 +10,8 @@ import UIKit
 import Then
 
 final class WSSTabBarController: UITabBarController {
-    
-    private let isLoggedIn: Bool
-    
-    init(isLoggedIn: Bool) {
-        self.isLoggedIn = isLoggedIn
+
+    init() {
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -68,7 +65,7 @@ final class WSSTabBarController: UITabBarController {
         var navigationControllers = [UINavigationController]()
         
         for item in WSSTabBarItem.allCases {
-            let viewController = item.itemViewController(isLoggedIn: isLoggedIn)
+            let viewController = item.itemViewController()
             let navigationController = createNavigationController(
                 normalImage: item.normalItemImage,
                 selectedImage: item.selectedItemImage,

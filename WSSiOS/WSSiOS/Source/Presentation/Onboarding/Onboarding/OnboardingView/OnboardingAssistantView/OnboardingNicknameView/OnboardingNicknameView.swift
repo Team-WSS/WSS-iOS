@@ -17,7 +17,7 @@ final class OnboardingNicknameView: UIView {
     private let titleLabel = UILabel()
     private let descriptionLabel = UILabel()
     let nicknameTextField = UITextField()
-    private let textFieldInnerButton = UIButton()
+    let textFieldInnerButton = UIButton()
     let duplicateCheckButton = UIButton()
     private let duplicateCheckButtonLabel = UILabel()
     private let nickNameStatusDescriptionLabel = UILabel()
@@ -97,10 +97,10 @@ final class OnboardingNicknameView: UIView {
         self.addSubviews(titleLabel,
                          descriptionLabel,
                          nicknameTextField,
+                         textFieldInnerButton,
                          duplicateCheckButton,
                          nickNameStatusDescriptionLabel,
                          bottomButton)
-        nicknameTextField.addSubview(textFieldInnerButton)
         duplicateCheckButton.addSubview(duplicateCheckButtonLabel)
     }
     
@@ -121,6 +121,12 @@ final class OnboardingNicknameView: UIView {
             $0.leading.equalToSuperview().inset(20)
         }
         
+        textFieldInnerButton.snp.makeConstraints {
+            $0.verticalEdges.equalTo(nicknameTextField.snp.verticalEdges)
+            $0.trailing.equalTo(nicknameTextField.snp.trailing)
+            $0.size.equalTo(44)
+        }
+        
         duplicateCheckButton.snp.makeConstraints {
             $0.top.equalTo(descriptionLabel.snp.bottom).offset(61)
             $0.height.equalTo(44)
@@ -136,11 +142,6 @@ final class OnboardingNicknameView: UIView {
         nickNameStatusDescriptionLabel.snp.makeConstraints {
             $0.top.equalTo(nicknameTextField.snp.bottom).offset(12)
             $0.leading.equalToSuperview().inset(20)
-        }
-        
-        textFieldInnerButton.snp.makeConstraints {
-            $0.verticalEdges.trailing.equalToSuperview()
-            $0.size.equalTo(44)
         }
         
         bottomButton.snp.makeConstraints {
@@ -196,16 +197,15 @@ final class OnboardingNicknameView: UIView {
         textFieldInnerButton.do {
             $0.isHidden = !isEditing
             $0.setImage(buttonImage, for: .normal)
-            $0.isEnabled = !(availablity == .available) || isEditing
+            $0.isUserInteractionEnabled = !(availablity == .available)
         }
     }
     
     func updateNickNameStatusDescriptionLabel(availablity: NicknameAvailablity) {
-        let descriptionText = availablity == .available ? "사용 가능한 닉네임이에요" : "한글, 영문, 숫자 2~10자까지 입력 가능해요"
         nickNameStatusDescriptionLabel.do {
-            $0.isHidden = availablity == .notStarted || availablity == .unknown
-            $0.applyWSSFont(.body2, with: descriptionText)
-            $0.textColor = availablity == .available ? .wssPrimary100 : .wssSecondary100
+            $0.isHidden = availablity.descriptionIsHidden()
+            $0.applyWSSFont(.body2, with:  availablity.description())
+            $0.textColor = availablity.color()
         }
     }
 }

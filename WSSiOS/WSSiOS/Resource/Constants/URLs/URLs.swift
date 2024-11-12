@@ -8,6 +8,15 @@
 import Foundation
 
 enum URLs {
+    enum Auth {
+        static let loginWithApple = "/auth/login/apple"
+    }
+    
+    enum Onboarding {
+        static let nicknameCheck = "/users/nickname/check"
+        static let postProfile = "/users/profile"
+    }
+    
     enum User {
         private static let userBasePath = "/users"
         static let afterDelete = userBasePath + "추후 삭제"
@@ -167,6 +176,7 @@ enum URLs {
     enum Search {
         static let sosoPick = "/soso-picks"
         static let normalSearch = "/novels"
+        static let detailSearch = "/novels/filtered"
     }
     
     enum Keyword {

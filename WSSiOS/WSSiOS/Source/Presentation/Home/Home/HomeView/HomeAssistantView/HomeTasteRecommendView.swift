@@ -19,16 +19,18 @@ final class HomeTasteRecommendView: UIView {
     let tasteRecommendCollectionView = UICollectionView(frame: .zero,
                                                         collectionViewLayout: UICollectionViewLayout())
     private let tasteRecommendCollectionViewLayout = UICollectionViewFlowLayout()
+    
+    private let isLoggedIn = APIConstants.isLogined
     let unregisterView = HomeUnregisterView(.tasteRecommend)
     
     //MARK: - Life Cycle
     
-    init(isLoggedIn: Bool) {
+    init() {
         super.init(frame: .zero)
         
-        setUI(isLoggedIn: isLoggedIn)
+        setUI()
         setHierarchy()
-        setLayout(isLoggedIn: isLoggedIn)
+        setLayout()
     }
     
     @available(*, unavailable)
@@ -36,7 +38,7 @@ final class HomeTasteRecommendView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setUI(isLoggedIn: Bool) {
+    private func setUI() {
         titleLabel.do {
             $0.applyWSSFont(.headline1, with: StringLiterals.Home.Title.recommend)
             $0.textColor = .wssBlack
@@ -56,6 +58,7 @@ final class HomeTasteRecommendView: UIView {
             $0.scrollDirection = .vertical
             $0.minimumLineSpacing = 18
             $0.minimumInteritemSpacing = 9
+            $0.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 40, right: 0)
             $0.itemSize = CGSize(width: (UIScreen.main.bounds.width - 49) / 2, height: 300)
             tasteRecommendCollectionView.setCollectionViewLayout($0, animated: false)
         }
@@ -64,8 +67,7 @@ final class HomeTasteRecommendView: UIView {
             subTitleLabel.isHidden = false
             tasteRecommendCollectionView.isHidden = false
             unregisterView.isHidden = true
-        }
-        else {
+        } else {
             subTitleLabel.isHidden = true
             tasteRecommendCollectionView.isHidden = true
             unregisterView.isHidden = false
@@ -79,12 +81,16 @@ final class HomeTasteRecommendView: UIView {
                          unregisterView)
     }
     
-    private func setLayout(isLoggedIn: Bool) {
+    private func setLayout() {
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.leading.equalToSuperview().inset(20)
         }
-
+        subTitleLabel.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom).offset(2)
+            $0.leading.equalTo(titleLabel.snp.leading)
+        }
+        
         if isLoggedIn {
             subTitleLabel.snp.makeConstraints {
                 $0.top.equalTo(titleLabel.snp.bottom).offset(2)
@@ -97,8 +103,7 @@ final class HomeTasteRecommendView: UIView {
                 $0.height.equalTo(0)
                 $0.bottom.equalToSuperview()
             }
-        }
-        else {
+        } else {
             unregisterView.snp.makeConstraints {
                 $0.top.equalTo(titleLabel.snp.bottom).offset(11)
                 $0.leading.trailing.equalToSuperview().inset(20)

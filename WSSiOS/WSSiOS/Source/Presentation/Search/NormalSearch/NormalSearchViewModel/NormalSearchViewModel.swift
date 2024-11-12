@@ -21,10 +21,10 @@ final class NormalSearchViewModel: ViewModelType {
     private let currentPage = BehaviorRelay<Int>(value: 0)
     private let isLoadable = BehaviorRelay<Bool>(value: false)
     private let resultCount = PublishSubject<Int>()
-    private let normalSearchList = BehaviorRelay<[NormalSearchNovel]>(value: [])
-
     private let pushToNovelDetailViewController = PublishRelay<Int>()
     private let isSearchTextFieldEditing = BehaviorRelay<Bool>(value: false)
+    private let normalSearchList = BehaviorRelay<[SearchNovel]>(value: [])
+    private let normalSearchCellIndexPath = PublishRelay<IndexPath>()
     
     //MARK: - Inputs
     
@@ -47,7 +47,7 @@ final class NormalSearchViewModel: ViewModelType {
     
     struct Output {
         let resultCount: Observable<Int>
-        let normalSearchList: Observable<[NormalSearchNovel]>
+        let normalSearchList: Observable<[SearchNovel]>
         let scrollToTop: Observable<Void>
         let scrollToTopAndendEditing: Observable<Void>
         let clearButtonEnabled: Observable<Void>
