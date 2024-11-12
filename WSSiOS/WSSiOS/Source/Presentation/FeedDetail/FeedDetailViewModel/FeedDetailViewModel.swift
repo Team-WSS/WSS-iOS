@@ -89,7 +89,7 @@ final class FeedDetailViewModel: ViewModelType {
         let commentContentViewDidEndEditing: ControlEvent<Void>
         let replyCommentCollectionViewSwipeGesture: Observable<UISwipeGestureRecognizer>
         let sendButtonDidTap: ControlEvent<Void>
-        let commentSpoilerTextDidTap: Observable<(Int, Bool)>
+        let commentSpoilerTextDidTap: Observable<Void>
         
         // 피드 드롭다운
         let dotsButtonDidTap: ControlEvent<Void>

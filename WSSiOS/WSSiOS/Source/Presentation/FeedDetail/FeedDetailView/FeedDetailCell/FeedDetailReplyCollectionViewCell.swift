@@ -14,7 +14,7 @@ import Then
 
 protocol FeedDetailReplyCollectionDelegate: AnyObject {
     func dotsButtonDidTap(commentId: Int, isMyComment: Bool)
-    func spoilerTextDidTap(commentId: Int, isMyComment: Bool)
+    func spoilerTextDidTap()
 }
 
 final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
@@ -144,7 +144,7 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
             .withLatestFrom(comment)
             .filter { $0.isSpoiler }
             .subscribe(with: self, onNext: { owner, comment in
-                owner.delegate?.spoilerTextDidTap(commentId: comment.commentId, isMyComment: comment.isMyComment)
+                owner.delegate?.spoilerTextDidTap()
                 owner.showFullText(for: comment)
             })
             .disposed(by: disposeBag)
