@@ -82,18 +82,26 @@ extension HomeViewModel {
         
         input.viewWillAppearEvent
             .flatMapLatest {
-                self.getRealtimePopularFeeds()
+                Observable.zip(
+                    self.getRealtimePopularFeeds(),
+                    self.getInterestFeeds()
+                )
             }
             .subscribe(with: self, onNext: { owner, data in
-                owner.realtimePopularList.onNext(data.popularFeeds)
+                let realtimeFeeds = data.0
+                let interestFeeds = data.1
                 
-                let groupedData = stride(from: 0, to: data.popularFeeds.count, by: 3)
+                owner.realtimePopularList.onNext(realtimeFeeds.popularFeeds)
+                
+                let groupedData = stride(from: 0, to: realtimeFeeds.popularFeeds.count, by: 3)
                     .map { index in
-                        Array(data.popularFeeds[index..<min(index + 3, data.popularFeeds.count)])
+                        Array(realtimeFeeds.popularFeeds[index..<min(index + 3, realtimeFeeds.popularFeeds.count)])
                     }
-                self.realtimePopularDataRelay.accept(groupedData)
+                owner.realtimePopularDataRelay.accept(groupedData)
+                owner.interestList.onNext(interestFeeds.recommendFeeds)
             }, onError: { owner, error in
                 owner.realtimePopularList.onError(error)
+                owner.interestList.onError(error)
             })
             .disposed(by: disposeBag)
         
