@@ -494,9 +494,10 @@ extension FeedDetailViewController: UICollectionViewDelegateFlowLayout {
     }
     
     private func getLabelHeight(text: String) -> CGFloat {
+        let labelWidth = UIScreen.main.bounds.width - 152
         let label = UILabel(frame: .init(x: .zero,
                                          y: .zero,
-                                         width: CGFloat(247),
+                                         width: labelWidth,
                                          height: .greatestFiniteMagnitude)
         )
         label.do {
