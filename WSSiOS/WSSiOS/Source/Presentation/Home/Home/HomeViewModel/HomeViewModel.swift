@@ -19,17 +19,15 @@ final class HomeViewModel: ViewModelType {
     
     private let isLoggedIn = APIConstants.isLogined
     
-    private let todayPopularList = PublishSubject<[TodayPopularNovel]>()
+    private let todayPopularList = BehaviorRelay<[TodayPopularNovel]>(value: [])
     private let realtimePopularList = PublishSubject<[RealtimePopularFeed]>()
     private let realtimePopularDataRelay = BehaviorRelay<[[RealtimePopularFeed]]>(value: [])
-    private let interestList = PublishSubject<[InterestFeed]>()
-    private let tasteRecommendList = PublishSubject<[TasteRecommendNovel]>()
+    private let interestList = BehaviorRelay<[InterestFeed]>(value: [])
+    private let tasteRecommendList = BehaviorRelay<[TasteRecommendNovel]>(value: [])
     
-    private let todayPopularCellIndexPath = PublishRelay<IndexPath>()
-    private let interestCellIndexPath = PublishRelay<IndexPath>()
-    private let tasteRecommendCellIndexPath = PublishRelay<IndexPath>()
     let presentInduceLoginViewController = PublishRelay<Void>()
     private let pushToAnnouncementViewController = PublishRelay<Void>()
+    private let pushToNovelDetailViewController = PublishRelay<Int>()
     private let updateInterestView = PublishRelay<(Bool, Bool)>()
     
     // MARK: - Inputs
@@ -56,7 +54,7 @@ final class HomeViewModel: ViewModelType {
         var interestList: Observable<[InterestFeed]>
         var tasteRecommendList: Observable<[TasteRecommendNovel]>
         let pushToAnnouncementViewController: Observable<Void>
-        let pushToNovelDetailInfoViewController: Observable<(IndexPath, Int)>
+        let pushToNovelDetailViewController: Observable<Int>
         let tasteRecommendCollectionViewHeight: Driver<CGFloat>
         let updateInterestView: Observable<(Bool, Bool)>
         
@@ -76,9 +74,8 @@ extension HomeViewModel {
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         self.getTodayPopularNovels()
             .subscribe(with: self, onNext: { owner, data in
-                owner.todayPopularList.onNext(data.popularNovels)
+                owner.todayPopularList.accept(data.popularNovels)
             }, onError: { owner, error in
-                owner.todayPopularList.onError(error)
             })
             .disposed(by: disposeBag)
         
@@ -101,14 +98,13 @@ extension HomeViewModel {
                 owner.realtimePopularDataRelay.accept(groupedData)
                 
                 if owner.isLoggedIn {
-                    owner.interestList.onNext(interestFeeds.recommendFeeds)
+                    owner.interestList.accept(interestFeeds.recommendFeeds)
                     owner.updateInterestView.accept((true, interestFeeds.recommendFeeds.isEmpty))
                 } else {
                     owner.updateInterestView.accept((false, true))
                 }
             }, onError: { owner, error in
                 owner.realtimePopularList.onError(error)
-                owner.interestList.onError(error)
             })
             .disposed(by: disposeBag)
         
@@ -120,23 +116,22 @@ extension HomeViewModel {
         
         input.todayPopularCellSelected
             .subscribe(with: self, onNext: { owner, indexPath in
-                if owner.isLoggedIn {
-                    owner.todayPopularCellIndexPath.accept(indexPath)
-                } else {
-                    owner.presentInduceLoginViewController.accept(())
-                }
+                let novelId = owner.todayPopularList.value[indexPath.row].novelId
+                owner.pushToNovelDetailViewController.accept(novelId)
             })
             .disposed(by: disposeBag)
         
         input.interestCellSelected
             .subscribe(with: self, onNext: { owner, indexPath in
-                owner.interestCellIndexPath.accept(indexPath)
+                let novelId = owner.interestList.value[indexPath.row].novelId
+                owner.pushToNovelDetailViewController.accept(novelId)
             })
             .disposed(by: disposeBag)
         
         input.tasteRecommendCellSelected
             .subscribe(with: self, onNext: { owner, indexPath in
-                owner.tasteRecommendCellIndexPath.accept(indexPath)
+                let novelId = owner.tasteRecommendList.value[indexPath.row].novelId
+                owner.pushToNovelDetailViewController.accept(novelId)
             })
             .disposed(by: disposeBag)
         
@@ -152,12 +147,6 @@ extension HomeViewModel {
         
         let pushToNormalSearchViewController = input.registerInterestNovelButtonTapped.asObservable()
         
-        let pushToNovelDetailInfoViewController = Observable.merge(
-            todayPopularCellIndexPath.map { indexPath in (indexPath, 0) },
-            interestCellIndexPath.map { indexPath in (indexPath, 1) },
-            tasteRecommendCellIndexPath.map { indexPath in (indexPath, 2) }
-        )
-        
         let tasteRecommendCollectionViewHeight = input.tasteRecommendCollectionViewContentSize
             .map { $0?.height ?? 0 }.asDriver(onErrorJustReturn: 0)
         
@@ -167,7 +156,7 @@ extension HomeViewModel {
                       interestList: interestList.asObservable(),
                       tasteRecommendList: tasteRecommendList.asObservable(),
                       pushToAnnouncementViewController: pushToAnnouncementViewController.asObservable(),
-                      pushToNovelDetailInfoViewController: pushToNovelDetailInfoViewController,
+                      pushToNovelDetailViewController: pushToNovelDetailViewController.asObservable(),
                       tasteRecommendCollectionViewHeight: tasteRecommendCollectionViewHeight,
                       updateInterestView: updateInterestView.asObservable(),
                       pushToNormalSearchViewController: pushToNormalSearchViewController,

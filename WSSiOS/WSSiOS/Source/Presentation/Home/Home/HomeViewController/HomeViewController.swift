@@ -170,26 +170,8 @@ final class HomeViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.pushToNovelDetailInfoViewController
-            .withLatestFrom(Observable.combineLatest(output.todayPopularList,
-                                                     output.interestList,
-                                                     output.tasteRecommendList)) { (indexPathSection, lists) in
-                let (indexPath, section) = indexPathSection
-                let (todayPopularList, interestList, tasteRecommendList) = lists
-                
-                switch section {
-                case 0:
-                    return todayPopularList[indexPath.row].novelId
-                case 1:
-                    return interestList[indexPath.row].novelId
-                case 2:
-                    return tasteRecommendList[indexPath.row].novelId
-                default:
-                    return nil
-                }
-            }
-            .compactMap { $0 }
-            .subscribe(with: self, onNext: { owner, novelId in
+        output.pushToNovelDetailViewController
+            .bind(with: self, onNext: { owner, novelId in
                 owner.pushToDetailViewController(novelId: novelId)
             })
             .disposed(by: disposeBag)
