@@ -195,7 +195,7 @@ final class HomeInterestCollectionViewCell: UICollectionViewCell {
             $0.lineBreakStrategy = .hangulWordPriority
             $0.numberOfLines = 2
         }
-        self.novelAverageRatingLabel.applyWSSFont(.body5, with: String(data.novelRating))
+        self.novelAverageRatingLabel.applyWSSFont(.body5, with: String(format: "%.1f", data.novelRating))
         self.novelRatingNumberLabel.applyWSSFont(.body5, with: "(\(data.novelRatingCount))")
         
         self.userProfileImageView.kfSetImage(url: makeBucketImageURLString(path: data.userAvatarImage))
