@@ -70,6 +70,7 @@ class TokenCheckURLProtocol: URLProtocol {
                                 owner.deleteTokens()
                                 owner.moveToLoginViewController()
                             }
+                            owner.client?.urlProtocol(self, didFailWithError: error)
                         })
                         .disposed(by: self.disposeBag)
                 } else {
