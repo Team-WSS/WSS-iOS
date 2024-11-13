@@ -56,6 +56,8 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
     //MARK: - UI
     
     private func setUI() {
+        self.backgroundColor = .wssPrimary80
+        replyContentLabel.backgroundColor = .wssSecondary50
         userProfileImageView.do {
             $0.image = .imgLoadingThumbnail
             $0.layer.cornerRadius = 12
