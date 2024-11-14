@@ -7,6 +7,8 @@
 
 import Foundation
 
+import KakaoSDKAuth
+import RxKakaoSDKAuth
 import RxSwift
 
 protocol AuthService {
@@ -34,6 +36,25 @@ final class DefaultAuthService: NSObject, Networking, AuthService {
                                        to: LoginResult.self) }
                 .asSingle()
 
+        } catch {
+            return Single.error(error)
+        }
+    }
+    
+    func loginWithKakao(_ kakaoAccessToken: OAuthToken) -> Single<LoginResult> {
+        do {
+            let request = try makeHTTPRequest(method: .post,
+                                              path: URLs.Auth.reissue,
+                                              headers: APIConstants.kakaoLoginHeader(kakaoAccessToken.accessToken),
+                                              body: nil)
+
+            NetworkLogger.log(request: request)
+
+            return basicURLSession.rx.data(request: request)
+                .map { try self.decode(data: $0,
+                                       to: LoginResult.self) }
+                .asSingle()
+            
         } catch {
             return Single.error(error)
         }
