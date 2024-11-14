@@ -20,24 +20,19 @@ protocol SearchService {
                             size: Int) -> Single<DetailSearchNovels>
 }
 
-final class DefaultSearchService: NSObject, Networking {
-    
-    private var urlSession = URLSession(configuration: URLSessionConfiguration.default,
-                                        delegate: nil,
-                                        delegateQueue: nil)
-}
+final class DefaultSearchService: NSObject, Networking { }
 
 extension DefaultSearchService: SearchService {
     func getSosopicks() -> Single<SosoPickNovels> {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.Search.sosoPick,
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: SosoPickNovels.self) }
                 .asSingle()
@@ -58,12 +53,12 @@ extension DefaultSearchService: SearchService {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.Search.normalSearch,
                                               queryItems: normalSearchQueryItems,
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: NormalSearchNovels.self) }
                 .asSingle()
@@ -99,12 +94,12 @@ extension DefaultSearchService: SearchService {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.Search.detailSearch,
                                               queryItems: detailSearchQueryItems,
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: DetailSearchNovels.self) }
                 .asSingle()

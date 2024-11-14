@@ -123,6 +123,7 @@
 		3910137C2CCF5EC6001894E5 /* BirthPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3910137B2CCF5EC6001894E5 /* BirthPickerView.swift */; };
 		3910137E2CCF5FD8001894E5 /* BirthPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3910137D2CCF5FD3001894E5 /* BirthPickerViewController.swift */; };
 		39119FA82C8C482800E9E6FA /* NovelDetailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39119FA72C8C482800E9E6FA /* NovelDetailService.swift */; };
+		39139A042CE0E8AF00BC40AE /* TokenCheckURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39139A032CE0E8AF00BC40AE /* TokenCheckURLProtocol.swift */; };
 		3916EC862B89B42C007835B5 /* RxGesture in Frameworks */ = {isa = PBXBuildFile; productRef = 3916EC852B89B42C007835B5 /* RxGesture */; };
 		3916EC892B89D23D007835B5 /* ModuleFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3916EC882B89D23D007835B5 /* ModuleFactory.swift */; };
 		392A29232B4E89FD0065EB97 /* RegisterNormalNovelInfoWithRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392A29222B4E89FD0065EB97 /* RegisterNormalNovelInfoWithRatingView.swift */; };
@@ -559,6 +560,7 @@
 		3910137B2CCF5EC6001894E5 /* BirthPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthPickerView.swift; sourceTree = "<group>"; };
 		3910137D2CCF5FD3001894E5 /* BirthPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthPickerViewController.swift; sourceTree = "<group>"; };
 		39119FA72C8C482800E9E6FA /* NovelDetailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailService.swift; sourceTree = "<group>"; };
+		39139A032CE0E8AF00BC40AE /* TokenCheckURLProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenCheckURLProtocol.swift; sourceTree = "<group>"; };
 		3916EC882B89D23D007835B5 /* ModuleFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleFactory.swift; sourceTree = "<group>"; };
 		392A29222B4E89FD0065EB97 /* RegisterNormalNovelInfoWithRatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalNovelInfoWithRatingView.swift; sourceTree = "<group>"; };
 		392A29262B4E96F30065EB97 /* UILabel+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+.swift"; sourceTree = "<group>"; };
@@ -2034,6 +2036,7 @@
 				A1654F0D2B540504004F78E8 /* APIConstants.swift */,
 				A1654F0E2B540504004F78E8 /* HTTPMethod.swift */,
 				396C7C5C2CB27AC2003C9712 /* ServerErrorResponse.swift */,
+				39139A032CE0E8AF00BC40AE /* TokenCheckURLProtocol.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -3283,6 +3286,7 @@
 				A1CB373A2B72935900CB290F /* UITableViewCell+.swift in Sources */,
 				A1147A802B50638200141692 /* RecordViewController.swift in Sources */,
 				B9F7401D2C047E360018D0C6 /* NormalSearchViewModel.swift in Sources */,
+				39139A042CE0E8AF00BC40AE /* TokenCheckURLProtocol.swift in Sources */,
 				CD803B392C940989006EBAF8 /* CenterAlignedCollectionViewFlowLayout.swift in Sources */,
 				CD8747B72C9F050800D0ADAD /* NovelDateSelectModalDatePickerView.swift in Sources */,
 				39ABD5A02B54D0A900DEA94E /* RegisterNormalDatePicker.swift in Sources */,

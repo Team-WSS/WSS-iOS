@@ -19,9 +19,6 @@ protocol MemoService {
 
 final class DefaultMemoService: NSObject, Networking {
     private var recordListSize = 1000
-    private var urlSession = URLSession(configuration: URLSessionConfiguration.default,
-                                        delegate: nil,
-                                        delegateQueue: nil)
 }
 
 extension DefaultMemoService: MemoService {
@@ -35,12 +32,12 @@ extension DefaultMemoService: MemoService {
             let request = try makeHTTPRequest(method: .get,
                                                path: URLs.Memo.getMemoList,
                                                queryItems: recordListQueryItems,
-                                               headers: APIConstants.testTokenHeader,
+                                               headers: APIConstants.accessTokenHeader,
                                                body: nil)
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0, to: RecordMemos.self) }
                 .asSingle()
         } catch {
@@ -56,12 +53,12 @@ extension DefaultMemoService: MemoService {
         do {
             let request = try makeHTTPRequest(method: .post,
                                               path: URLs.Memo.postMemo(userNovelId: userNovelId),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: memoContentData)
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0, to: IsAvatarUnlocked.self) }
                 .asSingle()
         } catch {
@@ -73,12 +70,12 @@ extension DefaultMemoService: MemoService {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.Memo.getMemo(memoId: memoId),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0, to: MemoDetail.self) }
                 .asSingle()
         } catch {
@@ -90,12 +87,12 @@ extension DefaultMemoService: MemoService {
         do {
             let request = try makeHTTPRequest(method: .delete,
                                                path: URLs.Memo.deleteMemo(memoId: memoId),
-                                               headers: APIConstants.testTokenHeader,
+                                               headers: APIConstants.accessTokenHeader,
                                                body: nil)
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
         } catch {
@@ -111,12 +108,12 @@ extension DefaultMemoService: MemoService {
         do {
             let request = try makeHTTPRequest(method: .patch,
                                               path: URLs.Memo.patchMemo(memoId: memoId),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: memoContentData)
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
         } catch {

@@ -38,7 +38,7 @@ enum StringLiterals {
         enum Title {
             static let home = "홈"
             static let search = "탐색"
-            static let feed = "피드"
+            static let feed = "수다"
             static let myPage = "My"
         }
     }

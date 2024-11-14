@@ -16,10 +16,18 @@ struct APIConstants {
     static let fcm = "FcmToken"
     
     static let boundary = "Boundary-\(UUID().uuidString)"
-    static var isLogined: Bool = false
-    static var testToken: String {
-        isLogined ? (Bundle.main.object(forInfoDictionaryKey: Config.Keys.Plist.testToken) as? String ?? "") : ""
+    
+    // Config의 Test Token을 사용한다면, 이 값을 true로,
+    // UserDefaults의 실제 토큰 값을 쓰려면 이 값을 false로 바꿀 것.
+    static let isTesting: Bool = false
+    
+    static var isLogined: Bool {
+        !accessToken.isEmpty
     }
+    static var accessToken: String {
+        isTesting ? testToken : UserDefaults.standard.value(forKey: StringLiterals.UserDefault.accessToken) as? String ?? ""
+    }
+    static var testToken: String = Bundle.main.object(forInfoDictionaryKey: Config.Keys.Plist.testToken) as? String ?? ""
 }
 
 extension APIConstants {
@@ -27,8 +35,8 @@ extension APIConstants {
         [contentType: applicationJSON]
     }
     
-    static var testTokenHeader: Dictionary<String, String> {
+    static var accessTokenHeader: Dictionary<String, String> {
         [contentType: applicationJSON,
-                auth: "Bearer " + testToken]
+                auth: "Bearer " + accessToken]
     }
 }
