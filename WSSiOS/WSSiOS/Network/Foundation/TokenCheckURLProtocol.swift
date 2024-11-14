@@ -12,6 +12,22 @@ class TokenCheckURLProtocol: URLProtocol {
     
     private let disposeBag = DisposeBag()
     
+    // 토큰 갱신 API 호출 스트림을 공유하여 구독할 때마다 새로 스트림이 생기는 것을 막아
+    // 토큰 리이슈 API 중복 호출 방지
+    private static var tokenRefreshSubject = BehaviorSubject<Void>(value: ())
+    private static var tokenRefreshObservable: Observable<ReissueResult> = {
+        return tokenRefreshSubject
+            .asObservable()
+            .flatMapLatest { _ in
+                return DefaultAuthService().reissueToken()
+            }
+            .do(onSubscribe: {
+                print("====== Try To Get New Token ======")
+            })
+            .share()
+        
+    }()
+    
     // 해당 요청을 이 프로토콜이 처리할지 여부를 결정합니다.
     // Handled에 값이 없는 경우에만(API를 처음 호출할 때만) 이 프로토콜이 처리한다.
     // 한번 이 프로토콜에서 처리하고 나면, startLoading() 과정에서
@@ -34,12 +50,11 @@ class TokenCheckURLProtocol: URLProtocol {
         // 원래 요청으로 데이터 태스크 시작
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let httpResponse = response as? HTTPURLResponse {
-                // 상태 코드가 401인지 확인
+                // 원래 요청의 응답 상태 코드가 401인지 확인
                 if httpResponse.statusCode == 401 {
-                    print("====== Try To Get New Token ======")
-                    // 401 응답 시 토큰 갱신 로직 처리
-                    DefaultAuthService().reissueToken()
-                        .subscribe(with: self, onSuccess: { owner, result in
+                    // 토큰 갱신 시도 (토큰 갱신이 진행되는 동안에는 한 번만 수행되도록 설정)
+                    TokenCheckURLProtocol.tokenRefreshObservable
+                        .subscribe(with: self, onNext: { owner, result in
                             print("====== Success To Get New Token ======")
                             // 새로운 토큰 저장
                             owner.updateTokens(result: result)
@@ -49,7 +64,7 @@ class TokenCheckURLProtocol: URLProtocol {
                                 return
                             }
                             URLProtocol.setProperty(true, forKey: "Handled", in: mutableRequest)
-                            mutableRequest.setValue("Bearer " + result.Authorization, forHTTPHeaderField: APIConstants.auth)
+                            mutableRequest.setValue("Bearer " + APIConstants.accessToken, forHTTPHeaderField: APIConstants.auth)
                             let newRequest = mutableRequest as URLRequest
                             
                             // 새로운 토큰으로 요청 재시도
@@ -70,7 +85,7 @@ class TokenCheckURLProtocol: URLProtocol {
                                 owner.deleteTokens()
                                 owner.moveToLoginViewController()
                             }
-                            owner.client?.urlProtocol(self, didFailWithError: error)
+                           // owner.client?.urlProtocol(self, didFailWithError: error)
                         })
                         .disposed(by: self.disposeBag)
                 } else {
