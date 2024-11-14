@@ -42,6 +42,6 @@ extension APIConstants {
     
     static func kakaoLoginHeader(_ kakaoAccessToken: String) -> Dictionary<String, String> {
         [contentType: applicationJSON,
-                auth: "Bearer " + kakaoAccessToken]
+                "Kakao-Access-Token":  "Bearer " + kakaoAccessToken]
     }
 }

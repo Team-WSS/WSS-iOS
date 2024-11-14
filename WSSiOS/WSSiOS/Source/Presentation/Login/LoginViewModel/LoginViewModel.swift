@@ -93,7 +93,7 @@ final class LoginViewModel: NSObject, ViewModelType {
                 case .skip:
                     owner.navigateToHome.accept(())
                 case .kakao:
-                    owner.navigateToOnboarding.accept(())
+                    owner.loginWithKakao(disposeBag: disposeBag)
                 case .naver:
                     owner.navigateToOnboarding.accept(())
                 case .apple:
@@ -109,15 +109,7 @@ final class LoginViewModel: NSObject, ViewModelType {
                                     email: email)
             }
             .subscribe(with: self, onNext: { owner, result in
-                UserDefaults.standard.setValue(result.Authorization,
-                                               forKey: StringLiterals.UserDefault.accessToken)
-                UserDefaults.standard.setValue(result.refreshToken,
-                                               forKey:  StringLiterals.UserDefault.refreshToken)
-                if result.isRegister {
-                    owner.navigateToHome.accept(())
-                } else {
-                    owner.navigateToOnboarding.accept(())
-                }
+                owner.loginSuccess(result: result)
             }, onError: { owner, error  in
                 print(error)
             })
@@ -146,6 +138,25 @@ final class LoginViewModel: NSObject, ViewModelType {
             })
     }
     
+    private func loginSuccess(result: LoginResult) {
+        UserDefaults.standard.setValue(result.Authorization,
+                                       forKey: StringLiterals.UserDefault.accessToken)
+        UserDefaults.standard.setValue(result.refreshToken,
+                                       forKey:  StringLiterals.UserDefault.refreshToken)
+        if result.isRegister {
+            self.navigateToHome.accept(())
+        } else {
+            self.navigateToOnboarding.accept(())
+        }
+    }
+    
+    //MARK: - API/Apple
+    
+    private func loginWithApple(userIdentifier: String, email: String?) -> Observable<LoginResult> {
+        authRepository.loginWithApple(userIdentifier: userIdentifier, email: email)
+            .observe(on: MainScheduler.instance)
+    }
+    
     private func requestAppleLogin() {
         let request = ASAuthorizationAppleIDProvider().createRequest()
         request.requestedScopes = [.email]
@@ -155,22 +166,23 @@ final class LoginViewModel: NSObject, ViewModelType {
         authorizationController.performRequests()
     }
     
-    //MARK: - API
+    //MARK: - API/Kakao
     
-    private func loginWithApple(userIdentifier: String, email: String?) -> Observable<LoginResult> {
-        authRepository.loginWithApple(userIdentifier: userIdentifier, email: email)
-            .observe(on: MainScheduler.instance)
-    }
-    
-    private func loginWithKakaotalk() {
+    private func loginWithKakao(disposeBag: DisposeBag) {
         if (UserApi.isKakaoTalkLoginAvailable()) {
             UserApi.shared.rx.loginWithKakaoTalk()
-                .subscribe(with: self, onNext: { owner, oauthToken in
-                    print("loginWithKakaoTalk() success.")
-                    
+                .flatMapLatest{ oauthToken in
+                    return self.authRepository.loginWithKakao(oauthToken)
+                }
+                .do(onNext: { _ in
+                    print("LoginWithKakao Success.")
+                })
+                .subscribe(with: self, onNext: { owner, result in
+                    owner.loginSuccess(result: result)
                 }, onError: { owner, error in
                     print(error)
                 })
+                .disposed(by: disposeBag)
         }
     }
 }
