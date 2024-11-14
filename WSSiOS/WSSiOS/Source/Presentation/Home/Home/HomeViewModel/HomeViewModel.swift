@@ -47,7 +47,6 @@ final class HomeViewModel: ViewModelType {
         let todayPopularCellSelected: ControlEvent<IndexPath>
         let interestCellSelected: ControlEvent<IndexPath>
         let tasteRecommendCellSelected: ControlEvent<IndexPath>
-        let tasteRecommendCollectionViewContentSize: Observable<CGSize?>
         let announcementButtonDidTap: ControlEvent<Void>
         let registerInterestNovelButtonTapped: ControlEvent<Void>
         let setPreferredGenresButtonTapped: ControlEvent<Void>
@@ -66,7 +65,6 @@ final class HomeViewModel: ViewModelType {
         let pushToNormalSearchViewController: Observable<Void>
         
         var tasteRecommendList: Observable<[TasteRecommendNovel]>
-        let tasteRecommendCollectionViewHeight: Driver<CGFloat>
         let updateTasteRecommendView: Observable<(Bool, Bool)>
         let pushToMyPageViewController: Observable<Void>
         
@@ -88,12 +86,16 @@ extension HomeViewModel {
             .flatMapLatest {
                 let realtimeFeedsObservable = self.getRealtimePopularFeeds()
                 let interestFeedsObservable = self.isLogined ? self.getInterestFeeds() : Observable.just(InterestFeeds(recommendFeeds: []))
+                let tasteRecommendNovelsObservable = self.isLogined ? self.getTasteRecommendNovels() : Observable.just(TasteRecommendNovels(tasteNovels: []))
                 
-                return Observable.zip(realtimeFeedsObservable, interestFeedsObservable)
+                return Observable.zip(realtimeFeedsObservable,
+                                      interestFeedsObservable,
+                                      tasteRecommendNovelsObservable)
             }
             .subscribe(with: self, onNext: { owner, data in
                 let realtimeFeeds = data.0
                 let interestFeeds = data.1
+                let tasteRecommendNovels = data.2
                 
                 owner.realtimePopularList.onNext(realtimeFeeds.popularFeeds)
                 let groupedData = stride(from: 0, to: realtimeFeeds.popularFeeds.count, by: 3)
@@ -105,8 +107,12 @@ extension HomeViewModel {
                 if owner.isLogined {
                     owner.interestList.accept(interestFeeds.recommendFeeds)
                     owner.updateInterestView.accept((true, interestFeeds.recommendFeeds.isEmpty))
+                    
+                    owner.tasteRecommendList.accept(tasteRecommendNovels.tasteNovels)
+                    owner.updateTasteRecommendView.accept((true, tasteRecommendNovels.tasteNovels.isEmpty))
                 } else {
                     owner.updateInterestView.accept((false, true))
+                    owner.updateTasteRecommendView.accept((false, true))
                 }
             }, onError: { owner, error in
                 owner.realtimePopularList.onError(error)
@@ -116,20 +122,6 @@ extension HomeViewModel {
         self.getTodayPopularNovels()
             .subscribe(with: self, onNext: { owner, data in
                 owner.todayPopularList.accept(data.popularNovels)
-            }, onError: { owner, error in
-                dump(error)
-            })
-            .disposed(by: disposeBag)
-    
-        self.getTasteRecommendNovels()
-            .subscribe(with: self, onNext: { owner, data in
-                owner.tasteRecommendList.accept(data.tasteNovels)
-                print("🚨tasteNovels: \(data.tasteNovels.count)")
-                if owner.isLogined {
-                    owner.updateTasteRecommendView.accept((true, data.tasteNovels.isEmpty))
-                } else {
-                    owner.updateTasteRecommendView.accept((false , true))
-                }
             }, onError: { owner, error in
                 dump(error)
             })
@@ -159,9 +151,6 @@ extension HomeViewModel {
                 owner.pushToNovelDetailViewController.accept(novelId)
             })
             .disposed(by: disposeBag)
-        
-        let tasteRecommendCollectionViewHeight = input.tasteRecommendCollectionViewContentSize
-            .map { $0?.height ?? 0 }.asDriver(onErrorJustReturn: 0)
         
         input.announcementButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
@@ -196,7 +185,6 @@ extension HomeViewModel {
                       updateInterestView: updateInterestView.asObservable(),
                       pushToNormalSearchViewController: pushToNormalSearchViewController.asObservable(),
                       tasteRecommendList: tasteRecommendList.asObservable(),
-                      tasteRecommendCollectionViewHeight: tasteRecommendCollectionViewHeight,
                       updateTasteRecommendView: updateTasteRecommendView.asObservable(),
                       pushToMyPageViewController: pushToMyPageViewController.asObservable(),
                       pushToNovelDetailViewController: pushToNovelDetailViewController.asObservable(),

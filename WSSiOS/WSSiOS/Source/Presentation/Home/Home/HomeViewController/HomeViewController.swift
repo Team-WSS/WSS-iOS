@@ -95,7 +95,6 @@ final class HomeViewController: UIViewController {
             todayPopularCellSelected: rootView.todayPopularView.todayPopularCollectionView.rx.itemSelected,
             interestCellSelected: rootView.interestView.interestCollectionView.rx.itemSelected,
             tasteRecommendCellSelected: rootView.tasteRecommendView.tasteRecommendCollectionView.rx.itemSelected,
-            tasteRecommendCollectionViewContentSize: rootView.tasteRecommendView.tasteRecommendCollectionView.rx.observe(CGSize.self, "contentSize"),
             announcementButtonDidTap: rootView.headerView.announcementButton.rx.tap,
             registerInterestNovelButtonTapped: rootView.interestView.unregisterView.registerButton.rx.tap,
             setPreferredGenresButtonTapped: rootView.tasteRecommendView.unregisterView.registerButton.rx.tap
@@ -174,12 +173,6 @@ final class HomeViewController: UIViewController {
                 }
                 .disposed(by: disposeBag)
         
-        output.tasteRecommendCollectionViewHeight
-            .drive(with: self, onNext: { owner, height in
-                owner.rootView.tasteRecommendView.updateCollectionViewHeight(height: height)
-            })
-            .disposed(by: disposeBag)
-        
         output.updateTasteRecommendView
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
@@ -188,6 +181,7 @@ final class HomeViewController: UIViewController {
                 owner.rootView.tasteRecommendView.updateView(isLogined, isEmpty)
             })
             .disposed(by: disposeBag)
+        
         
         output.pushToMyPageViewController
             .bind(with: self, onNext: { owner, _ in
