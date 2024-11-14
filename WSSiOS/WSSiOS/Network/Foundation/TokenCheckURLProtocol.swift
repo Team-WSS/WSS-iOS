@@ -109,7 +109,7 @@ class TokenCheckURLProtocol: URLProtocol {
             self.deleteTokens()
             self.moveToLoginViewController()
         }
-        //self.client?.urlProtocol(self, didFailWithError: error)
+        self.client?.urlProtocol(self, didFailWithError: error)
     }
     
     // 네트워크 요청 중단 시 호출됩니다.
