@@ -150,7 +150,8 @@ final class HomeViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
                 let isLogined = data.0
-                let message = data.1
+                let messageString = data.1
+                let message = InterestMessage(rawValue: messageString) ?? .none
                 owner.rootView.interestView.updateView(isLogined, message)
             })
             .disposed(by: disposeBag)

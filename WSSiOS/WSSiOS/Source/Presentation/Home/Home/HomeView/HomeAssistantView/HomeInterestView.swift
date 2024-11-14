@@ -64,9 +64,10 @@ final class HomeInterestView: UIView {
     
     //MARK: - Custom Method
     
-    func updateView(_ isLogined: Bool, _ message: String) {
+    func updateView(_ isLogined: Bool, _ message: InterestMessage) {
         if isLogined {
-            if message == "NO_INTEREST_NOVELS" {
+            switch message {
+            case .noInterestNovels:
                 titleLabel.applyWSSFont(.headline1, with: StringLiterals.Home.Title.notLoggedInInterest)
                 self.addSubviews(titleLabel,
                                  unregisterView)
@@ -82,7 +83,7 @@ final class HomeInterestView: UIView {
                 interestCollectionView.removeFromSuperview()
                 interestEmptyView.removeFromSuperview()
                 subTitleLabel.removeFromSuperview()
-            } else if message == "NO_ASSOCIATED_FEEDS" {
+            case .noAssociatedFeeds:
                 titleLabel.applyWSSFont(.headline1, with: StringLiterals.Home.Title.notLoggedInInterest)
                 interestCollectionView.removeFromSuperview()
                 self.addSubviews(titleLabel,
@@ -98,7 +99,7 @@ final class HomeInterestView: UIView {
                 }
                 unregisterView.removeFromSuperview()
                 subTitleLabel.removeFromSuperview()
-            } else {
+            case .none:
                 if let nickname = userNickname {
                     titleLabel.applyWSSFont(.headline1, with: "\(nickname)\(StringLiterals.Home.Title.interest)")
                 }

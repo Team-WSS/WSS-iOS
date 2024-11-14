@@ -64,6 +64,12 @@ struct InterestFeed: Codable {
     }
 }
 
+enum InterestMessage: String {
+    case noInterestNovels = "NO_INTEREST_NOVELS"
+    case noAssociatedFeeds = "NO_ASSOCIATED_FEEDS"
+    case none = ""
+}
+
 // 선호 장르 추천
 struct TasteRecommendNovels: Codable {
     var tasteNovels: [TasteRecommendNovel]
