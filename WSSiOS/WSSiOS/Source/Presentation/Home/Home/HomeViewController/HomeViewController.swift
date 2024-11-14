@@ -158,10 +158,7 @@ final class HomeViewController: UIViewController {
         
         output.pushToNormalSearchViewController
             .bind(with: self, onNext: { owner, _ in
-                let normalSearchViewController = NormalSearchViewController(viewModel: NormalSearchViewModel(searchRepository: DefaultSearchRepository(searchService: DefaultSearchService())))
-                normalSearchViewController.navigationController?.isNavigationBarHidden = false
-                normalSearchViewController.hidesBottomBarWhenPushed = true
-                owner.navigationController?.pushViewController(normalSearchViewController, animated: true)
+                owner.pushToNormalSearchViewController()
             })
             .disposed(by: disposeBag)
         
