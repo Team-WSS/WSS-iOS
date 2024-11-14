@@ -17,30 +17,38 @@ final class HomeViewModel: ViewModelType {
     private let recommendRepository: RecommendRepository
     private let disposeBag = DisposeBag()
     
-    private let isLoggedIn = APIConstants.isLogined
+    private let isLogined = APIConstants.isLogined
     
+    // 오늘의 인기작
     private let todayPopularList = BehaviorRelay<[TodayPopularNovel]>(value: [])
+    
+    // 지금 뜨는 수다글
     private let realtimePopularList = PublishSubject<[RealtimePopularFeed]>()
     private let realtimePopularDataRelay = BehaviorRelay<[[RealtimePopularFeed]]>(value: [])
-    private let interestList = BehaviorRelay<[InterestFeed]>(value: [])
-    private let tasteRecommendList = BehaviorRelay<[TasteRecommendNovel]>(value: [])
     
-    let presentInduceLoginViewController = PublishRelay<Void>()
-    private let pushToAnnouncementViewController = PublishRelay<Void>()
-    private let pushToNovelDetailViewController = PublishRelay<Int>()
+    // 관심글
+    private let interestList = BehaviorRelay<[InterestFeed]>(value: [])
     private let updateInterestView = PublishRelay<(Bool, Bool)>()
+    private let pushToNormalSearchViewController = PublishRelay<Void>()
+    
+    // 취향추천
+    private let tasteRecommendList = BehaviorRelay<[TasteRecommendNovel]>(value: [])
+    private let updateTasteRecommendView = PublishRelay<(Bool, Bool)>()
+    private let pushToMyPageViewController = PublishRelay<Void>()
+    
+    private let pushToNovelDetailViewController = PublishRelay<Int>()
+    private let pushToAnnouncementViewController = PublishRelay<Void>()
+    let showInduceLoginModalView = PublishRelay<Void>()
     
     // MARK: - Inputs
     
     struct Input {
         let viewWillAppearEvent: Observable<Void>
-        let announcementButtonDidTap: ControlEvent<Void>
         let todayPopularCellSelected: ControlEvent<IndexPath>
         let interestCellSelected: ControlEvent<IndexPath>
         let tasteRecommendCellSelected: ControlEvent<IndexPath>
         let tasteRecommendCollectionViewContentSize: Observable<CGSize?>
-        
-        // 비로그인
+        let announcementButtonDidTap: ControlEvent<Void>
         let registerInterestNovelButtonTapped: ControlEvent<Void>
         let setPreferredGenresButtonTapped: ControlEvent<Void>
     }
@@ -49,18 +57,22 @@ final class HomeViewModel: ViewModelType {
     
     struct Output {
         var todayPopularList: Observable<[TodayPopularNovel]>
+        
         var realtimePopularList: Observable<[RealtimePopularFeed]>
         var realtimePopularData: Observable<[[RealtimePopularFeed]]>
-        var interestList: Observable<[InterestFeed]>
-        var tasteRecommendList: Observable<[TasteRecommendNovel]>
-        let pushToAnnouncementViewController: Observable<Void>
-        let pushToNovelDetailViewController: Observable<Int>
-        let tasteRecommendCollectionViewHeight: Driver<CGFloat>
-        let updateInterestView: Observable<(Bool, Bool)>
         
-        // 비로그인
+        var interestList: Observable<[InterestFeed]>
+        let updateInterestView: Observable<(Bool, Bool)>
         let pushToNormalSearchViewController: Observable<Void>
-        let presentInduceLoginViewController: Observable<Void>
+        
+        var tasteRecommendList: Observable<[TasteRecommendNovel]>
+        let tasteRecommendCollectionViewHeight: Driver<CGFloat>
+        let updateTasteRecommendView: Observable<(Bool, Bool)>
+        let pushToMyPageViewController: Observable<Void>
+        
+        let pushToNovelDetailViewController: Observable<Int>
+        let pushToAnnouncementViewController: Observable<Void>
+        let showInduceLoginModalView: Observable<Void>
     }
     
     //MARK: - init
@@ -72,17 +84,10 @@ final class HomeViewModel: ViewModelType {
 
 extension HomeViewModel {
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
-        self.getTodayPopularNovels()
-            .subscribe(with: self, onNext: { owner, data in
-                owner.todayPopularList.accept(data.popularNovels)
-            }, onError: { owner, error in
-            })
-            .disposed(by: disposeBag)
-        
         input.viewWillAppearEvent
             .flatMapLatest {
                 let realtimeFeedsObservable = self.getRealtimePopularFeeds()
-                let interestFeedsObservable = self.isLoggedIn ? self.getInterestFeeds() : Observable.just(InterestFeeds(recommendFeeds: []))
+                let interestFeedsObservable = self.isLogined ? self.getInterestFeeds() : Observable.just(InterestFeeds(recommendFeeds: []))
                 
                 return Observable.zip(realtimeFeedsObservable, interestFeedsObservable)
             }
@@ -97,7 +102,7 @@ extension HomeViewModel {
                     }
                 owner.realtimePopularDataRelay.accept(groupedData)
                 
-                if owner.isLoggedIn {
+                if owner.isLogined {
                     owner.interestList.accept(interestFeeds.recommendFeeds)
                     owner.updateInterestView.accept((true, interestFeeds.recommendFeeds.isEmpty))
                 } else {
@@ -108,16 +113,36 @@ extension HomeViewModel {
             })
             .disposed(by: disposeBag)
         
-        input.setPreferredGenresButtonTapped
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.presentInduceLoginViewController.accept(())
+        self.getTodayPopularNovels()
+            .subscribe(with: self, onNext: { owner, data in
+                owner.todayPopularList.accept(data.popularNovels)
+            }, onError: { owner, error in
+                dump(error)
+            })
+            .disposed(by: disposeBag)
+    
+        self.getTasteRecommendNovels()
+            .subscribe(with: self, onNext: { owner, data in
+                owner.tasteRecommendList.accept(data.tasteNovels)
+                print("🚨tasteNovels: \(data.tasteNovels.count)")
+                if owner.isLogined {
+                    owner.updateTasteRecommendView.accept((true, data.tasteNovels.isEmpty))
+                } else {
+                    owner.updateTasteRecommendView.accept((false , true))
+                }
+            }, onError: { owner, error in
+                dump(error)
             })
             .disposed(by: disposeBag)
         
         input.todayPopularCellSelected
             .subscribe(with: self, onNext: { owner, indexPath in
-                let novelId = owner.todayPopularList.value[indexPath.row].novelId
-                owner.pushToNovelDetailViewController.accept(novelId)
+                if owner.isLogined {
+                    let novelId = owner.todayPopularList.value[indexPath.row].novelId
+                    owner.pushToNovelDetailViewController.accept(novelId)
+                } else {
+                    owner.showInduceLoginModalView.accept(())
+                }
             })
             .disposed(by: disposeBag)
         
@@ -135,32 +160,48 @@ extension HomeViewModel {
             })
             .disposed(by: disposeBag)
         
+        let tasteRecommendCollectionViewHeight = input.tasteRecommendCollectionViewContentSize
+            .map { $0?.height ?? 0 }.asDriver(onErrorJustReturn: 0)
+        
         input.announcementButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
-                if owner.isLoggedIn {
+                if owner.isLogined {
                     owner.pushToAnnouncementViewController.accept(())
                 } else {
-                    owner.presentInduceLoginViewController.accept(())
+                    owner.showInduceLoginModalView.accept(())
                 }
             })
             .disposed(by: disposeBag)
         
-        let pushToNormalSearchViewController = input.registerInterestNovelButtonTapped.asObservable()
+        input.registerInterestNovelButtonTapped
+            .subscribe(with: self, onNext: { owner, _ in
+                if owner.isLogined {
+                    owner.pushToMyPageViewController.accept(())
+                } else {
+                    owner.showInduceLoginModalView.accept(())
+                }
+            })
+            .disposed(by: disposeBag)
         
-        let tasteRecommendCollectionViewHeight = input.tasteRecommendCollectionViewContentSize
-            .map { $0?.height ?? 0 }.asDriver(onErrorJustReturn: 0)
+        input.setPreferredGenresButtonTapped
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.showInduceLoginModalView.accept(())
+            })
+            .disposed(by: disposeBag)
         
         return Output(todayPopularList: todayPopularList.asObservable(),
                       realtimePopularList: realtimePopularList.asObservable(),
                       realtimePopularData: realtimePopularDataRelay.asObservable(),
                       interestList: interestList.asObservable(),
-                      tasteRecommendList: tasteRecommendList.asObservable(),
-                      pushToAnnouncementViewController: pushToAnnouncementViewController.asObservable(),
-                      pushToNovelDetailViewController: pushToNovelDetailViewController.asObservable(),
-                      tasteRecommendCollectionViewHeight: tasteRecommendCollectionViewHeight,
                       updateInterestView: updateInterestView.asObservable(),
-                      pushToNormalSearchViewController: pushToNormalSearchViewController,
-                      presentInduceLoginViewController: presentInduceLoginViewController.asObservable())
+                      pushToNormalSearchViewController: pushToNormalSearchViewController.asObservable(),
+                      tasteRecommendList: tasteRecommendList.asObservable(),
+                      tasteRecommendCollectionViewHeight: tasteRecommendCollectionViewHeight,
+                      updateTasteRecommendView: updateTasteRecommendView.asObservable(),
+                      pushToMyPageViewController: pushToMyPageViewController.asObservable(),
+                      pushToNovelDetailViewController: pushToNovelDetailViewController.asObservable(),
+                      pushToAnnouncementViewController: pushToAnnouncementViewController.asObservable(),
+                      showInduceLoginModalView: showInduceLoginModalView.asObservable())
     }
     
     //MARK: - API

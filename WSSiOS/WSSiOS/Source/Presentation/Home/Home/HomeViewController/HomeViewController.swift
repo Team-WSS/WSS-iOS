@@ -92,16 +92,17 @@ final class HomeViewController: UIViewController {
     private func bindViewModel() {
         let input = HomeViewModel.Input(
             viewWillAppearEvent: viewWillAppearEvent.asObservable(),
-            announcementButtonDidTap: rootView.headerView.announcementButton.rx.tap,
             todayPopularCellSelected: rootView.todayPopularView.todayPopularCollectionView.rx.itemSelected,
             interestCellSelected: rootView.interestView.interestCollectionView.rx.itemSelected,
             tasteRecommendCellSelected: rootView.tasteRecommendView.tasteRecommendCollectionView.rx.itemSelected,
             tasteRecommendCollectionViewContentSize: rootView.tasteRecommendView.tasteRecommendCollectionView.rx.observe(CGSize.self, "contentSize"),
+            announcementButtonDidTap: rootView.headerView.announcementButton.rx.tap,
             registerInterestNovelButtonTapped: rootView.interestView.unregisterView.registerButton.rx.tap,
             setPreferredGenresButtonTapped: rootView.tasteRecommendView.unregisterView.registerButton.rx.tap
         )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
+        // 오늘의 인기작
         output.todayPopularList
             .bind(to: rootView.todayPopularView.todayPopularCollectionView.rx.items(
                 cellIdentifier: HomeTodayPopularCollectionViewCell.cellIdentifier,
@@ -110,6 +111,7 @@ final class HomeViewController: UIViewController {
                 }
                 .disposed(by: disposeBag)
         
+        // 지금 뜨는 수다글
         output.realtimePopularData
             .bind(to: rootView.realtimePopularView.realtimePopularCollectionView.rx.items(
                 cellIdentifier: HomeRealtimePopularCollectionViewCell.cellIdentifier,
@@ -123,7 +125,7 @@ final class HomeViewController: UIViewController {
                                 print("Invalid feedId: \(feedId)")
                             }
                         } else {
-                            self.viewModel.presentInduceLoginViewController.accept(())
+                            self.viewModel.showInduceLoginModalView.accept(())
                         }
                     }
                 }
@@ -136,6 +138,7 @@ final class HomeViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        // 관심글
         output.interestList
             .bind(to: rootView.interestView.interestCollectionView.rx.items(
                 cellIdentifier: HomeInterestCollectionViewCell.cellIdentifier,
@@ -144,20 +147,12 @@ final class HomeViewController: UIViewController {
                 }
                 .disposed(by: disposeBag)
         
-        output.tasteRecommendList
-            .bind(to: rootView.tasteRecommendView.tasteRecommendCollectionView.rx.items(
-                cellIdentifier: HomeTasteRecommendCollectionViewCell.cellIdentifier,
-                cellType: HomeTasteRecommendCollectionViewCell.self)) { row, element, cell in
-                    cell.bindData(data: element)
-                }
-                .disposed(by: disposeBag)
-        
-        output.pushToAnnouncementViewController
-            .bind(with: self, onNext: { owner, _ in
-                let viewController = HomeNoticeViewController(viewModel: HomeNoticeViewModel(noticeRepository: DefaultNoticeRepository(noticeService: DefaultNoticeService() )))
-                viewController.navigationController?.isNavigationBarHidden = false
-                viewController.hidesBottomBarWhenPushed = true
-                owner.navigationController?.pushViewController(viewController, animated: true)
+        output.updateInterestView
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, data in
+                let isLogined = data.0
+                let isEmpty = data.1
+                owner.rootView.interestView.updateView(isLogined, isEmpty)
             })
             .disposed(by: disposeBag)
         
@@ -170,17 +165,14 @@ final class HomeViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.pushToNovelDetailViewController
-            .bind(with: self, onNext: { owner, novelId in
-                owner.pushToDetailViewController(novelId: novelId)
-            })
-            .disposed(by: disposeBag)
-        
-        output.presentInduceLoginViewController
-            .bind(with: self, onNext: { owner, _ in
-                owner.presentInduceLoginViewController()
-            })
-            .disposed(by: disposeBag)
+        // 취향 추천
+        output.tasteRecommendList
+            .bind(to: rootView.tasteRecommendView.tasteRecommendCollectionView.rx.items(
+                cellIdentifier: HomeTasteRecommendCollectionViewCell.cellIdentifier,
+                cellType: HomeTasteRecommendCollectionViewCell.self)) { row, element, cell in
+                    cell.bindData(data: element)
+                }
+                .disposed(by: disposeBag)
         
         output.tasteRecommendCollectionViewHeight
             .drive(with: self, onNext: { owner, height in
@@ -188,12 +180,39 @@ final class HomeViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.updateInterestView
+        output.updateTasteRecommendView
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
                 let isLogined = data.0
                 let isEmpty = data.1
-                owner.rootView.interestView.updateView(isLogined, isEmpty)
+                owner.rootView.tasteRecommendView.updateView(isLogined, isEmpty)
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushToMyPageViewController
+            .bind(with: self, onNext: { owner, _ in
+                owner.pushToMyPageViewController(isMyPage: true)
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushToNovelDetailViewController
+            .bind(with: self, onNext: { owner, novelId in
+                owner.pushToDetailViewController(novelId: novelId)
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushToAnnouncementViewController
+            .bind(with: self, onNext: { owner, _ in
+                let viewController = HomeNoticeViewController(viewModel: HomeNoticeViewModel(noticeRepository: DefaultNoticeRepository(noticeService: DefaultNoticeService() )))
+                viewController.navigationController?.isNavigationBarHidden = false
+                viewController.hidesBottomBarWhenPushed = true
+                owner.navigationController?.pushViewController(viewController, animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        output.showInduceLoginModalView
+            .bind(with: self, onNext: { owner, _ in
+                owner.presentInduceLoginViewController()
             })
             .disposed(by: disposeBag)
     }
