@@ -12,16 +12,20 @@ class TokenCheckURLProtocol: URLProtocol {
     
     private let disposeBag = DisposeBag()
     
-    // 토큰 갱신 API 호출 스트림을 공유하여 구독할 때마다 새로 스트림이 생기는 것을 막아
-    // 토큰 리이슈 API 중복 호출 방지
+    // 토큰 갱신 API 호출 스트림을 공유하여 토큰 갱신이 진행되는 동안에는
+    // 구독할 때마다 새로 스트림이 생기는 것을 막아 토큰 리이슈 API 중복 호출 방지
     private static var tokenRefreshSubject = BehaviorSubject<Void>(value: ())
     private static var tokenRefreshObservable: Observable<ReissueResult> = {
         return tokenRefreshSubject
             .asObservable()
             .flatMapLatest { _ in
-                return DefaultAuthService().reissueToken()
+                return DefaultAuthService().reissueToken().asObservable()
             }
-            .do(onSubscribe: {
+            .do(onNext: { _ in
+                print("====== Success To Get New Token ======")
+            }, onError: { _ in
+                print("====== Fail To Get New Token ====== ")
+            }, onSubscribe: {
                 print("====== Try To Get New Token ======")
             })
             .share()
@@ -33,11 +37,7 @@ class TokenCheckURLProtocol: URLProtocol {
     // 한번 이 프로토콜에서 처리하고 나면, startLoading() 과정에서
     // Handled 값은 true로 들어가므로 더이상 이 프로토콜이 처리하지 않음.
     override class func canInit(with request: URLRequest) -> Bool {
-        if URLProtocol.property(forKey: "Handled", in: request) != nil {
-            return false
-        } else {
-            return true
-        }
+        return URLProtocol.property(forKey: "Handled", in: request) == nil
     }
     
     // 요청을 수정할 필요가 있을 때 호출됩니다.
@@ -47,63 +47,69 @@ class TokenCheckURLProtocol: URLProtocol {
     
     // 실제 네트워크 요청 처리
     override func startLoading() {
-        // 원래 요청으로 데이터 태스크 시작
+        // 원래 요청으로 데이터 테스크 시작
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if let httpResponse = response as? HTTPURLResponse {
-                // 원래 요청의 응답 상태 코드가 401인지 확인
-                if httpResponse.statusCode == 401 {
-                    // 토큰 갱신 시도 (토큰 갱신이 진행되는 동안에는 한 번만 수행되도록 설정)
-                    TokenCheckURLProtocol.tokenRefreshObservable
-                        .subscribe(with: self, onNext: { owner, result in
-                            print("====== Success To Get New Token ======")
-                            // 새로운 토큰 저장
-                            owner.updateTokens(result: result)
-                            
-                            // 갱신된 토큰으로 새로운 요청 생성
-                            guard let mutableRequest = (owner.request as NSURLRequest).mutableCopy() as? NSMutableURLRequest else {
-                                return
-                            }
-                            URLProtocol.setProperty(true, forKey: "Handled", in: mutableRequest)
-                            mutableRequest.setValue("Bearer " + APIConstants.accessToken, forHTTPHeaderField: APIConstants.auth)
-                            let newRequest = mutableRequest as URLRequest
-                            
-                            // 새로운 토큰으로 요청 재시도
-                            let retryTask = URLSession.shared.dataTask(with: newRequest) { data, response, error in
-                                if let data = data {
-                                    owner.client?.urlProtocol(owner, didLoad: data)
-                                }
-                                if let response = response {
-                                    owner.client?.urlProtocol(owner, didReceive: response, cacheStoragePolicy: .notAllowed)
-                                }
-                                owner.client?.urlProtocolDidFinishLoading(owner)
-                            }
-                            retryTask.resume()
-                        }, onFailure: { owner, error in
-                            print("====== Fail To Get New Token ====== ")
-                            // 실패 시 토큰을 삭제하고 로그인 VC로 이동
-                            DispatchQueue.main.async {
-                                owner.deleteTokens()
-                                owner.moveToLoginViewController()
-                            }
-                           // owner.client?.urlProtocol(self, didFailWithError: error)
-                        })
-                        .disposed(by: self.disposeBag)
-                } else {
-                    // 401이 아닌 경우 일반적인 응답 처리
-                    if let data = data {
-                        self.client?.urlProtocol(self, didLoad: data)
-                    }
-                    if let response = response {
-                        self.client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
-                    }
-                    self.client?.urlProtocolDidFinishLoading(self)
-                }
-            } else if let error = error {
-                // 일반적인 에러 처리
-                self.client?.urlProtocol(self, didFailWithError: error)
+            // 원래 요청의 응답 상태 코드가 401인지 확인
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 401 {
+                self.handleUnauthorizedResponse()
+            } else { // 401이 아닌 경우 일반적인 응답 처리
+                self.handleTaskResult(data: data, response: response, error: error)
             }
         }
         task.resume()
+    }
+    
+    private func handleUnauthorizedResponse() {
+        TokenCheckURLProtocol.tokenRefreshObservable
+            .subscribe(with: self, onNext: { owner, result in
+                // 새로운 토큰 저장 후 갱신된 토큰으로 요청 재시도
+                owner.updateTokens(result: result)
+                owner.retryRequestWithNewToken()
+            }, onError: { owner, error in
+                // 실패 시 토큰을 삭제하고 로그인 VC로 이동
+                owner.handleTokenReissueFailure(error: error)
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func handleTaskResult(data: Data?, response: URLResponse?, error: Error?) {
+        if let error = error {
+            self.client?.urlProtocol(self, didFailWithError: error)
+        } else {
+            if let data = data {
+                client?.urlProtocol(self, didLoad: data)
+            }
+            if let response = response {
+                client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
+            }
+            
+            client?.urlProtocolDidFinishLoading(self)
+        }
+    }
+    
+    private func retryRequestWithNewToken() {
+        // 갱신된 토큰으로 새로운 요청 생성
+        guard let mutableRequest = (self.request as NSURLRequest).mutableCopy() as? NSMutableURLRequest else {
+            return
+        }
+        URLProtocol.setProperty(true, forKey: "Handled", in: mutableRequest)
+        mutableRequest.setValue("Bearer " + APIConstants.accessToken, forHTTPHeaderField: APIConstants.auth)
+        let newRequest = mutableRequest as URLRequest
+        
+        // 새로운 토큰으로 요청 재시도
+        let retryTask = URLSession.shared.dataTask(with: newRequest) { data, response, error in
+            self.handleTaskResult(data: data, response: response, error: error)
+        }
+        retryTask.resume()
+    }
+    
+    private func handleTokenReissueFailure(error: Error) {
+        // 실패 시 토큰을 삭제하고 로그인 VC로 이동
+        DispatchQueue.main.async {
+            self.deleteTokens()
+            self.moveToLoginViewController()
+        }
+        //self.client?.urlProtocol(self, didFailWithError: error)
     }
     
     // 네트워크 요청 중단 시 호출됩니다.
