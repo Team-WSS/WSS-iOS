@@ -43,6 +43,7 @@ struct RealtimePopularFeed: Codable {
 // 관심글
 struct InterestFeeds: Codable {
     var recommendFeeds: [InterestFeed]
+    var message: String
 }
 
 struct InterestFeed: Codable {

@@ -150,8 +150,8 @@ final class HomeViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
                 let isLogined = data.0
-                let isEmpty = data.1
-                owner.rootView.interestView.updateView(isLogined, isEmpty)
+                let message = data.1
+                owner.rootView.interestView.updateView(isLogined, message)
             })
             .disposed(by: disposeBag)
         
@@ -184,6 +184,7 @@ final class HomeViewController: UIViewController {
         
         
         output.pushToMyPageViewController
+            .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 owner.pushToMyPageViewController(isMyPage: true)
             })

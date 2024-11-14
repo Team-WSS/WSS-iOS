@@ -64,9 +64,25 @@ final class HomeInterestView: UIView {
     
     //MARK: - Custom Method
     
-    func updateView(_ isLogined: Bool, _ isEmpty: Bool) {
+    func updateView(_ isLogined: Bool, _ message: String) {
         if isLogined {
-            if isEmpty {
+            if message == "NO_INTEREST_NOVELS" {
+                titleLabel.applyWSSFont(.headline1, with: StringLiterals.Home.Title.notLoggedInInterest)
+                self.addSubviews(titleLabel,
+                                 unregisterView)
+                titleLabel.snp.makeConstraints {
+                    $0.top.equalToSuperview()
+                    $0.leading.equalToSuperview().inset(20)
+                }
+                unregisterView.snp.makeConstraints {
+                    $0.top.equalTo(titleLabel.snp.bottom).offset(11)
+                    $0.leading.trailing.equalToSuperview().inset(20)
+                    $0.bottom.equalToSuperview().inset(20)
+                }
+                interestCollectionView.removeFromSuperview()
+                interestEmptyView.removeFromSuperview()
+                subTitleLabel.removeFromSuperview()
+            } else if message == "NO_ASSOCIATED_FEEDS" {
                 titleLabel.applyWSSFont(.headline1, with: StringLiterals.Home.Title.notLoggedInInterest)
                 interestCollectionView.removeFromSuperview()
                 self.addSubviews(titleLabel,

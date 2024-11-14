@@ -28,7 +28,7 @@ final class HomeViewModel: ViewModelType {
     
     // 관심글
     private let interestList = BehaviorRelay<[InterestFeed]>(value: [])
-    private let updateInterestView = PublishRelay<(Bool, Bool)>()
+    private let updateInterestView = PublishRelay<(Bool, String)>()
     private let pushToNormalSearchViewController = PublishRelay<Void>()
     
     // 취향추천
@@ -61,7 +61,7 @@ final class HomeViewModel: ViewModelType {
         var realtimePopularData: Observable<[[RealtimePopularFeed]]>
         
         var interestList: Observable<[InterestFeed]>
-        let updateInterestView: Observable<(Bool, Bool)>
+        let updateInterestView: Observable<(Bool, String)>
         let pushToNormalSearchViewController: Observable<Void>
         
         var tasteRecommendList: Observable<[TasteRecommendNovel]>
@@ -85,7 +85,7 @@ extension HomeViewModel {
         input.viewWillAppearEvent
             .flatMapLatest {
                 let realtimeFeedsObservable = self.getRealtimePopularFeeds()
-                let interestFeedsObservable = self.isLogined ? self.getInterestFeeds() : Observable.just(InterestFeeds(recommendFeeds: []))
+                let interestFeedsObservable = self.isLogined ? self.getInterestFeeds() : Observable.just(InterestFeeds(recommendFeeds: [], message: ""))
                 let tasteRecommendNovelsObservable = self.isLogined ? self.getTasteRecommendNovels() : Observable.just(TasteRecommendNovels(tasteNovels: []))
                 
                 return Observable.zip(realtimeFeedsObservable,
@@ -106,13 +106,12 @@ extension HomeViewModel {
                 
                 if owner.isLogined {
                     owner.interestList.accept(interestFeeds.recommendFeeds)
-                    owner.updateInterestView.accept((true, interestFeeds.recommendFeeds.isEmpty))
+                    owner.updateInterestView.accept((true, interestFeeds.message))
                     
                     owner.tasteRecommendList.accept(tasteRecommendNovels.tasteNovels)
                     owner.updateTasteRecommendView.accept((true, tasteRecommendNovels.tasteNovels.isEmpty))
-                    owner.pushToMyPageViewController.accept(())
                 } else {
-                    owner.updateInterestView.accept((false, true))
+                    owner.updateInterestView.accept((false, ""))
                     owner.updateTasteRecommendView.accept((false, true))
                 }
             }, onError: { owner, error in
@@ -166,7 +165,7 @@ extension HomeViewModel {
         input.registerInterestNovelButtonTapped
             .subscribe(with: self, onNext: { owner, _ in
                 if owner.isLogined {
-                    owner.pushToMyPageViewController.accept(())
+                    owner.pushToNormalSearchViewController.accept(())
                 } else {
                     owner.showInduceLoginModalView.accept(())
                 }
@@ -175,7 +174,11 @@ extension HomeViewModel {
         
         input.setPreferredGenresButtonTapped
             .subscribe(with: self, onNext: { owner, _ in
-                owner.showInduceLoginModalView.accept(())
+                if owner.isLogined {
+                    owner.pushToMyPageViewController.accept(())
+                } else {
+                    owner.showInduceLoginModalView.accept(())
+                }
             })
             .disposed(by: disposeBag)
         
