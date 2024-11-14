@@ -11,6 +11,8 @@ import UIKit
 import RxSwift
 import RxCocoa
 import Then
+import KakaoSDKUser
+import RxKakaoSDKUser
 
 final class LoginViewModel: NSObject, ViewModelType {
     
@@ -158,6 +160,18 @@ final class LoginViewModel: NSObject, ViewModelType {
     private func loginWithApple(userIdentifier: String, email: String?) -> Observable<LoginResult> {
         authRepository.loginWithApple(userIdentifier: userIdentifier, email: email)
             .observe(on: MainScheduler.instance)
+    }
+    
+    private func loginWithKakaotalk() {
+        if (UserApi.isKakaoTalkLoginAvailable()) {
+            UserApi.shared.rx.loginWithKakaoTalk()
+                .subscribe(with: self, onNext: { owner, oauthToken in
+                    print("loginWithKakaoTalk() success.")
+                    
+                }, onError: { owner, error in
+                    print(error)
+                })
+        }
     }
 }
 
