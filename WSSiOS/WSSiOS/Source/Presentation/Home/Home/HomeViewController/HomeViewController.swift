@@ -18,7 +18,7 @@ final class HomeViewController: UIViewController {
     private let viewModel: HomeViewModel
     private let disposeBag = DisposeBag()
     
-    private let isLoggedIn: Bool
+    private let isLoggedIn = APIConstants.isLogined
     private let viewWillAppearEvent = PublishRelay<Void>()
     
     //MARK: - UI Components
@@ -27,10 +27,9 @@ final class HomeViewController: UIViewController {
     
     //MARK: - Life Cycle
     
-    init(viewModel: HomeViewModel, isLoggedIn: Bool) {
+    init(viewModel: HomeViewModel) {
         self.viewModel = viewModel
-        self.isLoggedIn = isLoggedIn
-        self.rootView = HomeView(frame: .zero, isLoggedIn: isLoggedIn)
+        self.rootView = HomeView(frame: .zero)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -93,15 +92,13 @@ final class HomeViewController: UIViewController {
     private func bindViewModel() {
         let input = HomeViewModel.Input(
             viewWillAppearEvent: viewWillAppearEvent.asObservable(),
-            announcementButtonTapped: rootView.headerView.announcementButton.rx.tap,
-            registerInterestNovelButtonTapped: rootView.interestView.unregisterView.registerButton.rx.tap,
-            setPreferredGenresButtonTapped: rootView.tasteRecommendView.unregisterView.registerButton.rx.tap,
-            induceModalViewLoginButtonTapped: rootView.induceLoginModalView.loginButton.rx.tap,
-            induceModalViewCancelButtonTapped: rootView.induceLoginModalView.cancelButton.rx.tap,
+            announcementButtonDidTap: rootView.headerView.announcementButton.rx.tap,
             todayPopularCellSelected: rootView.todayPopularView.todayPopularCollectionView.rx.itemSelected,
             interestCellSelected: rootView.interestView.interestCollectionView.rx.itemSelected,
             tasteRecommendCellSelected: rootView.tasteRecommendView.tasteRecommendCollectionView.rx.itemSelected,
-            tasteRecommendCollectionViewContentSize: rootView.tasteRecommendView.tasteRecommendCollectionView.rx.observe(CGSize.self, "contentSize")
+            tasteRecommendCollectionViewContentSize: rootView.tasteRecommendView.tasteRecommendCollectionView.rx.observe(CGSize.self, "contentSize"),
+            registerInterestNovelButtonTapped: rootView.interestView.unregisterView.registerButton.rx.tap,
+            setPreferredGenresButtonTapped: rootView.tasteRecommendView.unregisterView.registerButton.rx.tap
         )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -119,10 +116,14 @@ final class HomeViewController: UIViewController {
                 cellType: HomeRealtimePopularCollectionViewCell.self)) { row, element, cell in
                     cell.bindData(data: element)
                     cell.onFeedViewTapped = { feedId in
-                        if let intFeedId = Int(feedId) {
-                            self.pushToFeedDetailViewController(feedId: intFeedId)
+                        if self.isLoggedIn {
+                            if let intFeedId = Int(feedId) {
+                                self.pushToFeedDetailViewController(feedId: intFeedId)
+                            } else {
+                                print("Invalid feedId: \(feedId)")
+                            }
                         } else {
-                            print("Invalid feedId: \(feedId)")
+                            self.viewModel.presentInduceLoginViewController.accept(())
                         }
                     }
                 }
@@ -151,7 +152,7 @@ final class HomeViewController: UIViewController {
                 }
                 .disposed(by: disposeBag)
         
-        output.navigateToAnnouncementView
+        output.pushToAnnouncementViewController
             .bind(with: self, onNext: { owner, _ in
                 let viewController = HomeNoticeViewController(viewModel: HomeNoticeViewModel(noticeRepository: DefaultNoticeRepository(noticeService: DefaultNoticeService() )))
                 viewController.navigationController?.isNavigationBarHidden = false
@@ -160,7 +161,7 @@ final class HomeViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.navigateToNormalSearchView
+        output.pushToNormalSearchViewController
             .bind(with: self, onNext: { owner, _ in
                 let normalSearchViewController = NormalSearchViewController(viewModel: NormalSearchViewModel(searchRepository: DefaultSearchRepository(searchService: DefaultSearchService())))
                 normalSearchViewController.navigationController?.isNavigationBarHidden = false
@@ -169,28 +170,13 @@ final class HomeViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.navigateToLoginView
-            .bind(with: self, onNext: { owner, _ in
-                guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else {
-                    return
-                }
-                sceneDelegate.setRootToLoginViewController()
-            })
-            .disposed(by: disposeBag)
-        
-        output.showInduceLoginModalView
-            .drive(with: self, onNext: { owner, isShow in
-                owner.showInduceLoginModalView(isShow)
-            })
-            .disposed(by: disposeBag)
-        
-        output.navigateToNovelDetailInfoView
+        output.pushToNovelDetailInfoViewController
             .withLatestFrom(Observable.combineLatest(output.todayPopularList,
                                                      output.interestList,
                                                      output.tasteRecommendList)) { (indexPathSection, lists) in
                 let (indexPath, section) = indexPathSection
                 let (todayPopularList, interestList, tasteRecommendList) = lists
-
+                
                 switch section {
                 case 0:
                     return todayPopularList[indexPath.row].novelId
@@ -208,18 +194,17 @@ final class HomeViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.presentInduceLoginViewController
+            .bind(with: self, onNext: { owner, _ in
+                owner.presentInduceLoginViewController()
+            })
+            .disposed(by: disposeBag)
+        
         output.tasteRecommendCollectionViewHeight
             .drive(with: self, onNext: { owner, height in
                 owner.rootView.tasteRecommendView.updateCollectionViewHeight(height: height)
             })
             .disposed(by: disposeBag)
-        
-    }
-    
-    //MARK: - Custom Method
-    
-    private func showInduceLoginModalView(_ isShow: Bool) {
-        rootView.induceLoginModalView.isHidden = !isShow
     }
 }
 

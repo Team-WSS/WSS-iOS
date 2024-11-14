@@ -1,5 +1,5 @@
 //
-//  HomeInduceLoginModalView.swift
+//  InduceLoginView.swift
 //  WSSiOS
 //
 //  Created by Seoyeon Choi on 5/13/24.
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class HomeInduceLoginModalView: UIView {
+final class InduceLoginView: UIView {
     
     //MARK: - UI Components
     
