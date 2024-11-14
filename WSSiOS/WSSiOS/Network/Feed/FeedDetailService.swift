@@ -26,20 +26,16 @@ protocol FeedDetailService {
 }
 
 final class DefaultFeedDetailService: NSObject, Networking, FeedDetailService {
-    private var urlSession: URLSession = URLSession(configuration: URLSessionConfiguration.default,
-                                                    delegate: nil,
-                                                    delegateQueue: nil)
-    
     func getFeed(feedId: Int) -> Single<Feed> {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.Feed.getSingleFeed(feedId: feedId),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: Feed.self) }
                 .asSingle()
@@ -53,12 +49,12 @@ final class DefaultFeedDetailService: NSObject, Networking, FeedDetailService {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.Feed.getSingleFeedComments(feedId: feedId),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: FeedComments.self) }
                 .asSingle()
@@ -72,12 +68,12 @@ final class DefaultFeedDetailService: NSObject, Networking, FeedDetailService {
         do {
             let request = try makeHTTPRequest(method: .post,
                                               path: URLs.Feed.postFeedLike(feedId: feedId),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
             
@@ -90,12 +86,12 @@ final class DefaultFeedDetailService: NSObject, Networking, FeedDetailService {
         do {
             let request = try makeHTTPRequest(method: .delete,
                                               path: URLs.Feed.deleteFeedLike(feedId: feedId),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
             
@@ -112,12 +108,12 @@ final class DefaultFeedDetailService: NSObject, Networking, FeedDetailService {
         do {
             let request = try makeHTTPRequest(method: .post,
                                               path: URLs.Feed.postComment(feedId: feedId),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: commentContent)
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
             
@@ -134,12 +130,12 @@ final class DefaultFeedDetailService: NSObject, Networking, FeedDetailService {
         do {
             let request = try makeHTTPRequest(method: .put,
                                               path: URLs.Feed.putComment(feedId: feedId, commentId: commentId),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: commentContent)
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
             
@@ -152,12 +148,12 @@ final class DefaultFeedDetailService: NSObject, Networking, FeedDetailService {
         do {
             let request = try makeHTTPRequest(method: .delete,
                                               path: URLs.Feed.deleteComment(feedId: feedId, commentId: commentId),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
             
@@ -170,12 +166,12 @@ final class DefaultFeedDetailService: NSObject, Networking, FeedDetailService {
         do {
             let request = try makeHTTPRequest(method: .post,
                                               path: URLs.Feed.postSpoilerFeed(feedId: feedId),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
             
@@ -188,12 +184,12 @@ final class DefaultFeedDetailService: NSObject, Networking, FeedDetailService {
         do {
             let request = try makeHTTPRequest(method: .post,
                                               path: URLs.Feed.postImpertinenceFeed(feedId: feedId),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
             
@@ -206,12 +202,12 @@ final class DefaultFeedDetailService: NSObject, Networking, FeedDetailService {
         do {
             let request = try makeHTTPRequest(method: .delete,
                                               path: URLs.Feed.deleteFeed(feedId: feedId),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
             

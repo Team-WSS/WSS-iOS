@@ -18,23 +18,19 @@ protocol NovelDetailService {
     func deleteNovelReview(novelId: Int) -> Single<Void>
 }
 
-final class DefaultNovelDetailService: NSObject, Networking {
-    private var urlSession: URLSession = URLSession(configuration: URLSessionConfiguration.default,
-                                                    delegate: nil,
-                                                    delegateQueue: nil)
-}
+final class DefaultNovelDetailService: NSObject, Networking { }
 
 extension DefaultNovelDetailService: NovelDetailService {
     func deleteNovelReview(novelId: Int) -> Single<Void> {
         do {
             let request = try makeHTTPRequest(method: .delete,
                                               path: URLs.NovelDetail.novelReview(novelId: novelId),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
         } catch {
@@ -46,12 +42,12 @@ extension DefaultNovelDetailService: NovelDetailService {
         do {
             let request = try makeHTTPRequest(method: .post,
                                               path: URLs.NovelDetail.novelIsInterest(novelId: novelId),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
         } catch {
@@ -63,12 +59,12 @@ extension DefaultNovelDetailService: NovelDetailService {
         do {
             let request = try makeHTTPRequest(method: .delete,
                                               path: URLs.NovelDetail.novelIsInterest(novelId: novelId),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
         } catch {
@@ -80,12 +76,12 @@ extension DefaultNovelDetailService: NovelDetailService {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.NovelDetail.novelDetailHeader(novelId: novelId),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: NovelDetailHeaderResult.self) }
                 .asSingle()
@@ -98,12 +94,12 @@ extension DefaultNovelDetailService: NovelDetailService {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.NovelDetail.novelDetailInfo(novelId: novelId),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: NovelDetailInfoResult.self) }
                 .asSingle()
@@ -121,12 +117,12 @@ extension DefaultNovelDetailService: NovelDetailService {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.NovelDetail.novelDetailFeed(novelId: novelId),
                                               queryItems: novelDetailFeedQueryItems,
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: NovelDetailFeedResult.self) }
                 .asSingle()
