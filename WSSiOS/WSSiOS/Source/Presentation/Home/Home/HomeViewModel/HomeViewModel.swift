@@ -110,6 +110,7 @@ extension HomeViewModel {
                     
                     owner.tasteRecommendList.accept(tasteRecommendNovels.tasteNovels)
                     owner.updateTasteRecommendView.accept((true, tasteRecommendNovels.tasteNovels.isEmpty))
+                    owner.pushToMyPageViewController.accept(())
                 } else {
                     owner.updateInterestView.accept((false, true))
                     owner.updateTasteRecommendView.accept((false, true))
