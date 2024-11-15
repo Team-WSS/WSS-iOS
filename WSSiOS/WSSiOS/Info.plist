@@ -2,14 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>KAKAO_APP_KEY</key>
+	<string>$(KAKAO_APP_KEY)</string>
 	<key>BASE_URL</key>
 	<string>$(BASE_URL)</string>
 	<key>BUCKET_URL</key>
 	<string>$(BUCKET_URL)</string>
 	<key>TEST_TOKEN</key>
 	<string>$(TEST_TOKEN)</string>
-	<key>KAKAO_APP_KEY</key>
-	<string>$(KAKAO_APP_KEY)</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -17,7 +17,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>kakao8eacace28aaf3bc045e6caf60c2cb4fe</string>
+				<string>kakao36e17a01cc11fa2116d6e59e4d98d159</string>
 			</array>
 		</dict>
 	</array>
