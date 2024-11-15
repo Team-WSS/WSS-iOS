@@ -10,8 +10,8 @@ import Foundation
 import RxSwift
 
 protocol AuthService {
-    func loginWithApple(userIdentifier: String,
-                        email: String?) -> Single<LoginResult>
+    func loginWithApple(authorizationCode: String,
+                        idToken: String) -> Single<LoginResult>
 }
 
 final class DefaultAuthService: NSObject, Networking, AuthService {
@@ -19,8 +19,8 @@ final class DefaultAuthService: NSObject, Networking, AuthService {
                                                     delegate: nil,
                                                     delegateQueue: nil)
     
-    func loginWithApple(userIdentifier: String, email: String?) -> RxSwift.Single<LoginResult> {
-        guard let appleLoginBody = try? JSONEncoder().encode(AppleLoginBody(userIdentifier: userIdentifier, email: email)) else {
+    func loginWithApple(authorizationCode: String, idToken: String) -> RxSwift.Single<LoginResult> {
+        guard let appleLoginBody = try? JSONEncoder().encode(AppleLoginBody(authorizationCode: authorizationCode, idToken: idToken)) else {
             return Single.error(NetworkServiceError.invalidRequestError)
         }
                 

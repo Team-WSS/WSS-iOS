@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 
 protocol AuthRepository {
-    func loginWithApple(userIdentifier: String, email: String?) -> Observable<LoginResult>
+    func loginWithApple(authorizationCode: String, idToken: String) -> Observable<LoginResult>
 }
 
 struct DefaultAuthRepository: AuthRepository {
@@ -21,9 +21,8 @@ struct DefaultAuthRepository: AuthRepository {
         self.authService = authService
     }
     
-    func loginWithApple(userIdentifier: String, email: String?) -> Observable<LoginResult> {
-        return authService.loginWithApple(userIdentifier: userIdentifier,
-                                          email: email)
+    func loginWithApple(authorizationCode: String, idToken: String) -> Observable<LoginResult> {
+        return authService.loginWithApple(authorizationCode: authorizationCode, idToken: idToken)
             .asObservable()
     }
 }
