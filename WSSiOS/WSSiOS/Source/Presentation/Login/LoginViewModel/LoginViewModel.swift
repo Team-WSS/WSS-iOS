@@ -94,8 +94,6 @@ final class LoginViewModel: NSObject, ViewModelType {
                     owner.navigateToHome.accept(())
                 case .kakao:
                     owner.loginWithKakao(disposeBag: disposeBag)
-                case .naver:
-                    owner.navigateToOnboarding.accept(())
                 case .apple:
                     owner.requestAppleLogin() // 애플로그인 요청
                 }
