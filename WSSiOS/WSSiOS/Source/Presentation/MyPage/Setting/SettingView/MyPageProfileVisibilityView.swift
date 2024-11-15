@@ -81,7 +81,7 @@ final class MyPageProfileVisibilityView: UIView {
         }
         
         profilePrivateLabel.snp.makeConstraints {
-            $0.leading.equalToSuperview().inset(30)
+            $0.leading.equalToSuperview().inset(20)
             $0.centerY.equalToSuperview()
         }
         
@@ -89,15 +89,6 @@ final class MyPageProfileVisibilityView: UIView {
             $0.size.equalTo(44)
             $0.centerY.equalToSuperview()
             $0.trailing.equalToSuperview().inset(20)
-        }
-        
-        backButton.snp.makeConstraints {
-            $0.size.equalTo(24)
-        }
-        
-        completeButton.snp.makeConstraints {
-            $0.width.equalTo(48)
-            $0.height.equalTo(42)
         }
     }
     

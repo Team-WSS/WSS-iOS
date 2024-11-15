@@ -166,11 +166,11 @@ extension DefaultUserService: UserService {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.MyPage.ProfileVisibility.isProfileVisibility,
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map {
                     try self.decode(data: $0,
                                     to: UserProfileVisibility.self)
@@ -190,11 +190,11 @@ extension DefaultUserService: UserService {
             let request = try makeHTTPRequest(method: .patch,
                                               path: URLs.MyPage.ProfileVisibility.isProfileVisibility,
                                               queryItems: makeUserProfileVisibilityQueryItems(isProfilePublic: isProfilePublic),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
         } catch {

@@ -34,7 +34,6 @@ final class MyPageProfileVisibilityViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         self.isPublic = self.initStatus
-        print(self.isPublic, "💖")
     }
     
     struct Input {

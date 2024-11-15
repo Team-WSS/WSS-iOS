@@ -78,7 +78,6 @@ final class MyPageProfileVisibilityViewController: UIViewController {
             })
             .disposed(by: disposeBag)
     }
-    
 }
 
 //MARK: - UI
