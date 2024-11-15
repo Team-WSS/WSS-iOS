@@ -16,12 +16,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         self.window = UIWindow(windowScene: windowScene)
         
-//        APIConstants.isLogined ? setRootToWSSTabBarController() : setRootToLoginViewController()
-        
-        let navigationController = UINavigationController(rootViewController: MyPageProfileVisibilityViewController(viewModel: MyPageProfileVisibilityViewModel(userRepository: DefaultUserRepository(userService: DefaultUserService(), blocksService: DefaultBlocksService()))))
-        navigationController.isNavigationBarHidden = true
-        self.window = UIWindow(windowScene: windowScene)
-        self.window?.rootViewController = navigationController
+        APIConstants.isLogined ? setRootToWSSTabBarController() : setRootToLoginViewController()
 
         self.window?.makeKeyAndVisible()
     }
