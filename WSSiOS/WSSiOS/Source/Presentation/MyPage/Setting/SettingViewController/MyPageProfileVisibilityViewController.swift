@@ -77,6 +77,12 @@ final class MyPageProfileVisibilityViewController: UIViewController {
                 owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
+        
+        output.showChangeProfileToast
+            .subscribe(with: self, onNext: { owner, status in
+                owner.showToast(status ? .changeToPublicProfile : .changeToPrivateProfile)
+            })
+            .disposed(by: disposeBag)
     }
 }
 

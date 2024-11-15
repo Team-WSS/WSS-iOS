@@ -37,6 +37,7 @@ final class MyPageProfileVisibilityViewModel: ViewModelType {
         let changePrivateToggleButton = PublishRelay<Bool>()
         let changeCompleteButton = PublishRelay<Bool>()
         let popViewControllerAction = PublishRelay<Bool>()
+        let showChangeProfileToast = PublishRelay<Bool>()
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -78,6 +79,7 @@ final class MyPageProfileVisibilityViewModel: ViewModelType {
         input.backButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in 
                 output.popViewControllerAction.accept(true)
+                output.showChangeProfileToast.accept(owner.isPublic)
             })
             .disposed(by: disposeBag)
         
