@@ -26,6 +26,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         self.window = UIWindow(windowScene: windowScene)
         
+        checkIsRegistered()
+        
         APIConstants.isLogined ? setRootToWSSTabBarController() : setRootToLoginViewController()
         
         self.window?.makeKeyAndVisible()
@@ -53,6 +55,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                           animations: {
             window.rootViewController = navigationController },
                           completion: nil)
+    }
+    
+    func checkIsRegistered() {
+        if !APIConstants.isRegister {
+            UserDefaults.standard.setValue(nil,
+                                           forKey: StringLiterals.UserDefault.accessToken)
+            UserDefaults.standard.setValue(nil,
+                                           forKey: StringLiterals.UserDefault.refreshToken)
+        }
     }
     
     func sceneDidDisconnect(_ scene: UIScene) {

@@ -23,6 +23,10 @@ struct APIConstants {
     // UserDefaults의 실제 토큰 값을 쓰려면 이 값을 false로 바꿀 것.
     static let isTesting: Bool = false
     
+    static var isRegister: Bool {
+        UserDefaults.standard.bool(forKey: StringLiterals.UserDefault.isRegister)
+    }
+    
     static var isLogined: Bool {
         !accessToken.isEmpty
     }
@@ -44,6 +48,6 @@ extension APIConstants {
     
     static func kakaoLoginHeader(_ kakaoAccessToken: String) -> Dictionary<String, String> {
         [contentType: applicationJSON,
-                "Kakao-Access-Token": kakaoAccessToken]
+         "Kakao-Access-Token": kakaoAccessToken]
     }
 }

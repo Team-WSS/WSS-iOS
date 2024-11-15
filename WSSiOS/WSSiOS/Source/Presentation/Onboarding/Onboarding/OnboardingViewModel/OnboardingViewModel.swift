@@ -364,6 +364,8 @@ final class OnboardingViewModel: ViewModelType {
                                            forKey: StringLiterals.UserDefault.userGender)
             UserDefaults.standard.setValue(self.nicknameText.value,
                                            forKey: StringLiterals.UserDefault.userNickname)
+            UserDefaults.standard.setValue(true,
+                                           forKey: StringLiterals.UserDefault.isRegister)
             owner.moveToOnboardingSuccessViewController.accept(owner.nicknameText.value)
         }, onFailure: { owner, error in
             owner.showNetworkErrorView.accept(())

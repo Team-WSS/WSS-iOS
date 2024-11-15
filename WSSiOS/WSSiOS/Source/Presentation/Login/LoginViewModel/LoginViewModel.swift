@@ -141,7 +141,9 @@ final class LoginViewModel: NSObject, ViewModelType {
                                        forKey: StringLiterals.UserDefault.accessToken)
         UserDefaults.standard.setValue(result.refreshToken,
                                        forKey:  StringLiterals.UserDefault.refreshToken)
-        if result.isRegister {
+        UserDefaults.standard.setValue(result.isRegister,
+                                       forKey: StringLiterals.UserDefault.isRegister)
+        if APIConstants.isRegister {
             self.navigateToHome.accept(())
         } else {
             self.navigateToOnboarding.accept(())

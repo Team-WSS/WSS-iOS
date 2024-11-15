@@ -13,6 +13,7 @@ enum StringLiterals {
         static let refreshToken = "REFRESH_TOKEN"
         static let userGender = "USER_GENDER"
         static let userNickname = "USER_NICKNAME"
+        static let isRegister = "IS_REGISTER"
     }
     
     enum BirthPicker {
