@@ -9,10 +9,15 @@ import UIKit
 
 import Then
 
-final class WSSTabBarController: UITabBarController {
-
+final class WSSTabBarController: UITabBarController, UITabBarControllerDelegate {
+    
+    //MARK: - Properties
+    
+    private let isLogined = APIConstants.isLogined
+    
     init() {
         super.init(nibName: nil, bundle: nil)
+        self.delegate = self
     }
     
     required init?(coder: NSCoder) {
@@ -94,5 +99,20 @@ final class WSSTabBarController: UITabBarController {
         navigationController.tabBarItem = item
         
         return navigationController
+    }
+    
+    //MARK: - Delegate
+    
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        guard let selectedIndex = viewControllers?.firstIndex(of: viewController) else {
+            return true
+        }
+        
+        if !isLogined && (selectedIndex == 1 || selectedIndex == 2 || selectedIndex == 3) {
+            self.presentInduceLoginViewController()
+            return false
+        }
+        
+        return true
     }
 }

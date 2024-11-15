@@ -96,10 +96,7 @@ final class SearchViewController: UIViewController {
         
         output.searchBarEnabled
             .bind(with: self, onNext: { owner, _ in
-                let viewController = NormalSearchViewController(viewModel: NormalSearchViewModel(searchRepository: DefaultSearchRepository(searchService: DefaultSearchService())))
-                viewController.navigationController?.isNavigationBarHidden = false
-                viewController.hidesBottomBarWhenPushed = true
-                owner.navigationController?.pushViewController(viewController, animated: true)
+                owner.pushToNormalSearchViewController()
             })
             .disposed(by: disposeBag)
         
