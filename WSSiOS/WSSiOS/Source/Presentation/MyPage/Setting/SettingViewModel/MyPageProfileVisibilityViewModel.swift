@@ -25,15 +25,6 @@ final class MyPageProfileVisibilityViewModel: ViewModelType {
     
     init(userRepository: UserRepository) {
         self.userRepository = userRepository
-        
-        self.getUserProfileVisibility()
-            .map { $0.isProfilePublic }
-            .subscribe(with: self, onNext: { owner, isPublic in 
-                owner.initStatus = isPublic
-            })
-            .disposed(by: disposeBag)
-        
-        self.isPublic = self.initStatus
     }
     
     struct Input {
@@ -51,6 +42,13 @@ final class MyPageProfileVisibilityViewModel: ViewModelType {
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
         
+        self.getUserProfileVisibility()
+            .map { $0.isProfilePublic }
+            .subscribe(with: self, onNext: { owner, isPublic in 
+                owner.initStatus = isPublic
+            })
+            .disposed(by: disposeBag)
+        
         input.isVisibilityToggleButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in 
                 owner.isPublic.toggle()
@@ -60,17 +58,20 @@ final class MyPageProfileVisibilityViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.completeButtonDidTap
-            .subscribe(with: self, onNext: { owner, _ in 
-                guard owner.initStatus != owner.isPublic else { return }
-                
+            .withUnretained(self)
+            .filter { owner, _ in
+                return owner.initStatus != owner.isPublic
+            }
+            .flatMap { owner, _ in
                 owner.patchUserProfileVisibility(isProfilePublic: owner.isPublic)
-                    .subscribe(onNext: {
-                        output.popViewControllerAction.accept(true)
-                        //TODO: - toastMessage
-                    }, onError: { error in
-                        print(error)
-                    })
-                    .disposed(by: owner.disposeBag)
+                    .catch { error in
+                        return Observable.empty()
+                    }
+            }
+            .subscribe(onNext: { [weak self] in
+                guard let self = self else { return }
+                output.popViewControllerAction.accept(true)
+                // TODO: - Toast Message 추가
             })
             .disposed(by: disposeBag)
         
