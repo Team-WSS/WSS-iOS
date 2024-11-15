@@ -10,6 +10,7 @@ import Foundation
 enum URLs {
     enum Auth {
         static let loginWithApple = "/auth/login/apple"
+        static let reissue = "/reissue"
     }
     
     enum Onboarding {

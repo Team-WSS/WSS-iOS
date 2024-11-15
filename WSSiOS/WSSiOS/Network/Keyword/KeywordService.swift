@@ -14,10 +14,6 @@ protocol KeywordService {
 }
 
 final class DefaultKeywordService: NSObject, Networking, KeywordService {
-    private var urlSession: URLSession = URLSession(configuration: URLSessionConfiguration.default,
-                                                    delegate: nil,
-                                                    delegateQueue: nil)
-
     func searchKeyword(query: String? = nil) -> RxSwift.Single<SearchKeywordResult> {
         var searchKeywordQueryItems: [URLQueryItem] = []
         
@@ -29,12 +25,12 @@ final class DefaultKeywordService: NSObject, Networking, KeywordService {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.Keyword.searchKeyword,
                                               queryItems: searchKeywordQueryItems,
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
 
             NetworkLogger.log(request: request)
 
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: SearchKeywordResult.self) }
                 .asSingle()

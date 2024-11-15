@@ -16,14 +16,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         self.window = UIWindow(windowScene: windowScene)
         
-        setRootToLoginViewController()
+        APIConstants.isLogined ? setRootToWSSTabBarController() : setRootToLoginViewController()
         
         self.window?.makeKeyAndVisible()
     }
     
     func setRootToWSSTabBarController() {
-        let isLoggedIn = APIConstants.isLogined
-        let navigationController = UINavigationController(rootViewController: WSSTabBarController(isLoggedIn: isLoggedIn))
+        let navigationController = UINavigationController(rootViewController: WSSTabBarController())
         navigationController.isNavigationBarHidden = true
         guard let window else { return }
         UIView.transition(with: window,
@@ -37,7 +36,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func setRootToLoginViewController() {
         let navigationController = UINavigationController(rootViewController: ModuleFactory.shared.makeLoginViewController())
         navigationController.isNavigationBarHidden = true
-        window?.rootViewController = navigationController
+        guard let window else { return }
+        UIView.transition(with: window,
+                          duration: 0.3,
+                          options: .transitionCrossDissolve,
+                          animations: {
+            window.rootViewController = navigationController },
+                          completion: nil)
     }
     
     func sceneDidDisconnect(_ scene: UIScene) {
