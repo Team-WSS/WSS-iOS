@@ -28,10 +28,6 @@ protocol NovelReviewService {
 }
 
 final class DefaultNovelReviewService: NSObject, Networking, NovelReviewService {
-    private var urlSession: URLSession = URLSession(configuration: URLSessionConfiguration.default,
-                                                    delegate: nil,
-                                                    delegateQueue: nil)
-    
     func postNovelReview(novelId: Int,
                          userNovelRating: Float,
                          status: String,
@@ -46,12 +42,12 @@ final class DefaultNovelReviewService: NSObject, Networking, NovelReviewService 
         do {
             let request = try makeHTTPRequest(method: .post,
                                               path: URLs.NovelReview.postNovelReview,
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: novelReviewContentData)
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
         } catch {
@@ -73,12 +69,12 @@ final class DefaultNovelReviewService: NSObject, Networking, NovelReviewService 
         do {
             let request = try makeHTTPRequest(method: .put,
                                               path: URLs.NovelReview.putNovelReview(novelId: novelId),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: novelReviewContentData)
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
         } catch {
@@ -90,12 +86,12 @@ final class DefaultNovelReviewService: NSObject, Networking, NovelReviewService 
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.NovelReview.getNovelReview(novelId: novelId),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: NovelReviewResult.self) }
                 .asSingle()

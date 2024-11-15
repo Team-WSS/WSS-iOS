@@ -17,3 +17,12 @@ struct LoginResult: Codable {
     let refreshToken: String
     let isRegister: Bool
 }
+
+struct ReissueBody: Codable {
+    let refreshToken: String
+}
+
+struct ReissueResult: Codable {
+    let Authorization: String
+    let refreshToken: String
+}
