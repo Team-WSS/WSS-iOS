@@ -14,7 +14,7 @@ final class NovelDetailFeedReactView: UIView {
 
     //MARK: - Components
     
-    private let likeView = UIView()
+    let likeView = UIView()
     private let likeImageView = UIImageView()
     private let likeLabel = UILabel()
     private let commentView = UIView()

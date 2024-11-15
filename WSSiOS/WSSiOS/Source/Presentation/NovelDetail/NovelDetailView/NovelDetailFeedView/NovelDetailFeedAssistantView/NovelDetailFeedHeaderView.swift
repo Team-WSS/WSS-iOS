@@ -14,12 +14,14 @@ final class NovelDetailFeedHeaderView: UIView {
 
     //MARK: - Components
     
+    let profileView = UIStackView()
     private let userImageView = UIImageView()
     private let userNicknameLabel = UILabel()
     private let dotImageView = UIImageView()
     private let createdDateLabel = UILabel()
     private let isModifiedLabel = UILabel()
-    let dropdownImageView = UIImageView()
+    let dropdownButtonView = UIView()
+    private let dropdownImageView = UIImageView()
     
     // MARK: - Life Cycle
     
@@ -38,6 +40,13 @@ final class NovelDetailFeedHeaderView: UIView {
     //MARK: - UI
     
     private func setUI() {
+        profileView.do {
+            $0.axis = .horizontal
+            $0.spacing = 14
+            $0.alignment = .center
+            $0.isUserInteractionEnabled = true
+        }
+        
         userImageView.do {
             $0.contentMode = .scaleAspectFill
             $0.layer.cornerRadius = 12
@@ -64,33 +73,33 @@ final class NovelDetailFeedHeaderView: UIView {
         }
         
         dropdownImageView.do {
-            $0.image = .icDropDownDot
+            $0.image = .icThreedots.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray100)
         }
     }
     
     private func setHierarchy() {
-        self.addSubviews(userImageView,
-                         userNicknameLabel,
+        self.addSubviews(profileView,
                          dotImageView,
                          createdDateLabel,
                          isModifiedLabel,
-                         dropdownImageView)
+                         dropdownButtonView)
+        profileView.addArrangedSubviews(userImageView,
+                                     userNicknameLabel)
+        dropdownButtonView.addSubview(dropdownImageView)
     }
     
     private func setLayout() {
-        userImageView.snp.makeConstraints {
+        profileView.snp.makeConstraints {
             $0.top.leading.bottom.equalToSuperview()
-            $0.size.equalTo(36)
         }
         
-        userNicknameLabel.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.leading.equalTo(userImageView.snp.trailing).offset(14)
+        userImageView.snp.makeConstraints {
+            $0.size.equalTo(36)
         }
         
         dotImageView.snp.makeConstraints {
             $0.centerY.equalToSuperview()
-            $0.leading.equalTo(userNicknameLabel.snp.trailing).offset(6)
+            $0.leading.equalTo(profileView.snp.trailing).offset(6)
             $0.size.equalTo(8)
         }
         
@@ -102,6 +111,11 @@ final class NovelDetailFeedHeaderView: UIView {
         isModifiedLabel.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.leading.equalTo(createdDateLabel.snp.trailing).offset(6)
+        }
+        
+        dropdownButtonView.snp.makeConstraints {
+            $0.top.trailing.bottom.equalToSuperview()
+            $0.size.equalTo(38)
         }
         
         dropdownImageView.snp.makeConstraints {
