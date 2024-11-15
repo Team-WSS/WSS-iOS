@@ -18,6 +18,8 @@ protocol UserRepository {
     func getBlocksList() -> Observable<BlockUserResult>
     func deleteBlockUser(blockID: Int) -> Observable<Void>
     func getUserNovelStatus() -> Observable<UserNovelStatus>
+    func getUserProfileVisibility() -> Observable<UserProfileVisibility>
+    func patchUserProfileVisibility(isProfilePublic: Bool) -> Observable<Void>
 }
 
 struct DefaultUserRepository: UserRepository {
@@ -74,6 +76,16 @@ struct DefaultUserRepository: UserRepository {
     
     func getUserNovelStatus() -> RxSwift.Observable<UserNovelStatus> {
         return userService.getUserNovelStatus()
+            .asObservable()
+    }
+    
+    func getUserProfileVisibility() -> Observable<UserProfileVisibility> {
+        return userService.getUserProfileVisibility()
+            .asObservable()
+    }
+    
+    func patchUserProfileVisibility(isProfilePublic: Bool) -> Observable<Void> {
+        return userService.patchUserProfileVisibility(isProfilePublic: isProfilePublic)
             .asObservable()
     }
 }

@@ -16,7 +16,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         self.window = UIWindow(windowScene: windowScene)
         
-        APIConstants.isLogined ? setRootToWSSTabBarController() : setRootToLoginViewController()
+//        APIConstants.isLogined ? setRootToWSSTabBarController() : setRootToLoginViewController()
+        setRootToWSSTabBarController()
         
         self.window?.makeKeyAndVisible()
     }

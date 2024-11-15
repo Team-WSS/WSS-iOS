@@ -16,6 +16,8 @@ protocol UserService {
     func getUserNovelStatus() -> Single<UserNovelStatus>
     func getUserInfo() -> Single<UserInfo>
     func putUserInfo(gender: String, birth: Int) -> Single<Void>
+    func getUserProfileVisibility() -> Single<UserProfileVisibility>
+    func patchUserProfileVisibility(isProfilePublic: Bool) -> Single<Void>
 }
 
 final class DefaultUserService: NSObject, Networking {
@@ -28,6 +30,11 @@ final class DefaultUserService: NSObject, Networking {
             URLQueryItem(name: "gender", value: gender),
             URLQueryItem(name: "birth", value: String(describing: birth))
         ]
+    }
+    
+    func makeUserProfileVisibilityQueryItems(isProfilePublic: Bool) -> [URLQueryItem] {
+        return [ URLQueryItem(name: "isProfilePublic",
+                              value: String(isProfilePublic))]
     }
 }
 
@@ -148,6 +155,46 @@ extension DefaultUserService: UserService {
             NetworkLogger.log(request: request)
             
             return tokenCheckURLSession.rx.data(request: request)
+                .map { _ in }
+                .asSingle()
+        } catch {
+            return Single.error(error)
+        }
+    }
+    
+    func getUserProfileVisibility() -> RxSwift.Single<UserProfileVisibility> {
+        do {
+            let request = try makeHTTPRequest(method: .get,
+                                              path: URLs.MyPage.ProfileVisibility.isProfileVisibility,
+                                              headers: APIConstants.testTokenHeader,
+                                              body: nil)
+            NetworkLogger.log(request: request)
+            
+            return urlSession.rx.data(request: request)
+                .map {
+                    try self.decode(data: $0,
+                                    to: UserProfileVisibility.self)
+                }
+                .asSingle()
+        } catch {
+            return Single.error(error)
+        }
+    }
+    
+    func patchUserProfileVisibility(isProfilePublic: Bool) -> RxSwift.Single<Void> {
+        guard let userProfileVisibility = try? JSONEncoder().encode(UserProfileVisibility(isProfilePublic: isProfilePublic))  else {
+            return .error(NetworkServiceError.invalidRequestError)
+        }
+        
+        do {
+            let request = try makeHTTPRequest(method: .patch,
+                                              path: URLs.MyPage.ProfileVisibility.isProfileVisibility,
+                                              queryItems: makeUserProfileVisibilityQueryItems(isProfilePublic: isProfilePublic),
+                                              headers: APIConstants.testTokenHeader,
+                                              body: nil)
+            NetworkLogger.log(request: request)
+            
+            return urlSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
         } catch {
