@@ -611,6 +611,7 @@ enum StringLiterals {
         static let deleteAccountUserNickname = "(알 수 없음)"
         static let hiddenComment = "숨김 처리된 댓글"
         static let spoilerComment = "스포일러가 포함된 댓글 보기"
+        static let blckedUser = "차단한 유저"
         static let blockedComment = "차단한 유저의 댓글"
     }
 }

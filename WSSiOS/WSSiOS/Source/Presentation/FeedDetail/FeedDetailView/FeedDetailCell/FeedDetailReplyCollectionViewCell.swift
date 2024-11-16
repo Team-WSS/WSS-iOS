@@ -161,8 +161,9 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
         
         self.userProfileImageView.kfSetImage(url: makeBucketImageURLString(path: data.userProfileImage))
         self.userNicknameLabel.do {
+            // 탈퇴유저에 대한 변수 추가 시 분기처리 필요
             if data.isBlocked {
-                $0.applyWSSFont(.title2, with: StringLiterals.FeedDetail.deleteAccountUserNickname)
+                $0.applyWSSFont(.title2, with: StringLiterals.FeedDetail.blckedUser)
             } else {
                 $0.applyWSSFont(.title2, with: data.userNickname)
             }
@@ -171,18 +172,22 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
         self.isModifiedLabel.isHidden = !data.isModified
         self.replyContentLabel.do {
             if data.isBlocked {
+                // 차단 유저
                 $0.applyWSSFont(.body2, with: StringLiterals.FeedDetail.blockedComment)
                 $0.textColor = .wssGray200
                 $0.isUserInteractionEnabled = false
             } else if data.isHidden {
+                // 숨김 처리
                 $0.applyWSSFont(.body2, with: StringLiterals.FeedDetail.hiddenComment)
                 $0.textColor = .wssGray200
                 $0.isUserInteractionEnabled = false
             } else if data.isSpoiler {
+                // 스포일러 댓글
                 $0.applyWSSFont(.body2, with: StringLiterals.FeedDetail.spoilerComment)
                 $0.textColor = .wssSecondary100
                 $0.isUserInteractionEnabled = true
             } else {
+                // 일반 댓글
                 $0.applyWSSFont(.body2, with: data.commentContent)
                 $0.textColor = .wssBlack
                 $0.numberOfLines = 0
