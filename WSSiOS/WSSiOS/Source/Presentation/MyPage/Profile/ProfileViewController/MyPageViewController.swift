@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class MyPageViewController: UIViewController, UIScrollViewDelegate {
+final class MyPageViewController: UIViewController {
     
     //MARK: - Properties
     
@@ -66,12 +66,16 @@ final class MyPageViewController: UIViewController, UIScrollViewDelegate {
         rootView.myPageLibraryView.novelPrefrerencesView.preferencesCollectionView.register(
             MyPageNovelPreferencesCollectionViewCell.self,
             forCellWithReuseIdentifier: MyPageNovelPreferencesCollectionViewCell.cellIdentifier)
+        
+        rootView.myPageLibraryView.genrePrefrerencesView.otherGenreView.genreTableView.register(MyPageGenrePreferencesOtherTableViewCell.self, forCellReuseIdentifier: MyPageGenrePreferencesOtherTableViewCell.cellIdentifier)
     }
     
     private func delegate() {
         rootView.myPageLibraryView.novelPrefrerencesView.preferencesCollectionView.rx
             .setDelegate(self)
             .disposed(by: disposeBag)
+        
+        rootView.myPageLibraryView.genrePrefrerencesView.otherGenreView.genreTableView.delegate = self
     }
     
     //MARK: - Bind
@@ -83,7 +87,8 @@ final class MyPageViewController: UIViewController, UIScrollViewDelegate {
             scrollOffset: rootView.scrollView.rx.contentOffset.asDriver(),
             settingButtonDidTap: settingButton.rx.tap,
             dropdownButtonDidTap: dropDownCellTap,
-            editButtonTapoed: rootView.headerView.userImageChangeButton.rx.tap)
+            editButtonTapoed: rootView.headerView.userImageChangeButton.rx.tap,
+            genrePreferenceButtonDidTap: rootView.myPageLibraryView.genrePrefrerencesView.myPageGenreOpenButton.rx.tap)
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -136,9 +141,13 @@ final class MyPageViewController: UIViewController, UIScrollViewDelegate {
         
         output.bindGenreData
             .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, data in
-                owner.rootView.myPageLibraryView.genrePrefrerencesView.bindData(data: data)
+            .do(onNext: { [weak self] data in
+                self?.rootView.myPageLibraryView.genrePrefrerencesView.bindData(data: data)
             })
+            .map { Array($0.genrePreferences.dropFirst(3)) }
+            .bind(to: rootView.myPageLibraryView.genrePrefrerencesView.otherGenreView.genreTableView.rx.items(cellIdentifier: MyPageGenrePreferencesOtherTableViewCell.cellIdentifier, cellType: MyPageGenrePreferencesOtherTableViewCell.self)) { row, data, cell in
+                cell.bindData(data: data)
+            }
             .disposed(by: disposeBag)
         
         output.bindattractivePointsData
@@ -162,10 +171,26 @@ final class MyPageViewController: UIViewController, UIScrollViewDelegate {
                 owner.rootView.myPageLibraryView.inventoryView.bindData(data: data)
             })
             .disposed(by: disposeBag)
+        
+        output.showGenreOtherView
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, show in
+                owner.rootView.myPageLibraryView.genrePrefrerencesView.myPageGenreOpenButton.isHidden = show
+                owner.rootView.myPageLibraryView.genrePrefrerencesView.otherGenreView.isHidden = !show
+                
+                owner.rootView.myPageLibraryView.genrePrefrerencesView.snp.updateConstraints {
+                    $0.height.equalTo(show ? 400 : 221.5)
+                }
+                
+                UIView.animate(withDuration: 0.3) {
+                    owner.rootView.layoutIfNeeded()
+                }
+            })
+            .disposed(by: disposeBag)
     }
 }
 
-extension MyPageViewController: UICollectionViewDelegateFlowLayout {
+extension MyPageViewController: UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, UITableViewDelegate {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         guard let keywords = try? viewModel.bindKeywordRelay.value,
               indexPath.row < keywords.count else {

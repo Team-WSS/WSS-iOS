@@ -43,6 +43,7 @@ final class MyPageViewModel: ViewModelType {
         let settingButtonDidTap: ControlEvent<Void>
         let dropdownButtonDidTap: Observable<String>
         let editButtonTapoed: ControlEvent<Void>
+        let genrePreferenceButtonDidTap: ControlEvent<Void>
     }
     
     struct Output {
@@ -59,6 +60,7 @@ final class MyPageViewModel: ViewModelType {
         let bindKeywordCell = BehaviorRelay<[Keyword]>(value: [])
         let bindGenreData = BehaviorRelay<UserGenrePreferences>(value: UserGenrePreferences(genrePreferences: []))
         let bindInventoryData = BehaviorRelay<UserNovelStatus>(value: UserNovelStatus(interestNovelCount: 0, watchingNovelCount: 0, watchedNovelCount: 0, quitNovelCount: 0))
+        let showGenreOtherView = BehaviorRelay<Bool>(value: false)
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -150,6 +152,14 @@ final class MyPageViewModel: ViewModelType {
                     output.dropdownButtonEnabled.accept(data)
                 }
             })
+            .disposed(by: disposeBag)
+        
+        input.genrePreferenceButtonDidTap
+            .bind(with: self, onNext: { owner, _ in
+                let currentState = output.showGenreOtherView.value
+                output.showGenreOtherView.accept(!(currentState))
+            })
+            .disposed(by: disposeBag)
         
         return output
     }

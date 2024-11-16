@@ -455,6 +455,8 @@
 		E407466A2CE896D4005D75D5 /* MyPageGenrePreferencesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40746692CE896D4005D75D5 /* MyPageGenrePreferencesCollectionViewCell.swift */; };
 		E407466C2CE89719005D75D5 /* MyPageGenrePreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E407466B2CE89719005D75D5 /* MyPageGenrePreferencesView.swift */; };
 		E407466E2CE897C7005D75D5 /* MyPageGenrePreferencesTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E407466D2CE897C7005D75D5 /* MyPageGenrePreferencesTopView.swift */; };
+		E40746702CE8DAB6005D75D5 /* MyPageGenrePreferencesOtherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E407466F2CE8DAB6005D75D5 /* MyPageGenrePreferencesOtherView.swift */; };
+		E40746722CE8DB89005D75D5 /* MyPageGenrePreferencesOtherTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40746712CE8DB89005D75D5 /* MyPageGenrePreferencesOtherTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -898,6 +900,8 @@
 		E40746692CE896D4005D75D5 /* MyPageGenrePreferencesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageGenrePreferencesCollectionViewCell.swift; sourceTree = "<group>"; };
 		E407466B2CE89719005D75D5 /* MyPageGenrePreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageGenrePreferencesView.swift; sourceTree = "<group>"; };
 		E407466D2CE897C7005D75D5 /* MyPageGenrePreferencesTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageGenrePreferencesTopView.swift; sourceTree = "<group>"; };
+		E407466F2CE8DAB6005D75D5 /* MyPageGenrePreferencesOtherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageGenrePreferencesOtherView.swift; sourceTree = "<group>"; };
+		E40746712CE8DB89005D75D5 /* MyPageGenrePreferencesOtherTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageGenrePreferencesOtherTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -993,6 +997,7 @@
 				2C41E0CD2CA4949C00FFD233 /* MyPageEditProfileGenreCollectionViewCell.swift */,
 				E40746672CE871EE005D75D5 /* MyPageNovelPreferencesCollectionViewCell.swift */,
 				E40746692CE896D4005D75D5 /* MyPageGenrePreferencesCollectionViewCell.swift */,
+				E40746712CE8DB89005D75D5 /* MyPageGenrePreferencesOtherTableViewCell.swift */,
 			);
 			path = ProfileCell;
 			sourceTree = "<group>";
@@ -1454,6 +1459,7 @@
 				E407465F2CE864FD005D75D5 /* MyPageInventoryView.swift */,
 				E40746652CE870AE005D75D5 /* MyPageNovelPreferencesView.swift */,
 				E407466B2CE89719005D75D5 /* MyPageGenrePreferencesView.swift */,
+				E407466F2CE8DAB6005D75D5 /* MyPageGenrePreferencesOtherView.swift */,
 				E407466D2CE897C7005D75D5 /* MyPageGenrePreferencesTopView.swift */,
 			);
 			path = ProfileAssistantView;
@@ -3144,6 +3150,7 @@
 				A1EF355A2B52FAD300A94C53 /* RecommendService.swift in Sources */,
 				2C9A19712C56925F0043044A /* MyPageInfoViewModel.swift in Sources */,
 				39D4A5D02BDA50E8004FC834 /* NovelDetailRepository.swift in Sources */,
+				E40746702CE8DAB6005D75D5 /* MyPageGenrePreferencesOtherView.swift in Sources */,
 				CD863EDC2CA5BAF30037DC08 /* NovelDetailFeedListView.swift in Sources */,
 				39CC167E2B512369003F56AE /* RegisterSuccessViewController.swift in Sources */,
 				E40746602CE864FD005D75D5 /* MyPageInventoryView.swift in Sources */,
@@ -3405,6 +3412,7 @@
 				399F29352B56DA7800BBC12B /* TrashReadStatus.swift in Sources */,
 				B9E565F92C04520A00DB51FF /* NormalSearchView.swift in Sources */,
 				CD39F2C12B4FF81E00B73A5C /* UIButton+.swift in Sources */,
+				E40746722CE8DB89005D75D5 /* MyPageGenrePreferencesOtherTableViewCell.swift in Sources */,
 				A1147A842B5063BC00141692 /* RecordResultView.swift in Sources */,
 				A1DBB2FE2B4AEB22000EE869 /* UIView+.swift in Sources */,
 				A1147A822B5063B300141692 /* RecordEmptyView.swift in Sources */,
