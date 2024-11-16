@@ -155,6 +155,14 @@ final class NovelDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.showNetworkErrorView
+            .drive(with: self, onNext: { owner, isShow in
+                owner.rootView.showNetworkErrorView(isShow: isShow)
+            })
+            .disposed(by: disposeBag)
+        
+        
+        
         //MARK: - Bind/NovelDetailHeader
         
         output.showLargeNovelCoverImage
@@ -431,6 +439,7 @@ final class NovelDetailViewController: UIViewController {
             viewWillAppearEvent: viewWillAppearEvent.asObservable(),
             scrollContentOffset: rootView.scrollView.rx.contentOffset,
             backButtonDidTap: rootView.backButton.rx.tap,
+            networkErrorRefreshButtonDidTap: rootView.networkErrorView.refreshButton.rx.tap,
             novelCoverImageButtonDidTap: rootView.headerView.coverImageButton.rx.tap,
             largeNovelCoverImageDismissButtonDidTap: rootView.largeNovelCoverImageButton.dismissButton.rx.tap,
             largeNovelCoverImageBackgroundDidTap: rootView.largeNovelCoverImageButton.rx.tap,

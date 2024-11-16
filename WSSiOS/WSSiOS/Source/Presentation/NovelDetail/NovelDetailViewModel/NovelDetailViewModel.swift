@@ -23,6 +23,7 @@ final class NovelDetailViewModel: ViewModelType {
     
     //Total
     private let viewWillAppearEvent = BehaviorRelay<Bool>(value: false)
+    private let showNetworkErrorView = BehaviorRelay<Bool>(value: false)
     
     //NovelDetailHeader
     private let novelDetailHeaderData = PublishSubject<NovelDetailHeaderEntity>()
@@ -73,6 +74,7 @@ final class NovelDetailViewModel: ViewModelType {
         let viewWillAppearEvent: Observable<Bool>
         let scrollContentOffset: ControlProperty<CGPoint>
         let backButtonDidTap: ControlEvent<Void>
+        let networkErrorRefreshButtonDidTap: ControlEvent<Void>
         
         //NovelDetailHeader
         let novelCoverImageButtonDidTap: ControlEvent<Void>
@@ -113,6 +115,7 @@ final class NovelDetailViewModel: ViewModelType {
         let detailInfoData: Observable<NovelDetailInfoResult>
         let scrollContentOffset: ControlProperty<CGPoint>
         let popToLastViewController: Observable<Void>
+        let showNetworkErrorView: Driver<Bool>
         
         //NovelDetailHeader
         let showLargeNovelCoverImage: Driver<Bool>
@@ -149,52 +152,25 @@ final class NovelDetailViewModel: ViewModelType {
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         input.viewWillAppearEvent
-            .flatMapLatest { _ in
-                self.novelDetailRepository.getNovelDetailHeaderData(novelId: self.novelId)
-            }
-            .subscribe(with: self, onNext: { owner, data in
-                owner.novelTitle = data.novelTitle
-                owner.novelDetailHeaderData.onNext(data)
-                owner.isUserNovelInterested.accept(data.isUserNovelInterest)
-                owner.readStatus.accept(data.readStatus)
-                
-                owner.novelGenre.accept(data.novelGenre.split{ $0 == "/"}
-                    .map{ String($0) }
-                    .map { NewNovelGenre.withKoreanRawValue(from: $0) })
-            }, onError: { owner, error in
-                owner.novelDetailHeaderData.onError(error)
-            })
+            .bind(to: self.viewWillAppearEvent)
             .disposed(by: disposeBag)
         
-        input.viewWillAppearEvent
-            .flatMapLatest { _ in
-                self.novelDetailRepository.getNovelDetailInfoData(novelId: self.novelId)
-            }
-            .subscribe(with: self, onNext: { owner, data in
-                owner.novelDetailInfoData.onNext(data)
-                owner.platformList.accept(data.platforms)
-                owner.keywordList.accept(data.keywords)
-            }, onError: { owner, error in
-                owner.novelDetailInfoData.onError(error)
-            })
-            .disposed(by: disposeBag)
-        
-        input.viewWillAppearEvent
+        self.viewWillAppearEvent
             .do(onNext: { _ in
                 self.isLoadable = false
                 self.lastFeedId = 0
+                self.showNetworkErrorView.accept(false)
             })
-            .flatMapLatest { _ in
-                self.getNovelDetailFeedData(novelId: self.novelId, lastFeedId: self.lastFeedId)
-            }
-            .subscribe(with: self, onNext: { owner, data in
-                owner.isLoadable = data.isLoadable
-                if let lastFeed = data.feeds.last {
-                    owner.lastFeedId = lastFeed.feedId
-                }
-                owner.feedList.accept(data.feeds)
-            }, onError: { owner, error in
-                print("Error: \(error)")
+            .bind(with: self, onNext: { owner, data in
+                owner.getNovelDetailHeaderData(disposeBag: disposeBag)
+                owner.getNovelDetailInfoData(disposeBag: disposeBag)
+                owner.getNovelDetailFeedData(disposeBag: disposeBag)
+            })
+            .disposed(by: disposeBag)
+        
+        input.networkErrorRefreshButtonDidTap
+            .bind(with: self, onNext: { owner, _ in
+                owner.viewWillAppearEvent.accept(true)
             })
             .disposed(by: disposeBag)
         
@@ -247,13 +223,13 @@ final class NovelDetailViewModel: ViewModelType {
             input.feedWriteButtonDidTap.asObservable(),
             input.createFeedButtonDidTap.asObservable()
         )
-        .map { _ in
-            (genre: self.novelGenre.value,
-             novelId: self.novelId,
-             novelTitle: self.novelTitle)
-        }
-        .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
-        .asObservable()
+            .map { _ in
+                (genre: self.novelGenre.value,
+                 novelId: self.novelId,
+                 novelTitle: self.novelTitle)
+            }
+            .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
+            .asObservable()
         
         let scrollContentOffset = input.scrollContentOffset
         
@@ -396,7 +372,7 @@ final class NovelDetailViewModel: ViewModelType {
             .do(onNext: { _ in
                 self.isFetching = true
             })
-            .flatMapLatest {_ in 
+            .flatMapLatest {_ in
                 self.getNovelDetailFeedData(novelId: self.novelId, lastFeedId: self.lastFeedId)
                     .do(onNext: { _ in
                         self.isFetching = false
@@ -443,6 +419,7 @@ final class NovelDetailViewModel: ViewModelType {
             detailInfoData: novelDetailInfoData.asObserver(),
             scrollContentOffset: scrollContentOffset,
             popToLastViewController: backButtonDidTap,
+            showNetworkErrorView: showNetworkErrorView.asDriver(),
             showLargeNovelCoverImage: showLargeNovelCoverImage.asDriver(),
             isUserNovelInterested: isUserNovelInterested.asDriver(),
             pushTofeedWriteViewController: pushTofeedWriteViewController,
@@ -469,6 +446,52 @@ final class NovelDetailViewModel: ViewModelType {
     }
     
     //MARK: - API
+    
+    private func getNovelDetailHeaderData(disposeBag: DisposeBag) {
+        self.novelDetailRepository.getNovelDetailHeaderData(novelId: self.novelId)
+            .subscribe(with: self, onNext: { owner, data in
+                owner.novelTitle = data.novelTitle
+                owner.novelDetailHeaderData.onNext(data)
+                owner.isUserNovelInterested.accept(data.isUserNovelInterest)
+                owner.readStatus.accept(data.readStatus)
+                
+                owner.novelGenre.accept(data.novelGenre.split{ $0 == "/"}
+                    .map{ String($0) }
+                    .map { NewNovelGenre.withKoreanRawValue(from: $0) })
+            }, onError: { owner, error in
+                owner.showNetworkErrorView.accept(true)
+                print("Error: \(error)")
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func getNovelDetailInfoData(disposeBag: DisposeBag) {
+        self.novelDetailRepository.getNovelDetailInfoData(novelId: self.novelId)
+            .subscribe(with: self, onNext: { owner, data in
+                owner.novelDetailInfoData.onNext(data)
+                owner.platformList.accept(data.platforms)
+                owner.keywordList.accept(data.keywords)
+            }, onError: { owner, error in
+                owner.showNetworkErrorView.accept(true)
+                print("Error: \(error)")
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func getNovelDetailFeedData(disposeBag: DisposeBag) {
+        self.getNovelDetailFeedData(novelId: self.novelId, lastFeedId: self.lastFeedId)
+            .subscribe(with: self, onNext: { owner, data in
+                owner.isLoadable = data.isLoadable
+                if let lastFeed = data.feeds.last {
+                    owner.lastFeedId = lastFeed.feedId
+                }
+                owner.feedList.accept(data.feeds)
+            }, onError: { owner, error in
+                owner.showNetworkErrorView.accept(true)
+                print("Error: \(error)")
+            })
+            .disposed(by: disposeBag)
+    }
     
     private func getNovelDetailFeedData(novelId: Int, lastFeedId: Int) -> Observable<NovelDetailFeedResult> {
         novelDetailRepository.getNovelDetailFeedData(novelId: novelId, lastFeedId: lastFeedId)

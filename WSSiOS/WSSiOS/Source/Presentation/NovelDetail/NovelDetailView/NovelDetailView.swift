@@ -31,6 +31,8 @@ final class NovelDetailView: UIView {
     
     let createFeedButton = DifferentRadiusButton()
     
+    let networkErrorView = WSSNetworkErrorView()
+    
     //MARK: - Life Cycle
     
     override init(frame: CGRect) {
@@ -92,6 +94,10 @@ final class NovelDetailView: UIView {
             $0.bottomLeftRadius = 32.5
             $0.bottomRightRadius = 10.0
         }
+        
+        networkErrorView.do {
+            $0.isHidden = true
+        }
     }
     
     private func setHierarchy() {
@@ -99,7 +105,8 @@ final class NovelDetailView: UIView {
                          statusBarView,
                          stickyTabBarView,
                          largeNovelCoverImageButton,
-                         createFeedButton)
+                         createFeedButton,
+                         networkErrorView)
         scrollView.addSubview(contentView)
         contentView.addArrangedSubviews(headerView,
                                         tabBarView,
@@ -131,6 +138,10 @@ final class NovelDetailView: UIView {
             $0.trailing.equalToSuperview().inset(26)
             $0.bottom.equalTo(self.safeAreaLayoutGuide).inset(10)
             $0.size.equalTo(65)
+        }
+        
+        networkErrorView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
     
@@ -167,6 +178,12 @@ final class NovelDetailView: UIView {
         case .feed:
             infoView.isHidden = true
             feedView.isHidden = false
+        }
+    }
+    
+    func showNetworkErrorView(isShow: Bool) {
+        networkErrorView.do {
+            $0.isHidden = !isShow
         }
     }
 }

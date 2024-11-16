@@ -3405,7 +3405,6 @@
 				C99DDFDD2C8613BC00EDC0C4 /* SearchView.swift in Sources */,
 				CD2D0AAD2C7EF1A2007CF1F1 /* NovelReviewViewController.swift in Sources */,
 				A1654F1A2B54052E004F78E8 /* Config.swift in Sources */,
-				CD863EEB2CA5CECD0037DC08 /* NovelDetailFeedReactView.swift in Sources */,
 				B92D8AB72CE0591D005B35F7 /* InduceLoginViewController.swift in Sources */,
 				CDEFE8272C9708870002D987 /* FeedNovelConnectModalViewModel.swift in Sources */,
 				2CD911582C0D8A21006B8D72 /* FeedPageBar.swift in Sources */,
