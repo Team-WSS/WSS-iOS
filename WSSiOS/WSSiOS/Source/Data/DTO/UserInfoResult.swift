@@ -13,7 +13,7 @@ struct UserResult: Codable {
         representativeAvatarLineContent,
         representativeAvatarImg,
         userNickname: String
-    let representativeAvatarId, 
+    let representativeAvatarId,
         userNovelCount,
         memoCount: Int
     let userAvatars: [UserAvatar]
@@ -38,4 +38,24 @@ struct UserInfo: Codable {
 struct ChangeUserInfo: Codable {
     let gender: String
     let birth: Int
+}
+
+struct UserNovelPreferences: Codable {
+    let attractivePoints: [String]?
+    let keywords: [KeywordTuple]?
+}
+
+struct KeywordTuple: Codable {
+    let keywordName: String
+    let keywordCount: Int
+}
+
+struct UserGenrePreferences: Codable {
+    let genrePreferences: [GenrePreference]
+}
+
+struct GenrePreference: Codable {
+    let genreName: String
+    let genreImage: String
+    let genreCount: Int
 }

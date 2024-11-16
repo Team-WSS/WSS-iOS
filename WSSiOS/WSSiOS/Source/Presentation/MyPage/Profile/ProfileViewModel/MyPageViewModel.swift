@@ -41,6 +41,9 @@ final class MyPageViewModel: ViewModelType {
         let dropdownButtonEnabled = PublishRelay<String>()
         let updateNavigationEnabled = BehaviorRelay<Bool>(value: false)
         let pushToEditViewController = PublishRelay<Void>()
+        let bindNovelData = BehaviorRelay<UserNovelPreferences>(value: UserNovelPreferences(attractivePoints: [],
+                                                                       keywords: []))
+        let bindGenreData = BehaviorRelay<UserGenrePreferences>(value: UserGenrePreferences(genrePreferences: []))
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -52,6 +55,28 @@ final class MyPageViewModel: ViewModelType {
                 self.getProfileData(isMyPage: isMyPage)
             }
             .bind(to: output.profileData)
+            .disposed(by: disposeBag)
+        
+        Observable.just(())
+            .flatMapLatest { _ in
+                self.getNovelPreferenceData(userId: 1)
+            }
+            .subscribe(with: self, onNext: { owner, data in
+                output.bindNovelData.accept(data)
+            }, onError: { owner, error in
+                print(error.localizedDescription)
+            })
+            .disposed(by: disposeBag)
+        
+        Observable.just(())
+            .flatMapLatest { _ in
+                self.getGenrePreferenceData(userId: 1)
+            }
+            .subscribe(with: self, onNext: { owner, data in
+                output.bindGenreData.accept(data)
+            }, onError: { owner, error in
+                print(error.localizedDescription)
+            })
             .disposed(by: disposeBag)
         
         input.headerViewHeight
@@ -109,4 +134,16 @@ final class MyPageViewModel: ViewModelType {
                 .observe(on: MainScheduler.instance)
         }
     }
+    
+    private func getNovelPreferenceData(userId: Int) -> Observable<UserNovelPreferences> {
+        return userRepository.getUserNovelPreferences(userId: userId)
+            .asObservable()
+    }
+    
+    private func getGenrePreferenceData(userId: Int) -> Observable<UserGenrePreferences> {
+        return userRepository.getUserGenrePreferences(userId: userId)
+            .asObservable()
+    }
+    
+    private func getInventoryData(user)
 }
