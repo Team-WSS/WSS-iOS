@@ -12,7 +12,7 @@ import Then
 
 final class MyPageLibraryView: UIView {
     
-    //MARK: - Properties
+    // MARK: - Properties
     
     var isExist: Bool = true {
         didSet {
@@ -20,12 +20,11 @@ final class MyPageLibraryView: UIView {
         }
     }
     
-    //MARK: - Components
+    // MARK: - Components
     
+    let stackView = UIStackView()
     let inventoryView = MyPageInventoryView()
-    
     let preferencesEmptyView = MyPagePreferencesEmptyView()
-    
     let genrePrefrerencesView = MyPageGenrePreferencesView()
     let novelPrefrerencesView = MyPageNovelPreferencesView()
     
@@ -33,7 +32,6 @@ final class MyPageLibraryView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         setUI()
         setHierarchy()
         setLayout()
@@ -44,61 +42,66 @@ final class MyPageLibraryView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - UI
-    
     private func setUI() {
-        self.backgroundColor = .wssGray50
+        stackView.do {
+            $0.axis = .vertical
+            $0.spacing = 3
+            $0.alignment = .fill
+            $0.distribution = .fill
+        }
     }
     
     private func setHierarchy() {
-        if !isExist {
-            self.addSubviews(inventoryView,
-                             preferencesEmptyView)
-        } else {
-            self.addSubviews(inventoryView,
-                             genrePrefrerencesView,
-                             novelPrefrerencesView)
-        }
-    }
+         self.addSubview(stackView)
+     }
     
     private func setLayout() {
-        inventoryView.snp.remakeConstraints {
-            $0.top.leading.trailing.equalToSuperview()
+        stackView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
+        inventoryView.snp.makeConstraints {
             $0.height.equalTo(160)
         }
         
-        if !isExist {
-            preferencesEmptyView.snp.makeConstraints {
-                $0.top.equalTo(inventoryView.snp.bottom).offset(3)
-                $0.leading.trailing.equalToSuperview()
-                $0.height.equalTo(363)
-                $0.bottom.equalToSuperview()
-            }
-        } else {
-            genrePrefrerencesView.snp.makeConstraints {
-                $0.top.equalTo(inventoryView.snp.bottom).offset(3)
-                $0.leading.trailing.equalToSuperview()
-                $0.height.equalTo(221.5)
-            }
-            
-            novelPrefrerencesView.snp.makeConstraints {
-                $0.top.equalTo(genrePrefrerencesView.snp.bottom).offset(3)
-                $0.leading.trailing.equalToSuperview()
-                $0.height.equalTo(270)
-                $0.bottom.equalToSuperview()
-            }
+        genrePrefrerencesView.snp.makeConstraints {
+            $0.height.equalTo(221.5)
+        }
+        
+        novelPrefrerencesView.snp.makeConstraints {
+            $0.height.equalTo(270)
+        }
+    }
+    
+    func updateGenreViewHeight(isExpanded: Bool) {
+        genrePrefrerencesView.snp.updateConstraints {
+            $0.height.equalTo(isExpanded ? 514 : 224.5)
+        }
+        UIView.animate(withDuration: 0.3) {
+            self.layoutIfNeeded()
         }
     }
     
     func updateView(isExist: Bool) {
-        subviews.forEach { $0.removeFromSuperview() }
+        stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         
-        setHierarchy()
-        setLayout()
+        if isExist {
+            stackView.addArrangedSubviews(inventoryView,
+                                          genrePrefrerencesView,
+                                          novelPrefrerencesView)
+        } else {
+            stackView.addArrangedSubviews(inventoryView,
+                                          preferencesEmptyView)
+            
+            preferencesEmptyView.snp.remakeConstraints {
+                $0.height.equalTo(363)
+            }
+        }
         
-        layoutIfNeeded()
+        UIView.animate(withDuration: 0.3) {
+            self.layoutIfNeeded()
+        }
     }
 }
-
 
 

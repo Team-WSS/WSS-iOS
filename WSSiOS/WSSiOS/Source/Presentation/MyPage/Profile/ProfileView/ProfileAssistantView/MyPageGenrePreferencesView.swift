@@ -13,7 +13,7 @@ import Then
 final class MyPageGenrePreferencesView: UIView {
     
     //MARK: - Components
-
+    
     var genreStackView = UIStackView()
     private let titleLabel = UILabel()
     
@@ -23,8 +23,8 @@ final class MyPageGenrePreferencesView: UIView {
     private let thirdTopGenreView = MyPageGenrePreferencesTopView()
     
     let myPageGenreOpenButton = UIButton()
-    
     let otherGenreView = MyPageGenrePreferencesOtherView()
+    let myPageGenreCloseButton = UIButton()
     
     // MARK: - Life Cycle
     
@@ -52,7 +52,9 @@ final class MyPageGenrePreferencesView: UIView {
         
         genreStackView.do {
             $0.axis = .vertical
-            $0.alignment = .center
+            $0.spacing = 0
+            $0.alignment = .fill
+            $0.distribution = .fill
         }
         
         myPageGenreOpenButton.do {
@@ -61,14 +63,20 @@ final class MyPageGenrePreferencesView: UIView {
         }
         
         otherGenreView.isHidden = true
+        
+        myPageGenreCloseButton.do {
+            $0.backgroundColor = .wssWhite
+            $0.setImage(.icChevronUp, for: .normal)
+        }
     }
     
     private func setHierarchy() {
         self.addSubviews(titleLabel,
                          genreStackView)
         genreStackView.addArrangedSubviews(topView,
-                                      myPageGenreOpenButton,
-                                      otherGenreView)
+                                           myPageGenreOpenButton,
+                                           otherGenreView,
+                                           myPageGenreCloseButton)
         topView.addSubviews(firstTopGenreView,
                             secondTopGenreView,
                             thirdTopGenreView)
@@ -112,16 +120,43 @@ final class MyPageGenrePreferencesView: UIView {
         }
         
         myPageGenreOpenButton.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(44)
+            $0.leading.trailing.bottom.equalToSuperview()
         }
         
         otherGenreView.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(250)
+            $0.height.equalTo(0)
+        }
+        
+        myPageGenreOpenButton.snp.makeConstraints {
+            $0.height.equalTo(0)
         }
     }
-     
+    
+    func updateView(showOtherGenreView: Bool) {
+        myPageGenreOpenButton.isHidden = showOtherGenreView
+        otherGenreView.isHidden = !showOtherGenreView
+        myPageGenreCloseButton.isHidden = !showOtherGenreView
+        
+        genreStackView.setCustomSpacing(showOtherGenreView ? 32 : 0, after: topView)
+        genreStackView.setCustomSpacing(showOtherGenreView ? 20 : 0, after: otherGenreView)
+        
+        myPageGenreOpenButton.snp.updateConstraints {
+            $0.height.equalTo(showOtherGenreView ? 0 : 44)
+        }
+        
+        otherGenreView.snp.updateConstraints {
+            $0.height.equalTo(showOtherGenreView ? 250 : 0)
+        }
+        
+        myPageGenreCloseButton.snp.updateConstraints {
+            $0.height.equalTo(showOtherGenreView ? 44 : 0)
+        }
+        
+        UIView.animate(withDuration: 0.3) {
+            self.layoutIfNeeded()
+        }
+    }
+    
     //MARK: - Data
     
     func bindData(data: UserGenrePreferences) {

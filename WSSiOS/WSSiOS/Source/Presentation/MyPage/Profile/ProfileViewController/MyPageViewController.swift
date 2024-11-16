@@ -81,6 +81,11 @@ final class MyPageViewController: UIViewController {
     //MARK: - Bind
     
     private func bindViewModel() {
+        let genrePreferenceButtonDidTap = Observable.merge(
+            rootView.myPageLibraryView.genrePrefrerencesView.myPageGenreOpenButton.rx.tap.map { true },
+            rootView.myPageLibraryView.genrePrefrerencesView.myPageGenreCloseButton.rx.tap.map { false }
+        )
+        
         let input = MyPageViewModel.Input(
             isMyPage: isMyPageRelay.asDriver(),
             headerViewHeight: headerViewHeightRelay.asDriver(),
@@ -88,7 +93,7 @@ final class MyPageViewController: UIViewController {
             settingButtonDidTap: settingButton.rx.tap,
             dropdownButtonDidTap: dropDownCellTap,
             editButtonTapoed: rootView.headerView.userImageChangeButton.rx.tap,
-            genrePreferenceButtonDidTap: rootView.myPageLibraryView.genrePrefrerencesView.myPageGenreOpenButton.rx.tap)
+            genrePreferenceButtonDidTap: genrePreferenceButtonDidTap)
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -175,14 +180,10 @@ final class MyPageViewController: UIViewController {
         output.showGenreOtherView
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, show in
-                owner.rootView.myPageLibraryView.genrePrefrerencesView.myPageGenreOpenButton.isHidden = show
-                owner.rootView.myPageLibraryView.genrePrefrerencesView.otherGenreView.isHidden = !show
-                
-                owner.rootView.myPageLibraryView.genrePrefrerencesView.snp.updateConstraints {
-                    $0.height.equalTo(show ? 400 : 221.5)
-                }
+                owner.rootView.myPageLibraryView.genrePrefrerencesView.updateView(showOtherGenreView: show)
                 
                 UIView.animate(withDuration: 0.3) {
+                    owner.rootView.myPageLibraryView.updateGenreViewHeight(isExpanded: show)
                     owner.rootView.layoutIfNeeded()
                 }
             })

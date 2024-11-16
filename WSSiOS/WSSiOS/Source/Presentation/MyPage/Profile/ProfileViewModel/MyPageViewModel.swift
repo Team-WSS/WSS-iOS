@@ -43,7 +43,7 @@ final class MyPageViewModel: ViewModelType {
         let settingButtonDidTap: ControlEvent<Void>
         let dropdownButtonDidTap: Observable<String>
         let editButtonTapoed: ControlEvent<Void>
-        let genrePreferenceButtonDidTap: ControlEvent<Void>
+        let genrePreferenceButtonDidTap: Observable<Bool>
     }
     
     struct Output {
