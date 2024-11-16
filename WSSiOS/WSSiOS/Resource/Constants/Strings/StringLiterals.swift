@@ -382,6 +382,8 @@ enum StringLiterals {
             static let inSeries = "  ·  연재중  ·  "
             static let interest = "관심"
             static let feedWrite = "나도 한마디"
+            static let errorReport = "오류 제보"
+            static let deleteReview = "평가 삭제"
             
             enum Loading {
                 static let novelTitle = "작품 제목"

@@ -24,6 +24,8 @@ final class NovelDetailViewModel: ViewModelType {
     //Total
     private let viewWillAppearEvent = BehaviorRelay<Bool>(value: false)
     private let showNetworkErrorView = BehaviorRelay<Bool>(value: false)
+    private let showHeaderDropdownView = BehaviorRelay<Bool>(value: false)
+    private let showReportPage = PublishRelay<Void>()
     
     //NovelDetailHeader
     private let novelDetailHeaderData = PublishSubject<NovelDetailHeaderEntity>()
@@ -78,6 +80,8 @@ final class NovelDetailViewModel: ViewModelType {
         let imageNetworkError: Observable<Bool>
         
         //NovelDetailHeader
+        let headerDotsButtonDidTap: ControlEvent<Void>
+        let headerDropdownButtonDidTap: Observable<DropdownButtonType>
         let novelCoverImageButtonDidTap: ControlEvent<Void>
         let largeNovelCoverImageDismissButtonDidTap: ControlEvent<Void>
         let largeNovelCoverImageBackgroundDidTap: ControlEvent<Void>
@@ -117,6 +121,8 @@ final class NovelDetailViewModel: ViewModelType {
         let scrollContentOffset: ControlProperty<CGPoint>
         let popToLastViewController: Observable<Void>
         let showNetworkErrorView: Driver<Bool>
+        let showHeaderDropdownView: Driver<Bool>
+        let showReportPage: Driver<Void>
         
         //NovelDetailHeader
         let showLargeNovelCoverImage: Driver<Bool>
@@ -176,6 +182,22 @@ final class NovelDetailViewModel: ViewModelType {
         input.networkErrorRefreshButtonDidTap
             .bind(with: self, onNext: { owner, _ in
                 owner.viewWillAppearEvent.accept(true)
+            })
+            .disposed(by: disposeBag)
+        
+        input.headerDotsButtonDidTap
+            .withLatestFrom(self.showHeaderDropdownView)
+            .map { !$0 }
+            .bind(with: self, onNext: { owner, isShow in
+                owner.showHeaderDropdownView.accept(isShow)
+            })
+            .disposed(by: disposeBag)
+        
+        input.headerDropdownButtonDidTap
+            .bind(with: self, onNext: { owner, type in
+                if type == .top {
+                    owner.showReportPage.accept(())
+                }
             })
             .disposed(by: disposeBag)
         
@@ -425,6 +447,8 @@ final class NovelDetailViewModel: ViewModelType {
             scrollContentOffset: scrollContentOffset,
             popToLastViewController: backButtonDidTap,
             showNetworkErrorView: showNetworkErrorView.asDriver(),
+            showHeaderDropdownView: showHeaderDropdownView.asDriver(),
+            showReportPage: showReportPage.asDriver(onErrorJustReturn: ()),
             showLargeNovelCoverImage: showLargeNovelCoverImage.asDriver(),
             isUserNovelInterested: isUserNovelInterested.asDriver(),
             pushTofeedWriteViewController: pushTofeedWriteViewController,

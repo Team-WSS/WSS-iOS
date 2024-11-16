@@ -80,7 +80,7 @@ final class NovelDetailViewController: UIViewController {
     private func setNavigationBar() {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: rootView.backButton)
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rootView.dropDownButton)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rootView.headerDropDownButton)
     }
     
     //MARK: - Bind
@@ -197,6 +197,12 @@ final class NovelDetailViewController: UIViewController {
                 owner.pushToFeedEditViewController(relevantCategories: genre,
                                                    novelId: novelId,
                                                    novelTitle: novelTitle)
+            })
+            .disposed(by: disposeBag)
+        
+        output.showHeaderDropdownView
+            .drive(with: self, onNext: { owner, isShow in
+                owner.rootView.showHeaderDropDownView(isShow: isShow)
             })
             .disposed(by: disposeBag)
         
@@ -438,12 +444,19 @@ final class NovelDetailViewController: UIViewController {
             rootView.feedView.feedListView.dropdownView.bottomDropdownButton.rx.tap.map { DropdownButtonType.bottom }
         )
         
+        let headerDropdownButtonDidTap = Observable.merge(
+            rootView.headerDropDownView.topDropdownButton.rx.tap.map { DropdownButtonType.top },
+            rootView.headerDropDownView.bottomDropdownButton.rx.tap.map { DropdownButtonType.bottom }
+        )
+        
         return NovelDetailViewModel.Input(
             viewWillAppearEvent: viewWillAppearEvent.asObservable(),
             scrollContentOffset: rootView.scrollView.rx.contentOffset,
             backButtonDidTap: rootView.backButton.rx.tap,
             networkErrorRefreshButtonDidTap: rootView.networkErrorView.refreshButton.rx.tap,
             imageNetworkError: imageNetworkError.asObservable(),
+            headerDotsButtonDidTap: rootView.headerDropDownButton.rx.tap,
+            headerDropdownButtonDidTap: headerDropdownButtonDidTap,
             novelCoverImageButtonDidTap: rootView.headerView.coverImageButton.rx.tap,
             largeNovelCoverImageDismissButtonDidTap: rootView.largeNovelCoverImageButton.dismissButton.rx.tap,
             largeNovelCoverImageBackgroundDidTap: rootView.largeNovelCoverImageButton.rx.tap,

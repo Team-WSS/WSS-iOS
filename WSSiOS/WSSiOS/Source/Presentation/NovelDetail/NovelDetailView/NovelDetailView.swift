@@ -19,7 +19,8 @@ final class NovelDetailView: UIView {
     private let contentView = UIStackView()
     
     let backButton = UIButton()
-    let dropDownButton = UIButton()
+    let headerDropDownButton = UIButton()
+    let headerDropDownView = NovelDetailHeaderDropdownView()
     
     let headerView = NovelDetailHeaderView()
     let largeNovelCoverImageButton = NovelDetailLargeCoverImageButton()
@@ -56,7 +57,7 @@ final class NovelDetailView: UIView {
         backButton.setImage(.icNavigateLeft.withTintColor(.wssBlack),
                             for: .normal)
         
-        dropDownButton.do {
+        headerDropDownButton.do {
             $0.setImage(.icDropDownDot.withRenderingMode(.alwaysTemplate),
                       for: .normal)
             $0.tintColor = .wssBlack
@@ -103,6 +104,10 @@ final class NovelDetailView: UIView {
         loadingView.do {
             $0.isHidden = false
         }
+        
+        headerDropDownView.do {
+            $0.isHidden = true
+        }
     }
     
     private func setHierarchy() {
@@ -111,6 +116,7 @@ final class NovelDetailView: UIView {
                          stickyTabBarView,
                          largeNovelCoverImageButton,
                          createFeedButton,
+                         headerDropDownView,
                          networkErrorView,
                          loadingView)
         scrollView.addSubview(contentView)
@@ -152,6 +158,11 @@ final class NovelDetailView: UIView {
         
         loadingView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+        }
+        
+        headerDropDownView.snp.makeConstraints {
+            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top)
+            $0.trailing.equalToSuperview().inset(20)
         }
     }
     
@@ -203,6 +214,12 @@ final class NovelDetailView: UIView {
     
     func showLoadingView(isShow: Bool) {
         loadingView.do {
+            $0.isHidden = !isShow
+        }
+    }
+    
+    func showHeaderDropDownView(isShow: Bool) {
+        headerDropDownView.do {
             $0.isHidden = !isShow
         }
     }

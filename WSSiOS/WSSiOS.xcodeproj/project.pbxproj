@@ -162,6 +162,7 @@
 		396C7C5D2CB27AC2003C9712 /* ServerErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 396C7C5C2CB27AC2003C9712 /* ServerErrorResponse.swift */; };
 		397DE6802C2342A70026DB07 /* NovelDetailTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 397DE67F2C2342A70026DB07 /* NovelDetailTabBarView.swift */; };
 		3980D1D62C19BB2C008B9B18 /* NovelDetailLargeCoverImageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3980D1D52C19BB2C008B9B18 /* NovelDetailLargeCoverImageButton.swift */; };
+		398F93402CE8743E00C0F916 /* NovelDetailHeaderDropdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398F933F2CE8743E00C0F916 /* NovelDetailHeaderDropdownView.swift */; };
 		399258182C16DAF20063FB46 /* NovelDetailHeaderInterestFeedWriteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399258172C16DAF20063FB46 /* NovelDetailHeaderInterestFeedWriteButton.swift */; };
 		3992FA562B81E2A40079C8B8 /* RegisterNormalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3992FA552B81E2A40079C8B8 /* RegisterNormalViewController.swift */; };
 		399492F32C9A8ADE00298F16 /* LoginBannerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399492F22C9A8ADE00298F16 /* LoginBannerCollectionViewCell.swift */; };
@@ -598,6 +599,7 @@
 		396C7C5C2CB27AC2003C9712 /* ServerErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerErrorResponse.swift; sourceTree = "<group>"; };
 		397DE67F2C2342A70026DB07 /* NovelDetailTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailTabBarView.swift; sourceTree = "<group>"; };
 		3980D1D52C19BB2C008B9B18 /* NovelDetailLargeCoverImageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailLargeCoverImageButton.swift; sourceTree = "<group>"; };
+		398F933F2CE8743E00C0F916 /* NovelDetailHeaderDropdownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailHeaderDropdownView.swift; sourceTree = "<group>"; };
 		399258172C16DAF20063FB46 /* NovelDetailHeaderInterestFeedWriteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailHeaderInterestFeedWriteButton.swift; sourceTree = "<group>"; };
 		3992FA552B81E2A40079C8B8 /* RegisterNormalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalViewController.swift; sourceTree = "<group>"; };
 		399492F22C9A8ADE00298F16 /* LoginBannerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginBannerCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -1876,6 +1878,7 @@
 				39E8FD8F2C742CE100AD6F30 /* NovelDetailHeaderReadStatusButton.swift */,
 				3980D1D52C19BB2C008B9B18 /* NovelDetailLargeCoverImageButton.swift */,
 				399258172C16DAF20063FB46 /* NovelDetailHeaderInterestFeedWriteButton.swift */,
+				398F933F2CE8743E00C0F916 /* NovelDetailHeaderDropdownView.swift */,
 			);
 			path = NovelDetailHeaderAssistantView;
 			sourceTree = "<group>";
@@ -3401,6 +3404,7 @@
 				2CCBFA002B4DBFD200D787C2 /* TrashMyPageChangeNickNameViewModel.swift in Sources */,
 				39DFB0ED2CABDFC000F87951 /* OnboardingGenrePreferenceView.swift in Sources */,
 				CD39F2BF2B4FF6DF00B73A5C /* TrashNovelDetailTabView.swift in Sources */,
+				398F93402CE8743E00C0F916 /* NovelDetailHeaderDropdownView.swift in Sources */,
 				A1EF35582B52FAC800A94C53 /* UserService.swift in Sources */,
 				C99DDFDD2C8613BC00EDC0C4 /* SearchView.swift in Sources */,
 				CD2D0AAD2C7EF1A2007CF1F1 /* NovelReviewViewController.swift in Sources */,
