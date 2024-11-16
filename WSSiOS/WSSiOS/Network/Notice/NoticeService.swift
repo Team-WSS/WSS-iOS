@@ -23,12 +23,12 @@ final class DefaultNoticeService: NSObject, Networking, NoticeService {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.Notice.getNotices,
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0, to: Notices.self) }
                 .asSingle()
         } catch {

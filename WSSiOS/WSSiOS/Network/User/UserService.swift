@@ -30,10 +30,6 @@ final class DefaultUserService: NSObject, Networking {
             URLQueryItem(name: "birth", value: String(describing: birth))
         ]
     }
-    
-    private var urlSession: URLSession = URLSession(configuration: URLSessionConfiguration.default,
-                                                    delegate: nil,
-                                                    delegateQueue: nil)
 }
 
 extension DefaultUserService: UserService {
@@ -41,13 +37,13 @@ extension DefaultUserService: UserService {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.User.afterDelete,
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: UserResult.self) }
                 .asSingle()
@@ -67,12 +63,12 @@ extension DefaultUserService: UserService {
             let request = try makeHTTPRequest(method: .patch,
                                               path: URLs.User.patchUserNickname,
                                               queryItems: userNickNameQueryItems,
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: userNickNameData)
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
         } catch {
@@ -84,12 +80,12 @@ extension DefaultUserService: UserService {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.Avatar.getRepAvatar,
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: UserCharacter.self) }
                 .asSingle()
@@ -102,12 +98,12 @@ extension DefaultUserService: UserService {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.User.getUserNovelStatus,
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: UserNovelStatus.self) }
                 .asSingle()
@@ -120,12 +116,12 @@ extension DefaultUserService: UserService {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.User.userInfo,
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: UserInfo.self) }
                 .asSingle()
@@ -147,12 +143,12 @@ extension DefaultUserService: UserService {
             let request = try makeHTTPRequest(method: .put,
                                               path: URLs.User.userInfo,
                                               queryItems: makeUserInfoQueryItems(gender: gender, birth: birth),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: userInfoData)
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
         } catch {

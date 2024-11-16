@@ -29,10 +29,6 @@ final class DefaultUserNovelService: NSObject, Networking {
             URLQueryItem(name: "sortType", value: sortType)
         ]
     }
-    
-    private var urlSession: URLSession = URLSession(configuration: URLSessionConfiguration.default,
-                                                    delegate: nil,
-                                                    delegateQueue: nil)
 }
 
 extension DefaultUserNovelService: UserNovelService {
@@ -44,12 +40,12 @@ extension DefaultUserNovelService: UserNovelService {
                                                                              lastUserNovelId: lastUserNovelId,
                                                                              size: size,
                                                                              sortType: sortType),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: UserNovelList.self) }
                 .asSingle()
@@ -62,12 +58,12 @@ extension DefaultUserNovelService: UserNovelService {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.UserNovel.getUserNovel(userNovelId: userNovelId),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: UserNovelDetail.self) }
                 .asSingle()
@@ -80,12 +76,12 @@ extension DefaultUserNovelService: UserNovelService {
         do {
             let request = try makeHTTPRequest(method: .delete,
                                               path: URLs.UserNovel.deleteUserNovel(userNovelId: userNovelId),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
         } catch {
@@ -106,12 +102,12 @@ extension DefaultUserNovelService: UserNovelService {
         do {
             let request = try makeHTTPRequest(method: .post,
                                                path: URLs.UserNovel.postUserNovel(novelId: novelId),
-                                               headers: APIConstants.testTokenHeader,
+                                               headers: APIConstants.accessTokenHeader,
                                                body: userNovelBasic)
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0, to: UserNovelId.self) }
                 .asSingle()
         } catch {
@@ -132,12 +128,12 @@ extension DefaultUserNovelService: UserNovelService {
         do {
             let request = try makeHTTPRequest(method: .patch,
                                                path: URLs.UserNovel.patchUserNovel(userNovelId: userNovelId),
-                                               headers: APIConstants.testTokenHeader,
+                                               headers: APIConstants.accessTokenHeader,
                                                body: userNovelBasic)
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
         } catch {

@@ -14,23 +14,19 @@ protocol BlocksService {
     func deleteBlockUser(blockID: Int) -> Single<Void>
 }
 
-final class DefaultBlocksService: NSObject, Networking {
-    private var urlSession: URLSession = URLSession(configuration: URLSessionConfiguration.default,
-                                                    delegate: nil,
-                                                    delegateQueue: nil)
-}
+final class DefaultBlocksService: NSObject, Networking { }
 
 extension DefaultBlocksService: BlocksService {
     func getBlocksList() -> RxSwift.Single<BlockUserResult> {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.MyPage.Block.blocks,
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: BlockUserResult.self) }
                 .asSingle()
@@ -43,13 +39,13 @@ extension DefaultBlocksService: BlocksService {
         do {
             let request = try makeHTTPRequest(method: .delete,
                                               path: URLs.MyPage.Block.userBlocks(blockID: blockID),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
         } catch {

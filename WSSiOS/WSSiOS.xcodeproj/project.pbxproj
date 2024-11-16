@@ -123,6 +123,7 @@
 		3910137C2CCF5EC6001894E5 /* BirthPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3910137B2CCF5EC6001894E5 /* BirthPickerView.swift */; };
 		3910137E2CCF5FD8001894E5 /* BirthPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3910137D2CCF5FD3001894E5 /* BirthPickerViewController.swift */; };
 		39119FA82C8C482800E9E6FA /* NovelDetailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39119FA72C8C482800E9E6FA /* NovelDetailService.swift */; };
+		39139A042CE0E8AF00BC40AE /* TokenCheckURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39139A032CE0E8AF00BC40AE /* TokenCheckURLProtocol.swift */; };
 		3916EC862B89B42C007835B5 /* RxGesture in Frameworks */ = {isa = PBXBuildFile; productRef = 3916EC852B89B42C007835B5 /* RxGesture */; };
 		3916EC892B89D23D007835B5 /* ModuleFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3916EC882B89D23D007835B5 /* ModuleFactory.swift */; };
 		392A29232B4E89FD0065EB97 /* RegisterNormalNovelInfoWithRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 392A29222B4E89FD0065EB97 /* RegisterNormalNovelInfoWithRatingView.swift */; };
@@ -310,6 +311,7 @@
 		B9AC1BD62BF0BB9D006EDE92 /* HomeNoticeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AC1BD52BF0BB9D006EDE92 /* HomeNoticeViewModel.swift */; };
 		B9AC1BD82BF0BDDD006EDE92 /* NoticeRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AC1BD72BF0BDDD006EDE92 /* NoticeRepository.swift */; };
 		B9AC1BDA2BF0BE23006EDE92 /* NoticeResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AC1BD92BF0BE23006EDE92 /* NoticeResult.swift */; };
+		B9ACACC12CE3A7E400D1D47A /* HomeInterestEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9ACACC02CE3A7E400D1D47A /* HomeInterestEmptyView.swift */; };
 		B9B0CBD62BE29EA0002F4CF6 /* HomeInterestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B0CBD52BE29EA0002F4CF6 /* HomeInterestView.swift */; };
 		B9B0CBD82BE2A09B002F4CF6 /* HomeInterestCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B0CBD72BE2A09B002F4CF6 /* HomeInterestCollectionViewCell.swift */; };
 		B9CEDA0D2C01C97E00E62247 /* HomeUnregisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9CEDA0C2C01C97E00E62247 /* HomeUnregisterView.swift */; };
@@ -392,6 +394,11 @@
 		CD514C922CD5DB87007A27A8 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD514C912CD5DB87007A27A8 /* AuthService.swift */; };
 		CD514C942CD5DB96007A27A8 /* AuthRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD514C932CD5DB96007A27A8 /* AuthRepository.swift */; };
 		CD514C962CD5DC22007A27A8 /* AuthResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD514C952CD5DC22007A27A8 /* AuthResult.swift */; };
+		CD5BFC742CE3004E0024C535 /* NovelDetailFeedReactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5BFC732CE3004E0024C535 /* NovelDetailFeedReactView.swift */; };
+		CD5BFC752CE3004E0024C535 /* NovelDetailFeedContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5BFC712CE3004E0024C535 /* NovelDetailFeedContentView.swift */; };
+		CD5BFC762CE3004E0024C535 /* NovelDetailFeedCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5BFC6F2CE3004E0024C535 /* NovelDetailFeedCategoryView.swift */; };
+		CD5BFC772CE3004E0024C535 /* NovelDetailFeedConnectedNovelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5BFC702CE3004E0024C535 /* NovelDetailFeedConnectedNovelView.swift */; };
+		CD5BFC782CE3004E0024C535 /* NovelDetailFeedHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5BFC722CE3004E0024C535 /* NovelDetailFeedHeaderView.swift */; };
 		CD6613702B8A225E00B90B2B /* MemoReadViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD66136F2B8A225E00B90B2B /* MemoReadViewModel.swift */; };
 		CD6613752B8A283500B90B2B /* MemoEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6613742B8A283500B90B2B /* MemoEditViewModel.swift */; };
 		CD6613782B8B313700B90B2B /* DeletePopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6613772B8B313700B90B2B /* DeletePopupViewModel.swift */; };
@@ -409,11 +416,6 @@
 		CD863EDA2CA5B7F70037DC08 /* NovelDetailFeedEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD863ED92CA5B7F70037DC08 /* NovelDetailFeedEmptyView.swift */; };
 		CD863EDC2CA5BAF30037DC08 /* NovelDetailFeedListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD863EDB2CA5BAF30037DC08 /* NovelDetailFeedListView.swift */; };
 		CD863EE12CA5BF000037DC08 /* NovelDetailFeedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD863EE02CA5BF000037DC08 /* NovelDetailFeedTableViewCell.swift */; };
-		CD863EE32CA5C0A30037DC08 /* NovelDetailFeedHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD863EE22CA5C0A30037DC08 /* NovelDetailFeedHeaderView.swift */; };
-		CD863EE52CA5C6E00037DC08 /* NovelDetailFeedContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD863EE42CA5C6DF0037DC08 /* NovelDetailFeedContentView.swift */; };
-		CD863EE72CA5CB0B0037DC08 /* NovelDetailFeedConnectedNovelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD863EE62CA5CB0B0037DC08 /* NovelDetailFeedConnectedNovelView.swift */; };
-		CD863EE92CA5CDC20037DC08 /* NovelDetailFeedCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD863EE82CA5CDC20037DC08 /* NovelDetailFeedCategoryView.swift */; };
-		CD863EEB2CA5CECD0037DC08 /* NovelDetailFeedReactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD863EEA2CA5CECD0037DC08 /* NovelDetailFeedReactView.swift */; };
 		CD8747A12C9EB37000D0ADAD /* NovelDateSelectModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8747A02C9EB37000D0ADAD /* NovelDateSelectModalViewController.swift */; };
 		CD8747A32C9EB37F00D0ADAD /* NovelDateSelectModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8747A22C9EB37F00D0ADAD /* NovelDateSelectModalView.swift */; };
 		CD8747A52C9EB39900D0ADAD /* NovelDateSelectModalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8747A42C9EB39900D0ADAD /* NovelDateSelectModalViewModel.swift */; };
@@ -558,6 +560,7 @@
 		3910137B2CCF5EC6001894E5 /* BirthPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthPickerView.swift; sourceTree = "<group>"; };
 		3910137D2CCF5FD3001894E5 /* BirthPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthPickerViewController.swift; sourceTree = "<group>"; };
 		39119FA72C8C482800E9E6FA /* NovelDetailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailService.swift; sourceTree = "<group>"; };
+		39139A032CE0E8AF00BC40AE /* TokenCheckURLProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenCheckURLProtocol.swift; sourceTree = "<group>"; };
 		3916EC882B89D23D007835B5 /* ModuleFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleFactory.swift; sourceTree = "<group>"; };
 		392A29222B4E89FD0065EB97 /* RegisterNormalNovelInfoWithRatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalNovelInfoWithRatingView.swift; sourceTree = "<group>"; };
 		392A29262B4E96F30065EB97 /* UILabel+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+.swift"; sourceTree = "<group>"; };
@@ -742,6 +745,7 @@
 		B9AC1BD52BF0BB9D006EDE92 /* HomeNoticeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNoticeViewModel.swift; sourceTree = "<group>"; };
 		B9AC1BD72BF0BDDD006EDE92 /* NoticeRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeRepository.swift; sourceTree = "<group>"; };
 		B9AC1BD92BF0BE23006EDE92 /* NoticeResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeResult.swift; sourceTree = "<group>"; };
+		B9ACACC02CE3A7E400D1D47A /* HomeInterestEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeInterestEmptyView.swift; sourceTree = "<group>"; };
 		B9B0CBD52BE29EA0002F4CF6 /* HomeInterestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeInterestView.swift; sourceTree = "<group>"; };
 		B9B0CBD72BE2A09B002F4CF6 /* HomeInterestCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeInterestCollectionViewCell.swift; sourceTree = "<group>"; };
 		B9CEDA0C2C01C97E00E62247 /* HomeUnregisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeUnregisterView.swift; sourceTree = "<group>"; };
@@ -825,6 +829,11 @@
 		CD514C912CD5DB87007A27A8 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		CD514C932CD5DB96007A27A8 /* AuthRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRepository.swift; sourceTree = "<group>"; };
 		CD514C952CD5DC22007A27A8 /* AuthResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthResult.swift; sourceTree = "<group>"; };
+		CD5BFC6F2CE3004E0024C535 /* NovelDetailFeedCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailFeedCategoryView.swift; sourceTree = "<group>"; };
+		CD5BFC702CE3004E0024C535 /* NovelDetailFeedConnectedNovelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailFeedConnectedNovelView.swift; sourceTree = "<group>"; };
+		CD5BFC712CE3004E0024C535 /* NovelDetailFeedContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailFeedContentView.swift; sourceTree = "<group>"; };
+		CD5BFC722CE3004E0024C535 /* NovelDetailFeedHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailFeedHeaderView.swift; sourceTree = "<group>"; };
+		CD5BFC732CE3004E0024C535 /* NovelDetailFeedReactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailFeedReactView.swift; sourceTree = "<group>"; };
 		CD66136F2B8A225E00B90B2B /* MemoReadViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoReadViewModel.swift; sourceTree = "<group>"; };
 		CD6613742B8A283500B90B2B /* MemoEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoEditViewModel.swift; sourceTree = "<group>"; };
 		CD6613772B8B313700B90B2B /* DeletePopupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletePopupViewModel.swift; sourceTree = "<group>"; };
@@ -842,11 +851,6 @@
 		CD863ED92CA5B7F70037DC08 /* NovelDetailFeedEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailFeedEmptyView.swift; sourceTree = "<group>"; };
 		CD863EDB2CA5BAF30037DC08 /* NovelDetailFeedListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailFeedListView.swift; sourceTree = "<group>"; };
 		CD863EE02CA5BF000037DC08 /* NovelDetailFeedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailFeedTableViewCell.swift; sourceTree = "<group>"; };
-		CD863EE22CA5C0A30037DC08 /* NovelDetailFeedHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailFeedHeaderView.swift; sourceTree = "<group>"; };
-		CD863EE42CA5C6DF0037DC08 /* NovelDetailFeedContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailFeedContentView.swift; sourceTree = "<group>"; };
-		CD863EE62CA5CB0B0037DC08 /* NovelDetailFeedConnectedNovelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailFeedConnectedNovelView.swift; sourceTree = "<group>"; };
-		CD863EE82CA5CDC20037DC08 /* NovelDetailFeedCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailFeedCategoryView.swift; sourceTree = "<group>"; };
-		CD863EEA2CA5CECD0037DC08 /* NovelDetailFeedReactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailFeedReactView.swift; sourceTree = "<group>"; };
 		CD8747A02C9EB37000D0ADAD /* NovelDateSelectModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDateSelectModalViewController.swift; sourceTree = "<group>"; };
 		CD8747A22C9EB37F00D0ADAD /* NovelDateSelectModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDateSelectModalView.swift; sourceTree = "<group>"; };
 		CD8747A42C9EB39900D0ADAD /* NovelDateSelectModalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDateSelectModalViewModel.swift; sourceTree = "<group>"; };
@@ -2032,6 +2036,7 @@
 				A1654F0D2B540504004F78E8 /* APIConstants.swift */,
 				A1654F0E2B540504004F78E8 /* HTTPMethod.swift */,
 				396C7C5C2CB27AC2003C9712 /* ServerErrorResponse.swift */,
+				39139A032CE0E8AF00BC40AE /* TokenCheckURLProtocol.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -2083,6 +2088,7 @@
 				B9B0CBD52BE29EA0002F4CF6 /* HomeInterestView.swift */,
 				B9181BDB2BEBDFA80024C800 /* HomeTasteRecommendView.swift */,
 				B9CEDA0C2C01C97E00E62247 /* HomeUnregisterView.swift */,
+				B9ACACC02CE3A7E400D1D47A /* HomeInterestEmptyView.swift */,
 			);
 			path = HomeAssistantView;
 			sourceTree = "<group>";
@@ -2712,6 +2718,11 @@
 			children = (
 				CD863ED92CA5B7F70037DC08 /* NovelDetailFeedEmptyView.swift */,
 				CD863EDB2CA5BAF30037DC08 /* NovelDetailFeedListView.swift */,
+				CD5BFC6F2CE3004E0024C535 /* NovelDetailFeedCategoryView.swift */,
+				CD5BFC702CE3004E0024C535 /* NovelDetailFeedConnectedNovelView.swift */,
+				CD5BFC712CE3004E0024C535 /* NovelDetailFeedContentView.swift */,
+				CD5BFC722CE3004E0024C535 /* NovelDetailFeedHeaderView.swift */,
+				CD5BFC732CE3004E0024C535 /* NovelDetailFeedReactView.swift */,
 			);
 			path = NovelDetailFeedAssistantView;
 			sourceTree = "<group>";
@@ -2720,11 +2731,6 @@
 			isa = PBXGroup;
 			children = (
 				CD863EE02CA5BF000037DC08 /* NovelDetailFeedTableViewCell.swift */,
-				CD863EE22CA5C0A30037DC08 /* NovelDetailFeedHeaderView.swift */,
-				CD863EE42CA5C6DF0037DC08 /* NovelDetailFeedContentView.swift */,
-				CD863EE62CA5CB0B0037DC08 /* NovelDetailFeedConnectedNovelView.swift */,
-				CD863EE82CA5CDC20037DC08 /* NovelDetailFeedCategoryView.swift */,
-				CD863EEA2CA5CECD0037DC08 /* NovelDetailFeedReactView.swift */,
 			);
 			path = NovelDetailFeedCell;
 			sourceTree = "<group>";
@@ -3018,7 +3024,6 @@
 				3932B59D2CAFCDBF00C1A736 /* OnboardingSuccessViewController.swift in Sources */,
 				B974EA452CC9029100169639 /* DetailSearchResultView.swift in Sources */,
 				CD1F7E042C9955390039972C /* NovelKeywordSelectSearchBarView.swift in Sources */,
-				CD863EE72CA5CB0B0037DC08 /* NovelDetailFeedConnectedNovelView.swift in Sources */,
 				CD6F49512C703E63005AD392 /* FeedNovelConnectModalViewController.swift in Sources */,
 				A1EF35492B52F7B000A94C53 /* AvatarRepository.swift in Sources */,
 				2C6030642B5407E90031544C /* LibraryViewController.swift in Sources */,
@@ -3055,7 +3060,6 @@
 				39AF30D12B50182F00FDC1F3 /* RegisterNormalReadStatusButton.swift in Sources */,
 				39D4A5E02BDF746C004FC834 /* NovelGenre.swift in Sources */,
 				2CFA9A132C9D7EE600A4A820 /* MyPageChangeUserInfoViewModel.swift in Sources */,
-				CD863EE92CA5CDC20037DC08 /* NovelDetailFeedCategoryView.swift in Sources */,
 				A1C3EC532B46962F00D997C2 /* UIImage+.swift in Sources */,
 				B96863D62C482E14008CFBA5 /* DetailSearchViewController.swift in Sources */,
 				39CD5E0C2B4F3D0700668B9A /* RegisterNormalNovelSummaryView.swift in Sources */,
@@ -3109,7 +3113,6 @@
 				C9A3CD452C8C3BA500B43BFB /* SearchService.swift in Sources */,
 				3999BFF02B4E6FA800984832 /* RegisterNormalBannerImageView.swift in Sources */,
 				A1EF355A2B52FAD300A94C53 /* RecommendService.swift in Sources */,
-				CD863EE32CA5C0A30037DC08 /* NovelDetailFeedHeaderView.swift in Sources */,
 				2C9A19712C56925F0043044A /* MyPageInfoViewModel.swift in Sources */,
 				39D4A5D02BDA50E8004FC834 /* NovelDetailRepository.swift in Sources */,
 				CD863EDC2CA5BAF30037DC08 /* NovelDetailFeedListView.swift in Sources */,
@@ -3173,6 +3176,7 @@
 				B974EA432CC8E57100169639 /* DetailSearchNovelRatingStatusButton.swift in Sources */,
 				C99DDFD52C86138E00EDC0C4 /* SearchBarView.swift in Sources */,
 				2CD911562C0D8A1A006B8D72 /* FeedPageBarCollectionViewCell.swift in Sources */,
+				B9ACACC12CE3A7E400D1D47A /* HomeInterestEmptyView.swift in Sources */,
 				39BA7F752BCABF1D0045B2B7 /* KeywordLink.swift in Sources */,
 				A1EF35432B52F75800A94C53 /* NovelRepository.swift in Sources */,
 				CD8747A92C9EDA3000D0ADAD /* NovelDateSelectModalTitleView.swift in Sources */,
@@ -3279,6 +3283,7 @@
 				A1CB373A2B72935900CB290F /* UITableViewCell+.swift in Sources */,
 				A1147A802B50638200141692 /* RecordViewController.swift in Sources */,
 				B9F7401D2C047E360018D0C6 /* NormalSearchViewModel.swift in Sources */,
+				39139A042CE0E8AF00BC40AE /* TokenCheckURLProtocol.swift in Sources */,
 				CD803B392C940989006EBAF8 /* CenterAlignedCollectionViewFlowLayout.swift in Sources */,
 				CD8747B72C9F050800D0ADAD /* NovelDateSelectModalDatePickerView.swift in Sources */,
 				39ABD5A02B54D0A900DEA94E /* RegisterNormalDatePicker.swift in Sources */,
@@ -3357,6 +3362,11 @@
 				CD39F2B82B4FE0FB00B73A5C /* TrashNovelDetailViewController.swift in Sources */,
 				CD39F2DE2B50E11000B73A5C /* TrashNovelDetailInfoKeywordCollectionViewCell.swift in Sources */,
 				2C8F89432C50CF250056895B /* MyPageDeleteIDWarningView.swift in Sources */,
+				CD5BFC742CE3004E0024C535 /* NovelDetailFeedReactView.swift in Sources */,
+				CD5BFC752CE3004E0024C535 /* NovelDetailFeedContentView.swift in Sources */,
+				CD5BFC762CE3004E0024C535 /* NovelDetailFeedCategoryView.swift in Sources */,
+				CD5BFC772CE3004E0024C535 /* NovelDetailFeedConnectedNovelView.swift in Sources */,
+				CD5BFC782CE3004E0024C535 /* NovelDetailFeedHeaderView.swift in Sources */,
 				B96F0F982C2993EE00DA5483 /* FeedDetailReplyCollectionViewCell.swift in Sources */,
 				399F29352B56DA7800BBC12B /* TrashReadStatus.swift in Sources */,
 				B9E565F92C04520A00DB51FF /* NormalSearchView.swift in Sources */,
@@ -3402,7 +3412,6 @@
 				CD39F2D82B50DA6300B73A5C /* TrashNovelDetailInfoDescriptionView.swift in Sources */,
 				39F8506D2C2BFB3E00E93EBC /* NovelDetailInfoDescriptionView.swift in Sources */,
 				C95EADD92BD4FE4C0060CF1A /* HomeRealTimePopularFeedView.swift in Sources */,
-				CD863EE52CA5C6E00037DC08 /* NovelDetailFeedContentView.swift in Sources */,
 				A1654F152B540513004F78E8 /* Networking.swift in Sources */,
 				CD3E5AAB2B56173C00C0A659 /* TrashNovelDetailMemoSettingButtonView.swift in Sources */,
 				CDA5F0432C2FDCD800FCF15C /* FeedCategoryCollectionViewCell.swift in Sources */,

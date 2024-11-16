@@ -97,6 +97,10 @@ final class HomeUnregisterView: UIView {
     }
     
     private func setLayout() {
+        self.snp.makeConstraints {
+            $0.height.equalTo(133)
+        }
+        
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(20)
             $0.leading.equalToSuperview().inset(24)
@@ -120,14 +124,11 @@ final class HomeUnregisterView: UIView {
             $0.applyWSSFont(.body2, with: type.title)
             $0.numberOfLines = 2
         }
-        
         self.registerButton.do {
             $0.backgroundColor = type.buttonColor
         }
-        
         self.registerButtonLabel.do {
             $0.applyWSSFont(.title3, with: type.buttonTitle)
         }
     }
 }
-

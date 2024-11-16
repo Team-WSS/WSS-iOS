@@ -107,8 +107,7 @@ final class LoginViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 // 온보딩 뷰로 이동
-                print("Token: \(APIConstants.testToken)")
-                //owner.loginCompleted()
+                print("Token: \(APIConstants.accessToken)")
                 owner.pushToOnboardingViewController()
             })
             .disposed(by: disposeBag)
@@ -116,8 +115,8 @@ final class LoginViewController: UIViewController {
         output.navigateToHome
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
-                // 온보딩 뷰로 이동
-                print("Token: \(APIConstants.testToken)")
+                // 홈으로 이동
+                print("Token: \(APIConstants.accessToken)")
                 owner.loginCompleted()
             })
             .disposed(by: disposeBag)

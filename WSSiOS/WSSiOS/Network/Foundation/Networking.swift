@@ -8,6 +8,10 @@
 import Foundation
 
 protocol Networking {
+    var basicURLSession: URLSession { get }
+    
+    var tokenCheckURLSession: URLSession { get }
+    
     func makeHTTPRequest(
         method: HTTPMethod,
         baseURL: String,
@@ -25,6 +29,20 @@ protocol Networking {
 }
 
 extension Networking {
+    var basicURLSession: URLSession {
+        URLSession(configuration: URLSessionConfiguration.default,
+                   delegate: nil,
+                   delegateQueue: nil)
+    }
+    
+    var tokenCheckURLSession: URLSession {
+        // CustomURLProtocol을 URLSessionConfiguration에 등록
+        let config = URLSessionConfiguration.default
+        config.protocolClasses = [TokenCheckURLProtocol.self] + (config.protocolClasses ?? [])
+        return URLSession(configuration: config,
+                          delegate: nil,
+                          delegateQueue: nil)
+    }
     
     func makeHTTPRequest(
         method: HTTPMethod,
