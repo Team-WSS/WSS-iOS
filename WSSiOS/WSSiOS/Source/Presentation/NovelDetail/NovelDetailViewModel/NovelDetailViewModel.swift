@@ -5,10 +5,11 @@
 //  Created by 이윤학 on 4/25/24.
 //
 
-import Foundation
+import UIKit
 
 import RxSwift
 import RxCocoa
+import RxGesture
 import Then
 
 final class NovelDetailViewModel: ViewModelType {
@@ -81,6 +82,7 @@ final class NovelDetailViewModel: ViewModelType {
         let networkErrorRefreshButtonDidTap: ControlEvent<Void>
         let imageNetworkError: Observable<Bool>
         let deleteReview: Observable<Void>
+        let backgroundDidTap: ControlEvent<UITapGestureRecognizer>
         
         //NovelDetailHeader
         let headerDotsButtonDidTap: ControlEvent<Void>
@@ -195,6 +197,13 @@ final class NovelDetailViewModel: ViewModelType {
             .map { !$0 }
             .bind(with: self, onNext: { owner, isShow in
                 owner.showHeaderDropdownView.accept(isShow)
+            })
+            .disposed(by: disposeBag)
+        
+        input.backgroundDidTap
+            .bind(with: self, onNext: { owner, _ in
+                owner.showHeaderDropdownView.accept(false)
+                owner.hideDropdownView.accept(())
             })
             .disposed(by: disposeBag)
         
@@ -572,7 +581,6 @@ final class NovelDetailViewModel: ViewModelType {
                 owner.viewWillAppearEvent.accept(true)
                 owner.showReviewDeletedToast.accept(())
             }, onError: { owner, error in
-                owner.showNetworkErrorView.accept(true)
                 print("Error: \(error)")
             })
             .disposed(by: disposeBag)

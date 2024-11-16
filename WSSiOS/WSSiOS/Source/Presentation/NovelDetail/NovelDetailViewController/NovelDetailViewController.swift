@@ -9,6 +9,7 @@ import UIKit
 
 import RxSwift
 import RxCocoa
+import RxGesture
 
 /// Detail View
 final class NovelDetailViewController: UIViewController {
@@ -489,6 +490,7 @@ final class NovelDetailViewController: UIViewController {
             networkErrorRefreshButtonDidTap: rootView.networkErrorView.refreshButton.rx.tap,
             imageNetworkError: imageNetworkError.asObservable(),
             deleteReview: deleteReview.asObservable(),
+            backgroundDidTap: rootView.rx.tapGesture(),
             headerDotsButtonDidTap: rootView.headerDropDownButton.rx.tap,
             headerDropdownButtonDidTap: headerDropdownButtonDidTap,
             novelCoverImageButtonDidTap: rootView.headerView.coverImageButton.rx.tap,
