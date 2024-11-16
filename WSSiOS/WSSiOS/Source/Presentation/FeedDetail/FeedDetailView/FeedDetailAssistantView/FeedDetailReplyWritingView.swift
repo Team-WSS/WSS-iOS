@@ -152,7 +152,7 @@ final class FeedDetailReplyWritingView: UIView {
         let lineHeight = replyWritingTextView.font?.lineHeight ?? 0
         let numberOfLines = Int(estimatedSize.height / lineHeight)
         let backgroundHeight: CGFloat
-        backgroundHeight = numberOfLines == 1 ? 42 : min(estimatedSize.height + 14, 84)
+        backgroundHeight = numberOfLines == 1 ? 42 : min(estimatedSize.height + 14, 98)
         
         replyWritingTextView.snp.updateConstraints {
             $0.height.equalTo(min(estimatedSize.height, 84))
