@@ -456,6 +456,7 @@
 		E407466E2CE897C7005D75D5 /* MyPageGenrePreferencesTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E407466D2CE897C7005D75D5 /* MyPageGenrePreferencesTopView.swift */; };
 		E40746702CE8DAB6005D75D5 /* MyPageGenrePreferencesOtherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E407466F2CE8DAB6005D75D5 /* MyPageGenrePreferencesOtherView.swift */; };
 		E40746722CE8DB89005D75D5 /* MyPageGenrePreferencesOtherTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40746712CE8DB89005D75D5 /* MyPageGenrePreferencesOtherTableViewCell.swift */; };
+		E40746742CE8F84A005D75D5 /* MyPageStickyHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40746732CE8F84A005D75D5 /* MyPageStickyHeaderView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -900,6 +901,7 @@
 		E407466D2CE897C7005D75D5 /* MyPageGenrePreferencesTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageGenrePreferencesTopView.swift; sourceTree = "<group>"; };
 		E407466F2CE8DAB6005D75D5 /* MyPageGenrePreferencesOtherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageGenrePreferencesOtherView.swift; sourceTree = "<group>"; };
 		E40746712CE8DB89005D75D5 /* MyPageGenrePreferencesOtherTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageGenrePreferencesOtherTableViewCell.swift; sourceTree = "<group>"; };
+		E40746732CE8F84A005D75D5 /* MyPageStickyHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageStickyHeaderView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1365,6 +1367,7 @@
 			isa = PBXGroup;
 			children = (
 				2CCBF9EF2B4C1FD800D787C2 /* MyPageView.swift */,
+				E40746732CE8F84A005D75D5 /* MyPageStickyHeaderView.swift */,
 				E40746612CE8688A005D75D5 /* MyPageLibraryView.swift */,
 				2C41E0CF2CA494B800FFD233 /* MyPageEditProfileView.swift */,
 				2C41E0C62CA493C100FFD233 /* ProfileCell */,
@@ -3170,6 +3173,7 @@
 				39D4A5D62BDD0913004FC834 /* NovelDetailHeaderView.swift in Sources */,
 				A1522CF52B8257F3003A4078 /* RecordViewModel.swift in Sources */,
 				B9DC62042CC942D900E87DD7 /* DetailSearchResultViewModel.swift in Sources */,
+				E40746742CE8F84A005D75D5 /* MyPageStickyHeaderView.swift in Sources */,
 				393CAC442CA72760004B4DB6 /* OnboardingBirthGenderView.swift in Sources */,
 				39D4A5DC2BDD420D004FC834 /* NovelDetailHeaderNovelInfoView.swift in Sources */,
 				2CD9114E2C0D8A0B006B8D72 /* FeedUserView.swift in Sources */,

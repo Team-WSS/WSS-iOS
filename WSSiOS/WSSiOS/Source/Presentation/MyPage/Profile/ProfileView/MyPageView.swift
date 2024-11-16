@@ -23,10 +23,11 @@ final class MyPageView: UIView {
     let contentView = UIView()
     
     let headerView = MyPageProfileHeaderView()
-    let mainStickyHeaderView = UIView()
-    let scrolledStstickyHeaderView = UIView()
+    let mainStickyHeaderView = MyPageStickyHeaderView()
+    let scrolledStstickyHeaderView = MyPageStickyHeaderView()
     
     let myPageLibraryView = MyPageLibraryView()
+    let myPageFeedView = UIView()
     
     // MARK: - Life Cycle
     
@@ -46,16 +47,13 @@ final class MyPageView: UIView {
     //MARK: - UI
     
     private func setUI() {
-        self.backgroundColor = .wssPrimary20
-        
-        mainStickyHeaderView.do {
-            $0.backgroundColor = .wssPrimary100
-        }
+        self.backgroundColor = .wssGray50
         
         scrolledStstickyHeaderView.do {
-            $0.backgroundColor = .wssPrimary100
             $0.isHidden = true
         }
+        
+        myPageFeedView.isHidden = true
     }
     
     private func setHierarchy() {
@@ -65,7 +63,8 @@ final class MyPageView: UIView {
         scrollView.addSubview(contentView)
         contentView.addSubviews(headerView,
                                 mainStickyHeaderView,
-                                myPageLibraryView)
+                                myPageLibraryView,
+                                myPageFeedView)
     }
     
     private func setLayout() {
@@ -97,7 +96,16 @@ final class MyPageView: UIView {
         
         myPageLibraryView.snp.makeConstraints {
             $0.top.equalTo(mainStickyHeaderView.snp.bottom)
-            $0.width.bottom.equalToSuperview()
+            $0.leading.trailing.equalToSuperview()
+        }
+        
+        myPageFeedView.snp.makeConstraints {
+            $0.top.equalTo(mainStickyHeaderView.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
+        }
+        
+        contentView.snp.makeConstraints {
+            $0.bottom.equalTo(myPageLibraryView.snp.bottom)
         }
     }
 }

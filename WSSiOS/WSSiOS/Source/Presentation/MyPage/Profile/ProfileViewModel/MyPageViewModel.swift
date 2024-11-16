@@ -19,17 +19,6 @@ final class MyPageViewModel: ViewModelType {
     var height: Double = 0.0
     let bindKeywordRelay = BehaviorRelay<[Keyword]>(value: [])
     
-    let dummyNovelPreferenceData = UserNovelPreferences(
-        attractivePoints: ["character", "material", "worldview"],
-        keywords: [
-            Keyword(keywordName: "서양풍/중세시대", keywordCount: 4),
-            Keyword(keywordName: "학원/아카데미", keywordCount: 3),
-            Keyword(keywordName: "SF", keywordCount: 3),
-            Keyword(keywordName: "동양풍/사극", keywordCount: 1),
-            Keyword(keywordName: "실존역사", keywordCount: 1)
-        ]
-    )
-    
     // MARK: - Life Cycle
     
     init(userRepository: UserRepository) {
@@ -44,6 +33,8 @@ final class MyPageViewModel: ViewModelType {
         let dropdownButtonDidTap: Observable<String>
         let editButtonTapoed: ControlEvent<Void>
         let genrePreferenceButtonDidTap: Observable<Bool>
+        let libraryButtonDidTap: Observable<Bool>
+        let feedButtonDidTap: Observable<Bool>
     }
     
     struct Output {
@@ -61,6 +52,7 @@ final class MyPageViewModel: ViewModelType {
         let bindGenreData = BehaviorRelay<UserGenrePreferences>(value: UserGenrePreferences(genrePreferences: []))
         let bindInventoryData = BehaviorRelay<UserNovelStatus>(value: UserNovelStatus(interestNovelCount: 0, watchingNovelCount: 0, watchedNovelCount: 0, quitNovelCount: 0))
         let showGenreOtherView = BehaviorRelay<Bool>(value: false)
+        let stickyHeaderAction = BehaviorRelay<Bool>(value: true)
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -74,10 +66,10 @@ final class MyPageViewModel: ViewModelType {
             .bind(to: output.profileData)
             .disposed(by: disposeBag)
         
-        Observable.just(dummyNovelPreferenceData)
-//            .flatMapLatest { _ in
-//                self.getNovelPreferenceData(userId: 1)
-//            }
+        Observable.just(())
+            .flatMapLatest { _ in
+                self.getNovelPreferenceData(userId: 1)
+            }
             .subscribe(with: self, onNext: { owner, data in
                 if data.attractivePoints == [] {
                     output.IsExistPreference.accept(false)
@@ -158,6 +150,18 @@ final class MyPageViewModel: ViewModelType {
             .bind(with: self, onNext: { owner, _ in
                 let currentState = output.showGenreOtherView.value
                 output.showGenreOtherView.accept(!(currentState))
+            })
+            .disposed(by: disposeBag)
+        
+        input.libraryButtonDidTap
+            .bind(with: self, onNext: { owner, _ in
+                output.stickyHeaderAction.accept(true)
+            })
+            .disposed(by: disposeBag)
+        
+        input.feedButtonDidTap
+            .bind(with: self, onNext: { owner, _ in
+                output.stickyHeaderAction.accept(false)
             })
             .disposed(by: disposeBag)
         

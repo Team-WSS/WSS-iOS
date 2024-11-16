@@ -86,6 +86,16 @@ final class MyPageViewController: UIViewController {
             rootView.myPageLibraryView.genrePrefrerencesView.myPageGenreCloseButton.rx.tap.map { false }
         )
         
+        let libraryButtonDidTap = Observable.merge(
+            rootView.mainStickyHeaderView.libraryButton.rx.tap.map { true },
+            rootView.scrolledStstickyHeaderView.libraryButton.rx.tap.map { true }
+        )
+        
+        let feedButtonDidTap = Observable.merge(
+            rootView.mainStickyHeaderView.feedButton.rx.tap.map { true },
+            rootView.scrolledStstickyHeaderView.feedButton.rx.tap.map { true }
+        )
+        
         let input = MyPageViewModel.Input(
             isMyPage: isMyPageRelay.asDriver(),
             headerViewHeight: headerViewHeightRelay.asDriver(),
@@ -93,7 +103,9 @@ final class MyPageViewController: UIViewController {
             settingButtonDidTap: settingButton.rx.tap,
             dropdownButtonDidTap: dropDownCellTap,
             editButtonTapoed: rootView.headerView.userImageChangeButton.rx.tap,
-            genrePreferenceButtonDidTap: genrePreferenceButtonDidTap)
+            genrePreferenceButtonDidTap: genrePreferenceButtonDidTap,
+            libraryButtonDidTap: libraryButtonDidTap,
+            feedButtonDidTap: feedButtonDidTap)
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -184,6 +196,32 @@ final class MyPageViewController: UIViewController {
                 
                 UIView.animate(withDuration: 0.3) {
                     owner.rootView.myPageLibraryView.updateGenreViewHeight(isExpanded: show)
+                    owner.rootView.layoutIfNeeded()
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        output.stickyHeaderAction
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, library in
+                owner.rootView.mainStickyHeaderView.updateSelection(isLibrarySelected: library)
+                owner.rootView.scrolledStstickyHeaderView.updateSelection(isLibrarySelected: library)
+                
+                owner.rootView.myPageLibraryView.isHidden = !library
+                owner.rootView.myPageFeedView.isHidden = library
+                
+                owner.rootView.contentView.snp.remakeConstraints {
+                    $0.edges.equalToSuperview()
+                    $0.width.equalToSuperview()
+                    
+                    if library {
+                        $0.bottom.equalTo(owner.rootView.myPageLibraryView.snp.bottom)
+                    } else {
+                        $0.bottom.equalTo(owner.rootView.myPageFeedView.snp.bottom)
+                    }
+                }
+                
+                UIView.animate(withDuration: 0.3) {
                     owner.rootView.layoutIfNeeded()
                 }
             })
