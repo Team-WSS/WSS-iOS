@@ -20,6 +20,7 @@ final class NovelDetailViewController: UIViewController {
     
     private let viewWillAppearEvent = BehaviorRelay(value: false)
     private let imageNetworkError = BehaviorRelay<Bool>(value: false)
+    private let deleteReview = PublishSubject<Void>()
     
     private var navigationTitle: String = ""
     private let dateFormatter = DateFormatter().then {
@@ -164,6 +165,31 @@ final class NovelDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.showReviewDeleteAlert
+            .flatMapLatest { _ in
+                self.presentToAlertViewController(
+                    iconImage: .icAlertWarningCircle,
+                    titleText: StringLiterals.NovelDetail.Header.deleteReviewAlertTitle,
+                    contentText: StringLiterals.NovelDetail.Header.deleteReviewAlertDescription,
+                    leftTitle: StringLiterals.NovelDetail.Header.deleteCancel,
+                    rightTitle: StringLiterals.NovelDetail.Header.deleteAccept,
+                    rightBackgroundColor: UIColor.wssSecondary100.cgColor
+                )
+            }
+            .bind(with: self, onNext: { owner, buttonType in
+                owner.rootView.showHeaderDropDownView(isShow: false)
+                if buttonType == .right {
+                    owner.deleteReview.onNext(())
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        output.showReviewDeletedToast
+            .drive(with: self, onNext: { owner, _ in
+                owner.showToast(.novelReviewDeleted)
+            })
+            .disposed(by: disposeBag)
+        
         //MARK: - Bind/NovelDetailHeader
         
         output.showLargeNovelCoverImage
@@ -206,6 +232,7 @@ final class NovelDetailViewController: UIViewController {
         
         output.showReportPage
             .drive(with: self, onNext: { owner, _ in
+                owner.rootView.showHeaderDropDownView(isShow: false)
                 if let url = URL(string: URLs.Contact.kakao) {
                     UIApplication.shared.open(url, options: [:])
                 }
@@ -461,6 +488,7 @@ final class NovelDetailViewController: UIViewController {
             backButtonDidTap: rootView.backButton.rx.tap,
             networkErrorRefreshButtonDidTap: rootView.networkErrorView.refreshButton.rx.tap,
             imageNetworkError: imageNetworkError.asObservable(),
+            deleteReview: deleteReview.asObservable(),
             headerDotsButtonDidTap: rootView.headerDropDownButton.rx.tap,
             headerDropdownButtonDidTap: headerDropdownButtonDidTap,
             novelCoverImageButtonDidTap: rootView.headerView.coverImageButton.rx.tap,

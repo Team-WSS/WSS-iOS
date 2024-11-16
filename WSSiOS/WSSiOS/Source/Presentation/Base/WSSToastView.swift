@@ -20,6 +20,7 @@ enum ToastStatus {
     case novelAlreadyConnected
     case selectionOverLimit(count: Int)
     case novelReviewed
+    case novelReviewDeleted
 
     var toastImage: UIImage {
         switch self {
@@ -27,7 +28,7 @@ enum ToastStatus {
             return .icAlertSuccess
         case .memoSaveFail, .memoDelete:
             return .icAlertWarning
-        case .novelReviewed:
+        case .novelReviewed, .novelReviewDeleted:
             return .icAlertCheck
         }
     }
@@ -52,6 +53,8 @@ enum ToastStatus {
             "\(count)개까지 선택 가능해요"
         case .novelReviewed:
             "평가 완료!"
+        case .novelReviewDeleted:
+            "평가를 모두 삭제했어요"
         }
     }
 }

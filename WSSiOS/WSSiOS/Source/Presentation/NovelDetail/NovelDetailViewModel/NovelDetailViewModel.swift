@@ -26,6 +26,8 @@ final class NovelDetailViewModel: ViewModelType {
     private let showNetworkErrorView = BehaviorRelay<Bool>(value: false)
     private let showHeaderDropdownView = BehaviorRelay<Bool>(value: false)
     private let showReportPage = PublishRelay<Void>()
+    private let showReviewDeleteAlert = PublishRelay<Void>()
+    private let showReviewDeletedToast = PublishRelay<Void>()
     
     //NovelDetailHeader
     private let novelDetailHeaderData = PublishSubject<NovelDetailHeaderEntity>()
@@ -78,6 +80,7 @@ final class NovelDetailViewModel: ViewModelType {
         let backButtonDidTap: ControlEvent<Void>
         let networkErrorRefreshButtonDidTap: ControlEvent<Void>
         let imageNetworkError: Observable<Bool>
+        let deleteReview: Observable<Void>
         
         //NovelDetailHeader
         let headerDotsButtonDidTap: ControlEvent<Void>
@@ -123,6 +126,8 @@ final class NovelDetailViewModel: ViewModelType {
         let showNetworkErrorView: Driver<Bool>
         let showHeaderDropdownView: Driver<Bool>
         let showReportPage: Driver<Void>
+        let showReviewDeleteAlert: Observable<Void>
+        let showReviewDeletedToast: Driver<Void>
         
         //NovelDetailHeader
         let showLargeNovelCoverImage: Driver<Bool>
@@ -195,9 +200,16 @@ final class NovelDetailViewModel: ViewModelType {
         
         input.headerDropdownButtonDidTap
             .bind(with: self, onNext: { owner, type in
-                if type == .top {
-                    owner.showReportPage.accept(())
+                switch type {
+                case .top: owner.showReportPage.accept(())
+                case .bottom: owner.showReviewDeleteAlert.accept(())
                 }
+            })
+            .disposed(by: disposeBag)
+        
+        input.deleteReview
+            .bind(with: self, onNext: { owner, type in
+                owner.deleteReview(disposeBag: disposeBag)
             })
             .disposed(by: disposeBag)
         
@@ -449,6 +461,8 @@ final class NovelDetailViewModel: ViewModelType {
             showNetworkErrorView: showNetworkErrorView.asDriver(),
             showHeaderDropdownView: showHeaderDropdownView.asDriver(),
             showReportPage: showReportPage.asDriver(onErrorJustReturn: ()),
+            showReviewDeleteAlert: showReviewDeleteAlert.asObservable(),
+            showReviewDeletedToast: showReviewDeletedToast.asDriver(onErrorJustReturn: ()),
             showLargeNovelCoverImage: showLargeNovelCoverImage.asDriver(),
             isUserNovelInterested: isUserNovelInterested.asDriver(),
             pushTofeedWriteViewController: pushTofeedWriteViewController,
@@ -550,6 +564,18 @@ final class NovelDetailViewModel: ViewModelType {
     func deleteFeed(_ feedId: Int) -> Observable<Void> {
         feedDetailRepository.deleteFeed(feedId: feedId)
             .observe(on: MainScheduler.instance)
+    }
+    
+    func deleteReview(disposeBag: DisposeBag) {
+        novelDetailRepository.deleteNovelReview(novelId: self.novelId)
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.viewWillAppearEvent.accept(true)
+                owner.showReviewDeletedToast.accept(())
+            }, onError: { owner, error in
+                owner.showNetworkErrorView.accept(true)
+                print("Error: \(error)")
+            })
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Custom Method
