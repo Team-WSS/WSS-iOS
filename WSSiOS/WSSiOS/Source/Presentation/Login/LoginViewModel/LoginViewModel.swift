@@ -33,8 +33,8 @@ final class LoginViewModel: NSObject, ViewModelType {
     private let navigateToHome = PublishRelay<Void>()
     private let navigateToOnboarding = PublishRelay<Void>()
     
-    private let loginWithApple = PublishRelay<(userIdentifier: String,
-                                               email: String?)>()
+    private let loginWithApple = PublishRelay<(authorizationCode: String,
+                                               idToken: String)>()
     
     //MARK: - Life Cycle
     
@@ -100,11 +100,11 @@ final class LoginViewModel: NSObject, ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        // 애플로그인 후 userIdentifier와 email을 받아와서 로그인 요청
+        // 애플로그인 후 authorizationCode와 idToken을 받아와서 로그인 요청
         loginWithApple
-            .flatMapLatest { userIdentifier, email in
-                self.loginWithApple(userIdentifier: userIdentifier,
-                                    email: email)
+            .flatMapLatest { authorizationCode, idToken in
+                self.loginWithApple(authorizationCode: authorizationCode,
+                                    idToken: idToken)
             }
             .subscribe(with: self, onNext: { owner, result in
                 UserDefaults.standard.setValue(result.Authorization,
@@ -155,8 +155,8 @@ final class LoginViewModel: NSObject, ViewModelType {
     
     //MARK: - API
     
-    private func loginWithApple(userIdentifier: String, email: String?) -> Observable<LoginResult> {
-        authRepository.loginWithApple(userIdentifier: userIdentifier, email: email)
+    private func loginWithApple(authorizationCode: String, idToken: String) -> Observable<LoginResult> {
+        authRepository.loginWithApple(authorizationCode: authorizationCode, idToken: idToken)
             .observe(on: MainScheduler.instance)
     }
 }
@@ -170,8 +170,8 @@ extension LoginViewModel: ASAuthorizationControllerDelegate {
             return
         }
         
-        loginWithApple.accept((userIdentifier: credential.user,
-                               email: credential.email))
+        loginWithApple.accept((authorizationCode: String(data: credential.authorizationCode!, encoding: String.Encoding.utf8)!,
+                               idToken: String(data: credential.identityToken!, encoding: String.Encoding.utf8)!))
     }
     
     func authorizationController(

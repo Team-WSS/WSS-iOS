@@ -8,8 +8,8 @@
 import Foundation
 
 struct AppleLoginBody: Codable {
-    let userIdentifier: String
-    let email: String?
+    let authorizationCode: String
+    let idToken: String
 }
 
 struct LoginResult: Codable {
