@@ -17,6 +17,7 @@ final class MyPageViewModel: ViewModelType {
     private let userRepository: UserRepository
     private let disposeBag = DisposeBag()
     var height: Double = 0.0
+    let bindKeywordRelay = BehaviorRelay<[Keyword]>(value: [])
     
     let dummyNovelPreferenceData = UserNovelPreferences(
         attractivePoints: ["character", "material", "worldview"],
@@ -82,8 +83,8 @@ final class MyPageViewModel: ViewModelType {
                     output.IsExistPreference.accept(true)
                     output.bindattractivePointsData.accept(data.attractivePoints ?? [])
                     let keywords = data.keywords ?? []
-                    print("😃",keywords)
                     output.bindKeywordCell.accept(keywords)
+                    owner.bindKeywordRelay.accept(keywords)
                 }
             }, onError: { owner, error in
                 print(error.localizedDescription)
@@ -154,7 +155,6 @@ final class MyPageViewModel: ViewModelType {
     }
     
     // MARK: - Custom Method
-    
     
     // MARK: - API
     

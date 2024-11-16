@@ -33,12 +33,13 @@ final class MyPageNovelPreferencesCollectionViewCell: UICollectionViewCell {
     //MARK: - UI
     
     private func setHierarchy() {
-        self.addSubview(keywordLabel)
+        self.contentView.addSubview(keywordLabel)
     }
     
     private func setLayout() {
         keywordLabel.snp.makeConstraints {
             $0.edges.equalToSuperview()
+            $0.height.equalTo(37)
         }
     }
     

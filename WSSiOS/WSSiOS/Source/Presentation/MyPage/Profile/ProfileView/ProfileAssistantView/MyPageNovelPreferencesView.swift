@@ -11,7 +11,7 @@ import SnapKit
 import Then
 
 final class MyPageNovelPreferencesView: UIView {
-
+    
     //MARK: - Components
     
     private let titleLabel = UILabel()
@@ -19,7 +19,7 @@ final class MyPageNovelPreferencesView: UIView {
     private let preferencesLabel = UILabel()
     
     lazy var preferencesCollectionView = UICollectionView(frame: .zero,
-                                                       collectionViewLayout: UICollectionViewLayout())
+                                                          collectionViewLayout: UICollectionViewLayout())
     
     
     // MARK: - Life Cycle
@@ -53,15 +53,11 @@ final class MyPageNovelPreferencesView: UIView {
         
         preferencesCollectionView.do {
             let layout = LeftAlignedCollectionViewFlowLayout()
-            layout.scrollDirection = .vertical
-            layout.minimumLineSpacing = 6
             layout.minimumInteritemSpacing = 6
-            layout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+            layout.minimumLineSpacing = 6
             
-            $0.backgroundColor = .wssWhite
             $0.collectionViewLayout = layout
             $0.isScrollEnabled = false
-            $0.allowsMultipleSelection = true
         }
     }
     

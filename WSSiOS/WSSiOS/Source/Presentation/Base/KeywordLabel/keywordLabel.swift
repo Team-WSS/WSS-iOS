@@ -14,7 +14,7 @@ final class KeywordLabel: UIView {
     
     //MARK: - Properties
     
-    private var labelHeight: CGFloat = 35
+    private var labelHeight: CGFloat = 37
     
     //MARK: - Components
     

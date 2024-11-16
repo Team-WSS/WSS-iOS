@@ -152,7 +152,6 @@ final class MyPageViewController: UIViewController, UIScrollViewDelegate {
         output.bindKeywordCell
             .observe(on: MainScheduler.instance)
             .bind(to: rootView.myPageLibraryView.novelPrefrerencesView.preferencesCollectionView.rx.items(cellIdentifier: MyPageNovelPreferencesCollectionViewCell.cellIdentifier, cellType: MyPageNovelPreferencesCollectionViewCell.self)){ row, data, cell in
-                print("바인드 데이터: \(data)")
                 cell.bindData(data: data)
             }
             .disposed(by: disposeBag)
@@ -163,6 +162,22 @@ final class MyPageViewController: UIViewController, UIScrollViewDelegate {
                 owner.rootView.myPageLibraryView.inventoryView.bindData(data: data)
             })
             .disposed(by: disposeBag)
+    }
+}
+
+extension MyPageViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        guard let keywords = try? viewModel.bindKeywordRelay.value,
+              indexPath.row < keywords.count else {
+            return CGSize(width: 0, height: 0)
+        }
+        
+        let keyword = keywords[indexPath.row]
+        let text = "\(keyword.keywordName) \(keyword.keywordCount)"
+        
+        
+        let width = (text as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 24
+        return CGSize(width: width, height: 37)
     }
 }
 
