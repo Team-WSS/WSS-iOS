@@ -160,12 +160,12 @@ extension DefaultUserService: UserService {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.User.myProfile,
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: MyProfileResult.self) }
                 .asSingle()
