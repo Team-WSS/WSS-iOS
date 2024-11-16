@@ -66,9 +66,13 @@ final class HomeInterestView: UIView {
     
     func updateView(_ isLogined: Bool, _ message: InterestMessage) {
         if isLogined {
+            // 로그인
             switch message {
             case .noInterestNovels:
-                titleLabel.applyWSSFont(.headline1, with: StringLiterals.Home.Title.notLoggedInInterest)
+                // 유저의 선호장르가 없을 때
+                if let nickname = userNickname {
+                    titleLabel.applyWSSFont(.headline1, with: "\(nickname)\(StringLiterals.Home.Title.interest)")
+                }
                 self.addSubviews(titleLabel,
                                  unregisterView)
                 titleLabel.snp.makeConstraints {
@@ -84,6 +88,7 @@ final class HomeInterestView: UIView {
                 interestEmptyView.removeFromSuperview()
                 subTitleLabel.removeFromSuperview()
             case .noAssociatedFeeds:
+                // 유저의 선호장르에 대한 글이 하나도 없을 때
                 titleLabel.applyWSSFont(.headline1, with: StringLiterals.Home.Title.notLoggedInInterest)
                 interestCollectionView.removeFromSuperview()
                 self.addSubviews(titleLabel,
@@ -100,6 +105,7 @@ final class HomeInterestView: UIView {
                 unregisterView.removeFromSuperview()
                 subTitleLabel.removeFromSuperview()
             case .none:
+                // 관심글이 존재할 때
                 if let nickname = userNickname {
                     titleLabel.applyWSSFont(.headline1, with: "\(nickname)\(StringLiterals.Home.Title.interest)")
                 }
@@ -123,6 +129,7 @@ final class HomeInterestView: UIView {
                 interestEmptyView.removeFromSuperview()
             }
         } else {
+            // 비로그인
             titleLabel.applyWSSFont(.headline1, with: StringLiterals.Home.Title.notLoggedInInterest)
             self.addSubviews(titleLabel,
                              unregisterView)
