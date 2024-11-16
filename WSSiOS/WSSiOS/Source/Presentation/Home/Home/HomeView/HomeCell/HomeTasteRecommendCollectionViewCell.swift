@@ -152,7 +152,8 @@ final class HomeTasteRecommendCollectionViewCell: UICollectionViewCell {
             $0.numberOfLines = 1
         }
         self.likeCountLabel.applyWSSFont(.body5, with: String(data.novelLikeCount))
-        self.ratingAverageLabel.applyWSSFont(.body5, with: String(format: "%.1f", data.novelRating))
+        let roundedRating = round(data.novelRating * 10) / 10
+        self.ratingAverageLabel.applyWSSFont(.body5, with: String(roundedRating))
         self.ratingCountLabel.applyWSSFont(.body5, with: "(\(data.novelRatingCount))")
     }
     
