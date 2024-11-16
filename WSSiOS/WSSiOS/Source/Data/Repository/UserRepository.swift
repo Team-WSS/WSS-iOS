@@ -21,20 +21,17 @@ protocol UserRepository {
 }
 
 struct DefaultUserRepository: UserRepository {
-    func getMyProfileData() -> RxSwift.Observable<MyProfileResult> {
-        return Observable.just(MyProfileResult(nickname: "밝보",
-                                               intro: "꺄울 로판에 절여진 밝보입니다~꺄울 로판에 절여진 밝보입니다~꺄울 로판에",
-                                               avatarImage: "https://mblogthumb-phinf.pstatic.net/MjAyMjAzMjlfMSAg/MDAxNjQ4NDgwNzgwMzkw.yDLPqC9ouJxYoJSgicANH0CPNvFdcixexP7hZaPlCl4g.n7yZDyGC06_gRTwEnAKIhj5bM04laVpNuKRz29dP83wg.JPEG.38qudehd/IMG_8635.JPG?type=w800",
-                                               genrePreferences: ["romance", "fantasy", "wuxia"]))
-    }
-    
-    
     private var userService: UserService
     private var blocksService: BlocksService
     
     init(userService: UserService, blocksService: BlocksService) {
         self.userService = userService
         self.blocksService = blocksService
+    }
+    
+    func getMyProfileData() -> Observable<MyProfileResult> {
+        return userService.getMyProfile()
+            .asObservable()
     }
     
     func getUserData() -> RxSwift.Observable<UserResult> {

@@ -16,6 +16,7 @@ protocol UserService {
     func getUserNovelStatus() -> Single<UserNovelStatus>
     func getUserInfo() -> Single<UserInfo>
     func putUserInfo(gender: String, birth: Int) -> Single<Void>
+    func getMyProfile() -> Single<MyProfileResult>
 }
 
 final class DefaultUserService: NSObject, Networking {
@@ -150,6 +151,25 @@ extension DefaultUserService: UserService {
             return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
+        } catch {
+            return Single.error(error)
+        }
+    }
+    
+    func getMyProfile() -> Single<MyProfileResult> {
+        do {
+            let request = try makeHTTPRequest(method: .get,
+                                              path: URLs.User.myProfile,
+                                              headers: APIConstants.accessTokenHeader,
+                                              body: nil)
+            
+            NetworkLogger.log(request: request)
+            
+            return tokenCheckURLSession.rx.data(request: request)
+                .map { try self.decode(data: $0,
+                                       to: MyProfileResult.self) }
+                .asSingle()
+            
         } catch {
             return Single.error(error)
         }

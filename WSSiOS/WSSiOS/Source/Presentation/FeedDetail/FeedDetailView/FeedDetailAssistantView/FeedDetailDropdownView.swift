@@ -105,8 +105,8 @@ final class FeedDetailDropdownView: UIView {
         }
     }
     
-    func configureDropdown(isMyFeed: Bool) {
-        if isMyFeed {
+    func configureDropdown(isMine: Bool) {
+        if isMine {
             topDropdownLabel.applyWSSFont(.body2, with: StringLiterals.FeedDetail.edit)
             bottomDropdownLabel.applyWSSFont(.body2, with: StringLiterals.FeedDetail.delete)
             topDropdownLabel.textColor = .wssBlack

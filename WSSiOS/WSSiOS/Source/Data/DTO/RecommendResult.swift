@@ -43,6 +43,7 @@ struct RealtimePopularFeed: Codable {
 // 관심글
 struct InterestFeeds: Codable {
     var recommendFeeds: [InterestFeed]
+    var message: String
 }
 
 struct InterestFeed: Codable {
@@ -61,6 +62,12 @@ struct InterestFeed: Codable {
         case userAvatarImage = "avatarImage"
         case userFeedContent = "feedContent"
     }
+}
+
+enum InterestMessage: String {
+    case noInterestNovels = "NO_INTEREST_NOVELS"
+    case noAssociatedFeeds = "NO_ASSOCIATED_FEEDS"
+    case none = ""
 }
 
 // 선호 장르 추천

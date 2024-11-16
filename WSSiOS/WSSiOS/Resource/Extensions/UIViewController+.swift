@@ -327,6 +327,9 @@ extension UIViewController {
             viewModel: FeedDetailViewModel(
                 feedDetailRepository: DefaultFeedDetailRepository(
                     feedDetailService: DefaultFeedDetailService()
+                ), userRepository: DefaultUserRepository(
+                    userService: DefaultUserService(),
+                    blocksService: DefaultBlocksService()
                 ),
                 feedId: feedId
             )
@@ -385,6 +388,13 @@ extension UIViewController {
     
     func dismissViewController() {
         self.dismiss(animated: false)
+    }
+    
+    func pushToNormalSearchViewController() {
+        let normalSearchViewController = NormalSearchViewController(viewModel: NormalSearchViewModel(searchRepository: DefaultSearchRepository(searchService: DefaultSearchService())))
+        normalSearchViewController.navigationController?.isNavigationBarHidden = false
+        normalSearchViewController.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(normalSearchViewController, animated: true)
     }
 }
 
