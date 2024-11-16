@@ -8,5 +8,5 @@
 import Foundation
 
 enum LoginButtonType {
-    case kakao, naver, apple, skip
+    case kakao, apple, skip
 }

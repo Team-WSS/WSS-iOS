@@ -44,6 +44,7 @@ final class OnboardingViewModel: ViewModelType {
     private let stageIndex = BehaviorRelay<Int>(value: 0)
     private let progressOffset = BehaviorRelay<CGFloat>(value: 0)
     private let showNetworkErrorView = PublishRelay<Void>()
+    private let moveToLoginViewController = PublishRelay<Void>()
     
     //MARK: - Life Cycle
     
@@ -74,6 +75,7 @@ final class OnboardingViewModel: ViewModelType {
         let backButtonDidTap: ControlEvent<Void>
         let scrollViewContentOffset: ControlProperty<CGPoint>
         let skipButtonDidTap: ControlEvent<Void>
+        let networkErrorRefreshButtonDidTap: ControlEvent<Void>
     }
     
     struct Output {
@@ -100,6 +102,8 @@ final class OnboardingViewModel: ViewModelType {
         let moveToNextStage: Driver<Void>
         let moveToOnboardingSuccessViewController: Driver<String>
         let progressOffset: Driver<CGFloat>
+        let showNetworkErrorView: Driver<Void>
+        let moveToLoginViewController: Driver<Void>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -148,6 +152,7 @@ final class OnboardingViewModel: ViewModelType {
         
         input.duplicateCheckButtonDidTap
             .withLatestFrom(input.nicknameTextFieldText)
+            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, nickname in
                 owner.checkNicknameisValid(nickname, disposeBag: disposeBag)
             })
@@ -239,6 +244,16 @@ final class OnboardingViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        input.networkErrorRefreshButtonDidTap
+            .bind(with: self, onNext: { owner, _ in
+                UserDefaults.standard.setValue(nil,
+                                               forKey: StringLiterals.UserDefault.accessToken)
+                UserDefaults.standard.setValue(nil,
+                                               forKey: StringLiterals.UserDefault.refreshToken)
+                owner.moveToLoginViewController.accept(())
+            })
+            .disposed(by: disposeBag)
+        
         return Output(
             isNicknameTextFieldEditing: isNicknameFieldEditing.asDriver(),
             nicknameTextFieldClear: nicknameTextFieldClear.asDriver(onErrorJustReturn: ()),
@@ -255,7 +270,9 @@ final class OnboardingViewModel: ViewModelType {
             moveToLastStage: moveToLastStage.asDriver(onErrorJustReturn: ()),
             moveToNextStage: moveToNextStage.asDriver(onErrorJustReturn: ()),
             moveToOnboardingSuccessViewController: moveToOnboardingSuccessViewController.asDriver(onErrorJustReturn: "Error"),
-            progressOffset: progressOffset.asDriver()
+            progressOffset: progressOffset.asDriver(),
+            showNetworkErrorView: showNetworkErrorView.asDriver(onErrorJustReturn: ()),
+            moveToLoginViewController: moveToLoginViewController.asDriver(onErrorJustReturn: ())
         )
     }
     
@@ -347,6 +364,8 @@ final class OnboardingViewModel: ViewModelType {
                                            forKey: StringLiterals.UserDefault.userGender)
             UserDefaults.standard.setValue(self.nicknameText.value,
                                            forKey: StringLiterals.UserDefault.userNickname)
+            UserDefaults.standard.setValue(true,
+                                           forKey: StringLiterals.UserDefault.isRegister)
             owner.moveToOnboardingSuccessViewController.accept(owner.nicknameText.value)
         }, onFailure: { owner, error in
             owner.showNetworkErrorView.accept(())

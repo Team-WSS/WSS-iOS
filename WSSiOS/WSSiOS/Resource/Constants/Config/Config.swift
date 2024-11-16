@@ -13,6 +13,7 @@ enum Config {
             static let baseURL = "BASE_URL"
             static let testToken = "TEST_TOKEN"
             static let bucketURL = "BUCKET_URL"
+            static let kakaoAppKey = "KAKAO_APP_KEY"
         }
     }
     

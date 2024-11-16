@@ -185,6 +185,21 @@ final class OnboardingViewController: UIViewController {
                 owner.scrollToNextItem()
             })
             .disposed(by: disposeBag)
+        
+        output.showNetworkErrorView
+            .drive(with: self, onNext: { owner, _ in
+                owner.rootView.showNetworkErrorView()
+            })
+            .disposed(by: disposeBag)
+        
+        output.moveToLoginViewController
+            .drive(with: self, onNext: { owner, _ in
+                guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else {
+                    return
+                }
+                sceneDelegate.setRootToLoginViewController()
+            })
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Actions
@@ -201,7 +216,7 @@ final class OnboardingViewController: UIViewController {
                 .map { view in
                     view.genreButton.rx.tap.map { view.genre }
                 }
-            )
+        )
         
         let getNotificationBirth = NotificationCenter.default.rx.notification(NSNotification.Name("Birth"))
             .map { notification -> Int? in
@@ -227,7 +242,8 @@ final class OnboardingViewController: UIViewController {
             nextButtonDidTap: nextButtonDidTap,
             backButtonDidTap: rootView.backButton.rx.tap,
             scrollViewContentOffset: self.rootView.scrollView.rx.contentOffset,
-            skipButtonDidTap: rootView.skipButton.rx.tap
+            skipButtonDidTap: rootView.skipButton.rx.tap,
+            networkErrorRefreshButtonDidTap: rootView.networkErrrorView.refreshButton.rx.tap
         )
     }
     
