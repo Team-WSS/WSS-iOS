@@ -16,10 +16,11 @@ final class MyPageView: UIView {
     //MARK: - Properties
     
     let isMyPage:Bool
-
+    
     //MARK: - Components
     
     let scrollView = UIScrollView()
+    let contentView = UIView()
     
     let headerView = MyPageProfileHeaderView()
     let mainStickyHeaderView = UIView()
@@ -28,7 +29,7 @@ final class MyPageView: UIView {
     let myPageLibraryView = MyPageLibraryView()
     
     // MARK: - Life Cycle
-
+    
     init(isMyPage: Bool) {
         self.isMyPage = isMyPage
         super.init(frame: .zero)
@@ -61,15 +62,21 @@ final class MyPageView: UIView {
         addSubviews(scrollView,
                     scrolledStstickyHeaderView)
         
-        scrollView.addSubviews(headerView,
-                               mainStickyHeaderView,
-                               myPageLibraryView)
+        scrollView.addSubview(contentView)
+        contentView.addSubviews(headerView,
+                                mainStickyHeaderView,
+                                myPageLibraryView)
     }
     
     private func setLayout() {
         scrollView.snp.makeConstraints {
             $0.top.equalTo(safeAreaLayoutGuide)
             $0.left.right.bottom.equalToSuperview()
+        }
+        
+        contentView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+            $0.width.equalToSuperview()
         }
         
         headerView.snp.makeConstraints {

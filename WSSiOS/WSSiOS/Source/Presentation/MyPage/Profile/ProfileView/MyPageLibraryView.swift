@@ -23,7 +23,10 @@ final class MyPageLibraryView: UIView {
     //MARK: - Components
     
     let inventoryView = MyPageInventoryView()
+    
     let preferencesEmptyView = MyPagePreferencesEmptyView()
+    
+    let genrePrefrerencesView = MyPageGenrePreferencesView()
     let novelPrefrerencesView = MyPageNovelPreferencesView()
     
     // MARK: - Life Cycle
@@ -53,12 +56,13 @@ final class MyPageLibraryView: UIView {
                              preferencesEmptyView)
         } else {
             self.addSubviews(inventoryView,
+                             genrePrefrerencesView,
                              novelPrefrerencesView)
         }
     }
     
     private func setLayout() {
-        inventoryView.snp.makeConstraints {
+        inventoryView.snp.remakeConstraints {
             $0.top.leading.trailing.equalToSuperview()
             $0.height.equalTo(160)
         }
@@ -66,21 +70,33 @@ final class MyPageLibraryView: UIView {
         if !isExist {
             preferencesEmptyView.snp.makeConstraints {
                 $0.top.equalTo(inventoryView.snp.bottom).offset(3)
-                $0.leading.trailing.bottom.equalToSuperview()
+                $0.leading.trailing.equalToSuperview()
                 $0.height.equalTo(363)
+                $0.bottom.equalToSuperview()
             }
         } else {
-            novelPrefrerencesView.snp.makeConstraints {
+            genrePrefrerencesView.snp.makeConstraints {
                 $0.top.equalTo(inventoryView.snp.bottom).offset(3)
-                $0.leading.trailing.bottom.equalToSuperview()
+                $0.leading.trailing.equalToSuperview()
+                $0.height.equalTo(221.5)
+            }
+            
+            novelPrefrerencesView.snp.makeConstraints {
+                $0.top.equalTo(genrePrefrerencesView.snp.bottom).offset(3)
+                $0.leading.trailing.equalToSuperview()
+                $0.height.equalTo(270)
                 $0.bottom.equalToSuperview()
             }
         }
     }
     
     func updateView(isExist: Bool) {
+        subviews.forEach { $0.removeFromSuperview() }
+        
         setHierarchy()
         setLayout()
+        
+        layoutIfNeeded()
     }
 }
 

@@ -452,6 +452,9 @@
 		E40746622CE8688A005D75D5 /* MyPageLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40746612CE8688A005D75D5 /* MyPageLibraryView.swift */; };
 		E40746662CE870AE005D75D5 /* MyPageNovelPreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40746652CE870AE005D75D5 /* MyPageNovelPreferencesView.swift */; };
 		E40746682CE871EE005D75D5 /* MyPageNovelPreferencesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40746672CE871EE005D75D5 /* MyPageNovelPreferencesCollectionViewCell.swift */; };
+		E407466A2CE896D4005D75D5 /* MyPageGenrePreferencesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40746692CE896D4005D75D5 /* MyPageGenrePreferencesCollectionViewCell.swift */; };
+		E407466C2CE89719005D75D5 /* MyPageGenrePreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E407466B2CE89719005D75D5 /* MyPageGenrePreferencesView.swift */; };
+		E407466E2CE897C7005D75D5 /* MyPageGenrePreferencesTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E407466D2CE897C7005D75D5 /* MyPageGenrePreferencesTopView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -892,6 +895,9 @@
 		E40746612CE8688A005D75D5 /* MyPageLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageLibraryView.swift; sourceTree = "<group>"; };
 		E40746652CE870AE005D75D5 /* MyPageNovelPreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageNovelPreferencesView.swift; sourceTree = "<group>"; };
 		E40746672CE871EE005D75D5 /* MyPageNovelPreferencesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageNovelPreferencesCollectionViewCell.swift; sourceTree = "<group>"; };
+		E40746692CE896D4005D75D5 /* MyPageGenrePreferencesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageGenrePreferencesCollectionViewCell.swift; sourceTree = "<group>"; };
+		E407466B2CE89719005D75D5 /* MyPageGenrePreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageGenrePreferencesView.swift; sourceTree = "<group>"; };
+		E407466D2CE897C7005D75D5 /* MyPageGenrePreferencesTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageGenrePreferencesTopView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -986,6 +992,7 @@
 			children = (
 				2C41E0CD2CA4949C00FFD233 /* MyPageEditProfileGenreCollectionViewCell.swift */,
 				E40746672CE871EE005D75D5 /* MyPageNovelPreferencesCollectionViewCell.swift */,
+				E40746692CE896D4005D75D5 /* MyPageGenrePreferencesCollectionViewCell.swift */,
 			);
 			path = ProfileCell;
 			sourceTree = "<group>";
@@ -1356,8 +1363,8 @@
 			isa = PBXGroup;
 			children = (
 				2CCBF9EF2B4C1FD800D787C2 /* MyPageView.swift */,
-				2C41E0CF2CA494B800FFD233 /* MyPageEditProfileView.swift */,
 				E40746612CE8688A005D75D5 /* MyPageLibraryView.swift */,
+				2C41E0CF2CA494B800FFD233 /* MyPageEditProfileView.swift */,
 				2C41E0C62CA493C100FFD233 /* ProfileCell */,
 				2CDB20C72C9B70700005C39B /* ProfileAssistantView */,
 			);
@@ -1446,6 +1453,8 @@
 				2C41E0CB2CA4948400FFD233 /* MyPageCountView.swift */,
 				E407465F2CE864FD005D75D5 /* MyPageInventoryView.swift */,
 				E40746652CE870AE005D75D5 /* MyPageNovelPreferencesView.swift */,
+				E407466B2CE89719005D75D5 /* MyPageGenrePreferencesView.swift */,
+				E407466D2CE897C7005D75D5 /* MyPageGenrePreferencesTopView.swift */,
 			);
 			path = ProfileAssistantView;
 			sourceTree = "<group>";
@@ -3029,8 +3038,10 @@
 				2C536C2E2C8F1F21004C5740 /* MyPageDeleteIDReasonView.swift in Sources */,
 				395928A02C99527500E7B17B /* LoginSkipButton.swift in Sources */,
 				B971D8792C0388E0008934D8 /* SearchRepository.swift in Sources */,
+				E407466E2CE897C7005D75D5 /* MyPageGenrePreferencesTopView.swift in Sources */,
 				CDC03F512CA6C5CD002D301F /* NovelReviewResult.swift in Sources */,
 				B9E565FF2C0452AA00DB51FF /* NormalSearchEmptyView.swift in Sources */,
+				E407466C2CE89719005D75D5 /* MyPageGenrePreferencesView.swift in Sources */,
 				B96863DA2C482E8C008CFBA5 /* DetailSearchView.swift in Sources */,
 				A18432EA2B511C4300910940 /* RecordTableViewCell.swift in Sources */,
 				2CCBFA062B4DD85600D787C2 /* MyPageTallyReuseView.swift in Sources */,
@@ -3267,6 +3278,7 @@
 				CD39F2DA2B50DDBF00B73A5C /* TrashNovelDetailInfoGenreView.swift in Sources */,
 				396C7C542CB1A197003C9712 /* NicknameAvailablity.swift in Sources */,
 				CD1F7E0C2C99AB7C0039972C /* NovelSelectedKeywordListView.swift in Sources */,
+				E407466A2CE896D4005D75D5 /* MyPageGenrePreferencesCollectionViewCell.swift in Sources */,
 				39F686FE2C6F5D5C0065999F /* NovelDetailInfoReviewGraphStackView.swift in Sources */,
 				395928952C9888A600E7B17B /* LoginViewController.swift in Sources */,
 				2CD9114A2C0D8948006B8D72 /* FeedContentView.swift in Sources */,

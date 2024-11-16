@@ -137,7 +137,7 @@ final class MyPageViewController: UIViewController, UIScrollViewDelegate {
         output.bindGenreData
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, data in
-                print(data)
+                owner.rootView.myPageLibraryView.genrePrefrerencesView.bindData(data: data)
             })
             .disposed(by: disposeBag)
         
