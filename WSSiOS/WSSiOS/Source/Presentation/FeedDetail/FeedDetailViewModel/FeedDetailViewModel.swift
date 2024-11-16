@@ -75,6 +75,8 @@ final class FeedDetailViewModel: ViewModelType {
     }
     
     struct Input {
+        let viewWillAppearEvent: Observable<Void>
+        
         let backButtonDidTap: ControlEvent<Void>
         let replyCollectionViewContentSize: Observable<CGSize?>
         let likeButtonDidTap: ControlEvent<Void>
@@ -144,30 +146,29 @@ final class FeedDetailViewModel: ViewModelType {
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
-        getSingleFeed(feedId)
+        input.viewWillAppearEvent
+            .flatMapLatest { _ in
+                Observable.zip(
+                    self.getSingleFeed(self.feedId),
+                    self.getSingleFeedComments(self.feedId),
+                    self.getMyProfile()
+                )
+            }
             .subscribe(with: self, onNext: { owner, data in
-                owner.feedData.onNext(data)
-                owner.likeButtonState.accept(data.isLiked)
-                owner.likeCount.accept(data.likeCount)
-                owner.novelId = data.novelId
-                owner.commentCount.accept(data.commentCount)
-                owner.isMyFeed.accept(data.isMyFeed)
-            }, onError: { owner, error in
-                owner.feedData.onError(error)
-            })
-            .disposed(by: disposeBag)
-        
-        getSingleFeedComments(feedId)
-            .subscribe(with: self, onNext: { owner, data in
-                owner.commentsData.accept(data.comments)
-            }, onError: { owner, error in
-                print(error)
-            })
-            .disposed(by: disposeBag)
-        
-        getMyProfile()
-            .subscribe(with: self, onNext: { owner, data in
-                owner.myProfileData.accept(data)
+                let feed = data.0
+                let comments = data.1
+                let profile = data.2
+                
+                owner.feedData.onNext(feed)
+                owner.likeButtonState.accept(feed.isLiked)
+                owner.likeCount.accept(feed.likeCount)
+                owner.novelId = feed.novelId
+                owner.commentCount.accept(feed.commentCount)
+                owner.isMyFeed.accept(feed.isMyFeed)
+
+                owner.commentsData.accept(comments.comments)
+
+                owner.myProfileData.accept(profile)
             }, onError: { owner, error in
                 print(error)
             })
