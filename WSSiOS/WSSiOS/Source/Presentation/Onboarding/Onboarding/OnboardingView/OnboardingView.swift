@@ -23,6 +23,7 @@ final class OnboardingView: UIView {
     let nickNameView = OnboardingNicknameView()
     let birthGenderView = OnboardingBirthGenderView()
     let genrePreferenceView = OnboardingGenrePreferenceView()
+    let networkErrrorView = WSSNetworkErrorView()
     
     //MARK: - Life Cycle
     
@@ -60,11 +61,16 @@ final class OnboardingView: UIView {
             $0.isPagingEnabled = true
             $0.isScrollEnabled = false
         }
+        
+        networkErrrorView.do {
+            $0.isHidden = true
+        }
     }
     
     private func setHierarchy() {
         self.addSubviews(progressView,
-                         scrollView)
+                         scrollView,
+                         networkErrrorView)
         scrollView.addSubview(contentView)
         contentView.addSubviews(nickNameView,
                                 birthGenderView,
@@ -80,6 +86,10 @@ final class OnboardingView: UIView {
         scrollView.snp.makeConstraints {
             $0.top.equalTo(progressView.snp.bottom)
             $0.bottom.horizontalEdges.equalToSuperview()
+        }
+        
+        networkErrrorView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
         
         contentView.snp.makeConstraints {
@@ -107,5 +117,10 @@ final class OnboardingView: UIView {
             $0.width.equalTo(UIScreen.main.bounds.width)
         }
     }
+    
+    //MARK: - Custom Method
+    
+    func showNetworkErrorView() {
+        networkErrrorView.isHidden = false
+    }
 }
-

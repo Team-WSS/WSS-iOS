@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct MyProfileResult {
+struct MyProfileResult: Codable {
     let nickname, intro, avatarImage: String
     let genrePreferences: [String]
 }

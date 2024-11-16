@@ -10,14 +10,16 @@ import Foundation
 import RxSwift
 
 protocol AuthService {
-    func loginWithApple(userIdentifier: String,
-                        email: String?) -> Single<LoginResult>
+    func loginWithApple(authorizationCode: String,
+                        idToken: String) -> Single<LoginResult>
+    func loginWithKakao(_ kakaoAccessToken: String) -> Single<LoginResult>
     func reissueToken() -> Single<ReissueResult>
 }
 
+
 final class DefaultAuthService: NSObject, Networking, AuthService {
-    func loginWithApple(userIdentifier: String, email: String?) -> RxSwift.Single<LoginResult> {
-        guard let appleLoginBody = try? JSONEncoder().encode(AppleLoginBody(userIdentifier: userIdentifier, email: email)) else {
+    func loginWithApple(authorizationCode: String, idToken: String) -> RxSwift.Single<LoginResult> {
+        guard let appleLoginBody = try? JSONEncoder().encode(AppleLoginBody(authorizationCode: authorizationCode, idToken: idToken)) else {
             return Single.error(NetworkServiceError.invalidRequestError)
         }
                 
@@ -34,6 +36,25 @@ final class DefaultAuthService: NSObject, Networking, AuthService {
                                        to: LoginResult.self) }
                 .asSingle()
 
+        } catch {
+            return Single.error(error)
+        }
+    }
+    
+    func loginWithKakao(_ kakaoAccessToken: String) -> Single<LoginResult> {
+        do {
+            let request = try makeHTTPRequest(method: .post,
+                                              path: URLs.Auth.loginWithKakao,
+                                              headers: APIConstants.kakaoLoginHeader(kakaoAccessToken),
+                                              body: nil)
+
+            NetworkLogger.log(request: request)
+
+            return basicURLSession.rx.data(request: request)
+                .map { try self.decode(data: $0,
+                                       to: LoginResult.self) }
+                .asSingle()
+            
         } catch {
             return Single.error(error)
         }

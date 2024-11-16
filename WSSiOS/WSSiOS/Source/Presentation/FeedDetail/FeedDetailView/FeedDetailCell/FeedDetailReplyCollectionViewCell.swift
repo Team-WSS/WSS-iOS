@@ -7,10 +7,24 @@
 
 import UIKit
 
+import RxSwift
+import RxCocoa
 import SnapKit
 import Then
 
+protocol FeedDetailReplyCollectionDelegate: AnyObject {
+    func dotsButtonDidTap(commentId: Int, isMyComment: Bool)
+    func spoilerTextDidTap()
+}
+
 final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
+    
+    // MARK: - Properties
+    
+    private let disposeBag = DisposeBag()
+    weak var delegate: FeedDetailReplyCollectionDelegate?
+    
+    private let comment = PublishRelay<FeedComment>()
     
     //MARK: - Components
     
@@ -31,6 +45,8 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
         setUI()
         setHierarchy()
         setLayout()
+        
+        bindAction()
     }
     
     required init?(coder: NSCoder) {
@@ -66,15 +82,12 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
         }
         
         isModifiedLabel.do {
+            $0.applyWSSFont(.body5, with: StringLiterals.Feed.modifiedText)
             $0.textColor = .wssGray200
         }
-        
-        replyContentLabel.do {
-            $0.textColor = .wssBlack
-        }
-        
+
         threeDotsButton.do {
-            $0.setImage(.icThreedots.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray100), for: .normal)
+            $0.setImage(.icThreedots.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray200), for: .normal)
             $0.contentMode = .scaleAspectFit
         }
     }
@@ -92,9 +105,9 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
     
     private func setLayout() {
         userProfileImageView.snp.makeConstraints {
-            $0.leading.equalToSuperview()
-            $0.size.equalTo(36)
-            $0.top.equalToSuperview().inset(4.5)
+            $0.size.equalTo(42)
+            $0.top.equalToSuperview().inset(2.5)
+            $0.leading.equalToSuperview().inset(20)
         }
         
         userStackview.snp.makeConstraints {
@@ -105,28 +118,78 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
         replyContentLabel.snp.makeConstraints {
             $0.top.equalTo(userStackview.snp.bottom)
             $0.leading.equalTo(userStackview.snp.leading)
-            $0.width.equalTo(247)
+            $0.trailing.equalTo(threeDotsButton.snp.leading).offset(-14)
             $0.bottom.equalToSuperview()
         }
         
         threeDotsButton.snp.makeConstraints {
-            $0.size.equalTo(18)
-            $0.leading.equalTo(replyContentLabel.snp.trailing).offset(20)
-            $0.trailing.equalToSuperview()
+            $0.size.equalTo(42)
+            $0.trailing.equalToSuperview().inset(20)
             $0.centerY.equalTo(userProfileImageView.snp.centerY)
         }
     }
     
+    //MARK: - Bind
+    
+    private func bindAction() {
+        threeDotsButton.rx.tap
+            .withLatestFrom(comment)
+            .subscribe(with: self, onNext: { owner, comment in
+                owner.delegate?.dotsButtonDidTap(commentId: comment.commentId, isMyComment: comment.isMyComment)
+            })
+            .disposed(by: disposeBag)
+
+        replyContentLabel.rx.tapGesture()
+            .when(.recognized)
+            .withLatestFrom(comment)
+            .filter { $0.isSpoiler }
+            .subscribe(with: self, onNext: { owner, comment in
+                owner.delegate?.spoilerTextDidTap()
+                owner.showFullText(for: comment)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func showFullText(for comment: FeedComment) {
+        replyContentLabel.applyWSSFont(.body2, with: comment.commentContent)
+        replyContentLabel.textColor = .wssBlack
+        replyContentLabel.numberOfLines = 0
+    }
+    
     func bindData(data: FeedComment) {
+        self.comment.accept(data)
+        
         self.userProfileImageView.kfSetImage(url: makeBucketImageURLString(path: data.userProfileImage))
-        self.userNicknameLabel.applyWSSFont(.title2, with: data.userNickname)
+        self.userNicknameLabel.do {
+            if data.isBlocked {
+                $0.applyWSSFont(.title2, with: StringLiterals.FeedDetail.deleteAccountUserNickname)
+            } else {
+                $0.applyWSSFont(.title2, with: data.userNickname)
+            }
+        }
         self.createdDateLabel.applyWSSFont(.body5, with: data.createdDate)
-        if data.isModified {
-            self.isModifiedLabel.applyWSSFont(.body5, with: StringLiterals.Feed.modifiedText)
-        }
+        self.isModifiedLabel.isHidden = !data.isModified
         self.replyContentLabel.do {
-            $0.applyWSSFont(.body2, with: data.commentContent)
-            $0.numberOfLines = 0
+            if data.isBlocked {
+                $0.applyWSSFont(.body2, with: StringLiterals.FeedDetail.blockedComment)
+                $0.textColor = .wssGray200
+                $0.isUserInteractionEnabled = false
+            } else if data.isHidden {
+                $0.applyWSSFont(.body2, with: StringLiterals.FeedDetail.hiddenComment)
+                $0.textColor = .wssGray200
+                $0.isUserInteractionEnabled = false
+            } else if data.isSpoiler {
+                $0.applyWSSFont(.body2, with: StringLiterals.FeedDetail.spoilerComment)
+                $0.textColor = .wssSecondary100
+                $0.isUserInteractionEnabled = true
+            } else {
+                $0.applyWSSFont(.body2, with: data.commentContent)
+                $0.textColor = .wssBlack
+                $0.numberOfLines = 0
+                $0.isUserInteractionEnabled = false
+            }
         }
+        
+        self.threeDotsButton.isHidden = data.isHidden || data.isBlocked
     }
 }
