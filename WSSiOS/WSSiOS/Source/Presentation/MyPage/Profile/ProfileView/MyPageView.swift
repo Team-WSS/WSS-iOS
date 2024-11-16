@@ -13,6 +13,10 @@ import Then
 
 final class MyPageView: UIView {
     
+    //MARK: - Properties
+    
+    let isMyPage:Bool
+
     //MARK: - Components
     
     let scrollView = UIScrollView()
@@ -21,14 +25,13 @@ final class MyPageView: UIView {
     let mainStickyHeaderView = UIView()
     let scrolledStstickyHeaderView = UIView()
     
-    let dummyView = UIView().then {
-        $0.backgroundColor = .wssGray70
-    }
-
-    // MARK: - Life Cycle
+    let myPageLibraryView = MyPageLibraryView(isEmpty: true)
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    // MARK: - Life Cycle
+
+    init(isMyPage: Bool) {
+        self.isMyPage = isMyPage
+        super.init(frame: .zero)
         
         setUI()
         setHierarchy()
@@ -60,7 +63,7 @@ final class MyPageView: UIView {
         
         scrollView.addSubviews(headerView,
                                mainStickyHeaderView,
-                               dummyView)
+                               myPageLibraryView)
     }
     
     private func setLayout() {
@@ -85,11 +88,9 @@ final class MyPageView: UIView {
             $0.height.equalTo(47)
         }
         
-        dummyView.snp.makeConstraints {
+        myPageLibraryView.snp.makeConstraints {
             $0.top.equalTo(mainStickyHeaderView.snp.bottom)
-            $0.width.equalToSuperview()
-            $0.height.equalTo(1000)
-            $0.bottom.equalToSuperview()
+            $0.width.bottom.equalToSuperview()
         }
     }
 }

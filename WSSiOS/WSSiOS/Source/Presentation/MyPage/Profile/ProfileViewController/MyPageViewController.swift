@@ -23,7 +23,7 @@ final class MyPageViewController: UIViewController {
     
     //MARK: - UI Components
     
-    private var rootView = MyPageView()
+    private var rootView = MyPageView(isMyPage: true)
     
     private lazy var settingButton = UIButton()
     private lazy var dropdownButton = WSSDropdownButton()

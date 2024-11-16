@@ -223,12 +223,12 @@ final class DefaultFeedDetailService: NSObject, Networking, FeedDetailService {
         do {
             let request = try makeHTTPRequest(method: .post,
                                               path: URLs.Feed.postSpoilerComment(feedId: feedId, commentId: commentId),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
             
@@ -241,12 +241,12 @@ final class DefaultFeedDetailService: NSObject, Networking, FeedDetailService {
         do {
             let request = try makeHTTPRequest(method: .post,
                                               path: URLs.Feed.postImpertinenceComment(feedId: feedId, commentId: commentId),
-                                              headers: APIConstants.testTokenHeader,
+                                              headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
             NetworkLogger.log(request: request)
             
-            return urlSession.rx.data(request: request)
+            return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
             
