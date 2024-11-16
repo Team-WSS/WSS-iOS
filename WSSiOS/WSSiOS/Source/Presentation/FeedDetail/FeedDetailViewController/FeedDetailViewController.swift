@@ -537,6 +537,7 @@ extension FeedDetailViewController: UITextViewDelegate {
         backgroundHeight = numberOfLines == 1 ? 42 : min(estimatedSize.height + 14, 98)
         
         rootView.replyWritingView.replyWritingTextView.snp.updateConstraints {
+            $0.centerY.equalToSuperview()
             $0.height.equalTo(min(estimatedSize.height, 84))
         }
         

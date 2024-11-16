@@ -133,7 +133,7 @@ final class FeedDetailReplyWritingView: UIView {
     func makeTextViewEmpty() {
         replyWritingTextView.text = ""
         replyWritingTextView.snp.updateConstraints {
-            $0.height.equalTo(21)
+            $0.centerY.equalToSuperview()
         }
         textViewBackgroundView.snp.updateConstraints {
             $0.height.equalTo(42)
