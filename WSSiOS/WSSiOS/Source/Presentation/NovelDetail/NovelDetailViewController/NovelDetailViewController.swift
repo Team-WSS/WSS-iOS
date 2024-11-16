@@ -164,8 +164,6 @@ final class NovelDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        
-        
         //MARK: - Bind/NovelDetailHeader
         
         output.showLargeNovelCoverImage
