@@ -73,7 +73,7 @@ final class NovelDetailFeedListView: UIView {
     
     func showDropdownView(indexPath: IndexPath, isMyFeed: Bool) {
         dropdownView.do {
-            $0.configureDropdown(isMyFeed: isMyFeed)
+            $0.configureDropdown(isMine: isMyFeed)
             $0.isHidden = false
         }
         updateDropdownViewLayout(indexPath: indexPath)
