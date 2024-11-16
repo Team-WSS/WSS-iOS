@@ -6,8 +6,9 @@
 //
 
 import UIKit
-import RxKakaoSDKAuth
+
 import KakaoSDKAuth
+import RxKakaoSDKAuth
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
