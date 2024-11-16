@@ -452,7 +452,6 @@
 		E40746622CE8688A005D75D5 /* MyPageLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40746612CE8688A005D75D5 /* MyPageLibraryView.swift */; };
 		E40746662CE870AE005D75D5 /* MyPageNovelPreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40746652CE870AE005D75D5 /* MyPageNovelPreferencesView.swift */; };
 		E40746682CE871EE005D75D5 /* MyPageNovelPreferencesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40746672CE871EE005D75D5 /* MyPageNovelPreferencesCollectionViewCell.swift */; };
-		E407466A2CE896D4005D75D5 /* MyPageGenrePreferencesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40746692CE896D4005D75D5 /* MyPageGenrePreferencesCollectionViewCell.swift */; };
 		E407466C2CE89719005D75D5 /* MyPageGenrePreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E407466B2CE89719005D75D5 /* MyPageGenrePreferencesView.swift */; };
 		E407466E2CE897C7005D75D5 /* MyPageGenrePreferencesTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E407466D2CE897C7005D75D5 /* MyPageGenrePreferencesTopView.swift */; };
 		E40746702CE8DAB6005D75D5 /* MyPageGenrePreferencesOtherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E407466F2CE8DAB6005D75D5 /* MyPageGenrePreferencesOtherView.swift */; };
@@ -897,7 +896,6 @@
 		E40746612CE8688A005D75D5 /* MyPageLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageLibraryView.swift; sourceTree = "<group>"; };
 		E40746652CE870AE005D75D5 /* MyPageNovelPreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageNovelPreferencesView.swift; sourceTree = "<group>"; };
 		E40746672CE871EE005D75D5 /* MyPageNovelPreferencesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageNovelPreferencesCollectionViewCell.swift; sourceTree = "<group>"; };
-		E40746692CE896D4005D75D5 /* MyPageGenrePreferencesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageGenrePreferencesCollectionViewCell.swift; sourceTree = "<group>"; };
 		E407466B2CE89719005D75D5 /* MyPageGenrePreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageGenrePreferencesView.swift; sourceTree = "<group>"; };
 		E407466D2CE897C7005D75D5 /* MyPageGenrePreferencesTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageGenrePreferencesTopView.swift; sourceTree = "<group>"; };
 		E407466F2CE8DAB6005D75D5 /* MyPageGenrePreferencesOtherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageGenrePreferencesOtherView.swift; sourceTree = "<group>"; };
@@ -996,7 +994,6 @@
 			children = (
 				2C41E0CD2CA4949C00FFD233 /* MyPageEditProfileGenreCollectionViewCell.swift */,
 				E40746672CE871EE005D75D5 /* MyPageNovelPreferencesCollectionViewCell.swift */,
-				E40746692CE896D4005D75D5 /* MyPageGenrePreferencesCollectionViewCell.swift */,
 				E40746712CE8DB89005D75D5 /* MyPageGenrePreferencesOtherTableViewCell.swift */,
 			);
 			path = ProfileCell;
@@ -3285,7 +3282,6 @@
 				CD39F2DA2B50DDBF00B73A5C /* TrashNovelDetailInfoGenreView.swift in Sources */,
 				396C7C542CB1A197003C9712 /* NicknameAvailablity.swift in Sources */,
 				CD1F7E0C2C99AB7C0039972C /* NovelSelectedKeywordListView.swift in Sources */,
-				E407466A2CE896D4005D75D5 /* MyPageGenrePreferencesCollectionViewCell.swift in Sources */,
 				39F686FE2C6F5D5C0065999F /* NovelDetailInfoReviewGraphStackView.swift in Sources */,
 				395928952C9888A600E7B17B /* LoginViewController.swift in Sources */,
 				2CD9114A2C0D8948006B8D72 /* FeedContentView.swift in Sources */,

@@ -51,7 +51,7 @@ final class MyPageGenrePreferencesTopView: UIView {
     private func setLayout() {
         topGenreImageView.snp.makeConstraints {
             $0.top.centerX.equalToSuperview()
-            $0.size.equalTo(48)
+            $0.size.equalTo(37.09)
         }
         
         topGenreTitleLabel.snp.makeConstraints {

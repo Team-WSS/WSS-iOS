@@ -50,7 +50,7 @@ final class MyPageGenrePreferencesOtherTableViewCell: UITableViewCell {
         genreImageView.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.leading.equalToSuperview().inset(40)
-            $0.size.equalTo(40)
+            $0.size.equalTo(27.27)
         }
         
         genreLabel.snp.makeConstraints {
