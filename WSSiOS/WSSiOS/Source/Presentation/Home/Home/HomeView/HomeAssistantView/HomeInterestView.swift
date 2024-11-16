@@ -69,7 +69,7 @@ final class HomeInterestView: UIView {
             // 로그인
             switch message {
             case .noInterestNovels:
-                // 유저의 선호장르가 없을 때
+                // 유저의 관심작품이 없을 때
                 if let nickname = userNickname {
                     titleLabel.applyWSSFont(.headline1, with: "\(nickname)\(StringLiterals.Home.Title.interest)")
                 }
@@ -88,7 +88,7 @@ final class HomeInterestView: UIView {
                 interestEmptyView.removeFromSuperview()
                 subTitleLabel.removeFromSuperview()
             case .noAssociatedFeeds:
-                // 유저의 선호장르에 대한 글이 하나도 없을 때
+                // 유저의 관심작품에 대한 글이 하나도 없을 때
                 titleLabel.applyWSSFont(.headline1, with: StringLiterals.Home.Title.notLoggedInInterest)
                 interestCollectionView.removeFromSuperview()
                 self.addSubviews(titleLabel,
