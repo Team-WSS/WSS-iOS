@@ -450,6 +450,8 @@
 		E407465E2CE85C3B005D75D5 /* MyPagePreferencesEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E407465D2CE85C3B005D75D5 /* MyPagePreferencesEmptyView.swift */; };
 		E40746602CE864FD005D75D5 /* MyPageInventoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E407465F2CE864FD005D75D5 /* MyPageInventoryView.swift */; };
 		E40746622CE8688A005D75D5 /* MyPageLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40746612CE8688A005D75D5 /* MyPageLibraryView.swift */; };
+		E40746662CE870AE005D75D5 /* MyPageNovelPreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40746652CE870AE005D75D5 /* MyPageNovelPreferencesView.swift */; };
+		E40746682CE871EE005D75D5 /* MyPageNovelPreferencesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40746672CE871EE005D75D5 /* MyPageNovelPreferencesCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -888,6 +890,8 @@
 		E407465D2CE85C3B005D75D5 /* MyPagePreferencesEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPagePreferencesEmptyView.swift; sourceTree = "<group>"; };
 		E407465F2CE864FD005D75D5 /* MyPageInventoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageInventoryView.swift; sourceTree = "<group>"; };
 		E40746612CE8688A005D75D5 /* MyPageLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageLibraryView.swift; sourceTree = "<group>"; };
+		E40746652CE870AE005D75D5 /* MyPageNovelPreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageNovelPreferencesView.swift; sourceTree = "<group>"; };
+		E40746672CE871EE005D75D5 /* MyPageNovelPreferencesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageNovelPreferencesCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -981,6 +985,7 @@
 			isa = PBXGroup;
 			children = (
 				2C41E0CD2CA4949C00FFD233 /* MyPageEditProfileGenreCollectionViewCell.swift */,
+				E40746672CE871EE005D75D5 /* MyPageNovelPreferencesCollectionViewCell.swift */,
 			);
 			path = ProfileCell;
 			sourceTree = "<group>";
@@ -1440,6 +1445,7 @@
 				2CCBFA052B4DD85600D787C2 /* MyPageTallyReuseView.swift */,
 				2C41E0CB2CA4948400FFD233 /* MyPageCountView.swift */,
 				E407465F2CE864FD005D75D5 /* MyPageInventoryView.swift */,
+				E40746652CE870AE005D75D5 /* MyPageNovelPreferencesView.swift */,
 			);
 			path = ProfileAssistantView;
 			sourceTree = "<group>";
@@ -3057,6 +3063,7 @@
 				2CD911542C0D8A17006B8D72 /* FeedCollectionViewCell.swift in Sources */,
 				A1708F162B4D8E2700E35E50 /* HomeHeaderView.swift in Sources */,
 				2C41E0D42CA494D900FFD233 /* MyPageEditProfileViewModel.swift in Sources */,
+				E40746662CE870AE005D75D5 /* MyPageNovelPreferencesView.swift in Sources */,
 				2C41E0D22CA494C900FFD233 /* MyPageEditProfileViewController.swift in Sources */,
 				2C41E0D02CA494B800FFD233 /* MyPageEditProfileView.swift in Sources */,
 				2C41E0CE2CA4949C00FFD233 /* MyPageEditProfileGenreCollectionViewCell.swift in Sources */,
@@ -3327,6 +3334,7 @@
 				2CD229572B42EA75005400BE /* UIColor+.swift in Sources */,
 				A18432EC2B511E7400910940 /* RecordDateView.swift in Sources */,
 				B92A06692C49877700E27652 /* DetailSearchBottomView.swift in Sources */,
+				E40746682CE871EE005D75D5 /* MyPageNovelPreferencesCollectionViewCell.swift in Sources */,
 				399492F32C9A8ADE00298F16 /* LoginBannerCollectionViewCell.swift in Sources */,
 				3910137C2CCF5EC6001894E5 /* BirthPickerView.swift in Sources */,
 				A1DBB2FA2B4AA981000EE869 /* SearchCollectionViewCell.swift in Sources */,

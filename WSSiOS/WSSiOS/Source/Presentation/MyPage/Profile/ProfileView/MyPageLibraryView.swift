@@ -20,6 +20,7 @@ final class MyPageLibraryView: UIView {
     
     let inventoryView = MyPageInventoryView()
     let preferencesEmptyView = MyPagePreferencesEmptyView()
+    let novelPrefrerencesView = MyPageNovelPreferencesView()
     
     // MARK: - Life Cycle
     
@@ -48,7 +49,7 @@ final class MyPageLibraryView: UIView {
                              preferencesEmptyView)
         } else {
             self.addSubviews(inventoryView,
-                             preferencesEmptyView)
+                             novelPrefrerencesView)
         }
     }
     
@@ -65,10 +66,10 @@ final class MyPageLibraryView: UIView {
                 $0.height.equalTo(363)
             }
         } else {
-            preferencesEmptyView.snp.makeConstraints {
+            novelPrefrerencesView.snp.makeConstraints {
                 $0.top.equalTo(inventoryView.snp.bottom).offset(3)
                 $0.leading.trailing.bottom.equalToSuperview()
-                $0.height.equalTo(363)
+                $0.bottom.equalToSuperview()
             }
         }
     }
