@@ -515,9 +515,7 @@ extension FeedDetailViewController: UICollectionViewDelegateFlowLayout {
         label.sizeToFit()
         let labelHeight = label.frame.height
         let resizedLabelHeight = ceil(labelHeight)
-        
-        print("labelHeight: \(labelHeight)")
-        print("resizedLabelHeight: \(resizedLabelHeight)")
+    
         return resizedLabelHeight
     }
 }
