@@ -18,6 +18,17 @@ final class MyPageViewModel: ViewModelType {
     private let disposeBag = DisposeBag()
     var height: Double = 0.0
     
+    let dummyNovelPreferenceData = UserNovelPreferences(
+        attractivePoints: ["character", "material", "worldview"],
+        keywords: [
+            Keyword(keywordName: "서양풍/중세시대", keywordCount: 4),
+            Keyword(keywordName: "학원/아카데미", keywordCount: 3),
+            Keyword(keywordName: "SF", keywordCount: 3),
+            Keyword(keywordName: "동양풍/사극", keywordCount: 1),
+            Keyword(keywordName: "실존역사", keywordCount: 1)
+        ]
+    )
+    
     // MARK: - Life Cycle
     
     init(userRepository: UserRepository) {
@@ -34,16 +45,19 @@ final class MyPageViewModel: ViewModelType {
     }
     
     struct Output {
+        let IsExistPreference = PublishRelay<Bool>()
         let profileData = BehaviorSubject<MyProfileResult>(value: MyProfileResult(nickname: "",
                                                                                   intro: "",
-                                                                                  avatarImage: "", genrePreferences: []))
+                                                                                  avatarImage: "",
+                                                                                  genrePreferences: []))
         let settingButtonEnabled = PublishRelay<Void>()
         let dropdownButtonEnabled = PublishRelay<String>()
         let updateNavigationEnabled = BehaviorRelay<Bool>(value: false)
         let pushToEditViewController = PublishRelay<Void>()
-        let bindNovelData = BehaviorRelay<UserNovelPreferences>(value: UserNovelPreferences(attractivePoints: [],
-                                                                       keywords: []))
+        let bindattractivePointsData = BehaviorRelay<[String]>(value: [])
+        let bindKeywordCell = BehaviorRelay<[Keyword]>(value: [])
         let bindGenreData = BehaviorRelay<UserGenrePreferences>(value: UserGenrePreferences(genrePreferences: []))
+        let bindInventoryData = BehaviorRelay<UserNovelStatus>(value: UserNovelStatus(interestNovelCount: 0, watchingNovelCount: 0, watchedNovelCount: 0, quitNovelCount: 0))
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -57,12 +71,20 @@ final class MyPageViewModel: ViewModelType {
             .bind(to: output.profileData)
             .disposed(by: disposeBag)
         
-        Observable.just(())
-            .flatMapLatest { _ in
-                self.getNovelPreferenceData(userId: 1)
-            }
+        Observable.just(dummyNovelPreferenceData)
+//            .flatMapLatest { _ in
+//                self.getNovelPreferenceData(userId: 1)
+//            }
             .subscribe(with: self, onNext: { owner, data in
-                output.bindNovelData.accept(data)
+                if data.attractivePoints == [] {
+                    output.IsExistPreference.accept(false)
+                } else {
+                    output.IsExistPreference.accept(true)
+                    output.bindattractivePointsData.accept(data.attractivePoints ?? [])
+                    let keywords = data.keywords ?? []
+                    print("😃",keywords)
+                    output.bindKeywordCell.accept(keywords)
+                }
             }, onError: { owner, error in
                 print(error.localizedDescription)
             })
@@ -74,6 +96,17 @@ final class MyPageViewModel: ViewModelType {
             }
             .subscribe(with: self, onNext: { owner, data in
                 output.bindGenreData.accept(data)
+            }, onError: { owner, error in
+                print(error.localizedDescription)
+            })
+            .disposed(by: disposeBag)
+        
+        Observable.just(())
+            .flatMapLatest { _ in
+                self.getInventoryData(userId: 1)
+            }
+            .subscribe(with: self, onNext: { owner, data in
+                output.bindInventoryData.accept(data)
             }, onError: { owner, error in
                 print(error.localizedDescription)
             })
@@ -145,5 +178,8 @@ final class MyPageViewModel: ViewModelType {
             .asObservable()
     }
     
-    private func getInventoryData(user)
+    private func getInventoryData(userId: Int) -> Observable<UserNovelStatus> {
+        return userRepository.getUserNovelStatus(userId: userId)
+            .asObservable()
+    }
 }

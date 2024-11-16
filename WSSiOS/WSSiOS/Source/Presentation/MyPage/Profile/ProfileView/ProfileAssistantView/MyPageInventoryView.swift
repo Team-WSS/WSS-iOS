@@ -11,7 +11,7 @@ import SnapKit
 import Then
 
 final class MyPageInventoryView: UIView {
-
+    
     //MARK: - Components
     
     private let titleLabel = UILabel()
@@ -135,8 +135,11 @@ final class MyPageInventoryView: UIView {
     
     //MARK: - Data
     
-    func bindData(data: MyProfileResult) {
-       
+    func bindData(data: UserNovelStatus) {
+        interestCountLabel.applyWSSFont(.title2, with: String(describing: data.interestNovelCount))
+        watchedCountLabel.applyWSSFont(.title2, with: String(describing: data.watchedNovelCount))
+        watchingCountLabel.applyWSSFont(.title2, with: String(describing: data.watchingNovelCount))
+        quitCountLabel.applyWSSFont(.title2, with: String(describing: data.quitNovelCount))
     }
 }
 

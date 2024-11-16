@@ -13,7 +13,7 @@ protocol UserService {
     func getUserData() -> Single<UserResult>
     func patchUserName(userNickName: String) -> Single<Void>
     func getUserCharacterData() -> Single<UserCharacter>
-    func getUserNovelStatus() -> Single<UserNovelStatus>
+    func getUserNovelStatus(userId: Int) -> Single<UserNovelStatus>
     func getUserInfo() -> Single<UserInfo>
     func putUserInfo(gender: String, birth: Int) -> Single<Void>
     func getMyProfile() -> Single<MyProfileResult>
@@ -96,10 +96,10 @@ extension DefaultUserService: UserService {
         }
     }
     
-    func getUserNovelStatus() -> RxSwift.Single<UserNovelStatus> {
+    func getUserNovelStatus(userId: Int) -> RxSwift.Single<UserNovelStatus> {
         do {
             let request = try makeHTTPRequest(method: .get,
-                                              path: URLs.User.getUserNovelStatus,
+                                              path: URLs.User.getUserNovelStatus(userId: userId),
                                               headers: APIConstants.accessTokenHeader,
                                               body: nil)
             

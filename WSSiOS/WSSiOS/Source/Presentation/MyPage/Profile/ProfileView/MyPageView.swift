@@ -25,7 +25,7 @@ final class MyPageView: UIView {
     let mainStickyHeaderView = UIView()
     let scrolledStstickyHeaderView = UIView()
     
-    let myPageLibraryView = MyPageLibraryView(isEmpty: false)
+    let myPageLibraryView = MyPageLibraryView()
     
     // MARK: - Life Cycle
 

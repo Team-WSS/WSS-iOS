@@ -56,6 +56,7 @@ final class MyPageNovelPreferencesView: UIView {
             layout.scrollDirection = .vertical
             layout.minimumLineSpacing = 6
             layout.minimumInteritemSpacing = 6
+            layout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
             
             $0.backgroundColor = .wssWhite
             $0.collectionViewLayout = layout
@@ -91,6 +92,22 @@ final class MyPageNovelPreferencesView: UIView {
             $0.top.equalTo(preferencesView.snp.bottom).offset(10)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.bottom.equalToSuperview().inset(40)
+        }
+    }
+    
+    //MARK: - Data
+    
+    func bindData(data: [String]) {
+        let koreanStrings = data.compactMap { AttractivePoint(rawValue: $0)?.koreanString }
+        let attaractiveString = koreanStrings.joined(separator: ", ")
+        preferencesLabel.do {
+            $0.font = .Title3
+            $0.textColor = .wssGray300
+            $0.makeAttribute(with: attaractiveString + StringLiterals.MyPage.Profile.novelPreferenceLabel)?
+                .lineHeight(1.5)
+                .kerning(kerningPixel: -0.6)
+                .partialColor(color: .wssPrimary100, rangeString: attaractiveString)
+                .applyAttribute()
         }
     }
 }

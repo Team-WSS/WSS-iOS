@@ -42,12 +42,7 @@ struct ChangeUserInfo: Codable {
 
 struct UserNovelPreferences: Codable {
     let attractivePoints: [String]?
-    let keywords: [KeywordTuple]?
-}
-
-struct KeywordTuple: Codable {
-    let keywordName: String
-    let keywordCount: Int
+    let keywords: [Keyword]?
 }
 
 struct UserGenrePreferences: Codable {

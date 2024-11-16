@@ -14,7 +14,11 @@ final class MyPageLibraryView: UIView {
     
     //MARK: - Properties
     
-    let isEmpty: Bool
+    var isExist: Bool = true {
+        didSet {
+            updateView(isExist: isExist)
+        }
+    }
     
     //MARK: - Components
     
@@ -24,13 +28,13 @@ final class MyPageLibraryView: UIView {
     
     // MARK: - Life Cycle
     
-    init(isEmpty: Bool) {
-        self.isEmpty = isEmpty
-        super.init(frame: .zero)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         
         setUI()
         setHierarchy()
         setLayout()
+        updateView(isExist: isExist)
     }
     
     required init?(coder: NSCoder) {
@@ -44,7 +48,7 @@ final class MyPageLibraryView: UIView {
     }
     
     private func setHierarchy() {
-        if isEmpty {
+        if !isExist {
             self.addSubviews(inventoryView,
                              preferencesEmptyView)
         } else {
@@ -59,7 +63,7 @@ final class MyPageLibraryView: UIView {
             $0.height.equalTo(160)
         }
         
-        if isEmpty {
+        if !isExist {
             preferencesEmptyView.snp.makeConstraints {
                 $0.top.equalTo(inventoryView.snp.bottom).offset(3)
                 $0.leading.trailing.bottom.equalToSuperview()
@@ -72,6 +76,11 @@ final class MyPageLibraryView: UIView {
                 $0.bottom.equalToSuperview()
             }
         }
+    }
+    
+    func updateView(isExist: Bool) {
+        setHierarchy()
+        setLayout()
     }
 }
 

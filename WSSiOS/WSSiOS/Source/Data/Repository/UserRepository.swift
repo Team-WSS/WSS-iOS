@@ -71,8 +71,8 @@ struct DefaultUserRepository: UserRepository {
             .asObservable()
     }
     
-    func getUserNovelStatus() -> RxSwift.Observable<UserNovelStatus> {
-        return userService.getUserNovelStatus()
+    func getUserNovelStatus(userId: Int) -> RxSwift.Observable<UserNovelStatus> {
+        return userService.getUserNovelStatus(userId: userId)
             .asObservable()
     }
     

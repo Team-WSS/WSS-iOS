@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class MyPageViewController: UIViewController {
+final class MyPageViewController: UIViewController, UIScrollViewDelegate {
     
     //MARK: - Properties
     
@@ -50,6 +50,9 @@ final class MyPageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        delegate()
+        register()
+        
         bindViewModel()
     }
     
@@ -57,6 +60,18 @@ final class MyPageViewController: UIViewController {
         super.viewDidLayoutSubviews()
         
         headerViewHeightRelay.accept(rootView.headerView.layer.frame.height)
+    }
+    
+    private func register() {
+        rootView.myPageLibraryView.novelPrefrerencesView.preferencesCollectionView.register(
+            MyPageNovelPreferencesCollectionViewCell.self,
+            forCellWithReuseIdentifier: MyPageNovelPreferencesCollectionViewCell.cellIdentifier)
+    }
+    
+    private func delegate() {
+        rootView.myPageLibraryView.novelPrefrerencesView.preferencesCollectionView.rx
+            .setDelegate(self)
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Bind
@@ -72,6 +87,14 @@ final class MyPageViewController: UIViewController {
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
+        output.IsExistPreference
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, exist in
+                owner.rootView.myPageLibraryView.isExist = exist
+                owner.rootView.myPageLibraryView.updateView(isExist: exist)
+            })
+            .disposed(by: disposeBag)
+        
         output.profileData
             .bind(with: self, onNext: { owner, data in
                 owner.rootView.headerView.bindData(data: data)
@@ -80,7 +103,7 @@ final class MyPageViewController: UIViewController {
         
         output.updateNavigationEnabled
             .asDriver()
-            .drive(with: self, onNext: { owner, update in 
+            .drive(with: self, onNext: { owner, update in
                 owner.rootView.scrolledStstickyHeaderView.isHidden = !update
                 owner.rootView.mainStickyHeaderView.isHidden = update
                 owner.rootView.headerView.isHidden = update
@@ -108,6 +131,36 @@ final class MyPageViewController: UIViewController {
         output.dropdownButtonEnabled
             .bind(with: self, onNext: { owner, data in
                 print(data)
+            })
+            .disposed(by: disposeBag)
+        
+        output.bindGenreData
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, data in
+                print(data)
+            })
+            .disposed(by: disposeBag)
+        
+        output.bindattractivePointsData
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, data in
+                owner.rootView.myPageLibraryView.novelPrefrerencesView.bindData(data: data)
+                
+            })
+            .disposed(by: disposeBag)
+        
+        output.bindKeywordCell
+            .observe(on: MainScheduler.instance)
+            .bind(to: rootView.myPageLibraryView.novelPrefrerencesView.preferencesCollectionView.rx.items(cellIdentifier: MyPageNovelPreferencesCollectionViewCell.cellIdentifier, cellType: MyPageNovelPreferencesCollectionViewCell.self)){ row, data, cell in
+                print("바인드 데이터: \(data)")
+                cell.bindData(data: data)
+            }
+            .disposed(by: disposeBag)
+        
+        output.bindInventoryData
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, data in
+                owner.rootView.myPageLibraryView.inventoryView.bindData(data: data)
             })
             .disposed(by: disposeBag)
     }
