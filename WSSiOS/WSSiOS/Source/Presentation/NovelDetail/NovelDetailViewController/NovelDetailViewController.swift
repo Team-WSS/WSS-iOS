@@ -206,6 +206,14 @@ final class NovelDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.showReportPage
+            .drive(with: self, onNext: { owner, _ in
+                if let url = URL(string: URLs.Contact.kakao) {
+                    UIApplication.shared.open(url, options: [:])
+                }
+            })
+            .disposed(by: disposeBag)
+        
         //MARK: - Bind/Tab
         
         output.selectedTab
