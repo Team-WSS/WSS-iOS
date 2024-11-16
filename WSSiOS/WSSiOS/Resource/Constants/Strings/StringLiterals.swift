@@ -604,5 +604,13 @@ enum StringLiterals {
         static let impertinentContent = "해당 글이 커뮤니티 가이드를\n위반했는지 검토할게요"
         
         static let reportResult = "신고가 접수되었어요!"
+        
+        static let deleteMineTitle = "내 댓글을 삭제할까요?"
+        static let deleteMineContent = "삭제한 댓글은 되돌릴 수 없어요"
+        
+        static let deleteAccountUserNickname = "(알 수 없음)"
+        static let hiddenComment = "숨김 처리된 댓글"
+        static let spoilerComment = "스포일러가 포함된 댓글 보기"
+        static let blockedComment = "차단한 유저의 댓글"
     }
 }

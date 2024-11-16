@@ -103,8 +103,10 @@ final class MyPageViewModel: ViewModelType {
     private func getProfileData(isMyPage: Bool) -> Observable<MyProfileResult> {
         if isMyPage {
             return userRepository.getMyProfileData()
+                .observe(on: MainScheduler.instance)
         } else {
             return userRepository.getMyProfileData()
+                .observe(on: MainScheduler.instance)
         }
     }
 }

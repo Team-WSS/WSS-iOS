@@ -41,7 +41,7 @@ final class FeedDetailReplyWritingView: UIView {
         }
         
         userProfileImageView.do {
-            $0.image = .adminProfile
+            $0.image = .imgLoadingThumbnail
             $0.layer.cornerRadius = 14
             $0.contentMode = .scaleAspectFill
             $0.clipsToBounds = true
@@ -138,5 +138,32 @@ final class FeedDetailReplyWritingView: UIView {
         textViewBackgroundView.snp.updateConstraints {
             $0.height.equalTo(42)
         }
+    }
+    
+    func setCommentText(_ text: String) {
+        replyWritingTextView.text = text
+        replyWritingPlaceHolderLabel.isHidden = !text.isEmpty
+        updateTextViewHeight()
+    }
+    
+    private func updateTextViewHeight() {
+        let size = CGSize(width: replyWritingTextView.frame.width, height: .infinity)
+        let estimatedSize = replyWritingTextView.sizeThatFits(size)
+        let lineHeight = replyWritingTextView.font?.lineHeight ?? 0
+        let numberOfLines = Int(estimatedSize.height / lineHeight)
+        let backgroundHeight: CGFloat
+        backgroundHeight = numberOfLines == 1 ? 42 : min(estimatedSize.height + 14, 84)
+        
+        replyWritingTextView.snp.updateConstraints {
+            $0.height.equalTo(min(estimatedSize.height, 84))
+        }
+        
+        textViewBackgroundView.snp.updateConstraints {
+            $0.height.equalTo(backgroundHeight)
+        }
+    }
+    
+    func bindUserProfile(_ data: MyProfileResult) {
+        userProfileImageView.kfSetImage(url: makeBucketImageURLString(path: data.avatarImage))
     }
 }

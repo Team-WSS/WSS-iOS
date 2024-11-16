@@ -17,6 +17,7 @@ final class FeedDetailReplyView: UIView {
     let replyCollectionView = UICollectionView(frame: .zero,
                                                collectionViewLayout: UICollectionViewLayout())
     private let replyCollectionViewLayout = UICollectionViewFlowLayout()
+    let dropdownView = FeedDetailDropdownView()
     
     //MARK: - Life Cycle
     
@@ -40,22 +41,33 @@ final class FeedDetailReplyView: UIView {
         
         replyCollectionViewLayout.do {
             $0.scrollDirection = .vertical
-            $0.itemSize = CGSize(width: UIScreen.main.bounds.width - 40, height: 45)
+            $0.itemSize = CGSize(width: UIScreen.main.bounds.width, height: 45)
             $0.minimumLineSpacing = 22
             $0.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 60, right: 0)
             replyCollectionView.setCollectionViewLayout($0, animated: true)
         }
+        
+        dropdownView.do {
+            $0.isHidden = true
+        }
     }
     
     private func setHierarchy() {
-        self.addSubview(replyCollectionView)
+        self.addSubviews(replyCollectionView,
+                         dropdownView)
     }
     
     private func setLayout() {
         replyCollectionView.snp.makeConstraints {
-            $0.top.horizontalEdges.equalToSuperview().inset(20)
+            $0.top.equalToSuperview().inset(20)
+            $0.horizontalEdges.equalToSuperview()
             $0.bottom.equalToSuperview().inset(40)
             $0.height.equalTo(20)
+        }
+        
+        dropdownView.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.trailing.equalToSuperview().inset(20)
         }
     }
     
@@ -64,6 +76,35 @@ final class FeedDetailReplyView: UIView {
     func updateCollectionViewHeight(height: CGFloat) {
         replyCollectionView.snp.updateConstraints {
             $0.height.equalTo(height)
+        }
+    }
+    
+    func showDropdownView(indexPath: IndexPath, isMyComment: Bool) {
+        dropdownView.do {
+            $0.configureDropdown(isMine: isMyComment)
+            $0.isHidden = false
+        }
+        updateDropdownViewLayout(indexPath: indexPath)
+    }
+    
+    func hideDropdownView() {
+        dropdownView.isHidden = true
+    }
+    
+    func toggleDropdownView() {
+        dropdownView.isHidden.toggle()
+    }
+    
+    func updateDropdownViewLayout(indexPath: IndexPath) {
+        guard let cell = replyCollectionView.cellForItem(at: indexPath) else { return }
+        
+        let cellFrameInSuperview = cell.convert(cell.bounds, to: self)
+        let numberOfItems = replyCollectionView.numberOfItems(inSection: indexPath.section)
+        let isLastTwoCells = numberOfItems >= 3 && indexPath.item >= numberOfItems - 2
+        
+        dropdownView.snp.updateConstraints {
+            $0.top.equalToSuperview().inset(isLastTwoCells ? cellFrameInSuperview.minY - dropdownView.frame.height : cellFrameInSuperview.minY + 40)
+            $0.trailing.equalToSuperview().inset(20)
         }
     }
 }

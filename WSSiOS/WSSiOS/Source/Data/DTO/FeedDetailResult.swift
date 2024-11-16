@@ -44,6 +44,7 @@ struct Feed: Decodable {
 
 /// 소소피드 댓글 전체 조회
 struct FeedComments: Decodable {
+    var commentsCount: Int
     var comments: [FeedComment]
 }
 
@@ -56,9 +57,12 @@ struct FeedComment: Decodable {
     var commentContent: String
     var isModified: Bool
     var isMyComment: Bool
+    var isSpoiler: Bool
+    var isBlocked: Bool
+    var isHidden: Bool
     
     enum CodingKeys: String, CodingKey {
-        case userId, commentId, createdDate, commentContent, isModified, isMyComment
+        case userId, commentId, createdDate, commentContent, isModified, isMyComment, isSpoiler, isBlocked, isHidden
         case userNickname = "nickname"
         case userProfileImage = "avatarImage"
     }

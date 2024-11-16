@@ -23,6 +23,9 @@ protocol FeedDetailService {
     func postImpertinenceFeed(feedId: Int) -> Single<Void>
     
     func deleteFeed(feedId: Int) -> Single<Void>
+    
+    func postSpoilerComment(feedId: Int, commentId: Int) -> Single<Void>
+    func postImpertinenceComment(feedId: Int, commentId: Int) -> Single<Void>
 }
 
 final class DefaultFeedDetailService: NSObject, Networking, FeedDetailService {
@@ -208,6 +211,42 @@ final class DefaultFeedDetailService: NSObject, Networking, FeedDetailService {
             NetworkLogger.log(request: request)
             
             return tokenCheckURLSession.rx.data(request: request)
+                .map { _ in }
+                .asSingle()
+            
+        } catch {
+            return Single.error(error)
+        }
+    }
+    
+    func postSpoilerComment(feedId: Int, commentId: Int) -> Single<Void> {
+        do {
+            let request = try makeHTTPRequest(method: .post,
+                                              path: URLs.Feed.postSpoilerComment(feedId: feedId, commentId: commentId),
+                                              headers: APIConstants.testTokenHeader,
+                                              body: nil)
+            
+            NetworkLogger.log(request: request)
+            
+            return urlSession.rx.data(request: request)
+                .map { _ in }
+                .asSingle()
+            
+        } catch {
+            return Single.error(error)
+        }
+    }
+    
+    func postImpertinenceComment(feedId: Int, commentId: Int) -> Single<Void> {
+        do {
+            let request = try makeHTTPRequest(method: .post,
+                                              path: URLs.Feed.postImpertinenceComment(feedId: feedId, commentId: commentId),
+                                              headers: APIConstants.testTokenHeader,
+                                              body: nil)
+            
+            NetworkLogger.log(request: request)
+            
+            return urlSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
             

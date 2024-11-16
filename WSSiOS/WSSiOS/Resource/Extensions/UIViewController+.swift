@@ -327,6 +327,9 @@ extension UIViewController {
             viewModel: FeedDetailViewModel(
                 feedDetailRepository: DefaultFeedDetailRepository(
                     feedDetailService: DefaultFeedDetailService()
+                ), userRepository: DefaultUserRepository(
+                    userService: DefaultUserService(),
+                    blocksService: DefaultBlocksService()
                 ),
                 feedId: feedId
             )

@@ -24,6 +24,7 @@ enum URLs {
         static let patchUserNickname = userBasePath + "/nickname"
         static let getUserNovelStatus = userBasePath + "/user-novel-stats"
         static let userInfo = userBasePath + "/info"
+        static let myProfile = userBasePath + "/my-profile"
     }
     
     enum Novel {
@@ -134,6 +135,7 @@ enum URLs {
         static func deleteComment(feedId: Int, commentId: Int) -> String {
             return "/feeds/\(feedId)/comments/\(commentId)"
         }
+        
         static func postSpoilerFeed(feedId: Int) -> String {
             return "/feeds/\(feedId)/spoiler"
         }
@@ -142,6 +144,13 @@ enum URLs {
         }
         static func deleteFeed(feedId: Int) -> String {
             return "/feeds/\(feedId)"
+        }
+        
+        static func postSpoilerComment(feedId: Int, commentId: Int) -> String {
+            return "/feeds/\(feedId)/comments/\(commentId)/spoiler"
+        }
+        static func postImpertinenceComment(feedId: Int, commentId: Int) -> String {
+            return "/feeds/\(feedId)/comments/\(commentId)/impertinence"
         }
     }
     
