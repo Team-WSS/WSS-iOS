@@ -161,8 +161,10 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
         
         self.userProfileImageView.kfSetImage(url: makeBucketImageURLString(path: data.userProfileImage))
         self.userNicknameLabel.do {
-            // 탈퇴유저에 대한 변수 추가 시 분기처리 필요
-            if data.isBlocked {
+            if data.userId == -1 {
+                // 탈퇴 유저
+                $0.applyWSSFont(.title2, with: StringLiterals.FeedDetail.deleteAccountUserNickname)
+            } else if data.isBlocked {
                 $0.applyWSSFont(.title2, with: StringLiterals.FeedDetail.blckedUser)
             } else {
                 $0.applyWSSFont(.title2, with: data.userNickname)
@@ -195,6 +197,6 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
             }
         }
         
-        self.threeDotsButton.isHidden = data.isHidden || data.isBlocked
+        self.threeDotsButton.isHidden = data.isHidden || data.isBlocked || data.userId == -1
     }
 }
