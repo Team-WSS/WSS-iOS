@@ -32,6 +32,7 @@ final class NovelDetailView: UIView {
     let createFeedButton = DifferentRadiusButton()
     
     let networkErrorView = WSSNetworkErrorView()
+    let loadingView = WSSLoadingView()
     
     //MARK: - Life Cycle
     
@@ -98,6 +99,10 @@ final class NovelDetailView: UIView {
         networkErrorView.do {
             $0.isHidden = true
         }
+        
+        loadingView.do {
+            $0.isHidden = false
+        }
     }
     
     private func setHierarchy() {
@@ -106,7 +111,8 @@ final class NovelDetailView: UIView {
                          stickyTabBarView,
                          largeNovelCoverImageButton,
                          createFeedButton,
-                         networkErrorView)
+                         networkErrorView,
+                         loadingView)
         scrollView.addSubview(contentView)
         contentView.addArrangedSubviews(headerView,
                                         tabBarView,
@@ -143,13 +149,21 @@ final class NovelDetailView: UIView {
         networkErrorView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+        
+        loadingView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
     }
     
     //MARK: - Data
     
     func bindHeaderData(_ data: NovelDetailHeaderEntity) {
         headerView.bindData(data)
-        largeNovelCoverImageButton.bindData(data.novelImage)
+    }
+    
+    func bindHeaderImage(novelImage: UIImage, genreImage: UIImage) {
+        headerView.bindImage(novelImage: novelImage, novelGenreImage: genreImage)
+        largeNovelCoverImageButton.bindData(novelImage)
     }
     
     func bindInfoData(_ data: NovelDetailInfoResult) {
@@ -183,6 +197,12 @@ final class NovelDetailView: UIView {
     
     func showNetworkErrorView(isShow: Bool) {
         networkErrorView.do {
+            $0.isHidden = !isShow
+        }
+    }
+    
+    func showLoadingView(isShow: Bool) {
+        loadingView.do {
             $0.isHidden = !isShow
         }
     }

@@ -75,6 +75,7 @@ final class NovelDetailViewModel: ViewModelType {
         let scrollContentOffset: ControlProperty<CGPoint>
         let backButtonDidTap: ControlEvent<Void>
         let networkErrorRefreshButtonDidTap: ControlEvent<Void>
+        let imageNetworkError: Observable<Bool>
         
         //NovelDetailHeader
         let novelCoverImageButtonDidTap: ControlEvent<Void>
@@ -166,6 +167,10 @@ final class NovelDetailViewModel: ViewModelType {
                 owner.getNovelDetailInfoData(disposeBag: disposeBag)
                 owner.getNovelDetailFeedData(disposeBag: disposeBag)
             })
+            .disposed(by: disposeBag)
+        
+        input.imageNetworkError
+            .bind(to: self.showNetworkErrorView)
             .disposed(by: disposeBag)
         
         input.networkErrorRefreshButtonDidTap

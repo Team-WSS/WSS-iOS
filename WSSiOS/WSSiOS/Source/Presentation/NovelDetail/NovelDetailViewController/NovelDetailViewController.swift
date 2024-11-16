@@ -19,6 +19,7 @@ final class NovelDetailViewController: UIViewController {
     private let disposeBag = DisposeBag()
     
     private let viewWillAppearEvent = BehaviorRelay(value: false)
+    private let imageNetworkError = BehaviorRelay<Bool>(value: false)
     
     private var navigationTitle: String = ""
     private let dateFormatter = DateFormatter().then {
@@ -118,6 +119,8 @@ final class NovelDetailViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
                 owner.rootView.bindHeaderData(data)
+                owner.rootView.showLoadingView(isShow: false)
+                owner.makeUIImage(data: data)
                 owner.navigationTitle = data.novelTitle
                 owner.setNavigationBar()
             }, onError: { owner, error in
@@ -440,6 +443,7 @@ final class NovelDetailViewController: UIViewController {
             scrollContentOffset: rootView.scrollView.rx.contentOffset,
             backButtonDidTap: rootView.backButton.rx.tap,
             networkErrorRefreshButtonDidTap: rootView.networkErrorView.refreshButton.rx.tap,
+            imageNetworkError: imageNetworkError.asObservable(),
             novelCoverImageButtonDidTap: rootView.headerView.coverImageButton.rx.tap,
             largeNovelCoverImageDismissButtonDidTap: rootView.largeNovelCoverImageButton.dismissButton.rx.tap,
             largeNovelCoverImageBackgroundDidTap: rootView.largeNovelCoverImageButton.rx.tap,
@@ -495,6 +499,21 @@ final class NovelDetailViewController: UIViewController {
             NSAttributedString.Key.foregroundColor: UIColor.wssBlack,
             NSAttributedString.Key.kern: -0.6,
         ]
+    }
+    
+    private func makeUIImage(data: NovelDetailHeaderEntity) {
+        Observable.zip (
+            KingFisherRxHelper.kingFisherImage(urlString: data.novelImage),
+            KingFisherRxHelper.kingFisherImage(urlString: data.novelGenreImage)
+        )
+        .subscribe(with: self, onNext: { owner, result in
+            let (novelImage, genreImage) = result
+            owner.rootView.bindHeaderImage(novelImage: novelImage, genreImage: genreImage)
+        }, onError: { owner, error in
+            print(error)
+            owner.imageNetworkError.accept(true)
+        })
+        .disposed(by: disposeBag)
     }
     
     private func observeReachedBottom(_ scrollView: UIScrollView) -> Observable<Bool> {
