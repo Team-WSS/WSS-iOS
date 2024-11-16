@@ -62,7 +62,6 @@ final class FeedDetailReplyWritingView: UIView {
                 $0.tintColor = .wssBlack
                 $0.backgroundColor = .wssGray50
                 $0.textContainerInset = UIEdgeInsets(top: 7, left: 0, bottom: 7, right: 0)
-                
                 $0.textContainer.lineFragmentPadding = 0
                 $0.textContainerInset = .zero
             }
@@ -103,7 +102,10 @@ final class FeedDetailReplyWritingView: UIView {
             replyWritingTextView.snp.makeConstraints {
                 $0.centerY.equalToSuperview()
                 $0.leading.equalToSuperview().inset(16)
-                $0.height.equalTo(21)
+                
+                let size = CGSize(width: replyWritingTextView.frame.width, height: .infinity)
+                let estimatedHeight = replyWritingTextView.sizeThatFits(size)
+                $0.height.equalTo(estimatedHeight.height)
                 
                 replyWritingPlaceHolderLabel.snp.makeConstraints {
                     $0.leading.equalToSuperview()
@@ -134,6 +136,10 @@ final class FeedDetailReplyWritingView: UIView {
         replyWritingTextView.text = ""
         replyWritingTextView.snp.updateConstraints {
             $0.centerY.equalToSuperview()
+            
+            let size = CGSize(width: replyWritingTextView.frame.width, height: .infinity)
+            let estimatedHeight = replyWritingTextView.sizeThatFits(size)
+            $0.height.equalTo(estimatedHeight.height)
         }
         textViewBackgroundView.snp.updateConstraints {
             $0.height.equalTo(42)
