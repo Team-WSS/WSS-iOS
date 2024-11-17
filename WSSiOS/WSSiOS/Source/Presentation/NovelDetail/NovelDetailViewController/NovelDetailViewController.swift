@@ -166,6 +166,12 @@ final class NovelDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.showfirstReviewDescriptionView
+            .drive(with: self, onNext: { owner, isShow in
+                owner.rootView.showFirstDescriptionView(isShow: isShow)
+            })
+            .disposed(by: disposeBag)
+        
         output.showReviewDeleteAlert
             .flatMapLatest { _ in
                 self.presentToAlertViewController(
@@ -491,6 +497,7 @@ final class NovelDetailViewController: UIViewController {
             imageNetworkError: imageNetworkError.asObservable(),
             deleteReview: deleteReview.asObservable(),
             backgroundDidTap: rootView.rx.tapGesture(),
+            firstDescriptionBackgroundDidTap: rootView.firstReviewDescriptionBackgroundView.rx.tapGesture(),
             headerDotsButtonDidTap: rootView.headerDropDownButton.rx.tap,
             headerDropdownButtonDidTap: headerDropdownButtonDidTap,
             novelCoverImageButtonDidTap: rootView.headerView.coverImageButton.rx.tap,

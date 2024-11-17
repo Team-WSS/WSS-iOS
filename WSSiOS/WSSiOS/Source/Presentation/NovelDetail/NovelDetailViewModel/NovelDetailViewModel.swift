@@ -29,6 +29,7 @@ final class NovelDetailViewModel: ViewModelType {
     private let showReportPage = PublishRelay<Void>()
     private let showReviewDeleteAlert = PublishRelay<Void>()
     private let showReviewDeletedToast = PublishRelay<Void>()
+    private let showfirstReviewDescription = BehaviorRelay<Bool>(value: false)
     
     //NovelDetailHeader
     private let novelDetailHeaderData = PublishSubject<NovelDetailHeaderEntity>()
@@ -83,6 +84,7 @@ final class NovelDetailViewModel: ViewModelType {
         let imageNetworkError: Observable<Bool>
         let deleteReview: Observable<Void>
         let backgroundDidTap: ControlEvent<UITapGestureRecognizer>
+        let firstDescriptionBackgroundDidTap: ControlEvent<UITapGestureRecognizer>
         
         //NovelDetailHeader
         let headerDotsButtonDidTap: ControlEvent<Void>
@@ -130,6 +132,7 @@ final class NovelDetailViewModel: ViewModelType {
         let showReportPage: Driver<Void>
         let showReviewDeleteAlert: Observable<Void>
         let showReviewDeletedToast: Driver<Void>
+        let showfirstReviewDescriptionView: Driver<Bool>
         
         //NovelDetailHeader
         let showLargeNovelCoverImage: Driver<Bool>
@@ -169,6 +172,14 @@ final class NovelDetailViewModel: ViewModelType {
             .bind(to: self.viewWillAppearEvent)
             .disposed(by: disposeBag)
         
+        input.firstDescriptionBackgroundDidTap
+            .bind(with: self, onNext: { owner, _ in
+                UserDefaults.standard.setValue(false,
+                                               forKey: StringLiterals.UserDefault.showReviewFirstDescription)
+                owner.showfirstReviewDescription.accept(false)
+            })
+            .disposed(by: disposeBag)
+        
         self.viewWillAppearEvent
             .do(onNext: { _ in
                 self.isLoadable = false
@@ -176,6 +187,8 @@ final class NovelDetailViewModel: ViewModelType {
                 self.showNetworkErrorView.accept(false)
             })
             .bind(with: self, onNext: { owner, data in
+                let isShow = UserDefaults.standard.bool(forKey: StringLiterals.UserDefault.showReviewFirstDescription)
+                owner.showfirstReviewDescription.accept(isShow)
                 owner.getNovelDetailHeaderData(disposeBag: disposeBag)
                 owner.getNovelDetailInfoData(disposeBag: disposeBag)
                 owner.getNovelDetailFeedData(disposeBag: disposeBag)
@@ -472,6 +485,7 @@ final class NovelDetailViewModel: ViewModelType {
             showReportPage: showReportPage.asDriver(onErrorJustReturn: ()),
             showReviewDeleteAlert: showReviewDeleteAlert.asObservable(),
             showReviewDeletedToast: showReviewDeletedToast.asDriver(onErrorJustReturn: ()),
+            showfirstReviewDescriptionView: showfirstReviewDescription.asDriver(),
             showLargeNovelCoverImage: showLargeNovelCoverImage.asDriver(),
             isUserNovelInterested: isUserNovelInterested.asDriver(),
             pushTofeedWriteViewController: pushTofeedWriteViewController,

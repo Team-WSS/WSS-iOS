@@ -24,6 +24,11 @@ final class NovelDetailView: UIView {
     
     let headerView = NovelDetailHeaderView()
     let largeNovelCoverImageButton = NovelDetailLargeCoverImageButton()
+    let firstReviewDescriptionBackgroundView = UIView()
+    let firstReviewDescriptionReviewButtonView = NovelDetailHeaderReviewResultView()
+    let firstReviewDescriptionLabel = UILabel()
+    let firstReviewDescriptionLabelBackgroundView = UIImageView()
+    
     let stickyTabBarView = NovelDetailTabBarView()
     let tabBarView = NovelDetailTabBarView()
     
@@ -68,6 +73,27 @@ final class NovelDetailView: UIView {
             let windowScene = scenes.first as? UIWindowScene
             let statusBarManager = windowScene?.windows.first?.windowScene?.statusBarManager
             $0.frame = statusBarManager?.statusBarFrame ?? .zero
+        }
+        
+        firstReviewDescriptionBackgroundView.do {
+            $0.backgroundColor = .wssBlack60
+        }
+        
+        firstReviewDescriptionReviewButtonView.do {
+            $0.isUserInteractionEnabled = false
+        }
+        
+        firstReviewDescriptionLabel.do {
+            $0.applyWSSFont(.body3, with: StringLiterals.NovelDetail.Header.firstReviewDescription)
+            $0.textColor = .wssPrimary100
+            $0.numberOfLines = 2
+            $0.isUserInteractionEnabled = false
+        }
+        
+        firstReviewDescriptionLabelBackgroundView.do {
+            $0.image = .speechBalloon
+            $0.contentMode = .scaleAspectFit
+            $0.isUserInteractionEnabled = false
         }
         
         stickyTabBarView.do {
@@ -117,6 +143,7 @@ final class NovelDetailView: UIView {
                          largeNovelCoverImageButton,
                          createFeedButton,
                          headerDropDownView,
+                         firstReviewDescriptionBackgroundView,
                          networkErrorView,
                          loadingView)
         scrollView.addSubview(contentView)
@@ -124,6 +151,11 @@ final class NovelDetailView: UIView {
                                         tabBarView,
                                         infoView,
                                         feedView)
+        firstReviewDescriptionBackgroundView.addSubviews(
+            firstReviewDescriptionReviewButtonView,
+            firstReviewDescriptionLabelBackgroundView,
+            firstReviewDescriptionLabel
+        )
     }
     
     private func setLayout() {
@@ -163,6 +195,26 @@ final class NovelDetailView: UIView {
         headerDropDownView.snp.makeConstraints {
             $0.top.equalTo(self.safeAreaLayoutGuide.snp.top)
             $0.trailing.equalToSuperview().inset(20)
+        }
+        
+        firstReviewDescriptionBackgroundView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
+        firstReviewDescriptionReviewButtonView.snp.makeConstraints {
+            $0.edges.equalTo(headerView.reviewResultView.snp.edges)
+        }
+        
+        firstReviewDescriptionLabelBackgroundView.snp.makeConstraints {
+            $0.top.equalTo(firstReviewDescriptionReviewButtonView.snp.bottom).offset(6)
+            $0.width.equalTo(147)
+            $0.height.equalTo(64)
+            $0.centerX.equalToSuperview()
+        }
+        
+        firstReviewDescriptionLabel.snp.makeConstraints {
+            $0.bottom.equalTo(firstReviewDescriptionLabelBackgroundView.snp.bottom).offset(-8)
+            $0.centerX.equalToSuperview()
         }
     }
     
@@ -222,5 +274,12 @@ final class NovelDetailView: UIView {
         headerDropDownView.do {
             $0.isHidden = !isShow
         }
+    }
+    
+    func showFirstDescriptionView(isShow: Bool) {
+        firstReviewDescriptionBackgroundView.isHidden = !isShow
+        firstReviewDescriptionLabel.isHidden = !isShow
+        firstReviewDescriptionReviewButtonView.isHidden = !isShow
+        firstReviewDescriptionLabelBackgroundView.isHidden = !isShow
     }
 }
