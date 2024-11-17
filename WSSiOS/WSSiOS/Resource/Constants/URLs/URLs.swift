@@ -21,7 +21,7 @@ enum URLs {
     
     enum User {
         private static let userBasePath = "/users"
-        static let afterDelete = userBasePath + "추후 삭제"
+        static let userme = userBasePath + "/me"
         static let patchUserNickname = userBasePath + "/nickname"
         static func getUserNovelStatus(userId: Int) -> String {
             return "\(userBasePath)/\(userId)/user-novel-stats"
@@ -170,8 +170,12 @@ enum URLs {
                 return "/blocks/\(blockID)"
             }
         }
+        
+        enum ProfileVisibility {
+            static let isProfileVisibility = "/users/profile-status"
+        }
     }
-
+    
     enum Recommend {
         static let getTodayPopulars = "/novels/popular"
         static let getRealtimePopulars = "/feeds/popular"

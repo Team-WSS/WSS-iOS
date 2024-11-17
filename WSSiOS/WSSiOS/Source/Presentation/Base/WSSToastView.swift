@@ -21,6 +21,8 @@ enum ToastStatus {
     case selectionOverLimit(count: Int)
     case novelReviewed
     case novelReviewDeleted
+    case changeToPublicProfile
+    case changeToPrivateProfile
 
     var toastImage: UIImage {
         switch self {
@@ -28,7 +30,7 @@ enum ToastStatus {
             return .icAlertSuccess
         case .memoSaveFail, .memoDelete:
             return .icAlertWarning
-        case .novelReviewed, .novelReviewDeleted:
+        case .novelReviewed, .changeToPublicProfile, .changeToPrivateProfile, .novelReviewDeleted:
             return .icAlertCheck
         }
     }
@@ -55,6 +57,10 @@ enum ToastStatus {
             "평가 완료!"
         case .novelReviewDeleted:
             "평가를 모두 삭제했어요"
+        case .changeToPublicProfile:
+            "프로필이 전체 공개로 전환되었어요"
+        case .changeToPrivateProfile:
+            "프로필이 비공개로 전환되었어요"
         }
     }
 }

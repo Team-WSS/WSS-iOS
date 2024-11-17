@@ -12,7 +12,6 @@
 		2C19A4FB2BBA8E9600D4D151 /* WSSDropdownManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C19A4FA2BBA8E9600D4D151 /* WSSDropdownManager.swift */; };
 		2C19A4FD2BBA90E700D4D151 /* WSSDropDownTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C19A4FC2BBA90E700D4D151 /* WSSDropDownTableView.swift */; };
 		2C19A5002BBD56C900D4D151 /* WSSDropdownButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C19A4FF2BBD56C900D4D151 /* WSSDropdownButton.swift */; };
-		2C1F571A2CA7B7EE00DF5DA0 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 2C1F57192CA7B7EE00DF5DA0 /* Then */; };
 		2C22AE6E2C56E99A00BF6E94 /* MyPageBlockUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C22AE6D2C56E99A00BF6E94 /* MyPageBlockUserViewController.swift */; };
 		2C22AE702C56E9C100BF6E94 /* MyPageBlockUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C22AE6F2C56E9C100BF6E94 /* MyPageBlockUserView.swift */; };
 		2C22AE722C56EAD000BF6E94 /* MyPageBlockUserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C22AE712C56EAD000BF6E94 /* MyPageBlockUserTableViewCell.swift */; };
@@ -75,6 +74,9 @@
 		2CA2F6622B530BBF0045B4C2 /* LibraryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2F6612B530BBF0045B4C2 /* LibraryCollectionViewCell.swift */; };
 		2CB613F32B575E4500FC3F89 /* MyPageInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB613F22B575E4500FC3F89 /* MyPageInfoViewController.swift */; };
 		2CB613F52B575E6A00FC3F89 /* MyPageInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB613F42B575E6A00FC3F89 /* MyPageInfoView.swift */; };
+		2CBBE80C2CE7C6E500DAF3DC /* MyPageProfileVisibilityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CBBE80B2CE7C6E500DAF3DC /* MyPageProfileVisibilityViewModel.swift */; };
+		2CBBE80E2CE7C70400DAF3DC /* MyPageProfileVisibilityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CBBE80D2CE7C70400DAF3DC /* MyPageProfileVisibilityViewController.swift */; };
+		2CBBE8102CE7C72A00DAF3DC /* MyPageProfileVisibilityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CBBE80F2CE7C72A00DAF3DC /* MyPageProfileVisibilityView.swift */; };
 		2CCBF9EE2B4C1FC500D787C2 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBF9ED2B4C1FC500D787C2 /* MyPageViewController.swift */; };
 		2CCBF9F02B4C1FD800D787C2 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBF9EF2B4C1FD800D787C2 /* MyPageView.swift */; };
 		2CCBF9F22B4D347B00D787C2 /* WSSMainButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBF9F12B4D347B00D787C2 /* WSSMainButton.swift */; };
@@ -144,6 +146,8 @@
 		393CAC442CA72760004B4DB6 /* OnboardingBirthGenderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393CAC432CA72760004B4DB6 /* OnboardingBirthGenderView.swift */; };
 		393CAC462CA727E3004B4DB6 /* Gender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393CAC452CA727E3004B4DB6 /* Gender.swift */; };
 		393CAC482CA72A2E004B4DB6 /* OnboardingGenderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393CAC472CA72A2E004B4DB6 /* OnboardingGenderButton.swift */; };
+		394401A72CE9AF55007B5E04 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 394401A62CE9AF55007B5E04 /* Config.xcconfig */; };
+		394401AA2CE9B07B007B5E04 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 394401A92CE9B07B007B5E04 /* Then */; };
 		394CFD352CA00AD80053C8EA /* NovelDetailHeaderEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394CFD342CA00AD80053C8EA /* NovelDetailHeaderEntity.swift */; };
 		394CFD3B2CA2E7760053C8EA /* KingFisherRxHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394CFD3A2CA2E7760053C8EA /* KingFisherRxHelper.swift */; };
 		395319272BE2865A00D075F4 /* KeywordManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395319262BE2865A00D075F4 /* KeywordManager.swift */; };
@@ -450,7 +454,6 @@
 		CDE596DA2B57C4BE00D99DA1 /* UITextView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D92B57C4BE00D99DA1 /* UITextView+.swift */; };
 		CDEFE8272C9708870002D987 /* FeedNovelConnectModalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEFE8262C9708870002D987 /* FeedNovelConnectModalViewModel.swift */; };
 		CDF27CDA2CA253B30072C0F7 /* AttractivePoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF27CD92CA253B30072C0F7 /* AttractivePoint.swift */; };
-		E407465A2CE85731005D75D5 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E40746592CE85731005D75D5 /* Config.xcconfig */; };
 		E407465E2CE85C3B005D75D5 /* MyPagePreferencesEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E407465D2CE85C3B005D75D5 /* MyPagePreferencesEmptyView.swift */; };
 		E40746602CE864FD005D75D5 /* MyPageInventoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E407465F2CE864FD005D75D5 /* MyPageInventoryView.swift */; };
 		E40746622CE8688A005D75D5 /* MyPageLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40746612CE8688A005D75D5 /* MyPageLibraryView.swift */; };
@@ -529,6 +532,9 @@
 		2CA2F6612B530BBF0045B4C2 /* LibraryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryCollectionViewCell.swift; sourceTree = "<group>"; };
 		2CB613F22B575E4500FC3F89 /* MyPageInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageInfoViewController.swift; sourceTree = "<group>"; };
 		2CB613F42B575E6A00FC3F89 /* MyPageInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageInfoView.swift; sourceTree = "<group>"; };
+		2CBBE80B2CE7C6E500DAF3DC /* MyPageProfileVisibilityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageProfileVisibilityViewModel.swift; sourceTree = "<group>"; };
+		2CBBE80D2CE7C70400DAF3DC /* MyPageProfileVisibilityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageProfileVisibilityViewController.swift; sourceTree = "<group>"; };
+		2CBBE80F2CE7C72A00DAF3DC /* MyPageProfileVisibilityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageProfileVisibilityView.swift; sourceTree = "<group>"; };
 		2CCBF9ED2B4C1FC500D787C2 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		2CCBF9EF2B4C1FD800D787C2 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
 		2CCBF9F12B4D347B00D787C2 /* WSSMainButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSMainButton.swift; sourceTree = "<group>"; };
@@ -593,6 +599,7 @@
 		393CAC432CA72760004B4DB6 /* OnboardingBirthGenderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingBirthGenderView.swift; sourceTree = "<group>"; };
 		393CAC452CA727E3004B4DB6 /* Gender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gender.swift; sourceTree = "<group>"; };
 		393CAC472CA72A2E004B4DB6 /* OnboardingGenderButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingGenderButton.swift; sourceTree = "<group>"; };
+		394401A62CE9AF55007B5E04 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		394CFD342CA00AD80053C8EA /* NovelDetailHeaderEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailHeaderEntity.swift; sourceTree = "<group>"; };
 		394CFD3A2CA2E7760053C8EA /* KingFisherRxHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KingFisherRxHelper.swift; sourceTree = "<group>"; };
 		395319262BE2865A00D075F4 /* KeywordManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeywordManager.swift; sourceTree = "<group>"; };
@@ -896,7 +903,6 @@
 		CDE596D92B57C4BE00D99DA1 /* UITextView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+.swift"; sourceTree = "<group>"; };
 		CDEFE8262C9708870002D987 /* FeedNovelConnectModalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedNovelConnectModalViewModel.swift; sourceTree = "<group>"; };
 		CDF27CD92CA253B30072C0F7 /* AttractivePoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttractivePoint.swift; sourceTree = "<group>"; };
-		E40746592CE85731005D75D5 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		E407465D2CE85C3B005D75D5 /* MyPagePreferencesEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPagePreferencesEmptyView.swift; sourceTree = "<group>"; };
 		E407465F2CE864FD005D75D5 /* MyPageInventoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageInventoryView.swift; sourceTree = "<group>"; };
 		E40746612CE8688A005D75D5 /* MyPageLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageLibraryView.swift; sourceTree = "<group>"; };
@@ -917,7 +923,7 @@
 				390162CE2CE6575D00B7476C /* RxKakaoSDKUser in Frameworks */,
 				3999BFEE2B4E6CA000984832 /* UIImageViewAlignedSwift in Frameworks */,
 				CD3E5A852B54254F00C0A659 /* RxKeyboard in Frameworks */,
-				2C1F571A2CA7B7EE00DF5DA0 /* Then in Frameworks */,
+				394401AA2CE9B07B007B5E04 /* Then in Frameworks */,
 				390162CC2CE6575D00B7476C /* RxKakaoSDKAuth in Frameworks */,
 				2CD229442B42E7A2005400BE /* RxRelay in Frameworks */,
 				2CD229472B42E7C8005400BE /* Lottie in Frameworks */,
@@ -1158,8 +1164,8 @@
 				2CD2294F2B42E9AD005400BE /* Source */,
 				A1EF35562B52FAA300A94C53 /* Network */,
 				2C426A432BFB08A4008F6B23 /* Trash */,
-				E40746592CE85731005D75D5 /* Config.xcconfig */,
 				2CD229292B42E687005400BE /* Info.plist */,
+				394401A62CE9AF55007B5E04 /* Config.xcconfig */,
 			);
 			path = WSSiOS;
 			sourceTree = "<group>";
@@ -1414,6 +1420,7 @@
 				2C22AE6F2C56E9C100BF6E94 /* MyPageBlockUserView.swift */,
 				2C81DF882CA1512400148F97 /* MyPageChangeUserBirthView.swift */,
 				2CFA9A102C9D7EA300A4A820 /* MyPageChangeUserInfoView.swift */,
+				2CBBE80F2CE7C72A00DAF3DC /* MyPageProfileVisibilityView.swift */,
 			);
 			path = SettingView;
 			sourceTree = "<group>";
@@ -1428,6 +1435,7 @@
 				2C8F894A2C50DFEB0056895B /* MyPageDeleteIDViewController.swift */,
 				2C81DF862CA150DE00148F97 /* MyPageChangeUserBirthViewController.swift */,
 				2CFA9A0E2C9D7E8600A4A820 /* MyPageChangeUserInfoViewController.swift */,
+				2CBBE80D2CE7C70400DAF3DC /* MyPageProfileVisibilityViewController.swift */,
 			);
 			path = SettingViewController;
 			sourceTree = "<group>";
@@ -1439,6 +1447,7 @@
 				2C22AE732C56EDB300BF6E94 /* MyPageBlockUserViewModel.swift */,
 				2CFA9A122C9D7EE600A4A820 /* MyPageChangeUserInfoViewModel.swift */,
 				2C9A19702C56925F0043044A /* MyPageInfoViewModel.swift */,
+				2CBBE80B2CE7C6E500DAF3DC /* MyPageProfileVisibilityViewModel.swift */,
 			);
 			path = SettingViewModel;
 			sourceTree = "<group>";
@@ -2962,10 +2971,10 @@
 				3916EC852B89B42C007835B5 /* RxGesture */,
 				2C95AEF22CA6DF85001A5559 /* SnapKit */,
 				2C9BDDA62CA79F420026D038 /* Kingfisher */,
-				2C1F57192CA7B7EE00DF5DA0 /* Then */,
 				390162CB2CE6575D00B7476C /* RxKakaoSDKAuth */,
 				390162CD2CE6575D00B7476C /* RxKakaoSDKUser */,
 				398F933D2CE66C3500C0F916 /* RxKakaoSDKCommon */,
+				394401A92CE9B07B007B5E04 /* Then */,
 			);
 			productName = WSSiOS;
 			productReference = 2CD229182B42E685005400BE /* WSSiOS.app */;
@@ -3003,8 +3012,8 @@
 				3916EC842B89B42C007835B5 /* XCRemoteSwiftPackageReference "RxGesture" */,
 				2C95AEF12CA6DF85001A5559 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				2C9BDDA52CA79F420026D038 /* XCRemoteSwiftPackageReference "Kingfisher" */,
-				2C1F57182CA7B7EE00DF5DA0 /* XCRemoteSwiftPackageReference "Then" */,
 				390162CA2CE6575D00B7476C /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */,
+				394401A82CE9B07B007B5E04 /* XCRemoteSwiftPackageReference "Then" */,
 			);
 			productRefGroup = 2CD229192B42E685005400BE /* Products */;
 			projectDirPath = "";
@@ -3021,7 +3030,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2CD229252B42E687005400BE /* Assets.xcassets in Resources */,
-				E407465A2CE85731005D75D5 /* Config.xcconfig in Resources */,
+				394401A72CE9AF55007B5E04 /* Config.xcconfig in Resources */,
 				2C79CB992B45A0B200734E1F /* Pretendard-Bold.otf in Resources */,
 				39B75ADA2B59891D005DD8B9 /* villainessFan.json in Resources */,
 				39B75AD92B59891D005DD8B9 /* villainessTea.json in Resources */,
@@ -3219,6 +3228,7 @@
 				B9E565F52C04517A00DB51FF /* NormalSearchViewController.swift in Sources */,
 				393CAC482CA72A2E004B4DB6 /* OnboardingGenderButton.swift in Sources */,
 				39CC16812B51246E003F56AE /* RegisterNormalView.swift in Sources */,
+				2CBBE80C2CE7C6E500DAF3DC /* MyPageProfileVisibilityViewModel.swift in Sources */,
 				39B75ADE2B59BA87005DD8B9 /* UIScreen+.swift in Sources */,
 				2C22AE702C56E9C100BF6E94 /* MyPageBlockUserView.swift in Sources */,
 				2C81DF892CA1512500148F97 /* MyPageChangeUserBirthView.swift in Sources */,
@@ -3243,6 +3253,7 @@
 				CDE596DA2B57C4BE00D99DA1 /* UITextView+.swift in Sources */,
 				2C5D0F612B50525700C76D3C /* TrashMyPageChangeNicknameView.swift in Sources */,
 				2CCBFA082B4DE38800D787C2 /* TrashMyPageInventoryView.swift in Sources */,
+				2CBBE80E2CE7C70400DAF3DC /* MyPageProfileVisibilityViewController.swift in Sources */,
 				3910137E2CCF5FD8001894E5 /* BirthPickerViewController.swift in Sources */,
 				A1EF35602B52FAEF00A94C53 /* MemoService.swift in Sources */,
 				B96D10C42BED2EDB00D4D84C /* HomeViewModel.swift in Sources */,
@@ -3262,6 +3273,7 @@
 				B9095D2E2C395598007521EF /* HomeNoticeDetailViewModel.swift in Sources */,
 				B974EA412CC8E40C00169639 /* NovelRatingStatus.swift in Sources */,
 				A147CBC62B4D6E190040AE39 /* UIStackView+.swift in Sources */,
+				2CBBE8102CE7C72A00DAF3DC /* MyPageProfileVisibilityView.swift in Sources */,
 				C9CF88B72C86205900E45BF0 /* NoticeService.swift in Sources */,
 				CD3E5A982B5509A500C0A659 /* DeletePopupContentView.swift in Sources */,
 				CD514C962CD5DC22007A27A8 /* AuthResult.swift in Sources */,
@@ -3478,7 +3490,7 @@
 /* Begin XCBuildConfiguration section */
 		2CD2292A2B42E687005400BE /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E40746592CE85731005D75D5 /* Config.xcconfig */;
+			baseConfigurationReference = 394401A62CE9AF55007B5E04 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -3542,7 +3554,7 @@
 		};
 		2CD2292B2B42E687005400BE /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E40746592CE85731005D75D5 /* Config.xcconfig */;
+			baseConfigurationReference = 394401A62CE9AF55007B5E04 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -3599,11 +3611,12 @@
 		};
 		2CD2292D2B42E687005400BE /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E40746592CE85731005D75D5 /* Config.xcconfig */;
+			baseConfigurationReference = 394401A62CE9AF55007B5E04 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = WSSiOS/WSSiOS.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 202401192;
@@ -3639,7 +3652,7 @@
 		};
 		2CD2292E2B42E687005400BE /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E40746592CE85731005D75D5 /* Config.xcconfig */;
+			baseConfigurationReference = 394401A62CE9AF55007B5E04 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -3702,14 +3715,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		2C1F57182CA7B7EE00DF5DA0 /* XCRemoteSwiftPackageReference "Then" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/devxoul/Then";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 3.0.0;
-			};
-		};
 		2C95AEF12CA6DF85001A5559 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit";
@@ -3758,6 +3763,14 @@
 				minimumVersion = 4.0.4;
 			};
 		};
+		394401A82CE9B07B007B5E04 /* XCRemoteSwiftPackageReference "Then" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/devxoul/Then";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
 		3999BFEC2B4E6CA000984832 /* XCRemoteSwiftPackageReference "UIImageViewAlignedSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sochalewski/UIImageViewAlignedSwift";
@@ -3777,11 +3790,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		2C1F57192CA7B7EE00DF5DA0 /* Then */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2C1F57182CA7B7EE00DF5DA0 /* XCRemoteSwiftPackageReference "Then" */;
-			productName = Then;
-		};
 		2C95AEF22CA6DF85001A5559 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2C95AEF12CA6DF85001A5559 /* XCRemoteSwiftPackageReference "SnapKit" */;
@@ -3826,6 +3834,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3916EC842B89B42C007835B5 /* XCRemoteSwiftPackageReference "RxGesture" */;
 			productName = RxGesture;
+		};
+		394401A92CE9B07B007B5E04 /* Then */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 394401A82CE9B07B007B5E04 /* XCRemoteSwiftPackageReference "Then" */;
+			productName = Then;
 		};
 		398F933D2CE66C3500C0F916 /* RxKakaoSDKCommon */ = {
 			isa = XCSwiftPackageProductDependency;
