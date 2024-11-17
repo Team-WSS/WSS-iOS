@@ -62,7 +62,6 @@ final class NovelDetailViewController: UIViewController {
         registerCell()
         delegate()
         bindViewModel()
-        swipeBackGesture()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -70,6 +69,7 @@ final class NovelDetailViewController: UIViewController {
         
         viewWillAppearEvent.accept(true)
         setNavigationBar()
+        swipeBackGesture()
         self.hidesBottomBarWhenPushed = true
     }
     
