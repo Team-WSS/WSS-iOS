@@ -1,3 +1,0 @@
-BASE_URL = http:/$()/13.124.252.133
-BUCKET_URL = https:/$()/websoso-aws-bucket.s3.ap-northeast-2.amazonaws.com
-TEST_TOKEN = eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhY2Nlc3MiLCJpYXQiOjE3MzExNjgwNDMsImV4cCI6MTczMjM3NzY0MywidXNlcklkIjo5fQ.NVEPQClIoqh4RiX8HhT48-cvSXw52OLhdwg03yX94l8
