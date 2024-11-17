@@ -111,7 +111,7 @@ final class MyPageViewModel: ViewModelType {
         
         Observable.just(())
             .flatMapLatest { _ in
-                self.getGenrePreferenceData(userId: 1)
+                self.getGenrePreferenceData(userId: self.userId.value)
             }
             .subscribe(with: self, onNext: { owner, data in
                 output.bindGenreData.accept(data)
@@ -122,7 +122,7 @@ final class MyPageViewModel: ViewModelType {
         
         Observable.just(())
             .flatMapLatest { _ in
-                self.getInventoryData(userId: 1)
+                self.getInventoryData(userId: self.userId.value)
             }
             .subscribe(with: self, onNext: { owner, data in
                 output.bindInventoryData.accept(data)
