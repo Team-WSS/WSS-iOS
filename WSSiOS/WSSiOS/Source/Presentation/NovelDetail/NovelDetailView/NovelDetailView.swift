@@ -276,10 +276,10 @@ final class NovelDetailView: UIView {
         }
     }
     
-    func showFirstDescriptionView(isShow: Bool) {
-        firstReviewDescriptionBackgroundView.isHidden = !isShow
-        firstReviewDescriptionLabel.isHidden = !isShow
-        firstReviewDescriptionReviewButtonView.isHidden = !isShow
-        firstReviewDescriptionLabelBackgroundView.isHidden = !isShow
+    func showFirstDescriptionView(isHidden: Bool) {
+        firstReviewDescriptionBackgroundView.isHidden = isHidden
+        firstReviewDescriptionLabel.isHidden = isHidden
+        firstReviewDescriptionReviewButtonView.isHidden = isHidden
+        firstReviewDescriptionLabelBackgroundView.isHidden = isHidden
     }
 }

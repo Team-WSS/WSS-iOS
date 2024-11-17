@@ -166,9 +166,9 @@ final class NovelDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.showfirstReviewDescriptionView
-            .drive(with: self, onNext: { owner, isShow in
-                owner.rootView.showFirstDescriptionView(isShow: isShow)
+        output.hidefirstReviewDescriptionView
+            .drive(with: self, onNext: { owner, isHidden in
+                owner.rootView.showFirstDescriptionView(isHidden: isHidden)
             })
             .disposed(by: disposeBag)
         

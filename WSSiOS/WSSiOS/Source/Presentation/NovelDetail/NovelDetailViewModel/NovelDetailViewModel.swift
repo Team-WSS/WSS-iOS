@@ -29,7 +29,7 @@ final class NovelDetailViewModel: ViewModelType {
     private let showReportPage = PublishRelay<Void>()
     private let showReviewDeleteAlert = PublishRelay<Void>()
     private let showReviewDeletedToast = PublishRelay<Void>()
-    private let showfirstReviewDescription = BehaviorRelay<Bool>(value: false)
+    private let hideFirstReviewDescription = BehaviorRelay<Bool>(value: false)
     
     //NovelDetailHeader
     private let novelDetailHeaderData = PublishSubject<NovelDetailHeaderEntity>()
@@ -132,7 +132,7 @@ final class NovelDetailViewModel: ViewModelType {
         let showReportPage: Driver<Void>
         let showReviewDeleteAlert: Observable<Void>
         let showReviewDeletedToast: Driver<Void>
-        let showfirstReviewDescriptionView: Driver<Bool>
+        let hidefirstReviewDescriptionView: Driver<Bool>
         
         //NovelDetailHeader
         let showLargeNovelCoverImage: Driver<Bool>
@@ -174,9 +174,9 @@ final class NovelDetailViewModel: ViewModelType {
         
         input.firstDescriptionBackgroundDidTap
             .bind(with: self, onNext: { owner, _ in
-                UserDefaults.standard.setValue(false,
+                UserDefaults.standard.setValue(true,
                                                forKey: StringLiterals.UserDefault.showReviewFirstDescription)
-                owner.showfirstReviewDescription.accept(false)
+                owner.hideFirstReviewDescription.accept(true)
             })
             .disposed(by: disposeBag)
         
@@ -187,8 +187,9 @@ final class NovelDetailViewModel: ViewModelType {
                 self.showNetworkErrorView.accept(false)
             })
             .bind(with: self, onNext: { owner, data in
-                let isShow = UserDefaults.standard.bool(forKey: StringLiterals.UserDefault.showReviewFirstDescription)
-                owner.showfirstReviewDescription.accept(isShow)
+                let isHidden = UserDefaults.standard.bool(forKey: StringLiterals.UserDefault.showReviewFirstDescription)
+                print(isHidden)
+                owner.hideFirstReviewDescription.accept(isHidden)
                 owner.getNovelDetailHeaderData(disposeBag: disposeBag)
                 owner.getNovelDetailInfoData(disposeBag: disposeBag)
                 owner.getNovelDetailFeedData(disposeBag: disposeBag)
@@ -485,7 +486,7 @@ final class NovelDetailViewModel: ViewModelType {
             showReportPage: showReportPage.asDriver(onErrorJustReturn: ()),
             showReviewDeleteAlert: showReviewDeleteAlert.asObservable(),
             showReviewDeletedToast: showReviewDeletedToast.asDriver(onErrorJustReturn: ()),
-            showfirstReviewDescriptionView: showfirstReviewDescription.asDriver(),
+            hidefirstReviewDescriptionView: hideFirstReviewDescription.asDriver(),
             showLargeNovelCoverImage: showLargeNovelCoverImage.asDriver(),
             isUserNovelInterested: isUserNovelInterested.asDriver(),
             pushTofeedWriteViewController: pushTofeedWriteViewController,

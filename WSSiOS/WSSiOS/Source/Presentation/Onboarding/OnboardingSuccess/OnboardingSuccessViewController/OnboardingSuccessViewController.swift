@@ -75,6 +75,5 @@ final class OnboardingSuccessViewController: UIViewController {
             return
         }
         sceneDelegate.setRootToWSSTabBarController()
-        UserDefaults.standard.set(true, forKey: StringLiterals.UserDefault.showReviewFirstDescription)
     }
 }
