@@ -89,7 +89,7 @@ final class MyPageSettingViewController: UIViewController {
                     }
                 case 3:
                     print("문의하기 & 의견 보내기")
-                    if let url = URL(string: "http://pf.kakao.com/_kHxlWG") {
+                    if let url = URL(string: StringLiterals.MyPage.SettingURL.qnaURL) {
                         UIApplication.shared.open(url, options: [:])
                     }
                 case 4:

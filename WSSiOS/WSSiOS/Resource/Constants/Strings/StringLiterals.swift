@@ -188,6 +188,7 @@ enum StringLiterals {
         }
         
         enum SettingURL {
+            static let qnaURL = "http://pf.kakao.com/_kHxlWG"
             static let instaURL = "https://www.instagram.com/websoso_official/"
             static let termsURL = "https://kimmjabc.notion.site/4acd397608c146cbbf8dd4fe11a82e19"
             static let infoURL = "https://kimmjabc.notion.site/e55f0c0e95c249f7998f21563aefa4b4?pvs=4"
