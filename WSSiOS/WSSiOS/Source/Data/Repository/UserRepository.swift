@@ -10,6 +10,7 @@ import Foundation
 import RxSwift
 
 protocol UserRepository {
+    func getUserMeData() -> Observable<UserMeResult>
     func getMyProfileData() -> Observable<MyProfileResult>
     func getUserInfo() -> Observable<UserInfo>
     func putUserInfo(gender: String, birth: Int) -> Observable<Void>
@@ -31,12 +32,17 @@ struct DefaultUserRepository: UserRepository {
         self.blocksService = blocksService
     }
     
+    func getUserMeData() -> Observable<UserMeResult> {
+        return userService.getUserData()
+            .asObservable()
+    }
+    
     func getMyProfileData() -> Observable<MyProfileResult> {
         return userService.getMyProfile()
             .asObservable()
     }
     
-    func getUserData() -> RxSwift.Observable<UserResult> {
+    func getUserData() -> RxSwift.Observable<UserMeResult> {
         return userService.getUserData()
             .asObservable()
     }
