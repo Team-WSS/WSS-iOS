@@ -174,7 +174,6 @@ final class NovelDetailViewModel: ViewModelType {
         
         input.firstDescriptionBackgroundDidTap
             .bind(with: self, onNext: { owner, _ in
-                print("ISTappped")
                 UserDefaults.standard.setValue(true,
                                                forKey: StringLiterals.UserDefault.showReviewFirstDescription)
                 owner.hideFirstReviewDescription.accept(true)
@@ -189,7 +188,6 @@ final class NovelDetailViewModel: ViewModelType {
             })
             .bind(with: self, onNext: { owner, data in
                 let isHidden = UserDefaults.standard.bool(forKey: StringLiterals.UserDefault.showReviewFirstDescription)
-                print(isHidden)
                 owner.hideFirstReviewDescription.accept(isHidden)
                 owner.getNovelDetailHeaderData(disposeBag: disposeBag)
                 owner.getNovelDetailInfoData(disposeBag: disposeBag)
