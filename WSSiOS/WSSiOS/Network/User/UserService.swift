@@ -10,14 +10,17 @@ import Foundation
 import RxSwift
 
 protocol UserService {
-    func getUserData() -> Single<UserResult>
+    func getUserData() -> Single<UserMeResult>
     func patchUserName(userNickName: String) -> Single<Void>
     func getUserCharacterData() -> Single<UserCharacter>
-    func getUserNovelStatus() -> Single<UserNovelStatus>
+    func getUserNovelStatus(userId: Int) -> Single<UserNovelStatus>
     func getUserInfo() -> Single<UserInfo>
     func putUserInfo(gender: String, birth: Int) -> Single<Void>
     func getUserProfileVisibility() -> Single<UserProfileVisibility>
     func patchUserProfileVisibility(isProfilePublic: Bool) -> Single<Void>
+    func getMyProfile() -> Single<MyProfileResult>
+    func getUserNovelPreferences(userId: Int) -> Single<UserNovelPreferences>
+    func getUserGenrePreferences(userId: Int) -> Single<UserGenrePreferences>
 }
 
 final class DefaultUserService: NSObject, Networking {
@@ -39,10 +42,10 @@ final class DefaultUserService: NSObject, Networking {
 }
 
 extension DefaultUserService: UserService {
-    func getUserData() -> RxSwift.Single<UserResult> {
+    func getUserData() -> RxSwift.Single<UserMeResult> {
         do {
             let request = try makeHTTPRequest(method: .get,
-                                              path: URLs.User.afterDelete,
+                                              path: URLs.User.userme,
                                               headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
@@ -51,7 +54,7 @@ extension DefaultUserService: UserService {
             
             return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
-                                       to: UserResult.self) }
+                                       to: UserMeResult.self) }
                 .asSingle()
         } catch {
             return Single.error(error)
@@ -100,10 +103,10 @@ extension DefaultUserService: UserService {
         }
     }
     
-    func getUserNovelStatus() -> RxSwift.Single<UserNovelStatus> {
+    func getUserNovelStatus(userId: Int) -> RxSwift.Single<UserNovelStatus> {
         do {
             let request = try makeHTTPRequest(method: .get,
-                                              path: URLs.User.getUserNovelStatus,
+                                              path: URLs.User.getUserNovelStatus(userId: userId),
                                               headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
@@ -176,6 +179,21 @@ extension DefaultUserService: UserService {
                                     to: UserProfileVisibility.self)
                 }
                 .asSingle()
+          
+    func getMyProfile() -> Single<MyProfileResult> {
+        do {
+            let request = try makeHTTPRequest(method: .get,
+                                              path: URLs.User.myProfile,
+                                              headers: APIConstants.accessTokenHeader,
+                                              body: nil)
+            
+            NetworkLogger.log(request: request)
+            
+            return tokenCheckURLSession.rx.data(request: request)
+                .map { try self.decode(data: $0,
+                                       to: MyProfileResult.self) }
+                .asSingle()
+            
         } catch {
             return Single.error(error)
         }
@@ -197,6 +215,40 @@ extension DefaultUserService: UserService {
             return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
+          
+    func getUserNovelPreferences(userId: Int) -> Single<UserNovelPreferences> {
+        do {
+            let request = try makeHTTPRequest(method: .get,
+                                              path: URLs.User.novelPreferencesstatic(userId: userId),
+                                              headers: APIConstants.accessTokenHeader,
+                                              body: nil)
+            
+            NetworkLogger.log(request: request)
+            
+            return tokenCheckURLSession.rx.data(request: request)
+                .map { try self.decode(data: $0,
+                                       to: UserNovelPreferences.self) }
+                .asSingle()
+            
+        } catch {
+            return Single.error(error)
+        }
+    }
+    
+    func getUserGenrePreferences(userId: Int) -> Single<UserGenrePreferences> {
+        do {
+            let request = try makeHTTPRequest(method: .get,
+                                              path: URLs.User.genrePreferencesstatic(userId: userId),
+                                              headers: APIConstants.accessTokenHeader,
+                                              body: nil)
+            
+            NetworkLogger.log(request: request)
+            
+            return tokenCheckURLSession.rx.data(request: request)
+                .map { try self.decode(data: $0,
+                                       to: UserGenrePreferences.self) }
+                .asSingle()
+            
         } catch {
             return Single.error(error)
         }

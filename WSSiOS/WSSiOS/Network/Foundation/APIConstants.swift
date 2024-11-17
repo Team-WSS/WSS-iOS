@@ -17,9 +17,15 @@ struct APIConstants {
     
     static let boundary = "Boundary-\(UUID().uuidString)"
     
+    static let kakaoAppKey: String = Bundle.main.object(forInfoDictionaryKey: Config.Keys.Plist.kakaoAppKey) as? String ?? ""
+    
     // Config의 Test Token을 사용한다면, 이 값을 true로,
     // UserDefaults의 실제 토큰 값을 쓰려면 이 값을 false로 바꿀 것.
     static let isTesting: Bool = true
+    
+    static var isRegister: Bool {
+        UserDefaults.standard.bool(forKey: StringLiterals.UserDefault.isRegister)
+    }
     
     static var isLogined: Bool {
         !accessToken.isEmpty
@@ -38,5 +44,10 @@ extension APIConstants {
     static var accessTokenHeader: Dictionary<String, String> {
         [contentType: applicationJSON,
                 auth: "Bearer " + accessToken]
+    }
+    
+    static func kakaoLoginHeader(_ kakaoAccessToken: String) -> Dictionary<String, String> {
+        [contentType: applicationJSON,
+         "Kakao-Access-Token": kakaoAccessToken]
     }
 }

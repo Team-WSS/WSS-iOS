@@ -42,7 +42,7 @@ final class MyPageEditProfileViewController: UIViewController {
         
         delegate()
         register()
-        bindViewModel() 
+        bindViewModel()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -71,8 +71,8 @@ final class MyPageEditProfileViewController: UIViewController {
         let input = MyPageEditProfileViewModel.Input(
             backButtonDidTap: rootView.backButton.rx.tap,
             completeButtonDidTap: rootView.completeButton.rx.tap,
-            profileViewDidTap: rootView.profileView.rx.tapGesture().when(.recognized).asObservable(),
-            updateNicknameText: rootView.nicknameTextField.rx.text.orEmpty.asObservable(), 
+            profileViewDidTap: rootView.myPageProfileView.rx.tapGesture().when(.recognized).asObservable(),
+            updateNicknameText: rootView.nicknameTextField.rx.text.orEmpty.asObservable(),
             textFieldBeginEditing: rootView.nicknameTextField.rx.controlEvent(.editingDidBegin),
             clearButtonDidTap: rootView.clearButton.rx.tap,
             checkButtonDidTap: rootView.checkButton.rx.tap,
@@ -129,7 +129,7 @@ final class MyPageEditProfileViewController: UIViewController {
                 }
             })
             .disposed(by: disposeBag)
-         
+        
         output.endEditing
             .bind(with: self, onNext: { owner, endEditing in
                 owner.view.endEditing(endEditing)
@@ -138,13 +138,19 @@ final class MyPageEditProfileViewController: UIViewController {
         
         output.updateCell
             .bind(with: self, onNext: { owner, indexPath in
-                //selected
+                
             })
             .disposed(by: disposeBag)
         
         output.completeButtonIsAbled
             .bind(with: self, onNext: { owner, isAbled in
                 owner.rootView.isAbledCompleteButton(isAbled: isAbled)
+            })
+            .disposed(by: disposeBag)
+        
+        output.bindProfileData
+            .bind(with: self, onNext: { owner, data in
+                owner.rootView.bindData(data: data)
             })
             .disposed(by: disposeBag)
     }

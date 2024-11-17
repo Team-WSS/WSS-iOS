@@ -119,6 +119,8 @@
 		2CFA9A132C9D7EE600A4A820 /* MyPageChangeUserInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CFA9A122C9D7EE600A4A820 /* MyPageChangeUserInfoViewModel.swift */; };
 		2CFA9A182C9D9AD500A4A820 /* UserInfoResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CFA9A172C9D9AD500A4A820 /* UserInfoResult.swift */; };
 		2CFE04332B66A45A0048F77A /* UICollectionViewCell+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CFE04322B66A45A0048F77A /* UICollectionViewCell+.swift */; };
+		390162CC2CE6575D00B7476C /* RxKakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 390162CB2CE6575D00B7476C /* RxKakaoSDKAuth */; };
+		390162CE2CE6575D00B7476C /* RxKakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = 390162CD2CE6575D00B7476C /* RxKakaoSDKUser */; };
 		3908376B2C32ADEA0082DC57 /* NovelDetailInfoReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3908376A2C32ADEA0082DC57 /* NovelDetailInfoReviewView.swift */; };
 		39099EF12CD8895E00FCA8DE /* WSSLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39099EF02CD8895D00FCA8DE /* WSSLoadingView.swift */; };
 		39099EF32CD88A1200FCA8DE /* loading.json in Resources */ = {isa = PBXBuildFile; fileRef = 39099EF22CD88A1200FCA8DE /* loading.json */; };
@@ -166,6 +168,7 @@
 		396C7C5D2CB27AC2003C9712 /* ServerErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 396C7C5C2CB27AC2003C9712 /* ServerErrorResponse.swift */; };
 		397DE6802C2342A70026DB07 /* NovelDetailTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 397DE67F2C2342A70026DB07 /* NovelDetailTabBarView.swift */; };
 		3980D1D62C19BB2C008B9B18 /* NovelDetailLargeCoverImageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3980D1D52C19BB2C008B9B18 /* NovelDetailLargeCoverImageButton.swift */; };
+		398F933E2CE66C3500C0F916 /* RxKakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 398F933D2CE66C3500C0F916 /* RxKakaoSDKCommon */; };
 		399258182C16DAF20063FB46 /* NovelDetailHeaderInterestFeedWriteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399258172C16DAF20063FB46 /* NovelDetailHeaderInterestFeedWriteButton.swift */; };
 		3992FA562B81E2A40079C8B8 /* RegisterNormalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3992FA552B81E2A40079C8B8 /* RegisterNormalViewController.swift */; };
 		399492F32C9A8ADE00298F16 /* LoginBannerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399492F22C9A8ADE00298F16 /* LoginBannerCollectionViewCell.swift */; };
@@ -450,6 +453,16 @@
 		CDE596DA2B57C4BE00D99DA1 /* UITextView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D92B57C4BE00D99DA1 /* UITextView+.swift */; };
 		CDEFE8272C9708870002D987 /* FeedNovelConnectModalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEFE8262C9708870002D987 /* FeedNovelConnectModalViewModel.swift */; };
 		CDF27CDA2CA253B30072C0F7 /* AttractivePoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF27CD92CA253B30072C0F7 /* AttractivePoint.swift */; };
+		E407465E2CE85C3B005D75D5 /* MyPagePreferencesEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E407465D2CE85C3B005D75D5 /* MyPagePreferencesEmptyView.swift */; };
+		E40746602CE864FD005D75D5 /* MyPageInventoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E407465F2CE864FD005D75D5 /* MyPageInventoryView.swift */; };
+		E40746622CE8688A005D75D5 /* MyPageLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40746612CE8688A005D75D5 /* MyPageLibraryView.swift */; };
+		E40746662CE870AE005D75D5 /* MyPageNovelPreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40746652CE870AE005D75D5 /* MyPageNovelPreferencesView.swift */; };
+		E40746682CE871EE005D75D5 /* MyPageNovelPreferencesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40746672CE871EE005D75D5 /* MyPageNovelPreferencesCollectionViewCell.swift */; };
+		E407466C2CE89719005D75D5 /* MyPageGenrePreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E407466B2CE89719005D75D5 /* MyPageGenrePreferencesView.swift */; };
+		E407466E2CE897C7005D75D5 /* MyPageGenrePreferencesTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E407466D2CE897C7005D75D5 /* MyPageGenrePreferencesTopView.swift */; };
+		E40746702CE8DAB6005D75D5 /* MyPageGenrePreferencesOtherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E407466F2CE8DAB6005D75D5 /* MyPageGenrePreferencesOtherView.swift */; };
+		E40746722CE8DB89005D75D5 /* MyPageGenrePreferencesOtherTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40746712CE8DB89005D75D5 /* MyPageGenrePreferencesOtherTableViewCell.swift */; };
+		E40746742CE8F84A005D75D5 /* MyPageStickyHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40746732CE8F84A005D75D5 /* MyPageStickyHeaderView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -888,6 +901,16 @@
 		CDE596D92B57C4BE00D99DA1 /* UITextView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+.swift"; sourceTree = "<group>"; };
 		CDEFE8262C9708870002D987 /* FeedNovelConnectModalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedNovelConnectModalViewModel.swift; sourceTree = "<group>"; };
 		CDF27CD92CA253B30072C0F7 /* AttractivePoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttractivePoint.swift; sourceTree = "<group>"; };
+		E407465D2CE85C3B005D75D5 /* MyPagePreferencesEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPagePreferencesEmptyView.swift; sourceTree = "<group>"; };
+		E407465F2CE864FD005D75D5 /* MyPageInventoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageInventoryView.swift; sourceTree = "<group>"; };
+		E40746612CE8688A005D75D5 /* MyPageLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageLibraryView.swift; sourceTree = "<group>"; };
+		E40746652CE870AE005D75D5 /* MyPageNovelPreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageNovelPreferencesView.swift; sourceTree = "<group>"; };
+		E40746672CE871EE005D75D5 /* MyPageNovelPreferencesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageNovelPreferencesCollectionViewCell.swift; sourceTree = "<group>"; };
+		E407466B2CE89719005D75D5 /* MyPageGenrePreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageGenrePreferencesView.swift; sourceTree = "<group>"; };
+		E407466D2CE897C7005D75D5 /* MyPageGenrePreferencesTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageGenrePreferencesTopView.swift; sourceTree = "<group>"; };
+		E407466F2CE8DAB6005D75D5 /* MyPageGenrePreferencesOtherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageGenrePreferencesOtherView.swift; sourceTree = "<group>"; };
+		E40746712CE8DB89005D75D5 /* MyPageGenrePreferencesOtherTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageGenrePreferencesOtherTableViewCell.swift; sourceTree = "<group>"; };
+		E40746732CE8F84A005D75D5 /* MyPageStickyHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageStickyHeaderView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -895,14 +918,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				390162CE2CE6575D00B7476C /* RxKakaoSDKUser in Frameworks */,
 				3999BFEE2B4E6CA000984832 /* UIImageViewAlignedSwift in Frameworks */,
 				CD3E5A852B54254F00C0A659 /* RxKeyboard in Frameworks */,
-				2CBBE80A2CE7C4E400DAF3DC /* Then in Frameworks */,
+				2C1F571A2CA7B7EE00DF5DA0 /* Then in Frameworks */,
+				390162CC2CE6575D00B7476C /* RxKakaoSDKAuth in Frameworks */,
 				2CD229442B42E7A2005400BE /* RxRelay in Frameworks */,
 				2CD229472B42E7C8005400BE /* Lottie in Frameworks */,
 				2CD229402B42E7A2005400BE /* RxCocoa in Frameworks */,
 				3916EC862B89B42C007835B5 /* RxGesture in Frameworks */,
 				2CD2293C2B42E7A2005400BE /* RxBlocking in Frameworks */,
+				398F933E2CE66C3500C0F916 /* RxKakaoSDKCommon in Frameworks */,
 				2C9BDDA72CA79F420026D038 /* Kingfisher in Frameworks */,
 				39EF97AC2B53E43800D2148B /* Lottie in Frameworks */,
 				2C95AEF32CA6DF85001A5559 /* SnapKit in Frameworks */,
@@ -981,6 +1007,8 @@
 			isa = PBXGroup;
 			children = (
 				2C41E0CD2CA4949C00FFD233 /* MyPageEditProfileGenreCollectionViewCell.swift */,
+				E40746672CE871EE005D75D5 /* MyPageNovelPreferencesCollectionViewCell.swift */,
+				E40746712CE8DB89005D75D5 /* MyPageGenrePreferencesOtherTableViewCell.swift */,
 			);
 			path = ProfileCell;
 			sourceTree = "<group>";
@@ -1135,7 +1163,6 @@
 				A1EF35562B52FAA300A94C53 /* Network */,
 				2C426A432BFB08A4008F6B23 /* Trash */,
 				2CD229292B42E687005400BE /* Info.plist */,
-				2CBBE8062CE7BC6A00DAF3DC /* Config.xcconfig */,
 			);
 			path = WSSiOS;
 			sourceTree = "<group>";
@@ -1351,6 +1378,8 @@
 			isa = PBXGroup;
 			children = (
 				2CCBF9EF2B4C1FD800D787C2 /* MyPageView.swift */,
+				E40746732CE8F84A005D75D5 /* MyPageStickyHeaderView.swift */,
+				E40746612CE8688A005D75D5 /* MyPageLibraryView.swift */,
 				2C41E0CF2CA494B800FFD233 /* MyPageEditProfileView.swift */,
 				2C41E0C62CA493C100FFD233 /* ProfileCell */,
 				2CDB20C72C9B70700005C39B /* ProfileAssistantView */,
@@ -1436,10 +1465,16 @@
 			isa = PBXGroup;
 			children = (
 				2C9A19662C567CC20043044A /* MyPageProfileHeaderView.swift */,
+				E407465D2CE85C3B005D75D5 /* MyPagePreferencesEmptyView.swift */,
 				2CCBFA012B4DC10500D787C2 /* MyPageProfileView.swift */,
 				2CCBFA032B4DD73D00D787C2 /* MyPageTallyView.swift */,
 				2CCBFA052B4DD85600D787C2 /* MyPageTallyReuseView.swift */,
 				2C41E0CB2CA4948400FFD233 /* MyPageCountView.swift */,
+				E407465F2CE864FD005D75D5 /* MyPageInventoryView.swift */,
+				E40746652CE870AE005D75D5 /* MyPageNovelPreferencesView.swift */,
+				E407466B2CE89719005D75D5 /* MyPageGenrePreferencesView.swift */,
+				E407466F2CE8DAB6005D75D5 /* MyPageGenrePreferencesOtherView.swift */,
+				E407466D2CE897C7005D75D5 /* MyPageGenrePreferencesTopView.swift */,
 			);
 			path = ProfileAssistantView;
 			sourceTree = "<group>";
@@ -2932,7 +2967,10 @@
 				3916EC852B89B42C007835B5 /* RxGesture */,
 				2C95AEF22CA6DF85001A5559 /* SnapKit */,
 				2C9BDDA62CA79F420026D038 /* Kingfisher */,
-				2CBBE8092CE7C4E400DAF3DC /* Then */,
+				2C1F57192CA7B7EE00DF5DA0 /* Then */,
+				390162CB2CE6575D00B7476C /* RxKakaoSDKAuth */,
+				390162CD2CE6575D00B7476C /* RxKakaoSDKUser */,
+				398F933D2CE66C3500C0F916 /* RxKakaoSDKCommon */,
 			);
 			productName = WSSiOS;
 			productReference = 2CD229182B42E685005400BE /* WSSiOS.app */;
@@ -2970,7 +3008,8 @@
 				3916EC842B89B42C007835B5 /* XCRemoteSwiftPackageReference "RxGesture" */,
 				2C95AEF12CA6DF85001A5559 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				2C9BDDA52CA79F420026D038 /* XCRemoteSwiftPackageReference "Kingfisher" */,
-				2CBBE8082CE7C4E400DAF3DC /* XCRemoteSwiftPackageReference "Then" */,
+				2C1F57182CA7B7EE00DF5DA0 /* XCRemoteSwiftPackageReference "Then" */,
+				390162CA2CE6575D00B7476C /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */,
 			);
 			productRefGroup = 2CD229192B42E685005400BE /* Products */;
 			projectDirPath = "";
@@ -3023,8 +3062,10 @@
 				2C536C2E2C8F1F21004C5740 /* MyPageDeleteIDReasonView.swift in Sources */,
 				395928A02C99527500E7B17B /* LoginSkipButton.swift in Sources */,
 				B971D8792C0388E0008934D8 /* SearchRepository.swift in Sources */,
+				E407466E2CE897C7005D75D5 /* MyPageGenrePreferencesTopView.swift in Sources */,
 				CDC03F512CA6C5CD002D301F /* NovelReviewResult.swift in Sources */,
 				B9E565FF2C0452AA00DB51FF /* NormalSearchEmptyView.swift in Sources */,
+				E407466C2CE89719005D75D5 /* MyPageGenrePreferencesView.swift in Sources */,
 				B96863DA2C482E8C008CFBA5 /* DetailSearchView.swift in Sources */,
 				A18432EA2B511C4300910940 /* RecordTableViewCell.swift in Sources */,
 				2CCBFA062B4DD85600D787C2 /* MyPageTallyReuseView.swift in Sources */,
@@ -3057,6 +3098,7 @@
 				2CD911542C0D8A17006B8D72 /* FeedCollectionViewCell.swift in Sources */,
 				A1708F162B4D8E2700E35E50 /* HomeHeaderView.swift in Sources */,
 				2C41E0D42CA494D900FFD233 /* MyPageEditProfileViewModel.swift in Sources */,
+				E40746662CE870AE005D75D5 /* MyPageNovelPreferencesView.swift in Sources */,
 				2C41E0D22CA494C900FFD233 /* MyPageEditProfileViewController.swift in Sources */,
 				2C41E0D02CA494B800FFD233 /* MyPageEditProfileView.swift in Sources */,
 				2C41E0CE2CA4949C00FFD233 /* MyPageEditProfileGenreCollectionViewCell.swift in Sources */,
@@ -3126,8 +3168,10 @@
 				A1EF355A2B52FAD300A94C53 /* RecommendService.swift in Sources */,
 				2C9A19712C56925F0043044A /* MyPageInfoViewModel.swift in Sources */,
 				39D4A5D02BDA50E8004FC834 /* NovelDetailRepository.swift in Sources */,
+				E40746702CE8DAB6005D75D5 /* MyPageGenrePreferencesOtherView.swift in Sources */,
 				CD863EDC2CA5BAF30037DC08 /* NovelDetailFeedListView.swift in Sources */,
 				39CC167E2B512369003F56AE /* RegisterSuccessViewController.swift in Sources */,
+				E40746602CE864FD005D75D5 /* MyPageInventoryView.swift in Sources */,
 				3992FA562B81E2A40079C8B8 /* RegisterNormalViewController.swift in Sources */,
 				B9AC1BD82BF0BDDD006EDE92 /* NoticeRepository.swift in Sources */,
 				396C7C5D2CB27AC2003C9712 /* ServerErrorResponse.swift in Sources */,
@@ -3147,6 +3191,7 @@
 				39D4A5D62BDD0913004FC834 /* NovelDetailHeaderView.swift in Sources */,
 				A1522CF52B8257F3003A4078 /* RecordViewModel.swift in Sources */,
 				B9DC62042CC942D900E87DD7 /* DetailSearchResultViewModel.swift in Sources */,
+				E40746742CE8F84A005D75D5 /* MyPageStickyHeaderView.swift in Sources */,
 				393CAC442CA72760004B4DB6 /* OnboardingBirthGenderView.swift in Sources */,
 				39D4A5DC2BDD420D004FC834 /* NovelDetailHeaderNovelInfoView.swift in Sources */,
 				2CD9114E2C0D8A0B006B8D72 /* FeedUserView.swift in Sources */,
@@ -3215,6 +3260,7 @@
 				B9181BDE2BEBE2300024C800 /* HomeTasteRecommendCollectionViewCell.swift in Sources */,
 				2C5D0F592B4FDEC000C76D3C /* TrashMyPageInventoryCollectionViewCell.swift in Sources */,
 				CD8747A52C9EB39900D0ADAD /* NovelDateSelectModalViewModel.swift in Sources */,
+				E40746622CE8688A005D75D5 /* MyPageLibraryView.swift in Sources */,
 				392A29232B4E89FD0065EB97 /* RegisterNormalNovelInfoWithRatingView.swift in Sources */,
 				CDA5F0492C30248A00FCF15C /* FeedEditConnectedNovelView.swift in Sources */,
 				C9CE229B2CBD5ECE00996225 /* FeedDetailDropdownView.swift in Sources */,
@@ -3249,6 +3295,7 @@
 				CD6613702B8A225E00B90B2B /* MemoReadViewModel.swift in Sources */,
 				39CC168C2B526991003F56AE /* WSSSectionTitleView.swift in Sources */,
 				CD6F49572C7062D4005AD392 /* FeedNovelConnectSearchResultView.swift in Sources */,
+				E407465E2CE85C3B005D75D5 /* MyPagePreferencesEmptyView.swift in Sources */,
 				A1147A8A2B506BA500141692 /* RecordHeaderAlignmentView.swift in Sources */,
 				CD3E5A962B55099E00C0A659 /* DeletePopupView.swift in Sources */,
 				CD280A932B88A6CC00AFDD90 /* TrashNovelDetailViewModel.swift in Sources */,
@@ -3327,6 +3374,7 @@
 				2CD229572B42EA75005400BE /* UIColor+.swift in Sources */,
 				A18432EC2B511E7400910940 /* RecordDateView.swift in Sources */,
 				B92A06692C49877700E27652 /* DetailSearchBottomView.swift in Sources */,
+				E40746682CE871EE005D75D5 /* MyPageNovelPreferencesCollectionViewCell.swift in Sources */,
 				399492F32C9A8ADE00298F16 /* LoginBannerCollectionViewCell.swift in Sources */,
 				3910137C2CCF5EC6001894E5 /* BirthPickerView.swift in Sources */,
 				A1DBB2FA2B4AA981000EE869 /* SearchCollectionViewCell.swift in Sources */,
@@ -3385,6 +3433,7 @@
 				399F29352B56DA7800BBC12B /* TrashReadStatus.swift in Sources */,
 				B9E565F92C04520A00DB51FF /* NormalSearchView.swift in Sources */,
 				CD39F2C12B4FF81E00B73A5C /* UIButton+.swift in Sources */,
+				E40746722CE8DB89005D75D5 /* MyPageGenrePreferencesOtherTableViewCell.swift in Sources */,
 				A1147A842B5063BC00141692 /* RecordResultView.swift in Sources */,
 				A1DBB2FE2B4AEB22000EE869 /* UIView+.swift in Sources */,
 				A1147A822B5063B300141692 /* RecordEmptyView.swift in Sources */,
@@ -3559,45 +3608,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = WSSiOS/WSSiOS.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 202401192;
-				DEVELOPMENT_TEAM = L4327HMP3S;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = WSSiOS/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "웹소소";
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = kr.websoso;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
-			};
-			name = Debug;
-		};
-		2CD2292E2B42E687005400BE /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = WSSiOS/WSSiOS.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 202401192;
-				DEVELOPMENT_TEAM = L4327HMP3S;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = L4327HMP3S;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WSSiOS/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "웹소소";
@@ -3615,6 +3631,47 @@
 				PRODUCT_BUNDLE_IDENTIFIER = kr.websoso;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = WebsosoDevelopCertificate;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		2CD2292E2B42E687005400BE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = WSSiOS/WSSiOS.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 202401192;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = L4327HMP3S;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WSSiOS/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "웹소소";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = kr.websoso;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = WebsosoDevelopCertificate;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -3689,6 +3746,14 @@
 				minimumVersion = 4.3.4;
 			};
 		};
+		390162CA2CE6575D00B7476C /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kakao/kakao-ios-sdk-rx";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		3916EC842B89B42C007835B5 /* XCRemoteSwiftPackageReference "RxGesture" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/RxSwiftCommunity/RxGesture";
@@ -3751,10 +3816,25 @@
 			package = 2CD229452B42E7C8005400BE /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
 		};
+		390162CB2CE6575D00B7476C /* RxKakaoSDKAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 390162CA2CE6575D00B7476C /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */;
+			productName = RxKakaoSDKAuth;
+		};
+		390162CD2CE6575D00B7476C /* RxKakaoSDKUser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 390162CA2CE6575D00B7476C /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */;
+			productName = RxKakaoSDKUser;
+		};
 		3916EC852B89B42C007835B5 /* RxGesture */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 3916EC842B89B42C007835B5 /* XCRemoteSwiftPackageReference "RxGesture" */;
 			productName = RxGesture;
+		};
+		398F933D2CE66C3500C0F916 /* RxKakaoSDKCommon */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 390162CA2CE6575D00B7476C /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */;
+			productName = RxKakaoSDKCommon;
 		};
 		3999BFED2B4E6CA000984832 /* UIImageViewAlignedSwift */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -11,6 +11,8 @@ import UIKit
 import RxSwift
 import RxCocoa
 import Then
+import KakaoSDKUser
+import RxKakaoSDKUser
 
 final class LoginViewModel: NSObject, ViewModelType {
     
@@ -33,8 +35,8 @@ final class LoginViewModel: NSObject, ViewModelType {
     private let navigateToHome = PublishRelay<Void>()
     private let navigateToOnboarding = PublishRelay<Void>()
     
-    private let loginWithApple = PublishRelay<(userIdentifier: String,
-                                               email: String?)>()
+    private let loginWithApple = PublishRelay<(authorizationCode: String,
+                                               idToken: String)>()
     
     //MARK: - Life Cycle
     
@@ -91,31 +93,21 @@ final class LoginViewModel: NSObject, ViewModelType {
                 case .skip:
                     owner.navigateToHome.accept(())
                 case .kakao:
-                    owner.navigateToOnboarding.accept(())
-                case .naver:
-                    owner.navigateToOnboarding.accept(())
+                    owner.loginWithKakao(disposeBag: disposeBag)
                 case .apple:
                     owner.requestAppleLogin() // 애플로그인 요청
                 }
             })
             .disposed(by: disposeBag)
         
-        // 애플로그인 후 userIdentifier와 email을 받아와서 로그인 요청
+        // 애플로그인 후 authorizationCode와 idToken을 받아와서 로그인 요청
         loginWithApple
-            .flatMapLatest { userIdentifier, email in
-                self.loginWithApple(userIdentifier: userIdentifier,
-                                    email: email)
+            .flatMapLatest { authorizationCode, idToken in
+                self.loginWithApple(authorizationCode: authorizationCode,
+                                    idToken: idToken)
             }
             .subscribe(with: self, onNext: { owner, result in
-                UserDefaults.standard.setValue(result.Authorization,
-                                               forKey: StringLiterals.UserDefault.accessToken)
-                UserDefaults.standard.setValue(result.refreshToken,
-                                               forKey:  StringLiterals.UserDefault.refreshToken)
-                if result.isRegister {
-                    owner.navigateToHome.accept(())
-                } else {
-                    owner.navigateToOnboarding.accept(())
-                }
+                owner.loginSuccess(result: result)
             }, onError: { owner, error  in
                 print(error)
             })
@@ -144,6 +136,27 @@ final class LoginViewModel: NSObject, ViewModelType {
             })
     }
     
+    private func loginSuccess(result: LoginResult) {
+        UserDefaults.standard.setValue(result.Authorization,
+                                       forKey: StringLiterals.UserDefault.accessToken)
+        UserDefaults.standard.setValue(result.refreshToken,
+                                       forKey:  StringLiterals.UserDefault.refreshToken)
+        UserDefaults.standard.setValue(result.isRegister,
+                                       forKey: StringLiterals.UserDefault.isRegister)
+        if APIConstants.isRegister {
+            self.navigateToHome.accept(())
+        } else {
+            self.navigateToOnboarding.accept(())
+        }
+    }
+    
+    //MARK: - API/Apple
+    
+    private func loginWithApple(authorizationCode: String, idToken: String) -> Observable<LoginResult> {
+        authRepository.loginWithApple(authorizationCode: authorizationCode, idToken: idToken)
+            .observe(on: MainScheduler.instance)
+    }
+    
     private func requestAppleLogin() {
         let request = ASAuthorizationAppleIDProvider().createRequest()
         request.requestedScopes = [.email]
@@ -153,11 +166,24 @@ final class LoginViewModel: NSObject, ViewModelType {
         authorizationController.performRequests()
     }
     
-    //MARK: - API
+    //MARK: - API/Kakao
     
-    private func loginWithApple(userIdentifier: String, email: String?) -> Observable<LoginResult> {
-        authRepository.loginWithApple(userIdentifier: userIdentifier, email: email)
-            .observe(on: MainScheduler.instance)
+    private func loginWithKakao(disposeBag: DisposeBag) {
+        if (UserApi.isKakaoTalkLoginAvailable()) {
+            UserApi.shared.rx.loginWithKakaoTalk()
+                .flatMapLatest{ oauthToken in
+                    return self.authRepository.loginWithKakao(oauthToken)
+                }
+                .do(onNext: { _ in
+                    print("LoginWithKakao Success.")
+                })
+                .subscribe(with: self, onNext: { owner, result in
+                    owner.loginSuccess(result: result)
+                }, onError: { owner, error in
+                    print(error)
+                })
+                .disposed(by: disposeBag)
+        }
     }
 }
 
@@ -170,8 +196,8 @@ extension LoginViewModel: ASAuthorizationControllerDelegate {
             return
         }
         
-        loginWithApple.accept((userIdentifier: credential.user,
-                               email: credential.email))
+        loginWithApple.accept((authorizationCode: String(data: credential.authorizationCode!, encoding: String.Encoding.utf8)!,
+                               idToken: String(data: credential.identityToken!, encoding: String.Encoding.utf8)!))
     }
     
     func authorizationController(

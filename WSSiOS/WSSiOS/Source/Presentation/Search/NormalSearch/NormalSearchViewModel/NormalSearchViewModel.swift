@@ -17,9 +17,13 @@ final class NormalSearchViewModel: ViewModelType {
     private let searchRepository: SearchRepository
     private let disposeBag = DisposeBag()
     
+    // API 쿼리
     private let searchText = BehaviorRelay<String>(value: "")
-    private let currentPage = BehaviorRelay<Int>(value: 0)
-    private let isLoadable = BehaviorRelay<Bool>(value: false)
+    private var currentPage: Int = 0
+    private var isLoadable: Bool = false
+    private var isFetching: Bool = false
+    
+    // Output
     private let resultCount = PublishSubject<Int>()
     private let pushToNovelDetailViewController = PublishRelay<Int>()
     private let isSearchTextFieldEditing = BehaviorRelay<Bool>(value: false)
@@ -39,7 +43,7 @@ final class NormalSearchViewModel: ViewModelType {
         let inquiryButtonDidTap: ControlEvent<Void>
         let normalSearchCollectionViewContentSize: Observable<CGSize?>
         let normalSearchCellSelected: ControlEvent<IndexPath>
-        let reachedBottom: Observable<Void>
+        let reachedBottom: Observable<Bool>
         let normalSearchCollectionViewSwipeGesture: Observable<UISwipeGestureRecognizer>
     }
     
@@ -77,8 +81,8 @@ final class NormalSearchViewModel: ViewModelType {
                     self.normalSearchList.accept(updatedList)
                 }
                 self.resultCount.onNext(data.resultCount)
-                self.isLoadable.accept(data.isLoadable)
-                self.currentPage.accept(page)
+                self.isLoadable = data.isLoadable
+                self.currentPage = page
             }, onError: { error in
                 print(error.localizedDescription)
             })
@@ -95,7 +99,7 @@ final class NormalSearchViewModel: ViewModelType {
             .filter { !$0.isEmpty }
             .do(onNext: { text in
                 self.searchText.accept(text)
-                self.currentPage.accept(0)
+                self.currentPage = 0
             })
             .flatMapLatest { text in
                 self.getNormalSearchList(query: text, page: 0)
@@ -119,15 +123,21 @@ final class NormalSearchViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.reachedBottom
-            .withLatestFrom(isLoadable)
-            .filter { $0 }
-            .withLatestFrom(currentPage)
-            .flatMapLatest { page -> Observable<NormalSearchNovels> in
-                let nextPage = page + 1
-                return self.getNormalSearchList(query: self.searchText.value, page: nextPage)
-                    .do(onNext: { _ in
-                        self.currentPage.accept(nextPage)
-                    })
+            .filter { reachedBottom in
+                return reachedBottom && !self.isFetching && self.isLoadable
+            }
+            .do(onNext: { _ in
+                self.isFetching = true
+            })
+            .flatMapLatest { _ in
+                self.getNormalSearchList(
+                    query: self.searchText.value,
+                    page: self.currentPage + 1)
+                .do(onNext: { _ in
+                    self.isFetching = false
+                }, onError: { _ in
+                    self.isFetching = false
+                })
             }
             .subscribe()
             .disposed(by: disposeBag)

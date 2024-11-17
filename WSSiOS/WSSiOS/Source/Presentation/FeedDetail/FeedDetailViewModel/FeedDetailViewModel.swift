@@ -15,11 +15,13 @@ final class FeedDetailViewModel: ViewModelType {
     //MARK: - Properties
     
     private let feedDetailRepository: FeedDetailRepository
+    private let userRepository: UserRepository
     private let disposeBag = DisposeBag()
-    let feedId: Int
     
+    let feedId: Int
     private let feedData = PublishSubject<Feed>()
-    private let commentsData = BehaviorRelay<[FeedComment]>(value: [])
+    let commentsData = BehaviorRelay<[FeedComment]>(value: [])
+    private let myProfileData = PublishRelay<MyProfileResult>()
     private let replyCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
     
     // 작품 연결
@@ -31,12 +33,12 @@ final class FeedDetailViewModel: ViewModelType {
     private let likeButtonState = BehaviorRelay<Bool>(value: false)
     
     // 댓글 작성
-    private let commentCount = BehaviorRelay<Int>(value: 0)
+    let commentCount = BehaviorRelay<Int>(value: 0)
     private let endEditing = PublishRelay<Bool>()
+    private let textViewResignFirstResponder = PublishRelay<Void>()
+    var initialCommentContent: String = ""
     private var updatedCommentContent: String = ""
     private var isValidCommentContent: Bool = false
-    private let maximumCommentContentCount: Int = 500
-    private let commentContentWithLengthLimit = BehaviorRelay<String>(value: "")
     private let showPlaceholder = BehaviorRelay<Bool>(value: true)
     private let sendButtonEnabled = BehaviorRelay<Bool>(value: false)
     private let textViewEmpty = BehaviorRelay<Bool>(value: true)
@@ -46,18 +48,35 @@ final class FeedDetailViewModel: ViewModelType {
     private let isMyFeed = BehaviorRelay<Bool>(value: false)
     
     let showSpoilerAlertView = PublishRelay<Void>()
-    let showImproperAlertView = PublishRelay<Void>()
+    let showImpertinenceAlertView = PublishRelay<Void>()
     let pushToFeedEditViewController = PublishRelay<Void>()
     let showDeleteAlertView = PublishRelay<Void>()
     
+    // 댓글 드롭다운
+    var selectedCommentId: Int = 0
+    var selectedCommentContent: String = ""
+    private var isMyComment: Bool = false
+    private let showCommentDropdownView = PublishRelay<(IndexPath, Bool)>()
+    private let hideCommentDropdownView = PublishRelay<Void>()
+    private let toggleDropdownView = PublishRelay<Void>()
+    // 댓글 드롭다운 내 이벤트
+    let showCommentSpoilerAlertView  = PublishRelay<((Int, Int) -> Observable<Void>, Int, Int)>()
+    let showCommentImpertinenceAlertView  = PublishRelay<((Int, Int) -> Observable<Void>, Int, Int)>()
+    var isCommentEditing: Bool = false
+    let myCommentEditing = PublishRelay<Void>()
+    let showCommentDeleteAlertView  = PublishRelay<((Int, Int) -> Observable<Void>, Int, Int)>()
+    
     //MARK: - Life Cycle
     
-    init(feedDetailRepository: FeedDetailRepository, feedId: Int) {
+    init(feedDetailRepository: FeedDetailRepository, userRepository: UserRepository, feedId: Int) {
         self.feedDetailRepository = feedDetailRepository
+        self.userRepository = userRepository
         self.feedId = feedId
     }
     
     struct Input {
+        let viewWillAppearEvent: Observable<Void>
+        
         let backButtonDidTap: ControlEvent<Void>
         let replyCollectionViewContentSize: Observable<CGSize?>
         let likeButtonDidTap: ControlEvent<Void>
@@ -72,15 +91,22 @@ final class FeedDetailViewModel: ViewModelType {
         let commentContentViewDidEndEditing: ControlEvent<Void>
         let replyCommentCollectionViewSwipeGesture: Observable<UISwipeGestureRecognizer>
         let sendButtonDidTap: ControlEvent<Void>
+        let commentSpoilerTextDidTap: Observable<Void>
         
         // 피드 드롭다운
         let dotsButtonDidTap: ControlEvent<Void>
         let dropdownButtonDidTap: Observable<DropdownButtonType>
+        
+        // 댓글 드롭다운
+        let commentdotsButtonDidTap: Observable<(Int, Bool)>
+        let commentDropdownDidTap: Observable<DropdownButtonType>
+        let reloadComments: Observable<Void>
     }
     
     struct Output {
         let feedData: Observable<Feed>
         let commentsData: Driver<[FeedComment]>
+        let myProfileData: Observable<MyProfileResult>
         let popViewController: Driver<Void>
         let replyCollectionViewHeight: Driver<CGFloat>
         
@@ -95,36 +121,54 @@ final class FeedDetailViewModel: ViewModelType {
         let commentCount: Driver<Int>
         let showPlaceholder: Observable<Bool>
         let endEditing: Observable<Bool>
-        let commentContentWithLengthLimit: Observable<String>
+        let textViewResignFirstResponder: Observable<Void>
         let sendButtonEnabled: Observable<Bool>
         let textViewEmpty: Observable<Bool>
         
         // 피드 드롭다운
         let showDropdownView: Driver<Bool>
         let isMyFeed: Driver<Bool>
+        // 피드 드롭다운 내 이벤트
         let showSpoilerAlertView: Observable<Void>
-        let showImproperAlertView: Observable<Void>
+        let showImpertinenceAlertView: Observable<Void>
         let pushToFeedEditViewController: Observable<Void>
         let showDeleteAlertView: Observable<Void>
+        
+        // 댓글 드롭다운
+        let showCommentDropdownView: Observable<(IndexPath, Bool)>
+        let hideCommentDropdownView: Observable<Void>
+        let toggleDropdownView: Observable<Void>
+        // 댓글 드롭다운 내 이벤트
+        let showCommentSpoilerAlertView: Observable<((Int, Int) -> Observable<Void>, Int, Int)>
+        let showCommentImpertinenceAlertView: Observable<((Int, Int) -> Observable<Void>, Int, Int)>
+        let myCommentEditing: Observable<Void>
+        let showCommentDeleteAlertView: Observable<((Int, Int) -> Observable<Void>, Int, Int)>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
-        getSingleFeed(feedId)
+        input.viewWillAppearEvent
+            .flatMapLatest { _ in
+                Observable.zip(
+                    self.getSingleFeed(self.feedId),
+                    self.getSingleFeedComments(self.feedId),
+                    self.getMyProfile()
+                )
+            }
             .subscribe(with: self, onNext: { owner, data in
-                owner.feedData.onNext(data)
-                owner.likeButtonState.accept(data.isLiked)
-                owner.likeCount.accept(data.likeCount)
-                owner.novelId = data.novelId
-                owner.commentCount.accept(data.commentCount)
-                owner.isMyFeed.accept(data.isMyFeed)
-            }, onError: { owner, error in
-                owner.feedData.onError(error)
-            })
-            .disposed(by: disposeBag)
-        
-        getSingleFeedComments(feedId)
-            .subscribe(with: self, onNext: { owner, data in
-                owner.commentsData.accept(data.comments)
+                let feed = data.0
+                let comments = data.1
+                let profile = data.2
+                
+                owner.feedData.onNext(feed)
+                owner.likeButtonState.accept(feed.isLiked)
+                owner.likeCount.accept(feed.likeCount)
+                owner.novelId = feed.novelId
+                owner.commentCount.accept(feed.commentCount)
+                owner.isMyFeed.accept(feed.isMyFeed)
+
+                owner.commentsData.accept(comments.comments)
+
+                owner.myProfileData.accept(profile)
             }, onError: { owner, error in
                 print(error)
             })
@@ -167,16 +211,13 @@ final class FeedDetailViewModel: ViewModelType {
         
         input.commentContentUpdated
             .subscribe(with: self, onNext: { owner, comment in
-                if comment.count <= owner.maximumCommentContentCount {
-                    owner.updatedCommentContent = comment
-                }
-                let limitedComment = String(comment.prefix(owner.maximumCommentContentCount))
-                owner.commentContentWithLengthLimit.accept(limitedComment)
+                owner.updatedCommentContent = comment
                 
-                let isEmpty = comment.count == 0
-                let isOverLimit = comment.count > owner.maximumCommentContentCount
+                let isEmpty = comment.isEmpty
+                let containsOnlyNewlinesOrWhitespace = comment.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                let isNotChanged = comment == owner.initialCommentContent
                 
-                owner.isValidCommentContent = !(isEmpty || isOverLimit)
+                owner.isValidCommentContent = !(containsOnlyNewlinesOrWhitespace || isNotChanged)
                 owner.textViewEmpty.accept(isEmpty)
                 owner.showPlaceholder.accept(isEmpty)
                 owner.sendButtonEnabled.accept(owner.isValidCommentContent)
@@ -204,7 +245,10 @@ final class FeedDetailViewModel: ViewModelType {
         input.sendButtonDidTap
             .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
             .flatMapLatest { () -> Observable<Void> in
-                return self.postComment(self.feedId, self.updatedCommentContent)
+                if self.isCommentEditing {
+                    return self.putComment(self.feedId,
+                                           self.selectedCommentId,
+                                           self.updatedCommentContent)
                     .flatMapLatest { _ in
                         self.getSingleFeedComments(self.feedId)
                             .do(onNext: { newComments in
@@ -212,16 +256,34 @@ final class FeedDetailViewModel: ViewModelType {
                             })
                             .map { _ in () }
                     }
-                    .observe(on: MainScheduler.instance)
                     .do(onNext: {
+                        self.textViewResignFirstResponder.accept(())
                         self.updatedCommentContent = ""
                         self.textViewEmpty.accept(true)
-                        self.commentContentWithLengthLimit.accept("")
                         self.showPlaceholder.accept(true)
-                        
-                        let newCommentCount = self.commentCount.value + 1
-                        self.commentCount.accept(newCommentCount)
+                        self.isCommentEditing = false
+                        self.selectedCommentId = 0
                     })
+                } else {
+                    return self.postComment(self.feedId, self.updatedCommentContent)
+                        .flatMapLatest { _ in
+                            self.getSingleFeedComments(self.feedId)
+                                .do(onNext: { newComments in
+                                    self.commentsData.accept(newComments.comments)
+                                })
+                                .map { _ in () }
+                        }
+                        .do(onNext: {
+                            self.textViewResignFirstResponder.accept(())
+                            self.updatedCommentContent = ""
+                            self.textViewEmpty.accept(true)
+                            self.showPlaceholder.accept(true)
+                            self.selectedCommentId = 0
+                            
+                            let newCommentCount = self.commentCount.value + 1
+                            self.commentCount.accept(newCommentCount)
+                        })
+                }
             }
             .subscribe()
             .disposed(by: disposeBag)
@@ -239,13 +301,64 @@ final class FeedDetailViewModel: ViewModelType {
                 case (.top, true): owner.pushToFeedEditViewController.accept(())
                 case (.bottom, true): owner.showDeleteAlertView.accept(())
                 case (.top, false): owner.showSpoilerAlertView.accept(())
-                case (.bottom, false): owner.showImproperAlertView.accept(())
+                case (.bottom, false): owner.showImpertinenceAlertView.accept(())
                 }
+            })
+            .disposed(by: disposeBag)
+        
+        input.commentdotsButtonDidTap
+            .subscribe(with: self, onNext: { owner, data in
+                let (commentId, isMyComment) = data
+                if owner.selectedCommentId == commentId {
+                    owner.toggleDropdownView.accept(())
+                } else {
+                    if let index = owner.commentsData.value.firstIndex(where: { $0.commentId == commentId }) {
+                        let indexPath = IndexPath(row: index, section: 0)
+                        owner.showCommentDropdownView.accept((indexPath, isMyComment))
+                        owner.initialCommentContent = owner.commentsData.value[index].commentContent
+                    }
+                }
+                owner.selectedCommentId = commentId
+                owner.isMyComment = isMyComment
+            })
+            .disposed(by: disposeBag)
+        
+        input.commentDropdownDidTap
+            .map { ($0, self.isMyComment) }
+            .subscribe(with: self, onNext: { owner, result in
+                owner.hideCommentDropdownView.accept(())
+                switch result {
+                case (.top, true):
+                    owner.isCommentEditing = true
+                    owner.myCommentEditing.accept(())
+                case (.bottom, true):
+                    owner.showCommentDeleteAlertView.accept((owner.deleteComment,
+                                                             owner.feedId,
+                                                             owner.selectedCommentId))
+                case (.top, false): owner.showCommentSpoilerAlertView.accept((owner.postSpoilerComment,
+                                                                              owner.feedId,
+                                                                              owner.selectedCommentId))
+                case (.bottom, false): owner.showCommentImpertinenceAlertView.accept((owner.postImpertinenceComment,
+                                                                                  owner.feedId,
+                                                                                  owner.selectedCommentId))
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        input.reloadComments
+            .flatMapLatest {
+                return self.getSingleFeedComments(self.feedId)
+            }
+            .subscribe(with: self, onNext: { owner, data in
+                owner.commentsData.accept(data.comments)
+            }, onError: { owner, error in
+                print(error)
             })
             .disposed(by: disposeBag)
         
         return Output(feedData: feedData.asObservable(),
                       commentsData: commentsData.asDriver(),
+                      myProfileData: myProfileData.asObservable(),
                       popViewController: popViewController,
                       replyCollectionViewHeight: replyCollectionViewContentSize,
                       likeCount: likeCount.asDriver(),
@@ -254,15 +367,22 @@ final class FeedDetailViewModel: ViewModelType {
                       commentCount: commentCount.asDriver(),
                       showPlaceholder: showPlaceholder.asObservable(),
                       endEditing: endEditing.asObservable(),
-                      commentContentWithLengthLimit: commentContentWithLengthLimit.asObservable(),
+                      textViewResignFirstResponder: textViewResignFirstResponder.asObservable(),
                       sendButtonEnabled: sendButtonEnabled.asObservable(),
                       textViewEmpty: textViewEmpty.asObservable(),
                       showDropdownView: showDropdownView.asDriver(),
                       isMyFeed: isMyFeed.asDriver(),
                       showSpoilerAlertView: showSpoilerAlertView.asObservable(),
-                      showImproperAlertView: showImproperAlertView.asObservable(),
+                      showImpertinenceAlertView: showImpertinenceAlertView.asObservable(),
                       pushToFeedEditViewController: pushToFeedEditViewController.asObservable(),
-                      showDeleteAlertView: showDeleteAlertView.asObservable())
+                      showDeleteAlertView: showDeleteAlertView.asObservable(),
+                      showCommentDropdownView: showCommentDropdownView.asObservable(),
+                      hideCommentDropdownView: hideCommentDropdownView.asObservable(),
+                      toggleDropdownView: toggleDropdownView.asObservable(),
+                      showCommentSpoilerAlertView: showCommentSpoilerAlertView.asObservable(),
+                      showCommentImpertinenceAlertView: showCommentImpertinenceAlertView.asObservable(),
+                      myCommentEditing: myCommentEditing.asObservable(),
+                      showCommentDeleteAlertView: showCommentDeleteAlertView.asObservable())
     }
     
     //MARK: - API
@@ -285,14 +405,17 @@ final class FeedDetailViewModel: ViewModelType {
     
     func postComment(_ feedId: Int, _ commentContent: String) -> Observable<Void> {
         return feedDetailRepository.postComment(feedId: feedId, commentContent: commentContent)
+            .observe(on: MainScheduler.instance)
     }
     
-    func putComment(_ feedId: Int, commentId: Int, commentContent: String) -> Observable<Void> {
+    func putComment(_ feedId: Int, _ commentId: Int, _ commentContent: String) -> Observable<Void> {
         return feedDetailRepository.putComment(feedId: feedId, commentId: commentId, commentContent: commentContent)
+            .observe(on: MainScheduler.instance)
     }
     
-    func deleteComment(_ feedId: Int, commentId: Int) -> Observable<Void> {
+    func deleteComment(_ feedId: Int, _ commentId: Int) -> Observable<Void> {
         return feedDetailRepository.deleteComment(feedId: feedId, commentId: commentId)
+            .observe(on: MainScheduler.instance)
     }
     
     func postSpoilerFeed(_ feedId: Int) -> Observable<Void> {
@@ -305,6 +428,21 @@ final class FeedDetailViewModel: ViewModelType {
     
     func deleteFeed(_ feedId: Int) -> Observable<Void> {
         return feedDetailRepository.deleteFeed(feedId: feedId)
+    }
+    
+    func postSpoilerComment(_ feedId: Int, _ commentId: Int) -> Observable<Void> {
+        return feedDetailRepository.postSpoilerComment(feedId: feedId, commentId: commentId)
+            .observe(on: MainScheduler.instance)
+    }
+    
+    func postImpertinenceComment(_ feedId: Int, _ commentId: Int) -> Observable<Void> {
+        return feedDetailRepository.postImpertinenceComment(feedId: feedId, commentId: commentId)
+            .observe(on: MainScheduler.instance)
+    }
+    
+    func getMyProfile() -> Observable<MyProfileResult> {
+        return userRepository.getMyProfileData()
+            .observe(on: MainScheduler.instance)
     }
     
     //MARK: - Custom Method

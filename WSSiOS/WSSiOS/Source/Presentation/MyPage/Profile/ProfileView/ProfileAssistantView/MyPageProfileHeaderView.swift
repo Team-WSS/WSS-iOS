@@ -28,15 +28,12 @@ class CircularButton: UIButton {
 
 final class MyPageProfileHeaderView: UIView {
     
-    //MARK: - Properties
-    
-    private let userImageChangeButtonView = UIImageView()
-    
     //MARK: - Components
 
     lazy var userImageChangeButton = CircularButton()
-    
     private let userImageView = CircularImageView()
+    private let userImageChangeButtonView = UIImageView()
+    
     private let userNicknameLabel = UILabel()
     private let userIntroLabel = UILabel()
     
@@ -128,7 +125,7 @@ final class MyPageProfileHeaderView: UIView {
     //MARK: - Data
     
     func bindData(data: MyProfileResult) {
-        userImageView.kfSetImage(url: data.avatarImage)
+        userImageView.kfSetImage(url: makeBucketImageURLString(path: data.avatarImage))
         userNicknameLabel.applyWSSFont(.headline1, with: data.nickname)
         userIntroLabel.do {
             $0.applyWSSFont(.body2, with: data.intro)

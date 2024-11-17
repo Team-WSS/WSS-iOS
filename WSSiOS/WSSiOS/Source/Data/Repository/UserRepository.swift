@@ -10,6 +10,7 @@ import Foundation
 import RxSwift
 
 protocol UserRepository {
+    func getUserMeData() -> Observable<UserMeResult>
     func getMyProfileData() -> Observable<MyProfileResult>
     func getUserInfo() -> Observable<UserInfo>
     func putUserInfo(gender: String, birth: Int) -> Observable<Void>
@@ -17,20 +18,14 @@ protocol UserRepository {
     func getUserCharacter() -> Observable<UserCharacter>
     func getBlocksList() -> Observable<BlockUserResult>
     func deleteBlockUser(blockID: Int) -> Observable<Void>
-    func getUserNovelStatus() -> Observable<UserNovelStatus>
     func getUserProfileVisibility() -> Observable<UserProfileVisibility>
     func patchUserProfileVisibility(isProfilePublic: Bool) -> Observable<Void>
+    func getUserNovelStatus(userId: Int) -> Observable<UserNovelStatus>
+    func getUserNovelPreferences(userId: Int) -> Observable<UserNovelPreferences>
+    func getUserGenrePreferences(userId: Int) -> Observable<UserGenrePreferences>
 }
 
 struct DefaultUserRepository: UserRepository {
-    func getMyProfileData() -> RxSwift.Observable<MyProfileResult> {
-        return Observable.just(MyProfileResult(nickname: "밝보",
-                                               intro: "꺄울 로판에 절여진 밝보입니다~꺄울 로판에 절여진 밝보입니다~꺄울 로판에",
-                                               avatarImage: "https://mblogthumb-phinf.pstatic.net/MjAyMjAzMjlfMSAg/MDAxNjQ4NDgwNzgwMzkw.yDLPqC9ouJxYoJSgicANH0CPNvFdcixexP7hZaPlCl4g.n7yZDyGC06_gRTwEnAKIhj5bM04laVpNuKRz29dP83wg.JPEG.38qudehd/IMG_8635.JPG?type=w800",
-                                               genrePreferences: ["romance", "fantasy", "wuxia"]))
-    }
-    
-    
     private var userService: UserService
     private var blocksService: BlocksService
     
@@ -39,7 +34,17 @@ struct DefaultUserRepository: UserRepository {
         self.blocksService = blocksService
     }
     
-    func getUserData() -> RxSwift.Observable<UserResult> {
+    func getUserMeData() -> Observable<UserMeResult> {
+        return userService.getUserData()
+            .asObservable()
+    }
+    
+    func getMyProfileData() -> Observable<MyProfileResult> {
+        return userService.getMyProfile()
+            .asObservable()
+    }
+    
+    func getUserData() -> RxSwift.Observable<UserMeResult> {
         return userService.getUserData()
             .asObservable()
     }
@@ -74,8 +79,18 @@ struct DefaultUserRepository: UserRepository {
             .asObservable()
     }
     
-    func getUserNovelStatus() -> RxSwift.Observable<UserNovelStatus> {
-        return userService.getUserNovelStatus()
+    func getUserNovelStatus(userId: Int) -> RxSwift.Observable<UserNovelStatus> {
+        return userService.getUserNovelStatus(userId: userId)
+            .asObservable()
+    }
+    
+    func getUserNovelPreferences(userId: Int) -> RxSwift.Observable<UserNovelPreferences> {
+        return userService.getUserNovelPreferences(userId: userId)
+            .asObservable()
+    }
+    
+    func getUserGenrePreferences(userId: Int) -> RxSwift.Observable<UserGenrePreferences> {
+        return userService.getUserGenrePreferences(userId: userId)
             .asObservable()
     }
     
