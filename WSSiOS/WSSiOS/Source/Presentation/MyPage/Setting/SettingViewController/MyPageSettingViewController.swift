@@ -89,17 +89,16 @@ final class MyPageSettingViewController: UIViewController {
                     }
                 case 3:
                     print("문의하기 & 의견 보내기")
-                    if let url = URL(string: "https://www.instagram.com/2s.ena/") {
+                    if let url = URL(string: "http://pf.kakao.com/_kHxlWG") {
                         UIApplication.shared.open(url, options: [:])
                     }
                 case 4:
-                    print("앱 평점 남기기")
-                    if let url = URL(string: "https://www.instagram.com/2s.ena/") {
+                    if let url = URL(string: StringLiterals.MyPage.SettingURL.termsURL) {
                         UIApplication.shared.open(url, options: [:])
                     }
                 case 5:
                     print("서비스 이용약관")
-                    if let url = URL(string: StringLiterals.MyPage.SettingURL.termsURL) {
+                    if let url = URL(string: StringLiterals.MyPage.SettingURL.infoURL) {
                         UIApplication.shared.open(url, options: [:])
                     }
                 default: break

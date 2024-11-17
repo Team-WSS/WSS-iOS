@@ -183,13 +183,14 @@ enum StringLiterals {
             case profileStatus = "프로필 공개 여부 설정"
             case webSoso = "웹소소 공식 계정"
             case qNA = "문의하기 & 의견 보내기"
-            case review = "앱 평점 남기기"
+            case review = "개인정보 처리 방침"
             case termsOfService = "서비스 이용약관"
         }
         
         enum SettingURL {
             static let instaURL = "https://www.instagram.com/websoso_official/"
             static let termsURL = "https://kimmjabc.notion.site/4acd397608c146cbbf8dd4fe11a82e19"
+            static let infoURL = "https://kimmjabc.notion.site/e55f0c0e95c249f7998f21563aefa4b4?pvs=4"
         }
         
         enum SettingInfo: String, CaseIterable {

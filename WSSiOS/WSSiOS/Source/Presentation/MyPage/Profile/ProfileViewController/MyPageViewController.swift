@@ -250,11 +250,11 @@ extension MyPageViewController {
     //MARK: - UI
     
     private func decideUI(isMyPage: Bool) {
-        let button = setButton(isMyPage: false)
+        let button = setButton(isMyPage: isMyPage)
         
         preparationSetNavigationBar(title: StringLiterals.Navigation.Title.myPage,
                                     left: nil,
-                                    right: dropdownButton)
+                                    right: button)
         
         rootView.headerView.userImageChangeButton.isHidden = !isMyPage
     }
