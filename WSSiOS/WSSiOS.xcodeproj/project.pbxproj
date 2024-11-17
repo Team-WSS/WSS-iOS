@@ -74,8 +74,6 @@
 		2CA2F6622B530BBF0045B4C2 /* LibraryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2F6612B530BBF0045B4C2 /* LibraryCollectionViewCell.swift */; };
 		2CB613F32B575E4500FC3F89 /* MyPageInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB613F22B575E4500FC3F89 /* MyPageInfoViewController.swift */; };
 		2CB613F52B575E6A00FC3F89 /* MyPageInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB613F42B575E6A00FC3F89 /* MyPageInfoView.swift */; };
-		2CBBE8072CE7BC6A00DAF3DC /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 2CBBE8062CE7BC6A00DAF3DC /* Config.xcconfig */; };
-		2CBBE80A2CE7C4E400DAF3DC /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 2CBBE8092CE7C4E400DAF3DC /* Then */; };
 		2CBBE80C2CE7C6E500DAF3DC /* MyPageProfileVisibilityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CBBE80B2CE7C6E500DAF3DC /* MyPageProfileVisibilityViewModel.swift */; };
 		2CBBE80E2CE7C70400DAF3DC /* MyPageProfileVisibilityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CBBE80D2CE7C70400DAF3DC /* MyPageProfileVisibilityViewController.swift */; };
 		2CBBE8102CE7C72A00DAF3DC /* MyPageProfileVisibilityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CBBE80F2CE7C72A00DAF3DC /* MyPageProfileVisibilityView.swift */; };
@@ -148,6 +146,8 @@
 		393CAC442CA72760004B4DB6 /* OnboardingBirthGenderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393CAC432CA72760004B4DB6 /* OnboardingBirthGenderView.swift */; };
 		393CAC462CA727E3004B4DB6 /* Gender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393CAC452CA727E3004B4DB6 /* Gender.swift */; };
 		393CAC482CA72A2E004B4DB6 /* OnboardingGenderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393CAC472CA72A2E004B4DB6 /* OnboardingGenderButton.swift */; };
+		394401A72CE9AF55007B5E04 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 394401A62CE9AF55007B5E04 /* Config.xcconfig */; };
+		394401AA2CE9B07B007B5E04 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 394401A92CE9B07B007B5E04 /* Then */; };
 		394CFD352CA00AD80053C8EA /* NovelDetailHeaderEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394CFD342CA00AD80053C8EA /* NovelDetailHeaderEntity.swift */; };
 		394CFD3B2CA2E7760053C8EA /* KingFisherRxHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394CFD3A2CA2E7760053C8EA /* KingFisherRxHelper.swift */; };
 		395319272BE2865A00D075F4 /* KeywordManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395319262BE2865A00D075F4 /* KeywordManager.swift */; };
@@ -169,6 +169,7 @@
 		397DE6802C2342A70026DB07 /* NovelDetailTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 397DE67F2C2342A70026DB07 /* NovelDetailTabBarView.swift */; };
 		3980D1D62C19BB2C008B9B18 /* NovelDetailLargeCoverImageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3980D1D52C19BB2C008B9B18 /* NovelDetailLargeCoverImageButton.swift */; };
 		398F933E2CE66C3500C0F916 /* RxKakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 398F933D2CE66C3500C0F916 /* RxKakaoSDKCommon */; };
+		398F93402CE8743E00C0F916 /* NovelDetailHeaderDropdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398F933F2CE8743E00C0F916 /* NovelDetailHeaderDropdownView.swift */; };
 		399258182C16DAF20063FB46 /* NovelDetailHeaderInterestFeedWriteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399258172C16DAF20063FB46 /* NovelDetailHeaderInterestFeedWriteButton.swift */; };
 		3992FA562B81E2A40079C8B8 /* RegisterNormalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3992FA552B81E2A40079C8B8 /* RegisterNormalViewController.swift */; };
 		399492F32C9A8ADE00298F16 /* LoginBannerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399492F22C9A8ADE00298F16 /* LoginBannerCollectionViewCell.swift */; };
@@ -531,7 +532,6 @@
 		2CA2F6612B530BBF0045B4C2 /* LibraryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryCollectionViewCell.swift; sourceTree = "<group>"; };
 		2CB613F22B575E4500FC3F89 /* MyPageInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageInfoViewController.swift; sourceTree = "<group>"; };
 		2CB613F42B575E6A00FC3F89 /* MyPageInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageInfoView.swift; sourceTree = "<group>"; };
-		2CBBE8062CE7BC6A00DAF3DC /* Config.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Config.xcconfig; path = ../../../Config.xcconfig; sourceTree = "<group>"; };
 		2CBBE80B2CE7C6E500DAF3DC /* MyPageProfileVisibilityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageProfileVisibilityViewModel.swift; sourceTree = "<group>"; };
 		2CBBE80D2CE7C70400DAF3DC /* MyPageProfileVisibilityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageProfileVisibilityViewController.swift; sourceTree = "<group>"; };
 		2CBBE80F2CE7C72A00DAF3DC /* MyPageProfileVisibilityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageProfileVisibilityView.swift; sourceTree = "<group>"; };
@@ -599,6 +599,7 @@
 		393CAC432CA72760004B4DB6 /* OnboardingBirthGenderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingBirthGenderView.swift; sourceTree = "<group>"; };
 		393CAC452CA727E3004B4DB6 /* Gender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gender.swift; sourceTree = "<group>"; };
 		393CAC472CA72A2E004B4DB6 /* OnboardingGenderButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingGenderButton.swift; sourceTree = "<group>"; };
+		394401A62CE9AF55007B5E04 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		394CFD342CA00AD80053C8EA /* NovelDetailHeaderEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailHeaderEntity.swift; sourceTree = "<group>"; };
 		394CFD3A2CA2E7760053C8EA /* KingFisherRxHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KingFisherRxHelper.swift; sourceTree = "<group>"; };
 		395319262BE2865A00D075F4 /* KeywordManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeywordManager.swift; sourceTree = "<group>"; };
@@ -619,6 +620,7 @@
 		396C7C5C2CB27AC2003C9712 /* ServerErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerErrorResponse.swift; sourceTree = "<group>"; };
 		397DE67F2C2342A70026DB07 /* NovelDetailTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailTabBarView.swift; sourceTree = "<group>"; };
 		3980D1D52C19BB2C008B9B18 /* NovelDetailLargeCoverImageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailLargeCoverImageButton.swift; sourceTree = "<group>"; };
+		398F933F2CE8743E00C0F916 /* NovelDetailHeaderDropdownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailHeaderDropdownView.swift; sourceTree = "<group>"; };
 		399258172C16DAF20063FB46 /* NovelDetailHeaderInterestFeedWriteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailHeaderInterestFeedWriteButton.swift; sourceTree = "<group>"; };
 		3992FA552B81E2A40079C8B8 /* RegisterNormalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNormalViewController.swift; sourceTree = "<group>"; };
 		399492F22C9A8ADE00298F16 /* LoginBannerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginBannerCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -921,7 +923,7 @@
 				390162CE2CE6575D00B7476C /* RxKakaoSDKUser in Frameworks */,
 				3999BFEE2B4E6CA000984832 /* UIImageViewAlignedSwift in Frameworks */,
 				CD3E5A852B54254F00C0A659 /* RxKeyboard in Frameworks */,
-				2C1F571A2CA7B7EE00DF5DA0 /* Then in Frameworks */,
+				394401AA2CE9B07B007B5E04 /* Then in Frameworks */,
 				390162CC2CE6575D00B7476C /* RxKakaoSDKAuth in Frameworks */,
 				2CD229442B42E7A2005400BE /* RxRelay in Frameworks */,
 				2CD229472B42E7C8005400BE /* Lottie in Frameworks */,
@@ -1163,6 +1165,7 @@
 				A1EF35562B52FAA300A94C53 /* Network */,
 				2C426A432BFB08A4008F6B23 /* Trash */,
 				2CD229292B42E687005400BE /* Info.plist */,
+				394401A62CE9AF55007B5E04 /* Config.xcconfig */,
 			);
 			path = WSSiOS;
 			sourceTree = "<group>";
@@ -1921,6 +1924,7 @@
 				39E8FD8F2C742CE100AD6F30 /* NovelDetailHeaderReadStatusButton.swift */,
 				3980D1D52C19BB2C008B9B18 /* NovelDetailLargeCoverImageButton.swift */,
 				399258172C16DAF20063FB46 /* NovelDetailHeaderInterestFeedWriteButton.swift */,
+				398F933F2CE8743E00C0F916 /* NovelDetailHeaderDropdownView.swift */,
 			);
 			path = NovelDetailHeaderAssistantView;
 			sourceTree = "<group>";
@@ -2967,10 +2971,10 @@
 				3916EC852B89B42C007835B5 /* RxGesture */,
 				2C95AEF22CA6DF85001A5559 /* SnapKit */,
 				2C9BDDA62CA79F420026D038 /* Kingfisher */,
-				2C1F57192CA7B7EE00DF5DA0 /* Then */,
 				390162CB2CE6575D00B7476C /* RxKakaoSDKAuth */,
 				390162CD2CE6575D00B7476C /* RxKakaoSDKUser */,
 				398F933D2CE66C3500C0F916 /* RxKakaoSDKCommon */,
+				394401A92CE9B07B007B5E04 /* Then */,
 			);
 			productName = WSSiOS;
 			productReference = 2CD229182B42E685005400BE /* WSSiOS.app */;
@@ -3008,8 +3012,8 @@
 				3916EC842B89B42C007835B5 /* XCRemoteSwiftPackageReference "RxGesture" */,
 				2C95AEF12CA6DF85001A5559 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				2C9BDDA52CA79F420026D038 /* XCRemoteSwiftPackageReference "Kingfisher" */,
-				2C1F57182CA7B7EE00DF5DA0 /* XCRemoteSwiftPackageReference "Then" */,
 				390162CA2CE6575D00B7476C /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */,
+				394401A82CE9B07B007B5E04 /* XCRemoteSwiftPackageReference "Then" */,
 			);
 			productRefGroup = 2CD229192B42E685005400BE /* Products */;
 			projectDirPath = "";
@@ -3026,7 +3030,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2CD229252B42E687005400BE /* Assets.xcassets in Resources */,
-				2CBBE8072CE7BC6A00DAF3DC /* Config.xcconfig in Resources */,
+				394401A72CE9AF55007B5E04 /* Config.xcconfig in Resources */,
 				2C79CB992B45A0B200734E1F /* Pretendard-Bold.otf in Resources */,
 				39B75ADA2B59891D005DD8B9 /* villainessFan.json in Resources */,
 				39B75AD92B59891D005DD8B9 /* villainessTea.json in Resources */,
@@ -3464,6 +3468,7 @@
 				2CCBFA002B4DBFD200D787C2 /* TrashMyPageChangeNickNameViewModel.swift in Sources */,
 				39DFB0ED2CABDFC000F87951 /* OnboardingGenrePreferenceView.swift in Sources */,
 				CD39F2BF2B4FF6DF00B73A5C /* TrashNovelDetailTabView.swift in Sources */,
+				398F93402CE8743E00C0F916 /* NovelDetailHeaderDropdownView.swift in Sources */,
 				A1EF35582B52FAC800A94C53 /* UserService.swift in Sources */,
 				C99DDFDD2C8613BC00EDC0C4 /* SearchView.swift in Sources */,
 				CD2D0AAD2C7EF1A2007CF1F1 /* NovelReviewViewController.swift in Sources */,
@@ -3485,6 +3490,7 @@
 /* Begin XCBuildConfiguration section */
 		2CD2292A2B42E687005400BE /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 394401A62CE9AF55007B5E04 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -3548,6 +3554,7 @@
 		};
 		2CD2292B2B42E687005400BE /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 394401A62CE9AF55007B5E04 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -3604,6 +3611,7 @@
 		};
 		2CD2292D2B42E687005400BE /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 394401A62CE9AF55007B5E04 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -3644,6 +3652,7 @@
 		};
 		2CD2292E2B42E687005400BE /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 394401A62CE9AF55007B5E04 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -3722,14 +3731,6 @@
 				minimumVersion = 8.0.3;
 			};
 		};
-		2CBBE8082CE7C4E400DAF3DC /* XCRemoteSwiftPackageReference "Then" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/devxoul/Then";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 3.0.0;
-			};
-		};
 		2CD2293A2B42E7A2005400BE /* XCRemoteSwiftPackageReference "RxSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
@@ -3762,6 +3763,14 @@
 				minimumVersion = 4.0.4;
 			};
 		};
+		394401A82CE9B07B007B5E04 /* XCRemoteSwiftPackageReference "Then" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/devxoul/Then";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
 		3999BFEC2B4E6CA000984832 /* XCRemoteSwiftPackageReference "UIImageViewAlignedSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sochalewski/UIImageViewAlignedSwift";
@@ -3790,11 +3799,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 2C9BDDA52CA79F420026D038 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
-		};
-		2CBBE8092CE7C4E400DAF3DC /* Then */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2CBBE8082CE7C4E400DAF3DC /* XCRemoteSwiftPackageReference "Then" */;
-			productName = Then;
 		};
 		2CD2293B2B42E7A2005400BE /* RxBlocking */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -3830,6 +3834,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3916EC842B89B42C007835B5 /* XCRemoteSwiftPackageReference "RxGesture" */;
 			productName = RxGesture;
+		};
+		394401A92CE9B07B007B5E04 /* Then */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 394401A82CE9B07B007B5E04 /* XCRemoteSwiftPackageReference "Then" */;
+			productName = Then;
 		};
 		398F933D2CE66C3500C0F916 /* RxKakaoSDKCommon */ = {
 			isa = XCSwiftPackageProductDependency;

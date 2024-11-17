@@ -9,6 +9,7 @@ import UIKit
 
 import RxSwift
 import RxCocoa
+import RxGesture
 
 /// Detail View
 final class NovelDetailViewController: UIViewController {
@@ -19,6 +20,8 @@ final class NovelDetailViewController: UIViewController {
     private let disposeBag = DisposeBag()
     
     private let viewWillAppearEvent = BehaviorRelay(value: false)
+    private let imageNetworkError = BehaviorRelay<Bool>(value: false)
+    private let deleteReview = PublishSubject<Void>()
     
     private var navigationTitle: String = ""
     private let dateFormatter = DateFormatter().then {
@@ -79,7 +82,7 @@ final class NovelDetailViewController: UIViewController {
     private func setNavigationBar() {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: rootView.backButton)
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rootView.dropDownButton)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rootView.headerDropDownButton)
     }
     
     //MARK: - Bind
@@ -118,6 +121,8 @@ final class NovelDetailViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
                 owner.rootView.bindHeaderData(data)
+                owner.rootView.showLoadingView(isShow: false)
+                owner.makeUIImage(data: data)
                 owner.navigationTitle = data.novelTitle
                 owner.setNavigationBar()
             }, onError: { owner, error in
@@ -155,6 +160,43 @@ final class NovelDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.showNetworkErrorView
+            .drive(with: self, onNext: { owner, isShow in
+                owner.rootView.showNetworkErrorView(isShow: isShow)
+            })
+            .disposed(by: disposeBag)
+        
+        output.hidefirstReviewDescriptionView
+            .drive(with: self, onNext: { owner, isHidden in
+                owner.rootView.showFirstDescriptionView(isHidden: isHidden)
+            })
+            .disposed(by: disposeBag)
+        
+        output.showReviewDeleteAlert
+            .flatMapLatest { _ in
+                self.presentToAlertViewController(
+                    iconImage: .icAlertWarningCircle,
+                    titleText: StringLiterals.NovelDetail.Header.deleteReviewAlertTitle,
+                    contentText: StringLiterals.NovelDetail.Header.deleteReviewAlertDescription,
+                    leftTitle: StringLiterals.NovelDetail.Header.deleteCancel,
+                    rightTitle: StringLiterals.NovelDetail.Header.deleteAccept,
+                    rightBackgroundColor: UIColor.wssSecondary100.cgColor
+                )
+            }
+            .bind(with: self, onNext: { owner, buttonType in
+                owner.rootView.showHeaderDropDownView(isShow: false)
+                if buttonType == .right {
+                    owner.deleteReview.onNext(())
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        output.showReviewDeletedToast
+            .drive(with: self, onNext: { owner, _ in
+                owner.showToast(.novelReviewDeleted)
+            })
+            .disposed(by: disposeBag)
+        
         //MARK: - Bind/NovelDetailHeader
         
         output.showLargeNovelCoverImage
@@ -186,6 +228,21 @@ final class NovelDetailViewController: UIViewController {
                 owner.pushToFeedEditViewController(relevantCategories: genre,
                                                    novelId: novelId,
                                                    novelTitle: novelTitle)
+            })
+            .disposed(by: disposeBag)
+        
+        output.showHeaderDropdownView
+            .drive(with: self, onNext: { owner, isShow in
+                owner.rootView.showHeaderDropDownView(isShow: isShow)
+            })
+            .disposed(by: disposeBag)
+        
+        output.showReportPage
+            .drive(with: self, onNext: { owner, _ in
+                owner.rootView.showHeaderDropDownView(isShow: false)
+                if let url = URL(string: URLs.Contact.kakao) {
+                    UIApplication.shared.open(url, options: [:])
+                }
             })
             .disposed(by: disposeBag)
         
@@ -427,10 +484,22 @@ final class NovelDetailViewController: UIViewController {
             rootView.feedView.feedListView.dropdownView.bottomDropdownButton.rx.tap.map { DropdownButtonType.bottom }
         )
         
+        let headerDropdownButtonDidTap = Observable.merge(
+            rootView.headerDropDownView.topDropdownButton.rx.tap.map { DropdownButtonType.top },
+            rootView.headerDropDownView.bottomDropdownButton.rx.tap.map { DropdownButtonType.bottom }
+        )
+        
         return NovelDetailViewModel.Input(
             viewWillAppearEvent: viewWillAppearEvent.asObservable(),
             scrollContentOffset: rootView.scrollView.rx.contentOffset,
             backButtonDidTap: rootView.backButton.rx.tap,
+            networkErrorRefreshButtonDidTap: rootView.networkErrorView.refreshButton.rx.tap,
+            imageNetworkError: imageNetworkError.asObservable(),
+            deleteReview: deleteReview.asObservable(),
+            backgroundDidTap: rootView.rx.tapGesture(),
+            firstDescriptionBackgroundDidTap: rootView.firstReviewDescriptionBackgroundView.rx.tap,
+            headerDotsButtonDidTap: rootView.headerDropDownButton.rx.tap,
+            headerDropdownButtonDidTap: headerDropdownButtonDidTap,
             novelCoverImageButtonDidTap: rootView.headerView.coverImageButton.rx.tap,
             largeNovelCoverImageDismissButtonDidTap: rootView.largeNovelCoverImageButton.dismissButton.rx.tap,
             largeNovelCoverImageBackgroundDidTap: rootView.largeNovelCoverImageButton.rx.tap,
@@ -486,6 +555,21 @@ final class NovelDetailViewController: UIViewController {
             NSAttributedString.Key.foregroundColor: UIColor.wssBlack,
             NSAttributedString.Key.kern: -0.6,
         ]
+    }
+    
+    private func makeUIImage(data: NovelDetailHeaderEntity) {
+        Observable.zip (
+            KingFisherRxHelper.kingFisherImage(urlString: data.novelImage),
+            KingFisherRxHelper.kingFisherImage(urlString: data.novelGenreImage)
+        )
+        .subscribe(with: self, onNext: { owner, result in
+            let (novelImage, genreImage) = result
+            owner.rootView.bindHeaderImage(novelImage: novelImage, genreImage: genreImage)
+        }, onError: { owner, error in
+            print(error)
+            owner.imageNetworkError.accept(true)
+        })
+        .disposed(by: disposeBag)
     }
     
     private func observeReachedBottom(_ scrollView: UIScrollView) -> Observable<Bool> {

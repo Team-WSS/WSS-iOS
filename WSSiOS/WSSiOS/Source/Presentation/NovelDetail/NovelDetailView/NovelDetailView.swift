@@ -19,10 +19,16 @@ final class NovelDetailView: UIView {
     private let contentView = UIStackView()
     
     let backButton = UIButton()
-    let dropDownButton = UIButton()
+    let headerDropDownButton = UIButton()
+    let headerDropDownView = NovelDetailHeaderDropdownView()
     
     let headerView = NovelDetailHeaderView()
     let largeNovelCoverImageButton = NovelDetailLargeCoverImageButton()
+    let firstReviewDescriptionBackgroundView = UIButton()
+    let firstReviewDescriptionReviewButtonView = NovelDetailHeaderReviewResultView()
+    let firstReviewDescriptionLabel = UILabel()
+    let firstReviewDescriptionLabelBackgroundView = UIImageView()
+    
     let stickyTabBarView = NovelDetailTabBarView()
     let tabBarView = NovelDetailTabBarView()
     
@@ -30,6 +36,9 @@ final class NovelDetailView: UIView {
     let feedView = NovelDetailFeedView()
     
     let createFeedButton = DifferentRadiusButton()
+    
+    let networkErrorView = WSSNetworkErrorView()
+    let loadingView = WSSLoadingView()
     
     //MARK: - Life Cycle
     
@@ -53,7 +62,7 @@ final class NovelDetailView: UIView {
         backButton.setImage(.icNavigateLeft.withTintColor(.wssBlack),
                             for: .normal)
         
-        dropDownButton.do {
+        headerDropDownButton.do {
             $0.setImage(.icDropDownDot.withRenderingMode(.alwaysTemplate),
                       for: .normal)
             $0.tintColor = .wssBlack
@@ -64,6 +73,27 @@ final class NovelDetailView: UIView {
             let windowScene = scenes.first as? UIWindowScene
             let statusBarManager = windowScene?.windows.first?.windowScene?.statusBarManager
             $0.frame = statusBarManager?.statusBarFrame ?? .zero
+        }
+        
+        firstReviewDescriptionBackgroundView.do {
+            $0.backgroundColor = .wssBlack60
+        }
+        
+        firstReviewDescriptionReviewButtonView.do {
+            $0.isUserInteractionEnabled = false
+        }
+        
+        firstReviewDescriptionLabel.do {
+            $0.applyWSSFont(.body3, with: StringLiterals.NovelDetail.Header.firstReviewDescription)
+            $0.textColor = .wssPrimary100
+            $0.numberOfLines = 2
+            $0.isUserInteractionEnabled = false
+        }
+        
+        firstReviewDescriptionLabelBackgroundView.do {
+            $0.image = .speechBalloon
+            $0.contentMode = .scaleAspectFit
+            $0.isUserInteractionEnabled = false
         }
         
         stickyTabBarView.do {
@@ -92,6 +122,18 @@ final class NovelDetailView: UIView {
             $0.bottomLeftRadius = 32.5
             $0.bottomRightRadius = 10.0
         }
+        
+        networkErrorView.do {
+            $0.isHidden = true
+        }
+        
+        loadingView.do {
+            $0.isHidden = false
+        }
+        
+        headerDropDownView.do {
+            $0.isHidden = true
+        }
     }
     
     private func setHierarchy() {
@@ -99,12 +141,21 @@ final class NovelDetailView: UIView {
                          statusBarView,
                          stickyTabBarView,
                          largeNovelCoverImageButton,
-                         createFeedButton)
+                         createFeedButton,
+                         headerDropDownView,
+                         firstReviewDescriptionBackgroundView,
+                         networkErrorView,
+                         loadingView)
         scrollView.addSubview(contentView)
         contentView.addArrangedSubviews(headerView,
                                         tabBarView,
                                         infoView,
                                         feedView)
+        firstReviewDescriptionBackgroundView.addSubviews(
+            firstReviewDescriptionReviewButtonView,
+            firstReviewDescriptionLabelBackgroundView,
+            firstReviewDescriptionLabel
+        )
     }
     
     private func setLayout() {
@@ -132,13 +183,50 @@ final class NovelDetailView: UIView {
             $0.bottom.equalTo(self.safeAreaLayoutGuide).inset(10)
             $0.size.equalTo(65)
         }
+        
+        networkErrorView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
+        loadingView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
+        headerDropDownView.snp.makeConstraints {
+            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top)
+            $0.trailing.equalToSuperview().inset(20)
+        }
+        
+        firstReviewDescriptionBackgroundView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
+        firstReviewDescriptionReviewButtonView.snp.makeConstraints {
+            $0.edges.equalTo(headerView.reviewResultView.snp.edges)
+        }
+        
+        firstReviewDescriptionLabelBackgroundView.snp.makeConstraints {
+            $0.top.equalTo(firstReviewDescriptionReviewButtonView.snp.bottom).offset(6)
+            $0.width.equalTo(147)
+            $0.height.equalTo(64)
+            $0.centerX.equalToSuperview()
+        }
+        
+        firstReviewDescriptionLabel.snp.makeConstraints {
+            $0.bottom.equalTo(firstReviewDescriptionLabelBackgroundView.snp.bottom).offset(-8)
+            $0.centerX.equalToSuperview()
+        }
     }
     
     //MARK: - Data
     
     func bindHeaderData(_ data: NovelDetailHeaderEntity) {
         headerView.bindData(data)
-        largeNovelCoverImageButton.bindData(data.novelImage)
+    }
+    
+    func bindHeaderImage(novelImage: UIImage, genreImage: UIImage) {
+        headerView.bindImage(novelImage: novelImage, novelGenreImage: genreImage)
+        largeNovelCoverImageButton.bindData(novelImage)
     }
     
     func bindInfoData(_ data: NovelDetailInfoResult) {
@@ -168,5 +256,30 @@ final class NovelDetailView: UIView {
             infoView.isHidden = true
             feedView.isHidden = false
         }
+    }
+    
+    func showNetworkErrorView(isShow: Bool) {
+        networkErrorView.do {
+            $0.isHidden = !isShow
+        }
+    }
+    
+    func showLoadingView(isShow: Bool) {
+        loadingView.do {
+            $0.isHidden = !isShow
+        }
+    }
+    
+    func showHeaderDropDownView(isShow: Bool) {
+        headerDropDownView.do {
+            $0.isHidden = !isShow
+        }
+    }
+    
+    func showFirstDescriptionView(isHidden: Bool) {
+        firstReviewDescriptionBackgroundView.isHidden = isHidden
+        firstReviewDescriptionLabel.isHidden = isHidden
+        firstReviewDescriptionReviewButtonView.isHidden = isHidden
+        firstReviewDescriptionLabelBackgroundView.isHidden = isHidden
     }
 }

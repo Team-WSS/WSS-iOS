@@ -60,6 +60,11 @@ final class NovelDetailHeaderReviewResultView: UIView {
             $0.axis = .horizontal
             $0.alignment = .center
             $0.spacing = 8
+            $0.isHidden = true
+        }
+        
+        readInfoButtons.forEach { button in
+            button.isHidden = true
         }
         
         readStatusButtonStackView.do {

@@ -14,6 +14,7 @@ enum StringLiterals {
         static let userGender = "USER_GENDER"
         static let userNickname = "USER_NICKNAME"
         static let isRegister = "IS_REGISTER"
+        static let showReviewFirstDescription = "SHOW_REVIEW_FIRST_DESCRIPTION"
     }
     
     enum BirthPicker {
@@ -397,6 +398,13 @@ enum StringLiterals {
             static let inSeries = "  ·  연재중  ·  "
             static let interest = "관심"
             static let feedWrite = "나도 한마디"
+            static let errorReport = "오류 제보"
+            static let deleteReview = "평가 삭제"
+            static let deleteReviewAlertTitle = "평가를 모두 삭제할까요?"
+            static let deleteReviewAlertDescription = "별점, 관심, 상태, 날짜, 매력포인트,\n키워드 정보가 사라지고 되돌릴 수 없어요"
+            static let deleteCancel = "취소"
+            static let deleteAccept = "삭제"
+            static let firstReviewDescription = "읽기 상태를 체크하여\n작품을 평가해보세요!"
             
             enum Loading {
                 static let novelTitle = "작품 제목"

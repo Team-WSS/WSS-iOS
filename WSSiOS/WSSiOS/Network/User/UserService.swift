@@ -62,7 +62,7 @@ extension DefaultUserService: UserService {
     }
     
     func patchUserName(userNickName: String) -> RxSwift.Single<Void> {
-        guard let userNickNameData = try? JSONEncoder().encode(UserNickNameResult(userNickname: userNickName)) 
+        guard let userNickNameData = try? JSONEncoder().encode(UserNickNameResult(userNickname: userNickName))
                 
         else {
             return .error(NetworkServiceError.invalidRequestError)
@@ -142,7 +142,7 @@ extension DefaultUserService: UserService {
     
     func putUserInfo(gender: String, birth: Int) -> RxSwift.Single<Void> {
         guard let userInfoData = try? JSONEncoder().encode(ChangeUserInfo(gender: gender,
-                                                                          birth: birth)) 
+                                                                          birth: birth))
                 
         else {
             return .error(NetworkServiceError.invalidRequestError)
@@ -179,7 +179,12 @@ extension DefaultUserService: UserService {
                                     to: UserProfileVisibility.self)
                 }
                 .asSingle()
-          
+            
+        } catch {
+            return Single.error(error)
+        }
+    }
+    
     func getMyProfile() -> Single<MyProfileResult> {
         do {
             let request = try makeHTTPRequest(method: .get,
@@ -215,7 +220,11 @@ extension DefaultUserService: UserService {
             return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
-          
+        } catch {
+            return Single.error(error)
+        }
+    }
+    
     func getUserNovelPreferences(userId: Int) -> Single<UserNovelPreferences> {
         do {
             let request = try makeHTTPRequest(method: .get,
@@ -254,5 +263,3 @@ extension DefaultUserService: UserService {
         }
     }
 }
-
-

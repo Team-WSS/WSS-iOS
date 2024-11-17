@@ -20,6 +20,7 @@ enum ToastStatus {
     case novelAlreadyConnected
     case selectionOverLimit(count: Int)
     case novelReviewed
+    case novelReviewDeleted
     case changeToPublicProfile
     case changeToPrivateProfile
 
@@ -29,7 +30,7 @@ enum ToastStatus {
             return .icAlertSuccess
         case .memoSaveFail, .memoDelete:
             return .icAlertWarning
-        case .novelReviewed, .changeToPublicProfile, .changeToPrivateProfile:
+        case .novelReviewed, .changeToPublicProfile, .changeToPrivateProfile, .novelReviewDeleted:
             return .icAlertCheck
         }
     }
@@ -54,6 +55,8 @@ enum ToastStatus {
             "\(count)개까지 선택 가능해요"
         case .novelReviewed:
             "평가 완료!"
+        case .novelReviewDeleted:
+            "평가를 모두 삭제했어요"
         case .changeToPublicProfile:
             "프로필이 전체 공개로 전환되었어요"
         case .changeToPrivateProfile:
