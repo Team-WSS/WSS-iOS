@@ -19,6 +19,8 @@ final class FeedDetailViewController: UIViewController {
     private let viewModel: FeedDetailViewModel
     private let disposeBag = DisposeBag()
     
+    private let viewWillAppearEvent = PublishRelay<Void>()
+    
     private let maximumCommentContentCount: Int = 500
     private let commentDotsButtonDidTap = PublishRelay<(Int, Bool)>()
     private let commentSpoilerTextDidTap = PublishRelay<Void>()
@@ -49,6 +51,8 @@ final class FeedDetailViewController: UIViewController {
         hideTabBar()
         setNavigationBar()
         swipeBackGesture()
+        
+        viewWillAppearEvent.accept(())
     }
     
     override func viewDidLoad() {
@@ -104,6 +108,7 @@ final class FeedDetailViewController: UIViewController {
         )
         
         let input = FeedDetailViewModel.Input(
+            viewWillAppearEvent: viewWillAppearEvent.asObservable(),
             backButtonDidTap: rootView.backButton.rx.tap,
             replyCollectionViewContentSize: rootView.replyView.replyCollectionView.rx.observe(CGSize.self, "contentSize"),
             likeButtonDidTap: rootView.feedContentView.reactView.likeButton.rx.tap,
@@ -141,6 +146,7 @@ final class FeedDetailViewController: UIViewController {
                 .disposed(by: disposeBag)
         
         output.myProfileData
+            .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
                 owner.rootView.replyWritingView.bindUserProfile(data)
             })
@@ -509,9 +515,7 @@ extension FeedDetailViewController: UICollectionViewDelegateFlowLayout {
         label.sizeToFit()
         let labelHeight = label.frame.height
         let resizedLabelHeight = ceil(labelHeight)
-        
-        print("labelHeight: \(labelHeight)")
-        print("resizedLabelHeight: \(resizedLabelHeight)")
+    
         return resizedLabelHeight
     }
 }
@@ -530,9 +534,10 @@ extension FeedDetailViewController: UITextViewDelegate {
         
         let backgroundHeight: CGFloat
         
-        backgroundHeight = numberOfLines == 1 ? 42 : min(estimatedSize.height + 14, 84)
+        backgroundHeight = numberOfLines == 1 ? 42 : min(estimatedSize.height + 14, 98)
         
         rootView.replyWritingView.replyWritingTextView.snp.updateConstraints {
+            $0.centerY.equalToSuperview()
             $0.height.equalTo(min(estimatedSize.height, 84))
         }
         
