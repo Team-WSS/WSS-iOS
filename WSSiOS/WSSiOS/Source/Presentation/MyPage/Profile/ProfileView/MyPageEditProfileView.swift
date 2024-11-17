@@ -14,10 +14,11 @@ final class MyPageEditProfileView: UIView {
     
     //MARK: - Components
     
-    let profileView = UIView()
-    private var profileImageView = UIImageView()
-    private let profileChangeView = UIView()
-    private let profileChangeImageView = UIImageView()
+    let myPageProfileView = UIView()
+    
+    private var userImageView = CircularImageView()
+    var userImageChangeButton = CircularButton()
+    private let userImageChangeButtonView = UIImageView()
 
     private let nicknameView = UIView()
     private let nicknameLabel = UILabel()
@@ -66,23 +67,22 @@ final class MyPageEditProfileView: UIView {
     private func setUI() {
         self.backgroundColor = .wssWhite
         
-        profileView.do {
+        myPageProfileView.do {
             $0.backgroundColor = .wssWhite
             
-            profileImageView.do {
-                $0.image = .profile
-                $0.layer.cornerRadius = 37
+            userImageChangeButtonView.do {
+                $0.image = .icPlus
             }
             
-            profileChangeView.do {
-                $0.backgroundColor = .wssWhite
-                $0.layer.cornerRadius = 12.5
-                $0.layer.borderColor = UIColor.wssGray70.cgColor
-                $0.layer.borderWidth = 1.04
+            userImageChangeButton.do {
+                var configuration = UIButton.Configuration.filled()
+                configuration.baseBackgroundColor = .wssWhite
                 
-                profileChangeImageView.do {
-                    $0.image = .icPlus
-                }
+                $0.configuration = configuration
+                $0.imageView?.contentMode = .scaleAspectFit
+                
+                $0.layer.borderWidth = 1.04
+                $0.layer.borderColor = UIColor.wssGray70.cgColor
             }
         }
         
@@ -198,13 +198,13 @@ final class MyPageEditProfileView: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubviews(profileView,
+        self.addSubviews(myPageProfileView,
                          nicknameView,
                          introView,
                          genreView)
-        profileView.addSubviews(profileImageView,
-                                     profileChangeView)
-        profileChangeView.addSubview(profileChangeImageView)
+        myPageProfileView.addSubviews(userImageView,
+                                      userImageChangeButton)
+        userImageChangeButton.addSubview(userImageChangeButtonView)
         nicknameView.addSubviews(nicknameLabel,
                                  nicknameTextField,
                                  checkButton,
@@ -222,7 +222,7 @@ final class MyPageEditProfileView: UIView {
     }
     
     private func setLayout() {
-        profileView.snp.makeConstraints {
+        myPageProfileView.snp.makeConstraints {
             if UIScreen.isSE {
                 $0.top.equalTo(safeAreaLayoutGuide.snp.top).inset(38-7)
             } else {
@@ -231,28 +231,27 @@ final class MyPageEditProfileView: UIView {
             $0.centerX.equalToSuperview()
             $0.size.equalTo(94)
             
-            profileImageView.snp.makeConstraints {
+            userImageView.snp.makeConstraints {
                 $0.edges.equalToSuperview()
             }
             
-            profileChangeView.snp.makeConstraints {
-                $0.size.equalTo(25)
-                $0.trailing.equalTo(profileImageView.snp.trailing)
-                $0.bottom.equalTo(profileImageView.snp.bottom)
-                
-                profileChangeImageView.snp.makeConstraints {
-                    $0.center.equalToSuperview()
-                    //TODO: 디자인썜들께 여쭤봄
-                    $0.size.equalTo(19.79)
-                }
+            userImageChangeButtonView.snp.makeConstraints {
+                $0.center.equalToSuperview()
+                $0.size.equalTo(20)
             }
-        }     
+            
+            userImageChangeButton.snp.makeConstraints {
+                $0.trailing.equalTo(userImageView.snp.trailing)
+                $0.bottom.equalTo(userImageView.snp.bottom)
+                $0.size.equalTo(25)
+            }
+        }
         
         nicknameView.snp.makeConstraints {
             if UIScreen.isSE {
-                $0.top.equalTo(profileView.snp.bottom).offset(29-7)
+                $0.top.equalTo(myPageProfileView.snp.bottom).offset(29-7)
             } else {
-                $0.top.equalTo(profileView.snp.bottom).offset(29)
+                $0.top.equalTo(myPageProfileView.snp.bottom).offset(29)
             }
             $0.width.equalToSuperview()
             
@@ -447,8 +446,19 @@ extension MyPageEditProfileView {
     
     //MARK: - Data
     
-    func bindData(nickName: String, intro: String) {
-        nicknameTextField.applyWSSFont(.body2, with: nickName)
-        introTextView.applyWSSFont(.body2, with: intro)
+    func bindData(data: MyProfileResult) {
+        
+        nicknameTextField.applyWSSFont(.body2, with: data.nickname)
+        
+        introTextView.applyWSSFont(.body2, with: data.intro)
+        if !data.intro.isEmpty {
+            introTextViewPlaceholder.isHidden = true
+        } else {
+            introCountView.isHidden = false
+        }
+        
+        userImageView.do {
+            $0.kfSetImage(url: makeBucketImageURLString(path: data.avatarImage))
+        }
     }
 }

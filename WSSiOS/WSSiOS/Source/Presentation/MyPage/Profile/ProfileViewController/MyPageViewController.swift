@@ -145,8 +145,8 @@ final class MyPageViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.pushToEditViewController
-            .bind(with: self, onNext: { owner, _ in
-                owner.pushToMyPageEditViewController()
+            .bind(with: self, onNext: { owner, data in
+                owner.pushToMyPageEditViewController(profile: data)
             })
             .disposed(by: disposeBag)
         

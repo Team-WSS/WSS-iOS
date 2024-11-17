@@ -28,15 +28,12 @@ class CircularButton: UIButton {
 
 final class MyPageProfileHeaderView: UIView {
     
-    //MARK: - Properties
-    
-    private let userImageChangeButtonView = UIImageView()
-    
     //MARK: - Components
 
     lazy var userImageChangeButton = CircularButton()
-    
     private let userImageView = CircularImageView()
+    private let userImageChangeButtonView = UIImageView()
+    
     private let userNicknameLabel = UILabel()
     private let userIntroLabel = UILabel()
     

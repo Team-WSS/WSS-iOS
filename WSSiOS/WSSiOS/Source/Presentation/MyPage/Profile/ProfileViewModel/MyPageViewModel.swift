@@ -19,6 +19,17 @@ final class MyPageViewModel: ViewModelType {
     var height: Double = 0.0
     let bindKeywordRelay = BehaviorRelay<[Keyword]>(value: [])
     
+    let dummyNovelPreferenceData = UserNovelPreferences(
+        attractivePoints: ["character", "material", "worldview"],
+        keywords: [
+            Keyword(keywordName: "서양풍/중세시대", keywordCount: 4),
+            Keyword(keywordName: "학원/아카데미", keywordCount: 3),
+            Keyword(keywordName: "SF", keywordCount: 3),
+            Keyword(keywordName: "동양풍/사극", keywordCount: 1),
+            Keyword(keywordName: "실존역사", keywordCount: 1)
+        ]
+    )
+    
     // MARK: - Life Cycle
     
     init(userRepository: UserRepository) {
@@ -39,14 +50,14 @@ final class MyPageViewModel: ViewModelType {
     
     struct Output {
         let IsExistPreference = PublishRelay<Bool>()
-        let profileData = BehaviorSubject<MyProfileResult>(value: MyProfileResult(nickname: "",
-                                                                                  intro: "",
-                                                                                  avatarImage: "",
-                                                                                  genrePreferences: []))
+        let profileData = BehaviorRelay<MyProfileResult>(value: MyProfileResult(nickname: "",
+                                                                                intro: "",
+                                                                                avatarImage: "",
+                                                                                genrePreferences: []))
         let settingButtonEnabled = PublishRelay<Void>()
         let dropdownButtonEnabled = PublishRelay<String>()
         let updateNavigationEnabled = BehaviorRelay<Bool>(value: false)
-        let pushToEditViewController = PublishRelay<Void>()
+        let pushToEditViewController = PublishRelay<MyProfileResult>()
         let bindattractivePointsData = BehaviorRelay<[String]>(value: [])
         let bindKeywordCell = BehaviorRelay<[Keyword]>(value: [])
         let bindGenreData = BehaviorRelay<UserGenrePreferences>(value: UserGenrePreferences(genrePreferences: []))
@@ -109,7 +120,7 @@ final class MyPageViewModel: ViewModelType {
         
         input.headerViewHeight
             .asObservable()
-            .bind(with: self, onNext: { owner, height in 
+            .bind(with: self, onNext: { owner, height in
                 owner.height = height
             })
             .disposed(by: disposeBag)
@@ -117,7 +128,7 @@ final class MyPageViewModel: ViewModelType {
         input.scrollOffset
             .asObservable()
             .map{ $0.y }
-            .subscribe(with: self, onNext: { owner, scrollHeight in 
+            .subscribe(with: self, onNext: { owner, scrollHeight in
                 if (scrollHeight > owner.height) {
                     output.updateNavigationEnabled.accept(true)
                 } else {
@@ -127,14 +138,14 @@ final class MyPageViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.settingButtonDidTap
-            .bind(with: self, onNext: { owner, _ in 
+            .bind(with: self, onNext: { owner, _ in
                 output.settingButtonEnabled.accept(())
             })
             .disposed(by: disposeBag)
         
         input.editButtonTapoed
-            .bind(with: self, onNext: { owner, _ in 
-                output.pushToEditViewController.accept(())
+            .bind(with: self, onNext: { owner, _ in
+                output.pushToEditViewController.accept(output.profileData.value)
             })
             .disposed(by: disposeBag)
         
