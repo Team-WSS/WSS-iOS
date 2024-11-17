@@ -497,7 +497,7 @@ final class NovelDetailViewController: UIViewController {
             imageNetworkError: imageNetworkError.asObservable(),
             deleteReview: deleteReview.asObservable(),
             backgroundDidTap: rootView.rx.tapGesture(),
-            firstDescriptionBackgroundDidTap: rootView.firstReviewDescriptionBackgroundView.rx.tapGesture(),
+            firstDescriptionBackgroundDidTap: rootView.firstReviewDescriptionBackgroundView.rx.tap,
             headerDotsButtonDidTap: rootView.headerDropDownButton.rx.tap,
             headerDropdownButtonDidTap: headerDropdownButtonDidTap,
             novelCoverImageButtonDidTap: rootView.headerView.coverImageButton.rx.tap,

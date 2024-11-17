@@ -168,6 +168,12 @@ enum StringLiterals {
         enum Profile {
             static let registerNovel = "등록 작품"
             static let record = "기록"
+            static let inventoryTitle = "보관함"
+            static let preferenceEmpty = "취향 분석"
+            static let preferenceEmptyLabel = "작품 취향을 파악할 수 없어요"
+            static let genrePreferenceTitle = "장르 취향"
+            static let novelPreferenceTitle = "작품 취향"
+            static let novelPreferenceLabel = "가 매력적인 작품"
         }
         
         enum Character {
@@ -179,13 +185,15 @@ enum StringLiterals {
             case profileStatus = "프로필 공개 여부 설정"
             case webSoso = "웹소소 공식 계정"
             case qNA = "문의하기 & 의견 보내기"
-            case review = "앱 평점 남기기"
+            case review = "개인정보 처리 방침"
             case termsOfService = "서비스 이용약관"
         }
         
         enum SettingURL {
+            static let qnaURL = "http://pf.kakao.com/_kHxlWG"
             static let instaURL = "https://www.instagram.com/websoso_official/"
             static let termsURL = "https://kimmjabc.notion.site/4acd397608c146cbbf8dd4fe11a82e19"
+            static let infoURL = "https://kimmjabc.notion.site/e55f0c0e95c249f7998f21563aefa4b4?pvs=4"
         }
         
         enum SettingInfo: String, CaseIterable {
@@ -620,6 +628,7 @@ enum StringLiterals {
         static let deleteAccountUserNickname = "(알 수 없음)"
         static let hiddenComment = "숨김 처리된 댓글"
         static let spoilerComment = "스포일러가 포함된 댓글 보기"
+        static let blckedUser = "차단한 유저"
         static let blockedComment = "차단한 유저의 댓글"
     }
 }

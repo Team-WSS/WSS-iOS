@@ -24,7 +24,7 @@ final class NovelDetailView: UIView {
     
     let headerView = NovelDetailHeaderView()
     let largeNovelCoverImageButton = NovelDetailLargeCoverImageButton()
-    let firstReviewDescriptionBackgroundView = UIView()
+    let firstReviewDescriptionBackgroundView = UIButton()
     let firstReviewDescriptionReviewButtonView = NovelDetailHeaderReviewResultView()
     let firstReviewDescriptionLabel = UILabel()
     let firstReviewDescriptionLabelBackgroundView = UIImageView()

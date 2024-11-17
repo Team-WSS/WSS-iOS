@@ -84,7 +84,7 @@ final class NovelDetailViewModel: ViewModelType {
         let imageNetworkError: Observable<Bool>
         let deleteReview: Observable<Void>
         let backgroundDidTap: ControlEvent<UITapGestureRecognizer>
-        let firstDescriptionBackgroundDidTap: ControlEvent<UITapGestureRecognizer>
+        let firstDescriptionBackgroundDidTap: ControlEvent<Void>
         
         //NovelDetailHeader
         let headerDotsButtonDidTap: ControlEvent<Void>
@@ -174,6 +174,7 @@ final class NovelDetailViewModel: ViewModelType {
         
         input.firstDescriptionBackgroundDidTap
             .bind(with: self, onNext: { owner, _ in
+                print("ISTappped")
                 UserDefaults.standard.setValue(true,
                                                forKey: StringLiterals.UserDefault.showReviewFirstDescription)
                 owner.hideFirstReviewDescription.accept(true)

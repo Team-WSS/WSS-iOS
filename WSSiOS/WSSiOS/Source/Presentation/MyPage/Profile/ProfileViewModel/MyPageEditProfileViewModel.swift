@@ -19,19 +19,29 @@ final class MyPageEditProfileViewModel: ViewModelType {
     
     static let nicknameLimit = 10
     static let introLimit = 40
-    private var updateImage = BehaviorRelay<Bool>(value: true)
-    private var updateNickname = BehaviorRelay<Bool>(value: true)
-    private var updateIntro = BehaviorRelay<Bool>(value: true)
-    private var updateGenre = BehaviorRelay<Bool>(value: true)
+    private var updateImage = BehaviorRelay<Bool>(value: false)
+    private var updateNickname = BehaviorRelay<Bool>(value: false)
+    private var updateIntro = BehaviorRelay<Bool>(value: false)
+    private var updateGenre = BehaviorRelay<Bool>(value: false)
     private var updateCompleteButton = BehaviorRelay<Bool>(value: false)
     
-    //더미 데이터
-    private var userNickname = "밝보"
-    private var userIntro = "ㅎㅇ"
-    private var userImage = ""
-    private var genre = ["로맨스", "드라마"]
+    private let userRepository: UserRepository
+    private var profileData: MyProfileResult
+    
+    private var userNickname = BehaviorRelay<String>(value: "")
+    private let userIntro = BehaviorRelay<String>(value: "")
+    private let userGenre = BehaviorRelay<[String]>(value: [])
+    private let userImage = BehaviorRelay<String>(value: "")
+    
     
     //MARK: - Life Cycle
+    
+    init(userRepository: UserRepository,
+         profileData: MyProfileResult) {
+        
+        self.userRepository = userRepository
+        self.profileData = profileData
+    }
     
     struct Input {
         let backButtonDidTap: ControlEvent<Void>
@@ -50,14 +60,18 @@ final class MyPageEditProfileViewModel: ViewModelType {
         let genreCellTap: ControlEvent<IndexPath>
     }
     
-    struct Output {        
+    struct Output {
         //TODO: 서연이 코드 합치면서 수정하기
         let bindGenreCell = BehaviorRelay<[String]>(value: ["로맨스", "로판", "판타지", "현판", "무협", "BL", "라노벨", "미스터리", "드라마"])
-        let popViewController = PublishRelay<Bool>() 
+        let popViewController = PublishRelay<Bool>()
         
+        let bindProfileData = BehaviorRelay<MyProfileResult>(value: MyProfileResult(nickname: "",
+                                                                                    intro: "",
+                                                                                    avatarImage: "",
+                                                                                    genrePreferences: []))
         let nicknameText = BehaviorRelay<String>(value: "")
         let editingTextField = BehaviorRelay<Bool>(value: false)
-        let isShownWarning = PublishRelay<StringLiterals.MyPage.EditProfileWarningMessage>() 
+        let isShownWarning = PublishRelay<StringLiterals.MyPage.EditProfileWarningMessage>()
         let checkButtonIsAbled = BehaviorRelay<Bool>(value: false)
         
         let introText = BehaviorRelay<String>(value: "")
@@ -71,9 +85,12 @@ final class MyPageEditProfileViewModel: ViewModelType {
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
         
-        //유저 정보 서버연결
-        output.nicknameText.accept(self.userNickname)
-        output.introText.accept(self.userIntro)
+        self.userNickname.accept(self.profileData.nickname)
+        self.userIntro.accept(self.profileData.intro)
+        self.userGenre.accept(self.profileData.genrePreferences)
+        self.userImage.accept(self.profileData.avatarImage)
+        
+        output.bindProfileData.accept(self.profileData)
         
         input.backButtonDidTap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
@@ -103,8 +120,8 @@ final class MyPageEditProfileViewModel: ViewModelType {
                 output.nicknameText.accept(String(text.prefix(MyPageEditProfileViewModel.nicknameLimit)))
                 
                 owner.updateNickname.accept(false)
-
-                if owner.userNickname == output.nicknameText.value {
+                
+                if owner.userNickname.value == output.nicknameText.value {
                     output.checkButtonIsAbled.accept(false)
                 } else {
                     owner.updateNickname.accept(true)
@@ -133,8 +150,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
                 
-                //TODO: 현재 임시 더미 넣어놓음 중복 체크 서버 연결 후 수정
-                if owner.userNickname == output.nicknameText.value {
+                if owner.userNickname.value == output.nicknameText.value {
                     output.editingTextField.accept(false)
                     owner.updateNickname.accept(false)
                 } else {
@@ -154,7 +170,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
         input.updateIntroText
             .subscribe(with: self, onNext: { owner, text in
                 output.introText.accept(String(text.prefix(MyPageEditProfileViewModel.introLimit)))
-                if owner.userIntro ==  output.introText.value {
+                if owner.userIntro.value ==  output.introText.value {
                     owner.updateIntro.accept(false)
                 } else {
                     owner.updateIntro.accept(true)
@@ -171,6 +187,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
         
         input.genreCellTap
             .bind(with: self, onNext: { owner, indexPath in
+                print(indexPath, "😃")
                 owner.updateGenre.accept(true)
                 output.updateCell.accept(indexPath)
                 owner.checkCompleteButton()

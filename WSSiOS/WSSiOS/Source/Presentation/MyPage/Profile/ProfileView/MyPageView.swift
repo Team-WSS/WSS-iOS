@@ -13,22 +13,27 @@ import Then
 
 final class MyPageView: UIView {
     
+    //MARK: - Properties
+    
+    let isMyPage:Bool
+    
     //MARK: - Components
     
     let scrollView = UIScrollView()
+    let contentView = UIView()
     
     let headerView = MyPageProfileHeaderView()
-    let mainStickyHeaderView = UIView()
-    let scrolledStstickyHeaderView = UIView()
+    let mainStickyHeaderView = MyPageStickyHeaderView()
+    let scrolledStstickyHeaderView = MyPageStickyHeaderView()
     
-    let dummyView = UIView().then {
-        $0.backgroundColor = .wssGray70
-    }
-
+    let myPageLibraryView = MyPageLibraryView()
+    let myPageFeedView = UIView()
+    
     // MARK: - Life Cycle
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(isMyPage: Bool) {
+        self.isMyPage = isMyPage
+        super.init(frame: .zero)
         
         setUI()
         setHierarchy()
@@ -42,31 +47,35 @@ final class MyPageView: UIView {
     //MARK: - UI
     
     private func setUI() {
-        self.backgroundColor = .wssPrimary20
-        
-        mainStickyHeaderView.do {
-            $0.backgroundColor = .wssPrimary100
-        }
+        self.backgroundColor = .wssGray50
         
         scrolledStstickyHeaderView.do {
-            $0.backgroundColor = .wssPrimary100
             $0.isHidden = true
         }
+        
+        myPageFeedView.isHidden = true
     }
     
     private func setHierarchy() {
         addSubviews(scrollView,
                     scrolledStstickyHeaderView)
         
-        scrollView.addSubviews(headerView,
-                               mainStickyHeaderView,
-                               dummyView)
+        scrollView.addSubview(contentView)
+        contentView.addSubviews(headerView,
+                                mainStickyHeaderView,
+                                myPageLibraryView,
+                                myPageFeedView)
     }
     
     private func setLayout() {
         scrollView.snp.makeConstraints {
             $0.top.equalTo(safeAreaLayoutGuide)
             $0.left.right.bottom.equalToSuperview()
+        }
+        
+        contentView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+            $0.width.equalToSuperview()
         }
         
         headerView.snp.makeConstraints {
@@ -85,11 +94,18 @@ final class MyPageView: UIView {
             $0.height.equalTo(47)
         }
         
-        dummyView.snp.makeConstraints {
+        myPageLibraryView.snp.makeConstraints {
             $0.top.equalTo(mainStickyHeaderView.snp.bottom)
-            $0.width.equalToSuperview()
-            $0.height.equalTo(1000)
-            $0.bottom.equalToSuperview()
+            $0.leading.trailing.equalToSuperview()
+        }
+        
+        myPageFeedView.snp.makeConstraints {
+            $0.top.equalTo(mainStickyHeaderView.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
+        }
+        
+        contentView.snp.makeConstraints {
+            $0.bottom.equalTo(myPageLibraryView.snp.bottom)
         }
     }
 }
