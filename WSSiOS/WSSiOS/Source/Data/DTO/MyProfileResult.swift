@@ -12,6 +12,10 @@ struct MyProfileResult: Codable {
     let genrePreferences: [String]
 }
 
+struct UserProfileVisibility: Codable {
+    let isProfilePublic: Bool
+}
+
 extension MyProfileResult {
     static let dummyData = 
     MyProfileResult(nickname: "밝보",

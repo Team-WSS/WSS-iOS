@@ -12,7 +12,6 @@
 		2C19A4FB2BBA8E9600D4D151 /* WSSDropdownManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C19A4FA2BBA8E9600D4D151 /* WSSDropdownManager.swift */; };
 		2C19A4FD2BBA90E700D4D151 /* WSSDropDownTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C19A4FC2BBA90E700D4D151 /* WSSDropDownTableView.swift */; };
 		2C19A5002BBD56C900D4D151 /* WSSDropdownButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C19A4FF2BBD56C900D4D151 /* WSSDropdownButton.swift */; };
-		2C1F571A2CA7B7EE00DF5DA0 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 2C1F57192CA7B7EE00DF5DA0 /* Then */; };
 		2C22AE6E2C56E99A00BF6E94 /* MyPageBlockUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C22AE6D2C56E99A00BF6E94 /* MyPageBlockUserViewController.swift */; };
 		2C22AE702C56E9C100BF6E94 /* MyPageBlockUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C22AE6F2C56E9C100BF6E94 /* MyPageBlockUserView.swift */; };
 		2C22AE722C56EAD000BF6E94 /* MyPageBlockUserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C22AE712C56EAD000BF6E94 /* MyPageBlockUserTableViewCell.swift */; };
@@ -75,6 +74,11 @@
 		2CA2F6622B530BBF0045B4C2 /* LibraryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2F6612B530BBF0045B4C2 /* LibraryCollectionViewCell.swift */; };
 		2CB613F32B575E4500FC3F89 /* MyPageInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB613F22B575E4500FC3F89 /* MyPageInfoViewController.swift */; };
 		2CB613F52B575E6A00FC3F89 /* MyPageInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB613F42B575E6A00FC3F89 /* MyPageInfoView.swift */; };
+		2CBBE8072CE7BC6A00DAF3DC /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 2CBBE8062CE7BC6A00DAF3DC /* Config.xcconfig */; };
+		2CBBE80A2CE7C4E400DAF3DC /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 2CBBE8092CE7C4E400DAF3DC /* Then */; };
+		2CBBE80C2CE7C6E500DAF3DC /* MyPageProfileVisibilityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CBBE80B2CE7C6E500DAF3DC /* MyPageProfileVisibilityViewModel.swift */; };
+		2CBBE80E2CE7C70400DAF3DC /* MyPageProfileVisibilityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CBBE80D2CE7C70400DAF3DC /* MyPageProfileVisibilityViewController.swift */; };
+		2CBBE8102CE7C72A00DAF3DC /* MyPageProfileVisibilityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CBBE80F2CE7C72A00DAF3DC /* MyPageProfileVisibilityView.swift */; };
 		2CCBF9EE2B4C1FC500D787C2 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBF9ED2B4C1FC500D787C2 /* MyPageViewController.swift */; };
 		2CCBF9F02B4C1FD800D787C2 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBF9EF2B4C1FD800D787C2 /* MyPageView.swift */; };
 		2CCBF9F22B4D347B00D787C2 /* WSSMainButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBF9F12B4D347B00D787C2 /* WSSMainButton.swift */; };
@@ -527,6 +531,10 @@
 		2CA2F6612B530BBF0045B4C2 /* LibraryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryCollectionViewCell.swift; sourceTree = "<group>"; };
 		2CB613F22B575E4500FC3F89 /* MyPageInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageInfoViewController.swift; sourceTree = "<group>"; };
 		2CB613F42B575E6A00FC3F89 /* MyPageInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageInfoView.swift; sourceTree = "<group>"; };
+		2CBBE8062CE7BC6A00DAF3DC /* Config.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Config.xcconfig; path = ../../../Config.xcconfig; sourceTree = "<group>"; };
+		2CBBE80B2CE7C6E500DAF3DC /* MyPageProfileVisibilityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageProfileVisibilityViewModel.swift; sourceTree = "<group>"; };
+		2CBBE80D2CE7C70400DAF3DC /* MyPageProfileVisibilityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageProfileVisibilityViewController.swift; sourceTree = "<group>"; };
+		2CBBE80F2CE7C72A00DAF3DC /* MyPageProfileVisibilityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageProfileVisibilityView.swift; sourceTree = "<group>"; };
 		2CCBF9ED2B4C1FC500D787C2 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		2CCBF9EF2B4C1FD800D787C2 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
 		2CCBF9F12B4D347B00D787C2 /* WSSMainButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSMainButton.swift; sourceTree = "<group>"; };
@@ -1409,6 +1417,7 @@
 				2C22AE6F2C56E9C100BF6E94 /* MyPageBlockUserView.swift */,
 				2C81DF882CA1512400148F97 /* MyPageChangeUserBirthView.swift */,
 				2CFA9A102C9D7EA300A4A820 /* MyPageChangeUserInfoView.swift */,
+				2CBBE80F2CE7C72A00DAF3DC /* MyPageProfileVisibilityView.swift */,
 			);
 			path = SettingView;
 			sourceTree = "<group>";
@@ -1423,6 +1432,7 @@
 				2C8F894A2C50DFEB0056895B /* MyPageDeleteIDViewController.swift */,
 				2C81DF862CA150DE00148F97 /* MyPageChangeUserBirthViewController.swift */,
 				2CFA9A0E2C9D7E8600A4A820 /* MyPageChangeUserInfoViewController.swift */,
+				2CBBE80D2CE7C70400DAF3DC /* MyPageProfileVisibilityViewController.swift */,
 			);
 			path = SettingViewController;
 			sourceTree = "<group>";
@@ -1434,6 +1444,7 @@
 				2C22AE732C56EDB300BF6E94 /* MyPageBlockUserViewModel.swift */,
 				2CFA9A122C9D7EE600A4A820 /* MyPageChangeUserInfoViewModel.swift */,
 				2C9A19702C56925F0043044A /* MyPageInfoViewModel.swift */,
+				2CBBE80B2CE7C6E500DAF3DC /* MyPageProfileVisibilityViewModel.swift */,
 			);
 			path = SettingViewModel;
 			sourceTree = "<group>";
@@ -3015,6 +3026,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2CD229252B42E687005400BE /* Assets.xcassets in Resources */,
+				2CBBE8072CE7BC6A00DAF3DC /* Config.xcconfig in Resources */,
 				2C79CB992B45A0B200734E1F /* Pretendard-Bold.otf in Resources */,
 				39B75ADA2B59891D005DD8B9 /* villainessFan.json in Resources */,
 				39B75AD92B59891D005DD8B9 /* villainessTea.json in Resources */,
@@ -3212,6 +3224,7 @@
 				B9E565F52C04517A00DB51FF /* NormalSearchViewController.swift in Sources */,
 				393CAC482CA72A2E004B4DB6 /* OnboardingGenderButton.swift in Sources */,
 				39CC16812B51246E003F56AE /* RegisterNormalView.swift in Sources */,
+				2CBBE80C2CE7C6E500DAF3DC /* MyPageProfileVisibilityViewModel.swift in Sources */,
 				39B75ADE2B59BA87005DD8B9 /* UIScreen+.swift in Sources */,
 				2C22AE702C56E9C100BF6E94 /* MyPageBlockUserView.swift in Sources */,
 				2C81DF892CA1512500148F97 /* MyPageChangeUserBirthView.swift in Sources */,
@@ -3236,6 +3249,7 @@
 				CDE596DA2B57C4BE00D99DA1 /* UITextView+.swift in Sources */,
 				2C5D0F612B50525700C76D3C /* TrashMyPageChangeNicknameView.swift in Sources */,
 				2CCBFA082B4DE38800D787C2 /* TrashMyPageInventoryView.swift in Sources */,
+				2CBBE80E2CE7C70400DAF3DC /* MyPageProfileVisibilityViewController.swift in Sources */,
 				3910137E2CCF5FD8001894E5 /* BirthPickerViewController.swift in Sources */,
 				A1EF35602B52FAEF00A94C53 /* MemoService.swift in Sources */,
 				B96D10C42BED2EDB00D4D84C /* HomeViewModel.swift in Sources */,
@@ -3255,6 +3269,7 @@
 				B9095D2E2C395598007521EF /* HomeNoticeDetailViewModel.swift in Sources */,
 				B974EA412CC8E40C00169639 /* NovelRatingStatus.swift in Sources */,
 				A147CBC62B4D6E190040AE39 /* UIStackView+.swift in Sources */,
+				2CBBE8102CE7C72A00DAF3DC /* MyPageProfileVisibilityView.swift in Sources */,
 				C9CF88B72C86205900E45BF0 /* NoticeService.swift in Sources */,
 				CD3E5A982B5509A500C0A659 /* DeletePopupContentView.swift in Sources */,
 				CD514C962CD5DC22007A27A8 /* AuthResult.swift in Sources */,
@@ -3691,14 +3706,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		2C1F57182CA7B7EE00DF5DA0 /* XCRemoteSwiftPackageReference "Then" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/devxoul/Then";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 3.0.0;
-			};
-		};
 		2C95AEF12CA6DF85001A5559 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit";
@@ -3713,6 +3720,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 8.0.3;
+			};
+		};
+		2CBBE8082CE7C4E400DAF3DC /* XCRemoteSwiftPackageReference "Then" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/devxoul/Then";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
 			};
 		};
 		2CD2293A2B42E7A2005400BE /* XCRemoteSwiftPackageReference "RxSwift" */ = {
@@ -3766,11 +3781,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		2C1F57192CA7B7EE00DF5DA0 /* Then */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2C1F57182CA7B7EE00DF5DA0 /* XCRemoteSwiftPackageReference "Then" */;
-			productName = Then;
-		};
 		2C95AEF22CA6DF85001A5559 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2C95AEF12CA6DF85001A5559 /* XCRemoteSwiftPackageReference "SnapKit" */;
@@ -3780,6 +3790,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 2C9BDDA52CA79F420026D038 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		2CBBE8092CE7C4E400DAF3DC /* Then */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2CBBE8082CE7C4E400DAF3DC /* XCRemoteSwiftPackageReference "Then" */;
+			productName = Then;
 		};
 		2CD2293B2B42E7A2005400BE /* RxBlocking */ = {
 			isa = XCSwiftPackageProductDependency;

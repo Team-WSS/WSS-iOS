@@ -170,8 +170,12 @@ enum URLs {
                 return "/blocks/\(blockID)"
             }
         }
+        
+        enum ProfileVisibility {
+            static let isProfileVisibility = "/users/profile-status"
+        }
     }
-
+    
     enum Recommend {
         static let getTodayPopulars = "/novels/popular"
         static let getRealtimePopulars = "/feeds/popular"

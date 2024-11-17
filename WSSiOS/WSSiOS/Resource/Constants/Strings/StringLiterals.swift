@@ -59,6 +59,7 @@ enum StringLiterals {
             static let myPageInfo = "계정설정"
             static let myPageBlockUser = "차단유저 목록"
             static let myPageChangeUserInfo = "성별/나이 변경"
+            static let isVisibleProfile = "프로필 공개 설정"
         }
     }
     
@@ -271,6 +272,11 @@ enum StringLiterals {
             static let birthYear = "출생연도"
             static let complete = "완료"
         }
+        
+        enum isVisiableProfile {
+            static let completeTitle = "완료"
+            static let isPrivateProfile = "비공개"
+        }        
     }
     
     enum Library {

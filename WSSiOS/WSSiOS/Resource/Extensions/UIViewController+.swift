@@ -401,6 +401,19 @@ extension UIViewController {
         normalSearchViewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(normalSearchViewController, animated: true)
     }
+    
+    func pushToMyPageProfileVisibilityViewController() {
+        let viewController = MyPageProfileVisibilityViewController(
+            viewModel: MyPageProfileVisibilityViewModel(
+                userRepository: DefaultUserRepository(
+                    userService: DefaultUserService(),
+                    blocksService: DefaultBlocksService()
+                )
+            )
+        )
+        
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
 }
 
 extension UIViewController: UIGestureRecognizerDelegate {
