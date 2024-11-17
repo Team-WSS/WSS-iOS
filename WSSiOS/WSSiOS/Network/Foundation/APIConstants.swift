@@ -21,7 +21,7 @@ struct APIConstants {
     
     // Config의 Test Token을 사용한다면, 이 값을 true로,
     // UserDefaults의 실제 토큰 값을 쓰려면 이 값을 false로 바꿀 것.
-    static let isTesting: Bool = false
+    static let isTesting: Bool = true
     
     static var isRegister: Bool {
         UserDefaults.standard.bool(forKey: StringLiterals.UserDefault.isRegister)

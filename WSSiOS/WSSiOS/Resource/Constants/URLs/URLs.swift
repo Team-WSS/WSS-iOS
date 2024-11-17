@@ -23,9 +23,17 @@ enum URLs {
         private static let userBasePath = "/users"
         static let afterDelete = userBasePath + "추후 삭제"
         static let patchUserNickname = userBasePath + "/nickname"
-        static let getUserNovelStatus = userBasePath + "/user-novel-stats"
+        static func getUserNovelStatus(userId: Int) -> String {
+            return "\(userBasePath)/\(userId)/user-novel-stats"
+        }
         static let userInfo = userBasePath + "/info"
         static let myProfile = userBasePath + "/my-profile"
+        static func novelPreferencesstatic(userId: Int) -> String {
+            return "\(userBasePath)/\(userId)/preferences/attractive-points"
+        }
+        static func genrePreferencesstatic(userId: Int) -> String {
+            return "\(userBasePath)/\(userId)/preferences/genres"
+        }
     }
     
     enum Novel {
