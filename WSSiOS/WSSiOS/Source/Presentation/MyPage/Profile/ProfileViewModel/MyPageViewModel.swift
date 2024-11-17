@@ -18,6 +18,7 @@ final class MyPageViewModel: ViewModelType {
     private let disposeBag = DisposeBag()
     var height: Double = 0.0
     let bindKeywordRelay = BehaviorRelay<[Keyword]>(value: [])
+    let userId = BehaviorRelay<Int>(value: 0)
     
     let dummyNovelPreferenceData = UserNovelPreferences(
         attractivePoints: ["character", "material", "worldview"],
@@ -50,6 +51,7 @@ final class MyPageViewModel: ViewModelType {
     
     struct Output {
         let IsExistPreference = PublishRelay<Bool>()
+        let userData = BehaviorRelay<UserInfoResult>(value: UserInfoResult(nickname: "", gender: "", birth: 0, genrePreferences: []))
         let profileData = BehaviorRelay<MyProfileResult>(value: MyProfileResult(nickname: "",
                                                                                 intro: "",
                                                                                 avatarImage: "",
@@ -79,7 +81,18 @@ final class MyPageViewModel: ViewModelType {
         
         Observable.just(())
             .flatMapLatest { _ in
-                self.getNovelPreferenceData(userId: 1)
+                self.getUserMeData()
+            }
+            .subscribe(with: self, onNext: { owner, data in
+                owner.userId.accept(data.userId)
+            }, onError: { owner, error in
+                print(error.localizedDescription)
+            })
+            .disposed(by: disposeBag)
+        
+        Observable.just(())
+            .flatMapLatest { _ in
+                self.getNovelPreferenceData(userId: self.userId.value)
             }
             .subscribe(with: self, onNext: { owner, data in
                 if data.attractivePoints == [] {
@@ -205,6 +218,11 @@ final class MyPageViewModel: ViewModelType {
     
     private func getInventoryData(userId: Int) -> Observable<UserNovelStatus> {
         return userRepository.getUserNovelStatus(userId: userId)
+            .asObservable()
+    }
+    
+    private func getUserMeData() -> Observable<UserMeResult> {
+        return userRepository.getUserMeData()
             .asObservable()
     }
 }

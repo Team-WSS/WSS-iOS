@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 
 protocol UserService {
-    func getUserData() -> Single<UserResult>
+    func getUserData() -> Single<UserMeResult>
     func patchUserName(userNickName: String) -> Single<Void>
     func getUserCharacterData() -> Single<UserCharacter>
     func getUserNovelStatus(userId: Int) -> Single<UserNovelStatus>
@@ -35,10 +35,10 @@ final class DefaultUserService: NSObject, Networking {
 }
 
 extension DefaultUserService: UserService {
-    func getUserData() -> RxSwift.Single<UserResult> {
+    func getUserData() -> RxSwift.Single<UserMeResult> {
         do {
             let request = try makeHTTPRequest(method: .get,
-                                              path: URLs.User.afterDelete,
+                                              path: URLs.User.userme,
                                               headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
@@ -47,7 +47,7 @@ extension DefaultUserService: UserService {
             
             return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
-                                       to: UserResult.self) }
+                                       to: UserMeResult.self) }
                 .asSingle()
         } catch {
             return Single.error(error)

@@ -19,6 +19,12 @@ struct UserResult: Codable {
     let userAvatars: [UserAvatar]
 }
 
+struct UserMeResult: Codable {
+    let userId: Int
+    let nickname: String
+    let gender: String
+}
+
 struct UserAvatar: Codable {
     let avatarId: Int
     let avatarImg: String
