@@ -105,9 +105,9 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
     
     private func setLayout() {
         userProfileImageView.snp.makeConstraints {
+            $0.size.equalTo(42)
+            $0.top.equalToSuperview().inset(2.5)
             $0.leading.equalToSuperview().inset(20)
-            $0.size.equalTo(36)
-            $0.top.equalToSuperview().inset(4.5)
         }
         
         userStackview.snp.makeConstraints {
@@ -118,7 +118,7 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
         replyContentLabel.snp.makeConstraints {
             $0.top.equalTo(userStackview.snp.bottom)
             $0.leading.equalTo(userStackview.snp.leading)
-            $0.width.equalTo(247)
+            $0.trailing.equalTo(threeDotsButton.snp.leading).offset(-14)
             $0.bottom.equalToSuperview()
         }
         

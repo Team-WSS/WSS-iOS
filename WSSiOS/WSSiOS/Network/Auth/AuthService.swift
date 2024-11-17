@@ -12,6 +12,7 @@ import RxSwift
 protocol AuthService {
     func loginWithApple(authorizationCode: String,
                         idToken: String) -> Single<LoginResult>
+    func loginWithKakao(_ kakaoAccessToken: String) -> Single<LoginResult>
     func reissueToken() -> Single<ReissueResult>
 }
 
@@ -35,6 +36,25 @@ final class DefaultAuthService: NSObject, Networking, AuthService {
                                        to: LoginResult.self) }
                 .asSingle()
 
+        } catch {
+            return Single.error(error)
+        }
+    }
+    
+    func loginWithKakao(_ kakaoAccessToken: String) -> Single<LoginResult> {
+        do {
+            let request = try makeHTTPRequest(method: .post,
+                                              path: URLs.Auth.loginWithKakao,
+                                              headers: APIConstants.kakaoLoginHeader(kakaoAccessToken),
+                                              body: nil)
+
+            NetworkLogger.log(request: request)
+
+            return basicURLSession.rx.data(request: request)
+                .map { try self.decode(data: $0,
+                                       to: LoginResult.self) }
+                .asSingle()
+            
         } catch {
             return Single.error(error)
         }

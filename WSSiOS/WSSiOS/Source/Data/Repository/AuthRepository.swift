@@ -7,10 +7,13 @@
 
 import Foundation
 
+import KakaoSDKAuth
+import RxKakaoSDKAuth
 import RxSwift
 
 protocol AuthRepository {
     func loginWithApple(authorizationCode: String, idToken: String) -> Observable<LoginResult>
+    func loginWithKakao(_ kakaoAccessToken: OAuthToken) -> Single<LoginResult> 
 }
 
 struct DefaultAuthRepository: AuthRepository {
@@ -24,6 +27,10 @@ struct DefaultAuthRepository: AuthRepository {
     func loginWithApple(authorizationCode: String, idToken: String) -> Observable<LoginResult> {
         return authService.loginWithApple(authorizationCode: authorizationCode, idToken: idToken)
             .asObservable()
+    }
+    
+    func loginWithKakao(_ kakaoAccessToken: OAuthToken) -> Single<LoginResult> {
+        return authService.loginWithKakao(kakaoAccessToken.accessToken)
     }
 }
 

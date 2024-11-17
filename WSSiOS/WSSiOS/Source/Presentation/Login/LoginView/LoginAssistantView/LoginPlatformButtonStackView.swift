@@ -17,7 +17,6 @@ final class LoginPlatformButtonStackView: UIView {
     let stackView = UIStackView()
     
     let kakaoLoginButton = LoginPlatformButton(.imgLoginButtonKakao)
-    let naverLoginButton = LoginPlatformButton(.imgLoginButtonNaver)
     let appleLoginButton = LoginPlatformButton(.imgLoginButtonApple)
     
     //MARK: - Life Cycle
@@ -46,7 +45,6 @@ final class LoginPlatformButtonStackView: UIView {
     private func setHierarchy() {
         self.addSubview(stackView)
         stackView.addArrangedSubviews(kakaoLoginButton,
-                                      naverLoginButton,
                                       appleLoginButton)
     }
     

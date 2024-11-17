@@ -487,30 +487,32 @@ extension FeedDetailViewController: UICollectionViewDelegateFlowLayout {
         guard let text = viewModel.replyContentForItemAt(indexPath: indexPath) else {
             return CGSize(width: 0, height: 0)
         }
+        let padding: CGFloat = 24
+        let labelHeight = getLabelHeight(text: text)
         
-        let labelWidth: CGFloat = 247
-        
-        let font = UIFont.Body2
-        
-        let boundingRect = (text as NSString).boundingRect(
-            with: CGSize(width: labelWidth, height: .greatestFiniteMagnitude),
-            options: [.usesLineFragmentOrigin, .usesFontLeading],
-            attributes: [
-                NSAttributedString.Key.font: font,
-                NSAttributedString.Key.kern: -0.6
-            ],
-            context: nil
+        return CGSize(width: UIScreen.main.bounds.width, height: labelHeight + padding)
+    }
+    
+    private func getLabelHeight(text: String) -> CGFloat {
+        let labelWidth = UIScreen.main.bounds.width - 152
+        let label = UILabel(frame: .init(x: .zero,
+                                         y: .zero,
+                                         width: labelWidth,
+                                         height: .greatestFiniteMagnitude)
         )
+        label.do {
+            $0.applyWSSFont(.body2, with: text)
+            $0.textAlignment = .left
+            $0.lineBreakStrategy = .hangulWordPriority
+            $0.numberOfLines = 0
+        }
+        label.sizeToFit()
+        let labelHeight = label.frame.height
+        let resizedLabelHeight = ceil(labelHeight)
         
-        let lineHeight = font.lineHeight
-        let numberOfLines = ceil(boundingRect.height / lineHeight)
-        let padding: CGFloat = 28
-        
-        let finalHeight = ceil(lineHeight * numberOfLines) + padding
-        
-        let cellWidth = UIScreen.main.bounds.width
-        
-        return CGSize(width: cellWidth, height: finalHeight)
+        print("labelHeight: \(labelHeight)")
+        print("resizedLabelHeight: \(resizedLabelHeight)")
+        return resizedLabelHeight
     }
 }
 
