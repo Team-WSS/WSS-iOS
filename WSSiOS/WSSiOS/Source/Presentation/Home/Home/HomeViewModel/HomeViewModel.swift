@@ -127,6 +127,7 @@ extension HomeViewModel {
             .disposed(by: disposeBag)
         
         input.viewDidLoadEvent
+            .filter { self.isLogined }
             .flatMapLatest {
                 return self.getUserMeData()
             }
