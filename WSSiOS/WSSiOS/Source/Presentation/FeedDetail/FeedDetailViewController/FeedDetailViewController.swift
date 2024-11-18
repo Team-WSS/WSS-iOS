@@ -20,7 +20,7 @@ final class FeedDetailViewController: UIViewController {
     private let disposeBag = DisposeBag()
     
     private let viewWillAppearEvent = PublishRelay<Void>()
-    
+    private let profileViewDidTap = PublishRelay<Int>()
     private let maximumCommentContentCount: Int = 500
     private let commentDotsButtonDidTap = PublishRelay<(Int, Bool)>()
     private let commentSpoilerTextDidTap = PublishRelay<Void>()
@@ -122,6 +122,7 @@ final class FeedDetailViewController: UIViewController {
             commentSpoilerTextDidTap: commentSpoilerTextDidTap.asObservable(),
             dotsButtonDidTap: rootView.dropdownButton.rx.tap,
             dropdownButtonDidTap: dropdownButtonDidTap,
+            profileViewDidTap: profileViewDidTap.asObservable(),
             commentdotsButtonDidTap: commentDotsButtonDidTap.asObservable(),
             commentDropdownDidTap: commentDropdownButtonDidTap,
             reloadComments: reloadComments.asObservable()
@@ -552,6 +553,10 @@ extension FeedDetailViewController: UITextViewDelegate {
 }
 
 extension FeedDetailViewController: FeedDetailReplyCollectionDelegate {
+    func profileViewDidTap(userId: Int) {
+        self.profileViewDidTap.accept(userId)
+    }
+    
     func dotsButtonDidTap(commentId: Int, isMyComment: Bool) {
         self.commentDotsButtonDidTap.accept((commentId, isMyComment))
     }

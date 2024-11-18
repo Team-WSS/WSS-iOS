@@ -66,6 +66,8 @@ final class FeedDetailViewModel: ViewModelType {
     let myCommentEditing = PublishRelay<Void>()
     let showCommentDeleteAlertView  = PublishRelay<((Int, Int) -> Observable<Void>, Int, Int)>()
     
+    let pushToUserPageViewController = PublishRelay<Int>()
+    
     //MARK: - Life Cycle
     
     init(feedDetailRepository: FeedDetailRepository, userRepository: UserRepository, feedId: Int) {
@@ -98,6 +100,7 @@ final class FeedDetailViewModel: ViewModelType {
         let dropdownButtonDidTap: Observable<DropdownButtonType>
         
         // 댓글 드롭다운
+        let profileViewDidTap: Observable<Int>
         let commentdotsButtonDidTap: Observable<(Int, Bool)>
         let commentDropdownDidTap: Observable<DropdownButtonType>
         let reloadComments: Observable<Void>
@@ -143,6 +146,8 @@ final class FeedDetailViewModel: ViewModelType {
         let showCommentImpertinenceAlertView: Observable<((Int, Int) -> Observable<Void>, Int, Int)>
         let myCommentEditing: Observable<Void>
         let showCommentDeleteAlertView: Observable<((Int, Int) -> Observable<Void>, Int, Int)>
+        
+        let pushToUserPageViewController: Observable<Int>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -195,6 +200,7 @@ final class FeedDetailViewModel: ViewModelType {
             .subscribe()
             .disposed(by: disposeBag)
         
+        // 작품 연결
         input.linkNovelViewDidTap
             .subscribe(with: self, onNext: { owner, _ in
                 if let novelId = owner.novelId {
@@ -203,6 +209,7 @@ final class FeedDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        // 댓글 작성
         input.viewDidTap
             .subscribe(with: self, onNext: { owner, _ in
                 owner.endEditing.accept(true)
@@ -288,6 +295,7 @@ final class FeedDetailViewModel: ViewModelType {
             .subscribe()
             .disposed(by: disposeBag)
         
+        // 피드 드롭다운
         input.dotsButtonDidTap
             .withLatestFrom(showDropdownView)
             .map { !$0 }
@@ -302,6 +310,15 @@ final class FeedDetailViewModel: ViewModelType {
                 case (.bottom, true): owner.showDeleteAlertView.accept(())
                 case (.top, false): owner.showSpoilerAlertView.accept(())
                 case (.bottom, false): owner.showImpertinenceAlertView.accept(())
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        // 댓글 드롭다운
+        input.profileViewDidTap
+            .subscribe(with: self, onNext: { owner, userId in
+                if let index = owner.commentsData.value.firstIndex(where: { $0.userId == userId }) {
+                    owner.pushToUserPageViewController.accept(userId)
                 }
             })
             .disposed(by: disposeBag)
@@ -382,7 +399,8 @@ final class FeedDetailViewModel: ViewModelType {
                       showCommentSpoilerAlertView: showCommentSpoilerAlertView.asObservable(),
                       showCommentImpertinenceAlertView: showCommentImpertinenceAlertView.asObservable(),
                       myCommentEditing: myCommentEditing.asObservable(),
-                      showCommentDeleteAlertView: showCommentDeleteAlertView.asObservable())
+                      showCommentDeleteAlertView: showCommentDeleteAlertView.asObservable(),
+                      pushToUserPageViewController: pushToUserPageViewController.asObservable())
     }
     
     //MARK: - API
