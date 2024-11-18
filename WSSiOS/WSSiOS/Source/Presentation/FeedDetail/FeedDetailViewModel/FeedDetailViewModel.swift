@@ -98,6 +98,7 @@ final class FeedDetailViewModel: ViewModelType {
         // 피드 드롭다운
         let dotsButtonDidTap: ControlEvent<Void>
         let dropdownButtonDidTap: Observable<DropdownButtonType>
+        let backgroundViewDidTap: ControlEvent<UITapGestureRecognizer>
         
         // 댓글 드롭다운
         let profileViewDidTap: Observable<Int>
@@ -312,6 +313,13 @@ final class FeedDetailViewModel: ViewModelType {
                 case (.bottom, false): owner.showImpertinenceAlertView.accept(())
                 }
                 owner.showDropdownView.accept(false)
+            })
+            .disposed(by: disposeBag)
+        
+        input.backgroundViewDidTap
+            .bind(with: self, onNext: { owner, _ in
+                owner.showDropdownView.accept(false)
+                owner.hideCommentDropdownView.accept(())
             })
             .disposed(by: disposeBag)
         

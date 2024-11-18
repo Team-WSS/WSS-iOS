@@ -122,6 +122,9 @@ final class FeedDetailViewController: UIViewController {
             commentSpoilerTextDidTap: commentSpoilerTextDidTap.asObservable(),
             dotsButtonDidTap: rootView.dropdownButton.rx.tap,
             dropdownButtonDidTap: dropdownButtonDidTap,
+            backgroundViewDidTap: rootView.rx.tapGesture(configuration: { gestureRecognizer, delegate in
+                gestureRecognizer.cancelsTouchesInView = false
+            }),
             profileViewDidTap: profileViewDidTap.asObservable(),
             commentdotsButtonDidTap: commentDotsButtonDidTap.asObservable(),
             commentDropdownDidTap: commentDropdownButtonDidTap,
