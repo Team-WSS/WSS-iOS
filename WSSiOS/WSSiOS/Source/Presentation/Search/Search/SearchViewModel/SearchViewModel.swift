@@ -67,7 +67,7 @@ extension SearchViewModel {
         input.searhBarDidTap
             .subscribe(onNext: { _ in
                 output.searchBarEnabled.accept(true)
-                if self.isLogined {
+                if !self.isLogined {
                     output.presentToInduceLoginView.accept(())
                 }
             })
@@ -76,7 +76,7 @@ extension SearchViewModel {
         input.induceButtonDidTap
             .subscribe(onNext: { _ in
                 output.induceButtonEnabled.accept(true)
-                if self.isLogined {
+                if !self.isLogined {
                     output.presentToInduceLoginView.accept(())
                 }
             })
@@ -85,7 +85,7 @@ extension SearchViewModel {
         input.sosoPickCellSelected
             .subscribe(onNext: { indexPath in
                 output.navigateToNovelDetailView.accept(indexPath)
-                if self.isLogined {
+                if !self.isLogined {
                     output.presentToInduceLoginView.accept(())
                 }
             })
