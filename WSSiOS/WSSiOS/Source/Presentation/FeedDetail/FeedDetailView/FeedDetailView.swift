@@ -98,6 +98,14 @@ final class FeedDetailView: UIView {
             $0.width.equalTo(scrollView.snp.width)
         }
         
+        backButton.snp.makeConstraints {
+            $0.size.equalTo(44)
+        }
+        
+        dropdownButton.snp.makeConstraints {
+            $0.size.equalTo(38)
+        }
+        
         dropdownView.snp.makeConstraints {
             $0.top.equalTo(self.safeAreaLayoutGuide.snp.top)
             $0.trailing.equalToSuperview().inset(20)

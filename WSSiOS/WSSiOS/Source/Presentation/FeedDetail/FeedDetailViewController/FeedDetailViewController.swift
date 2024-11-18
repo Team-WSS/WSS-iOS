@@ -283,7 +283,6 @@ final class FeedDetailViewController: UIViewController {
                 )
             }
             .subscribe(with: self, onNext: { owner, buttonType in
-                owner.rootView.dropdownView.isHidden = true
                 if buttonType == .right {
                     owner.viewModel.postSpoilerFeed(owner.viewModel.feedId)
                         .subscribe()
@@ -314,7 +313,6 @@ final class FeedDetailViewController: UIViewController {
                 )
             }
             .subscribe(with: self, onNext: { owner, buttonType in
-                owner.rootView.dropdownView.isHidden = true
                 if buttonType == .right {
                     owner.viewModel.postImpertinenceFeed(owner.viewModel.feedId)
                         .subscribe()
@@ -335,7 +333,6 @@ final class FeedDetailViewController: UIViewController {
         
         output.pushToFeedEditViewController
             .subscribe(with: self, onNext: { owner, _ in
-                owner.rootView.dropdownView.isHidden = true
                 owner.pushToFeedEditViewController(feedId: owner.viewModel.feedId)
             })
             .disposed(by: disposeBag)
@@ -352,7 +349,6 @@ final class FeedDetailViewController: UIViewController {
                 )
             }
             .subscribe(with: self, onNext: { owner, buttonType in
-                owner.rootView.dropdownView.isHidden = true
                 if buttonType == .right {
                     owner.viewModel.deleteFeed(owner.viewModel.feedId)
                         .subscribe()

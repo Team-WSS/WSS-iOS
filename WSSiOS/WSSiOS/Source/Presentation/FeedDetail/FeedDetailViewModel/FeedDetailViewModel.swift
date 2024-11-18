@@ -44,7 +44,7 @@ final class FeedDetailViewModel: ViewModelType {
     private let textViewEmpty = BehaviorRelay<Bool>(value: true)
     
     // 피드 드롭다운
-    private let showDropdownView = BehaviorRelay<Bool>(value: false)
+    let showDropdownView = BehaviorRelay<Bool>(value: false)
     private let isMyFeed = BehaviorRelay<Bool>(value: false)
     
     let showSpoilerAlertView = PublishRelay<Void>()
@@ -311,15 +311,14 @@ final class FeedDetailViewModel: ViewModelType {
                 case (.top, false): owner.showSpoilerAlertView.accept(())
                 case (.bottom, false): owner.showImpertinenceAlertView.accept(())
                 }
+                owner.showDropdownView.accept(false)
             })
             .disposed(by: disposeBag)
         
         // 댓글 드롭다운
         input.profileViewDidTap
             .subscribe(with: self, onNext: { owner, userId in
-                if let index = owner.commentsData.value.firstIndex(where: { $0.userId == userId }) {
-                    owner.pushToUserPageViewController.accept(userId)
-                }
+                owner.pushToUserPageViewController.accept(userId)
             })
             .disposed(by: disposeBag)
         
@@ -356,8 +355,8 @@ final class FeedDetailViewModel: ViewModelType {
                                                                               owner.feedId,
                                                                               owner.selectedCommentId))
                 case (.bottom, false): owner.showCommentImpertinenceAlertView.accept((owner.postImpertinenceComment,
-                                                                                  owner.feedId,
-                                                                                  owner.selectedCommentId))
+                                                                                      owner.feedId,
+                                                                                      owner.selectedCommentId))
                 }
             })
             .disposed(by: disposeBag)
