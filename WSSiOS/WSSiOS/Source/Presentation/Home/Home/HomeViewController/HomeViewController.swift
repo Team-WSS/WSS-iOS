@@ -209,6 +209,12 @@ final class HomeViewController: UIViewController {
             })
             .disposed(by: disposeBag)
     }
+    
+    //MARK: - Custom Method
+    
+    func scrollToTop() {
+        self.rootView.scrollView.setContentOffset(CGPoint(x: 0, y: -self.rootView.scrollView.contentInset.top), animated: true)
+    }
 }
 
 extension HomeViewController: UICollectionViewDelegateFlowLayout {

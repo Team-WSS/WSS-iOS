@@ -14,7 +14,7 @@ final class HomeView: UIView {
     
     //MARK: - UI Components
     
-    private let scrollView = UIScrollView()
+    let scrollView = UIScrollView()
     private let contentView = UIView()
     let headerView = HomeHeaderView()
     let todayPopularView = HomeTodayPopularView()
