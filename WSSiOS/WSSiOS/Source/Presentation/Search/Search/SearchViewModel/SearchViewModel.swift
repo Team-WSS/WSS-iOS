@@ -48,6 +48,9 @@ final class SearchViewModel: ViewModelType {
     
     //MARK: - API
     
+    func getSosoPickNovels() -> Observable<SosoPickNovels> {
+        return searchRepository.getSosoPickNovels()
+    }
 }
 
 //MARK: - Methods
@@ -56,7 +59,7 @@ extension SearchViewModel {
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
         
-        searchRepository.getSosoPickNovels()
+        self.getSosoPickNovels()
             .subscribe(with: self, onNext: { owner, data in
                 output.sosoPickList.accept(data.sosoPicks)
             }, onError: { owner, error in
