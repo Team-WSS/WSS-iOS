@@ -15,6 +15,7 @@ final class HomeViewModel: ViewModelType {
     //MARK: - Properties
     
     private let recommendRepository: RecommendRepository
+    private let userRepository: UserRepository
     private let disposeBag = DisposeBag()
     
     private let isLogined = APIConstants.isLogined
@@ -44,6 +45,7 @@ final class HomeViewModel: ViewModelType {
     
     struct Input {
         let viewWillAppearEvent: Observable<Void>
+        let viewDidLoadEvent: Observable<Void>
         let todayPopularCellSelected: ControlEvent<IndexPath>
         let interestCellSelected: ControlEvent<IndexPath>
         let tasteRecommendCellSelected: ControlEvent<IndexPath>
@@ -75,8 +77,9 @@ final class HomeViewModel: ViewModelType {
     
     //MARK: - init
     
-    init(recommendRepository: RecommendRepository) {
+    init(recommendRepository: RecommendRepository, userRepository: UserRepository) {
         self.recommendRepository = recommendRepository
+        self.userRepository = userRepository
     }
 }
 
@@ -120,6 +123,17 @@ extension HomeViewModel {
                 }
             }, onError: { owner, error in
                 owner.realtimePopularList.onError(error)
+            })
+            .disposed(by: disposeBag)
+        
+        input.viewDidLoadEvent
+            .flatMapLatest {
+                return self.getUserMeData()
+            }
+            .subscribe(with: self, onNext: { owner, data in
+                UserDefaults.standard.setValue(data.userId, forKey: StringLiterals.UserDefault.userId)
+                UserDefaults.standard.setValue(data.nickname, forKey: StringLiterals.UserDefault.userNickname)
+                UserDefaults.standard.setValue(data.gender, forKey: StringLiterals.UserDefault.userGender)
             })
             .disposed(by: disposeBag)
         
@@ -194,18 +208,27 @@ extension HomeViewModel {
     
     //MARK: - API
     
+    // 유저 정보 조회
+    func getUserMeData() -> Observable<UserMeResult> {
+        return userRepository.getUserMeData()
+    }
+    
+    // 오늘의 인기작 조회
     func getTodayPopularNovels() -> Observable<TodayPopularNovels> {
         return recommendRepository.getTodayPopularNovels()
     }
     
+    // 지금 뜨는 수다글 조회
     func getRealtimePopularFeeds() -> Observable<RealtimePopularFeeds> {
         return recommendRepository.getRealtimePopularFeeds()
     }
     
+    // 관심글 조회
     func getInterestFeeds() -> Observable<InterestFeeds> {
         return recommendRepository.getInterestFeeds()
     }
     
+    // 취향추천 작품 조회
     func getTasteRecommendNovels() -> Observable<TasteRecommendNovels> {
         return recommendRepository.getTasteRecommendNovels()
     }

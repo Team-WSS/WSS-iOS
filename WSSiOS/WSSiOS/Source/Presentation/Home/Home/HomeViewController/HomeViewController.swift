@@ -20,6 +20,7 @@ final class HomeViewController: UIViewController {
     
     private let isLoggedIn = APIConstants.isLogined
     private let viewWillAppearEvent = PublishRelay<Void>()
+    private let viewDidLoadEvent = PublishRelay<Void>()
     
     //MARK: - UI Components
     
@@ -56,6 +57,8 @@ final class HomeViewController: UIViewController {
         registerCell()
         setDelegate()
         bindViewModel()
+        
+        viewDidLoadEvent.accept(())
     }
     
     //MARK: - UI
@@ -92,6 +95,7 @@ final class HomeViewController: UIViewController {
     private func bindViewModel() {
         let input = HomeViewModel.Input(
             viewWillAppearEvent: viewWillAppearEvent.asObservable(),
+            viewDidLoadEvent: viewDidLoadEvent.asObservable(),
             todayPopularCellSelected: rootView.todayPopularView.todayPopularCollectionView.rx.itemSelected,
             interestCellSelected: rootView.interestView.interestCollectionView.rx.itemSelected,
             tasteRecommendCellSelected: rootView.tasteRecommendView.tasteRecommendCollectionView.rx.itemSelected,

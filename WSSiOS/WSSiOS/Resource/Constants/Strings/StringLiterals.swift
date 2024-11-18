@@ -11,6 +11,7 @@ enum StringLiterals {
     enum UserDefault {
         static let accessToken = "ACCESS_TOKEN"
         static let refreshToken = "REFRESH_TOKEN"
+        static let userId = "USER_ID"
         static let userGender = "USER_GENDER"
         static let userNickname = "USER_NICKNAME"
         static let isRegister = "IS_REGISTER"

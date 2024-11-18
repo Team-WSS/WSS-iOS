@@ -56,6 +56,10 @@ enum WSSTabBarItem: CaseIterable {
             return HomeViewController(viewModel: HomeViewModel(
                 recommendRepository: DefaultRecommendRepository(
                     recommendService: DefaultRecommendService()
+                ),
+                userRepository: DefaultUserRepository(
+                    userService: DefaultUserService(),
+                    blocksService: DefaultBlocksService()
                 )
             ))
             
