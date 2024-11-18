@@ -84,19 +84,23 @@ extension HomeViewModel {
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         input.viewWillAppearEvent
             .flatMapLatest {
+                let todayPopularNovelsObservable = self.getTodayPopularNovels()
                 let realtimeFeedsObservable = self.getRealtimePopularFeeds()
                 let interestFeedsObservable = self.isLogined ? self.getInterestFeeds() : Observable.just(InterestFeeds(recommendFeeds: [], message: ""))
                 let tasteRecommendNovelsObservable = self.isLogined ? self.getTasteRecommendNovels() : Observable.just(TasteRecommendNovels(tasteNovels: []))
                 
-                return Observable.zip(realtimeFeedsObservable,
+                return Observable.zip(todayPopularNovelsObservable,
+                                      realtimeFeedsObservable,
                                       interestFeedsObservable,
                                       tasteRecommendNovelsObservable)
             }
             .subscribe(with: self, onNext: { owner, data in
-                let realtimeFeeds = data.0
-                let interestFeeds = data.1
-                let tasteRecommendNovels = data.2
+                let todayPopularNovels = data.0
+                let realtimeFeeds = data.1
+                let interestFeeds = data.2
+                let tasteRecommendNovels = data.3
                 
+                owner.todayPopularList.accept(todayPopularNovels.popularNovels)
                 owner.realtimePopularList.onNext(realtimeFeeds.popularFeeds)
                 let groupedData = stride(from: 0, to: realtimeFeeds.popularFeeds.count, by: 3)
                     .map { index in
@@ -116,14 +120,6 @@ extension HomeViewModel {
                 }
             }, onError: { owner, error in
                 owner.realtimePopularList.onError(error)
-            })
-            .disposed(by: disposeBag)
-        
-        self.getTodayPopularNovels()
-            .subscribe(with: self, onNext: { owner, data in
-                owner.todayPopularList.accept(data.popularNovels)
-            }, onError: { owner, error in
-                dump(error)
             })
             .disposed(by: disposeBag)
         
