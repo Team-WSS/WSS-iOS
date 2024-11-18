@@ -79,7 +79,7 @@ final class FeedDetailViewModel: ViewModelType {
         
         let backButtonDidTap: ControlEvent<Void>
         let replyCollectionViewContentSize: Observable<CGSize?>
-        let likeButtonDidTap: ControlEvent<Void>
+        let likeButtonDidTap: Observable<UITapGestureRecognizer>
         
         // 작품 연결
         let linkNovelViewDidTap: Observable<UITapGestureRecognizer>

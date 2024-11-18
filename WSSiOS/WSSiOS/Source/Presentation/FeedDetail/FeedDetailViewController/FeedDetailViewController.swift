@@ -111,7 +111,7 @@ final class FeedDetailViewController: UIViewController {
             viewWillAppearEvent: viewWillAppearEvent.asObservable(),
             backButtonDidTap: rootView.backButton.rx.tap,
             replyCollectionViewContentSize: rootView.replyView.replyCollectionView.rx.observe(CGSize.self, "contentSize"),
-            likeButtonDidTap: rootView.feedContentView.reactView.likeButton.rx.tap,
+            likeButtonDidTap: rootView.feedContentView.reactView.likeView.rx.tapGesture().when(.recognized).asObservable(),
             linkNovelViewDidTap: rootView.feedContentView.linkNovelView.rx.tapGesture().when(.recognized).asObservable(),
             viewDidTap: viewDidTap,
             commentContentUpdated: rootView.replyWritingView.replyWritingTextView.rx.text.orEmpty.distinctUntilChanged().asObservable(),
