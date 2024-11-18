@@ -55,6 +55,7 @@ final class KeywordTag: UIView {
             
             eraseButton.do {
                 $0.setImage(.icKeywordCancel, for: .normal)
+                $0.isUserInteractionEnabled = false
             }
         }
         
