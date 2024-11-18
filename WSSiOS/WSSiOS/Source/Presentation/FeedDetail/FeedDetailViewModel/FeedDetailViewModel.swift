@@ -44,7 +44,7 @@ final class FeedDetailViewModel: ViewModelType {
     private let textViewEmpty = BehaviorRelay<Bool>(value: true)
     
     // 피드 드롭다운
-    let showDropdownView = BehaviorRelay<Bool>(value: false)
+    private let showDropdownView = BehaviorRelay<Bool>(value: false)
     private let isMyFeed = BehaviorRelay<Bool>(value: false)
     
     let showSpoilerAlertView = PublishRelay<Void>()
