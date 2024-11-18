@@ -33,9 +33,9 @@ final class SearchViewModel: ViewModelType {
     
     struct Output {
         var sosoPickList = BehaviorRelay<[SosoPickNovel]>(value: [])
-        let searchBarEnabled = PublishRelay<Bool>()
-        let induceButtonEnabled = PublishRelay<Bool>()
-        let navigateToNovelDetailView = PublishRelay<IndexPath>()
+        let pushToNormalSearchViewController = PublishRelay<Void>()
+        let pushToDetailSearchViewController = PublishRelay<Void>()
+        let pushToNovelDetailViewController = PublishRelay<Int>()
         let pushToDetailSearchResultView = PublishRelay<Notification>()
         let presentToInduceLoginView = PublishRelay<Void>()
     }
@@ -69,8 +69,9 @@ extension SearchViewModel {
         
         input.searhBarDidTap
             .subscribe(onNext: { _ in
-                output.searchBarEnabled.accept(true)
-                if !self.isLogined {
+                if self.isLogined {
+                    output.pushToNormalSearchViewController.accept(())
+                } else {
                     output.presentToInduceLoginView.accept(())
                 }
             })
@@ -78,8 +79,9 @@ extension SearchViewModel {
         
         input.induceButtonDidTap
             .subscribe(onNext: { _ in
-                output.induceButtonEnabled.accept(true)
-                if !self.isLogined {
+                if self.isLogined {
+                    output.pushToDetailSearchViewController.accept(())
+                } else {
                     output.presentToInduceLoginView.accept(())
                 }
             })
@@ -87,8 +89,10 @@ extension SearchViewModel {
         
         input.sosoPickCellSelected
             .subscribe(onNext: { indexPath in
-                output.navigateToNovelDetailView.accept(indexPath)
-                if !self.isLogined {
+                if self.isLogined {
+                    let novelId = output.sosoPickList.value[indexPath.row].novelId
+                    output.pushToNovelDetailViewController.accept(novelId)
+                } else {
                     output.presentToInduceLoginView.accept(())
                 }
             })

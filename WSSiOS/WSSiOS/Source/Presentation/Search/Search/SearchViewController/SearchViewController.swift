@@ -94,13 +94,13 @@ final class SearchViewController: UIViewController {
                 }
                 .disposed(by: disposeBag)
         
-        output.searchBarEnabled
+        output.pushToNormalSearchViewController
             .bind(with: self, onNext: { owner, _ in
                 owner.pushToNormalSearchViewController()
             })
             .disposed(by: disposeBag)
         
-        output.induceButtonEnabled
+        output.pushToDetailSearchViewController
             .bind(with: self, onNext: { owner, _ in
                 owner.presentToDetailSearchViewController(selectedKeywordList: [],
                                                           previousViewInfo: .search,
@@ -111,9 +111,8 @@ final class SearchViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.navigateToNovelDetailView
-            .bind(with: self, onNext: { owner, indexPath in
-                let novelId = output.sosoPickList.value[indexPath.row].novelId
+        output.pushToNovelDetailViewController
+            .bind(with: self, onNext: { owner, novelId in
                 owner.pushToDetailViewController(novelId: novelId)
             })
             .disposed(by: disposeBag)
