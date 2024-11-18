@@ -108,7 +108,7 @@ final class WSSTabBarController: UITabBarController, UITabBarControllerDelegate 
             return true
         }
         
-        if !isLogined && (selectedIndex == 1 || selectedIndex == 2 || selectedIndex == 3) {
+        if !isLogined && (selectedIndex == 2 || selectedIndex == 3) {
             self.presentInduceLoginViewController()
             return false
         }

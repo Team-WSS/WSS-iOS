@@ -144,5 +144,12 @@ final class SearchViewController: UIViewController {
                 }
             })
             .disposed(by: disposeBag)
+        
+        output.presentToInduceLoginView
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.presentInduceLoginViewController()
+            })
+            .disposed(by: disposeBag)
     }
 }

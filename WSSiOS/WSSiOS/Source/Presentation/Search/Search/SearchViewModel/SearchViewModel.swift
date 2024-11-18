@@ -18,6 +18,8 @@ final class SearchViewModel: ViewModelType {
     private let searchRepository: SearchRepository
     private let disposeBag = DisposeBag()
     
+    private let isLogined = APIConstants.isLogined
+    
     //MARK: - Inputs
     
     struct Input {
@@ -35,6 +37,7 @@ final class SearchViewModel: ViewModelType {
         let induceButtonEnabled = PublishRelay<Bool>()
         let navigateToNovelDetailView = PublishRelay<IndexPath>()
         let pushToDetailSearchResultView = PublishRelay<Notification>()
+        let presentToInduceLoginView = PublishRelay<Void>()
     }
     
     //MARK: - init
@@ -64,18 +67,27 @@ extension SearchViewModel {
         input.searhBarDidTap
             .subscribe(onNext: { _ in
                 output.searchBarEnabled.accept(true)
+                if self.isLogined {
+                    output.presentToInduceLoginView.accept(())
+                }
             })
             .disposed(by: disposeBag)
         
         input.induceButtonDidTap
             .subscribe(onNext: { _ in
                 output.induceButtonEnabled.accept(true)
+                if self.isLogined {
+                    output.presentToInduceLoginView.accept(())
+                }
             })
             .disposed(by: disposeBag)
         
         input.sosoPickCellSelected
             .subscribe(onNext: { indexPath in
                 output.navigateToNovelDetailView.accept(indexPath)
+                if self.isLogined {
+                    output.presentToInduceLoginView.accept(())
+                }
             })
             .disposed(by: disposeBag)
         
