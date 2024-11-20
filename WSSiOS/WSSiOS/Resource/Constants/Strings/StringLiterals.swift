@@ -620,7 +620,7 @@ enum StringLiterals {
         static let confirm = "확인"
         
         static let reportSpoiler = "스포일러 신고"
-        static let spoilerTitle = "해당 글이 스포일러를 포함하고 있나요?"
+        static let spoilerTitle = "해당 글이 스포일러를\n포함하고 있나요?"
         
         static let reportImpertinence = "부적절한 표현 신고"
         static let impertinentTitle = "해당 글에 부적절한 표현이\n사용되었나요?"
