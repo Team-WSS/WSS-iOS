@@ -456,6 +456,12 @@ final class NovelDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.showFeedEditedToast
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.showToast(.feedEdited)
+            })
+            .disposed(by: disposeBag)
+        
         //MARK: - Bind/NovelReview
         
         output.showNovelReviewedToast
@@ -521,6 +527,7 @@ final class NovelDetailViewController: UIViewController {
             reloadNovelDetailFeed: reloadNovelDetailFeed.asObservable(),
             scrollViewReachedBottom: observeReachedBottom(rootView.scrollView),
             createFeedButtonDidTap: rootView.createFeedButton.rx.tap,
+            feedEditedNotification: NotificationCenter.default.rx.notification(Notification.Name("FeedEdited")).asObservable(),
             novelReviewedNotification: NotificationCenter.default.rx.notification(Notification.Name("NovelReviewed")).asObservable()
         )
     }

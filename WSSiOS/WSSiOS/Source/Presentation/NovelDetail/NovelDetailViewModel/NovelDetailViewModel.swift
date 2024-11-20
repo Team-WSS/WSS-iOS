@@ -116,6 +116,7 @@ final class NovelDetailViewModel: ViewModelType {
         let reloadNovelDetailFeed: Observable<Void>
         let scrollViewReachedBottom: Observable<Bool>
         let createFeedButtonDidTap: ControlEvent<Void>
+        let feedEditedNotification: Observable<Notification>
         
         //NovelReview
         let novelReviewedNotification: Observable<Notification>
@@ -162,6 +163,7 @@ final class NovelDetailViewModel: ViewModelType {
         let showImproperAlertView: Observable<((Int) -> Observable<Void>, Int)>
         let pushToFeedEditViewController: Observable<Int>
         let showDeleteAlertView: Observable<((Int) -> Observable<Void>, Int)>
+        let showFeedEditedToast: Observable<Void>
         
         //NovelReview
         let showNovelReviewedToast: Observable<Void>
@@ -471,6 +473,10 @@ final class NovelDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        let showFeedEditedToast = input.feedEditedNotification
+            .map { _ in () }
+            .asObservable()
+        
         let showNovelReviewedToast = input.novelReviewedNotification
             .map { _ in () }
             .asObservable()
@@ -507,6 +513,7 @@ final class NovelDetailViewModel: ViewModelType {
             showImproperAlertView: showImproperAlertView.asObservable(),
             pushToFeedEditViewController: pushToFeedEditViewController.asObservable(),
             showDeleteAlertView: showDeleteAlertView.asObservable(),
+            showFeedEditedToast: showFeedEditedToast,
             showNovelReviewedToast: showNovelReviewedToast
         )
     }
