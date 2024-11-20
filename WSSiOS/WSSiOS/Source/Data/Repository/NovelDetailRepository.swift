@@ -1,5 +1,5 @@
 //
-//  DetailRepository.swift
+//  NovelDetailRepository.swift
 //  WSSiOS
 //
 //  Created by 이윤학 on 4/25/24.
@@ -16,32 +16,6 @@ protocol NovelDetailRepository {
     func postUserInterest(novelId: Int) -> Observable<Void>
     func deleteUserInterest(novelId: Int) -> Observable<Void>
     func deleteNovelReview(novelId: Int) -> Observable<Void>
-}
-
-struct TestNovelDetailRepository: NovelDetailRepository {
-    func deleteNovelReview(novelId: Int) -> Observable<Void> {
-        return Observable.just(())
-    }
-    
-    func postUserInterest(novelId: Int) -> Observable<Void> {
-        return Observable.just(())
-    }
-    
-    func deleteUserInterest(novelId: Int) -> Observable<Void> {
-        return Observable.just(())
-    }
-    
-    func getNovelDetailHeaderData(novelId: Int) -> Observable<NovelDetailHeaderEntity> {
-        return Observable.just(NovelDetailHeaderResult.dummyFullData[0]).flatMap { $0.transform() }
-    }
-    
-    func getNovelDetailInfoData(novelId: Int) -> Observable<NovelDetailInfoResult> {
-        return Observable.just(NovelDetailInfoResult.dummyFullData[0])
-    }
-    
-    func getNovelDetailFeedData(novelId: Int, lastFeedId: Int) -> Observable<NovelDetailFeedResult> {
-        return Observable.just(NovelDetailFeedResult.dummyData)
-    }
 }
 
 struct DefaultNovelDetailRepository {

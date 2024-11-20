@@ -14,8 +14,7 @@ final class FeedGenreView: UIView {
     
     //MARK: - Components
     
-    lazy var feedCollectionView = UICollectionView(frame: .zero,
-                                                   collectionViewLayout: UICollectionViewLayout())
+    let feedTableView = UITableView(frame: .zero, style: .plain)
     
     // MARK: - Life Cycle
     
@@ -36,26 +35,18 @@ final class FeedGenreView: UIView {
     private func setUI() {
         self.backgroundColor = .wssWhite
         
-        feedCollectionView.do {
-            let layout = UICollectionViewFlowLayout().then {
-                $0.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-                $0.minimumLineSpacing = 0
-                $0.minimumInteritemSpacing = 0
-                $0.scrollDirection = .vertical
-            }
-            
-            $0.collectionViewLayout = layout
+        feedTableView.do {
             $0.showsVerticalScrollIndicator = false
-            $0.contentInsetAdjustmentBehavior = .always
+            $0.separatorStyle = .none
         }
     }
     
     private func setHierarchy() {
-        addSubview(feedCollectionView)
+        addSubview(feedTableView)
     }
     
     private func setLayout() {
-        feedCollectionView.snp.makeConstraints() {
+        feedTableView.snp.makeConstraints() {
             $0.edges.equalToSuperview()
         }
     }

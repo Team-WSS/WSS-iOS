@@ -44,7 +44,6 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
         super.viewDidLoad()
         
         register()
-        delegate()
         bindViewModel()
     }
     
@@ -56,13 +55,8 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
     //MARK: - Bind
     
     private func register() {
-        rootView.feedCollectionView.register(FeedCollectionViewCell.self,
-                                             forCellWithReuseIdentifier: FeedCollectionViewCell.cellIdentifier)
-    }
-    
-    private func delegate() {
-        rootView.feedCollectionView.rx
-            .setDelegate(self).disposed(by: disposeBag)
+        rootView.feedTableView.register(NovelDetailFeedTableViewCell.self,
+                                        forCellReuseIdentifier: NovelDetailFeedTableViewCell.cellIdentifier)
     }
     
     private func bindViewModel() {
@@ -86,29 +80,10 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
             .disposed(by: disposeBag)
         
         feedData
-            .bind(to: rootView.feedCollectionView.rx.items(
-                cellIdentifier: FeedCollectionViewCell.cellIdentifier,
-                cellType: FeedCollectionViewCell.self)) { (row, element, cell) in                   
-                    
-                    cell.profileTapHandler = {
-                        profileTapped.onNext(element.userId)
-                    }
-                    
-                    cell.contentTapHandler = {
-                        contentTapped.onNext(element.feedId)
-                    }
-                    
-                    cell.novelTapHandler = {
-                        if let novelId = element.novelId {
-                            novelTapped.onNext(novelId)
-                        }
-                    }
-                    
-                    cell.commentTapHandler = {
-                        commentTapped.onNext(element.feedId)
-                    }
-                    
-                    cell.bindData(data: element)
+            .bind(to: rootView.feedTableView.rx.items(
+                cellIdentifier: NovelDetailFeedTableViewCell.cellIdentifier,
+                cellType: NovelDetailFeedTableViewCell.self)) { _, element, cell in
+                    cell.bindData(feed: element)
                 }
                 .disposed(by: disposeBag)
         
@@ -127,22 +102,5 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
                 self.pushToDetailViewController(novelId: novelId)
             })
             .disposed(by: disposeBag)
-    }
-}
-
-extension FeedGenreViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let feed = feedData.value[indexPath.row]
-        
-        let cell = FeedCollectionViewCell(frame: CGRect(x: 0, y: 0, width: collectionView.frame.width, height: 0))
-        cell.bindData(data: feed)
-        
-        cell.setNeedsLayout()
-        cell.layoutIfNeeded()
-        
-        let targetSize = CGSize(width: collectionView.frame.width, height: UIView.layoutFittingCompressedSize.height)
-        let estimatedSize = cell.systemLayoutSizeFitting(targetSize)
-        
-        return CGSize(width: collectionView.frame.width, height: estimatedSize.height)
     }
 }

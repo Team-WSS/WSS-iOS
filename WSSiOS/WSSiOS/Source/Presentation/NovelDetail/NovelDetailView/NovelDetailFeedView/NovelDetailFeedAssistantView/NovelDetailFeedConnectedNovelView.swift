@@ -48,6 +48,7 @@ final class NovelDetailFeedConnectedNovelView: UIView {
         
         titleLabel.do {
             $0.textColor = .wssBlack
+            $0.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         }
         
         starImageView.do {
@@ -56,6 +57,8 @@ final class NovelDetailFeedConnectedNovelView: UIView {
         
         ratingLabel.do {
             $0.textColor = .wssBlack
+            $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+            $0.setContentHuggingPriority(.required, for: .horizontal)
         }
         
         arrowImageView.do {
@@ -105,7 +108,7 @@ final class NovelDetailFeedConnectedNovelView: UIView {
     
     //MARK: - Data
     
-    func bindData(title: String, novelRatingCount: Int, novelRating: Double) {
+    func bindData(title: String, novelRatingCount: Int, novelRating: Float) {
         titleLabel.do {
             $0.applyWSSFont(.title3, with: title)
             $0.lineBreakMode = .byTruncatingTail

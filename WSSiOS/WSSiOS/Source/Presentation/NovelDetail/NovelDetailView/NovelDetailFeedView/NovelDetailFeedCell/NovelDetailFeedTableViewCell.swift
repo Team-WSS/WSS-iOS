@@ -27,7 +27,7 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
     private let disposeBag = DisposeBag()
     weak var delegate: FeedTableViewDelegate?
     
-    private let feed = PublishRelay<NovelDetailFeed>()
+    private let feed = PublishRelay<TotalFeeds>()
     
     //MARK: - Components
     
@@ -89,7 +89,6 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
             stackView.do {
                 $0.setCustomSpacing(12, after: novelDetailFeedHeaderView)
                 $0.setCustomSpacing(20, after: novelDetailFeedContentView)
-                $0.setCustomSpacing(20, after: novelDetailFeedConnectedNovelView)
                 $0.setCustomSpacing(24, after: novelDetailFeedCategoryView)
             }
         }
@@ -123,7 +122,9 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
             .when(.recognized)
             .withLatestFrom(feed)
             .subscribe(with: self, onNext: { owner, feed in
-                owner.delegate?.connectedNovelViewDidTap(novelId: feed.novelId)
+                if let novelId = feed.novelId {
+                    owner.delegate?.connectedNovelViewDidTap(novelId: novelId)
+                }
             })
             .disposed(by: disposeBag)
         
@@ -138,7 +139,7 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
     
     //MARK: - Data
     
-    func bindData(feed: NovelDetailFeed) {
+    func bindData(feed: TotalFeeds) {
         self.feed.accept(feed)
         
         novelDetailFeedHeaderView.bindData(avatarImage: feed.avatarImage,
@@ -147,9 +148,19 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
                                            isModified: feed.isModified)
         novelDetailFeedContentView.bindData(feedContent: feed.feedContent,
                                             isSpoiler: feed.isSpoiler)
-        novelDetailFeedConnectedNovelView.bindData(title: feed.title,
-                                                   novelRatingCount: feed.novelRatingCount,
-                                                   novelRating: feed.novelRating)
+        if let title = feed.title,
+           let novelRatingCount = feed.novelRatingCount,
+           let novelRating = feed.novelRating {
+            self.stackView.insertArrangedSubview(novelDetailFeedConnectedNovelView, at: 2)
+            stackView.do {
+                $0.setCustomSpacing(20, after: novelDetailFeedConnectedNovelView)
+            }
+            novelDetailFeedConnectedNovelView.bindData(title: title,
+                                                       novelRatingCount: novelRatingCount,
+                                                       novelRating: novelRating)
+        } else {
+            novelDetailFeedConnectedNovelView.removeFromSuperview()
+        }
         novelDetailFeedCategoryView.bindData(relevantCategories: feed.relevantCategories)
         novelDetailFeedReactView.bindData(isLiked: feed.isLiked,
                                           likeCount: feed.likeCount,

@@ -52,7 +52,7 @@ final class NovelDetailViewModel: ViewModelType {
     private var isLoadable: Bool = false
     private var isFetching: Bool = false
     private var lastFeedId: Int = 0
-    private let feedList = BehaviorRelay<[NovelDetailFeed]>(value: [])
+    private let feedList = BehaviorRelay<[TotalFeeds]>(value: [])
     private let novelDetailFeedTableViewHeight = PublishRelay<CGFloat>()
     private let pushToFeedDetailViewController = PublishRelay<Int>()
     private let showDropdownView = PublishRelay<(IndexPath, Bool)>()
@@ -150,7 +150,7 @@ final class NovelDetailViewModel: ViewModelType {
         let reviewSectionVisibilities: Driver<[ReviewSectionVisibility]>
         
         //NovelDetailFeed
-        let feedList: Observable<[NovelDetailFeed]>
+        let feedList: Observable<[TotalFeeds]>
         let novelDetailFeedTableViewHeight: Observable<CGFloat>
         let pushToFeedDetailViewController: Observable<Int>
         let pushToUserViewController: Observable<Int>
