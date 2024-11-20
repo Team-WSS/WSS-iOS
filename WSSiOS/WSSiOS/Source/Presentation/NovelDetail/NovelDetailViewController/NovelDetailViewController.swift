@@ -208,8 +208,9 @@ final class NovelDetailViewController: UIViewController {
         output.pushToReviewViewController
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, result in
-                let (readStatus, novelId, novelTitle) = result
-                owner.pushToNovelReviewViewController(readStatus: readStatus,
+                let (isInterest, readStatus, novelId, novelTitle) = result
+                owner.pushToNovelReviewViewController(isInterest: isInterest,
+                                                      readStatus: readStatus,
                                                       novelId: novelId,
                                                       novelTitle: novelTitle)
             })

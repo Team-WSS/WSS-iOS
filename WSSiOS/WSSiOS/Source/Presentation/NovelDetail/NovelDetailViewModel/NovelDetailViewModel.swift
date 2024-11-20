@@ -139,7 +139,7 @@ final class NovelDetailViewModel: ViewModelType {
         let showLargeNovelCoverImage: Driver<Bool>
         let isUserNovelInterested: Driver<Bool>
         let pushTofeedWriteViewController: Observable<(genre: [NewNovelGenre], novelId: Int, novelTitle: String)>
-        let pushToReviewViewController: Observable<(readStatus: ReadStatus, novelId: Int, novelTitle: String)>
+        let pushToReviewViewController: Observable<(isInterest: Bool, readStatus: ReadStatus, novelId: Int, novelTitle: String)>
         
         //Tab
         let selectedTab: Driver<Tab>
@@ -259,7 +259,8 @@ final class NovelDetailViewModel: ViewModelType {
             .map {
                 let selectedReadStatus = $0 ?? self.readStatus.value
                 guard let selectedReadStatus else { throw RxError.noElements }
-                return (readStatus: selectedReadStatus,
+                return (isInterest: self.isUserNovelInterested.value,
+                        readStatus: selectedReadStatus,
                         novelId: self.novelId,
                         novelTitle: self.novelTitle)
             }
