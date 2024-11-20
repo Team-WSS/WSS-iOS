@@ -56,7 +56,7 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.rootView.headerView.searchTextField .becomeFirstResponder()
+        self.rootView.headerView.searchTextField.becomeFirstResponder()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
