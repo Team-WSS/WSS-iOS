@@ -18,6 +18,11 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
     private let loadMoreTrigger = PublishSubject<Void>()
     private let feedData = BehaviorRelay<[TotalFeeds]>(value: [])
     
+    private let novelDetailFeedProfileViewDidTap = PublishRelay<Int>()
+    private let novelDetailFeedDropdownButtonDidTap = PublishRelay<(Int, Bool)>()
+    private let novelDetailFeedConnectedNovelViewDidTap = PublishRelay<Int>()
+    private let novelDetailFeedLikeViewDidTap = PublishRelay<(Int, Bool)>()
+    
     //MARK: - Components
     
     private var rootView = FeedGenreView()
@@ -67,8 +72,11 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
         let likedTapped = PublishSubject<Bool>()
         let commentTapped = PublishSubject<Int>()
         
-        let input = FeedGenreViewModel.Input(loadMoreTrigger: loadMoreTrigger,
-                                             feedTableViewItemSelected: rootView.feedTableView.rx.itemSelected.asObservable())
+        let input = FeedGenreViewModel.Input(
+            loadMoreTrigger: loadMoreTrigger,
+            feedTableViewItemSelected: rootView.feedTableView.rx.itemSelected.asObservable(),
+            feedProfileViewDidTap: novelDetailFeedProfileViewDidTap.asObservable()
+        )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.feedList
@@ -91,12 +99,28 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
             })
             .disposed(by: disposeBag)
         
-//        output.pushToNovelDetailViewController
-//            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
-//            .subscribe(with: self, onNext: { owner, novelId in
-//                print(novelId, "📌📌")
-//                self.pushToDetailViewController(novelId: novelId)
-//            })
-//            .disposed(by: disposeBag)
+        output.pushToUserViewController
+            .subscribe(with: self, onNext: { owner, userId in
+                owner.pushToMyPageViewController(isMyPage: false)
+            })
+            .disposed(by: disposeBag)
+    }
+}
+
+extension FeedGenreViewController: FeedTableViewDelegate {
+    func profileViewDidTap(userId: Int) {
+        self.novelDetailFeedProfileViewDidTap.accept(userId)
+    }
+    
+    func dropdownButtonDidTap(feedId: Int, isMyFeed: Bool) {
+        self.novelDetailFeedDropdownButtonDidTap.accept((feedId, isMyFeed))
+    }
+    
+    func connectedNovelViewDidTap(novelId: Int) {
+        self.novelDetailFeedConnectedNovelViewDidTap.accept(novelId)
+    }
+    
+    func likeViewDidTap(feedId: Int, isLiked: Bool) {
+        self.novelDetailFeedLikeViewDidTap.accept((feedId, isLiked))
     }
 }

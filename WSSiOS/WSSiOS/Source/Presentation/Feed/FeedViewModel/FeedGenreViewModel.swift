@@ -34,6 +34,7 @@ final class FeedGenreViewModel: ViewModelType {
     struct Input {
         let loadMoreTrigger: Observable<Void>
         let feedTableViewItemSelected: Observable<IndexPath>
+        let feedProfileViewDidTap: Observable<Int>
 //        let profileTapped: PublishSubject<Int>
 //        let contentTapped: PublishSubject<Int>
 //        let novelTapped: PublishSubject<Int>
@@ -44,6 +45,7 @@ final class FeedGenreViewModel: ViewModelType {
     struct Output {
         let feedList: Observable<[TotalFeeds]>
         let pushToFeedDetailViewController: Observable<Int>
+        let pushToUserViewController: Observable<Int>
 //        let pushToMyPageViewController = PublishRelay<Int>()
 //        let dropdownTapped = PublishRelay<Void>()
 //        let pushToNovelDetailViewController = PublishRelay<Int>()
@@ -117,7 +119,9 @@ final class FeedGenreViewModel: ViewModelType {
         
         return Output(
             feedList: feedList.asObservable(),
-            pushToFeedDetailViewController: pushToFeedDetailViewController.asObservable())
+            pushToFeedDetailViewController: pushToFeedDetailViewController.asObservable(),
+            pushToUserViewController: input.feedProfileViewDidTap.asObservable()
+        )
     }
     
     //MARK: - API
