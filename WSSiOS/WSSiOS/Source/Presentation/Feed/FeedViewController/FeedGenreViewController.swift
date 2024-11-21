@@ -95,6 +95,14 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
                 }
                 .disposed(by: disposeBag)
         
+        output.feedList
+            .skip(1)
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, feedList in
+                owner.rootView.bindData(isEmpty: feedList.isEmpty)
+            })
+            .disposed(by: disposeBag)
+        
         output.pushToFeedDetailViewController
             .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, feedId in

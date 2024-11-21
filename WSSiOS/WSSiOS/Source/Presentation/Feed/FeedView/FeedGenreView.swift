@@ -14,6 +14,7 @@ final class FeedGenreView: UIView {
     
     //MARK: - Components
     
+    private let emptyView = NovelDetailFeedEmptyView()
     let feedTableView = UITableView(frame: .zero, style: .plain)
     let dropdownView = FeedDetailDropdownView()
     
@@ -36,6 +37,10 @@ final class FeedGenreView: UIView {
     private func setUI() {
         self.backgroundColor = .wssWhite
         
+        emptyView.do {
+            $0.isHidden = true
+        }
+        
         feedTableView.do {
             $0.showsVerticalScrollIndicator = false
             $0.refreshControl = UIRefreshControl()
@@ -48,11 +53,16 @@ final class FeedGenreView: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubviews(feedTableView,
+        self.addSubviews(emptyView,
+                         feedTableView,
                          dropdownView)
     }
     
     private func setLayout() {
+        emptyView.snp.makeConstraints {
+            $0.center.equalToSuperview()
+        }
+        
         feedTableView.snp.makeConstraints() {
             $0.edges.equalToSuperview()
         }
@@ -89,6 +99,18 @@ final class FeedGenreView: UIView {
         dropdownView.snp.updateConstraints {
             $0.top.equalToSuperview().inset(cellFrameInSuperview.minY + 58)
             $0.trailing.equalToSuperview().inset(20)
+        }
+    }
+    
+    //MARK: - Data
+    
+    func bindData(isEmpty: Bool) {
+        if isEmpty {
+            emptyView.isHidden = false
+            feedTableView.isHidden = true
+        } else {
+            emptyView.isHidden = true
+            feedTableView.isHidden = false
         }
     }
 }
