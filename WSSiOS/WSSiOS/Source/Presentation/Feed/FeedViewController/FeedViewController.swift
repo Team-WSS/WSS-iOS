@@ -16,7 +16,7 @@ final class FeedViewController: UIViewController {
     //MARK: - Properties
     
     private let disposeBag = DisposeBag()
-    private var categoryList = BehaviorRelay<[String]>(value: [""])
+    private var categoryList = BehaviorRelay<[NewNovelGenre]>(value: [])
     private let viewModel: FeedViewModel
     
     //MARK: - Components
@@ -87,7 +87,7 @@ final class FeedViewController: UIViewController {
     
     private func setupPages() {
         for pageIndex in 0..<categoryList.value.count {
-            let category = NewNovelGenre.withKoreanRawValue(from: categoryList.value[pageIndex])
+            let category = categoryList.value[pageIndex]
             let viewController = FeedGenreViewController(
                 viewModel: FeedGenreViewModel(
                     feedRepository: DefaultFeedRepository(
@@ -161,7 +161,7 @@ extension FeedViewController: UICollectionViewDelegateFlowLayout {
             let height: CGFloat = 41
             
             let pageTitleLabel = UILabel()
-            pageTitleLabel.text = text
+            pageTitleLabel.text = text.withKorean
             pageTitleLabel.font = .Title3
             
             let maxSize = CGSize(width: CGFloat.greatestFiniteMagnitude, height: height)
