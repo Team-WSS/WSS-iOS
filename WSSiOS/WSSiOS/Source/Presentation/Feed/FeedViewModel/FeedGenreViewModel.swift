@@ -22,10 +22,18 @@ final class FeedGenreViewModel: ViewModelType {
     private var isFetching: Bool = false
     private var lastFeedId: Int = 0
     
+    private var feedId: Int = 0
+    private var isMyFeed: Bool = false
+    
     // output
     
     private let feedList = BehaviorRelay<[TotalFeeds]>(value: [])
     private let pushToFeedDetailViewController = PublishRelay<Int>()
+    private let pushToUserViewController = PublishRelay<Int>()
+    private let pushToNovelDetailViewController = PublishRelay<Int>()
+    private let showDropdownView = PublishRelay<(IndexPath, Bool)>()
+    private let hideDropdownView = PublishRelay<Void>()
+    private let toggleDropdownView = PublishRelay<Void>()
 
     //MARK: - Life Cycle
     
@@ -39,13 +47,10 @@ final class FeedGenreViewModel: ViewModelType {
         let loadMoreTrigger: Observable<Void>
         let feedTableViewItemSelected: Observable<IndexPath>
         let feedProfileViewDidTap: Observable<Int>
+        let feedDropdownButtonDidTap: Observable<(Int, Bool)>
         let feedConnectedNovelViewDidTap: Observable<Int>
         let feedLikeViewDidTap: Observable<(Int, Bool)>
-//        let profileTapped: PublishSubject<Int>
-//        let contentTapped: PublishSubject<Int>
-//        let novelTapped: PublishSubject<Int>
-//        let likedTapped: PublishSubject<Bool>
-//        let commentTapped: PublishSubject<Int>
+        let feedTableViewVillBeginDragging: Observable<Void>
     }
     
     struct Output {
@@ -53,11 +58,9 @@ final class FeedGenreViewModel: ViewModelType {
         let pushToFeedDetailViewController: Observable<Int>
         let pushToUserViewController: Observable<Int>
         let pushToNovelDetailViewController: Observable<Int>
-//        let pushToMyPageViewController = PublishRelay<Int>()
-//        let dropdownTapped = PublishRelay<Void>()
-//        let pushToNovelDetailViewController = PublishRelay<Int>()
-//        let likedTapped = PublishRelay<Void>()
-//        let pushToFeedDetailViewControllerWithKeyboard = PublishRelay<Int>()
+        let showDropdownView: Observable<(IndexPath, Bool)>
+        let hideDropdownView: Observable<Void>
+        let toggleDropdownView: Observable<Void>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -76,6 +79,37 @@ final class FeedGenreViewModel: ViewModelType {
         input.feedTableViewItemSelected
             .subscribe(with: self, onNext: { owner, indexPath in
                 owner.pushToFeedDetailViewController.accept(owner.feedList.value[indexPath.item].feedId)
+                owner.hideDropdownView.accept(())
+            })
+            .disposed(by: disposeBag)
+        
+        input.feedProfileViewDidTap
+            .subscribe(with: self, onNext: { owner, userId in
+                owner.pushToUserViewController.accept(userId)
+                owner.hideDropdownView.accept(())
+            })
+            .disposed(by: disposeBag)
+        
+        input.feedConnectedNovelViewDidTap
+            .subscribe(with: self, onNext: { owner, novelId in
+                owner.pushToNovelDetailViewController.accept(novelId)
+                owner.hideDropdownView.accept(())
+            })
+            .disposed(by: disposeBag)
+        
+        input.feedDropdownButtonDidTap
+            .subscribe(with: self, onNext: { owner, data in
+                let (feedId, isMyFeed) = data
+                if owner.feedId == feedId {
+                    owner.toggleDropdownView.accept(())
+                } else {
+                    if let index = owner.feedList.value.firstIndex(where: { $0.feedId == feedId }) {
+                        let indexPath = IndexPath(row: index, section: 0)
+                        owner.showDropdownView.accept((indexPath, isMyFeed))
+                    }
+                }
+                owner.feedId = feedId
+                owner.isMyFeed = isMyFeed
             })
             .disposed(by: disposeBag)
         
@@ -107,59 +141,21 @@ final class FeedGenreViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-//        input.profileTapped
-//            .throttle(.seconds(2), scheduler: MainScheduler.instance)
-//            .bind(with: self, onNext: { owner, userId in
-//                output.pushToMyPageViewController.accept(userId)
-//            })
-//            .disposed(by: disposeBag)
-//        
-//        input.contentTapped
-//            .throttle(.seconds(2), scheduler: MainScheduler.instance)
-//            .bind(with: self, onNext: { owner, feedId in
-//                output.pushToFeedDetailViewController.accept(feedId)
-//            })
-//            .disposed(by: disposeBag)
-//        
-//        input.novelTapped
-//            .throttle(.seconds(2), scheduler: MainScheduler.instance)
-//            .bind(with: self, onNext: { owner, novelId in
-//                output.pushToNovelDetailViewController.accept(novelId)
-//            })
-//            .disposed(by: disposeBag)
-//        
-//        input.commentTapped
-//            .throttle(.seconds(2), scheduler: MainScheduler.instance)
-//            .bind(with: self, onNext: { owner, feedId in
-//                output.pushToFeedDetailViewController.accept(feedId)
-//            })
-//            .disposed(by: disposeBag)
-//                  
-//        
-//        input.loadMoreTrigger
-//            .filter { [weak self] in self?.isLoading == false }
-//            .flatMapLatest { [weak self] _ -> Observable<TotalFeed> in
-//                guard let self = self else { return Observable.empty() }
-//                self.isLoading = true
-//                return self.getFeedData(category: self.category, lastFeedId: self.lastFeedId)
-//            }
-//            .subscribe(with: self, onNext: { owner, data in
-//                owner.isLoading = false
-//                owner.lastFeedId = data.feeds.last?.feedId ?? owner.lastFeedId
-//                var currentFeeds = output.feedList.value
-//                currentFeeds.append(contentsOf: data.feeds)
-//                output.feedList.accept(currentFeeds)
-//            }, onError: { owner, error in
-//                owner.isLoading = false
-//                print(error)
-//            })
-//            .disposed(by: disposeBag)
+        input.feedTableViewVillBeginDragging
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.hideDropdownView.accept(())
+            })
+            .disposed(by: disposeBag)
+        
         
         return Output(
             feedList: feedList.asObservable(),
             pushToFeedDetailViewController: pushToFeedDetailViewController.asObservable(),
-            pushToUserViewController: input.feedProfileViewDidTap.asObservable(),
-            pushToNovelDetailViewController: input.feedConnectedNovelViewDidTap.asObservable()
+            pushToUserViewController: pushToUserViewController.asObservable(),
+            pushToNovelDetailViewController: pushToNovelDetailViewController.asObservable(),
+            showDropdownView: showDropdownView.asObservable(),
+            hideDropdownView: hideDropdownView.asObservable(),
+            toggleDropdownView: toggleDropdownView.asObservable()
         )
     }
     

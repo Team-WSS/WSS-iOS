@@ -9,6 +9,7 @@ import UIKit
 
 import RxSwift
 import RxRelay
+import RxGesture
 
 class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
     
@@ -66,18 +67,14 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
     
     private func bindViewModel() {
         
-        let profileTapped = PublishSubject<Int>()
-        let contentTapped = PublishSubject<Int>()
-        let novelTapped = PublishSubject<Int>()
-        let likedTapped = PublishSubject<Bool>()
-        let commentTapped = PublishSubject<Int>()
-        
         let input = FeedGenreViewModel.Input(
             loadMoreTrigger: loadMoreTrigger,
             feedTableViewItemSelected: rootView.feedTableView.rx.itemSelected.asObservable(),
             feedProfileViewDidTap: feedProfileViewDidTap.asObservable(),
+            feedDropdownButtonDidTap: feedDropdownButtonDidTap.asObservable(),
             feedConnectedNovelViewDidTap: feedConnectedNovelViewDidTap.asObservable(),
-            feedLikeViewDidTap: feedLikeViewDidTap.asObservable()
+            feedLikeViewDidTap: feedLikeViewDidTap.asObservable(),
+            feedTableViewVillBeginDragging: rootView.feedTableView.rx.willBeginDragging.asObservable()
         )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -110,6 +107,26 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
         output.pushToNovelDetailViewController
             .subscribe(with: self, onNext: { owner, novelId in
                 owner.pushToDetailViewController(novelId: novelId)
+            })
+            .disposed(by: disposeBag)
+        
+        output.showDropdownView
+            .subscribe(with: self, onNext: { owner, data in
+                let (indexPath, isMyFeed) = data
+                owner.rootView.showDropdownView(indexPath: indexPath,
+                                                isMyFeed: isMyFeed)
+            })
+            .disposed(by: disposeBag)
+        
+        output.hideDropdownView
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.rootView.hideDropdownView()
+            })
+            .disposed(by: disposeBag)
+        
+        output.toggleDropdownView
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.rootView.toggleDropdownView()
             })
             .disposed(by: disposeBag)
     }

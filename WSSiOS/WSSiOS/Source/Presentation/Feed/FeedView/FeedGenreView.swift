@@ -15,6 +15,7 @@ final class FeedGenreView: UIView {
     //MARK: - Components
     
     let feedTableView = UITableView(frame: .zero, style: .plain)
+    let dropdownView = FeedDetailDropdownView()
     
     // MARK: - Life Cycle
     
@@ -39,15 +40,54 @@ final class FeedGenreView: UIView {
             $0.showsVerticalScrollIndicator = false
             $0.separatorStyle = .none
         }
+        
+        dropdownView.do {
+            $0.isHidden = true
+        }
     }
     
     private func setHierarchy() {
-        addSubview(feedTableView)
+        self.addSubviews(feedTableView,
+                         dropdownView)
     }
     
     private func setLayout() {
         feedTableView.snp.makeConstraints() {
             $0.edges.equalToSuperview()
+        }
+        
+        dropdownView.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.trailing.equalToSuperview().inset(20)
+        }
+    }
+    
+    //MARK: - Custom Method
+    
+    func showDropdownView(indexPath: IndexPath, isMyFeed: Bool) {
+        dropdownView.do {
+            $0.configureDropdown(isMine: isMyFeed)
+            $0.isHidden = false
+        }
+        updateDropdownViewLayout(indexPath: indexPath)
+    }
+    
+    func hideDropdownView() {
+        dropdownView.isHidden = true
+    }
+    
+    func toggleDropdownView() {
+        dropdownView.isHidden.toggle()
+    }
+    
+    func updateDropdownViewLayout(indexPath: IndexPath) {
+        guard let cell = feedTableView.cellForRow(at: indexPath) else { return }
+
+        let cellFrameInSuperview = cell.convert(cell.bounds, to: self)
+        
+        dropdownView.snp.updateConstraints {
+            $0.top.equalToSuperview().inset(cellFrameInSuperview.minY + 58)
+            $0.trailing.equalToSuperview().inset(20)
         }
     }
 }
