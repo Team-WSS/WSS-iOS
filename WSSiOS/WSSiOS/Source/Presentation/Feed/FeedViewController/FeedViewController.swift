@@ -91,7 +91,11 @@ final class FeedViewController: UIViewController {
                 viewModel: FeedGenreViewModel(
                     feedRepository: DefaultFeedRepository(
                         feedService: DefaultFeedService()
-                    ), category: category.rawValue
+                    ),
+                    feedDetailRepository: DefaultFeedDetailRepository(
+                        feedDetailService: DefaultFeedDetailService()
+                    ),
+                    category: category.rawValue
                 )
             )
             

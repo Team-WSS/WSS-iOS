@@ -15,9 +15,12 @@ final class FeedGenreViewModel: ViewModelType {
     //MARK: - Properties
     
     private let feedRepository: FeedRepository
+    private let feedDetailRepository: FeedDetailRepository
+    
     private let category: String
+    private var isLoadable: Bool = false
+    private var isFetching: Bool = false
     private var lastFeedId: Int = 0
-    private var isLoading = false
     
     // output
     
@@ -26,8 +29,9 @@ final class FeedGenreViewModel: ViewModelType {
 
     //MARK: - Life Cycle
     
-    init(feedRepository: FeedRepository, category: String) {
+    init(feedRepository: FeedRepository, feedDetailRepository: FeedDetailRepository, category: String) {
         self.feedRepository = feedRepository
+        self.feedDetailRepository = feedDetailRepository
         self.category = category
     }
     
@@ -36,6 +40,7 @@ final class FeedGenreViewModel: ViewModelType {
         let feedTableViewItemSelected: Observable<IndexPath>
         let feedProfileViewDidTap: Observable<Int>
         let feedConnectedNovelViewDidTap: Observable<Int>
+        let feedLikeViewDidTap: Observable<(Int, Bool)>
 //        let profileTapped: PublishSubject<Int>
 //        let contentTapped: PublishSubject<Int>
 //        let novelTapped: PublishSubject<Int>
@@ -58,7 +63,10 @@ final class FeedGenreViewModel: ViewModelType {
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         getFeedData(category: category, lastFeedId: lastFeedId)
             .subscribe(with: self, onNext: { owner, data in
-                owner.lastFeedId = data.feeds.last?.feedId ?? owner.lastFeedId
+                owner.isLoadable = data.isLoadable
+                if let lastFeed = data.feeds.last {
+                    owner.lastFeedId = lastFeed.feedId
+                }
                 owner.feedList.accept(data.feeds)
             }, onError: { owner, error in
                 print(error)
@@ -68,6 +76,34 @@ final class FeedGenreViewModel: ViewModelType {
         input.feedTableViewItemSelected
             .subscribe(with: self, onNext: { owner, indexPath in
                 owner.pushToFeedDetailViewController.accept(owner.feedList.value[indexPath.item].feedId)
+            })
+            .disposed(by: disposeBag)
+        
+        input.feedLikeViewDidTap
+            .flatMapLatest { data in
+                let (feedId, isLiked) = data
+                if isLiked {
+                    return self.deleteFeedLike(feedId)
+                } else {
+                    return self.postFeedLike(feedId)
+                }
+            }
+            .do(onNext: { _ in
+                self.isLoadable = false
+                self.lastFeedId = 0
+            })
+            .flatMapLatest { _ in
+                self.getFeedData(category: self.category,
+                                 lastFeedId: self.lastFeedId)
+            }
+            .subscribe(with: self, onNext: { owner, data in
+                owner.isLoadable = data.isLoadable
+                if let lastFeed = data.feeds.last {
+                    owner.lastFeedId = lastFeed.feedId
+                }
+                owner.feedList.accept(data.feeds)
+            }, onError: { owner, error in
+                print("Error: \(error)")
             })
             .disposed(by: disposeBag)
         
@@ -131,6 +167,16 @@ final class FeedGenreViewModel: ViewModelType {
     
     private func getFeedData(category: String, lastFeedId: Int) -> Observable<TotalFeed> {
         return self.feedRepository.getFeedData(category: category, lastFeedId: lastFeedId)
+    }
+    
+    private func postFeedLike(_ feedId: Int) -> Observable<Void> {
+        feedDetailRepository.postFeedLike(feedId: feedId)
+            .observe(on: MainScheduler.instance)
+    }
+    
+    private func deleteFeedLike(_ feedId: Int) -> Observable<Void> {
+        feedDetailRepository.deleteFeedLike(feedId: feedId)
+            .observe(on: MainScheduler.instance)
     }
 }
 

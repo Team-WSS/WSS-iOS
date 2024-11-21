@@ -76,7 +76,8 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
             loadMoreTrigger: loadMoreTrigger,
             feedTableViewItemSelected: rootView.feedTableView.rx.itemSelected.asObservable(),
             feedProfileViewDidTap: feedProfileViewDidTap.asObservable(),
-            feedConnectedNovelViewDidTap: feedConnectedNovelViewDidTap.asObservable()
+            feedConnectedNovelViewDidTap: feedConnectedNovelViewDidTap.asObservable(),
+            feedLikeViewDidTap: feedLikeViewDidTap.asObservable()
         )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
