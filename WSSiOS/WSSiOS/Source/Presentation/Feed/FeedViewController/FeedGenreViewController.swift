@@ -23,6 +23,7 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
     private let feedDropdownButtonDidTap = PublishRelay<(Int, Bool)>()
     private let feedConnectedNovelViewDidTap = PublishRelay<Int>()
     private let feedLikeViewDidTap = PublishRelay<(Int, Bool)>()
+    private let reloadFeed = PublishRelay<Void>()
     
     //MARK: - Components
     
@@ -66,15 +67,21 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func bindViewModel() {
+        let dropdownButtonDidTap = Observable.merge(
+            rootView.dropdownView.topDropdownButton.rx.tap.map { DropdownButtonType.top },
+            rootView.dropdownView.bottomDropdownButton.rx.tap.map { DropdownButtonType.bottom }
+        )
         
         let input = FeedGenreViewModel.Input(
             loadMoreTrigger: loadMoreTrigger,
             feedTableViewItemSelected: rootView.feedTableView.rx.itemSelected.asObservable(),
             feedProfileViewDidTap: feedProfileViewDidTap.asObservable(),
             feedDropdownButtonDidTap: feedDropdownButtonDidTap.asObservable(),
+            dropdownButtonDidTap: dropdownButtonDidTap,
             feedConnectedNovelViewDidTap: feedConnectedNovelViewDidTap.asObservable(),
             feedLikeViewDidTap: feedLikeViewDidTap.asObservable(),
-            feedTableViewVillBeginDragging: rootView.feedTableView.rx.willBeginDragging.asObservable()
+            feedTableViewVillBeginDragging: rootView.feedTableView.rx.willBeginDragging.asObservable(),
+            reloadFeed: reloadFeed.asObservable()
         )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -129,6 +136,106 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
                 owner.rootView.toggleDropdownView()
             })
             .disposed(by: disposeBag)
+        
+        output.showSpoilerAlertView
+            .flatMapLatest { postSpoilerFeed, feedId in
+                self.presentToAlertViewController(
+                    iconImage: .icAlertWarningCircle,
+                    titleText: StringLiterals.FeedDetail.spoilerTitle,
+                    contentText: nil,
+                    leftTitle: StringLiterals.FeedDetail.cancel,
+                    rightTitle: StringLiterals.FeedDetail.report,
+                    rightBackgroundColor: UIColor.wssPrimary100.cgColor
+                )
+                .flatMapLatest { buttonType in
+                    if buttonType == .right {
+                        return postSpoilerFeed(feedId)
+                    } else {
+                        return Observable.empty()
+                    }
+                }
+            }
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.dismiss(animated: true) {
+                    _ = owner.presentToAlertViewController(
+                        iconImage: .icReportCheck,
+                        titleText: StringLiterals.FeedDetail.reportResult,
+                        contentText: nil,
+                        leftTitle: nil,
+                        rightTitle: StringLiterals.FeedDetail.confirm,
+                        rightBackgroundColor: UIColor.wssPrimary100.cgColor
+                    )
+                }
+            }, onError: { owner, error in
+                print("Error: \(error)")
+            })
+            .disposed(by: disposeBag)
+        
+        output.showImproperAlertView
+            .flatMapLatest { postImpertinenceFeed, feedId in
+                self.presentToAlertViewController(
+                    iconImage: .icAlertWarningCircle,
+                    titleText: StringLiterals.FeedDetail.impertinentTitle,
+                    contentText: nil,
+                    leftTitle: StringLiterals.FeedDetail.cancel,
+                    rightTitle: StringLiterals.FeedDetail.report,
+                    rightBackgroundColor: UIColor.wssPrimary100.cgColor
+                )
+                .flatMapLatest { buttonType in
+                    if buttonType == .right {
+                        return postImpertinenceFeed(feedId)
+                    } else {
+                        return Observable.empty()
+                    }
+                }
+            }
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.dismiss(animated: true) {
+                    _ = owner.presentToAlertViewController(
+                        iconImage: .icReportCheck,
+                        titleText: StringLiterals.FeedDetail.reportResult,
+                        contentText: StringLiterals.FeedDetail.impertinentContent,
+                        leftTitle: nil,
+                        rightTitle: StringLiterals.FeedDetail.confirm,
+                        rightBackgroundColor: UIColor.wssPrimary100.cgColor
+                    )
+                }
+            }, onError: { owner, error in
+                print("Error: \(error)")
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushToFeedEditViewController
+            .subscribe(with: self, onNext: { owner, feedId in
+                owner.pushToFeedEditViewController(feedId: feedId)
+            })
+            .disposed(by: disposeBag)
+        
+        output.showDeleteAlertView
+            .flatMapLatest { deleteFeed, feedId in
+                self.presentToAlertViewController(
+                    iconImage: .icAlertWarningCircle,
+                    titleText: StringLiterals.FeedDetail.deleteTitle,
+                    contentText: StringLiterals.FeedDetail.deleteContent,
+                    leftTitle: StringLiterals.FeedDetail.cancel,
+                    rightTitle: StringLiterals.FeedDetail.delete,
+                    rightBackgroundColor: UIColor.wssSecondary100.cgColor
+                )
+                .flatMapLatest { buttonType in
+                    if buttonType == .right {
+                        return deleteFeed(feedId)
+                    } else {
+                        return Observable.empty()
+                    }
+                }
+            }
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.reloadFeed.accept(())
+            }, onError: { owner, error in
+                print("Error: \(error)")
+            })
+            .disposed(by: disposeBag)
+
     }
 }
 

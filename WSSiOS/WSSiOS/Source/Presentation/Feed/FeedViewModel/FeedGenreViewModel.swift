@@ -34,7 +34,11 @@ final class FeedGenreViewModel: ViewModelType {
     private let showDropdownView = PublishRelay<(IndexPath, Bool)>()
     private let hideDropdownView = PublishRelay<Void>()
     private let toggleDropdownView = PublishRelay<Void>()
-
+    private let showSpoilerAlertView = PublishRelay<((Int) -> Observable<Void>, Int)>()
+    private let showImproperAlertView = PublishRelay<((Int) -> Observable<Void>, Int)>()
+    private let pushToFeedEditViewController = PublishRelay<Int>()
+    private let showDeleteAlertView = PublishRelay<((Int) -> Observable<Void>, Int)>()
+    
     //MARK: - Life Cycle
     
     init(feedRepository: FeedRepository, feedDetailRepository: FeedDetailRepository, category: String) {
@@ -48,9 +52,11 @@ final class FeedGenreViewModel: ViewModelType {
         let feedTableViewItemSelected: Observable<IndexPath>
         let feedProfileViewDidTap: Observable<Int>
         let feedDropdownButtonDidTap: Observable<(Int, Bool)>
+        let dropdownButtonDidTap: Observable<DropdownButtonType>
         let feedConnectedNovelViewDidTap: Observable<Int>
         let feedLikeViewDidTap: Observable<(Int, Bool)>
         let feedTableViewVillBeginDragging: Observable<Void>
+        let reloadFeed: Observable<Void>
     }
     
     struct Output {
@@ -61,6 +67,10 @@ final class FeedGenreViewModel: ViewModelType {
         let showDropdownView: Observable<(IndexPath, Bool)>
         let hideDropdownView: Observable<Void>
         let toggleDropdownView: Observable<Void>
+        let showSpoilerAlertView: Observable<((Int) -> Observable<Void>, Int)>
+        let showImproperAlertView: Observable<((Int) -> Observable<Void>, Int)>
+        let pushToFeedEditViewController: Observable<Int>
+        let showDeleteAlertView: Observable<((Int) -> Observable<Void>, Int)>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -113,6 +123,20 @@ final class FeedGenreViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        input.dropdownButtonDidTap
+            .map { ($0, self.isMyFeed) }
+            .subscribe( with: self, onNext: { owner, result in
+                owner.hideDropdownView.accept(())
+                switch result {
+                case (.top, true): owner.pushToFeedEditViewController.accept(owner.feedId)
+                    owner.hideDropdownView.accept(())
+                case (.bottom, true): owner.showDeleteAlertView.accept((owner.deleteFeed, owner.feedId))
+                case (.top, false): owner.showSpoilerAlertView.accept((owner.postSpoilerFeed, owner.feedId))
+                case (.bottom, false): owner.showImproperAlertView.accept((owner.postImpertinenceFeed, owner.feedId))
+                }
+            })
+            .disposed(by: disposeBag)
+        
         input.feedLikeViewDidTap
             .flatMapLatest { data in
                 let (feedId, isLiked) = data
@@ -147,6 +171,25 @@ final class FeedGenreViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        input.reloadFeed
+            .do(onNext: { _ in
+                self.isLoadable = false
+                self.lastFeedId = 0
+            })
+            .flatMapLatest { _ in
+                self.getFeedData(category: self.category,
+                                 lastFeedId: self.lastFeedId)
+            }
+            .subscribe(with: self, onNext: { owner, data in
+                owner.isLoadable = data.isLoadable
+                if let lastFeed = data.feeds.last {
+                    owner.lastFeedId = lastFeed.feedId
+                }
+                owner.feedList.accept(data.feeds)
+            }, onError: { owner, error in
+                print("Error: \(error)")
+            })
+            .disposed(by: disposeBag)
         
         return Output(
             feedList: feedList.asObservable(),
@@ -155,7 +198,11 @@ final class FeedGenreViewModel: ViewModelType {
             pushToNovelDetailViewController: pushToNovelDetailViewController.asObservable(),
             showDropdownView: showDropdownView.asObservable(),
             hideDropdownView: hideDropdownView.asObservable(),
-            toggleDropdownView: toggleDropdownView.asObservable()
+            toggleDropdownView: toggleDropdownView.asObservable(),
+            showSpoilerAlertView: showSpoilerAlertView.asObservable(),
+            showImproperAlertView: showImproperAlertView.asObservable(),
+            pushToFeedEditViewController: pushToFeedEditViewController.asObservable(),
+            showDeleteAlertView: showDeleteAlertView.asObservable()
         )
     }
     
@@ -172,6 +219,21 @@ final class FeedGenreViewModel: ViewModelType {
     
     private func deleteFeedLike(_ feedId: Int) -> Observable<Void> {
         feedDetailRepository.deleteFeedLike(feedId: feedId)
+            .observe(on: MainScheduler.instance)
+    }
+    
+    func postSpoilerFeed(_ feedId: Int) -> Observable<Void> {
+        feedDetailRepository.postSpoilerFeed(feedId: feedId)
+            .observe(on: MainScheduler.instance)
+    }
+    
+    func postImpertinenceFeed(_ feedId: Int) -> Observable<Void> {
+        feedDetailRepository.postImpertinenceFeed(feedId: feedId)
+            .observe(on: MainScheduler.instance)
+    }
+    
+    func deleteFeed(_ feedId: Int) -> Observable<Void> {
+        feedDetailRepository.deleteFeed(feedId: feedId)
             .observe(on: MainScheduler.instance)
     }
 }
