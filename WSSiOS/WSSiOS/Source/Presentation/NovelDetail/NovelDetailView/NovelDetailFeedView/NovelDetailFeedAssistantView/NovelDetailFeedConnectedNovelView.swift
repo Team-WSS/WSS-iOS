@@ -76,7 +76,6 @@ final class NovelDetailFeedConnectedNovelView: UIView {
     
     private func setLayout() {
         linkImageView.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
             $0.leading.equalToSuperview().inset(16)
             $0.top.bottom.equalToSuperview().inset(14)
             $0.size.equalTo(20)

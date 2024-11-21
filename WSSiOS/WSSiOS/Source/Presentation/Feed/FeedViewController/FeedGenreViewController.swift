@@ -68,11 +68,7 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
         let commentTapped = PublishSubject<Int>()
         
         let input = FeedGenreViewModel.Input(loadMoreTrigger: loadMoreTrigger,
-                                             profileTapped: profileTapped,
-                                             contentTapped: contentTapped,
-                                             novelTapped: novelTapped,
-                                             likedTapped: likedTapped,
-                                             commentTapped: commentTapped)
+                                             feedTableViewItemSelected: rootView.feedTableView.rx.itemSelected.asObservable())
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.feedList
@@ -84,23 +80,23 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
                 cellIdentifier: NovelDetailFeedTableViewCell.cellIdentifier,
                 cellType: NovelDetailFeedTableViewCell.self)) { _, element, cell in
                     cell.bindData(feed: element)
+                    cell.delegate = self
                 }
                 .disposed(by: disposeBag)
         
         output.pushToFeedDetailViewController
             .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, feedId in
-                print(feedId, "📌")
-                self.pushToFeedDetailViewController(feedId: feedId)
+                owner.pushToFeedDetailViewController(feedId: feedId)
             })
             .disposed(by: disposeBag)
         
-        output.pushToNovelDetailViewController
-            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, novelId in
-                print(novelId, "📌📌")
-                self.pushToDetailViewController(novelId: novelId)
-            })
-            .disposed(by: disposeBag)
+//        output.pushToNovelDetailViewController
+//            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
+//            .subscribe(with: self, onNext: { owner, novelId in
+//                print(novelId, "📌📌")
+//                self.pushToDetailViewController(novelId: novelId)
+//            })
+//            .disposed(by: disposeBag)
     }
 }

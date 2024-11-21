@@ -151,13 +151,14 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
         if let title = feed.title,
            let novelRatingCount = feed.novelRatingCount,
            let novelRating = feed.novelRating {
+            novelDetailFeedConnectedNovelView.bindData(title: title,
+                                                       novelRatingCount: novelRatingCount,
+                                                       novelRating: novelRating)
+            
             self.stackView.insertArrangedSubview(novelDetailFeedConnectedNovelView, at: 2)
             stackView.do {
                 $0.setCustomSpacing(20, after: novelDetailFeedConnectedNovelView)
             }
-            novelDetailFeedConnectedNovelView.bindData(title: title,
-                                                       novelRatingCount: novelRatingCount,
-                                                       novelRating: novelRating)
         } else {
             novelDetailFeedConnectedNovelView.removeFromSuperview()
         }
