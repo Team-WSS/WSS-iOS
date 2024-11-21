@@ -18,10 +18,10 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
     private let loadMoreTrigger = PublishSubject<Void>()
     private let feedData = BehaviorRelay<[TotalFeeds]>(value: [])
     
-    private let novelDetailFeedProfileViewDidTap = PublishRelay<Int>()
-    private let novelDetailFeedDropdownButtonDidTap = PublishRelay<(Int, Bool)>()
-    private let novelDetailFeedConnectedNovelViewDidTap = PublishRelay<Int>()
-    private let novelDetailFeedLikeViewDidTap = PublishRelay<(Int, Bool)>()
+    private let feedProfileViewDidTap = PublishRelay<Int>()
+    private let feedDropdownButtonDidTap = PublishRelay<(Int, Bool)>()
+    private let feedConnectedNovelViewDidTap = PublishRelay<Int>()
+    private let feedLikeViewDidTap = PublishRelay<(Int, Bool)>()
     
     //MARK: - Components
     
@@ -75,7 +75,8 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
         let input = FeedGenreViewModel.Input(
             loadMoreTrigger: loadMoreTrigger,
             feedTableViewItemSelected: rootView.feedTableView.rx.itemSelected.asObservable(),
-            feedProfileViewDidTap: novelDetailFeedProfileViewDidTap.asObservable()
+            feedProfileViewDidTap: feedProfileViewDidTap.asObservable(),
+            feedConnectedNovelViewDidTap: feedConnectedNovelViewDidTap.asObservable()
         )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -104,23 +105,29 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
                 owner.pushToMyPageViewController(isMyPage: false)
             })
             .disposed(by: disposeBag)
+        
+        output.pushToNovelDetailViewController
+            .subscribe(with: self, onNext: { owner, novelId in
+                owner.pushToDetailViewController(novelId: novelId)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
 extension FeedGenreViewController: FeedTableViewDelegate {
     func profileViewDidTap(userId: Int) {
-        self.novelDetailFeedProfileViewDidTap.accept(userId)
+        self.feedProfileViewDidTap.accept(userId)
     }
     
     func dropdownButtonDidTap(feedId: Int, isMyFeed: Bool) {
-        self.novelDetailFeedDropdownButtonDidTap.accept((feedId, isMyFeed))
+        self.feedDropdownButtonDidTap.accept((feedId, isMyFeed))
     }
     
     func connectedNovelViewDidTap(novelId: Int) {
-        self.novelDetailFeedConnectedNovelViewDidTap.accept(novelId)
+        self.feedConnectedNovelViewDidTap.accept(novelId)
     }
     
     func likeViewDidTap(feedId: Int, isLiked: Bool) {
-        self.novelDetailFeedLikeViewDidTap.accept((feedId, isLiked))
+        self.feedLikeViewDidTap.accept((feedId, isLiked))
     }
 }
