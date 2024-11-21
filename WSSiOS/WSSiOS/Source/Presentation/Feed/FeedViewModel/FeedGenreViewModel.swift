@@ -48,6 +48,7 @@ final class FeedGenreViewModel: ViewModelType {
     }
     
     struct Input {
+        let viewWillAppearEvent: Observable<Void>
         let loadMoreTrigger: Observable<Void>
         let feedTableViewItemSelected: Observable<IndexPath>
         let feedProfileViewDidTap: Observable<Int>
@@ -57,6 +58,7 @@ final class FeedGenreViewModel: ViewModelType {
         let feedLikeViewDidTap: Observable<(Int, Bool)>
         let feedTableViewVillBeginDragging: Observable<Void>
         let reloadFeed: Observable<Void>
+        let feedTableViewReachedBottom: Observable<Bool>
     }
     
     struct Output {
@@ -74,7 +76,15 @@ final class FeedGenreViewModel: ViewModelType {
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
-        getFeedData(category: category, lastFeedId: lastFeedId)
+        input.viewWillAppearEvent
+            .do(onNext: { _ in
+                self.isLoadable = false
+                self.lastFeedId = 0
+            })
+            .flatMapLatest { _ in
+                self.getFeedData(category: self.category,
+                                 lastFeedId: self.lastFeedId)
+            }
             .subscribe(with: self, onNext: { owner, data in
                 owner.isLoadable = data.isLoadable
                 if let lastFeed = data.feeds.last {
@@ -82,7 +92,7 @@ final class FeedGenreViewModel: ViewModelType {
                 }
                 owner.feedList.accept(data.feeds)
             }, onError: { owner, error in
-                print(error)
+                print("Error: \(error)")
             })
             .disposed(by: disposeBag)
         
@@ -186,6 +196,32 @@ final class FeedGenreViewModel: ViewModelType {
                     owner.lastFeedId = lastFeed.feedId
                 }
                 owner.feedList.accept(data.feeds)
+            }, onError: { owner, error in
+                print("Error: \(error)")
+            })
+            .disposed(by: disposeBag)
+        
+        input.feedTableViewReachedBottom
+            .filter { reachedBottom in
+                return reachedBottom && !self.isFetching && self.isLoadable
+            }
+            .do(onNext: { _ in
+                self.isFetching = true
+            })
+            .flatMapLatest {_ in
+                self.getFeedData(category: self.category,
+                                 lastFeedId: self.lastFeedId)
+                    .do(onNext: { _ in
+                        self.isFetching = false
+                    })
+            }
+            .subscribe(with: self, onNext: { owner, data in
+                owner.isLoadable = data.isLoadable
+                if let lastFeed = data.feeds.last {
+                    owner.lastFeedId = lastFeed.feedId
+                }
+                let newData = owner.feedList.value + data.feeds
+                owner.feedList.accept(newData)
             }, onError: { owner, error in
                 print("Error: \(error)")
             })

@@ -19,6 +19,8 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
     private let loadMoreTrigger = PublishSubject<Void>()
     private let feedData = BehaviorRelay<[TotalFeeds]>(value: [])
     
+    private let viewWillAppearEvent = PublishRelay<Void>()
+    
     private let feedProfileViewDidTap = PublishRelay<Int>()
     private let feedDropdownButtonDidTap = PublishRelay<(Int, Bool)>()
     private let feedConnectedNovelViewDidTap = PublishRelay<Int>()
@@ -55,6 +57,7 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        viewWillAppearEvent.accept(())
         self.navigationController?.isNavigationBarHidden = true
         showTabBar()
     }
@@ -73,6 +76,7 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
         )
         
         let input = FeedGenreViewModel.Input(
+            viewWillAppearEvent: viewWillAppearEvent.asObservable(),
             loadMoreTrigger: loadMoreTrigger,
             feedTableViewItemSelected: rootView.feedTableView.rx.itemSelected.asObservable(),
             feedProfileViewDidTap: feedProfileViewDidTap.asObservable(),
@@ -81,8 +85,10 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
             feedConnectedNovelViewDidTap: feedConnectedNovelViewDidTap.asObservable(),
             feedLikeViewDidTap: feedLikeViewDidTap.asObservable(),
             feedTableViewVillBeginDragging: rootView.feedTableView.rx.willBeginDragging.asObservable(),
-            reloadFeed: reloadFeed.asObservable()
+            reloadFeed: reloadFeed.asObservable(),
+            feedTableViewReachedBottom: observeReachedBottom(rootView.feedTableView)
         )
+        
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.feedList
@@ -236,6 +242,20 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
             })
             .disposed(by: disposeBag)
 
+    }
+    
+    //MARK: - Custom Method
+    
+    private func observeReachedBottom(_ scrollView: UIScrollView) -> Observable<Bool> {
+        return scrollView.rx.contentOffset
+            .map { contentOffset in
+                let contentHeight = scrollView.contentSize.height
+                let viewHeight = scrollView.frame.size.height
+                let offsetY = contentOffset.y
+                
+                return offsetY + viewHeight >= contentHeight
+            }
+            .distinctUntilChanged()
     }
 }
 
