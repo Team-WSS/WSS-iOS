@@ -38,6 +38,7 @@ final class FeedGenreView: UIView {
         
         feedTableView.do {
             $0.showsVerticalScrollIndicator = false
+            $0.refreshControl = UIRefreshControl()
             $0.separatorStyle = .none
         }
         

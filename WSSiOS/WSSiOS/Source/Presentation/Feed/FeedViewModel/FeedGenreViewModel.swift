@@ -5,7 +5,7 @@
 //  Created by 신지원 on 9/28/24.
 //
 
-import Foundation
+import UIKit
 
 import RxSwift
 import RxCocoa
@@ -38,6 +38,7 @@ final class FeedGenreViewModel: ViewModelType {
     private let showImproperAlertView = PublishRelay<((Int) -> Observable<Void>, Int)>()
     private let pushToFeedEditViewController = PublishRelay<Int>()
     private let showDeleteAlertView = PublishRelay<((Int) -> Observable<Void>, Int)>()
+    private let feedTableViewEndRefreshing = PublishRelay<Void>()
     
     //MARK: - Life Cycle
     
@@ -57,6 +58,7 @@ final class FeedGenreViewModel: ViewModelType {
         let feedLikeViewDidTap: Observable<(Int, Bool)>
         let feedTableViewVillBeginDragging: Observable<Void>
         let feedTableViewReachedBottom: Observable<Bool>
+        let feedTableViewIsRefreshing: Observable<Void>
     }
     
     struct Output {
@@ -71,6 +73,7 @@ final class FeedGenreViewModel: ViewModelType {
         let showImproperAlertView: Observable<((Int) -> Observable<Void>, Int)>
         let pushToFeedEditViewController: Observable<Int>
         let showDeleteAlertView: Observable<((Int) -> Observable<Void>, Int)>
+        let feedTableViewEndRefreshing: Observable<Void>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -208,6 +211,28 @@ final class FeedGenreViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        input.feedTableViewIsRefreshing
+            .do(onNext: { _ in
+                self.isLoadable = false
+                self.lastFeedId = 0
+            })
+            .flatMapLatest { _ in
+                self.getFeedData(category: self.category,
+                                 lastFeedId: self.lastFeedId,
+                                 size: nil)
+            }
+            .subscribe(with: self, onNext: { owner, data in
+                owner.isLoadable = data.isLoadable
+                if let lastFeed = data.feeds.last {
+                    owner.lastFeedId = lastFeed.feedId
+                }
+                owner.feedList.accept(data.feeds)
+                owner.feedTableViewEndRefreshing.accept(())
+            }, onError: { owner, error in
+                print("Error: \(error)")
+            })
+            .disposed(by: disposeBag)
+        
         return Output(
             feedList: feedList.asObservable(),
             pushToFeedDetailViewController: pushToFeedDetailViewController.asObservable(),
@@ -219,7 +244,8 @@ final class FeedGenreViewModel: ViewModelType {
             showSpoilerAlertView: showSpoilerAlertView.asObservable(),
             showImproperAlertView: showImproperAlertView.asObservable(),
             pushToFeedEditViewController: pushToFeedEditViewController.asObservable(),
-            showDeleteAlertView: showDeleteAlertView.asObservable()
+            showDeleteAlertView: showDeleteAlertView.asObservable(),
+            feedTableViewEndRefreshing: feedTableViewEndRefreshing.asObservable()
         )
     }
     

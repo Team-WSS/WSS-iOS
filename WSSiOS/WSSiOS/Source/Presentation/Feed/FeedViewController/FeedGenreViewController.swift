@@ -80,7 +80,8 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
             feedConnectedNovelViewDidTap: feedConnectedNovelViewDidTap.asObservable(),
             feedLikeViewDidTap: feedLikeViewDidTap.asObservable(),
             feedTableViewVillBeginDragging: rootView.feedTableView.rx.willBeginDragging.asObservable(),
-            feedTableViewReachedBottom: observeReachedBottom(rootView.feedTableView)
+            feedTableViewReachedBottom: observeReachedBottom(rootView.feedTableView),
+            feedTableViewIsRefreshing: rootView.feedTableView.refreshControl!.rx.controlEvent(.valueChanged).asObservable()
         )
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
@@ -231,7 +232,13 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
                 print("Error: \(error)")
             })
             .disposed(by: disposeBag)
-
+        
+        output.feedTableViewEndRefreshing
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.rootView.feedTableView.refreshControl?.endRefreshing()
+            })
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Custom Method
