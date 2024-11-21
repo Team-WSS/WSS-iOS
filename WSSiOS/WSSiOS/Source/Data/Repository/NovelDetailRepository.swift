@@ -12,7 +12,9 @@ import RxSwift
 protocol NovelDetailRepository {
     func getNovelDetailHeaderData(novelId: Int) -> Observable<NovelDetailHeaderEntity>
     func getNovelDetailInfoData(novelId: Int) -> Observable<NovelDetailInfoResult>
-    func getNovelDetailFeedData(novelId: Int, lastFeedId: Int) -> Observable<NovelDetailFeedResult>
+    func getNovelDetailFeedData(novelId: Int,
+                                lastFeedId: Int,
+                                size: Int?) -> Observable<NovelDetailFeedResult>
     func postUserInterest(novelId: Int) -> Observable<Void>
     func deleteUserInterest(novelId: Int) -> Observable<Void>
     func deleteNovelReview(novelId: Int) -> Observable<Void>
@@ -36,8 +38,8 @@ extension DefaultNovelDetailRepository: NovelDetailRepository  {
         return novelDetailService.getNovelDetailInfoData(novelId: novelId).asObservable()
     }
     
-    func getNovelDetailFeedData(novelId: Int, lastFeedId: Int) -> Observable<NovelDetailFeedResult> {
-        return novelDetailService.getNovelDetailFeedData(novelId: novelId, lastFeedId: lastFeedId, size: novelDetailFeedSize).asObservable()
+    func getNovelDetailFeedData(novelId: Int, lastFeedId: Int, size: Int?) -> Observable<NovelDetailFeedResult> {
+        return novelDetailService.getNovelDetailFeedData(novelId: novelId, lastFeedId: lastFeedId, size: size ?? novelDetailFeedSize).asObservable()
     }
     
     func deleteNovelReview(novelId: Int) -> Observable<Void> {

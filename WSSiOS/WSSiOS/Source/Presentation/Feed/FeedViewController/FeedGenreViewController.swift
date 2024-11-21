@@ -16,10 +16,6 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
     //MARK: - Properties
     
     private let disposeBag = DisposeBag()
-    private let loadMoreTrigger = PublishSubject<Void>()
-    private let feedData = BehaviorRelay<[TotalFeeds]>(value: [])
-    
-    private let viewWillAppearEvent = PublishRelay<Void>()
     
     private let feedProfileViewDidTap = PublishRelay<Int>()
     private let feedDropdownButtonDidTap = PublishRelay<(Int, Bool)>()
@@ -57,7 +53,7 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        viewWillAppearEvent.accept(())
+        reloadFeed.accept(())
         self.navigationController?.isNavigationBarHidden = true
         showTabBar()
     }
@@ -76,8 +72,7 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
         )
         
         let input = FeedGenreViewModel.Input(
-            viewWillAppearEvent: viewWillAppearEvent.asObservable(),
-            loadMoreTrigger: loadMoreTrigger,
+            reloadFeed: reloadFeed.asObservable(),
             feedTableViewItemSelected: rootView.feedTableView.rx.itemSelected.asObservable(),
             feedProfileViewDidTap: feedProfileViewDidTap.asObservable(),
             feedDropdownButtonDidTap: feedDropdownButtonDidTap.asObservable(),
@@ -85,17 +80,12 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
             feedConnectedNovelViewDidTap: feedConnectedNovelViewDidTap.asObservable(),
             feedLikeViewDidTap: feedLikeViewDidTap.asObservable(),
             feedTableViewVillBeginDragging: rootView.feedTableView.rx.willBeginDragging.asObservable(),
-            reloadFeed: reloadFeed.asObservable(),
             feedTableViewReachedBottom: observeReachedBottom(rootView.feedTableView)
         )
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.feedList
-            .bind(to: feedData)
-            .disposed(by: disposeBag)
-        
-        feedData
             .bind(to: rootView.feedTableView.rx.items(
                 cellIdentifier: NovelDetailFeedTableViewCell.cellIdentifier,
                 cellType: NovelDetailFeedTableViewCell.self)) { _, element, cell in

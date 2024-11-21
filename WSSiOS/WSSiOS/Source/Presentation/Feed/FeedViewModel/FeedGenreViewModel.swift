@@ -48,8 +48,7 @@ final class FeedGenreViewModel: ViewModelType {
     }
     
     struct Input {
-        let viewWillAppearEvent: Observable<Void>
-        let loadMoreTrigger: Observable<Void>
+        let reloadFeed: Observable<Void>
         let feedTableViewItemSelected: Observable<IndexPath>
         let feedProfileViewDidTap: Observable<Int>
         let feedDropdownButtonDidTap: Observable<(Int, Bool)>
@@ -57,7 +56,6 @@ final class FeedGenreViewModel: ViewModelType {
         let feedConnectedNovelViewDidTap: Observable<Int>
         let feedLikeViewDidTap: Observable<(Int, Bool)>
         let feedTableViewVillBeginDragging: Observable<Void>
-        let reloadFeed: Observable<Void>
         let feedTableViewReachedBottom: Observable<Bool>
     }
     
@@ -76,14 +74,15 @@ final class FeedGenreViewModel: ViewModelType {
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
-        input.viewWillAppearEvent
+        input.reloadFeed
             .do(onNext: { _ in
                 self.isLoadable = false
                 self.lastFeedId = 0
             })
             .flatMapLatest { _ in
                 self.getFeedData(category: self.category,
-                                 lastFeedId: self.lastFeedId)
+                                 lastFeedId: self.lastFeedId,
+                                 size: self.feedList.value.isEmpty ? nil : self.feedList.value.count)
             }
             .subscribe(with: self, onNext: { owner, data in
                 owner.isLoadable = data.isLoadable
@@ -162,7 +161,8 @@ final class FeedGenreViewModel: ViewModelType {
             })
             .flatMapLatest { _ in
                 self.getFeedData(category: self.category,
-                                 lastFeedId: self.lastFeedId)
+                                 lastFeedId: self.lastFeedId,
+                                 size: self.feedList.value.isEmpty ? nil : self.feedList.value.count)
             }
             .subscribe(with: self, onNext: { owner, data in
                 owner.isLoadable = data.isLoadable
@@ -181,26 +181,6 @@ final class FeedGenreViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.reloadFeed
-            .do(onNext: { _ in
-                self.isLoadable = false
-                self.lastFeedId = 0
-            })
-            .flatMapLatest { _ in
-                self.getFeedData(category: self.category,
-                                 lastFeedId: self.lastFeedId)
-            }
-            .subscribe(with: self, onNext: { owner, data in
-                owner.isLoadable = data.isLoadable
-                if let lastFeed = data.feeds.last {
-                    owner.lastFeedId = lastFeed.feedId
-                }
-                owner.feedList.accept(data.feeds)
-            }, onError: { owner, error in
-                print("Error: \(error)")
-            })
-            .disposed(by: disposeBag)
-        
         input.feedTableViewReachedBottom
             .filter { reachedBottom in
                 return reachedBottom && !self.isFetching && self.isLoadable
@@ -210,8 +190,9 @@ final class FeedGenreViewModel: ViewModelType {
             })
             .flatMapLatest {_ in
                 self.getFeedData(category: self.category,
-                                 lastFeedId: self.lastFeedId)
-                    .do(onNext: { _ in
+                                 lastFeedId: self.lastFeedId,
+                                 size: nil)
+                .do(onNext: { _ in
                         self.isFetching = false
                     })
             }
@@ -244,8 +225,8 @@ final class FeedGenreViewModel: ViewModelType {
     
     //MARK: - API
     
-    private func getFeedData(category: String, lastFeedId: Int) -> Observable<TotalFeed> {
-        return self.feedRepository.getFeedData(category: category, lastFeedId: lastFeedId)
+    private func getFeedData(category: String, lastFeedId: Int, size: Int?) -> Observable<TotalFeed> {
+        return self.feedRepository.getFeedData(category: category, lastFeedId: lastFeedId, size: size)
     }
     
     private func postFeedLike(_ feedId: Int) -> Observable<Void> {

@@ -304,6 +304,9 @@ extension UIViewController {
             )
         )
         
+        viewController.navigationController?.isNavigationBarHidden = false
+        viewController.hidesBottomBarWhenPushed = true
+        
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     

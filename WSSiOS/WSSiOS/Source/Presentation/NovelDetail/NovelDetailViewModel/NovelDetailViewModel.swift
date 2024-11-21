@@ -320,7 +320,9 @@ final class NovelDetailViewModel: ViewModelType {
             self.selectedTab.accept(.feed)
         })
         .flatMapLatest { _ in
-            self.getNovelDetailFeedData(novelId: self.novelId, lastFeedId: self.lastFeedId)
+            self.getNovelDetailFeedData(novelId: self.novelId,
+                                        lastFeedId: self.lastFeedId,
+                                        size: nil)
         }
         .subscribe(with: self, onNext: { owner, data in
             owner.isLoadable = data.isLoadable
@@ -394,7 +396,9 @@ final class NovelDetailViewModel: ViewModelType {
                 self.lastFeedId = 0
             })
             .flatMapLatest { _ in
-                self.getNovelDetailFeedData(novelId: self.novelId, lastFeedId: self.lastFeedId)
+                self.getNovelDetailFeedData(novelId: self.novelId,
+                                            lastFeedId: self.lastFeedId,
+                                            size: self.feedList.value.isEmpty ? nil : self.feedList.value.count)
             }
             .subscribe(with: self, onNext: { owner, data in
                 owner.isLoadable = data.isLoadable
@@ -413,7 +417,9 @@ final class NovelDetailViewModel: ViewModelType {
                 self.lastFeedId = 0
             })
             .flatMapLatest { _ in
-                self.getNovelDetailFeedData(novelId: self.novelId, lastFeedId: self.lastFeedId)
+                self.getNovelDetailFeedData(novelId: self.novelId,
+                                            lastFeedId: self.lastFeedId,
+                                            size: nil)
             }
             .subscribe(with: self, onNext: { owner, data in
                 owner.isLoadable = data.isLoadable
@@ -434,10 +440,12 @@ final class NovelDetailViewModel: ViewModelType {
                 self.isFetching = true
             })
             .flatMapLatest {_ in
-                self.getNovelDetailFeedData(novelId: self.novelId, lastFeedId: self.lastFeedId)
-                    .do(onNext: { _ in
-                        self.isFetching = false
-                    })
+                self.getNovelDetailFeedData(novelId: self.novelId,
+                                            lastFeedId: self.lastFeedId,
+                                            size: nil)
+                .do(onNext: { _ in
+                    self.isFetching = false
+                })
             }
             .subscribe(with: self, onNext: { owner, data in
                 owner.isLoadable = data.isLoadable
@@ -545,22 +553,26 @@ final class NovelDetailViewModel: ViewModelType {
     }
     
     private func getNovelDetailFeedData(disposeBag: DisposeBag) {
-        self.getNovelDetailFeedData(novelId: self.novelId, lastFeedId: self.lastFeedId)
-            .subscribe(with: self, onNext: { owner, data in
-                owner.isLoadable = data.isLoadable
-                if let lastFeed = data.feeds.last {
-                    owner.lastFeedId = lastFeed.feedId
-                }
-                owner.feedList.accept(data.feeds)
-            }, onError: { owner, error in
-                owner.showNetworkErrorView.accept(true)
-                print("Error: \(error)")
-            })
-            .disposed(by: disposeBag)
+        self.isLoadable = false
+        self.lastFeedId = 0
+        self.getNovelDetailFeedData(novelId: self.novelId,
+                                    lastFeedId: self.lastFeedId,
+                                    size: self.feedList.value.isEmpty ? nil : self.feedList.value.count)
+        .subscribe(with: self, onNext: { owner, data in
+            owner.isLoadable = data.isLoadable
+            if let lastFeed = data.feeds.last {
+                owner.lastFeedId = lastFeed.feedId
+            }
+            owner.feedList.accept(data.feeds)
+        }, onError: { owner, error in
+            owner.showNetworkErrorView.accept(true)
+            print("Error: \(error)")
+        })
+        .disposed(by: disposeBag)
     }
     
-    private func getNovelDetailFeedData(novelId: Int, lastFeedId: Int) -> Observable<NovelDetailFeedResult> {
-        novelDetailRepository.getNovelDetailFeedData(novelId: novelId, lastFeedId: lastFeedId)
+    private func getNovelDetailFeedData(novelId: Int, lastFeedId: Int, size: Int?) -> Observable<NovelDetailFeedResult> {
+        novelDetailRepository.getNovelDetailFeedData(novelId: novelId, lastFeedId: lastFeedId, size: size)
             .observe(on: MainScheduler.instance)
     }
     
