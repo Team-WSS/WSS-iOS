@@ -27,11 +27,13 @@ final class FeedViewModel: ViewModelType {
     
     struct Input {
         let pageBarTapped: ControlEvent<IndexPath>
+        let createFeedButtonDidTap: ControlEvent<Void>
     }
     
     struct Output {
         let categoryList = BehaviorRelay<[String]>(value: [""])
         let selectedTabIndex = PublishSubject<Int>()
+        let pushToFeedEditViewController = PublishRelay<Void>()
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -46,6 +48,12 @@ final class FeedViewModel: ViewModelType {
         input.pageBarTapped
             .map{$0.row}
             .bind(to: output.selectedTabIndex)
+            .disposed(by: disposeBag)
+        
+        input.createFeedButtonDidTap
+            .subscribe(with: self, onNext: { owner, _ in
+                output.pushToFeedEditViewController.accept(())
+            })
             .disposed(by: disposeBag)
         
         return output
