@@ -89,6 +89,7 @@ final class MyPageDeleteIDViewModel: ViewModelType {
             .subscribe(with: self, onNext: { owner, text in
                 output.containText.accept(String(text.prefix(MyPageDeleteIDViewModel.textViewMaxLimit)))
                 output.textCountLimit.accept(output.containText.value.count)
+                owner.isEmptyTextField.accept(output.containText.value.isEmpty || output.containText.value.range(of: "^[\\s]*$", options: .regularExpression) != nil)
             })
             .disposed(by: disposeBag)
          
