@@ -76,7 +76,9 @@ final class MyPageEditProfileViewController: UIViewController {
             textFieldBeginEditing: rootView.nicknameTextField.rx.controlEvent(.editingDidBegin),
             clearButtonDidTap: rootView.clearButton.rx.tap,
             checkButtonDidTap: rootView.checkButton.rx.tap,
-            viewDidTap: view.rx.tapGesture(),
+            viewDidTap: view.rx.tapGesture(configuration: { gestureRecognizer, delegate in
+                gestureRecognizer.cancelsTouchesInView = false
+            }),
             updateIntroText: rootView.introTextView.rx.text.orEmpty.asObservable(),
             textViewBeginEditing: rootView.introTextView.rx.didBeginEditing,
             genreCellTap: rootView.genreCollectionView.rx.itemSelected
@@ -88,8 +90,8 @@ final class MyPageEditProfileViewController: UIViewController {
             .bind(to: rootView.genreCollectionView.rx.items(
                 cellIdentifier: MyPageEditProfileGenreCollectionViewCell.cellIdentifier,
                 cellType: MyPageEditProfileGenreCollectionViewCell.self)) { row, element, cell in
-                    cell.bindData(genre: element)
-                    cell.updateCell(isSelected: false)
+                    cell.bindData(genre: element.0)
+                    cell.updateCell(isSelected: element.1)
                 }
                 .disposed(by: disposeBag)
         
@@ -137,8 +139,11 @@ final class MyPageEditProfileViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.updateCell
-            .bind(with: self, onNext: { owner, indexPath in
-                
+            .bind(with: self, onNext: { owner, cellData in
+                let (indexPath, update) = cellData
+                if let cell = owner.rootView.genreCollectionView.cellForItem(at: indexPath) as? MyPageEditProfileGenreCollectionViewCell {
+                    cell.updateCell(isSelected: update)
+                }
             })
             .disposed(by: disposeBag)
         

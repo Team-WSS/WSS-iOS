@@ -16,14 +16,10 @@ final class MyPageEditProfileViewModel: ViewModelType {
     
     //TODO: 서연이 코드랑 합칠 예정
     let genreList = ["로맨스", "로판", "판타지", "현판", "무협", "BL", "라노벨", "미스터리", "드라마"]
+    var listlist = ["로맨스", "BL", "라노벨", "미스터리", "드라마"]
     
     static let nicknameLimit = 10
     static let introLimit = 40
-    private var updateImage = BehaviorRelay<Bool>(value: false)
-    private var updateNickname = BehaviorRelay<Bool>(value: false)
-    private var updateIntro = BehaviorRelay<Bool>(value: false)
-    private var updateGenre = BehaviorRelay<Bool>(value: false)
-    private var updateCompleteButton = BehaviorRelay<Bool>(value: false)
     
     private let userRepository: UserRepository
     private var profileData: MyProfileResult
@@ -56,15 +52,13 @@ final class MyPageEditProfileViewModel: ViewModelType {
         let viewDidTap: ControlEvent<UITapGestureRecognizer>
         let updateIntroText: Observable<String>
         let textViewBeginEditing: ControlEvent<Void>
-        
+
         let genreCellTap: ControlEvent<IndexPath>
     }
     
     struct Output {
-        //TODO: 서연이 코드 합치면서 수정하기
-        let bindGenreCell = BehaviorRelay<[String]>(value: ["로맨스", "로판", "판타지", "현판", "무협", "BL", "라노벨", "미스터리", "드라마"])
+        let bindGenreCell = BehaviorRelay<[(String, Bool)]>(value: [])
         let popViewController = PublishRelay<Bool>()
-        
         let bindProfileData = BehaviorRelay<MyProfileResult>(value: MyProfileResult(nickname: "",
                                                                                     intro: "",
                                                                                     avatarImage: "",
@@ -78,13 +72,14 @@ final class MyPageEditProfileViewModel: ViewModelType {
         let editingTextView = BehaviorRelay<Bool>(value: false)
         let endEditing = PublishRelay<Bool>()
         
-        let updateCell = PublishRelay<IndexPath>()
+        let updateCell = PublishRelay<(IndexPath, Bool)>()
         let completeButtonIsAbled = BehaviorRelay<Bool>(value: false)
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
         
+        // 데이터 초기 설정
         self.userNickname.accept(self.profileData.nickname)
         self.userIntro.accept(self.profileData.intro)
         self.userGenre.accept(self.profileData.genrePreferences)
@@ -92,6 +87,10 @@ final class MyPageEditProfileViewModel: ViewModelType {
         
         output.bindProfileData.accept(self.profileData)
         
+        let bindGenreTuple = checkGenreToMakeTuple(self.genreList, self.listlist)
+        output.bindGenreCell.accept(bindGenreTuple)
+        
+        // 네비게이션 기능
         input.backButtonDidTap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
@@ -107,27 +106,20 @@ final class MyPageEditProfileViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        output.completeButtonIsAbled.accept(self.changeInfoData())
+        
+        // 프로필 기능
         input.profileViewDidTap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
                 //VC 이동
-                owner.updateImage.accept(true)
             })
             .disposed(by: disposeBag)
         
+        // 닉네임 기능
         input.updateNicknameText
             .subscribe(with: self, onNext: { owner, text in
                 output.nicknameText.accept(String(text.prefix(MyPageEditProfileViewModel.nicknameLimit)))
-                
-                owner.updateNickname.accept(false)
-                
-                if owner.userNickname.value == output.nicknameText.value {
-                    output.checkButtonIsAbled.accept(false)
-                } else {
-                    owner.updateNickname.accept(true)
-                    output.checkButtonIsAbled.accept(true)
-                    owner.checkCompleteButton()
-                }
             })
             .disposed(by: disposeBag)
         
@@ -140,7 +132,6 @@ final class MyPageEditProfileViewModel: ViewModelType {
         input.clearButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
                 output.nicknameText.accept("")
-                owner.updateNickname.accept(false)
                 output.editingTextField.accept(true)
                 output.completeButtonIsAbled.accept(false)
             })
@@ -152,11 +143,9 @@ final class MyPageEditProfileViewModel: ViewModelType {
                 
                 if owner.userNickname.value == output.nicknameText.value {
                     output.editingTextField.accept(false)
-                    owner.updateNickname.accept(false)
                 } else {
                     //TODO: 중복 체크 완료시
                     output.editingTextField.accept(false)
-                    owner.updateNickname.accept(true)
                 }
             })
             .disposed(by: disposeBag)
@@ -167,15 +156,10 @@ final class MyPageEditProfileViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        // 소개 기능
         input.updateIntroText
             .subscribe(with: self, onNext: { owner, text in
                 output.introText.accept(String(text.prefix(MyPageEditProfileViewModel.introLimit)))
-                if owner.userIntro.value ==  output.introText.value {
-                    owner.updateIntro.accept(false)
-                } else {
-                    owner.updateIntro.accept(true)
-                    owner.checkCompleteButton()
-                }
             })
             .disposed(by: disposeBag)
         
@@ -185,18 +169,17 @@ final class MyPageEditProfileViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        // 선호 장르 기능
         input.genreCellTap
             .bind(with: self, onNext: { owner, indexPath in
-                print(indexPath, "😃")
-                owner.updateGenre.accept(true)
-                output.updateCell.accept(indexPath)
-                owner.checkCompleteButton()
-            })
-            .disposed(by: disposeBag)
-        
-        updateCompleteButton
-            .bind(with: self, onNext: { owner, update in
-                output.completeButtonIsAbled.accept(update)
+                let cellContent = owner.genreList[indexPath.row]
+                let update = owner.checkGenreToUpdateCell(owner.listlist, cellContent)
+                if (update) {
+                    owner.listlist = owner.listlist.filter { $0 != cellContent }
+                } else {
+                    owner.listlist.append(cellContent)
+                }
+                output.updateCell.accept((indexPath, !update))
             })
             .disposed(by: disposeBag)
         
@@ -205,12 +188,28 @@ final class MyPageEditProfileViewModel: ViewModelType {
     
     //MARK: - Custom Method
     
-    private func checkCompleteButton() {
-        if self.updateGenre.value && self.updateImage.value && self.updateIntro.value && self.updateNickname.value {
-            updateCompleteButton.accept(true)
-        } else {
-            updateCompleteButton.accept(false)
+    private func checkGenreToMakeTuple(_ totalGenre: [String], _ myGenre: [String]) -> [(String, Bool)] {
+        return totalGenre.map { genre in
+            let isPreferred = myGenre.contains(genre)
+            return (genre, isPreferred)
         }
+    }
+    
+    private func checkGenreToUpdateCell(_ totalGenre: [String], _ myGenre: String) -> Bool {
+        return totalGenre.contains { genre in
+            myGenre.contains(genre)
+        }
+    }
+    
+    private func changeInfoData() -> Bool {
+        if (self.userNickname.value == "" || self.userIntro.value == "" || self.userGenre.value == []) {
+            return false
+        }
+        else if (self.userNickname.value == profileData.nickname && self.userIntro.value == profileData.intro && self.userGenre.value == profileData.genrePreferences && self.userImage.value == self.profileData.avatarImage) {
+            return false
+        }
+        
+        return true
     }
     
     //MARK: - API
