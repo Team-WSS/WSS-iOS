@@ -16,7 +16,6 @@ final class MyPageEditProfileViewModel: ViewModelType {
     
     //TODO: 서연이 코드랑 합칠 예정
     let genreList = ["로맨스", "로판", "판타지", "현판", "무협", "BL", "라노벨", "미스터리", "드라마"]
-    var listlist = ["로맨스", "BL", "라노벨", "미스터리", "드라마"]
     
     static let nicknameLimit = 10
     static let introLimit = 40
@@ -28,6 +27,8 @@ final class MyPageEditProfileViewModel: ViewModelType {
     private let userIntro = BehaviorRelay<String>(value: "")
     private let userGenre = BehaviorRelay<[String]>(value: [])
     private let userImage = BehaviorRelay<String>(value: "")
+    
+    private var changeCompleteButtonRelay = BehaviorRelay<Bool>(value: false)
     
     
     //MARK: - Life Cycle
@@ -52,7 +53,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
         let viewDidTap: ControlEvent<UITapGestureRecognizer>
         let updateIntroText: Observable<String>
         let textViewBeginEditing: ControlEvent<Void>
-
+        
         let genreCellTap: ControlEvent<IndexPath>
     }
     
@@ -87,7 +88,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
         
         output.bindProfileData.accept(self.profileData)
         
-        let bindGenreTuple = checkGenreToMakeTuple(self.genreList, self.listlist)
+        let bindGenreTuple = checkGenreToMakeTuple(self.genreList, self.userGenre.value)
         output.bindGenreCell.accept(bindGenreTuple)
         
         // 네비게이션 기능
@@ -106,7 +107,17 @@ final class MyPageEditProfileViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        output.completeButtonIsAbled.accept(self.changeInfoData())
+        changeCompleteButtonRelay
+            .distinctUntilChanged()
+            .bind(to: output.completeButtonIsAbled)
+            .disposed(by: disposeBag)
+        
+        Observable
+            .combineLatest(userNickname, userIntro, userGenre, userImage)
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.changeInfoData()
+            })
+            .disposed(by: disposeBag)
         
         // 프로필 기능
         input.profileViewDidTap
@@ -160,6 +171,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
         input.updateIntroText
             .subscribe(with: self, onNext: { owner, text in
                 output.introText.accept(String(text.prefix(MyPageEditProfileViewModel.introLimit)))
+                owner.userIntro.accept(String(text.prefix(MyPageEditProfileViewModel.introLimit)))
             })
             .disposed(by: disposeBag)
         
@@ -173,12 +185,15 @@ final class MyPageEditProfileViewModel: ViewModelType {
         input.genreCellTap
             .bind(with: self, onNext: { owner, indexPath in
                 let cellContent = owner.genreList[indexPath.row]
-                let update = owner.checkGenreToUpdateCell(owner.listlist, cellContent)
+                let update = owner.checkGenreToUpdateCell(owner.userGenre.value, cellContent)
+                
+                var updatedGenres = owner.userGenre.value
                 if (update) {
-                    owner.listlist = owner.listlist.filter { $0 != cellContent }
+                    updatedGenres = updatedGenres.filter { $0 != cellContent }
                 } else {
-                    owner.listlist.append(cellContent)
+                    updatedGenres.append(cellContent)
                 }
+                owner.userGenre.accept(updatedGenres)
                 output.updateCell.accept((indexPath, !update))
             })
             .disposed(by: disposeBag)
@@ -201,15 +216,16 @@ final class MyPageEditProfileViewModel: ViewModelType {
         }
     }
     
-    private func changeInfoData() -> Bool {
+    private func changeInfoData() {
         if (self.userNickname.value == "" || self.userIntro.value == "" || self.userGenre.value == []) {
-            return false
+            self.changeCompleteButtonRelay.accept(false)
         }
         else if (self.userNickname.value == profileData.nickname && self.userIntro.value == profileData.intro && self.userGenre.value == profileData.genrePreferences && self.userImage.value == self.profileData.avatarImage) {
-            return false
+            self.changeCompleteButtonRelay.accept(false)
         }
-        
-        return true
+        else {
+            self.changeCompleteButtonRelay.accept(true)
+        }
     }
     
     //MARK: - API
