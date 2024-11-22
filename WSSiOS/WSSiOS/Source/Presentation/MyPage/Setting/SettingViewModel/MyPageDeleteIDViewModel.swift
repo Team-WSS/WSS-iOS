@@ -21,6 +21,7 @@ final class MyPageDeleteIDViewModel: ViewModelType {
     private let checkCellTitle = BehaviorRelay<[(String, String)]>(value: zip(StringLiterals.MyPage.DeleteIDCheckTitle.allCases, StringLiterals.MyPage.DeleteIDCheckContent.allCases).map { ($0.rawValue, $1.rawValue) })
     
     private let reasonCellTap = BehaviorRelay<Bool>(value: false)
+    private let isEmptyTextField = BehaviorRelay<Bool>(value: true)
     
     //MARK: - Life Cycle
     
@@ -84,6 +85,7 @@ final class MyPageDeleteIDViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.textUpdated
+            .observe(on: MainScheduler.asyncInstance)
             .subscribe(with: self, onNext: { owner, text in
                 output.containText.accept(String(text.prefix(MyPageDeleteIDViewModel.textViewMaxLimit)))
                 output.textCountLimit.accept(output.containText.value.count)
@@ -98,6 +100,7 @@ final class MyPageDeleteIDViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.didEndEditing
+            .observe(on:MainScheduler.asyncInstance)
             .subscribe(onNext: { _ in
                 output.endEditing.accept(true) 
             })
@@ -111,10 +114,13 @@ final class MyPageDeleteIDViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         Observable
-            .combineLatest(reasonCellTap, output.tapReasonCell, input.textUpdated, output.changeAgreeButtonColor)
-            .map { tappedCell, cellIndexPath, text, tappedAgreeButton in
+            .combineLatest(reasonCellTap,
+                           output.tapReasonCell,
+                           self.isEmptyTextField.distinctUntilChanged(),
+                           output.changeAgreeButtonColor)
+            .map { tappedCell, cellIndexPath, textEmpty, tappedAgreeButton in
                 guard tappedCell, tappedAgreeButton else { return false }
-                return cellIndexPath != MyPageDeleteIDViewModel.exceptionIndexPath || text != ""
+                return cellIndexPath != MyPageDeleteIDViewModel.exceptionIndexPath || !textEmpty
             }
             .bind(to: output.completeButtonIsAble)
             .disposed(by: disposeBag)
