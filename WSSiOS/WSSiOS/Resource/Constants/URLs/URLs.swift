@@ -12,6 +12,7 @@ enum URLs {
         static let loginWithApple = "/auth/login/apple"
         static let loginWithKakao = "/auth/login/kakao"
         static let reissue = "/reissue"
+        static let withdrawId = "/auth/withdraw"
     }
     
     enum Onboarding {

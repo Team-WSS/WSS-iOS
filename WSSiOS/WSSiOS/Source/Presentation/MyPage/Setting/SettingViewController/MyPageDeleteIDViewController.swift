@@ -119,6 +119,12 @@ final class MyPageDeleteIDViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.pushToLoginViewController
+            .bind(with: self, onNext: { owner, _ in
+                owner.pushToLoginViewController()
+            })
+            .disposed(by: disposeBag)
+        
         output.beginEditing
             .bind(with: self, onNext: { owner, beginEditing in
                 owner.rootView.reasonView.placeholderIsHidden(isHidden: true)

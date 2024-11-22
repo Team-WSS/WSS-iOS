@@ -252,6 +252,12 @@ enum StringLiterals {
             case third = "삭제하고 싶은 내용이 있어서"
             case fourth = " 원하는 작품이 없어서"
             case etc = "직접 입력"
+            
+            static func reasonForIndex(_ index: Int) -> String {
+                if(index <= 3) {
+                    return StringLiterals.MyPage.DeleteIDReason.allCases[index].rawValue
+                } else { return ""}
+            }
         }
         
         enum DeleteIDCheckTitle: String, CaseIterable {

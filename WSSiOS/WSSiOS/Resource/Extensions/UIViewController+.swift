@@ -221,16 +221,22 @@ extension UIViewController {
     
     func pushToMyPageDeleteIDWarningViewController() {
         let viewController = MyPageDeleteIDWarningViewController(
-//            userRepository: DefaultUserRepository(
-//                userService: DefaultUserService(),
-//                blocksService: DefaultBlocksService()
-//            )
+            userRepository: DefaultUserRepository(
+                userService: DefaultUserService(),
+                blocksService: DefaultBlocksService()
+            )
         )
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
     func pushToMyPageDeleteIDViewController() {
-        let viewController = MyPageDeleteIDViewController(viewModel: MyPageDeleteIDViewModel())
+        let viewController = MyPageDeleteIDViewController(
+            viewModel: MyPageDeleteIDViewModel(
+                authRepository: DefaultAuthRepository(
+                    authService: DefaultAuthService()
+                )
+            )
+        )
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     

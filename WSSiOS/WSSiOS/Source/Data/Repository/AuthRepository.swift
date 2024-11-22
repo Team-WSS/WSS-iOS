@@ -13,7 +13,8 @@ import RxSwift
 
 protocol AuthRepository {
     func loginWithApple(authorizationCode: String, idToken: String) -> Observable<LoginResult>
-    func loginWithKakao(_ kakaoAccessToken: OAuthToken) -> Single<LoginResult> 
+    func loginWithKakao(_ kakaoAccessToken: OAuthToken) -> Single<LoginResult>
+    func postWithdrawId(reason: String, refreshToken: String) -> Single<Void>
 }
 
 struct DefaultAuthRepository: AuthRepository {
@@ -31,6 +32,10 @@ struct DefaultAuthRepository: AuthRepository {
     
     func loginWithKakao(_ kakaoAccessToken: OAuthToken) -> Single<LoginResult> {
         return authService.loginWithKakao(kakaoAccessToken.accessToken)
+    }
+    
+    func postWithdrawId(reason: String, refreshToken: String) -> Single<Void> {
+        return authService.postWithdrawId(reason: reason, refreshToken: refreshToken)
     }
 }
 

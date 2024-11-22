@@ -14,7 +14,7 @@ final class MyPageDeleteIDWarningViewController: UIViewController {
     //MARK: - Properties
     
     private let disposeBag = DisposeBag()
-//    private let userRepository: UserRepository
+    private let userRepository: UserRepository
     
     //MARK: - Components
     
@@ -22,15 +22,15 @@ final class MyPageDeleteIDWarningViewController: UIViewController {
     
     // MARK: - Life Cycle
     
-//    init(userRepository: UserRepository) {
-//        self.userRepository = userRepository
-//        
-//        super.init(nibName: nil, bundle: nil)
-//    }
-//    
-//    required init?(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
+    init(userRepository: UserRepository) {
+        self.userRepository = userRepository
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func loadView() {
         self.view = rootView
@@ -39,7 +39,7 @@ final class MyPageDeleteIDWarningViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        bindData()
+        bindData()
         bindAction()
     }
     
@@ -53,16 +53,16 @@ final class MyPageDeleteIDWarningViewController: UIViewController {
     
     //MARK: - Bind
     
-//    private func bindData() {
-//        userRepository.getUserNovelStatus(userId: 1)
-//            .observe(on: MainScheduler.instance)
-//            .subscribe(with: self, onNext: { owner, status in 
-//                owner.rootView.bindData(count: status)
-//            },onError: { owner, error in
-//                print(error)
-//            })
-//            .disposed(by: disposeBag)
-//    }
+    private func bindData() {
+        userRepository.getUserNovelStatus(userId: 1)
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, status in 
+                owner.rootView.bindData(count: status)
+            },onError: { owner, error in
+                print(error)
+            })
+            .disposed(by: disposeBag)
+    }
     
     private func bindAction() {
         rootView.backButton.rx.tap
