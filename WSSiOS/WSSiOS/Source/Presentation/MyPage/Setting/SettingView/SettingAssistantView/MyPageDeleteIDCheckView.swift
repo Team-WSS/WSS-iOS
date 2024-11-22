@@ -45,6 +45,7 @@ final class MyPageDeleteIDCheckView: UIView {
             $0.isScrollEnabled = false
             $0.showsVerticalScrollIndicator = false
             $0.separatorStyle = .none
+            $0.allowsMultipleSelection = false
         }
     }
     private func setHierarchy() {

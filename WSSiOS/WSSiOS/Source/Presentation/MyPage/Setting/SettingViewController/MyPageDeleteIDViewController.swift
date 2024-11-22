@@ -68,7 +68,9 @@ final class MyPageDeleteIDViewController: UIViewController {
             agreeAllButtonDidTap: rootView.agreeDeleteIDButton.rx.tap,
             reasonCellDidTap: rootView.reasonView.reasonTableView.rx.itemSelected,
             completeButtonDidTap: rootView.completeButton.rx.tap,
-            viewDidTap: view.rx.tapGesture(),
+            viewDidTap: view.rx.tapGesture(configuration: { gestureRecognizer, delegate in
+                gestureRecognizer.cancelsTouchesInView = false
+            }),
             textUpdated: rootView.reasonView.reasonTextView.rx.text.orEmpty.asObservable(),
             didBeginEditing: rootView.reasonView.reasonTextView.rx.didBeginEditing,
             didEndEditing: rootView.reasonView.reasonTextView.rx.didEndEditing)
