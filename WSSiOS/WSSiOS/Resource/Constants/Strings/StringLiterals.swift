@@ -557,7 +557,7 @@ enum StringLiterals {
         enum Content {
             static let writeContent = "내용 작성하기"
             static let spoiler = "스포일러"
-            static let placeHolder = "피드 작성 유의사항!\n\n욕설, 비방 등 상대방을 불쾌하게 하는 의견은\n작품 내용을 담은 글은 스포일러 체크해주세요."
+            static let placeHolder = "웹소설과 관련된 글을 자유롭게 남겨보세요\n\n • 작품에 대한 한줄평\n • 여운이 남는 명장면, 명대사\n • 수다 떨고 싶은 작품 이야기\n • 다른 독자들과 공유하고 싶은 작품 정보 등"
         }
         enum Novel {
             static let novelConnect = "작품 연결하기"
@@ -620,7 +620,7 @@ enum StringLiterals {
         static let confirm = "확인"
         
         static let reportSpoiler = "스포일러 신고"
-        static let spoilerTitle = "해당 글이 스포일러를 포함하고 있나요?"
+        static let spoilerTitle = "해당 글이 스포일러를\n포함하고 있나요?"
         
         static let reportImpertinence = "부적절한 표현 신고"
         static let impertinentTitle = "해당 글에 부적절한 표현이\n사용되었나요?"

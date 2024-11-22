@@ -310,12 +310,13 @@ extension UIViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func pushToNovelReviewViewController(readStatus: ReadStatus, novelId: Int, novelTitle: String) {
+    func pushToNovelReviewViewController(isInterest: Bool, readStatus: ReadStatus, novelId: Int, novelTitle: String) {
         let viewController = NovelReviewViewController(
             viewModel: NovelReviewViewModel(
                 novelReviewRepository: DefaultNovelReviewRepository(
                     novelReviewService: DefaultNovelReviewService()
                 ),
+                isInterest: isInterest,
                 readStatus: readStatus,
                 novelId: novelId,
                 novelTitle: novelTitle
