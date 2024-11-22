@@ -101,10 +101,36 @@ final class MyPageEditProfileViewModel: ViewModelType {
         
         input.completeButtonDidTap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, _ in
-                //서버통신 구현
-                output.popViewController.accept(true)
-            })
+            .flatMapLatest{ _ -> Observable<Void> in
+                var updatedFields: [String: Any] = [:]
+                
+                if self.userImage.value != self.profileData.avatarImage {
+                    updatedFields["avatarId"] = 0
+                }
+                if self.userNickname.value != self.profileData.nickname {
+                    updatedFields["nickname"] = self.userNickname.value
+                }
+                if self.userIntro.value != self.profileData.intro {
+                    updatedFields["intro"] = self.userIntro.value
+                }
+                if self.userGenre.value != self.profileData.genrePreferences {
+                    updatedFields["genrePreferences"] = self.userGenre.value.compactMap { genre in
+                        NewNovelGenre.withKoreanRawValue(from: genre)
+                    }
+                } else {
+                    updatedFields["genrePreferences"] = []
+                }
+                
+                return self.patchProfile(updatedFields: updatedFields)
+            }
+            .subscribe(
+                onNext: {
+                    output.popViewController.accept(true)
+                },
+                onError: { error in
+                    print(error.localizedDescription)
+                }
+            )
             .disposed(by: disposeBag)
         
         changeCompleteButtonRelay
@@ -130,8 +156,8 @@ final class MyPageEditProfileViewModel: ViewModelType {
         // 닉네임 기능
         input.updateNicknameText
             .subscribe(with: self, onNext: { owner, text in
-                owner.userNickname.accept(String(text.prefix(MyPageEditProfileViewModel.nicknameLimit)))
-                output.nicknameText.accept(owner.userNickname.value)
+                output.nicknameText.accept(String(text.prefix(MyPageEditProfileViewModel.nicknameLimit)))
+                owner.userNickname.accept(output.nicknameText.value)
             })
             .disposed(by: disposeBag)
         
@@ -220,10 +246,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
     }
     
     private func changeInfoData() {
-        if (self.userNickname.value == "" || self.userIntro.value == "" || self.userGenre.value == []) {
-            self.changeCompleteButtonRelay.accept(false)
-        }
-        else if (self.userNickname.value == profileData.nickname && self.userIntro.value == profileData.intro && self.userGenre.value == profileData.genrePreferences && self.userImage.value == self.profileData.avatarImage) {
+        if (self.userNickname.value == profileData.nickname && self.userIntro.value == profileData.intro && self.userGenre.value == profileData.genrePreferences && self.userImage.value == self.profileData.avatarImage) {
             self.changeCompleteButtonRelay.accept(false)
         }
         else {
@@ -233,6 +256,10 @@ final class MyPageEditProfileViewModel: ViewModelType {
     
     //MARK: - API
     
+    private func patchProfile(updatedFields: [String: Any]) -> Observable<Void> {
+        return userRepository.patchUserProfile(updatedFields: updatedFields)
+            .asObservable()
+    }
 }
 
 

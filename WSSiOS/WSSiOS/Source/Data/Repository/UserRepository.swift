@@ -23,6 +23,7 @@ protocol UserRepository {
     func getUserNovelStatus(userId: Int) -> Observable<UserNovelStatus>
     func getUserNovelPreferences(userId: Int) -> Observable<UserNovelPreferences>
     func getUserGenrePreferences(userId: Int) -> Observable<UserGenrePreferences>
+    func patchUserProfile(updatedFields: [String: Any]) -> Observable<Void>
 }
 
 struct DefaultUserRepository: UserRepository {
@@ -101,6 +102,11 @@ struct DefaultUserRepository: UserRepository {
     
     func patchUserProfileVisibility(isProfilePublic: Bool) -> Observable<Void> {
         return userService.patchUserProfileVisibility(isProfilePublic: isProfilePublic)
+            .asObservable()
+    }
+    
+    func patchUserProfile(updatedFields: [String: Any]) -> Observable<Void> {
+        return userService.patchUserProfile(updatedFields: updatedFields)
             .asObservable()
     }
 }

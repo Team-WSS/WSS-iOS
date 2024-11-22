@@ -34,6 +34,7 @@ enum URLs {
         static func genrePreferencesstatic(userId: Int) -> String {
             return "\(userBasePath)/\(userId)/preferences/genres"
         }
+        static let editUserProfile = "\(userBasePath)/my-profile"
     }
     
     enum Novel {

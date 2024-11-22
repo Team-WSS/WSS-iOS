@@ -21,6 +21,7 @@ protocol UserService {
     func getMyProfile() -> Single<MyProfileResult>
     func getUserNovelPreferences(userId: Int) -> Single<UserNovelPreferences>
     func getUserGenrePreferences(userId: Int) -> Single<UserGenrePreferences>
+    func patchUserProfile(updatedFields: [String: Any]) -> Single<Void>
 }
 
 final class DefaultUserService: NSObject, Networking {
@@ -258,6 +259,24 @@ extension DefaultUserService: UserService {
                                        to: UserGenrePreferences.self) }
                 .asSingle()
             
+        } catch {
+            return Single.error(error)
+        }
+    }
+    
+    func patchUserProfile(updatedFields: [String: Any]) -> RxSwift.Single<Void> {
+        do {
+            let userProfileData = try JSONSerialization.data(withJSONObject: updatedFields, options: [])
+            let request = try makeHTTPRequest(method: .patch,
+                                              path: URLs.User.editUserProfile,
+                                              headers: APIConstants.accessTokenHeader,
+                                              body: userProfileData)
+            
+            NetworkLogger.log(request: request)
+            
+            return tokenCheckURLSession.rx.data(request: request)
+                .map { _ in }
+                .asSingle()
         } catch {
             return Single.error(error)
         }
