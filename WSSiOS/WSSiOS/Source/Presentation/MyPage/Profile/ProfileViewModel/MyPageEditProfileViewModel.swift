@@ -130,7 +130,8 @@ final class MyPageEditProfileViewModel: ViewModelType {
         // 닉네임 기능
         input.updateNicknameText
             .subscribe(with: self, onNext: { owner, text in
-                output.nicknameText.accept(String(text.prefix(MyPageEditProfileViewModel.nicknameLimit)))
+                owner.userNickname.accept(String(text.prefix(MyPageEditProfileViewModel.nicknameLimit)))
+                output.nicknameText.accept(owner.userNickname.value)
             })
             .disposed(by: disposeBag)
         
@@ -142,7 +143,9 @@ final class MyPageEditProfileViewModel: ViewModelType {
         
         input.clearButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
-                output.nicknameText.accept("")
+                owner.userNickname.accept("")
+                output.nicknameText.accept(owner.userNickname.value)
+                
                 output.editingTextField.accept(true)
                 output.completeButtonIsAbled.accept(false)
             })
@@ -170,8 +173,8 @@ final class MyPageEditProfileViewModel: ViewModelType {
         // 소개 기능
         input.updateIntroText
             .subscribe(with: self, onNext: { owner, text in
-                output.introText.accept(String(text.prefix(MyPageEditProfileViewModel.introLimit)))
                 owner.userIntro.accept(String(text.prefix(MyPageEditProfileViewModel.introLimit)))
+                output.introText.accept(owner.userIntro.value)
             })
             .disposed(by: disposeBag)
         

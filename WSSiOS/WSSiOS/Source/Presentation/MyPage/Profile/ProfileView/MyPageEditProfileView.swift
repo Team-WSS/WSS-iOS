@@ -442,6 +442,8 @@ extension MyPageEditProfileView {
         } else {
             completeButton.setTitleColor(.wssGray200, for: .normal)
         }
+        
+        completeButton.isEnabled = isAbled
     }
     
     //MARK: - Data
