@@ -114,7 +114,7 @@ final class MyPageDeleteIDViewModel: ViewModelType {
             .combineLatest(reasonCellTap, output.tapReasonCell, input.textUpdated, output.changeAgreeButtonColor)
             .map { tappedCell, cellIndexPath, text, tappedAgreeButton in
                 guard tappedCell, tappedAgreeButton else { return false }
-                return cellIndexPath != MyPageDeleteIDViewModel.exceptionIndexPath || !text.isEmpty
+                return cellIndexPath != MyPageDeleteIDViewModel.exceptionIndexPath || text != ""
             }
             .bind(to: output.completeButtonIsAble)
             .disposed(by: disposeBag)
