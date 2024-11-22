@@ -159,7 +159,6 @@ final class LoginViewModel: NSObject, ViewModelType {
     
     private func requestAppleLogin() {
         let request = ASAuthorizationAppleIDProvider().createRequest()
-        request.requestedScopes = [.email]
         
         let authorizationController = ASAuthorizationController(authorizationRequests: [request])
         authorizationController.delegate = self
