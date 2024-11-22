@@ -27,14 +27,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         self.window = UIWindow(windowScene: windowScene)
         
-//        checkIsRegistered()
-//        
-//        APIConstants.isLogined ? setRootToWSSTabBarController() : setRootToLoginViewController()
-
-        let navigationController = UINavigationController(
-            rootViewController: MyPageDeleteIDWarningViewController())
-        navigationController.isNavigationBarHidden = true
-        window?.rootViewController = navigationController
+        checkIsRegistered()
+        
+        APIConstants.isLogined ? setRootToWSSTabBarController() : setRootToLoginViewController()
         
         self.window?.makeKeyAndVisible()
     }
