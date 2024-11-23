@@ -72,7 +72,7 @@ final class MyPageEditProfileViewController: UIViewController {
             backButtonDidTap: rootView.backButton.rx.tap,
             completeButtonDidTap: rootView.completeButton.rx.tap,
             profileViewDidTap: rootView.myPageProfileView.rx.tapGesture().when(.recognized).asObservable(),
-            updateNicknameText: rootView.nicknameTextField.rx.text.orEmpty.asObservable(),
+            updateNicknameText: rootView.nicknameTextField.rx.text.orEmpty.distinctUntilChanged(),
             textFieldBeginEditing: rootView.nicknameTextField.rx.controlEvent(.editingDidBegin),
             clearButtonDidTap: rootView.clearButton.rx.tap,
             checkButtonDidTap: rootView.checkButton.rx.tap,
@@ -113,6 +113,12 @@ final class MyPageEditProfileViewController: UIViewController {
                 if !editing {
                     owner.rootView.nicknameTextField.endEditing(true)
                 }
+            })
+            .disposed(by: disposeBag)
+        
+        output.checkButtonIsAbled
+            .bind(with: self, onNext: { owner, able in
+                owner.rootView.isAbledCheckButton(isAbled: able)
             })
             .disposed(by: disposeBag)
         

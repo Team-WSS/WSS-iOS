@@ -108,9 +108,9 @@ final class MyPageEditProfileViewModel: ViewModelType {
             .flatMapLatest{ _ -> Observable<Void> in
                 var updatedFields: [String: Any] = [:]
                 
-//                if self.userImage.value != self.profileData.avatarImage {
-//                    updatedFields["avatarId"] = 0
-//                }
+                //                if self.userImage.value != self.profileData.avatarImage {
+                //                    updatedFields["avatarId"] = 0
+                //                }
                 if self.userNickname.value != self.profileData.nickname {
                     print(self.userNickname.value, "😂")
                     updatedFields["nickname"] = self.userNickname.value
@@ -172,6 +172,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
                 output.editingTextField.accept(true)
+                output.checkButtonIsAbled.accept(true)
             })
             .disposed(by: disposeBag)
         
@@ -186,16 +187,10 @@ final class MyPageEditProfileViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.checkButtonDidTap
-            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, _ in
-                
-                if owner.userNickname.value == output.nicknameText.value {
-                    output.editingTextField.accept(false)
-                } else {
-                    //TODO: 중복 체크 완료시
-                    output.editingTextField.accept(false)
-                    owner.userNickname.accept(output.nicknameText.value)
-                }
+            .withLatestFrom(input.updateNicknameText)
+            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, nickname in
+                owner.checkNicknameisValid(nickname, disposeBag: disposeBag)
             })
             .disposed(by: disposeBag)
         
@@ -287,6 +282,27 @@ final class MyPageEditProfileViewModel: ViewModelType {
         return text.range(of: nicknamePattern, options: .regularExpression) != nil
     }
     
+    private func acceptNicknameNotAvailableReason(from code: String) {
+        let reason: NicknameNotAvailableReason
+        switch code {
+        case "USER-003":
+            reason = .whiteSpaceIncluded
+        case "USER-014":
+            reason = .notChanged
+        default:
+            reason = .invalidChacterOrLimitExceeded
+        }
+        
+        self.isNicknameAvailable.accept(.notAvailable(reason: reason))
+    }
+    
+    //MARK: - API
+    
+    private func patchProfile(updatedFields: [String: Any]) -> Observable<Void> {
+        return userRepository.patchUserProfile(updatedFields: updatedFields)
+            .asObservable()
+    }
+    
     private func checkNicknameisValid(_ nickname: String, disposeBag: DisposeBag) {
         self.userRepository.getNicknameisValid(nickname)
             .map { $0.isValid }
@@ -317,27 +333,6 @@ final class MyPageEditProfileViewModel: ViewModelType {
                 }
             })
             .disposed(by: disposeBag)
-    }
-    
-    private func acceptNicknameNotAvailableReason(from code: String) {
-        let reason: NicknameNotAvailableReason
-        switch code {
-        case "USER-003":
-            reason = .whiteSpaceIncluded
-        case "USER-014":
-            reason = .notChanged
-        default:
-            reason = .invalidChacterOrLimitExceeded
-        }
-        
-        self.isNicknameAvailable.accept(.notAvailable(reason: reason))
-    }
-    
-    //MARK: - API
-    
-    private func patchProfile(updatedFields: [String: Any]) -> Observable<Void> {
-        return userRepository.patchUserProfile(updatedFields: updatedFields)
-            .asObservable()
     }
 }
 
