@@ -143,14 +143,6 @@ final class MyPageDeleteIDViewModel: ViewModelType {
             .observe(on: MainScheduler.instance)
             .subscribe(
                 onNext: {
-                    //                    UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.accessToken)
-                    //                    UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.refreshToken)
-                    //                    UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.userNickname)
-                    //                    UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.userGender)
-                    //                    UserDefaults.standard.synchronize()
-                    //
-                    //                    URLCache.shared.removeAllCachedResponses()
-                    
                     output.pushToLoginViewController.accept(true)
                 },
                 onError: { error in
