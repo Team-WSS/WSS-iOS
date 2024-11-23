@@ -208,8 +208,9 @@ final class NovelDetailViewController: UIViewController {
         output.pushToReviewViewController
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, result in
-                let (readStatus, novelId, novelTitle) = result
-                owner.pushToNovelReviewViewController(readStatus: readStatus,
+                let (isInterest, readStatus, novelId, novelTitle) = result
+                owner.pushToNovelReviewViewController(isInterest: isInterest,
+                                                      readStatus: readStatus,
                                                       novelId: novelId,
                                                       novelTitle: novelTitle)
             })
@@ -456,6 +457,12 @@ final class NovelDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.showFeedEditedToast
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.showToast(.feedEdited)
+            })
+            .disposed(by: disposeBag)
+        
         //MARK: - Bind/NovelReview
         
         output.showNovelReviewedToast
@@ -521,6 +528,7 @@ final class NovelDetailViewController: UIViewController {
             reloadNovelDetailFeed: reloadNovelDetailFeed.asObservable(),
             scrollViewReachedBottom: observeReachedBottom(rootView.scrollView),
             createFeedButtonDidTap: rootView.createFeedButton.rx.tap,
+            feedEditedNotification: NotificationCenter.default.rx.notification(Notification.Name("FeedEdited")).asObservable(),
             novelReviewedNotification: NotificationCenter.default.rx.notification(Notification.Name("NovelReviewed")).asObservable()
         )
     }
