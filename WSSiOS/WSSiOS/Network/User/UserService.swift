@@ -22,6 +22,7 @@ protocol UserService {
     func getUserNovelPreferences(userId: Int) -> Single<UserNovelPreferences>
     func getUserGenrePreferences(userId: Int) -> Single<UserGenrePreferences>
     func patchUserProfile(updatedFields: [String: Any]) -> Single<Void>
+    func getNicknameisValid(_ nickname: String) -> Single<OnboardingResult>
 }
 
 final class DefaultUserService: NSObject, Networking {
@@ -277,6 +278,32 @@ extension DefaultUserService: UserService {
             return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
+        } catch {
+            return Single.error(error)
+        }
+    }
+    
+    func getNicknameisValid(_ nickname: String) -> Single<OnboardingResult> {
+        let nicknameisValidQueryItems: [URLQueryItem] = [
+            URLQueryItem(name: "nickname", value: String(describing: nickname))
+        ]
+        
+        do {
+            let request = try self.makeHTTPRequest(
+                method: .get,
+                path: URLs.Onboarding.nicknameCheck,
+                queryItems: nicknameisValidQueryItems,
+                headers: APIConstants.accessTokenHeader,
+                body: nil
+            )
+            
+            NetworkLogger.log(request: request)
+            
+            return tokenCheckURLSession.rx.data(request: request)
+                .map { try self.decode(data: $0,
+                                       to: OnboardingResult.self) }
+                .asSingle()
+            
         } catch {
             return Single.error(error)
         }
