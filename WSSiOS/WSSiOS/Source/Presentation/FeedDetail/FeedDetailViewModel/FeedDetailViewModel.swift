@@ -66,6 +66,8 @@ final class FeedDetailViewModel: ViewModelType {
     let myCommentEditing = PublishRelay<Void>()
     let showCommentDeleteAlertView  = PublishRelay<((Int, Int) -> Observable<Void>, Int, Int)>()
     
+    let pushToUserPageViewController = PublishRelay<Int>()
+    
     //MARK: - Life Cycle
     
     init(feedDetailRepository: FeedDetailRepository, userRepository: UserRepository, feedId: Int) {
@@ -79,7 +81,7 @@ final class FeedDetailViewModel: ViewModelType {
         
         let backButtonDidTap: ControlEvent<Void>
         let replyCollectionViewContentSize: Observable<CGSize?>
-        let likeButtonDidTap: ControlEvent<Void>
+        let likeButtonDidTap: Observable<UITapGestureRecognizer>
         
         // 작품 연결
         let linkNovelViewDidTap: Observable<UITapGestureRecognizer>
@@ -96,8 +98,10 @@ final class FeedDetailViewModel: ViewModelType {
         // 피드 드롭다운
         let dotsButtonDidTap: ControlEvent<Void>
         let dropdownButtonDidTap: Observable<DropdownButtonType>
+        let backgroundViewDidTap: ControlEvent<UITapGestureRecognizer>
         
         // 댓글 드롭다운
+        let profileViewDidTap: Observable<Int>
         let commentdotsButtonDidTap: Observable<(Int, Bool)>
         let commentDropdownDidTap: Observable<DropdownButtonType>
         let reloadComments: Observable<Void>
@@ -143,6 +147,8 @@ final class FeedDetailViewModel: ViewModelType {
         let showCommentImpertinenceAlertView: Observable<((Int, Int) -> Observable<Void>, Int, Int)>
         let myCommentEditing: Observable<Void>
         let showCommentDeleteAlertView: Observable<((Int, Int) -> Observable<Void>, Int, Int)>
+        
+        let pushToUserPageViewController: Observable<Int>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -195,6 +201,7 @@ final class FeedDetailViewModel: ViewModelType {
             .subscribe()
             .disposed(by: disposeBag)
         
+        // 작품 연결
         input.linkNovelViewDidTap
             .subscribe(with: self, onNext: { owner, _ in
                 if let novelId = owner.novelId {
@@ -203,6 +210,7 @@ final class FeedDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        // 댓글 작성
         input.viewDidTap
             .subscribe(with: self, onNext: { owner, _ in
                 owner.endEditing.accept(true)
@@ -288,6 +296,7 @@ final class FeedDetailViewModel: ViewModelType {
             .subscribe()
             .disposed(by: disposeBag)
         
+        // 피드 드롭다운
         input.dotsButtonDidTap
             .withLatestFrom(showDropdownView)
             .map { !$0 }
@@ -303,6 +312,21 @@ final class FeedDetailViewModel: ViewModelType {
                 case (.top, false): owner.showSpoilerAlertView.accept(())
                 case (.bottom, false): owner.showImpertinenceAlertView.accept(())
                 }
+                owner.showDropdownView.accept(false)
+            })
+            .disposed(by: disposeBag)
+        
+        input.backgroundViewDidTap
+            .bind(with: self, onNext: { owner, _ in
+                owner.showDropdownView.accept(false)
+                owner.hideCommentDropdownView.accept(())
+            })
+            .disposed(by: disposeBag)
+        
+        // 댓글 드롭다운
+        input.profileViewDidTap
+            .subscribe(with: self, onNext: { owner, userId in
+                owner.pushToUserPageViewController.accept(userId)
             })
             .disposed(by: disposeBag)
         
@@ -339,8 +363,8 @@ final class FeedDetailViewModel: ViewModelType {
                                                                               owner.feedId,
                                                                               owner.selectedCommentId))
                 case (.bottom, false): owner.showCommentImpertinenceAlertView.accept((owner.postImpertinenceComment,
-                                                                                  owner.feedId,
-                                                                                  owner.selectedCommentId))
+                                                                                      owner.feedId,
+                                                                                      owner.selectedCommentId))
                 }
             })
             .disposed(by: disposeBag)
@@ -382,7 +406,8 @@ final class FeedDetailViewModel: ViewModelType {
                       showCommentSpoilerAlertView: showCommentSpoilerAlertView.asObservable(),
                       showCommentImpertinenceAlertView: showCommentImpertinenceAlertView.asObservable(),
                       myCommentEditing: myCommentEditing.asObservable(),
-                      showCommentDeleteAlertView: showCommentDeleteAlertView.asObservable())
+                      showCommentDeleteAlertView: showCommentDeleteAlertView.asObservable(),
+                      pushToUserPageViewController: pushToUserPageViewController.asObservable())
     }
     
     //MARK: - API

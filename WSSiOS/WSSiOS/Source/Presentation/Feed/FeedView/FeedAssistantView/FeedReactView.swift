@@ -14,8 +14,8 @@ final class FeedReactView: UIView {
     
     //MARK: - Components
     
-    private let likeView = UIView()
-    let likeButton = UIButton()
+    let likeView = UIView()
+    let likeIcon = UIImageView()
     let likeRatingLabel = UILabel()
     
     let commentView = UIView()
@@ -45,8 +45,8 @@ final class FeedReactView: UIView {
             $0.backgroundColor = .wssWhite
         }
         
-        likeButton.do {
-            $0.setImage(.icThumbUp.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray200), for: .normal)
+        likeIcon.do {
+            $0.image = .icThumbUp.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray200)
             $0.contentMode = .scaleAspectFit
         }
         
@@ -72,7 +72,7 @@ final class FeedReactView: UIView {
         self.addSubviews(likeView,
                          commentView)
         
-        likeView.addSubviews(likeButton,
+        likeView.addSubviews(likeIcon,
                              likeRatingLabel)
         
         commentView.addSubviews(commentIcon,
@@ -83,14 +83,14 @@ final class FeedReactView: UIView {
         likeView.snp.makeConstraints {
             $0.top.leading.bottom.equalToSuperview()
             
-            likeButton.snp.makeConstraints {
+            likeIcon.snp.makeConstraints {
                 $0.top.bottom.centerY.leading.equalToSuperview()
                 $0.size.equalTo(20)
             }
             
             likeRatingLabel.snp.makeConstraints {
                 $0.centerY.trailing.equalToSuperview()
-                $0.leading.equalTo(likeButton.snp.trailing).offset(5)
+                $0.leading.equalTo(likeIcon.snp.trailing).offset(5)
             }
         }
         
@@ -113,13 +113,13 @@ final class FeedReactView: UIView {
     //MARK: - Data
     
     func bindData(likeRating: Int, isLiked: Bool, commentRating: Int) {
-        likeButton.setImage(isLiked ? .icThumbUpFill : .icThumbUp, for: .normal)
+        likeIcon.image = isLiked ? .icThumbUpFill : .icThumbUp
         likeRatingLabel.applyWSSFont(.title3, with: String(likeRating))
         commentRatingLabel.applyWSSFont(.title3, with: String(commentRating))
     }
     
     func updateLikeState(_ isLiked: Bool) {
-        likeButton.setImage(isLiked ? .icThumbUpFill : .icThumbUp, for: .normal)
+        likeIcon.image = isLiked ? .icThumbUpFill : .icThumbUp
     }
     
     func updateLikeCount(_ count: Int) {

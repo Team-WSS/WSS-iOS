@@ -19,7 +19,6 @@ final class FeedDetailView: UIView {
     
     let backButton = UIButton()
     let viewTitleLabel = UILabel()
-    
     let dropdownButton = UIButton()
     let dropdownView = FeedDetailDropdownView()
     
@@ -96,6 +95,14 @@ final class FeedDetailView: UIView {
         contentView.snp.makeConstraints {
             $0.edges.equalTo(scrollView.contentLayoutGuide)
             $0.width.equalTo(scrollView.snp.width)
+        }
+        
+        backButton.snp.makeConstraints {
+            $0.size.equalTo(24)
+        }
+        
+        dropdownButton.snp.makeConstraints {
+            $0.size.equalTo(38)
         }
         
         dropdownView.snp.makeConstraints {
