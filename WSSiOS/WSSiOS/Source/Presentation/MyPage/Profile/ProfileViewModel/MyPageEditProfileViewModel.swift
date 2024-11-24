@@ -14,8 +14,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
     
     //MARK: - Properties
     
-    //TODO: 서연이 코드랑 합칠 예정
-    let genreList = ["로맨스", "로판", "판타지", "현판", "무협", "BL", "라노벨", "미스터리", "드라마"]
+    private let genreList: [String] = NovelGenre.allCases.map { $0.toKorean }
     
     private let nicknamePattern = "^[a-zA-Z0-9가-힣]{2,10}$"
     static let nicknameLimit = 10
@@ -128,12 +127,13 @@ final class MyPageEditProfileViewModel: ViewModelType {
                     updatedFields["genrePreferences"] = []
                 }
                 
-                print(updatedFields)
-                
                 return self.patchProfile(updatedFields: updatedFields)
             }
             .subscribe(
                 onNext: {
+                    UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.userNickname)
+                    UserDefaults.standard.setValue(self.userNickname.value, forKey: StringLiterals.UserDefault.userNickname)
+                    
                     output.popViewController.accept(true)
                 },
                 onError: { error in
