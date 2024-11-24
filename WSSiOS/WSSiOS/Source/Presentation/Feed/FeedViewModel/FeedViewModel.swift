@@ -21,12 +21,14 @@ final class FeedViewModel: ViewModelType {
     struct Input {
         let pageBarTapped: ControlEvent<IndexPath>
         let createFeedButtonDidTap: ControlEvent<Void>
+        let feedEditedNotification: Observable<Notification>
     }
     
     struct Output {
         let categoryList = BehaviorRelay<[NewNovelGenre]>(value: [])
         let selectedTabIndex = PublishSubject<Int>()
         let pushToFeedEditViewController = PublishRelay<Void>()
+        let showFeedEditedToast =  PublishRelay<Void>()
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -44,6 +46,12 @@ final class FeedViewModel: ViewModelType {
         input.createFeedButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
                 output.pushToFeedEditViewController.accept(())
+            })
+            .disposed(by: disposeBag)
+        
+        input.feedEditedNotification
+            .subscribe(with: self, onNext: { owner, _ in
+                output.showFeedEditedToast.accept(())
             })
             .disposed(by: disposeBag)
         

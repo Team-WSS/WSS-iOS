@@ -23,7 +23,7 @@ extension UIViewController {
         
         toastView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(view.snp.bottom).offset(-212)
+            $0.bottom.equalTo(view.snp.bottom).offset(-124)
         }
         
         UIView.animate(withDuration: 0.3, delay: 3.0, animations: {
