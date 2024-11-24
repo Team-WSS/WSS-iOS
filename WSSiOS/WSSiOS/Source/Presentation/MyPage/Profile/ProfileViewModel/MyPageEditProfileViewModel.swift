@@ -32,6 +32,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
     private var changeCompleteButtonRelay = BehaviorRelay<Bool>(value: false)
     private let isNicknameAvailable = BehaviorRelay<NicknameAvailablity>(value: .notStarted)
     private let showNetworkErrorView = PublishRelay<Void>()
+    private let checkDuplicatedButton = BehaviorRelay<Bool>(value: false)
     
     
     //MARK: - Life Cycle
@@ -112,12 +113,13 @@ final class MyPageEditProfileViewModel: ViewModelType {
                 //                    updatedFields["avatarId"] = 0
                 //                }
                 if self.userNickname.value != self.profileData.nickname {
-                    print(self.userNickname.value, "😂")
                     updatedFields["nickname"] = self.userNickname.value
                 }
+                
                 if self.userIntro.value != self.profileData.intro {
                     updatedFields["intro"] = self.userIntro.value
                 }
+                
                 if self.userGenre.value != self.profileData.genrePreferences {
                     updatedFields["genrePreferences"] = self.userGenre.value.compactMap { genre in
                         NewNovelGenre.withKoreanRawValue(from: genre).rawValue
@@ -146,7 +148,8 @@ final class MyPageEditProfileViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         Observable
-            .combineLatest(userNickname, userIntro, userGenre, userImage)
+            .combineLatest(userNickname, userIntro, userGenre, userImage, checkDuplicatedButton)
+            .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
                 owner.changeInfoData()
             })
@@ -169,6 +172,10 @@ final class MyPageEditProfileViewModel: ViewModelType {
                 
                 let isNickNameValid = owner.isValidNicknameCharacters(text)
                 output.checkButtonIsAbled.accept(text != owner.userNickname.value && isNickNameValid)
+                
+                if(text != owner.profileData.nickname) {
+                    owner.checkDuplicatedButton.accept(false)
+                }
             })
             .disposed(by: disposeBag)
         
@@ -184,7 +191,6 @@ final class MyPageEditProfileViewModel: ViewModelType {
                 output.nicknameText.accept("")
                 
                 output.editingTextField.accept(true)
-                output.completeButtonIsAbled.accept(false)
             })
             .disposed(by: disposeBag)
         
@@ -261,7 +267,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
     
     private func changeInfoData() {
         if (self.userNickname.value == profileData.nickname && self.userIntro.value == profileData.intro && self.userGenre.value == profileData.genrePreferences /*&& self.userImage.value == self.profileData.avatarImage*/) {
-            self.changeCompleteButtonRelay.accept(false)
+            self.changeCompleteButtonRelay.accept(self.checkDuplicatedButton.value)
         }
         else {
             self.changeCompleteButtonRelay.accept(true)
@@ -317,6 +323,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
             .subscribe(with: self, onSuccess: { owner, isValid in
                 if isValid {
                     owner.isNicknameAvailable.accept(.available)
+                    owner.checkDuplicatedButton.accept(true)
                 } else {
                     owner.isNicknameAvailable.accept(
                         .notAvailable(reason: .duplicated)
@@ -325,6 +332,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
             }, onFailure: { owner, error in
                 guard let networkError = error as? RxCocoaURLError else {
                     owner.showNetworkErrorView.accept(())
+                    owner.checkDuplicatedButton.accept(false)
                     return
                 }
                 
