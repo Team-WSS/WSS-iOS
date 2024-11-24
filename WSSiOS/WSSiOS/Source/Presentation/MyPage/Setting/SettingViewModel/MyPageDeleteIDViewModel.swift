@@ -17,6 +17,7 @@ final class MyPageDeleteIDViewModel: ViewModelType {
     private let authRepository: AuthRepository
     static let textViewMaxLimit = 80
     static let exceptionIndexPath: IndexPath = [ 0 , 4 ]
+    private  let whitespaceRegex = "^[\\s]*$"
     
     private let reasonCellTitle = BehaviorRelay<[String]>(value: StringLiterals.MyPage.DeleteIDReason.allCases.map { $0.rawValue })
     private let checkCellTitle = BehaviorRelay<[(String, String)]>(value: zip(StringLiterals.MyPage.DeleteIDCheckTitle.allCases, StringLiterals.MyPage.DeleteIDCheckContent.allCases).map { ($0.rawValue, $1.rawValue) })
@@ -138,11 +139,16 @@ final class MyPageDeleteIDViewModel: ViewModelType {
                 }
                 
                 guard let refreshTokenString = UserDefaults.standard.string(forKey: StringLiterals.UserDefault.refreshToken) else { return Observable.empty() }
-                return self.postDeleteID(reason: reasonString, refreshToken: refreshTokenString)
+                return self.postWithdrawId(reason: reasonString, refreshToken: refreshTokenString)
             }
             .observe(on: MainScheduler.instance)
             .subscribe(
                 onNext: {
+                    UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.userNickname)
+                    UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.accessToken)
+                    UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.refreshToken)
+                    UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.userGender)
+                    
                     output.pushToLoginViewController.accept(true)
                 },
                 onError: { error in
@@ -157,7 +163,7 @@ final class MyPageDeleteIDViewModel: ViewModelType {
                            output.changeAgreeButtonColor)
             .map { exceptionReasonContent, cellIndexPath, tappedAgreeButton in
                 guard tappedAgreeButton else { return false }
-                return cellIndexPath != MyPageDeleteIDViewModel.exceptionIndexPath || (exceptionReasonContent.range(of: "^[\\s]*$", options: .regularExpression) == nil)
+                return cellIndexPath != MyPageDeleteIDViewModel.exceptionIndexPath || (exceptionReasonContent.range(of: self.whitespaceRegex, options: .regularExpression) == nil)
             }
             .bind(to: output.completeButtonIsAble)
             .disposed(by: disposeBag)
@@ -167,7 +173,7 @@ final class MyPageDeleteIDViewModel: ViewModelType {
     
     //MARK: - API
     
-    private func postDeleteID(reason: String, refreshToken: String) -> Observable<Void> {
+    private func postWithdrawId(reason: String, refreshToken: String) -> Observable<Void> {
         return self.authRepository.postWithdrawId(reason: reason, refreshToken: refreshToken)
             .asObservable()
     }
