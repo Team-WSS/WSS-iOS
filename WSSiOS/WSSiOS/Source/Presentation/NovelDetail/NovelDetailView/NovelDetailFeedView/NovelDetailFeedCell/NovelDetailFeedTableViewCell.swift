@@ -105,6 +105,7 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
         novelDetailFeedHeaderView.profileView.rx.tapGesture()
             .when(.recognized)
             .withLatestFrom(feed)
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, feed in
                 owner.delegate?.profileViewDidTap(userId: feed.userId)
             })
@@ -113,6 +114,7 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
         novelDetailFeedHeaderView.dropdownButtonView.rx.tapGesture()
             .when(.recognized)
             .withLatestFrom(feed)
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, feed in
                 owner.delegate?.dropdownButtonDidTap(feedId: feed.feedId, isMyFeed: feed.isMyFeed)
             })
@@ -121,6 +123,7 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
         novelDetailFeedConnectedNovelView.rx.tapGesture()
             .when(.recognized)
             .withLatestFrom(feed)
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, feed in
                 if let novelId = feed.novelId {
                     owner.delegate?.connectedNovelViewDidTap(novelId: novelId)
@@ -131,6 +134,7 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
         novelDetailFeedReactView.likeView.rx.tapGesture()
             .when(.recognized)
             .withLatestFrom(feed)
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, feed in
                 owner.delegate?.likeViewDidTap(feedId: feed.feedId, isLiked: feed.isLiked)
             })

@@ -99,6 +99,7 @@ final class FeedGenreViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.feedTableViewItemSelected
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, indexPath in
                 owner.pushToFeedDetailViewController.accept(owner.feedList.value[indexPath.item].feedId)
                 owner.hideDropdownView.accept(())
@@ -137,6 +138,7 @@ final class FeedGenreViewModel: ViewModelType {
         
         input.dropdownButtonDidTap
             .map { ($0, self.isMyFeed) }
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
             .subscribe( with: self, onNext: { owner, result in
                 owner.hideDropdownView.accept(())
                 switch result {

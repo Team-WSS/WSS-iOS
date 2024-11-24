@@ -44,6 +44,7 @@ final class FeedViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.createFeedButtonDidTap
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
                 output.pushToFeedEditViewController.accept(())
             })
