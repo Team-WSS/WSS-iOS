@@ -43,7 +43,7 @@ final class MyPageEditAvatarCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Data
     
-    private func bindData(_ avatar: Avatar) {
+    func bindData(_ avatar: Avatar) {
         avatarImageView.do {
             $0.kfSetImage(url: makeBucketImageURLString(path: avatar.avatarImage))
             $0.layer.cornerRadius = 50/2

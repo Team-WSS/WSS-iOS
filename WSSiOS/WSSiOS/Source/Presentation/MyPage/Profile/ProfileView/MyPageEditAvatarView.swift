@@ -29,8 +29,8 @@ final class MyPageEditAvatarView: UIView {
     
     let avatarImageCollectionView = UICollectionView(frame: .zero,
                                                              collectionViewLayout: UICollectionViewLayout())
-    private let changeButton = UIButton()
-    private let notChangeButton = UIButton()
+    let changeButton = UIButton()
+    let notChangeButton = UIButton()
     
     // MARK: - Life Cycle
     
@@ -137,7 +137,7 @@ final class MyPageEditAvatarView: UIView {
     
     //MARK: - Data
     
-    private func bindData(_ avatar: Avatar) {
+    func bindData(_ avatar: Avatar) {
         avatarNameLabel.do {
             $0.applyWSSFont(.headline1, with: avatar.avatarName)
             $0.textColor = .wssBlack
