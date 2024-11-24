@@ -22,7 +22,7 @@ protocol UserService {
     func getUserNovelPreferences(userId: Int) -> Single<UserNovelPreferences>
     func getUserGenrePreferences(userId: Int) -> Single<UserGenrePreferences>
     func patchUserProfile(updatedFields: [String: Any]) -> Single<Void>
-    func getNicknameisValid(_ nickname: String) -> Single<OnboardingResult>
+    func getNicknameisValid(nickname: String) -> Single<OnboardingResult>
 }
 
 final class DefaultUserService: NSObject, Networking {
@@ -283,7 +283,7 @@ extension DefaultUserService: UserService {
         }
     }
     
-    func getNicknameisValid(_ nickname: String) -> Single<OnboardingResult> {
+    func getNicknameisValid(nickname: String) -> Single<OnboardingResult> {
         let nicknameisValidQueryItems: [URLQueryItem] = [
             URLQueryItem(name: "nickname", value: String(describing: nickname))
         ]

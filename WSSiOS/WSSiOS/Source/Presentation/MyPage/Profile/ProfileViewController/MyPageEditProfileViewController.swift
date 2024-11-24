@@ -107,18 +107,24 @@ final class MyPageEditProfileViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.editingTextField
-            .bind(with: self, onNext: { owner, editing in
-                owner.rootView.updateNicknameTextFieldColor(update: editing)
-                if !editing {
-                    owner.rootView.nicknameTextField.endEditing(true)
-                }
+        output.checkButtonIsAbled
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, isEnabled in
+                owner.rootView.updateCheckButton(isEnabled: isEnabled)
             })
             .disposed(by: disposeBag)
-        
-        output.checkButtonIsAbled
-            .bind(with: self, onNext: { owner, able in
-                owner.rootView.isAbledCheckButton(isAbled: able)
+
+        Observable.combineLatest(
+            output.editingTextField.startWith(false),
+            output.checkShwonWarningMessage.startWith(.notStarted)
+        )
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, tuple in
+                let (isEditing, availability) = tuple
+                owner.rootView.updateCheckButton(isEnabled: isEditing)
+                owner.rootView.updateNicknameTextField(isEditing: isEditing, availablity: availability)
+                owner.rootView.updateNickNameStatusDescriptionLabel(isEditing: isEditing, availablity: availability)
+                owner.rootView.updateTextFieldInnerButton(isEditing: isEditing, availablity: availability)
             })
             .disposed(by: disposeBag)
         

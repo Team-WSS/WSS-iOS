@@ -69,7 +69,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
                                                                                     genrePreferences: []))
         let nicknameText = BehaviorRelay<String>(value: "")
         let editingTextField = BehaviorRelay<Bool>(value: false)
-        let isShownWarning = PublishRelay<StringLiterals.MyPage.EditProfileWarningMessage>()
+        let checkShwonWarningMessage = BehaviorRelay<NicknameAvailablity>(value: .notStarted)
         let checkButtonIsAbled = BehaviorRelay<Bool>(value: false)
         
         let introText = BehaviorRelay<String>(value: "")
@@ -165,6 +165,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, text in
                 output.nicknameText.accept(String(text.prefix(MyPageEditProfileViewModel.nicknameLimit)))
+                output.checkButtonIsAbled.accept(text != owner.userNickname.value)
             })
             .disposed(by: disposeBag)
         
@@ -172,7 +173,6 @@ final class MyPageEditProfileViewModel: ViewModelType {
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
                 output.editingTextField.accept(true)
-                output.checkButtonIsAbled.accept(true)
             })
             .disposed(by: disposeBag)
         
@@ -194,6 +194,13 @@ final class MyPageEditProfileViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        self.isNicknameAvailable
+            .bind(with: self, onNext: { owner, availablity in
+                output.checkShwonWarningMessage.accept(availablity)
+                output.checkButtonIsAbled.accept(availablity != .available && availablity != .notStarted)
+            })
+            .disposed(by: disposeBag)
+        
         input.viewDidTap
             .subscribe(onNext: { _ in
                 output.endEditing.accept(true)
@@ -202,7 +209,6 @@ final class MyPageEditProfileViewModel: ViewModelType {
         
         // 소개 기능
         input.updateIntroText
-            .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, text in
                 owner.userIntro.accept(String(text.prefix(MyPageEditProfileViewModel.introLimit)))
                 output.introText.accept(owner.userIntro.value)
@@ -304,7 +310,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
     }
     
     private func checkNicknameisValid(_ nickname: String, disposeBag: DisposeBag) {
-        self.userRepository.getNicknameisValid(nickname)
+        self.userRepository.getNicknameisValid(nickname: nickname)
             .map { $0.isValid }
             .subscribe(with: self, onSuccess: { owner, isValid in
                 if isValid {

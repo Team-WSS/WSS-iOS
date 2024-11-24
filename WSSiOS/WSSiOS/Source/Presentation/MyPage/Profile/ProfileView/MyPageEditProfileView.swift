@@ -353,38 +353,79 @@ final class MyPageEditProfileView: UIView {
 extension MyPageEditProfileView {
     
     //MARK: - Custom Method
-    
-    func updateNicknameTextFieldColor(update: Bool) {
-        nicknameWarningLabel.isHidden = true
-        
-        if update {
-            nicknameTextField.do {
-                $0.backgroundColor = .wssWhite
-                $0.layer.borderColor = UIColor.wssGray70.cgColor
-                $0.layer.borderWidth = 1
-            }
-        } else {
-            nicknameTextField.do {
-                $0.backgroundColor = .wssGray50
-                $0.layer.borderWidth = 0
-            }
-        }
-    }
-    
-    func isAbledCheckButton(isAbled: Bool) {
+
+    //네비게이션
+    func isAbledCompleteButton(isAbled: Bool) {
         if isAbled {
-            checkButton.do {
-                $0.setTitleColor(.wssPrimary100, for: .normal)
-                $0.backgroundColor = .wssPrimary50
-            }
+            completeButton.setTitleColor(.wssPrimary100, for: .normal)
         } else {
-            checkButton.do {
-                $0.setTitleColor(.wssGray200, for: .normal)
-                $0.backgroundColor = .wssGray70
-            }
+            completeButton.setTitleColor(.wssGray200, for: .normal)
+        }
+        
+        completeButton.isEnabled = isAbled
+    }
+    
+    //닉네임
+    func updateNickname(text: String) {
+        nicknameTextField.applyWSSFont(.body2, with: text)
+        nicknameCountView.countLabel.applyWSSFont(.label1, with: String(text.count))
+    }
+    
+    func updateNicknameTextField(isEditing: Bool, availablity: NicknameAvailablity) {
+        var borderColor: CGColor = UIColor.wssGray70.cgColor
+        
+        switch availablity {
+        case .available:
+            borderColor = UIColor.wssPrimary100.cgColor
+        case .notAvailable:
+            borderColor = UIColor.wssSecondary100.cgColor
+        default:
+            borderColor = UIColor.wssGray70.cgColor
+        }
+        
+        nicknameTextField.do {
+            $0.backgroundColor = isEditing ? .wssWhite : .wssGray50
+            $0.layer.borderWidth = isEditing ? 1 : 0
+            $0.layer.borderColor = borderColor
         }
     }
     
+    func updateNickNameStatusDescriptionLabel(isEditing: Bool, availablity: NicknameAvailablity) {
+        nicknameWarningLabel.do {
+            $0.isHidden = availablity.descriptionIsHidden()
+            $0.applyWSSFont(.body4, with:  availablity.description())
+            $0.textColor = availablity.color()
+        }
+    }
+    
+    func updateTextFieldInnerButton(isEditing: Bool, availablity: NicknameAvailablity) {
+        var buttonImage: UIImage = .icCancelDark
+        
+        switch availablity {
+        case .available:
+            buttonImage = .icNickNameAvailable
+        case .notAvailable:
+            buttonImage = .icNickNameError
+        default:
+            break
+        }
+        
+        clearButton.do {
+            $0.isHidden = !isEditing
+            $0.setImage(buttonImage, for: .normal)
+            $0.isUserInteractionEnabled = !(availablity == .available)
+        }
+    }
+    
+    func updateCheckButton(isEnabled: Bool) {
+        checkButton.do {
+            $0.isEnabled = isEnabled
+            $0.backgroundColor = isEnabled ? .wssPrimary50 : .wssGray70
+            $0.setTitleColor(isEnabled ? .wssPrimary100 : .wssGray200, for: .normal)
+        }
+    }
+    
+    //소개
     func updateIntroTextViewColor(update: Bool) {
         if update {
             introTextView.do {
@@ -409,41 +450,9 @@ extension MyPageEditProfileView {
         }
     }
     
-    func updateNickname(text: String) {
-        nicknameTextField.applyWSSFont(.body2, with: text)
-        nicknameCountView.countLabel.applyWSSFont(.label1, with: String(text.count))
-    }
-    
     func updateIntro(text: String) {
         introTextView.applyWSSFont(.body2, with: text)
         introCountView.countLabel.applyWSSFont(.label1, with: String(text.count))
-    }
-    
-    func warningNickname(isWarning: StringLiterals.MyPage.EditProfileWarningMessage) {
-        nicknameTextField.do {
-            $0.backgroundColor = .wssWhite
-            $0.layer.borderColor = UIColor.wssSecondary100.cgColor
-            $0.layer.borderWidth = 1
-        }
-        
-        nicknameWarningLabel.do {
-            $0.isHidden = false
-            $0.applyWSSFont(.label1, with: isWarning.rawValue)
-        }
-        
-        clearButton.do {
-            $0.setImage(.icCancelWarning, for: .normal)
-        }
-    }
-    
-    func isAbledCompleteButton(isAbled: Bool) {
-        if isAbled {
-            completeButton.setTitleColor(.wssPrimary100, for: .normal)
-        } else {
-            completeButton.setTitleColor(.wssGray200, for: .normal)
-        }
-        
-        completeButton.isEnabled = isAbled
     }
     
     //MARK: - Data
