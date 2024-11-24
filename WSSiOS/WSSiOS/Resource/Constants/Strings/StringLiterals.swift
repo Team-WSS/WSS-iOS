@@ -61,6 +61,7 @@ enum StringLiterals {
             static let myPageBlockUser = "차단유저 목록"
             static let myPageChangeUserInfo = "성별/나이 변경"
             static let isVisibleProfile = "프로필 공개 설정"
+            static let changeAvatar = "프로필 선택"
         }
     }
     
@@ -159,9 +160,6 @@ enum StringLiterals {
     
     enum MyPage {
         enum Modal {
-            static let back = "돌아가기"
-            static let baseTitle = "오늘 당신을 만날 걸 알고 있었어"
-            static let baseExplanation = "메모를 작성해서 잠금해제 됐어요!"
             static let keepOriginally = "원래대로 유지하기"
             static let changeCharacter = "대표 캐릭터 설정하기"
         }

@@ -464,6 +464,10 @@
 		E40746722CE8DB89005D75D5 /* MyPageGenrePreferencesOtherTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40746712CE8DB89005D75D5 /* MyPageGenrePreferencesOtherTableViewCell.swift */; };
 		E40746742CE8F84A005D75D5 /* MyPageStickyHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40746732CE8F84A005D75D5 /* MyPageStickyHeaderView.swift */; };
 		E497C9B22CF195E90079C30D /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E497C9B12CF195E90079C30D /* Config.xcconfig */; };
+		E497C9B62CF3AFBD0079C30D /* MyPageEditAvatarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E497C9B52CF3AFBD0079C30D /* MyPageEditAvatarViewController.swift */; };
+		E497C9B82CF3B0160079C30D /* MyPageEditAvatarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E497C9B72CF3B0160079C30D /* MyPageEditAvatarViewModel.swift */; };
+		E497C9BA2CF3B0220079C30D /* MyPageEditAvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E497C9B92CF3B0220079C30D /* MyPageEditAvatarView.swift */; };
+		E497C9BC2CF3BBC90079C30D /* MyPageEditAvatarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E497C9BB2CF3BBC90079C30D /* MyPageEditAvatarCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -914,6 +918,10 @@
 		E40746732CE8F84A005D75D5 /* MyPageStickyHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageStickyHeaderView.swift; sourceTree = "<group>"; };
 		E442D70D2CF10AC7003C7472 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Config.xcconfig; path = /Users/sinjiwon/Desktop/jiwon/Config.xcconfig; sourceTree = "<absolute>"; };
 		E497C9B12CF195E90079C30D /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Config.xcconfig; path = /Users/sinjiwon/Desktop/Config.xcconfig; sourceTree = "<absolute>"; };
+		E497C9B52CF3AFBD0079C30D /* MyPageEditAvatarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageEditAvatarViewController.swift; sourceTree = "<group>"; };
+		E497C9B72CF3B0160079C30D /* MyPageEditAvatarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageEditAvatarViewModel.swift; sourceTree = "<group>"; };
+		E497C9B92CF3B0220079C30D /* MyPageEditAvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageEditAvatarView.swift; sourceTree = "<group>"; };
+		E497C9BB2CF3BBC90079C30D /* MyPageEditAvatarCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageEditAvatarCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1010,6 +1018,7 @@
 			isa = PBXGroup;
 			children = (
 				2C41E0CD2CA4949C00FFD233 /* MyPageEditProfileGenreCollectionViewCell.swift */,
+				E497C9BB2CF3BBC90079C30D /* MyPageEditAvatarCollectionViewCell.swift */,
 				E40746672CE871EE005D75D5 /* MyPageNovelPreferencesCollectionViewCell.swift */,
 				E40746712CE8DB89005D75D5 /* MyPageGenrePreferencesOtherTableViewCell.swift */,
 			);
@@ -1386,6 +1395,7 @@
 				E40746732CE8F84A005D75D5 /* MyPageStickyHeaderView.swift */,
 				E40746612CE8688A005D75D5 /* MyPageLibraryView.swift */,
 				2C41E0CF2CA494B800FFD233 /* MyPageEditProfileView.swift */,
+				E497C9B92CF3B0220079C30D /* MyPageEditAvatarView.swift */,
 				2C41E0C62CA493C100FFD233 /* ProfileCell */,
 				2CDB20C72C9B70700005C39B /* ProfileAssistantView */,
 			);
@@ -1397,6 +1407,7 @@
 			children = (
 				2CCBF9ED2B4C1FC500D787C2 /* MyPageViewController.swift */,
 				2C41E0D12CA494C900FFD233 /* MyPageEditProfileViewController.swift */,
+				E497C9B52CF3AFBD0079C30D /* MyPageEditAvatarViewController.swift */,
 			);
 			path = ProfileViewController;
 			sourceTree = "<group>";
@@ -1406,6 +1417,7 @@
 			children = (
 				2C9A19682C567D6B0043044A /* MyPageViewModel.swift */,
 				2C41E0D32CA494D900FFD233 /* MyPageEditProfileViewModel.swift */,
+				E497C9B72CF3B0160079C30D /* MyPageEditAvatarViewModel.swift */,
 			);
 			path = ProfileViewModel;
 			sourceTree = "<group>";
@@ -3084,6 +3096,7 @@
 				CD1F7E042C9955390039972C /* NovelKeywordSelectSearchBarView.swift in Sources */,
 				CD6F49512C703E63005AD392 /* FeedNovelConnectModalViewController.swift in Sources */,
 				A1EF35492B52F7B000A94C53 /* AvatarRepository.swift in Sources */,
+				E497C9BA2CF3B0220079C30D /* MyPageEditAvatarView.swift in Sources */,
 				2C6030642B5407E90031544C /* LibraryViewController.swift in Sources */,
 				CD803B3B2C940B88006EBAF8 /* NovelReviewKeywordView.swift in Sources */,
 				B933BED32C4916DC00365077 /* KeywordBox.swift in Sources */,
@@ -3127,6 +3140,7 @@
 				3908376B2C32ADEA0082DC57 /* NovelDetailInfoReviewView.swift in Sources */,
 				CDE596D62B57708D00D99DA1 /* UIViewController+.swift in Sources */,
 				39BA7F772BCAC3E60045B2B7 /* keywordLabel.swift in Sources */,
+				E497C9BC2CF3BBC90079C30D /* MyPageEditAvatarCollectionViewCell.swift in Sources */,
 				3931020C2CA5D389002CBEA0 /* OnboardingViewModel.swift in Sources */,
 				C9D56ED62C9D2B4D00FEDFDA /* FeedDetailReplyWritingView.swift in Sources */,
 				A1654F162B540513004F78E8 /* NetworkLogger.swift in Sources */,
@@ -3174,6 +3188,7 @@
 				A1EF355A2B52FAD300A94C53 /* RecommendService.swift in Sources */,
 				2C9A19712C56925F0043044A /* MyPageInfoViewModel.swift in Sources */,
 				39D4A5D02BDA50E8004FC834 /* NovelDetailRepository.swift in Sources */,
+				E497C9B62CF3AFBD0079C30D /* MyPageEditAvatarViewController.swift in Sources */,
 				E40746702CE8DAB6005D75D5 /* MyPageGenrePreferencesOtherView.swift in Sources */,
 				CD863EDC2CA5BAF30037DC08 /* NovelDetailFeedListView.swift in Sources */,
 				39CC167E2B512369003F56AE /* RegisterSuccessViewController.swift in Sources */,
@@ -3416,6 +3431,7 @@
 				CD39F2CA2B5038F400B73A5C /* TrashNovelDetailInfoView.swift in Sources */,
 				CD1F7E0E2C99ADC90039972C /* NovelSelectedKeywordCollectionViewCell.swift in Sources */,
 				CD39F2D22B50CE0600B73A5C /* TrashNovelDetailInfoReadStatusTagView.swift in Sources */,
+				E497C9B82CF3B0160079C30D /* MyPageEditAvatarViewModel.swift in Sources */,
 				A1EF35452B52F76C00A94C53 /* UserNovelRepository.swift in Sources */,
 				CD39F2C32B4FFDF900B73A5C /* TrashNovelDetailMemoView.swift in Sources */,
 				CD3E5AB32B565DFF00C0A659 /* NovelMemoResult.swift in Sources */,

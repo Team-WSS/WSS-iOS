@@ -14,7 +14,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
     
     //MARK: - Properties
     
-    private let genreList: [String] = NovelGenre.allCases.map { $0.toKorean }
+    let genreList: [String] = NovelGenre.allCases.map { $0.toKorean }
     
     private let nicknamePattern = "^[a-zA-Z0-9가-힣]{2,10}$"
     static let nicknameLimit = 10
