@@ -29,8 +29,9 @@ final class HomeViewModel: ViewModelType {
     
     // 관심글
     private let interestList = BehaviorRelay<[InterestFeed]>(value: [])
-    private let updateInterestView = PublishRelay<(Bool, String)>()
+    private let updateInterestView = PublishRelay<(Bool, InterestMessage)>()
     private let pushToNormalSearchViewController = PublishRelay<Void>()
+    private var interestFeedMessage = BehaviorRelay<InterestMessage>(value: .none)
     
     // 취향추천
     private let tasteRecommendList = BehaviorRelay<[TasteRecommendNovel]>(value: [])
@@ -63,7 +64,7 @@ final class HomeViewModel: ViewModelType {
         var realtimePopularData: Observable<[[RealtimePopularFeed]]>
         
         var interestList: Observable<[InterestFeed]>
-        let updateInterestView: Observable<(Bool, String)>
+        let updateInterestView: Observable<(Bool, InterestMessage)>
         let pushToNormalSearchViewController: Observable<Void>
         
         var tasteRecommendList: Observable<[TasteRecommendNovel]>
@@ -110,15 +111,19 @@ extension HomeViewModel {
                         Array(realtimeFeeds.popularFeeds[index..<min(index + 3, realtimeFeeds.popularFeeds.count)])
                     }
                 owner.realtimePopularDataRelay.accept(groupedData)
+                let message = InterestMessage(rawValue: interestFeeds.message)
                 
                 if owner.isLogined {
                     owner.interestList.accept(interestFeeds.recommendFeeds)
-                    owner.updateInterestView.accept((true, interestFeeds.message))
+                    owner.updateInterestView.accept((true, message ?? .none))
+                    owner.interestFeedMessage.accept(message ?? .none)
                     
                     owner.tasteRecommendList.accept(tasteRecommendNovels.tasteNovels)
                     owner.updateTasteRecommendView.accept((true, tasteRecommendNovels.tasteNovels.isEmpty))
                 } else {
-                    owner.updateInterestView.accept((false, ""))
+                    owner.updateInterestView.accept((false, message ?? .none))
+                    owner.interestFeedMessage.accept(.none)
+                    
                     owner.updateTasteRecommendView.accept((false, true))
                 }
             }, onError: { owner, error in
@@ -135,6 +140,8 @@ extension HomeViewModel {
                 UserDefaults.standard.setValue(data.userId, forKey: StringLiterals.UserDefault.userId)
                 UserDefaults.standard.setValue(data.nickname, forKey: StringLiterals.UserDefault.userNickname)
                 UserDefaults.standard.setValue(data.gender, forKey: StringLiterals.UserDefault.userGender)
+                
+                owner.updateInterestView.accept((self.isLogined, self.interestFeedMessage.value))
             })
             .disposed(by: disposeBag)
         
