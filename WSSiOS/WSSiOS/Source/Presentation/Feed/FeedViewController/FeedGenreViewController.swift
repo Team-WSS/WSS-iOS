@@ -9,14 +9,19 @@ import UIKit
 
 import RxSwift
 import RxRelay
+import RxGesture
 
 class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
     
     //MARK: - Properties
     
     private let disposeBag = DisposeBag()
-    private let loadMoreTrigger = PublishSubject<Void>()
-    private let feedData = BehaviorRelay<[TotalFeeds]>(value: [])
+    
+    private let feedProfileViewDidTap = PublishRelay<Int>()
+    private let feedDropdownButtonDidTap = PublishRelay<(Int, Bool)>()
+    private let feedConnectedNovelViewDidTap = PublishRelay<Int>()
+    private let feedLikeViewDidTap = PublishRelay<(Int, Bool)>()
+    private let reloadFeed = PublishRelay<Void>()
     
     //MARK: - Components
     
@@ -44,11 +49,11 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
         super.viewDidLoad()
         
         register()
-        delegate()
         bindViewModel()
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        reloadFeed.accept(())
         self.navigationController?.isNavigationBarHidden = true
         showTabBar()
     }
@@ -56,93 +61,223 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
     //MARK: - Bind
     
     private func register() {
-        rootView.feedCollectionView.register(FeedCollectionViewCell.self,
-                                             forCellWithReuseIdentifier: FeedCollectionViewCell.cellIdentifier)
-    }
-    
-    private func delegate() {
-        rootView.feedCollectionView.rx
-            .setDelegate(self).disposed(by: disposeBag)
+        rootView.feedTableView.register(NovelDetailFeedTableViewCell.self,
+                                        forCellReuseIdentifier: NovelDetailFeedTableViewCell.cellIdentifier)
     }
     
     private func bindViewModel() {
+        let dropdownButtonDidTap = Observable.merge(
+            rootView.dropdownView.topDropdownButton.rx.tap.map { DropdownButtonType.top },
+            rootView.dropdownView.bottomDropdownButton.rx.tap.map { DropdownButtonType.bottom }
+        )
         
-        let profileTapped = PublishSubject<Int>()
-        let contentTapped = PublishSubject<Int>()
-        let novelTapped = PublishSubject<Int>()
-        let likedTapped = PublishSubject<Bool>()
-        let commentTapped = PublishSubject<Int>()
+        let input = FeedGenreViewModel.Input(
+            reloadFeed: reloadFeed.asObservable(),
+            feedTableViewItemSelected: rootView.feedTableView.rx.itemSelected.asObservable(),
+            feedProfileViewDidTap: feedProfileViewDidTap.asObservable(),
+            feedDropdownButtonDidTap: feedDropdownButtonDidTap.asObservable(),
+            dropdownButtonDidTap: dropdownButtonDidTap,
+            feedConnectedNovelViewDidTap: feedConnectedNovelViewDidTap.asObservable(),
+            feedLikeViewDidTap: feedLikeViewDidTap.asObservable(),
+            feedTableViewVillBeginDragging: rootView.feedTableView.rx.willBeginDragging.asObservable(),
+            feedTableViewReachedBottom: observeReachedBottom(rootView.feedTableView),
+            feedTableViewIsRefreshing: rootView.feedTableView.refreshControl!.rx.controlEvent(.valueChanged).asObservable()
+        )
         
-        let input = FeedGenreViewModel.Input(loadMoreTrigger: loadMoreTrigger,
-                                             profileTapped: profileTapped,
-                                             contentTapped: contentTapped,
-                                             novelTapped: novelTapped,
-                                             likedTapped: likedTapped,
-                                             commentTapped: commentTapped)
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.feedList
-            .bind(to: feedData)
-            .disposed(by: disposeBag)
-        
-        feedData
-            .bind(to: rootView.feedCollectionView.rx.items(
-                cellIdentifier: FeedCollectionViewCell.cellIdentifier,
-                cellType: FeedCollectionViewCell.self)) { (row, element, cell) in                   
-                    
-                    cell.profileTapHandler = {
-                        profileTapped.onNext(element.userId)
-                    }
-                    
-                    cell.contentTapHandler = {
-                        contentTapped.onNext(element.feedId)
-                    }
-                    
-                    cell.novelTapHandler = {
-                        if let novelId = element.novelId {
-                            novelTapped.onNext(novelId)
-                        }
-                    }
-                    
-                    cell.commentTapHandler = {
-                        commentTapped.onNext(element.feedId)
-                    }
-                    
-                    cell.bindData(data: element)
+            .bind(to: rootView.feedTableView.rx.items(
+                cellIdentifier: NovelDetailFeedTableViewCell.cellIdentifier,
+                cellType: NovelDetailFeedTableViewCell.self)) { _, element, cell in
+                    cell.bindData(feed: element)
+                    cell.delegate = self
                 }
                 .disposed(by: disposeBag)
+        
+        output.feedList
+            .skip(1)
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, feedList in
+                owner.rootView.bindData(isEmpty: feedList.isEmpty)
+            })
+            .disposed(by: disposeBag)
         
         output.pushToFeedDetailViewController
             .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, feedId in
-                print(feedId, "📌")
-                self.pushToFeedDetailViewController(feedId: feedId)
+                owner.pushToFeedDetailViewController(feedId: feedId)
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushToUserViewController
+            .subscribe(with: self, onNext: { owner, userId in
+                owner.pushToMyPageViewController(isMyPage: false)
             })
             .disposed(by: disposeBag)
         
         output.pushToNovelDetailViewController
-            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, novelId in
-                print(novelId, "📌📌")
-                self.pushToDetailViewController(novelId: novelId)
+                owner.pushToDetailViewController(novelId: novelId)
+            })
+            .disposed(by: disposeBag)
+        
+        output.showDropdownView
+            .subscribe(with: self, onNext: { owner, data in
+                let (indexPath, isMyFeed) = data
+                owner.rootView.showDropdownView(indexPath: indexPath,
+                                                isMyFeed: isMyFeed)
+            })
+            .disposed(by: disposeBag)
+        
+        output.hideDropdownView
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.rootView.hideDropdownView()
+            })
+            .disposed(by: disposeBag)
+        
+        output.toggleDropdownView
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.rootView.toggleDropdownView()
+            })
+            .disposed(by: disposeBag)
+        
+        output.showSpoilerAlertView
+            .flatMapLatest { postSpoilerFeed, feedId in
+                self.presentToAlertViewController(
+                    iconImage: .icAlertWarningCircle,
+                    titleText: StringLiterals.FeedDetail.spoilerTitle,
+                    contentText: nil,
+                    leftTitle: StringLiterals.FeedDetail.cancel,
+                    rightTitle: StringLiterals.FeedDetail.report,
+                    rightBackgroundColor: UIColor.wssPrimary100.cgColor
+                )
+                .flatMapLatest { buttonType in
+                    if buttonType == .right {
+                        return postSpoilerFeed(feedId)
+                    } else {
+                        return Observable.empty()
+                    }
+                }
+            }
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.dismiss(animated: true) {
+                    _ = owner.presentToAlertViewController(
+                        iconImage: .icReportCheck,
+                        titleText: StringLiterals.FeedDetail.reportResult,
+                        contentText: nil,
+                        leftTitle: nil,
+                        rightTitle: StringLiterals.FeedDetail.confirm,
+                        rightBackgroundColor: UIColor.wssPrimary100.cgColor
+                    )
+                }
+            }, onError: { owner, error in
+                print("Error: \(error)")
+            })
+            .disposed(by: disposeBag)
+        
+        output.showImproperAlertView
+            .flatMapLatest { postImpertinenceFeed, feedId in
+                self.presentToAlertViewController(
+                    iconImage: .icAlertWarningCircle,
+                    titleText: StringLiterals.FeedDetail.impertinentTitle,
+                    contentText: nil,
+                    leftTitle: StringLiterals.FeedDetail.cancel,
+                    rightTitle: StringLiterals.FeedDetail.report,
+                    rightBackgroundColor: UIColor.wssPrimary100.cgColor
+                )
+                .flatMapLatest { buttonType in
+                    if buttonType == .right {
+                        return postImpertinenceFeed(feedId)
+                    } else {
+                        return Observable.empty()
+                    }
+                }
+            }
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.dismiss(animated: true) {
+                    _ = owner.presentToAlertViewController(
+                        iconImage: .icReportCheck,
+                        titleText: StringLiterals.FeedDetail.reportResult,
+                        contentText: StringLiterals.FeedDetail.impertinentContent,
+                        leftTitle: nil,
+                        rightTitle: StringLiterals.FeedDetail.confirm,
+                        rightBackgroundColor: UIColor.wssPrimary100.cgColor
+                    )
+                }
+            }, onError: { owner, error in
+                print("Error: \(error)")
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushToFeedEditViewController
+            .subscribe(with: self, onNext: { owner, feedId in
+                owner.pushToFeedEditViewController(feedId: feedId)
+            })
+            .disposed(by: disposeBag)
+        
+        output.showDeleteAlertView
+            .flatMapLatest { deleteFeed, feedId in
+                self.presentToAlertViewController(
+                    iconImage: .icAlertWarningCircle,
+                    titleText: StringLiterals.FeedDetail.deleteTitle,
+                    contentText: StringLiterals.FeedDetail.deleteContent,
+                    leftTitle: StringLiterals.FeedDetail.cancel,
+                    rightTitle: StringLiterals.FeedDetail.delete,
+                    rightBackgroundColor: UIColor.wssSecondary100.cgColor
+                )
+                .flatMapLatest { buttonType in
+                    if buttonType == .right {
+                        return deleteFeed(feedId)
+                    } else {
+                        return Observable.empty()
+                    }
+                }
+            }
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.reloadFeed.accept(())
+            }, onError: { owner, error in
+                print("Error: \(error)")
+            })
+            .disposed(by: disposeBag)
+        
+        output.feedTableViewEndRefreshing
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.rootView.feedTableView.refreshControl?.endRefreshing()
             })
             .disposed(by: disposeBag)
     }
+    
+    //MARK: - Custom Method
+    
+    private func observeReachedBottom(_ scrollView: UIScrollView) -> Observable<Bool> {
+        return scrollView.rx.contentOffset
+            .map { contentOffset in
+                let contentHeight = scrollView.contentSize.height
+                let viewHeight = scrollView.frame.size.height
+                let offsetY = contentOffset.y
+                
+                return offsetY + viewHeight >= contentHeight
+            }
+            .distinctUntilChanged()
+    }
 }
 
-extension FeedGenreViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let feed = feedData.value[indexPath.row]
-        
-        let cell = FeedCollectionViewCell(frame: CGRect(x: 0, y: 0, width: collectionView.frame.width, height: 0))
-        cell.bindData(data: feed)
-        
-        cell.setNeedsLayout()
-        cell.layoutIfNeeded()
-        
-        let targetSize = CGSize(width: collectionView.frame.width, height: UIView.layoutFittingCompressedSize.height)
-        let estimatedSize = cell.systemLayoutSizeFitting(targetSize)
-        
-        return CGSize(width: collectionView.frame.width, height: estimatedSize.height)
+extension FeedGenreViewController: FeedTableViewDelegate {
+    func profileViewDidTap(userId: Int) {
+        self.feedProfileViewDidTap.accept(userId)
+    }
+    
+    func dropdownButtonDidTap(feedId: Int, isMyFeed: Bool) {
+        self.feedDropdownButtonDidTap.accept((feedId, isMyFeed))
+    }
+    
+    func connectedNovelViewDidTap(novelId: Int) {
+        self.feedConnectedNovelViewDidTap.accept(novelId)
+    }
+    
+    func likeViewDidTap(feedId: Int, isLiked: Bool) {
+        self.feedLikeViewDidTap.accept((feedId, isLiked))
     }
 }

@@ -16,7 +16,7 @@ final class FeedViewController: UIViewController {
     //MARK: - Properties
     
     private let disposeBag = DisposeBag()
-    private var categoryList = BehaviorRelay<[String]>(value: [""])
+    private var categoryList = BehaviorRelay<[NewNovelGenre]>(value: [])
     private let viewModel: FeedViewModel
     
     //MARK: - Components
@@ -27,6 +27,7 @@ final class FeedViewController: UIViewController {
                                                           options: nil)
     private let pageBar = FeedPageBar()
     private lazy var pages = [FeedGenreViewController]()
+    private let createFeedButton = DifferentRadiusButton()
     
     // MARK: - Life Cycle
     
@@ -86,12 +87,16 @@ final class FeedViewController: UIViewController {
     
     private func setupPages() {
         for pageIndex in 0..<categoryList.value.count {
-            let category = NewNovelGenre.withKoreanRawValue(from: categoryList.value[pageIndex])
+            let category = categoryList.value[pageIndex]
             let viewController = FeedGenreViewController(
                 viewModel: FeedGenreViewModel(
                     feedRepository: DefaultFeedRepository(
                         feedService: DefaultFeedService()
-                    ), category: category.rawValue
+                    ),
+                    feedDetailRepository: DefaultFeedDetailRepository(
+                        feedDetailService: DefaultFeedDetailService()
+                    ),
+                    category: category.rawValue
                 )
             )
             
@@ -109,7 +114,11 @@ final class FeedViewController: UIViewController {
     }
     
     private func bindViewModel() {
-        let input = FeedViewModel.Input(pageBarTapped: pageBar.feedPageBarCollectionView.rx.itemSelected)
+        let input = FeedViewModel.Input(
+            pageBarTapped: pageBar.feedPageBarCollectionView.rx.itemSelected,
+            createFeedButtonDidTap: createFeedButton.rx.tap,
+            feedEditedNotification: NotificationCenter.default.rx.notification(Notification.Name("FeedEdited")).asObservable()
+        )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.categoryList
@@ -133,6 +142,18 @@ final class FeedViewController: UIViewController {
                                                             completion: nil)
             })
             .disposed(by: disposeBag)
+        
+        output.pushToFeedEditViewController
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.pushToFeedEditViewController()
+            })
+            .disposed(by: disposeBag)
+        
+        output.showFeedEditedToast
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.showToast(.feedEdited)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
@@ -147,7 +168,7 @@ extension FeedViewController: UICollectionViewDelegateFlowLayout {
             let height: CGFloat = 41
             
             let pageTitleLabel = UILabel()
-            pageTitleLabel.text = text
+            pageTitleLabel.text = text.withKorean
             pageTitleLabel.font = .Title3
             
             let maxSize = CGSize(width: CGFloat.greatestFiniteMagnitude, height: height)
@@ -195,14 +216,25 @@ extension FeedViewController {
     
     private func setUI() {
         self.view.backgroundColor = .wssWhite
+        
+        createFeedButton.do {
+            $0.backgroundColor = .wssBlack
+            $0.setImage(.icPencilSmall, for: .normal)
+            $0.topLeftRadius = 32.5
+            $0.topRightRadius = 32.5
+            $0.bottomLeftRadius = 32.5
+            $0.bottomRightRadius = 10.0
+        }
     }
     
     private func setHierarchy() {
         self.view.addSubviews(navigationBar,
-                              pageBar)
+                              pageBar,
+                              createFeedButton)
         self.addChild(pageViewController)
         self.view.addSubview(pageViewController.view)
         pageViewController.didMove(toParent: self)
+        self.view.bringSubviewToFront(createFeedButton)
     }
     
     private func setLayout() {
@@ -221,6 +253,12 @@ extension FeedViewController {
         pageViewController.view.snp.makeConstraints {
             $0.top.equalTo(pageBar.snp.bottom).offset(18)
             $0.width.bottom.equalToSuperview()
+        }
+        
+        createFeedButton.snp.makeConstraints {
+            $0.trailing.equalToSuperview().inset(26)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(45)
+            $0.size.equalTo(65)
         }
     }
 }

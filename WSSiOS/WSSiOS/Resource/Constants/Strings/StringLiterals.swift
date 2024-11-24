@@ -52,7 +52,7 @@ enum StringLiterals {
             static let search = "검색"
             static let myPage = "마이페이지"
             static let changeNickname = "닉네임 변경"
-            static let feed = "소소피드"
+            static let feed = "소소한 수다"
             static let notice = "알림"
             static let editProfile = "프로필 편집"
             static let deleteID = "회원탈퇴"

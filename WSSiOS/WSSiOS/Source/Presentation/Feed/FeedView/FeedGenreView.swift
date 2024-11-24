@@ -14,8 +14,9 @@ final class FeedGenreView: UIView {
     
     //MARK: - Components
     
-    lazy var feedCollectionView = UICollectionView(frame: .zero,
-                                                   collectionViewLayout: UICollectionViewLayout())
+    private let emptyView = NovelDetailFeedEmptyView()
+    let feedTableView = UITableView(frame: .zero, style: .plain)
+    let dropdownView = FeedDetailDropdownView()
     
     // MARK: - Life Cycle
     
@@ -36,27 +37,80 @@ final class FeedGenreView: UIView {
     private func setUI() {
         self.backgroundColor = .wssWhite
         
-        feedCollectionView.do {
-            let layout = UICollectionViewFlowLayout().then {
-                $0.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-                $0.minimumLineSpacing = 0
-                $0.minimumInteritemSpacing = 0
-                $0.scrollDirection = .vertical
-            }
-            
-            $0.collectionViewLayout = layout
+        emptyView.do {
+            $0.isHidden = true
+        }
+        
+        feedTableView.do {
             $0.showsVerticalScrollIndicator = false
-            $0.contentInsetAdjustmentBehavior = .always
+            $0.refreshControl = UIRefreshControl()
+            $0.separatorStyle = .none
+        }
+        
+        dropdownView.do {
+            $0.isHidden = true
         }
     }
     
     private func setHierarchy() {
-        addSubview(feedCollectionView)
+        self.addSubviews(emptyView,
+                         feedTableView,
+                         dropdownView)
     }
     
     private func setLayout() {
-        feedCollectionView.snp.makeConstraints() {
+        emptyView.snp.makeConstraints {
+            $0.center.equalToSuperview()
+        }
+        
+        feedTableView.snp.makeConstraints() {
             $0.edges.equalToSuperview()
+        }
+        
+        dropdownView.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.trailing.equalToSuperview().inset(20)
+        }
+    }
+    
+    //MARK: - Custom Method
+    
+    func showDropdownView(indexPath: IndexPath, isMyFeed: Bool) {
+        dropdownView.do {
+            $0.configureDropdown(isMine: isMyFeed)
+            $0.isHidden = false
+        }
+        updateDropdownViewLayout(indexPath: indexPath)
+    }
+    
+    func hideDropdownView() {
+        dropdownView.isHidden = true
+    }
+    
+    func toggleDropdownView() {
+        dropdownView.isHidden.toggle()
+    }
+    
+    func updateDropdownViewLayout(indexPath: IndexPath) {
+        guard let cell = feedTableView.cellForRow(at: indexPath) else { return }
+
+        let cellFrameInSuperview = cell.convert(cell.bounds, to: self)
+        
+        dropdownView.snp.updateConstraints {
+            $0.top.equalToSuperview().inset(cellFrameInSuperview.minY + 58)
+            $0.trailing.equalToSuperview().inset(20)
+        }
+    }
+    
+    //MARK: - Data
+    
+    func bindData(isEmpty: Bool) {
+        if isEmpty {
+            emptyView.isHidden = false
+            feedTableView.isHidden = true
+        } else {
+            emptyView.isHidden = true
+            feedTableView.isHidden = false
         }
     }
 }
