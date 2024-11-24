@@ -49,6 +49,7 @@ final class MyPageEditAvatarView: UIView {
     //MARK: - UI
     
     private func setUI() {
+        self.backgroundColor = .wssWhite
         navigationLabel.do {
             $0.applyWSSFont(.headline1, with: StringLiterals.Navigation.Title.changeAvatar)
             $0.textColor = .wssBlack

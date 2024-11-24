@@ -416,13 +416,12 @@ extension UIViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func pushToMyPageEditAvatarViewController() {
+    func presentMyPageEditAvatarViewController() {
         let viewController = MyPageEditAvatarViewController(
             viewModel: MyPageEditAvatarViewModel(
                 avatarRepository: DefaultAvatarRepository(
                     avatarService: DefaultAvatarService())))
-        
-        self.navigationController?.pushViewController(viewController, animated: true)
+        self.presentModalViewController(viewController)
     }
 }
 

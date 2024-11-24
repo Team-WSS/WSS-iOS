@@ -15,7 +15,6 @@ protocol UserRepository {
     func getUserInfo() -> Observable<UserInfo>
     func putUserInfo(gender: String, birth: Int) -> Observable<Void>
     func patchUserName(userNickName: String) -> Observable<Void>
-    func getUserCharacter() -> Observable<UserCharacter>
     func getBlocksList() -> Observable<BlockUserResult>
     func deleteBlockUser(blockID: Int) -> Observable<Void>
     func getUserProfileVisibility() -> Observable<UserProfileVisibility>
@@ -63,11 +62,6 @@ struct DefaultUserRepository: UserRepository {
     
     func patchUserName(userNickName: String) -> RxSwift.Observable<Void> {
         return userService.patchUserName(userNickName: userNickName)
-            .asObservable()
-    }
-    
-    func getUserCharacter() -> Observable<UserCharacter> {
-        return userService.getUserCharacterData()
             .asObservable()
     }
     

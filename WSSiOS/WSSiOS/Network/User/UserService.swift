@@ -12,7 +12,6 @@ import RxSwift
 protocol UserService {
     func getUserData() -> Single<UserMeResult>
     func patchUserName(userNickName: String) -> Single<Void>
-    func getUserCharacterData() -> Single<UserCharacter>
     func getUserNovelStatus(userId: Int) -> Single<UserNovelStatus>
     func getUserInfo() -> Single<UserInfo>
     func putUserInfo(gender: String, birth: Int) -> Single<Void>
@@ -81,24 +80,6 @@ extension DefaultUserService: UserService {
             
             return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
-                .asSingle()
-        } catch {
-            return Single.error(error)
-        }
-    }
-    
-    func getUserCharacterData() -> Single<UserCharacter> {
-        do {
-            let request = try makeHTTPRequest(method: .get,
-                                              path: URLs.Avatar.getRepAvatar,
-                                              headers: APIConstants.accessTokenHeader,
-                                              body: nil)
-            
-            NetworkLogger.log(request: request)
-            
-            return tokenCheckURLSession.rx.data(request: request)
-                .map { try self.decode(data: $0,
-                                       to: UserCharacter.self) }
                 .asSingle()
         } catch {
             return Single.error(error)

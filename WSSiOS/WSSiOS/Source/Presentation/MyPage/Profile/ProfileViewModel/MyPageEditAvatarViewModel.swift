@@ -68,7 +68,10 @@ final class MyPageEditAvatarViewModel: ViewModelType {
         input.changeButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
                 if owner.isTappedAvatar {
-                    NotificationCenter.default.post(name: NSNotification.Name("ChangRepresentativeAvatar"), object: owner.lastTappedAvatar.value)
+                    let avatarIndex = owner.lastTappedAvatar.value
+                    let avatarID = owner.totalAvatarData[avatarIndex].avatarId
+                    let avatarImage = owner.totalAvatarData[avatarIndex].avatarImage
+                    NotificationCenter.default.post(name: NSNotification.Name("ChangRepresentativeAvatar"), object: (avatarID, avatarImage))
                 }
                 output.dismissModalViewController.accept(())
             })

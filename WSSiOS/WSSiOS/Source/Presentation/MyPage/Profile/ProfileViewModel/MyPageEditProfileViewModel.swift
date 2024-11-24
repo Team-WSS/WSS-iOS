@@ -22,6 +22,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
     
     private let userRepository: UserRepository
     private var profileData: MyProfileResult
+    private var avatarId: Int = -1
     
     private var userNickname = BehaviorRelay<String>(value: "")
     private let userIntro = BehaviorRelay<String>(value: "")
@@ -32,7 +33,6 @@ final class MyPageEditProfileViewModel: ViewModelType {
     private let isNicknameAvailable = BehaviorRelay<NicknameAvailablity>(value: .notStarted)
     private let showNetworkErrorView = PublishRelay<Void>()
     private let checkDuplicatedButton = BehaviorRelay<Bool>(value: false)
-    
     
     //MARK: - Life Cycle
     
@@ -69,6 +69,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
                                                                                     avatarImage: "",
                                                                                     genrePreferences: []))
         let pushToAvatarViewController = PublishRelay<Bool>()
+        let updateProfileImage = PublishRelay<String>()
         
         let nicknameText = BehaviorRelay<String>(value: "")
         let editingTextField = BehaviorRelay<Bool>(value: false)
@@ -111,9 +112,10 @@ final class MyPageEditProfileViewModel: ViewModelType {
             .flatMapLatest{ _ -> Observable<Void> in
                 var updatedFields: [String: Any] = [:]
                 
-                //                if self.userImage.value != self.profileData.avatarImage {
-                //                    updatedFields["avatarId"] = 0
-                //                }
+                if self.userImage.value != self.profileData.avatarImage && self.avatarId != -1  {
+                    updatedFields["avatarId"] = self.avatarId
+                }
+                
                 if self.userNickname.value != self.profileData.nickname {
                     updatedFields["nickname"] = self.userNickname.value
                 }
@@ -168,8 +170,10 @@ final class MyPageEditProfileViewModel: ViewModelType {
         
         input.avatarImageNotification
             .subscribe(with: self, onNext: { owner, notification in
-                guard let avatarImage = notification.object as? Int else { return }
-                
+                guard let avatarData = notification.object as? (Int, String) else { return }
+                owner.avatarId = avatarData.0
+                owner.userImage.accept(avatarData.1)
+                output.updateProfileImage.accept(avatarData.1)
             })
             .disposed(by: disposeBag)
         
@@ -276,7 +280,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
     }
     
     private func changeInfoData() {
-        if (self.userNickname.value == profileData.nickname && self.userIntro.value == profileData.intro && self.userGenre.value == profileData.genrePreferences /*&& self.userImage.value == self.profileData.avatarImage*/) {
+        if (self.userNickname.value == profileData.nickname && self.userIntro.value == profileData.intro && self.userGenre.value == profileData.genrePreferences && self.userImage.value == self.profileData.avatarImage) {
             self.changeCompleteButtonRelay.accept(self.checkDuplicatedButton.value)
         }
         else {

@@ -106,7 +106,14 @@ final class MyPageEditProfileViewController: UIViewController {
         output.pushToAvatarViewController
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
-                owner.pushToMyPageEditAvatarViewController()
+                owner.presentMyPageEditAvatarViewController()
+            })
+            .disposed(by: disposeBag)
+        
+        output.updateProfileImage
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, image in
+                owner.rootView.updateProfileImage(image: image)
             })
             .disposed(by: disposeBag)
         

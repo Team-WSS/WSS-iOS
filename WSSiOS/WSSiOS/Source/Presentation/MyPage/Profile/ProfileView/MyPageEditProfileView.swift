@@ -365,6 +365,13 @@ extension MyPageEditProfileView {
         completeButton.isEnabled = isAbled
     }
     
+    //프로필
+    func updateProfileImage(image: String) {
+        userImageView.do {
+            $0.kfSetImage(url: makeBucketImageURLString(path: image))
+        }
+    }
+    
     //닉네임
     func updateNicknameText(text: String) {
         nicknameTextField.applyWSSFont(.body2, with: text)

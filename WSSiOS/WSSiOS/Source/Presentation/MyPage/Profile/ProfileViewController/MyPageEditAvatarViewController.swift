@@ -78,7 +78,7 @@ final class MyPageEditAvatarViewController: UIViewController, UIScrollViewDelega
         output.dismissModalViewController
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
-                owner.popToLastViewController()
+                owner.dismissModalViewController()
             })
             .disposed(by: disposeBag)
         
@@ -90,3 +90,17 @@ final class MyPageEditAvatarViewController: UIViewController, UIScrollViewDelega
         
     }
 }
+//
+//extension MyPageEditAvatarViewController: UICollectionViewDelegateFlowLayout {
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//        
+//        guard let unwrappedText = text else {
+//            return CGSize(width: 0, height: 0)
+//        }
+//        
+//        let width = (unwrappedText as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 26
+//        return CGSize(width: 50, height: 50)
+//    }
+//    
+//    func 
+//}
