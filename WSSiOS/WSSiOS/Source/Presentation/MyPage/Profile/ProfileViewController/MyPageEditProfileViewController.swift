@@ -72,6 +72,7 @@ final class MyPageEditProfileViewController: UIViewController {
             backButtonDidTap: rootView.backButton.rx.tap,
             completeButtonDidTap: rootView.completeButton.rx.tap,
             profileViewDidTap: rootView.myPageProfileView.rx.tapGesture().when(.recognized).asObservable(),
+            avatarImageNotification: NotificationCenter.default.rx.notification(Notification.Name("ChangRepresentativeAvatar")).asObservable(),
             updateNicknameText: rootView.nicknameTextField.rx.text.orEmpty.distinctUntilChanged(),
             textFieldBeginEditing: rootView.nicknameTextField.rx.controlEvent(.editingDidBegin),
             clearButtonDidTap: rootView.nicknameClearButton.rx.tap,
@@ -99,6 +100,13 @@ final class MyPageEditProfileViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 owner.popToLastViewController()
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushToAvatarViewController
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                owner.pushToMyPageEditAvatarViewController()
             })
             .disposed(by: disposeBag)
         

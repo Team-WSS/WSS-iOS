@@ -75,7 +75,7 @@ final class MyPageEditAvatarViewController: UIViewController, UIScrollViewDelega
             }
             .disposed(by: disposeBag)
         
-        output.popViewController
+        output.dismissModalViewController
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 owner.popToLastViewController()

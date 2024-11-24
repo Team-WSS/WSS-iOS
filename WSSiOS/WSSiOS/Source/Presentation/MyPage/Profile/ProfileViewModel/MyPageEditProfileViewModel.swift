@@ -47,6 +47,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
         let backButtonDidTap: ControlEvent<Void>
         let completeButtonDidTap: ControlEvent<Void>
         let profileViewDidTap: Observable<UITapGestureRecognizer>
+        let avatarImageNotification: Observable<Notification>
         
         let updateNicknameText: Observable<String>
         let textFieldBeginEditing: ControlEvent<Void>
@@ -67,6 +68,8 @@ final class MyPageEditProfileViewModel: ViewModelType {
                                                                                     intro: "",
                                                                                     avatarImage: "",
                                                                                     genrePreferences: []))
+        let pushToAvatarViewController = PublishRelay<Bool>()
+        
         let nicknameText = BehaviorRelay<String>(value: "")
         let editingTextField = BehaviorRelay<Bool>(value: false)
         let checkShwonWarningMessage = BehaviorRelay<NicknameAvailablity>(value: .notStarted)
@@ -159,7 +162,14 @@ final class MyPageEditProfileViewModel: ViewModelType {
         input.profileViewDidTap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
-                //VC 이동
+                output.pushToAvatarViewController.accept(true)
+            })
+            .disposed(by: disposeBag)
+        
+        input.avatarImageNotification
+            .subscribe(with: self, onNext: { owner, notification in
+                guard let avatarImage = notification.object as? Int else { return }
+                
             })
             .disposed(by: disposeBag)
         
