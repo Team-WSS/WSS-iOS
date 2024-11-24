@@ -28,6 +28,8 @@ final class FeedDetailView: UIView {
     let replyWritingView = FeedDetailReplyWritingView()
     private let replyBottomView = UIView()
     
+    private let loadingView = WSSLoadingView()
+    
     // MARK: - Life Cycle
     
     override init(frame: CGRect) {
@@ -73,13 +75,18 @@ final class FeedDetailView: UIView {
         replyBottomView.do {
             $0.backgroundColor = .wssWhite
         }
+        
+        loadingView.do {
+            $0.isHidden = true
+        }
     }
     
     private func setHierarchy() {
         self.addSubviews(scrollView,
                          replyWritingView,
                          replyBottomView,
-                         dropdownView)
+                         dropdownView,
+                         loadingView)
         scrollView.addSubview(contentView)
         contentView.addSubviews(profileView,
                                 feedContentView,
@@ -135,6 +142,10 @@ final class FeedDetailView: UIView {
             $0.horizontalEdges.equalToSuperview()
             $0.bottom.equalToSuperview()
         }
+        
+        loadingView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
     }
     
     //MARK: - Custom Methods
@@ -142,5 +153,9 @@ final class FeedDetailView: UIView {
     func bindData(_ data: Feed) {
         profileView.bindData(data: data)
         feedContentView.bindData(data: data)
+    }
+    
+    func showLoadingView(isShow: Bool) {
+        loadingView.isHidden = !isShow
     }
 }
