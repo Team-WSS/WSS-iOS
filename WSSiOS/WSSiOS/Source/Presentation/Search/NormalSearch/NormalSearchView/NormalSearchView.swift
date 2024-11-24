@@ -18,16 +18,16 @@ final class NormalSearchView: UIView {
     let resultView = NormalSearchResultView()
     let emptyView = NormalSearchEmptyView()
     
+    let loadingView = WSSLoadingView()
+    
     // MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        setUI()
         setHierarchy()
         setLayout()
-        
-        resultView.isHidden = true
-        emptyView.isHidden = true
     }
     
     required init?(coder: NSCoder) {
@@ -35,11 +35,18 @@ final class NormalSearchView: UIView {
     }
     
     //MARK: - UI
+    
+    private func setUI() {
+        resultView.isHidden = true
+        emptyView.isHidden = true
+        loadingView.isHidden = true
+    }
 
     private func setHierarchy() {
         self.addSubviews(headerView,
                          resultView,
-                         emptyView)
+                         emptyView,
+                         loadingView)
     }
     
     private func setLayout() {
@@ -56,6 +63,18 @@ final class NormalSearchView: UIView {
         emptyView.snp.makeConstraints {
             $0.top.equalTo(headerView.snp.bottom)
             $0.horizontalEdges.bottom.equalToSuperview()
+        }
+        
+        loadingView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+    }
+    
+    //MARK: - Custom Methods
+    
+    func showLoadingView(isShow: Bool) {
+        loadingView.do {
+            $0.isHidden = !isShow
         }
     }
 }

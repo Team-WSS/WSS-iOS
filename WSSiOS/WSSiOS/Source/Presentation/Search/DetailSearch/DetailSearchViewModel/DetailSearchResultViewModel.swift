@@ -37,6 +37,7 @@ final class DetailSearchResultViewModel: ViewModelType {
     private let filteredNovelsData = BehaviorRelay<[SearchNovel]>(value: [])
     private let resultCount = BehaviorRelay<Int>(value: 0)
     private let updateDetailSearchResultNotification = PublishRelay<Notification>()
+    private let showLoadingView = PublishRelay<Bool>()
     
     struct Input {
         let backButtonDidTap: ControlEvent<Void>
@@ -58,6 +59,7 @@ final class DetailSearchResultViewModel: ViewModelType {
         let filteredNovelsData: Observable<[SearchNovel]>
         let resultCount: Driver<Int>
         let showEmptyView: Observable<Bool>
+        let showLoadingView: Observable<Bool>
     }
     
     init(searchRepository: SearchRepository,
@@ -104,6 +106,9 @@ final class DetailSearchResultViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.viewDidLoadEvent
+            .do(onNext: {
+                self.showLoadingView.accept(true)
+            })
             .flatMapLatest {
                 return self.getDetailSearchNovels(
                     genres: self.genres.map { $0.rawValue },
@@ -117,8 +122,10 @@ final class DetailSearchResultViewModel: ViewModelType {
                 self.filteredNovelsData.accept(result.novels)
                 self.resultCount.accept(result.resultCount)
                 self.isLoadable = result.isLoadable
+                self.showLoadingView.accept(false)
             }, onError: { error in
                 print("Error fetching novels: \(error)")
+                self.showLoadingView.accept(false)
             })
             .disposed(by: disposeBag)
         
@@ -133,6 +140,7 @@ final class DetailSearchResultViewModel: ViewModelType {
             }
             .do(onNext: { _ in
                 self.isFetching = true
+                self.showLoadingView.accept(true)
             })
             .flatMapLatest { _ in
                 self.getDetailSearchNovels(
@@ -144,8 +152,10 @@ final class DetailSearchResultViewModel: ViewModelType {
                 .do(onNext: { _ in
                     self.currentPage += 1
                     self.isFetching = false
+                    self.showLoadingView.accept(false)
                 }, onError: { _ in
                     self.isFetching = false
+                    self.showLoadingView.accept(false)
                 })
             }
             .subscribe(with: self, onNext: { owner, data in
@@ -156,6 +166,9 @@ final class DetailSearchResultViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.updateDetailSearchResultNotification
+            .do(onNext: { _ in
+                self.showLoadingView.accept(true)
+            })
             .subscribe(with: self, onNext: { owner, notification in
                 owner.updateDetailSearchResultNotification.accept(notification)
                 owner.filteredNovelsData.accept([])
@@ -183,8 +196,10 @@ final class DetailSearchResultViewModel: ViewModelType {
                         owner.filteredNovelsData.accept(result.novels)
                         owner.resultCount.accept(result.resultCount)
                         owner.isLoadable = result.isLoadable
+                        owner.showLoadingView.accept(false)
                     }, onError: { error in
                         print("Error fetching novels: \(error)")
+                        owner.showLoadingView.accept(false)
                     })
                     .disposed(by: disposeBag)
                 }
@@ -197,7 +212,8 @@ final class DetailSearchResultViewModel: ViewModelType {
                       presentDetailSearchModal: presentDetailSearchModal.asObservable(),
                       filteredNovelsData: filteredNovelsData.asObservable(),
                       resultCount: resultCount.asDriver(),
-                      showEmptyView: showEmptyView.asObservable())
+                      showEmptyView: showEmptyView.asObservable(),
+                      showLoadingView: showLoadingView.asObservable())
     }
     
     //MARK: - API
