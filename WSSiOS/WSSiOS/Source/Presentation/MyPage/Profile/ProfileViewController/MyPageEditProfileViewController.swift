@@ -96,7 +96,8 @@ final class MyPageEditProfileViewController: UIViewController {
                 .disposed(by: disposeBag)
         
         output.popViewController
-            .subscribe(with: self, onNext: { owner, _ in
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
                 owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
