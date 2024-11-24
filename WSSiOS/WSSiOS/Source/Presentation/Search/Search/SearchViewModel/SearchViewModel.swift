@@ -18,6 +18,8 @@ final class SearchViewModel: ViewModelType {
     private let searchRepository: SearchRepository
     private let disposeBag = DisposeBag()
     
+    private let isLogined = APIConstants.isLogined
+    
     //MARK: - Inputs
     
     struct Input {
@@ -31,10 +33,11 @@ final class SearchViewModel: ViewModelType {
     
     struct Output {
         var sosoPickList = BehaviorRelay<[SosoPickNovel]>(value: [])
-        let searchBarEnabled = PublishRelay<Bool>()
-        let induceButtonEnabled = PublishRelay<Bool>()
-        let navigateToNovelDetailView = PublishRelay<IndexPath>()
+        let pushToNormalSearchViewController = PublishRelay<Void>()
+        let pushToDetailSearchViewController = PublishRelay<Void>()
+        let pushToNovelDetailViewController = PublishRelay<Int>()
         let pushToDetailSearchResultView = PublishRelay<Notification>()
+        let presentToInduceLoginView = PublishRelay<Void>()
     }
     
     //MARK: - init
@@ -45,6 +48,9 @@ final class SearchViewModel: ViewModelType {
     
     //MARK: - API
     
+    func getSosoPickNovels() -> Observable<SosoPickNovels> {
+        return searchRepository.getSosoPickNovels()
+    }
 }
 
 //MARK: - Methods
@@ -53,7 +59,7 @@ extension SearchViewModel {
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
         
-        searchRepository.getSosoPickNovels()
+        self.getSosoPickNovels()
             .subscribe(with: self, onNext: { owner, data in
                 output.sosoPickList.accept(data.sosoPicks)
             }, onError: { owner, error in
@@ -63,19 +69,32 @@ extension SearchViewModel {
         
         input.searhBarDidTap
             .subscribe(onNext: { _ in
-                output.searchBarEnabled.accept(true)
+                if self.isLogined {
+                    output.pushToNormalSearchViewController.accept(())
+                } else {
+                    output.presentToInduceLoginView.accept(())
+                }
             })
             .disposed(by: disposeBag)
         
         input.induceButtonDidTap
             .subscribe(onNext: { _ in
-                output.induceButtonEnabled.accept(true)
+                if self.isLogined {
+                    output.pushToDetailSearchViewController.accept(())
+                } else {
+                    output.presentToInduceLoginView.accept(())
+                }
             })
             .disposed(by: disposeBag)
         
         input.sosoPickCellSelected
             .subscribe(onNext: { indexPath in
-                output.navigateToNovelDetailView.accept(indexPath)
+                if self.isLogined {
+                    let novelId = output.sosoPickList.value[indexPath.row].novelId
+                    output.pushToNovelDetailViewController.accept(novelId)
+                } else {
+                    output.presentToInduceLoginView.accept(())
+                }
             })
             .disposed(by: disposeBag)
         

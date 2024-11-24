@@ -20,8 +20,6 @@ final class HomeInterestView: UIView {
     let interestCollectionView = UICollectionView(frame: .zero,
                                                   collectionViewLayout: UICollectionViewLayout())
     private let interestCollectionViewLayout = UICollectionViewFlowLayout()
-    
-    private let userNickname = UserDefaults.standard.string(forKey: StringLiterals.UserDefault.userNickname)
     let unregisterView = HomeUnregisterView(.interest)
     private let interestEmptyView = HomeInterestEmptyView()
     
@@ -64,13 +62,13 @@ final class HomeInterestView: UIView {
     
     //MARK: - Custom Method
     
-    func updateView(_ isLogined: Bool, _ message: InterestMessage) {
+    func updateView(_ isLogined: Bool, _ message: InterestMessage, _ nickname: String?) {
         if isLogined {
             // 로그인
             switch message {
             case .noInterestNovels:
                 // 유저의 관심작품이 없을 때
-                if let nickname = userNickname {
+                if let nickname = nickname {
                     titleLabel.applyWSSFont(.headline1, with: "\(nickname)\(StringLiterals.Home.Title.interest)")
                 }
                 self.addSubviews(titleLabel,
@@ -102,11 +100,12 @@ final class HomeInterestView: UIView {
                     $0.leading.trailing.equalToSuperview().inset(20)
                     $0.bottom.equalToSuperview().inset(20)
                 }
+                interestCollectionView.removeFromSuperview()
                 unregisterView.removeFromSuperview()
                 subTitleLabel.removeFromSuperview()
             case .none:
                 // 관심글이 존재할 때
-                if let nickname = userNickname {
+                if let nickname = nickname {
                     titleLabel.applyWSSFont(.headline1, with: "\(nickname)\(StringLiterals.Home.Title.interest)")
                 }
                 self.addSubviews(titleLabel,

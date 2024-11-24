@@ -20,6 +20,7 @@ final class HomeViewController: UIViewController {
     
     private let isLoggedIn = APIConstants.isLogined
     private let viewWillAppearEvent = PublishRelay<Void>()
+    private let viewDidLoadEvent = PublishRelay<Void>()
     
     //MARK: - UI Components
     
@@ -56,6 +57,8 @@ final class HomeViewController: UIViewController {
         registerCell()
         setDelegate()
         bindViewModel()
+        
+        viewDidLoadEvent.accept(())
     }
     
     //MARK: - UI
@@ -92,6 +95,7 @@ final class HomeViewController: UIViewController {
     private func bindViewModel() {
         let input = HomeViewModel.Input(
             viewWillAppearEvent: viewWillAppearEvent.asObservable(),
+            viewDidLoadEvent: viewDidLoadEvent.asObservable(),
             todayPopularCellSelected: rootView.todayPopularView.todayPopularCollectionView.rx.itemSelected,
             interestCellSelected: rootView.interestView.interestCollectionView.rx.itemSelected,
             tasteRecommendCellSelected: rootView.tasteRecommendView.tasteRecommendCollectionView.rx.itemSelected,
@@ -150,9 +154,9 @@ final class HomeViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
                 let isLogined = data.0
-                let messageString = data.1
-                let message = InterestMessage(rawValue: messageString) ?? .none
-                owner.rootView.interestView.updateView(isLogined, message)
+                let message = data.1
+                let nickname = UserDefaults.standard.string(forKey: StringLiterals.UserDefault.userNickname)
+                owner.rootView.interestView.updateView(isLogined, message, nickname)
             })
             .disposed(by: disposeBag)
         
@@ -208,6 +212,12 @@ final class HomeViewController: UIViewController {
                 owner.presentInduceLoginViewController()
             })
             .disposed(by: disposeBag)
+    }
+    
+    //MARK: - Custom Method
+    
+    func scrollToTop() {
+        self.rootView.scrollView.setContentOffset(CGPoint(x: 0, y: -self.rootView.scrollView.contentInset.top), animated: true)
     }
 }
 

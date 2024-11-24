@@ -54,6 +54,11 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
         bindViewModel()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.rootView.headerView.searchTextField.becomeFirstResponder()
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
@@ -66,7 +71,6 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
     
     private func setUI() {
         self.view.backgroundColor = .wssWhite
-        self.rootView.headerView.searchTextField.becomeFirstResponder()
     }
     
     //MARK: - Bind
