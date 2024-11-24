@@ -19,7 +19,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
     
     private let nicknamePattern = "^[a-zA-Z0-9가-힣]{2,10}$"
     static let nicknameLimit = 10
-    static let introLimit = 40
+    static let introLimit = 50
     
     private let userRepository: UserRepository
     private var profileData: MyProfileResult
@@ -165,7 +165,10 @@ final class MyPageEditProfileViewModel: ViewModelType {
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, text in
                 output.nicknameText.accept(String(text.prefix(MyPageEditProfileViewModel.nicknameLimit)))
-                output.checkButtonIsAbled.accept(text != owner.userNickname.value)
+                owner.checkNicknameAvailability(text)
+                
+                let isNickNameValid = owner.isValidNicknameCharacters(text)
+                output.checkButtonIsAbled.accept(text != owner.userNickname.value && isNickNameValid)
             })
             .disposed(by: disposeBag)
         
@@ -178,8 +181,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
         
         input.clearButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
-                owner.userNickname.accept("")
-                output.nicknameText.accept(owner.userNickname.value)
+                output.nicknameText.accept("")
                 
                 output.editingTextField.accept(true)
                 output.completeButtonIsAbled.accept(false)

@@ -23,8 +23,8 @@ final class MyPageEditProfileView: UIView {
     private let nicknameView = UIView()
     private let nicknameLabel = UILabel()
     lazy var nicknameTextField = UITextField()
-    lazy var clearButton = UIButton()
-    lazy var checkButton = UIButton()
+    lazy var nicknameClearButton = UIButton()
+    lazy var nicknameDuplicatedButton = UIButton()
     private let nicknameWarningLabel = UILabel()
     private var nicknameCountView = MyPageCountView(maxLimit: 10)
     
@@ -34,7 +34,7 @@ final class MyPageEditProfileView: UIView {
     private let introLabel = UILabel()
     lazy var introTextView = UITextView()
     private let introTextViewPlaceholder = UILabel()
-    private var introCountView = MyPageCountView(maxLimit: 40)
+    private var introCountView = MyPageCountView(maxLimit: 50)
     
     private let divide2View = UIView()
     
@@ -106,18 +106,18 @@ final class MyPageEditProfileView: UIView {
                 
                 let rightViewContainer = UIView(frame: CGRect(x: -13, y: 0, width: 44, height: 44))
                 
-                clearButton.do {
+                nicknameClearButton.do {
                     $0.setImage(.icCancelLight, for: .normal)
                     $0.contentMode = .scaleAspectFit
                     $0.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
                 }
                 
-                rightViewContainer.addSubview(clearButton)
+                rightViewContainer.addSubview(nicknameClearButton)
                 $0.rightView = rightViewContainer
                 $0.rightViewMode = .always
             }
             
-            checkButton.do {
+            nicknameDuplicatedButton.do {
                 $0.setTitle(StringLiterals.MyPage.EditProfile.nicknameCheck, for: .normal)
                 $0.setTitleColor(.wssGray200, for: .normal)
                 $0.titleLabel?.applyWSSFont(.body2, with: StringLiterals.MyPage.EditProfile.nicknameCheck)
@@ -207,7 +207,7 @@ final class MyPageEditProfileView: UIView {
         userImageChangeButton.addSubview(userImageChangeButtonView)
         nicknameView.addSubviews(nicknameLabel,
                                  nicknameTextField,
-                                 checkButton,
+                                 nicknameDuplicatedButton,
                                  nicknameWarningLabel,
                                  nicknameCountView,
                                  divide1View)
@@ -267,7 +267,7 @@ final class MyPageEditProfileView: UIView {
                 $0.width.equalTo(240)
             }
             
-            checkButton.snp.makeConstraints {
+            nicknameDuplicatedButton.snp.makeConstraints {
                 $0.top.equalTo(nicknameLabel.snp.bottom).offset(7)
                 $0.leading.equalTo(nicknameTextField.snp.trailing).offset(7)
                 $0.trailing.equalToSuperview().inset(20)
@@ -366,7 +366,7 @@ extension MyPageEditProfileView {
     }
     
     //닉네임
-    func updateNickname(text: String) {
+    func updateNicknameText(text: String) {
         nicknameTextField.applyWSSFont(.body2, with: text)
         nicknameCountView.countLabel.applyWSSFont(.label1, with: String(text.count))
     }
@@ -390,7 +390,7 @@ extension MyPageEditProfileView {
         }
     }
     
-    func updateNickNameStatusDescriptionLabel(isEditing: Bool, availablity: NicknameAvailablity) {
+    func updateNickNameWarningLabel(isEditing: Bool, availablity: NicknameAvailablity) {
         nicknameWarningLabel.do {
             $0.isHidden = availablity.descriptionIsHidden()
             $0.applyWSSFont(.body4, with:  availablity.description())
@@ -398,7 +398,7 @@ extension MyPageEditProfileView {
         }
     }
     
-    func updateTextFieldInnerButton(isEditing: Bool, availablity: NicknameAvailablity) {
+    func updateNicknameClearButton(isEditing: Bool, availablity: NicknameAvailablity) {
         var buttonImage: UIImage = .icCancelDark
         
         switch availablity {
@@ -410,15 +410,15 @@ extension MyPageEditProfileView {
             break
         }
         
-        clearButton.do {
+        nicknameClearButton.do {
             $0.isHidden = !isEditing
             $0.setImage(buttonImage, for: .normal)
             $0.isUserInteractionEnabled = !(availablity == .available)
         }
     }
     
-    func updateCheckButton(isEnabled: Bool) {
-        checkButton.do {
+    func updateNicknameDuplicatedButton(isEnabled: Bool) {
+        nicknameDuplicatedButton.do {
             $0.isEnabled = isEnabled
             $0.backgroundColor = isEnabled ? .wssPrimary50 : .wssGray70
             $0.setTitleColor(isEnabled ? .wssPrimary100 : .wssGray200, for: .normal)

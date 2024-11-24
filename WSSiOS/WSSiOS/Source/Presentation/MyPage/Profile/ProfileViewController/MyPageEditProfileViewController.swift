@@ -74,8 +74,8 @@ final class MyPageEditProfileViewController: UIViewController {
             profileViewDidTap: rootView.myPageProfileView.rx.tapGesture().when(.recognized).asObservable(),
             updateNicknameText: rootView.nicknameTextField.rx.text.orEmpty.distinctUntilChanged(),
             textFieldBeginEditing: rootView.nicknameTextField.rx.controlEvent(.editingDidBegin),
-            clearButtonDidTap: rootView.clearButton.rx.tap,
-            checkButtonDidTap: rootView.checkButton.rx.tap,
+            clearButtonDidTap: rootView.nicknameClearButton.rx.tap,
+            checkButtonDidTap: rootView.nicknameDuplicatedButton.rx.tap,
             viewDidTap: view.rx.tapGesture(configuration: { gestureRecognizer, delegate in
                 gestureRecognizer.cancelsTouchesInView = false
             }),
@@ -103,14 +103,14 @@ final class MyPageEditProfileViewController: UIViewController {
         
         output.nicknameText
             .bind(with: self, onNext: { owner, text in
-                owner.rootView.updateNickname(text: text)
+                owner.rootView.updateNicknameText(text: text)
             })
             .disposed(by: disposeBag)
         
         output.checkButtonIsAbled
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, isEnabled in
-                owner.rootView.updateCheckButton(isEnabled: isEnabled)
+                owner.rootView.updateNicknameDuplicatedButton(isEnabled: isEnabled)
             })
             .disposed(by: disposeBag)
 
@@ -121,10 +121,10 @@ final class MyPageEditProfileViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, tuple in
                 let (isEditing, availability) = tuple
-                owner.rootView.updateCheckButton(isEnabled: isEditing)
+                
                 owner.rootView.updateNicknameTextField(isEditing: isEditing, availablity: availability)
-                owner.rootView.updateNickNameStatusDescriptionLabel(isEditing: isEditing, availablity: availability)
-                owner.rootView.updateTextFieldInnerButton(isEditing: isEditing, availablity: availability)
+                owner.rootView.updateNickNameWarningLabel(isEditing: isEditing, availablity: availability)
+                owner.rootView.updateNicknameClearButton(isEditing: isEditing, availablity: availability)
             })
             .disposed(by: disposeBag)
         
