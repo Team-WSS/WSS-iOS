@@ -230,7 +230,13 @@ extension UIViewController {
     }
     
     func pushToMyPageDeleteIDViewController() {
-        let viewController = MyPageDeleteIDViewController(viewModel: MyPageDeleteIDViewModel())
+        let viewController = MyPageDeleteIDViewController(
+            viewModel: MyPageDeleteIDViewModel(
+                authRepository: DefaultAuthRepository(
+                    authService: DefaultAuthService()
+                )
+            )
+        )
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     

@@ -14,6 +14,7 @@ protocol AuthService {
                         idToken: String) -> Single<LoginResult>
     func loginWithKakao(_ kakaoAccessToken: String) -> Single<LoginResult>
     func reissueToken() -> Single<ReissueResult>
+    func postWithdrawId(reason: String, refreshToken: String) -> Single<Void>
 }
 
 
@@ -82,6 +83,26 @@ final class DefaultAuthService: NSObject, Networking, AuthService {
                                        to: ReissueResult.self) }
                 .asSingle()
 
+        } catch {
+            return Single.error(error)
+        }
+    }
+    
+    func postWithdrawId(reason: String, refreshToken: String) -> Single<Void> {
+        guard let data = try? JSONEncoder().encode(WithdrawRequest(reason: reason, refreshToken: refreshToken)) else {
+            return Single.error(NetworkServiceError.invalidRequestError)
+        }
+        do {
+            let request = try makeHTTPRequest(method: .post,
+                                              path: URLs.Auth.withdrawId,
+                                              headers: APIConstants.accessTokenHeader,
+                                              body: data)
+            
+            NetworkLogger.log(request: request)
+
+            return tokenCheckURLSession.rx.data(request: request)
+                .map { _ in }
+                .asSingle()
         } catch {
             return Single.error(error)
         }

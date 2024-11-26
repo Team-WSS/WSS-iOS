@@ -68,7 +68,9 @@ final class MyPageDeleteIDViewController: UIViewController {
             agreeAllButtonDidTap: rootView.agreeDeleteIDButton.rx.tap,
             reasonCellDidTap: rootView.reasonView.reasonTableView.rx.itemSelected,
             completeButtonDidTap: rootView.completeButton.rx.tap,
-            viewDidTap: view.rx.tapGesture(),
+            viewDidTap: view.rx.tapGesture(configuration: { gestureRecognizer, delegate in
+                gestureRecognizer.cancelsTouchesInView = false
+            }),
             textUpdated: rootView.reasonView.reasonTextView.rx.text.orEmpty.asObservable(),
             didBeginEditing: rootView.reasonView.reasonTextView.rx.didBeginEditing,
             didEndEditing: rootView.reasonView.reasonTextView.rx.didEndEditing)
@@ -114,6 +116,12 @@ final class MyPageDeleteIDViewController: UIViewController {
         output.popViewController
             .bind(with: self, onNext: { owner, _ in
                 owner.popToLastViewController()
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushToLoginViewController
+            .bind(with: self, onNext: { owner, _ in
+                owner.pushToLoginViewController()
             })
             .disposed(by: disposeBag)
         
