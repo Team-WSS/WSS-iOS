@@ -95,6 +95,7 @@ final class MyPageEditProfileView: UIView {
             
             nicknameTextField.do {
                 $0.textColor = .wssBlack
+                $0.font = .Body2
                 $0.backgroundColor = .wssGray50
                 $0.layer.cornerRadius = 12
                 
@@ -373,7 +374,7 @@ extension MyPageEditProfileView {
     
     //닉네임
     func updateNicknameText(text: String) {
-        nicknameTextField.applyWSSFont(.body2, with: text)
+        nicknameTextField.text = text
         nicknameCountView.countLabel.applyWSSFont(.label1, with: String(text.count))
     }
     
@@ -465,7 +466,7 @@ extension MyPageEditProfileView {
     
     func bindData(data: MyProfileResult) {
         
-        nicknameTextField.applyWSSFont(.body2, with: data.nickname)
+        nicknameTextField.text = data.nickname
         
         introTextView.applyWSSFont(.body2, with: data.intro)
         if !data.intro.isEmpty {
