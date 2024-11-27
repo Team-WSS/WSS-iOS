@@ -30,7 +30,6 @@ final class MyPageInfoViewModel: ViewModelType {
         let cellDidTapped: ControlEvent<IndexPath>
         let logoutButtonTapped: PublishRelay<Bool>
         let backButtonDidTap: ControlEvent<Void>
-        let updateUserInfo: BehaviorRelay<Bool>
     }
     
     struct Output {
@@ -80,19 +79,6 @@ final class MyPageInfoViewModel: ViewModelType {
                     //회원탈퇴
                     output.pushToMyPageDeleteIDWarningViewController.accept(())
                 default: break
-                }
-            })
-            .disposed(by: disposeBag)
-        
-        input.updateUserInfo
-            .subscribe(with: self, onNext: { owner, update in
-                if update {
-                    owner.getUserInfo()
-                        .subscribe(with: self, onNext: { owner, data in
-                            output.genderAndBirth.accept(ChangeUserInfo(gender: data.gender,
-                                                                        birth: data.birth))
-                        })
-                        .disposed(by: disposeBag)
                 }
             })
             .disposed(by: disposeBag)

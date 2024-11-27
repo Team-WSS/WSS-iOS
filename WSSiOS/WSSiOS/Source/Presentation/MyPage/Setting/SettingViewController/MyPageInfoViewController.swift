@@ -18,7 +18,6 @@ final class MyPageInfoViewController: UIViewController {
     private let viewModel: MyPageInfoViewModel
     private let emailRelay = BehaviorRelay(value: "")
     private let logoutRelay = PublishRelay<Bool>()
-    private let updateDataRelay = BehaviorRelay<Bool>(value: false)
     
     //MARK: - UI Components
     
@@ -44,7 +43,6 @@ final class MyPageInfoViewController: UIViewController {
         super.viewDidLoad()
         
         register()
-        bindCell()
         bindViewModel()
     }
     
@@ -66,18 +64,12 @@ final class MyPageInfoViewController: UIViewController {
     
     
     //MARK: - Bind
-    
-    private func bindCell() {
-        rootView.tableView.rx.itemSelected
-        
-    }
-    
+
     private func bindViewModel() {
         let input = MyPageInfoViewModel.Input(
             cellDidTapped: self.rootView.tableView.rx.itemSelected,
             logoutButtonTapped: self.logoutRelay,
-            backButtonDidTap: rootView.backButton.rx.tap,
-            updateUserInfo: self.updateDataRelay)
+            backButtonDidTap: rootView.backButton.rx.tap)
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -154,7 +146,7 @@ final class MyPageInfoViewController: UIViewController {
     }
 }
 
-extension MyPageInfoViewController: MyPageChangeUserInfoDelegate {
+extension MyPageInfoViewController {
     
     //MARK: - UI
     
@@ -171,17 +163,8 @@ extension MyPageInfoViewController: MyPageChangeUserInfoDelegate {
             viewModel: MyPageChangeUserInfoViewModel(
                 userRepository: DefaultUserRepository(
                     userService: DefaultUserService(),
-                    blocksService: DefaultBlocksService()),
-                userInfo: userInfo)
-        )
-        
-        viewController.delegate = self
+                    blocksService: DefaultBlocksService())))
         self.navigationController?.pushViewController(viewController, animated: true)
-    }
-    
-    func updateUserInfo() {
-        self.updateDataRelay.accept(true)
-        print("돌아와써")
     }
 }
 
