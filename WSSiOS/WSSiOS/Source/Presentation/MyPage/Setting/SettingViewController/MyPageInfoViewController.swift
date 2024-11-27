@@ -87,7 +87,7 @@ final class MyPageInfoViewController: UIViewController {
         output.pushToChangeUserInfoViewController
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, data in
-                owner.pushToChangeUserInfoViewController(userInfo: ChangeUserInfo(gender: data.gender, birth: data.birth))
+                owner.pushToChangeUserInfoViewController()
             })
             .disposed(by: disposeBag)
         
@@ -154,17 +154,6 @@ extension MyPageInfoViewController {
         preparationSetNavigationBar(title: StringLiterals.Navigation.Title.myPageInfo,
                                     left: self.rootView.backButton,
                                     right: nil)
-    }
-    
-    //MARK: - Delegate
-    
-    private func pushToChangeUserInfoViewController(userInfo: ChangeUserInfo) {
-        let viewController = MyPageChangeUserInfoViewController(
-            viewModel: MyPageChangeUserInfoViewModel(
-                userRepository: DefaultUserRepository(
-                    userService: DefaultUserService(),
-                    blocksService: DefaultBlocksService())))
-        self.navigationController?.pushViewController(viewController, animated: true)
     }
 }
 
