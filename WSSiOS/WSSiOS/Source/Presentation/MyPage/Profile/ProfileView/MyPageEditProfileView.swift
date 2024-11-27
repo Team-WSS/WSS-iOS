@@ -18,9 +18,10 @@ final class MyPageEditProfileView: UIView {
     private var userImageView = CircularImageView()
     let userImageChangeInnerButton: UIButton = CircularButton()
     private let userImageChangeInnerButtonView = UIImageView()
-
+    
     private let nicknameView = UIView()
     private let nicknameLabel = UILabel()
+    var textFieldBackgroundView = UIView()
     lazy var nicknameTextField = UITextField()
     lazy var nicknameClearButton = UIButton()
     lazy var nicknameDuplicatedButton = UIButton()
@@ -41,7 +42,7 @@ final class MyPageEditProfileView: UIView {
     private let genreLabel = UILabel()
     private let genreDescriptionLabel = UILabel()
     lazy var genreCollectionView = UICollectionView(frame: .zero,
-                                                       collectionViewLayout: UICollectionViewLayout())
+                                                    collectionViewLayout: UICollectionViewLayout())
     
     //In VC
     let backButton = UIButton()
@@ -93,29 +94,22 @@ final class MyPageEditProfileView: UIView {
                 $0.textColor = .wssBlack
             }
             
-            nicknameTextField.do {
-                $0.textColor = .wssBlack
-                $0.font = .Body2
+            textFieldBackgroundView.do {
                 $0.backgroundColor = .wssGray50
                 $0.layer.cornerRadius = 12
+            }
+            
+            nicknameTextField.do {
+                $0.font = .Body2
+                $0.textColor = .wssBlack
                 $0.tintColor = .wssBlack
-                
-                let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 12, height: 44))
-                $0.leftView = paddingView
-                $0.leftViewMode = .always
                 $0.contentVerticalAlignment = .center
-                
-                let rightViewContainer = UIView(frame: CGRect(x: -13, y: 0, width: 44, height: 44))
-                
-                nicknameClearButton.do {
-                    $0.setImage(.icCancelLight, for: .normal)
-                    $0.contentMode = .scaleAspectFit
-                    $0.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
-                }
-                
-                rightViewContainer.addSubview(nicknameClearButton)
-                $0.rightView = rightViewContainer
-                $0.rightViewMode = .always
+            }
+            
+            nicknameClearButton.do {
+                $0.setImage(.icCancelLight, for: .normal)
+                $0.contentMode = .scaleAspectFit
+                $0.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
             }
             
             nicknameDuplicatedButton.do {
@@ -182,7 +176,7 @@ final class MyPageEditProfileView: UIView {
             }
         }
         
-        [divide1View, divide2View].forEach { 
+        [divide1View, divide2View].forEach {
             $0.do {
                 $0.backgroundColor = .wssGray50
             }
@@ -208,11 +202,13 @@ final class MyPageEditProfileView: UIView {
                                       userImageChangeInnerButton)
         userImageChangeInnerButton.addSubview(userImageChangeInnerButtonView)
         nicknameView.addSubviews(nicknameLabel,
-                                 nicknameTextField,
+                                 textFieldBackgroundView,
                                  nicknameDuplicatedButton,
                                  nicknameWarningLabel,
                                  nicknameCountView,
                                  divide1View)
+        textFieldBackgroundView.addSubviews(nicknameTextField,
+                                            nicknameClearButton)
         introView.addSubviews(introLabel,
                               introTextView,
                               introCountView,
@@ -262,27 +258,39 @@ final class MyPageEditProfileView: UIView {
                 $0.leading.equalToSuperview().inset(20)
             }
             
-            nicknameTextField.snp.makeConstraints {
+            textFieldBackgroundView.snp.makeConstraints {
                 $0.top.equalTo(nicknameLabel.snp.bottom).offset(7)
                 $0.leading.equalToSuperview().inset(20)
                 $0.height.equalTo(44)
                 $0.width.equalTo(240)
+                
+                nicknameTextField.snp.makeConstraints {
+                    $0.centerY.equalToSuperview()
+                    $0.leading.equalToSuperview().inset(12)
+                    $0.trailing.equalToSuperview().inset(44)
+                }
+                
+                nicknameClearButton.snp.makeConstraints {
+                    $0.leading.equalTo(nicknameTextField.snp.trailing)
+                    $0.trailing.equalToSuperview()
+                    $0.size.equalTo(44)
+                }
             }
             
             nicknameDuplicatedButton.snp.makeConstraints {
                 $0.top.equalTo(nicknameLabel.snp.bottom).offset(7)
-                $0.leading.equalTo(nicknameTextField.snp.trailing).offset(7)
+                $0.leading.equalTo(textFieldBackgroundView.snp.trailing).offset(7)
                 $0.trailing.equalToSuperview().inset(20)
-                $0.height.equalTo(nicknameTextField.snp.height)
+                $0.height.equalTo(textFieldBackgroundView.snp.height)
             }
             
             nicknameWarningLabel.snp.makeConstraints {
-                $0.top.equalTo(nicknameTextField.snp.bottom).offset(4)
+                $0.top.equalTo(textFieldBackgroundView.snp.bottom).offset(4)
                 $0.leading.equalToSuperview().inset(20)
             }
             
             nicknameCountView.snp.makeConstraints {
-                $0.top.equalTo(nicknameTextField.snp.bottom).offset(4)
+                $0.top.equalTo(textFieldBackgroundView.snp.bottom).offset(4)
                 $0.trailing.bottom.equalToSuperview().inset(20)
             }
         }
@@ -334,7 +342,7 @@ final class MyPageEditProfileView: UIView {
             }
         }
         
-        [divide1View, divide2View].forEach { 
+        [divide1View, divide2View].forEach {
             $0.snp.makeConstraints {
                 $0.leading.trailing.bottom.equalToSuperview()
                 $0.height.equalTo(1)
@@ -355,7 +363,7 @@ final class MyPageEditProfileView: UIView {
 extension MyPageEditProfileView {
     
     //MARK: - Custom Method
-
+    
     //네비게이션
     func isAbledCompleteButton(isAbled: Bool) {
         if isAbled {
@@ -376,7 +384,9 @@ extension MyPageEditProfileView {
     
     //닉네임
     func updateNicknameText(text: String) {
-        nicknameTextField.text = text
+        nicknameTextField.makeAttribute(with: text)
+            .kerning(kerningPixel: -0.6)
+            .applyAttribute()
         nicknameCountView.countLabel.applyWSSFont(.body4, with: String(text.count))
     }
     
@@ -392,7 +402,7 @@ extension MyPageEditProfileView {
             borderColor = UIColor.wssGray70.cgColor
         }
         
-        nicknameTextField.do {
+        textFieldBackgroundView.do {
             $0.backgroundColor = isEditing ? .wssWhite : .wssGray50
             $0.layer.borderWidth = isEditing ? 1 : 0
             $0.layer.borderColor = borderColor
@@ -420,7 +430,6 @@ extension MyPageEditProfileView {
         }
         
         nicknameClearButton.do {
-            $0.isHidden = !isEditing
             $0.setImage(buttonImage, for: .normal)
             $0.isUserInteractionEnabled = !(availablity == .available)
         }
@@ -468,7 +477,9 @@ extension MyPageEditProfileView {
     
     func bindData(data: MyProfileResult) {
         
-        nicknameTextField.text = data.nickname
+        nicknameTextField.makeAttribute(with: data.nickname)
+            .kerning(kerningPixel: -0.6)
+            .applyAttribute()
         nicknameCountView.countLabel.text = String(data.nickname.count)
         
         introTextView.applyWSSFont(.body2, with: data.intro)
