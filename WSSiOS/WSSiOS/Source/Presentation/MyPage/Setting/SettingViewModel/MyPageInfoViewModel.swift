@@ -83,13 +83,19 @@ final class MyPageInfoViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        getUserInfo()
+        Observable.just(())
+            .flatMapLatest { [weak self] _ -> Observable<UserInfo> in
+                guard let self = self else { return Observable.empty() }
+                return self.getUserInfo()
+            }
             .subscribe(with: self, onNext: { owner, data in
-                output.bindEmail.accept(data.email)
                 output.genderAndBirth.accept(ChangeUserInfo(gender: data.gender,
                                                             birth: data.birth))
 
                 UserDefaults.standard.set(data.birth, forKey: StringLiterals.UserDefault.userBirth)
+                
+                guard let email = data.email, !email.isEmpty else { return }
+                output.bindEmail.accept(email)
             }, onError: { owner, error in
                 print(error)
             })

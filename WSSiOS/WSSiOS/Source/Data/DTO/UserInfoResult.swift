@@ -36,7 +36,7 @@ struct UserNickNameResult: Codable {
 }
 
 struct UserInfo: Codable {
-    let email: String
+    let email: String?
     let gender: String
     let birth: Int
 }
