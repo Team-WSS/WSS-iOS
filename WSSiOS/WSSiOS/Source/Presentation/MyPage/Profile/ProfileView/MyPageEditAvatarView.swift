@@ -71,7 +71,7 @@ final class MyPageEditAvatarView: UIView {
         
         avatarLineLabel.do {
             $0.applyWSSFont(.title3, with: StringLiterals.MyPage.EditProfile.defaultAvatarDescription)
-            $0.textColor = .wssBlack
+            $0.textColor = .wssGray300
         }
         
         avatarImageCollectionView.do {
@@ -86,15 +86,13 @@ final class MyPageEditAvatarView: UIView {
         }
         
         changeButton.do {
-            $0.setTitle(StringLiterals.MyPage.Modal.changeCharacter, for: .normal)
-            $0.setTitleColor(.wssWhite, for: .normal)
+            $0.setButtonAttributedTitle(text: StringLiterals.MyPage.Modal.changeCharacter, font: .Body1, color: .wssWhite)
             $0.backgroundColor = .wssPrimary100
             $0.layer.cornerRadius = 14
         }
         
         notChangeButton.do {
-            $0.setTitle(StringLiterals.MyPage.Modal.keepOriginally, for: .normal)
-            $0.setTitleColor(.wssGray300, for: .normal)
+            $0.setButtonAttributedTitle(text: StringLiterals.MyPage.Modal.keepOriginally, font: .Body2, color: .wssGray300)
             $0.backgroundColor = .clear
             $0.layer.cornerRadius = 14
         }
@@ -114,11 +112,7 @@ final class MyPageEditAvatarView: UIView {
     private func setLayout() {
         contentView.snp.makeConstraints {
             $0.leading.trailing.bottom.equalToSuperview()
-            if UIScreen.isSE {
-                $0.height.equalTo(654 + 10)
-            } else {
-                $0.height.equalTo(689)
-            }
+            $0.height.equalTo(UIScreen.isSE ? 654 + 10 : 689)
         }
         
         navigationLabel.snp.makeConstraints {
@@ -145,7 +139,7 @@ final class MyPageEditAvatarView: UIView {
         avatarImageCollectionView.snp.makeConstraints {
             $0.top.equalTo(avatarLineLabel.snp.bottom).offset(33)
             $0.centerX.equalToSuperview()
-            $0.width.equalTo(50*3 + 16*3)
+            $0.width.equalTo(0)
         }
         
         changeButton.snp.makeConstraints {

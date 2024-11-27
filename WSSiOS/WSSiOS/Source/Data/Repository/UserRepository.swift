@@ -23,7 +23,7 @@ protocol UserRepository {
     func getUserNovelPreferences(userId: Int) -> Observable<UserNovelPreferences>
     func getUserGenrePreferences(userId: Int) -> Observable<UserGenrePreferences>
     func patchUserProfile(updatedFields: [String: Any]) -> Observable<Void>
-    func getNicknameisValid(nickname: String) -> Observable<OnboardingResult>
+    func getNicknameisValid(nickname: String) -> Single<OnboardingResult>
 }
 
 struct DefaultUserRepository: UserRepository {
@@ -105,8 +105,7 @@ struct DefaultUserRepository: UserRepository {
             .asObservable()
     }
     
-    func getNicknameisValid(nickname: String) -> Observable<OnboardingResult> {
+    func getNicknameisValid(nickname: String) -> Single<OnboardingResult> {
         return userService.getNicknameisValid(nickname: nickname)
-            .asObservable()
     }
 }
