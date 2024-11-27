@@ -467,6 +467,7 @@ extension MyPageEditProfileView {
     func bindData(data: MyProfileResult) {
         
         nicknameTextField.text = data.nickname
+        nicknameCountView.countLabel.text = String(data.nickname.count)
         
         introTextView.applyWSSFont(.body2, with: data.intro)
         if !data.intro.isEmpty {
