@@ -78,6 +78,7 @@ final class MyPageEditProfileViewController: UIViewController {
             clearButtonDidTap: rootView.nicknameClearButton.rx.tap,
             checkButtonDidTap: rootView.nicknameDuplicatedButton.rx.tap,
             viewDidTap: view.rx.tapGesture(configuration: { gestureRecognizer, delegate in
+                gestureRecognizer.delegate = self
                 gestureRecognizer.cancelsTouchesInView = false
             }),
             updateIntroText: rootView.introTextView.rx.text.orEmpty.asObservable(),
