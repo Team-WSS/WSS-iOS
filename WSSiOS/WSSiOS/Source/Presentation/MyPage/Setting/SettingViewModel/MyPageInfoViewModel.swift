@@ -108,16 +108,17 @@ final class MyPageInfoViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.logoutButtonTapped
-            .throttle(.seconds(3), scheduler: MainScheduler.asyncInstance)
+            .throttle(.seconds(3), scheduler: MainScheduler.instance)
             .flatMapLatest { [weak self] _ -> Observable<Void> in
                 guard let self = self else { return Observable.empty() }
-                let refreshToken = UserDefaults.standard.string(forKey: StringLiterals.UserDefault.refreshToken) ?? ""
-                return self.postLogout(refreshToken: refreshToken)
+                guard let refreshTokenString = UserDefaults.standard.string(forKey: StringLiterals.UserDefault.refreshToken) else { return Observable.empty() }
+                return self.postLogout(refreshToken: refreshTokenString)
             }
             .subscribe(
                 onNext: {
+                    UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.accessToken)
                     UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.refreshToken)
-                    
+                    output.pushToLoginViewController.accept(())
                 },
                 onError: { error in
                     print(error.localizedDescription)
