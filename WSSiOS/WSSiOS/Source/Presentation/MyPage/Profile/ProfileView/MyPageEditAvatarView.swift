@@ -15,9 +15,9 @@ final class MyPageEditAvatarView: UIView {
     
     //랜덤하게 출력
     private let lottieList: [() -> LottieAnimationView] = [
-        { [Lottie.Home.Sosocat.tail, Lottie.Home.Sosocat.bread].randomElement()! },
-        { [Lottie.Home.Regressor.sword, Lottie.Home.Regressor.greeting].randomElement()! },
-        { [Lottie.Home.Villainess.fan, Lottie.Home.Villainess.tea].randomElement()! }
+        { [Lottie.Home.Sosocat.tail, Lottie.Home.Sosocat.bread].randomElement() ?? Lottie.Home.Sosocat.tail},
+        { [Lottie.Home.Regressor.sword, Lottie.Home.Regressor.greeting].randomElement() ?? Lottie.Home.Regressor.sword},
+        { [Lottie.Home.Villainess.fan, Lottie.Home.Villainess.tea].randomElement() ?? Lottie.Home.Villainess.fan}
     ]
     
     //MARK: - Components
