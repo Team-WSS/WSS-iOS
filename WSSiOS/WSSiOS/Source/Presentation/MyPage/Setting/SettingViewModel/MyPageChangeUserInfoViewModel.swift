@@ -96,7 +96,12 @@ final class MyPageChangeUserInfoViewModel: ViewModelType {
                 let isEnabled = output.changeCompleteButton.value
                 if isEnabled {
                     owner.putUserInfo(gender: owner.currentGender, birth: owner.currentBirth)
-                        .subscribe(with: self, onNext: { owner, _ in 
+                        .subscribe(with: self, onNext: { owner, _ in
+                            UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.userGender)
+                            UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.userBirth)
+                            
+                            UserDefaults.standard.set(owner.currentGender, forKey: StringLiterals.UserDefault.userGender)
+                            UserDefaults.standard.set(owner.currentBirth, forKey: StringLiterals.UserDefault.userBirth)
                             output.popViewController.accept(())
                         }, onError: { owner, error in
                             print(error)

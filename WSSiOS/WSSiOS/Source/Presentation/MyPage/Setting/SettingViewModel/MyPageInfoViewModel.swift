@@ -102,6 +102,8 @@ final class MyPageInfoViewModel: ViewModelType {
                 output.bindEmail.accept(data.email)
                 output.genderAndBirth.accept(ChangeUserInfo(gender: data.gender,
                                                             birth: data.birth))
+
+                UserDefaults.standard.set(data.birth, forKey: StringLiterals.UserDefault.userBirth)
             }, onError: { owner, error in
                 print(error)
             })
