@@ -87,8 +87,12 @@ final class MyPageSettingTableViewCell: UITableViewCell {
     }
     
     func bindDescriptionData(title: String) {
-        cellDescriptionLabel.applyWSSFont(.body3, with: title)
-        cellDescriptionLabel.isHidden = false
+        let isEmptyEmail = (title == "")
+        if !isEmptyEmail {
+            cellDescriptionLabel.applyWSSFont(.body3, with: title)
+            cellDescriptionLabel.isHidden = false
+        }
+        
         cellIconImageView.isHidden = true
     }
 }

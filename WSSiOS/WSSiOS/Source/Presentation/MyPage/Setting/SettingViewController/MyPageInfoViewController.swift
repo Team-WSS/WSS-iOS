@@ -78,7 +78,7 @@ final class MyPageInfoViewController: UIViewController {
                 cellIdentifier: MyPageSettingTableViewCell.cellIdentifier,
                 cellType: MyPageSettingTableViewCell.self)) {(row, element, cell) in
                     cell.bindData(title: element)
-                    if row == 1 && self.emailRelay.value != "" {
+                    if row == 1 {
                         cell.bindDescriptionData(title: self.emailRelay.value)
                     }
                 }
