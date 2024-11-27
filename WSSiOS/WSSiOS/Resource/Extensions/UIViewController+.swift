@@ -245,7 +245,9 @@ extension UIViewController {
             viewModel: MyPageInfoViewModel(
                 userRepository: DefaultUserRepository(
                     userService: DefaultUserService(),
-                    blocksService: DefaultBlocksService())))
+                    blocksService: DefaultBlocksService()),
+                authRepository: DefaultAuthRepository(
+                    authService: DefaultAuthService())))
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     

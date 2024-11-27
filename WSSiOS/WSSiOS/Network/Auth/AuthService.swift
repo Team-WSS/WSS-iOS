@@ -110,7 +110,7 @@ final class DefaultAuthService: NSObject, Networking, AuthService {
     }
     
     func postLogout(refreshToken: String) -> Single<Void> {
-        guard let data = try? JSONEncoder().encode(refreshToken) else {
+        guard let data = try? JSONEncoder().encode(Logout(refreshToken: refreshToken)) else {
             return Single.error(NetworkServiceError.invalidRequestError)
         }
         do {

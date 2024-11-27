@@ -17,6 +17,8 @@ final class MyPageInfoViewModel: ViewModelType {
     private let userRepository: UserRepository
     private let authRepository: AuthRepository
     
+    private let settingList = StringLiterals.MyPage.SettingInfo.allCases.map { $0.rawValue }
+    
     //MARK: - Life Cycle
     
     init(userRepository: UserRepository, authRepository: AuthRepository) {
@@ -25,24 +27,60 @@ final class MyPageInfoViewModel: ViewModelType {
     }
     
     struct Input {
+        let cellDidTapped: ControlEvent<IndexPath>
         let logoutButtonTapped: PublishRelay<Bool>
         let backButtonDidTap: ControlEvent<Void>
         let updateUserInfo: BehaviorRelay<Bool>
     }
     
     struct Output {
+        let bindSettingCell = BehaviorRelay<[String]>(value: [""])
+        let pushToChangeUserInfoViewController = PublishRelay<ChangeUserInfo>()
+        let pushToBlockIDViewController = PublishRelay<Void>()
+        let presentToAlertViewController = PublishRelay<Void>()
+        let pushToMyPageDeleteIDWarningViewController = PublishRelay<Void>()
+        let pushToLoginViewController = PublishRelay<Void>()
+        
         let popViewController = PublishRelay<Bool>()
         let bindEmail = BehaviorRelay<String>(value: "")
-        let genderAndBirth = PublishRelay<ChangeUserInfo>()
+        let genderAndBirth = BehaviorRelay<ChangeUserInfo>(value: ChangeUserInfo(gender: "", birth: 0))
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
         
+        Observable.just(settingList)
+            .bind(to: output.bindSettingCell)
+            .disposed(by: disposeBag)
+        
         input.backButtonDidTap
             .throttle(.seconds(3), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
                 output.popViewController.accept(true)
+            })
+            .disposed(by: disposeBag)
+        
+        input.cellDidTapped
+            .throttle(.seconds(2), scheduler: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, indexPath in
+                switch indexPath.row {
+                case 0:
+                    //성별/나이 변경
+                    output.pushToChangeUserInfoViewController.accept(output.genderAndBirth.value)
+                case 1:
+                    //이메일
+                    break;
+                case 2:
+                    //차단유저 목록
+                    output.pushToBlockIDViewController.accept(())
+                case 3:
+                    //로그아웃
+                    output.presentToAlertViewController.accept(())
+                case 4:
+                    //회원탈퇴
+                    output.pushToMyPageDeleteIDWarningViewController.accept(())
+                default: break
+                }
             })
             .disposed(by: disposeBag)
         
@@ -80,7 +118,6 @@ final class MyPageInfoViewModel: ViewModelType {
                 onNext: {
                     UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.refreshToken)
                     
-//                    output.pushToLoginViewController.accept(true)
                 },
                 onError: { error in
                     print(error.localizedDescription)

@@ -16,11 +16,9 @@ final class MyPageInfoViewController: UIViewController {
     
     private let disposeBag = DisposeBag()
     private let viewModel: MyPageInfoViewModel
-    private let settingList = StringLiterals.MyPage.SettingInfo.allCases.map { $0.rawValue }
     private let emailRelay = BehaviorRelay(value: "")
     private let logoutRelay = PublishRelay<Bool>()
     private let updateDataRelay = BehaviorRelay<Bool>(value: false)
-    private var genderAndBirthData = ChangeUserInfo(gender: "", birth: 0)
     
     //MARK: - UI Components
     
@@ -70,7 +68,20 @@ final class MyPageInfoViewController: UIViewController {
     //MARK: - Bind
     
     private func bindCell() {
-        Observable.just(settingList)
+        rootView.tableView.rx.itemSelected
+        
+    }
+    
+    private func bindViewModel() {
+        let input = MyPageInfoViewModel.Input(
+            cellDidTapped: self.rootView.tableView.rx.itemSelected,
+            logoutButtonTapped: self.logoutRelay,
+            backButtonDidTap: rootView.backButton.rx.tap,
+            updateUserInfo: self.updateDataRelay)
+        
+        let output = viewModel.transform(from: input, disposeBag: disposeBag)
+        
+        output.bindSettingCell
             .bind(to: rootView.tableView.rx.items(
                 cellIdentifier: MyPageSettingTableViewCell.cellIdentifier,
                 cellType: MyPageSettingTableViewCell.self)) {(row, element, cell) in
@@ -81,53 +92,54 @@ final class MyPageInfoViewController: UIViewController {
                 }
                 .disposed(by: disposeBag)
         
-        rootView.tableView.rx.itemSelected
-            .subscribe(with: self, onNext: { owner, indexPath in
-                self.rootView.tableView.deselectRow(at: indexPath, animated: true)
-                
-                switch indexPath.row {
-                case 0:
-                    print("성별/나이 변경")
-                    owner.pushToChangeUserInfoViewController(userInfo: owner.genderAndBirthData)
-                case 1:
-                    print("이메일")
-                    break;
-                case 2:
-                    print("차단유저 목록")
-                    owner.pushToBlockIDViewController()
-                case 3:
-                    print("로그아웃")
-                    owner.presentToAlertViewController(iconImage: .icAlertWarningCircle,
-                                                       titleText: StringLiterals.Alert.logoutTitle,
-                                                       contentText: nil,
-                                                       leftTitle: StringLiterals.Alert.cancel,
-                                                       rightTitle: StringLiterals.Alert.logout,
-                                                       rightBackgroundColor: UIColor.wssPrimary100.cgColor)
-                    .subscribe(with: self, onNext: { owner, buttonType in
-                        if buttonType == .right {
-                            owner.logoutRelay.accept(true)
-                        }
-                    })
-                    .disposed(by: owner.disposeBag)
-                    
-                case 4:
-                    print("회원탈퇴")
-                    owner.pushToMyPageDeleteIDWarningViewController()
-                default: break
-                }
+        output.pushToChangeUserInfoViewController
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, data in
+                owner.pushToChangeUserInfoViewController(userInfo: ChangeUserInfo(gender: data.gender, birth: data.birth))
             })
             .disposed(by: disposeBag)
-    }
-    
-    private func bindViewModel() {
-        let input = MyPageInfoViewModel.Input(
-            logoutButtonTapped: self.logoutRelay,
-            backButtonDidTap: rootView.backButton.rx.tap,
-            updateUserInfo: self.updateDataRelay)
         
-        let output = viewModel.transform(from: input, disposeBag: disposeBag)
+        output.pushToBlockIDViewController
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                owner.pushToBlockIDViewController()
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushToMyPageDeleteIDWarningViewController
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                owner.pushToMyPageDeleteIDWarningViewController()
+            })
+            .disposed(by: disposeBag)
+        
+        output.presentToAlertViewController
+            .observe(on: MainScheduler.instance)
+            .bind(with: self as MyPageInfoViewController, onNext: { owner, _ in
+                owner.presentToAlertViewController(iconImage: .icAlertWarningCircle,
+                                                   titleText: StringLiterals.Alert.logoutTitle,
+                                                   contentText: nil,
+                                                   leftTitle: StringLiterals.Alert.cancel,
+                                                   rightTitle: StringLiterals.Alert.logout,
+                                                   rightBackgroundColor: UIColor.wssPrimary100.cgColor)
+                .bind(with: self, onNext: { owner, buttonType in
+                    if buttonType == .right {
+                        owner.logoutRelay.accept(true)
+                    }
+                })
+                .disposed(by: owner.disposeBag)
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushToLoginViewController
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                owner.pushToLoginViewController()
+            })
+            .disposed(by: disposeBag)
         
         output.popViewController
+            .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 owner.popToLastViewController()
             })
@@ -139,16 +151,10 @@ final class MyPageInfoViewController: UIViewController {
                 owner.rootView.tableView.reloadData()
             })
             .disposed(by: disposeBag)
-        
-        output.genderAndBirth
-            .bind(with: self, onNext: { owner, data in
-                owner.genderAndBirthData = ChangeUserInfo(gender: data.gender, birth: data.birth)
-            })
-            .disposed(by: disposeBag)
     }
 }
 
-extension MyPageInfoViewController: MyPageChangeUserInfoDelegate {    
+extension MyPageInfoViewController: MyPageChangeUserInfoDelegate {
     
     //MARK: - UI
     
