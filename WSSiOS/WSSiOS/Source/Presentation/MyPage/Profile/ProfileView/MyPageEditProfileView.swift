@@ -377,7 +377,7 @@ extension MyPageEditProfileView {
     //닉네임
     func updateNicknameText(text: String) {
         nicknameTextField.text = text
-        nicknameCountView.countLabel.applyWSSFont(.label1, with: String(text.count))
+        nicknameCountView.countLabel.applyWSSFont(.body4, with: String(text.count))
     }
     
     func updateNicknameTextField(isEditing: Bool, availablity: NicknameAvailablity) {
@@ -461,7 +461,7 @@ extension MyPageEditProfileView {
     
     func updateIntro(text: String) {
         introTextView.applyWSSFont(.body2, with: text)
-        introCountView.countLabel.applyWSSFont(.label1, with: String(text.count))
+        introCountView.countLabel.applyWSSFont(.body4, with: String(text.count))
     }
     
     //MARK: - Data
