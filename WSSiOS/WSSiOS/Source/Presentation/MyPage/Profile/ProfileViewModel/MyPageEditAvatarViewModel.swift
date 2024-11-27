@@ -62,6 +62,7 @@ final class MyPageEditAvatarViewModel: ViewModelType {
                 //View 바인딩을 위한 대표아바타ID 저장
                 let presentativeId = avatarList.avatars.first(where: { $0.isRepresentative })?.avatarId
                 owner.defaultAvatarId = presentativeId ?? owner.defaultAvatarId
+                owner.lastTappedAvatar.accept(owner.defaultAvatarId)
                 
             }, onError: { owner, error in
                 print(error.localizedDescription)

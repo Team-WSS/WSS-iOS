@@ -144,10 +144,8 @@ final class MyPageEditAvatarView: UIView {
         
         avatarImageCollectionView.snp.makeConstraints {
             $0.top.equalTo(avatarLineLabel.snp.bottom).offset(33)
-            
-            // 마지막 minimumInteritemSpacing 고려
-            $0.centerX.equalToSuperview().inset(16)
-            $0.width.equalTo(182+16)
+            $0.centerX.equalToSuperview()
+            $0.width.equalTo(50*3 + 16*3)
         }
         
         changeButton.snp.makeConstraints {

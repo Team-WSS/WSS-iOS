@@ -69,10 +69,21 @@ final class MyPageEditAvatarViewController: UIViewController, UIScrollViewDelega
         
         output.bindAvatarImageCell
             .bind(to: rootView.avatarImageCollectionView.rx.items(cellIdentifier: MyPageEditAvatarCollectionViewCell.cellIdentifier, cellType: MyPageEditAvatarCollectionViewCell.self)) { (row, data, cell) in
-                print(data)
                 let (avatarImage, isRepresentive) = data
                 cell.bindData(avatarImage: avatarImage, isRepresentative: isRepresentive)
             }
+            .disposed(by: disposeBag)
+        
+        output.bindAvatarImageCell
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, avatarList in
+                let cellCount = avatarList.count
+                let totalWidth = (50 * cellCount) + (16 * (cellCount - 1))
+                
+                owner.rootView.avatarImageCollectionView.snp.updateConstraints {
+                    $0.width.equalTo(totalWidth)
+                }
+            })
             .disposed(by: disposeBag)
         
         output.dismissModalViewController
@@ -83,6 +94,7 @@ final class MyPageEditAvatarViewController: UIViewController, UIScrollViewDelega
             .disposed(by: disposeBag)
         
         output.updateAvatarData
+            .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, data in
                 let (avatarData, nickname) = data
                 owner.rootView.bindData(avatar: avatarData, nickname: nickname)

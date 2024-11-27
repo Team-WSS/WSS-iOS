@@ -21,7 +21,6 @@ final class MyPageEditAvatarCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        setUI()
         setHierarchy()
         setLayout()
     }
@@ -30,14 +29,14 @@ final class MyPageEditAvatarCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - UI
-    
-    private func setUI() {
-        avatarImageView.do {
-            $0.layer.cornerRadius = 50/2
-            $0.isUserInteractionEnabled = true
-        }
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        avatarImageView.layer.cornerRadius = avatarImageView.frame.size.width / 2
+        avatarImageView.clipsToBounds = true
     }
+    
+    //MARK: - UI
     
     private func setHierarchy() {
         self.addSubview(avatarImageView)
