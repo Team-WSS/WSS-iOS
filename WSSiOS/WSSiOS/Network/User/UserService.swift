@@ -43,7 +43,7 @@ final class DefaultUserService: NSObject, Networking {
 }
 
 extension DefaultUserService: UserService {
-    func getUserData() -> RxSwift.Single<UserMeResult> {
+    func getUserData() -> Single<UserMeResult> {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.User.userme,
@@ -62,7 +62,7 @@ extension DefaultUserService: UserService {
         }
     }
     
-    func patchUserName(userNickName: String) -> RxSwift.Single<Void> {
+    func patchUserName(userNickName: String) -> Single<Void> {
         guard let userNickNameData = try? JSONEncoder().encode(UserNickNameResult(userNickname: userNickName))
                 
         else {
@@ -86,7 +86,7 @@ extension DefaultUserService: UserService {
         }
     }
     
-    func getUserNovelStatus(userId: Int) -> RxSwift.Single<UserNovelStatus> {
+    func getUserNovelStatus(userId: Int) -> Single<UserNovelStatus> {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.User.getUserNovelStatus(userId: userId),
@@ -104,7 +104,7 @@ extension DefaultUserService: UserService {
         }
     }
     
-    func getUserInfo() -> RxSwift.Single<UserInfo> {
+    func getUserInfo() -> Single<UserInfo> {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.User.userInfo,
@@ -123,7 +123,7 @@ extension DefaultUserService: UserService {
         }
     }
     
-    func putUserInfo(gender: String, birth: Int) -> RxSwift.Single<Void> {
+    func putUserInfo(gender: String, birth: Int) -> Single<Void> {
         guard let userInfoData = try? JSONEncoder().encode(ChangeUserInfo(gender: gender,
                                                                           birth: birth))
                 
@@ -148,7 +148,7 @@ extension DefaultUserService: UserService {
         }
     }
     
-    func getUserProfileVisibility() -> RxSwift.Single<UserProfileVisibility> {
+    func getUserProfileVisibility() -> Single<UserProfileVisibility> {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.MyPage.ProfileVisibility.isProfileVisibility,
@@ -187,7 +187,7 @@ extension DefaultUserService: UserService {
         }
     }
     
-    func patchUserProfileVisibility(isProfilePublic: Bool) -> RxSwift.Single<Void> {
+    func patchUserProfileVisibility(isProfilePublic: Bool) -> Single<Void> {
         guard let userProfileVisibility = try? JSONEncoder().encode(UserProfileVisibility(isProfilePublic: isProfilePublic))  else {
             return .error(NetworkServiceError.invalidRequestError)
         }
@@ -246,7 +246,7 @@ extension DefaultUserService: UserService {
         }
     }
     
-    func patchUserProfile(updatedFields: [String: Any]) -> RxSwift.Single<Void> {
+    func patchUserProfile(updatedFields: [String: Any]) -> Single<Void> {
         do {
             let userProfileData = try JSONSerialization.data(withJSONObject: updatedFields, options: [])
             let request = try makeHTTPRequest(method: .patch,

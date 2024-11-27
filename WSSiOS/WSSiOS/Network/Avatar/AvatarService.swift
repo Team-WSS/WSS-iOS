@@ -13,12 +13,8 @@ protocol AvatarService {
     func getAvatarList() -> Single<AvatarResponse>
 }
 
-final class DefaultAvatarService: NSObject, Networking {
-   
-}
-
-extension DefaultAvatarService: AvatarService {
-    func getAvatarList() -> RxSwift.Single<AvatarResponse> {
+final class DefaultAvatarService: NSObject, AvatarService, Networking {
+    func getAvatarList() -> Single<AvatarResponse> {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.Avatar.getAvatar,

@@ -23,7 +23,7 @@ protocol UserRepository {
     func getUserNovelPreferences(userId: Int) -> Observable<UserNovelPreferences>
     func getUserGenrePreferences(userId: Int) -> Observable<UserGenrePreferences>
     func patchUserProfile(updatedFields: [String: Any]) -> Observable<Void>
-    func getNicknameisValid(nickname: String) -> Single<OnboardingResult>
+    func getNicknameisValid(nickname: String) -> Observable<OnboardingResult>
 }
 
 struct DefaultUserRepository: UserRepository {
@@ -45,47 +45,47 @@ struct DefaultUserRepository: UserRepository {
             .asObservable()
     }
     
-    func getUserData() -> RxSwift.Observable<UserMeResult> {
+    func getUserData() -> Observable<UserMeResult> {
         return userService.getUserData()
             .asObservable()
     }
     
-    func getUserInfo() -> RxSwift.Observable<UserInfo> {
+    func getUserInfo() -> Observable<UserInfo> {
         return userService.getUserInfo()
             .asObservable()
     }
     
-    func putUserInfo(gender: String, birth: Int) -> RxSwift.Observable<Void> {
+    func putUserInfo(gender: String, birth: Int) -> Observable<Void> {
         return userService.putUserInfo(gender: gender, birth: birth)
             .asObservable()
     }
     
-    func patchUserName(userNickName: String) -> RxSwift.Observable<Void> {
+    func patchUserName(userNickName: String) -> Observable<Void> {
         return userService.patchUserName(userNickName: userNickName)
             .asObservable()
     }
     
-    func getBlocksList() -> RxSwift.Observable<BlockUserResult> {
+    func getBlocksList() -> Observable<BlockUserResult> {
         return blocksService.getBlocksList()
             .asObservable()
     }
     
-    func deleteBlockUser(blockID: Int) -> RxSwift.Observable<Void> {
+    func deleteBlockUser(blockID: Int) -> Observable<Void> {
         return blocksService.deleteBlockUser(blockID: blockID)
             .asObservable()
     }
     
-    func getUserNovelStatus(userId: Int) -> RxSwift.Observable<UserNovelStatus> {
+    func getUserNovelStatus(userId: Int) -> Observable<UserNovelStatus> {
         return userService.getUserNovelStatus(userId: userId)
             .asObservable()
     }
     
-    func getUserNovelPreferences(userId: Int) -> RxSwift.Observable<UserNovelPreferences> {
+    func getUserNovelPreferences(userId: Int) -> Observable<UserNovelPreferences> {
         return userService.getUserNovelPreferences(userId: userId)
             .asObservable()
     }
     
-    func getUserGenrePreferences(userId: Int) -> RxSwift.Observable<UserGenrePreferences> {
+    func getUserGenrePreferences(userId: Int) -> Observable<UserGenrePreferences> {
         return userService.getUserGenrePreferences(userId: userId)
             .asObservable()
     }
@@ -105,7 +105,8 @@ struct DefaultUserRepository: UserRepository {
             .asObservable()
     }
     
-    func getNicknameisValid(nickname: String) -> Single<OnboardingResult> {
+    func getNicknameisValid(nickname: String) -> Observable<OnboardingResult> {
         return userService.getNicknameisValid(nickname: nickname)
+            .asObservable()
     }
 }

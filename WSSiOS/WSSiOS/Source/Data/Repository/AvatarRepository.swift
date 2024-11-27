@@ -20,7 +20,7 @@ struct DefaultAvatarRepository: AvatarRepository {
         self.avatarService = avatarService
     }
     
-    func getAvatarList() -> RxSwift.Observable<AvatarResponse> {
+    func getAvatarList() -> Observable<AvatarResponse> {
         return avatarService.getAvatarList()
             .asObservable()
     }
