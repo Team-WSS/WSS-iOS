@@ -128,6 +128,8 @@ final class MyPageInfoViewModel: ViewModelType {
     private func getUserInfo() -> Observable<UserInfo> {
         return userRepository.getUserInfo()
             .observe(on: MainScheduler.instance)
+        
+//        return UserInfo(email: "", gender: "F", birth: 2000)
     }
     
     private func postLogout(refreshToken: String) -> Observable<Void> {
