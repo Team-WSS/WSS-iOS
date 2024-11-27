@@ -15,11 +15,13 @@ final class MyPageInfoViewModel: ViewModelType {
     //MARK: - Properties
     
     private let userRepository: UserRepository
+    private let authRepository: AuthRepository
     
     //MARK: - Life Cycle
     
-    init(userRepository: UserRepository) {
+    init(userRepository: UserRepository, authRepository: AuthRepository) {
         self.userRepository = userRepository
+        self.authRepository = authRepository
     }
     
     struct Input {
@@ -68,11 +70,22 @@ final class MyPageInfoViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.logoutButtonTapped
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.logout()
-            }, onError: { owner, error in
-                print(error)
-            })
+            .throttle(.seconds(3), scheduler: MainScheduler.asyncInstance)
+            .flatMapLatest { [weak self] _ -> Observable<Void> in
+                guard let self = self else { return Observable.empty() }
+                let refreshToken = UserDefaults.standard.string(forKey: StringLiterals.UserDefault.refreshToken) ?? ""
+                return self.postLogout(refreshToken: refreshToken)
+            }
+            .subscribe(
+                onNext: {
+                    UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.refreshToken)
+                    
+//                    output.pushToLoginViewController.accept(true)
+                },
+                onError: { error in
+                    print(error.localizedDescription)
+                }
+            )
             .disposed(by: disposeBag)
         
         return output
@@ -85,8 +98,9 @@ final class MyPageInfoViewModel: ViewModelType {
             .observe(on: MainScheduler.instance)
     }
     
-    private func logout() {
-        print("로그아웃 로직 구현")
+    private func postLogout(refreshToken: String) -> Observable<Void> {
+        return authRepository.postLogout(refreshToken: refreshToken)
+            .asObservable()
     }
 }
 

@@ -15,6 +15,7 @@ protocol AuthRepository {
     func loginWithApple(authorizationCode: String, idToken: String) -> Observable<LoginResult>
     func loginWithKakao(_ kakaoAccessToken: OAuthToken) -> Single<LoginResult>
     func postWithdrawId(reason: String, refreshToken: String) -> Single<Void>
+    func postLogout(refreshToken: String) -> Single<Void>
 }
 
 struct DefaultAuthRepository: AuthRepository {
@@ -36,6 +37,10 @@ struct DefaultAuthRepository: AuthRepository {
     
     func postWithdrawId(reason: String, refreshToken: String) -> Single<Void> {
         return authService.postWithdrawId(reason: reason, refreshToken: refreshToken)
+    }
+    
+    func postLogout(refreshToken: String) -> Single<Void> {
+        return authService.postLogout(refreshToken: refreshToken)
     }
 }
 
