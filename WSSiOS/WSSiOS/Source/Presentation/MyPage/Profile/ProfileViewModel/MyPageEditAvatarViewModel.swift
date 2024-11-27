@@ -71,10 +71,8 @@ final class MyPageEditAvatarViewModel: ViewModelType {
         
         input.avatarCellDidTap
             .throttle(.seconds(1), scheduler: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, indexPath in
-                owner.isTappedAvatar = true
-                owner.lastTappedAvatar.accept(indexPath.row + 1)
-            })
+            .map { $0.row + 1 }
+            .bind(to: lastTappedAvatar)
             .disposed(by: disposeBag)
         
         self.lastTappedAvatar
@@ -87,8 +85,8 @@ final class MyPageEditAvatarViewModel: ViewModelType {
         input.changeButtonDidTap
             .throttle(.seconds(3), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
-                if owner.isTappedAvatar {
-                    let avatarId = owner.lastTappedAvatar.value
+                let avatarId = owner.lastTappedAvatar.value
+                if (avatarId != owner.defaultAvatarId) {
                     let avatarImage = owner.totalAvatarData[avatarId-1].avatarImage
                     NotificationCenter.default.post(name: NSNotification.Name("ChangRepresentativeAvatar"), object: (avatarId, avatarImage))
                 }
