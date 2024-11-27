@@ -32,7 +32,9 @@ final class MyPageEditAvatarView: UIView {
     let avatarImageCollectionView = UICollectionView(frame: .zero,
                                                      collectionViewLayout: UICollectionViewLayout())
     let changeButton = UIButton()
+    private let changeButtonLabel = UILabel()
     let notChangeButton = UIButton()
+    private let notChangeButtonLabel = UILabel()
     
     // MARK: - Life Cycle
     
@@ -86,15 +88,23 @@ final class MyPageEditAvatarView: UIView {
         }
         
         changeButton.do {
-            $0.setButtonAttributedTitle(text: StringLiterals.MyPage.Modal.changeCharacter, font: .Body1, color: .wssWhite)
             $0.backgroundColor = .wssPrimary100
             $0.layer.cornerRadius = 14
         }
         
         notChangeButton.do {
-            $0.setButtonAttributedTitle(text: StringLiterals.MyPage.Modal.keepOriginally, font: .Body2, color: .wssGray300)
             $0.backgroundColor = .clear
             $0.layer.cornerRadius = 14
+        }
+        
+        changeButtonLabel.do {
+            $0.applyWSSFont(.body1, with: StringLiterals.MyPage.Modal.changeCharacter)
+            $0.textColor = .wssWhite
+        }
+        
+        notChangeButtonLabel.do {
+            $0.applyWSSFont(.body2, with: StringLiterals.MyPage.Modal.keepOriginally)
+            $0.textColor = .Gray300
         }
     }
     
@@ -107,6 +117,8 @@ final class MyPageEditAvatarView: UIView {
                                 avatarImageCollectionView,
                                 changeButton,
                                 notChangeButton)
+        changeButton.addSubview(changeButtonLabel)
+        notChangeButton.addSubview(notChangeButtonLabel)
     }
     
     private func setLayout() {
@@ -146,6 +158,10 @@ final class MyPageEditAvatarView: UIView {
             $0.top.equalTo(avatarImageCollectionView.snp.bottom).offset(43)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(53)
+            
+            changeButtonLabel.snp.makeConstraints {
+                $0.center.equalToSuperview()
+            }
         }
         
         notChangeButton.snp.makeConstraints {
@@ -156,6 +172,10 @@ final class MyPageEditAvatarView: UIView {
                 $0.bottom.equalToSuperview().inset(10)
             } else {
                 $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom)
+            }
+            
+            notChangeButtonLabel.snp.makeConstraints {
+                $0.center.equalToSuperview()
             }
         }
     }
