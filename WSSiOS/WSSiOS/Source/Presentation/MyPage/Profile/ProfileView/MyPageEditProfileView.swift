@@ -98,6 +98,7 @@ final class MyPageEditProfileView: UIView {
                 $0.font = .Body2
                 $0.backgroundColor = .wssGray50
                 $0.layer.cornerRadius = 12
+                $0.tintColor = .wssBlack
                 
                 let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 12, height: 44))
                 $0.leftView = paddingView
@@ -146,6 +147,7 @@ final class MyPageEditProfileView: UIView {
                 $0.spellCheckingType = .no
                 $0.autocorrectionType = .no
                 $0.autocapitalizationType = .none
+                $0.tintColor = .wssBlack
             }
             
             introTextViewPlaceholder.do {
