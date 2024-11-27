@@ -65,12 +65,12 @@ final class MyPageEditAvatarView: UIView {
         
         avatarNameLabel.do {
             //데이터 바인딩이 늦었을 때 레이아웃 달라지는 것을 대비하여 기본값 설정
-            $0.applyWSSFont(.headline1, with: "소소냥이")
+            $0.applyWSSFont(.headline1, with: StringLiterals.MyPage.EditProfile.defaultAvatarName)
             $0.textColor = .wssBlack
         }
         
         avatarLineLabel.do {
-            $0.applyWSSFont(.title3, with: "만나서 반가워")
+            $0.applyWSSFont(.title3, with: StringLiterals.MyPage.EditProfile.defaultAvatarDescription)
             $0.textColor = .wssBlack
         }
         

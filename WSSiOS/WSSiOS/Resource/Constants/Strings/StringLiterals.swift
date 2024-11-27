@@ -211,6 +211,9 @@ enum StringLiterals {
             static let introPlaceholder = "소개글을 적어보세요!"
             static let genre = "선호장르"
             static let genreDescription = "선택한 장르에 맞춰 작품을 추천해 드려요"
+            
+            static let defaultAvatarName = "소소냥이"
+            static let defaultAvatarDescription = "만나서 반가워"
         }
         
         enum EditProfileWarningMessage: String {
