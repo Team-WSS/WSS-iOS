@@ -14,11 +14,10 @@ final class MyPageEditProfileView: UIView {
     
     //MARK: - Components
     
-    let myPageProfileView = UIView()
-    
+    private let myPageProfileView = UIView()
     private var userImageView = CircularImageView()
-    var userImageChangeButton = CircularButton()
-    private let userImageChangeButtonView = UIImageView()
+    let userImageChangeInnerButton: UIButton = CircularButton()
+    private let userImageChangeInnerButtonView = UIImageView()
 
     private let nicknameView = UIView()
     private let nicknameLabel = UILabel()
@@ -70,11 +69,7 @@ final class MyPageEditProfileView: UIView {
         myPageProfileView.do {
             $0.backgroundColor = .wssWhite
             
-            userImageChangeButtonView.do {
-                $0.image = .icPlus
-            }
-            
-            userImageChangeButton.do {
+            userImageChangeInnerButton.do {
                 var configuration = UIButton.Configuration.filled()
                 configuration.baseBackgroundColor = .wssWhite
                 
@@ -83,6 +78,10 @@ final class MyPageEditProfileView: UIView {
                 
                 $0.layer.borderWidth = 1.04
                 $0.layer.borderColor = UIColor.wssGray70.cgColor
+                
+                userImageChangeInnerButtonView.do {
+                    $0.image = .icPlus
+                }
             }
         }
         
@@ -203,8 +202,8 @@ final class MyPageEditProfileView: UIView {
                          introView,
                          genreView)
         myPageProfileView.addSubviews(userImageView,
-                                      userImageChangeButton)
-        userImageChangeButton.addSubview(userImageChangeButtonView)
+                                      userImageChangeInnerButton)
+        userImageChangeInnerButton.addSubview(userImageChangeInnerButtonView)
         nicknameView.addSubviews(nicknameLabel,
                                  nicknameTextField,
                                  nicknameDuplicatedButton,
@@ -235,15 +234,15 @@ final class MyPageEditProfileView: UIView {
                 $0.edges.equalToSuperview()
             }
             
-            userImageChangeButtonView.snp.makeConstraints {
-                $0.center.equalToSuperview()
-                $0.size.equalTo(20)
-            }
-            
-            userImageChangeButton.snp.makeConstraints {
+            userImageChangeInnerButton.snp.makeConstraints {
                 $0.trailing.equalTo(userImageView.snp.trailing)
                 $0.bottom.equalTo(userImageView.snp.bottom)
                 $0.size.equalTo(25)
+                
+                userImageChangeInnerButtonView.snp.makeConstraints {
+                    $0.center.equalToSuperview()
+                    $0.size.equalTo(20)
+                }
             }
         }
         

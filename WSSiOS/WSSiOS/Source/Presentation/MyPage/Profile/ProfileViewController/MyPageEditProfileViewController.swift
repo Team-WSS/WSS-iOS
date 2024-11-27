@@ -71,7 +71,7 @@ final class MyPageEditProfileViewController: UIViewController {
         let input = MyPageEditProfileViewModel.Input(
             backButtonDidTap: rootView.backButton.rx.tap,
             completeButtonDidTap: rootView.completeButton.rx.tap,
-            profileViewDidTap: rootView.myPageProfileView.rx.tapGesture().when(.recognized).asObservable(),
+            profileViewDidTap: rootView.userImageChangeInnerButton.rx.tap,
             avatarImageNotification: NotificationCenter.default.rx.notification(Notification.Name("ChangRepresentativeAvatar")).asObservable(),
             updateNicknameText: rootView.nicknameTextField.rx.text.orEmpty.distinctUntilChanged(),
             textFieldBeginEditing: rootView.nicknameTextField.rx.controlEvent(.editingDidBegin),
