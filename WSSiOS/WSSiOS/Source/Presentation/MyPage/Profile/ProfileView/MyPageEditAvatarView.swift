@@ -13,22 +13,24 @@ import Then
 
 final class MyPageEditAvatarView: UIView {
     
+    //랜덤하게 출력
     private let lottieList: [() -> LottieAnimationView] = [
         { [Lottie.Home.Sosocat.tail, Lottie.Home.Sosocat.bread].randomElement()! },
-        { [Lottie.Home.Villainess.fan, Lottie.Home.Villainess.tea].randomElement()! },
-        { [Lottie.Home.Regressor.sword, Lottie.Home.Regressor.greeting].randomElement()! }
+        { [Lottie.Home.Regressor.sword, Lottie.Home.Regressor.greeting].randomElement()! },
+        { [Lottie.Home.Villainess.fan, Lottie.Home.Villainess.tea].randomElement()! }
     ]
     
     //MARK: - Components
     
     private let navigationLabel = UILabel()
     
+    private let contentView = UIView()
     private var avatarLottieView = LottieAnimationView()
     private let avatarNameLabel = UILabel()
     private let avatarLineLabel = UILabel()
     
     let avatarImageCollectionView = UICollectionView(frame: .zero,
-                                                             collectionViewLayout: UICollectionViewLayout())
+                                                     collectionViewLayout: UICollectionViewLayout())
     let changeButton = UIButton()
     let notChangeButton = UIButton()
     
@@ -49,9 +51,26 @@ final class MyPageEditAvatarView: UIView {
     //MARK: - UI
     
     private func setUI() {
-        self.backgroundColor = .wssWhite
+        contentView.do {
+            $0.backgroundColor = .wssWhite
+            $0.layer.cornerRadius = 12
+            $0.layer.maskedCorners = [.layerMinXMinYCorner,
+                                      .layerMaxXMinYCorner]
+        }
+        
         navigationLabel.do {
             $0.applyWSSFont(.headline1, with: StringLiterals.Navigation.Title.changeAvatar)
+            $0.textColor = .wssBlack
+        }
+        
+        avatarNameLabel.do {
+            //데이터 바인딩이 늦었을 때 레이아웃 달라지는 것을 대비하여 기본값 설정
+            $0.applyWSSFont(.headline1, with: "소소냥이")
+            $0.textColor = .wssBlack
+        }
+        
+        avatarLineLabel.do {
+            $0.applyWSSFont(.title3, with: "만나서 반가워")
             $0.textColor = .wssBlack
         }
         
@@ -82,16 +101,26 @@ final class MyPageEditAvatarView: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubviews(navigationLabel,
-                         avatarLottieView,
-                         avatarNameLabel,
-                         avatarLineLabel,
-                         avatarImageCollectionView,
-                         changeButton,
-                         notChangeButton)
+        self.addSubview(contentView)
+        contentView.addSubviews(navigationLabel,
+                                avatarLottieView,
+                                avatarNameLabel,
+                                avatarLineLabel,
+                                avatarImageCollectionView,
+                                changeButton,
+                                notChangeButton)
     }
     
     private func setLayout() {
+        contentView.snp.makeConstraints {
+            $0.leading.trailing.bottom.equalToSuperview()
+            if UIScreen.isSE {
+                $0.height.equalTo(654 + 10)
+            } else {
+                $0.height.equalTo(689)
+            }
+        }
+        
         navigationLabel.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.top.equalToSuperview().inset(33)
@@ -104,7 +133,7 @@ final class MyPageEditAvatarView: UIView {
         }
         
         avatarNameLabel.snp.makeConstraints {
-            $0.top.equalTo(avatarLottieView.snp.bottom).offset(28)
+            $0.top.equalTo(navigationLabel.snp.bottom).offset(36 + 250 + 28)
             $0.centerX.equalToSuperview()
         }
         
@@ -115,7 +144,10 @@ final class MyPageEditAvatarView: UIView {
         
         avatarImageCollectionView.snp.makeConstraints {
             $0.top.equalTo(avatarLineLabel.snp.bottom).offset(33)
-            $0.centerX.equalToSuperview()
+            
+            // 마지막 minimumInteritemSpacing 고려
+            $0.centerX.equalToSuperview().inset(16)
+            $0.width.equalTo(182+16)
         }
         
         changeButton.snp.makeConstraints {
@@ -127,7 +159,7 @@ final class MyPageEditAvatarView: UIView {
         notChangeButton.snp.makeConstraints {
             $0.top.equalTo(changeButton.snp.bottom).offset(8)
             $0.leading.trailing.equalToSuperview().inset(20)
-            $0.height.equalTo(53)
+            $0.height.equalTo(39)
             if UIScreen.isSE {
                 $0.bottom.equalToSuperview().inset(10)
             } else {
@@ -138,15 +170,18 @@ final class MyPageEditAvatarView: UIView {
     
     //MARK: - Data
     
-    func bindData(_ avatar: Avatar) {
+    func bindData(avatar: Avatar, nickname: String) {
+        
+        avatarLottieView.removeFromSuperview()
+        
         avatarNameLabel.do {
             $0.applyWSSFont(.headline1, with: avatar.avatarName)
-            $0.textColor = .wssBlack
         }
         
         avatarLineLabel.do {
-            $0.applyWSSFont(.headline1, with: avatar.avatarLine)
-            $0.textColor = .wssBlack
+            let avatarLineText = avatar.avatarLine
+            let formattedLineText = avatarLineText.replacingOccurrences(of: "%s", with: nickname)
+            $0.applyWSSFont(.title3, with: formattedLineText)
         }
         
         //Lottie 적용

@@ -68,7 +68,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
                                                                                     intro: "",
                                                                                     avatarImage: "",
                                                                                     genrePreferences: []))
-        let pushToAvatarViewController = PublishRelay<Bool>()
+        let pushToAvatarViewController = PublishRelay<String>()
         let updateProfileImage = PublishRelay<String>()
         
         let nicknameText = BehaviorRelay<String>(value: "")
@@ -164,7 +164,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
         input.profileViewDidTap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
-                output.pushToAvatarViewController.accept(true)
+                output.pushToAvatarViewController.accept(owner.profileData.nickname)
             })
             .disposed(by: disposeBag)
         

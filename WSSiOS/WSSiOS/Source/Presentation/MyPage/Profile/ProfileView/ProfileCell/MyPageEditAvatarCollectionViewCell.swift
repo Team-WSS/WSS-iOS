@@ -21,6 +21,7 @@ final class MyPageEditAvatarCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        setUI()
         setHierarchy()
         setLayout()
     }
@@ -30,6 +31,13 @@ final class MyPageEditAvatarCollectionViewCell: UICollectionViewCell {
     }
     
     //MARK: - UI
+    
+    private func setUI() {
+        avatarImageView.do {
+            $0.layer.cornerRadius = 50/2
+            $0.isUserInteractionEnabled = true
+        }
+    }
     
     private func setHierarchy() {
         self.addSubview(avatarImageView)
@@ -43,13 +51,11 @@ final class MyPageEditAvatarCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Data
     
-    func bindData(_ avatar: Avatar) {
+    func bindData(avatarImage: String, isRepresentative: Bool) {
         avatarImageView.do {
-            $0.kfSetImage(url: makeBucketImageURLString(path: avatar.avatarImage))
-            $0.layer.cornerRadius = 50/2
-            $0.isUserInteractionEnabled = true
+            $0.kfSetImage(url: makeBucketImageURLString(path: avatarImage))
             
-            if (avatar.isRepresentative) {
+            if (isRepresentative) {
                 $0.layer.borderColor = UIColor.wssPrimary100.cgColor
                 $0.layer.borderWidth = 5
             }

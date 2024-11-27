@@ -67,11 +67,11 @@ final class MyPageEditAvatarViewController: UIViewController, UIScrollViewDelega
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
-        output.bindAvatarCell
-            .bind(to: rootView.avatarImageCollectionView.rx.items(
-                cellIdentifier: MyPageEditAvatarCollectionViewCell.cellIdentifier,
-                cellType: MyPageEditAvatarCollectionViewCell.self)) { row, element, cell in
-                    cell.bindData(element)
+        output.bindAvatarImageCell
+            .bind(to: rootView.avatarImageCollectionView.rx.items(cellIdentifier: MyPageEditAvatarCollectionViewCell.cellIdentifier, cellType: MyPageEditAvatarCollectionViewCell.self)) { (row, data, cell) in
+                print(data)
+                let (avatarImage, isRepresentive) = data
+                cell.bindData(avatarImage: avatarImage, isRepresentative: isRepresentive)
             }
             .disposed(by: disposeBag)
         
@@ -84,23 +84,16 @@ final class MyPageEditAvatarViewController: UIViewController, UIScrollViewDelega
         
         output.updateAvatarData
             .bind(with: self, onNext: { owner, data in
-                owner.rootView.bindData(data)
+                let (avatarData, nickname) = data
+                owner.rootView.bindData(avatar: avatarData, nickname: nickname)
             })
             .disposed(by: disposeBag)
         
     }
 }
-//
-//extension MyPageEditAvatarViewController: UICollectionViewDelegateFlowLayout {
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        
-//        guard let unwrappedText = text else {
-//            return CGSize(width: 0, height: 0)
-//        }
-//        
-//        let width = (unwrappedText as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 26
-//        return CGSize(width: 50, height: 50)
-//    }
-//    
-//    func 
-//}
+
+extension MyPageEditAvatarViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 50, height: 50)
+    }
+}

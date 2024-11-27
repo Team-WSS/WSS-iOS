@@ -105,8 +105,13 @@ final class MyPageEditProfileViewController: UIViewController {
         
         output.pushToAvatarViewController
             .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, _ in
-                owner.presentMyPageEditAvatarViewController()
+            .bind(with: self, onNext: { owner, nickname in
+                owner.presentModalViewController(
+                    MyPageEditAvatarViewController(
+                        viewModel: MyPageEditAvatarViewModel(
+                            avatarRepository: DefaultAvatarRepository(
+                                avatarService: DefaultAvatarService()),
+                            userNickname: nickname)))
             })
             .disposed(by: disposeBag)
         

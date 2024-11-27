@@ -415,14 +415,6 @@ extension UIViewController {
         
         self.navigationController?.pushViewController(viewController, animated: true)
     }
-    
-    func presentMyPageEditAvatarViewController() {
-        let viewController = MyPageEditAvatarViewController(
-            viewModel: MyPageEditAvatarViewModel(
-                avatarRepository: DefaultAvatarRepository(
-                    avatarService: DefaultAvatarService())))
-        self.presentModalViewController(viewController)
-    }
 }
 
 extension UIViewController: UIGestureRecognizerDelegate {
