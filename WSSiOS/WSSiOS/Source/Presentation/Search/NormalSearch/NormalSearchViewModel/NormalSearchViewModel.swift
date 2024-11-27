@@ -29,7 +29,10 @@ final class NormalSearchViewModel: ViewModelType {
     private let isSearchTextFieldEditing = BehaviorRelay<Bool>(value: false)
     private let normalSearchList = BehaviorRelay<[SearchNovel]>(value: [])
     private let normalSearchCellIndexPath = PublishRelay<IndexPath>()
+    
+    // 로딩
     private let showLoadingView = PublishRelay<Bool>()
+    private let showInfiniteScrollLoadingView = PublishRelay<Bool>()
     
     //MARK: - Inputs
     
@@ -63,6 +66,7 @@ final class NormalSearchViewModel: ViewModelType {
         let isSearchTextFieldEditing: Observable<Bool>
         let endEditing: Observable<Void>
         let showLoadingView: Observable<Bool>
+        let showInfiniteScrollLoadingVIew: Observable<Bool>
     }
     
     //MARK: - init
@@ -90,12 +94,18 @@ final class NormalSearchViewModel: ViewModelType {
                 onError: { error in
                     print(error.localizedDescription)
                     self.showLoadingView.accept(false)
+                    self.showInfiniteScrollLoadingView.accept(false)
                 },
                 onCompleted: {
                     self.showLoadingView.accept(false)
+                    self.showInfiniteScrollLoadingView.accept(false)
                 },
                 onSubscribe: {
-                    self.showLoadingView.accept(true)
+                    if page == 0 {
+                        self.showLoadingView.accept(true)
+                    } else {
+                        self.showInfiniteScrollLoadingView.accept(true)
+                    }
                 }
             )
     }
@@ -184,6 +194,7 @@ final class NormalSearchViewModel: ViewModelType {
                       pushToNovelDetailViewController: pushToNovelDetailViewController.asObservable(),
                       isSearchTextFieldEditing: isSearchTextFieldEditing.asObservable(),
                       endEditing: endEditing,
-                      showLoadingView: showLoadingView.asObservable())
+                      showLoadingView: showLoadingView.asObservable(),
+                      showInfiniteScrollLoadingVIew: showInfiniteScrollLoadingView.asObservable())
     }
 }

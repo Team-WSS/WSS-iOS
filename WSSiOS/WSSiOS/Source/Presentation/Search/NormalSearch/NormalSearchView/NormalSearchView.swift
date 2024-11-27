@@ -66,7 +66,8 @@ final class NormalSearchView: UIView {
         }
         
         loadingView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.top.equalTo(headerView.snp.bottom)
+            $0.horizontalEdges.bottom.equalToSuperview()
         }
     }
     

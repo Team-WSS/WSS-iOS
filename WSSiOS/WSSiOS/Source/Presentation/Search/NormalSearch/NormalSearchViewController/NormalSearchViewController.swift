@@ -211,6 +211,13 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
                 owner.rootView.showLoadingView(isShow: isShow)
             })
             .disposed(by: disposeBag)
+        
+        output.showInfiniteScrollLoadingVIew
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, isShow in
+                owner.rootView.resultView.showInfiniteScrollLoadingView(isShow: isShow)
+            })
+            .disposed(by: disposeBag)
     }
     
     private func isNearBottomEdge() -> Bool {
