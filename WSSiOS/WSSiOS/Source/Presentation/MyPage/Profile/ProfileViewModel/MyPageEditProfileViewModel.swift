@@ -232,8 +232,9 @@ final class MyPageEditProfileViewModel: ViewModelType {
         // 소개 기능
         input.updateIntroText
             .subscribe(with: self, onNext: { owner, text in
-                owner.userIntro.accept(String(text.prefix(MyPageEditProfileViewModel.introLimit)))
-                output.introText.accept(owner.userIntro.value)
+                let limitedText = String(text.prefix(MyPageEditProfileViewModel.introLimit))
+                owner.userIntro.accept(limitedText)
+                output.introText.accept(limitedText)
             })
             .disposed(by: disposeBag)
         
