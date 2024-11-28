@@ -46,7 +46,7 @@ final class MyPageView: UIView {
     //MARK: - UI
     
     private func setUI() {
-        self.backgroundColor = .wssGray50
+        self.backgroundColor = .wssWhite
         
         scrolledStstickyHeaderView.do {
             $0.isHidden = true

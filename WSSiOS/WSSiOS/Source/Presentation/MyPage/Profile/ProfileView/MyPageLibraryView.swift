@@ -28,6 +28,9 @@ final class MyPageLibraryView: UIView {
     let genrePrefrerencesView = MyPageGenrePreferencesView()
     let novelPrefrerencesView = MyPageNovelPreferencesView()
     
+    private let dividerView = UIView()
+    private let dividerView2 = UIView()
+    
     // MARK: - Life Cycle
     
     override init(frame: CGRect) {
@@ -48,6 +51,10 @@ final class MyPageLibraryView: UIView {
             $0.spacing = 3
             $0.alignment = .fill
             $0.distribution = .fill
+        }
+        
+        [dividerView, dividerView2].forEach {
+            $0.backgroundColor = .wssGray50
         }
     }
     
@@ -71,6 +78,12 @@ final class MyPageLibraryView: UIView {
         novelPrefrerencesView.snp.makeConstraints {
             $0.height.equalTo(270)
         }
+        
+        [dividerView, dividerView2].forEach {
+            $0.snp.makeConstraints {
+                $0.height.equalTo(3)
+            }
+        }
     }
     
     func updateGenreViewHeight(isExpanded: Bool) {
@@ -87,10 +100,13 @@ final class MyPageLibraryView: UIView {
         
         if isExist {
             stackView.addArrangedSubviews(inventoryView,
+                                          dividerView,
                                           genrePrefrerencesView,
+                                          dividerView2,
                                           novelPrefrerencesView)
         } else {
             stackView.addArrangedSubviews(inventoryView,
+                                          dividerView,
                                           preferencesEmptyView)
             
             preferencesEmptyView.snp.remakeConstraints {
