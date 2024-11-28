@@ -25,6 +25,10 @@ final class MyPageView: UIView {
     let myPageLibraryView = MyPageLibraryView()
     let myPageFeedView = UIView()
     
+    //In VC
+    let settingButton = UIButton()
+    let backButton = UIButton()
+    
     // MARK: - Life Cycle
     
     override init(frame: CGRect) {
@@ -49,6 +53,14 @@ final class MyPageView: UIView {
         }
         
         myPageFeedView.isHidden = true
+        
+        settingButton.do {
+            $0.setImage(UIImage(resource: .icSetting), for: .normal)
+        }
+        
+        backButton.do {
+            $0.setImage(.icNavigateLeft.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray300), for: .normal)
+        }
     }
     
     private func setHierarchy() {

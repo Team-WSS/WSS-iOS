@@ -31,9 +31,6 @@ final class MyPageViewController: UIViewController {
     
     private var rootView = MyPageView()
     
-    private lazy var settingButton = UIButton()
-    private lazy var dropdownButton = WSSDropdownButton()
-    
     // MARK: - Life Cycle
     
     init(viewModel: MyPageViewModel) {
@@ -44,6 +41,10 @@ final class MyPageViewController: UIViewController {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func loadView() {
+        self.view = rootView
     }
     
     override func viewDidLoad() {
@@ -62,6 +63,10 @@ final class MyPageViewController: UIViewController {
             print("다른 VC에서 진입")
             isEntryTabbarRelay.accept(false)
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
     }
     
     override func viewDidLayoutSubviews() {
@@ -108,14 +113,22 @@ final class MyPageViewController: UIViewController {
             isEntryTabbar: isEntryTabbarRelay.asObservable(),
             headerViewHeight: headerViewHeightRelay.asDriver(),
             scrollOffset: rootView.scrollView.rx.contentOffset.asDriver(),
-            settingButtonDidTap: settingButton.rx.tap,
+            settingButtonDidTap: rootView.settingButton.rx.tap,
             dropdownButtonDidTap: dropDownCellTap,
-            editButtonTapoed: rootView.headerView.userImageChangeButton.rx.tap,
+            editButtonDidTap: rootView.headerView.userImageChangeButton.rx.tap,
             genrePreferenceButtonDidTap: genrePreferenceButtonDidTap,
             libraryButtonDidTap: libraryButtonDidTap,
             feedButtonDidTap: feedButtonDidTap)
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
+        
+        output.isMyPage
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, isMyPage in
+                owner.decideUI(myPage: isMyPage)
+                //이름 데이터 받아야 함
+            })
+            .disposed(by: disposeBag)
         
         output.IsExistPreference
             .observe(on: MainScheduler.instance)
@@ -125,7 +138,7 @@ final class MyPageViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.myProfileData
+        output.profileData
             .bind(with: self, onNext: { owner, data in
                 owner.rootView.headerView.bindData(data: data)
             })
@@ -146,7 +159,7 @@ final class MyPageViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.settingButtonEnabled
+        output.pushToSettingViewController
             .bind(with: self, onNext: { owner, _ in
                 owner.pushToSettingViewController()
             })
@@ -158,11 +171,11 @@ final class MyPageViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.dropdownButtonEnabled
-            .bind(with: self, onNext: { owner, data in
-                print(data)
-            })
-            .disposed(by: disposeBag)
+        //        output.dropdownButtonEnabled
+        //            .bind(with: self, onNext: { owner, data in
+        //                print(data)
+        //            })
+        //            .disposed(by: disposeBag)
         
         output.bindGenreData
             .observe(on: MainScheduler.instance)
@@ -257,34 +270,26 @@ extension MyPageViewController {
     
     //MARK: - UI
     
-    private func decideUI(isMyPage: Bool) {
-        let button = setButton(isMyPage: isMyPage)
-        
-        preparationSetNavigationBar(title: StringLiterals.Navigation.Title.myPage,
-                                    left: nil,
-                                    right: button)
-        
-        rootView.headerView.userImageChangeButton.isHidden = !isMyPage
-    }
-    
-    private func setButton(isMyPage: Bool) -> UIButton {
-        if isMyPage {
-            settingButton.do {
-                $0.setImage(UIImage(resource: .icSetting), for: .normal)
-            }
-            return settingButton
-            
+    private func decideUI(myPage: Bool) {
+        if myPage {
+            preparationSetNavigationBar(title: StringLiterals.Navigation.Title.myPage,
+                                        left: nil,
+                                        right: rootView.settingButton)
         } else {
-            dropdownButton.do {
+            let dropdownButton = WSSDropdownButton().then {
                 $0.makeDropdown(dropdownRootView: self.rootView,
                                 dropdownWidth: 120,
-                                dropdownData: ["수정하기", "삭제하기"],
+                                dropdownData: ["차단하기"],
                                 textColor: .wssBlack)
                 .bind(to: dropDownCellTap)
                 .disposed(by: disposeBag)
             }
             
-            return dropdownButton
+            preparationSetNavigationBar(title: StringLiterals.Navigation.Title.myPage,
+                                        left: rootView.backButton,
+                                        right: dropdownButton)
         }
+        
+        rootView.headerView.userImageChangeButton.isHidden = !myPage
     }
 }
