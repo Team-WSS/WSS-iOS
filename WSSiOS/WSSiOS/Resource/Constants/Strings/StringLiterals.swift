@@ -176,6 +176,7 @@ enum StringLiterals {
             static let genrePreferenceTitle = "장르 취향"
             static let novelPreferenceTitle = "작품 취향"
             static let novelPreferenceLabel = "가 매력적인 작품"
+            static let privateLabel = "님의 프로필은\n비공개 상태예요"
         }
         
         enum Character {

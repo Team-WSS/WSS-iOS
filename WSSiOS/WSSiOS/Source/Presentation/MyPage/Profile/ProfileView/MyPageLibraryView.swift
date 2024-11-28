@@ -16,7 +16,7 @@ final class MyPageLibraryView: UIView {
     
     var isExist: Bool = true {
         didSet {
-            updateView(isExist: isExist)
+            updateLibraryView(isExist: isExist)
         }
     }
     
@@ -28,6 +28,8 @@ final class MyPageLibraryView: UIView {
     let genrePrefrerencesView = MyPageGenrePreferencesView()
     let novelPrefrerencesView = MyPageNovelPreferencesView()
     
+    private let myPagePrivateView = MyPagePrivateView()
+    
     private let dividerView = UIView()
     private let dividerView2 = UIView()
     
@@ -38,7 +40,7 @@ final class MyPageLibraryView: UIView {
         setUI()
         setHierarchy()
         setLayout()
-        updateView(isExist: isExist)
+        updateLibraryView(isExist: isExist)
     }
     
     required init?(coder: NSCoder) {
@@ -59,8 +61,8 @@ final class MyPageLibraryView: UIView {
     }
     
     private func setHierarchy() {
-         self.addSubview(stackView)
-     }
+        self.addSubview(stackView)
+    }
     
     private func setLayout() {
         stackView.snp.makeConstraints {
@@ -84,6 +86,10 @@ final class MyPageLibraryView: UIView {
                 $0.height.equalTo(3)
             }
         }
+        
+        myPagePrivateView.snp.makeConstraints {
+            $0.height.equalTo(812)
+        }
     }
     
     func updateGenreViewHeight(isExpanded: Bool) {
@@ -95,7 +101,9 @@ final class MyPageLibraryView: UIView {
         }
     }
     
-    func updateView(isExist: Bool) {
+    //MARK: - Data
+    
+    func updateLibraryView(isExist: Bool) {
         stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         
         if isExist {
@@ -118,6 +126,17 @@ final class MyPageLibraryView: UIView {
             self.layoutIfNeeded()
         }
     }
+    
+    func isPrivateUserView(isPrivate: Bool, nickname: String) {
+        if isPrivate {
+            stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+            stackView.addArrangedSubviews(myPagePrivateView)
+            
+            let text = nickname + StringLiterals.MyPage.Profile.privateLabel
+            myPagePrivateView.isPrivateDescriptionLabel.do {
+                $0.applyWSSFont(.body2, with: text)
+                $0.textAlignment = .center
+            }
+        }
+    }
 }
-
-

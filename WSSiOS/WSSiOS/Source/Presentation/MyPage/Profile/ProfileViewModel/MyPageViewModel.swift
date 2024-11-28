@@ -20,7 +20,7 @@ final class MyPageViewModel: ViewModelType {
     private let disposeBag = DisposeBag()
     var height: Double = 0.0
     let bindKeywordRelay = BehaviorRelay<[Keyword]>(value: [])
-    let isMyPageRelay = PublishRelay<Bool>()
+    let isMyPageRelay = BehaviorRelay<Bool>(value: true)
     
     // MARK: - Life Cycle
     
@@ -53,8 +53,8 @@ final class MyPageViewModel: ViewModelType {
     
     struct Output {
         let isMyPage = BehaviorRelay<(Bool, String)>(value: (true, ""))
-        let IsExistPreference = PublishRelay<Bool>()
-        let isProfilePublic = PublishRelay<Bool>()
+        let isExistPreference = PublishRelay<Bool>()
+        let isProfilePrivate = BehaviorRelay<(Bool, String)>(value: (true, ""))
         let profileData = BehaviorRelay<MyProfileResult>(value: MyProfileResult(nickname: "",
                                                                                 intro: "",
                                                                                 avatarImage: "",
@@ -68,7 +68,10 @@ final class MyPageViewModel: ViewModelType {
         let bindattractivePointsData = BehaviorRelay<[String]>(value: [])
         let bindKeywordCell = BehaviorRelay<[Keyword]>(value: [])
         let bindGenreData = BehaviorRelay<UserGenrePreferences>(value: UserGenrePreferences(genrePreferences: []))
-        let bindInventoryData = BehaviorRelay<UserNovelStatus>(value: UserNovelStatus(interestNovelCount: 0, watchingNovelCount: 0, watchedNovelCount: 0, quitNovelCount: 0))
+        let bindInventoryData = BehaviorRelay<UserNovelStatus>(value: UserNovelStatus(interestNovelCount: 0,
+                                                                                      watchingNovelCount: 0,
+                                                                                      watchedNovelCount: 0,
+                                                                                      quitNovelCount: 0))
         let showGenreOtherView = BehaviorRelay<Bool>(value: false)
         
         let stickyHeaderAction = BehaviorRelay<Bool>(value: true)
@@ -106,9 +109,9 @@ final class MyPageViewModel: ViewModelType {
                                 avatarImage: profileData.avatarImage,
                                 genrePreferences: profileData.genrePreferences
                             )
-                            output.isProfilePublic.accept(profileData.isProfilePublic)
                             output.profileData.accept(data)
                             output.isMyPage.accept((false, profileData.nickname))
+                            output.isProfilePrivate.accept((!profileData.isProfilePublic, profileData.nickname))
                         })
                         .map { _ in }
                 }
@@ -117,44 +120,51 @@ final class MyPageViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         // 마이페이지 정보 바인딩
-        Observable.just(())
-            .flatMapLatest { _ in
-                self.getNovelPreferenceData(userId: self.profileId)
+        Observable.combineLatest(output.isProfilePrivate.asObservable(), isMyPageRelay.asObservable())
+            .filter { isProfilePrivate, isMyPage in
+                !isProfilePrivate.0 || isMyPage
             }
-            .subscribe(with: self, onNext: { owner, data in
-                if data.attractivePoints == [] {
-                    output.IsExistPreference.accept(false)
-                } else {
-                    output.IsExistPreference.accept(true)
-                    output.bindattractivePointsData.accept(data.attractivePoints ?? [])
-                    let keywords = data.keywords ?? []
-                    output.bindKeywordCell.accept(keywords)
-                    owner.bindKeywordRelay.accept(keywords)
-                }
-            }, onError: { owner, error in
-                print(error.localizedDescription)
-            })
-            .disposed(by: disposeBag)
-        
-        Observable.just(())
-            .flatMapLatest { _ in
-                self.getGenrePreferenceData(userId: self.profileId)
-            }
-            .subscribe(with: self, onNext: { owner, data in
-                output.bindGenreData.accept(data)
-            }, onError: { owner, error in
-                print(error.localizedDescription)
-            })
-            .disposed(by: disposeBag)
-        
-        Observable.just(())
-            .flatMapLatest { _ in
-                self.getInventoryData(userId: self.profileId)
-            }
-            .subscribe(with: self, onNext: { owner, data in
-                output.bindInventoryData.accept(data)
-            }, onError: { owner, error in
-                print(error.localizedDescription)
+            .subscribe(onNext: { [unowned self] _, _ in
+                Observable.just(())
+                    .flatMapLatest { _ in
+                        self.getNovelPreferenceData(userId: self.profileId)
+                    }
+                    .subscribe(with: self, onNext: { owner, data in
+                        if data.attractivePoints == [] {
+                            output.isExistPreference.accept(false)
+                        } else {
+                            output.isExistPreference.accept(true)
+                            output.bindattractivePointsData.accept(data.attractivePoints ?? [])
+                            let keywords = data.keywords ?? []
+                            output.bindKeywordCell.accept(keywords)
+                            owner.bindKeywordRelay.accept(keywords)
+                        }
+                    }, onError: { owner, error in
+                        print(error.localizedDescription)
+                    })
+                    .disposed(by: disposeBag)
+                
+                Observable.just(())
+                    .flatMapLatest { _ in
+                        self.getGenrePreferenceData(userId: self.profileId)
+                    }
+                    .subscribe(with: self, onNext: { owner, data in
+                        output.bindGenreData.accept(data)
+                    }, onError: { owner, error in
+                        print(error.localizedDescription)
+                    })
+                    .disposed(by: disposeBag)
+                
+                Observable.just(())
+                    .flatMapLatest { _ in
+                        self.getInventoryData(userId: self.profileId)
+                    }
+                    .subscribe(with: self, onNext: { owner, data in
+                        output.bindInventoryData.accept(data)
+                    }, onError: { owner, error in
+                        print(error.localizedDescription)
+                    })
+                    .disposed(by: disposeBag)
             })
             .disposed(by: disposeBag)
         

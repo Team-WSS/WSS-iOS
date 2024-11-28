@@ -115,4 +115,10 @@ final class MyPageView: UIView {
             $0.bottom.equalTo(myPageLibraryView.snp.bottom)
         }
     }
+    
+    func dataBind(isPrivate: Bool) {
+        if isPrivate {
+            
+        }
+    }
 }

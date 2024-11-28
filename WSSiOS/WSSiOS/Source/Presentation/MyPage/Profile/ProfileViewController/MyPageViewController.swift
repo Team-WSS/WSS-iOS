@@ -133,11 +133,11 @@ final class MyPageViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.IsExistPreference
+        output.isExistPreference
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, exist in
                 owner.rootView.myPageLibraryView.isExist = exist
-                owner.rootView.myPageLibraryView.updateView(isExist: exist)
+                owner.rootView.myPageLibraryView.updateLibraryView(isExist: exist)
             })
             .disposed(by: disposeBag)
         
@@ -189,6 +189,15 @@ final class MyPageViewController: UIViewController {
         //                print(data)
         //            })
         //            .disposed(by: disposeBag)
+        
+        output.isProfilePrivate
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, data in
+                let (isPrivate, nickname) = data
+                owner.rootView.myPageLibraryView.isPrivateUserView(isPrivate: isPrivate, nickname: nickname)
+                
+            })
+            .disposed(by: disposeBag)
         
         output.bindGenreData
             .observe(on: MainScheduler.instance)
