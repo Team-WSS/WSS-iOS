@@ -361,10 +361,7 @@ extension UIViewController {
             viewModel: MyPageViewModel(
                 userRepository: DefaultUserRepository(
                     userService: DefaultUserService(),
-                    blocksService: DefaultBlocksService()
-                )
-            ),
-            isMyPage: isMyPage)
+                    blocksService: DefaultBlocksService()), profileId: 0))
         
         self.navigationController?.pushViewController(viewController, animated: true)
     }

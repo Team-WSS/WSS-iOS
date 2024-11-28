@@ -14,11 +14,15 @@ final class MyPageViewModel: ViewModelType {
     
     // MARK: - Properties
     
+    let profileId: Int
+    
     private let userRepository: UserRepository
     private let disposeBag = DisposeBag()
     var height: Double = 0.0
     let bindKeywordRelay = BehaviorRelay<[Keyword]>(value: [])
-    let userId = BehaviorRelay<Int>(value: 0)
+    let userIdRelay = BehaviorRelay<Int>(value: 0)
+    let isMyPageRelay = PublishRelay<Bool>()
+    let isNotMyPageRelay = PublishRelay<Bool>()
     
     let dummyNovelPreferenceData = UserNovelPreferences(
         attractivePoints: ["character", "material", "worldview"],
@@ -33,12 +37,13 @@ final class MyPageViewModel: ViewModelType {
     
     // MARK: - Life Cycle
     
-    init(userRepository: UserRepository) {
+    init(userRepository: UserRepository, profileId: Int) {
         self.userRepository = userRepository
+        self.profileId = profileId
     }
     
     struct Input {
-        let isMyPage: Driver<Bool>
+        let isEntryTabbar: Observable<Bool>
         let headerViewHeight: Driver<Double>
         let scrollOffset: Driver<CGPoint>
         let settingButtonDidTap: ControlEvent<Void>
@@ -50,6 +55,7 @@ final class MyPageViewModel: ViewModelType {
     }
     
     struct Output {
+        let isMyPage = BehaviorRelay<Bool>(value: true)
         let IsExistPreference = PublishRelay<Bool>()
         let userData = BehaviorRelay<UserInfoResult>(value: UserInfoResult(nickname: "", gender: "", birth: 0, genrePreferences: []))
         let profileData = BehaviorRelay<MyProfileResult>(value: MyProfileResult(nickname: "",
@@ -71,12 +77,35 @@ final class MyPageViewModel: ViewModelType {
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
         
-        input.isMyPage
+        input.isEntryTabbar
+            .subscribe(with: self, onNext: { owner, isMyPage in
+                if isMyPage {
+                    owner.isMyPageRelay.accept(true)
+                } else {
+                    owner.isNotMyPageRelay.accept(true)
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        self.isMyPageRelay
             .asObservable()
-            .flatMapLatest { [unowned self] isMyPage in
-                self.getProfileData(isMyPage: isMyPage)
+            .flatMapLatest { [unowned self] _ in
+                self.getProfileData()
             }
-            .bind(to: output.profileData)
+            .subscribe(with: self, onNext: { owner, prifileData in
+                output.profileData.accept(prifileData)
+                output.isMyPage.accept(true)
+            })
+            .disposed(by: disposeBag)
+        
+        self.isNotMyPageRelay
+//            .asObservable()
+//            .flatMapLatest { [unowned self] _ in
+//                self.getProfileData()
+//            }
+            .subscribe(with: self, onNext: { owner, _ in
+                print(owner.profileId, "🤪")
+            })
             .disposed(by: disposeBag)
         
         Observable.just(())
@@ -84,7 +113,7 @@ final class MyPageViewModel: ViewModelType {
                 self.getUserMeData()
             }
             .subscribe(with: self, onNext: { owner, data in
-                owner.userId.accept(data.userId)
+                owner.userIdRelay.accept(data.userId)
             }, onError: { owner, error in
                 print(error.localizedDescription)
             })
@@ -92,7 +121,7 @@ final class MyPageViewModel: ViewModelType {
         
         Observable.just(())
             .flatMapLatest { _ in
-                self.getNovelPreferenceData(userId: self.userId.value)
+                self.getNovelPreferenceData(userId: self.userIdRelay.value)
             }
             .subscribe(with: self, onNext: { owner, data in
                 if data.attractivePoints == [] {
@@ -111,7 +140,7 @@ final class MyPageViewModel: ViewModelType {
         
         Observable.just(())
             .flatMapLatest { _ in
-                self.getGenrePreferenceData(userId: self.userId.value)
+                self.getGenrePreferenceData(userId: self.userIdRelay.value)
             }
             .subscribe(with: self, onNext: { owner, data in
                 output.bindGenreData.accept(data)
@@ -122,7 +151,7 @@ final class MyPageViewModel: ViewModelType {
         
         Observable.just(())
             .flatMapLatest { _ in
-                self.getInventoryData(userId: self.userId.value)
+                self.getInventoryData(userId: self.userIdRelay.value)
             }
             .subscribe(with: self, onNext: { owner, data in
                 output.bindInventoryData.accept(data)
@@ -196,14 +225,9 @@ final class MyPageViewModel: ViewModelType {
     
     // MARK: - API
     
-    private func getProfileData(isMyPage: Bool) -> Observable<MyProfileResult> {
-        if isMyPage {
-            return userRepository.getMyProfileData()
-                .observe(on: MainScheduler.instance)
-        } else {
-            return userRepository.getMyProfileData()
-                .observe(on: MainScheduler.instance)
-        }
+    private func getProfileData() -> Observable<MyProfileResult> {
+        return userRepository.getMyProfileData()
+            .observe(on: MainScheduler.instance)
     }
     
     private func getNovelPreferenceData(userId: Int) -> Observable<UserNovelPreferences> {

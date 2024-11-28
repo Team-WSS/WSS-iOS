@@ -13,10 +13,6 @@ import Then
 
 final class MyPageView: UIView {
     
-    //MARK: - Properties
-    
-    let isMyPage:Bool
-    
     //MARK: - Components
     
     let scrollView = UIScrollView()
@@ -31,9 +27,8 @@ final class MyPageView: UIView {
     
     // MARK: - Life Cycle
     
-    init(isMyPage: Bool) {
-        self.isMyPage = isMyPage
-        super.init(frame: .zero)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         
         setUI()
         setHierarchy()

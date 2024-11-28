@@ -10,41 +10,40 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+enum EntryType {
+    case tabBar
+    case otherVC
+}
+
 final class MyPageViewController: UIViewController {
     
     //MARK: - Properties
     
     private let disposeBag = DisposeBag()
     private let viewModel: MyPageViewModel
+    var entryType: EntryType = .otherVC
     
-    private var isMyPageRelay: BehaviorRelay<Bool>
+    private let isEntryTabbarRelay = BehaviorRelay<Bool>(value: false)
     private var dropDownCellTap = PublishSubject<String>()
     private let headerViewHeightRelay = BehaviorRelay<Double>(value: 0)
     
     //MARK: - UI Components
     
-    private var rootView = MyPageView(isMyPage: true)
+    private var rootView = MyPageView()
     
     private lazy var settingButton = UIButton()
     private lazy var dropdownButton = WSSDropdownButton()
     
     // MARK: - Life Cycle
     
-    init(viewModel: MyPageViewModel, isMyPage: Bool) {
+    init(viewModel: MyPageViewModel) {
         self.viewModel = viewModel
-        self.isMyPageRelay = BehaviorRelay(value: isMyPage)
         
         super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func loadView() {
-        self.view = rootView
-        
-        decideUI(isMyPage: isMyPageRelay.value)
     }
     
     override func viewDidLoad() {
@@ -54,6 +53,15 @@ final class MyPageViewController: UIViewController {
         register()
         
         bindViewModel()
+        
+        switch entryType {
+        case .tabBar:
+            print("탭바에서 진입")
+            isEntryTabbarRelay.accept(true)
+        case .otherVC:
+            print("다른 VC에서 진입")
+            isEntryTabbarRelay.accept(false)
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -97,7 +105,7 @@ final class MyPageViewController: UIViewController {
         )
         
         let input = MyPageViewModel.Input(
-            isMyPage: isMyPageRelay.asDriver(),
+            isEntryTabbar: isEntryTabbarRelay.asObservable(),
             headerViewHeight: headerViewHeightRelay.asDriver(),
             scrollOffset: rootView.scrollView.rx.contentOffset.asDriver(),
             settingButtonDidTap: settingButton.rx.tap,
