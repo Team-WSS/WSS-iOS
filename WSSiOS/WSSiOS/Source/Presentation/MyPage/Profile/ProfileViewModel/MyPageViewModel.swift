@@ -52,7 +52,7 @@ final class MyPageViewModel: ViewModelType {
     }
     
     struct Output {
-        let isMyPage = BehaviorRelay<Bool>(value: true)
+        let isMyPage = BehaviorRelay<(Bool, String)>(value: (true, ""))
         let IsExistPreference = PublishRelay<Bool>()
         let isProfilePublic = PublishRelay<Bool>()
         let profileData = BehaviorRelay<MyProfileResult>(value: MyProfileResult(nickname: "",
@@ -93,7 +93,8 @@ final class MyPageViewModel: ViewModelType {
                     return self.getProfileData()
                         .do(onNext: { profileData in
                             output.profileData.accept(profileData)
-                            output.isMyPage.accept(true)
+                            let navigationTitle = StringLiterals.Navigation.Title.myPage
+                            output.isMyPage.accept((true, navigationTitle))
                         })
                         .map { _ in }
                 } else {
@@ -107,7 +108,7 @@ final class MyPageViewModel: ViewModelType {
                             )
                             output.isProfilePublic.accept(profileData.isProfilePublic)
                             output.profileData.accept(data)
-                            output.isMyPage.accept(false)
+                            output.isMyPage.accept((false, profileData.nickname))
                         })
                         .map { _ in }
                 }

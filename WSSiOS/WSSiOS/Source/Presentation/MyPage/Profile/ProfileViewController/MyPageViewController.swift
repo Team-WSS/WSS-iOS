@@ -127,9 +127,9 @@ final class MyPageViewController: UIViewController {
         
         output.isMyPage
             .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, isMyPage in
-                owner.decideUI(myPage: isMyPage)
-                //이름 데이터 받아야 함
+            .bind(with: self, onNext: { owner, data in
+                let (myPage, title) = data
+                owner.decideNavigation(myPage: myPage, title: title)
             })
             .disposed(by: disposeBag)
         
@@ -283,9 +283,9 @@ extension MyPageViewController {
     
     //MARK: - UI
     
-    private func decideUI(myPage: Bool) {
+    private func decideNavigation(myPage: Bool, title: String) {
         if myPage {
-            preparationSetNavigationBar(title: StringLiterals.Navigation.Title.myPage,
+            preparationSetNavigationBar(title: title,
                                         left: nil,
                                         right: rootView.settingButton)
         } else {
@@ -298,7 +298,7 @@ extension MyPageViewController {
                 .disposed(by: disposeBag)
             }
             
-            preparationSetNavigationBar(title: StringLiterals.Navigation.Title.myPage,
+            preparationSetNavigationBar(title: title,
                                         left: rootView.backButton,
                                         right: dropdownButton)
         }
