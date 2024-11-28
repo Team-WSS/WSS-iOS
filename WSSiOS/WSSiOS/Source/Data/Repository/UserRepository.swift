@@ -24,6 +24,7 @@ protocol UserRepository {
     func getUserNovelStatus(userId: Int) -> Observable<UserNovelStatus>
     func getUserNovelPreferences(userId: Int) -> Observable<UserNovelPreferences>
     func getUserGenrePreferences(userId: Int) -> Observable<UserGenrePreferences>
+    func postBlockUser(userId: Int) -> Observable<Void>
 }
 
 struct DefaultUserRepository: UserRepository {
@@ -107,6 +108,11 @@ struct DefaultUserRepository: UserRepository {
     
     func patchUserProfileVisibility(isProfilePublic: Bool) -> Observable<Void> {
         return userService.patchUserProfileVisibility(isProfilePublic: isProfilePublic)
+            .asObservable()
+    }
+    
+    func postBlockUser(userId: Int) -> Observable<Void> {
+        return blocksService.postBlockUser(blockID: userId)
             .asObservable()
     }
 }

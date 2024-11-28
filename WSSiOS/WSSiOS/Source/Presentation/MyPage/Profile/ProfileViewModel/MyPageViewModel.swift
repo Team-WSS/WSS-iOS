@@ -17,6 +17,7 @@ final class MyPageViewModel: ViewModelType {
     let profileId: Int
     
     private let userRepository: UserRepository
+    
     private let disposeBag = DisposeBag()
     var height: Double = 0.0
     let bindKeywordRelay = BehaviorRelay<[Keyword]>(value: [])
@@ -227,6 +228,17 @@ final class MyPageViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        input.dropdownButtonDidTap
+            .flatMapLatest { _ in
+                self.postBlockUser(userId: self.profileId)
+            }
+            .subscribe(with: self, onNext: { owner, data in
+                output.popViewController.accept(())
+            }, onError: { owner, error in
+                print(error.localizedDescription)
+            })
+            .disposed(by: disposeBag)
+        
         return output
     }
     
@@ -256,6 +268,11 @@ final class MyPageViewModel: ViewModelType {
     
     private func getInventoryData(userId: Int) -> Observable<UserNovelStatus> {
         return userRepository.getUserNovelStatus(userId: userId)
+            .asObservable()
+    }
+    
+    private func postBlockUser(userId: Int) -> Observable<Void> {
+        return userRepository.postBlockUser(userId: userId)
             .asObservable()
     }
 }

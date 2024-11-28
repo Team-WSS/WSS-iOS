@@ -184,12 +184,6 @@ final class MyPageViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        //        output.dropdownButtonEnabled
-        //            .bind(with: self, onNext: { owner, data in
-        //                print(data)
-        //            })
-        //            .disposed(by: disposeBag)
-        
         output.isProfilePrivate
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, data in
