@@ -62,6 +62,8 @@ final class MyPageViewController: UIViewController {
         case .otherVC:
             print("다른 VC에서 진입")
             isEntryTabbarRelay.accept(false)
+            hideTabBar()
+            swipeBackGesture()
         }
     }
     
@@ -116,6 +118,7 @@ final class MyPageViewController: UIViewController {
             settingButtonDidTap: rootView.settingButton.rx.tap,
             dropdownButtonDidTap: dropDownCellTap,
             editButtonDidTap: rootView.headerView.userImageChangeButton.rx.tap,
+            backButtonDidTap: rootView.backButton.rx.tap,
             genrePreferenceButtonDidTap: genrePreferenceButtonDidTap,
             libraryButtonDidTap: libraryButtonDidTap,
             feedButtonDidTap: feedButtonDidTap)
@@ -139,6 +142,7 @@ final class MyPageViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.profileData
+            .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, data in
                 owner.rootView.headerView.bindData(data: data)
             })
@@ -160,14 +164,23 @@ final class MyPageViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.pushToSettingViewController
+            .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 owner.pushToSettingViewController()
             })
             .disposed(by: disposeBag)
         
         output.pushToEditViewController
+            .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, data in
                 owner.pushToMyPageEditViewController(profile: data)
+            })
+            .disposed(by: disposeBag)
+        
+        output.popViewController
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, data in
+                owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
         

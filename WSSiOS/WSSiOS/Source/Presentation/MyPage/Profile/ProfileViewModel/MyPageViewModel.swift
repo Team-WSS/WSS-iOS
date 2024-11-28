@@ -21,7 +21,6 @@ final class MyPageViewModel: ViewModelType {
     var height: Double = 0.0
     let bindKeywordRelay = BehaviorRelay<[Keyword]>(value: [])
     let isMyPageRelay = PublishRelay<Bool>()
-    let isNotMyPageRelay = PublishRelay<Bool>()
     
     // MARK: - Life Cycle
     
@@ -38,11 +37,15 @@ final class MyPageViewModel: ViewModelType {
     
     struct Input {
         let isEntryTabbar: Observable<Bool>
+        
         let headerViewHeight: Driver<Double>
         let scrollOffset: Driver<CGPoint>
+        
         let settingButtonDidTap: ControlEvent<Void>
         let dropdownButtonDidTap: Observable<String>
         let editButtonDidTap: ControlEvent<Void>
+        let backButtonDidTap: ControlEvent<Void>
+        
         let genrePreferenceButtonDidTap: Observable<Bool>
         let libraryButtonDidTap: Observable<Bool>
         let feedButtonDidTap: Observable<Bool>
@@ -60,6 +63,7 @@ final class MyPageViewModel: ViewModelType {
         let updateNavigationEnabled = BehaviorRelay<Bool>(value: false)
         let pushToEditViewController = PublishRelay<MyProfileResult>()
         let pushToSettingViewController = PublishRelay<Void>()
+        let popViewController = PublishRelay<Void>()
         
         let bindattractivePointsData = BehaviorRelay<[String]>(value: [])
         let bindKeywordCell = BehaviorRelay<[Keyword]>(value: [])
@@ -74,13 +78,10 @@ final class MyPageViewModel: ViewModelType {
         let output = Output()
         
         // 진입 경로 분기처리
+        // 현재는 탭바로 진입할 때만 마이페이지!
         input.isEntryTabbar
             .subscribe(with: self, onNext: { owner, isMyPage in
-                if isMyPage {
-                    owner.isMyPageRelay.accept(true)
-                } else {
-                    owner.isNotMyPageRelay.accept(true)
-                }
+                owner.isMyPageRelay.accept(isMyPage)
             })
             .disposed(by: disposeBag)
         
@@ -176,10 +177,23 @@ final class MyPageViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        
         input.genrePreferenceButtonDidTap
             .bind(with: self, onNext: { owner, _ in
                 let currentState = output.showGenreOtherView.value
                 output.showGenreOtherView.accept(!(currentState))
+            })
+            .disposed(by: disposeBag)
+        
+        input.libraryButtonDidTap
+            .bind(with: self, onNext: { owner, _ in
+                output.stickyHeaderAction.accept(true)
+            })
+            .disposed(by: disposeBag)
+        
+        input.feedButtonDidTap
+            .bind(with: self, onNext: { owner, _ in
+                output.stickyHeaderAction.accept(false)
             })
             .disposed(by: disposeBag)
         
@@ -196,15 +210,9 @@ final class MyPageViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.libraryButtonDidTap
+        input.backButtonDidTap
             .bind(with: self, onNext: { owner, _ in
-                output.stickyHeaderAction.accept(true)
-            })
-            .disposed(by: disposeBag)
-        
-        input.feedButtonDidTap
-            .bind(with: self, onNext: { owner, _ in
-                output.stickyHeaderAction.accept(false)
+                output.popViewController.accept(())
             })
             .disposed(by: disposeBag)
         

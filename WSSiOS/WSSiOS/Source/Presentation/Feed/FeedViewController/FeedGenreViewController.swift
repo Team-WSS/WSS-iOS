@@ -111,8 +111,9 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
             .disposed(by: disposeBag)
         
         output.pushToUserViewController
+            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, userId in
-                owner.pushToMyPageViewController(isMyPage: false)
+                owner.pushToMyPageViewController(userId: userId)
             })
             .disposed(by: disposeBag)
         

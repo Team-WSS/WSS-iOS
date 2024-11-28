@@ -486,6 +486,13 @@ final class FeedDetailViewController: UIViewController {
                 owner.rootView.replyWritingView.setCommentText(owner.viewModel.initialCommentContent)
             })
             .disposed(by: disposeBag)
+        
+        output.pushToUserPageViewController
+            .subscribe(with: self, onNext: { owner, userId in
+                owner.pushToMyPageViewController(userId: userId)
+            })
+            .disposed(by: disposeBag)
+        
     }
 }
 extension FeedDetailViewController: UICollectionViewDelegateFlowLayout {

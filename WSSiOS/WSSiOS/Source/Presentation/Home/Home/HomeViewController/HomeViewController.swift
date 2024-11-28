@@ -188,7 +188,9 @@ final class HomeViewController: UIViewController {
         output.pushToMyPageViewController
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
-                owner.pushToMyPageViewController(isMyPage: true)
+                if let tabBarController = self.tabBarController as? WSSTabBarController {
+                    tabBarController.selectedIndex = WSSTabBarItem.myPage.hashValue
+                }
             })
             .disposed(by: disposeBag)
         
