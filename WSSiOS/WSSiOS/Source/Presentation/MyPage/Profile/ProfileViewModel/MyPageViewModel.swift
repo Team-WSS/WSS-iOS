@@ -57,20 +57,21 @@ final class MyPageViewModel: ViewModelType {
     struct Output {
         let isMyPage = BehaviorRelay<Bool>(value: true)
         let IsExistPreference = PublishRelay<Bool>()
-        let userData = BehaviorRelay<UserInfoResult>(value: UserInfoResult(nickname: "", gender: "", birth: 0, genrePreferences: []))
+        let isProfilePublic = PublishRelay<Bool>()
         let profileData = BehaviorRelay<MyProfileResult>(value: MyProfileResult(nickname: "",
                                                                                 intro: "",
                                                                                 avatarImage: "",
                                                                                 genrePreferences: []))
-        let settingButtonEnabled = PublishRelay<Void>()
-        let dropdownButtonEnabled = PublishRelay<String>()
+        
         let updateNavigationEnabled = BehaviorRelay<Bool>(value: false)
         let pushToEditViewController = PublishRelay<MyProfileResult>()
+        
         let bindattractivePointsData = BehaviorRelay<[String]>(value: [])
         let bindKeywordCell = BehaviorRelay<[Keyword]>(value: [])
         let bindGenreData = BehaviorRelay<UserGenrePreferences>(value: UserGenrePreferences(genrePreferences: []))
         let bindInventoryData = BehaviorRelay<UserNovelStatus>(value: UserNovelStatus(interestNovelCount: 0, watchingNovelCount: 0, watchedNovelCount: 0, quitNovelCount: 0))
         let showGenreOtherView = BehaviorRelay<Bool>(value: false)
+        
         let stickyHeaderAction = BehaviorRelay<Bool>(value: true)
     }
     
@@ -92,30 +93,25 @@ final class MyPageViewModel: ViewModelType {
             .flatMapLatest { [unowned self] _ in
                 self.getProfileData()
             }
-            .subscribe(with: self, onNext: { owner, prifileData in
-                output.profileData.accept(prifileData)
+            .subscribe(with: self, onNext: { owner, profileData in
+                output.profileData.accept(profileData)
                 output.isMyPage.accept(true)
             })
             .disposed(by: disposeBag)
         
         self.isNotMyPageRelay
-//            .asObservable()
-//            .flatMapLatest { [unowned self] _ in
-//                self.getProfileData()
-//            }
-            .subscribe(with: self, onNext: { owner, _ in
-                print(owner.profileId, "🤪")
-            })
-            .disposed(by: disposeBag)
-        
-        Observable.just(())
-            .flatMapLatest { _ in
-                self.getUserMeData()
+            .asObservable()
+            .flatMapLatest { [unowned self] _ in
+                self.getOtherProfileData(userId: self.profileId)
             }
-            .subscribe(with: self, onNext: { owner, data in
-                owner.userIdRelay.accept(data.userId)
-            }, onError: { owner, error in
-                print(error.localizedDescription)
+            .subscribe(with: self, onNext: { owner, profileData in
+                let data = MyProfileResult(nickname: profileData.nickname,
+                                           intro: profileData.intro,
+                                           avatarImage: profileData.avatarImage,
+                                           genrePreferences: profileData.genrePreferences)
+                output.isProfilePublic.accept(profileData.isProfilePublic)
+                output.profileData.accept(data)
+                output.isMyPage.accept(false)
             })
             .disposed(by: disposeBag)
         
@@ -187,7 +183,7 @@ final class MyPageViewModel: ViewModelType {
         
         input.editButtonTapoed
             .bind(with: self, onNext: { owner, _ in
-                output.pushToEditViewController.accept(output.profileData.value)
+                output.pushToEditViewController.accept(output.myProfileData.value)
             })
             .disposed(by: disposeBag)
         
@@ -230,6 +226,11 @@ final class MyPageViewModel: ViewModelType {
             .observe(on: MainScheduler.instance)
     }
     
+    private func getOtherProfileData(userId: Int) -> Observable<OtherProfileResult> {
+        return userRepository.getOtherProfile(userId: userId)
+            .asObservable()
+    }
+    
     private func getNovelPreferenceData(userId: Int) -> Observable<UserNovelPreferences> {
         return userRepository.getUserNovelPreferences(userId: userId)
             .asObservable()
@@ -242,11 +243,6 @@ final class MyPageViewModel: ViewModelType {
     
     private func getInventoryData(userId: Int) -> Observable<UserNovelStatus> {
         return userRepository.getUserNovelStatus(userId: userId)
-            .asObservable()
-    }
-    
-    private func getUserMeData() -> Observable<UserMeResult> {
-        return userRepository.getUserMeData()
             .asObservable()
     }
 }

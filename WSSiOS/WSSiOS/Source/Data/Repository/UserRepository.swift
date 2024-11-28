@@ -12,6 +12,7 @@ import RxSwift
 protocol UserRepository {
     func getUserMeData() -> Observable<UserMeResult>
     func getMyProfileData() -> Observable<MyProfileResult>
+    func getOtherProfile(userId: Int) -> Observable<OtherProfileResult>
     func getUserInfo() -> Observable<UserInfo>
     func putUserInfo(gender: String, birth: Int) -> Observable<Void>
     func patchUserName(userNickName: String) -> Observable<Void>
@@ -41,6 +42,11 @@ struct DefaultUserRepository: UserRepository {
     
     func getMyProfileData() -> Observable<MyProfileResult> {
         return userService.getMyProfile()
+            .asObservable()
+    }
+    
+    func getOtherProfile(userId: Int) -> Observable<OtherProfileResult> {
+        return userService.getOtherProfile(userId: userId)
             .asObservable()
     }
     

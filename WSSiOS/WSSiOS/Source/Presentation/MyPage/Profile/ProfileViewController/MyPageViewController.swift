@@ -125,7 +125,7 @@ final class MyPageViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.profileData
+        output.myProfileData
             .bind(with: self, onNext: { owner, data in
                 owner.rootView.headerView.bindData(data: data)
             })
