@@ -22,7 +22,7 @@ final class FeedViewModel: ViewModelType {
         let pageBarTapped: ControlEvent<IndexPath>
         let createFeedButtonDidTap: ControlEvent<Void>
         let feedEditedNotification: Observable<Notification>
-        let blockUserNotification: Observable<String>
+        let blockUserNotification: Observable<Notification>
     }
     
     struct Output {
@@ -59,7 +59,8 @@ final class FeedViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.blockUserNotification
-            .subscribe(with: self, onNext: { owner, nickname in
+            .subscribe(with: self, onNext: { owner, notification in
+                guard let nickname = notification.object as? String else { return }
                 output.showBlockUserToast.accept(nickname)
             })
             .disposed(by: disposeBag)

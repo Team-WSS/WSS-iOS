@@ -18,6 +18,7 @@ final class MyPageBlockUserViewModel: ViewModelType {
     private var bindCellReleay = BehaviorRelay<[BlockUser]>(value: [])
     private let showEmptyView = PublishRelay<Bool>()
     private let popViewController = PublishRelay<Bool>()
+    private let reloadTableViewRelay = PublishRelay<Bool>()
     private let toastMessage = PublishRelay<String>()
     
     init(userRepository: UserRepository) {
@@ -35,6 +36,7 @@ final class MyPageBlockUserViewModel: ViewModelType {
         let showEmptyView: Driver<Bool>
         let popViewController: PublishRelay<Bool>
         let bindCell: BehaviorRelay<[BlockUser]>
+        let reloadTableView: PublishRelay<Bool>
         let toastMessage: PublishRelay<String>
     }
     
@@ -57,30 +59,34 @@ final class MyPageBlockUserViewModel: ViewModelType {
         
         input.unblockButtonDidTap
             .throttle(.seconds(Int(0.5)), scheduler: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, indexPath in
-                var blocks = owner.bindCellReleay.value
+            .flatMapLatest { [unowned self] indexPath -> Observable<String> in
                 
+                var blocks = self.bindCellReleay.value
                 let blockID = blocks[indexPath.row].blockId
                 var nickName = blocks[indexPath.row].nickname
                 if nickName.count > 8 {
                     nickName = nickName.prefix(8) + "..."
                 }
                 
-                owner.deleteBlockUser(blockID: blockID)
-                    .subscribe(onNext: {
+                return self.deleteBlockUser(blockID: blockID)
+                    .map { _ -> String in
                         blocks.remove(at: indexPath.row)
-                        owner.bindCellReleay.accept(blocks)
-                        owner.toastMessage.accept(nickName)
-                    }, onError: { error in
-                        print("Error: \(error)")
-                    })
-                    .disposed(by: disposeBag)
+                        self.bindCellReleay.accept(blocks)
+                        self.reloadTableViewRelay.accept(true)
+                        return nickName
+                    }
+            }
+            .subscribe(onNext: { [weak self] nickName in
+                self?.toastMessage.accept(nickName)
+            }, onError: { error in
+                print("Error: \(error)")
             })
             .disposed(by: disposeBag)
         
         return Output(showEmptyView: showEmptyView.asDriver(onErrorJustReturn: true),
                       popViewController: popViewController,
                       bindCell: bindCellReleay,
+                      reloadTableView: reloadTableViewRelay,
                       toastMessage: toastMessage)
     }
     

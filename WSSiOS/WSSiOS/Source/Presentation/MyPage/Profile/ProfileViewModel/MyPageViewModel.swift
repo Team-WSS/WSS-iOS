@@ -238,7 +238,7 @@ final class MyPageViewModel: ViewModelType {
             }
             .subscribe(with: self, onNext: { owner, tappedCell in
                 let nickname = output.profileData.value.nickname
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     NotificationCenter.default.post(name: NSNotification.Name("BlockUser"), object: nickname)
                 }
                 output.popViewController.accept(())
