@@ -150,5 +150,12 @@ final class SearchViewController: UIViewController {
                 owner.presentInduceLoginViewController()
             })
             .disposed(by: disposeBag)
+        
+        output.showLoadingView
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, isShow in
+                owner.rootView.showLoadingView(isShow: isShow)
+            })
+            .disposed(by: disposeBag)
     }
 }
