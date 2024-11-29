@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxRelay
 
-final class MyPageBlockUserViewController: UIViewController {
+final class MyPageBlockUserViewController: UIViewController, UIScrollViewDelegate {
     
     //MARK: - Properties
     
@@ -41,6 +41,7 @@ final class MyPageBlockUserViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        delegate()
         register()
         bindViewModel()
     }
@@ -54,6 +55,12 @@ final class MyPageBlockUserViewController: UIViewController {
     }
     
     //MARK: - Delegate
+    
+    private func delegate() {
+        rootView.blockTableView.rx
+            .setDelegate(self)
+            .disposed(by: disposeBag)
+    }
     
     private func register() {
         rootView.blockTableView.register(
@@ -92,12 +99,15 @@ final class MyPageBlockUserViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.toastMessage
+            .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, nickname in
+                owner.rootView.blockTableView.reloadData()
                 owner.showToast(.deleteBlockUser(nickname: nickname))
             })
             .disposed(by: disposeBag)
         
         output.popViewController
+            .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 owner.popToLastViewController()
             })

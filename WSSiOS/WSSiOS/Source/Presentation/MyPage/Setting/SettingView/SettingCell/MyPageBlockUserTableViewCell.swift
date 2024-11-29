@@ -95,7 +95,7 @@ final class MyPageBlockUserTableViewCell: UITableViewCell {
     //MARK: - Data
     
     func bindData(image: String, nickname: String) {
-        userImageView.kfSetImage(url: image)
+        userImageView.kfSetImage(url: makeBucketImageURLString(path: image))
         userNicknameLabel.applyWSSFont(.body2, with: nickname)
     }
 }

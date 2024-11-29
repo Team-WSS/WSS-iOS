@@ -56,9 +56,9 @@ final class MyPageBlockUserViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.unblockButtonDidTap
-            .throttle(.seconds(2), scheduler: MainScheduler.instance)
+            .throttle(.seconds(Int(0.5)), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, indexPath in
-                let blocks = owner.bindCellReleay.value
+                var blocks = owner.bindCellReleay.value
                 
                 let blockID = blocks[indexPath.row].blockId
                 var nickName = blocks[indexPath.row].nickname
@@ -68,6 +68,8 @@ final class MyPageBlockUserViewModel: ViewModelType {
                 
                 owner.deleteBlockUser(blockID: blockID)
                     .subscribe(onNext: {
+                        blocks.remove(at: indexPath.row)
+                        owner.bindCellReleay.accept(blocks)
                         owner.toastMessage.accept(nickName)
                     }, onError: { error in
                         print("Error: \(error)")
