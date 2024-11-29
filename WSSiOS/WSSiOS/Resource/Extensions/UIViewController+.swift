@@ -365,7 +365,7 @@ extension UIViewController {
                 profileId: userId))
         
         viewController.hidesBottomBarWhenPushed = true
-        self.navigationController?.pushViewController(viewController, animated: true)
+        self.navigationController?.pushViewController(viewController, animated: false)
     }
     
     func pushToMyPageEditViewController(profile: MyProfileResult) {

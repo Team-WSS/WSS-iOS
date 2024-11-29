@@ -151,10 +151,6 @@ final class MyPageGenrePreferencesView: UIView {
         myPageGenreCloseButton.snp.updateConstraints {
             $0.height.equalTo(showOtherGenreView ? 44 : 0)
         }
-        
-        UIView.animate(withDuration: 0.3) {
-            self.layoutIfNeeded()
-        }
     }
     
     //MARK: - Data

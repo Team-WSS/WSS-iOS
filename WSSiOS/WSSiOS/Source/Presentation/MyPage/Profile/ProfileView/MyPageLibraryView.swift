@@ -96,9 +96,6 @@ final class MyPageLibraryView: UIView {
         genrePrefrerencesView.snp.updateConstraints {
             $0.height.equalTo(isExpanded ? 514 : 224.5)
         }
-        UIView.animate(withDuration: 0.3) {
-            self.layoutIfNeeded()
-        }
     }
     
     //MARK: - Data
@@ -120,10 +117,6 @@ final class MyPageLibraryView: UIView {
             preferencesEmptyView.snp.remakeConstraints {
                 $0.height.equalTo(363)
             }
-        }
-        
-        UIView.animate(withDuration: 0.3) {
-            self.layoutIfNeeded()
         }
     }
     
