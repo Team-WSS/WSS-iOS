@@ -129,9 +129,8 @@ final class MyPageViewController: UIViewController {
         
         output.isMyPage
             .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, data in
-                let (myPage, title) = data
-                owner.decideNavigation(myPage: myPage, title: title)
+            .bind(with: self, onNext: { owner, isMyPage in
+                owner.decideNavigation(myPage: isMyPage)
             })
             .disposed(by: disposeBag)
         
@@ -152,13 +151,14 @@ final class MyPageViewController: UIViewController {
         
         output.updateNavigationEnabled
             .asDriver()
-            .drive(with: self, onNext: { owner, update in
+            .drive(with: self, onNext: { owner, data in
+                let (update, navigationTitle) = data
                 owner.rootView.scrolledStstickyHeaderView.isHidden = !update
                 owner.rootView.mainStickyHeaderView.isHidden = update
                 owner.rootView.headerView.isHidden = update
                 
                 if update {
-                    owner.navigationItem.title = StringLiterals.Navigation.Title.myPage
+                    owner.navigationItem.title = navigationTitle
                 } else {
                     owner.navigationItem.title = ""
                 }
@@ -307,9 +307,9 @@ extension MyPageViewController {
     
     //MARK: - UI
     
-    private func decideNavigation(myPage: Bool, title: String) {
+    private func decideNavigation(myPage: Bool) {
         if myPage {
-            preparationSetNavigationBar(title: title,
+            preparationSetNavigationBar(title: "",
                                         left: nil,
                                         right: rootView.settingButton)
         } else {
@@ -323,7 +323,7 @@ extension MyPageViewController {
                 .disposed(by: disposeBag)
             }
             
-            preparationSetNavigationBar(title: title,
+            preparationSetNavigationBar(title: "",
                                         left: rootView.backButton,
                                         right: dropdownButton)
         }

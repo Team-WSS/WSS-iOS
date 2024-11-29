@@ -54,7 +54,7 @@ final class MyPageViewModel: ViewModelType {
     }
     
     struct Output {
-        let isMyPage = BehaviorRelay<(Bool, String)>(value: (true, ""))
+        let isMyPage = BehaviorRelay<Bool>(value: true)
         let isExistPreference = PublishRelay<Bool>()
         let isProfilePrivate = BehaviorRelay<(Bool, String)>(value: (true, ""))
         let profileData = BehaviorRelay<MyProfileResult>(value: MyProfileResult(nickname: "",
@@ -62,7 +62,7 @@ final class MyPageViewModel: ViewModelType {
                                                                                 avatarImage: "",
                                                                                 genrePreferences: []))
         
-        let updateNavigationEnabled = BehaviorRelay<Bool>(value: false)
+        let updateNavigationEnabled = BehaviorRelay<(Bool, String)>(value: (false,""))
         let pushToEditViewController = PublishRelay<MyProfileResult>()
         let pushToSettingViewController = PublishRelay<Void>()
         let popViewController = PublishRelay<Void>()
@@ -100,8 +100,7 @@ final class MyPageViewModel: ViewModelType {
                     return self.getProfileData()
                         .do(onNext: { profileData in
                             output.profileData.accept(profileData)
-                            let navigationTitle = StringLiterals.Navigation.Title.myPage
-                            output.isMyPage.accept((true, navigationTitle))
+                            output.isMyPage.accept(true)
                         })
                         .map { _ in }
                 } else {
@@ -114,7 +113,7 @@ final class MyPageViewModel: ViewModelType {
                                 genrePreferences: profileData.genrePreferences
                             )
                             output.profileData.accept(data)
-                            output.isMyPage.accept((false, profileData.nickname))
+                            output.isMyPage.accept(false)
                             output.isProfilePrivate.accept((!profileData.isProfilePublic, profileData.nickname))
                         })
                         .map { _ in }
@@ -122,7 +121,7 @@ final class MyPageViewModel: ViewModelType {
                             let unknownUserError = self.isUnknownUserError(error)
                             if unknownUserError {
                                 output.showUnknownUserAlert.accept(())
-                                output.isMyPage.accept((false, ""))
+                                output.isMyPage.accept(false)
                             }
                             return .empty()
                         }
@@ -192,10 +191,11 @@ final class MyPageViewModel: ViewModelType {
             .asObservable()
             .map{ $0.y }
             .subscribe(with: self, onNext: { owner, scrollHeight in
+                let navigationText = owner.isMyPageRelay.value ? StringLiterals.Navigation.Title.myPage : output.profileData.value.nickname
                 if (scrollHeight > owner.height) {
-                    output.updateNavigationEnabled.accept(true)
+                    output.updateNavigationEnabled.accept((true, navigationText))
                 } else {
-                    output.updateNavigationEnabled.accept(false)
+                    output.updateNavigationEnabled.accept((false, navigationText))
                 }
             })
             .disposed(by: disposeBag)
