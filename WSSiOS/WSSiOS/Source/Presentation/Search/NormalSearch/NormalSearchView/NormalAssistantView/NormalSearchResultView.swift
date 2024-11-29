@@ -20,7 +20,6 @@ final class NormalSearchResultView: UIView {
     let normalSearchCollectionView = UICollectionView(frame: .zero,
                                                       collectionViewLayout: UICollectionViewLayout())
     private let normalSearchCollectionViewLayout = UICollectionViewFlowLayout()
-    private let infiniteScrollLoadingView = WSSInfiniteScrollLoadingView()
     
     //MARK: - Life Cycle
     
@@ -56,15 +55,10 @@ final class NormalSearchResultView: UIView {
             $0.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 40, right: 0)
             normalSearchCollectionView.setCollectionViewLayout($0, animated: false)
         }
-        
-        infiniteScrollLoadingView.do {
-            $0.isHidden = false
-        }
     }
     
     private func setHierarchy() {
-        self.addSubviews(scrollView,
-                        infiniteScrollLoadingView)
+        self.addSubview(scrollView)
         scrollView.addSubview(contentView)
         contentView.addSubviews(resultCountView,
                                 normalSearchCollectionView)
@@ -91,11 +85,6 @@ final class NormalSearchResultView: UIView {
             $0.leading.trailing.bottom.equalToSuperview()
             $0.height.equalTo(300)
         }
-        
-        infiniteScrollLoadingView.snp.makeConstraints {
-            $0.horizontalEdges.equalToSuperview()
-            $0.bottom.equalToSuperview()
-        }
     }
     
     //MARK: - Custom Method
@@ -104,9 +93,5 @@ final class NormalSearchResultView: UIView {
         normalSearchCollectionView.snp.updateConstraints {
             $0.height.equalTo(height)
         }
-    }
-    
-    func showInfiniteScrollLoadingView(isShow: Bool) {
-        infiniteScrollLoadingView.isHidden = !isShow
     }
 }

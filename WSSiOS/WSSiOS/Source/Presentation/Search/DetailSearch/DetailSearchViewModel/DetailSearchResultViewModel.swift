@@ -140,7 +140,6 @@ final class DetailSearchResultViewModel: ViewModelType {
             }
             .do(onNext: { _ in
                 self.isFetching = true
-                self.showLoadingView.accept(true)
             })
             .flatMapLatest { _ in
                 self.getDetailSearchNovels(
@@ -152,10 +151,8 @@ final class DetailSearchResultViewModel: ViewModelType {
                 .do(onNext: { _ in
                     self.currentPage += 1
                     self.isFetching = false
-                    self.showLoadingView.accept(false)
                 }, onError: { _ in
                     self.isFetching = false
-                    self.showLoadingView.accept(false)
                 })
             }
             .subscribe(with: self, onNext: { owner, data in

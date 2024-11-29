@@ -32,7 +32,6 @@ final class NormalSearchViewModel: ViewModelType {
     
     // 로딩
     private let showLoadingView = PublishRelay<Bool>()
-    private let showInfiniteScrollLoadingView = PublishRelay<Bool>()
     
     //MARK: - Inputs
     
@@ -66,7 +65,6 @@ final class NormalSearchViewModel: ViewModelType {
         let isSearchTextFieldEditing: Observable<Bool>
         let endEditing: Observable<Void>
         let showLoadingView: Observable<Bool>
-        let showInfiniteScrollLoadingVIew: Observable<Bool>
     }
     
     //MARK: - init
@@ -94,17 +92,13 @@ final class NormalSearchViewModel: ViewModelType {
                 onError: { error in
                     print(error.localizedDescription)
                     self.showLoadingView.accept(false)
-                    self.showInfiniteScrollLoadingView.accept(false)
                 },
                 onCompleted: {
                     self.showLoadingView.accept(false)
-                    self.showInfiniteScrollLoadingView.accept(false)
                 },
                 onSubscribe: {
                     if page == 0 {
                         self.showLoadingView.accept(true)
-                    } else {
-                        self.showInfiniteScrollLoadingView.accept(true)
                     }
                 }
             )
@@ -194,7 +188,6 @@ final class NormalSearchViewModel: ViewModelType {
                       pushToNovelDetailViewController: pushToNovelDetailViewController.asObservable(),
                       isSearchTextFieldEditing: isSearchTextFieldEditing.asObservable(),
                       endEditing: endEditing,
-                      showLoadingView: showLoadingView.asObservable(),
-                      showInfiniteScrollLoadingVIew: showInfiniteScrollLoadingView.asObservable())
+                      showLoadingView: showLoadingView.asObservable())
     }
 }
