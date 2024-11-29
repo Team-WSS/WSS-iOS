@@ -74,6 +74,7 @@ final class MyPageViewModel: ViewModelType {
                                                                                       watchedNovelCount: 0,
                                                                                       quitNovelCount: 0))
         let showGenreOtherView = BehaviorRelay<Bool>(value: false)
+        let showToastView = PublishRelay<String>()
         
         let stickyHeaderAction = BehaviorRelay<Bool>(value: true)
     }
@@ -236,6 +237,10 @@ final class MyPageViewModel: ViewModelType {
                 self.postBlockUser(userId: self.profileId)
             }
             .subscribe(with: self, onNext: { owner, tappedCell in
+                let nickname = output.profileData.value.nickname
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    NotificationCenter.default.post(name: NSNotification.Name("BlockUser"), object: nickname)
+                }
                 output.popViewController.accept(())
             }, onError: { owner, error in
                 print(error.localizedDescription)

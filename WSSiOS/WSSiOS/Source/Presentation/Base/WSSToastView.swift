@@ -16,6 +16,7 @@ enum ToastStatus {
     case memoEditSuccess
     case memoDelete
     case nicknameSave
+    case blockUser(nickname: String)
     case deleteBlockUser(nickname: String)
     case novelAlreadyConnected
     case selectionOverLimit(count: Int)
@@ -31,7 +32,7 @@ enum ToastStatus {
             return .icAlertSuccess
         case .memoSaveFail, .memoDelete:
             return .icAlertWarning
-        case .novelReviewed, .changeToPublicProfile, .changeToPrivateProfile, .novelReviewDeleted, .feedEdited:
+        case .novelReviewed, .changeToPublicProfile, .changeToPrivateProfile, .novelReviewDeleted, .feedEdited, .blockUser:
             return .icAlertCheck
         }
     }
@@ -48,6 +49,8 @@ enum ToastStatus {
             "메모를 삭제했어요"
         case .nicknameSave:
             "닉네임을 저장했어요"
+        case .blockUser(let nickname):
+            "\(nickname)님을 차단했어요"
         case .deleteBlockUser(let nickname):
             "\(nickname)님을 차단 해제했어요"
         case .novelAlreadyConnected:

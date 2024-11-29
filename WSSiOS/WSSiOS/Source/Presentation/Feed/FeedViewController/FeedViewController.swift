@@ -117,7 +117,8 @@ final class FeedViewController: UIViewController {
         let input = FeedViewModel.Input(
             pageBarTapped: pageBar.feedPageBarCollectionView.rx.itemSelected,
             createFeedButtonDidTap: createFeedButton.rx.tap,
-            feedEditedNotification: NotificationCenter.default.rx.notification(Notification.Name("FeedEdited")).asObservable()
+            feedEditedNotification: NotificationCenter.default.rx.notification(Notification.Name("FeedEdited")).asObservable(),
+            blockUserNotification: NotificationCenter.default.rx.notification(Notification.Name("BlockUser")).asObservable()
         )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -152,6 +153,12 @@ final class FeedViewController: UIViewController {
         output.showFeedEditedToast
             .subscribe(with: self, onNext: { owner, _ in
                 owner.showToast(.feedEdited)
+            })
+            .disposed(by: disposeBag)
+        
+        output.showBlockUserToast
+            .subscribe(with: self, onNext: { owner, nickname in
+                owner.showToast(.blockUser(nickname: nickname))
             })
             .disposed(by: disposeBag)
     }
