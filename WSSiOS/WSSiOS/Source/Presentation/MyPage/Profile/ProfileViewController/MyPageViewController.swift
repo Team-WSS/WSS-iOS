@@ -295,6 +295,7 @@ extension MyPageViewController {
             let dropdownButton = WSSDropdownButton().then {
                 $0.makeDropdown(dropdownRootView: self.rootView,
                                 dropdownWidth: 120,
+                                dropdownLayout: .autoInNavigationBar,
                                 dropdownData: ["차단하기"],
                                 textColor: .wssBlack)
                 .bind(to: dropDownCellTap)

@@ -15,7 +15,11 @@ protocol BlocksService {
     func postBlockUser(blockID: Int) -> Single<Void>
 }
 
-final class DefaultBlocksService: NSObject, Networking { }
+final class DefaultBlocksService: NSObject, Networking {
+    private func makeUserBlockQuery(userId: Int) -> [URLQueryItem] {
+        return [URLQueryItem(name: "userId", value: String(describing: userId))]
+    }
+}
 
 extension DefaultBlocksService: BlocksService {
     func getBlocksList() -> Single<BlockUserResult> {
@@ -61,6 +65,7 @@ extension DefaultBlocksService: BlocksService {
         do {
             let request = try makeHTTPRequest(method: .post,
                                               path: URLs.MyPage.Block.blocks,
+                                              queryItems: makeUserBlockQuery(userId: blockID),
                                               headers: APIConstants.accessTokenHeader,
                                               body: blockUser)
             

@@ -36,7 +36,7 @@ final class DefaultUserService: NSObject, Networking {
         ]
     }
     
-    func makeUserProfileVisibilityQueryItems(isProfilePublic: Bool) -> [URLQueryItem] {
+    private func makeUserProfileVisibilityQueryItems(isProfilePublic: Bool) -> [URLQueryItem] {
         return [ URLQueryItem(name: "isProfilePublic",
                               value: String(isProfilePublic))]
     }

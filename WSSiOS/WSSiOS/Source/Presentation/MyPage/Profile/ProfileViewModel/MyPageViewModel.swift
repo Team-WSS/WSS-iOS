@@ -229,10 +229,13 @@ final class MyPageViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.dropdownButtonDidTap
+            .filter { tappedCell in
+                tappedCell == "차단하기"
+            }
             .flatMapLatest { _ in
                 self.postBlockUser(userId: self.profileId)
             }
-            .subscribe(with: self, onNext: { owner, data in
+            .subscribe(with: self, onNext: { owner, tappedCell in
                 output.popViewController.accept(())
             }, onError: { owner, error in
                 print(error.localizedDescription)
