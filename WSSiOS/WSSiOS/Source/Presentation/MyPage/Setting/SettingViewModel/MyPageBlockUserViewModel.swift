@@ -72,6 +72,9 @@ final class MyPageBlockUserViewModel: ViewModelType {
                     .map { _ -> String in
                         blocks.remove(at: indexPath.row)
                         self.bindCellReleay.accept(blocks)
+                        if blocks.isEmpty {
+                            self.showEmptyView.accept(true)
+                        }
                         self.reloadTableViewRelay.accept(true)
                         return nickName
                     }
