@@ -227,6 +227,7 @@ enum StringLiterals {
         enum BlockUser {
             static let buttonTitle = "차단 해제"
             static let emptyLabel = "차단한 유저가 없어요"
+            static let toastText = "차단하기"
         }
         
         enum DeleteIDWarning {

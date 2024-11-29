@@ -231,7 +231,7 @@ final class MyPageViewModel: ViewModelType {
         
         input.dropdownButtonDidTap
             .filter { tappedCell in
-                tappedCell == "차단하기"
+                tappedCell == StringLiterals.MyPage.BlockUser.toastText
             }
             .flatMapLatest { _ in
                 self.postBlockUser(userId: self.profileId)
