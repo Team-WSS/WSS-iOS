@@ -26,6 +26,7 @@ final class MyPageViewController: UIViewController {
     private let isEntryTabbarRelay = BehaviorRelay<Bool>(value: false)
     private var dropDownCellTap = PublishSubject<String>()
     private let headerViewHeightRelay = BehaviorRelay<Double>(value: 0)
+    private let alertButtonRelay = PublishRelay<Bool>()
     
     //MARK: - UI Components
     
@@ -121,7 +122,8 @@ final class MyPageViewController: UIViewController {
             backButtonDidTap: rootView.backButton.rx.tap,
             genrePreferenceButtonDidTap: genrePreferenceButtonDidTap,
             libraryButtonDidTap: libraryButtonDidTap,
-            feedButtonDidTap: feedButtonDidTap)
+            feedButtonDidTap: feedButtonDidTap,
+            alertButtonDidTap: alertButtonRelay)
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -261,6 +263,25 @@ final class MyPageViewController: UIViewController {
                 UIView.animate(withDuration: 0.3) {
                     owner.rootView.layoutIfNeeded()
                 }
+            })
+            .disposed(by: disposeBag)
+        
+        output.showUnknownUserAlert
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                self.rootView.isUnknownUserProfile()
+                self.presentToAlertViewController(iconImage: .icAlertWarningCircle,
+                                                  titleText: StringLiterals.MyPage.Profile.unknownUserNickname,
+                                                  contentText: StringLiterals.MyPage.Profile.unknownAlertContent,
+                                                  leftTitle: StringLiterals.MyPage.Profile.unknownAlertButtonTitle,
+                                                  rightTitle: nil,
+                                                  rightBackgroundColor: nil)
+                .bind(with: self, onNext: { owner, buttonType in
+                    if buttonType == .left {
+                        owner.alertButtonRelay.accept(true)
+                    }
+                })
+                .disposed(by: owner.disposeBag)
             })
             .disposed(by: disposeBag)
     }

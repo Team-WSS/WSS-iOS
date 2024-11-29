@@ -50,6 +50,7 @@ final class MyPageViewModel: ViewModelType {
         let genrePreferenceButtonDidTap: Observable<Bool>
         let libraryButtonDidTap: Observable<Bool>
         let feedButtonDidTap: Observable<Bool>
+        let alertButtonDidTap: PublishRelay<Bool>
     }
     
     struct Output {
@@ -77,6 +78,7 @@ final class MyPageViewModel: ViewModelType {
         let showToastView = PublishRelay<String>()
         
         let stickyHeaderAction = BehaviorRelay<Bool>(value: true)
+        let showUnknownUserAlert = PublishRelay<Void>()
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -116,6 +118,14 @@ final class MyPageViewModel: ViewModelType {
                             output.isProfilePrivate.accept((!profileData.isProfilePublic, profileData.nickname))
                         })
                         .map { _ in }
+                        .catch { [unowned self] error in
+                            let unknownUserError = self.isUnknownUserError(error)
+                            if unknownUserError {
+                                output.showUnknownUserAlert.accept(())
+                                output.isMyPage.accept((false, ""))
+                            }
+                            return .empty()
+                        }
                 }
             }
             .subscribe()
@@ -247,10 +257,37 @@ final class MyPageViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        input.alertButtonDidTap
+            .subscribe(with: self, onNext: { owner, _ in
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    NotificationCenter.default.post(name: NSNotification.Name("UnknownUser"), object: nil)
+                }
+                output.popViewController.accept(())
+            })
+            .disposed(by: disposeBag)
+        
         return output
     }
     
     // MARK: - Custom Method
+    
+    private func isUnknownUserError(_ error: Error) -> Bool {
+        if let networkError = error as? RxCocoaURLError {
+            switch networkError {
+            case .httpRequestFailed(_, let data):
+                if let data = data {
+                    do {
+                        let errorInfo = try JSONDecoder().decode(ServerErrorResponse.self, from: data)
+                        return errorInfo.code == "USER-018"
+                    } catch {}
+                }
+                
+            default:
+                return false
+            }
+        }
+        return false
+    }
     
     // MARK: - API
     

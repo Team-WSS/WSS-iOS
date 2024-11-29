@@ -116,9 +116,15 @@ final class MyPageView: UIView {
         }
     }
     
-    func dataBind(isPrivate: Bool) {
-        if isPrivate {
-            
-        }
+    //MARK: - Data
+    
+    func isUnknownUserProfile() {
+        headerView.bindData(data: MyProfileResult(nickname: StringLiterals.MyPage.Profile.unknownUserNickname,
+                                                  intro: "",
+                                                  avatarImage: "",
+                                                  genrePreferences: []))
+        mainStickyHeaderView.isHidden = true
+        myPageLibraryView.isHidden = true
+        myPageFeedView.isHidden = true
     }
 }
