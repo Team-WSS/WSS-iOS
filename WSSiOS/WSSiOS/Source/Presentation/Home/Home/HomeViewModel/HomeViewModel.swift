@@ -15,6 +15,7 @@ final class HomeViewModel: ViewModelType {
     //MARK: - Properties
     
     private let recommendRepository: RecommendRepository
+    private let userRepository: UserRepository
     private let disposeBag = DisposeBag()
     
     private let isLogined = APIConstants.isLogined
@@ -28,8 +29,9 @@ final class HomeViewModel: ViewModelType {
     
     // 관심글
     private let interestList = BehaviorRelay<[InterestFeed]>(value: [])
-    private let updateInterestView = PublishRelay<(Bool, String)>()
+    private let updateInterestView = PublishRelay<(Bool, InterestMessage)>()
     private let pushToNormalSearchViewController = PublishRelay<Void>()
+    private var interestFeedMessage = BehaviorRelay<InterestMessage>(value: .none)
     
     // 취향추천
     private let tasteRecommendList = BehaviorRelay<[TasteRecommendNovel]>(value: [])
@@ -40,10 +42,13 @@ final class HomeViewModel: ViewModelType {
     private let pushToAnnouncementViewController = PublishRelay<Void>()
     let showInduceLoginModalView = PublishRelay<Void>()
     
+    private let showLoadingView = PublishRelay<Bool>()
+    
     // MARK: - Inputs
     
     struct Input {
         let viewWillAppearEvent: Observable<Void>
+        let viewDidLoadEvent: Observable<Void>
         let todayPopularCellSelected: ControlEvent<IndexPath>
         let interestCellSelected: ControlEvent<IndexPath>
         let tasteRecommendCellSelected: ControlEvent<IndexPath>
@@ -61,7 +66,7 @@ final class HomeViewModel: ViewModelType {
         var realtimePopularData: Observable<[[RealtimePopularFeed]]>
         
         var interestList: Observable<[InterestFeed]>
-        let updateInterestView: Observable<(Bool, String)>
+        let updateInterestView: Observable<(Bool, InterestMessage)>
         let pushToNormalSearchViewController: Observable<Void>
         
         var tasteRecommendList: Observable<[TasteRecommendNovel]>
@@ -71,59 +76,81 @@ final class HomeViewModel: ViewModelType {
         let pushToNovelDetailViewController: Observable<Int>
         let pushToAnnouncementViewController: Observable<Void>
         let showInduceLoginModalView: Observable<Void>
+        let showLoadingView: Observable<Bool>
     }
     
     //MARK: - init
     
-    init(recommendRepository: RecommendRepository) {
+    init(recommendRepository: RecommendRepository, userRepository: UserRepository) {
         self.recommendRepository = recommendRepository
+        self.userRepository = userRepository
     }
 }
 
 extension HomeViewModel {
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         input.viewWillAppearEvent
+            .do(onNext: {
+                self.showLoadingView.accept(true)
+            })
             .flatMapLatest {
+                let todayPopularNovelsObservable = self.getTodayPopularNovels()
                 let realtimeFeedsObservable = self.getRealtimePopularFeeds()
                 let interestFeedsObservable = self.isLogined ? self.getInterestFeeds() : Observable.just(InterestFeeds(recommendFeeds: [], message: ""))
                 let tasteRecommendNovelsObservable = self.isLogined ? self.getTasteRecommendNovels() : Observable.just(TasteRecommendNovels(tasteNovels: []))
                 
-                return Observable.zip(realtimeFeedsObservable,
+                return Observable.zip(todayPopularNovelsObservable,
+                                      realtimeFeedsObservable,
                                       interestFeedsObservable,
                                       tasteRecommendNovelsObservable)
             }
             .subscribe(with: self, onNext: { owner, data in
-                let realtimeFeeds = data.0
-                let interestFeeds = data.1
-                let tasteRecommendNovels = data.2
+                let todayPopularNovels = data.0
+                let realtimeFeeds = data.1
+                let interestFeeds = data.2
+                let tasteRecommendNovels = data.3
                 
+                owner.todayPopularList.accept(todayPopularNovels.popularNovels)
                 owner.realtimePopularList.onNext(realtimeFeeds.popularFeeds)
                 let groupedData = stride(from: 0, to: realtimeFeeds.popularFeeds.count, by: 3)
                     .map { index in
                         Array(realtimeFeeds.popularFeeds[index..<min(index + 3, realtimeFeeds.popularFeeds.count)])
                     }
                 owner.realtimePopularDataRelay.accept(groupedData)
+                let message = InterestMessage(rawValue: interestFeeds.message)
                 
                 if owner.isLogined {
                     owner.interestList.accept(interestFeeds.recommendFeeds)
-                    owner.updateInterestView.accept((true, interestFeeds.message))
+                    owner.updateInterestView.accept((true, message ?? .none))
+                    owner.interestFeedMessage.accept(message ?? .none)
                     
                     owner.tasteRecommendList.accept(tasteRecommendNovels.tasteNovels)
                     owner.updateTasteRecommendView.accept((true, tasteRecommendNovels.tasteNovels.isEmpty))
                 } else {
-                    owner.updateInterestView.accept((false, ""))
+                    owner.updateInterestView.accept((false, message ?? .none))
+                    owner.interestFeedMessage.accept(.none)
+                    
                     owner.updateTasteRecommendView.accept((false, true))
                 }
+                
+                owner.showLoadingView.accept(false)
             }, onError: { owner, error in
                 owner.realtimePopularList.onError(error)
+                owner.showLoadingView.accept(false)
             })
             .disposed(by: disposeBag)
         
-        self.getTodayPopularNovels()
+        input.viewDidLoadEvent
+            .filter { self.isLogined }
+            .flatMapLatest {
+                return self.getUserMeData()
+            }
             .subscribe(with: self, onNext: { owner, data in
-                owner.todayPopularList.accept(data.popularNovels)
-            }, onError: { owner, error in
-                dump(error)
+                UserDefaults.standard.setValue(data.userId, forKey: StringLiterals.UserDefault.userId)
+                UserDefaults.standard.setValue(data.nickname, forKey: StringLiterals.UserDefault.userNickname)
+                UserDefaults.standard.setValue(data.gender, forKey: StringLiterals.UserDefault.userGender)
+                
+                owner.updateInterestView.accept((self.isLogined, self.interestFeedMessage.value))
             })
             .disposed(by: disposeBag)
         
@@ -193,23 +220,33 @@ extension HomeViewModel {
                       pushToMyPageViewController: pushToMyPageViewController.asObservable(),
                       pushToNovelDetailViewController: pushToNovelDetailViewController.asObservable(),
                       pushToAnnouncementViewController: pushToAnnouncementViewController.asObservable(),
-                      showInduceLoginModalView: showInduceLoginModalView.asObservable())
+                      showInduceLoginModalView: showInduceLoginModalView.asObservable(),
+                      showLoadingView: showLoadingView.asObservable())
     }
     
     //MARK: - API
     
+    // 유저 정보 조회
+    func getUserMeData() -> Observable<UserMeResult> {
+        return userRepository.getUserMeData()
+    }
+    
+    // 오늘의 인기작 조회
     func getTodayPopularNovels() -> Observable<TodayPopularNovels> {
         return recommendRepository.getTodayPopularNovels()
     }
     
+    // 지금 뜨는 수다글 조회
     func getRealtimePopularFeeds() -> Observable<RealtimePopularFeeds> {
         return recommendRepository.getRealtimePopularFeeds()
     }
     
+    // 관심글 조회
     func getInterestFeeds() -> Observable<InterestFeeds> {
         return recommendRepository.getInterestFeeds()
     }
     
+    // 취향추천 작품 조회
     func getTasteRecommendNovels() -> Observable<TasteRecommendNovels> {
         return recommendRepository.getTasteRecommendNovels()
     }

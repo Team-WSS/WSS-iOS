@@ -30,7 +30,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         checkIsRegistered()
         
         APIConstants.isLogined ? setRootToWSSTabBarController() : setRootToLoginViewController()
-
+        
         self.window?.makeKeyAndVisible()
     }
     

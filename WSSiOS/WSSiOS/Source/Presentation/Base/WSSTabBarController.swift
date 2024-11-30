@@ -80,7 +80,7 @@ final class WSSTabBarController: UITabBarController, UITabBarControllerDelegate 
             navigationControllers.append(navigationController)
         }
         
-        setViewControllers(navigationControllers, animated: true)
+        setViewControllers(navigationControllers, animated: false)
     }
     
     private func createNavigationController(normalImage: UIImage,
@@ -108,9 +108,14 @@ final class WSSTabBarController: UITabBarController, UITabBarControllerDelegate 
             return true
         }
         
-        if !isLogined && (selectedIndex == 1 || selectedIndex == 2 || selectedIndex == 3) {
+        if !isLogined && (selectedIndex == 2 || selectedIndex == 3) {
             self.presentInduceLoginViewController()
             return false
+        }
+        
+        if let navigationController = viewController as? UINavigationController,
+           let homeViewController = navigationController.viewControllers.first as? HomeViewController {
+            homeViewController.scrollToTop()
         }
         
         return true

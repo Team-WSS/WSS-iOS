@@ -22,6 +22,8 @@ final class SearchView: UIView {
     let searchDetailInduceView = SearchDetailInduceView()
     let sosopickView = SearchSosoPickView()
     
+    private let loadingView = WSSLoadingView()
+    
     // MARK: - Life Cycle
     
     override init(frame: CGRect) {
@@ -47,12 +49,17 @@ final class SearchView: UIView {
             $0.fontHeadline1Attribute(with: StringLiterals.Search.title)
             $0.textColor = .wssBlack
         }
+        
+        loadingView.do {
+            $0.isHidden = true
+        }
     }
     
     private func setHierarchy() {
         self.addSubviews(scrollView,
                          titleLabel,
-                         searchbarView)
+                         searchbarView,
+                         loadingView)
         scrollView.addSubview(contentView)
         contentView.addSubviews(searchDetailInduceView,
                                 sosopickView)
@@ -92,6 +99,18 @@ final class SearchView: UIView {
         sosopickView.snp.makeConstraints {
             $0.top.equalTo(searchDetailInduceView.snp.bottom).offset(24)
             $0.leading.trailing.bottom.equalToSuperview()
+        }
+        
+        loadingView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+    }
+    
+    //MARK: - Custom Methods
+    
+    func showLoadingView(isShow: Bool) {
+        loadingView.do {
+            $0.isHidden = !isShow
         }
     }
 }

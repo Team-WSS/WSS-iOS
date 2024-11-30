@@ -27,7 +27,7 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
     private let disposeBag = DisposeBag()
     weak var delegate: FeedTableViewDelegate?
     
-    private let feed = PublishRelay<NovelDetailFeed>()
+    private let feed = PublishRelay<TotalFeeds>()
     
     //MARK: - Components
     
@@ -89,7 +89,6 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
             stackView.do {
                 $0.setCustomSpacing(12, after: novelDetailFeedHeaderView)
                 $0.setCustomSpacing(20, after: novelDetailFeedContentView)
-                $0.setCustomSpacing(20, after: novelDetailFeedConnectedNovelView)
                 $0.setCustomSpacing(24, after: novelDetailFeedCategoryView)
             }
         }
@@ -106,6 +105,7 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
         novelDetailFeedHeaderView.profileView.rx.tapGesture()
             .when(.recognized)
             .withLatestFrom(feed)
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, feed in
                 owner.delegate?.profileViewDidTap(userId: feed.userId)
             })
@@ -114,6 +114,7 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
         novelDetailFeedHeaderView.dropdownButtonView.rx.tapGesture()
             .when(.recognized)
             .withLatestFrom(feed)
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, feed in
                 owner.delegate?.dropdownButtonDidTap(feedId: feed.feedId, isMyFeed: feed.isMyFeed)
             })
@@ -122,14 +123,18 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
         novelDetailFeedConnectedNovelView.rx.tapGesture()
             .when(.recognized)
             .withLatestFrom(feed)
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, feed in
-                owner.delegate?.connectedNovelViewDidTap(novelId: feed.novelId)
+                if let novelId = feed.novelId {
+                    owner.delegate?.connectedNovelViewDidTap(novelId: novelId)
+                }
             })
             .disposed(by: disposeBag)
         
         novelDetailFeedReactView.likeView.rx.tapGesture()
             .when(.recognized)
             .withLatestFrom(feed)
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, feed in
                 owner.delegate?.likeViewDidTap(feedId: feed.feedId, isLiked: feed.isLiked)
             })
@@ -138,7 +143,7 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
     
     //MARK: - Data
     
-    func bindData(feed: NovelDetailFeed) {
+    func bindData(feed: TotalFeeds) {
         self.feed.accept(feed)
         
         novelDetailFeedHeaderView.bindData(avatarImage: feed.avatarImage,
@@ -147,9 +152,20 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
                                            isModified: feed.isModified)
         novelDetailFeedContentView.bindData(feedContent: feed.feedContent,
                                             isSpoiler: feed.isSpoiler)
-        novelDetailFeedConnectedNovelView.bindData(title: feed.title,
-                                                   novelRatingCount: feed.novelRatingCount,
-                                                   novelRating: feed.novelRating)
+        if let title = feed.title,
+           let novelRatingCount = feed.novelRatingCount,
+           let novelRating = feed.novelRating {
+            novelDetailFeedConnectedNovelView.bindData(title: title,
+                                                       novelRatingCount: novelRatingCount,
+                                                       novelRating: novelRating)
+            
+            self.stackView.insertArrangedSubview(novelDetailFeedConnectedNovelView, at: 2)
+            stackView.do {
+                $0.setCustomSpacing(20, after: novelDetailFeedConnectedNovelView)
+            }
+        } else {
+            novelDetailFeedConnectedNovelView.removeFromSuperview()
+        }
         novelDetailFeedCategoryView.bindData(relevantCategories: feed.relevantCategories)
         novelDetailFeedReactView.bindData(isLiked: feed.isLiked,
                                           likeCount: feed.likeCount,

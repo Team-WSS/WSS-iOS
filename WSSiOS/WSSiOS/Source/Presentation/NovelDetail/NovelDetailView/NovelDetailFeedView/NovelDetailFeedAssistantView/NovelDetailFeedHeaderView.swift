@@ -90,7 +90,7 @@ final class NovelDetailFeedHeaderView: UIView {
     
     private func setLayout() {
         profileView.snp.makeConstraints {
-            $0.top.leading.bottom.equalToSuperview()
+            $0.centerY.leading.equalToSuperview()
         }
         
         userImageView.snp.makeConstraints {

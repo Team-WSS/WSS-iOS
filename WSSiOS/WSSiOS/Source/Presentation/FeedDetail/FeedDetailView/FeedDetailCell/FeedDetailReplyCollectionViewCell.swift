@@ -13,6 +13,7 @@ import SnapKit
 import Then
 
 protocol FeedDetailReplyCollectionDelegate: AnyObject {
+    func profileViewDidTap(userId: Int)
     func dotsButtonDidTap(commentId: Int, isMyComment: Bool)
     func spoilerTextDidTap()
 }
@@ -132,6 +133,14 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
     //MARK: - Bind
     
     private func bindAction() {
+        userProfileImageView.rx.tapGesture()
+            .when(.recognized)
+            .withLatestFrom(comment)
+            .subscribe(with: self, onNext: { owner, comment in
+                owner.delegate?.profileViewDidTap(userId: comment.userId)
+            })
+            .disposed(by: disposeBag)
+        
         threeDotsButton.rx.tap
             .withLatestFrom(comment)
             .subscribe(with: self, onNext: { owner, comment in

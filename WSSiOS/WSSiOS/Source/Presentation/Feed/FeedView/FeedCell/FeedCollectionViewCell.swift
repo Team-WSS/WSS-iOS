@@ -149,8 +149,8 @@ final class FeedCollectionViewCell: UICollectionViewCell {
         novelView.isUserInteractionEnabled = true
         
         let likedTap = UITapGestureRecognizer(target: self, action: #selector(handleLikedTap))
-        reactView.likeButton.addGestureRecognizer(likedTap)
-        reactView.likeButton.isUserInteractionEnabled = true
+        reactView.likeIcon.addGestureRecognizer(likedTap)
+        reactView.likeIcon.isUserInteractionEnabled = true
         
         let commentTap = UITapGestureRecognizer(target: self, action: #selector(handleCommentTap))
         reactView.commentView.addGestureRecognizer(commentTap)

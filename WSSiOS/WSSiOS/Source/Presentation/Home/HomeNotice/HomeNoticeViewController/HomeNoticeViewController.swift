@@ -95,6 +95,13 @@ final class HomeNoticeViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.showLoadingView
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, isShow in
+                owner.rootView.showLoadingView(isShow: isShow)
+            })
+            .disposed(by: disposeBag)
+        
         rootView.backButton.rx.tap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in

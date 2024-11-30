@@ -135,4 +135,6 @@ enum NewNovelGenre: String, CaseIterable {
 extension NewNovelGenre {
     static let feedEditGenres: [NewNovelGenre] = [.fantasy, .modernFantasy, .romance, .romanceFantasy, .wuxia, .drama, .mystery, .lightNovel, .bl, .etc]
     static let onboardingGenres: [NewNovelGenre] = [.romance, .romanceFantasy, .bl, .fantasy, .modernFantasy, .wuxia, .lightNovel, .drama, .mystery]
+    static let feedMaleGenres: [NewNovelGenre] = [.all, .fantasy, .modernFantasy, .wuxia, .drama, .mystery, .lightNovel, .romance, .romanceFantasy, .bl, .etc]
+    static let feedFemaleGenres: [NewNovelGenre] = [.all, .romance, .romanceFantasy, .bl, .fantasy, .modernFantasy, .wuxia, .drama, .mystery, .lightNovel, .etc]
 }

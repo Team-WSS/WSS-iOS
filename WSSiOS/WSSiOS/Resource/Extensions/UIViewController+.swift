@@ -23,7 +23,7 @@ extension UIViewController {
         
         toastView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(view.snp.bottom).offset(-212)
+            $0.bottom.equalTo(view.snp.bottom).offset(-124)
         }
         
         UIView.animate(withDuration: 0.3, delay: 3.0, animations: {
@@ -230,7 +230,13 @@ extension UIViewController {
     }
     
     func pushToMyPageDeleteIDViewController() {
-        let viewController = MyPageDeleteIDViewController(viewModel: MyPageDeleteIDViewModel())
+        let viewController = MyPageDeleteIDViewController(
+            viewModel: MyPageDeleteIDViewModel(
+                authRepository: DefaultAuthRepository(
+                    authService: DefaultAuthService()
+                )
+            )
+        )
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
@@ -303,6 +309,9 @@ extension UIViewController {
                 novelTitle: novelTitle
             )
         )
+        
+        viewController.navigationController?.isNavigationBarHidden = false
+        viewController.hidesBottomBarWhenPushed = true
         
         self.navigationController?.pushViewController(viewController, animated: true)
     }

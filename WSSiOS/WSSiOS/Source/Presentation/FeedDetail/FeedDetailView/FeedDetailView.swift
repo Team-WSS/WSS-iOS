@@ -19,7 +19,6 @@ final class FeedDetailView: UIView {
     
     let backButton = UIButton()
     let viewTitleLabel = UILabel()
-    
     let dropdownButton = UIButton()
     let dropdownView = FeedDetailDropdownView()
     
@@ -28,6 +27,8 @@ final class FeedDetailView: UIView {
     let replyView = FeedDetailReplyView()
     let replyWritingView = FeedDetailReplyWritingView()
     private let replyBottomView = UIView()
+    
+    private let loadingView = WSSLoadingView()
     
     // MARK: - Life Cycle
     
@@ -74,13 +75,18 @@ final class FeedDetailView: UIView {
         replyBottomView.do {
             $0.backgroundColor = .wssWhite
         }
+        
+        loadingView.do {
+            $0.isHidden = true
+        }
     }
     
     private func setHierarchy() {
         self.addSubviews(scrollView,
                          replyWritingView,
                          replyBottomView,
-                         dropdownView)
+                         dropdownView,
+                         loadingView)
         scrollView.addSubview(contentView)
         contentView.addSubviews(profileView,
                                 feedContentView,
@@ -96,6 +102,14 @@ final class FeedDetailView: UIView {
         contentView.snp.makeConstraints {
             $0.edges.equalTo(scrollView.contentLayoutGuide)
             $0.width.equalTo(scrollView.snp.width)
+        }
+        
+        backButton.snp.makeConstraints {
+            $0.size.equalTo(24)
+        }
+        
+        dropdownButton.snp.makeConstraints {
+            $0.size.equalTo(38)
         }
         
         dropdownView.snp.makeConstraints {
@@ -128,6 +142,10 @@ final class FeedDetailView: UIView {
             $0.horizontalEdges.equalToSuperview()
             $0.bottom.equalToSuperview()
         }
+        
+        loadingView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
     }
     
     //MARK: - Custom Methods
@@ -135,5 +153,9 @@ final class FeedDetailView: UIView {
     func bindData(_ data: Feed) {
         profileView.bindData(data: data)
         feedContentView.bindData(data: data)
+    }
+    
+    func showLoadingView(isShow: Bool) {
+        loadingView.isHidden = !isShow
     }
 }

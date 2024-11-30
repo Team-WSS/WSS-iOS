@@ -11,6 +11,7 @@ enum StringLiterals {
     enum UserDefault {
         static let accessToken = "ACCESS_TOKEN"
         static let refreshToken = "REFRESH_TOKEN"
+        static let userId = "USER_ID"
         static let userGender = "USER_GENDER"
         static let userNickname = "USER_NICKNAME"
         static let isRegister = "IS_REGISTER"
@@ -52,7 +53,7 @@ enum StringLiterals {
             static let search = "검색"
             static let myPage = "마이페이지"
             static let changeNickname = "닉네임 변경"
-            static let feed = "소소피드"
+            static let feed = "소소한 수다"
             static let notice = "알림"
             static let editProfile = "프로필 편집"
             static let deleteID = "회원탈퇴"
@@ -253,6 +254,12 @@ enum StringLiterals {
             case third = "삭제하고 싶은 내용이 있어서"
             case fourth = " 원하는 작품이 없어서"
             case etc = "직접 입력"
+            
+            static func reasonForIndex(_ index: Int) -> String {
+                if(index <= 3) {
+                    return StringLiterals.MyPage.DeleteIDReason.allCases[index].rawValue
+                } else { return ""}
+            }
         }
         
         enum DeleteIDCheckTitle: String, CaseIterable {

@@ -63,9 +63,9 @@ final class FeedPageBarCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Data
     
-    func bindData(text: String) {
+    func bindData(text: NewNovelGenre) {
         titleLabel.do {
-            $0.text = text
+            $0.text = text.withKorean
             $0.makeAttribute(with: $0.text)?
                 .lineSpacing(spacingPercentage: 0)
                 .kerning(kerningPixel: -0.6)
