@@ -39,6 +39,7 @@ final class LibraryViewModel: ViewModelType {
         let newestButtonDidTap: ControlEvent<Void>
         let oldestButtonDidTap: ControlEvent<Void>
         let backButtonDidTap: ControlEvent<Void>
+        let novelCountNotification: Observable<Notification>
     }
     
     struct Output {
@@ -49,6 +50,7 @@ final class LibraryViewModel: ViewModelType {
         let changeListType = BehaviorRelay<StringLiterals.Alignment>(value:.newest)
         let updateChildViewController = BehaviorRelay<StringLiterals.Alignment>(value:.newest)
         let popLastViewController = PublishRelay<Void>()
+        let changeNovelCount = BehaviorRelay<Int>(value: 0)
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -107,6 +109,12 @@ final class LibraryViewModel: ViewModelType {
         input.backButtonDidTap
             .bind(with: self, onNext: { owner, _ in
                 output.popLastViewController.accept(())
+            })
+            .disposed(by: disposeBag)
+        
+        input.novelCountNotification
+            .bind(with: self, onNext: { owner, notification in
+                output.changeNovelCount.accept(notification.object as! Int)
             })
             .disposed(by: disposeBag)
         

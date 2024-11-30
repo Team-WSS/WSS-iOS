@@ -15,7 +15,6 @@ final class LibraryChildView: UIView {
     //MARK: - Components
     
     lazy var libraryCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
-    
     let libraryEmptyView = LibraryEmptyView()
     
     // MARK: - Life Cycle
@@ -38,10 +37,10 @@ final class LibraryChildView: UIView {
         libraryCollectionView.do {
             let layout = UICollectionViewFlowLayout()
             layout.scrollDirection = .vertical
-            layout.minimumLineSpacing = 24.0
-            layout.minimumInteritemSpacing = 3
-            layout.sectionInset = UIEdgeInsets(top: 24, left: 0.1, bottom: 0, right: 0.1)
-            layout.itemSize = CGSize(width: 105.0, height: 243.0)
+            layout.minimumLineSpacing = 20.0
+            layout.minimumInteritemSpacing = 6
+            layout.sectionInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
+            layout.itemSize = CGSize(width: 108.0, height: 240.0)
             
             $0.collectionViewLayout = layout
             $0.showsVerticalScrollIndicator = false

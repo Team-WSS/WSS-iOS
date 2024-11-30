@@ -57,8 +57,6 @@ final class LibraryViewController: UIViewController {
         delegate()
         register()
         bindViewModel()
-        
-        addNotificationCenter()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -89,7 +87,8 @@ final class LibraryViewController: UIViewController {
             listButtonDidTap: libraryDescriptionView.libraryNovelListButton.rx.tap,
             newestButtonDidTap: libraryListView.libraryNewestButton.rx.tap,
             oldestButtonDidTap: libraryListView.libraryOldestButton.rx.tap,
-            backButtonDidTap: backButton.rx.tap
+            backButtonDidTap: backButton.rx.tap,
+            novelCountNotification: NotificationCenter.default.rx.notification(Notification.Name("NovelCount")).asObservable()
         )
         
         let output = libraryViewModel.transform(from: input, disposeBag: disposeBag)
@@ -107,8 +106,6 @@ final class LibraryViewController: UIViewController {
                                                         size: sortTypeList.sizeData,
                                                         sortType: sortTypeList.sortType)
                     let viewController = owner.libraryChildViewController(userId: userId, data: sortTypeQuery)
-                    
-                    viewController.delegate = self
                     owner.libraryPages.append(viewController)
                 }
                 
@@ -120,10 +117,6 @@ final class LibraryViewController: UIViewController {
                                                                    direction: .forward,
                                                                    animated: false,
                                                                    completion: nil)
-                
-                owner.libraryPageBar.libraryTabCollectionView.selectItem(at: IndexPath(item: 0, section: 0),
-                                                                                 animated: true,
-                                                                                 scrollPosition: [])
             })
             .disposed(by: disposeBag)
         
@@ -168,7 +161,6 @@ final class LibraryViewController: UIViewController {
                                                     lastUserNovelId: sortType.lastId,
                                                     size: sortType.sizeData,
                                                     sortType: sortType.sortType)
-                print("🤪",sortTypeQuery)
                 viewController.updateNovelListRelay.accept(sortTypeQuery)
             })
             .disposed(by: disposeBag)
@@ -178,6 +170,16 @@ final class LibraryViewController: UIViewController {
                 owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
+        
+        output.changeNovelCount
+            .bind(with: self, onNext: { owner, count in
+                owner.libraryDescriptionView.updateNovelCount(count: count)
+            })
+            .disposed(by: disposeBag)
+        
+        libraryPageBar.libraryTabCollectionView.selectItem(at: IndexPath(item: 0, section: 0),
+                                                                         animated: true,
+                                                                         scrollPosition: [])
     }
 }
 
@@ -205,12 +207,6 @@ extension LibraryViewController: UIPageViewControllerDataSource {
             return libraryPages[currentIndex + 1]
         }
         return nil
-    }
-}
-
-extension LibraryViewController: NovelDelegate {
-    func sendData(data: Int) {
-        libraryDescriptionView.libraryNovelCountLabel.text = "\(data)개"
     }
 }
 
@@ -263,10 +259,9 @@ extension LibraryViewController {
     //MARK: - UI
     
     private func setUI() {
-        self.view.backgroundColor = .White
+        self.view.backgroundColor = .wssWhite
         
         libraryListView.isHidden = true
-        
         backButton.do {
             $0.setImage(.icNavigateLeft.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray300), for: .normal)
         }

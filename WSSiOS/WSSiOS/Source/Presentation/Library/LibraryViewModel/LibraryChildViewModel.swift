@@ -10,6 +10,10 @@ import Foundation
 import RxSwift
 import RxCocoa
 
+protocol NovelDelegate: AnyObject {
+    func sendNovelCount(data: Int)
+}
+
 final class LibraryChildViewModel: ViewModelType {
     
     // MARK: - Properties
@@ -17,6 +21,7 @@ final class LibraryChildViewModel: ViewModelType {
     private let userRepository: UserRepository
     private let initData: ShowNovelStatus
     private let userId: Int
+    weak var delegate: NovelDelegate?
     
     private let disposeBag = DisposeBag()
     
@@ -37,6 +42,7 @@ final class LibraryChildViewModel: ViewModelType {
     
     struct Output {
         let cellData = BehaviorRelay<[UserNovel]>(value: [])
+        let countNovel = BehaviorRelay<Int>(value: 0)
         let showEmptyView = PublishRelay<Bool>()
         let pushToDetailNovelViewController = BehaviorRelay<Int>(value: 0)
         let pushToSearchViewController = PublishRelay<Void>()
@@ -57,7 +63,9 @@ final class LibraryChildViewModel: ViewModelType {
         .subscribe(with: self, onNext: { owner, data in
             output.cellData.accept(data.userNovels)
             output.showEmptyView.accept(data.userNovels.isEmpty)
-            print("API response: \(data)")
+            if data.userNovelCount > 0 {
+                NotificationCenter.default.post(name: NSNotification.Name("NovelCount"),object: data.userNovelCount)
+            }
         }, onError: { error, _ in
             print(error)
         })
@@ -70,14 +78,9 @@ final class LibraryChildViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        
-        
-        
         return output
     }
-    
-    // MARK: - Custom Method
-    
+
     // MARK: - API
     
     private func getUserNovelList(userId: Int, data: ShowNovelStatus) -> Observable<UserNovelList> {

@@ -9,11 +9,6 @@ import UIKit
 
 import RxSwift
 import RxCocoa
-import SnapKit
-
-protocol NovelDelegate: AnyObject {
-    func sendData(data: Int)
-}
 
 final class LibraryChildViewController: UIViewController, UIScrollViewDelegate {
     

@@ -37,7 +37,6 @@ final class LibraryDescriptionView: UIView {
         self.backgroundColor = .wssGray50
         
         libraryNovelCountLabel.do {
-            $0.font = .Label1
             $0.textColor = .wssGray200
         }
         
@@ -72,5 +71,10 @@ final class LibraryDescriptionView: UIView {
             $0.centerY.equalToSuperview()
             $0.trailing.equalToSuperview().inset(20)
         }
+    }
+    
+    func updateNovelCount(count: Int) {
+        let text = String(describing: count) + "개"
+        libraryNovelCountLabel.applyWSSFont(.body4, with: text)
     }
 }
