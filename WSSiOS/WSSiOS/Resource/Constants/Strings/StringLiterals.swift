@@ -11,10 +11,12 @@ enum StringLiterals {
     enum UserDefault {
         static let accessToken = "ACCESS_TOKEN"
         static let refreshToken = "REFRESH_TOKEN"
+        static let userId = "USER_ID"
         static let userGender = "USER_GENDER"
         static let userNickname = "USER_NICKNAME"
         static let isRegister = "IS_REGISTER"
         static let showReviewFirstDescription = "SHOW_REVIEW_FIRST_DESCRIPTION"
+        static let userBirth = "USER_BIRTH"
     }
     
     enum BirthPicker {
@@ -52,7 +54,7 @@ enum StringLiterals {
             static let search = "검색"
             static let myPage = "마이페이지"
             static let changeNickname = "닉네임 변경"
-            static let feed = "소소피드"
+            static let feed = "소소한 수다"
             static let notice = "알림"
             static let editProfile = "프로필 편집"
             static let deleteID = "회원탈퇴"
@@ -61,6 +63,7 @@ enum StringLiterals {
             static let myPageBlockUser = "차단유저 목록"
             static let myPageChangeUserInfo = "성별/나이 변경"
             static let isVisibleProfile = "프로필 공개 설정"
+            static let changeAvatar = "프로필 선택"
         }
     }
     
@@ -159,9 +162,6 @@ enum StringLiterals {
     
     enum MyPage {
         enum Modal {
-            static let back = "돌아가기"
-            static let baseTitle = "오늘 당신을 만날 걸 알고 있었어"
-            static let baseExplanation = "메모를 작성해서 잠금해제 됐어요!"
             static let keepOriginally = "원래대로 유지하기"
             static let changeCharacter = "대표 캐릭터 설정하기"
         }
@@ -213,6 +213,9 @@ enum StringLiterals {
             static let introPlaceholder = "소개글을 적어보세요!"
             static let genre = "선호장르"
             static let genreDescription = "선택한 장르에 맞춰 작품을 추천해 드려요"
+            
+            static let defaultAvatarName = "소소냥이"
+            static let defaultAvatarDescription = "만나서 반가워"
         }
         
         enum EditProfileWarningMessage: String {
@@ -252,6 +255,12 @@ enum StringLiterals {
             case third = "삭제하고 싶은 내용이 있어서"
             case fourth = " 원하는 작품이 없어서"
             case etc = "직접 입력"
+            
+            static func reasonForIndex(_ index: Int) -> String {
+                if(index <= 3) {
+                    return StringLiterals.MyPage.DeleteIDReason.allCases[index].rawValue
+                } else { return ""}
+            }
         }
         
         enum DeleteIDCheckTitle: String, CaseIterable {
@@ -557,7 +566,7 @@ enum StringLiterals {
         enum Content {
             static let writeContent = "내용 작성하기"
             static let spoiler = "스포일러"
-            static let placeHolder = "피드 작성 유의사항!\n\n욕설, 비방 등 상대방을 불쾌하게 하는 의견은\n작품 내용을 담은 글은 스포일러 체크해주세요."
+            static let placeHolder = "웹소설과 관련된 글을 자유롭게 남겨보세요\n\n • 작품에 대한 한줄평\n • 여운이 남는 명장면, 명대사\n • 수다 떨고 싶은 작품 이야기\n • 다른 독자들과 공유하고 싶은 작품 정보 등"
         }
         enum Novel {
             static let novelConnect = "작품 연결하기"
@@ -620,7 +629,7 @@ enum StringLiterals {
         static let confirm = "확인"
         
         static let reportSpoiler = "스포일러 신고"
-        static let spoilerTitle = "해당 글이 스포일러를 포함하고 있나요?"
+        static let spoilerTitle = "해당 글이 스포일러를\n포함하고 있나요?"
         
         static let reportImpertinence = "부적절한 표현 신고"
         static let impertinentTitle = "해당 글에 부적절한 표현이\n사용되었나요?"

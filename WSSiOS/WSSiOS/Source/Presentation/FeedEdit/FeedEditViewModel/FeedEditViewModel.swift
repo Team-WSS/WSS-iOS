@@ -133,33 +133,24 @@ final class FeedEditViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        if let feedId {
-            input.completeButtonDidTap
-                .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
-                .withLatestFrom(isSpoiler)
-                .flatMapLatest { isSpoiler in
+        input.completeButtonDidTap
+            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
+            .withLatestFrom(isSpoiler)
+            .flatMapLatest { isSpoiler in
+                
+                if let feedId = self.feedId {
                     self.putFeed(feedId: feedId, relevantCategories: self.newRelevantCategories.map { $0.rawValue }, feedContent: self.newFeedContent, novelId: self.newNovelId, isSpoiler: isSpoiler)
-                }
-                .subscribe(with: self, onNext: { owner, _ in
-                    owner.popViewController.accept(())
-                }, onError: { owner, error  in
-                    print(error)
-                })
-                .disposed(by: disposeBag)
-        } else {
-            input.completeButtonDidTap
-                .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
-                .withLatestFrom(isSpoiler)
-                .flatMapLatest { isSpoiler in
+                } else {
                     self.postFeed(relevantCategories: self.newRelevantCategories.map { $0.rawValue }, feedContent: self.newFeedContent, novelId: self.newNovelId, isSpoiler: isSpoiler)
                 }
-                .subscribe(with: self, onNext: { owner, _ in
-                    owner.popViewController.accept(())
-                }, onError: { owner, error  in
-                    print(error)
-                })
-                .disposed(by: disposeBag)
-        }
+            }
+            .subscribe(with: self, onNext: { owner, _ in
+                NotificationCenter.default.post(name: NSNotification.Name("FeedEdited"), object: nil)
+                owner.popViewController.accept(())
+            }, onError: { owner, error  in
+                print(error)
+            })
+            .disposed(by: disposeBag)
         
         input.spoilerButtonDidTap
             .withLatestFrom(isSpoiler)

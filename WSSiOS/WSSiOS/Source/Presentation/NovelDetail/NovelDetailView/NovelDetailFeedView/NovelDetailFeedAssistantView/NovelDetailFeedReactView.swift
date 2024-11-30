@@ -67,11 +67,11 @@ final class NovelDetailFeedReactView: UIView {
     private func setLayout() {
         likeView.snp.makeConstraints {
             $0.top.leading.bottom.equalToSuperview()
+            $0.height.equalTo(37)
         }
         
         likeImageView.snp.makeConstraints {
-            $0.top.bottom.equalToSuperview().inset(8.5)
-            $0.leading.equalToSuperview()
+            $0.centerY.leading.equalToSuperview()
             $0.size.equalTo(20)
         }
         
@@ -87,8 +87,7 @@ final class NovelDetailFeedReactView: UIView {
         }
         
         commentImageView.snp.makeConstraints {
-            $0.top.bottom.equalToSuperview().inset(8.5)
-            $0.leading.equalToSuperview()
+            $0.centerY.leading.equalToSuperview()
             $0.size.equalTo(20)
         }
         

@@ -35,6 +35,9 @@ final class NovelDetailFeedCategoryView: UIView {
     private func setUI() {
         categoryLabel.do {
             $0.textColor = .wssGray200
+            $0.numberOfLines = 0
+            $0.lineBreakMode = .byWordWrapping
+            $0.lineBreakStrategy = .hangulWordPriority
         }
     }
     
@@ -45,7 +48,7 @@ final class NovelDetailFeedCategoryView: UIView {
     private func setLayout() {
         categoryLabel.snp.makeConstraints {
             $0.top.bottom.equalToSuperview()
-            $0.leading.equalToSuperview().inset(4)
+            $0.leading.trailing.equalToSuperview().inset(4)
         }
     }
     

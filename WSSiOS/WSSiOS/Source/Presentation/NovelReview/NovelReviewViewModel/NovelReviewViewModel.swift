@@ -17,6 +17,7 @@ final class NovelReviewViewModel: ViewModelType {
     
     private let novelReviewRepository: NovelReviewRepository
     
+    let isInterest: Bool
     var readStatus: ReadStatus
     private let novelId: Int
     let novelTitle: String
@@ -52,8 +53,9 @@ final class NovelReviewViewModel: ViewModelType {
     
     //MARK: - Life Cycle
     
-    init(novelReviewRepository: NovelReviewRepository, readStatus: ReadStatus, novelId: Int, novelTitle: String) {
+    init(novelReviewRepository: NovelReviewRepository, isInterest: Bool, readStatus: ReadStatus, novelId: Int, novelTitle: String) {
         self.novelReviewRepository = novelReviewRepository
+        self.isInterest = isInterest
         self.readStatus = readStatus
         self.novelId = novelId
         self.novelTitle = novelTitle
@@ -99,7 +101,7 @@ final class NovelReviewViewModel: ViewModelType {
                 self.getNovelReview(novelId: self.novelId)
             }
             .subscribe(with: self, onNext: { owner, data in
-                owner.isNovelReviewExist = data.status != nil
+                owner.isNovelReviewExist = data.status != nil || owner.isInterest == true
                 if data.startDate != nil || data.endDate != nil {
                     owner.startDate = data.startDate.flatMap { owner.dateFormatter.date(from: $0) } ?? Date()
                     owner.endDate = data.endDate.flatMap { owner.dateFormatter.date(from: $0) } ?? Date()

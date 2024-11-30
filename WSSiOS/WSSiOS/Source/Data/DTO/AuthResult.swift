@@ -26,3 +26,12 @@ struct ReissueResult: Codable {
     let Authorization: String
     let refreshToken: String
 }
+
+struct WithdrawRequest: Codable {
+    let reason: String
+    let refreshToken: String
+}
+
+struct Logout: Codable {
+    let refreshToken: String
+}

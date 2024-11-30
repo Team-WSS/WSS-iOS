@@ -52,7 +52,7 @@ final class NovelDetailViewModel: ViewModelType {
     private var isLoadable: Bool = false
     private var isFetching: Bool = false
     private var lastFeedId: Int = 0
-    private let feedList = BehaviorRelay<[NovelDetailFeed]>(value: [])
+    private let feedList = BehaviorRelay<[TotalFeeds]>(value: [])
     private let novelDetailFeedTableViewHeight = PublishRelay<CGFloat>()
     private let pushToFeedDetailViewController = PublishRelay<Int>()
     private let showDropdownView = PublishRelay<(IndexPath, Bool)>()
@@ -116,6 +116,7 @@ final class NovelDetailViewModel: ViewModelType {
         let reloadNovelDetailFeed: Observable<Void>
         let scrollViewReachedBottom: Observable<Bool>
         let createFeedButtonDidTap: ControlEvent<Void>
+        let feedEditedNotification: Observable<Notification>
         
         //NovelReview
         let novelReviewedNotification: Observable<Notification>
@@ -138,7 +139,7 @@ final class NovelDetailViewModel: ViewModelType {
         let showLargeNovelCoverImage: Driver<Bool>
         let isUserNovelInterested: Driver<Bool>
         let pushTofeedWriteViewController: Observable<(genre: [NewNovelGenre], novelId: Int, novelTitle: String)>
-        let pushToReviewViewController: Observable<(readStatus: ReadStatus, novelId: Int, novelTitle: String)>
+        let pushToReviewViewController: Observable<(isInterest: Bool, readStatus: ReadStatus, novelId: Int, novelTitle: String)>
         
         //Tab
         let selectedTab: Driver<Tab>
@@ -150,7 +151,7 @@ final class NovelDetailViewModel: ViewModelType {
         let reviewSectionVisibilities: Driver<[ReviewSectionVisibility]>
         
         //NovelDetailFeed
-        let feedList: Observable<[NovelDetailFeed]>
+        let feedList: Observable<[TotalFeeds]>
         let novelDetailFeedTableViewHeight: Observable<CGFloat>
         let pushToFeedDetailViewController: Observable<Int>
         let pushToUserViewController: Observable<Int>
@@ -162,6 +163,7 @@ final class NovelDetailViewModel: ViewModelType {
         let showImproperAlertView: Observable<((Int) -> Observable<Void>, Int)>
         let pushToFeedEditViewController: Observable<Int>
         let showDeleteAlertView: Observable<((Int) -> Observable<Void>, Int)>
+        let showFeedEditedToast: Observable<Void>
         
         //NovelReview
         let showNovelReviewedToast: Observable<Void>
@@ -257,7 +259,8 @@ final class NovelDetailViewModel: ViewModelType {
             .map {
                 let selectedReadStatus = $0 ?? self.readStatus.value
                 guard let selectedReadStatus else { throw RxError.noElements }
-                return (readStatus: selectedReadStatus,
+                return (isInterest: self.isUserNovelInterested.value,
+                        readStatus: selectedReadStatus,
                         novelId: self.novelId,
                         novelTitle: self.novelTitle)
             }
@@ -323,7 +326,9 @@ final class NovelDetailViewModel: ViewModelType {
             self.selectedTab.accept(.feed)
         })
         .flatMapLatest { _ in
-            self.getNovelDetailFeedData(novelId: self.novelId, lastFeedId: self.lastFeedId)
+            self.getNovelDetailFeedData(novelId: self.novelId,
+                                        lastFeedId: self.lastFeedId,
+                                        size: nil)
         }
         .subscribe(with: self, onNext: { owner, data in
             owner.isLoadable = data.isLoadable
@@ -348,6 +353,7 @@ final class NovelDetailViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.novelDetailFeedTableViewItemSelected
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, indexPath in
                 owner.hideDropdownView.accept(())
                 owner.pushToFeedDetailViewController.accept(owner.feedList.value[indexPath.item].feedId)
@@ -372,6 +378,7 @@ final class NovelDetailViewModel: ViewModelType {
         
         input.dropdownButtonDidTap
             .map { ($0, self.isMyFeed) }
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
             .subscribe( with: self, onNext: { owner, result in
                 owner.hideDropdownView.accept(())
                 switch result {
@@ -397,7 +404,9 @@ final class NovelDetailViewModel: ViewModelType {
                 self.lastFeedId = 0
             })
             .flatMapLatest { _ in
-                self.getNovelDetailFeedData(novelId: self.novelId, lastFeedId: self.lastFeedId)
+                self.getNovelDetailFeedData(novelId: self.novelId,
+                                            lastFeedId: self.lastFeedId,
+                                            size: self.feedList.value.isEmpty ? nil : self.feedList.value.count)
             }
             .subscribe(with: self, onNext: { owner, data in
                 owner.isLoadable = data.isLoadable
@@ -416,7 +425,9 @@ final class NovelDetailViewModel: ViewModelType {
                 self.lastFeedId = 0
             })
             .flatMapLatest { _ in
-                self.getNovelDetailFeedData(novelId: self.novelId, lastFeedId: self.lastFeedId)
+                self.getNovelDetailFeedData(novelId: self.novelId,
+                                            lastFeedId: self.lastFeedId,
+                                            size: nil)
             }
             .subscribe(with: self, onNext: { owner, data in
                 owner.isLoadable = data.isLoadable
@@ -437,10 +448,12 @@ final class NovelDetailViewModel: ViewModelType {
                 self.isFetching = true
             })
             .flatMapLatest {_ in
-                self.getNovelDetailFeedData(novelId: self.novelId, lastFeedId: self.lastFeedId)
-                    .do(onNext: { _ in
-                        self.isFetching = false
-                    })
+                self.getNovelDetailFeedData(novelId: self.novelId,
+                                            lastFeedId: self.lastFeedId,
+                                            size: nil)
+                .do(onNext: { _ in
+                    self.isFetching = false
+                })
             }
             .subscribe(with: self, onNext: { owner, data in
                 owner.isLoadable = data.isLoadable
@@ -473,6 +486,10 @@ final class NovelDetailViewModel: ViewModelType {
                 owner.reviewSectionVisibilities.accept([])
             })
             .disposed(by: disposeBag)
+        
+        let showFeedEditedToast = input.feedEditedNotification
+            .map { _ in () }
+            .asObservable()
         
         let showNovelReviewedToast = input.novelReviewedNotification
             .map { _ in () }
@@ -510,6 +527,7 @@ final class NovelDetailViewModel: ViewModelType {
             showImproperAlertView: showImproperAlertView.asObservable(),
             pushToFeedEditViewController: pushToFeedEditViewController.asObservable(),
             showDeleteAlertView: showDeleteAlertView.asObservable(),
+            showFeedEditedToast: showFeedEditedToast,
             showNovelReviewedToast: showNovelReviewedToast
         )
     }
@@ -548,22 +566,26 @@ final class NovelDetailViewModel: ViewModelType {
     }
     
     private func getNovelDetailFeedData(disposeBag: DisposeBag) {
-        self.getNovelDetailFeedData(novelId: self.novelId, lastFeedId: self.lastFeedId)
-            .subscribe(with: self, onNext: { owner, data in
-                owner.isLoadable = data.isLoadable
-                if let lastFeed = data.feeds.last {
-                    owner.lastFeedId = lastFeed.feedId
-                }
-                owner.feedList.accept(data.feeds)
-            }, onError: { owner, error in
-                owner.showNetworkErrorView.accept(true)
-                print("Error: \(error)")
-            })
-            .disposed(by: disposeBag)
+        self.isLoadable = false
+        self.lastFeedId = 0
+        self.getNovelDetailFeedData(novelId: self.novelId,
+                                    lastFeedId: self.lastFeedId,
+                                    size: self.feedList.value.isEmpty ? nil : self.feedList.value.count)
+        .subscribe(with: self, onNext: { owner, data in
+            owner.isLoadable = data.isLoadable
+            if let lastFeed = data.feeds.last {
+                owner.lastFeedId = lastFeed.feedId
+            }
+            owner.feedList.accept(data.feeds)
+        }, onError: { owner, error in
+            owner.showNetworkErrorView.accept(true)
+            print("Error: \(error)")
+        })
+        .disposed(by: disposeBag)
     }
     
-    private func getNovelDetailFeedData(novelId: Int, lastFeedId: Int) -> Observable<NovelDetailFeedResult> {
-        novelDetailRepository.getNovelDetailFeedData(novelId: novelId, lastFeedId: lastFeedId)
+    private func getNovelDetailFeedData(novelId: Int, lastFeedId: Int, size: Int?) -> Observable<NovelDetailFeedResult> {
+        novelDetailRepository.getNovelDetailFeedData(novelId: novelId, lastFeedId: lastFeedId, size: size)
             .observe(on: MainScheduler.instance)
     }
     

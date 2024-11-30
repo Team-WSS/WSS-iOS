@@ -14,15 +14,22 @@ final class MyPageDeleteIDViewModel: ViewModelType {
     
     //MARK: - Properties
     
+    private let authRepository: AuthRepository
     static let textViewMaxLimit = 80
     static let exceptionIndexPath: IndexPath = [ 0 , 4 ]
+    private  let whitespaceRegex = "^[\\s]*$"
     
     private let reasonCellTitle = BehaviorRelay<[String]>(value: StringLiterals.MyPage.DeleteIDReason.allCases.map { $0.rawValue })
     private let checkCellTitle = BehaviorRelay<[(String, String)]>(value: zip(StringLiterals.MyPage.DeleteIDCheckTitle.allCases, StringLiterals.MyPage.DeleteIDCheckContent.allCases).map { ($0.rawValue, $1.rawValue) })
-    
-    private let reasonCellTap = BehaviorRelay<Bool>(value: false)
+
+    private let reasonStringRelay = BehaviorRelay<String>(value: "")
+    private let reasonIndexRelay = BehaviorRelay<IndexPath>(value: [0,0])
     
     //MARK: - Life Cycle
+    
+    init(authRepository: AuthRepository) {
+        self.authRepository = authRepository
+    }
     
     struct Input {
         let backButtonDidTap: ControlEvent<Void>
@@ -39,13 +46,14 @@ final class MyPageDeleteIDViewModel: ViewModelType {
         let bindReasonCell: Observable<[String]>
         let bindCheckCell: Observable<[(String, String)]>
         let tapReasonCell = PublishRelay<IndexPath>()
-        let popViewController = PublishRelay<Bool>() 
+        let popViewController = PublishRelay<Bool>()
         let changeAgreeButtonColor = BehaviorRelay<Bool>(value: false)
         let completeButtonIsAble = BehaviorRelay<Bool>(value: false)
         let textCountLimit = PublishRelay<Int>()
         let beginEditing = PublishRelay<Bool>()
         let endEditing = PublishRelay<Bool>()
         let containText = BehaviorRelay<String>(value: "")
+        let pushToLoginViewController = PublishRelay<Bool>()
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -68,11 +76,22 @@ final class MyPageDeleteIDViewModel: ViewModelType {
         
         input.reasonCellDidTap
             .subscribe(with: self, onNext: { owner, indexPath in
+                owner.reasonIndexRelay.accept(indexPath)
+            })
+            .disposed(by: disposeBag)
+        
+        reasonIndexRelay
+            .subscribe(with: self, onNext: { owner, indexPath in
                 output.tapReasonCell.accept(indexPath)
-                owner.reasonCellTap.accept(true)
+                
                 if indexPath != MyPageDeleteIDViewModel.exceptionIndexPath {
                     output.containText.accept("")
                     output.endEditing.accept(true)
+                    
+                    let reason = StringLiterals.MyPage.DeleteIDReason.reasonForIndex(indexPath.row)
+                    owner.reasonStringRelay.accept(reason)
+                } else {
+                    owner.reasonStringRelay.accept("")
                 }
             })
             .disposed(by: disposeBag)
@@ -84,37 +103,67 @@ final class MyPageDeleteIDViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.textUpdated
+            .observe(on: MainScheduler.asyncInstance)
             .subscribe(with: self, onNext: { owner, text in
                 output.containText.accept(String(text.prefix(MyPageDeleteIDViewModel.textViewMaxLimit)))
                 output.textCountLimit.accept(output.containText.value.count)
+                owner.reasonStringRelay.accept(String(text.prefix(MyPageDeleteIDViewModel.textViewMaxLimit)))
             })
             .disposed(by: disposeBag)
-         
+        
         input.didBeginEditing
             .subscribe(with: self, onNext: { owner, text in
-                output.tapReasonCell.accept(MyPageDeleteIDViewModel.exceptionIndexPath)
+                owner.reasonIndexRelay.accept(MyPageDeleteIDViewModel.exceptionIndexPath)
                 output.beginEditing.accept(true)
             })
             .disposed(by: disposeBag)
         
         input.didEndEditing
+            .observe(on:MainScheduler.asyncInstance)
             .subscribe(onNext: { _ in
-                output.endEditing.accept(true) 
+                output.endEditing.accept(true)
             })
             .disposed(by: disposeBag)
         
         input.completeButtonDidTap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
-            .subscribe(onNext: { _ in
-                //서버연결 
-            })
+            .flatMapLatest { [weak self] _ -> Observable<Void> in
+                guard let self = self else { return Observable.empty() }
+                
+                var reasonString = ""
+                if self.reasonIndexRelay.value != MyPageDeleteIDViewModel.exceptionIndexPath {
+                    let reasonIndex = self.reasonIndexRelay.value.row
+                    reasonString = StringLiterals.MyPage.DeleteIDReason.reasonForIndex(reasonIndex)
+                } else {
+                    reasonString = self.reasonStringRelay.value
+                }
+                
+                guard let refreshTokenString = UserDefaults.standard.string(forKey: StringLiterals.UserDefault.refreshToken) else { return Observable.empty() }
+                return self.postWithdrawId(reason: reasonString, refreshToken: refreshTokenString)
+            }
+            .observe(on: MainScheduler.instance)
+            .subscribe(
+                onNext: {
+                    UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.userNickname)
+                    UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.accessToken)
+                    UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.refreshToken)
+                    UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.userGender)
+                    
+                    output.pushToLoginViewController.accept(true)
+                },
+                onError: { error in
+                    print(error.localizedDescription)
+                }
+            )
             .disposed(by: disposeBag)
         
         Observable
-            .combineLatest(reasonCellTap, output.tapReasonCell, input.textUpdated, output.changeAgreeButtonColor)
-            .map { tappedCell, cellIndexPath, text, tappedAgreeButton in
-                guard tappedCell, tappedAgreeButton else { return false }
-                return cellIndexPath != MyPageDeleteIDViewModel.exceptionIndexPath || !text.isEmpty
+            .combineLatest(output.containText,
+                           output.tapReasonCell,
+                           output.changeAgreeButtonColor)
+            .map { exceptionReasonContent, cellIndexPath, tappedAgreeButton in
+                guard tappedAgreeButton else { return false }
+                return cellIndexPath != MyPageDeleteIDViewModel.exceptionIndexPath || (exceptionReasonContent.range(of: self.whitespaceRegex, options: .regularExpression) == nil)
             }
             .bind(to: output.completeButtonIsAble)
             .disposed(by: disposeBag)
@@ -122,8 +171,10 @@ final class MyPageDeleteIDViewModel: ViewModelType {
         return output
     }
     
-    //MARK: - Custom Method
-    
     //MARK: - API
     
+    private func postWithdrawId(reason: String, refreshToken: String) -> Observable<Void> {
+        return self.authRepository.postWithdrawId(reason: reason, refreshToken: refreshToken)
+            .asObservable()
+    }
 }

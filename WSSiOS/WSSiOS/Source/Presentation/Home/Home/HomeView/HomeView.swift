@@ -14,13 +14,15 @@ final class HomeView: UIView {
     
     //MARK: - UI Components
     
-    private let scrollView = UIScrollView()
+    let scrollView = UIScrollView()
     private let contentView = UIView()
     let headerView = HomeHeaderView()
     let todayPopularView = HomeTodayPopularView()
     let realtimePopularView = HomeRealtimePopularView()
     let interestView = HomeInterestView()
     let tasteRecommendView = HomeTasteRecommendView()
+    
+    let loadingView = WSSLoadingView()
     
     //MARK: - Life Cycle
     
@@ -41,11 +43,16 @@ final class HomeView: UIView {
         scrollView.do {
             $0.showsVerticalScrollIndicator = false
         }
+        
+        loadingView.do {
+            $0.isHidden = true
+        }
     }
     
     private func setHierarchy() {
         self.addSubviews(headerView,
-                         scrollView)
+                         scrollView,
+                         loadingView)
         self.scrollView.addSubview(contentView)
         contentView.addSubviews(todayPopularView,
                                 realtimePopularView,
@@ -64,6 +71,10 @@ final class HomeView: UIView {
             $0.top.equalTo(headerView.snp.bottom)
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
+        }
+        
+        loadingView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
 
         contentView.snp.makeConstraints {
@@ -90,6 +101,14 @@ final class HomeView: UIView {
         tasteRecommendView.snp.makeConstraints {
             $0.top.equalTo(interestView.snp.bottom).offset(36)
             $0.horizontalEdges.bottom.equalToSuperview()
+        }
+    }
+    
+    //MARK: - Custom Methods
+    
+    func showLoadingView(isShow: Bool) {
+        loadingView.do {
+            $0.isHidden = !isShow
         }
     }
 }

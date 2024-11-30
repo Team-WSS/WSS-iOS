@@ -5,7 +5,6 @@
 //  Created by 신지원 on 9/20/24.
 //
 
-import Foundation
 import UIKit
 
 import RxSwift
@@ -21,7 +20,9 @@ final class MyPageChangeUserInfoViewModel: ViewModelType {
     //MARK: - Properties
     
     private let userRepository: UserRepository
-    private let userInfo: ChangeUserInfo
+    
+    private let gender = UserDefaults.standard.string(forKey: StringLiterals.UserDefault.userGender) ?? ""
+    private let birth = UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userBirth)
     
     private var currentGender = ""
     private var currentBirth = 0
@@ -29,12 +30,8 @@ final class MyPageChangeUserInfoViewModel: ViewModelType {
     
     //MARK: - Life Cycle
     
-    init(userRepository: UserRepository, userInfo: ChangeUserInfo) {
+    init(userRepository: UserRepository) {
         self.userRepository = userRepository
-        self.userInfo = userInfo
-        
-        self.currentGender = self.userInfo.gender
-        self.currentBirth = self.userInfo.birth
     }
     
     struct Input {
@@ -59,7 +56,9 @@ final class MyPageChangeUserInfoViewModel: ViewModelType {
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
         
-        output.dataBind.accept(self.userInfo)
+        output.dataBind.accept(ChangeUserInfo(gender: self.gender, birth: self.birth))
+        self.currentGender = self.gender
+        self.currentBirth = self.birth
         
         input.maleButtonTapped
             .bind(with: self, onNext: { owner, _ in
@@ -96,7 +95,12 @@ final class MyPageChangeUserInfoViewModel: ViewModelType {
                 let isEnabled = output.changeCompleteButton.value
                 if isEnabled {
                     owner.putUserInfo(gender: owner.currentGender, birth: owner.currentBirth)
-                        .subscribe(with: self, onNext: { owner, _ in 
+                        .subscribe(with: self, onNext: { owner, _ in
+                            UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.userGender)
+                            UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.userBirth)
+                            
+                            UserDefaults.standard.set(owner.currentGender, forKey: StringLiterals.UserDefault.userGender)
+                            UserDefaults.standard.set(owner.currentBirth, forKey: StringLiterals.UserDefault.userBirth)
                             output.popViewController.accept(())
                         }, onError: { owner, error in
                             print(error)
@@ -107,9 +111,9 @@ final class MyPageChangeUserInfoViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.getNotificationUserBirth
-            .bind(with: self, onNext: { owner, birth in
-                owner.currentBirth = birth
-                output.changeBirth.accept(birth)
+            .bind(with: self, onNext: { owner, userBirth in
+                owner.currentBirth = userBirth
+                output.changeBirth.accept(userBirth)
                 output.changeCompleteButton.accept(owner.checkIsEnabledCompleteButton())
                 
             })
@@ -128,7 +132,7 @@ final class MyPageChangeUserInfoViewModel: ViewModelType {
     //MARK: - Custom Method
     
     private func checkIsEnabledCompleteButton() -> Bool {
-        return userInfo.gender != currentGender || userInfo.birth != currentBirth
+        return self.gender != currentGender || self.birth != currentBirth
     }
 }
 

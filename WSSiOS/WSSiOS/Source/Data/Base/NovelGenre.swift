@@ -7,25 +7,6 @@
 
 import UIKit
 
-enum OldNovelGenre: String {
-    case romanceFantasy, romance, fantasy, modernFantasy, drama, lightNovel, wuxia, mystery, BL, error
-    
-    var genreText: String {
-        switch self {
-        case .romanceFantasy: return "로판"
-        case .romance: return "로맨스"
-        case .fantasy: return "판타지"
-        case .modernFantasy: return "현판"
-        case .drama: return "드라마"
-        case .lightNovel: return "라노벨"
-        case .wuxia: return "무협"
-        case .mystery: return "미스터리"
-        case .BL: return "BL"
-        case .error: return "error"
-        }
-    }
-}
-
 enum NovelGenre: String, CaseIterable {
     case romance, romanceFantasy, fantasy, modernFantasy, wuxia, BL, lightNovel, mystery, drama
     
@@ -154,4 +135,6 @@ enum NewNovelGenre: String, CaseIterable {
 extension NewNovelGenre {
     static let feedEditGenres: [NewNovelGenre] = [.fantasy, .modernFantasy, .romance, .romanceFantasy, .wuxia, .drama, .mystery, .lightNovel, .bl, .etc]
     static let onboardingGenres: [NewNovelGenre] = [.romance, .romanceFantasy, .bl, .fantasy, .modernFantasy, .wuxia, .lightNovel, .drama, .mystery]
+    static let feedMaleGenres: [NewNovelGenre] = [.all, .fantasy, .modernFantasy, .wuxia, .drama, .mystery, .lightNovel, .romance, .romanceFantasy, .bl, .etc]
+    static let feedFemaleGenres: [NewNovelGenre] = [.all, .romance, .romanceFantasy, .bl, .fantasy, .modernFantasy, .wuxia, .drama, .mystery, .lightNovel, .etc]
 }

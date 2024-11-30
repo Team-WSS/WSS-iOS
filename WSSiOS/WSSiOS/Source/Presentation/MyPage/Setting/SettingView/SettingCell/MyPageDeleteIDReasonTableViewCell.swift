@@ -14,7 +14,7 @@ final class MyPageDeleteIDReasonTableViewCell: UITableViewCell {
     
     //MARK: - Components
     
-    private let checkButton = UIButton()
+    private let checkImageView = UIImageView()
     private let titleLabel = UILabel()
     
     //MARK: - Life Cycle
@@ -37,12 +37,11 @@ final class MyPageDeleteIDReasonTableViewCell: UITableViewCell {
         contentView.do {
             $0.backgroundColor = .wssWhite
             $0.clipsToBounds = true
-            $0.isUserInteractionEnabled = false
+            $0.isUserInteractionEnabled = true
         }
         
-        checkButton.do {
-            $0.setImage(.checkDefault, for: .normal)
-            $0.isUserInteractionEnabled = true
+        checkImageView.do {
+            $0.image = .checkDefault
         }
         
         titleLabel.do {
@@ -51,12 +50,12 @@ final class MyPageDeleteIDReasonTableViewCell: UITableViewCell {
     }
     
     private func setHierarchy() {
-        contentView.addSubviews(checkButton,
+        contentView.addSubviews(checkImageView,
                                 titleLabel)
     }
     
     private func setLayout() {
-        checkButton.snp.makeConstraints {
+        checkImageView.snp.makeConstraints {
             $0.leading.equalToSuperview()
             $0.top.bottom.equalToSuperview().inset(10)
             $0.size.equalTo(24)
@@ -64,14 +63,14 @@ final class MyPageDeleteIDReasonTableViewCell: UITableViewCell {
         
         titleLabel.snp.makeConstraints {
             $0.centerY.equalToSuperview()
-            $0.leading.equalTo(checkButton.snp.trailing).offset(8)
+            $0.leading.equalTo(checkImageView.snp.trailing).offset(8)
         }
     }
     
     //MARK: - Custom Method
     
     func isSelected(isSelected: Bool) {
-        checkButton.setImage( isSelected ? .checkSelected : .checkDefault , for: .normal)
+        checkImageView.image = isSelected ? .checkSelected : .checkDefault
     }
     
     //MARK: - Data

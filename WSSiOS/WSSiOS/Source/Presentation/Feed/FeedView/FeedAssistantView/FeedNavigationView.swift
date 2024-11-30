@@ -15,7 +15,6 @@ final class FeedNavigationView: UIView {
     //MARK: - Components
     
     private let navigationTitle = UILabel()
-    private lazy var navigationResetButton = UIButton()
     
     // MARK: - Life Cycle
     
@@ -45,27 +44,16 @@ final class FeedNavigationView: UIView {
             $0.font = .HeadLine1
             $0.textColor = .wssBlack
         }
-        
-        navigationResetButton.do {
-            $0.setImage(UIImage(resource: .icReset), for: .normal)
-        }
     }
     
     private func setHierarchy() {
-        addSubviews(navigationTitle,
-                    navigationResetButton)
+        addSubview(navigationTitle)
     }
     
     private func setLayout() {
         navigationTitle.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.leading.equalToSuperview().inset(20)
-        }
-        
-        navigationResetButton.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.trailing.equalToSuperview().inset(20)
-            $0.size.equalTo(20)
         }
     }
 }

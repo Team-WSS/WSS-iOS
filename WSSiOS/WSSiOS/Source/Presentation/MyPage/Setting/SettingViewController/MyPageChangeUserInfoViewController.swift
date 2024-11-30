@@ -9,15 +9,9 @@ import UIKit
 
 import RxSwift
 
-protocol MyPageChangeUserInfoDelegate: AnyObject {
-    func updateUserInfo()
-}
-
 final class MyPageChangeUserInfoViewController: UIViewController {
     
     //MARK: - Properties
-    
-    weak var delegate: MyPageChangeUserInfoDelegate?
     
     private var viewModel: MyPageChangeUserInfoViewModel
     private let disposeBag = DisposeBag()
@@ -100,7 +94,6 @@ final class MyPageChangeUserInfoViewController: UIViewController {
         
         output.popViewController
             .subscribe(with: self, onNext: { owner, _ in
-                owner.delegate?.updateUserInfo()
                 owner.popToLastViewController()
             })
             .disposed(by: disposeBag)

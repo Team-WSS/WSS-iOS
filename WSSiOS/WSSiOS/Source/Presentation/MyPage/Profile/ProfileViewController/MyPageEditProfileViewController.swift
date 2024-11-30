@@ -71,12 +71,16 @@ final class MyPageEditProfileViewController: UIViewController {
         let input = MyPageEditProfileViewModel.Input(
             backButtonDidTap: rootView.backButton.rx.tap,
             completeButtonDidTap: rootView.completeButton.rx.tap,
-            profileViewDidTap: rootView.myPageProfileView.rx.tapGesture().when(.recognized).asObservable(),
-            updateNicknameText: rootView.nicknameTextField.rx.text.orEmpty.asObservable(),
+            profileViewDidTap: rootView.userImageChangeInnerButton.rx.tap,
+            avatarImageNotification: NotificationCenter.default.rx.notification(Notification.Name("ChangRepresentativeAvatar")).asObservable(),
+            updateNicknameText: rootView.nicknameTextField.rx.text.orEmpty.distinctUntilChanged(),
             textFieldBeginEditing: rootView.nicknameTextField.rx.controlEvent(.editingDidBegin),
-            clearButtonDidTap: rootView.clearButton.rx.tap,
-            checkButtonDidTap: rootView.checkButton.rx.tap,
-            viewDidTap: view.rx.tapGesture(),
+            clearButtonDidTap: rootView.nicknameClearButton.rx.tap,
+            checkButtonDidTap: rootView.nicknameDuplicatedButton.rx.tap,
+            viewDidTap: view.rx.tapGesture(configuration: { gestureRecognizer, delegate in
+                gestureRecognizer.delegate = self
+                gestureRecognizer.cancelsTouchesInView = false
+            }),
             updateIntroText: rootView.introTextView.rx.text.orEmpty.asObservable(),
             textViewBeginEditing: rootView.introTextView.rx.didBeginEditing,
             genreCellTap: rootView.genreCollectionView.rx.itemSelected
@@ -88,29 +92,61 @@ final class MyPageEditProfileViewController: UIViewController {
             .bind(to: rootView.genreCollectionView.rx.items(
                 cellIdentifier: MyPageEditProfileGenreCollectionViewCell.cellIdentifier,
                 cellType: MyPageEditProfileGenreCollectionViewCell.self)) { row, element, cell in
-                    cell.bindData(genre: element)
-                    cell.updateCell(isSelected: false)
+                    cell.bindData(genre: element.0)
+                    cell.updateCell(isSelected: element.1)
                 }
                 .disposed(by: disposeBag)
         
         output.popViewController
-            .subscribe(with: self, onNext: { owner, _ in
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
                 owner.popToLastViewController()
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushToAvatarViewController
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, nickname in
+                owner.presentModalViewController(
+                    MyPageEditAvatarViewController(
+                        viewModel: MyPageEditAvatarViewModel(
+                            avatarRepository: DefaultAvatarRepository(
+                                avatarService: DefaultAvatarService()),
+                            userNickname: nickname)))
+            })
+            .disposed(by: disposeBag)
+        
+        output.updateProfileImage
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, image in
+                owner.rootView.updateProfileImage(image: image)
             })
             .disposed(by: disposeBag)
         
         output.nicknameText
             .bind(with: self, onNext: { owner, text in
-                owner.rootView.updateNickname(text: text)
+                owner.rootView.updateNicknameText(text: text)
             })
             .disposed(by: disposeBag)
         
-        output.editingTextField
-            .bind(with: self, onNext: { owner, editing in
-                owner.rootView.updateNicknameTextFieldColor(update: editing)
-                if !editing {
-                    owner.rootView.nicknameTextField.endEditing(true)
-                }
+        output.checkButtonIsAbled
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, isEnabled in
+                owner.rootView.updateNicknameDuplicatedButton(isEnabled: isEnabled)
+            })
+            .disposed(by: disposeBag)
+
+        Observable.combineLatest(
+            output.editingTextField.startWith(false),
+            output.checkShwonWarningMessage.startWith(.notStarted)
+        )
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, tuple in
+                let (isEditing, availability) = tuple
+                
+                owner.rootView.updateNicknameTextField(isEditing: isEditing, availablity: availability)
+                owner.rootView.updateNickNameWarningLabel(isEditing: isEditing, availablity: availability)
+                owner.rootView.updateNicknameClearButton(isEditing: isEditing, availablity: availability)
             })
             .disposed(by: disposeBag)
         
@@ -137,8 +173,11 @@ final class MyPageEditProfileViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.updateCell
-            .bind(with: self, onNext: { owner, indexPath in
-                
+            .bind(with: self, onNext: { owner, cellData in
+                let (indexPath, update) = cellData
+                if let cell = owner.rootView.genreCollectionView.cellForItem(at: indexPath) as? MyPageEditProfileGenreCollectionViewCell {
+                    cell.updateCell(isSelected: update)
+                }
             })
             .disposed(by: disposeBag)
         

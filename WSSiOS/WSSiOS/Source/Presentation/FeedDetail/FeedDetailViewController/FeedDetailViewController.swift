@@ -20,7 +20,7 @@ final class FeedDetailViewController: UIViewController {
     private let disposeBag = DisposeBag()
     
     private let viewWillAppearEvent = PublishRelay<Void>()
-    
+    private let profileViewDidTap = PublishRelay<Int>()
     private let maximumCommentContentCount: Int = 500
     private let commentDotsButtonDidTap = PublishRelay<(Int, Bool)>()
     private let commentSpoilerTextDidTap = PublishRelay<Void>()
@@ -111,7 +111,7 @@ final class FeedDetailViewController: UIViewController {
             viewWillAppearEvent: viewWillAppearEvent.asObservable(),
             backButtonDidTap: rootView.backButton.rx.tap,
             replyCollectionViewContentSize: rootView.replyView.replyCollectionView.rx.observe(CGSize.self, "contentSize"),
-            likeButtonDidTap: rootView.feedContentView.reactView.likeButton.rx.tap,
+            likeButtonDidTap: rootView.feedContentView.reactView.likeView.rx.tapGesture().when(.recognized).asObservable(),
             linkNovelViewDidTap: rootView.feedContentView.linkNovelView.rx.tapGesture().when(.recognized).asObservable(),
             viewDidTap: viewDidTap,
             commentContentUpdated: rootView.replyWritingView.replyWritingTextView.rx.text.orEmpty.distinctUntilChanged().asObservable(),
@@ -122,6 +122,10 @@ final class FeedDetailViewController: UIViewController {
             commentSpoilerTextDidTap: commentSpoilerTextDidTap.asObservable(),
             dotsButtonDidTap: rootView.dropdownButton.rx.tap,
             dropdownButtonDidTap: dropdownButtonDidTap,
+            backgroundViewDidTap: rootView.rx.tapGesture(configuration: { gestureRecognizer, delegate in
+                gestureRecognizer.cancelsTouchesInView = false
+            }),
+            profileViewDidTap: profileViewDidTap.asObservable(),
             commentdotsButtonDidTap: commentDotsButtonDidTap.asObservable(),
             commentDropdownDidTap: commentDropdownButtonDidTap,
             reloadComments: reloadComments.asObservable()
@@ -282,7 +286,6 @@ final class FeedDetailViewController: UIViewController {
                 )
             }
             .subscribe(with: self, onNext: { owner, buttonType in
-                owner.rootView.dropdownView.isHidden = true
                 if buttonType == .right {
                     owner.viewModel.postSpoilerFeed(owner.viewModel.feedId)
                         .subscribe()
@@ -313,7 +316,6 @@ final class FeedDetailViewController: UIViewController {
                 )
             }
             .subscribe(with: self, onNext: { owner, buttonType in
-                owner.rootView.dropdownView.isHidden = true
                 if buttonType == .right {
                     owner.viewModel.postImpertinenceFeed(owner.viewModel.feedId)
                         .subscribe()
@@ -334,7 +336,6 @@ final class FeedDetailViewController: UIViewController {
         
         output.pushToFeedEditViewController
             .subscribe(with: self, onNext: { owner, _ in
-                owner.rootView.dropdownView.isHidden = true
                 owner.pushToFeedEditViewController(feedId: owner.viewModel.feedId)
             })
             .disposed(by: disposeBag)
@@ -351,7 +352,6 @@ final class FeedDetailViewController: UIViewController {
                 )
             }
             .subscribe(with: self, onNext: { owner, buttonType in
-                owner.rootView.dropdownView.isHidden = true
                 if buttonType == .right {
                     owner.viewModel.deleteFeed(owner.viewModel.feedId)
                         .subscribe()
@@ -486,6 +486,13 @@ final class FeedDetailViewController: UIViewController {
                 owner.rootView.replyWritingView.setCommentText(owner.viewModel.initialCommentContent)
             })
             .disposed(by: disposeBag)
+        
+        output.showLoadingView
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, isShow in
+                owner.rootView.showLoadingView(isShow: isShow)
+            })
+            .disposed(by: disposeBag)
     }
 }
 extension FeedDetailViewController: UICollectionViewDelegateFlowLayout {
@@ -552,6 +559,10 @@ extension FeedDetailViewController: UITextViewDelegate {
 }
 
 extension FeedDetailViewController: FeedDetailReplyCollectionDelegate {
+    func profileViewDidTap(userId: Int) {
+        self.profileViewDidTap.accept(userId)
+    }
+    
     func dotsButtonDidTap(commentId: Int, isMyComment: Bool) {
         self.commentDotsButtonDidTap.accept((commentId, isMyComment))
     }
