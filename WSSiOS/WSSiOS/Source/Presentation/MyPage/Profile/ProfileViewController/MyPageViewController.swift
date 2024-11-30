@@ -131,6 +131,8 @@ final class MyPageViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, isMyPage in
                 owner.decideNavigation(myPage: isMyPage)
+                owner.rootView.mainStickyHeaderView.buttonLabelText(isMyPage: isMyPage)
+                owner.rootView.scrolledStstickyHeaderView.buttonLabelText(isMyPage: isMyPage)
             })
             .disposed(by: disposeBag)
         

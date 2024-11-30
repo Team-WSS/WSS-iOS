@@ -48,6 +48,10 @@ final class MyPageView: UIView {
     private func setUI() {
         self.backgroundColor = .wssPrimary20
         
+        scrollView.do {
+            $0.showsVerticalScrollIndicator = false
+        }
+        
         scrolledStstickyHeaderView.do {
             $0.isHidden = true
         }

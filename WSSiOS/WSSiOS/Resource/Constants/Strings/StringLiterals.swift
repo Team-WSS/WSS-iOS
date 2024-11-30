@@ -180,6 +180,10 @@ enum StringLiterals {
             static let unknownUserNickname = "(알 수 없음)"
             static let unknownAlertContent = "웹소소와 계약을 종료하고 떠난 독자예요"
             static let unknownAlertButtonTitle = "확인"
+            static let myProfileLibrary = "내 서재"
+            static let otherProfileLibrary = "서재"
+            static let myProfileFeed = "내 활동"
+            static let otherProfileFeed = "활동"
         }
         
         enum Character {
