@@ -49,7 +49,7 @@ enum StringLiterals {
     
     enum Navigation {
         enum Title {
-            static let library = "내 서재"
+            static let library = "보관함"
             static let record = "내 기록"
             static let search = "검색"
             static let myPage = "마이페이지"
@@ -301,12 +301,11 @@ enum StringLiterals {
         }
     }
     
-    enum TabBar: String, CaseIterable {
-        case all = "전체"
-        case finish = "읽음"
-        case reading = "읽는 중"
-        case drop = "하차"
-        case wish = "읽고 싶음"
+    enum ReviewerStatus: String, CaseIterable {
+        case interest = "관심"
+        case watching = "보는 중"
+        case watched = "봤어요"
+        case quit = "하차"
     }
     
     enum ReadStatus: String, CaseIterable {

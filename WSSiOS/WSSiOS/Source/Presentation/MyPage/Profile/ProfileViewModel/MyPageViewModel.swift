@@ -47,6 +47,8 @@ final class MyPageViewModel: ViewModelType {
         let genrePreferenceButtonDidTap: Observable<Bool>
         let libraryButtonDidTap: Observable<Bool>
         let feedButtonDidTap: Observable<Bool>
+        
+        let inventoryButtonDidTap: ControlEvent<Void>
     }
     
     struct Output {
@@ -66,6 +68,8 @@ final class MyPageViewModel: ViewModelType {
         let bindInventoryData = BehaviorRelay<UserNovelStatus>(value: UserNovelStatus(interestNovelCount: 0, watchingNovelCount: 0, watchedNovelCount: 0, quitNovelCount: 0))
         let showGenreOtherView = BehaviorRelay<Bool>(value: false)
         let stickyHeaderAction = BehaviorRelay<Bool>(value: true)
+        
+        let pushToLibraryViewController = PublishRelay<Void>()
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -186,6 +190,12 @@ final class MyPageViewModel: ViewModelType {
         input.feedButtonDidTap
             .bind(with: self, onNext: { owner, _ in
                 output.stickyHeaderAction.accept(false)
+            })
+            .disposed(by: disposeBag)
+        
+        input.libraryButtonDidTap
+            .bind(with: self, onNext: { owner, _ in
+                output.pushToLibraryViewController.accept(())
             })
             .disposed(by: disposeBag)
         

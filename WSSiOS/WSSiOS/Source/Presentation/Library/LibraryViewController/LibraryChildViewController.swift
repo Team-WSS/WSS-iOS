@@ -1,5 +1,5 @@
 //
-//  LibraryViewController.swift
+//  LibraryChildViewController.swift
 //  WSSiOS
 //
 //  Created by 신지원 on 1/14/24.
@@ -15,7 +15,7 @@ protocol NovelDelegate: AnyObject {
     func sendData(data: Int)
 }
 
-final class LibraryBaseViewController: UIViewController {
+final class LibraryChildViewController: UIViewController {
     
     //MARK: - Properties
     
@@ -32,7 +32,7 @@ final class LibraryBaseViewController: UIViewController {
     
     //MARK: - Components
     
-    private let rootView = LibraryView()
+    private let rootView = LibraryChildView()
     private let libraryEmptyView = LibraryEmptyView()
     
     // MARK: - Life Cycle
@@ -147,7 +147,7 @@ final class LibraryBaseViewController: UIViewController {
     }
 }
 
-extension LibraryBaseViewController {
+extension LibraryChildViewController {
     
     //MARK: - UI
     

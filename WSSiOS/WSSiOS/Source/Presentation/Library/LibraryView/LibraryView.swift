@@ -1,8 +1,8 @@
 //
-//  View.swift
+//  LibraryView.swift
 //  WSSiOS
 //
-//  Created by 신지원 on 1/14/24.
+//  Created by 신지원 on 12/1/24.
 //
 
 import UIKit
@@ -14,7 +14,10 @@ final class LibraryView: UIView {
     
     //MARK: - Components
     
-    public lazy var libraryCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+    let libraryPageBar = LibraryPageBar()
+    let libraryDescriptionView = LibraryDescriptionView()
+    let libraryListView = LibraryListView()
+    lazy var libraryPages = [LibraryChildViewController]()
     
     // MARK: - Life Cycle
     
@@ -33,29 +36,58 @@ final class LibraryView: UIView {
     //MARK: - UI
     
     private func setUI() {
-        libraryCollectionView.do {
-            let layout = UICollectionViewFlowLayout()
-            layout.scrollDirection = .vertical
-            layout.minimumLineSpacing = 24.0
-            layout.minimumInteritemSpacing = 3
-            layout.sectionInset = UIEdgeInsets(top: 24, left: 0.1, bottom: 0, right: 0.1)
-            layout.itemSize = CGSize(width: 105.0, height: 243.0)
-            
-            $0.collectionViewLayout = layout
-            $0.showsVerticalScrollIndicator = false
-        }
+        self.backgroundColor = .wssWhite
+        
+        libraryListView.isHidden = true
     }
-  
+    
     private func setHierarchy() {
-        self.addSubview(libraryCollectionView)
+        self.addSubviews(libraryPageBar,
+                         libraryDescriptionView.
+                         libraryListView)
     }
     
     private func setLayout() {
-        libraryCollectionView.snp.makeConstraints() {
-            $0.top.equalToSuperview()
-            $0.centerX.equalToSuperview()
-            $0.leading.equalTo(20)
-            $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom)
+        libraryPageBar.snp.makeConstraints() {
+            $0.top.equalTo(self.safeAreaLayoutGuide)
+            $0.width.equalToSuperview()
+            $0.height.equalTo(54)
+        }
+        
+        libraryDescriptionView.snp.makeConstraints() {
+            $0.top.equalTo(libraryPageBar.snp.bottom)
+            $0.width.equalToSuperview()
+            $0.height.equalTo(40)
+        }
+        
+        libraryPageViewController.view.snp.makeConstraints {
+            $0.top.equalTo(libraryDescriptionView.snp.bottom)
+            $0.width.bottom.equalToSuperview()
+        }
+        
+        libraryListView.snp.makeConstraints() {
+            $0.top.equalTo(libraryDescriptionView.snp.bottom).offset(10)
+            $0.trailing.equalToSuperview().inset(25)
+            $0.width.equalTo(100)
+            $0.height.equalTo(104)
+        }
+    }
+    
+   func resetUI(title: String) {
+        libraryDescriptionView.libraryNovelListButton.do {
+            let title = title
+            var attString = AttributedString(title)
+            attString.font = UIFont.Label1
+            attString.foregroundColor = UIColor.wssGray300
+            
+            var configuration = UIButton.Configuration.filled()
+            configuration.attributedTitle = attString
+            configuration.image = .icDropDown
+            configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 0)
+            configuration.imagePlacement = .trailing
+            configuration.baseBackgroundColor = UIColor.clear
+            $0.configuration = configuration
         }
     }
 }
+

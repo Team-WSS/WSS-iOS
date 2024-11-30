@@ -105,7 +105,9 @@ final class MyPageViewController: UIViewController {
             editButtonTapoed: rootView.headerView.userImageChangeButton.rx.tap,
             genrePreferenceButtonDidTap: genrePreferenceButtonDidTap,
             libraryButtonDidTap: libraryButtonDidTap,
-            feedButtonDidTap: feedButtonDidTap)
+            feedButtonDidTap: feedButtonDidTap,
+            
+            inventoryButtonDidTap: rootView.myPageLibraryView.inventoryView.arrowButton.rx.tap)
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -224,6 +226,13 @@ final class MyPageViewController: UIViewController {
                 UIView.animate(withDuration: 0.3) {
                     owner.rootView.layoutIfNeeded()
                 }
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushToLibraryViewController
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                owner.pushToLibraryViewController()
             })
             .disposed(by: disposeBag)
     }

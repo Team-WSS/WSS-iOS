@@ -17,7 +17,6 @@ final class LibraryPageBar: UIView {
     //MARK: - Properties
     
     private let disposeBag = DisposeBag()
-    lazy var selectedTabIndex = PublishSubject<Int>()
     
     //MARK: - Components
     
@@ -48,11 +47,6 @@ final class LibraryPageBar: UIView {
             
             $0.collectionViewLayout = layout
         }
-        
-        libraryTabCollectionView.rx.itemSelected
-            .map{$0.row}
-            .bind(to: selectedTabIndex)
-            .disposed(by: disposeBag)
     }
 
     private func setHierarchy() {
