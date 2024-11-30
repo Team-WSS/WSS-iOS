@@ -78,7 +78,7 @@ final class DetailSearchHeaderView: UIView {
             $0.leading.equalTo(infoLabel.snp.trailing).offset(3)
             $0.size.equalTo(4)
         }
-
+        
         keywordLabel.snp.makeConstraints {
             $0.top.equalTo(infoLabel.snp.top)
             $0.leading.equalTo(infoLabel.snp.trailing).offset(29.5)
@@ -103,7 +103,7 @@ final class DetailSearchHeaderView: UIView {
     
     func updateTab(selected tab: DetailSearchTab) {
         updateTabTextColor(selected: tab)
-        updateunderLineView(selected: tab)
+        updateUnderLineView(selected: tab)
     }
     
     private func updateTabTextColor(selected tab: DetailSearchTab) {
@@ -113,23 +113,25 @@ final class DetailSearchHeaderView: UIView {
         self.keywordLabel.textColor = isInfoSelected ? .wssGray200 : .wssPrimary100
     }
     
-    private func updateunderLineView(selected tab: DetailSearchTab) {
-        switch tab {
-        case .info:
-            self.underLineView.snp.remakeConstraints {
-                $0.top.equalTo(self.infoLabel.snp.bottom).offset(6)
-                $0.horizontalEdges.equalTo(infoLabel.snp.horizontalEdges)
-                $0.height.equalTo(2)
-                $0.bottom.equalToSuperview()
+    private func updateUnderLineView(selected tab: DetailSearchTab) {
+        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
+            switch tab {
+            case .info:
+                self.underLineView.snp.remakeConstraints {
+                    $0.top.equalTo(self.infoLabel.snp.bottom).offset(6)
+                    $0.horizontalEdges.equalTo(self.infoLabel.snp.horizontalEdges)
+                    $0.height.equalTo(2)
+                    $0.bottom.equalToSuperview()
+                }
+            case .keyword:
+                self.underLineView.snp.remakeConstraints {
+                    $0.top.equalTo(self.keywordLabel.snp.bottom).offset(6)
+                    $0.horizontalEdges.equalTo(self.keywordLabel.snp.horizontalEdges)
+                    $0.height.equalTo(2)
+                    $0.bottom.equalToSuperview()
+                }
             }
-        case .keyword:
-            self.underLineView.snp.remakeConstraints {
-                $0.top.equalTo(keywordLabel.snp.bottom).offset(6)
-                $0.horizontalEdges.equalTo(keywordLabel.snp.horizontalEdges)
-                $0.height.equalTo(2)
-                $0.bottom.equalToSuperview()
-            }
-        }
-        self.layoutIfNeeded()
+            self.layoutIfNeeded()
+        })
     }
 }
