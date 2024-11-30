@@ -50,6 +50,7 @@ final class FeedEditViewController: UIViewController {
          super.viewDidLoad()
          
          hideTabBar()
+         setNotificationCenter()
          register()
          delegate()
          bindViewModel()
@@ -66,6 +67,17 @@ final class FeedEditViewController: UIViewController {
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.backgroundColor = .clear
+    }
+    
+    private func setNotificationCenter() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillShow(_:)),
+                                               name: UIResponder.keyboardWillShowNotification,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillHide(_:)),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
     }
     
     private func register() {
@@ -201,6 +213,31 @@ final class FeedEditViewController: UIViewController {
                 }
             })
             .disposed(by: disposeBag)
+    }
+    
+    // MARK: - Custom Method
+    
+    @objc private func keyboardWillShow(_ notification: Notification) {
+        guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+        let keyboardHeight = keyboardFrame.height
+        
+        UIView.animate(withDuration: 0.3) {
+            self.rootView.scrollView.contentInset.bottom = keyboardHeight
+            
+            let feedEditContentBottomY = self.rootView.feedEditContentView.convert(self.rootView.feedEditContentView.bounds, to: self.view).maxY
+            let keyboardTopY = self.view.frame.height - keyboardHeight
+            
+            if feedEditContentBottomY > keyboardTopY {
+                let offset = feedEditContentBottomY - keyboardTopY
+                self.rootView.scrollView.contentOffset.y += offset
+            }
+        }
+    }
+
+    @objc private func keyboardWillHide(_ notification: Notification) {
+        UIView.animate(withDuration: 0.3) {
+            self.rootView.scrollView.contentInset.bottom = 0
+        }
     }
 }
 
