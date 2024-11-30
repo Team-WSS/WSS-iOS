@@ -245,7 +245,9 @@ extension UIViewController {
             viewModel: MyPageInfoViewModel(
                 userRepository: DefaultUserRepository(
                     userService: DefaultUserService(),
-                    blocksService: DefaultBlocksService())))
+                    blocksService: DefaultBlocksService()),
+                authRepository: DefaultAuthRepository(
+                    authService: DefaultAuthService())))
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
@@ -422,6 +424,15 @@ extension UIViewController {
             )
         )
         
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func pushToChangeUserInfoViewController() {
+        let viewController = MyPageChangeUserInfoViewController(
+            viewModel: MyPageChangeUserInfoViewModel(
+                userRepository: DefaultUserRepository(
+                    userService: DefaultUserService(),
+                    blocksService: DefaultBlocksService())))
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 }

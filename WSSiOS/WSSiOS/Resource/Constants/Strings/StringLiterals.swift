@@ -16,6 +16,7 @@ enum StringLiterals {
         static let userNickname = "USER_NICKNAME"
         static let isRegister = "IS_REGISTER"
         static let showReviewFirstDescription = "SHOW_REVIEW_FIRST_DESCRIPTION"
+        static let userBirth = "USER_BIRTH"
     }
     
     enum BirthPicker {

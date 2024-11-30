@@ -133,7 +133,7 @@ final class MyPageInfoView: UIView {
         nickNameLabel.text = "닉네임"
         userNickNameLabel.text = data
         emailLabel.text = "이메일"
-        userEmailLabel.text = "이메일안줌@naver.com"
+        userEmailLabel.text = ""
         secessionLabel.text = "회원탈퇴"
     }
 }
