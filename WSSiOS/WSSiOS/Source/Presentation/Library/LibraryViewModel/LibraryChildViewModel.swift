@@ -14,17 +14,19 @@ final class LibraryChildViewModel: ViewModelType {
     
     // MARK: - Properties
     
-    private let userNovelListRepository: UserNovelRepository
+    private let userRepository: UserRepository
     private let initData: ShowNovelStatus
+    private let userId: Int
     
     private let disposeBag = DisposeBag()
     
     
     // MARK: - Life Cycle
     
-    init(userNovelListRepository: UserNovelRepository, initData: ShowNovelStatus) {
-        self.userNovelListRepository = userNovelListRepository
+    init(userRepository: UserRepository, initData: ShowNovelStatus, userId: Int) {
+        self.userRepository = userRepository
         self.initData = initData
+        self.userId = userId
     }
     
     struct Input {
@@ -34,7 +36,7 @@ final class LibraryChildViewModel: ViewModelType {
     }
     
     struct Output {
-        let cellData = BehaviorRelay<[UserNovelListDetail]>(value: [])
+        let cellData = BehaviorRelay<[UserNovel]>(value: [])
         let showEmptyView = PublishRelay<Bool>()
         let pushToDetailNovelViewController = BehaviorRelay<Int>(value: 0)
         let pushToSearchViewController = PublishRelay<Void>()
@@ -43,19 +45,23 @@ final class LibraryChildViewModel: ViewModelType {
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
         
-        input.updateNovelList
-            .flatMapLatest { [weak self] status -> Observable<UserNovelList> in
-                guard let self = self else { return Observable.empty() }
-                return self.getUserNovelList(data: status)
-            }
-            .observe(on: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, data in
-                output.cellData.accept(data.userNovels)
-                output.showEmptyView.accept(data.userNovels.isEmpty)
-            }, onError: { error, _ in
-                print(error)
-            })
-            .disposed(by: disposeBag)
+        Observable.merge(
+            Observable.just(initData),
+            input.updateNovelList.asObservable()
+        )
+        .flatMapLatest { [weak self] status -> Observable<UserNovelList> in
+            guard let self = self else { return Observable.empty() }
+            return self.getUserNovelList(userId: self.userId, data: status)
+        }
+        .observe(on: MainScheduler.instance)
+        .subscribe(with: self, onNext: { owner, data in
+            output.cellData.accept(data.userNovels)
+            output.showEmptyView.accept(data.userNovels.isEmpty)
+            print("API response: \(data)")
+        }, onError: { error, _ in
+            print(error)
+        })
+        .disposed(by: disposeBag)
         
         input.lookForNovelButtonDidTap
             .observe(on: MainScheduler.instance)
@@ -74,9 +80,10 @@ final class LibraryChildViewModel: ViewModelType {
     
     // MARK: - API
     
-    private func getUserNovelList(data: ShowNovelStatus) -> Observable<UserNovelList> {
-        return userNovelListRepository.getUserNovelList(readStatus: data.readStatus, lastUserNovelId: data.lastUserNovelId, size: data.size, sortType: data.sortType)
-            .asObservable()
+    private func getUserNovelList(userId: Int, data: ShowNovelStatus) -> Observable<UserNovelList> {
+        return userRepository.getUserNovelList(userId: userId,
+                                               readStatus: data.readStatus, lastUserNovelId: data.lastUserNovelId, size: data.size, sortType: data.sortType)
+        .asObservable()
     }
 }
 

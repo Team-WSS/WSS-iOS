@@ -101,12 +101,12 @@ final class LibraryCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Data
     
-    func bindData(_ data: UserNovelListDetail) {
-        novelImageView.kfSetImage(url: data.userNovelImg)
-        novelTitleLabel.text = data.userNovelTitle
-        novelAuthorLabel.text = data.userNovelAuthor
+    func bindData(_ data: UserNovel) {
+        novelImageView.kfSetImage(url: data.novelImage)
+        novelTitleLabel.text = data.title
+        novelAuthorLabel.text = data.author
         
-        let novelRating = data.userNovelRating
+        let novelRating = data.novelRating
         
         if novelRating == 0.0 {
             ratingStarImage.isHidden = true
@@ -115,7 +115,7 @@ final class LibraryCollectionViewCell: UICollectionViewCell {
         else {
             ratingStarImage.isHidden = false
             novelRatingLabel.isHidden = false
-            novelRatingLabel.text = String(data.userNovelRating)
+            novelRatingLabel.text = String(data.novelRating)
         }
     }
 }

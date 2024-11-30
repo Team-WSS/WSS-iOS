@@ -66,10 +66,6 @@ final class LibraryEmptyView: UIView {
             $0.layer.backgroundColor = UIColor.wssPrimary50.cgColor
             $0.layer.cornerRadius = 12
         }
-        
-        backButton.snp.makeConstraints {
-            $0.size.equalTo(44)
-        }
     }
 
     private func setHierarchy() {

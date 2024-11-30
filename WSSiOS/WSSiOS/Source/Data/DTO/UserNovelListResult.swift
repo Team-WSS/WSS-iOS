@@ -8,16 +8,19 @@
 import Foundation
 
 struct UserNovelList: Codable {
-    let userNovelCount: Int
-    let userNovels: [UserNovelListDetail]
+    let userNovelCount: Int64
+    let userNovelRating: Float
+    let isLoadable: Bool
+    let userNovels: [UserNovel]
 }
 
-struct UserNovelListDetail: Codable {
-    let userNovelId: Int
-    let userNovelTitle: String
-    let userNovelImg: String
-    let userNovelAuthor: String
-    let userNovelRating: Float
+struct UserNovel: Codable {
+    let userNovelId: Int64
+    let novelId: Int64
+    let author: String
+    let novelImage: String
+    let title: String
+    let novelRating: Float
 }
 
 struct ShowNovelStatus {

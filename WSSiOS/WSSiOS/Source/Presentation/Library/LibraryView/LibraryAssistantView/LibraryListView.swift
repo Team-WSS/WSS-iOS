@@ -15,8 +15,8 @@ final class LibraryListView: UIView {
     //MARK: - Components
     
     private let dividerView = UIView()
-    public lazy var libraryNewestButton = UIButton()
-    public lazy var libraryOldestButton = UIButton()
+    lazy var libraryNewestButton = UIButton()
+    lazy var libraryOldestButton = UIButton()
     
     // MARK: - Life Cycle
     

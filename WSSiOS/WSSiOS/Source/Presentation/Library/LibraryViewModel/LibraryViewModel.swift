@@ -14,18 +14,23 @@ final class LibraryViewModel: ViewModelType {
     
     // MARK: - Properties
     
-    private let userNovelListRepository: UserNovelRepository
+    private let userRepository: UserRepository
+    private let userId: Int
     
     private let disposeBag = DisposeBag()
     private let tabBarList = StringLiterals.ReviewerStatus.allCases.map { $0.rawValue }
     private let sortTypeList = StringLiterals.Alignment.self
     
     private let lastTappedListTypeRelay = BehaviorRelay<StringLiterals.Alignment>(value: .newest)
+    private let userIdRelay = BehaviorRelay<Int>(value: 0)
 
     // MARK: - Life Cycle
     
-    init(userNovelListRepository: UserNovelRepository) {
-        self.userNovelListRepository = userNovelListRepository
+    init(userRepository: UserRepository, userId: Int) {
+        self.userRepository = userRepository
+        self.userId = userId
+        
+        userIdRelay.accept(userId)
     }
     
     struct Input {
@@ -37,6 +42,7 @@ final class LibraryViewModel: ViewModelType {
     }
     
     struct Output {
+        let setUpPageViewController = BehaviorRelay<Int>(value: 0)
         let bindCell = BehaviorRelay<[String]>(value: [])
         let moveToTappedTabBar = BehaviorRelay<Int>(value: 0)
         let showListView = BehaviorRelay<Bool>(value: false)
@@ -50,6 +56,12 @@ final class LibraryViewModel: ViewModelType {
         
         output.bindCell.accept(tabBarList)
         output.showListView.accept(false)
+        
+        userIdRelay
+            .bind(with: self, onNext: { owner, _ in
+                output.setUpPageViewController.accept(owner.userId)
+            })
+            .disposed(by: disposeBag)
         
         input.tabBarDidTap
             .bind(with: self, onNext: { owner, indexPath in

@@ -14,8 +14,8 @@ final class LibraryDescriptionView: UIView {
     
     //MARK: - Components
     
-    public let libraryNovelCountLabel = UILabel()
-    public lazy var libraryNovelListButton = UIButton()
+    let libraryNovelCountLabel = UILabel()
+    lazy var libraryNovelListButton = UIButton()
     
     // MARK: - Life Cycle
     

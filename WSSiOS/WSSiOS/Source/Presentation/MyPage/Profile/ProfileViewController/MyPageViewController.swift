@@ -231,7 +231,8 @@ final class MyPageViewController: UIViewController {
         output.pushToLibraryViewController
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
-                owner.pushToLibraryViewController()
+                let userId = UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)
+                owner.pushToLibraryViewController(userId: userId)
             })
             .disposed(by: disposeBag)
     }

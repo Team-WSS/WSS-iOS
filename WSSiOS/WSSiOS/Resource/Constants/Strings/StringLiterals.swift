@@ -316,6 +316,13 @@ enum StringLiterals {
         case wish = "WISH"
     }
     
+    enum LibraryReadStatus: String, CaseIterable {
+        case interst = "INTEREST"
+        case watching = "WATCHING"
+        case watched = "WATCHED"
+        case quit = "QUIT"
+    }
+    
     enum Alignment {
         case newest, oldest
         
@@ -340,7 +347,7 @@ enum StringLiterals {
         var lastId: Int {
             switch self {
             case .newest:
-                return 999999
+                return 0
             case .oldest:
                 return 0
             }

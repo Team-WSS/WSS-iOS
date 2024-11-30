@@ -436,11 +436,13 @@ extension UIViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func pushToLibraryViewController() {
+    func pushToLibraryViewController(userId: Int) {
         let viewController = LibraryViewController(
             libraryViewModel: LibraryViewModel(
-                userNovelListRepository: DefaultUserNovelRepository(
-                    userNovelService: DefaultUserNovelService())))
+                userRepository: DefaultUserRepository(
+                    userService: DefaultUserService(),
+                    blocksService: DefaultBlocksService()),
+                userId: userId))
         
         self.navigationController?.pushViewController(viewController, animated: true)
     }
