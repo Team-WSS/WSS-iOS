@@ -87,9 +87,6 @@ final class MyPageLibraryView: UIView {
             }
         }
         
-        myPagePrivateView.snp.makeConstraints {
-            $0.height.equalTo(812)
-        }
     }
     
     func updateGenreViewHeight(isExpanded: Bool) {
@@ -125,10 +122,18 @@ final class MyPageLibraryView: UIView {
             stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
             stackView.addArrangedSubviews(myPagePrivateView)
             
+            myPagePrivateView.do {
+                $0.backgroundColor = .wssWhite
+            }
+            
             let text = nickname + StringLiterals.MyPage.Profile.privateLabel
             myPagePrivateView.isPrivateDescriptionLabel.do {
                 $0.applyWSSFont(.body2, with: text)
                 $0.textAlignment = .center
+            }
+            
+            myPagePrivateView.snp.makeConstraints {
+                $0.height.equalTo(stackView.snp.height)
             }
         }
     }
