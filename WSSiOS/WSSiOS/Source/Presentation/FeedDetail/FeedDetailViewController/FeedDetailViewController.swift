@@ -20,7 +20,7 @@ final class FeedDetailViewController: UIViewController {
     private let disposeBag = DisposeBag()
     
     private let viewWillAppearEvent = PublishRelay<Void>()
-    private let profileViewDidTap = PublishRelay<Int>()
+    private let profileViewDidTap = PublishRelay<(Int, Int, Bool)>()
     private let maximumCommentContentCount: Int = 500
     private let commentDotsButtonDidTap = PublishRelay<(Int, Bool)>()
     private let commentSpoilerTextDidTap = PublishRelay<Void>()
@@ -560,8 +560,8 @@ extension FeedDetailViewController: UITextViewDelegate {
 }
 
 extension FeedDetailViewController: FeedDetailReplyCollectionDelegate {
-    func profileViewDidTap(userId: Int) {
-        self.profileViewDidTap.accept(userId)
+    func profileViewDidTap(commentId: Int, userId: Int, isMyComment: Bool) {
+        self.profileViewDidTap.accept((commentId, userId, isMyComment))
     }
     
     func dotsButtonDidTap(commentId: Int, isMyComment: Bool) {

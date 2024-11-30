@@ -103,7 +103,7 @@ final class FeedDetailViewModel: ViewModelType {
         let backgroundViewDidTap: ControlEvent<UITapGestureRecognizer>
         
         // 댓글 드롭다운
-        let profileViewDidTap: Observable<Int>
+        let profileViewDidTap: Observable<(Int, Int, Bool)>
         let commentdotsButtonDidTap: Observable<(Int, Bool)>
         let commentDropdownDidTap: Observable<DropdownButtonType>
         let reloadComments: Observable<Void>
@@ -337,8 +337,15 @@ final class FeedDetailViewModel: ViewModelType {
         
         // 댓글 드롭다운
         input.profileViewDidTap
-            .subscribe(with: self, onNext: { owner, userId in
-                owner.pushToUserPageViewController.accept(userId)
+            .subscribe(with: self, onNext: { owner, data in
+                let (commentId, commentUserId ,isMyComment) = data
+                if owner.commentsData.value.firstIndex(where: { $0.commentId == commentId }) != nil {
+                    if !isMyComment {
+                        owner.pushToUserPageViewController.accept(commentUserId)
+                    }
+                }
+                owner.selectedCommentId = commentId
+                owner.isMyComment = isMyComment
             })
             .disposed(by: disposeBag)
         
