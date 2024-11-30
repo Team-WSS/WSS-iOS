@@ -16,7 +16,7 @@ final class FeedDetailProfileView: UIView {
     //MARK: - UI Components
     
     private let profileStackView = UIStackView()
-    private let userProfileImageView = UIImageView()
+    let userProfileImageView = UIImageView()
     private let userNicknameLabel = UILabel()
     private let blackDotImageView = UIImageView()
     private let createdDateLabel = UILabel()
