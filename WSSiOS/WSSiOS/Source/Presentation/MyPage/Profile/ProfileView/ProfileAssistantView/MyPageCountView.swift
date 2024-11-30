@@ -42,12 +42,12 @@ final class MyPageCountView: UIView {
         self.backgroundColor = .wssWhite
         
         countLabel.do {
-            $0.applyWSSFont(.label1, with: "0")
+            $0.applyWSSFont(.body4, with: "0")
             $0.textColor = .wssGray300
         }
         
         countLimitLabel.do {
-            $0.applyWSSFont(.label1, with: " / " + String(maxLimit))
+            $0.applyWSSFont(.body4, with: " / " + String(maxLimit))
             $0.textColor = .wssGray200
         }
     }

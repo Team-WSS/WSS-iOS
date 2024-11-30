@@ -92,18 +92,24 @@ final class MyPageChangeUserInfoViewModel: ViewModelType {
         
         input.completeButtonTapped
             .throttle(.seconds(3), scheduler: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, _ in
-                let isEnabled = output.changeCompleteButton.value
-                if isEnabled {
-                    owner.putUserInfo(gender: owner.currentGender, birth: owner.currentBirth)
-                        .subscribe(with: self, onNext: { owner, _ in 
-                            output.popViewController.accept(())
-                        }, onError: { owner, error in
-                            print(error)
-                        })
-                        .disposed(by: disposeBag)
+            .filter { output.changeCompleteButton.value }
+            .flatMapLatest { [weak self] _ -> Observable<Void> in
+                guard let self = self else { return Observable.empty() }
+                return self.putUserInfo(gender: self.currentGender, birth: self.currentBirth)
+            }
+            .observe(on: MainScheduler.instance)
+            .subscribe(
+                onNext: { [weak self] in
+                    guard let self = self else { return }
+                    UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.userGender)
+                    UserDefaults.standard.setValue(self.currentGender, forKey: StringLiterals.UserDefault.userGender)
+                    
+                    output.popViewController.accept(())
+                },
+                onError: { error in
+                    print((error.localizedDescription))
                 }
-            })
+            )
             .disposed(by: disposeBag)
         
         input.getNotificationUserBirth

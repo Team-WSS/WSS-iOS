@@ -426,8 +426,13 @@ extension UIViewController {
     }
 }
 
-extension UIViewController: UIGestureRecognizerDelegate {
+extension UIViewController: @retroactive UIGestureRecognizerDelegate {
     public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         return navigationController?.viewControllers.count ?? 0 > 1
+    }
+    
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if let touchedView = touch.view, touchedView is UITextField || touchedView is UITextView { return false }
+        return true
     }
 }
