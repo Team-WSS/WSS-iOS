@@ -106,7 +106,6 @@ final class MyPageViewController: UIViewController {
             genrePreferenceButtonDidTap: genrePreferenceButtonDidTap,
             libraryButtonDidTap: libraryButtonDidTap,
             feedButtonDidTap: feedButtonDidTap,
-            
             inventoryButtonDidTap: rootView.myPageLibraryView.inventoryView.arrowButton.rx.tap)
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)

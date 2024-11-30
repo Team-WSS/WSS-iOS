@@ -463,7 +463,7 @@
 		E40746722CE8DB89005D75D5 /* MyPageGenrePreferencesOtherTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40746712CE8DB89005D75D5 /* MyPageGenrePreferencesOtherTableViewCell.swift */; };
 		E40746742CE8F84A005D75D5 /* MyPageStickyHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40746732CE8F84A005D75D5 /* MyPageStickyHeaderView.swift */; };
 		E45FEF982CFB5D4800B73D80 /* LibraryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E45FEF972CFB5D4800B73D80 /* LibraryViewModel.swift */; };
-		E45FEF9A2CFB624E00B73D80 /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E45FEF992CFB624E00B73D80 /* LibraryView.swift */; };
+		E45FEF9C2CFB6B7B00B73D80 /* LibraryChildViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E45FEF9B2CFB6B7B00B73D80 /* LibraryChildViewModel.swift */; };
 		E497C9B22CF195E90079C30D /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E497C9B12CF195E90079C30D /* Config.xcconfig */; };
 		E497C9B62CF3AFBD0079C30D /* MyPageEditAvatarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E497C9B52CF3AFBD0079C30D /* MyPageEditAvatarViewController.swift */; };
 		E497C9B82CF3B0160079C30D /* MyPageEditAvatarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E497C9B72CF3B0160079C30D /* MyPageEditAvatarViewModel.swift */; };
@@ -917,7 +917,7 @@
 		E40746712CE8DB89005D75D5 /* MyPageGenrePreferencesOtherTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageGenrePreferencesOtherTableViewCell.swift; sourceTree = "<group>"; };
 		E40746732CE8F84A005D75D5 /* MyPageStickyHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageStickyHeaderView.swift; sourceTree = "<group>"; };
 		E45FEF972CFB5D4800B73D80 /* LibraryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViewModel.swift; sourceTree = "<group>"; };
-		E45FEF992CFB624E00B73D80 /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
+		E45FEF9B2CFB6B7B00B73D80 /* LibraryChildViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryChildViewModel.swift; sourceTree = "<group>"; };
 		E497C9B12CF195E90079C30D /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Config.xcconfig; path = /Users/sinjiwon/Desktop/Config.xcconfig; sourceTree = "<absolute>"; };
 		E497C9B52CF3AFBD0079C30D /* MyPageEditAvatarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageEditAvatarViewController.swift; sourceTree = "<group>"; };
 		E497C9B72CF3B0160079C30D /* MyPageEditAvatarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageEditAvatarViewModel.swift; sourceTree = "<group>"; };
@@ -1070,7 +1070,6 @@
 		2CA2F6572B5303B10045B4C2 /* LibraryView */ = {
 			isa = PBXGroup;
 			children = (
-				E45FEF992CFB624E00B73D80 /* LibraryView.swift */,
 				2CA2F65F2B530B650045B4C2 /* LibraryChildView.swift */,
 				2C60306A2B54448F0031544C /* LibraryPageBar.swift */,
 				2CA2F65E2B5304400045B4C2 /* LibraryAssistantView */,
@@ -2963,6 +2962,7 @@
 			isa = PBXGroup;
 			children = (
 				E45FEF972CFB5D4800B73D80 /* LibraryViewModel.swift */,
+				E45FEF9B2CFB6B7B00B73D80 /* LibraryChildViewModel.swift */,
 			);
 			path = LibraryViewModel;
 			sourceTree = "<group>";
@@ -3292,6 +3292,7 @@
 				CD8747A52C9EB39900D0ADAD /* NovelDateSelectModalViewModel.swift in Sources */,
 				E40746622CE8688A005D75D5 /* MyPageLibraryView.swift in Sources */,
 				392A29232B4E89FD0065EB97 /* RegisterNormalNovelInfoWithRatingView.swift in Sources */,
+				E45FEF9C2CFB6B7B00B73D80 /* LibraryChildViewModel.swift in Sources */,
 				CDA5F0492C30248A00FCF15C /* FeedEditConnectedNovelView.swift in Sources */,
 				C9CE229B2CBD5ECE00996225 /* FeedDetailDropdownView.swift in Sources */,
 				2CFA9A182C9D9AD500A4A820 /* UserInfoResult.swift in Sources */,
@@ -3509,7 +3510,6 @@
 				A1654F152B540513004F78E8 /* Networking.swift in Sources */,
 				CD3E5AAB2B56173C00C0A659 /* TrashNovelDetailMemoSettingButtonView.swift in Sources */,
 				CDA5F0432C2FDCD800FCF15C /* FeedCategoryCollectionViewCell.swift in Sources */,
-				E45FEF9A2CFB624E00B73D80 /* LibraryView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

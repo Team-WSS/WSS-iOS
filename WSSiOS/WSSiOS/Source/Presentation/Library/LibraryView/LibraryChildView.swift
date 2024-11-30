@@ -14,7 +14,9 @@ final class LibraryChildView: UIView {
     
     //MARK: - Components
     
-    public lazy var libraryCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+    lazy var libraryCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+    
+    let libraryEmptyView = LibraryEmptyView()
     
     // MARK: - Life Cycle
     
@@ -44,10 +46,13 @@ final class LibraryChildView: UIView {
             $0.collectionViewLayout = layout
             $0.showsVerticalScrollIndicator = false
         }
+        
+        libraryEmptyView.isHidden = true
     }
   
     private func setHierarchy() {
-        self.addSubview(libraryCollectionView)
+        self.addSubviews(libraryCollectionView,
+                         libraryEmptyView)
     }
     
     private func setLayout() {
@@ -56,6 +61,10 @@ final class LibraryChildView: UIView {
             $0.centerX.equalToSuperview()
             $0.leading.equalTo(20)
             $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom)
+        }
+        
+        libraryEmptyView.snp.makeConstraints() {
+            $0.edges.equalToSuperview()
         }
     }
 }

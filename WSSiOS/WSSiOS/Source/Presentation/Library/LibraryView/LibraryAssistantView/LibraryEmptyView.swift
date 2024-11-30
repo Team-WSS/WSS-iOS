@@ -17,7 +17,7 @@ final class LibraryEmptyView: UIView {
     private let emptyStackView = UIStackView()
     private let emptyImageView = UIImageView()
     private let emptyTitleLabel = UILabel()
-    public lazy var libraryRegisterButton = UIButton()
+    lazy var libraryLookForNovelButton = UIButton()
     
     // MARK: - Life Cycle
     
@@ -59,18 +59,22 @@ final class LibraryEmptyView: UIView {
             }
         }
         
-        libraryRegisterButton.do {
-            $0.setTitle(StringLiterals.Library.register, for: .normal)
+        libraryLookForNovelButton.do {
+            $0.setTitle(StringLiterals.Library.lookForNovel, for: .normal)
             $0.setTitleColor(.wssPrimary100, for: .normal)
             $0.titleLabel?.font = .Title1
             $0.layer.backgroundColor = UIColor.wssPrimary50.cgColor
             $0.layer.cornerRadius = 12
         }
+        
+        backButton.snp.makeConstraints {
+            $0.size.equalTo(44)
+        }
     }
 
     private func setHierarchy() {
         self.addSubviews(emptyStackView,
-                         libraryRegisterButton)
+                         libraryLookForNovelButton)
         emptyStackView.addArrangedSubviews(emptyImageView,
                                            emptyTitleLabel)
     }
@@ -86,7 +90,7 @@ final class LibraryEmptyView: UIView {
             $0.size.equalTo(48)
         }
         
-        libraryRegisterButton.snp.makeConstraints() {
+        libraryLookForNovelButton.snp.makeConstraints() {
             $0.top.equalTo(emptyStackView.snp.bottom).offset(45)
             $0.centerX.equalToSuperview()
             $0.leading.equalToSuperview().inset(90)

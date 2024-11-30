@@ -193,7 +193,7 @@ final class MyPageViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.libraryButtonDidTap
+        input.inventoryButtonDidTap
             .bind(with: self, onNext: { owner, _ in
                 output.pushToLibraryViewController.accept(())
             })

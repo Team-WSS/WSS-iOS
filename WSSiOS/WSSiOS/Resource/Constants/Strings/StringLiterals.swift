@@ -290,8 +290,8 @@ enum StringLiterals {
     }
     
     enum Library {
-        static let empty = "아직 서재가 비어있네요!"
-        static let register = "웹소설 등록하기"
+        static let empty = "보관함이 비어있어요"
+        static let lookForNovel = "웹소설 찾으러 가기"
     }
     
     enum Record {

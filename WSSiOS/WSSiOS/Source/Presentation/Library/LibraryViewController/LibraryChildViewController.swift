@@ -15,39 +15,26 @@ protocol NovelDelegate: AnyObject {
     func sendData(data: Int)
 }
 
-final class LibraryChildViewController: UIViewController {
+final class LibraryChildViewController: UIViewController, UIScrollViewDelegate {
     
     //MARK: - Properties
     
-    private let readStatus: String
-    private var lastUserNovelId: Int
-    private let size: Int
-    private var sortType: String
-    private let userNovelListRepository: DefaultUserNovelRepository
+    private let libraryViewModel: LibraryChildViewModel
     
     private let disposeBag = DisposeBag()
     weak var delegate : NovelDelegate?
-    private lazy var novelListRelay = PublishRelay<[UserNovelListDetail]>()
+    let updateNovelListRelay = PublishRelay<ShowNovelStatus>()
     private lazy var novelTotalRelay = PublishRelay<Int>()
     
     //MARK: - Components
     
     private let rootView = LibraryChildView()
-    private let libraryEmptyView = LibraryEmptyView()
     
     // MARK: - Life Cycle
     
-    init(userNovelListRepository: DefaultUserNovelRepository,
-         readStatus: String,
-         lastUserNovelId: Int,
-         size: Int,
-         sortType: String) {
-        
-        self.userNovelListRepository = userNovelListRepository
-        self.readStatus = readStatus
-        self.lastUserNovelId = lastUserNovelId
-        self.size = size
-        self.sortType = sortType
+    init(libraryViewModel: LibraryChildViewModel) {
+        self.libraryViewModel = libraryViewModel
+    
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -62,106 +49,71 @@ final class LibraryChildViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setUI()
-        setHierarchy()
-        setLayout()
         register()
-        bindCell()
-        bindAction()
+        setDelegate()
+
+        bindViewModel()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         showTabBar()
-        updateNovelList(readStatus: readStatus,
-                        lastUserNovelId: lastUserNovelId,
-                        size: size,
-                        sortType: sortType)
     }
     
     //MARK: - Bind
     
     private func register() {
         rootView.libraryCollectionView.register(LibraryCollectionViewCell.self,
-                                                forCellWithReuseIdentifier: "LibraryCollectionViewCell")
+                                                forCellWithReuseIdentifier: LibraryCollectionViewCell.cellIdentifier)
     }
     
-    private func bindCell() {
-        novelListRelay.bind(to: rootView.libraryCollectionView.rx.items(
-            cellIdentifier: "LibraryCollectionViewCell",
-            cellType: LibraryCollectionViewCell.self)) {(row, element, cell) in
-                cell.bindData(element)
-            }
+    private func setDelegate() {
+        rootView.libraryCollectionView.rx
+            .setDelegate(self)
             .disposed(by: disposeBag)
+    }
+    
+    private func bindViewModel() {
+        let input = LibraryChildViewModel.Input(
+            updateNovelList: updateNovelListRelay,
+            lookForNovelButtonDidTap: rootView.libraryEmptyView.libraryLookForNovelButton.rx.tap,
+            cellItemSeleted: rootView.libraryCollectionView.rx.itemSelected
+        )
         
-        novelListRelay
-            .subscribe(with: self, onNext: { owner, list in
-                owner.libraryEmptyView.isHidden = !list.isEmpty
-            })
-            .disposed(by: disposeBag)
+        let output = libraryViewModel.transform(from: input, disposeBag: disposeBag)
         
-        novelTotalRelay
-            .subscribe(with: self, onNext: { owner, count in
-                owner.delegate?.sendData(data: count)
-            })
-            .disposed(by: disposeBag)
-    }
-    
-    func updateNovelList(readStatus: String,
-                         lastUserNovelId: Int,
-                         size: Int,
-                         sortType: String) {
-        userNovelListRepository.getUserNovelList(readStatus: readStatus,
-                                                 lastUserNovelId: lastUserNovelId,
-                                                 size: size,
-                                                 sortType: sortType)
-        .observe(on: MainScheduler.instance)
-        .subscribe(with: self, onNext: { owner, data in
-            owner.novelListRelay.accept(data.userNovels)
-            owner.novelTotalRelay.accept(data.userNovelCount)
-        }, onError: { error, _  in
-            print(error)
-        })
-        .disposed(by: disposeBag)
-    }
-    
-    //MARK: - Actions
-    
-    private func bindAction() {
-        rootView.libraryCollectionView.rx.itemSelected
+        output.cellData
+            .bind(to: rootView.libraryCollectionView.rx.items(
+                cellIdentifier: LibraryCollectionViewCell.cellIdentifier,
+                cellType: LibraryCollectionViewCell.self)) {(row, element, cell) in
+                    cell.bindData(element)
+                }
+                .disposed(by: disposeBag)
+        
+        output.pushToDetailNovelViewController
             .observe(on: MainScheduler.instance)
-            .withLatestFrom(novelListRelay) { (indexPath, novelList) -> UserNovelListDetail? in
-                return novelList[indexPath.row]
-            }
-            .compactMap { $0 }
-            .subscribe(with: self, onNext: { owner, selectedItem in
-                owner.moveToNovelDetailViewController(userNovelId: selectedItem.userNovelId)
+            .bind(with: self, onNext: { owner, novelId in
+                owner.pushToDetailViewController(novelId: novelId)
             })
             .disposed(by: disposeBag)
         
-        libraryEmptyView.libraryRegisterButton.rx.tap
-            .bind(with: self, onNext: { owner, _ in
-                
+        output.showEmptyView
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, isEmpty in
+                owner.rootView.libraryEmptyView.isHidden = !isEmpty
             })
             .disposed(by: disposeBag)
-    }
-}
-
-extension LibraryChildViewController {
-    
-    //MARK: - UI
-    
-    private func setUI() {
-        libraryEmptyView.isHidden = true
-    }
-    
-    private func setHierarchy() {
-        self.view.addSubview(libraryEmptyView)
-    }
-    
-    private func setLayout() {
-        libraryEmptyView.snp.makeConstraints() {
-            $0.edges.equalToSuperview()
-        }
+        
+        output.pushToSearchViewController
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, isEmpty in
+                if let tabBarController = owner.tabBarController as? WSSTabBarController {
+                    if let myPageIndex = WSSTabBarItem.allCases.firstIndex(of: .search) {
+                        tabBarController.selectedIndex = myPageIndex
+                    }
+                }
+            })
+            .disposed(by: disposeBag)
     }
 }

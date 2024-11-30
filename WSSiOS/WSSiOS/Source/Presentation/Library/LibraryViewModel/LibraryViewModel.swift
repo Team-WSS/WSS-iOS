@@ -33,6 +33,7 @@ final class LibraryViewModel: ViewModelType {
         let listButtonDidTap: ControlEvent<Void>
         let newestButtonDidTap: ControlEvent<Void>
         let oldestButtonDidTap: ControlEvent<Void>
+        let backButtonDidTap: ControlEvent<Void>
     }
     
     struct Output {
@@ -41,12 +42,14 @@ final class LibraryViewModel: ViewModelType {
         let showListView = BehaviorRelay<Bool>(value: false)
         let changeListType = BehaviorRelay<StringLiterals.Alignment>(value:.newest)
         let updateChildViewController = BehaviorRelay<StringLiterals.Alignment>(value:.newest)
+        let popLastViewController = PublishRelay<Void>()
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
         
         output.bindCell.accept(tabBarList)
+        output.showListView.accept(false)
         
         input.tabBarDidTap
             .bind(with: self, onNext: { owner, indexPath in
@@ -89,11 +92,12 @@ final class LibraryViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        input.backButtonDidTap
+            .bind(with: self, onNext: { owner, _ in
+                output.popLastViewController.accept(())
+            })
+            .disposed(by: disposeBag)
         
         return output
     }
-    
-    // MARK: - Custom Method
-    
-    // MARK: - API
 }

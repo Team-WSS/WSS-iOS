@@ -12,10 +12,6 @@ import Then
 
 final class LibraryCollectionViewCell: UICollectionViewCell {
     
-    //MARK: - Properties
-    
-    static let identifier: String = "LibraryCollectionViewCell"
-    
     //MARK: - Components
     
     private let novelImageView = UIImageView()

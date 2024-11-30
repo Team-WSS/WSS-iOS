@@ -19,3 +19,10 @@ struct UserNovelListDetail: Codable {
     let userNovelAuthor: String
     let userNovelRating: Float
 }
+
+struct ShowNovelStatus {
+    let readStatus: String
+    let lastUserNovelId: Int
+    let size: Int
+    let sortType: String
+}
