@@ -7,13 +7,14 @@
 
 import Foundation
 
-struct AvatarResult: Codable {
-    let avatarTag,
-        avatarGenreBadgeImg,
-        avatarMent,
-        avatarCondition: String
+struct AvatarResponse: Codable {
+    let avatars: [Avatar]
 }
 
-struct AvatarChangeResult: Codable {
+struct Avatar: Codable {
     let avatarId: Int
+    let avatarName: String
+    let avatarLine: String
+    let avatarImage: String
+    let isRepresentative: Bool
 }

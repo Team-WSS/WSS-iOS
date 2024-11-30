@@ -14,17 +14,17 @@ final class MyPageEditProfileView: UIView {
     
     //MARK: - Components
     
-    let myPageProfileView = UIView()
-    
+    private let myPageProfileView = UIView()
     private var userImageView = CircularImageView()
-    var userImageChangeButton = CircularButton()
-    private let userImageChangeButtonView = UIImageView()
-
+    let userImageChangeInnerButton: UIButton = CircularButton()
+    private let userImageChangeInnerButtonView = UIImageView()
+    
     private let nicknameView = UIView()
     private let nicknameLabel = UILabel()
+    var textFieldBackgroundView = UIView()
     lazy var nicknameTextField = UITextField()
-    lazy var clearButton = UIButton()
-    lazy var checkButton = UIButton()
+    lazy var nicknameClearButton = UIButton()
+    lazy var nicknameDuplicatedButton = UIButton()
     private let nicknameWarningLabel = UILabel()
     private var nicknameCountView = MyPageCountView(maxLimit: 10)
     
@@ -34,7 +34,7 @@ final class MyPageEditProfileView: UIView {
     private let introLabel = UILabel()
     lazy var introTextView = UITextView()
     private let introTextViewPlaceholder = UILabel()
-    private var introCountView = MyPageCountView(maxLimit: 40)
+    private var introCountView = MyPageCountView(maxLimit: 50)
     
     private let divide2View = UIView()
     
@@ -42,7 +42,7 @@ final class MyPageEditProfileView: UIView {
     private let genreLabel = UILabel()
     private let genreDescriptionLabel = UILabel()
     lazy var genreCollectionView = UICollectionView(frame: .zero,
-                                                       collectionViewLayout: UICollectionViewLayout())
+                                                    collectionViewLayout: UICollectionViewLayout())
     
     //In VC
     let backButton = UIButton()
@@ -70,11 +70,7 @@ final class MyPageEditProfileView: UIView {
         myPageProfileView.do {
             $0.backgroundColor = .wssWhite
             
-            userImageChangeButtonView.do {
-                $0.image = .icPlus
-            }
-            
-            userImageChangeButton.do {
+            userImageChangeInnerButton.do {
                 var configuration = UIButton.Configuration.filled()
                 configuration.baseBackgroundColor = .wssWhite
                 
@@ -83,6 +79,10 @@ final class MyPageEditProfileView: UIView {
                 
                 $0.layer.borderWidth = 1.04
                 $0.layer.borderColor = UIColor.wssGray70.cgColor
+                
+                userImageChangeInnerButtonView.do {
+                    $0.image = .icPlus
+                }
             }
         }
         
@@ -94,30 +94,25 @@ final class MyPageEditProfileView: UIView {
                 $0.textColor = .wssBlack
             }
             
-            nicknameTextField.do {
-                $0.textColor = .wssBlack
+            textFieldBackgroundView.do {
                 $0.backgroundColor = .wssGray50
                 $0.layer.cornerRadius = 12
-                
-                let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 12, height: 44))
-                $0.leftView = paddingView
-                $0.leftViewMode = .always
-                $0.contentVerticalAlignment = .center
-                
-                let rightViewContainer = UIView(frame: CGRect(x: -13, y: 0, width: 44, height: 44))
-                
-                clearButton.do {
-                    $0.setImage(.icCancelLight, for: .normal)
-                    $0.contentMode = .scaleAspectFit
-                    $0.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
-                }
-                
-                rightViewContainer.addSubview(clearButton)
-                $0.rightView = rightViewContainer
-                $0.rightViewMode = .always
             }
             
-            checkButton.do {
+            nicknameTextField.do {
+                $0.font = .Body2
+                $0.textColor = .wssBlack
+                $0.tintColor = .wssBlack
+                $0.contentVerticalAlignment = .center
+            }
+            
+            nicknameClearButton.do {
+                $0.setImage(.icCancelLight, for: .normal)
+                $0.contentMode = .scaleAspectFit
+                $0.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
+            }
+            
+            nicknameDuplicatedButton.do {
                 $0.setTitle(StringLiterals.MyPage.EditProfile.nicknameCheck, for: .normal)
                 $0.setTitleColor(.wssGray200, for: .normal)
                 $0.titleLabel?.applyWSSFont(.body2, with: StringLiterals.MyPage.EditProfile.nicknameCheck)
@@ -146,6 +141,7 @@ final class MyPageEditProfileView: UIView {
                 $0.spellCheckingType = .no
                 $0.autocorrectionType = .no
                 $0.autocapitalizationType = .none
+                $0.tintColor = .wssBlack
             }
             
             introTextViewPlaceholder.do {
@@ -180,7 +176,7 @@ final class MyPageEditProfileView: UIView {
             }
         }
         
-        [divide1View, divide2View].forEach { 
+        [divide1View, divide2View].forEach {
             $0.do {
                 $0.backgroundColor = .wssGray50
             }
@@ -203,14 +199,16 @@ final class MyPageEditProfileView: UIView {
                          introView,
                          genreView)
         myPageProfileView.addSubviews(userImageView,
-                                      userImageChangeButton)
-        userImageChangeButton.addSubview(userImageChangeButtonView)
+                                      userImageChangeInnerButton)
+        userImageChangeInnerButton.addSubview(userImageChangeInnerButtonView)
         nicknameView.addSubviews(nicknameLabel,
-                                 nicknameTextField,
-                                 checkButton,
+                                 textFieldBackgroundView,
+                                 nicknameDuplicatedButton,
                                  nicknameWarningLabel,
                                  nicknameCountView,
                                  divide1View)
+        textFieldBackgroundView.addSubviews(nicknameTextField,
+                                            nicknameClearButton)
         introView.addSubviews(introLabel,
                               introTextView,
                               introCountView,
@@ -235,15 +233,15 @@ final class MyPageEditProfileView: UIView {
                 $0.edges.equalToSuperview()
             }
             
-            userImageChangeButtonView.snp.makeConstraints {
-                $0.center.equalToSuperview()
-                $0.size.equalTo(20)
-            }
-            
-            userImageChangeButton.snp.makeConstraints {
+            userImageChangeInnerButton.snp.makeConstraints {
                 $0.trailing.equalTo(userImageView.snp.trailing)
                 $0.bottom.equalTo(userImageView.snp.bottom)
                 $0.size.equalTo(25)
+                
+                userImageChangeInnerButtonView.snp.makeConstraints {
+                    $0.center.equalToSuperview()
+                    $0.size.equalTo(20)
+                }
             }
         }
         
@@ -260,27 +258,39 @@ final class MyPageEditProfileView: UIView {
                 $0.leading.equalToSuperview().inset(20)
             }
             
-            nicknameTextField.snp.makeConstraints {
+            textFieldBackgroundView.snp.makeConstraints {
                 $0.top.equalTo(nicknameLabel.snp.bottom).offset(7)
                 $0.leading.equalToSuperview().inset(20)
                 $0.height.equalTo(44)
                 $0.width.equalTo(240)
+                
+                nicknameTextField.snp.makeConstraints {
+                    $0.centerY.equalToSuperview()
+                    $0.leading.equalToSuperview().inset(12)
+                    $0.trailing.equalToSuperview().inset(44)
+                }
+                
+                nicknameClearButton.snp.makeConstraints {
+                    $0.leading.equalTo(nicknameTextField.snp.trailing)
+                    $0.trailing.equalToSuperview()
+                    $0.size.equalTo(44)
+                }
             }
             
-            checkButton.snp.makeConstraints {
+            nicknameDuplicatedButton.snp.makeConstraints {
                 $0.top.equalTo(nicknameLabel.snp.bottom).offset(7)
-                $0.leading.equalTo(nicknameTextField.snp.trailing).offset(7)
+                $0.leading.equalTo(textFieldBackgroundView.snp.trailing).offset(7)
                 $0.trailing.equalToSuperview().inset(20)
-                $0.height.equalTo(nicknameTextField.snp.height)
+                $0.height.equalTo(textFieldBackgroundView.snp.height)
             }
             
             nicknameWarningLabel.snp.makeConstraints {
-                $0.top.equalTo(nicknameTextField.snp.bottom).offset(4)
+                $0.top.equalTo(textFieldBackgroundView.snp.bottom).offset(4)
                 $0.leading.equalToSuperview().inset(20)
             }
             
             nicknameCountView.snp.makeConstraints {
-                $0.top.equalTo(nicknameTextField.snp.bottom).offset(4)
+                $0.top.equalTo(textFieldBackgroundView.snp.bottom).offset(4)
                 $0.trailing.bottom.equalToSuperview().inset(20)
             }
         }
@@ -332,7 +342,7 @@ final class MyPageEditProfileView: UIView {
             }
         }
         
-        [divide1View, divide2View].forEach { 
+        [divide1View, divide2View].forEach {
             $0.snp.makeConstraints {
                 $0.leading.trailing.bottom.equalToSuperview()
                 $0.height.equalTo(1)
@@ -354,37 +364,86 @@ extension MyPageEditProfileView {
     
     //MARK: - Custom Method
     
-    func updateNicknameTextFieldColor(update: Bool) {
-        nicknameWarningLabel.isHidden = true
-        
-        if update {
-            nicknameTextField.do {
-                $0.backgroundColor = .wssWhite
-                $0.layer.borderColor = UIColor.wssGray70.cgColor
-                $0.layer.borderWidth = 1
-            }
-        } else {
-            nicknameTextField.do {
-                $0.backgroundColor = .wssGray50
-                $0.layer.borderWidth = 0
-            }
-        }
-    }
-    
-    func isAbledCheckButton(isAbled: Bool) {
+    //네비게이션
+    func isAbledCompleteButton(isAbled: Bool) {
         if isAbled {
-            checkButton.do {
-                $0.setTitleColor(.wssPrimary100, for: .normal)
-                $0.backgroundColor = .wssPrimary50
-            }
+            completeButton.setTitleColor(.wssPrimary100, for: .normal)
         } else {
-            checkButton.do {
-                $0.setTitleColor(.wssGray200, for: .normal)
-                $0.backgroundColor = .wssGray70
-            }
+            completeButton.setTitleColor(.wssGray200, for: .normal)
+        }
+        
+        completeButton.isEnabled = isAbled
+    }
+    
+    //프로필
+    func updateProfileImage(image: String) {
+        userImageView.do {
+            $0.kfSetImage(url: makeBucketImageURLString(path: image))
         }
     }
     
+    //닉네임
+    func updateNicknameText(text: String) {
+        nicknameTextField.makeAttribute(with: text)
+            .kerning(kerningPixel: -0.6)
+            .applyAttribute()
+        nicknameCountView.countLabel.applyWSSFont(.body4, with: String(text.count))
+    }
+    
+    func updateNicknameTextField(isEditing: Bool, availablity: NicknameAvailablity) {
+        var borderColor: CGColor = UIColor.wssGray70.cgColor
+        
+        switch availablity {
+        case .available:
+            borderColor = UIColor.wssPrimary100.cgColor
+        case .notAvailable:
+            borderColor = UIColor.wssSecondary100.cgColor
+        default:
+            borderColor = UIColor.wssGray70.cgColor
+        }
+        
+        textFieldBackgroundView.do {
+            $0.backgroundColor = isEditing ? .wssWhite : .wssGray50
+            $0.layer.borderWidth = isEditing ? 1 : 0
+            $0.layer.borderColor = borderColor
+        }
+    }
+    
+    func updateNickNameWarningLabel(isEditing: Bool, availablity: NicknameAvailablity) {
+        nicknameWarningLabel.do {
+            $0.isHidden = availablity.descriptionIsHidden()
+            $0.applyWSSFont(.body4, with:  availablity.description())
+            $0.textColor = availablity.color()
+        }
+    }
+    
+    func updateNicknameClearButton(isEditing: Bool, availablity: NicknameAvailablity) {
+        var buttonImage: UIImage = .icCancelDark
+        
+        switch availablity {
+        case .available:
+            buttonImage = .icNickNameAvailable
+        case .notAvailable:
+            buttonImage = .icNickNameError
+        default:
+            break
+        }
+        
+        nicknameClearButton.do {
+            $0.setImage(buttonImage, for: .normal)
+            $0.isUserInteractionEnabled = !(availablity == .available)
+        }
+    }
+    
+    func updateNicknameDuplicatedButton(isEnabled: Bool) {
+        nicknameDuplicatedButton.do {
+            $0.isEnabled = isEnabled
+            $0.backgroundColor = isEnabled ? .wssPrimary50 : .wssGray70
+            $0.setTitleColor(isEnabled ? .wssPrimary100 : .wssGray200, for: .normal)
+        }
+    }
+    
+    //소개
     func updateIntroTextViewColor(update: Bool) {
         if update {
             introTextView.do {
@@ -409,46 +468,19 @@ extension MyPageEditProfileView {
         }
     }
     
-    func updateNickname(text: String) {
-        nicknameTextField.applyWSSFont(.body2, with: text)
-        nicknameCountView.countLabel.applyWSSFont(.label1, with: String(text.count))
-    }
-    
     func updateIntro(text: String) {
         introTextView.applyWSSFont(.body2, with: text)
-        introCountView.countLabel.applyWSSFont(.label1, with: String(text.count))
-    }
-    
-    func warningNickname(isWarning: StringLiterals.MyPage.EditProfileWarningMessage) {
-        nicknameTextField.do {
-            $0.backgroundColor = .wssWhite
-            $0.layer.borderColor = UIColor.wssSecondary100.cgColor
-            $0.layer.borderWidth = 1
-        }
-        
-        nicknameWarningLabel.do {
-            $0.isHidden = false
-            $0.applyWSSFont(.label1, with: isWarning.rawValue)
-        }
-        
-        clearButton.do {
-            $0.setImage(.icCancelWarning, for: .normal)
-        }
-    }
-    
-    func isAbledCompleteButton(isAbled: Bool) {
-        if isAbled {
-            completeButton.setTitleColor(.wssPrimary100, for: .normal)
-        } else {
-            completeButton.setTitleColor(.wssGray200, for: .normal)
-        }
+        introCountView.countLabel.applyWSSFont(.body4, with: String(text.count))
     }
     
     //MARK: - Data
     
     func bindData(data: MyProfileResult) {
         
-        nicknameTextField.applyWSSFont(.body2, with: data.nickname)
+        nicknameTextField.makeAttribute(with: data.nickname)
+            .kerning(kerningPixel: -0.6)
+            .applyAttribute()
+        nicknameCountView.countLabel.text = String(data.nickname.count)
         
         introTextView.applyWSSFont(.body2, with: data.intro)
         if !data.intro.isEmpty {

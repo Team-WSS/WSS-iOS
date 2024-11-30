@@ -132,6 +132,13 @@ final class DetailSearchResultViewController: UIViewController, UIScrollViewDele
                 owner.rootView.showEmptyView(show: show)
             })
             .disposed(by: disposeBag)
+        
+        output.showLoadingView
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, isShow in
+                owner.rootView.showLoadingView(isShow: isShow)
+            })
+            .disposed(by: disposeBag)
     }
     
     // MARK: - Custom Method

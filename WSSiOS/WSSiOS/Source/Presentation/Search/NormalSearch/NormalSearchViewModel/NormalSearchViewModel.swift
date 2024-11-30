@@ -30,6 +30,9 @@ final class NormalSearchViewModel: ViewModelType {
     private let normalSearchList = BehaviorRelay<[SearchNovel]>(value: [])
     private let normalSearchCellIndexPath = PublishRelay<IndexPath>()
     
+    // 로딩
+    private let showLoadingView = PublishRelay<Bool>()
+    
     //MARK: - Inputs
     
     struct Input {
@@ -61,6 +64,7 @@ final class NormalSearchViewModel: ViewModelType {
         let pushToNovelDetailViewController: Observable<Int>
         let isSearchTextFieldEditing: Observable<Bool>
         let endEditing: Observable<Void>
+        let showLoadingView: Observable<Bool>
     }
     
     //MARK: - init
@@ -73,19 +77,31 @@ final class NormalSearchViewModel: ViewModelType {
     
     private func getNormalSearchList(query: String, page: Int) -> Observable<NormalSearchNovels> {
         return searchRepository.getSearchNovels(query: query, page: page)
-            .do(onNext: { data in
-                if page == 0 {
-                    self.normalSearchList.accept(data.novels)
-                } else {
-                    let updatedList = self.normalSearchList.value + data.novels
-                    self.normalSearchList.accept(updatedList)
+            .do(
+                onNext: { data in
+                    if page == 0 {
+                        self.normalSearchList.accept(data.novels)
+                    } else {
+                        let updatedList = self.normalSearchList.value + data.novels
+                        self.normalSearchList.accept(updatedList)
+                    }
+                    self.resultCount.onNext(data.resultCount)
+                    self.isLoadable = data.isLoadable
+                    self.currentPage = page
+                },
+                onError: { error in
+                    print(error.localizedDescription)
+                    self.showLoadingView.accept(false)
+                },
+                onCompleted: {
+                    self.showLoadingView.accept(false)
+                },
+                onSubscribe: {
+                    if page == 0 {
+                        self.showLoadingView.accept(true)
+                    }
                 }
-                self.resultCount.onNext(data.resultCount)
-                self.isLoadable = data.isLoadable
-                self.currentPage = page
-            }, onError: { error in
-                print(error.localizedDescription)
-            })
+            )
     }
     
     //MARK: - Methods
@@ -171,6 +187,7 @@ final class NormalSearchViewModel: ViewModelType {
                       normalSearchCollectionViewHeight: normalSearchCollectionViewHeight,
                       pushToNovelDetailViewController: pushToNovelDetailViewController.asObservable(),
                       isSearchTextFieldEditing: isSearchTextFieldEditing.asObservable(),
-                      endEditing: endEditing)
+                      endEditing: endEditing,
+                      showLoadingView: showLoadingView.asObservable())
     }
 }

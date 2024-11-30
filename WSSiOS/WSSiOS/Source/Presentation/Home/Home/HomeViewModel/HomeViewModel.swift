@@ -42,6 +42,8 @@ final class HomeViewModel: ViewModelType {
     private let pushToAnnouncementViewController = PublishRelay<Void>()
     let showInduceLoginModalView = PublishRelay<Void>()
     
+    private let showLoadingView = PublishRelay<Bool>()
+    
     // MARK: - Inputs
     
     struct Input {
@@ -74,6 +76,7 @@ final class HomeViewModel: ViewModelType {
         let pushToNovelDetailViewController: Observable<Int>
         let pushToAnnouncementViewController: Observable<Void>
         let showInduceLoginModalView: Observable<Void>
+        let showLoadingView: Observable<Bool>
     }
     
     //MARK: - init
@@ -87,6 +90,9 @@ final class HomeViewModel: ViewModelType {
 extension HomeViewModel {
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         input.viewWillAppearEvent
+            .do(onNext: {
+                self.showLoadingView.accept(true)
+            })
             .flatMapLatest {
                 let todayPopularNovelsObservable = self.getTodayPopularNovels()
                 let realtimeFeedsObservable = self.getRealtimePopularFeeds()
@@ -126,8 +132,11 @@ extension HomeViewModel {
                     
                     owner.updateTasteRecommendView.accept((false, true))
                 }
+                
+                owner.showLoadingView.accept(false)
             }, onError: { owner, error in
                 owner.realtimePopularList.onError(error)
+                owner.showLoadingView.accept(false)
             })
             .disposed(by: disposeBag)
         
@@ -211,7 +220,8 @@ extension HomeViewModel {
                       pushToMyPageViewController: pushToMyPageViewController.asObservable(),
                       pushToNovelDetailViewController: pushToNovelDetailViewController.asObservable(),
                       pushToAnnouncementViewController: pushToAnnouncementViewController.asObservable(),
-                      showInduceLoginModalView: showInduceLoginModalView.asObservable())
+                      showInduceLoginModalView: showInduceLoginModalView.asObservable(),
+                      showLoadingView: showLoadingView.asObservable())
     }
     
     //MARK: - API

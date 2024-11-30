@@ -60,3 +60,10 @@ struct GenrePreference: Codable {
     let genreImage: String
     let genreCount: Int
 }
+
+struct UserEditProfile: Codable {
+    let avatarId: Int?
+    let nickname: String?
+    let intro: String?
+    let genrePreferences: [String]
+}

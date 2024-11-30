@@ -486,6 +486,13 @@ final class FeedDetailViewController: UIViewController {
                 owner.rootView.replyWritingView.setCommentText(owner.viewModel.initialCommentContent)
             })
             .disposed(by: disposeBag)
+        
+        output.showLoadingView
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, isShow in
+                owner.rootView.showLoadingView(isShow: isShow)
+            })
+            .disposed(by: disposeBag)
     }
 }
 extension FeedDetailViewController: UICollectionViewDelegateFlowLayout {
