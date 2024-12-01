@@ -358,17 +358,16 @@ extension UIViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func pushToMyPageViewController(isMyPage: Bool) {
+    func pushToMyPageViewController(userId: Int) {
         let viewController = MyPageViewController(
             viewModel: MyPageViewModel(
                 userRepository: DefaultUserRepository(
                     userService: DefaultUserService(),
-                    blocksService: DefaultBlocksService()
-                )
-            ),
-            isMyPage: isMyPage)
+                    blocksService: DefaultBlocksService()),
+                profileId: userId))
         
-        self.navigationController?.pushViewController(viewController, animated: true)
+        viewController.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(viewController, animated: false)
     }
     
     func pushToMyPageEditViewController(profile: MyProfileResult) {

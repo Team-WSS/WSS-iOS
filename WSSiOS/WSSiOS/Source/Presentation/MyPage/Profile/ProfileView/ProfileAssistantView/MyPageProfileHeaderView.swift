@@ -125,7 +125,11 @@ final class MyPageProfileHeaderView: UIView {
     //MARK: - Data
     
     func bindData(data: MyProfileResult) {
-        userImageView.kfSetImage(url: makeBucketImageURLString(path: data.avatarImage))
+        if data.avatarImage == "" {
+            userImageView.image = .profile
+        } else {
+            userImageView.kfSetImage(url: makeBucketImageURLString(path: data.avatarImage))
+        }
         userNicknameLabel.applyWSSFont(.headline1, with: data.nickname)
         userIntroLabel.do {
             $0.applyWSSFont(.body2, with: data.intro)

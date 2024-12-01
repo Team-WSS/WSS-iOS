@@ -10,29 +10,32 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+enum EntryType {
+    case tabBar
+    case otherVC
+}
+
 final class MyPageViewController: UIViewController {
     
     //MARK: - Properties
     
     private let disposeBag = DisposeBag()
     private let viewModel: MyPageViewModel
+    var entryType: EntryType = .otherVC
     
-    private var isMyPageRelay: BehaviorRelay<Bool>
+    private let isEntryTabbarRelay = BehaviorRelay<Bool>(value: false)
     private var dropDownCellTap = PublishSubject<String>()
     private let headerViewHeightRelay = BehaviorRelay<Double>(value: 0)
+    private let alertButtonRelay = PublishRelay<Bool>()
     
     //MARK: - UI Components
     
-    private var rootView = MyPageView(isMyPage: true)
-    
-    private lazy var settingButton = UIButton()
-    private lazy var dropdownButton = WSSDropdownButton()
+    private var rootView = MyPageView()
     
     // MARK: - Life Cycle
     
-    init(viewModel: MyPageViewModel, isMyPage: Bool) {
+    init(viewModel: MyPageViewModel) {
         self.viewModel = viewModel
-        self.isMyPageRelay = BehaviorRelay(value: isMyPage)
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -43,8 +46,6 @@ final class MyPageViewController: UIViewController {
     
     override func loadView() {
         self.view = rootView
-        
-        decideUI(isMyPage: isMyPageRelay.value)
     }
     
     override func viewDidLoad() {
@@ -54,6 +55,23 @@ final class MyPageViewController: UIViewController {
         register()
         
         bindViewModel()
+        
+        switch entryType {
+        case .tabBar:
+            print("탭바에서 진입")
+            isEntryTabbarRelay.accept(true)
+        case .otherVC:
+            print("다른 VC에서 진입")
+            isEntryTabbarRelay.accept(false)
+            hideTabBar()
+            swipeBackGesture()
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
     override func viewDidLayoutSubviews() {
@@ -97,27 +115,39 @@ final class MyPageViewController: UIViewController {
         )
         
         let input = MyPageViewModel.Input(
-            isMyPage: isMyPageRelay.asDriver(),
+            isEntryTabbar: isEntryTabbarRelay.asObservable(),
             headerViewHeight: headerViewHeightRelay.asDriver(),
             scrollOffset: rootView.scrollView.rx.contentOffset.asDriver(),
-            settingButtonDidTap: settingButton.rx.tap,
+            settingButtonDidTap: rootView.settingButton.rx.tap,
             dropdownButtonDidTap: dropDownCellTap,
-            editButtonTapoed: rootView.headerView.userImageChangeButton.rx.tap,
+            editButtonDidTap: rootView.headerView.userImageChangeButton.rx.tap,
+            backButtonDidTap: rootView.backButton.rx.tap,
             genrePreferenceButtonDidTap: genrePreferenceButtonDidTap,
             libraryButtonDidTap: libraryButtonDidTap,
-            feedButtonDidTap: feedButtonDidTap)
+            feedButtonDidTap: feedButtonDidTap,
+            alertButtonDidTap: alertButtonRelay)
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
-        output.IsExistPreference
+        output.isMyPage
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, isMyPage in
+                owner.decideNavigation(myPage: isMyPage)
+                owner.rootView.mainStickyHeaderView.buttonLabelText(isMyPage: isMyPage)
+                owner.rootView.scrolledStstickyHeaderView.buttonLabelText(isMyPage: isMyPage)
+            })
+            .disposed(by: disposeBag)
+        
+        output.isExistPreference
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, exist in
                 owner.rootView.myPageLibraryView.isExist = exist
-                owner.rootView.myPageLibraryView.updateView(isExist: exist)
+                owner.rootView.myPageLibraryView.updateLibraryView(isExist: exist)
             })
             .disposed(by: disposeBag)
         
         output.profileData
+            .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, data in
                 owner.rootView.headerView.bindData(data: data)
             })
@@ -125,34 +155,47 @@ final class MyPageViewController: UIViewController {
         
         output.updateNavigationEnabled
             .asDriver()
-            .drive(with: self, onNext: { owner, update in
+            .drive(with: self, onNext: { owner, data in
+                let (update, navigationTitle) = data
                 owner.rootView.scrolledStstickyHeaderView.isHidden = !update
                 owner.rootView.mainStickyHeaderView.isHidden = update
                 owner.rootView.headerView.isHidden = update
                 
                 if update {
-                    owner.navigationItem.title = StringLiterals.Navigation.Title.myPage
+                    owner.navigationItem.title = navigationTitle
                 } else {
                     owner.navigationItem.title = ""
                 }
             })
             .disposed(by: disposeBag)
         
-        output.settingButtonEnabled
+        output.pushToSettingViewController
+            .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 owner.pushToSettingViewController()
             })
             .disposed(by: disposeBag)
         
         output.pushToEditViewController
+            .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, data in
                 owner.pushToMyPageEditViewController(profile: data)
             })
             .disposed(by: disposeBag)
         
-        output.dropdownButtonEnabled
+        output.popViewController
+            .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, data in
-                print(data)
+                owner.popToLastViewController()
+            })
+            .disposed(by: disposeBag)
+        
+        output.isProfilePrivate
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, data in
+                let (isPrivate, nickname) = data
+                owner.rootView.myPageLibraryView.isPrivateUserView(isPrivate: isPrivate, nickname: nickname)
+                
             })
             .disposed(by: disposeBag)
         
@@ -226,6 +269,25 @@ final class MyPageViewController: UIViewController {
                 }
             })
             .disposed(by: disposeBag)
+        
+        output.showUnknownUserAlert
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                self.rootView.isUnknownUserProfile()
+                self.presentToAlertViewController(iconImage: .icAlertWarningCircle,
+                                                  titleText: StringLiterals.MyPage.Profile.unknownUserNickname,
+                                                  contentText: StringLiterals.MyPage.Profile.unknownAlertContent,
+                                                  leftTitle: StringLiterals.MyPage.Profile.unknownAlertButtonTitle,
+                                                  rightTitle: nil,
+                                                  rightBackgroundColor: nil)
+                .bind(with: self, onNext: { owner, buttonType in
+                    if buttonType == .left {
+                        owner.alertButtonRelay.accept(true)
+                    }
+                })
+                .disposed(by: owner.disposeBag)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
@@ -249,34 +311,27 @@ extension MyPageViewController {
     
     //MARK: - UI
     
-    private func decideUI(isMyPage: Bool) {
-        let button = setButton(isMyPage: isMyPage)
-        
-        preparationSetNavigationBar(title: StringLiterals.Navigation.Title.myPage,
-                                    left: nil,
-                                    right: button)
-        
-        rootView.headerView.userImageChangeButton.isHidden = !isMyPage
-    }
-    
-    private func setButton(isMyPage: Bool) -> UIButton {
-        if isMyPage {
-            settingButton.do {
-                $0.setImage(UIImage(resource: .icSetting), for: .normal)
-            }
-            return settingButton
-            
+    private func decideNavigation(myPage: Bool) {
+        if myPage {
+            preparationSetNavigationBar(title: "",
+                                        left: nil,
+                                        right: rootView.settingButton)
         } else {
-            dropdownButton.do {
+            let dropdownButton = WSSDropdownButton().then {
                 $0.makeDropdown(dropdownRootView: self.rootView,
                                 dropdownWidth: 120,
-                                dropdownData: ["수정하기", "삭제하기"],
+                                dropdownLayout: .autoInNavigationBar,
+                                dropdownData: [StringLiterals.MyPage.BlockUser.toastText],
                                 textColor: .wssBlack)
                 .bind(to: dropDownCellTap)
                 .disposed(by: disposeBag)
             }
             
-            return dropdownButton
+            preparationSetNavigationBar(title: "",
+                                        left: rootView.backButton,
+                                        right: dropdownButton)
         }
+        
+        rootView.headerView.userImageChangeButton.isHidden = !myPage
     }
 }

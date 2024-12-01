@@ -12,6 +12,7 @@ import RxSwift
 protocol UserRepository {
     func getUserMeData() -> Observable<UserMeResult>
     func getMyProfileData() -> Observable<MyProfileResult>
+    func getOtherProfile(userId: Int) -> Observable<OtherProfileResult>
     func getUserInfo() -> Observable<UserInfo>
     func putUserInfo(gender: String, birth: Int) -> Observable<Void>
     func patchUserName(userNickName: String) -> Observable<Void>
@@ -22,6 +23,7 @@ protocol UserRepository {
     func getUserNovelStatus(userId: Int) -> Observable<UserNovelStatus>
     func getUserNovelPreferences(userId: Int) -> Observable<UserNovelPreferences>
     func getUserGenrePreferences(userId: Int) -> Observable<UserGenrePreferences>
+    func postBlockUser(userId: Int) -> Observable<Void>
     func patchUserProfile(updatedFields: [String: Any]) -> Observable<Void>
     func getNicknameisValid(nickname: String) -> Single<OnboardingResult>
 }
@@ -42,6 +44,11 @@ struct DefaultUserRepository: UserRepository {
     
     func getMyProfileData() -> Observable<MyProfileResult> {
         return userService.getMyProfile()
+            .asObservable()
+    }
+    
+    func getOtherProfile(userId: Int) -> Observable<OtherProfileResult> {
+        return userService.getOtherProfile(userId: userId)
             .asObservable()
     }
     
@@ -100,6 +107,10 @@ struct DefaultUserRepository: UserRepository {
             .asObservable()
     }
     
+    func postBlockUser(userId: Int) -> Observable<Void> {
+        return blocksService.postBlockUser(blockID: userId)
+            .asObservable()
+    }
     func patchUserProfile(updatedFields: [String: Any]) -> Observable<Void> {
         return userService.patchUserProfile(updatedFields: updatedFields)
             .asObservable()

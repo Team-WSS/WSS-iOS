@@ -30,6 +30,9 @@ enum URLs {
         }
         static let userInfo = userBasePath + "/info"
         static let myProfile = userBasePath + "/my-profile"
+        static func otherProfile(userId: Int) -> String {
+            return "\(userBasePath)/profile/\(userId)"
+        }
         static func novelPreferencesstatic(userId: Int) -> String {
             return "\(userBasePath)/\(userId)/preferences/attractive-points"
         }
@@ -200,5 +203,6 @@ enum URLs {
     
     enum Contact {
         static let kakao = "http://pf.kakao.com/_kHxlWG"
+        static let notionForm = "https://websoso.notion.site/144600bd746881d4b012fbaf586c264d"
     }
 }

@@ -16,7 +16,10 @@ final class MyPageStickyHeaderView: UIView {
     
     let libraryButton = UIButton()
     let libraryUnderView = UIView()
+    let libraryButtonLabel = UILabel()
+    
     let feedButton = UIButton()
+    let feedButtonLabel = UILabel()
     let feedUnderView = UIView()
     
     // MARK: - Life Cycle
@@ -36,18 +39,18 @@ final class MyPageStickyHeaderView: UIView {
     private func setUI() {
         libraryButton.do {
             $0.backgroundColor = .wssWhite
-            $0.setTitle("내 서재", for: .normal)
-            $0.setTitleColor(.wssBlack, for: .normal)
-            $0.titleLabel?.font = .Body2
             $0.isSelected = true
+        
+            libraryButtonLabel.do {
+                $0.textColor = .wssBlack
+            }
         }
         
         feedButton.do {
             $0.backgroundColor = .wssWhite
-            $0.setTitle("내 활동", for: .normal)
-            $0.setTitleColor(.wssBlack, for: .normal)
-            $0.titleLabel?.font = .Body2
             $0.isSelected = false
+            
+            feedButtonLabel.textColor = .wssBlack
         }
         
         libraryUnderView.do {
@@ -66,12 +69,18 @@ final class MyPageStickyHeaderView: UIView {
                          libraryUnderView,
                          feedButton,
                          feedUnderView)
+        libraryButton.addSubview(libraryButtonLabel)
+        feedButton.addSubview(feedButtonLabel)
     }
     
     private func setLayout() {
         libraryButton.snp.makeConstraints {
             $0.top.leading.bottom.equalToSuperview()
             $0.trailing.equalTo(super.snp.centerX)
+            
+            libraryButtonLabel.snp.makeConstraints {
+                $0.center.equalToSuperview()
+            }
         }
         
         libraryUnderView.snp.makeConstraints {
@@ -83,6 +92,10 @@ final class MyPageStickyHeaderView: UIView {
         feedButton.snp.makeConstraints {
             $0.top.trailing.bottom.equalToSuperview()
             $0.leading.equalTo(super.snp.centerX)
+            
+            feedButtonLabel.snp.makeConstraints {
+                $0.center.equalToSuperview()
+            }
         }
         
         feedUnderView.snp.makeConstraints {
@@ -96,10 +109,15 @@ final class MyPageStickyHeaderView: UIView {
         libraryButton.isSelected = isLibrarySelected
         feedButton.isSelected = !isLibrarySelected
         
-        libraryButton.setTitleColor(isLibrarySelected ? .wssBlack : .wssGray300, for: .normal)
-        feedButton.setTitleColor(isLibrarySelected ? .wssGray300 : .wssBlack, for: .normal)
+        libraryButtonLabel.textColor = isLibrarySelected ? .wssBlack : .wssGray300
+        feedButtonLabel.textColor = isLibrarySelected ? .wssGray300 : .wssBlack
         
         libraryUnderView.isHidden = !isLibrarySelected
         feedUnderView.isHidden = isLibrarySelected
+    }
+    
+    func buttonLabelText(isMyPage: Bool) {
+        libraryButtonLabel.applyWSSFont(.body2, with: isMyPage ? StringLiterals.MyPage.Profile.myProfileLibrary : StringLiterals.MyPage.Profile.otherProfileLibrary)
+        feedButtonLabel.applyWSSFont(.body2, with: isMyPage ? StringLiterals.MyPage.Profile.myProfileFeed : StringLiterals.MyPage.Profile.otherProfileFeed)
     }
 }

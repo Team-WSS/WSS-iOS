@@ -13,10 +13,6 @@ import Then
 
 final class MyPageView: UIView {
     
-    //MARK: - Properties
-    
-    let isMyPage:Bool
-    
     //MARK: - Components
     
     let scrollView = UIScrollView()
@@ -29,11 +25,14 @@ final class MyPageView: UIView {
     let myPageLibraryView = MyPageLibraryView()
     let myPageFeedView = UIView()
     
+    //In VC
+    let settingButton = UIButton()
+    let backButton = UIButton()
+    
     // MARK: - Life Cycle
     
-    init(isMyPage: Bool) {
-        self.isMyPage = isMyPage
-        super.init(frame: .zero)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         
         setUI()
         setHierarchy()
@@ -47,13 +46,25 @@ final class MyPageView: UIView {
     //MARK: - UI
     
     private func setUI() {
-        self.backgroundColor = .wssGray50
+        self.backgroundColor = .wssPrimary20
+        
+        scrollView.do {
+            $0.showsVerticalScrollIndicator = false
+        }
         
         scrolledStstickyHeaderView.do {
             $0.isHidden = true
         }
         
         myPageFeedView.isHidden = true
+        
+        settingButton.do {
+            $0.setImage(UIImage(resource: .icSetting), for: .normal)
+        }
+        
+        backButton.do {
+            $0.setImage(.icNavigateLeft.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray300), for: .normal)
+        }
     }
     
     private func setHierarchy() {
@@ -107,5 +118,17 @@ final class MyPageView: UIView {
         contentView.snp.makeConstraints {
             $0.bottom.equalTo(myPageLibraryView.snp.bottom)
         }
+    }
+    
+    //MARK: - Data
+    
+    func isUnknownUserProfile() {
+        headerView.bindData(data: MyProfileResult(nickname: StringLiterals.MyPage.Profile.unknownUserNickname,
+                                                  intro: "",
+                                                  avatarImage: "",
+                                                  genrePreferences: []))
+        mainStickyHeaderView.isHidden = true
+        myPageLibraryView.isHidden = true
+        myPageFeedView.isHidden = true
     }
 }
