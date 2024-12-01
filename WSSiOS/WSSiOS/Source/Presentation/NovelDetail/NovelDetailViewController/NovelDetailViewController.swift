@@ -62,7 +62,6 @@ final class NovelDetailViewController: UIViewController {
         registerCell()
         delegate()
         bindViewModel()
-        swipeBackGesture()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -70,6 +69,7 @@ final class NovelDetailViewController: UIViewController {
         
         viewWillAppearEvent.accept(true)
         setNavigationBar()
+        swipeBackGesture()
         self.hidesBottomBarWhenPushed = true
     }
     
@@ -241,7 +241,7 @@ final class NovelDetailViewController: UIViewController {
         output.showReportPage
             .drive(with: self, onNext: { owner, _ in
                 owner.rootView.showHeaderDropDownView(isShow: false)
-                if let url = URL(string: URLs.Contact.kakao) {
+                if let url = URL(string: URLs.Contact.notionForm) {
                     UIApplication.shared.open(url, options: [:])
                 }
             })
@@ -503,7 +503,9 @@ final class NovelDetailViewController: UIViewController {
             networkErrorRefreshButtonDidTap: rootView.networkErrorView.refreshButton.rx.tap,
             imageNetworkError: imageNetworkError.asObservable(),
             deleteReview: deleteReview.asObservable(),
-            backgroundDidTap: rootView.rx.tapGesture(),
+            backgroundDidTap: rootView.rx.tapGesture(configuration: { gestureRecognizer, delegate in
+                gestureRecognizer.cancelsTouchesInView = false
+            }),
             firstDescriptionBackgroundDidTap: rootView.firstReviewDescriptionBackgroundView.rx.tap,
             headerDotsButtonDidTap: rootView.headerDropDownButton.rx.tap,
             headerDropdownButtonDidTap: headerDropdownButtonDidTap,

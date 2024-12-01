@@ -203,5 +203,6 @@ enum URLs {
     
     enum Contact {
         static let kakao = "http://pf.kakao.com/_kHxlWG"
+        static let notionForm = "https://websoso.notion.site/144600bd746881d4b012fbaf586c264d"
     }
 }

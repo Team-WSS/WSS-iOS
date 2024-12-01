@@ -68,13 +68,6 @@ final class NovelDetailView: UIView {
             $0.tintColor = .wssBlack
         }
         
-        statusBarView.do {
-            let scenes = UIApplication.shared.connectedScenes
-            let windowScene = scenes.first as? UIWindowScene
-            let statusBarManager = windowScene?.windows.first?.windowScene?.statusBarManager
-            $0.frame = statusBarManager?.statusBarFrame ?? .zero
-        }
-        
         firstReviewDescriptionBackgroundView.do {
             $0.backgroundColor = .wssBlack60
         }
@@ -166,6 +159,11 @@ final class NovelDetailView: UIView {
         
         scrollView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+        }
+        
+        statusBarView.snp.makeConstraints {
+            $0.top.horizontalEdges.equalToSuperview()
+            $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.top)
         }
         
         contentView.snp.makeConstraints {
