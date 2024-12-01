@@ -68,10 +68,13 @@ final class FeedDetailViewModel: ViewModelType {
     let showCommentDeleteAlertView  = PublishRelay<((Int, Int) -> Observable<Void>, Int, Int)>()
     
     let pushToUserPageViewController = PublishRelay<Int>()
+    private let showLoadingView = PublishRelay<Bool>()
     
     //MARK: - Life Cycle
     
-    init(feedDetailRepository: FeedDetailRepository, userRepository: UserRepository, feedId: Int) {
+    init(feedDetailRepository: FeedDetailRepository,
+         userRepository: UserRepository,
+         feedId: Int) {
         self.feedDetailRepository = feedDetailRepository
         self.userRepository = userRepository
         self.feedId = feedId
@@ -151,10 +154,14 @@ final class FeedDetailViewModel: ViewModelType {
         let showCommentDeleteAlertView: Observable<((Int, Int) -> Observable<Void>, Int, Int)>
         
         let pushToUserPageViewController: Observable<Int>
+        let showLoadingView: Observable<Bool>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         input.viewWillAppearEvent
+            .do(onNext: {
+                self.showLoadingView.accept(true)
+            })
             .flatMapLatest { _ in
                 Observable.zip(
                     self.getSingleFeed(self.feedId),
@@ -178,8 +185,11 @@ final class FeedDetailViewModel: ViewModelType {
                 owner.commentsData.accept(comments.comments)
 
                 owner.myProfileData.accept(profile)
+                
+                owner.showLoadingView.accept(false)
             }, onError: { owner, error in
                 print(error)
+                owner.showLoadingView.accept(false)
             })
             .disposed(by: disposeBag)
         
@@ -271,6 +281,9 @@ final class FeedDetailViewModel: ViewModelType {
                                            self.updatedCommentContent)
                     .flatMapLatest { _ in
                         self.getSingleFeedComments(self.feedId)
+                            .do(onNext: { _ in
+                                self.showLoadingView.accept(true)
+                            })
                             .do(onNext: { newComments in
                                 self.commentsData.accept(newComments.comments)
                             })
@@ -283,11 +296,15 @@ final class FeedDetailViewModel: ViewModelType {
                         self.showPlaceholder.accept(true)
                         self.isCommentEditing = false
                         self.selectedCommentId = 0
+                        self.showLoadingView.accept(false)
                     })
                 } else {
                     return self.postComment(self.feedId, self.updatedCommentContent)
                         .flatMapLatest { _ in
                             self.getSingleFeedComments(self.feedId)
+                                .do(onNext: { _ in
+                                    self.showLoadingView.accept(true)
+                                })
                                 .do(onNext: { newComments in
                                     self.commentsData.accept(newComments.comments)
                                 })
@@ -299,6 +316,7 @@ final class FeedDetailViewModel: ViewModelType {
                             self.textViewEmpty.accept(true)
                             self.showPlaceholder.accept(true)
                             self.selectedCommentId = 0
+                            self.showLoadingView.accept(false)
                             
                             let newCommentCount = self.commentCount.value + 1
                             self.commentCount.accept(newCommentCount)
@@ -389,13 +407,18 @@ final class FeedDetailViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.reloadComments
+            .do(onNext: {
+                self.showLoadingView.accept(true)
+            })
             .flatMapLatest {
                 return self.getSingleFeedComments(self.feedId)
             }
             .subscribe(with: self, onNext: { owner, data in
                 owner.commentsData.accept(data.comments)
+                owner.showLoadingView.accept(false)
             }, onError: { owner, error in
                 print(error)
+                owner.showLoadingView.accept(false)
             })
             .disposed(by: disposeBag)
         
@@ -426,7 +449,8 @@ final class FeedDetailViewModel: ViewModelType {
                       showCommentImpertinenceAlertView: showCommentImpertinenceAlertView.asObservable(),
                       myCommentEditing: myCommentEditing.asObservable(),
                       showCommentDeleteAlertView: showCommentDeleteAlertView.asObservable(),
-                      pushToUserPageViewController: pushToUserPageViewController.asObservable())
+                      pushToUserPageViewController: pushToUserPageViewController.asObservable(),
+                      showLoadingView: showLoadingView.asObservable())
     }
     
     //MARK: - API

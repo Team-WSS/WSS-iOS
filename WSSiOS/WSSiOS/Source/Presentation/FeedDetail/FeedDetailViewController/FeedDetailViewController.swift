@@ -493,7 +493,13 @@ final class FeedDetailViewController: UIViewController {
                 owner.pushToMyPageViewController(userId: userId)
             })
             .disposed(by: disposeBag)
-        
+
+        output.showLoadingView
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, isShow in
+                owner.rootView.showLoadingView(isShow: isShow)
+            })
+            .disposed(by: disposeBag)
     }
 }
 extension FeedDetailViewController: UICollectionViewDelegateFlowLayout {

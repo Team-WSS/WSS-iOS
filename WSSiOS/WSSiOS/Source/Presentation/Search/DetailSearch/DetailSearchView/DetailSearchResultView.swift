@@ -18,6 +18,8 @@ final class DetailSearchResultView: UIView {
     let novelView = DetailSearchResultNovelView()
     let emptyView = DetailSearchResultEmptyView()
     
+    private let loadingView = WSSLoadingView()
+    
     //MARK: - Life Cycle
     
     override init(frame: CGRect) {
@@ -38,12 +40,14 @@ final class DetailSearchResultView: UIView {
         
         novelView.isHidden = true
         emptyView.isHidden = true
+        loadingView.isHidden = true
     }
     
     private func setHierarchy() {
         self.addSubviews(headerView,
                          novelView,
-                         emptyView)
+                         emptyView,
+                         loadingView)
     }
     
     private func setLayout() {
@@ -62,6 +66,10 @@ final class DetailSearchResultView: UIView {
             $0.top.equalTo(headerView.snp.bottom)
             $0.horizontalEdges.bottom.equalToSuperview()
         }
+        
+        loadingView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
     }
     
     //MARK: - Custom Method
@@ -69,5 +77,9 @@ final class DetailSearchResultView: UIView {
     func showEmptyView(show: Bool) {
         emptyView.isHidden = !show
         novelView.isHidden = show
+    }
+    
+    func showLoadingView(isShow: Bool) {
+        loadingView.isHidden = !isShow
     }
 }

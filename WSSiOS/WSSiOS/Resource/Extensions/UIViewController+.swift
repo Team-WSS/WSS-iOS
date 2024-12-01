@@ -245,7 +245,9 @@ extension UIViewController {
             viewModel: MyPageInfoViewModel(
                 userRepository: DefaultUserRepository(
                     userService: DefaultUserService(),
-                    blocksService: DefaultBlocksService())))
+                    blocksService: DefaultBlocksService()),
+                authRepository: DefaultAuthRepository(
+                    authService: DefaultAuthService())))
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
@@ -423,10 +425,24 @@ extension UIViewController {
         
         self.navigationController?.pushViewController(viewController, animated: true)
     }
+    
+    func pushToChangeUserInfoViewController() {
+        let viewController = MyPageChangeUserInfoViewController(
+            viewModel: MyPageChangeUserInfoViewModel(
+                userRepository: DefaultUserRepository(
+                    userService: DefaultUserService(),
+                    blocksService: DefaultBlocksService())))
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
 }
 
-extension UIViewController: UIGestureRecognizerDelegate {
+extension UIViewController: @retroactive UIGestureRecognizerDelegate {
     public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         return navigationController?.viewControllers.count ?? 0 > 1
+    }
+    
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if let touchedView = touch.view, touchedView is UITextField || touchedView is UITextView { return false }
+        return true
     }
 }

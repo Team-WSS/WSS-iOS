@@ -88,7 +88,8 @@ final class MyPageLibraryView: UIView {
         }
         
         myPagePrivateView.snp.makeConstraints {
-            $0.height.equalTo(812)
+            //임의적인 수! 수정 필요
+            $0.height.equalTo(450)
         }
     }
     
