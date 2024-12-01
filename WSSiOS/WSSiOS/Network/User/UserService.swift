@@ -18,6 +18,7 @@ protocol UserService {
     func getUserProfileVisibility() -> Single<UserProfileVisibility>
     func patchUserProfileVisibility(isProfilePublic: Bool) -> Single<Void>
     func getMyProfile() -> Single<MyProfileResult>
+    func getOtherProfile(userId: Int) -> Single<OtherProfileResult> 
     func getUserNovelPreferences(userId: Int) -> Single<UserNovelPreferences>
     func getUserGenrePreferences(userId: Int) -> Single<UserGenrePreferences>
     func patchUserProfile(updatedFields: [String: Any]) -> Single<Void>
@@ -36,7 +37,7 @@ final class DefaultUserService: NSObject, Networking {
         ]
     }
     
-    func makeUserProfileVisibilityQueryItems(isProfilePublic: Bool) -> [URLQueryItem] {
+    private func makeUserProfileVisibilityQueryItems(isProfilePublic: Bool) -> [URLQueryItem] {
         return [ URLQueryItem(name: "isProfilePublic",
                               value: String(isProfilePublic))]
     }
@@ -187,6 +188,25 @@ extension DefaultUserService: UserService {
         }
     }
     
+    func getOtherProfile(userId: Int) -> Single<OtherProfileResult> {
+        do {
+            let request = try makeHTTPRequest(method: .get,
+                                              path: URLs.User.otherProfile(userId: userId),
+                                              headers: APIConstants.accessTokenHeader,
+                                              body: nil)
+            
+            NetworkLogger.log(request: request)
+            
+            return tokenCheckURLSession.rx.data(request: request)
+                .map { try self.decode(data: $0,
+                                       to: OtherProfileResult.self) }
+                .asSingle()
+            
+        } catch {
+            return Single.error(error)
+        }
+    }
+  
     func patchUserProfileVisibility(isProfilePublic: Bool) -> Single<Void> {
         guard let userProfileVisibility = try? JSONEncoder().encode(UserProfileVisibility(isProfilePublic: isProfilePublic))  else {
             return .error(NetworkServiceError.invalidRequestError)

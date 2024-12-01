@@ -41,7 +41,7 @@ final class WSSDropdownButton: UIButton {
     private func setLayout() {
         dropdownImageView.snp.makeConstraints {
             $0.centerX.centerY.equalToSuperview()
-            $0.size.equalTo(18)
+            $0.size.equalTo(24)
         }
     }
     

@@ -22,7 +22,7 @@ final class MyPageBlockUserTableViewCell: UITableViewCell {
     
     private var userImageView = UIImageView()
     private var userNicknameLabel = UILabel()
-    var unblockButton = UIButton()
+    private var unblockLabel = UILabel()
     
     //MARK: - Life Cycle
     
@@ -38,10 +38,19 @@ final class MyPageBlockUserTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+            if unblockLabel.frame.contains(point) {
+                return true
+            }
+        return false
+        }
+    
     //MARK: - UI
     
     private func setUI() {
-        contentView.clipsToBounds = true
+        self.do {
+            $0.selectionStyle = .none
+        }
         
         userImageView.do {
             $0.image = .imgProfile
@@ -54,21 +63,21 @@ final class MyPageBlockUserTableViewCell: UITableViewCell {
             $0.textColor = .wssBlack
         }
         
-        unblockButton.do {
-            $0.setTitle(StringLiterals.MyPage.BlockUser.buttonTitle, for: .normal)
-            $0.setTitleColor(.wssGray300, for: .normal)
-            $0.layer.cornerRadius = 35/2
-            $0.titleLabel?.applyWSSFont(.body3, with: StringLiterals.MyPage.BlockUser.buttonTitle)
-            $0.layer.backgroundColor = UIColor.wssGray50.cgColor
+        unblockLabel.do {
+            $0.applyWSSFont(.body3, with: StringLiterals.MyPage.BlockUser.buttonTitle)
+            $0.textColor = .wssGray300
+            $0.textAlignment = .center
+            $0.backgroundColor = .wssGray50
+            $0.layer.cornerRadius = 14
+            $0.layer.masksToBounds = true
             $0.isUserInteractionEnabled = true
         }
     }
     
-    
     private func setHierarchy() {
         contentView.addSubviews(userImageView,
                                 userNicknameLabel,
-                                unblockButton)
+                                unblockLabel)
     }
     
     
@@ -84,7 +93,7 @@ final class MyPageBlockUserTableViewCell: UITableViewCell {
             $0.leading.equalTo(userImageView.snp.trailing).offset(14)
         }
         
-        unblockButton.snp.makeConstraints {
+        unblockLabel.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.trailing.equalToSuperview().inset(20)
             $0.width.equalTo(77)
@@ -95,7 +104,7 @@ final class MyPageBlockUserTableViewCell: UITableViewCell {
     //MARK: - Data
     
     func bindData(image: String, nickname: String) {
-        userImageView.kfSetImage(url: image)
+        userImageView.kfSetImage(url: makeBucketImageURLString(path: image))
         userNicknameLabel.applyWSSFont(.body2, with: nickname)
     }
 }

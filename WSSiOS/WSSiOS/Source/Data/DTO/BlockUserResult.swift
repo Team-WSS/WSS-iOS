@@ -17,3 +17,7 @@ struct BlockUser: Codable {
     var nickname: String
     var avatarImage: String
 }
+
+struct BlockUserId: Codable {
+    var userId: Int
+}

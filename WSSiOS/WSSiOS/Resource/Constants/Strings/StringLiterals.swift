@@ -175,6 +175,14 @@ enum StringLiterals {
             static let genrePreferenceTitle = "장르 취향"
             static let novelPreferenceTitle = "작품 취향"
             static let novelPreferenceLabel = "가 매력적인 작품"
+            static let privateLabel = "님의 프로필은\n비공개 상태예요"
+            static let unknownUserNickname = "(알 수 없음)"
+            static let unknownAlertContent = "웹소소와 계약을 종료하고 떠난 독자예요"
+            static let unknownAlertButtonTitle = "확인"
+            static let myProfileLibrary = "내 서재"
+            static let otherProfileLibrary = "서재"
+            static let myProfileFeed = "내 활동"
+            static let otherProfileFeed = "활동"
         }
         
         enum Character {
@@ -228,6 +236,7 @@ enum StringLiterals {
         enum BlockUser {
             static let buttonTitle = "차단 해제"
             static let emptyLabel = "차단한 유저가 없어요"
+            static let toastText = "차단하기"
         }
         
         enum DeleteIDWarning {
