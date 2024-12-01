@@ -23,6 +23,7 @@ final class FeedDetailViewModel: ViewModelType {
     let commentsData = BehaviorRelay<[FeedComment]>(value: [])
     private let myProfileData = PublishRelay<MyProfileResult>()
     private let replyCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
+    private var feedUserId: Int?
     
     // 작품 연결
     private var novelId: Int?
@@ -85,6 +86,7 @@ final class FeedDetailViewModel: ViewModelType {
         let backButtonDidTap: ControlEvent<Void>
         let replyCollectionViewContentSize: Observable<CGSize?>
         let likeButtonDidTap: Observable<UITapGestureRecognizer>
+        let userProfileViewDidTap: Observable<UITapGestureRecognizer>
         
         // 작품 연결
         let linkNovelViewDidTap: Observable<UITapGestureRecognizer>
@@ -104,7 +106,7 @@ final class FeedDetailViewModel: ViewModelType {
         let backgroundViewDidTap: ControlEvent<UITapGestureRecognizer>
         
         // 댓글 드롭다운
-        let profileViewDidTap: Observable<Int>
+        let profileViewDidTap: Observable<(Int, Int, Bool)>
         let commentdotsButtonDidTap: Observable<(Int, Bool)>
         let commentDropdownDidTap: Observable<DropdownButtonType>
         let reloadComments: Observable<Void>
@@ -175,6 +177,7 @@ final class FeedDetailViewModel: ViewModelType {
                 owner.feedData.onNext(feed)
                 owner.likeButtonState.accept(feed.isLiked)
                 owner.likeCount.accept(feed.likeCount)
+                owner.feedUserId = feed.userId
                 owner.novelId = feed.novelId
                 owner.commentCount.accept(feed.commentCount)
                 owner.isMyFeed.accept(feed.isMyFeed)
@@ -209,6 +212,15 @@ final class FeedDetailViewModel: ViewModelType {
                     })
             }
             .subscribe()
+            .disposed(by: disposeBag)
+        
+        input.userProfileViewDidTap
+            .subscribe(with: self, onNext: { owner, _ in
+                guard let feedUserId = owner.feedUserId else { return }
+                if !owner.isMyFeed.value {
+                    owner.pushToUserPageViewController.accept(feedUserId)
+                }
+            })
             .disposed(by: disposeBag)
         
         // 작품 연결
@@ -343,8 +355,15 @@ final class FeedDetailViewModel: ViewModelType {
         
         // 댓글 드롭다운
         input.profileViewDidTap
-            .subscribe(with: self, onNext: { owner, userId in
-                owner.pushToUserPageViewController.accept(userId)
+            .subscribe(with: self, onNext: { owner, data in
+                let (commentId, commentUserId ,isMyComment) = data
+                if owner.commentsData.value.firstIndex(where: { $0.commentId == commentId }) != nil {
+                    if !isMyComment {
+                        owner.pushToUserPageViewController.accept(commentUserId)
+                    }
+                }
+                owner.selectedCommentId = commentId
+                owner.isMyComment = isMyComment
             })
             .disposed(by: disposeBag)
         

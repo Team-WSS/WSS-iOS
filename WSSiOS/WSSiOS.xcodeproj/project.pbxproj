@@ -311,6 +311,7 @@
 		B974EA472CC902E800169639 /* DetailSearchResultHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B974EA462CC902E800169639 /* DetailSearchResultHeaderView.swift */; };
 		B974EA492CC905BB00169639 /* DetailSearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B974EA482CC905BB00169639 /* DetailSearchResultViewController.swift */; };
 		B98748632C3581A70039ACE5 /* NormalSearchCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E565FB2C04526000DB51FF /* NormalSearchCollectionViewCell.swift */; };
+		B99E8B042CFB7ECB00004A06 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = B99E8B032CFB7ECB00004A06 /* Config.xcconfig */; };
 		B9A0FD6C2BFCF0080004252E /* HomeRealtimePopularCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A0FD6B2BFCF0080004252E /* HomeRealtimePopularCollectionViewCell.swift */; };
 		B9AC1BD02BF0B33E006EDE92 /* HomeNoticeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AC1BCF2BF0B33E006EDE92 /* HomeNoticeViewController.swift */; };
 		B9AC1BD22BF0B485006EDE92 /* HomeNoticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AC1BD12BF0B485006EDE92 /* HomeNoticeView.swift */; };
@@ -330,6 +331,7 @@
 		B9E566032C0452C600DB51FF /* NormalSearchHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E566022C0452C600DB51FF /* NormalSearchHeaderView.swift */; };
 		B9E566052C0452E500DB51FF /* NormalSearchResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E566042C0452E500DB51FF /* NormalSearchResultView.swift */; };
 		B9F7401D2C047E360018D0C6 /* NormalSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9F7401C2C047E360018D0C6 /* NormalSearchViewModel.swift */; };
+		B9FDFB4C2CFC03440034923C /* MyPageStickyHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40746732CE8F84A005D75D5 /* MyPageStickyHeaderView.swift */; };
 		B9FE59642BF11955005815AF /* InduceLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FE59632BF11955005815AF /* InduceLoginView.swift */; };
 		C9063A972BD3F868006AD8F9 /* HomeRealtimePopularView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9063A962BD3F868006AD8F9 /* HomeRealtimePopularView.swift */; };
 		C95EADD92BD4FE4C0060CF1A /* HomeRealTimePopularFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95EADD82BD4FE4C0060CF1A /* HomeRealTimePopularFeedView.swift */; };
@@ -763,6 +765,7 @@
 		B974EA442CC9029100169639 /* DetailSearchResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailSearchResultView.swift; sourceTree = "<group>"; };
 		B974EA462CC902E800169639 /* DetailSearchResultHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailSearchResultHeaderView.swift; sourceTree = "<group>"; };
 		B974EA482CC905BB00169639 /* DetailSearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailSearchResultViewController.swift; sourceTree = "<group>"; };
+		B99E8B032CFB7ECB00004A06 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		B9A0FD6B2BFCF0080004252E /* HomeRealtimePopularCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRealtimePopularCollectionViewCell.swift; sourceTree = "<group>"; };
 		B9AC1BCF2BF0B33E006EDE92 /* HomeNoticeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNoticeViewController.swift; sourceTree = "<group>"; };
 		B9AC1BD12BF0B485006EDE92 /* HomeNoticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNoticeView.swift; sourceTree = "<group>"; };
@@ -1167,6 +1170,7 @@
 		2CD2291A2B42E685005400BE /* WSSiOS */ = {
 			isa = PBXGroup;
 			children = (
+				B99E8B032CFB7ECB00004A06 /* Config.xcconfig */,
 				CD514C8D2CD5D6DB007A27A8 /* WSSiOS.entitlements */,
 				2CD229532B42EA12005400BE /* App */,
 				2CD229482B42E92F005400BE /* Resource */,
