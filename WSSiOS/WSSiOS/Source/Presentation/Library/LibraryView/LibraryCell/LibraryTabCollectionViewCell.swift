@@ -15,8 +15,7 @@ import Then
 final class LibraryTabCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Properties
-    
-    static let identifier: String = "LibraryTabCollectionViewCell"
+
     private let disposeBag = DisposeBag()
     
     //MARK: - Components
@@ -72,7 +71,7 @@ final class LibraryTabCollectionViewCell: UICollectionViewCell {
         }
         
         libraryTabUnderView.snp.makeConstraints() {
-            $0.width.equalTo(libraryTabLabel.snp.width)
+            $0.width.equalToSuperview()
             $0.centerX.bottom.equalToSuperview()
             $0.height.equalTo(3)
         }

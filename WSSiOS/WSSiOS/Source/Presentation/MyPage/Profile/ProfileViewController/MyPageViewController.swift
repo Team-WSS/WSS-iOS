@@ -131,7 +131,8 @@ final class MyPageViewController: UIViewController {
             genrePreferenceButtonDidTap: genrePreferenceButtonDidTap,
             libraryButtonDidTap: libraryButtonDidTap,
             feedButtonDidTap: feedButtonDidTap,
-            alertButtonDidTap: alertButtonRelay)
+            alertButtonDidTap: alertButtonRelay,
+            inventoryButtonDidTap: rootView.myPageLibraryView.inventoryView.arrowButton.rx.tap)
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -311,6 +312,14 @@ final class MyPageViewController: UIViewController {
 //                owner.rootView.myPageFeedView.isEmprtyView(isEmpty: feeds.isEmpty)
             })
             .disposed(by: disposeBag)
+        
+        output.pushToLibraryViewController
+                    .observe(on: MainScheduler.instance)
+                    .bind(with: self, onNext: { owner, _ in
+                        let userId = UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)
+                        owner.pushToLibraryViewController(userId: userId)
+                    })
+                    .disposed(by: disposeBag)
     }
 }
 

@@ -24,6 +24,11 @@ protocol UserService {
     func patchUserProfile(updatedFields: [String: Any]) -> Single<Void>
     func getNicknameisValid(nickname: String) -> Single<OnboardingResult>
     func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Single<MyFeedResult>
+    func getUserNovelList(userId: Int,
+                              readStatus: String,
+                              lastUserNovelId: Int,
+                              size: Int,
+                              sortType: String) -> Single<UserNovelList>
 }
 
 final class DefaultUserService: NSObject, Networking {
@@ -42,6 +47,15 @@ final class DefaultUserService: NSObject, Networking {
         return [ URLQueryItem(name: "isProfilePublic",
                               value: String(isProfilePublic))]
     }
+    
+    func makeNovelListQuery(readStatus: String, lastUserNovelId: Int, size: Int, sortType: String) -> [URLQueryItem] {
+            return [
+                URLQueryItem(name: "readStatus", value: readStatus),
+                URLQueryItem(name: "lastUserNovelId", value: String(describing: lastUserNovelId)),
+                URLQueryItem(name: "size", value: String(describing: size)),
+                URLQueryItem(name: "sortType", value: sortType)
+            ]
+        }
 }
 
 extension DefaultUserService: UserService {
@@ -333,4 +347,26 @@ extension DefaultUserService: UserService {
             return Single.error(error)
         }
     }
+    
+    func getUserNovelList(userId: Int, readStatus: String, lastUserNovelId: Int, size: Int, sortType: String) -> RxSwift.Single<UserNovelList> {
+            do {
+                let request = try makeHTTPRequest(method: .get,
+                                                  path: URLs.User.getUserNovel(userId: userId),
+                                                  queryItems: makeNovelListQuery(readStatus: readStatus,
+                                                                                 lastUserNovelId: lastUserNovelId,
+                                                                                 size: size,
+                                                                                 sortType: sortType),
+                                                  headers: APIConstants.accessTokenHeader,
+                                                  body: nil)
+
+                NetworkLogger.log(request: request)
+
+                return tokenCheckURLSession.rx.data(request: request)
+                    .map { try self.decode(data: $0,
+                                           to: UserNovelList.self) }
+                    .asSingle()
+            } catch {
+                return Single.error(error)
+            }
+        }
 }

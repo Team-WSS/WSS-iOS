@@ -17,7 +17,8 @@ final class LibraryEmptyView: UIView {
     private let emptyStackView = UIStackView()
     private let emptyImageView = UIImageView()
     private let emptyTitleLabel = UILabel()
-    public lazy var libraryRegisterButton = UIButton()
+    var libraryLookForNovelButton = UIButton()
+    private var libraryLookForNovelButtonLabel = UILabel()
     
     // MARK: - Life Cycle
     
@@ -45,34 +46,34 @@ final class LibraryEmptyView: UIView {
             $0.spacing = 8
             
             emptyImageView.do {
-                $0.image = .register
+                $0.image = .icGenreDefault
             }
             
             emptyTitleLabel.do {
-                $0.text = StringLiterals.Library.empty
-                $0.makeAttribute(with: StringLiterals.Library.empty)?
-                    .kerning(kerningPixel: -0.8)
-                    .applyAttribute()
-                $0.font = .Body1
+                $0.applyWSSFont(.body1, with: StringLiterals.Library.empty)
                 $0.textColor = .wssGray200
                 $0.textAlignment = .center
             }
         }
         
-        libraryRegisterButton.do {
-            $0.setTitle(StringLiterals.Library.register, for: .normal)
-            $0.setTitleColor(.wssPrimary100, for: .normal)
-            $0.titleLabel?.font = .Title1
+        libraryLookForNovelButton.do {
             $0.layer.backgroundColor = UIColor.wssPrimary50.cgColor
             $0.layer.cornerRadius = 12
+        }
+        
+        libraryLookForNovelButtonLabel.do {
+            $0.applyWSSFont(.title1, with: StringLiterals.Library.lookForNovel)
+            $0.textColor = .wssPrimary100
+            $0.isUserInteractionEnabled = true
         }
     }
 
     private func setHierarchy() {
         self.addSubviews(emptyStackView,
-                         libraryRegisterButton)
+                         libraryLookForNovelButton)
         emptyStackView.addArrangedSubviews(emptyImageView,
                                            emptyTitleLabel)
+        libraryLookForNovelButton.addSubview(libraryLookForNovelButtonLabel)
     }
     
     private func setLayout() {
@@ -83,14 +84,18 @@ final class LibraryEmptyView: UIView {
         }
         
         emptyImageView.snp.makeConstraints() {
-            $0.size.equalTo(48)
+            $0.height.equalTo(48)
         }
         
-        libraryRegisterButton.snp.makeConstraints() {
+        libraryLookForNovelButton.snp.makeConstraints() {
             $0.top.equalTo(emptyStackView.snp.bottom).offset(45)
             $0.centerX.equalToSuperview()
             $0.leading.equalToSuperview().inset(90)
             $0.height.equalTo(53)
+            
+            libraryLookForNovelButtonLabel.snp.makeConstraints {
+                $0.center.equalToSuperview()
+            }
         }
     }
 }

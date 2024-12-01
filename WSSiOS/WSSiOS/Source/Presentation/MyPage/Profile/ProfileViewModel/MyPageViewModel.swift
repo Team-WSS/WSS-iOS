@@ -50,6 +50,7 @@ final class MyPageViewModel: ViewModelType {
         let libraryButtonDidTap: Observable<Bool>
         let feedButtonDidTap: Observable<Bool>
         let alertButtonDidTap: PublishRelay<Bool>
+        let inventoryButtonDidTap: ControlEvent<Void>
     }
     
     struct Output {
@@ -81,6 +82,7 @@ final class MyPageViewModel: ViewModelType {
         let showUnknownUserAlert = PublishRelay<Void>()
         let isEmptyFeed = PublishRelay<Void>()
         let updateButtonWithLibraryView = BehaviorRelay<Bool>(value: true)
+        let pushToLibraryViewController = PublishRelay<Void>()
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -294,6 +296,12 @@ final class MyPageViewModel: ViewModelType {
                 output.popViewController.accept(())
             })
             .disposed(by: disposeBag)
+        
+        input.inventoryButtonDidTap
+                    .bind(with: self, onNext: { owner, _ in
+                        output.pushToLibraryViewController.accept(())
+                    })
+                    .disposed(by: disposeBag)
         
         return output
     }

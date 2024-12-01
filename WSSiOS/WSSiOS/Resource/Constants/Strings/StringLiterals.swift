@@ -49,7 +49,7 @@ enum StringLiterals {
     
     enum Navigation {
         enum Title {
-            static let library = "내 서재"
+            static let library = "보관함"
             static let record = "내 기록"
             static let search = "검색"
             static let myPage = "마이페이지"
@@ -159,6 +159,12 @@ enum StringLiterals {
         }
     }
     
+    enum ReviewerStatus: String, CaseIterable {
+        case interest = "관심"
+        case watching = "보는 중"
+        case watched = "봤어요"
+        case quit = "하차"
+    }
     
     enum MyPage {
         enum Modal {
@@ -297,12 +303,12 @@ enum StringLiterals {
         enum isVisiableProfile {
             static let completeTitle = "완료"
             static let isPrivateProfile = "비공개"
-        }        
+        }
     }
     
     enum Library {
-        static let empty = "아직 서재가 비어있네요!"
-        static let register = "웹소설 등록하기"
+        static let empty = "보관함이 비어있어요"
+        static let lookForNovel = "웹소설 찾으러 가기"
     }
     
     enum Record {
@@ -312,12 +318,11 @@ enum StringLiterals {
         }
     }
     
-    enum TabBar: String, CaseIterable {
-        case all = "전체"
-        case finish = "읽음"
-        case reading = "읽는 중"
-        case drop = "하차"
-        case wish = "읽고 싶음"
+    enum LibraryReadStatus: String, CaseIterable {
+        case interst = "INTEREST"
+        case watching = "WATCHING"
+        case watched = "WATCHED"
+        case quit = "QUIT"
     }
     
     enum ReadStatus: String, CaseIterable {
@@ -352,7 +357,7 @@ enum StringLiterals {
         var lastId: Int {
             switch self {
             case .newest:
-                return 999999
+                return 0
             case .oldest:
                 return 0
             }
@@ -396,7 +401,7 @@ enum StringLiterals {
             static let textFieldPlaceholder = "닉네임"
             static let duplicateCheckButton = "중복확인"
         }
-    
+        
         enum Login {
             static let skip = "회원가입 없이 둘러보기"
         }

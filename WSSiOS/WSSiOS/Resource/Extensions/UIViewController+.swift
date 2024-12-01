@@ -434,6 +434,17 @@ extension UIViewController {
                     blocksService: DefaultBlocksService())))
         self.navigationController?.pushViewController(viewController, animated: true)
     }
+    
+    func pushToLibraryViewController(userId: Int) {
+            let viewController = LibraryViewController(
+                libraryViewModel: LibraryViewModel(
+                    userRepository: DefaultUserRepository(
+                        userService: DefaultUserService(),
+                        blocksService: DefaultBlocksService()),
+                    userId: userId))
+
+            self.navigationController?.pushViewController(viewController, animated: true)
+        }
 }
 
 extension UIViewController: @retroactive UIGestureRecognizerDelegate {
