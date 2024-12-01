@@ -18,7 +18,7 @@ final class FeedEditContentView: UIView {
     private let essentialImageView = UIImageView()
     private let spoilerLabel = UILabel()
     let spoilerButton = WSSToggleButton()
-    private let feedTextWrapperView = UIView()
+    let feedTextWrapperView = UIView()
     let feedTextView = UITextView()
     let placeholderLabel = UILabel()
     private let letterCountLabel = UILabel()
