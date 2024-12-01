@@ -9,35 +9,37 @@ import UIKit
 
 import RxSwift
 import RxCocoa
-import SnapKit
-import Then
 
 final class LibraryViewController: UIViewController {
     
     //MARK: - Properties
     
-    private let userNovelListRepository: DefaultUserNovelRepository
+    private let libraryViewModel: LibraryViewModel
     
     private let disposeBag = DisposeBag()
-    private let tabBarList = StringLiterals.TabBar.allCases.map { $0.rawValue }
-    private let readStatusList = StringLiterals.ReadStatus.allCases.map { $0.rawValue }
     private let sortTypeList = StringLiterals.Alignment.self
+    
+    private let readStatusList = StringLiterals.LibraryReadStatus.allCases.map { $0.rawValue }
     private var currentPageIndex = 0
     
-    //MARK: - Components
+    //UI 관련
+    let libraryPageBar = LibraryPageBar()
+    let libraryDescriptionView = LibraryDescriptionView()
+    let libraryListView = LibraryListView()
+    var libraryPages = [LibraryChildViewController]()
+    let backButton = UIButton()
+    
+    //MARK: - UI Components
     
     private let libraryPageViewController = UIPageViewController(transitionStyle: .scroll,
                                                                  navigationOrientation: .horizontal,
                                                                  options: nil)
-    private let libraryPageBar = LibraryPageBar()
-    private let libraryDescriptionView = LibraryDescriptionView()
-    private let libraryListView = LibraryListView()
-    private lazy var libraryPages = [LibraryBaseViewController]()
+    
     
     // MARK: - Life Cycle
     
-    init(userNovelListRepository: DefaultUserNovelRepository) {
-        self.userNovelListRepository = userNovelListRepository
+    init(libraryViewModel: LibraryViewModel) {
+        self.libraryViewModel = libraryViewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -48,24 +50,22 @@ final class LibraryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        preparationSetNavigationBar(title: StringLiterals.Navigation.Title.library,
-                                    left: nil,
-                                    right: nil)
-        setupPages()
         setUI()
         setHierarchy()
+        setLayout()
+        
         delegate()
         register()
-        bindCell()
-        setLayout()
-        setAction()
-        addNotificationCenter()
+        bindViewModel()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         showTabBar()
+        preparationSetNavigationBar(title: StringLiterals.Navigation.Title.library,
+                                    left: backButton,
+                                    right: nil)
     }
     
     //MARK: - Bind
@@ -73,28 +73,7 @@ final class LibraryViewController: UIViewController {
     private func register() {
         libraryPageBar.libraryTabCollectionView
             .register(LibraryTabCollectionViewCell.self,
-                      forCellWithReuseIdentifier: "LibraryTabCollectionViewCell")
-    }
-    
-    private func bindCell() {
-        Observable.just(tabBarList)
-            .bind(to: libraryPageBar.libraryTabCollectionView.rx.items(
-                cellIdentifier: "LibraryTabCollectionViewCell",
-                cellType: LibraryTabCollectionViewCell.self)) { (row, element, cell) in
-                    cell.bindData(data: element)
-                }
-                .disposed(by: disposeBag)
-        
-        libraryPageBar.libraryTabCollectionView.rx.itemSelected
-            .map { indexPath in
-                return indexPath.row
-            }
-            .bind(to: self.libraryPageBar.selectedTabIndex)
-            .disposed(by: disposeBag)
-        
-        libraryPageBar.libraryTabCollectionView.selectItem(at: IndexPath(item: 0, section: 0),
-                                                           animated: true,
-                                                           scrollPosition: [])
+                      forCellWithReuseIdentifier: LibraryTabCollectionViewCell.cellIdentifier)
     }
     
     private func delegate() {
@@ -102,37 +81,59 @@ final class LibraryViewController: UIViewController {
         libraryPageViewController.dataSource = self
     }
     
-    private func setupPages() {
-        for i in 0..<readStatusList.count {
-            let sortTypeList = sortTypeList.newest
-            let viewController = LibraryBaseViewController(
-                userNovelListRepository: DefaultUserNovelRepository(
-                    userNovelService: DefaultUserNovelService()),
-                readStatus: readStatusList[i],
-                lastUserNovelId: sortTypeList.lastId,
-                size: sortTypeList.sizeData,
-                sortType: sortTypeList.sortType)
-            
-            viewController.delegate = self
-            libraryPages.append(viewController)
-        }
+    private func bindViewModel() {
+        let input = LibraryViewModel.Input(
+            tabBarDidTap:libraryPageBar.libraryTabCollectionView.rx.itemSelected,
+            listButtonDidTap: libraryDescriptionView.libraryNovelListButton.rx.tap,
+            newestButtonDidTap: libraryListView.libraryNewestButton.rx.tap,
+            oldestButtonDidTap: libraryListView.libraryOldestButton.rx.tap,
+            backButtonDidTap: backButton.rx.tap,
+            novelCountNotification: NotificationCenter.default.rx.notification(Notification.Name("NovelCount")).asObservable()
+        )
         
-        for (index, viewController) in libraryPages.enumerated() {
-            viewController.view.tag = index
-        }
+        let output = libraryViewModel.transform(from: input, disposeBag: disposeBag)
         
-        libraryPageViewController.setViewControllers([libraryPages[0]],
-                                                     direction: .forward,
-                                                     animated: false,
-                                                     completion: nil)
-    }
-    
-    //MARK: - Actions
-    
-    private func setAction() {
-        libraryPageBar.selectedTabIndex
-            .subscribe(with: self, onNext: { owner, index in 
-                let direction: UIPageViewController.NavigationDirection = index > (owner.libraryPageViewController.viewControllers?.first?.view.tag ?? 0) ? .forward : .reverse
+        output.setUpPageViewController
+            .subscribe(with: self, onNext: { owner, userId in
+                owner.addChild(owner.libraryPageViewController)
+                owner.view.addSubviews(owner.libraryPageViewController.view)
+                owner.libraryPageViewController.didMove(toParent: self)
+                
+                for i in 0..<owner.readStatusList.count {
+                    let sortTypeList = owner.sortTypeList.newest
+                    let sortTypeQuery = ShowNovelStatus(readStatus: owner.readStatusList[i],
+                                                        lastUserNovelId: sortTypeList.lastId,
+                                                        size: sortTypeList.sizeData,
+                                                        sortType: sortTypeList.sortType)
+                    let viewController = owner.libraryChildViewController(userId: userId, data: sortTypeQuery)
+                    owner.libraryPages.append(viewController)
+                }
+                
+                for (index, viewController) in owner.libraryPages.enumerated() {
+                    viewController.view.tag = index
+                }
+                
+                owner.libraryPageViewController.setViewControllers([owner.libraryPages[0]],
+                                                                   direction: .forward,
+                                                                   animated: false,
+                                                                   completion: nil)
+            })
+            .disposed(by: disposeBag)
+        
+        output.bindCell
+            .bind(to: libraryPageBar.libraryTabCollectionView.rx.items(
+                cellIdentifier: LibraryTabCollectionViewCell.cellIdentifier,
+                cellType: LibraryTabCollectionViewCell.self)) { (row, element, cell) in
+                    cell.bindData(data: element)
+                }
+                .disposed(by: disposeBag)
+        
+        output.moveToTappedTabBar
+            .subscribe(with: self, onNext: { owner, index in
+                guard index >= 0, index < owner.libraryPages.count else { return }
+                
+                let currentTag = owner.libraryPageViewController.viewControllers?.first?.view.tag ?? 0
+                let direction: UIPageViewController.NavigationDirection = index > currentTag ? .forward : .reverse
                 owner.libraryPageViewController.setViewControllers([owner.libraryPages[index]],
                                                                    direction: direction,
                                                                    animated: true,
@@ -140,45 +141,53 @@ final class LibraryViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        libraryDescriptionView.libraryNovelListButton.rx.tap
-            .bind(with: self, onNext: { owner, _ in 
-                owner.libraryListView.isHidden.toggle()
+        output.showListView
+            .bind(with: self, onNext: { owner, isShown in
+                owner.libraryListView.isHidden = isShown
             })
             .disposed(by: disposeBag)
         
-        libraryListView.libraryNewestButton.rx.tap
-            .bind(with: self) { owner , _ in
-                let sortTypeList = owner.sortTypeList.newest
-                owner.updatePages(sortType: sortTypeList)
-                owner.resetUI(title: sortTypeList.title)
-                owner.libraryListView.isHidden.toggle()
-            }
+        output.changeListType
+            .bind(with: self, onNext: { owner, listType in
+                owner.resetUI(title: listType.title)
+            })
             .disposed(by: disposeBag)
         
-        libraryListView.libraryOldestButton.rx.tap
-            .bind(with: self) { owner , _ in
-                let sortTypeList = owner.sortTypeList.oldest
-                owner.updatePages(sortType: sortTypeList)
-                owner.resetUI(title: sortTypeList.title)
-                owner.libraryListView.isHidden.toggle()
-            }
+        output.updateChildViewController
+            .bind(with: self, onNext: { owner, sortType in
+                guard owner.currentPageIndex >= 0 && owner.currentPageIndex < owner.libraryPages.count else { return }
+                let viewController = owner.libraryPages[owner.currentPageIndex]
+                let sortTypeQuery = ShowNovelStatus(readStatus: owner.readStatusList[owner.currentPageIndex],
+                                                    lastUserNovelId: sortType.lastId,
+                                                    size: sortType.sizeData,
+                                                    sortType: sortType.sortType)
+                viewController.updateNovelListRelay.accept(sortTypeQuery)
+            })
             .disposed(by: disposeBag)
-    }
-    
-    private func updatePages(sortType: StringLiterals.Alignment) {
-        let viewController = libraryPages[currentPageIndex]
-        viewController.updateNovelList(readStatus: readStatusList[currentPageIndex],
-                                       lastUserNovelId: sortType.lastId,
-                                       size: sortType.sizeData,
-                                       sortType: sortType.sortType)
+        
+        output.popLastViewController
+            .bind(with: self, onNext: { owner, _ in
+                owner.popToLastViewController()
+            })
+            .disposed(by: disposeBag)
+        
+        output.changeNovelCount
+            .bind(with: self, onNext: { owner, count in
+                owner.libraryDescriptionView.updateNovelCount(count: count)
+            })
+            .disposed(by: disposeBag)
+        
+        libraryPageBar.libraryTabCollectionView.selectItem(at: IndexPath(item: 0, section: 0),
+                                                                         animated: true,
+                                                                         scrollPosition: [])
     }
 }
 
 //MARK: - Set PageController
 
 extension LibraryViewController : UIPageViewControllerDelegate {
-    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) { 
-        if completed, let currentViewController = pageViewController.viewControllers?.first, let index = libraryPages.firstIndex(of: currentViewController as! LibraryBaseViewController) {
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        if completed, let currentViewController = pageViewController.viewControllers?.first, let index = libraryPages.firstIndex(of: currentViewController as! LibraryChildViewController) {
             libraryPageBar.libraryTabCollectionView.selectItem(at: IndexPath(item: index, section: 0), animated: true, scrollPosition: .centeredHorizontally)
             currentPageIndex = index
         }
@@ -187,23 +196,61 @@ extension LibraryViewController : UIPageViewControllerDelegate {
 
 extension LibraryViewController: UIPageViewControllerDataSource {
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        if let currentIndex = libraryPages.firstIndex(of: viewController as! LibraryBaseViewController), currentIndex > 0 {
-            return libraryPages[currentIndex - 1]
-        }
-        return nil
+        guard let currentIndex = libraryPages.firstIndex(of: viewController as! LibraryChildViewController) else { return nil }
+        guard currentIndex > 0 else { return nil }
+        
+        return libraryPages[currentIndex - 1]
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        if let currentIndex = libraryPages.firstIndex(of: viewController as! LibraryBaseViewController), currentIndex < libraryPages.count - 1 {
+        if let currentIndex = libraryPages.firstIndex(of: viewController as! LibraryChildViewController), currentIndex < libraryPages.count - 1 {
             return libraryPages[currentIndex + 1]
         }
         return nil
     }
 }
 
-extension LibraryViewController: NovelDelegate {
-    func sendData(data: Int) {
-        libraryDescriptionView.libraryNovelCountLabel.text = "\(data)개"
+extension LibraryViewController {
+    
+    //MARK: - Notification
+    
+    private func addNotificationCenter() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.showNovelInfo(_:)),
+            name: NSNotification.Name("ShowNovelInfo"),
+            object: nil
+        )
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.showNovelMemo(_:)),
+            name: NSNotification.Name("ShowNovelMemo"),
+            object: nil
+        )
+    }
+    
+    @objc
+    func showNovelInfo(_ notification: Notification) {
+        
+        guard let userNovelId = notification.object as? Int else { return }
+        self.moveToNovelDetailViewController(userNovelId: userNovelId)
+    }
+    
+    @objc
+    func showNovelMemo(_ notification: Notification) {
+        guard let userNovelId = notification.object as? Int else { return }
+        self.moveToNovelDetailViewController(userNovelId: userNovelId)
+    }
+    
+    private func libraryChildViewController(userId: Int, data: ShowNovelStatus) -> LibraryChildViewController {
+        return LibraryChildViewController(
+            libraryViewModel: LibraryChildViewModel(
+                userRepository: DefaultUserRepository(
+                    userService: DefaultUserService(),
+                    blocksService: DefaultBlocksService()),
+                initData: data,
+                userId: userId))
     }
 }
 
@@ -215,6 +262,9 @@ extension LibraryViewController {
         self.view.backgroundColor = .wssWhite
         
         libraryListView.isHidden = true
+        backButton.do {
+            $0.setImage(.icNavigateLeft.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray300), for: .normal)
+        }
     }
     
     private func setHierarchy() {
@@ -257,47 +307,15 @@ extension LibraryViewController {
             let title = title
             var attString = AttributedString(title)
             attString.font = UIFont.Label1
-            attString.foregroundColor = UIColor.wssGray300
+            attString.foregroundColor = UIColor.Gray300
             
             var configuration = UIButton.Configuration.filled()
             configuration.attributedTitle = attString
-            configuration.image = .icDropDown
+            configuration.image = UIImage.icDropDown
             configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 0)
             configuration.imagePlacement = .trailing
             configuration.baseBackgroundColor = UIColor.clear
             $0.configuration = configuration
         }
     }
-    
-    //MARK: - Notification
-    
-    private func addNotificationCenter() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(self.showNovelInfo(_:)),
-            name: NSNotification.Name("ShowNovelInfo"),
-            object: nil
-        )
-        
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(self.showNovelMemo(_:)),
-            name: NSNotification.Name("ShowNovelMemo"),
-            object: nil
-        )
-    }
-    
-    @objc
-    func showNovelInfo(_ notification: Notification) {
-        guard let userNovelId = notification.object as? Int else { return }
-        self.moveToNovelDetailViewController(userNovelId: userNovelId)
-    }
-    
-    @objc
-    func showNovelMemo(_ notification: Notification) {
-        guard let userNovelId = notification.object as? Int else { return }
-        self.moveToNovelDetailViewController(userNovelId: userNovelId)
-    }
 }
-
-

@@ -86,6 +86,8 @@ final class MyPageViewController: UIViewController {
             forCellWithReuseIdentifier: MyPageNovelPreferencesCollectionViewCell.cellIdentifier)
         
         rootView.myPageLibraryView.genrePrefrerencesView.otherGenreView.genreTableView.register(MyPageGenrePreferencesOtherTableViewCell.self, forCellReuseIdentifier: MyPageGenrePreferencesOtherTableViewCell.cellIdentifier)
+        
+        rootView.myPageFeedView.feedListView.feedTableView.register(NovelDetailFeedTableViewCell.self, forCellReuseIdentifier: NovelDetailFeedTableViewCell.cellIdentifier)
     }
     
     private func delegate() {
@@ -94,6 +96,10 @@ final class MyPageViewController: UIViewController {
             .disposed(by: disposeBag)
         
         rootView.myPageLibraryView.genrePrefrerencesView.otherGenreView.genreTableView.delegate = self
+        
+        rootView.myPageFeedView.feedListView.feedTableView.rx
+            .setDelegate(self)
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Bind
@@ -125,7 +131,8 @@ final class MyPageViewController: UIViewController {
             genrePreferenceButtonDidTap: genrePreferenceButtonDidTap,
             libraryButtonDidTap: libraryButtonDidTap,
             feedButtonDidTap: feedButtonDidTap,
-            alertButtonDidTap: alertButtonRelay)
+            alertButtonDidTap: alertButtonRelay,
+            inventoryButtonDidTap: rootView.myPageLibraryView.inventoryView.arrowButton.rx.tap)
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -195,6 +202,7 @@ final class MyPageViewController: UIViewController {
             .bind(with: self, onNext: { owner, data in
                 let (isPrivate, nickname) = data
                 owner.rootView.myPageLibraryView.isPrivateUserView(isPrivate: isPrivate, nickname: nickname)
+//                owner.rootView.myPageFeedView.isPrivateUserView(isPrivate: isPrivate, nickname: nickname)
                 
             })
             .disposed(by: disposeBag)
@@ -288,6 +296,30 @@ final class MyPageViewController: UIViewController {
                 .disposed(by: owner.disposeBag)
             })
             .disposed(by: disposeBag)
+        
+        output.bindFeedData
+            .observe(on: MainScheduler.instance)
+            .bind(to: rootView.myPageFeedView.feedListView.feedTableView.rx.items(
+                cellIdentifier: NovelDetailFeedTableViewCell.cellIdentifier,
+                cellType: NovelDetailFeedTableViewCell.self)) { _, element, cell in
+                    cell.bindProfileData(feed: element)
+                }
+                .disposed(by: disposeBag)
+        
+        output.bindFeedData
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, feeds in
+//                owner.rootView.myPageFeedView.isEmprtyView(isEmpty: feeds.isEmpty)
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushToLibraryViewController
+                    .observe(on: MainScheduler.instance)
+                    .bind(with: self, onNext: { owner, _ in
+                        let userId = UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)
+                        owner.pushToLibraryViewController(userId: userId)
+                    })
+                    .disposed(by: disposeBag)
     }
 }
 

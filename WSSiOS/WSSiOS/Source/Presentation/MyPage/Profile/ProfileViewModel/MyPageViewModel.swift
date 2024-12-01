@@ -33,7 +33,6 @@ final class MyPageViewModel: ViewModelType {
         } else {
             self.profileId = profileId
         }
-        
     }
     
     struct Input {
@@ -51,6 +50,7 @@ final class MyPageViewModel: ViewModelType {
         let libraryButtonDidTap: Observable<Bool>
         let feedButtonDidTap: Observable<Bool>
         let alertButtonDidTap: PublishRelay<Bool>
+        let inventoryButtonDidTap: ControlEvent<Void>
     }
     
     struct Output {
@@ -74,11 +74,15 @@ final class MyPageViewModel: ViewModelType {
                                                                                       watchingNovelCount: 0,
                                                                                       watchedNovelCount: 0,
                                                                                       quitNovelCount: 0))
+        let bindFeedData = BehaviorRelay<[FeedCellData]>(value: [])
         let showGenreOtherView = BehaviorRelay<Bool>(value: false)
         let showToastView = PublishRelay<String>()
         
         let stickyHeaderAction = BehaviorRelay<Bool>(value: true)
         let showUnknownUserAlert = PublishRelay<Void>()
+        let isEmptyFeed = PublishRelay<Void>()
+        let updateButtonWithLibraryView = BehaviorRelay<Bool>(value: true)
+        let pushToLibraryViewController = PublishRelay<Void>()
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -176,6 +180,31 @@ final class MyPageViewModel: ViewModelType {
                         print(error.localizedDescription)
                     })
                     .disposed(by: disposeBag)
+                
+                Observable.just(())
+                    .flatMapLatest { _ in
+                        self.getUserFeed(userId: self.profileId, lastFeedId: 0, size: 5)
+                    }
+                    .map { [weak self] feedResult -> [FeedCellData] in
+                            guard let self = self else { return [] }
+                            return feedResult.feeds.map { feed in
+                                FeedCellData(
+                                    feed: feed,
+                                    avatarImage: output.profileData.value.avatarImage,
+                                    nickname: output.profileData.value.nickname
+                                )
+                            }
+                    }
+                    .subscribe(with: self, onNext: { owner, feedData in
+                        if feedData.isEmpty {
+                            output.isEmptyFeed.accept(())
+                        } else {
+                            output.bindFeedData.accept(feedData)
+                        }
+                    }, onError: { owner, error in
+                        print(error.localizedDescription)
+                    })
+                    .disposed(by: disposeBag)
             })
             .disposed(by: disposeBag)
         
@@ -211,12 +240,14 @@ final class MyPageViewModel: ViewModelType {
         input.libraryButtonDidTap
             .bind(with: self, onNext: { owner, _ in
                 output.stickyHeaderAction.accept(true)
+                output.updateButtonWithLibraryView.accept(true)
             })
             .disposed(by: disposeBag)
         
         input.feedButtonDidTap
             .bind(with: self, onNext: { owner, _ in
                 output.stickyHeaderAction.accept(false)
+                output.updateButtonWithLibraryView.accept(false)
             })
             .disposed(by: disposeBag)
         
@@ -265,6 +296,12 @@ final class MyPageViewModel: ViewModelType {
                 output.popViewController.accept(())
             })
             .disposed(by: disposeBag)
+        
+        input.inventoryButtonDidTap
+                    .bind(with: self, onNext: { owner, _ in
+                        output.pushToLibraryViewController.accept(())
+                    })
+                    .disposed(by: disposeBag)
         
         return output
     }
@@ -318,6 +355,11 @@ final class MyPageViewModel: ViewModelType {
     
     private func postBlockUser(userId: Int) -> Observable<Void> {
         return userRepository.postBlockUser(userId: userId)
+            .asObservable()
+    }
+    
+    private func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Observable<MyFeedResult> {
+        return userRepository.getUserFeed(userId: userId, lastFeedId: lastFeedId, size: size)
             .asObservable()
     }
 }

@@ -23,7 +23,7 @@ final class MyPageView: UIView {
     let scrolledStstickyHeaderView = MyPageStickyHeaderView()
     
     let myPageLibraryView = MyPageLibraryView()
-    let myPageFeedView = UIView()
+    let myPageFeedView = NovelDetailFeedView()
     
     //In VC
     let settingButton = UIButton()
@@ -130,5 +130,11 @@ final class MyPageView: UIView {
         mainStickyHeaderView.isHidden = true
         myPageLibraryView.isHidden = true
         myPageFeedView.isHidden = true
+    }
+    
+    func updateScrollViewContentHeight(library: Bool) {
+        contentView.snp.makeConstraints {
+            $0.bottom.equalTo(library ? myPageLibraryView.snp.bottom : myPageFeedView.snp.bottom)
+        }
     }
 }
