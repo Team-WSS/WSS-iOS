@@ -13,6 +13,7 @@ enum URLs {
         static let loginWithKakao = "/auth/login/kakao"
         static let reissue = "/reissue"
         static let withdrawId = "/auth/withdraw"
+        static let logout = "/auth/logout"
     }
     
     enum Onboarding {
@@ -38,6 +39,7 @@ enum URLs {
         static func genrePreferencesstatic(userId: Int) -> String {
             return "\(userBasePath)/\(userId)/preferences/genres"
         }
+        static let editUserProfile = "\(userBasePath)/my-profile"
     }
     
     enum Novel {
@@ -112,9 +114,7 @@ enum URLs {
     }
     
     enum Avatar {
-        static let getAvatarDetail = "/avatars/{avatarId}"
-        static let getRepAvatar = "/rep-avatar"
-        static let patchRepAvatar = "/rep-avatar"
+        static let getAvatar = "/avatars"
     }
     
     enum Feed {

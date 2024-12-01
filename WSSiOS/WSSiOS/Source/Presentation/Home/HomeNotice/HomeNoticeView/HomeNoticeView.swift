@@ -16,8 +16,9 @@ final class HomeNoticeView: UIView {
     
     let backButton = UIButton()
     let viewTitleLabel = UILabel()
-    
     let noticeTableView = UITableView(frame: .zero, style: .plain)
+    
+    let loadingView = WSSLoadingView()
     
     //MARK: - Life Cycle
     
@@ -51,16 +52,33 @@ final class HomeNoticeView: UIView {
             $0.separatorColor = .wssGray50
             $0.rowHeight = 110
         }
+        
+        loadingView.do {
+            $0.isHidden = true
+        }
     }
     
     private func setHierarchy() {
-        self.addSubview(noticeTableView)
+        self.addSubviews(noticeTableView,
+                         loadingView)
     }
     
     private func setLayout() {
         noticeTableView.snp.makeConstraints {
             $0.top.equalTo(safeAreaLayoutGuide.snp.top)
             $0.horizontalEdges.bottom.equalToSuperview()
+        }
+        
+        loadingView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+    }
+    
+    //MARK: - Custom Methods
+    
+    func showLoadingView(isShow: Bool) {
+        loadingView.do {
+            $0.isHidden = !isShow
         }
     }
 }

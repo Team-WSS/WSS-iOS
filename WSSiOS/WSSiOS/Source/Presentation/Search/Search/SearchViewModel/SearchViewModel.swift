@@ -38,6 +38,7 @@ final class SearchViewModel: ViewModelType {
         let pushToNovelDetailViewController = PublishRelay<Int>()
         let pushToDetailSearchResultView = PublishRelay<Notification>()
         let presentToInduceLoginView = PublishRelay<Void>()
+        let showLoadingView = PublishRelay<Bool>()
     }
     
     //MARK: - init
@@ -60,10 +61,15 @@ extension SearchViewModel {
         let output = Output()
         
         self.getSosoPickNovels()
+            .do(onNext: { _ in
+                output.showLoadingView.accept(true)
+            })
             .subscribe(with: self, onNext: { owner, data in
                 output.sosoPickList.accept(data.sosoPicks)
+                output.showLoadingView.accept(false)
             }, onError: { owner, error in
                 print(error)
+                output.showLoadingView.accept(false)
             })
             .disposed(by: disposeBag)
         

@@ -31,3 +31,7 @@ struct WithdrawRequest: Codable {
     let reason: String
     let refreshToken: String
 }
+
+struct Logout: Codable {
+    let refreshToken: String
+}
