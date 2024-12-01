@@ -26,6 +26,7 @@ protocol UserRepository {
     func postBlockUser(userId: Int) -> Observable<Void>
     func patchUserProfile(updatedFields: [String: Any]) -> Observable<Void>
     func getNicknameisValid(nickname: String) -> Single<OnboardingResult>
+    func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Observable<MyFeedResult>
 }
 
 struct DefaultUserRepository: UserRepository {
@@ -118,5 +119,10 @@ struct DefaultUserRepository: UserRepository {
     
     func getNicknameisValid(nickname: String) -> Single<OnboardingResult> {
         return userService.getNicknameisValid(nickname: nickname)
+    }
+    
+    func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Observable<MyFeedResult> {
+        return userService.getUserFeed(userId: userId, lastFeedId: lastFeedId, size: size)
+            .asObservable()
     }
 }

@@ -23,6 +23,7 @@ protocol UserService {
     func getUserGenrePreferences(userId: Int) -> Single<UserGenrePreferences>
     func patchUserProfile(updatedFields: [String: Any]) -> Single<Void>
     func getNicknameisValid(nickname: String) -> Single<OnboardingResult>
+    func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Single<MyFeedResult>
 }
 
 final class DefaultUserService: NSObject, Networking {
@@ -305,6 +306,29 @@ extension DefaultUserService: UserService {
                                        to: OnboardingResult.self) }
                 .asSingle()
             
+        } catch {
+            return Single.error(error)
+        }
+    }
+    
+    func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Single<MyFeedResult> {
+        let feedQueryItems: [URLQueryItem] = [
+            URLQueryItem(name: "lastFeedId", value: String(describing: lastFeedId)),
+            URLQueryItem(name: "size", value: String(describing: size))
+        ]
+        do {
+            let request = try makeHTTPRequest(method: .get,
+                                              path: URLs.User.getProfileFeed(userId: userId),
+                                              queryItems: feedQueryItems,
+                                              headers: APIConstants.accessTokenHeader,
+                                              body: nil)
+            
+            NetworkLogger.log(request: request)
+            
+            return tokenCheckURLSession.rx.data(request: request)
+                .map { try self.decode(data: $0,
+                                       to: MyFeedResult.self) }
+                .asSingle()
         } catch {
             return Single.error(error)
         }

@@ -171,4 +171,31 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
                                           likeCount: feed.likeCount,
                                           commentCount: feed.commentCount)
     }
+    
+    func bindProfileData(feed: FeedCellData) {
+        novelDetailFeedHeaderView.bindData(avatarImage: feed.avatarImage,
+                                           nickname: feed.nickname,
+                                           createdDate: feed.feed.createdDate,
+                                           isModified: feed.feed.isModified)
+        novelDetailFeedContentView.bindData(feedContent: feed.feed.feedContent,
+                                            isSpoiler: feed.feed.isSpoiler)
+        if let title = feed.feed.title,
+           let novelRatingCount = feed.feed.novelRatingCount,
+           let novelRating = feed.feed.novelRating {
+            novelDetailFeedConnectedNovelView.bindData(title: title,
+                                                       novelRatingCount: novelRatingCount,
+                                                       novelRating: novelRating)
+            
+            self.stackView.insertArrangedSubview(novelDetailFeedConnectedNovelView, at: 2)
+            stackView.do {
+                $0.setCustomSpacing(20, after: novelDetailFeedConnectedNovelView)
+            }
+        } else {
+            novelDetailFeedConnectedNovelView.removeFromSuperview()
+        }
+        novelDetailFeedCategoryView.bindData(relevantCategories: feed.feed.relevantCategories)
+        novelDetailFeedReactView.bindData(isLiked: feed.feed.isLiked,
+                                          likeCount: feed.feed.likeCount,
+                                          commentCount: feed.feed.commentCount)
+    }
 }

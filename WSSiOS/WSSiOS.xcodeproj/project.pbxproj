@@ -463,6 +463,10 @@
 		E40746722CE8DB89005D75D5 /* MyPageGenrePreferencesOtherTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40746712CE8DB89005D75D5 /* MyPageGenrePreferencesOtherTableViewCell.swift */; };
 		E4358F222CF91C4C009466C5 /* MyPagePrivateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4358F212CF91C4C009466C5 /* MyPagePrivateView.swift */; };
 		E45FEF9F2CFC03C300B73D80 /* MyPageStickyHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40746732CE8F84A005D75D5 /* MyPageStickyHeaderView.swift */; };
+		E45FEFA12CFC04ED00B73D80 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E45FEFA02CFC04ED00B73D80 /* Config.xcconfig */; };
+		E45FEFA52CFC059200B73D80 /* MyPageFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E45FEFA42CFC059200B73D80 /* MyPageFeedView.swift */; };
+		E45FEFA72CFC08CA00B73D80 /* MyFeedResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = E45FEFA62CFC08CA00B73D80 /* MyFeedResult.swift */; };
+		E45FEFA92CFC13BA00B73D80 /* MyPageFeedEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E45FEFA82CFC13BA00B73D80 /* MyPageFeedEmptyView.swift */; };
 		E497C9B62CF3AFBD0079C30D /* MyPageEditAvatarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E497C9B52CF3AFBD0079C30D /* MyPageEditAvatarViewController.swift */; };
 		E497C9B82CF3B0160079C30D /* MyPageEditAvatarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E497C9B72CF3B0160079C30D /* MyPageEditAvatarViewModel.swift */; };
 		E497C9BA2CF3B0220079C30D /* MyPageEditAvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E497C9B92CF3B0220079C30D /* MyPageEditAvatarView.swift */; };
@@ -915,6 +919,10 @@
 		E40746712CE8DB89005D75D5 /* MyPageGenrePreferencesOtherTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageGenrePreferencesOtherTableViewCell.swift; sourceTree = "<group>"; };
 		E40746732CE8F84A005D75D5 /* MyPageStickyHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageStickyHeaderView.swift; sourceTree = "<group>"; };
 		E4358F212CF91C4C009466C5 /* MyPagePrivateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPagePrivateView.swift; sourceTree = "<group>"; };
+		E45FEFA02CFC04ED00B73D80 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		E45FEFA42CFC059200B73D80 /* MyPageFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageFeedView.swift; sourceTree = "<group>"; };
+		E45FEFA62CFC08CA00B73D80 /* MyFeedResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFeedResult.swift; sourceTree = "<group>"; };
+		E45FEFA82CFC13BA00B73D80 /* MyPageFeedEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageFeedEmptyView.swift; sourceTree = "<group>"; };
 		E497C9B52CF3AFBD0079C30D /* MyPageEditAvatarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageEditAvatarViewController.swift; sourceTree = "<group>"; };
 		E497C9B72CF3B0160079C30D /* MyPageEditAvatarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageEditAvatarViewModel.swift; sourceTree = "<group>"; };
 		E497C9B92CF3B0220079C30D /* MyPageEditAvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageEditAvatarView.swift; sourceTree = "<group>"; };
@@ -1172,6 +1180,7 @@
 				A1EF35562B52FAA300A94C53 /* Network */,
 				2C426A432BFB08A4008F6B23 /* Trash */,
 				2CD229292B42E687005400BE /* Info.plist */,
+				E45FEFA02CFC04ED00B73D80 /* Config.xcconfig */,
 			);
 			path = WSSiOS;
 			sourceTree = "<group>";
@@ -1389,6 +1398,7 @@
 				2CCBF9EF2B4C1FD800D787C2 /* MyPageView.swift */,
 				E40746732CE8F84A005D75D5 /* MyPageStickyHeaderView.swift */,
 				E40746612CE8688A005D75D5 /* MyPageLibraryView.swift */,
+				E45FEFA42CFC059200B73D80 /* MyPageFeedView.swift */,
 				2C41E0CF2CA494B800FFD233 /* MyPageEditProfileView.swift */,
 				E497C9B92CF3B0220079C30D /* MyPageEditAvatarView.swift */,
 				2C41E0C62CA493C100FFD233 /* ProfileCell */,
@@ -1488,6 +1498,7 @@
 				E407466F2CE8DAB6005D75D5 /* MyPageGenrePreferencesOtherView.swift */,
 				E407466D2CE897C7005D75D5 /* MyPageGenrePreferencesTopView.swift */,
 				E4358F212CF91C4C009466C5 /* MyPagePrivateView.swift */,
+				E45FEFA82CFC13BA00B73D80 /* MyPageFeedEmptyView.swift */,
 			);
 			path = ProfileAssistantView;
 			sourceTree = "<group>";
@@ -2212,6 +2223,7 @@
 				CDC03F502CA6C5CD002D301F /* NovelReviewResult.swift */,
 				CD514C952CD5DC22007A27A8 /* AuthResult.swift */,
 				396C7C572CB24F68003C9712 /* OnboardingResult.swift */,
+				E45FEFA62CFC08CA00B73D80 /* MyFeedResult.swift */,
 			);
 			path = DTO;
 			sourceTree = "<group>";
@@ -3039,6 +3051,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2CD229252B42E687005400BE /* Assets.xcassets in Resources */,
+				E45FEFA12CFC04ED00B73D80 /* Config.xcconfig in Resources */,
 				2C79CB992B45A0B200734E1F /* Pretendard-Bold.otf in Resources */,
 				39B75ADA2B59891D005DD8B9 /* villainessFan.json in Resources */,
 				39B75AD92B59891D005DD8B9 /* villainessTea.json in Resources */,
@@ -3172,6 +3185,7 @@
 				CD6F49552C705B22005AD392 /* FeedNovelConnectCollectionViewCell.swift in Sources */,
 				2C9A19692C567D6B0043044A /* MyPageViewModel.swift in Sources */,
 				C9AF1AE22BCC234300208BC9 /* HomeTodayPopularView.swift in Sources */,
+				E45FEFA72CFC08CA00B73D80 /* MyFeedResult.swift in Sources */,
 				2CD9115E2C0D8A28006B8D72 /* FeedGenreViewController.swift in Sources */,
 				39F687002C6F60400065999F /* ReadStatus.swift in Sources */,
 				39CC16902B529AB6003F56AE /* RegisterNormalReadStatusView.swift in Sources */,
@@ -3230,6 +3244,7 @@
 				B9CEDA0D2C01C97E00E62247 /* HomeUnregisterView.swift in Sources */,
 				39599E082C356DFA00702004 /* NovelDetailInfoReviewAttractivePointView.swift in Sources */,
 				A1B903E52B58140800398890 /* UserNovelListResult.swift in Sources */,
+				E45FEFA52CFC059200B73D80 /* MyPageFeedView.swift in Sources */,
 				3931020A2CA5D381002CBEA0 /* OnboardingViewController.swift in Sources */,
 				2C22AE722C56EAD000BF6E94 /* MyPageBlockUserTableViewCell.swift in Sources */,
 				393CAC462CA727E3004B4DB6 /* Gender.swift in Sources */,
@@ -3426,6 +3441,7 @@
 				CD1F7E0E2C99ADC90039972C /* NovelSelectedKeywordCollectionViewCell.swift in Sources */,
 				CD39F2D22B50CE0600B73A5C /* TrashNovelDetailInfoReadStatusTagView.swift in Sources */,
 				E497C9B82CF3B0160079C30D /* MyPageEditAvatarViewModel.swift in Sources */,
+				E45FEFA92CFC13BA00B73D80 /* MyPageFeedEmptyView.swift in Sources */,
 				A1EF35452B52F76C00A94C53 /* UserNovelRepository.swift in Sources */,
 				CD39F2C32B4FFDF900B73A5C /* TrashNovelDetailMemoView.swift in Sources */,
 				CD3E5AB32B565DFF00C0A659 /* NovelMemoResult.swift in Sources */,
@@ -3502,6 +3518,7 @@
 /* Begin XCBuildConfiguration section */
 		2CD2292A2B42E687005400BE /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E45FEFA02CFC04ED00B73D80 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -3565,6 +3582,7 @@
 		};
 		2CD2292B2B42E687005400BE /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E45FEFA02CFC04ED00B73D80 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -3621,6 +3639,7 @@
 		};
 		2CD2292D2B42E687005400BE /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E45FEFA02CFC04ED00B73D80 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -3658,6 +3677,7 @@
 		};
 		2CD2292E2B42E687005400BE /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E45FEFA02CFC04ED00B73D80 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

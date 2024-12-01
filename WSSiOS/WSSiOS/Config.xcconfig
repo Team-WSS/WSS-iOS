@@ -1,0 +1,4 @@
+BASE_URL = http:/$()/13.124.252.133
+BUCKET_URL = https:/$()/websoso-aws-bucket.s3.ap-northeast-2.amazonaws.com
+TEST_TOKEN = eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhY2Nlc3MiLCJpYXQiOjE3MzExNjgwMjAsImV4cCI6MTczMjM3NzYyMCwidXNlcklkIjo3fQ.m_Ewgo4DK_-puJ6Koi4PHTXj0B0g6y0EiUP_Y_wD-l4
+KAKAO_APP_KEY = 36e17a01cc11fa2116d6e59e4d98d159
