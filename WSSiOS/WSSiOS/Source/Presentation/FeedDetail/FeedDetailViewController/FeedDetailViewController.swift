@@ -487,6 +487,12 @@ final class FeedDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.pushToUserPageViewController
+            .subscribe(with: self, onNext: { owner, userId in
+                owner.pushToMyPageViewController(userId: userId)
+            })
+            .disposed(by: disposeBag)
+
         output.showLoadingView
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, isShow in

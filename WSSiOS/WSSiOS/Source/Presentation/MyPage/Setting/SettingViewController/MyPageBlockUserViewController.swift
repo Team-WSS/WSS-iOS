@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxRelay
 
-final class MyPageBlockUserViewController: UIViewController {
+final class MyPageBlockUserViewController: UIViewController, UIScrollViewDelegate {
     
     //MARK: - Properties
     
@@ -41,6 +41,7 @@ final class MyPageBlockUserViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        delegate()
         register()
         bindViewModel()
     }
@@ -55,6 +56,12 @@ final class MyPageBlockUserViewController: UIViewController {
     
     //MARK: - Delegate
     
+    private func delegate() {
+        rootView.blockTableView.rx
+            .setDelegate(self)
+            .disposed(by: disposeBag)
+    }
+    
     private func register() {
         rootView.blockTableView.register(
             MyPageBlockUserTableViewCell.self,
@@ -67,20 +74,13 @@ final class MyPageBlockUserViewController: UIViewController {
     private func bindViewModel() {
         let input = MyPageBlockUserViewModel.Input(
             backButtonDidTap: rootView.backButton.rx.tap,
-            unblockButtonDidTap: unblockButtonTapRelay.asObservable()
+            unblockButtonDidTap: self.rootView.blockTableView.rx.itemSelected.asObservable()
         )
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.bindCell
-            .bind(to: rootView.blockTableView.rx.items(cellIdentifier: MyPageBlockUserTableViewCell.cellIdentifier, cellType: MyPageBlockUserTableViewCell.self)) { row, data, cell in
-                cell.unblockButton.rx.tap
-                    .map { IndexPath(row: row, section: 0) }
-                    .subscribe(onNext: { indexPath in
-                        self.unblockButtonTapRelay.accept(indexPath)
-                    })
-                    .disposed(by: cell.disposeBag)
-                
+            .bind(to: rootView.blockTableView.rx.items(cellIdentifier: MyPageBlockUserTableViewCell.cellIdentifier,cellType: MyPageBlockUserTableViewCell.self)) { row, data, cell in
                 cell.bindData(image: data.avatarImage, nickname: data.nickname)
             }
             .disposed(by: disposeBag)
@@ -92,14 +92,23 @@ final class MyPageBlockUserViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.toastMessage
+            .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, nickname in
                 owner.showToast(.deleteBlockUser(nickname: nickname))
             })
             .disposed(by: disposeBag)
         
         output.popViewController
+            .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 owner.popToLastViewController()
+            })
+            .disposed(by: disposeBag)
+        
+        output.reloadTableView
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                owner.rootView.blockTableView.reloadData()
             })
             .disposed(by: disposeBag)
     }

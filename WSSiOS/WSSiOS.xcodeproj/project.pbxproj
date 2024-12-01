@@ -461,7 +461,7 @@
 		E407466E2CE897C7005D75D5 /* MyPageGenrePreferencesTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E407466D2CE897C7005D75D5 /* MyPageGenrePreferencesTopView.swift */; };
 		E40746702CE8DAB6005D75D5 /* MyPageGenrePreferencesOtherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E407466F2CE8DAB6005D75D5 /* MyPageGenrePreferencesOtherView.swift */; };
 		E40746722CE8DB89005D75D5 /* MyPageGenrePreferencesOtherTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40746712CE8DB89005D75D5 /* MyPageGenrePreferencesOtherTableViewCell.swift */; };
-		E40746742CE8F84A005D75D5 /* MyPageStickyHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40746732CE8F84A005D75D5 /* MyPageStickyHeaderView.swift */; };
+		E4358F222CF91C4C009466C5 /* MyPagePrivateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4358F212CF91C4C009466C5 /* MyPagePrivateView.swift */; };
 		E497C9B22CF195E90079C30D /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E497C9B12CF195E90079C30D /* Config.xcconfig */; };
 		E497C9B62CF3AFBD0079C30D /* MyPageEditAvatarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E497C9B52CF3AFBD0079C30D /* MyPageEditAvatarViewController.swift */; };
 		E497C9B82CF3B0160079C30D /* MyPageEditAvatarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E497C9B72CF3B0160079C30D /* MyPageEditAvatarViewModel.swift */; };
@@ -914,7 +914,7 @@
 		E407466F2CE8DAB6005D75D5 /* MyPageGenrePreferencesOtherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageGenrePreferencesOtherView.swift; sourceTree = "<group>"; };
 		E40746712CE8DB89005D75D5 /* MyPageGenrePreferencesOtherTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageGenrePreferencesOtherTableViewCell.swift; sourceTree = "<group>"; };
 		E40746732CE8F84A005D75D5 /* MyPageStickyHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageStickyHeaderView.swift; sourceTree = "<group>"; };
-		E497C9B12CF195E90079C30D /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Config.xcconfig; path = /Users/sinjiwon/Desktop/Config.xcconfig; sourceTree = "<absolute>"; };
+		E4358F212CF91C4C009466C5 /* MyPagePrivateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPagePrivateView.swift; sourceTree = "<group>"; };
 		E497C9B52CF3AFBD0079C30D /* MyPageEditAvatarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageEditAvatarViewController.swift; sourceTree = "<group>"; };
 		E497C9B72CF3B0160079C30D /* MyPageEditAvatarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageEditAvatarViewModel.swift; sourceTree = "<group>"; };
 		E497C9B92CF3B0220079C30D /* MyPageEditAvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageEditAvatarView.swift; sourceTree = "<group>"; };
@@ -1488,6 +1488,7 @@
 				E407466B2CE89719005D75D5 /* MyPageGenrePreferencesView.swift */,
 				E407466F2CE8DAB6005D75D5 /* MyPageGenrePreferencesOtherView.swift */,
 				E407466D2CE897C7005D75D5 /* MyPageGenrePreferencesTopView.swift */,
+				E4358F212CF91C4C009466C5 /* MyPagePrivateView.swift */,
 			);
 			path = ProfileAssistantView;
 			sourceTree = "<group>";
@@ -3353,6 +3354,7 @@
 				393CAC3C2CA6AFD8004B4DB6 /* OnboardingBottomButtonView.swift in Sources */,
 				2C9CBDB12C5BB4340084481F /* BlocksService.swift in Sources */,
 				CD1F7E062C9967780039972C /* NovelKeywordSelectSearchResultView.swift in Sources */,
+				E4358F222CF91C4C009466C5 /* MyPagePrivateView.swift in Sources */,
 				2CCBF9F22B4D347B00D787C2 /* WSSMainButton.swift in Sources */,
 				CD863EDA2CA5B7F70037DC08 /* NovelDetailFeedEmptyView.swift in Sources */,
 				2C8F89452C50CF470056895B /* MyPageDeleteIDWarningViewController.swift in Sources */,

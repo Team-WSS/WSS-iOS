@@ -16,6 +16,8 @@ enum ToastStatus {
     case memoEditSuccess
     case memoDelete
     case nicknameSave
+    case blockUser(nickname: String)
+    case unknownUser
     case deleteBlockUser(nickname: String)
     case novelAlreadyConnected
     case selectionOverLimit(count: Int)
@@ -27,11 +29,11 @@ enum ToastStatus {
 
     var toastImage: UIImage {
         switch self {
-        case .memoSaveSuccess, .nicknameSave, .memoEditSuccess, .deleteBlockUser, .novelAlreadyConnected, .selectionOverLimit:
+        case .memoSaveSuccess, .nicknameSave, .memoEditSuccess, .deleteBlockUser, .novelAlreadyConnected, .selectionOverLimit, .unknownUser:
             return .icAlertSuccess
         case .memoSaveFail, .memoDelete:
             return .icAlertWarning
-        case .novelReviewed, .changeToPublicProfile, .changeToPrivateProfile, .novelReviewDeleted, .feedEdited:
+        case .novelReviewed, .changeToPublicProfile, .changeToPrivateProfile, .novelReviewDeleted, .feedEdited, .blockUser:
             return .icAlertCheck
         }
     }
@@ -48,6 +50,8 @@ enum ToastStatus {
             "메모를 삭제했어요"
         case .nicknameSave:
             "닉네임을 저장했어요"
+        case .blockUser(let nickname):
+            "\(nickname)님을 차단했어요"
         case .deleteBlockUser(let nickname):
             "\(nickname)님을 차단 해제했어요"
         case .novelAlreadyConnected:
@@ -64,6 +68,8 @@ enum ToastStatus {
             "프로필이 비공개로 전환되었어요"
         case .feedEdited:
             "작성 완료!"
+        case .unknownUser:
+            "웹소소를 떠난 유저예요"
         }
     }
 }

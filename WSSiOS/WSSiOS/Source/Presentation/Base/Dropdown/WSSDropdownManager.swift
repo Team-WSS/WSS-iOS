@@ -49,10 +49,7 @@ class WSSDropdownManager {
                 if dropdownLayout == SelfLayout.customLayout {
                     customLayout(dropdownTableView)
                 } else {
-                    if let window = dropdownButton.window {
-                        let buttonFrame = dropdownButton.convert(dropdownButton.bounds, to: window)
-                        $0.top.equalTo(dropdownRootView.snp.top).offset(buttonFrame.maxY + 10)
-                    }
+                    $0.top.equalTo(dropdownRootView.snp.top).offset(100)
                     $0.trailing.equalToSuperview().inset(20.5)
                 }
                 
