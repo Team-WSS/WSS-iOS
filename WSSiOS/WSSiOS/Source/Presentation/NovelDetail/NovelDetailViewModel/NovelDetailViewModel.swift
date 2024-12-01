@@ -294,6 +294,9 @@ final class NovelDetailViewModel: ViewModelType {
             }
             .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
             .asObservable()
+            .do(onNext: { _ in
+                self.selectedTab.accept(.feed)
+            })
         
         let scrollContentOffset = input.scrollContentOffset
         

@@ -50,6 +50,7 @@ final class FeedEditViewController: UIViewController {
          super.viewDidLoad()
          
          hideTabBar()
+         setNotificationCenter()
          register()
          delegate()
          bindViewModel()
@@ -68,6 +69,17 @@ final class FeedEditViewController: UIViewController {
         self.navigationController?.navigationBar.backgroundColor = .clear
     }
     
+    private func setNotificationCenter() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillShow(_:)),
+                                               name: UIResponder.keyboardWillShowNotification,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillHide(_:)),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
+    }
+    
     private func register() {
         rootView.feedEditCategoryView.categoryCollectionView.register(FeedCategoryCollectionViewCell.self, forCellWithReuseIdentifier: FeedCategoryCollectionViewCell.cellIdentifier)
     }
@@ -83,9 +95,18 @@ final class FeedEditViewController: UIViewController {
     private func bindViewModel() {
         let input = FeedEditViewModel.Input(
             viewDidLoadEvent: viewDidLoadEvent.asObservable(),
-            viewDidTap: view.rx.tapGesture(configuration: { gestureRecognizer, delegate in
+            viewDidTap: view.rx.tapGesture(configuration: { gestureRecognizer, _ in
                 gestureRecognizer.cancelsTouchesInView = false
-            }).when(.recognized).asObservable(),
+            }).when(.recognized)
+                .filter { [weak self] gesture in
+                    guard let self = self else { return false }
+                    let location = gesture.location(in: self.rootView)
+                    if let touchedView = self.rootView.hitTest(location, with: nil) {
+                        return !touchedView.isDescendant(of: self.rootView.feedEditContentView.feedTextWrapperView)
+                    }
+                    return true
+                }
+                .asObservable(),
             backButtonDidTap: rootView.backButton.rx.tap,
             completeButtonDidTap: rootView.completeButton.rx.tap,
             spoilerButtonDidTap: rootView.feedEditContentView.spoilerButton.rx.tap,
@@ -192,6 +213,31 @@ final class FeedEditViewController: UIViewController {
                 }
             })
             .disposed(by: disposeBag)
+    }
+    
+    // MARK: - Custom Method
+    
+    @objc private func keyboardWillShow(_ notification: Notification) {
+        guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+        let keyboardHeight = keyboardFrame.height
+        
+        UIView.animate(withDuration: 0.3) {
+            self.rootView.scrollView.contentInset.bottom = keyboardHeight
+            
+            let feedEditContentBottomY = self.rootView.feedEditContentView.convert(self.rootView.feedEditContentView.bounds, to: self.view).maxY
+            let keyboardTopY = self.view.frame.height - keyboardHeight
+            
+            if feedEditContentBottomY > keyboardTopY {
+                let offset = feedEditContentBottomY - keyboardTopY
+                self.rootView.scrollView.contentOffset.y += offset
+            }
+        }
+    }
+
+    @objc private func keyboardWillHide(_ notification: Notification) {
+        UIView.animate(withDuration: 0.3) {
+            self.rootView.scrollView.contentInset.bottom = 0
+        }
     }
 }
 
