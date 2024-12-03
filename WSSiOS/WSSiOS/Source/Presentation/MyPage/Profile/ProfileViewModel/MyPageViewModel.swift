@@ -357,9 +357,6 @@ final class MyPageViewModel: ViewModelType {
             
             self.getInventoryData(userId: self.profileId)
                 .do(onNext: { data in
-                    if data.interestNovelCount == 0 && data.quitNovelCount == 0 && data.watchedNovelCount == 0 && data.watchingNovelCount == 0 {
-                        
-                    }
                     self.bindInventoryDataRelay.accept(data)
                 }),
             

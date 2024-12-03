@@ -55,10 +55,6 @@ final class MyPageFeedDetailView: UIView {
         myPageFeedDetailTableView.snp.makeConstraints() {
             $0.edges.equalToSuperview()
         }
-
-        backButton.snp.makeConstraints {
-            $0.size.equalTo(44)
-        }
     }
 }
 

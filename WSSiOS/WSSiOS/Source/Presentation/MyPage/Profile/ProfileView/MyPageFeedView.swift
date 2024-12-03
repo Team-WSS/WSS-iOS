@@ -129,56 +129,44 @@ final class MyPageFeedView: UIView {
             }
             
         } else {
+            myPagePrivateView.isHidden = true
+            
             [myPageFeedTableView,
-             myPageFeedDetailButton,
+             buttonView,
              paddingViewAfterButton].forEach { view in
                 view.do {
                     $0.isHidden = false
                 }
             }
-            
-            [myPagePrivateView,
-             myPageFeedEmptyView].forEach { view in
-                view.do {
-                    $0.isHidden = true
-                }
-            }
         }
     }
+    
     
     func isEmptyView(isEmpty: Bool) {
         if isEmpty {
             myPageFeedEmptyView.isHidden = false
             
             [myPageFeedTableView,
-             myPageFeedDetailButton,
-             paddingViewAfterButton,
-             myPagePrivateView].forEach { view in
+             buttonView,
+             paddingViewAfterButton].forEach { view in
                 view.do {
                     $0.isHidden = true
                 }
             }
-        }
-        
-        else {
+        } else {
+            myPageFeedEmptyView.isHidden = true
+            
             [myPageFeedTableView,
-             myPageFeedDetailButton,
+             buttonView,
              paddingViewAfterButton].forEach { view in
                 view.do {
                     $0.isHidden = false
-                }
-            }
-            
-            [myPagePrivateView,
-             myPageFeedEmptyView].forEach { view in
-                view.do {
-                    $0.isHidden = true
                 }
             }
         }
     }
     
     func showMoreButton(isShow: Bool) {
-        myPageFeedDetailButton.isHidden = !isShow
+        buttonView.isHidden = !isShow
     }
 }

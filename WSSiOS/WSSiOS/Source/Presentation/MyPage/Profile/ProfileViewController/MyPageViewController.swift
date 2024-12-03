@@ -201,7 +201,6 @@ final class MyPageViewController: UIViewController {
                 let (isPrivate, nickname) = data
                 owner.rootView.myPageLibraryView.isPrivateUserView(isPrivate: isPrivate, nickname: nickname)
                 owner.rootView.myPageFeedView.isPrivateUserView(isPrivate: isPrivate, nickname: nickname)
-                
             })
             .disposed(by: disposeBag)
         
@@ -292,10 +291,10 @@ final class MyPageViewController: UIViewController {
                 }
                 .disposed(by: disposeBag)
         
-        output.bindFeedData
+        output.isEmptyFeed
             .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, feeds in
-                owner.rootView.myPageFeedView.isEmptyView(isEmpty: feeds.isEmpty)
+            .bind(with: self, onNext: { owner, _ in
+                owner.rootView.myPageFeedView.isEmptyView(isEmpty: true)
             })
             .disposed(by: disposeBag)
         
@@ -351,7 +350,7 @@ final class MyPageViewController: UIViewController {
     //MARK: - Custom Method
     
     func scrollToTop() {
-       
+        
     }
 }
 
