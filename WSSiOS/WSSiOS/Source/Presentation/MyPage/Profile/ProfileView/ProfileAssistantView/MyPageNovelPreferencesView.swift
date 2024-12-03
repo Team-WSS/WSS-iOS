@@ -14,9 +14,14 @@ final class MyPageNovelPreferencesView: UIView {
     
     //MARK: - Components
     
+    private let stackView = UIStackView()
+    
+    private let paddingView = UIView()
     private let titleLabel = UILabel()
     private let preferencesView = UIView()
     private let preferencesLabel = UILabel()
+    
+    private let preferencesEmptyView = MyPagePreferencesEmptyView()
     
     lazy var preferencesCollectionView = UICollectionView(frame: .zero,
                                                           collectionViewLayout: UICollectionViewLayout())
@@ -40,6 +45,15 @@ final class MyPageNovelPreferencesView: UIView {
     
     private func setUI() {
         self.backgroundColor = .wssWhite
+        stackView.do {
+            $0.axis = .vertical
+            $0.alignment = .center
+            $0.distribution = .fillEqually
+        }
+        
+        paddingView.do {
+            $0.backgroundColor = .wssWhite
+        }
         
         titleLabel.do {
             $0.applyWSSFont(.title1, with: StringLiterals.MyPage.Profile.novelPreferenceTitle)
@@ -59,24 +73,39 @@ final class MyPageNovelPreferencesView: UIView {
             $0.collectionViewLayout = layout
             $0.isScrollEnabled = false
         }
+        
+        preferencesEmptyView.isHidden = true
     }
     
     private func setHierarchy() {
-        self.addSubviews(titleLabel,
-                         preferencesView,
-                         preferencesCollectionView)
+        self.addSubview(stackView)
+        stackView.addArrangedSubviews(paddingView,
+                                      titleLabel,
+                                      preferencesView,
+                                      preferencesCollectionView,
+                                      preferencesEmptyView)
         preferencesView.addSubviews(preferencesLabel)
     }
     
     private func setLayout() {
+        stackView.snp.makeConstraints {
+            $0.top.bottom.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(20)
+        }
+        
+        stackView.setCustomSpacing(10, after: titleLabel)
+        stackView.setCustomSpacing(20, after: preferencesView)
+        
+        paddingView.snp.makeConstraints {
+            $0.height.equalTo(30)
+        }
+        
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(30)
             $0.leading.equalToSuperview().inset(20)
         }
         
         preferencesView.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(10)
-            $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(55)
             
             preferencesLabel.snp.makeConstraints {
@@ -85,27 +114,71 @@ final class MyPageNovelPreferencesView: UIView {
         }
         
         preferencesCollectionView.snp.makeConstraints {
-            $0.top.equalTo(preferencesView.snp.bottom).offset(10)
-            $0.leading.trailing.equalToSuperview().inset(20)
             $0.bottom.equalToSuperview().inset(40)
+        }
+        
+        preferencesEmptyView.snp.makeConstraints {
+            $0.height.equalTo(363)
         }
     }
     
     //MARK: - Data
     
-    func bindData(data: [String]) {
-        let koreanStrings = data.compactMap { AttractivePoint(rawValue: $0)?.koreanString }
-        let attaractiveString = koreanStrings.joined(separator: ", ")
-        preferencesLabel.do {
-            $0.font = .Title3
-            $0.textColor = .wssGray300
-            $0.makeAttribute(with: attaractiveString + StringLiterals.MyPage.Profile.novelPreferenceLabel)?
-                .lineHeight(1.5)
-                .kerning(kerningPixel: -0.6)
-                .partialColor(color: .wssPrimary100, rangeString: attaractiveString)
-                .applyAttribute()
+    func updatePreferencesView(isExist: Bool, data: [String]) {
+        if isExist {
+            [paddingView,
+             titleLabel,
+             preferencesView,
+             preferencesCollectionView].forEach { view in
+                view.do {
+                    $0.isHidden = false
+                }
+            }
+            
+            [preferencesEmptyView].forEach { view in
+                view.do {
+                    $0.isHidden = true
+                }
+            }
+            
+            bindPreferencesDetailData(data: data)
+            
+        } else {
+            [preferencesEmptyView].forEach { view in
+                view.do {
+                    $0.isHidden = false
+                }
+            }
+            
+            [paddingView,
+             titleLabel,
+             preferencesView,
+             preferencesCollectionView].forEach { view in
+                view.do {
+                    $0.isHidden = true
+                }
+            }
+        }
+    }
+    
+    private func bindPreferencesDetailData(data: [String]) {
+        if data.isEmpty {
+            preferencesView.isHidden = true
+        } else {
+            preferencesView.isHidden = false
+            preferencesLabel.isHidden = false
+            
+            let koreanStrings = data.compactMap { AttractivePoint(rawValue: $0)?.koreanString }
+            let attaractiveString = koreanStrings.joined(separator: ", ")
+            preferencesLabel.do {
+                $0.font = .Title3
+                $0.textColor = .wssGray300
+                $0.makeAttribute(with: attaractiveString + StringLiterals.MyPage.Profile.novelPreferenceLabel)?
+                    .lineHeight(1.5)
+                    .kerning(kerningPixel: -0.6)
+                    .partialColor(color: .wssPrimary100, rangeString: attaractiveString)
+                    .applyAttribute()
+            }
         }
     }
 }
-
-

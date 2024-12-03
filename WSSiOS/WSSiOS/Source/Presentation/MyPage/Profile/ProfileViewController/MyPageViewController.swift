@@ -146,13 +146,6 @@ final class MyPageViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.isExistPreference
-            .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, exist in
-                owner.rootView.myPageLibraryView.updateLibraryView(isExist: exist)
-            })
-            .disposed(by: disposeBag)
-        
         output.profileData
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, data in
@@ -221,7 +214,8 @@ final class MyPageViewController: UIViewController {
         output.bindattractivePointsData
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, data in
-                owner.rootView.myPageLibraryView.novelPrefrerencesView.bindData(data: data)
+                let (isExist, keywordData) = data
+                owner.rootView.myPageLibraryView.novelPrefrerencesView.updatePreferencesView(isExist: isExist, data: keywordData)
                 
             })
             .disposed(by: disposeBag)

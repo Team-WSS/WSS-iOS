@@ -17,7 +17,6 @@ final class MyPageLibraryView: UIView {
     
     let stackView = UIStackView()
     let inventoryView = MyPageInventoryView()
-    let preferencesEmptyView = MyPagePreferencesEmptyView()
     let genrePrefrerencesView = MyPageGenrePreferencesView()
     let novelPrefrerencesView = MyPageNovelPreferencesView()
     
@@ -30,6 +29,7 @@ final class MyPageLibraryView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         setUI()
         setHierarchy()
         setLayout()
@@ -44,7 +44,6 @@ final class MyPageLibraryView: UIView {
         
         stackView.do {
             $0.axis = .vertical
-            $0.spacing = 3
             $0.alignment = .fill
             $0.distribution = .fill
         }
@@ -52,6 +51,8 @@ final class MyPageLibraryView: UIView {
         [dividerView, dividerView2].forEach {
             $0.backgroundColor = .wssGray50
         }
+        
+        myPagePrivateView.isHidden = true
     }
     
     private func setHierarchy() {
@@ -59,7 +60,6 @@ final class MyPageLibraryView: UIView {
         stackView.addArrangedSubviews(myPagePrivateView,
                                       inventoryView,
                                       dividerView,
-                                      preferencesEmptyView,
                                       genrePrefrerencesView,
                                       dividerView2,
                                       novelPrefrerencesView)
@@ -90,7 +90,6 @@ final class MyPageLibraryView: UIView {
         }
         
         myPagePrivateView.snp.makeConstraints {
-            //임의적인 수! 수정 필요
             $0.height.equalTo(450)
         }
     }
@@ -103,49 +102,10 @@ final class MyPageLibraryView: UIView {
     
     //MARK: - Data
     
-    func updateLibraryView(isExist: Bool) {
-        if isExist {
-            [inventoryView,
-             dividerView,
-             genrePrefrerencesView,
-             dividerView2,
-             novelPrefrerencesView].forEach { view in
-                view.do {
-                    $0.isHidden = false
-                }
-            }
-            
-            [myPagePrivateView,
-             preferencesEmptyView].forEach { view in
-                view.do {
-                    $0.isHidden = true
-                }
-            }
-        } else {
-            [inventoryView,
-             dividerView,
-             preferencesEmptyView].forEach { view in
-                view.do {
-                    $0.isHidden = false
-                }
-            }
-            
-            [myPagePrivateView,
-             genrePrefrerencesView,
-             dividerView2,
-             novelPrefrerencesView].forEach { view in
-                view.do {
-                    $0.isHidden = true
-                }
-            }
-        }
-    }
-    
     func isPrivateUserView(isPrivate: Bool, nickname: String) {
         if isPrivate {
             [inventoryView,
              dividerView,
-             preferencesEmptyView,
              genrePrefrerencesView,
              dividerView2,
              novelPrefrerencesView] .forEach { view in
@@ -161,6 +121,18 @@ final class MyPageLibraryView: UIView {
                 $0.applyWSSFont(.body2, with: text)
                 $0.textAlignment = .center
             }
+        } else {
+            [inventoryView,
+             dividerView,
+             genrePrefrerencesView,
+             dividerView2,
+             novelPrefrerencesView] .forEach { view in
+                view.do {
+                    $0.isHidden = false
+                }
+            }
+            
+            myPagePrivateView.isHidden = true
         }
     }
 }

@@ -56,7 +56,6 @@ final class MyPageViewModel: ViewModelType {
     
     struct Output {
         let isMyPage = BehaviorRelay<Bool>(value: true)
-        let isExistPreference = PublishRelay<Bool>()
         let isProfilePrivate = BehaviorRelay<(Bool, String)>(value: (true, ""))
         let profileData = BehaviorRelay<MyProfileResult>(value: MyProfileResult(nickname: "",
                                                                                 intro: "",
@@ -68,7 +67,7 @@ final class MyPageViewModel: ViewModelType {
         let pushToSettingViewController = PublishRelay<Void>()
         let popViewController = PublishRelay<Void>()
         
-        let bindattractivePointsData = BehaviorRelay<[String]>(value: [])
+        let bindattractivePointsData = BehaviorRelay<(Bool, [String])>(value: (true, []))
         let bindKeywordCell = BehaviorRelay<[Keyword]>(value: [])
         let bindGenreData = BehaviorRelay<UserGenrePreferences>(value: UserGenrePreferences(genrePreferences: []))
         let bindInventoryData = BehaviorRelay<UserNovelStatus>(value: UserNovelStatus(interestNovelCount: 0,
@@ -107,6 +106,7 @@ final class MyPageViewModel: ViewModelType {
                         .do(onNext: { profileData in
                             output.profileData.accept(profileData)
                             output.isMyPage.accept(true)
+                            output.isProfilePrivate.accept((false, profileData.nickname))
                         })
                         .map { _ in }
                 } else {
@@ -142,19 +142,19 @@ final class MyPageViewModel: ViewModelType {
                 !isProfilePrivate.0 || isMyPage
             }
             .subscribe(onNext: { [unowned self] _, _ in
+                
                 Observable.just(())
                     .flatMapLatest { _ in
                         self.getNovelPreferenceData(userId: self.profileId)
                     }
                     .subscribe(with: self, onNext: { owner, data in
-                        if data.attractivePoints == [] {
-                            output.isExistPreference.accept(false)
+                        let keywords = data.keywords ?? []
+                        if (data.attractivePoints == [] && keywords.isEmpty) {
+                            output.bindattractivePointsData.accept((false, []))
                         } else {
-                            output.isExistPreference.accept(true)
-                            output.bindattractivePointsData.accept(data.attractivePoints ?? [])
-                            let keywords = data.keywords ?? []
-                            output.bindKeywordCell.accept(keywords)
+                            output.bindattractivePointsData.accept((true, data.attractivePoints ?? []))
                             owner.bindKeywordRelay.accept(keywords)
+                            output.bindKeywordCell.accept(keywords)
                         }
                     }, onError: { owner, error in
                         print(error.localizedDescription)

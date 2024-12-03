@@ -97,12 +97,10 @@ final class MyPageFeedView: UIView {
         }
         
         myPagePrivateView.snp.makeConstraints {
-            $0.width.equalToSuperview()
             $0.height.equalTo(450)
         }
         
         myPageFeedEmptyView.snp.makeConstraints {
-            $0.width.equalToSuperview()
             $0.height.equalTo(450)
         }
     }
