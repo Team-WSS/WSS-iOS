@@ -87,7 +87,7 @@ final class MyPageViewController: UIViewController {
         
         rootView.myPageLibraryView.genrePrefrerencesView.otherGenreView.genreTableView.register(MyPageGenrePreferencesOtherTableViewCell.self, forCellReuseIdentifier: MyPageGenrePreferencesOtherTableViewCell.cellIdentifier)
         
-        rootView.myPageFeedView.feedListView.feedTableView.register(NovelDetailFeedTableViewCell.self, forCellReuseIdentifier: NovelDetailFeedTableViewCell.cellIdentifier)
+//        rootView.myPageFeedView.feedListView.feedTableView.register(NovelDetailFeedTableViewCell.self, forCellReuseIdentifier: NovelDetailFeedTableViewCell.cellIdentifier)
     }
     
     private func delegate() {
@@ -97,9 +97,9 @@ final class MyPageViewController: UIViewController {
         
         rootView.myPageLibraryView.genrePrefrerencesView.otherGenreView.genreTableView.delegate = self
         
-        rootView.myPageFeedView.feedListView.feedTableView.rx
-            .setDelegate(self)
-            .disposed(by: disposeBag)
+//        rootView.myPageFeedView.feedListView.feedTableView.rx
+//            .setDelegate(self)
+//            .disposed(by: disposeBag)
     }
     
     //MARK: - Bind
@@ -112,12 +112,12 @@ final class MyPageViewController: UIViewController {
         
         let libraryButtonDidTap = Observable.merge(
             rootView.mainStickyHeaderView.libraryButton.rx.tap.map { true },
-            rootView.scrolledStstickyHeaderView.libraryButton.rx.tap.map { true }
+            rootView.scrolledStickyHeaderView.libraryButton.rx.tap.map { true }
         )
         
         let feedButtonDidTap = Observable.merge(
             rootView.mainStickyHeaderView.feedButton.rx.tap.map { true },
-            rootView.scrolledStstickyHeaderView.feedButton.rx.tap.map { true }
+            rootView.scrolledStickyHeaderView.feedButton.rx.tap.map { true }
         )
         
         let input = MyPageViewModel.Input(
@@ -141,7 +141,7 @@ final class MyPageViewController: UIViewController {
             .bind(with: self, onNext: { owner, isMyPage in
                 owner.decideNavigation(myPage: isMyPage)
                 owner.rootView.mainStickyHeaderView.buttonLabelText(isMyPage: isMyPage)
-                owner.rootView.scrolledStstickyHeaderView.buttonLabelText(isMyPage: isMyPage)
+                owner.rootView.scrolledStickyHeaderView.buttonLabelText(isMyPage: isMyPage)
             })
             .disposed(by: disposeBag)
         
@@ -163,7 +163,7 @@ final class MyPageViewController: UIViewController {
             .asDriver()
             .drive(with: self, onNext: { owner, data in
                 let (update, navigationTitle) = data
-                owner.rootView.scrolledStstickyHeaderView.isHidden = !update
+                owner.rootView.scrolledStickyHeaderView.isHidden = !update
                 owner.rootView.mainStickyHeaderView.isHidden = update
                 owner.rootView.headerView.isHidden = update
                 
@@ -255,7 +255,7 @@ final class MyPageViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, library in
                 owner.rootView.mainStickyHeaderView.updateSelection(isLibrarySelected: library)
-                owner.rootView.scrolledStstickyHeaderView.updateSelection(isLibrarySelected: library)
+                owner.rootView.scrolledStickyHeaderView.updateSelection(isLibrarySelected: library)
                 
                 owner.rootView.myPageLibraryView.isHidden = !library
                 owner.rootView.myPageFeedView.isHidden = library
@@ -296,14 +296,14 @@ final class MyPageViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.bindFeedData
-            .observe(on: MainScheduler.instance)
-            .bind(to: rootView.myPageFeedView.feedListView.feedTableView.rx.items(
-                cellIdentifier: NovelDetailFeedTableViewCell.cellIdentifier,
-                cellType: NovelDetailFeedTableViewCell.self)) { _, element, cell in
-                    cell.bindProfileData(feed: element)
-                }
-                .disposed(by: disposeBag)
+//        output.bindFeedData
+//            .observe(on: MainScheduler.instance)
+//            .bind(to: rootView.myPageFeedView.feedListView.feedTableView.rx.items(
+//                cellIdentifier: NovelDetailFeedTableViewCell.cellIdentifier,
+//                cellType: NovelDetailFeedTableViewCell.self)) { _, element, cell in
+//                    cell.bindProfileData(feed: element)
+//                }
+//                .disposed(by: disposeBag)
         
         output.bindFeedData
             .observe(on: MainScheduler.instance)
@@ -318,6 +318,14 @@ final class MyPageViewController: UIViewController {
                 owner.pushToLibraryViewController(userId: userId)
             })
             .disposed(by: disposeBag)
+        
+        output.updateButtonWithLibraryView
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, showLibraryView in
+                owner.rootView.showContentView(showLibraryView: showLibraryView)
+            })
+            .disposed(by: disposeBag)
+        
     }
 }
 

@@ -20,10 +20,10 @@ final class MyPageView: UIView {
     
     let headerView = MyPageProfileHeaderView()
     let mainStickyHeaderView = MyPageStickyHeaderView()
-    let scrolledStstickyHeaderView = MyPageStickyHeaderView()
+    let scrolledStickyHeaderView = MyPageStickyHeaderView()
     
     let myPageLibraryView = MyPageLibraryView()
-    let myPageFeedView = NovelDetailFeedView()
+    let myPageFeedView = UIView()
     
     //In VC
     let settingButton = UIButton()
@@ -53,7 +53,7 @@ final class MyPageView: UIView {
             $0.showsVerticalScrollIndicator = false
         }
         
-        scrolledStstickyHeaderView.do {
+        scrolledStickyHeaderView.do {
             $0.isHidden = true
         }
         
@@ -70,7 +70,7 @@ final class MyPageView: UIView {
     
     private func setHierarchy() {
         addSubviews(scrollView,
-                    scrolledStstickyHeaderView)
+                    scrolledStickyHeaderView)
         
         scrollView.addSubview(contentView)
         contentView.addSubviews(headerView,
@@ -99,10 +99,17 @@ final class MyPageView: UIView {
             $0.height.equalTo(47)
         }
         
-        scrolledStstickyHeaderView.snp.makeConstraints {
+        scrolledStickyHeaderView.snp.makeConstraints {
             $0.top.equalTo(safeAreaLayoutGuide)
             $0.width.equalToSuperview()
             $0.height.equalTo(47)
+        }
+        
+        [myPageLibraryView, myPageFeedView].forEach { view in
+            view.snp.makeConstraints {
+                $0.top.equalTo(headerView.snp.bottom).offset(47)
+                $0.width.equalToSuperview()
+            }
         }
     }
     
@@ -118,9 +125,8 @@ final class MyPageView: UIView {
         myPageFeedView.isHidden = true
     }
     
-//    func updateScrollViewContentHeight(library: Bool) {
-//        contentView.snp.makeConstraints {
-//            $0.bottom.equalTo(library ? myPageLibraryView.snp.bottom : myPageFeedView.snp.bottom)
-//        }
-//    }
+    func showContentView(showLibraryView: Bool) {
+        myPageLibraryView.isHidden = !showLibraryView
+        myPageFeedView.isHidden = showLibraryView
+    }
 }

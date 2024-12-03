@@ -33,7 +33,6 @@ final class MyPageLibraryView: UIView {
         setUI()
         setHierarchy()
         setLayout()
-//        updateLibraryView(isExist: isExist)
     }
     
     required init?(coder: NSCoder) {
@@ -69,38 +68,38 @@ final class MyPageLibraryView: UIView {
     private func setLayout() {
         stackView.snp.makeConstraints {
             $0.edges.equalToSuperview()
-            $0.width.equalToSuperview()
+            $0.bottom.equalToSuperview()
         }
         
-//        inventoryView.snp.makeConstraints {
-//            $0.height.equalTo(160)
-//        }
-//        
-//        genrePrefrerencesView.snp.makeConstraints {
-//            $0.height.equalTo(221.5)
-//        }
-//        
-//        novelPrefrerencesView.snp.makeConstraints {
-//            $0.height.equalTo(270)
-//        }
-//        
-//        [dividerView, dividerView2].forEach {
-//            $0.snp.makeConstraints {
-//                $0.height.equalTo(3)
-//            }
-//        }
-//        
-//        myPagePrivateView.snp.makeConstraints {
-//            //임의적인 수! 수정 필요
-//            $0.height.equalTo(450)
-//        }
+        inventoryView.snp.makeConstraints {
+            $0.height.equalTo(160)
+        }
+        
+        genrePrefrerencesView.snp.makeConstraints {
+            $0.height.equalTo(221.5)
+        }
+        
+        novelPrefrerencesView.snp.makeConstraints {
+            $0.height.equalTo(270)
+        }
+        
+        [dividerView, dividerView2].forEach {
+            $0.snp.makeConstraints {
+                $0.height.equalTo(3)
+            }
+        }
+        
+        myPagePrivateView.snp.makeConstraints {
+            //임의적인 수! 수정 필요
+            $0.height.equalTo(450)
+        }
     }
     
-//    func updateGenreViewHeight(isExpanded: Bool) {
-//        genrePrefrerencesView.snp.updateConstraints {
-//            $0.height.equalTo(isExpanded ? 514 : 224.5)
-//        }
-//    }
+    func updateGenreViewHeight(isExpanded: Bool) {
+        genrePrefrerencesView.snp.updateConstraints {
+            $0.height.equalTo(isExpanded ? 514 : 224.5)
+        }
+    }
     
     //MARK: - Data
     
