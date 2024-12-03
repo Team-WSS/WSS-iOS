@@ -141,15 +141,27 @@ final class MyPageLibraryView: UIView {
     }
     
     func updatePreferencesEmptyView(isEmpty: Bool) {
-        [genrePrefrerencesView,
-         dividerView2,
-         novelPrefrerencesView,
-         myPagePrivateView] .forEach { view in
-            view.do {
-                $0.isHidden = isEmpty
+        if isEmpty {
+            [genrePrefrerencesView,
+             dividerView2,
+             novelPrefrerencesView] .forEach { view in
+                view.do {
+                    $0.isHidden = true
+                }
             }
+            
+            preferencesEmptyView.isHidden  = false
+            
+        } else {
+            [genrePrefrerencesView,
+             dividerView2,
+             novelPrefrerencesView] .forEach { view in
+                view.do {
+                    $0.isHidden = false
+                }
+            }
+            
+            preferencesEmptyView.isHidden  = true
         }
-        
-        preferencesEmptyView.isHidden  = !isEmpty
     }
 }

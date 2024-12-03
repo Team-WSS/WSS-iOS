@@ -19,6 +19,7 @@ final class MyPageFeedView: UIView {
     let stackView = UIStackView()
     
     let myPageFeedTableView = NovelDetailFeedListView()
+    private let buttonView = UIView()
     let myPageFeedDetailButton = UIButton()
     let myPageFeedDetailButtonLabel = UILabel()
     private let paddingViewAfterButton = UIView()
@@ -45,7 +46,6 @@ final class MyPageFeedView: UIView {
         
         stackView.do {
             $0.axis = .vertical
-            $0.alignment = .fill
         }
         
         myPageFeedDetailButton.do {
@@ -70,19 +70,21 @@ final class MyPageFeedView: UIView {
     private func setHierarchy() {
         self.addSubview(stackView)
         stackView.addArrangedSubviews(myPageFeedTableView,
-                                      myPageFeedDetailButton,
+                                      buttonView,
                                       paddingViewAfterButton,
                                       myPagePrivateView,
                                       myPageFeedEmptyView)
+        buttonView.addSubview(myPageFeedDetailButton)
         myPageFeedDetailButton.addSubview(myPageFeedDetailButtonLabel)
     }
     
     private func setLayout() {
         stackView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.top.leading.trailing.bottom.equalToSuperview()
         }
         
         myPageFeedDetailButton.snp.makeConstraints {
+            $0.top.bottom.equalToSuperview()
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(48)
         }
@@ -112,7 +114,7 @@ final class MyPageFeedView: UIView {
             myPagePrivateView.isHidden = false
             
             [myPageFeedTableView,
-             myPageFeedDetailButton,
+             buttonView,
              paddingViewAfterButton,
              myPageFeedEmptyView].forEach { view in
                 view.do {

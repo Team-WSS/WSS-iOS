@@ -142,6 +142,21 @@ final class MyPageViewModel: ViewModelType {
             .subscribe()
             .disposed(by: disposeBag)
         
+        input.viewWillAppearEvent
+            .flatMapLatest { [unowned self] _ in
+                self.updateHeaderView(isMyPage: self.isMyPageRelay.value)
+                    .flatMapLatest { [unowned self] _ in
+                        let isPrivate = self.isProfilePrivateRelay.value.0
+                        if isPrivate {
+                            return Observable<Void>.empty()
+                        } else {
+                            return self.updateMyPageData()
+                        }
+                    }
+            }
+            .subscribe()
+            .disposed(by: disposeBag)
+        
         // 스티키 헤더 처리
         input.headerViewHeight
             .asObservable()
@@ -289,6 +304,8 @@ final class MyPageViewModel: ViewModelType {
     }
     
     private func updateHeaderView(isMyPage: Bool) -> Observable<Void> {
+        let profileDataObservable: Observable<MyProfileResult>
+        
         if isMyPage {
             return self.getProfileData()
                 .do(onNext: { profileData in

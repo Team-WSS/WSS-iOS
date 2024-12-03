@@ -249,9 +249,8 @@ final class MyPageViewController: UIViewController {
         output.showGenreOtherView
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, show in
-                owner.rootView.myPageLibraryView.genrePrefrerencesView.updateView(showOtherGenreView: show)
-                owner.rootView.layoutIfNeeded()
                 UIView.animate(withDuration: 0.3) {
+                    owner.rootView.myPageLibraryView.genrePrefrerencesView.updateView(showOtherGenreView: show)
                     owner.rootView.myPageLibraryView.updateGenreViewHeight(isExpanded: show)
                     owner.rootView.layoutIfNeeded()
                 }
@@ -348,6 +347,12 @@ final class MyPageViewController: UIViewController {
             })
             .disposed(by: disposeBag)
     }
+    
+    //MARK: - Custom Method
+    
+    func scrollToTop() {
+       
+    }
 }
 
 extension MyPageViewController: UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, UITableViewDelegate {
@@ -382,6 +387,7 @@ extension MyPageViewController {
                                 dropdownLayout: .autoInNavigationBar,
                                 dropdownData: [StringLiterals.MyPage.BlockUser.toastText],
                                 textColor: .wssBlack)
+                .observe(on: MainScheduler.instance)
                 .bind(to: dropDownCellTap)
                 .disposed(by: disposeBag)
             }
