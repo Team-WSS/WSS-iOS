@@ -125,12 +125,32 @@ final class MyPageViewModel: ViewModelType {
                 Observable.zip(
                     self.updateHeaderView(isMyPage: self.isMyPageRelay.value),
                     self.updateMyPageData(),
-                    self.handleScrollOffset(scrollOffset: input.scrollOffset.asObservable()),
                     self.handleKeywordCollectionViewHeight(resizeKeywordCollectionViewHeight: input.resizeKeywordCollectionViewHeight),
                     self.handleFeedTableViewHeight(resizeFeedTableViewHeight: input.resizefeedTableViewHeight)
                 )
             }
             .subscribe()
+            .disposed(by: disposeBag)
+        
+        // 스티키 헤더 처리
+        input.headerViewHeight
+            .asObservable()
+            .bind(with: self, onNext: { owner, height in
+                owner.height = height
+            })
+            .disposed(by: disposeBag)
+        
+        input.scrollOffset
+            .asObservable()
+            .map{ $0.y }
+            .subscribe(with: self, onNext: { owner, scrollHeight in
+                let navigationText = owner.isMyPageRelay.value ? StringLiterals.Navigation.Title.myPage : owner.profileDataRelay.value.nickname
+                if (scrollHeight > owner.height) {
+                    self.updateNavigationEnabledRelay.accept((true, navigationText))
+                } else {
+                    self.updateNavigationEnabledRelay.accept((false, navigationText))
+                }
+            })
             .disposed(by: disposeBag)
         
         // 버튼 클릭 이벤트 처리
@@ -313,18 +333,6 @@ final class MyPageViewModel: ViewModelType {
                 })
         )
         .map { _ in }
-    }
-    
-    private func handleScrollOffset(scrollOffset: Observable<CGPoint>) -> Observable<Void> {
-        return scrollOffset
-            .map { $0.y }
-            .do(onNext: { [weak self] scrollHeight in
-                guard let self = self else { return }
-                let navigationText = self.isMyPageRelay.value ? StringLiterals.Navigation.Title.myPage : self.profileDataRelay.value.nickname
-                let shouldEnableNavigation = scrollHeight > self.height
-                self.updateNavigationEnabledRelay.accept((shouldEnableNavigation, navigationText))
-            })
-            .map { _ in }
     }
     
     private func handleFeedTableViewHeight(resizeFeedTableViewHeight: Observable<CGSize?>) -> Observable<CGFloat> {

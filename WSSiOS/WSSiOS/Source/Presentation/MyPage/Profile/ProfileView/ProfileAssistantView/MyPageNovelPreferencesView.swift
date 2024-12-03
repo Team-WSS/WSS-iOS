@@ -172,8 +172,7 @@ final class MyPageNovelPreferencesView: UIView {
     }
     
     func updateKeywordViewHeight(height: CGFloat) {
-        [preferencesCollectionView,
-         paddingView2].forEach { view in
+        [preferencesCollectionView].forEach { view in
             view.do {
                 $0.isHidden = height == 0
             }
