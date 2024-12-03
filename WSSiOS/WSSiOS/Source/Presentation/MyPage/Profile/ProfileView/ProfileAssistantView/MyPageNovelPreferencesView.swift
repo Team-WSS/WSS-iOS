@@ -122,7 +122,6 @@ final class MyPageNovelPreferencesView: UIView {
         
         preferencesCollectionView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(20)
-            $0.width.equalToSuperview()
             $0.height.equalTo(0)
         }
         
@@ -180,6 +179,7 @@ final class MyPageNovelPreferencesView: UIView {
             }
         }
         preferencesCollectionView.snp.updateConstraints {
+            $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(height)
         }
     }

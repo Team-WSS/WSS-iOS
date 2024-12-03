@@ -21,7 +21,32 @@ final class MyPageViewModel: ViewModelType {
     private let disposeBag = DisposeBag()
     var height: Double = 0.0
     let bindKeywordRelay = BehaviorRelay<[Keyword]>(value: [])
+    
     let isMyPageRelay = BehaviorRelay<Bool>(value: true)
+    let isProfilePrivateRelay = BehaviorRelay<(Bool, String)>(value: (true, ""))
+    
+    let profileDataRelay = BehaviorRelay<MyProfileResult>(value: MyProfileResult(nickname: "", intro: "", avatarImage: "", genrePreferences: []))
+    let updateNavigationEnabledRelay = BehaviorRelay<(Bool, String)>(value: (false, ""))
+    
+    let pushToEditViewControllerRelay = PublishRelay<MyProfileResult>()
+    let pushToSettingViewControllerRelay = PublishRelay<Void>()
+    let popViewControllerRelay = PublishRelay<Void>()
+    let pushToLibraryViewControllerRelay = PublishRelay<Int>()
+    
+    let bindAttractivePointsDataRelay = BehaviorRelay<(Bool, [String])>(value: (true, []))
+    let bindKeywordCellRelay = BehaviorRelay<[Keyword]>(value: [])
+    let bindGenreDataRelay = BehaviorRelay<UserGenrePreferences>(value: UserGenrePreferences(genrePreferences: []))
+    let bindInventoryDataRelay = BehaviorRelay<UserNovelStatus>(value: UserNovelStatus(interestNovelCount: 0, watchingNovelCount: 0, watchedNovelCount: 0, quitNovelCount: 0))
+    
+    let bindFeedDataRelay = BehaviorRelay<[FeedCellData]>(value: [])
+    let showGenreOtherViewRelay = BehaviorRelay<Bool>(value: false)
+    let showToastViewRelay = PublishRelay<String>()
+    let stickyHeaderActionRelay = BehaviorRelay<Bool>(value: true)
+    let showUnknownUserAlertRelay = PublishRelay<Void>()
+    let isEmptyFeedRelay = PublishRelay<Void>()
+    let updateButtonWithLibraryViewRelay = BehaviorRelay<Bool>(value: true)
+    let updateFeedTableViewHeightRelay = PublishRelay<CGFloat>()
+    let updateKeywordCollectionViewHeightRelay = PublishRelay<CGFloat>()
     
     // MARK: - Life Cycle
     
@@ -37,6 +62,7 @@ final class MyPageViewModel: ViewModelType {
     
     struct Input {
         let isEntryTabbar: Observable<Bool>
+        let viewWillAppearEvent: PublishRelay<Bool>
         
         let headerViewHeight: Driver<Double>
         let resizefeedTableViewHeight: Observable<CGSize?>
@@ -56,40 +82,34 @@ final class MyPageViewModel: ViewModelType {
     }
     
     struct Output {
-        let isMyPage = BehaviorRelay<Bool>(value: true)
-        let isProfilePrivate = BehaviorRelay<(Bool, String)>(value: (true, ""))
-        let profileData = BehaviorRelay<MyProfileResult>(value: MyProfileResult(nickname: "",
-                                                                                intro: "",
-                                                                                avatarImage: "",
-                                                                                genrePreferences: []))
+        let isMyPage: BehaviorRelay<Bool>
+        let isProfilePrivate: BehaviorRelay<(Bool, String)>
+        let profileData: BehaviorRelay<MyProfileResult>
+        let updateNavigationEnabled: BehaviorRelay<(Bool, String)>
         
-        let updateNavigationEnabled = BehaviorRelay<(Bool, String)>(value: (false,""))
-        let pushToEditViewController = PublishRelay<MyProfileResult>()
-        let pushToSettingViewController = PublishRelay<Void>()
-        let popViewController = PublishRelay<Void>()
-        let pushToLibraryViewController = PublishRelay<Int>()
+        let pushToEditViewController: PublishRelay<MyProfileResult>
+        let pushToSettingViewController: PublishRelay<Void>
+        let popViewController: PublishRelay<Void>
+        let pushToLibraryViewController: PublishRelay<Int>
         
-        let bindAttractivePointsData = BehaviorRelay<(Bool, [String])>(value: (true, []))
-        let bindKeywordCell = BehaviorRelay<[Keyword]>(value: [])
-        let bindGenreData = BehaviorRelay<UserGenrePreferences>(value: UserGenrePreferences(genrePreferences: []))
-        let bindInventoryData = BehaviorRelay<UserNovelStatus>(value: UserNovelStatus(interestNovelCount: 0,
-                                                                                      watchingNovelCount: 0,
-                                                                                      watchedNovelCount: 0,
-                                                                                      quitNovelCount: 0))
-        let bindFeedData = BehaviorRelay<[FeedCellData]>(value: [])
-        let showGenreOtherView = BehaviorRelay<Bool>(value: false)
-        let showToastView = PublishRelay<String>()
+        let bindAttractivePointsData: BehaviorRelay<(Bool, [String])>
+        let bindKeywordCell: BehaviorRelay<[Keyword]>
+        let updateKeywordCollectionViewHeight: PublishRelay<CGFloat>
+        let bindGenreData: BehaviorRelay<UserGenrePreferences>
+        let bindInventoryData: BehaviorRelay<UserNovelStatus>
+        let showGenreOtherView: BehaviorRelay<Bool>
         
-        let stickyHeaderAction = BehaviorRelay<Bool>(value: true)
-        let showUnknownUserAlert = PublishRelay<Void>()
-        let isEmptyFeed = PublishRelay<Void>()
-        let updateButtonWithLibraryView = BehaviorRelay<Bool>(value: true)
-        let updateFeedTableViewHeight = PublishRelay<CGFloat>()
-        let updateKeywordCollectionViewHeight = PublishRelay<CGFloat>()
+        let bindFeedData: BehaviorRelay<[FeedCellData]>
+        let updateFeedTableViewHeight: PublishRelay<CGFloat>
+        let isEmptyFeed: PublishRelay<Void>
+        
+        let showToastView: PublishRelay<String>
+        let stickyHeaderAction: BehaviorRelay<Bool>
+        let showUnknownUserAlert: PublishRelay<Void>
+        let updateButtonWithLibraryView: BehaviorRelay<Bool>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
-        let output = Output()
         
         // 진입 경로 분기처리
         // 현재는 탭바로 진입할 때만 마이페이지!
@@ -99,206 +119,64 @@ final class MyPageViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        // 마이페이지 분기 처리
-        self.isMyPageRelay
-            .asObservable()
-            .flatMapLatest { [unowned self] isMyPage -> Observable<Void> in
-                if isMyPage {
-                    return self.getProfileData()
-                        .do(onNext: { profileData in
-                            output.profileData.accept(profileData)
-                            output.isMyPage.accept(true)
-                            output.isProfilePrivate.accept((false, profileData.nickname))
-                        })
-                        .map { _ in }
-                } else {
-                    return self.getOtherProfileData(userId: self.profileId)
-                        .do(onNext: { profileData in
-                            let data = MyProfileResult(
-                                nickname: profileData.nickname,
-                                intro: profileData.intro,
-                                avatarImage: profileData.avatarImage,
-                                genrePreferences: profileData.genrePreferences
-                            )
-                            output.profileData.accept(data)
-                            output.isMyPage.accept(false)
-                            output.isProfilePrivate.accept((!profileData.isProfilePublic, profileData.nickname))
-                        })
-                        .map { _ in }
-                        .catch { [unowned self] error in
-                            let unknownUserError = self.isUnknownUserError(error)
-                            if unknownUserError {
-                                output.showUnknownUserAlert.accept(())
-                                output.isMyPage.accept(false)
-                            }
-                            return .empty()
-                        }
-                }
+        // viewWillAppear 이벤트 처리
+        input.viewWillAppearEvent
+            .flatMapLatest { [unowned self] _ in
+                Observable.zip(
+                    self.updateHeaderView(isMyPage: self.isMyPageRelay.value),
+                    self.updateMyPageData(),
+                    self.handleScrollOffset(scrollOffset: input.scrollOffset.asObservable()),
+                    self.handleKeywordCollectionViewHeight(resizeKeywordCollectionViewHeight: input.resizeKeywordCollectionViewHeight),
+                    self.handleFeedTableViewHeight(resizeFeedTableViewHeight: input.resizefeedTableViewHeight)
+                )
             }
             .subscribe()
             .disposed(by: disposeBag)
         
-        // 마이페이지 정보 바인딩
-        Observable.combineLatest(output.isProfilePrivate.asObservable(), isMyPageRelay.asObservable())
-            .filter { isProfilePrivate, isMyPage in
-                !isProfilePrivate.0 || isMyPage
-            }
-            .subscribe(onNext: { [unowned self] _, _ in
-                
-                Observable.just(())
-                    .flatMapLatest { _ in
-                        self.getNovelPreferenceData(userId: self.profileId)
-                    }
-                    .subscribe(with: self, onNext: { owner, data in
-                        let keywords = data.keywords ?? []
-                        if (data.attractivePoints == [] && keywords.isEmpty) {
-                            output.bindAttractivePointsData.accept((false, []))
-                        } else {
-                            output.bindAttractivePointsData.accept((true, data.attractivePoints ?? []))
-                            owner.bindKeywordRelay.accept(keywords)
-                            output.bindKeywordCell.accept(keywords)
-                        }
-                    }, onError: { owner, error in
-                        print(error.localizedDescription)
-                    })
-                    .disposed(by: disposeBag)
-                
-                Observable.just(())
-                    .flatMapLatest { _ in
-                        self.getGenrePreferenceData(userId: self.profileId)
-                    }
-                    .subscribe(with: self, onNext: { owner, data in
-                        output.bindGenreData.accept(data)
-                    }, onError: { owner, error in
-                        print(error.localizedDescription)
-                    })
-                    .disposed(by: disposeBag)
-                
-                Observable.just(())
-                    .flatMapLatest { _ in
-                        self.getInventoryData(userId: self.profileId)
-                    }
-                    .subscribe(with: self, onNext: { owner, data in
-                        output.bindInventoryData.accept(data)
-                    }, onError: { owner, error in
-                        print(error.localizedDescription)
-                    })
-                    .disposed(by: disposeBag)
-                
-                Observable.just(())
-                    .flatMapLatest { _ in
-                        self.getUserFeed(userId: self.profileId, lastFeedId: 0, size: 5)
-                    }
-                    .map { [weak self] feedResult -> [FeedCellData] in
-                        guard let self = self else { return [] }
-                        return feedResult.feeds.map { feed in
-                            FeedCellData(
-                                feed: feed,
-                                avatarImage: output.profileData.value.avatarImage,
-                                nickname: output.profileData.value.nickname
-                            )
-                        }
-                    }
-                    .subscribe(with: self, onNext: { owner, feedData in
-                        if feedData.isEmpty {
-                            output.isEmptyFeed.accept(())
-                        } else {
-                            output.bindFeedData.accept(feedData)
-                        }
-                    }, onError: { owner, error in
-                        print(error.localizedDescription)
-                    })
-                    .disposed(by: disposeBag)
-            })
-            .disposed(by: disposeBag)
-        
-        // 레이아웃 조정
-        input.headerViewHeight
-            .asObservable()
-            .bind(with: self, onNext: { owner, height in
-                owner.height = height
-            })
-            .disposed(by: disposeBag)
-        
-        input.scrollOffset
-            .asObservable()
-            .map{ $0.y }
-            .subscribe(with: self, onNext: { owner, scrollHeight in
-                let navigationText = owner.isMyPageRelay.value ? StringLiterals.Navigation.Title.myPage : output.profileData.value.nickname
-                if (scrollHeight > owner.height) {
-                    output.updateNavigationEnabled.accept((true, navigationText))
-                } else {
-                    output.updateNavigationEnabled.accept((false, navigationText))
-                }
-            })
-            .disposed(by: disposeBag)
-        
-        
+        // 버튼 클릭 이벤트 처리
         input.genrePreferenceButtonDidTap
-            .bind(with: self, onNext: { owner, _ in
-                let currentState = output.showGenreOtherView.value
-                output.showGenreOtherView.accept(!(currentState))
+            .subscribe(with: self, onNext: { owner, _ in
+                let currentState = owner.showGenreOtherViewRelay.value
+                owner.showGenreOtherViewRelay.accept(!currentState)
             })
             .disposed(by: disposeBag)
         
-        input.resizefeedTableViewHeight
-            .map { $0?.height ?? 0 }
-            .bind(to: output.updateFeedTableViewHeight)
+        input.settingButtonDidTap
+            .bind(to: pushToSettingViewControllerRelay)
             .disposed(by: disposeBag)
         
-        input.resizeKeywordCollectionViewHeight
-            .map { $0?.height ?? 0 }
-            .bind(to: output.updateKeywordCollectionViewHeight)
+        input.editButtonDidTap
+            .map { self.profileDataRelay.value }
+            .bind(to: pushToEditViewControllerRelay)
+            .disposed(by: disposeBag)
+        
+        input.backButtonDidTap
+            .bind(to: popViewControllerRelay)
             .disposed(by: disposeBag)
         
         input.libraryButtonDidTap
-            .bind(with: self, onNext: { owner, _ in
-                output.stickyHeaderAction.accept(true)
-                output.updateButtonWithLibraryView.accept(true)
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.stickyHeaderActionRelay.accept(true)
+                owner.updateButtonWithLibraryViewRelay.accept(true)
             })
             .disposed(by: disposeBag)
         
         input.feedButtonDidTap
-            .bind(with: self, onNext: { owner, _ in
-                output.stickyHeaderAction.accept(false)
-                output.updateButtonWithLibraryView.accept(false)
-            })
-            .disposed(by: disposeBag)
-        
-        //VC 이동
-        input.settingButtonDidTap
-            .bind(with: self, onNext: { owner, _ in
-                output.pushToSettingViewController.accept(())
-            })
-            .disposed(by: disposeBag)
-        
-        input.editButtonDidTap
-            .bind(with: self, onNext: { owner, _ in
-                output.pushToEditViewController.accept(output.profileData.value)
-            })
-            .disposed(by: disposeBag)
-        
-        input.backButtonDidTap
-            .bind(with: self, onNext: { owner, _ in
-                output.popViewController.accept(())
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.stickyHeaderActionRelay.accept(false)
+                owner.updateButtonWithLibraryViewRelay.accept(false)
             })
             .disposed(by: disposeBag)
         
         input.dropdownButtonDidTap
-            .filter { tappedCell in
-                tappedCell == StringLiterals.MyPage.BlockUser.toastText
-            }
-            .flatMapLatest { _ in
+            .filter { $0 == StringLiterals.MyPage.BlockUser.toastText }
+            .flatMapLatest { [unowned self] _ in
                 self.postBlockUser(userId: self.profileId)
             }
-            .subscribe(with: self, onNext: { owner, tappedCell in
-                let nickname = output.profileData.value.nickname
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    NotificationCenter.default.post(name: NSNotification.Name("BlockUser"), object: nickname)
-                }
-                output.popViewController.accept(())
-            }, onError: { owner, error in
-                print(error.localizedDescription)
+            .subscribe(with: self, onNext: { owner, _ in
+                let nickname = owner.profileDataRelay.value.nickname
+                NotificationCenter.default.post(name: NSNotification.Name("BlockUser"), object: nickname)
+                owner.popViewControllerRelay.accept(())
             })
             .disposed(by: disposeBag)
         
@@ -307,17 +185,43 @@ final class MyPageViewModel: ViewModelType {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     NotificationCenter.default.post(name: NSNotification.Name("UnknownUser"), object: nil)
                 }
-                output.popViewController.accept(())
+                self.popViewControllerRelay.accept(())
             })
             .disposed(by: disposeBag)
         
         input.inventoryButtonDidTap
             .bind(with: self, onNext: { owner, _ in
-                output.pushToLibraryViewController.accept(owner.profileId)
+                self.pushToLibraryViewControllerRelay.accept(owner.profileId)
             })
             .disposed(by: disposeBag)
         
-        return output
+        return Output(
+            isMyPage: self.isMyPageRelay,
+            isProfilePrivate: self.isProfilePrivateRelay,
+            profileData: self.profileDataRelay,
+            updateNavigationEnabled: self.updateNavigationEnabledRelay,
+            
+            pushToEditViewController: self.pushToEditViewControllerRelay,
+            pushToSettingViewController: self.pushToSettingViewControllerRelay,
+            popViewController: self.popViewControllerRelay,
+            pushToLibraryViewController: self.pushToLibraryViewControllerRelay,
+            
+            bindAttractivePointsData: self.bindAttractivePointsDataRelay,
+            bindKeywordCell: self.bindKeywordRelay,
+            updateKeywordCollectionViewHeight: self.updateKeywordCollectionViewHeightRelay,
+            bindGenreData: self.bindGenreDataRelay,
+            bindInventoryData: self.bindInventoryDataRelay,
+            showGenreOtherView: self.showGenreOtherViewRelay,
+            
+            bindFeedData: self.bindFeedDataRelay,
+            updateFeedTableViewHeight: self.updateFeedTableViewHeightRelay,
+            isEmptyFeed: self.isEmptyFeedRelay,
+            
+            showToastView: self.showToastViewRelay,
+            stickyHeaderAction: self.stickyHeaderActionRelay,
+            showUnknownUserAlert: self.showUnknownUserAlertRelay,
+            updateButtonWithLibraryView: self.updateButtonWithLibraryViewRelay
+        )
     }
     
     // MARK: - Custom Method
@@ -338,6 +242,105 @@ final class MyPageViewModel: ViewModelType {
             }
         }
         return false
+    }
+    
+    private func updateHeaderView(isMyPage: Bool) -> Observable<Void> {
+        if isMyPage {
+            return self.getProfileData()
+                .do(onNext: { profileData in
+                    self.profileDataRelay.accept(profileData)
+                    self.isProfilePrivateRelay.accept((false, profileData.nickname))
+                })
+                .map { _ in }
+        } else {
+            return self.getOtherProfileData(userId: self.profileId)
+                .do(onNext: { profileData in
+                    let data = MyProfileResult(
+                        nickname: profileData.nickname,
+                        intro: profileData.intro,
+                        avatarImage: profileData.avatarImage,
+                        genrePreferences: profileData.genrePreferences
+                    )
+                    self.profileDataRelay.accept(data)
+                    self.isProfilePrivateRelay.accept((!profileData.isProfilePublic, profileData.nickname))
+                })
+                .map { _ in }
+                .catch { [unowned self] error in
+                    if self.isUnknownUserError(error) {
+                        self.showUnknownUserAlertRelay.accept(())
+                    }
+                    return .empty()
+                }
+        }
+    }
+    
+    private func updateMyPageData() -> Observable<Void> {
+        return Observable.zip(
+            self.getNovelPreferenceData(userId: self.profileId)
+                .do(onNext: { data in
+                    let keywords = data.keywords ?? []
+                    if data.attractivePoints == [] && keywords.isEmpty {
+                        self.bindAttractivePointsDataRelay.accept((false, []))
+                    } else {
+                        self.bindAttractivePointsDataRelay.accept((true, data.attractivePoints ?? []))
+                        self.bindKeywordRelay.accept(keywords)
+                    }
+                }),
+            self.getGenrePreferenceData(userId: self.profileId)
+                .do(onNext: { data in
+                    self.bindGenreDataRelay.accept(data)
+                }),
+            self.getInventoryData(userId: self.profileId)
+                .do(onNext: { data in
+                    self.bindInventoryDataRelay.accept(data)
+                }),
+            self.getUserFeed(userId: self.profileId, lastFeedId: 0, size: 5)
+                .map { feedResult -> [FeedCellData] in
+                    feedResult.feeds.map { feed in
+                        FeedCellData(
+                            feed: feed,
+                            avatarImage: self.profileDataRelay.value.avatarImage,
+                            nickname: self.profileDataRelay.value.nickname
+                        )
+                    }
+                }
+                .do(onNext: { feedData in
+                    if feedData.isEmpty {
+                        self.isEmptyFeedRelay.accept(())
+                    } else {
+                        self.bindFeedDataRelay.accept(feedData)
+                    }
+                })
+        )
+        .map { _ in }
+    }
+    
+    private func handleScrollOffset(scrollOffset: Observable<CGPoint>) -> Observable<Void> {
+        return scrollOffset
+            .map { $0.y }
+            .do(onNext: { [weak self] scrollHeight in
+                guard let self = self else { return }
+                let navigationText = self.isMyPageRelay.value ? StringLiterals.Navigation.Title.myPage : self.profileDataRelay.value.nickname
+                let shouldEnableNavigation = scrollHeight > self.height
+                self.updateNavigationEnabledRelay.accept((shouldEnableNavigation, navigationText))
+            })
+            .map { _ in }
+    }
+    
+    private func handleFeedTableViewHeight(resizeFeedTableViewHeight: Observable<CGSize?>) -> Observable<CGFloat> {
+        return resizeFeedTableViewHeight
+            .map { $0?.height ?? 0 }
+            .do(onNext: { [weak self] height in
+                self?.updateFeedTableViewHeightRelay.accept(height)
+            })
+    }
+    
+    private func handleKeywordCollectionViewHeight(resizeKeywordCollectionViewHeight: Observable<CGSize?>) -> Observable<CGFloat> {
+        return resizeKeywordCollectionViewHeight
+            .map { $0?.height ?? 0 }
+            .do(onNext: { [weak self] height in
+                self?.updateKeywordCollectionViewHeightRelay.accept(height)
+            })
     }
     
     // MARK: - API

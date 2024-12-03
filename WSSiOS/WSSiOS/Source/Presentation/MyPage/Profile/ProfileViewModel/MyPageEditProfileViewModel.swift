@@ -117,6 +117,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
                 }
                 
                 if self.userNickname.value != self.profileData.nickname {
+                    print("☺️", self.userNickname.value)
                     updatedFields["nickname"] = self.userNickname.value
                 }
                 

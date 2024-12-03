@@ -27,6 +27,7 @@ final class MyPageViewController: UIViewController {
     private var dropDownCellTap = PublishSubject<String>()
     private let headerViewHeightRelay = BehaviorRelay<Double>(value: 0)
     private let alertButtonRelay = PublishRelay<Bool>()
+    private let viewWillAppearEvent = PublishRelay<Bool>()
     
     //MARK: - UI Components
     
@@ -72,6 +73,7 @@ final class MyPageViewController: UIViewController {
         super.viewWillAppear(animated)
         
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
+        self.viewWillAppearEvent.accept(true)
     }
     
     override func viewDidLayoutSubviews() {
@@ -122,6 +124,7 @@ final class MyPageViewController: UIViewController {
         
         let input = MyPageViewModel.Input(
             isEntryTabbar: isEntryTabbarRelay.asObservable(),
+            viewWillAppearEvent: self.viewWillAppearEvent,
             headerViewHeight: headerViewHeightRelay.asDriver(),
             resizefeedTableViewHeight: rootView.myPageFeedView.myPageFeedTableView.feedTableView.rx.observe(CGSize.self, "contentSize"),
             resizeKeywordCollectionViewHeight: rootView.myPageLibraryView.novelPrefrerencesView.preferencesCollectionView.rx.observe(CGSize.self, "contentSize"),
@@ -333,7 +336,6 @@ final class MyPageViewController: UIViewController {
                 owner.rootView.myPageLibraryView.novelPrefrerencesView.updateKeywordViewHeight(height: height)
             })
             .disposed(by: disposeBag)
-        
     }
 }
 
