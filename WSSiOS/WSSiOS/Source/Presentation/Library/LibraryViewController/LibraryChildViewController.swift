@@ -70,10 +70,22 @@ final class LibraryChildViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func bindViewModel() {
+        let loadNextPageTrigger = rootView.libraryCollectionView.rx.contentOffset
+            .map { [weak self] contentOffset in
+                guard let self = self else { return false }
+                let offsetY = contentOffset.y
+                let contentHeight = self.rootView.libraryCollectionView.contentSize.height
+                let frameHeight = self.rootView.libraryCollectionView.frame.height
+                return offsetY + frameHeight >= contentHeight - 100
+            }
+            .distinctUntilChanged()
+            .filter { $0 }
+            .map { _ in () }
+        
         let input = LibraryChildViewModel.Input(
-            updateNovelList: updateNovelListRelay,
             lookForNovelButtonDidTap: rootView.libraryEmptyView.libraryLookForNovelButton.rx.tap,
-            cellItemSeleted: rootView.libraryCollectionView.rx.itemSelected
+            cellItemSeleted: rootView.libraryCollectionView.rx.itemSelected,
+            loadNextPageTrigger: loadNextPageTrigger
         )
         
         let output = libraryViewModel.transform(from: input, disposeBag: disposeBag)
@@ -86,13 +98,6 @@ final class LibraryChildViewController: UIViewController, UIScrollViewDelegate {
                 }
                 .disposed(by: disposeBag)
         
-        output.pushToDetailNovelViewController
-            .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, novelId in
-                owner.pushToDetailViewController(novelId: novelId)
-            })
-            .disposed(by: disposeBag)
-        
         output.showEmptyView
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, isEmpty in
@@ -100,14 +105,24 @@ final class LibraryChildViewController: UIViewController, UIScrollViewDelegate {
             })
             .disposed(by: disposeBag)
         
+        output.pushToDetailNovelViewController
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, novelId in
+                owner.pushToDetailViewController(novelId: novelId)
+            })
+            .disposed(by: disposeBag)
+        
         output.pushToSearchViewController
             .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, isEmpty in
-                if let tabBarController = owner.tabBarController as? WSSTabBarController {
-                    if let myPageIndex = WSSTabBarItem.allCases.firstIndex(of: .search) {
-                        tabBarController.selectedIndex = myPageIndex
-                    }
-                }
+            .bind(with: self, onNext: { owner, _ in
+                owner.pushToNormalSearchViewController()
+            })
+            .disposed(by: disposeBag)
+        
+        output.sendNovelTotalCount
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, count in
+                owner.delegate?.sendNovelCount(data: count)
             })
             .disposed(by: disposeBag)
     }

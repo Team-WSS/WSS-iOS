@@ -57,8 +57,7 @@ final class LibraryChildView: UIView {
     private func setLayout() {
         libraryCollectionView.snp.makeConstraints() {
             $0.top.equalToSuperview()
-            $0.centerX.equalToSuperview()
-            $0.leading.equalTo(20)
+            $0.leading.trailing.equalToSuperview().inset(20)
             $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom)
         }
         

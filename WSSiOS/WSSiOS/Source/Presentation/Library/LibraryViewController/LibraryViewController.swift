@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class LibraryViewController: UIViewController {
+final class LibraryViewController: UIViewController, NovelDelegate {
     
     //MARK: - Properties
     
@@ -111,6 +111,7 @@ final class LibraryViewController: UIViewController {
                 
                 for (index, viewController) in owner.libraryPages.enumerated() {
                     viewController.view.tag = index
+                    viewController.delegate  = owner
                 }
                 
                 owner.libraryPageViewController.setViewControllers([owner.libraryPages[0]],
@@ -180,6 +181,10 @@ final class LibraryViewController: UIViewController {
         libraryPageBar.libraryTabCollectionView.selectItem(at: IndexPath(item: 0, section: 0),
                                                                          animated: true,
                                                                          scrollPosition: [])
+    }
+    
+    func sendNovelCount(data: Int) {
+        self.libraryDescriptionView.updateNovelCount(count: data)
     }
 }
 

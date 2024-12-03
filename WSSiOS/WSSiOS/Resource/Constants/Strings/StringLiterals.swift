@@ -364,7 +364,7 @@ enum StringLiterals {
         }
         
         var sizeData: Int {
-            return 500
+            return 10
         }
     }
     

@@ -47,7 +47,6 @@ final class MyPageFeedDetailViewModel: ViewModelType {
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
-        
         input.loadNextPageTrigger
             .filter { [unowned self] _ in !self.isFetching && self.isLoadableRelay.value }
             .do(onNext: { [unowned self] _ in self.isFetching = true })

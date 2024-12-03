@@ -28,10 +28,10 @@ protocol UserRepository {
     func getNicknameisValid(nickname: String) -> Single<OnboardingResult>
     func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Observable<MyFeedResult>
     func getUserNovelList(userId: Int,
-                              readStatus: String,
-                              lastUserNovelId: Int,
-                              size: Int,
-                              sortType: String) -> Observable<UserNovelList>
+                          readStatus: String,
+                          lastUserNovelId: Int,
+                          size: Int,
+                          sortType: String) -> Observable<UserNovelList>
 }
 
 struct DefaultUserRepository: UserRepository {

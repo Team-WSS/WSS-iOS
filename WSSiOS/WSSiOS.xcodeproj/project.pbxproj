@@ -2985,8 +2985,8 @@
 		E45FEFAE2CFC309800B73D80 /* LibraryViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				E45FEFAF2CFC30A600B73D80 /* LibraryChildViewModel.swift */,
 				E45FEFB12CFC30BD00B73D80 /* LibraryViewModel.swift */,
+				E45FEFAF2CFC30A600B73D80 /* LibraryChildViewModel.swift */,
 			);
 			path = LibraryViewModel;
 			sourceTree = "<group>";
