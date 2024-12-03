@@ -49,6 +49,7 @@ final class MyPageView: UIView {
         self.backgroundColor = .wssPrimary20
         
         scrollView.do {
+            $0.contentInsetAdjustmentBehavior = .never
             $0.showsVerticalScrollIndicator = false
         }
         
@@ -86,7 +87,6 @@ final class MyPageView: UIView {
         
         contentView.snp.makeConstraints {
             $0.edges.equalToSuperview()
-            $0.width.equalToSuperview()
         }
         
         headerView.snp.makeConstraints {
@@ -104,20 +104,6 @@ final class MyPageView: UIView {
             $0.width.equalToSuperview()
             $0.height.equalTo(47)
         }
-        
-        myPageLibraryView.snp.makeConstraints {
-            $0.top.equalTo(mainStickyHeaderView.snp.bottom)
-            $0.leading.trailing.equalToSuperview()
-        }
-        
-        myPageFeedView.snp.makeConstraints {
-            $0.top.equalTo(mainStickyHeaderView.snp.bottom)
-            $0.leading.trailing.equalToSuperview()
-        }
-        
-        contentView.snp.makeConstraints {
-            $0.bottom.equalTo(myPageLibraryView.snp.bottom)
-        }
     }
     
     //MARK: - Data
@@ -132,9 +118,9 @@ final class MyPageView: UIView {
         myPageFeedView.isHidden = true
     }
     
-    func updateScrollViewContentHeight(library: Bool) {
-        contentView.snp.makeConstraints {
-            $0.bottom.equalTo(library ? myPageLibraryView.snp.bottom : myPageFeedView.snp.bottom)
-        }
-    }
+//    func updateScrollViewContentHeight(library: Bool) {
+//        contentView.snp.makeConstraints {
+//            $0.bottom.equalTo(library ? myPageLibraryView.snp.bottom : myPageFeedView.snp.bottom)
+//        }
+//    }
 }

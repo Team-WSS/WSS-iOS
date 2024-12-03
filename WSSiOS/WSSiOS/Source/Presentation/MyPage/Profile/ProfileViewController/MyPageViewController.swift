@@ -148,7 +148,6 @@ final class MyPageViewController: UIViewController {
         output.isExistPreference
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, exist in
-                owner.rootView.myPageLibraryView.isExist = exist
                 owner.rootView.myPageLibraryView.updateLibraryView(isExist: exist)
             })
             .disposed(by: disposeBag)
@@ -244,11 +243,11 @@ final class MyPageViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, show in
                 owner.rootView.myPageLibraryView.genrePrefrerencesView.updateView(showOtherGenreView: show)
-                
-                UIView.animate(withDuration: 0.3) {
-                    owner.rootView.myPageLibraryView.updateGenreViewHeight(isExpanded: show)
-                    owner.rootView.layoutIfNeeded()
-                }
+                owner.rootView.layoutIfNeeded()
+//                UIView.animate(withDuration: 0.3) {
+//                    owner.rootView.myPageLibraryView.updateGenreViewHeight(isExpanded: show)
+//                    owner.rootView.layoutIfNeeded()
+//                }
             })
             .disposed(by: disposeBag)
         
@@ -309,17 +308,16 @@ final class MyPageViewController: UIViewController {
         output.bindFeedData
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, feeds in
-//                owner.rootView.myPageFeedView.isEmprtyView(isEmpty: feeds.isEmpty)
+                //                owner.rootView.myPageFeedView.isEmprtyView(isEmpty: feeds.isEmpty)
             })
             .disposed(by: disposeBag)
         
         output.pushToLibraryViewController
-                    .observe(on: MainScheduler.instance)
-                    .bind(with: self, onNext: { owner, _ in
-                        let userId = UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)
-                        owner.pushToLibraryViewController(userId: userId)
-                    })
-                    .disposed(by: disposeBag)
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, userId in
+                owner.pushToLibraryViewController(userId: userId)
+            })
+            .disposed(by: disposeBag)
     }
 }
 

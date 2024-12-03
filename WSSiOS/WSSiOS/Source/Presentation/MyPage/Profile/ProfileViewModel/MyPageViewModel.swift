@@ -82,7 +82,7 @@ final class MyPageViewModel: ViewModelType {
         let showUnknownUserAlert = PublishRelay<Void>()
         let isEmptyFeed = PublishRelay<Void>()
         let updateButtonWithLibraryView = BehaviorRelay<Bool>(value: true)
-        let pushToLibraryViewController = PublishRelay<Void>()
+        let pushToLibraryViewController = PublishRelay<Int>()
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -186,14 +186,14 @@ final class MyPageViewModel: ViewModelType {
                         self.getUserFeed(userId: self.profileId, lastFeedId: 0, size: 5)
                     }
                     .map { [weak self] feedResult -> [FeedCellData] in
-                            guard let self = self else { return [] }
-                            return feedResult.feeds.map { feed in
-                                FeedCellData(
-                                    feed: feed,
-                                    avatarImage: output.profileData.value.avatarImage,
-                                    nickname: output.profileData.value.nickname
-                                )
-                            }
+                        guard let self = self else { return [] }
+                        return feedResult.feeds.map { feed in
+                            FeedCellData(
+                                feed: feed,
+                                avatarImage: output.profileData.value.avatarImage,
+                                nickname: output.profileData.value.nickname
+                            )
+                        }
                     }
                     .subscribe(with: self, onNext: { owner, feedData in
                         if feedData.isEmpty {
@@ -298,10 +298,10 @@ final class MyPageViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.inventoryButtonDidTap
-                    .bind(with: self, onNext: { owner, _ in
-                        output.pushToLibraryViewController.accept(())
-                    })
-                    .disposed(by: disposeBag)
+            .bind(with: self, onNext: { owner, _ in
+                output.pushToLibraryViewController.accept(owner.profileId)
+            })
+            .disposed(by: disposeBag)
         
         return output
     }

@@ -12,13 +12,6 @@ import Then
 
 final class MyPageLibraryView: UIView {
     
-    // MARK: - Properties
-    
-    var isExist: Bool = true {
-        didSet {
-            updateLibraryView(isExist: isExist)
-        }
-    }
     
     // MARK: - Components
     
@@ -40,7 +33,7 @@ final class MyPageLibraryView: UIView {
         setUI()
         setHierarchy()
         setLayout()
-        updateLibraryView(isExist: isExist)
+//        updateLibraryView(isExist: isExist)
     }
     
     required init?(coder: NSCoder) {
@@ -48,6 +41,8 @@ final class MyPageLibraryView: UIView {
     }
     
     private func setUI() {
+        self.backgroundColor = .wssWhite
+        
         stackView.do {
             $0.axis = .vertical
             $0.spacing = 3
@@ -62,69 +57,105 @@ final class MyPageLibraryView: UIView {
     
     private func setHierarchy() {
         self.addSubview(stackView)
+        stackView.addArrangedSubviews(myPagePrivateView,
+                                      inventoryView,
+                                      dividerView,
+                                      preferencesEmptyView,
+                                      genrePrefrerencesView,
+                                      dividerView2,
+                                      novelPrefrerencesView)
     }
     
     private func setLayout() {
         stackView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+            $0.width.equalToSuperview()
         }
         
-        inventoryView.snp.makeConstraints {
-            $0.height.equalTo(160)
-        }
-        
-        genrePrefrerencesView.snp.makeConstraints {
-            $0.height.equalTo(221.5)
-        }
-        
-        novelPrefrerencesView.snp.makeConstraints {
-            $0.height.equalTo(270)
-        }
-        
-        [dividerView, dividerView2].forEach {
-            $0.snp.makeConstraints {
-                $0.height.equalTo(3)
-            }
-        }
-        
-        myPagePrivateView.snp.makeConstraints {
-            //임의적인 수! 수정 필요
-            $0.height.equalTo(450)
-        }
+//        inventoryView.snp.makeConstraints {
+//            $0.height.equalTo(160)
+//        }
+//        
+//        genrePrefrerencesView.snp.makeConstraints {
+//            $0.height.equalTo(221.5)
+//        }
+//        
+//        novelPrefrerencesView.snp.makeConstraints {
+//            $0.height.equalTo(270)
+//        }
+//        
+//        [dividerView, dividerView2].forEach {
+//            $0.snp.makeConstraints {
+//                $0.height.equalTo(3)
+//            }
+//        }
+//        
+//        myPagePrivateView.snp.makeConstraints {
+//            //임의적인 수! 수정 필요
+//            $0.height.equalTo(450)
+//        }
     }
     
-    func updateGenreViewHeight(isExpanded: Bool) {
-        genrePrefrerencesView.snp.updateConstraints {
-            $0.height.equalTo(isExpanded ? 514 : 224.5)
-        }
-    }
+//    func updateGenreViewHeight(isExpanded: Bool) {
+//        genrePrefrerencesView.snp.updateConstraints {
+//            $0.height.equalTo(isExpanded ? 514 : 224.5)
+//        }
+//    }
     
     //MARK: - Data
     
     func updateLibraryView(isExist: Bool) {
-        stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
-        
         if isExist {
-            stackView.addArrangedSubviews(inventoryView,
-                                          dividerView,
-                                          genrePrefrerencesView,
-                                          dividerView2,
-                                          novelPrefrerencesView)
-        } else {
-            stackView.addArrangedSubviews(inventoryView,
-                                          dividerView,
-                                          preferencesEmptyView)
+            [inventoryView,
+             dividerView,
+             genrePrefrerencesView,
+             dividerView2,
+             novelPrefrerencesView].forEach { view in
+                view.do {
+                    $0.isHidden = false
+                }
+            }
             
-            preferencesEmptyView.snp.remakeConstraints {
-                $0.height.equalTo(363)
+            [myPagePrivateView,
+             preferencesEmptyView].forEach { view in
+                view.do {
+                    $0.isHidden = true
+                }
+            }
+        } else {
+            [inventoryView,
+             dividerView,
+             preferencesEmptyView].forEach { view in
+                view.do {
+                    $0.isHidden = false
+                }
+            }
+            
+            [myPagePrivateView,
+             genrePrefrerencesView,
+             dividerView2,
+             novelPrefrerencesView].forEach { view in
+                view.do {
+                    $0.isHidden = true
+                }
             }
         }
     }
     
     func isPrivateUserView(isPrivate: Bool, nickname: String) {
         if isPrivate {
-            stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
-            stackView.addArrangedSubviews(myPagePrivateView)
+            [inventoryView,
+             dividerView,
+             preferencesEmptyView,
+             genrePrefrerencesView,
+             dividerView2,
+             novelPrefrerencesView] .forEach { view in
+                view.do {
+                    $0.isHidden = true
+                }
+            }
+            
+            myPagePrivateView.isHidden = false
             
             let text = nickname + StringLiterals.MyPage.Profile.privateLabel
             myPagePrivateView.isPrivateDescriptionLabel.do {
