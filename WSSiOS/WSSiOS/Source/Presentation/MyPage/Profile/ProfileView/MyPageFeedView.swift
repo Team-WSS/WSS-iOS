@@ -113,7 +113,6 @@ final class MyPageFeedView: UIView {
             
             [myPageFeedTableView,
              myPageFeedDetailButton,
-             myPageFeedDetailButtonLabel,
              paddingViewAfterButton,
              myPageFeedEmptyView].forEach { view in
                 view.do {
@@ -130,7 +129,6 @@ final class MyPageFeedView: UIView {
         } else {
             [myPageFeedTableView,
              myPageFeedDetailButton,
-             myPageFeedDetailButtonLabel,
              paddingViewAfterButton].forEach { view in
                 view.do {
                     $0.isHidden = false
@@ -152,7 +150,6 @@ final class MyPageFeedView: UIView {
             
             [myPageFeedTableView,
              myPageFeedDetailButton,
-             myPageFeedDetailButtonLabel,
              paddingViewAfterButton,
              myPagePrivateView].forEach { view in
                 view.do {
@@ -164,7 +161,6 @@ final class MyPageFeedView: UIView {
         else {
             [myPageFeedTableView,
              myPageFeedDetailButton,
-             myPageFeedDetailButtonLabel,
              paddingViewAfterButton].forEach { view in
                 view.do {
                     $0.isHidden = false
@@ -178,5 +174,9 @@ final class MyPageFeedView: UIView {
                 }
             }
         }
+    }
+    
+    func showMoreButton(isShow: Bool) {
+        myPageFeedDetailButton.isHidden = !isShow
     }
 }

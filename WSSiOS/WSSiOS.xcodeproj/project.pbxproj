@@ -474,6 +474,9 @@
 		E497C9B82CF3B0160079C30D /* MyPageEditAvatarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E497C9B72CF3B0160079C30D /* MyPageEditAvatarViewModel.swift */; };
 		E497C9BA2CF3B0220079C30D /* MyPageEditAvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E497C9B92CF3B0220079C30D /* MyPageEditAvatarView.swift */; };
 		E497C9BC2CF3BBC90079C30D /* MyPageEditAvatarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E497C9BB2CF3BBC90079C30D /* MyPageEditAvatarCollectionViewCell.swift */; };
+		E4FEAB322CFF4DD200D45558 /* MyPageFeedDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4FEAB312CFF4DD200D45558 /* MyPageFeedDetailView.swift */; };
+		E4FEAB342CFF4DE500D45558 /* MyPageFeedDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4FEAB332CFF4DE500D45558 /* MyPageFeedDetailViewController.swift */; };
+		E4FEAB362CFF4E5300D45558 /* MyPageFeedDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4FEAB352CFF4E5300D45558 /* MyPageFeedDetailViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -933,6 +936,9 @@
 		E497C9B72CF3B0160079C30D /* MyPageEditAvatarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageEditAvatarViewModel.swift; sourceTree = "<group>"; };
 		E497C9B92CF3B0220079C30D /* MyPageEditAvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageEditAvatarView.swift; sourceTree = "<group>"; };
 		E497C9BB2CF3BBC90079C30D /* MyPageEditAvatarCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageEditAvatarCollectionViewCell.swift; sourceTree = "<group>"; };
+		E4FEAB312CFF4DD200D45558 /* MyPageFeedDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageFeedDetailView.swift; sourceTree = "<group>"; };
+		E4FEAB332CFF4DE500D45558 /* MyPageFeedDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageFeedDetailViewController.swift; sourceTree = "<group>"; };
+		E4FEAB352CFF4E5300D45558 /* MyPageFeedDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageFeedDetailViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1409,6 +1415,7 @@
 				E45FEFA42CFC059200B73D80 /* MyPageFeedView.swift */,
 				2C41E0CF2CA494B800FFD233 /* MyPageEditProfileView.swift */,
 				E497C9B92CF3B0220079C30D /* MyPageEditAvatarView.swift */,
+				E4FEAB312CFF4DD200D45558 /* MyPageFeedDetailView.swift */,
 				2C41E0C62CA493C100FFD233 /* ProfileCell */,
 				2CDB20C72C9B70700005C39B /* ProfileAssistantView */,
 			);
@@ -1421,6 +1428,7 @@
 				2CCBF9ED2B4C1FC500D787C2 /* MyPageViewController.swift */,
 				2C41E0D12CA494C900FFD233 /* MyPageEditProfileViewController.swift */,
 				E497C9B52CF3AFBD0079C30D /* MyPageEditAvatarViewController.swift */,
+				E4FEAB332CFF4DE500D45558 /* MyPageFeedDetailViewController.swift */,
 			);
 			path = ProfileViewController;
 			sourceTree = "<group>";
@@ -1431,6 +1439,7 @@
 				2C9A19682C567D6B0043044A /* MyPageViewModel.swift */,
 				2C41E0D32CA494D900FFD233 /* MyPageEditProfileViewModel.swift */,
 				E497C9B72CF3B0160079C30D /* MyPageEditAvatarViewModel.swift */,
+				E4FEAB352CFF4E5300D45558 /* MyPageFeedDetailViewModel.swift */,
 			);
 			path = ProfileViewModel;
 			sourceTree = "<group>";
@@ -3093,6 +3102,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E45FEF9F2CFC03C300B73D80 /* MyPageStickyHeaderView.swift in Sources */,
+				E4FEAB362CFF4E5300D45558 /* MyPageFeedDetailViewModel.swift in Sources */,
 				B9095D2C2C39514D007521EF /* HomeNoticeDetailContentView.swift in Sources */,
 				C99DDFDB2C8613AF00EDC0C4 /* SosoPickCollectionViewCell.swift in Sources */,
 				2CD9115A2C0D8A23006B8D72 /* FeedGenreView.swift in Sources */,
@@ -3205,6 +3215,7 @@
 				E45FEFA72CFC08CA00B73D80 /* MyFeedResult.swift in Sources */,
 				2CD9115E2C0D8A28006B8D72 /* FeedGenreViewController.swift in Sources */,
 				39F687002C6F60400065999F /* ReadStatus.swift in Sources */,
+				E4FEAB322CFF4DD200D45558 /* MyPageFeedDetailView.swift in Sources */,
 				39CC16902B529AB6003F56AE /* RegisterNormalReadStatusView.swift in Sources */,
 				39F686FC2C6F5BB90065999F /* NovelDetailInfoReviewKeywordView.swift in Sources */,
 				B92A06652C495AFF00E27652 /* DetailSearchInfoGenreCollectionViewCell.swift in Sources */,
@@ -3291,6 +3302,7 @@
 				39FE80BD2C9AD3AC00F89700 /* LoginCarouselIndicatorView.swift in Sources */,
 				C9AF1AE42BCC28EE00208BC9 /* HomeTodayPopularCollectionViewCell.swift in Sources */,
 				2C22AE742C56EDB300BF6E94 /* MyPageBlockUserViewModel.swift in Sources */,
+				E4FEAB342CFF4DE500D45558 /* MyPageFeedDetailViewController.swift in Sources */,
 				39CC168A2B51D965003F56AE /* RegisterSuccessView.swift in Sources */,
 				C99DDFD92C8613A000EDC0C4 /* SearchSosoPickView.swift in Sources */,
 				CDE596DA2B57C4BE00D99DA1 /* UITextView+.swift in Sources */,

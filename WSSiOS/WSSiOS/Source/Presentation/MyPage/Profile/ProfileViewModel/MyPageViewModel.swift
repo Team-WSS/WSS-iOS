@@ -32,6 +32,7 @@ final class MyPageViewModel: ViewModelType {
     let pushToSettingViewControllerRelay = PublishRelay<Void>()
     let popViewControllerRelay = PublishRelay<Void>()
     let pushToLibraryViewControllerRelay = PublishRelay<Int>()
+    let pushToFeedDetailViewControllerRelay = PublishRelay<(Int, MyProfileResult)>()
     
     let bindAttractivePointsDataRelay = BehaviorRelay<(Bool, [String])>(value: (true, []))
     let bindKeywordCellRelay = BehaviorRelay<[Keyword]>(value: [])
@@ -39,11 +40,14 @@ final class MyPageViewModel: ViewModelType {
     let bindInventoryDataRelay = BehaviorRelay<UserNovelStatus>(value: UserNovelStatus(interestNovelCount: 0, watchingNovelCount: 0, watchedNovelCount: 0, quitNovelCount: 0))
     
     let bindFeedDataRelay = BehaviorRelay<[FeedCellData]>(value: [])
+    let isEmptyFeedRelay = PublishRelay<Void>()
+    let showFeedDetailButtonRelay = PublishRelay<Bool>()
+    
     let showGenreOtherViewRelay = BehaviorRelay<Bool>(value: false)
     let showToastViewRelay = PublishRelay<String>()
     let stickyHeaderActionRelay = BehaviorRelay<Bool>(value: true)
     let showUnknownUserAlertRelay = PublishRelay<Void>()
-    let isEmptyFeedRelay = PublishRelay<Void>()
+    
     let updateButtonWithLibraryViewRelay = BehaviorRelay<Bool>(value: true)
     let updateFeedTableViewHeightRelay = PublishRelay<CGFloat>()
     let updateKeywordCollectionViewHeightRelay = PublishRelay<CGFloat>()
@@ -79,6 +83,7 @@ final class MyPageViewModel: ViewModelType {
         let feedButtonDidTap: Observable<Bool>
         let alertButtonDidTap: PublishRelay<Bool>
         let inventoryButtonDidTap: ControlEvent<Void>
+        let feedDetailButtonDidTap: ControlEvent<Void>
     }
     
     struct Output {
@@ -91,6 +96,7 @@ final class MyPageViewModel: ViewModelType {
         let pushToSettingViewController: PublishRelay<Void>
         let popViewController: PublishRelay<Void>
         let pushToLibraryViewController: PublishRelay<Int>
+        let pushToFeedDetailViewController: PublishRelay<(Int, MyProfileResult)>
         
         let bindAttractivePointsData: BehaviorRelay<(Bool, [String])>
         let bindKeywordCell: BehaviorRelay<[Keyword]>
@@ -102,6 +108,7 @@ final class MyPageViewModel: ViewModelType {
         let bindFeedData: BehaviorRelay<[FeedCellData]>
         let updateFeedTableViewHeight: PublishRelay<CGFloat>
         let isEmptyFeed: PublishRelay<Void>
+        let showFeedDetailButton: PublishRelay<Bool>
         
         let showToastView: PublishRelay<String>
         let stickyHeaderAction: BehaviorRelay<Bool>
@@ -215,6 +222,12 @@ final class MyPageViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        input.feedDetailButtonDidTap
+            .bind(with: self, onNext: { owner, _ in
+                self.pushToFeedDetailViewControllerRelay.accept((owner.profileId, owner.profileDataRelay.value))
+            })
+            .disposed(by: disposeBag)
+        
         return Output(
             isMyPage: self.isMyPageRelay,
             isProfilePrivate: self.isProfilePrivateRelay,
@@ -225,6 +238,7 @@ final class MyPageViewModel: ViewModelType {
             pushToSettingViewController: self.pushToSettingViewControllerRelay,
             popViewController: self.popViewControllerRelay,
             pushToLibraryViewController: self.pushToLibraryViewControllerRelay,
+            pushToFeedDetailViewController: self.pushToFeedDetailViewControllerRelay,
             
             bindAttractivePointsData: self.bindAttractivePointsDataRelay,
             bindKeywordCell: self.bindKeywordRelay,
@@ -236,6 +250,7 @@ final class MyPageViewModel: ViewModelType {
             bindFeedData: self.bindFeedDataRelay,
             updateFeedTableViewHeight: self.updateFeedTableViewHeightRelay,
             isEmptyFeed: self.isEmptyFeedRelay,
+            showFeedDetailButton: self.showFeedDetailButtonRelay,
             
             showToastView: self.showToastViewRelay,
             stickyHeaderAction: self.stickyHeaderActionRelay,
@@ -314,7 +329,7 @@ final class MyPageViewModel: ViewModelType {
                 .do(onNext: { data in
                     self.bindInventoryDataRelay.accept(data)
                 }),
-            self.getUserFeed(userId: self.profileId, lastFeedId: 0, size: 5)
+            self.getUserFeed(userId: self.profileId, lastFeedId: 0, size: 6)
                 .map { feedResult -> [FeedCellData] in
                     feedResult.feeds.map { feed in
                         FeedCellData(
@@ -323,6 +338,13 @@ final class MyPageViewModel: ViewModelType {
                             nickname: self.profileDataRelay.value.nickname
                         )
                     }
+                }
+                .do(onNext: { feedCellData in
+                    let hasMoreThanFive = feedCellData.count > 5
+                    self.showFeedDetailButtonRelay.accept(hasMoreThanFive)
+                })
+                .map { feedCellData in
+                    Array(feedCellData.suffix(5))
                 }
                 .do(onNext: { feedData in
                     if feedData.isEmpty {
