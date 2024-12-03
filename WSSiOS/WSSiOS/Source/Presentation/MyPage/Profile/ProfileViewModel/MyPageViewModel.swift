@@ -67,7 +67,7 @@ final class MyPageViewModel: ViewModelType {
         let pushToSettingViewController = PublishRelay<Void>()
         let popViewController = PublishRelay<Void>()
         
-        let bindattractivePointsData = BehaviorRelay<(Bool, [String])>(value: (true, []))
+        let bindAttractivePointsData = BehaviorRelay<(Bool, [String])>(value: (true, []))
         let bindKeywordCell = BehaviorRelay<[Keyword]>(value: [])
         let bindGenreData = BehaviorRelay<UserGenrePreferences>(value: UserGenrePreferences(genrePreferences: []))
         let bindInventoryData = BehaviorRelay<UserNovelStatus>(value: UserNovelStatus(interestNovelCount: 0,
@@ -150,9 +150,9 @@ final class MyPageViewModel: ViewModelType {
                     .subscribe(with: self, onNext: { owner, data in
                         let keywords = data.keywords ?? []
                         if (data.attractivePoints == [] && keywords.isEmpty) {
-                            output.bindattractivePointsData.accept((false, []))
+                            output.bindAttractivePointsData.accept((false, []))
                         } else {
-                            output.bindattractivePointsData.accept((true, data.attractivePoints ?? []))
+                            output.bindAttractivePointsData.accept((true, data.attractivePoints ?? []))
                             owner.bindKeywordRelay.accept(keywords)
                             output.bindKeywordCell.accept(keywords)
                         }

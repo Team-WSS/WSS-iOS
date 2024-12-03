@@ -125,49 +125,30 @@ final class MyPageNovelPreferencesView: UIView {
     //MARK: - Data
     
     func updatePreferencesView(isExist: Bool, data: [String]) {
-        if isExist {
-            [paddingView,
-             titleLabel,
-             preferencesView,
-             preferencesCollectionView].forEach { view in
-                view.do {
-                    $0.isHidden = false
-                }
-            }
-            
-            [preferencesEmptyView].forEach { view in
-                view.do {
-                    $0.isHidden = true
-                }
-            }
-            
-            bindPreferencesDetailData(data: data)
-            
-        } else {
-            [preferencesEmptyView].forEach { view in
-                view.do {
-                    $0.isHidden = false
-                }
-            }
-            
-            [paddingView,
-             titleLabel,
-             preferencesView,
-             preferencesCollectionView].forEach { view in
-                view.do {
-                    $0.isHidden = true
-                }
+        [paddingView,
+         titleLabel,
+         preferencesView,
+         preferencesLabel,
+         preferencesCollectionView].forEach { view in
+            view.do {
+                $0.isHidden = !isExist
             }
         }
+        
+        [preferencesEmptyView].forEach { view in
+            view.do {
+                $0.isHidden = isExist
+            }
+        }
+        
+        bindPreferencesDetailData(data: data)
     }
     
     private func bindPreferencesDetailData(data: [String]) {
         if data.isEmpty {
             preferencesView.isHidden = true
         } else {
-            preferencesView.isHidden = false
-            preferencesLabel.isHidden = false
-            
+        
             let koreanStrings = data.compactMap { AttractivePoint(rawValue: $0)?.koreanString }
             let attaractiveString = koreanStrings.joined(separator: ", ")
             preferencesLabel.do {

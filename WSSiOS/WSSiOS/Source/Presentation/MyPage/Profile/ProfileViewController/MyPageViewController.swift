@@ -211,7 +211,7 @@ final class MyPageViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
-        output.bindattractivePointsData
+        output.bindAttractivePointsData
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, data in
                 let (isExist, keywordData) = data
