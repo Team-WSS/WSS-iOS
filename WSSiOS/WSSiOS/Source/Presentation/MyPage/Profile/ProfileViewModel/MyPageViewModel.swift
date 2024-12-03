@@ -81,7 +81,6 @@ final class MyPageViewModel: ViewModelType {
         let genrePreferenceButtonDidTap: Observable<Bool>
         let libraryButtonDidTap: Observable<Bool>
         let feedButtonDidTap: Observable<Bool>
-        let alertButtonDidTap: PublishRelay<Bool>
         let inventoryButtonDidTap: ControlEvent<Void>
         let feedDetailButtonDidTap: ControlEvent<Void>
     }
@@ -112,7 +111,6 @@ final class MyPageViewModel: ViewModelType {
         
         let showToastView: PublishRelay<String>
         let stickyHeaderAction: BehaviorRelay<Bool>
-        let showUnknownUserAlert: PublishRelay<Void>
         let updateButtonWithLibraryView: BehaviorRelay<Bool>
     }
     
@@ -207,7 +205,7 @@ final class MyPageViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.alertButtonDidTap
+        self.showUnknownUserAlertRelay
             .subscribe(with: self, onNext: { owner, _ in
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     NotificationCenter.default.post(name: NSNotification.Name("UnknownUser"), object: nil)
@@ -254,7 +252,6 @@ final class MyPageViewModel: ViewModelType {
             
             showToastView: self.showToastViewRelay,
             stickyHeaderAction: self.stickyHeaderActionRelay,
-            showUnknownUserAlert: self.showUnknownUserAlertRelay,
             updateButtonWithLibraryView: self.updateButtonWithLibraryViewRelay
         )
     }
