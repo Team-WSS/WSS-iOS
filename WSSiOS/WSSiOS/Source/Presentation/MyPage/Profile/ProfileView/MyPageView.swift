@@ -23,7 +23,7 @@ final class MyPageView: UIView {
     let scrolledStickyHeaderView = MyPageStickyHeaderView()
     
     let myPageLibraryView = MyPageLibraryView()
-    let myPageFeedView = UIView()
+    let myPageFeedView = MyPageFeedView()
     
     //In VC
     let settingButton = UIButton()

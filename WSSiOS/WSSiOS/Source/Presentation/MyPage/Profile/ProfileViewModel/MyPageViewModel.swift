@@ -39,6 +39,7 @@ final class MyPageViewModel: ViewModelType {
         let isEntryTabbar: Observable<Bool>
         
         let headerViewHeight: Driver<Double>
+        let resizefeedTableViewHeight: Observable<CGSize?>
         let scrollOffset: Driver<CGPoint>
         
         let settingButtonDidTap: ControlEvent<Void>
@@ -82,6 +83,7 @@ final class MyPageViewModel: ViewModelType {
         let showUnknownUserAlert = PublishRelay<Void>()
         let isEmptyFeed = PublishRelay<Void>()
         let updateButtonWithLibraryView = BehaviorRelay<Bool>(value: true)
+        let updateFeedTableViewHeight = PublishRelay<CGFloat>()
         let pushToLibraryViewController = PublishRelay<Int>()
     }
     
@@ -235,6 +237,11 @@ final class MyPageViewModel: ViewModelType {
                 let currentState = output.showGenreOtherView.value
                 output.showGenreOtherView.accept(!(currentState))
             })
+            .disposed(by: disposeBag)
+        
+        input.resizefeedTableViewHeight
+            .map { $0?.height ?? 0 }
+            .bind(to: output.updateFeedTableViewHeight)
             .disposed(by: disposeBag)
         
         input.libraryButtonDidTap

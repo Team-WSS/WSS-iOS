@@ -87,7 +87,7 @@ final class MyPageViewController: UIViewController {
         
         rootView.myPageLibraryView.genrePrefrerencesView.otherGenreView.genreTableView.register(MyPageGenrePreferencesOtherTableViewCell.self, forCellReuseIdentifier: MyPageGenrePreferencesOtherTableViewCell.cellIdentifier)
         
-//        rootView.myPageFeedView.feedListView.feedTableView.register(NovelDetailFeedTableViewCell.self, forCellReuseIdentifier: NovelDetailFeedTableViewCell.cellIdentifier)
+        rootView.myPageFeedView.myPageFeedTableView.feedTableView.register(NovelDetailFeedTableViewCell.self, forCellReuseIdentifier: NovelDetailFeedTableViewCell.cellIdentifier)
     }
     
     private func delegate() {
@@ -97,9 +97,9 @@ final class MyPageViewController: UIViewController {
         
         rootView.myPageLibraryView.genrePrefrerencesView.otherGenreView.genreTableView.delegate = self
         
-//        rootView.myPageFeedView.feedListView.feedTableView.rx
-//            .setDelegate(self)
-//            .disposed(by: disposeBag)
+        rootView.myPageFeedView.myPageFeedTableView.feedTableView.rx
+            .setDelegate(self)
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Bind
@@ -123,6 +123,7 @@ final class MyPageViewController: UIViewController {
         let input = MyPageViewModel.Input(
             isEntryTabbar: isEntryTabbarRelay.asObservable(),
             headerViewHeight: headerViewHeightRelay.asDriver(),
+            resizefeedTableViewHeight: rootView.myPageFeedView.myPageFeedTableView.feedTableView.rx.observe(CGSize.self, "contentSize"),
             scrollOffset: rootView.scrollView.rx.contentOffset.asDriver(),
             settingButtonDidTap: rootView.settingButton.rx.tap,
             dropdownButtonDidTap: dropDownCellTap,
@@ -201,7 +202,7 @@ final class MyPageViewController: UIViewController {
             .bind(with: self, onNext: { owner, data in
                 let (isPrivate, nickname) = data
                 owner.rootView.myPageLibraryView.isPrivateUserView(isPrivate: isPrivate, nickname: nickname)
-//                owner.rootView.myPageFeedView.isPrivateUserView(isPrivate: isPrivate, nickname: nickname)
+                owner.rootView.myPageFeedView.isPrivateUserView(isPrivate: isPrivate, nickname: nickname)
                 
             })
             .disposed(by: disposeBag)
@@ -296,19 +297,19 @@ final class MyPageViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-//        output.bindFeedData
-//            .observe(on: MainScheduler.instance)
-//            .bind(to: rootView.myPageFeedView.feedListView.feedTableView.rx.items(
-//                cellIdentifier: NovelDetailFeedTableViewCell.cellIdentifier,
-//                cellType: NovelDetailFeedTableViewCell.self)) { _, element, cell in
-//                    cell.bindProfileData(feed: element)
-//                }
-//                .disposed(by: disposeBag)
+        output.bindFeedData
+            .observe(on: MainScheduler.instance)
+            .bind(to: rootView.myPageFeedView.myPageFeedTableView.feedTableView.rx.items(
+                cellIdentifier: NovelDetailFeedTableViewCell.cellIdentifier,
+                cellType: NovelDetailFeedTableViewCell.self)) { _, element, cell in
+                    cell.bindProfileData(feed: element)
+                }
+                .disposed(by: disposeBag)
         
         output.bindFeedData
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, feeds in
-                //                owner.rootView.myPageFeedView.isEmprtyView(isEmpty: feeds.isEmpty)
+                owner.rootView.myPageFeedView.isEmptyView(isEmpty: feeds.isEmpty)
             })
             .disposed(by: disposeBag)
         
@@ -323,6 +324,12 @@ final class MyPageViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, showLibraryView in
                 owner.rootView.showContentView(showLibraryView: showLibraryView)
+            })
+            .disposed(by: disposeBag)
+        
+        output.updateFeedTableViewHeight
+            .subscribe(with: self, onNext: { owner, height in
+                owner.rootView.myPageFeedView.myPageFeedTableView.updateTableViewHeight(height: height)
             })
             .disposed(by: disposeBag)
         

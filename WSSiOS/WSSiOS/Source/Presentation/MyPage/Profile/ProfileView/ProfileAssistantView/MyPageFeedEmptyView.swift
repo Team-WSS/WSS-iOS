@@ -65,6 +65,7 @@ final class MyPageFeedEmptyView: UIView {
         isEmptyDescriptionLabel.snp.makeConstraints {
             $0.top.equalTo(isEmptyImageView.snp.bottom).offset(20)
             $0.centerX.equalToSuperview()
+            $0.bottom.equalToSuperview().inset(70)
         }
     }
 }
