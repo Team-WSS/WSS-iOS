@@ -17,6 +17,7 @@ final class MyPageNovelPreferencesView: UIView {
     private let stackView = UIStackView()
     
     private let paddingView = UIView()
+    private let paddingView2 = UIView()
     private let titleLabel = UILabel()
     private let preferencesView = UIView()
     private let preferencesLabel = UILabel()
@@ -48,11 +49,12 @@ final class MyPageNovelPreferencesView: UIView {
         stackView.do {
             $0.axis = .vertical
             $0.alignment = .center
-            $0.distribution = .fillEqually
         }
         
-        paddingView.do {
-            $0.backgroundColor = .wssWhite
+        [paddingView, paddingView2].forEach { view in
+            view.do {
+                $0.backgroundColor = .wssWhite
+            }
         }
         
         titleLabel.do {
@@ -83,14 +85,14 @@ final class MyPageNovelPreferencesView: UIView {
                                       titleLabel,
                                       preferencesView,
                                       preferencesCollectionView,
+                                      paddingView2,
                                       preferencesEmptyView)
-        preferencesView.addSubviews(preferencesLabel)
+        preferencesView.addSubview(preferencesLabel)
     }
     
     private func setLayout() {
         stackView.snp.makeConstraints {
-            $0.top.bottom.equalToSuperview()
-            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.edges.equalToSuperview()
         }
         
         stackView.setCustomSpacing(10, after: titleLabel)
@@ -100,12 +102,17 @@ final class MyPageNovelPreferencesView: UIView {
             $0.height.equalTo(30)
         }
         
+        paddingView2.snp.makeConstraints {
+            $0.height.equalTo(40)
+        }
+        
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(30)
             $0.leading.equalToSuperview().inset(20)
         }
         
         preferencesView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(55)
             
             preferencesLabel.snp.makeConstraints {
@@ -114,10 +121,13 @@ final class MyPageNovelPreferencesView: UIView {
         }
         
         preferencesCollectionView.snp.makeConstraints {
-            $0.bottom.equalToSuperview().inset(40)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.width.equalToSuperview()
+            $0.height.equalTo(0)
         }
         
         preferencesEmptyView.snp.makeConstraints {
+            $0.width.equalToSuperview()
             $0.height.equalTo(363)
         }
     }
@@ -128,8 +138,8 @@ final class MyPageNovelPreferencesView: UIView {
         [paddingView,
          titleLabel,
          preferencesView,
-         preferencesLabel,
-         preferencesCollectionView].forEach { view in
+         preferencesCollectionView,
+         paddingView2].forEach { view in
             view.do {
                 $0.isHidden = !isExist
             }
@@ -148,7 +158,6 @@ final class MyPageNovelPreferencesView: UIView {
         if data.isEmpty {
             preferencesView.isHidden = true
         } else {
-        
             let koreanStrings = data.compactMap { AttractivePoint(rawValue: $0)?.koreanString }
             let attaractiveString = koreanStrings.joined(separator: ", ")
             preferencesLabel.do {
@@ -160,6 +169,18 @@ final class MyPageNovelPreferencesView: UIView {
                     .partialColor(color: .wssPrimary100, rangeString: attaractiveString)
                     .applyAttribute()
             }
+        }
+    }
+    
+    func updateKeywordViewHeight(height: CGFloat) {
+        [preferencesCollectionView,
+         paddingView2].forEach { view in
+            view.do {
+                $0.isHidden = height == 0
+            }
+        }
+        preferencesCollectionView.snp.updateConstraints {
+            $0.height.equalTo(height)
         }
     }
 }

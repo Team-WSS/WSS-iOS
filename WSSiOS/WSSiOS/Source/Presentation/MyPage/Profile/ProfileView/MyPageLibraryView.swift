@@ -79,10 +79,6 @@ final class MyPageLibraryView: UIView {
             $0.height.equalTo(221.5)
         }
         
-        novelPrefrerencesView.snp.makeConstraints {
-            $0.height.equalTo(270)
-        }
-        
         [dividerView, dividerView2].forEach {
             $0.snp.makeConstraints {
                 $0.height.equalTo(3)

@@ -40,6 +40,7 @@ final class MyPageViewModel: ViewModelType {
         
         let headerViewHeight: Driver<Double>
         let resizefeedTableViewHeight: Observable<CGSize?>
+        let resizeKeywordCollectionViewHeight: Observable<CGSize?>
         let scrollOffset: Driver<CGPoint>
         
         let settingButtonDidTap: ControlEvent<Void>
@@ -66,6 +67,7 @@ final class MyPageViewModel: ViewModelType {
         let pushToEditViewController = PublishRelay<MyProfileResult>()
         let pushToSettingViewController = PublishRelay<Void>()
         let popViewController = PublishRelay<Void>()
+        let pushToLibraryViewController = PublishRelay<Int>()
         
         let bindAttractivePointsData = BehaviorRelay<(Bool, [String])>(value: (true, []))
         let bindKeywordCell = BehaviorRelay<[Keyword]>(value: [])
@@ -83,7 +85,7 @@ final class MyPageViewModel: ViewModelType {
         let isEmptyFeed = PublishRelay<Void>()
         let updateButtonWithLibraryView = BehaviorRelay<Bool>(value: true)
         let updateFeedTableViewHeight = PublishRelay<CGFloat>()
-        let pushToLibraryViewController = PublishRelay<Int>()
+        let updateKeywordCollectionViewHeight = PublishRelay<CGFloat>()
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -242,6 +244,11 @@ final class MyPageViewModel: ViewModelType {
         input.resizefeedTableViewHeight
             .map { $0?.height ?? 0 }
             .bind(to: output.updateFeedTableViewHeight)
+            .disposed(by: disposeBag)
+        
+        input.resizeKeywordCollectionViewHeight
+            .map { $0?.height ?? 0 }
+            .bind(to: output.updateKeywordCollectionViewHeight)
             .disposed(by: disposeBag)
         
         input.libraryButtonDidTap

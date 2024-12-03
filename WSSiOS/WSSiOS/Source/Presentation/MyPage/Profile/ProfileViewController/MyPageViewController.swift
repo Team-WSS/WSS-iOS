@@ -124,6 +124,7 @@ final class MyPageViewController: UIViewController {
             isEntryTabbar: isEntryTabbarRelay.asObservable(),
             headerViewHeight: headerViewHeightRelay.asDriver(),
             resizefeedTableViewHeight: rootView.myPageFeedView.myPageFeedTableView.feedTableView.rx.observe(CGSize.self, "contentSize"),
+            resizeKeywordCollectionViewHeight: rootView.myPageLibraryView.novelPrefrerencesView.preferencesCollectionView.rx.observe(CGSize.self, "contentSize"),
             scrollOffset: rootView.scrollView.rx.contentOffset.asDriver(),
             settingButtonDidTap: rootView.settingButton.rx.tap,
             dropdownButtonDidTap: dropDownCellTap,
@@ -324,6 +325,12 @@ final class MyPageViewController: UIViewController {
         output.updateFeedTableViewHeight
             .subscribe(with: self, onNext: { owner, height in
                 owner.rootView.myPageFeedView.myPageFeedTableView.updateTableViewHeight(height: height)
+            })
+            .disposed(by: disposeBag)
+        
+        output.updateKeywordCollectionViewHeight
+            .subscribe(with: self, onNext: { owner, height in
+                owner.rootView.myPageLibraryView.novelPrefrerencesView.updateKeywordViewHeight(height: height)
             })
             .disposed(by: disposeBag)
         
