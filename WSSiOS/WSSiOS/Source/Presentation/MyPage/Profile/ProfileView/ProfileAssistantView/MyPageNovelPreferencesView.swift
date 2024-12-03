@@ -22,8 +22,6 @@ final class MyPageNovelPreferencesView: UIView {
     private let preferencesView = UIView()
     private let preferencesLabel = UILabel()
     
-    private let preferencesEmptyView = MyPagePreferencesEmptyView()
-    
     lazy var preferencesCollectionView = UICollectionView(frame: .zero,
                                                           collectionViewLayout: UICollectionViewLayout())
     
@@ -75,8 +73,6 @@ final class MyPageNovelPreferencesView: UIView {
             $0.collectionViewLayout = layout
             $0.isScrollEnabled = false
         }
-        
-        preferencesEmptyView.isHidden = true
     }
     
     private func setHierarchy() {
@@ -85,8 +81,7 @@ final class MyPageNovelPreferencesView: UIView {
                                       titleLabel,
                                       preferencesView,
                                       preferencesCollectionView,
-                                      paddingView2,
-                                      preferencesEmptyView)
+                                      paddingView2)
         preferencesView.addSubview(preferencesLabel)
     }
     
@@ -124,39 +119,16 @@ final class MyPageNovelPreferencesView: UIView {
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(0)
         }
-        
-        preferencesEmptyView.snp.makeConstraints {
-            $0.width.equalToSuperview()
-            $0.height.equalTo(363)
-        }
     }
     
     //MARK: - Data
     
-    func updatePreferencesView(isExist: Bool, data: [String]) {
-        [paddingView,
-         titleLabel,
-         preferencesView,
-         preferencesCollectionView,
-         paddingView2].forEach { view in
-            view.do {
-                $0.isHidden = !isExist
-            }
-        }
-        
-        [preferencesEmptyView].forEach { view in
-            view.do {
-                $0.isHidden = isExist
-            }
-        }
-        
-        bindPreferencesDetailData(data: data)
-    }
-    
-    private func bindPreferencesDetailData(data: [String]) {
-        if data.isEmpty {
+    func bindPreferencesDetailData(data: [String]) {
+        if data == [] {
             preferencesView.isHidden = true
         } else {
+            preferencesView.isHidden = false
+            
             let koreanStrings = data.compactMap { AttractivePoint(rawValue: $0)?.koreanString }
             let attaractiveString = koreanStrings.joined(separator: ", ")
             preferencesLabel.do {

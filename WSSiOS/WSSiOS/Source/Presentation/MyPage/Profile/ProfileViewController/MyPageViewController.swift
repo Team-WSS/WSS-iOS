@@ -60,6 +60,7 @@ final class MyPageViewController: UIViewController {
         case .tabBar:
             print("탭바에서 진입")
             isEntryTabbarRelay.accept(true)
+            
         case .otherVC:
             print("다른 VC에서 진입")
             isEntryTabbarRelay.accept(false)
@@ -209,7 +210,7 @@ final class MyPageViewController: UIViewController {
                 self?.rootView.myPageLibraryView.genrePrefrerencesView.bindData(data: data)
             })
             .map { Array($0.genrePreferences.dropFirst(3)) }
-            .bind(to: rootView.myPageLibraryView.genrePrefrerencesView.otherGenreView.genreTableView.rx.items(cellIdentifier: MyPageGenrePreferencesOtherTableViewCell.cellIdentifier, cellType: MyPageGenrePreferencesOtherTableViewCell.self)) { row, data, cell in
+            .bind(to: rootView.myPageLibraryView.genrePrefrerencesView.otherGenreView.genreTableView.rx.items(cellIdentifier: MyPageGenrePreferencesOtherTableViewCell.cellIdentifier,cellType: MyPageGenrePreferencesOtherTableViewCell.self)) { row, data, cell in
                 cell.bindData(data: data)
             }
             .disposed(by: disposeBag)
@@ -217,8 +218,16 @@ final class MyPageViewController: UIViewController {
         output.bindAttractivePointsData
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, data in
-                let (isExist, keywordData) = data
-                owner.rootView.myPageLibraryView.novelPrefrerencesView.updatePreferencesView(isExist: isExist, data: keywordData)
+                owner.rootView.myPageLibraryView.novelPrefrerencesView.bindPreferencesDetailData(data: data)
+                print(data, "😃")
+                
+            })
+            .disposed(by: disposeBag)
+        
+        output.isExistPreferneces
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, isExist in
+                owner.rootView.myPageLibraryView.updatePreferencesEmptyView(isEmpty: !isExist)
                 
             })
             .disposed(by: disposeBag)
@@ -301,7 +310,7 @@ final class MyPageViewController: UIViewController {
         output.pushToLibraryViewController
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, userId in
-                owner.pushToLibraryViewController(userId: userId)
+                owner.pushToLibraryViewController(userId: userId, entryType: owner.isEntryTabbarRelay.value ? .tabBar: .otherVC)
             })
             .disposed(by: disposeBag)
         

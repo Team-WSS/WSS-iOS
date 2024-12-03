@@ -34,10 +34,11 @@ final class MyPageViewModel: ViewModelType {
     let pushToLibraryViewControllerRelay = PublishRelay<Int>()
     let pushToFeedDetailViewControllerRelay = PublishRelay<(Int, MyProfileResult)>()
     
-    let bindAttractivePointsDataRelay = BehaviorRelay<(Bool, [String])>(value: (true, []))
+    let bindAttractivePointsDataRelay = BehaviorRelay<[String]>(value: [])
     let bindKeywordCellRelay = BehaviorRelay<[Keyword]>(value: [])
     let bindGenreDataRelay = BehaviorRelay<UserGenrePreferences>(value: UserGenrePreferences(genrePreferences: []))
     let bindInventoryDataRelay = BehaviorRelay<UserNovelStatus>(value: UserNovelStatus(interestNovelCount: 0, watchingNovelCount: 0, watchedNovelCount: 0, quitNovelCount: 0))
+    let isExistPrefernecesRelay = PublishRelay<Bool>()
     
     let bindFeedDataRelay = BehaviorRelay<[FeedCellData]>(value: [])
     let isEmptyFeedRelay = PublishRelay<Void>()
@@ -97,12 +98,14 @@ final class MyPageViewModel: ViewModelType {
         let pushToLibraryViewController: PublishRelay<Int>
         let pushToFeedDetailViewController: PublishRelay<(Int, MyProfileResult)>
         
-        let bindAttractivePointsData: BehaviorRelay<(Bool, [String])>
+        let bindAttractivePointsData: BehaviorRelay<[String]>
         let bindKeywordCell: BehaviorRelay<[Keyword]>
         let updateKeywordCollectionViewHeight: PublishRelay<CGFloat>
         let bindGenreData: BehaviorRelay<UserGenrePreferences>
         let bindInventoryData: BehaviorRelay<UserNovelStatus>
+
         let showGenreOtherView: BehaviorRelay<Bool>
+        let isExistPreferneces: PublishRelay<Bool>
         
         let bindFeedData: BehaviorRelay<[FeedCellData]>
         let updateFeedTableViewHeight: PublishRelay<CGFloat>
@@ -244,6 +247,7 @@ final class MyPageViewModel: ViewModelType {
             bindGenreData: self.bindGenreDataRelay,
             bindInventoryData: self.bindInventoryDataRelay,
             showGenreOtherView: self.showGenreOtherViewRelay,
+            isExistPreferneces: self.isExistPrefernecesRelay,
             
             bindFeedData: self.bindFeedDataRelay,
             updateFeedTableViewHeight: self.updateFeedTableViewHeightRelay,
@@ -312,20 +316,28 @@ final class MyPageViewModel: ViewModelType {
                 .do(onNext: { data in
                     let keywords = data.keywords ?? []
                     if data.attractivePoints == [] && keywords.isEmpty {
-                        self.bindAttractivePointsDataRelay.accept((false, []))
+                        self.isExistPrefernecesRelay.accept(false)
                     } else {
-                        self.bindAttractivePointsDataRelay.accept((true, data.attractivePoints ?? []))
+                        self.bindAttractivePointsDataRelay.accept(data.attractivePoints ?? [])
                         self.bindKeywordRelay.accept(keywords)
                     }
                 }),
+            
             self.getGenrePreferenceData(userId: self.profileId)
                 .do(onNext: { data in
-                    self.bindGenreDataRelay.accept(data)
+                    if !data.genrePreferences.isEmpty {
+                        self.bindGenreDataRelay.accept(data)
+                    }
                 }),
+            
             self.getInventoryData(userId: self.profileId)
                 .do(onNext: { data in
+                    if data.interestNovelCount == 0 && data.quitNovelCount == 0 && data.watchedNovelCount == 0 && data.watchingNovelCount == 0 {
+                        
+                    }
                     self.bindInventoryDataRelay.accept(data)
                 }),
+            
             self.getUserFeed(userId: self.profileId, lastFeedId: 0, size: 6)
                 .map { feedResult -> [FeedCellData] in
                     feedResult.feeds.map { feed in

@@ -20,6 +20,7 @@ final class MyPageLibraryView: UIView {
     let genrePrefrerencesView = MyPageGenrePreferencesView()
     let novelPrefrerencesView = MyPageNovelPreferencesView()
     
+    private let preferencesEmptyView = MyPagePreferencesEmptyView()
     private let myPagePrivateView = MyPagePrivateView()
     
     private let dividerView = UIView()
@@ -53,16 +54,18 @@ final class MyPageLibraryView: UIView {
         }
         
         myPagePrivateView.isHidden = true
+        preferencesEmptyView.isHidden = true
     }
     
     private func setHierarchy() {
         self.addSubview(stackView)
-        stackView.addArrangedSubviews(myPagePrivateView,
-                                      inventoryView,
+        stackView.addArrangedSubviews(inventoryView,
                                       dividerView,
                                       genrePrefrerencesView,
                                       dividerView2,
-                                      novelPrefrerencesView)
+                                      novelPrefrerencesView,
+                                      myPagePrivateView,
+                                      preferencesEmptyView)
     }
     
     private func setLayout() {
@@ -87,6 +90,11 @@ final class MyPageLibraryView: UIView {
         
         myPagePrivateView.snp.makeConstraints {
             $0.height.equalTo(450)
+        }
+        
+        preferencesEmptyView.snp.makeConstraints {
+            $0.width.equalToSuperview()
+            $0.height.equalTo(363)
         }
     }
     
@@ -130,5 +138,18 @@ final class MyPageLibraryView: UIView {
             
             myPagePrivateView.isHidden = true
         }
+    }
+    
+    func updatePreferencesEmptyView(isEmpty: Bool) {
+        [genrePrefrerencesView,
+         dividerView2,
+         novelPrefrerencesView,
+         myPagePrivateView] .forEach { view in
+            view.do {
+                $0.isHidden = isEmpty
+            }
+        }
+        
+        preferencesEmptyView.isHidden  = !isEmpty
     }
 }

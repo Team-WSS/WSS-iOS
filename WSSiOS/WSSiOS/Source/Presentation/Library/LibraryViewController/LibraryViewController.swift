@@ -15,6 +15,8 @@ final class LibraryViewController: UIViewController, NovelDelegate {
     //MARK: - Properties
     
     private let libraryViewModel: LibraryViewModel
+    var entryType: EntryType = .otherVC
+    private let isEntryTabbarRelay = BehaviorRelay<Bool>(value: false)
     
     private let disposeBag = DisposeBag()
     private let sortTypeList = StringLiterals.Alignment.self
@@ -57,6 +59,15 @@ final class LibraryViewController: UIViewController, NovelDelegate {
         delegate()
         register()
         bindViewModel()
+        
+        switch entryType {
+        case .tabBar:
+            print("탭바에서 진입")
+            
+        case .otherVC:
+            print("탭바 없이 진입")
+            hideTabBar()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

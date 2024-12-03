@@ -432,16 +432,24 @@ extension UIViewController {
                 userRepository: DefaultUserRepository(
                     userService: DefaultUserService(),
                     blocksService: DefaultBlocksService())))
+        viewController.hidesBottomBarWhenPushed = true
+        
         self.navigationController?.pushViewController(viewController, animated: false)
     }
     
-    func pushToLibraryViewController(userId: Int) {
+    func pushToLibraryViewController(userId: Int, entryType: EntryType) {
             let viewController = LibraryViewController(
                 libraryViewModel: LibraryViewModel(
                     userRepository: DefaultUserRepository(
                         userService: DefaultUserService(),
                         blocksService: DefaultBlocksService()),
                     userId: userId))
+        
+        if entryType == .otherVC {
+            viewController.hidesBottomBarWhenPushed = true
+        }
+        
+        viewController.entryType = entryType
         self.navigationController?.pushViewController(viewController, animated: false)
     }
     
