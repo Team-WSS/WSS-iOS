@@ -219,7 +219,6 @@ final class MyPageViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, data in
                 owner.rootView.myPageLibraryView.novelPrefrerencesView.bindPreferencesDetailData(data: data)
-                print(data, "😃")
                 
             })
             .disposed(by: disposeBag)

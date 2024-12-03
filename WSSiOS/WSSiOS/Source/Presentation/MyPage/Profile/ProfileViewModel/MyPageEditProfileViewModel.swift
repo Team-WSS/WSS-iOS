@@ -125,9 +125,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
                 }
                 
                 if self.userGenre.value != self.profileData.genrePreferences {
-                    updatedFields["genrePreferences"] = self.userGenre.value.compactMap { genre in
-                        NewNovelGenre.withKoreanRawValue(from: genre).rawValue
-                    }
+                    updatedFields["genrePreferences"] = self.userGenre.value.map {$0}
                 } else {
                     updatedFields["genrePreferences"] = []
                 }
@@ -259,13 +257,14 @@ final class MyPageEditProfileViewModel: ViewModelType {
         input.genreCellTap
             .bind(with: self, onNext: { owner, indexPath in
                 let cellContent = owner.genreList[indexPath.row]
-                let update = owner.checkGenreToUpdateCell(owner.userGenre.value, cellContent)
+                let toEnglish = NewNovelGenre.withKoreanRawValue(from: cellContent).rawValue
+                let update = owner.checkGenreToUpdateCell(owner.userGenre.value, toEnglish)
                 
                 var updatedGenres = owner.userGenre.value
                 if (update) {
-                    updatedGenres = updatedGenres.filter { $0 != cellContent }
+                    updatedGenres = updatedGenres.filter { $0 != toEnglish }
                 } else {
-                    updatedGenres.append(cellContent)
+                    updatedGenres.append(toEnglish)
                 }
                 owner.userGenre.accept(updatedGenres)
                 output.updateCell.accept((indexPath, !update))
@@ -278,8 +277,12 @@ final class MyPageEditProfileViewModel: ViewModelType {
     //MARK: - Custom Method
     
     private func checkGenreToMakeTuple(_ totalGenre: [String], _ myGenre: [String]) -> [(String, Bool)] {
+        let toKorean = myGenre.compactMap { genre in
+            NewNovelGenre(rawValue: genre)?.withKorean
+        }
+    
         return totalGenre.map { genre in
-            let isPreferred = myGenre.contains(genre)
+            let isPreferred = toKorean.contains(genre)
             return (genre, isPreferred)
         }
     }
