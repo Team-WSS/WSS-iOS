@@ -137,7 +137,8 @@ final class MyPageViewController: UIViewController {
             libraryButtonDidTap: libraryButtonDidTap,
             feedButtonDidTap: feedButtonDidTap,
             inventoryButtonDidTap: rootView.myPageLibraryView.inventoryView.arrowButton.rx.tap,
-            feedDetailButtonDidTap: rootView.myPageFeedView.myPageFeedDetailButton.rx.tap)
+            feedDetailButtonDidTap: rootView.myPageFeedView.myPageFeedDetailButton.rx.tap,
+            editProfileNotification: NotificationCenter.default.rx.notification(NSNotification.Name("EditProfile")).asObservable())
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -340,6 +341,12 @@ final class MyPageViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.showToastView
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                owner.showToast(.editUserProfile)
+            })
+            .disposed(by: disposeBag)
     }
 }
 

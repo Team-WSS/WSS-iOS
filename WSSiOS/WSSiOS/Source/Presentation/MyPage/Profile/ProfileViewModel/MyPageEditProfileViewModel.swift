@@ -125,7 +125,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
                 }
                 
                 if self.userGenre.value != self.profileData.genrePreferences {
-                    updatedFields["genrePreferences"] = self.userGenre.value.map {$0}
+                    updatedFields["genrePreferences"] = self.userGenre.value.map { $0 }
                 } else {
                     updatedFields["genrePreferences"] = []
                 }
@@ -136,6 +136,10 @@ final class MyPageEditProfileViewModel: ViewModelType {
                 onNext: {
                     UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.userNickname)
                     UserDefaults.standard.setValue(self.userNickname.value, forKey: StringLiterals.UserDefault.userNickname)
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                        NotificationCenter.default.post(name: NSNotification.Name("EditProfile"), object: nil)
+                    }
                     
                     output.popViewController.accept(true)
                 },

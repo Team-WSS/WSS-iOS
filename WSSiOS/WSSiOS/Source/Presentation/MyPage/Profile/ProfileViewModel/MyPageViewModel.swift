@@ -45,7 +45,7 @@ final class MyPageViewModel: ViewModelType {
     let showFeedDetailButtonRelay = PublishRelay<Bool>()
     
     let showGenreOtherViewRelay = BehaviorRelay<Bool>(value: false)
-    let showToastViewRelay = PublishRelay<String>()
+    let showToastViewRelay = PublishRelay<Void>()
     let stickyHeaderActionRelay = BehaviorRelay<Bool>(value: true)
     let showUnknownUserAlertRelay = PublishRelay<Void>()
     
@@ -84,6 +84,8 @@ final class MyPageViewModel: ViewModelType {
         let feedButtonDidTap: Observable<Bool>
         let inventoryButtonDidTap: ControlEvent<Void>
         let feedDetailButtonDidTap: ControlEvent<Void>
+        
+        let editProfileNotification: Observable<Notification>
     }
     
     struct Output {
@@ -112,7 +114,7 @@ final class MyPageViewModel: ViewModelType {
         let isEmptyFeed: PublishRelay<Void>
         let showFeedDetailButton: PublishRelay<Bool>
         
-        let showToastView: PublishRelay<String>
+        let showToastView: PublishRelay<Void>
         let stickyHeaderAction: BehaviorRelay<Bool>
         let updateButtonWithLibraryView: BehaviorRelay<Bool>
     }
@@ -226,6 +228,12 @@ final class MyPageViewModel: ViewModelType {
         input.feedDetailButtonDidTap
             .bind(with: self, onNext: { owner, _ in
                 self.pushToFeedDetailViewControllerRelay.accept((owner.profileId, owner.profileDataRelay.value))
+            })
+            .disposed(by: disposeBag)
+        
+        input.editProfileNotification
+            .bind(with: self, onNext: { owner, _ in
+                self.showToastViewRelay.accept(())
             })
             .disposed(by: disposeBag)
         

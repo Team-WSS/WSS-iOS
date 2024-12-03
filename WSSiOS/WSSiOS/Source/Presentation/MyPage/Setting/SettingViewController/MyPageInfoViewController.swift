@@ -69,7 +69,8 @@ final class MyPageInfoViewController: UIViewController {
         let input = MyPageInfoViewModel.Input(
             cellDidTapped: self.rootView.tableView.rx.itemSelected,
             logoutButtonTapped: self.logoutRelay,
-            backButtonDidTap: rootView.backButton.rx.tap)
+            backButtonDidTap: rootView.backButton.rx.tap,
+            changeInfoNotification: NotificationCenter.default.rx.notification(NSNotification.Name("ChangeUserInfo")).asObservable())
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -141,6 +142,13 @@ final class MyPageInfoViewController: UIViewController {
             .bind(with: self, onNext: { owner, email in
                 owner.emailRelay.accept(email)
                 owner.rootView.tableView.reloadData()
+            })
+            .disposed(by: disposeBag)
+        
+        output.showToastMessage
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                owner.showToast(.changeUserInfo)
             })
             .disposed(by: disposeBag)
     }
