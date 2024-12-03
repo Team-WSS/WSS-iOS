@@ -8,6 +8,7 @@
 import UIKit
 
 import RxSwift
+import RxRelay
 import RxGesture
 
 final class MyPageFeedDetailViewController: UIViewController, UIScrollViewDelegate {
@@ -16,6 +17,7 @@ final class MyPageFeedDetailViewController: UIViewController, UIScrollViewDelega
     
     private let disposeBag = DisposeBag()
     private let viewModel: MyPageFeedDetailViewModel
+    private let viewWillAppearRelay = PublishRelay<Void>()
     
     //MARK: - Components
     
@@ -48,7 +50,8 @@ final class MyPageFeedDetailViewController: UIViewController, UIScrollViewDelega
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        setNavigation()
+        viewWillAppearRelay.accept(())
+        swipeBackGesture()
     }
     
     private func register() {
@@ -77,7 +80,8 @@ final class MyPageFeedDetailViewController: UIViewController, UIScrollViewDelega
         
         let input = MyPageFeedDetailViewModel.Input(
             loadNextPageTrigger: loadNextPageTrigger,
-            popViewController: rootView.backButton.rx.tap)
+            popViewController: rootView.backButton.rx.tap,
+            viewWillAppearEvent: viewWillAppearRelay.asObservable())
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -96,13 +100,13 @@ final class MyPageFeedDetailViewController: UIViewController, UIScrollViewDelega
                 owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
-    }
-}
-
-extension MyPageFeedDetailViewController {
-    private func setNavigation() {
-        preparationSetNavigationBar(title: StringLiterals.Navigation.Title.editProfile,
-                                    left: self.rootView.backButton,
-                                    right: nil)
+        
+        output.isMyPage
+            .bind(with: self, onNext: { owner, isMyPage in
+                owner.preparationSetNavigationBar(title: isMyPage ? StringLiterals.MyPage.Profile.myProfileLibrary : StringLiterals.MyPage.Profile.otherProfileLibrary,
+                                                  left: self.rootView.backButton,
+                                                  right: nil)
+            })
+            .disposed(by: disposeBag)
     }
 }

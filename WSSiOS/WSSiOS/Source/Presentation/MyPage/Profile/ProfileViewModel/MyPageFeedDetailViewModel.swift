@@ -24,6 +24,7 @@ final class MyPageFeedDetailViewModel: ViewModelType {
     
     private let showLoadingViewRelay = BehaviorRelay<Bool>(value: false)
     private let popViewControllerRelay = PublishRelay<Void>()
+    private let isMyPage = PublishRelay<Bool>()
     
     private var isFetching = false
     
@@ -39,11 +40,13 @@ final class MyPageFeedDetailViewModel: ViewModelType {
     struct Input {
         let loadNextPageTrigger: Observable<Void>
         let popViewController: ControlEvent<Void>
+        let viewWillAppearEvent: Observable<Void>
     }
     
     struct Output {
         let bindFeedData: BehaviorRelay<[FeedCellData]>
         let popViewController: PublishRelay<Void>
+        let isMyPage: PublishRelay<Bool>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -67,8 +70,16 @@ final class MyPageFeedDetailViewModel: ViewModelType {
             .bind(to: self.popViewControllerRelay)
             .disposed(by: disposeBag)
         
+        input.viewWillAppearEvent
+            .bind(with: self, onNext: { owner, _ in
+                let userId = UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)
+                owner.isMyPage.accept(userId == self.profileId)
+            })
+            .disposed(by: disposeBag)
+        
         return Output(bindFeedData: self.feedDataRelay,
-                      popViewController: self.popViewControllerRelay
+                      popViewController: self.popViewControllerRelay,
+                      isMyPage: self.isMyPage
         )
     }
     

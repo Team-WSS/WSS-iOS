@@ -36,7 +36,6 @@ final class MyPageFeedDetailView: UIView {
     //MARK: - UI
     
     private func setUI() {
-        
         myPageFeedDetailTableView.do {
             $0.separatorStyle = .none
             $0.showsVerticalScrollIndicator = false
