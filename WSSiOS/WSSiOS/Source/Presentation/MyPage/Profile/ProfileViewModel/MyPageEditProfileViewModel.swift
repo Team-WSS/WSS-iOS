@@ -117,7 +117,6 @@ final class MyPageEditProfileViewModel: ViewModelType {
                 }
                 
                 if self.userNickname.value != self.profileData.nickname {
-                    print("☺️", self.userNickname.value)
                     updatedFields["nickname"] = self.userNickname.value
                 }
                 
@@ -182,14 +181,24 @@ final class MyPageEditProfileViewModel: ViewModelType {
         input.updateNicknameText
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, text in
-                output.nicknameText.accept(String(text.prefix(MyPageEditProfileViewModel.nicknameLimit)))
-                owner.checkNicknameAvailability(text)
+                let limitedText = String(text.prefix(MyPageEditProfileViewModel.nicknameLimit))
+                output.nicknameText.accept(limitedText)
+                owner.checkNicknameAvailability(limitedText)
                 
                 let isNickNameValid = owner.isValidNicknameCharacters(text)
                 output.checkButtonIsAbled.accept(text != owner.userNickname.value && isNickNameValid)
                 
-                if(text != owner.profileData.nickname) {
+                if(limitedText == owner.profileData.nickname) {
                     owner.checkDuplicatedButton.accept(false)
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        self.checkDuplicatedButton
+            .subscribe(with: self, onNext: { owner, isAble in
+                if isAble {
+                    let nickname = output.nicknameText.value
+                    self.userNickname.accept(nickname)
                 }
             })
             .disposed(by: disposeBag)
