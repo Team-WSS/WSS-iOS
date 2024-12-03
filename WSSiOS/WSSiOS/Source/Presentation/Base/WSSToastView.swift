@@ -26,6 +26,8 @@ enum ToastStatus {
     case changeToPublicProfile
     case changeToPrivateProfile
     case feedEdited
+    case changePublic
+    case changePrivate
 
     var toastImage: UIImage {
         switch self {
@@ -33,7 +35,7 @@ enum ToastStatus {
             return .icAlertSuccess
         case .memoSaveFail, .memoDelete:
             return .icAlertWarning
-        case .novelReviewed, .changeToPublicProfile, .changeToPrivateProfile, .novelReviewDeleted, .feedEdited, .blockUser:
+        case .novelReviewed, .changeToPublicProfile, .changeToPrivateProfile, .novelReviewDeleted, .feedEdited, .blockUser, .changePublic, .changePrivate:
             return .icAlertCheck
         }
     }
@@ -70,6 +72,10 @@ enum ToastStatus {
             "작성 완료!"
         case .unknownUser:
             "웹소소를 떠난 유저예요"
+        case .changePublic:
+            "프로필이 전체 공개로 전환되었어요"
+        case .changePrivate:
+            "프로필이 비공개로 전환되었어요"
         }
     }
 }
