@@ -244,10 +244,10 @@ final class MyPageViewController: UIViewController {
             .bind(with: self, onNext: { owner, show in
                 owner.rootView.myPageLibraryView.genrePrefrerencesView.updateView(showOtherGenreView: show)
                 owner.rootView.layoutIfNeeded()
-//                UIView.animate(withDuration: 0.3) {
-//                    owner.rootView.myPageLibraryView.updateGenreViewHeight(isExpanded: show)
-//                    owner.rootView.layoutIfNeeded()
-//                }
+                UIView.animate(withDuration: 0.3) {
+                    owner.rootView.myPageLibraryView.updateGenreViewHeight(isExpanded: show)
+                    owner.rootView.layoutIfNeeded()
+                }
             })
             .disposed(by: disposeBag)
         

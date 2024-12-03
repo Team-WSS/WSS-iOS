@@ -115,6 +115,11 @@ final class MyPageView: UIView {
     
     //MARK: - Data
     
+    func showContentView(showLibraryView: Bool) {
+        myPageLibraryView.isHidden = !showLibraryView
+        myPageFeedView.isHidden = showLibraryView
+    }
+    
     func isUnknownUserProfile() {
         headerView.bindData(data: MyProfileResult(nickname: StringLiterals.MyPage.Profile.unknownUserNickname,
                                                   intro: "",
@@ -123,10 +128,5 @@ final class MyPageView: UIView {
         mainStickyHeaderView.isHidden = true
         myPageLibraryView.isHidden = true
         myPageFeedView.isHidden = true
-    }
-    
-    func showContentView(showLibraryView: Bool) {
-        myPageLibraryView.isHidden = !showLibraryView
-        myPageFeedView.isHidden = showLibraryView
     }
 }

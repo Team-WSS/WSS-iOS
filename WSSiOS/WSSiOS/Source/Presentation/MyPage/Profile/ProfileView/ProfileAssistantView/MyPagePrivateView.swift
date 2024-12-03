@@ -63,6 +63,7 @@ final class MyPagePrivateView: UIView {
         isPrivateDescriptionLabel.snp.makeConstraints {
             $0.top.equalTo(isPrivateImageView.snp.bottom).offset(20)
             $0.centerX.equalToSuperview()
+            $0.bottom.equalToSuperview().inset(70)
         }
     }
 }
