@@ -152,16 +152,6 @@ final class MyPageLibraryView: UIView {
             
             preferencesEmptyView.isHidden  = false
             
-        } else {
-            [genrePrefrerencesView,
-             dividerView2,
-             novelPrefrerencesView] .forEach { view in
-                view.do {
-                    $0.isHidden = false
-                }
-            }
-            
-            preferencesEmptyView.isHidden  = true
         }
     }
 }

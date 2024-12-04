@@ -138,7 +138,6 @@ final class MyPageViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        // viewWillAppear 이벤트 처리
         input.viewWillAppearEvent
             .flatMapLatest { [unowned self] _ in
                 Observable.zip(
@@ -397,18 +396,17 @@ final class MyPageViewModel: ViewModelType {
                 .do(onNext: { feedCellData in
                     let hasMoreThanFive = feedCellData.count > 5
                     self.showFeedDetailButtonRelay.accept(hasMoreThanFive)
-                })
-                .map { feedCellData in
-                    Array(feedCellData.suffix(5))
-                }
-                .do(onNext: { feedData in
-                    if feedData.isEmpty {
-                        self.isEmptyFeedRelay.accept(())
+                    
+                    if feedCellData.isEmpty {
+                        self.isEmptyFeedRelay.accept(()) // Empty 상태 처리
                     } else {
-                        self.bindFeedDataRelay.accept(feedData)
+                        self.bindFeedDataRelay.accept(feedCellData)
                     }
                 })
         )
+        .do(onSubscribe: { [weak self] in
+           
+        })
         .map { _ in }
     }
     

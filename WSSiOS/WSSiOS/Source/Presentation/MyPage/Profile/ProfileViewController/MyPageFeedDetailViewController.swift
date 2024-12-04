@@ -80,11 +80,6 @@ final class MyPageFeedDetailViewController: UIViewController, UIScrollViewDelega
             .filter { $0 }
             .map { _ in () }
         
-        let dropdownButtonDidTap = Observable.merge(
-            rootView.dropdownView.topDropdownButton.rx.tap.map { DropdownButtonType.top },
-            rootView.dropdownView.bottomDropdownButton.rx.tap.map { DropdownButtonType.bottom }
-        )
-        
         let input = MyPageFeedDetailViewModel.Input(
             loadNextPageTrigger: loadNextPageTrigger,
             popViewController: rootView.backButton.rx.tap,

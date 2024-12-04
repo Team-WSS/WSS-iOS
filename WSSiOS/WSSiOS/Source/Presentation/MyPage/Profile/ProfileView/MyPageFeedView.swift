@@ -153,16 +153,6 @@ final class MyPageFeedView: UIView {
                     $0.isHidden = true
                 }
             }
-        } else {
-            myPageFeedEmptyView.isHidden = true
-            
-            [myPageFeedTableView,
-             buttonView,
-             paddingViewAfterButton].forEach { view in
-                view.do {
-                    $0.isHidden = false
-                }
-            }
         }
     }
     
