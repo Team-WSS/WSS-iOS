@@ -15,8 +15,11 @@ final class MyPageFeedDetailViewModel: ViewModelType {
     //MARK: - Properties
     
     private let userRepository: UserRepository
+    
     private let profileData: MyProfileResult
     private let profileId: Int
+    private var feedId: Int = 0
+    private var isMyFeed: Bool = false
     
     private let feedDataRelay = BehaviorRelay<[FeedCellData]>(value: [])
     private let isLoadableRelay = BehaviorRelay<Bool>(value: true)
@@ -28,11 +31,22 @@ final class MyPageFeedDetailViewModel: ViewModelType {
     
     private var isFetching = false
     
+    private let pushToFeedDetailViewController = PublishRelay<Int>()
+    private let pushToNovelDetailViewController = PublishRelay<Int>()
+    private let showDropdownView = PublishRelay<(IndexPath, Bool)>()
+    private let hideDropdownView = PublishRelay<Void>()
+    private let toggleDropdownView = PublishRelay<Void>()
+    private let showSpoilerAlertView = PublishRelay<((Int) -> Observable<Void>, Int)>()
+    private let showImproperAlertView = PublishRelay<((Int) -> Observable<Void>, Int)>()
+    private let pushToFeedEditViewController = PublishRelay<Int>()
+    private let showDeleteAlertView = PublishRelay<((Int) -> Observable<Void>, Int)>()
+    
     
     //MARK: - Life Cycle
     
     init(userRepository: UserRepository, profileId: Int, profileData: MyProfileResult) {
         self.userRepository = userRepository
+
         self.profileId = profileId
         self.profileData = profileData
     }
@@ -41,12 +55,30 @@ final class MyPageFeedDetailViewModel: ViewModelType {
         let loadNextPageTrigger: Observable<Void>
         let popViewController: ControlEvent<Void>
         let viewWillAppearEvent: Observable<Void>
+        
+        let feedTableViewItemSelected: Observable<IndexPath>
+        let dropdownButtonDidTap: Observable<DropdownButtonType>
+        let feedDropdownButtonDidTap: Observable<(Int, Bool)>
+        let feedConnectedNovelViewDidTap: Observable<Int>
+        let feedLikeViewDidTap: Observable<(Int, Bool)>
     }
     
     struct Output {
         let bindFeedData: BehaviorRelay<[FeedCellData]>
         let popViewController: PublishRelay<Void>
         let isMyPage: PublishRelay<Bool>
+        
+        let pushToFeedDetailViewController: Observable<Int>
+        let pushToNovelDetailViewController: Observable<Int>
+        
+        let showDropdownView: Observable<(IndexPath, Bool)>
+        let hideDropdownView: Observable<Void>
+        let toggleDropdownView: Observable<Void>
+        
+        let showSpoilerAlertView: Observable<((Int) -> Observable<Void>, Int)>
+        let showImproperAlertView: Observable<((Int) -> Observable<Void>, Int)>
+        let pushToFeedEditViewController: Observable<Int>
+        let showDeleteAlertView: Observable<((Int) -> Observable<Void>, Int)>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -77,9 +109,47 @@ final class MyPageFeedDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        input.feedTableViewItemSelected
+            .bind(with: self, onNext: { owner, indexPath in
+                let feedId = self.feedDataRelay.value[indexPath.row].feed.feedId
+                self.pushToFeedDetailViewController.accept(feedId)
+            })
+            .disposed(by: disposeBag)
+        
+        input.feedConnectedNovelViewDidTap
+            .bind(with: self, onNext: { owner, novelId in
+                self.pushToNovelDetailViewController.accept(novelId)
+            })
+            .disposed(by: disposeBag)
+        
+        input.feedDropdownButtonDidTap
+            .subscribe(with: self, onNext: { owner, data in
+                let (feedId, isMyFeed) = data
+                if owner.feedId == feedId {
+                    owner.toggleDropdownView.accept(())
+                } else {
+                    if let index = owner.feedDataRelay.value.firstIndex(where: { $0.feed.feedId == feedId }) {
+                        let indexPath = IndexPath(row: index, section: 0)
+                        owner.showDropdownView.accept((indexPath, isMyFeed))
+                    }
+                }
+                owner.feedId = feedId
+                owner.isMyFeed = isMyFeed
+            })
+            .disposed(by: disposeBag)
+        
         return Output(bindFeedData: self.feedDataRelay,
                       popViewController: self.popViewControllerRelay,
-                      isMyPage: self.isMyPage
+                      isMyPage: self.isMyPage,
+                      pushToFeedDetailViewController: self.pushToFeedDetailViewController.asObservable(),
+                      pushToNovelDetailViewController: self.pushToNovelDetailViewController.asObservable(),
+                      showDropdownView: self.showDropdownView.asObservable(),
+                      hideDropdownView: self.hideDropdownView.asObservable(),
+                      toggleDropdownView: self.toggleDropdownView.asObservable(),
+                      showSpoilerAlertView: showSpoilerAlertView.asObservable(),
+                      showImproperAlertView: showImproperAlertView.asObservable(),
+                      pushToFeedEditViewController: self.pushToFeedEditViewController.asObservable(),
+                      showDeleteAlertView: self.showDeleteAlertView.asObservable()
         )
     }
     
@@ -107,4 +177,3 @@ final class MyPageFeedDetailViewModel: ViewModelType {
             .asObservable()
     }
 }
-

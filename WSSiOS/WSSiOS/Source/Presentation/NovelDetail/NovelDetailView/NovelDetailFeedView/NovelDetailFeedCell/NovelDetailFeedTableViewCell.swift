@@ -193,7 +193,11 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
         } else {
             novelDetailFeedConnectedNovelView.removeFromSuperview()
         }
-        novelDetailFeedCategoryView.bindData(relevantCategories: feed.feed.relevantCategories)
+        
+        let translatedGenres = feed.feed.relevantCategories.compactMap {
+            NewNovelGenre(rawValue: $0)?.withKorean
+        }
+        novelDetailFeedCategoryView.bindData(relevantCategories: translatedGenres)
         novelDetailFeedReactView.bindData(isLiked: feed.feed.isLiked,
                                           likeCount: feed.feed.likeCount,
                                           commentCount: feed.feed.commentCount)

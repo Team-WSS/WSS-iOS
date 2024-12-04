@@ -19,6 +19,10 @@ final class MyPageFeedDetailViewController: UIViewController, UIScrollViewDelega
     private let viewModel: MyPageFeedDetailViewModel
     private let viewWillAppearRelay = PublishRelay<Void>()
     
+    private let feedDropdownButtonDidTap = PublishRelay<(Int, Bool)>()
+    private let feedConnectedNovelViewDidTap = PublishRelay<Int>()
+    private let feedLikeViewDidTap = PublishRelay<(Int, Bool)>()
+    
     //MARK: - Components
     
     private let rootView = MyPageFeedDetailView()
@@ -78,10 +82,21 @@ final class MyPageFeedDetailViewController: UIViewController, UIScrollViewDelega
             .filter { $0 }
             .map { _ in () }
         
+        let dropdownButtonDidTap = Observable.merge(
+            rootView.dropdownView.topDropdownButton.rx.tap.map { DropdownButtonType.top },
+            rootView.dropdownView.bottomDropdownButton.rx.tap.map { DropdownButtonType.bottom }
+        )
+        
         let input = MyPageFeedDetailViewModel.Input(
             loadNextPageTrigger: loadNextPageTrigger,
             popViewController: rootView.backButton.rx.tap,
-            viewWillAppearEvent: viewWillAppearRelay.asObservable())
+            viewWillAppearEvent: viewWillAppearRelay.asObservable(),
+            feedTableViewItemSelected: rootView.myPageFeedDetailTableView.rx.itemSelected.asObservable(),
+            dropdownButtonDidTap: dropdownButtonDidTap,
+            feedDropdownButtonDidTap: feedDropdownButtonDidTap.asObservable(),
+            feedConnectedNovelViewDidTap: feedConnectedNovelViewDidTap.asObservable(),
+            feedLikeViewDidTap: feedLikeViewDidTap.asObservable()
+        )
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -91,6 +106,7 @@ final class MyPageFeedDetailViewController: UIViewController, UIScrollViewDelega
                 cellIdentifier: NovelDetailFeedTableViewCell.cellIdentifier,
                 cellType: NovelDetailFeedTableViewCell.self)) { _, element, cell in
                     cell.bindProfileData(feed: element)
+                    cell.delegate = self
                 }
                 .disposed(by: disposeBag)
         
@@ -108,5 +124,64 @@ final class MyPageFeedDetailViewController: UIViewController, UIScrollViewDelega
                                                   right: nil)
             })
             .disposed(by: disposeBag)
+        
+        output.pushToNovelDetailViewController
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, novelId in
+                owner.pushToDetailViewController(novelId: novelId)
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushToFeedDetailViewController
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, feedId in
+                owner.pushToFeedDetailViewController(feedId: feedId)
+            })
+            .disposed(by: disposeBag)
+        
+        output.showDropdownView
+            .subscribe(with: self, onNext: { owner, data in
+                let (indexPath, isMyFeed) = data
+                owner.rootView.showDropdownView(indexPath: indexPath,
+                                                isMyFeed: isMyFeed)
+            })
+            .disposed(by: disposeBag)
+        
+        output.hideDropdownView
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.rootView.hideDropdownView()
+            })
+            .disposed(by: disposeBag)
+        
+        output.toggleDropdownView
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.rootView.toggleDropdownView()
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushToFeedEditViewController
+            .subscribe(with: self, onNext: { owner, feedId in
+                owner.pushToFeedEditViewController(feedId: feedId)
+            })
+            .disposed(by: disposeBag)
+        
+    }
+}
+
+extension MyPageFeedDetailViewController: FeedTableViewDelegate {
+    func profileViewDidTap(userId: Int) {
+        return
+    }
+    
+    func dropdownButtonDidTap(feedId: Int, isMyFeed: Bool) {
+        self.feedDropdownButtonDidTap.accept((feedId, isMyFeed))
+    }
+    
+    func connectedNovelViewDidTap(novelId: Int) {
+        self.feedConnectedNovelViewDidTap.accept(novelId)
+    }
+    
+    func likeViewDidTap(feedId: Int, isLiked: Bool) {
+        self.feedLikeViewDidTap.accept((feedId, isLiked))
     }
 }
