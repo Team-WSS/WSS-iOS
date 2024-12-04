@@ -35,11 +35,8 @@ final class LibraryViewModel: ViewModelType {
     
     struct Input {
         let tabBarDidTap: ControlEvent<IndexPath>
-        let listButtonDidTap: ControlEvent<Void>
-        let newestButtonDidTap: ControlEvent<Void>
-        let oldestButtonDidTap: ControlEvent<Void>
         let backButtonDidTap: ControlEvent<Void>
-        let novelCountNotification: Observable<Notification>
+        let novelCount: Observable<Int>
     }
     
     struct Output {
@@ -71,50 +68,15 @@ final class LibraryViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.listButtonDidTap
-            .bind(with: self, onNext: { owner, _ in
-                let nowShowListStatus = output.showListView.value
-                output.showListView.accept(!nowShowListStatus)
-            })
-            .disposed(by: disposeBag)
-        
-        input.newestButtonDidTap
-            .bind(with: self, onNext: { owner, _ in
-                let lastTappedListType = owner.lastTappedListTypeRelay.value
-                if (lastTappedListType != .newest) {
-                    output.changeListType.accept(.newest)
-                }
-                
-                let nowShowListStatus = output.showListView.value
-                output.showListView.accept(!nowShowListStatus)
-                output.updateChildViewController.accept(.newest)
-                
-            })
-            .disposed(by: disposeBag)
-        
-        input.oldestButtonDidTap
-            .bind(with: self, onNext: { owner, _ in
-                let lastTappedListType = owner.lastTappedListTypeRelay.value
-                if (lastTappedListType != .oldest) {
-                    output.changeListType.accept(.oldest)
-                }
-                
-                let nowShowListStatus = output.showListView.value
-                output.showListView.accept(!nowShowListStatus)
-                output.updateChildViewController.accept(.oldest)
-                
-            })
-            .disposed(by: disposeBag)
-        
         input.backButtonDidTap
             .bind(with: self, onNext: { owner, _ in
                 output.popLastViewController.accept(())
             })
             .disposed(by: disposeBag)
         
-        input.novelCountNotification
-            .bind(with: self, onNext: { owner, notification in
-                output.changeNovelCount.accept(notification.object as! Int)
+        input.novelCount
+            .bind(with: self, onNext: { owner, count in
+                output.changeNovelCount.accept(count)
             })
             .disposed(by: disposeBag)
         

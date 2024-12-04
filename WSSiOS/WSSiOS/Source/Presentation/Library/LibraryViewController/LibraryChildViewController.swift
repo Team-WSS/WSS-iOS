@@ -17,9 +17,9 @@ final class LibraryChildViewController: UIViewController, UIScrollViewDelegate {
     private let libraryViewModel: LibraryChildViewModel
     
     private let disposeBag = DisposeBag()
-    weak var delegate : NovelDelegate?
     let updateNovelListRelay = PublishRelay<ShowNovelStatus>()
     private lazy var novelTotalRelay = PublishRelay<Int>()
+    private let updateRelay = PublishRelay<Void>()
     
     //MARK: - Components
     
@@ -85,7 +85,11 @@ final class LibraryChildViewController: UIViewController, UIScrollViewDelegate {
         let input = LibraryChildViewModel.Input(
             lookForNovelButtonDidTap: rootView.libraryEmptyView.libraryLookForNovelButton.rx.tap,
             cellItemSeleted: rootView.libraryCollectionView.rx.itemSelected,
-            loadNextPageTrigger: loadNextPageTrigger
+            loadNextPageTrigger: loadNextPageTrigger,
+            updateCollectionView: updateRelay.asObservable(),
+            listTapped: rootView.descriptionView.libraryNovelListButton.rx.tap,
+            newestTapped: rootView.libraryListView.libraryNewestButton.rx.tap,
+            oldestTapped: rootView.libraryListView.libraryOldestButton.rx.tap
         )
         
         let output = libraryViewModel.transform(from: input, disposeBag: disposeBag)
@@ -122,7 +126,21 @@ final class LibraryChildViewController: UIViewController, UIScrollViewDelegate {
         output.sendNovelTotalCount
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, count in
-                owner.delegate?.sendNovelCount(data: count)
+                owner.rootView.descriptionView.updateNovelCount(count: count)
+            })
+            .disposed(by: disposeBag)
+        
+        output.showListView
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, show in
+                owner.rootView.libraryListView.isHidden = !show
+            })
+            .disposed(by: disposeBag)
+        
+        output.updateToggleViewTitle
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, isNewest in
+                owner.rootView.resetUI(title: isNewest ? "최신순": "오래된순")
             })
             .disposed(by: disposeBag)
     }

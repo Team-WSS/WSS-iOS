@@ -13,7 +13,8 @@ import Then
 final class LibraryChildView: UIView {
     
     //MARK: - Components
-    
+    let descriptionView = LibraryDescriptionView()
+    let libraryListView = LibraryListView()
     lazy var libraryCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     let libraryEmptyView = LibraryEmptyView()
     
@@ -47,22 +48,56 @@ final class LibraryChildView: UIView {
         }
         
         libraryEmptyView.isHidden = true
+        libraryListView.isHidden = true
     }
   
     private func setHierarchy() {
-        self.addSubviews(libraryCollectionView,
-                         libraryEmptyView)
+        self.addSubviews(descriptionView,
+                         libraryCollectionView,
+                         libraryEmptyView,
+                         libraryListView)
     }
     
     private func setLayout() {
+        descriptionView.snp.makeConstraints {
+            $0.top.leading.trailing.equalToSuperview()
+            $0.height.equalTo(40)
+        }
+        
         libraryCollectionView.snp.makeConstraints() {
-            $0.top.equalToSuperview()
+            $0.top.equalTo(descriptionView.snp.bottom)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom)
         }
         
         libraryEmptyView.snp.makeConstraints() {
-            $0.edges.equalToSuperview()
+            $0.top.equalTo(descriptionView.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom)
+        }
+        
+        libraryListView.snp.makeConstraints() {
+            $0.top.equalTo(descriptionView.snp.bottom).offset(10)
+            $0.trailing.equalToSuperview().inset(25)
+            $0.width.equalTo(100)
+            $0.height.equalTo(104)
+        }
+    }
+    
+    func resetUI(title: String) {
+        descriptionView.libraryNovelListButton.do {
+            let title = title
+            var attString = AttributedString(title)
+            attString.font = UIFont.Label1
+            attString.foregroundColor = UIColor.Gray300
+            
+            var configuration = UIButton.Configuration.filled()
+            configuration.attributedTitle = attString
+            configuration.image = UIImage.icDropDown
+            configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 0)
+            configuration.imagePlacement = .trailing
+            configuration.baseBackgroundColor = UIColor.clear
+            $0.configuration = configuration
         }
     }
 }
