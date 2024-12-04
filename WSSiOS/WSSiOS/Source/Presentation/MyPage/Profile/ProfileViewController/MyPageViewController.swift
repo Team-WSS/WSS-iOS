@@ -27,6 +27,7 @@ final class MyPageViewController: UIViewController {
     private var dropDownCellTap = PublishSubject<String>()
     private let headerViewHeightRelay = BehaviorRelay<Double>(value: 0)
     private let viewWillAppearEvent = PublishRelay<Bool>()
+    private let feedConnectedNovelViewDidTap = PublishRelay<Int>()
     
     //MARK: - UI Components
     
@@ -142,7 +143,9 @@ final class MyPageViewController: UIViewController {
             feedButtonDidTap: feedButtonDidTap,
             inventoryButtonDidTap: rootView.myPageLibraryView.inventoryView.arrowButton.rx.tap,
             feedDetailButtonDidTap: rootView.myPageFeedView.myPageFeedDetailButton.rx.tap,
-            editProfileNotification: NotificationCenter.default.rx.notification(NSNotification.Name("EditProfile")).asObservable())
+            editProfileNotification: NotificationCenter.default.rx.notification(NSNotification.Name("EditProfile")).asObservable(),
+            feedTableViewItemSelected: rootView.myPageFeedView.myPageFeedTableView.feedTableView.rx.itemSelected.asObservable(),
+            feedConnectedNovelViewDidTap: feedConnectedNovelViewDidTap.asObservable())
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -335,7 +338,7 @@ final class MyPageViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.pushToFeedDetailViewController
+        output.pushToMyPageFeedDetailViewController
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, userData in
                 let (id, data) = userData
@@ -347,6 +350,20 @@ final class MyPageViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 owner.showToast(.editUserProfile)
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushToNovelDetailViewController
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, novelId in
+                owner.pushToDetailViewController(novelId: novelId)
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushToFeedDetailViewController
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, feedId in
+                owner.pushToFeedDetailViewController(feedId: feedId)
             })
             .disposed(by: disposeBag)
     }
@@ -409,3 +426,22 @@ extension MyPageViewController {
         rootView.headerView.userImageChangeButton.isHidden = !myPage
     }
 }
+
+extension MyPageViewController: FeedTableViewDelegate {
+    func profileViewDidTap(userId: Int) {
+        return
+    }
+    
+    func dropdownButtonDidTap(feedId: Int, isMyFeed: Bool) {
+        return
+    }
+    
+    func likeViewDidTap(feedId: Int, isLiked: Bool) {
+        return
+    }
+    
+    func connectedNovelViewDidTap(novelId: Int) {
+        self.feedConnectedNovelViewDidTap.accept(novelId)
+    }
+}
+

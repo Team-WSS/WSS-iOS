@@ -32,7 +32,7 @@ final class MyPageViewModel: ViewModelType {
     let pushToSettingViewControllerRelay = PublishRelay<Void>()
     let popViewControllerRelay = PublishRelay<Void>()
     let pushToLibraryViewControllerRelay = PublishRelay<Int>()
-    let pushToFeedDetailViewControllerRelay = PublishRelay<(Int, MyProfileResult)>()
+    let pushToMyPageFeedDetailViewControllerRelay = PublishRelay<(Int, MyProfileResult)>()
     
     let bindAttractivePointsDataRelay = BehaviorRelay<[String]>(value: [])
     let bindKeywordCellRelay = BehaviorRelay<[Keyword]>(value: [])
@@ -52,6 +52,9 @@ final class MyPageViewModel: ViewModelType {
     let updateButtonWithLibraryViewRelay = BehaviorRelay<Bool>(value: true)
     let updateFeedTableViewHeightRelay = PublishRelay<CGFloat>()
     let updateKeywordCollectionViewHeightRelay = PublishRelay<CGFloat>()
+    
+    private let pushToFeedDetailViewController = PublishRelay<Int>()
+    private let pushToNovelDetailViewController = PublishRelay<Int>()
     
     // MARK: - Life Cycle
     
@@ -86,6 +89,9 @@ final class MyPageViewModel: ViewModelType {
         let feedDetailButtonDidTap: ControlEvent<Void>
         
         let editProfileNotification: Observable<Notification>
+        
+        let feedTableViewItemSelected: Observable<IndexPath>
+        let feedConnectedNovelViewDidTap: Observable<Int>
     }
     
     struct Output {
@@ -98,7 +104,7 @@ final class MyPageViewModel: ViewModelType {
         let pushToSettingViewController: PublishRelay<Void>
         let popViewController: PublishRelay<Void>
         let pushToLibraryViewController: PublishRelay<Int>
-        let pushToFeedDetailViewController: PublishRelay<(Int, MyProfileResult)>
+        let pushToMyPageFeedDetailViewController: PublishRelay<(Int, MyProfileResult)>
         
         let bindAttractivePointsData: BehaviorRelay<[String]>
         let bindKeywordCell: BehaviorRelay<[Keyword]>
@@ -117,6 +123,9 @@ final class MyPageViewModel: ViewModelType {
         let showToastView: PublishRelay<Void>
         let stickyHeaderAction: BehaviorRelay<Bool>
         let updateButtonWithLibraryView: BehaviorRelay<Bool>
+        
+        let pushToFeedDetailViewController: Observable<Int>
+        let pushToNovelDetailViewController: Observable<Int>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -242,13 +251,26 @@ final class MyPageViewModel: ViewModelType {
         
         input.feedDetailButtonDidTap
             .bind(with: self, onNext: { owner, _ in
-                self.pushToFeedDetailViewControllerRelay.accept((owner.profileId, owner.profileDataRelay.value))
+                self.pushToMyPageFeedDetailViewControllerRelay.accept((owner.profileId, owner.profileDataRelay.value))
             })
             .disposed(by: disposeBag)
         
         input.editProfileNotification
             .bind(with: self, onNext: { owner, _ in
                 self.showToastViewRelay.accept(())
+            })
+            .disposed(by: disposeBag)
+        
+        input.feedTableViewItemSelected
+            .bind(with: self, onNext: { owner, indexPath in
+                let feedId = self.bindFeedDataRelay.value[indexPath.row].feed.feedId
+                self.pushToFeedDetailViewController.accept(feedId)
+            })
+            .disposed(by: disposeBag)
+        
+        input.feedConnectedNovelViewDidTap
+            .bind(with: self, onNext: { owner, novelId in
+                self.pushToNovelDetailViewController.accept(novelId)
             })
             .disposed(by: disposeBag)
         
@@ -262,7 +284,7 @@ final class MyPageViewModel: ViewModelType {
             pushToSettingViewController: self.pushToSettingViewControllerRelay,
             popViewController: self.popViewControllerRelay,
             pushToLibraryViewController: self.pushToLibraryViewControllerRelay,
-            pushToFeedDetailViewController: self.pushToFeedDetailViewControllerRelay,
+            pushToMyPageFeedDetailViewController: self.pushToMyPageFeedDetailViewControllerRelay,
             
             bindAttractivePointsData: self.bindAttractivePointsDataRelay,
             bindKeywordCell: self.bindKeywordRelay,
@@ -279,7 +301,9 @@ final class MyPageViewModel: ViewModelType {
             
             showToastView: self.showToastViewRelay,
             stickyHeaderAction: self.stickyHeaderActionRelay,
-            updateButtonWithLibraryView: self.updateButtonWithLibraryViewRelay
+            updateButtonWithLibraryView: self.updateButtonWithLibraryViewRelay,
+            pushToFeedDetailViewController: self.pushToFeedDetailViewController.asObservable(),
+            pushToNovelDetailViewController: self.pushToNovelDetailViewController.asObservable()
         )
     }
     

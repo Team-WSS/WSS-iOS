@@ -19,9 +19,7 @@ final class MyPageFeedDetailViewController: UIViewController, UIScrollViewDelega
     private let viewModel: MyPageFeedDetailViewModel
     private let viewWillAppearRelay = PublishRelay<Void>()
     
-    private let feedDropdownButtonDidTap = PublishRelay<(Int, Bool)>()
     private let feedConnectedNovelViewDidTap = PublishRelay<Int>()
-    private let feedLikeViewDidTap = PublishRelay<(Int, Bool)>()
     
     //MARK: - Components
     
@@ -92,10 +90,7 @@ final class MyPageFeedDetailViewController: UIViewController, UIScrollViewDelega
             popViewController: rootView.backButton.rx.tap,
             viewWillAppearEvent: viewWillAppearRelay.asObservable(),
             feedTableViewItemSelected: rootView.myPageFeedDetailTableView.rx.itemSelected.asObservable(),
-            dropdownButtonDidTap: dropdownButtonDidTap,
-            feedDropdownButtonDidTap: feedDropdownButtonDidTap.asObservable(),
-            feedConnectedNovelViewDidTap: feedConnectedNovelViewDidTap.asObservable(),
-            feedLikeViewDidTap: feedLikeViewDidTap.asObservable()
+            feedConnectedNovelViewDidTap: feedConnectedNovelViewDidTap.asObservable()
         )
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
@@ -137,34 +132,7 @@ final class MyPageFeedDetailViewController: UIViewController, UIScrollViewDelega
             .bind(with: self, onNext: { owner, feedId in
                 owner.pushToFeedDetailViewController(feedId: feedId)
             })
-            .disposed(by: disposeBag)
-        
-        output.showDropdownView
-            .subscribe(with: self, onNext: { owner, data in
-                let (indexPath, isMyFeed) = data
-                owner.rootView.showDropdownView(indexPath: indexPath,
-                                                isMyFeed: isMyFeed)
-            })
-            .disposed(by: disposeBag)
-        
-        output.hideDropdownView
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.rootView.hideDropdownView()
-            })
-            .disposed(by: disposeBag)
-        
-        output.toggleDropdownView
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.rootView.toggleDropdownView()
-            })
-            .disposed(by: disposeBag)
-        
-        output.pushToFeedEditViewController
-            .subscribe(with: self, onNext: { owner, feedId in
-                owner.pushToFeedEditViewController(feedId: feedId)
-            })
-            .disposed(by: disposeBag)
-        
+            .disposed(by: disposeBag)        
     }
 }
 
@@ -174,14 +142,14 @@ extension MyPageFeedDetailViewController: FeedTableViewDelegate {
     }
     
     func dropdownButtonDidTap(feedId: Int, isMyFeed: Bool) {
-        self.feedDropdownButtonDidTap.accept((feedId, isMyFeed))
+        return
+    }
+    
+    func likeViewDidTap(feedId: Int, isLiked: Bool) {
+        return
     }
     
     func connectedNovelViewDidTap(novelId: Int) {
         self.feedConnectedNovelViewDidTap.accept(novelId)
-    }
-    
-    func likeViewDidTap(feedId: Int, isLiked: Bool) {
-        self.feedLikeViewDidTap.accept((feedId, isLiked))
     }
 }
