@@ -59,21 +59,12 @@ final class LibraryViewController: UIViewController {
         delegate()
         register()
         bindViewModel()
-        
-        switch entryType {
-        case .tabBar:
-            print("탭바에서 진입")
-            
-        case .otherVC:
-            print("탭바 없이 진입")
-            hideTabBar()
-        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        showTabBar()
+        hideTabBar()
         preparationSetNavigationBar(title: StringLiterals.Navigation.Title.library,
                                     left: backButton,
                                     right: nil)

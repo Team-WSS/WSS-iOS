@@ -41,7 +41,8 @@ final class LibraryChildView: UIView {
             layout.minimumLineSpacing = 20.0
             layout.minimumInteritemSpacing = 6
             layout.sectionInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
-            layout.itemSize = CGSize(width: 108.0, height: 240.0)
+            let cellWidth = (UIScreen.main.bounds.width - (6 * 2) - (20 * 2)) / 3
+            layout.itemSize = CGSize(width: cellWidth, height: 240.0)
             
             $0.collectionViewLayout = layout
             $0.showsVerticalScrollIndicator = false

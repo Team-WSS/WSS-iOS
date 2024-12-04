@@ -315,7 +315,7 @@ final class MyPageViewController: UIViewController {
         output.pushToLibraryViewController
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, userId in
-                owner.pushToLibraryViewController(userId: userId, entryType: owner.isEntryTabbarRelay.value ? .tabBar: .otherVC)
+                owner.pushToLibraryViewController(userId: userId)
             })
             .disposed(by: disposeBag)
         

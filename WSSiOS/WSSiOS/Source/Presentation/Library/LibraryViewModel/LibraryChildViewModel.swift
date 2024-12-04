@@ -22,6 +22,7 @@ final class LibraryChildViewModel: ViewModelType {
     private let initData: ShowNovelStatus
     private let userId: Int
     weak var delegate: NovelDelegate?
+    private var isMyPage = true
     
     private let disposeBag = DisposeBag()
     
@@ -33,7 +34,7 @@ final class LibraryChildViewModel: ViewModelType {
     private let lastNovelIdRelay = BehaviorRelay<Int>(value: 0)
     private let showLoadingViewRelay = BehaviorRelay<Bool>(value: false)
     
-    private let showEmptyView = PublishRelay<Bool>()
+    private let showEmptyView = PublishRelay<(Bool,Bool)>()
     private let pushToDetailNovelViewController = PublishRelay<Int>()
     private let pushToSearchViewController = PublishRelay<Void>()
     private let sendNovelTotalCountRelay = BehaviorRelay<Int>(value: 0)
@@ -64,7 +65,7 @@ final class LibraryChildViewModel: ViewModelType {
     
     struct Output {
         let cellData: BehaviorRelay<[UserNovel]>
-        let showEmptyView: PublishRelay<Bool>
+        let showEmptyView: PublishRelay<(Bool,Bool)>
         let pushToDetailNovelViewController: PublishRelay<Int>
         let pushToSearchViewController: PublishRelay<Void>
         let sendNovelTotalCount: BehaviorRelay<Int>
@@ -74,12 +75,9 @@ final class LibraryChildViewModel: ViewModelType {
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
-//        input.viewWillAppear
-//            .observe(on: MainScheduler.instance)
-//            .bind(with: self, onNext: { owner, _ in
-//                owner.novelDataRelay.accept(updatedData)
-//            })
-//            .disposed(by: disposeBag)
+        
+        let userDefaultId = UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)
+        self.isMyPage = self.userId == userDefaultId
         
         input.lookForNovelButtonDidTap
             .observe(on: MainScheduler.instance)
@@ -195,7 +193,8 @@ final class LibraryChildViewModel: ViewModelType {
         self.isLoadableRelay.accept(novelResult.isLoadable)
         self.isFetching = false
         
-        self.showEmptyView.accept(novelDataRelay.value.isEmpty)
+        self.showEmptyView.accept((novelDataRelay.value.isEmpty, self.isMyPage))
+        
         self.sendNovelTotalCountRelay.accept(Int(novelResult.userNovelCount))
     }
     

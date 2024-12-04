@@ -106,8 +106,10 @@ final class LibraryChildViewController: UIViewController, UIScrollViewDelegate {
         
         output.showEmptyView
             .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, isEmpty in
+            .bind(with: self, onNext: { owner, data in
+                let (isEmpty, isMyPage) = data
                 owner.rootView.libraryEmptyView.isHidden = !isEmpty
+                owner.rootView.libraryEmptyView.libraryLookForNovelButton.isHidden = !isMyPage
             })
             .disposed(by: disposeBag)
         
