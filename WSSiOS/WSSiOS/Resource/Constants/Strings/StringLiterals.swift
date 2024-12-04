@@ -207,10 +207,10 @@ enum StringLiterals {
         }
         
         enum SettingURL {
-            static let qnaURL = "http://pf.kakao.com/_kHxlWG"
+            static let QNAInHompageURL = "https://websoso.notion.site/144600bd746881d4b012fbaf586c264d?pvs=105"
             static let instaURL = "https://www.instagram.com/websoso_official/"
-            static let termsURL = "https://kimmjabc.notion.site/4acd397608c146cbbf8dd4fe11a82e19"
-            static let infoURL = "https://kimmjabc.notion.site/e55f0c0e95c249f7998f21563aefa4b4?pvs=4"
+            static let termsURL = "https://websoso.notion.site/143600bd746880668556fb005fcef491?pvs=4"
+            static let infoURL = "https://websoso.notion.site/143600bd74688050be18f4da31d9403e?pvs=4"
         }
         
         enum SettingInfo: String, CaseIterable {

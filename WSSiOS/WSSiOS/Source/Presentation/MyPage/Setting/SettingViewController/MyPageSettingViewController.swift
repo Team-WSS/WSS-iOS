@@ -91,10 +91,11 @@ final class MyPageSettingViewController: UIViewController {
                     }
                 case 3:
                     print("문의하기 & 의견 보내기")
-                    if let url = URL(string: StringLiterals.MyPage.SettingURL.qnaURL) {
+                    if let url = URL(string: StringLiterals.MyPage.SettingURL.QNAInHompageURL) {
                         UIApplication.shared.open(url, options: [:])
                     }
                 case 4:
+                    print("개인정보 처리 방침")
                     if let url = URL(string: StringLiterals.MyPage.SettingURL.termsURL) {
                         UIApplication.shared.open(url, options: [:])
                     }

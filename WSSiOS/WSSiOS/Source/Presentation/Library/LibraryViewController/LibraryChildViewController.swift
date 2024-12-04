@@ -20,6 +20,7 @@ final class LibraryChildViewController: UIViewController, UIScrollViewDelegate {
     let updateNovelListRelay = PublishRelay<ShowNovelStatus>()
     private lazy var novelTotalRelay = PublishRelay<Int>()
     private let updateRelay = PublishRelay<Void>()
+    private let viewWillAppearEventRelay = PublishRelay<Void>()
     
     //MARK: - Components
     
@@ -52,8 +53,8 @@ final class LibraryChildViewController: UIViewController, UIScrollViewDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        showTabBar()
+
+        viewWillAppearEventRelay.accept(())
     }
     
     //MARK: - Bind
@@ -83,6 +84,7 @@ final class LibraryChildViewController: UIViewController, UIScrollViewDelegate {
             .map { _ in () }
         
         let input = LibraryChildViewModel.Input(
+            viewWillAppear: viewWillAppearEventRelay.asObservable(),
             lookForNovelButtonDidTap: rootView.libraryEmptyView.libraryLookForNovelButton.rx.tap,
             cellItemSeleted: rootView.libraryCollectionView.rx.itemSelected,
             loadNextPageTrigger: loadNextPageTrigger,

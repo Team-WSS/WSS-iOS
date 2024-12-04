@@ -51,6 +51,7 @@ final class LibraryChildViewModel: ViewModelType {
     }
     
     struct Input {
+        let viewWillAppear: Observable<Void>
         let lookForNovelButtonDidTap: ControlEvent<Void>
         let cellItemSeleted: ControlEvent<IndexPath>
         let loadNextPageTrigger: Observable<Void>
@@ -73,6 +74,13 @@ final class LibraryChildViewModel: ViewModelType {
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
+//        input.viewWillAppear
+//            .observe(on: MainScheduler.instance)
+//            .bind(with: self, onNext: { owner, _ in
+//                owner.novelDataRelay.accept(updatedData)
+//            })
+//            .disposed(by: disposeBag)
+        
         input.lookForNovelButtonDidTap
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
