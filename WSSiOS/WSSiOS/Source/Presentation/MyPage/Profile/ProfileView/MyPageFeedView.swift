@@ -168,5 +168,21 @@ final class MyPageFeedView: UIView {
     
     func showMoreButton(isShow: Bool) {
         buttonView.isHidden = !isShow
+        if isShow {
+            paddingViewAfterButton.snp.makeConstraints {
+                $0.width.equalToSuperview()
+                $0.height.equalTo(40)
+            }
+        } else {
+            paddingViewAfterButton.snp.makeConstraints {
+                $0.width.equalToSuperview()
+                $0.bottom.equalToSuperview()
+                $0.height.greaterThanOrEqualTo(40)
+            }
+        }
+        
+        UIView.animate(withDuration: 0.3) {
+            self.stackView.layoutIfNeeded()
+        }
     }
 }

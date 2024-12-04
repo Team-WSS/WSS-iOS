@@ -49,6 +49,7 @@ final class MyPageView: UIView {
         self.backgroundColor = .wssPrimary20
         
         scrollView.do {
+            $0.backgroundColor = .wssWhite
             $0.contentInsetAdjustmentBehavior = .never
             $0.showsVerticalScrollIndicator = false
         }

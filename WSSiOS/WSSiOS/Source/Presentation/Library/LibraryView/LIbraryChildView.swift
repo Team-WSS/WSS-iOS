@@ -67,7 +67,7 @@ final class LibraryChildView: UIView {
         libraryCollectionView.snp.makeConstraints() {
             $0.top.equalTo(descriptionView.snp.bottom)
             $0.leading.trailing.equalToSuperview().inset(20)
-            $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom)
+            $0.bottom.equalToSuperview().inset(18)
         }
         
         libraryEmptyView.snp.makeConstraints() {

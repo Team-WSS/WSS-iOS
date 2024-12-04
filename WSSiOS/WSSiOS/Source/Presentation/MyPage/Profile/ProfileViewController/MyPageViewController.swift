@@ -93,6 +93,10 @@ final class MyPageViewController: UIViewController {
     }
     
     private func delegate() {
+        rootView.scrollView.rx
+            .setDelegate(self)
+            .disposed(by: disposeBag)
+        
         rootView.myPageLibraryView.novelPrefrerencesView.preferencesCollectionView.rx
             .setDelegate(self)
             .disposed(by: disposeBag)
@@ -367,6 +371,12 @@ extension MyPageViewController: UICollectionViewDelegateFlowLayout, UIScrollView
         
         let width = (text as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 24
         return CGSize(width: width, height: 37)
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y < 0 {
+            scrollView.contentOffset.y = 0
+        }
     }
 }
 
