@@ -34,7 +34,7 @@ final class LibraryChildViewModel: ViewModelType {
     private let showLoadingViewRelay = BehaviorRelay<Bool>(value: false)
     
     private let showEmptyView = PublishRelay<Bool>()
-    private let pushToDetailNovelViewController = BehaviorRelay<Int>(value: 0)
+    private let pushToDetailNovelViewController = PublishRelay<Int>()
     private let pushToSearchViewController = PublishRelay<Void>()
     private let sendNovelTotalCountRelay = BehaviorRelay<Int>(value: 0)
     
@@ -64,7 +64,7 @@ final class LibraryChildViewModel: ViewModelType {
     struct Output {
         let cellData: BehaviorRelay<[UserNovel]>
         let showEmptyView: PublishRelay<Bool>
-        let pushToDetailNovelViewController: BehaviorRelay<Int>
+        let pushToDetailNovelViewController: PublishRelay<Int>
         let pushToSearchViewController: PublishRelay<Void>
         let sendNovelTotalCount: BehaviorRelay<Int>
         
@@ -77,6 +77,15 @@ final class LibraryChildViewModel: ViewModelType {
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 self.pushToSearchViewController.accept(())
+            })
+            .disposed(by: disposeBag)
+        
+        input.cellItemSeleted
+            .throttle(.seconds(2), scheduler: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, indexPath in
+                let novelList = self.novelDataRelay.value
+                let novelId = novelList[indexPath.row].novelId
+                self.pushToDetailNovelViewController.accept(Int(novelId))
             })
             .disposed(by: disposeBag)
         
@@ -99,7 +108,7 @@ final class LibraryChildViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.listTapped
-            .observe(on: MainScheduler.instance)
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 let currentValue = owner.showListViewRelay.value
                 self.showListViewRelay.accept(!currentValue)
@@ -107,6 +116,7 @@ final class LibraryChildViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.newestTapped
+            .throttle(.seconds(3), scheduler: MainScheduler.instance)
             .filter { [unowned self] _ in !self.isSortTypeNewestRelay.value }
             .do(onNext: { [unowned self] _ in
                 self.isSortTypeNewestRelay.accept(true)
@@ -124,6 +134,7 @@ final class LibraryChildViewModel: ViewModelType {
             .disposed(by: disposeBag)
 
             input.oldestTapped
+            .throttle(.seconds(3), scheduler: MainScheduler.instance)
                 .filter { [unowned self] _ in self.isSortTypeNewestRelay.value }
                 .do(onNext: { [unowned self] _ in
                     self.isSortTypeNewestRelay.accept(false)

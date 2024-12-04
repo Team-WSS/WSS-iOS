@@ -143,5 +143,14 @@ final class LibraryChildViewController: UIViewController, UIScrollViewDelegate {
                 owner.rootView.resetUI(title: isNewest ? "최신순": "오래된순")
             })
             .disposed(by: disposeBag)
+        
+        
+        //TODO: 두번 불리는 건 아닌데 화면상 두번 뎁스가 쌓임
+        output.pushToDetailNovelViewController
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, novelId in
+                owner.pushToDetailViewController(novelId: novelId)
+            })
+            .disposed(by: disposeBag)
     }
 }
