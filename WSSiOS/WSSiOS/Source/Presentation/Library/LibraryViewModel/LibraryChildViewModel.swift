@@ -107,14 +107,20 @@ final class LibraryChildViewModel: ViewModelType {
         //가장 처음 호출되는 무한스크롤 - 최신순
         //setNovelListData 함수를 통해 전체 작품 개수, 무한스크롤 유무를 세팅하기 위해 처음에만 호출
         input.loadNextPageTrigger
-            .filter { [unowned self] _ in !self.isFetching && self.isLoadableRelay.value }
-            .do(onNext: { [unowned self] _ in self.isFetching = true })
-            .flatMapLatest { [unowned self] _ in
-                self.getUserNovelList(userId: self.userId,
-                                      data: ShowNovelStatus(readStatus: self.initData.readStatus,
-                                                            lastUserNovelId: self.lastNovelIdRelay.value,
-                                                            size: self.initData.size,
-                                                            sortType: self.initData.sortType))
+            .filter { [weak self] _ in
+                guard let self = self else { return false }
+                return !self.isFetching && self.isLoadableRelay.value
+            }
+            .do(onNext: { [weak self] _ in
+                self?.isFetching = true
+            })
+            .flatMapLatest { [weak self] _ -> Observable<UserNovelList> in
+                guard let self else { return .empty() }
+                return self.getUserNovelList(userId: self.userId,
+                                             data: ShowNovelStatus(readStatus: self.initData.readStatus,
+                                                                   lastUserNovelId: self.lastNovelIdRelay.value,
+                                                                   size: self.initData.size,
+                                                                   sortType: self.initData.sortType))
             }
             .subscribe(with: self, onNext: { owner, novelResult in
                 owner.setNovelListData(novelResult)
@@ -136,37 +142,47 @@ final class LibraryChildViewModel: ViewModelType {
         Observable.merge(
             input.newestTapped
                 .throttle(.seconds(1), scheduler: MainScheduler.instance)
-                .filter { [unowned self] _ in !self.isSortTypeNewestRelay.value }
+                .filter { [weak self] _ in
+                    guard let self = self else { return false }
+                    return !self.isSortTypeNewestRelay.value
+                }
                 .map { ("newest", true) },
             input.oldestTapped
                 .throttle(.seconds(1), scheduler: MainScheduler.instance)
-                .filter { [unowned self] _ in self.isSortTypeNewestRelay.value }
+                .filter { [weak self] _ in
+                    guard let self = self else { return false }
+                    return self.isSortTypeNewestRelay.value
+                }
                 .map { ("oldest", false) }
         )
-        .do(onNext: { [unowned self] sortType, isNewest in
-            self.isSortTypeNewestRelay.accept(isNewest)
-            self.showListViewRelay.accept(false)
+        .do(onNext: { [weak self] sortType, isNewest in
+            self?.isSortTypeNewestRelay.accept(isNewest)
+            self?.showListViewRelay.accept(false)
             
             if sortType == "newest" {
-                self.lastNovelIdRelay.accept(0)
+                self?.lastNovelIdRelay.accept(0)
             } else {
-                let novelLastNumber = self.novelDataRelay.value.last?.userNovelId ?? 0
-                self.lastNovelIdRelay.accept(Int(novelLastNumber))
+                let novelLastNumber = self?.novelDataRelay.value.last?.userNovelId ?? 0
+                self?.lastNovelIdRelay.accept(Int(novelLastNumber))
             }
         })
-        .map { [unowned self] sortType, _ in
-            ShowNovelStatus(
+        .map { [weak self] sortType, _ -> ShowNovelStatus? in
+            guard let self = self else { return nil }
+            
+            return ShowNovelStatus(
                 readStatus: self.initData.readStatus,
                 lastUserNovelId: self.lastNovelIdRelay.value,
                 size: self.initData.size,
                 sortType: sortType
             )
         }
+        .compactMap { $0 }
         .withLatestFrom(isNotLoadableRelay) { novelStatus, isNotLoadable in
             return (novelStatus, isNotLoadable)
         }
         //작품 수가 size 보다 더 많은지 판별하여 무한스크롤 여부 처리
-        .subscribe(onNext: { [unowned self] novelStatus, isNotLoadable in
+        .subscribe(onNext: { [weak self] novelStatus, isNotLoadable in
+            guard let self = self else { return }
             if isNotLoadable {
                 self.updateCollectionViewWithoutLoadTriggerRelay.accept(novelStatus)
             } else {
@@ -179,12 +195,17 @@ final class LibraryChildViewModel: ViewModelType {
         
         //무한스크롤일 때 처리
         updateCollectionViewWithLoadTriggerRelay
-            .filter { [unowned self] _ in !self.isFetching && self.isLoadableRelay.value }
-            .do(onNext: { [unowned self] _ in
+            .filter { [weak self] _ in
+                guard let self = self else { return false }
+                return !self.isFetching && self.isLoadableRelay.value
+            }
+            .do(onNext: { [weak self] _ in
+                guard let self = self else { return }
                 self.isFetching = true
             })
-            .flatMapLatest { [unowned self] status in
-                self.getUserNovelList(userId: self.userId, data: status)
+            .flatMapLatest { [weak self] status -> Observable<UserNovelList> in
+                guard let self = self else { return .empty() }
+                return self.getUserNovelList(userId: self.userId, data: status)
             }
             .subscribe(with: self, onNext: { owner, novelResult in
                 owner.updateNovelListWithNewSortTypeWithLoadTrigger(novelResult)

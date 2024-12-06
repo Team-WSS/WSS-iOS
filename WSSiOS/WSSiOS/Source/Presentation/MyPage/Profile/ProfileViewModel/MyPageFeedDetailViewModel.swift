@@ -39,7 +39,7 @@ final class MyPageFeedDetailViewModel: ViewModelType {
     
     init(userRepository: UserRepository, profileId: Int, profileData: MyProfileResult) {
         self.userRepository = userRepository
-
+        
         self.profileId = profileId
         self.profileData = profileData
     }
@@ -64,17 +64,23 @@ final class MyPageFeedDetailViewModel: ViewModelType {
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         input.loadNextPageTrigger
-            .filter { [unowned self] _ in !self.isFetching && self.isLoadableRelay.value }
-            .do(onNext: { [unowned self] _ in self.isFetching = true })
-            .flatMapLatest { [unowned self] _ in
-                self.getUserFeed(userId: self.profileId,
-                                 lastFeedId: self.lastFeedIdRelay.value,
-                                 size: 20)
+            .filter { [weak self] _ in
+                guard let self = self else { return false }
+                return !self.isFetching && self.isLoadableRelay.value
             }
-            .subscribe(with: self, onNext: { owner, feedResult in
-                owner.updateFeedList(feedResult)
-            }, onError: { owner, error in
-                owner.isFetching = false
+            .do(onNext: { [weak self] _ in
+                self?.isFetching = true
+            })
+            .flatMapLatest { [weak self] _ -> Observable<MyFeedResult> in
+                guard let self = self else { return .empty() }
+                return self.getUserFeed(userId: self.profileId,
+                                        lastFeedId: self.lastFeedIdRelay.value,
+                                        size: 20)
+            }
+            .subscribe(onNext: { [weak self] feedResult in
+                self?.updateFeedList(feedResult)
+            }, onError: { [weak self] error in
+                self?.isFetching = false
                 print(error.localizedDescription)
             })
             .disposed(by: disposeBag)
