@@ -142,11 +142,18 @@ final class LibraryChildViewModel: ViewModelType {
         .do(onNext: { [unowned self] sortType, isNewest in
             self.isSortTypeNewestRelay.accept(isNewest)
             self.showListViewRelay.accept(false)
+            
+            if sortType == "newest" {
+                self.lastNovelIdRelay.accept(0)
+            } else {
+                let novelLastNumber = self.novelDataRelay.value.last?.userNovelId ?? 0
+                self.lastNovelIdRelay.accept(Int(novelLastNumber))
+            }
         })
         .map { [unowned self] sortType, _ in
             ShowNovelStatus(
                 readStatus: self.initData.readStatus,
-                lastUserNovelId: sortType == "newest" ? 0 : self.showNovelTotalCountRelay.value,
+                lastUserNovelId: self.lastNovelIdRelay.value,
                 size: self.initData.size,
                 sortType: sortType
             )
@@ -159,6 +166,7 @@ final class LibraryChildViewModel: ViewModelType {
                 self.updateCollectionViewWithoutLoadTriggerRelay.accept(novelStatus)
             } else {
                 self.novelDataRelay.accept([])
+                self.isLoadableRelay.accept(true)
                 self.updateCollectionViewWithLoadTriggerRelay.accept(novelStatus)
             }
         })
@@ -171,22 +179,6 @@ final class LibraryChildViewModel: ViewModelType {
             })
             .flatMapLatest { [unowned self] status in
                 self.getUserNovelList(userId: self.userId, data: status)
-                    .map { novelResult -> UserNovelList in
-                        if status.sortType == "oldest" {
-                            
-                            var reversedNovels = novelResult.userNovels
-                            reversedNovels.reverse()
-                            
-                            return UserNovelList(
-                                userNovelCount: novelResult.userNovelCount,
-                                userNovelRating: novelResult.userNovelRating,
-                                isLoadable: novelResult.isLoadable,
-                                userNovels: reversedNovels
-                            )
-                        }
-                        
-                        return novelResult
-                    }
             }
             .subscribe(with: self, onNext: { owner, novelResult in
                 owner.updateNovelListWithNewSortTypeWithLoadTrigger(novelResult)
@@ -233,11 +225,17 @@ final class LibraryChildViewModel: ViewModelType {
     
     private func updateNovelListWithNewSortTypeWithLoadTrigger(_ novelResult: UserNovelList) {
         let newNovelData = novelResult.userNovels
-        if let lastNovel = novelResult.userNovels.last {
+        
+        if self.isSortTypeNewestRelay.value {
+            self.novelDataRelay.accept(self.novelDataRelay.value + newNovelData)
+        } else {
+            self.novelDataRelay.accept(newNovelData + self.novelDataRelay.value)
+        }
+        
+        if let lastNovel = self.isSortTypeNewestRelay.value ? newNovelData.last : newNovelData.first {
             self.lastNovelIdRelay.accept(Int(lastNovel.userNovelId))
         }
         
-        self.novelDataRelay.accept(self.novelDataRelay.value + newNovelData)
         self.isLoadableRelay.accept(novelResult.isLoadable)
         self.isFetching = false
     }
