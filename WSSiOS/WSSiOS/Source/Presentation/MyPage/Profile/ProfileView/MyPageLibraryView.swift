@@ -125,18 +125,6 @@ final class MyPageLibraryView: UIView {
                 $0.applyWSSFont(.body2, with: text)
                 $0.textAlignment = .center
             }
-        } else {
-            [inventoryView,
-             firstDividerView,
-             genrePrefrerencesView,
-             secondDividerView,
-             novelPrefrerencesView] .forEach { view in
-                view.do {
-                    $0.isHidden = false
-                }
-            }
-            
-            myPagePrivateView.isHidden = true
         }
     }
     
@@ -151,7 +139,6 @@ final class MyPageLibraryView: UIView {
             }
             
             preferencesEmptyView.isHidden  = false
-            
         }
     }
 }

@@ -206,8 +206,10 @@ final class MyPageViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, data in
                 let (isPrivate, nickname) = data
-                owner.rootView.myPageLibraryView.isPrivateUserView(isPrivate: isPrivate, nickname: nickname)
-                owner.rootView.myPageFeedView.isPrivateUserView(isPrivate: isPrivate, nickname: nickname)
+                if isPrivate {
+                    owner.rootView.myPageLibraryView.isPrivateUserView(isPrivate: isPrivate, nickname: nickname)
+                    owner.rootView.myPageFeedView.isPrivateUserView(isPrivate: isPrivate, nickname: nickname)
+                }
             })
             .disposed(by: disposeBag)
         
@@ -236,7 +238,6 @@ final class MyPageViewController: UIViewController {
                 if !isExist {
                     owner.rootView.myPageLibraryView.updatePreferencesEmptyView(isEmpty: !isExist)
                 }
-                
             })
             .disposed(by: disposeBag)
         
@@ -329,12 +330,14 @@ final class MyPageViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.updateFeedTableViewHeight
+            .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, height in
                 owner.rootView.myPageFeedView.myPageFeedTableView.updateTableViewHeight(height: height)
             })
             .disposed(by: disposeBag)
         
         output.updateKeywordCollectionViewHeight
+            .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, height in
                 owner.rootView.myPageLibraryView.novelPrefrerencesView.updateKeywordViewHeight(height: height)
             })

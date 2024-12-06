@@ -129,16 +129,6 @@ final class MyPageFeedView: UIView {
                 $0.textAlignment = .center
             }
             
-        } else {
-            myPagePrivateView.isHidden = true
-            
-            [myPageFeedTableView,
-             showMoreActivityButton,
-             paddingViewAfterButton].forEach { view in
-                view.do {
-                    $0.isHidden = false
-                }
-            }
         }
     }
     
