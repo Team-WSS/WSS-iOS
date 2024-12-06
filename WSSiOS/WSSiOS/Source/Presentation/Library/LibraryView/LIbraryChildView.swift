@@ -84,22 +84,5 @@ final class LibraryChildView: UIView {
             $0.height.equalTo(104)
         }
     }
-    
-    func resetUI(title: String) {
-        descriptionView.libraryNovelListButton.do {
-            let title = title
-            var attString = AttributedString(title)
-            attString.font = UIFont.Label1
-            attString.foregroundColor = UIColor.Gray300
-            
-            var configuration = UIButton.Configuration.filled()
-            configuration.attributedTitle = attString
-            configuration.image = UIImage.icDropDown
-            configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 0)
-            configuration.imagePlacement = .trailing
-            configuration.baseBackgroundColor = UIColor.clear
-            $0.configuration = configuration
-        }
-    }
 }
 

@@ -64,12 +64,17 @@ final class LibraryChildViewModel: ViewModelType {
     }
     
     struct Output {
+        
+        //collectionView Data
         let cellData: BehaviorRelay<[UserNovel]>
         let showEmptyView: PublishRelay<(Bool,Bool)>
+        
+        //Logic
         let pushToDetailNovelViewController: PublishRelay<Int>
         let pushToSearchViewController: PublishRelay<Void>
-        let sendNovelTotalCount: BehaviorRelay<Int>
         
+        //Page descriptionView Data
+        let sendNovelTotalCount: BehaviorRelay<Int>
         let showListView: BehaviorRelay<Bool>
         let updateToggleViewTitle: BehaviorRelay<Bool>
     }

@@ -144,7 +144,7 @@ final class LibraryChildViewController: UIViewController, UIScrollViewDelegate {
         output.updateToggleViewTitle
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, isNewest in
-                owner.rootView.resetUI(title: isNewest ? "최신순": "오래된순")
+                owner.rootView.descriptionView.updatelibraryNovelListButtonTitle(title: isNewest)
             })
             .disposed(by: disposeBag)
     }

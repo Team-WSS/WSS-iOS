@@ -16,12 +16,9 @@ final class LibraryViewController: UIViewController {
     //MARK: - Properties
     
     private let libraryViewModel: LibraryViewModel
-    var entryType: EntryType = .otherVC
-    private let isEntryTabbarRelay = BehaviorRelay<Bool>(value: false)
-    
     private let disposeBag = DisposeBag()
-    private let sortTypeList = StringLiterals.Alignment.self
     
+    private let sortTypeList = StringLiterals.Alignment.self
     private let readStatusList = StringLiterals.LibraryReadStatus.allCases.map { $0.rawValue }
     private var currentPageIndex = 0
     private let sendNovelTotalCount = BehaviorRelay<Int>(value: 0)
@@ -86,8 +83,7 @@ final class LibraryViewController: UIViewController {
     private func bindViewModel() {
         let input = LibraryViewModel.Input(
             tabBarDidTap:libraryPageBar.libraryTabCollectionView.rx.itemSelected,
-            backButtonDidTap: backButton.rx.tap,
-            novelCount: sendNovelTotalCount.asObservable()
+            backButtonDidTap: backButton.rx.tap
         )
         
         let output = libraryViewModel.transform(from: input, disposeBag: disposeBag)
