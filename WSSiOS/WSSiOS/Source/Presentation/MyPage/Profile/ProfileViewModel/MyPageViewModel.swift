@@ -14,47 +14,43 @@ final class MyPageViewModel: ViewModelType {
     
     // MARK: - Properties
     
-    let profileId: Int
-    
+    private let profileId: Int
     private let userRepository: UserRepository
+    private var height: CGFloat = 0
     
     private let disposeBag = DisposeBag()
-    var height: Double = 0.0
-    let bindKeywordRelay = BehaviorRelay<[Keyword]>(value: [])
     
-    let isMyPageRelay = BehaviorRelay<Bool>(value: true)
-    let isProfilePrivateRelay = BehaviorRelay<(Bool, String)>(value: (false, ""))
+    private let isMyPageRelay = BehaviorRelay<Bool>(value: true)
+    private let updateNavigationEnabledRelay = BehaviorRelay<(Bool, String)>(value: (false, ""))
+    private let isProfilePrivateRelay = BehaviorRelay<(Bool, String)>(value: (false, ""))
+    private let profileDataRelay = BehaviorRelay<MyProfileResult>(value: MyProfileResult(nickname: "", intro: "", avatarImage: "", genrePreferences: []))
     
-    let profileDataRelay = BehaviorRelay<MyProfileResult>(value: MyProfileResult(nickname: "", intro: "", avatarImage: "", genrePreferences: []))
-    let updateNavigationEnabledRelay = BehaviorRelay<(Bool, String)>(value: (false, ""))
+    private let isExistPrefernecesRelay = PublishRelay<Bool>()
+    private let bindInventoryDataRelay = BehaviorRelay<UserNovelStatus>(value: UserNovelStatus(interestNovelCount: 0, watchingNovelCount: 0, watchedNovelCount: 0, quitNovelCount: 0))
+    private let bindKeywordRelay = BehaviorRelay<[Keyword]>(value: [])
+    private let bindAttractivePointsDataRelay = BehaviorRelay<[String]>(value: [])
+    private let bindGenreDataRelay = BehaviorRelay<UserGenrePreferences>(value: UserGenrePreferences(genrePreferences: []))
+    private let showGenreOtherViewRelay = BehaviorRelay<Bool>(value: false)
     
-    let pushToEditViewControllerRelay = PublishRelay<MyProfileResult>()
-    let pushToSettingViewControllerRelay = PublishRelay<Void>()
-    let popViewControllerRelay = PublishRelay<Void>()
-    let pushToLibraryViewControllerRelay = PublishRelay<Int>()
-    let pushToMyPageFeedDetailViewControllerRelay = PublishRelay<(Int, MyProfileResult)>()
+    private let bindFeedDataRelay = BehaviorRelay<[FeedCellData]>(value: [])
+    private let isEmptyFeedRelay = PublishRelay<Void>()
+    private let showFeedDetailButtonRelay = PublishRelay<Bool>()
     
-    let bindAttractivePointsDataRelay = BehaviorRelay<[String]>(value: [])
-    let bindKeywordCellRelay = BehaviorRelay<[Keyword]>(value: [])
-    let bindGenreDataRelay = BehaviorRelay<UserGenrePreferences>(value: UserGenrePreferences(genrePreferences: []))
-    let bindInventoryDataRelay = BehaviorRelay<UserNovelStatus>(value: UserNovelStatus(interestNovelCount: 0, watchingNovelCount: 0, watchedNovelCount: 0, quitNovelCount: 0))
-    let isExistPrefernecesRelay = PublishRelay<Bool>()
+    private let updateButtonWithLibraryViewRelay = BehaviorRelay<Bool>(value: true)
+    private let updateFeedTableViewHeightRelay = PublishRelay<CGFloat>()
+    private let updateKeywordCollectionViewHeightRelay = PublishRelay<CGFloat>()
     
-    let bindFeedDataRelay = BehaviorRelay<[FeedCellData]>(value: [])
-    let isEmptyFeedRelay = PublishRelay<Void>()
-    let showFeedDetailButtonRelay = PublishRelay<Bool>()
-    
-    let showGenreOtherViewRelay = BehaviorRelay<Bool>(value: false)
-    let showToastViewRelay = PublishRelay<Void>()
-    let stickyHeaderActionRelay = BehaviorRelay<Bool>(value: true)
-    let showUnknownUserAlertRelay = PublishRelay<Void>()
-    
-    let updateButtonWithLibraryViewRelay = BehaviorRelay<Bool>(value: true)
-    let updateFeedTableViewHeightRelay = PublishRelay<CGFloat>()
-    let updateKeywordCollectionViewHeightRelay = PublishRelay<CGFloat>()
-    
+    private let pushToEditViewControllerRelay = PublishRelay<MyProfileResult>()
+    private let pushToSettingViewControllerRelay = PublishRelay<Void>()
+    private let pushToLibraryViewControllerRelay = PublishRelay<Int>()
+    private let pushToMyPageFeedDetailViewControllerRelay = PublishRelay<(Int, MyProfileResult)>()
     private let pushToFeedDetailViewController = PublishRelay<Int>()
     private let pushToNovelDetailViewController = PublishRelay<Int>()
+    private let popViewControllerRelay = PublishRelay<Void>()
+    
+    private let showToastViewRelay = PublishRelay<Void>()
+    private let showUnknownUserAlertRelay = PublishRelay<Void>()
+    private let stickyHeaderActionRelay = BehaviorRelay<Bool>(value: true)
     
     // MARK: - Life Cycle
     
@@ -138,6 +134,10 @@ final class MyPageViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        //본인 프로필/타인 프로필 분기처리 후 headerView 업데이트
+        //서재 - 보관함 데이터 업데이트
+        //서재 - 나머지뷰 업데이트 후 키워드컬렉션뷰 높이 업데이트
+        //피드 - 피드뷰 업데이트 후 피드테이블뷰 높이 업데이트
         input.viewWillAppearEvent
             .flatMapLatest { [unowned self] _ in
                 self.updateHeaderView(isMyPage: self.isMyPageRelay.value)
@@ -234,15 +234,6 @@ final class MyPageViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        self.showUnknownUserAlertRelay
-            .subscribe(with: self, onNext: { owner, _ in
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    NotificationCenter.default.post(name: NSNotification.Name("UnknownUser"), object: nil)
-                }
-                self.popViewControllerRelay.accept(())
-            })
-            .disposed(by: disposeBag)
-        
         input.inventoryButtonDidTap
             .bind(with: self, onNext: { owner, _ in
                 self.pushToLibraryViewControllerRelay.accept(owner.profileId)
@@ -255,6 +246,17 @@ final class MyPageViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        //알 수 없음 유저일 때 분기처리
+        self.showUnknownUserAlertRelay
+            .subscribe(with: self, onNext: { owner, _ in
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    NotificationCenter.default.post(name: NSNotification.Name("UnknownUser"), object: nil)
+                }
+                self.popViewControllerRelay.accept(())
+            })
+            .disposed(by: disposeBag)
+        
+        //토스트뷰를 위한 분기처리
         input.editProfileNotification
             .bind(with: self, onNext: { owner, _ in
                 self.showToastViewRelay.accept(())
@@ -327,6 +329,10 @@ final class MyPageViewModel: ViewModelType {
         return false
     }
     
+    //본인프로필과 타인프로필 분기처리
+    //본인프로필일 때는 private 상태 false
+    //타인프로필일 때 private 상태 분기처리
+    //에러일 때 알 수 없음 프로필로 처리
     private func updateHeaderView(isMyPage: Bool) -> Observable<Void> {
         if isMyPage {
             return self.getProfileData()
@@ -357,6 +363,8 @@ final class MyPageViewModel: ViewModelType {
         }
     }
     
+    //서재 데이터 바인딩
+    //보관함-장르취향-작품취향 서버연결
     private func updateMyPageLibraryInventoryData() -> Observable<Void> {
         return getInventoryData(userId: self.profileId)
             .do(onNext: { [unowned self] inventory in
@@ -365,9 +373,20 @@ final class MyPageViewModel: ViewModelType {
             .map { _ in Void() }
     }
     
+    //취향분석 데이터 바인딩
     private func updateMyPageLibraryPreferenceData() -> Observable<Void> {
         return getNovelPreferenceData(userId: self.profileId)
             .flatMap { [unowned self] preference -> Observable<Bool> in
+                
+                //작품취향 분기처리
+                //1. 매력포인트, 키워드 둘 다 있을 때
+                //2. 매력포인트만 있을 때
+                //3. 키워드만 있을 때
+                // => 각각의 뷰만 뜨게 함
+                
+                //4. 둘 다 없을 때
+                //=> emptyView 처리
+                //=> 이 경우 장르 취향도 데이터가 없기 때문에 false 반환
                 let keywords = preference.keywords ?? []
                 if preference.attractivePoints == [] && keywords.isEmpty {
                     self.isExistPrefernecesRelay.accept(false)
@@ -378,10 +397,15 @@ final class MyPageViewModel: ViewModelType {
                     return .just(true)
                 }
             }
+        
+            //회원가입후 처음 접속시 서버연결 에러가 나서 분기처리가 제대로 안된 에러 발생
+            //=> 해결 위하여 서버연결 실패시 emptyView 처리
             .catch { [weak self] error in
                 self?.isExistPrefernecesRelay.accept(false)
                 return .just(false)
             }
+        
+            // 장르 취향
             .flatMap { [unowned self] isExist -> Observable<Void> in
                 if isExist {
                     return self.getGenrePreferenceData(userId: self.profileId)
@@ -412,9 +436,12 @@ final class MyPageViewModel: ViewModelType {
                 if feedCellData.isEmpty {
                     self.isEmptyFeedRelay.accept(())
                 } else {
+                    
+                    //5개까지만 활동뷰에 바인딩
+                    //5개를 초과할 경우 더보기 버튼 뜨게 함
                     let hasMoreThanFive = feedCellData.count > 5
                     self.showFeedDetailButtonRelay.accept(hasMoreThanFive)
-                    self.bindFeedDataRelay.accept(feedCellData)
+                    self.bindFeedDataRelay.accept(feedCellData.suffix(5))
                 }
             })
             .catch { [weak self] error in
