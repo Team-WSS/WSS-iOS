@@ -90,8 +90,8 @@ final class LibraryChildViewController: UIViewController, UIScrollViewDelegate {
             cellItemSeleted: rootView.libraryCollectionView.rx.itemSelected,
             loadNextPageTrigger: loadNextPageTrigger,
             listTapped: rootView.descriptionView.libraryNovelListButton.rx.tap,
-            newestTapped: rootView.libraryListView.libraryNewestButton.rx.tap,
-            oldestTapped: rootView.libraryListView.libraryOldestButton.rx.tap
+            newestTapped: rootView.libraryDropdownView.libraryNewestButton.rx.tap,
+            oldestTapped: rootView.libraryDropdownView.libraryOldestButton.rx.tap
         )
         
         let output = libraryViewModel.transform(from: input, disposeBag: disposeBag)
@@ -137,7 +137,7 @@ final class LibraryChildViewController: UIViewController, UIScrollViewDelegate {
         output.showListView
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, show in
-                owner.rootView.libraryListView.isHidden = !show
+                owner.rootView.libraryDropdownView.isHidden = !show
             })
             .disposed(by: disposeBag)
         

@@ -465,7 +465,7 @@
 		E45FEFA52CFC059200B73D80 /* MyPageFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E45FEFA42CFC059200B73D80 /* MyPageFeedView.swift */; };
 		E45FEFA72CFC08CA00B73D80 /* MyFeedResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = E45FEFA62CFC08CA00B73D80 /* MyFeedResult.swift */; };
 		E45FEFA92CFC13BA00B73D80 /* MyPageFeedEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E45FEFA82CFC13BA00B73D80 /* MyPageFeedEmptyView.swift */; };
-		E45FEFAB2CFC303300B73D80 /* LIbraryChildView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E45FEFAA2CFC303300B73D80 /* LIbraryChildView.swift */; };
+		E45FEFAB2CFC303300B73D80 /* LibraryChildView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E45FEFAA2CFC303300B73D80 /* LibraryChildView.swift */; };
 		E45FEFAD2CFC306800B73D80 /* LibraryChildViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E45FEFAC2CFC306800B73D80 /* LibraryChildViewController.swift */; };
 		E45FEFB02CFC30A600B73D80 /* LibraryChildViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E45FEFAF2CFC30A600B73D80 /* LibraryChildViewModel.swift */; };
 		E45FEFB22CFC30BD00B73D80 /* LibraryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E45FEFB12CFC30BD00B73D80 /* LibraryViewModel.swift */; };
@@ -927,7 +927,7 @@
 		E45FEFA42CFC059200B73D80 /* MyPageFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageFeedView.swift; sourceTree = "<group>"; };
 		E45FEFA62CFC08CA00B73D80 /* MyFeedResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFeedResult.swift; sourceTree = "<group>"; };
 		E45FEFA82CFC13BA00B73D80 /* MyPageFeedEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageFeedEmptyView.swift; sourceTree = "<group>"; };
-		E45FEFAA2CFC303300B73D80 /* LIbraryChildView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LIbraryChildView.swift; sourceTree = "<group>"; };
+		E45FEFAA2CFC303300B73D80 /* LibraryChildView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryChildView.swift; sourceTree = "<group>"; };
 		E45FEFAC2CFC306800B73D80 /* LibraryChildViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryChildViewController.swift; sourceTree = "<group>"; };
 		E45FEFAF2CFC30A600B73D80 /* LibraryChildViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryChildViewModel.swift; sourceTree = "<group>"; };
 		E45FEFB12CFC30BD00B73D80 /* LibraryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViewModel.swift; sourceTree = "<group>"; };
@@ -1090,7 +1090,7 @@
 				2C60306A2B54448F0031544C /* LibraryPageBar.swift */,
 				2CA2F65E2B5304400045B4C2 /* LibraryAssistantView */,
 				2CA2F6592B5304000045B4C2 /* LibraryCell */,
-				E45FEFAA2CFC303300B73D80 /* LIbraryChildView.swift */,
+				E45FEFAA2CFC303300B73D80 /* LibraryChildView.swift */,
 			);
 			path = LibraryView;
 			sourceTree = "<group>";
@@ -3268,7 +3268,7 @@
 				CD514C942CD5DB96007A27A8 /* AuthRepository.swift in Sources */,
 				CD8747A72C9EC4F900D0ADAD /* NovelDateSelectModalButtonView.swift in Sources */,
 				2CD911522C0D8A0F006B8D72 /* FeedNovelView.swift in Sources */,
-				E45FEFAB2CFC303300B73D80 /* LIbraryChildView.swift in Sources */,
+				E45FEFAB2CFC303300B73D80 /* LibraryChildView.swift in Sources */,
 				2C19A4FB2BBA8E9600D4D151 /* WSSDropdownManager.swift in Sources */,
 				B9CEDA0D2C01C97E00E62247 /* HomeUnregisterView.swift in Sources */,
 				39599E082C356DFA00702004 /* NovelDetailInfoReviewAttractivePointView.swift in Sources */,

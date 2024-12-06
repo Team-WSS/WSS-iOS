@@ -23,8 +23,8 @@ final class MyPageLibraryView: UIView {
     private let preferencesEmptyView = MyPagePreferencesEmptyView()
     private let myPagePrivateView = MyPagePrivateView()
     
-    private let dividerView = UIView()
-    private let dividerView2 = UIView()
+    private let firstDividerView = UIView()
+    private let secondDividerView = UIView()
     
     // MARK: - Life Cycle
     
@@ -49,7 +49,7 @@ final class MyPageLibraryView: UIView {
             $0.distribution = .fill
         }
         
-        [dividerView, dividerView2].forEach {
+        [firstDividerView, secondDividerView].forEach {
             $0.backgroundColor = .wssGray50
         }
         
@@ -60,9 +60,9 @@ final class MyPageLibraryView: UIView {
     private func setHierarchy() {
         self.addSubview(stackView)
         stackView.addArrangedSubviews(inventoryView,
-                                      dividerView,
+                                      firstDividerView,
                                       genrePrefrerencesView,
-                                      dividerView2,
+                                      secondDividerView,
                                       novelPrefrerencesView,
                                       myPagePrivateView,
                                       preferencesEmptyView)
@@ -82,7 +82,7 @@ final class MyPageLibraryView: UIView {
             $0.height.equalTo(221.5)
         }
         
-        [dividerView, dividerView2].forEach {
+        [firstDividerView, secondDividerView].forEach {
             $0.snp.makeConstraints {
                 $0.height.equalTo(3)
             }
@@ -109,9 +109,9 @@ final class MyPageLibraryView: UIView {
     func isPrivateUserView(isPrivate: Bool, nickname: String) {
         if isPrivate {
             [inventoryView,
-             dividerView,
+             firstDividerView,
              genrePrefrerencesView,
-             dividerView2,
+             secondDividerView,
              novelPrefrerencesView] .forEach { view in
                 view.do {
                     $0.isHidden = true
@@ -127,9 +127,9 @@ final class MyPageLibraryView: UIView {
             }
         } else {
             [inventoryView,
-             dividerView,
+             firstDividerView,
              genrePrefrerencesView,
-             dividerView2,
+             secondDividerView,
              novelPrefrerencesView] .forEach { view in
                 view.do {
                     $0.isHidden = false
@@ -143,7 +143,7 @@ final class MyPageLibraryView: UIView {
     func updatePreferencesEmptyView(isEmpty: Bool) {
         if isEmpty {
             [genrePrefrerencesView,
-             dividerView2,
+             secondDividerView,
              novelPrefrerencesView] .forEach { view in
                 view.do {
                     $0.isHidden = true

@@ -1,5 +1,5 @@
 //
-//  View.swift
+//  LibraryChildView.swift
 //  WSSiOS
 //
 //  Created by 신지원 on 1/14/24.
@@ -14,7 +14,7 @@ final class LibraryChildView: UIView {
     
     //MARK: - Components
     let descriptionView = LibraryDescriptionView()
-    let libraryListView = LibraryListView()
+    let libraryDropdownView = LibraryListView()
     lazy var libraryCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     let libraryEmptyView = LibraryEmptyView()
     
@@ -49,14 +49,14 @@ final class LibraryChildView: UIView {
         }
         
         libraryEmptyView.isHidden = true
-        libraryListView.isHidden = true
+        libraryDropdownView.isHidden = true
     }
   
     private func setHierarchy() {
         self.addSubviews(descriptionView,
                          libraryCollectionView,
                          libraryEmptyView,
-                         libraryListView)
+                         libraryDropdownView)
     }
     
     private func setLayout() {
@@ -77,9 +77,9 @@ final class LibraryChildView: UIView {
             $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom)
         }
         
-        libraryListView.snp.makeConstraints() {
-            $0.top.equalTo(descriptionView.snp.bottom).offset(10)
-            $0.trailing.equalToSuperview().inset(25)
+        libraryDropdownView.snp.makeConstraints() {
+            $0.top.equalTo(descriptionView.snp.bottom)
+            $0.trailing.equalToSuperview().inset(20)
             $0.width.equalTo(100)
             $0.height.equalTo(104)
         }
