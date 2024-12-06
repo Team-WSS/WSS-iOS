@@ -89,7 +89,7 @@ final class LibraryChildViewController: UIViewController, UIScrollViewDelegate {
             lookForNovelButtonDidTap: rootView.libraryEmptyView.libraryLookForNovelButton.rx.tap,
             cellItemSeleted: rootView.libraryCollectionView.rx.itemSelected,
             loadNextPageTrigger: loadNextPageTrigger,
-            listTapped: rootView.descriptionView.libraryNovelListButton.rx.tap,
+            dropdownListDidTap: rootView.descriptionView.libraryNovelListButton.rx.tap,
             newestTapped: rootView.libraryDropdownView.libraryNewestButton.rx.tap,
             oldestTapped: rootView.libraryDropdownView.libraryOldestButton.rx.tap
         )

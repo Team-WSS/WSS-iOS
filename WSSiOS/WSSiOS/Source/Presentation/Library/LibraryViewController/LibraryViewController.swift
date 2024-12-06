@@ -136,18 +136,6 @@ final class LibraryViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.updateChildViewController
-            .bind(with: self, onNext: { owner, sortType in
-                guard owner.currentPageIndex >= 0 && owner.currentPageIndex < owner.libraryPages.count else { return }
-                let viewController = owner.libraryPages[owner.currentPageIndex]
-                let sortTypeQuery = ShowNovelStatus(readStatus: owner.readStatusList[owner.currentPageIndex],
-                                                    lastUserNovelId: sortType.lastId,
-                                                    size: sortType.sizeData,
-                                                    sortType: sortType.sortType)
-                viewController.updateNovelListRelay.accept(sortTypeQuery)
-            })
-            .disposed(by: disposeBag)
-        
         output.popLastViewController
             .bind(with: self, onNext: { owner, _ in
                 owner.popToLastViewController()

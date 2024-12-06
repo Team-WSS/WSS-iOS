@@ -21,11 +21,10 @@ final class LibraryChildViewModel: ViewModelType {
     private let userRepository: UserRepository
     private let initData: ShowNovelStatus
     private let userId: Int
-    weak var delegate: NovelDelegate?
-    private var isMyPage = true
     
     private let disposeBag = DisposeBag()
     
+    private var isMyPage = true
     private var isFetching = false
     private var isSortTypeNewest = true
     
@@ -34,15 +33,17 @@ final class LibraryChildViewModel: ViewModelType {
     private let lastNovelIdRelay = BehaviorRelay<Int>(value: 0)
     
     private let showEmptyView = PublishRelay<(Bool,Bool)>()
+    
     private let pushToDetailNovelViewController = PublishRelay<Int>()
     private let pushToSearchViewController = PublishRelay<Void>()
     
     private let showNovelTotalCountRelay = BehaviorRelay<Int>(value: 0)
-    
     private let showListViewRelay = BehaviorRelay<Bool>(value: false)
+    private let isSortTypeNewestRelay = BehaviorRelay<Bool>(value: true)
+    
     private let updateCollectionViewWithLoadTriggerRelay = PublishRelay<ShowNovelStatus>()
     private let updateCollectionViewWithoutLoadTriggerRelay = PublishRelay<ShowNovelStatus>()
-    private let isSortTypeNewestRelay = BehaviorRelay<Bool>(value: true)
+    
     private let isNotLoadableRelay = BehaviorRelay<Bool>(value: false)
     private let reloadCollectionViewRelay = PublishRelay<Void>()
     
@@ -60,7 +61,7 @@ final class LibraryChildViewModel: ViewModelType {
         let cellItemSeleted: ControlEvent<IndexPath>
         let loadNextPageTrigger: Observable<Void>
         
-        let listTapped: ControlEvent<Void>
+        let dropdownListDidTap: ControlEvent<Void>
         let newestTapped: ControlEvent<Void>
         let oldestTapped: ControlEvent<Void>
     }
@@ -103,6 +104,8 @@ final class LibraryChildViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        //가장 처음 호출되는 무한스크롤 - 최신순
+        //setNovelListData 함수를 통해 전체 작품 개수, 무한스크롤 유무를 세팅하기 위해 처음에만 호출
         input.loadNextPageTrigger
             .filter { [unowned self] _ in !self.isFetching && self.isLoadableRelay.value }
             .do(onNext: { [unowned self] _ in self.isFetching = true })
@@ -121,7 +124,7 @@ final class LibraryChildViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.listTapped
+        input.dropdownListDidTap
             .throttle(.seconds(1), scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 let currentValue = owner.showListViewRelay.value
@@ -129,6 +132,7 @@ final class LibraryChildViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        //변경된 sortList 로 서버 호출하기 위한 데이터 세팅
         Observable.merge(
             input.newestTapped
                 .throttle(.seconds(1), scheduler: MainScheduler.instance)
@@ -161,6 +165,7 @@ final class LibraryChildViewModel: ViewModelType {
         .withLatestFrom(isNotLoadableRelay) { novelStatus, isNotLoadable in
             return (novelStatus, isNotLoadable)
         }
+        //작품 수가 size 보다 더 많은지 판별하여 무한스크롤 여부 처리
         .subscribe(onNext: { [unowned self] novelStatus, isNotLoadable in
             if isNotLoadable {
                 self.updateCollectionViewWithoutLoadTriggerRelay.accept(novelStatus)
@@ -172,6 +177,7 @@ final class LibraryChildViewModel: ViewModelType {
         })
         .disposed(by: disposeBag)
         
+        //무한스크롤일 때 처리
         updateCollectionViewWithLoadTriggerRelay
             .filter { [unowned self] _ in !self.isFetching && self.isLoadableRelay.value }
             .do(onNext: { [unowned self] _ in
@@ -188,6 +194,7 @@ final class LibraryChildViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        //무한스크롤이 아닐 때 처리
         updateCollectionViewWithoutLoadTriggerRelay
             .subscribe(with: self, onNext: { owner, novelResult in
                 owner.updateNovelListWithNewSortTypeWithoutLoadTrigger(novelResult)
@@ -206,6 +213,9 @@ final class LibraryChildViewModel: ViewModelType {
                       reloadCollectionView: self.reloadCollectionViewRelay)
     }
     
+    // MARK: - Custom Method
+    
+    //가장 처음 호출되는 무한스크롤
     private func setNovelListData(_ novelResult: UserNovelList) {
         let newNovelData = novelResult.userNovels
         if let lastNovel = novelResult.userNovels.last {
@@ -223,6 +233,7 @@ final class LibraryChildViewModel: ViewModelType {
         }
     }
     
+    //무한스크롤이 가능한 경우 처리
     private func updateNovelListWithNewSortTypeWithLoadTrigger(_ novelResult: UserNovelList) {
         let newNovelData = novelResult.userNovels
         
@@ -240,6 +251,7 @@ final class LibraryChildViewModel: ViewModelType {
         self.isFetching = false
     }
     
+    //무한 스크롤이 불가능한 경우 처리
     private func updateNovelListWithNewSortTypeWithoutLoadTrigger(_ novelStatus: ShowNovelStatus) {
         var novelData = self.novelDataRelay.value
         novelData.reverse()

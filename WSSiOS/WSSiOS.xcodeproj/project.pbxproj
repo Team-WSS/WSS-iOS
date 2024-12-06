@@ -1084,10 +1084,10 @@
 		2CA2F6572B5303B10045B4C2 /* LibraryView */ = {
 			isa = PBXGroup;
 			children = (
+				E45FEFAA2CFC303300B73D80 /* LibraryChildView.swift */,
 				2C60306A2B54448F0031544C /* LibraryPageBar.swift */,
 				2CA2F65E2B5304400045B4C2 /* LibraryAssistantView */,
 				2CA2F6592B5304000045B4C2 /* LibraryCell */,
-				E45FEFAA2CFC303300B73D80 /* LibraryChildView.swift */,
 			);
 			path = LibraryView;
 			sourceTree = "<group>";

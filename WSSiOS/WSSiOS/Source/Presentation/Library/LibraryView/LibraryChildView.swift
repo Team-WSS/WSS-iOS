@@ -13,6 +13,7 @@ import Then
 final class LibraryChildView: UIView {
     
     //MARK: - Components
+    
     let descriptionView = LibraryDescriptionView()
     let libraryDropdownView = LibraryListView()
     lazy var libraryCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())

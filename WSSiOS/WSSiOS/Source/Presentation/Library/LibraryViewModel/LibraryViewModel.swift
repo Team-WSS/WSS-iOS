@@ -40,7 +40,6 @@ final class LibraryViewModel: ViewModelType {
         let setUpPageViewController = BehaviorRelay<Int>(value: 0)
         let bindCell = BehaviorRelay<[String]>(value: [])
         let moveToTappedTabBar = BehaviorRelay<Int>(value: 0)
-        let updateChildViewController = BehaviorRelay<StringLiterals.Alignment>(value:.newest)
         let popLastViewController = PublishRelay<Void>()
     }
     
