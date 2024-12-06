@@ -17,6 +17,7 @@ final class LibraryChildViewController: UIViewController, UIScrollViewDelegate {
     private let libraryViewModel: LibraryChildViewModel
     
     private let disposeBag = DisposeBag()
+    
     let updateNovelListRelay = PublishRelay<ShowNovelStatus>()
     private lazy var novelTotalRelay = PublishRelay<Int>()
     private let updateRelay = PublishRelay<Void>()
@@ -88,7 +89,6 @@ final class LibraryChildViewController: UIViewController, UIScrollViewDelegate {
             lookForNovelButtonDidTap: rootView.libraryEmptyView.libraryLookForNovelButton.rx.tap,
             cellItemSeleted: rootView.libraryCollectionView.rx.itemSelected,
             loadNextPageTrigger: loadNextPageTrigger,
-            updateCollectionView: updateRelay.asObservable(),
             listTapped: rootView.descriptionView.libraryNovelListButton.rx.tap,
             newestTapped: rootView.libraryListView.libraryNewestButton.rx.tap,
             oldestTapped: rootView.libraryListView.libraryOldestButton.rx.tap
@@ -120,14 +120,14 @@ final class LibraryChildViewController: UIViewController, UIScrollViewDelegate {
             })
             .disposed(by: disposeBag)
         
-        output.pushToSearchViewController
+        output.pushToNormalSearchViewController
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 owner.pushToNormalSearchViewController()
             })
             .disposed(by: disposeBag)
         
-        output.sendNovelTotalCount
+        output.showNovelTotalCount
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, count in
                 owner.rootView.descriptionView.updateNovelCount(count: count)
@@ -145,6 +145,13 @@ final class LibraryChildViewController: UIViewController, UIScrollViewDelegate {
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, isNewest in
                 owner.rootView.descriptionView.updatelibraryNovelListButtonTitle(title: isNewest)
+            })
+            .disposed(by: disposeBag)
+        
+        output.reloadCollectionView
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                owner.rootView.libraryCollectionView.reloadData()
             })
             .disposed(by: disposeBag)
     }

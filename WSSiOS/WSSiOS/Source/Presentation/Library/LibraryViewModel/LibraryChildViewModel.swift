@@ -32,17 +32,20 @@ final class LibraryChildViewModel: ViewModelType {
     private let novelDataRelay = BehaviorRelay<[UserNovel]>(value: [])
     private let isLoadableRelay = BehaviorRelay<Bool>(value: true)
     private let lastNovelIdRelay = BehaviorRelay<Int>(value: 0)
-    private let showLoadingViewRelay = BehaviorRelay<Bool>(value: false)
     
     private let showEmptyView = PublishRelay<(Bool,Bool)>()
     private let pushToDetailNovelViewController = PublishRelay<Int>()
     private let pushToSearchViewController = PublishRelay<Void>()
-    private let sendNovelTotalCountRelay = BehaviorRelay<Int>(value: 0)
+    
+    private let showNovelTotalCountRelay = BehaviorRelay<Int>(value: 0)
     
     private let showListViewRelay = BehaviorRelay<Bool>(value: false)
-    private let updateCollectionViewRelay = BehaviorRelay<ShowNovelStatus>(value: ShowNovelStatus(readStatus: "", lastUserNovelId: 0, size: 0, sortType: ""     ))
+    private let updateCollectionViewWithLoadTriggerRelay = PublishRelay<ShowNovelStatus>()
+    private let updateCollectionViewWithoutLoadTriggerRelay = PublishRelay<ShowNovelStatus>()
     private let isSortTypeNewestRelay = BehaviorRelay<Bool>(value: true)
-
+    private let isNotLoadableRelay = BehaviorRelay<Bool>(value: false)
+    private let reloadCollectionViewRelay = PublishRelay<Void>()
+    
     // MARK: - Life Cycle
     
     init(userRepository: UserRepository, initData: ShowNovelStatus, userId: Int) {
@@ -56,7 +59,6 @@ final class LibraryChildViewModel: ViewModelType {
         let lookForNovelButtonDidTap: ControlEvent<Void>
         let cellItemSeleted: ControlEvent<IndexPath>
         let loadNextPageTrigger: Observable<Void>
-        let updateCollectionView: Observable<Void>
         
         let listTapped: ControlEvent<Void>
         let newestTapped: ControlEvent<Void>
@@ -71,12 +73,13 @@ final class LibraryChildViewModel: ViewModelType {
         
         //Logic
         let pushToDetailNovelViewController: PublishRelay<Int>
-        let pushToSearchViewController: PublishRelay<Void>
+        let pushToNormalSearchViewController: PublishRelay<Void>
         
         //Page descriptionView Data
-        let sendNovelTotalCount: BehaviorRelay<Int>
+        let showNovelTotalCount: BehaviorRelay<Int>
         let showListView: BehaviorRelay<Bool>
         let updateToggleViewTitle: BehaviorRelay<Bool>
+        let reloadCollectionView: PublishRelay<Void>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -111,7 +114,7 @@ final class LibraryChildViewModel: ViewModelType {
                                                             sortType: self.initData.sortType))
             }
             .subscribe(with: self, onNext: { owner, novelResult in
-                owner.updateNovelList(novelResult)
+                owner.setNovelListData(novelResult)
             }, onError: { owner, error in
                 owner.isFetching = false
                 print(error.localizedDescription)
@@ -126,69 +129,92 @@ final class LibraryChildViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.newestTapped
-            .throttle(.seconds(3), scheduler: MainScheduler.instance)
-            .filter { [unowned self] _ in !self.isSortTypeNewestRelay.value }
-            .do(onNext: { [unowned self] _ in
-                self.isSortTypeNewestRelay.accept(true)
-                self.showListViewRelay.accept(false)
-            })
-            .map { [unowned self] _ in
-                ShowNovelStatus(
-                    readStatus: self.initData.readStatus,
-                    lastUserNovelId: 0,
-                    size: self.initData.size,
-                    sortType: "newest"
-                )
-            }
-            .bind(to: updateCollectionViewRelay)
-            .disposed(by: disposeBag)
-
+        Observable.merge(
+            input.newestTapped
+                .throttle(.seconds(1), scheduler: MainScheduler.instance)
+                .filter { [unowned self] _ in !self.isSortTypeNewestRelay.value }
+                .map { ("newest", true) },
             input.oldestTapped
-            .throttle(.seconds(3), scheduler: MainScheduler.instance)
+                .throttle(.seconds(1), scheduler: MainScheduler.instance)
                 .filter { [unowned self] _ in self.isSortTypeNewestRelay.value }
-                .do(onNext: { [unowned self] _ in
-                    self.isSortTypeNewestRelay.accept(false)
-                    self.showListViewRelay.accept(false)
-                })
-                .map { [unowned self] _ in
-                    ShowNovelStatus(
-                        readStatus: self.initData.readStatus,
-                        lastUserNovelId: 0,
-                        size: self.initData.size,
-                        sortType: "oldest"
-                    )
-                }
-                .bind(to: updateCollectionViewRelay)
-                .disposed(by: disposeBag)
-
-            updateCollectionViewRelay
-                .filter { [unowned self] _ in !self.isFetching && self.isLoadableRelay.value }
-                .do(onNext: { [unowned self] _ in
-                    self.isFetching = true
-                    self.novelDataRelay.accept([])
-                })
-                .flatMapLatest { [unowned self] status in
-                    self.getUserNovelList(userId: self.userId, data: status)
-                }
-                .subscribe(with: self, onNext: { owner, novelResult in
-                    owner.reupdateNovelList(novelResult)
-                }, onError: { owner, error in
-                    owner.isFetching = false
-                    print(error.localizedDescription)
-                })
-                .disposed(by: disposeBag)
+                .map { ("oldest", false) }
+        )
+        .do(onNext: { [unowned self] sortType, isNewest in
+            self.isSortTypeNewestRelay.accept(isNewest)
+            self.showListViewRelay.accept(false)
+        })
+        .map { [unowned self] sortType, _ in
+            ShowNovelStatus(
+                readStatus: self.initData.readStatus,
+                lastUserNovelId: sortType == "newest" ? 0 : self.showNovelTotalCountRelay.value,
+                size: self.initData.size,
+                sortType: sortType
+            )
+        }
+        .withLatestFrom(isNotLoadableRelay) { novelStatus, isNotLoadable in
+            return (novelStatus, isNotLoadable)
+        }
+        .subscribe(onNext: { [unowned self] novelStatus, isNotLoadable in
+            if isNotLoadable {
+                self.updateCollectionViewWithoutLoadTriggerRelay.accept(novelStatus)
+            } else {
+                self.novelDataRelay.accept([])
+                self.updateCollectionViewWithLoadTriggerRelay.accept(novelStatus)
+            }
+        })
+        .disposed(by: disposeBag)
+        
+        updateCollectionViewWithLoadTriggerRelay
+            .filter { [unowned self] _ in !self.isFetching && self.isLoadableRelay.value }
+            .do(onNext: { [unowned self] _ in
+                self.isFetching = true
+            })
+            .flatMapLatest { [unowned self] status in
+                self.getUserNovelList(userId: self.userId, data: status)
+                    .map { novelResult -> UserNovelList in
+                        if status.sortType == "oldest" {
+                            
+                            var reversedNovels = novelResult.userNovels
+                            reversedNovels.reverse()
+                            
+                            return UserNovelList(
+                                userNovelCount: novelResult.userNovelCount,
+                                userNovelRating: novelResult.userNovelRating,
+                                isLoadable: novelResult.isLoadable,
+                                userNovels: reversedNovels
+                            )
+                        }
+                        
+                        return novelResult
+                    }
+            }
+            .subscribe(with: self, onNext: { owner, novelResult in
+                owner.updateNovelListWithNewSortTypeWithLoadTrigger(novelResult)
+            }, onError: { owner, error in
+                owner.isFetching = false
+                print(error.localizedDescription)
+            })
+            .disposed(by: disposeBag)
+        
+        updateCollectionViewWithoutLoadTriggerRelay
+            .subscribe(with: self, onNext: { owner, novelResult in
+                owner.updateNovelListWithNewSortTypeWithoutLoadTrigger(novelResult)
+            }, onError: { owner, error in
+                print(error.localizedDescription)
+            })
+            .disposed(by: disposeBag)
         
         return Output(cellData: self.novelDataRelay,
                       showEmptyView: self.showEmptyView,
                       pushToDetailNovelViewController: self.pushToDetailNovelViewController,
-                      pushToSearchViewController: self.pushToSearchViewController,
-                      sendNovelTotalCount: self.sendNovelTotalCountRelay,
+                      pushToNormalSearchViewController: self.pushToSearchViewController,
+                      showNovelTotalCount: self.showNovelTotalCountRelay,
                       showListView: self.showListViewRelay,
-                      updateToggleViewTitle: self.isSortTypeNewestRelay)
+                      updateToggleViewTitle: self.isSortTypeNewestRelay,
+                      reloadCollectionView: self.reloadCollectionViewRelay)
     }
     
-    private func updateNovelList(_ novelResult: UserNovelList) {
+    private func setNovelListData(_ novelResult: UserNovelList) {
         let newNovelData = novelResult.userNovels
         if let lastNovel = novelResult.userNovels.last {
             self.lastNovelIdRelay.accept(Int(lastNovel.userNovelId))
@@ -199,12 +225,13 @@ final class LibraryChildViewModel: ViewModelType {
         self.isFetching = false
         
         self.showEmptyView.accept((novelDataRelay.value.isEmpty, self.isMyPage))
-        
-        self.sendNovelTotalCountRelay.accept(Int(novelResult.userNovelCount))
+        self.showNovelTotalCountRelay.accept(Int(novelResult.userNovelCount))
+        if Int(novelResult.userNovelCount) <= self.initData.size {
+            isNotLoadableRelay.accept(true)
+        }
     }
     
-    //TODO: size 보다 값이 작으면 update 하지 못함
-    private func reupdateNovelList(_ novelResult: UserNovelList) {
+    private func updateNovelListWithNewSortTypeWithLoadTrigger(_ novelResult: UserNovelList) {
         let newNovelData = novelResult.userNovels
         if let lastNovel = novelResult.userNovels.last {
             self.lastNovelIdRelay.accept(Int(lastNovel.userNovelId))
@@ -213,6 +240,12 @@ final class LibraryChildViewModel: ViewModelType {
         self.novelDataRelay.accept(self.novelDataRelay.value + newNovelData)
         self.isLoadableRelay.accept(novelResult.isLoadable)
         self.isFetching = false
+    }
+    
+    private func updateNovelListWithNewSortTypeWithoutLoadTrigger(_ novelStatus: ShowNovelStatus) {
+        var novelData = self.novelDataRelay.value
+        novelData.reverse()
+        self.novelDataRelay.accept(novelData)
     }
     
     // MARK: - API

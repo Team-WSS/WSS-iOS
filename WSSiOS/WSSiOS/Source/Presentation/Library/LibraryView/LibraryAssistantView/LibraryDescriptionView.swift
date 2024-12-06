@@ -47,7 +47,7 @@ final class LibraryDescriptionView: UIView {
         }
         
         libraryNovelListButtonLabel.do {
-            $0.applyWSSFont(.label1, with: StringLiterals.Alignment.newest.title)
+            $0.applyWSSFont(.body4, with: StringLiterals.Alignment.newest.title)
             $0.textColor = .wssGray300
             $0.isUserInteractionEnabled = false
         }
@@ -61,8 +61,8 @@ final class LibraryDescriptionView: UIView {
     private func setHierarchy() {
         self.addSubviews(libraryNovelCountLabel,
                          libraryNovelListButton)
-        libraryNovelListButton.addSubviews(libraryNovelListButtonLabel,
-                                           libraryNovelListButtonImageView)
+        libraryNovelListButton.addSubviews(libraryNovelListButtonImageView,
+                                           libraryNovelListButtonLabel)
     }
     
     private func setLayout() {
@@ -75,14 +75,14 @@ final class LibraryDescriptionView: UIView {
             $0.centerY.equalToSuperview()
             $0.trailing.equalToSuperview().inset(20)
             
-            libraryNovelListButtonLabel.snp.makeConstraints {
-                $0.top.leading.bottom.equalToSuperview()
+            libraryNovelListButtonImageView.snp.makeConstraints {
+                $0.top.bottom.trailing.equalToSuperview()
+                $0.size.equalTo(20)
             }
             
-            libraryNovelListButtonImageView.snp.makeConstraints {
-                $0.leading.equalTo(libraryNovelCountLabel.snp.trailing).offset(8)
-                $0.trailing.equalToSuperview()
-                $0.size.equalTo(20)
+            libraryNovelListButtonLabel.snp.makeConstraints {
+                $0.centerY.equalTo(libraryNovelListButtonImageView.snp.centerY)
+                $0.trailing.equalTo(libraryNovelListButtonImageView.snp.leading).offset(-8)
             }
         }
     }
@@ -93,6 +93,6 @@ final class LibraryDescriptionView: UIView {
     }
     
     func updatelibraryNovelListButtonTitle(title: Bool) {
-        libraryNovelListButtonLabel.applyWSSFont(.label1, with: title ? "최신순": "오래된순")
+        libraryNovelListButtonLabel.applyWSSFont(.body4, with: title ? "최신순": "오래된순")
     }
 }
