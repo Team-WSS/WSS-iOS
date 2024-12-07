@@ -221,6 +221,7 @@ final class MyPageViewController: UIViewController {
             .map { Array($0.genrePreferences.dropFirst(3)) }
             .bind(to: rootView.myPageLibraryView.genrePrefrerencesView.otherGenreView.genreTableView.rx.items(cellIdentifier: MyPageGenrePreferencesOtherTableViewCell.cellIdentifier,cellType: MyPageGenrePreferencesOtherTableViewCell.self)) { row, data, cell in
                 cell.bindData(data: data)
+                cell.selectionStyle = .none
             }
             .disposed(by: disposeBag)
         
@@ -286,9 +287,8 @@ final class MyPageViewController: UIViewController {
                     }
                 }
                 
-                UIView.animate(withDuration: 0.3) {
-                    owner.rootView.layoutIfNeeded()
-                }
+                owner.rootView.layoutIfNeeded()
+                
             })
             .disposed(by: disposeBag)
         

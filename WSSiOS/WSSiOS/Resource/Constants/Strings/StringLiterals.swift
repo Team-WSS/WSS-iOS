@@ -309,6 +309,8 @@ enum StringLiterals {
     enum Library {
         static let empty = "보관함이 비어있어요"
         static let lookForNovel = "웹소설 찾으러 가기"
+        static let newest = "최신 순"
+        static let oldest = "오래된 순"
     }
     
     enum Record {

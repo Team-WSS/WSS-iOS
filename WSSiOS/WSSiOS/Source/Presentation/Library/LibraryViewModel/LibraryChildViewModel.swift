@@ -78,7 +78,7 @@ final class LibraryChildViewModel: ViewModelType {
         
         //Page descriptionView Data
         let showNovelTotalCount: BehaviorRelay<Int>
-        let showListView: BehaviorRelay<Bool>
+        let showDropdownListView: BehaviorRelay<Bool>
         let updateToggleViewTitle: BehaviorRelay<Bool>
         let reloadCollectionView: PublishRelay<Void>
     }
@@ -229,7 +229,7 @@ final class LibraryChildViewModel: ViewModelType {
                       pushToDetailNovelViewController: self.pushToDetailNovelViewController,
                       pushToNormalSearchViewController: self.pushToSearchViewController,
                       showNovelTotalCount: self.showNovelTotalCountRelay,
-                      showListView: self.showListViewRelay,
+                      showDropdownListView: self.showListViewRelay,
                       updateToggleViewTitle: self.isSortTypeNewestRelay,
                       reloadCollectionView: self.reloadCollectionViewRelay)
     }

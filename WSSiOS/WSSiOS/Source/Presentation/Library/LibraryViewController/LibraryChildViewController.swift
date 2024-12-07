@@ -134,7 +134,7 @@ final class LibraryChildViewController: UIViewController, UIScrollViewDelegate {
             })
             .disposed(by: disposeBag)
         
-        output.showListView
+        output.showDropdownListView
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, show in
                 owner.rootView.libraryDropdownView.isHidden = !show
