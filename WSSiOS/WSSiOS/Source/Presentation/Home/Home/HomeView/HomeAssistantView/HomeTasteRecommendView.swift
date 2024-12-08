@@ -107,9 +107,6 @@ final class HomeTasteRecommendView: UIView {
                 
                 stackView.do {
                     $0.setCustomSpacing(11, after: titleLabel)
-                    $0.snp.updateConstraints {
-                        $0.bottom.equalToSuperview()
-                    }
                 }
             } else {
                 subTitleLabel.isHidden = false
@@ -119,6 +116,9 @@ final class HomeTasteRecommendView: UIView {
                 stackView.do {
                     $0.setCustomSpacing(2, after: titleLabel)
                     $0.setCustomSpacing(20, after: subTitleLabel)
+                    $0.snp.updateConstraints {
+                        $0.bottom.equalToSuperview()
+                    }
                 }
             }
         } else {
@@ -128,9 +128,6 @@ final class HomeTasteRecommendView: UIView {
             
             stackView.do {
                 $0.setCustomSpacing(11, after: titleLabel)
-                $0.snp.updateConstraints {
-                    $0.bottom.equalToSuperview()
-                }
             }
         }
     }
