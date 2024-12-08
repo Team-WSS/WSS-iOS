@@ -93,6 +93,6 @@ final class LibraryDescriptionView: UIView {
     }
     
     func updatelibraryNovelListButtonTitle(title: Bool) {
-        libraryNovelListButtonLabel.applyWSSFont(.body4, with: title ? StringLiterals.Library.newest : StringLiterals.Library.oldest)
+        libraryNovelListButtonLabel.applyWSSFont(.body4, with: title ? StringLiterals.Alignment.newest.title : StringLiterals.Alignment.oldest.title)
     }
 }
