@@ -17,9 +17,11 @@ final class LibraryChildViewController: UIViewController, UIScrollViewDelegate {
     private let libraryViewModel: LibraryChildViewModel
     
     private let disposeBag = DisposeBag()
-    weak var delegate : NovelDelegate?
+    
     let updateNovelListRelay = PublishRelay<ShowNovelStatus>()
     private lazy var novelTotalRelay = PublishRelay<Int>()
+    private let updateRelay = PublishRelay<Void>()
+    private let viewWillAppearEventRelay = PublishRelay<Void>()
     
     //MARK: - Components
     
@@ -52,8 +54,8 @@ final class LibraryChildViewController: UIViewController, UIScrollViewDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        showTabBar()
+
+        viewWillAppearEventRelay.accept(())
     }
     
     //MARK: - Bind
@@ -70,10 +72,26 @@ final class LibraryChildViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func bindViewModel() {
+        let loadNextPageTrigger = rootView.libraryCollectionView.rx.contentOffset
+            .map { [weak self] contentOffset in
+                guard let self = self else { return false }
+                let offsetY = contentOffset.y
+                let contentHeight = self.rootView.libraryCollectionView.contentSize.height
+                let frameHeight = self.rootView.libraryCollectionView.frame.height
+                return offsetY + frameHeight >= contentHeight - 100
+            }
+            .distinctUntilChanged()
+            .filter { $0 }
+            .map { _ in () }
+        
         let input = LibraryChildViewModel.Input(
-            updateNovelList: updateNovelListRelay,
+            viewWillAppear: viewWillAppearEventRelay.asObservable(),
             lookForNovelButtonDidTap: rootView.libraryEmptyView.libraryLookForNovelButton.rx.tap,
-            cellItemSeleted: rootView.libraryCollectionView.rx.itemSelected
+            cellItemSeleted: rootView.libraryCollectionView.rx.itemSelected,
+            loadNextPageTrigger: loadNextPageTrigger,
+            dropdownListDidTap: rootView.descriptionView.libraryNovelListButton.rx.tap,
+            newestTapped: rootView.libraryDropdownView.libraryNewestButton.rx.tap,
+            oldestTapped: rootView.libraryDropdownView.libraryOldestButton.rx.tap
         )
         
         let output = libraryViewModel.transform(from: input, disposeBag: disposeBag)
@@ -86,6 +104,15 @@ final class LibraryChildViewController: UIViewController, UIScrollViewDelegate {
                 }
                 .disposed(by: disposeBag)
         
+        output.showEmptyView
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, data in
+                let (isEmpty, isMyPage) = data
+                owner.rootView.libraryEmptyView.isHidden = !isEmpty
+                owner.rootView.libraryEmptyView.libraryLookForNovelButton.isHidden = !isMyPage
+            })
+            .disposed(by: disposeBag)
+        
         output.pushToDetailNovelViewController
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, novelId in
@@ -93,21 +120,38 @@ final class LibraryChildViewController: UIViewController, UIScrollViewDelegate {
             })
             .disposed(by: disposeBag)
         
-        output.showEmptyView
+        output.pushToNormalSearchViewController
             .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, isEmpty in
-                owner.rootView.libraryEmptyView.isHidden = !isEmpty
+            .bind(with: self, onNext: { owner, _ in
+                owner.pushToNormalSearchViewController()
             })
             .disposed(by: disposeBag)
         
-        output.pushToSearchViewController
+        output.showNovelTotalCount
             .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, isEmpty in
-                if let tabBarController = owner.tabBarController as? WSSTabBarController {
-                    if let myPageIndex = WSSTabBarItem.allCases.firstIndex(of: .search) {
-                        tabBarController.selectedIndex = myPageIndex
-                    }
-                }
+            .bind(with: self, onNext: { owner, count in
+                owner.rootView.descriptionView.updateNovelCount(count: count)
+            })
+            .disposed(by: disposeBag)
+        
+        output.showDropdownListView
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, show in
+                owner.rootView.libraryDropdownView.isHidden = !show
+            })
+            .disposed(by: disposeBag)
+        
+        output.updateToggleViewTitle
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, isNewest in
+                owner.rootView.descriptionView.updatelibraryNovelListButtonTitle(title: isNewest)
+            })
+            .disposed(by: disposeBag)
+        
+        output.reloadCollectionView
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                owner.rootView.libraryCollectionView.reloadData()
             })
             .disposed(by: disposeBag)
     }

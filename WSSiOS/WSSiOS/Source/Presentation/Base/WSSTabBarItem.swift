@@ -70,12 +70,12 @@ enum WSSTabBarItem: CaseIterable {
             return FeedViewController(viewModel: FeedViewModel())
             
         case .myPage:
-            
+            let userId = UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)
             let myPageVC = MyPageViewController(
                 viewModel: MyPageViewModel(
                     userRepository: DefaultUserRepository(
                         userService: DefaultUserService(),
-                        blocksService: DefaultBlocksService()), profileId: 0))
+                        blocksService: DefaultBlocksService()), profileId: userId))
             myPageVC.entryType = .tabBar
             return myPageVC
         }

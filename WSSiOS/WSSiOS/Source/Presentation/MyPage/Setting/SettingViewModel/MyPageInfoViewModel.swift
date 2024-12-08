@@ -30,6 +30,7 @@ final class MyPageInfoViewModel: ViewModelType {
         let cellDidTapped: ControlEvent<IndexPath>
         let logoutButtonTapped: PublishRelay<Bool>
         let backButtonDidTap: ControlEvent<Void>
+        let changeInfoNotification: Observable<Notification>
     }
     
     struct Output {
@@ -43,6 +44,7 @@ final class MyPageInfoViewModel: ViewModelType {
         let popViewController = PublishRelay<Bool>()
         let bindEmail = BehaviorRelay<String>(value: "")
         let genderAndBirth = BehaviorRelay<ChangeUserInfo>(value: ChangeUserInfo(gender: "", birth: 0))
+        let showToastMessage = PublishRelay<Void>()
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -118,6 +120,12 @@ final class MyPageInfoViewModel: ViewModelType {
                     print(error.localizedDescription)
                 }
             )
+            .disposed(by: disposeBag)
+        
+        input.changeInfoNotification
+            .subscribe(with: self, onNext: { owner, _ in
+                output.showToastMessage.accept(())
+            })
             .disposed(by: disposeBag)
         
         return output

@@ -423,7 +423,7 @@ extension UIViewController {
             )
         )
         
-        self.navigationController?.pushViewController(viewController, animated: true)
+        self.navigationController?.pushViewController(viewController, animated: false)
     }
     
     func pushToChangeUserInfoViewController() {
@@ -432,19 +432,33 @@ extension UIViewController {
                 userRepository: DefaultUserRepository(
                     userService: DefaultUserService(),
                     blocksService: DefaultBlocksService())))
-        self.navigationController?.pushViewController(viewController, animated: true)
+        viewController.hidesBottomBarWhenPushed = true
+        
+        self.navigationController?.pushViewController(viewController, animated: false)
     }
     
     func pushToLibraryViewController(userId: Int) {
-            let viewController = LibraryViewController(
-                libraryViewModel: LibraryViewModel(
-                    userRepository: DefaultUserRepository(
-                        userService: DefaultUserService(),
-                        blocksService: DefaultBlocksService()),
-                    userId: userId))
-
-            self.navigationController?.pushViewController(viewController, animated: true)
-        }
+        let viewController = LibraryViewController(
+            libraryViewModel: LibraryViewModel(
+                userRepository: DefaultUserRepository(
+                    userService: DefaultUserService(),
+                    blocksService: DefaultBlocksService()),
+                userId: userId))
+        
+        viewController.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(viewController, animated: false)
+    }
+    
+    func pushToMyPageFeedDetailViewController(userId: Int, useData: MyProfileResult) {
+        let viewController = MyPageFeedDetailViewController(
+            viewModel: MyPageFeedDetailViewModel(
+                userRepository: DefaultUserRepository(
+                    userService: DefaultUserService(),
+                    blocksService: DefaultBlocksService()),
+                profileId: userId,
+                profileData: useData))
+        self.navigationController?.pushViewController(viewController, animated: false)
+    }
 }
 
 extension UIViewController: @retroactive UIGestureRecognizerDelegate {

@@ -92,6 +92,7 @@ final class MyPageEditProfileViewController: UIViewController {
             .bind(to: rootView.genreCollectionView.rx.items(
                 cellIdentifier: MyPageEditProfileGenreCollectionViewCell.cellIdentifier,
                 cellType: MyPageEditProfileGenreCollectionViewCell.self)) { row, element, cell in
+                    print(element)
                     cell.bindData(genre: element.0)
                     cell.updateCell(isSelected: element.1)
                 }

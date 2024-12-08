@@ -173,9 +173,26 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
     }
     
     func bindProfileData(feed: FeedCellData) {
+        novelDetailFeedHeaderView.dropdownButtonView.isHidden = true
+        
+        let createdDate = feed.feed.createdDate
+        let inputDateFormatter = DateFormatter()
+        inputDateFormatter.dateFormat = "yyyy-MM-dd"
+        
+        var formattedDate: String = ""
+
+        if let date = inputDateFormatter.date(from: createdDate) {
+            let outputDateFormatter = DateFormatter()
+            outputDateFormatter.locale = Locale(identifier: "ko_KR")
+            outputDateFormatter.dateFormat = "M월 d일"
+            formattedDate = outputDateFormatter.string(from: date)
+        } else {
+            formattedDate = ""
+        }
+        
         novelDetailFeedHeaderView.bindData(avatarImage: feed.avatarImage,
                                            nickname: feed.nickname,
-                                           createdDate: feed.feed.createdDate,
+                                           createdDate: formattedDate,
                                            isModified: feed.feed.isModified)
         novelDetailFeedContentView.bindData(feedContent: feed.feed.feedContent,
                                             isSpoiler: feed.feed.isSpoiler)
@@ -193,7 +210,11 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
         } else {
             novelDetailFeedConnectedNovelView.removeFromSuperview()
         }
-        novelDetailFeedCategoryView.bindData(relevantCategories: feed.feed.relevantCategories)
+        
+        let translatedGenres = feed.feed.relevantCategories.compactMap {
+            NewNovelGenre(rawValue: $0)?.withKorean
+        }
+        novelDetailFeedCategoryView.bindData(relevantCategories: translatedGenres)
         novelDetailFeedReactView.bindData(isLiked: feed.feed.isLiked,
                                           likeCount: feed.feed.likeCount,
                                           commentCount: feed.feed.commentCount)

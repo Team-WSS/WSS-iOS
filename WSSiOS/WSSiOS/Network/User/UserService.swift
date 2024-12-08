@@ -226,13 +226,12 @@ extension DefaultUserService: UserService {
         guard let userProfileVisibility = try? JSONEncoder().encode(UserProfileVisibility(isProfilePublic: isProfilePublic))  else {
             return .error(NetworkServiceError.invalidRequestError)
         }
-        
         do {
             let request = try makeHTTPRequest(method: .patch,
                                               path: URLs.MyPage.ProfileVisibility.isProfileVisibility,
                                               queryItems: makeUserProfileVisibilityQueryItems(isProfilePublic: isProfilePublic),
                                               headers: APIConstants.accessTokenHeader,
-                                              body: nil)
+                                              body: userProfileVisibility)
             NetworkLogger.log(request: request)
             
             return tokenCheckURLSession.rx.data(request: request)

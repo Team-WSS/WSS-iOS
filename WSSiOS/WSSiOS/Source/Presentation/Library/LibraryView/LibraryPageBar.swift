@@ -44,9 +44,10 @@ final class LibraryPageBar: UIView {
             let layout = UICollectionViewFlowLayout()
             layout.scrollDirection = .horizontal
             layout.minimumLineSpacing = 0
-            layout.itemSize = CGSize(width: 67.0, height: 54.0)
+            layout.itemSize = CGSize(width: UIScreen.main.bounds.width/4, height: 54.0)
             
             $0.collectionViewLayout = layout
+            $0.showsVerticalScrollIndicator = false
         }
         
         libraryTabCollectionView.rx.itemSelected
@@ -61,8 +62,7 @@ final class LibraryPageBar: UIView {
     
     private func setLayout() {
         libraryTabCollectionView.snp.makeConstraints() {
-            $0.top.bottom.equalToSuperview()
-            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.edges.equalToSuperview()
         }
     }
 }

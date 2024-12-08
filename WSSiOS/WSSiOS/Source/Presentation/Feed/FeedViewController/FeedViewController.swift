@@ -152,18 +152,21 @@ final class FeedViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.showFeedEditedToast
+            .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
                 owner.showToast(.feedEdited)
             })
             .disposed(by: disposeBag)
         
         output.showBlockUserToast
+            .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, nickname in
                 owner.showToast(.blockUser(nickname: nickname))
             })
             .disposed(by: disposeBag)
         
         output.showUnknownUserToast
+            .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
                 owner.showToast(.unknownUser)
             })

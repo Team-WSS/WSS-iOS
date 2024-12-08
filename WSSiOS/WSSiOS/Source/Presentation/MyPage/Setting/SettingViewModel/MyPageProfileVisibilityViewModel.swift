@@ -19,7 +19,7 @@ final class MyPageProfileVisibilityViewModel: ViewModelType {
     
     //초기값 부여
     private var initStatus: Bool = true
-    private var isPublic: Bool = true
+    private var isStatusRelay = BehaviorRelay<Bool>(value: true)
     
     //MARK: - Life Cycle
     
@@ -33,11 +33,10 @@ final class MyPageProfileVisibilityViewModel: ViewModelType {
         let completeButtonDidTap: ControlEvent<Void>
     }
     
-    struct Output {        
+    struct Output {
         let changePrivateToggleButton = PublishRelay<Bool>()
         let changeCompleteButton = PublishRelay<Bool>()
         let popViewControllerAction = PublishRelay<Bool>()
-        let showChangeProfileToast = PublishRelay<Bool>()
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -45,41 +44,43 @@ final class MyPageProfileVisibilityViewModel: ViewModelType {
         
         self.getUserProfileVisibility()
             .map { $0.isProfilePublic }
-            .subscribe(with: self, onNext: { owner, isPublic in 
+            .subscribe(with: self, onNext: { owner, isPublic in
                 owner.initStatus = isPublic
+                owner.isStatusRelay.accept(isPublic)
             })
             .disposed(by: disposeBag)
         
         input.isVisibilityToggleButtonDidTap
-            .subscribe(with: self, onNext: { owner, _ in 
-                owner.isPublic.toggle()
-                output.changePrivateToggleButton.accept(owner.isPublic)
-                output.changeCompleteButton.accept(owner.initStatus != owner.isPublic)
+            .subscribe(with: self, onNext: { owner, _ in
+                let currentValue = owner.isStatusRelay.value
+                owner.isStatusRelay.accept(!currentValue)
+            })
+            .disposed(by: disposeBag)
+        
+        self.isStatusRelay
+            .subscribe(with: self, onNext: { owner, status in
+                output.changePrivateToggleButton.accept(status)
+                output.changeCompleteButton.accept(owner.initStatus != status)
             })
             .disposed(by: disposeBag)
         
         input.completeButtonDidTap
             .withUnretained(self)
-            .filter { owner, _ in
-                return owner.initStatus != owner.isPublic
-            }
             .flatMap { owner, _ in
-                owner.patchUserProfileVisibility(isProfilePublic: owner.isPublic)
+                owner.patchUserProfileVisibility(isProfilePublic: owner.isStatusRelay.value)
                     .catch { error in
                         return Observable.empty()
                     }
             }
-            .subscribe(onNext: { [weak self] in
-                guard let self = self else { return }
+            .subscribe(with: self, onNext: { owner, _ in
+                NotificationCenter.default.post(name: NSNotification.Name("ChangeVisibility"), object: owner.isStatusRelay.value)
                 output.popViewControllerAction.accept(true)
-                // TODO: - Toast Message 추가
             })
             .disposed(by: disposeBag)
         
         input.backButtonDidTap
-            .subscribe(with: self, onNext: { owner, _ in 
+            .subscribe(with: self, onNext: { owner, _ in
                 output.popViewControllerAction.accept(true)
-                output.showChangeProfileToast.accept(owner.isPublic)
             })
             .disposed(by: disposeBag)
         
