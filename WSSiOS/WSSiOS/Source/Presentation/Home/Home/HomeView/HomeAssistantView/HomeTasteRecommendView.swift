@@ -117,7 +117,7 @@ final class HomeTasteRecommendView: UIView {
                     $0.setCustomSpacing(2, after: titleLabel)
                     $0.setCustomSpacing(20, after: subTitleLabel)
                     $0.snp.updateConstraints {
-                        $0.bottom.equalToSuperview()
+                        $0.bottom.equalToSuperview().inset(40)
                     }
                 }
             }
