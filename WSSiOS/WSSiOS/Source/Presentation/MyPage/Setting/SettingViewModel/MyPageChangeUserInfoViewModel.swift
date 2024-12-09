@@ -101,6 +101,9 @@ final class MyPageChangeUserInfoViewModel: ViewModelType {
                             
                             UserDefaults.standard.set(owner.currentGender, forKey: StringLiterals.UserDefault.userGender)
                             UserDefaults.standard.set(owner.currentBirth, forKey: StringLiterals.UserDefault.userBirth)
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                NotificationCenter.default.post(name: NSNotification.Name("ChangeUserInfo"), object: nil)
+                            }
                             output.popViewController.accept(())
                         }, onError: { owner, error in
                             print(error)
@@ -115,7 +118,6 @@ final class MyPageChangeUserInfoViewModel: ViewModelType {
                 owner.currentBirth = userBirth
                 output.changeBirth.accept(userBirth)
                 output.changeCompleteButton.accept(owner.checkIsEnabledCompleteButton())
-                
             })
             .disposed(by: disposeBag)
         

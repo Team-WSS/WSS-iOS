@@ -64,7 +64,7 @@ final class LibraryEmptyView: UIView {
         libraryLookForNovelButtonLabel.do {
             $0.applyWSSFont(.title1, with: StringLiterals.Library.lookForNovel)
             $0.textColor = .wssPrimary100
-            $0.isUserInteractionEnabled = true
+            $0.isUserInteractionEnabled = false
         }
     }
 

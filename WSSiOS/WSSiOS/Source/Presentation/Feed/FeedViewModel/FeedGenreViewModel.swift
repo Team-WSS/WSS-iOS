@@ -108,6 +108,9 @@ final class FeedGenreViewModel: ViewModelType {
         
         input.feedProfileViewDidTap
             .subscribe(with: self, onNext: { owner, userId in
+                let myUserId = UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)
+                guard myUserId != userId else { return }
+                
                 owner.pushToUserViewController.accept(userId)
                 owner.hideDropdownView.accept(())
             })

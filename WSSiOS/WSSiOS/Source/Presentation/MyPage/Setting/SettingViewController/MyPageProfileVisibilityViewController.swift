@@ -61,26 +61,23 @@ final class MyPageProfileVisibilityViewController: UIViewController {
         let output = viewModel.transform(from: input, disposeBag: self.disposeBag)
         
         output.changePrivateToggleButton
+            .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, isPublic in
                 owner.rootView.bindData(isPrivate: !isPublic)
             })
             .disposed(by: disposeBag)
         
         output.changeCompleteButton
+            .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, change in
                 owner.rootView.changeCompleteButton(change: change)
             })
             .disposed(by: disposeBag)
         
         output.popViewControllerAction
+            .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 owner.popToLastViewController()
-            })
-            .disposed(by: disposeBag)
-        
-        output.showChangeProfileToast
-            .subscribe(with: self, onNext: { owner, status in
-                owner.showToast(status ? .changeToPublicProfile : .changeToPrivateProfile)
             })
             .disposed(by: disposeBag)
     }

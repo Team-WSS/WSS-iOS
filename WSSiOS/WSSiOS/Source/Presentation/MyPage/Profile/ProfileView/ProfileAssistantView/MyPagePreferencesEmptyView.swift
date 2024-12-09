@@ -72,6 +72,7 @@ final class MyPagePreferencesEmptyView: UIView {
         emptyLabel.snp.makeConstraints {
             $0.top.equalTo(emptyImage.snp.bottom).offset(20)
             $0.centerX.equalToSuperview()
+            $0.bottom.equalToSuperview().inset(70)
         }
     }
 }

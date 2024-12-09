@@ -16,9 +16,14 @@ final class MyPageFeedView: UIView {
     
     // MARK: - Components
     
-    let myPageFeedTableView = UITableView(frame: .zero, style: .plain)
+    let stackView = UIStackView()
+    
+    let myPageFeedTableView = NovelDetailFeedListView()
+    
+    private let showMoreActivityButton = UIView()
     let myPageFeedDetailButton = UIButton()
     let myPageFeedDetailButtonLabel = UILabel()
+    private let paddingViewAfterButton = UIView()
     
     private let myPagePrivateView = MyPagePrivateView()
     private let myPageFeedEmptyView = MyPageFeedEmptyView()
@@ -40,11 +45,8 @@ final class MyPageFeedView: UIView {
     private func setUI() {
         self.backgroundColor = .wssWhite
         
-        myPageFeedTableView.do {
-            $0.showsVerticalScrollIndicator = false
-            $0.separatorStyle = .none
-            $0.isScrollEnabled = false
-            $0.isUserInteractionEnabled = true
+        stackView.do {
+            $0.axis = .vertical
         }
         
         myPageFeedDetailButton.do {
@@ -58,41 +60,50 @@ final class MyPageFeedView: UIView {
             }
         }
         
+        paddingViewAfterButton.do {
+            $0.backgroundColor = .wssWhite
+        }
+        
         myPagePrivateView.isHidden = true
         myPageFeedEmptyView.isHidden = true
     }
     
     private func setHierarchy() {
-        self.addSubviews(myPageFeedTableView,
-//                         myPageFeedDetailButton,
-                         myPagePrivateView,
-                         myPageFeedEmptyView)
-//        myPageFeedDetailButton.addSubview(myPageFeedDetailButtonLabel)
+        self.addSubview(stackView)
+        stackView.addArrangedSubviews(myPageFeedTableView,
+                                      showMoreActivityButton,
+                                      paddingViewAfterButton,
+                                      myPagePrivateView,
+                                      myPageFeedEmptyView)
+        showMoreActivityButton.addSubview(myPageFeedDetailButton)
+        myPageFeedDetailButton.addSubview(myPageFeedDetailButtonLabel)
     }
     
     private func setLayout() {
-        myPageFeedTableView.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview()
-            $0.height.equalTo(0)
+        stackView.snp.makeConstraints {
+            $0.top.leading.trailing.bottom.equalToSuperview()
         }
         
-//        myPageFeedDetailButton.snp.makeConstraints {
-//            $0.top.equalTo(myPageFeedTableView.snp.bottom)
-//            $0.leading.trailing.equalToSuperview().inset(20)
-//            $0.height.equalTo(48)
-//        }
-//
-//        myPageFeedDetailButtonLabel.snp.makeConstraints {
-//            $0.center.equalToSuperview()
-//        }
+        myPageFeedDetailButton.snp.makeConstraints {
+            $0.top.bottom.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(48)
+        }
+        
+        myPageFeedDetailButtonLabel.snp.makeConstraints {
+            $0.center.equalToSuperview()
+        }
+        
+        paddingViewAfterButton.snp.makeConstraints {
+            $0.width.equalToSuperview()
+            $0.height.equalTo(40)
+        }
         
         myPagePrivateView.snp.makeConstraints {
-            $0.top.width.bottom.equalToSuperview()
             $0.height.equalTo(450)
         }
         
         myPageFeedEmptyView.snp.makeConstraints {
-            $0.top.width.bottom.equalToSuperview()
             $0.height.equalTo(450)
         }
     }
@@ -101,21 +112,58 @@ final class MyPageFeedView: UIView {
     
     func isPrivateUserView(isPrivate: Bool, nickname: String) {
         if isPrivate {
-            myPageFeedTableView.isHidden = true
-            //            myPageFeedDetailButton.isHidden = true
+            myPagePrivateView.isHidden = false
+            
+            [myPageFeedTableView,
+             showMoreActivityButton,
+             paddingViewAfterButton,
+             myPageFeedEmptyView].forEach { view in
+                view.do {
+                    $0.isHidden = true
+                }
+            }
             
             let text = nickname + StringLiterals.MyPage.Profile.privateLabel
             myPagePrivateView.isPrivateDescriptionLabel.do {
                 $0.applyWSSFont(.body2, with: text)
                 $0.textAlignment = .center
             }
+            
         }
     }
     
-    func isEmprtyView(isEmpty: Bool) {
-            myPageFeedTableView.isHidden = isEmpty
-//            myPageFeedDetailButton.isHidden = true
+    
+    func isEmptyView(isEmpty: Bool) {
+        if isEmpty {
+            myPageFeedEmptyView.isHidden = false
             
-            myPageFeedEmptyView.isHidden = !isEmpty
+            [myPageFeedTableView,
+             showMoreActivityButton,
+             paddingViewAfterButton].forEach { view in
+                view.do {
+                    $0.isHidden = true
+                }
+            }
+        }
+    }
+    
+    func showMoreButton(isShow: Bool) {
+        showMoreActivityButton.isHidden = !isShow
+        if isShow {
+            paddingViewAfterButton.snp.makeConstraints {
+                $0.width.equalToSuperview()
+                $0.height.equalTo(40)
+            }
+        } else {
+            paddingViewAfterButton.snp.makeConstraints {
+                $0.width.equalToSuperview()
+                $0.bottom.equalToSuperview()
+                $0.height.greaterThanOrEqualTo(40)
+            }
+        }
+        
+        UIView.animate(withDuration: 0.3) {
+            self.stackView.layoutIfNeeded()
+        }
     }
 }

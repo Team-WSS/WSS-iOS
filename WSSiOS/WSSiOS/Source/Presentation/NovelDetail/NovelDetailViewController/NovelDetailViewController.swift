@@ -241,7 +241,7 @@ final class NovelDetailViewController: UIViewController {
         output.showReportPage
             .drive(with: self, onNext: { owner, _ in
                 owner.rootView.showHeaderDropDownView(isShow: false)
-                if let url = URL(string: URLs.Contact.notionForm) {
+                if let url = URL(string: URLs.Contact.kakao) {
                     UIApplication.shared.open(url, options: [:])
                 }
             })

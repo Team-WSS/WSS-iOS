@@ -49,7 +49,6 @@ final class LibraryTabCollectionViewCell: UICollectionViewCell {
     private func setUI() {
         libraryTabLabel.do {
             $0.textColor = .wssGray200
-            $0.font = .Body1
             $0.backgroundColor = .clear
             $0.textAlignment = .center
         }
@@ -85,6 +84,6 @@ final class LibraryTabCollectionViewCell: UICollectionViewCell {
     //MARK: - Data
     
     func bindData(data: String) {
-        libraryTabLabel.text = data
+        libraryTabLabel.applyWSSFont(.body1, with: data)
     }
 }
