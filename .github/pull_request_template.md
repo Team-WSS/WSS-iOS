@@ -25,7 +25,7 @@ Prefix
 -->
 
 ### ⭐️Issue
-close #
+- close #
 <br/>
 
 ### 🌟Motivation

@@ -52,6 +52,7 @@ final class HomeViewModel: ViewModelType {
         let todayPopularCellSelected: ControlEvent<IndexPath>
         let interestCellSelected: ControlEvent<IndexPath>
         let tasteRecommendCellSelected: ControlEvent<IndexPath>
+        let tasteRecommendCollectionViewContentSize: Observable<CGSize?>
         let announcementButtonDidTap: ControlEvent<Void>
         let registerInterestNovelButtonTapped: ControlEvent<Void>
         let setPreferredGenresButtonTapped: ControlEvent<Void>
@@ -70,6 +71,7 @@ final class HomeViewModel: ViewModelType {
         let pushToNormalSearchViewController: Observable<Void>
         
         var tasteRecommendList: Observable<[TasteRecommendNovel]>
+        let tasteRecommendCollectionViewHeight: Driver<CGFloat>
         let updateTasteRecommendView: Observable<(Bool, Bool)>
         let pushToMyPageViewController: Observable<Void>
         
@@ -179,6 +181,10 @@ extension HomeViewModel {
             })
             .disposed(by: disposeBag)
         
+        let tasteRecommendCollectionViewHeight = input.tasteRecommendCollectionViewContentSize
+            .map { $0?.height ?? 0 }
+            .asDriver(onErrorJustReturn: 0)
+
         input.announcementButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
                 if owner.isLogined {
@@ -216,6 +222,7 @@ extension HomeViewModel {
                       updateInterestView: updateInterestView.asObservable(),
                       pushToNormalSearchViewController: pushToNormalSearchViewController.asObservable(),
                       tasteRecommendList: tasteRecommendList.asObservable(),
+                      tasteRecommendCollectionViewHeight: tasteRecommendCollectionViewHeight.asDriver(),
                       updateTasteRecommendView: updateTasteRecommendView.asObservable(),
                       pushToMyPageViewController: pushToMyPageViewController.asObservable(),
                       pushToNovelDetailViewController: pushToNovelDetailViewController.asObservable(),

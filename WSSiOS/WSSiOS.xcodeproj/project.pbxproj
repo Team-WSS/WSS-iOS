@@ -468,7 +468,6 @@
 		E45FEFAD2CFC306800B73D80 /* LibraryChildViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E45FEFAC2CFC306800B73D80 /* LibraryChildViewController.swift */; };
 		E45FEFB02CFC30A600B73D80 /* LibraryChildViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E45FEFAF2CFC30A600B73D80 /* LibraryChildViewModel.swift */; };
 		E45FEFB22CFC30BD00B73D80 /* LibraryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E45FEFB12CFC30BD00B73D80 /* LibraryViewModel.swift */; };
-		E486AE292CFEB2CC00465AEE /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E486AE282CFEB2CC00465AEE /* Config.xcconfig */; };
 		E497C9B62CF3AFBD0079C30D /* MyPageEditAvatarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E497C9B52CF3AFBD0079C30D /* MyPageEditAvatarViewController.swift */; };
 		E497C9B82CF3B0160079C30D /* MyPageEditAvatarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E497C9B72CF3B0160079C30D /* MyPageEditAvatarViewModel.swift */; };
 		E497C9BA2CF3B0220079C30D /* MyPageEditAvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E497C9B92CF3B0220079C30D /* MyPageEditAvatarView.swift */; };

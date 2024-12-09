@@ -14,6 +14,7 @@ final class HomeTasteRecommendView: UIView {
     
     //MARK: - UI Components
     
+    private var stackView = UIStackView()
     private var titleLabel = UILabel()
     private var subTitleLabel = UILabel()
     let tasteRecommendCollectionView = UICollectionView(frame: .zero,
@@ -27,6 +28,8 @@ final class HomeTasteRecommendView: UIView {
         super.init(frame: .zero)
         
         setUI()
+        setHierarchy()
+        setLayout()
     }
     
     @available(*, unavailable)
@@ -35,6 +38,10 @@ final class HomeTasteRecommendView: UIView {
     }
     
     private func setUI() {
+        stackView.do {
+            $0.axis = .vertical
+        }
+        
         titleLabel.do {
             $0.applyWSSFont(.headline1, with: StringLiterals.Home.Title.recommend)
             $0.textColor = .wssBlack
@@ -43,20 +50,49 @@ final class HomeTasteRecommendView: UIView {
         subTitleLabel.do {
             $0.applyWSSFont(.body2, with: StringLiterals.Home.SubTitle.recommend)
             $0.textColor = .wssGray200
+            $0.isHidden = true
         }
         
         tasteRecommendCollectionView.do {
             $0.showsVerticalScrollIndicator = false
             $0.isScrollEnabled = false
+            $0.isHidden = true
         }
         
         tasteRecommendCollectionViewLayout.do {
             $0.scrollDirection = .vertical
             $0.minimumLineSpacing = 18
             $0.minimumInteritemSpacing = 9
-            $0.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 40, right: 0)
             $0.itemSize = CGSize(width: (UIScreen.main.bounds.width - 49) / 2, height: 300)
             tasteRecommendCollectionView.setCollectionViewLayout($0, animated: false)
+        }
+        
+        unregisterView.do {
+            $0.isHidden = true
+        }
+    }
+    
+    private func setHierarchy() {
+        self.addSubview(stackView)
+        stackView.addArrangedSubviews(titleLabel,
+                                      subTitleLabel,
+                                      tasteRecommendCollectionView,
+                                      unregisterView)
+    }
+    
+    private func setLayout() {
+        stackView.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview().inset(20)
+            $0.top.equalToSuperview()
+            $0.bottom.equalToSuperview().inset(56)
+        }
+        
+        tasteRecommendCollectionView.snp.makeConstraints {
+            $0.height.equalTo(0)
+        }
+        
+        unregisterView.snp.makeConstraints {
+            $0.height.equalTo(133)
         }
     }
     
@@ -65,55 +101,40 @@ final class HomeTasteRecommendView: UIView {
     func updateView(_ isLogined: Bool, _ isEmpty: Bool) {
         if isLogined {
             if isEmpty {
-                self.addSubviews(titleLabel,
-                                unregisterView)
-                titleLabel.snp.makeConstraints {
-                    $0.top.equalToSuperview()
-                    $0.leading.equalToSuperview().inset(20)
-                }
-                unregisterView.snp.makeConstraints {
-                    $0.top.equalTo(titleLabel.snp.bottom).offset(11)
-                    $0.leading.trailing.equalToSuperview().inset(20)
-                    $0.bottom.equalToSuperview().inset(56)
-                    $0.height.equalTo(133)
-                }
-                subTitleLabel.removeFromSuperview()
-                tasteRecommendCollectionView.removeFromSuperview()
-            } else {
-                self.addSubviews(titleLabel,
-                                 subTitleLabel,
-                                 tasteRecommendCollectionView)
-                titleLabel.snp.makeConstraints {
-                    $0.top.equalToSuperview()
-                    $0.leading.equalToSuperview().inset(20)
-                }
-                subTitleLabel.snp.makeConstraints {
-                    $0.top.equalTo(titleLabel.snp.bottom).offset(2)
-                    $0.leading.equalTo(titleLabel.snp.leading)
-                }
+                unregisterView.isHidden = false
+                subTitleLabel.isHidden = true
+                tasteRecommendCollectionView.isHidden = true
                 
-                tasteRecommendCollectionView.snp.makeConstraints {
-                    $0.top.equalTo(subTitleLabel.snp.bottom).offset(20)
-                    $0.leading.trailing.bottom.equalToSuperview().inset(20)
-                    $0.height.equalTo(1591)
+                stackView.do {
+                    $0.setCustomSpacing(11, after: titleLabel)
                 }
-                unregisterView.removeFromSuperview()
+            } else {
+                subTitleLabel.isHidden = false
+                tasteRecommendCollectionView.isHidden = false
+                unregisterView.isHidden = true
+                
+                stackView.do {
+                    $0.setCustomSpacing(2, after: titleLabel)
+                    $0.setCustomSpacing(20, after: subTitleLabel)
+                    $0.snp.updateConstraints {
+                        $0.bottom.equalToSuperview().inset(40)
+                    }
+                }
             }
         } else {
-            self.addSubviews(titleLabel,
-                            unregisterView)
-            titleLabel.snp.makeConstraints {
-                $0.top.equalToSuperview()
-                $0.leading.equalToSuperview().inset(20)
+            unregisterView.isHidden = false
+            subTitleLabel.isHidden = true
+            tasteRecommendCollectionView.isHidden = true
+            
+            stackView.do {
+                $0.setCustomSpacing(11, after: titleLabel)
             }
-            unregisterView.snp.makeConstraints {
-                $0.top.equalTo(titleLabel.snp.bottom).offset(11)
-                $0.leading.trailing.equalToSuperview().inset(20)
-                $0.bottom.equalToSuperview().inset(56)
-                $0.height.equalTo(133)
-            }
-            subTitleLabel.removeFromSuperview()
-            tasteRecommendCollectionView.removeFromSuperview()
+        }
+    }
+    
+    func updateCollectionViewHeight(height: CGFloat) {
+        tasteRecommendCollectionView.snp.updateConstraints {
+            $0.height.equalTo(height)
         }
     }
 }
