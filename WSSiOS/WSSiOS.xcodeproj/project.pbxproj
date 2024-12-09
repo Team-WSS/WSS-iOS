@@ -3032,7 +3032,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1510;
-				LastUpgradeCheck = 1600;
+				LastUpgradeCheck = 1610;
 				TargetAttributes = {
 					2CD229172B42E685005400BE = {
 						CreatedOnToolsVersion = 15.1;
@@ -3074,7 +3074,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				2CD229252B42E687005400BE /* Assets.xcassets in Resources */,
-				E486AE292CFEB2CC00465AEE /* Config.xcconfig in Resources */,
 				2C79CB992B45A0B200734E1F /* Pretendard-Bold.otf in Resources */,
 				39B75ADA2B59891D005DD8B9 /* villainessFan.json in Resources */,
 				39B75AD92B59891D005DD8B9 /* villainessTea.json in Resources */,

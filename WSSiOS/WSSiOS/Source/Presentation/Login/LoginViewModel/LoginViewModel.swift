@@ -169,6 +169,14 @@ final class LoginViewModel: NSObject, ViewModelType {
     
     private func loginWithKakao(disposeBag: DisposeBag) {
         if (UserApi.isKakaoTalkLoginAvailable()) {
+            loginWithKakaoTalk(disposeBag: disposeBag)
+        } else {
+            loginWithKakaoAccount(disposeBag: disposeBag)
+        }
+    }
+    
+    private func loginWithKakaoTalk(disposeBag: DisposeBag) {
+        if (UserApi.isKakaoTalkLoginAvailable()) {
             UserApi.shared.rx.loginWithKakaoTalk()
                 .flatMapLatest{ oauthToken in
                     return self.authRepository.loginWithKakao(oauthToken)
@@ -183,6 +191,22 @@ final class LoginViewModel: NSObject, ViewModelType {
                 })
                 .disposed(by: disposeBag)
         }
+    }
+    
+    private func loginWithKakaoAccount(disposeBag: DisposeBag) {
+        UserApi.shared.rx.loginWithKakaoAccount()
+            .flatMapLatest{ oauthToken in
+                return self.authRepository.loginWithKakao(oauthToken)
+            }
+            .do(onNext: { _ in
+                print("LoginWithKakao Success.")
+            })
+            .subscribe(with: self, onNext: { owner, result in
+                owner.loginSuccess(result: result)
+            }, onError: { owner, error in
+                print(error)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
