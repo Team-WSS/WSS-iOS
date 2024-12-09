@@ -180,7 +180,7 @@ enum StringLiterals {
             static let preferenceEmptyLabel = "작품 취향을 파악할 수 없어요"
             static let genrePreferenceTitle = "장르 취향"
             static let novelPreferenceTitle = "작품 취향"
-            static let novelPreferenceLabel = "가 매력적인 작품"
+            static let novelPreferenceLabel = "(이)가 매력적인 작품을 선호해요"
             static let privateLabel = "님의 프로필은\n비공개 상태예요"
             static let unknownUserNickname = "(알 수 없음)"
             static let unknownAlertContent = "웹소소와 계약을 종료하고 떠난 독자예요"
@@ -207,10 +207,10 @@ enum StringLiterals {
         }
         
         enum SettingURL {
-            static let qnaURL = "http://pf.kakao.com/_kHxlWG"
+            static let QNAInHompageURL = "https://websoso.notion.site/144600bd746881d4b012fbaf586c264d?pvs=105"
             static let instaURL = "https://www.instagram.com/websoso_official/"
-            static let termsURL = "https://kimmjabc.notion.site/4acd397608c146cbbf8dd4fe11a82e19"
-            static let infoURL = "https://kimmjabc.notion.site/e55f0c0e95c249f7998f21563aefa4b4?pvs=4"
+            static let termsURL = "https://websoso.notion.site/143600bd746880668556fb005fcef491?pvs=4"
+            static let infoURL = "https://websoso.notion.site/143600bd74688050be18f4da31d9403e?pvs=4"
         }
         
         enum SettingInfo: String, CaseIterable {
@@ -364,7 +364,7 @@ enum StringLiterals {
         }
         
         var sizeData: Int {
-            return 500
+            return 10
         }
     }
     

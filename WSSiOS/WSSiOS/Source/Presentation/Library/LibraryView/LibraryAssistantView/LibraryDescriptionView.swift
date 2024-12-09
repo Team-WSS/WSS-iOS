@@ -16,6 +16,8 @@ final class LibraryDescriptionView: UIView {
     
     let libraryNovelCountLabel = UILabel()
     lazy var libraryNovelListButton = UIButton()
+    lazy var libraryNovelListButtonLabel = UILabel()
+    private var libraryNovelListButtonImageView = UIImageView()
     
     // MARK: - Life Cycle
     
@@ -41,24 +43,26 @@ final class LibraryDescriptionView: UIView {
         }
         
         libraryNovelListButton.do {
-            let title = StringLiterals.Alignment.newest.title
-            var attString = AttributedString(title)
-            attString.font = UIFont.Label1
-            attString.foregroundColor = UIColor.wssGray300
-            
-            var configuration = UIButton.Configuration.filled()
-            configuration.attributedTitle = attString
-            configuration.image = .icDropDown
-            configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 0)
-            configuration.imagePlacement = .trailing
-            configuration.baseBackgroundColor = UIColor.clear
-            $0.configuration = configuration
+            $0.backgroundColor = .clear
+        }
+        
+        libraryNovelListButtonLabel.do {
+            $0.applyWSSFont(.body4, with: StringLiterals.Alignment.newest.title)
+            $0.textColor = .wssGray300
+            $0.isUserInteractionEnabled = false
+        }
+        
+        libraryNovelListButtonImageView.do {
+            $0.image = .icDropDown
+            $0.isUserInteractionEnabled = false
         }
     }
 
     private func setHierarchy() {
         self.addSubviews(libraryNovelCountLabel,
                          libraryNovelListButton)
+        libraryNovelListButton.addSubviews(libraryNovelListButtonImageView,
+                                           libraryNovelListButtonLabel)
     }
     
     private func setLayout() {
@@ -70,11 +74,25 @@ final class LibraryDescriptionView: UIView {
         libraryNovelListButton.snp.makeConstraints() {
             $0.centerY.equalToSuperview()
             $0.trailing.equalToSuperview().inset(20)
+            
+            libraryNovelListButtonImageView.snp.makeConstraints {
+                $0.top.bottom.trailing.equalToSuperview()
+                $0.size.equalTo(20)
+            }
+            
+            libraryNovelListButtonLabel.snp.makeConstraints {
+                $0.centerY.equalTo(libraryNovelListButtonImageView.snp.centerY)
+                $0.trailing.equalTo(libraryNovelListButtonImageView.snp.leading).offset(-8)
+            }
         }
     }
     
     func updateNovelCount(count: Int) {
         let text = String(describing: count) + "개"
         libraryNovelCountLabel.applyWSSFont(.body4, with: text)
+    }
+    
+    func updatelibraryNovelListButtonTitle(title: Bool) {
+        libraryNovelListButtonLabel.applyWSSFont(.body4, with: title ? StringLiterals.Alignment.newest.title : StringLiterals.Alignment.oldest.title)
     }
 }

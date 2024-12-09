@@ -14,6 +14,10 @@ final class MyPageNovelPreferencesView: UIView {
     
     //MARK: - Components
     
+    private let stackView = UIStackView()
+    
+    private let paddingView = UIView()
+    private let paddingView2 = UIView()
     private let titleLabel = UILabel()
     private let preferencesView = UIView()
     private let preferencesLabel = UILabel()
@@ -40,6 +44,16 @@ final class MyPageNovelPreferencesView: UIView {
     
     private func setUI() {
         self.backgroundColor = .wssWhite
+        stackView.do {
+            $0.axis = .vertical
+            $0.alignment = .center
+        }
+        
+        [paddingView, paddingView2].forEach { view in
+            view.do {
+                $0.backgroundColor = .wssWhite
+            }
+        }
         
         titleLabel.do {
             $0.applyWSSFont(.title1, with: StringLiterals.MyPage.Profile.novelPreferenceTitle)
@@ -62,20 +76,37 @@ final class MyPageNovelPreferencesView: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubviews(titleLabel,
-                         preferencesView,
-                         preferencesCollectionView)
-        preferencesView.addSubviews(preferencesLabel)
+        self.addSubview(stackView)
+        stackView.addArrangedSubviews(paddingView,
+                                      titleLabel,
+                                      preferencesView,
+                                      preferencesCollectionView,
+                                      paddingView2)
+        preferencesView.addSubview(preferencesLabel)
     }
     
     private func setLayout() {
+        stackView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
+        stackView.setCustomSpacing(10, after: titleLabel)
+        stackView.setCustomSpacing(20, after: preferencesView)
+        
+        paddingView.snp.makeConstraints {
+            $0.height.equalTo(30)
+        }
+        
+        paddingView2.snp.makeConstraints {
+            $0.height.equalTo(40)
+        }
+        
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(30)
             $0.leading.equalToSuperview().inset(20)
         }
         
         preferencesView.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(10)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(55)
             
@@ -85,27 +116,42 @@ final class MyPageNovelPreferencesView: UIView {
         }
         
         preferencesCollectionView.snp.makeConstraints {
-            $0.top.equalTo(preferencesView.snp.bottom).offset(10)
             $0.leading.trailing.equalToSuperview().inset(20)
-            $0.bottom.equalToSuperview().inset(40)
+            $0.height.equalTo(0)
         }
     }
     
     //MARK: - Data
     
-    func bindData(data: [String]) {
-        let koreanStrings = data.compactMap { AttractivePoint(rawValue: $0)?.koreanString }
-        let attaractiveString = koreanStrings.joined(separator: ", ")
-        preferencesLabel.do {
-            $0.font = .Title3
-            $0.textColor = .wssGray300
-            $0.makeAttribute(with: attaractiveString + StringLiterals.MyPage.Profile.novelPreferenceLabel)?
-                .lineHeight(1.5)
-                .kerning(kerningPixel: -0.6)
-                .partialColor(color: .wssPrimary100, rangeString: attaractiveString)
-                .applyAttribute()
+    func bindPreferencesDetailData(data: [String]) {
+        if data == [] {
+            preferencesView.isHidden = true
+        } else {
+            preferencesView.isHidden = false
+            
+            let koreanStrings = data.compactMap { AttractivePoint(rawValue: $0)?.koreanString }
+            let attaractiveString = koreanStrings.joined(separator: ", ")
+            preferencesLabel.do {
+                $0.font = .Title3
+                $0.textColor = .wssGray300
+                $0.makeAttribute(with: attaractiveString + StringLiterals.MyPage.Profile.novelPreferenceLabel)?
+                    .lineHeight(1.5)
+                    .kerning(kerningPixel: -0.6)
+                    .partialColor(color: .wssPrimary100, rangeString: attaractiveString)
+                    .applyAttribute()
+            }
+        }
+    }
+    
+    func updateKeywordViewHeight(height: CGFloat) {
+        [preferencesCollectionView].forEach { view in
+            view.do {
+                $0.isHidden = height == 0
+            }
+        }
+        preferencesCollectionView.snp.updateConstraints {
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(height)
         }
     }
 }
-
-

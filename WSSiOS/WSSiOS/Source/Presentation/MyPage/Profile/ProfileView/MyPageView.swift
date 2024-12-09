@@ -20,10 +20,10 @@ final class MyPageView: UIView {
     
     let headerView = MyPageProfileHeaderView()
     let mainStickyHeaderView = MyPageStickyHeaderView()
-    let scrolledStstickyHeaderView = MyPageStickyHeaderView()
+    let scrolledStickyHeaderView = MyPageStickyHeaderView()
     
     let myPageLibraryView = MyPageLibraryView()
-    let myPageFeedView = NovelDetailFeedView()
+    let myPageFeedView = MyPageFeedView()
     
     //In VC
     let settingButton = UIButton()
@@ -49,10 +49,12 @@ final class MyPageView: UIView {
         self.backgroundColor = .wssPrimary20
         
         scrollView.do {
+            $0.backgroundColor = .wssWhite
+            $0.contentInsetAdjustmentBehavior = .never
             $0.showsVerticalScrollIndicator = false
         }
         
-        scrolledStstickyHeaderView.do {
+        scrolledStickyHeaderView.do {
             $0.isHidden = true
         }
         
@@ -69,7 +71,7 @@ final class MyPageView: UIView {
     
     private func setHierarchy() {
         addSubviews(scrollView,
-                    scrolledStstickyHeaderView)
+                    scrolledStickyHeaderView)
         
         scrollView.addSubview(contentView)
         contentView.addSubviews(headerView,
@@ -86,7 +88,6 @@ final class MyPageView: UIView {
         
         contentView.snp.makeConstraints {
             $0.edges.equalToSuperview()
-            $0.width.equalToSuperview()
         }
         
         headerView.snp.makeConstraints {
@@ -99,28 +100,26 @@ final class MyPageView: UIView {
             $0.height.equalTo(47)
         }
         
-        scrolledStstickyHeaderView.snp.makeConstraints {
+        scrolledStickyHeaderView.snp.makeConstraints {
             $0.top.equalTo(safeAreaLayoutGuide)
             $0.width.equalToSuperview()
             $0.height.equalTo(47)
         }
         
-        myPageLibraryView.snp.makeConstraints {
-            $0.top.equalTo(mainStickyHeaderView.snp.bottom)
-            $0.leading.trailing.equalToSuperview()
-        }
-        
-        myPageFeedView.snp.makeConstraints {
-            $0.top.equalTo(mainStickyHeaderView.snp.bottom)
-            $0.leading.trailing.equalToSuperview()
-        }
-        
-        contentView.snp.makeConstraints {
-            $0.bottom.equalTo(myPageLibraryView.snp.bottom)
+        [myPageLibraryView, myPageFeedView].forEach { view in
+            view.snp.makeConstraints {
+                $0.top.equalTo(headerView.snp.bottom).offset(47)
+                $0.width.equalToSuperview()
+            }
         }
     }
     
     //MARK: - Data
+    
+    func showContentView(showLibraryView: Bool) {
+        myPageLibraryView.isHidden = !showLibraryView
+        myPageFeedView.isHidden = showLibraryView
+    }
     
     func isUnknownUserProfile() {
         headerView.bindData(data: MyProfileResult(nickname: StringLiterals.MyPage.Profile.unknownUserNickname,
@@ -130,11 +129,5 @@ final class MyPageView: UIView {
         mainStickyHeaderView.isHidden = true
         myPageLibraryView.isHidden = true
         myPageFeedView.isHidden = true
-    }
-    
-    func updateScrollViewContentHeight(library: Bool) {
-        contentView.snp.makeConstraints {
-            $0.bottom.equalTo(library ? myPageLibraryView.snp.bottom : myPageFeedView.snp.bottom)
-        }
     }
 }

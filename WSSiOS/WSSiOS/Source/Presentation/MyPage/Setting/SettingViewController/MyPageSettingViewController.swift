@@ -8,6 +8,7 @@
 import UIKit
 
 import RxSwift
+import RxRelay
 
 final class MyPageSettingViewController: UIViewController {
     
@@ -15,6 +16,7 @@ final class MyPageSettingViewController: UIViewController {
     
     private let disposeBag = DisposeBag()
     private let settingList = StringLiterals.MyPage.Setting.allCases.map { $0.rawValue }
+    private let changeVisibilityNotification = PublishRelay<Bool>()
     
     //MARK: - UI Components
     
@@ -89,10 +91,11 @@ final class MyPageSettingViewController: UIViewController {
                     }
                 case 3:
                     print("문의하기 & 의견 보내기")
-                    if let url = URL(string: StringLiterals.MyPage.SettingURL.qnaURL) {
+                    if let url = URL(string: StringLiterals.MyPage.SettingURL.QNAInHompageURL) {
                         UIApplication.shared.open(url, options: [:])
                     }
                 case 4:
+                    print("개인정보 처리 방침")
                     if let url = URL(string: StringLiterals.MyPage.SettingURL.termsURL) {
                         UIApplication.shared.open(url, options: [:])
                     }
@@ -104,6 +107,20 @@ final class MyPageSettingViewController: UIViewController {
                 default: break
                 }
             })
+            .disposed(by: disposeBag)
+        
+        changeVisibilityNotification
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, status in
+                owner.showToast(status ? .changePublic : .changePrivate)
+            })
+            .disposed(by: disposeBag)
+        
+        NotificationCenter.default.rx.notification(NSNotification.Name("ChangeVisibility"))
+            .compactMap { notification -> Bool? in
+                notification.object as? Bool
+            }
+            .bind(to: changeVisibilityNotification)
             .disposed(by: disposeBag)
     }
 }
