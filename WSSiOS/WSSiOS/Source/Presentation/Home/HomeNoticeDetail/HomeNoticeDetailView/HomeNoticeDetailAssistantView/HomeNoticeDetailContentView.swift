@@ -17,7 +17,7 @@ final class HomeNoticeDetailContentView: UIView {
     private let noticeTitleLabel = UILabel()
     private let createdDateLabel = UILabel()
     private let dividerView = UIView()
-    private let noticeContentLabel = UILabel()
+    private let noticeContentTextView = UITextView()
     
     //MARK: - Life Cycle
     
@@ -47,8 +47,10 @@ final class HomeNoticeDetailContentView: UIView {
             $0.backgroundColor = .wssGray50
         }
         
-        noticeContentLabel.do {
+        noticeContentTextView.do {
             $0.textColor = .wssBlack
+            $0.dataDetectorTypes = .link
+            $0.isEditable = false
         }
     }
     
@@ -56,7 +58,7 @@ final class HomeNoticeDetailContentView: UIView {
         self.addSubviews(noticeTitleLabel,
                          createdDateLabel,
                          dividerView,
-                         noticeContentLabel)
+                         noticeContentTextView)
     }
     
     private func setLayout() {
@@ -75,7 +77,7 @@ final class HomeNoticeDetailContentView: UIView {
             $0.height.equalTo(1)
         }
         
-        noticeContentLabel.snp.makeConstraints {
+        noticeContentTextView.snp.makeConstraints {
             $0.top.equalTo(dividerView.snp.bottom).offset(24)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.bottom.equalToSuperview().inset(40)
@@ -88,10 +90,8 @@ final class HomeNoticeDetailContentView: UIView {
             $0.numberOfLines = 0
         }
         createdDateLabel.applyWSSFont(.body5, with: data.createdDate)
-        noticeContentLabel.do {
+        noticeContentTextView.do {
             $0.applyWSSFont(.body2, with: data.noticeContent)
-            $0.numberOfLines = 0
-            $0.lineBreakStrategy = .hangulWordPriority
         }
     }
 }
