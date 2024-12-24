@@ -328,6 +328,7 @@
 		B9E566052C0452E500DB51FF /* NormalSearchResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E566042C0452E500DB51FF /* NormalSearchResultView.swift */; };
 		B9F7401D2C047E360018D0C6 /* NormalSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9F7401C2C047E360018D0C6 /* NormalSearchViewModel.swift */; };
 		B9FE59642BF11955005815AF /* InduceLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FE59632BF11955005815AF /* InduceLoginView.swift */; };
+		B9FF40A92D170DFE00A2B93E /* AppVersionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FF40A82D170DFE00A2B93E /* AppVersionResult.swift */; };
 		C9063A972BD3F868006AD8F9 /* HomeRealtimePopularView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9063A962BD3F868006AD8F9 /* HomeRealtimePopularView.swift */; };
 		C95EADD92BD4FE4C0060CF1A /* HomeRealTimePopularFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95EADD82BD4FE4C0060CF1A /* HomeRealTimePopularFeedView.swift */; };
 		C96A0E1F2C9F2B9900A6EA87 /* FeedDetailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96A0E1E2C9F2B9000A6EA87 /* FeedDetailService.swift */; };
@@ -789,6 +790,7 @@
 		B9E566042C0452E500DB51FF /* NormalSearchResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalSearchResultView.swift; sourceTree = "<group>"; };
 		B9F7401C2C047E360018D0C6 /* NormalSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalSearchViewModel.swift; sourceTree = "<group>"; };
 		B9FE59632BF11955005815AF /* InduceLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InduceLoginView.swift; sourceTree = "<group>"; };
+		B9FF40A82D170DFE00A2B93E /* AppVersionResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersionResult.swift; sourceTree = "<group>"; };
 		C9063A962BD3F868006AD8F9 /* HomeRealtimePopularView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRealtimePopularView.swift; sourceTree = "<group>"; };
 		C95EADD82BD4FE4C0060CF1A /* HomeRealTimePopularFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRealTimePopularFeedView.swift; sourceTree = "<group>"; };
 		C96A0E1E2C9F2B9000A6EA87 /* FeedDetailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDetailService.swift; sourceTree = "<group>"; };
@@ -2240,6 +2242,7 @@
 				CD514C952CD5DC22007A27A8 /* AuthResult.swift */,
 				396C7C572CB24F68003C9712 /* OnboardingResult.swift */,
 				E45FEFA62CFC08CA00B73D80 /* MyFeedResult.swift */,
+				B9FF40A82D170DFE00A2B93E /* AppVersionResult.swift */,
 			);
 			path = DTO;
 			sourceTree = "<group>";
@@ -3135,6 +3138,7 @@
 				CD803B3B2C940B88006EBAF8 /* NovelReviewKeywordView.swift in Sources */,
 				B933BED32C4916DC00365077 /* KeywordBox.swift in Sources */,
 				A1EF355E2B52FAE600A94C53 /* UserNovelService.swift in Sources */,
+				B9FF40A92D170DFE00A2B93E /* AppVersionResult.swift in Sources */,
 				A1654F142B540513004F78E8 /* NetworkingServiceError.swift in Sources */,
 				2C536C302C8F1FE0004C5740 /* MyPageDeleteIDCheckView.swift in Sources */,
 				A1654F102B540504004F78E8 /* HTTPMethod.swift in Sources */,
