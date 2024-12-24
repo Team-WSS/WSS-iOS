@@ -148,7 +148,7 @@ extension HomeViewModel {
             .flatMapLatest { self.getAppMinimumVersion() }
             .subscribe(with: self, onNext: { owner, versionInfo in
                 let currentVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
-                if currentVersion != versionInfo.minimumVersion {
+                if currentVersion < versionInfo.minimumVersion {
                     owner.showUpdateVersionAlertView.accept(())
                 }
             })
