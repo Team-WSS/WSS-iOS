@@ -237,7 +237,8 @@ final class HomeViewController: UIViewController {
                                                          contentText: StringLiterals.AppMinimumVersion.content,
                                                          leftTitle: nil,
                                                          rightTitle: StringLiterals.AppMinimumVersion.buttonTitle,
-                                                         rightBackgroundColor: UIColor.wssPrimary100.cgColor)
+                                                         rightBackgroundColor: UIColor.wssPrimary100.cgColor,
+                                                         isDismissable: false)
             }
             .subscribe(with: self, onNext: { owner, buttonType in
                 guard let url = URL(string: StringLiterals.AppMinimumVersion.appStoreURL) else { return }

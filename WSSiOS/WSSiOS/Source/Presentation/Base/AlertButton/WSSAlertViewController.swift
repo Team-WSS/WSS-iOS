@@ -28,6 +28,8 @@ final class WSSAlertViewController: UIViewController {
     private var rightTitle: String?
     private var rightBackgroundColor: CGColor?
     
+    private var isDismissable: Bool
+    
     private let leftButtonTapSubject = PublishSubject<Void>()
     var leftButtonTap: Observable<Void> {
         return leftButtonTapSubject.asObservable()
@@ -49,7 +51,8 @@ final class WSSAlertViewController: UIViewController {
          contentText: String?,
          leftTitle: String?,
          rightTitle: String?,
-         rightBackgroundColor: CGColor?) {
+         rightBackgroundColor: CGColor?,
+         isDismissable: Bool) {
         
         self.alertIconImage = iconImage
         self.alertTitle = titleText
@@ -57,6 +60,7 @@ final class WSSAlertViewController: UIViewController {
         self.leftTitle = leftTitle
         self.rightTitle = rightTitle
         self.rightBackgroundColor = rightBackgroundColor
+        self.isDismissable = isDismissable
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -87,7 +91,9 @@ final class WSSAlertViewController: UIViewController {
             .bind(with: self, onNext: { owner, _ in
                 owner.leftButtonTapSubject.onNext(())
                 print("\(String(describing: owner.leftTitle))Button Tap 💖")
-                owner.dismiss(animated: true)
+                if owner.isDismissable {
+                    owner.dismiss(animated: true)
+                }
             })
             .disposed(by: disposeBag)
         
@@ -96,7 +102,9 @@ final class WSSAlertViewController: UIViewController {
             .bind(with: self, onNext: { owner, _ in
                 owner.rightButtonTapSubject.onNext(())
                 print("\(String(describing: owner.rightTitle))Button Tap 💖")
-                owner.dismiss(animated: true)
+                if owner.isDismissable {
+                    owner.dismiss(animated: true)
+                }
             })
             .disposed(by: disposeBag)
     }
