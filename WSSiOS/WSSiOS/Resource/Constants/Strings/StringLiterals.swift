@@ -667,6 +667,10 @@ enum StringLiterals {
         static let title = "업데이트 알림"
         static let content = "웹소소 세계에 변화가 생겼어요!\n지금 업데이트해보세요."
         static let buttonTitle = "업데이트"
-        static let appStoreURL = ""
+        
+        static var appStoreID: String {
+            return Bundle.main.object(forInfoDictionaryKey: Config.Keys.Plist.appStoreID) as? String ?? "Error"
+        }
+        static let appStoreURL = "itms-apps://itunes.apple.com/app/\(appStoreID)"
     }
 }

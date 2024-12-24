@@ -242,9 +242,7 @@ final class HomeViewController: UIViewController {
             }
             .subscribe(with: self, onNext: { owner, buttonType in
                 guard let url = URL(string: StringLiterals.AppMinimumVersion.appStoreURL) else { return }
-                if UIApplication.shared.canOpenURL(url) {
-                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                }
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
             })
             .disposed(by: disposeBag)
     }
