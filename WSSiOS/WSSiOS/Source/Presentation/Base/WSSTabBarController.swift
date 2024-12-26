@@ -119,6 +119,13 @@ final class WSSTabBarController: UITabBarController, UITabBarControllerDelegate 
         }
         
         if let navigationController = viewController as? UINavigationController,
+           let feedPageViewController = navigationController.viewControllers.first as? FeedViewController {
+            if tabBarController.selectedViewController == navigationController {
+                feedPageViewController.scrollToTop()
+            }
+        }
+        
+        if let navigationController = viewController as? UINavigationController,
            let myPageViewController = navigationController.viewControllers.first as? MyPageViewController {
             myPageViewController.scrollToTop()
         }
