@@ -165,7 +165,7 @@ final class MyPageViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.updateNavigationColor
+        output.updateNavigationBar
             .asDriver()
             .drive(with: self, onNext: { owner, data in
                 let (update, navigationTitle) = data

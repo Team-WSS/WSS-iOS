@@ -95,7 +95,7 @@ final class MyPageViewModel: ViewModelType {
         let isMyPage: BehaviorRelay<Bool>
         let isProfilePrivate: BehaviorRelay<(Bool, String)>
         let profileData: BehaviorRelay<MyProfileResult>
-        let updateNavigationColor: BehaviorRelay<(Bool, String)>
+        let updateNavigationBar: BehaviorRelay<(Bool, String)>
         let updateStickyHeader: BehaviorRelay<(Bool)>
         
         let pushToEditViewController: PublishRelay<MyProfileResult>
@@ -285,7 +285,7 @@ final class MyPageViewModel: ViewModelType {
             isMyPage: self.isMyPageRelay,
             isProfilePrivate: self.isProfilePrivateRelay,
             profileData: self.profileDataRelay,
-            updateNavigationColor: self.updateNavigationRelay,
+            updateNavigationBar: self.updateNavigationRelay,
             updateStickyHeader: self.updateStickyHeaderRelay,
             
             pushToEditViewController: self.pushToEditViewControllerRelay,
