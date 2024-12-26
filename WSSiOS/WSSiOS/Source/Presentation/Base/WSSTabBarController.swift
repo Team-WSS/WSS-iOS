@@ -118,6 +118,11 @@ final class WSSTabBarController: UITabBarController, UITabBarControllerDelegate 
             homeViewController.scrollToTop()
         }
         
+        if let navigationController = viewController as? UINavigationController,
+           let myPageViewController = navigationController.viewControllers.first as? MyPageViewController {
+            myPageViewController.scrollToTop()
+        }
+        
         return true
     }
 }

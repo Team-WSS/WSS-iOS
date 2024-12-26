@@ -379,7 +379,7 @@ final class MyPageViewController: UIViewController {
     //MARK: - Custom Method
     
     func scrollToTop() {
-        
+        self.rootView.scrollView.setContentOffset(CGPoint(x: 0, y: -self.rootView.scrollView.contentInset.top), animated: true)
     }
 }
 
