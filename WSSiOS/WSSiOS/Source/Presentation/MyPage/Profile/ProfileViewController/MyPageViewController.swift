@@ -165,19 +165,22 @@ final class MyPageViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.updateNavigationEnabled
+        output.updateNavigationColor
             .asDriver()
             .drive(with: self, onNext: { owner, data in
                 let (update, navigationTitle) = data
+                owner.navigationController?.navigationBar.barTintColor = update ? .white : .clear
+                owner.navigationController?.navigationBar.isTranslucent = !update
+                owner.navigationItem.title = update ? navigationTitle : ""
+            })
+            .disposed(by: disposeBag)
+        
+        output.updateStickyHeader
+            .asDriver()
+            .drive(with: self, onNext: { owner, update in
                 owner.rootView.scrolledStickyHeaderView.isHidden = !update
                 owner.rootView.mainStickyHeaderView.isHidden = update
                 owner.rootView.headerView.isHidden = update
-                
-                if update {
-                    owner.navigationItem.title = navigationTitle
-                } else {
-                    owner.navigationItem.title = ""
-                }
             })
             .disposed(by: disposeBag)
         
