@@ -142,9 +142,16 @@ final class FeedEditContentView: UIView {
     //MARK: - Data
     
     func bindData(feedContent: String) {
+        // 현재 커서 위치
+        let selectedRange = self.feedTextView.selectedRange
+        
         self.feedTextView.do {
             $0.applyWSSFont(.body2, with: feedContent)
         }
+        
+        // 커서 위치 복원
+        let cursorPosition = min(selectedRange.location, feedContent.count)
+        self.feedTextView.selectedRange = NSRange(location: cursorPosition, length: 0)
         
         self.letterCountLabel.do {
             $0.applyWSSFont(.body2, with: "(\(feedContent.count)/2000)")
