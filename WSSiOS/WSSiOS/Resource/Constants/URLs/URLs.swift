@@ -44,8 +44,9 @@ enum URLs {
             return "\(userBasePath)/\(userId)/feeds"
         }
         static func getUserNovel(userId: Int) -> String {
-                    return "\(userBasePath)/\(userId)/novels"
-                }
+            return "\(userBasePath)/\(userId)/novels"
+        }
+        static let getAppMinimumVersion = "/minimum-version"
     }
     
     enum Novel {

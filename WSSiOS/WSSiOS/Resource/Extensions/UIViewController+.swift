@@ -201,13 +201,15 @@ extension UIViewController {
                                       contentText: String?,
                                       leftTitle: String?,
                                       rightTitle: String?,
-                                      rightBackgroundColor: CGColor?) -> Observable<AlertButtonType> {
+                                      rightBackgroundColor: CGColor?,
+                                      isDismissable: Bool = true) -> Observable<AlertButtonType> {
         let alertViewController = WSSAlertViewController(iconImage: iconImage,
                                                          titleText: titleText,
                                                          contentText: contentText,
                                                          leftTitle: leftTitle,
                                                          rightTitle: rightTitle,
-                                                         rightBackgroundColor: rightBackgroundColor)
+                                                         rightBackgroundColor: rightBackgroundColor,
+                                                         isDismissable: isDismissable)
         alertViewController.modalPresentationStyle = .overFullScreen
         alertViewController.modalTransitionStyle = .crossDissolve
         

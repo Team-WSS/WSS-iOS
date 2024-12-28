@@ -32,6 +32,7 @@ protocol UserRepository {
                           lastUserNovelId: Int,
                           size: Int,
                           sortType: String) -> Observable<UserNovelList>
+    func getAppMinimumVersion() -> Observable<AppMinimumVersion>
 }
 
 struct DefaultUserRepository: UserRepository {
@@ -132,11 +133,16 @@ struct DefaultUserRepository: UserRepository {
     }
     
     func getUserNovelList(userId: Int, readStatus: String, lastUserNovelId: Int, size: Int, sortType: String) -> Observable<UserNovelList> {
-            return userService.getUserNovelList(userId: userId,
-                                                readStatus: readStatus,
-                                                lastUserNovelId: lastUserNovelId,
-                                                size: size,
-                                                sortType: sortType)
+        return userService.getUserNovelList(userId: userId,
+                                            readStatus: readStatus,
+                                            lastUserNovelId: lastUserNovelId,
+                                            size: size,
+                                            sortType: sortType)
+        .asObservable()
+    }
+    
+    func getAppMinimumVersion() -> Observable<AppMinimumVersion> {
+        return userService.getAppMinimumVersion()
             .asObservable()
-        }
+    }
 }

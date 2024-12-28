@@ -662,4 +662,18 @@ enum StringLiterals {
         static let blckedUser = "차단한 유저"
         static let blockedComment = "차단한 유저의 댓글"
     }
+    
+    enum AppMinimumVersion {
+        static let title = "업데이트 알림"
+        static let content = "웹소소 세계에 변화가 생겼어요!\n지금 업데이트해보세요."
+        static let buttonTitle = "업데이트"
+        
+        static var bundleVersion: String {
+            return Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+        }
+        static var appStoreID: String {
+            return Bundle.main.object(forInfoDictionaryKey: Config.Keys.Plist.appStoreID) as? String ?? "Error"
+        }
+        static let appStoreURL = "itms-apps://itunes.apple.com/app/\(appStoreID)"
+    }
 }
