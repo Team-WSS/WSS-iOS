@@ -34,9 +34,9 @@ final class FeedDetailUnknownUserErrorViewController: UIViewController {
         rootView.confirmationButton.rx.tap
             .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
-                owner.dismiss(animated: true)
                 NotificationCenter.default.post(name: owner.popFeedDetailViewControllerNotificationName,
                                                 object: nil)
+                owner.dismiss(animated: true)
             })
             .disposed(by: disposeBag)
     }
