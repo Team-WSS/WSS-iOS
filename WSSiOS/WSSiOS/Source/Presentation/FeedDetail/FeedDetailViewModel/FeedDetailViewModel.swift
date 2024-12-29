@@ -71,6 +71,7 @@ final class FeedDetailViewModel: ViewModelType {
     private let showLoadingView = PublishRelay<Bool>()
     private let showNetworkErrorView = PublishRelay<Void>()
     private let showUnknownUserAlertView = PublishRelay<Void>()
+    private let popViewController = PublishRelay<Void>()
     
     //MARK: - Life Cycle
     
@@ -112,13 +113,15 @@ final class FeedDetailViewModel: ViewModelType {
         let commentdotsButtonDidTap: Observable<(Int, Bool)>
         let commentDropdownDidTap: Observable<DropdownButtonType>
         let reloadComments: Observable<Void>
+        
+        let popFeedDetailViewControllerNotification: Observable<Notification>
     }
     
     struct Output {
         let feedData: Observable<Feed>
         let commentsData: Driver<[FeedComment]>
         let myProfileData: Observable<MyProfileResult>
-        let popViewController: Driver<Void>
+        let popViewController: Observable<Void>
         let replyCollectionViewHeight: Driver<CGFloat>
         
         // 관심 버튼
@@ -215,8 +218,12 @@ final class FeedDetailViewModel: ViewModelType {
                 owner.showLoadingView.accept(false)
             })
             .disposed(by: disposeBag)
-        
-        let popViewController = input.backButtonDidTap.asDriver()
+
+        input.backButtonDidTap
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.popViewController.accept(())
+            })
+            .disposed(by: disposeBag)
         
         let replyCollectionViewContentSize = input.replyCollectionViewContentSize
             .map { $0?.height ?? 0 }.asDriver(onErrorJustReturn: 0)
@@ -445,10 +452,16 @@ final class FeedDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        input.popFeedDetailViewControllerNotification
+            .subscribe(with: self, onNext: { owner, notification in
+                owner.popViewController.accept(())
+            })
+            .disposed(by: disposeBag)
+        
         return Output(feedData: feedData.asObservable(),
                       commentsData: commentsData.asDriver(),
                       myProfileData: myProfileData.asObservable(),
-                      popViewController: popViewController,
+                      popViewController: popViewController.asObservable(),
                       replyCollectionViewHeight: replyCollectionViewContentSize,
                       likeCount: likeCount.asDriver(),
                       likeButtonToggle: likeButtonState.asDriver(),
