@@ -166,31 +166,25 @@ final class FeedDetailViewModel: ViewModelType {
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         input.viewWillAppearEvent
-            .flatMapLatest { self.getSingleFeed(self.feedId) }
-            .subscribe(with: self, onNext: { owner, feed in
-                owner.feedData.onNext(feed)
-                owner.likeButtonState.accept(feed.isLiked)
-                owner.likeCount.accept(feed.likeCount)
-                owner.feedUserId = feed.userId
-                owner.novelId = feed.novelId
-                owner.commentCount.accept(feed.commentCount)
-                owner.isMyFeed.accept(feed.isMyFeed)
-            }, onError: { owner, error in
-                guard let networkError = error as? RxCocoaURLError else {
-                    owner.showNetworkErrorView.accept(())
-                    return
-                }
-                switch networkError {
-                case .httpRequestFailed(_, let data):
-                    if let data,
-                       let errorResponse = try? JSONDecoder().decode(ServerErrorResponse.self, from: data) {
-                        if errorResponse.code == "FEED-001" {
-                            owner.showUnknownUserAlertView.accept(())
-                        }
-                    } else {
-                        owner.showNetworkErrorView.accept(())
-                    }
-                default: owner.showNetworkErrorView.accept(())
+            .flatMapLatest {
+                self.getSingleFeed(self.feedId)
+                    .asObservable()
+                    .materialize()
+            }
+            .subscribe(with: self, onNext: { owner, event in
+                switch event {
+                case .next(let feed):
+                    owner.feedData.onNext(feed)
+                    owner.likeButtonState.accept(feed.isLiked)
+                    owner.likeCount.accept(feed.likeCount)
+                    owner.feedUserId = feed.userId
+                    owner.novelId = feed.novelId
+                    owner.commentCount.accept(feed.commentCount)
+                    owner.isMyFeed.accept(feed.isMyFeed)
+                case .error(let error):
+                    owner.handleNetworkError(error)
+                case .completed:
+                    break
                 }
             })
             .disposed(by: disposeBag)
@@ -208,7 +202,7 @@ final class FeedDetailViewModel: ViewModelType {
             .subscribe(with: self, onNext: { owner, data in
                 let comments = data.0
                 let profile = data.1
-
+                
                 owner.commentsData.accept(comments.comments)
                 owner.myProfileData.accept(profile)
                 
@@ -218,7 +212,7 @@ final class FeedDetailViewModel: ViewModelType {
                 owner.showLoadingView.accept(false)
             })
             .disposed(by: disposeBag)
-
+        
         input.backButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
                 owner.popViewController.accept(())
@@ -580,6 +574,26 @@ final class FeedDetailViewModel: ViewModelType {
         let numberOfLines = Int(round(requiredSize.height / lineHeight))
         
         return numberOfLines
+    }
+    
+    private func handleNetworkError(_ error: Error) {
+        guard let networkError = error as? RxCocoaURLError else {
+            self.showNetworkErrorView.accept(())
+            return
+        }
+        switch networkError {
+        case .httpRequestFailed(_, let data):
+            if let data,
+               let errorResponse = try? JSONDecoder().decode(ServerErrorResponse.self, from: data) {
+                if errorResponse.code == "FEED-001" {
+                    self.showUnknownUserAlertView.accept(())
+                }
+            } else {
+                self.showNetworkErrorView.accept(())
+            }
+        default:
+            self.showNetworkErrorView.accept(())
+        }
     }
 }
 
