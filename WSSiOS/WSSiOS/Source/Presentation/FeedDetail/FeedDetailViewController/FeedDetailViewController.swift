@@ -500,6 +500,20 @@ final class FeedDetailViewController: UIViewController {
                 owner.rootView.showLoadingView(isShow: isShow)
             })
             .disposed(by: disposeBag)
+        
+        output.showNetworkErrorView
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                owner.rootView.showNetworkErrorView()
+            })
+            .disposed(by: disposeBag)
+        
+        output.showUnknownUserAlertView
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                
+            })
+            .disposed(by: disposeBag)
     }
 }
 extension FeedDetailViewController: UICollectionViewDelegateFlowLayout {

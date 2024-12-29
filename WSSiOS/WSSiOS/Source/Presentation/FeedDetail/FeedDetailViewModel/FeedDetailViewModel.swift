@@ -69,6 +69,8 @@ final class FeedDetailViewModel: ViewModelType {
     
     let pushToUserPageViewController = PublishRelay<Int>()
     private let showLoadingView = PublishRelay<Bool>()
+    private let showNetworkErrorView = PublishRelay<Void>()
+    private let showUnknownUserAlertView = PublishRelay<Void>()
     
     //MARK: - Life Cycle
     
@@ -155,6 +157,8 @@ final class FeedDetailViewModel: ViewModelType {
         
         let pushToUserPageViewController: Observable<Int>
         let showLoadingView: Observable<Bool>
+        let showNetworkErrorView: Observable<Void>
+        let showUnknownUserAlertView: Observable<Void>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -469,7 +473,9 @@ final class FeedDetailViewModel: ViewModelType {
                       myCommentEditing: myCommentEditing.asObservable(),
                       showCommentDeleteAlertView: showCommentDeleteAlertView.asObservable(),
                       pushToUserPageViewController: pushToUserPageViewController.asObservable(),
-                      showLoadingView: showLoadingView.asObservable())
+                      showLoadingView: showLoadingView.asObservable(),
+                      showNetworkErrorView: showNetworkErrorView.asObservable(),
+                      showUnknownUserAlertView: showUnknownUserAlertView.asObservable())
     }
     
     //MARK: - API
