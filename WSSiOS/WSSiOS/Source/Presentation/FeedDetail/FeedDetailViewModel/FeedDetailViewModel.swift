@@ -159,21 +159,8 @@ final class FeedDetailViewModel: ViewModelType {
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         input.viewWillAppearEvent
-            .do(onNext: {
-                self.showLoadingView.accept(true)
-            })
-            .flatMapLatest { _ in
-                Observable.zip(
-                    self.getSingleFeed(self.feedId),
-                    self.getSingleFeedComments(self.feedId),
-                    self.getMyProfile()
-                )
-            }
-            .subscribe(with: self, onNext: { owner, data in
-                let feed = data.0
-                let comments = data.1
-                let profile = data.2
-                
+            .flatMapLatest { self.getSingleFeed(self.feedId) }
+            .subscribe(with: self, onNext: { owner, feed in
                 owner.feedData.onNext(feed)
                 owner.likeButtonState.accept(feed.isLiked)
                 owner.likeCount.accept(feed.likeCount)
@@ -181,9 +168,41 @@ final class FeedDetailViewModel: ViewModelType {
                 owner.novelId = feed.novelId
                 owner.commentCount.accept(feed.commentCount)
                 owner.isMyFeed.accept(feed.isMyFeed)
+            }, onError: { owner, error in
+                guard let networkError = error as? RxCocoaURLError else {
+                    owner.showNetworkErrorView.accept(())
+                    return
+                }
+                switch networkError {
+                case .httpRequestFailed(_, let data):
+                    if let data,
+                       let errorResponse = try? JSONDecoder().decode(ServerErrorResponse.self, from: data) {
+                        if errorResponse.code == "FEED-001" {
+                            owner.showUnknownUserAlertView.accept(())
+                        }
+                    } else {
+                        owner.showNetworkErrorView.accept(())
+                    }
+                default: owner.showNetworkErrorView.accept(())
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        input.viewWillAppearEvent
+            .do(onNext: {
+                self.showLoadingView.accept(true)
+            })
+            .flatMapLatest { _ in
+                Observable.zip(
+                    self.getSingleFeedComments(self.feedId),
+                    self.getMyProfile()
+                )
+            }
+            .subscribe(with: self, onNext: { owner, data in
+                let comments = data.0
+                let profile = data.1
 
                 owner.commentsData.accept(comments.comments)
-
                 owner.myProfileData.accept(profile)
                 
                 owner.showLoadingView.accept(false)
