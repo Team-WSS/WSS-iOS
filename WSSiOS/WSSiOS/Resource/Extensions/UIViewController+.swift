@@ -82,48 +82,6 @@ extension UIViewController {
         }
     }
     
-    func presentDeleteUserNovelViewController(userNovelId: Int) {
-        let viewController = DeletePopupViewController(
-            viewModel: DeletePopupViewModel(
-                userNovelRepository: DefaultUserNovelRepository(
-                    userNovelService: DefaultUserNovelService()
-                ),
-                userNovelId: userNovelId),
-            popupStatus: .novelDelete
-        )
-        viewController.modalPresentationStyle = .overFullScreen
-        viewController.modalTransitionStyle = .crossDissolve
-        self.present(viewController, animated: true)
-    }
-    
-    func presentMemoDeleteViewController(memoId: Int) {
-        let viewController = DeletePopupViewController(
-            viewModel: DeletePopupViewModel(
-                memoRepository: DefaultMemoRepository(
-                    memoService: DefaultMemoService()
-                ),
-                memoId: memoId),
-            popupStatus: .memoDelete
-        )
-        viewController.modalPresentationStyle = .overFullScreen
-        viewController.modalTransitionStyle = .crossDissolve
-        self.present(viewController, animated: true)
-    }
-    
-    func presentMemoEditCancelViewController() {
-        let viewController = DeletePopupViewController(
-            viewModel: DeletePopupViewModel(
-                memoRepository: DefaultMemoRepository(
-                    memoService: DefaultMemoService()
-                )
-            ),
-            popupStatus: .memoEditCancel
-        )
-        viewController.modalPresentationStyle = .overFullScreen
-        viewController.modalTransitionStyle = .crossDissolve
-        self.present(viewController, animated: true)
-    }
-    
     func popToLastViewController() {
         self.navigationController?.popViewController(animated: true)
     }
