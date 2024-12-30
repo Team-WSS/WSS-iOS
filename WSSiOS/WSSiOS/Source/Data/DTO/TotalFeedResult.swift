@@ -33,4 +33,9 @@ struct TotalFeeds: Codable {
     let isMyFeed: Bool
 }
 
-let dummyFeedImage = "https://d2ur3228349jyd.cloudfront.net/assets/img/common/characters/kuromi.png"
+struct FeedContent: Codable {
+    let relevantCategories: [String]
+    let feedContent: String
+    let novelId: Int?
+    let isSpoiler: Bool
+}
