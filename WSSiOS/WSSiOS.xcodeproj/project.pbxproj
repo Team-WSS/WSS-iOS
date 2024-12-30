@@ -73,8 +73,6 @@
 		2CCBF9F02B4C1FD800D787C2 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBF9EF2B4C1FD800D787C2 /* MyPageView.swift */; };
 		2CCBF9F22B4D347B00D787C2 /* WSSMainButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBF9F12B4D347B00D787C2 /* WSSMainButton.swift */; };
 		2CCBFA022B4DC10500D787C2 /* MyPageProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBFA012B4DC10500D787C2 /* MyPageProfileView.swift */; };
-		2CCBFA042B4DD73D00D787C2 /* MyPageTallyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBFA032B4DD73D00D787C2 /* MyPageTallyView.swift */; };
-		2CCBFA062B4DD85600D787C2 /* MyPageTallyReuseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCBFA052B4DD85600D787C2 /* MyPageTallyReuseView.swift */; };
 		2CD2291C2B42E685005400BE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD2291B2B42E685005400BE /* AppDelegate.swift */; };
 		2CD2291E2B42E685005400BE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD2291D2B42E685005400BE /* SceneDelegate.swift */; };
 		2CD229252B42E687005400BE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2CD229242B42E687005400BE /* Assets.xcassets */; };
@@ -463,8 +461,6 @@
 		2CCBF9EF2B4C1FD800D787C2 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
 		2CCBF9F12B4D347B00D787C2 /* WSSMainButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSMainButton.swift; sourceTree = "<group>"; };
 		2CCBFA012B4DC10500D787C2 /* MyPageProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageProfileView.swift; sourceTree = "<group>"; };
-		2CCBFA032B4DD73D00D787C2 /* MyPageTallyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageTallyView.swift; sourceTree = "<group>"; };
-		2CCBFA052B4DD85600D787C2 /* MyPageTallyReuseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageTallyReuseView.swift; sourceTree = "<group>"; };
 		2CD229182B42E685005400BE /* WSSiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WSSiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CD2291B2B42E685005400BE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2CD2291D2B42E685005400BE /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -1278,8 +1274,6 @@
 				2C9A19662C567CC20043044A /* MyPageProfileHeaderView.swift */,
 				E407465D2CE85C3B005D75D5 /* MyPagePreferencesEmptyView.swift */,
 				2CCBFA012B4DC10500D787C2 /* MyPageProfileView.swift */,
-				2CCBFA032B4DD73D00D787C2 /* MyPageTallyView.swift */,
-				2CCBFA052B4DD85600D787C2 /* MyPageTallyReuseView.swift */,
 				2C41E0CB2CA4948400FFD233 /* MyPageCountView.swift */,
 				E407465F2CE864FD005D75D5 /* MyPageInventoryView.swift */,
 				E40746652CE870AE005D75D5 /* MyPageNovelPreferencesView.swift */,
@@ -2535,7 +2529,6 @@
 				B9E565FF2C0452AA00DB51FF /* NormalSearchEmptyView.swift in Sources */,
 				E407466C2CE89719005D75D5 /* MyPageGenrePreferencesView.swift in Sources */,
 				B96863DA2C482E8C008CFBA5 /* DetailSearchView.swift in Sources */,
-				2CCBFA062B4DD85600D787C2 /* MyPageTallyReuseView.swift in Sources */,
 				B96F0F942C298F3F00DA5483 /* FeedDetailReplyView.swift in Sources */,
 				3932B59D2CAFCDBF00C1A736 /* OnboardingSuccessViewController.swift in Sources */,
 				B974EA452CC9029100169639 /* DetailSearchResultView.swift in Sources */,
@@ -2774,7 +2767,6 @@
 				39D4A5C92BDA4C5A004FC834 /* NovelDetailViewController.swift in Sources */,
 				CD2D0AB92C7F0279007CF1F1 /* NovelReviewStatusCollectionViewCell.swift in Sources */,
 				B948BDB92CCD8DD500A7C771 /* DetailSearchResultEmptyView.swift in Sources */,
-				2CCBFA042B4DD73D00D787C2 /* MyPageTallyView.swift in Sources */,
 				2C2491812B4ADC000096F255 /* StringLiterals.swift in Sources */,
 				39DFB0EF2CABE47B00F87951 /* OnboardingGenreButtonView.swift in Sources */,
 				39F850712C2D39E000E93EBC /* NovelDetailInfoPlatformView.swift in Sources */,

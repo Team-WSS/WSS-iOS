@@ -107,7 +107,7 @@ final class MyPageEditProfileView: UIView {
             }
             
             nicknameClearButton.do {
-                $0.setImage(.icCancelLight, for: .normal)
+                $0.setImage(.icCancel, for: .normal)
                 $0.contentMode = .scaleAspectFit
                 $0.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
             }

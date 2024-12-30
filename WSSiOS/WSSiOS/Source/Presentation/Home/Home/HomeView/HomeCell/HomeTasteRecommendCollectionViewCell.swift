@@ -71,7 +71,7 @@ final class HomeTasteRecommendCollectionViewCell: UICollectionViewCell {
         }
         
         ratingImageView.do {
-            $0.image = .icStar2
+            $0.image = .icStar
             $0.contentMode = .scaleAspectFit
         }
         

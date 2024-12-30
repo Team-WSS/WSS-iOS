@@ -41,7 +41,7 @@ final class MyPageDeleteIDReasonTableViewCell: UITableViewCell {
         }
         
         checkImageView.do {
-            $0.image = .checkDefault
+            $0.image = .icSelectNovelDefault
         }
         
         titleLabel.do {
@@ -70,7 +70,7 @@ final class MyPageDeleteIDReasonTableViewCell: UITableViewCell {
     //MARK: - Custom Method
     
     func isSelected(isSelected: Bool) {
-        checkImageView.image = isSelected ? .checkSelected : .checkDefault
+        checkImageView.image = isSelected ? .icSelectNovelSelected : .icSelectNovelDefault
     }
     
     //MARK: - Data

@@ -232,7 +232,7 @@ final class HomeViewController: UIViewController {
         output.showUpdateVersionAlertView
             .observe(on: MainScheduler.instance)
             .flatMapLatest { _ -> Observable<AlertButtonType> in
-                return self.presentToAlertViewController(iconImage: .icWarning,
+                return self.presentToAlertViewController(iconImage: .icModalWarning,
                                                          titleText: StringLiterals.AppMinimumVersion.title,
                                                          contentText: StringLiterals.AppMinimumVersion.content,
                                                          leftTitle: nil,

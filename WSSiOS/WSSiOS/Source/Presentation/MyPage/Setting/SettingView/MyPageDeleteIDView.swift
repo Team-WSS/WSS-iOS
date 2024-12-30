@@ -51,7 +51,7 @@ final class MyPageDeleteIDView: UIView {
         }
         
         agreeDeleteIDButton.do {
-            $0.setImage(.checkDefault, for: .normal)
+            $0.setImage(.icSelectNovelDefault, for: .normal)
         }
         
         agreeDeleteIDLabel.do {
@@ -136,7 +136,7 @@ extension MyPageDeleteIDView {
     //MARK: - Custom Method
     
     func agreeDeleteIDButtonIsSelected(isSelected: Bool) {
-        agreeDeleteIDButton.setImage( isSelected ? .checkSelected : .checkDefault , for: .normal)
+        agreeDeleteIDButton.setImage( isSelected ? .icSelectNovelSelected : .icSelectNovelDefault, for: .normal)
     }
     
     func completeButtonIsEnabled(isEnabled: Bool) {

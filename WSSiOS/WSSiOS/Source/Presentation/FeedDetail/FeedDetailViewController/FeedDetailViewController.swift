@@ -278,7 +278,7 @@ final class FeedDetailViewController: UIViewController {
         output.showSpoilerAlertView
             .flatMapLatest { _ -> Observable<AlertButtonType> in
                 return self.presentToAlertViewController(
-                    iconImage: .icAlertWarningCircle,
+                    iconImage: .icModalWarning,
                     titleText: StringLiterals.FeedDetail.spoilerTitle,
                     contentText: nil,
                     leftTitle: StringLiterals.FeedDetail.cancel,
@@ -308,7 +308,7 @@ final class FeedDetailViewController: UIViewController {
         output.showImpertinenceAlertView
             .flatMapLatest { _ -> Observable<AlertButtonType> in
                 return self.presentToAlertViewController(
-                    iconImage: .icAlertWarningCircle,
+                    iconImage: .icModalWarning,
                     titleText: StringLiterals.FeedDetail.impertinentTitle,
                     contentText: nil,
                     leftTitle: StringLiterals.FeedDetail.cancel,
@@ -344,7 +344,7 @@ final class FeedDetailViewController: UIViewController {
         output.showDeleteAlertView
             .flatMapLatest { _ -> Observable<AlertButtonType> in
                 return self.presentToAlertViewController(
-                    iconImage: .icAlertWarningCircle,
+                    iconImage: .icModalWarning,
                     titleText: StringLiterals.FeedDetail.deleteTitle,
                     contentText: StringLiterals.FeedDetail.deleteContent,
                     leftTitle: StringLiterals.FeedDetail.cancel,
@@ -387,7 +387,7 @@ final class FeedDetailViewController: UIViewController {
         output.showCommentDeleteAlertView
             .flatMapLatest { deleteComment, feedId, commentId in
                 self.presentToAlertViewController(
-                    iconImage: .icAlertWarningCircle,
+                    iconImage: .icModalWarning,
                     titleText: StringLiterals.FeedDetail.deleteMineTitle,
                     contentText: StringLiterals.FeedDetail.deleteMineContent,
                     leftTitle: StringLiterals.FeedDetail.cancel,
@@ -413,7 +413,7 @@ final class FeedDetailViewController: UIViewController {
         output.showCommentSpoilerAlertView
             .flatMapLatest { postSpoilerComment, feedId ,commentId in
                 self.presentToAlertViewController(
-                    iconImage: .icAlertWarningCircle,
+                    iconImage: .icModalWarning,
                     titleText: StringLiterals.FeedDetail.spoilerTitle,
                     contentText: nil,
                     leftTitle: StringLiterals.FeedDetail.cancel,
@@ -449,7 +449,7 @@ final class FeedDetailViewController: UIViewController {
         output.showCommentImpertinenceAlertView
             .flatMapLatest { postImpertinenceComment, feedId, commentId in
                 self.presentToAlertViewController(
-                    iconImage: .icAlertWarningCircle,
+                    iconImage: .icModalWarning,
                     titleText: StringLiterals.FeedDetail.impertinentTitle,
                     contentText: nil,
                     leftTitle: StringLiterals.FeedDetail.cancel,

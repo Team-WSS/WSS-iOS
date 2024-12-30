@@ -50,7 +50,7 @@ final class FeedUserView: UIView {
         }
         
         dotIcon.do {
-            $0.image = UIImage(resource: .icDot)
+            $0.image = .icBlackDot
         }
         
         restTimeLabel.do {
@@ -64,7 +64,7 @@ final class FeedUserView: UIView {
         }
         
         dropdownIcon.do {
-            $0.image = UIImage(resource: .icDropDownDot)
+            $0.image = UIImage(resource: .icThreedots)
         }
     }
     

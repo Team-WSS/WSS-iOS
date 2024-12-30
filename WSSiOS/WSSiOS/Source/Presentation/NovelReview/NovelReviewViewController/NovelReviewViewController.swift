@@ -201,7 +201,7 @@ final class NovelReviewViewController: UIViewController {
         
         output.showStopReviewingAlert
             .flatMapLatest { _ -> Observable<AlertButtonType> in
-                return self.presentToAlertViewController(iconImage: .icAlertWarningCircle,
+                return self.presentToAlertViewController(iconImage: .icModalWarning,
                                                          titleText: StringLiterals.NovelReview.Alert.titleText,
                                                          contentText: nil,
                                                          leftTitle: StringLiterals.NovelReview.Alert.stopTitle,

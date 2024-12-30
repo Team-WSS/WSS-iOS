@@ -48,7 +48,7 @@ final class WSSNetworkErrorView: UIView {
         }
         
         errorImageView.do {
-            $0.image = .statusQuestionmark
+            $0.image = .imgEmptyCatQuestionmark
             $0.contentMode = .scaleAspectFit
         }
         

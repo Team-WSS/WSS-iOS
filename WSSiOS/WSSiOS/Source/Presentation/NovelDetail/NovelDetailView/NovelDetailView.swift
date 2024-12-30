@@ -63,7 +63,7 @@ final class NovelDetailView: UIView {
                             for: .normal)
         
         headerDropDownButton.do {
-            $0.setImage(.icDropDownDot.withRenderingMode(.alwaysTemplate),
+            $0.setImage(.icThreedots.withRenderingMode(.alwaysTemplate),
                       for: .normal)
             $0.tintColor = .wssBlack
         }

@@ -42,7 +42,7 @@ final class MyPagePreferencesEmptyView: UIView {
             $0.textColor = .wssBlack
         }
         
-        emptyImage.image = .imgEmptyCat
+        emptyImage.image = .imgEmptyCatQuestionmark
         
         emptyLabel.do {
             $0.applyWSSFont(.body2, with: StringLiterals.MyPage.Profile.preferenceEmptyLabel)

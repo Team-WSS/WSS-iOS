@@ -54,7 +54,7 @@ final class MyPageBlockUserView: UIView {
             $0.isHidden = true
             
             emptyImageView.do {
-                $0.image = .imgEmptyCat
+                $0.image = .imgEmptyCatEyes
                 $0.contentMode = .scaleAspectFit
             }
             

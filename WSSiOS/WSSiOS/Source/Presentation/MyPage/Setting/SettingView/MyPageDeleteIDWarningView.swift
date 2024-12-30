@@ -117,9 +117,17 @@ final class MyPageDeleteIDWarningView: UIView {
     //MARK: - Data
     
     func bindData(count: UserNovelStatus) {
-        interestView.bindData(icon: .interest, status: StringLiterals.MyPage.DeleteIDWarning.interest, count: String(describing: count.interestNovelCount))
-        watchingView.bindData(icon: .watching, status: StringLiterals.MyPage.DeleteIDWarning.watching, count: String(describing: count.watchingNovelCount))
-        watchedView.bindData(icon: .watched, status: StringLiterals.MyPage.DeleteIDWarning.watched, count: String(describing: count.watchedNovelCount))
-        quitView.bindData(icon: .quit, status: StringLiterals.MyPage.DeleteIDWarning.quit, count: String(describing: count.quitNovelCount))
+        interestView.bindData(icon: .icQuittingLike,
+                              status: StringLiterals.MyPage.DeleteIDWarning.interest,
+                              count: String(describing: count.interestNovelCount))
+        watchingView.bindData(icon: .icQuittingReading,
+                              status: StringLiterals.MyPage.DeleteIDWarning.watching,
+                              count: String(describing: count.watchingNovelCount))
+        watchedView.bindData(icon: .icQuittingFinished,
+                             status: StringLiterals.MyPage.DeleteIDWarning.watched,
+                             count: String(describing: count.watchedNovelCount))
+        quitView.bindData(icon: .icQuittingStopped,
+                          status: StringLiterals.MyPage.DeleteIDWarning.quit,
+                          count: String(describing: count.quitNovelCount))
     }
 }

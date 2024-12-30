@@ -38,7 +38,7 @@ final class MyPageFeedEmptyView: UIView {
         self.backgroundColor = .wssWhite
         
         isEmptyImageView.do {
-            $0.image = .imgFeedEmprtyCat
+            $0.image = .imgEmptyCatEyes
             $0.contentMode = .scaleAspectFit
         }
         

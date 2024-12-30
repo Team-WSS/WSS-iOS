@@ -41,7 +41,7 @@ final class HomeRealTimePopularFeedView: UIView {
     
     private func setUI() {
         likeImageView.do {
-            $0.image = .icLikeDefault.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray200)
+            $0.image = .icThumbUp.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray200)
             $0.contentMode = .scaleAspectFit
         }
         
