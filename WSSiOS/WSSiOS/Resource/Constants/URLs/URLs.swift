@@ -46,14 +46,8 @@ enum URLs {
         static func getUserNovel(userId: Int) -> String {
             return "\(userBasePath)/\(userId)/novels"
         }
+        static let isProfileVisibility = "\(userBasePath)/profile-status"
         static let getAppMinimumVersion = "/minimum-version"
-    }
-    
-    enum Novel {
-        static let getSearchList = "/novels"
-        static func getNovelInfo(novelId: Int) -> String {
-            return "/novels/\(novelId)"
-        }
     }
     
     enum NovelDetail {
@@ -166,10 +160,6 @@ enum URLs {
             static func userBlocks(blockID: Int) -> String {
                 return "/blocks/\(blockID)"
             }
-        }
-        
-        enum ProfileVisibility {
-            static let isProfileVisibility = "/users/profile-status"
         }
     }
     
