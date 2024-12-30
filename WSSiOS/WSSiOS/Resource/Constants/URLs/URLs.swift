@@ -100,26 +100,6 @@ enum URLs {
         }
     }
     
-    enum Memo {
-        static func getMemo(memoId: Int) -> String {
-            return "/memos/\(memoId)"
-        }
-        static let getMemoList = "/memos"
-        static func postMemo(userNovelId: Int) -> String {
-            return "/user-novels/\(userNovelId)/memo"
-        }
-        static let postFeed = "/feeds"
-        static func putFeed(feedId: Int) -> String {
-            return "/feeds/\(feedId)"
-        }
-        static func patchMemo(memoId: Int) -> String {
-            return "/memos/\(memoId)"
-        }
-        static func deleteMemo(memoId: Int) -> String {
-            return "/memos/\(memoId)"
-        }
-    }
-    
     enum Avatar {
         static let getAvatar = "/avatars"
     }
@@ -171,6 +151,12 @@ enum URLs {
         }
         static func postImpertinenceComment(feedId: Int, commentId: Int) -> String {
             return "/feeds/\(feedId)/comments/\(commentId)/impertinence"
+        }
+        
+        // 피드 작성, 수정
+        static let postFeed = "/feeds"
+        static func putFeed(feedId: Int) -> String {
+            return "/feeds/\(feedId)"
         }
     }
     
