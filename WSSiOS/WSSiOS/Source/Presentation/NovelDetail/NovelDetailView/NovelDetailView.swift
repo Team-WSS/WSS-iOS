@@ -84,7 +84,7 @@ final class NovelDetailView: UIView {
         }
         
         firstReviewDescriptionLabelBackgroundView.do {
-            $0.image = .speechBalloon
+            $0.image = .imgSpeechBalloon
             $0.contentMode = .scaleAspectFit
             $0.isUserInteractionEnabled = false
         }

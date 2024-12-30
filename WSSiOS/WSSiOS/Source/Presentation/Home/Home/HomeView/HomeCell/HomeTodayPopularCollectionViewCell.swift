@@ -52,7 +52,7 @@ final class HomeTodayPopularCollectionViewCell: UICollectionViewCell {
         }
         
         bestTagImageView.do {
-            $0.image = .icBest
+            $0.image = .imgBest
         }
         
         novelTitleLabel.do {
