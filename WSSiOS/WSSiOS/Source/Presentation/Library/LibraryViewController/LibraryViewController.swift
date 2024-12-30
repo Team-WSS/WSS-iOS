@@ -100,7 +100,7 @@ final class LibraryViewController: UIViewController {
                                                         lastUserNovelId: sortTypeList.lastId,
                                                         size: sortTypeList.sizeData,
                                                         sortType: sortTypeList.sortType)
-                    let viewController = owner.libraryChildViewController(userId: userId, data: sortTypeQuery)
+                    let viewController = owner.setLibraryChildViewController(userId: userId, data: sortTypeQuery)
                     owner.libraryPages.append(viewController)
                 }
                 
@@ -176,7 +176,7 @@ extension LibraryViewController: UIPageViewControllerDataSource {
 }
 
 extension LibraryViewController {
-    private func libraryChildViewController(userId: Int, data: ShowNovelStatus) -> LibraryChildViewController {
+    private func setLibraryChildViewController(userId: Int, data: ShowNovelStatus) -> LibraryChildViewController {
         return LibraryChildViewController(
             libraryViewModel: LibraryChildViewModel(
                 userRepository: DefaultUserRepository(

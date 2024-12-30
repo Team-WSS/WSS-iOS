@@ -29,6 +29,7 @@ protocol UserService {
                               lastUserNovelId: Int,
                               size: Int,
                               sortType: String) -> Single<UserNovelList>
+    func getAppMinimumVersion() -> Single<AppMinimumVersion>
 }
 
 final class DefaultUserService: NSObject, Networking {
@@ -347,7 +348,11 @@ extension DefaultUserService: UserService {
         }
     }
     
-    func getUserNovelList(userId: Int, readStatus: String, lastUserNovelId: Int, size: Int, sortType: String) -> RxSwift.Single<UserNovelList> {
+    func getUserNovelList(userId: Int,
+                          readStatus: String,
+                          lastUserNovelId: Int,
+                          size: Int,
+                          sortType: String) -> Single<UserNovelList> {
             do {
                 let request = try makeHTTPRequest(method: .get,
                                                   path: URLs.User.getUserNovel(userId: userId),
@@ -368,4 +373,24 @@ extension DefaultUserService: UserService {
                 return Single.error(error)
             }
         }
+    
+    func getAppMinimumVersion() -> Single<AppMinimumVersion> {
+        let appMinimumVersionQueryItem: [URLQueryItem] = [URLQueryItem(name: "os", value: "ios")]
+        do {
+            let request = try makeHTTPRequest(method: .get,
+                                              path: URLs.User.getAppMinimumVersion,
+                                              queryItems: appMinimumVersionQueryItem,
+                                              headers: APIConstants.accessTokenHeader,
+                                              body: nil)
+
+            NetworkLogger.log(request: request)
+
+            return tokenCheckURLSession.rx.data(request: request)
+                .map { try self.decode(data: $0,
+                                       to: AppMinimumVersion.self) }
+                .asSingle()
+        } catch {
+            return Single.error(error)
+        }
+    }
 }

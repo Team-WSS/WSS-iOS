@@ -88,6 +88,13 @@ final class LibraryChildViewModel: ViewModelType {
         let userDefaultId = UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)
         self.isMyPage = self.userId == userDefaultId
         
+        input.viewWillAppear
+            .observe(on: MainScheduler.instance)
+            .bind(with: self) { owner, _ in
+                owner.updateData()
+            }
+            .disposed(by: disposeBag)
+        
         input.lookForNovelButtonDidTap
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
@@ -104,8 +111,7 @@ final class LibraryChildViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        //가장 처음 호출되는 무한스크롤 - 최신순
-        //setNovelListData 함수를 통해 전체 작품 개수, 무한스크롤 유무를 세팅하기 위해 처음에만 호출
+        //무한스크롤 구현
         input.loadNextPageTrigger
             .filter { [weak self] _ in
                 guard let self = self else { return false }
@@ -120,7 +126,7 @@ final class LibraryChildViewModel: ViewModelType {
                                              data: ShowNovelStatus(readStatus: self.initData.readStatus,
                                                                    lastUserNovelId: self.lastNovelIdRelay.value,
                                                                    size: self.initData.size,
-                                                                   sortType: self.initData.sortType))
+                                                                   sortType: isSortTypeNewestRelay.value ? StringLiterals.Alignment.newest.sortType : StringLiterals.Alignment.oldest.sortType))
             }
             .subscribe(with: self, onNext: { owner, novelResult in
                 owner.setNovelListData(novelResult)
@@ -158,13 +164,7 @@ final class LibraryChildViewModel: ViewModelType {
         .do(onNext: { [weak self] sortType, isNewest in
             self?.isSortTypeNewestRelay.accept(isNewest)
             self?.showListViewRelay.accept(false)
-            
-            if sortType == "newest" {
-                self?.lastNovelIdRelay.accept(0)
-            } else {
-                let novelLastNumber = self?.novelDataRelay.value.last?.userNovelId ?? 0
-                self?.lastNovelIdRelay.accept(Int(novelLastNumber))
-            }
+            self?.lastNovelIdRelay.accept(0)
         })
         .map { [weak self] sortType, _ -> ShowNovelStatus? in
             guard let self = self else { return nil }
@@ -180,6 +180,7 @@ final class LibraryChildViewModel: ViewModelType {
         .withLatestFrom(isNotLoadableRelay) { novelStatus, isNotLoadable in
             return (novelStatus, isNotLoadable)
         }
+        
         //작품 수가 size 보다 더 많은지 판별하여 무한스크롤 여부 처리
         .subscribe(onNext: { [weak self] novelStatus, isNotLoadable in
             guard let self = self else { return }
@@ -187,7 +188,7 @@ final class LibraryChildViewModel: ViewModelType {
                 self.updateCollectionViewWithoutLoadTriggerRelay.accept(novelStatus)
             } else {
                 self.novelDataRelay.accept([])
-                self.isLoadableRelay.accept(true)
+                self.isLoadableRelay.accept(!isNotLoadable)
                 self.updateCollectionViewWithLoadTriggerRelay.accept(novelStatus)
             }
         })
@@ -208,7 +209,7 @@ final class LibraryChildViewModel: ViewModelType {
                 return self.getUserNovelList(userId: self.userId, data: status)
             }
             .subscribe(with: self, onNext: { owner, novelResult in
-                owner.updateNovelListWithNewSortTypeWithLoadTrigger(novelResult)
+                owner.setNovelListData(novelResult)
             }, onError: { owner, error in
                 owner.isFetching = false
                 print(error.localizedDescription)
@@ -236,7 +237,22 @@ final class LibraryChildViewModel: ViewModelType {
     
     // MARK: - Custom Method
     
-    //가장 처음 호출되는 무한스크롤
+    private func updateData() {
+        self.lastNovelIdRelay.accept(0)
+        self.isLoadableRelay.accept(true)
+        self.novelDataRelay.accept([])
+        
+        let status = ShowNovelStatus(
+            readStatus: self.initData.readStatus,
+            lastUserNovelId: self.lastNovelIdRelay.value,
+            size: self.initData.size,
+            sortType: self.isSortTypeNewestRelay.value ? StringLiterals.Alignment.newest.sortType : StringLiterals.Alignment.oldest.sortType
+        )
+        
+        self.updateCollectionViewWithLoadTriggerRelay.accept(status)
+    }
+    
+    //가장 처음 호출되는 무한스크롤 || 무한스크롤이 가능한 경우 처리
     private func setNovelListData(_ novelResult: UserNovelList) {
         let newNovelData = novelResult.userNovels
         if let lastNovel = novelResult.userNovels.last {
@@ -252,24 +268,6 @@ final class LibraryChildViewModel: ViewModelType {
         if Int(novelResult.userNovelCount) <= self.initData.size {
             isNotLoadableRelay.accept(true)
         }
-    }
-    
-    //무한스크롤이 가능한 경우 처리
-    private func updateNovelListWithNewSortTypeWithLoadTrigger(_ novelResult: UserNovelList) {
-        let newNovelData = novelResult.userNovels
-        
-        if self.isSortTypeNewestRelay.value {
-            self.novelDataRelay.accept(self.novelDataRelay.value + newNovelData)
-        } else {
-            self.novelDataRelay.accept(newNovelData + self.novelDataRelay.value)
-        }
-        
-        if let lastNovel = self.isSortTypeNewestRelay.value ? newNovelData.last : newNovelData.first {
-            self.lastNovelIdRelay.accept(Int(lastNovel.userNovelId))
-        }
-        
-        self.isLoadableRelay.accept(novelResult.isLoadable)
-        self.isFetching = false
     }
     
     //무한 스크롤이 불가능한 경우 처리

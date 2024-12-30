@@ -207,51 +207,73 @@ struct TextAttributeSet {
 
 extension TextAttributeSet {
     func lineSpacing(spacingPercentage: Double) -> TextAttributeSet {
-        let spacing = (self.label.font.pointSize * CGFloat(spacingPercentage/100) - self.label.font.pointSize)/2
+        let spacing = (self.label.font.pointSize * CGFloat(spacingPercentage / 100) - self.label.font.pointSize) / 2
         
-        let style = NSMutableParagraphStyle().then { $0.lineSpacing = spacing }
+        let style = NSMutableParagraphStyle()
+        style.lineSpacing = spacing
+        
+        let length = self.attributedString.length
+        
         self.attributedString.addAttribute(
             .paragraphStyle,
             value: style,
-            range: NSRange(location: 0, length: attributedString.length)
+            range: NSRange(location: 0, length: length)
         )
         
         return self
     }
     
     func kerning(kerningPixel: Double) -> TextAttributeSet {
+        let length = self.attributedString.length
+        
+        guard length > 1 else {
+            return self
+        }
+        
         self.attributedString.addAttribute(
             .kern,
             value: kerningPixel,
-            range: NSRange(location: 0, length: attributedString.length - 1)
+            range: NSRange(location: 0, length: length)
         )
         
         return self
     }
     
     func underlineStyle(_ style: NSUnderlineStyle) -> TextAttributeSet {
+        let length = self.attributedString.length
+        
         self.attributedString.addAttribute(
             .underlineStyle,
             value: style.rawValue,
-            range: NSRange(location: 0, length: attributedString.length)
+            range: NSRange(location: 0, length: length)
         )
         
         return self
     }
     
     func partialColor(color: UIColor, rangeString: String) -> TextAttributeSet {
-        let range = (self.attributedString.string as NSString).range(of: rangeString)
+        let nsString = self.attributedString.string as NSString
+        let range = nsString.range(of: rangeString)
+        
         if range.location != NSNotFound {
             self.attributedString.addAttribute(.foregroundColor, value: color, range: range)
         }
         return self
     }
     
-    func partialColor(color: UIColor, from: Int, to: Int) -> TextAttributeSet{
+    func partialColor(color: UIColor, from: Int, to: Int) -> TextAttributeSet {
+        let length = self.attributedString.length
+        
+        guard from >= 0, to < length, from <= to else {
+            return self
+        }
+        
+        let safeTo = min(to, length - 1)
+        
         self.attributedString.addAttribute(
             .foregroundColor,
             value: color,
-            range: NSRange(location: from, length: to+1-from)
+            range: NSRange(location: from, length: safeTo - from + 1)
         )
         
         return self
@@ -260,26 +282,26 @@ extension TextAttributeSet {
     func lineHeight(_ multiple: CGFloat) -> TextAttributeSet {
         let lineHeight = self.label.font.pointSize * multiple
         
-        guard !lineHeight.isNaN else {
-            print("Error: lineHeight is NaN")
+        guard lineHeight.isFinite else {
             return self
         }
         
-        let style = NSMutableParagraphStyle().then {
-            $0.maximumLineHeight = lineHeight
-            $0.minimumLineHeight = lineHeight
-        }
+        let style = NSMutableParagraphStyle()
+        style.maximumLineHeight = lineHeight
+        style.minimumLineHeight = lineHeight
+        
+        let length = self.attributedString.length
         
         self.attributedString.addAttribute(
             .paragraphStyle,
             value: style,
-            range: NSRange(location: 0, length: attributedString.length)
+            range: NSRange(location: 0, length: length)
         )
         
         self.attributedString.addAttribute(
             .baselineOffset,
             value: (lineHeight - self.label.font.lineHeight) / 2,
-            range: NSRange(location: 0, length: attributedString.length)
+            range: NSRange(location: 0, length: length)
         )
         
         return self

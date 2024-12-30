@@ -228,6 +228,23 @@ final class HomeViewController: UIViewController {
                 owner.rootView.showLoadingView(isShow: isShow)
             })
             .disposed(by: disposeBag)
+        
+        output.showUpdateVersionAlertView
+            .observe(on: MainScheduler.instance)
+            .flatMapLatest { _ -> Observable<AlertButtonType> in
+                return self.presentToAlertViewController(iconImage: .icWarning,
+                                                         titleText: StringLiterals.AppMinimumVersion.title,
+                                                         contentText: StringLiterals.AppMinimumVersion.content,
+                                                         leftTitle: nil,
+                                                         rightTitle: StringLiterals.AppMinimumVersion.buttonTitle,
+                                                         rightBackgroundColor: UIColor.wssPrimary100.cgColor,
+                                                         isDismissable: false)
+            }
+            .subscribe(with: self, onNext: { owner, buttonType in
+                guard let url = URL(string: StringLiterals.AppMinimumVersion.appStoreURL) else { return }
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            })
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Custom Method

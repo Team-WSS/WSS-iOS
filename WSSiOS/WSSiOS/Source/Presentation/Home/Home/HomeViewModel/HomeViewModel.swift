@@ -43,6 +43,7 @@ final class HomeViewModel: ViewModelType {
     let showInduceLoginModalView = PublishRelay<Void>()
     
     private let showLoadingView = PublishRelay<Bool>()
+    private let showUpdateVersionAlertView = PublishRelay<Void>()
     
     // MARK: - Inputs
     
@@ -79,6 +80,7 @@ final class HomeViewModel: ViewModelType {
         let pushToAnnouncementViewController: Observable<Void>
         let showInduceLoginModalView: Observable<Void>
         let showLoadingView: Observable<Bool>
+        let showUpdateVersionAlertView: Observable<Void>
     }
     
     //MARK: - init
@@ -139,6 +141,16 @@ extension HomeViewModel {
             }, onError: { owner, error in
                 owner.realtimePopularList.onError(error)
                 owner.showLoadingView.accept(false)
+            })
+            .disposed(by: disposeBag)
+        
+        input.viewWillAppearEvent
+            .flatMapLatest { self.getAppMinimumVersion() }
+            .subscribe(with: self, onNext: { owner, versionInfo in
+                let currentVersion = StringLiterals.AppMinimumVersion.bundleVersion
+                if currentVersion < versionInfo.minimumVersion {
+                    owner.showUpdateVersionAlertView.accept(())
+                }
             })
             .disposed(by: disposeBag)
         
@@ -228,7 +240,8 @@ extension HomeViewModel {
                       pushToNovelDetailViewController: pushToNovelDetailViewController.asObservable(),
                       pushToAnnouncementViewController: pushToAnnouncementViewController.asObservable(),
                       showInduceLoginModalView: showInduceLoginModalView.asObservable(),
-                      showLoadingView: showLoadingView.asObservable())
+                      showLoadingView: showLoadingView.asObservable(),
+                      showUpdateVersionAlertView: showUpdateVersionAlertView.asObservable())
     }
     
     //MARK: - API
@@ -256,5 +269,10 @@ extension HomeViewModel {
     // 취향추천 작품 조회
     func getTasteRecommendNovels() -> Observable<TasteRecommendNovels> {
         return recommendRepository.getTasteRecommendNovels()
+    }
+    
+    // 앱 최소 버전 조회
+    func getAppMinimumVersion() -> Observable<AppMinimumVersion> {
+        return userRepository.getAppMinimumVersion()
     }
 }
