@@ -140,7 +140,7 @@ extension MyPageDeleteIDView {
     }
     
     func completeButtonIsEnabled(isEnabled: Bool) {
-        completeButton.backgroundColor = isEnabled ? .Primary100 : .wssGray70
+        completeButton.backgroundColor = isEnabled ? .wssPrimary100 : .wssGray70
         completeButton.isEnabled = isEnabled
     }
 }

@@ -121,7 +121,7 @@ final class MyPageEditProfileView: UIView {
             }
             
             nicknameWarningLabel.do {
-                $0.textColor = .Secondary100
+                $0.textColor = .wssSecondary100
                 $0.isHidden = true
             }
         }
@@ -160,7 +160,7 @@ final class MyPageEditProfileView: UIView {
             
             genreDescriptionLabel.do {
                 $0.applyWSSFont(.body5, with: StringLiterals.MyPage.EditProfile.genreDescription)
-                $0.textColor = .Gray200
+                $0.textColor = .wssGray200
             }
             
             genreCollectionView.do {

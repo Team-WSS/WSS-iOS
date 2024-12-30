@@ -59,7 +59,7 @@ final class WSSSectionTitleView: UIView {
             $0.makeAttribute(with: label.text)?
                 .lineSpacing(spacingPercentage: 140)
                 .kerning(kerningPixel: -0.6)
-                .partialColor(color: .Secondary100, rangeString: "*")
+                .partialColor(color: .wssSecondary100, rangeString: "*")
                 .applyAttribute()
             $0.font = .Title1
         }

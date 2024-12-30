@@ -52,7 +52,7 @@ final class MyPageDeleteIDWarningView: UIView {
         
         descriptionLabel.do {
             $0.applyWSSFont(.body2, with: StringLiterals.MyPage.DeleteIDWarning.description)
-            $0.textColor = .Gray200
+            $0.textColor = .wssGray200
         }
         
         backButton.do {

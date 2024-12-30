@@ -82,7 +82,6 @@
 		2CD229402B42E7A2005400BE /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 2CD2293F2B42E7A2005400BE /* RxCocoa */; };
 		2CD229442B42E7A2005400BE /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 2CD229432B42E7A2005400BE /* RxRelay */; };
 		2CD229472B42E7C8005400BE /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 2CD229462B42E7C8005400BE /* Lottie */; };
-		2CD229572B42EA75005400BE /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD229562B42EA75005400BE /* UIColor+.swift */; };
 		2CD2FE3E2C43BF300033366C /* WSSAlertButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD2FE3D2C43BF300033366C /* WSSAlertButtonView.swift */; };
 		2CD2FE402C43E7B60033366C /* WSSAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD2FE3F2C43E7B60033366C /* WSSAlertViewController.swift */; };
 		2CD911422C0D87E0006B8D72 /* FeedService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD911412C0D87E0006B8D72 /* FeedService.swift */; };
@@ -471,7 +470,6 @@
 		2CD2291D2B42E685005400BE /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		2CD229242B42E687005400BE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2CD229292B42E687005400BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		2CD229562B42EA75005400BE /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		2CD2FE3D2C43BF300033366C /* WSSAlertButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSAlertButtonView.swift; sourceTree = "<group>"; };
 		2CD2FE3F2C43E7B60033366C /* WSSAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSAlertViewController.swift; sourceTree = "<group>"; };
 		2CD911412C0D87E0006B8D72 /* FeedService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedService.swift; sourceTree = "<group>"; };
@@ -1005,7 +1003,6 @@
 			isa = PBXGroup;
 			children = (
 				A1654F1B2B540563004F78E8 /* Data+.swift */,
-				2CD229562B42EA75005400BE /* UIColor+.swift */,
 				A1C3EC522B46962F00D997C2 /* UIImage+.swift */,
 				392A29262B4E96F30065EB97 /* UILabel+.swift */,
 				2C79CB9C2B45A1DD00734E1F /* UIFont+.swift */,
@@ -2794,7 +2791,6 @@
 				39D4A5D42BDCC1B1004FC834 /* NovelDetailHeaderBackgroundImageView.swift in Sources */,
 				39D4A5CB2BDA4C62004FC834 /* NovelDetailViewModel.swift in Sources */,
 				CD2D0ABD2C7F1F39007CF1F1 /* NovelReviewRatingView.swift in Sources */,
-				2CD229572B42EA75005400BE /* UIColor+.swift in Sources */,
 				B92A06692C49877700E27652 /* DetailSearchBottomView.swift in Sources */,
 				E40746682CE871EE005D75D5 /* MyPageNovelPreferencesCollectionViewCell.swift in Sources */,
 				399492F32C9A8ADE00298F16 /* LoginBannerCollectionViewCell.swift in Sources */,
