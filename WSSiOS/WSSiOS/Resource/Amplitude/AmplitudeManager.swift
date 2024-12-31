@@ -19,7 +19,7 @@ final class AmplitudeManager {
         amplitude = Amplitude(
             configuration: Configuration(
                 apiKey: apiKey,
-                autocapture: [.sessions, .appLifecycles, .screenViews]
+                autocapture: [.sessions, .appLifecycles]
             )
         )
     }
