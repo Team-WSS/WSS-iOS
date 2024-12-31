@@ -116,6 +116,7 @@ final class MyPageInfoViewController: UIViewController {
                                                    rightTitle: StringLiterals.Alert.logout,
                                                    rightBackgroundColor: UIColor.wssPrimary100.cgColor)
                 .bind(with: self, onNext: { owner, buttonType in
+                    AmplitudeManager.shared.track(AmplitudeEvent.MyPage.logout)
                     if buttonType == .right {
                         owner.logoutRelay.accept(true)
                     }

@@ -233,6 +233,7 @@ final class MyPageViewModel: ViewModelType {
                 return self.postBlockUser(userId: self.profileId)
             }
             .subscribe(with: self, onNext: { owner, _ in
+                AmplitudeManager.shared.track(AmplitudeEvent.MyPage.otherBlock)
                 let nickname = owner.profileDataRelay.value.nickname
                 NotificationCenter.default.post(name: NSNotification.Name("BlockUser"), object: nickname)
                 owner.popViewControllerRelay.accept(())
