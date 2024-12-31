@@ -448,6 +448,7 @@
 		CDC03F572CA721C3002D301F /* NovelKeywordSelectCategoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC03F562CA721C3002D301F /* NovelKeywordSelectCategoryListView.swift */; };
 		CDE0C0312D23B04D000BC822 /* AmplitudeSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CDE0C0302D23B04D000BC822 /* AmplitudeSwift */; };
 		CDE0C0342D23B162000BC822 /* AmplitudeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE0C0332D23B162000BC822 /* AmplitudeManager.swift */; };
+		CDE0C0362D23B359000BC822 /* AmplitudeEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE0C0352D23B359000BC822 /* AmplitudeEvent.swift */; };
 		CDE596D62B57708D00D99DA1 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D52B57708D00D99DA1 /* UIViewController+.swift */; };
 		CDE596D82B5770CE00D99DA1 /* WSSToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D72B5770CE00D99DA1 /* WSSToastView.swift */; };
 		CDE596DA2B57C4BE00D99DA1 /* UITextView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D92B57C4BE00D99DA1 /* UITextView+.swift */; };
@@ -911,6 +912,7 @@
 		CDC03F542CA71F01002D301F /* NovelKeywordSelectCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelKeywordSelectCategoryView.swift; sourceTree = "<group>"; };
 		CDC03F562CA721C3002D301F /* NovelKeywordSelectCategoryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelKeywordSelectCategoryListView.swift; sourceTree = "<group>"; };
 		CDE0C0332D23B162000BC822 /* AmplitudeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmplitudeManager.swift; sourceTree = "<group>"; };
+		CDE0C0352D23B359000BC822 /* AmplitudeEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmplitudeEvent.swift; sourceTree = "<group>"; };
 		CDE596D52B57708D00D99DA1 /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
 		CDE596D72B5770CE00D99DA1 /* WSSToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSSToastView.swift; sourceTree = "<group>"; };
 		CDE596D92B57C4BE00D99DA1 /* UITextView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+.swift"; sourceTree = "<group>"; };
@@ -2932,6 +2934,7 @@
 			isa = PBXGroup;
 			children = (
 				CDE0C0332D23B162000BC822 /* AmplitudeManager.swift */,
+				CDE0C0352D23B359000BC822 /* AmplitudeEvent.swift */,
 			);
 			path = Amplitude;
 			sourceTree = "<group>";
@@ -3164,6 +3167,7 @@
 				C9063A972BD3F868006AD8F9 /* HomeRealtimePopularView.swift in Sources */,
 				A1708F182B4D8E2F00E35E50 /* HomeView.swift in Sources */,
 				2C19A4FD2BBA90E700D4D151 /* WSSDropDownTableView.swift in Sources */,
+				CDE0C0362D23B359000BC822 /* AmplitudeEvent.swift in Sources */,
 				3959289E2C99525A00E7B17B /* LoginPlatformButton.swift in Sources */,
 				2C9A19672C567CC20043044A /* MyPageProfileHeaderView.swift in Sources */,
 				2CD2291C2B42E685005400BE /* AppDelegate.swift in Sources */,
