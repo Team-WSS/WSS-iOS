@@ -200,6 +200,9 @@ final class FeedDetailViewModel: ViewModelType {
         
         input.likeButtonDidTap
             .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
+            .do(onNext: { _ in
+                AmplitudeManager.shared.track(AmplitudeEvent.Feed.feedDetailLike)
+            })
             .withLatestFrom(likeButtonState)
             .flatMapLatest { isLiked -> Observable<Void> in
                 let request: Observable<Void>
@@ -274,6 +277,9 @@ final class FeedDetailViewModel: ViewModelType {
         
         input.sendButtonDidTap
             .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
+            .do(onNext: {
+                AmplitudeManager.shared.track(AmplitudeEvent.Feed.writeComment)
+            })
             .flatMapLatest { () -> Observable<Void> in
                 if self.isCommentEditing {
                     return self.putComment(self.feedId,

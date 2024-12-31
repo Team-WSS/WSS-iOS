@@ -130,6 +130,35 @@ enum NewNovelGenre: String, CaseIterable {
             return .icGenreRF
         }
     }
+    
+    var amplitudeEvent: AmplitudeEvent.Feed? {
+        switch self {
+        case .all:
+            return AmplitudeEvent.Feed.feedAll
+        case .fantasy:
+            return AmplitudeEvent.Feed.feedF
+        case .modernFantasy:
+            return AmplitudeEvent.Feed.feedHF
+        case .wuxia:
+            return AmplitudeEvent.Feed.feedMH
+        case .drama:
+            return AmplitudeEvent.Feed.feedD
+        case .mystery:
+            return AmplitudeEvent.Feed.feedM
+        case .lightNovel:
+            return AmplitudeEvent.Feed.feedLN
+        case .romance:
+            return AmplitudeEvent.Feed.feedR
+        case .romanceFantasy:
+            return AmplitudeEvent.Feed.feedRF
+        case .bl:
+            return AmplitudeEvent.Feed.feedBL
+        case .etc:
+            return AmplitudeEvent.Feed.feedEtc
+        default:
+            return nil
+        }
+    }
 }
 
 extension NewNovelGenre {

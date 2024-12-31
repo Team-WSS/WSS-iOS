@@ -61,6 +61,8 @@ final class FeedDetailViewController: UIViewController {
         bindViewModel()
         registerCell()
         delegate()
+        
+        AmplitudeManager.shared.track(AmplitudeEvent.Feed.feedDetail)
     }
     
     //MARK: - UI
@@ -287,6 +289,7 @@ final class FeedDetailViewController: UIViewController {
                 )
             }
             .subscribe(with: self, onNext: { owner, buttonType in
+                AmplitudeManager.shared.track(AmplitudeEvent.Feed.alertFeedSpoiler)
                 if buttonType == .right {
                     owner.viewModel.postSpoilerFeed(owner.viewModel.feedId)
                         .subscribe()
@@ -317,6 +320,7 @@ final class FeedDetailViewController: UIViewController {
                 )
             }
             .subscribe(with: self, onNext: { owner, buttonType in
+                AmplitudeManager.shared.track(AmplitudeEvent.Feed.alertFeedAbuse)
                 if buttonType == .right {
                     owner.viewModel.postImpertinenceFeed(owner.viewModel.feedId)
                         .subscribe()
@@ -422,6 +426,7 @@ final class FeedDetailViewController: UIViewController {
                 )
                 .flatMapLatest { buttonType in
                     if buttonType == .right {
+                        AmplitudeManager.shared.track(AmplitudeEvent.Feed.alertCommentSpoiler)
                         return postSpoilerComment(feedId, commentId)
                     } else {
                         return Observable.empty()
@@ -458,6 +463,7 @@ final class FeedDetailViewController: UIViewController {
                 )
                 .flatMapLatest { buttonType in
                     if buttonType == .right {
+                        AmplitudeManager.shared.track(AmplitudeEvent.Feed.alertCommentAbuse)
                         return postImpertinenceComment(feedId, commentId)
                     } else {
                         return Observable.empty()

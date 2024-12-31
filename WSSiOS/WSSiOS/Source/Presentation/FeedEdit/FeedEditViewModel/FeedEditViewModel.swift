@@ -135,6 +135,9 @@ final class FeedEditViewModel: ViewModelType {
         
         input.completeButtonDidTap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
+            .do(onNext: { _ in
+                AmplitudeManager.shared.track(AmplitudeEvent.Feed.writeFeed)
+            })
             .withLatestFrom(isSpoiler)
             .flatMapLatest { isSpoiler in
                 

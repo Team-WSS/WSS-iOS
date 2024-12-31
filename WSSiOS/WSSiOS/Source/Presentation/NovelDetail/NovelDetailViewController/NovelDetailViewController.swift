@@ -376,6 +376,7 @@ final class NovelDetailViewController: UIViewController {
                 )
                 .flatMapLatest { buttonType in
                     if buttonType == .right {
+                        AmplitudeManager.shared.track(AmplitudeEvent.Feed.alertFeedSpoiler)
                         return postSpoilerFeed(feedId)
                     } else {
                         return Observable.empty()
@@ -410,6 +411,7 @@ final class NovelDetailViewController: UIViewController {
                 )
                 .flatMapLatest { buttonType in
                     if buttonType == .right {
+                        AmplitudeManager.shared.track(AmplitudeEvent.Feed.alertFeedAbuse)
                         return postImpertinenceFeed(feedId)
                     } else {
                         return Observable.empty()

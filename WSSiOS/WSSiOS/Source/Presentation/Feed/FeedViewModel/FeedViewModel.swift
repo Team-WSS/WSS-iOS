@@ -50,6 +50,7 @@ final class FeedViewModel: ViewModelType {
         input.createFeedButtonDidTap
             .throttle(.seconds(1), scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
+                AmplitudeManager.shared.track(AmplitudeEvent.Feed.feedWriteFloatingButton)
                 output.pushToFeedEditViewController.accept(())
             })
             .disposed(by: disposeBag)
