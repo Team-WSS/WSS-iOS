@@ -253,6 +253,12 @@ final class NovelDetailViewController: UIViewController {
             .drive(with: self, onNext: { owner, tab in
                 owner.rootView.updateTab(selected: tab)
                 owner.rootView.showCreateFeedButton(show: tab == .feed)
+                
+                if tab == .info {
+                    AmplitudeManager.shared.track(AmplitudeEvent.Novel.novelInfo)
+                } else {
+                    AmplitudeManager.shared.track(AmplitudeEvent.Novel.novelFeed)
+                }
             })
             .disposed(by: disposeBag)
         
@@ -275,6 +281,7 @@ final class NovelDetailViewController: UIViewController {
         rootView.infoView.platformView.platformCollectionView.rx.itemSelected
             .withLatestFrom(output.platformList) {(indexPath: $0, platformList: $1)}
             .subscribe(with: self, onNext: { owner, data in
+                AmplitudeManager.shared.track(AmplitudeEvent.Novel.directNovel)
                 if let url = URL(string: data.platformList[data.indexPath.item].platformURL) {
                     UIApplication.shared.open(url, options: [:])
                 }
