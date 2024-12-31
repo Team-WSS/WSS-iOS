@@ -376,12 +376,6 @@ enum StringLiterals {
     }
     
     enum NovelDetail {
-        enum Memo {
-            static let memo = "메모"
-            static let noMemo = "아직 작성된 메모가 없어요"
-            static let newMemo = "새로운 메모를 작성해보세요"
-        }
-        
         enum Setting {
             static let novelDelete = "작품을 서재에서 삭제"
             static let novelEdit = "작품 정보 수정"
