@@ -446,6 +446,7 @@
 		CDC03F512CA6C5CD002D301F /* NovelReviewResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC03F502CA6C5CD002D301F /* NovelReviewResult.swift */; };
 		CDC03F552CA71F01002D301F /* NovelKeywordSelectCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC03F542CA71F01002D301F /* NovelKeywordSelectCategoryView.swift */; };
 		CDC03F572CA721C3002D301F /* NovelKeywordSelectCategoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC03F562CA721C3002D301F /* NovelKeywordSelectCategoryListView.swift */; };
+		CDE0C0312D23B04D000BC822 /* AmplitudeSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CDE0C0302D23B04D000BC822 /* AmplitudeSwift */; };
 		CDE596D62B57708D00D99DA1 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D52B57708D00D99DA1 /* UIViewController+.swift */; };
 		CDE596D82B5770CE00D99DA1 /* WSSToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D72B5770CE00D99DA1 /* WSSToastView.swift */; };
 		CDE596DA2B57C4BE00D99DA1 /* UITextView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE596D92B57C4BE00D99DA1 /* UITextView+.swift */; };
@@ -950,6 +951,7 @@
 				390162CE2CE6575D00B7476C /* RxKakaoSDKUser in Frameworks */,
 				3999BFEE2B4E6CA000984832 /* UIImageViewAlignedSwift in Frameworks */,
 				CD3E5A852B54254F00C0A659 /* RxKeyboard in Frameworks */,
+				CDE0C0312D23B04D000BC822 /* AmplitudeSwift in Frameworks */,
 				394401AA2CE9B07B007B5E04 /* Then in Frameworks */,
 				390162CC2CE6575D00B7476C /* RxKakaoSDKAuth in Frameworks */,
 				2CD229442B42E7A2005400BE /* RxRelay in Frameworks */,
@@ -3024,6 +3026,7 @@
 				390162CD2CE6575D00B7476C /* RxKakaoSDKUser */,
 				398F933D2CE66C3500C0F916 /* RxKakaoSDKCommon */,
 				394401A92CE9B07B007B5E04 /* Then */,
+				CDE0C0302D23B04D000BC822 /* AmplitudeSwift */,
 			);
 			productName = WSSiOS;
 			productReference = 2CD229182B42E685005400BE /* WSSiOS.app */;
@@ -3063,6 +3066,7 @@
 				2C9BDDA52CA79F420026D038 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				390162CA2CE6575D00B7476C /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */,
 				394401A82CE9B07B007B5E04 /* XCRemoteSwiftPackageReference "Then" */,
+				CDE0C02F2D23B04C000BC822 /* XCRemoteSwiftPackageReference "Amplitude-Swift" */,
 			);
 			productRefGroup = 2CD229192B42E685005400BE /* Products */;
 			projectDirPath = "";
@@ -3854,6 +3858,14 @@
 				minimumVersion = 2.0.1;
 			};
 		};
+		CDE0C02F2D23B04C000BC822 /* XCRemoteSwiftPackageReference "Amplitude-Swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/amplitude/Amplitude-Swift";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -3926,6 +3938,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CD3E5A832B54254F00C0A659 /* XCRemoteSwiftPackageReference "RxKeyboard" */;
 			productName = RxKeyboard;
+		};
+		CDE0C0302D23B04D000BC822 /* AmplitudeSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CDE0C02F2D23B04C000BC822 /* XCRemoteSwiftPackageReference "Amplitude-Swift" */;
+			productName = AmplitudeSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
