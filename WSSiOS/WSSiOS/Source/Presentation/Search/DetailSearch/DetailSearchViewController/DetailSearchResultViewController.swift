@@ -43,6 +43,8 @@ final class DetailSearchResultViewController: UIViewController, UIScrollViewDele
         
         setNavigationBar()
         swipeBackGesture()
+        
+        AmplitudeManager.shared.track(AmplitudeEvent.Search.seekResult)
     }
     
     override func viewDidLoad() {
