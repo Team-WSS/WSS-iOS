@@ -48,6 +48,8 @@ final class HomeViewController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: false)
         showTabBar()
         viewWillAppearEvent.accept(())
+        
+        AmplitudeManager.shared.track(AmplitudeEvent.Home.home)
     }
     
     override func viewDidLoad() {
