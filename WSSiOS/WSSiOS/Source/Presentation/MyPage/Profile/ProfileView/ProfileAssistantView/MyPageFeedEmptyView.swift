@@ -38,7 +38,11 @@ final class MyPageFeedEmptyView: UIView {
         self.backgroundColor = .wssWhite
         
         isEmptyImageView.do {
+<<<<<<< HEAD
             $0.image = .imgEmptyCatEyes
+=======
+            $0.image = .imgFeedEmptyCat
+>>>>>>> 239402ed ([Delete] #401 - myPage, Library 관련 코드 삭제)
             $0.contentMode = .scaleAspectFit
         }
         

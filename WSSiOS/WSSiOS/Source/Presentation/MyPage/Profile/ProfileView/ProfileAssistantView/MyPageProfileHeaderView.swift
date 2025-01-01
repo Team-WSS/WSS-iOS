@@ -126,7 +126,11 @@ final class MyPageProfileHeaderView: UIView {
     
     func bindData(data: MyProfileResult) {
         if data.avatarImage == "" {
+<<<<<<< HEAD
             userImageView.image = .imgProfile
+=======
+            userImageView.image = .imgDummyProfile
+>>>>>>> 239402ed ([Delete] #401 - myPage, Library 관련 코드 삭제)
         } else {
             userImageView.kfSetImage(url: makeBucketImageURLString(path: data.avatarImage))
         }

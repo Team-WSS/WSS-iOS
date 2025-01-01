@@ -46,7 +46,11 @@ final class LibraryEmptyView: UIView {
             $0.spacing = 8
             
             emptyImageView.do {
+<<<<<<< HEAD
                 $0.image = .imgEmpty
+=======
+                $0.image = .icGenreEmpty
+>>>>>>> 239402ed ([Delete] #401 - myPage, Library 관련 코드 삭제)
             }
             
             emptyTitleLabel.do {
