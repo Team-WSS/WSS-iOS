@@ -157,10 +157,10 @@ final class MyPageEditProfileViewModel: ViewModelType {
                     updatedFields["intro"] = self.userIntro.value
                 }
                 
-                if self.userGenre.value != self.profileData?.genrePreferences {
-                    updatedFields["genrePreferences"] = self.userGenre.value.map { $0 }
-                } else {
+                if self.userGenre.value == [] {
                     updatedFields["genrePreferences"] = []
+                } else {
+                    updatedFields["genrePreferences"] = self.userGenre.value.map { $0 }
                 }
                 
                 return self.patchProfile(updatedFields: updatedFields)
