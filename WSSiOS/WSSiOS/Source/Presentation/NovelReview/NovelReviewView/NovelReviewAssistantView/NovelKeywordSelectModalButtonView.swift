@@ -47,7 +47,7 @@ final class NovelKeywordSelectModalButtonView: UIView {
         }
         
         resetImageView.do {
-            $0.image = .icReset
+            $0.image = .icReload
             $0.isUserInteractionEnabled = false
         }
         

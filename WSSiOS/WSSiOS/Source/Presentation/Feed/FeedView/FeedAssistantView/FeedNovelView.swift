@@ -52,7 +52,7 @@ final class FeedNovelView: UIView {
         }
         
         novelStarIcon.do {
-            $0.image = .icLinkStar
+            $0.image = .icStar.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray300)
             $0.contentMode = .scaleAspectFit
         }
         

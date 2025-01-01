@@ -55,7 +55,7 @@ final class FeedEditConnectedNovelView: UIView {
         }
         
         removeButton.do {
-            $0.setImage(.icCancelLight, for: .normal)
+            $0.setImage(.icCancel, for: .normal)
         }
     }
     

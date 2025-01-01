@@ -47,7 +47,7 @@ final class NovelDetailInfoReviewEmptyView: UIView {
 
         reviewEmptyImageView.do {
             $0.contentMode = .scaleAspectFill
-            $0.image = .imgReviewEmpty
+            $0.image = .imgEmptyCatEyes
         }
         
         reviewEmptyLabel.do {

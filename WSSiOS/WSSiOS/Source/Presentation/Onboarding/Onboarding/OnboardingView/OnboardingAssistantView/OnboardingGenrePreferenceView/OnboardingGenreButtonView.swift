@@ -62,7 +62,7 @@ final class OnboardingGenreButtonView: UIView {
             }
             
             checkImageView.do {
-                $0.image = .icOnboardingCheck
+                $0.image = .icCheck
                 $0.contentMode = .scaleAspectFit
                 $0.isUserInteractionEnabled = false
                 $0.isHidden = true

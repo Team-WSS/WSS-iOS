@@ -126,7 +126,7 @@ final class MyPageProfileHeaderView: UIView {
     
     func bindData(data: MyProfileResult) {
         if data.avatarImage == "" {
-            userImageView.image = .profile
+            userImageView.image = .imgProfile
         } else {
             userImageView.kfSetImage(url: makeBucketImageURLString(path: data.avatarImage))
         }

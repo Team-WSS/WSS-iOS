@@ -52,7 +52,7 @@ final class FeedEditCategoryView: UIView {
         
         multipleSelectLabel.do {
             $0.applyWSSFont(.label1, with: StringLiterals.FeedEdit.Category.multipleSelect)
-            $0.textColor = .Gray200
+            $0.textColor = .wssGray200
         }
         
         categoryCollectionView.do {

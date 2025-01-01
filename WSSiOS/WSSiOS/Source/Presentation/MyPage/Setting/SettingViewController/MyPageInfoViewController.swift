@@ -109,7 +109,7 @@ final class MyPageInfoViewController: UIViewController {
         output.presentToAlertViewController
             .observe(on: MainScheduler.instance)
             .bind(with: self as MyPageInfoViewController, onNext: { owner, _ in
-                owner.presentToAlertViewController(iconImage: .icAlertWarningCircle,
+                owner.presentToAlertViewController(iconImage: .icModalWarning,
                                                    titleText: StringLiterals.Alert.logoutTitle,
                                                    contentText: nil,
                                                    leftTitle: StringLiterals.Alert.cancel,

@@ -57,7 +57,7 @@ final class DefaultFeedService: NSObject, Networking, FeedService {
         
         do {
             let request = try makeHTTPRequest(method: .post,
-                                              path: URLs.Memo.postFeed,
+                                              path: URLs.Feed.postFeed,
                                               headers: APIConstants.accessTokenHeader,
                                               body: feedContentData)
             
@@ -78,7 +78,7 @@ final class DefaultFeedService: NSObject, Networking, FeedService {
         
         do {
             let request = try makeHTTPRequest(method: .put,
-                                              path: URLs.Memo.putFeed(feedId: feedId),
+                                              path: URLs.Feed.putFeed(feedId: feedId),
                                               headers: APIConstants.accessTokenHeader,
                                               body: feedContentData)
             

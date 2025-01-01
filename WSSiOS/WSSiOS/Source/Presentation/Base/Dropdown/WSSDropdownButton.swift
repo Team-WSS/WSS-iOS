@@ -16,7 +16,7 @@ final class WSSDropdownButton: UIButton {
     // MARK: - UI Components
     
     private let disposeBag = DisposeBag()
-    private let dropdownImageView = UIImageView(image: UIImage(resource: .icDropDownDot))
+    private let dropdownImageView = UIImageView(image: UIImage(resource: .icThreedots))
     
     // MARK: - Life Cycles
     

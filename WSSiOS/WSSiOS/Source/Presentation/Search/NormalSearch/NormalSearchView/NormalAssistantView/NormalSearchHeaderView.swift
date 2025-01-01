@@ -59,7 +59,7 @@ final class NormalSearchHeaderView: UIView {
         }
         
         searchClearButton.do {
-            $0.setImage(.icSearchCancel, for: .normal)
+            $0.setImage(.icCancel, for: .normal)
         }
         
         searchButton.do {

@@ -35,7 +35,7 @@ final class NovelDetailFeedEmptyView: UIView {
     
     private func setUI() {
         imageView.do {
-            $0.image = .imgReviewEmpty
+            $0.image = .imgEmptyCatEyes
             $0.contentMode = .scaleAspectFit
         }
         

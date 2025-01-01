@@ -131,31 +131,6 @@ enum StringLiterals {
                 static let dateFormat = "yyyy-MM-dd"
                 static let complete = "완료"
             }
-            
-            enum SectionTitle {
-                static let readStatus = "읽기 상태 *"
-                static let readDate = "읽은 날짜"
-                static let keyword = "키워드"
-                static let plot = "작품 소개"
-                static let genre = "장르"
-                static let platform = "작품 보러가기"
-            }
-            
-            enum Keyword {
-                static let selectButton = "키워드 등록"
-            }
-            
-            enum RegisterButton {
-                static let new = "내 서재에 등록"
-                static let edit = "수정 완료"
-            }
-        }
-        
-        enum Success {
-            static let title = "내 서재에 작품이\n성공적으로 등록되었어요!"
-            static let lottie = "animationRegistration"
-            static let makeMemo = "작품에 메모 남기기"
-            static let returnHome = "홈으로 돌아가기"
         }
     }
     
@@ -183,7 +158,6 @@ enum StringLiterals {
             static let novelPreferenceLabel = "(이)가 매력적인 작품을 선호해요"
             static let privateLabel = "님의 프로필은\n비공개 상태예요"
             static let unknownUserNickname = "(알 수 없음)"
-            static let unknownAlertContent = "웹소소와 계약을 종료하고 떠난 독자예요"
             static let unknownAlertButtonTitle = "확인"
             static let myProfileLibrary = "내 서재"
             static let otherProfileLibrary = "서재"
@@ -191,10 +165,6 @@ enum StringLiterals {
             static let otherProfileFeed = "활동"
             static let activyButton = "활동기록 더보기"
             static let emptyFeed = "작성한 글이 없어요"
-        }
-        
-        enum Character {
-            static let select = "캐릭터 선택"
         }
         
         enum Setting: String, CaseIterable {
@@ -276,7 +246,7 @@ enum StringLiterals {
             static func reasonForIndex(_ index: Int) -> String {
                 if(index <= 3) {
                     return StringLiterals.MyPage.DeleteIDReason.allCases[index].rawValue
-                } else { return ""}
+                } else { return "" }
             }
         }
         
@@ -309,13 +279,6 @@ enum StringLiterals {
     enum Library {
         static let empty = "보관함이 비어있어요"
         static let lookForNovel = "웹소설 찾으러 가기"
-    }
-    
-    enum Record {
-        enum Empty {
-            static let description = "읽은 웹소설에 대해\n기록을 남겨볼까요?"
-            static let register = "웹소설 기록하기"
-        }
     }
     
     enum LibraryReadStatus: String, CaseIterable {
@@ -406,13 +369,8 @@ enum StringLiterals {
             static let skip = "회원가입 없이 둘러보기"
         }
     }
+    
     enum NovelDetail {
-        enum Memo {
-            static let memo = "메모"
-            static let noMemo = "아직 작성된 메모가 없어요"
-            static let newMemo = "새로운 메모를 작성해보세요"
-        }
-        
         enum Setting {
             static let novelDelete = "작품을 서재에서 삭제"
             static let novelEdit = "작품 정보 수정"
@@ -533,7 +491,6 @@ enum StringLiterals {
         enum Empty {
             static let description = "해당 검색어를 가진 작품은\n아직 등록되지 않았어요.."
             static let inquiryButton = "작품 문의하러 가기"
-            static let kakaoChannelUrl = "https://pf.kakao.com/_kHxlWG"
         }
     }
     
@@ -544,14 +501,8 @@ enum StringLiterals {
         static let genre = "장르"
         
         static let serialStatus = "연재상태"
-        static let statusIng = "연재중"
-        static let statusFinished = "완결작"
-        
+  
         static let rating = "별점"
-        static let ratingaboveThreePointFive = "3.5이상"
-        static let ratingaboveFourPointZero = "4.0이상"
-        static let ratingaboveFourPointFive = "4.5이상"
-        static let ratingaboveFourPointEight = "4.8이상"
         
         static let reload = "초기화"
         static let searchNovel = "작품 찾기"
@@ -567,60 +518,32 @@ enum StringLiterals {
         static let empty = "해당하는 작품이 없어요\n검색의 범위를 더 넓혀보세요"
     }
     
-    enum Memo {
-        static let complete = "완료"
-        static let edit = "수정"
-    }
-    
     enum FeedEdit {
         static let complete = "완료"
         static let edit = "수정"
+        
         enum Category {
             static let category = "카테고리"
             static let multipleSelect = "중복 선택 가능"
         }
+        
         enum Content {
             static let writeContent = "내용 작성하기"
             static let spoiler = "스포일러"
             static let placeHolder = "웹소설과 관련된 글을 자유롭게 남겨보세요\n\n • 작품에 대한 한줄평\n • 여운이 남는 명장면, 명대사\n • 수다 떨고 싶은 작품 이야기\n • 다른 독자들과 공유하고 싶은 작품 정보 등"
         }
+        
         enum Novel {
             static let novelConnect = "작품 연결하기"
             static let novelSearch = "작품 제목, 작가를 검색하세요"
             static let novelSelect = "작성 중인 글과 관련된 웹소설을 선택하세요"
             static let connectSelectedNovel = "해당 작품 연결"
         }
+        
         enum Alert {
             static let titleText = "글 작성을 그만하시겠어요?"
             static let writeTitle = "계속 작성"
             static let stopTitle = "그만하기"
-        }
-    }
-    
-    enum DeletePopup {
-        enum MemoEditCancel {
-            static let titleText = "작성을 취소할까요?"
-            static let descriptionText = "작성 중인 내용이 모두 사라져요!"
-        }
-        
-        enum MemoDelete {
-            static let titleText = "메모를 삭제하실 건가요?"
-            static let descriptionText = "삭제한 메모는 다시 되돌릴 수 없어요!"
-        }
-        
-        enum NovelDelete {
-            static let titleText = "이 작품을 삭제하실 건가요?"
-            static let descriptionText = "읽기 정보와 작성한 메모가 모두 사라져요!\n삭제한 내용은 절대 되돌릴 수 없어요ㅠ"
-        }
-        
-        enum DeleteButtonText {
-            static let exit = "나가기"
-            static let delete = "삭제하기"
-        }
-        
-        enum CancelButtonText {
-            static let keepWriting = "계속 작성하기"
-            static let cancel = "취소"
         }
     }
     
