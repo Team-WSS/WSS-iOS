@@ -29,6 +29,7 @@ final class FeedDetailView: UIView {
     private let replyBottomView = UIView()
     
     private let loadingView = WSSLoadingView()
+    private let networkErrorView = WSSNetworkErrorView()
     
     // MARK: - Life Cycle
     
@@ -79,6 +80,10 @@ final class FeedDetailView: UIView {
         loadingView.do {
             $0.isHidden = true
         }
+        
+        networkErrorView.do {
+            $0.isHidden = true
+        }
     }
     
     private func setHierarchy() {
@@ -86,7 +91,8 @@ final class FeedDetailView: UIView {
                          replyWritingView,
                          replyBottomView,
                          dropdownView,
-                         loadingView)
+                         loadingView,
+                         networkErrorView)
         scrollView.addSubview(contentView)
         contentView.addSubviews(profileView,
                                 feedContentView,
@@ -146,6 +152,10 @@ final class FeedDetailView: UIView {
         loadingView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+        
+        networkErrorView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
     }
     
     //MARK: - Custom Methods
@@ -157,5 +167,9 @@ final class FeedDetailView: UIView {
     
     func showLoadingView(isShow: Bool) {
         loadingView.isHidden = !isShow
+    }
+    
+    func showNetworkErrorView() {
+        networkErrorView.isHidden = false
     }
 }

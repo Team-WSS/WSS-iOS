@@ -69,6 +69,9 @@ final class FeedDetailViewModel: ViewModelType {
     
     let pushToUserPageViewController = PublishRelay<Int>()
     private let showLoadingView = PublishRelay<Bool>()
+    private let showNetworkErrorView = PublishRelay<Void>()
+    private let showUnknownUserAlertView = PublishRelay<Void>()
+    private let popViewController = PublishRelay<Void>()
     
     //MARK: - Life Cycle
     
@@ -110,13 +113,15 @@ final class FeedDetailViewModel: ViewModelType {
         let commentdotsButtonDidTap: Observable<(Int, Bool)>
         let commentDropdownDidTap: Observable<DropdownButtonType>
         let reloadComments: Observable<Void>
+        
+        let popFeedDetailViewControllerNotification: Observable<Notification>
     }
     
     struct Output {
         let feedData: Observable<Feed>
         let commentsData: Driver<[FeedComment]>
         let myProfileData: Observable<MyProfileResult>
-        let popViewController: Driver<Void>
+        let popViewController: Observable<Void>
         let replyCollectionViewHeight: Driver<CGFloat>
         
         // 관심 버튼
@@ -155,35 +160,50 @@ final class FeedDetailViewModel: ViewModelType {
         
         let pushToUserPageViewController: Observable<Int>
         let showLoadingView: Observable<Bool>
+        let showNetworkErrorView: Observable<Void>
+        let showUnknownUserAlertView: Observable<Void>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
+        input.viewWillAppearEvent
+            .flatMapLatest {
+                self.getSingleFeed(self.feedId)
+                    .asObservable()
+                    .materialize()
+            }
+            .subscribe(with: self, onNext: { owner, event in
+                switch event {
+                case .next(let feed):
+                    owner.feedData.onNext(feed)
+                    owner.likeButtonState.accept(feed.isLiked)
+                    owner.likeCount.accept(feed.likeCount)
+                    owner.feedUserId = feed.userId
+                    owner.novelId = feed.novelId
+                    owner.commentCount.accept(feed.commentCount)
+                    owner.isMyFeed.accept(feed.isMyFeed)
+                case .error(let error):
+                    owner.handleNetworkError(error)
+                case .completed:
+                    break
+                }
+            })
+            .disposed(by: disposeBag)
+        
         input.viewWillAppearEvent
             .do(onNext: {
                 self.showLoadingView.accept(true)
             })
             .flatMapLatest { _ in
                 Observable.zip(
-                    self.getSingleFeed(self.feedId),
                     self.getSingleFeedComments(self.feedId),
                     self.getMyProfile()
                 )
             }
             .subscribe(with: self, onNext: { owner, data in
-                let feed = data.0
-                let comments = data.1
-                let profile = data.2
+                let comments = data.0
+                let profile = data.1
                 
-                owner.feedData.onNext(feed)
-                owner.likeButtonState.accept(feed.isLiked)
-                owner.likeCount.accept(feed.likeCount)
-                owner.feedUserId = feed.userId
-                owner.novelId = feed.novelId
-                owner.commentCount.accept(feed.commentCount)
-                owner.isMyFeed.accept(feed.isMyFeed)
-
                 owner.commentsData.accept(comments.comments)
-
                 owner.myProfileData.accept(profile)
                 
                 owner.showLoadingView.accept(false)
@@ -193,7 +213,11 @@ final class FeedDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        let popViewController = input.backButtonDidTap.asDriver()
+        input.backButtonDidTap
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.popViewController.accept(())
+            })
+            .disposed(by: disposeBag)
         
         let replyCollectionViewContentSize = input.replyCollectionViewContentSize
             .map { $0?.height ?? 0 }.asDriver(onErrorJustReturn: 0)
@@ -422,10 +446,16 @@ final class FeedDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        input.popFeedDetailViewControllerNotification
+            .subscribe(with: self, onNext: { owner, notification in
+                owner.popViewController.accept(())
+            })
+            .disposed(by: disposeBag)
+        
         return Output(feedData: feedData.asObservable(),
                       commentsData: commentsData.asDriver(),
                       myProfileData: myProfileData.asObservable(),
-                      popViewController: popViewController,
+                      popViewController: popViewController.asObservable(),
                       replyCollectionViewHeight: replyCollectionViewContentSize,
                       likeCount: likeCount.asDriver(),
                       likeButtonToggle: likeButtonState.asDriver(),
@@ -450,7 +480,9 @@ final class FeedDetailViewModel: ViewModelType {
                       myCommentEditing: myCommentEditing.asObservable(),
                       showCommentDeleteAlertView: showCommentDeleteAlertView.asObservable(),
                       pushToUserPageViewController: pushToUserPageViewController.asObservable(),
-                      showLoadingView: showLoadingView.asObservable())
+                      showLoadingView: showLoadingView.asObservable(),
+                      showNetworkErrorView: showNetworkErrorView.asObservable(),
+                      showUnknownUserAlertView: showUnknownUserAlertView.asObservable())
     }
     
     //MARK: - API
@@ -542,6 +574,26 @@ final class FeedDetailViewModel: ViewModelType {
         let numberOfLines = Int(round(requiredSize.height / lineHeight))
         
         return numberOfLines
+    }
+    
+    private func handleNetworkError(_ error: Error) {
+        guard let networkError = error as? RxCocoaURLError else {
+            self.showNetworkErrorView.accept(())
+            return
+        }
+        switch networkError {
+        case .httpRequestFailed(_, let data):
+            if let data,
+               let errorResponse = try? JSONDecoder().decode(ServerErrorResponse.self, from: data) {
+                if errorResponse.code == "FEED-001" {
+                    self.showUnknownUserAlertView.accept(())
+                }
+            } else {
+                self.showNetworkErrorView.accept(())
+            }
+        default:
+            self.showNetworkErrorView.accept(())
+        }
     }
 }
 
