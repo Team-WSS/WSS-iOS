@@ -379,6 +379,14 @@ extension UIViewController {
                 profileData: useData))
         self.navigationController?.pushViewController(viewController, animated: false)
     }
+    
+    func presentToFeedDetailUnknownUserErrorViewController() {
+        let feedDetailUnknownUserErrorViewController = FeedDetailUnknownUserErrorViewController()
+        feedDetailUnknownUserErrorViewController.modalPresentationStyle = .overFullScreen
+        feedDetailUnknownUserErrorViewController.modalTransitionStyle = .crossDissolve
+        
+        self.present(feedDetailUnknownUserErrorViewController, animated: true)
+    }
 }
 
 extension UIViewController: @retroactive UIGestureRecognizerDelegate {

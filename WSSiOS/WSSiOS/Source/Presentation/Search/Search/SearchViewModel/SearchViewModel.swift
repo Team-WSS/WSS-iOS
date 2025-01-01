@@ -12,7 +12,7 @@ import RxCocoa
 import RxGesture
 
 final class SearchViewModel: ViewModelType {
-
+    
     //MARK: - Properties
     
     private let searchRepository: SearchRepository
@@ -23,6 +23,7 @@ final class SearchViewModel: ViewModelType {
     //MARK: - Inputs
     
     struct Input {
+        let viewWillAppearEvent: Observable<Void>
         let searhBarDidTap: Observable<UITapGestureRecognizer>
         let induceButtonDidTap: Observable<UITapGestureRecognizer>
         let sosoPickCellSelected: Observable<IndexPath>
@@ -42,7 +43,7 @@ final class SearchViewModel: ViewModelType {
     }
     
     //MARK: - init
-  
+    
     init(searchRepository: SearchRepository) {
         self.searchRepository = searchRepository
     }
@@ -60,7 +61,10 @@ extension SearchViewModel {
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
         
-        self.getSosoPickNovels()
+        input.viewWillAppearEvent
+            .flatMapLatest {
+                self.getSosoPickNovels()
+            }
             .do(onNext: { _ in
                 output.showLoadingView.accept(true)
             })
