@@ -453,7 +453,7 @@ final class MyPageViewModel: ViewModelType {
                     //5개를 초과할 경우 더보기 버튼 뜨게 함
                     let hasMoreThanFive = feedCellData.count > 5
                     self.showFeedDetailButtonRelay.accept(hasMoreThanFive)
-                    self.bindFeedDataRelay.accept(feedCellData.suffix(5))
+                    self.bindFeedDataRelay.accept(Array(feedCellData.prefix(5)))
                 }
             })
             .catch { [weak self] error in
