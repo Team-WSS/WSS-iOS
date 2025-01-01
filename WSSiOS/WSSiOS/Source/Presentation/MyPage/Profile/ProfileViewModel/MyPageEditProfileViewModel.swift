@@ -418,7 +418,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
     
     private func getProfileData() -> Observable<MyProfileResult> {
         return userRepository.getMyProfileData()
-            .asObservable()
+            .observe(on: MainScheduler.instance)
     }
 }
 

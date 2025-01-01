@@ -372,7 +372,7 @@ extension UIViewController {
         self.navigationController?.pushViewController(viewController, animated: false)
     }
     
-    func pushToMyPageEditViewController(entryType: MyPageEditEntryType,profile: MyProfileResult) {
+    func pushToMyPageEditViewController(entryType: MyPageEditEntryType, profile: MyProfileResult?) {
         let viewController = MyPageEditProfileViewController(
             viewModel: MyPageEditProfileViewModel(
                 userRepository: DefaultUserRepository(
