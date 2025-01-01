@@ -89,8 +89,8 @@ final class MyPageDeleteIDWarningViewController: UIViewController {
 
 extension MyPageDeleteIDWarningViewController {
     private func setNavigationBar() {
-        preparationSetNavigationBar(title: StringLiterals.Navigation.Title.deleteID,
-                                    left: self.rootView.backButton,
-                                    right: nil)
+        setNavigationBar(title: StringLiterals.Navigation.Title.deleteID,
+                         left: self.rootView.backButton,
+                         right: nil)
     }
 }

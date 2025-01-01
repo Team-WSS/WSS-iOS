@@ -50,9 +50,7 @@ extension UIViewController {
         navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
-    // 이미 만들어 놓은 네비게이션 함수랑 네이밍 겹쳐서 우선 이렇게 해놓음
-    // 추후 이름 고치기
-    func preparationSetNavigationBar(title: String, left: UIButton?, right: UIButton?) {
+    func setNavigationBar(title: String, left: UIButton?, right: UIButton?) {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         self.navigationItem.title = title
         

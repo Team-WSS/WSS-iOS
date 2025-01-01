@@ -136,20 +136,20 @@ final class MyPageEditProfileViewController: UIViewController {
                 owner.rootView.updateNicknameDuplicatedButton(isEnabled: isEnabled)
             })
             .disposed(by: disposeBag)
-
+        
         Observable.combineLatest(
             output.editingTextField.startWith(false),
             output.checkShwonWarningMessage.startWith(.notStarted)
         )
-            .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, tuple in
-                let (isEditing, availability) = tuple
-                
-                owner.rootView.updateNicknameTextField(isEditing: isEditing, availablity: availability)
-                owner.rootView.updateNickNameWarningLabel(isEditing: isEditing, availablity: availability)
-                owner.rootView.updateNicknameClearButton(isEditing: isEditing, availablity: availability)
-            })
-            .disposed(by: disposeBag)
+        .observe(on: MainScheduler.instance)
+        .bind(with: self, onNext: { owner, tuple in
+            let (isEditing, availability) = tuple
+            
+            owner.rootView.updateNicknameTextField(isEditing: isEditing, availablity: availability)
+            owner.rootView.updateNickNameWarningLabel(isEditing: isEditing, availablity: availability)
+            owner.rootView.updateNicknameClearButton(isEditing: isEditing, availablity: availability)
+        })
+        .disposed(by: disposeBag)
         
         output.introText
             .bind(with: self, onNext: { owner, text in
@@ -215,8 +215,8 @@ extension MyPageEditProfileViewController: UICollectionViewDelegateFlowLayout {
 
 extension MyPageEditProfileViewController {
     private func setNavigation() {
-        preparationSetNavigationBar(title: StringLiterals.Navigation.Title.editProfile,
-                                    left: self.rootView.backButton,
-                                    right: self.rootView.completeButton)
+        setNavigationBar(title: StringLiterals.Navigation.Title.editProfile,
+                         left: self.rootView.backButton,
+                         right: self.rootView.completeButton)
     }
 }

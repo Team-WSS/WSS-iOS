@@ -43,9 +43,9 @@ final class RecordViewController: UIViewController {
         super.viewWillAppear(animated)
         
         showTabBar()
-        preparationSetNavigationBar(title: StringLiterals.Navigation.Title.record,
-                                    left: nil,
-                                    right: nil)
+        setNavigationBar(title: StringLiterals.Navigation.Title.record,
+                         left: nil,
+                         right: nil)
         viewWillAppearEvent.onNext(())
     }
     
