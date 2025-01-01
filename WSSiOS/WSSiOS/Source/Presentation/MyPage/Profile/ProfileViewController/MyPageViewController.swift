@@ -411,7 +411,7 @@ extension MyPageViewController {
     
     private func decideNavigation(myPage: Bool) {
         if myPage {
-            preparationSetNavigationBar(title: "",
+            setNavigationBarWithoutUnderline(title: "",
                                         left: nil,
                                         right: rootView.settingButton)
         } else {
@@ -426,7 +426,7 @@ extension MyPageViewController {
                 .disposed(by: disposeBag)
             }
             
-            preparationSetNavigationBar(title: "",
+            setNavigationBarWithoutUnderline(title: "",
                                         left: rootView.backButton,
                                         right: dropdownButton)
         }
