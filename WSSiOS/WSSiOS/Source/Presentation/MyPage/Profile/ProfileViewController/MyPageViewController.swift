@@ -411,9 +411,9 @@ extension MyPageViewController {
     
     private func decideNavigation(myPage: Bool) {
         if myPage {
-            setNavigationBarWithoutUnderline(title: "",
-                                        left: nil,
-                                        right: rootView.settingButton)
+            setNavigationBar(title: "",
+                             left: nil,
+                             right: rootView.settingButton)
         } else {
             let dropdownButton = WSSDropdownButton().then {
                 $0.makeDropdown(dropdownRootView: self.rootView,
@@ -426,9 +426,9 @@ extension MyPageViewController {
                 .disposed(by: disposeBag)
             }
             
-            setNavigationBarWithoutUnderline(title: "",
-                                        left: rootView.backButton,
-                                        right: dropdownButton)
+            setNavigationBar(title: "",
+                             left: rootView.backButton,
+                             right: dropdownButton)
         }
         
         rootView.headerView.userImageChangeButton.isHidden = !myPage
