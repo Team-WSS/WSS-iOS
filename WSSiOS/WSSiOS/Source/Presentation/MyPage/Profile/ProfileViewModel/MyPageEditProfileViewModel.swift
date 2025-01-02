@@ -108,11 +108,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
             output.bindProfileData.accept(profileData)
             
         } else if entryType == .home {
-            Observable.just(())
-                .flatMapLatest { [weak self] _ -> Observable<MyProfileResult> in
-                    guard let self = self else { return Observable.empty() }
-                    return self.getProfileData()
-                }
+            self.getProfileData()
                 .subscribe(with: self, onNext: { owner, profileData in
                     owner.profileData = profileData
                     owner.userNickname.accept(profileData.nickname)
