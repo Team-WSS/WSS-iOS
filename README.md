@@ -59,7 +59,7 @@
 |<img width="250px" alt="지원" src="https://github.com/Team-WSS/WSS-iOS/assets/87518742/c902ad7d-4a2a-4964-b3e6-76c4ab5fbdb0">|<img width="250px" alt="윤학" src="https://github.com/Team-WSS/WSS-iOS/assets/87518742/e09c52e1-2876-49c0-9a32-33eb204590ea">|<img width="250px" alt="서연" src="https://github.com/Team-WSS/WSS-iOS/assets/87518742/b2b350b4-cf4a-4469-8e3d-320b4a7fd7fa">|<img width="250px" alt="효원" src="https://github.com/Team-WSS/WSS-iOS/assets/87518742/e46f7d9c-41cb-4fcb-8ba5-52acbd208bb3">|
 |:----:|:----:|:----:|:----:|
 |[신지원(이나)](https://github.com/ena-isme)|[이윤학(나기)](https://github.com/Naknakk)|[최서연(구리스)](https://github.com/Guryss)|[전효원(하쿠)](https://github.com/hyowon612)|
-|전체피드, 마이페이지|온보딩, 작품상세|홈, 피드상세, 탐색|작품피드, 피드작성|
+|전체피드, 마이페이지|온보딩, 작품상세|홈, 탐색, 피드상세|작품피드, 피드작성|
 
 <br>
 
@@ -79,8 +79,6 @@
 
 ### Dependencies
 ```
-KakaoSDKAuth
-RxKakaoSDKAuth
 Snapkit
 Then
 KingFisher
@@ -89,9 +87,10 @@ UIImageViewAlignedSwift
 RxSwift
 RxKeyBoard
 RxGesture
+KakaoSDKAuth
+RxKakaoSDKAuth
 ```
 
 ### 아요소소의 개발이 더 궁금하다면? [Git Wiki로✨](https://github.com/Team-WSS/WSS-iOS/wiki)
-<br>
  <div align="center">
 </br>
