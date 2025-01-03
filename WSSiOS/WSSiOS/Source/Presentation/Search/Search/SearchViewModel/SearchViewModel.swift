@@ -79,6 +79,7 @@ extension SearchViewModel {
         
         input.searhBarDidTap
             .subscribe(onNext: { _ in
+                AmplitudeManager.shared.track(AmplitudeEvent.Search.generalSearch)
                 if self.isLogined {
                     output.pushToNormalSearchViewController.accept(())
                 } else {
@@ -89,6 +90,7 @@ extension SearchViewModel {
         
         input.induceButtonDidTap
             .subscribe(onNext: { _ in
+                AmplitudeManager.shared.track(AmplitudeEvent.Search.seek)
                 if self.isLogined {
                     output.pushToDetailSearchViewController.accept(())
                 } else {
@@ -99,6 +101,7 @@ extension SearchViewModel {
         
         input.sosoPickCellSelected
             .subscribe(onNext: { indexPath in
+                AmplitudeManager.shared.track(AmplitudeEvent.Search.sosoPick)
                 if self.isLogined {
                     let novelId = output.sosoPickList.value[indexPath.row].novelId
                     output.pushToNovelDetailViewController.accept(novelId)

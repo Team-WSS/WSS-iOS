@@ -45,6 +45,8 @@ final class SearchViewController: UIViewController {
         showTabBar()
         setNavigationBar()
         viewWillAppearEvent.accept(())
+        
+        AmplitudeManager.shared.track(AmplitudeEvent.Search.search)
     }
     
     override func viewDidLoad() {

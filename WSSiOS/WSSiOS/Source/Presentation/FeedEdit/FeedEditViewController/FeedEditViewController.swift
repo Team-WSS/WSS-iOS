@@ -56,6 +56,8 @@ final class FeedEditViewController: UIViewController {
          bindViewModel()
          
          viewDidLoadEvent.accept(())
+         
+         AmplitudeManager.shared.track(AmplitudeEvent.Feed.write)
     }
     
     //MARK: - UI

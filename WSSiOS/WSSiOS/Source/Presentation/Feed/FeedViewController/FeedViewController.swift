@@ -53,6 +53,8 @@ final class FeedViewController: UIViewController {
         bindViewModel()
         setupPages()
         bindColletionView()
+        
+        AmplitudeManager.shared.track(AmplitudeEvent.Feed.feedAll)
     }
     
     //MARK: - Bind
@@ -130,7 +132,11 @@ final class FeedViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.selectedTabIndex
-            .subscribe(with: self, onNext: { owner, index in 
+            .subscribe(with: self, onNext: { owner, index in
+                if let event = owner.categoryList.value[index].amplitudeEvent {
+                    AmplitudeManager.shared.track(event)
+                }
+
                 owner.pageBar.feedPageBarCollectionView.scrollToItem(
                     at: IndexPath(item: index, section: 0),
                     at: .centeredHorizontally,

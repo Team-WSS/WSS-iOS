@@ -127,6 +127,8 @@ final class NovelReviewViewModel: ViewModelType {
         input.completeButtonDidTap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .flatMapLatest {
+                AmplitudeManager.shared.track(AmplitudeEvent.Novel.rateNovel)
+
                 let startDateString = self.readStatus != .quit ? self.startDate.map { self.dateFormatter.string(from: $0) } : nil
                 let endDateString = self.readStatus != .watching ? self.endDate.map { self.dateFormatter.string(from: $0) } : nil
                 let keywordIdList = self.selectedKeywordListData.value.map { $0.keywordId }

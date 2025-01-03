@@ -144,6 +144,7 @@ final class MyPageDeleteIDViewModel: ViewModelType {
             .observe(on: MainScheduler.instance)
             .subscribe(
                 onNext: {
+                    AmplitudeManager.shared.track(AmplitudeEvent.MyPage.withdraw)
                     UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.userNickname)
                     UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.accessToken)
                     UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.refreshToken)

@@ -73,6 +73,7 @@ final class HomeRealtimePopularCollectionViewCell: UICollectionViewCell {
     }
     
     @objc private func feedViewTapped(_ sender: UITapGestureRecognizer) {
+        AmplitudeManager.shared.track(AmplitudeEvent.Home.homeHotFeedlist)
         guard let feedView = sender.view, let feedId = feedView.accessibilityIdentifier else { return }
         onFeedViewTapped?(feedId)
     }

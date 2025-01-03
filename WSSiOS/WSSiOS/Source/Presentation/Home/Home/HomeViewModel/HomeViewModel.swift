@@ -170,6 +170,7 @@ extension HomeViewModel {
         
         input.todayPopularCellSelected
             .subscribe(with: self, onNext: { owner, indexPath in
+                AmplitudeManager.shared.track(AmplitudeEvent.Home.homeTodayRanking)
                 if owner.isLogined {
                     let novelId = owner.todayPopularList.value[indexPath.row].novelId
                     owner.pushToNovelDetailViewController.accept(novelId)
@@ -181,6 +182,7 @@ extension HomeViewModel {
         
         input.interestCellSelected
             .subscribe(with: self, onNext: { owner, indexPath in
+                AmplitudeManager.shared.track(AmplitudeEvent.Home.homeLoveFeedlist)
                 let novelId = owner.interestList.value[indexPath.row].novelId
                 owner.pushToNovelDetailViewController.accept(novelId)
             })
@@ -188,6 +190,7 @@ extension HomeViewModel {
         
         input.tasteRecommendCellSelected
             .subscribe(with: self, onNext: { owner, indexPath in
+                AmplitudeManager.shared.track(AmplitudeEvent.Home.homePreferNovellist)
                 let novelId = owner.tasteRecommendList.value[indexPath.row].novelId
                 owner.pushToNovelDetailViewController.accept(novelId)
             })
@@ -209,6 +212,7 @@ extension HomeViewModel {
         
         input.registerInterestNovelButtonTapped
             .subscribe(with: self, onNext: { owner, _ in
+                AmplitudeManager.shared.track(AmplitudeEvent.Home.homeToLoveButton)
                 if owner.isLogined {
                     owner.pushToNormalSearchViewController.accept(())
                 } else {
@@ -219,6 +223,7 @@ extension HomeViewModel {
         
         input.setPreferredGenresButtonTapped
             .subscribe(with: self, onNext: { owner, _ in
+                AmplitudeManager.shared.track(AmplitudeEvent.Home.homeToPreferButton)
                 if owner.isLogined {
                     owner.pushToMyPageViewController.accept(())
                 } else {

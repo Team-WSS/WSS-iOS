@@ -155,6 +155,7 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
                 )
                 .flatMapLatest { buttonType in
                     if buttonType == .right {
+                        AmplitudeManager.shared.track(AmplitudeEvent.Feed.alertFeedSpoiler)
                         return postSpoilerFeed(feedId)
                     } else {
                         return Observable.empty()
@@ -189,6 +190,7 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
                 )
                 .flatMapLatest { buttonType in
                     if buttonType == .right {
+                        AmplitudeManager.shared.track(AmplitudeEvent.Feed.alertFeedAbuse)
                         return postImpertinenceFeed(feedId)
                     } else {
                         return Observable.empty()

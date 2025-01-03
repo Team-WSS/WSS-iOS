@@ -60,10 +60,12 @@ final class MyPageViewController: UIViewController {
         switch entryType {
         case .tabBar:
             print("탭바에서 진입")
+            AmplitudeManager.shared.track(AmplitudeEvent.MyPage.mypage)
             isEntryTabbarRelay.accept(true)
             
         case .otherVC:
             print("다른 VC에서 진입")
+            AmplitudeManager.shared.track(AmplitudeEvent.MyPage.otherMypage)
             isEntryTabbarRelay.accept(false)
             hideTabBar()
             swipeBackGesture()
