@@ -246,8 +246,10 @@ final class FeedDetailViewModel: ViewModelType {
         input.userProfileViewDidTap
             .subscribe(with: self, onNext: { owner, _ in
                 guard let feedUserId = owner.feedUserId else { return }
-                if !owner.isMyFeed.value {
+                if !owner.isMyFeed.value && feedUserId != -1 {
                     owner.pushToUserPageViewController.accept(feedUserId)
+                } else if feedUserId == -1 {
+                    owner.showWithdrawalUserToastView.accept(())
                 }
             })
             .disposed(by: disposeBag)
