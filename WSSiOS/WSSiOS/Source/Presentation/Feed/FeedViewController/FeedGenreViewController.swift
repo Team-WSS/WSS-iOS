@@ -250,6 +250,13 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
                 owner.rootView.feedTableView.refreshControl?.endRefreshing()
             })
             .disposed(by: disposeBag)
+        
+        output.showWithdrawalUserToastView
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.showToast(.unknownUser)
+            })
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Custom Method
