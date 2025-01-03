@@ -16,7 +16,7 @@ final class WSSDropdownButton: UIButton {
     // MARK: - UI Components
     
     private let disposeBag = DisposeBag()
-    private let dropdownImageView = UIImageView(image: UIImage(resource: .icThreedots))
+    private let dropdownImageView = UIImageView()
     
     // MARK: - Life Cycles
     
@@ -24,6 +24,7 @@ final class WSSDropdownButton: UIButton {
         super.init(frame: frame)
         self.backgroundColor = .clear
         
+        setUI()
         setHierarchy()
         setLayout()
     }
@@ -34,6 +35,12 @@ final class WSSDropdownButton: UIButton {
     
     //MARK: - UI
     
+    private func setUI() {
+        dropdownImageView.do {
+            $0.image = .icThreedots.withRenderingMode(.alwaysOriginal).withTintColor(.wssBlack)
+        }
+    }
+    
     private func setHierarchy() {
         addSubview(dropdownImageView)
     }
@@ -41,7 +48,7 @@ final class WSSDropdownButton: UIButton {
     private func setLayout() {
         dropdownImageView.snp.makeConstraints {
             $0.centerX.centerY.equalToSuperview()
-            $0.size.equalTo(24)
+            $0.size.equalTo(18)
         }
     }
     
