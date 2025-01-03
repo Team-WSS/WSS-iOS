@@ -110,9 +110,9 @@ final class MyPageChangeUserInfoViewController: UIViewController {
 
 extension MyPageChangeUserInfoViewController {
     private func setNavigationBar() {
-        preparationSetNavigationBar(title: StringLiterals.Navigation.Title.myPageChangeUserInfo,
-                                    left: self.rootView.backButton,
-                                    right: self.rootView.completeButton)
+        setNavigationBar(title: StringLiterals.Navigation.Title.myPageChangeUserInfo,
+                         left: self.rootView.backButton,
+                         right: self.rootView.completeButton)
     }
 }
 

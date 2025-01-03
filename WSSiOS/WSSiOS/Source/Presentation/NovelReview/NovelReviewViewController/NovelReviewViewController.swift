@@ -54,7 +54,7 @@ final class NovelReviewViewController: UIViewController {
     //MARK: - UI
     
     private func setNavigationBar() {
-        self.preparationSetNavigationBar(title: self.novelReviewViewModel.novelTitle, left: rootView.backButton, right: rootView.completeButton)
+        self.setNavigationBar(title: self.novelReviewViewModel.novelTitle, left: rootView.backButton, right: rootView.completeButton)
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.backgroundColor = .clear

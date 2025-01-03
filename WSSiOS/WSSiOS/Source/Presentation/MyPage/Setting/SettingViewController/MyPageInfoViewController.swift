@@ -64,7 +64,7 @@ final class MyPageInfoViewController: UIViewController {
     
     
     //MARK: - Bind
-
+    
     private func bindViewModel() {
         let input = MyPageInfoViewModel.Input(
             cellDidTapped: self.rootView.tableView.rx.itemSelected,
@@ -159,9 +159,9 @@ extension MyPageInfoViewController {
     //MARK: - UI
     
     private func setNavigationBar() {
-        preparationSetNavigationBar(title: StringLiterals.Navigation.Title.myPageInfo,
-                                    left: self.rootView.backButton,
-                                    right: nil)
+        setNavigationBar(title: StringLiterals.Navigation.Title.myPageInfo,
+                         left: self.rootView.backButton,
+                         right: nil)
     }
 }
 

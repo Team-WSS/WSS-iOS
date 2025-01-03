@@ -198,6 +198,15 @@ extension FeedViewController: UICollectionViewDelegateFlowLayout {
             return CGSize()
         }
     }
+    
+    func scrollToTop() {
+        guard let pageViewController = self.children.first as? UIPageViewController,
+              let currentVC = pageViewController.viewControllers?.first else { return }
+        
+        if let scrollView = currentVC.view.subviews.compactMap({ $0 as? UIScrollView }).first {
+            scrollView.setContentOffset(CGPoint(x: 0, y: -scrollView.contentInset.top), animated: true)
+        }
+    }
 }
 
 extension FeedViewController : UIPageViewControllerDelegate {

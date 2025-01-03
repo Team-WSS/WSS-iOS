@@ -50,9 +50,7 @@ extension UIViewController {
         navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
-    // 이미 만들어 놓은 네비게이션 함수랑 네이밍 겹쳐서 우선 이렇게 해놓음
-    // 추후 이름 고치기
-    func preparationSetNavigationBar(title: String, left: UIButton?, right: UIButton?) {
+    func setNavigationBar(title: String, left: UIButton?, right: UIButton?, underLine: Bool = false) {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         self.navigationItem.title = title
         
@@ -65,6 +63,11 @@ extension UIViewController {
         
         self.navigationItem.leftBarButtonItem = left != nil ? UIBarButtonItem(customView: left!) : nil
         self.navigationItem.rightBarButtonItem = right != nil ? UIBarButtonItem(customView: right!) : nil
+        
+        if !underLine {
+            self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+            self.navigationController?.navigationBar.shadowImage = UIImage()
+        }
     }
     
     func moveToNovelDetailViewController(userNovelId: Int) {
