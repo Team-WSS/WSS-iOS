@@ -472,6 +472,13 @@ final class NovelDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.showWithdrawalUserToastView
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.showToast(.unknownUser)
+            })
+            .disposed(by: disposeBag)
+        
         //MARK: - Bind/NovelReview
         
         output.showNovelReviewedToast

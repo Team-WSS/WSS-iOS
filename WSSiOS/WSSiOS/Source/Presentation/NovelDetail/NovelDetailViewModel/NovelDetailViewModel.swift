@@ -64,6 +64,8 @@ final class NovelDetailViewModel: ViewModelType {
     private let showDeleteAlertView = PublishRelay<((Int) -> Observable<Void>, Int)>()
     private var feedId: Int = 0
     private var isMyFeed: Bool = false
+    private let pushToUserViewController = PublishRelay<Int>()
+    private let showWithdrawalUserToastView = PublishRelay<Void>()
     
     //MARK: - Life Cycle
     
@@ -164,6 +166,7 @@ final class NovelDetailViewModel: ViewModelType {
         let pushToFeedEditViewController: Observable<Int>
         let showDeleteAlertView: Observable<((Int) -> Observable<Void>, Int)>
         let showFeedEditedToast: Observable<Void>
+        let showWithdrawalUserToastView: Observable<Void>
         
         //NovelReview
         let showNovelReviewedToast: Observable<Void>
@@ -519,6 +522,16 @@ final class NovelDetailViewModel: ViewModelType {
             .map { _ in () }
             .asObservable()
         
+        input.novelDetailFeedProfileViewDidTap
+            .subscribe(with: self, onNext: { owner, userId in
+                if userId == -1 {
+                    owner.showWithdrawalUserToastView.accept(())
+                } else {
+                    owner.pushToUserViewController.accept(userId)
+                }
+            })
+            .disposed(by: disposeBag)
+        
         return Output(
             detailHeaderData: novelDetailHeaderData.asObservable(),
             detailInfoData: novelDetailInfoData.asObserver(),
@@ -542,7 +555,7 @@ final class NovelDetailViewModel: ViewModelType {
             feedList: feedList.asObservable(),
             novelDetailFeedTableViewHeight: novelDetailFeedTableViewHeight.asObservable(),
             pushToFeedDetailViewController: pushToFeedDetailViewController.asObservable(),
-            pushToUserViewController: input.novelDetailFeedProfileViewDidTap.asObservable(),
+            pushToUserViewController: pushToUserViewController.asObservable(),
             pushToNovelDetailViewController: input.novelDetailFeedConnectedNovelViewDidTap.asObservable(),
             showDropdownView: showDropdownView.asObservable(),
             hideDropdownView: hideDropdownView.asObservable(),
@@ -552,6 +565,7 @@ final class NovelDetailViewModel: ViewModelType {
             pushToFeedEditViewController: pushToFeedEditViewController.asObservable(),
             showDeleteAlertView: showDeleteAlertView.asObservable(),
             showFeedEditedToast: showFeedEditedToast,
+            showWithdrawalUserToastView: showWithdrawalUserToastView.asObservable(),
             showNovelReviewedToast: showNovelReviewedToast
         )
     }
