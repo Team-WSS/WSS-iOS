@@ -1,10 +1,17 @@
 # 웹소설 뭐 읽을 지 고민될 땐? 웹소소.
  <div align="center">
-<img alt="스크린샷 2024-07-01 오후 3 14 07" src="https://github.com/Team-WSS/WSS-iOS/assets/103318297/d08ae388-429f-46cc-a507-9cc3d004b33a">
+<img src="https://github.com/user-attachments/assets/6a77d2c5-2f10-4889-a2e8-5a8838c3bf71">
 </br>
-<img src="https://github.com/user-attachments/assets/ff532d33-22b8-40a0-bfa0-76375c0742ca" width=200>
+<br>
 
-[웹소소 홈페이지](https://www.websoso.kr) 
+<a href="https://apps.apple.com/kr/app/%EC%9B%B9%EC%86%8C%EC%86%8C-%EC%9B%B9%EC%86%8C%EC%84%A4%EB%8F%84-%EC%86%8C%EC%84%A4%EC%9D%B4%EB%8B%A4/id6738299124" target="_blank">
+    <img src="https://github.com/user-attachments/assets/ff532d33-22b8-40a0-bfa0-76375c0742ca" width="200" alt="Apple App Store Link">
+</a>
+
+<a href="https://www.websoso.kr" target="_blank">
+    <img src="https://github.com/user-attachments/assets/ca18711b-bc6a-4408-b15a-1f9a34d7108a" width="200" alt="Websoso Link">
+</a>
+
  </div>
 
 
@@ -94,3 +101,4 @@ RxKakaoSDKAuth
 ### 아요소소의 개발이 더 궁금하다면? [Git Wiki로✨](https://github.com/Team-WSS/WSS-iOS/wiki)
  <div align="center">
 </br>
+<img alt="스크린샷 2024-07-01 오후 3 14 07" src="https://github.com/Team-WSS/WSS-iOS/assets/103318297/d08ae388-429f-46cc-a507-9cc3d004b33a">
