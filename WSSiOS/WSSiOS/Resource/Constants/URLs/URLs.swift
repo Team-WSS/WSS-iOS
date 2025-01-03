@@ -46,14 +46,8 @@ enum URLs {
         static func getUserNovel(userId: Int) -> String {
             return "\(userBasePath)/\(userId)/novels"
         }
+        static let isProfileVisibility = "\(userBasePath)/profile-status"
         static let getAppMinimumVersion = "/minimum-version"
-    }
-    
-    enum Novel {
-        static let getSearchList = "/novels"
-        static func getNovelInfo(novelId: Int) -> String {
-            return "/novels/\(novelId)"
-        }
     }
     
     enum NovelDetail {
@@ -97,26 +91,6 @@ enum URLs {
         }
         static func deleteUserNovel(userNovelId: Int) -> String {
             return "/user-novels/\(userNovelId)"
-        }
-    }
-    
-    enum Memo {
-        static func getMemo(memoId: Int) -> String {
-            return "/memos/\(memoId)"
-        }
-        static let getMemoList = "/memos"
-        static func postMemo(userNovelId: Int) -> String {
-            return "/user-novels/\(userNovelId)/memo"
-        }
-        static let postFeed = "/feeds"
-        static func putFeed(feedId: Int) -> String {
-            return "/feeds/\(feedId)"
-        }
-        static func patchMemo(memoId: Int) -> String {
-            return "/memos/\(memoId)"
-        }
-        static func deleteMemo(memoId: Int) -> String {
-            return "/memos/\(memoId)"
         }
     }
     
@@ -172,6 +146,12 @@ enum URLs {
         static func postImpertinenceComment(feedId: Int, commentId: Int) -> String {
             return "/feeds/\(feedId)/comments/\(commentId)/impertinence"
         }
+        
+        // 피드 작성, 수정
+        static let postFeed = "/feeds"
+        static func putFeed(feedId: Int) -> String {
+            return "/feeds/\(feedId)"
+        }
     }
     
     enum MyPage {
@@ -180,10 +160,6 @@ enum URLs {
             static func userBlocks(blockID: Int) -> String {
                 return "/blocks/\(blockID)"
             }
-        }
-        
-        enum ProfileVisibility {
-            static let isProfileVisibility = "/users/profile-status"
         }
     }
     

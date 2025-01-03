@@ -94,7 +94,7 @@ final class HomeInterestCollectionViewCell: UICollectionViewCell {
         }
         
         starImageView.do {
-            $0.image = .icStar
+            $0.image = .icStar.withRenderingMode(.alwaysOriginal).withTintColor(.wssBlack)
             $0.contentMode = .scaleAspectFit
         }
         

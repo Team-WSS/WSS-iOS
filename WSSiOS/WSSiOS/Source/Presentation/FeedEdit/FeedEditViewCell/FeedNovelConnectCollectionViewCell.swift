@@ -16,7 +16,7 @@ final class FeedNovelConnectCollectionViewCell: UICollectionViewCell {
     
     override var isSelected: Bool {
         didSet {
-            self.selectedImageView.image = isSelected ? .icSelectedNovel : .icDeselectedNovel
+            self.selectedImageView.image = isSelected ? .icSelectNovelSelected : .icSelectNovelDefault
         }
     }
     
@@ -61,7 +61,7 @@ final class FeedNovelConnectCollectionViewCell: UICollectionViewCell {
         }
         
         selectedImageView.do {
-            $0.image = .icDeselectedNovel
+            $0.image = .icSelectNovelDefault
             $0.contentMode = .scaleAspectFit
         }
     }

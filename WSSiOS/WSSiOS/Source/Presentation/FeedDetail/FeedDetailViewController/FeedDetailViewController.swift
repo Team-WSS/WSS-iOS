@@ -131,7 +131,8 @@ final class FeedDetailViewController: UIViewController {
             profileViewDidTap: profileViewDidTap.asObservable(),
             commentdotsButtonDidTap: commentDotsButtonDidTap.asObservable(),
             commentDropdownDidTap: commentDropdownButtonDidTap,
-            reloadComments: reloadComments.asObservable()
+            reloadComments: reloadComments.asObservable(),
+            popFeedDetailViewControllerNotification: NotificationCenter.default.rx.notification(Notification.Name("PopFeedDetailViewControllerNotificationName")).asObservable()
         )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -160,7 +161,8 @@ final class FeedDetailViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.popViewController
-            .drive(with: self, onNext: { owner, _ in
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, _ in
                 owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
@@ -280,7 +282,7 @@ final class FeedDetailViewController: UIViewController {
         output.showSpoilerAlertView
             .flatMapLatest { _ -> Observable<AlertButtonType> in
                 return self.presentToAlertViewController(
-                    iconImage: .icAlertWarningCircle,
+                    iconImage: .icModalWarning,
                     titleText: StringLiterals.FeedDetail.spoilerTitle,
                     contentText: nil,
                     leftTitle: StringLiterals.FeedDetail.cancel,
@@ -311,7 +313,7 @@ final class FeedDetailViewController: UIViewController {
         output.showImpertinenceAlertView
             .flatMapLatest { _ -> Observable<AlertButtonType> in
                 return self.presentToAlertViewController(
-                    iconImage: .icAlertWarningCircle,
+                    iconImage: .icModalWarning,
                     titleText: StringLiterals.FeedDetail.impertinentTitle,
                     contentText: nil,
                     leftTitle: StringLiterals.FeedDetail.cancel,
@@ -348,7 +350,7 @@ final class FeedDetailViewController: UIViewController {
         output.showDeleteAlertView
             .flatMapLatest { _ -> Observable<AlertButtonType> in
                 return self.presentToAlertViewController(
-                    iconImage: .icAlertWarningCircle,
+                    iconImage: .icModalWarning,
                     titleText: StringLiterals.FeedDetail.deleteTitle,
                     contentText: StringLiterals.FeedDetail.deleteContent,
                     leftTitle: StringLiterals.FeedDetail.cancel,
@@ -391,7 +393,7 @@ final class FeedDetailViewController: UIViewController {
         output.showCommentDeleteAlertView
             .flatMapLatest { deleteComment, feedId, commentId in
                 self.presentToAlertViewController(
-                    iconImage: .icAlertWarningCircle,
+                    iconImage: .icModalWarning,
                     titleText: StringLiterals.FeedDetail.deleteMineTitle,
                     contentText: StringLiterals.FeedDetail.deleteMineContent,
                     leftTitle: StringLiterals.FeedDetail.cancel,
@@ -417,7 +419,7 @@ final class FeedDetailViewController: UIViewController {
         output.showCommentSpoilerAlertView
             .flatMapLatest { postSpoilerComment, feedId ,commentId in
                 self.presentToAlertViewController(
-                    iconImage: .icAlertWarningCircle,
+                    iconImage: .icModalWarning,
                     titleText: StringLiterals.FeedDetail.spoilerTitle,
                     contentText: nil,
                     leftTitle: StringLiterals.FeedDetail.cancel,
@@ -454,7 +456,7 @@ final class FeedDetailViewController: UIViewController {
         output.showCommentImpertinenceAlertView
             .flatMapLatest { postImpertinenceComment, feedId, commentId in
                 self.presentToAlertViewController(
-                    iconImage: .icAlertWarningCircle,
+                    iconImage: .icModalWarning,
                     titleText: StringLiterals.FeedDetail.impertinentTitle,
                     contentText: nil,
                     leftTitle: StringLiterals.FeedDetail.cancel,
@@ -504,6 +506,20 @@ final class FeedDetailViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, isShow in
                 owner.rootView.showLoadingView(isShow: isShow)
+            })
+            .disposed(by: disposeBag)
+        
+        output.showNetworkErrorView
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                owner.rootView.showNetworkErrorView()
+            })
+            .disposed(by: disposeBag)
+        
+        output.showUnknownUserAlertView
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                owner.presentToFeedDetailUnknownUserErrorViewController()
             })
             .disposed(by: disposeBag)
     }

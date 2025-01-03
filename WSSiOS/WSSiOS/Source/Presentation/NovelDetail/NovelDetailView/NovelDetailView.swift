@@ -63,7 +63,7 @@ final class NovelDetailView: UIView {
                             for: .normal)
         
         headerDropDownButton.do {
-            $0.setImage(.icDropDownDot.withRenderingMode(.alwaysTemplate),
+            $0.setImage(.icThreedots.withRenderingMode(.alwaysTemplate),
                       for: .normal)
             $0.tintColor = .wssBlack
         }
@@ -84,7 +84,7 @@ final class NovelDetailView: UIView {
         }
         
         firstReviewDescriptionLabelBackgroundView.do {
-            $0.image = .speechBalloon
+            $0.image = .imgSpeechBalloon
             $0.contentMode = .scaleAspectFit
             $0.isUserInteractionEnabled = false
         }

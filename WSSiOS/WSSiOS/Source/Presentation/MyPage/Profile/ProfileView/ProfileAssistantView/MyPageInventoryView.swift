@@ -55,7 +55,7 @@ final class MyPageInventoryView: UIView {
         }
         
         arrowButton.do {
-            $0.setImage(.icRight.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray200), for: .normal)
+            $0.setImage(.icNavigateRight.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray200), for: .normal)
             $0.isUserInteractionEnabled = true
         }
         

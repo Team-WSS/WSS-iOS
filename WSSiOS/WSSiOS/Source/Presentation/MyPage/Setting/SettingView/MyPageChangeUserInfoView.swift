@@ -79,7 +79,7 @@ final class MyPageChangeUserInfoView: UIView {
             }
             
             birthArrowImageView.do {
-                $0.image = .icDownArrow.withTintColor(.wssGray300, renderingMode: .alwaysOriginal)
+                $0.image = .icChevronDown.withTintColor(.wssGray300, renderingMode: .alwaysOriginal)
                 $0.isUserInteractionEnabled = false
             }
         }

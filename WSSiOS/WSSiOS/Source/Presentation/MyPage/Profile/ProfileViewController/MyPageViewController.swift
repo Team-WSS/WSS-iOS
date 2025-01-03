@@ -167,19 +167,22 @@ final class MyPageViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.updateNavigationEnabled
+        output.updateNavigationBar
             .asDriver()
             .drive(with: self, onNext: { owner, data in
                 let (update, navigationTitle) = data
+                owner.navigationController?.navigationBar.barTintColor = update ? .white : .clear
+                owner.navigationController?.navigationBar.isTranslucent = !update
+                owner.navigationItem.title = update ? navigationTitle : ""
+            })
+            .disposed(by: disposeBag)
+        
+        output.updateStickyHeader
+            .asDriver()
+            .drive(with: self, onNext: { owner, update in
                 owner.rootView.scrolledStickyHeaderView.isHidden = !update
                 owner.rootView.mainStickyHeaderView.isHidden = update
                 owner.rootView.headerView.isHidden = update
-                
-                if update {
-                    owner.navigationItem.title = navigationTitle
-                } else {
-                    owner.navigationItem.title = ""
-                }
             })
             .disposed(by: disposeBag)
         
@@ -193,7 +196,7 @@ final class MyPageViewController: UIViewController {
         output.pushToEditViewController
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, data in
-                owner.pushToMyPageEditViewController(profile: data)
+                owner.pushToMyPageEditViewController(entryType: .myPage, profile: data)
             })
             .disposed(by: disposeBag)
         
@@ -378,7 +381,7 @@ final class MyPageViewController: UIViewController {
     //MARK: - Custom Method
     
     func scrollToTop() {
-        
+        self.rootView.scrollView.setContentOffset(CGPoint(x: 0, y: -self.rootView.scrollView.contentInset.top), animated: true)
     }
 }
 
@@ -410,9 +413,9 @@ extension MyPageViewController {
     
     private func decideNavigation(myPage: Bool) {
         if myPage {
-            preparationSetNavigationBar(title: "",
-                                        left: nil,
-                                        right: rootView.settingButton)
+            setNavigationBar(title: "",
+                             left: nil,
+                             right: rootView.settingButton)
         } else {
             let dropdownButton = WSSDropdownButton().then {
                 $0.makeDropdown(dropdownRootView: self.rootView,
@@ -425,9 +428,9 @@ extension MyPageViewController {
                 .disposed(by: disposeBag)
             }
             
-            preparationSetNavigationBar(title: "",
-                                        left: rootView.backButton,
-                                        right: dropdownButton)
+            setNavigationBar(title: "",
+                             left: rootView.backButton,
+                             right: dropdownButton)
         }
         
         rootView.headerView.userImageChangeButton.isHidden = !myPage

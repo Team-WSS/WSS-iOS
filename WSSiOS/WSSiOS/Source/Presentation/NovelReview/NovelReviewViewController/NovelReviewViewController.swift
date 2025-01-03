@@ -54,7 +54,7 @@ final class NovelReviewViewController: UIViewController {
     //MARK: - UI
     
     private func setNavigationBar() {
-        self.preparationSetNavigationBar(title: self.novelReviewViewModel.novelTitle, left: rootView.backButton, right: rootView.completeButton)
+        self.setNavigationBar(title: self.novelReviewViewModel.novelTitle, left: rootView.backButton, right: rootView.completeButton)
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.backgroundColor = .clear
@@ -201,7 +201,7 @@ final class NovelReviewViewController: UIViewController {
         
         output.showStopReviewingAlert
             .flatMapLatest { _ -> Observable<AlertButtonType> in
-                return self.presentToAlertViewController(iconImage: .icAlertWarningCircle,
+                return self.presentToAlertViewController(iconImage: .icModalWarning,
                                                          titleText: StringLiterals.NovelReview.Alert.titleText,
                                                          contentText: nil,
                                                          leftTitle: StringLiterals.NovelReview.Alert.stopTitle,

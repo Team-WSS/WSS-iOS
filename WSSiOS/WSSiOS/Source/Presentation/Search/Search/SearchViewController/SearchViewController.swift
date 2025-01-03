@@ -18,6 +18,8 @@ final class SearchViewController: UIViewController {
     private let viewModel: SearchViewModel
     private let disposeBag = DisposeBag()
     
+    private let viewWillAppearEvent = PublishRelay<Void>()
+    
     //MARK: - Components
     
     private let rootView = SearchView()
@@ -42,6 +44,7 @@ final class SearchViewController: UIViewController {
         
         showTabBar()
         setNavigationBar()
+        viewWillAppearEvent.accept(())
         
         AmplitudeManager.shared.track(AmplitudeEvent.Search.search)
     }
@@ -53,12 +56,6 @@ final class SearchViewController: UIViewController {
         registerCell()
         
         bindViewModel()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        NotificationCenter.default.removeObserver(self)
     }
     
     //MARK: - UI
@@ -81,6 +78,7 @@ final class SearchViewController: UIViewController {
     
     private func bindViewModel() {
         let input = SearchViewModel.Input(
+            viewWillAppearEvent: viewWillAppearEvent.asObservable(),
             searhBarDidTap: rootView.searchbarView.rx.tapGesture().when(.recognized).asObservable(),
             induceButtonDidTap: rootView.searchDetailInduceView.rx.tapGesture().when(.recognized).asObservable(),
             sosoPickCellSelected: rootView.sosopickView.sosopickCollectionView.rx.itemSelected.asObservable(),

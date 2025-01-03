@@ -23,7 +23,7 @@ final class MyPageSettingViewController: UIViewController {
     private var rootView = MyPageSettingView()
     
     // MARK: - Life Cycle
-
+    
     override func loadView() {
         self.view = rootView
     }
@@ -35,7 +35,7 @@ final class MyPageSettingViewController: UIViewController {
         bindCell()
         bindAction()
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -76,7 +76,7 @@ final class MyPageSettingViewController: UIViewController {
         rootView.tableView.rx.itemSelected
             .subscribe(with: self, onNext: { owner, indexPath in
                 self.rootView.tableView.deselectRow(at: indexPath, animated: true)
-
+                
                 switch indexPath.row {
                 case 0:
                     print("계정정보")
@@ -129,8 +129,8 @@ final class MyPageSettingViewController: UIViewController {
 
 extension MyPageSettingViewController {
     private func setNavigationBar() {
-        preparationSetNavigationBar(title: StringLiterals.Navigation.Title.myPageSetting,
-                                    left: self.rootView.backButton,
-                                    right: nil)
+        setNavigationBar(title: StringLiterals.Navigation.Title.myPageSetting,
+                         left: self.rootView.backButton,
+                         right: nil)
     }
 }

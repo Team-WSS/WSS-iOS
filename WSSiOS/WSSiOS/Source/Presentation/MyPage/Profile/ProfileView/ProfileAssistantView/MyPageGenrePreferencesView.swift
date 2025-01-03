@@ -59,7 +59,7 @@ final class MyPageGenrePreferencesView: UIView {
         
         myPageGenreOpenButton.do {
             $0.backgroundColor = .wssWhite
-            $0.setImage(.icDownArrow, for: .normal)
+            $0.setImage(.icChevronDown, for: .normal)
         }
         
         otherGenreView.isHidden = true

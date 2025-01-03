@@ -46,7 +46,7 @@ final class LibraryEmptyView: UIView {
             $0.spacing = 8
             
             emptyImageView.do {
-                $0.image = .icGenreDefault
+                $0.image = .imgEmpty
             }
             
             emptyTitleLabel.do {

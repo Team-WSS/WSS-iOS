@@ -175,7 +175,7 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
         
         output.inquiryButtonEnabled
             .subscribe(with: self, onNext: { owner, _ in
-                if let url = URL(string: StringLiterals.Search.Empty.kakaoChannelUrl) {
+                if let url = URL(string: URLs.Contact.kakao) {
                     UIApplication.shared.open(url, options: [:])
                 }
             })

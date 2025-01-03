@@ -37,7 +37,7 @@ final class MyPagePrivateView: UIView {
         self.backgroundColor = .wssWhite
         
         isPrivateImageView.do {
-            $0.image = .imgPrivateCat
+            $0.image = .imgEmptyCatLocked
             $0.contentMode = .scaleAspectFit
         }
         

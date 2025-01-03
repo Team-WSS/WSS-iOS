@@ -46,7 +46,7 @@ final class SearchView: UIView {
         }
         
         titleLabel.do {
-            $0.fontHeadline1Attribute(with: StringLiterals.Search.title)
+            $0.applyWSSFont(.headline1, with: StringLiterals.Search.title)
             $0.textColor = .wssBlack
         }
         

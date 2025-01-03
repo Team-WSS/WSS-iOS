@@ -146,7 +146,7 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
         output.showSpoilerAlertView
             .flatMapLatest { postSpoilerFeed, feedId in
                 self.presentToAlertViewController(
-                    iconImage: .icAlertWarningCircle,
+                    iconImage: .icModalWarning,
                     titleText: StringLiterals.FeedDetail.spoilerTitle,
                     contentText: nil,
                     leftTitle: StringLiterals.FeedDetail.cancel,
@@ -181,7 +181,7 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
         output.showImproperAlertView
             .flatMapLatest { postImpertinenceFeed, feedId in
                 self.presentToAlertViewController(
-                    iconImage: .icAlertWarningCircle,
+                    iconImage: .icModalWarning,
                     titleText: StringLiterals.FeedDetail.impertinentTitle,
                     contentText: nil,
                     leftTitle: StringLiterals.FeedDetail.cancel,
@@ -222,7 +222,7 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
         output.showDeleteAlertView
             .flatMapLatest { deleteFeed, feedId in
                 self.presentToAlertViewController(
-                    iconImage: .icAlertWarningCircle,
+                    iconImage: .icModalWarning,
                     titleText: StringLiterals.FeedDetail.deleteTitle,
                     contentText: StringLiterals.FeedDetail.deleteContent,
                     leftTitle: StringLiterals.FeedDetail.cancel,

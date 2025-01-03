@@ -104,7 +104,7 @@ final class MyPageEditAvatarView: UIView {
         
         notChangeButtonLabel.do {
             $0.applyWSSFont(.body2, with: StringLiterals.MyPage.Modal.keepOriginally)
-            $0.textColor = .Gray300
+            $0.textColor = .wssGray300
         }
     }
     

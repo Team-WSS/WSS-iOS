@@ -16,12 +16,13 @@ final class MyPageViewModel: ViewModelType {
     
     private let profileId: Int
     private let userRepository: UserRepository
-    private var height: CGFloat = 0
+    private var stickyHeaderHeight: CGFloat = 0
     
     private let disposeBag = DisposeBag()
     
     private let isMyPageRelay = BehaviorRelay<Bool>(value: true)
-    private let updateNavigationEnabledRelay = BehaviorRelay<(Bool, String)>(value: (false, ""))
+    private let updateNavigationRelay = BehaviorRelay<(Bool, String)>(value: (false, ""))
+    private let updateStickyHeaderRelay = BehaviorRelay<(Bool)>(value: (false))
     private let isProfilePrivateRelay = BehaviorRelay<(Bool, String)>(value: (false, ""))
     private let profileDataRelay = BehaviorRelay<MyProfileResult>(value: MyProfileResult(nickname: "", intro: "", avatarImage: "", genrePreferences: []))
     
@@ -94,7 +95,8 @@ final class MyPageViewModel: ViewModelType {
         let isMyPage: BehaviorRelay<Bool>
         let isProfilePrivate: BehaviorRelay<(Bool, String)>
         let profileData: BehaviorRelay<MyProfileResult>
-        let updateNavigationEnabled: BehaviorRelay<(Bool, String)>
+        let updateNavigationBar: BehaviorRelay<(Bool, String)>
+        let updateStickyHeader: BehaviorRelay<(Bool)>
         
         let pushToEditViewController: PublishRelay<MyProfileResult>
         let pushToSettingViewController: PublishRelay<Void>
@@ -174,7 +176,7 @@ final class MyPageViewModel: ViewModelType {
         input.headerViewHeight
             .asObservable()
             .bind(with: self, onNext: { owner, height in
-                owner.height = height
+                owner.stickyHeaderHeight = height
             })
             .disposed(by: disposeBag)
         
@@ -183,11 +185,9 @@ final class MyPageViewModel: ViewModelType {
             .map{ $0.y }
             .subscribe(with: self, onNext: { owner, scrollHeight in
                 let navigationText = owner.isMyPageRelay.value ? StringLiterals.Navigation.Title.myPage : owner.profileDataRelay.value.nickname
-                if (scrollHeight > owner.height) {
-                    self.updateNavigationEnabledRelay.accept((true, navigationText))
-                } else {
-                    self.updateNavigationEnabledRelay.accept((false, navigationText))
-                }
+                
+                owner.updateNavigationRelay.accept((scrollHeight > 0, navigationText))
+                owner.updateStickyHeaderRelay.accept(scrollHeight > owner.stickyHeaderHeight)
             })
             .disposed(by: disposeBag)
         
@@ -286,7 +286,8 @@ final class MyPageViewModel: ViewModelType {
             isMyPage: self.isMyPageRelay,
             isProfilePrivate: self.isProfilePrivateRelay,
             profileData: self.profileDataRelay,
-            updateNavigationEnabled: self.updateNavigationEnabledRelay,
+            updateNavigationBar: self.updateNavigationRelay,
+            updateStickyHeader: self.updateStickyHeaderRelay,
             
             pushToEditViewController: self.pushToEditViewControllerRelay,
             pushToSettingViewController: self.pushToSettingViewControllerRelay,
@@ -454,7 +455,7 @@ final class MyPageViewModel: ViewModelType {
                     //5개를 초과할 경우 더보기 버튼 뜨게 함
                     let hasMoreThanFive = feedCellData.count > 5
                     self.showFeedDetailButtonRelay.accept(hasMoreThanFive)
-                    self.bindFeedDataRelay.accept(feedCellData.suffix(5))
+                    self.bindFeedDataRelay.accept(Array(feedCellData.prefix(5)))
                 }
             })
             .catch { [weak self] error in

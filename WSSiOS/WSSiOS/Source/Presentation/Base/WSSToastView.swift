@@ -11,11 +11,6 @@ import SnapKit
 import Then
 
 enum ToastStatus {
-    case memoSaveSuccess
-    case memoSaveFail
-    case memoEditSuccess
-    case memoDelete
-    case nicknameSave
     case blockUser(nickname: String)
     case unknownUser
     case deleteBlockUser(nickname: String)
@@ -23,8 +18,6 @@ enum ToastStatus {
     case selectionOverLimit(count: Int)
     case novelReviewed
     case novelReviewDeleted
-    case changeToPublicProfile
-    case changeToPrivateProfile
     case feedEdited
     case changePublic
     case changePrivate
@@ -33,27 +26,15 @@ enum ToastStatus {
 
     var toastImage: UIImage {
         switch self {
-        case .memoSaveSuccess, .nicknameSave, .memoEditSuccess, .deleteBlockUser, .novelAlreadyConnected, .selectionOverLimit, .unknownUser:
+        case .deleteBlockUser, .novelAlreadyConnected, .selectionOverLimit, .unknownUser:
             return .icAlertSuccess
-        case .memoSaveFail, .memoDelete:
-            return .icAlertWarning
-        case .novelReviewed, .changeToPublicProfile, .changeToPrivateProfile, .novelReviewDeleted, .feedEdited, .blockUser, .changePublic, .changePrivate, .changeUserInfo, .editUserProfile:
+        case .novelReviewed, .novelReviewDeleted, .feedEdited, .blockUser, .changePublic, .changePrivate, .changeUserInfo, .editUserProfile:
             return .icAlertCheck
         }
     }
     
     var toastText: String {
         switch self {
-        case .memoSaveSuccess:
-            "메모를 저장했어요"
-        case .memoSaveFail:
-            "메모 저장에 실패했어요"
-        case .memoEditSuccess:
-            "메모를 수정했어요"
-        case .memoDelete:
-            "메모를 삭제했어요"
-        case .nicknameSave:
-            "닉네임을 저장했어요"
         case .blockUser(let nickname):
             "\(nickname)님을 차단했어요"
         case .deleteBlockUser(let nickname):
@@ -66,10 +47,6 @@ enum ToastStatus {
             "평가 완료!"
         case .novelReviewDeleted:
             "평가를 모두 삭제했어요"
-        case .changeToPublicProfile:
-            "프로필이 전체 공개로 전환되었어요"
-        case .changeToPrivateProfile:
-            "프로필이 비공개로 전환되었어요"
         case .feedEdited:
             "작성 완료!"
         case .unknownUser:
