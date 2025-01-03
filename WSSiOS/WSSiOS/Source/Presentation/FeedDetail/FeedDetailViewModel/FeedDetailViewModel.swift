@@ -66,6 +66,7 @@ final class FeedDetailViewModel: ViewModelType {
     var isCommentEditing: Bool = false
     let myCommentEditing = PublishRelay<Void>()
     let showCommentDeleteAlertView  = PublishRelay<((Int, Int) -> Observable<Void>, Int, Int)>()
+    let showWithdrawalUserToastView = PublishRelay<Void>()
     
     let pushToUserPageViewController = PublishRelay<Int>()
     private let showLoadingView = PublishRelay<Bool>()
@@ -157,6 +158,7 @@ final class FeedDetailViewModel: ViewModelType {
         let showCommentImpertinenceAlertView: Observable<((Int, Int) -> Observable<Void>, Int, Int)>
         let myCommentEditing: Observable<Void>
         let showCommentDeleteAlertView: Observable<((Int, Int) -> Observable<Void>, Int, Int)>
+        let showWithdrawalUserToastView: Observable<Void>
         
         let pushToUserPageViewController: Observable<Int>
         let showLoadingView: Observable<Bool>
@@ -388,8 +390,11 @@ final class FeedDetailViewModel: ViewModelType {
             .subscribe(with: self, onNext: { owner, data in
                 let (commentId, commentUserId ,isMyComment) = data
                 if owner.commentsData.value.firstIndex(where: { $0.commentId == commentId }) != nil {
-                    if !isMyComment {
+                    if !isMyComment && commentUserId != -1 {
                         owner.pushToUserPageViewController.accept(commentUserId)
+                    } else if commentUserId == -1 {
+                        // 탈퇴 유저일 때
+                        owner.showWithdrawalUserToastView.accept(())
                     }
                 }
                 owner.selectedCommentId = commentId
@@ -485,6 +490,7 @@ final class FeedDetailViewModel: ViewModelType {
                       showCommentImpertinenceAlertView: showCommentImpertinenceAlertView.asObservable(),
                       myCommentEditing: myCommentEditing.asObservable(),
                       showCommentDeleteAlertView: showCommentDeleteAlertView.asObservable(),
+                      showWithdrawalUserToastView: showWithdrawalUserToastView.asObservable(),
                       pushToUserPageViewController: pushToUserPageViewController.asObservable(),
                       showLoadingView: showLoadingView.asObservable(),
                       showNetworkErrorView: showNetworkErrorView.asObservable(),

@@ -489,6 +489,13 @@ final class FeedDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.showWithdrawalUserToastView
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.showToast(.unknownUser)
+            })
+            .disposed(by: disposeBag)
+        
         output.myCommentEditing
             .subscribe(with: self, onNext: { owner, _ in
                 owner.rootView.replyWritingView.replyWritingTextView.becomeFirstResponder()
