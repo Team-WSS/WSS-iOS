@@ -1,4 +1,5 @@
 # 웹소설 뭐 읽을 지 고민될 땐? 웹소소.
+<br>
  <div align="center">
 <img src="https://github.com/user-attachments/assets/6a77d2c5-2f10-4889-a2e8-5a8838c3bf71">
 </br>
@@ -12,12 +13,14 @@
     <img src="https://github.com/user-attachments/assets/ca18711b-bc6a-4408-b15a-1f9a34d7108a" width="200" alt="Websoso Link">
 </a>
 
+
  </div>
 
+<br>
 
 ## 📓 About WSS
 > 📅 2023.12.17 ~ ing
-대학생 연합 IT 벤처 창업 동아리 SOPT 33기 장기 해커톤 APP-JAM에서 탄생한 웹소소는 **웹소설 추천 및 커뮤니티 서비스**입니다. 
+> 대학생 연합 IT 벤처 창업 동아리 SOPT 33기 장기 해커톤 APP-JAM에서 탄생한 웹소소는 **웹소설 추천 및 커뮤니티 서비스**입니다. 
 
 ### 💫 Brand Value 
 - **Easy**: 쉽게 발견하자
@@ -82,7 +85,7 @@
 
 ### Develop Enviroment
 
-<img src="https://img.shields.io/badge/iOS-17.2-000000?style=flat-square&logo=iOS&logoColor=white"/> <img src="https://img.shields.io/badge/Xcode-15.1-147EFB?style=flat-square&logo=Xcode&logoColor=white"/> 
+<img src="https://img.shields.io/badge/iOS-15.0-000000?style=flat-square&logo=iOS&logoColor=white"/> <img src="https://img.shields.io/badge/Xcode-15.1-147EFB?style=flat-square&logo=Xcode&logoColor=white"/> 
 
 ### Dependencies
 ```
