@@ -74,7 +74,7 @@ final class HomeViewModel: ViewModelType {
         var tasteRecommendList: Observable<[TasteRecommendNovel]>
         let tasteRecommendCollectionViewHeight: Driver<CGFloat>
         let updateTasteRecommendView: Observable<(Bool, Bool)>
-        let pushToMyPageViewController: Observable<Void>
+        let pushToMyPageEditViewController: Observable<Void>
         
         let pushToNovelDetailViewController: Observable<Int>
         let pushToAnnouncementViewController: Observable<Void>
@@ -236,7 +236,7 @@ extension HomeViewModel {
                       tasteRecommendList: tasteRecommendList.asObservable(),
                       tasteRecommendCollectionViewHeight: tasteRecommendCollectionViewHeight.asDriver(),
                       updateTasteRecommendView: updateTasteRecommendView.asObservable(),
-                      pushToMyPageViewController: pushToMyPageViewController.asObservable(),
+                      pushToMyPageEditViewController: pushToMyPageViewController.asObservable(),
                       pushToNovelDetailViewController: pushToNovelDetailViewController.asObservable(),
                       pushToAnnouncementViewController: pushToAnnouncementViewController.asObservable(),
                       showInduceLoginModalView: showInduceLoginModalView.asObservable(),

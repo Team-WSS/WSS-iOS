@@ -191,7 +191,7 @@ final class MyPageViewController: UIViewController {
         output.pushToEditViewController
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, data in
-                owner.pushToMyPageEditViewController(profile: data)
+                owner.pushToMyPageEditViewController(entryType: .myPage, profile: data)
             })
             .disposed(by: disposeBag)
         

@@ -190,14 +190,10 @@ final class HomeViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.pushToMyPageViewController
+        output.pushToMyPageEditViewController
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
-                if let tabBarController = owner.tabBarController as? WSSTabBarController {
-                    if let myPageIndex = WSSTabBarItem.allCases.firstIndex(of: .myPage) {
-                        tabBarController.selectedIndex = myPageIndex
-                    }
-                }
+                owner.pushToMyPageEditViewController(entryType: .home, profile: nil)
             })
             .disposed(by: disposeBag)
         
@@ -243,6 +239,14 @@ final class HomeViewController: UIViewController {
             .subscribe(with: self, onNext: { owner, buttonType in
                 guard let url = URL(string: StringLiterals.AppMinimumVersion.appStoreURL) else { return }
                 UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            })
+            .disposed(by: disposeBag)
+        
+        //취향장르 정보 수정 Notification
+        NotificationCenter.default.rx.notification(NSNotification.Name("EditProfile"))
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                owner.showToast(.editUserProfile)
             })
             .disposed(by: disposeBag)
     }
