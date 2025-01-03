@@ -160,6 +160,7 @@ final class FeedGenreViewModel: ViewModelType {
                 if isLiked {
                     return self.deleteFeedLike(feedId)
                 } else {
+                    AmplitudeManager.shared.track(AmplitudeEvent.Feed.feedLike)
                     return self.postFeedLike(feedId)
                 }
             }

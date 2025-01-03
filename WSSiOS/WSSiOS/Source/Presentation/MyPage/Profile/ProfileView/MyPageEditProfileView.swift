@@ -107,7 +107,7 @@ final class MyPageEditProfileView: UIView {
             }
             
             nicknameClearButton.do {
-                $0.setImage(.icCancelLight, for: .normal)
+                $0.setImage(.icCancel, for: .normal)
                 $0.contentMode = .scaleAspectFit
                 $0.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
             }
@@ -121,7 +121,7 @@ final class MyPageEditProfileView: UIView {
             }
             
             nicknameWarningLabel.do {
-                $0.textColor = .Secondary100
+                $0.textColor = .wssSecondary100
                 $0.isHidden = true
             }
         }
@@ -160,7 +160,7 @@ final class MyPageEditProfileView: UIView {
             
             genreDescriptionLabel.do {
                 $0.applyWSSFont(.body5, with: StringLiterals.MyPage.EditProfile.genreDescription)
-                $0.textColor = .Gray200
+                $0.textColor = .wssGray200
             }
             
             genreCollectionView.do {

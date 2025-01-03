@@ -75,7 +75,7 @@ final class NormalSearchCollectionViewCell: UICollectionViewCell {
         }
         
         ratingImageView.do {
-            $0.image = .icStar2
+            $0.image = .icStar
         }
         
         ratingAverageLabel.do {

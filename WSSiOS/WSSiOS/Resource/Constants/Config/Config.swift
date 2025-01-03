@@ -15,6 +15,7 @@ enum Config {
             static let bucketURL = "BUCKET_URL"
             static let kakaoAppKey = "KAKAO_APP_KEY"
             static let appStoreID = "APPSTORE_ID"
+            static let amplitudeAPIKey = "AMPLITUDE_API_KEY"
         }
     }
     

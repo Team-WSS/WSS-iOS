@@ -64,7 +64,7 @@ final class MyPageInfoViewController: UIViewController {
     
     
     //MARK: - Bind
-
+    
     private func bindViewModel() {
         let input = MyPageInfoViewModel.Input(
             cellDidTapped: self.rootView.tableView.rx.itemSelected,
@@ -109,13 +109,14 @@ final class MyPageInfoViewController: UIViewController {
         output.presentToAlertViewController
             .observe(on: MainScheduler.instance)
             .bind(with: self as MyPageInfoViewController, onNext: { owner, _ in
-                owner.presentToAlertViewController(iconImage: .icAlertWarningCircle,
+                owner.presentToAlertViewController(iconImage: .icModalWarning,
                                                    titleText: StringLiterals.Alert.logoutTitle,
                                                    contentText: nil,
                                                    leftTitle: StringLiterals.Alert.cancel,
                                                    rightTitle: StringLiterals.Alert.logout,
                                                    rightBackgroundColor: UIColor.wssPrimary100.cgColor)
                 .bind(with: self, onNext: { owner, buttonType in
+                    AmplitudeManager.shared.track(AmplitudeEvent.MyPage.logout)
                     if buttonType == .right {
                         owner.logoutRelay.accept(true)
                     }
@@ -159,9 +160,9 @@ extension MyPageInfoViewController {
     //MARK: - UI
     
     private func setNavigationBar() {
-        preparationSetNavigationBar(title: StringLiterals.Navigation.Title.myPageInfo,
-                                    left: self.rootView.backButton,
-                                    right: nil)
+        setNavigationBar(title: StringLiterals.Navigation.Title.myPageInfo,
+                         left: self.rootView.backButton,
+                         right: nil)
     }
 }
 

@@ -10,9 +10,16 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+enum MyPageEditEntryType {
+    case myPage
+    case home
+}
+
 final class MyPageEditProfileViewModel: ViewModelType {
     
     //MARK: - Properties
+    
+    private var entryType: MyPageEditEntryType
     
     let genreList: [String] = NovelGenre.allCases.map { $0.toKorean }
     
@@ -21,7 +28,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
     static let introLimit = 50
     
     private let userRepository: UserRepository
-    private var profileData: MyProfileResult
+    private var profileData: MyProfileResult?
     private var avatarId: Int = -1
     
     private var userNickname = BehaviorRelay<String>(value: "")
@@ -37,9 +44,11 @@ final class MyPageEditProfileViewModel: ViewModelType {
     //MARK: - Life Cycle
     
     init(userRepository: UserRepository,
-         profileData: MyProfileResult) {
+         entryType: MyPageEditEntryType,
+         profileData: MyProfileResult? = nil) {
         
         self.userRepository = userRepository
+        self.entryType = entryType
         self.profileData = profileData
     }
     
@@ -87,13 +96,33 @@ final class MyPageEditProfileViewModel: ViewModelType {
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
         
-        // 데이터 초기 설정
-        self.userNickname.accept(self.profileData.nickname)
-        self.userIntro.accept(self.profileData.intro)
-        self.userGenre.accept(self.profileData.genrePreferences)
-        self.userImage.accept(self.profileData.avatarImage)
-        
-        output.bindProfileData.accept(self.profileData)
+        // 진입 경로 별 데이터 바인딩 분리
+        if entryType == .myPage {
+            guard let profileData = self.profileData else { fatalError("프로필 데이터가 전달되지 않음") }
+            
+            self.userNickname.accept(profileData.nickname)
+            self.userIntro.accept(profileData.intro)
+            self.userGenre.accept(profileData.genrePreferences)
+            self.userImage.accept(profileData.avatarImage)
+            
+            output.bindProfileData.accept(profileData)
+            
+        } else if entryType == .home {
+            self.getProfileData()
+                .subscribe(with: self, onNext: { owner, profileData in
+                    owner.profileData = profileData
+                    owner.userNickname.accept(profileData.nickname)
+                    owner.userIntro.accept(profileData.intro)
+                    owner.userGenre.accept(profileData.genrePreferences)
+                    owner.userImage.accept(profileData.avatarImage)
+                    
+                    output.bindProfileData.accept(profileData)
+                    
+                }, onError: { owner, error in
+                    print(error)
+                })
+                .disposed(by: disposeBag)
+        }
         
         let bindGenreTuple = checkGenreToMakeTuple(self.genreList, self.userGenre.value)
         output.bindGenreCell.accept(bindGenreTuple)
@@ -112,22 +141,22 @@ final class MyPageEditProfileViewModel: ViewModelType {
             .flatMapLatest{ _ -> Observable<Void> in
                 var updatedFields: [String: Any] = [:]
                 
-                if self.userImage.value != self.profileData.avatarImage && self.avatarId != -1  {
+                if self.userImage.value != self.profileData?.avatarImage && self.avatarId != -1  {
                     updatedFields["avatarId"] = self.avatarId
                 }
                 
-                if self.userNickname.value != self.profileData.nickname {
+                if self.userNickname.value != self.profileData?.nickname {
                     updatedFields["nickname"] = self.userNickname.value
                 }
                 
-                if self.userIntro.value != self.profileData.intro {
+                if self.userIntro.value != self.profileData?.intro {
                     updatedFields["intro"] = self.userIntro.value
                 }
                 
-                if self.userGenre.value != self.profileData.genrePreferences {
-                    updatedFields["genrePreferences"] = self.userGenre.value.map { $0 }
-                } else {
+                if self.userGenre.value == [] {
                     updatedFields["genrePreferences"] = []
+                } else {
+                    updatedFields["genrePreferences"] = self.userGenre.value.map { $0 }
                 }
                 
                 return self.patchProfile(updatedFields: updatedFields)
@@ -166,7 +195,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
         input.profileViewDidTap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
-                output.pushToAvatarViewController.accept(owner.profileData.nickname)
+                output.pushToAvatarViewController.accept(owner.profileData?.nickname ?? "")
             })
             .disposed(by: disposeBag)
         
@@ -190,7 +219,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
                 let isNickNameValid = owner.isValidNicknameCharacters(text)
                 output.checkButtonIsAbled.accept(text != owner.userNickname.value && isNickNameValid)
                 
-                if(limitedText == owner.profileData.nickname) {
+                if(limitedText == owner.profileData?.nickname) {
                     owner.checkDuplicatedButton.accept(false)
                 }
             })
@@ -298,7 +327,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
     }
     
     private func changeInfoData() {
-        if (self.userNickname.value == profileData.nickname && self.userIntro.value == profileData.intro && self.userGenre.value == profileData.genrePreferences && self.userImage.value == self.profileData.avatarImage) {
+        if (self.userNickname.value == profileData?.nickname && self.userIntro.value == profileData?.intro && self.userGenre.value == profileData?.genrePreferences && self.userImage.value == self.profileData?.avatarImage) {
             self.changeCompleteButtonRelay.accept(self.checkDuplicatedButton.value)
         }
         else {
@@ -381,6 +410,11 @@ final class MyPageEditProfileViewModel: ViewModelType {
                 }
             })
             .disposed(by: disposeBag)
+    }
+    
+    private func getProfileData() -> Observable<MyProfileResult> {
+        return userRepository.getMyProfileData()
+            .observe(on: MainScheduler.instance)
     }
 }
 

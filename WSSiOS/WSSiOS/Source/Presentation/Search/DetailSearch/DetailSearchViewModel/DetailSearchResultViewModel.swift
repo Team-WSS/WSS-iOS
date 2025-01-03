@@ -87,6 +87,9 @@ final class DetailSearchResultViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.novelResultCellSelected
+            .do(onNext: { _ in
+                AmplitudeManager.shared.track(AmplitudeEvent.Search.clickSeekResult)
+            })
             .withLatestFrom(filteredNovelsData) { indexPath, data in
                 data[indexPath.row].novelId
             }

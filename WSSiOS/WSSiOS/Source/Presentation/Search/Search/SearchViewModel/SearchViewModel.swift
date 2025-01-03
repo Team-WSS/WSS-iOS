@@ -12,7 +12,7 @@ import RxCocoa
 import RxGesture
 
 final class SearchViewModel: ViewModelType {
-
+    
     //MARK: - Properties
     
     private let searchRepository: SearchRepository
@@ -23,6 +23,7 @@ final class SearchViewModel: ViewModelType {
     //MARK: - Inputs
     
     struct Input {
+        let viewWillAppearEvent: Observable<Void>
         let searhBarDidTap: Observable<UITapGestureRecognizer>
         let induceButtonDidTap: Observable<UITapGestureRecognizer>
         let sosoPickCellSelected: Observable<IndexPath>
@@ -42,7 +43,7 @@ final class SearchViewModel: ViewModelType {
     }
     
     //MARK: - init
-  
+    
     init(searchRepository: SearchRepository) {
         self.searchRepository = searchRepository
     }
@@ -60,7 +61,10 @@ extension SearchViewModel {
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
         
-        self.getSosoPickNovels()
+        input.viewWillAppearEvent
+            .flatMapLatest {
+                self.getSosoPickNovels()
+            }
             .do(onNext: { _ in
                 output.showLoadingView.accept(true)
             })
@@ -75,6 +79,7 @@ extension SearchViewModel {
         
         input.searhBarDidTap
             .subscribe(onNext: { _ in
+                AmplitudeManager.shared.track(AmplitudeEvent.Search.generalSearch)
                 if self.isLogined {
                     output.pushToNormalSearchViewController.accept(())
                 } else {
@@ -85,6 +90,7 @@ extension SearchViewModel {
         
         input.induceButtonDidTap
             .subscribe(onNext: { _ in
+                AmplitudeManager.shared.track(AmplitudeEvent.Search.seek)
                 if self.isLogined {
                     output.pushToDetailSearchViewController.accept(())
                 } else {
@@ -95,6 +101,7 @@ extension SearchViewModel {
         
         input.sosoPickCellSelected
             .subscribe(onNext: { indexPath in
+                AmplitudeManager.shared.track(AmplitudeEvent.Search.sosoPick)
                 if self.isLogined {
                     let novelId = output.sosoPickList.value[indexPath.row].novelId
                     output.pushToNovelDetailViewController.accept(novelId)

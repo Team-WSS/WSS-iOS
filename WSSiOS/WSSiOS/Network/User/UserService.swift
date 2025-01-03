@@ -168,7 +168,7 @@ extension DefaultUserService: UserService {
     func getUserProfileVisibility() -> Single<UserProfileVisibility> {
         do {
             let request = try makeHTTPRequest(method: .get,
-                                              path: URLs.MyPage.ProfileVisibility.isProfileVisibility,
+                                              path: URLs.User.isProfileVisibility,
                                               headers: APIConstants.accessTokenHeader,
                                               body: nil)
             NetworkLogger.log(request: request)
@@ -229,7 +229,7 @@ extension DefaultUserService: UserService {
         }
         do {
             let request = try makeHTTPRequest(method: .patch,
-                                              path: URLs.MyPage.ProfileVisibility.isProfileVisibility,
+                                              path: URLs.User.isProfileVisibility,
                                               queryItems: makeUserProfileVisibilityQueryItems(isProfilePublic: isProfilePublic),
                                               headers: APIConstants.accessTokenHeader,
                                               body: userProfileVisibility)

@@ -175,7 +175,7 @@ final class NovelDetailViewController: UIViewController {
         output.showReviewDeleteAlert
             .flatMapLatest { _ in
                 self.presentToAlertViewController(
-                    iconImage: .icAlertWarningCircle,
+                    iconImage: .icModalWarning,
                     titleText: StringLiterals.NovelDetail.Header.deleteReviewAlertTitle,
                     contentText: StringLiterals.NovelDetail.Header.deleteReviewAlertDescription,
                     leftTitle: StringLiterals.NovelDetail.Header.deleteCancel,
@@ -253,6 +253,12 @@ final class NovelDetailViewController: UIViewController {
             .drive(with: self, onNext: { owner, tab in
                 owner.rootView.updateTab(selected: tab)
                 owner.rootView.showCreateFeedButton(show: tab == .feed)
+                
+                if tab == .info {
+                    AmplitudeManager.shared.track(AmplitudeEvent.Novel.novelInfo)
+                } else {
+                    AmplitudeManager.shared.track(AmplitudeEvent.Novel.novelFeed)
+                }
             })
             .disposed(by: disposeBag)
         
@@ -275,6 +281,7 @@ final class NovelDetailViewController: UIViewController {
         rootView.infoView.platformView.platformCollectionView.rx.itemSelected
             .withLatestFrom(output.platformList) {(indexPath: $0, platformList: $1)}
             .subscribe(with: self, onNext: { owner, data in
+                AmplitudeManager.shared.track(AmplitudeEvent.Novel.directNovel)
                 if let url = URL(string: data.platformList[data.indexPath.item].platformURL) {
                     UIApplication.shared.open(url, options: [:])
                 }
@@ -360,7 +367,7 @@ final class NovelDetailViewController: UIViewController {
         output.showSpoilerAlertView
             .flatMapLatest { postSpoilerFeed, feedId in
                 self.presentToAlertViewController(
-                    iconImage: .icAlertWarningCircle,
+                    iconImage: .icModalWarning,
                     titleText: StringLiterals.FeedDetail.spoilerTitle,
                     contentText: nil,
                     leftTitle: StringLiterals.FeedDetail.cancel,
@@ -369,6 +376,7 @@ final class NovelDetailViewController: UIViewController {
                 )
                 .flatMapLatest { buttonType in
                     if buttonType == .right {
+                        AmplitudeManager.shared.track(AmplitudeEvent.Feed.alertFeedSpoiler)
                         return postSpoilerFeed(feedId)
                     } else {
                         return Observable.empty()
@@ -394,7 +402,7 @@ final class NovelDetailViewController: UIViewController {
         output.showImproperAlertView
             .flatMapLatest { postImpertinenceFeed, feedId in
                 self.presentToAlertViewController(
-                    iconImage: .icAlertWarningCircle,
+                    iconImage: .icModalWarning,
                     titleText: StringLiterals.FeedDetail.impertinentTitle,
                     contentText: nil,
                     leftTitle: StringLiterals.FeedDetail.cancel,
@@ -403,6 +411,7 @@ final class NovelDetailViewController: UIViewController {
                 )
                 .flatMapLatest { buttonType in
                     if buttonType == .right {
+                        AmplitudeManager.shared.track(AmplitudeEvent.Feed.alertFeedAbuse)
                         return postImpertinenceFeed(feedId)
                     } else {
                         return Observable.empty()
@@ -435,7 +444,7 @@ final class NovelDetailViewController: UIViewController {
         output.showDeleteAlertView
             .flatMapLatest { deleteFeed, feedId in
                 self.presentToAlertViewController(
-                    iconImage: .icAlertWarningCircle,
+                    iconImage: .icModalWarning,
                     titleText: StringLiterals.FeedDetail.deleteTitle,
                     contentText: StringLiterals.FeedDetail.deleteContent,
                     leftTitle: StringLiterals.FeedDetail.cancel,

@@ -52,7 +52,7 @@ final class NovelDetailFeedConnectedNovelView: UIView {
         }
         
         starImageView.do {
-            $0.image = .icLinkStar
+            $0.image = .icStar.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray300)
         }
         
         ratingLabel.do {

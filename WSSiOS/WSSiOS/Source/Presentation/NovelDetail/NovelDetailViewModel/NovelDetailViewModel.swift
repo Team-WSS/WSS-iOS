@@ -225,8 +225,12 @@ final class NovelDetailViewModel: ViewModelType {
         input.headerDropdownButtonDidTap
             .bind(with: self, onNext: { owner, type in
                 switch type {
-                case .top: owner.showReportPage.accept(())
-                case .bottom: owner.showReviewDeleteAlert.accept(())
+                case .top:
+                    AmplitudeManager.shared.track(AmplitudeEvent.Novel.contactError)
+                    owner.showReportPage.accept(())
+                case .bottom:
+                    AmplitudeManager.shared.track(AmplitudeEvent.Novel.rateDelete)
+                    owner.showReviewDeleteAlert.accept(())
                 }
             })
             .disposed(by: disposeBag)
@@ -257,6 +261,7 @@ final class NovelDetailViewModel: ViewModelType {
         
         let pushToReviewViewController = input.reviewResultButtonDidTap
             .map {
+                AmplitudeManager.shared.track(AmplitudeEvent.Novel.rate)
                 let selectedReadStatus = $0 ?? self.readStatus.value
                 guard let selectedReadStatus else { throw RxError.noElements }
                 return (isInterest: self.isUserNovelInterested.value,
@@ -269,6 +274,9 @@ final class NovelDetailViewModel: ViewModelType {
         
         input.interestButtonDidTap
             .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
+            .do(onNext: { _ in
+                AmplitudeManager.shared.track(AmplitudeEvent.Novel.rateLove)
+            })
             .withUnretained(isUserNovelInterested)
             .withLatestFrom(isUserNovelInterested)
             .flatMapLatest{ isInterested in
@@ -283,20 +291,35 @@ final class NovelDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        let pushTofeedWriteViewController = Observable.merge(
-            input.feedWriteButtonDidTap.asObservable(),
-            input.createFeedButtonDidTap.asObservable()
-        )
+        let pushToFeedWriteViewControllerFromFeedWriteButton = input.feedWriteButtonDidTap
+            .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
+            .do(onNext: {
+                AmplitudeManager.shared.track(AmplitudeEvent.Novel.novelWriteButton)
+            })
             .map { _ in
                 (genre: self.novelGenre.value,
                  novelId: self.novelId,
                  novelTitle: self.novelTitle)
             }
+
+        let pushToFeedWriteViewControllerFromCreateFeedButton = input.createFeedButtonDidTap
             .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
-            .asObservable()
-            .do(onNext: { _ in
-                self.selectedTab.accept(.feed)
+            .do(onNext: {
+                AmplitudeManager.shared.track(AmplitudeEvent.Novel.novelWriteFloatingButton)
             })
+            .map { _ in
+                (genre: self.novelGenre.value,
+                 novelId: self.novelId,
+                 novelTitle: self.novelTitle)
+            }
+
+        let pushToFeedWriteViewController = Observable.merge(
+            pushToFeedWriteViewControllerFromFeedWriteButton,
+            pushToFeedWriteViewControllerFromCreateFeedButton
+        )
+        .do(onNext: { _ in
+            self.selectedTab.accept(.feed)
+        })
         
         let scrollContentOffset = input.scrollContentOffset
         
@@ -396,6 +419,7 @@ final class NovelDetailViewModel: ViewModelType {
                 if isLiked {
                     return self.deleteFeedLike(feedId)
                 } else {
+                    AmplitudeManager.shared.track(AmplitudeEvent.Feed.feedLike)
                     return self.postFeedLike(feedId)
                 }
             }
@@ -508,7 +532,7 @@ final class NovelDetailViewModel: ViewModelType {
             hidefirstReviewDescriptionView: hideFirstReviewDescription.asDriver(),
             showLargeNovelCoverImage: showLargeNovelCoverImage.asDriver(),
             isUserNovelInterested: isUserNovelInterested.asDriver(),
-            pushTofeedWriteViewController: pushTofeedWriteViewController,
+            pushTofeedWriteViewController: pushToFeedWriteViewController,
             pushToReviewViewController: pushToReviewViewController,
             selectedTab: selectedTab.asDriver(),
             isInfoDescriptionExpended: isInfoDescriptionExpended.asDriver(),

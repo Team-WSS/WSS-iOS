@@ -53,7 +53,6 @@ final class MyPageBlockUserTableViewCell: UITableViewCell {
         }
         
         userImageView.do {
-            $0.image = .imgProfile
             $0.layer.cornerRadius = 14
             $0.contentMode = .scaleToFill
             $0.clipsToBounds = true

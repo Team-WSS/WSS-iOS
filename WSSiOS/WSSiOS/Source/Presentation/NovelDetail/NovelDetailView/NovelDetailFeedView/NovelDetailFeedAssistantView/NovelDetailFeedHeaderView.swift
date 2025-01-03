@@ -59,7 +59,7 @@ final class NovelDetailFeedHeaderView: UIView {
         }
         
         dotImageView.do {
-            $0.image = .icDot
+            $0.image = .icBlackDot
         }
         
         createdDateLabel.do {

@@ -53,7 +53,7 @@ final class LibraryDescriptionView: UIView {
         }
         
         libraryNovelListButtonImageView.do {
-            $0.image = .icDropDown
+            $0.image = .icAlignmentDropdown
             $0.isUserInteractionEnabled = false
         }
     }

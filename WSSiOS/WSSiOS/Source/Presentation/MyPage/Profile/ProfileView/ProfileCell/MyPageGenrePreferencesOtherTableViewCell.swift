@@ -37,7 +37,7 @@ final class MyPageGenrePreferencesOtherTableViewCell: UITableViewCell {
     private func setUI() {
         genreLabel.textColor = .wssBlack
         
-        countLabel.textColor = .Gray200
+        countLabel.textColor = .wssGray200
     }
     
     private func setHierarchy() {

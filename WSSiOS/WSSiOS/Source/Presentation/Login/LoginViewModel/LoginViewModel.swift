@@ -91,6 +91,7 @@ final class LoginViewModel: NSObject, ViewModelType {
             .subscribe(with: self, onNext: { owner, type in
                 switch type {
                 case .skip:
+                    AmplitudeManager.shared.track(AmplitudeEvent.Onboarding.nonLogin)
                     owner.navigateToHome.accept(())
                 case .kakao:
                     owner.loginWithKakao(disposeBag: disposeBag)

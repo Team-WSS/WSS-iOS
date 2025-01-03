@@ -160,6 +160,7 @@ final class NormalSearchViewModel: ViewModelType {
         
         input.normalSearchCellSelected
             .subscribe(with: self, onNext: { owner, indexPath in
+                AmplitudeManager.shared.track(AmplitudeEvent.Search.clickSearchResult)
                 let novelId = owner.normalSearchList.value[indexPath.row].novelId
                 owner.pushToNovelDetailViewController.accept(novelId)
             })
@@ -169,7 +170,11 @@ final class NormalSearchViewModel: ViewModelType {
         let searchButtonEnabled = input.searchButtonDidTap.asObservable()
         let clearButtonEnabled = input.clearButtonDidTap.asObservable()
         let popViewController = input.backButtonDidTap.asObservable()
-        let inquiryButtonEnabled = input.inquiryButtonDidTap.asObservable()
+        let inquiryButtonEnabled = input.inquiryButtonDidTap
+            .asObservable()
+            .do(onNext: {
+                AmplitudeManager.shared.track(AmplitudeEvent.Search.contactNovelSearch)
+            })
         
         let normalSearchCollectionViewHeight = input.normalSearchCollectionViewContentSize
             .map { $0?.height ?? 0 }.asDriver(onErrorJustReturn: 0)

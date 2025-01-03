@@ -56,6 +56,8 @@ final class FeedEditViewController: UIViewController {
          bindViewModel()
          
          viewDidLoadEvent.accept(())
+         
+         AmplitudeManager.shared.track(AmplitudeEvent.Feed.write)
     }
     
     //MARK: - UI
@@ -200,7 +202,7 @@ final class FeedEditViewController: UIViewController {
         
         output.showStopEditingAlert
             .flatMapLatest { _ -> Observable<AlertButtonType> in
-                return self.presentToAlertViewController(iconImage: .icAlertWarningCircle,
+                return self.presentToAlertViewController(iconImage: .icModalWarning,
                                                          titleText: StringLiterals.FeedEdit.Alert.titleText,
                                                          contentText: nil,
                                                          leftTitle: StringLiterals.FeedEdit.Alert.stopTitle,

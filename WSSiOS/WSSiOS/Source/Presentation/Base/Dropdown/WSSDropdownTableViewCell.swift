@@ -39,7 +39,7 @@ final class WSSDropdownTableViewCell: UITableViewCell {
         }
         
         divderView.do {
-            $0.backgroundColor = .Gray50
+            $0.backgroundColor = .wssGray50
         }
     }
     

@@ -53,6 +53,8 @@ final class FeedViewController: UIViewController {
         bindViewModel()
         setupPages()
         bindColletionView()
+        
+        AmplitudeManager.shared.track(AmplitudeEvent.Feed.feedAll)
     }
     
     //MARK: - Bind
@@ -130,7 +132,11 @@ final class FeedViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.selectedTabIndex
-            .subscribe(with: self, onNext: { owner, index in 
+            .subscribe(with: self, onNext: { owner, index in
+                if let event = owner.categoryList.value[index].amplitudeEvent {
+                    AmplitudeManager.shared.track(event)
+                }
+
                 owner.pageBar.feedPageBarCollectionView.scrollToItem(
                     at: IndexPath(item: index, section: 0),
                     at: .centeredHorizontally,
@@ -196,6 +202,15 @@ extension FeedViewController: UICollectionViewDelegateFlowLayout {
             
         default:
             return CGSize()
+        }
+    }
+    
+    func scrollToTop() {
+        guard let pageViewController = self.children.first as? UIPageViewController,
+              let currentVC = pageViewController.viewControllers?.first else { return }
+        
+        if let scrollView = currentVC.view.subviews.compactMap({ $0 as? UIScrollView }).first {
+            scrollView.setContentOffset(CGPoint(x: 0, y: -scrollView.contentInset.top), animated: true)
         }
     }
 }

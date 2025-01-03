@@ -58,9 +58,9 @@ final class DetailSearchViewController: UIViewController, UIScrollViewDelegate {
         rootView.detailSearchInfoView.genreCollectionView
             .register(DetailSearchInfoGenreCollectionViewCell.self,
                       forCellWithReuseIdentifier: DetailSearchInfoGenreCollectionViewCell.cellIdentifier)
-        rootView.detailSearchKeywordView.novelSelectedKeywordListView.selectedKeywordCollectionView
         
         //키워드뷰
+        rootView.detailSearchKeywordView.novelSelectedKeywordListView.selectedKeywordCollectionView
             .register(NovelSelectedKeywordCollectionViewCell.self,
                       forCellWithReuseIdentifier: NovelSelectedKeywordCollectionViewCell.cellIdentifier)
         rootView.detailSearchKeywordView.novelKeywordSelectSearchResultView.searchResultCollectionView
