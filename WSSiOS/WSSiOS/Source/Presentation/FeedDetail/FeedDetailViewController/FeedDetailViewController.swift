@@ -523,10 +523,10 @@ final class FeedDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.showUnknownUserAlertView
+        output.showUnknownFeedAlertView
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
-                owner.presentToFeedDetailUnknownUserErrorViewController()
+                owner.presentToFeedDetailUnknownFeedErrorViewController()
             })
             .disposed(by: disposeBag)
     }

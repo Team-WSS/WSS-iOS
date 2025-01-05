@@ -71,7 +71,7 @@ final class FeedDetailViewModel: ViewModelType {
     let pushToUserPageViewController = PublishRelay<Int>()
     private let showLoadingView = PublishRelay<Bool>()
     private let showNetworkErrorView = PublishRelay<Void>()
-    private let showUnknownUserAlertView = PublishRelay<Void>()
+    private let showUnknownFeedAlertView = PublishRelay<Void>()
     private let popViewController = PublishRelay<Void>()
     
     //MARK: - Life Cycle
@@ -163,7 +163,7 @@ final class FeedDetailViewModel: ViewModelType {
         let pushToUserPageViewController: Observable<Int>
         let showLoadingView: Observable<Bool>
         let showNetworkErrorView: Observable<Void>
-        let showUnknownUserAlertView: Observable<Void>
+        let showUnknownFeedAlertView: Observable<Void>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -496,7 +496,7 @@ final class FeedDetailViewModel: ViewModelType {
                       pushToUserPageViewController: pushToUserPageViewController.asObservable(),
                       showLoadingView: showLoadingView.asObservable(),
                       showNetworkErrorView: showNetworkErrorView.asObservable(),
-                      showUnknownUserAlertView: showUnknownUserAlertView.asObservable())
+                      showUnknownFeedAlertView: showUnknownFeedAlertView.asObservable())
     }
     
     //MARK: - API
@@ -600,7 +600,7 @@ final class FeedDetailViewModel: ViewModelType {
             if let data,
                let errorResponse = try? JSONDecoder().decode(ServerErrorResponse.self, from: data) {
                 if errorResponse.code == "FEED-001" {
-                    self.showUnknownUserAlertView.accept(())
+                    self.showUnknownFeedAlertView.accept(())
                 }
             } else {
                 self.showNetworkErrorView.accept(())
