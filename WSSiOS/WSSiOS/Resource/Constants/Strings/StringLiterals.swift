@@ -599,6 +599,6 @@ enum StringLiterals {
         static var appStoreID: String {
             return Bundle.main.object(forInfoDictionaryKey: Config.Keys.Plist.appStoreID) as? String ?? "Error"
         }
-        static let appStoreURL = "itms-apps://itunes.apple.com/app/\(appStoreID)"
+        static let appStoreURL = "itms-apps://itunes.apple.com/kr/app/\(appStoreID)"
     }
 }
