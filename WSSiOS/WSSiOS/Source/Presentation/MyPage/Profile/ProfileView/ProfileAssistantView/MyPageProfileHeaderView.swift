@@ -132,7 +132,7 @@ final class MyPageProfileHeaderView: UIView {
         }
         
         if data.nickname == "" {
-            userNicknameLabel.applyWSSFont(.headline1, with: StringLiterals.MyPage.Profile.unknownUserNickname)
+            userNicknameLabel.applyWSSFont(.headline1, with: StringLiterals.Error.unknownUser)
         } else {
             userNicknameLabel.applyWSSFont(.headline1, with: data.nickname)
         }

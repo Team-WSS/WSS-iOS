@@ -36,6 +36,9 @@ enum StringLiterals {
         static let title = "네트워크 연결에\n실패했어요"
         static let description = "연결 상태를 확인한 후\n다시 시도해 보세요"
         static let refreshButton = "페이지 다시 불러오기"
+        
+        static let unknown = "알 수 없음"
+        static let unknownUser = "(알 수 없음)"
     }
     
     enum Tabbar {
@@ -157,7 +160,6 @@ enum StringLiterals {
             static let novelPreferenceTitle = "작품 취향"
             static let novelPreferenceLabel = "(이)가 매력적인 작품을 선호해요"
             static let privateLabel = "님의 프로필은\n비공개 상태예요"
-            static let unknownUserNickname = "(알 수 없음)"
             static let unknownAlertButtonTitle = "확인"
             static let myProfileLibrary = "내 서재"
             static let otherProfileLibrary = "서재"
