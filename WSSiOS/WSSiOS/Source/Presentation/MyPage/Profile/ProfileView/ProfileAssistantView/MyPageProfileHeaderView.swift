@@ -130,7 +130,12 @@ final class MyPageProfileHeaderView: UIView {
         } else {
             userImageView.kfSetImage(url: makeBucketImageURLString(path: data.avatarImage))
         }
-        userNicknameLabel.applyWSSFont(.headline1, with: data.nickname)
+        
+        if data.nickname == "" {
+            userNicknameLabel.applyWSSFont(.headline1, with: StringLiterals.MyPage.Profile.unknownUserNickname)
+        } else {
+            userNicknameLabel.applyWSSFont(.headline1, with: data.nickname)
+        }
         userIntroLabel.do {
             $0.applyWSSFont(.body2, with: data.intro)
             $0.textAlignment = .center
