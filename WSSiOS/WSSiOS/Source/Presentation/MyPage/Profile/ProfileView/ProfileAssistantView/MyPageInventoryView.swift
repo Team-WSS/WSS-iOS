@@ -24,7 +24,7 @@ final class MyPageInventoryView: UIView {
     
     private let interestCountLabel = UILabel()
     private let interestLabel = UILabel()
-    
+     
     private let watchingCountLabel = UILabel()
     private let watchingLabel = UILabel()
     
@@ -79,7 +79,7 @@ final class MyPageInventoryView: UIView {
         }
     }
     
-    private func createVerticalStack(countLabel: UILabel, textLabel: UILabel, text: String) -> UIStackView {
+    private func createVerticalStack(countLabel: UILabel, textLabel: UILabel, text: String, addLine: Bool = false) -> UIStackView {
         countLabel.do {
             $0.applyWSSFont(.title2, with: "0")
             $0.textAlignment = .center
@@ -97,17 +97,31 @@ final class MyPageInventoryView: UIView {
             $0.spacing = 2
         }
         
+        if addLine {
+            let dividerView = UIView().then {
+                $0.backgroundColor = .wssGray70
+            }
+            
+            verticalStack.addSubview(dividerView)
+            
+            dividerView.snp.makeConstraints {
+                $0.centerY.trailing.equalToSuperview()
+                $0.height.equalTo(40)
+                $0.width.equalTo(1)
+            }
+        }
+        
         return verticalStack
     }
     
     private func setHierarchy() {
         self.addSubview(inventoryView)
         inventoryView.addSubviews(titleLabel,
-                         arrowButton,
+                                  arrowButton,
                                   inventoryDetailView)
         inventoryDetailView.addSubview(stackView)
         
-        let interestStack = createVerticalStack(countLabel: interestCountLabel, textLabel: interestLabel, text: "관심")
+        let interestStack = createVerticalStack(countLabel: interestCountLabel, textLabel: interestLabel, text: "관심", addLine: true)
         let watchingStack = createVerticalStack(countLabel: watchingCountLabel, textLabel: watchingLabel, text: "보는중")
         let watchedStack = createVerticalStack(countLabel: watchedCountLabel, textLabel: watchedLabel, text: "봤어요")
         let quitStack = createVerticalStack(countLabel: quitCountLabel, textLabel: quitLabel, text: "하차")
