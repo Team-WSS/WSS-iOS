@@ -15,6 +15,7 @@ final class FeedNavigationView: UIView {
     //MARK: - Components
     
     private let navigationTitle = UILabel()
+    let createFeedButton = UIButton()
     
     // MARK: - Life Cycle
     
@@ -44,16 +45,27 @@ final class FeedNavigationView: UIView {
             $0.font = .HeadLine1
             $0.textColor = .wssBlack
         }
+        
+        createFeedButton.do {
+            $0.setImage(.icPencilSmall.withTintColor(.wssBlack).withRenderingMode(.alwaysOriginal), for: .normal)
+        }
     }
     
     private func setHierarchy() {
-        addSubview(navigationTitle)
+        addSubviews(navigationTitle,
+                    createFeedButton)
     }
     
     private func setLayout() {
         navigationTitle.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.leading.equalToSuperview().inset(20)
+        }
+        
+        createFeedButton.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalToSuperview().inset(20)
+            $0.size.equalTo(20)
         }
     }
 }
