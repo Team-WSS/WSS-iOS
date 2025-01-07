@@ -24,7 +24,7 @@ final class MyPageInventoryView: UIView {
     
     private let interestCountLabel = UILabel()
     private let interestLabel = UILabel()
-     
+    
     private let watchingCountLabel = UILabel()
     private let watchingLabel = UILabel()
     
@@ -53,7 +53,7 @@ final class MyPageInventoryView: UIView {
         self.backgroundColor = .wssWhite
         
         inventoryView.do {
-            $0.backgroundColor = .blue
+            $0.backgroundColor = .wssWhite
         }
         
         titleLabel.do {
@@ -75,7 +75,6 @@ final class MyPageInventoryView: UIView {
             $0.axis = .horizontal
             $0.distribution = .fillEqually
             $0.spacing = 2
-            $0.backgroundColor = .yellow
         }
     }
     
@@ -121,10 +120,11 @@ final class MyPageInventoryView: UIView {
                                   inventoryDetailView)
         inventoryDetailView.addSubview(stackView)
         
-        let interestStack = createVerticalStack(countLabel: interestCountLabel, textLabel: interestLabel, text: "관심", addLine: true)
-        let watchingStack = createVerticalStack(countLabel: watchingCountLabel, textLabel: watchingLabel, text: "보는중")
-        let watchedStack = createVerticalStack(countLabel: watchedCountLabel, textLabel: watchedLabel, text: "봤어요")
-        let quitStack = createVerticalStack(countLabel: quitCountLabel, textLabel: quitLabel, text: "하차")
+        let statusList = StringLiterals.ReviewerStatus.allCases.map { $0.rawValue }
+        let interestStack = createVerticalStack(countLabel: interestCountLabel, textLabel: interestLabel, text: statusList[0] , addLine: true)
+        let watchingStack = createVerticalStack(countLabel: watchingCountLabel, textLabel: watchingLabel, text: statusList[1])
+        let watchedStack = createVerticalStack(countLabel: watchedCountLabel, textLabel: watchedLabel, text: statusList[2])
+        let quitStack = createVerticalStack(countLabel: quitCountLabel, textLabel: quitLabel, text: statusList[3])
         
         stackView.addArrangedSubviews(interestStack,
                                       watchingStack,
