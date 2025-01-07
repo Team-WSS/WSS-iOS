@@ -5,7 +5,7 @@
 //  Created by 신지원 on 7/9/24.
 //
 
-import Foundation
+import UIKit
 
 import RxSwift
 import RxCocoa
@@ -82,7 +82,7 @@ final class MyPageViewModel: ViewModelType {
         let genrePreferenceButtonDidTap: Observable<Bool>
         let libraryButtonDidTap: Observable<Bool>
         let feedButtonDidTap: Observable<Bool>
-        let inventoryButtonDidTap: ControlEvent<Void>
+        let inventoryViewDidTap: Observable<UITapGestureRecognizer>
         let feedDetailButtonDidTap: ControlEvent<Void>
         
         let editProfileNotification: Observable<Notification>
@@ -240,7 +240,7 @@ final class MyPageViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.inventoryButtonDidTap
+        input.inventoryViewDidTap
             .bind(with: self, onNext: { owner, _ in
                 self.pushToLibraryViewControllerRelay.accept(owner.profileId)
             })
