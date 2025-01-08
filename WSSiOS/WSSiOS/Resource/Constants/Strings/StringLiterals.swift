@@ -75,7 +75,7 @@ enum StringLiterals {
     
     enum Home {
         enum Title {
-            static let todayPopular = "오늘의 인기작"
+            static let todayPopular = "오늘의 발견"
             static let realtimePopular = "지금 뜨는 수다글"
             static let interest = "님의 관심글"
             static let notLoggedInInterest = "관심글"
