@@ -23,7 +23,6 @@ final class FeedViewModel: ViewModelType {
         let createFeedButtonDidTap: ControlEvent<Void>
         let feedEditedNotification: Observable<Notification>
         let blockUserNotification: Observable<Notification>
-        let unknownUserNotification: Observable<Notification>
     }
     
     struct Output {
@@ -32,7 +31,6 @@ final class FeedViewModel: ViewModelType {
         let pushToFeedEditViewController = PublishRelay<Void>()
         let showFeedEditedToast =  PublishRelay<Void>()
         let showBlockUserToast =  PublishRelay<String>()
-        let showUnknownUserToast =  PublishRelay<Void>()
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -65,12 +63,6 @@ final class FeedViewModel: ViewModelType {
             .subscribe(with: self, onNext: { owner, notification in
                 guard let nickname = notification.object as? String else { return }
                 output.showBlockUserToast.accept(nickname)
-            })
-            .disposed(by: disposeBag)
-        
-        input.unknownUserNotification
-            .subscribe(with: self, onNext: { owner, notification in
-                output.showUnknownUserToast.accept(())
             })
             .disposed(by: disposeBag)
         

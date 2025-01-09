@@ -50,7 +50,6 @@ final class MyPageViewModel: ViewModelType {
     private let popViewControllerRelay = PublishRelay<Void>()
     
     private let showToastViewRelay = PublishRelay<Void>()
-    private let showUnknownUserAlertRelay = PublishRelay<Void>()
     private let stickyHeaderActionRelay = BehaviorRelay<Bool>(value: true)
     
     // MARK: - Life Cycle
@@ -252,16 +251,6 @@ final class MyPageViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        //알 수 없음 유저일 때 분기처리
-        self.showUnknownUserAlertRelay
-            .subscribe(with: self, onNext: { owner, _ in
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    NotificationCenter.default.post(name: NSNotification.Name("UnknownUser"), object: nil)
-                }
-                self.popViewControllerRelay.accept(())
-            })
-            .disposed(by: disposeBag)
-        
         //토스트뷰를 위한 분기처리
         input.editProfileNotification
             .bind(with: self, onNext: { owner, _ in
@@ -364,8 +353,17 @@ final class MyPageViewModel: ViewModelType {
                 .catch { [weak self] error in
                     guard let self else { return .empty() }
                     
+                    //현재 로직상 알 수 없는 유저 프로필을 확인하는 것은 불가능하지만
+                    //서버에러에 대응하여 아래처럼 처리
                     if self.isUnknownUserError(error) {
-                        self.showUnknownUserAlertRelay.accept(())
+                        let data = MyProfileResult(
+                            nickname: "",
+                            intro: "",
+                            avatarImage: "",
+                            genrePreferences: []
+                        )
+                        self.profileDataRelay.accept(data)
+                        self.isProfilePrivateRelay.accept((false, ""))
                     }
                     return .empty()
                 }

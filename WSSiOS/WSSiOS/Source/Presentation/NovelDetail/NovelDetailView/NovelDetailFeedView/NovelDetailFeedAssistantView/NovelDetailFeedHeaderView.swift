@@ -128,7 +128,11 @@ final class NovelDetailFeedHeaderView: UIView {
     
     func bindData(avatarImage: String, nickname: String, createdDate: String, isModified: Bool) {
         userImageView.kfSetImage(url: makeBucketImageURLString(path: avatarImage))
-        userNicknameLabel.applyWSSFont(.title2, with: nickname)
+        if nickname == StringLiterals.Error.unknown {
+            userNicknameLabel.applyWSSFont(.title2, with: StringLiterals.Error.unknownUser)
+        } else {
+            userNicknameLabel.applyWSSFont(.title2, with: nickname)
+        }
         createdDateLabel.applyWSSFont(.body5, with: createdDate)
         isModifiedLabel.isHidden = !isModified
     }

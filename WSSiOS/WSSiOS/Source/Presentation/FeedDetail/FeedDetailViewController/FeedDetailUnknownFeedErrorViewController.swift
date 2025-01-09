@@ -1,5 +1,5 @@
 //
-//  FeedDetailUnknownUserErrorViewController.swift
+//  FeedDetailUnknownFeedErrorViewController.swift
 //  WSSiOS
 //
 //  Created by Seoyeon Choi on 12/30/24.
@@ -9,7 +9,7 @@ import UIKit
 
 import RxSwift
 
-final class FeedDetailUnknownUserErrorViewController: UIViewController {
+final class FeedDetailUnknownFeedErrorViewController: UIViewController {
     
     //MARK: - Properties
     
@@ -18,7 +18,7 @@ final class FeedDetailUnknownUserErrorViewController: UIViewController {
     
     //MARK: - UI Components
     
-    private let rootView = FeedDetailUnknownUserErrorView()
+    private let rootView = FeedDetailUnknownFeedErrorView()
     
     override func loadView() {
         self.view = rootView

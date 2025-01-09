@@ -66,11 +66,12 @@ final class FeedDetailViewModel: ViewModelType {
     var isCommentEditing: Bool = false
     let myCommentEditing = PublishRelay<Void>()
     let showCommentDeleteAlertView  = PublishRelay<((Int, Int) -> Observable<Void>, Int, Int)>()
+    let showWithdrawalUserToastView = PublishRelay<Void>()
     
     let pushToUserPageViewController = PublishRelay<Int>()
     private let showLoadingView = PublishRelay<Bool>()
     private let showNetworkErrorView = PublishRelay<Void>()
-    private let showUnknownUserAlertView = PublishRelay<Void>()
+    private let showUnknownFeedAlertView = PublishRelay<Void>()
     private let popViewController = PublishRelay<Void>()
     
     //MARK: - Life Cycle
@@ -157,11 +158,12 @@ final class FeedDetailViewModel: ViewModelType {
         let showCommentImpertinenceAlertView: Observable<((Int, Int) -> Observable<Void>, Int, Int)>
         let myCommentEditing: Observable<Void>
         let showCommentDeleteAlertView: Observable<((Int, Int) -> Observable<Void>, Int, Int)>
+        let showWithdrawalUserToastView: Observable<Void>
         
         let pushToUserPageViewController: Observable<Int>
         let showLoadingView: Observable<Bool>
         let showNetworkErrorView: Observable<Void>
-        let showUnknownUserAlertView: Observable<Void>
+        let showUnknownFeedAlertView: Observable<Void>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -244,8 +246,10 @@ final class FeedDetailViewModel: ViewModelType {
         input.userProfileViewDidTap
             .subscribe(with: self, onNext: { owner, _ in
                 guard let feedUserId = owner.feedUserId else { return }
-                if !owner.isMyFeed.value {
+                if !owner.isMyFeed.value && feedUserId != -1 {
                     owner.pushToUserPageViewController.accept(feedUserId)
+                } else if feedUserId == -1 {
+                    owner.showWithdrawalUserToastView.accept(())
                 }
             })
             .disposed(by: disposeBag)
@@ -388,8 +392,11 @@ final class FeedDetailViewModel: ViewModelType {
             .subscribe(with: self, onNext: { owner, data in
                 let (commentId, commentUserId ,isMyComment) = data
                 if owner.commentsData.value.firstIndex(where: { $0.commentId == commentId }) != nil {
-                    if !isMyComment {
+                    if !isMyComment && commentUserId != -1 {
                         owner.pushToUserPageViewController.accept(commentUserId)
+                    } else if commentUserId == -1 {
+                        // 탈퇴 유저일 때
+                        owner.showWithdrawalUserToastView.accept(())
                     }
                 }
                 owner.selectedCommentId = commentId
@@ -485,10 +492,11 @@ final class FeedDetailViewModel: ViewModelType {
                       showCommentImpertinenceAlertView: showCommentImpertinenceAlertView.asObservable(),
                       myCommentEditing: myCommentEditing.asObservable(),
                       showCommentDeleteAlertView: showCommentDeleteAlertView.asObservable(),
+                      showWithdrawalUserToastView: showWithdrawalUserToastView.asObservable(),
                       pushToUserPageViewController: pushToUserPageViewController.asObservable(),
                       showLoadingView: showLoadingView.asObservable(),
                       showNetworkErrorView: showNetworkErrorView.asObservable(),
-                      showUnknownUserAlertView: showUnknownUserAlertView.asObservable())
+                      showUnknownFeedAlertView: showUnknownFeedAlertView.asObservable())
     }
     
     //MARK: - API
@@ -592,7 +600,7 @@ final class FeedDetailViewModel: ViewModelType {
             if let data,
                let errorResponse = try? JSONDecoder().decode(ServerErrorResponse.self, from: data) {
                 if errorResponse.code == "FEED-001" {
-                    self.showUnknownUserAlertView.accept(())
+                    self.showUnknownFeedAlertView.accept(())
                 }
             } else {
                 self.showNetworkErrorView.accept(())

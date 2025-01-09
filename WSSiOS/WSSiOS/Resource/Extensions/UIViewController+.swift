@@ -290,7 +290,7 @@ extension UIViewController {
                 profileId: userId))
         
         viewController.hidesBottomBarWhenPushed = true
-        self.navigationController?.pushViewController(viewController, animated: false)
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
     
     func pushToMyPageEditViewController(entryType: MyPageEditEntryType, profile: MyProfileResult?) {
@@ -384,12 +384,12 @@ extension UIViewController {
         self.navigationController?.pushViewController(viewController, animated: false)
     }
     
-    func presentToFeedDetailUnknownUserErrorViewController() {
-        let feedDetailUnknownUserErrorViewController = FeedDetailUnknownUserErrorViewController()
-        feedDetailUnknownUserErrorViewController.modalPresentationStyle = .overFullScreen
-        feedDetailUnknownUserErrorViewController.modalTransitionStyle = .crossDissolve
+    func presentToFeedDetailUnknownFeedErrorViewController() {
+        let feedDetailUnknownFeedErrorViewController = FeedDetailUnknownFeedErrorViewController()
+        feedDetailUnknownFeedErrorViewController.modalPresentationStyle = .overFullScreen
+        feedDetailUnknownFeedErrorViewController.modalTransitionStyle = .crossDissolve
         
-        self.present(feedDetailUnknownUserErrorViewController, animated: true)
+        self.present(feedDetailUnknownFeedErrorViewController, animated: true)
     }
 }
 

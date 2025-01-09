@@ -1,5 +1,5 @@
 //
-//  FeedDetailUnknownUserErrorView.swift
+//  FeedDetailUnknownFeedErrorView.swift
 //  WSSiOS
 //
 //  Created by Seoyeon Choi on 12/30/24.
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class FeedDetailUnknownUserErrorView: UIView {
+final class FeedDetailUnknownFeedErrorView: UIView {
     
     //MARK: - UI Components
     
