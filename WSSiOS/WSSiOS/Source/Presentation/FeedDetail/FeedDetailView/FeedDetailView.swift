@@ -17,6 +17,7 @@ final class FeedDetailView: UIView {
     let scrollView = UIScrollView()
     private let contentView = UIView()
     
+    let statusBarView = UIView()
     let backButton = UIButton()
     let viewTitleLabel = UILabel()
     let dropdownButton = UIButton()
@@ -88,6 +89,7 @@ final class FeedDetailView: UIView {
     
     private func setHierarchy() {
         self.addSubviews(scrollView,
+                         statusBarView,
                          replyWritingView,
                          replyBottomView,
                          dropdownView,
@@ -108,6 +110,11 @@ final class FeedDetailView: UIView {
         contentView.snp.makeConstraints {
             $0.edges.equalTo(scrollView.contentLayoutGuide)
             $0.width.equalTo(scrollView.snp.width)
+        }
+        
+        statusBarView.snp.makeConstraints {
+            $0.top.horizontalEdges.equalToSuperview()
+            $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.top)
         }
         
         backButton.snp.makeConstraints {

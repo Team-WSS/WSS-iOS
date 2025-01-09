@@ -72,6 +72,10 @@ final class FeedDetailViewController: UIViewController {
         self.navigationItem.titleView = self.rootView.viewTitleLabel
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.rootView.backButton)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.rootView.dropdownButton)
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.backgroundColor = .wssWhite
+        rootView.statusBarView.backgroundColor = .wssWhite
     }
     
     //MARK: - Bind
