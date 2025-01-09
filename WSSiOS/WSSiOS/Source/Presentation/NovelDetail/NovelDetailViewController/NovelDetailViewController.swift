@@ -83,6 +83,7 @@ final class NovelDetailViewController: UIViewController {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: rootView.backButton)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rootView.headerDropDownButton)
+        updateNavigationBarStyle(offset: rootView.scrollView.contentOffset.y)
     }
     
     //MARK: - Bind
