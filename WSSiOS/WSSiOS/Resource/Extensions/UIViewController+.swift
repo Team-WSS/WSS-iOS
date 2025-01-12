@@ -70,6 +70,41 @@ extension UIViewController {
         }
     }
     
+    func setWSSNavigationBar(title: String?, left: UIButton?, right: UIButton?, isVisibleBeforeScroll: Bool = true) {
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        self.navigationItem.title = title
+        self.navigationItem.leftBarButtonItem = left != nil ? UIBarButtonItem(customView: left!) : nil
+        self.navigationItem.rightBarButtonItem = right != nil ? UIBarButtonItem(customView: right!) : nil
+        setNavigationBarVisibleBeforeScroll(isVisible: isVisibleBeforeScroll)
+        
+    }
+    
+    func setNavigationBarVisibleBeforeScroll(isVisible: Bool) {
+        let clearAppearance = UINavigationBarAppearance().then {
+            $0.configureWithTransparentBackground()
+            $0.titleTextAttributes = [
+                .font: UIFont.Title2,
+                .kern: -0.6,
+                .foregroundColor: UIColor.clear
+            ]
+            $0.shadowColor = .clear
+        }
+        
+        let whiteAppearance = UINavigationBarAppearance().then {
+            $0.configureWithOpaqueBackground()
+            $0.backgroundColor = .white
+            $0.titleTextAttributes = [
+                .font: UIFont.Title2,
+                .kern: -0.6,
+                .foregroundColor: UIColor.black
+            ]
+            $0.shadowColor = .clear
+        }
+        
+        navigationController?.navigationBar.standardAppearance = whiteAppearance
+        navigationController?.navigationBar.scrollEdgeAppearance = isVisible ? whiteAppearance : clearAppearance
+    }
+    
     func moveToNovelDetailViewController(userNovelId: Int) {
         if self.navigationController?.tabBarController?.selectedIndex == 0 {
             let tabBar = WSSTabBarController()
