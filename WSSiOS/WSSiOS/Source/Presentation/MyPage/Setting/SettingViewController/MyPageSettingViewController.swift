@@ -129,7 +129,7 @@ final class MyPageSettingViewController: UIViewController {
 
 extension MyPageSettingViewController {
     private func setNavigationBar() {
-        setNavigationBar(title: StringLiterals.Navigation.Title.myPageSetting,
+        setWSSNavigationBar(title: StringLiterals.Navigation.Title.myPageSetting,
                          left: self.rootView.backButton,
                          right: nil)
     }

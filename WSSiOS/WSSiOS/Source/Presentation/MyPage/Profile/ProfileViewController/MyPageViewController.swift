@@ -23,6 +23,8 @@ final class MyPageViewController: UIViewController {
     private let viewModel: MyPageViewModel
     var entryType: EntryType = .otherVC
     
+    private var navigationTitle: String = ""
+    
     private let isEntryTabbarRelay = BehaviorRelay<Bool>(value: false)
     private var dropDownCellTap = PublishSubject<String>()
     private let headerViewHeightRelay = BehaviorRelay<Double>(value: 0)
@@ -77,6 +79,7 @@ final class MyPageViewController: UIViewController {
         
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
         self.viewWillAppearEvent.accept(true)
+        decideNavigation(myPage: entryType == .tabBar, navigationTitle: navigationTitle)
     }
     
     override func viewDidLayoutSubviews() {
@@ -154,7 +157,7 @@ final class MyPageViewController: UIViewController {
         output.isMyPage
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, isMyPage in
-                owner.decideNavigation(myPage: isMyPage)
+                owner.decideNavigation(myPage: isMyPage, navigationTitle: "")
                 owner.rootView.mainStickyHeaderView.buttonLabelText(isMyPage: isMyPage)
                 owner.rootView.scrolledStickyHeaderView.buttonLabelText(isMyPage: isMyPage)
             })
@@ -171,8 +174,7 @@ final class MyPageViewController: UIViewController {
             .asDriver()
             .drive(with: self, onNext: { owner, data in
                 let (update, navigationTitle) = data
-                owner.navigationController?.navigationBar.barTintColor = update ? .white : .clear
-                owner.navigationController?.navigationBar.isTranslucent = !update
+                owner.navigationTitle = navigationTitle
                 owner.navigationItem.title = update ? navigationTitle : ""
             })
             .disposed(by: disposeBag)
@@ -411,11 +413,12 @@ extension MyPageViewController {
     
     //MARK: - UI
     
-    private func decideNavigation(myPage: Bool) {
+    private func decideNavigation(myPage: Bool, navigationTitle: String) {
         if myPage {
-            setNavigationBar(title: "",
-                             left: nil,
-                             right: rootView.settingButton)
+            setWSSNavigationBar(title: navigationTitle,
+                                left: nil,
+                                right: rootView.settingButton,
+                                isVisibleBeforeScroll: false)
         } else {
             let dropdownButton = WSSDropdownButton().then {
                 $0.makeDropdown(dropdownRootView: self.rootView,
@@ -428,9 +431,10 @@ extension MyPageViewController {
                 .disposed(by: disposeBag)
             }
             
-            setNavigationBar(title: "",
-                             left: rootView.backButton,
-                             right: dropdownButton)
+            setWSSNavigationBar(title: navigationTitle,
+                                left: rootView.backButton,
+                                right: dropdownButton,
+                                isVisibleBeforeScroll: false)
         }
         
         rootView.headerView.userImageChangeButton.isHidden = !myPage
