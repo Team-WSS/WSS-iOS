@@ -187,6 +187,8 @@
 		39E8FD902C742CE100AD6F30 /* NovelDetailHeaderReadStatusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E8FD8F2C742CE100AD6F30 /* NovelDetailHeaderReadStatusButton.swift */; };
 		39E8FD922C743D8000AD6F30 /* NovelDetailHeaderReadInfoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E8FD912C743D8000AD6F30 /* NovelDetailHeaderReadInfoButton.swift */; };
 		39EDFB362D38D8CF009F071A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 39EDFB352D38D8CF009F071A /* GoogleService-Info.plist */; };
+		39EDFB392D38D9A7009F071A /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 39EDFB382D38D9A7009F071A /* FirebaseAnalytics */; };
+		39EDFB3B2D38D9A7009F071A /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 39EDFB3A2D38D9A7009F071A /* FirebaseMessaging */; };
 		39EF97AC2B53E43800D2148B /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 39EF97AB2B53E43800D2148B /* Lottie */; };
 		39F686FC2C6F5BB90065999F /* NovelDetailInfoReviewKeywordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39F686FB2C6F5BB90065999F /* NovelDetailInfoReviewKeywordView.swift */; };
 		39F686FE2C6F5D5C0065999F /* NovelDetailInfoReviewGraphStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39F686FD2C6F5D5C0065999F /* NovelDetailInfoReviewGraphStackView.swift */; };
@@ -797,7 +799,9 @@
 				2CD229442B42E7A2005400BE /* RxRelay in Frameworks */,
 				2CD229472B42E7C8005400BE /* Lottie in Frameworks */,
 				2CD229402B42E7A2005400BE /* RxCocoa in Frameworks */,
+				39EDFB3B2D38D9A7009F071A /* FirebaseMessaging in Frameworks */,
 				3916EC862B89B42C007835B5 /* RxGesture in Frameworks */,
+				39EDFB392D38D9A7009F071A /* FirebaseAnalytics in Frameworks */,
 				2CD2293C2B42E7A2005400BE /* RxBlocking in Frameworks */,
 				398F933E2CE66C3500C0F916 /* RxKakaoSDKCommon in Frameworks */,
 				2C9BDDA72CA79F420026D038 /* Kingfisher in Frameworks */,
@@ -2451,6 +2455,8 @@
 				398F933D2CE66C3500C0F916 /* RxKakaoSDKCommon */,
 				394401A92CE9B07B007B5E04 /* Then */,
 				CDE0C0302D23B04D000BC822 /* AmplitudeSwift */,
+				39EDFB382D38D9A7009F071A /* FirebaseAnalytics */,
+				39EDFB3A2D38D9A7009F071A /* FirebaseMessaging */,
 			);
 			productName = WSSiOS;
 			productReference = 2CD229182B42E685005400BE /* WSSiOS.app */;
@@ -2491,6 +2497,7 @@
 				390162CA2CE6575D00B7476C /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */,
 				394401A82CE9B07B007B5E04 /* XCRemoteSwiftPackageReference "Then" */,
 				CDE0C02F2D23B04C000BC822 /* XCRemoteSwiftPackageReference "Amplitude-Swift" */,
+				39EDFB372D38D9A7009F071A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = 2CD229192B42E685005400BE /* Products */;
 			projectDirPath = "";
@@ -3194,6 +3201,14 @@
 				minimumVersion = 0.8.3;
 			};
 		};
+		39EDFB372D38D9A7009F071A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.7.0;
+			};
+		};
 		CD3E5A832B54254F00C0A659 /* XCRemoteSwiftPackageReference "RxKeyboard" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/RxSwiftCommunity/RxKeyboard";
@@ -3272,6 +3287,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3999BFEC2B4E6CA000984832 /* XCRemoteSwiftPackageReference "UIImageViewAlignedSwift" */;
 			productName = UIImageViewAlignedSwift;
+		};
+		39EDFB382D38D9A7009F071A /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 39EDFB372D38D9A7009F071A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		39EDFB3A2D38D9A7009F071A /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 39EDFB372D38D9A7009F071A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
 		};
 		39EF97AB2B53E43800D2148B /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
