@@ -172,6 +172,7 @@ enum URLs {
     
     enum Notice {
         static let getNotices = "/notices"
+        static let getNotifications = "/notifications"
     }
     
     enum Search {

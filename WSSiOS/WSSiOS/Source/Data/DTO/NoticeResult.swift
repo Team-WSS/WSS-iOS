@@ -16,3 +16,19 @@ struct Notice: Codable {
     var noticeContent: String
     var createdDate: String
 }
+
+struct NotificationsResult: Decodable {
+    var isLoadable: Bool
+    var notifications: [NotificationResult]
+}
+
+struct NotificationResult: Decodable {
+    var notificationId: Int
+    var notificationImage: String
+    var notificationTitle: String
+    var notificationDescription: String
+    var createdDate: String
+    var isRead: Bool
+    var isNotice: Bool
+    var feedId: Int?
+}
