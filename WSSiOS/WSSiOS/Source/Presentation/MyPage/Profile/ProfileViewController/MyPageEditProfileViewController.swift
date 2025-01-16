@@ -215,7 +215,7 @@ extension MyPageEditProfileViewController: UICollectionViewDelegateFlowLayout {
 
 extension MyPageEditProfileViewController {
     private func setNavigation() {
-        setNavigationBar(title: StringLiterals.Navigation.Title.editProfile,
+        setWSSNavigationBar(title: StringLiterals.Navigation.Title.editProfile,
                          left: self.rootView.backButton,
                          right: self.rootView.completeButton)
     }

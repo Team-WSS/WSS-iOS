@@ -65,7 +65,7 @@ final class SearchViewController: UIViewController {
     }
     
     private func setNavigationBar() {
-        self.navigationController?.isNavigationBarHidden = true
+        navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
     //MARK: - Bind

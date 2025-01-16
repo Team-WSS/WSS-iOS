@@ -63,12 +63,7 @@ final class FeedEditViewController: UIViewController {
     //MARK: - UI
     
     private func setNavigationBar() {
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.rootView.backButton)
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.rootView.completeButton)
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.backgroundColor = .clear
+        self.setWSSNavigationBar(title: nil, left: self.rootView.backButton, right: self.rootView.completeButton)
     }
     
     private func setNotificationCenter() {

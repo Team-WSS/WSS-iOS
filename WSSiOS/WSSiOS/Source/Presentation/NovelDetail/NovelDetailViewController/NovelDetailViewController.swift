@@ -73,16 +73,10 @@ final class NovelDetailViewController: UIViewController {
         self.hidesBottomBarWhenPushed = true
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        updateNavigationBarStyle(offset: 0)
-    }
-    
     //MARK: - UI
     
     private func setNavigationBar() {
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: rootView.backButton)
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rootView.headerDropDownButton)
+        self.setWSSNavigationBar(title: navigationTitle, left: rootView.backButton, right: rootView.headerDropDownButton, isVisibleBeforeScroll: false)
     }
     
     //MARK: - Bind
@@ -103,6 +97,8 @@ final class NovelDetailViewController: UIViewController {
     
     private func delegate() {
         rootView.infoView.reviewView.keywordView.keywordCollectionView.rx.setDelegate(self)
+            .disposed(by: disposeBag)
+        rootView.scrollView.rx.setDelegate(self)
             .disposed(by: disposeBag)
     }
     
@@ -142,14 +138,9 @@ final class NovelDetailViewController: UIViewController {
         output.scrollContentOffset
             .observe(on: MainScheduler.asyncInstance)
             .subscribe(with: self, onNext: { owner, offset in
-                owner.updateNavigationBarStyle(offset: offset.y)
-                
                 let stickyoffset = owner.rootView.headerView.frame.size.height - owner.view.safeAreaInsets.top
                 let showStickyTabBar = offset.y > stickyoffset
                 owner.rootView.updateStickyTabBarShow(showStickyTabBar)
-                if offset.y < 0 {
-                    owner.rootView.scrollView.rx.contentOffset.onNext(CGPoint(x: 0, y: 0))
-                }
             })
             .disposed(by: disposeBag)
         
@@ -558,31 +549,6 @@ final class NovelDetailViewController: UIViewController {
         self.navigationController?.setNavigationBarHidden(isShow, animated: false)
     }
     
-    private func updateNavigationBarStyle(offset: CGFloat) {
-        if offset > 0 {
-            rootView.statusBarView.backgroundColor = .wssWhite
-            navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-            navigationController?.navigationBar.shadowImage = UIImage()
-            navigationController?.navigationBar.backgroundColor = .wssWhite
-            navigationItem.title = navigationTitle
-            setNavigationBarTextAttribute()
-        } else {
-            rootView.statusBarView.backgroundColor = .clear
-            navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
-            navigationController?.navigationBar.shadowImage = nil
-            navigationController?.navigationBar.backgroundColor = .clear
-            navigationItem.title = ""
-        }
-    }
-    
-    private func setNavigationBarTextAttribute() {
-        navigationController?.navigationBar.titleTextAttributes = [
-            NSAttributedString.Key.font: UIFont.Title2,
-            NSAttributedString.Key.foregroundColor: UIColor.wssBlack,
-            NSAttributedString.Key.kern: -0.6,
-        ]
-    }
-    
     private func makeUIImage(data: NovelDetailHeaderEntity) {
         Observable.zip (
             KingFisherRxHelper.kingFisherImage(urlString: data.novelImage),
@@ -619,6 +585,14 @@ extension NovelDetailViewController: UICollectionViewDelegateFlowLayout {
         
         let width = (text as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 24
         return CGSize(width: width, height: 37)
+    }
+}
+
+extension NovelDetailViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y < 0 {
+            scrollView.contentOffset.y = 0
+        }
     }
 }
 
