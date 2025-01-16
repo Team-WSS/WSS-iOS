@@ -50,26 +50,6 @@ extension UIViewController {
         navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
-    func setNavigationBar(title: String, left: UIButton?, right: UIButton?, underLine: Bool = false) {
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        self.navigationItem.title = title
-        
-        if let navigationBar = self.navigationController?.navigationBar {
-            let titleTextAttributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.Title2
-            ]
-            navigationBar.titleTextAttributes = titleTextAttributes
-        }
-        
-        self.navigationItem.leftBarButtonItem = left != nil ? UIBarButtonItem(customView: left!) : nil
-        self.navigationItem.rightBarButtonItem = right != nil ? UIBarButtonItem(customView: right!) : nil
-        
-        if !underLine {
-            self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-            self.navigationController?.navigationBar.shadowImage = UIImage()
-        }
-    }
-    
     func setWSSNavigationBar(title: String?, left: UIButton?, right: UIButton?, isVisibleBeforeScroll: Bool = true) {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         self.navigationItem.title = title
