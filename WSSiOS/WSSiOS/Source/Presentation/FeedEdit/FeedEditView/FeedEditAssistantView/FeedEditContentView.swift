@@ -142,7 +142,6 @@ final class FeedEditContentView: UIView {
     //MARK: - Data
     
     func bindData(feedContent: String) {
-        // 현재 커서 위치 (UTF-16 인덱스를 String.Index로 변환)
         if let selectedRange = self.feedTextView.selectedTextRange {
             // 시작 위치와 끝 위치를 저장
             let cursorStartPosition = self.feedTextView.offset(from: self.feedTextView.beginningOfDocument, to: selectedRange.start)
