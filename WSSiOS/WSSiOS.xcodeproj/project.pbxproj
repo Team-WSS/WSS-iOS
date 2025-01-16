@@ -189,6 +189,7 @@
 		39EDFB362D38D8CF009F071A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 39EDFB352D38D8CF009F071A /* GoogleService-Info.plist */; };
 		39EDFB392D38D9A7009F071A /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 39EDFB382D38D9A7009F071A /* FirebaseAnalytics */; };
 		39EDFB3B2D38D9A7009F071A /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 39EDFB3A2D38D9A7009F071A /* FirebaseMessaging */; };
+		39EDFB3D2D390131009F071A /* NotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EDFB3C2D390131009F071A /* NotificationHelper.swift */; };
 		39EF97AC2B53E43800D2148B /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 39EF97AB2B53E43800D2148B /* Lottie */; };
 		39F686FC2C6F5BB90065999F /* NovelDetailInfoReviewKeywordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39F686FB2C6F5BB90065999F /* NovelDetailInfoReviewKeywordView.swift */; };
 		39F686FE2C6F5D5C0065999F /* NovelDetailInfoReviewGraphStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39F686FD2C6F5D5C0065999F /* NovelDetailInfoReviewGraphStackView.swift */; };
@@ -573,6 +574,7 @@
 		39E8FD8F2C742CE100AD6F30 /* NovelDetailHeaderReadStatusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailHeaderReadStatusButton.swift; sourceTree = "<group>"; };
 		39E8FD912C743D8000AD6F30 /* NovelDetailHeaderReadInfoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailHeaderReadInfoButton.swift; sourceTree = "<group>"; };
 		39EDFB352D38D8CF009F071A /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		39EDFB3C2D390131009F071A /* NotificationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHelper.swift; sourceTree = "<group>"; };
 		39F686FB2C6F5BB90065999F /* NovelDetailInfoReviewKeywordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoReviewKeywordView.swift; sourceTree = "<group>"; };
 		39F686FD2C6F5D5C0065999F /* NovelDetailInfoReviewGraphStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoReviewGraphStackView.swift; sourceTree = "<group>"; };
 		39F686FF2C6F60400065999F /* ReadStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadStatus.swift; sourceTree = "<group>"; };
@@ -1348,6 +1350,7 @@
 			children = (
 				3916EC882B89D23D007835B5 /* ModuleFactory.swift */,
 				394CFD3A2CA2E7760053C8EA /* KingFisherRxHelper.swift */,
+				39EDFB3C2D390131009F071A /* NotificationHelper.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -2878,6 +2881,7 @@
 				2CA2F6622B530BBF0045B4C2 /* LibraryCollectionViewCell.swift in Sources */,
 				39E8FD902C742CE100AD6F30 /* NovelDetailHeaderReadStatusButton.swift in Sources */,
 				2C81DF872CA150DE00148F97 /* MyPageChangeUserBirthViewController.swift in Sources */,
+				39EDFB3D2D390131009F071A /* NotificationHelper.swift in Sources */,
 				395928932C98889B00E7B17B /* LoginView.swift in Sources */,
 				CDC03F4F2CA6C4E0002D301F /* NovelReviewRepository.swift in Sources */,
 				CD8747B52C9EF31E00D0ADAD /* NovelDateSelectModalDateButtonView.swift in Sources */,
