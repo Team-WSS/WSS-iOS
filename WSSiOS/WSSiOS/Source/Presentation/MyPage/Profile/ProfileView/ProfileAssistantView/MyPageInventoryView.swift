@@ -14,9 +14,12 @@ final class MyPageInventoryView: UIView {
     
     //MARK: - Components
     
+    //터치영역
+    let inventoryView = UIView()
+    
     private let titleLabel = UILabel()
-    let arrowButton = UIButton()
-    private let inventoryView = UIView()
+    private let arrowButton = UIButton()
+    private let inventoryDetailView = UIView()
     private let stackView = UIStackView()
     
     private let interestCountLabel = UILabel()
@@ -49,6 +52,10 @@ final class MyPageInventoryView: UIView {
     private func setUI() {
         self.backgroundColor = .wssWhite
         
+        inventoryView.do {
+            $0.backgroundColor = .wssWhite
+        }
+        
         titleLabel.do {
             $0.applyWSSFont(.title1, with: StringLiterals.MyPage.Profile.inventoryTitle)
             $0.textColor = .wssBlack
@@ -59,7 +66,7 @@ final class MyPageInventoryView: UIView {
             $0.isUserInteractionEnabled = true
         }
         
-        inventoryView.do {
+        inventoryDetailView.do {
             $0.backgroundColor = .wssGray50
             $0.layer.cornerRadius = 14
         }
@@ -71,7 +78,7 @@ final class MyPageInventoryView: UIView {
         }
     }
     
-    private func createVerticalStack(countLabel: UILabel, textLabel: UILabel, text: String) -> UIStackView {
+    private func createVerticalStack(countLabel: UILabel, textLabel: UILabel, text: String, addLine: Bool = false) -> UIStackView {
         countLabel.do {
             $0.applyWSSFont(.title2, with: "0")
             $0.textAlignment = .center
@@ -89,19 +96,35 @@ final class MyPageInventoryView: UIView {
             $0.spacing = 2
         }
         
+        if addLine {
+            let dividerView = UIView().then {
+                $0.backgroundColor = .wssGray70
+            }
+            
+            verticalStack.addSubview(dividerView)
+            
+            dividerView.snp.makeConstraints {
+                $0.centerY.trailing.equalToSuperview()
+                $0.height.equalTo(40)
+                $0.width.equalTo(1)
+            }
+        }
+        
         return verticalStack
     }
     
     private func setHierarchy() {
-        self.addSubviews(titleLabel,
-                         arrowButton,
-                         inventoryView)
-        inventoryView.addSubview(stackView)
+        self.addSubview(inventoryView)
+        inventoryView.addSubviews(titleLabel,
+                                  arrowButton,
+                                  inventoryDetailView)
+        inventoryDetailView.addSubview(stackView)
         
-        let interestStack = createVerticalStack(countLabel: interestCountLabel, textLabel: interestLabel, text: "관심")
-        let watchingStack = createVerticalStack(countLabel: watchingCountLabel, textLabel: watchingLabel, text: "보는중")
-        let watchedStack = createVerticalStack(countLabel: watchedCountLabel, textLabel: watchedLabel, text: "봤어요")
-        let quitStack = createVerticalStack(countLabel: quitCountLabel, textLabel: quitLabel, text: "하차")
+        let statusList = StringLiterals.ReviewerStatus.allCases.map { $0.rawValue }
+        let interestStack = createVerticalStack(countLabel: interestCountLabel, textLabel: interestLabel, text: statusList[0] , addLine: true)
+        let watchingStack = createVerticalStack(countLabel: watchingCountLabel, textLabel: watchingLabel, text: statusList[1])
+        let watchedStack = createVerticalStack(countLabel: watchedCountLabel, textLabel: watchedLabel, text: statusList[2])
+        let quitStack = createVerticalStack(countLabel: quitCountLabel, textLabel: quitLabel, text: statusList[3])
         
         stackView.addArrangedSubviews(interestStack,
                                       watchingStack,
@@ -110,27 +133,32 @@ final class MyPageInventoryView: UIView {
     }
     
     private func setLayout() {
-        titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(25.5)
-            $0.leading.equalToSuperview().inset(20)
-        }
-        
-        arrowButton.snp.makeConstraints {
-            $0.centerY.equalTo(titleLabel)
-            $0.trailing.equalToSuperview().inset(20)
-            $0.size.equalTo(44)
-        }
-        
         inventoryView.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(9.5)
+            $0.top.equalToSuperview().inset(16)
             $0.leading.trailing.equalToSuperview().inset(20)
-            $0.height.equalTo(70)
             $0.bottom.equalToSuperview().inset(30)
-        }
-        
-        stackView.snp.makeConstraints {
-            $0.height.equalTo(38.5)
-            $0.leading.trailing.centerY.equalToSuperview()
+            
+            arrowButton.snp.makeConstraints {
+                $0.top.equalToSuperview()
+                $0.trailing.equalToSuperview()
+                $0.size.equalTo(44)
+            }
+            
+            titleLabel.snp.makeConstraints {
+                $0.leading.equalToSuperview()
+                $0.centerY.equalTo(arrowButton.snp.centerY)
+            }
+            
+            inventoryDetailView.snp.makeConstraints {
+                $0.top.equalTo(arrowButton.snp.bottom)
+                $0.leading.trailing.bottom.equalToSuperview()
+                $0.height.equalTo(70)
+                
+                stackView.snp.makeConstraints {
+                    $0.height.equalTo(38.5)
+                    $0.leading.trailing.centerY.equalToSuperview()
+                }
+            }
         }
     }
     

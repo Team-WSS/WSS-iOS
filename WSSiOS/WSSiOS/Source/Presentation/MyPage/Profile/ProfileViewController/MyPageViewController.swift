@@ -146,7 +146,9 @@ final class MyPageViewController: UIViewController {
             genrePreferenceButtonDidTap: genrePreferenceButtonDidTap,
             libraryButtonDidTap: libraryButtonDidTap,
             feedButtonDidTap: feedButtonDidTap,
-            inventoryButtonDidTap: rootView.myPageLibraryView.inventoryView.arrowButton.rx.tap,
+            inventoryViewDidTap: rootView.myPageLibraryView.inventoryView.inventoryView.rx.tapGesture()
+                .when(.recognized)
+                .asObservable(),
             feedDetailButtonDidTap: rootView.myPageFeedView.myPageFeedDetailButton.rx.tap,
             editProfileNotification: NotificationCenter.default.rx.notification(NSNotification.Name("EditProfile")).asObservable(),
             feedTableViewItemSelected: rootView.myPageFeedView.myPageFeedTableView.feedTableView.rx.itemSelected.asObservable(),
