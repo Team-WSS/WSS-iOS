@@ -14,7 +14,7 @@ final class HomeNoticeViewModel: ViewModelType {
     
     //MARK: - Properties
     
-    private let noticeRepository: NoticeRepository
+    private let notificationRepository: NotificationRepository
     private let disposeBag = DisposeBag()
     
     // MARK: - Inputs
@@ -26,28 +26,26 @@ final class HomeNoticeViewModel: ViewModelType {
     // MARK: - Outputs
     
     struct Output {
-        var noticeList = BehaviorRelay<[Notice]>(value: [])
+        var noticeList = BehaviorRelay<[NotificationEntity]>(value: [])
         let selectedNoticeCellIndexPath = PublishRelay<IndexPath>()
         let showLoadingView = PublishRelay<Bool>()
     }
     
     //MARK: - init
     
-    init(noticeRepository: NoticeRepository) {
-        self.noticeRepository = noticeRepository
+    init(notificationRepository: NotificationRepository) {
+        self.notificationRepository = notificationRepository
     }
-}
-
-extension HomeNoticeViewModel {
+    
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
         
-        noticeRepository.getNotices()
+        notificationRepository.getNotifications()
             .do(onNext: { _ in
                 output.showLoadingView.accept(true)
             })
             .subscribe(with: self, onNext: { owner, data in
-                output.noticeList.accept(data.notices)
+                output.noticeList.accept(data.notifications)
                 output.showLoadingView.accept(false)
             }, onError: { owner, error in
                 print(error)

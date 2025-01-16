@@ -43,7 +43,8 @@ struct NotificationEntity {
 extension NotificationResult {
     func transform() -> Observable<NotificationEntity> {
         return Observable.create { observer in
-            let notificationImageURL = KingFisherRxHelper.makeBucketImageURL(path: notificationImage) ?? .none
+            let notificationImageURL = KingFisherRxHelper.makeImageURLString(path: notificationImage) ?? .none
+            
             let entity = NotificationEntity(notificationId: self.notificationId,
                                             notificationImageURL: notificationImageURL,
                                             notificationTitle: self.notificationTitle,

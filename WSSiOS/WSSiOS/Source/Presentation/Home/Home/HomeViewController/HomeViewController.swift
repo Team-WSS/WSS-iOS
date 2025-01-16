@@ -207,7 +207,13 @@ final class HomeViewController: UIViewController {
         
         output.pushToAnnouncementViewController
             .bind(with: self, onNext: { owner, _ in
-                let viewController = HomeNoticeViewController(viewModel: HomeNoticeViewModel(noticeRepository: DefaultNoticeRepository(noticeService: DefaultNoticeService() )))
+                let viewController = HomeNoticeViewController(
+                    viewModel: HomeNoticeViewModel(
+                        notificationRepository: DefaultNotificationRepository(
+                            notificationService: DefaultNoticeService()
+                        )
+                    )
+                )
                 viewController.navigationController?.isNavigationBarHidden = false
                 viewController.hidesBottomBarWhenPushed = true
                 owner.navigationController?.pushViewController(viewController, animated: true)

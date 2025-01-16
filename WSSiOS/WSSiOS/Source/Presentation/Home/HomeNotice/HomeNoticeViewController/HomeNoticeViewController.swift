@@ -85,15 +85,15 @@ final class HomeNoticeViewController: UIViewController {
                 }
                 .disposed(by: disposeBag)
         
-        output.selectedNoticeCellIndexPath
-            .bind(with: self, onNext: { owner, indexPath in
-                let viewController = HomeNoticeDetailViewController(viewModel: HomeNoticeDetailViewModel(),
-                                                                    notice: output.noticeList.value[indexPath.row])
-                viewController.navigationController?.isNavigationBarHidden = false
-                viewController.hidesBottomBarWhenPushed = true
-                owner.navigationController?.pushViewController(viewController, animated: true)
-            })
-            .disposed(by: disposeBag)
+//        output.selectedNoticeCellIndexPath
+//            .bind(with: self, onNext: { owner, indexPath in
+//                let viewController = HomeNoticeDetailViewController(viewModel: HomeNoticeDetailViewModel(),
+//                                                                    notice: output.noticeList.value[indexPath.row])
+//                viewController.navigationController?.isNavigationBarHidden = false
+//                viewController.hidesBottomBarWhenPushed = true
+//                owner.navigationController?.pushViewController(viewController, animated: true)
+//            })
+//            .disposed(by: disposeBag)
         
         output.showLoadingView
             .observe(on: MainScheduler.instance)

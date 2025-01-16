@@ -170,8 +170,7 @@ enum URLs {
         static let getTasteRecommendNovels = "/novels/taste"
     }
     
-    enum Notice {
-        static let getNotices = "/notices"
+    enum Notification {
         static let getNotifications = "/notifications"
     }
     
