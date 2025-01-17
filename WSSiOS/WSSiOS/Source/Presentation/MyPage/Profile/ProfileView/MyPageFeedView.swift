@@ -149,6 +149,7 @@ final class MyPageFeedView: UIView {
     
     func showMoreButton(isShow: Bool) {
         showMoreActivityButton.isHidden = !isShow
+        paddingViewAfterButton.isHidden = !isShow
         
         if isShow {
             paddingViewAfterButton.snp.makeConstraints {
