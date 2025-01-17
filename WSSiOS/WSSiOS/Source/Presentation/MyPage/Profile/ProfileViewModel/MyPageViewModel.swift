@@ -384,7 +384,6 @@ final class MyPageViewModel: ViewModelType {
             .do(onNext: { [weak self] inventory in
                 guard let self else { return }
                 self.bindInventoryDataRelay.accept(inventory)
-                print(profileId, "😍")
             })
             .map { _ in Void() }
     }
