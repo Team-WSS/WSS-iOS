@@ -849,6 +849,7 @@
 		2C2491822B4ADC1D0096F255 /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				E44FB3222D3AC2740089E475 /* FeedList */,
 				B92D8AB82CE05924005B35F7 /* InduceLogin */,
 				39099EEF2CD8894F00FCA8DE /* NetworkView */,
 				391013782CCF5C33001894E5 /* BirthPicker */,
@@ -2227,12 +2228,6 @@
 			isa = PBXGroup;
 			children = (
 				CD863ED92CA5B7F70037DC08 /* NovelDetailFeedEmptyView.swift */,
-				CD863EDB2CA5BAF30037DC08 /* FeedListView.swift */,
-				CD5BFC6F2CE3004E0024C535 /* FeedListCategoryView.swift */,
-				CD5BFC702CE3004E0024C535 /* FeedListConnectedNovelView.swift */,
-				CD5BFC712CE3004E0024C535 /* FeedListContentView.swift */,
-				CD5BFC722CE3004E0024C535 /* FeedListHeaderView.swift */,
-				CD5BFC732CE3004E0024C535 /* FeedListReactView.swift */,
 			);
 			path = NovelDetailFeedAssistantView;
 			sourceTree = "<group>";
@@ -2405,6 +2400,19 @@
 				CD6F49582C70637A005AD392 /* FeedNovelConnectSearchBarView.swift */,
 			);
 			path = FeedEditAssistantView;
+			sourceTree = "<group>";
+		};
+		E44FB3222D3AC2740089E475 /* FeedList */ = {
+			isa = PBXGroup;
+			children = (
+				CD863EDB2CA5BAF30037DC08 /* FeedListView.swift */,
+				CD5BFC6F2CE3004E0024C535 /* FeedListCategoryView.swift */,
+				CD5BFC702CE3004E0024C535 /* FeedListConnectedNovelView.swift */,
+				CD5BFC712CE3004E0024C535 /* FeedListContentView.swift */,
+				CD5BFC722CE3004E0024C535 /* FeedListHeaderView.swift */,
+				CD5BFC732CE3004E0024C535 /* FeedListReactView.swift */,
+			);
+			path = FeedList;
 			sourceTree = "<group>";
 		};
 		E45FEFAE2CFC309800B73D80 /* LibraryViewModel */ = {
