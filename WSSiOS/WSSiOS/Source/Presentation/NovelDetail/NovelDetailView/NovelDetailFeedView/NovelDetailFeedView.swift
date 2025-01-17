@@ -16,7 +16,7 @@ final class NovelDetailFeedView: UIButton {
     
     private let stackView = UIStackView()
     private let emptyView = NovelDetailFeedEmptyView()
-    let feedListView = NovelDetailFeedListView()
+    let feedListView = FeedListView()
     
     //MARK: - Life Cycle
     

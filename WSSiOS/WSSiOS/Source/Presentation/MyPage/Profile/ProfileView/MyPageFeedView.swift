@@ -18,7 +18,7 @@ final class MyPageFeedView: UIView {
     
     let stackView = UIStackView()
     
-    let myPageFeedTableView = NovelDetailFeedListView()
+    let myPageFeedTableView = FeedListView()
     
     private let showMoreActivityButton = UIView()
     let myPageFeedDetailButton = UIButton()
@@ -149,6 +149,7 @@ final class MyPageFeedView: UIView {
     
     func showMoreButton(isShow: Bool) {
         showMoreActivityButton.isHidden = !isShow
+        
         if isShow {
             paddingViewAfterButton.snp.makeConstraints {
                 $0.width.equalToSuperview()

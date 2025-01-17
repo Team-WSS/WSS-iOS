@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class NovelDetailFeedListView: UIView {
+final class FeedListView: UIView {
     
     //MARK: - Components
     
