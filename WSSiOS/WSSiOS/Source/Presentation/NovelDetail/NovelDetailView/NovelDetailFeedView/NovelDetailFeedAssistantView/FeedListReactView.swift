@@ -1,5 +1,5 @@
 //
-//  NovelDetailFeedReactView.swift
+//  FeedListReactView.swift
 //  WSSiOS
 //
 //  Created by Hyowon Jeon on 9/27/24.
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class NovelDetailFeedReactView: UIView {
+final class FeedListReactView: UIView {
 
     //MARK: - Components
     

@@ -61,8 +61,8 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
     //MARK: - Bind
     
     private func register() {
-        rootView.feedTableView.register(NovelDetailFeedTableViewCell.self,
-                                        forCellReuseIdentifier: NovelDetailFeedTableViewCell.cellIdentifier)
+        rootView.feedTableView.register(FeedListTableViewCell.self,
+                                        forCellReuseIdentifier: FeedListTableViewCell.cellIdentifier)
     }
     
     private func bindViewModel() {
@@ -88,8 +88,8 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
         
         output.feedList
             .bind(to: rootView.feedTableView.rx.items(
-                cellIdentifier: NovelDetailFeedTableViewCell.cellIdentifier,
-                cellType: NovelDetailFeedTableViewCell.self)) { _, element, cell in
+                cellIdentifier: FeedListTableViewCell.cellIdentifier,
+                cellType: FeedListTableViewCell.self)) { _, element, cell in
                     cell.bindData(feed: element)
                     cell.delegate = self
                 }

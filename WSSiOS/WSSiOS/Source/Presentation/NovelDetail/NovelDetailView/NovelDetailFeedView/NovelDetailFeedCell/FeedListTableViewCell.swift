@@ -1,5 +1,5 @@
 //
-//  NovelDetailFeedTableViewCell.swift
+//  FeedListTableViewCell.swift
 //  WSSiOS
 //
 //  Created by Hyowon Jeon on 9/27/24.
@@ -20,7 +20,7 @@ protocol FeedTableViewDelegate: AnyObject {
     func likeViewDidTap(feedId: Int, isLiked: Bool)
 }
 
-final class NovelDetailFeedTableViewCell: UITableViewCell {
+final class FeedListTableViewCell: UITableViewCell {
     
     // MARK: - Properties
     
@@ -32,11 +32,11 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
     //MARK: - Components
     
     private let stackView = UIStackView()
-    let novelDetailFeedHeaderView = NovelDetailFeedHeaderView()
-    private let novelDetailFeedContentView = NovelDetailFeedContentView()
-    private let novelDetailFeedConnectedNovelView = NovelDetailFeedConnectedNovelView()
-    private let novelDetailFeedCategoryView = NovelDetailFeedCategoryView()
-    private let novelDetailFeedReactView = NovelDetailFeedReactView()
+    let feedHeaderView = FeedListHeaderView()
+    private let feedContentView = FeedListContentView()
+    private let feedConnectedNovelView = FeedListConnectedNovelView()
+    private let feedCategoryView = FeedListCategoryView()
+    private let feedReactView = FeedListReactView()
     private let dividerView = UIView()
     
     //MARK: - Life Cycle
@@ -75,11 +75,11 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
     private func setHierarchy() {
         contentView.addSubviews(stackView,
                                 dividerView)
-        stackView.addArrangedSubviews(novelDetailFeedHeaderView,
-                                      novelDetailFeedContentView,
-                                      novelDetailFeedConnectedNovelView,
-                                      novelDetailFeedCategoryView,
-                                      novelDetailFeedReactView)
+        stackView.addArrangedSubviews(feedHeaderView,
+                                      feedContentView,
+                                      feedConnectedNovelView,
+                                      feedCategoryView,
+                                      feedReactView)
     }
     
     private func setLayout() {
@@ -87,9 +87,9 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
             $0.edges.equalToSuperview().inset(20)
             
             stackView.do {
-                $0.setCustomSpacing(12, after: novelDetailFeedHeaderView)
-                $0.setCustomSpacing(20, after: novelDetailFeedContentView)
-                $0.setCustomSpacing(24, after: novelDetailFeedCategoryView)
+                $0.setCustomSpacing(12, after: feedHeaderView)
+                $0.setCustomSpacing(20, after: feedContentView)
+                $0.setCustomSpacing(24, after: feedCategoryView)
             }
         }
         
@@ -102,7 +102,7 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
     //MARK: - Bind
     
     private func bindAction() {
-        novelDetailFeedHeaderView.profileView.rx.tapGesture()
+        feedHeaderView.profileView.rx.tapGesture()
             .when(.recognized)
             .withLatestFrom(feed)
             .throttle(.seconds(1), scheduler: MainScheduler.instance)
@@ -111,7 +111,7 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
             })
             .disposed(by: disposeBag)
         
-        novelDetailFeedHeaderView.dropdownButtonView.rx.tapGesture()
+        feedHeaderView.dropdownButtonView.rx.tapGesture()
             .when(.recognized)
             .withLatestFrom(feed)
             .throttle(.seconds(1), scheduler: MainScheduler.instance)
@@ -120,7 +120,7 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
             })
             .disposed(by: disposeBag)
         
-        novelDetailFeedConnectedNovelView.rx.tapGesture()
+        feedConnectedNovelView.rx.tapGesture()
             .when(.recognized)
             .withLatestFrom(feed)
             .throttle(.seconds(1), scheduler: MainScheduler.instance)
@@ -131,7 +131,7 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
             })
             .disposed(by: disposeBag)
         
-        novelDetailFeedReactView.likeView.rx.tapGesture()
+        feedReactView.likeView.rx.tapGesture()
             .when(.recognized)
             .withLatestFrom(feed)
             .throttle(.seconds(1), scheduler: MainScheduler.instance)
@@ -146,34 +146,34 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
     func bindData(feed: TotalFeeds) {
         self.feed.accept(feed)
         
-        novelDetailFeedHeaderView.bindData(avatarImage: feed.avatarImage,
+        feedHeaderView.bindData(avatarImage: feed.avatarImage,
                                            nickname: feed.nickname,
                                            createdDate: feed.createdDate,
                                            isModified: feed.isModified)
-        novelDetailFeedContentView.bindData(feedContent: feed.feedContent,
+        feedContentView.bindData(feedContent: feed.feedContent,
                                             isSpoiler: feed.isSpoiler)
         if let title = feed.title,
            let novelRatingCount = feed.novelRatingCount,
            let novelRating = feed.novelRating {
-            novelDetailFeedConnectedNovelView.bindData(title: title,
+            feedConnectedNovelView.bindData(title: title,
                                                        novelRatingCount: novelRatingCount,
                                                        novelRating: novelRating)
             
-            self.stackView.insertArrangedSubview(novelDetailFeedConnectedNovelView, at: 2)
+            self.stackView.insertArrangedSubview(feedConnectedNovelView, at: 2)
             stackView.do {
-                $0.setCustomSpacing(20, after: novelDetailFeedConnectedNovelView)
+                $0.setCustomSpacing(20, after: feedConnectedNovelView)
             }
         } else {
-            novelDetailFeedConnectedNovelView.removeFromSuperview()
+            feedConnectedNovelView.removeFromSuperview()
         }
-        novelDetailFeedCategoryView.bindData(relevantCategories: feed.relevantCategories)
-        novelDetailFeedReactView.bindData(isLiked: feed.isLiked,
+        feedCategoryView.bindData(relevantCategories: feed.relevantCategories)
+        feedReactView.bindData(isLiked: feed.isLiked,
                                           likeCount: feed.likeCount,
                                           commentCount: feed.commentCount)
     }
     
     func bindProfileData(feed: FeedCellData) {
-        novelDetailFeedHeaderView.dropdownButtonView.isHidden = true
+        feedHeaderView.dropdownButtonView.isHidden = true
         
         let createdDate = feed.feed.createdDate
         let inputDateFormatter = DateFormatter()
@@ -190,32 +190,32 @@ final class NovelDetailFeedTableViewCell: UITableViewCell {
             formattedDate = ""
         }
         
-        novelDetailFeedHeaderView.bindData(avatarImage: feed.avatarImage,
+        feedHeaderView.bindData(avatarImage: feed.avatarImage,
                                            nickname: feed.nickname,
                                            createdDate: formattedDate,
                                            isModified: feed.feed.isModified)
-        novelDetailFeedContentView.bindData(feedContent: feed.feed.feedContent,
+        feedContentView.bindData(feedContent: feed.feed.feedContent,
                                             isSpoiler: feed.feed.isSpoiler)
         if let title = feed.feed.title,
            let novelRatingCount = feed.feed.novelRatingCount,
            let novelRating = feed.feed.novelRating {
-            novelDetailFeedConnectedNovelView.bindData(title: title,
+            feedConnectedNovelView.bindData(title: title,
                                                        novelRatingCount: novelRatingCount,
                                                        novelRating: novelRating)
             
-            self.stackView.insertArrangedSubview(novelDetailFeedConnectedNovelView, at: 2)
+            self.stackView.insertArrangedSubview(feedConnectedNovelView, at: 2)
             stackView.do {
-                $0.setCustomSpacing(20, after: novelDetailFeedConnectedNovelView)
+                $0.setCustomSpacing(20, after: feedConnectedNovelView)
             }
         } else {
-            novelDetailFeedConnectedNovelView.removeFromSuperview()
+            feedConnectedNovelView.removeFromSuperview()
         }
         
         let translatedGenres = feed.feed.relevantCategories.compactMap {
             NewNovelGenre(rawValue: $0)?.withKorean
         }
-        novelDetailFeedCategoryView.bindData(relevantCategories: translatedGenres)
-        novelDetailFeedReactView.bindData(isLiked: feed.feed.isLiked,
+        feedCategoryView.bindData(relevantCategories: translatedGenres)
+        feedReactView.bindData(isLiked: feed.feed.isLiked,
                                           likeCount: feed.feed.likeCount,
                                           commentCount: feed.feed.commentCount)
     }
