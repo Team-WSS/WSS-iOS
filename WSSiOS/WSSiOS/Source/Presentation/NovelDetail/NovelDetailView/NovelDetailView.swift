@@ -14,7 +14,6 @@ final class NovelDetailView: UIView {
     
     //MARK: - Components
     
-    let statusBarView = UIView()
     let scrollView = UIScrollView()
     private let contentView = UIStackView()
     
@@ -131,7 +130,6 @@ final class NovelDetailView: UIView {
     
     private func setHierarchy() {
         self.addSubviews(scrollView,
-                         statusBarView,
                          stickyTabBarView,
                          largeNovelCoverImageButton,
                          createFeedButton,
@@ -159,11 +157,6 @@ final class NovelDetailView: UIView {
         
         scrollView.snp.makeConstraints {
             $0.edges.equalToSuperview()
-        }
-        
-        statusBarView.snp.makeConstraints {
-            $0.top.horizontalEdges.equalToSuperview()
-            $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.top)
         }
         
         contentView.snp.makeConstraints {

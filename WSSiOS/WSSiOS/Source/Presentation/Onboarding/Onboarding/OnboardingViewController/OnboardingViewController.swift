@@ -59,12 +59,8 @@ final class OnboardingViewController: UIViewController {
     //MARK: - UI
     
     private func setNavigationBar() {
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
-        navigationController?.navigationBar.backgroundColor = .wssWhite
+        self.setWSSNavigationBar(title: nil, left: nil, right: nil)
         navigationItem.setHidesBackButton(true, animated: true)
-        self.navigationItem.leftBarButtonItem = nil
     }
     
     //MARK: - Bind
@@ -123,7 +119,6 @@ final class OnboardingViewController: UIViewController {
         output.showBirthPickerModal
             .withLatestFrom(output.selectedBirth)
             .drive(with: self, onNext: { owner, value in
-                owner.updateNavigationBarVisibility(isShow: false)
                 owner.presentModalViewController(BirthPickerViewController(birth: value ?? 2000))
             })
             .disposed(by: disposeBag)
@@ -269,18 +264,6 @@ final class OnboardingViewController: UIViewController {
         navigationItem.setHidesBackButton(stage == 0, animated: true)
         self.navigationItem.leftBarButtonItem = stage == 0 ? nil : UIBarButtonItem(customView: rootView.backButton)
         self.navigationItem.rightBarButtonItem = stage != 2 ? nil : UIBarButtonItem(customView: rootView.skipButton)
-    }
-    
-    private func updateNavigationBarVisibility(isShow: Bool) {
-        if isShow {
-            navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-            navigationController?.navigationBar.shadowImage = UIImage()
-            navigationController?.navigationBar.backgroundColor = .wssWhite
-        } else {
-            navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
-            navigationController?.navigationBar.shadowImage = nil
-            navigationController?.navigationBar.backgroundColor = .clear
-        }
     }
 }
 

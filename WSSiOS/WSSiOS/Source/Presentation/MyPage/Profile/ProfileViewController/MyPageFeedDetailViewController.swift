@@ -109,7 +109,7 @@ final class MyPageFeedDetailViewController: UIViewController, UIScrollViewDelega
         
         output.isMyPage
             .bind(with: self, onNext: { owner, isMyPage in
-                owner.setNavigationBar(title: isMyPage ? StringLiterals.MyPage.Profile.myProfileFeed : StringLiterals.MyPage.Profile.otherProfileFeed,
+                owner.setWSSNavigationBar(title: isMyPage ? StringLiterals.MyPage.Profile.myProfileFeed : StringLiterals.MyPage.Profile.otherProfileFeed,
                                        left: self.rootView.backButton,
                                        right: nil)
             })
