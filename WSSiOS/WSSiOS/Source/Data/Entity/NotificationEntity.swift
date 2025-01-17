@@ -33,7 +33,7 @@ struct NotificationEntity {
     let notificationId: Int
     let notificationImageURL: URL?
     let notificationTitle: String
-    let notificationDescription: String
+    let notificationOverview: String
     let createdDate: String
     let isRead: Bool
     let isNotice: Bool
@@ -48,7 +48,7 @@ extension NotificationResult {
             let entity = NotificationEntity(notificationId: self.notificationId,
                                             notificationImageURL: notificationImageURL,
                                             notificationTitle: self.notificationTitle,
-                                            notificationDescription: self.notificationDescription,
+                                            notificationOverview: self.notificationBody,
                                             createdDate: self.createdDate,
                                             isRead: self.isRead,
                                             isNotice: self.isNotice,

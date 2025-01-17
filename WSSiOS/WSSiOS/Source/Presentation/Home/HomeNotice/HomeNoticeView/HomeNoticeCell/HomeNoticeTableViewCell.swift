@@ -105,7 +105,7 @@ final class HomeNoticeTableViewCell: UITableViewCell {
         }
         
         self.contentLabel.do {
-            $0.applyWSSFont(.body5, with: data.notificationDescription)
+            $0.applyWSSFont(.body5, with: data.notificationOverview)
             $0.lineBreakMode = .byTruncatingTail
             $0.numberOfLines = 1
         }

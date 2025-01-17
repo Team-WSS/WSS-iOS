@@ -26,7 +26,7 @@ struct NotificationResult: Decodable {
     var notificationId: Int
     var notificationImage: String
     var notificationTitle: String
-    var notificationDescription: String
+    var notificationBody: String
     var createdDate: String
     var isRead: Bool
     var isNotice: Bool
