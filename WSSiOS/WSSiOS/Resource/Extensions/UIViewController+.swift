@@ -391,6 +391,15 @@ extension UIViewController {
         
         self.present(feedDetailUnknownFeedErrorViewController, animated: true)
     }
+    
+    func pushToNotificationDetailViewController(notificationId: Int) {
+        let viewController = HomeNoticeDetailViewController(
+            viewModel: HomeNoticeDetailViewModel(
+                notificationRepository: DefaultNotificationRepository(
+                    notificationService: DefaultNoticeService()),
+                notificationId: notificationId))
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
 }
 
 extension UIViewController: @retroactive UIGestureRecognizerDelegate {

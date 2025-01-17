@@ -84,14 +84,14 @@ final class HomeNoticeDetailContentView: UIView {
         }
     }
     
-    func bindData(data: Notice) {
+    func bindData(data: NotificationDetailEntity) {
         noticeTitleLabel.do {
-            $0.applyWSSFont(.headline1, with: data.noticeTitle)
+            $0.applyWSSFont(.headline1, with: data.title)
             $0.numberOfLines = 0
         }
         createdDateLabel.applyWSSFont(.body5, with: data.createdDate)
         noticeContentTextView.do {
-            $0.applyWSSFont(.body2, with: data.noticeContent)
+            $0.applyWSSFont(.body2, with: data.content)
         }
     }
 }

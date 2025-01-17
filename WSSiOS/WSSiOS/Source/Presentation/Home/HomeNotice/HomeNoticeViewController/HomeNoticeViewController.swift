@@ -111,7 +111,7 @@ final class HomeNoticeViewController: UIViewController {
         
         output.pushToNoticeDetailViewController
             .subscribe(with: self, onNext: { owner, notificationId in
-                
+                owner.pushToNotificationDetailViewController(notificationId: notificationId)
             })
             .disposed(by: disposeBag)
         

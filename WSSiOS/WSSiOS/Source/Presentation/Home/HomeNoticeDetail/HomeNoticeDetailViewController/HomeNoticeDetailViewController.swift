@@ -16,11 +16,8 @@ final class HomeNoticeDetailViewController: UIViewController {
     
     private let viewModel: HomeNoticeDetailViewModel
     private let disposeBag = DisposeBag()
-    
-    private let notice: Notice
-    private let viewWillAppearEvent = BehaviorRelay(value: Notice(noticeTitle: "", 
-                                                                  noticeContent: "",
-                                                                  createdDate: ""))
+
+    private let viewWillAppearEvent = PublishRelay<Void>()
     
     //MARK: - UI Components
     
@@ -28,9 +25,8 @@ final class HomeNoticeDetailViewController: UIViewController {
     
     //MARK: - Life Cycle
     
-    init(viewModel: HomeNoticeDetailViewModel, notice: Notice) {
+    init(viewModel: HomeNoticeDetailViewModel) {
         self.viewModel = viewModel
-        self.notice = notice
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -45,7 +41,7 @@ final class HomeNoticeDetailViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        viewWillAppearEvent.accept(self.notice)
+        viewWillAppearEvent.accept(())
     }
     
     override func viewDidLoad() {
@@ -75,7 +71,7 @@ final class HomeNoticeDetailViewController: UIViewController {
         let input = HomeNoticeDetailViewModel.Input(viewWillAppearEvent: self.viewWillAppearEvent.asObservable())
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
-        output.noticeData
+        output.notificationData
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, data in
                 owner.rootView.noticeContentView.bindData(data: data)
