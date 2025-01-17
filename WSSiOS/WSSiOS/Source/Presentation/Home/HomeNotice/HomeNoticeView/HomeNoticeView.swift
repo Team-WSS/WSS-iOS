@@ -15,9 +15,7 @@ final class HomeNoticeView: UIView {
     //MARK: - UI Components
     
     let backButton = UIButton()
-    let viewTitleLabel = UILabel()
     let noticeTableView = UITableView(frame: .zero, style: .plain)
-    
     let loadingView = WSSLoadingView()
     
     //MARK: - Life Cycle
@@ -39,12 +37,7 @@ final class HomeNoticeView: UIView {
         backButton.do {
             $0.setImage(.icNavigateLeft.withRenderingMode(.alwaysOriginal).withTintColor(.wssBlack), for: .normal)
         }
-        
-        viewTitleLabel.do {
-            $0.applyWSSFont(.title2, with: StringLiterals.Navigation.Title.notice)
-            $0.textColor = .wssBlack
-        }
-        
+
         noticeTableView.do {
             $0.showsVerticalScrollIndicator = false
             $0.separatorStyle = .singleLine

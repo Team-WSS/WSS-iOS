@@ -41,6 +41,9 @@ final class HomeNoticeDetailViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        setWSSNavigationBar(title: StringLiterals.Navigation.Title.notice,
+                            left: self.rootView.backButton,
+                            right: nil)
         viewWillAppearEvent.accept(())
     }
     
@@ -48,7 +51,6 @@ final class HomeNoticeDetailViewController: UIViewController {
         super.viewDidLoad()
         
         setUI()
-        setNavigationBar()
         
         bindViewModel()
     }
@@ -58,13 +60,7 @@ final class HomeNoticeDetailViewController: UIViewController {
     private func setUI() {
         self.view.backgroundColor = .wssWhite
     }
-    
-    private func setNavigationBar() {
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
-        self.navigationItem.titleView = self.rootView.viewTitleLabel
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.rootView.backButton)
-    }
-    
+
     //MARK: - Bind
     
     private func bindViewModel() {
