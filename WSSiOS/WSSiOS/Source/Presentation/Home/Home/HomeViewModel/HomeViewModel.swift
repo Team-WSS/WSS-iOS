@@ -168,6 +168,21 @@ extension HomeViewModel {
             })
             .disposed(by: disposeBag)
         
+        input.viewWillAppearEvent
+            .filter { self.isLogined && UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId) == 0}
+            .flatMapLatest {
+                return self.getUserMeData()
+            }
+            .subscribe(with: self, onNext: { owner, data in
+                let existUserId = UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)
+                print(existUserId, "🔫")
+                
+                UserDefaults.standard.setValue(data.userId, forKey: StringLiterals.UserDefault.userId)
+                UserDefaults.standard.setValue(data.nickname, forKey: StringLiterals.UserDefault.userNickname)
+                UserDefaults.standard.setValue(data.gender, forKey: StringLiterals.UserDefault.userGender)
+            })
+            .disposed(by: disposeBag)
+        
         input.todayPopularCellSelected
             .subscribe(with: self, onNext: { owner, indexPath in
                 AmplitudeManager.shared.track(AmplitudeEvent.Home.homeTodayRanking)

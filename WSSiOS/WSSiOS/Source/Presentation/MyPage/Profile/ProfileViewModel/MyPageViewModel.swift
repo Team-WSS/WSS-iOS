@@ -14,7 +14,7 @@ final class MyPageViewModel: ViewModelType {
     
     // MARK: - Properties
     
-    private let profileId: Int
+    private var profileId: Int
     private let userRepository: UserRepository
     private var stickyHeaderHeight: CGFloat = 0
     
@@ -52,6 +52,8 @@ final class MyPageViewModel: ViewModelType {
     private let showToastViewRelay = PublishRelay<Void>()
     private let stickyHeaderActionRelay = BehaviorRelay<Bool>(value: true)
     
+    private let reloadSubject = PublishSubject<Void>()
+    
     // MARK: - Life Cycle
     
     init(userRepository: UserRepository, profileId: Int) {
@@ -66,7 +68,7 @@ final class MyPageViewModel: ViewModelType {
     
     struct Input {
         let isEntryTabbar: Observable<Bool>
-        let viewWillAppearEvent: PublishRelay<Bool>
+        let viewWillAppearEvent: PublishSubject<Void>
         
         let headerViewHeight: Driver<Double>
         let resizefeedTableViewHeight: Observable<CGSize?>
@@ -139,7 +141,7 @@ final class MyPageViewModel: ViewModelType {
         //서재 - 보관함 데이터 업데이트
         //서재 - 나머지뷰 업데이트 후 키워드컬렉션뷰 높이 업데이트
         //피드 - 피드뷰 업데이트 후 피드테이블뷰 높이 업데이트
-        input.viewWillAppearEvent
+        Observable.merge(input.viewWillAppearEvent, reloadSubject)
             .flatMapLatest { [weak self] _ -> Observable<Void> in
                 guard let self else { return .empty() }
                 return self.updateHeaderView(isMyPage: self.isMyPageRelay.value)
@@ -147,6 +149,11 @@ final class MyPageViewModel: ViewModelType {
             .flatMapLatest { [weak self]  _ -> Observable<Void> in
                 guard let self else { return .empty() }
                 guard !self.isProfilePrivateRelay.value.0 else { return .empty() }
+                if self.profileId == 0 {
+                    self.profileId =  UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)
+                    reloadSubject.onNext(())
+                    return .just(())
+                }
                 return Observable.concat([
                     self.updateMyPageLibraryInventoryData()
                         .map { _ in Void() },
@@ -377,6 +384,7 @@ final class MyPageViewModel: ViewModelType {
             .do(onNext: { [weak self] inventory in
                 guard let self else { return }
                 self.bindInventoryDataRelay.accept(inventory)
+                print(profileId, "😍")
             })
             .map { _ in Void() }
     }

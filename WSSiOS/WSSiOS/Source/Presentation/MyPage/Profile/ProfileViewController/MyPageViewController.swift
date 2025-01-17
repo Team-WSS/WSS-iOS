@@ -28,7 +28,7 @@ final class MyPageViewController: UIViewController {
     private let isEntryTabbarRelay = BehaviorRelay<Bool>(value: false)
     private var dropDownCellTap = PublishSubject<String>()
     private let headerViewHeightRelay = BehaviorRelay<Double>(value: 0)
-    private let viewWillAppearEvent = PublishRelay<Bool>()
+    private let viewWillAppearEvent = PublishSubject<Void>()
     private let feedConnectedNovelViewDidTap = PublishRelay<Int>()
     
     //MARK: - UI Components
@@ -78,7 +78,7 @@ final class MyPageViewController: UIViewController {
         super.viewWillAppear(animated)
         
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
-        self.viewWillAppearEvent.accept(true)
+        self.viewWillAppearEvent.onNext(())
         decideNavigation(myPage: entryType == .tabBar, navigationTitle: navigationTitle)
     }
     
