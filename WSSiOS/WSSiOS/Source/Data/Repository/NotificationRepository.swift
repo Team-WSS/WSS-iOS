@@ -10,21 +10,20 @@ import Foundation
 import RxSwift
 
 protocol NotificationRepository {
-    func getNotifications() -> Observable<NotificationsEntity>
+    func getNotifications(lastNotificationId: Int) -> Observable<NotificationsEntity>
 }
 
 struct DefaultNotificationRepository: NotificationRepository {
     
     private var notificationService: NotificationService
     
-    private let lastNotificationId = 0
     private let notificationSize = 20
     
     init(notificationService: NotificationService) {
         self.notificationService = notificationService
     }
     
-    func getNotifications() -> Observable<NotificationsEntity> {
+    func getNotifications(lastNotificationId: Int) -> Observable<NotificationsEntity> {
         return notificationService.getNotifications(lastNotificationId: lastNotificationId,
                                                     size: notificationSize)
         .asObservable()

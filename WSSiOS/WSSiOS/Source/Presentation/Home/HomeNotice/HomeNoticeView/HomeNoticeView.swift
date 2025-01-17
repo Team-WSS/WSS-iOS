@@ -67,6 +67,7 @@ final class HomeNoticeView: UIView {
         noticeTableView.snp.makeConstraints {
             $0.top.equalTo(safeAreaLayoutGuide.snp.top)
             $0.horizontalEdges.bottom.equalToSuperview()
+            $0.height.equalTo(0)
         }
         
         loadingView.snp.makeConstraints {
@@ -79,6 +80,12 @@ final class HomeNoticeView: UIView {
     func showLoadingView(isShow: Bool) {
         loadingView.do {
             $0.isHidden = !isShow
+        }
+    }
+    
+    func updateTableViewHeight(height: CGFloat) {
+        noticeTableView.snp.updateConstraints {
+            $0.height.equalTo(height)
         }
     }
 }
