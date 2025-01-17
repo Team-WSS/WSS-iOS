@@ -142,16 +142,33 @@ final class FeedEditContentView: UIView {
     //MARK: - Data
     
     func bindData(feedContent: String) {
-        // 현재 커서 위치
-        let selectedRange = self.feedTextView.selectedRange
-        
-        self.feedTextView.do {
-            $0.applyWSSFont(.body2, with: feedContent)
+        if let selectedRange = self.feedTextView.selectedTextRange {
+            // 시작 위치와 끝 위치를 저장
+            let cursorStartPosition = self.feedTextView.offset(from: self.feedTextView.beginningOfDocument, to: selectedRange.start)
+            let cursorEndPosition = self.feedTextView.offset(from: self.feedTextView.beginningOfDocument, to: selectedRange.end)
+            
+            if self.feedTextView.text != feedContent {
+                self.feedTextView.do {
+                    $0.applyWSSFont(.body2, with: feedContent)
+                }
+            }
+            
+            // 새로운 텍스트에서 위치 복원
+            if let newStartPosition = self.feedTextView.position(from: self.feedTextView.beginningOfDocument, offset: cursorStartPosition),
+               let newEndPosition = self.feedTextView.position(from: self.feedTextView.beginningOfDocument, offset: cursorEndPosition) {
+                let newSelectedRange = self.feedTextView.textRange(from: newStartPosition, to: newEndPosition)
+                self.feedTextView.selectedTextRange = newSelectedRange
+            }
+
+            // 커서가 가시 영역 아래에 있는 경우 스크롤
+            let caretRect = self.feedTextView.caretRect(for: selectedRange.start)
+            let caretBottom = caretRect.origin.y + caretRect.size.height
+            let visibleAreaBottom = self.feedTextView.contentOffset.y + self.feedTextView.bounds.size.height - self.feedTextView.textContainerInset.bottom
+
+            if caretBottom > visibleAreaBottom {
+                self.feedTextView.setContentOffset(CGPoint(x: 0, y: self.feedTextView.contentOffset.y + (caretBottom - visibleAreaBottom)), animated: true)
+            }
         }
-        
-        // 커서 위치 복원
-        let cursorPosition = min(selectedRange.location, feedContent.count)
-        self.feedTextView.selectedRange = NSRange(location: cursorPosition, length: 0)
         
         self.letterCountLabel.do {
             $0.applyWSSFont(.body2, with: "(\(feedContent.count)/2000)")
