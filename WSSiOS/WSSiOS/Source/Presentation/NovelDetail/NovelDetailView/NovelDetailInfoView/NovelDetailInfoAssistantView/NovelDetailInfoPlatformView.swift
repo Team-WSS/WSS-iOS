@@ -54,6 +54,12 @@ final class NovelDetailInfoPlatformView: UIView {
             platformCollectionView.setCollectionViewLayout($0,
                                                            animated: false)
         }
+        
+        platformCollectionView.do {
+            $0.showsHorizontalScrollIndicator = false
+            $0.setCollectionViewLayout(platformCollectionViewLayout,
+                                       animated: false)
+        }
     }
     
     private func setHierarchy() {
