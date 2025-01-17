@@ -39,7 +39,6 @@ final class HomeViewModel: ViewModelType {
     private let pushToMyPageViewController = PublishRelay<Void>()
     
     private let pushToNovelDetailViewController = PublishRelay<Int>()
-    private let pushToAnnouncementViewController = PublishRelay<Void>()
     let showInduceLoginModalView = PublishRelay<Void>()
     
     private let showLoadingView = PublishRelay<Bool>()
@@ -54,7 +53,6 @@ final class HomeViewModel: ViewModelType {
         let interestCellSelected: ControlEvent<IndexPath>
         let tasteRecommendCellSelected: ControlEvent<IndexPath>
         let tasteRecommendCollectionViewContentSize: Observable<CGSize?>
-        let announcementButtonDidTap: ControlEvent<Void>
         let registerInterestNovelButtonTapped: ControlEvent<Void>
         let setPreferredGenresButtonTapped: ControlEvent<Void>
     }
@@ -77,7 +75,6 @@ final class HomeViewModel: ViewModelType {
         let pushToMyPageEditViewController: Observable<Void>
         
         let pushToNovelDetailViewController: Observable<Int>
-        let pushToAnnouncementViewController: Observable<Void>
         let showInduceLoginModalView: Observable<Void>
         let showLoadingView: Observable<Bool>
         let showUpdateVersionAlertView: Observable<Void>
@@ -199,16 +196,6 @@ extension HomeViewModel {
         let tasteRecommendCollectionViewHeight = input.tasteRecommendCollectionViewContentSize
             .map { $0?.height ?? 0 }
             .asDriver(onErrorJustReturn: 0)
-
-        input.announcementButtonDidTap
-            .subscribe(with: self, onNext: { owner, _ in
-                if owner.isLogined {
-                    owner.pushToAnnouncementViewController.accept(())
-                } else {
-                    owner.showInduceLoginModalView.accept(())
-                }
-            })
-            .disposed(by: disposeBag)
         
         input.registerInterestNovelButtonTapped
             .subscribe(with: self, onNext: { owner, _ in
@@ -243,7 +230,6 @@ extension HomeViewModel {
                       updateTasteRecommendView: updateTasteRecommendView.asObservable(),
                       pushToMyPageEditViewController: pushToMyPageViewController.asObservable(),
                       pushToNovelDetailViewController: pushToNovelDetailViewController.asObservable(),
-                      pushToAnnouncementViewController: pushToAnnouncementViewController.asObservable(),
                       showInduceLoginModalView: showInduceLoginModalView.asObservable(),
                       showLoadingView: showLoadingView.asObservable(),
                       showUpdateVersionAlertView: showUpdateVersionAlertView.asObservable())

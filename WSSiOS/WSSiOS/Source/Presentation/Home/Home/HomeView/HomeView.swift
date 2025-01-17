@@ -16,7 +16,6 @@ final class HomeView: UIView {
     
     let scrollView = UIScrollView()
     private let contentView = UIView()
-    let headerView = HomeHeaderView()
     let todayPopularView = HomeTodayPopularView()
     let realtimePopularView = HomeRealtimePopularView()
     let interestView = HomeInterestView()
@@ -50,8 +49,7 @@ final class HomeView: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubviews(headerView,
-                         scrollView,
+        self.addSubviews(scrollView,
                          loadingView)
         self.scrollView.addSubview(contentView)
         contentView.addSubviews(todayPopularView,
@@ -61,15 +59,8 @@ final class HomeView: UIView {
     }
     
     private func setLayout() {
-        headerView.snp.makeConstraints {
-            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top)
-            $0.height.equalTo(50)
-            $0.leading.trailing.equalToSuperview()
-        }
-        
         scrollView.snp.makeConstraints {
-            $0.top.equalTo(headerView.snp.bottom)
-            $0.leading.trailing.equalToSuperview()
+            $0.top.leading.trailing.equalToSuperview()
             $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
         }
         
