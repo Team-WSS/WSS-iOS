@@ -34,7 +34,7 @@ final class MyPageViewModel: ViewModelType {
     private let showGenreOtherViewRelay = BehaviorRelay<Bool>(value: false)
     
     private let bindFeedDataRelay = BehaviorRelay<[FeedCellData]>(value: [])
-    private let isEmptyFeedRelay = PublishRelay<Void>()
+    private let isEmptyFeedRelay = PublishRelay<Bool>()
     private let showFeedDetailButtonRelay = BehaviorSubject<Bool>(value: false)
     
     private let updateButtonWithLibraryViewRelay = BehaviorRelay<Bool>(value: true)
@@ -114,7 +114,7 @@ final class MyPageViewModel: ViewModelType {
         
         let bindFeedData: BehaviorRelay<[FeedCellData]>
         let updateFeedTableViewHeight: PublishRelay<CGFloat>
-        let isEmptyFeed: PublishRelay<Void>
+        let isEmptyFeed: PublishRelay<Bool>
         let showFeedDetailButton: BehaviorSubject<Bool>
         
         let showToastView: PublishRelay<Void>
@@ -431,6 +431,7 @@ final class MyPageViewModel: ViewModelType {
             }
     }
     
+    // 활동 데이터 바인딩
     private func updateMyPageFeedData() -> Observable<Void> {
         return getUserFeed(userId: self.profileId, lastFeedId: 0, size: 6)
             .map { feedResult -> [FeedCellData] in
@@ -446,18 +447,19 @@ final class MyPageViewModel: ViewModelType {
                 guard let self else { return }
                 
                 if feedCellData.isEmpty {
-                    self.isEmptyFeedRelay.accept(())
+                    self.isEmptyFeedRelay.accept(true)
                 } else {
                     
                     //5개까지만 활동뷰에 바인딩
                     //5개를 초과할 경우 더보기 버튼 뜨게 함
+                    self.isEmptyFeedRelay.accept(false)
                     let hasMoreThanFive = feedCellData.count > 5
                     self.showFeedDetailButtonRelay.onNext(hasMoreThanFive)
                     self.bindFeedDataRelay.accept(Array(feedCellData.prefix(5)))
                 }
             })
             .catch { [weak self] error in
-                self?.isEmptyFeedRelay.accept(())
+                self?.isEmptyFeedRelay.accept(true)
                 return .just([])
             }
             .map { _ in Void() }

@@ -310,8 +310,8 @@ final class MyPageViewController: UIViewController {
         
         output.isEmptyFeed
             .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, _ in
-                owner.rootView.myPageFeedView.isEmptyView(isEmpty: true)
+            .bind(with: self, onNext: { owner, isEmpty in
+                owner.rootView.myPageFeedView.isEmptyView(isEmpty: isEmpty)
             })
             .disposed(by: disposeBag)
         
