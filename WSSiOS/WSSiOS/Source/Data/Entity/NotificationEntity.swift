@@ -59,3 +59,23 @@ extension NotificationResult {
         }
     }
 }
+
+
+struct NotificationDetailEntity {
+    let title: String
+    let content: String
+    let createdDate: String
+}
+
+extension NotificationDetailResult {
+    func transform() -> Observable<NotificationDetailEntity> {
+        return Observable.create { observer in
+            let entity = NotificationDetailEntity(title: self.notificationTitle,
+                                                  content: self.notificationDetail,
+                                                  createdDate: self.notificationCreatedDate)
+            observer.onNext(entity)
+            observer.onCompleted()
+            return Disposables.create()
+        }
+    }
+}

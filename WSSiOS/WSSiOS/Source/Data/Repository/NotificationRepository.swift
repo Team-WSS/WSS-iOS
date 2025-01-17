@@ -11,6 +11,7 @@ import RxSwift
 
 protocol NotificationRepository {
     func getNotifications(lastNotificationId: Int) -> Observable<NotificationsEntity>
+    func getNotificationDetail(notificationId: Int) -> Observable<NotificationDetailEntity>
 }
 
 struct DefaultNotificationRepository: NotificationRepository {
@@ -28,5 +29,11 @@ struct DefaultNotificationRepository: NotificationRepository {
                                                     size: notificationSize)
         .asObservable()
         .flatMap { $0.transform() }
+    }
+    
+    func getNotificationDetail(notificationId: Int) -> Observable<NotificationDetailEntity> {
+        return notificationService.getNotificationDetail(notificationId: notificationId)
+            .asObservable()
+            .flatMap { $0.transform() }
     }
 }

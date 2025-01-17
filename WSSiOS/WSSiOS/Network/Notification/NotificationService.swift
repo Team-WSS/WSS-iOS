@@ -11,6 +11,7 @@ import RxSwift
 
 protocol NotificationService {
     func getNotifications(lastNotificationId: Int, size: Int) -> Single<NotificationsResult>
+    func getNotificationDetail(notificationId: Int) -> Single<NotificationDetailResult>
 }
 
 final class DefaultNoticeService: NSObject, Networking, NotificationService {
@@ -36,6 +37,23 @@ final class DefaultNoticeService: NSObject, Networking, NotificationService {
             
             return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0, to: NotificationsResult.self) }
+                .asSingle()
+        } catch {
+            return Single.error(error)
+        }
+    }
+    
+    func getNotificationDetail(notificationId: Int) -> Single<NotificationDetailResult> {
+        do {
+            let request = try makeHTTPRequest(method: .get,
+                                              path: URLs.Notification.getNotificationDetail(notificationId: notificationId),
+                                              headers: APIConstants.accessTokenHeader,
+                                              body: nil)
+            
+            NetworkLogger.log(request: request)
+            
+            return tokenCheckURLSession.rx.data(request: request)
+                .map { try self.decode(data: $0, to: NotificationDetailResult.self) }
                 .asSingle()
         } catch {
             return Single.error(error)
