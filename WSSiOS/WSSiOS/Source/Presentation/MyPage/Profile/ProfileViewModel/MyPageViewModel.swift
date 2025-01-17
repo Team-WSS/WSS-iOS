@@ -35,7 +35,7 @@ final class MyPageViewModel: ViewModelType {
     
     private let bindFeedDataRelay = BehaviorRelay<[FeedCellData]>(value: [])
     private let isEmptyFeedRelay = PublishRelay<Void>()
-    private let showFeedDetailButtonRelay = PublishRelay<Bool>()
+    private let showFeedDetailButtonRelay = BehaviorSubject<Bool>(value: false)
     
     private let updateButtonWithLibraryViewRelay = BehaviorRelay<Bool>(value: true)
     private let updateFeedTableViewHeightRelay = PublishRelay<CGFloat>()
@@ -115,7 +115,7 @@ final class MyPageViewModel: ViewModelType {
         let bindFeedData: BehaviorRelay<[FeedCellData]>
         let updateFeedTableViewHeight: PublishRelay<CGFloat>
         let isEmptyFeed: PublishRelay<Void>
-        let showFeedDetailButton: PublishRelay<Bool>
+        let showFeedDetailButton: BehaviorSubject<Bool>
         
         let showToastView: PublishRelay<Void>
         let stickyHeaderAction: BehaviorRelay<Bool>
@@ -452,7 +452,7 @@ final class MyPageViewModel: ViewModelType {
                     //5개까지만 활동뷰에 바인딩
                     //5개를 초과할 경우 더보기 버튼 뜨게 함
                     let hasMoreThanFive = feedCellData.count > 5
-                    self.showFeedDetailButtonRelay.accept(hasMoreThanFive)
+                    self.showFeedDetailButtonRelay.onNext(hasMoreThanFive)
                     self.bindFeedDataRelay.accept(Array(feedCellData.prefix(5)))
                 }
             })
