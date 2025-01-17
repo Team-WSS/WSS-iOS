@@ -113,6 +113,8 @@ final class NovelDetailViewController: UIViewController {
         
         //MARK: - Bind/Total
         
+        self.rootView.feedView.feedListView.updateTableViewBottom()
+        
         output.detailHeaderData
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
