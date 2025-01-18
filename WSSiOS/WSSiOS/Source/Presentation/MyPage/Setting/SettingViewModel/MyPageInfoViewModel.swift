@@ -112,8 +112,12 @@ final class MyPageInfoViewModel: ViewModelType {
             }
             .subscribe(
                 onNext: {
+                    UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.userId)
+                    UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.userNickname)
+                    UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.userGender)
                     UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.accessToken)
                     UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.refreshToken)
+                    
                     output.pushToLoginViewController.accept(())
                 },
                 onError: { error in
