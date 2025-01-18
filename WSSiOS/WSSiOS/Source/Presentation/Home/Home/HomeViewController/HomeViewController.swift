@@ -248,6 +248,13 @@ final class HomeViewController: UIViewController {
                 owner.showToast(.editUserProfile)
             })
             .disposed(by: disposeBag)
+        
+        output.isNotificationUnread
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, isUnread in
+                owner.rootView.headerView.checkNotificationUnread(isUnread)
+            })
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Custom Method

@@ -58,4 +58,10 @@ final class HomeHeaderView: UIView {
             $0.trailing.equalToSuperview().inset(20)
         }
     }
+    
+    //MARK: - Custom Method
+    
+    func checkNotificationUnread(_ unread: Bool) {
+        announcementButton.setImage(unread ? .icAnnouncementDotted : .icAnnouncement, for: .normal)
+    }
 }

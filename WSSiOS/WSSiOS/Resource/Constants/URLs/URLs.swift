@@ -175,6 +175,7 @@ enum URLs {
         static func getNotificationDetail(notificationId: Int) -> String {
             return "/notifications/\(notificationId)"
         }
+        static let getNotificationUnreadStatus = "/notifications/unread"
     }
     
     enum Search {
