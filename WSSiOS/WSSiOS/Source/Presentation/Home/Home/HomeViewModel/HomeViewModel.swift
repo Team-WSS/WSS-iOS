@@ -201,14 +201,14 @@ extension HomeViewModel {
             .asDriver(onErrorJustReturn: 0)
         
         input.announcementButtonDidTap
-                  .subscribe(with: self, onNext: { owner, _ in
-                      if owner.isLogined {
-                          owner.pushToAnnouncementViewController.accept(())
-                      } else {
-                          owner.showInduceLoginModalView.accept(())
-                      }
-                  })
-                  .disposed(by: disposeBag)
+            .subscribe(with: self, onNext: { owner, _ in
+                if owner.isLogined {
+                    owner.pushToAnnouncementViewController.accept(())
+                } else {
+                    owner.showInduceLoginModalView.accept(())
+                }
+            })
+            .disposed(by: disposeBag)
         
         input.registerInterestNovelButtonTapped
             .subscribe(with: self, onNext: { owner, _ in

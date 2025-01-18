@@ -39,7 +39,7 @@ final class HomeNoticeDetailView: UIView {
         backButton.do {
             $0.setImage(.icNavigateLeft.withRenderingMode(.alwaysOriginal).withTintColor(.wssBlack), for: .normal)
         }
-
+        
         scrollView.do {
             $0.showsVerticalScrollIndicator = false
         }
