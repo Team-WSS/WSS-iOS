@@ -22,9 +22,6 @@ final class HomeViewController: UIViewController {
     private let viewWillAppearEvent = PublishRelay<Void>()
     private let viewDidLoadEvent = PublishRelay<Void>()
     
-    private let logoImageView = UIButton()
-    private let bellButton = UIButton()
-    
     //MARK: - UI Components
     
     private let rootView: HomeView
@@ -48,9 +45,7 @@ final class HomeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        setWSSNavigationBar(title: nil,
-                            left: self.logoImageView,
-                            right: self.bellButton)
+        navigationController?.setNavigationBarHidden(true, animated: true)
         showTabBar()
         
         viewWillAppearEvent.accept(())
@@ -72,15 +67,6 @@ final class HomeViewController: UIViewController {
     
     private func setUI() {
         self.view.backgroundColor = .wssWhite
-        
-        logoImageView.do {
-            $0.setImage(.imgLogoType, for: .normal)
-            $0.isUserInteractionEnabled = false
-        }
-        
-        bellButton.do {
-            $0.setImage(.icAnnouncement, for: .normal)
-        }
     }
     
     //MARK: - Bind
@@ -116,20 +102,11 @@ final class HomeViewController: UIViewController {
             interestCellSelected: rootView.interestView.interestCollectionView.rx.itemSelected,
             tasteRecommendCellSelected: rootView.tasteRecommendView.tasteRecommendCollectionView.rx.itemSelected,
             tasteRecommendCollectionViewContentSize: rootView.tasteRecommendView.tasteRecommendCollectionView.rx.observe(CGSize.self, "contentSize"),
+            announcementButtonDidTap: rootView.headerView.announcementButton.rx.tap,
             registerInterestNovelButtonTapped: rootView.interestView.unregisterView.registerButton.rx.tap,
             setPreferredGenresButtonTapped: rootView.tasteRecommendView.unregisterView.registerButton.rx.tap
         )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
-        
-        self.bellButton.rx.tap
-            .bind(with: self, onNext: { owner, _ in
-                if owner.isLoggedIn {
-                    owner.pushToNotificationViewController()
-                } else {
-                    owner.presentInduceLoginViewController()
-                }
-            })
-            .disposed(by: disposeBag)
         
         // 오늘의 인기작
         output.todayPopularList
@@ -212,6 +189,12 @@ final class HomeViewController: UIViewController {
             .subscribe(with: self, onNext: { owner, updateData in
                 let (isLogined, isEmpty) = updateData
                 owner.rootView.tasteRecommendView.updateView(isLogined, isEmpty)
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushToAnnouncementViewController
+            .bind(with: self, onNext: { owner, _ in
+                owner.pushToNotificationViewController()
             })
             .disposed(by: disposeBag)
         
