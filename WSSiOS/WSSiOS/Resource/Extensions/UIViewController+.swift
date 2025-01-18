@@ -80,8 +80,8 @@ extension UIViewController {
             $0.shadowColor = .clear
         }
         
-        navigationController?.navigationBar.standardAppearance = whiteAppearance
-        navigationController?.navigationBar.scrollEdgeAppearance = isVisible ? whiteAppearance : clearAppearance
+        navigationItem.standardAppearance = whiteAppearance
+        navigationItem.scrollEdgeAppearance = isVisible ? whiteAppearance : clearAppearance
     }
     
     func moveToNovelDetailViewController(userNovelId: Int) {
