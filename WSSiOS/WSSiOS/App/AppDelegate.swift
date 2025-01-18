@@ -18,9 +18,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         RxKakaoSDK.initSDK(appKey: APIConstants.kakaoAppKey)
         
         FirebaseApp.configure()
-        Task {
-            await setFCM(application)
-        }
         
         return true
     }
@@ -40,42 +37,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 }
 
-// MARK: Notification
+// MARK: APNs & FCM
 extension AppDelegate {
     
-    @MainActor
-    func setFCM(_ application: UIApplication) async {
-        setDelegate()
-        if await requestNotificationAuthorization() {
-            print("알림 권한 허용")
-            registerForAPNs(application)
-        } else {
-            print("알림 권한 거부")
-        }
-    }
-    
-    // 알림 및 cloudMessaging Delegate 지정
-    func setDelegate() {
-        UNUserNotificationCenter.current().delegate = self
-        Messaging.messaging().delegate = self
-    }
-    
-    // 알림 권한 요청
-    func requestNotificationAuthorization() async -> Bool {
-        do {
-            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-            return try await UNUserNotificationCenter.current().requestAuthorization(options: authOptions)
-        } catch {
-            return false
-        }
-    }
-    
-    // APNs에 기기 등록
-    func registerForAPNs(_ application: UIApplication) {
-        application.registerForRemoteNotifications()
-    }
-    
-    // APNs 기기 등록 성공 콜백, Swizzling Off로 직접 device토큰을 Messaging에 등록
+    // APNs 기기 등록 성공 콜백, Swizzling Off 상태이기 때문에 직접 device토큰을 Messaging에 등록
     func application(
         _ application: UIApplication,
         didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data
@@ -92,7 +57,7 @@ extension AppDelegate {
         print("디바이스 토큰 등록 실패: \(error)")
     }
     
-    //
+    //FCM에서 수신한 알림 분석 데이터를 Firebase SDK에 전달
     func application(
         _ application: UIApplication,
         didReceiveRemoteNotification userInfo: [AnyHashable : Any],
@@ -101,22 +66,4 @@ extension AppDelegate {
         Messaging.messaging().appDidReceiveMessage(userInfo)
         completionHandler(.noData)
     }
-}
-
-extension AppDelegate: MessagingDelegate {
-    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-        guard let fcmToken = fcmToken else { return }
-        print("Firebase 등록 토큰: \(fcmToken)")
-        
-        // 필요 시 서버로 토큰 전송
-        sendFCMTokenToServer(token: fcmToken)
-    }
-
-    private func sendFCMTokenToServer(token: String) {
-        // 서버로 토큰 전송 로직 구현
-    }
-}
-
-extension AppDelegate: UNUserNotificationCenterDelegate {
-    
 }
