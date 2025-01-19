@@ -595,18 +595,22 @@ final class FeedDetailViewModel: ViewModelType {
             self.showNetworkErrorView.accept(())
             return
         }
-        switch networkError {
-        case .httpRequestFailed(_, let data):
-            if let data,
-               let errorResponse = try? JSONDecoder().decode(ServerErrorResponse.self, from: data) {
-                if errorResponse.code == "FEED-001" {
-                    self.showUnknownFeedAlertView.accept(())
-                }
-            } else {
-                self.showNetworkErrorView.accept(())
-            }
-        default:
-            self.showNetworkErrorView.accept(())
+        
+        if case .httpRequestFailed(_, let data) = networkError,
+           let data,
+           let errorResponse = try? JSONDecoder().decode(ServerErrorResponse.self, from: data) {
+            handleUnknownFeedError(errorResponse)
+        } else {
+            showNetworkErrorView.accept(())
+        }
+    }
+    
+    private func handleUnknownFeedError(_ errorResponse: ServerErrorResponse) {
+        let alertCodes = ["FEED-001", "FEED-005", "FEED-006"]
+        if alertCodes.contains(errorResponse.code) {
+            showUnknownFeedAlertView.accept(())
+        } else {
+            showNetworkErrorView.accept(())
         }
     }
 }
