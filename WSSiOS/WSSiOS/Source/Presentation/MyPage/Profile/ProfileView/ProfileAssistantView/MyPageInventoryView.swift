@@ -151,7 +151,7 @@ final class MyPageInventoryView: UIView {
                 
                 arrowImageView.snp.makeConstraints {
                     $0.center.equalToSuperview()
-                    $0.size.equalTo(22)
+                    $0.size.equalTo(24)
                 }
             }
             
