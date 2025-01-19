@@ -109,8 +109,8 @@ final class MyPageStickyHeaderView: UIView {
         libraryButton.isSelected = isLibrarySelected
         feedButton.isSelected = !isLibrarySelected
         
-        libraryButtonLabel.textColor = isLibrarySelected ? .wssBlack : .wssGray300
-        feedButtonLabel.textColor = isLibrarySelected ? .wssGray300 : .wssBlack
+        libraryButtonLabel.textColor = isLibrarySelected ? .wssBlack : .wssGray100
+        feedButtonLabel.textColor = isLibrarySelected ? .wssGray100 : .wssBlack
         
         libraryUnderView.isHidden = !isLibrarySelected
         feedUnderView.isHidden = isLibrarySelected
