@@ -16,12 +16,12 @@ final class MyPageInventoryView: UIView {
     
     //터치영역
     let inventoryView = UIView()
+    let inventoryStackView = UIStackView()
     
     private let titleLabel = UILabel()
     private let arrowView = UIView()
     private let arrowImageView = UIImageView()
     private let inventoryDetailView = UIView()
-    let inventoryStackView = UIStackView()
     
     private var interestStackView = UIStackView()
     private let interestCountLabel = UILabel()
