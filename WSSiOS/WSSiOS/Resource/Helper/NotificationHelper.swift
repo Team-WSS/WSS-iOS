@@ -75,15 +75,17 @@ extension NotificationHelper: UNUserNotificationCenterDelegate {
 }
 
 extension NotificationHelper: MessagingDelegate {
+    
+    // FCM 토큰이 생성되거나 변경될 때 자동으로 호출되어 클라이언트에 전달해줌.
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
         guard let fcmToken = fcmToken else { return }
         print("Firebase 등록 토큰: \(fcmToken)")
         
-        // 필요 시 서버로 토큰 전송
         sendFCMTokenToServer(token: fcmToken)
     }
 
+    // 서버로 FCM 토큰 갱신.
     private func sendFCMTokenToServer(token: String) {
-        // 서버로 토큰 전송 로직 구현
+       
     }
 }
