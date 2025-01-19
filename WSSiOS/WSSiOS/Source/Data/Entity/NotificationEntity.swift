@@ -42,21 +42,16 @@ struct NotificationEntity {
 
 extension NotificationResult {
     func transform() -> Observable<NotificationEntity> {
-        return Observable.create { observer in
-            let notificationImageURL = KingFisherRxHelper.makeImageURLString(path: notificationImage) ?? .none
-            
-            let entity = NotificationEntity(notificationId: self.notificationId,
-                                            notificationImageURL: notificationImageURL,
-                                            notificationTitle: self.notificationTitle,
-                                            notificationOverview: self.notificationBody,
-                                            createdDate: self.createdDate,
-                                            isRead: self.isRead,
-                                            isNotice: self.isNotice,
-                                            feedId: self.feedId)
-            observer.onNext(entity)
-            observer.onCompleted()
-            return Disposables.create()
-        }
+        let notificationImageURL = KingFisherRxHelper.makeImageURLString(path: notificationImage) ?? .none
+        let entity = NotificationEntity(notificationId: self.notificationId,
+                                        notificationImageURL: notificationImageURL,
+                                        notificationTitle: self.notificationTitle,
+                                        notificationOverview: self.notificationBody,
+                                        createdDate: self.createdDate,
+                                        isRead: self.isRead,
+                                        isNotice: self.isNotice,
+                                        feedId: self.feedId)
+        return Observable.just(entity)
     }
 }
 
@@ -69,13 +64,9 @@ struct NotificationDetailEntity {
 
 extension NotificationDetailResult {
     func transform() -> Observable<NotificationDetailEntity> {
-        return Observable.create { observer in
-            let entity = NotificationDetailEntity(title: self.notificationTitle,
-                                                  content: self.notificationDetail,
-                                                  createdDate: self.notificationCreatedDate)
-            observer.onNext(entity)
-            observer.onCompleted()
-            return Disposables.create()
-        }
+        let entity = NotificationDetailEntity(title: self.notificationTitle,
+                                              content: self.notificationDetail,
+                                              createdDate: self.notificationCreatedDate)
+        return Observable.just(entity)
     }
 }
