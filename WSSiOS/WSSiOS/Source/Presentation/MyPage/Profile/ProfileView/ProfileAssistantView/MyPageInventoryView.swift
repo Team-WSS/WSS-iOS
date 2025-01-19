@@ -187,6 +187,3 @@ final class MyPageInventoryView: UIView {
         quitCountLabel.applyWSSFont(.title2, with: String(describing: data.quitNovelCount))
     }
 }
-
-
-
