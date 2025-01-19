@@ -112,9 +112,7 @@ final class NovelDetailViewController: UIViewController {
     private func bindViewModelOutput(_ output: NovelDetailViewModel.Output) {
         
         //MARK: - Bind/Total
-        
-        self.rootView.feedView.feedListView.updateTableViewBottom()
-        
+         
         output.detailHeaderData
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in

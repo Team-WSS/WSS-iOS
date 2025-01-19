@@ -65,12 +65,6 @@ final class FeedListView: UIView {
     
     //MARK: - Custom Method
     
-    func updateTableViewBottom() {
-        feedTableView.snp.updateConstraints {
-            $0.bottom.equalToSuperview().inset(28)
-        }
-    }
-    
     func updateTableViewHeight(height: CGFloat) {
         feedTableView.snp.updateConstraints {
             $0.height.equalTo(height)

@@ -48,7 +48,8 @@ final class NovelDetailFeedView: UIButton {
     
     private func setLayout() {
         stackView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.top.horizontalEdges.equalToSuperview()
+            $0.bottom.equalToSuperview().inset(28)
         }
     }
     
