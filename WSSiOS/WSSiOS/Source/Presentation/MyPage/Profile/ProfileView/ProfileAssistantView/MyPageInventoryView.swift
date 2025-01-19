@@ -17,6 +17,11 @@ final class MyPageInventoryView: UIView {
     //터치영역
     let inventoryView = UIView()
     
+    var interestStackView = UIStackView()
+    var watchingStackView = UIStackView()
+    var watchedStackView = UIStackView()
+    var quitStackView = UIStackView()
+    
     private let titleLabel = UILabel()
     private let arrowView = UIView()
     private let arrowImageView = UIImageView()
@@ -77,6 +82,12 @@ final class MyPageInventoryView: UIView {
             $0.distribution = .fillEqually
             $0.spacing = 2
         }
+        
+        let statusList = StringLiterals.ReviewerStatus.allCases.map { $0.rawValue }
+        interestStackView = createVerticalStack(countLabel: interestCountLabel, textLabel: interestLabel, text: statusList[0] , addLine: true)
+        watchingStackView = createVerticalStack(countLabel: watchingCountLabel, textLabel: watchingLabel, text: statusList[1])
+        watchedStackView = createVerticalStack(countLabel: watchedCountLabel, textLabel: watchedLabel, text: statusList[2])
+        quitStackView = createVerticalStack(countLabel: quitCountLabel, textLabel: quitLabel, text: statusList[3])
     }
     
     private func createVerticalStack(countLabel: UILabel, textLabel: UILabel, text: String, addLine: Bool = false) -> UIStackView {
@@ -122,16 +133,10 @@ final class MyPageInventoryView: UIView {
         inventoryDetailView.addSubview(stackView)
         arrowView.addSubview(arrowImageView)
         
-        let statusList = StringLiterals.ReviewerStatus.allCases.map { $0.rawValue }
-        let interestStack = createVerticalStack(countLabel: interestCountLabel, textLabel: interestLabel, text: statusList[0] , addLine: true)
-        let watchingStack = createVerticalStack(countLabel: watchingCountLabel, textLabel: watchingLabel, text: statusList[1])
-        let watchedStack = createVerticalStack(countLabel: watchedCountLabel, textLabel: watchedLabel, text: statusList[2])
-        let quitStack = createVerticalStack(countLabel: quitCountLabel, textLabel: quitLabel, text: statusList[3])
-        
-        stackView.addArrangedSubviews(interestStack,
-                                      watchingStack,
-                                      watchedStack,
-                                      quitStack)
+        stackView.addArrangedSubviews(interestStackView,
+                                      watchingStackView,
+                                      watchedStackView,
+                                      quitStackView)
     }
     
     private func setLayout() {
