@@ -68,10 +68,10 @@ final class MyPageFeedDetailViewController: UIViewController, UIScrollViewDelega
     }
     
     private func bindViewModel() {
-        let loadNextPageTrigger = rootView.myPageFeedDetailTableView.rx.didScroll
-            .map { [weak self] in
+        let loadNextPageTrigger = rootView.myPageFeedDetailTableView.rx.contentOffset
+            .map { [weak self] contentOffset in
                 guard let self = self else { return false }
-                let offsetY = self.rootView.myPageFeedDetailTableView.contentOffset.y
+                let offsetY = contentOffset.y
                 let contentHeight = self.rootView.myPageFeedDetailTableView.contentSize.height
                 let frameHeight = self.rootView.myPageFeedDetailTableView.frame.height
                 return offsetY + frameHeight >= contentHeight - 100
@@ -109,7 +109,7 @@ final class MyPageFeedDetailViewController: UIViewController, UIScrollViewDelega
         
         output.isMyPage
             .bind(with: self, onNext: { owner, isMyPage in
-                owner.setNavigationBar(title: isMyPage ? StringLiterals.MyPage.Profile.myProfileFeed : StringLiterals.MyPage.Profile.otherProfileFeed,
+                owner.setWSSNavigationBar(title: isMyPage ? StringLiterals.MyPage.Profile.myProfileFeed : StringLiterals.MyPage.Profile.otherProfileFeed,
                                        left: self.rootView.backButton,
                                        right: nil)
             })

@@ -160,7 +160,7 @@ extension MyPageInfoViewController {
     //MARK: - UI
     
     private func setNavigationBar() {
-        setNavigationBar(title: StringLiterals.Navigation.Title.myPageInfo,
+        setWSSNavigationBar(title: StringLiterals.Navigation.Title.myPageInfo,
                          left: self.rootView.backButton,
                          right: nil)
     }

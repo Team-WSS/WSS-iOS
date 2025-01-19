@@ -62,7 +62,7 @@ final class LibraryViewController: UIViewController {
         super.viewWillAppear(animated)
         
         hideTabBar()
-        setNavigationBar(title: StringLiterals.Navigation.Title.library,
+        setWSSNavigationBar(title: StringLiterals.Navigation.Title.library,
                          left: backButton,
                          right: nil)
     }

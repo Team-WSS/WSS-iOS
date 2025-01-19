@@ -134,15 +134,13 @@ final class MyPageFeedView: UIView {
     
     
     func isEmptyView(isEmpty: Bool) {
-        if isEmpty {
-            myPageFeedEmptyView.isHidden = false
-            
-            [myPageFeedTableView,
-             showMoreActivityButton,
-             paddingViewAfterButton].forEach { view in
-                view.do {
-                    $0.isHidden = true
-                }
+        myPageFeedEmptyView.isHidden = !isEmpty
+        
+        [myPageFeedTableView,
+         showMoreActivityButton,
+         paddingViewAfterButton].forEach { view in
+            view.do {
+                $0.isHidden = isEmpty
             }
         }
     }

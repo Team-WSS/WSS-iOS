@@ -165,7 +165,7 @@ final class MyPageDeleteIDViewController: UIViewController {
 
 extension MyPageDeleteIDViewController {
     private func setNavigationBar() {
-        setNavigationBar(title: StringLiterals.Navigation.Title.deleteID,
+        setWSSNavigationBar(title: StringLiterals.Navigation.Title.deleteID,
                          left: self.rootView.backButton,
                          right: nil)
     }

@@ -50,24 +50,38 @@ extension UIViewController {
         navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
-    func setNavigationBar(title: String, left: UIButton?, right: UIButton?, underLine: Bool = false) {
+    func setWSSNavigationBar(title: String?, left: UIButton?, right: UIButton?, isVisibleBeforeScroll: Bool = true) {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         self.navigationItem.title = title
-        
-        if let navigationBar = self.navigationController?.navigationBar {
-            let titleTextAttributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.Title2
-            ]
-            navigationBar.titleTextAttributes = titleTextAttributes
-        }
-        
         self.navigationItem.leftBarButtonItem = left != nil ? UIBarButtonItem(customView: left!) : nil
         self.navigationItem.rightBarButtonItem = right != nil ? UIBarButtonItem(customView: right!) : nil
-        
-        if !underLine {
-            self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-            self.navigationController?.navigationBar.shadowImage = UIImage()
+        setNavigationBarVisibleBeforeScroll(isVisible: isVisibleBeforeScroll)
+    }
+    
+    func setNavigationBarVisibleBeforeScroll(isVisible: Bool) {
+        let clearAppearance = UINavigationBarAppearance().then {
+            $0.configureWithTransparentBackground()
+            $0.titleTextAttributes = [
+                .font: UIFont.Title2,
+                .kern: -0.6,
+                .foregroundColor: UIColor.clear
+            ]
+            $0.shadowColor = .clear
         }
+        
+        let whiteAppearance = UINavigationBarAppearance().then {
+            $0.configureWithOpaqueBackground()
+            $0.backgroundColor = .white
+            $0.titleTextAttributes = [
+                .font: UIFont.Title2,
+                .kern: -0.6,
+                .foregroundColor: UIColor.black
+            ]
+            $0.shadowColor = .clear
+        }
+        
+        navigationController?.navigationBar.standardAppearance = whiteAppearance
+        navigationController?.navigationBar.scrollEdgeAppearance = isVisible ? whiteAppearance : clearAppearance
     }
     
     func moveToNovelDetailViewController(userNovelId: Int) {
@@ -175,24 +189,35 @@ extension UIViewController {
     }
     
     func presentModalViewController(_ viewController: UIViewController) {
-        let blackOverlayView = UIView(frame: self.view.bounds).then {
-            $0.backgroundColor = UIColor.black.withAlphaComponent(0)
-            $0.tag = 999
-        }
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let window = windowScene.windows.first else { return }
+           
+           let blackOverlayView = UIView(frame: window.bounds).then {
+               $0.backgroundColor = UIColor.black.withAlphaComponent(0)
+               $0.tag = 999
+           }
+           
+           window.addSubview(blackOverlayView)
+           
+           blackOverlayView.snp.makeConstraints {
+               $0.edges.equalToSuperview()
+           }
+           
+           UIView.animate(withDuration: 0.3) {
+               blackOverlayView.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+           }
+           
+           viewController.modalPresentationStyle = .overFullScreen
+           self.present(viewController, animated: true)
         
-        self.view.addSubview(blackOverlayView)
         
-        UIView.animate(withDuration: 0.3) {
-            blackOverlayView.backgroundColor = UIColor.black.withAlphaComponent(0.6)
-        }
-        
-        viewController.modalPresentationStyle = .overFullScreen
-        
-        self.present(viewController, animated: true)
     }
     
     func dismissModalViewController() {
-        guard let blackOverlayView = self.presentingViewController?.view.viewWithTag(999) else { return }
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let window = windowScene.windows.first else { return }
+
+        guard let blackOverlayView = window.viewWithTag(999) else { return }
         
         UIView.animate(withDuration: 0.3, animations: {
             blackOverlayView.backgroundColor = UIColor.black.withAlphaComponent(0)
@@ -347,7 +372,7 @@ extension UIViewController {
             )
         )
         
-        self.navigationController?.pushViewController(viewController, animated: false)
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
     
     func pushToChangeUserInfoViewController() {
@@ -358,7 +383,7 @@ extension UIViewController {
                     blocksService: DefaultBlocksService())))
         viewController.hidesBottomBarWhenPushed = true
         
-        self.navigationController?.pushViewController(viewController, animated: false)
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
     
     func pushToLibraryViewController(userId: Int) {
@@ -370,7 +395,7 @@ extension UIViewController {
                 userId: userId))
         
         viewController.hidesBottomBarWhenPushed = true
-        self.navigationController?.pushViewController(viewController, animated: false)
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
     
     func pushToMyPageFeedDetailViewController(userId: Int, useData: MyProfileResult) {
@@ -381,7 +406,7 @@ extension UIViewController {
                     blocksService: DefaultBlocksService()),
                 profileId: userId,
                 profileData: useData))
-        self.navigationController?.pushViewController(viewController, animated: false)
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
     
     func presentToFeedDetailUnknownFeedErrorViewController() {

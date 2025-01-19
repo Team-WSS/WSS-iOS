@@ -114,7 +114,7 @@ final class MyPageBlockUserViewController: UIViewController, UIScrollViewDelegat
     }
     
     private func setNavigation() {
-        setNavigationBar(title: StringLiterals.Navigation.Title.myPageBlockUser,
+        setWSSNavigationBar(title: StringLiterals.Navigation.Title.myPageBlockUser,
                          left: self.rootView.backButton,
                          right: nil)
     }
