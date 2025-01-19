@@ -386,7 +386,7 @@ extension UIViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func pushToLibraryViewController(userId: Int) {
+    func pushToLibraryViewController(userId: Int, pageIndex: Int = 0) {
         let viewController = LibraryViewController(
             libraryViewModel: LibraryViewModel(
                 userRepository: DefaultUserRepository(
@@ -394,6 +394,7 @@ extension UIViewController {
                     blocksService: DefaultBlocksService()),
                 userId: userId))
         
+        viewController.pageIndex = pageIndex
         viewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(viewController, animated: true)
     }

@@ -149,6 +149,16 @@ final class MyPageViewController: UIViewController {
             inventoryViewDidTap: rootView.myPageLibraryView.inventoryView.inventoryView.rx.tapGesture()
                 .when(.recognized)
                 .asObservable(),
+            inventorySpecificPageViewDidTap: rootView.myPageLibraryView.inventoryView.inventoryStackView.rx.tapGesture()
+                .when(.recognized)
+                .compactMap { [weak self] tapGesture -> Int? in
+                    guard let self = self else { return nil }
+                    let location = tapGesture.location(in: self.rootView.myPageLibraryView.inventoryView.inventoryStackView)
+                    if let tappedView = self.rootView.myPageLibraryView.inventoryView.inventoryStackView
+                        .subviews.first(where: { $0.frame.contains(location) }) { return tappedView.tag }
+                    return nil
+                }
+                .asObservable(),
             feedDetailButtonDidTap: rootView.myPageFeedView.myPageFeedDetailButton.rx.tap,
             editProfileNotification: NotificationCenter.default.rx.notification(NSNotification.Name("EditProfile")).asObservable(),
             feedTableViewItemSelected: rootView.myPageFeedView.myPageFeedTableView.feedTableView.rx.itemSelected.asObservable(),
@@ -328,6 +338,14 @@ final class MyPageViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, userId in
                 owner.pushToLibraryViewController(userId: userId)
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushToSpecificLibraryViewController
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, userData in
+                let (id, pageIndex) = userData
+                owner.pushToLibraryViewController(userId: id, pageIndex: pageIndex)
             })
             .disposed(by: disposeBag)
         

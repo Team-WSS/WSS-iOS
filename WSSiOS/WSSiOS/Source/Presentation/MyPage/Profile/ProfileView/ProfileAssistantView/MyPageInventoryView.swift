@@ -26,7 +26,7 @@ final class MyPageInventoryView: UIView {
     private let arrowView = UIView()
     private let arrowImageView = UIImageView()
     private let inventoryDetailView = UIView()
-    private let stackView = UIStackView()
+    let inventoryStackView = UIStackView()
     
     private let interestCountLabel = UILabel()
     private let interestLabel = UILabel()
@@ -77,20 +77,21 @@ final class MyPageInventoryView: UIView {
             $0.layer.cornerRadius = 14
         }
         
-        stackView.do {
+        inventoryStackView.do {
             $0.axis = .horizontal
             $0.distribution = .fillEqually
             $0.spacing = 2
         }
         
         let statusList = StringLiterals.ReviewerStatus.allCases.map { $0.rawValue }
-        interestStackView = createVerticalStack(countLabel: interestCountLabel, textLabel: interestLabel, text: statusList[0] , addLine: true)
-        watchingStackView = createVerticalStack(countLabel: watchingCountLabel, textLabel: watchingLabel, text: statusList[1])
-        watchedStackView = createVerticalStack(countLabel: watchedCountLabel, textLabel: watchedLabel, text: statusList[2])
-        quitStackView = createVerticalStack(countLabel: quitCountLabel, textLabel: quitLabel, text: statusList[3])
+        interestStackView = createVerticalStack(tag: 0, countLabel: interestCountLabel, textLabel: interestLabel, text: statusList[0],
+                                                addLine: true)
+        watchingStackView = createVerticalStack(tag: 1, countLabel: watchingCountLabel, textLabel: watchingLabel, text: statusList[1])
+        watchedStackView = createVerticalStack(tag: 2, countLabel: watchedCountLabel, textLabel: watchedLabel, text: statusList[2])
+        quitStackView = createVerticalStack(tag: 3, countLabel: quitCountLabel, textLabel: quitLabel, text: statusList[3])
     }
     
-    private func createVerticalStack(countLabel: UILabel, textLabel: UILabel, text: String, addLine: Bool = false) -> UIStackView {
+    private func createVerticalStack(tag: Int, countLabel: UILabel, textLabel: UILabel, text: String, addLine: Bool = false) -> UIStackView {
         countLabel.do {
             $0.applyWSSFont(.title2, with: "0")
             $0.textAlignment = .center
@@ -106,6 +107,7 @@ final class MyPageInventoryView: UIView {
             $0.axis = .vertical
             $0.alignment = .center
             $0.spacing = 2
+            $0.tag = tag
         }
         
         if addLine {
@@ -130,10 +132,10 @@ final class MyPageInventoryView: UIView {
         inventoryView.addSubviews(titleLabel,
                                   arrowView,
                                   inventoryDetailView)
-        inventoryDetailView.addSubview(stackView)
+        inventoryDetailView.addSubview(inventoryStackView)
         arrowView.addSubview(arrowImageView)
         
-        stackView.addArrangedSubviews(interestStackView,
+        inventoryStackView.addArrangedSubviews(interestStackView,
                                       watchingStackView,
                                       watchedStackView,
                                       quitStackView)
@@ -165,7 +167,7 @@ final class MyPageInventoryView: UIView {
                 $0.leading.trailing.bottom.equalToSuperview()
                 $0.height.equalTo(70)
                 
-                stackView.snp.makeConstraints {
+                inventoryStackView.snp.makeConstraints {
                     $0.height.equalTo(38.5)
                     $0.leading.trailing.centerY.equalToSuperview()
                 }
