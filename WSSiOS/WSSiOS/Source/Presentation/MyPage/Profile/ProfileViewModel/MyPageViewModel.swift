@@ -150,7 +150,7 @@ final class MyPageViewModel: ViewModelType {
                 guard let self else { return .empty() }
                 guard !self.isProfilePrivateRelay.value.0 else { return .empty() }
                 if self.profileId == 0 {
-                    self.profileId =  UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)
+                    self.profileId = UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)
                     reloadSubject.onNext(())
                     return .just(())
                 }
