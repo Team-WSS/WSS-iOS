@@ -25,7 +25,8 @@ extension NotificationsResult {
                 isLoadable: self.isLoadable,
                 notifications: notificationEntities
             )
-        }.asObservable()
+        }
+        .asObservable()
     }
 }
 
