@@ -47,7 +47,6 @@ final class HomeViewController: UIViewController {
         
         navigationController?.setNavigationBarHidden(true, animated: false)
         showTabBar()
-        setRemoteNotification()
         viewWillAppearEvent.accept(())
         
         AmplitudeManager.shared.track(AmplitudeEvent.Home.home)
@@ -60,6 +59,7 @@ final class HomeViewController: UIViewController {
         registerCell()
         setDelegate()
         bindViewModel()
+        setRemoteNotification()
         
         viewDidLoadEvent.accept(())
     }
