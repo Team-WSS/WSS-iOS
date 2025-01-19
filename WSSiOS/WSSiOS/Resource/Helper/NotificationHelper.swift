@@ -67,10 +67,56 @@ extension NotificationHelper: UNUserNotificationCenterDelegate {
         didReceive response: UNNotificationResponse,
         withCompletionHandler completionHandler: @escaping () -> Void
     ) {
-      let userInfo = response.notification.request.content.userInfo
-      Messaging.messaging().appDidReceiveMessage(userInfo)
-
-      completionHandler()
+        let userInfo = response.notification.request.content.userInfo
+        Messaging.messaging().appDidReceiveMessage(userInfo)
+        moveToFeedDetailViewController(feedId: 2)
+//        if let feedId = response.notification.request.content.userInfo["feedId"] as? Int {
+//            moveToFeedDetailViewController(feedId: feedId)
+//        }
+        
+        completionHandler()
+    }
+    
+    func moveToFeedDetailViewController(feedId: Int) {
+        // 현재 최상단 ViewController를 가져옴
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let window = windowScene.windows.first else { return }
+        
+//        
+//        guard let keyWindow = UIApplication.shared.connectedScenes
+//                .filter({ $0.activationState == .foregroundActive })
+//                .compactMap({ $0 as? UIWindowScene })
+//                .first?.windows
+//                .first(where: { $0.isKeyWindow }),
+//              let rootViewController = keyWindow.rootViewController else {
+//            print("Root ViewController를 찾을 수 없습니다.")
+//            return
+//        }
+//        
+//        // UINavigationController 탐색
+//        var topViewController = rootViewController
+//        while let presentedViewController = topViewController.presentedViewController {
+//            topViewController = presentedViewController
+//        }
+//        
+        if let navigationController =  window.rootViewController as? UINavigationController {
+            // NovelDetailViewController로 이동
+            let viewController = FeedDetailViewController(
+                viewModel: FeedDetailViewModel(
+                    feedDetailRepository: DefaultFeedDetailRepository(
+                        feedDetailService: DefaultFeedDetailService()
+                    ), userRepository: DefaultUserRepository(
+                        userService: DefaultUserService(),
+                        blocksService: DefaultBlocksService()
+                    ),
+                    feedId: 2
+                )
+            )
+            
+            navigationController.pushViewController(viewController, animated: true)
+        } else {
+            print("Navigation Controller가 없습니다.")
+        }
     }
 }
 
