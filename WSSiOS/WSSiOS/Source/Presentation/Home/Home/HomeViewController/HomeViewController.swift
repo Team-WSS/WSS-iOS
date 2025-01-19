@@ -47,6 +47,7 @@ final class HomeViewController: UIViewController {
         
         navigationController?.setNavigationBarHidden(true, animated: false)
         showTabBar()
+        setRemoteNotification()
         viewWillAppearEvent.accept(())
         
         AmplitudeManager.shared.track(AmplitudeEvent.Home.home)
@@ -257,6 +258,12 @@ final class HomeViewController: UIViewController {
     
     func scrollToTop() {
         self.rootView.scrollView.setContentOffset(CGPoint(x: 0, y: -self.rootView.scrollView.contentInset.top), animated: true)
+    }
+    
+    func setRemoteNotification() {
+        Task {
+            await NotificationHelper.shared.setRemoteNotification()
+        }
     }
 }
 

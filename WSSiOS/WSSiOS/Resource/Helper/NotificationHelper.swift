@@ -21,7 +21,7 @@ final class NotificationHelper: NSObject {
     
     /// 전체 FCM 초기 설정 (메인 스레드에서 진행되어야 함)
     @MainActor
-    func setFCM() async {
+    func setRemoteNotification() async {
         if await requestNotificationAuthorization() {
             print("알림 권한 허용")
             registerForAPNs()
