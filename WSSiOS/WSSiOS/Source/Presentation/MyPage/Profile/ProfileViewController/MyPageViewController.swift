@@ -148,6 +148,12 @@ final class MyPageViewController: UIViewController {
             feedButtonDidTap: feedButtonDidTap,
             inventoryViewDidTap: rootView.myPageLibraryView.inventoryView.inventoryView.rx.tapGesture()
                 .when(.recognized)
+                .filter { [weak self] tapGesture in
+                    guard let self = self else { return false }
+                    let location = tapGesture.location(in: self.rootView.myPageLibraryView.inventoryView.inventoryStackView)
+                    return !self.rootView.myPageLibraryView.inventoryView.inventoryStackView
+                        .subviews.contains(where: { $0.frame.contains(location) })
+                }
                 .asObservable(),
             inventorySpecificPageViewDidTap: rootView.myPageLibraryView.inventoryView.inventoryStackView.rx.tapGesture()
                 .when(.recognized)
