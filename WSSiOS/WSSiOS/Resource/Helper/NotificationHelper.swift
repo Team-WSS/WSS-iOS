@@ -49,7 +49,7 @@ final class NotificationHelper: NSObject {
 
 extension NotificationHelper: UNUserNotificationCenterDelegate {
     
-    /// 앱을 보고있는 중에 푸시올 때 처리. 알림이 뜨도록 설정함.
+    /// 포그라운드에서 푸시올 때 처리. 알림이 뜨도록 설정함.
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         willPresent notification: UNNotification,
@@ -61,7 +61,7 @@ extension NotificationHelper: UNUserNotificationCenterDelegate {
         completionHandler([.sound, .badge, .banner])
     }
 
-    /// 백그라운드에서 푸쉬 알람을 탭 했을 때 처리. 화면 이동을 여기서 처리함.
+    /// 푸쉬 알람을 탭 했을 때 처리. 화면 이동을 여기서 처리함.
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         didReceive response: UNNotificationResponse,
@@ -84,7 +84,7 @@ extension NotificationHelper: MessagingDelegate {
         sendFCMTokenToServer(token: fcmToken)
     }
 
-    // 서버로 FCM 토큰 갱신.
+    // 서버로 갱신된 FCM 토큰 전달
     private func sendFCMTokenToServer(token: String) {
        
     }
