@@ -85,7 +85,8 @@ final class MyPageFeedView: UIView {
         }
         
         myPageFeedDetailButton.snp.makeConstraints {
-            $0.top.bottom.equalToSuperview()
+            $0.top.equalToSuperview().inset(28)
+            $0.bottom.equalToSuperview()
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(48)
         }
