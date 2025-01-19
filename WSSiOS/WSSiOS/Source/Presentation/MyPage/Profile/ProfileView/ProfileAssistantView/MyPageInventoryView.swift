@@ -21,21 +21,20 @@ final class MyPageInventoryView: UIView {
     private let titleLabel = UILabel()
     private let arrowView = UIView()
     private let arrowImageView = UIImageView()
-    private let inventoryDetailView = UIView()
     
-    private var interestStackView = UIStackView()
+    private var interestView = UIView()
     private let interestCountLabel = UILabel()
     private let interestLabel = UILabel()
     
-    private var watchingStackView = UIStackView()
+    private var watchingView = UIView()
     private let watchingCountLabel = UILabel()
     private let watchingLabel = UILabel()
     
-    private var watchedStackView = UIStackView()
+    private var watchedView = UIView()
     private let watchedCountLabel = UILabel()
     private let watchedLabel = UILabel()
     
-    private var quitStackView = UIStackView()
+    private var quitView = UIView()
     private let quitCountLabel = UILabel()
     private let quitLabel = UILabel()
     
@@ -71,73 +70,33 @@ final class MyPageInventoryView: UIView {
             $0.contentMode = .center
         }
         
-        inventoryDetailView.do {
+        inventoryStackView.do {
             $0.backgroundColor = .wssGray50
             $0.layer.cornerRadius = 14
-        }
-        
-        inventoryStackView.do {
             $0.axis = .horizontal
             $0.distribution = .fillEqually
             $0.spacing = 2
         }
         
         let statusList = StringLiterals.ReviewerStatus.allCases.map { $0.rawValue }
-        interestStackView = createVerticalStack(tag: 0, countLabel: interestCountLabel, textLabel: interestLabel, text: statusList[0],
-                                                addLine: true)
-        watchingStackView = createVerticalStack(tag: 1, countLabel: watchingCountLabel, textLabel: watchingLabel, text: statusList[1])
-        watchedStackView = createVerticalStack(tag: 2, countLabel: watchedCountLabel, textLabel: watchedLabel, text: statusList[2])
-        quitStackView = createVerticalStack(tag: 3, countLabel: quitCountLabel, textLabel: quitLabel, text: statusList[3])
-    }
-    
-    private func createVerticalStack(tag: Int, countLabel: UILabel, textLabel: UILabel, text: String, addLine: Bool = false) -> UIStackView {
-        countLabel.do {
-            $0.applyWSSFont(.title2, with: "0")
-            $0.textAlignment = .center
-        }
-        
-        textLabel.do {
-            $0.applyWSSFont(.body5, with: text)
-            $0.textColor = .wssGray200
-            $0.textAlignment = .center
-        }
-        
-        let verticalStack = UIStackView(arrangedSubviews: [countLabel, textLabel]).then {
-            $0.axis = .vertical
-            $0.alignment = .center
-            $0.spacing = 2
-            $0.tag = tag
-        }
-        
-        if addLine {
-            let dividerView = UIView().then {
-                $0.backgroundColor = .wssGray70
-            }
-            
-            verticalStack.addSubview(dividerView)
-            
-            dividerView.snp.makeConstraints {
-                $0.centerY.trailing.equalToSuperview()
-                $0.height.equalTo(40)
-                $0.width.equalTo(1)
-            }
-        }
-        
-        return verticalStack
+        interestView = createInventorySectionView(tag: 0, countLabel: interestCountLabel, textLabel: interestLabel, text: statusList[0],
+                                                  addLine: true)
+        watchingView = createInventorySectionView(tag: 1, countLabel: watchingCountLabel, textLabel: watchingLabel, text: statusList[1])
+        watchedView = createInventorySectionView(tag: 2, countLabel: watchedCountLabel, textLabel: watchedLabel, text: statusList[2])
+        quitView = createInventorySectionView(tag: 3, countLabel: quitCountLabel, textLabel: quitLabel, text: statusList[3])
     }
     
     private func setHierarchy() {
         self.addSubview(inventoryView)
         inventoryView.addSubviews(titleLabel,
                                   arrowView,
-                                  inventoryDetailView)
-        inventoryDetailView.addSubview(inventoryStackView)
+                                  inventoryStackView)
         arrowView.addSubview(arrowImageView)
         
-        inventoryStackView.addArrangedSubviews(interestStackView,
-                                      watchingStackView,
-                                      watchedStackView,
-                                      quitStackView)
+        inventoryStackView.addArrangedSubviews(interestView,
+                                               watchingView,
+                                               watchedView,
+                                               quitView)
     }
     
     private func setLayout() {
@@ -161,17 +120,62 @@ final class MyPageInventoryView: UIView {
                 $0.centerY.equalTo(arrowView.snp.centerY)
             }
             
-            inventoryDetailView.snp.makeConstraints {
+            inventoryStackView.snp.makeConstraints {
                 $0.top.equalTo(arrowView.snp.bottom)
                 $0.leading.trailing.bottom.equalToSuperview()
                 $0.height.equalTo(70)
-                
-                inventoryStackView.snp.makeConstraints {
-                    $0.height.equalTo(38.5)
-                    $0.leading.trailing.centerY.equalToSuperview()
-                }
             }
         }
+    }
+    
+    //MARK: - Custom Method
+    
+    private func createInventorySectionView(tag: Int, countLabel: UILabel, textLabel: UILabel, text: String, addLine: Bool = false) -> UIView {
+        let statusView = UIView()
+        
+        statusView.do {
+            $0.tag = tag
+        }
+        
+        countLabel.do {
+            $0.applyWSSFont(.title2, with: "0")
+            $0.textAlignment = .center
+        }
+        
+        textLabel.do {
+            $0.applyWSSFont(.body5, with: text)
+            $0.textColor = .wssGray200
+            $0.textAlignment = .center
+        }
+        
+        statusView.addSubviews(countLabel,
+                               textLabel)
+        
+        countLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(13.5)
+            $0.centerX.equalToSuperview()
+        }
+        
+        textLabel.snp.makeConstraints {
+            $0.top.equalTo(countLabel.snp.bottom).offset(2)
+            $0.centerX.equalToSuperview()
+        }
+        
+        if addLine {
+            let dividerView = UIView().then {
+                $0.backgroundColor = .wssGray70
+            }
+            
+            statusView.addSubview(dividerView)
+            
+            dividerView.snp.makeConstraints {
+                $0.centerY.trailing.equalToSuperview()
+                $0.height.equalTo(40)
+                $0.width.equalTo(1)
+            }
+        }
+        
+        return statusView
     }
     
     //MARK: - Data
