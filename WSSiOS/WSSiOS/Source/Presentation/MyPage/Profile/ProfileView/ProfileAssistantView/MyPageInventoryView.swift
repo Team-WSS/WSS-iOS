@@ -18,7 +18,8 @@ final class MyPageInventoryView: UIView {
     let inventoryView = UIView()
     
     private let titleLabel = UILabel()
-    private let arrowButton = UIButton()
+    private let arrowView = UIView()
+    private let arrowImageView = UIImageView()
     private let inventoryDetailView = UIView()
     private let stackView = UIStackView()
     
@@ -61,9 +62,9 @@ final class MyPageInventoryView: UIView {
             $0.textColor = .wssBlack
         }
         
-        arrowButton.do {
-            $0.setImage(.icNavigateRight.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray200), for: .normal)
-            $0.isUserInteractionEnabled = true
+        arrowImageView.do {
+            $0.image = .icNavigateRight.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray200)
+            $0.contentMode = .center
         }
         
         inventoryDetailView.do {
@@ -116,9 +117,10 @@ final class MyPageInventoryView: UIView {
     private func setHierarchy() {
         self.addSubview(inventoryView)
         inventoryView.addSubviews(titleLabel,
-                                  arrowButton,
+                                  arrowView,
                                   inventoryDetailView)
         inventoryDetailView.addSubview(stackView)
+        arrowView.addSubview(arrowImageView)
         
         let statusList = StringLiterals.ReviewerStatus.allCases.map { $0.rawValue }
         let interestStack = createVerticalStack(countLabel: interestCountLabel, textLabel: interestLabel, text: statusList[0] , addLine: true)
@@ -138,19 +140,23 @@ final class MyPageInventoryView: UIView {
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.bottom.equalToSuperview().inset(30)
             
-            arrowButton.snp.makeConstraints {
-                $0.top.equalToSuperview()
-                $0.trailing.equalToSuperview()
+            arrowView.snp.makeConstraints {
+                $0.top.trailing.equalToSuperview()
                 $0.size.equalTo(44)
+                
+                arrowImageView.snp.makeConstraints {
+                    $0.center.equalToSuperview()
+                    $0.size.equalTo(22)
+                }
             }
             
             titleLabel.snp.makeConstraints {
                 $0.leading.equalToSuperview()
-                $0.centerY.equalTo(arrowButton.snp.centerY)
+                $0.centerY.equalTo(arrowView.snp.centerY)
             }
             
             inventoryDetailView.snp.makeConstraints {
-                $0.top.equalTo(arrowButton.snp.bottom)
+                $0.top.equalTo(arrowView.snp.bottom)
                 $0.leading.trailing.bottom.equalToSuperview()
                 $0.height.equalTo(70)
                 
