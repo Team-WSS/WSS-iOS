@@ -17,26 +17,25 @@ final class MyPageInventoryView: UIView {
     //터치영역
     let inventoryView = UIView()
     
-    var interestStackView = UIStackView()
-    var watchingStackView = UIStackView()
-    var watchedStackView = UIStackView()
-    var quitStackView = UIStackView()
-    
     private let titleLabel = UILabel()
     private let arrowView = UIView()
     private let arrowImageView = UIImageView()
     private let inventoryDetailView = UIView()
     let inventoryStackView = UIStackView()
     
+    private var interestStackView = UIStackView()
     private let interestCountLabel = UILabel()
     private let interestLabel = UILabel()
     
+    private var watchingStackView = UIStackView()
     private let watchingCountLabel = UILabel()
     private let watchingLabel = UILabel()
     
+    private var watchedStackView = UIStackView()
     private let watchedCountLabel = UILabel()
     private let watchedLabel = UILabel()
     
+    private var quitStackView = UIStackView()
     private let quitCountLabel = UILabel()
     private let quitLabel = UILabel()
     
