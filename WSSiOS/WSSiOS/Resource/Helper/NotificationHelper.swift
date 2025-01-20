@@ -49,7 +49,7 @@ final class NotificationHelper: NSObject {
 
 extension NotificationHelper: UNUserNotificationCenterDelegate {
     
-    /// 포그라운드에서 푸시올 때 처리. 알림이 뜨도록 설정함.
+    /// 포그라운드에서 푸시 알림이 도착하면 실행됨. 도착한 알람을 어떻게 처리할지 설정
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         willPresent notification: UNNotification,
@@ -61,7 +61,7 @@ extension NotificationHelper: UNUserNotificationCenterDelegate {
         completionHandler([.sound, .badge, .banner])
     }
 
-    /// 푸쉬 알람을 탭 했을 때 처리. 화면 이동을 여기서 처리함.
+    /// 앱이 백그라운드나 포그라운드 상태일 때 푸쉬 알람을 탭 하면 호출됨
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         didReceive response: UNNotificationResponse,
