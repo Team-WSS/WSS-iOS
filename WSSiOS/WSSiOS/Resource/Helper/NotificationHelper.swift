@@ -69,36 +69,32 @@ extension NotificationHelper: UNUserNotificationCenterDelegate {
     ) {
         let userInfo = response.notification.request.content.userInfo
         Messaging.messaging().appDidReceiveMessage(userInfo)
-        moveToFeedDetailViewController(feedId: 2)
-//        if let feedId = response.notification.request.content.userInfo["feedId"] as? Int {
-//            moveToFeedDetailViewController(feedId: feedId)
-//        }
+        
+        let category = response.notification.request.content.categoryIdentifier
+        switch category {
+        default: moveToTargetViewController(userInfo)
+        }
         
         completionHandler()
     }
     
-    func moveToFeedDetailViewController(feedId: Int) {
-        // 현재 최상단 ViewController를 가져옴
+    func moveToTargetViewController(_ userInfo: [AnyHashable: Any]) {
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-              let window = windowScene.windows.first else { return }
-
-        if let navigationController = window.rootViewController?.topMostViewController() {
-            // NovelDetailViewController로 이동
-            let viewController = FeedDetailViewController(
-                viewModel: FeedDetailViewModel(
-                    feedDetailRepository: DefaultFeedDetailRepository(
-                        feedDetailService: DefaultFeedDetailService()
-                    ), userRepository: DefaultUserRepository(
-                        userService: DefaultUserService(),
-                        blocksService: DefaultBlocksService()
-                    ),
-                    feedId: 2
-                )
-            )
-            
-            navigationController.navigationController?.pushViewController(viewController, animated: true)
-        } else {
-            print("Navigation Controller가 없습니다.")
+              let window = windowScene.windows.first,
+              let topViewController = window.rootViewController?.topViewController() else {
+            print("최상단 View Controller를 찾지 못했습니다.")
+            return
+        }
+        
+        
+        let type = userInfo["type"] as? String ?? ""
+        
+        switch type {
+        case "feedDetailView":
+            if let feedId = userInfo["feedId"] as? Int {
+                topViewController.pushToFeedDetailViewController(feedId: feedId)
+            }
+        default: break
         }
     }
 }

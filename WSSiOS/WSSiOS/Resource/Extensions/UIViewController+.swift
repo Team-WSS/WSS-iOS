@@ -417,15 +417,15 @@ extension UIViewController {
         self.present(feedDetailUnknownFeedErrorViewController, animated: true)
     }
     
-    func topMostViewController() -> UIViewController {
+    func topViewController() -> UIViewController {
             if let presented = self.presentedViewController {
-                return presented.topMostViewController()
+                return presented.topViewController()
             }
             if let navigation = self as? UINavigationController {
-                return navigation.visibleViewController?.topMostViewController() ?? navigation
+                return navigation.visibleViewController?.topViewController() ?? navigation
             }
             if let tab = self as? UITabBarController {
-                return tab.selectedViewController?.topMostViewController() ?? tab
+                return tab.selectedViewController?.topViewController() ?? tab
             }
             return self
         }
