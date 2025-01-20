@@ -87,11 +87,11 @@ extension NotificationHelper: UNUserNotificationCenterDelegate {
         }
         
         
-        let type = userInfo["type"] as? String ?? ""
+        let type = userInfo[StringLiterals.NotificationCenter.Keys.type] as? String ?? ""
         
         switch type {
-        case "feedDetailView":
-            if let feedId = userInfo["feedId"] as? Int {
+        case StringLiterals.NotificationCenter.Values.feedDetailView:
+            if let feedId = userInfo[ StringLiterals.NotificationCenter.Keys.feedId] as? Int {
                 topViewController.pushToFeedDetailViewController(feedId: feedId)
             }
         default: break

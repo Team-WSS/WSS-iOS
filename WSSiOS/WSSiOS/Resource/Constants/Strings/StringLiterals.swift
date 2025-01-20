@@ -19,6 +19,17 @@ enum StringLiterals {
         static let userBirth = "USER_BIRTH"
     }
     
+    enum NotificationCenter {
+        enum Keys {
+            static let type = "type"
+            static let feedId = "feedId"
+        }
+        
+        enum Values {
+            static let feedDetailView = "feedDetailView"
+        }
+    }
+    
     enum BirthPicker {
         static let title = "출생연도"
         static let completeButton = "완료"
