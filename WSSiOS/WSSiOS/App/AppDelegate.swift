@@ -18,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         RxKakaoSDK.initSDK(appKey: APIConstants.kakaoAppKey)
         
         FirebaseApp.configure()
+        NotificationHelper.shared.configure()
         
         return true
     }

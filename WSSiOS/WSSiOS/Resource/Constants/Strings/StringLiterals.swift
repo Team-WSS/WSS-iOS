@@ -20,12 +20,12 @@ enum StringLiterals {
     }
     
     enum NotificationCenter {
-        enum Keys {
+        enum Key {
             static let view = "view"
             static let feedId = "feedId"
         }
         
-        enum Values {
+        enum Value {
             static let feedDetail = "feedDetail"
         }
     }

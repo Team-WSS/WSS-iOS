@@ -19,10 +19,11 @@ final class NotificationHelper: NSObject {
         self.pushNotificationRepository = DefaultPushNotificationRepository(
             pushNotificationService: DefaultPushNotificationService()
         )
-        
         super.init()
-        
-        // 알림 및 cloudMessaging Delegate 지정
+    }
+    
+    /// 알림 및 cloudMessaging Delegate 지정, 메서드를 사용함으로써 싱글톤 인스턴스를 생성
+    func configure() {
         UNUserNotificationCenter.current().delegate = self
         Messaging.messaging().delegate = self
     }
@@ -57,7 +58,7 @@ final class NotificationHelper: NSObject {
 
 extension NotificationHelper: UNUserNotificationCenterDelegate {
     
-    /// 포그라운드에서 푸시 알림이 도착하면 실행됨. 도착한 알람을 어떻게 처리할지 설정
+    /// 포그라운드에서 푸시 알림이 도착하면 실행됨. 도착한 알림을 어떻게 처리할지 설정
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         willPresent notification: UNNotification,
@@ -68,8 +69,8 @@ extension NotificationHelper: UNUserNotificationCenterDelegate {
         
         completionHandler([.sound, .badge, .banner])
     }
-
-    /// 앱이 백그라운드나 포그라운드 상태일 때 푸쉬 알람을 탭 하면 호출됨
+    
+    /// 푸쉬 알림을 탭 하면 호출됨
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         didReceive response: UNNotificationResponse,
@@ -86,7 +87,9 @@ extension NotificationHelper: UNUserNotificationCenterDelegate {
         completionHandler()
     }
     
+    /// userInfo에 담긴 데이터에 따라 최상단 VC에서 화면 이동을 수행함
     func moveToTargetViewController(_ userInfo: [AnyHashable: Any]) {
+        print("GG")
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
               let window = windowScene.windows.first,
               let topViewController = window.rootViewController?.topViewController() else {
@@ -94,11 +97,11 @@ extension NotificationHelper: UNUserNotificationCenterDelegate {
             return
         }
         
-        let view = userInfo[StringLiterals.NotificationCenter.Keys.view] as? String ?? ""
+        let view = userInfo[StringLiterals.NotificationCenter.Key.view] as? String ?? ""
         
         switch view {
-        case StringLiterals.NotificationCenter.Values.feedDetail:
-            if let feedIdString = userInfo[StringLiterals.NotificationCenter.Keys.feedId] as? String,
+        case StringLiterals.NotificationCenter.Value.feedDetail:
+            if let feedIdString = userInfo[StringLiterals.NotificationCenter.Key.feedId] as? String,
                let feedId =  Int(feedIdString) {
                 topViewController.pushToFeedDetailViewController(feedId: feedId)
             }
@@ -109,15 +112,15 @@ extension NotificationHelper: UNUserNotificationCenterDelegate {
 
 extension NotificationHelper: MessagingDelegate {
     
-    // FCM 토큰이 생성되거나 변경될 때 자동으로 호출되어 클라이언트에 전달해줌.
+    /// FCM 토큰이 생성되거나 변경될 때 자동으로 호출되어 클라이언트에 전달해줌.
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
         guard let fcmToken = fcmToken else { return }
         print("Firebase 등록 토큰: \(fcmToken)")
         
         sendFCMTokenToServer(token: fcmToken)
     }
-
-    // 서버로 갱신된 FCM 토큰 전달
+    
+    /// 서버로 갱신된 FCM 토큰 전달
     private func sendFCMTokenToServer(token: String) {
         pushNotificationRepository.postUserFCMToken(fcmToken: token)
             .do(onSuccess: { _ in
