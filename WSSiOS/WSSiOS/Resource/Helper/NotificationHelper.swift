@@ -8,10 +8,18 @@
 import UIKit
 
 import Firebase
+import RxSwift
 
 final class NotificationHelper: NSObject {
     static let shared = NotificationHelper()
+    private let pushNotificationRepository: PushNotificationRepository
+    private let disposeBag = DisposeBag()
+    
     private override init() {
+        self.pushNotificationRepository = DefaultPushNotificationRepository(
+            pushNotificationService: DefaultPushNotificationService()
+        )
+        
         super.init()
         
         // 알림 및 cloudMessaging Delegate 지정
@@ -111,6 +119,17 @@ extension NotificationHelper: MessagingDelegate {
 
     // 서버로 갱신된 FCM 토큰 전달
     private func sendFCMTokenToServer(token: String) {
-       
+        pushNotificationRepository.postUserFCMToken(fcmToken: token)
+            .do(onSuccess: { _ in
+                print("토큰 등록 성공")
+            }, onError: { error in
+                print(error)
+            })
+            .subscribe(with: self, onSuccess: { owner, _ in
+                
+            }, onFailure: { owner, error in
+                
+            })
+            .disposed(by: disposeBag)
     }
 }

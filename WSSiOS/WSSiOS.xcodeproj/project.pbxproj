@@ -184,6 +184,9 @@
 		39D4A5E42BDF90FB004FC834 /* NovelDetailHeaderReviewResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5E32BDF90FB004FC834 /* NovelDetailHeaderReviewResultView.swift */; };
 		39DFB0ED2CABDFC000F87951 /* OnboardingGenrePreferenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39DFB0EC2CABDFC000F87951 /* OnboardingGenrePreferenceView.swift */; };
 		39DFB0EF2CABE47B00F87951 /* OnboardingGenreButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39DFB0EE2CABE47B00F87951 /* OnboardingGenreButtonView.swift */; };
+		39E0E9252D3E7B9C0034B639 /* PushService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E0E9242D3E7B980034B639 /* PushService.swift */; };
+		39E0E9272D3E7CC80034B639 /* PushNotificationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E0E9262D3E7CC60034B639 /* PushNotificationResult.swift */; };
+		39E0E9292D3E7E160034B639 /* PushNotificationRepositry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E0E9282D3E7E0D0034B639 /* PushNotificationRepositry.swift */; };
 		39E8FD902C742CE100AD6F30 /* NovelDetailHeaderReadStatusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E8FD8F2C742CE100AD6F30 /* NovelDetailHeaderReadStatusButton.swift */; };
 		39E8FD922C743D8000AD6F30 /* NovelDetailHeaderReadInfoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E8FD912C743D8000AD6F30 /* NovelDetailHeaderReadInfoButton.swift */; };
 		39EDFB362D38D8CF009F071A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 39EDFB352D38D8CF009F071A /* GoogleService-Info.plist */; };
@@ -571,6 +574,9 @@
 		39D4A5E32BDF90FB004FC834 /* NovelDetailHeaderReviewResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailHeaderReviewResultView.swift; sourceTree = "<group>"; };
 		39DFB0EC2CABDFC000F87951 /* OnboardingGenrePreferenceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingGenrePreferenceView.swift; sourceTree = "<group>"; };
 		39DFB0EE2CABE47B00F87951 /* OnboardingGenreButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingGenreButtonView.swift; sourceTree = "<group>"; };
+		39E0E9242D3E7B980034B639 /* PushService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushService.swift; sourceTree = "<group>"; };
+		39E0E9262D3E7CC60034B639 /* PushNotificationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationResult.swift; sourceTree = "<group>"; };
+		39E0E9282D3E7E0D0034B639 /* PushNotificationRepositry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationRepositry.swift; sourceTree = "<group>"; };
 		39E8FD8F2C742CE100AD6F30 /* NovelDetailHeaderReadStatusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailHeaderReadStatusButton.swift; sourceTree = "<group>"; };
 		39E8FD912C743D8000AD6F30 /* NovelDetailHeaderReadInfoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailHeaderReadInfoButton.swift; sourceTree = "<group>"; };
 		39EDFB352D38D8CF009F071A /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -818,6 +824,7 @@
 		2C01F9832B482E6400D90FFE /* Repository */ = {
 			isa = PBXGroup;
 			children = (
+				39E0E9282D3E7E0D0034B639 /* PushNotificationRepositry.swift */,
 				C96A0E202C9F2ED500A6EA87 /* FeedDetailRepository.swift */,
 				2C01F9842B482EB700D90FFE /* UserRepository.swift */,
 				395928982C988A4200E7B17B /* LoginRepository.swift */,
@@ -1642,6 +1649,14 @@
 			path = NovelDetailHeaderAssistantView;
 			sourceTree = "<group>";
 		};
+		39E0E9232D3E7B750034B639 /* PushNotification */ = {
+			isa = PBXGroup;
+			children = (
+				39E0E9242D3E7B980034B639 /* PushService.swift */,
+			);
+			path = PushNotification;
+			sourceTree = "<group>";
+		};
 		39EF97B12B54498E00D2148B /* Lottie */ = {
 			isa = PBXGroup;
 			children = (
@@ -1822,6 +1837,7 @@
 		A1EF35552B52FA9700A94C53 /* DTO */ = {
 			isa = PBXGroup;
 			children = (
+				39E0E9262D3E7CC60034B639 /* PushNotificationResult.swift */,
 				A1B903E42B58140800398890 /* UserNovelListResult.swift */,
 				2C9A19642C567AE40043044A /* MyProfileResult.swift */,
 				A1EF35682B52FD9B00A94C53 /* AvatarResult.swift */,
@@ -1849,6 +1865,7 @@
 		A1EF35562B52FAA300A94C53 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				39E0E9232D3E7B750034B639 /* PushNotification */,
 				CD514C902CD5DB7B007A27A8 /* Auth */,
 				396C7C592CB2541A003C9712 /* Onboarding */,
 				CDC03F3F2CA671FB002D301F /* Keyword */,
@@ -2590,6 +2607,7 @@
 				A1708F162B4D8E2700E35E50 /* HomeHeaderView.swift in Sources */,
 				2C41E0D42CA494D900FFD233 /* MyPageEditProfileViewModel.swift in Sources */,
 				E40746662CE870AE005D75D5 /* MyPageNovelPreferencesView.swift in Sources */,
+				39E0E9252D3E7B9C0034B639 /* PushService.swift in Sources */,
 				2C41E0D22CA494C900FFD233 /* MyPageEditProfileViewController.swift in Sources */,
 				2C41E0D02CA494B800FFD233 /* MyPageEditProfileView.swift in Sources */,
 				2C41E0CE2CA4949C00FFD233 /* MyPageEditProfileGenreCollectionViewCell.swift in Sources */,
@@ -2630,6 +2648,7 @@
 				CD6F49532C703E6F005AD392 /* FeedNovelConnectModalView.swift in Sources */,
 				2C19A4F92BBA8C3F00D4D151 /* WSSDropdownTableViewCell.swift in Sources */,
 				2CD2FE3E2C43BF300033366C /* WSSAlertButtonView.swift in Sources */,
+				39E0E9292D3E7E160034B639 /* PushNotificationRepositry.swift in Sources */,
 				CD1F7E022C994AA00039972C /* NovelKeywordSelectModalView.swift in Sources */,
 				2CD911442C0D884B006B8D72 /* String+.swift in Sources */,
 				CD2D0AAF2C7EF1BF007CF1F1 /* NovelReviewView.swift in Sources */,
@@ -2649,6 +2668,7 @@
 				C9A3CD452C8C3BA500B43BFB /* SearchService.swift in Sources */,
 				A1EF355A2B52FAD300A94C53 /* RecommendService.swift in Sources */,
 				2C9A19712C56925F0043044A /* MyPageInfoViewModel.swift in Sources */,
+				39E0E9272D3E7CC80034B639 /* PushNotificationResult.swift in Sources */,
 				39D4A5D02BDA50E8004FC834 /* NovelDetailRepository.swift in Sources */,
 				E497C9B62CF3AFBD0079C30D /* MyPageEditAvatarViewController.swift in Sources */,
 				E40746702CE8DAB6005D75D5 /* MyPageGenrePreferencesOtherView.swift in Sources */,
