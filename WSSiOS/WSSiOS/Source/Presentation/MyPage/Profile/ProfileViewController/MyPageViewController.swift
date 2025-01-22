@@ -117,6 +117,12 @@ final class MyPageViewController: UIViewController {
     //MARK: - Bind
     
     private func bindViewModel() {
+        let inventoryStatusButtonDidTap = Observable<Int>.merge(
+            rootView.myPageLibraryView.inventoryView.readStatusButtons.enumerated().map { index, button in
+                button.rx.tap
+                    .map { index }
+            })
+        
         let genrePreferenceButtonDidTap = Observable.merge(
             rootView.myPageLibraryView.genrePrefrerencesView.myPageGenreOpenButton.rx.tap.map { true },
             rootView.myPageLibraryView.genrePrefrerencesView.myPageGenreCloseButton.rx.tap.map { false }
@@ -149,16 +155,7 @@ final class MyPageViewController: UIViewController {
             inventoryViewDidTap: rootView.myPageLibraryView.inventoryView.inventoryTitleView.rx.tapGesture()
                 .when(.recognized)
                 .asObservable(),
-            inventorySpecificPageViewDidTap: rootView.myPageLibraryView.inventoryView.inventoryStackView.rx.tapGesture()
-                .when(.recognized)
-                .compactMap { [weak self] tapGesture -> Int? in
-                    guard let self = self else { return nil }
-                    let location = tapGesture.location(in: self.rootView.myPageLibraryView.inventoryView.inventoryStackView)
-                    if let tappedView = self.rootView.myPageLibraryView.inventoryView.inventoryStackView
-                        .subviews.first(where: { $0.frame.contains(location) }) { return tappedView.tag }
-                    return nil
-                }
-                .asObservable(),
+            inventorySpecificPageViewDidTap: inventoryStatusButtonDidTap,
             feedDetailButtonDidTap: rootView.myPageFeedView.myPageFeedDetailButton.rx.tap,
             editProfileNotification: NotificationCenter.default.rx.notification(NSNotification.Name("EditProfile")).asObservable(),
             feedTableViewItemSelected: rootView.myPageFeedView.myPageFeedTableView.feedTableView.rx.itemSelected.asObservable(),

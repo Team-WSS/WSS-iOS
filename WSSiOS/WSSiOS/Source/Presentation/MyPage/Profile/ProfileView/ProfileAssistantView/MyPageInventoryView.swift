@@ -24,21 +24,12 @@ final class MyPageInventoryView: UIView {
     private let arrowView = UIView()
     private let arrowImageView = UIImageView()
     
-    private var interestView = UIView()
+    var readStatusButtons = [UIButton()]
+    
     private let interestCountLabel = UILabel()
-    private let interestLabel = UILabel()
-    
-    private var watchingView = UIView()
     private let watchingCountLabel = UILabel()
-    private let watchingLabel = UILabel()
-    
-    private var watchedView = UIView()
     private let watchedCountLabel = UILabel()
-    private let watchedLabel = UILabel()
-    
-    private var quitView = UIView()
     private let quitCountLabel = UILabel()
-    private let quitLabel = UILabel()
     
     // MARK: - Life Cycle
     
@@ -80,12 +71,19 @@ final class MyPageInventoryView: UIView {
             $0.spacing = 2
         }
         
-        let statusList = StringLiterals.ReviewerStatus.allCases.map { $0.rawValue }
-        interestView = createInventorySectionView(tag: 0, countLabel: interestCountLabel, textLabel: interestLabel, text: statusList[0],
-                                                  addLine: true)
-        watchingView = createInventorySectionView(tag: 1, countLabel: watchingCountLabel, textLabel: watchingLabel, text: statusList[1])
-        watchedView = createInventorySectionView(tag: 2, countLabel: watchedCountLabel, textLabel: watchedLabel, text: statusList[2])
-        quitView = createInventorySectionView(tag: 3, countLabel: quitCountLabel, textLabel: quitLabel, text: statusList[3])
+        let countLabels: [UILabel] = [
+            interestCountLabel,
+            watchingCountLabel,
+            watchedCountLabel,
+            quitCountLabel
+        ]
+        
+        readStatusButtons = StringLiterals.ReviewerStatus.allCases.enumerated().map { index, status in
+            createInventorySectionView (
+                countLabel: countLabels[index],
+                text: status.rawValue,
+                addLine: index == 0)
+        }
     }
     
     private func setHierarchy() {
@@ -96,10 +94,9 @@ final class MyPageInventoryView: UIView {
                                        arrowView)
         arrowView.addSubview(arrowImageView)
         
-        inventoryStackView.addArrangedSubviews(interestView,
-                                               watchingView,
-                                               watchedView,
-                                               quitView)
+        readStatusButtons.forEach {
+            inventoryStackView.addArrangedSubviews($0)
+        }
     }
     
     private func setLayout() {
@@ -137,12 +134,9 @@ final class MyPageInventoryView: UIView {
     
     //MARK: - Custom Method
     
-    private func createInventorySectionView(tag: Int, countLabel: UILabel, textLabel: UILabel, text: String, addLine: Bool = false) -> UIView {
-        let statusView = UIView()
-        
-        statusView.do {
-            $0.tag = tag
-        }
+    private func createInventorySectionView(countLabel: UILabel, text: String, addLine: Bool = false) -> UIButton {
+        let statusButton = UIButton()
+        let textLabel = UILabel()
         
         countLabel.do {
             $0.applyWSSFont(.title2, with: "0")
@@ -155,8 +149,8 @@ final class MyPageInventoryView: UIView {
             $0.textAlignment = .center
         }
         
-        statusView.addSubviews(countLabel,
-                               textLabel)
+        statusButton.addSubviews(countLabel,
+                                 textLabel)
         
         countLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(13.5)
@@ -173,7 +167,7 @@ final class MyPageInventoryView: UIView {
                 $0.backgroundColor = .wssGray70
             }
             
-            statusView.addSubview(dividerView)
+            statusButton.addSubview(dividerView)
             
             dividerView.snp.makeConstraints {
                 $0.centerY.trailing.equalToSuperview()
@@ -182,7 +176,7 @@ final class MyPageInventoryView: UIView {
             }
         }
         
-        return statusView
+        return statusButton
     }
     
     //MARK: - Data
