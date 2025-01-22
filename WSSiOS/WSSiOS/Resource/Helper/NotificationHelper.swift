@@ -12,12 +12,13 @@ import RxSwift
 
 final class NotificationHelper: NSObject {
     static let shared = NotificationHelper()
-    private let pushNotificationRepository: PushNotificationRepository
+    private let userRepository: UserRepository
     private let disposeBag = DisposeBag()
     
     private override init() {
-        self.pushNotificationRepository = DefaultPushNotificationRepository(
-            pushNotificationService: DefaultPushNotificationService()
+        self.userRepository = DefaultUserRepository(
+            userService: DefaultUserService(),
+            blocksService: DefaultBlocksService()
         )
         super.init()
     }
@@ -122,7 +123,7 @@ extension NotificationHelper: MessagingDelegate {
     
     /// 서버로 갱신된 FCM 토큰 전달
     private func sendFCMTokenToServer(token: String) {
-        pushNotificationRepository.postUserFCMToken(fcmToken: token)
+        userRepository.postUserFCMToken(fcmToken: token)
             .do(onSuccess: { _ in
                 print("토큰 등록 성공")
             }, onError: { error in

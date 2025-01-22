@@ -30,6 +30,9 @@ protocol UserService {
                               size: Int,
                               sortType: String) -> Single<UserNovelList>
     func getAppMinimumVersion() -> Single<AppMinimumVersion>
+    
+    // PushNotification
+    func postUserFCMToken(fcmToken: String) -> Single<Void>
 }
 
 final class DefaultUserService: NSObject, Networking {
@@ -388,6 +391,28 @@ extension DefaultUserService: UserService {
             return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: AppMinimumVersion.self) }
+                .asSingle()
+        } catch {
+            return Single.error(error)
+        }
+    }
+}
+
+
+// PushNotification
+extension DefaultUserService {
+    func postUserFCMToken(fcmToken: String) -> Single<Void> {
+        do {
+            let fcmTokenBody = try JSONEncoder().encode(FCMTokenResult(fcmToken: fcmToken))
+            let request = try makeHTTPRequest(method: .post,
+                                              path: URLs.PushNotification.postFcmToken,
+                                              headers: APIConstants.accessTokenHeader,
+                                              body: fcmTokenBody)
+            
+            NetworkLogger.log(request: request)
+            
+            return tokenCheckURLSession.rx.data(request: request)
+                .map { _ in }
                 .asSingle()
         } catch {
             return Single.error(error)

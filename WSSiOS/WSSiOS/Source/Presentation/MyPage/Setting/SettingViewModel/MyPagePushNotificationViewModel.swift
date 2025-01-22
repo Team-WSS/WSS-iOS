@@ -33,5 +33,6 @@ final class MyPagePushNotificationViewModel: ViewModelType {
     
     func transform(from input: Input, disposeBag: RxSwift.DisposeBag) -> Output {
         
+        return Output()
     }
 }

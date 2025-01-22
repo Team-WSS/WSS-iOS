@@ -33,6 +33,9 @@ protocol UserRepository {
                           size: Int,
                           sortType: String) -> Observable<UserNovelList>
     func getAppMinimumVersion() -> Observable<AppMinimumVersion>
+    
+    // Push Notification
+    func postUserFCMToken(fcmToken: String) -> Single<Void>
 }
 
 struct DefaultUserRepository: UserRepository {
@@ -144,5 +147,12 @@ struct DefaultUserRepository: UserRepository {
     func getAppMinimumVersion() -> Observable<AppMinimumVersion> {
         return userService.getAppMinimumVersion()
             .asObservable()
+    }
+}
+
+
+extension DefaultUserRepository {
+    func postUserFCMToken(fcmToken: String) -> Single<Void> {
+        userService.postUserFCMToken(fcmToken: fcmToken)
     }
 }
