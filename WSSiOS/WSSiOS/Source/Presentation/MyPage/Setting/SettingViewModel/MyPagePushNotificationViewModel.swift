@@ -17,6 +17,8 @@ final class MyPagePushNotificationViewModel: ViewModelType {
     private let userRepository: UserRepository
     private let disposeBag = DisposeBag()
     
+    private let activePushIsEnabled = BehaviorRelay<Bool>(value: true)
+    
     //MARK: - Life Cycle
     
     init(userRepository: UserRepository) {
@@ -24,15 +26,24 @@ final class MyPagePushNotificationViewModel: ViewModelType {
     }
     
     struct Input {
-       
+        let activePushSettingSectionDidTap: ControlEvent<UITapGestureRecognizer>
     }
     
     struct Output {
-
+        let activePushIsEnabled: Driver<Bool>
     }
     
     func transform(from input: Input, disposeBag: RxSwift.DisposeBag) -> Output {
+        input.activePushSettingSectionDidTap
+            .withLatestFrom(activePushIsEnabled)
+            .bind(with: self, onNext: { owner, isEnalbed in
+                owner.activePushIsEnabled.accept(!isEnalbed)
+            })
+            .disposed(by: disposeBag)
         
-        return Output()
+        
+        return Output(
+            activePushIsEnabled: activePushIsEnabled.asDriver()
+        )
     }
 }

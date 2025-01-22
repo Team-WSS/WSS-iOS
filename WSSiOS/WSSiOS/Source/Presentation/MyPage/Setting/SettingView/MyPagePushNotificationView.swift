@@ -14,10 +14,10 @@ final class MyPagePushNotificationView: UIView {
     
     //MARK: - Components
     
-    private let activePushSettingSection = UIView()
+    let activePushSettingSection = UIView()
     private let activePushSettingTitleLabel = UILabel()
     private let activePushSettingDescriptionLabel = UILabel()
-    let activePushSettingToggleButton = WSSToggleButton()
+    private let activePushSettingToggleButton = WSSToggleButton()
     
     //In VC
     let backButton = UIButton()
@@ -55,6 +55,10 @@ final class MyPagePushNotificationView: UIView {
         activePushSettingDescriptionLabel.do {
             $0.textColor = .wssGray200
             $0.applyWSSFont(.body4, with: StringLiterals.MyPage.PushNotification.activePushDescription)
+        }
+        
+        activePushSettingToggleButton.do {
+            $0.isUserInteractionEnabled = false
         }
                 
         backButton.do {
@@ -95,11 +99,7 @@ final class MyPagePushNotificationView: UIView {
     
     //MARK: - Data
     
-    func bindData(isPrivate: Bool) {
-     
-    }
-    
-    func changeCompleteButton(change: Bool) {
-
+    func bindData(isEnabled: Bool) {
+        activePushSettingToggleButton.updateToggle(isEnabled)
     }
 }

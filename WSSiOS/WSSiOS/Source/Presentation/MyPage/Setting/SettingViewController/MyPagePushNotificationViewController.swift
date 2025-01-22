@@ -53,7 +53,24 @@ final class MyPagePushNotificationViewController: UIViewController {
     //MARK: - Bind
     
     private func bindViewModel() {
-       
+        let input = MyPagePushNotificationViewModel.Input(
+            activePushSettingSectionDidTap: rootView.activePushSettingSection.rx.tapGesture()
+        )
+        let output = viewModel.transform(from: input,
+                                         disposeBag: disposeBag)
+        output.activePushIsEnabled
+            .drive(with: self, onNext: { owner, isEnabled in
+                owner.rootView.bindData(isEnabled: isEnabled)
+            })
+            .disposed(by: disposeBag)
+        
+        rootView.backButton.rx.tap
+            .asDriver()
+            .drive(with: self, onNext: {owner, _ in
+                owner.popToLastViewController()
+            })
+            .disposed(by: disposeBag)
+        
     }
 }
 
@@ -61,7 +78,7 @@ final class MyPagePushNotificationViewController: UIViewController {
 
 extension MyPagePushNotificationViewController {
     private func setNavigationBar() {
-        setWSSNavigationBar(title: StringLiterals.Navigation.Title.isVisibleProfile,
+        setWSSNavigationBar(title: StringLiterals.Navigation.Title.pushNotification,
                             left: self.rootView.backButton,
                             right: nil)
     }
