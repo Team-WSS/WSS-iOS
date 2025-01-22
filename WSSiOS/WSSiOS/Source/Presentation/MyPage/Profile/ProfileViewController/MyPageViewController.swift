@@ -95,7 +95,7 @@ final class MyPageViewController: UIViewController {
         
         rootView.myPageLibraryView.genrePrefrerencesView.otherGenreView.genreTableView.register(MyPageGenrePreferencesOtherTableViewCell.self, forCellReuseIdentifier: MyPageGenrePreferencesOtherTableViewCell.cellIdentifier)
         
-        rootView.myPageFeedView.myPageFeedTableView.feedTableView.register(NovelDetailFeedTableViewCell.self, forCellReuseIdentifier: NovelDetailFeedTableViewCell.cellIdentifier)
+        rootView.myPageFeedView.myPageFeedTableView.feedTableView.register(FeedListTableViewCell.self, forCellReuseIdentifier: FeedListTableViewCell.cellIdentifier)
     }
     
     private func delegate() {
@@ -304,8 +304,8 @@ final class MyPageViewController: UIViewController {
         output.bindFeedData
             .observe(on: MainScheduler.instance)
             .bind(to: rootView.myPageFeedView.myPageFeedTableView.feedTableView.rx.items(
-                cellIdentifier: NovelDetailFeedTableViewCell.cellIdentifier,
-                cellType: NovelDetailFeedTableViewCell.self)) { _, element, cell in
+                cellIdentifier: FeedListTableViewCell.cellIdentifier,
+                cellType: FeedListTableViewCell.self)) { _, element, cell in
                     cell.bindProfileData(feed: element)
                 }
                 .disposed(by: disposeBag)
