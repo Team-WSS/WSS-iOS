@@ -48,7 +48,7 @@ final class MyPageViewModel: ViewModelType {
     struct Input {
         let isEntryTabbar: Observable<Bool>
         let viewWillAppearEvent: BehaviorRelay<Void>
-
+        
         let headerViewHeight: Driver<Double>
         let scrollOffset: Driver<CGPoint>
         let dropdownButtonDidTap: Observable<String>
@@ -223,11 +223,9 @@ final class MyPageViewModel: ViewModelType {
     
     private func getOtherProfileData(userId: Int) -> Observable<OtherProfileResult> {
         return userRepository.getOtherProfile(userId: userId)
-            .asObservable()
     }
     
     private func postBlockUser(userId: Int) -> Observable<Void> {
         return userRepository.postBlockUser(userId: userId)
-            .asObservable()
     }
 }

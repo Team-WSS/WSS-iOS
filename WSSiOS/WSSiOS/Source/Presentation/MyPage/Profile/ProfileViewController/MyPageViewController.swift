@@ -304,6 +304,7 @@ final class MyPageViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, isExist in
                 owner.rootView.myPageLibraryView.updatePreferencesEmptyView(isEmpty: !isExist)
+                owner.rootView.myPageLibraryView.layoutIfNeeded()
             })
             .disposed(by: disposeBag)
         
@@ -371,6 +372,7 @@ final class MyPageViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, isEmpty in
                 owner.rootView.myPageFeedView.isEmptyView(isEmpty: isEmpty)
+                owner.rootView.myPageFeedView.layoutIfNeeded()
             })
             .disposed(by: disposeBag)
         

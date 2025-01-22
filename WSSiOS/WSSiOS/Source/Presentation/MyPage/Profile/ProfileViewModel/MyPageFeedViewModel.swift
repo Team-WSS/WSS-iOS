@@ -26,8 +26,8 @@ final class MyPageFeedViewModel: ViewModelType {
                                                                                          genrePreferences: []))
     
     private let bindFeedDataRelay = BehaviorRelay<[FeedCellData]>(value: [])
-    private let isEmptyFeedRelay = PublishSubject<Bool>()
-    private let showFeedDetailButtonRelay = BehaviorSubject<Bool>(value: false)
+    private let isEmptyFeedRelay = BehaviorRelay<Bool>(value: true)
+    private let showFeedDetailButtonRelay = BehaviorRelay<Bool>(value: false)
     
     private let pushToMyPageFeedDetailViewControllerRelay = PublishSubject<(Int, MyProfileResult)>()
     private let pushToFeedDetailViewController = PublishSubject<Int>()
@@ -53,8 +53,8 @@ final class MyPageFeedViewModel: ViewModelType {
     
     struct Output {
         let bindFeedData: BehaviorRelay<[FeedCellData]>
-        let isEmptyFeed: Observable<Bool>
-        let showFeedDetailButton: BehaviorSubject<Bool>
+        let isEmptyFeed: BehaviorRelay<Bool>
+        let showFeedDetailButton: BehaviorRelay<Bool>
         
         let pushToMyPageFeedDetailViewController: Observable<(Int, MyProfileResult)>
         let pushToFeedDetailViewController: Observable<Int>
@@ -67,6 +67,21 @@ final class MyPageFeedViewModel: ViewModelType {
         input.viewWillAppearEvent
             .flatMapLatest { [weak self] _ -> Observable<Void> in
                 guard let self = self else { return .empty() }
+                
+                if self.profileId == 0 {
+                    let myUserId = UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)
+                    if myUserId == 0 {
+                        return self.getUserMeData()
+                            .do(onNext: { userData in
+                                self.profileId = userData.userId
+                                UserDefaults.standard.setValue(userData.userId, forKey: StringLiterals.UserDefault.userId)
+                            })
+                            .map{ _ in }
+                    } else {
+                        self.profileId = myUserId
+                    }
+                }
+                
                 return self.updateMyPageFeedData()
                 
                 .flatMap { _ -> Observable<Void> in
@@ -128,21 +143,20 @@ final class MyPageFeedViewModel: ViewModelType {
             .do(onNext: { [weak self] feedCellData in
                 guard let self else { return }
                 if feedCellData.isEmpty {
-                    self.isEmptyFeedRelay.onNext(true)
+                    self.isEmptyFeedRelay.accept(feedCellData.isEmpty)
+                    self.showFeedDetailButtonRelay.accept(!feedCellData.isEmpty)
                 } else {
-                    
-                    /// 데이터를 먼저 띄우고 더보기 버튼처리를 하여 데이터로딩 늦어지는 이슈 해결
-                    self.isEmptyFeedRelay.onNext(false)
+                    self.isEmptyFeedRelay.accept(false)
                     self.bindFeedDataRelay.accept(Array(feedCellData.prefix(5)))
                     
                     /// 5개까지만 활동뷰에 바인딩
                     /// 5개를 초과할 경우 더보기 버튼 뜨게 함
                     let hasMoreThanFive = feedCellData.count > 5
-                    self.showFeedDetailButtonRelay.onNext(hasMoreThanFive)
+                    self.showFeedDetailButtonRelay.accept(hasMoreThanFive)
                 }
             })
             .catch { [weak self] error in
-                self?.isEmptyFeedRelay.onNext(true)
+                self?.isEmptyFeedRelay.accept(false)
                 return .just([])
             }
             .map { _ in Void() }
@@ -158,8 +172,11 @@ final class MyPageFeedViewModel: ViewModelType {
     
     // MARK: - API
     
+    func getUserMeData() -> Observable<UserMeResult> {
+        return userRepository.getUserMeData()
+    }
+    
     private func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Observable<MyFeedResult> {
         return userRepository.getUserFeed(userId: userId, lastFeedId: lastFeedId, size: size)
-            .asObservable()
     }
 }

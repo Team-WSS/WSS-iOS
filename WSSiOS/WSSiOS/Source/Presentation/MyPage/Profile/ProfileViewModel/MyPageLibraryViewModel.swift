@@ -41,7 +41,12 @@ final class MyPageLibraryViewModel: ViewModelType {
     
     init(userRepository: UserRepository, profileId: Int) {
         self.userRepository = userRepository
-        self.profileId = profileId
+        if profileId == 0 {
+            let userId = UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)
+            self.profileId = userId
+        } else {
+            self.profileId = profileId
+        }
     }
     
     struct Input {
@@ -69,12 +74,26 @@ final class MyPageLibraryViewModel: ViewModelType {
             .flatMapLatest { [weak self] _ -> Observable<Void> in
                 guard let self = self else { return .empty() }
                 
-                return Observable.zip(
+                if self.profileId == 0 {
+                    let myUserId = UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)
+                    if myUserId == 0 {
+                        return self.getUserMeData()
+                            .do(onNext: { userData in
+                                self.profileId = userData.userId
+                                UserDefaults.standard.setValue(userData.userId, forKey: StringLiterals.UserDefault.userId)
+                            })
+                            .map{ _ in }
+                    } else {
+                        self.profileId = myUserId
+                    }
+                }
+                
+                return Observable.merge(
                     self.updateMyPageLibraryInventoryData(),
                     self.updateMyPageLibraryPreferenceData()
                 )
                 /// flatMap 체인에서 반환 타입을 일관되게 만들어야 하기 때문에 함수의 리턴값인 <CGFloat> 을 <Void> 로 조정
-                .flatMap { _, _ -> Observable<Void> in
+                .flatMap { _ -> Observable<Void> in
                     self.handleKeywordCollectionViewHeight(resizeKeywordCollectionViewHeight: input.resizeKeywordCollectionViewHeight)
                         .map { _ in () }
                 }
@@ -94,6 +113,16 @@ final class MyPageLibraryViewModel: ViewModelType {
                 self.pushToLibraryViewControllerRelay.accept(owner.profileId)
             })
             .disposed(by: disposeBag)
+        
+        Observable.combineLatest(
+            bindAttractivePointsDataRelay.asObservable(),
+            bindKeywordRelay.asObservable()
+        )
+        .map { attractivePoints, keywords in
+            !(attractivePoints.isEmpty && keywords.isEmpty)
+        }
+        .bind(to: isExistPrefernecesRelay)
+        .disposed(by: disposeBag)
         
         return Output(isExistPreferneces: isExistPrefernecesRelay,
                       isProfilePrivate: isProfilePrivate,
@@ -163,15 +192,9 @@ final class MyPageLibraryViewModel: ViewModelType {
                 //=> emptyView 처리
                 //=> 이 경우 장르 취향도 데이터가 없기 때문에 false 반환
                 let keywords = preference.keywords ?? []
-                if preference.attractivePoints == [] && keywords.isEmpty {
-                    self.isExistPrefernecesRelay.accept(false)
-                    return .just(false)
-                } else {
-                    self.isExistPrefernecesRelay.accept(true)
-                    self.bindAttractivePointsDataRelay.accept(preference.attractivePoints ?? [])
-                    self.bindKeywordRelay.accept(keywords)
-                    return .just(true)
-                }
+                self.bindAttractivePointsDataRelay.accept(preference.attractivePoints ?? [])
+                self.bindKeywordRelay.accept(keywords)
+                return .just(true)
             }
             .catch { [weak self] error in
                 guard let self else { return .empty() }
@@ -209,18 +232,19 @@ final class MyPageLibraryViewModel: ViewModelType {
     
     // MARK: - API
     
+    func getUserMeData() -> Observable<UserMeResult> {
+        return userRepository.getUserMeData()
+    }
+    
     private func getNovelPreferenceData(userId: Int) -> Observable<UserNovelPreferences> {
         return userRepository.getUserNovelPreferences(userId: userId)
-            .asObservable()
     }
     
     private func getGenrePreferenceData(userId: Int) -> Observable<UserGenrePreferences> {
         return userRepository.getUserGenrePreferences(userId: userId)
-            .asObservable()
     }
     
     private func getInventoryData(userId: Int) -> Observable<UserNovelStatus> {
         return userRepository.getUserNovelStatus(userId: userId)
-            .asObservable()
     }
 }
