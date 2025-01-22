@@ -80,7 +80,13 @@ enum WSSTabBarItem: CaseIterable {
                 myPageLibraryViewModel: MyPageLibraryViewModel(
                     userRepository: DefaultUserRepository(
                         userService: DefaultUserService(),
-                        blocksService: DefaultBlocksService())))
+                        blocksService: DefaultBlocksService()),
+                    profileId: userId),
+                myPageFeedViewModel: MyPageFeedViewModel(
+                    userRepository: DefaultUserRepository(
+                        userService: DefaultUserService(),
+                        blocksService: DefaultBlocksService()),
+                    profileId: userId))
             
             myPageVC.entryType = .tabBar
             return myPageVC

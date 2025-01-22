@@ -20,46 +20,43 @@ final class MyPageFeedViewModel: ViewModelType {
     /// 초기값은 내 프로필로 설정
     private let isMyPage = BehaviorRelay<Bool>(value: true)
     private var profileId: Int
+    private let profileDataRelay = BehaviorRelay<MyProfileResult>(value: MyProfileResult(nickname: "",
+                                                                                         intro: "",
+                                                                                         avatarImage: "",
+                                                                                         genrePreferences: []))
     
     private let bindFeedDataRelay = BehaviorRelay<[FeedCellData]>(value: [])
-    private let isEmptyFeedRelay = PublishRelay<Bool>()
+    private let isEmptyFeedRelay = PublishSubject<Bool>()
     private let showFeedDetailButtonRelay = BehaviorSubject<Bool>(value: false)
     
-    private let pushToMyPageFeedDetailViewControllerRelay = PublishRelay<(Int, MyProfileResult)>()
-    private let pushToFeedDetailViewController = PublishRelay<Int>()
-    private let pushToNovelDetailViewController = PublishRelay<Int>()
+    private let pushToMyPageFeedDetailViewControllerRelay = PublishSubject<(Int, MyProfileResult)>()
+    private let pushToFeedDetailViewController = PublishSubject<Int>()
+    private let pushToNovelDetailViewController = PublishSubject<Int>()
     
     private let updateFeedTableViewHeightRelay = PublishRelay<CGFloat>()
     
     // MARK: - Life Cycle
     
-    init(userRepository: UserRepository, isMyPage: Bool = true, profileId: Int = 0) {
+    init(userRepository: UserRepository, profileId: Int) {
         self.userRepository = userRepository
-        if isMyPage {
-            let userId = UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)
-            self.profileId = userId
-        } else {
-            self.profileId = profileId
-        }
-        self.isMyPage.accept(isMyPage)
+        self.profileId = profileId
     }
     
     struct Input {
         let viewWillAppearEvent: PublishSubject<Void>
-        
+        let profileData: BehaviorRelay<MyProfileResult>
         let feedDetailButtonDidTap: ControlEvent<Void>
         let feedTableViewItemSelected: Observable<IndexPath>
         let feedConnectedNovelViewDidTap: Observable<Int>
-        
         let resizefeedTableViewHeight: Observable<CGSize?>
     }
     
     struct Output {
         let bindFeedData: BehaviorRelay<[FeedCellData]>
-        let isEmptyFeed: PublishRelay<Bool>
+        let isEmptyFeed: Observable<Bool>
         let showFeedDetailButton: BehaviorSubject<Bool>
         
-        let pushToMyPageFeedDetailViewController: PublishRelay<(Int, MyProfileResult)>
+        let pushToMyPageFeedDetailViewController: Observable<(Int, MyProfileResult)>
         let pushToFeedDetailViewController: Observable<Int>
         let pushToNovelDetailViewController: Observable<Int>
         
@@ -70,7 +67,6 @@ final class MyPageFeedViewModel: ViewModelType {
         input.viewWillAppearEvent
             .flatMapLatest { [weak self] _ -> Observable<Void> in
                 guard let self = self else { return .empty() }
-                
                 return self.updateMyPageFeedData()
                 
                 .flatMap { _ -> Observable<Void> in
@@ -81,22 +77,28 @@ final class MyPageFeedViewModel: ViewModelType {
             .subscribe()
             .disposed(by: disposeBag)
         
+        input.profileData
+            .bind(with: self, onNext: { owner, data in
+                owner.profileDataRelay.accept(data)
+            })
+            .disposed(by: disposeBag)
+        
         input.feedDetailButtonDidTap
             .bind(with: self, onNext: { owner, _ in
-                self.pushToMyPageFeedDetailViewControllerRelay.accept((owner.profileId, owner.profileDataRelay.value))
+                self.pushToMyPageFeedDetailViewControllerRelay.onNext((owner.profileId, owner.profileDataRelay.value))
             })
             .disposed(by: disposeBag)
         
         input.feedTableViewItemSelected
             .bind(with: self, onNext: { owner, indexPath in
                 let feedId = self.bindFeedDataRelay.value[indexPath.row].feed.feedId
-                self.pushToFeedDetailViewController.accept(feedId)
+                self.pushToFeedDetailViewController.onNext(feedId)
             })
             .disposed(by: disposeBag)
         
         input.feedConnectedNovelViewDidTap
             .bind(with: self, onNext: { owner, novelId in
-                self.pushToNovelDetailViewController.accept(novelId)
+                self.pushToNovelDetailViewController.onNext(novelId)
             })
             .disposed(by: disposeBag)
         
@@ -127,19 +129,19 @@ final class MyPageFeedViewModel: ViewModelType {
                 guard let self else { return }
                 
                 if feedCellData.isEmpty {
-                    self.isEmptyFeedRelay.accept(true)
+                    self.isEmptyFeedRelay.onNext(true)
                 } else {
                     
                     /// 5개까지만 활동뷰에 바인딩
                     /// 5개를 초과할 경우 더보기 버튼 뜨게 함
-                    self.isEmptyFeedRelay.accept(false)
+                    self.isEmptyFeedRelay.onNext(false)
                     let hasMoreThanFive = feedCellData.count > 5
                     self.showFeedDetailButtonRelay.onNext(hasMoreThanFive)
                     self.bindFeedDataRelay.accept(Array(feedCellData.prefix(5)))
                 }
             })
             .catch { [weak self] error in
-                self?.isEmptyFeedRelay.accept(true)
+                self?.isEmptyFeedRelay.onNext(true)
                 return .just([])
             }
             .map { _ in Void() }

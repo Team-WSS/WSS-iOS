@@ -39,23 +39,15 @@ final class MyPageLibraryViewModel: ViewModelType {
     
     // MARK: - Life Cycle
     
-    init(userRepository: UserRepository, isMyPage: Bool = true, profileId: Int = 0) {
+    init(userRepository: UserRepository, profileId: Int) {
         self.userRepository = userRepository
-        if isMyPage {
-            let userId = UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)
-            self.profileId = userId
-        } else {
-            self.profileId = profileId
-        }
-        self.isMyPage.accept(isMyPage)
+        self.profileId = profileId
     }
     
     struct Input {
         let viewWillAppearEvent: PublishSubject<Void>
-        
         let genrePreferenceButtonDidTap: Observable<Bool>
         let inventoryViewDidTap: Observable<UITapGestureRecognizer>
-        
         let resizeKeywordCollectionViewHeight: Observable<CGSize?>
     }
     

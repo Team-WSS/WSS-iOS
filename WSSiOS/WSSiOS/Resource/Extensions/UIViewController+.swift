@@ -316,7 +316,13 @@ extension UIViewController {
             myPageLibraryViewModel: MyPageLibraryViewModel(
                 userRepository: DefaultUserRepository(
                     userService: DefaultUserService(),
-                    blocksService: DefaultBlocksService())))
+                    blocksService: DefaultBlocksService()),
+                profileId: userId),
+            myPageFeedViewModel: MyPageFeedViewModel(
+                userRepository: DefaultUserRepository(
+                    userService: DefaultUserService(),
+                    blocksService: DefaultBlocksService()),
+                profileId: userId))
         
         viewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(viewController, animated: true)

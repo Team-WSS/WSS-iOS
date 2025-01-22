@@ -25,16 +25,19 @@ final class MyPageViewController: UIViewController {
     private let myPageFeedViewModel: MyPageFeedViewModel
     
     var entryType: EntryType = .otherVC
-    
     private var navigationTitle: String = ""
     
     private let isEntryTabbarRelay = BehaviorRelay<Bool>(value: false)
+    private let updateButtonWithLibraryView = BehaviorRelay<Bool>(value: true)
+    
     private var dropDownCellTap = PublishSubject<String>()
     private let headerViewHeightRelay = BehaviorRelay<Double>(value: 0)
     private let viewWillAppearEvent = PublishSubject<Void>()
     private let feedConnectedNovelViewDidTap = PublishRelay<Int>()
-    
-    private let profileDataRelay = PublishRelay<MyProfileResult>()
+    private let profileDataRelay = BehaviorRelay<MyProfileResult>(value: MyProfileResult(nickname: "",
+                                                                                         intro: "",
+                                                                                         avatarImage: "",
+                                                                                         genrePreferences: []))
     
     //MARK: - UI Components
     
@@ -74,12 +77,10 @@ final class MyPageViewController: UIViewController {
         
         switch entryType {
         case .tabBar:
-            print("탭바에서 진입")
             AmplitudeManager.shared.track(AmplitudeEvent.MyPage.mypage)
             isEntryTabbarRelay.accept(true)
             
         case .otherVC:
-            print("다른 VC에서 진입")
             AmplitudeManager.shared.track(AmplitudeEvent.MyPage.otherMypage)
             isEntryTabbarRelay.accept(false)
             hideTabBar()
@@ -153,7 +154,6 @@ final class MyPageViewController: UIViewController {
     }
     
     private func bindViewModel() {
-        
         let libraryButtonDidTap = Observable.merge(
             rootView.mainStickyHeaderView.libraryButton.rx.tap.map { true },
             rootView.scrolledStickyHeaderView.libraryButton.rx.tap.map { true }
@@ -189,6 +189,7 @@ final class MyPageViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, data in
                 owner.rootView.headerView.bindData(data: data)
+                owner.profileDataRelay.accept(data)
             })
             .disposed(by: disposeBag)
         
@@ -238,6 +239,7 @@ final class MyPageViewController: UIViewController {
         output.stickyHeaderAction
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, library in
+                owner.rootView.showContentView(showLibraryView: library)
                 owner.rootView.mainStickyHeaderView.updateSelection(isLibrarySelected: library)
                 owner.rootView.scrolledStickyHeaderView.updateSelection(isLibrarySelected: library)
                 
@@ -259,13 +261,6 @@ final class MyPageViewController: UIViewController {
                 
             })
             .disposed(by: disposeBag)
-        
-//        output.updateButtonWithLibraryView
-//            .observe(on: MainScheduler.instance)
-//            .bind(with: self, onNext: { owner, showLibraryView in
-//                owner.rootView.showContentView(showLibraryView: showLibraryView)
-//            })
-//            .disposed(by: disposeBag)
     }
     
     private func bindLibraryViewModel() {
@@ -357,6 +352,7 @@ final class MyPageViewController: UIViewController {
     private func bindFeedViewModel() {
         let input = MyPageFeedViewModel.Input(
             viewWillAppearEvent: self.viewWillAppearEvent,
+            profileData: self.profileDataRelay,
             feedDetailButtonDidTap: rootView.myPageFeedView.myPageFeedDetailButton.rx.tap,
             feedTableViewItemSelected: rootView.myPageFeedView.myPageFeedTableView.feedTableView.rx.itemSelected.asObservable(),
             feedConnectedNovelViewDidTap: feedConnectedNovelViewDidTap.asObservable(),

@@ -16,24 +16,22 @@ final class MyPageViewModel: ViewModelType {
     
     private var profileId: Int
     private let userRepository: UserRepository
-    private var stickyHeaderHeight: CGFloat = 0
-    
     private let disposeBag = DisposeBag()
     
     private let isMyPageRelay = BehaviorRelay<Bool>(value: true)
+    private let isProfilePrivateRelay = BehaviorRelay<(Bool, String)>(value: (false, ""))
+    private let isExistPrefernecesRelay = PublishRelay<Bool>()
+    private let profileDataRelay = BehaviorRelay<MyProfileResult>(value: MyProfileResult(nickname: "",
+                                                                                         intro: "",
+                                                                                         avatarImage: "",
+                                                                                         genrePreferences: []))
     private let updateNavigationRelay = BehaviorRelay<(Bool, String)>(value: (false, ""))
     private let updateStickyHeaderRelay = BehaviorRelay<(Bool)>(value: (false))
-    private let isProfilePrivateRelay = BehaviorRelay<(Bool, String)>(value: (false, ""))
-    private let profileDataRelay = BehaviorRelay<MyProfileResult>(value: MyProfileResult(nickname: "", intro: "", avatarImage: "", genrePreferences: []))
-    
-    private let isExistPrefernecesRelay = PublishRelay<Bool>()
+    private let stickyHeaderAction = BehaviorRelay<Bool>(value: true)
+    private var stickyHeaderHeight: CGFloat = 0
     
     private let pushToEditViewControllerRelay = PublishRelay<MyProfileResult>()
     private let popViewControllerRelay = PublishRelay<Void>()
-    
-    private let stickyHeaderActionRelay = BehaviorRelay<Bool>(value: true)
-    
-    private let reloadSubject = PublishSubject<Void>()
     
     // MARK: - Life Cycle
     
@@ -50,13 +48,11 @@ final class MyPageViewModel: ViewModelType {
     struct Input {
         let isEntryTabbar: Observable<Bool>
         let viewWillAppearEvent: PublishSubject<Void>
-        
+
         let headerViewHeight: Driver<Double>
         let scrollOffset: Driver<CGPoint>
-
         let dropdownButtonDidTap: Observable<String>
         let editButtonDidTap: ControlEvent<Void>
-        
         let libraryButtonDidTap: Observable<Bool>
         let feedButtonDidTap: Observable<Bool>
     }
@@ -67,12 +63,10 @@ final class MyPageViewModel: ViewModelType {
         let profileData: BehaviorRelay<MyProfileResult>
         let updateNavigationBar: BehaviorRelay<(Bool, String)>
         let updateStickyHeader: BehaviorRelay<(Bool)>
+        let stickyHeaderAction: BehaviorRelay<Bool>
         
         let pushToEditViewController: PublishRelay<MyProfileResult>
         let popViewController: PublishRelay<Void>
-        
-        let stickyHeaderAction: BehaviorRelay<Bool>
-//        let updateButtonWithLibraryView: BehaviorRelay<Bool>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -86,9 +80,11 @@ final class MyPageViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.viewWillAppearEvent
-            .bind(with: self, onNext: { owner, _ in
-                _ = owner.updateHeaderView(isMyPage: owner.isMyPageRelay.value)
-            })
+            .flatMap { [weak self] _ -> Observable<Void> in
+                guard let self = self else { return .empty() }
+                return self.updateHeaderView(isMyPage: self.isMyPageRelay.value)
+            }
+            .subscribe()
             .disposed(by: disposeBag)
         
         /// 스티키 헤더 처리
@@ -114,20 +110,17 @@ final class MyPageViewModel: ViewModelType {
             .map { self.profileDataRelay.value }
             .bind(to: pushToEditViewControllerRelay)
             .disposed(by: disposeBag)
-//        
-//        input.libraryButtonDidTap
-//            .subscribe(with: self, onNext: { owner, _ in
-//                owner.stickyHeaderActionRelay.accept(true)
-//                owner.updateButtonWithLibraryViewRelay.accept(true)
-//            })
-//            .disposed(by: disposeBag)
-//        
-//        input.feedButtonDidTap
-//            .subscribe(with: self, onNext: { owner, _ in
-//                owner.stickyHeaderActionRelay.accept(false)
-//                owner.updateButtonWithLibraryViewRelay.accept(false)
-//            })
-//            .disposed(by: disposeBag)
+        
+        Observable.merge(
+            input.libraryButtonDidTap.map { _ in true },
+            input.feedButtonDidTap.map { _ in false }
+        )
+        .flatMapLatest { isLibraryTap -> Observable<Void> in
+            self.stickyHeaderAction.accept(isLibraryTap)
+            return .just(())
+        }
+        .subscribe()
+        .disposed(by: disposeBag)
         
         input.dropdownButtonDidTap
             .filter { $0 == StringLiterals.MyPage.BlockUser.toastText }
@@ -149,11 +142,10 @@ final class MyPageViewModel: ViewModelType {
             profileData: self.profileDataRelay,
             updateNavigationBar: self.updateNavigationRelay,
             updateStickyHeader: self.updateStickyHeaderRelay,
+            stickyHeaderAction: self.stickyHeaderAction,
             
             pushToEditViewController: self.pushToEditViewControllerRelay,
-            popViewController: self.popViewControllerRelay,
-            
-            stickyHeaderAction: self.stickyHeaderActionRelay
+            popViewController: self.popViewControllerRelay
         )
     }
     
