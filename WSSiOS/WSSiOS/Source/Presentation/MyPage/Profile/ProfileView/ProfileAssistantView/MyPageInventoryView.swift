@@ -14,8 +14,10 @@ final class MyPageInventoryView: UIView {
     
     //MARK: - Components
     
+    private let inventoryView = UIView()
+    
     //터치영역
-    let inventoryView = UIView()
+    let inventoryTitleView = UIView()
     let inventoryStackView = UIStackView()
     
     private let titleLabel = UILabel()
@@ -88,9 +90,10 @@ final class MyPageInventoryView: UIView {
     
     private func setHierarchy() {
         self.addSubview(inventoryView)
-        inventoryView.addSubviews(titleLabel,
-                                  arrowView,
+        inventoryView.addSubviews(inventoryTitleView,
                                   inventoryStackView)
+        inventoryTitleView.addSubviews(titleLabel,
+                                       arrowView)
         arrowView.addSubview(arrowImageView)
         
         inventoryStackView.addArrangedSubviews(interestView,
@@ -105,23 +108,27 @@ final class MyPageInventoryView: UIView {
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.bottom.equalToSuperview().inset(30)
             
-            arrowView.snp.makeConstraints {
-                $0.top.trailing.equalToSuperview()
-                $0.size.equalTo(44)
+            inventoryTitleView.snp.makeConstraints {
+                $0.top.width.equalToSuperview()
                 
-                arrowImageView.snp.makeConstraints {
-                    $0.center.equalToSuperview()
-                    $0.size.equalTo(24)
+                arrowView.snp.makeConstraints {
+                    $0.top.trailing.bottom.equalToSuperview()
+                    $0.size.equalTo(44)
+                    
+                    arrowImageView.snp.makeConstraints {
+                        $0.center.equalToSuperview()
+                        $0.size.equalTo(24)
+                    }
+                }
+                
+                titleLabel.snp.makeConstraints {
+                    $0.leading.equalToSuperview()
+                    $0.centerY.equalTo(arrowView.snp.centerY)
                 }
             }
             
-            titleLabel.snp.makeConstraints {
-                $0.leading.equalToSuperview()
-                $0.centerY.equalTo(arrowView.snp.centerY)
-            }
-            
             inventoryStackView.snp.makeConstraints {
-                $0.top.equalTo(arrowView.snp.bottom)
+                $0.top.equalTo(inventoryTitleView.snp.bottom)
                 $0.leading.trailing.bottom.equalToSuperview()
                 $0.height.equalTo(70)
             }
