@@ -41,12 +41,7 @@ final class MyPageLibraryViewModel: ViewModelType {
     
     init(userRepository: UserRepository, profileId: Int) {
         self.userRepository = userRepository
-        if profileId == 0 {
-            let userId = UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)
-            self.profileId = userId
-        } else {
-            self.profileId = profileId
-        }
+        self.profileId = profileId
     }
     
     struct Input {
