@@ -78,6 +78,7 @@ enum StringLiterals {
             static let myPageChangeUserInfo = "성별/나이 변경"
             static let isVisibleProfile = "프로필 공개 설정"
             static let changeAvatar = "프로필 선택"
+            static let pushNotification = "알림 설정"
         }
     }
     

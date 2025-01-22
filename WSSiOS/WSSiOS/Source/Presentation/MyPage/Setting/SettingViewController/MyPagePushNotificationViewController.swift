@@ -18,7 +18,7 @@ final class MyPagePushNotificationViewController: UIViewController {
     
     //MARK: - Components
     
-    private let rootView = MyPageProfileVisibilityView()
+    private let rootView = MyPagePushNotificationView()
     
     // MARK: - Life Cycle
     
@@ -47,11 +47,22 @@ final class MyPagePushNotificationViewController: UIViewController {
         
         hideTabBar()
         swipeBackGesture()
+        setNavigationBar()
     }
     
     //MARK: - Bind
     
     private func bindViewModel() {
        
+    }
+}
+
+//MARK: - UI
+
+extension MyPagePushNotificationViewController {
+    private func setNavigationBar() {
+        setWSSNavigationBar(title: StringLiterals.Navigation.Title.isVisibleProfile,
+                            left: self.rootView.backButton,
+                            right: nil)
     }
 }

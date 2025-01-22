@@ -376,7 +376,14 @@ extension UIViewController {
     }
     
     func pushToMyPagePushNotificationViewController() {
-        print("화면이동 코드 작성")
+        let viewController = MyPagePushNotificationViewController(
+            viewModel: MyPagePushNotificationViewModel(
+                userRepository: DefaultUserRepository(
+                    userService: DefaultUserService(),
+                    blocksService: DefaultBlocksService())))
+        viewController.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(viewController, animated: true)
+        
     }
     
     func pushToChangeUserInfoViewController() {

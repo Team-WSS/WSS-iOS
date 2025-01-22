@@ -58,7 +58,8 @@ final class MyPagePushNotificationView: UIView {
         }
                 
         backButton.do {
-            $0.setImage(.icNavigateLeft.withRenderingMode(.alwaysOriginal), for: .normal)
+            $0.setImage(.icNavigateLeft.withTintColor(.wssGray300),
+                        for: .normal)
         }
     }
     
