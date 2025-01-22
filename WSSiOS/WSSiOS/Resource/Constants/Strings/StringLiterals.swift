@@ -182,7 +182,7 @@ enum StringLiterals {
         
         enum Setting: String, CaseIterable {
             case accountInfo = "계정정보"
-            case profileStatus = "프로필 공개 여부 설정"
+            case profileStatus = "프로필 공개 설정"
             case webSoso = "웹소소 공식 계정"
             case qNA = "문의하기 & 의견 보내기"
             case review = "개인정보 처리 방침"
