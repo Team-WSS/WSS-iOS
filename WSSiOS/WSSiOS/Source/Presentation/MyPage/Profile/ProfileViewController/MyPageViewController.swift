@@ -58,6 +58,7 @@ final class MyPageViewController: UIViewController {
         register()
         
         bindViewModel()
+        bindAction()
         
         switch entryType {
         case .tabBar:
@@ -116,6 +117,29 @@ final class MyPageViewController: UIViewController {
     
     //MARK: - Bind
     
+    private func bindAction() {
+        rootView.backButton.rx.tap
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, data in
+                owner.popToLastViewController()
+            })
+            .disposed(by: disposeBag)
+        
+        rootView.settingButton.rx.tap
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                owner.pushToSettingViewController()
+            })
+            .disposed(by: disposeBag)
+        
+        NotificationCenter.default.rx.notification(NSNotification.Name("EditProfile"))
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                owner.showToast(.editUserProfile)
+            })
+            .disposed(by: disposeBag)
+    }
+    
     private func bindViewModel() {
         let genrePreferenceButtonDidTap = Observable.merge(
             rootView.myPageLibraryView.genrePrefrerencesView.myPageGenreOpenButton.rx.tap.map { true },
@@ -139,10 +163,8 @@ final class MyPageViewController: UIViewController {
             resizefeedTableViewHeight: rootView.myPageFeedView.myPageFeedTableView.feedTableView.rx.observe(CGSize.self, "contentSize"),
             resizeKeywordCollectionViewHeight: rootView.myPageLibraryView.novelPrefrerencesView.preferencesCollectionView.rx.observe(CGSize.self, "contentSize"),
             scrollOffset: rootView.scrollView.rx.contentOffset.asDriver(),
-            settingButtonDidTap: rootView.settingButton.rx.tap,
             dropdownButtonDidTap: dropDownCellTap,
             editButtonDidTap: rootView.headerView.userImageChangeButton.rx.tap,
-            backButtonDidTap: rootView.backButton.rx.tap,
             genrePreferenceButtonDidTap: genrePreferenceButtonDidTap,
             libraryButtonDidTap: libraryButtonDidTap,
             feedButtonDidTap: feedButtonDidTap,
@@ -150,7 +172,6 @@ final class MyPageViewController: UIViewController {
                 .when(.recognized)
                 .asObservable(),
             feedDetailButtonDidTap: rootView.myPageFeedView.myPageFeedDetailButton.rx.tap,
-            editProfileNotification: NotificationCenter.default.rx.notification(NSNotification.Name("EditProfile")).asObservable(),
             feedTableViewItemSelected: rootView.myPageFeedView.myPageFeedTableView.feedTableView.rx.itemSelected.asObservable(),
             feedConnectedNovelViewDidTap: feedConnectedNovelViewDidTap.asObservable())
         
@@ -187,13 +208,6 @@ final class MyPageViewController: UIViewController {
                 owner.rootView.scrolledStickyHeaderView.isHidden = !update
                 owner.rootView.mainStickyHeaderView.isHidden = update
                 owner.rootView.headerView.isHidden = update
-            })
-            .disposed(by: disposeBag)
-        
-        output.pushToSettingViewController
-            .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, _ in
-                owner.pushToSettingViewController()
             })
             .disposed(by: disposeBag)
         
@@ -360,13 +374,6 @@ final class MyPageViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.showToastView
-            .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, _ in
-                owner.showToast(.editUserProfile)
-            })
-            .disposed(by: disposeBag)
-        
         output.pushToNovelDetailViewController
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, novelId in
@@ -460,4 +467,3 @@ extension MyPageViewController: FeedTableViewDelegate {
         self.feedConnectedNovelViewDidTap.accept(novelId)
     }
 }
-

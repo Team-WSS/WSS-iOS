@@ -42,14 +42,12 @@ final class MyPageViewModel: ViewModelType {
     private let updateKeywordCollectionViewHeightRelay = PublishRelay<CGFloat>()
     
     private let pushToEditViewControllerRelay = PublishRelay<MyProfileResult>()
-    private let pushToSettingViewControllerRelay = PublishRelay<Void>()
     private let pushToLibraryViewControllerRelay = PublishRelay<Int>()
     private let pushToMyPageFeedDetailViewControllerRelay = PublishRelay<(Int, MyProfileResult)>()
     private let pushToFeedDetailViewController = PublishRelay<Int>()
     private let pushToNovelDetailViewController = PublishRelay<Int>()
     private let popViewControllerRelay = PublishRelay<Void>()
     
-    private let showToastViewRelay = PublishRelay<Void>()
     private let stickyHeaderActionRelay = BehaviorRelay<Bool>(value: true)
     
     private let reloadSubject = PublishSubject<Void>()
@@ -74,19 +72,15 @@ final class MyPageViewModel: ViewModelType {
         let resizefeedTableViewHeight: Observable<CGSize?>
         let resizeKeywordCollectionViewHeight: Observable<CGSize?>
         let scrollOffset: Driver<CGPoint>
-        
-        let settingButtonDidTap: ControlEvent<Void>
+
         let dropdownButtonDidTap: Observable<String>
         let editButtonDidTap: ControlEvent<Void>
-        let backButtonDidTap: ControlEvent<Void>
         
         let genrePreferenceButtonDidTap: Observable<Bool>
         let libraryButtonDidTap: Observable<Bool>
         let feedButtonDidTap: Observable<Bool>
         let inventoryViewDidTap: Observable<UITapGestureRecognizer>
         let feedDetailButtonDidTap: ControlEvent<Void>
-        
-        let editProfileNotification: Observable<Notification>
         
         let feedTableViewItemSelected: Observable<IndexPath>
         let feedConnectedNovelViewDidTap: Observable<Int>
@@ -100,7 +94,6 @@ final class MyPageViewModel: ViewModelType {
         let updateStickyHeader: BehaviorRelay<(Bool)>
         
         let pushToEditViewController: PublishRelay<MyProfileResult>
-        let pushToSettingViewController: PublishRelay<Void>
         let popViewController: PublishRelay<Void>
         let pushToLibraryViewController: PublishRelay<Int>
         let pushToMyPageFeedDetailViewController: PublishRelay<(Int, MyProfileResult)>
@@ -119,7 +112,6 @@ final class MyPageViewModel: ViewModelType {
         let isEmptyFeed: PublishRelay<Bool>
         let showFeedDetailButton: BehaviorSubject<Bool>
         
-        let showToastView: PublishRelay<Void>
         let stickyHeaderAction: BehaviorRelay<Bool>
         let updateButtonWithLibraryView: BehaviorRelay<Bool>
         
@@ -205,17 +197,9 @@ final class MyPageViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.settingButtonDidTap
-            .bind(to: pushToSettingViewControllerRelay)
-            .disposed(by: disposeBag)
-        
         input.editButtonDidTap
             .map { self.profileDataRelay.value }
             .bind(to: pushToEditViewControllerRelay)
-            .disposed(by: disposeBag)
-        
-        input.backButtonDidTap
-            .bind(to: popViewControllerRelay)
             .disposed(by: disposeBag)
         
         input.libraryButtonDidTap
@@ -258,13 +242,6 @@ final class MyPageViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        //토스트뷰를 위한 분기처리
-        input.editProfileNotification
-            .bind(with: self, onNext: { owner, _ in
-                self.showToastViewRelay.accept(())
-            })
-            .disposed(by: disposeBag)
-        
         input.feedTableViewItemSelected
             .bind(with: self, onNext: { owner, indexPath in
                 let feedId = self.bindFeedDataRelay.value[indexPath.row].feed.feedId
@@ -286,7 +263,6 @@ final class MyPageViewModel: ViewModelType {
             updateStickyHeader: self.updateStickyHeaderRelay,
             
             pushToEditViewController: self.pushToEditViewControllerRelay,
-            pushToSettingViewController: self.pushToSettingViewControllerRelay,
             popViewController: self.popViewControllerRelay,
             pushToLibraryViewController: self.pushToLibraryViewControllerRelay,
             pushToMyPageFeedDetailViewController: self.pushToMyPageFeedDetailViewControllerRelay,
@@ -304,7 +280,6 @@ final class MyPageViewModel: ViewModelType {
             isEmptyFeed: self.isEmptyFeedRelay,
             showFeedDetailButton: self.showFeedDetailButtonRelay,
             
-            showToastView: self.showToastViewRelay,
             stickyHeaderAction: self.stickyHeaderActionRelay,
             updateButtonWithLibraryView: self.updateButtonWithLibraryViewRelay,
             pushToFeedDetailViewController: self.pushToFeedDetailViewController.asObservable(),
