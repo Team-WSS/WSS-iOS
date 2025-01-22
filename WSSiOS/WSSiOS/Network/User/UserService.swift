@@ -33,6 +33,9 @@ protocol UserService {
     
     // PushNotification
     func postUserFCMToken(fcmToken: String) -> Single<Void>
+    func postUserPushNotificationSetting(isPushEnabled: Bool) -> Single<Void>
+    func patchUserPushNotificationSetting(isPushEnabled: Bool) -> Single<Void>
+    func getUserPushNotificationSetting() -> Single<PushNotificationSettingResult>
 }
 
 final class DefaultUserService: NSObject, Networking {
@@ -405,7 +408,7 @@ extension DefaultUserService {
         do {
             let fcmTokenBody = try JSONEncoder().encode(FCMTokenResult(fcmToken: fcmToken))
             let request = try makeHTTPRequest(method: .post,
-                                              path: URLs.PushNotification.postFcmToken,
+                                              path: URLs.User.fcmToken,
                                               headers: APIConstants.accessTokenHeader,
                                               body: fcmTokenBody)
             
@@ -413,6 +416,60 @@ extension DefaultUserService {
             
             return tokenCheckURLSession.rx.data(request: request)
                 .map { _ in }
+                .asSingle()
+        } catch {
+            return Single.error(error)
+        }
+    }
+    
+    func postUserPushNotificationSetting(isPushEnabled: Bool) -> Single<Void> {
+        do {
+            let requestBody = try JSONEncoder().encode(PushNotificationSettingResult(isPushEnabled: isPushEnabled))
+            let request = try makeHTTPRequest(method: .post,
+                                              path: URLs.User.pushNotificationSetting,
+                                              headers: APIConstants.accessTokenHeader,
+                                              body: requestBody)
+            
+            NetworkLogger.log(request: request)
+            
+            return tokenCheckURLSession.rx.data(request: request)
+                .map { _ in }
+                .asSingle()
+        } catch {
+            return Single.error(error)
+        }
+    }
+    
+    func patchUserPushNotificationSetting(isPushEnabled: Bool) -> Single<Void> {
+        do {
+            let requestBody = try JSONEncoder().encode(PushNotificationSettingResult(isPushEnabled: isPushEnabled))
+            let request = try makeHTTPRequest(method: .patch,
+                                              path: URLs.User.pushNotificationSetting,
+                                              headers: APIConstants.accessTokenHeader,
+                                              body: requestBody)
+            
+            NetworkLogger.log(request: request)
+            
+            return tokenCheckURLSession.rx.data(request: request)
+                .map { _ in }
+                .asSingle()
+        } catch {
+            return Single.error(error)
+        }
+    }
+    
+    func getUserPushNotificationSetting() -> Single<PushNotificationSettingResult> {
+        do {
+            let request = try makeHTTPRequest(method: .get,
+                                              path: URLs.User.pushNotificationSetting,
+                                              headers: APIConstants.accessTokenHeader,
+                                              body: nil)
+            
+            NetworkLogger.log(request: request)
+            
+            return tokenCheckURLSession.rx.data(request: request)
+                .map { try self.decode(data: $0,
+                                       to: PushNotificationSettingResult.self)  }
                 .asSingle()
         } catch {
             return Single.error(error)

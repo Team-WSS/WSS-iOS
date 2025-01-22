@@ -16,10 +16,6 @@ enum URLs {
         static let logout = "/auth/logout"
     }
     
-    enum PushNotification {
-        static let postFcmToken = "/users/fcm-token"
-    }
-    
     enum Onboarding {
         static let nicknameCheck = "/users/nickname/check"
         static let postProfile = "/users/profile"
@@ -52,6 +48,10 @@ enum URLs {
         }
         static let isProfileVisibility = "\(userBasePath)/profile-status"
         static let getAppMinimumVersion = "/minimum-version"
+        
+        // PushNotification
+        static let fcmToken = "/users/fcm-token"
+        static let pushNotificationSetting = "/users/push-settings"
     }
     
     enum NovelDetail {

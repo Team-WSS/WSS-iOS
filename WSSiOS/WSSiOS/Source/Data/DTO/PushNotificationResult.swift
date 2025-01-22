@@ -10,3 +10,7 @@ import Foundation
 struct FCMTokenResult: Codable {
     let fcmToken: String
 }
+
+struct PushNotificationSettingResult: Codable {
+    let isPushEnabled: Bool
+}

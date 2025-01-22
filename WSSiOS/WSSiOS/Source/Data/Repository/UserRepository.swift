@@ -36,6 +36,9 @@ protocol UserRepository {
     
     // Push Notification
     func postUserFCMToken(fcmToken: String) -> Single<Void>
+    func postUserPushNotificationSetting(isPushEnabled: Bool) -> Single<Void>
+    func patchUserPushNotificationSetting(isPushEnabled: Bool) -> Single<Void>
+    func getUserPushNotificationSetting() -> Single<PushNotificationSettingResult>
 }
 
 struct DefaultUserRepository: UserRepository {
@@ -151,8 +154,21 @@ struct DefaultUserRepository: UserRepository {
 }
 
 
+// PushNotification
 extension DefaultUserRepository {
     func postUserFCMToken(fcmToken: String) -> Single<Void> {
         userService.postUserFCMToken(fcmToken: fcmToken)
+    }
+    
+    func postUserPushNotificationSetting(isPushEnabled: Bool) -> Single<Void> {
+        userService.postUserPushNotificationSetting(isPushEnabled: isPushEnabled)
+    }
+    
+    func patchUserPushNotificationSetting(isPushEnabled: Bool) -> Single<Void> {
+        userService.patchUserPushNotificationSetting(isPushEnabled: isPushEnabled)
+    }
+    
+    func getUserPushNotificationSetting() -> Single<PushNotificationSettingResult> {
+        userService.getUserPushNotificationSetting()
     }
 }
