@@ -308,11 +308,15 @@ extension UIViewController {
     
     func pushToMyPageViewController(userId: Int) {
         let viewController = MyPageViewController(
-            viewModel: MyPageViewModel(
+            myPageViewModel: MyPageViewModel(
                 userRepository: DefaultUserRepository(
                     userService: DefaultUserService(),
                     blocksService: DefaultBlocksService()),
-                profileId: userId))
+                profileId: userId),
+            myPageLibraryViewModel: MyPageLibraryViewModel(
+                userRepository: DefaultUserRepository(
+                    userService: DefaultUserService(),
+                    blocksService: DefaultBlocksService())))
         
         viewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(viewController, animated: true)
