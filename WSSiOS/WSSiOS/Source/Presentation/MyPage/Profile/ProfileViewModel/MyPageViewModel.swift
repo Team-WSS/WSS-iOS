@@ -47,7 +47,7 @@ final class MyPageViewModel: ViewModelType {
     
     struct Input {
         let isEntryTabbar: Observable<Bool>
-        let viewWillAppearEvent: PublishSubject<Void>
+        let viewWillAppearEvent: BehaviorRelay<Void>
 
         let headerViewHeight: Driver<Double>
         let scrollOffset: Driver<CGPoint>

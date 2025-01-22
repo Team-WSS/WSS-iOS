@@ -43,7 +43,7 @@ final class MyPageFeedViewModel: ViewModelType {
     }
     
     struct Input {
-        let viewWillAppearEvent: PublishSubject<Void>
+        let viewWillAppearEvent: BehaviorRelay<Void>
         let profileData: BehaviorRelay<MyProfileResult>
         let feedDetailButtonDidTap: ControlEvent<Void>
         let feedTableViewItemSelected: Observable<IndexPath>
@@ -127,17 +127,18 @@ final class MyPageFeedViewModel: ViewModelType {
             }
             .do(onNext: { [weak self] feedCellData in
                 guard let self else { return }
-                
                 if feedCellData.isEmpty {
                     self.isEmptyFeedRelay.onNext(true)
                 } else {
                     
+                    /// 데이터를 먼저 띄우고 더보기 버튼처리를 하여 데이터로딩 늦어지는 이슈 해결
+                    self.isEmptyFeedRelay.onNext(false)
+                    self.bindFeedDataRelay.accept(Array(feedCellData.prefix(5)))
+                    
                     /// 5개까지만 활동뷰에 바인딩
                     /// 5개를 초과할 경우 더보기 버튼 뜨게 함
-                    self.isEmptyFeedRelay.onNext(false)
                     let hasMoreThanFive = feedCellData.count > 5
                     self.showFeedDetailButtonRelay.onNext(hasMoreThanFive)
-                    self.bindFeedDataRelay.accept(Array(feedCellData.prefix(5)))
                 }
             })
             .catch { [weak self] error in

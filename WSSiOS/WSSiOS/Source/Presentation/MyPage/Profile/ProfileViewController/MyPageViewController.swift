@@ -32,7 +32,7 @@ final class MyPageViewController: UIViewController {
     
     private var dropDownCellTap = PublishSubject<String>()
     private let headerViewHeightRelay = BehaviorRelay<Double>(value: 0)
-    private let viewWillAppearEvent = PublishSubject<Void>()
+    private let viewWillAppearEvent = BehaviorRelay<Void>(value: ())
     private let feedConnectedNovelViewDidTap = PublishRelay<Int>()
     private let profileDataRelay = BehaviorRelay<MyProfileResult>(value: MyProfileResult(nickname: "",
                                                                                          intro: "",
@@ -92,7 +92,7 @@ final class MyPageViewController: UIViewController {
         super.viewWillAppear(animated)
         
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
-        self.viewWillAppearEvent.onNext(())
+        self.viewWillAppearEvent.accept(())
         decideNavigation(myPage: entryType == .tabBar, navigationTitle: navigationTitle)
     }
     

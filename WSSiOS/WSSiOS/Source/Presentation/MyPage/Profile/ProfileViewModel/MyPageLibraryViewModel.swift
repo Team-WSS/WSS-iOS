@@ -45,7 +45,7 @@ final class MyPageLibraryViewModel: ViewModelType {
     }
     
     struct Input {
-        let viewWillAppearEvent: PublishSubject<Void>
+        let viewWillAppearEvent: BehaviorRelay<Void>
         let genrePreferenceButtonDidTap: Observable<Bool>
         let inventoryViewDidTap: Observable<UITapGestureRecognizer>
         let resizeKeywordCollectionViewHeight: Observable<CGSize?>
