@@ -138,7 +138,7 @@ final class MyPageFeedView: UIView {
         myPageFeedEmptyView.isHidden = !isEmpty
         
         [myPageFeedTableView,
-         showMoreActivityButton,
+         showMoreActivityButtonView,
          paddingViewAfterButton].forEach { view in
             view.do {
                 $0.isHidden = isEmpty
