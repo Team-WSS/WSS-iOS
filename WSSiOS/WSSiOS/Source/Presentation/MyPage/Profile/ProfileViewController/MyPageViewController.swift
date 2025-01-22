@@ -28,7 +28,7 @@ final class MyPageViewController: UIViewController {
     private let isEntryTabbarRelay = BehaviorRelay<Bool>(value: false)
     private var dropDownCellTap = PublishSubject<String>()
     private let headerViewHeightRelay = BehaviorRelay<Double>(value: 0)
-    private let viewWillAppearEvent = PublishRelay<Bool>()
+    private let viewWillAppearEvent = PublishSubject<Void>()
     private let feedConnectedNovelViewDidTap = PublishRelay<Int>()
     
     //MARK: - UI Components
@@ -78,7 +78,7 @@ final class MyPageViewController: UIViewController {
         super.viewWillAppear(animated)
         
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
-        self.viewWillAppearEvent.accept(true)
+        self.viewWillAppearEvent.onNext(())
         decideNavigation(myPage: entryType == .tabBar, navigationTitle: navigationTitle)
     }
     
@@ -312,8 +312,8 @@ final class MyPageViewController: UIViewController {
         
         output.isEmptyFeed
             .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, _ in
-                owner.rootView.myPageFeedView.isEmptyView(isEmpty: true)
+            .bind(with: self, onNext: { owner, isEmpty in
+                owner.rootView.myPageFeedView.isEmptyView(isEmpty: isEmpty)
             })
             .disposed(by: disposeBag)
         
