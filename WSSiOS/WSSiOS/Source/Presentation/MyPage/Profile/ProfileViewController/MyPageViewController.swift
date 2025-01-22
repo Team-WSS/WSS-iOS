@@ -303,9 +303,7 @@ final class MyPageViewController: UIViewController {
         output.isExistPreferneces
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, isExist in
-                if !isExist {
-                    owner.rootView.myPageLibraryView.updatePreferencesEmptyView(isEmpty: !isExist)
-                }
+                owner.rootView.myPageLibraryView.updatePreferencesEmptyView(isEmpty: !isExist)
             })
             .disposed(by: disposeBag)
         

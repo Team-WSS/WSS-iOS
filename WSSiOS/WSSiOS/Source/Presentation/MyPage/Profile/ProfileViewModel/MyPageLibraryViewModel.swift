@@ -21,7 +21,7 @@ final class MyPageLibraryViewModel: ViewModelType {
     private let isMyPage = BehaviorRelay<Bool>(value: true)
     private var profileId: Int
     
-    private let isExistPrefernecesRelay = PublishRelay<Bool>()
+    private let isExistPrefernecesRelay = BehaviorRelay<Bool>(value: false)
     private let isProfilePrivate = PublishRelay<Bool>()
     
     private let bindInventoryDataRelay = BehaviorRelay<UserNovelStatus>(value: UserNovelStatus(interestNovelCount: 0,
@@ -52,7 +52,7 @@ final class MyPageLibraryViewModel: ViewModelType {
     }
     
     struct Output {
-        let isExistPreferneces: PublishRelay<Bool>
+        let isExistPreferneces: BehaviorRelay<Bool>
         let isProfilePrivate: PublishRelay<Bool>
         
         let bindInventoryData: BehaviorRelay<UserNovelStatus>
@@ -167,6 +167,7 @@ final class MyPageLibraryViewModel: ViewModelType {
                     self.isExistPrefernecesRelay.accept(false)
                     return .just(false)
                 } else {
+                    self.isExistPrefernecesRelay.accept(true)
                     self.bindAttractivePointsDataRelay.accept(preference.attractivePoints ?? [])
                     self.bindKeywordRelay.accept(keywords)
                     return .just(true)
