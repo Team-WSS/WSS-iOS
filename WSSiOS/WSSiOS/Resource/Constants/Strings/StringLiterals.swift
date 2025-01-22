@@ -288,6 +288,11 @@ enum StringLiterals {
             static let completeTitle = "완료"
             static let isPrivateProfile = "비공개"
         }
+        
+        enum PushNotification {
+            static let activePushTitle = "활동 알림"
+            static let activePushDescription = "댓글, 좋아요 등 알림"
+        }
     }
     
     enum Library {

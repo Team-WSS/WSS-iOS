@@ -14,13 +14,13 @@ final class MyPagePushNotificationView: UIView {
     
     //MARK: - Components
     
-    private let profilePrivateView = UIView()
-    private let profilePrivateLabel = UILabel()
-    let profilePrivateToggleButton = UIButton()
+    private let activePushSettingSection = UIView()
+    private let activePushSettingTitleLabel = UILabel()
+    private let activePushSettingDescriptionLabel = UILabel()
+    let activePushSettingToggleButton = WSSToggleButton()
     
     //In VC
     let backButton = UIButton()
-    let completeButton = UIButton()
     
     // MARK: - Life Cycle
     
@@ -43,50 +43,50 @@ final class MyPagePushNotificationView: UIView {
             $0.backgroundColor = .wssWhite
         }
         
-        profilePrivateView.do {
+        activePushSettingSection.do {
             $0.backgroundColor = .wssWhite
         }
         
-        profilePrivateLabel.do {
+        activePushSettingTitleLabel.do {
             $0.textColor = .wssBlack
-            $0.applyWSSFont(.body1, with: StringLiterals.MyPage.isVisiableProfile.isPrivateProfile)
+            $0.applyWSSFont(.body1, with: StringLiterals.MyPage.PushNotification.activePushTitle)
         }
         
-        profilePrivateToggleButton.do {
-            $0.setImage(.icSelectNovelDefault, for: .normal)
+        activePushSettingDescriptionLabel.do {
+            $0.textColor = .wssGray200
+            $0.applyWSSFont(.body4, with: StringLiterals.MyPage.PushNotification.activePushDescription)
         }
-        
+                
         backButton.do {
             $0.setImage(.icNavigateLeft.withRenderingMode(.alwaysOriginal), for: .normal)
-        }
-        
-        completeButton.do {
-            $0.setTitle(StringLiterals.MyPage.isVisiableProfile.completeTitle, for: .normal)
-            $0.setTitleColor(.wssGray200, for: .normal)
-            $0.titleLabel?.applyWSSFont(.title2, with: StringLiterals.MyPage.isVisiableProfile.completeTitle)
         }
     }
     
     private func setHierarchy() {
-        self.addSubview(profilePrivateView)
-        profilePrivateView.addSubviews(profilePrivateLabel,
-                                       profilePrivateToggleButton)
+        self.addSubview(activePushSettingSection)
+        activePushSettingSection.addSubviews(activePushSettingTitleLabel,
+                                             activePushSettingDescriptionLabel,
+                                             activePushSettingToggleButton)
     }
     
     private func setLayout() {
-        profilePrivateView.snp.makeConstraints {
+        activePushSettingSection.snp.makeConstraints {
             $0.top.equalTo(safeAreaLayoutGuide.snp.top)
-            $0.width.equalToSuperview()
             $0.height.equalTo(63)
+            $0.horizontalEdges.equalToSuperview()
         }
         
-        profilePrivateLabel.snp.makeConstraints {
+        activePushSettingTitleLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(9)
             $0.leading.equalToSuperview().inset(20)
-            $0.centerY.equalToSuperview()
         }
         
-        profilePrivateToggleButton.snp.makeConstraints {
-            $0.size.equalTo(44)
+        activePushSettingDescriptionLabel.snp.makeConstraints {
+            $0.bottom.equalToSuperview().inset(9)
+            $0.leading.equalToSuperview().inset(20)
+        }
+        
+        activePushSettingToggleButton.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.trailing.equalToSuperview().inset(20)
         }
@@ -95,14 +95,10 @@ final class MyPagePushNotificationView: UIView {
     //MARK: - Data
     
     func bindData(isPrivate: Bool) {
-        profilePrivateToggleButton.setImage(isPrivate ? .icSelectNovelSelected : .icSelectNovelDefault,
-                                            for: .normal)
+     
     }
     
     func changeCompleteButton(change: Bool) {
-        completeButton.do {
-            $0.setTitleColor(change ? .wssPrimary100: .wssGray200,
-                             for: .normal)
-        }
+
     }
 }
