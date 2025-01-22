@@ -85,21 +85,23 @@ final class MyPageSettingViewController: UIViewController {
                     print("프로필 공개 여부 설정")
                     owner.pushToMyPageProfileVisibilityViewController()
                 case 2:
+                    print("알림 설정")
+                case 3:
                     print("웹소소 공식 계정")
                     if let url = URL(string: StringLiterals.MyPage.SettingURL.instaURL) {
                         UIApplication.shared.open(url, options: [:])
                     }
-                case 3:
+                case 4:
                     print("문의하기 & 의견 보내기")
                     if let url = URL(string: StringLiterals.MyPage.SettingURL.QNAInHompageURL) {
                         UIApplication.shared.open(url, options: [:])
                     }
-                case 4:
+                case 5:
                     print("개인정보 처리 방침")
                     if let url = URL(string: StringLiterals.MyPage.SettingURL.termsURL) {
                         UIApplication.shared.open(url, options: [:])
                     }
-                case 5:
+                case 6:
                     print("서비스 이용약관")
                     if let url = URL(string: StringLiterals.MyPage.SettingURL.infoURL) {
                         UIApplication.shared.open(url, options: [:])
