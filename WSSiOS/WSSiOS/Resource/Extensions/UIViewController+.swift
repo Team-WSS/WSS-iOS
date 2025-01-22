@@ -375,6 +375,10 @@ extension UIViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
+    func pushToMyPagePushNotificationViewController() {
+        print("화면이동 코드 작성")
+    }
+    
     func pushToChangeUserInfoViewController() {
         let viewController = MyPageChangeUserInfoViewController(
             viewModel: MyPageChangeUserInfoViewModel(

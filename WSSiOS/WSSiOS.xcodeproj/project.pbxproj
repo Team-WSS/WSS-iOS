@@ -187,6 +187,9 @@
 		39E0E9252D3E7B9C0034B639 /* PushService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E0E9242D3E7B980034B639 /* PushService.swift */; };
 		39E0E9272D3E7CC80034B639 /* PushNotificationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E0E9262D3E7CC60034B639 /* PushNotificationResult.swift */; };
 		39E0E9292D3E7E160034B639 /* PushNotificationRepositry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E0E9282D3E7E0D0034B639 /* PushNotificationRepositry.swift */; };
+		39E0EA032D40CD9D0034B639 /* MyPagePushNotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E0EA022D40CD890034B639 /* MyPagePushNotificationViewController.swift */; };
+		39E0EA052D40D0F20034B639 /* MyPagePushNotificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E0EA042D40D0F20034B639 /* MyPagePushNotificationViewModel.swift */; };
+		39E0EA072D40D2260034B639 /* MyPagePushNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E0EA062D40D2260034B639 /* MyPagePushNotificationView.swift */; };
 		39E8FD902C742CE100AD6F30 /* NovelDetailHeaderReadStatusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E8FD8F2C742CE100AD6F30 /* NovelDetailHeaderReadStatusButton.swift */; };
 		39E8FD922C743D8000AD6F30 /* NovelDetailHeaderReadInfoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E8FD912C743D8000AD6F30 /* NovelDetailHeaderReadInfoButton.swift */; };
 		39EDFB362D38D8CF009F071A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 39EDFB352D38D8CF009F071A /* GoogleService-Info.plist */; };
@@ -577,6 +580,9 @@
 		39E0E9242D3E7B980034B639 /* PushService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushService.swift; sourceTree = "<group>"; };
 		39E0E9262D3E7CC60034B639 /* PushNotificationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationResult.swift; sourceTree = "<group>"; };
 		39E0E9282D3E7E0D0034B639 /* PushNotificationRepositry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationRepositry.swift; sourceTree = "<group>"; };
+		39E0EA022D40CD890034B639 /* MyPagePushNotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPagePushNotificationViewController.swift; sourceTree = "<group>"; };
+		39E0EA042D40D0F20034B639 /* MyPagePushNotificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPagePushNotificationViewModel.swift; sourceTree = "<group>"; };
+		39E0EA062D40D2260034B639 /* MyPagePushNotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPagePushNotificationView.swift; sourceTree = "<group>"; };
 		39E8FD8F2C742CE100AD6F30 /* NovelDetailHeaderReadStatusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailHeaderReadStatusButton.swift; sourceTree = "<group>"; };
 		39E8FD912C743D8000AD6F30 /* NovelDetailHeaderReadInfoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailHeaderReadInfoButton.swift; sourceTree = "<group>"; };
 		39EDFB352D38D8CF009F071A /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -1247,6 +1253,7 @@
 				2C81DF882CA1512400148F97 /* MyPageChangeUserBirthView.swift */,
 				2CFA9A102C9D7EA300A4A820 /* MyPageChangeUserInfoView.swift */,
 				2CBBE80F2CE7C72A00DAF3DC /* MyPageProfileVisibilityView.swift */,
+				39E0EA062D40D2260034B639 /* MyPagePushNotificationView.swift */,
 			);
 			path = SettingView;
 			sourceTree = "<group>";
@@ -1262,6 +1269,7 @@
 				2C81DF862CA150DE00148F97 /* MyPageChangeUserBirthViewController.swift */,
 				2CFA9A0E2C9D7E8600A4A820 /* MyPageChangeUserInfoViewController.swift */,
 				2CBBE80D2CE7C70400DAF3DC /* MyPageProfileVisibilityViewController.swift */,
+				39E0EA022D40CD890034B639 /* MyPagePushNotificationViewController.swift */,
 			);
 			path = SettingViewController;
 			sourceTree = "<group>";
@@ -1274,6 +1282,7 @@
 				2CFA9A122C9D7EE600A4A820 /* MyPageChangeUserInfoViewModel.swift */,
 				2C9A19702C56925F0043044A /* MyPageInfoViewModel.swift */,
 				2CBBE80B2CE7C6E500DAF3DC /* MyPageProfileVisibilityViewModel.swift */,
+				39E0EA042D40D0F20034B639 /* MyPagePushNotificationViewModel.swift */,
 			);
 			path = SettingViewModel;
 			sourceTree = "<group>";
@@ -2618,6 +2627,7 @@
 				2CFA9A0F2C9D7E8600A4A820 /* MyPageChangeUserInfoViewController.swift in Sources */,
 				2CCBF9F02B4C1FD800D787C2 /* MyPageView.swift in Sources */,
 				39BA7F6F2BCAADDF0045B2B7 /* KeywordTag.swift in Sources */,
+				39E0EA052D40D0F20034B639 /* MyPagePushNotificationViewModel.swift in Sources */,
 				2C9A196F2C56923B0043044A /* MyPageSettingViewController.swift in Sources */,
 				39D4A5E02BDF746C004FC834 /* NovelGenre.swift in Sources */,
 				2CFA9A132C9D7EE600A4A820 /* MyPageChangeUserInfoViewModel.swift in Sources */,
@@ -2728,6 +2738,7 @@
 				C99DDFD52C86138E00EDC0C4 /* SearchBarView.swift in Sources */,
 				2CD911562C0D8A1A006B8D72 /* FeedPageBarCollectionViewCell.swift in Sources */,
 				B9ACACC12CE3A7E400D1D47A /* HomeInterestEmptyView.swift in Sources */,
+				39E0EA032D40CD9D0034B639 /* MyPagePushNotificationViewController.swift in Sources */,
 				39BA7F752BCABF1D0045B2B7 /* KeywordLink.swift in Sources */,
 				CD8747A92C9EDA3000D0ADAD /* NovelDateSelectModalTitleView.swift in Sources */,
 				CD1F7E082C9968950039972C /* NovelKeywordSelectSearchResultCollectionViewCell.swift in Sources */,
@@ -2786,6 +2797,7 @@
 				2CD9114A2C0D8948006B8D72 /* FeedContentView.swift in Sources */,
 				C99DDFDF2C8613C900EDC0C4 /* SearchViewController.swift in Sources */,
 				2CCBF9EE2B4C1FC500D787C2 /* MyPageViewController.swift in Sources */,
+				39E0EA072D40D2260034B639 /* MyPagePushNotificationView.swift in Sources */,
 				CDC03F452CA67421002D301F /* KeywordRepository.swift in Sources */,
 				CD2D0AB42C7EFEAF007CF1F1 /* NovelReviewStatusView.swift in Sources */,
 				CDA5F03A2C2FDB2200FCF15C /* FeedEditViewController.swift in Sources */,
