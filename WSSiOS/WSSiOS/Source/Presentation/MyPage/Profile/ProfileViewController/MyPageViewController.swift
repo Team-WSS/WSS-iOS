@@ -22,6 +22,8 @@ final class MyPageViewController: UIViewController {
     private let disposeBag = DisposeBag()
     private let myPageViewModel: MyPageViewModel
     private let myPageLibraryViewModel: MyPageLibraryViewModel
+    private let myPageFeedViewModel: MyPageFeedViewModel
+    
     var entryType: EntryType = .otherVC
     
     private var navigationTitle: String = ""
@@ -32,6 +34,8 @@ final class MyPageViewController: UIViewController {
     private let viewWillAppearEvent = PublishSubject<Void>()
     private let feedConnectedNovelViewDidTap = PublishRelay<Int>()
     
+    private let profileDataRelay = PublishRelay<MyProfileResult>()
+    
     //MARK: - UI Components
     
     private var rootView = MyPageView()
@@ -39,10 +43,12 @@ final class MyPageViewController: UIViewController {
     // MARK: - Life Cycle
     
     init(myPageViewModel: MyPageViewModel,
-         myPageLibraryViewModel: MyPageLibraryViewModel) {
+         myPageLibraryViewModel: MyPageLibraryViewModel,
+         myPageFeedViewModel: MyPageFeedViewModel) {
         
         self.myPageViewModel = myPageViewModel
         self.myPageLibraryViewModel = myPageLibraryViewModel
+        self.myPageFeedViewModel = myPageFeedViewModel
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -64,6 +70,7 @@ final class MyPageViewController: UIViewController {
         bindAction()
         bindViewModel()
         bindLibraryViewModel()
+        bindFeedViewModel()
         
         switch entryType {
         case .tabBar:
@@ -143,6 +150,122 @@ final class MyPageViewController: UIViewController {
                 owner.showToast(.editUserProfile)
             })
             .disposed(by: disposeBag)
+    }
+    
+    private func bindViewModel() {
+        
+        let libraryButtonDidTap = Observable.merge(
+            rootView.mainStickyHeaderView.libraryButton.rx.tap.map { true },
+            rootView.scrolledStickyHeaderView.libraryButton.rx.tap.map { true }
+        )
+        
+        let feedButtonDidTap = Observable.merge(
+            rootView.mainStickyHeaderView.feedButton.rx.tap.map { true },
+            rootView.scrolledStickyHeaderView.feedButton.rx.tap.map { true }
+        )
+        
+        let input = MyPageViewModel.Input(
+            isEntryTabbar: isEntryTabbarRelay.asObservable(),
+            viewWillAppearEvent: self.viewWillAppearEvent,
+            headerViewHeight: headerViewHeightRelay.asDriver(),
+            scrollOffset: rootView.scrollView.rx.contentOffset.asDriver(),
+            dropdownButtonDidTap: dropDownCellTap,
+            editButtonDidTap: rootView.headerView.userImageChangeButton.rx.tap,
+            libraryButtonDidTap: libraryButtonDidTap,
+            feedButtonDidTap: feedButtonDidTap)
+        
+        let output = myPageViewModel.transform(from: input, disposeBag: disposeBag)
+        
+        output.isMyPage
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, isMyPage in
+                owner.decideNavigation(myPage: isMyPage, navigationTitle: "")
+                owner.rootView.mainStickyHeaderView.buttonLabelText(isMyPage: isMyPage)
+                owner.rootView.scrolledStickyHeaderView.buttonLabelText(isMyPage: isMyPage)
+            })
+            .disposed(by: disposeBag)
+        
+        output.profileData
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, data in
+                owner.rootView.headerView.bindData(data: data)
+            })
+            .disposed(by: disposeBag)
+        
+        output.updateNavigationBar
+            .asDriver()
+            .drive(with: self, onNext: { owner, data in
+                let (update, navigationTitle) = data
+                owner.navigationTitle = navigationTitle
+                owner.navigationItem.title = update ? navigationTitle : ""
+            })
+            .disposed(by: disposeBag)
+        
+        output.updateStickyHeader
+            .asDriver()
+            .drive(with: self, onNext: { owner, update in
+                owner.rootView.scrolledStickyHeaderView.isHidden = !update
+                owner.rootView.mainStickyHeaderView.isHidden = update
+                owner.rootView.headerView.isHidden = update
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushToEditViewController
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, data in
+                owner.pushToMyPageEditViewController(entryType: .myPage, profile: data)
+            })
+            .disposed(by: disposeBag)
+        
+        output.popViewController
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, data in
+                owner.popToLastViewController()
+            })
+            .disposed(by: disposeBag)
+        
+        output.isProfilePrivate
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, data in
+                let (isPrivate, nickname) = data
+                if isPrivate {
+                    owner.rootView.myPageLibraryView.isPrivateUserView(isPrivate: isPrivate, nickname: nickname)
+                    owner.rootView.myPageFeedView.isPrivateUserView(isPrivate: isPrivate, nickname: nickname)
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        output.stickyHeaderAction
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, library in
+                owner.rootView.mainStickyHeaderView.updateSelection(isLibrarySelected: library)
+                owner.rootView.scrolledStickyHeaderView.updateSelection(isLibrarySelected: library)
+                
+                owner.rootView.myPageLibraryView.isHidden = !library
+                owner.rootView.myPageFeedView.isHidden = library
+                
+                owner.rootView.contentView.snp.remakeConstraints {
+                    $0.edges.equalToSuperview()
+                    $0.width.equalToSuperview()
+                    
+                    if library {
+                        $0.bottom.equalTo(owner.rootView.myPageLibraryView.snp.bottom)
+                    } else {
+                        $0.bottom.equalTo(owner.rootView.myPageFeedView.snp.bottom)
+                    }
+                }
+                
+                owner.rootView.layoutIfNeeded()
+                
+            })
+            .disposed(by: disposeBag)
+        
+//        output.updateButtonWithLibraryView
+//            .observe(on: MainScheduler.instance)
+//            .bind(with: self, onNext: { owner, showLibraryView in
+//                owner.rootView.showContentView(showLibraryView: showLibraryView)
+//            })
+//            .disposed(by: disposeBag)
     }
     
     private func bindLibraryViewModel() {
@@ -231,117 +354,15 @@ final class MyPageViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    private func bindViewModel() {
-        
-        let libraryButtonDidTap = Observable.merge(
-            rootView.mainStickyHeaderView.libraryButton.rx.tap.map { true },
-            rootView.scrolledStickyHeaderView.libraryButton.rx.tap.map { true }
-        )
-        
-        let feedButtonDidTap = Observable.merge(
-            rootView.mainStickyHeaderView.feedButton.rx.tap.map { true },
-            rootView.scrolledStickyHeaderView.feedButton.rx.tap.map { true }
-        )
-        
-        let input = MyPageViewModel.Input(
-            isEntryTabbar: isEntryTabbarRelay.asObservable(),
+    private func bindFeedViewModel() {
+        let input = MyPageFeedViewModel.Input(
             viewWillAppearEvent: self.viewWillAppearEvent,
-            headerViewHeight: headerViewHeightRelay.asDriver(),
-            resizefeedTableViewHeight: rootView.myPageFeedView.myPageFeedTableView.feedTableView.rx.observe(CGSize.self, "contentSize"),
-            scrollOffset: rootView.scrollView.rx.contentOffset.asDriver(),
-            dropdownButtonDidTap: dropDownCellTap,
-            editButtonDidTap: rootView.headerView.userImageChangeButton.rx.tap,
-            libraryButtonDidTap: libraryButtonDidTap,
-            feedButtonDidTap: feedButtonDidTap,
             feedDetailButtonDidTap: rootView.myPageFeedView.myPageFeedDetailButton.rx.tap,
             feedTableViewItemSelected: rootView.myPageFeedView.myPageFeedTableView.feedTableView.rx.itemSelected.asObservable(),
-            feedConnectedNovelViewDidTap: feedConnectedNovelViewDidTap.asObservable())
+            feedConnectedNovelViewDidTap: feedConnectedNovelViewDidTap.asObservable(),
+            resizefeedTableViewHeight: rootView.myPageFeedView.myPageFeedTableView.feedTableView.rx.observe(CGSize.self, "contentSize"))
         
-        let output = myPageViewModel.transform(from: input, disposeBag: disposeBag)
-        
-        output.isMyPage
-            .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, isMyPage in
-                owner.decideNavigation(myPage: isMyPage, navigationTitle: "")
-                owner.rootView.mainStickyHeaderView.buttonLabelText(isMyPage: isMyPage)
-                owner.rootView.scrolledStickyHeaderView.buttonLabelText(isMyPage: isMyPage)
-            })
-            .disposed(by: disposeBag)
-        
-        output.profileData
-            .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, data in
-                owner.rootView.headerView.bindData(data: data)
-            })
-            .disposed(by: disposeBag)
-        
-        output.updateNavigationBar
-            .asDriver()
-            .drive(with: self, onNext: { owner, data in
-                let (update, navigationTitle) = data
-                owner.navigationTitle = navigationTitle
-                owner.navigationItem.title = update ? navigationTitle : ""
-            })
-            .disposed(by: disposeBag)
-        
-        output.updateStickyHeader
-            .asDriver()
-            .drive(with: self, onNext: { owner, update in
-                owner.rootView.scrolledStickyHeaderView.isHidden = !update
-                owner.rootView.mainStickyHeaderView.isHidden = update
-                owner.rootView.headerView.isHidden = update
-            })
-            .disposed(by: disposeBag)
-        
-        output.pushToEditViewController
-            .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, data in
-                owner.pushToMyPageEditViewController(entryType: .myPage, profile: data)
-            })
-            .disposed(by: disposeBag)
-        
-        output.popViewController
-            .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, data in
-                owner.popToLastViewController()
-            })
-            .disposed(by: disposeBag)
-        
-        output.isProfilePrivate
-            .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, data in
-                let (isPrivate, nickname) = data
-                if isPrivate {
-                    owner.rootView.myPageLibraryView.isPrivateUserView(isPrivate: isPrivate, nickname: nickname)
-                    owner.rootView.myPageFeedView.isPrivateUserView(isPrivate: isPrivate, nickname: nickname)
-                }
-            })
-            .disposed(by: disposeBag)
-        
-        output.stickyHeaderAction
-            .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, library in
-                owner.rootView.mainStickyHeaderView.updateSelection(isLibrarySelected: library)
-                owner.rootView.scrolledStickyHeaderView.updateSelection(isLibrarySelected: library)
-                
-                owner.rootView.myPageLibraryView.isHidden = !library
-                owner.rootView.myPageFeedView.isHidden = library
-                
-                owner.rootView.contentView.snp.remakeConstraints {
-                    $0.edges.equalToSuperview()
-                    $0.width.equalToSuperview()
-                    
-                    if library {
-                        $0.bottom.equalTo(owner.rootView.myPageLibraryView.snp.bottom)
-                    } else {
-                        $0.bottom.equalTo(owner.rootView.myPageFeedView.snp.bottom)
-                    }
-                }
-                
-                owner.rootView.layoutIfNeeded()
-                
-            })
-            .disposed(by: disposeBag)
+        let output = myPageFeedViewModel.transform(from: input, disposeBag: disposeBag)
         
         output.bindFeedData
             .observe(on: MainScheduler.instance)
@@ -365,13 +386,6 @@ final class MyPageViewController: UIViewController {
                 owner.rootView.myPageFeedView.showMoreButton(isShow: show)
             })
             .disposed(by: disposeBag)
-        
-//        output.updateButtonWithLibraryView
-//            .observe(on: MainScheduler.instance)
-//            .bind(with: self, onNext: { owner, showLibraryView in
-//                owner.rootView.showContentView(showLibraryView: showLibraryView)
-//            })
-//            .disposed(by: disposeBag)
         
         output.updateFeedTableViewHeight
             .observe(on: MainScheduler.instance)

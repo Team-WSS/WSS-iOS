@@ -28,16 +28,7 @@ final class MyPageViewModel: ViewModelType {
     
     private let isExistPrefernecesRelay = PublishRelay<Bool>()
     
-    private let bindFeedDataRelay = BehaviorRelay<[FeedCellData]>(value: [])
-    private let isEmptyFeedRelay = PublishRelay<Bool>()
-    private let showFeedDetailButtonRelay = BehaviorSubject<Bool>(value: false)
-
-    private let updateFeedTableViewHeightRelay = PublishRelay<CGFloat>()
-    
     private let pushToEditViewControllerRelay = PublishRelay<MyProfileResult>()
-    private let pushToMyPageFeedDetailViewControllerRelay = PublishRelay<(Int, MyProfileResult)>()
-    private let pushToFeedDetailViewController = PublishRelay<Int>()
-    private let pushToNovelDetailViewController = PublishRelay<Int>()
     private let popViewControllerRelay = PublishRelay<Void>()
     
     private let stickyHeaderActionRelay = BehaviorRelay<Bool>(value: true)
@@ -61,7 +52,6 @@ final class MyPageViewModel: ViewModelType {
         let viewWillAppearEvent: PublishSubject<Void>
         
         let headerViewHeight: Driver<Double>
-        let resizefeedTableViewHeight: Observable<CGSize?>
         let scrollOffset: Driver<CGPoint>
 
         let dropdownButtonDidTap: Observable<String>
@@ -69,10 +59,6 @@ final class MyPageViewModel: ViewModelType {
         
         let libraryButtonDidTap: Observable<Bool>
         let feedButtonDidTap: Observable<Bool>
-        let feedDetailButtonDidTap: ControlEvent<Void>
-        
-        let feedTableViewItemSelected: Observable<IndexPath>
-        let feedConnectedNovelViewDidTap: Observable<Int>
     }
     
     struct Output {
@@ -84,18 +70,9 @@ final class MyPageViewModel: ViewModelType {
         
         let pushToEditViewController: PublishRelay<MyProfileResult>
         let popViewController: PublishRelay<Void>
-        let pushToMyPageFeedDetailViewController: PublishRelay<(Int, MyProfileResult)>
-        
-        let bindFeedData: BehaviorRelay<[FeedCellData]>
-        let updateFeedTableViewHeight: PublishRelay<CGFloat>
-        let isEmptyFeed: PublishRelay<Bool>
-        let showFeedDetailButton: BehaviorSubject<Bool>
         
         let stickyHeaderAction: BehaviorRelay<Bool>
 //        let updateButtonWithLibraryView: BehaviorRelay<Bool>
-        
-        let pushToFeedDetailViewController: Observable<Int>
-        let pushToNovelDetailViewController: Observable<Int>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -108,35 +85,10 @@ final class MyPageViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        /// 본인 프로필/타인 프로필 분기처리 후 headerView 업데이트
-        /// 서재 - 보관함 데이터 업데이트
-        /// 서재 - 나머지뷰 업데이트 후 키워드컬렉션뷰 높이 업데이트
-        /// 피드 - 피드뷰 업데이트 후 피드테이블뷰 높이 업데이트
-        Observable.merge(input.viewWillAppearEvent, reloadSubject)
-            .flatMapLatest { [weak self] _ -> Observable<Void> in
-                guard let self else { return .empty() }
-                return self.updateHeaderView(isMyPage: self.isMyPageRelay.value)
-            }
-            .flatMapLatest { [weak self]  _ -> Observable<Void> in
-                guard let self else { return .empty() }
-                guard !self.isProfilePrivateRelay.value.0 else { return .empty() }
-                if self.profileId == 0 {
-                    self.profileId =  UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)
-                    reloadSubject.onNext(())
-                    return .just(())
-                }
-                return Observable.concat([
-                    self.updateMyPageFeedData()
-                        .do(onNext: { [weak self] _ in
-                            guard let self else { return }
-                            self.handleFeedTableViewHeight(resizeFeedTableViewHeight: input.resizefeedTableViewHeight)
-                                .subscribe()
-                                .disposed(by: self.disposeBag)
-                        })
-                        .map { _ in Void() }
-                ])
-            }
-            .subscribe()
+        input.viewWillAppearEvent
+            .bind(with: self, onNext: { owner, _ in
+                _ = owner.updateHeaderView(isMyPage: owner.isMyPageRelay.value)
+            })
             .disposed(by: disposeBag)
         
         /// 스티키 헤더 처리
@@ -191,25 +143,6 @@ final class MyPageViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.feedDetailButtonDidTap
-            .bind(with: self, onNext: { owner, _ in
-                self.pushToMyPageFeedDetailViewControllerRelay.accept((owner.profileId, owner.profileDataRelay.value))
-            })
-            .disposed(by: disposeBag)
-        
-        input.feedTableViewItemSelected
-            .bind(with: self, onNext: { owner, indexPath in
-                let feedId = self.bindFeedDataRelay.value[indexPath.row].feed.feedId
-                self.pushToFeedDetailViewController.accept(feedId)
-            })
-            .disposed(by: disposeBag)
-        
-        input.feedConnectedNovelViewDidTap
-            .bind(with: self, onNext: { owner, novelId in
-                self.pushToNovelDetailViewController.accept(novelId)
-            })
-            .disposed(by: disposeBag)
-        
         return Output(
             isMyPage: self.isMyPageRelay,
             isProfilePrivate: self.isProfilePrivateRelay,
@@ -219,15 +152,8 @@ final class MyPageViewModel: ViewModelType {
             
             pushToEditViewController: self.pushToEditViewControllerRelay,
             popViewController: self.popViewControllerRelay,
-            pushToMyPageFeedDetailViewController: self.pushToMyPageFeedDetailViewControllerRelay,
-            bindFeedData: self.bindFeedDataRelay,
-            updateFeedTableViewHeight: self.updateFeedTableViewHeightRelay,
-            isEmptyFeed: self.isEmptyFeedRelay,
-            showFeedDetailButton: self.showFeedDetailButtonRelay,
             
-            stickyHeaderAction: self.stickyHeaderActionRelay,
-            pushToFeedDetailViewController: self.pushToFeedDetailViewController.asObservable(),
-            pushToNovelDetailViewController: self.pushToNovelDetailViewController.asObservable()
+            stickyHeaderAction: self.stickyHeaderActionRelay
         )
     }
     
@@ -296,48 +222,6 @@ final class MyPageViewModel: ViewModelType {
         }
     }
     
-    /// 활동 데이터 바인딩
-    private func updateMyPageFeedData() -> Observable<Void> {
-        return getUserFeed(userId: self.profileId, lastFeedId: 0, size: 6)
-            .map { feedResult -> [FeedCellData] in
-                feedResult.feeds.map { feed in
-                    FeedCellData(
-                        feed: feed,
-                        avatarImage: self.profileDataRelay.value.avatarImage,
-                        nickname: self.profileDataRelay.value.nickname
-                    )
-                }
-            }
-            .do(onNext: { [weak self] feedCellData in
-                guard let self else { return }
-                
-                if feedCellData.isEmpty {
-                    self.isEmptyFeedRelay.accept(true)
-                } else {
-                    
-                    /// 5개까지만 활동뷰에 바인딩
-                    /// 5개를 초과할 경우 더보기 버튼 뜨게 함
-                    self.isEmptyFeedRelay.accept(false)
-                    let hasMoreThanFive = feedCellData.count > 5
-                    self.showFeedDetailButtonRelay.onNext(hasMoreThanFive)
-                    self.bindFeedDataRelay.accept(Array(feedCellData.prefix(5)))
-                }
-            })
-            .catch { [weak self] error in
-                self?.isEmptyFeedRelay.accept(true)
-                return .just([])
-            }
-            .map { _ in Void() }
-    }
-    
-    private func handleFeedTableViewHeight(resizeFeedTableViewHeight: Observable<CGSize?>) -> Observable<CGFloat> {
-        return resizeFeedTableViewHeight
-            .map { $0?.height ?? 0 }
-            .do(onNext: { [weak self] height in
-                self?.updateFeedTableViewHeightRelay.accept(height)
-            })
-    }
-    
     // MARK: - API
     
     private func getProfileData() -> Observable<MyProfileResult> {
@@ -352,11 +236,6 @@ final class MyPageViewModel: ViewModelType {
     
     private func postBlockUser(userId: Int) -> Observable<Void> {
         return userRepository.postBlockUser(userId: userId)
-            .asObservable()
-    }
-    
-    private func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Observable<MyFeedResult> {
-        return userRepository.getUserFeed(userId: userId, lastFeedId: lastFeedId, size: size)
             .asObservable()
     }
 }
