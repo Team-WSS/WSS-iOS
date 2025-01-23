@@ -35,9 +35,8 @@ protocol UserRepository {
     func getAppMinimumVersion() -> Observable<AppMinimumVersion>
     
     // Push Notification
-    func postUserFCMToken(fcmToken: String) -> Single<Void>
+    func postUserFCMToken(fcmToken: String, deviceIdentifier: String) -> Single<Void>
     func postUserPushNotificationSetting(isPushEnabled: Bool) -> Single<Void>
-    func patchUserPushNotificationSetting(isPushEnabled: Bool) -> Single<Void>
     func getUserPushNotificationSetting() -> Single<PushNotificationSettingResult>
 }
 
@@ -156,16 +155,12 @@ struct DefaultUserRepository: UserRepository {
 
 // PushNotification
 extension DefaultUserRepository {
-    func postUserFCMToken(fcmToken: String) -> Single<Void> {
-        userService.postUserFCMToken(fcmToken: fcmToken)
+    func postUserFCMToken(fcmToken: String, deviceIdentifier: String) -> Single<Void> {
+        userService.postUserFCMToken(fcmToken: fcmToken, deviceIdentifier: deviceIdentifier)
     }
     
     func postUserPushNotificationSetting(isPushEnabled: Bool) -> Single<Void> {
         userService.postUserPushNotificationSetting(isPushEnabled: isPushEnabled)
-    }
-    
-    func patchUserPushNotificationSetting(isPushEnabled: Bool) -> Single<Void> {
-        userService.patchUserPushNotificationSetting(isPushEnabled: isPushEnabled)
     }
     
     func getUserPushNotificationSetting() -> Single<PushNotificationSettingResult> {

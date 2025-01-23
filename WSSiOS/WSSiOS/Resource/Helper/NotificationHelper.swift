@@ -123,7 +123,9 @@ extension NotificationHelper: MessagingDelegate {
     
     /// 서버로 갱신된 FCM 토큰 전달
     private func sendFCMTokenToServer(token: String) {
-        userRepository.postUserFCMToken(fcmToken: token)
+        let deviceIdentifier: String = "test"
+        
+        userRepository.postUserFCMToken(fcmToken: token, deviceIdentifier: deviceIdentifier)
             .do(onSuccess: { _ in
                 print("토큰 등록 성공")
             }, onError: { error in

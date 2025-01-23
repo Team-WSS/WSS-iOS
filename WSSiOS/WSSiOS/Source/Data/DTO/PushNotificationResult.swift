@@ -9,6 +9,7 @@ import Foundation
 
 struct FCMTokenResult: Codable {
     let fcmToken: String
+    let deviceIdentifier: String
 }
 
 struct PushNotificationSettingResult: Codable {

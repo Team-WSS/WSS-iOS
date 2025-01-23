@@ -32,9 +32,8 @@ protocol UserService {
     func getAppMinimumVersion() -> Single<AppMinimumVersion>
     
     // PushNotification
-    func postUserFCMToken(fcmToken: String) -> Single<Void>
+    func postUserFCMToken(fcmToken: String, deviceIdentifier: String) -> Single<Void>
     func postUserPushNotificationSetting(isPushEnabled: Bool) -> Single<Void>
-    func patchUserPushNotificationSetting(isPushEnabled: Bool) -> Single<Void>
     func getUserPushNotificationSetting() -> Single<PushNotificationSettingResult>
 }
 
@@ -404,9 +403,10 @@ extension DefaultUserService: UserService {
 
 // PushNotification
 extension DefaultUserService {
-    func postUserFCMToken(fcmToken: String) -> Single<Void> {
+    func postUserFCMToken(fcmToken: String, deviceIdentifier: String) -> Single<Void> {
         do {
-            let fcmTokenBody = try JSONEncoder().encode(FCMTokenResult(fcmToken: fcmToken))
+            let fcmTokenBody = try JSONEncoder().encode(FCMTokenResult(fcmToken: fcmToken,
+                                                                       deviceIdentifier: deviceIdentifier))
             let request = try makeHTTPRequest(method: .post,
                                               path: URLs.User.fcmToken,
                                               headers: APIConstants.accessTokenHeader,
@@ -426,24 +426,6 @@ extension DefaultUserService {
         do {
             let requestBody = try JSONEncoder().encode(PushNotificationSettingResult(isPushEnabled: isPushEnabled))
             let request = try makeHTTPRequest(method: .post,
-                                              path: URLs.User.pushNotificationSetting,
-                                              headers: APIConstants.accessTokenHeader,
-                                              body: requestBody)
-            
-            NetworkLogger.log(request: request)
-            
-            return tokenCheckURLSession.rx.data(request: request)
-                .map { _ in }
-                .asSingle()
-        } catch {
-            return Single.error(error)
-        }
-    }
-    
-    func patchUserPushNotificationSetting(isPushEnabled: Bool) -> Single<Void> {
-        do {
-            let requestBody = try JSONEncoder().encode(PushNotificationSettingResult(isPushEnabled: isPushEnabled))
-            let request = try makeHTTPRequest(method: .patch,
                                               path: URLs.User.pushNotificationSetting,
                                               headers: APIConstants.accessTokenHeader,
                                               body: requestBody)
