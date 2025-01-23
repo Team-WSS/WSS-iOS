@@ -14,7 +14,7 @@ final class MyPageViewModel: ViewModelType {
     
     // MARK: - Properties
     
-    private let profileId: Int
+    private var profileId: Int
     private let userRepository: UserRepository
     private var stickyHeaderHeight: CGFloat = 0
     
@@ -34,8 +34,8 @@ final class MyPageViewModel: ViewModelType {
     private let showGenreOtherViewRelay = BehaviorRelay<Bool>(value: false)
     
     private let bindFeedDataRelay = BehaviorRelay<[FeedCellData]>(value: [])
-    private let isEmptyFeedRelay = PublishRelay<Void>()
-    private let showFeedDetailButtonRelay = PublishRelay<Bool>()
+    private let isEmptyFeedRelay = PublishRelay<Bool>()
+    private let showFeedDetailButtonRelay = BehaviorSubject<Bool>(value: false)
     
     private let updateButtonWithLibraryViewRelay = BehaviorRelay<Bool>(value: true)
     private let updateFeedTableViewHeightRelay = PublishRelay<CGFloat>()
@@ -52,6 +52,8 @@ final class MyPageViewModel: ViewModelType {
     private let showToastViewRelay = PublishRelay<Void>()
     private let stickyHeaderActionRelay = BehaviorRelay<Bool>(value: true)
     
+    private let reloadSubject = PublishSubject<Void>()
+    
     // MARK: - Life Cycle
     
     init(userRepository: UserRepository, profileId: Int) {
@@ -66,7 +68,7 @@ final class MyPageViewModel: ViewModelType {
     
     struct Input {
         let isEntryTabbar: Observable<Bool>
-        let viewWillAppearEvent: PublishRelay<Bool>
+        let viewWillAppearEvent: PublishSubject<Void>
         
         let headerViewHeight: Driver<Double>
         let resizefeedTableViewHeight: Observable<CGSize?>
@@ -114,8 +116,8 @@ final class MyPageViewModel: ViewModelType {
         
         let bindFeedData: BehaviorRelay<[FeedCellData]>
         let updateFeedTableViewHeight: PublishRelay<CGFloat>
-        let isEmptyFeed: PublishRelay<Void>
-        let showFeedDetailButton: PublishRelay<Bool>
+        let isEmptyFeed: PublishRelay<Bool>
+        let showFeedDetailButton: BehaviorSubject<Bool>
         
         let showToastView: PublishRelay<Void>
         let stickyHeaderAction: BehaviorRelay<Bool>
@@ -139,7 +141,7 @@ final class MyPageViewModel: ViewModelType {
         //서재 - 보관함 데이터 업데이트
         //서재 - 나머지뷰 업데이트 후 키워드컬렉션뷰 높이 업데이트
         //피드 - 피드뷰 업데이트 후 피드테이블뷰 높이 업데이트
-        input.viewWillAppearEvent
+        Observable.merge(input.viewWillAppearEvent, reloadSubject)
             .flatMapLatest { [weak self] _ -> Observable<Void> in
                 guard let self else { return .empty() }
                 return self.updateHeaderView(isMyPage: self.isMyPageRelay.value)
@@ -147,6 +149,11 @@ final class MyPageViewModel: ViewModelType {
             .flatMapLatest { [weak self]  _ -> Observable<Void> in
                 guard let self else { return .empty() }
                 guard !self.isProfilePrivateRelay.value.0 else { return .empty() }
+                if self.profileId == 0 {
+                    self.profileId =  UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)
+                    reloadSubject.onNext(())
+                    return .just(())
+                }
                 return Observable.concat([
                     self.updateMyPageLibraryInventoryData()
                         .map { _ in Void() },
@@ -431,6 +438,7 @@ final class MyPageViewModel: ViewModelType {
             }
     }
     
+    // 활동 데이터 바인딩
     private func updateMyPageFeedData() -> Observable<Void> {
         return getUserFeed(userId: self.profileId, lastFeedId: 0, size: 6)
             .map { feedResult -> [FeedCellData] in
@@ -446,18 +454,19 @@ final class MyPageViewModel: ViewModelType {
                 guard let self else { return }
                 
                 if feedCellData.isEmpty {
-                    self.isEmptyFeedRelay.accept(())
+                    self.isEmptyFeedRelay.accept(true)
                 } else {
                     
                     //5개까지만 활동뷰에 바인딩
                     //5개를 초과할 경우 더보기 버튼 뜨게 함
+                    self.isEmptyFeedRelay.accept(false)
                     let hasMoreThanFive = feedCellData.count > 5
-                    self.showFeedDetailButtonRelay.accept(hasMoreThanFive)
+                    self.showFeedDetailButtonRelay.onNext(hasMoreThanFive)
                     self.bindFeedDataRelay.accept(Array(feedCellData.prefix(5)))
                 }
             })
             .catch { [weak self] error in
-                self?.isEmptyFeedRelay.accept(())
+                self?.isEmptyFeedRelay.accept(true)
                 return .just([])
             }
             .map { _ in Void() }

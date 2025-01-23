@@ -110,7 +110,8 @@ final class HomeNoticeViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         let noticeTableViewHeight = input.noticeTableViewContentSize
-            .map { $0?.height ?? 0 }.asDriver(onErrorJustReturn: 0)
+            .map { $0?.height ?? 0 }
+            .asDriver(onErrorJustReturn: 0)
         
         return Output(notificationList: notificationList.asObservable(),
                       noticeTableViewHeight: noticeTableViewHeight,

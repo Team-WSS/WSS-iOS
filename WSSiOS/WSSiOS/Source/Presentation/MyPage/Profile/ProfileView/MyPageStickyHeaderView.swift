@@ -14,6 +14,8 @@ final class MyPageStickyHeaderView: UIView {
     
     // MARK: - Components
     
+    private let underLineView = UIView()
+    
     let libraryButton = UIButton()
     let libraryUnderView = UIView()
     let libraryButtonLabel = UILabel()
@@ -37,10 +39,14 @@ final class MyPageStickyHeaderView: UIView {
     }
     
     private func setUI() {
+        underLineView.do {
+            $0.backgroundColor = .wssGray70
+        }
+        
         libraryButton.do {
             $0.backgroundColor = .wssWhite
             $0.isSelected = true
-        
+            
             libraryButtonLabel.do {
                 $0.textColor = .wssBlack
             }
@@ -66,14 +72,21 @@ final class MyPageStickyHeaderView: UIView {
     
     private func setHierarchy() {
         self.addSubviews(libraryButton,
-                         libraryUnderView,
                          feedButton,
+                         underLineView,
+                         libraryUnderView,
                          feedUnderView)
         libraryButton.addSubview(libraryButtonLabel)
         feedButton.addSubview(feedButtonLabel)
     }
     
     private func setLayout() {
+        underLineView.snp.makeConstraints {
+            $0.bottom.equalToSuperview().inset(1)
+            $0.width.equalToSuperview()
+            $0.height.equalTo(1)
+        }
+        
         libraryButton.snp.makeConstraints {
             $0.top.leading.bottom.equalToSuperview()
             $0.trailing.equalTo(super.snp.centerX)
@@ -109,8 +122,8 @@ final class MyPageStickyHeaderView: UIView {
         libraryButton.isSelected = isLibrarySelected
         feedButton.isSelected = !isLibrarySelected
         
-        libraryButtonLabel.textColor = isLibrarySelected ? .wssBlack : .wssGray300
-        feedButtonLabel.textColor = isLibrarySelected ? .wssGray300 : .wssBlack
+        libraryButtonLabel.textColor = isLibrarySelected ? .wssBlack : .wssGray100
+        feedButtonLabel.textColor = isLibrarySelected ? .wssGray100 : .wssBlack
         
         libraryUnderView.isHidden = !isLibrarySelected
         feedUnderView.isHidden = isLibrarySelected

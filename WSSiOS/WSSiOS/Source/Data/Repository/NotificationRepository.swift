@@ -53,13 +53,13 @@ struct DefaultNotificationRepository: NotificationRepository {
         return notificationService.getNotifications(lastNotificationId: lastNotificationId,
                                                     size: notificationSize)
         .asObservable()
-        .flatMap { $0.transform() }
+        .map { $0.toEntity() }
     }
     
     func getNotificationDetail(notificationId: Int) -> Observable<NotificationDetailEntity> {
         return notificationService.getNotificationDetail(notificationId: notificationId)
             .asObservable()
-            .flatMap { $0.transform() }
+            .map { $0.toEntity() }
     }
     
     func getNotificationUnreadStatus() -> Observable<NotificationUnreadStatusResult> {

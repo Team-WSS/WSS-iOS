@@ -145,10 +145,11 @@ final class MyPageDeleteIDViewModel: ViewModelType {
             .subscribe(
                 onNext: {
                     AmplitudeManager.shared.track(AmplitudeEvent.MyPage.withdraw)
+                    UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.userId)
                     UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.userNickname)
+                    UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.userGender)
                     UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.accessToken)
                     UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.refreshToken)
-                    UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.userGender)
                     
                     output.pushToLoginViewController.accept(true)
                 },

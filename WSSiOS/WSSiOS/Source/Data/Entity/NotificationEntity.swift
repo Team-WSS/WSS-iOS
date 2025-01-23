@@ -15,17 +15,9 @@ struct NotificationsEntity {
 }
 
 extension NotificationsResult {
-    func transform() -> Observable<NotificationsEntity> {
-        let notificationsObservable = Observable.from(self.notifications)
-            .flatMap { $0.transform() }
-            .toArray()
-        
-        return notificationsObservable.map { notificationEntities in
-            NotificationsEntity(
-                isLoadable: self.isLoadable,
-                notifications: notificationEntities
-            )
-        }.asObservable()
+    func toEntity() -> NotificationsEntity {
+        return NotificationsEntity(isLoadable: self.isLoadable,
+                                   notifications: self.notifications.map { $0.toEntity() })
     }
 }
 
@@ -41,22 +33,16 @@ struct NotificationEntity {
 }
 
 extension NotificationResult {
-    func transform() -> Observable<NotificationEntity> {
-        return Observable.create { observer in
-            let notificationImageURL = KingFisherRxHelper.makeImageURLString(path: notificationImage) ?? .none
-            
-            let entity = NotificationEntity(notificationId: self.notificationId,
-                                            notificationImageURL: notificationImageURL,
-                                            notificationTitle: self.notificationTitle,
-                                            notificationOverview: self.notificationBody,
-                                            createdDate: self.createdDate,
-                                            isRead: self.isRead,
-                                            isNotice: self.isNotice,
-                                            feedId: self.feedId)
-            observer.onNext(entity)
-            observer.onCompleted()
-            return Disposables.create()
-        }
+    func toEntity() -> NotificationEntity {
+        let notificationImageURL = KingFisherRxHelper.makeImageURLString(path: notificationImage) ?? .none
+        return NotificationEntity(notificationId: self.notificationId,
+                                  notificationImageURL: notificationImageURL,
+                                  notificationTitle: self.notificationTitle,
+                                  notificationOverview: self.notificationBody,
+                                  createdDate: self.createdDate,
+                                  isRead: self.isRead,
+                                  isNotice: self.isNotice,
+                                  feedId: self.feedId)
     }
 }
 
@@ -68,14 +54,9 @@ struct NotificationDetailEntity {
 }
 
 extension NotificationDetailResult {
-    func transform() -> Observable<NotificationDetailEntity> {
-        return Observable.create { observer in
-            let entity = NotificationDetailEntity(title: self.notificationTitle,
-                                                  content: self.notificationDetail,
-                                                  createdDate: self.notificationCreatedDate)
-            observer.onNext(entity)
-            observer.onCompleted()
-            return Disposables.create()
-        }
+    func toEntity() -> NotificationDetailEntity {
+        return NotificationDetailEntity(title: self.notificationTitle,
+                                        content: self.notificationDetail,
+                                        createdDate: self.notificationCreatedDate)
     }
 }

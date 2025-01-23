@@ -28,7 +28,7 @@ final class MyPageViewController: UIViewController {
     private let isEntryTabbarRelay = BehaviorRelay<Bool>(value: false)
     private var dropDownCellTap = PublishSubject<String>()
     private let headerViewHeightRelay = BehaviorRelay<Double>(value: 0)
-    private let viewWillAppearEvent = PublishRelay<Bool>()
+    private let viewWillAppearEvent = PublishSubject<Void>()
     private let feedConnectedNovelViewDidTap = PublishRelay<Int>()
     
     //MARK: - UI Components
@@ -78,7 +78,7 @@ final class MyPageViewController: UIViewController {
         super.viewWillAppear(animated)
         
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
-        self.viewWillAppearEvent.accept(true)
+        self.viewWillAppearEvent.onNext(())
         decideNavigation(myPage: entryType == .tabBar, navigationTitle: navigationTitle)
     }
     
@@ -95,7 +95,7 @@ final class MyPageViewController: UIViewController {
         
         rootView.myPageLibraryView.genrePrefrerencesView.otherGenreView.genreTableView.register(MyPageGenrePreferencesOtherTableViewCell.self, forCellReuseIdentifier: MyPageGenrePreferencesOtherTableViewCell.cellIdentifier)
         
-        rootView.myPageFeedView.myPageFeedTableView.feedTableView.register(NovelDetailFeedTableViewCell.self, forCellReuseIdentifier: NovelDetailFeedTableViewCell.cellIdentifier)
+        rootView.myPageFeedView.myPageFeedTableView.feedTableView.register(FeedListTableViewCell.self, forCellReuseIdentifier: FeedListTableViewCell.cellIdentifier)
     }
     
     private func delegate() {
@@ -304,16 +304,16 @@ final class MyPageViewController: UIViewController {
         output.bindFeedData
             .observe(on: MainScheduler.instance)
             .bind(to: rootView.myPageFeedView.myPageFeedTableView.feedTableView.rx.items(
-                cellIdentifier: NovelDetailFeedTableViewCell.cellIdentifier,
-                cellType: NovelDetailFeedTableViewCell.self)) { _, element, cell in
+                cellIdentifier: FeedListTableViewCell.cellIdentifier,
+                cellType: FeedListTableViewCell.self)) { _, element, cell in
                     cell.bindProfileData(feed: element)
                 }
                 .disposed(by: disposeBag)
         
         output.isEmptyFeed
             .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, _ in
-                owner.rootView.myPageFeedView.isEmptyView(isEmpty: true)
+            .bind(with: self, onNext: { owner, isEmpty in
+                owner.rootView.myPageFeedView.isEmptyView(isEmpty: isEmpty)
             })
             .disposed(by: disposeBag)
         

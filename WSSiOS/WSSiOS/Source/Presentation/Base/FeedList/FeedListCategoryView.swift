@@ -1,5 +1,5 @@
 //
-//  NovelDetailFeedCategoryView.swift
+//  FeedListCategoryView.swift
 //  WSSiOS
 //
 //  Created by Hyowon Jeon on 9/27/24.
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class NovelDetailFeedCategoryView: UIView {
+final class FeedListCategoryView: UIView {
 
     //MARK: - Components
     
