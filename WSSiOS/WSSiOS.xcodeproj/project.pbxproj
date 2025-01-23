@@ -188,6 +188,7 @@
 		39E0EA032D40CD9D0034B639 /* MyPagePushNotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E0EA022D40CD890034B639 /* MyPagePushNotificationViewController.swift */; };
 		39E0EA052D40D0F20034B639 /* MyPagePushNotificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E0EA042D40D0F20034B639 /* MyPagePushNotificationViewModel.swift */; };
 		39E0EA072D40D2260034B639 /* MyPagePushNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E0EA062D40D2260034B639 /* MyPagePushNotificationView.swift */; };
+		39E0EA092D4267660034B639 /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E0EA082D4267660034B639 /* KeychainHelper.swift */; };
 		39E8FD902C742CE100AD6F30 /* NovelDetailHeaderReadStatusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E8FD8F2C742CE100AD6F30 /* NovelDetailHeaderReadStatusButton.swift */; };
 		39E8FD922C743D8000AD6F30 /* NovelDetailHeaderReadInfoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E8FD912C743D8000AD6F30 /* NovelDetailHeaderReadInfoButton.swift */; };
 		39EDFB362D38D8CF009F071A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 39EDFB352D38D8CF009F071A /* GoogleService-Info.plist */; };
@@ -579,6 +580,7 @@
 		39E0EA022D40CD890034B639 /* MyPagePushNotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPagePushNotificationViewController.swift; sourceTree = "<group>"; };
 		39E0EA042D40D0F20034B639 /* MyPagePushNotificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPagePushNotificationViewModel.swift; sourceTree = "<group>"; };
 		39E0EA062D40D2260034B639 /* MyPagePushNotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPagePushNotificationView.swift; sourceTree = "<group>"; };
+		39E0EA082D4267660034B639 /* KeychainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHelper.swift; sourceTree = "<group>"; };
 		39E8FD8F2C742CE100AD6F30 /* NovelDetailHeaderReadStatusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailHeaderReadStatusButton.swift; sourceTree = "<group>"; };
 		39E8FD912C743D8000AD6F30 /* NovelDetailHeaderReadInfoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailHeaderReadInfoButton.swift; sourceTree = "<group>"; };
 		39EDFB352D38D8CF009F071A /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -1362,6 +1364,7 @@
 				3916EC882B89D23D007835B5 /* ModuleFactory.swift */,
 				394CFD3A2CA2E7760053C8EA /* KingFisherRxHelper.swift */,
 				39EDFB3C2D390131009F071A /* NotificationHelper.swift */,
+				39E0EA082D4267660034B639 /* KeychainHelper.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -2635,6 +2638,7 @@
 				2CD9115C2C0D8A26006B8D72 /* FeedViewController.swift in Sources */,
 				394CFD3B2CA2E7760053C8EA /* KingFisherRxHelper.swift in Sources */,
 				39B6B6A32C649F3300D80BD9 /* NovelDetailInfoReviewGraphView.swift in Sources */,
+				39E0EA092D4267660034B639 /* KeychainHelper.swift in Sources */,
 				CDA5F03C2C2FDB3100FCF15C /* FeedEditViewModel.swift in Sources */,
 				B9181BDC2BEBDFA80024C800 /* HomeTasteRecommendView.swift in Sources */,
 				2C8F894D2C50E0060056895B /* MyPageDeleteIDView.swift in Sources */,

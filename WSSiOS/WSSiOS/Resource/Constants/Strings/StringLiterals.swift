@@ -8,6 +8,10 @@
 import Foundation
 
 enum StringLiterals {
+    enum KeyChain {
+        static let deviceIdentifier = "DEVICE_IDENTIFIER"
+    }
+    
     enum UserDefault {
         static let accessToken = "ACCESS_TOKEN"
         static let refreshToken = "REFRESH_TOKEN"

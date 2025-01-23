@@ -125,17 +125,17 @@ extension NotificationHelper: MessagingDelegate {
     private func sendFCMTokenToServer(token: String) {
         let deviceIdentifier: String = "test"
         
-        userRepository.postUserFCMToken(fcmToken: token, deviceIdentifier: deviceIdentifier)
-            .do(onSuccess: { _ in
-                print("토큰 등록 성공")
-            }, onError: { error in
-                print(error)
-            })
-            .subscribe(with: self, onSuccess: { owner, _ in
-                
-            }, onFailure: { owner, error in
-                
-            })
-            .disposed(by: disposeBag)
+//        userRepository.postUserFCMToken(fcmToken: token, deviceIdentifier: deviceIdentifier)
+//            .do(onSuccess: { _ in
+//                print("토큰 등록 성공")
+//            }, onError: { error in
+//                print(error)
+//            })
+//            .subscribe(with: self, onSuccess: { owner, _ in
+//                
+//            }, onFailure: { owner, error in
+//                
+//            })
+//            .disposed(by: disposeBag)
     }
 }
