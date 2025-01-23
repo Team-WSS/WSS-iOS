@@ -3,10 +3,10 @@ import Foundation
 // MARK: - Protocols
 
 protocol KeychainBasic {
-    func create(account: String, data: Data?) throws
-    func read(account: String) throws -> Data?
-    func update(account: String, data: Data?) throws
-    func delete(account: String) throws
+    func create(data: Data?, forKey account: String) throws
+    func read(forKey account: String) throws -> Data?
+    func update(data: Data?, forKey account: String) throws
+    func delete(forKey account: String) throws
 }
 
 // MARK: - KeychainHelper
@@ -22,8 +22,7 @@ final class KeychainHelper: KeychainBasic {
         return service
     }
     
-    // 1. Create (Data)
-    func create(account: String, data: Data?) throws {
+    func create(data: Data?, forKey account: String) throws {
         guard let data else {
             throw KeychainError.noData
         }
@@ -41,8 +40,7 @@ final class KeychainHelper: KeychainBasic {
         }
     }
     
-    // 2. Read (Data)
-    func read(account: String) throws -> Data? {
+    func read(forKey account: String) throws -> Data? {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: service,
@@ -63,8 +61,7 @@ final class KeychainHelper: KeychainBasic {
         }
     }
     
-    // 3. Update (Data)
-    func update(account: String, data: Data?) throws {
+    func update(data: Data?, forKey account: String) throws {
         guard let data else {
             throw KeychainError.noData
         }
@@ -85,8 +82,7 @@ final class KeychainHelper: KeychainBasic {
         }
     }
     
-    // 4. Delete
-    func delete(account: String) throws {
+    func delete(forKey account: String) throws {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: service,
@@ -103,18 +99,18 @@ final class KeychainHelper: KeychainBasic {
 // MARK: - KeychainHelper String ver
 
 extension KeychainHelper {
-    func create(account: String, value: String) throws {
+    func create(value: String, forKey account: String) throws {
         guard let data = value.data(using: .utf8) else {
             throw KeychainError.dataEncodingFailed
         }
-        try create(account: account, data: data)
+        try create(data: data, forKey: account)
     }
     
-    func update(account: String, value: String) throws {
+    func update(value: String, forKey account: String) throws {
         guard let data = value.data(using: .utf8) else {
             throw KeychainError.dataEncodingFailed
         }
-        try update(account: account, data: data)
+        try update(data: data, forKey: account)
     }
 }
 

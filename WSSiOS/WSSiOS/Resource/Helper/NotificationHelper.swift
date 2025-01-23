@@ -23,7 +23,8 @@ final class NotificationHelper: NSObject {
         super.init()
     }
     
-    /// 알림 및 cloudMessaging Delegate 지정, 메서드를 사용함으로써 싱글톤 인스턴스를 생성
+    /// 알림 및 cloudMessaging Delegate 지정, NotificationHelper 초기 세팅
+    /// 메서드를 사용함으로써 싱글톤 인스턴스를 생성
     func configure() {
         UNUserNotificationCenter.current().delegate = self
         Messaging.messaging().delegate = self
@@ -123,7 +124,13 @@ extension NotificationHelper: MessagingDelegate {
     
     /// 서버로 갱신된 FCM 토큰 전달
     private func sendFCMTokenToServer(token: String) {
-        let deviceIdentifier: String = "test"
+        do {
+            let deviceIdentifier = try getOrCreateDeviceIdentifier()
+            print("Identifier", deviceIdentifier)
+        } catch {
+            print(error)
+        }
+        
         
 //        userRepository.postUserFCMToken(fcmToken: token, deviceIdentifier: deviceIdentifier)
 //            .do(onSuccess: { _ in
@@ -137,5 +144,18 @@ extension NotificationHelper: MessagingDelegate {
 //                
 //            })
 //            .disposed(by: disposeBag)
+    }
+    
+    func getOrCreateDeviceIdentifier() throws -> String {
+        if let previousIdentifier = try? KeychainHelper.shared.read(forKey: StringLiterals.KeyChain.deviceIdentifier) {
+            return String(decoding: previousIdentifier, as: UTF8.self)
+        } else {
+            let deviceIdentifier = UUID().uuidString
+            try KeychainHelper.shared.create(
+                value: deviceIdentifier,
+                forKey: StringLiterals.KeyChain.deviceIdentifier
+            )
+            return deviceIdentifier
+        }
     }
 }
