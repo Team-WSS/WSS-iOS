@@ -51,6 +51,7 @@ final class HomeNoticeDetailContentView: UIView {
             $0.textColor = .wssBlack
             $0.dataDetectorTypes = .link
             $0.isEditable = false
+            $0.isScrollEnabled = false
         }
     }
     
@@ -81,17 +82,42 @@ final class HomeNoticeDetailContentView: UIView {
             $0.top.equalTo(dividerView.snp.bottom).offset(24)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.bottom.equalToSuperview().inset(40)
+            $0.height.equalTo(0)
         }
     }
     
-    func bindData(data: Notice) {
+    func bindData(data: NotificationDetailEntity) {
         noticeTitleLabel.do {
-            $0.applyWSSFont(.headline1, with: data.noticeTitle)
+            $0.applyWSSFont(.headline1, with: data.title)
             $0.numberOfLines = 0
         }
         createdDateLabel.applyWSSFont(.body5, with: data.createdDate)
         noticeContentTextView.do {
-            $0.applyWSSFont(.body2, with: data.noticeContent)
+            $0.applyWSSFont(.body2, with: data.content)
         }
+        
+        noticeContentTextView.snp.updateConstraints {
+            $0.height.equalTo(getTextViewLabelHeight(text: data.content))
+        }
+    }
+    
+    private func getTextViewLabelHeight(text: String) -> CGFloat {
+        let labelWidth = UIScreen.main.bounds.width - 40
+        let label = UILabel(frame: .init(x: .zero,
+                                         y: .zero,
+                                         width: labelWidth,
+                                         height: .greatestFiniteMagnitude)
+        )
+        label.do {
+            $0.applyWSSFont(.body2, with: text)
+            $0.textAlignment = .left
+            $0.lineBreakStrategy = .hangulWordPriority
+            $0.numberOfLines = 0
+        }
+        label.sizeToFit()
+        
+        let labelHeight = label.frame.height
+        let resizedLabelHeight = ceil(labelHeight)
+        return resizedLabelHeight
     }
 }

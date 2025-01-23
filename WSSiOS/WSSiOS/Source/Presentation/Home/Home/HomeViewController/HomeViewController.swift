@@ -47,8 +47,8 @@ final class HomeViewController: UIViewController {
         
         navigationController?.setNavigationBarHidden(true, animated: true)
         showTabBar()
-        viewWillAppearEvent.accept(())
         
+        viewWillAppearEvent.accept(())
         AmplitudeManager.shared.track(AmplitudeEvent.Home.home)
     }
     
@@ -192,6 +192,12 @@ final class HomeViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.pushToAnnouncementViewController
+            .bind(with: self, onNext: { owner, _ in
+                owner.pushToNotificationViewController()
+            })
+            .disposed(by: disposeBag)
+        
         output.pushToMyPageEditViewController
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
@@ -202,15 +208,6 @@ final class HomeViewController: UIViewController {
         output.pushToNovelDetailViewController
             .bind(with: self, onNext: { owner, novelId in
                 owner.pushToDetailViewController(novelId: novelId)
-            })
-            .disposed(by: disposeBag)
-        
-        output.pushToAnnouncementViewController
-            .bind(with: self, onNext: { owner, _ in
-                let viewController = HomeNoticeViewController(viewModel: HomeNoticeViewModel(noticeRepository: DefaultNoticeRepository(noticeService: DefaultNoticeService() )))
-                viewController.navigationController?.isNavigationBarHidden = false
-                viewController.hidesBottomBarWhenPushed = true
-                owner.navigationController?.pushViewController(viewController, animated: true)
             })
             .disposed(by: disposeBag)
         
@@ -244,7 +241,7 @@ final class HomeViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        //취향장르 정보 수정 Notification
+        // 취향장르 정보 수정 Notification
         NotificationCenter.default.rx.notification(NSNotification.Name("EditProfile"))
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in

@@ -76,7 +76,7 @@ final class HomeView: UIView {
         loadingView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
-
+        
         contentView.snp.makeConstraints {
             $0.top.equalTo(scrollView.contentLayoutGuide).inset(18)
             $0.leading.trailing.bottom.equalTo(scrollView.contentLayoutGuide)

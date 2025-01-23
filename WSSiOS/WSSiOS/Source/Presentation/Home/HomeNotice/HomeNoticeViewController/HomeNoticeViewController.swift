@@ -8,6 +8,7 @@
 import UIKit
 
 import RxSwift
+import RxRelay
 
 final class HomeNoticeViewController: UIViewController {
     
@@ -15,6 +16,8 @@ final class HomeNoticeViewController: UIViewController {
     
     private let viewModel: HomeNoticeViewModel
     private let disposeBag = DisposeBag()
+    
+    private let viewWillAppearEvent = PublishRelay<Void>()
     
     //MARK: - UI Components
     
@@ -38,15 +41,18 @@ final class HomeNoticeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        setWSSNavigationBar(title: StringLiterals.Navigation.Title.notice,
+                            left: self.rootView.backButton,
+                            right: nil)
         swipeBackGesture()
+        
+        viewWillAppearEvent.accept(())
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setUI()
-        setNavigationBar()
-        
         registerCell()
         bindViewModel()
     }
@@ -55,12 +61,6 @@ final class HomeNoticeViewController: UIViewController {
     
     private func setUI() {
         self.view.backgroundColor = .wssWhite
-    }
-    
-    private func setNavigationBar() {
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
-        self.navigationItem.titleView = self.rootView.viewTitleLabel
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.rootView.backButton)
     }
     
     //MARK: - Bind
@@ -72,12 +72,20 @@ final class HomeNoticeViewController: UIViewController {
     }
     
     private func bindViewModel() {
+        let reachedBottom = rootView.noticeTableView.rx.didScroll
+            .map { self.isNearBottomEdge() }
+            .distinctUntilChanged()
+            .asObservable()
+        
         let input = HomeNoticeViewModel.Input(
-            noticeCellDidTap: rootView.noticeTableView.rx.itemSelected
+            viewWillAppearEvent: viewWillAppearEvent.asObservable(),
+            noticeTableViewContentSize: rootView.noticeTableView.rx.observe(CGSize.self, "contentSize"),
+            noticeTableViewCellSelected: rootView.noticeTableView.rx.itemSelected,
+            scrollReachedBottom: reachedBottom
         )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
-        output.noticeList
+        output.notificationList
             .bind(to: rootView.noticeTableView.rx.items(
                 cellIdentifier: HomeNoticeTableViewCell.cellIdentifier,
                 cellType: HomeNoticeTableViewCell.self)) { row, element, cell in
@@ -85,13 +93,21 @@ final class HomeNoticeViewController: UIViewController {
                 }
                 .disposed(by: disposeBag)
         
-        output.selectedNoticeCellIndexPath
-            .bind(with: self, onNext: { owner, indexPath in
-                let viewController = HomeNoticeDetailViewController(viewModel: HomeNoticeDetailViewModel(),
-                                                                    notice: output.noticeList.value[indexPath.row])
-                viewController.navigationController?.isNavigationBarHidden = false
-                viewController.hidesBottomBarWhenPushed = true
-                owner.navigationController?.pushViewController(viewController, animated: true)
+        output.noticeTableViewHeight
+            .drive(with: self, onNext: { owner, height in
+                owner.rootView.updateTableViewHeight(height: height)
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushToFeedDetailViewController
+            .subscribe(with: self, onNext: { owner, feedId in
+                owner.pushToFeedDetailViewController(feedId: feedId)
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushToNoticeDetailViewController
+            .subscribe(with: self, onNext: { owner, notificationId in
+                owner.pushToNotificationDetailViewController(notificationId: notificationId)
             })
             .disposed(by: disposeBag)
         
@@ -108,5 +124,15 @@ final class HomeNoticeViewController: UIViewController {
                 owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
+    }
+    
+    private func isNearBottomEdge() -> Bool {
+        guard self.rootView.noticeTableView.contentSize.height > 0 else {
+            return false
+        }
+        
+        let checkNearBottomEdge = self.rootView.noticeTableView.contentOffset.y + self.rootView.noticeTableView.bounds.size.height + 1.0 >= self.rootView.noticeTableView.contentSize.height
+        
+        return checkNearBottomEdge
     }
 }
