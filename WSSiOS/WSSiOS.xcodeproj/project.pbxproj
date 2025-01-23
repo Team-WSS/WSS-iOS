@@ -3041,7 +3041,7 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = L4327HMP3S;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WSSiOS/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "웹소소";
+				INFOPLIST_KEY_CFBundleDisplayName = "웹소소_Debug";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.books";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
