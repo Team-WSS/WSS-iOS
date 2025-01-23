@@ -91,8 +91,8 @@ final class NovelDetailViewController: UIViewController {
             forCellWithReuseIdentifier: NovelDetailInfoReviewKeywordCollectionViewCell.cellIdentifier)
         
         rootView.feedView.feedListView.feedTableView.register(
-            NovelDetailFeedTableViewCell.self,
-            forCellReuseIdentifier: NovelDetailFeedTableViewCell.cellIdentifier)
+            FeedListTableViewCell.self,
+            forCellReuseIdentifier: FeedListTableViewCell.cellIdentifier)
     }
     
     private func delegate() {
@@ -112,7 +112,7 @@ final class NovelDetailViewController: UIViewController {
     private func bindViewModelOutput(_ output: NovelDetailViewModel.Output) {
         
         //MARK: - Bind/Total
-        
+         
         output.detailHeaderData
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
@@ -297,8 +297,8 @@ final class NovelDetailViewController: UIViewController {
         
         output.feedList
             .bind(to: rootView.feedView.feedListView.feedTableView.rx.items(
-                cellIdentifier: NovelDetailFeedTableViewCell.cellIdentifier,
-                cellType: NovelDetailFeedTableViewCell.self)) { _, element, cell in
+                cellIdentifier: FeedListTableViewCell.cellIdentifier,
+                cellType: FeedListTableViewCell.self)) { _, element, cell in
                     cell.bindData(feed: element)
                     cell.delegate = self
                 }

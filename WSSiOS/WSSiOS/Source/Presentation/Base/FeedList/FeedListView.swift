@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class NovelDetailFeedListView: UIView {
+final class FeedListView: UIView {
     
     //MARK: - Components
     
@@ -53,7 +53,7 @@ final class NovelDetailFeedListView: UIView {
     private func setLayout() {
         feedTableView.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
-            $0.bottom.equalToSuperview().inset(28)
+            $0.bottom.equalToSuperview()
             $0.height.equalTo(0)
         }
         

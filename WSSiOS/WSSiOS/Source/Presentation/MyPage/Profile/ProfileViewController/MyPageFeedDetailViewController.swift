@@ -57,8 +57,8 @@ final class MyPageFeedDetailViewController: UIViewController, UIScrollViewDelega
     }
     
     private func register() {
-        rootView.myPageFeedDetailTableView.register(NovelDetailFeedTableViewCell.self,
-                                                    forCellReuseIdentifier: NovelDetailFeedTableViewCell.cellIdentifier)
+        rootView.myPageFeedDetailTableView.register(FeedListTableViewCell.self,
+                                                    forCellReuseIdentifier: FeedListTableViewCell.cellIdentifier)
     }
     
     private func delegate() {
@@ -93,8 +93,8 @@ final class MyPageFeedDetailViewController: UIViewController, UIScrollViewDelega
         output.bindFeedData
             .observe(on: MainScheduler.instance)
             .bind(to: rootView.myPageFeedDetailTableView.rx.items(
-                cellIdentifier: NovelDetailFeedTableViewCell.cellIdentifier,
-                cellType: NovelDetailFeedTableViewCell.self)) { _, element, cell in
+                cellIdentifier: FeedListTableViewCell.cellIdentifier,
+                cellType: FeedListTableViewCell.self)) { _, element, cell in
                     cell.bindProfileData(feed: element)
                     cell.delegate = self
                 }

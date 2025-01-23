@@ -1,5 +1,5 @@
 //
-//  NovelDetailFeedHeaderView.swift
+//  FeedListHeaderView.swift
 //  WSSiOS
 //
 //  Created by Hyowon Jeon on 9/27/24.
@@ -10,8 +10,8 @@ import UIKit
 import SnapKit
 import Then
 
-final class NovelDetailFeedHeaderView: UIView {
-    
+final class FeedListHeaderView: UIView {
+
     //MARK: - Components
     
     let profileView = UIStackView()

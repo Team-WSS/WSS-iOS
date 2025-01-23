@@ -7,12 +7,26 @@
 
 import Foundation
 
-struct Notices: Codable {
-    var notices: [Notice]
+// 전체 공지사항 조회
+struct NotificationsResult: Decodable {
+    var isLoadable: Bool
+    var notifications: [NotificationResult]
 }
 
-struct Notice: Codable {
-    var noticeTitle: String
-    var noticeContent: String
+struct NotificationResult: Decodable {
+    var notificationId: Int
+    var notificationImage: String
+    var notificationTitle: String
+    var notificationBody: String
     var createdDate: String
+    var isRead: Bool
+    var isNotice: Bool
+    var feedId: Int?
+}
+
+// 공지사항 상세 조회
+struct NotificationDetailResult: Codable {
+    var notificationTitle: String
+    var notificationCreatedDate: String
+    var notificationDetail: String
 }
