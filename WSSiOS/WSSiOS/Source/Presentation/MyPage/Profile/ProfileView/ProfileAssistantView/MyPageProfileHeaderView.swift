@@ -29,7 +29,7 @@ class CircularButton: UIButton {
 final class MyPageProfileHeaderView: UIView {
     
     //MARK: - Components
-
+    
     lazy var userImageChangeButton = CircularButton()
     private let userImageView = CircularImageView()
     private let userImageChangeButtonView = UIImageView()
@@ -70,7 +70,7 @@ final class MyPageProfileHeaderView: UIView {
             $0.layer.borderWidth = 1.04
             $0.layer.borderColor = UIColor.wssGray70.cgColor
         }
-
+        
         userNicknameLabel.do {
             $0.textColor = .wssBlack
             $0.numberOfLines = 1
@@ -91,7 +91,7 @@ final class MyPageProfileHeaderView: UIView {
         userImageChangeButton.addSubview(userImageChangeButtonView)
     }
     
-    private func setLayout() {        
+    private func setLayout() {
         userImageView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(25)
             $0.centerX.equalToSuperview()
@@ -130,12 +130,7 @@ final class MyPageProfileHeaderView: UIView {
         } else {
             userImageView.kfSetImage(url: makeBucketImageURLString(path: data.avatarImage))
         }
-        
-        if data.nickname == "" {
-            userNicknameLabel.applyWSSFont(.headline1, with: StringLiterals.Error.unknownUser)
-        } else {
-            userNicknameLabel.applyWSSFont(.headline1, with: data.nickname)
-        }
+        userNicknameLabel.applyWSSFont(.headline1, with: data.nickname)
         userIntroLabel.do {
             $0.applyWSSFont(.body2, with: data.intro)
             $0.textAlignment = .center
