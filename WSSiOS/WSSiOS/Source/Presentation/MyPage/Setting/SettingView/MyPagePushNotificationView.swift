@@ -49,12 +49,12 @@ final class MyPagePushNotificationView: UIView {
         
         activePushSettingTitleLabel.do {
             $0.textColor = .wssBlack
-            $0.applyWSSFont(.body1, with: StringLiterals.MyPage.PushNotification.activePushTitle)
+            $0.applyWSSFont(.body2, with: StringLiterals.MyPage.PushNotification.activePushTitle)
         }
         
         activePushSettingDescriptionLabel.do {
             $0.textColor = .wssGray200
-            $0.applyWSSFont(.body4, with: StringLiterals.MyPage.PushNotification.activePushDescription)
+            $0.applyWSSFont(.body3, with: StringLiterals.MyPage.PushNotification.activePushDescription)
         }
         
         activePushSettingToggleButton.do {
