@@ -102,7 +102,26 @@ final class WSSToggleButton: UIButton {
         self.onCircleInset = onCircleInset
         
         setUI()
-        setLayout()
+        updateLayout()
+    }
+    
+    private func updateLayout() {
+        self.snp.updateConstraints() {
+            $0.size.equalTo(toggleSize.height)
+        }
+        
+        barView.snp.updateConstraints {
+            $0.width.equalTo(barViewSize.width)
+            $0.height.equalTo(barViewSize.height)
+            $0.center.equalToSuperview()
+        }
+        
+        circleView.snp.updateConstraints {
+            $0.width.equalTo(circleViewSize.width)
+            $0.height.equalTo(circleViewSize.height)
+            $0.trailing.equalTo(barView.snp.trailing).inset(onCircleInset)
+            $0.centerY.equalToSuperview()
+        }
     }
     
     func updateToggle(_ state: Bool) {

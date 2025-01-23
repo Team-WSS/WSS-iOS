@@ -58,6 +58,12 @@ final class MyPagePushNotificationView: UIView {
         }
         
         activePushSettingToggleButton.do {
+            $0.setToggleSize(
+                toggleSize: CGSize(width: 42, height: 42),
+                barViewSize: CGSize(width: 40, height: 22),
+                circleViewSize: CGSize(width: 18, height: 18),
+                onCircleInset: 2
+            )
             $0.isUserInteractionEnabled = false
         }
                 
