@@ -13,6 +13,7 @@ protocol NotificationRepository {
     func getNotifications(lastNotificationId: Int) -> Observable<NotificationsEntity>
     func getNotificationDetail(notificationId: Int) -> Observable<NotificationDetailEntity>
     func getNotificationUnreadStatus() -> Observable<NotificationUnreadStatusResult>
+    func postNotificationRead(notificationId: Int) -> Observable<Void>
 }
 
 struct TestNotificationRepository: NotificationRepository {
@@ -36,6 +37,10 @@ struct TestNotificationRepository: NotificationRepository {
     
     func getNotificationUnreadStatus() -> Observable<NotificationUnreadStatusResult> {
         return Observable.just(NotificationUnreadStatusResult(hasUnreadNotifications: false))
+    }
+    
+    func postNotificationRead(notificationId: Int) -> Observable<Void> {
+        return Observable.just(())
     }
 }
 
@@ -64,6 +69,11 @@ struct DefaultNotificationRepository: NotificationRepository {
     
     func getNotificationUnreadStatus() -> Observable<NotificationUnreadStatusResult> {
         return notificationService.getNotificationUnreadStatus()
+            .asObservable()
+    }
+    
+    func postNotificationRead(notificationId: Int) -> Observable<Void> {
+        return notificationService.postNotificationRead(notificationId: notificationId)
             .asObservable()
     }
 }
