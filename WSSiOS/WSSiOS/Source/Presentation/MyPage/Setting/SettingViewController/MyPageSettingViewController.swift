@@ -86,7 +86,7 @@ final class MyPageSettingViewController: UIViewController {
                     owner.pushToMyPageProfileVisibilityViewController()
                 case 2:
                     print("알림 설정")
-                    owner.pushToMyPagePushNotificationViewController()
+                    owner.checkNotificationAuthorizationStatus()
                 case 3:
                     print("웹소소 공식 계정")
                     if let url = URL(string: StringLiterals.MyPage.SettingURL.instaURL) {
@@ -124,6 +124,33 @@ final class MyPageSettingViewController: UIViewController {
                 notification.object as? Bool
             }
             .bind(to: changeVisibilityNotification)
+            .disposed(by: disposeBag)
+    }
+    
+    //MARK: - Custom Method
+    func checkNotificationAuthorizationStatus() {
+        NotificationHelper.shared.checkNotificationAuthorizationStatus()
+            .observe(on: MainScheduler.instance)
+            .flatMap{ isAuthorized -> Observable<AlertButtonType> in
+                if isAuthorized {
+                    self.pushToMyPagePushNotificationViewController()
+                    return Observable<AlertButtonType>.empty()
+                } else {
+                    return self.presentToAlertViewController(
+                        iconImage: .icModalWarning,
+                        titleText: StringLiterals.MyPage.PushNotification.moveToSettingAlertTitle,
+                        contentText: StringLiterals.MyPage.PushNotification.moveToSettingAlertDescription,
+                        leftTitle: StringLiterals.MyPage.PushNotification.moveCancel,
+                        rightTitle: StringLiterals.MyPage.PushNotification.moveAccept,
+                        rightBackgroundColor: UIColor.wssPrimary100.cgColor
+                    )
+                }
+            }
+            .bind(with: self, onNext: { owner, buttonType in
+                if buttonType == .right {
+                    NotificationHelper.shared.moveToDeviceSettingApp()
+                }
+            })
             .disposed(by: disposeBag)
     }
 }

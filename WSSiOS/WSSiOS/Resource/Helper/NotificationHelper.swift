@@ -58,12 +58,13 @@ final class NotificationHelper: NSObject {
         UIApplication.shared.registerForRemoteNotifications()
     }
     
-    func checkNotificationAuthorizationStatus() -> Single<Bool> {
-        return Single<Bool>.create { single in
+    func checkNotificationAuthorizationStatus() -> Observable<Bool> {
+        return Observable<Bool>.create { observer in
             Task {
                 let settings = await UNUserNotificationCenter.current().notificationSettings()
                 let isAuthorized = settings.authorizationStatus == .authorized
-                single(.success(isAuthorized))
+                observer.onNext(isAuthorized)
+                observer.onCompleted()
             }
             return Disposables.create()
         }

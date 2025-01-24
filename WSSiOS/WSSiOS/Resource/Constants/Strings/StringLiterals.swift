@@ -294,6 +294,11 @@ enum StringLiterals {
         enum PushNotification {
             static let activePushTitle = "활동 알림"
             static let activePushDescription = "댓글, 좋아요 등 알림"
+            
+            static let moveToSettingAlertTitle = "앱 알림을 켤까요?"
+            static let moveToSettingAlertDescription = "웹소소 알림을 받으려면,\n기기 설정에서 알림 허용이 필요해요."
+            static let moveCancel = "다음에 하기"
+            static let moveAccept = "설정하러 가기"
         }
     }
     

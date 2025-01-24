@@ -7,14 +7,7 @@
 
 import Foundation
 
-protocol KeychainBasic {
-    func create(data: Data?, forKey account: String) throws
-    func read(forKey account: String) throws -> Data?
-    func update(data: Data?, forKey account: String) throws
-    func delete(forKey account: String) throws
-}
-
-final class KeychainHelper: KeychainBasic {
+final class KeychainHelper {
     static let shared = KeychainHelper()
     private init() {}
     
