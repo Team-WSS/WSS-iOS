@@ -172,10 +172,7 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
         
         self.userProfileImageView.kfSetImage(url: makeBucketImageURLString(path: data.userProfileImage))
         self.userNicknameLabel.do {
-            if data.userId == -1 {
-                // 탈퇴 유저
-                $0.applyWSSFont(.title2, with: StringLiterals.FeedDetail.deleteAccountUserNickname)
-            } else if data.isBlocked {
+            if data.isBlocked {
                 $0.applyWSSFont(.title2, with: StringLiterals.FeedDetail.blckedUser)
             } else {
                 $0.applyWSSFont(.title2, with: data.userNickname)

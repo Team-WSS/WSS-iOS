@@ -117,6 +117,12 @@ final class MyPageViewController: UIViewController {
     //MARK: - Bind
     
     private func bindViewModel() {
+        let inventoryStatusButtonDidTap = Observable<Int>.merge(
+            rootView.myPageLibraryView.inventoryView.readStatusButtons.enumerated().map { index, button in
+                button.rx.tap
+                    .map { index }
+            })
+        
         let genrePreferenceButtonDidTap = Observable.merge(
             rootView.myPageLibraryView.genrePrefrerencesView.myPageGenreOpenButton.rx.tap.map { true },
             rootView.myPageLibraryView.genrePrefrerencesView.myPageGenreCloseButton.rx.tap.map { false }
@@ -146,9 +152,10 @@ final class MyPageViewController: UIViewController {
             genrePreferenceButtonDidTap: genrePreferenceButtonDidTap,
             libraryButtonDidTap: libraryButtonDidTap,
             feedButtonDidTap: feedButtonDidTap,
-            inventoryViewDidTap: rootView.myPageLibraryView.inventoryView.inventoryView.rx.tapGesture()
+            inventoryViewDidTap: rootView.myPageLibraryView.inventoryView.inventoryTitleView.rx.tapGesture()
                 .when(.recognized)
                 .asObservable(),
+            inventorySpecificPageViewDidTap: inventoryStatusButtonDidTap,
             feedDetailButtonDidTap: rootView.myPageFeedView.myPageFeedDetailButton.rx.tap,
             editProfileNotification: NotificationCenter.default.rx.notification(NSNotification.Name("EditProfile")).asObservable(),
             feedTableViewItemSelected: rootView.myPageFeedView.myPageFeedTableView.feedTableView.rx.itemSelected.asObservable(),
@@ -328,6 +335,14 @@ final class MyPageViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, userId in
                 owner.pushToLibraryViewController(userId: userId)
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushToSpecificLibraryViewController
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, userData in
+                let (id, pageIndex) = userData
+                owner.pushToLibraryViewController(userId: id, pageIndex: pageIndex)
             })
             .disposed(by: disposeBag)
         

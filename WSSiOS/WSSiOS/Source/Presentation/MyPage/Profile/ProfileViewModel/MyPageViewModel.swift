@@ -48,6 +48,7 @@ final class MyPageViewModel: ViewModelType {
     private let pushToFeedDetailViewController = PublishRelay<Int>()
     private let pushToNovelDetailViewController = PublishRelay<Int>()
     private let popViewControllerRelay = PublishRelay<Void>()
+    private let pushToSpecificLibraryViewController = PublishSubject<(Int,Int)>()
     
     private let showToastViewRelay = PublishRelay<Void>()
     private let stickyHeaderActionRelay = BehaviorRelay<Bool>(value: true)
@@ -84,6 +85,7 @@ final class MyPageViewModel: ViewModelType {
         let libraryButtonDidTap: Observable<Bool>
         let feedButtonDidTap: Observable<Bool>
         let inventoryViewDidTap: Observable<UITapGestureRecognizer>
+        let inventorySpecificPageViewDidTap: Observable<Int>
         let feedDetailButtonDidTap: ControlEvent<Void>
         
         let editProfileNotification: Observable<Notification>
@@ -125,6 +127,7 @@ final class MyPageViewModel: ViewModelType {
         
         let pushToFeedDetailViewController: Observable<Int>
         let pushToNovelDetailViewController: Observable<Int>
+        let pushToSpecificLibraryViewController: PublishSubject<(Int, Int)>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -278,6 +281,12 @@ final class MyPageViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        input.inventorySpecificPageViewDidTap
+            .bind(with: self, onNext: { owner, pageIndex in
+                self.pushToSpecificLibraryViewController.onNext((owner.profileId, pageIndex))
+            })
+            .disposed(by: disposeBag)
+        
         return Output(
             isMyPage: self.isMyPageRelay,
             isProfilePrivate: self.isProfilePrivateRelay,
@@ -308,7 +317,8 @@ final class MyPageViewModel: ViewModelType {
             stickyHeaderAction: self.stickyHeaderActionRelay,
             updateButtonWithLibraryView: self.updateButtonWithLibraryViewRelay,
             pushToFeedDetailViewController: self.pushToFeedDetailViewController.asObservable(),
-            pushToNovelDetailViewController: self.pushToNovelDetailViewController.asObservable()
+            pushToNovelDetailViewController: self.pushToNovelDetailViewController.asObservable(),
+            pushToSpecificLibraryViewController: pushToSpecificLibraryViewController
         )
     }
     
