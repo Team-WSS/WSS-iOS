@@ -125,4 +125,8 @@ final class HomeNoticeViewModel: ViewModelType {
     private func getNotifications(lastNotificationId: Int) -> Observable<NotificationsEntity> {
         return notificationRepository.getNotifications(lastNotificationId: lastNotificationId)
     }
+    
+    private func postNotificationRead(notificationId: Int) -> Observable<Void> {
+        return notificationRepository.postNotificationRead(notificationId: notificationId)
+    }
 }

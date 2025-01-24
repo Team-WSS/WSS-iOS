@@ -13,6 +13,7 @@ protocol NotificationService {
     func getNotifications(lastNotificationId: Int, size: Int) -> Single<NotificationsResult>
     func getNotificationDetail(notificationId: Int) -> Single<NotificationDetailResult>
     func getNotificationUnreadStatus() -> Single<NotificationUnreadStatusResult>
+    func postNotificationRead(notificationId: Int) -> Single<Void>
 }
 
 final class DefaultNoticeService: NSObject, Networking, NotificationService {
@@ -73,6 +74,24 @@ final class DefaultNoticeService: NSObject, Networking, NotificationService {
             return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0, to: NotificationUnreadStatusResult.self) }
                 .asSingle()
+        } catch {
+            return Single.error(error)
+        }
+    }
+    
+    func postNotificationRead(notificationId: Int) -> Single<Void> {
+        do {
+            let request = try makeHTTPRequest(method: .post,
+                                              path: URLs.Notification.postNotificationRead(notificationId: notificationId),
+                                              headers: APIConstants.accessTokenHeader,
+                                              body: nil)
+            
+            NetworkLogger.log(request: request)
+            
+            return tokenCheckURLSession.rx.data(request: request)
+                .map { _ in }
+                .asSingle()
+            
         } catch {
             return Single.error(error)
         }
