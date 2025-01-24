@@ -57,6 +57,27 @@ final class NotificationHelper: NSObject {
     private func registerForAPNs() {
         UIApplication.shared.registerForRemoteNotifications()
     }
+    
+    func checkNotificationAuthorizationStatus() -> Single<Bool> {
+        return Single<Bool>.create { single in
+            Task {
+                let settings = await UNUserNotificationCenter.current().notificationSettings()
+                let isAuthorized = settings.authorizationStatus == .authorized
+                single(.success(isAuthorized))
+            }
+            return Disposables.create()
+        }
+    }
+    
+    func moveToDeviceSettingApp() {
+        if let appSettingsURL = URL(string: UIApplication.openSettingsURLString) {
+            if UIApplication.shared.canOpenURL(appSettingsURL) {
+                UIApplication.shared.open(appSettingsURL, options: [:], completionHandler: nil)
+            } else {
+                print("설정 앱을 열 수 없음")
+            }
+        }
+    }
 }
 
 extension NotificationHelper: UNUserNotificationCenterDelegate {
