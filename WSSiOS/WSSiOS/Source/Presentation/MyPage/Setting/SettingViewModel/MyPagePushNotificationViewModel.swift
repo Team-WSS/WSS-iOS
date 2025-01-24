@@ -26,7 +26,8 @@ final class MyPagePushNotificationViewModel: ViewModelType {
     }
     
     struct Input {
-        let activePushSettingSectionDidTap: ControlEvent<UITapGestureRecognizer>
+        let viewWillAppearEvent: Observable<Void>
+        let activePushSettingSectionDidTap: ControlEvent<Void>
     }
     
     struct Output {
@@ -34,10 +35,17 @@ final class MyPagePushNotificationViewModel: ViewModelType {
     }
     
     func transform(from input: Input, disposeBag: RxSwift.DisposeBag) -> Output {
+        input.viewWillAppearEvent
+            .bind(with: self, onNext: { owner, _ in
+                owner.getUserPushNotificationSetting()
+            })
+            .disposed(by: disposeBag)
+        
+            
         input.activePushSettingSectionDidTap
             .withLatestFrom(activePushIsEnabled)
             .bind(with: self, onNext: { owner, isEnalbed in
-                owner.activePushIsEnabled.accept(!isEnalbed)
+                owner.postUserPushNotificationSetting(isPushEnabled: !isEnalbed)
             })
             .disposed(by: disposeBag)
         
@@ -45,5 +53,23 @@ final class MyPagePushNotificationViewModel: ViewModelType {
         return Output(
             activePushIsEnabled: activePushIsEnabled.asDriver()
         )
+    }
+    
+    func getUserPushNotificationSetting() {
+        userRepository.getUserPushNotificationSetting()
+            .subscribe(with: self, onSuccess: { owner, data in
+                owner.activePushIsEnabled.accept(data.isPushEnabled)
+            }, onFailure: { onwer, error in
+                print(error)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    func postUserPushNotificationSetting(isPushEnabled: Bool) {
+        userRepository.postUserPushNotificationSetting(isPushEnabled: isPushEnabled)
+            .subscribe(with: self, onSuccess: { owner, _ in
+                owner.activePushIsEnabled.accept(isPushEnabled)
+            })
+            .disposed(by: disposeBag)
     }
 }

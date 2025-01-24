@@ -14,7 +14,7 @@ final class MyPagePushNotificationView: UIView {
     
     //MARK: - Components
     
-    let activePushSettingSection = UIView()
+    let activePushSettingSection = UIButton()
     private let activePushSettingTitleLabel = UILabel()
     private let activePushSettingDescriptionLabel = UILabel()
     private let activePushSettingToggleButton = WSSToggleButton()

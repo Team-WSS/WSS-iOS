@@ -8,6 +8,7 @@
 import UIKit
 
 import RxSwift
+import RxCocoa
 
 final class MyPagePushNotificationViewController: UIViewController {
     
@@ -15,6 +16,7 @@ final class MyPagePushNotificationViewController: UIViewController {
     
     private let viewModel: MyPagePushNotificationViewModel
     private let disposeBag = DisposeBag()
+    private let viewWillAppearEvent = PublishRelay<Void>()
     
     //MARK: - Components
     
@@ -45,6 +47,7 @@ final class MyPagePushNotificationViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        viewWillAppearEvent.accept(())
         hideTabBar()
         swipeBackGesture()
         setNavigationBar()
@@ -54,10 +57,12 @@ final class MyPagePushNotificationViewController: UIViewController {
     
     private func bindViewModel() {
         let input = MyPagePushNotificationViewModel.Input(
-            activePushSettingSectionDidTap: rootView.activePushSettingSection.rx.tapGesture()
+            viewWillAppearEvent: viewWillAppearEvent.asObservable(),
+            activePushSettingSectionDidTap: rootView.activePushSettingSection.rx.tap
         )
         let output = viewModel.transform(from: input,
                                          disposeBag: disposeBag)
+        
         output.activePushIsEnabled
             .drive(with: self, onNext: { owner, isEnabled in
                 owner.rootView.bindData(isEnabled: isEnabled)
@@ -70,7 +75,6 @@ final class MyPagePushNotificationViewController: UIViewController {
                 owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
-        
     }
 }
 
