@@ -14,7 +14,7 @@ final class HomeNoticeTableViewCell: UITableViewCell {
     
     //MARK: - UI Components
     
-    private var adminProfileImageView = UIImageView()
+    private var noticeImageView = UIImageView()
     
     private var contentStackView = UIStackView()
     private var titleLabel = UILabel()
@@ -44,9 +44,10 @@ final class HomeNoticeTableViewCell: UITableViewCell {
             $0.backgroundColor = .wssWhite
         }
         
-        adminProfileImageView.do {
-            $0.image = .imgAlertNews
-            $0.layer.cornerRadius = 11.25
+        noticeImageView.do {
+            $0.image = .imgLoadingThumbnail
+            $0.contentMode = .scaleAspectFill
+            $0.layer.cornerRadius = 12
             $0.clipsToBounds = true
         }
         
@@ -71,12 +72,12 @@ final class HomeNoticeTableViewCell: UITableViewCell {
         contentStackView.addArrangedSubviews(titleLabel,
                                              contentLabel,
                                              dateLabel)
-        self.addSubviews(adminProfileImageView,
+        self.addSubviews(noticeImageView,
                          contentStackView)
     }
     
     private func setLayout() {
-        adminProfileImageView.snp.makeConstraints {
+        noticeImageView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(20)
             $0.leading.equalToSuperview().inset(20)
             $0.size.equalTo(36)
@@ -89,20 +90,22 @@ final class HomeNoticeTableViewCell: UITableViewCell {
         
         contentStackView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(20)
-            $0.leading.equalTo(adminProfileImageView.snp.trailing).offset(14)
+            $0.leading.equalTo(noticeImageView.snp.trailing).offset(14)
             $0.trailing.equalToSuperview().inset(20)
         }
     }
     
-    func bindData(data: Notice) {
+    func bindData(data: NotificationEntity) {
+        self.noticeImageView.kfSetImage(url: data.notificationImageURL)
+        
         self.titleLabel.do {
-            $0.applyWSSFont(.title2, with: data.noticeTitle)
+            $0.applyWSSFont(.title2, with: data.notificationTitle)
             $0.lineBreakMode = .byTruncatingTail
             $0.numberOfLines = 1
         }
         
         self.contentLabel.do {
-            $0.applyWSSFont(.body5, with: data.noticeContent)
+            $0.applyWSSFont(.body5, with: data.notificationOverview)
             $0.lineBreakMode = .byTruncatingTail
             $0.numberOfLines = 1
         }
@@ -110,5 +113,7 @@ final class HomeNoticeTableViewCell: UITableViewCell {
         self.dateLabel.do {
             $0.applyWSSFont(.body5, with: data.createdDate)
         }
+        
+        self.backgroundColor = data.isRead ? .wssWhite : .wssPrimary20
     }
 }

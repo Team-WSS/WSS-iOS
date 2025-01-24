@@ -80,8 +80,8 @@ extension UIViewController {
             $0.shadowColor = .clear
         }
         
-        navigationController?.navigationBar.standardAppearance = whiteAppearance
-        navigationController?.navigationBar.scrollEdgeAppearance = isVisible ? whiteAppearance : clearAppearance
+        navigationItem.standardAppearance = whiteAppearance
+        navigationItem.scrollEdgeAppearance = isVisible ? whiteAppearance : clearAppearance
     }
     
     func moveToNovelDetailViewController(userNovelId: Int) {
@@ -397,7 +397,7 @@ extension UIViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func pushToLibraryViewController(userId: Int) {
+    func pushToLibraryViewController(userId: Int, pageIndex: Int = 0) {
         let viewController = LibraryViewController(
             libraryViewModel: LibraryViewModel(
                 userRepository: DefaultUserRepository(
@@ -405,6 +405,7 @@ extension UIViewController {
                     blocksService: DefaultBlocksService()),
                 userId: userId))
         
+        viewController.pageIndex = pageIndex
         viewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(viewController, animated: true)
     }
@@ -440,6 +441,28 @@ extension UIViewController {
             }
             return self
         }
+    
+    func pushToNotificationViewController() {
+        let viewController = HomeNoticeViewController(
+            viewModel: HomeNoticeViewModel(
+                notificationRepository: DefaultNotificationRepository(
+                    notificationService: DefaultNoticeService()
+                )
+            )
+        )
+        viewController.navigationController?.isNavigationBarHidden = false
+        viewController.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func pushToNotificationDetailViewController(notificationId: Int) {
+        let viewController = HomeNoticeDetailViewController(
+            viewModel: HomeNoticeDetailViewModel(
+                notificationRepository: DefaultNotificationRepository(
+                    notificationService: DefaultNoticeService()),
+                notificationId: notificationId))
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
 }
 
 extension UIViewController: @retroactive UIGestureRecognizerDelegate {

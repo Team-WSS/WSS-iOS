@@ -174,8 +174,12 @@ enum URLs {
         static let getTasteRecommendNovels = "/novels/taste"
     }
     
-    enum Notice {
-        static let getNotices = "/notices"
+    enum Notification {
+        static let getNotifications = "/notifications"
+        static func getNotificationDetail(notificationId: Int) -> String {
+            return "/notifications/\(notificationId)"
+        }
+        static let getNotificationUnreadStatus = "/notifications/unread"
     }
     
     enum Search {

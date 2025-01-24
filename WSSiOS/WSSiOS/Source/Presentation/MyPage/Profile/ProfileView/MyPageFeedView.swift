@@ -18,9 +18,9 @@ final class MyPageFeedView: UIView {
     
     let stackView = UIStackView()
     
-    let myPageFeedTableView = NovelDetailFeedListView()
+    let myPageFeedTableView = FeedListView()
     
-    private let showMoreActivityButton = UIView()
+    private let showMoreActivityButtonView = UIView()
     let myPageFeedDetailButton = UIButton()
     let myPageFeedDetailButtonLabel = UILabel()
     private let paddingViewAfterButton = UIView()
@@ -71,11 +71,11 @@ final class MyPageFeedView: UIView {
     private func setHierarchy() {
         self.addSubview(stackView)
         stackView.addArrangedSubviews(myPageFeedTableView,
-                                      showMoreActivityButton,
+                                      showMoreActivityButtonView,
                                       paddingViewAfterButton,
                                       myPagePrivateView,
                                       myPageFeedEmptyView)
-        showMoreActivityButton.addSubview(myPageFeedDetailButton)
+        showMoreActivityButtonView.addSubview(myPageFeedDetailButton)
         myPageFeedDetailButton.addSubview(myPageFeedDetailButtonLabel)
     }
     
@@ -85,7 +85,8 @@ final class MyPageFeedView: UIView {
         }
         
         myPageFeedDetailButton.snp.makeConstraints {
-            $0.top.bottom.equalToSuperview()
+            $0.top.equalToSuperview().inset(28)
+            $0.bottom.equalToSuperview()
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(48)
         }
@@ -115,7 +116,7 @@ final class MyPageFeedView: UIView {
             myPagePrivateView.isHidden = false
             
             [myPageFeedTableView,
-             showMoreActivityButton,
+             showMoreActivityButtonView,
              paddingViewAfterButton,
              myPageFeedEmptyView].forEach { view in
                 view.do {
@@ -137,7 +138,7 @@ final class MyPageFeedView: UIView {
         myPageFeedEmptyView.isHidden = !isEmpty
         
         [myPageFeedTableView,
-         showMoreActivityButton,
+         showMoreActivityButtonView,
          paddingViewAfterButton].forEach { view in
             view.do {
                 $0.isHidden = isEmpty
@@ -146,7 +147,9 @@ final class MyPageFeedView: UIView {
     }
     
     func showMoreButton(isShow: Bool) {
-        showMoreActivityButton.isHidden = !isShow
+        showMoreActivityButtonView.isHidden = !isShow
+        paddingViewAfterButton.isHidden = !isShow
+        
         if isShow {
             paddingViewAfterButton.snp.makeConstraints {
                 $0.width.equalToSuperview()
@@ -154,8 +157,7 @@ final class MyPageFeedView: UIView {
             }
         } else {
             paddingViewAfterButton.snp.makeConstraints {
-                $0.width.equalToSuperview()
-                $0.bottom.equalToSuperview()
+                $0.width.bottom.equalToSuperview()
                 $0.height.greaterThanOrEqualTo(40)
             }
         }

@@ -20,7 +20,7 @@ final class FeedDetailProfileView: UIView {
     private let userNicknameLabel = UILabel()
     private let blackDotImageView = UIImageView()
     private let createdDateLabel = UILabel()
-
+    
     //MARK: - Life Cycle
     
     override init(frame: CGRect) {
@@ -88,11 +88,7 @@ final class FeedDetailProfileView: UIView {
     
     func bindData(data: Feed) {
         userProfileImageView.kfSetImage(url: makeBucketImageURLString(path: data.userProfileImage))
-        if data.userNickname == StringLiterals.Error.unknown {
-            userNicknameLabel.applyWSSFont(.title2, with: StringLiterals.Error.unknownUser)
-        } else {
-            userNicknameLabel.applyWSSFont(.title2, with: data.userNickname)
-        }
+        userNicknameLabel.applyWSSFont(.title2, with: data.userNickname)
         createdDateLabel.applyWSSFont(.body5, with: data.createdDate)
     }
 }

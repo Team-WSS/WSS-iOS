@@ -1,5 +1,5 @@
 //
-//  NovelDetailFeedHeaderView.swift
+//  FeedListHeaderView.swift
 //  WSSiOS
 //
 //  Created by Hyowon Jeon on 9/27/24.
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class NovelDetailFeedHeaderView: UIView {
+final class FeedListHeaderView: UIView {
 
     //MARK: - Components
     
@@ -84,7 +84,7 @@ final class NovelDetailFeedHeaderView: UIView {
                          isModifiedLabel,
                          dropdownButtonView)
         profileView.addArrangedSubviews(userImageView,
-                                     userNicknameLabel)
+                                        userNicknameLabel)
         dropdownButtonView.addSubview(dropdownImageView)
     }
     
@@ -128,11 +128,7 @@ final class NovelDetailFeedHeaderView: UIView {
     
     func bindData(avatarImage: String, nickname: String, createdDate: String, isModified: Bool) {
         userImageView.kfSetImage(url: makeBucketImageURLString(path: avatarImage))
-        if nickname == StringLiterals.Error.unknown {
-            userNicknameLabel.applyWSSFont(.title2, with: StringLiterals.Error.unknownUser)
-        } else {
-            userNicknameLabel.applyWSSFont(.title2, with: nickname)
-        }
+        userNicknameLabel.applyWSSFont(.title2, with: nickname)
         createdDateLabel.applyWSSFont(.body5, with: createdDate)
         isModifiedLabel.isHidden = !isModified
     }

@@ -51,9 +51,6 @@ enum StringLiterals {
         static let title = "네트워크 연결에\n실패했어요"
         static let description = "연결 상태를 확인한 후\n다시 시도해 보세요"
         static let refreshButton = "페이지 다시 불러오기"
-        
-        static let unknown = "알 수 없음"
-        static let unknownUser = "(알 수 없음)"
     }
     
     enum Tabbar {
@@ -602,8 +599,7 @@ enum StringLiterals {
         
         static let deleteMineTitle = "내 댓글을 삭제할까요?"
         static let deleteMineContent = "삭제한 댓글은 되돌릴 수 없어요"
-        
-        static let deleteAccountUserNickname = "(알 수 없음)"
+
         static let hiddenComment = "숨김 처리된 댓글"
         static let spoilerComment = "스포일러가 포함된 댓글 보기"
         static let blckedUser = "차단한 유저"

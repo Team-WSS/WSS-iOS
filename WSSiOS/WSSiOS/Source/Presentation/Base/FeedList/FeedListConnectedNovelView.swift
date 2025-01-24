@@ -1,5 +1,5 @@
 //
-//  NovelDetailFeedConnectedNovelView.swift
+//  FeedListConnectedNovelView.swift
 //  WSSiOS
 //
 //  Created by Hyowon Jeon on 9/27/24.
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class NovelDetailFeedConnectedNovelView: UIView {
+final class FeedListConnectedNovelView: UIView {
 
     //MARK: - Components
     

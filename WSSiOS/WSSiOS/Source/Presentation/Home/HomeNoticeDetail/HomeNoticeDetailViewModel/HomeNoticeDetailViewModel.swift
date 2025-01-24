@@ -14,31 +14,48 @@ final class HomeNoticeDetailViewModel: ViewModelType {
     
     //MARK: - Properties
     
+    private let notificationRepository: NotificationRepository
     private let disposeBag = DisposeBag()
+    
+    let notificationId: Int
+    private let notificationData = PublishSubject<NotificationDetailEntity>()
     
     // MARK: - Inputs
     
     struct Input {
-        let viewWillAppearEvent: Observable<Notice>
+        let viewWillAppearEvent: Observable<Void>
     }
     
     // MARK: - Outputs
     
     struct Output {
-        let noticeData = BehaviorRelay<Notice>(value: Notice(noticeTitle: "", noticeContent: "", createdDate: ""))
+        let notificationData: Observable<NotificationDetailEntity>
     }
-}
-
-extension HomeNoticeDetailViewModel {
+    
+    //MARK: - init
+    
+    init(notificationRepository: NotificationRepository,
+         notificationId: Int) {
+        self.notificationRepository = notificationRepository
+        self.notificationId = notificationId
+    }
+    
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
-        let output = Output()
-        
         input.viewWillAppearEvent
+            .flatMapLatest {
+                self.getNotificationDetail(notificationId: self.notificationId)
+            }
             .subscribe(with: self, onNext: { owner, data in
-                output.noticeData.accept(data)
+                owner.notificationData.onNext(data)
             })
             .disposed(by: disposeBag)
         
-        return output
+        return Output(notificationData: self.notificationData.asObservable())
+    }
+    
+    //MARK: - API
+    
+    func getNotificationDetail(notificationId: Int) -> Observable<NotificationDetailEntity> {
+        return notificationRepository.getNotificationDetail(notificationId: notificationId)
     }
 }
