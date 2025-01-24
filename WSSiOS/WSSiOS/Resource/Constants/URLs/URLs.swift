@@ -48,10 +48,6 @@ enum URLs {
         }
         static let isProfileVisibility = "\(userBasePath)/profile-status"
         static let getAppMinimumVersion = "/minimum-version"
-        
-        // PushNotification
-        static let fcmToken = "/users/fcm-token"
-        static let pushNotificationSetting = "/users/push-settings"
     }
     
     enum NovelDetail {
@@ -183,6 +179,9 @@ enum URLs {
         static func postNotificationRead(notificationId: Int) -> String {
             return "/notifications/\(notificationId)/read"
         }
+        
+        static let fcmToken = "/users/fcm-token"
+        static let pushNotificationSetting = "/users/push-settings"
     }
     
     enum Search {

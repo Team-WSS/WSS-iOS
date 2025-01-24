@@ -105,7 +105,7 @@ final class DefaultNoticeService: NSObject, Networking, NotificationService {
             let fcmTokenBody = try JSONEncoder().encode(FCMTokenResult(fcmToken: fcmToken,
                                                                        deviceIdentifier: deviceIdentifier))
             let request = try makeHTTPRequest(method: .post,
-                                              path: URLs.User.fcmToken,
+                                              path: URLs.Notification.fcmToken,
                                               headers: APIConstants.accessTokenHeader,
                                               body: fcmTokenBody)
             
@@ -123,7 +123,7 @@ final class DefaultNoticeService: NSObject, Networking, NotificationService {
         do {
             let requestBody = try JSONEncoder().encode(PushNotificationSettingResult(isPushEnabled: isPushEnabled))
             let request = try makeHTTPRequest(method: .post,
-                                              path: URLs.User.pushNotificationSetting,
+                                              path: URLs.Notification.pushNotificationSetting,
                                               headers: APIConstants.accessTokenHeader,
                                               body: requestBody)
             
@@ -140,7 +140,7 @@ final class DefaultNoticeService: NSObject, Networking, NotificationService {
     func getUserPushNotificationSetting() -> Single<PushNotificationSettingResult> {
         do {
             let request = try makeHTTPRequest(method: .get,
-                                              path: URLs.User.pushNotificationSetting,
+                                              path: URLs.Notification.pushNotificationSetting,
                                               headers: APIConstants.accessTokenHeader,
                                               body: nil)
             
