@@ -35,10 +35,11 @@ final class NotificationHelper: NSObject {
     func setRemoteNotification() async {
         if await requestNotificationAuthorization() {
             print("알림 권한 허용")
-            registerForAPNs()
         } else {
             print("알림 권한 거부")
         }
+        // 권한 여부와 관계없이 알림 설정은 On이라 가정하고 일단 진행. 권한이 없으면 알림 못받으니 괜찮음.
+        registerForAPNs()
     }
     
     /// 알림 권한 요청
@@ -90,7 +91,7 @@ extension NotificationHelper: UNUserNotificationCenterDelegate {
     }
     
     /// userInfo에 담긴 데이터에 따라 최상단 VC에서 화면 이동을 수행함
-    func moveToTargetViewController(_ userInfo: [AnyHashable: Any]) {
+    private func moveToTargetViewController(_ userInfo: [AnyHashable: Any]) {
         print("GG")
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
               let window = windowScene.windows.first,
@@ -127,26 +128,23 @@ extension NotificationHelper: MessagingDelegate {
         do {
             let deviceIdentifier = try getOrCreateDeviceIdentifier()
             print("Identifier", deviceIdentifier)
+            
+            userRepository.postUserFCMToken(fcmToken: token, deviceIdentifier: deviceIdentifier)
+                .retry(3)
+                .do(onSuccess: { _ in
+                    print("웹소소 서버에 fcm 토큰 등록 성공")
+                }, onError: { error in
+                    print("웹소소 서버에 fcm 토큰 등록 실패")
+                    print(error)
+                })
+                .subscribe()
+                .disposed(by: disposeBag)
         } catch {
             print(error)
         }
-        
-        
-//        userRepository.postUserFCMToken(fcmToken: token, deviceIdentifier: deviceIdentifier)
-//            .do(onSuccess: { _ in
-//                print("토큰 등록 성공")
-//            }, onError: { error in
-//                print(error)
-//            })
-//            .subscribe(with: self, onSuccess: { owner, _ in
-//                
-//            }, onFailure: { owner, error in
-//                
-//            })
-//            .disposed(by: disposeBag)
     }
     
-    func getOrCreateDeviceIdentifier() throws -> String {
+    private func getOrCreateDeviceIdentifier() throws -> String {
         if let previousIdentifier = try? KeychainHelper.shared.read(forKey: StringLiterals.KeyChain.deviceIdentifier) {
             return String(decoding: previousIdentifier, as: UTF8.self)
         } else {

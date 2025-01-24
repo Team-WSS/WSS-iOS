@@ -1,6 +1,11 @@
-import Foundation
+//
+//  KeychainHelper.swift
+//  WSSiOS
+//
+//  Created by YunhakLee on 1/24/25.
+//
 
-// MARK: - Protocols
+import Foundation
 
 protocol KeychainBasic {
     func create(data: Data?, forKey account: String) throws
@@ -8,8 +13,6 @@ protocol KeychainBasic {
     func update(data: Data?, forKey account: String) throws
     func delete(forKey account: String) throws
 }
-
-// MARK: - KeychainHelper
 
 final class KeychainHelper: KeychainBasic {
     static let shared = KeychainHelper()
