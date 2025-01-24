@@ -79,16 +79,14 @@ final class HomeNoticeViewModel: ViewModelType {
             }
             .subscribe(with: self, onNext: { owner, notification in
                 let notificationId = notification.notificationId
-                guard let feedId = notification.feedId else { return }
-                
                 if notification.isNotice {
                     owner.pushToNoticeDetailViewController.accept(notificationId)
                 } else if notification.isRead {
-                    owner.pushToFeedDetailViewController.accept(feedId)
+                    owner.pushToFeedDetailViewController.accept(notification.feedId ?? -1)
                 } else {
                     self.postNotificationRead(notificationId: notificationId)
                         .subscribe(onCompleted: {
-                            self.pushToFeedDetailViewController.accept(feedId)
+                            self.pushToFeedDetailViewController.accept(notification.feedId ?? -1)
                         })
                         .disposed(by: self.disposeBag)
                 }
