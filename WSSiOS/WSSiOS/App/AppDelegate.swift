@@ -15,6 +15,15 @@ import RxKakaoSDKCommon
 class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        // Firebase Info 파일 디버그-릴리즈 버전 적용 분기처리
+#if DEBUG
+        let filePath = Bundle.main.path(forResource: "GoogleService-Info-Debug", ofType: "plist")!
+#else
+        let filePath = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist")!
+#endif
+        let options: FirebaseOptions? = FirebaseOptions.init(contentsOfFile: filePath)
+        
         RxKakaoSDK.initSDK(appKey: APIConstants.kakaoAppKey)
         
         FirebaseApp.configure()
