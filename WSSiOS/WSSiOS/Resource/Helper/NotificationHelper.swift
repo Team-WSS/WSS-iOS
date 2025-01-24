@@ -126,10 +126,26 @@ extension NotificationHelper: UNUserNotificationCenterDelegate {
         switch view {
         case StringLiterals.NotificationCenter.Value.feedDetail:
             if let feedIdString = userInfo[StringLiterals.NotificationCenter.Key.feedId] as? String,
-               let feedId =  Int(feedIdString) {
+               let feedId = Int(feedIdString) {
+                postNotificationRead(userInfo)
                 topViewController.pushToFeedDetailViewController(feedId: feedId)
             }
         default: break
+        }
+    }
+    
+    func postNotificationRead(_ userInfo: [AnyHashable: Any]) {
+        if let notificationIdString = userInfo[StringLiterals.NotificationCenter.Key.notificationId] as? String,
+           let notificationId = Int(notificationIdString) {
+            notificationRepository.postNotificationRead(notificationId: notificationId)
+                .do(onNext: { _ in
+                    print("알림 읽기 처리 성공!")
+                },onError: { error in
+                    print("알림 읽기 처리 실패")
+                    print(error)
+                })
+                .subscribe()
+                .disposed(by: disposeBag)
         }
     }
 }

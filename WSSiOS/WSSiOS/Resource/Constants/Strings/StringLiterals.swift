@@ -27,6 +27,7 @@ enum StringLiterals {
         enum Key {
             static let view = "view"
             static let feedId = "feedId"
+            static let notificationId = "notificationId"
         }
         
         enum Value {
