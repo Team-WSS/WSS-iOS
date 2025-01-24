@@ -74,14 +74,23 @@ final class HomeNoticeViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.noticeTableViewCellSelected
-            .subscribe(with: self, onNext: { owner, indexPath in
-                let isNotice = owner.notificationList.value[indexPath.row].isNotice
-                if isNotice {
-                    let notificationId = owner.notificationList.value[indexPath.row].notificationId
+            .map { indexPath -> NotificationEntity in
+                return self.notificationList.value[indexPath.row]
+            }
+            .subscribe(with: self, onNext: { owner, notification in
+                let notificationId = notification.notificationId
+                guard let feedId = notification.feedId else { return }
+                
+                if notification.isNotice {
                     owner.pushToNoticeDetailViewController.accept(notificationId)
-                } else {
-                    let feedId = owner.notificationList.value[indexPath.row].feedId ?? -1
+                } else if notification.isRead {
                     owner.pushToFeedDetailViewController.accept(feedId)
+                } else {
+                    self.postNotificationRead(notificationId: notificationId)
+                        .subscribe(onCompleted: {
+                            self.pushToFeedDetailViewController.accept(feedId)
+                        })
+                        .disposed(by: self.disposeBag)
                 }
             })
             .disposed(by: disposeBag)
