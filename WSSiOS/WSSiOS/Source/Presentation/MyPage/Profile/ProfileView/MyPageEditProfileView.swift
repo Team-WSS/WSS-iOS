@@ -463,6 +463,7 @@ extension MyPageEditProfileView {
     }
     
     func updateIntro(text: String) {
+        print(introTextView.typingAttributes, "😍")
         introCountView.countLabel.applyWSSFont(.body4, with: String(text.count))
     }
     
