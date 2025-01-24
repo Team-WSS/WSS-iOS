@@ -380,7 +380,7 @@ extension MyPageEditProfileView {
     }
     
     //닉네임
-    func updateNicknameText(text: String) {
+    func updateNicknameCount(text: String) {
         nicknameCountView.countLabel.applyWSSFont(.body4, with: String(text.count))
     }
     
@@ -462,8 +462,7 @@ extension MyPageEditProfileView {
         }
     }
     
-    func updateIntro(text: String) {
-        print(introTextView.typingAttributes, "😍")
+    func updateIntroCount(text: String) {
         introCountView.countLabel.applyWSSFont(.body4, with: String(text.count))
     }
     
