@@ -139,7 +139,6 @@ final class MyPageEditProfileView: UIView {
                 $0.layer.cornerRadius = 14
                 $0.textContainerInset = UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)
                 $0.tintColor = .wssBlack
-                $0.font = .Body2
             }
             
             introTextViewPlaceholder.do {
@@ -464,14 +463,12 @@ extension MyPageEditProfileView {
     }
     
     func updateIntro(text: String) {
-//        introTextView.applyWSSFont(.body2, with: text)
         introCountView.countLabel.applyWSSFont(.body4, with: String(text.count))
     }
     
     //MARK: - Data
     
     func bindData(data: MyProfileResult) {
-        
         nicknameTextField.makeAttribute(with: data.nickname)
             .kerning(kerningPixel: -0.6)
             .applyAttribute()
