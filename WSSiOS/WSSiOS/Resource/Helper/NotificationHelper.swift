@@ -12,13 +12,12 @@ import RxSwift
 
 final class NotificationHelper: NSObject {
     static let shared = NotificationHelper()
-    private let userRepository: UserRepository
+    private let notificationRepository: NotificationRepository
     private let disposeBag = DisposeBag()
     
     private override init() {
-        self.userRepository = DefaultUserRepository(
-            userService: DefaultUserService(),
-            blocksService: DefaultBlocksService()
+        self.notificationRepository = DefaultNotificationRepository(
+            notificationService: DefaultNoticeService()
         )
         super.init()
     }
@@ -151,7 +150,7 @@ extension NotificationHelper: MessagingDelegate {
             let deviceIdentifier = try getOrCreateDeviceIdentifier()
             print("Identifier", deviceIdentifier)
             
-            userRepository.postUserFCMToken(fcmToken: token, deviceIdentifier: deviceIdentifier)
+            notificationRepository.postUserFCMToken(fcmToken: token, deviceIdentifier: deviceIdentifier)
                 .retry(3)
                 .do(onSuccess: { _ in
                     print("웹소소 서버에 fcm 토큰 등록 성공")

@@ -14,15 +14,15 @@ final class MyPagePushNotificationViewModel: ViewModelType {
 
     //MARK: - Properties
     
-    private let userRepository: UserRepository
+    private let notificationRepository: NotificationRepository
     private let disposeBag = DisposeBag()
     
     private let activePushIsEnabled = BehaviorRelay<Bool>(value: true)
     
     //MARK: - Life Cycle
     
-    init(userRepository: UserRepository) {
-        self.userRepository = userRepository
+    init(notificationRepository: NotificationRepository) {
+        self.notificationRepository = notificationRepository
     }
     
     struct Input {
@@ -56,7 +56,7 @@ final class MyPagePushNotificationViewModel: ViewModelType {
     }
     
     func getUserPushNotificationSetting() {
-        userRepository.getUserPushNotificationSetting()
+        notificationRepository.getUserPushNotificationSetting()
             .subscribe(with: self, onSuccess: { owner, data in
                 owner.activePushIsEnabled.accept(data.isPushEnabled)
             }, onFailure: { onwer, error in
@@ -66,7 +66,7 @@ final class MyPagePushNotificationViewModel: ViewModelType {
     }
     
     func postUserPushNotificationSetting(isPushEnabled: Bool) {
-        userRepository.postUserPushNotificationSetting(isPushEnabled: isPushEnabled)
+        notificationRepository.postUserPushNotificationSetting(isPushEnabled: isPushEnabled)
             .subscribe(with: self, onSuccess: { owner, _ in
                 owner.activePushIsEnabled.accept(isPushEnabled)
             })

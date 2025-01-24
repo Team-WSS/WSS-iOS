@@ -33,11 +33,6 @@ protocol UserRepository {
                           size: Int,
                           sortType: String) -> Observable<UserNovelList>
     func getAppMinimumVersion() -> Observable<AppMinimumVersion>
-    
-    // Push Notification
-    func postUserFCMToken(fcmToken: String, deviceIdentifier: String) -> Single<Void>
-    func postUserPushNotificationSetting(isPushEnabled: Bool) -> Single<Void>
-    func getUserPushNotificationSetting() -> Single<PushNotificationSettingResult>
 }
 
 struct DefaultUserRepository: UserRepository {
@@ -149,21 +144,5 @@ struct DefaultUserRepository: UserRepository {
     func getAppMinimumVersion() -> Observable<AppMinimumVersion> {
         return userService.getAppMinimumVersion()
             .asObservable()
-    }
-}
-
-
-// PushNotification
-extension DefaultUserRepository {
-    func postUserFCMToken(fcmToken: String, deviceIdentifier: String) -> Single<Void> {
-        userService.postUserFCMToken(fcmToken: fcmToken, deviceIdentifier: deviceIdentifier)
-    }
-    
-    func postUserPushNotificationSetting(isPushEnabled: Bool) -> Single<Void> {
-        userService.postUserPushNotificationSetting(isPushEnabled: isPushEnabled)
-    }
-    
-    func getUserPushNotificationSetting() -> Single<PushNotificationSettingResult> {
-        userService.getUserPushNotificationSetting()
     }
 }
