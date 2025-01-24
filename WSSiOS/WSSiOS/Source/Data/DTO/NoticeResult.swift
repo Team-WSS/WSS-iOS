@@ -30,3 +30,8 @@ struct NotificationDetailResult: Codable {
     var notificationCreatedDate: String
     var notificationDetail: String
 }
+
+// 유저 비열람 알림 존재 여부 조회
+struct NotificationUnreadStatusResult: Codable {
+    var hasUnreadNotifications: Bool
+}
