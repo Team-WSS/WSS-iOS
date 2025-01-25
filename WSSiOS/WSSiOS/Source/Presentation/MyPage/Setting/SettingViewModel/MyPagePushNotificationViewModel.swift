@@ -55,6 +55,8 @@ final class MyPagePushNotificationViewModel: ViewModelType {
         )
     }
     
+    // MARK: - API
+    
     func getUserPushNotificationSetting() {
         notificationRepository.getUserPushNotificationSetting()
             .subscribe(with: self, onSuccess: { owner, data in
