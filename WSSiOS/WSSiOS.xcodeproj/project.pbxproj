@@ -184,8 +184,18 @@
 		39D4A5E42BDF90FB004FC834 /* NovelDetailHeaderReviewResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5E32BDF90FB004FC834 /* NovelDetailHeaderReviewResultView.swift */; };
 		39DFB0ED2CABDFC000F87951 /* OnboardingGenrePreferenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39DFB0EC2CABDFC000F87951 /* OnboardingGenrePreferenceView.swift */; };
 		39DFB0EF2CABE47B00F87951 /* OnboardingGenreButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39DFB0EE2CABE47B00F87951 /* OnboardingGenreButtonView.swift */; };
+		39E0E9272D3E7CC80034B639 /* PushNotificationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E0E9262D3E7CC60034B639 /* PushNotificationResult.swift */; };
+		39E0EA032D40CD9D0034B639 /* MyPagePushNotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E0EA022D40CD890034B639 /* MyPagePushNotificationViewController.swift */; };
+		39E0EA052D40D0F20034B639 /* MyPagePushNotificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E0EA042D40D0F20034B639 /* MyPagePushNotificationViewModel.swift */; };
+		39E0EA072D40D2260034B639 /* MyPagePushNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E0EA062D40D2260034B639 /* MyPagePushNotificationView.swift */; };
+		39E0EA092D4267660034B639 /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E0EA082D4267660034B639 /* KeychainHelper.swift */; };
 		39E8FD902C742CE100AD6F30 /* NovelDetailHeaderReadStatusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E8FD8F2C742CE100AD6F30 /* NovelDetailHeaderReadStatusButton.swift */; };
 		39E8FD922C743D8000AD6F30 /* NovelDetailHeaderReadInfoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E8FD912C743D8000AD6F30 /* NovelDetailHeaderReadInfoButton.swift */; };
+		39EDB8352D4500470023935F /* GoogleService-Info-Debug.plist in Resources */ = {isa = PBXBuildFile; fileRef = 39EDB8342D4500470023935F /* GoogleService-Info-Debug.plist */; };
+		39EDB8362D4500470023935F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 39EDB8332D4500470023935F /* GoogleService-Info.plist */; };
+		39EDFB392D38D9A7009F071A /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 39EDFB382D38D9A7009F071A /* FirebaseAnalytics */; };
+		39EDFB3B2D38D9A7009F071A /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 39EDFB3A2D38D9A7009F071A /* FirebaseMessaging */; };
+		39EDFB3D2D390131009F071A /* NotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EDFB3C2D390131009F071A /* NotificationHelper.swift */; };
 		39EF97AC2B53E43800D2148B /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 39EF97AB2B53E43800D2148B /* Lottie */; };
 		39F686FC2C6F5BB90065999F /* NovelDetailInfoReviewKeywordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39F686FB2C6F5BB90065999F /* NovelDetailInfoReviewKeywordView.swift */; };
 		39F686FE2C6F5D5C0065999F /* NovelDetailInfoReviewGraphStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39F686FD2C6F5D5C0065999F /* NovelDetailInfoReviewGraphStackView.swift */; };
@@ -568,8 +578,16 @@
 		39D4A5E32BDF90FB004FC834 /* NovelDetailHeaderReviewResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailHeaderReviewResultView.swift; sourceTree = "<group>"; };
 		39DFB0EC2CABDFC000F87951 /* OnboardingGenrePreferenceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingGenrePreferenceView.swift; sourceTree = "<group>"; };
 		39DFB0EE2CABE47B00F87951 /* OnboardingGenreButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingGenreButtonView.swift; sourceTree = "<group>"; };
+		39E0E9262D3E7CC60034B639 /* PushNotificationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationResult.swift; sourceTree = "<group>"; };
+		39E0EA022D40CD890034B639 /* MyPagePushNotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPagePushNotificationViewController.swift; sourceTree = "<group>"; };
+		39E0EA042D40D0F20034B639 /* MyPagePushNotificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPagePushNotificationViewModel.swift; sourceTree = "<group>"; };
+		39E0EA062D40D2260034B639 /* MyPagePushNotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPagePushNotificationView.swift; sourceTree = "<group>"; };
+		39E0EA082D4267660034B639 /* KeychainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHelper.swift; sourceTree = "<group>"; };
 		39E8FD8F2C742CE100AD6F30 /* NovelDetailHeaderReadStatusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailHeaderReadStatusButton.swift; sourceTree = "<group>"; };
 		39E8FD912C743D8000AD6F30 /* NovelDetailHeaderReadInfoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailHeaderReadInfoButton.swift; sourceTree = "<group>"; };
+		39EDB8332D4500470023935F /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		39EDB8342D4500470023935F /* GoogleService-Info-Debug.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info-Debug.plist"; sourceTree = "<group>"; };
+		39EDFB3C2D390131009F071A /* NotificationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHelper.swift; sourceTree = "<group>"; };
 		39F686FB2C6F5BB90065999F /* NovelDetailInfoReviewKeywordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoReviewKeywordView.swift; sourceTree = "<group>"; };
 		39F686FD2C6F5D5C0065999F /* NovelDetailInfoReviewGraphStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailInfoReviewGraphStackView.swift; sourceTree = "<group>"; };
 		39F686FF2C6F60400065999F /* ReadStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadStatus.swift; sourceTree = "<group>"; };
@@ -797,7 +815,9 @@
 				2CD229442B42E7A2005400BE /* RxRelay in Frameworks */,
 				2CD229472B42E7C8005400BE /* Lottie in Frameworks */,
 				2CD229402B42E7A2005400BE /* RxCocoa in Frameworks */,
+				39EDFB3B2D38D9A7009F071A /* FirebaseMessaging in Frameworks */,
 				3916EC862B89B42C007835B5 /* RxGesture in Frameworks */,
+				39EDFB392D38D9A7009F071A /* FirebaseAnalytics in Frameworks */,
 				2CD2293C2B42E7A2005400BE /* RxBlocking in Frameworks */,
 				398F933E2CE66C3500C0F916 /* RxKakaoSDKCommon in Frameworks */,
 				2C9BDDA72CA79F420026D038 /* Kingfisher in Frameworks */,
@@ -975,6 +995,8 @@
 				2CD229292B42E687005400BE /* Info.plist */,
 				E486AE282CFEB2CC00465AEE /* Debug.xcconfig */,
 				E4EC12DF2D06FDB200B961BB /* Release.xcconfig */,
+				39EDB8332D4500470023935F /* GoogleService-Info.plist */,
+				39EDB8342D4500470023935F /* GoogleService-Info-Debug.plist */,
 			);
 			path = WSSiOS;
 			sourceTree = "<group>";
@@ -1234,6 +1256,7 @@
 				2C81DF882CA1512400148F97 /* MyPageChangeUserBirthView.swift */,
 				2CFA9A102C9D7EA300A4A820 /* MyPageChangeUserInfoView.swift */,
 				2CBBE80F2CE7C72A00DAF3DC /* MyPageProfileVisibilityView.swift */,
+				39E0EA062D40D2260034B639 /* MyPagePushNotificationView.swift */,
 			);
 			path = SettingView;
 			sourceTree = "<group>";
@@ -1249,6 +1272,7 @@
 				2C81DF862CA150DE00148F97 /* MyPageChangeUserBirthViewController.swift */,
 				2CFA9A0E2C9D7E8600A4A820 /* MyPageChangeUserInfoViewController.swift */,
 				2CBBE80D2CE7C70400DAF3DC /* MyPageProfileVisibilityViewController.swift */,
+				39E0EA022D40CD890034B639 /* MyPagePushNotificationViewController.swift */,
 			);
 			path = SettingViewController;
 			sourceTree = "<group>";
@@ -1261,6 +1285,7 @@
 				2CFA9A122C9D7EE600A4A820 /* MyPageChangeUserInfoViewModel.swift */,
 				2C9A19702C56925F0043044A /* MyPageInfoViewModel.swift */,
 				2CBBE80B2CE7C6E500DAF3DC /* MyPageProfileVisibilityViewModel.swift */,
+				39E0EA042D40D0F20034B639 /* MyPagePushNotificationViewModel.swift */,
 			);
 			path = SettingViewModel;
 			sourceTree = "<group>";
@@ -1344,6 +1369,8 @@
 			children = (
 				3916EC882B89D23D007835B5 /* ModuleFactory.swift */,
 				394CFD3A2CA2E7760053C8EA /* KingFisherRxHelper.swift */,
+				39EDFB3C2D390131009F071A /* NotificationHelper.swift */,
+				39E0EA082D4267660034B639 /* KeychainHelper.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -1816,6 +1843,7 @@
 		A1EF35552B52FA9700A94C53 /* DTO */ = {
 			isa = PBXGroup;
 			children = (
+				39E0E9262D3E7CC60034B639 /* PushNotificationResult.swift */,
 				A1B903E42B58140800398890 /* UserNovelListResult.swift */,
 				2C9A19642C567AE40043044A /* MyProfileResult.swift */,
 				A1EF35682B52FD9B00A94C53 /* AvatarResult.swift */,
@@ -2459,6 +2487,8 @@
 				398F933D2CE66C3500C0F916 /* RxKakaoSDKCommon */,
 				394401A92CE9B07B007B5E04 /* Then */,
 				CDE0C0302D23B04D000BC822 /* AmplitudeSwift */,
+				39EDFB382D38D9A7009F071A /* FirebaseAnalytics */,
+				39EDFB3A2D38D9A7009F071A /* FirebaseMessaging */,
 			);
 			productName = WSSiOS;
 			productReference = 2CD229182B42E685005400BE /* WSSiOS.app */;
@@ -2499,6 +2529,7 @@
 				390162CA2CE6575D00B7476C /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */,
 				394401A82CE9B07B007B5E04 /* XCRemoteSwiftPackageReference "Then" */,
 				CDE0C02F2D23B04C000BC822 /* XCRemoteSwiftPackageReference "Amplitude-Swift" */,
+				39EDFB372D38D9A7009F071A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = 2CD229192B42E685005400BE /* Products */;
 			projectDirPath = "";
@@ -2526,6 +2557,8 @@
 				39B75AD82B59891D005DD8B9 /* regressorGreeting.json in Resources */,
 				2C79CB952B45A0A400734E1F /* Pretendard-SemiBold.otf in Resources */,
 				39B75ADC2B59891D005DD8B9 /* sosocatBread.json in Resources */,
+				39EDB8352D4500470023935F /* GoogleService-Info-Debug.plist in Resources */,
+				39EDB8362D4500470023935F /* GoogleService-Info.plist in Resources */,
 				2C79CB972B45A0AB00734E1F /* Pretendard-Medium.otf in Resources */,
 				390F546C2CD54541002D24E1 /* scroll.json in Resources */,
 				E4EC12E02D06FDB200B961BB /* Release.xcconfig in Resources */,
@@ -2597,6 +2630,7 @@
 				2CFA9A0F2C9D7E8600A4A820 /* MyPageChangeUserInfoViewController.swift in Sources */,
 				2CCBF9F02B4C1FD800D787C2 /* MyPageView.swift in Sources */,
 				39BA7F6F2BCAADDF0045B2B7 /* KeywordTag.swift in Sources */,
+				39E0EA052D40D0F20034B639 /* MyPagePushNotificationViewModel.swift in Sources */,
 				2C9A196F2C56923B0043044A /* MyPageSettingViewController.swift in Sources */,
 				39D4A5E02BDF746C004FC834 /* NovelGenre.swift in Sources */,
 				2CFA9A132C9D7EE600A4A820 /* MyPageChangeUserInfoViewModel.swift in Sources */,
@@ -2619,6 +2653,7 @@
 				2CD9115C2C0D8A26006B8D72 /* FeedViewController.swift in Sources */,
 				394CFD3B2CA2E7760053C8EA /* KingFisherRxHelper.swift in Sources */,
 				39B6B6A32C649F3300D80BD9 /* NovelDetailInfoReviewGraphView.swift in Sources */,
+				39E0EA092D4267660034B639 /* KeychainHelper.swift in Sources */,
 				CDA5F03C2C2FDB3100FCF15C /* FeedEditViewModel.swift in Sources */,
 				B9181BDC2BEBDFA80024C800 /* HomeTasteRecommendView.swift in Sources */,
 				2C8F894D2C50E0060056895B /* MyPageDeleteIDView.swift in Sources */,
@@ -2646,6 +2681,7 @@
 				C9A3CD452C8C3BA500B43BFB /* SearchService.swift in Sources */,
 				A1EF355A2B52FAD300A94C53 /* RecommendService.swift in Sources */,
 				2C9A19712C56925F0043044A /* MyPageInfoViewModel.swift in Sources */,
+				39E0E9272D3E7CC80034B639 /* PushNotificationResult.swift in Sources */,
 				39D4A5D02BDA50E8004FC834 /* NovelDetailRepository.swift in Sources */,
 				E497C9B62CF3AFBD0079C30D /* MyPageEditAvatarViewController.swift in Sources */,
 				E40746702CE8DAB6005D75D5 /* MyPageGenrePreferencesOtherView.swift in Sources */,
@@ -2705,6 +2741,7 @@
 				C99DDFD52C86138E00EDC0C4 /* SearchBarView.swift in Sources */,
 				2CD911562C0D8A1A006B8D72 /* FeedPageBarCollectionViewCell.swift in Sources */,
 				B9ACACC12CE3A7E400D1D47A /* HomeInterestEmptyView.swift in Sources */,
+				39E0EA032D40CD9D0034B639 /* MyPagePushNotificationViewController.swift in Sources */,
 				39BA7F752BCABF1D0045B2B7 /* KeywordLink.swift in Sources */,
 				CD8747A92C9EDA3000D0ADAD /* NovelDateSelectModalTitleView.swift in Sources */,
 				CD1F7E082C9968950039972C /* NovelKeywordSelectSearchResultCollectionViewCell.swift in Sources */,
@@ -2763,6 +2800,7 @@
 				2CD9114A2C0D8948006B8D72 /* FeedContentView.swift in Sources */,
 				C99DDFDF2C8613C900EDC0C4 /* SearchViewController.swift in Sources */,
 				2CCBF9EE2B4C1FC500D787C2 /* MyPageViewController.swift in Sources */,
+				39E0EA072D40D2260034B639 /* MyPagePushNotificationView.swift in Sources */,
 				CDC03F452CA67421002D301F /* KeywordRepository.swift in Sources */,
 				CD2D0AB42C7EFEAF007CF1F1 /* NovelReviewStatusView.swift in Sources */,
 				CDA5F03A2C2FDB2200FCF15C /* FeedEditViewController.swift in Sources */,
@@ -2879,6 +2917,7 @@
 				2CA2F6622B530BBF0045B4C2 /* LibraryCollectionViewCell.swift in Sources */,
 				39E8FD902C742CE100AD6F30 /* NovelDetailHeaderReadStatusButton.swift in Sources */,
 				2C81DF872CA150DE00148F97 /* MyPageChangeUserBirthViewController.swift in Sources */,
+				39EDFB3D2D390131009F071A /* NotificationHelper.swift in Sources */,
 				395928932C98889B00E7B17B /* LoginView.swift in Sources */,
 				CDC03F4F2CA6C4E0002D301F /* NovelReviewRepository.swift in Sources */,
 				CD8747B52C9EF31E00D0ADAD /* NovelDateSelectModalDateButtonView.swift in Sources */,
@@ -3202,6 +3241,14 @@
 				minimumVersion = 0.8.3;
 			};
 		};
+		39EDFB372D38D9A7009F071A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.7.0;
+			};
+		};
 		CD3E5A832B54254F00C0A659 /* XCRemoteSwiftPackageReference "RxKeyboard" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/RxSwiftCommunity/RxKeyboard";
@@ -3280,6 +3327,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3999BFEC2B4E6CA000984832 /* XCRemoteSwiftPackageReference "UIImageViewAlignedSwift" */;
 			productName = UIImageViewAlignedSwift;
+		};
+		39EDFB382D38D9A7009F071A /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 39EDFB372D38D9A7009F071A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		39EDFB3A2D38D9A7009F071A /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 39EDFB372D38D9A7009F071A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
 		};
 		39EF97AB2B53E43800D2148B /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -80,6 +80,7 @@ final class MyPageViewController: UIViewController {
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
         self.viewWillAppearEvent.onNext(())
         decideNavigation(myPage: entryType == .tabBar, navigationTitle: navigationTitle)
+        swipeBackGesture()
     }
     
     override func viewDidLayoutSubviews() {

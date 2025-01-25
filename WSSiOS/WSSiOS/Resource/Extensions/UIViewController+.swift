@@ -191,24 +191,24 @@ extension UIViewController {
     func presentModalViewController(_ viewController: UIViewController) {
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
               let window = windowScene.windows.first else { return }
-           
-           let blackOverlayView = UIView(frame: window.bounds).then {
-               $0.backgroundColor = UIColor.black.withAlphaComponent(0)
-               $0.tag = 999
-           }
-           
-           window.addSubview(blackOverlayView)
-           
-           blackOverlayView.snp.makeConstraints {
-               $0.edges.equalToSuperview()
-           }
-           
-           UIView.animate(withDuration: 0.3) {
-               blackOverlayView.backgroundColor = UIColor.black.withAlphaComponent(0.6)
-           }
-           
-           viewController.modalPresentationStyle = .overFullScreen
-           self.present(viewController, animated: true)
+        
+        let blackOverlayView = UIView(frame: window.bounds).then {
+            $0.backgroundColor = UIColor.black.withAlphaComponent(0)
+            $0.tag = 999
+        }
+        
+        window.addSubview(blackOverlayView)
+        
+        blackOverlayView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
+        UIView.animate(withDuration: 0.3) {
+            blackOverlayView.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        }
+        
+        viewController.modalPresentationStyle = .overFullScreen
+        self.present(viewController, animated: true)
         
         
     }
@@ -216,7 +216,7 @@ extension UIViewController {
     func dismissModalViewController() {
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
               let window = windowScene.windows.first else { return }
-
+        
         guard let blackOverlayView = window.viewWithTag(999) else { return }
         
         UIView.animate(withDuration: 0.3, animations: {
@@ -375,6 +375,16 @@ extension UIViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
+    func pushToMyPagePushNotificationViewController() {
+        let viewController = MyPagePushNotificationViewController(
+            viewModel: MyPagePushNotificationViewModel(
+                notificationRepository: DefaultNotificationRepository(
+                    notificationService: DefaultNoticeService())))
+        viewController.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(viewController, animated: true)
+        
+    }
+    
     func pushToChangeUserInfoViewController() {
         let viewController = MyPageChangeUserInfoViewController(
             viewModel: MyPageChangeUserInfoViewModel(
@@ -416,6 +426,19 @@ extension UIViewController {
         feedDetailUnknownFeedErrorViewController.modalTransitionStyle = .crossDissolve
         
         self.present(feedDetailUnknownFeedErrorViewController, animated: true)
+    }
+    
+    func topViewController() -> UIViewController {
+        if let presented = self.presentedViewController {
+            return presented.topViewController()
+        }
+        if let navigation = self as? UINavigationController {
+            return navigation.visibleViewController?.topViewController() ?? navigation
+        }
+        if let tab = self as? UITabBarController {
+            return tab.selectedViewController?.topViewController() ?? tab
+        }
+        return self
     }
     
     func pushToNotificationViewController() {

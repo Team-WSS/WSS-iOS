@@ -59,6 +59,7 @@ final class HomeViewController: UIViewController {
         registerCell()
         setDelegate()
         bindViewModel()
+        setRemoteNotification()
         
         viewDidLoadEvent.accept(())
     }
@@ -261,6 +262,12 @@ final class HomeViewController: UIViewController {
     
     func scrollToTop() {
         self.rootView.scrollView.setContentOffset(CGPoint(x: 0, y: -self.rootView.scrollView.contentInset.top), animated: true)
+    }
+    
+    func setRemoteNotification() {
+        Task {
+            await NotificationHelper.shared.setRemoteNotification()
+        }
     }
 }
 

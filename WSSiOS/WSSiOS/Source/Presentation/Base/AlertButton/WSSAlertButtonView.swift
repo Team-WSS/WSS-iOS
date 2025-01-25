@@ -87,12 +87,12 @@ final class WSSAlertButtonView: UIView {
         
         stackView.do {
             $0.setCustomSpacing(18, after: alertImageView)
-            $0.setCustomSpacing(4, after: alertTitleLabel)
-            $0.setCustomSpacing(18, after: alertContentLabel)
+            $0.setCustomSpacing(10, after: alertTitleLabel)
+            $0.setCustomSpacing(24, after: alertContentLabel)
         }
         
         alertImageView.snp.makeConstraints {
-            $0.size.equalTo(60)
+            $0.size.equalTo(46)
         }
         
         buttonStackView.do {

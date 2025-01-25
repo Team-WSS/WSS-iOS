@@ -179,6 +179,9 @@ enum URLs {
         static func postNotificationRead(notificationId: Int) -> String {
             return "/notifications/\(notificationId)/read"
         }
+        
+        static let fcmToken = "/users/fcm-token"
+        static let pushNotificationSetting = "/users/push-settings"
     }
     
     enum Search {

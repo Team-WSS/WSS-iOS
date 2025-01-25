@@ -8,6 +8,10 @@
 import Foundation
 
 enum StringLiterals {
+    enum KeyChain {
+        static let deviceIdentifier = "DEVICE_IDENTIFIER"
+    }
+    
     enum UserDefault {
         static let accessToken = "ACCESS_TOKEN"
         static let refreshToken = "REFRESH_TOKEN"
@@ -17,6 +21,18 @@ enum StringLiterals {
         static let isRegister = "IS_REGISTER"
         static let showReviewFirstDescription = "SHOW_REVIEW_FIRST_DESCRIPTION"
         static let userBirth = "USER_BIRTH"
+    }
+    
+    enum FCMCenter {
+        enum Key {
+            static let view = "view"
+            static let feedId = "feedId"
+            static let notificationId = "notificationId"
+        }
+        
+        enum Value {
+            static let feedDetail = "feedDetail"
+        }
     }
     
     enum BirthPicker {
@@ -64,6 +80,7 @@ enum StringLiterals {
             static let myPageChangeUserInfo = "성별/나이 변경"
             static let isVisibleProfile = "프로필 공개 설정"
             static let changeAvatar = "프로필 선택"
+            static let pushNotification = "알림 설정"
         }
     }
     
@@ -168,7 +185,8 @@ enum StringLiterals {
         
         enum Setting: String, CaseIterable {
             case accountInfo = "계정정보"
-            case profileStatus = "프로필 공개 여부 설정"
+            case profileStatus = "프로필 공개 설정"
+            case pushNotification = "알림 설정"
             case webSoso = "웹소소 공식 계정"
             case qNA = "문의하기 & 의견 보내기"
             case review = "개인정보 처리 방침"
@@ -272,6 +290,16 @@ enum StringLiterals {
         enum isVisiableProfile {
             static let completeTitle = "완료"
             static let isPrivateProfile = "비공개"
+        }
+        
+        enum PushNotification {
+            static let activePushTitle = "활동 알림"
+            static let activePushDescription = "댓글, 좋아요 등 알림"
+            
+            static let moveToSettingAlertTitle = "앱 알림을 켤까요?"
+            static let moveToSettingAlertDescription = "웹소소 알림을 받으려면,\n기기 설정에서 알림 허용이 필요해요."
+            static let moveCancel = "다음에 하기"
+            static let moveAccept = "설정하러 가기"
         }
     }
     

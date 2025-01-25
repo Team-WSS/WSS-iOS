@@ -14,6 +14,10 @@ protocol NotificationRepository {
     func getNotificationDetail(notificationId: Int) -> Observable<NotificationDetailEntity>
     func getNotificationUnreadStatus() -> Observable<NotificationUnreadStatusResult>
     func postNotificationRead(notificationId: Int) -> Observable<Void>
+    func postUserFCMToken(fcmToken: String, deviceIdentifier: String) -> Single<Void>
+    func postUserPushNotificationSetting(isPushEnabled: Bool) -> Single<Void>
+    func getUserPushNotificationSetting() -> Single<PushNotificationSettingResult>
+
 }
 
 struct TestNotificationRepository: NotificationRepository {
@@ -41,6 +45,18 @@ struct TestNotificationRepository: NotificationRepository {
     
     func postNotificationRead(notificationId: Int) -> Observable<Void> {
         return Observable.just(())
+    }
+    
+    func postUserFCMToken(fcmToken: String, deviceIdentifier: String) -> Single<Void> {
+        return Single<Void>.just(())
+    }
+    
+    func postUserPushNotificationSetting(isPushEnabled: Bool) -> Single<Void> {
+        return Single<Void>.just(())
+    }
+    
+    func getUserPushNotificationSetting() -> Single<PushNotificationSettingResult> {
+        return Single<PushNotificationSettingResult>.just(PushNotificationSettingResult(isPushEnabled: true))
     }
 }
 
@@ -75,5 +91,17 @@ struct DefaultNotificationRepository: NotificationRepository {
     func postNotificationRead(notificationId: Int) -> Observable<Void> {
         return notificationService.postNotificationRead(notificationId: notificationId)
             .asObservable()
+    }
+    
+    func postUserFCMToken(fcmToken: String, deviceIdentifier: String) -> Single<Void> {
+        notificationService.postUserFCMToken(fcmToken: fcmToken, deviceIdentifier: deviceIdentifier)
+    }
+    
+    func postUserPushNotificationSetting(isPushEnabled: Bool) -> Single<Void> {
+        notificationService.postUserPushNotificationSetting(isPushEnabled: isPushEnabled)
+    }
+    
+    func getUserPushNotificationSetting() -> Single<PushNotificationSettingResult> {
+        notificationService.getUserPushNotificationSetting()
     }
 }
