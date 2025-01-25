@@ -23,7 +23,7 @@ enum StringLiterals {
         static let userBirth = "USER_BIRTH"
     }
     
-    enum NotificationCenter {
+    enum FCMCenter {
         enum Key {
             static let view = "view"
             static let feedId = "feedId"
