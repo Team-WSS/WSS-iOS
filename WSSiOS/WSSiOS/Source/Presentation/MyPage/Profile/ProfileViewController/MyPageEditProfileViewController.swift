@@ -126,7 +126,7 @@ final class MyPageEditProfileViewController: UIViewController {
         
         output.nicknameText
             .bind(with: self, onNext: { owner, text in
-                owner.rootView.updateNicknameText(text: text)
+                owner.rootView.updateNicknameCount(text: text)
             })
             .disposed(by: disposeBag)
         
@@ -153,7 +153,7 @@ final class MyPageEditProfileViewController: UIViewController {
         
         output.introText
             .bind(with: self, onNext: { owner, text in
-                owner.rootView.updateIntro(text: text)
+                owner.rootView.updateIntroCount(text: text)
             })
             .disposed(by: disposeBag)
         
