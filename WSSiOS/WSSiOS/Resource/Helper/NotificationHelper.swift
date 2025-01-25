@@ -123,11 +123,11 @@ extension NotificationHelper: UNUserNotificationCenterDelegate {
             return
         }
         
-        let view = userInfo[StringLiterals.NotificationCenter.Key.view] as? String ?? ""
+        let view = userInfo[StringLiterals.FCMCenter.Key.view] as? String ?? ""
         
         switch view {
-        case StringLiterals.NotificationCenter.Value.feedDetail:
-            if let feedIdString = userInfo[StringLiterals.NotificationCenter.Key.feedId] as? String,
+        case StringLiterals.FCMCenter.Value.feedDetail:
+            if let feedIdString = userInfo[StringLiterals.FCMCenter.Key.feedId] as? String,
                let feedId = Int(feedIdString) {
                 postNotificationRead(userInfo)
                 topViewController.pushToFeedDetailViewController(feedId: feedId)
@@ -137,7 +137,7 @@ extension NotificationHelper: UNUserNotificationCenterDelegate {
     }
     
     func postNotificationRead(_ userInfo: [AnyHashable: Any]) {
-        if let notificationIdString = userInfo[StringLiterals.NotificationCenter.Key.notificationId] as? String,
+        if let notificationIdString = userInfo[StringLiterals.FCMCenter.Key.notificationId] as? String,
            let notificationId = Int(notificationIdString) {
             notificationRepository.postNotificationRead(notificationId: notificationId)
                 .do(onNext: { _ in
