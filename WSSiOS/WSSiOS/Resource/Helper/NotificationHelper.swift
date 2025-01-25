@@ -88,6 +88,8 @@ extension NotificationHelper: UNUserNotificationCenterDelegate {
         willPresent notification: UNNotification,
         withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
     ) {
+        print("푸시알림 수신됨")
+        
         let userInfo = notification.request.content.userInfo
         Messaging.messaging().appDidReceiveMessage(userInfo)
         
@@ -100,6 +102,7 @@ extension NotificationHelper: UNUserNotificationCenterDelegate {
         didReceive response: UNNotificationResponse,
         withCompletionHandler completionHandler: @escaping () -> Void
     ) {
+        print("푸시알림 탭 됨")
         let userInfo = response.notification.request.content.userInfo
         Messaging.messaging().appDidReceiveMessage(userInfo)
         
@@ -113,7 +116,6 @@ extension NotificationHelper: UNUserNotificationCenterDelegate {
     
     /// userInfo에 담긴 데이터에 따라 최상단 VC에서 화면 이동을 수행함
     private func moveToTargetViewController(_ userInfo: [AnyHashable: Any]) {
-        print("GG")
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
               let window = windowScene.windows.first,
               let topViewController = window.rootViewController?.topViewController() else {
@@ -154,10 +156,12 @@ extension NotificationHelper: MessagingDelegate {
     
     /// FCM 토큰이 생성되거나 변경될 때 자동으로 호출되어 클라이언트에 전달해줌.
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-        guard let fcmToken = fcmToken else { return }
-        print("Firebase 등록 토큰: \(fcmToken)")
-        
-        sendFCMTokenToServer(token: fcmToken)
+        guard let newFCMToken = fcmToken else { return }
+        print("Firebase 등록 토큰: \(newFCMToken)")
+
+        if APIConstants.isLogined {
+            sendFCMTokenToServer(token: newFCMToken)
+        }
     }
     
     /// 서버로 갱신된 FCM 토큰 전달

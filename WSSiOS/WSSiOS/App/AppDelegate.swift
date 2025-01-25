@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 #else
         let filePath = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist")!
 #endif
-        let options: FirebaseOptions? = FirebaseOptions.init(contentsOfFile: filePath)
+        let _: FirebaseOptions? = FirebaseOptions.init(contentsOfFile: filePath)
         
         RxKakaoSDK.initSDK(appKey: APIConstants.kakaoAppKey)
         
