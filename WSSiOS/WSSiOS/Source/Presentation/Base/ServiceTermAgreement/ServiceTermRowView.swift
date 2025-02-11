@@ -44,7 +44,7 @@ final class ServiceTermRowView: UIView {
     
     private func setUI() {
         termAgreeButton.do {
-            $0.setImage(.icSelectNovelDefault, for: .normal)
+            $0.setImage(.icSelectNovelDefault2, for: .normal)
         }
     }
     
@@ -75,6 +75,7 @@ final class ServiceTermRowView: UIView {
     private func bindData(_ serviceTerm: ServiceTerm) {
         termLabel.do {
             $0.font = .Body2
+            $0.textColor = .wssGray200
             $0.makeAttribute(with: serviceTerm.fullText)?
                 .lineHeight(WSSFont.body2.lineHeightMultiple)
                 .kerning(kerningPixel: WSSFont.body2.kerningPixel)

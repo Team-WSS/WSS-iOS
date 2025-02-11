@@ -81,7 +81,7 @@ final class ServiceTermAgreementView: UIView {
             }
             
             agreeAllButtonImageView.do {
-                $0.image = .icSelectNovelDefault
+                $0.image = .icSelectNovelDefault2
                 $0.isUserInteractionEnabled = false
             }
         }
