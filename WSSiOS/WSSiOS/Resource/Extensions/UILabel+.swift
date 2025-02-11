@@ -114,6 +114,20 @@ extension TextAttributeSet {
         return self
     }
     
+    func partialUnderlineStyle(_ style: NSUnderlineStyle, rangeString: String) -> TextAttributeSet {
+        let nsString = self.attributedString.string as NSString
+        let range = nsString.range(of: rangeString)
+        
+        if range.location != NSNotFound {
+            self.attributedString.addAttribute(
+                .underlineStyle,
+                value: style.rawValue,
+                range: range
+            )
+        }
+        return self
+    }
+    
     func partialColor(color: UIColor, rangeString: String) -> TextAttributeSet {
         let nsString = self.attributedString.string as NSString
         let range = nsString.range(of: rangeString)
