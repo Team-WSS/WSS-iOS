@@ -158,9 +158,23 @@ extension NotificationHelper: MessagingDelegate {
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
         guard let newFCMToken = fcmToken else { return }
         print("Firebase 등록 토큰: \(newFCMToken)")
-
+        
         if APIConstants.isLogined {
             sendFCMTokenToServer(token: newFCMToken)
+        }
+    }
+    
+    /// 최신 FCM 토큰을 직접 가져옴
+    private func fetchFCMToken() {
+        Messaging.messaging().token { [weak self] token, error in
+            if let error = error {
+                print("FCM 토큰 가져오기 실패: \(error.localizedDescription)")
+            } else if let token = token {
+                print("FCM 토큰: \(token)")
+                if APIConstants.isLogined {
+                    self?.sendFCMTokenToServer(token: token)
+                }
+            }
         }
     }
     
