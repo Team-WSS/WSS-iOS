@@ -17,7 +17,7 @@ class TermsAgreementViewController: UIViewController {
     
     //MARK: - Components
     
-    private let rootView = TermsAgreementView()
+    private let rootView = ServiceTermAgreementView()
     
     // MARK: - Life Cycle
     

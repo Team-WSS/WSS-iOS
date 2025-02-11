@@ -126,8 +126,10 @@
 		3932B59D2CAFCDBF00C1A736 /* OnboardingSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3932B59C2CAFCDBF00C1A736 /* OnboardingSuccessViewController.swift */; };
 		3932B5A32CAFCE6000C1A736 /* OnboardingSuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3932B5A22CAFCE6000C1A736 /* OnboardingSuccessView.swift */; };
 		3935876B2C99682400F005B4 /* LoginCarouselIndicatorDotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3935876A2C99682400F005B4 /* LoginCarouselIndicatorDotView.swift */; };
-		393C9DF02D5B578B00A6BC1E /* TermsAgreementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393C9DEF2D5B578B00A6BC1E /* TermsAgreementView.swift */; };
+		393C9DF02D5B578B00A6BC1E /* ServiceTermAgreementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393C9DEF2D5B578B00A6BC1E /* ServiceTermAgreementView.swift */; };
 		393C9DF22D5B57AE00A6BC1E /* TermsAgreementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393C9DF12D5B57AE00A6BC1E /* TermsAgreementViewController.swift */; };
+		393C9DF42D5B60A200A6BC1E /* ServiceTermRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393C9DF32D5B609900A6BC1E /* ServiceTermRowView.swift */; };
+		393C9DF62D5B614900A6BC1E /* ServiceTerm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393C9DF52D5B614300A6BC1E /* ServiceTerm.swift */; };
 		393CAC3C2CA6AFD8004B4DB6 /* OnboardingBottomButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393CAC3B2CA6AFD8004B4DB6 /* OnboardingBottomButtonView.swift */; };
 		393CAC402CA6D10C004B4DB6 /* OnboardingProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393CAC3F2CA6D10C004B4DB6 /* OnboardingProgressView.swift */; };
 		393CAC442CA72760004B4DB6 /* OnboardingBirthGenderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393CAC432CA72760004B4DB6 /* OnboardingBirthGenderView.swift */; };
@@ -525,8 +527,10 @@
 		3932B59C2CAFCDBF00C1A736 /* OnboardingSuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSuccessViewController.swift; sourceTree = "<group>"; };
 		3932B5A22CAFCE6000C1A736 /* OnboardingSuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSuccessView.swift; sourceTree = "<group>"; };
 		3935876A2C99682400F005B4 /* LoginCarouselIndicatorDotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCarouselIndicatorDotView.swift; sourceTree = "<group>"; };
-		393C9DEF2D5B578B00A6BC1E /* TermsAgreementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsAgreementView.swift; sourceTree = "<group>"; };
+		393C9DEF2D5B578B00A6BC1E /* ServiceTermAgreementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceTermAgreementView.swift; sourceTree = "<group>"; };
 		393C9DF12D5B57AE00A6BC1E /* TermsAgreementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsAgreementViewController.swift; sourceTree = "<group>"; };
+		393C9DF32D5B609900A6BC1E /* ServiceTermRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceTermRowView.swift; sourceTree = "<group>"; };
+		393C9DF52D5B614300A6BC1E /* ServiceTerm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceTerm.swift; sourceTree = "<group>"; };
 		393CAC3B2CA6AFD8004B4DB6 /* OnboardingBottomButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingBottomButtonView.swift; sourceTree = "<group>"; };
 		393CAC3F2CA6D10C004B4DB6 /* OnboardingProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingProgressView.swift; sourceTree = "<group>"; };
 		393CAC432CA72760004B4DB6 /* OnboardingBirthGenderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingBirthGenderView.swift; sourceTree = "<group>"; };
@@ -875,7 +879,7 @@
 		2C2491822B4ADC1D0096F255 /* Base */ = {
 			isa = PBXGroup;
 			children = (
-				393C9DEA2D5B573700A6BC1E /* TermsAgreement */,
+				393C9DEA2D5B573700A6BC1E /* ServiceTermAgreement */,
 				E44FB3222D3AC2740089E475 /* FeedList */,
 				B92D8AB82CE05924005B35F7 /* InduceLogin */,
 				39099EEF2CD8894F00FCA8DE /* NetworkView */,
@@ -1461,13 +1465,15 @@
 			path = OnboardingSuccessViewController;
 			sourceTree = "<group>";
 		};
-		393C9DEA2D5B573700A6BC1E /* TermsAgreement */ = {
+		393C9DEA2D5B573700A6BC1E /* ServiceTermAgreement */ = {
 			isa = PBXGroup;
 			children = (
-				393C9DEF2D5B578B00A6BC1E /* TermsAgreementView.swift */,
+				393C9DF52D5B614300A6BC1E /* ServiceTerm.swift */,
+				393C9DF32D5B609900A6BC1E /* ServiceTermRowView.swift */,
+				393C9DEF2D5B578B00A6BC1E /* ServiceTermAgreementView.swift */,
 				393C9DF12D5B57AE00A6BC1E /* TermsAgreementViewController.swift */,
 			);
-			path = TermsAgreement;
+			path = ServiceTermAgreement;
 			sourceTree = "<group>";
 		};
 		394CFD392CA2E70B0053C8EA /* Entity */ = {
@@ -2607,6 +2613,7 @@
 				E407466C2CE89719005D75D5 /* MyPageGenrePreferencesView.swift in Sources */,
 				B96863DA2C482E8C008CFBA5 /* DetailSearchView.swift in Sources */,
 				B96F0F942C298F3F00DA5483 /* FeedDetailReplyView.swift in Sources */,
+				393C9DF42D5B60A200A6BC1E /* ServiceTermRowView.swift in Sources */,
 				3932B59D2CAFCDBF00C1A736 /* OnboardingSuccessViewController.swift in Sources */,
 				B974EA452CC9029100169639 /* DetailSearchResultView.swift in Sources */,
 				CD1F7E042C9955390039972C /* NovelKeywordSelectSearchBarView.swift in Sources */,
@@ -2636,7 +2643,7 @@
 				E40746662CE870AE005D75D5 /* MyPageNovelPreferencesView.swift in Sources */,
 				393C9DF22D5B57AE00A6BC1E /* TermsAgreementViewController.swift in Sources */,
 				2C41E0D22CA494C900FFD233 /* MyPageEditProfileViewController.swift in Sources */,
-				393C9DF02D5B578B00A6BC1E /* TermsAgreementView.swift in Sources */,
+				393C9DF02D5B578B00A6BC1E /* ServiceTermAgreementView.swift in Sources */,
 				2C41E0D02CA494B800FFD233 /* MyPageEditProfileView.swift in Sources */,
 				2C41E0CE2CA4949C00FFD233 /* MyPageEditProfileGenreCollectionViewCell.swift in Sources */,
 				395928972C9888B800E7B17B /* LoginViewModel.swift in Sources */,
@@ -2815,6 +2822,7 @@
 				395928952C9888A600E7B17B /* LoginViewController.swift in Sources */,
 				2CD9114A2C0D8948006B8D72 /* FeedContentView.swift in Sources */,
 				C99DDFDF2C8613C900EDC0C4 /* SearchViewController.swift in Sources */,
+				393C9DF62D5B614900A6BC1E /* ServiceTerm.swift in Sources */,
 				2CCBF9EE2B4C1FC500D787C2 /* MyPageViewController.swift in Sources */,
 				39E0EA072D40D2260034B639 /* MyPagePushNotificationView.swift in Sources */,
 				CDC03F452CA67421002D301F /* KeywordRepository.swift in Sources */,
