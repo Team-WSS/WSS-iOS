@@ -19,8 +19,8 @@ final class ServiceTermRowView: UIView {
     
     //MARK: - Components
     
-    private let termLabel = UILabel()
-    private let termAgreeButton = UIButton()
+    let termLabel = UILabel()
+    let termAgreeButton = UIButton()
     
     
     // MARK: - Life Cycle
