@@ -15,7 +15,8 @@ final class ServiceTermAgreementView: UIView {
     
     //MARK: - Components
     
-    private let contentView = UIView()
+    private let backgroundView = UIView()
+    private let contentView = UIStackView()
     
     private let titleLabel = UILabel()
     private let descriptionLabel = UILabel()
@@ -24,15 +25,11 @@ final class ServiceTermAgreementView: UIView {
     private let agreeAllButtonLabel = UILabel()
     private let agreeAllButtonImageView = UIImageView()
     
-    private let firstTermLabel = UILabel()
-    private let firstTermAgreeButton = UIButton()
+    private let serviceTermRowViews: [ServiceTermRowView] = ServiceTerm.allCases.map { ServiceTermRowView($0)}
     
-    private let secondTermLabel = UILabel()
-    private let secondTermAgreeButton = UIButton()
+    private let bottomButton = UIButton()
+    private let bottomButtonLabel = UILabel()
     
-    private let 
-    
-  
     // MARK: - Life Cycle
     
     override init(frame: CGRect) {
@@ -50,27 +47,118 @@ final class ServiceTermAgreementView: UIView {
     //MARK: - UI
     
     private func setUI() {
-      
+        backgroundView.do {
+            $0.backgroundColor = .wssWhite
+            $0.layer.cornerRadius = 12
+            $0.layer.maskedCorners = [.layerMinXMinYCorner,
+                                      .layerMaxXMinYCorner]
+        }
+        
+        contentView.do {
+            $0.axis = .vertical
+            $0.alignment = .fill
+            $0.spacing = 14
+        }
+        
+        titleLabel.do {
+            $0.applyWSSFont(.headline1, with: StringLiterals.ServiceTermAgreement.title)
+            $0.textColor = .wssBlack
+        }
+        
+        descriptionLabel.do {
+            $0.applyWSSFont(.body2, with: StringLiterals.ServiceTermAgreement.description)
+            $0.textColor = .wssGray200
+        }
+        
+        agreeAllButton.do {
+            $0.backgroundColor = .wssPrimary20
+            $0.layer.cornerRadius = 14
+            
+            agreeAllButtonLabel.do {
+                $0.applyWSSFont(.title2, with: StringLiterals.ServiceTermAgreement.agreeAllButton)
+                $0.textColor = .wssPrimary100
+                $0.isUserInteractionEnabled = false
+            }
+            
+            agreeAllButtonImageView.do {
+                $0.image = .icSelectNovelDefault
+                $0.isUserInteractionEnabled = false
+            }
+        }
+        
+        bottomButton.do {
+            $0.backgroundColor = .wssGray70
+            $0.layer.cornerRadius = 14
+            $0.isEnabled = false
+            
+            bottomButtonLabel.do {
+                $0.applyWSSFont(.title1,
+                                with: APIConstants.isRegister ? StringLiterals.ServiceTermAgreement.bottomButtonComplete
+                                                              : StringLiterals.ServiceTermAgreement.bottomButtonNext)
+                $0.textColor = .wssWhite
+                $0.isUserInteractionEnabled = false
+            }
+        }
     }
     
     private func setHierarchy() {
-       
+        self.addSubview(backgroundView)
+        backgroundView.addSubviews(contentView,
+                                   bottomButton)
+        contentView.addArrangedSubviews(titleLabel,
+                                        descriptionLabel,
+                                        agreeAllButton)
+        serviceTermRowViews.forEach { contentView.addArrangedSubview($0) }
+        
+        agreeAllButton.addSubviews(agreeAllButtonLabel,
+                                   agreeAllButtonImageView)
+        bottomButton.addSubview(bottomButtonLabel)
     }
     
     private func setLayout() {
-       
-    }
-    
-    //MARK: - Custom Method
-    
-    private func applyFontWithPartialUnderLine(label: UILabel, text: String, underlinePart: String) {
-        label.do {
-            $0.font = .Body2
-            $0.makeAttribute(with: text)?
-                .lineHeight(WSSFont.body2.lineHeightMultiple)
-                .kerning(kerningPixel: WSSFont.body2.kerningPixel)
-                .partialUnderlineStyle(.single, rangeString: underlinePart)
-                .applyAttribute()
+        backgroundView.snp.makeConstraints {
+            $0.leading.trailing.bottom.equalToSuperview()
+            if UIScreen.isSE {
+                $0.height.equalTo(635)
+            } else {
+                $0.height.equalTo(670)
+            }
+        }
+        
+        contentView.do {
+            $0.snp.makeConstraints {
+                $0.top.equalToSuperview().inset(48)
+                $0.horizontalEdges.equalToSuperview().inset(20)
+            }
+            
+            $0.setCustomSpacing(8, after: titleLabel)
+            $0.setCustomSpacing(64, after: descriptionLabel)
+            $0.setCustomSpacing(32, after: agreeAllButton)
+        }
+        
+        agreeAllButton.snp.makeConstraints {
+            $0.height.equalTo(56)
+            
+            agreeAllButtonLabel.snp.makeConstraints {
+                $0.leading.equalToSuperview().inset(16)
+                $0.centerY.equalToSuperview()
+            }
+            
+            agreeAllButtonImageView.snp.makeConstraints {
+                $0.trailing.equalToSuperview().inset(16)
+                $0.centerY.equalToSuperview()
+                $0.size.equalTo(24)
+            }
+        }
+        
+        bottomButton.snp.makeConstraints {
+            $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom).offset(-10)
+            $0.height.equalTo(53)
+            $0.horizontalEdges.equalToSuperview().inset(16)
+            
+            bottomButtonLabel.snp.makeConstraints {
+                $0.center.equalToSuperview()
+            }
         }
     }
 }

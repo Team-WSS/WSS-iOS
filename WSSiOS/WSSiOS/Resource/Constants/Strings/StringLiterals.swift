@@ -40,6 +40,18 @@ enum StringLiterals {
         static let completeButton = "완료"
     }
     
+    enum ServiceTermAgreement {
+        static let title = "웹소소 세계로 들어가는 중..."
+        static let description = "아래 약관 내용에 동의 후 서비스 이용이 가능해요"
+        static let agreeAllButton = "전체 동의"
+        static let bottomButtonNext = "다음으로"
+        static let bottomButtonComplete = "완료"
+        
+        static let alertTitle = "약관 동의가 필요해요!"
+        static let alertDesctiption = "더 안전하고 원활한 웹소소를 위해\n업데이트된 약관에 동의해주세요."
+        static let alertButton = "동의하러 가기"
+    }
+    
     enum Loading {
         static let loadingTitle = "로딩 중"
         static let loadingDescription = "잠시만 기다려주세요"
