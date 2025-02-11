@@ -146,6 +146,7 @@ final class LoginViewModel: NSObject, ViewModelType {
                                        forKey: StringLiterals.UserDefault.isRegister)
         if APIConstants.isRegister {
             self.navigateToHome.accept(())
+            NotificationHelper.shared.fetchFCMToken()
         } else {
             self.navigateToOnboarding.accept(())
         }

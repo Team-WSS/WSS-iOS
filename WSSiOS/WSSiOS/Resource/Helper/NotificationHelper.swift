@@ -157,7 +157,7 @@ extension NotificationHelper: MessagingDelegate {
     /// FCM 토큰이 생성되거나 변경될 때 자동으로 호출되어 클라이언트에 전달해줌.
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
         guard let newFCMToken = fcmToken else { return }
-        print("Firebase 등록 토큰: \(newFCMToken)")
+        print("새로 갱신된 FCM 토큰: \(newFCMToken)")
         
         if APIConstants.isLogined {
             sendFCMTokenToServer(token: newFCMToken)
@@ -165,12 +165,12 @@ extension NotificationHelper: MessagingDelegate {
     }
     
     /// 최신 FCM 토큰을 직접 가져옴
-    private func fetchFCMToken() {
+    func fetchFCMToken() {
         Messaging.messaging().token { [weak self] token, error in
             if let error = error {
                 print("FCM 토큰 가져오기 실패: \(error.localizedDescription)")
             } else if let token = token {
-                print("FCM 토큰: \(token)")
+                print("최신 FCM 토큰: \(token)")
                 if APIConstants.isLogined {
                     self?.sendFCMTokenToServer(token: token)
                 }
