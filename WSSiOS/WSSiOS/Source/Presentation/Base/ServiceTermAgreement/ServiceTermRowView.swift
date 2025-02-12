@@ -33,8 +33,6 @@ final class ServiceTermRowView: UIView {
         setUI()
         setHierarchy()
         setLayout()
-        
-        bindData(serviceTerm)
     }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -43,6 +41,16 @@ final class ServiceTermRowView: UIView {
     //MARK: - UI
     
     private func setUI() {
+        termLabel.do {
+            $0.font = .Body2
+            $0.textColor = .wssGray200
+            $0.makeAttribute(with: serviceTerm.fullText)?
+                .lineHeight(WSSFont.body2.lineHeightMultiple)
+                .kerning(kerningPixel: WSSFont.body2.kerningPixel)
+                .partialUnderlineStyle(.single, rangeString: serviceTerm.underlineText)
+                .applyAttribute()
+        }
+        
         termAgreeButton.do {
             $0.setImage(.icSelectNovelDefault2, for: .normal)
         }
@@ -71,18 +79,6 @@ final class ServiceTermRowView: UIView {
     }
     
     //MARK: - Custom Method
-    
-    private func bindData(_ serviceTerm: ServiceTerm) {
-        termLabel.do {
-            $0.font = .Body2
-            $0.textColor = .wssGray200
-            $0.makeAttribute(with: serviceTerm.fullText)?
-                .lineHeight(WSSFont.body2.lineHeightMultiple)
-                .kerning(kerningPixel: WSSFont.body2.kerningPixel)
-                .partialUnderlineStyle(.single, rangeString: serviceTerm.underlineText)
-                .applyAttribute()
-        }
-    }
     
     func updateAgreeButton(isAgree: Bool) {
         termAgreeButton.setImage(isAgree ? .icSelectNovelSelected : .icSelectNovelDefault,
