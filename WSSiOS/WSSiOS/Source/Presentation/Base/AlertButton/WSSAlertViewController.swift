@@ -89,10 +89,13 @@ final class WSSAlertViewController: UIViewController {
         rootView.leftButton.rx.tap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
-                owner.leftButtonTapSubject.onNext(())
                 print("\(String(describing: owner.leftTitle))Button Tap 💖")
                 if owner.isDismissable {
-                    owner.dismiss(animated: true)
+                    owner.dismiss(animated: true, completion: {
+                        owner.leftButtonTapSubject.onNext(())
+                    })
+                } else {
+                    owner.leftButtonTapSubject.onNext(())
                 }
             })
             .disposed(by: disposeBag)
@@ -100,10 +103,13 @@ final class WSSAlertViewController: UIViewController {
         rootView.rightButton.rx.tap
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
-                owner.rightButtonTapSubject.onNext(())
                 print("\(String(describing: owner.rightTitle))Button Tap 💖")
                 if owner.isDismissable {
-                    owner.dismiss(animated: true)
+                    owner.dismiss(animated: true, completion: {
+                        owner.rightButtonTapSubject.onNext(())
+                    })
+                } else {
+                    owner.rightButtonTapSubject.onNext(())
                 }
             })
             .disposed(by: disposeBag)
