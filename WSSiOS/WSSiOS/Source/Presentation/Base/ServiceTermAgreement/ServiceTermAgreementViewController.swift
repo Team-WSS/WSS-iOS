@@ -78,7 +78,7 @@ final class ServiceTermAgreementViewController: UIViewController {
         
         Observable.merge(
             rootView.serviceTermRowViews.map { view in
-                view.termLabel.rx.tapGesture().when(.recognized).map { _ in view.serviceTerm }
+                view.termLabelButton.rx.tap.map { _ in view.serviceTerm }
             }
         )
         .observe(on: MainScheduler.instance)
