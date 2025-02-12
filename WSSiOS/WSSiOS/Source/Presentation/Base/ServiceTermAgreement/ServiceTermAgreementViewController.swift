@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class ServiceTermAgreementViewController: UIViewController {
+final class ServiceTermAgreementViewController: UIViewController {
     
     //MARK: - Properties
     
