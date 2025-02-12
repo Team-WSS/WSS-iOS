@@ -30,6 +30,10 @@ protocol UserService {
                               size: Int,
                               sortType: String) -> Single<UserNovelList>
     func getAppMinimumVersion() -> Single<AppMinimumVersion>
+    
+    //약관동의 관련
+    func getTermSetting() -> Single<TermSettingDTO>
+    func patchTermSetting(_ termSettingDTO: TermSettingDTO) -> Single<Void>
 }
 
 final class DefaultUserService: NSObject, Networking {
@@ -393,4 +397,45 @@ extension DefaultUserService: UserService {
             return Single.error(error)
         }
     }
+    
+    //약관동의 관련
+    func getTermSetting() -> Single<TermSettingDTO> {
+        do {
+            let request = try makeHTTPRequest(method: .get,
+                                              path: URLs.User.termSetting,
+                                              headers: APIConstants.accessTokenHeader,
+                                              body: nil)
+            
+            NetworkLogger.log(request: request)
+            
+            return tokenCheckURLSession.rx.data(request: request)
+                .map { try self.decode(data: $0,
+                                       to: TermSettingDTO.self) }
+                .asSingle()
+        } catch {
+            return Single.error(error)
+        }
+    }
+    
+    func patchTermSetting(_ termSettingDTO: TermSettingDTO) -> Single<Void> {
+        guard let termSettingBody = try? JSONEncoder().encode(termSettingDTO) else {
+            return Single.error(NetworkServiceError.invalidRequestError)
+        }
+        
+        do {
+            let request = try makeHTTPRequest(method: .patch,
+                                              path: URLs.User.termSetting,
+                                              headers: APIConstants.accessTokenHeader,
+                                              body: termSettingBody)
+            
+            NetworkLogger.log(request: request)
+            
+            return tokenCheckURLSession.rx.data(request: request)
+                .map { _ in }
+                .asSingle()
+        } catch {
+            return Single.error(error)
+        }
+    }
+    
 }
