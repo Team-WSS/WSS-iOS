@@ -14,15 +14,27 @@ class TermsAgreementViewController: UIViewController {
     
     //MARK: - Properties
     
+    private let userRepository: UserRepository
     private let disposeBag = DisposeBag()
     
     private let agreedTerms = BehaviorRelay<Set<ServiceTerm>>(value: [])
+    private let dismissModal = PublishRelay<Void>()
     
     //MARK: - Components
     
     private let rootView = ServiceTermAgreementView()
     
-    // MARK: - Life Cycle
+    //MARK: - Life Cycle
+    
+    init(repository: UserRepository) {
+        self.userRepository = repository
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func loadView() {
         self.view = rootView
@@ -84,16 +96,16 @@ class TermsAgreementViewController: UIViewController {
             .do(onNext: {
                 print("약관 동의 작업 완료!")
             })
-            .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
-                owner.dismissModalViewController()
+                owner.patchTermSetting(disposeBag: owner.disposeBag)
             })
             .disposed(by: disposeBag)
     }
     
     func bindOutput() {
-        agreedTerms.asDriver()
-            .drive(with: self, onNext: { owner, currentAgreedTerms in
+        agreedTerms
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, currentAgreedTerms in
                 owner.rootView.serviceTermRowViews.forEach {
                     let isAgreed = currentAgreedTerms.contains($0.serviceTerm)
                     $0.updateAgreeButton(isAgreed: isAgreed)
@@ -106,5 +118,31 @@ class TermsAgreementViewController: UIViewController {
                 owner.rootView.updateBottomButton(isEnabled: requiredTermsAllAgreed)
             })
             .disposed(by: disposeBag)
+        
+        dismissModal
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                owner.dismissModalViewController()
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func patchTermSetting(disposeBag: DisposeBag) {
+        let agreedTermBools: [Bool] = ServiceTerm.allCases.map { self.agreedTerms.value.contains($0) }
+        
+        userRepository.patchTermSetting(serviceAgreed: agreedTermBools[0],
+                                        privacyAgreed: agreedTermBools[1],
+                                        marketingAgreed: agreedTermBools[2])
+        .do(onSuccess: { _ in
+            print("약관 동의 패치 성공")
+        }, onError: { error in
+            print("약관 동의 패치 실패")
+        })
+        .subscribe(with: self, onSuccess: { owner, _ in
+            owner.dismissModal.accept(())
+        }, onFailure: { owner, error in
+            print(error)
+        })
+        .disposed(by: disposeBag)
     }
 }
