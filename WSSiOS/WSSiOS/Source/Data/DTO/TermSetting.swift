@@ -7,8 +7,15 @@
 
 import Foundation
 
-struct TermSettingDTO: Codable {
+struct TermSettingResponse: Decodable {
     let serviceAgreed: Bool
     let privacyAgreed: Bool
     let marketingAgreed: Bool
 }
+
+struct TermSettingRequest: Encodable {
+    let serviceAgreed: Bool
+    let privacyAgreed: Bool
+    let marketingAgreed: Bool
+}
+

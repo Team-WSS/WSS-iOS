@@ -18,22 +18,22 @@ protocol UserService {
     func getUserProfileVisibility() -> Single<UserProfileVisibility>
     func patchUserProfileVisibility(isProfilePublic: Bool) -> Single<Void>
     func getMyProfile() -> Single<MyProfileResult>
-    func getOtherProfile(userId: Int) -> Single<OtherProfileResult> 
+    func getOtherProfile(userId: Int) -> Single<OtherProfileResult>
     func getUserNovelPreferences(userId: Int) -> Single<UserNovelPreferences>
     func getUserGenrePreferences(userId: Int) -> Single<UserGenrePreferences>
     func patchUserProfile(updatedFields: [String: Any]) -> Single<Void>
     func getNicknameisValid(nickname: String) -> Single<OnboardingResult>
     func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Single<MyFeedResult>
     func getUserNovelList(userId: Int,
-                              readStatus: String,
-                              lastUserNovelId: Int,
-                              size: Int,
-                              sortType: String) -> Single<UserNovelList>
+                          readStatus: String,
+                          lastUserNovelId: Int,
+                          size: Int,
+                          sortType: String) -> Single<UserNovelList>
     func getAppMinimumVersion() -> Single<AppMinimumVersion>
     
     //약관동의 관련
-    func getTermSetting() -> Single<TermSettingDTO>
-    func patchTermSetting(_ termSettingDTO: TermSettingDTO) -> Single<Void>
+    func getTermSetting() -> Single<TermSettingResponse>
+    func patchTermSetting(_ termSettingRequest: TermSettingRequest) -> Single<Void>
 }
 
 final class DefaultUserService: NSObject, Networking {
@@ -54,13 +54,13 @@ final class DefaultUserService: NSObject, Networking {
     }
     
     func makeNovelListQuery(readStatus: String, lastUserNovelId: Int, size: Int, sortType: String) -> [URLQueryItem] {
-            return [
-                URLQueryItem(name: "readStatus", value: readStatus),
-                URLQueryItem(name: "lastUserNovelId", value: String(describing: lastUserNovelId)),
-                URLQueryItem(name: "size", value: String(describing: size)),
-                URLQueryItem(name: "sortType", value: sortType)
-            ]
-        }
+        return [
+            URLQueryItem(name: "readStatus", value: readStatus),
+            URLQueryItem(name: "lastUserNovelId", value: String(describing: lastUserNovelId)),
+            URLQueryItem(name: "size", value: String(describing: size)),
+            URLQueryItem(name: "sortType", value: sortType)
+        ]
+    }
 }
 
 extension DefaultUserService: UserService {
@@ -226,7 +226,7 @@ extension DefaultUserService: UserService {
             return Single.error(error)
         }
     }
-  
+    
     func patchUserProfileVisibility(isProfilePublic: Bool) -> Single<Void> {
         guard let userProfileVisibility = try? JSONEncoder().encode(UserProfileVisibility(isProfilePublic: isProfilePublic))  else {
             return .error(NetworkServiceError.invalidRequestError)
@@ -357,26 +357,26 @@ extension DefaultUserService: UserService {
                           lastUserNovelId: Int,
                           size: Int,
                           sortType: String) -> Single<UserNovelList> {
-            do {
-                let request = try makeHTTPRequest(method: .get,
-                                                  path: URLs.User.getUserNovel(userId: userId),
-                                                  queryItems: makeNovelListQuery(readStatus: readStatus,
-                                                                                 lastUserNovelId: lastUserNovelId,
-                                                                                 size: size,
-                                                                                 sortType: sortType),
-                                                  headers: APIConstants.accessTokenHeader,
-                                                  body: nil)
-
-                NetworkLogger.log(request: request)
-
-                return tokenCheckURLSession.rx.data(request: request)
-                    .map { try self.decode(data: $0,
-                                           to: UserNovelList.self) }
-                    .asSingle()
-            } catch {
-                return Single.error(error)
-            }
+        do {
+            let request = try makeHTTPRequest(method: .get,
+                                              path: URLs.User.getUserNovel(userId: userId),
+                                              queryItems: makeNovelListQuery(readStatus: readStatus,
+                                                                             lastUserNovelId: lastUserNovelId,
+                                                                             size: size,
+                                                                             sortType: sortType),
+                                              headers: APIConstants.accessTokenHeader,
+                                              body: nil)
+            
+            NetworkLogger.log(request: request)
+            
+            return tokenCheckURLSession.rx.data(request: request)
+                .map { try self.decode(data: $0,
+                                       to: UserNovelList.self) }
+                .asSingle()
+        } catch {
+            return Single.error(error)
         }
+    }
     
     func getAppMinimumVersion() -> Single<AppMinimumVersion> {
         let appMinimumVersionQueryItem: [URLQueryItem] = [URLQueryItem(name: "os", value: "ios")]
@@ -386,9 +386,9 @@ extension DefaultUserService: UserService {
                                               queryItems: appMinimumVersionQueryItem,
                                               headers: APIConstants.accessTokenHeader,
                                               body: nil)
-
+            
             NetworkLogger.log(request: request)
-
+            
             return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
                                        to: AppMinimumVersion.self) }
@@ -399,7 +399,7 @@ extension DefaultUserService: UserService {
     }
     
     //약관동의 관련
-    func getTermSetting() -> Single<TermSettingDTO> {
+    func getTermSetting() -> Single<TermSettingResponse> {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.User.termSetting,
@@ -410,15 +410,15 @@ extension DefaultUserService: UserService {
             
             return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
-                                       to: TermSettingDTO.self) }
+                                       to: TermSettingResponse.self) }
                 .asSingle()
         } catch {
             return Single.error(error)
         }
     }
     
-    func patchTermSetting(_ termSettingDTO: TermSettingDTO) -> Single<Void> {
-        guard let termSettingBody = try? JSONEncoder().encode(termSettingDTO) else {
+    func patchTermSetting(_ termSettingRequest: TermSettingRequest) -> Single<Void> {
+        guard let termSettingBody = try? JSONEncoder().encode(termSettingRequest) else {
             return Single.error(NetworkServiceError.invalidRequestError)
         }
         

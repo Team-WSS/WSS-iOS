@@ -21,6 +21,7 @@ final class HomeViewController: UIViewController {
     private let isLoggedIn = APIConstants.isLogined
     private let viewWillAppearEvent = PublishRelay<Void>()
     private let viewDidLoadEvent = PublishRelay<Void>()
+    private let showServiceTermAgreementView = PublishRelay<Void>()
     
     //MARK: - UI Components
     
@@ -254,6 +255,29 @@ final class HomeViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, isUnread in
                 owner.rootView.headerView.checkNotificationUnread(isUnread)
+            })
+            .disposed(by: disposeBag)
+        
+        output.showServiceTermAgreementAlert
+            .observe(on: MainScheduler.instance)
+            .flatMapLatest { _ -> Observable<AlertButtonType> in
+                return self.presentToAlertViewController(iconImage: .icModalWarning,
+                                                         titleText: StringLiterals.ServiceTermAgreement.alertTitle,
+                                                         contentText: StringLiterals.ServiceTermAgreement.alertDesctiption,
+                                                         leftTitle: nil,
+                                                         rightTitle: StringLiterals.ServiceTermAgreement.alertButton,
+                                                         rightBackgroundColor: UIColor.wssPrimary100.cgColor,
+                                                         isDismissable: false)
+            }
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.showServiceTermAgreementView.accept(())
+            })
+            .disposed(by: disposeBag)
+        
+        self.showServiceTermAgreementView
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                self.presentModalViewController(ModuleFactory.shared.makeServiceTermAgreementViewController())
             })
             .disposed(by: disposeBag)
     }

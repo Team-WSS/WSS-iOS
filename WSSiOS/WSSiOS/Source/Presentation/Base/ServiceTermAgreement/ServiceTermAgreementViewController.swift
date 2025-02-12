@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class TermsAgreementViewController: UIViewController {
+class ServiceTermAgreementViewController: UIViewController {
     
     //MARK: - Properties
     
@@ -90,8 +90,6 @@ class TermsAgreementViewController: UIViewController {
         })
         .disposed(by: disposeBag)
         
-        
-        //MARK: - Todo - 서버에 약관 동의 전달 필요
         rootView.bottomButton.rx.tap
             .do(onNext: {
                 print("약관 동의 작업 완료!")
@@ -126,6 +124,8 @@ class TermsAgreementViewController: UIViewController {
             })
             .disposed(by: disposeBag)
     }
+    
+    //MARK: - API
     
     private func patchTermSetting(disposeBag: DisposeBag) {
         let agreedTermBools: [Bool] = ServiceTerm.allCases.map { self.agreedTerms.value.contains($0) }
