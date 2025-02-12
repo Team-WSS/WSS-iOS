@@ -21,13 +21,13 @@ final class ServiceTermAgreementView: UIView {
     private let titleLabel = UILabel()
     private let descriptionLabel = UILabel()
     
-    private let agreeAllButton = UIButton()
-    private let agreeAllButtonLabel = UILabel()
-    private let agreeAllButtonImageView = UIImageView()
+    let allAgreeButton = UIButton()
+    private let allAgreeButtonLabel = UILabel()
+    private let allAgreeButtonImageView = UIImageView()
     
-    private let serviceTermRowViews: [ServiceTermRowView] = ServiceTerm.allCases.map { ServiceTermRowView($0)}
+    let serviceTermRowViews: [ServiceTermRowView] = ServiceTerm.allCases.map { ServiceTermRowView($0)}
     
-    private let bottomButton = UIButton()
+    let bottomButton = UIButton()
     private let bottomButtonLabel = UILabel()
     
     // MARK: - Life Cycle
@@ -70,17 +70,17 @@ final class ServiceTermAgreementView: UIView {
             $0.textColor = .wssGray200
         }
         
-        agreeAllButton.do {
+        allAgreeButton.do {
             $0.backgroundColor = .wssPrimary20
             $0.layer.cornerRadius = 14
             
-            agreeAllButtonLabel.do {
+            allAgreeButtonLabel.do {
                 $0.applyWSSFont(.title2, with: StringLiterals.ServiceTermAgreement.agreeAllButton)
                 $0.textColor = .wssPrimary100
                 $0.isUserInteractionEnabled = false
             }
             
-            agreeAllButtonImageView.do {
+            allAgreeButtonImageView.do {
                 $0.image = .icSelectNovelDefault2
                 $0.isUserInteractionEnabled = false
             }
@@ -107,11 +107,11 @@ final class ServiceTermAgreementView: UIView {
                                    bottomButton)
         contentView.addArrangedSubviews(titleLabel,
                                         descriptionLabel,
-                                        agreeAllButton)
+                                        allAgreeButton)
         serviceTermRowViews.forEach { contentView.addArrangedSubview($0) }
         
-        agreeAllButton.addSubviews(agreeAllButtonLabel,
-                                   agreeAllButtonImageView)
+        allAgreeButton.addSubviews(allAgreeButtonLabel,
+                                   allAgreeButtonImageView)
         bottomButton.addSubview(bottomButtonLabel)
     }
     
@@ -133,18 +133,18 @@ final class ServiceTermAgreementView: UIView {
             
             $0.setCustomSpacing(8, after: titleLabel)
             $0.setCustomSpacing(64, after: descriptionLabel)
-            $0.setCustomSpacing(32, after: agreeAllButton)
+            $0.setCustomSpacing(32, after: allAgreeButton)
         }
         
-        agreeAllButton.snp.makeConstraints {
+        allAgreeButton.snp.makeConstraints {
             $0.height.equalTo(56)
             
-            agreeAllButtonLabel.snp.makeConstraints {
+            allAgreeButtonLabel.snp.makeConstraints {
                 $0.leading.equalToSuperview().inset(16)
                 $0.centerY.equalToSuperview()
             }
             
-            agreeAllButtonImageView.snp.makeConstraints {
+            allAgreeButtonImageView.snp.makeConstraints {
                 $0.trailing.equalToSuperview().inset(16)
                 $0.centerY.equalToSuperview()
                 $0.size.equalTo(24)
@@ -159,6 +159,20 @@ final class ServiceTermAgreementView: UIView {
             bottomButtonLabel.snp.makeConstraints {
                 $0.center.equalToSuperview()
             }
+        }
+    }
+    
+    //MARK: - Custom Method
+    
+    func updateAllAgreeButton(isAllAgreed: Bool) {
+        allAgreeButtonImageView.image = isAllAgreed ? .icSelectNovelSelected : .icSelectNovelDefault2
+    }
+    
+    func updateBottomButton(isEnabled: Bool) {
+        bottomButton.do {
+            $0.backgroundColor = isEnabled ? .wssPrimary100 : .wssGray70
+            $0.layer.cornerRadius = 14
+            $0.isEnabled = isEnabled
         }
     }
 }
