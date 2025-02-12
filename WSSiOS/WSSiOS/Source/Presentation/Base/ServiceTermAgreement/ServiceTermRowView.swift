@@ -52,7 +52,11 @@ final class ServiceTermRowView: UIView {
         }
         
         termAgreeButton.do {
-            $0.setImage(.icSelectNovelDefault2, for: .normal)
+            $0.setImage(.icSelectNovelDefault2.withRenderingMode(.alwaysOriginal), for: .normal)
+            var config = UIButton.Configuration.filled()
+            config.baseBackgroundColor = .clear
+            config.baseForegroundColor = .blue
+            $0.configuration = config
         }
     }
     
@@ -80,8 +84,8 @@ final class ServiceTermRowView: UIView {
     
     //MARK: - Custom Method
     
-    func updateAgreeButton(isAgree: Bool) {
-        termAgreeButton.setImage(isAgree ? .icSelectNovelSelected : .icSelectNovelDefault,
+    func updateAgreeButton(isAgreed: Bool) {
+        termAgreeButton.setImage(isAgreed ? .icSelectNovelSelected : .icSelectNovelDefault2,
                                  for: .normal)
     }
 }
