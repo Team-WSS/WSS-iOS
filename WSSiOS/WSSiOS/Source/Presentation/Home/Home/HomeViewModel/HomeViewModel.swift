@@ -46,6 +46,7 @@ final class HomeViewModel: ViewModelType {
     private let showLoadingView = PublishRelay<Bool>()
     private let showUpdateVersionAlertView = PublishRelay<Void>()
     private let isNotificationUnread = PublishRelay<Bool>()
+    private let showServiceTermAgreementAlert = PublishRelay<Void>()
     
     // MARK: - Inputs
     
@@ -84,6 +85,7 @@ final class HomeViewModel: ViewModelType {
         let showLoadingView: Observable<Bool>
         let showUpdateVersionAlertView: Observable<Void>
         let isNotificationUnread: Observable<Bool>
+        let showServiceTermAgreementAlert: Observable<Void>
     }
     
     //MARK: - init
@@ -176,6 +178,8 @@ extension HomeViewModel {
                 UserDefaults.standard.setValue(data.gender, forKey: StringLiterals.UserDefault.userGender)
                 
                 owner.updateInterestView.accept((self.isLogined, self.interestFeedMessage.value))
+                
+                owner.getTermSetting(disposeBag: disposeBag)
             })
             .disposed(by: disposeBag)
         
@@ -258,7 +262,8 @@ extension HomeViewModel {
                       showInduceLoginModalView: showInduceLoginModalView.asObservable(),
                       showLoadingView: showLoadingView.asObservable(),
                       showUpdateVersionAlertView: showUpdateVersionAlertView.asObservable(),
-                      isNotificationUnread: isNotificationUnread.asObservable())
+                      isNotificationUnread: isNotificationUnread.asObservable(),
+                      showServiceTermAgreementAlert: showServiceTermAgreementAlert.asObservable())
     }
     
     //MARK: - API
@@ -296,5 +301,21 @@ extension HomeViewModel {
     //유저 비열람 알림 존재 여부 조회
     func getNotificationUnreadStatus() -> Observable<NotificationUnreadStatusResult> {
         return notificationRepository.getNotificationUnreadStatus()
+    }
+    
+    func getTermSetting(disposeBag: DisposeBag) {
+        userRepository.getTermSetting()
+            .subscribe(with: self, onSuccess: { owner, value in
+                let isAllRequiredTermsAgreed = value.privacyAgreed && value.serviceAgreed
+                
+                if !isAllRequiredTermsAgreed {
+                    owner.showServiceTermAgreementAlert.accept(())
+                } else {
+                    print("약관동의 완료됨!")
+                }
+            }, onFailure: { owner, error in
+                print(error)
+            })
+            .disposed(by: disposeBag)
     }
 }

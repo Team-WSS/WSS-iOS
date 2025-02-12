@@ -128,7 +128,7 @@
 		3932B5A32CAFCE6000C1A736 /* OnboardingSuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3932B5A22CAFCE6000C1A736 /* OnboardingSuccessView.swift */; };
 		3935876B2C99682400F005B4 /* LoginCarouselIndicatorDotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3935876A2C99682400F005B4 /* LoginCarouselIndicatorDotView.swift */; };
 		393C9DF02D5B578B00A6BC1E /* ServiceTermAgreementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393C9DEF2D5B578B00A6BC1E /* ServiceTermAgreementView.swift */; };
-		393C9DF22D5B57AE00A6BC1E /* TermsAgreementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393C9DF12D5B57AE00A6BC1E /* TermsAgreementViewController.swift */; };
+		393C9DF22D5B57AE00A6BC1E /* ServiceTermAgreementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393C9DF12D5B57AE00A6BC1E /* ServiceTermAgreementViewController.swift */; };
 		393C9DF42D5B60A200A6BC1E /* ServiceTermRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393C9DF32D5B609900A6BC1E /* ServiceTermRowView.swift */; };
 		393C9DF62D5B614900A6BC1E /* ServiceTerm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393C9DF52D5B614300A6BC1E /* ServiceTerm.swift */; };
 		393CAC3C2CA6AFD8004B4DB6 /* OnboardingBottomButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393CAC3B2CA6AFD8004B4DB6 /* OnboardingBottomButtonView.swift */; };
@@ -530,7 +530,7 @@
 		3932B5A22CAFCE6000C1A736 /* OnboardingSuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSuccessView.swift; sourceTree = "<group>"; };
 		3935876A2C99682400F005B4 /* LoginCarouselIndicatorDotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCarouselIndicatorDotView.swift; sourceTree = "<group>"; };
 		393C9DEF2D5B578B00A6BC1E /* ServiceTermAgreementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceTermAgreementView.swift; sourceTree = "<group>"; };
-		393C9DF12D5B57AE00A6BC1E /* TermsAgreementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsAgreementViewController.swift; sourceTree = "<group>"; };
+		393C9DF12D5B57AE00A6BC1E /* ServiceTermAgreementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceTermAgreementViewController.swift; sourceTree = "<group>"; };
 		393C9DF32D5B609900A6BC1E /* ServiceTermRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceTermRowView.swift; sourceTree = "<group>"; };
 		393C9DF52D5B614300A6BC1E /* ServiceTerm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceTerm.swift; sourceTree = "<group>"; };
 		393CAC3B2CA6AFD8004B4DB6 /* OnboardingBottomButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingBottomButtonView.swift; sourceTree = "<group>"; };
@@ -1473,7 +1473,7 @@
 				393C9DF52D5B614300A6BC1E /* ServiceTerm.swift */,
 				393C9DF32D5B609900A6BC1E /* ServiceTermRowView.swift */,
 				393C9DEF2D5B578B00A6BC1E /* ServiceTermAgreementView.swift */,
-				393C9DF12D5B57AE00A6BC1E /* TermsAgreementViewController.swift */,
+				393C9DF12D5B57AE00A6BC1E /* ServiceTermAgreementViewController.swift */,
 			);
 			path = ServiceTermAgreement;
 			sourceTree = "<group>";
@@ -2644,7 +2644,7 @@
 				A1708F162B4D8E2700E35E50 /* HomeHeaderView.swift in Sources */,
 				2C41E0D42CA494D900FFD233 /* MyPageEditProfileViewModel.swift in Sources */,
 				E40746662CE870AE005D75D5 /* MyPageNovelPreferencesView.swift in Sources */,
-				393C9DF22D5B57AE00A6BC1E /* TermsAgreementViewController.swift in Sources */,
+				393C9DF22D5B57AE00A6BC1E /* ServiceTermAgreementViewController.swift in Sources */,
 				2C41E0D22CA494C900FFD233 /* MyPageEditProfileViewController.swift in Sources */,
 				393C9DF02D5B578B00A6BC1E /* ServiceTermAgreementView.swift in Sources */,
 				2C41E0D02CA494B800FFD233 /* MyPageEditProfileView.swift in Sources */,
