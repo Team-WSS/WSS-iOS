@@ -266,8 +266,7 @@ final class HomeViewController: UIViewController {
                                                          contentText: StringLiterals.ServiceTermAgreement.alertDesctiption,
                                                          leftTitle: nil,
                                                          rightTitle: StringLiterals.ServiceTermAgreement.alertButton,
-                                                         rightBackgroundColor: UIColor.wssPrimary100.cgColor,
-                                                         isDismissable: false)
+                                                         rightBackgroundColor: UIColor.wssPrimary100.cgColor)
             }
             .subscribe(with: self, onNext: { owner, _ in
                 owner.showServiceTermAgreementView.accept(())
