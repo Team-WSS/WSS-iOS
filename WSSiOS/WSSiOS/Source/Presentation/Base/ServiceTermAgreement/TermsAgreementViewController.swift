@@ -64,6 +64,22 @@ class TermsAgreementViewController: UIViewController {
         })
         .disposed(by: disposeBag)
         
+        Observable.merge(
+            rootView.serviceTermRowViews.map { view in
+                view.termLabel.rx.tapGesture().when(.recognized).map { _ in view.serviceTerm }
+            }
+        )
+        .observe(on: MainScheduler.instance)
+        .bind(with: self, onNext: { owner, value in
+            if let urlString = value.connectedURLString, let url = URL(string: urlString) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            }
+            
+        })
+        .disposed(by: disposeBag)
+        
+        
+        //MARK: - Todo - 서버에 약관 동의 전달 필요
         rootView.bottomButton.rx.tap
             .do(onNext: {
                 print("약관 동의 작업 완료!")
