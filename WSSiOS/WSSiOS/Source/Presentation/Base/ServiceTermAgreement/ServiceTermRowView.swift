@@ -20,6 +20,7 @@ final class ServiceTermRowView: UIView {
     //MARK: - Components
     
     let termLabel = UILabel()
+    let termLabelButton = UIButton()
     let termAgreeButton = UIButton()
     
     
@@ -49,6 +50,7 @@ final class ServiceTermRowView: UIView {
                 .kerning(kerningPixel: WSSFont.body2.kerningPixel)
                 .partialUnderlineStyle(.single, rangeString: serviceTerm.underlineText)
                 .applyAttribute()
+            $0.isUserInteractionEnabled = false
         }
         
         termAgreeButton.do {
@@ -61,24 +63,31 @@ final class ServiceTermRowView: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubviews(termLabel,
+        self.addSubviews(termLabelButton,
                          termAgreeButton)
+        termLabelButton.addSubview(termLabel)
     }
     
     private func setLayout() {
-        termLabel.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.leading.equalToSuperview().inset(16)
+        termLabelButton.snp.makeConstraints {
+            $0.leading.equalToSuperview()
+            $0.verticalEdges.equalToSuperview()
         }
-        
-        termAgreeButton.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.size.equalTo(24)
+        termLabel.snp.makeConstraints {
+            $0.verticalEdges.equalToSuperview()
+            $0.leading.equalToSuperview().inset(16)
             $0.trailing.equalToSuperview().inset(16)
         }
         
+        termAgreeButton.snp.makeConstraints {
+            $0.verticalEdges.equalToSuperview()
+            $0.height.equalTo(40)
+            $0.width.equalTo(56)
+            $0.trailing.equalToSuperview()
+        }
+        
         self.snp.makeConstraints {
-            $0.height.equalTo(24)
+            $0.height.equalTo(40)
         }
     }
     
