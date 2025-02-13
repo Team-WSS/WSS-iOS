@@ -24,7 +24,7 @@ final class NovelDetailHeaderReviewResultView: UIView {
     let readStatusButtons = ReadStatus.allCases.map {
         NovelDetailHeaderReadStatusButton(readStatus: $0)
     }
-    private let divierViews = [UIView(), UIView()]
+    private let dividerViews = [UIView(), UIView()]
     
     //MARK: - Life Cycle
     
@@ -72,7 +72,7 @@ final class NovelDetailHeaderReviewResultView: UIView {
             $0.distribution = .fillEqually
         }
         
-        divierViews.forEach {
+        dividerViews.forEach {
             $0.backgroundColor = .wssGray70
         }
     }
@@ -87,7 +87,7 @@ final class NovelDetailHeaderReviewResultView: UIView {
         readStatusButtons.forEach { button in
             readStatusButtonStackView.addArrangedSubview(button)
         }
-        divierViews.forEach { view in
+        dividerViews.forEach { view in
             readStatusButtonStackView.addSubview(view)
         }
     }
@@ -103,7 +103,7 @@ final class NovelDetailHeaderReviewResultView: UIView {
             $0.horizontalEdges.equalToSuperview()
         }
         
-        divierViews.enumerated().forEach { index, divierView in
+        dividerViews.enumerated().forEach { index, divierView in
             divierView.snp.makeConstraints {
                 $0.height.equalToSuperview()
                 $0.centerY.equalToSuperview()
