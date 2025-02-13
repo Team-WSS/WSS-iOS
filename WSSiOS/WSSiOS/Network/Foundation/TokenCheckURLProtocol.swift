@@ -53,6 +53,7 @@ class TokenCheckURLProtocol: URLProtocol {
                 self.handleUnauthorizedResponse()
             } else if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 404 {  // 요청의 응답 상태 코드가 404인 경우 탈퇴한 것으로, 무조건 로그인 창으로 이동
                 self.deleteTokenAndMoveToLoginViewController(error: NetworkServiceError.authenticationError)
+                print("404 에러로 로그인 화면으로 돌아갑니다.")
             } else { // 401, 404가 아닌 경우 일반적인 응답 처리
                 self.handleTaskResult(data: data, response: response, error: error)
             }
