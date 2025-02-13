@@ -201,8 +201,8 @@ extension NotificationHelper: MessagingDelegate {
     
     /// 디바이스 구분값을 조회하고, 없으면 새로 생성해 저장하고 반환한다.
     private func getOrCreateDeviceIdentifier() throws -> String {
-        if let previousIdentifier = try? KeychainHelper.shared.read(forKey: StringLiterals.KeyChain.deviceIdentifier) {
-            return String(decoding: previousIdentifier, as: UTF8.self)
+        if let previousIdentifier = try? KeychainHelper.shared.readString(forKey: StringLiterals.KeyChain.deviceIdentifier) {
+            return previousIdentifier
         } else {
             let deviceIdentifier = UUID().uuidString
             try KeychainHelper.shared.create(
