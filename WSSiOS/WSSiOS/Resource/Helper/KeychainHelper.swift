@@ -102,6 +102,11 @@ extension KeychainHelper {
         try create(data: data, forKey: account)
     }
     
+    func readString(forKey account: String) throws -> String? {
+        guard let data = try read(forKey: account) else { return nil }
+        return String(decoding: data, as: UTF8.self)
+    }
+    
     func update(value: String, forKey account: String) throws {
         guard let data = value.data(using: .utf8) else {
             throw KeychainError.dataEncodingFailed
@@ -116,7 +121,7 @@ enum KeychainError: Error, CustomStringConvertible {
     case noData
     case dataEncodingFailed
     case unhandledError(status: OSStatus)
-
+    
     var description: String {
         prefix + content
     }
