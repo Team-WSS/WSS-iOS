@@ -388,10 +388,8 @@ final class OnboardingViewModel: ViewModelType {
     
     func getTermSetting(disposeBag: DisposeBag) {
         userRepository.getTermSetting()
-            .subscribe(with: self, onSuccess: { owner, value in
-                let isAllRequiredTermsAgreed = value.privacyAgreed && value.serviceAgreed
-                
-                if !isAllRequiredTermsAgreed {
+            .subscribe(with: self, onSuccess: { owner, result in
+                if !result.isAllRequiredTermsAgreed {
                     owner.showServiceTermAgreementView.accept(())
                 } else {
                     print("약관동의 완료됨!")
