@@ -15,9 +15,10 @@ final class OnboardingViewController: UIViewController {
     
     //MARK: - Properties
     
-    private let viewModel: OnboardingViewModel
+    private let onboardingViewModel: OnboardingViewModel
     let disposeBag = DisposeBag()
-    let selectedBirth = BehaviorSubject<Int?>(value: nil)
+    private let viewDidLoadEvent = PublishRelay<Void>()
+    private let selectedBirth = BehaviorSubject<Int?>(value: nil)
     
     //MARK: - Components
     
@@ -26,7 +27,7 @@ final class OnboardingViewController: UIViewController {
     //MARK: - Life Cycle
     
     init(viewModel: OnboardingViewModel) {
-        self.viewModel = viewModel
+        self.onboardingViewModel = viewModel
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -42,8 +43,9 @@ final class OnboardingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        rootView.nickNameView.nicknameTextField.delegate = self
+        delegate()
         bindViewModel()
+        viewDidLoadEvent.accept(())
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -65,9 +67,13 @@ final class OnboardingViewController: UIViewController {
     
     //MARK: - Bind
     
+    private func delegate() {
+        rootView.nickNameView.nicknameTextField.delegate = self
+    }
+    
     private func bindViewModel() {
         let input = createViewModelInput()
-        let output = viewModel.transform(from: input,
+        let output = onboardingViewModel.transform(from: input,
                                          disposeBag: disposeBag)
         bindViewModelOutput(output)
     }
@@ -195,6 +201,12 @@ final class OnboardingViewController: UIViewController {
                 sceneDelegate.setRootToLoginViewController()
             })
             .disposed(by: disposeBag)
+        
+        output.showServiceTermAgreementView
+            .drive(with: self, onNext: { owner, _ in
+                owner.presentModalViewController(ModuleFactory.shared.makeServiceTermAgreementViewController())
+            })
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Actions
@@ -234,6 +246,7 @@ final class OnboardingViewController: UIViewController {
             selectBirthButtonDidTap: self.rootView.birthGenderView.selectBirthButton.rx.tap,
             selectedBirth: getNotificationBirth,
             genreButtonDidTap: genreButtonDidTap,
+            viewDidLoadEvent: self.viewDidLoadEvent.asObservable(),
             nextButtonDidTap: nextButtonDidTap,
             backButtonDidTap: rootView.backButton.rx.tap,
             scrollViewContentOffset: self.rootView.scrollView.rx.contentOffset,
@@ -274,4 +287,3 @@ extension OnboardingViewController: UITextFieldDelegate {
         return newLength <= 10
     }
 }
-
