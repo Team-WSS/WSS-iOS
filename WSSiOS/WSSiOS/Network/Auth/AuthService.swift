@@ -15,7 +15,7 @@ protocol AuthService {
     func loginWithKakao(_ kakaoAccessToken: String) -> Single<LoginResult>
     func reissueToken() -> Single<ReissueResult>
     func postWithdrawId(reason: String, refreshToken: String) -> Single<Void>
-    func postLogout(refreshToken: String) -> Single<Void>
+    func postLogout(logoutRequest: LogoutRequest) -> Single<Void>
 }
 
 
@@ -109,8 +109,8 @@ final class DefaultAuthService: NSObject, Networking, AuthService {
         }
     }
     
-    func postLogout(refreshToken: String) -> Single<Void> {
-        guard let data = try? JSONEncoder().encode(Logout(refreshToken: refreshToken)) else {
+    func postLogout(logoutRequest: LogoutRequest) -> Single<Void> {
+        guard let data = try? JSONEncoder().encode(logoutRequest) else {
             return Single.error(NetworkServiceError.invalidRequestError)
         }
         do {

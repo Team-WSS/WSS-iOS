@@ -32,6 +32,7 @@ struct WithdrawRequest: Codable {
     let refreshToken: String
 }
 
-struct Logout: Codable {
+struct LogoutRequest: Codable {
     let refreshToken: String
+    let deviceIdentifier: String
 }
