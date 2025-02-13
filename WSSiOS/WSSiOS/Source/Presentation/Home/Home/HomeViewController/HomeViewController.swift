@@ -289,7 +289,9 @@ final class HomeViewController: UIViewController {
     
     func setRemoteNotification() {
         Task {
-            await NotificationHelper.shared.setRemoteNotification()
+            if APIConstants.isLogined {
+                await NotificationHelper.shared.setRemoteNotification()
+            }
         }
     }
 }
