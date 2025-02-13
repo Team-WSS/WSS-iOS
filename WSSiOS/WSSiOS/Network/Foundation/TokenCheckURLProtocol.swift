@@ -107,7 +107,7 @@ class TokenCheckURLProtocol: URLProtocol {
     private func deleteTokenAndMoveToLoginViewController(error: Error) {
         // 실패 시 토큰을 삭제하고 로그인 VC로 이동
         DispatchQueue.main.async {
-            self.deleteTokens()
+            self.deleteUserInfo()
             self.moveToLoginViewController()
         }
         self.client?.urlProtocol(self, didFailWithError: error)
@@ -127,11 +127,12 @@ extension TokenCheckURLProtocol {
                                        forKey: StringLiterals.UserDefault.refreshToken)
     }
     
-    private func deleteTokens() {
-        UserDefaults.standard.setValue(nil,
-                                       forKey: StringLiterals.UserDefault.accessToken)
-        UserDefaults.standard.setValue(nil,
-                                       forKey: StringLiterals.UserDefault.refreshToken)
+    private func deleteUserInfo() {
+        UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.userId)
+        UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.userNickname)
+        UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.userGender)
+        UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.accessToken)
+        UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.refreshToken)
     }
     
     private func moveToLoginViewController() {
