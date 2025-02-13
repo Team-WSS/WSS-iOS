@@ -53,7 +53,7 @@ enum ServiceTerm: CaseIterable {
         case .serviceAgreement:
             return "https://websoso.notion.site/143600bd74688050be18f4da31d9403e"
         case .privacyPolicy:
-            return "https://websoso.notion.site/143600bd746880668556fb005fcef491"
+            return "https://websoso.notion.site/198600bd746880699fd6f22dd42a7215"
         case .marketingConsent:
             return nil
         }
