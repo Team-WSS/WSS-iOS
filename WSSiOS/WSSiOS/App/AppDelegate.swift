@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        // Firebase Info 파일 디버그-릴리즈 버전 적용 분기처리
+        /// Firebase Info 파일 디버그-릴리즈 버전 적용 분기처리
 #if DEBUG
         let filePath = Bundle.main.path(forResource: "GoogleService-Info-Debug", ofType: "plist")!
 #else
@@ -48,9 +48,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 
 // MARK: APNs & FCM
+
 extension AppDelegate {
     
-    // APNs 기기 등록 성공 콜백, Swizzling Off 상태이기 때문에 직접 device토큰을 Messaging에 등록
+    /// APNs 기기 등록 성공 콜백, Swizzling Off 상태이기 때문에 직접 device토큰을 Messaging에 등록
     func application(
         _ application: UIApplication,
         didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data
@@ -59,7 +60,7 @@ extension AppDelegate {
         Messaging.messaging().apnsToken = deviceToken
     }
     
-    // APNs 기기 등록 실패 콜백
+    /// APNs 기기 등록 실패 콜백
     func application(
         _ application: UIApplication,
         didFailToRegisterForRemoteNotificationsWithError error: Error
@@ -67,7 +68,7 @@ extension AppDelegate {
         print("디바이스 토큰 등록 실패: \(error)")
     }
     
-    //FCM에서 수신한 알림 분석 데이터를 Firebase SDK에 전달
+    /// FCM에서 수신한 알림 분석 데이터를 Firebase SDK에 전달
     func application(
         _ application: UIApplication,
         didReceiveRemoteNotification userInfo: [AnyHashable : Any],
