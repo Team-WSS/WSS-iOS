@@ -108,7 +108,6 @@ final class ServiceTermAgreementView: UIView {
                                         descriptionLabel,
                                         allAgreeButton)
         serviceTermRowViews.forEach { contentView.addArrangedSubview($0) }
-        
         allAgreeButton.addSubviews(allAgreeButtonLabel,
                                    allAgreeButtonImageView)
         bottomButton.addSubview(bottomButtonLabel)
