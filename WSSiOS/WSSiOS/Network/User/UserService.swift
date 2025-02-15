@@ -31,7 +31,7 @@ protocol UserService {
                           sortType: String) -> Single<UserNovelList>
     func getAppMinimumVersion() -> Single<AppMinimumVersion>
     
-    //약관동의 관련
+    // 약관동의 관련
     func getTermSetting() -> Single<TermSettingResponse>
     func patchTermSetting(_ termSettingRequest: TermSettingRequest) -> Single<Void>
 }
