@@ -93,7 +93,7 @@ final class ServiceTermAgreementView: UIView {
             bottomButtonLabel.do {
                 $0.applyWSSFont(.title1,
                                 with: APIConstants.isRegister ? StringLiterals.ServiceTermAgreement.bottomButtonComplete
-                                                              : StringLiterals.ServiceTermAgreement.bottomButtonNext)
+                                : StringLiterals.ServiceTermAgreement.bottomButtonNext)
                 $0.textColor = .wssWhite
                 $0.isUserInteractionEnabled = false
             }
@@ -116,11 +116,7 @@ final class ServiceTermAgreementView: UIView {
     private func setLayout() {
         backgroundView.snp.makeConstraints {
             $0.leading.trailing.bottom.equalToSuperview()
-            if UIScreen.isSE {
-                $0.height.equalTo(635)
-            } else {
-                $0.height.equalTo(670)
-            }
+            $0.height.equalTo(UIScreen.isSE ? 635 : 670)
         }
         
         contentView.do {
