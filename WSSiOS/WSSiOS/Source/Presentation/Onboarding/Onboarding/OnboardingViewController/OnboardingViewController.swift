@@ -16,7 +16,7 @@ final class OnboardingViewController: UIViewController {
     //MARK: - Properties
     
     private let onboardingViewModel: OnboardingViewModel
-    let disposeBag = DisposeBag()
+    private let disposeBag = DisposeBag()
     private let viewDidLoadEvent = PublishRelay<Void>()
     private let selectedBirth = BehaviorSubject<Int?>(value: nil)
     
