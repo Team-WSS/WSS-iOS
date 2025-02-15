@@ -35,6 +35,7 @@ final class ServiceTermRowView: UIView {
         setHierarchy()
         setLayout()
     }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -73,6 +74,7 @@ final class ServiceTermRowView: UIView {
             $0.leading.equalToSuperview()
             $0.verticalEdges.equalToSuperview()
         }
+        
         termLabel.snp.makeConstraints {
             $0.verticalEdges.equalToSuperview()
             $0.leading.equalToSuperview().inset(16)
