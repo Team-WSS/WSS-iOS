@@ -49,7 +49,7 @@ enum URLs {
         static let isProfileVisibility = "\(userBasePath)/profile-status"
         static let getAppMinimumVersion = "/minimum-version"
         
-        static let termSetting = "/users/terms-settings"
+        static let termSetting = userBasePath + "/terms-settings"
     }
     
     enum NovelDetail {
