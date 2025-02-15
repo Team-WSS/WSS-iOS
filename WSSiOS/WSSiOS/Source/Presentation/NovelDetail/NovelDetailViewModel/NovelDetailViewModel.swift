@@ -22,7 +22,7 @@ final class NovelDetailViewModel: ViewModelType {
     private let novelId: Int
     private var novelTitle: String = ""
     
-    //Total
+    // Total
     private let viewWillAppearEvent = BehaviorRelay<Bool>(value: false)
     private let showNetworkErrorView = BehaviorRelay<Bool>(value: false)
     private let showHeaderDropdownView = BehaviorRelay<Bool>(value: false)
@@ -31,24 +31,24 @@ final class NovelDetailViewModel: ViewModelType {
     private let showReviewDeletedToast = PublishRelay<Void>()
     private let hideFirstReviewDescription = BehaviorRelay<Bool>(value: false)
     
-    //NovelDetailHeader
+    // NovelDetailHeader
     private let novelDetailHeaderData = PublishSubject<NovelDetailHeaderEntity>()
     private let showLargeNovelCoverImage = BehaviorRelay<Bool>(value: false)
     private let isUserNovelInterested = BehaviorRelay<Bool>(value: false)
     private let readStatus = BehaviorRelay<ReadStatus?>(value: nil)
     private let novelGenre = BehaviorRelay<[NewNovelGenre]>(value: [])
     
-    //Tab
+    // Tab
     private let selectedTab = BehaviorRelay<Tab>(value: Tab.info)
     
-    //NovelDetailInfo
+    // NovelDetailInfo
     private let novelDetailInfoData = PublishSubject<NovelDetailInfoResult>()
     private let isInfoDescriptionExpended = BehaviorRelay<Bool>(value: false)
     private let platformList = BehaviorRelay<[Platform]>(value: [])
     private let keywordList = BehaviorRelay<[Keyword]>(value: [])
     private let reviewSectionVisibilities = BehaviorRelay<[ReviewSectionVisibility]>(value: [])
     
-    //NovelDetailFeed
+    // NovelDetailFeed
     private var isLoadable: Bool = false
     private var isFetching: Bool = false
     private var lastFeedId: Int = 0
@@ -78,7 +78,7 @@ final class NovelDetailViewModel: ViewModelType {
     //MARK: - Transform
     
     struct Input {
-        //Total
+        // Total
         let viewWillAppearEvent: Observable<Bool>
         let scrollContentOffset: ControlProperty<CGPoint>
         let backButtonDidTap: ControlEvent<Void>
@@ -88,7 +88,7 @@ final class NovelDetailViewModel: ViewModelType {
         let backgroundDidTap: ControlEvent<UITapGestureRecognizer>
         let firstDescriptionBackgroundDidTap: ControlEvent<Void>
         
-        //NovelDetailHeader
+        // NovelDetailHeader
         let headerDotsButtonDidTap: ControlEvent<Void>
         let headerDropdownButtonDidTap: Observable<DropdownButtonType>
         let novelCoverImageButtonDidTap: ControlEvent<Void>
@@ -98,16 +98,16 @@ final class NovelDetailViewModel: ViewModelType {
         let interestButtonDidTap: ControlEvent<Void>
         let feedWriteButtonDidTap: ControlEvent<Void>
         
-        //Tab
+        // Tab
         let infoTabBarButtonDidTap: ControlEvent<Void>
         let feedTabBarButtonDidTap: ControlEvent<Void>
         let stickyInfoTabBarButtonDidTap: ControlEvent<Void>
         let stickyFeedTabBarButtonDidTap: ControlEvent<Void>
         
-        //NovelDetailInfo
+        // NovelDetailInfo
         let descriptionAccordionButtonDidTap: ControlEvent<Void>
         
-        //NovelDetailFeed
+        // NovelDetailFeed
         let novelDetailFeedTableViewContentSize: Observable<CGSize?>
         let novelDetailFeedTableViewItemSelected: Observable<IndexPath>
         let novelDetailFeedProfileViewDidTap: Observable<Int>
@@ -120,12 +120,12 @@ final class NovelDetailViewModel: ViewModelType {
         let createFeedButtonDidTap: ControlEvent<Void>
         let feedEditedNotification: Observable<Notification>
         
-        //NovelReview
+        // NovelReview
         let novelReviewedNotification: Observable<Notification>
     }
     
     struct Output {
-        //Total
+        // Total
         let detailHeaderData: Observable<NovelDetailHeaderEntity>
         let detailInfoData: Observable<NovelDetailInfoResult>
         let scrollContentOffset: ControlProperty<CGPoint>
@@ -137,22 +137,22 @@ final class NovelDetailViewModel: ViewModelType {
         let showReviewDeletedToast: Driver<Void>
         let hidefirstReviewDescriptionView: Driver<Bool>
         
-        //NovelDetailHeader
+        // NovelDetailHeader
         let showLargeNovelCoverImage: Driver<Bool>
         let isUserNovelInterested: Driver<Bool>
         let pushTofeedWriteViewController: Observable<(genre: [NewNovelGenre], novelId: Int, novelTitle: String)>
         let pushToReviewViewController: Observable<(isInterest: Bool, readStatus: ReadStatus, novelId: Int, novelTitle: String)>
         
-        //Tab
+        // Tab
         let selectedTab: Driver<Tab>
         
-        //NovelDetailInfo
+        // NovelDetailInfo
         let isInfoDescriptionExpended: Driver<Bool>
         let platformList: Driver<[Platform]>
         let keywordList: Driver<[Keyword]>
         let reviewSectionVisibilities: Driver<[ReviewSectionVisibility]>
         
-        //NovelDetailFeed
+        // NovelDetailFeed
         let feedList: Observable<[TotalFeeds]>
         let novelDetailFeedTableViewHeight: Observable<CGFloat>
         let pushToFeedDetailViewController: Observable<Int>
@@ -168,7 +168,7 @@ final class NovelDetailViewModel: ViewModelType {
         let showFeedEditedToast: Observable<Void>
         let showWithdrawalUserToastView: Observable<Void>
         
-        //NovelReview
+        // NovelReview
         let showNovelReviewedToast: Observable<Void>
     }
     

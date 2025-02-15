@@ -29,7 +29,7 @@ final class NovelDetailViewController: UIViewController {
         $0.timeZone = TimeZone(identifier: StringLiterals.Register.Normal.DatePicker.KoreaTimeZone)
     }
     
-    //NovelDetailFeed
+    // NovelDetailFeed
     private let novelDetailFeedProfileViewDidTap = PublishRelay<Int>()
     private let novelDetailFeedDropdownButtonDidTap = PublishRelay<(Int, Bool)>()
     private let novelDetailFeedConnectedNovelViewDidTap = PublishRelay<Int>()
