@@ -150,6 +150,8 @@ struct DefaultUserRepository: UserRepository {
             .asObservable()
     }
     
+    // 약관 동의
+    
     func getTermSetting() -> Single<TermSettingEntity> {
         return userService.getTermSetting().map { $0.toEntity() }
     }

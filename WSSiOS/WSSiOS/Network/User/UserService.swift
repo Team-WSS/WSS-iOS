@@ -398,7 +398,7 @@ extension DefaultUserService: UserService {
         }
     }
     
-    //약관동의 관련
+    // 약관동의 관련
     func getTermSetting() -> Single<TermSettingResponse> {
         do {
             let request = try makeHTTPRequest(method: .get,
