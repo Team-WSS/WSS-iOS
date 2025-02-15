@@ -81,7 +81,7 @@ final class ServiceTermAgreementViewController: UIViewController {
                 view.termLabelButton.rx.tap.map { _ in view.serviceTerm }
             }
         )
-        .observe(on: MainScheduler.instance)
+        //.observe(on: MainScheduler.instance)
         .bind(with: self, onNext: { owner, value in
             if let urlString = value.connectedURLString, let url = URL(string: urlString) {
                 UIApplication.shared.open(url, options: [:], completionHandler: nil)
