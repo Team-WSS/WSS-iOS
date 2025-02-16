@@ -23,7 +23,6 @@ final class ServiceTermRowView: UIView {
     let termLabelButton = UIButton()
     let termAgreeButton = UIButton()
     
-    
     // MARK: - Life Cycle
     
     init(_ serviceTerm: ServiceTerm) {
