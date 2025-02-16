@@ -17,7 +17,7 @@ final class NotificationHelper: NSObject {
     
     private override init() {
         self.notificationRepository = DefaultNotificationRepository(
-            notificationService: DefaultNoticeService()
+            notificationService: DefaultNotificationService()
         )
         super.init()
     }

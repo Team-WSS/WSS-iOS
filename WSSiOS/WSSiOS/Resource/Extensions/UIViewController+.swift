@@ -379,7 +379,7 @@ extension UIViewController {
         let viewController = MyPagePushNotificationViewController(
             viewModel: MyPagePushNotificationViewModel(
                 notificationRepository: DefaultNotificationRepository(
-                    notificationService: DefaultNoticeService())))
+                    notificationService: DefaultNotificationService())))
         viewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(viewController, animated: true)
         
@@ -442,10 +442,10 @@ extension UIViewController {
     }
     
     func pushToNotificationViewController() {
-        let viewController = HomeNoticeViewController(
-            viewModel: HomeNoticeViewModel(
+        let viewController = HomeNotificationViewController(
+            viewModel: HomeNotificationViewModel(
                 notificationRepository: DefaultNotificationRepository(
-                    notificationService: DefaultNoticeService()
+                    notificationService: DefaultNotificationService()
                 )
             )
         )
@@ -458,7 +458,7 @@ extension UIViewController {
         let viewController = HomeNoticeDetailViewController(
             viewModel: HomeNoticeDetailViewModel(
                 notificationRepository: DefaultNotificationRepository(
-                    notificationService: DefaultNoticeService()),
+                    notificationService: DefaultNotificationService()),
                 notificationId: notificationId))
         self.navigationController?.pushViewController(viewController, animated: true)
     }

@@ -41,7 +41,7 @@ final class HomeNoticeDetailViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        setWSSNavigationBar(title: StringLiterals.Navigation.Title.notice,
+        setWSSNavigationBar(title: StringLiterals.Navigation.Title.notification,
                             left: self.rootView.backButton,
                             right: nil)
         viewWillAppearEvent.accept(())

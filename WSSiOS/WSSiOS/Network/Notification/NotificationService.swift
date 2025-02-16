@@ -19,7 +19,7 @@ protocol NotificationService {
     func getUserPushNotificationSetting() -> Single<PushNotificationSettingResult>
 }
 
-final class DefaultNoticeService: NSObject, Networking, NotificationService {
+final class DefaultNotificationService: NSObject, Networking, NotificationService {
     
     private var urlSession = URLSession(configuration: URLSessionConfiguration.default,
                                         delegate: nil,
