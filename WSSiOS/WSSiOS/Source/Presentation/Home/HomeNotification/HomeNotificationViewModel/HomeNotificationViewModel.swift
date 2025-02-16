@@ -65,7 +65,9 @@ final class HomeNotificationViewModel: ViewModelType {
             .subscribe(onNext: { data in
                 self.notificationList.accept(data.notifications)
                 self.isLoadable = data.isLoadable
-                self.lastNotificationId = data.notifications.count
+                if let lastNotification = data.notifications.last {
+                    self.lastNotificationId = lastNotification.notificationId
+                }
                 self.showLoadingView.accept(false)
             }, onError: { error in
                 print("Error fetching notifications: \(error)")
@@ -112,7 +114,9 @@ final class HomeNotificationViewModel: ViewModelType {
                 let newData = owner.notificationList.value + data.notifications
                 owner.notificationList.accept(newData)
                 owner.isLoadable = data.isLoadable
-                owner.lastNotificationId += data.notifications.count
+                if let lastNotification = data.notifications.last {
+                    owner.lastNotificationId = lastNotification.notificationId
+                }
             })
             .disposed(by: disposeBag)
         
