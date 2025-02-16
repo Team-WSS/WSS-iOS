@@ -1,5 +1,5 @@
 //
-//  NotificationResult.swift
+//  Notification.swift
 //  WSSiOS
 //
 //  Created by Seoyeon Choi on 5/12/24.
