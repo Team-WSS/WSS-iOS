@@ -144,8 +144,10 @@ final class LoginViewModel: NSObject, ViewModelType {
                                        forKey:  StringLiterals.UserDefault.refreshToken)
         UserDefaults.standard.setValue(result.isRegister,
                                        forKey: StringLiterals.UserDefault.isRegister)
+        NotificationHelper.shared.fetchFCMToken()
         if APIConstants.isRegister {
             self.navigateToHome.accept(())
+          
         } else {
             self.navigateToOnboarding.accept(())
         }

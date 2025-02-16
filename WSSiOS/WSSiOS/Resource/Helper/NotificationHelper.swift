@@ -157,10 +157,24 @@ extension NotificationHelper: MessagingDelegate {
     /// FCM 토큰이 생성되거나 변경될 때 자동으로 호출되어 클라이언트에 전달해줌.
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
         guard let newFCMToken = fcmToken else { return }
-        print("Firebase 등록 토큰: \(newFCMToken)")
-
+        print("새로 갱신된 FCM 토큰: \(newFCMToken)")
+        
         if APIConstants.isLogined {
             sendFCMTokenToServer(token: newFCMToken)
+        }
+    }
+    
+    /// 최신 FCM 토큰을 직접 갱신
+    func fetchFCMToken() {
+        Messaging.messaging().token { [weak self] token, error in
+            if let error = error {
+                print("FCM 토큰 가져오기 실패: \(error.localizedDescription)")
+            } else if let token = token {
+                print("최신 FCM 토큰: \(token)")
+                if APIConstants.isLogined {
+                    self?.sendFCMTokenToServer(token: token)
+                }
+            }
         }
     }
     
@@ -187,8 +201,8 @@ extension NotificationHelper: MessagingDelegate {
     
     /// 디바이스 구분값을 조회하고, 없으면 새로 생성해 저장하고 반환한다.
     private func getOrCreateDeviceIdentifier() throws -> String {
-        if let previousIdentifier = try? KeychainHelper.shared.read(forKey: StringLiterals.KeyChain.deviceIdentifier) {
-            return String(decoding: previousIdentifier, as: UTF8.self)
+        if let previousIdentifier = try? KeychainHelper.shared.readString(forKey: StringLiterals.KeyChain.deviceIdentifier) {
+            return previousIdentifier
         } else {
             let deviceIdentifier = UUID().uuidString
             try KeychainHelper.shared.create(
