@@ -25,7 +25,7 @@ final class ServiceTermAgreementView: UIView {
     private let allAgreeButtonLabel = UILabel()
     private let allAgreeButtonImageView = UIImageView()
     
-    let serviceTermRowViews: [ServiceTermRowView] = ServiceTerm.allCases.map { ServiceTermRowView($0)}
+    let serviceTermRowViews: [ServiceTermRowView] = ServiceTerm.allCases.map { ServiceTermRowView($0) }
     
     let bottomButton = UIButton()
     private let bottomButtonLabel = UILabel()

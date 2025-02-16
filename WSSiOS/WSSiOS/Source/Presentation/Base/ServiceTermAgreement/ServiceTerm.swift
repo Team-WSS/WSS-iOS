@@ -12,7 +12,6 @@ enum ServiceTerm: CaseIterable {
     case privacyPolicy
     case marketingConsent
     
-    
     var fullText: String {
         return "\(termTitle) \(requiredStatusText)"
     }
