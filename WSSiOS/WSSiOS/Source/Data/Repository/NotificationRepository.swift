@@ -12,7 +12,7 @@ import RxSwift
 protocol NotificationRepository {
     func getNotifications(lastNotificationId: Int) -> Observable<NotificationsEntity>
     func getNotificationDetail(notificationId: Int) -> Observable<NotificationDetailEntity>
-    func getNotificationUnreadStatus() -> Observable<NotificationUnreadStatusResult>
+    func getNotificationUnreadStatus() -> Observable<NotificationUnreadStatusResponse>
     func postNotificationRead(notificationId: Int) -> Observable<Void>
     func postUserFCMToken(fcmToken: String, deviceIdentifier: String) -> Single<Void>
     func postUserPushNotificationSetting(isPushEnabled: Bool) -> Single<Void>
@@ -39,8 +39,8 @@ struct TestNotificationRepository: NotificationRepository {
                                                         createdDate: "1999년 11월 16일"))
     }
     
-    func getNotificationUnreadStatus() -> Observable<NotificationUnreadStatusResult> {
-        return Observable.just(NotificationUnreadStatusResult(hasUnreadNotifications: false))
+    func getNotificationUnreadStatus() -> Observable<NotificationUnreadStatusResponse> {
+        return Observable.just(NotificationUnreadStatusResponse(hasUnreadNotifications: false))
     }
     
     func postNotificationRead(notificationId: Int) -> Observable<Void> {
@@ -83,7 +83,7 @@ struct DefaultNotificationRepository: NotificationRepository {
             .map { $0.toEntity() }
     }
     
-    func getNotificationUnreadStatus() -> Observable<NotificationUnreadStatusResult> {
+    func getNotificationUnreadStatus() -> Observable<NotificationUnreadStatusResponse> {
         return notificationService.getNotificationUnreadStatus()
             .asObservable()
     }

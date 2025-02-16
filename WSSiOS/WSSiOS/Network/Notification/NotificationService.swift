@@ -10,9 +10,9 @@ import Foundation
 import RxSwift
 
 protocol NotificationService {
-    func getNotifications(lastNotificationId: Int, size: Int) -> Single<NotificationsResult>
-    func getNotificationDetail(notificationId: Int) -> Single<NotificationDetailResult>
-    func getNotificationUnreadStatus() -> Single<NotificationUnreadStatusResult>
+    func getNotifications(lastNotificationId: Int, size: Int) -> Single<NotificationsResponse>
+    func getNotificationDetail(notificationId: Int) -> Single<NotificationDetailResponse>
+    func getNotificationUnreadStatus() -> Single<NotificationUnreadStatusResponse>
     func postNotificationRead(notificationId: Int) -> Single<Void>
     func postUserFCMToken(fcmToken: String, deviceIdentifier: String) -> Single<Void>
     func postUserPushNotificationSetting(isPushEnabled: Bool) -> Single<Void>
@@ -25,7 +25,7 @@ final class DefaultNotificationService: NSObject, Networking, NotificationServic
                                         delegate: nil,
                                         delegateQueue: nil)
     
-    func getNotifications(lastNotificationId: Int, size: Int) -> Single<NotificationsResult> {
+    func getNotifications(lastNotificationId: Int, size: Int) -> Single<NotificationsResponse> {
         let notificationsQueryItems: [URLQueryItem] = [
             URLQueryItem(name: "lastNotificationId", value: String(describing: lastNotificationId)),
             URLQueryItem(name: "size", value: String(describing: size))
@@ -41,14 +41,14 @@ final class DefaultNotificationService: NSObject, Networking, NotificationServic
             NetworkLogger.log(request: request)
             
             return tokenCheckURLSession.rx.data(request: request)
-                .map { try self.decode(data: $0, to: NotificationsResult.self) }
+                .map { try self.decode(data: $0, to: NotificationsResponse.self) }
                 .asSingle()
         } catch {
             return Single.error(error)
         }
     }
     
-    func getNotificationDetail(notificationId: Int) -> Single<NotificationDetailResult> {
+    func getNotificationDetail(notificationId: Int) -> Single<NotificationDetailResponse> {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.Notification.getNotificationDetail(notificationId: notificationId),
@@ -58,14 +58,14 @@ final class DefaultNotificationService: NSObject, Networking, NotificationServic
             NetworkLogger.log(request: request)
             
             return tokenCheckURLSession.rx.data(request: request)
-                .map { try self.decode(data: $0, to: NotificationDetailResult.self) }
+                .map { try self.decode(data: $0, to: NotificationDetailResponse.self) }
                 .asSingle()
         } catch {
             return Single.error(error)
         }
     }
     
-    func getNotificationUnreadStatus() -> Single<NotificationUnreadStatusResult> {
+    func getNotificationUnreadStatus() -> Single<NotificationUnreadStatusResponse> {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.Notification.getNotificationUnreadStatus,
@@ -75,7 +75,7 @@ final class DefaultNotificationService: NSObject, Networking, NotificationServic
             NetworkLogger.log(request: request)
             
             return tokenCheckURLSession.rx.data(request: request)
-                .map { try self.decode(data: $0, to: NotificationUnreadStatusResult.self) }
+                .map { try self.decode(data: $0, to: NotificationUnreadStatusResponse.self) }
                 .asSingle()
         } catch {
             return Single.error(error)
