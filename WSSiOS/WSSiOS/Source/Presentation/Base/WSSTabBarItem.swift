@@ -62,7 +62,7 @@ enum WSSTabBarItem: CaseIterable {
                     blocksService: DefaultBlocksService()
                 ),
                 notificationRepository: DefaultNotificationRepository(
-                    notificationService: DefaultNoticeService())
+                    notificationService: DefaultNotificationService())
             ))
             
         case .search:

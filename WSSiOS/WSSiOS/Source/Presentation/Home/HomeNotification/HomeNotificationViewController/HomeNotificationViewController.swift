@@ -1,5 +1,5 @@
 //
-//  HomeNoticeViewController.swift
+//  HomeNotificationViewController.swift
 //  WSSiOS
 //
 //  Created by Seoyeon Choi on 5/12/24.
@@ -10,22 +10,22 @@ import UIKit
 import RxSwift
 import RxRelay
 
-final class HomeNoticeViewController: UIViewController {
+final class HomeNotificationViewController: UIViewController {
     
     //MARK: - Properties
     
-    private let viewModel: HomeNoticeViewModel
+    private let viewModel: HomeNotificationViewModel
     private let disposeBag = DisposeBag()
     
     private let viewWillAppearEvent = PublishRelay<Void>()
     
     //MARK: - UI Components
     
-    private let rootView = HomeNoticeView()
+    private let rootView = HomeNotificationView()
     
     //MARK: - Life Cycle
     
-    init(viewModel: HomeNoticeViewModel) {
+    init(viewModel: HomeNotificationViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -41,7 +41,7 @@ final class HomeNoticeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        setWSSNavigationBar(title: StringLiterals.Navigation.Title.notice,
+        setWSSNavigationBar(title: StringLiterals.Navigation.Title.notification,
                             left: self.rootView.backButton,
                             right: nil)
         swipeBackGesture()
@@ -66,34 +66,34 @@ final class HomeNoticeViewController: UIViewController {
     //MARK: - Bind
     
     private func registerCell() {
-        rootView.noticeTableView.register(
-            HomeNoticeTableViewCell.self,
-            forCellReuseIdentifier: HomeNoticeTableViewCell.cellIdentifier)
+        rootView.notificationTableView.register(
+            HomeNotificationTableViewCell.self,
+            forCellReuseIdentifier: HomeNotificationTableViewCell.cellIdentifier)
     }
     
     private func bindViewModel() {
-        let reachedBottom = rootView.noticeTableView.rx.didScroll
+        let reachedBottom = rootView.notificationTableView.rx.didScroll
             .map { self.isNearBottomEdge() }
             .distinctUntilChanged()
             .asObservable()
         
-        let input = HomeNoticeViewModel.Input(
+        let input = HomeNotificationViewModel.Input(
             viewWillAppearEvent: viewWillAppearEvent.asObservable(),
-            noticeTableViewContentSize: rootView.noticeTableView.rx.observe(CGSize.self, "contentSize"),
-            noticeTableViewCellSelected: rootView.noticeTableView.rx.itemSelected,
+            notificationTableViewContentSize: rootView.notificationTableView.rx.observe(CGSize.self, "contentSize"),
+            notificationTableViewCellSelected: rootView.notificationTableView.rx.itemSelected,
             scrollReachedBottom: reachedBottom
         )
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.notificationList
-            .bind(to: rootView.noticeTableView.rx.items(
-                cellIdentifier: HomeNoticeTableViewCell.cellIdentifier,
-                cellType: HomeNoticeTableViewCell.self)) { row, element, cell in
+            .bind(to: rootView.notificationTableView.rx.items(
+                cellIdentifier: HomeNotificationTableViewCell.cellIdentifier,
+                cellType: HomeNotificationTableViewCell.self)) { row, element, cell in
                     cell.bindData(data: element)
                 }
                 .disposed(by: disposeBag)
         
-        output.noticeTableViewHeight
+        output.notificationTableViewHeight
             .drive(with: self, onNext: { owner, height in
                 owner.rootView.updateTableViewHeight(height: height)
             })
@@ -106,7 +106,7 @@ final class HomeNoticeViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.pushToNoticeDetailViewController
+        output.pushToNotificationDetailViewController
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, notificationId in
                 owner.pushToNotificationDetailViewController(notificationId: notificationId)
@@ -129,11 +129,11 @@ final class HomeNoticeViewController: UIViewController {
     }
     
     private func isNearBottomEdge() -> Bool {
-        guard self.rootView.noticeTableView.contentSize.height > 0 else {
+        guard self.rootView.notificationTableView.contentSize.height > 0 else {
             return false
         }
         
-        let checkNearBottomEdge = self.rootView.noticeTableView.contentOffset.y + self.rootView.noticeTableView.bounds.size.height + 1.0 >= self.rootView.noticeTableView.contentSize.height
+        let checkNearBottomEdge = self.rootView.notificationTableView.contentOffset.y + self.rootView.notificationTableView.bounds.size.height + 1.0 >= self.rootView.notificationTableView.contentSize.height
         
         return checkNearBottomEdge
     }

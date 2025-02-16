@@ -1,5 +1,5 @@
 //
-//  HomeNoticeViewModel.swift
+//  HomeNotificationViewModel.swift
 //  WSSiOS
 //
 //  Created by Seoyeon Choi on 5/12/24.
@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class HomeNoticeViewModel: ViewModelType {
+final class HomeNotificationViewModel: ViewModelType {
     
     //MARK: - Properties
     
@@ -23,15 +23,15 @@ final class HomeNoticeViewModel: ViewModelType {
     private let notificationList = BehaviorRelay<[NotificationEntity]>(value: [])
     
     private let pushToFeedDetailViewController = PublishRelay<Int>()
-    private let pushToNoticeDetailViewController = PublishRelay<Int>()
+    private let pushToNotificationDetailViewController = PublishRelay<Int>()
     private let showLoadingView = PublishRelay<Bool>()
     
     // MARK: - Inputs
     
     struct Input {
         let viewWillAppearEvent: Observable<Void>
-        let noticeTableViewContentSize: Observable<CGSize?>
-        let noticeTableViewCellSelected: ControlEvent<IndexPath>
+        let notificationTableViewContentSize: Observable<CGSize?>
+        let notificationTableViewCellSelected: ControlEvent<IndexPath>
         let scrollReachedBottom: Observable<Bool>
     }
     
@@ -39,9 +39,9 @@ final class HomeNoticeViewModel: ViewModelType {
     
     struct Output {
         let notificationList: Observable<[NotificationEntity]>
-        let noticeTableViewHeight: Driver<CGFloat>
+        let notificationTableViewHeight: Driver<CGFloat>
         let pushToFeedDetailViewController: Observable<Int>
-        let pushToNoticeDetailViewController: Observable<Int>
+        let pushToNotificationDetailViewController: Observable<Int>
         let showLoadingView: Observable<Bool>
     }
     
@@ -73,14 +73,14 @@ final class HomeNoticeViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.noticeTableViewCellSelected
+        input.notificationTableViewCellSelected
             .map { indexPath -> NotificationEntity in
                 return self.notificationList.value[indexPath.row]
             }
             .subscribe(with: self, onNext: { owner, notification in
                 let notificationId = notification.notificationId
                 if notification.isNotice {
-                    owner.pushToNoticeDetailViewController.accept(notificationId)
+                    owner.pushToNotificationDetailViewController.accept(notificationId)
                 } else if notification.isRead {
                     owner.pushToFeedDetailViewController.accept(notification.feedId ?? -1)
                 } else {
@@ -116,14 +116,14 @@ final class HomeNoticeViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        let noticeTableViewHeight = input.noticeTableViewContentSize
+        let notificationTableViewHeight = input.notificationTableViewContentSize
             .map { $0?.height ?? 0 }
             .asDriver(onErrorJustReturn: 0)
         
         return Output(notificationList: notificationList.asObservable(),
-                      noticeTableViewHeight: noticeTableViewHeight,
+                      notificationTableViewHeight: notificationTableViewHeight,
                       pushToFeedDetailViewController: pushToFeedDetailViewController.asObservable(),
-                      pushToNoticeDetailViewController: pushToNoticeDetailViewController.asObservable(),
+                      pushToNotificationDetailViewController: pushToNotificationDetailViewController.asObservable(),
                       showLoadingView: showLoadingView.asObservable())
     }
     

@@ -1,5 +1,5 @@
 //
-//  HomeNoticeTableViewCell.swift
+//  HomeNotificationTableViewCell.swift
 //  WSSiOS
 //
 //  Created by Seoyeon Choi on 5/12/24.
@@ -10,11 +10,11 @@ import UIKit
 import SnapKit
 import Then
 
-final class HomeNoticeTableViewCell: UITableViewCell {
+final class HomeNotificationTableViewCell: UITableViewCell {
     
     //MARK: - UI Components
     
-    private var noticeImageView = UIImageView()
+    private var notificationImageView = UIImageView()
     
     private var contentStackView = UIStackView()
     private var titleLabel = UILabel()
@@ -44,7 +44,7 @@ final class HomeNoticeTableViewCell: UITableViewCell {
             $0.backgroundColor = .wssWhite
         }
         
-        noticeImageView.do {
+        notificationImageView.do {
             $0.image = .imgLoadingThumbnail
             $0.contentMode = .scaleAspectFill
             $0.layer.cornerRadius = 12
@@ -72,12 +72,12 @@ final class HomeNoticeTableViewCell: UITableViewCell {
         contentStackView.addArrangedSubviews(titleLabel,
                                              contentLabel,
                                              dateLabel)
-        self.addSubviews(noticeImageView,
+        self.addSubviews(notificationImageView,
                          contentStackView)
     }
     
     private func setLayout() {
-        noticeImageView.snp.makeConstraints {
+        notificationImageView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(20)
             $0.leading.equalToSuperview().inset(20)
             $0.size.equalTo(36)
@@ -90,13 +90,13 @@ final class HomeNoticeTableViewCell: UITableViewCell {
         
         contentStackView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(20)
-            $0.leading.equalTo(noticeImageView.snp.trailing).offset(14)
+            $0.leading.equalTo(notificationImageView.snp.trailing).offset(14)
             $0.trailing.equalToSuperview().inset(20)
         }
     }
     
     func bindData(data: NotificationEntity) {
-        self.noticeImageView.kfSetImage(url: data.notificationImageURL)
+        self.notificationImageView.kfSetImage(url: data.notificationImageURL)
         
         self.titleLabel.do {
             $0.applyWSSFont(.title2, with: data.notificationTitle)

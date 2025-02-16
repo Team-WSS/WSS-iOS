@@ -240,10 +240,10 @@
 		A1EF35692B52FD9B00A94C53 /* AvatarResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EF35682B52FD9B00A94C53 /* AvatarResult.swift */; };
 		B90145392C4D301C00A8B7EA /* DetailSearchKeywordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90145382C4D301C00A8B7EA /* DetailSearchKeywordView.swift */; };
 		B9059CBC2C484C2700D7CA86 /* DetailSearchInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9059CBB2C484C2700D7CA86 /* DetailSearchInfoView.swift */; };
-		B9095D282C394FC7007521EF /* HomeNoticeDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9095D272C394FC7007521EF /* HomeNoticeDetailViewController.swift */; };
-		B9095D2A2C3950B4007521EF /* HomeNoticeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9095D292C3950B4007521EF /* HomeNoticeDetailView.swift */; };
-		B9095D2C2C39514D007521EF /* HomeNoticeDetailContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9095D2B2C39514D007521EF /* HomeNoticeDetailContentView.swift */; };
-		B9095D2E2C395598007521EF /* HomeNoticeDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9095D2D2C395598007521EF /* HomeNoticeDetailViewModel.swift */; };
+		B9095D282C394FC7007521EF /* HomeNotificationDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9095D272C394FC7007521EF /* HomeNotificationDetailViewController.swift */; };
+		B9095D2A2C3950B4007521EF /* HomeNotificationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9095D292C3950B4007521EF /* HomeNotificationDetailView.swift */; };
+		B9095D2C2C39514D007521EF /* HomeNotificationDetailContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9095D2B2C39514D007521EF /* HomeNotificationDetailContentView.swift */; };
+		B9095D2E2C395598007521EF /* HomeNotificationDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9095D2D2C395598007521EF /* HomeNotificationDetailViewModel.swift */; };
 		B9181BDC2BEBDFA80024C800 /* HomeTasteRecommendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9181BDB2BEBDFA80024C800 /* HomeTasteRecommendView.swift */; };
 		B9181BDE2BEBE2300024C800 /* HomeTasteRecommendCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9181BDD2BEBE2300024C800 /* HomeTasteRecommendCollectionViewCell.swift */; };
 		B92A06652C495AFF00E27652 /* DetailSearchInfoGenreCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92A06642C495AFF00E27652 /* DetailSearchInfoGenreCollectionViewCell.swift */; };
@@ -278,10 +278,10 @@
 		B99FBE3E2D21B6E500787D1C /* FeedDetailUnknownFeedErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B99FBE3D2D21B6E500787D1C /* FeedDetailUnknownFeedErrorView.swift */; };
 		B99FBE402D21B98700787D1C /* FeedDetailUnknownFeedErrorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B99FBE3F2D21B98700787D1C /* FeedDetailUnknownFeedErrorViewController.swift */; };
 		B9A0FD6C2BFCF0080004252E /* HomeRealtimePopularCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A0FD6B2BFCF0080004252E /* HomeRealtimePopularCollectionViewCell.swift */; };
-		B9AC1BD02BF0B33E006EDE92 /* HomeNoticeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AC1BCF2BF0B33E006EDE92 /* HomeNoticeViewController.swift */; };
-		B9AC1BD22BF0B485006EDE92 /* HomeNoticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AC1BD12BF0B485006EDE92 /* HomeNoticeView.swift */; };
-		B9AC1BD42BF0B529006EDE92 /* HomeNoticeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AC1BD32BF0B529006EDE92 /* HomeNoticeTableViewCell.swift */; };
-		B9AC1BD62BF0BB9D006EDE92 /* HomeNoticeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AC1BD52BF0BB9D006EDE92 /* HomeNoticeViewModel.swift */; };
+		B9AC1BD02BF0B33E006EDE92 /* HomeNotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AC1BCF2BF0B33E006EDE92 /* HomeNotificationViewController.swift */; };
+		B9AC1BD22BF0B485006EDE92 /* HomeNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AC1BD12BF0B485006EDE92 /* HomeNotificationView.swift */; };
+		B9AC1BD42BF0B529006EDE92 /* HomeNotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AC1BD32BF0B529006EDE92 /* HomeNotificationTableViewCell.swift */; };
+		B9AC1BD62BF0BB9D006EDE92 /* HomeNotificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AC1BD52BF0BB9D006EDE92 /* HomeNotificationViewModel.swift */; };
 		B9AC1BD82BF0BDDD006EDE92 /* NotificationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AC1BD72BF0BDDD006EDE92 /* NotificationRepository.swift */; };
 		B9AC1BDA2BF0BE23006EDE92 /* NoticeResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AC1BD92BF0BE23006EDE92 /* NoticeResult.swift */; };
 		B9ACACC12CE3A7E400D1D47A /* HomeInterestEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9ACACC02CE3A7E400D1D47A /* HomeInterestEmptyView.swift */; };
@@ -637,10 +637,10 @@
 		A1EF35682B52FD9B00A94C53 /* AvatarResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarResult.swift; sourceTree = "<group>"; };
 		B90145382C4D301C00A8B7EA /* DetailSearchKeywordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailSearchKeywordView.swift; sourceTree = "<group>"; };
 		B9059CBB2C484C2700D7CA86 /* DetailSearchInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailSearchInfoView.swift; sourceTree = "<group>"; };
-		B9095D272C394FC7007521EF /* HomeNoticeDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNoticeDetailViewController.swift; sourceTree = "<group>"; };
-		B9095D292C3950B4007521EF /* HomeNoticeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNoticeDetailView.swift; sourceTree = "<group>"; };
-		B9095D2B2C39514D007521EF /* HomeNoticeDetailContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNoticeDetailContentView.swift; sourceTree = "<group>"; };
-		B9095D2D2C395598007521EF /* HomeNoticeDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNoticeDetailViewModel.swift; sourceTree = "<group>"; };
+		B9095D272C394FC7007521EF /* HomeNotificationDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNotificationDetailViewController.swift; sourceTree = "<group>"; };
+		B9095D292C3950B4007521EF /* HomeNotificationDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNotificationDetailView.swift; sourceTree = "<group>"; };
+		B9095D2B2C39514D007521EF /* HomeNotificationDetailContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNotificationDetailContentView.swift; sourceTree = "<group>"; };
+		B9095D2D2C395598007521EF /* HomeNotificationDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNotificationDetailViewModel.swift; sourceTree = "<group>"; };
 		B9181BDB2BEBDFA80024C800 /* HomeTasteRecommendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTasteRecommendView.swift; sourceTree = "<group>"; };
 		B9181BDD2BEBE2300024C800 /* HomeTasteRecommendCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTasteRecommendCollectionViewCell.swift; sourceTree = "<group>"; };
 		B92A06642C495AFF00E27652 /* DetailSearchInfoGenreCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailSearchInfoGenreCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -674,10 +674,10 @@
 		B99FBE3D2D21B6E500787D1C /* FeedDetailUnknownFeedErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDetailUnknownFeedErrorView.swift; sourceTree = "<group>"; };
 		B99FBE3F2D21B98700787D1C /* FeedDetailUnknownFeedErrorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDetailUnknownFeedErrorViewController.swift; sourceTree = "<group>"; };
 		B9A0FD6B2BFCF0080004252E /* HomeRealtimePopularCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRealtimePopularCollectionViewCell.swift; sourceTree = "<group>"; };
-		B9AC1BCF2BF0B33E006EDE92 /* HomeNoticeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNoticeViewController.swift; sourceTree = "<group>"; };
-		B9AC1BD12BF0B485006EDE92 /* HomeNoticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNoticeView.swift; sourceTree = "<group>"; };
-		B9AC1BD32BF0B529006EDE92 /* HomeNoticeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNoticeTableViewCell.swift; sourceTree = "<group>"; };
-		B9AC1BD52BF0BB9D006EDE92 /* HomeNoticeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNoticeViewModel.swift; sourceTree = "<group>"; };
+		B9AC1BCF2BF0B33E006EDE92 /* HomeNotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNotificationViewController.swift; sourceTree = "<group>"; };
+		B9AC1BD12BF0B485006EDE92 /* HomeNotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNotificationView.swift; sourceTree = "<group>"; };
+		B9AC1BD32BF0B529006EDE92 /* HomeNotificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNotificationTableViewCell.swift; sourceTree = "<group>"; };
+		B9AC1BD52BF0BB9D006EDE92 /* HomeNotificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNotificationViewModel.swift; sourceTree = "<group>"; };
 		B9AC1BD72BF0BDDD006EDE92 /* NotificationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationRepository.swift; sourceTree = "<group>"; };
 		B9AC1BD92BF0BE23006EDE92 /* NoticeResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeResult.swift; sourceTree = "<group>"; };
 		B9ACACC02CE3A7E400D1D47A /* HomeInterestEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeInterestEmptyView.swift; sourceTree = "<group>"; };
@@ -1825,8 +1825,8 @@
 		A1708F102B4D8DCD00E35E50 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				C978B30E2C87886D00C78F77 /* HomeNoticeDetail */,
-				C978B30D2C87886600C78F77 /* HomeNotice */,
+				C978B30E2C87886D00C78F77 /* HomeNotificationDetail */,
+				C978B30D2C87886600C78F77 /* HomeNotification */,
 				C978B30C2C87886000C78F77 /* Home */,
 			);
 			path = Home;
@@ -2117,90 +2117,90 @@
 			path = Home;
 			sourceTree = "<group>";
 		};
-		C978B30D2C87886600C78F77 /* HomeNotice */ = {
+		C978B30D2C87886600C78F77 /* HomeNotification */ = {
 			isa = PBXGroup;
 			children = (
-				C978B3142C8788C100C78F77 /* HomeNoticeViewController */,
-				C978B3132C8788BC00C78F77 /* HomeNoticeViewModel */,
-				C978B3122C8788B300C78F77 /* HomeNoticeView */,
+				C978B3142C8788C100C78F77 /* HomeNotificationViewController */,
+				C978B3132C8788BC00C78F77 /* HomeNotificationViewModel */,
+				C978B3122C8788B300C78F77 /* HomeNotificationView */,
 			);
-			path = HomeNotice;
+			path = HomeNotification;
 			sourceTree = "<group>";
 		};
-		C978B30E2C87886D00C78F77 /* HomeNoticeDetail */ = {
+		C978B30E2C87886D00C78F77 /* HomeNotificationDetail */ = {
 			isa = PBXGroup;
 			children = (
-				C978B3112C87889100C78F77 /* HomeNoticeDetailView */,
-				C978B3102C87888A00C78F77 /* HomeNoticeDetailViewModel */,
-				C978B30F2C87887A00C78F77 /* HomeNoticeDetailViewController */,
+				C978B3112C87889100C78F77 /* HomeNotificationDetailView */,
+				C978B3102C87888A00C78F77 /* HomeNotificationDetailViewModel */,
+				C978B30F2C87887A00C78F77 /* HomeNotificationDetailViewController */,
 			);
-			path = HomeNoticeDetail;
+			path = HomeNotificationDetail;
 			sourceTree = "<group>";
 		};
-		C978B30F2C87887A00C78F77 /* HomeNoticeDetailViewController */ = {
+		C978B30F2C87887A00C78F77 /* HomeNotificationDetailViewController */ = {
 			isa = PBXGroup;
 			children = (
-				B9095D272C394FC7007521EF /* HomeNoticeDetailViewController.swift */,
+				B9095D272C394FC7007521EF /* HomeNotificationDetailViewController.swift */,
 			);
-			path = HomeNoticeDetailViewController;
+			path = HomeNotificationDetailViewController;
 			sourceTree = "<group>";
 		};
-		C978B3102C87888A00C78F77 /* HomeNoticeDetailViewModel */ = {
+		C978B3102C87888A00C78F77 /* HomeNotificationDetailViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				B9095D2D2C395598007521EF /* HomeNoticeDetailViewModel.swift */,
+				B9095D2D2C395598007521EF /* HomeNotificationDetailViewModel.swift */,
 			);
-			path = HomeNoticeDetailViewModel;
+			path = HomeNotificationDetailViewModel;
 			sourceTree = "<group>";
 		};
-		C978B3112C87889100C78F77 /* HomeNoticeDetailView */ = {
+		C978B3112C87889100C78F77 /* HomeNotificationDetailView */ = {
 			isa = PBXGroup;
 			children = (
-				C978B3162C87891B00C78F77 /* HomeNoticeDetailAssistantView */,
-				B9095D292C3950B4007521EF /* HomeNoticeDetailView.swift */,
+				C978B3162C87891B00C78F77 /* HomeNotificationDetailAssistantView */,
+				B9095D292C3950B4007521EF /* HomeNotificationDetailView.swift */,
 			);
-			path = HomeNoticeDetailView;
+			path = HomeNotificationDetailView;
 			sourceTree = "<group>";
 		};
-		C978B3122C8788B300C78F77 /* HomeNoticeView */ = {
+		C978B3122C8788B300C78F77 /* HomeNotificationView */ = {
 			isa = PBXGroup;
 			children = (
-				C978B3152C87890C00C78F77 /* HomeNoticeCell */,
-				B9AC1BD12BF0B485006EDE92 /* HomeNoticeView.swift */,
+				C978B3152C87890C00C78F77 /* HomeNotificationCell */,
+				B9AC1BD12BF0B485006EDE92 /* HomeNotificationView.swift */,
 			);
-			path = HomeNoticeView;
+			path = HomeNotificationView;
 			sourceTree = "<group>";
 		};
-		C978B3132C8788BC00C78F77 /* HomeNoticeViewModel */ = {
+		C978B3132C8788BC00C78F77 /* HomeNotificationViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				B9AC1BD52BF0BB9D006EDE92 /* HomeNoticeViewModel.swift */,
+				B9AC1BD52BF0BB9D006EDE92 /* HomeNotificationViewModel.swift */,
 			);
-			path = HomeNoticeViewModel;
+			path = HomeNotificationViewModel;
 			sourceTree = "<group>";
 		};
-		C978B3142C8788C100C78F77 /* HomeNoticeViewController */ = {
+		C978B3142C8788C100C78F77 /* HomeNotificationViewController */ = {
 			isa = PBXGroup;
 			children = (
-				B9AC1BCF2BF0B33E006EDE92 /* HomeNoticeViewController.swift */,
+				B9AC1BCF2BF0B33E006EDE92 /* HomeNotificationViewController.swift */,
 			);
-			path = HomeNoticeViewController;
+			path = HomeNotificationViewController;
 			sourceTree = "<group>";
 		};
-		C978B3152C87890C00C78F77 /* HomeNoticeCell */ = {
+		C978B3152C87890C00C78F77 /* HomeNotificationCell */ = {
 			isa = PBXGroup;
 			children = (
-				B9AC1BD32BF0B529006EDE92 /* HomeNoticeTableViewCell.swift */,
+				B9AC1BD32BF0B529006EDE92 /* HomeNotificationTableViewCell.swift */,
 			);
-			path = HomeNoticeCell;
+			path = HomeNotificationCell;
 			sourceTree = "<group>";
 		};
-		C978B3162C87891B00C78F77 /* HomeNoticeDetailAssistantView */ = {
+		C978B3162C87891B00C78F77 /* HomeNotificationDetailAssistantView */ = {
 			isa = PBXGroup;
 			children = (
-				B9095D2B2C39514D007521EF /* HomeNoticeDetailContentView.swift */,
+				B9095D2B2C39514D007521EF /* HomeNotificationDetailContentView.swift */,
 			);
-			path = HomeNoticeDetailAssistantView;
+			path = HomeNotificationDetailAssistantView;
 			sourceTree = "<group>";
 		};
 		C98B8E752C790C3B008BF2AA /* SearchAssistantView */ = {
@@ -2600,12 +2600,12 @@
 			files = (
 				E45FEF9F2CFC03C300B73D80 /* MyPageStickyHeaderView.swift in Sources */,
 				E4FEAB362CFF4E5300D45558 /* MyPageFeedDetailViewModel.swift in Sources */,
-				B9095D2C2C39514D007521EF /* HomeNoticeDetailContentView.swift in Sources */,
+				B9095D2C2C39514D007521EF /* HomeNotificationDetailContentView.swift in Sources */,
 				C99DDFDB2C8613AF00EDC0C4 /* SosoPickCollectionViewCell.swift in Sources */,
 				2CD9115A2C0D8A23006B8D72 /* FeedGenreView.swift in Sources */,
 				2C8F89492C50D37A0056895B /* UserNovelStatus.swift in Sources */,
 				2C60307B2B55D9160031544C /* UIImageView+.swift in Sources */,
-				B9095D2A2C3950B4007521EF /* HomeNoticeDetailView.swift in Sources */,
+				B9095D2A2C3950B4007521EF /* HomeNotificationDetailView.swift in Sources */,
 				2C22AE762C56EE3900BF6E94 /* BlockUserResult.swift in Sources */,
 				A1EF35692B52FD9B00A94C53 /* AvatarResult.swift in Sources */,
 				39099EF52CD8AF6D00FCA8DE /* WSSNetworkErrorView.swift in Sources */,
@@ -2635,7 +2635,7 @@
 				A1654F102B540504004F78E8 /* HTTPMethod.swift in Sources */,
 				3959289C2C9951AD00E7B17B /* LoginCarouselView.swift in Sources */,
 				A1654F1C2B540563004F78E8 /* Data+.swift in Sources */,
-				B9AC1BD22BF0B485006EDE92 /* HomeNoticeView.swift in Sources */,
+				B9AC1BD22BF0B485006EDE92 /* HomeNotificationView.swift in Sources */,
 				C9063A972BD3F868006AD8F9 /* HomeRealtimePopularView.swift in Sources */,
 				A1708F182B4D8E2F00E35E50 /* HomeView.swift in Sources */,
 				2C19A4FD2BBA90E700D4D151 /* WSSDropDownTableView.swift in Sources */,
@@ -2665,7 +2665,7 @@
 				2CFA9A132C9D7EE600A4A820 /* MyPageChangeUserInfoViewModel.swift in Sources */,
 				A1C3EC532B46962F00D997C2 /* UIImage+.swift in Sources */,
 				B96863D62C482E14008CFBA5 /* DetailSearchViewController.swift in Sources */,
-				B9AC1BD42BF0B529006EDE92 /* HomeNoticeTableViewCell.swift in Sources */,
+				B9AC1BD42BF0B529006EDE92 /* HomeNotificationTableViewCell.swift in Sources */,
 				CD863EE12CA5BF000037DC08 /* FeedListTableViewCell.swift in Sources */,
 				3908376B2C32ADEA0082DC57 /* NovelDetailInfoReviewView.swift in Sources */,
 				CDE596D62B57708D00D99DA1 /* UIViewController+.swift in Sources */,
@@ -2796,7 +2796,7 @@
 				C9CE229B2CBD5ECE00996225 /* FeedDetailDropdownView.swift in Sources */,
 				2CFA9A182C9D9AD500A4A820 /* UserInfoResult.swift in Sources */,
 				2C79CB9D2B45A1DD00734E1F /* UIFont+.swift in Sources */,
-				B9095D2E2C395598007521EF /* HomeNoticeDetailViewModel.swift in Sources */,
+				B9095D2E2C395598007521EF /* HomeNotificationDetailViewModel.swift in Sources */,
 				B974EA412CC8E40C00169639 /* NovelRatingStatus.swift in Sources */,
 				A147CBC62B4D6E190040AE39 /* UIStackView+.swift in Sources */,
 				2CBBE8102CE7C72A00DAF3DC /* MyPageProfileVisibilityView.swift in Sources */,
@@ -2875,7 +2875,7 @@
 				2C6030712B54F23F0031544C /* LibraryListView.swift in Sources */,
 				A1EF35622B52FAF700A94C53 /* AvatarService.swift in Sources */,
 				3980D1D62C19BB2C008B9B18 /* NovelDetailLargeCoverImageButton.swift in Sources */,
-				B9095D282C394FC7007521EF /* HomeNoticeDetailViewController.swift in Sources */,
+				B9095D282C394FC7007521EF /* HomeNotificationDetailViewController.swift in Sources */,
 				CDA5F03E2C2FDB6B00FCF15C /* FeedEditView.swift in Sources */,
 				2CD911482C0D88F8006B8D72 /* FeedRepository.swift in Sources */,
 				2C2491862B4ADC420096F255 /* WSSTabBarController.swift in Sources */,
@@ -2891,7 +2891,7 @@
 				396C7C5B2CB2542F003C9712 /* OnboardingService.swift in Sources */,
 				B96F0F8E2C28638E00DA5483 /* FeedDetailProfileView.swift in Sources */,
 				A1654F0F2B540504004F78E8 /* APIConstants.swift in Sources */,
-				B9AC1BD62BF0BB9D006EDE92 /* HomeNoticeViewModel.swift in Sources */,
+				B9AC1BD62BF0BB9D006EDE92 /* HomeNotificationViewModel.swift in Sources */,
 				C99DDFE12C8613D500EDC0C4 /* SearchViewModel.swift in Sources */,
 				CDA5F0472C2FF60A00FCF15C /* FeedEditNovelConnectView.swift in Sources */,
 				2CE078182B80894B0028F2B0 /* ViewModelType.swift in Sources */,
@@ -2953,7 +2953,7 @@
 				395928932C98889B00E7B17B /* LoginView.swift in Sources */,
 				CDC03F4F2CA6C4E0002D301F /* NovelReviewRepository.swift in Sources */,
 				CD8747B52C9EF31E00D0ADAD /* NovelDateSelectModalDateButtonView.swift in Sources */,
-				B9AC1BD02BF0B33E006EDE92 /* HomeNoticeViewController.swift in Sources */,
+				B9AC1BD02BF0B33E006EDE92 /* HomeNotificationViewController.swift in Sources */,
 				2C41E0CC2CA4948400FFD233 /* MyPageCountView.swift in Sources */,
 				39B75ACE2B5912B5005DD8B9 /* Lottie.swift in Sources */,
 				CDA5F0402C2FDC5200FCF15C /* FeedEditCategoryView.swift in Sources */,
