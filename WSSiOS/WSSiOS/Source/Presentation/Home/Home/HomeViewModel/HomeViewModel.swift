@@ -110,7 +110,7 @@ extension HomeViewModel {
                 let realtimeFeedsObservable = self.getRealtimePopularFeeds()
                 let interestFeedsObservable = self.isLogined ? self.getInterestFeeds() : Observable.just(InterestFeeds(recommendFeeds: [], message: ""))
                 let tasteRecommendNovelsObservable = self.isLogined ? self.getTasteRecommendNovels() : Observable.just(TasteRecommendNovels(tasteNovels: []))
-                let isNotificationUnreadObservable = self.isLogined ? self.getNotificationUnreadStatus() : Observable.just(NotificationUnreadStatusResult(hasUnreadNotifications: false))
+                let isNotificationUnreadObservable = self.isLogined ? self.getNotificationUnreadStatus() : Observable.just(NotificationUnreadStatusResponse(hasUnreadNotifications: false))
                 
                 return Observable.zip(todayPopularNovelsObservable,
                                       realtimeFeedsObservable,
@@ -299,7 +299,7 @@ extension HomeViewModel {
     }
     
     //유저 비열람 알림 존재 여부 조회
-    func getNotificationUnreadStatus() -> Observable<NotificationUnreadStatusResult> {
+    func getNotificationUnreadStatus() -> Observable<NotificationUnreadStatusResponse> {
         return notificationRepository.getNotificationUnreadStatus()
     }
     

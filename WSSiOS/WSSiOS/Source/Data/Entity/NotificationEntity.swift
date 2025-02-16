@@ -14,7 +14,7 @@ struct NotificationsEntity {
     let notifications: [NotificationEntity]
 }
 
-extension NotificationsResult {
+extension NotificationsResponse {
     func toEntity() -> NotificationsEntity {
         return NotificationsEntity(isLoadable: self.isLoadable,
                                    notifications: self.notifications.map { $0.toEntity() })
@@ -32,7 +32,7 @@ struct NotificationEntity {
     let feedId: Int?
 }
 
-extension NotificationResult {
+extension NotificationResponse {
     func toEntity() -> NotificationEntity {
         let notificationImageURL = KingFisherRxHelper.makeImageURLString(path: notificationImage) ?? .none
         return NotificationEntity(notificationId: self.notificationId,
@@ -53,7 +53,7 @@ struct NotificationDetailEntity {
     let createdDate: String
 }
 
-extension NotificationDetailResult {
+extension NotificationDetailResponse {
     func toEntity() -> NotificationDetailEntity {
         return NotificationDetailEntity(title: self.notificationTitle,
                                         content: self.notificationDetail,

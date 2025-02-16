@@ -8,12 +8,12 @@
 import Foundation
 
 // 전체 공지사항 조회
-struct NotificationsResult: Decodable {
+struct NotificationsResponse: Decodable {
     var isLoadable: Bool
-    var notifications: [NotificationResult]
+    var notifications: [NotificationResponse]
 }
 
-struct NotificationResult: Decodable {
+struct NotificationResponse: Decodable {
     var notificationId: Int
     var notificationImage: String
     var notificationTitle: String
@@ -25,13 +25,13 @@ struct NotificationResult: Decodable {
 }
 
 // 공지사항 상세 조회
-struct NotificationDetailResult: Codable {
+struct NotificationDetailResponse: Decodable {
     var notificationTitle: String
     var notificationCreatedDate: String
     var notificationDetail: String
 }
 
 // 유저 비열람 알림 존재 여부 조회
-struct NotificationUnreadStatusResult: Codable {
+struct NotificationUnreadStatusResponse: Decodable {
     var hasUnreadNotifications: Bool
 }
