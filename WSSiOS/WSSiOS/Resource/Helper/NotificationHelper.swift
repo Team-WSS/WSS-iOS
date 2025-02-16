@@ -164,7 +164,7 @@ extension NotificationHelper: MessagingDelegate {
         }
     }
     
-    /// 최신 FCM 토큰을 직접 가져옴
+    /// 최신 FCM 토큰을 직접 갱신
     func fetchFCMToken() {
         Messaging.messaging().token { [weak self] token, error in
             if let error = error {
