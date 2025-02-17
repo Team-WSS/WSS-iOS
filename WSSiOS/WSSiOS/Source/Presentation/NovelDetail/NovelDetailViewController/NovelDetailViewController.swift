@@ -19,7 +19,7 @@ final class NovelDetailViewController: UIViewController {
     private let viewModel: NovelDetailViewModel
     private let disposeBag = DisposeBag()
     
-    private let viewWillAppearEvent = BehaviorRelay(value: false)
+    private let viewWillAppearEvent = PublishRelay<Void>()
     private let imageNetworkError = BehaviorRelay<Bool>(value: false)
     private let deleteReview = PublishSubject<Void>()
     
@@ -67,7 +67,7 @@ final class NovelDetailViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        viewWillAppearEvent.accept(true)
+        viewWillAppearEvent.accept(())
         setNavigationBar()
         swipeBackGesture()
         self.hidesBottomBarWhenPushed = true

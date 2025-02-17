@@ -23,7 +23,7 @@ final class NovelDetailViewModel: ViewModelType {
     private var novelTitle: String = ""
     
     // Total
-    private let viewWillAppearEvent = BehaviorRelay<Bool>(value: false)
+    private let reloadData = PublishRelay<Void>()
     private let showNetworkErrorView = BehaviorRelay<Bool>(value: false)
     private let showHeaderDropdownView = BehaviorRelay<Bool>(value: false)
     private let showReportPage = PublishRelay<Void>()
@@ -79,7 +79,7 @@ final class NovelDetailViewModel: ViewModelType {
     
     struct Input {
         // Total
-        let viewWillAppearEvent: Observable<Bool>
+        let viewWillAppearEvent: Observable<Void>
         let scrollContentOffset: ControlProperty<CGPoint>
         let backButtonDidTap: ControlEvent<Void>
         let networkErrorRefreshButtonDidTap: ControlEvent<Void>
@@ -174,7 +174,7 @@ final class NovelDetailViewModel: ViewModelType {
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         input.viewWillAppearEvent
-            .bind(to: self.viewWillAppearEvent)
+            .bind(to: self.reloadData)
             .disposed(by: disposeBag)
         
         input.firstDescriptionBackgroundDidTap
@@ -185,7 +185,7 @@ final class NovelDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        self.viewWillAppearEvent
+        self.reloadData
             .do(onNext: { _ in
                 self.isLoadable = false
                 self.lastFeedId = 0
@@ -206,7 +206,7 @@ final class NovelDetailViewModel: ViewModelType {
         
         input.networkErrorRefreshButtonDidTap
             .bind(with: self, onNext: { owner, _ in
-                owner.viewWillAppearEvent.accept(true)
+                owner.reloadData.accept(())
             })
             .disposed(by: disposeBag)
         
@@ -291,6 +291,7 @@ final class NovelDetailViewModel: ViewModelType {
             }
             .bind(with: self, onNext: { owner, _ in
                 owner.isUserNovelInterested.accept(!owner.isUserNovelInterested.value)
+                owner.reloadData.accept(())
             })
             .disposed(by: disposeBag)
         
@@ -574,7 +575,7 @@ final class NovelDetailViewModel: ViewModelType {
     
     private func getNovelDetailHeaderData(disposeBag: DisposeBag) {
         self.novelDetailRepository.getNovelDetailHeaderData(novelId: self.novelId)
-            .subscribe(with: self, onNext: { owner, data in
+            .subscribe(with: self, onSuccess: { owner, data in
                 owner.novelTitle = data.novelTitle
                 owner.novelDetailHeaderData.onNext(data)
                 owner.isUserNovelInterested.accept(data.isUserNovelInterest)
@@ -583,7 +584,7 @@ final class NovelDetailViewModel: ViewModelType {
                 owner.novelGenre.accept(data.novelGenre.split{ $0 == "/"}
                     .map{ String($0) }
                     .map { NewNovelGenre.withKoreanRawValue(from: $0) })
-            }, onError: { owner, error in
+            }, onFailure: { owner, error in
                 owner.showNetworkErrorView.accept(true)
                 print("Error: \(error)")
             })
@@ -655,7 +656,7 @@ final class NovelDetailViewModel: ViewModelType {
     func deleteReview(disposeBag: DisposeBag) {
         novelDetailRepository.deleteNovelReview(novelId: self.novelId)
             .subscribe(with: self, onNext: { owner, _ in
-                owner.viewWillAppearEvent.accept(true)
+                owner.reloadData.accept(())
                 owner.showReviewDeletedToast.accept(())
             }, onError: { owner, error in
                 print("Error: \(error)")

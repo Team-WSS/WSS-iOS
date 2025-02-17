@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct NovelDetailHeaderResult: Codable {
+struct NovelDetailHeaderResponse: Codable {
     let userNovelID: Int?
     let novelTitle, novelImage: String
     let novelGenres: String
@@ -30,9 +30,9 @@ struct NovelDetailHeaderResult: Codable {
     }
 }
 
-extension NovelDetailHeaderResult {
-    static let dummyReviewEmptyData: [NovelDetailHeaderResult] = [
-        NovelDetailHeaderResult(userNovelID: nil,
+extension NovelDetailHeaderResponse {
+    static let dummyReviewEmptyData: [NovelDetailHeaderResponse] = [
+        NovelDetailHeaderResponse(userNovelID: nil,
                                 novelTitle: "여자친구로 삼으려고 학생회장을 꼭 닮은 여자아이를 연성했다가 내가 하인이 됐습니다",
                                 novelImage: "https://i.pinimg.com/474x/12/82/4b/12824bae93318692634d3bf0f4a4fe13.jpg",
                                 novelGenres: "로판/로맨스",
@@ -48,7 +48,7 @@ extension NovelDetailHeaderResult {
                                 startDate: nil,
                                 endDate: nil,
                                 isUserNovelInterest: false),
-        NovelDetailHeaderResult(userNovelID: nil,
+        NovelDetailHeaderResponse(userNovelID: nil,
                                 novelTitle: "여자친구로 삼으려고 학생회장을 꼭 닮은 여자아이를 연성했다가 내가 하인이 됐습니다",
                                 novelImage: "https://i.pinimg.com/474x/12/82/4b/12824bae93318692634d3bf0f4a4fe13.jpg",
                                 novelGenres:"로판/로맨스",
@@ -66,8 +66,8 @@ extension NovelDetailHeaderResult {
                                 isUserNovelInterest: true)
     ]
     
-    static let dummyDateEmptyData: [NovelDetailHeaderResult] = [
-        NovelDetailHeaderResult(userNovelID: nil,
+    static let dummyDateEmptyData: [NovelDetailHeaderResponse] = [
+        NovelDetailHeaderResponse(userNovelID: nil,
                                 novelTitle: "여자친구로 삼으려고 학생회장을 꼭 닮은 여자아이를 연성했다가 내가 하인이 됐습니다",
                                 novelImage: "https://i.pinimg.com/474x/12/82/4b/12824bae93318692634d3bf0f4a4fe13.jpg",
                                 novelGenres: "로판/로맨스",
@@ -83,7 +83,7 @@ extension NovelDetailHeaderResult {
                                 startDate: nil,
                                 endDate: nil,
                                 isUserNovelInterest: true),
-        NovelDetailHeaderResult(userNovelID: nil,
+        NovelDetailHeaderResponse(userNovelID: nil,
                                 novelTitle: "여자친구로 삼으려고 학생회장을 꼭 닮은 여자아이를 연성했다가 내가 하인이 됐습니다",
                                 novelImage: "https://i.pinimg.com/474x/12/82/4b/12824bae93318692634d3bf0f4a4fe13.jpg",
                                 novelGenres: "로판/로맨스",
@@ -99,7 +99,7 @@ extension NovelDetailHeaderResult {
                                 startDate: nil,
                                 endDate: nil,
                                 isUserNovelInterest: true),
-        NovelDetailHeaderResult(userNovelID: nil,
+        NovelDetailHeaderResponse(userNovelID: nil,
                                 novelTitle: "여자친구로 삼으려고 학생회장을 꼭 닮은 여자아이를 연성했다가 내가 하인이 됐습니다",
                                 novelImage: "https://i.pinimg.com/474x/12/82/4b/12824bae93318692634d3bf0f4a4fe13.jpg",
                                 novelGenres: "로판/로맨스",
@@ -115,7 +115,7 @@ extension NovelDetailHeaderResult {
                                 startDate: nil,
                                 endDate: nil,
                                 isUserNovelInterest: true),
-        NovelDetailHeaderResult(userNovelID: nil,
+        NovelDetailHeaderResponse(userNovelID: nil,
                                 novelTitle: "여자친구로 삼으려고 학생회장을 꼭 닮은 여자아이를 연성했다가 내가 하인이 됐습니다",
                                 novelImage: "https://i.pinimg.com/474x/12/82/4b/12824bae93318692634d3bf0f4a4fe13.jpg",
                                 novelGenres: "로판/로맨스",
@@ -132,8 +132,8 @@ extension NovelDetailHeaderResult {
                                 endDate: nil,
                                 isUserNovelInterest: false)
     ]
-    static let dummyFullData: [NovelDetailHeaderResult] = [
-        NovelDetailHeaderResult(userNovelID: 5,
+    static let dummyFullData: [NovelDetailHeaderResponse] = [
+        NovelDetailHeaderResponse(userNovelID: 5,
                                 novelTitle: "당신의 이해를 돕기 위하여",
                                 novelImage: "https://i.pinimg.com/474x/12/82/4b/12824bae93318692634d3bf0f4a4fe13.jpg",
                                 novelGenres: "로판/로맨스",
@@ -149,7 +149,7 @@ extension NovelDetailHeaderResult {
                                 startDate: "23. 12. 25",
                                 endDate: "24. 01. 05",
                                 isUserNovelInterest: true),
-        NovelDetailHeaderResult(userNovelID: 5,
+        NovelDetailHeaderResponse(userNovelID: 5,
                                 novelTitle: "당신의 이해를 돕기 위하여",
                                 novelImage: "https://i.pinimg.com/474x/12/82/4b/12824bae93318692634d3bf0f4a4fe13.jpg",
                                 novelGenres:"로판/로맨스",
@@ -165,7 +165,7 @@ extension NovelDetailHeaderResult {
                                 startDate: "23. 12. 25",
                                 endDate: nil,
                                 isUserNovelInterest: true),
-        NovelDetailHeaderResult(userNovelID: 5,
+        NovelDetailHeaderResponse(userNovelID: 5,
                                 novelTitle: "당신의 이해를 돕기 위하여",
                                 novelImage: "https://i.pinimg.com/474x/12/82/4b/12824bae93318692634d3bf0f4a4fe13.jpg",
                                 novelGenres: "로판/로맨스",

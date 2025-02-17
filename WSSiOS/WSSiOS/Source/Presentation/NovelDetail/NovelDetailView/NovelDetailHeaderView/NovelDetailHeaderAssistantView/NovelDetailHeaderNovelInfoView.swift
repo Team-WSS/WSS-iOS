@@ -96,11 +96,15 @@ final class NovelDetailHeaderNovelInfoView: UIView {
     //MARK: - Data
     
     func bindData(_ data: NovelDetailHeaderEntity) {
+        let novelCompletionText = data.isNovelCompleted ? StringLiterals.NovelDetail.Header.complete : StringLiterals.NovelDetail.Header.inSeries
+        let novelRatingText = "\(data.novelRating) (\(data.novelRatingCount))"
+        
         setTitleLabelText(with: data.novelTitle)
-        setInfoLabelText(with: "\(data.novelGenre)\(data.novelCompletion)\(data.novelAuthor)")
-        interestCount.setText(with: data.interestCountText)
-        rating.setText(with: data.novelRatingText)
-        feedCount.setText(with: data.feedCountText)
+        setInfoLabelText(with: "\(data.novelGenre)  ·  \(novelCompletionText)  ·  \(data.novelAuthor)")
+        interestCount.setText(with: "\(data.interestCount)")
+        rating.setText(with: novelRatingText)
+        feedCount.setText(with: "\(data.feedCount)")
+        print(data)
     }
     
     //MARK: - Custom Method

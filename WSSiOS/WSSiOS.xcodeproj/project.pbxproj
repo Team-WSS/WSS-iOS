@@ -180,7 +180,7 @@
 		39D4A5CB2BDA4C62004FC834 /* NovelDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5CA2BDA4C62004FC834 /* NovelDetailViewModel.swift */; };
 		39D4A5CD2BDA4C6D004FC834 /* NovelDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5CC2BDA4C6D004FC834 /* NovelDetailView.swift */; };
 		39D4A5D02BDA50E8004FC834 /* NovelDetailRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5CF2BDA50E8004FC834 /* NovelDetailRepository.swift */; };
-		39D4A5D22BDC0902004FC834 /* NovelDetailHeaderResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5D12BDC0902004FC834 /* NovelDetailHeaderResult.swift */; };
+		39D4A5D22BDC0902004FC834 /* NovelDetailHeaderResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5D12BDC0902004FC834 /* NovelDetailHeaderResponse.swift */; };
 		39D4A5D42BDCC1B1004FC834 /* NovelDetailHeaderBackgroundImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5D32BDCC1B1004FC834 /* NovelDetailHeaderBackgroundImageView.swift */; };
 		39D4A5D62BDD0913004FC834 /* NovelDetailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5D52BDD0913004FC834 /* NovelDetailHeaderView.swift */; };
 		39D4A5D82BDD23FE004FC834 /* NovelDetailHeaderCoverImageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D4A5D72BDD23FE004FC834 /* NovelDetailHeaderCoverImageButton.swift */; };
@@ -580,7 +580,7 @@
 		39D4A5CA2BDA4C62004FC834 /* NovelDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailViewModel.swift; sourceTree = "<group>"; };
 		39D4A5CC2BDA4C6D004FC834 /* NovelDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailView.swift; sourceTree = "<group>"; };
 		39D4A5CF2BDA50E8004FC834 /* NovelDetailRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailRepository.swift; sourceTree = "<group>"; };
-		39D4A5D12BDC0902004FC834 /* NovelDetailHeaderResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailHeaderResult.swift; sourceTree = "<group>"; };
+		39D4A5D12BDC0902004FC834 /* NovelDetailHeaderResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailHeaderResponse.swift; sourceTree = "<group>"; };
 		39D4A5D32BDCC1B1004FC834 /* NovelDetailHeaderBackgroundImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailHeaderBackgroundImageView.swift; sourceTree = "<group>"; };
 		39D4A5D52BDD0913004FC834 /* NovelDetailHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailHeaderView.swift; sourceTree = "<group>"; };
 		39D4A5D72BDD23FE004FC834 /* NovelDetailHeaderCoverImageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelDetailHeaderCoverImageButton.swift; sourceTree = "<group>"; };
@@ -1875,7 +1875,7 @@
 				A1EF35682B52FD9B00A94C53 /* AvatarResult.swift */,
 				A197A4C22B56D0C200E5A701 /* RecommendResult.swift */,
 				A123C49E2B56FB7800D32AEB /* SearchResult.swift */,
-				39D4A5D12BDC0902004FC834 /* NovelDetailHeaderResult.swift */,
+				39D4A5D12BDC0902004FC834 /* NovelDetailHeaderResponse.swift */,
 				39F850692C29C1FB00E93EBC /* NovelDetailInfoResult.swift */,
 				CD863ED62CA54E7C0037DC08 /* NovelDetailFeedResult.swift */,
 				2CD911452C0D88CA006B8D72 /* TotalFeedResult.swift */,
@@ -2696,7 +2696,7 @@
 				CD2D0AAF2C7EF1BF007CF1F1 /* NovelReviewView.swift in Sources */,
 				B96098802C27201B0084F697 /* NormalSearchResultCountView.swift in Sources */,
 				CDE596D82B5770CE00D99DA1 /* WSSToastView.swift in Sources */,
-				39D4A5D22BDC0902004FC834 /* NovelDetailHeaderResult.swift in Sources */,
+				39D4A5D22BDC0902004FC834 /* NovelDetailHeaderResponse.swift in Sources */,
 				CD6F49552C705B22005AD392 /* FeedNovelConnectCollectionViewCell.swift in Sources */,
 				2C9A19692C567D6B0043044A /* MyPageViewModel.swift in Sources */,
 				C9AF1AE22BCC234300208BC9 /* HomeTodayPopularView.swift in Sources */,

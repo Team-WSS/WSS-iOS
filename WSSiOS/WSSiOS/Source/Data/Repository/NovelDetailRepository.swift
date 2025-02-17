@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 
 protocol NovelDetailRepository {
-    func getNovelDetailHeaderData(novelId: Int) -> Observable<NovelDetailHeaderEntity>
+    func getNovelDetailHeaderData(novelId: Int) -> Single<NovelDetailHeaderEntity>
     func getNovelDetailInfoData(novelId: Int) -> Observable<NovelDetailInfoResult>
     func getNovelDetailFeedData(novelId: Int,
                                 lastFeedId: Int,
@@ -30,8 +30,8 @@ struct DefaultNovelDetailRepository {
 }
 
 extension DefaultNovelDetailRepository: NovelDetailRepository  {
-    func getNovelDetailHeaderData(novelId: Int) -> Observable<NovelDetailHeaderEntity> {
-        return novelDetailService.getNovelDetailHeaderData(novelId: novelId).asObservable().flatMap{ $0.transform() }
+    func getNovelDetailHeaderData(novelId: Int) -> Single<NovelDetailHeaderEntity> {
+        return novelDetailService.getNovelDetailHeaderData(novelId: novelId).map { $0.toEntity() }
     }
     
     func getNovelDetailInfoData(novelId: Int) -> Observable<NovelDetailInfoResult> {

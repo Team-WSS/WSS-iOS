@@ -15,54 +15,42 @@ struct NovelDetailHeaderEntity {
     let novelImage: String
     let novelGenre: String
     let novelGenreImage: String
-    let novelCompletion: String
+    let isNovelCompleted: Bool
     let novelAuthor: String
-    let interestCountText: String
-    let novelRatingText: String
-    let feedCountText: String
+    let interestCount: Int
+    let novelRating: Float
+    let novelRatingCount: Int
+    let feedCount: Int
     let isUserNovelRatingExist: Bool
-    let userNovelRatingText: String
+    let userNovelRating: Float
     let readStatus: ReadStatus?
     let isReadDateExist: Bool
-    let readDateText: String
+    let startDate: String?
+    let endDate: String?
     let isUserNovelInterest: Bool
 }
 
-extension NovelDetailHeaderResult {
-    func transform() -> Observable<NovelDetailHeaderEntity> {
-        return Observable.just(())
-            .map {
-                let novelCompletion = isNovelCompleted ? StringLiterals.NovelDetail.Header.complete
-                : StringLiterals.NovelDetail.Header.inSeries
-                let interestCountText = "\(interestCount)"
-                let novelRatingText = "\(novelRating) (\(novelRatingCount))"
-                let feedCountText = "\(feedCount)"
-                let isUserNovelRatingExist = !userNovelRating.isZero
-                let userNovelRatingText = "\(userNovelRating)"
-                let readStatus = ReadStatus(rawValue: readStatus ?? "")
-                let isReadDateExist = startDate != nil || endDate != nil
-                let readDateText = [startDate, "~", endDate]
-                    .compactMap { $0 }
-                    .joined(separator: " ")
-                
-                return NovelDetailHeaderEntity(
-                    userNovelID: userNovelID,
-                    novelTitle: novelTitle,
-                    novelImage: novelImage,
-                    novelGenre: novelGenres,
-                    novelGenreImage: novelGenreImage,
-                    novelCompletion: novelCompletion,
-                    novelAuthor: author,
-                    interestCountText: interestCountText,
-                    novelRatingText: novelRatingText,
-                    feedCountText: feedCountText,
-                    isUserNovelRatingExist: isUserNovelRatingExist,
-                    userNovelRatingText: userNovelRatingText,
-                    readStatus: readStatus,
-                    isReadDateExist: isReadDateExist,
-                    readDateText: readDateText,
-                    isUserNovelInterest: isUserNovelInterest
-                )
-            }
+extension NovelDetailHeaderResponse {
+    func toEntity() -> NovelDetailHeaderEntity {
+        return NovelDetailHeaderEntity(
+            userNovelID: self.userNovelID,
+            novelTitle: self.novelTitle,
+            novelImage: self.novelImage,
+            novelGenre: self.novelGenres,
+            novelGenreImage: self.novelGenreImage,
+            isNovelCompleted: self.isNovelCompleted,
+            novelAuthor: self.author,
+            interestCount: self.interestCount,
+            novelRating: round(self.novelRating * 10) / 10,
+            novelRatingCount: self.novelRatingCount,
+            feedCount: self.feedCount,
+            isUserNovelRatingExist: !self.userNovelRating.isZero,
+            userNovelRating: round(self.userNovelRating * 10) / 10,
+            readStatus: ReadStatus(rawValue: readStatus ?? ""),
+            isReadDateExist: self.startDate != nil || self.endDate != nil,
+            startDate: self.startDate,
+            endDate: self.endDate,
+            isUserNovelInterest: self.isUserNovelInterest
+        )
     }
 }

@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 
 protocol NovelDetailService {
-    func getNovelDetailHeaderData(novelId: Int) -> Single<NovelDetailHeaderResult>
+    func getNovelDetailHeaderData(novelId: Int) -> Single<NovelDetailHeaderResponse>
     func getNovelDetailInfoData(novelId: Int) -> Single<NovelDetailInfoResult>
     func getNovelDetailFeedData(novelId: Int, lastFeedId: Int, size: Int) -> Single<NovelDetailFeedResult>
     func postUserInterest(novelId: Int) -> Single<Void>
@@ -72,7 +72,7 @@ extension DefaultNovelDetailService: NovelDetailService {
         }
     }
     
-    func getNovelDetailHeaderData(novelId: Int) -> Single<NovelDetailHeaderResult> {
+    func getNovelDetailHeaderData(novelId: Int) -> Single<NovelDetailHeaderResponse> {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.NovelDetail.novelDetailHeader(novelId: novelId),
@@ -83,7 +83,7 @@ extension DefaultNovelDetailService: NovelDetailService {
             
             return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
-                                       to: NovelDetailHeaderResult.self) }
+                                       to: NovelDetailHeaderResponse.self) }
                 .asSingle()
         } catch {
             return Single.error(error)
