@@ -41,7 +41,7 @@ enum ServiceTerm: CaseIterable {
         case .serviceAgreement:
             return "서비스 이용약관 동의"
         case .privacyPolicy:
-            return "개인정보 수집 및 이용 안내"
+            return "개인정보 수집 및 이용 동의"
         case .marketingConsent:
             return "마케팅 정보 수신 동의"
         }
