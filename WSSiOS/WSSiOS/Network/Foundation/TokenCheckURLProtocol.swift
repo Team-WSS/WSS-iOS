@@ -49,12 +49,14 @@ class TokenCheckURLProtocol: URLProtocol {
     override func startLoading() {
         // 원래 요청으로 데이터 테스크 시작
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 401 {  // 원래 요청의 응답 상태 코드가 401인 경우 토큰 재발급 시도
-                self.handleUnauthorizedResponse()
-            } else if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 404 {  // 요청의 응답 상태 코드가 404인 경우 탈퇴한 것으로, 무조건 로그인 창으로 이동
-                self.deleteTokenAndMoveToLoginViewController(error: NetworkServiceError.authenticationError)
-                print("404 에러로 로그인 화면으로 돌아갑니다.")
-            } else { // 401, 404가 아닌 경우 일반적인 응답 처리
+            if let httpResponse = response as? HTTPURLResponse {
+                switch httpResponse.statusCode {
+                case 401, 404: // 401: 토큰 만료, 404: 유저 탈퇴 가능성 확인
+                    self.handleUnauthorizedResponse()
+                default: // 일반적인 응답 처리
+                    self.handleTaskResult(data: data, response: response, error: error)
+                }
+            } else { // 일반적인 응답 처리
                 self.handleTaskResult(data: data, response: response, error: error)
             }
         }
@@ -68,7 +70,7 @@ class TokenCheckURLProtocol: URLProtocol {
                 owner.updateTokens(result: result)
                 owner.retryRequestWithNewToken()
             }, onError: { owner, error in
-                // 실패 시 토큰을 삭제하고 로그인 VC로 이동
+                // 실패 시 유저 정보를 삭제하고 로그인 VC로 이동
                 owner.deleteTokenAndMoveToLoginViewController(error: error)
             })
             .disposed(by: self.disposeBag)
