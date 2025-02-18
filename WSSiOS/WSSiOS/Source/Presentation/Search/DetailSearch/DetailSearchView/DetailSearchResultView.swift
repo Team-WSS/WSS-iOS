@@ -58,7 +58,7 @@ final class DetailSearchResultView: UIView {
         
         novelView.snp.makeConstraints {
             $0.top.equalTo(headerView.snp.bottom)
-            $0.horizontalEdges.equalToSuperview().inset(20)
+            $0.horizontalEdges.equalToSuperview()
             $0.bottom.equalToSuperview()
         }
         

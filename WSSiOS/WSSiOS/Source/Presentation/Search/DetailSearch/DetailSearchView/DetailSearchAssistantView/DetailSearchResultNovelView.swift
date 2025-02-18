@@ -37,11 +37,7 @@ final class DetailSearchResultNovelView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setUI() {
-        scrollView.do {
-            $0.showsVerticalScrollIndicator = false
-        }
-        
+    private func setUI() {  
         novelTitleLabel.do {
             $0.applyWSSFont(.title1, with: StringLiterals.Search.novel)
             $0.textColor = .wssBlack
@@ -86,7 +82,7 @@ final class DetailSearchResultNovelView: UIView {
         
         novelTitleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(10)
-            $0.leading.equalToSuperview()
+            $0.leading.equalToSuperview().inset(20)
         }
         
         novelCountLabel.snp.makeConstraints {
@@ -96,7 +92,8 @@ final class DetailSearchResultNovelView: UIView {
         
         resultNovelCollectionView.snp.makeConstraints {
             $0.top.equalTo(novelTitleLabel.snp.bottom).offset(14)
-            $0.horizontalEdges.bottom.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview().inset(20)
+            $0.bottom.equalToSuperview()
             $0.height.equalTo(0)
         }
     }
