@@ -39,7 +39,6 @@ final class HomeNotificationView: UIView {
         }
 
         notificationTableView.do {
-            $0.showsVerticalScrollIndicator = false
             $0.separatorStyle = .singleLine
             $0.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
             $0.separatorColor = .wssGray50
