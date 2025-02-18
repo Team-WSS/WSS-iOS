@@ -191,7 +191,7 @@ enum StringLiterals {
             static let otherProfileLibrary = "서재"
             static let myProfileFeed = "내 활동"
             static let otherProfileFeed = "활동"
-            static let activyButton = "활동기록 더보기"
+            static let activityButton = "활동기록 더보기"
             static let emptyFeed = "작성한 글이 없어요"
         }
         

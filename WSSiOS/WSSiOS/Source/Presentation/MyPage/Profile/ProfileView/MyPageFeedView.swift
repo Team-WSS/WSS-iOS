@@ -55,7 +55,7 @@ final class MyPageFeedView: UIView {
             $0.layer.borderWidth = 1
             
             myPageFeedDetailButtonLabel.do {
-                $0.applyWSSFont(.title2, with: StringLiterals.MyPage.Profile.activyButton)
+                $0.applyWSSFont(.title2, with: StringLiterals.MyPage.Profile.activityButton)
                 $0.textColor = .wssPrimary100
             }
         }
