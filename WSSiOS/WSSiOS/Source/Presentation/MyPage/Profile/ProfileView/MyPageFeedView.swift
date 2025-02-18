@@ -162,8 +162,6 @@ final class MyPageFeedView: UIView {
             }
         }
         
-        UIView.animate(withDuration: 0.3) {
-            self.stackView.layoutIfNeeded()
-        }
+        self.stackView.layoutIfNeeded()
     }
 }

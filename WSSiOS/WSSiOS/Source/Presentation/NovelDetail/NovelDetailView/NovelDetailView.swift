@@ -98,7 +98,6 @@ final class NovelDetailView: UIView {
         
         scrollView.do {
             $0.contentInsetAdjustmentBehavior = .never
-            $0.showsVerticalScrollIndicator = false
         }
         
         contentView.do {
