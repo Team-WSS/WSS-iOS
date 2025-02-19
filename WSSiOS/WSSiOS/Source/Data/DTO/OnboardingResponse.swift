@@ -7,11 +7,11 @@
 
 import Foundation
 
-struct OnboardingResult: Codable {
+struct OnboardingResponse: Codable {
     let isValid: Bool
 }
 
-struct UserInfoResult: Codable {
+struct UserInfoRequest: Codable {
     let nickname: String
     let gender: String
     let birth: Int

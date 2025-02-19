@@ -22,7 +22,7 @@ protocol UserService {
     func getUserNovelPreferences(userId: Int) -> Single<UserNovelPreferencesResponse>
     func getUserGenrePreferences(userId: Int) -> Single<UserGenrePreferences>
     func patchUserProfile(updatedFields: [String: Any]) -> Single<Void>
-    func getNicknameisValid(nickname: String) -> Single<OnboardingResult>
+    func getNicknameisValid(nickname: String) -> Single<OnboardingResponse>
     func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Single<MyFeedResult>
     func getUserNovelList(userId: Int,
                           readStatus: String,
@@ -303,7 +303,7 @@ extension DefaultUserService: UserService {
         }
     }
     
-    func getNicknameisValid(nickname: String) -> Single<OnboardingResult> {
+    func getNicknameisValid(nickname: String) -> Single<OnboardingResponse> {
         let nicknameisValidQueryItems: [URLQueryItem] = [
             URLQueryItem(name: "nickname", value: String(describing: nickname))
         ]
@@ -321,7 +321,7 @@ extension DefaultUserService: UserService {
             
             return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
-                                       to: OnboardingResult.self) }
+                                       to: OnboardingResponse.self) }
                 .asSingle()
             
         } catch {
