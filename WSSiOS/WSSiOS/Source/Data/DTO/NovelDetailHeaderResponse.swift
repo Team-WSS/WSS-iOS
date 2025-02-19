@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct NovelDetailHeaderResponse: Codable {
+struct NovelDetailHeaderResponse: Decodable {
     let userNovelID: Int?
     let novelTitle, novelImage: String
     let novelGenres: String

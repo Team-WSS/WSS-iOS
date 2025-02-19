@@ -42,10 +42,10 @@ final class NovelDetailViewModel: ViewModelType {
     private let selectedTab = BehaviorRelay<Tab>(value: Tab.info)
     
     // NovelDetailInfo
-    private let novelDetailInfoData = PublishSubject<NovelDetailInfoResult>()
+    private let novelDetailInfoData = PublishSubject<NovelDetailInfoEntity>()
     private let isInfoDescriptionExpended = BehaviorRelay<Bool>(value: false)
-    private let platformList = BehaviorRelay<[Platform]>(value: [])
-    private let keywordList = BehaviorRelay<[Keyword]>(value: [])
+    private let platformList = BehaviorRelay<[PlatformEntity]>(value: [])
+    private let keywordList = BehaviorRelay<[KeywordEntity]>(value: [])
     private let reviewSectionVisibilities = BehaviorRelay<[ReviewSectionVisibility]>(value: [])
     
     // NovelDetailFeed
@@ -127,7 +127,7 @@ final class NovelDetailViewModel: ViewModelType {
     struct Output {
         // Total
         let detailHeaderData: Observable<NovelDetailHeaderEntity>
-        let detailInfoData: Observable<NovelDetailInfoResult>
+        let detailInfoData: Observable<NovelDetailInfoEntity>
         let scrollContentOffset: ControlProperty<CGPoint>
         let popToLastViewController: Observable<Void>
         let showNetworkErrorView: Driver<Bool>
@@ -148,8 +148,8 @@ final class NovelDetailViewModel: ViewModelType {
         
         // NovelDetailInfo
         let isInfoDescriptionExpended: Driver<Bool>
-        let platformList: Driver<[Platform]>
-        let keywordList: Driver<[Keyword]>
+        let platformList: Driver<[PlatformEntity]>
+        let keywordList: Driver<[KeywordEntity]>
         let reviewSectionVisibilities: Driver<[ReviewSectionVisibility]>
         
         // NovelDetailFeed
@@ -495,26 +495,6 @@ final class NovelDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        self.novelDetailInfoData
-            .subscribe(with: self, onNext: { owner, data in
-                var visibilities: [ReviewSectionVisibility] = []
-                
-                if (data.quitCount+data.watchedCount+data.watchingCount) > 0 {
-                    visibilities.append(.graph)
-                }
-                if !data.attractivePoints.isEmpty {
-                    visibilities.append(.attractivepoint)
-                }
-                if !data.keywords.isEmpty {
-                    visibilities.append(.keyword)
-                }
-                
-                owner.reviewSectionVisibilities.accept(visibilities)
-            }, onError: { owner, error in
-                owner.reviewSectionVisibilities.accept([])
-            })
-            .disposed(by: disposeBag)
-        
         let showFeedEditedToast = input.feedEditedNotification
             .map { _ in () }
             .asObservable()
@@ -593,11 +573,12 @@ final class NovelDetailViewModel: ViewModelType {
     
     private func getNovelDetailInfoData(disposeBag: DisposeBag) {
         self.novelDetailRepository.getNovelDetailInfoData(novelId: self.novelId)
-            .subscribe(with: self, onNext: { owner, data in
+            .subscribe(with: self, onSuccess: { owner, data in
                 owner.novelDetailInfoData.onNext(data)
+                owner.reviewSectionVisibilities.accept(data.visibilities)
                 owner.platformList.accept(data.platforms)
                 owner.keywordList.accept(data.keywords)
-            }, onError: { owner, error in
+            }, onFailure: { owner, error in
                 owner.showNetworkErrorView.accept(true)
                 print("Error: \(error)")
             })

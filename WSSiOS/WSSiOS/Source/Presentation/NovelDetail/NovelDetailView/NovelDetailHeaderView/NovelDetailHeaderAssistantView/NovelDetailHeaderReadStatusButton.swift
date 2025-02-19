@@ -50,7 +50,7 @@ final class NovelDetailHeaderReadStatusButton: UIButton {
             }
             
             statusLabel.do {
-                $0.applyWSSFont(.body4, with: readStatus.nameText)
+                $0.applyWSSFont(.body4, with: readStatus.statusName)
             }
         }
     }

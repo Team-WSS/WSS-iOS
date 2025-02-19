@@ -11,7 +11,7 @@ import RxSwift
 
 protocol NovelDetailRepository {
     func getNovelDetailHeaderData(novelId: Int) -> Single<NovelDetailHeaderEntity>
-    func getNovelDetailInfoData(novelId: Int) -> Observable<NovelDetailInfoResult>
+    func getNovelDetailInfoData(novelId: Int) -> Single<NovelDetailInfoEntity>
     func getNovelDetailFeedData(novelId: Int,
                                 lastFeedId: Int,
                                 size: Int?) -> Observable<NovelDetailFeedResult>
@@ -34,8 +34,8 @@ extension DefaultNovelDetailRepository: NovelDetailRepository  {
         return novelDetailService.getNovelDetailHeaderData(novelId: novelId).map { $0.toEntity() }
     }
     
-    func getNovelDetailInfoData(novelId: Int) -> Observable<NovelDetailInfoResult> {
-        return novelDetailService.getNovelDetailInfoData(novelId: novelId).asObservable()
+    func getNovelDetailInfoData(novelId: Int) -> Single<NovelDetailInfoEntity> {
+        return novelDetailService.getNovelDetailInfoData(novelId: novelId).map { $0.toEntity()}
     }
     
     func getNovelDetailFeedData(novelId: Int, lastFeedId: Int, size: Int?) -> Observable<NovelDetailFeedResult> {

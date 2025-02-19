@@ -5,9 +5,7 @@
 //  Created by YunhakLee on 9/22/24.
 //
 
-import UIKit
-
-import RxSwift
+import Foundation
 
 struct NovelDetailHeaderEntity {
     let userNovelID: Int?

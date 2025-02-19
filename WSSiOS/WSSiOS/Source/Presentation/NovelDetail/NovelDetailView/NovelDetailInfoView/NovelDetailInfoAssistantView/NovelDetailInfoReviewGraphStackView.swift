@@ -16,8 +16,8 @@ final class NovelDetailInfoReviewGraphStackView: UIView {
     
     private let titleLabel = UILabel()
     private let graphStackView = UIStackView()
-    private let graphViews = ReadStatus.allCases.map { _ in
-        NovelDetailInfoReviewGraphView()
+    private let graphViews = ReadStatus.allCases.map {
+        NovelDetailInfoReviewGraphView(readStatus: $0)
     }
     
     //MARK: - Life Cycle
@@ -66,52 +66,29 @@ final class NovelDetailInfoReviewGraphStackView: UIView {
     
     //MARK: - Data
     
-    func bindData(_ data: NovelDetailInfoResult) {
-        let topReadStatusCount = getTopReadStatusCount(data)
-        let topReadStatusText = getTopReadStatusText(data)
-        let titleText = "\(topReadStatusCount)"
+    func bindData(_ data: NovelDetailInfoEntity) {
+        let titleText = "\(data.topReadStatusCount)"
                         + StringLiterals.NovelDetail.Info.readStatus
-                        + topReadStatusText
+                        + data.topReadStatus.graphSectionTitle
         
+        let wssFont = WSSFont.title1
         titleLabel.do {
-            $0.font = .Title1
+            $0.font = wssFont.font
             $0.textColor = .wssBlack
             $0.makeAttribute(with: titleText)?
-                .lineHeight(1.4)
-                .kerning(kerningPixel: -0.6)
+                .lineHeight(wssFont.lineHeightMultiple)
+                .kerning(kerningPixel: wssFont.kerningPixel)
                 .partialColor(color: .wssPrimary100,
-                              rangeString: "\(topReadStatusCount)명")
+                              rangeString: "\(data.topReadStatusCount)명")
                 .applyAttribute()
             $0.numberOfLines = 2
         }
         
-        let statusCounts = [data.watchingCount, data.watchedCount, data.quitCount]
-        
-        for i in 0..<ReadStatus.allCases.count {
-            graphViews[i].bindData(statusText: ReadStatus.allCases[i].nameText,
-                                   statusCount: statusCounts[i],
-                                   maxCount: topReadStatusCount)
-        }
-    }
-    
-    //MARK: - Custom Methode
-    
-    private func getTopReadStatusCount(_ data: NovelDetailInfoResult) -> Int {
-        return max(data.quitCount, data.watchedCount, data.watchingCount)
-    }
-    
-    private func getTopReadStatusText(_ data: NovelDetailInfoResult) -> String {
-        let maxCount = getTopReadStatusCount(data)
-        
-        switch maxCount {
-        case data.quitCount:
-            return StringLiterals.NovelDetail.Info.ReadStatus.quit
-        case data.watchedCount:
-            return StringLiterals.NovelDetail.Info.ReadStatus.watched
-        case data.watchingCount:
-            return StringLiterals.NovelDetail.Info.ReadStatus.watching
-        default:
-            return StringLiterals.NovelDetail.Info.ReadStatus.quit
+        graphViews.forEach {
+            if let statusCount = data.readStatusCounts[$0.readStatus] {
+                $0.bindData(statusCount: statusCount,
+                            topStatusCount: data.topReadStatusCount)
+            }
         }
     }
 }

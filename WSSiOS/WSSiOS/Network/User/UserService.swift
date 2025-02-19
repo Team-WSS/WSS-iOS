@@ -19,7 +19,7 @@ protocol UserService {
     func patchUserProfileVisibility(isProfilePublic: Bool) -> Single<Void>
     func getMyProfile() -> Single<MyProfileResult>
     func getOtherProfile(userId: Int) -> Single<OtherProfileResult>
-    func getUserNovelPreferences(userId: Int) -> Single<UserNovelPreferences>
+    func getUserNovelPreferences(userId: Int) -> Single<UserNovelPreferencesResponse>
     func getUserGenrePreferences(userId: Int) -> Single<UserGenrePreferences>
     func patchUserProfile(updatedFields: [String: Any]) -> Single<Void>
     func getNicknameisValid(nickname: String) -> Single<OnboardingResult>
@@ -247,7 +247,7 @@ extension DefaultUserService: UserService {
         }
     }
     
-    func getUserNovelPreferences(userId: Int) -> Single<UserNovelPreferences> {
+    func getUserNovelPreferences(userId: Int) -> Single<UserNovelPreferencesResponse> {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.User.novelPreferencesstatic(userId: userId),
@@ -258,7 +258,7 @@ extension DefaultUserService: UserService {
             
             return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
-                                       to: UserNovelPreferences.self) }
+                                       to: UserNovelPreferencesResponse.self) }
                 .asSingle()
             
         } catch {

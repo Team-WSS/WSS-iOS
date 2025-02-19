@@ -11,7 +11,7 @@ import RxSwift
 
 protocol NovelDetailService {
     func getNovelDetailHeaderData(novelId: Int) -> Single<NovelDetailHeaderResponse>
-    func getNovelDetailInfoData(novelId: Int) -> Single<NovelDetailInfoResult>
+    func getNovelDetailInfoData(novelId: Int) -> Single<NovelDetailInfoResponse>
     func getNovelDetailFeedData(novelId: Int, lastFeedId: Int, size: Int) -> Single<NovelDetailFeedResult>
     func postUserInterest(novelId: Int) -> Single<Void>
     func deleteUserInterest(novelId: Int) -> Single<Void>
@@ -90,7 +90,7 @@ extension DefaultNovelDetailService: NovelDetailService {
         }
     }
     
-    func getNovelDetailInfoData(novelId: Int) -> Single<NovelDetailInfoResult> {
+    func getNovelDetailInfoData(novelId: Int) -> Single<NovelDetailInfoResponse> {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.NovelDetail.novelDetailInfo(novelId: novelId),
@@ -101,7 +101,7 @@ extension DefaultNovelDetailService: NovelDetailService {
             
             return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
-                                       to: NovelDetailInfoResult.self) }
+                                       to: NovelDetailInfoResponse.self) }
                 .asSingle()
         } catch {
             return Single.error(error)
