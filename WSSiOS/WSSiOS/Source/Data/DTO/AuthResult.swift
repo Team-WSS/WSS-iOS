@@ -12,17 +12,17 @@ struct AppleLoginBody: Codable {
     let idToken: String
 }
 
-struct LoginResult: Codable {
+struct LoginResponse: Decodable {
     let Authorization: String
     let refreshToken: String
     let isRegister: Bool
 }
 
-struct ReissueBody: Codable {
+struct ReissueRequest: Encodable {
     let refreshToken: String
 }
 
-struct ReissueResult: Codable {
+struct ReissueResponse: Decodable {
     let Authorization: String
     let refreshToken: String
 }
