@@ -74,7 +74,7 @@ final class MyPageFeedDetailViewController: UIViewController, UIScrollViewDelega
                 let offsetY = contentOffset.y
                 let contentHeight = self.rootView.myPageFeedDetailTableView.contentSize.height
                 let frameHeight = self.rootView.myPageFeedDetailTableView.frame.height
-                return offsetY + frameHeight >= contentHeight - 100
+                return offsetY + frameHeight >= contentHeight - 10
             }
             .distinctUntilChanged()
             .filter { $0 }
