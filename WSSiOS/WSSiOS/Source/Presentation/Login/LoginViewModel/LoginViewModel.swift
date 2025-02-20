@@ -147,7 +147,6 @@ final class LoginViewModel: NSObject, ViewModelType {
         NotificationHelper.shared.fetchFCMToken()
         if APIConstants.isRegister {
             self.navigateToHome.accept(())
-          
         } else {
             self.navigateToOnboarding.accept(())
         }

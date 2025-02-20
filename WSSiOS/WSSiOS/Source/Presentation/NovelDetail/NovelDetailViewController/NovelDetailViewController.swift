@@ -62,6 +62,7 @@ final class NovelDetailViewController: UIViewController {
         registerCell()
         delegate()
         bindViewModel()
+        bindAction()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -132,23 +133,6 @@ final class NovelDetailViewController: UIViewController {
                 owner.rootView.bindInfoData(data)
             }, onError: { owner, error in
                 print(error)
-            })
-            .disposed(by: disposeBag)
-        
-        rootView.scrollView.rx.contentOffset
-            .observe(on: MainScheduler.asyncInstance)
-            .subscribe(with: self, onNext: { owner, offset in
-                let stickyoffset = owner.rootView.headerView.frame.size.height - owner.view.safeAreaInsets.top
-                let showStickyTabBar = offset.y > stickyoffset
-                owner.rootView.updateStickyTabBarShow(showStickyTabBar)
-            })
-            .disposed(by: disposeBag)
-        
-        rootView.backButton.rx.tap
-            .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
-            .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, _ in
-                owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
         
@@ -481,6 +465,25 @@ final class NovelDetailViewController: UIViewController {
     }
     
     //MARK: - Actions
+    
+    private func bindAction() {
+        rootView.scrollView.rx.contentOffset
+            .observe(on: MainScheduler.asyncInstance)
+            .subscribe(with: self, onNext: { owner, offset in
+                let stickyoffset = owner.rootView.headerView.frame.size.height - owner.view.safeAreaInsets.top
+                let showStickyTabBar = offset.y > stickyoffset
+                owner.rootView.updateStickyTabBarShow(showStickyTabBar)
+            })
+            .disposed(by: disposeBag)
+        
+        rootView.backButton.rx.tap
+            .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                owner.popToLastViewController()
+            })
+            .disposed(by: disposeBag)
+    }
     
     private func createViewModelInput() -> NovelDetailViewModel.Input {
         let reviewResultButtonDidTap = Observable<ReadStatus?>.merge(
