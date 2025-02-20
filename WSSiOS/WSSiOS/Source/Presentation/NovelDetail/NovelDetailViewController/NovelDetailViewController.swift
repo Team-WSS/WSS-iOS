@@ -135,7 +135,7 @@ final class NovelDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.scrollContentOffset
+        rootView.scrollView.rx.contentOffset
             .observe(on: MainScheduler.asyncInstance)
             .subscribe(with: self, onNext: { owner, offset in
                 let stickyoffset = owner.rootView.headerView.frame.size.height - owner.view.safeAreaInsets.top
@@ -144,7 +144,8 @@ final class NovelDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.popToLastViewController
+        rootView.backButton.rx.tap
+            .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 owner.popToLastViewController()
@@ -493,6 +494,13 @@ final class NovelDetailViewController: UIViewController {
                     button.rx.tap.map { nil }
                 })
         
+        let tabBarButtonDidTap = Observable<Tab>.merge(
+            rootView.tabBarView.infoButton.rx.tap.map { .info },
+            rootView.tabBarView.feedButton.rx.tap.map { .feed },
+            rootView.stickyTabBarView.infoButton.rx.tap.map { .info },
+            rootView.stickyTabBarView.feedButton.rx.tap.map { .feed }
+        )
+        
         let dropdownButtonDidTap = Observable.merge(
             rootView.feedView.feedListView.dropdownView.topDropdownButton.rx.tap.map { DropdownButtonType.top },
             rootView.feedView.feedListView.dropdownView.bottomDropdownButton.rx.tap.map { DropdownButtonType.bottom }
@@ -505,8 +513,6 @@ final class NovelDetailViewController: UIViewController {
         
         return NovelDetailViewModel.Input(
             viewWillAppearEvent: viewWillAppearEvent.asObservable(),
-            scrollContentOffset: rootView.scrollView.rx.contentOffset,
-            backButtonDidTap: rootView.backButton.rx.tap,
             networkErrorRefreshButtonDidTap: rootView.networkErrorView.refreshButton.rx.tap,
             imageNetworkError: imageNetworkError.asObservable(),
             deleteReview: deleteReview.asObservable(),
@@ -522,10 +528,7 @@ final class NovelDetailViewController: UIViewController {
             reviewResultButtonDidTap: reviewResultButtonDidTap,
             interestButtonDidTap: rootView.headerView.interestReviewButton.interestButton.rx.tap,
             feedWriteButtonDidTap: rootView.headerView.interestReviewButton.feedWriteButton.rx.tap,
-            infoTabBarButtonDidTap: rootView.tabBarView.infoButton.rx.tap,
-            feedTabBarButtonDidTap: rootView.tabBarView.feedButton.rx.tap,
-            stickyInfoTabBarButtonDidTap: rootView.stickyTabBarView.infoButton.rx.tap,
-            stickyFeedTabBarButtonDidTap: rootView.stickyTabBarView.feedButton.rx.tap,
+            tabBarButtonDidTap: tabBarButtonDidTap,
             descriptionAccordionButtonDidTap: rootView.infoView.descriptionView.accordionButton.rx.tap,
             novelDetailFeedTableViewContentSize: rootView.feedView.feedListView.feedTableView.rx.observe(CGSize.self, "contentSize"),
             novelDetailFeedTableViewItemSelected: rootView.feedView.feedListView.feedTableView.rx.itemSelected.asObservable(),

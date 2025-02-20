@@ -80,8 +80,6 @@ final class NovelDetailViewModel: ViewModelType {
     struct Input {
         // Total
         let viewWillAppearEvent: Observable<Void>
-        let scrollContentOffset: ControlProperty<CGPoint>
-        let backButtonDidTap: ControlEvent<Void>
         let networkErrorRefreshButtonDidTap: ControlEvent<Void>
         let imageNetworkError: Observable<Bool>
         let deleteReview: Observable<Void>
@@ -99,10 +97,7 @@ final class NovelDetailViewModel: ViewModelType {
         let feedWriteButtonDidTap: ControlEvent<Void>
         
         // Tab
-        let infoTabBarButtonDidTap: ControlEvent<Void>
-        let feedTabBarButtonDidTap: ControlEvent<Void>
-        let stickyInfoTabBarButtonDidTap: ControlEvent<Void>
-        let stickyFeedTabBarButtonDidTap: ControlEvent<Void>
+        let tabBarButtonDidTap: Observable<Tab>
         
         // NovelDetailInfo
         let descriptionAccordionButtonDidTap: ControlEvent<Void>
@@ -128,8 +123,6 @@ final class NovelDetailViewModel: ViewModelType {
         // Total
         let detailHeaderData: Observable<NovelDetailHeaderEntity>
         let detailInfoData: Observable<NovelDetailInfoEntity>
-        let scrollContentOffset: ControlProperty<CGPoint>
-        let popToLastViewController: Observable<Void>
         let showNetworkErrorView: Driver<Bool>
         let showHeaderDropdownView: Driver<Bool>
         let showReportPage: Driver<Void>
@@ -173,6 +166,9 @@ final class NovelDetailViewModel: ViewModelType {
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
+        
+        //MARK: - transform/Total
+        
         input.viewWillAppearEvent
             .bind(to: self.reloadData)
             .disposed(by: disposeBag)
@@ -244,6 +240,8 @@ final class NovelDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        //MARK: - transform/Header
+        
         input.novelCoverImageButtonDidTap
             .bind(with: self, onNext: { owner, _ in
                 owner.showLargeNovelCoverImage.accept(true)
@@ -305,7 +303,7 @@ final class NovelDetailViewModel: ViewModelType {
                  novelId: self.novelId,
                  novelTitle: self.novelTitle)
             }
-
+        
         let pushToFeedWriteViewControllerFromCreateFeedButton = input.createFeedButtonDidTap
             .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
             .do(onNext: {
@@ -316,63 +314,53 @@ final class NovelDetailViewModel: ViewModelType {
                  novelId: self.novelId,
                  novelTitle: self.novelTitle)
             }
-
+        
         let pushToFeedWriteViewController = Observable.merge(
             pushToFeedWriteViewControllerFromFeedWriteButton,
             pushToFeedWriteViewControllerFromCreateFeedButton
         )
-        .do(onNext: { _ in
-            self.selectedTab.accept(.feed)
-        })
-        
-        let scrollContentOffset = input.scrollContentOffset
-        
-        let backButtonDidTap = input.backButtonDidTap
-            .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
-            .asObservable()
-        
-        input.infoTabBarButtonDidTap
-            .bind(with: self, onNext: { owner, _ in
-                owner.selectedTab.accept(.info)
+            .do(onNext: { _ in
+                self.selectedTab.accept(.feed)
             })
+        
+        //MARK: - transform/TabBar
+        
+        input.tabBarButtonDidTap
+            .bind(to: self.selectedTab)
             .disposed(by: disposeBag)
         
-        input.stickyInfoTabBarButtonDidTap
-            .bind(with: self, onNext: { owner, _ in
-                owner.selectedTab.accept(.info)
+        input.tabBarButtonDidTap
+            .filter { $0 == .feed }
+            .do(onNext: { _ in
+                self.isLoadable = false
+                self.lastFeedId = 0
+                self.selectedTab.accept(.feed)
             })
-            .disposed(by: disposeBag)
-        
-        Observable.merge(
-            input.feedTabBarButtonDidTap.asObservable(),
-            input.stickyFeedTabBarButtonDidTap.asObservable()
-        )
-        .do(onNext: {
-            self.isLoadable = false
-            self.lastFeedId = 0
-            self.selectedTab.accept(.feed)
-        })
-        .flatMapLatest { _ in
-            self.getNovelDetailFeedData(novelId: self.novelId,
-                                        lastFeedId: self.lastFeedId,
-                                        size: nil)
-        }
-        .subscribe(with: self, onNext: { owner, data in
-            owner.isLoadable = data.isLoadable
-            if let lastFeed = data.feeds.last {
-                owner.lastFeedId = lastFeed.feedId
+            .flatMapLatest { _ in
+                self.getNovelDetailFeedData(novelId: self.novelId,
+                                            lastFeedId: self.lastFeedId,
+                                            size: nil)
             }
-            owner.feedList.accept(data.feeds)
-        }, onError: { owner, error in
-            print("Error: \(error)")
-        })
-        .disposed(by: disposeBag)
+            .subscribe(with: self, onNext: { owner, data in
+                owner.isLoadable = data.isLoadable
+                if let lastFeed = data.feeds.last {
+                    owner.lastFeedId = lastFeed.feedId
+                }
+                owner.feedList.accept(data.feeds)
+            }, onError: { owner, error in
+                print("Error: \(error)")
+            })
+            .disposed(by: disposeBag)
+        
+        //MARK: - transform/Info
         
         input.descriptionAccordionButtonDidTap
             .bind(with: self, onNext: { owner, _ in
                 owner.isInfoDescriptionExpended.accept(!owner.isInfoDescriptionExpended.value)
             })
             .disposed(by: disposeBag)
+        
+        //MARK: - transform/Feed
         
         input.novelDetailFeedTableViewContentSize
             .map { $0?.height ?? 0 }
@@ -516,8 +504,6 @@ final class NovelDetailViewModel: ViewModelType {
         return Output(
             detailHeaderData: novelDetailHeaderData.asObservable(),
             detailInfoData: novelDetailInfoData.asObserver(),
-            scrollContentOffset: scrollContentOffset,
-            popToLastViewController: backButtonDidTap,
             showNetworkErrorView: showNetworkErrorView.asDriver(),
             showHeaderDropdownView: showHeaderDropdownView.asDriver(),
             showReportPage: showReportPage.asDriver(onErrorJustReturn: ()),
