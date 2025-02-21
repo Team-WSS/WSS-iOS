@@ -32,6 +32,24 @@ class TokenCheckURLProtocol: URLProtocol {
         
     }()
     
+    private static var checkUserisValidSubject = BehaviorSubject<Void>(value: ())
+    private static var checkUserisValidObservable: Observable<Void> = {
+        return checkUserisValidSubject
+            .asObservable()
+            .flatMapLatest { _ in
+                return DefaultAuthService().checkUserisValid().asObservable()
+            }
+            .do(onNext: { _ in
+                print("====== User is Valid ======")
+            }, onError: { _ in
+                print("====== User is Not Valid ====== ")
+            }, onSubscribe: {
+                print("====== Try To Check User is Valid ======")
+            })
+            .share()
+        
+    }()
+    
     // 해당 요청을 이 프로토콜이 처리할지 여부를 결정합니다.
     // Handled에 값이 없는 경우에만(API를 처음 호출할 때만) 이 프로토콜이 처리한다.
     // 한번 이 프로토콜에서 처리하고 나면, startLoading() 과정에서
@@ -51,8 +69,10 @@ class TokenCheckURLProtocol: URLProtocol {
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let httpResponse = response as? HTTPURLResponse {
                 switch httpResponse.statusCode {
-                case 401, 404: // 401: 토큰 만료, 404: 유저 탈퇴 가능성 확인
+                case 401: // 토큰 재발급 시도
                     self.handleUnauthorizedResponse()
+                case 404: // 유저 탈퇴 여부 확인
+                    self.handleNotFoundResponse()
                 default: // 일반적인 응답 처리
                     self.handleTaskResult(data: data, response: response, error: error)
                 }
@@ -76,6 +96,18 @@ class TokenCheckURLProtocol: URLProtocol {
             .disposed(by: self.disposeBag)
     }
     
+    private func handleNotFoundResponse() {
+        TokenCheckURLProtocol.checkUserisValidObservable
+            .subscribe(with: self, onNext: { owner, _ in
+                // 유저 정보 조회 성공 -> 기존 요청 재개
+                owner.resumeOriginalRequest()
+            }, onError: { owner, error in
+                // 유저 정보 조회 실패 -> 탈퇴한 상태로 간주하고 유저 정보를 삭제, 로그인 VC로 이동
+                owner.deleteTokenAndMoveToLoginViewController(error: error)
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
     private func handleTaskResult(data: Data?, response: URLResponse?, error: Error?) {
         if let error = error {
             self.client?.urlProtocol(self, didFailWithError: error)
@@ -89,6 +121,19 @@ class TokenCheckURLProtocol: URLProtocol {
             
             client?.urlProtocolDidFinishLoading(self)
         }
+    }
+    
+    private func resumeOriginalRequest() {
+        // 기존 요청을 다시 실행
+        guard let mutableRequest = (self.request as NSURLRequest).mutableCopy() as? NSMutableURLRequest else {
+            return
+        }
+        URLProtocol.setProperty(true, forKey: "Handled", in: mutableRequest)
+        let originalRequest = mutableRequest as URLRequest
+        let retryTask = URLSession.shared.dataTask(with: originalRequest) { data, response, error in
+            self.handleTaskResult(data: data, response: response, error: error)
+        }
+        retryTask.resume()
     }
     
     private func retryRequestWithNewToken() {
