@@ -11,9 +11,9 @@ import RxSwift
 
 protocol AuthService {
     func loginWithApple(authorizationCode: String,
-                        idToken: String) -> Single<LoginResult>
-    func loginWithKakao(_ kakaoAccessToken: String) -> Single<LoginResult>
-    func reissueToken() -> Single<ReissueResult>
+                        idToken: String) -> Single<LoginResponse>
+    func loginWithKakao(_ kakaoAccessToken: String) -> Single<LoginResponse>
+    func reissueToken() -> Single<ReissueResponse>
     func postWithdrawId(reason: String, refreshToken: String) -> Single<Void>
     func postLogout(logoutRequest: LogoutRequest) -> Single<Void>
     func checkUserisValid() -> Single<Void>
@@ -21,7 +21,7 @@ protocol AuthService {
 
 
 final class DefaultAuthService: NSObject, Networking, AuthService {
-    func loginWithApple(authorizationCode: String, idToken: String) -> RxSwift.Single<LoginResult> {
+    func loginWithApple(authorizationCode: String, idToken: String) -> RxSwift.Single<LoginResponse> {
         guard let appleLoginBody = try? JSONEncoder().encode(AppleLoginBody(authorizationCode: authorizationCode, idToken: idToken)) else {
             return Single.error(NetworkServiceError.invalidRequestError)
         }
@@ -36,7 +36,7 @@ final class DefaultAuthService: NSObject, Networking, AuthService {
 
             return basicURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
-                                       to: LoginResult.self) }
+                                       to: LoginResponse.self) }
                 .asSingle()
 
         } catch {
@@ -44,7 +44,7 @@ final class DefaultAuthService: NSObject, Networking, AuthService {
         }
     }
     
-    func loginWithKakao(_ kakaoAccessToken: String) -> Single<LoginResult> {
+    func loginWithKakao(_ kakaoAccessToken: String) -> Single<LoginResponse> {
         do {
             let request = try makeHTTPRequest(method: .post,
                                               path: URLs.Auth.loginWithKakao,
@@ -55,7 +55,7 @@ final class DefaultAuthService: NSObject, Networking, AuthService {
 
             return basicURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
-                                       to: LoginResult.self) }
+                                       to: LoginResponse.self) }
                 .asSingle()
             
         } catch {
@@ -63,12 +63,12 @@ final class DefaultAuthService: NSObject, Networking, AuthService {
         }
     }
     
-    func reissueToken() -> Single<ReissueResult> {
+    func reissueToken() -> Single<ReissueResponse> {
         guard let refreshToken = UserDefaults.standard.string(forKey: StringLiterals.UserDefault.refreshToken) else {
             return Single.error(NetworkServiceError.authenticationError)
         }
         
-        guard let reissueBody = try? JSONEncoder().encode(ReissueBody(refreshToken: refreshToken)) else {
+        guard let reissueBody = try? JSONEncoder().encode(ReissueRequest(refreshToken: refreshToken)) else {
             return Single.error(NetworkServiceError.invalidRequestError)
         }
                 
@@ -82,7 +82,7 @@ final class DefaultAuthService: NSObject, Networking, AuthService {
 
             return basicURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
-                                       to: ReissueResult.self) }
+                                       to: ReissueResponse.self) }
                 .asSingle()
 
         } catch {

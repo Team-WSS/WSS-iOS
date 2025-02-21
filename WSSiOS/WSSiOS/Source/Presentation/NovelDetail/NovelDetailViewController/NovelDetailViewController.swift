@@ -19,7 +19,7 @@ final class NovelDetailViewController: UIViewController {
     private let viewModel: NovelDetailViewModel
     private let disposeBag = DisposeBag()
     
-    private let viewWillAppearEvent = BehaviorRelay(value: false)
+    private let viewWillAppearEvent = PublishRelay<Void>()
     private let imageNetworkError = BehaviorRelay<Bool>(value: false)
     private let deleteReview = PublishSubject<Void>()
     
@@ -62,12 +62,13 @@ final class NovelDetailViewController: UIViewController {
         registerCell()
         delegate()
         bindViewModel()
+        bindAction()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        viewWillAppearEvent.accept(true)
+        viewWillAppearEvent.accept(())
         setNavigationBar()
         swipeBackGesture()
         self.hidesBottomBarWhenPushed = true
@@ -132,22 +133,6 @@ final class NovelDetailViewController: UIViewController {
                 owner.rootView.bindInfoData(data)
             }, onError: { owner, error in
                 print(error)
-            })
-            .disposed(by: disposeBag)
-        
-        output.scrollContentOffset
-            .observe(on: MainScheduler.asyncInstance)
-            .subscribe(with: self, onNext: { owner, offset in
-                let stickyoffset = owner.rootView.headerView.frame.size.height - owner.view.safeAreaInsets.top
-                let showStickyTabBar = offset.y > stickyoffset
-                owner.rootView.updateStickyTabBarShow(showStickyTabBar)
-            })
-            .disposed(by: disposeBag)
-        
-        output.popToLastViewController
-            .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, _ in
-                owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
         
@@ -481,6 +466,25 @@ final class NovelDetailViewController: UIViewController {
     
     //MARK: - Actions
     
+    private func bindAction() {
+        rootView.scrollView.rx.contentOffset
+            .observe(on: MainScheduler.asyncInstance)
+            .subscribe(with: self, onNext: { owner, offset in
+                let stickyoffset = owner.rootView.headerView.frame.size.height - owner.view.safeAreaInsets.top
+                let showStickyTabBar = offset.y > stickyoffset
+                owner.rootView.updateStickyTabBarShow(showStickyTabBar)
+            })
+            .disposed(by: disposeBag)
+        
+        rootView.backButton.rx.tap
+            .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                owner.popToLastViewController()
+            })
+            .disposed(by: disposeBag)
+    }
+    
     private func createViewModelInput() -> NovelDetailViewModel.Input {
         let reviewResultButtonDidTap = Observable<ReadStatus?>.merge(
             rootView.headerView.reviewResultView.readStatusButtons
@@ -492,6 +496,13 @@ final class NovelDetailViewController: UIViewController {
                     button in
                     button.rx.tap.map { nil }
                 })
+        
+        let tabBarButtonDidTap = Observable<Tab>.merge(
+            rootView.tabBarView.infoButton.rx.tap.map { .info },
+            rootView.tabBarView.feedButton.rx.tap.map { .feed },
+            rootView.stickyTabBarView.infoButton.rx.tap.map { .info },
+            rootView.stickyTabBarView.feedButton.rx.tap.map { .feed }
+        )
         
         let dropdownButtonDidTap = Observable.merge(
             rootView.feedView.feedListView.dropdownView.topDropdownButton.rx.tap.map { DropdownButtonType.top },
@@ -505,8 +516,6 @@ final class NovelDetailViewController: UIViewController {
         
         return NovelDetailViewModel.Input(
             viewWillAppearEvent: viewWillAppearEvent.asObservable(),
-            scrollContentOffset: rootView.scrollView.rx.contentOffset,
-            backButtonDidTap: rootView.backButton.rx.tap,
             networkErrorRefreshButtonDidTap: rootView.networkErrorView.refreshButton.rx.tap,
             imageNetworkError: imageNetworkError.asObservable(),
             deleteReview: deleteReview.asObservable(),
@@ -522,10 +531,7 @@ final class NovelDetailViewController: UIViewController {
             reviewResultButtonDidTap: reviewResultButtonDidTap,
             interestButtonDidTap: rootView.headerView.interestReviewButton.interestButton.rx.tap,
             feedWriteButtonDidTap: rootView.headerView.interestReviewButton.feedWriteButton.rx.tap,
-            infoTabBarButtonDidTap: rootView.tabBarView.infoButton.rx.tap,
-            feedTabBarButtonDidTap: rootView.tabBarView.feedButton.rx.tap,
-            stickyInfoTabBarButtonDidTap: rootView.stickyTabBarView.infoButton.rx.tap,
-            stickyFeedTabBarButtonDidTap: rootView.stickyTabBarView.feedButton.rx.tap,
+            tabBarButtonDidTap: tabBarButtonDidTap,
             descriptionAccordionButtonDidTap: rootView.infoView.descriptionView.accordionButton.rx.tap,
             novelDetailFeedTableViewContentSize: rootView.feedView.feedListView.feedTableView.rx.observe(CGSize.self, "contentSize"),
             novelDetailFeedTableViewItemSelected: rootView.feedView.feedListView.feedTableView.rx.itemSelected.asObservable(),

@@ -59,9 +59,8 @@ final class NovelDetailInfoReviewAttractivePointView: UIView {
     
     //MARK: - Data
     
-    func bindData(_ data: NovelDetailInfoResult) {
+    func bindData(_ data: NovelDetailInfoEntity) {
         let attractivePointText = data.attractivePoints
-            .compactMap{ AttractivePoint(rawValue: $0) }
             .map{ $0.koreanString }
             .joined(separator: ", ")
         

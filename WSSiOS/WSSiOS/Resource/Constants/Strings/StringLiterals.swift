@@ -416,8 +416,8 @@ enum StringLiterals {
         }
         
         enum Header {
-            static let complete = "  ·  완결작  ·  "
-            static let inSeries = "  ·  연재중  ·  "
+            static let complete = "완결작"
+            static let inSeries = "연재중"
             static let interest = "관심"
             static let feedWrite = "나도 한마디"
             static let errorReport = "오류 제보"

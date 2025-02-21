@@ -10,14 +10,14 @@ import Foundation
 import RxSwift
 
 protocol OnboardingService {
-    func getNicknameisValid(_ nickname: String) -> Single<OnboardingResult>
-    func postUserProfile(userInfoResult: UserInfoResult) -> Single<Void>
+    func getNicknameisValid(_ nickname: String) -> Single<OnboardingResponse>
+    func postUserProfile(userInfoRequest: UserInfoRequest) -> Single<Void>
 }
 
 final class DefaultOnboardingService: NSObject, Networking { }
 
 extension DefaultOnboardingService: OnboardingService {
-    func getNicknameisValid(_ nickname: String) -> Single<OnboardingResult> {
+    func getNicknameisValid(_ nickname: String) -> Single<OnboardingResponse> {
         let nicknameisValidQueryItems: [URLQueryItem] = [
             URLQueryItem(name: "nickname", value: String(describing: nickname))
         ]
@@ -35,7 +35,7 @@ extension DefaultOnboardingService: OnboardingService {
             
             return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
-                                       to: OnboardingResult.self) }
+                                       to: OnboardingResponse.self) }
                 .asSingle()
             
         } catch {
@@ -43,8 +43,8 @@ extension DefaultOnboardingService: OnboardingService {
         }
     }
     
-    func postUserProfile(userInfoResult: UserInfoResult) -> Single<Void> {
-        guard let userInfo = try? JSONEncoder().encode(userInfoResult) else {
+    func postUserProfile(userInfoRequest: UserInfoRequest) -> Single<Void> {
+        guard let userInfo = try? JSONEncoder().encode(userInfoRequest) else {
             return Single.error(NetworkServiceError.invalidRequestError)
         }
         do {

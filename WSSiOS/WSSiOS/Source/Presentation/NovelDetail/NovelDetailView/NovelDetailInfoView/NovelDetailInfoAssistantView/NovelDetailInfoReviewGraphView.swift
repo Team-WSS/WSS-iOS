@@ -12,6 +12,10 @@ import Then
 
 final class NovelDetailInfoReviewGraphView: UIView {
     
+    //MARK: - Properties
+    
+    let readStatus: ReadStatus
+    
     //MARK: - UI Components
     
     private let stackView = UIStackView()
@@ -25,7 +29,9 @@ final class NovelDetailInfoReviewGraphView: UIView {
     
     //MARK: - Life Cycle
     
-    override init(frame: CGRect) {
+    init(readStatus: ReadStatus) {
+        self.readStatus = readStatus
+        
         super.init(frame: .zero)
         
         setUI()
@@ -52,6 +58,10 @@ final class NovelDetailInfoReviewGraphView: UIView {
                 graphValueView.do {
                     $0.backgroundColor = .wssGray70
                 }
+            }
+            
+            statusNameLabel.do {
+                $0.applyWSSFont(.body2, with: readStatus.statusName)
             }
         }
     }
@@ -88,11 +98,10 @@ final class NovelDetailInfoReviewGraphView: UIView {
     
     //MARK: - Data
     
-    func bindData(statusText: String, statusCount: Int, maxCount: Int) {
-        guard maxCount != 0 else { return }
-        
-        let graphTopInset = (1-Double(statusCount)/Double(maxCount))*100
-        let isTopReadStatus = statusCount == maxCount
+    func bindData(statusCount: Int, topStatusCount: Int) {
+        guard topStatusCount != 0 else { return }
+        let graphTopInset = (1-Double(statusCount)/Double(topStatusCount))*100
+        let isTopReadStatus = statusCount == topStatusCount
         
         statusCountLabel.do {
             $0.applyWSSFont(.body5, with: "\(statusCount)")
@@ -100,7 +109,6 @@ final class NovelDetailInfoReviewGraphView: UIView {
         }
         
         statusNameLabel.do {
-            $0.applyWSSFont(.body2, with: statusText)
             $0.textColor = isTopReadStatus ? .wssPrimary200 : .wssGray200
         }
         

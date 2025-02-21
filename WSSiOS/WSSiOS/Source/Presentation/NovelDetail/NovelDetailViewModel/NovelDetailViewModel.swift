@@ -23,7 +23,7 @@ final class NovelDetailViewModel: ViewModelType {
     private var novelTitle: String = ""
     
     // Total
-    private let viewWillAppearEvent = BehaviorRelay<Bool>(value: false)
+    private let reloadData = PublishRelay<Void>()
     private let showNetworkErrorView = BehaviorRelay<Bool>(value: false)
     private let showHeaderDropdownView = BehaviorRelay<Bool>(value: false)
     private let showReportPage = PublishRelay<Void>()
@@ -42,10 +42,10 @@ final class NovelDetailViewModel: ViewModelType {
     private let selectedTab = BehaviorRelay<Tab>(value: Tab.info)
     
     // NovelDetailInfo
-    private let novelDetailInfoData = PublishSubject<NovelDetailInfoResult>()
+    private let novelDetailInfoData = PublishSubject<NovelDetailInfoEntity>()
     private let isInfoDescriptionExpended = BehaviorRelay<Bool>(value: false)
-    private let platformList = BehaviorRelay<[Platform]>(value: [])
-    private let keywordList = BehaviorRelay<[Keyword]>(value: [])
+    private let platformList = BehaviorRelay<[PlatformEntity]>(value: [])
+    private let keywordList = BehaviorRelay<[KeywordEntity]>(value: [])
     private let reviewSectionVisibilities = BehaviorRelay<[ReviewSectionVisibility]>(value: [])
     
     // NovelDetailFeed
@@ -79,9 +79,7 @@ final class NovelDetailViewModel: ViewModelType {
     
     struct Input {
         // Total
-        let viewWillAppearEvent: Observable<Bool>
-        let scrollContentOffset: ControlProperty<CGPoint>
-        let backButtonDidTap: ControlEvent<Void>
+        let viewWillAppearEvent: Observable<Void>
         let networkErrorRefreshButtonDidTap: ControlEvent<Void>
         let imageNetworkError: Observable<Bool>
         let deleteReview: Observable<Void>
@@ -99,10 +97,7 @@ final class NovelDetailViewModel: ViewModelType {
         let feedWriteButtonDidTap: ControlEvent<Void>
         
         // Tab
-        let infoTabBarButtonDidTap: ControlEvent<Void>
-        let feedTabBarButtonDidTap: ControlEvent<Void>
-        let stickyInfoTabBarButtonDidTap: ControlEvent<Void>
-        let stickyFeedTabBarButtonDidTap: ControlEvent<Void>
+        let tabBarButtonDidTap: Observable<Tab>
         
         // NovelDetailInfo
         let descriptionAccordionButtonDidTap: ControlEvent<Void>
@@ -127,9 +122,7 @@ final class NovelDetailViewModel: ViewModelType {
     struct Output {
         // Total
         let detailHeaderData: Observable<NovelDetailHeaderEntity>
-        let detailInfoData: Observable<NovelDetailInfoResult>
-        let scrollContentOffset: ControlProperty<CGPoint>
-        let popToLastViewController: Observable<Void>
+        let detailInfoData: Observable<NovelDetailInfoEntity>
         let showNetworkErrorView: Driver<Bool>
         let showHeaderDropdownView: Driver<Bool>
         let showReportPage: Driver<Void>
@@ -148,8 +141,8 @@ final class NovelDetailViewModel: ViewModelType {
         
         // NovelDetailInfo
         let isInfoDescriptionExpended: Driver<Bool>
-        let platformList: Driver<[Platform]>
-        let keywordList: Driver<[Keyword]>
+        let platformList: Driver<[PlatformEntity]>
+        let keywordList: Driver<[KeywordEntity]>
         let reviewSectionVisibilities: Driver<[ReviewSectionVisibility]>
         
         // NovelDetailFeed
@@ -173,8 +166,11 @@ final class NovelDetailViewModel: ViewModelType {
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
+        
+        //MARK: - transform/Total
+        
         input.viewWillAppearEvent
-            .bind(to: self.viewWillAppearEvent)
+            .bind(to: self.reloadData)
             .disposed(by: disposeBag)
         
         input.firstDescriptionBackgroundDidTap
@@ -185,7 +181,7 @@ final class NovelDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        self.viewWillAppearEvent
+        self.reloadData
             .do(onNext: { _ in
                 self.isLoadable = false
                 self.lastFeedId = 0
@@ -206,7 +202,7 @@ final class NovelDetailViewModel: ViewModelType {
         
         input.networkErrorRefreshButtonDidTap
             .bind(with: self, onNext: { owner, _ in
-                owner.viewWillAppearEvent.accept(true)
+                owner.reloadData.accept(())
             })
             .disposed(by: disposeBag)
         
@@ -243,6 +239,8 @@ final class NovelDetailViewModel: ViewModelType {
                 owner.deleteReview(disposeBag: disposeBag)
             })
             .disposed(by: disposeBag)
+        
+        //MARK: - transform/Header
         
         input.novelCoverImageButtonDidTap
             .bind(with: self, onNext: { owner, _ in
@@ -291,6 +289,7 @@ final class NovelDetailViewModel: ViewModelType {
             }
             .bind(with: self, onNext: { owner, _ in
                 owner.isUserNovelInterested.accept(!owner.isUserNovelInterested.value)
+                owner.reloadData.accept(())
             })
             .disposed(by: disposeBag)
         
@@ -304,7 +303,7 @@ final class NovelDetailViewModel: ViewModelType {
                  novelId: self.novelId,
                  novelTitle: self.novelTitle)
             }
-
+        
         let pushToFeedWriteViewControllerFromCreateFeedButton = input.createFeedButtonDidTap
             .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
             .do(onNext: {
@@ -315,63 +314,53 @@ final class NovelDetailViewModel: ViewModelType {
                  novelId: self.novelId,
                  novelTitle: self.novelTitle)
             }
-
+        
         let pushToFeedWriteViewController = Observable.merge(
             pushToFeedWriteViewControllerFromFeedWriteButton,
             pushToFeedWriteViewControllerFromCreateFeedButton
         )
-        .do(onNext: { _ in
-            self.selectedTab.accept(.feed)
-        })
-        
-        let scrollContentOffset = input.scrollContentOffset
-        
-        let backButtonDidTap = input.backButtonDidTap
-            .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
-            .asObservable()
-        
-        input.infoTabBarButtonDidTap
-            .bind(with: self, onNext: { owner, _ in
-                owner.selectedTab.accept(.info)
+            .do(onNext: { _ in
+                self.selectedTab.accept(.feed)
             })
+        
+        //MARK: - transform/TabBar
+        
+        input.tabBarButtonDidTap
+            .bind(to: self.selectedTab)
             .disposed(by: disposeBag)
         
-        input.stickyInfoTabBarButtonDidTap
-            .bind(with: self, onNext: { owner, _ in
-                owner.selectedTab.accept(.info)
+        input.tabBarButtonDidTap
+            .filter { $0 == .feed }
+            .do(onNext: { _ in
+                self.isLoadable = false
+                self.lastFeedId = 0
+                self.selectedTab.accept(.feed)
             })
-            .disposed(by: disposeBag)
-        
-        Observable.merge(
-            input.feedTabBarButtonDidTap.asObservable(),
-            input.stickyFeedTabBarButtonDidTap.asObservable()
-        )
-        .do(onNext: {
-            self.isLoadable = false
-            self.lastFeedId = 0
-            self.selectedTab.accept(.feed)
-        })
-        .flatMapLatest { _ in
-            self.getNovelDetailFeedData(novelId: self.novelId,
-                                        lastFeedId: self.lastFeedId,
-                                        size: nil)
-        }
-        .subscribe(with: self, onNext: { owner, data in
-            owner.isLoadable = data.isLoadable
-            if let lastFeed = data.feeds.last {
-                owner.lastFeedId = lastFeed.feedId
+            .flatMapLatest { _ in
+                self.getNovelDetailFeedData(novelId: self.novelId,
+                                            lastFeedId: self.lastFeedId,
+                                            size: nil)
             }
-            owner.feedList.accept(data.feeds)
-        }, onError: { owner, error in
-            print("Error: \(error)")
-        })
-        .disposed(by: disposeBag)
+            .subscribe(with: self, onNext: { owner, data in
+                owner.isLoadable = data.isLoadable
+                if let lastFeed = data.feeds.last {
+                    owner.lastFeedId = lastFeed.feedId
+                }
+                owner.feedList.accept(data.feeds)
+            }, onError: { owner, error in
+                print("Error: \(error)")
+            })
+            .disposed(by: disposeBag)
+        
+        //MARK: - transform/Info
         
         input.descriptionAccordionButtonDidTap
             .bind(with: self, onNext: { owner, _ in
                 owner.isInfoDescriptionExpended.accept(!owner.isInfoDescriptionExpended.value)
             })
             .disposed(by: disposeBag)
+        
+        //MARK: - transform/Feed
         
         input.novelDetailFeedTableViewContentSize
             .map { $0?.height ?? 0 }
@@ -494,26 +483,6 @@ final class NovelDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        self.novelDetailInfoData
-            .subscribe(with: self, onNext: { owner, data in
-                var visibilities: [ReviewSectionVisibility] = []
-                
-                if (data.quitCount+data.watchedCount+data.watchingCount) > 0 {
-                    visibilities.append(.graph)
-                }
-                if !data.attractivePoints.isEmpty {
-                    visibilities.append(.attractivepoint)
-                }
-                if !data.keywords.isEmpty {
-                    visibilities.append(.keyword)
-                }
-                
-                owner.reviewSectionVisibilities.accept(visibilities)
-            }, onError: { owner, error in
-                owner.reviewSectionVisibilities.accept([])
-            })
-            .disposed(by: disposeBag)
-        
         let showFeedEditedToast = input.feedEditedNotification
             .map { _ in () }
             .asObservable()
@@ -535,8 +504,6 @@ final class NovelDetailViewModel: ViewModelType {
         return Output(
             detailHeaderData: novelDetailHeaderData.asObservable(),
             detailInfoData: novelDetailInfoData.asObserver(),
-            scrollContentOffset: scrollContentOffset,
-            popToLastViewController: backButtonDidTap,
             showNetworkErrorView: showNetworkErrorView.asDriver(),
             showHeaderDropdownView: showHeaderDropdownView.asDriver(),
             showReportPage: showReportPage.asDriver(onErrorJustReturn: ()),
@@ -574,7 +541,7 @@ final class NovelDetailViewModel: ViewModelType {
     
     private func getNovelDetailHeaderData(disposeBag: DisposeBag) {
         self.novelDetailRepository.getNovelDetailHeaderData(novelId: self.novelId)
-            .subscribe(with: self, onNext: { owner, data in
+            .subscribe(with: self, onSuccess: { owner, data in
                 owner.novelTitle = data.novelTitle
                 owner.novelDetailHeaderData.onNext(data)
                 owner.isUserNovelInterested.accept(data.isUserNovelInterest)
@@ -583,7 +550,7 @@ final class NovelDetailViewModel: ViewModelType {
                 owner.novelGenre.accept(data.novelGenre.split{ $0 == "/"}
                     .map{ String($0) }
                     .map { NewNovelGenre.withKoreanRawValue(from: $0) })
-            }, onError: { owner, error in
+            }, onFailure: { owner, error in
                 owner.showNetworkErrorView.accept(true)
                 print("Error: \(error)")
             })
@@ -592,11 +559,12 @@ final class NovelDetailViewModel: ViewModelType {
     
     private func getNovelDetailInfoData(disposeBag: DisposeBag) {
         self.novelDetailRepository.getNovelDetailInfoData(novelId: self.novelId)
-            .subscribe(with: self, onNext: { owner, data in
+            .subscribe(with: self, onSuccess: { owner, data in
                 owner.novelDetailInfoData.onNext(data)
+                owner.reviewSectionVisibilities.accept(data.visibilities)
                 owner.platformList.accept(data.platforms)
                 owner.keywordList.accept(data.keywords)
-            }, onError: { owner, error in
+            }, onFailure: { owner, error in
                 owner.showNetworkErrorView.accept(true)
                 print("Error: \(error)")
             })
@@ -655,7 +623,7 @@ final class NovelDetailViewModel: ViewModelType {
     func deleteReview(disposeBag: DisposeBag) {
         novelDetailRepository.deleteNovelReview(novelId: self.novelId)
             .subscribe(with: self, onNext: { owner, _ in
-                owner.viewWillAppearEvent.accept(true)
+                owner.reloadData.accept(())
                 owner.showReviewDeletedToast.accept(())
             }, onError: { owner, error in
                 print("Error: \(error)")

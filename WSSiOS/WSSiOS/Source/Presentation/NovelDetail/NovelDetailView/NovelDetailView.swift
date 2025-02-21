@@ -219,7 +219,7 @@ final class NovelDetailView: UIView {
         largeNovelCoverImageButton.bindData(novelImage)
     }
     
-    func bindInfoData(_ data: NovelDetailInfoResult) {
+    func bindInfoData(_ data: NovelDetailInfoEntity) {
         infoView.bindData(data)
     }
     

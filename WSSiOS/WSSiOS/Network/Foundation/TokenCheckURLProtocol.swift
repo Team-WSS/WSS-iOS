@@ -15,7 +15,7 @@ class TokenCheckURLProtocol: URLProtocol {
     // 토큰 갱신 API 호출 스트림을 공유하여 토큰 갱신이 진행되는 동안에는
     // 구독할 때마다 새로 스트림이 생기는 것을 막아 토큰 리이슈 API 중복 호출 방지
     private static var tokenRefreshSubject = BehaviorSubject<Void>(value: ())
-    private static var tokenRefreshObservable: Observable<ReissueResult> = {
+    private static var tokenRefreshObservable: Observable<ReissueResponse> = {
         return tokenRefreshSubject
             .asObservable()
             .flatMapLatest { _ in
@@ -168,7 +168,7 @@ class TokenCheckURLProtocol: URLProtocol {
 }
 
 extension TokenCheckURLProtocol {
-    private func updateTokens(result: ReissueResult) {
+    private func updateTokens(result: ReissueResponse) {
         UserDefaults.standard.setValue(result.Authorization,
                                        forKey: StringLiterals.UserDefault.accessToken)
         UserDefaults.standard.setValue(result.refreshToken,

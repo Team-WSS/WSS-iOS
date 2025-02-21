@@ -28,7 +28,7 @@ final class MyPageViewModel: ViewModelType {
     
     private let isExistPrefernecesRelay = PublishRelay<Bool>()
     private let bindInventoryDataRelay = BehaviorRelay<UserNovelStatus>(value: UserNovelStatus(interestNovelCount: 0, watchingNovelCount: 0, watchedNovelCount: 0, quitNovelCount: 0))
-    let bindKeywordRelay = BehaviorRelay<[Keyword]>(value: [])
+    let bindKeywordRelay = BehaviorRelay<[KeywordResponse]>(value: [])
     private let bindAttractivePointsDataRelay = BehaviorRelay<[String]>(value: [])
     private let bindGenreDataRelay = BehaviorRelay<UserGenrePreferences>(value: UserGenrePreferences(genrePreferences: []))
     private let showGenreOtherViewRelay = BehaviorRelay<Bool>(value: false)
@@ -108,7 +108,7 @@ final class MyPageViewModel: ViewModelType {
         let pushToMyPageFeedDetailViewController: PublishRelay<(Int, MyProfileResult)>
         
         let bindAttractivePointsData: BehaviorRelay<[String]>
-        let bindKeywordCell: BehaviorRelay<[Keyword]>
+        let bindKeywordCell: BehaviorRelay<[KeywordResponse]>
         let updateKeywordCollectionViewHeight: PublishRelay<CGFloat>
         let bindGenreData: BehaviorRelay<UserGenrePreferences>
         let bindInventoryData: BehaviorRelay<UserNovelStatus>
@@ -510,7 +510,7 @@ final class MyPageViewModel: ViewModelType {
             .asObservable()
     }
     
-    private func getNovelPreferenceData(userId: Int) -> Observable<UserNovelPreferences> {
+    private func getNovelPreferenceData(userId: Int) -> Observable<UserNovelPreferencesResponse> {
         return userRepository.getUserNovelPreferences(userId: userId)
             .asObservable()
     }

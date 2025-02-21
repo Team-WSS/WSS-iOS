@@ -21,11 +21,11 @@ protocol UserRepository {
     func getUserProfileVisibility() -> Observable<UserProfileVisibility>
     func patchUserProfileVisibility(isProfilePublic: Bool) -> Observable<Void>
     func getUserNovelStatus(userId: Int) -> Observable<UserNovelStatus>
-    func getUserNovelPreferences(userId: Int) -> Observable<UserNovelPreferences>
+    func getUserNovelPreferences(userId: Int) -> Observable<UserNovelPreferencesResponse>
     func getUserGenrePreferences(userId: Int) -> Observable<UserGenrePreferences>
     func postBlockUser(userId: Int) -> Observable<Void>
     func patchUserProfile(updatedFields: [String: Any]) -> Observable<Void>
-    func getNicknameisValid(nickname: String) -> Single<OnboardingResult>
+    func getNicknameisValid(nickname: String) -> Single<OnboardingResponse>
     func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Observable<MyFeedResult>
     func getUserNovelList(userId: Int,
                           readStatus: String,
@@ -98,7 +98,7 @@ struct DefaultUserRepository: UserRepository {
             .asObservable()
     }
     
-    func getUserNovelPreferences(userId: Int) -> Observable<UserNovelPreferences> {
+    func getUserNovelPreferences(userId: Int) -> Observable<UserNovelPreferencesResponse> {
         return userService.getUserNovelPreferences(userId: userId)
             .asObservable()
     }
@@ -127,7 +127,7 @@ struct DefaultUserRepository: UserRepository {
             .asObservable()
     }
     
-    func getNicknameisValid(nickname: String) -> Single<OnboardingResult> {
+    func getNicknameisValid(nickname: String) -> Single<OnboardingResponse> {
         return userService.getNicknameisValid(nickname: nickname)
     }
     

@@ -12,7 +12,7 @@ enum ReadStatus: String, CaseIterable {
     case watched = "WATCHED"
     case quit = "QUIT"
     
-    var nameText: String {
+    var statusName: String {
         switch self {
         case .watching: return "보는 중"
         case .watched: return "봤어요"
@@ -41,6 +41,14 @@ enum ReadStatus: String, CaseIterable {
         case .watching: return "시작 날짜"
         case .watched: return "읽은 날짜"
         case .quit: return "종료 날짜"
+        }
+    }
+    
+    var graphSectionTitle: String {
+        switch self {
+        case .watching: return StringLiterals.NovelDetail.Info.ReadStatus.watching
+        case .watched: return StringLiterals.NovelDetail.Info.ReadStatus.watched
+        case .quit: return StringLiterals.NovelDetail.Info.ReadStatus.quit
         }
     }
 }

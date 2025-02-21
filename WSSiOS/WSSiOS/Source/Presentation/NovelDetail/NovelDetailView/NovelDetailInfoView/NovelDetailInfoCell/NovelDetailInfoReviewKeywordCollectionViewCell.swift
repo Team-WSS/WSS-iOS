@@ -42,7 +42,7 @@ final class NovelDetailInfoReviewKeywordCollectionViewCell: UICollectionViewCell
         }
     }
     
-    func bindData(data: Keyword) {
+    func bindData(data: KeywordEntity) {
         keywordLabel.setText("\(data.keywordName) \(data.keywordCount)")
     }
 }

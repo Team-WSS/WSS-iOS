@@ -46,9 +46,9 @@ struct ChangeUserInfo: Codable {
     let birth: Int
 }
 
-struct UserNovelPreferences: Codable {
+struct UserNovelPreferencesResponse: Decodable {
     let attractivePoints: [String]?
-    let keywords: [Keyword]?
+    let keywords: [KeywordResponse]?
 }
 
 struct UserGenrePreferences: Codable {

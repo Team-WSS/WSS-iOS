@@ -121,8 +121,11 @@ final class NovelDetailHeaderReviewResultView: UIView {
         }
         bindVisibility(data.isUserNovelRatingExist, data.isReadDateExist)
         
-        readInfoButtons[0].bindData(infoText: data.userNovelRatingText)
-        readInfoButtons[1].bindData(infoText: data.readDateText)
+        let readDateText = [data.startDate, "~", data.endDate]
+            .compactMap { $0 }
+            .joined(separator: " ")
+        readInfoButtons[0].bindData(infoText: "\(data.userNovelRating)")
+        readInfoButtons[1].bindData(infoText: readDateText)
     }
     
     //MARK: - Custom Method

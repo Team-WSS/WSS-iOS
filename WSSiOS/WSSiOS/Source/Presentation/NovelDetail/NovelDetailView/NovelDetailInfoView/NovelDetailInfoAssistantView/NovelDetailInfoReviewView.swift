@@ -104,7 +104,7 @@ final class NovelDetailInfoReviewView: UIView {
     
     //MARK: - Data
     
-    func bindData(_ data: NovelDetailInfoResult) {
+    func bindData(_ data: NovelDetailInfoEntity) {
         attractivePointView.bindData(data)
         graphStackView.bindData(data)
     }
