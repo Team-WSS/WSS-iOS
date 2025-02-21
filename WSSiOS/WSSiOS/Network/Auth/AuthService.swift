@@ -16,6 +16,7 @@ protocol AuthService {
     func reissueToken() -> Single<ReissueResult>
     func postWithdrawId(reason: String, refreshToken: String) -> Single<Void>
     func postLogout(logoutRequest: LogoutRequest) -> Single<Void>
+    func checkUserisValid() -> Single<Void>
 }
 
 
@@ -122,6 +123,25 @@ final class DefaultAuthService: NSObject, Networking, AuthService {
             NetworkLogger.log(request: request)
 
             return tokenCheckURLSession.rx.data(request: request)
+                .map { _ in }
+                .asSingle()
+        } catch {
+            return Single.error(error)
+        }
+    }
+    
+    /// UserMe API로 탈퇴한 유저인지 확인함
+    func checkUserisValid() -> Single<Void> {
+        do {
+            let request = try makeHTTPRequest(method: .get,
+                                              path: URLs.User.userme,
+                                              headers: APIConstants.accessTokenHeader,
+                                              body: nil)
+            
+            
+            NetworkLogger.log(request: request)
+            
+            return basicURLSession.rx.data(request: request)
                 .map { _ in }
                 .asSingle()
         } catch {
