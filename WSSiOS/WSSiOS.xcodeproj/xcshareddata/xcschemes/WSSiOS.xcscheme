@@ -79,8 +79,8 @@
       buildConfiguration = "Debug">
    </AnalyzeAction>
    <ArchiveAction
-      buildConfiguration = "Debug"
-      customArchiveName = "WSSiOS_DEV"
+      buildConfiguration = "Release"
+      customArchiveName = "WSSiOS"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>
