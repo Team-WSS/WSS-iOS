@@ -15,9 +15,10 @@ final class OnboardingViewController: UIViewController {
     
     //MARK: - Properties
     
-    private let viewModel: OnboardingViewModel
-    let disposeBag = DisposeBag()
-    let selectedBirth = BehaviorSubject<Int?>(value: nil)
+    private let onboardingViewModel: OnboardingViewModel
+    private let disposeBag = DisposeBag()
+    private let viewDidLoadEvent = PublishRelay<Void>()
+    private let selectedBirth = BehaviorSubject<Int?>(value: nil)
     
     //MARK: - Components
     
@@ -26,7 +27,7 @@ final class OnboardingViewController: UIViewController {
     //MARK: - Life Cycle
     
     init(viewModel: OnboardingViewModel) {
-        self.viewModel = viewModel
+        self.onboardingViewModel = viewModel
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -42,8 +43,9 @@ final class OnboardingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        rootView.nickNameView.nicknameTextField.delegate = self
+        delegate()
         bindViewModel()
+        viewDidLoadEvent.accept(())
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -59,19 +61,19 @@ final class OnboardingViewController: UIViewController {
     //MARK: - UI
     
     private func setNavigationBar() {
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
-        navigationController?.navigationBar.backgroundColor = .wssWhite
+        self.setWSSNavigationBar(title: nil, left: nil, right: nil)
         navigationItem.setHidesBackButton(true, animated: true)
-        self.navigationItem.leftBarButtonItem = nil
     }
     
     //MARK: - Bind
     
+    private func delegate() {
+        rootView.nickNameView.nicknameTextField.delegate = self
+    }
+    
     private func bindViewModel() {
         let input = createViewModelInput()
-        let output = viewModel.transform(from: input,
+        let output = onboardingViewModel.transform(from: input,
                                          disposeBag: disposeBag)
         bindViewModelOutput(output)
     }
@@ -123,7 +125,6 @@ final class OnboardingViewController: UIViewController {
         output.showBirthPickerModal
             .withLatestFrom(output.selectedBirth)
             .drive(with: self, onNext: { owner, value in
-                owner.updateNavigationBarVisibility(isShow: false)
                 owner.presentModalViewController(BirthPickerViewController(birth: value ?? 2000))
             })
             .disposed(by: disposeBag)
@@ -200,6 +201,12 @@ final class OnboardingViewController: UIViewController {
                 sceneDelegate.setRootToLoginViewController()
             })
             .disposed(by: disposeBag)
+        
+        output.showServiceTermAgreementView
+            .drive(with: self, onNext: { owner, _ in
+                owner.presentModalViewController(ModuleFactory.shared.makeServiceTermAgreementViewController())
+            })
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Actions
@@ -239,6 +246,7 @@ final class OnboardingViewController: UIViewController {
             selectBirthButtonDidTap: self.rootView.birthGenderView.selectBirthButton.rx.tap,
             selectedBirth: getNotificationBirth,
             genreButtonDidTap: genreButtonDidTap,
+            viewDidLoadEvent: self.viewDidLoadEvent.asObservable(),
             nextButtonDidTap: nextButtonDidTap,
             backButtonDidTap: rootView.backButton.rx.tap,
             scrollViewContentOffset: self.rootView.scrollView.rx.contentOffset,
@@ -270,18 +278,6 @@ final class OnboardingViewController: UIViewController {
         self.navigationItem.leftBarButtonItem = stage == 0 ? nil : UIBarButtonItem(customView: rootView.backButton)
         self.navigationItem.rightBarButtonItem = stage != 2 ? nil : UIBarButtonItem(customView: rootView.skipButton)
     }
-    
-    private func updateNavigationBarVisibility(isShow: Bool) {
-        if isShow {
-            navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-            navigationController?.navigationBar.shadowImage = UIImage()
-            navigationController?.navigationBar.backgroundColor = .wssWhite
-        } else {
-            navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
-            navigationController?.navigationBar.shadowImage = nil
-            navigationController?.navigationBar.backgroundColor = .clear
-        }
-    }
 }
 
 extension OnboardingViewController: UITextFieldDelegate {
@@ -291,4 +287,3 @@ extension OnboardingViewController: UITextFieldDelegate {
         return newLength <= 10
     }
 }
-

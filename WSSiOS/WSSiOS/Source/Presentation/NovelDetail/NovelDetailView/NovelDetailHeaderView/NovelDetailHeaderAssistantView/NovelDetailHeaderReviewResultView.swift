@@ -24,7 +24,7 @@ final class NovelDetailHeaderReviewResultView: UIView {
     let readStatusButtons = ReadStatus.allCases.map {
         NovelDetailHeaderReadStatusButton(readStatus: $0)
     }
-    private let divierViews = [UIView(), UIView()]
+    private let dividerViews = [UIView(), UIView()]
     
     //MARK: - Life Cycle
     
@@ -72,7 +72,7 @@ final class NovelDetailHeaderReviewResultView: UIView {
             $0.distribution = .fillEqually
         }
         
-        divierViews.forEach {
+        dividerViews.forEach {
             $0.backgroundColor = .wssGray70
         }
     }
@@ -87,7 +87,7 @@ final class NovelDetailHeaderReviewResultView: UIView {
         readStatusButtons.forEach { button in
             readStatusButtonStackView.addArrangedSubview(button)
         }
-        divierViews.forEach { view in
+        dividerViews.forEach { view in
             readStatusButtonStackView.addSubview(view)
         }
     }
@@ -103,7 +103,7 @@ final class NovelDetailHeaderReviewResultView: UIView {
             $0.horizontalEdges.equalToSuperview()
         }
         
-        divierViews.enumerated().forEach { index, divierView in
+        dividerViews.enumerated().forEach { index, divierView in
             divierView.snp.makeConstraints {
                 $0.height.equalToSuperview()
                 $0.centerY.equalToSuperview()
@@ -121,8 +121,11 @@ final class NovelDetailHeaderReviewResultView: UIView {
         }
         bindVisibility(data.isUserNovelRatingExist, data.isReadDateExist)
         
-        readInfoButtons[0].bindData(infoText: data.userNovelRatingText)
-        readInfoButtons[1].bindData(infoText: data.readDateText)
+        let readDateText = [data.startDate, "~", data.endDate]
+            .compactMap { $0 }
+            .joined(separator: " ")
+        readInfoButtons[0].bindData(infoText: "\(data.userNovelRating)")
+        readInfoButtons[1].bindData(infoText: readDateText)
     }
     
     //MARK: - Custom Method

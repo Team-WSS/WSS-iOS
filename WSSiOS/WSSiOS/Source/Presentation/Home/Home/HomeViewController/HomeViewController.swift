@@ -21,6 +21,7 @@ final class HomeViewController: UIViewController {
     private let isLoggedIn = APIConstants.isLogined
     private let viewWillAppearEvent = PublishRelay<Void>()
     private let viewDidLoadEvent = PublishRelay<Void>()
+    private let showServiceTermAgreementView = PublishRelay<Void>()
     
     //MARK: - UI Components
     
@@ -45,10 +46,10 @@ final class HomeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        navigationController?.setNavigationBarHidden(true, animated: false)
+        navigationController?.setNavigationBarHidden(true, animated: true)
         showTabBar()
-        viewWillAppearEvent.accept(())
         
+        viewWillAppearEvent.accept(())
         AmplitudeManager.shared.track(AmplitudeEvent.Home.home)
     }
     
@@ -59,6 +60,7 @@ final class HomeViewController: UIViewController {
         registerCell()
         setDelegate()
         bindViewModel()
+        setRemoteNotification()
         
         viewDidLoadEvent.accept(())
     }
@@ -192,6 +194,12 @@ final class HomeViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.pushToAnnouncementViewController
+            .bind(with: self, onNext: { owner, _ in
+                owner.pushToNotificationViewController()
+            })
+            .disposed(by: disposeBag)
+        
         output.pushToMyPageEditViewController
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
@@ -202,15 +210,6 @@ final class HomeViewController: UIViewController {
         output.pushToNovelDetailViewController
             .bind(with: self, onNext: { owner, novelId in
                 owner.pushToDetailViewController(novelId: novelId)
-            })
-            .disposed(by: disposeBag)
-        
-        output.pushToAnnouncementViewController
-            .bind(with: self, onNext: { owner, _ in
-                let viewController = HomeNoticeViewController(viewModel: HomeNoticeViewModel(noticeRepository: DefaultNoticeRepository(noticeService: DefaultNoticeService() )))
-                viewController.navigationController?.isNavigationBarHidden = false
-                viewController.hidesBottomBarWhenPushed = true
-                owner.navigationController?.pushViewController(viewController, animated: true)
             })
             .disposed(by: disposeBag)
         
@@ -244,11 +243,40 @@ final class HomeViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        //취향장르 정보 수정 Notification
+        // 취향장르 정보 수정 Notification
         NotificationCenter.default.rx.notification(NSNotification.Name("EditProfile"))
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 owner.showToast(.editUserProfile)
+            })
+            .disposed(by: disposeBag)
+        
+        output.isNotificationUnread
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, isUnread in
+                owner.rootView.headerView.checkNotificationUnread(isUnread)
+            })
+            .disposed(by: disposeBag)
+        
+        output.showServiceTermAgreementAlert
+            .observe(on: MainScheduler.instance)
+            .flatMapLatest { _ -> Observable<AlertButtonType> in
+                return self.presentToAlertViewController(iconImage: .icModalWarning,
+                                                         titleText: StringLiterals.ServiceTermAgreement.alertTitle,
+                                                         contentText: StringLiterals.ServiceTermAgreement.alertDesctiption,
+                                                         leftTitle: nil,
+                                                         rightTitle: StringLiterals.ServiceTermAgreement.alertButton,
+                                                         rightBackgroundColor: UIColor.wssPrimary100.cgColor)
+            }
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.showServiceTermAgreementView.accept(())
+            })
+            .disposed(by: disposeBag)
+        
+        self.showServiceTermAgreementView
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                self.presentModalViewController(ModuleFactory.shared.makeServiceTermAgreementViewController())
             })
             .disposed(by: disposeBag)
     }
@@ -257,6 +285,14 @@ final class HomeViewController: UIViewController {
     
     func scrollToTop() {
         self.rootView.scrollView.setContentOffset(CGPoint(x: 0, y: -self.rootView.scrollView.contentInset.top), animated: true)
+    }
+    
+    func setRemoteNotification() {
+        Task {
+            if APIConstants.isLogined {
+                await NotificationHelper.shared.setRemoteNotification()
+            }
+        }
     }
 }
 

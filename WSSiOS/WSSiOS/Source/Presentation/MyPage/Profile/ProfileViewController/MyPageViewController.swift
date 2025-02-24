@@ -23,10 +23,12 @@ final class MyPageViewController: UIViewController {
     private let viewModel: MyPageViewModel
     var entryType: EntryType = .otherVC
     
+    private var navigationTitle: String = ""
+    
     private let isEntryTabbarRelay = BehaviorRelay<Bool>(value: false)
     private var dropDownCellTap = PublishSubject<String>()
     private let headerViewHeightRelay = BehaviorRelay<Double>(value: 0)
-    private let viewWillAppearEvent = PublishRelay<Bool>()
+    private let viewWillAppearEvent = PublishSubject<Void>()
     private let feedConnectedNovelViewDidTap = PublishRelay<Int>()
     
     //MARK: - UI Components
@@ -76,7 +78,9 @@ final class MyPageViewController: UIViewController {
         super.viewWillAppear(animated)
         
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
-        self.viewWillAppearEvent.accept(true)
+        self.viewWillAppearEvent.onNext(())
+        decideNavigation(myPage: entryType == .tabBar, navigationTitle: navigationTitle)
+        swipeBackGesture()
     }
     
     override func viewDidLayoutSubviews() {
@@ -92,7 +96,7 @@ final class MyPageViewController: UIViewController {
         
         rootView.myPageLibraryView.genrePrefrerencesView.otherGenreView.genreTableView.register(MyPageGenrePreferencesOtherTableViewCell.self, forCellReuseIdentifier: MyPageGenrePreferencesOtherTableViewCell.cellIdentifier)
         
-        rootView.myPageFeedView.myPageFeedTableView.feedTableView.register(NovelDetailFeedTableViewCell.self, forCellReuseIdentifier: NovelDetailFeedTableViewCell.cellIdentifier)
+        rootView.myPageFeedView.myPageFeedTableView.feedTableView.register(FeedListTableViewCell.self, forCellReuseIdentifier: FeedListTableViewCell.cellIdentifier)
     }
     
     private func delegate() {
@@ -114,6 +118,12 @@ final class MyPageViewController: UIViewController {
     //MARK: - Bind
     
     private func bindViewModel() {
+        let inventoryStatusButtonDidTap = Observable<Int>.merge(
+            rootView.myPageLibraryView.inventoryView.readStatusButtons.enumerated().map { index, button in
+                button.rx.tap
+                    .map { index }
+            })
+        
         let genrePreferenceButtonDidTap = Observable.merge(
             rootView.myPageLibraryView.genrePrefrerencesView.myPageGenreOpenButton.rx.tap.map { true },
             rootView.myPageLibraryView.genrePrefrerencesView.myPageGenreCloseButton.rx.tap.map { false }
@@ -143,7 +153,10 @@ final class MyPageViewController: UIViewController {
             genrePreferenceButtonDidTap: genrePreferenceButtonDidTap,
             libraryButtonDidTap: libraryButtonDidTap,
             feedButtonDidTap: feedButtonDidTap,
-            inventoryButtonDidTap: rootView.myPageLibraryView.inventoryView.arrowButton.rx.tap,
+            inventoryViewDidTap: rootView.myPageLibraryView.inventoryView.inventoryTitleView.rx.tapGesture()
+                .when(.recognized)
+                .asObservable(),
+            inventorySpecificPageViewDidTap: inventoryStatusButtonDidTap,
             feedDetailButtonDidTap: rootView.myPageFeedView.myPageFeedDetailButton.rx.tap,
             editProfileNotification: NotificationCenter.default.rx.notification(NSNotification.Name("EditProfile")).asObservable(),
             feedTableViewItemSelected: rootView.myPageFeedView.myPageFeedTableView.feedTableView.rx.itemSelected.asObservable(),
@@ -154,7 +167,7 @@ final class MyPageViewController: UIViewController {
         output.isMyPage
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, isMyPage in
-                owner.decideNavigation(myPage: isMyPage)
+                owner.decideNavigation(myPage: isMyPage, navigationTitle: "")
                 owner.rootView.mainStickyHeaderView.buttonLabelText(isMyPage: isMyPage)
                 owner.rootView.scrolledStickyHeaderView.buttonLabelText(isMyPage: isMyPage)
             })
@@ -171,8 +184,7 @@ final class MyPageViewController: UIViewController {
             .asDriver()
             .drive(with: self, onNext: { owner, data in
                 let (update, navigationTitle) = data
-                owner.navigationController?.navigationBar.barTintColor = update ? .white : .clear
-                owner.navigationController?.navigationBar.isTranslucent = !update
+                owner.navigationTitle = navigationTitle
                 owner.navigationItem.title = update ? navigationTitle : ""
             })
             .disposed(by: disposeBag)
@@ -264,11 +276,9 @@ final class MyPageViewController: UIViewController {
         output.showGenreOtherView
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, show in
-                UIView.animate(withDuration: 0.3) {
-                    owner.rootView.myPageLibraryView.genrePrefrerencesView.updateView(showOtherGenreView: show)
-                    owner.rootView.myPageLibraryView.updateGenreViewHeight(isExpanded: show)
-                    owner.rootView.layoutIfNeeded()
-                }
+                owner.rootView.myPageLibraryView.genrePrefrerencesView.updateView(showOtherGenreView: show)
+                owner.rootView.myPageLibraryView.updateGenreViewHeight(isExpanded: show)
+                owner.rootView.layoutIfNeeded()
             })
             .disposed(by: disposeBag)
         
@@ -300,16 +310,16 @@ final class MyPageViewController: UIViewController {
         output.bindFeedData
             .observe(on: MainScheduler.instance)
             .bind(to: rootView.myPageFeedView.myPageFeedTableView.feedTableView.rx.items(
-                cellIdentifier: NovelDetailFeedTableViewCell.cellIdentifier,
-                cellType: NovelDetailFeedTableViewCell.self)) { _, element, cell in
+                cellIdentifier: FeedListTableViewCell.cellIdentifier,
+                cellType: FeedListTableViewCell.self)) { _, element, cell in
                     cell.bindProfileData(feed: element)
                 }
                 .disposed(by: disposeBag)
         
         output.isEmptyFeed
             .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, _ in
-                owner.rootView.myPageFeedView.isEmptyView(isEmpty: true)
+            .bind(with: self, onNext: { owner, isEmpty in
+                owner.rootView.myPageFeedView.isEmptyView(isEmpty: isEmpty)
             })
             .disposed(by: disposeBag)
         
@@ -324,6 +334,14 @@ final class MyPageViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, userId in
                 owner.pushToLibraryViewController(userId: userId)
+            })
+            .disposed(by: disposeBag)
+        
+        output.pushToSpecificLibraryViewController
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, userData in
+                let (id, pageIndex) = userData
+                owner.pushToLibraryViewController(userId: id, pageIndex: pageIndex)
             })
             .disposed(by: disposeBag)
         
@@ -411,11 +429,12 @@ extension MyPageViewController {
     
     //MARK: - UI
     
-    private func decideNavigation(myPage: Bool) {
+    private func decideNavigation(myPage: Bool, navigationTitle: String) {
         if myPage {
-            setNavigationBar(title: "",
-                             left: nil,
-                             right: rootView.settingButton)
+            setWSSNavigationBar(title: navigationTitle,
+                                left: nil,
+                                right: rootView.settingButton,
+                                isVisibleBeforeScroll: false)
         } else {
             let dropdownButton = WSSDropdownButton().then {
                 $0.makeDropdown(dropdownRootView: self.rootView,
@@ -428,9 +447,10 @@ extension MyPageViewController {
                 .disposed(by: disposeBag)
             }
             
-            setNavigationBar(title: "",
-                             left: rootView.backButton,
-                             right: dropdownButton)
+            setWSSNavigationBar(title: navigationTitle,
+                                left: rootView.backButton,
+                                right: dropdownButton,
+                                isVisibleBeforeScroll: false)
         }
         
         rootView.headerView.userImageChangeButton.isHidden = !myPage

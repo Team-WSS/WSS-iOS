@@ -8,6 +8,10 @@
 import Foundation
 
 enum StringLiterals {
+    enum KeyChain {
+        static let deviceIdentifier = "DEVICE_IDENTIFIER"
+    }
+    
     enum UserDefault {
         static let accessToken = "ACCESS_TOKEN"
         static let refreshToken = "REFRESH_TOKEN"
@@ -19,9 +23,33 @@ enum StringLiterals {
         static let userBirth = "USER_BIRTH"
     }
     
+    enum FCMCenter {
+        enum Key {
+            static let view = "view"
+            static let feedId = "feedId"
+            static let notificationId = "notificationId"
+        }
+        
+        enum Value {
+            static let feedDetail = "feedDetail"
+        }
+    }
+    
     enum BirthPicker {
         static let title = "출생연도"
         static let completeButton = "완료"
+    }
+    
+    enum ServiceTermAgreement {
+        static let title = "웹소소 세계로 들어가는 중..."
+        static let description = "아래 약관 내용에 동의 후 서비스 이용이 가능해요"
+        static let agreeAllButton = "전체 동의"
+        static let bottomButtonNext = "다음으로"
+        static let bottomButtonComplete = "완료"
+        
+        static let alertTitle = "약관 동의가 필요해요!"
+        static let alertDesctiption = "더 안전하고 원활한 웹소소를 위해\n업데이트된 약관에 동의해주세요."
+        static let alertButton = "동의하러 가기"
     }
     
     enum Loading {
@@ -55,7 +83,7 @@ enum StringLiterals {
             static let myPage = "마이페이지"
             static let changeNickname = "닉네임 변경"
             static let feed = "소소한 수다"
-            static let notice = "알림"
+            static let notification = "알림"
             static let editProfile = "프로필 편집"
             static let deleteID = "회원탈퇴"
             static let myPageSetting = "설정"
@@ -64,6 +92,7 @@ enum StringLiterals {
             static let myPageChangeUserInfo = "성별/나이 변경"
             static let isVisibleProfile = "프로필 공개 설정"
             static let changeAvatar = "프로필 선택"
+            static let pushNotification = "알림 설정"
         }
     }
     
@@ -75,7 +104,7 @@ enum StringLiterals {
     
     enum Home {
         enum Title {
-            static let todayPopular = "오늘의 인기작"
+            static let todayPopular = "오늘의 발견"
             static let realtimePopular = "지금 뜨는 수다글"
             static let interest = "님의 관심글"
             static let notLoggedInInterest = "관심글"
@@ -157,19 +186,19 @@ enum StringLiterals {
             static let novelPreferenceTitle = "작품 취향"
             static let novelPreferenceLabel = "(이)가 매력적인 작품을 선호해요"
             static let privateLabel = "님의 프로필은\n비공개 상태예요"
-            static let unknownUserNickname = "(알 수 없음)"
             static let unknownAlertButtonTitle = "확인"
             static let myProfileLibrary = "내 서재"
             static let otherProfileLibrary = "서재"
             static let myProfileFeed = "내 활동"
             static let otherProfileFeed = "활동"
-            static let activyButton = "활동기록 더보기"
+            static let activityButton = "활동기록 더보기"
             static let emptyFeed = "작성한 글이 없어요"
         }
         
         enum Setting: String, CaseIterable {
             case accountInfo = "계정정보"
-            case profileStatus = "프로필 공개 여부 설정"
+            case profileStatus = "프로필 공개 설정"
+            case pushNotification = "알림 설정"
             case webSoso = "웹소소 공식 계정"
             case qNA = "문의하기 & 의견 보내기"
             case review = "개인정보 처리 방침"
@@ -274,6 +303,16 @@ enum StringLiterals {
             static let completeTitle = "완료"
             static let isPrivateProfile = "비공개"
         }
+        
+        enum PushNotification {
+            static let activePushTitle = "활동 알림"
+            static let activePushDescription = "댓글, 좋아요 등 알림"
+            
+            static let moveToSettingAlertTitle = "앱 알림을 켤까요?"
+            static let moveToSettingAlertDescription = "웹소소 알림을 받으려면,\n기기 설정에서 알림 허용이 필요해요."
+            static let moveCancel = "다음에 하기"
+            static let moveAccept = "설정하러 가기"
+        }
     }
     
     enum Library {
@@ -377,8 +416,8 @@ enum StringLiterals {
         }
         
         enum Header {
-            static let complete = "  ·  완결작  ·  "
-            static let inSeries = "  ·  연재중  ·  "
+            static let complete = "완결작"
+            static let inSeries = "연재중"
             static let interest = "관심"
             static let feedWrite = "나도 한마디"
             static let errorReport = "오류 제보"
@@ -578,8 +617,7 @@ enum StringLiterals {
         
         static let deleteMineTitle = "내 댓글을 삭제할까요?"
         static let deleteMineContent = "삭제한 댓글은 되돌릴 수 없어요"
-        
-        static let deleteAccountUserNickname = "(알 수 없음)"
+
         static let hiddenComment = "숨김 처리된 댓글"
         static let spoilerComment = "스포일러가 포함된 댓글 보기"
         static let blckedUser = "차단한 유저"

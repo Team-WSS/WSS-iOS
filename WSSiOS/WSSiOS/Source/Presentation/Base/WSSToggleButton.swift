@@ -17,23 +17,25 @@ final class WSSToggleButton: UIButton {
     //MARK: - Properties
     
     // 상태별 스위치 배경 색상
-    let onColor = UIColor.wssPrimary100
-    let offColor = UIColor.wssGray70
+    private let onColor = UIColor.wssPrimary100
+    private let offColor = UIColor.wssGray70
     
     // 스위치가 이동하는 애니메이션 시간
-    var animationDuration: TimeInterval = 0.20
+    private var animationDuration: TimeInterval = 0.20
     
     // 각 View의 Size
-    typealias SizeSet = (height: CGFloat, width: CGFloat)
-    
-    private var toggleSize: SizeSet = (height: 32, width: 32)
-    private var barViewSize: SizeSet = (height: 16.55, width: 30.9)
-    private var circleViewSize: SizeSet = (height: 11.03, width: 11.03)
+    private var toggleSize: CGSize = CGSize(width: 32, height: 32)
+    private var barViewSize: CGSize = CGSize(width: 30.9, height: 16.55)
+    private var circleViewSize: CGSize = CGSize(width: 11.03, height: 11.03)
+    private var onCircleInset: CGFloat = 2.76
+    private var offCircleInset: CGFloat {
+        self.barViewSize.width - self.circleViewSize.width - onCircleInset
+    }
     
     //MARK: - Components
     
-    var barView = UIView()
-    var circleView = UIView()
+    private var barView = UIView()
+    private var circleView = UIView()
     
     //MARK: - Life Cycle
     
@@ -86,12 +88,41 @@ final class WSSToggleButton: UIButton {
         circleView.snp.makeConstraints {
             $0.width.equalTo(circleViewSize.width)
             $0.height.equalTo(circleViewSize.height)
-            $0.trailing.equalTo(barView.snp.trailing).inset(2.76)
+            $0.trailing.equalTo(barView.snp.trailing).inset(onCircleInset)
             $0.centerY.equalToSuperview()
         }
     }
     
     //MARK: - Custom Method
+    
+    func setToggleSize(toggleSize: CGSize, barViewSize: CGSize, circleViewSize: CGSize, onCircleInset: CGFloat) {
+        self.toggleSize = toggleSize
+        self.barViewSize = barViewSize
+        self.circleViewSize = circleViewSize
+        self.onCircleInset = onCircleInset
+        
+        setUI()
+        updateLayout()
+    }
+    
+    private func updateLayout() {
+        self.snp.updateConstraints() {
+            $0.size.equalTo(toggleSize.height)
+        }
+        
+        barView.snp.updateConstraints {
+            $0.width.equalTo(barViewSize.width)
+            $0.height.equalTo(barViewSize.height)
+            $0.center.equalToSuperview()
+        }
+        
+        circleView.snp.updateConstraints {
+            $0.width.equalTo(circleViewSize.width)
+            $0.height.equalTo(circleViewSize.height)
+            $0.trailing.equalTo(barView.snp.trailing).inset(onCircleInset)
+            $0.centerY.equalToSuperview()
+        }
+    }
     
     func updateToggle(_ state: Bool) {
         UIView.animate(withDuration: self.animationDuration) {
@@ -106,15 +137,15 @@ final class WSSToggleButton: UIButton {
         }
     }
     
-    func onStateLayout() {
+    private func onStateLayout() {
         circleView.snp.updateConstraints {
-            $0.trailing.equalTo(barView.snp.trailing).inset(2.76)
+            $0.trailing.equalTo(barView.snp.trailing).inset(onCircleInset)
         }
     }
     
-    func offStateLayout() {
+    private func offStateLayout() {
         circleView.snp.updateConstraints {
-            $0.trailing.equalTo(barView.snp.trailing).inset(17.1)
+            $0.trailing.equalTo(barView.snp.trailing).inset(offCircleInset)
         }
     }
 }

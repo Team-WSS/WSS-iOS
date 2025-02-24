@@ -69,10 +69,6 @@ final class FeedDetailView: UIView {
             $0.isHidden = true
         }
         
-        scrollView.do {
-            $0.showsVerticalScrollIndicator = false
-        }
-        
         replyBottomView.do {
             $0.backgroundColor = .wssWhite
         }

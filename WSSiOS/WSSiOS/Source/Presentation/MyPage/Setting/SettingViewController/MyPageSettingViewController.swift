@@ -85,21 +85,24 @@ final class MyPageSettingViewController: UIViewController {
                     print("프로필 공개 여부 설정")
                     owner.pushToMyPageProfileVisibilityViewController()
                 case 2:
+                    print("알림 설정")
+                    owner.checkNotificationAuthorizationStatus()
+                case 3:
                     print("웹소소 공식 계정")
                     if let url = URL(string: StringLiterals.MyPage.SettingURL.instaURL) {
                         UIApplication.shared.open(url, options: [:])
                     }
-                case 3:
+                case 4:
                     print("문의하기 & 의견 보내기")
                     if let url = URL(string: StringLiterals.MyPage.SettingURL.QNAInHompageURL) {
                         UIApplication.shared.open(url, options: [:])
                     }
-                case 4:
+                case 5:
                     print("개인정보 처리 방침")
                     if let url = URL(string: StringLiterals.MyPage.SettingURL.termsURL) {
                         UIApplication.shared.open(url, options: [:])
                     }
-                case 5:
+                case 6:
                     print("서비스 이용약관")
                     if let url = URL(string: StringLiterals.MyPage.SettingURL.infoURL) {
                         UIApplication.shared.open(url, options: [:])
@@ -123,13 +126,40 @@ final class MyPageSettingViewController: UIViewController {
             .bind(to: changeVisibilityNotification)
             .disposed(by: disposeBag)
     }
+    
+    //MARK: - Custom Method
+    func checkNotificationAuthorizationStatus() {
+        NotificationHelper.shared.checkNotificationAuthorizationStatus()
+            .observe(on: MainScheduler.instance)
+            .flatMap{ isAuthorized -> Observable<AlertButtonType> in
+                if isAuthorized {
+                    self.pushToMyPagePushNotificationViewController()
+                    return Observable<AlertButtonType>.empty()
+                } else {
+                    return self.presentToAlertViewController(
+                        iconImage: .icModalWarning,
+                        titleText: StringLiterals.MyPage.PushNotification.moveToSettingAlertTitle,
+                        contentText: StringLiterals.MyPage.PushNotification.moveToSettingAlertDescription,
+                        leftTitle: StringLiterals.MyPage.PushNotification.moveCancel,
+                        rightTitle: StringLiterals.MyPage.PushNotification.moveAccept,
+                        rightBackgroundColor: UIColor.wssPrimary100.cgColor
+                    )
+                }
+            }
+            .bind(with: self, onNext: { owner, buttonType in
+                if buttonType == .right {
+                    NotificationHelper.shared.moveToDeviceSettingApp()
+                }
+            })
+            .disposed(by: disposeBag)
+    }
 }
 
 //MARK: - UI
 
 extension MyPageSettingViewController {
     private func setNavigationBar() {
-        setNavigationBar(title: StringLiterals.Navigation.Title.myPageSetting,
+        setWSSNavigationBar(title: StringLiterals.Navigation.Title.myPageSetting,
                          left: self.rootView.backButton,
                          right: nil)
     }

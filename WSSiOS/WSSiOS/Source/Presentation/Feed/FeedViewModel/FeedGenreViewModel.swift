@@ -39,6 +39,7 @@ final class FeedGenreViewModel: ViewModelType {
     private let pushToFeedEditViewController = PublishRelay<Int>()
     private let showDeleteAlertView = PublishRelay<((Int) -> Observable<Void>, Int)>()
     private let feedTableViewEndRefreshing = PublishRelay<Void>()
+    private let showWithdrawalUserToastView = PublishRelay<Void>()
     
     //MARK: - Life Cycle
     
@@ -74,6 +75,7 @@ final class FeedGenreViewModel: ViewModelType {
         let pushToFeedEditViewController: Observable<Int>
         let showDeleteAlertView: Observable<((Int) -> Observable<Void>, Int)>
         let feedTableViewEndRefreshing: Observable<Void>
+        let showWithdrawalUserToastView: Observable<Void>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -111,7 +113,11 @@ final class FeedGenreViewModel: ViewModelType {
                 let myUserId = UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)
                 guard myUserId != userId else { return }
                 
-                owner.pushToUserViewController.accept(userId)
+                if userId == -1 {
+                    owner.showWithdrawalUserToastView.accept(())
+                } else {
+                    owner.pushToUserViewController.accept(userId)
+                }
                 owner.hideDropdownView.accept(())
             })
             .disposed(by: disposeBag)
@@ -251,7 +257,8 @@ final class FeedGenreViewModel: ViewModelType {
             showImproperAlertView: showImproperAlertView.asObservable(),
             pushToFeedEditViewController: pushToFeedEditViewController.asObservable(),
             showDeleteAlertView: showDeleteAlertView.asObservable(),
-            feedTableViewEndRefreshing: feedTableViewEndRefreshing.asObservable()
+            feedTableViewEndRefreshing: feedTableViewEndRefreshing.asObservable(),
+            showWithdrawalUserToastView: showWithdrawalUserToastView.asObservable()
         )
     }
     

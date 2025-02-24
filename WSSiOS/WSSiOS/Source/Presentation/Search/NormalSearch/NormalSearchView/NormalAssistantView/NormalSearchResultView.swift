@@ -39,10 +39,6 @@ final class NormalSearchResultView: UIView {
     //MARK: - UI
     
     private func setUI() {
-        scrollView.do {
-            $0.showsVerticalScrollIndicator = false
-        }
-        
         normalSearchCollectionView.do {
             $0.showsVerticalScrollIndicator = false
             $0.isUserInteractionEnabled = false

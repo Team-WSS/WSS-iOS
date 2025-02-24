@@ -38,7 +38,6 @@ final class MyPageFeedDetailView: UIView {
     private func setUI() {
         myPageFeedDetailTableView.do {
             $0.separatorStyle = .none
-            $0.showsVerticalScrollIndicator = false
         }
         
         backButton.do {

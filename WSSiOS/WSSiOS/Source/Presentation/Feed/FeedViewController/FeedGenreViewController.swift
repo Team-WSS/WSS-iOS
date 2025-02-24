@@ -54,15 +54,15 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         reloadFeed.accept(())
-        self.navigationController?.isNavigationBarHidden = true
+        navigationController?.setNavigationBarHidden(true, animated: true)
         showTabBar()
     }
     
     //MARK: - Bind
     
     private func register() {
-        rootView.feedTableView.register(NovelDetailFeedTableViewCell.self,
-                                        forCellReuseIdentifier: NovelDetailFeedTableViewCell.cellIdentifier)
+        rootView.feedTableView.register(FeedListTableViewCell.self,
+                                        forCellReuseIdentifier: FeedListTableViewCell.cellIdentifier)
     }
     
     private func bindViewModel() {
@@ -88,8 +88,8 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
         
         output.feedList
             .bind(to: rootView.feedTableView.rx.items(
-                cellIdentifier: NovelDetailFeedTableViewCell.cellIdentifier,
-                cellType: NovelDetailFeedTableViewCell.self)) { _, element, cell in
+                cellIdentifier: FeedListTableViewCell.cellIdentifier,
+                cellType: FeedListTableViewCell.self)) { _, element, cell in
                     cell.bindData(feed: element)
                     cell.delegate = self
                 }
@@ -248,6 +248,13 @@ class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
                 owner.rootView.feedTableView.refreshControl?.endRefreshing()
+            })
+            .disposed(by: disposeBag)
+        
+        output.showWithdrawalUserToastView
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.showToast(.unknownUser)
             })
             .disposed(by: disposeBag)
     }

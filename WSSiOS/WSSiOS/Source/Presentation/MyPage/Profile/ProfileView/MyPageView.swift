@@ -120,14 +120,4 @@ final class MyPageView: UIView {
         myPageLibraryView.isHidden = !showLibraryView
         myPageFeedView.isHidden = showLibraryView
     }
-    
-    func isUnknownUserProfile() {
-        headerView.bindData(data: MyProfileResult(nickname: StringLiterals.MyPage.Profile.unknownUserNickname,
-                                                  intro: "",
-                                                  avatarImage: "",
-                                                  genrePreferences: []))
-        mainStickyHeaderView.isHidden = true
-        myPageLibraryView.isHidden = true
-        myPageFeedView.isHidden = true
-    }
 }

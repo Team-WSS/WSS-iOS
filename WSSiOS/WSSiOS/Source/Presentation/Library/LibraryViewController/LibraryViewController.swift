@@ -15,12 +15,13 @@ final class LibraryViewController: UIViewController {
     
     //MARK: - Properties
     
+    var pageIndex: Int = 0
+    
     private let libraryViewModel: LibraryViewModel
     private let disposeBag = DisposeBag()
     
     private let sortTypeList = StringLiterals.Alignment.self
     private let readStatusList = StringLiterals.LibraryReadStatus.allCases.map { $0.rawValue }
-    private var currentPageIndex = 0
     private let sendNovelTotalCount = BehaviorRelay<Int>(value: 0)
     
     //UI 관련
@@ -62,7 +63,7 @@ final class LibraryViewController: UIViewController {
         super.viewWillAppear(animated)
         
         hideTabBar()
-        setNavigationBar(title: StringLiterals.Navigation.Title.library,
+        setWSSNavigationBar(title: StringLiterals.Navigation.Title.library,
                          left: backButton,
                          right: nil)
     }
@@ -108,7 +109,8 @@ final class LibraryViewController: UIViewController {
                     viewController.view.tag = index
                 }
                 
-                owner.libraryPageViewController.setViewControllers([owner.libraryPages[0]],
+                guard owner.pageIndex < StringLiterals.ReviewerStatus.allCases.count else { return }
+                owner.libraryPageViewController.setViewControllers([owner.libraryPages[owner.pageIndex]],
                                                                    direction: .forward,
                                                                    animated: false,
                                                                    completion: nil)
@@ -142,7 +144,7 @@ final class LibraryViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        libraryPageBar.libraryTabCollectionView.selectItem(at: IndexPath(item: 0, section: 0),
+        libraryPageBar.libraryTabCollectionView.selectItem(at: IndexPath(item: self.pageIndex, section: 0),
                                                            animated: true,
                                                            scrollPosition: [])
     }
@@ -154,7 +156,7 @@ extension LibraryViewController : UIPageViewControllerDelegate {
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         if completed, let currentViewController = pageViewController.viewControllers?.first, let index = libraryPages.firstIndex(of: currentViewController as! LibraryChildViewController) {
             libraryPageBar.libraryTabCollectionView.selectItem(at: IndexPath(item: index, section: 0), animated: true, scrollPosition: .centeredHorizontally)
-            currentPageIndex = index
+            pageIndex = index
         }
     }
 }

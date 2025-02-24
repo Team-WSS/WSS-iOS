@@ -137,13 +137,14 @@ final class LoginViewModel: NSObject, ViewModelType {
             })
     }
     
-    private func loginSuccess(result: LoginResult) {
+    private func loginSuccess(result: LoginResponse) {
         UserDefaults.standard.setValue(result.Authorization,
                                        forKey: StringLiterals.UserDefault.accessToken)
         UserDefaults.standard.setValue(result.refreshToken,
                                        forKey:  StringLiterals.UserDefault.refreshToken)
         UserDefaults.standard.setValue(result.isRegister,
                                        forKey: StringLiterals.UserDefault.isRegister)
+        NotificationHelper.shared.fetchFCMToken()
         if APIConstants.isRegister {
             self.navigateToHome.accept(())
         } else {
@@ -153,7 +154,7 @@ final class LoginViewModel: NSObject, ViewModelType {
     
     //MARK: - API/Apple
     
-    private func loginWithApple(authorizationCode: String, idToken: String) -> Observable<LoginResult> {
+    private func loginWithApple(authorizationCode: String, idToken: String) -> Observable<LoginResponse> {
         authRepository.loginWithApple(authorizationCode: authorizationCode, idToken: idToken)
             .observe(on: MainScheduler.instance)
     }

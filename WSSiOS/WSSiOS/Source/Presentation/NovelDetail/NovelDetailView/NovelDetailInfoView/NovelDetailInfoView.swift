@@ -68,7 +68,7 @@ final class NovelDetailInfoView: UIView {
     
     //MARK: - Data
     
-    func bindData(_ data: NovelDetailInfoResult) {
+    func bindData(_ data: NovelDetailInfoEntity) {
         descriptionView.bindData(data)
         reviewView.bindData(data)
     }

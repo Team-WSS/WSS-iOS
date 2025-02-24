@@ -138,9 +138,6 @@ final class MyPageEditProfileView: UIView {
                 $0.backgroundColor = .wssGray50
                 $0.layer.cornerRadius = 14
                 $0.textContainerInset = UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)
-                $0.spellCheckingType = .no
-                $0.autocorrectionType = .no
-                $0.autocapitalizationType = .none
                 $0.tintColor = .wssBlack
             }
             
@@ -383,10 +380,7 @@ extension MyPageEditProfileView {
     }
     
     //닉네임
-    func updateNicknameText(text: String) {
-        nicknameTextField.makeAttribute(with: text)
-            .kerning(kerningPixel: -0.6)
-            .applyAttribute()
+    func updateNicknameCount(text: String) {
         nicknameCountView.countLabel.applyWSSFont(.body4, with: String(text.count))
     }
     
@@ -468,15 +462,13 @@ extension MyPageEditProfileView {
         }
     }
     
-    func updateIntro(text: String) {
-        introTextView.applyWSSFont(.body2, with: text)
+    func updateIntroCount(text: String) {
         introCountView.countLabel.applyWSSFont(.body4, with: String(text.count))
     }
     
     //MARK: - Data
     
     func bindData(data: MyProfileResult) {
-        
         nicknameTextField.makeAttribute(with: data.nickname)
             .kerning(kerningPixel: -0.6)
             .applyAttribute()

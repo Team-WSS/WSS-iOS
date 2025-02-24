@@ -16,6 +16,7 @@ final class HomeViewModel: ViewModelType {
     
     private let recommendRepository: RecommendRepository
     private let userRepository: UserRepository
+    private let notificationRepository: NotificationRepository
     private let disposeBag = DisposeBag()
     
     private let isLogined = APIConstants.isLogined
@@ -44,6 +45,8 @@ final class HomeViewModel: ViewModelType {
     
     private let showLoadingView = PublishRelay<Bool>()
     private let showUpdateVersionAlertView = PublishRelay<Void>()
+    private let isNotificationUnread = PublishRelay<Bool>()
+    private let showServiceTermAgreementAlert = PublishRelay<Void>()
     
     // MARK: - Inputs
     
@@ -81,13 +84,18 @@ final class HomeViewModel: ViewModelType {
         let showInduceLoginModalView: Observable<Void>
         let showLoadingView: Observable<Bool>
         let showUpdateVersionAlertView: Observable<Void>
+        let isNotificationUnread: Observable<Bool>
+        let showServiceTermAgreementAlert: Observable<Void>
     }
     
     //MARK: - init
     
-    init(recommendRepository: RecommendRepository, userRepository: UserRepository) {
+    init(recommendRepository: RecommendRepository,
+         userRepository: UserRepository,
+         notificationRepository: NotificationRepository) {
         self.recommendRepository = recommendRepository
         self.userRepository = userRepository
+        self.notificationRepository = notificationRepository
     }
 }
 
@@ -102,17 +110,20 @@ extension HomeViewModel {
                 let realtimeFeedsObservable = self.getRealtimePopularFeeds()
                 let interestFeedsObservable = self.isLogined ? self.getInterestFeeds() : Observable.just(InterestFeeds(recommendFeeds: [], message: ""))
                 let tasteRecommendNovelsObservable = self.isLogined ? self.getTasteRecommendNovels() : Observable.just(TasteRecommendNovels(tasteNovels: []))
+                let isNotificationUnreadObservable = self.isLogined ? self.getNotificationUnreadStatus() : Observable.just(NotificationUnreadStatusResponse(hasUnreadNotifications: false))
                 
                 return Observable.zip(todayPopularNovelsObservable,
                                       realtimeFeedsObservable,
                                       interestFeedsObservable,
-                                      tasteRecommendNovelsObservable)
+                                      tasteRecommendNovelsObservable,
+                                      isNotificationUnreadObservable)
             }
             .subscribe(with: self, onNext: { owner, data in
                 let todayPopularNovels = data.0
                 let realtimeFeeds = data.1
                 let interestFeeds = data.2
                 let tasteRecommendNovels = data.3
+                let isNotificationUnread = data.4
                 
                 owner.todayPopularList.accept(todayPopularNovels.popularNovels)
                 owner.realtimePopularList.onNext(realtimeFeeds.popularFeeds)
@@ -136,6 +147,8 @@ extension HomeViewModel {
                     
                     owner.updateTasteRecommendView.accept((false, true))
                 }
+                
+                owner.isNotificationUnread.accept(isNotificationUnread.hasUnreadNotifications)
                 
                 owner.showLoadingView.accept(false)
             }, onError: { owner, error in
@@ -165,6 +178,8 @@ extension HomeViewModel {
                 UserDefaults.standard.setValue(data.gender, forKey: StringLiterals.UserDefault.userGender)
                 
                 owner.updateInterestView.accept((self.isLogined, self.interestFeedMessage.value))
+                
+                owner.getTermSetting(disposeBag: disposeBag)
             })
             .disposed(by: disposeBag)
         
@@ -199,7 +214,7 @@ extension HomeViewModel {
         let tasteRecommendCollectionViewHeight = input.tasteRecommendCollectionViewContentSize
             .map { $0?.height ?? 0 }
             .asDriver(onErrorJustReturn: 0)
-
+        
         input.announcementButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
                 if owner.isLogined {
@@ -246,7 +261,9 @@ extension HomeViewModel {
                       pushToAnnouncementViewController: pushToAnnouncementViewController.asObservable(),
                       showInduceLoginModalView: showInduceLoginModalView.asObservable(),
                       showLoadingView: showLoadingView.asObservable(),
-                      showUpdateVersionAlertView: showUpdateVersionAlertView.asObservable())
+                      showUpdateVersionAlertView: showUpdateVersionAlertView.asObservable(),
+                      isNotificationUnread: isNotificationUnread.asObservable(),
+                      showServiceTermAgreementAlert: showServiceTermAgreementAlert.asObservable())
     }
     
     //MARK: - API
@@ -279,5 +296,24 @@ extension HomeViewModel {
     // 앱 최소 버전 조회
     func getAppMinimumVersion() -> Observable<AppMinimumVersion> {
         return userRepository.getAppMinimumVersion()
+    }
+    
+    //유저 비열람 알림 존재 여부 조회
+    func getNotificationUnreadStatus() -> Observable<NotificationUnreadStatusResponse> {
+        return notificationRepository.getNotificationUnreadStatus()
+    }
+    
+    func getTermSetting(disposeBag: DisposeBag) {
+        userRepository.getTermSetting()
+            .subscribe(with: self, onSuccess: { owner, result in
+                if !result.isAllRequiredTermsAgreed {
+                    owner.showServiceTermAgreementAlert.accept(())
+                } else {
+                    print("약관동의 완료됨!")
+                }
+            }, onFailure: { owner, error in
+                print(error)
+            })
+            .disposed(by: disposeBag)
     }
 }

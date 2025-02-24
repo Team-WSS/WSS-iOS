@@ -17,6 +17,10 @@ protocol NovelDetailModuleFactory {
     func makeNovelDetailViewController(novelId: Int) -> UIViewController
 }
 
+protocol ServiceTermAgreementFactory {
+    func makeServiceTermAgreementViewController() -> UIViewController
+}
+
 final class ModuleFactory {
     static let shared = ModuleFactory()
     private init() {}
@@ -38,10 +42,19 @@ extension ModuleFactory: OnboardingModuleFactory {
     }
     
     func makeOnboardingViewController() -> UIViewController {
-        return OnboardingViewController(viewModel: OnboardingViewModel(onboardingRepository: DefaultOnboardingRepository(onboardingService: DefaultOnboardingService())))
+        return OnboardingViewController(viewModel: OnboardingViewModel(onboardingRepository: DefaultOnboardingRepository(onboardingService: DefaultOnboardingService()),
+                                                                       userRepository: DefaultUserRepository(userService: DefaultUserService(),
+                                                                                                             blocksService: DefaultBlocksService())))
     }
     
     func makeOnboardingSuccessViewController(nickname: String) -> UIViewController {
         return OnboardingSuccessViewController(nickname: nickname)
+    }
+}
+
+extension ModuleFactory: ServiceTermAgreementFactory {
+    func makeServiceTermAgreementViewController() -> UIViewController {
+        return ServiceTermAgreementViewController(repository: DefaultUserRepository(userService: DefaultUserService(),
+                                                                                    blocksService: DefaultBlocksService()))
     }
 }

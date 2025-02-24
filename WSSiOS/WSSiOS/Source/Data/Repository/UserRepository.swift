@@ -21,11 +21,11 @@ protocol UserRepository {
     func getUserProfileVisibility() -> Observable<UserProfileVisibility>
     func patchUserProfileVisibility(isProfilePublic: Bool) -> Observable<Void>
     func getUserNovelStatus(userId: Int) -> Observable<UserNovelStatus>
-    func getUserNovelPreferences(userId: Int) -> Observable<UserNovelPreferences>
+    func getUserNovelPreferences(userId: Int) -> Observable<UserNovelPreferencesResponse>
     func getUserGenrePreferences(userId: Int) -> Observable<UserGenrePreferences>
     func postBlockUser(userId: Int) -> Observable<Void>
     func patchUserProfile(updatedFields: [String: Any]) -> Observable<Void>
-    func getNicknameisValid(nickname: String) -> Single<OnboardingResult>
+    func getNicknameisValid(nickname: String) -> Single<OnboardingResponse>
     func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Observable<MyFeedResult>
     func getUserNovelList(userId: Int,
                           readStatus: String,
@@ -33,6 +33,10 @@ protocol UserRepository {
                           size: Int,
                           sortType: String) -> Observable<UserNovelList>
     func getAppMinimumVersion() -> Observable<AppMinimumVersion>
+    
+    // 약관동의
+    func getTermSetting() -> Single<TermSettingEntity>
+    func patchTermSetting(serviceAgreed: Bool, privacyAgreed: Bool, marketingAgreed: Bool) -> Single<Void>
 }
 
 struct DefaultUserRepository: UserRepository {
@@ -94,7 +98,7 @@ struct DefaultUserRepository: UserRepository {
             .asObservable()
     }
     
-    func getUserNovelPreferences(userId: Int) -> Observable<UserNovelPreferences> {
+    func getUserNovelPreferences(userId: Int) -> Observable<UserNovelPreferencesResponse> {
         return userService.getUserNovelPreferences(userId: userId)
             .asObservable()
     }
@@ -123,7 +127,7 @@ struct DefaultUserRepository: UserRepository {
             .asObservable()
     }
     
-    func getNicknameisValid(nickname: String) -> Single<OnboardingResult> {
+    func getNicknameisValid(nickname: String) -> Single<OnboardingResponse> {
         return userService.getNicknameisValid(nickname: nickname)
     }
     
@@ -144,5 +148,18 @@ struct DefaultUserRepository: UserRepository {
     func getAppMinimumVersion() -> Observable<AppMinimumVersion> {
         return userService.getAppMinimumVersion()
             .asObservable()
+    }
+    
+    // 약관 동의
+    
+    func getTermSetting() -> Single<TermSettingEntity> {
+        return userService.getTermSetting().map { $0.toEntity() }
+    }
+    
+    func patchTermSetting(serviceAgreed: Bool, privacyAgreed: Bool, marketingAgreed: Bool) -> Single<Void> {
+        let requestBody = TermSettingRequest(serviceAgreed: serviceAgreed,
+                                             privacyAgreed: privacyAgreed,
+                                             marketingAgreed: marketingAgreed)
+        return userService.patchTermSetting(requestBody)
     }
 }

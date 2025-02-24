@@ -108,12 +108,18 @@ final class MyPageInfoViewModel: ViewModelType {
             .flatMapLatest { [weak self] _ -> Observable<Void> in
                 guard let self = self else { return Observable.empty() }
                 guard let refreshTokenString = UserDefaults.standard.string(forKey: StringLiterals.UserDefault.refreshToken) else { return Observable.empty() }
-                return self.postLogout(refreshToken: refreshTokenString)
+                guard let deviceIdentifierString = try? KeychainHelper.shared.readString(forKey: StringLiterals.KeyChain.deviceIdentifier) else { return Observable.empty() }
+
+                return self.postLogout(refreshToken: refreshTokenString, deviceIdentifier: deviceIdentifierString)
             }
             .subscribe(
                 onNext: {
+                    UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.userId)
+                    UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.userNickname)
+                    UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.userGender)
                     UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.accessToken)
                     UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.refreshToken)
+                    
                     output.pushToLoginViewController.accept(())
                 },
                 onError: { error in
@@ -138,8 +144,8 @@ final class MyPageInfoViewModel: ViewModelType {
             .observe(on: MainScheduler.instance)
     }
     
-    private func postLogout(refreshToken: String) -> Observable<Void> {
-        return authRepository.postLogout(refreshToken: refreshToken)
+    private func postLogout(refreshToken: String, deviceIdentifier: String) -> Observable<Void> {
+        return authRepository.postLogout(refreshToken: refreshToken, deviceIdentifier: deviceIdentifier)
             .asObservable()
     }
 }

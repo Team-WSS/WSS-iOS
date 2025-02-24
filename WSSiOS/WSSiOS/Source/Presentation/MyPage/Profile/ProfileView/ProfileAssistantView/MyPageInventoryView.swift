@@ -14,22 +14,22 @@ final class MyPageInventoryView: UIView {
     
     //MARK: - Components
     
-    private let titleLabel = UILabel()
-    let arrowButton = UIButton()
     private let inventoryView = UIView()
-    private let stackView = UIStackView()
+    
+    //터치영역
+    let inventoryTitleView = UIView()
+    let inventoryStackView = UIStackView()
+    
+    private let titleLabel = UILabel()
+    private let arrowView = UIView()
+    private let arrowImageView = UIImageView()
+    
+    var readStatusButtons = [UIButton()]
     
     private let interestCountLabel = UILabel()
-    private let interestLabel = UILabel()
-    
     private let watchingCountLabel = UILabel()
-    private let watchingLabel = UILabel()
-    
     private let watchedCountLabel = UILabel()
-    private let watchedLabel = UILabel()
-    
     private let quitCountLabel = UILabel()
-    private let quitLabel = UILabel()
     
     // MARK: - Life Cycle
     
@@ -49,29 +49,95 @@ final class MyPageInventoryView: UIView {
     private func setUI() {
         self.backgroundColor = .wssWhite
         
+        inventoryView.do {
+            $0.backgroundColor = .wssWhite
+        }
+        
         titleLabel.do {
             $0.applyWSSFont(.title1, with: StringLiterals.MyPage.Profile.inventoryTitle)
             $0.textColor = .wssBlack
         }
         
-        arrowButton.do {
-            $0.setImage(.icNavigateRight.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray200), for: .normal)
-            $0.isUserInteractionEnabled = true
+        arrowImageView.do {
+            $0.image = .icNavigateRight.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray200)
+            $0.contentMode = .center
         }
         
-        inventoryView.do {
+        inventoryStackView.do {
             $0.backgroundColor = .wssGray50
             $0.layer.cornerRadius = 14
-        }
-        
-        stackView.do {
             $0.axis = .horizontal
             $0.distribution = .fillEqually
             $0.spacing = 2
         }
+        
+        let countLabels: [UILabel] = [
+            interestCountLabel,
+            watchingCountLabel,
+            watchedCountLabel,
+            quitCountLabel
+        ]
+        
+        readStatusButtons = StringLiterals.ReviewerStatus.allCases.enumerated().map { index, status in
+            createInventorySectionView (
+                countLabel: countLabels[index],
+                text: status.rawValue,
+                addLine: index == 0)
+        }
     }
     
-    private func createVerticalStack(countLabel: UILabel, textLabel: UILabel, text: String) -> UIStackView {
+    private func setHierarchy() {
+        self.addSubview(inventoryView)
+        inventoryView.addSubviews(inventoryTitleView,
+                                  inventoryStackView)
+        inventoryTitleView.addSubviews(titleLabel,
+                                       arrowView)
+        arrowView.addSubview(arrowImageView)
+        
+        readStatusButtons.forEach {
+            inventoryStackView.addArrangedSubviews($0)
+        }
+    }
+    
+    private func setLayout() {
+        inventoryView.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(16)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.bottom.equalToSuperview().inset(30)
+            
+            inventoryTitleView.snp.makeConstraints {
+                $0.top.width.equalToSuperview()
+                
+                arrowView.snp.makeConstraints {
+                    $0.top.trailing.bottom.equalToSuperview()
+                    $0.size.equalTo(44)
+                    
+                    arrowImageView.snp.makeConstraints {
+                        $0.center.equalToSuperview()
+                        $0.size.equalTo(24)
+                    }
+                }
+                
+                titleLabel.snp.makeConstraints {
+                    $0.leading.equalToSuperview()
+                    $0.centerY.equalTo(arrowView.snp.centerY)
+                }
+            }
+            
+            inventoryStackView.snp.makeConstraints {
+                $0.top.equalTo(inventoryTitleView.snp.bottom)
+                $0.leading.trailing.bottom.equalToSuperview()
+                $0.height.equalTo(70)
+            }
+        }
+    }
+    
+    //MARK: - Custom Method
+    
+    private func createInventorySectionView(countLabel: UILabel, text: String, addLine: Bool = false) -> UIButton {
+        let statusButton = UIButton()
+        let textLabel = UILabel()
+        
         countLabel.do {
             $0.applyWSSFont(.title2, with: "0")
             $0.textAlignment = .center
@@ -83,55 +149,34 @@ final class MyPageInventoryView: UIView {
             $0.textAlignment = .center
         }
         
-        let verticalStack = UIStackView(arrangedSubviews: [countLabel, textLabel]).then {
-            $0.axis = .vertical
-            $0.alignment = .center
-            $0.spacing = 2
+        statusButton.addSubviews(countLabel,
+                                 textLabel)
+        
+        countLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(13.5)
+            $0.centerX.equalToSuperview()
         }
         
-        return verticalStack
-    }
-    
-    private func setHierarchy() {
-        self.addSubviews(titleLabel,
-                         arrowButton,
-                         inventoryView)
-        inventoryView.addSubview(stackView)
-        
-        let interestStack = createVerticalStack(countLabel: interestCountLabel, textLabel: interestLabel, text: "관심")
-        let watchingStack = createVerticalStack(countLabel: watchingCountLabel, textLabel: watchingLabel, text: "보는중")
-        let watchedStack = createVerticalStack(countLabel: watchedCountLabel, textLabel: watchedLabel, text: "봤어요")
-        let quitStack = createVerticalStack(countLabel: quitCountLabel, textLabel: quitLabel, text: "하차")
-        
-        stackView.addArrangedSubviews(interestStack,
-                                      watchingStack,
-                                      watchedStack,
-                                      quitStack)
-    }
-    
-    private func setLayout() {
-        titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(25.5)
-            $0.leading.equalToSuperview().inset(20)
+        textLabel.snp.makeConstraints {
+            $0.top.equalTo(countLabel.snp.bottom).offset(2)
+            $0.centerX.equalToSuperview()
         }
         
-        arrowButton.snp.makeConstraints {
-            $0.centerY.equalTo(titleLabel)
-            $0.trailing.equalToSuperview().inset(20)
-            $0.size.equalTo(44)
+        if addLine {
+            let dividerView = UIView().then {
+                $0.backgroundColor = .wssGray70
+            }
+            
+            statusButton.addSubview(dividerView)
+            
+            dividerView.snp.makeConstraints {
+                $0.centerY.trailing.equalToSuperview()
+                $0.height.equalTo(40)
+                $0.width.equalTo(1)
+            }
         }
         
-        inventoryView.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(9.5)
-            $0.leading.trailing.equalToSuperview().inset(20)
-            $0.height.equalTo(70)
-            $0.bottom.equalToSuperview().inset(30)
-        }
-        
-        stackView.snp.makeConstraints {
-            $0.height.equalTo(38.5)
-            $0.leading.trailing.centerY.equalToSuperview()
-        }
+        return statusButton
     }
     
     //MARK: - Data
@@ -143,6 +188,3 @@ final class MyPageInventoryView: UIView {
         quitCountLabel.applyWSSFont(.title2, with: String(describing: data.quitNovelCount))
     }
 }
-
-
-

@@ -19,7 +19,7 @@ final class NovelDetailViewController: UIViewController {
     private let viewModel: NovelDetailViewModel
     private let disposeBag = DisposeBag()
     
-    private let viewWillAppearEvent = BehaviorRelay(value: false)
+    private let viewWillAppearEvent = PublishRelay<Void>()
     private let imageNetworkError = BehaviorRelay<Bool>(value: false)
     private let deleteReview = PublishSubject<Void>()
     
@@ -29,7 +29,7 @@ final class NovelDetailViewController: UIViewController {
         $0.timeZone = TimeZone(identifier: StringLiterals.Register.Normal.DatePicker.KoreaTimeZone)
     }
     
-    //NovelDetailFeed
+    // NovelDetailFeed
     private let novelDetailFeedProfileViewDidTap = PublishRelay<Int>()
     private let novelDetailFeedDropdownButtonDidTap = PublishRelay<(Int, Bool)>()
     private let novelDetailFeedConnectedNovelViewDidTap = PublishRelay<Int>()
@@ -62,27 +62,22 @@ final class NovelDetailViewController: UIViewController {
         registerCell()
         delegate()
         bindViewModel()
+        bindAction()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        viewWillAppearEvent.accept(true)
+        viewWillAppearEvent.accept(())
         setNavigationBar()
         swipeBackGesture()
         self.hidesBottomBarWhenPushed = true
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        updateNavigationBarStyle(offset: 0)
-    }
-    
     //MARK: - UI
     
     private func setNavigationBar() {
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: rootView.backButton)
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rootView.headerDropDownButton)
+        self.setWSSNavigationBar(title: navigationTitle, left: rootView.backButton, right: rootView.headerDropDownButton, isVisibleBeforeScroll: false)
     }
     
     //MARK: - Bind
@@ -97,12 +92,14 @@ final class NovelDetailViewController: UIViewController {
             forCellWithReuseIdentifier: NovelDetailInfoReviewKeywordCollectionViewCell.cellIdentifier)
         
         rootView.feedView.feedListView.feedTableView.register(
-            NovelDetailFeedTableViewCell.self,
-            forCellReuseIdentifier: NovelDetailFeedTableViewCell.cellIdentifier)
+            FeedListTableViewCell.self,
+            forCellReuseIdentifier: FeedListTableViewCell.cellIdentifier)
     }
     
     private func delegate() {
         rootView.infoView.reviewView.keywordView.keywordCollectionView.rx.setDelegate(self)
+            .disposed(by: disposeBag)
+        rootView.scrollView.rx.setDelegate(self)
             .disposed(by: disposeBag)
     }
     
@@ -116,7 +113,7 @@ final class NovelDetailViewController: UIViewController {
     private func bindViewModelOutput(_ output: NovelDetailViewModel.Output) {
         
         //MARK: - Bind/Total
-        
+         
         output.detailHeaderData
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, data in
@@ -136,27 +133,6 @@ final class NovelDetailViewController: UIViewController {
                 owner.rootView.bindInfoData(data)
             }, onError: { owner, error in
                 print(error)
-            })
-            .disposed(by: disposeBag)
-        
-        output.scrollContentOffset
-            .observe(on: MainScheduler.asyncInstance)
-            .subscribe(with: self, onNext: { owner, offset in
-                owner.updateNavigationBarStyle(offset: offset.y)
-                
-                let stickyoffset = owner.rootView.headerView.frame.size.height - owner.view.safeAreaInsets.top
-                let showStickyTabBar = offset.y > stickyoffset
-                owner.rootView.updateStickyTabBarShow(showStickyTabBar)
-                if offset.y < 0 {
-                    owner.rootView.scrollView.rx.contentOffset.onNext(CGPoint(x: 0, y: 0))
-                }
-            })
-            .disposed(by: disposeBag)
-        
-        output.popToLastViewController
-            .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, _ in
-                owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
         
@@ -306,8 +282,8 @@ final class NovelDetailViewController: UIViewController {
         
         output.feedList
             .bind(to: rootView.feedView.feedListView.feedTableView.rx.items(
-                cellIdentifier: NovelDetailFeedTableViewCell.cellIdentifier,
-                cellType: NovelDetailFeedTableViewCell.self)) { _, element, cell in
+                cellIdentifier: FeedListTableViewCell.cellIdentifier,
+                cellType: FeedListTableViewCell.self)) { _, element, cell in
                     cell.bindData(feed: element)
                     cell.delegate = self
                 }
@@ -472,6 +448,13 @@ final class NovelDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.showWithdrawalUserToastView
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.showToast(.unknownUser)
+            })
+            .disposed(by: disposeBag)
+        
         //MARK: - Bind/NovelReview
         
         output.showNovelReviewedToast
@@ -482,6 +465,25 @@ final class NovelDetailViewController: UIViewController {
     }
     
     //MARK: - Actions
+    
+    private func bindAction() {
+        rootView.scrollView.rx.contentOffset
+            .observe(on: MainScheduler.asyncInstance)
+            .subscribe(with: self, onNext: { owner, offset in
+                let stickyoffset = owner.rootView.headerView.frame.size.height - owner.view.safeAreaInsets.top
+                let showStickyTabBar = offset.y > stickyoffset
+                owner.rootView.updateStickyTabBarShow(showStickyTabBar)
+            })
+            .disposed(by: disposeBag)
+        
+        rootView.backButton.rx.tap
+            .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                owner.popToLastViewController()
+            })
+            .disposed(by: disposeBag)
+    }
     
     private func createViewModelInput() -> NovelDetailViewModel.Input {
         let reviewResultButtonDidTap = Observable<ReadStatus?>.merge(
@@ -495,6 +497,13 @@ final class NovelDetailViewController: UIViewController {
                     button.rx.tap.map { nil }
                 })
         
+        let tabBarButtonDidTap = Observable<Tab>.merge(
+            rootView.tabBarView.infoButton.rx.tap.map { .info },
+            rootView.tabBarView.feedButton.rx.tap.map { .feed },
+            rootView.stickyTabBarView.infoButton.rx.tap.map { .info },
+            rootView.stickyTabBarView.feedButton.rx.tap.map { .feed }
+        )
+        
         let dropdownButtonDidTap = Observable.merge(
             rootView.feedView.feedListView.dropdownView.topDropdownButton.rx.tap.map { DropdownButtonType.top },
             rootView.feedView.feedListView.dropdownView.bottomDropdownButton.rx.tap.map { DropdownButtonType.bottom }
@@ -507,8 +516,6 @@ final class NovelDetailViewController: UIViewController {
         
         return NovelDetailViewModel.Input(
             viewWillAppearEvent: viewWillAppearEvent.asObservable(),
-            scrollContentOffset: rootView.scrollView.rx.contentOffset,
-            backButtonDidTap: rootView.backButton.rx.tap,
             networkErrorRefreshButtonDidTap: rootView.networkErrorView.refreshButton.rx.tap,
             imageNetworkError: imageNetworkError.asObservable(),
             deleteReview: deleteReview.asObservable(),
@@ -524,10 +531,7 @@ final class NovelDetailViewController: UIViewController {
             reviewResultButtonDidTap: reviewResultButtonDidTap,
             interestButtonDidTap: rootView.headerView.interestReviewButton.interestButton.rx.tap,
             feedWriteButtonDidTap: rootView.headerView.interestReviewButton.feedWriteButton.rx.tap,
-            infoTabBarButtonDidTap: rootView.tabBarView.infoButton.rx.tap,
-            feedTabBarButtonDidTap: rootView.tabBarView.feedButton.rx.tap,
-            stickyInfoTabBarButtonDidTap: rootView.stickyTabBarView.infoButton.rx.tap,
-            stickyFeedTabBarButtonDidTap: rootView.stickyTabBarView.feedButton.rx.tap,
+            tabBarButtonDidTap: tabBarButtonDidTap,
             descriptionAccordionButtonDidTap: rootView.infoView.descriptionView.accordionButton.rx.tap,
             novelDetailFeedTableViewContentSize: rootView.feedView.feedListView.feedTableView.rx.observe(CGSize.self, "contentSize"),
             novelDetailFeedTableViewItemSelected: rootView.feedView.feedListView.feedTableView.rx.itemSelected.asObservable(),
@@ -549,31 +553,6 @@ final class NovelDetailViewController: UIViewController {
     private func showLargeNovelCoverImageView(_ isShow: Bool) {
         rootView.largeNovelCoverImageButton.isHidden = !isShow
         self.navigationController?.setNavigationBarHidden(isShow, animated: false)
-    }
-    
-    private func updateNavigationBarStyle(offset: CGFloat) {
-        if offset > 0 {
-            rootView.statusBarView.backgroundColor = .wssWhite
-            navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-            navigationController?.navigationBar.shadowImage = UIImage()
-            navigationController?.navigationBar.backgroundColor = .wssWhite
-            navigationItem.title = navigationTitle
-            setNavigationBarTextAttribute()
-        } else {
-            rootView.statusBarView.backgroundColor = .clear
-            navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
-            navigationController?.navigationBar.shadowImage = nil
-            navigationController?.navigationBar.backgroundColor = .clear
-            navigationItem.title = ""
-        }
-    }
-    
-    private func setNavigationBarTextAttribute() {
-        navigationController?.navigationBar.titleTextAttributes = [
-            NSAttributedString.Key.font: UIFont.Title2,
-            NSAttributedString.Key.foregroundColor: UIColor.wssBlack,
-            NSAttributedString.Key.kern: -0.6,
-        ]
     }
     
     private func makeUIImage(data: NovelDetailHeaderEntity) {
@@ -612,6 +591,14 @@ extension NovelDetailViewController: UICollectionViewDelegateFlowLayout {
         
         let width = (text as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 24
         return CGSize(width: width, height: 37)
+    }
+}
+
+extension NovelDetailViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y < 0 {
+            scrollView.contentOffset.y = 0
+        }
     }
 }
 

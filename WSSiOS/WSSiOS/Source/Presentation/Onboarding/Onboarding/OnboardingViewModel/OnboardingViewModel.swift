@@ -18,6 +18,7 @@ final class OnboardingViewModel: ViewModelType {
     
     private let nicknamePattern = "^[a-zA-Z0-9가-힣]{2,10}$"
     private let onboardingRepository: OnboardingRepository
+    private let userRepository: UserRepository
     
     // Nickname
     private let nicknameText = BehaviorRelay<String>(value: "")
@@ -45,11 +46,13 @@ final class OnboardingViewModel: ViewModelType {
     private let progressOffset = BehaviorRelay<CGFloat>(value: 0)
     private let showNetworkErrorView = PublishRelay<Void>()
     private let moveToLoginViewController = PublishRelay<Void>()
+    private let showServiceTermAgreementView = PublishRelay<Void>()
     
     //MARK: - Life Cycle
     
-    init(onboardingRepository: OnboardingRepository) {
+    init(onboardingRepository: OnboardingRepository, userRepository: UserRepository) {
         self.onboardingRepository = onboardingRepository
+        self.userRepository = userRepository
     }
     
     //MARK: - Transform
@@ -71,6 +74,7 @@ final class OnboardingViewModel: ViewModelType {
         let genreButtonDidTap: Observable<NewNovelGenre>
         
         // Total
+        let viewDidLoadEvent: Observable<Void>
         let nextButtonDidTap: Observable<Void>
         let backButtonDidTap: ControlEvent<Void>
         let scrollViewContentOffset: ControlProperty<CGPoint>
@@ -104,6 +108,7 @@ final class OnboardingViewModel: ViewModelType {
         let progressOffset: Driver<CGFloat>
         let showNetworkErrorView: Driver<Void>
         let moveToLoginViewController: Driver<Void>
+        let showServiceTermAgreementView: Driver<Void>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -206,6 +211,12 @@ final class OnboardingViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         // Total
+        input.viewDidLoadEvent
+            .bind(with: self, onNext: { owner, _ in
+                owner.getTermSetting(disposeBag: disposeBag)
+            })
+            .disposed(by: disposeBag)
+        
         input.backButtonDidTap
             .throttle(.seconds(1), scheduler: MainScheduler.instance)
             .withLatestFrom(stageIndex)
@@ -272,7 +283,8 @@ final class OnboardingViewModel: ViewModelType {
             moveToOnboardingSuccessViewController: moveToOnboardingSuccessViewController.asDriver(onErrorJustReturn: "Error"),
             progressOffset: progressOffset.asDriver(),
             showNetworkErrorView: showNetworkErrorView.asDriver(onErrorJustReturn: ()),
-            moveToLoginViewController: moveToLoginViewController.asDriver(onErrorJustReturn: ())
+            moveToLoginViewController: moveToLoginViewController.asDriver(onErrorJustReturn: ()),
+            showServiceTermAgreementView: showServiceTermAgreementView.asDriver(onErrorJustReturn: ())
         )
     }
     
@@ -372,5 +384,19 @@ final class OnboardingViewModel: ViewModelType {
             print(error)
         })
         .disposed(by: disposeBag)
+    }
+    
+    func getTermSetting(disposeBag: DisposeBag) {
+        userRepository.getTermSetting()
+            .subscribe(with: self, onSuccess: { owner, result in
+                if !result.isAllRequiredTermsAgreed {
+                    owner.showServiceTermAgreementView.accept(())
+                } else {
+                    print("약관동의 완료됨!")
+                }
+            }, onFailure: { owner, error in
+                print(error)
+            })
+            .disposed(by: disposeBag)
     }
 }

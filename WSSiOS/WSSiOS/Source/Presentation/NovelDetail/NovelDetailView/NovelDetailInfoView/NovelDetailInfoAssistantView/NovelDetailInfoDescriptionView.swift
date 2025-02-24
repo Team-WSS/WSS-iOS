@@ -92,7 +92,7 @@ final class NovelDetailInfoDescriptionView: UIView {
     
     //MARK: - Data
     
-    func bindData(_ data: NovelDetailInfoResult) {
+    func bindData(_ data: NovelDetailInfoEntity) {
         isAccordionButtonHidden(text: data.novelDescription)
         setDescriptionLabelText(with: data.novelDescription)
     }

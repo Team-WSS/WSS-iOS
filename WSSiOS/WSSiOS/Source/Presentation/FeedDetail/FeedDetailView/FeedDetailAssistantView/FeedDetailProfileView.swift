@@ -20,7 +20,7 @@ final class FeedDetailProfileView: UIView {
     private let userNicknameLabel = UILabel()
     private let blackDotImageView = UIImageView()
     private let createdDateLabel = UILabel()
-
+    
     //MARK: - Life Cycle
     
     override init(frame: CGRect) {
