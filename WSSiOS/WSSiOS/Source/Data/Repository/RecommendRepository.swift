@@ -16,6 +16,7 @@ protocol RecommendRepository {
     func getTasteRecommendNovels() -> Observable<TasteRecommendNovels>
 }
 
+
 struct DefaultRecommendRepository: RecommendRepository {
     
     private let recommendService: RecommendService
