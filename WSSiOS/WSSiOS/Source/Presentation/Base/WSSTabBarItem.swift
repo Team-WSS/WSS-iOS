@@ -69,7 +69,7 @@ enum WSSTabBarItem: CaseIterable {
             return SearchViewController(viewModel: SearchViewModel(searchRepository: DefaultSearchRepository(searchService: DefaultSearchService())))
             
         case .feed:
-            return FeedViewController(viewModel: FeedViewModel())
+            return FeedViewController()
             
         case .myPage:
             let userId = UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)

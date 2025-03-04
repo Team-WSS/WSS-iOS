@@ -11,7 +11,7 @@ import RxSwift
 import RxRelay
 import RxGesture
 
-class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
+final class FeedGenreViewController: UIViewController, UIScrollViewDelegate {
     
     //MARK: - Properties
     

@@ -293,4 +293,3 @@ final class FeedGenreViewModel: ViewModelType {
             .observe(on: MainScheduler.instance)
     }
 }
-
