@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct NovelDetailFeedResult: Decodable {
+struct NovelDetailFeedResponse: Decodable {
     let isLoadable: Bool
     let feeds: [TotalFeedListDTO]
 }

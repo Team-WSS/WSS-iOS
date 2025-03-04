@@ -10,9 +10,7 @@ import Foundation
 import RxSwift
 
 protocol FeedService {
-    func getFeedList(category: String,
-                     lastFeedId: Int,
-                     size: Int) -> Single<TotalFeed>
+    func getFeedList(category: String, lastFeedId: Int, size: Int) -> Single<TotalFeedResponse>
     func postFeed(relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool) -> Single<Void>
     func putFeed(feedId: Int, relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool) -> Single<Void>
 }
@@ -28,7 +26,7 @@ final class DefaultFeedService: NSObject, Networking, FeedService {
         ]
     }
 
-    func getFeedList(category: String, lastFeedId: Int, size: Int) -> RxSwift.Single<TotalFeed> {
+    func getFeedList(category: String, lastFeedId: Int, size: Int) -> Single<TotalFeedResponse> {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.Feed.getFeeds,
@@ -42,7 +40,7 @@ final class DefaultFeedService: NSObject, Networking, FeedService {
 
             return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
-                                       to: TotalFeed.self) }
+                                       to: TotalFeedResponse.self) }
                 .asSingle()
 
         } catch {
@@ -51,7 +49,9 @@ final class DefaultFeedService: NSObject, Networking, FeedService {
     }
     
     func postFeed(relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool) -> Single<Void> {
-        guard let feedContentData = try? JSONEncoder().encode(FeedContent(relevantCategories: relevantCategories, feedContent: feedContent, novelId: novelId, isSpoiler: isSpoiler)) else {
+        guard let feedContentData = try? JSONEncoder().encode(
+            FeedContentRequest(relevantCategories: relevantCategories, feedContent: feedContent, novelId: novelId, isSpoiler: isSpoiler))
+        else {
             return Single.error(NetworkServiceError.invalidRequestError)
         }
         
@@ -72,7 +72,9 @@ final class DefaultFeedService: NSObject, Networking, FeedService {
     }
     
     func putFeed(feedId: Int, relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool) -> Single<Void> {
-        guard let feedContentData = try? JSONEncoder().encode(FeedContent(relevantCategories: relevantCategories, feedContent: feedContent, novelId: novelId, isSpoiler: isSpoiler)) else {
+        guard let feedContentData = try? JSONEncoder().encode(
+            FeedContentRequest(relevantCategories: relevantCategories, feedContent: feedContent, novelId: novelId, isSpoiler: isSpoiler))
+        else {
             return Single.error(NetworkServiceError.invalidRequestError)
         }
         

@@ -54,7 +54,13 @@ final class FeedListCategoryView: UIView {
     
     //MARK: - Data
     
-    func bindData(relevantCategories: [String]) {
+    func bindData(relevantCategories: String) {
+        categoryLabel.applyWSSFont(.body2, with: relevantCategories)
+    }
+
+    
+    // 임시 bindData, MyPage Entity 작업하면서 삭제할 것
+    func temporaryBindData(relevantCategories: [String]) {
         categoryLabel.applyWSSFont(.body2, with: relevantCategories.joined(separator: ", "))
     }
 }
