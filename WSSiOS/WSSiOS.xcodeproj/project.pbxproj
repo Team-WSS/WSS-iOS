@@ -97,7 +97,6 @@
 		2CD9115A2C0D8A23006B8D72 /* FeedGenreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD911592C0D8A23006B8D72 /* FeedGenreView.swift */; };
 		2CD9115C2C0D8A26006B8D72 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD9115B2C0D8A26006B8D72 /* FeedViewController.swift */; };
 		2CD9115E2C0D8A28006B8D72 /* FeedGenreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD9115D2C0D8A28006B8D72 /* FeedGenreViewController.swift */; };
-		2CD911612C0D8B71006B8D72 /* FeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD911602C0D8B71006B8D72 /* FeedViewModel.swift */; };
 		2CE078182B80894B0028F2B0 /* ViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CE078172B80894B0028F2B0 /* ViewModelType.swift */; };
 		2CFA9A0F2C9D7E8600A4A820 /* MyPageChangeUserInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CFA9A0E2C9D7E8600A4A820 /* MyPageChangeUserInfoViewController.swift */; };
 		2CFA9A112C9D7EA300A4A820 /* MyPageChangeUserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CFA9A102C9D7EA300A4A820 /* MyPageChangeUserInfoView.swift */; };
@@ -504,7 +503,6 @@
 		2CD911592C0D8A23006B8D72 /* FeedGenreView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedGenreView.swift; sourceTree = "<group>"; };
 		2CD9115B2C0D8A26006B8D72 /* FeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		2CD9115D2C0D8A28006B8D72 /* FeedGenreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedGenreViewController.swift; sourceTree = "<group>"; };
-		2CD911602C0D8B71006B8D72 /* FeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewModel.swift; sourceTree = "<group>"; };
 		2CE078172B80894B0028F2B0 /* ViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
 		2CFA9A0E2C9D7E8600A4A820 /* MyPageChangeUserInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageChangeUserInfoViewController.swift; sourceTree = "<group>"; };
 		2CFA9A102C9D7EA300A4A820 /* MyPageChangeUserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageChangeUserInfoView.swift; sourceTree = "<group>"; };
@@ -1194,7 +1192,6 @@
 		2CD9115F2C0D8B65006B8D72 /* FeedViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				2CD911602C0D8B71006B8D72 /* FeedViewModel.swift */,
 				2C3B08762CA74358002802D5 /* FeedGenreViewModel.swift */,
 			);
 			path = FeedViewModel;
@@ -2731,7 +2728,6 @@
 				B99FBE3E2D21B6E500787D1C /* FeedDetailUnknownFeedErrorView.swift in Sources */,
 				2CD2291E2B42E685005400BE /* SceneDelegate.swift in Sources */,
 				CDF27CDA2CA253B30072C0F7 /* AttractivePoint.swift in Sources */,
-				2CD911612C0D8B71006B8D72 /* FeedViewModel.swift in Sources */,
 				395928992C988A4200E7B17B /* LoginRepository.swift in Sources */,
 				2CB613F52B575E6A00FC3F89 /* MyPageInfoView.swift in Sources */,
 				39D4A5D62BDD0913004FC834 /* NovelDetailHeaderView.swift in Sources */,
