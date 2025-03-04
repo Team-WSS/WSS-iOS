@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct NovelDetailFeedResult: Codable {
+struct NovelDetailFeedResult: Decodable {
     let isLoadable: Bool
     let feeds: [TotalFeeds]
 }

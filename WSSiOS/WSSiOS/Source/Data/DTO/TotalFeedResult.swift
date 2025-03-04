@@ -7,13 +7,13 @@
 
 import Foundation
 
-struct TotalFeed: Codable {
+struct TotalFeed: Decodable {
     let category: String
     let isLoadable: Bool
     let feeds: [TotalFeeds]
 }
 
-struct TotalFeeds: Codable {
+struct TotalFeeds: Decodable {
     let feedId: Int
     let userId: Int
     let nickname: String
@@ -33,7 +33,7 @@ struct TotalFeeds: Codable {
     let isMyFeed: Bool
 }
 
-struct FeedContent: Codable {
+struct FeedContent: Encodable {
     let relevantCategories: [String]
     let feedContent: String
     let novelId: Int?
