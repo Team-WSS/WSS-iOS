@@ -285,6 +285,5 @@ final class LibraryChildViewModel: ViewModelType {
                                                lastUserNovelId: data.lastUserNovelId,
                                                size: data.size,
                                                sortType: data.sortType)
-        .asObservable()
     }
 }

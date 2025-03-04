@@ -30,7 +30,6 @@ final class LibraryCollectionViewCell: UICollectionViewCell {
         setLayout()
     }
     
-    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
