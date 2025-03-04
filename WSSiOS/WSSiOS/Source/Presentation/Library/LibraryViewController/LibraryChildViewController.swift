@@ -15,12 +15,7 @@ final class LibraryChildViewController: UIViewController, UIScrollViewDelegate {
     //MARK: - Properties
     
     private let libraryViewModel: LibraryChildViewModel
-    
     private let disposeBag = DisposeBag()
-    
-    let updateNovelListRelay = PublishRelay<ShowNovelStatus>()
-    private lazy var novelTotalRelay = PublishRelay<Int>()
-    private let updateRelay = PublishRelay<Void>()
     private let viewWillAppearEventRelay = PublishRelay<Void>()
     
     //MARK: - Components

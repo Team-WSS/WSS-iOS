@@ -119,7 +119,7 @@ final class LibraryViewController: UIViewController {
         
         for readStatus in readStatusList {
             let sortTypeList = sortTypeList.newest
-            let sortTypeQuery = ShowNovelStatus(
+            let sortTypeQuery = UserNovelNovelStatus(
                 readStatus: readStatus,
                 lastUserNovelId: sortTypeList.lastId,
                 size: sortTypeList.sizeData,
@@ -179,7 +179,7 @@ extension LibraryViewController: UIPageViewControllerDataSource {
 }
 
 extension LibraryViewController {
-    private func setLibraryChildViewController(userId: Int, data: ShowNovelStatus) -> LibraryChildViewController {
+    private func setLibraryChildViewController(userId: Int, data: UserNovelNovelStatus) -> LibraryChildViewController {
         return LibraryChildViewController(
             libraryViewModel: LibraryChildViewModel(
                 userRepository: DefaultUserRepository(
