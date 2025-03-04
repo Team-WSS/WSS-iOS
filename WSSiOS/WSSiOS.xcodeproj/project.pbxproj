@@ -1180,15 +1180,6 @@
 			path = FeedCell;
 			sourceTree = "<group>";
 		};
-		2CD911402C0D87CD006B8D72 /* Feed */ = {
-			isa = PBXGroup;
-			children = (
-				C96A0E1E2C9F2B9000A6EA87 /* FeedDetailService.swift */,
-				2CD911412C0D87E0006B8D72 /* FeedService.swift */,
-			);
-			path = Feed;
-			sourceTree = "<group>";
-		};
 		2CD9115F2C0D8B65006B8D72 /* FeedViewModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -1905,11 +1896,12 @@
 				C9CF88B52C86204E00E45BF0 /* Notification */,
 				39119FA62C8C481700E9E6FA /* NovelDetail */,
 				C9A3CD432C8C3B9C00B43BFB /* Search */,
-				2CD911402C0D87CD006B8D72 /* Feed */,
 				A122C9D72B53097A00DFCFE4 /* Foundation */,
 				A122C9D62B53026E00DFCFE4 /* Avatar */,
 				A122C9D02B53024800DFCFE4 /* Recommend */,
 				A122C9CD2B53022E00DFCFE4 /* User */,
+				C96A0E1E2C9F2B9000A6EA87 /* FeedDetailService.swift */,
+				2CD911412C0D87E0006B8D72 /* FeedService.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
