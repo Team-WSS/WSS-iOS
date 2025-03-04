@@ -1,5 +1,5 @@
 //
-//  TotalFeedDTO.swift
+//  TotalFeedResponse.swift
 //  WSSiOS
 //
 //  Created by 신지원 on 6/3/24.
@@ -7,13 +7,13 @@
 
 import Foundation
 
-struct TotalFeed: Decodable {
+struct TotalFeedResponse: Decodable {
     let category: String
     let isLoadable: Bool
-    let feeds: [TotalFeeds]
+    let feeds: [TotalFeedListDTO]
 }
 
-struct TotalFeeds: Decodable {
+struct TotalFeedListDTO: Decodable {
     let feedId: Int
     let userId: Int
     let nickname: String
@@ -33,7 +33,7 @@ struct TotalFeeds: Decodable {
     let isMyFeed: Bool
 }
 
-struct FeedContent: Encodable {
+struct FeedContentRequest: Encodable {
     let relevantCategories: [String]
     let feedContent: String
     let novelId: Int?

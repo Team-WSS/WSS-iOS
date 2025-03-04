@@ -12,7 +12,7 @@ import RxSwift
 protocol FeedRepository {
     func getFeedData(category: String,
                      lastFeedId: Int,
-                     size: Int?) -> Observable<TotalFeed>
+                     size: Int?) -> Observable<TotalFeedResponse>
     func postFeed(relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool) -> Observable<Void>
     func putFeed(feedId: Int, relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool) -> Observable<Void>
 }
@@ -25,7 +25,7 @@ struct DefaultFeedRepository: FeedRepository {
         self.feedService = feedService
     }
     
-    func getFeedData(category: String, lastFeedId: Int, size: Int?) -> RxSwift.Observable<TotalFeed> {
+    func getFeedData(category: String, lastFeedId: Int, size: Int?) -> RxSwift.Observable<TotalFeedResponse> {
         return feedService.getFeedList(category: category, lastFeedId: lastFeedId, size: size ?? self.size)
             .asObservable()
     }

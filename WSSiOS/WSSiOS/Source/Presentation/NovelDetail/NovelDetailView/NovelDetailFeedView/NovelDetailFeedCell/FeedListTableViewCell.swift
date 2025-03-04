@@ -27,7 +27,7 @@ final class FeedListTableViewCell: UITableViewCell {
     private let disposeBag = DisposeBag()
     weak var delegate: FeedTableViewDelegate?
     
-    private let feed = PublishRelay<TotalFeeds>()
+    private let feed = PublishRelay<TotalFeedListDTO>()
     
     //MARK: - Components
     
@@ -143,7 +143,7 @@ final class FeedListTableViewCell: UITableViewCell {
     
     //MARK: - Data
     
-    func bindData(feed: TotalFeeds) {
+    func bindData(feed: TotalFeedListDTO) {
         self.feed.accept(feed)
         
         feedHeaderView.bindData(avatarImage: feed.avatarImage,

@@ -9,5 +9,5 @@ import Foundation
 
 struct NovelDetailFeedResult: Decodable {
     let isLoadable: Bool
-    let feeds: [TotalFeeds]
+    let feeds: [TotalFeedListDTO]
 }
