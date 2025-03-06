@@ -527,7 +527,8 @@ final class MyPageViewModel: ViewModelType {
     
     private func postBlockUser(userId: Int) -> Observable<Void> {
         return userRepository.userBlockRepository.postBlockUser(userId: userId)
-            .asObservable()
+            .subscribe(on: ConcurrentDispatchQueueScheduler(qos: .background))
+            .observe(on: MainScheduler.instance)
     }
     
     private func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Observable<MyFeedResult> {

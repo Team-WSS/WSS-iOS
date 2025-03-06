@@ -81,6 +81,7 @@ final class MyPageBlockUserViewController: UIViewController, UIScrollViewDelegat
     
     private func setupTableView() {
         getBlockUserList()
+            .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, blocks in
                 owner.rootView.emptyView.isHidden = !blocks.blocks.isEmpty
                 owner.cellDataRelay.accept(blocks.blocks)
@@ -92,7 +93,7 @@ final class MyPageBlockUserViewController: UIViewController, UIScrollViewDelegat
                                                        cellType: MyPageBlockUserTableViewCell.self)) { row, data, cell in
                 cell.bindData(image: data.avatarImage, nickname: data.nickname)
             }
-            .disposed(by: disposeBag)
+                                                       .disposed(by: disposeBag)
     }
     
     private func bindAction() {
@@ -136,5 +137,7 @@ final class MyPageBlockUserViewController: UIViewController, UIScrollViewDelegat
     
     private func deleteBlockUser(blockID: Int) -> Observable<Void> {
         return self.userRepository.deleteBlockUser(blockID: blockID)
+            .subscribe(on: ConcurrentDispatchQueueScheduler(qos: .background))
+            .observe(on: MainScheduler.instance)
     }
 }
