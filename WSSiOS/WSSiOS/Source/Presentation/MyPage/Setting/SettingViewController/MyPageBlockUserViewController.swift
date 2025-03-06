@@ -81,16 +81,16 @@ final class MyPageBlockUserViewController: UIViewController, UIScrollViewDelegat
     
     private func setupTableView() {
         getBlockUserList()
-            .subscribe(with: self, onNext: { owner, data in
-                if data.blocks.isEmpty {
-                    owner.rootView.emptyView.isHidden = false
-                }
-                owner.cellDataRelay.accept(data.blocks)
+            .map { $0.blocks }
+            .subscribe(with: self, onNext: { owner, blocks in
+                owner.rootView.emptyView.isHidden = !blocks.isEmpty
+                owner.cellDataRelay.accept(blocks)
             })
             .disposed(by: disposeBag)
         
         cellDataRelay
-            .bind(to: rootView.blockTableView.rx.items(cellIdentifier: MyPageBlockUserTableViewCell.cellIdentifier,cellType: MyPageBlockUserTableViewCell.self)) { row, data, cell in
+            .bind(to: rootView.blockTableView.rx.items(cellIdentifier: MyPageBlockUserTableViewCell.cellIdentifier,
+                                                       cellType: MyPageBlockUserTableViewCell.self)) { row, data, cell in
                 cell.bindData(image: data.avatarImage, nickname: data.nickname)
             }
             .disposed(by: disposeBag)
@@ -111,17 +111,12 @@ final class MyPageBlockUserViewController: UIViewController, UIScrollViewDelegat
                 var blocks = cellDataRelay.value
                 let blockID = blocks[indexPath.row].blockId
                 var nickName = blocks[indexPath.row].nickname
-                if nickName.count > 8 {
-                    nickName = nickName.prefix(8) + "..."
-                }
                 
                 return self.deleteBlockUser(blockID: blockID)
                     .map { _ -> String in
                         blocks.remove(at: indexPath.row)
                         self.cellDataRelay.accept(blocks)
-                        if blocks.isEmpty {
-                            self.rootView.emptyView.isHidden = false
-                        }
+                        self.rootView.emptyView.isHidden = !blocks.isEmpty
                         self.rootView.blockTableView.reloadData()
                         return nickName
                     }

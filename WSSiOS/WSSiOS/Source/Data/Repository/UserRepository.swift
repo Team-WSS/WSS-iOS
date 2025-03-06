@@ -16,7 +16,7 @@ protocol UserRepository {
     func getUserInfo() -> Observable<UserInfo>
     func putUserInfo(gender: String, birth: Int) -> Observable<Void>
     func patchUserName(userNickName: String) -> Observable<Void>
-    func getBlocksList() -> Observable<BlockUserResponse>
+    func getBlocksList() -> Observable<BlockUserEntity>
     func deleteBlockUser(blockID: Int) -> Observable<Void>
     func getUserProfileVisibility() -> Observable<UserProfileVisibility>
     func patchUserProfileVisibility(isProfilePublic: Bool) -> Observable<Void>
@@ -83,8 +83,9 @@ struct DefaultUserRepository: UserRepository {
             .asObservable()
     }
     
-    func getBlocksList() -> Observable<BlockUserResponse> {
+    func getBlocksList() -> Observable<BlockUserEntity> {
         return blocksService.getBlocksList()
+            .map { $0.toEntity() }
             .asObservable()
     }
     
