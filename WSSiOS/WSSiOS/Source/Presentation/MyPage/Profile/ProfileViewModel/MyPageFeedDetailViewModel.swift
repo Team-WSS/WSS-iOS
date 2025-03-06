@@ -14,7 +14,7 @@ final class MyPageFeedDetailViewModel: ViewModelType {
     
     //MARK: - Properties
     
-    private let userRepository: UserRepository
+    private let userRepository: UserRepositoryWithUserService
     
     private let profileData: MyProfileResult
     private let profileId: Int
@@ -37,7 +37,7 @@ final class MyPageFeedDetailViewModel: ViewModelType {
     
     //MARK: - Life Cycle
     
-    init(userRepository: UserRepository, profileId: Int, profileData: MyProfileResult) {
+    init(userRepository: UserRepositoryWithUserService, profileId: Int, profileData: MyProfileResult) {
         self.userRepository = userRepository
         
         self.profileId = profileId

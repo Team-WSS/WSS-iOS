@@ -18,7 +18,7 @@ final class OnboardingViewModel: ViewModelType {
     
     private let nicknamePattern = "^[a-zA-Z0-9가-힣]{2,10}$"
     private let onboardingRepository: OnboardingRepository
-    private let userRepository: UserRepository
+    private let userRepository: UserRepositoryWithUserService
     
     // Nickname
     private let nicknameText = BehaviorRelay<String>(value: "")
@@ -50,7 +50,7 @@ final class OnboardingViewModel: ViewModelType {
     
     //MARK: - Life Cycle
     
-    init(onboardingRepository: OnboardingRepository, userRepository: UserRepository) {
+    init(onboardingRepository: OnboardingRepository, userRepository: UserRepositoryWithUserService) {
         self.onboardingRepository = onboardingRepository
         self.userRepository = userRepository
     }

@@ -15,7 +15,7 @@ final class MyPageViewModel: ViewModelType {
     // MARK: - Properties
     
     private var profileId: Int
-    private let userRepository: UserRepository
+    private let userRepository: UserRepositoryWithUserService
     private var stickyHeaderHeight: CGFloat = 0
     
     private let disposeBag = DisposeBag()
@@ -57,7 +57,7 @@ final class MyPageViewModel: ViewModelType {
     
     // MARK: - Life Cycle
     
-    init(userRepository: UserRepository, profileId: Int) {
+    init(userRepository: UserRepositoryWithUserService, profileId: Int) {
         self.userRepository = userRepository
         if profileId == 0 {
             let userId = UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)

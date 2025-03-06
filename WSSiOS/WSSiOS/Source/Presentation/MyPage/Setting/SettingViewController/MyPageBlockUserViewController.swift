@@ -15,7 +15,7 @@ final class MyPageBlockUserViewController: UIViewController, UIScrollViewDelegat
     //MARK: - Properties
     
     private let disposeBag = DisposeBag()
-    private let userRepository: UserRepository
+    private let userRepository: UserRepositoryWithBlockService
     private var cellDataRelay = BehaviorRelay<[BlockUserListDTO]>(value: [])
     
     //MARK: - UI Components
@@ -24,7 +24,7 @@ final class MyPageBlockUserViewController: UIViewController, UIScrollViewDelegat
     
     // MARK: - Life Cycle
     
-    init(userRepository: UserRepository) {
+    init(userRepository: UserRepositoryWithBlockService) {
         self.userRepository = userRepository
         
         super.init(nibName: nil, bundle: nil)
