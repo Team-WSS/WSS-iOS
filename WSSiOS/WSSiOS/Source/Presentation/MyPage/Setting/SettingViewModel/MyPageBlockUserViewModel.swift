@@ -15,7 +15,7 @@ final class MyPageBlockUserViewModel: ViewModelType {
     //MARK: - Properties
     
     private let userRepository: UserRepository
-    private var bindCellReleay = BehaviorRelay<[BlockUser]>(value: [])
+    private var bindCellReleay = BehaviorRelay<[BlockUserListDTO]>(value: [])
     private let showEmptyView = PublishRelay<Bool>()
     private let popViewController = PublishRelay<Bool>()
     private let reloadTableViewRelay = PublishRelay<Bool>()
@@ -35,7 +35,7 @@ final class MyPageBlockUserViewModel: ViewModelType {
     struct Output {
         let showEmptyView: Driver<Bool>
         let popViewController: PublishRelay<Bool>
-        let bindCell: BehaviorRelay<[BlockUser]>
+        let bindCell: BehaviorRelay<[BlockUserListDTO]>
         let reloadTableView: PublishRelay<Bool>
         let toastMessage: PublishRelay<String>
     }
@@ -95,7 +95,7 @@ final class MyPageBlockUserViewModel: ViewModelType {
     
     //MARK: - API
     
-    private func getBlockUserList() -> Observable<BlockUserResult> {
+    private func getBlockUserList() -> Observable<BlockUserResponse> {
         return self.userRepository.getBlocksList()
     }
     

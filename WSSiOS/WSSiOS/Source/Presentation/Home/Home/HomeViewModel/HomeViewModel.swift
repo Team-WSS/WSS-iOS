@@ -269,7 +269,7 @@ extension HomeViewModel {
     //MARK: - API
     
     // 유저 정보 조회
-    func getUserMeData() -> Observable<UserMeResult> {
+    func getUserMeData() -> Observable<UserMeResponse> {
         return userRepository.getUserMeData()
     }
     

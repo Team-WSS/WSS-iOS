@@ -7,17 +7,17 @@
 
 import Foundation
 
-struct BlockUserResult: Codable {
-    var blocks: [BlockUser]
+struct BlockUserResponse: Decodable {
+    var blocks: [BlockUserListDTO]
 }
 
-struct BlockUser: Codable {
+struct BlockUserListDTO: Decodable {
     var blockId: Int
     var userId: Int
     var nickname: String
     var avatarImage: String
 }
 
-struct BlockUserId: Codable {
+struct BlockUserIdRequest: Encodable {
     var userId: Int
 }
