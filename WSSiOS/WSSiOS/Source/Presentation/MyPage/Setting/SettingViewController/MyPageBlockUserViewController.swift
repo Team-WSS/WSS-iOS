@@ -8,15 +8,15 @@
 import UIKit
 
 import RxSwift
-import RxRelay
+import RxCocoa
 
 final class MyPageBlockUserViewController: UIViewController, UIScrollViewDelegate {
     
     //MARK: - Properties
     
     private let disposeBag = DisposeBag()
-    private let viewModel: MyPageBlockUserViewModel
-    private let unblockButtonTapRelay = PublishRelay<IndexPath>()
+    private let userRepository: UserRepository
+    private var cellDataRelay = BehaviorRelay<[BlockUserListDTO]>(value: [])
     
     //MARK: - UI Components
     
@@ -24,8 +24,8 @@ final class MyPageBlockUserViewController: UIViewController, UIScrollViewDelegat
     
     // MARK: - Life Cycle
     
-    init(viewModel: MyPageBlockUserViewModel) {
-        self.viewModel = viewModel
+    init(userRepository: UserRepository) {
+        self.userRepository = userRepository
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -43,7 +43,9 @@ final class MyPageBlockUserViewController: UIViewController, UIScrollViewDelegat
         
         delegate()
         register()
-        bindViewModel()
+        setupTableView()
+        
+        bindAction()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -73,49 +75,72 @@ final class MyPageBlockUserViewController: UIViewController, UIScrollViewDelegat
         swipeBackGesture()
         hideTabBar()
         setWSSNavigationBar(title: StringLiterals.Navigation.Title.myPageBlockUser,
-                         left: self.rootView.backButton,
-                         right: nil)
+                            left: self.rootView.backButton,
+                            right: nil)
     }
     
-    private func bindViewModel() {
-        let input = MyPageBlockUserViewModel.Input(
-            backButtonDidTap: rootView.backButton.rx.tap,
-            unblockButtonDidTap: self.rootView.blockTableView.rx.itemSelected.asObservable()
-        )
+    private func setupTableView() {
+        getBlockUserList()
+            .subscribe(with: self, onNext: { owner, data in
+                if data.blocks.isEmpty {
+                    owner.rootView.emptyView.isHidden = false
+                }
+                owner.cellDataRelay.accept(data.blocks)
+            })
+            .disposed(by: disposeBag)
         
-        let output = viewModel.transform(from: input, disposeBag: disposeBag)
-        
-        output.bindCell
+        cellDataRelay
             .bind(to: rootView.blockTableView.rx.items(cellIdentifier: MyPageBlockUserTableViewCell.cellIdentifier,cellType: MyPageBlockUserTableViewCell.self)) { row, data, cell in
                 cell.bindData(image: data.avatarImage, nickname: data.nickname)
             }
             .disposed(by: disposeBag)
-        
-        output.showEmptyView
-            .drive(with: self, onNext: { owner, isShown in
-                owner.rootView.emptyView.isHidden = !isShown
-            })
-            .disposed(by: disposeBag)
-        
-        output.toastMessage
-            .observe(on: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, nickname in
-                owner.showToast(.deleteBlockUser(nickname: nickname))
-            })
-            .disposed(by: disposeBag)
-        
-        output.popViewController
-            .observe(on: MainScheduler.instance)
+    }
+    
+    private func bindAction() {
+        rootView.backButton.rx.tap
+            .throttle(.seconds(3), scheduler: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
         
-        output.reloadTableView
-            .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, _ in
-                owner.rootView.blockTableView.reloadData()
+        rootView.blockTableView.rx.itemSelected
+            .throttle(.seconds(Int(0.5)), scheduler: MainScheduler.instance)
+            .flatMapLatest { [weak self] indexPath -> Observable<String> in
+                guard let self = self else { return .empty() }
+                var blocks = cellDataRelay.value
+                let blockID = blocks[indexPath.row].blockId
+                var nickName = blocks[indexPath.row].nickname
+                if nickName.count > 8 {
+                    nickName = nickName.prefix(8) + "..."
+                }
+                
+                return self.deleteBlockUser(blockID: blockID)
+                    .map { _ -> String in
+                        blocks.remove(at: indexPath.row)
+                        self.cellDataRelay.accept(blocks)
+                        if blocks.isEmpty {
+                            self.rootView.emptyView.isHidden = false
+                        }
+                        self.rootView.blockTableView.reloadData()
+                        return nickName
+                    }
+            }
+            .subscribe(with: self, onNext: { owner, nickname in
+                owner.showToast(.deleteBlockUser(nickname: nickname))
+            }, onError: { error, _ in
+                print("Error: \(error)")
             })
             .disposed(by: disposeBag)
+    }
+    
+    //MARK: - API
+    
+    private func getBlockUserList() -> Observable<BlockUserResponse> {
+        return self.userRepository.getBlocksList()
+    }
+    
+    private func deleteBlockUser(blockID: Int) -> Observable<Void> {
+        return self.userRepository.deleteBlockUser(blockID: blockID)
     }
 }

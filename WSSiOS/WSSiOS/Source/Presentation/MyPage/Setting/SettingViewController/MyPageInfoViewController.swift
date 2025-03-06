@@ -95,7 +95,7 @@ final class MyPageInfoViewController: UIViewController {
         output.pushToBlockIDViewController
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
-                owner.pushToBlockIDViewController()
+                owner.pushToBlockUserViewController()
             })
             .disposed(by: disposeBag)
         

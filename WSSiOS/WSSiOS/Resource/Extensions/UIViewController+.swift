@@ -228,13 +228,11 @@ extension UIViewController {
         self.dismiss(animated: true)
     }
     
-    func pushToBlockIDViewController() {
+    func pushToBlockUserViewController() {
         let viewController = MyPageBlockUserViewController(
-            viewModel:MyPageBlockUserViewModel(
-                userRepository: DefaultUserRepository(
-                    userService: DefaultUserService(),
-                    blocksService: DefaultBlocksService()
-                )
+            userRepository: DefaultUserRepository(
+                userService: DefaultUserService(),
+                blocksService: DefaultBlocksService()
             )
         )
         
