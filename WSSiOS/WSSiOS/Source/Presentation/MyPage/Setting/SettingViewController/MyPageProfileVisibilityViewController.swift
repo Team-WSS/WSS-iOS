@@ -8,13 +8,17 @@
 import UIKit
 
 import RxSwift
+import RxCocoa
 
 final class MyPageProfileVisibilityViewController: UIViewController {
     
     //MARK: - Properties
     
-    private let viewModel: MyPageProfileVisibilityViewModel
+    private let userInfoRepository: UserInfoRepository
     private let disposeBag = DisposeBag()
+    
+    private var initStatus: Bool = true
+    private var isStatusRelay = BehaviorRelay<Bool>(value: true)
     
     //MARK: - Components
     
@@ -22,9 +26,9 @@ final class MyPageProfileVisibilityViewController: UIViewController {
     
     // MARK: - Life Cycle
     
-    init(viewModel: MyPageProfileVisibilityViewModel) {
+    init(userInfoRepository: UserInfoRepository) {
+        self.userInfoRepository = userInfoRepository
         
-        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -39,56 +43,77 @@ final class MyPageProfileVisibilityViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        bindViewModel()
+        bindAction()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        setNavigation()
-        hideTabBar()
-        swipeBackGesture()
+        bindViewWillAppearAction()
     }
     
     //MARK: - Bind
     
-    private func bindViewModel() {
-        let input = MyPageProfileVisibilityViewModel.Input(
-            isVisibilityToggleButtonDidTap: rootView.profilePrivateToggleButton.rx.tap,
-            backButtonDidTap: rootView.backButton.rx.tap,
-            completeButtonDidTap: rootView.completeButton.rx.tap)
+    private func bindViewWillAppearAction() {
+        hideTabBar()
+        swipeBackGesture()
         
-        let output = viewModel.transform(from: input, disposeBag: self.disposeBag)
-        
-        output.changePrivateToggleButton
-            .observe(on: MainScheduler.instance)
+        setWSSNavigationBar(title: StringLiterals.Navigation.Title.isVisibleProfile,
+                            left: self.rootView.backButton,
+                            right: self.rootView.completeButton)
+    }
+    
+    private func bindAction() {
+        self.getUserProfileVisibility()
+            .map { $0.isProfilePublic }
             .subscribe(with: self, onNext: { owner, isPublic in
-                owner.rootView.bindData(isPrivate: !isPublic)
+                owner.initStatus = isPublic
+                owner.isStatusRelay.accept(isPublic)
             })
             .disposed(by: disposeBag)
         
-        output.changeCompleteButton
-            .observe(on: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, change in
-                owner.rootView.changeCompleteButton(change: change)
+        self.isStatusRelay
+            .subscribe(with: self, onNext: { owner, status in
+                owner.rootView.bindData(isPrivate: !status)
+                owner.rootView.changeCompleteButton(change: owner.initStatus != status)
             })
             .disposed(by: disposeBag)
         
-        output.popViewControllerAction
-            .observe(on: MainScheduler.instance)
+        rootView.profilePrivateToggleButton.rx.tap
+            .subscribe(with: self, onNext: { owner, _ in
+                let currentValue = owner.isStatusRelay.value
+                owner.isStatusRelay.accept(!currentValue)
+            })
+            .disposed(by: disposeBag)
+        
+        rootView.backButton.rx.tap
             .bind(with: self, onNext: { owner, _ in
                 owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
+        
+        rootView.completeButton.rx.tap
+            .withUnretained(self)
+            .flatMap { owner, _ in
+                owner.patchUserProfileVisibility(isProfilePublic: owner.isStatusRelay.value)
+                    .catch { error in
+                        return Observable.empty()
+                    }
+            }
+            .subscribe(with: self, onNext: { owner, _ in
+                NotificationCenter.default.post(name: NSNotification.Name("ChangeVisibility"), object: owner.isStatusRelay.value)
+                owner.popToLastViewController()
+            })
+            .disposed(by: disposeBag)
     }
-}
-
-//MARK: - UI
-
-extension MyPageProfileVisibilityViewController {
-    private func setNavigation() {
-        setWSSNavigationBar(title: StringLiterals.Navigation.Title.isVisibleProfile,
-                         left: self.rootView.backButton,
-                         right: self.rootView.completeButton)
+    
+    //MARK: - API
+    
+    private func getUserProfileVisibility() -> Observable<UserProfileVisibility> {
+        return userInfoRepository.getUserProfileVisibility()
+    }
+    
+    private func patchUserProfileVisibility(isProfilePublic: Bool) -> Observable<Void> {
+        return userInfoRepository.patchUserProfileVisibility(isProfilePublic: isProfilePublic)
     }
 }
