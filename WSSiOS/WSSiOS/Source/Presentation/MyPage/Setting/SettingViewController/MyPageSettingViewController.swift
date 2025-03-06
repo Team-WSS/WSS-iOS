@@ -47,7 +47,7 @@ final class MyPageSettingViewController: UIViewController {
     //MARK: - Delegate
     
     private func register() {
-        rootView.tableView.register(
+        rootView.settingTableView.register(
             MyPageSettingTableViewCell.self,
             forCellReuseIdentifier: MyPageSettingTableViewCell.cellIdentifier)
     }
@@ -56,7 +56,7 @@ final class MyPageSettingViewController: UIViewController {
     
     private func bindCell() {
         Observable.just(settingList)
-            .bind(to: rootView.tableView.rx.items(
+            .bind(to: rootView.settingTableView.rx.items(
                 cellIdentifier: MyPageSettingTableViewCell.cellIdentifier,
                 cellType: MyPageSettingTableViewCell.self)) {(row, element, cell) in
                     cell.bindData(title: element)
@@ -73,9 +73,9 @@ final class MyPageSettingViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        rootView.tableView.rx.itemSelected
+        rootView.settingTableView.rx.itemSelected
             .subscribe(with: self, onNext: { owner, indexPath in
-                self.rootView.tableView.deselectRow(at: indexPath, animated: true)
+                self.rootView.settingTableView.deselectRow(at: indexPath, animated: true)
                 
                 switch indexPath.row {
                 case 0:
