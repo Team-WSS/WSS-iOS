@@ -167,7 +167,7 @@ final class MyPageChangeUserInfoView: UIView {
     
     //MARK: - Data
     
-    func bindData(data: ChangeUserInfo) {
+    func bindData(data: ChangeUserInfoEntity) {
         changeGenderButton(gender: data.gender)
         changeBirthYearLabel(year: data.birth)
     }
@@ -185,7 +185,7 @@ final class MyPageChangeUserInfoView: UIView {
     
     private func selectGenderButton(button: UIButton, select: Bool) {
         button.do {
-            var text = button == genderMaleButton ? StringLiterals.MyPage.ChangeUserInfo.male : StringLiterals.MyPage.ChangeUserInfo.female
+            let text = button == genderMaleButton ? StringLiterals.MyPage.ChangeUserInfo.male : StringLiterals.MyPage.ChangeUserInfo.female
             $0.setButtonAttributedTitle(text: text, font: .Body2, color: select ? .wssPrimary100 : .wssGray300)
             $0.backgroundColor = select ? .wssPrimary50 : .wssGray50
             $0.layer.borderWidth = 1

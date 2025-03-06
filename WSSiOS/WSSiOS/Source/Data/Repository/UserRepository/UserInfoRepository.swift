@@ -13,8 +13,8 @@ protocol UserInfoRepository {
     func getUserMeData() -> Observable<UserMeResult>
     func getMyProfileData() -> Observable<MyProfileResult>
     func getOtherProfile(userId: Int) -> Observable<OtherProfileResult>
-    func getUserInfo() -> Observable<UserInfo>
-    func putUserInfo(gender: String, birth: Int) -> Observable<Void>
+    func getUserInfo() -> Observable<UserInfoEntity>
+    func putUserInfo(userData: ChangeUserInfoEntity) -> Observable<Void>
     func patchUserName(userNickName: String) -> Observable<Void>
     func getUserProfileVisibility() -> Observable<UserProfileVisibilityDTO>
     func patchUserProfileVisibility(isProfilePublic: Bool) -> Observable<Void>
@@ -62,13 +62,15 @@ struct DefaultUserInfoRepository: UserInfoRepository {
             .asObservable()
     }
     
-    func getUserInfo() -> Observable<UserInfo> {
+    func getUserInfo() -> Observable<UserInfoEntity> {
         return userService.getUserInfo()
+            .map { $0.toEntity() }
             .asObservable()
     }
     
-    func putUserInfo(gender: String, birth: Int) -> Observable<Void> {
-        return userService.putUserInfo(gender: gender, birth: birth)
+    func putUserInfo(userData: ChangeUserInfoEntity) -> Observable<Void> {
+        let userDataDTO = userData.toDTO()
+        return userService.putUserInfo(userData: userDataDTO)
             .asObservable()
     }
     

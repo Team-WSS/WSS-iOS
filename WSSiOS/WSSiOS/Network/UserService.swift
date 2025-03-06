@@ -13,8 +13,8 @@ protocol UserService {
     func getUserData() -> Single<UserMeResult>
     func patchUserName(userNickName: String) -> Single<Void>
     func getUserNovelStatus(userId: Int) -> Single<UserNovelStatus>
-    func getUserInfo() -> Single<UserInfo>
-    func putUserInfo(gender: String, birth: Int) -> Single<Void>
+    func getUserInfo() -> Single<UserInfoResponse>
+    func putUserInfo(userData: ChangeUserInfoRequest) -> Single<Void>
     func getUserProfileVisibility() -> Single<UserProfileVisibilityDTO>
     func patchUserProfileVisibility(isProfilePublic: Bool) -> Single<Void>
     func getMyProfile() -> Single<MyProfileResult>
@@ -39,14 +39,6 @@ protocol UserService {
 final class DefaultUserService: NSObject, Networking {
     private let userNickNameQueryItems: [URLQueryItem] = [URLQueryItem(name: "userNickname",
                                                                        value: String(describing: 10))]
-    
-    private func makeUserInfoQueryItems(gender: String,
-                                        birth: Int) -> [URLQueryItem] {
-        return [
-            URLQueryItem(name: "gender", value: gender),
-            URLQueryItem(name: "birth", value: String(describing: birth))
-        ]
-    }
     
     private func makeUserProfileVisibilityQueryItems(isProfilePublic: Bool) -> [URLQueryItem] {
         return [ URLQueryItem(name: "isProfilePublic",
@@ -125,7 +117,7 @@ extension DefaultUserService: UserService {
         }
     }
     
-    func getUserInfo() -> Single<UserInfo> {
+    func getUserInfo() -> Single<UserInfoResponse> {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.User.userInfo,
@@ -136,7 +128,7 @@ extension DefaultUserService: UserService {
             
             return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
-                                       to: UserInfo.self) }
+                                       to: UserInfoResponse.self) }
                 .asSingle()
             
         } catch {
@@ -144,9 +136,8 @@ extension DefaultUserService: UserService {
         }
     }
     
-    func putUserInfo(gender: String, birth: Int) -> Single<Void> {
-        guard let userInfoData = try? JSONEncoder().encode(ChangeUserInfo(gender: gender,
-                                                                          birth: birth))
+    func putUserInfo(userData: ChangeUserInfoRequest) -> Single<Void> {
+        guard let userInfoData = try? JSONEncoder().encode(userData)
                 
         else {
             return .error(NetworkServiceError.invalidRequestError)
@@ -155,7 +146,6 @@ extension DefaultUserService: UserService {
         do {
             let request = try makeHTTPRequest(method: .put,
                                               path: URLs.User.userInfo,
-                                              queryItems: makeUserInfoQueryItems(gender: gender, birth: birth),
                                               headers: APIConstants.accessTokenHeader,
                                               body: userInfoData)
             

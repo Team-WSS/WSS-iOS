@@ -42,7 +42,7 @@ final class MyPageInfoViewModel: ViewModelType {
     struct Output {
         let cellData = BehaviorRelay<[String]>(value: [""])
         let emailData = BehaviorRelay<String>(value: "")
-        let genderAndBirthData = BehaviorRelay<ChangeUserInfo>(value: ChangeUserInfo(gender: "", birth: 0))
+        let genderAndBirthData = BehaviorRelay<ChangeUserInfoEntity>(value: ChangeUserInfoEntity(gender: "", birth: 0))
         let pushToOtherViewController = PublishRelay<PushToViewControllerFromInfoViewController>()
     }
     
@@ -79,16 +79,14 @@ final class MyPageInfoViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         Observable.just(())
-            .flatMapLatest { [weak self] _ -> Observable<UserInfo> in
+            .flatMapLatest { [weak self] _ -> Observable<UserInfoEntity> in
                 guard let self = self else { return Observable.empty() }
                 return self.getUserInfo()
             }
             .subscribe(with: self, onNext: { owner, data in
-                output.genderAndBirthData.accept(ChangeUserInfo(gender: data.gender, birth: data.birth))
+                output.emailData.accept(data.email)
+                output.genderAndBirthData.accept(ChangeUserInfoEntity(gender: data.gender, birth: data.birth))
                 UserDefaults.standard.set(data.birth, forKey: StringLiterals.UserDefault.userBirth)
-                
-                guard let email = data.email, !email.isEmpty else { return }
-                output.emailData.accept(email)
             }, onError: { owner, error in
                 print(error)
             })
@@ -124,7 +122,7 @@ final class MyPageInfoViewModel: ViewModelType {
     
     //MARK: - API
     
-    private func getUserInfo() -> Observable<UserInfo> {
+    private func getUserInfo() -> Observable<UserInfoEntity> {
         return userRepository.getUserInfo()
             .observe(on: MainScheduler.instance)
     }
