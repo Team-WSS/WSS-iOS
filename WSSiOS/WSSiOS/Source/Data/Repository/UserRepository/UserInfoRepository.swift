@@ -16,8 +16,8 @@ protocol UserInfoRepository {
     func getUserInfo() -> Observable<UserInfoEntity>
     func putUserInfo(userData: ChangeUserInfoEntity) -> Observable<Void>
     func patchUserName(userNickName: String) -> Observable<Void>
-    func getUserProfileVisibility() -> Observable<UserProfileVisibilityDTO>
-    func patchUserProfileVisibility(isProfilePublic: Bool) -> Observable<Void>
+    func getUserProfileVisibility() -> Observable<UserProfileVisibilityResponse>
+    func patchUserProfileVisibility(isProfilePublic: UserProfileVisibilityRequest) -> Observable<Void>
     func getUserNovelStatus(userId: Int) -> Observable<UserNovelStatus>
     func getUserNovelPreferences(userId: Int) -> Observable<UserNovelPreferencesResponse>
     func getUserGenrePreferences(userId: Int) -> Observable<UserGenrePreferences>
@@ -94,12 +94,12 @@ struct DefaultUserInfoRepository: UserInfoRepository {
             .asObservable()
     }
     
-    func getUserProfileVisibility() -> Observable<UserProfileVisibilityDTO> {
+    func getUserProfileVisibility() -> Observable<UserProfileVisibilityResponse> {
         return userService.getUserProfileVisibility()
             .asObservable()
     }
     
-    func patchUserProfileVisibility(isProfilePublic: Bool) -> Observable<Void> {
+    func patchUserProfileVisibility(isProfilePublic: UserProfileVisibilityRequest) -> Observable<Void> {
         return userService.patchUserProfileVisibility(isProfilePublic: isProfilePublic)
             .asObservable()
     }

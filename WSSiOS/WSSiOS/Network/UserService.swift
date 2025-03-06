@@ -15,8 +15,8 @@ protocol UserService {
     func getUserNovelStatus(userId: Int) -> Single<UserNovelStatus>
     func getUserInfo() -> Single<UserInfoResponse>
     func putUserInfo(userData: ChangeUserInfoRequest) -> Single<Void>
-    func getUserProfileVisibility() -> Single<UserProfileVisibilityDTO>
-    func patchUserProfileVisibility(isProfilePublic: Bool) -> Single<Void>
+    func getUserProfileVisibility() -> Single<UserProfileVisibilityResponse>
+    func patchUserProfileVisibility(isProfilePublic: UserProfileVisibilityRequest) -> Single<Void>
     func getMyProfile() -> Single<MyProfileResult>
     func getOtherProfile(userId: Int) -> Single<OtherProfileResult>
     func getUserNovelPreferences(userId: Int) -> Single<UserNovelPreferencesResponse>
@@ -159,7 +159,7 @@ extension DefaultUserService: UserService {
         }
     }
     
-    func getUserProfileVisibility() -> Single<UserProfileVisibilityDTO> {
+    func getUserProfileVisibility() -> Single<UserProfileVisibilityResponse> {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.User.isProfileVisibility,
@@ -170,7 +170,7 @@ extension DefaultUserService: UserService {
             return tokenCheckURLSession.rx.data(request: request)
                 .map {
                     try self.decode(data: $0,
-                                    to: UserProfileVisibilityDTO.self)
+                                    to: UserProfileVisibilityResponse.self)
                 }
                 .asSingle()
             
@@ -217,14 +217,13 @@ extension DefaultUserService: UserService {
         }
     }
     
-    func patchUserProfileVisibility(isProfilePublic: Bool) -> Single<Void> {
-        guard let userProfileVisibility = try? JSONEncoder().encode(UserProfileVisibilityDTO(isProfilePublic: isProfilePublic))  else {
+    func patchUserProfileVisibility(isProfilePublic: UserProfileVisibilityRequest) -> Single<Void> {
+        guard let userProfileVisibility = try? JSONEncoder().encode(isProfilePublic)  else {
             return .error(NetworkServiceError.invalidRequestError)
         }
         do {
             let request = try makeHTTPRequest(method: .patch,
                                               path: URLs.User.isProfileVisibility,
-                                              queryItems: makeUserProfileVisibilityQueryItems(isProfilePublic: isProfilePublic),
                                               headers: APIConstants.accessTokenHeader,
                                               body: userProfileVisibility)
             NetworkLogger.log(request: request)

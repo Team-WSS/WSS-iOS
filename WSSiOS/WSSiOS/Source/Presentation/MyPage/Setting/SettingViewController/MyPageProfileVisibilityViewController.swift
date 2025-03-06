@@ -95,7 +95,7 @@ final class MyPageProfileVisibilityViewController: UIViewController {
         rootView.completeButton.rx.tap
             .withUnretained(self)
             .flatMap { owner, _ in
-                owner.patchUserProfileVisibility(isProfilePublic: owner.isStatusRelay.value)
+                owner.patchUserProfileVisibility(isProfilePublic: UserProfileVisibilityRequest(isProfilePublic: owner.isStatusRelay.value))
                     .catch { error in
                         return Observable.empty()
                     }
@@ -109,11 +109,11 @@ final class MyPageProfileVisibilityViewController: UIViewController {
     
     //MARK: - API
     
-    private func getUserProfileVisibility() -> Observable<UserProfileVisibilityDTO> {
+    private func getUserProfileVisibility() -> Observable<UserProfileVisibilityResponse> {
         return userInfoRepository.getUserProfileVisibility()
     }
     
-    private func patchUserProfileVisibility(isProfilePublic: Bool) -> Observable<Void> {
+    private func patchUserProfileVisibility(isProfilePublic: UserProfileVisibilityRequest) -> Observable<Void> {
         return userInfoRepository.patchUserProfileVisibility(isProfilePublic: isProfilePublic)
     }
 }
