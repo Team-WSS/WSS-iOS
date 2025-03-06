@@ -18,6 +18,6 @@ struct OtherProfileResult: Codable {
     let isProfilePublic: Bool
 }
 
-struct UserProfileVisibility: Codable {
+struct UserProfileVisibilityDTO: Decodable, Encodable {
     let isProfilePublic: Bool
 }

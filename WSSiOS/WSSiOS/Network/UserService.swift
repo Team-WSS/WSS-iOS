@@ -15,7 +15,7 @@ protocol UserService {
     func getUserNovelStatus(userId: Int) -> Single<UserNovelStatus>
     func getUserInfo() -> Single<UserInfo>
     func putUserInfo(gender: String, birth: Int) -> Single<Void>
-    func getUserProfileVisibility() -> Single<UserProfileVisibility>
+    func getUserProfileVisibility() -> Single<UserProfileVisibilityDTO>
     func patchUserProfileVisibility(isProfilePublic: Bool) -> Single<Void>
     func getMyProfile() -> Single<MyProfileResult>
     func getOtherProfile(userId: Int) -> Single<OtherProfileResult>
@@ -169,7 +169,7 @@ extension DefaultUserService: UserService {
         }
     }
     
-    func getUserProfileVisibility() -> Single<UserProfileVisibility> {
+    func getUserProfileVisibility() -> Single<UserProfileVisibilityDTO> {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.User.isProfileVisibility,
@@ -180,7 +180,7 @@ extension DefaultUserService: UserService {
             return tokenCheckURLSession.rx.data(request: request)
                 .map {
                     try self.decode(data: $0,
-                                    to: UserProfileVisibility.self)
+                                    to: UserProfileVisibilityDTO.self)
                 }
                 .asSingle()
             
@@ -228,7 +228,7 @@ extension DefaultUserService: UserService {
     }
     
     func patchUserProfileVisibility(isProfilePublic: Bool) -> Single<Void> {
-        guard let userProfileVisibility = try? JSONEncoder().encode(UserProfileVisibility(isProfilePublic: isProfilePublic))  else {
+        guard let userProfileVisibility = try? JSONEncoder().encode(UserProfileVisibilityDTO(isProfilePublic: isProfilePublic))  else {
             return .error(NetworkServiceError.invalidRequestError)
         }
         do {

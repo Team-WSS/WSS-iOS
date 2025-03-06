@@ -109,7 +109,7 @@ final class MyPageProfileVisibilityViewController: UIViewController {
     
     //MARK: - API
     
-    private func getUserProfileVisibility() -> Observable<UserProfileVisibility> {
+    private func getUserProfileVisibility() -> Observable<UserProfileVisibilityDTO> {
         return userInfoRepository.getUserProfileVisibility()
     }
     
