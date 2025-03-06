@@ -14,7 +14,7 @@ final class ServiceTermAgreementViewController: UIViewController {
     
     //MARK: - Properties
     
-    private let userRepository: UserRepositoryWithUserService
+    private let userRepository: UserInfoRepository
     private let disposeBag = DisposeBag()
     
     private let agreedTerms = BehaviorRelay<Set<ServiceTerm>>(value: [])
@@ -26,7 +26,7 @@ final class ServiceTermAgreementViewController: UIViewController {
     
     //MARK: - Life Cycle
     
-    init(repository: UserRepositoryWithUserService) {
+    init(repository: UserInfoRepository) {
         self.userRepository = repository
         
         super.init(nibName: nil, bundle: nil)

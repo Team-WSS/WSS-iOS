@@ -57,9 +57,8 @@ enum WSSTabBarItem: CaseIterable {
                 recommendRepository: DefaultRecommendRepository(
                     recommendService: DefaultRecommendService()
                 ),
-                userRepository: DefaultUserRepository(
-                    userService: DefaultUserService(),
-                    blocksService: DefaultBlocksService()
+                userRepository: DefaultUserInfoRepository(
+                    userService: DefaultUserService()
                 ),
                 notificationRepository: DefaultNotificationRepository(
                     notificationService: DefaultNotificationService())
@@ -76,8 +75,11 @@ enum WSSTabBarItem: CaseIterable {
             let myPageVC = MyPageViewController(
                 viewModel: MyPageViewModel(
                     userRepository: DefaultUserRepository(
-                        userService: DefaultUserService(),
-                        blocksService: DefaultBlocksService()), profileId: userId))
+                        userInfoRepository: DefaultUserInfoRepository(
+                            userService: DefaultUserService()),
+                        userBlockRepository: DefaultUserBlockRepository(
+                            blocksService: DefaultBlocksService())),
+                    profileId: userId))
             myPageVC.entryType = .tabBar
             return myPageVC
         }

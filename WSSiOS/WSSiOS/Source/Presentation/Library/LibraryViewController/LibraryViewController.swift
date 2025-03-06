@@ -182,9 +182,9 @@ extension LibraryViewController {
     private func setLibraryChildViewController(userId: Int, data: UserNovelNovelStatus) -> LibraryChildViewController {
         return LibraryChildViewController(
             libraryViewModel: LibraryChildViewModel(
-                userRepository: DefaultUserRepository(
-                    userService: DefaultUserService(),
-                    blocksService: DefaultBlocksService()),
+                userRepository: DefaultUserInfoRepository(
+                    userService: DefaultUserService()
+                ),
                 initData: data,
                 userId: userId))
     }

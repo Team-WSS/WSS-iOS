@@ -15,8 +15,8 @@ final class MyPageBlockUserViewController: UIViewController, UIScrollViewDelegat
     //MARK: - Properties
     
     private let disposeBag = DisposeBag()
-    private let userRepository: UserRepositoryWithBlockService
-    private var cellDataRelay = BehaviorRelay<[BlockUserListDTO]>(value: [])
+    private let userRepository: UserBlockRepository
+    private var cellDataRelay = BehaviorRelay<[BlockUserListEntity]>(value: [])
     
     //MARK: - UI Components
     
@@ -24,7 +24,7 @@ final class MyPageBlockUserViewController: UIViewController, UIScrollViewDelegat
     
     // MARK: - Life Cycle
     
-    init(userRepository: UserRepositoryWithBlockService) {
+    init(userRepository: UserBlockRepository) {
         self.userRepository = userRepository
         
         super.init(nibName: nil, bundle: nil)
@@ -81,10 +81,9 @@ final class MyPageBlockUserViewController: UIViewController, UIScrollViewDelegat
     
     private func setupTableView() {
         getBlockUserList()
-            .map { $0.blocks }
             .subscribe(with: self, onNext: { owner, blocks in
-                owner.rootView.emptyView.isHidden = !blocks.isEmpty
-                owner.cellDataRelay.accept(blocks)
+                owner.rootView.emptyView.isHidden = !blocks.blocks.isEmpty
+                owner.cellDataRelay.accept(blocks.blocks)
             })
             .disposed(by: disposeBag)
         
@@ -110,7 +109,7 @@ final class MyPageBlockUserViewController: UIViewController, UIScrollViewDelegat
                 guard let self = self else { return .empty() }
                 var blocks = cellDataRelay.value
                 let blockID = blocks[indexPath.row].blockId
-                var nickName = blocks[indexPath.row].nickname
+                let nickName = blocks[indexPath.row].nickname
                 
                 return self.deleteBlockUser(blockID: blockID)
                     .map { _ -> String in
@@ -131,7 +130,7 @@ final class MyPageBlockUserViewController: UIViewController, UIScrollViewDelegat
     
     //MARK: - API
     
-    private func getBlockUserList() -> Observable<BlockUserResponse> {
+    private func getBlockUserList() -> Observable<BlockUserEntity> {
         return self.userRepository.getBlocksList()
     }
     

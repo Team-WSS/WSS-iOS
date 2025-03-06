@@ -15,7 +15,7 @@ final class HomeViewModel: ViewModelType {
     //MARK: - Properties
     
     private let recommendRepository: RecommendRepository
-    private let userRepository: UserRepositoryWithUserService
+    private let userRepository: UserInfoRepository
     private let notificationRepository: NotificationRepository
     private let disposeBag = DisposeBag()
     
@@ -91,7 +91,7 @@ final class HomeViewModel: ViewModelType {
     //MARK: - init
     
     init(recommendRepository: RecommendRepository,
-         userRepository: UserRepositoryWithUserService,
+         userRepository: UserInfoRepository,
          notificationRepository: NotificationRepository) {
         self.recommendRepository = recommendRepository
         self.userRepository = userRepository
@@ -269,7 +269,7 @@ extension HomeViewModel {
     //MARK: - API
     
     // 유저 정보 조회
-    func getUserMeData() -> Observable<UserMeResponse> {
+    func getUserMeData() -> Observable<UserMeResult> {
         return userRepository.getUserMeData()
     }
     

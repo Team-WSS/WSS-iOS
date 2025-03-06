@@ -1,15 +1,15 @@
 //
-//  UserRepository.swift
+//  UserInfoRepository.swift
 //  WSSiOS
 //
-//  Created by 신지원 on 1/5/24.
+//  Created by 신지원 on 3/6/25.
 //
 
 import Foundation
 
 import RxSwift
 
-protocol UserRepositoryWithUserService {
+protocol UserInfoRepository {
     func getUserMeData() -> Observable<UserMeResult>
     func getMyProfileData() -> Observable<MyProfileResult>
     func getOtherProfile(userId: Int) -> Observable<OtherProfileResult>
@@ -34,23 +34,14 @@ protocol UserRepositoryWithUserService {
     func patchTermSetting(serviceAgreed: Bool, privacyAgreed: Bool, marketingAgreed: Bool) -> Single<Void>
 }
 
-protocol UserRepositoryWithBlockService {
-    func getBlocksList() -> Observable<BlockUserEntity>
-    func deleteBlockUser(blockID: Int) -> Observable<Void>
-    func postBlockUser(userId: Int) -> Observable<Void>
-}
+struct DefaultUserInfoRepository: UserInfoRepository {
+    
+    private let userService: UserService
 
-struct DefaultUserRepository: UserRepositoryWithUserService, UserRepositoryWithBlockService {
-    private var userService: UserService
-    private var blocksService: BlocksService
-    
-    init(userService: UserService, blocksService: BlocksService) {
+    init(userService: UserService) {
         self.userService = userService
-        self.blocksService = blocksService
     }
-    
-    //MARK: - UserService
-    
+
     func getUserMeData() -> Observable<UserMeResult> {
         return userService.getUserData()
             .asObservable()
@@ -150,23 +141,5 @@ struct DefaultUserRepository: UserRepositoryWithUserService, UserRepositoryWithB
                                              privacyAgreed: privacyAgreed,
                                              marketingAgreed: marketingAgreed)
         return userService.patchTermSetting(requestBody)
-    }
-    
-    //MARK: - BlockService
-    
-    func getBlocksList() -> Observable<BlockUserEntity> {
-        return blocksService.getBlocksList()
-            .map { $0.toEntity() }
-            .asObservable()
-    }
-    
-    func deleteBlockUser(blockID: Int) -> Observable<Void> {
-        return blocksService.deleteBlockUser(blockID: blockID)
-            .asObservable()
-    }
-    
-    func postBlockUser(userId: Int) -> Observable<Void> {
-        return blocksService.postBlockUser(blockID: userId)
-            .asObservable()
     }
 }

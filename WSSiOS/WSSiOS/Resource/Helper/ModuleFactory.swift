@@ -43,8 +43,7 @@ extension ModuleFactory: OnboardingModuleFactory {
     
     func makeOnboardingViewController() -> UIViewController {
         return OnboardingViewController(viewModel: OnboardingViewModel(onboardingRepository: DefaultOnboardingRepository(onboardingService: DefaultOnboardingService()),
-                                                                       userRepository: DefaultUserRepository(userService: DefaultUserService(),
-                                                                                                             blocksService: DefaultBlocksService())))
+                                                                       userRepository: DefaultUserInfoRepository(userService: DefaultUserService())))
     }
     
     func makeOnboardingSuccessViewController(nickname: String) -> UIViewController {
@@ -54,7 +53,6 @@ extension ModuleFactory: OnboardingModuleFactory {
 
 extension ModuleFactory: ServiceTermAgreementFactory {
     func makeServiceTermAgreementViewController() -> UIViewController {
-        return ServiceTermAgreementViewController(repository: DefaultUserRepository(userService: DefaultUserService(),
-                                                                                    blocksService: DefaultBlocksService()))
+        return ServiceTermAgreementViewController(repository: DefaultUserInfoRepository(userService: DefaultUserService()))
     }
 }

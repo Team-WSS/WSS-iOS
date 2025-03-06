@@ -14,14 +14,14 @@ final class MyPageInfoViewModel: ViewModelType {
     
     //MARK: - Properties
     
-    private let userRepository: UserRepositoryWithUserService
+    private let userRepository: UserInfoRepository
     private let authRepository: AuthRepository
     
     private let settingList = StringLiterals.MyPage.SettingInfo.allCases.map { $0.rawValue }
     
     //MARK: - Life Cycle
     
-    init(userRepository: UserRepositoryWithUserService, authRepository: AuthRepository) {
+    init(userRepository: UserInfoRepository, authRepository: AuthRepository) {
         self.userRepository = userRepository
         self.authRepository = authRepository
     }

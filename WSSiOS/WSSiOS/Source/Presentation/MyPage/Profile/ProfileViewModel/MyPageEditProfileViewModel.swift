@@ -27,7 +27,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
     static let nicknameLimit = 10
     static let introLimit = 50
     
-    private let userRepository: UserRepositoryWithUserService
+    private let userRepository: UserInfoRepository
     private var profileData: MyProfileResult?
     private var avatarId: Int = -1
     
@@ -43,7 +43,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
     
     //MARK: - Life Cycle
     
-    init(userRepository: UserRepositoryWithUserService,
+    init(userRepository: UserInfoRepository,
          entryType: MyPageEditEntryType,
          profileData: MyProfileResult? = nil) {
         
