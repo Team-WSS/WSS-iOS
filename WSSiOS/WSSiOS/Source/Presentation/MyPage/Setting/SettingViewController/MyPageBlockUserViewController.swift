@@ -49,9 +49,7 @@ final class MyPageBlockUserViewController: UIViewController, UIScrollViewDelegat
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        swipeBackGesture()
-        setNavigation()
-        hideTabBar()
+        bindViewWillAppearAction()
     }
     
     //MARK: - Delegate
@@ -70,6 +68,14 @@ final class MyPageBlockUserViewController: UIViewController, UIScrollViewDelegat
     
     
     //MARK: - Bind
+    
+    private func bindViewWillAppearAction() {
+        swipeBackGesture()
+        hideTabBar()
+        setWSSNavigationBar(title: StringLiterals.Navigation.Title.myPageBlockUser,
+                         left: self.rootView.backButton,
+                         right: nil)
+    }
     
     private func bindViewModel() {
         let input = MyPageBlockUserViewModel.Input(
@@ -111,11 +117,5 @@ final class MyPageBlockUserViewController: UIViewController, UIScrollViewDelegat
                 owner.rootView.blockTableView.reloadData()
             })
             .disposed(by: disposeBag)
-    }
-    
-    private func setNavigation() {
-        setWSSNavigationBar(title: StringLiterals.Navigation.Title.myPageBlockUser,
-                         left: self.rootView.backButton,
-                         right: nil)
     }
 }
