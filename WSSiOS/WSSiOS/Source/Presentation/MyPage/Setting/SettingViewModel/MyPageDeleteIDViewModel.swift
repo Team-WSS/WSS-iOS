@@ -177,6 +177,5 @@ final class MyPageDeleteIDViewModel: ViewModelType {
     
     private func postWithdrawId(reason: String, refreshToken: String) -> Observable<Void> {
         return self.authRepository.postWithdrawId(reason: reason, refreshToken: refreshToken)
-            .asObservable()
     }
 }
