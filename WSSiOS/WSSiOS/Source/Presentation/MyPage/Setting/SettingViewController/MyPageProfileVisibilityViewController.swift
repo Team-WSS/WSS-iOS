@@ -66,21 +66,21 @@ final class MyPageProfileVisibilityViewController: UIViewController {
     private func bindAction() {
         self.getUserProfileVisibility()
             .map { $0.isProfilePublic }
-            .subscribe(with: self, onNext: { owner, isPublic in
+            .bind(with: self, onNext: { owner, isPublic in
                 owner.initStatus = isPublic
                 owner.isStatusRelay.accept(isPublic)
             })
             .disposed(by: disposeBag)
         
         self.isStatusRelay
-            .subscribe(with: self, onNext: { owner, status in
+            .bind(with: self, onNext: { owner, status in
                 owner.rootView.bindData(isPrivate: !status)
                 owner.rootView.changeCompleteButton(change: owner.initStatus != status)
             })
             .disposed(by: disposeBag)
         
         rootView.profilePrivateToggleButton.rx.tap
-            .subscribe(with: self, onNext: { owner, _ in
+            .bind(with: self, onNext: { owner, _ in
                 let currentValue = owner.isStatusRelay.value
                 owner.isStatusRelay.accept(!currentValue)
             })
@@ -100,7 +100,7 @@ final class MyPageProfileVisibilityViewController: UIViewController {
                         return Observable.empty()
                     }
             }
-            .subscribe(with: self, onNext: { owner, _ in
+            .bind(with: self, onNext: { owner, _ in
                 NotificationCenter.default.post(name: NSNotification.Name("ChangeVisibility"), object: owner.isStatusRelay.value)
                 owner.popToLastViewController()
             })
@@ -111,9 +111,11 @@ final class MyPageProfileVisibilityViewController: UIViewController {
     
     private func getUserProfileVisibility() -> Observable<UserProfileVisibilityResponse> {
         return userInfoRepository.getUserProfileVisibility()
+            .observe(on: MainScheduler.instance)
     }
     
     private func patchUserProfileVisibility(isProfilePublic: UserProfileVisibilityRequest) -> Observable<Void> {
         return userInfoRepository.patchUserProfileVisibility(isProfilePublic: isProfilePublic)
+            .observe(on: MainScheduler.instance)
     }
 }
