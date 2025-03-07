@@ -14,9 +14,9 @@ final class MyPagePushNotificationViewController: UIViewController {
     
     //MARK: - Properties
     
-    private let viewModel: MyPagePushNotificationViewModel
+    private let notificationRepository: NotificationRepository
     private let disposeBag = DisposeBag()
-    private let viewWillAppearEvent = PublishRelay<Void>()
+    private let activePushIsEnabled = BehaviorRelay<Bool>(value: true)
     
     //MARK: - Components
     
@@ -24,9 +24,9 @@ final class MyPagePushNotificationViewController: UIViewController {
     
     // MARK: - Life Cycle
     
-    init(viewModel: MyPagePushNotificationViewModel) {
+    init(notificationRepository: NotificationRepository) {
+        self.notificationRepository = notificationRepository
         
-        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -41,49 +41,68 @@ final class MyPagePushNotificationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        bindViewModel()
+        bindAction()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        viewWillAppearEvent.accept(())
-        hideTabBar()
-        swipeBackGesture()
-        setNavigationBar()
+        bindViewModelAction()
     }
     
     //MARK: - Bind
     
-    private func bindViewModel() {
-        let input = MyPagePushNotificationViewModel.Input(
-            viewWillAppearEvent: viewWillAppearEvent.asObservable(),
-            activePushSettingSectionDidTap: rootView.activePushSettingSection.rx.tap
-        )
-        let output = viewModel.transform(from: input,
-                                         disposeBag: disposeBag)
-        
-        output.activePushIsEnabled
-            .drive(with: self, onNext: { owner, isEnabled in
-                owner.rootView.bindData(isEnabled: isEnabled)
-            })
-            .disposed(by: disposeBag)
-        
+    private func bindViewModelAction() {
+        getUserPushNotificationSetting()
+        hideTabBar()
+        swipeBackGesture()
+        setWSSNavigationBar(title: StringLiterals.Navigation.Title.pushNotification,
+                            left: self.rootView.backButton,
+                            right: nil)
+    }
+    
+    private func bindAction() {
         rootView.backButton.rx.tap
             .asDriver()
             .drive(with: self, onNext: {owner, _ in
                 owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
+        
+        rootView.activePushSettingSection.rx.tap
+            .withLatestFrom(activePushIsEnabled)
+            .bind(with: self, onNext: { owner, isEnalbed in
+                owner.postUserPushNotificationSetting(isPushEnabled: !isEnalbed)
+            })
+            .disposed(by: disposeBag)
+        
+        activePushIsEnabled
+            .bind(with: self, onNext: { owner, isEnabled in
+                owner.rootView.bindData(isEnabled: isEnabled)
+            })
+            .disposed(by: disposeBag)
+        
     }
-}
-
-//MARK: - UI
-
-extension MyPagePushNotificationViewController {
-    private func setNavigationBar() {
-        setWSSNavigationBar(title: StringLiterals.Navigation.Title.pushNotification,
-                            left: self.rootView.backButton,
-                            right: nil)
+    
+    // MARK: - API
+    
+    func getUserPushNotificationSetting() {
+        notificationRepository.getUserPushNotificationSetting()
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onSuccess: { owner, data in
+                owner.activePushIsEnabled.accept(data.isPushEnabled)
+            }, onFailure: { onwer, error in
+                print(error)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    func postUserPushNotificationSetting(isPushEnabled: Bool) {
+        notificationRepository.postUserPushNotificationSetting(isPushEnabled: isPushEnabled)
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onSuccess: { owner, _ in
+                owner.activePushIsEnabled.accept(isPushEnabled)
+            })
+            .disposed(by: disposeBag)
     }
 }

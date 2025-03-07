@@ -370,9 +370,8 @@ extension UIViewController {
     
     func pushToMyPagePushNotificationViewController() {
         let viewController = MyPagePushNotificationViewController(
-            viewModel: MyPagePushNotificationViewModel(
-                notificationRepository: DefaultNotificationRepository(
-                    notificationService: DefaultNotificationService())))
+            notificationRepository: DefaultNotificationRepository(
+                notificationService: DefaultNotificationService()))
         viewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(viewController, animated: true)
         
