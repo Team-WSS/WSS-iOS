@@ -25,8 +25,8 @@ final class MyPageChangeUserInfoViewController: UIViewController {
     private let gender = UserDefaults.standard.string(forKey: StringLiterals.UserDefault.userGender) ?? ""
     private let birth = UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userBirth)
     
-    private var currentGender = ""
-    private var currentBirth = 0
+    private var currentGender = BehaviorRelay<String>(value: "")
+    private var currentBirth = BehaviorRelay<Int>(value: 0)
     private var isEnabledCompleteButton = BehaviorRelay<Bool>(value: false)
     
     //MARK: - Components
@@ -72,28 +72,22 @@ final class MyPageChangeUserInfoViewController: UIViewController {
     }
     
     private func bindAction() {
-        currentGender = Gender.male
-        currentBirth = birth
-
-        rootView.genderMaleButton.rx.tap
-            .bind(with: self, onNext: { owner, _ in
-                owner.currentGender = Gender.male
-                owner.rootView.changeGenderButton(gender: owner.currentGender)
-                owner.isEnabledCompleteButton.accept(owner.checkIsEnabledCompleteButton())
-            })
-            .disposed(by: disposeBag)
+        currentGender.accept(gender)
+        currentBirth.accept(birth)
         
-        rootView.genderFemaleButton.rx.tap
-            .bind(with: self, onNext: { owner, _ in
-                owner.currentGender = Gender.female
-                owner.rootView.changeGenderButton(gender: owner.currentGender)
-                owner.isEnabledCompleteButton.accept(owner.checkIsEnabledCompleteButton())
-            })
-            .disposed(by: disposeBag)
+        Observable.merge(
+            rootView.genderMaleButton.rx.tap.map { Gender.male },
+            rootView.genderFemaleButton.rx.tap.map { Gender.female }
+        )
+        .bind(with: self, onNext: { owner, gender in
+            owner.currentGender.accept(gender)
+        })
+        .disposed(by: disposeBag)
         
         rootView.birthButtonView.rx.tapGesture()
+            .when(.recognized)
             .subscribe(with: self, onNext: { owner, _ in
-                owner.presentModalViewController(MyPageChangeUserBirthViewController(userBirth: owner.birth))
+                owner.presentModalViewController(MyPageChangeUserBirthViewController(userBirth: owner.currentBirth.value))
             })
             .disposed(by: disposeBag)
         
@@ -108,7 +102,7 @@ final class MyPageChangeUserInfoViewController: UIViewController {
             .withUnretained(self)
             .flatMapLatest { owner, _ -> Observable<Void> in
                 guard owner.isEnabledCompleteButton.value else { return .empty() }
-                let userData = ChangeUserInfoEntity(gender: owner.currentGender, birth: owner.currentBirth)
+                let userData = ChangeUserInfoEntity(gender: owner.currentGender.value, birth: owner.currentBirth.value)
                 return owner.putUserInfo(userData: userData)
             }
             .observe(on: MainScheduler.instance)
@@ -116,8 +110,8 @@ final class MyPageChangeUserInfoViewController: UIViewController {
                 UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.userGender)
                 UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.userBirth)
                 
-                UserDefaults.standard.set(owner.currentGender, forKey: StringLiterals.UserDefault.userGender)
-                UserDefaults.standard.set(owner.currentBirth, forKey: StringLiterals.UserDefault.userBirth)
+                UserDefaults.standard.set(owner.currentGender.value, forKey: StringLiterals.UserDefault.userGender)
+                UserDefaults.standard.set(owner.currentBirth.value, forKey: StringLiterals.UserDefault.userBirth)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                     NotificationCenter.default.post(name: NSNotification.Name("ChangeUserInfo"), object: nil)
                 }
@@ -133,8 +127,28 @@ final class MyPageChangeUserInfoViewController: UIViewController {
                 return notification.userInfo?["userBirth"] as? Int
             }
             .bind(with: self, onNext: { owner, userBirth in
-                owner.currentBirth = userBirth
+                owner.currentBirth.accept(userBirth)
                 owner.isEnabledCompleteButton.accept(owner.checkIsEnabledCompleteButton())
+            })
+            .disposed(by: disposeBag)
+        
+        currentGender
+            .bind(with: self, onNext: { owner, gender in
+                owner.rootView.changeGenderButton(gender: gender)
+                owner.isEnabledCompleteButton.accept(owner.checkIsEnabledCompleteButton())
+            })
+            .disposed(by: disposeBag)
+        
+        currentBirth
+            .bind(with: self, onNext: { owner, birth in
+                owner.rootView.changeBirthYearLabel(year: birth)
+                owner.isEnabledCompleteButton.accept(owner.checkIsEnabledCompleteButton())
+            })
+            .disposed(by: disposeBag)
+        
+        isEnabledCompleteButton
+            .bind(with: self, onNext: { owner, isEnabled in
+                owner.rootView.isEnabledCompleteButton(isEnabled: isEnabled)
             })
             .disposed(by: disposeBag)
     }
@@ -149,6 +163,7 @@ final class MyPageChangeUserInfoViewController: UIViewController {
     //MARK: - Custom Method
     
     private func checkIsEnabledCompleteButton() -> Bool {
-        return self.gender != currentGender || self.birth != currentBirth
+        let isEnabled = self.gender != currentGender.value || self.birth != currentBirth.value
+        return isEnabled
     }
 }
