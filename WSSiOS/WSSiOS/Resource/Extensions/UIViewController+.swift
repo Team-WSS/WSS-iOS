@@ -380,14 +380,11 @@ extension UIViewController {
     
     func pushToChangeUserInfoViewController() {
         let viewController = MyPageChangeUserInfoViewController(
-            viewModel: MyPageChangeUserInfoViewModel(
                 userRepository: DefaultUserInfoRepository(
                     userService: DefaultUserService()
-                )
             )
         )
         viewController.hidesBottomBarWhenPushed = true
-        
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
