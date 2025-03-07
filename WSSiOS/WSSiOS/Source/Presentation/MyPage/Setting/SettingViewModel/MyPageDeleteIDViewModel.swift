@@ -141,7 +141,8 @@ final class MyPageDeleteIDViewModel: ViewModelType {
                 }
                 
                 guard let refreshTokenString = UserDefaults.standard.string(forKey: StringLiterals.UserDefault.refreshToken) else { return Observable.empty() }
-                return self.postWithdrawId(reason: reasonString, refreshToken: refreshTokenString)
+                let withdrawData = WithdrawRequest(reason: reasonString, refreshToken: refreshTokenString)
+                return self.postWithdrawId(withdrawData: withdrawData)
             }
             .observe(on: MainScheduler.instance)
             .subscribe(
@@ -179,7 +180,7 @@ final class MyPageDeleteIDViewModel: ViewModelType {
     
     //MARK: - API
     
-    private func postWithdrawId(reason: String, refreshToken: String) -> Observable<Void> {
-        return self.authRepository.postWithdrawId(reason: reason, refreshToken: refreshToken)
+    private func postWithdrawId(withdrawData: WithdrawRequest) -> Observable<Void> {
+        return self.authRepository.postWithdrawId(withdrawData: withdrawData)
     }
 }

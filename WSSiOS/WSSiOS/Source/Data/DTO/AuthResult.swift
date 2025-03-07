@@ -27,7 +27,7 @@ struct ReissueResponse: Decodable {
     let refreshToken: String
 }
 
-struct WithdrawRequest: Codable {
+struct WithdrawRequest: Encodable {
     let reason: String
     let refreshToken: String
 }
