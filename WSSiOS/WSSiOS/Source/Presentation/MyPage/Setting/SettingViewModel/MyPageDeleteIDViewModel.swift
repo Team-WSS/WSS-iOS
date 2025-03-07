@@ -15,10 +15,11 @@ final class MyPageDeleteIDViewModel: ViewModelType {
     //MARK: - Properties
     
     private let authRepository: AuthRepository
+    
     static let textViewMaxLimit = 80
     static let exceptionIndexPath: IndexPath = [ 0 , 4 ]
-    private  let whitespaceRegex = "^[\\s]*$"
     
+    private  let whitespaceRegex = "^[\\s]*$"
     private let reasonCellTitle = BehaviorRelay<[String]>(value: StringLiterals.MyPage.DeleteIDReason.allCases.map { $0.rawValue })
     private let checkCellTitle = BehaviorRelay<[(String, String)]>(value: zip(StringLiterals.MyPage.DeleteIDCheckTitle.allCases, StringLiterals.MyPage.DeleteIDCheckContent.allCases).map { ($0.rawValue, $1.rawValue) })
 
@@ -45,6 +46,7 @@ final class MyPageDeleteIDViewModel: ViewModelType {
     struct Output {
         let bindReasonCell: Observable<[String]>
         let bindCheckCell: Observable<[(String, String)]>
+        
         let tapReasonCell = PublishRelay<IndexPath>()
         let popViewController = PublishRelay<Bool>()
         let changeAgreeButtonColor = BehaviorRelay<Bool>(value: false)
@@ -165,7 +167,9 @@ final class MyPageDeleteIDViewModel: ViewModelType {
                            output.changeAgreeButtonColor)
             .map { exceptionReasonContent, cellIndexPath, tappedAgreeButton in
                 guard tappedAgreeButton else { return false }
-                return cellIndexPath != MyPageDeleteIDViewModel.exceptionIndexPath || (exceptionReasonContent.range(of: self.whitespaceRegex, options: .regularExpression) == nil)
+                let normalCondition = cellIndexPath != MyPageDeleteIDViewModel.exceptionIndexPath
+                let exceptionIndexCondition = exceptionReasonContent.range(of: self.whitespaceRegex, options: .regularExpression) == nil
+                return normalCondition || exceptionIndexCondition
             }
             .bind(to: output.completeButtonIsAble)
             .disposed(by: disposeBag)
