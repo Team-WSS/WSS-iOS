@@ -14,7 +14,7 @@ struct UserNovelEntity {
     let userNovels: [UserNovelListEntity]
 }
 
-extension UserNovelResponse {
+extension UserNovelListResponse {
     func toEntity() -> UserNovelEntity {
         return UserNovelEntity(userNovelCount: self.userNovelCount,
                                userNovelRating: self.userNovelRating,
@@ -33,7 +33,7 @@ struct UserNovelListEntity {
     let hasNovelRating: Bool
 }
 
-extension UserNovelListDTO {
+extension UserNovelResponse {
     func toEntity() -> UserNovelListEntity {
         let novelRatingText = String(round(self.novelRating * 10) / 10)
         let hasNovelRating = self.novelRating != 0.0

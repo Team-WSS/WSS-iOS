@@ -28,7 +28,7 @@ protocol UserService {
                           readStatus: String,
                           lastUserNovelId: Int,
                           size: Int,
-                          sortType: String) -> Single<UserNovelResponse>
+                          sortType: String) -> Single<UserNovelListResponse>
     func getAppMinimumVersion() -> Single<AppMinimumVersion>
     
     // 약관동의 관련
@@ -356,7 +356,7 @@ extension DefaultUserService: UserService {
                           readStatus: String,
                           lastUserNovelId: Int,
                           size: Int,
-                          sortType: String) -> Single<UserNovelResponse> {
+                          sortType: String) -> Single<UserNovelListResponse> {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.User.getUserNovel(userId: userId),
@@ -371,7 +371,7 @@ extension DefaultUserService: UserService {
             
             return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
-                                       to: UserNovelResponse.self) }
+                                       to: UserNovelListResponse.self) }
                 .asSingle()
         } catch {
             return Single.error(error)
