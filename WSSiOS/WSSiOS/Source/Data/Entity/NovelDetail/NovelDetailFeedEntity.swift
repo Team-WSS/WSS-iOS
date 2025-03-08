@@ -9,7 +9,7 @@ import Foundation
 
 struct NovelDetailFeedEntity {
     let isLoadable: Bool
-    let feeds: [TotalFeedListEntity]
+    let feeds: [TotalFeedEntity]
 }
 
 extension NovelDetailFeedResponse {

@@ -184,7 +184,7 @@ final class FeedCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Data
     
-    func bindData(data: TotalFeedListEntity) {
+    func bindData(data: TotalFeedEntity) {
         userView.bindData(imageURL: data.avatarImage,
                           nickname: data.nickname,
                           createdDate: data.createdDate,

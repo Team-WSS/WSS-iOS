@@ -27,7 +27,7 @@ final class FeedGenreViewModel: ViewModelType {
     
     // output
     
-    private let feedList = BehaviorRelay<[TotalFeedListEntity]>(value: [])
+    private let feedList = BehaviorRelay<[TotalFeedEntity]>(value: [])
     private let pushToFeedDetailViewController = PublishRelay<Int>()
     private let pushToUserViewController = PublishRelay<Int>()
     private let pushToNovelDetailViewController = PublishRelay<Int>()
@@ -63,7 +63,7 @@ final class FeedGenreViewModel: ViewModelType {
     }
     
     struct Output {
-        let feedList: Observable<[TotalFeedListEntity]>
+        let feedList: Observable<[TotalFeedEntity]>
         let pushToFeedDetailViewController: Observable<Int>
         let pushToUserViewController: Observable<Int>
         let pushToNovelDetailViewController: Observable<Int>
@@ -264,7 +264,7 @@ final class FeedGenreViewModel: ViewModelType {
     
     //MARK: - API
     
-    private func getFeedData(category: String, lastFeedId: Int, size: Int?) -> Observable<TotalFeedEntity> {
+    private func getFeedData(category: String, lastFeedId: Int, size: Int?) -> Observable<TotalFeedListEntity> {
         return self.feedRepository.getFeedData(category: category, lastFeedId: lastFeedId, size: size)
     }
     

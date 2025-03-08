@@ -5,21 +5,21 @@
 //  Created by 신지원 on 3/4/25.
 //
 
-struct TotalFeedEntity {
+struct TotalFeedListEntity {
     let category: String
     let isLoadable: Bool
-    let feeds: [TotalFeedListEntity]
+    let feeds: [TotalFeedEntity]
 }
 
 extension TotalFeedListResponse {
-    func toEntity() -> TotalFeedEntity {
-        return TotalFeedEntity(category: self.category,
+    func toEntity() -> TotalFeedListEntity {
+        return TotalFeedListEntity(category: self.category,
                                isLoadable: self.isLoadable,
                                feeds: self.feeds.map { $0.toEntity() })
     }
 }
 
-struct TotalFeedListEntity {
+struct TotalFeedEntity {
     let feedId: Int
     let userId: Int
     let nickname: String
@@ -40,10 +40,10 @@ struct TotalFeedListEntity {
 }
 
 extension TotalFeedResponse {
-    func toEntity() -> TotalFeedListEntity {
+    func toEntity() -> TotalFeedEntity {
         let categoryText = self.relevantCategories.joined(separator: ", ")
         
-        return TotalFeedListEntity(
+        return TotalFeedEntity(
             feedId: self.feedId,
             userId: self.userId,
             nickname: self.nickname,
