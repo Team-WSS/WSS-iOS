@@ -31,7 +31,7 @@ protocol UserRepository {
                           readStatus: String,
                           lastUserNovelId: Int,
                           size: Int,
-                          sortType: String) -> Observable<UserNovelEntity>
+                          sortType: String) -> Observable<UserNovelListEntity>
     func getAppMinimumVersion() -> Observable<AppMinimumVersion>
     
     // 약관동의
@@ -136,7 +136,7 @@ struct DefaultUserRepository: UserRepository {
             .asObservable()
     }
     
-    func getUserNovelList(userId: Int, readStatus: String, lastUserNovelId: Int, size: Int, sortType: String) -> Observable<UserNovelEntity> {
+    func getUserNovelList(userId: Int, readStatus: String, lastUserNovelId: Int, size: Int, sortType: String) -> Observable<UserNovelListEntity> {
         return userService.getUserNovelList(userId: userId,
                                             readStatus: readStatus,
                                             lastUserNovelId: lastUserNovelId,
