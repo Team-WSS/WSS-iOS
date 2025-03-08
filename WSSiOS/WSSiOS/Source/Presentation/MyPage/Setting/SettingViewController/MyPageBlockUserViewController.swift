@@ -16,7 +16,7 @@ final class MyPageBlockUserViewController: UIViewController, UIScrollViewDelegat
     
     private let disposeBag = DisposeBag()
     private let userRepository: UserBlockRepository
-    private var cellDataRelay = BehaviorRelay<[BlockUserListEntity]>(value: [])
+    private var cellDataRelay = BehaviorRelay<[BlockUserEntity]>(value: [])
     
     //MARK: - UI Components
     
@@ -131,7 +131,7 @@ final class MyPageBlockUserViewController: UIViewController, UIScrollViewDelegat
     
     //MARK: - API
     
-    private func getBlockUserList() -> Observable<BlockUserEntity> {
+    private func getBlockUserList() -> Observable<BlockUserListEntity> {
         return self.userRepository.getBlocksList()
     }
     

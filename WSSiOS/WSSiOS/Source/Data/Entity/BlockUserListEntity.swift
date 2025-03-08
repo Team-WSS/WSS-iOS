@@ -7,27 +7,27 @@
 
 import Foundation
 
-struct BlockUserEntity {
-    let blocks: [BlockUserListEntity]
+struct BlockUserListEntity {
+    let blocks: [BlockUserEntity]
 }
 
-extension BlockUserResponse {
-    func toEntity() -> BlockUserEntity {
-        return BlockUserEntity(blocks: self.blocks.map { $0.toEntity() })
+extension BlockUserListResponse {
+    func toEntity() -> BlockUserListEntity {
+        return BlockUserListEntity(blocks: self.blocks.map { $0.toEntity() })
     }
 }
 
-struct BlockUserListEntity {
+struct BlockUserEntity {
     var blockId: Int
     var userId: Int
     var nickname: String
     var avatarImage: String
 }
 
-extension BlockUserListDTO {
-    func toEntity() -> BlockUserListEntity {
+extension BlockUserResponse {
+    func toEntity() -> BlockUserEntity {
         let nicknameText = self.nickname.count > 8 ? self.nickname.prefix(8) + "..." : self.nickname
-        return BlockUserListEntity(blockId: self.blockId,
+        return BlockUserEntity(blockId: self.blockId,
                                    userId: self.userId,
                                    nickname: nicknameText,
                                    avatarImage: self.avatarImage)

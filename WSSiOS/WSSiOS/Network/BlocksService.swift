@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 
 protocol BlocksService {
-    func getBlocksList() -> Single<BlockUserResponse>
+    func getBlocksList() -> Single<BlockUserListResponse>
     func deleteBlockUser(blockID: Int) -> Single<Void>
     func postBlockUser(blockID: Int) -> Single<Void>
 }
@@ -22,7 +22,7 @@ final class DefaultBlocksService: NSObject, Networking {
 }
 
 extension DefaultBlocksService: BlocksService {
-    func getBlocksList() -> Single<BlockUserResponse> {
+    func getBlocksList() -> Single<BlockUserListResponse> {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.MyPage.Block.blocks,
@@ -33,7 +33,7 @@ extension DefaultBlocksService: BlocksService {
             
             return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
-                                       to: BlockUserResponse.self) }
+                                       to: BlockUserListResponse.self) }
                 .asSingle()
         } catch {
             return Single.error(error)
@@ -59,7 +59,7 @@ extension DefaultBlocksService: BlocksService {
     }
     
     func postBlockUser(blockID: Int) -> Single<Void> {
-        guard let blockUser = try? JSONEncoder().encode(BlockUserIdRequest(userId: blockID)) else {
+        guard let blockUser = try? JSONEncoder().encode(BlockUserRequest(userId: blockID)) else {
             return Single.error(NetworkServiceError.invalidRequestError)
         }
         do {

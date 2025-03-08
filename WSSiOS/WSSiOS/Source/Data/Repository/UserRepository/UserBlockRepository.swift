@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 
 protocol UserBlockRepository {
-    func getBlocksList() -> Observable<BlockUserEntity>
+    func getBlocksList() -> Observable<BlockUserListEntity>
     func deleteBlockUser(blockID: Int) -> Observable<Void>
     func postBlockUser(userId: Int) -> Observable<Void>
 }
@@ -24,7 +24,7 @@ struct DefaultUserBlockRepository: UserBlockRepository {
     
     //MARK: - BlockService
     
-    func getBlocksList() -> Observable<BlockUserEntity> {
+    func getBlocksList() -> Observable<BlockUserListEntity> {
         return blocksService.getBlocksList()
             .map { $0.toEntity() }
             .asObservable()
