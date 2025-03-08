@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 
 protocol FeedService {
-    func getFeedList(category: String, lastFeedId: Int, size: Int) -> Single<TotalFeedResponse>
+    func getFeedList(category: String, lastFeedId: Int, size: Int) -> Single<TotalFeedListResponse>
     func postFeed(relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool) -> Single<Void>
     func putFeed(feedId: Int, relevantCategories: [String], feedContent: String, novelId: Int?, isSpoiler: Bool) -> Single<Void>
 }
@@ -26,7 +26,7 @@ final class DefaultFeedService: NSObject, Networking, FeedService {
         ]
     }
 
-    func getFeedList(category: String, lastFeedId: Int, size: Int) -> Single<TotalFeedResponse> {
+    func getFeedList(category: String, lastFeedId: Int, size: Int) -> Single<TotalFeedListResponse> {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.Feed.getFeeds,
@@ -40,7 +40,7 @@ final class DefaultFeedService: NSObject, Networking, FeedService {
 
             return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
-                                       to: TotalFeedResponse.self) }
+                                       to: TotalFeedListResponse.self) }
                 .asSingle()
 
         } catch {

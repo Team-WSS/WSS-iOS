@@ -7,13 +7,13 @@
 
 import Foundation
 
-struct TotalFeedResponse: Decodable {
+struct TotalFeedListResponse: Decodable {
     let category: String
     let isLoadable: Bool
-    let feeds: [TotalFeedListDTO]
+    let feeds: [TotalFeedResponse]
 }
 
-struct TotalFeedListDTO: Decodable {
+struct TotalFeedResponse: Decodable {
     let feedId: Int
     let userId: Int
     let nickname: String

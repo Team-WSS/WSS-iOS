@@ -11,7 +11,7 @@ struct TotalFeedEntity {
     let feeds: [TotalFeedListEntity]
 }
 
-extension TotalFeedResponse {
+extension TotalFeedListResponse {
     func toEntity() -> TotalFeedEntity {
         return TotalFeedEntity(category: self.category,
                                isLoadable: self.isLoadable,
@@ -39,7 +39,7 @@ struct TotalFeedListEntity {
     let isMyFeed: Bool
 }
 
-extension TotalFeedListDTO {
+extension TotalFeedResponse {
     func toEntity() -> TotalFeedListEntity {
         let categoryText = self.relevantCategories.joined(separator: ", ")
         
