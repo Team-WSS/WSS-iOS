@@ -10,6 +10,7 @@ import UIKit
 import RxSwift
 import RxRelay
 import SnapKit
+import Then
 
 final class FeedViewController: UIViewController {
     
@@ -17,7 +18,6 @@ final class FeedViewController: UIViewController {
     
     private let disposeBag = DisposeBag()
     private var categoryList = BehaviorRelay<[NewNovelGenre]>(value: [])
-    private let viewModel: FeedViewModel
     
     //MARK: - Components
     
@@ -30,16 +30,6 @@ final class FeedViewController: UIViewController {
     
     // MARK: - Life Cycle
     
-    init(viewModel: FeedViewModel) {
-        self.viewModel = viewModel
-        
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -49,9 +39,11 @@ final class FeedViewController: UIViewController {
         
         register()
         delegate()
-        bindViewModel()
-        setupPages()
-        bindColletionView()
+
+        setupPageBar()
+        setupPageViewController()
+        
+        bindAction()
         
         AmplitudeManager.shared.track(AmplitudeEvent.Feed.feedAll)
     }
@@ -66,9 +58,17 @@ final class FeedViewController: UIViewController {
     private func delegate() {
         pageViewController.delegate = self
         pageViewController.dataSource = self
+        
+        pageBar.feedPageBarCollectionView.rx
+            .setDelegate(self)
+            .disposed(by: disposeBag)
     }
     
-    private func bindColletionView() {
+    private func setupPageBar() {
+        let gender = UserDefaults.standard.string(forKey: StringLiterals.UserDefault.userGender)
+        let category = gender == "M" ? NewNovelGenre.feedMaleGenres : NewNovelGenre.feedFemaleGenres
+        self.categoryList.accept(category)
+        
         categoryList
             .bind(to: pageBar.feedPageBarCollectionView.rx.items(
                 cellIdentifier: FeedPageBarCollectionViewCell.cellIdentifier,
@@ -77,16 +77,15 @@ final class FeedViewController: UIViewController {
                 }
                 .disposed(by: disposeBag)
         
-        pageBar.feedPageBarCollectionView.rx
-            .setDelegate(self).disposed(by: disposeBag)
-        
-        pageBar.feedPageBarCollectionView
-            .selectItem(at: IndexPath(item: 0, section: 0),
-                        animated: true,
-                        scrollPosition: [])
+        DispatchQueue.main.async {
+            self.pageBar.feedPageBarCollectionView
+                .selectItem(at: IndexPath(item: 0, section: 0),
+                            animated: true,
+                            scrollPosition: [])
+        }
     }
     
-    private func setupPages() {
+    private func setupPageViewController() {
         for pageIndex in 0..<categoryList.value.count {
             let category = categoryList.value[pageIndex]
             let viewController = FeedGenreViewController(
@@ -114,27 +113,14 @@ final class FeedViewController: UIViewController {
                                               completion: nil)
     }
     
-    private func bindViewModel() {
-        let input = FeedViewModel.Input(
-            pageBarTapped: pageBar.feedPageBarCollectionView.rx.itemSelected,
-            createFeedButtonDidTap: navigationBar.createFeedButton.rx.tap,
-            feedEditedNotification: NotificationCenter.default.rx.notification(Notification.Name("FeedEdited")).asObservable(),
-            blockUserNotification: NotificationCenter.default.rx.notification(Notification.Name("BlockUser")).asObservable()
-        )
-        let output = viewModel.transform(from: input, disposeBag: disposeBag)
-        
-        output.categoryList
-            .bind(with: self, onNext: { owner, category in
-                owner.categoryList.accept(category)
-            })
-            .disposed(by: disposeBag)
-        
-        output.selectedTabIndex
+    private func bindAction() {
+        pageBar.feedPageBarCollectionView.rx.itemSelected
+            .map{$0.row}
             .subscribe(with: self, onNext: { owner, index in
                 if let event = owner.categoryList.value[index].amplitudeEvent {
                     AmplitudeManager.shared.track(event)
                 }
-
+                
                 owner.pageBar.feedPageBarCollectionView.scrollToItem(
                     at: IndexPath(item: index, section: 0),
                     at: .centeredHorizontally,
@@ -149,22 +135,25 @@ final class FeedViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.pushToFeedEditViewController
-            .subscribe(with: self, onNext: { owner, _ in
+        navigationBar.createFeedButton.rx.tap
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
+                AmplitudeManager.shared.track(AmplitudeEvent.Feed.feedWriteFloatingButton)
                 owner.pushToFeedEditViewController()
             })
             .disposed(by: disposeBag)
         
-        output.showFeedEditedToast
+        NotificationCenter.default.rx.notification(Notification.Name("FeedEdited"))
             .observe(on: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, _ in
+            .bind(with: self, onNext: { owner, _ in
                 owner.showToast(.feedEdited)
             })
             .disposed(by: disposeBag)
         
-        output.showBlockUserToast
+        NotificationCenter.default.rx.notification(Notification.Name("BlockUser"))
             .observe(on: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, nickname in
+            .bind(with: self, onNext: { owner, notification in
+                guard let nickname = notification.object as? String else { return }
                 owner.showToast(.blockUser(nickname: nickname))
             })
             .disposed(by: disposeBag)
@@ -207,7 +196,7 @@ extension FeedViewController: UICollectionViewDelegateFlowLayout {
 }
 
 extension FeedViewController : UIPageViewControllerDelegate {
-    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) { 
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         if completed,
            let currentViewController = pageViewController.viewControllers?.first,
            let index = pages.firstIndex(of: currentViewController as! FeedGenreViewController) {
@@ -233,9 +222,9 @@ extension FeedViewController: UIPageViewControllerDataSource {
     }
 }
 
+// MARK: - UI
+
 extension FeedViewController {
-    
-    // MARK: - UI
     
     private func setUI() {
         self.view.backgroundColor = .wssWhite

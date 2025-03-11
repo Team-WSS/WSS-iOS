@@ -184,10 +184,7 @@ final class FeedCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Data
     
-    func bindData(data: TotalFeeds) {
-        
-        //TODO: - dropDown 설정하면서 myFeed 구분하기
-        
+    func bindData(data: TotalFeedEntity) {
         userView.bindData(imageURL: data.avatarImage,
                           nickname: data.nickname,
                           createdDate: data.createdDate,
@@ -196,8 +193,8 @@ final class FeedCollectionViewCell: UICollectionViewCell {
         detailContentView.bindData(content: data.feedContent,
                                    isSpolier: data.isSpoiler)
         
-        if data.title == nil {
-            if let index = stackView.arrangedSubviews.firstIndex(of: novelView) {
+        if data.title == "" {
+            if stackView.arrangedSubviews.firstIndex(of: novelView) != nil {
                 stackView.removeArrangedSubview(novelView)
                 novelView.removeFromSuperview()
             }
@@ -209,9 +206,9 @@ final class FeedCollectionViewCell: UICollectionViewCell {
             }
             
             novelView.bindData(
-                title: data.title ?? "",
-                rating: data.novelRating ?? -1,
-                participants: data.novelRatingCount ?? -1
+                title: data.title,
+                rating: data.novelRating,
+                participants: data.novelRatingCount
             )
         }
         
@@ -221,11 +218,7 @@ final class FeedCollectionViewCell: UICollectionViewCell {
         
         isLiked = data.isLiked
         isLikedCount = data.likeCount
-        
-        let categoriesText = data.relevantCategories
-            .joined(separator: ", ")
-        
-        genreLabel.applyWSSFont(.body2, with: categoriesText)
+        genreLabel.applyWSSFont(.body2, with: data.relevantCategories)
     }
 }
 

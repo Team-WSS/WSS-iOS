@@ -12,7 +12,7 @@ import RxSwift
 protocol NovelDetailService {
     func getNovelDetailHeaderData(novelId: Int) -> Single<NovelDetailHeaderResponse>
     func getNovelDetailInfoData(novelId: Int) -> Single<NovelDetailInfoResponse>
-    func getNovelDetailFeedData(novelId: Int, lastFeedId: Int, size: Int) -> Single<NovelDetailFeedResult>
+    func getNovelDetailFeedData(novelId: Int, lastFeedId: Int, size: Int) -> Single<NovelDetailFeedResponse>
     func postUserInterest(novelId: Int) -> Single<Void>
     func deleteUserInterest(novelId: Int) -> Single<Void>
     func deleteNovelReview(novelId: Int) -> Single<Void>
@@ -108,7 +108,7 @@ extension DefaultNovelDetailService: NovelDetailService {
         }
     }
     
-    func getNovelDetailFeedData(novelId: Int, lastFeedId: Int, size: Int) -> Single<NovelDetailFeedResult> {
+    func getNovelDetailFeedData(novelId: Int, lastFeedId: Int, size: Int) -> Single<NovelDetailFeedResponse> {
         let novelDetailFeedQueryItems: [URLQueryItem] = [
             URLQueryItem(name: "lastFeedId", value: String(describing: lastFeedId)),
             URLQueryItem(name: "size", value: String(describing: size))
@@ -124,7 +124,7 @@ extension DefaultNovelDetailService: NovelDetailService {
             
             return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
-                                       to: NovelDetailFeedResult.self) }
+                                       to: NovelDetailFeedResponse.self) }
                 .asSingle()
         } catch {
             return Single.error(error)
