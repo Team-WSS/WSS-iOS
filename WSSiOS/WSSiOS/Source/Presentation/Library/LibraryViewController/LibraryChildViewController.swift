@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class LibraryChildViewController: UIViewController, UIScrollViewDelegate {
+final class LibraryChildViewController: UIViewController {
     
     //MARK: - Properties
     
@@ -42,8 +42,6 @@ final class LibraryChildViewController: UIViewController, UIScrollViewDelegate {
         super.viewDidLoad()
         
         register()
-        setDelegate()
-
         bindViewModel()
     }
     
@@ -58,12 +56,6 @@ final class LibraryChildViewController: UIViewController, UIScrollViewDelegate {
     private func register() {
         rootView.libraryCollectionView.register(LibraryCollectionViewCell.self,
                                                 forCellWithReuseIdentifier: LibraryCollectionViewCell.cellIdentifier)
-    }
-    
-    private func setDelegate() {
-        rootView.libraryCollectionView.rx
-            .setDelegate(self)
-            .disposed(by: disposeBag)
     }
     
     private func bindViewModel() {
