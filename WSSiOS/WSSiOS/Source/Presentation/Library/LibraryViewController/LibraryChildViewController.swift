@@ -10,17 +10,12 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class LibraryChildViewController: UIViewController, UIScrollViewDelegate {
+final class LibraryChildViewController: UIViewController {
     
     //MARK: - Properties
     
     private let libraryViewModel: LibraryChildViewModel
-    
     private let disposeBag = DisposeBag()
-    
-    let updateNovelListRelay = PublishRelay<ShowNovelStatus>()
-    private lazy var novelTotalRelay = PublishRelay<Int>()
-    private let updateRelay = PublishRelay<Void>()
     private let viewWillAppearEventRelay = PublishRelay<Void>()
     
     //MARK: - Components
@@ -47,8 +42,6 @@ final class LibraryChildViewController: UIViewController, UIScrollViewDelegate {
         super.viewDidLoad()
         
         register()
-        setDelegate()
-
         bindViewModel()
     }
     
@@ -63,12 +56,6 @@ final class LibraryChildViewController: UIViewController, UIScrollViewDelegate {
     private func register() {
         rootView.libraryCollectionView.register(LibraryCollectionViewCell.self,
                                                 forCellWithReuseIdentifier: LibraryCollectionViewCell.cellIdentifier)
-    }
-    
-    private func setDelegate() {
-        rootView.libraryCollectionView.rx
-            .setDelegate(self)
-            .disposed(by: disposeBag)
     }
     
     private func bindViewModel() {
