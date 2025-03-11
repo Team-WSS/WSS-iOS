@@ -10,6 +10,7 @@ import UIKit
 import RxSwift
 import RxRelay
 import SnapKit
+import Then
 
 final class FeedViewController: UIViewController {
     
@@ -143,13 +144,15 @@ final class FeedViewController: UIViewController {
             .disposed(by: disposeBag)
         
         NotificationCenter.default.rx.notification(Notification.Name("FeedEdited"))
-            .subscribe(with: self, onNext: { owner, _ in
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, _ in
                 owner.showToast(.feedEdited)
             })
             .disposed(by: disposeBag)
         
-        NotificationCenter.default.rx.notification(Notification.Name("BlockUser")).asObservable()
-            .subscribe(with: self, onNext: { owner, notification in
+        NotificationCenter.default.rx.notification(Notification.Name("BlockUser"))
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, notification in
                 guard let nickname = notification.object as? String else { return }
                 owner.showToast(.blockUser(nickname: nickname))
             })
