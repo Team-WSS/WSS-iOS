@@ -5,6 +5,8 @@
 //  Created by 신지원 on 3/4/25.
 //
 
+import Foundation
+
 struct TotalFeedListEntity {
     let category: String
     let isLoadable: Bool
@@ -42,6 +44,12 @@ struct TotalFeedEntity {
 extension TotalFeedResponse {
     func toEntity() -> TotalFeedEntity {
         let categoryText = self.relevantCategories.joined(separator: ", ")
+        let makeNovelRating: Float
+        if let novelRating = self.novelRating {
+            makeNovelRating = round(novelRating * 10) / 10
+        } else {
+            makeNovelRating = -1
+        }
         
         return TotalFeedEntity(
             feedId: self.feedId,
@@ -56,7 +64,7 @@ extension TotalFeedResponse {
             novelId: self.novelId ?? -1,
             title: self.title ?? "",
             novelRatingCount: self.novelRatingCount ?? -1,
-            novelRating: self.novelRating ?? -1,
+            novelRating: makeNovelRating,
             relevantCategories: categoryText,
             isSpoiler: self.isSpoiler,
             isModified: self.isModified,
