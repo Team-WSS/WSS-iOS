@@ -46,7 +46,11 @@ final class MyPageDeleteIDViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-        bindViewWillAppearAction()
+        hideTabBar()
+        swipeBackGesture()
+        setWSSNavigationBar(title: StringLiterals.Navigation.Title.deleteID,
+                            left: self.rootView.backButton,
+                            right: nil)
     }
     
     //MARK: - Bind
@@ -58,14 +62,6 @@ final class MyPageDeleteIDViewController: UIViewController {
         
         rootView.checkView.checkTableView.register(
             MyPageDeleteIDCheckTableViewCell.self, forCellReuseIdentifier: MyPageDeleteIDCheckTableViewCell.cellIdentifier)
-    }
-    
-    private func bindViewWillAppearAction() {
-        hideTabBar()
-        swipeBackGesture()
-        setWSSNavigationBar(title: StringLiterals.Navigation.Title.deleteID,
-                         left: self.rootView.backButton,
-                         right: nil)
     }
     
     private func bindViewModel() {
