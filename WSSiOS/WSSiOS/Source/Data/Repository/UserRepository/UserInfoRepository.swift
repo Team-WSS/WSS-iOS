@@ -28,7 +28,7 @@ protocol UserInfoRepository {
                           readStatus: String,
                           lastUserNovelId: Int,
                           size: Int,
-                          sortType: String) -> Observable<UserNovelEntity>
+                          sortType: String) -> Observable<UserNovelListEntity>
     func getAppMinimumVersion() -> Observable<AppMinimumVersion>
     func getTermSetting() -> Single<TermSettingEntity>
     func patchTermSetting(serviceAgreed: Bool, privacyAgreed: Bool, marketingAgreed: Bool) -> Single<Void>
@@ -116,7 +116,7 @@ struct DefaultUserInfoRepository: UserInfoRepository {
             .asObservable()
     }
     
-    func getUserNovelList(userId: Int, readStatus: String, lastUserNovelId: Int, size: Int, sortType: String) -> Observable<UserNovelEntity> {
+    func getUserNovelList(userId: Int, readStatus: String, lastUserNovelId: Int, size: Int, sortType: String) -> Observable<UserNovelListEntity> {
         return userService.getUserNovelList(userId: userId,
                                             readStatus: readStatus,
                                             lastUserNovelId: lastUserNovelId,

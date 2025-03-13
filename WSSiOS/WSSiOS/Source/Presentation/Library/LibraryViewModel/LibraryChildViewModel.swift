@@ -28,7 +28,7 @@ final class LibraryChildViewModel: ViewModelType {
     private var isFetching = false
     private var isSortTypeNewest = true
     
-    private let novelDataRelay = BehaviorRelay<[UserNovelListEntity]>(value: [])
+    private let novelDataRelay = BehaviorRelay<[UserNovelEntity]>(value: [])
     private let isLoadableRelay = BehaviorRelay<Bool>(value: true)
     private let lastNovelIdRelay = BehaviorRelay<Int>(value: 0)
     
@@ -69,7 +69,7 @@ final class LibraryChildViewModel: ViewModelType {
     struct Output {
         
         //collectionView Data
-        let cellData: BehaviorRelay<[UserNovelListEntity]>
+        let cellData: BehaviorRelay<[UserNovelEntity]>
         let showEmptyView: PublishRelay<(Bool,Bool)>
         
         //Logic
@@ -120,7 +120,7 @@ final class LibraryChildViewModel: ViewModelType {
             .do(onNext: { [weak self] _ in
                 self?.isFetching = true
             })
-            .flatMapLatest { [weak self] _ -> Observable<UserNovelEntity> in
+            .flatMapLatest { [weak self] _ -> Observable<UserNovelListEntity> in
                 guard let self else { return .empty() }
                 return self.getUserNovelList(userId: self.userId,
                                              data: UserNovelNovelStatus(readStatus: self.initData.readStatus,
@@ -204,7 +204,7 @@ final class LibraryChildViewModel: ViewModelType {
                 guard let self = self else { return }
                 self.isFetching = true
             })
-            .flatMapLatest { [weak self] status -> Observable<UserNovelEntity> in
+            .flatMapLatest { [weak self] status -> Observable<UserNovelListEntity> in
                 guard let self = self else { return .empty() }
                 return self.getUserNovelList(userId: self.userId, data: status)
             }
@@ -253,7 +253,7 @@ final class LibraryChildViewModel: ViewModelType {
     }
     
     //가장 처음 호출되는 무한스크롤 || 무한스크롤이 가능한 경우 처리
-    private func setNovelListData(_ novelResult: UserNovelEntity) {
+    private func setNovelListData(_ novelResult: UserNovelListEntity) {
         let newNovelData = novelResult.userNovels
         if let lastNovel = novelResult.userNovels.last {
             self.lastNovelIdRelay.accept(Int(lastNovel.userNovelId))
@@ -279,7 +279,7 @@ final class LibraryChildViewModel: ViewModelType {
     
     // MARK: - API
     
-    private func getUserNovelList(userId: Int, data: UserNovelNovelStatus) -> Observable<UserNovelEntity> {
+    private func getUserNovelList(userId: Int, data: UserNovelNovelStatus) -> Observable<UserNovelListEntity> {
         return userRepository.getUserNovelList(userId: userId,
                                                readStatus: data.readStatus,
                                                lastUserNovelId: data.lastUserNovelId,

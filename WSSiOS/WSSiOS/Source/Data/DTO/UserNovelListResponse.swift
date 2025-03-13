@@ -7,14 +7,14 @@
 
 import Foundation
 
-struct UserNovelResponse: Decodable {
+struct UserNovelListResponse: Decodable {
     let userNovelCount: Int
     let userNovelRating: Float
     let isLoadable: Bool
-    let userNovels: [UserNovelListDTO]
+    let userNovels: [UserNovelResponse]
 }
 
-struct UserNovelListDTO: Decodable {
+struct UserNovelResponse: Decodable {
     let userNovelId: Int
     let novelId: Int
     let author: String

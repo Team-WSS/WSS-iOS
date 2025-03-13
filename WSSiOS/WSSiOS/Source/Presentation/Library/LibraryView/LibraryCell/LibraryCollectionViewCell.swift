@@ -99,7 +99,7 @@ final class LibraryCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Data
     
-    func bindData(_ data: UserNovelListEntity) {
+    func bindData(_ data: UserNovelEntity) {
         novelImageView.kfSetImage(url: data.novelImage)
         novelTitleLabel.applyWSSFont(.body4, with: data.title)
         novelAuthorLabel.applyWSSFont(.body5, with: data.author)

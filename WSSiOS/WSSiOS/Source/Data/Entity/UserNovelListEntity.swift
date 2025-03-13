@@ -7,23 +7,23 @@
 
 import Foundation
 
-struct UserNovelEntity {
+struct UserNovelListEntity {
     let userNovelCount: Int
     let userNovelRating: Float
     let isLoadable: Bool
-    let userNovels: [UserNovelListEntity]
+    let userNovels: [UserNovelEntity]
 }
 
-extension UserNovelResponse {
-    func toEntity() -> UserNovelEntity {
-        return UserNovelEntity(userNovelCount: self.userNovelCount,
+extension UserNovelListResponse {
+    func toEntity() -> UserNovelListEntity {
+        return UserNovelListEntity(userNovelCount: self.userNovelCount,
                                userNovelRating: self.userNovelRating,
                                isLoadable: self.isLoadable,
                                userNovels: self.userNovels.map { $0.toEntity() })
     }
 }
 
-struct UserNovelListEntity {
+struct UserNovelEntity {
     let userNovelId: Int
     let novelId: Int
     let author: String
@@ -33,12 +33,12 @@ struct UserNovelListEntity {
     let hasNovelRating: Bool
 }
 
-extension UserNovelListDTO {
-    func toEntity() -> UserNovelListEntity {
+extension UserNovelResponse {
+    func toEntity() -> UserNovelEntity {
         let novelRatingText = String(round(self.novelRating * 10) / 10)
         let hasNovelRating = self.novelRating != 0.0
         
-        return UserNovelListEntity(userNovelId: self.novelId,
+        return UserNovelEntity(userNovelId: self.novelId,
                                    novelId: self.novelId,
                                    author: self.author,
                                    novelImage: self.novelImage,
