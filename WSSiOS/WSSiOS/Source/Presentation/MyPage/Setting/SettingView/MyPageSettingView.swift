@@ -14,7 +14,7 @@ final class MyPageSettingView: UIView {
     
     //MARK: - Components
     
-    var tableView = UITableView(frame: .zero, style: .plain)
+    var settingTableView = UITableView(frame: .zero, style: .plain)
     let backButton = UIButton()
     
     // MARK: - Life Cycle
@@ -36,7 +36,7 @@ final class MyPageSettingView: UIView {
     private func setUI() {
         self.backgroundColor = .wssWhite
         
-        tableView.do {
+        settingTableView.do {
             $0.showsVerticalScrollIndicator = false
             $0.isScrollEnabled = false
             $0.separatorStyle = .singleLine
@@ -51,11 +51,11 @@ final class MyPageSettingView: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubview(tableView)
+        self.addSubview(settingTableView)
     }
     
     private func setLayout() {
-        tableView.snp.makeConstraints {
+        settingTableView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
         

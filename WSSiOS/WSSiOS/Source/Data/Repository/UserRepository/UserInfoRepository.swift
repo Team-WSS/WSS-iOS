@@ -13,11 +13,11 @@ protocol UserInfoRepository {
     func getUserMeData() -> Observable<UserMeResult>
     func getMyProfileData() -> Observable<MyProfileResult>
     func getOtherProfile(userId: Int) -> Observable<OtherProfileResult>
-    func getUserInfo() -> Observable<UserInfo>
-    func putUserInfo(gender: String, birth: Int) -> Observable<Void>
+    func getUserInfo() -> Observable<UserInfoEntity>
+    func putUserInfo(userData: ChangeUserInfoEntity) -> Observable<Void>
     func patchUserName(userNickName: String) -> Observable<Void>
-    func getUserProfileVisibility() -> Observable<UserProfileVisibility>
-    func patchUserProfileVisibility(isProfilePublic: Bool) -> Observable<Void>
+    func getUserProfileVisibility() -> Observable<UserProfileVisibilityResponse>
+    func patchUserProfileVisibility(isProfilePublic: UserProfileVisibilityRequest) -> Observable<Void>
     func getUserNovelStatus(userId: Int) -> Observable<UserNovelStatus>
     func getUserNovelPreferences(userId: Int) -> Observable<UserNovelPreferencesResponse>
     func getUserGenrePreferences(userId: Int) -> Observable<UserGenrePreferences>
@@ -62,13 +62,15 @@ struct DefaultUserInfoRepository: UserInfoRepository {
             .asObservable()
     }
     
-    func getUserInfo() -> Observable<UserInfo> {
+    func getUserInfo() -> Observable<UserInfoEntity> {
         return userService.getUserInfo()
+            .map { $0.toEntity() }
             .asObservable()
     }
     
-    func putUserInfo(gender: String, birth: Int) -> Observable<Void> {
-        return userService.putUserInfo(gender: gender, birth: birth)
+    func putUserInfo(userData: ChangeUserInfoEntity) -> Observable<Void> {
+        let userDataDTO = userData.toDTO()
+        return userService.putUserInfo(userData: userDataDTO)
             .asObservable()
     }
     
@@ -92,12 +94,12 @@ struct DefaultUserInfoRepository: UserInfoRepository {
             .asObservable()
     }
     
-    func getUserProfileVisibility() -> Observable<UserProfileVisibility> {
+    func getUserProfileVisibility() -> Observable<UserProfileVisibilityResponse> {
         return userService.getUserProfileVisibility()
             .asObservable()
     }
     
-    func patchUserProfileVisibility(isProfilePublic: Bool) -> Observable<Void> {
+    func patchUserProfileVisibility(isProfilePublic: UserProfileVisibilityRequest) -> Observable<Void> {
         return userService.patchUserProfileVisibility(isProfilePublic: isProfilePublic)
             .asObservable()
     }

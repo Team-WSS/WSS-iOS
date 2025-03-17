@@ -360,10 +360,8 @@ extension UIViewController {
     
     func pushToMyPageProfileVisibilityViewController() {
         let viewController = MyPageProfileVisibilityViewController(
-            viewModel: MyPageProfileVisibilityViewModel(
-                userRepository: DefaultUserInfoRepository(
-                    userService: DefaultUserService()
-                )
+            userInfoRepository: DefaultUserInfoRepository(
+                userService: DefaultUserService()
             )
         )
         

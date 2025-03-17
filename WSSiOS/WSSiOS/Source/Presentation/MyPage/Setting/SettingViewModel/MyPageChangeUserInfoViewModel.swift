@@ -44,8 +44,7 @@ final class MyPageChangeUserInfoViewModel: ViewModelType {
     }
     
     struct Output {
-        let dataBind = BehaviorRelay<ChangeUserInfo>(value: ChangeUserInfo(gender: "", 
-                                                                           birth: 0))
+        let dataBind = BehaviorRelay<ChangeUserInfoEntity>(value: ChangeUserInfoEntity(gender: "", birth: 0))
         let changeGender = BehaviorRelay<String>(value: "")
         let showBottomSheet = PublishRelay<Int>()
         let changeCompleteButton = BehaviorRelay<Bool>(value: false)
@@ -56,7 +55,7 @@ final class MyPageChangeUserInfoViewModel: ViewModelType {
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
         
-        output.dataBind.accept(ChangeUserInfo(gender: self.gender, birth: self.birth))
+        output.dataBind.accept(ChangeUserInfoEntity(gender: self.gender, birth: self.birth))
         self.currentGender = self.gender
         self.currentBirth = self.birth
         
@@ -94,7 +93,7 @@ final class MyPageChangeUserInfoViewModel: ViewModelType {
             .bind(with: self, onNext: { owner, _ in
                 let isEnabled = output.changeCompleteButton.value
                 if isEnabled {
-                    owner.putUserInfo(gender: owner.currentGender, birth: owner.currentBirth)
+                    owner.putUserInfo(userData: ChangeUserInfoEntity(gender: owner.currentGender, birth: owner.currentBirth))
                         .subscribe(with: self, onNext: { owner, _ in
                             UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.userGender)
                             UserDefaults.standard.removeObject(forKey: StringLiterals.UserDefault.userBirth)
@@ -126,8 +125,8 @@ final class MyPageChangeUserInfoViewModel: ViewModelType {
     
     //MARK: - API
     
-    private func putUserInfo(gender: String, birth: Int) -> Observable<Void> {
-        return userRepository.putUserInfo(gender: gender, birth: birth) 
+    private func putUserInfo(userData: ChangeUserInfoEntity) -> Observable<Void> {
+        return userRepository.putUserInfo(userData: userData)
             .observe(on: MainScheduler.instance)
     }
     
