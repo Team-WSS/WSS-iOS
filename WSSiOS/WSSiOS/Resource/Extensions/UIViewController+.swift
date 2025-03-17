@@ -370,9 +370,8 @@ extension UIViewController {
     
     func pushToMyPagePushNotificationViewController() {
         let viewController = MyPagePushNotificationViewController(
-            viewModel: MyPagePushNotificationViewModel(
-                notificationRepository: DefaultNotificationRepository(
-                    notificationService: DefaultNotificationService())))
+            notificationRepository: DefaultNotificationRepository(
+                notificationService: DefaultNotificationService()))
         viewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(viewController, animated: true)
         
@@ -380,14 +379,11 @@ extension UIViewController {
     
     func pushToChangeUserInfoViewController() {
         let viewController = MyPageChangeUserInfoViewController(
-            viewModel: MyPageChangeUserInfoViewModel(
                 userRepository: DefaultUserInfoRepository(
                     userService: DefaultUserService()
-                )
             )
         )
         viewController.hidesBottomBarWhenPushed = true
-        
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     

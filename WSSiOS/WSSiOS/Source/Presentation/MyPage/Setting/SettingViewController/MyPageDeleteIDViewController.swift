@@ -46,9 +46,11 @@ final class MyPageDeleteIDViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-        setNavigationBar()
         hideTabBar()
         swipeBackGesture()
+        setWSSNavigationBar(title: StringLiterals.Navigation.Title.deleteID,
+                            left: self.rootView.backButton,
+                            right: nil)
     }
     
     //MARK: - Bind
@@ -160,14 +162,3 @@ final class MyPageDeleteIDViewController: UIViewController {
             .disposed(by: disposeBag)
     }
 }
-
-//MARK: - UI
-
-extension MyPageDeleteIDViewController {
-    private func setNavigationBar() {
-        setWSSNavigationBar(title: StringLiterals.Navigation.Title.deleteID,
-                         left: self.rootView.backButton,
-                         right: nil)
-    }
-}
-
