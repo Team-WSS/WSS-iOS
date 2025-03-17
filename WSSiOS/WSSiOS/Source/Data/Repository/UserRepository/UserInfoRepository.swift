@@ -1,29 +1,26 @@
 //
-//  UserRepository.swift
+//  UserInfoRepository.swift
 //  WSSiOS
 //
-//  Created by 신지원 on 1/5/24.
+//  Created by 신지원 on 3/6/25.
 //
 
 import Foundation
 
 import RxSwift
 
-protocol UserRepository {
+protocol UserInfoRepository {
     func getUserMeData() -> Observable<UserMeResult>
     func getMyProfileData() -> Observable<MyProfileResult>
     func getOtherProfile(userId: Int) -> Observable<OtherProfileResult>
     func getUserInfo() -> Observable<UserInfo>
     func putUserInfo(gender: String, birth: Int) -> Observable<Void>
     func patchUserName(userNickName: String) -> Observable<Void>
-    func getBlocksList() -> Observable<BlockUserResult>
-    func deleteBlockUser(blockID: Int) -> Observable<Void>
     func getUserProfileVisibility() -> Observable<UserProfileVisibility>
     func patchUserProfileVisibility(isProfilePublic: Bool) -> Observable<Void>
     func getUserNovelStatus(userId: Int) -> Observable<UserNovelStatus>
     func getUserNovelPreferences(userId: Int) -> Observable<UserNovelPreferencesResponse>
     func getUserGenrePreferences(userId: Int) -> Observable<UserGenrePreferences>
-    func postBlockUser(userId: Int) -> Observable<Void>
     func patchUserProfile(updatedFields: [String: Any]) -> Observable<Void>
     func getNicknameisValid(nickname: String) -> Single<OnboardingResponse>
     func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Observable<MyFeedResult>
@@ -33,21 +30,18 @@ protocol UserRepository {
                           size: Int,
                           sortType: String) -> Observable<UserNovelListEntity>
     func getAppMinimumVersion() -> Observable<AppMinimumVersion>
-    
-    // 약관동의
     func getTermSetting() -> Single<TermSettingEntity>
     func patchTermSetting(serviceAgreed: Bool, privacyAgreed: Bool, marketingAgreed: Bool) -> Single<Void>
 }
 
-struct DefaultUserRepository: UserRepository {
-    private var userService: UserService
-    private var blocksService: BlocksService
+struct DefaultUserInfoRepository: UserInfoRepository {
     
-    init(userService: UserService, blocksService: BlocksService) {
+    private let userService: UserService
+
+    init(userService: UserService) {
         self.userService = userService
-        self.blocksService = blocksService
     }
-    
+
     func getUserMeData() -> Observable<UserMeResult> {
         return userService.getUserData()
             .asObservable()
@@ -83,16 +77,6 @@ struct DefaultUserRepository: UserRepository {
             .asObservable()
     }
     
-    func getBlocksList() -> Observable<BlockUserResult> {
-        return blocksService.getBlocksList()
-            .asObservable()
-    }
-    
-    func deleteBlockUser(blockID: Int) -> Observable<Void> {
-        return blocksService.deleteBlockUser(blockID: blockID)
-            .asObservable()
-    }
-    
     func getUserNovelStatus(userId: Int) -> Observable<UserNovelStatus> {
         return userService.getUserNovelStatus(userId: userId)
             .asObservable()
@@ -118,10 +102,6 @@ struct DefaultUserRepository: UserRepository {
             .asObservable()
     }
     
-    func postBlockUser(userId: Int) -> Observable<Void> {
-        return blocksService.postBlockUser(blockID: userId)
-            .asObservable()
-    }
     func patchUserProfile(updatedFields: [String: Any]) -> Observable<Void> {
         return userService.patchUserProfile(updatedFields: updatedFields)
             .asObservable()

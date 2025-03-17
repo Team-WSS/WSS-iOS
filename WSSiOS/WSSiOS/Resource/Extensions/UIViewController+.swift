@@ -158,9 +158,8 @@ extension UIViewController {
     
     func pushToMyPageDeleteIDWarningViewController() {
         let viewController = MyPageDeleteIDWarningViewController(
-            userRepository: DefaultUserRepository(
-                userService: DefaultUserService(),
-                blocksService: DefaultBlocksService()
+            userRepository: DefaultUserInfoRepository(
+                userService: DefaultUserService()
             )
         )
         self.navigationController?.pushViewController(viewController, animated: true)
@@ -180,9 +179,8 @@ extension UIViewController {
     func pushToMyPageInfoViewController() {
         let viewController = MyPageInfoViewController(
             viewModel: MyPageInfoViewModel(
-                userRepository: DefaultUserRepository(
-                    userService: DefaultUserService(),
-                    blocksService: DefaultBlocksService()),
+                userRepository: DefaultUserInfoRepository(
+                    userService: DefaultUserService()),
                 authRepository: DefaultAuthRepository(
                     authService: DefaultAuthService())))
         self.navigationController?.pushViewController(viewController, animated: true)
@@ -228,13 +226,10 @@ extension UIViewController {
         self.dismiss(animated: true)
     }
     
-    func pushToBlockIDViewController() {
+    func pushToBlockUserViewController() {
         let viewController = MyPageBlockUserViewController(
-            viewModel:MyPageBlockUserViewModel(
-                userRepository: DefaultUserRepository(
-                    userService: DefaultUserService(),
-                    blocksService: DefaultBlocksService()
-                )
+            userRepository: DefaultUserBlockRepository(
+                blocksService: DefaultBlocksService()
             )
         )
         
@@ -287,9 +282,8 @@ extension UIViewController {
             viewModel: FeedDetailViewModel(
                 feedDetailRepository: DefaultFeedDetailRepository(
                     feedDetailService: DefaultFeedDetailService()
-                ), userRepository: DefaultUserRepository(
-                    userService: DefaultUserService(),
-                    blocksService: DefaultBlocksService()
+                ), userRepository: DefaultUserInfoRepository(
+                    userService: DefaultUserService()
                 ),
                 feedId: feedId
             )
@@ -310,8 +304,10 @@ extension UIViewController {
         let viewController = MyPageViewController(
             viewModel: MyPageViewModel(
                 userRepository: DefaultUserRepository(
-                    userService: DefaultUserService(),
-                    blocksService: DefaultBlocksService()),
+                    userInfoRepository: DefaultUserInfoRepository(
+                        userService: DefaultUserService()),
+                    userBlockRepository: DefaultUserBlockRepository(
+                        blocksService: DefaultBlocksService())),
                 profileId: userId))
         
         viewController.hidesBottomBarWhenPushed = true
@@ -321,9 +317,9 @@ extension UIViewController {
     func pushToMyPageEditViewController(entryType: MyPageEditEntryType, profile: MyProfileResult?) {
         let viewController = MyPageEditProfileViewController(
             viewModel: MyPageEditProfileViewModel(
-                userRepository: DefaultUserRepository(
-                    userService: DefaultUserService(),
-                    blocksService: DefaultBlocksService()),
+                userRepository: DefaultUserInfoRepository(
+                    userService: DefaultUserService()
+                ),
                 entryType: entryType,
                 profileData: profile))
         
@@ -365,9 +361,8 @@ extension UIViewController {
     func pushToMyPageProfileVisibilityViewController() {
         let viewController = MyPageProfileVisibilityViewController(
             viewModel: MyPageProfileVisibilityViewModel(
-                userRepository: DefaultUserRepository(
-                    userService: DefaultUserService(),
-                    blocksService: DefaultBlocksService()
+                userRepository: DefaultUserInfoRepository(
+                    userService: DefaultUserService()
                 )
             )
         )
@@ -388,9 +383,11 @@ extension UIViewController {
     func pushToChangeUserInfoViewController() {
         let viewController = MyPageChangeUserInfoViewController(
             viewModel: MyPageChangeUserInfoViewModel(
-                userRepository: DefaultUserRepository(
-                    userService: DefaultUserService(),
-                    blocksService: DefaultBlocksService())))
+                userRepository: DefaultUserInfoRepository(
+                    userService: DefaultUserService()
+                )
+            )
+        )
         viewController.hidesBottomBarWhenPushed = true
         
         self.navigationController?.pushViewController(viewController, animated: true)
@@ -407,9 +404,9 @@ extension UIViewController {
     func pushToMyPageFeedDetailViewController(userId: Int, useData: MyProfileResult) {
         let viewController = MyPageFeedDetailViewController(
             viewModel: MyPageFeedDetailViewModel(
-                userRepository: DefaultUserRepository(
-                    userService: DefaultUserService(),
-                    blocksService: DefaultBlocksService()),
+                userRepository: DefaultUserInfoRepository(
+                    userService: DefaultUserService()
+                ),
                 profileId: userId,
                 profileData: useData))
         self.navigationController?.pushViewController(viewController, animated: true)

@@ -18,7 +18,7 @@ final class LibraryChildViewModel: ViewModelType {
     
     // MARK: - Properties
     
-    private let userRepository: UserRepository
+    private let userRepository: UserInfoRepository
     private let initData: UserNovelNovelStatus
     private let userId: Int
     
@@ -49,7 +49,7 @@ final class LibraryChildViewModel: ViewModelType {
     
     // MARK: - Life Cycle
     
-    init(userRepository: UserRepository, initData: UserNovelNovelStatus, userId: Int) {
+    init(userRepository: UserInfoRepository, initData: UserNovelNovelStatus, userId: Int) {
         self.userRepository = userRepository
         self.initData = initData
         self.userId = userId

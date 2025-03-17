@@ -15,7 +15,7 @@ final class FeedDetailViewModel: ViewModelType {
     //MARK: - Properties
     
     private let feedDetailRepository: FeedDetailRepository
-    private let userRepository: UserRepository
+    private let userRepository: UserInfoRepository
     private let disposeBag = DisposeBag()
     
     let feedId: Int
@@ -77,7 +77,7 @@ final class FeedDetailViewModel: ViewModelType {
     //MARK: - Life Cycle
     
     init(feedDetailRepository: FeedDetailRepository,
-         userRepository: UserRepository,
+         userRepository: UserInfoRepository,
          feedId: Int) {
         self.feedDetailRepository = feedDetailRepository
         self.userRepository = userRepository

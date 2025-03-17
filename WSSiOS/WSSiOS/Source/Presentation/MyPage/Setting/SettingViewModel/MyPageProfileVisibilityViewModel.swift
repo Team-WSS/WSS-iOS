@@ -14,7 +14,7 @@ final class MyPageProfileVisibilityViewModel: ViewModelType {
     
     //MARK: - Properties
     
-    private let userRepository: UserRepository
+    private let userRepository: UserInfoRepository
     private let disposeBag = DisposeBag()
     
     //초기값 부여
@@ -23,7 +23,7 @@ final class MyPageProfileVisibilityViewModel: ViewModelType {
     
     //MARK: - Life Cycle
     
-    init(userRepository: UserRepository) {
+    init(userRepository: UserInfoRepository) {
         self.userRepository = userRepository
     }
     

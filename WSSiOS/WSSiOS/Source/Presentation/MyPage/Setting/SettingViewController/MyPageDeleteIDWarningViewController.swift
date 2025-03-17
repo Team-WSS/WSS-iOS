@@ -14,7 +14,7 @@ final class MyPageDeleteIDWarningViewController: UIViewController {
     //MARK: - Properties
     
     private let disposeBag = DisposeBag()
-    private let userRepository: UserRepository
+    private let userRepository: UserInfoRepository
     
     //MARK: - Components
     
@@ -22,7 +22,7 @@ final class MyPageDeleteIDWarningViewController: UIViewController {
     
     // MARK: - Life Cycle
     
-    init(userRepository: UserRepository) {
+    init(userRepository: UserInfoRepository) {
         self.userRepository = userRepository
         
         super.init(nibName: nil, bundle: nil)

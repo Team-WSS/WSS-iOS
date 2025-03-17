@@ -19,7 +19,7 @@ final class MyPageChangeUserInfoViewModel: ViewModelType {
     
     //MARK: - Properties
     
-    private let userRepository: UserRepository
+    private let userRepository: UserInfoRepository
     
     private let gender = UserDefaults.standard.string(forKey: StringLiterals.UserDefault.userGender) ?? ""
     private let birth = UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userBirth)
@@ -30,7 +30,7 @@ final class MyPageChangeUserInfoViewModel: ViewModelType {
     
     //MARK: - Life Cycle
     
-    init(userRepository: UserRepository) {
+    init(userRepository: UserInfoRepository) {
         self.userRepository = userRepository
     }
     

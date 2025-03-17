@@ -501,37 +501,38 @@ final class MyPageViewModel: ViewModelType {
     // MARK: - API
     
     private func getProfileData() -> Observable<MyProfileResult> {
-        return userRepository.getMyProfileData()
+        return userRepository.userInfoRepository.getMyProfileData()
             .observe(on: MainScheduler.instance)
     }
     
     private func getOtherProfileData(userId: Int) -> Observable<OtherProfileResult> {
-        return userRepository.getOtherProfile(userId: userId)
+        return userRepository.userInfoRepository.getOtherProfile(userId: userId)
             .asObservable()
     }
     
     private func getNovelPreferenceData(userId: Int) -> Observable<UserNovelPreferencesResponse> {
-        return userRepository.getUserNovelPreferences(userId: userId)
+        return userRepository.userInfoRepository.getUserNovelPreferences(userId: userId)
             .asObservable()
     }
     
     private func getGenrePreferenceData(userId: Int) -> Observable<UserGenrePreferences> {
-        return userRepository.getUserGenrePreferences(userId: userId)
+        return userRepository.userInfoRepository.getUserGenrePreferences(userId: userId)
             .asObservable()
     }
     
     private func getInventoryData(userId: Int) -> Observable<UserNovelStatus> {
-        return userRepository.getUserNovelStatus(userId: userId)
+        return userRepository.userInfoRepository.getUserNovelStatus(userId: userId)
             .asObservable()
     }
     
     private func postBlockUser(userId: Int) -> Observable<Void> {
-        return userRepository.postBlockUser(userId: userId)
-            .asObservable()
+        return userRepository.userBlockRepository.postBlockUser(userId: userId)
+            .subscribe(on: ConcurrentDispatchQueueScheduler(qos: .background))
+            .observe(on: MainScheduler.instance)
     }
     
     private func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Observable<MyFeedResult> {
-        return userRepository.getUserFeed(userId: userId, lastFeedId: lastFeedId, size: size)
+        return userRepository.userInfoRepository.getUserFeed(userId: userId, lastFeedId: lastFeedId, size: size)
             .asObservable()
     }
 }
