@@ -102,7 +102,6 @@ final class MyPageFeedDetailViewController: UIViewController, UIScrollViewDelega
                 cellType: FeedListTableViewCell.self)) { _, element, cell in
                     cell.bindProfileFeedData(feed: element)
                     cell.delegate = self
-                    print("Delegate set:", cell.delegate != nil)
                 }
                 .disposed(by: disposeBag)
         
