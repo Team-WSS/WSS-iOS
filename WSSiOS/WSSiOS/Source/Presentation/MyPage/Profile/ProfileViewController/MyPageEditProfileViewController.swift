@@ -1,5 +1,5 @@
 //
-//  MyPageProfileEditViewController.swift
+//  MyPageEditProfileViewController.swift
 //  WSSiOS
 //
 //  Created by 신지원 on 7/26/24.
@@ -200,11 +200,14 @@ final class MyPageEditProfileViewController: UIViewController {
     }
 }
 
+//MARK: - UICollectionViewDelegateFlowLayout
+
 extension MyPageEditProfileViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var text: String?
         
-        text = self.viewModel.genreList[indexPath.item]
+        let genreList: [String] = NovelGenre.allCases.map { $0.toKorean }
+        text = genreList[indexPath.item]
         
         guard let unwrappedText = text else {
             return CGSize(width: 0, height: 0)

@@ -19,24 +19,26 @@ final class MyPageEditProfileViewModel: ViewModelType {
     
     //MARK: - Properties
     
+    // init 처리 해주는 값
     private var entryType: MyPageEditEntryType
-    
-    let genreList: [String] = NovelGenre.allCases.map { $0.toKorean }
-    
-    private let nicknamePattern = "^[a-zA-Z0-9가-힣]{2,10}$"
-    static let nicknameLimit = 10
-    static let introLimit = 50
-    
     private let userRepository: UserInfoRepository
     private var profileData: MyProfileEntity?
     private var avatarId: Int = -1
     
+    // 고정값
+    private let genreList: [String] = NovelGenre.allCases.map { $0.toKorean }
+    private let nicknamePattern = "^[a-zA-Z0-9가-힣]{2,10}$"
+    static let nicknameLimit = 10
+    static let introLimit = 50
+    
+    // user 데이터
     private var userNickname = BehaviorRelay<String>(value: "")
     private let userIntro = BehaviorRelay<String>(value: "")
     private let userGenre = BehaviorRelay<[String]>(value: [])
     private let userImage = BehaviorRelay<String>(value: "")
     
-    private var changeCompleteButtonRelay = BehaviorRelay<Bool>(value: false)
+    // Action Relay
+    private var changeCompleteButton = BehaviorRelay<Bool>(value: false)
     private let isNicknameAvailable = BehaviorRelay<NicknameAvailablity>(value: .notStarted)
     private let showNetworkErrorView = PublishRelay<Void>()
     private let checkDuplicatedButton = BehaviorRelay<Bool>(value: false)
@@ -178,7 +180,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
             )
             .disposed(by: disposeBag)
         
-        changeCompleteButtonRelay
+        changeCompleteButton
             .distinctUntilChanged()
             .bind(to: output.completeButtonIsAbled)
             .disposed(by: disposeBag)
@@ -244,7 +246,6 @@ final class MyPageEditProfileViewModel: ViewModelType {
         input.clearButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
                 output.nicknameText.accept("")
-                
                 output.editingTextField.accept(true)
             })
             .disposed(by: disposeBag)
@@ -328,10 +329,10 @@ final class MyPageEditProfileViewModel: ViewModelType {
     
     private func changeInfoData() {
         if (self.userNickname.value == profileData?.nickname && self.userIntro.value == profileData?.intro && self.userGenre.value == profileData?.genrePreferences && self.userImage.value == self.profileData?.avatarImage) {
-            self.changeCompleteButtonRelay.accept(self.checkDuplicatedButton.value)
+            self.changeCompleteButton.accept(self.checkDuplicatedButton.value)
         }
         else {
-            self.changeCompleteButtonRelay.accept(true)
+            self.changeCompleteButton.accept(true)
         }
     }
     
@@ -375,7 +376,6 @@ final class MyPageEditProfileViewModel: ViewModelType {
     
     private func patchProfile(updatedFields: [String: Any]) -> Observable<Void> {
         return userRepository.patchUserProfile(updatedFields: updatedFields)
-            .asObservable()
     }
     
     private func checkNicknameisValid(_ nickname: String, disposeBag: DisposeBag) {
@@ -417,5 +417,3 @@ final class MyPageEditProfileViewModel: ViewModelType {
             .observe(on: MainScheduler.instance)
     }
 }
-
-
