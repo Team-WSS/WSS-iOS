@@ -25,14 +25,14 @@ final class MyPageProfileLibraryViewModel: ViewModelType, MyPageProfileLibraryVi
     
     private let isExistPrefernecesRelay = PublishRelay<Bool>()
     private let updateKeywordCollectionViewHeightRelay = PublishRelay<CGFloat>()
-    private let bindInventoryDataRelay = BehaviorRelay<UserNovelStatus>(value: UserNovelStatus(interestNovelCount: 0,
+    private let bindInventoryDataRelay = BehaviorRelay<UserNovelStatusResponse>(value: UserNovelStatusResponse(interestNovelCount: 0,
                                                                                                watchingNovelCount: 0,
                                                                                                watchedNovelCount: 0,
                                                                                                quitNovelCount: 0))
     private let bindKeywordRelay = BehaviorRelay<[KeywordResponse]>(value: [])
     private let updateCellSize = BehaviorRelay<[CGSize]>(value: [])
     private let bindAttractivePointsDataRelay = BehaviorRelay<[String]>(value: [])
-    private let bindGenreDataRelay = BehaviorRelay<UserGenrePreferences>(value: UserGenrePreferences(genrePreferences: []))
+    private let bindGenreDataRelay = BehaviorRelay<UserGenrePreferenceListEntity>(value: UserGenrePreferenceListEntity(genrePreferences: []))
     private let showGenreOtherViewRelay = BehaviorRelay<Bool>(value: false)
     private let pushToLibraryViewController = PublishSubject<Int>()
     private let pushToSpecificLibraryViewController = PublishSubject<(Int,Int)>()
@@ -55,8 +55,8 @@ final class MyPageProfileLibraryViewModel: ViewModelType, MyPageProfileLibraryVi
         let bindAttractivePointsData: BehaviorRelay<[String]>
         let bindKeywordCell: BehaviorRelay<[KeywordResponse]>
         let updateKeywordCollectionViewHeight: PublishRelay<CGFloat>
-        let bindGenreData: BehaviorRelay<UserGenrePreferences>
-        let bindInventoryData: BehaviorRelay<UserNovelStatus>
+        let bindGenreData: BehaviorRelay<UserGenrePreferenceListEntity>
+        let bindInventoryData: BehaviorRelay<UserNovelStatusResponse>
         let showGenreOtherView: BehaviorRelay<Bool>
         let isExistPreferneces: PublishRelay<Bool>
         let pushToLibraryViewController: PublishSubject<Int>
@@ -187,15 +187,15 @@ final class MyPageProfileLibraryViewModel: ViewModelType, MyPageProfileLibraryVi
     
     // MARK: - API
     
-    private func getNovelPreferenceData(userId: Int) -> Observable<UserNovelPreferencesResponse> {
+    private func getNovelPreferenceData(userId: Int) -> Observable<UserNovelPreferenceEntity> {
         return userInfoRepository.getUserNovelPreferences(userId: userId)
     }
     
-    private func getGenrePreferenceData(userId: Int) -> Observable<UserGenrePreferences> {
+    private func getGenrePreferenceData(userId: Int) -> Observable<UserGenrePreferenceListEntity> {
         return userInfoRepository.getUserGenrePreferences(userId: userId)
     }
     
-    private func getInventoryData(userId: Int) -> Observable<UserNovelStatus> {
+    private func getInventoryData(userId: Int) -> Observable<UserNovelStatusResponse> {
         return userInfoRepository.getUserNovelStatus(userId: userId)
     }
 }

@@ -12,15 +12,15 @@ import RxSwift
 protocol UserService {
     func getUserData() -> Single<UserMeResult>
     func patchUserName(userNickName: String) -> Single<Void>
-    func getUserNovelStatus(userId: Int) -> Single<UserNovelStatus>
+    func getUserNovelStatus(userId: Int) -> Single<UserNovelStatusResponse>
     func getUserInfo() -> Single<UserInfoResponse>
     func putUserInfo(userData: ChangeUserInfoRequest) -> Single<Void>
     func getUserProfileVisibility() -> Single<UserProfileVisibilityResponse>
     func patchUserProfileVisibility(isProfilePublic: UserProfileVisibilityRequest) -> Single<Void>
     func getMyProfile() -> Single<MyProfileResponse>
     func getOtherProfile(userId: Int) -> Single<OtherProfileResponse>
-    func getUserNovelPreferences(userId: Int) -> Single<UserNovelPreferencesResponse>
-    func getUserGenrePreferences(userId: Int) -> Single<UserGenrePreferences>
+    func getUserNovelPreferences(userId: Int) -> Single<UserNovelPreferenceResponse>
+    func getUserGenrePreferences(userId: Int) -> Single<UserGenrePreferenceListResponse>
     func patchUserProfile(updatedFields: [String: Any]) -> Single<Void>
     func getNicknameisValid(nickname: String) -> Single<OnboardingResponse>
     func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Single<MyFeedListResponse>
@@ -76,7 +76,7 @@ extension DefaultUserService: UserService {
     }
     
     func patchUserName(userNickName: String) -> Single<Void> {
-        guard let userNickNameData = try? JSONEncoder().encode(UserNickNameResult(userNickname: userNickName))
+        guard let userNickNameData = try? JSONEncoder().encode(UserNickNameRequest(userNickname: userNickName))
                 
         else {
             return .error(NetworkServiceError.invalidRequestError)
@@ -99,7 +99,7 @@ extension DefaultUserService: UserService {
         }
     }
     
-    func getUserNovelStatus(userId: Int) -> Single<UserNovelStatus> {
+    func getUserNovelStatus(userId: Int) -> Single<UserNovelStatusResponse> {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.User.getUserNovelStatus(userId: userId),
@@ -110,7 +110,7 @@ extension DefaultUserService: UserService {
             
             return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
-                                       to: UserNovelStatus.self) }
+                                       to: UserNovelStatusResponse.self) }
                 .asSingle()
         } catch {
             return Single.error(error)
@@ -236,7 +236,7 @@ extension DefaultUserService: UserService {
         }
     }
     
-    func getUserNovelPreferences(userId: Int) -> Single<UserNovelPreferencesResponse> {
+    func getUserNovelPreferences(userId: Int) -> Single<UserNovelPreferenceResponse> {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.User.novelPreferencesstatic(userId: userId),
@@ -247,7 +247,7 @@ extension DefaultUserService: UserService {
             
             return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
-                                       to: UserNovelPreferencesResponse.self) }
+                                       to: UserNovelPreferenceResponse.self) }
                 .asSingle()
             
         } catch {
@@ -255,7 +255,7 @@ extension DefaultUserService: UserService {
         }
     }
     
-    func getUserGenrePreferences(userId: Int) -> Single<UserGenrePreferences> {
+    func getUserGenrePreferences(userId: Int) -> Single<UserGenrePreferenceListResponse> {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.User.genrePreferencesstatic(userId: userId),
@@ -266,7 +266,7 @@ extension DefaultUserService: UserService {
             
             return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
-                                       to: UserGenrePreferences.self) }
+                                       to: UserGenrePreferenceListResponse.self) }
                 .asSingle()
             
         } catch {

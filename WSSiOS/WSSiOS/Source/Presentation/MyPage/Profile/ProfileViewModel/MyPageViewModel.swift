@@ -101,8 +101,8 @@ final class MyPageViewModel: ViewModelType {
         let bindAttractivePointsData: BehaviorRelay<[String]>
         let bindKeywordCell: BehaviorRelay<[KeywordResponse]>
         let updateKeywordCollectionViewHeight: PublishRelay<CGFloat>
-        let bindGenreData: BehaviorRelay<UserGenrePreferences>
-        let bindInventoryData: BehaviorRelay<UserNovelStatus>
+        let bindGenreData: BehaviorRelay<UserGenrePreferenceListEntity>
+        let bindInventoryData: BehaviorRelay<UserNovelStatusResponse>
         let showGenreOtherView: BehaviorRelay<Bool>
         let isExistPreferneces: PublishRelay<Bool>
         let pushToLibraryViewController: PublishSubject<Int>

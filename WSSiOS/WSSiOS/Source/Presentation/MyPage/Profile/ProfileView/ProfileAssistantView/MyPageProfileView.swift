@@ -85,13 +85,4 @@ final class MyPageProfileView: UIView {
             $0.size.equalTo(220)
         }
     }
-    
-    //MARK: - Data
-    
-    func bindProfileViewData(_ data: UserResult) {
-        myPageNameLabel.text = data.representativeAvatarTag
-        myPageBadgeImageView.kfSetImage(url: data.representativeAvatarGenreBadge)
-        myPagePhraseLabel.text = data.representativeAvatarLineContent
-        myPageAvartarImageView.kfSetImage(url: data.representativeAvatarImg)
-    }
 }

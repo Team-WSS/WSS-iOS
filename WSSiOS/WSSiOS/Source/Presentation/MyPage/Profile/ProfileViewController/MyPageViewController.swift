@@ -27,8 +27,8 @@ final class MyPageViewController: UIViewController {
     private let viewWillAppearEvent = PublishSubject<Void>()
     private var navigationTitle: String = ""
     private var dropDownCellTap = PublishSubject<String>()
-    private let updateHeaderViewHeight = BehaviorRelay<Double>(value: 0)
-    private var updateCellSizes = BehaviorRelay<[CGSize]>(value: [])
+    private let headerViewHeightRelay = BehaviorRelay<Double>(value: 0)
+    private var cellSizesRelay = BehaviorRelay<[CGSize]>(value: [])
     
     //MARK: - UI Components
     
@@ -84,7 +84,7 @@ final class MyPageViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        updateHeaderViewHeight.accept(rootView.headerView.layer.frame.height)
+        headerViewHeightRelay.accept(rootView.headerView.layer.frame.height)
     }
     
     private func register() {
@@ -116,8 +116,7 @@ final class MyPageViewController: UIViewController {
     private func bindViewModel() {
         let inventoryStatusButtonDidTap = Observable<Int>.merge(
             rootView.myPageLibraryView.inventoryView.readStatusButtons.enumerated().map { index, button in
-                button.rx.tap
-                    .map { index }
+                button.rx.tap.map { index }
             })
         
         let genrePreferenceButtonDidTap = Observable.merge(
@@ -139,7 +138,7 @@ final class MyPageViewController: UIViewController {
             isEntryTabbar: isEntryTabbarRelay.asObservable(),
             viewWillAppearEvent: self.viewWillAppearEvent,
             editProfileNotification: NotificationCenter.default.rx.notification(NSNotification.Name("EditProfile")).asObservable(),
-            headerViewHeight: updateHeaderViewHeight.asDriver(),
+            headerViewHeight: headerViewHeightRelay.asDriver(),
             scrollOffset: rootView.scrollView.rx.contentOffset.asDriver(),
             libraryButtonDidTap: libraryButtonDidTap,
             feedButtonDidTap: feedButtonDidTap,
@@ -273,7 +272,7 @@ final class MyPageViewController: UIViewController {
                     return CGSize(width: width, height: 37)
                 }
             }
-            .bind(to: self.cellSizes)
+            .bind(to: self.cellSizesRelay)
             .disposed(by: disposeBag)
         
         output.bindInventoryData
@@ -323,7 +322,6 @@ final class MyPageViewController: UIViewController {
                 cellIdentifier: FeedListTableViewCell.cellIdentifier,
                 cellType: FeedListTableViewCell.self)) { _, element, cell in
                     cell.bindProfileFeedData(feed: element)
-                    cell.delegate = self
                 }
                 .disposed(by: disposeBag)
         
@@ -392,13 +390,6 @@ final class MyPageViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.pushToNovelDetailViewController
-            .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, novelId in
-                owner.pushToNovelDetailViewController(novelId: novelId)
-            })
-            .disposed(by: disposeBag)
-        
         output.pushToFeedDetailViewController
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, feedId in
@@ -416,7 +407,7 @@ final class MyPageViewController: UIViewController {
 
 extension MyPageViewController: UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, UITableViewDelegate {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return indexPath.row < updateCellSizes.value.count ? updateCellSizes.value[indexPath.row] : CGSize(width: 0, height: 0)
+        return indexPath.row < cellSizesRelay.value.count ? cellSizesRelay.value[indexPath.row] : CGSize(width: 0, height: 0)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -455,23 +446,5 @@ extension MyPageViewController {
         }
         
         rootView.headerView.userImageChangeButton.isHidden = !myPage
-    }
-}
-
-extension MyPageViewController: FeedTableViewDelegate {
-    func profileViewDidTap(userId: Int) {
-        return
-    }
-    
-    func dropdownButtonDidTap(feedId: Int, isMyFeed: Bool) {
-        return
-    }
-    
-    func likeViewDidTap(feedId: Int, isLiked: Bool) {
-        return
-    }
-    
-    func connectedNovelViewDidTap(novelId: Int) {
-        self.feedConnectedNovelViewDidTap.accept(novelId)
     }
 }

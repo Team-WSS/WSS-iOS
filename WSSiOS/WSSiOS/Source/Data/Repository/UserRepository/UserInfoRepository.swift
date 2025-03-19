@@ -18,9 +18,9 @@ protocol UserInfoRepository {
     func patchUserName(userNickName: String) -> Observable<Void>
     func getUserProfileVisibility() -> Observable<UserProfileVisibilityResponse>
     func patchUserProfileVisibility(isProfilePublic: UserProfileVisibilityRequest) -> Observable<Void>
-    func getUserNovelStatus(userId: Int) -> Observable<UserNovelStatus>
-    func getUserNovelPreferences(userId: Int) -> Observable<UserNovelPreferencesResponse>
-    func getUserGenrePreferences(userId: Int) -> Observable<UserGenrePreferences>
+    func getUserNovelStatus(userId: Int) -> Observable<UserNovelStatusResponse>
+    func getUserNovelPreferences(userId: Int) -> Observable<UserNovelPreferenceEntity>
+    func getUserGenrePreferences(userId: Int) -> Observable<UserGenrePreferenceListEntity>
     func patchUserProfile(updatedFields: [String: Any]) -> Observable<Void>
     func getNicknameisValid(nickname: String) -> Single<OnboardingResponse>
     func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Observable<MyFeedListEntity>
@@ -81,18 +81,20 @@ struct DefaultUserInfoRepository: UserInfoRepository {
             .asObservable()
     }
     
-    func getUserNovelStatus(userId: Int) -> Observable<UserNovelStatus> {
+    func getUserNovelStatus(userId: Int) -> Observable<UserNovelStatusResponse> {
         return userService.getUserNovelStatus(userId: userId)
             .asObservable()
     }
     
-    func getUserNovelPreferences(userId: Int) -> Observable<UserNovelPreferencesResponse> {
+    func getUserNovelPreferences(userId: Int) -> Observable<UserNovelPreferenceEntity> {
         return userService.getUserNovelPreferences(userId: userId)
+            .map { $0.toEntity() }
             .asObservable()
     }
     
-    func getUserGenrePreferences(userId: Int) -> Observable<UserGenrePreferences> {
+    func getUserGenrePreferences(userId: Int) -> Observable<UserGenrePreferenceListEntity> {
         return userService.getUserGenrePreferences(userId: userId)
+            .map { $0.toEntity() }
             .asObservable()
     }
     

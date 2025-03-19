@@ -155,7 +155,7 @@ final class MyPageGenrePreferencesView: UIView {
     
     //MARK: - Data
     
-    func bindData(data: UserGenrePreferences) {
+    func bindData(data: UserGenrePreferenceListEntity) {
         if data.genrePreferences.indices.contains(0) {
             firstTopGenreView.bindData(data: data.genrePreferences[0])
         }
@@ -169,6 +169,3 @@ final class MyPageGenrePreferencesView: UIView {
         }
     }
 }
-
-
-
