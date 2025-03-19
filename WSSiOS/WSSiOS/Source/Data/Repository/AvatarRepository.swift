@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 
 protocol AvatarRepository {
-    func getAvatarList() -> Observable<AvatarResponse>
+    func getAvatarList() -> Observable<AvatarListResponse>
 }
 
 struct DefaultAvatarRepository: AvatarRepository {
@@ -20,7 +20,7 @@ struct DefaultAvatarRepository: AvatarRepository {
         self.avatarService = avatarService
     }
     
-    func getAvatarList() -> Observable<AvatarResponse> {
+    func getAvatarList() -> Observable<AvatarListResponse> {
         return avatarService.getAvatarList()
             .asObservable()
     }

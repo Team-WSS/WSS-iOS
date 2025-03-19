@@ -182,7 +182,7 @@ final class MyPageEditAvatarView: UIView {
     
     //MARK: - Data
     
-    func bindData(avatar: Avatar, nickname: String) {
+    func bindData(avatar: AvatarResponse, nickname: String) {
         
         avatarLottieView.removeFromSuperview()
         

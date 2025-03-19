@@ -17,7 +17,7 @@ final class MyPageEditAvatarViewModel: ViewModelType {
     let userNickname: String
     
     private let avatarRepository: AvatarRepository
-    private var totalAvatarData: [Avatar] = []
+    private var totalAvatarData: [AvatarResponse] = []
     private let lastTappedAvatar = BehaviorRelay<Int>(value: 1)
     
     private var defaultAvatarId: Int = 1
@@ -39,7 +39,7 @@ final class MyPageEditAvatarViewModel: ViewModelType {
     
     struct Output {
         let bindAvatarImageCell = BehaviorRelay<[(String, Bool)]>(value: [])
-        let updateAvatarData = PublishRelay<(Avatar,String)>()
+        let updateAvatarData = PublishRelay<(AvatarResponse,String)>()
         let dismissModalViewController = PublishRelay<Void>()
     }
     
@@ -106,7 +106,7 @@ final class MyPageEditAvatarViewModel: ViewModelType {
     
     //MARK: - API
     
-    private func getAvatarList() -> Observable<AvatarResponse> {
+    private func getAvatarList() -> Observable<AvatarListResponse> {
         return avatarRepository.getAvatarList()
             .asObservable()
     }
