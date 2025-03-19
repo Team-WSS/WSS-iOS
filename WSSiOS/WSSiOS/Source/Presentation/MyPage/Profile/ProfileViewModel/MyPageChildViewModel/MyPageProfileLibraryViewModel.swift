@@ -1,5 +1,5 @@
 //
-//  MyPageLibraryViewModel.swift
+//  MyPageProfileLibraryViewModel.swift
 //  WSSiOS
 //
 //  Created by 신지원 on 3/19/25.
@@ -34,6 +34,7 @@ final class MyPageProfileLibraryViewModel: ViewModelType, MyPageProfileLibraryVi
     private let bindAttractivePointsDataRelay = BehaviorRelay<[String]>(value: [])
     private let bindGenreDataRelay = BehaviorRelay<UserGenrePreferences>(value: UserGenrePreferences(genrePreferences: []))
     private let showGenreOtherViewRelay = BehaviorRelay<Bool>(value: false)
+    private let pushToLibraryViewController = PublishSubject<Int>()
     private let pushToSpecificLibraryViewController = PublishSubject<(Int,Int)>()
     
     // MARK: - Life Cycle
@@ -58,6 +59,7 @@ final class MyPageProfileLibraryViewModel: ViewModelType, MyPageProfileLibraryVi
         let bindInventoryData: BehaviorRelay<UserNovelStatus>
         let showGenreOtherView: BehaviorRelay<Bool>
         let isExistPreferneces: PublishRelay<Bool>
+        let pushToLibraryViewController: PublishSubject<Int>
         let pushToSpecificLibraryViewController: PublishSubject<(Int, Int)>
     }
     
@@ -83,6 +85,12 @@ final class MyPageProfileLibraryViewModel: ViewModelType, MyPageProfileLibraryVi
             })
             .disposed(by: disposeBag)
         
+        input.inventoryViewDidTap
+            .bind(with: self, onNext: { owner, _ in
+                self.pushToLibraryViewController.onNext(owner.profileId.value)
+            })
+            .disposed(by: disposeBag)
+        
         input.inventorySpecificPageViewDidTap
             .bind(with: self, onNext: { owner, pageIndex in
                 self.pushToSpecificLibraryViewController.onNext((owner.profileId.value, pageIndex))
@@ -96,6 +104,7 @@ final class MyPageProfileLibraryViewModel: ViewModelType, MyPageProfileLibraryVi
                       bindInventoryData: self.bindInventoryDataRelay,
                       showGenreOtherView: self.showGenreOtherViewRelay,
                       isExistPreferneces: self.isExistPrefernecesRelay,
+                      pushToLibraryViewController: self.pushToLibraryViewController,
                       pushToSpecificLibraryViewController: pushToSpecificLibraryViewController)
     }
     

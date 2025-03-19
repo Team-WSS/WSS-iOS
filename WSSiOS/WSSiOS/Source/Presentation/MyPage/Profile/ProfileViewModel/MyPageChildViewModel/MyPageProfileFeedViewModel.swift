@@ -31,7 +31,6 @@ final class MyPageProfileFeedViewModel: ViewModelType, MyPageProfileFeedViewMode
     private let showFeedDetailButton = BehaviorSubject<Bool>(value: false)
     private let pushToMyPageFeedDetailViewController = PublishRelay<(Int, ProfileFeedData)>()
     private let pushToFeedDetailViewController = PublishRelay<Int>()
-    private let pushToNovelDetailViewController = PublishRelay<Int>()
     
     // MARK: - Life Cycle
     
@@ -45,7 +44,6 @@ final class MyPageProfileFeedViewModel: ViewModelType, MyPageProfileFeedViewMode
         let resizefeedTableViewHeight: Observable<CGSize?>
         let feedDetailButtonDidTap: ControlEvent<Void>
         let feedTableViewItemSelected: Observable<IndexPath>
-        let feedConnectedNovelViewDidTap: Observable<Int>
     }
     
     struct Output {
@@ -55,7 +53,6 @@ final class MyPageProfileFeedViewModel: ViewModelType, MyPageProfileFeedViewMode
         let showFeedDetailButton: BehaviorSubject<Bool>
         let pushToMyPageFeedDetailViewController: Observable<(Int, ProfileFeedData)>
         let pushToFeedDetailViewController: Observable<Int>
-        let pushToNovelDetailViewController: Observable<Int>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -88,19 +85,12 @@ final class MyPageProfileFeedViewModel: ViewModelType, MyPageProfileFeedViewMode
             })
             .disposed(by: disposeBag)
         
-        input.feedConnectedNovelViewDidTap
-            .bind(with: self, onNext: { owner, novelId in
-                self.pushToNovelDetailViewController.accept(novelId)
-            })
-            .disposed(by: disposeBag)
-        
         return Output(bindFeedData: self.bindFeedData,
                       updateFeedTableViewHeight: self.updateFeedTableViewHeight,
                       isEmptyFeed: self.isEmptyFeed,
                       showFeedDetailButton: self.showFeedDetailButton,
                       pushToMyPageFeedDetailViewController: self.pushToMyPageFeedDetailViewController.asObservable(),
-                      pushToFeedDetailViewController: self.pushToFeedDetailViewController.asObservable(),
-                      pushToNovelDetailViewController: self.pushToNovelDetailViewController.asObservable())
+                      pushToFeedDetailViewController: self.pushToFeedDetailViewController.asObservable())
     }
     
     // MARK: - Bind Data

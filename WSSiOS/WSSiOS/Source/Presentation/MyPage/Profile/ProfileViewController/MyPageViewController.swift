@@ -23,14 +23,12 @@ final class MyPageViewController: UIViewController {
     private let viewModel: MyPageViewModel
     var entryType: EntryType = .otherVC
     
-    private var navigationTitle: String = ""
-    
     private let isEntryTabbarRelay = BehaviorRelay<Bool>(value: false)
-    private var dropDownCellTap = PublishSubject<String>()
-    private let headerViewHeightRelay = BehaviorRelay<Double>(value: 0)
     private let viewWillAppearEvent = PublishSubject<Void>()
-    private let feedConnectedNovelViewDidTap = PublishRelay<Int>()
-    private var cellSizes = BehaviorRelay<[CGSize]>(value: [])
+    private var navigationTitle: String = ""
+    private var dropDownCellTap = PublishSubject<String>()
+    private let updateHeaderViewHeight = BehaviorRelay<Double>(value: 0)
+    private var updateCellSizes = BehaviorRelay<[CGSize]>(value: [])
     
     //MARK: - UI Components
     
@@ -57,7 +55,6 @@ final class MyPageViewController: UIViewController {
         
         delegate()
         register()
-        
         bindViewModel()
         
         switch entryType {
@@ -87,7 +84,7 @@ final class MyPageViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        headerViewHeightRelay.accept(rootView.headerView.layer.frame.height)
+        updateHeaderViewHeight.accept(rootView.headerView.layer.frame.height)
     }
     
     private func register() {
@@ -95,9 +92,13 @@ final class MyPageViewController: UIViewController {
             MyPageNovelPreferencesCollectionViewCell.self,
             forCellWithReuseIdentifier: MyPageNovelPreferencesCollectionViewCell.cellIdentifier)
         
-        rootView.myPageLibraryView.genrePrefrerencesView.otherGenreView.genreTableView.register(MyPageGenrePreferencesOtherTableViewCell.self, forCellReuseIdentifier: MyPageGenrePreferencesOtherTableViewCell.cellIdentifier)
+        rootView.myPageLibraryView.genrePrefrerencesView.otherGenreView.genreTableView.register(
+            MyPageGenrePreferencesOtherTableViewCell.self,
+            forCellReuseIdentifier: MyPageGenrePreferencesOtherTableViewCell.cellIdentifier)
         
-        rootView.myPageFeedView.myPageFeedTableView.feedTableView.register(FeedListTableViewCell.self, forCellReuseIdentifier: FeedListTableViewCell.cellIdentifier)
+        rootView.myPageFeedView.myPageFeedTableView.feedTableView.register(
+            FeedListTableViewCell.self,
+            forCellReuseIdentifier: FeedListTableViewCell.cellIdentifier)
     }
     
     private func delegate() {
@@ -106,12 +107,6 @@ final class MyPageViewController: UIViewController {
             .disposed(by: disposeBag)
         
         rootView.myPageLibraryView.novelPrefrerencesView.preferencesCollectionView.rx
-            .setDelegate(self)
-            .disposed(by: disposeBag)
-        
-        rootView.myPageLibraryView.genrePrefrerencesView.otherGenreView.genreTableView.delegate = self
-        
-        rootView.myPageFeedView.myPageFeedTableView.feedTableView.rx
             .setDelegate(self)
             .disposed(by: disposeBag)
     }
@@ -143,25 +138,24 @@ final class MyPageViewController: UIViewController {
         let input = MyPageViewModel.Input(
             isEntryTabbar: isEntryTabbarRelay.asObservable(),
             viewWillAppearEvent: self.viewWillAppearEvent,
-            headerViewHeight: headerViewHeightRelay.asDriver(),
+            editProfileNotification: NotificationCenter.default.rx.notification(NSNotification.Name("EditProfile")).asObservable(),
+            headerViewHeight: updateHeaderViewHeight.asDriver(),
             scrollOffset: rootView.scrollView.rx.contentOffset.asDriver(),
+            libraryButtonDidTap: libraryButtonDidTap,
+            feedButtonDidTap: feedButtonDidTap,
             settingButtonDidTap: rootView.settingButton.rx.tap,
             dropdownButtonDidTap: dropDownCellTap,
             editButtonDidTap: rootView.headerView.userImageChangeButton.rx.tap,
             backButtonDidTap: rootView.backButton.rx.tap,
-            editProfileNotification: NotificationCenter.default.rx.notification(NSNotification.Name("EditProfile")).asObservable(),
             resizeKeywordCollectionViewHeight: rootView.myPageLibraryView.novelPrefrerencesView.preferencesCollectionView.rx.observe(CGSize.self, "contentSize"),
             genrePreferenceButtonDidTap: genrePreferenceButtonDidTap,
-            libraryButtonDidTap: libraryButtonDidTap,
-            feedButtonDidTap: feedButtonDidTap,
             inventoryViewDidTap: rootView.myPageLibraryView.inventoryView.inventoryTitleView.rx.tapGesture()
                 .when(.recognized)
                 .asObservable(),
             inventorySpecificPageViewDidTap: inventoryStatusButtonDidTap,
             resizefeedTableViewHeight: rootView.myPageFeedView.myPageFeedTableView.feedTableView.rx.observe(CGSize.self, "contentSize"),
             feedDetailButtonDidTap: rootView.myPageFeedView.myPageFeedDetailButton.rx.tap,
-            feedTableViewItemSelected: rootView.myPageFeedView.myPageFeedTableView.feedTableView.rx.itemSelected.asObservable(),
-            feedConnectedNovelViewDidTap: feedConnectedNovelViewDidTap.asObservable())
+            feedTableViewItemSelected: rootView.myPageFeedView.myPageFeedTableView.feedTableView.rx.itemSelected.asObservable())
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
@@ -422,7 +416,7 @@ final class MyPageViewController: UIViewController {
 
 extension MyPageViewController: UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, UITableViewDelegate {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return indexPath.row < cellSizes.value.count ? cellSizes.value[indexPath.row] : CGSize(width: 0, height: 0)
+        return indexPath.row < updateCellSizes.value.count ? updateCellSizes.value[indexPath.row] : CGSize(width: 0, height: 0)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

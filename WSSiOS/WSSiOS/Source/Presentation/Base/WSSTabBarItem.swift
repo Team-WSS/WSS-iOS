@@ -74,13 +74,18 @@ enum WSSTabBarItem: CaseIterable {
             let userId = UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)
             let myPageVC = MyPageViewController(
                 viewModel: MyPageViewModel(
-                    profileLibraryViewModel: MyPageProfileLibraryViewModel(userInfoRepository: DefaultUserInfoRepository(userService: DefaultUserService())),
-                    profileFeedViewModel: MyPageProfileFeedViewModel(userInfoRepository: DefaultUserInfoRepository(userService: DefaultUserService())), userRepository: DefaultUserRepository(
-                        userInfoRepository: DefaultUserInfoRepository(
-                            userService: DefaultUserService()),
+                    profileId: userId,
+                    userInfoRepository: DefaultUserInfoRepository(
+                        userService: DefaultUserService()),
+                    profileHeaderViewModel: MyPageProfileHeaderViewModel(
                         userBlockRepository: DefaultUserBlockRepository(
                             blocksService: DefaultBlocksService())),
-                    profileId: userId))
+                    profileLibraryViewModel: MyPageProfileLibraryViewModel(
+                        userInfoRepository: DefaultUserInfoRepository(
+                            userService: DefaultUserService())),
+                    profileFeedViewModel: MyPageProfileFeedViewModel(
+                        userInfoRepository: DefaultUserInfoRepository(
+                            userService: DefaultUserService()))))
             myPageVC.entryType = .tabBar
             return myPageVC
         }
