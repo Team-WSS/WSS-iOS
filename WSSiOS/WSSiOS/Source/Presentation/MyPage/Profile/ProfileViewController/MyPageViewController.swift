@@ -30,6 +30,7 @@ final class MyPageViewController: UIViewController {
     private let headerViewHeightRelay = BehaviorRelay<Double>(value: 0)
     private let viewWillAppearEvent = PublishSubject<Void>()
     private let feedConnectedNovelViewDidTap = PublishRelay<Int>()
+    private var cellSizes = BehaviorRelay<[CGSize]>(value: [])
     
     //MARK: - UI Components
     
@@ -143,13 +144,13 @@ final class MyPageViewController: UIViewController {
             isEntryTabbar: isEntryTabbarRelay.asObservable(),
             viewWillAppearEvent: self.viewWillAppearEvent,
             headerViewHeight: headerViewHeightRelay.asDriver(),
-            resizefeedTableViewHeight: rootView.myPageFeedView.myPageFeedTableView.feedTableView.rx.observe(CGSize.self, "contentSize"),
-            resizeKeywordCollectionViewHeight: rootView.myPageLibraryView.novelPrefrerencesView.preferencesCollectionView.rx.observe(CGSize.self, "contentSize"),
             scrollOffset: rootView.scrollView.rx.contentOffset.asDriver(),
             settingButtonDidTap: rootView.settingButton.rx.tap,
             dropdownButtonDidTap: dropDownCellTap,
             editButtonDidTap: rootView.headerView.userImageChangeButton.rx.tap,
             backButtonDidTap: rootView.backButton.rx.tap,
+            editProfileNotification: NotificationCenter.default.rx.notification(NSNotification.Name("EditProfile")).asObservable(),
+            resizeKeywordCollectionViewHeight: rootView.myPageLibraryView.novelPrefrerencesView.preferencesCollectionView.rx.observe(CGSize.self, "contentSize"),
             genrePreferenceButtonDidTap: genrePreferenceButtonDidTap,
             libraryButtonDidTap: libraryButtonDidTap,
             feedButtonDidTap: feedButtonDidTap,
@@ -157,8 +158,8 @@ final class MyPageViewController: UIViewController {
                 .when(.recognized)
                 .asObservable(),
             inventorySpecificPageViewDidTap: inventoryStatusButtonDidTap,
+            resizefeedTableViewHeight: rootView.myPageFeedView.myPageFeedTableView.feedTableView.rx.observe(CGSize.self, "contentSize"),
             feedDetailButtonDidTap: rootView.myPageFeedView.myPageFeedDetailButton.rx.tap,
-            editProfileNotification: NotificationCenter.default.rx.notification(NSNotification.Name("EditProfile")).asObservable(),
             feedTableViewItemSelected: rootView.myPageFeedView.myPageFeedTableView.feedTableView.rx.itemSelected.asObservable(),
             feedConnectedNovelViewDidTap: feedConnectedNovelViewDidTap.asObservable())
         
@@ -266,6 +267,21 @@ final class MyPageViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
+        output.bindKeywordCell
+            .observe(on: MainScheduler.instance)
+            .do(onNext: { [weak self] _ in
+                self?.rootView.myPageLibraryView.novelPrefrerencesView.preferencesCollectionView.reloadData()
+            })
+            .map { keywords in
+                return keywords.map { keyword -> CGSize in
+                    let text = "\(keyword.keywordName) \(keyword.keywordCount)"
+                    let width = (text as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 24
+                    return CGSize(width: width, height: 37)
+                }
+            }
+            .bind(to: self.cellSizes)
+            .disposed(by: disposeBag)
+        
         output.bindInventoryData
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, data in
@@ -369,7 +385,7 @@ final class MyPageViewController: UIViewController {
         
         output.pushToMyPageFeedDetailViewController
             .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, userData in
+            .bind(with: self as MyPageViewController, onNext: { owner, userData in
                 let (id, data) = userData
                 owner.pushToMyPageFeedDetailViewController(userId: id, useData: data)
             })
@@ -406,17 +422,7 @@ final class MyPageViewController: UIViewController {
 
 extension MyPageViewController: UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, UITableViewDelegate {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        guard let keywords = try? viewModel.bindKeywordRelay.value,
-              indexPath.row < keywords.count else {
-            return CGSize(width: 0, height: 0)
-        }
-        
-        let keyword = keywords[indexPath.row]
-        let text = "\(keyword.keywordName) \(keyword.keywordCount)"
-        
-        
-        let width = (text as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 24
-        return CGSize(width: width, height: 37)
+        return indexPath.row < cellSizes.value.count ? cellSizes.value[indexPath.row] : CGSize(width: 0, height: 0)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -475,4 +481,3 @@ extension MyPageViewController: FeedTableViewDelegate {
         self.feedConnectedNovelViewDidTap.accept(novelId)
     }
 }
-

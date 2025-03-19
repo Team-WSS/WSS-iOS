@@ -303,6 +303,8 @@ extension UIViewController {
     func pushToMyPageViewController(userId: Int) {
         let viewController = MyPageViewController(
             viewModel: MyPageViewModel(
+                profileLibraryViewModel: MyPageProfileLibraryViewModel(userInfoRepository: DefaultUserInfoRepository(userService: DefaultUserService())),
+                profileFeedViewModel: MyPageProfileFeedViewModel(userInfoRepository: DefaultUserInfoRepository(userService: DefaultUserService())),
                 userRepository: DefaultUserRepository(
                     userInfoRepository: DefaultUserInfoRepository(
                         userService: DefaultUserService()),
@@ -395,7 +397,7 @@ extension UIViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func pushToMyPageFeedDetailViewController(userId: Int, useData: MyProfileEntity) {
+    func pushToMyPageFeedDetailViewController(userId: Int, useData: ProfileFeedData) {
         let viewController = MyPageFeedDetailViewController(
             viewModel: MyPageFeedDetailViewModel(
                 userRepository: DefaultUserInfoRepository(

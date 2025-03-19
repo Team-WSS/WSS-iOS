@@ -16,7 +16,7 @@ final class MyPageFeedDetailViewModel: ViewModelType {
     
     //init
     private let userRepository: UserInfoRepository
-    private let profileData: MyProfileEntity
+    private let profileData: ProfileFeedData
     private let profileId: Int
     
     //피드 정보 관련 데이터
@@ -37,7 +37,7 @@ final class MyPageFeedDetailViewModel: ViewModelType {
     
     //MARK: - Life Cycle
     
-    init(userRepository: UserInfoRepository, profileId: Int, profileData: MyProfileEntity) {
+    init(userRepository: UserInfoRepository, profileId: Int, profileData: ProfileFeedData) {
         self.userRepository = userRepository
         
         self.profileId = profileId
