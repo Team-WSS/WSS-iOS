@@ -10,18 +10,20 @@ import Foundation
 import RxSwift
 
 protocol AvatarRepository {
-    func getAvatarList() -> Observable<AvatarListResponse>
+    func getAvatarList() -> Observable<AvatarListEntity>
 }
 
 struct DefaultAvatarRepository: AvatarRepository {
+    
     private var avatarService: AvatarService
     
     init(avatarService: AvatarService) {
         self.avatarService = avatarService
     }
     
-    func getAvatarList() -> Observable<AvatarListResponse> {
+    func getAvatarList() -> Observable<AvatarListEntity> {
         return avatarService.getAvatarList()
+            .map{ $0.toEntity() }
             .asObservable()
     }
 }
