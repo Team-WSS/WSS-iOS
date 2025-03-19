@@ -14,25 +14,25 @@ final class MyPageFeedDetailViewModel: ViewModelType {
     
     //MARK: - Properties
     
+    //init
     private let userRepository: UserInfoRepository
-    
     private let profileData: MyProfileEntity
     private let profileId: Int
+    
+    //피드 정보 관련 데이터
+    private let isMyPage = PublishRelay<Bool>()
     private var feedId: Int = 0
     private var isMyFeed: Bool = false
     
-    private let feedDataRelay = BehaviorRelay<[FeedCellData]>(value: [])
+    //무한스크롤 기능
+    private let feedDataRelay = BehaviorRelay<[MyFeedListItem]>(value: [])
     private let isLoadableRelay = BehaviorRelay<Bool>(value: true)
     private let lastFeedIdRelay = BehaviorRelay<Int>(value: 0)
-    
-    private let showLoadingViewRelay = BehaviorRelay<Bool>(value: false)
-    private let popViewControllerRelay = PublishRelay<Void>()
-    private let isMyPage = PublishRelay<Bool>()
-    
     private var isFetching = false
     
+    //Action Relay
+    private let showLoadingViewRelay = BehaviorRelay<Bool>(value: false)
     private let pushToFeedDetailViewController = PublishRelay<Int>()
-    private let pushToNovelDetailViewController = PublishRelay<Int>()
     
     
     //MARK: - Life Cycle
@@ -46,20 +46,14 @@ final class MyPageFeedDetailViewModel: ViewModelType {
     
     struct Input {
         let loadNextPageTrigger: Observable<Void>
-        let popViewController: ControlEvent<Void>
         let viewWillAppearEvent: Observable<Void>
-        
-        let feedTableViewItemSelected: Observable<IndexPath>
-        let feedConnectedNovelViewDidTap: Observable<Int>
+        let feedTableViewItemSelected: ControlEvent<IndexPath>
     }
     
     struct Output {
-        let bindFeedData: BehaviorRelay<[FeedCellData]>
-        let popViewController: PublishRelay<Void>
+        let bindFeedData: BehaviorRelay<[MyFeedListItem]>
         let isMyPage: PublishRelay<Bool>
-        
         let pushToFeedDetailViewController: Observable<Int>
-        let pushToNovelDetailViewController: Observable<Int>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -71,7 +65,7 @@ final class MyPageFeedDetailViewModel: ViewModelType {
             .do(onNext: { [weak self] _ in
                 self?.isFetching = true
             })
-            .flatMapLatest { [weak self] _ -> Observable<MyFeedResult> in
+            .flatMapLatest { [weak self] _ -> Observable<MyFeedListEntity> in
                 guard let self = self else { return .empty() }
                 return self.getUserFeed(userId: self.profileId,
                                         lastFeedId: self.lastFeedIdRelay.value,
@@ -84,11 +78,7 @@ final class MyPageFeedDetailViewModel: ViewModelType {
                 print(error.localizedDescription)
             })
             .disposed(by: disposeBag)
-        
-        input.popViewController
-            .bind(to: self.popViewControllerRelay)
-            .disposed(by: disposeBag)
-        
+
         input.viewWillAppearEvent
             .bind(with: self, onNext: { owner, _ in
                 let userId = UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)
@@ -102,24 +92,16 @@ final class MyPageFeedDetailViewModel: ViewModelType {
                 self.pushToFeedDetailViewController.accept(feedId)
             })
             .disposed(by: disposeBag)
-        
-        input.feedConnectedNovelViewDidTap
-            .bind(with: self, onNext: { owner, novelId in
-                self.pushToNovelDetailViewController.accept(novelId)
-            })
-            .disposed(by: disposeBag)
-        
+
         return Output(bindFeedData: self.feedDataRelay,
-                      popViewController: self.popViewControllerRelay,
                       isMyPage: self.isMyPage,
-                      pushToFeedDetailViewController: self.pushToFeedDetailViewController.asObservable(),
-                      pushToNovelDetailViewController: self.pushToNovelDetailViewController.asObservable())
+                      pushToFeedDetailViewController: self.pushToFeedDetailViewController.asObservable())
     }
     
-    private func updateFeedList(_ feedResult: MyFeedResult) {
+    private func updateFeedList(_ feedResult: MyFeedListEntity) {
         let newFeedData = feedResult.feeds
             .map { feed in
-                FeedCellData(feed: feed,
+                MyFeedListItem(feed: feed,
                              avatarImage: self.profileData.avatarImage,
                              nickname: self.profileData.nickname)
             }
@@ -135,8 +117,7 @@ final class MyPageFeedDetailViewModel: ViewModelType {
     
     //MARK: - API
     
-    private func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Observable<MyFeedResult> {
+    private func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Observable<MyFeedListEntity> {
         return userRepository.getUserFeed(userId: userId, lastFeedId: lastFeedId, size: size)
-            .asObservable()
     }
 }

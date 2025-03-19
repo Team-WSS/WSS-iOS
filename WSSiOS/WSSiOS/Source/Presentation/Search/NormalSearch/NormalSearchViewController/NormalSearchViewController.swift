@@ -189,7 +189,7 @@ final class NormalSearchViewController: UIViewController, UIScrollViewDelegate {
         
         output.pushToNovelDetailViewController
             .subscribe(with: self, onNext: { owner, novelId in
-                owner.pushToDetailViewController(novelId: novelId)
+                owner.pushToNovelDetailViewController(novelId: novelId)
             })
             .disposed(by: disposeBag)
         

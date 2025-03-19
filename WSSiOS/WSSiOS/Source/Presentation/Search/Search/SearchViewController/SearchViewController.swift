@@ -113,7 +113,7 @@ final class SearchViewController: UIViewController {
         
         output.pushToNovelDetailViewController
             .bind(with: self, onNext: { owner, novelId in
-                owner.pushToDetailViewController(novelId: novelId)
+                owner.pushToNovelDetailViewController(novelId: novelId)
             })
             .disposed(by: disposeBag)
         

@@ -103,7 +103,7 @@ final class LibraryChildViewController: UIViewController {
         output.pushToDetailNovelViewController
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, novelId in
-                owner.pushToDetailViewController(novelId: novelId)
+                owner.pushToNovelDetailViewController(novelId: novelId)
             })
             .disposed(by: disposeBag)
         

@@ -18,9 +18,7 @@ final class MyPageFeedDetailViewController: UIViewController, UIScrollViewDelega
     private let disposeBag = DisposeBag()
     private let viewModel: MyPageFeedDetailViewModel
     private let viewWillAppearRelay = PublishRelay<Void>()
-    
-    private let feedConnectedNovelViewDidTap = PublishRelay<Int>()
-    
+ 
     //MARK: - Components
     
     private let rootView = MyPageFeedDetailView()
@@ -47,6 +45,7 @@ final class MyPageFeedDetailViewController: UIViewController, UIScrollViewDelega
         register()
         delegate()
         bindViewModel()
+        bindAction()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -67,6 +66,14 @@ final class MyPageFeedDetailViewController: UIViewController, UIScrollViewDelega
             .disposed(by: disposeBag)
     }
     
+    private func bindAction() {
+        rootView.backButton.rx.tap
+            .bind(with: self, onNext: { owner, _ in
+                owner.popToLastViewController()
+            })
+            .disposed(by: disposeBag)
+    }
+    
     private func bindViewModel() {
         let loadNextPageTrigger = rootView.myPageFeedDetailTableView.rx.contentOffset
             .map { [weak self] contentOffset in
@@ -82,10 +89,8 @@ final class MyPageFeedDetailViewController: UIViewController, UIScrollViewDelega
         
         let input = MyPageFeedDetailViewModel.Input(
             loadNextPageTrigger: loadNextPageTrigger,
-            popViewController: rootView.backButton.rx.tap,
             viewWillAppearEvent: viewWillAppearRelay.asObservable(),
-            feedTableViewItemSelected: rootView.myPageFeedDetailTableView.rx.itemSelected.asObservable(),
-            feedConnectedNovelViewDidTap: feedConnectedNovelViewDidTap.asObservable()
+            feedTableViewItemSelected: rootView.myPageFeedDetailTableView.rx.itemSelected
         )
         
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
@@ -95,30 +100,17 @@ final class MyPageFeedDetailViewController: UIViewController, UIScrollViewDelega
             .bind(to: rootView.myPageFeedDetailTableView.rx.items(
                 cellIdentifier: FeedListTableViewCell.cellIdentifier,
                 cellType: FeedListTableViewCell.self)) { _, element, cell in
-                    cell.bindProfileData(feed: element)
+                    cell.bindProfileFeedData(feed: element)
                     cell.delegate = self
+                    print("Delegate set:", cell.delegate != nil)
                 }
                 .disposed(by: disposeBag)
-        
-        output.popViewController
-            .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, _ in
-                owner.popToLastViewController()
-            })
-            .disposed(by: disposeBag)
         
         output.isMyPage
             .bind(with: self, onNext: { owner, isMyPage in
                 owner.setWSSNavigationBar(title: isMyPage ? StringLiterals.MyPage.Profile.myProfileFeed : StringLiterals.MyPage.Profile.otherProfileFeed,
                                        left: self.rootView.backButton,
                                        right: nil)
-            })
-            .disposed(by: disposeBag)
-        
-        output.pushToNovelDetailViewController
-            .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, novelId in
-                owner.pushToDetailViewController(novelId: novelId)
             })
             .disposed(by: disposeBag)
         
@@ -145,6 +137,6 @@ extension MyPageFeedDetailViewController: FeedTableViewDelegate {
     }
     
     func connectedNovelViewDidTap(novelId: Int) {
-        self.feedConnectedNovelViewDidTap.accept(novelId)
+        self.pushToNovelDetailViewController(novelId: novelId)
     }
 }

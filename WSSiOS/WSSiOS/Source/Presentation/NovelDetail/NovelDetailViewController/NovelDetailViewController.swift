@@ -284,7 +284,7 @@ final class NovelDetailViewController: UIViewController {
             .bind(to: rootView.feedView.feedListView.feedTableView.rx.items(
                 cellIdentifier: FeedListTableViewCell.cellIdentifier,
                 cellType: FeedListTableViewCell.self)) { _, element, cell in
-                    cell.bindData(feed: element)
+                    cell.bindFeedData(feed: element)
                     cell.delegate = self
                 }
                 .disposed(by: disposeBag)
@@ -316,7 +316,7 @@ final class NovelDetailViewController: UIViewController {
         
         output.pushToNovelDetailViewController
             .subscribe(with: self, onNext: { owner, novelId in
-                owner.pushToDetailViewController(novelId: novelId)
+                owner.pushToNovelDetailViewController(novelId: novelId)
             })
             .disposed(by: disposeBag)
         

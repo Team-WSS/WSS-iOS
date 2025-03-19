@@ -312,7 +312,8 @@ final class MyPageViewController: UIViewController {
             .bind(to: rootView.myPageFeedView.myPageFeedTableView.feedTableView.rx.items(
                 cellIdentifier: FeedListTableViewCell.cellIdentifier,
                 cellType: FeedListTableViewCell.self)) { _, element, cell in
-                    cell.bindProfileData(feed: element)
+                    cell.bindProfileFeedData(feed: element)
+                    cell.delegate = self
                 }
                 .disposed(by: disposeBag)
         
@@ -384,7 +385,7 @@ final class MyPageViewController: UIViewController {
         output.pushToNovelDetailViewController
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, novelId in
-                owner.pushToDetailViewController(novelId: novelId)
+                owner.pushToNovelDetailViewController(novelId: novelId)
             })
             .disposed(by: disposeBag)
         

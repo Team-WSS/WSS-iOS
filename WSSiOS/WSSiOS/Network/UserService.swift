@@ -23,7 +23,7 @@ protocol UserService {
     func getUserGenrePreferences(userId: Int) -> Single<UserGenrePreferences>
     func patchUserProfile(updatedFields: [String: Any]) -> Single<Void>
     func getNicknameisValid(nickname: String) -> Single<OnboardingResponse>
-    func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Single<MyFeedResult>
+    func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Single<MyFeedListResponse>
     func getUserNovelList(userId: Int,
                           readStatus: String,
                           lastUserNovelId: Int,
@@ -318,7 +318,7 @@ extension DefaultUserService: UserService {
         }
     }
     
-    func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Single<MyFeedResult> {
+    func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Single<MyFeedListResponse> {
         let feedQueryItems: [URLQueryItem] = [
             URLQueryItem(name: "lastFeedId", value: String(describing: lastFeedId)),
             URLQueryItem(name: "size", value: String(describing: size))
@@ -334,7 +334,7 @@ extension DefaultUserService: UserService {
             
             return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
-                                       to: MyFeedResult.self) }
+                                       to: MyFeedListResponse.self) }
                 .asSingle()
         } catch {
             return Single.error(error)

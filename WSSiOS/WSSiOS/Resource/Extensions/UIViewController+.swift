@@ -107,7 +107,7 @@ extension UIViewController {
         self.navigationController?.popToRootViewController(animated: true)
     }
     
-    func pushToDetailViewController(novelId: Int) {
+    func pushToNovelDetailViewController(novelId: Int) {
         let viewController = ModuleFactory.shared.makeNovelDetailViewController(novelId: novelId)
         viewController.navigationController?.isNavigationBarHidden = false
         viewController.hidesBottomBarWhenPushed = true

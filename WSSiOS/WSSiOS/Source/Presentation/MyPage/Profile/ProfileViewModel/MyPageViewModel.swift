@@ -33,7 +33,7 @@ final class MyPageViewModel: ViewModelType {
     private let bindGenreDataRelay = BehaviorRelay<UserGenrePreferences>(value: UserGenrePreferences(genrePreferences: []))
     private let showGenreOtherViewRelay = BehaviorRelay<Bool>(value: false)
     
-    private let bindFeedDataRelay = BehaviorRelay<[FeedCellData]>(value: [])
+    private let bindFeedDataRelay = BehaviorRelay<[MyFeedListItem]>(value: [])
     private let isEmptyFeedRelay = PublishRelay<Bool>()
     private let showFeedDetailButtonRelay = BehaviorSubject<Bool>(value: false)
     
@@ -116,7 +116,7 @@ final class MyPageViewModel: ViewModelType {
         let showGenreOtherView: BehaviorRelay<Bool>
         let isExistPreferneces: PublishRelay<Bool>
         
-        let bindFeedData: BehaviorRelay<[FeedCellData]>
+        let bindFeedData: BehaviorRelay<[MyFeedListItem]>
         let updateFeedTableViewHeight: PublishRelay<CGFloat>
         let isEmptyFeed: PublishRelay<Bool>
         let showFeedDetailButton: BehaviorSubject<Bool>
@@ -451,9 +451,9 @@ final class MyPageViewModel: ViewModelType {
     // 활동 데이터 바인딩
     private func updateMyPageFeedData() -> Observable<Void> {
         return getUserFeed(userId: self.profileId, lastFeedId: 0, size: 6)
-            .map { feedResult -> [FeedCellData] in
+            .map { feedResult -> [MyFeedListItem] in
                 feedResult.feeds.map { feed in
-                    FeedCellData(
+                    MyFeedListItem(
                         feed: feed,
                         avatarImage: self.profileDataRelay.value.avatarImage,
                         nickname: self.profileDataRelay.value.nickname
@@ -530,8 +530,7 @@ final class MyPageViewModel: ViewModelType {
             .observe(on: MainScheduler.instance)
     }
     
-    private func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Observable<MyFeedResult> {
+    private func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Observable<MyFeedListEntity> {
         return userRepository.userInfoRepository.getUserFeed(userId: userId, lastFeedId: lastFeedId, size: size)
-            .asObservable()
     }
 }
