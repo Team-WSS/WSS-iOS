@@ -28,7 +28,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
     static let introLimit = 50
     
     private let userRepository: UserInfoRepository
-    private var profileData: MyProfileResult?
+    private var profileData: MyProfileEntity?
     private var avatarId: Int = -1
     
     private var userNickname = BehaviorRelay<String>(value: "")
@@ -45,7 +45,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
     
     init(userRepository: UserInfoRepository,
          entryType: MyPageEditEntryType,
-         profileData: MyProfileResult? = nil) {
+         profileData: MyProfileEntity? = nil) {
         
         self.userRepository = userRepository
         self.entryType = entryType
@@ -73,7 +73,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
     struct Output {
         let bindGenreCell = BehaviorRelay<[(String, Bool)]>(value: [])
         let popViewController = PublishRelay<Bool>()
-        let bindProfileData = BehaviorRelay<MyProfileResult>(value: MyProfileResult(nickname: "",
+        let bindProfileData = BehaviorRelay<MyProfileEntity>(value: MyProfileEntity(nickname: "",
                                                                                     intro: "",
                                                                                     avatarImage: "",
                                                                                     genrePreferences: []))
@@ -412,7 +412,7 @@ final class MyPageEditProfileViewModel: ViewModelType {
             .disposed(by: disposeBag)
     }
     
-    private func getProfileData() -> Observable<MyProfileResult> {
+    private func getProfileData() -> Observable<MyProfileEntity> {
         return userRepository.getMyProfileData()
             .observe(on: MainScheduler.instance)
     }

@@ -48,12 +48,14 @@ final class MyPageEditProfileViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        setNavigation()
         hideTabBar()
         swipeBackGesture()
+        setWSSNavigationBar(title: StringLiterals.Navigation.Title.editProfile,
+                         left: self.rootView.backButton,
+                         right: self.rootView.completeButton)
     }
     
-    //MARK: - Bind
+    //MARK: - Delegate
     
     private func register() {
         rootView.genreCollectionView.register(
@@ -66,6 +68,8 @@ final class MyPageEditProfileViewController: UIViewController {
             .setDelegate(self)
             .disposed(by: disposeBag)
     }
+    
+    //MARK: - Bind
     
     private func bindViewModel() {
         let input = MyPageEditProfileViewModel.Input(
@@ -208,15 +212,5 @@ extension MyPageEditProfileViewController: UICollectionViewDelegateFlowLayout {
         
         let width = (unwrappedText as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 26
         return CGSize(width: width, height: 35)
-    }
-}
-
-//MARK: - UI
-
-extension MyPageEditProfileViewController {
-    private func setNavigation() {
-        setWSSNavigationBar(title: StringLiterals.Navigation.Title.editProfile,
-                         left: self.rootView.backButton,
-                         right: self.rootView.completeButton)
     }
 }

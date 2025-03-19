@@ -11,8 +11,8 @@ import RxSwift
 
 protocol UserInfoRepository {
     func getUserMeData() -> Observable<UserMeResult>
-    func getMyProfileData() -> Observable<MyProfileResult>
-    func getOtherProfile(userId: Int) -> Observable<OtherProfileResult>
+    func getMyProfileData() -> Observable<MyProfileEntity>
+    func getOtherProfile(userId: Int) -> Observable<OtherProfileEntity>
     func getUserInfo() -> Observable<UserInfoEntity>
     func putUserInfo(userData: ChangeUserInfoEntity) -> Observable<Void>
     func patchUserName(userNickName: String) -> Observable<Void>
@@ -47,13 +47,15 @@ struct DefaultUserInfoRepository: UserInfoRepository {
             .asObservable()
     }
     
-    func getMyProfileData() -> Observable<MyProfileResult> {
+    func getMyProfileData() -> Observable<MyProfileEntity> {
         return userService.getMyProfile()
+            .map{ $0.toEntity() }
             .asObservable()
     }
     
-    func getOtherProfile(userId: Int) -> Observable<OtherProfileResult> {
+    func getOtherProfile(userId: Int) -> Observable<OtherProfileEntity> {
         return userService.getOtherProfile(userId: userId)
+            .map{ $0.toEntity() }
             .asObservable()
     }
     
