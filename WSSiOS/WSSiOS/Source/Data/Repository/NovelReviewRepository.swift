@@ -10,20 +10,8 @@ import Foundation
 import RxSwift
 
 protocol NovelReviewRepository {
-    func postNovelReview(novelId: Int,
-                         userNovelRating: Float,
-                         status: String,
-                         startDate: String?,
-                         endDate: String?,
-                         attractivePoints: [String],
-                         keywordIds: [Int]) -> Observable<Void>
-    func putNovelReview(novelId: Int,
-                        userNovelRating: Float,
-                        status: String,
-                        startDate: String?,
-                        endDate: String?,
-                        attractivePoints: [String],
-                        keywordIds: [Int]) -> Observable<Void>
+    func postNovelReview(novelReviewData: PostNovelReviewEntity) -> Observable<Void>
+    func putNovelReview(novelId: Int, novelReviewData: PutNovelReviewEntity) -> Observable<Void>
     func getNovelReview(novelId: Int) -> Observable<NovelReviewEntity>
 }
 
@@ -34,38 +22,16 @@ struct DefaultNovelReviewRepository: NovelReviewRepository {
         self.novelReviewService = novelReviewService
     }
     
-    func postNovelReview(novelId: Int,
-                         userNovelRating: Float,
-                         status: String,
-                         startDate: String?,
-                         endDate: String?,
-                         attractivePoints: [String],
-                         keywordIds: [Int]) -> Observable<Void> {
-        return novelReviewService.postNovelReview(novelId: novelId,
-                                                  userNovelRating: userNovelRating,
-                                                  status: status,
-                                                  startDate: startDate,
-                                                  endDate: endDate,
-                                                  attractivePoints: attractivePoints,
-                                                  keywordIds: keywordIds)
-        .asObservable()
+    func postNovelReview(novelReviewData: PostNovelReviewEntity) -> Observable<Void> {
+        let novelReviewDataDTO = novelReviewData.toDTO()
+        return novelReviewService.postNovelReview(novelReviewData: novelReviewDataDTO)
+            .asObservable()
     }
     
-    func putNovelReview(novelId: Int,
-                        userNovelRating: Float,
-                        status: String,
-                        startDate: String?,
-                        endDate: String?,
-                        attractivePoints: [String],
-                        keywordIds: [Int]) -> Observable<Void> {
-        return novelReviewService.putNovelReview(novelId: novelId,
-                                                 userNovelRating: userNovelRating,
-                                                 status: status,
-                                                 startDate: startDate,
-                                                 endDate: endDate,
-                                                 attractivePoints: attractivePoints,
-                                                 keywordIds: keywordIds)
-        .asObservable()
+    func putNovelReview(novelId: Int, novelReviewData: PutNovelReviewEntity) -> Observable<Void> {
+        let novelReviewDataDTO = novelReviewData.toDTO()
+        return novelReviewService.putNovelReview(novelId: novelId, novelReviewData: novelReviewDataDTO)
+            .asObservable()
     }
     
     func getNovelReview(novelId: Int) -> Observable<NovelReviewEntity> {

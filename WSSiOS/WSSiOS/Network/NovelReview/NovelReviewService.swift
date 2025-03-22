@@ -10,32 +10,14 @@ import Foundation
 import RxSwift
 
 protocol NovelReviewService {
-    func postNovelReview(novelId: Int,
-                         userNovelRating: Float,
-                         status: String,
-                         startDate: String?,
-                         endDate: String?,
-                         attractivePoints: [String],
-                         keywordIds: [Int]) -> Single<Void>
-    func putNovelReview(novelId: Int,
-                        userNovelRating: Float,
-                        status: String,
-                        startDate: String?,
-                        endDate: String?,
-                        attractivePoints: [String],
-                        keywordIds: [Int]) -> Single<Void>
+    func postNovelReview(novelReviewData: PostNovelReviewRequest) -> Single<Void>
+    func putNovelReview(novelId: Int, novelReviewData: PutNovelReviewRequest) -> Single<Void>
     func getNovelReview(novelId: Int) -> Single<NovelReviewResponse>
 }
 
 final class DefaultNovelReviewService: NSObject, Networking, NovelReviewService {
-    func postNovelReview(novelId: Int,
-                         userNovelRating: Float,
-                         status: String,
-                         startDate: String?,
-                         endDate: String?,
-                         attractivePoints: [String],
-                         keywordIds: [Int]) -> Single<Void> {
-        guard let novelReviewContentData = try? JSONEncoder().encode(PostNovelReviewRequest(novelId: novelId, userNovelRating: userNovelRating, status: status, startDate: startDate, endDate: endDate, attractivePoints: attractivePoints, keywordIds: keywordIds)) else {
+    func postNovelReview(novelReviewData: PostNovelReviewRequest) -> Single<Void> {
+        guard let novelReviewContentData = try? JSONEncoder().encode(novelReviewData) else {
             return Single.error(NetworkServiceError.invalidRequestError)
         }
         
@@ -55,14 +37,8 @@ final class DefaultNovelReviewService: NSObject, Networking, NovelReviewService 
         }
     }
     
-    func putNovelReview(novelId: Int,
-                        userNovelRating: Float,
-                        status: String,
-                        startDate: String?,
-                        endDate: String?,
-                        attractivePoints: [String],
-                        keywordIds: [Int]) -> Single<Void> {
-        guard let novelReviewContentData = try? JSONEncoder().encode(PutNovelReviewRequest(userNovelRating: userNovelRating, status: status, startDate: startDate, endDate: endDate, attractivePoints: attractivePoints, keywordIds: keywordIds)) else {
+    func putNovelReview(novelId: Int, novelReviewData: PutNovelReviewRequest) -> Single<Void> {
+        guard let novelReviewContentData = try? JSONEncoder().encode(novelReviewData) else {
             return Single.error(NetworkServiceError.invalidRequestError)
         }
         

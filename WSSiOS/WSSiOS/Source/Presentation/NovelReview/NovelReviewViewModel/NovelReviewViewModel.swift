@@ -23,7 +23,7 @@ final class NovelReviewViewModel: ViewModelType {
     let novelTitle: String
     
     private var isNovelReviewExist: Bool = false
-
+    
     private var startDate: Date?
     private var endDate: Date?
     var selectedAttractivePointList: [String] = []
@@ -126,13 +126,27 @@ final class NovelReviewViewModel: ViewModelType {
             .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .flatMapLatest {
                 AmplitudeManager.shared.track(AmplitudeEvent.Novel.rateNovel)
-
+                
                 let startDateString = self.readStatus != .quit ? self.startDate.map { self.dateFormatter.string(from: $0) } : nil
                 let endDateString = self.readStatus != .watching ? self.endDate.map { self.dateFormatter.string(from: $0) } : nil
                 let keywordIdList = self.selectedKeywordListData.value.map { $0.keywordId }
                 
                 if self.isNovelReviewExist {
+                    let novelReviewData = PutNovelReviewEntity(
+                        userNovelRating: self.starRating.value,
+                        status: self.readStatus.rawValue,
+                        startDate: startDateString,
+                        endDate: endDateString,
+                        attractivePoints: self.selectedAttractivePointList,
+                        keywordIds: keywordIdList
+                    )
+                    
                     return self.putNovelReview(
+                        novelId: self.novelId,
+                        novelReviewData: novelReviewData
+                    )
+                } else {
+                    let novelReviewData = PostNovelReviewEntity(
                         novelId: self.novelId,
                         userNovelRating: self.starRating.value,
                         status: self.readStatus.rawValue,
@@ -141,15 +155,9 @@ final class NovelReviewViewModel: ViewModelType {
                         attractivePoints: self.selectedAttractivePointList,
                         keywordIds: keywordIdList
                     )
-                } else {
+                    
                     return self.postNovelReview(
-                        novelId: self.novelId,
-                        userNovelRating: self.starRating.value,
-                        status: self.readStatus.rawValue,
-                        startDate: startDateString,
-                        endDate: endDateString,
-                        attractivePoints: self.selectedAttractivePointList,
-                        keywordIds: keywordIdList
+                        novelReviewData: novelReviewData
                     )
                 }
             }
@@ -171,8 +179,8 @@ final class NovelReviewViewModel: ViewModelType {
         input.dateLabelTapGesture
             .subscribe(with: self, onNext: { owner, _ in
                 owner.presentNovelDateSelectModalViewController.accept((owner.readStatus,
-                                                                         owner.startDate,
-                                                                         owner.endDate))
+                                                                        owner.startDate,
+                                                                        owner.endDate))
             })
             .disposed(by: disposeBag)
         
@@ -260,7 +268,7 @@ final class NovelReviewViewModel: ViewModelType {
                 owner.popViewController.accept(())
             })
             .disposed(by: disposeBag)
-
+        
         return Output(popViewController: popViewController.asObservable(),
                       readStatusListData: readStatusListData.asObservable(),
                       readStatusData: readStatusData.asObservable(),
@@ -277,38 +285,14 @@ final class NovelReviewViewModel: ViewModelType {
     
     //MARK: - API
     
-    private func postNovelReview(novelId: Int,
-                                 userNovelRating: Float,
-                                 status: String,
-                                 startDate: String?,
-                                 endDate: String?,
-                                 attractivePoints: [String],
-                                 keywordIds: [Int]) -> Observable<Void> {
-        novelReviewRepository.postNovelReview(novelId: novelId,
-                                              userNovelRating: userNovelRating,
-                                              status: status,
-                                              startDate: startDate,
-                                              endDate: endDate,
-                                              attractivePoints: attractivePoints,
-                                              keywordIds: keywordIds)
-        .observe(on: MainScheduler.instance)
+    private func postNovelReview(novelReviewData: PostNovelReviewEntity) -> Observable<Void> {
+        novelReviewRepository.postNovelReview(novelReviewData: novelReviewData)
+            .observe(on: MainScheduler.instance)
     }
     
-    private func putNovelReview(novelId: Int,
-                                 userNovelRating: Float,
-                                 status: String,
-                                 startDate: String?,
-                                 endDate: String?,
-                                 attractivePoints: [String],
-                                 keywordIds: [Int]) -> Observable<Void> {
-        novelReviewRepository.putNovelReview(novelId: novelId,
-                                              userNovelRating: userNovelRating,
-                                              status: status,
-                                              startDate: startDate,
-                                              endDate: endDate,
-                                              attractivePoints: attractivePoints,
-                                              keywordIds: keywordIds)
-        .observe(on: MainScheduler.instance)
+    private func putNovelReview(novelId: Int, novelReviewData: PutNovelReviewEntity) -> Observable<Void> {
+        novelReviewRepository.putNovelReview(novelId: novelId, novelReviewData: novelReviewData)
+            .observe(on: MainScheduler.instance)
     }
     
     private func getNovelReview(novelId: Int) -> Observable<NovelReviewEntity> {

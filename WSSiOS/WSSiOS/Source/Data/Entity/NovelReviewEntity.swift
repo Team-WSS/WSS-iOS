@@ -35,3 +35,45 @@ extension NovelReviewResponse {
                                  keywords: self.keywords)
     }
 }
+
+struct PostNovelReviewEntity {
+    let novelId: Int
+    let userNovelRating: Float
+    let status: String
+    let startDate: String?
+    let endDate: String?
+    let attractivePoints: [String]
+    let keywordIds: [Int]
+}
+
+extension PostNovelReviewEntity {
+    func toDTO() -> PostNovelReviewRequest {
+        return PostNovelReviewRequest(novelId: self.novelId,
+                                      userNovelRating: self.userNovelRating,
+                                      status: self.status,
+                                      startDate: self.startDate,
+                                      endDate: self.endDate,
+                                      attractivePoints: self.attractivePoints,
+                                      keywordIds: self.keywordIds)
+    }
+}
+
+struct PutNovelReviewEntity {
+    let userNovelRating: Float
+    let status: String
+    let startDate: String?
+    let endDate: String?
+    let attractivePoints: [String]
+    let keywordIds: [Int]
+}
+
+extension PutNovelReviewEntity {
+    func toDTO() -> PutNovelReviewRequest {
+        return PutNovelReviewRequest(userNovelRating: self.userNovelRating,
+                                     status: self.status,
+                                     startDate: self.startDate,
+                                     endDate: self.endDate,
+                                     attractivePoints: self.attractivePoints,
+                                     keywordIds: self.keywordIds)
+    }
+}
