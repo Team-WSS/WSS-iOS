@@ -1,5 +1,5 @@
 //
-//  FeedDetailCommentEntity.swift
+//  FeedCommentEntity.swift
 //  WSSiOS
 //
 //  Created by Seoyeon Choi on 3/22/25.
@@ -36,6 +36,7 @@ extension FeedCommentResponse {
     func toEntity() -> FeedCommentEntity {
         let userProfileImageURL = KingFisherRxHelper.makeImageURLString(path: self.avatarImage)
         let userNickname = self.isBlocked ? StringLiterals.FeedDetail.blckedUser : self.nickname
+        
         var commentType: FeedCommentType = .normal
         if self.isBlocked {
             commentType = .blocked

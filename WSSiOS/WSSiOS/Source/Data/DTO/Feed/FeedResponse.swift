@@ -1,5 +1,5 @@
 //
-//  FeedDetail.swift
+//  FeedResponse.swift
 //  WSSiOS
 //
 //  Created by Seoyeon Choi on 6/24/24.
@@ -60,8 +60,4 @@ struct FeedCommentResponse: Decodable {
     var isSpoiler: Bool
     var isBlocked: Bool
     var isHidden: Bool
-}
-
-struct FeedCommentContentRequest: Codable {
-    var commentContent: String
 }
