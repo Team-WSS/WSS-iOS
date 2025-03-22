@@ -1,5 +1,5 @@
 //
-//  SearchKeywordResult.swift
+//  SearchKeywordResponse.swift
 //  WSSiOS
 //
 //  Created by Hyowon Jeon on 9/27/24.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SearchKeywordResult: Codable {
+struct SearchKeywordResponse: Decodable {
     let categories: [KeywordCategory]
 }
 

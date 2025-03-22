@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 
 protocol KeywordRepository {
-    func searchKeyword(query: String?) -> Observable<SearchKeywordResult>
+    func searchKeyword(query: String?) -> Observable<SearchKeywordEntity>
 }
 
 struct DefaultKeywordRepository: KeywordRepository {
@@ -21,8 +21,9 @@ struct DefaultKeywordRepository: KeywordRepository {
         self.keywordService = keywordService
     }
     
-    func searchKeyword(query: String?) -> Observable<SearchKeywordResult> {
+    func searchKeyword(query: String?) -> Observable<SearchKeywordEntity> {
         return keywordService.searchKeyword(query: query)
+            .map{ $0.toEntity() }
             .asObservable()
     }
 }

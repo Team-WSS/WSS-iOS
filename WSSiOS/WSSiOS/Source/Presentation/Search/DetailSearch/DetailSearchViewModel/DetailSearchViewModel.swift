@@ -392,7 +392,7 @@ final class DetailSearchViewModel: ViewModelType {
     
     //MARK: - API
     
-    private func searchKeyword(query: String? = nil) -> Observable<SearchKeywordResult> {
+    private func searchKeyword(query: String? = nil) -> Observable<SearchKeywordEntity> {
         keywordRepository.searchKeyword(query: query)
             .observe(on: MainScheduler.instance)
     }

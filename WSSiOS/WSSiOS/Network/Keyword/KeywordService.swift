@@ -10,11 +10,11 @@ import Foundation
 import RxSwift
 
 protocol KeywordService {
-    func searchKeyword(query: String?) -> Single<SearchKeywordResult>
+    func searchKeyword(query: String?) -> Single<SearchKeywordResponse>
 }
 
 final class DefaultKeywordService: NSObject, Networking, KeywordService {
-    func searchKeyword(query: String? = nil) -> RxSwift.Single<SearchKeywordResult> {
+    func searchKeyword(query: String? = nil) -> RxSwift.Single<SearchKeywordResponse> {
         var searchKeywordQueryItems: [URLQueryItem] = []
         
         if let query {
@@ -32,7 +32,7 @@ final class DefaultKeywordService: NSObject, Networking, KeywordService {
 
             return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
-                                       to: SearchKeywordResult.self) }
+                                       to: SearchKeywordResponse.self) }
                 .asSingle()
 
         } catch {
