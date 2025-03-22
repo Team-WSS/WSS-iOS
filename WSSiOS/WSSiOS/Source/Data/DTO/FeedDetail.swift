@@ -1,5 +1,5 @@
 //
-//  FeedDetailResult.swift
+//  FeedDetail.swift
 //  WSSiOS
 //
 //  Created by Seoyeon Choi on 6/24/24.
@@ -43,15 +43,15 @@ struct Feed: Decodable {
 }
 
 /// 소소피드 댓글 전체 조회
-struct FeedComments: Decodable {
+struct FeedCommentsResponse: Decodable {
     var commentsCount: Int
-    var comments: [FeedComment]
+    var comments: [FeedCommentResponse]
 }
 
-struct FeedComment: Decodable {
+struct FeedCommentResponse: Decodable {
     var userId: Int
-    var userNickname: String
-    var userProfileImage: String
+    var nickname: String
+    var avatarImage: String
     var commentId: Int
     var createdDate: String
     var commentContent: String
@@ -60,14 +60,8 @@ struct FeedComment: Decodable {
     var isSpoiler: Bool
     var isBlocked: Bool
     var isHidden: Bool
-    
-    enum CodingKeys: String, CodingKey {
-        case userId, commentId, createdDate, commentContent, isModified, isMyComment, isSpoiler, isBlocked, isHidden
-        case userNickname = "nickname"
-        case userProfileImage = "avatarImage"
-    }
 }
 
-struct FeedCommentContent: Codable {
+struct FeedCommentContentRequest: Codable {
     var commentContent: String
 }

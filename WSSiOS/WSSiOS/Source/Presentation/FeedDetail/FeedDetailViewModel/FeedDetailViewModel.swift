@@ -20,7 +20,7 @@ final class FeedDetailViewModel: ViewModelType {
     
     let feedId: Int
     private let feedData = PublishSubject<Feed>()
-    let commentsData = BehaviorRelay<[FeedComment]>(value: [])
+    let commentsData = BehaviorRelay<[FeedCommentEntity]>(value: [])
     private let myProfileData = PublishRelay<MyProfileResult>()
     private let replyCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
     private var feedUserId: Int?
@@ -120,7 +120,7 @@ final class FeedDetailViewModel: ViewModelType {
     
     struct Output {
         let feedData: Observable<Feed>
-        let commentsData: Driver<[FeedComment]>
+        let commentsData: Driver<[FeedCommentEntity]>
         let myProfileData: Observable<MyProfileResult>
         let popViewController: Observable<Void>
         let replyCollectionViewHeight: Driver<CGFloat>
@@ -505,7 +505,7 @@ final class FeedDetailViewModel: ViewModelType {
         return feedDetailRepository.getSingleFeedData(feedId: feedId)
     }
     
-    func getSingleFeedComments(_ feedId: Int) -> Observable<FeedComments> {
+    func getSingleFeedComments(_ feedId: Int) -> Observable<FeedCommentsEntity> {
         return feedDetailRepository.getSingleFeedComments(feedId: feedId)
     }
     

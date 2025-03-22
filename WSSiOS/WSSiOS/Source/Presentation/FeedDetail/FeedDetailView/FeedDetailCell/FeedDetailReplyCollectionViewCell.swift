@@ -25,7 +25,7 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
     private let disposeBag = DisposeBag()
     weak var delegate: FeedDetailReplyCollectionDelegate?
     
-    private let comment = PublishRelay<FeedComment>()
+    private let comment = PublishRelay<FeedCommentEntity>()
     
     //MARK: - Components
     
@@ -139,21 +139,22 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
             .subscribe(with: self, onNext: { owner, comment in
                 owner.delegate?.profileViewDidTap(commentId: comment.commentId,
                                                   userId: comment.userId,
-                                                  isMyComment: comment.isMyComment)
+                                                  isMyComment: comment.commentType == .mine)
             })
             .disposed(by: disposeBag)
         
         threeDotsButton.rx.tap
             .withLatestFrom(comment)
             .subscribe(with: self, onNext: { owner, comment in
-                owner.delegate?.dotsButtonDidTap(commentId: comment.commentId, isMyComment: comment.isMyComment)
+                owner.delegate?.dotsButtonDidTap(commentId: comment.commentId,
+                                                 isMyComment: comment.commentType == .mine)
             })
             .disposed(by: disposeBag)
 
         replyContentLabel.rx.tapGesture()
             .when(.recognized)
             .withLatestFrom(comment)
-            .filter { $0.isSpoiler }
+            .filter { $0.commentType == .spoiler }
             .subscribe(with: self, onNext: { owner, comment in
                 owner.delegate?.spoilerTextDidTap()
                 owner.showFullText(for: comment)
@@ -161,50 +162,26 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
             .disposed(by: disposeBag)
     }
     
-    private func showFullText(for comment: FeedComment) {
+    private func showFullText(for comment: FeedCommentEntity) {
         replyContentLabel.applyWSSFont(.body2, with: comment.commentContent)
         replyContentLabel.textColor = .wssBlack
         replyContentLabel.numberOfLines = 0
     }
     
-    func bindData(data: FeedComment) {
+    func bindData(data: FeedCommentEntity) {
         self.comment.accept(data)
         
-        self.userProfileImageView.kfSetImage(url: makeBucketImageURLString(path: data.userProfileImage))
-        self.userNicknameLabel.do {
-            if data.isBlocked {
-                $0.applyWSSFont(.title2, with: StringLiterals.FeedDetail.blckedUser)
-            } else {
-                $0.applyWSSFont(.title2, with: data.userNickname)
-            }
-        }
+        self.userProfileImageView.kfSetImage(url: data.userProfileImageURL)
+        self.userNicknameLabel.applyWSSFont(.title2, with: data.userNickname)
         self.createdDateLabel.applyWSSFont(.body5, with: data.createdDate)
-        self.isModifiedLabel.isHidden = !data.isModified
+        
         self.replyContentLabel.do {
-            if data.isBlocked {
-                // 차단 유저
-                $0.applyWSSFont(.body2, with: StringLiterals.FeedDetail.blockedComment)
-                $0.textColor = .wssGray200
-                $0.isUserInteractionEnabled = false
-            } else if data.isHidden {
-                // 숨김 처리
-                $0.applyWSSFont(.body2, with: StringLiterals.FeedDetail.hiddenComment)
-                $0.textColor = .wssGray200
-                $0.isUserInteractionEnabled = false
-            } else if data.isSpoiler {
-                // 스포일러 댓글
-                $0.applyWSSFont(.body2, with: StringLiterals.FeedDetail.spoilerComment)
-                $0.textColor = .wssSecondary100
-                $0.isUserInteractionEnabled = true
-            } else {
-                // 일반 댓글
-                $0.applyWSSFont(.body2, with: data.commentContent)
-                $0.textColor = .wssBlack
-                $0.numberOfLines = 0
-                $0.isUserInteractionEnabled = false
-            }
+            $0.applyWSSFont(.body2, with: data.commentType.commentContent(originalContent: data.commentContent))
+            $0.textColor = data.commentType.textColor
         }
         
-        self.threeDotsButton.isHidden = data.isHidden || data.isBlocked || data.userId == -1
+        self.isModifiedLabel.isHidden = !data.commentType.showModifiedLabel
+        self.isModifiedLabel.isHidden = !data.isModified
+        self.threeDotsButton.isHidden = data.commentType.showDropdownButton
     }
 }
