@@ -1,5 +1,5 @@
 //
-//  HomeNoticeDetailViewModel.swift
+//  HomeNotificationDetailViewModel.swift
 //  WSSiOS
 //
 //  Created by Seoyeon Choi on 7/6/24.
@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-final class HomeNoticeDetailViewModel: ViewModelType {
+final class HomeNotificationDetailViewModel: ViewModelType {
     
     //MARK: - Properties
     

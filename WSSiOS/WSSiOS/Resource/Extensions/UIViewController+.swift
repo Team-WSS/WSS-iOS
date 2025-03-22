@@ -441,8 +441,8 @@ extension UIViewController {
     }
     
     func pushToNotificationDetailViewController(notificationId: Int) {
-        let viewController = HomeNoticeDetailViewController(
-            viewModel: HomeNoticeDetailViewModel(
+        let viewController = HomeNotificationDetailViewController(
+            viewModel: HomeNotificationDetailViewModel(
                 notificationRepository: DefaultNotificationRepository(
                     notificationService: DefaultNotificationService()),
                 notificationId: notificationId))

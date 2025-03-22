@@ -1,5 +1,5 @@
 //
-//  HomeNoticeDetailView.swift
+//  HomeNotificationDetailView.swift
 //  WSSiOS
 //
 //  Created by Seoyeon Choi on 7/6/24.
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class HomeNoticeDetailView: UIView {
+final class HomeNotificationDetailView: UIView {
     
     //MARK: - UI Components
     
@@ -18,7 +18,7 @@ final class HomeNoticeDetailView: UIView {
     
     private let scrollView = UIScrollView()
     private let contentView = UIView()
-    let noticeContentView = HomeNoticeDetailContentView()
+    let notificationContentView = HomeNotificationDetailContentView()
     
     //MARK: - Life Cycle
     
@@ -48,7 +48,7 @@ final class HomeNoticeDetailView: UIView {
     private func setHierarchy() {
         self.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        contentView.addSubview(noticeContentView)
+        contentView.addSubview(notificationContentView)
     }
     
     private func setLayout() {
@@ -62,7 +62,7 @@ final class HomeNoticeDetailView: UIView {
             $0.width.equalTo(scrollView.snp.width)
         }
         
-        noticeContentView.snp.makeConstraints {
+        notificationContentView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
     }
