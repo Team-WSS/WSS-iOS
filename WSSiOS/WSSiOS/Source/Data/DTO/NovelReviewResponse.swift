@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct NovelReviewResult: Codable {
+struct NovelReviewResponse: Decodable {
     let novelTitle: String
     let status: String?
     let startDate: String?
@@ -17,7 +17,7 @@ struct NovelReviewResult: Codable {
     let keywords: [KeywordData]
 }
 
-struct PostNovelReviewContent: Codable {
+struct PostNovelReviewRequest: Encodable {
     let novelId: Int
     let userNovelRating: Float
     let status: String
@@ -27,7 +27,7 @@ struct PostNovelReviewContent: Codable {
     let keywordIds: [Int]
 }
 
-struct PutNovelReviewContent: Codable {
+struct PutNovelReviewRequest: Encodable {
     let userNovelRating: Float
     let status: String
     let startDate: String?

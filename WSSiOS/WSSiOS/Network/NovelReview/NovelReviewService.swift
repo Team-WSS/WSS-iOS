@@ -24,7 +24,7 @@ protocol NovelReviewService {
                         endDate: String?,
                         attractivePoints: [String],
                         keywordIds: [Int]) -> Single<Void>
-    func getNovelReview(novelId: Int) -> Single<NovelReviewResult>
+    func getNovelReview(novelId: Int) -> Single<NovelReviewResponse>
 }
 
 final class DefaultNovelReviewService: NSObject, Networking, NovelReviewService {
@@ -35,7 +35,7 @@ final class DefaultNovelReviewService: NSObject, Networking, NovelReviewService 
                          endDate: String?,
                          attractivePoints: [String],
                          keywordIds: [Int]) -> Single<Void> {
-        guard let novelReviewContentData = try? JSONEncoder().encode(PostNovelReviewContent(novelId: novelId, userNovelRating: userNovelRating, status: status, startDate: startDate, endDate: endDate, attractivePoints: attractivePoints, keywordIds: keywordIds)) else {
+        guard let novelReviewContentData = try? JSONEncoder().encode(PostNovelReviewRequest(novelId: novelId, userNovelRating: userNovelRating, status: status, startDate: startDate, endDate: endDate, attractivePoints: attractivePoints, keywordIds: keywordIds)) else {
             return Single.error(NetworkServiceError.invalidRequestError)
         }
         
@@ -56,13 +56,13 @@ final class DefaultNovelReviewService: NSObject, Networking, NovelReviewService 
     }
     
     func putNovelReview(novelId: Int,
-                         userNovelRating: Float,
-                         status: String,
-                         startDate: String?,
-                         endDate: String?,
-                         attractivePoints: [String],
-                         keywordIds: [Int]) -> Single<Void> {
-        guard let novelReviewContentData = try? JSONEncoder().encode(PutNovelReviewContent(userNovelRating: userNovelRating, status: status, startDate: startDate, endDate: endDate, attractivePoints: attractivePoints, keywordIds: keywordIds)) else {
+                        userNovelRating: Float,
+                        status: String,
+                        startDate: String?,
+                        endDate: String?,
+                        attractivePoints: [String],
+                        keywordIds: [Int]) -> Single<Void> {
+        guard let novelReviewContentData = try? JSONEncoder().encode(PutNovelReviewRequest(userNovelRating: userNovelRating, status: status, startDate: startDate, endDate: endDate, attractivePoints: attractivePoints, keywordIds: keywordIds)) else {
             return Single.error(NetworkServiceError.invalidRequestError)
         }
         
@@ -82,7 +82,7 @@ final class DefaultNovelReviewService: NSObject, Networking, NovelReviewService 
         }
     }
     
-    func getNovelReview(novelId: Int) -> Single<NovelReviewResult> {
+    func getNovelReview(novelId: Int) -> Single<NovelReviewResponse> {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.NovelReview.getNovelReview(novelId: novelId),
@@ -93,7 +93,7 @@ final class DefaultNovelReviewService: NSObject, Networking, NovelReviewService 
             
             return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
-                                       to: NovelReviewResult.self) }
+                                       to: NovelReviewResponse.self) }
                 .asSingle()
             
         } catch {

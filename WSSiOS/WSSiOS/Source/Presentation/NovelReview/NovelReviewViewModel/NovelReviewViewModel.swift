@@ -102,10 +102,8 @@ final class NovelReviewViewModel: ViewModelType {
             }
             .subscribe(with: self, onNext: { owner, data in
                 owner.isNovelReviewExist = data.status != nil || owner.isInterest == true
-                if data.startDate != nil || data.endDate != nil {
-                    owner.startDate = data.startDate.flatMap { owner.dateFormatter.date(from: $0) } ?? Date()
-                    owner.endDate = data.endDate.flatMap { owner.dateFormatter.date(from: $0) } ?? Date()
-                }
+                owner.startDate = data.startDate
+                owner.endDate = data.endDate
                 owner.startDateEndDateData.accept([owner.startDate, owner.endDate])
                 owner.starRating.accept(data.userNovelRating)
                 owner.selectedKeywordListData.accept(data.keywords)
@@ -313,7 +311,7 @@ final class NovelReviewViewModel: ViewModelType {
         .observe(on: MainScheduler.instance)
     }
     
-    private func getNovelReview(novelId: Int) -> Observable<NovelReviewResult> {
+    private func getNovelReview(novelId: Int) -> Observable<NovelReviewEntity> {
         novelReviewRepository.getNovelReview(novelId: novelId)
             .observe(on: MainScheduler.instance)
     }

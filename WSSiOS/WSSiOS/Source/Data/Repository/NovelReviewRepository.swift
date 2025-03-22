@@ -24,7 +24,7 @@ protocol NovelReviewRepository {
                         endDate: String?,
                         attractivePoints: [String],
                         keywordIds: [Int]) -> Observable<Void>
-    func getNovelReview(novelId: Int) -> Observable<NovelReviewResult>
+    func getNovelReview(novelId: Int) -> Observable<NovelReviewEntity>
 }
 
 struct DefaultNovelReviewRepository: NovelReviewRepository {
@@ -68,8 +68,9 @@ struct DefaultNovelReviewRepository: NovelReviewRepository {
         .asObservable()
     }
     
-    func getNovelReview(novelId: Int) -> Observable<NovelReviewResult> {
+    func getNovelReview(novelId: Int) -> Observable<NovelReviewEntity> {
         return novelReviewService.getNovelReview(novelId: novelId)
+            .map { $0.toEntity() }
             .asObservable()
     }
 }
