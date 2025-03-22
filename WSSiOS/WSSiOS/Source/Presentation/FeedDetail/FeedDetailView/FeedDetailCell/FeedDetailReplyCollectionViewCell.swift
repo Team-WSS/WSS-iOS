@@ -182,6 +182,6 @@ final class FeedDetailReplyCollectionViewCell: UICollectionViewCell {
         
         self.isModifiedLabel.isHidden = !data.commentType.showModifiedLabel
         self.isModifiedLabel.isHidden = !data.isModified
-        self.threeDotsButton.isHidden = data.commentType.showDropdownButton
+        self.threeDotsButton.isHidden = !data.commentType.showDropdownButton
     }
 }

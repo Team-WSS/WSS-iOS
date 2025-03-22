@@ -35,7 +35,7 @@ struct FeedCommentEntity {
 extension FeedCommentResponse {
     func toEntity() -> FeedCommentEntity {
         let userProfileImageURL = KingFisherRxHelper.makeImageURLString(path: self.avatarImage)
-        let userNickname = self.userId == -1 ? StringLiterals.FeedDetail.blckedUser : self.nickname
+        let userNickname = self.isBlocked ? StringLiterals.FeedDetail.blckedUser : self.nickname
         var commentType: FeedCommentType = .normal
         if self.isBlocked {
             commentType = .blocked
