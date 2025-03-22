@@ -137,7 +137,7 @@ final class LoginViewModel: NSObject, ViewModelType {
             })
     }
     
-    private func loginSuccess(result: LoginResponse) {
+    private func loginSuccess(result: LoginEntity) {
         UserDefaults.standard.setValue(result.Authorization,
                                        forKey: StringLiterals.UserDefault.accessToken)
         UserDefaults.standard.setValue(result.refreshToken,
@@ -154,7 +154,7 @@ final class LoginViewModel: NSObject, ViewModelType {
     
     //MARK: - API/Apple
     
-    private func loginWithApple(authorizationCode: String, idToken: String) -> Observable<LoginResponse> {
+    private func loginWithApple(authorizationCode: String, idToken: String) -> Observable<LoginEntity> {
         authRepository.loginWithApple(authorizationCode: authorizationCode, idToken: idToken)
             .observe(on: MainScheduler.instance)
     }

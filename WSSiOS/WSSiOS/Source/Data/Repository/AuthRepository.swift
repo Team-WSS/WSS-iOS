@@ -12,8 +12,8 @@ import RxKakaoSDKAuth
 import RxSwift
 
 protocol AuthRepository {
-    func loginWithApple(authorizationCode: String, idToken: String) -> Observable<LoginResponse>
-    func loginWithKakao(_ kakaoAccessToken: OAuthToken) -> Single<LoginResponse>
+    func loginWithApple(authorizationCode: String, idToken: String) -> Observable<LoginEntity>
+    func loginWithKakao(_ kakaoAccessToken: OAuthToken) -> Single<LoginEntity>
     func postWithdrawId(withdrawData: WithdrawRequest) -> Observable<Void>
     func postLogout(refreshToken: String, deviceIdentifier: String) -> Observable<Void>
 }
@@ -26,13 +26,15 @@ struct DefaultAuthRepository: AuthRepository {
         self.authService = authService
     }
     
-    func loginWithApple(authorizationCode: String, idToken: String) -> Observable<LoginResponse> {
+    func loginWithApple(authorizationCode: String, idToken: String) -> Observable<LoginEntity> {
         return authService.loginWithApple(authorizationCode: authorizationCode, idToken: idToken)
+            .map { $0.toEntity() }
             .asObservable()
     }
     
-    func loginWithKakao(_ kakaoAccessToken: OAuthToken) -> Single<LoginResponse> {
+    func loginWithKakao(_ kakaoAccessToken: OAuthToken) -> Single<LoginEntity> {
         return authService.loginWithKakao(kakaoAccessToken.accessToken)
+            .map { $0.toEntity() }
     }
     
     func postWithdrawId(withdrawData: WithdrawRequest) -> Observable<Void> {

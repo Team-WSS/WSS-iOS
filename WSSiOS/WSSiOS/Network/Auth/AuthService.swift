@@ -22,7 +22,7 @@ protocol AuthService {
 
 final class DefaultAuthService: NSObject, Networking, AuthService {
     func loginWithApple(authorizationCode: String, idToken: String) -> RxSwift.Single<LoginResponse> {
-        guard let appleLoginBody = try? JSONEncoder().encode(AppleLoginBody(authorizationCode: authorizationCode, idToken: idToken)) else {
+        guard let appleLoginBody = try? JSONEncoder().encode(AppleLoginRequest(authorizationCode: authorizationCode, idToken: idToken)) else {
             return Single.error(NetworkServiceError.invalidRequestError)
         }
                 

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct AppleLoginBody: Codable {
+struct AppleLoginRequest: Encodable {
     let authorizationCode: String
     let idToken: String
 }
