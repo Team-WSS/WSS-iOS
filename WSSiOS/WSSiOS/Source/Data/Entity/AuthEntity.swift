@@ -7,6 +7,20 @@
 
 import Foundation
 
+struct AppleLoginEntity {
+    let authorizationCode: Data
+    let idToken: Data
+}
+
+extension AppleLoginEntity {
+    func toDTO() -> AppleLoginRequest {
+        let authorizationCode = String(data: authorizationCode, encoding: String.Encoding.utf8)!
+        let idToken = String(data: idToken, encoding: String.Encoding.utf8)!
+        return AppleLoginRequest(authorizationCode: authorizationCode,
+                                 idToken: idToken)
+    }
+}
+
 struct LoginEntity {
     let Authorization: String
     let refreshToken: String
