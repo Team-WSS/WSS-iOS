@@ -19,7 +19,7 @@ final class FeedDetailViewModel: ViewModelType {
     private let disposeBag = DisposeBag()
     
     let feedId: Int
-    private let feedData = PublishSubject<Feed>()
+    private let feedData = PublishSubject<FeedEntity>()
     let commentsData = BehaviorRelay<[FeedCommentEntity]>(value: [])
     private let myProfileData = PublishRelay<MyProfileResult>()
     private let replyCollectionViewHeight = BehaviorRelay<CGFloat>(value: 0)
@@ -119,7 +119,7 @@ final class FeedDetailViewModel: ViewModelType {
     }
     
     struct Output {
-        let feedData: Observable<Feed>
+        let feedData: Observable<FeedEntity>
         let commentsData: Driver<[FeedCommentEntity]>
         let myProfileData: Observable<MyProfileResult>
         let popViewController: Observable<Void>
@@ -501,7 +501,7 @@ final class FeedDetailViewModel: ViewModelType {
     
     //MARK: - API
     
-    func getSingleFeed(_ feedId: Int) -> Observable<Feed> {
+    func getSingleFeed(_ feedId: Int) -> Observable<FeedEntity> {
         return feedDetailRepository.getSingleFeedData(feedId: feedId)
     }
     

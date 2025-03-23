@@ -8,13 +8,12 @@
 import Foundation
 
 /// 소소피드 전체 및 단건 조회
-struct Feed: Decodable {
+struct FeedResponse: Decodable {
     var userId: Int
-    var userNickname: String
-    var userProfileImage: String
+    var nickname: String
+    var avatarImage: String
     
     var feedId: Int
-    
     var createdDate: String
     var feedContent: String
     var likeCount: Int
@@ -23,23 +22,14 @@ struct Feed: Decodable {
     var commentCount: Int
     
     var novelId: Int?
-    var novelTitle: String?
+    var title: String?
     var novelRatingCount: Int?
     var novelRating: Float?
-    var genres: [String]
+    var relevantCategories: [String]
     
     var isSpoiler: Bool
     var isModified: Bool
     var isMyFeed: Bool
-    
-    enum CodingKeys: String, CodingKey {
-        case userId, feedId, createdDate, feedContent, likeCount, isLiked, commentCount
-        case novelId, novelRatingCount, novelRating, isSpoiler, isModified, isMyFeed
-        case userNickname = "nickname"
-        case userProfileImage = "avatarImage"
-        case novelTitle = "title"
-        case genres = "relevantCategories"
-    }
 }
 
 /// 소소피드 댓글 전체 조회

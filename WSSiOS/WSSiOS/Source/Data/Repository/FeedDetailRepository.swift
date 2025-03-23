@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 
 protocol FeedDetailRepository {
-    func getSingleFeedData(feedId: Int) -> Observable<Feed>
+    func getSingleFeedData(feedId: Int) -> Observable<FeedEntity>
     func getSingleFeedComments(feedId: Int) -> Observable<FeedCommentsEntity>
     
     func postFeedLike(feedId: Int) -> Observable<Void>
@@ -30,25 +30,8 @@ protocol FeedDetailRepository {
 }
 
 struct TestFeedDetailRepository: FeedDetailRepository {
-    func getSingleFeedData(feedId: Int) -> Observable<Feed> {
-        return Observable.just(Feed(userId: 1003,
-                                    userNickname: "구리스",
-                                    userProfileImage: "https://i.pinimg.com/564x/d6/01/72/d60172b19b2a70f0e64282ac769cbe00.jpg",
-                                    feedId: 1,
-                                    createdDate: "10월 3일",
-                                    feedContent: "여름 햇살이 뜨겁게 내리쬐던 어느 오후, 작은 마을의 공원에서 아이들의 웃음소리가 가득했다. 그들은 공놀이를 하며 즐거운 시간을 보내고 있었다. 나무 그늘 아래에는 노부부가 벤치에 앉아 이야기를 나누고 있었다. 그들은 서로의 손을 꼭 잡고 오랜 추억을 이야기하며 미소를 지었다. 공원의 풍경은 평화롭고 아름다웠다. 바람에 흔들리는 나뭇잎 소리와 함께 새들의 지저귐이 어우러져 한 폭의 그림 같았다. 시간이 천천히 흐르는 듯한 그곳에서, 사람들은 일상의 소소한 행복을 만끽하고 있었다.",
-                                    likeCount: 123,
-                                    isLiked: false,
-                                    commentCount: 3,
-                                    novelId: 1116,
-                                    novelTitle: "결혼 다음날 남편이 사라졌다",
-                                    novelRatingCount: 234,
-                                    novelRating: 2.23,
-                                    genres: ["drama", "modernFantasy", "romanceFantasy"],
-                                    isSpoiler: false,
-                                    isModified: true,
-                                    isMyFeed: false)
-        )
+    func getSingleFeedData(feedId: Int) -> Observable<FeedEntity> {
+        return Observable.just(FeedEntity(userId: 0, userNickname: "굴", userProfileImageURL: nil, feedId: 1, createdDate: "2001년 10월 3일", feedContent: "오호랏", likeCount: 1, isLiked: true, commentCount: 1, genreCategories: [], hasLinkedNovel: false, novelId: 1, novelTitle: "", novelRatingCount: 0, novelRating: 0, isSpoiler: false, isModified: true, isMyFeed: true))
     }
     
     func getSingleFeedComments(feedId: Int) -> Observable<FeedCommentsEntity> {
@@ -103,8 +86,10 @@ struct DefaultFeedDetailRepository: FeedDetailRepository {
         self.feedDetailService = feedDetailService
     }
     
-    func getSingleFeedData(feedId: Int) -> Observable<Feed> {
-        return feedDetailService.getFeed(feedId: feedId).asObservable()
+    func getSingleFeedData(feedId: Int) -> Observable<FeedEntity> {
+        return feedDetailService.getFeed(feedId: feedId)
+            .map { $0.toEntity() }
+            .asObservable()
     }
     
     func getSingleFeedComments(feedId: Int) -> Observable<FeedCommentsEntity> {
