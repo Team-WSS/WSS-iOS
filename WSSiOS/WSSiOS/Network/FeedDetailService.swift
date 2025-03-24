@@ -10,8 +10,8 @@ import Foundation
 import RxSwift
 
 protocol FeedDetailService {
-    func getFeed(feedId: Int) -> Single<Feed>
-    func getFeedComments(feedId: Int) -> Single<FeedComments>
+    func getFeed(feedId: Int) -> Single<FeedResponse>
+    func getFeedComments(feedId: Int) -> Single<FeedCommentsResponse>
     func postFeedLike(feedId: Int) -> Single<Void>
     func deleteFeedLike(feedId: Int) -> Single<Void>
     
@@ -29,7 +29,7 @@ protocol FeedDetailService {
 }
 
 final class DefaultFeedDetailService: NSObject, Networking, FeedDetailService {
-    func getFeed(feedId: Int) -> Single<Feed> {
+    func getFeed(feedId: Int) -> Single<FeedResponse> {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.Feed.getSingleFeed(feedId: feedId),
@@ -40,7 +40,7 @@ final class DefaultFeedDetailService: NSObject, Networking, FeedDetailService {
             
             return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
-                                       to: Feed.self) }
+                                       to: FeedResponse.self) }
                 .asSingle()
             
         } catch {
@@ -48,7 +48,7 @@ final class DefaultFeedDetailService: NSObject, Networking, FeedDetailService {
         }
     }
     
-    func getFeedComments(feedId: Int) -> Single<FeedComments> {
+    func getFeedComments(feedId: Int) -> Single<FeedCommentsResponse> {
         do {
             let request = try makeHTTPRequest(method: .get,
                                               path: URLs.Feed.getSingleFeedComments(feedId: feedId),
@@ -59,7 +59,7 @@ final class DefaultFeedDetailService: NSObject, Networking, FeedDetailService {
             
             return tokenCheckURLSession.rx.data(request: request)
                 .map { try self.decode(data: $0,
-                                       to: FeedComments.self) }
+                                       to: FeedCommentsResponse.self) }
                 .asSingle()
             
         } catch {
@@ -104,7 +104,7 @@ final class DefaultFeedDetailService: NSObject, Networking, FeedDetailService {
     }
     
     func postComment(feedId: Int, commentContent: String) -> Single<Void> {
-        guard let commentContent = try? JSONEncoder().encode(FeedCommentContent(commentContent: commentContent)) else {
+        guard let commentContent = try? JSONEncoder().encode(FeedCommentContentRequest(commentContent: commentContent)) else {
             return Single.error(NetworkServiceError.invalidRequestError)
         }
         
@@ -126,7 +126,7 @@ final class DefaultFeedDetailService: NSObject, Networking, FeedDetailService {
     }
     
     func putComment(feedId: Int, commentId: Int, commentContent: String) -> Single<Void> {
-        guard let commentContent = try? JSONEncoder().encode(FeedCommentContent(commentContent: commentContent)) else {
+        guard let commentContent = try? JSONEncoder().encode(FeedCommentContentRequest(commentContent: commentContent)) else {
             return Single.error(NetworkServiceError.invalidRequestError)
         }
         
