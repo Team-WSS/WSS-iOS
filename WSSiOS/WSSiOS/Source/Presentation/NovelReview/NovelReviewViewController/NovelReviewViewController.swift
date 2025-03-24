@@ -19,7 +19,6 @@ final class NovelReviewViewController: UIViewController {
     private let disposeBag = DisposeBag()
     
     private let viewDidLoadEvent = PublishRelay<Void>()
-    private let stopReviewingEvent = PublishRelay<Void>()
     
     //MARK: - Components
     
@@ -47,6 +46,7 @@ final class NovelReviewViewController: UIViewController {
         register()
         delegate()
         bindViewModel()
+        bindAction()
         
         viewDidLoadEvent.accept(())
     }
@@ -78,7 +78,6 @@ final class NovelReviewViewController: UIViewController {
     private func bindViewModel() {
         let input = NovelReviewViewModel.Input(
             viewDidLoadEvent: viewDidLoadEvent.asObservable(),
-            backButtonDidTap: rootView.backButton.rx.tap,
             completeButtonDidTap: rootView.completeButton.rx.tap,
             statusCollectionViewItemSelected: rootView.novelReviewStatusView.statusCollectionView.rx.itemSelected.asObservable(),
             dateLabelTapGesture: rootView.novelReviewStatusView.dateLabel.rx.tapGesture()
@@ -110,8 +109,7 @@ final class NovelReviewViewController: UIViewController {
             selectedKeywordCollectionViewItemSelected: rootView.novelReviewKeywordView.selectedKeywordCollectionView.rx.itemSelected.asObservable(),
             novelReviewKeywordSelectedNotification: NotificationCenter.default.rx.notification(Notification.Name("NovelReviewKeywordSelected")).asObservable(),
             novelReviewDateSelectedNotification: NotificationCenter.default.rx.notification(Notification.Name("NovelReviewDateSelected")).asObservable(),
-            novelReviewDateRemovedNotification: NotificationCenter.default.rx.notification(Notification.Name("NovelReviewDateRemoved")).asObservable(),
-            stopReviewButtonDidTap: stopReviewingEvent.asObservable()
+            novelReviewDateRemovedNotification: NotificationCenter.default.rx.notification(Notification.Name("NovelReviewDateRemoved")).asObservable()
         )
         
         let output = self.novelReviewViewModel.transform(from: input, disposeBag: self.disposeBag)
@@ -195,8 +193,11 @@ final class NovelReviewViewController: UIViewController {
                 owner.rootView.novelReviewKeywordView.updateCollectionViewHeight(height: height)
             })
             .disposed(by: disposeBag)
-        
-        output.showStopReviewingAlert
+    }
+    
+    private func bindAction() {
+        rootView.backButton.rx.tap
+            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .flatMapLatest { _ -> Observable<AlertButtonType> in
                 return self.presentToAlertViewController(iconImage: .icModalWarning,
                                                          titleText: StringLiterals.NovelReview.Alert.titleText,
@@ -207,10 +208,11 @@ final class NovelReviewViewController: UIViewController {
             }
             .subscribe(with: self, onNext: { owner, buttonType in
                 if buttonType == .left {
-                    owner.stopReviewingEvent.accept(())
+                    owner.navigationController?.popViewController(animated: true)
                 }
             })
             .disposed(by: disposeBag)
+        
     }
 }
 

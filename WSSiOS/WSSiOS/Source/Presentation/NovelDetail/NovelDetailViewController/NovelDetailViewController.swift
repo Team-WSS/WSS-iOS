@@ -442,24 +442,10 @@ final class NovelDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.showFeedEditedToast
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.showToast(.feedEdited)
-            })
-            .disposed(by: disposeBag)
-        
         output.showWithdrawalUserToastView
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { owner, _ in
                 owner.showToast(.unknownUser)
-            })
-            .disposed(by: disposeBag)
-        
-        //MARK: - Bind/NovelReview
-        
-        output.showNovelReviewedToast
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.showToast(.novelReviewed)
             })
             .disposed(by: disposeBag)
     }
@@ -481,6 +467,18 @@ final class NovelDetailViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, _ in
                 owner.popToLastViewController()
+            })
+            .disposed(by: disposeBag)
+        
+        NotificationCenter.default.rx.notification(Notification.Name("FeedEdited"))
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.showToast(.feedEdited)
+            })
+            .disposed(by: disposeBag)
+        
+        NotificationCenter.default.rx.notification(Notification.Name("NovelReviewed"))
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.showToast(.novelReviewed)
             })
             .disposed(by: disposeBag)
     }
@@ -542,9 +540,7 @@ final class NovelDetailViewController: UIViewController {
             novelDetailFeedLikeViewDidTap: novelDetailFeedLikeViewDidTap.asObservable(),
             reloadNovelDetailFeed: reloadNovelDetailFeed.asObservable(),
             scrollViewReachedBottom: observeReachedBottom(rootView.scrollView),
-            createFeedButtonDidTap: rootView.createFeedButton.rx.tap,
-            feedEditedNotification: NotificationCenter.default.rx.notification(Notification.Name("FeedEdited")).asObservable(),
-            novelReviewedNotification: NotificationCenter.default.rx.notification(Notification.Name("NovelReviewed")).asObservable()
+            createFeedButtonDidTap: rootView.createFeedButton.rx.tap
         )
     }
     

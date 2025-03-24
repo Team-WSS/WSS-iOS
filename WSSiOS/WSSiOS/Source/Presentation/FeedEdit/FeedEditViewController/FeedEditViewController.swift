@@ -19,7 +19,6 @@ final class FeedEditViewController: UIViewController {
     private let disposeBag = DisposeBag()
     
     private let viewDidLoadEvent = PublishRelay<Void>()
-    private let stopEditingEvent = PublishRelay<Void>()
     
     //MARK: - Components
 
@@ -54,6 +53,7 @@ final class FeedEditViewController: UIViewController {
          register()
          delegate()
          bindViewModel()
+         bindAction()
          
          viewDidLoadEvent.accept(())
          
@@ -104,7 +104,6 @@ final class FeedEditViewController: UIViewController {
                     return true
                 }
                 .asObservable(),
-            backButtonDidTap: rootView.backButton.rx.tap,
             completeButtonDidTap: rootView.completeButton.rx.tap,
             spoilerButtonDidTap: rootView.feedEditContentView.spoilerButton.rx.tap,
             categoryCollectionViewItemSelected: rootView.feedEditCategoryView.categoryCollectionView.rx.itemSelected.asObservable(),
@@ -114,8 +113,7 @@ final class FeedEditViewController: UIViewController {
             feedContentViewDidEndEditing: rootView.feedEditContentView.feedTextView.rx.didEndEditing,
             novelConnectViewDidTap: rootView.feedEditNovelConnectView.rx.tapGesture().when(.recognized).asObservable(),
             feedNovelConnectedNotification: NotificationCenter.default.rx.notification(Notification.Name("FeedNovelConnected")).asObservable(),
-            novelRemoveButtonDidTap: rootView.feedEditConnectedNovelView.removeButton.rx.tap,
-            stopEditButtonDidTap: stopEditingEvent.asObservable()
+            novelRemoveButtonDidTap: rootView.feedEditConnectedNovelView.removeButton.rx.tap
         )
         
         let output = self.feedEditViewModel.transform(from: input, disposeBag: self.disposeBag)
@@ -194,8 +192,11 @@ final class FeedEditViewController: UIViewController {
                 owner.showToast(.novelAlreadyConnected)
             })
             .disposed(by: disposeBag)
-        
-        output.showStopEditingAlert
+    }
+    
+    private func bindAction() {
+        rootView.backButton.rx.tap
+            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
             .flatMapLatest { _ -> Observable<AlertButtonType> in
                 return self.presentToAlertViewController(iconImage: .icModalWarning,
                                                          titleText: StringLiterals.FeedEdit.Alert.titleText,
@@ -206,7 +207,7 @@ final class FeedEditViewController: UIViewController {
             }
             .subscribe(with: self, onNext: { owner, buttonType in
                 if buttonType == .left {
-                    owner.stopEditingEvent.accept(())
+                    owner.navigationController?.popViewController(animated: true)
                 }
             })
             .disposed(by: disposeBag)

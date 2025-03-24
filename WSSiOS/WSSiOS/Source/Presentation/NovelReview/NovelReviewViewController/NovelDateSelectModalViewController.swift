@@ -48,18 +48,16 @@ final class NovelDateSelectModalViewController: UIViewController {
         super.viewDidLoad()
         
         bindViewModel()
+        bindAction()
         
         viewDidLoadEvent.accept(())
     }
-    
-    //MARK: - UI
     
     //MARK: - Bind
     
     private func bindViewModel() {
         let input = NovelDateSelectModalViewModel.Input(
             viewDidLoadEvent: viewDidLoadEvent.asObservable(),
-            closeButtonDidTap: rootView.closeButton.rx.tap,
             startDateButonDidTap: rootView.novelDateSelectModalDateButtonView.startDateButton.rx.tap,
             endDateButonDidTap: rootView.novelDateSelectModalDateButtonView.endDateButton.rx.tap,
             datePickerDateDidChanged: rootView.novelDateSelectModalDatePickerView.datePicker.rx.date.changed,
@@ -102,6 +100,14 @@ final class NovelDateSelectModalViewController: UIViewController {
         output.setDatePickerDate
             .subscribe(with: self, onNext: { owner, date in
                 owner.rootView.novelDateSelectModalDatePickerView.bindData(date: date)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindAction() {
+        rootView.closeButton.rx.tap
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.dismissModalViewController()
             })
             .disposed(by: disposeBag)
     }

@@ -42,6 +42,7 @@ final class FeedNovelConnectModalViewController: UIViewController {
         
         register()
         bindViewModel()
+        bindAction()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -58,7 +59,6 @@ final class FeedNovelConnectModalViewController: UIViewController {
     
     private func bindViewModel() {
         let input = FeedNovelConnectModalViewModel.Input(
-            closeButtonDidTap: rootView.closeButton.rx.tap,
             searchTextUpdated: rootView.feedNovelConnectSearchBarView.titleTextField.rx.text.orEmpty.asObservable(),
             searchButtonDidTap: rootView.feedNovelConnectSearchBarView.searchButton.rx.tap,
             searchResultCollectionViewReachedBottom: observeReachedBottom(rootView.feedNovelConnectSearchResultView.searchResultCollectionView),
@@ -98,6 +98,14 @@ final class FeedNovelConnectModalViewController: UIViewController {
         output.showConnectNovelButton
             .subscribe(with: self, onNext: { owner, _ in
                 owner.rootView.feedNovelConnectSearchResultView.showConnectNovelButton()
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindAction() {
+        rootView.closeButton.rx.tap
+            .subscribe(with: self, onNext: { owner, _ in
+                owner.dismissModalViewController()
             })
             .disposed(by: disposeBag)
     }

@@ -49,7 +49,6 @@ final class FeedEditViewModel: ViewModelType {
     private let presentFeedEditNovelConnectModalViewController = PublishRelay<Void>()
     private let connectedNovelTitle = BehaviorRelay<String?>(value: nil)
     private let showAlreadyConnectedToast = PublishRelay<Void>()
-    private let showStopEditingAlert = PublishRelay<Void>()
     
     //MARK: - Life Cycle
     
@@ -67,7 +66,6 @@ final class FeedEditViewModel: ViewModelType {
     struct Input {
         let viewDidLoadEvent: Observable<Void>
         let viewDidTap: Observable<UITapGestureRecognizer>
-        let backButtonDidTap: ControlEvent<Void>
         let completeButtonDidTap: ControlEvent<Void>
         let spoilerButtonDidTap: ControlEvent<Void>
         let categoryCollectionViewItemSelected: Observable<IndexPath>
@@ -78,7 +76,6 @@ final class FeedEditViewModel: ViewModelType {
         let novelConnectViewDidTap: Observable<UITapGestureRecognizer>
         let feedNovelConnectedNotification: Observable<Notification>
         let novelRemoveButtonDidTap: ControlEvent<Void>
-        let stopEditButtonDidTap: Observable<Void>
     }
     
     struct Output {
@@ -93,7 +90,6 @@ final class FeedEditViewModel: ViewModelType {
         let presentFeedEditNovelConnectModalViewController: Observable<Void>
         let connectedNovelTitle: Observable<String?>
         let showAlreadyConnectedToast: Observable<Void>
-        let showStopEditingAlert: Observable<Void>
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -123,13 +119,6 @@ final class FeedEditViewModel: ViewModelType {
         input.viewDidTap
             .subscribe(with: self, onNext: { owner, _ in
                 owner.endEditing.accept(true)
-            })
-            .disposed(by: disposeBag)
-        
-        input.backButtonDidTap
-            .throttle(.seconds(3), latest: false, scheduler: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.showStopEditingAlert.accept(())
             })
             .disposed(by: disposeBag)
         
@@ -239,12 +228,6 @@ final class FeedEditViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.stopEditButtonDidTap
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.popViewController.accept(())
-            })
-            .disposed(by: disposeBag)
-        
         return Output(endEditing: endEditing.asObservable(),
                       categoryListData: categoryListData.asObservable(),
                       popViewController: popViewController.asObservable(),
@@ -255,8 +238,8 @@ final class FeedEditViewModel: ViewModelType {
                       showPlaceholder: showPlaceholder.asObservable(),
                       presentFeedEditNovelConnectModalViewController: presentFeedEditNovelConnectModalViewController.asObservable(),
                       connectedNovelTitle: connectedNovelTitle.asObservable(),
-                      showAlreadyConnectedToast: showAlreadyConnectedToast.asObservable(),
-                      showStopEditingAlert: showStopEditingAlert.asObservable())
+                      showAlreadyConnectedToast: showAlreadyConnectedToast.asObservable()
+        )
     }
     
     // MARK: - Custom Method

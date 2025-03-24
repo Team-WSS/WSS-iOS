@@ -30,7 +30,6 @@ final class NovelDateSelectModalViewModel: ViewModelType {
     
     struct Input {
         let viewDidLoadEvent: Observable<Void>
-        let closeButtonDidTap: ControlEvent<Void>
         let startDateButonDidTap: ControlEvent<Void>
         let endDateButonDidTap: ControlEvent<Void>
         let datePickerDateDidChanged: ControlEvent<Date>
@@ -70,12 +69,6 @@ final class NovelDateSelectModalViewModel: ViewModelType {
                 } else {
                     output.setDatePickerDate.accept(owner.endDate)
                 }
-            })
-            .disposed(by: disposeBag)
-        
-        input.closeButtonDidTap
-            .subscribe(onNext: { _ in
-                output.dismissModalViewController.accept(())
             })
             .disposed(by: disposeBag)
         

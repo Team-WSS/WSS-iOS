@@ -38,7 +38,6 @@ final class FeedNovelConnectModalViewModel: ViewModelType {
     }
     
     struct Input {
-        let closeButtonDidTap: ControlEvent<Void>
         let searchTextUpdated: Observable<String>
         let searchButtonDidTap: ControlEvent<Void>
         let searchResultCollectionViewReachedBottom: Observable<Bool>
@@ -57,12 +56,6 @@ final class FeedNovelConnectModalViewModel: ViewModelType {
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
-        input.closeButtonDidTap
-            .subscribe(with: self, onNext: { owner, _ in
-                owner.dismissModalViewController.accept(())
-            })
-            .disposed(by: disposeBag)
-        
         input.searchTextUpdated
             .subscribe(with: self, onNext: { owner, text in
                 owner.searchText = text
