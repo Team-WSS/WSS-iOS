@@ -9,7 +9,7 @@ import UIKit
 
 import RxSwift
 
-final class MyPageEditAvatarViewController: UIViewController{
+final class MyPageEditAvatarViewController: UIViewController {
     
     //MARK: - Properties
     
