@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "device=ios, status=2.png",
+      "filename" : "Frame 1321318588.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "device=ios, status=2@2x.png",
+      "filename" : "Frame 1321318588@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "device=ios, status=2@3x.png",
+      "filename" : "Frame 1321318588@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
