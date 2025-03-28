@@ -18,7 +18,7 @@ enum AmplitudeEvent {
     enum Home: String {
         case home = "home" // 홈 화면 진입
         case homeTodayRanking = "home_today_ranking" // 오늘의 인기작 클릭
-        case homeHotFeedlist = "home_hot_feedlist" // 지금 뜨는 수다글 클릭
+        case homeHotFeedlist = "home_hot_feedlist" // 지금 뜨는 게시글 클릭
         case homeToLoveButton = "home_to_love_btn" // 관심 등록 유도 버튼 클릭
         case homeLoveFeedlist = "home_love_feedlist" // 관심글 클릭
         case homeToPreferButton = "home_to_prefer_btn" // 선호 장르 유도 버튼 클릭
@@ -47,26 +47,26 @@ enum AmplitudeEvent {
         case rate = "rate" // 작품 평가 뷰 진입
         case rateNovel = "rate_novel" // 작품 평가 완료했을 때
         case rateDelete = "rate_delete" // 작품 평가 > 더보기 > 평가 삭제 클릭
-        case novelFeed = "novel_feed" // 작품 상세 > 수다 진입 or 수다 탭 클릭
+        case novelFeed = "novel_feed" // 작품 상세 > 피드 진입 or 피드 탭 클릭
         case novelWriteButton = "novel_write_btn" // 작품 상세 > 나도 한마디 클릭
-        case novelWriteFloatingButton = "novel_write_floating_btn" // 작품 상세 > 수다 > 글쓰기 플로팅 버튼 클릭
+        case novelWriteFloatingButton = "novel_write_floating_btn" // 작품 상세 > 피드 > 글쓰기 플로팅 버튼 클릭
     }
     
-    // MARK: - 수다
+    // MARK: - 피드
     enum Feed: String {
-        case feedAll = "feed_all" // 소소한수다 화면 진입
-        case feedWriteFloatingButton = "feed_write_floating_btn" // 수다 > 글쓰기 플로팅 버튼 클릭
-        case feedLike = "feed_like" // 소소한수다에서 좋아요 클릭
-        case feedR = "feed_R" // 소소한수다 > 로맨스 장르탭
-        case feedRF = "feed_RF" // 소소한수다 > 로판 장르탭
-        case feedF = "feed_F" // 소소한수다 > 판타지 장르탭
-        case feedHF = "feed_HF" // 소소한수다 > 현판 장르탭
-        case feedMH = "feed_MH" // 소소한수다 > 무협 장르탭
-        case feedBL = "feed_BL" // 소소한수다 > BL 장르탭
-        case feedD = "feed_D" // 소소한수다 > 드라마 장르탭
-        case feedM = "feed_M" // 소소한수다 > 미스터리 장르탭
-        case feedLN = "feed_LN" // 소소한수다 > 라노벨 장르탭
-        case feedEtc = "feed_etc" // 소소한수다 > 기타 장르탭
+        case feedAll = "feed_all" // 소소피드 화면 진입
+        case feedWriteFloatingButton = "feed_write_floating_btn" // 피드 > 글쓰기 플로팅 버튼 클릭
+        case feedLike = "feed_like" // 소소피드에서 좋아요 클릭
+        case feedR = "feed_R" // 소소피드 > 로맨스 장르탭
+        case feedRF = "feed_RF" // 소소피드 > 로판 장르탭
+        case feedF = "feed_F" // 소소피드 > 판타지 장르탭
+        case feedHF = "feed_HF" // 소소피드 > 현판 장르탭
+        case feedMH = "feed_MH" // 소소피드 > 무협 장르탭
+        case feedBL = "feed_BL" // 소소피드 > BL 장르탭
+        case feedD = "feed_D" // 소소피드 > 드라마 장르탭
+        case feedM = "feed_M" // 소소피드 > 미스터리 장르탭
+        case feedLN = "feed_LN" // 소소피드 > 라노벨 장르탭
+        case feedEtc = "feed_etc" // 소소피드 > 기타 장르탭
         case feedDetail = "feed_detail" // 피드 상세보기 화면 진입
         case feedDetailLike = "feed_detail_like" // 피드 좋아요 클릭
         case write = "write" // 글 작성 뷰 진입 시
