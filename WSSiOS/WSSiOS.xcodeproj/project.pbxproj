@@ -22,70 +22,24 @@
 		39EDFB392D38D9A7009F071A /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 39EDFB382D38D9A7009F071A /* FirebaseAnalytics */; };
 		39EDFB3B2D38D9A7009F071A /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 39EDFB3A2D38D9A7009F071A /* FirebaseMessaging */; };
 		39EF97AC2B53E43800D2148B /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 39EF97AB2B53E43800D2148B /* Lottie */; };
-		A1708F142B4D8DF400E35E50 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1708F132B4D8DF400E35E50 /* HomeViewController.swift */; };
-		A1708F162B4D8E2700E35E50 /* HomeHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1708F152B4D8E2700E35E50 /* HomeHeaderView.swift */; };
-		A1708F182B4D8E2F00E35E50 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1708F172B4D8E2F00E35E50 /* HomeView.swift */; };
-		B9095D282C394FC7007521EF /* HomeNotificationDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9095D272C394FC7007521EF /* HomeNotificationDetailViewController.swift */; };
-		B9095D2A2C3950B4007521EF /* HomeNotificationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9095D292C3950B4007521EF /* HomeNotificationDetailView.swift */; };
-		B9095D2C2C39514D007521EF /* HomeNotificationDetailContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9095D2B2C39514D007521EF /* HomeNotificationDetailContentView.swift */; };
-		B9095D2E2C395598007521EF /* HomeNotificationDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9095D2D2C395598007521EF /* HomeNotificationDetailViewModel.swift */; };
-		B9181BDC2BEBDFA80024C800 /* HomeTasteRecommendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9181BDB2BEBDFA80024C800 /* HomeTasteRecommendView.swift */; };
-		B9181BDE2BEBE2300024C800 /* HomeTasteRecommendCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9181BDD2BEBE2300024C800 /* HomeTasteRecommendCollectionViewCell.swift */; };
-		B96D10C42BED2EDB00D4D84C /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B96D10C32BED2EDB00D4D84C /* HomeViewModel.swift */; };
-		B9A0FD6C2BFCF0080004252E /* HomeRealtimePopularCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A0FD6B2BFCF0080004252E /* HomeRealtimePopularCollectionViewCell.swift */; };
-		B9AC1BD02BF0B33E006EDE92 /* HomeNotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AC1BCF2BF0B33E006EDE92 /* HomeNotificationViewController.swift */; };
-		B9AC1BD22BF0B485006EDE92 /* HomeNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AC1BD12BF0B485006EDE92 /* HomeNotificationView.swift */; };
-		B9AC1BD42BF0B529006EDE92 /* HomeNotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AC1BD32BF0B529006EDE92 /* HomeNotificationTableViewCell.swift */; };
-		B9AC1BD62BF0BB9D006EDE92 /* HomeNotificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AC1BD52BF0BB9D006EDE92 /* HomeNotificationViewModel.swift */; };
-		B9ACACC12CE3A7E400D1D47A /* HomeInterestEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9ACACC02CE3A7E400D1D47A /* HomeInterestEmptyView.swift */; };
-		B9B0CBD62BE29EA0002F4CF6 /* HomeInterestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B0CBD52BE29EA0002F4CF6 /* HomeInterestView.swift */; };
-		B9B0CBD82BE2A09B002F4CF6 /* HomeInterestCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B0CBD72BE2A09B002F4CF6 /* HomeInterestCollectionViewCell.swift */; };
-		B9CEDA0D2C01C97E00E62247 /* HomeUnregisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9CEDA0C2C01C97E00E62247 /* HomeUnregisterView.swift */; };
 		B9DDB08B2D70300A00D8D4B3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B9DDB0892D70300A00D8D4B3 /* GoogleService-Info.plist */; };
 		B9DDB08C2D70300A00D8D4B3 /* GoogleService-Info-Debug.plist in Resources */ = {isa = PBXBuildFile; fileRef = B9DDB08A2D70300A00D8D4B3 /* GoogleService-Info-Debug.plist */; };
-		C9063A972BD3F868006AD8F9 /* HomeRealtimePopularView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9063A962BD3F868006AD8F9 /* HomeRealtimePopularView.swift */; };
-		C95EADD92BD4FE4C0060CF1A /* HomeRealTimePopularFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95EADD82BD4FE4C0060CF1A /* HomeRealTimePopularFeedView.swift */; };
-		C9AF1AE22BCC234300208BC9 /* HomeTodayPopularView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF1AE12BCC234300208BC9 /* HomeTodayPopularView.swift */; };
-		C9AF1AE42BCC28EE00208BC9 /* HomeTodayPopularCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF1AE32BCC28EE00208BC9 /* HomeTodayPopularCollectionViewCell.swift */; };
 		CD3E5A852B54254F00C0A659 /* RxKeyboard in Frameworks */ = {isa = PBXBuildFile; productRef = CD3E5A842B54254F00C0A659 /* RxKeyboard */; };
 		CDE0C0312D23B04D000BC822 /* AmplitudeSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CDE0C0302D23B04D000BC822 /* AmplitudeSwift */; };
-		E4EC12E02D06FDB200B961BB /* Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E4EC12DF2D06FDB200B961BB /* Release.xcconfig */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		2CD229182B42E685005400BE /* WSSiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WSSiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CD229292B42E687005400BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A1708F132B4D8DF400E35E50 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
-		A1708F152B4D8E2700E35E50 /* HomeHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeHeaderView.swift; sourceTree = "<group>"; };
-		A1708F172B4D8E2F00E35E50 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
-		B9095D272C394FC7007521EF /* HomeNotificationDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNotificationDetailViewController.swift; sourceTree = "<group>"; };
-		B9095D292C3950B4007521EF /* HomeNotificationDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNotificationDetailView.swift; sourceTree = "<group>"; };
-		B9095D2B2C39514D007521EF /* HomeNotificationDetailContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNotificationDetailContentView.swift; sourceTree = "<group>"; };
-		B9095D2D2C395598007521EF /* HomeNotificationDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNotificationDetailViewModel.swift; sourceTree = "<group>"; };
-		B9181BDB2BEBDFA80024C800 /* HomeTasteRecommendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTasteRecommendView.swift; sourceTree = "<group>"; };
-		B9181BDD2BEBE2300024C800 /* HomeTasteRecommendCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTasteRecommendCollectionViewCell.swift; sourceTree = "<group>"; };
-		B96D10C32BED2EDB00D4D84C /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
-		B9A0FD6B2BFCF0080004252E /* HomeRealtimePopularCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRealtimePopularCollectionViewCell.swift; sourceTree = "<group>"; };
-		B9AC1BCF2BF0B33E006EDE92 /* HomeNotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNotificationViewController.swift; sourceTree = "<group>"; };
-		B9AC1BD12BF0B485006EDE92 /* HomeNotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNotificationView.swift; sourceTree = "<group>"; };
-		B9AC1BD32BF0B529006EDE92 /* HomeNotificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNotificationTableViewCell.swift; sourceTree = "<group>"; };
-		B9AC1BD52BF0BB9D006EDE92 /* HomeNotificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNotificationViewModel.swift; sourceTree = "<group>"; };
-		B9ACACC02CE3A7E400D1D47A /* HomeInterestEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeInterestEmptyView.swift; sourceTree = "<group>"; };
-		B9B0CBD52BE29EA0002F4CF6 /* HomeInterestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeInterestView.swift; sourceTree = "<group>"; };
-		B9B0CBD72BE2A09B002F4CF6 /* HomeInterestCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeInterestCollectionViewCell.swift; sourceTree = "<group>"; };
-		B9CEDA0C2C01C97E00E62247 /* HomeUnregisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeUnregisterView.swift; sourceTree = "<group>"; };
 		B9DDB0892D70300A00D8D4B3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B9DDB08A2D70300A00D8D4B3 /* GoogleService-Info-Debug.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info-Debug.plist"; sourceTree = "<group>"; };
-		C9063A962BD3F868006AD8F9 /* HomeRealtimePopularView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRealtimePopularView.swift; sourceTree = "<group>"; };
-		C95EADD82BD4FE4C0060CF1A /* HomeRealTimePopularFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRealTimePopularFeedView.swift; sourceTree = "<group>"; };
-		C9AF1AE12BCC234300208BC9 /* HomeTodayPopularView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTodayPopularView.swift; sourceTree = "<group>"; };
-		C9AF1AE32BCC28EE00208BC9 /* HomeTodayPopularCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTodayPopularCollectionViewCell.swift; sourceTree = "<group>"; };
 		CD514C8D2CD5D6DB007A27A8 /* WSSiOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WSSiOS.entitlements; sourceTree = "<group>"; };
 		E486AE282CFEB2CC00465AEE /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		E4EC12DF2D06FDB200B961BB /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		B90DFC2A2D8E896200D62D76 /* Home */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Home; sourceTree = "<group>"; };
 		E4E960BE2D7718A50058E6CC /* Feed */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Feed; sourceTree = "<group>"; };
 		E4E9613E2D7718CB0058E6CC /* Network */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Network; sourceTree = "<group>"; };
 		E4E961A42D7718D00058E6CC /* Data */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Data; sourceTree = "<group>"; };
@@ -194,170 +148,12 @@
 				E4E962CA2D7718E80058E6CC /* FeedEdit */,
 				E4E960BE2D7718A50058E6CC /* Feed */,
 				E4E962E92D7718EA0058E6CC /* Library */,
-				A1708F102B4D8DCD00E35E50 /* Home */,
+				B90DFC2A2D8E896200D62D76 /* Home */,
 				E4E963262D7718EB0058E6CC /* Search */,
 				2CCBF9E92B4C1E2200D787C2 /* MyPage */,
 				E4E963FB2D7719030058E6CC /* Base */,
 			);
 			path = Presentation;
-			sourceTree = "<group>";
-		};
-		A107A4A72B4DDE4900668C3E /* HomeView */ = {
-			isa = PBXGroup;
-			children = (
-				A1708F172B4D8E2F00E35E50 /* HomeView.swift */,
-				A14EDBBD2B4F05DD00906957 /* HomeCell */,
-				A1708F112B4D8DD300E35E50 /* HomeAssistantView */,
-			);
-			path = HomeView;
-			sourceTree = "<group>";
-		};
-		A14EDBBD2B4F05DD00906957 /* HomeCell */ = {
-			isa = PBXGroup;
-			children = (
-				C9AF1AE32BCC28EE00208BC9 /* HomeTodayPopularCollectionViewCell.swift */,
-				B9B0CBD72BE2A09B002F4CF6 /* HomeInterestCollectionViewCell.swift */,
-				B9181BDD2BEBE2300024C800 /* HomeTasteRecommendCollectionViewCell.swift */,
-				B9A0FD6B2BFCF0080004252E /* HomeRealtimePopularCollectionViewCell.swift */,
-			);
-			path = HomeCell;
-			sourceTree = "<group>";
-		};
-		A1708F102B4D8DCD00E35E50 /* Home */ = {
-			isa = PBXGroup;
-			children = (
-				C978B30E2C87886D00C78F77 /* HomeNotificationDetail */,
-				C978B30D2C87886600C78F77 /* HomeNotification */,
-				C978B30C2C87886000C78F77 /* Home */,
-			);
-			path = Home;
-			sourceTree = "<group>";
-		};
-		A1708F112B4D8DD300E35E50 /* HomeAssistantView */ = {
-			isa = PBXGroup;
-			children = (
-				C95EADD82BD4FE4C0060CF1A /* HomeRealTimePopularFeedView.swift */,
-				A1708F152B4D8E2700E35E50 /* HomeHeaderView.swift */,
-				C9AF1AE12BCC234300208BC9 /* HomeTodayPopularView.swift */,
-				C9063A962BD3F868006AD8F9 /* HomeRealtimePopularView.swift */,
-				B9B0CBD52BE29EA0002F4CF6 /* HomeInterestView.swift */,
-				B9181BDB2BEBDFA80024C800 /* HomeTasteRecommendView.swift */,
-				B9CEDA0C2C01C97E00E62247 /* HomeUnregisterView.swift */,
-				B9ACACC02CE3A7E400D1D47A /* HomeInterestEmptyView.swift */,
-			);
-			path = HomeAssistantView;
-			sourceTree = "<group>";
-		};
-		A1708F122B4D8DDE00E35E50 /* HomeViewController */ = {
-			isa = PBXGroup;
-			children = (
-				A1708F132B4D8DF400E35E50 /* HomeViewController.swift */,
-			);
-			path = HomeViewController;
-			sourceTree = "<group>";
-		};
-		B96D10C22BED2ED100D4D84C /* HomeViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				B96D10C32BED2EDB00D4D84C /* HomeViewModel.swift */,
-			);
-			path = HomeViewModel;
-			sourceTree = "<group>";
-		};
-		C978B30C2C87886000C78F77 /* Home */ = {
-			isa = PBXGroup;
-			children = (
-				A1708F122B4D8DDE00E35E50 /* HomeViewController */,
-				A107A4A72B4DDE4900668C3E /* HomeView */,
-				B96D10C22BED2ED100D4D84C /* HomeViewModel */,
-			);
-			path = Home;
-			sourceTree = "<group>";
-		};
-		C978B30D2C87886600C78F77 /* HomeNotification */ = {
-			isa = PBXGroup;
-			children = (
-				C978B3142C8788C100C78F77 /* HomeNotificationViewController */,
-				C978B3132C8788BC00C78F77 /* HomeNotificationViewModel */,
-				C978B3122C8788B300C78F77 /* HomeNotificationView */,
-			);
-			path = HomeNotification;
-			sourceTree = "<group>";
-		};
-		C978B30E2C87886D00C78F77 /* HomeNotificationDetail */ = {
-			isa = PBXGroup;
-			children = (
-				C978B3112C87889100C78F77 /* HomeNotificationDetailView */,
-				C978B3102C87888A00C78F77 /* HomeNotificationDetailViewModel */,
-				C978B30F2C87887A00C78F77 /* HomeNotificationDetailViewController */,
-			);
-			path = HomeNotificationDetail;
-			sourceTree = "<group>";
-		};
-		C978B30F2C87887A00C78F77 /* HomeNotificationDetailViewController */ = {
-			isa = PBXGroup;
-			children = (
-				B9095D272C394FC7007521EF /* HomeNotificationDetailViewController.swift */,
-			);
-			path = HomeNotificationDetailViewController;
-			sourceTree = "<group>";
-		};
-		C978B3102C87888A00C78F77 /* HomeNotificationDetailViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				B9095D2D2C395598007521EF /* HomeNotificationDetailViewModel.swift */,
-			);
-			path = HomeNotificationDetailViewModel;
-			sourceTree = "<group>";
-		};
-		C978B3112C87889100C78F77 /* HomeNotificationDetailView */ = {
-			isa = PBXGroup;
-			children = (
-				C978B3162C87891B00C78F77 /* HomeNotificationDetailAssistantView */,
-				B9095D292C3950B4007521EF /* HomeNotificationDetailView.swift */,
-			);
-			path = HomeNotificationDetailView;
-			sourceTree = "<group>";
-		};
-		C978B3122C8788B300C78F77 /* HomeNotificationView */ = {
-			isa = PBXGroup;
-			children = (
-				C978B3152C87890C00C78F77 /* HomeNotificationCell */,
-				B9AC1BD12BF0B485006EDE92 /* HomeNotificationView.swift */,
-			);
-			path = HomeNotificationView;
-			sourceTree = "<group>";
-		};
-		C978B3132C8788BC00C78F77 /* HomeNotificationViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				B9AC1BD52BF0BB9D006EDE92 /* HomeNotificationViewModel.swift */,
-			);
-			path = HomeNotificationViewModel;
-			sourceTree = "<group>";
-		};
-		C978B3142C8788C100C78F77 /* HomeNotificationViewController */ = {
-			isa = PBXGroup;
-			children = (
-				B9AC1BCF2BF0B33E006EDE92 /* HomeNotificationViewController.swift */,
-			);
-			path = HomeNotificationViewController;
-			sourceTree = "<group>";
-		};
-		C978B3152C87890C00C78F77 /* HomeNotificationCell */ = {
-			isa = PBXGroup;
-			children = (
-				B9AC1BD32BF0B529006EDE92 /* HomeNotificationTableViewCell.swift */,
-			);
-			path = HomeNotificationCell;
-			sourceTree = "<group>";
-		};
-		C978B3162C87891B00C78F77 /* HomeNotificationDetailAssistantView */ = {
-			isa = PBXGroup;
-			children = (
-				B9095D2B2C39514D007521EF /* HomeNotificationDetailContentView.swift */,
-			);
-			path = HomeNotificationDetailAssistantView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -376,6 +172,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				B90DFC2A2D8E896200D62D76 /* Home */,
 				E4E960BE2D7718A50058E6CC /* Feed */,
 				E4E9613E2D7718CB0058E6CC /* Network */,
 				E4E961A42D7718D00058E6CC /* Data */,
@@ -470,7 +267,6 @@
 			files = (
 				B9DDB08B2D70300A00D8D4B3 /* GoogleService-Info.plist in Resources */,
 				B9DDB08C2D70300A00D8D4B3 /* GoogleService-Info-Debug.plist in Resources */,
-				E4EC12E02D06FDB200B961BB /* Release.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -481,29 +277,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B9095D2C2C39514D007521EF /* HomeNotificationDetailContentView.swift in Sources */,
-				B9095D2A2C3950B4007521EF /* HomeNotificationDetailView.swift in Sources */,
-				B9AC1BD22BF0B485006EDE92 /* HomeNotificationView.swift in Sources */,
-				C9063A972BD3F868006AD8F9 /* HomeRealtimePopularView.swift in Sources */,
-				A1708F182B4D8E2F00E35E50 /* HomeView.swift in Sources */,
-				A1708F162B4D8E2700E35E50 /* HomeHeaderView.swift in Sources */,
-				B9AC1BD42BF0B529006EDE92 /* HomeNotificationTableViewCell.swift in Sources */,
-				B9181BDC2BEBDFA80024C800 /* HomeTasteRecommendView.swift in Sources */,
-				C9AF1AE22BCC234300208BC9 /* HomeTodayPopularView.swift in Sources */,
-				B9B0CBD62BE29EA0002F4CF6 /* HomeInterestView.swift in Sources */,
-				B9A0FD6C2BFCF0080004252E /* HomeRealtimePopularCollectionViewCell.swift in Sources */,
-				B9CEDA0D2C01C97E00E62247 /* HomeUnregisterView.swift in Sources */,
-				B9ACACC12CE3A7E400D1D47A /* HomeInterestEmptyView.swift in Sources */,
-				C9AF1AE42BCC28EE00208BC9 /* HomeTodayPopularCollectionViewCell.swift in Sources */,
-				B96D10C42BED2EDB00D4D84C /* HomeViewModel.swift in Sources */,
-				B9181BDE2BEBE2300024C800 /* HomeTasteRecommendCollectionViewCell.swift in Sources */,
-				B9095D2E2C395598007521EF /* HomeNotificationDetailViewModel.swift in Sources */,
-				B9095D282C394FC7007521EF /* HomeNotificationDetailViewController.swift in Sources */,
-				B9AC1BD62BF0BB9D006EDE92 /* HomeNotificationViewModel.swift in Sources */,
-				A1708F142B4D8DF400E35E50 /* HomeViewController.swift in Sources */,
-				B9B0CBD82BE2A09B002F4CF6 /* HomeInterestCollectionViewCell.swift in Sources */,
-				B9AC1BD02BF0B33E006EDE92 /* HomeNotificationViewController.swift in Sources */,
-				C95EADD92BD4FE4C0060CF1A /* HomeRealTimePopularFeedView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -644,7 +417,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2025022401;
+				CURRENT_PROJECT_VERSION = 2025032903;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = L4327HMP3S;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -661,7 +434,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.0;
+				MARKETING_VERSION = 1.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = kr.websoso.debug;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -686,7 +459,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2025022401;
+				CURRENT_PROJECT_VERSION = 2025032903;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = L4327HMP3S;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -703,7 +476,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.0;
+				MARKETING_VERSION = 1.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = kr.websoso;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
