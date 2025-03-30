@@ -406,7 +406,7 @@ final class MyPageViewController: UIViewController {
 
 extension MyPageViewController: UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, UITableViewDelegate {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        guard let keywords = try? viewModel.bindKeywordRelay.value,
+        guard let keywords = viewModel.bindKeywordRelay.value,
               indexPath.row < keywords.count else {
             return CGSize(width: 0, height: 0)
         }
