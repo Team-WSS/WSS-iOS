@@ -107,7 +107,7 @@ extension UIViewController {
         self.navigationController?.popToRootViewController(animated: true)
     }
     
-    func pushToDetailViewController(novelId: Int) {
+    func pushToNovelDetailViewController(novelId: Int) {
         let viewController = ModuleFactory.shared.makeNovelDetailViewController(novelId: novelId)
         viewController.navigationController?.isNavigationBarHidden = false
         viewController.hidesBottomBarWhenPushed = true
@@ -314,7 +314,7 @@ extension UIViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func pushToMyPageEditViewController(entryType: MyPageEditEntryType, profile: MyProfileResult?) {
+    func pushToMyPageEditViewController(entryType: MyPageEditEntryType, profile: MyProfileEntity?) {
         let viewController = MyPageEditProfileViewController(
             viewModel: MyPageEditProfileViewModel(
                 userRepository: DefaultUserInfoRepository(
@@ -395,7 +395,7 @@ extension UIViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func pushToMyPageFeedDetailViewController(userId: Int, useData: MyProfileResult) {
+    func pushToMyPageFeedDetailViewController(userId: Int, useData: MyProfileEntity) {
         let viewController = MyPageFeedDetailViewController(
             viewModel: MyPageFeedDetailViewModel(
                 userRepository: DefaultUserInfoRepository(

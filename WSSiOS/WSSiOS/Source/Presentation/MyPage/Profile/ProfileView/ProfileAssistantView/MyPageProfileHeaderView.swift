@@ -124,7 +124,7 @@ final class MyPageProfileHeaderView: UIView {
     
     //MARK: - Data
     
-    func bindData(data: MyProfileResult) {
+    func bindData(data: MyProfileEntity) {
         if data.avatarImage == "" {
             userImageView.image = .imgProfile
         } else {

@@ -11,8 +11,8 @@ import RxSwift
 
 protocol UserInfoRepository {
     func getUserMeData() -> Observable<UserMeResult>
-    func getMyProfileData() -> Observable<MyProfileResult>
-    func getOtherProfile(userId: Int) -> Observable<OtherProfileResult>
+    func getMyProfileData() -> Observable<MyProfileEntity>
+    func getOtherProfile(userId: Int) -> Observable<OtherProfileEntity>
     func getUserInfo() -> Observable<UserInfoEntity>
     func putUserInfo(userData: ChangeUserInfoEntity) -> Observable<Void>
     func patchUserName(userNickName: String) -> Observable<Void>
@@ -23,7 +23,7 @@ protocol UserInfoRepository {
     func getUserGenrePreferences(userId: Int) -> Observable<UserGenrePreferences>
     func patchUserProfile(updatedFields: [String: Any]) -> Observable<Void>
     func getNicknameisValid(nickname: String) -> Single<OnboardingResponse>
-    func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Observable<MyFeedResult>
+    func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Observable<MyFeedListEntity>
     func getUserNovelList(userId: Int,
                           readStatus: String,
                           lastUserNovelId: Int,
@@ -47,13 +47,15 @@ struct DefaultUserInfoRepository: UserInfoRepository {
             .asObservable()
     }
     
-    func getMyProfileData() -> Observable<MyProfileResult> {
+    func getMyProfileData() -> Observable<MyProfileEntity> {
         return userService.getMyProfile()
+            .map{ $0.toEntity() }
             .asObservable()
     }
     
-    func getOtherProfile(userId: Int) -> Observable<OtherProfileResult> {
+    func getOtherProfile(userId: Int) -> Observable<OtherProfileEntity> {
         return userService.getOtherProfile(userId: userId)
+            .map{ $0.toEntity() }
             .asObservable()
     }
     
@@ -113,8 +115,9 @@ struct DefaultUserInfoRepository: UserInfoRepository {
         return userService.getNicknameisValid(nickname: nickname)
     }
     
-    func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Observable<MyFeedResult> {
+    func getUserFeed(userId: Int, lastFeedId: Int, size: Int) -> Observable<MyFeedListEntity> {
         return userService.getUserFeed(userId: userId, lastFeedId: lastFeedId, size: size)
+            .map { $0.toEntity() }
             .asObservable()
     }
     

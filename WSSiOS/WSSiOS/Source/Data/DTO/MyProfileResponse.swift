@@ -1,5 +1,5 @@
 //
-//  UserDTO.swift
+//  MyProfileResponse.swift
 //  WSSiOS
 //
 //  Created by 신지원 on 1/15/24.
@@ -7,12 +7,12 @@
 
 import Foundation
 
-struct MyProfileResult: Codable {
+struct MyProfileResponse: Decodable {
     let nickname, intro, avatarImage: String
     let genrePreferences: [String]
 }
 
-struct OtherProfileResult: Codable {
+struct OtherProfileResponse: Decodable {
     let nickname, intro, avatarImage: String
     let genrePreferences: [String]
     let isProfilePublic: Bool

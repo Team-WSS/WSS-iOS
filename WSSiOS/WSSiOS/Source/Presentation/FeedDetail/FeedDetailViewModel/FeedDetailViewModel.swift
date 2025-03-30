@@ -554,7 +554,7 @@ final class FeedDetailViewModel: ViewModelType {
             .observe(on: MainScheduler.instance)
     }
     
-    func getMyProfile() -> Observable<MyProfileResult> {
+    func getMyProfile() -> Observable<MyProfileEntity> {
         return userRepository.getMyProfileData()
             .observe(on: MainScheduler.instance)
     }

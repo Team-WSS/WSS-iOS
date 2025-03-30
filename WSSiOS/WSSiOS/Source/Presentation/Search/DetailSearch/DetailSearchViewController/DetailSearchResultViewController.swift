@@ -116,7 +116,7 @@ final class DetailSearchResultViewController: UIViewController, UIScrollViewDele
         
         output.pushToNovelDetailViewController
             .subscribe(with: self, onNext: { owner, novelId in
-                owner.pushToDetailViewController(novelId: novelId)
+                owner.pushToNovelDetailViewController(novelId: novelId)
             })
             .disposed(by: disposeBag)
         

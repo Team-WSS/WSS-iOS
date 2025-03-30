@@ -182,7 +182,7 @@ final class MyPageEditAvatarView: UIView {
     
     //MARK: - Data
     
-    func bindData(avatar: Avatar, nickname: String) {
+    func bindData(avatar: AvatarEntity, nickname: String) {
         
         avatarLottieView.removeFromSuperview()
         
@@ -217,5 +217,13 @@ final class MyPageEditAvatarView: UIView {
     private func playLottie() {
         avatarLottieView.play()
         avatarLottieView.loopMode = .playOnce
+    }
+    
+    func updateCollectionViewWidth(cellCount: Int) {
+        let totalWidth = (50 * cellCount) + (16 * (cellCount - 1))
+        
+        avatarImageCollectionView.snp.updateConstraints {
+            $0.width.equalTo(totalWidth)
+        }
     }
 }

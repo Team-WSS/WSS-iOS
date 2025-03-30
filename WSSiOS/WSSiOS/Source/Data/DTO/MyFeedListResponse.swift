@@ -7,12 +7,12 @@
 
 import Foundation
 
-struct MyFeedResult: Codable {
+struct MyFeedListResponse: Decodable {
     let isLoadable: Bool
-    let feeds: [MyFeed]
+    let feeds: [MyFeedResponse]
 }
 
-struct MyFeed: Codable {
+struct MyFeedResponse: Decodable {
     let feedId: Int
     let feedContent: String
     let createdDate: String
@@ -27,10 +27,4 @@ struct MyFeed: Codable {
     let novelRating: Float?
     let novelRatingCount: Int?
     let relevantCategories: [String]
-}
-
-struct FeedCellData {
-    let feed: MyFeed
-    let avatarImage: String
-    let nickname: String
 }

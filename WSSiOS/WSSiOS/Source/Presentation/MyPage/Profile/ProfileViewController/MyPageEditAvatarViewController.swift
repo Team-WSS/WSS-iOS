@@ -8,14 +8,13 @@
 import UIKit
 
 import RxSwift
-import RxGesture
 
-final class MyPageEditAvatarViewController: UIViewController, UIScrollViewDelegate {
+final class MyPageEditAvatarViewController: UIViewController {
     
     //MARK: - Properties
     
-    private let disposeBag = DisposeBag()
     private let viewModel: MyPageEditAvatarViewModel
+    private let disposeBag = DisposeBag()
     
     //MARK: - Components
     
@@ -40,26 +39,20 @@ final class MyPageEditAvatarViewController: UIViewController, UIScrollViewDelega
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        delegate()
         register()
         bindViewModel()
     }
     
-    //MARK: - Bind
-    
-    private func delegate() {
-        self.rootView.avatarImageCollectionView.rx
-            .setDelegate(self)
-            .disposed(by: disposeBag)
-    }
+    //MARK: - Delegate
     
     private func register() {
         self.rootView.avatarImageCollectionView
             .register(MyPageEditAvatarCollectionViewCell.self, forCellWithReuseIdentifier: MyPageEditAvatarCollectionViewCell.cellIdentifier)
     }
     
+    //MARK: - Bind
+    
     private func bindViewModel() {
-        
         let input = MyPageEditAvatarViewModel.Input(
             avatarCellDidTap: rootView.avatarImageCollectionView.rx.itemSelected,
             changeButtonDidTap: rootView.changeButton.rx.tap,
@@ -68,21 +61,19 @@ final class MyPageEditAvatarViewController: UIViewController, UIScrollViewDelega
         let output = viewModel.transform(from: input, disposeBag: disposeBag)
         
         output.bindAvatarImageCell
-            .bind(to: rootView.avatarImageCollectionView.rx.items(cellIdentifier: MyPageEditAvatarCollectionViewCell.cellIdentifier, cellType: MyPageEditAvatarCollectionViewCell.self)) { (row, data, cell) in
-                let (avatarImage, isRepresentive) = data
-                cell.bindData(avatarImage: avatarImage, isRepresentative: isRepresentive)
-            }
-            .disposed(by: disposeBag)
+            .bind(to: rootView.avatarImageCollectionView.rx.items(
+                cellIdentifier: MyPageEditAvatarCollectionViewCell.cellIdentifier,
+                cellType: MyPageEditAvatarCollectionViewCell.self)) { (row, data, cell) in
+                    let (avatarImage, isRepresentive) = data
+                    cell.bindData(avatarImage: avatarImage, isRepresentative: isRepresentive)
+                }
+                .disposed(by: disposeBag)
         
         output.bindAvatarImageCell
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, avatarList in
                 let cellCount = avatarList.count
-                let totalWidth = (50 * cellCount) + (16 * (cellCount - 1))
-                
-                owner.rootView.avatarImageCollectionView.snp.updateConstraints {
-                    $0.width.equalTo(totalWidth)
-                }
+                owner.rootView.updateCollectionViewWidth(cellCount: cellCount)
             })
             .disposed(by: disposeBag)
         
@@ -100,6 +91,5 @@ final class MyPageEditAvatarViewController: UIViewController, UIScrollViewDelega
                 owner.rootView.bindData(avatar: avatarData, nickname: nickname)
             })
             .disposed(by: disposeBag)
-        
     }
 }

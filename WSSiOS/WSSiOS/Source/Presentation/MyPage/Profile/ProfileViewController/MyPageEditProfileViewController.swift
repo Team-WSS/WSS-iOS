@@ -1,5 +1,5 @@
 //
-//  MyPageProfileEditViewController.swift
+//  MyPageEditProfileViewController.swift
 //  WSSiOS
 //
 //  Created by 신지원 on 7/26/24.
@@ -48,12 +48,14 @@ final class MyPageEditProfileViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        setNavigation()
         hideTabBar()
         swipeBackGesture()
+        setWSSNavigationBar(title: StringLiterals.Navigation.Title.editProfile,
+                         left: self.rootView.backButton,
+                         right: self.rootView.completeButton)
     }
     
-    //MARK: - Bind
+    //MARK: - Delegate
     
     private func register() {
         rootView.genreCollectionView.register(
@@ -66,6 +68,8 @@ final class MyPageEditProfileViewController: UIViewController {
             .setDelegate(self)
             .disposed(by: disposeBag)
     }
+    
+    //MARK: - Bind
     
     private func bindViewModel() {
         let input = MyPageEditProfileViewModel.Input(
@@ -196,11 +200,14 @@ final class MyPageEditProfileViewController: UIViewController {
     }
 }
 
+//MARK: - UICollectionViewDelegateFlowLayout
+
 extension MyPageEditProfileViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var text: String?
         
-        text = self.viewModel.genreList[indexPath.item]
+        let genreList: [String] = NovelGenre.allCases.map { $0.toKorean }
+        text = genreList[indexPath.item]
         
         guard let unwrappedText = text else {
             return CGSize(width: 0, height: 0)
@@ -208,15 +215,5 @@ extension MyPageEditProfileViewController: UICollectionViewDelegateFlowLayout {
         
         let width = (unwrappedText as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.Body2]).width + 26
         return CGSize(width: width, height: 35)
-    }
-}
-
-//MARK: - UI
-
-extension MyPageEditProfileViewController {
-    private func setNavigation() {
-        setWSSNavigationBar(title: StringLiterals.Navigation.Title.editProfile,
-                         left: self.rootView.backButton,
-                         right: self.rootView.completeButton)
     }
 }

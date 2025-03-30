@@ -468,7 +468,7 @@ extension MyPageEditProfileView {
     
     //MARK: - Data
     
-    func bindData(data: MyProfileResult) {
+    func bindData(data: MyProfileEntity) {
         nicknameTextField.makeAttribute(with: data.nickname)
             .kerning(kerningPixel: -0.6)
             .applyAttribute()
