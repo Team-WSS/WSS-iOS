@@ -26,7 +26,6 @@
 		B9DDB08C2D70300A00D8D4B3 /* GoogleService-Info-Debug.plist in Resources */ = {isa = PBXBuildFile; fileRef = B9DDB08A2D70300A00D8D4B3 /* GoogleService-Info-Debug.plist */; };
 		CD3E5A852B54254F00C0A659 /* RxKeyboard in Frameworks */ = {isa = PBXBuildFile; productRef = CD3E5A842B54254F00C0A659 /* RxKeyboard */; };
 		CDE0C0312D23B04D000BC822 /* AmplitudeSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CDE0C0302D23B04D000BC822 /* AmplitudeSwift */; };
-		E4EC12E02D06FDB200B961BB /* Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E4EC12DF2D06FDB200B961BB /* Release.xcconfig */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -268,7 +267,6 @@
 			files = (
 				B9DDB08B2D70300A00D8D4B3 /* GoogleService-Info.plist in Resources */,
 				B9DDB08C2D70300A00D8D4B3 /* GoogleService-Info-Debug.plist in Resources */,
-				E4EC12E02D06FDB200B961BB /* Release.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -419,7 +417,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2025032801;
+				CURRENT_PROJECT_VERSION = 2025032903;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = L4327HMP3S;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -461,7 +459,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2025032801;
+				CURRENT_PROJECT_VERSION = 2025032903;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = L4327HMP3S;
 				GENERATE_INFOPLIST_FILE = YES;
