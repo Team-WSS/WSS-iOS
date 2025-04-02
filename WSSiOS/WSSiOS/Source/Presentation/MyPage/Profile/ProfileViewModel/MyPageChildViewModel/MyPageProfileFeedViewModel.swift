@@ -10,12 +10,12 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-protocol MyPageProfileFeedViewModelDelegate: AnyObject {
+protocol MyPageProfileFeedViewModelHandler: AnyObject {
     func bindProfileId(profileId: Int)
     func transform(from input: MyPageProfileFeedViewModel.Input, disposeBag: DisposeBag) -> MyPageProfileFeedViewModel.Output
 }
 
-final class MyPageProfileFeedViewModel: ViewModelType, MyPageProfileFeedViewModelDelegate {
+final class MyPageProfileFeedViewModel: ViewModelType, MyPageProfileFeedViewModelHandler {
     
     // MARK: - Properties
     

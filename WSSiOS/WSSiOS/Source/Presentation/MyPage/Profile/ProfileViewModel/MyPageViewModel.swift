@@ -16,9 +16,9 @@ final class MyPageViewModel: ViewModelType {
     
     private var profileId: Int
     private let userInfoRepository: UserInfoRepository
-    private let profileHeaderViewModel: MyPageProfileHeaderViewModelDelegate
-    private let profileLibraryViewModel: MyPageProfileLibraryViewModelDelegate
-    private let profileFeedViewModel: MyPageProfileFeedViewModelDelegate
+    private let profileHeaderViewModel: MyPageProfileHeaderViewModelHandler
+    private let profileLibraryViewModel: MyPageProfileLibraryViewModelHandler
+    private let profileFeedViewModel: MyPageProfileFeedViewModelHandler
     private let disposeBag = DisposeBag()
     
     private let isMyPage = BehaviorRelay<Bool>(value: true)
@@ -38,9 +38,9 @@ final class MyPageViewModel: ViewModelType {
     
     init(profileId: Int,
          userInfoRepository: UserInfoRepository,
-         profileHeaderViewModel: MyPageProfileHeaderViewModelDelegate,
-         profileLibraryViewModel: MyPageProfileLibraryViewModelDelegate,
-         profileFeedViewModel: MyPageProfileFeedViewModelDelegate) {
+         profileHeaderViewModel: MyPageProfileHeaderViewModelHandler,
+         profileLibraryViewModel: MyPageProfileLibraryViewModelHandler,
+         profileFeedViewModel: MyPageProfileFeedViewModelHandler) {
         
         self.profileHeaderViewModel = profileHeaderViewModel
         self.profileLibraryViewModel = profileLibraryViewModel

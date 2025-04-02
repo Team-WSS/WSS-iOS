@@ -10,12 +10,12 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-protocol MyPageProfileHeaderViewModelDelegate: AnyObject {
+protocol MyPageProfileHeaderViewModelHandler: AnyObject {
     func bindProfileId(profileId: Int)
     func transform(from input: MyPageProfileHeaderViewModel.Input, disposeBag: DisposeBag) -> MyPageProfileHeaderViewModel.Output
 }
 
-final class MyPageProfileHeaderViewModel: ViewModelType, MyPageProfileHeaderViewModelDelegate {
+final class MyPageProfileHeaderViewModel: ViewModelType, MyPageProfileHeaderViewModelHandler {
     
     // MARK: - Properties
     

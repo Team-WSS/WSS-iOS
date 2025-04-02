@@ -10,12 +10,12 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-protocol MyPageProfileLibraryViewModelDelegate: AnyObject {
+protocol MyPageProfileLibraryViewModelHandler: AnyObject {
     func bindProfileId(profileId: Int)
     func transform(from input: MyPageProfileLibraryViewModel.Input, disposeBag: DisposeBag) -> MyPageProfileLibraryViewModel.Output
 }
 
-final class MyPageProfileLibraryViewModel: ViewModelType, MyPageProfileLibraryViewModelDelegate {
+final class MyPageProfileLibraryViewModel: ViewModelType, MyPageProfileLibraryViewModelHandler {
     
     // MARK: - Properties
     
