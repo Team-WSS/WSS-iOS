@@ -8,11 +8,14 @@
 import UIKit
 
 import Then
+import RxSwift
+import RxCocoa
 
 final class WSSTabBarController: UITabBarController, UITabBarControllerDelegate {
     
     //MARK: - Properties
     
+    private let disposeBag = DisposeBag()
     private let isLogined = APIConstants.isLogined
     
     init() {
@@ -30,7 +33,7 @@ final class WSSTabBarController: UITabBarController, UITabBarControllerDelegate 
         super.viewDidLoad()
         
         setUI()
-        setTabBarController()
+        bind()
     }
     
     override func viewDidLayoutSubviews() {
@@ -66,7 +69,22 @@ final class WSSTabBarController: UITabBarController, UITabBarControllerDelegate 
     
     //MARK: - Custom Method
     
+    private func bind() {
+        DefaultUserInfoRepository(userService: DefaultUserService()).getUserMeData()
+            .filter { _ in self.isLogined }
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, data in
+                UserDefaults.standard.setValue(data.userId, forKey: StringLiterals.UserDefault.userId)
+                UserDefaults.standard.setValue(data.nickname, forKey: StringLiterals.UserDefault.userNickname)
+                UserDefaults.standard.setValue(data.gender, forKey: StringLiterals.UserDefault.userGender)
+                owner.setTabBarController()
+            })
+            .disposed(by: disposeBag)
+    }
+    
     private func setTabBarController() {
+
+        
         var navigationControllers = [UINavigationController]()
         
         for item in WSSTabBarItem.allCases {

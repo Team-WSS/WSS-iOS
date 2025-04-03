@@ -29,7 +29,6 @@ final class LibraryViewController: UIViewController {
     private let libraryNavigationView = LibraryNavigationView()
     private let libraryPageBar = LibraryPageBar()
     private var libraryPages = [LibraryChildViewController]()
-    private let backButton = UIButton()
     private let libraryPageViewController = UIPageViewController(transitionStyle: .scroll,
                                                                  navigationOrientation: .horizontal,
                                                                  options: nil)
@@ -57,7 +56,6 @@ final class LibraryViewController: UIViewController {
         
         setupPageBar()
         setupPageViewController()
-        bindAction()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -108,7 +106,6 @@ final class LibraryViewController: UIViewController {
                                                                    completion: nil)
             })
             .disposed(by: disposeBag)
-        
     }
     
     private func setupPageViewController() {
@@ -139,14 +136,6 @@ final class LibraryViewController: UIViewController {
             animated: false,
             completion: nil
         )
-    }
-    
-    private func bindAction() {
-        backButton.rx.tap
-            .bind(with: self, onNext: { owner, _ in
-                owner.popToLastViewController()
-            })
-            .disposed(by: disposeBag)
     }
 }
 
@@ -195,10 +184,6 @@ extension LibraryViewController {
     
     private func setUI() {
         self.view.backgroundColor = .wssWhite
-        
-        backButton.do {
-            $0.setImage(.icNavigateLeft.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray300), for: .normal)
-        }
     }
     
     private func setHierarchy() {
