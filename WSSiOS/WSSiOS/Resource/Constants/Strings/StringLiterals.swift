@@ -71,13 +71,14 @@ enum StringLiterals {
             static let home = "홈"
             static let search = "탐색"
             static let feed = "피드"
+            static let libary = "서재"
             static let myPage = "My"
         }
     }
     
     enum Navigation {
         enum Title {
-            static let library = "보관함"
+            static let library = "서재"
             static let record = "내 기록"
             static let search = "검색"
             static let myPage = "마이페이지"
