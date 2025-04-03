@@ -9,6 +9,8 @@ import UIKit
 
 import RxSwift
 import RxCocoa
+import SnapKit
+import Then
 
 final class LibraryViewController: UIViewController {
     
@@ -24,6 +26,7 @@ final class LibraryViewController: UIViewController {
     
     //MARK: - UI Components
     
+    private let libraryNavigationView = LibraryNavigationView()
     private let libraryPageBar = LibraryPageBar()
     private var libraryPages = [LibraryChildViewController]()
     private let backButton = UIButton()
@@ -59,11 +62,7 @@ final class LibraryViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        hideTabBar()
-        setWSSNavigationBar(title: StringLiterals.Navigation.Title.library,
-                            left: backButton,
-                            right: nil)
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
     //MARK: - Bind
@@ -203,15 +202,22 @@ extension LibraryViewController {
     }
     
     private func setHierarchy() {
-        self.view.addSubviews(libraryPageBar)
+        self.view.addSubviews(libraryNavigationView,
+                              libraryPageBar)
         self.addChild(libraryPageViewController)
         self.view.addSubviews(libraryPageViewController.view)
         libraryPageViewController.didMove(toParent: self)
     }
     
     private func setLayout() {
+        libraryNavigationView.snp.makeConstraints {
+            $0.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(52)
+        }
+        
         libraryPageBar.snp.makeConstraints() {
-            $0.top.equalTo(self.view.safeAreaLayoutGuide)
+            $0.top.equalTo(libraryNavigationView.snp.bottom).offset(-6)
             $0.width.equalToSuperview()
             $0.height.equalTo(54)
         }
