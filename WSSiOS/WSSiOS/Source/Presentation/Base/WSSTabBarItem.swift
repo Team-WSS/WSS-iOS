@@ -7,9 +7,10 @@
 
 import UIKit
 
-enum WSSTabBarItem: CaseIterable {
+enum WSSTabBarItem: Int, CaseIterable {
     
-    case home, search, feed, library, myPage
+    case home = 0
+    case search, feed, library, myPage
     
     var normalItemImage: UIImage {
         switch self {

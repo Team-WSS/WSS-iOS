@@ -33,7 +33,7 @@ final class WSSTabBarController: UITabBarController, UITabBarControllerDelegate 
         super.viewDidLoad()
         
         setUI()
-        bind()
+        setTabBarControllerWithBasicInfo()
     }
     
     override func viewDidLayoutSubviews() {
@@ -69,7 +69,7 @@ final class WSSTabBarController: UITabBarController, UITabBarControllerDelegate 
     
     //MARK: - Custom Method
     
-    private func bind() {
+    private func setTabBarControllerWithBasicInfo() {
         DefaultUserInfoRepository(userService: DefaultUserService()).getUserMeData()
             .filter { _ in self.isLogined }
             .observe(on: MainScheduler.instance)
@@ -83,7 +83,7 @@ final class WSSTabBarController: UITabBarController, UITabBarControllerDelegate 
     }
     
     private func setTabBarController() {
-
+        
         
         var navigationControllers = [UINavigationController]()
         
@@ -99,6 +99,23 @@ final class WSSTabBarController: UITabBarController, UITabBarControllerDelegate 
         }
         
         setViewControllers(navigationControllers, animated: false)
+        
+        
+        NotificationCenter.default.rx.notification(Notification.Name("MoveToLibraryViewController"))
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, notification in
+                if let libraryNavigationVC = owner.viewControllers?[WSSTabBarItem.library.rawValue] as? UINavigationController,
+                   let libraryVC = libraryNavigationVC.topViewController as? LibraryViewController {
+                    
+                    owner.selectedIndex = WSSTabBarItem.library.rawValue
+                    
+                    if let pageIndex = notification.object as? Int {
+                        libraryVC.pageIndex = pageIndex
+                       // libraryVC.setPageViewControllerToPageIndex()
+                    }
+                }
+            })
+            .disposed(by: disposeBag)
     }
     
     private func createNavigationController(normalImage: UIImage,

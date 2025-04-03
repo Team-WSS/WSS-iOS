@@ -334,15 +334,15 @@ final class MyPageViewController: UIViewController {
         output.pushToLibraryViewController
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, userId in
-                owner.pushToLibraryViewController(userId: userId)
+                NotificationCenter.default.post(name: NSNotification.Name("MoveToLibraryViewController"), object: nil)
             })
             .disposed(by: disposeBag)
         
         output.pushToSpecificLibraryViewController
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, userData in
-                let (id, pageIndex) = userData
-                owner.pushToLibraryViewController(userId: id, pageIndex: pageIndex)
+                let (_, pageIndex) = userData
+                NotificationCenter.default.post(name: NSNotification.Name("MoveToLibraryViewController"), object: pageIndex)
             })
             .disposed(by: disposeBag)
         

@@ -106,6 +106,18 @@ final class LibraryViewController: UIViewController {
                                                                    completion: nil)
             })
             .disposed(by: disposeBag)
+        
+        NotificationCenter.default.rx.notification(Notification.Name("MoveToLibraryViewController"))
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, notification in
+                owner.tabBarController?.selectedIndex = WSSTabBarItem.library.rawValue
+                
+                if let pageIndex = notification.object as? Int {
+                    owner.pageIndex = pageIndex
+                    owner.setPageViewControllerToPageIndex()
+                }
+            })
+            .disposed(by: disposeBag)
     }
     
     private func setupPageViewController() {
@@ -136,6 +148,19 @@ final class LibraryViewController: UIViewController {
             animated: false,
             completion: nil
         )
+    }
+    
+    //MARK: - Custom Method
+    func setPageViewControllerToPageIndex() {
+        libraryPageViewController.setViewControllers(
+            [libraryPages[pageIndex]],
+            direction: .forward,
+            animated: false,
+            completion: nil
+        )
+        libraryPageBar.libraryTabCollectionView.selectItem(at: IndexPath(item: pageIndex, section: 0),
+                                                                 animated: true,
+                                                                 scrollPosition: [])
     }
 }
 
