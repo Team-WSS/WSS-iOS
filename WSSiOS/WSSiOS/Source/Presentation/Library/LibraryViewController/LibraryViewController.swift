@@ -91,6 +91,7 @@ final class LibraryViewController: UIViewController {
             .subscribe(with: self, onNext: { owner, index in
                 guard index >= 0, index < owner.libraryPages.count else { return }
                 
+                owner.pageIndex = index
                 let currentTag = owner.libraryPageViewController.viewControllers?.first?.view.tag ?? 0
                 let direction: UIPageViewController.NavigationDirection = index > currentTag ? .forward : .reverse
                 owner.libraryPageViewController.setViewControllers([owner.libraryPages[index]],
@@ -99,11 +100,6 @@ final class LibraryViewController: UIViewController {
                                                                    completion: nil)
             })
             .disposed(by: disposeBag)
-    }
-    
-    func setPageIndex(target: Int) {
-        guard target >= 0, target < self.tabBarList.count else { return }
-        self.pageIndex = target
     }
     
     private func setupPageViewController() {
@@ -129,7 +125,8 @@ final class LibraryViewController: UIViewController {
     }
     
     //MARK: - Custom Method
-    func setPageViewControllerToPageIndex() {
+    
+    private func setPageViewControllerToPageIndex() {
         libraryPageViewController.setViewControllers(
             [libraryPages[pageIndex]],
             direction: .forward,
@@ -140,6 +137,12 @@ final class LibraryViewController: UIViewController {
                                                                  animated: true,
                                                                  scrollPosition: [])
     }
+    
+    func setPageIndex(target: Int) {
+        guard target >= 0, target < self.tabBarList.count else { return }
+        self.pageIndex = target
+    }
+    
 }
 
 //MARK: - Set PageController
