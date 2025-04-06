@@ -205,7 +205,7 @@ extension LibraryViewController {
         }
         
         libraryPageBar.snp.makeConstraints() {
-            $0.top.equalTo(libraryNavigationView.snp.bottom).offset(-6)
+            $0.top.equalTo(libraryNavigationView.snp.bottom)
             $0.width.equalToSuperview()
             $0.height.equalTo(54)
         }
