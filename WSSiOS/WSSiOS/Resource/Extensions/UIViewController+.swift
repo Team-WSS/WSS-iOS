@@ -390,7 +390,7 @@ extension UIViewController {
     func pushToLibraryViewController(userId: Int, pageIndex: Int = 0) {
         let viewController = LibraryViewController(userId: userId)
         
-        viewController.pageIndex = pageIndex
+       // viewController.pageIndex = pageIndex
         viewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(viewController, animated: true)
     }

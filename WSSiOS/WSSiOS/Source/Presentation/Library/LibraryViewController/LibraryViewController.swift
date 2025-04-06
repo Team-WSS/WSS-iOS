@@ -16,7 +16,7 @@ final class LibraryViewController: UIViewController {
     
     //MARK: - Properties
     
-    var pageIndex: Int = 0
+    private var pageIndex: Int = 0
     private let userId: Int
     private let disposeBag = DisposeBag()
     private let sortTypeList = StringLiterals.Alignment.self
@@ -61,6 +61,7 @@ final class LibraryViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(true, animated: true)
+        setPageViewControllerToPageIndex()
     }
     
     //MARK: - Bind
@@ -77,14 +78,6 @@ final class LibraryViewController: UIViewController {
     
     private func setupPageBar() {
         Observable.just(tabBarList)
-            .do(onNext: { [weak self] index in
-                guard !index.isEmpty else { return }
-                DispatchQueue.main.async {
-                    self?.libraryPageBar.libraryTabCollectionView.selectItem(at: IndexPath(item: self?.pageIndex ?? 0, section: 0),
-                                                                             animated: true,
-                                                                             scrollPosition: [])
-                }
-            })
             .bind(to: libraryPageBar.libraryTabCollectionView.rx.items(
                 cellIdentifier: LibraryTabCollectionViewCell.cellIdentifier,
                 cellType: LibraryTabCollectionViewCell.self
@@ -106,18 +99,11 @@ final class LibraryViewController: UIViewController {
                                                                    completion: nil)
             })
             .disposed(by: disposeBag)
-        
-        NotificationCenter.default.rx.notification(Notification.Name("MoveToLibraryViewController"))
-            .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, notification in
-                owner.tabBarController?.selectedIndex = WSSTabBarItem.library.rawValue
-                
-                if let pageIndex = notification.object as? Int {
-                    owner.pageIndex = pageIndex
-                    owner.setPageViewControllerToPageIndex()
-                }
-            })
-            .disposed(by: disposeBag)
+    }
+    
+    func setPageIndex(target: Int) {
+        guard target >= 0, target < self.tabBarList.count else { return }
+        self.pageIndex = target
     }
     
     private func setupPageViewController() {
@@ -140,14 +126,6 @@ final class LibraryViewController: UIViewController {
         for (index, viewController) in libraryPages.enumerated() {
             viewController.view.tag = index
         }
-        
-        guard pageIndex < StringLiterals.ReviewerStatus.allCases.count else { return }
-        libraryPageViewController.setViewControllers(
-            [libraryPages[pageIndex]],
-            direction: .forward,
-            animated: false,
-            completion: nil
-        )
     }
     
     //MARK: - Custom Method

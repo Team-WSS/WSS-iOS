@@ -11,7 +11,7 @@ import Then
 import RxSwift
 import RxCocoa
 
-final class WSSTabBarController: UITabBarController, UITabBarControllerDelegate {
+final class WSSTabBarController: UITabBarController {
     
     //MARK: - Properties
     
@@ -33,7 +33,7 @@ final class WSSTabBarController: UITabBarController, UITabBarControllerDelegate 
         super.viewDidLoad()
         
         setUI()
-        setTabBarControllerWithBasicInfo()
+        bind()
     }
     
     override func viewDidLayoutSubviews() {
@@ -69,7 +69,7 @@ final class WSSTabBarController: UITabBarController, UITabBarControllerDelegate 
     
     //MARK: - Custom Method
     
-    private func setTabBarControllerWithBasicInfo() {
+    private func bind() {
         DefaultUserInfoRepository(userService: DefaultUserService()).getUserMeData()
             .filter { _ in self.isLogined }
             .observe(on: MainScheduler.instance)
@@ -77,14 +77,28 @@ final class WSSTabBarController: UITabBarController, UITabBarControllerDelegate 
                 UserDefaults.standard.setValue(data.userId, forKey: StringLiterals.UserDefault.userId)
                 UserDefaults.standard.setValue(data.nickname, forKey: StringLiterals.UserDefault.userNickname)
                 UserDefaults.standard.setValue(data.gender, forKey: StringLiterals.UserDefault.userGender)
+                
                 owner.setTabBarController()
+            })
+            .disposed(by: disposeBag)
+        
+        NotificationCenter.default.rx.notification(Notification.Name("MoveToLibraryTab"))
+            .observe(on: MainScheduler.instance)
+            .bind(with: self, onNext: { owner, notification in
+                if let libraryNavigationVC = owner.viewControllers?[WSSTabBarItem.library.rawValue] as? UINavigationController,
+                   let libraryVC = libraryNavigationVC.topViewController as? LibraryViewController {
+                    
+                    owner.selectedIndex = WSSTabBarItem.library.rawValue
+                    
+                    if let pageIndex = notification.object as? Int {
+                        libraryVC.setPageIndex(target: pageIndex)
+                    }
+                }
             })
             .disposed(by: disposeBag)
     }
     
     private func setTabBarController() {
-        
-        
         var navigationControllers = [UINavigationController]()
         
         for item in WSSTabBarItem.allCases {
@@ -99,23 +113,6 @@ final class WSSTabBarController: UITabBarController, UITabBarControllerDelegate 
         }
         
         setViewControllers(navigationControllers, animated: false)
-        
-        
-        NotificationCenter.default.rx.notification(Notification.Name("MoveToLibraryViewController"))
-            .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, notification in
-                if let libraryNavigationVC = owner.viewControllers?[WSSTabBarItem.library.rawValue] as? UINavigationController,
-                   let libraryVC = libraryNavigationVC.topViewController as? LibraryViewController {
-                    
-                    owner.selectedIndex = WSSTabBarItem.library.rawValue
-                    
-                    if let pageIndex = notification.object as? Int {
-                        libraryVC.pageIndex = pageIndex
-                       // libraryVC.setPageViewControllerToPageIndex()
-                    }
-                }
-            })
-            .disposed(by: disposeBag)
     }
     
     private func createNavigationController(normalImage: UIImage,
@@ -135,6 +132,9 @@ final class WSSTabBarController: UITabBarController, UITabBarControllerDelegate 
         
         return navigationController
     }
+}
+
+extension WSSTabBarController: UITabBarControllerDelegate {
     
     //MARK: - Delegate
     
