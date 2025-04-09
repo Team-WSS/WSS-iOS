@@ -56,7 +56,6 @@ final class FeedEditPrivateSettingView: UIView {
                 circleViewSize: CGSize(width: 18, height: 18),
                 onCircleInset: 2
             )
-            $0.isUserInteractionEnabled = false
         }
     }
     
