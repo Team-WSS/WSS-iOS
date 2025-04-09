@@ -15,7 +15,6 @@ final class FeedEditCategoryView: UIView {
     //MARK: - Components
     
     private let categoryLabel = UILabel()
-    private let essentialImageView = UIImageView()
     private let multipleSelectLabel = UILabel()
     let categoryCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     
@@ -45,11 +44,6 @@ final class FeedEditCategoryView: UIView {
             $0.textColor = .wssBlack
         }
         
-        essentialImageView.do {
-            $0.image = .icEssential
-            $0.contentMode = .scaleAspectFit
-        }
-        
         multipleSelectLabel.do {
             $0.applyWSSFont(.label1, with: StringLiterals.FeedEdit.Category.multipleSelect)
             $0.textColor = .wssGray200
@@ -69,7 +63,6 @@ final class FeedEditCategoryView: UIView {
     
     private func setHierarchy() {
         self.addSubviews(categoryLabel,
-                         essentialImageView,
                          multipleSelectLabel,
                          categoryCollectionView)
     }
@@ -80,19 +73,13 @@ final class FeedEditCategoryView: UIView {
             $0.leading.equalToSuperview().inset(20)
         }
         
-        essentialImageView.snp.makeConstraints {
-            $0.top.equalTo(categoryLabel.snp.top).offset(2)
-            $0.leading.equalTo(categoryLabel.snp.trailing).offset(2)
-            $0.size.equalTo(8)
-        }
-        
         multipleSelectLabel.snp.makeConstraints {
-            $0.top.equalTo(categoryLabel.snp.top).offset(3)
-            $0.leading.equalTo(essentialImageView.snp.trailing).offset(6)
+            $0.top.equalTo(categoryLabel.snp.bottom).offset(4)
+            $0.leading.equalToSuperview().inset(20)
         }
         
         categoryCollectionView.snp.makeConstraints {
-            $0.top.equalTo(categoryLabel.snp.bottom).offset(14)
+            $0.top.equalTo(multipleSelectLabel.snp.bottom).offset(14)
             $0.leading.equalToSuperview().inset(20)
             $0.trailing.equalToSuperview().inset(20)
             $0.bottom.equalToSuperview()
