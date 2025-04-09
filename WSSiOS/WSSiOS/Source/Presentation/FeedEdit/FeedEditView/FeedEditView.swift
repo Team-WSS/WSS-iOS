@@ -18,6 +18,7 @@ final class FeedEditView: UIView {
     let completeButton = UIButton()
     let scrollView = UIScrollView()
     private let stackView = UIStackView()
+    private let feedEditPrivateSettingView = FeedEditPrivateSettingView()
     let feedEditCategoryView = FeedEditCategoryView()
     let feedEditContentView = FeedEditContentView()
     let feedEditNovelConnectView = FeedEditNovelConnectView()
@@ -70,9 +71,10 @@ final class FeedEditView: UIView {
     private func setHierarchy() {
         self.addSubview(scrollView)
         scrollView.addSubview(stackView)
-        stackView.addArrangedSubviews(feedEditCategoryView,
-                                      feedEditContentView,
+        stackView.addArrangedSubviews(feedEditPrivateSettingView,
                                       feedEditNovelConnectView,
+                                      feedEditCategoryView,
+                                      feedEditContentView,
                                       feedEditConnectedNovelView)
     }
     
@@ -85,10 +87,6 @@ final class FeedEditView: UIView {
         stackView.snp.makeConstraints {
             $0.edges.equalTo(scrollView.contentLayoutGuide)
             $0.width.equalTo(UIScreen.main.bounds.width)
-            
-            stackView.do {
-                $0.setCustomSpacing(12, after: feedEditNovelConnectView)
-            }
         }
     }
     
