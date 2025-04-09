@@ -14,7 +14,8 @@ final class FeedEditNovelConnectView: UIView {
     
     //MARK: - Components
     
-    private let novelConnectLabel = UILabel()
+    private let novelConnectTitleLabel = UILabel()
+    private let novelConnectSubTitleLabel = UILabel()
     private let novelSearchView = UIView()
     private let novelSearchLabel = UILabel()
     private let searchImageView = UIImageView()
@@ -40,9 +41,14 @@ final class FeedEditNovelConnectView: UIView {
             $0.backgroundColor = .wssWhite
         }
         
-        novelConnectLabel.do {
+        novelConnectTitleLabel.do {
             $0.applyWSSFont(.title2, with: StringLiterals.FeedEdit.Novel.novelConnect)
             $0.textColor = .wssBlack
+        }
+        
+        novelConnectSubTitleLabel.do {
+            $0.applyWSSFont(.body4, with: StringLiterals.FeedEdit.Novel.novelConnectSub)
+            $0.textColor = .wssGray200
         }
         
         novelSearchView.do {
@@ -62,20 +68,26 @@ final class FeedEditNovelConnectView: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubviews(novelConnectLabel,
+        self.addSubviews(novelConnectTitleLabel,
+                         novelConnectSubTitleLabel,
                          novelSearchView)
         novelSearchView.addSubviews(novelSearchLabel,
                                     searchImageView)
     }
     
     private func setLayout() {
-        novelConnectLabel.snp.makeConstraints {
+        novelConnectTitleLabel.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.leading.equalToSuperview().inset(20)
         }
         
+        novelConnectSubTitleLabel.snp.makeConstraints {
+            $0.top.equalTo(novelConnectTitleLabel.snp.bottom).offset(4)
+            $0.leading.equalToSuperview().inset(20)
+        }
+        
         novelSearchView.snp.makeConstraints {
-            $0.top.equalTo(novelConnectLabel.snp.bottom).offset(17)
+            $0.top.equalTo(novelConnectSubTitleLabel.snp.bottom).offset(17)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.bottom.equalToSuperview()
             $0.height.equalTo(42)

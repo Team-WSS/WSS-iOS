@@ -73,9 +73,9 @@ final class FeedEditView: UIView {
         scrollView.addSubview(stackView)
         stackView.addArrangedSubviews(feedEditPrivateSettingView,
                                       feedEditNovelConnectView,
+                                      feedEditConnectedNovelView,
                                       feedEditCategoryView,
-                                      feedEditContentView,
-                                      feedEditConnectedNovelView)
+                                      feedEditContentView)
     }
     
     private func setLayout() {
@@ -87,6 +87,10 @@ final class FeedEditView: UIView {
         stackView.snp.makeConstraints {
             $0.edges.equalTo(scrollView.contentLayoutGuide)
             $0.width.equalTo(UIScreen.main.bounds.width)
+            
+            stackView.do {
+                $0.setCustomSpacing(12, after: feedEditNovelConnectView)
+            }
         }
     }
     
