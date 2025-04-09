@@ -15,12 +15,11 @@ final class FeedEditContentView: UIView {
     //MARK: - Components
     
     private let writeContentLabel = UILabel()
-    private let essentialImageView = UIImageView()
-    private let spoilerLabel = UILabel()
-    let spoilerButton = WSSToggleButton()
+    let spoilerView = FeedEditContentSpoilerView()
     let feedTextWrapperView = UIView()
     let feedTextView = UITextView()
     let placeholderLabel = UILabel()
+    private let photoImageView = UIImageView()
     private let letterCountLabel = UILabel()
     
     //MARK: - Life Cycle
@@ -49,16 +48,6 @@ final class FeedEditContentView: UIView {
             $0.textColor = .wssBlack
         }
         
-        essentialImageView.do {
-            $0.image = .icEssential
-            $0.contentMode = .scaleAspectFit
-        }
-        
-        spoilerLabel.do {
-            $0.applyWSSFont(.label1, with: StringLiterals.FeedEdit.Content.spoiler)
-            $0.textColor = .wssGray300
-        }
-        
         feedTextWrapperView.do {
             $0.backgroundColor = .wssGray50
             $0.layer.cornerRadius = 14
@@ -75,8 +64,12 @@ final class FeedEditContentView: UIView {
         
         placeholderLabel.do {
             $0.applyWSSFont(.body2, with: StringLiterals.FeedEdit.Content.placeHolder)
-            $0.textColor = .wssGray200
+            $0.textColor = .wssGray100
             $0.numberOfLines = 0
+        }
+        
+        photoImageView.do {
+            $0.image = .icPhoto
         }
         
         letterCountLabel.do {
@@ -86,12 +79,11 @@ final class FeedEditContentView: UIView {
     
     private func setHierarchy() {
         self.addSubviews(writeContentLabel,
-                         essentialImageView,
-                         spoilerLabel,
-                         spoilerButton,
+                         spoilerView,
                          feedTextWrapperView)
         feedTextWrapperView.addSubviews(feedTextView,
                                         placeholderLabel,
+                                        photoImageView,
                                         letterCountLabel)
     }
     
@@ -101,24 +93,14 @@ final class FeedEditContentView: UIView {
             $0.leading.equalToSuperview().inset(20)
         }
         
-        essentialImageView.snp.makeConstraints {
-            $0.top.equalTo(writeContentLabel.snp.top).offset(2)
-            $0.leading.equalTo(writeContentLabel.snp.trailing).offset(2)
-            $0.size.equalTo(8)
-        }
-        
-        spoilerLabel.snp.makeConstraints {
-            $0.centerY.equalTo(writeContentLabel.snp.centerY)
-            $0.trailing.equalTo(spoilerButton.snp.leading).offset(-8)
-        }
-        
-        spoilerButton.snp.makeConstraints {
-            $0.centerY.equalTo(writeContentLabel.snp.centerY)
-            $0.trailing.equalToSuperview().inset(20)
+        spoilerView.snp.makeConstraints {
+            $0.top.equalTo(writeContentLabel.snp.bottom).offset(13)
+            $0.horizontalEdges.equalToSuperview().inset(20)
+            $0.height.equalTo(50)
         }
         
         feedTextWrapperView.snp.makeConstraints {
-            $0.top.equalTo(writeContentLabel.snp.bottom).offset(18)
+            $0.top.equalTo(spoilerView.snp.bottom).offset(13)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.bottom.equalToSuperview()
             $0.height.equalTo(309)
@@ -131,6 +113,12 @@ final class FeedEditContentView: UIView {
         
         placeholderLabel.snp.makeConstraints {
             $0.top.leading.equalToSuperview().inset(20)
+        }
+        
+        photoImageView.snp.makeConstraints {
+            $0.size.equalTo(24)
+            $0.leading.equalToSuperview().inset(20)
+            $0.bottom.equalToSuperview().inset(12)
         }
         
         letterCountLabel.snp.makeConstraints {

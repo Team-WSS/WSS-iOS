@@ -586,7 +586,7 @@ enum StringLiterals {
         }
         
         enum Content {
-            static let writeContent = "내용 작성하기"
+            static let writeContent = "작품에 대한 이야기"
             static let spoiler = "스포일러"
             static let placeHolder = "웹소설과 관련된 글을 자유롭게 남겨보세요\n\n • 작품에 대한 한줄평\n • 여운이 남는 명장면, 명대사\n • 수다 떨고 싶은 작품 이야기\n • 다른 독자들과 공유하고 싶은 작품 정보 등"
         }
