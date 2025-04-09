@@ -70,17 +70,20 @@ final class WSSTabBarController: UITabBarController {
     //MARK: - Custom Method
     
     private func bind() {
-        DefaultUserInfoRepository(userService: DefaultUserService()).getUserMeData()
-            .filter { _ in self.isLogined }
-            .observe(on: MainScheduler.instance)
-            .subscribe(with: self, onNext: { owner, data in
-                UserDefaults.standard.setValue(data.userId, forKey: StringLiterals.UserDefault.userId)
-                UserDefaults.standard.setValue(data.nickname, forKey: StringLiterals.UserDefault.userNickname)
-                UserDefaults.standard.setValue(data.gender, forKey: StringLiterals.UserDefault.userGender)
-                
-                owner.setTabBarController()
-            })
-            .disposed(by: disposeBag)
+        if isLogined {
+            DefaultUserInfoRepository(userService: DefaultUserService()).getUserMeData()
+                .observe(on: MainScheduler.instance)
+                .subscribe(with: self, onNext: { owner, data in
+                    UserDefaults.standard.setValue(data.userId, forKey: StringLiterals.UserDefault.userId)
+                    UserDefaults.standard.setValue(data.nickname, forKey: StringLiterals.UserDefault.userNickname)
+                    UserDefaults.standard.setValue(data.gender, forKey: StringLiterals.UserDefault.userGender)
+                    
+                    owner.setTabBarController()
+                })
+                .disposed(by: disposeBag)
+        } else {
+            self.setTabBarController()
+        }
         
         NotificationCenter.default.rx.notification(Notification.Name("MoveToLibraryTab"))
             .observe(on: MainScheduler.instance)
@@ -143,7 +146,7 @@ extension WSSTabBarController: UITabBarControllerDelegate {
             return true
         }
         
-        if !isLogined && (selectedIndex == 2 || selectedIndex == 3) {
+        if !isLogined && !(selectedIndex < 2) {
             self.presentInduceLoginViewController()
             return false
         }
