@@ -578,6 +578,7 @@ enum StringLiterals {
     enum FeedEdit {
         static let complete = "완료"
         static let edit = "수정"
+        static let setPrivate = "비공개 기록"
         
         enum Category {
             static let category = "카테고리"
