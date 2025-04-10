@@ -233,7 +233,7 @@ final class FeedEditViewController: UIViewController {
 
     @objc private func keyboardWillHide(_ notification: Notification) {
         UIView.animate(withDuration: 0.3) {
-            self.rootView.scrollView.contentInset.bottom = 0
+            self.rootView.scrollView.contentInset.bottom = 30
         }
     }
 }
