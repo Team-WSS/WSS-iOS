@@ -146,7 +146,7 @@ extension WSSTabBarController: UITabBarControllerDelegate {
             return true
         }
         
-        if !isLogined && !(selectedIndex < 2) {
+        if !isLogined && (selectedIndex >= WSSTabBarItem.feed.rawValue) {
             self.presentInduceLoginViewController()
             return false
         }
