@@ -9,12 +9,14 @@ import UIKit
 
 import RxSwift
 import RxCocoa
+import SnapKit
+import Then
 
 final class LibraryViewController: UIViewController {
     
     //MARK: - Properties
     
-    var pageIndex: Int = 0
+    private var pageIndex: Int = 0
     private let userId: Int
     private let disposeBag = DisposeBag()
     private let sortTypeList = StringLiterals.Alignment.self
@@ -24,9 +26,9 @@ final class LibraryViewController: UIViewController {
     
     //MARK: - UI Components
     
+    private let libraryNavigationView = LibraryNavigationView()
     private let libraryPageBar = LibraryPageBar()
     private var libraryPages = [LibraryChildViewController]()
-    private let backButton = UIButton()
     private let libraryPageViewController = UIPageViewController(transitionStyle: .scroll,
                                                                  navigationOrientation: .horizontal,
                                                                  options: nil)
@@ -54,16 +56,12 @@ final class LibraryViewController: UIViewController {
         
         setupPageBar()
         setupPageViewController()
-        bindAction()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        hideTabBar()
-        setWSSNavigationBar(title: StringLiterals.Navigation.Title.library,
-                            left: backButton,
-                            right: nil)
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
+        setPageViewControllerToPageIndex()
     }
     
     //MARK: - Bind
@@ -80,14 +78,6 @@ final class LibraryViewController: UIViewController {
     
     private func setupPageBar() {
         Observable.just(tabBarList)
-            .do(onNext: { [weak self] index in
-                guard !index.isEmpty else { return }
-                DispatchQueue.main.async {
-                    self?.libraryPageBar.libraryTabCollectionView.selectItem(at: IndexPath(item: self?.pageIndex ?? 0, section: 0),
-                                                                             animated: true,
-                                                                             scrollPosition: [])
-                }
-            })
             .bind(to: libraryPageBar.libraryTabCollectionView.rx.items(
                 cellIdentifier: LibraryTabCollectionViewCell.cellIdentifier,
                 cellType: LibraryTabCollectionViewCell.self
@@ -101,6 +91,7 @@ final class LibraryViewController: UIViewController {
             .subscribe(with: self, onNext: { owner, index in
                 guard index >= 0, index < owner.libraryPages.count else { return }
                 
+                owner.pageIndex = index
                 let currentTag = owner.libraryPageViewController.viewControllers?.first?.view.tag ?? 0
                 let direction: UIPageViewController.NavigationDirection = index > currentTag ? .forward : .reverse
                 owner.libraryPageViewController.setViewControllers([owner.libraryPages[index]],
@@ -109,7 +100,6 @@ final class LibraryViewController: UIViewController {
                                                                    completion: nil)
             })
             .disposed(by: disposeBag)
-        
     }
     
     private func setupPageViewController() {
@@ -132,23 +122,27 @@ final class LibraryViewController: UIViewController {
         for (index, viewController) in libraryPages.enumerated() {
             viewController.view.tag = index
         }
-        
-        guard pageIndex < StringLiterals.ReviewerStatus.allCases.count else { return }
+    }
+    
+    //MARK: - Custom Method
+    
+    private func setPageViewControllerToPageIndex() {
         libraryPageViewController.setViewControllers(
             [libraryPages[pageIndex]],
             direction: .forward,
             animated: false,
             completion: nil
         )
+        libraryPageBar.libraryTabCollectionView.selectItem(at: IndexPath(item: pageIndex, section: 0),
+                                                                 animated: true,
+                                                                 scrollPosition: [])
     }
     
-    private func bindAction() {
-        backButton.rx.tap
-            .bind(with: self, onNext: { owner, _ in
-                owner.popToLastViewController()
-            })
-            .disposed(by: disposeBag)
+    func setPageIndex(target: Int) {
+        guard target >= 0, target < self.tabBarList.count else { return }
+        self.pageIndex = target
     }
+    
 }
 
 //MARK: - Set PageController
@@ -196,22 +190,25 @@ extension LibraryViewController {
     
     private func setUI() {
         self.view.backgroundColor = .wssWhite
-        
-        backButton.do {
-            $0.setImage(.icNavigateLeft.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray300), for: .normal)
-        }
     }
     
     private func setHierarchy() {
-        self.view.addSubviews(libraryPageBar)
+        self.view.addSubviews(libraryNavigationView,
+                              libraryPageBar)
         self.addChild(libraryPageViewController)
         self.view.addSubviews(libraryPageViewController.view)
         libraryPageViewController.didMove(toParent: self)
     }
     
     private func setLayout() {
+        libraryNavigationView.snp.makeConstraints {
+            $0.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(52)
+        }
+        
         libraryPageBar.snp.makeConstraints() {
-            $0.top.equalTo(self.view.safeAreaLayoutGuide)
+            $0.top.equalTo(libraryNavigationView.snp.bottom)
             $0.width.equalToSuperview()
             $0.height.equalTo(54)
         }

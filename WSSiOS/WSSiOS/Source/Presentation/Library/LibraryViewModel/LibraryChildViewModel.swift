@@ -124,9 +124,9 @@ final class LibraryChildViewModel: ViewModelType {
                 guard let self else { return .empty() }
                 return self.getUserNovelList(userId: self.userId,
                                              data: UserNovelNovelStatus(readStatus: self.initData.readStatus,
-                                                                   lastUserNovelId: self.lastNovelIdRelay.value,
-                                                                   size: self.initData.size,
-                                                                   sortType: isSortTypeNewestRelay.value ? StringLiterals.Alignment.newest.sortType : StringLiterals.Alignment.oldest.sortType))
+                                                                        lastUserNovelId: self.lastNovelIdRelay.value,
+                                                                        size: self.initData.size,
+                                                                        sortType: isSortTypeNewestRelay.value ? StringLiterals.Alignment.newest.sortType : StringLiterals.Alignment.oldest.sortType))
             }
             .subscribe(with: self, onNext: { owner, novelResult in
                 owner.setNovelListData(novelResult)

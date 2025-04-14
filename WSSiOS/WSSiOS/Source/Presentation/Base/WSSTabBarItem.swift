@@ -7,9 +7,10 @@
 
 import UIKit
 
-enum WSSTabBarItem: CaseIterable {
+enum WSSTabBarItem: Int, CaseIterable {
     
-    case home, search, feed, myPage
+    case home = 0
+    case search, feed, library, myPage
     
     var normalItemImage: UIImage {
         switch self {
@@ -19,6 +20,8 @@ enum WSSTabBarItem: CaseIterable {
             return .icNavigateSearch
         case .feed:
             return .icNavigateFeed
+        case .library:
+            return .icNavigateLibrary
         case .myPage:
             return .icNavigateMy
         }
@@ -32,6 +35,8 @@ enum WSSTabBarItem: CaseIterable {
             return .icNavigateSearchSelected
         case .feed:
             return .icNavigateFeedSelected
+        case .library:
+            return .icNavigateLibrarySelected
         case .myPage:
             return .icNavigateMySelected
         }
@@ -45,6 +50,8 @@ enum WSSTabBarItem: CaseIterable {
             return StringLiterals.Tabbar.Title.search
         case .feed:
             return StringLiterals.Tabbar.Title.feed
+        case .library:
+            return StringLiterals.Tabbar.Title.libary
         case .myPage:
             return StringLiterals.Tabbar.Title.myPage
         }
@@ -69,6 +76,9 @@ enum WSSTabBarItem: CaseIterable {
             
         case .feed:
             return FeedViewController()
+            
+        case .library:
+            return LibraryViewController(userId: UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId))
             
         case .myPage:
             let userId = UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)

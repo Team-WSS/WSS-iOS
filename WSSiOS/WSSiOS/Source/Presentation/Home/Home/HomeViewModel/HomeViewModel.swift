@@ -176,7 +176,6 @@ extension HomeViewModel {
                 UserDefaults.standard.setValue(data.userId, forKey: StringLiterals.UserDefault.userId)
                 UserDefaults.standard.setValue(data.nickname, forKey: StringLiterals.UserDefault.userNickname)
                 UserDefaults.standard.setValue(data.gender, forKey: StringLiterals.UserDefault.userGender)
-                
                 owner.updateInterestView.accept((self.isLogined, self.interestFeedMessage.value))
                 
                 owner.getTermSetting(disposeBag: disposeBag)

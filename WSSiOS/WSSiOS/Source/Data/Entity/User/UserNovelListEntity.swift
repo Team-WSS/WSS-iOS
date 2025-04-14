@@ -38,7 +38,7 @@ extension UserNovelResponse {
         let novelRatingText = String(round(self.novelRating * 10) / 10)
         let hasNovelRating = self.novelRating != 0.0
         
-        return UserNovelEntity(userNovelId: self.novelId,
+        return UserNovelEntity(userNovelId: self.userNovelId,
                                    novelId: self.novelId,
                                    author: self.author,
                                    novelImage: self.novelImage,
