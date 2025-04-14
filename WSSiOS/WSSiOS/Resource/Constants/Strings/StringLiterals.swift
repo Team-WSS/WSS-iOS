@@ -195,7 +195,7 @@ enum StringLiterals {
         enum Profile {
             static let registerNovel = "등록 작품"
             static let record = "기록"
-            static let inventoryTitle = "보관함"
+            static let inventoryTitle = "서재"
             static let preferenceEmpty = "취향 분석"
             static let preferenceEmptyLabel = "작품 취향을 파악할 수 없어요"
             static let genrePreferenceTitle = "장르 취향"
