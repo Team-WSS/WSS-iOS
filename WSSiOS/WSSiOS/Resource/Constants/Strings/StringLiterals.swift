@@ -203,7 +203,7 @@ enum StringLiterals {
             static let novelPreferenceLabel = "(이)가 매력적인 작품을 선호해요"
             static let privateLabel = "님의 프로필은\n비공개 상태예요"
             static let unknownAlertButtonTitle = "확인"
-            static let myProfileLibrary = "내 서재"
+            static let myProfileLibrary = "내 통계"
             static let otherProfileLibrary = "서재"
             static let myProfileFeed = "내 활동"
             static let otherProfileFeed = "활동"
@@ -332,7 +332,7 @@ enum StringLiterals {
     }
     
     enum Library {
-        static let empty = "보관함이 비어있어요"
+        static let empty = "서재가 비어있어요"
         static let lookForNovel = "웹소설 찾으러 가기"
     }
     
