@@ -17,6 +17,7 @@ final class DetailSearchResultNovelView: UIView {
     let scrollView = UIScrollView()
     private let contentView = UIView()
     private let novelTitleLabel = UILabel()
+    let noSearchResultLabel = UILabel()
     let novelCountLabel = UILabel()
     let resultNovelCollectionView = UICollectionView(frame: .zero,
                                                              collectionViewLayout: UICollectionViewLayout())
@@ -47,6 +48,11 @@ final class DetailSearchResultNovelView: UIView {
             $0.textColor = .wssGray100
         }
         
+        noSearchResultLabel.do {
+            $0.applyWSSFontWithUnderLine(.body4, with: StringLiterals.Search.noSearchResult)
+            $0.textColor = .wssGray200
+        }
+        
         resultNovelCollectionView.do {
             $0.showsVerticalScrollIndicator = false
             $0.isScrollEnabled = false
@@ -66,8 +72,9 @@ final class DetailSearchResultNovelView: UIView {
         self.addSubview(scrollView)
         scrollView.addSubview(contentView)
         contentView.addSubviews(novelTitleLabel,
-                         novelCountLabel,
-                         resultNovelCollectionView)
+                                novelCountLabel,
+                                noSearchResultLabel,
+                                resultNovelCollectionView)
     }
     
     private func setLayout() {
@@ -88,6 +95,11 @@ final class DetailSearchResultNovelView: UIView {
         novelCountLabel.snp.makeConstraints {
             $0.centerY.equalTo(novelTitleLabel.snp.centerY)
             $0.leading.equalTo(novelTitleLabel.snp.trailing).offset(5)
+        }
+        
+        noSearchResultLabel.snp.makeConstraints {
+            $0.centerY.equalTo(novelTitleLabel.snp.centerY)
+            $0.trailing.equalToSuperview().inset(20)
         }
         
         resultNovelCollectionView.snp.makeConstraints {

@@ -73,7 +73,7 @@ final class NormalSearchResultView: UIView {
         
         resultCountView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(10)
-            $0.leading.equalToSuperview().inset(20)
+            $0.leading.trailing.equalToSuperview().inset(20)
         }
         
         normalSearchCollectionView.snp.makeConstraints {
