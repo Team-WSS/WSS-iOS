@@ -351,7 +351,7 @@ final class DetailSearchViewModel: ViewModelType {
         
         input.contactButtonDidTap
             .subscribe(with: self, onNext: { owner, _ in
-                if let url = URL(string: URLs.Contact.kakao) {
+                if let url = URL(string: URLs.Contact.inquiry) {
                     if UIApplication.shared.canOpenURL(url) {
                         UIApplication.shared.open(url, options: [:], completionHandler: nil)
                     }
