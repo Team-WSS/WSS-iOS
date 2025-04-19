@@ -356,7 +356,7 @@ final class MyPageViewController: UIViewController {
                 if isMyPage {
                     NotificationCenter.default.post(name: Notification.Name("MoveToLibraryTab"), object: pageIndex)
                 } else {
-                    owner.pushToLibraryViewController(userId: userId)
+                    owner.pushToLibraryViewController(userId: userId, pageIndex: pageIndex)
                 }
             })
             .disposed(by: disposeBag)
