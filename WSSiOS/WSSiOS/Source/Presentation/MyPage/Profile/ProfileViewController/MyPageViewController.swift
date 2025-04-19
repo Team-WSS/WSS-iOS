@@ -332,17 +332,32 @@ final class MyPageViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.pushToLibraryViewController
+            .withLatestFrom(output.isMyPage) {
+                (userId, isMyPage) in (userId, isMyPage)
+            }
             .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, userId in
-                NotificationCenter.default.post(name: Notification.Name("MoveToLibraryTab"), object: nil)
+            .bind(with: self, onNext: { owner, data in
+                let (userId, isMyPage) = data
+                if isMyPage {
+                    NotificationCenter.default.post(name: Notification.Name("MoveToLibraryTab"), object: nil)
+                } else {
+                    owner.pushToLibraryViewController(userId: userId)
+                }
             })
             .disposed(by: disposeBag)
         
         output.pushToSpecificLibraryViewController
+            .withLatestFrom(output.isMyPage) {
+                (userData, isMyPage) in  (userData.0, userData.1, isMyPage)
+            }
             .observe(on: MainScheduler.instance)
-            .bind(with: self, onNext: { owner, userData in
-                let (_, pageIndex) = userData
-                NotificationCenter.default.post(name: Notification.Name("MoveToLibraryTab"), object: pageIndex)
+            .bind(with: self, onNext: { owner, data in
+                let (userId, pageIndex, isMyPage) = data
+                if isMyPage {
+                    NotificationCenter.default.post(name: Notification.Name("MoveToLibraryTab"), object: pageIndex)
+                } else {
+                    owner.pushToLibraryViewController(userId: userId)
+                }
             })
             .disposed(by: disposeBag)
         

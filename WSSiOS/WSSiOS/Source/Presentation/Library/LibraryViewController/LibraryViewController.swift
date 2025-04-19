@@ -18,6 +18,10 @@ final class LibraryViewController: UIViewController {
     
     private var pageIndex: Int = 0
     private let userId: Int
+    private var isMyLibrary: Bool {
+        let myId = UserDefaults.standard.integer(forKey: StringLiterals.UserDefault.userId)
+        return self.userId == myId
+    }
     private let disposeBag = DisposeBag()
     private let sortTypeList = StringLiterals.Alignment.self
     private let readStatusList = StringLiterals.LibraryReadStatus.allCases.map { $0.rawValue }
