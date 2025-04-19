@@ -61,6 +61,7 @@ final class LibraryViewController: UIViewController {
         
         setupPageBar()
         setupPageViewController()
+        bindAction()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -129,6 +130,14 @@ final class LibraryViewController: UIViewController {
         }
     }
     
+    private func bindAction() {
+        backButton.rx.tap
+            .bind(with: self, onNext: { owner, _ in
+                owner.popToLastViewController()
+            })
+            .disposed(by: disposeBag)
+    }
+    
     //MARK: - Custom Method
     
     private func setPageViewControllerToPageIndex() {
@@ -139,15 +148,15 @@ final class LibraryViewController: UIViewController {
             completion: nil
         )
         libraryPageBar.libraryTabCollectionView.selectItem(at: IndexPath(item: pageIndex, section: 0),
-                                                                 animated: true,
-                                                                 scrollPosition: [])
+                                                           animated: true,
+                                                           scrollPosition: [])
     }
     
     func setPageIndex(target: Int) {
         guard target >= 0, target < self.tabBarList.count else { return }
         self.pageIndex = target
     }
-
+    
     func setLibraryViewUI() {
         if isMyLibrary {
             self.navigationController?.setNavigationBarHidden(true, animated: true)
