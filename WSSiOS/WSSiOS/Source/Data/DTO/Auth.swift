@@ -1,5 +1,5 @@
 //
-//  AuthResult.swift
+//  Auth.swift
 //  WSSiOS
 //
 //  Created by Hyowon Jeon on 11/2/24.

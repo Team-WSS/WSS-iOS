@@ -141,7 +141,7 @@ final class FeedEditViewController: UIViewController {
         
         output.popViewController
             .subscribe(with: self, onNext: { owner, _ in
-                owner.navigationController?.popViewController(animated: true)
+                owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
         
@@ -207,7 +207,7 @@ final class FeedEditViewController: UIViewController {
             }
             .subscribe(with: self, onNext: { owner, buttonType in
                 if buttonType == .left {
-                    owner.navigationController?.popViewController(animated: true)
+                    owner.popToLastViewController()
                 }
             })
             .disposed(by: disposeBag)

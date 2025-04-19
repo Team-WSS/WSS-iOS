@@ -26,7 +26,7 @@ final class NovelReviewViewModel: ViewModelType {
     
     private var startDate: Date?
     private var endDate: Date?
-    var selectedAttractivePointList: [String] = []
+    var selectedAttractivePointList: [AttractivePoint?] = []
     
     private let minStarRating: Float = 0.0
     private let maxStarRating: Float = 5.0
@@ -123,7 +123,7 @@ final class NovelReviewViewModel: ViewModelType {
                 if self.isNovelReviewExist {
                     let novelReviewData = PutNovelReviewEntity(
                         userNovelRating: self.starRating.value,
-                        status: self.readStatus.rawValue,
+                        status: self.readStatus,
                         startDate: startDateString,
                         endDate: endDateString,
                         attractivePoints: self.selectedAttractivePointList,
@@ -138,7 +138,7 @@ final class NovelReviewViewModel: ViewModelType {
                     let novelReviewData = PostNovelReviewEntity(
                         novelId: self.novelId,
                         userNovelRating: self.starRating.value,
-                        status: self.readStatus.rawValue,
+                        status: self.readStatus,
                         startDate: startDateString,
                         endDate: endDateString,
                         attractivePoints: self.selectedAttractivePointList,
@@ -197,14 +197,14 @@ final class NovelReviewViewModel: ViewModelType {
                 if owner.selectedAttractivePointList.count >= owner.attractivePointLimit {
                     owner.isAttractivePointCountOverLimit.accept(indexPath)
                 } else {
-                    owner.selectedAttractivePointList.append(AttractivePoint.allCases[indexPath.item].rawValue)
+                    owner.selectedAttractivePointList.append(AttractivePoint.allCases[indexPath.item])
                 }
             })
             .disposed(by: disposeBag)
         
         input.attractivePointCollectionViewItemDeselected
             .subscribe(with: self, onNext: { owner, indexPath in
-                owner.selectedAttractivePointList.removeAll { $0 == AttractivePoint.allCases[indexPath.item].rawValue }
+                owner.selectedAttractivePointList.removeAll { $0 == AttractivePoint.allCases[indexPath.item] }
             })
             .disposed(by: disposeBag)
         

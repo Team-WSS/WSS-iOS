@@ -116,7 +116,7 @@ final class NovelReviewViewController: UIViewController {
         
         output.popViewController
             .subscribe(with: self, onNext: { owner, _ in
-                owner.navigationController?.popViewController(animated: true)
+                owner.popToLastViewController()
             })
             .disposed(by: disposeBag)
         
@@ -160,7 +160,7 @@ final class NovelReviewViewController: UIViewController {
             .bind(to: rootView.novelReviewAttractivePointView.attractivePointCollectionView.rx.items(cellIdentifier: NovelReviewAttractivePointCollectionViewCell.cellIdentifier, cellType: NovelReviewAttractivePointCollectionViewCell.self)) { item, element, cell in
                 let indexPath = IndexPath(item: item, section: 0)
                 
-                if self.novelReviewViewModel.selectedAttractivePointList.contains(element.rawValue) {
+                if self.novelReviewViewModel.selectedAttractivePointList.contains(element) {
                     self.rootView.novelReviewAttractivePointView.attractivePointCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
                 } else {
                     self.rootView.novelReviewAttractivePointView.attractivePointCollectionView.deselectItem(at: indexPath, animated: false)
@@ -208,7 +208,7 @@ final class NovelReviewViewController: UIViewController {
             }
             .subscribe(with: self, onNext: { owner, buttonType in
                 if buttonType == .left {
-                    owner.navigationController?.popViewController(animated: true)
+                    owner.popToLastViewController()
                 }
             })
             .disposed(by: disposeBag)

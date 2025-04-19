@@ -9,11 +9,11 @@ import Foundation
 
 struct NovelReviewEntity {
     let novelTitle: String
-    let status: String?
+    let status: ReadStatus?
     let startDate: Date?
     let endDate: Date?
     let userNovelRating: Float
-    let attractivePoints: [String]
+    let attractivePoints: [AttractivePoint?]
     let keywords: [KeywordData]
 }
 
@@ -26,12 +26,15 @@ extension NovelReviewResponse {
         
         let startDate = self.startDate.flatMap { dateFormatter.date(from: $0) }
         let endDate = self.endDate.flatMap { dateFormatter.date(from: $0) }
+        let readStatus = self.status.flatMap { ReadStatus(rawValue: $0) }
+        let attractivePoints = self.attractivePoints.map { AttractivePoint(rawValue: $0) }
+
         return NovelReviewEntity(novelTitle: self.novelTitle,
-                                 status: self.status,
+                                 status: readStatus,
                                  startDate: startDate,
                                  endDate: endDate,
                                  userNovelRating: self.userNovelRating,
-                                 attractivePoints: self.attractivePoints,
+                                 attractivePoints: attractivePoints,
                                  keywords: self.keywords)
     }
 }
@@ -39,41 +42,45 @@ extension NovelReviewResponse {
 struct PostNovelReviewEntity {
     let novelId: Int
     let userNovelRating: Float
-    let status: String
+    let status: ReadStatus
     let startDate: String?
     let endDate: String?
-    let attractivePoints: [String]
+    let attractivePoints: [AttractivePoint?]
     let keywordIds: [Int]
 }
 
 extension PostNovelReviewEntity {
     func toDTO() -> PostNovelReviewRequest {
+        let statusString = self.status.rawValue
+        let attractivePoints = self.attractivePoints.compactMap { $0?.rawValue }
         return PostNovelReviewRequest(novelId: self.novelId,
                                       userNovelRating: self.userNovelRating,
-                                      status: self.status,
+                                      status: statusString,
                                       startDate: self.startDate,
                                       endDate: self.endDate,
-                                      attractivePoints: self.attractivePoints,
+                                      attractivePoints: attractivePoints,
                                       keywordIds: self.keywordIds)
     }
 }
 
 struct PutNovelReviewEntity {
     let userNovelRating: Float
-    let status: String
+    let status: ReadStatus
     let startDate: String?
     let endDate: String?
-    let attractivePoints: [String]
+    let attractivePoints: [AttractivePoint?]
     let keywordIds: [Int]
 }
 
 extension PutNovelReviewEntity {
     func toDTO() -> PutNovelReviewRequest {
+        let statusString = self.status.rawValue
+        let attractivePoints = self.attractivePoints.compactMap { $0?.rawValue }
         return PutNovelReviewRequest(userNovelRating: self.userNovelRating,
-                                     status: self.status,
+                                     status: statusString,
                                      startDate: self.startDate,
                                      endDate: self.endDate,
-                                     attractivePoints: self.attractivePoints,
+                                     attractivePoints: attractivePoints,
                                      keywordIds: self.keywordIds)
     }
 }
