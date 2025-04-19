@@ -9,6 +9,7 @@ import UIKit
 
 import RxSwift
 import RxCocoa
+import RxGesture
 
 final class MyPageProfileVisibilityViewController: UIViewController {
     
@@ -79,7 +80,7 @@ final class MyPageProfileVisibilityViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        rootView.profilePrivateToggleButton.rx.tap
+        rootView.profilePrivateView.rx.tapGesture()
             .bind(with: self, onNext: { owner, _ in
                 let currentValue = owner.isStatusRelay.value
                 owner.isStatusRelay.accept(!currentValue)
