@@ -36,6 +36,7 @@ final class LibraryViewController: UIViewController {
     private let libraryPageViewController = UIPageViewController(transitionStyle: .scroll,
                                                                  navigationOrientation: .horizontal,
                                                                  options: nil)
+    private let backButton = UIButton()
     
     // MARK: - Life Cycle
     
@@ -53,7 +54,7 @@ final class LibraryViewController: UIViewController {
         
         setUI()
         setHierarchy()
-        setLayout()
+        setLayout(isMyLibrary: isMyLibrary)
         
         delegate()
         register()
@@ -64,7 +65,7 @@ final class LibraryViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.setNavigationBarHidden(true, animated: true)
+        setLibraryViewUI()
         setPageViewControllerToPageIndex()
     }
     
@@ -146,7 +147,18 @@ final class LibraryViewController: UIViewController {
         guard target >= 0, target < self.tabBarList.count else { return }
         self.pageIndex = target
     }
-    
+
+    func setLibraryViewUI() {
+        if isMyLibrary {
+            self.navigationController?.setNavigationBarHidden(true, animated: true)
+        } else {
+            hideTabBar()
+            setWSSNavigationBar(title: StringLiterals.Navigation.Title.library,
+                                left: backButton,
+                                right: nil)
+            self.libraryNavigationView.isHidden = true
+        }
+    }
 }
 
 //MARK: - Set PageController
@@ -194,6 +206,10 @@ extension LibraryViewController {
     
     private func setUI() {
         self.view.backgroundColor = .wssWhite
+        
+        backButton.do {
+            $0.setImage(.icNavigateLeft.withRenderingMode(.alwaysOriginal).withTintColor(.wssGray300), for: .normal)
+        }
     }
     
     private func setHierarchy() {
@@ -204,17 +220,27 @@ extension LibraryViewController {
         libraryPageViewController.didMove(toParent: self)
     }
     
-    private func setLayout() {
-        libraryNavigationView.snp.makeConstraints {
-            $0.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
-            $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(52)
-        }
-        
-        libraryPageBar.snp.makeConstraints() {
-            $0.top.equalTo(libraryNavigationView.snp.bottom)
-            $0.width.equalToSuperview()
-            $0.height.equalTo(54)
+    private func setLayout(isMyLibrary: Bool) {
+        if isMyLibrary {
+            libraryNavigationView.snp.makeConstraints {
+                $0.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
+                $0.leading.trailing.equalToSuperview()
+                $0.height.equalTo(52)
+            }
+            
+            libraryPageBar.snp.makeConstraints() {
+                $0.top.equalTo(libraryNavigationView.snp.bottom)
+                $0.width.equalToSuperview()
+                $0.height.equalTo(54)
+            }
+        } else {
+            libraryNavigationView.isHidden = true
+            
+            libraryPageBar.snp.makeConstraints() {
+                $0.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
+                $0.width.equalToSuperview()
+                $0.height.equalTo(54)
+            }
         }
         
         libraryPageViewController.view.snp.makeConstraints {
