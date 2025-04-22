@@ -14,9 +14,9 @@ final class MyPageProfileVisibilityView: UIView {
     
     //MARK: - Components
     
-    private let profilePrivateView = UIView()
+    let profilePrivateView = UIView()
     private let profilePrivateLabel = UILabel()
-    let profilePrivateToggleButton = UIButton()
+    private let profilePrivateToggleButton = WSSToggleButton()
     
     //In VC
     let backButton = UIButton()
@@ -53,7 +53,13 @@ final class MyPageProfileVisibilityView: UIView {
         }
         
         profilePrivateToggleButton.do {
-            $0.setImage(.icSelectNovelDefault, for: .normal)
+            $0.setToggleSize(
+                toggleSize: CGSize(width: 42, height: 42),
+                barViewSize: CGSize(width: 40, height: 22),
+                circleViewSize: CGSize(width: 18, height: 18),
+                onCircleInset: 2
+            )
+            $0.isUserInteractionEnabled = false
         }
         
         backButton.do {
@@ -86,7 +92,6 @@ final class MyPageProfileVisibilityView: UIView {
         }
         
         profilePrivateToggleButton.snp.makeConstraints {
-            $0.size.equalTo(44)
             $0.centerY.equalToSuperview()
             $0.trailing.equalToSuperview().inset(20)
         }
@@ -95,8 +100,7 @@ final class MyPageProfileVisibilityView: UIView {
     //MARK: - Data
     
     func bindData(isPrivate: Bool) {
-        profilePrivateToggleButton.setImage(isPrivate ? .icSelectNovelSelected : .icSelectNovelDefault,
-                                            for: .normal)
+        profilePrivateToggleButton.updateToggle(isPrivate)
     }
     
     func changeCompleteButton(change: Bool) {
