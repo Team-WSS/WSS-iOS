@@ -339,7 +339,7 @@ final class MyPageViewController: UIViewController {
             .bind(with: self, onNext: { owner, data in
                 let (userId, isMyPage) = data
                 if isMyPage {
-                    NotificationCenter.default.post(name: Notification.Name("MoveToLibraryTab"), object: nil)
+                    NotificationCenter.default.post(name: StringLiterals.NotificationCenter.moveToLibraryTab, object: nil)
                 } else {
                     owner.pushToLibraryViewController(userId: userId)
                 }
@@ -347,14 +347,14 @@ final class MyPageViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.pushToSpecificLibraryViewController
-            .withLatestFrom(output.isMyPage) {
-                (userData, isMyPage) in  (userData.0, userData.1, isMyPage)
+            .withLatestFrom(output.isMyPage) { (userData, isMyPage) in
+               (userData.0, userData.1, isMyPage)
             }
             .observe(on: MainScheduler.instance)
             .bind(with: self, onNext: { owner, data in
                 let (userId, pageIndex, isMyPage) = data
                 if isMyPage {
-                    NotificationCenter.default.post(name: Notification.Name("MoveToLibraryTab"), object: pageIndex)
+                    NotificationCenter.default.post(name: StringLiterals.NotificationCenter.moveToLibraryTab, object: pageIndex)
                 } else {
                     owner.pushToLibraryViewController(userId: userId, pageIndex: pageIndex)
                 }
