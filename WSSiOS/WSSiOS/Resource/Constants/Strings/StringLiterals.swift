@@ -204,7 +204,7 @@ enum StringLiterals {
             static let privateLabel = "님의 프로필은\n비공개 상태예요"
             static let unknownAlertButtonTitle = "확인"
             static let myProfileLibrary = "내 통계"
-            static let otherProfileLibrary = "서재"
+            static let otherProfileLibrary = "통계"
             static let myProfileFeed = "내 활동"
             static let otherProfileFeed = "활동"
             static let activityButton = "활동기록 더보기"

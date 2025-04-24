@@ -387,6 +387,14 @@ extension UIViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
+    func pushToLibraryViewController(userId: Int, pageIndex: Int = 0) {
+        let viewController = LibraryViewController(userId: userId)
+
+        viewController.setPageIndex(target: pageIndex)
+        viewController.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
     func pushToMyPageFeedDetailViewController(userId: Int, useData: MyProfileEntity) {
         let viewController = MyPageFeedDetailViewController(
             viewModel: MyPageFeedDetailViewModel(
