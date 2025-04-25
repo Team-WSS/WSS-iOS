@@ -78,9 +78,8 @@ final class FeedEditContentView: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubviews(writeContentLabel,
-                         spoilerView,
-                         feedTextWrapperView)
+        self.addSubviews(feedTextWrapperView,
+                         spoilerView)
         feedTextWrapperView.addSubviews(feedTextView,
                                         placeholderLabel,
                                         photoImageView,
@@ -88,22 +87,17 @@ final class FeedEditContentView: UIView {
     }
     
     private func setLayout() {
-        writeContentLabel.snp.makeConstraints {
+        feedTextWrapperView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(5)
-            $0.leading.equalToSuperview().inset(20)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(309)
         }
         
         spoilerView.snp.makeConstraints {
-            $0.top.equalTo(writeContentLabel.snp.bottom).offset(13)
+            $0.top.equalTo(feedTextWrapperView.snp.bottom).offset(13)
             $0.horizontalEdges.equalToSuperview().inset(20)
             $0.height.equalTo(50)
-        }
-        
-        feedTextWrapperView.snp.makeConstraints {
-            $0.top.equalTo(spoilerView.snp.bottom).offset(13)
-            $0.leading.trailing.equalToSuperview().inset(20)
             $0.bottom.equalToSuperview()
-            $0.height.equalTo(309)
         }
         
         feedTextView.snp.makeConstraints {

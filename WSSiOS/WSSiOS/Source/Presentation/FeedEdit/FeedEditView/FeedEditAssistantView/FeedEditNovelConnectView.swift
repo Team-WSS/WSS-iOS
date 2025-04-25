@@ -15,7 +15,6 @@ final class FeedEditNovelConnectView: UIView {
     //MARK: - Components
     
     private let novelConnectTitleLabel = UILabel()
-    private let novelConnectSubTitleLabel = UILabel()
     private let novelSearchView = UIView()
     private let novelSearchLabel = UILabel()
     private let searchImageView = UIImageView()
@@ -46,11 +45,6 @@ final class FeedEditNovelConnectView: UIView {
             $0.textColor = .wssBlack
         }
         
-        novelConnectSubTitleLabel.do {
-            $0.applyWSSFont(.body4, with: StringLiterals.FeedEdit.Novel.novelConnectSub)
-            $0.textColor = .wssGray200
-        }
-        
         novelSearchView.do {
             $0.backgroundColor = .wssGray50
             $0.layer.cornerRadius = 14
@@ -69,7 +63,6 @@ final class FeedEditNovelConnectView: UIView {
     
     private func setHierarchy() {
         self.addSubviews(novelConnectTitleLabel,
-                         novelConnectSubTitleLabel,
                          novelSearchView)
         novelSearchView.addSubviews(novelSearchLabel,
                                     searchImageView)
@@ -81,13 +74,8 @@ final class FeedEditNovelConnectView: UIView {
             $0.leading.equalToSuperview().inset(20)
         }
         
-        novelConnectSubTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(novelConnectTitleLabel.snp.bottom).offset(4)
-            $0.leading.equalToSuperview().inset(20)
-        }
-        
         novelSearchView.snp.makeConstraints {
-            $0.top.equalTo(novelConnectSubTitleLabel.snp.bottom).offset(17)
+            $0.top.equalTo(novelConnectTitleLabel.snp.bottom).offset(17)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.bottom.equalToSuperview()
             $0.height.equalTo(42)
