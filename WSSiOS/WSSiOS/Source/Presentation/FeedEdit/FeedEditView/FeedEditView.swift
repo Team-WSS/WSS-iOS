@@ -20,14 +20,14 @@ final class FeedEditView: UIView {
     private let stackView = UIStackView()
     // 비공개 설정
     private let feedEditPrivateSettingView = FeedEditPrivateSettingView()
-    // 작품 연결
-    private let novelConnectStackView = UIStackView()
-    let feedEditNovelConnectView = FeedEditNovelConnectView()
-    let feedEditConnectedNovelView = FeedEditConnectedNovelView()
     // 장르 카테고리
     let feedEditCategoryView = FeedEditCategoryView()
     // 작품 피드 작성
     let feedEditContentView = FeedEditContentView()
+    // 작품 연결
+    private let novelConnectStackView = UIStackView()
+    let feedEditNovelConnectView = FeedEditNovelConnectView()
+    let feedEditConnectedNovelView = FeedEditConnectedNovelView()
     
     //MARK: - Life Cycle
     
@@ -56,14 +56,16 @@ final class FeedEditView: UIView {
         }
         
         completeButton.do {
-            $0.setButtonAttributedTitle(text: StringLiterals.FeedEdit.complete, font: .Title2, color: .wssPrimary100)
+            $0.setButtonAttributedTitle(text: StringLiterals.FeedEdit.complete,
+                                        font: .Title2,
+                                        color: .wssPrimary100)
             $0.isEnabled = false
         }
         
         scrollView.do {
             $0.contentInsetAdjustmentBehavior = .never
             $0.showsVerticalScrollIndicator = false
-            $0.contentInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 30.0, right: 0.0)
+            $0.contentInset = UIEdgeInsets(top: 30.0, left: 0.0, bottom: 30.0, right: 0.0)
         }
         
         stackView.do {
@@ -80,19 +82,24 @@ final class FeedEditView: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubview(scrollView)
+        self.addSubviews(feedEditPrivateSettingView,
+                         scrollView)
         scrollView.addSubview(stackView)
-        stackView.addArrangedSubviews(feedEditPrivateSettingView,
-                                      novelConnectStackView,
-                                      feedEditCategoryView,
-                                      feedEditContentView)
+        stackView.addArrangedSubviews(feedEditCategoryView,
+                                      feedEditContentView,
+                                      novelConnectStackView)
         novelConnectStackView.addArrangedSubviews(feedEditNovelConnectView,
                                                   feedEditConnectedNovelView)
     }
     
     private func setLayout() {
-        scrollView.snp.makeConstraints {
+        feedEditPrivateSettingView.snp.makeConstraints {
             $0.top.equalTo(self.safeAreaLayoutGuide)
+            $0.horizontalEdges.equalToSuperview()
+        }
+        
+        scrollView.snp.makeConstraints {
+            $0.top.equalTo(feedEditPrivateSettingView.snp.bottom)
             $0.horizontalEdges.equalToSuperview()
             $0.bottom.equalToSuperview().inset(30)
         }
@@ -101,6 +108,8 @@ final class FeedEditView: UIView {
             $0.edges.equalTo(scrollView.contentLayoutGuide)
             $0.width.equalTo(UIScreen.main.bounds.width)
         }
+        
+        stackView.setCustomSpacing(12, after: feedEditCategoryView)
     }
     
     //MARK: - Custom Method

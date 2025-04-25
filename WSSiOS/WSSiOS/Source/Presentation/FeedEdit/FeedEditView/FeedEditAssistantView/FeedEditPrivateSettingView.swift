@@ -14,7 +14,6 @@ final class FeedEditPrivateSettingView: UIView {
     
     //MARK: - Components
     
-    private let stackView = UIStackView()
     private let lockImageView = UIImageView()
     private let privateSettingLabel = UILabel()
     private let privateSettingButton = WSSToggleButton()
@@ -35,10 +34,6 @@ final class FeedEditPrivateSettingView: UIView {
     
     private func setUI() {
         self.backgroundColor = .wssGray300
-        
-        stackView.do {
-            $0.axis = .horizontal
-        }
         
         lockImageView.do {
             $0.image = .icLock
@@ -61,14 +56,15 @@ final class FeedEditPrivateSettingView: UIView {
     
     private func setHierarchy() {
         self.addSubviews(lockImageView,
-                                      privateSettingLabel,
-                                      privateSettingButton)
+                         privateSettingLabel,
+                         privateSettingButton)
     }
     
     private func setLayout() {
         self.snp.makeConstraints {
             $0.height.equalTo(58)
         }
+        
         lockImageView.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.leading.equalToSuperview().inset(20)

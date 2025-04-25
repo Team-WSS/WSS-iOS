@@ -15,7 +15,6 @@ final class FeedEditCategoryView: UIView {
     //MARK: - Components
     
     private let categoryLabel = UILabel()
-    private let multipleSelectLabel = UILabel()
     let categoryCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     
     //MARK: - Life Cycle
@@ -44,17 +43,12 @@ final class FeedEditCategoryView: UIView {
             $0.textColor = .wssBlack
         }
         
-        multipleSelectLabel.do {
-            $0.applyWSSFont(.label1, with: StringLiterals.FeedEdit.Category.multipleSelect)
-            $0.textColor = .wssGray200
-        }
-        
         categoryCollectionView.do {
             let layout = LeftAlignedCollectionViewFlowLayout()
             layout.scrollDirection = .vertical
             layout.minimumLineSpacing = 10
             layout.minimumInteritemSpacing = 6
-
+            
             $0.collectionViewLayout = layout
             $0.isScrollEnabled = false
             $0.allowsMultipleSelection = true
@@ -63,7 +57,6 @@ final class FeedEditCategoryView: UIView {
     
     private func setHierarchy() {
         self.addSubviews(categoryLabel,
-                         multipleSelectLabel,
                          categoryCollectionView)
     }
     
@@ -73,13 +66,8 @@ final class FeedEditCategoryView: UIView {
             $0.leading.equalToSuperview().inset(20)
         }
         
-        multipleSelectLabel.snp.makeConstraints {
-            $0.top.equalTo(categoryLabel.snp.bottom).offset(4)
-            $0.leading.equalToSuperview().inset(20)
-        }
-        
         categoryCollectionView.snp.makeConstraints {
-            $0.top.equalTo(multipleSelectLabel.snp.bottom).offset(14)
+            $0.top.equalTo(categoryLabel.snp.bottom).offset(14)
             $0.leading.equalToSuperview().inset(20)
             $0.trailing.equalToSuperview().inset(20)
             $0.bottom.equalToSuperview()

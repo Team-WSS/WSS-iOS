@@ -581,7 +581,7 @@ enum StringLiterals {
         static let setPrivate = "비공개 기록"
         
         enum Category {
-            static let category = "장르 카테고리"
+            static let category = "기록 작성"
             static let multipleSelect = "장르는 여러 개 선택할 수 있어요."
         }
         
